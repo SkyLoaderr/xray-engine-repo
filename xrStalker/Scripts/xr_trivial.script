@@ -9,7 +9,7 @@ local novice_speak  = 10000     --Через какое время примерно новичок произносит 
 
 local novice_speak3 = 8000
 
-local time_to_speak = 10000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 5000     	--Через какое время примерно зомби произносит фразы
 
 local time_walk2    = 10000     --Время ходьбы для навичка номер2
 
@@ -89,7 +89,7 @@ function stalker_zombie_action:__init (name, storage) super (nil, name)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombie_action:initialize ()
-    action_base.initialize       	(self)
+	action_base.initialize       	(self)
     self.a.time      = device():time_global() + time_to_speak
     self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
 
@@ -111,8 +111,8 @@ function stalker_zombie_action:execute ()
 	self.object:set_mental_state    ( anim.free )
 	self.object:set_item            ( object.idle, self.object:best_weapon() )
 
-	if( device():time_global() > self.a.time and self.object:active_sound_count() == 0 ) then
-	--Давно уже ничего не говорили
+	if(self.a.stand == false and device():time_global() > self.a.time and self.object:active_sound_count() == 0 ) then
+		--Давно уже ничего не говорили
 		self:speak()
     end
 
@@ -123,9 +123,12 @@ function stalker_zombie_action:execute ()
 		self.object:clear_animations()
 		self.object:set_movement_type( move.walk )
 		self.a.time = device():time_global() + 8000 + 0.4*math.random(time_to_speak)
+		self.time	= device():time_global() + 5000
     end
 	
-	xr_sound.sound_update(self.object, self.sounds)
+	if(self.a.stand == false) then
+		xr_sound.sound_update(self.object, self.sounds)
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombie_action:speak()
@@ -133,7 +136,7 @@ function stalker_zombie_action:speak()
         self.object:set_movement_type ( move.stand )
         self.object:add_animation( "prisluh_9_0", true )
         self.object:add_animation( "prisluh_9_2", true )
-        xr_sound.sound_update(self.object, self.sounds, math.random(1000, 3000))
+		xr_sound.sound_update(self.object, self.sounds, math.random(1000, 3000))
         self.a.stand = true
     end
 
