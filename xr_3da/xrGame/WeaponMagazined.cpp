@@ -235,8 +235,8 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	case eFire:			state_Fire		(bHUDView,dt);	break;
 	case eMagEmpty:		state_MagEmpty	(bHUDView,dt);	break;
 	}
-	bVisible		= TRUE;
-	bPending		= FALSE;
+	bVisible			= TRUE;
+	bPending			= FALSE;
 }
 
 void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
