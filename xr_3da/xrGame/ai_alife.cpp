@@ -10,6 +10,7 @@
 #include "ai_alife.h"
 
 //#define WRITE_TO_LOG
+#define MONSTER_TO_GENERATE	40
 
 CAI_ALife::CAI_ALife()
 {
@@ -52,12 +53,12 @@ IC bool	bfSpawnPointPredicate(CAI_ALife::SSpawnPoint v1, CAI_ALife::SSpawnPoint 
 
 void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 {
-#define MODEL_COUNT				1
+#define MODEL_COUNT				2
 	vector<bool>				tpMarks;
 	tpMarks.resize				(Level().AI.GraphHeader().dwVertexCount);
 	tpMarks.assign				(tpMarks.size(),false);
 	AI::SGraphVertex			*tpaGraph = Level().AI.m_tpaGraph;
-	const char					*caModels[] = {"m_rat_e"};
+	const char					*caModels[MODEL_COUNT] = {"m_rat_e","m_zombie_e"};
 	m_tpSpawnPoint.resize		(dwSpawnCount);
 	u16 wGroupID				= 0;
 	m_tSpawnHeader.dwCount		= dwSpawnCount;
@@ -74,7 +75,6 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 			}
 		if (!bOk)
 			m_tpSpawnPoint[i].wGroupID = wGroupID++;
-
 		j = ::Random.randI(0,MODEL_COUNT);
 		memcpy(m_tpSpawnPoint[i].caModel,caModels[j],(1 + strlen(caModels[j]))*sizeof(char));
 		m_tpSpawnPoint[i].ucTeam					= (u8)::Random.randI(255);
@@ -89,7 +89,7 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 		u16				wPoint = m_tpSpawnPoint[i].wNearestGraphPoint;
 		int				wCount = tpaGraph[wPoint].dwNeighbourCount;
 		AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
-		for (int j=0; j<(int)wCount; j++) {
+		for ( j=0; j<(int)wCount; j++) {
 			if (!tpMarks[tpaEdges[j].dwVertexNumber]) {
 				m_tpSpawnPoint[i].wpRouteGraphPoints.push_back((u16)tpaEdges[j].dwVertexNumber);
 				tpMarks[tpaEdges[j].dwVertexNumber] = true;
@@ -139,7 +139,7 @@ void CAI_ALife::vfSaveSpawnPoints()
 
 void CAI_ALife::Load()
 {
-	shedule_Min					=   100;
+	shedule_Min					=     1;
 	shedule_Max					=    20;
 	m_dwNPCBeingProcessed		=     0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
@@ -157,7 +157,7 @@ void CAI_ALife::Load()
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn")) {
 //		THROW;
 #ifdef DEBUG
-		vfGenerateSpawnPoints(30);
+		vfGenerateSpawnPoints(MONSTER_TO_GENERATE);
 		vfSaveSpawnPoints();
 #else
 		return;
@@ -204,10 +204,9 @@ void CAI_ALife::Load()
 	tpStream->Read(&m_tNPCHeader,sizeof(m_tNPCHeader));
 	if (m_tNPCHeader.dwVersion != ALIFE_VERSION)
 		THROW;
-	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
+	R_ASSERT(tpStream->FindChunk(NPC_CHUNK_DATA));
 	m_tpNPC.resize(m_tNPCHeader.dwCount);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
-		
 		m_tpNPC[i].dwLastUpdateTime		= tpStream->Rdword();
 		m_tpNPC[i].wSpawnPoint			= tpStream->Rword();
 		m_tpNPC[i].wCount				= tpStream->Rword();
@@ -218,11 +217,19 @@ void CAI_ALife::Load()
 		m_tpNPC[i].fDistanceFromPoint	= tpStream->Rfloat();
 		m_tpNPC[i].fDistanceToPoint		= tpStream->Rfloat();
 		m_tpNPC[i].iHealth				= tpStream->Rint();
-		m_tpNPC[i].tpUsefulObject.resize(tpStream->Rword());
-		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
-			tpStream->Read(&(m_tpNPC[i].tpUsefulObject[j]),sizeof(SUsefulObject));
-
+		m_tpNPC[i].tpItem.resize(tpStream->Rword());
+		for (int j=0; j<(int)m_tpNPC[i].tpItem.size(); j++)
+			tpStream->Read(&(m_tpNPC[i].tpItem[j]),sizeof(SItem));
 	}
+	
+	R_ASSERT(tpStream->FindChunk(TASK_CHUNK_DATA));
+	m_tpTask.resize(tpStream->Rword());
+	for ( i=0; i<(int)m_tpTask.size(); i++) {
+		m_tpTask[i].wGraphPoint = tpStream->Rword();
+		m_tpTask[i].ucTerrain	= tpStream->Rbyte();
+		m_tpTask[i].tTaskType	= ETaskType(tpStream->Rdword());
+	}
+
 	Engine.FS.Close(tpStream);
 
 	vfInitGraph();
@@ -241,7 +248,7 @@ void CAI_ALife::Save()
 	tStream.close_chunk	();
 	
 	// data chunk
-	tStream.open_chunk	(ALIFE_CHUNK_DATA);
+	tStream.open_chunk	(NPC_CHUNK_DATA);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
 		
 		tStream.Wdword	(m_tpNPC[i].dwLastUpdateTime);
@@ -254,12 +261,23 @@ void CAI_ALife::Save()
 		tStream.Wfloat	(m_tpNPC[i].fDistanceFromPoint);
 		tStream.Wfloat	(m_tpNPC[i].fDistanceToPoint);
 		tStream.Wdword	(m_tpNPC[i].iHealth);
-		tStream.Wword	((u16)m_tpNPC[i].tpUsefulObject.size());
-		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
-            tStream.write(&(m_tpNPC[i].tpUsefulObject[j]),sizeof(SUsefulObject));
+		tStream.Wword	((u16)m_tpNPC[i].tpItem.size());
+		for (int j=0; j<(int)m_tpNPC[i].tpItem.size(); j++)
+            tStream.write(&(m_tpNPC[i].tpItem[j]),sizeof(SItem));
 
 	}
 	tStream.close_chunk	();
+	
+	// task chunk
+	tStream.open_chunk	(TASK_CHUNK_DATA);
+	tStream.Wword		((u16)m_tpTask.size());
+	for (int i=0; i<(int)m_tpTask.size(); i++) {
+		tStream.Wword	(m_tpTask[i].wGraphPoint);
+		tStream.Wbyte	(m_tpTask[i].ucTerrain);
+		tStream.Wdword	(m_tpTask[i].tTaskType);
+	}
+	tStream.close_chunk	();
+
 	tStream.SaveTo		("game.alife",0);
 }
 
@@ -292,7 +310,7 @@ void CAI_ALife::Generate()
 		tALifeNPC.fDistanceFromPoint	= 0.f;
 		tALifeNPC.fDistanceToPoint		= 0.f;
 		tALifeNPC.iHealth				= pSettings->ReadINT(m_tpSpawnPoint[i].caModel, "Health");
-		tALifeNPC.tpUsefulObject.clear	();
+		tALifeNPC.tpItem.clear			();
 
 		m_tpNPC.push_back				(tALifeNPC);
 		i = m;	
@@ -331,8 +349,9 @@ void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
 //	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
 //	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
 //	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
-	vfCheckForTheBattle		(dwNPCIndex);
+	vfCheckForDeletedEvents	(dwNPCIndex);
 	vfChooseNextRoutePoint	(dwNPCIndex);
+	vfCheckForTheBattle		(dwNPCIndex);
 	m_tpNPC[dwNPCIndex].dwLastUpdateTime = Level().timeServer();
 //	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
 //	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
@@ -415,4 +434,8 @@ void CAI_ALife::vfCheckForTheBattle(u32 dwNPCIndex)
 //	for (int i=0; i<(int)m_tpGraphObject[m_tpNPC[dwNPCIndex].wGraphPoint].size(); i++)
 //		if (m_tpGraphObject[m_tpNPC[dwNPCIndex].wGraphPoint][i] != (u16)dwNPCIndex) {
 //		}
+}
+
+void CAI_ALife::vfCheckForDeletedEvents(u32 dwNPCIndex)
+{
 }
