@@ -1,7 +1,7 @@
-module "xr_events"
+--module "xr_events"
 
 function main()
-    local actor = get_actor()
+--[[    local actor = get_actor()
 
     xr_events.SoundEvent( get_level_object( "sound_zone_01" ), actor, "ambient\\floor_creak1", "ambient\\floor_creak2", "ambient\\floor_creak3")
     xr_events.SoundEvent( get_level_object( "sound_zone_0000" ), actor, "ambient\\floor_creak1", "ambient\\floor_creak2", "ambient\\floor_creak3")
@@ -26,5 +26,5 @@ function main()
     xr_events.SoundEvent( get_level_object( "sound_zone_0019" ), actor, "ambient\\floor_creak1", "ambient\\floor_creak2", "ambient\\floor_creak3")
     xr_events.SoundEvent( get_level_object( "sound_zone_0020" ), actor, "ambient\\floor_creak1", "ambient\\floor_creak2", "ambient\\floor_creak3")
 
-    wait( time_infinite )
+    wait( time_infinite )]]
 end
