@@ -11,6 +11,9 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 
 	if (Device.bReady) return;
 
+	cache.pRT		= 0;
+	cache.pZB		= 0;
+	
 	//************************************************************************************
 	// RTargets
 	for (map<LPSTR,CRT*,str_pred>::iterator r=rtargets.begin(); r!=rtargets.end(); r++)
@@ -120,6 +123,8 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 void	CShaderManager::OnDeviceCreate	(CStream* FS){
 	if (!Device.bReady) return;
 	cache.Invalidate	();
+	cache.pRT			= HW.pBaseRT;
+	cache.pZB			= HW.pBaseZB;
 
 	string256	name;
 

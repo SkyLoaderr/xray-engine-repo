@@ -63,9 +63,9 @@ private:
 		
 		void						Invalidate	()
 		{	
-			ZeroMemory(&pass,sizeof(pass));
-			ZeroMemory(surfaces,sizeof(surfaces));
-			ZeroMemory(matrices,sizeof(matrices));
+			ZeroMemory	(&pass,		sizeof(pass)	);
+			ZeroMemory	(surfaces,	sizeof(surfaces));
+			ZeroMemory	(matrices,	sizeof(matrices));
 		}
 	}								cache;
 
