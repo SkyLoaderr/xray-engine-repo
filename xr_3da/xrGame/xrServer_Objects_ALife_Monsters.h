@@ -138,8 +138,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 									CSE_ALifeCreatureActor		(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterCrow,CSE_ALifeCreatureAbstract)
-									CSE_ALifeMonsterCrow		(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
+									CSE_ALifeCreatureCrow		(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
 	{
 		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	    set_visual				(pSettings->r_string(caSection,"visual"));

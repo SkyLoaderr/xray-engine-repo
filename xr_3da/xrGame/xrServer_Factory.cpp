@@ -27,7 +27,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_SPAWN_GROUP:		return xr_new<CSE_SpawnGroup>					(caSection);
 		
 		case CLSID_AI_GRAPH:			return xr_new<CSE_ALifeGraphPoint>				(caSection);			
-		case CLSID_AI_CROW:				return xr_new<CSE_ALifeMonsterCrow>				(caSection);            // Visualed
+		case CLSID_AI_CROW:				return xr_new<CSE_ALifeCreatureCrow>				(caSection);            // Visualed
 		case CLSID_AI_RAT:				return xr_new<CSE_ALifeMonsterRat>				(caSection);			// Visualed
 		case CLSID_AI_RAT_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat> >	(caSection);	
 		case CLSID_AI_FLESH:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);

@@ -370,9 +370,9 @@ void CSE_ALifeCreatureActor::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeMonsterCrow
+// CSE_ALifeCreatureCrow
 ////////////////////////////////////////////////////////////////////////////
-void CSE_ALifeMonsterCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeCreatureCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20) {
 		inherited::STATE_Read	(tNetPacket,size);
@@ -381,23 +381,23 @@ void CSE_ALifeMonsterCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	}
 }
 
-void CSE_ALifeMonsterCrow::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureCrow::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeMonsterCrow::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureCrow::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeMonsterCrow::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureCrow::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeMonsterCrow::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp			(pref,values);
 }
