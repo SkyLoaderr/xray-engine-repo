@@ -468,6 +468,7 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 	// Network
 	//////////////////////////////////////////////////////////////////////////
+			void						ConvState			(u32 mstate_rl, string128 *buf);
 public:
 	virtual BOOL						net_Spawn			( CSE_Abstract* DC);
 	virtual void						net_Export			( NET_Packet& P);				// export to server

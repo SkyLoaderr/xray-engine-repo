@@ -36,6 +36,24 @@ int			g_dwInputUpdateDelta	= 20;
 BOOL		net_cl_inputguaranteed	= FALSE;
 
 //--------------------------------------------------------------------
+void	CActor::ConvState(u32 mstate_rl, string128 *buf)
+{
+	strcpy(*buf,"");
+	if (isAccelerated(mstate_rl))		strcat(*buf,"Accel ");
+	if (mstate_rl&mcCrouch)		strcat(*buf,"Crouch ");
+	if (mstate_rl&mcFwd)		strcat(*buf,"Fwd ");
+	if (mstate_rl&mcBack)		strcat(*buf,"Back ");
+	if (mstate_rl&mcLStrafe)	strcat(*buf,"LStrafe ");
+	if (mstate_rl&mcRStrafe)	strcat(*buf,"RStrafe ");
+	if (mstate_rl&mcJump)		strcat(*buf,"Jump ");
+	if (mstate_rl&mcFall)		strcat(*buf,"Fall ");
+	if (mstate_rl&mcTurn)		strcat(*buf,"Turn ");
+	if (mstate_rl&mcLanding)	strcat(*buf,"Landing ");
+	if (mstate_rl&mcLLookout)	strcat(*buf,"LLookout ");
+	if (mstate_rl&mcRLookout)	strcat(*buf,"RLookout ");
+	if (m_bJumpKeyPressed)		strcat(*buf,"+Jumping ");
+};
+//--------------------------------------------------------------------
 void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	u8					flags = 0;
@@ -67,10 +85,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 	P.w_float_q16		(fArmor,-500,1000);
 
-
-
 	P.w_u8				(u8(inventory().GetActiveSlot()));
-
 	/////////////////////////////////////////////////
 	u16 NumItems		= PHGetSyncItemsNumber();
 	

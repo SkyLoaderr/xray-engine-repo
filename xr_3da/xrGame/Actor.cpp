@@ -686,8 +686,11 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 void CActor::UpdateCL()
 {
+	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL();
+	VERIFY2								(_valid(renderable.xform),*cName());
 	m_pPhysics_support->in_UpdateCL	();
+	VERIFY2								(_valid(renderable.xform),*cName());
 	if (g_Alive()) 
 	{
 		//update the fog of war
@@ -837,8 +840,9 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		if (NET.size())
 		{
-//			NET_Last = NET.back();
+			NET_SavedAccel = NET_Last.p_accel;
 			mstate_real = mstate_wishful = NET_Last.mstate;
+
 			g_sv_Orientate				(NET_Last.mstate,dt			);
 			g_Orientate					(NET_Last.mstate,dt			);
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
