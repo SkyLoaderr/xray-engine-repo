@@ -1,6 +1,27 @@
 #include	"stdafx.h"
 #include	"ETools.h"
 
+BOOL APIENTRY DllMain( HANDLE hModule, 
+					  DWORD  fdwReason, 
+					  LPVOID lpReserved
+					  )
+{ 
+	switch(fdwReason) {
+		case DLL_PROCESS_ATTACH:
+//			Core._initialize("XRayEditorTools",0,"\\\\X-Ray\\stalker$\\");
+			//FPU::m64r	();
+			break;
+		case DLL_THREAD_ATTACH:
+			break;
+		case DLL_THREAD_DETACH:
+			break;
+		case DLL_PROCESS_DETACH:
+			//Core._destroy();
+			break;
+	}
+	return TRUE;
+}
+
 namespace ETOOLS{
 	ETOOLS_API bool TestRayTriA(const Fvector& C, const Fvector& D, Fvector** p, float& u, float& v, float& range, bool bCull)
 	{

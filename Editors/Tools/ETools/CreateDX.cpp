@@ -192,4 +192,37 @@ extern "C"{
 	{
 		return DXGetErrorDescription9(hr);
 	}
+	ETOOLS_API D3DXMATRIX* WINAPI 
+		D3DX_MatrixInverse(          
+		D3DXMATRIX *pOut,
+		FLOAT *pDeterminant,
+		CONST D3DXMATRIX *pM)
+	{
+		return D3DXMatrixInverse(pOut, pDeterminant,pM);
+	}
+
+	ETOOLS_API D3DXMATRIX* WINAPI
+		D3DX_MatrixTranspose(          
+		D3DXMATRIX *pOut,
+		CONST D3DXMATRIX *pM)
+	{
+		return D3DXMatrixTranspose(pOut, pM);
+	}
+
+	ETOOLS_API D3DXPLANE* WINAPI
+		D3DX_PlaneNormalize(          
+		D3DXPLANE *pOut,
+		CONST D3DXPLANE *pP)
+	{
+		return D3DXPlaneNormalize(pOut, pP);
+	}
+
+	ETOOLS_API D3DXPLANE* WINAPI
+		D3DX_PlaneTransform(          
+		D3DXPLANE *pOut,
+		CONST D3DXPLANE *pP,
+		CONST D3DXMATRIX *pM)
+	{
+		return D3DXPlaneTransform(pOut, pP, pM);
+	}
 }

@@ -138,6 +138,28 @@ extern "C" {
 	ETOOLS_API const char*  WINAPI
 		DX_GetErrorDescription9(
 		HRESULT					hr);
+
+	ETOOLS_API D3DXMATRIX* WINAPI
+		D3DX_MatrixInverse(          
+		D3DXMATRIX *pOut,
+		FLOAT *pDeterminant,
+		CONST D3DXMATRIX *pM);
+
+	ETOOLS_API D3DXMATRIX* WINAPI
+		D3DX_MatrixTranspose(          
+		D3DXMATRIX *pOut,
+		CONST D3DXMATRIX *pM);
+
+	ETOOLS_API D3DXPLANE* WINAPI
+		D3DX_PlaneNormalize(          
+		D3DXPLANE *pOut,
+		CONST D3DXPLANE *pP);
+
+	ETOOLS_API D3DXPLANE* WINAPI
+		D3DX_PlaneTransform(          
+		D3DXPLANE *pOut,
+		CONST D3DXPLANE *pP,
+		CONST D3DXMATRIX *pM);
 }
 
 #ifndef CREATEDX_EXPORTS
@@ -158,6 +180,10 @@ extern "C" {
 	#define D3DXGetDeclLength						D3DX_GetDeclLength
 	#define D3DXGetFVFVertexSize					D3DX_GetFVFVertexSize
 	#define DXGetErrorDescription9					DX_GetErrorDescription9
+	#define D3DXMatrixInverse						D3DX_MatrixInverse
+	#define D3DXMatrixTranspose						D3DX_MatrixTranspose
+	#define D3DXPlaneNormalize						D3DX_PlaneNormalize 
+	#define D3DXPlaneTransform						D3DX_PlaneTransform 
 #endif
 
 #endif
