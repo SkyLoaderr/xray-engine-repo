@@ -234,7 +234,7 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!tpTrader->m_tpTaskIDs.size()) {
-		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
+		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2),true);
 		vfCreateNewTask				(m_tpTraders[0]);
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -103,10 +103,16 @@ public:
 
 	IC void vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
 	{
+		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+		if (tpALifeItem) {
+			if (!tpALifeItem->m_bAttached)
+				m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
+			return;
+		}
+		m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
 		if (tpALifeMonsterAbstract) {
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
-			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
 			if (tpALifeHuman) {
 				if (tpALifeHuman->m_bIsTrader) {
@@ -121,7 +127,15 @@ public:
 		}
 	}
 	
-	IC void vfCreateNewDynamicObject(SPAWN_IT I)
+	IC void vfUpdateDynamicData()
+	{
+		OBJECT_PAIR_IT			I = m_tObjectRegistry.m_tppMap.begin();
+		OBJECT_PAIR_IT			E = m_tObjectRegistry.m_tppMap.end();
+		for ( ; I != E; I++)
+			vfUpdateDynamicData((*I).second);
+	}
+
+	IC void vfCreateNewDynamicObject(SPAWN_IT I, bool bUpdateDynamicData = false)
 	{
 		CALifeDynamicObject	*tpALifeDynamicObject;
 		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled")) {
@@ -141,7 +155,8 @@ public:
 
 		tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
 		m_tObjectRegistry.Add				(tpALifeDynamicObject);
-		vfUpdateDynamicData					(tpALifeDynamicObject);
+		if (bUpdateDynamicData)
+			vfUpdateDynamicData				(tpALifeDynamicObject);
 	};
 
 	IC void vfCreateNewTask(CALifeHuman *tpTrader)

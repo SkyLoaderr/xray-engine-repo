@@ -1570,9 +1570,6 @@
 					RelativePath="ai_alife_process.cpp">
 				</File>
 				<File
-					RelativePath="ai_alife_registries.cpp">
-				</File>
-				<File
 					RelativePath="ai_alife_registries.h">
 				</File>
 				<File

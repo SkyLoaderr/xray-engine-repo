@@ -377,7 +377,7 @@ void CAI_ALife::Load()
 		THROW;
 	
 	R_ASSERT(tpStream->FindChunk(OBJECT_CHUNK_DATA));
-	m_tObjectRegistry.Load(*tpStream,this);
+	m_tObjectRegistry.Load(*tpStream);
 	
 	R_ASSERT(tpStream->FindChunk(EVENT_CHUNK_DATA));
 	m_tEventRegistry.Load(*tpStream);
@@ -385,6 +385,8 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(TASK_CHUNK_DATA));
 	m_tTaskRegistry.Load(*tpStream);
 	
+	vfUpdateDynamicData();
+
 	Engine.FS.Close(tpStream);
 
 	m_bLoaded = true;
