@@ -42,6 +42,8 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._float_2				= 1.2
 	self._float_3				= 1.3
 	self._float_4				= 1.4
+	// bool
+	self._bool_0				= true
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -87,6 +89,8 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_float				(self._float_2)
 	packet:w_float				(self._float_3)
 	packet:w_float				(self._float_4)
+	// bool
+	packet:w_bool				(self._bool_0)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -128,6 +132,8 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._float_2				= packet:r_float()
 	self._float_3				= packet:r_float()
 	self._float_4				= packet:r_float()
+	// bool
+	self._bool_0				= packet:r_bool()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -164,11 +170,11 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_u32	(items,"script\\u32\\2",self,"_u32_2",1,32)
 	properties_helper():create_u32	(items,"script\\u32\\3",self,"_u32_3",1,32,8)
 	// float														   
-	log							("float started 0!")
 	properties_helper():create_float(items,"script\\float\\0",self,"_float_0")
-	log							("float started 1!")
 	properties_helper():create_float(items,"script\\float\\1",self,"_float_1",0)
 	properties_helper():create_float(items,"script\\float\\2",self,"_float_2",0,10)
 	properties_helper():create_float(items,"script\\float\\3",self,"_float_3",0,10,0.1)
 	properties_helper():create_float(items,"script\\float\\4",self,"_float_4",0,10,0.1,3)
+	// bool														   
+	properties_helper():create_bool	(items,"script\\bool\\0",self,"_bool_0")
 end
