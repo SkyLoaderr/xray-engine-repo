@@ -31,7 +31,7 @@ const char* _SetPos (const char* src, DWORD pos )
 {
 	const char*	res			= src;
 	DWORD		p			= 0;
-	while( p<pos && (res=strchr(res,',')) )
+	while( p<pos && (0!=(res=strchr(res,','))) )
 	{
 		res		++;
 		p		++;
@@ -54,7 +54,7 @@ int				_GetItemCount ( const char* src )
 {
 	const char*	res			= src;
 	DWORD		p			= 0;
-	while( res=strchr(res,',') )
+	while( 0!=(res=strchr(res,',')) )
 	{
 		res		++;
 		p		++;
