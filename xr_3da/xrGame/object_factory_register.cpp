@@ -146,6 +146,8 @@
 
 #	include "UIGameSP.h"
 #	include "UIGameAHunt.h"
+
+#	include "space_restrictor.h"
 #endif
 
 #ifndef NO_XR_GAME
@@ -309,8 +311,8 @@ void CObjectFactory::register_classes	()
 	ADD(CLevelChanger			,CSE_ALifeLevelChanger			,CLSID_LEVEL_CHANGER		,"level_changer");
 	ADD(CScriptZone				,CSE_ALifeScriptZone			,CLSID_SCRIPT_ZONE			,"script_zone");
 	ADD(CTeamBaseZone			,CSE_ALifeTeamBaseZone			,CLSID_Z_TEAM_BASE			,"team_base_zone");
-
 	ADD(CTorridZone				,CSE_ALifeTorridZone			,CLSID_Z_TORRID				,"torrid_zone");
+	ADD(CSpaceRestrictor		,CSE_ALifeScriptZone			,CLSID_SPACE_RESTRICTOR		,"space_restrictor");
 
 	// Detectors
 	ADD(CSimpleDetector			,CSE_ALifeItemDetector			,CLSID_DETECTOR_SIMPLE		,"device_detector_simple");

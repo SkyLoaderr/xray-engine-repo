@@ -37,6 +37,8 @@
 #include "patrol_path_storage.h"
 #include "date_time.h"
 
+#include "space_restrictor_manager.h"
+
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;
@@ -83,6 +85,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	physics_step_time_callback	= (PhysicsStepTimeCallback*) &PhisStepsCallback;
 
 	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
+
+	m_space_restrictor_manager = xr_new<CSpaceRestrictorManager>();
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -123,6 +127,8 @@ CLevel::~CLevel()
 	static_Sounds.clear	();
 
 	xr_delete					(m_patrol_path_storage);
+
+	xr_delete					(m_space_restrictor_manager);
 	
 	ai().script_engine().remove_script_process("level");
 
@@ -132,11 +138,11 @@ CLevel::~CLevel()
 
 	//by Dandy
 	//destroy fog of war
-	xr_delete			(m_pFogOfWar);
+	xr_delete					(m_pFogOfWar);
 	//destroy bullet manager
 	xr_delete					(m_pBulletManager);
 	//-----------------------------------------------------------
-	xr_delete	(pStatGraph);
+	xr_delete					(pStatGraph);
 	//-----------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();

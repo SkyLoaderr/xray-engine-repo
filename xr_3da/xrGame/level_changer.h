@@ -13,23 +13,20 @@
 
 class CLevelChanger : public CGameObject, public Feel::Touch {
 private:
+	typedef	CGameObject	inherited;
+
+private:
 	ALife::_GRAPH_ID	m_game_vertex_id;
 	u32					m_level_vertex_id;
 	Fvector				m_position;
 	Fvector				m_angles;
 
 public:
-	typedef	CGameObject	inherited;
-
-	virtual			~CLevelChanger		();
-	virtual BOOL	net_Spawn			(LPVOID DC);
-	//virtual void	spatial_register	();
-	//virtual void	spatial_move		();
-
-	virtual void	Center				(Fvector& C) const;
-	virtual float	Radius				() const;
-
-	virtual void	shedule_Update		(u32 dt);
-	virtual void	feel_touch_new		(CObject* O);
-	virtual BOOL	feel_touch_contact	(CObject* O);
+	virtual				~CLevelChanger		();
+	virtual BOOL		net_Spawn			(LPVOID DC);
+	virtual void		Center				(Fvector& C) const;
+	virtual float		Radius				() const;
+	virtual void		shedule_Update		(u32 dt);
+	virtual void		feel_touch_new		(CObject* O);
+	virtual BOOL		feel_touch_contact	(CObject* O);
 };

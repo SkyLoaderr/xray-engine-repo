@@ -20,6 +20,7 @@ class	game_cl_GameState;
 class	NET_Queue_Event;
 class	CSE_Abstract;
 class	CPatrolPathStorage;
+class	CSpaceRestrictorManager;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -41,6 +42,8 @@ protected:
 	
 	// patrol path storage
 	CPatrolPathStorage			*m_patrol_path_storage;
+	// movement restriction manager
+	CSpaceRestrictorManager		*m_space_restrictor_manager;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -190,6 +193,8 @@ public:
 	// Save/Load/State
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
+	
+	IC CSpaceRestrictorManager	&space_restrictor_manager	();
 
 	// C/D
 	CLevel();
@@ -255,6 +260,11 @@ IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}
 	u32					GameID();
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
+IC CSpaceRestrictorManager	&CLevel::space_restrictor_manager()
+{
+	VERIFY				(m_space_restrictor_manager);
+	return				(*m_space_restrictor_manager);
+}
 	//by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}
 IC bool					OnClient()	{ return Level().IsClient();				}
