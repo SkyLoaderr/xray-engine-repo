@@ -12,12 +12,12 @@ struct 	v2p_out
 
 struct 	v2p_in
 {
-  float2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  half2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
 };
 
 struct 	p2f
 {
-  float4 C: 		COLOR0;		// Final color
+  half4 C: 			COLOR0;		// Final color
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -26,10 +26,10 @@ uniform sampler2D 	s_normal;
 uniform sampler2D 	s_diffuse;
 uniform sampler1D 	s_power;
 uniform sampler2D 	s_shadowmap;
-uniform float4 		light_direction;
-uniform float4 		light_color;
-uniform float4x4	light_xform;
-uniform float4		jitter[6];
+uniform half4 		light_direction;
+uniform half4 		light_color;
+uniform half4x4		light_xform;
+uniform half4		jitter[6];
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
@@ -48,13 +48,13 @@ p2f 	p_main	( v2p_in IN )
   p2f		OUT;
 
   // Sample the fat framebuffer:
-  float4 _P		= tex2D 	(s_position, float2(IN.tc0.x, IN.tc0.y)); 
-  float4 _N		= tex2D 	(s_normal,   float2(IN.tc0.x, IN.tc0.y)); 
+  half4 _P		= tex2D 	(s_position, IN.tc0); 
+  half4 _N		= tex2D 	(s_normal,   IN.tc0); 
   
   // Transform position to light/shadow space
-  float4 PLS	= mul		(light_xform,float4(_P.x,_P.y,_P.z,1));
-  float2 uv0	= float2	(PLS.x/PLS.w,PLS.y/PLS.w);
-  float  depth	= PLS.z;
+  half4 PLS		= mul		(light_xform,float4(_P.x,_P.y,_P.z,1));
+  half2	uv0		= float2	(PLS.x/PLS.w,PLS.y/PLS.w);
+  half  depth	= PLS.z;
   
   // 1. Sample shadowmap 
   // 2. Compare (if (depth_pixel > depth_smap) then in shadow)
