@@ -101,7 +101,7 @@ void CBuild::xrPhase_MergeLM()
 			std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
 
 			// Select first deflectors which can fit
-			int maxarea		= lmap_size*lmap_size*6;	// Max up to 6 lm selected
+			int maxarea		= lmap_size*lmap_size*5;	// Max up to 6 lm selected
 			int curarea		= 0;
 			int merge_count	= 0;
 			for (it=0; it<(int)Layer.size(); it++)
