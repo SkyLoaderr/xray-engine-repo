@@ -437,6 +437,7 @@ void CCustomMonster::OnRender()
 {
 	if (0 == (psAI_Flags&aiDebug)) return;
 	
+	Device.Shader.OnFrameEnd	();
 	{
 	for (DWORD I=1; I<AI_Path.TravelPath.size(); I++)
 	{
