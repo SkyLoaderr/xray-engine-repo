@@ -3,5 +3,5 @@ function break_dialog(first_speaker, second_speaker)
 end
 
 function kickass(first_speaker, second_speaker)
-	printf("BOOM")
+	xr_punch.punch[first_speaker:id()] = second_speaker
 end
