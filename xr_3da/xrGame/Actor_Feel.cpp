@@ -135,13 +135,14 @@ void CActor::PickupModeUpdate()
 BOOL	g_b_COD_PickUpMode = FALSE;
 void	CActor::PickupModeUpdate_COD	()
 {
-	if (!g_b_COD_PickUpMode || eacFirstEye != cam_active || Level().CurrentViewEntity() != this || !g_Alive()) 
+	if (Level().CurrentViewEntity() != this || !g_b_COD_PickUpMode) return;
+		
+	if (!g_Alive() || eacFirstEye != cam_active) 
 	{
 		HUD().GetUI()->UIMainIngameWnd->SetPickUpItem(NULL);
 		return;
 	};
-
-
+	
 	CFrustum frustum;
 	frustum.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 

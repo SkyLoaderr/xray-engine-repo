@@ -39,6 +39,7 @@
 #include "../actorcondition.h"
 
 #include "../string_table.h"
+#include "clsid_game.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1444,7 +1445,7 @@ void CUIMainIngameWnd::SetPickUpItem	(CInventoryItem* PickUpItem)
 };
 void CUIMainIngameWnd::UpdatePickUpItem	()
 {
-	if (!m_pPickUpItem) 
+	if (!m_pPickUpItem || !Level().CurrentViewEntity() || Level().CurrentViewEntity()->CLS_ID != CLSID_OBJECT_ACTOR) 
 	{
 		UIPickUpItemIcon.Show(false);
 		return;
