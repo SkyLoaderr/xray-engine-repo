@@ -175,8 +175,8 @@ void CGameFont::OnRender()
 
 				float	tu,tv;
 				for (int j=0; j<len; j++) {
-					int c		= CharMap	[PS.string[j]];
-					Fvector& l	= TCMap		[PS.string[j]];
+					int c		= CharMap	[(u8)PS.string[j]];
+					Fvector& l	= TCMap		[(u8)PS.string[j]];
 					float scw	= S*l.z;
 					if ((c>=0)&&!fis_zero(l.z)){
 						tu		= l.x+vHalfPixel.x;
