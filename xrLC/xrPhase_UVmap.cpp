@@ -52,8 +52,8 @@ void	CBuild::xrPhase_UVmap()
 	float p_total	= 0.f;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
-		Progress	(p_total+=p_cost);
-		mem_Compact	();
+		Progress			(p_total+=p_cost);
+		mem_CompactSubdivs	();
 		
 		// Detect vertex-lighting and avoid this subdivision
 		R_ASSERT(!g_XSplit[SP].empty());
