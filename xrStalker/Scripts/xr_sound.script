@@ -1,0 +1,74 @@
+---------------------------------------------------------------------------------------------------------------------
+--	—хема реакции на раздражители
+--	автор: ƒиденко –услан (Stohe)
+----------------------------------------------------------------------------------------------------------------------
+
+local theme = {}
+-----------------------------------------------------------------------------------------------------------------------------------
+--  ѕример конструктора, описывающего звуки
+--
+--  self.sound = {idle = 0,     -- служебное поле
+--           begin = nil,   -- служебное поле
+--           maxidle = 10,  -- максимальное врем€ между звуками
+--           sumidle = 10,  -- надбавочное врем€, добавл€етс€ к рандомно выбранному от 1 до максимального.
+--               rnd = 100,     -- веро€тность, с которой будет проигран звук, если пришло врем€
+--           lastsound = nil,   -- служебное поле
+--          sounds = {      {pack = sounds["idle"], id = 0},    -- пачка звуков, из которых будет выбиратьс€
+--                  {pack = sounds["idle"], id = 1},
+--                  {pack = sounds["idle"], id = 3},
+--                  {pack = sounds["idle"], id = 4},
+--                  {pack = sounds["idle"], id = 7},
+--                  {pack = sounds["idle"], id = 9},
+--                  {pack = sounds["idle"], id = 11},
+--                  {pack = sounds["idle"], id = 12},
+--                  {pack = sounds["idle"], id = 14}    }}
+--
+--
+-- ѕроигрыш саундов (By Stohe)
+-- npc - object который будет играть звук
+-- sound - конструктр звуков, см выше
+-- now - если звук отыграть надо пр€мо сейчас
+-----------------------------------------------------------------------------------------------------------------------------------
+function set_sound(npc, sound, now)
+    local a = now
+
+    if sound.begin == nil or
+       (device():time_global()/1000 - sound.begin) > sound.idle then
+        sound.begin = device():time_global()/1000
+        sound.idle = math.random(sound.maxidle) + sound.sumidle
+        a = true
+    end
+
+    if a == true then
+        if math.random(100) < sound.rnd or now == true then
+            local r
+            if sound.lastsound == nil then
+                r = math.random(table.getn(sound.sounds))
+            else
+                r = math.random(table.getn(sound.sounds)-1)
+                if r >= sound.lastsound then
+                    r = r + 1
+                end
+            end
+            sound.lastsound = r
+            npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
+        end
+    end
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_sound(obj)
+	local sounds_base = stalker_ids.sound_script + 10000
+    	function id()
+       		local t = sounds_base
+        	sounds_base = sounds_base + 1
+        	return t
+	end
+	function load_theme(name)
+		if name == "weather" then
+	               	obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, id ())
+		end
+	end
+
+    	-- фразы о погоде
+    	theme["weather"] = {}
+end
