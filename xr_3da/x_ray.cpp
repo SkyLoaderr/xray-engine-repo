@@ -118,6 +118,7 @@ void __cdecl	slowdownthread	( void* )
 		if (Device.mt_bMustExit)	return;
 		if (0==pSettings)			return;
 		if (0==Console)				return;
+		if (0==pInput)				return;
 	}
 }
 
