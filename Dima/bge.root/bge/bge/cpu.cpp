@@ -80,7 +80,7 @@ IC	void detect				()
 
 void CPU::detect	() 
 {
-	char features[128]	= "RDTSC";
+	string128			features = "RDTSC";
 
 	ui().log			("Detecting hardware...");
 	

@@ -139,6 +139,7 @@ IC	void CBoardClassicOthello::do_move		(const cell_index &index)
 	m_passed			= false;
 	m_difference		= difference + 1;
 	m_color_to_move		= opponent_color;
+	--m_empties;
 }
 
 void CBoardClassicOthello::do_move			(const cell_index &index)

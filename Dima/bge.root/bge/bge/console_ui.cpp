@@ -10,10 +10,10 @@
 #include "console_ui.h"
 #include "script.h"
 
-LPCSTR		log_file_name		= "vo.log";
-const char	SHAPE_CHARACTER		= '*';
-const int	display_width		= 79;
-LPCSTR		header[]			= {
+LPCSTR		log_file_name				= "vo.log";
+const char	SHAPE_CHARACTER				= '*';
+const int	CConsoleUI::g_display_width	= 79;
+LPCSTR		header[]					= {
 	"",
 	"Board Game Engine v0.001",
 	"Copyleft(C) 2000-2004 Dmitriy Iassenev",
@@ -59,13 +59,13 @@ LPSTR CConsoleUI::process_compile	()
 
 void CConsoleUI::show_header(const vector<LPCSTR> &strings)
 {
-	char							temp[display_width];
+	char							temp[g_display_width];
 	vector<LPCSTR>::const_iterator	I = strings.begin();
 	vector<LPCSTR>::const_iterator	E = strings.end();
 	for ( ; I != E; ++I) {
 		size_t				n = strlen(*I);
-		bool				parity = !((display_width - n) & 1);
-		size_t				count = ((display_width - 2 - n)/2 + (parity ? 0 : 1));
+		bool				parity = !((g_display_width - n) & 1);
+		size_t				count = ((g_display_width - 2 - n)/2 + (parity ? 0 : 1));
 		Memory::mem_fill	(temp,' ',count*sizeof(char));
 		temp[count]			= 0;
 		strcat				(temp,*I);
@@ -80,16 +80,16 @@ void CConsoleUI::show_header(const vector<LPCSTR> &strings)
 
 void CConsoleUI::show_header()
 {
-	char					compile[display_width];
+	char					compile[g_display_width];
 	LPSTR					temp = process_compile();
 	sprintf					(compile,"Compiled on %s %s",temp,__TIME__,SHAPE_CHARACTER);
 	c_free					(temp);
 
 	vector<LPCSTR>			strings;
 	
-	char					string[display_width-1];
-	Memory::mem_fill		(string,SHAPE_CHARACTER,(display_width - 2)*sizeof(char));
-	string[display_width - 2] = 0;
+	char					string[g_display_width - 1];
+	Memory::mem_fill		(string,SHAPE_CHARACTER,(g_display_width - 2)*sizeof(char));
+	string[g_display_width - 2] = 0;
 
 	strings.push_back		(string);
 
@@ -195,7 +195,7 @@ int __cdecl	CConsoleUI::error_log	(LPCSTR format, ...)
 
 void CConsoleUI::execute	(char argc, char *argv[])
 {
-	char					s[256];
+	string256				s;
 	xr_strcpy				(s,"");
 	for (char i=1; i<argc; ++i) {
 		strcat(s,argv[i]);

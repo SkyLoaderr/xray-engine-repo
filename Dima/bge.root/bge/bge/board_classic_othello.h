@@ -58,17 +58,20 @@ private:
 	static const u8 flipping_directions[BOARD_SIZE];
 
 private:
-	cell_type		m_board[BOARD_SIZE];
-	cell_type		m_color_to_move;
-	u8				m_empties;
-	int				m_difference;
-	bool			m_passed;
-	flip_stack		m_flip_stack;
-	mutable char	m_temp[16];
+	cell_type				m_board[BOARD_SIZE];
+	cell_type				m_color_to_move;
+	u8						m_empties;
+	int						m_difference;
+	bool					m_passed;
+	flip_stack				m_flip_stack;
+	mutable string256		m_temp;
 
 protected:
+	IC		int				move_cell				(const cell_index &index) const;
 	IC		void			show_cell				(const cell_index &index) const;
+	IC		void			show_move_cell			(const cell_index &index) const;
 	IC		void			show_letters			() const;
+	IC		void			show_move_digit			(const cell_index &index) const;
 	IC		void			show_digit				(const cell_index &index) const;
 
 protected:
@@ -118,6 +121,7 @@ public:
 	IC		u8				empties					() const;
 	IC		int				difference				() const;
 	IC		bool			passed					() const;
+	IC		bool			terminal_position		() const;
 
 public:
 	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;

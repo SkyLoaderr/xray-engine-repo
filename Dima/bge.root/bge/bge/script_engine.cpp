@@ -10,7 +10,7 @@
 #include "script_engine.h"
 #include "script_space.h"
 
-char g_stdout[4096];
+string4096 g_stdout;
 
 extern void export_classes(lua_State *L);
 
@@ -42,7 +42,7 @@ CScriptEngine::~CScriptEngine	()
 
 void CScriptEngine::init		()
 {
-	ui().log			("Script engine is initializing... ");
+	ui().log			("Script engine is initializing...");
 #ifdef _DEBUG
 	ui().log			("\n");
 #endif

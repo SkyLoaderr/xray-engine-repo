@@ -31,5 +31,6 @@ void CBoardClassicOthello::script_register(lua_State *L)
 			.def("difference",			&CBoardClassicOthello::difference)
 			.def("compute_difference",	(int (CBoardClassicOthello::*)(const cell_index &,const cell_index &) const)(&CBoardClassicOthello::compute_difference))
 			.def("compute_difference",	(int (CBoardClassicOthello::*)(LPCSTR) const)(&CBoardClassicOthello::compute_difference))
+			.def("terminal_position",	&CBoardClassicOthello::terminal_position)
 	];
 }

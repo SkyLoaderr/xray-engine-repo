@@ -20,6 +20,6 @@
 #include <luabind/luabind.hpp>
 #include <luabind/object.hpp>
 
-extern	char g_stdout[4096];
+extern	string4096 g_stdout;
 
 #pragma warning(pop)

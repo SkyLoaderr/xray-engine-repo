@@ -69,17 +69,80 @@ IC	void CBoardClassicOthello::show_cell		(const cell_index &index) const
 	ui().log		(" %c",output);
 }
 
+IC	int	CBoardClassicOthello::move_cell(const cell_index &index) const
+{
+	flip_stack		temp = m_flip_stack;
+	for (int j= 60 - empties(); !temp.empty(); --j) {
+		int			n = temp.top().m_flip_count;
+		
+		temp.pop	();
+		
+		if (!n) {
+			++j;
+			continue;
+		}
+
+		if (index == (temp.top().m_cell - m_board))
+			return	(j);
+
+		temp.pop	();
+		
+		for (int i=0; i<n; ++i)
+			temp.pop();
+	}
+	return			(0);
+}
+
+IC	void CBoardClassicOthello::show_move_cell	(const cell_index &index) const
+{
+	string16	output;
+	switch (cell(index)) {
+		case BLACK :
+		case WHITE : {
+			int		id = move_cell(index);
+			if (id)
+				sprintf	(output,"|%2d",id);
+			else
+				strcpy	(output,"|##");
+			break;
+		}
+		case EMPTY : {
+			strcpy		(output,"|--");
+			break;
+		}
+		default : NODEFAULT;
+	}
+	ui().log		("%s",output);
+}
+
 IC	void CBoardClassicOthello::show_letters		() const
 {
 	ui().log		("  ");
 	for (cell_index i=0; i<8; ++i)
-		ui().log	(" %c",'A' + i);
+		ui().log	("%2c",'A' + i);
+	
+	int				count = ui().display_width() - (20 + 20 + 8);
+	Memory::mem_fill(m_temp,' ',count*sizeof(char));
+	m_temp[count]	= 0;
+	ui().log		(m_temp);
+	
+	ui().log		("  ");
+
+	ui().log		("  ");
+	for (cell_index i=0; i<8; ++i)
+		ui().log	("%3c",'A' + i);
+	
 	ui().log		("\n");
 }
 
 IC	void CBoardClassicOthello::show_digit		(const cell_index &index) const
 {
-	ui().log		(" %c",'1' + index);
+	ui().log		("%2c",'1' + index);
+}
+
+IC	void CBoardClassicOthello::show_move_digit	(const cell_index &index) const
+{
+	ui().log		("|%c",'1' + index);
 }
 
 void CBoardClassicOthello::show				() const
@@ -90,6 +153,14 @@ void CBoardClassicOthello::show				() const
 		for (cell_index j=0; j<8; ++j)
 			show_cell	(index(i,j));
 		show_digit		(i);
+
+		ui().log		(m_temp);
+
+		show_digit		(i);
+		for (cell_index j=0; j<8; ++j)
+			show_move_cell	(index(i,j));
+		show_move_digit	(i);
+		
 		ui().log		("\n");
 	}
 	show_letters		();

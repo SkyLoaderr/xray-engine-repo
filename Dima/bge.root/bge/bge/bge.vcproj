@@ -1547,6 +1547,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\console_ui_inline.h"
+					>
+				</File>
+				<File
 					RelativePath=".\console_ui_script.cpp"
 					>
 				</File>

@@ -22,6 +22,7 @@ public:
 
 private:
 	FILE				*m_log;
+	static const int	g_display_width;
 
 protected:
 			LPSTR		process_compile	();
@@ -41,8 +42,11 @@ public:
 			int __cdecl	error_log		(LPCSTR format, ...);
 			void		execute			(char argc, char *argv[]);
 			void		flush			();
+	IC		int			display_width	() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CConsoleUI)
 #undef script_type_list
 #define script_type_list save_type_list(CConsoleUI)
+
+#include "console_ui_inline.h"
