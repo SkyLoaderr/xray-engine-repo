@@ -67,6 +67,8 @@ void CMissile::Load(LPCSTR section)
 	m_sAnimThrowAct		= pSettings->r_string(*hud_sect, "anim_throw_act");
 	m_sAnimThrowEnd		= pSettings->r_string(*hud_sect, "anim_throw_end");
 
+	if(pSettings->line_exist(section,"snd_playing"))
+		LoadSound(section,"snd_playing",sndPlaying,TRUE);
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -143,6 +145,8 @@ void CMissile::net_Destroy()
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	m_pInventory = 0;
+
+	DestroySound(sndPlaying);
 }
 void CMissile::OnH_B_Chield() 
 {
@@ -207,9 +211,9 @@ void CMissile::OnH_B_Independent()
 	//xr_delete(m_pHUD);
 	setVisible					(true);
 	setEnabled					(true);
-	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
-	R_ASSERT		(E);
-	XFORM().set(E->XFORM());
+	//CObject*	E		= dynamic_cast<CObject*>(H_Parent());
+	//R_ASSERT(E);
+	//XFORM().set(E->XFORM());
 	
 	if(m_pPhysicsShell) 
 	{
@@ -258,19 +262,105 @@ void CMissile::OnH_B_Independent()
 //		}
 */
 
-		Fvector vel;
-		vel.set(m_throw_direction);
-		vel.normalize();
-		vel.mul(m_fThrowForce);
-		//XFORM().c.set(m_throw_point);
-		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
+//		Fvector vel;
+//		vel.set(m_throw_direction);
+//		vel.normalize();
+//		vel.mul(m_fThrowForce);
+//		XFORM().c.set(m_throw_point);
+//		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
+
+/*		if (hud_mode)
+		{
+			Fmatrix trans;
+			Level().Cameras.unaffected_Matrix(trans);
+			m_throw_direction.set(trans.k);
+		
+			m_throw_point =	m_vHudThrowPoint;
+			parent.transform_tiny(m_throw_point);
+		} 
+		else 
+		{
+			// 3rd person
+			Fmatrix& parent			= H_Parent()->XFORM();
+			Fvector& fp				= m_vThrowPoint;
+
+			parent.transform_tiny	(m_throw_point,fp);
+			
+			//m_throw_direction.set	(0.f,0.f,1.f);
+			m_throw_direction.set	(m_vThrowDir);
+			parent.transform_dir	(m_throw_direction);
+		}*/
+
+		
+			/*if(hud_mode)
+		{
+			Fmatrix trans;
+			Level().Cameras.unaffected_Matrix(trans);
+			l_fw.set(trans.k);
+		}
+		else
+		{
+			l_fw.set(H_Root()->XFORM().k);
+		}*/
+
+	
+/*		Fmatrix trans;
+		Level().Cameras.unaffected_Matrix(trans);
+		l_fw.set(trans.k);
+		
+		Fvector l_up;
+		l_up.set(XFORM().j);
+		l_up.mul(2.f);
+		
+		Fmatrix l_p1;
+		l_p1.set(XFORM());
+		l_p1.c.add(l_up);
+		l_up.mul(1.2f);
+
+		l_fw.mul(m_fThrowForce);
+*/
+/*		CActor* pActor = dynamic_cast<CActor*>(H_Root());
+		if(pActor && pActor->HUDview())
+		{
+			Fmatrix trans;
+			Level().Cameras.unaffected_Matrix(trans);
+			m_throw_direction.set(trans.k);
+		}
+		else
+		{
+			m_throw_direction.set(H_Root()->XFORM().k);
+		}
+
+
+		Fmatrix xform;
+		xform.set(H_Root()->XFORM());
+		xform.c.add(Fvector().set(0,2.f,0));
+
+		XFORM().set(xform);*/
+
+		Fvector l_vel;
+		l_vel.set(m_throw_direction);
+		l_vel.normalize();
+		l_vel.mul(m_fThrowForce);
+
+
+		Fvector a_vel;
+		float fi,teta,r;
+		fi=	 ::Random.randF(0.f,2.f*M_PI);
+		teta=::Random.randF(0.f,M_PI);
+		r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
+		float rxy=r*_sin(teta);
+		a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
+
+		XFORM().set(m_throw_matrix);
+		m_pPhysicsShell->Activate(XFORM(), l_vel, zero_vel);
 	}
 }
 
 void CMissile::UpdateCL() 
 {
 	inherited::UpdateCL();
-		
+
 	if(State() == MS_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
 		OnStateSwitch(MS_PLAYING);
 	
@@ -321,7 +411,7 @@ u32 CMissile::State(u32 state)
 	case MS_SHOWING:
         {
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), FALSE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
 		} break;
 	case MS_IDLE:
 		{
@@ -360,6 +450,7 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_PLAYING:
 		{
+			PlaySound(sndPlaying,Position());
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
 		} break;
 	}
@@ -417,7 +508,8 @@ void CMissile::UpdatePosition(const Fmatrix& trans)
 
 void CMissile::UpdateXForm()
 {
-	if (Device.dwFrame!=dwXF_Frame){
+	if (Device.dwFrame!=dwXF_Frame)
+	{
 		dwXF_Frame = Device.dwFrame;
 
 		if (0==H_Parent())	return;
@@ -435,10 +527,12 @@ void CMissile::UpdateXForm()
 		E->g_WeaponBones(boneL,boneR,boneR2);
 
 //		if ((STATE == eReload) || (!E->g_Alive()))
-			boneL = boneR2;
+		boneL = boneR2;
+
 		V->Calculate	();
 		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
 		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+
 		// Calculate
 		Fmatrix			mRes;
 		Fvector			R,D,N;
@@ -476,12 +570,31 @@ void CMissile::Throw()
 	
 	//Fvector								throw_point, throw_direction;
 	//entity->g_fireParams				(throw_point,throw_direction);
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	if(pActor && pActor->HUDview())
+	{
+		Fmatrix trans;
+		Level().Cameras.unaffected_Matrix(trans);
+		m_throw_direction.set(trans.k);
+		
+		m_throw_matrix.identity();
+		m_throw_matrix.c.set(m_vHudThrowPoint);
+		m_throw_matrix.mulA(m_pHUD->Transform());
+	}
+	else
+	{
+		m_throw_direction.set(H_Parent()->XFORM().k);
 
+	}
+
+	
+	
 	m_fake_missile->m_throw_point		= m_throw_point;
 	m_fake_missile->m_throw_direction	= m_throw_direction;
+	m_fake_missile->m_throw_matrix		= m_throw_matrix;
 	
-	m_fake_missile->m_fThrowForce				= m_fThrowForce; 
-	m_fThrowForce								= m_fMinForce;
+	m_fake_missile->m_fThrowForce		= m_fThrowForce; 
+	m_fThrowForce						= m_fMinForce;
 	
 	if (Local()) {
 		NET_Packet						P;
@@ -564,16 +677,14 @@ void  CMissile::UpdateFP()
 			V->Calculate			();
 
 			// fire point&direction
-			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
 			Fmatrix& parent			= m_pHUD->Transform	();
-			Fvector& fp				= m_vHudThrowPoint;
-
-			fire_mat.transform_tiny	(m_throw_point,fp);
+			m_throw_point			= m_vHudThrowPoint;
 			parent.transform_tiny	(m_throw_point);
 			
 			//m_throw_direction.set	(0.f,0.f,1.f);
-			m_throw_direction.set	(m_vHudThrowDir);
-			parent.transform_dir	(m_throw_direction);
+			//m_throw_direction.set	(m_vHudThrowDir);
+			//parent.transform_dir	(m_throw_direction);
+			m_throw_direction.set	(parent.k);
 		} 
 		else 
 		{

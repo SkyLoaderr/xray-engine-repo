@@ -39,6 +39,8 @@ public:
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 
+	virtual void	UpdateSounds	();
+
 	//переключение в режим подствольника
 	void			SwitchMode		();
 	void			OnAnimationEnd	();
@@ -53,12 +55,9 @@ public:
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
-	ref_sound			sndShotG;
-	ref_sound			sndReloadG;
-	ref_sound			sndSwitch;
-	float				sndShotG_delay;
-	float				sndReloadG_delay;
-	float				sndSwitch_delay;
+	HUD_SOUND			sndShotG;
+	HUD_SOUND			sndReloadG;
+	HUD_SOUND			sndSwitch;
 
 	MotionSVec			mhud_idle_g;
 	MotionSVec			mhud_reload_g;

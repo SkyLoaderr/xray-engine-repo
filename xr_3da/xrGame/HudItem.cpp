@@ -44,9 +44,17 @@ void CHudItem::Load(LPCSTR section)
 	}
 }
 
+void CHudItem::LoadSound(LPCSTR section, LPCSTR line, 
+						 HUD_SOUND& hud_snd, BOOL _3D, 
+						 int type)
+{
+	LoadSound(section, line, hud_snd.snd, 
+			 _3D, type, &hud_snd.volume, &hud_snd.delay);
+}
 void  CHudItem::LoadSound(LPCSTR section, LPCSTR line, 
 						  ref_sound& snd, BOOL _3D, 
 						  int type,
+						  float* volume, 
 						  float* delay)
 {
 	LPCSTR str = pSettings->r_string(section, line);
@@ -58,15 +66,45 @@ void  CHudItem::LoadSound(LPCSTR section, LPCSTR line,
 	_GetItem(str, 0, buf_str);
 	snd.create(_3D, buf_str, type);
 
-	if(count>1 && delay != NULL)
-	{
-		_GetItem (str, 1, buf_str);
-		*delay = (float)atof(buf_str);
-	}
-	else
-		*delay = 0;
 
+	if(volume != NULL)
+	{
+		*volume = 1.f;
+		if(count>1)
+		{
+			_GetItem (str, 1, buf_str);
+			if(xr_strlen(buf_str)>0)
+				*volume = (float)atof(buf_str);
+		}
+	}
+
+	if(delay != NULL)
+	{
+		*delay = 0;
+		if(count>2)
+		{
+			_GetItem (str, 2, buf_str);
+			if(xr_strlen(buf_str)>0)
+				*delay = (float)atof(buf_str);
+		}
+	}
 }
+
+void CHudItem::DestroySound	(HUD_SOUND& hud_snd)
+{
+	hud_snd.snd.destroy();
+}
+
+void CHudItem::PlaySound(HUD_SOUND& hud_snd,
+						 const Fvector& position)
+{
+	hud_snd.snd.set_volume	(hud_snd.volume);
+	hud_snd.snd.play_at_pos	(H_Root(),
+							 position,
+							 hud_mode?sm_2D:0,
+							 hud_snd.delay);
+}
+
 
 
 void CHudItem::renderable_Render()

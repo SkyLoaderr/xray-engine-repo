@@ -51,8 +51,7 @@ public:
 					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 
 protected:
-	ref_sound		sndCheckout;
-	float			sndCheckout_delay;
+	HUD_SOUND		sndCheckout;
 	ESoundTypes		m_eSoundCheckout;
 
 public:

@@ -39,11 +39,11 @@ void CWeaponMagazined::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	sndShow.destroy();
-	sndHide.destroy();
-	sndShot.destroy();
-	sndEmptyClick.destroy();
-	sndReload.destroy();
+	DestroySound(sndShow);
+	DestroySound(sndHide);
+	DestroySound(sndShot);
+	DestroySound(sndEmptyClick);
+	DestroySound(sndReload);
 }
 
 
@@ -52,11 +52,11 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 	bFlame				= FALSE;
 	// Sounds
-	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		, &sndShow_delay		);
-	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		, &sndHide_delay		);
-	LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		, &sndShot_delay		);
-	LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	, &sndEmptyClick_delay	);
-	LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		, &sndReload_delay		);
+	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		);
+	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);
+	LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		);
+	LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	);
+	LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		);
 	
 		
 	
@@ -342,15 +342,19 @@ void CWeaponMagazined::UpdateSounds	()
 	dwUpdateSounds_Frame = Device.dwFrame;
 
 	// ref_sound positions
-	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
+	if (sndShow.snd.feedback || 
+		sndHide.snd.feedback || 
+		sndShot.snd.feedback || 
+		sndReload.snd.feedback || 
+		sndEmptyClick.snd.feedback)
 	{
 		UpdateFP					();
 
-		if (sndShow.feedback)		sndShow.set_position		(vLastFP);
-		if (sndHide.feedback)		sndHide.set_position		(vLastFP);
-		if (sndShot.feedback)		sndShot.set_position		(vLastFP);
-		if (sndReload.feedback)		sndReload.set_position		(vLastFP);
-		if (sndEmptyClick.feedback)	sndEmptyClick.set_position	(vLastFP);
+		if (sndShow.snd.feedback)		sndShow.set_position		(vLastFP);
+		if (sndHide.snd.feedback)		sndHide.set_position		(vLastFP);
+		if (sndShot.snd.feedback)		sndShot.set_position		(vLastFP);
+		if (sndReload.snd.feedback)		sndReload.set_position		(vLastFP);
+		if (sndEmptyClick.snd.feedback)	sndEmptyClick.set_position	(vLastFP);
 	}
 }
 
@@ -435,7 +439,8 @@ void CWeaponMagazined::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	sndShot.play_at_pos			(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShot_delay);
+
+	PlaySound(sndShot,vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -463,7 +468,7 @@ void CWeaponMagazined::OnShot		()
 void CWeaponMagazined::OnEmptyClick	()
 {
 	UpdateFP();
-	sndEmptyClick.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndEmptyClick_delay);
+	PlaySound(sndEmptyClick,vLastFP);
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -489,7 +494,7 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	UpdateFP();
-	sndReload.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndReload_delay);
+	PlaySound(sndReload,vLastFP);
 	
 	PlayAnimReload();
 	m_bPending = true;
@@ -499,7 +504,7 @@ void CWeaponMagazined::switch2_Hiding()
 	CWeapon::FireEnd();
 	
 	UpdateFP();
-	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndHide_delay);
+	PlaySound(sndHide,vLastFP);
 
 	PlayAnimHide();
 	m_bPending = true;
@@ -513,7 +518,7 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	UpdateFP();
-	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShow_delay);
+	PlaySound(sndShow,vLastFP);
 
 	m_bPending = true;
 	PlayAnimShow();

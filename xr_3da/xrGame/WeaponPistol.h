@@ -21,7 +21,9 @@ public:
 	virtual void	PlayAnimIdle	();
 	virtual void	PlayAnimHide	();
 
-	ref_sound		sndClose;
+	virtual void	UpdateSounds	();
+protected:	
+	HUD_SOUND		sndClose;
 	ESoundTypes		m_eSoundClose;
 
 	MotionSVec		mhud_empty;

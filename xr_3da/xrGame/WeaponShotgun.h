@@ -26,7 +26,7 @@ public:
 	virtual bool Action(s32 cmd, u32 flags);
 
 protected:
-	ref_sound		sndShotBoth;
+	HUD_SOUND		sndShotBoth;
 	ESoundTypes		m_eSoundShotBoth;
 	MotionSVec		mhud_shot_boths;
 };

@@ -20,7 +20,7 @@ void CWeaponPistol::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	sndClose.destroy();
+	DestroySound(sndClose);
 }
 
 void CWeaponPistol::OnH_B_Chield		()
@@ -42,8 +42,7 @@ void CWeaponPistol::PlayAnimHide()
 	if(m_opened) 
 	{
 		UpdateFP();
-		sndClose.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
-		///if (sndClose.feedback)	sndClose.feedback->set_volume(.2f);
+		PlaySound(sndClose,vLastFP);
 		m_pHUD->animPlay		(mhud_close[Random.randI(mhud_close.size())],FALSE,this);
 	} 
 	else 
@@ -68,7 +67,7 @@ void CWeaponPistol::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 
-	sndClose.create		(TRUE, pSettings->r_string(section, "snd_close"), m_eSoundClose);
+	LoadSound(section, "snd_close", sndClose, TRUE, m_eSoundClose);
 
 	animGet				(mhud_empty,	pSettings->r_string(*hud_sect, "anim_empty"));
 	animGet				(mhud_shot_l,	pSettings->r_string(*hud_sect, "anim_shot_last"));
@@ -79,7 +78,7 @@ void CWeaponPistol::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	sndShot.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShot_delay);
+	PlaySound(sndShot,vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -111,3 +110,12 @@ void CWeaponPistol::OnShot		()
 	//дым из ствола
 	StartSmokeParticles	();
 }
+
+void CWeaponPistol::UpdateSounds()
+{
+	inherited::UpdateSounds();
+
+	UpdateFP();
+	if (sndClose.snd.feedback) sndClose.set_position(vLastFP);
+}
+

@@ -70,6 +70,8 @@ protected:
 
 	Fvector					m_throw_direction;
 	Fvector					m_throw_point;
+	Fmatrix					m_throw_matrix;
+
 	CMissile				*m_fake_missile;
 
 	//параметры броска
@@ -92,4 +94,8 @@ protected:
 	ref_str	m_sAnimThrowIdle;
 	ref_str	m_sAnimThrowAct;
 	ref_str	m_sAnimThrowEnd;
+
+	//звук анимации "играния"
+	HUD_SOUND sndPlaying;
+
 };

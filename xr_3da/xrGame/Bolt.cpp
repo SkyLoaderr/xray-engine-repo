@@ -60,12 +60,13 @@ bool CBolt::Action(s32 cmd, u32 flags)
 		{
 			if(flags&CMD_START) 
 			{
-				 m_throw = false;
+				m_throw = false;
 				if(State() == MS_IDLE) State(MS_THREATEN);
 			} 
 			else if(State() == MS_READY || State() == MS_THREATEN) 
 			{
-				m_throw = true; if(State() == MS_READY) State(MS_THROW);
+				m_throw = true; 
+				if(State() == MS_READY) State(MS_THROW);
 			}
 		} 
 		return true;

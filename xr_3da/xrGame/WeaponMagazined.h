@@ -12,18 +12,11 @@ private:
 	typedef CWeapon inherited;
 protected:
 	// Media :: sounds
-	ref_sound		sndShow;
-	ref_sound		sndHide;
-	ref_sound		sndShot;
-	ref_sound		sndEmptyClick;
-	ref_sound		sndReload;
-	//паузы перед проигрыванием звуков
-	float			sndShow_delay;
-	float			sndHide_delay;
-	float			sndShot_delay;
-	float			sndEmptyClick_delay;
-	float			sndReload_delay;
-
+	HUD_SOUND		sndShow;
+	HUD_SOUND		sndHide;
+	HUD_SOUND		sndShot;
+	HUD_SOUND		sndEmptyClick;
+	HUD_SOUND		sndReload;
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;
