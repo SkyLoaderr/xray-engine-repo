@@ -1,3 +1,17 @@
+[flares_aaa]
+flare_opacity            = 1.000, 1.000,      
+flare_position           = 1.000, 1.000,      
+flare_radius             = 0.05, 0.05,        
+flare_textures           = fx\fx_moon.tga, fx\fx_moon.tga, 
+flares                   = off
+gradient                 = off
+gradient_opacity         = 0.65
+gradient_radius          = 1.000
+gradient_texture         = fx\fx_gradient.tga
+source                   = on
+source_radius            = 1.05
+source_texture           = fx\fx_moon.tga
+
 [weathers]
 default			= sect_default
 normal			= sect_normal
@@ -8,7 +22,7 @@ b				=	default_02
 
 [default_01]
 exec_time		= 	0:0:0
-flares			=	flares_moon
+flares			=	flares_aaa
 sky_texture		=	sky\sky_5_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -27,7 +41,7 @@ sun_dir			=	-31.0, 180.0
 
 [default_02]
 exec_time		= 	12:00:00
-flares			=	flares_moon	
+flares			=	flares_aaa	
 sky_texture		=	sky\sky_3_cube
 sky_rotation	=	0
 sky_color		=	0.8,    0.8,  	0.8
