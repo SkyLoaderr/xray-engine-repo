@@ -12,8 +12,7 @@
 #endif
 
 const int			quant	= 16384;
-const int			c_hdr	= 12;
-const int			c_base	= c_hdr;
+const int			c_hdr	= 10;
 const int			c_size	= 4;
 
 static D3DVERTEXELEMENT9 dwDecl[] =
@@ -234,7 +233,7 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 					u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
 					RCache.get_ConstantCache_Vertex().b_dirty				=	TRUE;
 					RCache.get_ConstantCache_Vertex().get_array_f().dirty	(c_base,c_base+dwBatch*4);
-					RCache.Render			(D3DPT_TRIANGLELIST,vOffset, 0,dwCNT_verts,iOffset,dwCNT_prims);
+					RCache.Render			(D3DPT_TRIANGLELIST,vOffset, 0, dwCNT_verts,iOffset,dwCNT_prims);
 
 					// restart
 					dwBatch					= 0;
