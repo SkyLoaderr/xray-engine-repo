@@ -137,12 +137,23 @@ private:
 	u64								m_qwStartProcessorTime;
 	u64								m_qwStartGameTime;
 	float							m_fTimeFactor;
+	//-------------------------------------------------------
+	u64								m_qwEStartProcessorTime;
+	u64								m_qwEStartGameTime;
+	float							m_fETimeFactor;
+	//-------------------------------------------------------
 public:
+
+	virtual		ALife::_TIME_ID		GetGameTime				();	
+	virtual		float				GetGameTimeFactor		();	
 				void				SetGameTimeFactor		(ALife::_TIME_ID GameTime, const float fTimeFactor);
-	virtual		ALife::_TIME_ID		GetGameTime				();
-	virtual		float				GetGameTimeFactor		();
-//	virtual		void				SetGameTime				(ALife::_TIME_ID GameTime);
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
+	
+
+	virtual		ALife::_TIME_ID		GetEnvironmentGameTime	();
+	virtual		float				GetEnvironmentGameTimeFactor		();
+				void				SetEnvironmentGameTimeFactor		(ALife::_TIME_ID GameTime, const float fTimeFactor);
+	virtual		void				SetEnvironmentGameTimeFactor		(const float fTimeFactor);
 
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -206,8 +206,9 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 		A->flags = tmp_flags;
 	}
 
-	P.w_u64(GetGameTime());
-	P.w_float(GetGameTimeFactor());
+//	P.w_u64(GetGameTime());
+//	P.w_float(GetGameTimeFactor());
+	net_Export_GameTime(P);
 }
 
 void game_sv_GameState::net_Export_Update						(NET_Packet& P, ClientID id_to, ClientID id)
@@ -232,6 +233,9 @@ void game_sv_GameState::net_Export_GameTime						(NET_Packet& P)
 	//Syncronize GameTime 
 	P.w_u64(GetGameTime());
 	P.w_float(GetGameTimeFactor());
+	//Syncronize EnvironmentGameTime 
+	P.w_u64(GetEnvironmentGameTime());
+	P.w_float(GetEnvironmentGameTimeFactor());
 };
 
 

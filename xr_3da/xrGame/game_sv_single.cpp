@@ -184,6 +184,21 @@ void game_sv_Single::SetGameTimeFactor		(const float fTimeFactor)
 		return(inherited::SetGameTimeFactor(fTimeFactor));
 }
 
+ALife::_TIME_ID game_sv_Single::GetEnvironmentGameTime		()
+{
+	return(inherited::GetGameTime());
+}
+
+float game_sv_Single::GetEnvironmentGameTimeFactor		()
+{
+	return(inherited::GetGameTimeFactor());
+}
+
+void game_sv_Single::SetEnvironmentGameTimeFactor		(const float fTimeFactor)
+{
+//	return(inherited::SetGameTimeFactor(fTimeFactor));
+}
+
 bool game_sv_Single::change_level			(NET_Packet &net_packet, ClientID sender)
 {
 	if (ai().get_alife())

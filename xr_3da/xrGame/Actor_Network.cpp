@@ -832,7 +832,8 @@ void	CActor::OnChangeVisual()
 	SetCallbacks		();
 	m_anims->Create			(V);
 	m_vehicle_anims->Create			(V);
-	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
+//	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
+	CDamageManager::reload(*cNameSect(),pSettings);
 	//-------------------------------------------------------------------------------
 	m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");
 	m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));

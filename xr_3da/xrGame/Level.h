@@ -189,17 +189,21 @@ public:
 	
 	//возвращает время в милисекундах относительно начала игры
 	ALife::_TIME_ID		GetGameTime				();
+	//возвращает время для энвайронмента в милисекундах относительно начала игры
+	ALife::_TIME_ID		GetEnvironmentGameTime	();
 	//игровое время в отформатированном виде
 	void				GetGameDateTime			(u32& year, u32& month, u32& day, u32& hours, u32& mins, u32& secs, u32& milisecs);
 
 	float				GetGameTimeFactor		();
 	void				SetGameTimeFactor		(const float fTimeFactor);
 	void				SetGameTimeFactor		(ALife::_TIME_ID GameTime, const float fTimeFactor);
+	void				SetEnvironmentGameTimeFactor		(ALife::_TIME_ID GameTime, const float fTimeFactor);
 //	void				SetGameTime				(ALife::_TIME_ID GameTime);
 
 	// gets current daytime [0..23]
 	u8					GetDayTime();
 	float				GetGameDayTimeSec();
+	float				GetEnvironmentGameDayTimeSec();
 
 protected:
 	CFogOfWar*			m_pFogOfWar;

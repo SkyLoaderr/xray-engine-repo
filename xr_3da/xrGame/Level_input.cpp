@@ -125,15 +125,21 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case DIK_DIVIDE:
 		if( OnServer() ){
 			float NewTimeFactor				= pSettings->r_float("alife","time_factor");
-			Server->game->SetGameTimeFactor(NewTimeFactor);
-//			SetGameTimeFactor(1.f);	
+			
+			if (GameID() == GAME_SINGLE)
+				Server->game->SetGameTimeFactor(NewTimeFactor);
+			else
+				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
 		}
 		break;
 	
 	case DIK_MULTIPLY:
 		if( OnServer() ){
-			Server->game->SetGameTimeFactor(1000.f);
-//			SetGameTimeFactor(1000.f);
+			float NewTimeFactor				= 1000.f;
+			if (GameID() == GAME_SINGLE)
+				Server->game->SetGameTimeFactor(NewTimeFactor);
+			else
+				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
 		}
 		break;
 

@@ -123,7 +123,11 @@ game_GameState::game_GameState()
 	m_qwStartProcessorTime		= Level().timeServer_Async();
 	m_qwStartGameTime			= 12*60*60*1000;
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
-
+	//-------------------------------------------------------
+	m_qwEStartProcessorTime		= m_qwStartProcessorTime;	
+	m_qwEStartGameTime			= m_qwStartGameTime		;
+	m_fETimeFactor				= m_fTimeFactor			;
+	//-------------------------------------------------------
 }
 
 CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
@@ -184,5 +188,28 @@ void game_GameState::SetGameTimeFactor	(ALife::_TIME_ID GameTime, const float fT
 //	m_qwStartProcessorTime		= CPU::GetCycleCount();
 	m_qwStartProcessorTime		= Level().timeServer_Async();
 	m_fTimeFactor				= fTimeFactor;
+}
 
+ALife::_TIME_ID game_GameState::GetEnvironmentGameTime()
+{
+	return			(m_qwEStartGameTime + iFloor(m_fETimeFactor*float(Level().timeServer_Async() - m_qwEStartProcessorTime)));
+}
+
+float game_GameState::GetEnvironmentGameTimeFactor()
+{
+	return			(m_fETimeFactor);
+}
+
+void game_GameState::SetEnvironmentGameTimeFactor (const float fTimeFactor)
+{
+	m_qwEStartGameTime			= GetEnvironmentGameTime();
+	m_qwEStartProcessorTime		= Level().timeServer_Async();
+	m_fETimeFactor				= fTimeFactor;
+}
+
+void game_GameState::SetEnvironmentGameTimeFactor	(ALife::_TIME_ID GameTime, const float fTimeFactor)
+{
+	m_qwEStartGameTime			= GameTime;
+	m_qwEStartProcessorTime		= Level().timeServer_Async();
+	m_fETimeFactor				= fTimeFactor;
 }

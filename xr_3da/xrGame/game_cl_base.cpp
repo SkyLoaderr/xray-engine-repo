@@ -27,6 +27,23 @@ game_cl_GameState::~game_cl_GameState()
 	shedule_unregister();
 }
 
+void	game_cl_GameState::net_import_GameTime		(NET_Packet& P)
+{
+	//time
+	u64				GameTime;
+	P.r_u64			(GameTime);
+	float			TimeFactor;
+	P.r_float		(TimeFactor);
+
+	Level().SetGameTimeFactor	(GameTime,TimeFactor);
+
+	u64				GameEnvironmentTime;
+	P.r_u64			(GameEnvironmentTime);
+	float			EnvironmentTimeFactor;
+	P.r_float		(EnvironmentTimeFactor);
+
+	Level().SetEnvironmentGameTimeFactor	(GameEnvironmentTime,EnvironmentTimeFactor);
+}
 
 void	game_cl_GameState::net_import_state	(NET_Packet& P)
 {
@@ -89,13 +106,8 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	players.clear();
 	
 	players = players_new;
-//time
-	u64				GameTime;
-	P.r_u64			(GameTime);
-	float			TimeFactor;
-	P.r_float		(TimeFactor);
 
-	Level().SetGameTimeFactor	(GameTime,TimeFactor);
+	net_import_GameTime(P);
 }
 
 void	game_cl_GameState::net_import_update(NET_Packet& P)
@@ -122,12 +134,7 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 //	if (OnServer())		return;
 
 	//Syncronize GameTime
-	u64				GameTime;
-	P.r_u64			(GameTime);
-	float			TimeFactor;
-	P.r_float		(TimeFactor);
-
-	Level().SetGameTimeFactor	(GameTime,TimeFactor);
+	net_import_GameTime (P);
 }
 
 void	game_cl_GameState::net_signal		(NET_Packet& P)
