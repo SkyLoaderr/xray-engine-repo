@@ -686,13 +686,13 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		state(uid(eObjectActionAim2,id)).set_inertia_time(1000);
 	}
 	else if (missile) {
-		add_state		(xr_new<CObjectStateIdle>(inventory_item,MS_IDLE,true),		uid(eObjectActionIdle,id),		0);
-//		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_SHOWING),		uid(eObjectActionShow,id),		0);
-		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_IDLE),		uid(eObjectActionShow,id),		0);
-		add_state		(xr_new<CObjectStateHide>(inventory_item,MS_HIDING),		uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,MS_THREATEN),uid(eObjectActionFire2,id),		0);
-		add_state		(xr_new<CObjectStateSwitch>(inventory_item,MS_READY,true),	uid(eObjectActionSwitch1,id),	0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_END),	uid(eObjectActionFire1,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,MS_IDLE,true),			uid(eObjectActionIdle,id),		0);
+//		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_SHOWING),			uid(eObjectActionShow,id),		0);
+		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_IDLE),				uid(eObjectActionShow,id),		0);
+		add_state		(xr_new<CObjectStateHide>(inventory_item,MS_HIDING),			uid(eObjectActionHide,id),		0);
+		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,MS_THREATEN),	uid(eObjectActionFire2,id),		0);
+		add_state		(xr_new<CObjectStateSwitch>(inventory_item,MS_READY,true),		uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_END),				uid(eObjectActionFire1,id),		0);
 
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
