@@ -73,6 +73,7 @@ function game_cl_LastStanding:createGameUI ()
    self.m_testWnd = game_last_tmp.test_dialog()
    self.m_testWnd:SetClGame(self)
    self.m_dlg_ = game_last_dialog.uiDialog()
+   self.m_dlg_:SetClGame(self)
    return self.m_game_ui
 end
 
