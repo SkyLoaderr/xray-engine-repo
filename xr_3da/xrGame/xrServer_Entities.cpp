@@ -594,7 +594,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 {
    	inherited::FillProp(pref, values);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateLibObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
