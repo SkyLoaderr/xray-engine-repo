@@ -115,8 +115,6 @@ void C3DSound::OnMove		()
 				// SIMULATE
 				dwState				= bMustLoop?stSimulatingLooped:stSimulating;
 			}
-		} else {
-			Update_Params			( );
 		}
 		break;
 	case stPlaying:
@@ -132,7 +130,6 @@ void C3DSound::OnMove		()
 				dwState						=	stSimulating;		// switch state
 			}
 		}
-		Update_Params		();
 		break;
 	case stSimulating:
 		if (dwTime>=dwTimeToStop)	{
@@ -148,7 +145,6 @@ void C3DSound::OnMove		()
 				dwState						=	stPlaying;			// switch state
 			}
 		}
-		Update_Params		();
 		break;
 	case stPlayingLooped:
 		if (dwTime>=dwTimeToStop)	{
@@ -165,7 +161,6 @@ void C3DSound::OnMove		()
 				dwState						=	stSimulatingLooped;	// switch state
 			}
 		}
-		Update_Params		();
 		break;
 	case stSimulatingLooped:
 		if (dwTime>=dwTimeToStop)	{
@@ -182,9 +177,9 @@ void C3DSound::OnMove		()
 				dwState						=	stPlaying;			// switch state
 			}
 		}
-		Update_Params		();
 		break;
 	}
+	Update_Params		();
 }
 
 void C3DSound::SetPosition	(const Fvector &pos)
