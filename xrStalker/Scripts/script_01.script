@@ -32,6 +32,9 @@ function main()
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
+	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
+
+	sound_wind:play_at_pos		(event,event:position(),1);
 
 	wait		(1000)
 	stalker1:script	(true,script_01.script_name())
@@ -39,12 +42,12 @@ function main()
 	action(                                                                                                       
 	    stalker1,
 	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-		cond	(cond.time_end, 100000)
+		cond	(cond.time_end, 1000000)
 	)
 	action(                                                                                                       
 	    stalker2,
 	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-		cond	(cond.time_end, 100000)
+		cond	(cond.time_end, 1000000)
 	)
 	sound_cough:play_at_pos		(stalker1,stalker1:position(),0);
 	wait		(4500)
@@ -105,6 +108,7 @@ function main()
 			action(
 				stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				sound	("scripts\\idle\\movie_footsteps","bip01_l_foot",vector():set(0,0,0),vector():set(0,0,0),false),
 				anim	(anim.danger),
 				cond	(cond.time_end, 30000)
 				)
@@ -167,9 +171,6 @@ function main()
 		end
 		wait()			
 	end
-
-			printf("!!!")
-			flush()
 
 	while stalker1:action() and stalker2:action() do
 	    wait	()
