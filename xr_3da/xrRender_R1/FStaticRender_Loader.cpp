@@ -18,6 +18,8 @@ void CRender::level_Load()
 	L_Shadows					= xr_new<CLightShadows>		();
 	L_Projector					= xr_new<CLightProjector>	();
 	L_DB						= xr_new<CLightDB_Static>	();
+	L_Glows						= xr_new<CGlowManager>		();
+	Wallmarks					= xr_new<CWallmarksEngine>	();
 
 	rmFar						();
 	rmNormal					();
@@ -28,38 +30,35 @@ void CRender::level_Load()
 	marker						= 0;
 
 	// VB
-	pApp->LoadTitle		("Loading geometry...");
-	LoadBuffers			(fs);
+	pApp->LoadTitle				("Loading geometry...");
+	LoadBuffers					(fs);
 	
 	// Visuals
-	pApp->LoadTitle		("Loading spatial-DB...");
-	chunk				= fs->open_chunk(fsL_VISUALS);
-	LoadVisuals			(chunk);
-	chunk->close		();
+	pApp->LoadTitle				("Loading spatial-DB...");
+	chunk						= fs->open_chunk(fsL_VISUALS);
+	LoadVisuals					(chunk);
+	chunk->close				();
 	
 	// Sectors
-	pApp->LoadTitle		("Loading sectors & portals...");
-	LoadSectors			(fs);
+	pApp->LoadTitle				("Loading sectors & portals...");
+	LoadSectors					(fs);
 
 	// Lights
-	pApp->LoadTitle		("Loading lights...");
-	LoadLights			(fs);
+	pApp->LoadTitle				("Loading lights...");
+	LoadLights					(fs);
 
 	// Details
-	pApp->LoadTitle		("Loading details...");
-	Details->Load		();
-
-	// Wallmarks
-	Wallmarks			= xr_new<CWallmarksEngine>	();
+	pApp->LoadTitle				("Loading details...");
+	Details->Load				();
 
 	// Streams
-	hGeomPatches.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeomPatches.create			(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	
 	// HOM
-	HOM.Load			();
+	HOM.Load					();
 	
 	// End
-	pApp->LoadEnd		();
+	pApp->LoadEnd				();
 }
 
 void CRender::level_Unload()
@@ -69,32 +68,29 @@ void CRender::level_Unload()
 	u32 I;
 
 	// HOM
-	HOM.Unload				();
+	HOM.Unload					();
 
 	//*** Streams
-	hGeomPatches.destroy	();
+	hGeomPatches.destroy		();
 
-	// Wallmarks
-	xr_delete				(Wallmarks);
-	
 	//*** Details
-	Details->Unload			();
+	Details->Unload				();
 
 	//*** Sectors
 	// 1.
-	xr_delete				(rmPortals);
-	pLastSector				= 0;
-	vLastCameraPos.set		(0,0,0);
+	xr_delete					(rmPortals);
+	pLastSector					= 0;
+	vLastCameraPos.set			(0,0,0);
 	// 2.
 	for (I=0; I<Sectors.size(); I++)	xr_delete(Sectors[I]);
-	Sectors.clear			();
+	Sectors.clear				();
 	// 3.
 	for (I=0; I<Portals.size(); I++)	xr_delete(Portals[I]);
-	Portals.clear			();
+	Portals.clear				();
 
 	//*** Lights
-	Glows->Unload			();
-	L_DB->Unload			();
+	L_Glows->Unload				();
+	L_DB->Unload				();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -102,16 +98,18 @@ void CRender::level_Unload()
 		Visuals[I]->Release();
 		xr_delete(Visuals[I]);
 	}
-	Visuals.clear			();
+	Visuals.clear				();
 
 	//*** VB/IB
 	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
 	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
-	DCL.clear				();
-	VB.clear				();
-	IB.clear				();
+	DCL.clear					();
+	VB.clear					();
+	IB.clear					();
 
 	//*** Components
+	xr_delete					(Wallmarks);
+	xr_delete					(L_Glows);
 	xr_delete					(L_DB);
 	xr_delete					(L_Projector);
 	xr_delete					(L_Shadows);
@@ -208,10 +206,10 @@ void CRender::LoadLights(IReader *fs)
 	L_DB->Load	(fs);
 
 	// glows
-	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
-	R_ASSERT	(chunk && "Can't find glows");
-	Glows->Load	(chunk);
-	chunk->close();
+	IReader*		chunk = fs->open_chunk(fsL_GLOWS);
+	R_ASSERT		(chunk && "Can't find glows");
+	L_Glows->Load	(chunk);
+	chunk->close	();
 }
 
 struct b_portal

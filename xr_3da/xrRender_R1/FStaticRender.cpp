@@ -779,7 +779,7 @@ void	CRender::Render		()
 	mapSorted.clear			();
 
 	// Glows
-	Glows->Render			();
+	L_Glows->Render			();
 
 	// Patches
 	if (vecPatches.size())  {
