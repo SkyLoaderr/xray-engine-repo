@@ -310,7 +310,7 @@ public:
 				xr_vector<SLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
 				xr_vector<SLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
 				for ( ; I != E; I++,i++)
-					*I = *i;
+					*i = *I;
 				l_tpALifeAnomalousZone->m_dwStartIndex = l_dwStartIndex;
 			}
 
