@@ -17,7 +17,7 @@ void CActorTools::UndoClear()
 
 void CActorTools::UndoSave()
 {
-    UI.RedrawScene();
+    UI->RedrawScene();
     if (0==EPrefs.scene_undo_level) return;
 
 	UndoItem item;

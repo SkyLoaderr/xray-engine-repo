@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 265
-  Top = 199
+  Left = 322
+  Top = 238
   Width = 770
   Height = 446
   Color = clBtnFace
@@ -133,7 +133,7 @@ object frmMain: TfrmMain
       BevelOuter = bvNone
       TabOrder = 0
     end
-    object paWindow: TPanel
+    object paRender: TPanel
       Left = 0
       Top = 18
       Width = 544
@@ -142,7 +142,7 @@ object frmMain: TfrmMain
       BevelOuter = bvNone
       Color = 4868682
       TabOrder = 1
-      OnResize = paWindowResize
+      OnResize = paRenderResize
       object D3DWindow: TD3DWindow
         Left = 22
         Top = 22
@@ -168,7 +168,6 @@ object frmMain: TfrmMain
   object fsStorage: TFormStorage
     IniSection = 'Main Form'
     RegistryRoot = prLocalMachine
-    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paLeftBar.Tag')
     StoredValues = <>

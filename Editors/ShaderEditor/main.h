@@ -28,7 +28,7 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
     TPanel *paMain;
     TPanel *paTopBar;
-	TPanel *paWindow;
+	TPanel *paRender;
 	TLabel *APHeadLabel2;
 	TExtBtn *sbToolsMin;
 	TD3DWindow *D3DWindow;
@@ -47,9 +47,7 @@ __published:	// IDE-managed Components
     void __fastcall D3DWindowPaint(TObject *Sender);
     void __fastcall D3DWindowKeyPress(TObject *Sender, char &Key);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-    void __fastcall fsStorageRestorePlacement(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall paWindowResize(TObject *Sender);
 	void __fastcall D3DWindowChangeFocus(TObject *Sender);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -64,6 +62,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebAllMinClick(TObject *Sender);
 	void __fastcall ebAllMaxClick(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
+	void __fastcall paRenderResize(TObject *Sender);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 

@@ -51,7 +51,7 @@ void __fastcall TfrmBonePart::FormShow(TObject *Sender)
 {
 	FillBoneParts();
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
             	BP.bones.push_back(m_EditObject->BoneIDByName(AnsiString(node->Text).c_str()));
         }
     }
-    Tools.OnMotionDefsModified();
+    ATools->OnMotionDefsModified();
     Close();
     ModalResult = mrOk;
 }

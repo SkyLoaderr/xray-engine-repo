@@ -8,21 +8,13 @@
 #include "EditObject.h"
 #include "SkeletonCustom.h"
 #include "ClipEditor.h"
+#include "UI_ToolsCustom.h"
 // refs
 class TProperties;
 class CEditableObject;
 class PropValue;
 class TfrmKeyBar;
 class CBlend;
-
-enum EAction{
-    eaSelect=0,
-    eaAdd,
-    eaMove,
-    eaRotate,
-    eaScale,
-    eaMaxActions
-};
 
 enum EEditMode{
     emObject,
@@ -32,18 +24,12 @@ enum EEditMode{
     emMesh
 };
 
-enum EAxis{
-    eAxisX=0,
-	eAxisY,
-    eAxisZ,
-    eAxisZX
-};
-
 // refs
 class CSMotion;
 
-class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
+class CActorTools: public CToolsCustom
 {
+	typedef CToolsCustom inherited;
     class PreviewModel{
 	    TProperties*	m_Props;
         float			m_fSpeed;
@@ -114,21 +100,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     };
 
     bool				m_bObjectModified;
-    bool				m_bReady;
 
     EEditMode			m_EditMode;
-    EAction				m_Action;
-    bool				m_bHiddenMode;
-	// move
-    Fvector				m_MovingXVector;
-    Fvector				m_MovingYVector;
-    Fvector				m_MovingReminder;
-	// scale
-    Fvector				m_ScaleCenter;
-    // rotate
-    Fvector				m_RotateCenter;
-    Fvector				m_RotateVector;
-    float				m_fRotateSnapAngle;
 
 	void __fastcall		OnMotionTypeChange		(PropValue* sender);
 
@@ -166,16 +139,15 @@ protected:
     void				RefreshSubProperties	(){m_Flags.set(flRefreshSubProps,TRUE);}
     void				RefreshShaders			(){m_Flags.set(flRefreshShaders,TRUE);}
 
-    void				RealUpdateProperties	();
-
     void __fastcall 	PMMotionItemClick		(TObject *Sender);
     
+    virtual void		RealUpdateProperties	();
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
 
+    TProperties*		m_Props;
     TItemList*			m_ObjectItems;
-    TProperties*		m_ItemProps;
     TClipMaker*			m_ClipMaker;
 
     TfrmKeyBar* 		m_KeyBar;
@@ -194,23 +166,64 @@ public:
 	bool 				Undo				();
 	bool 				Redo				();
 public:
-    float 				fFogness;
-    u32					dwFogColor;
-public:
 						CActorTools			();
     virtual 			~CActorTools		();
 
-    void				Render				();
-	void				RenderEnvironment	(){;}
-    void				OnFrame				();
+    virtual void		Render				();
+	virtual void		RenderEnvironment	(){;}
+    virtual void		OnFrame				();
 
-    bool				OnCreate			();
-    void				OnDestroy			();
+    virtual bool		OnCreate			();
+    virtual void		OnDestroy			();
 
-    bool				IfModified			();
-    bool				IsModified			(){return m_bObjectModified;}
-    void				Modified			(); 
+    virtual bool		IfModified			();
+    virtual bool		IsModified			(){return m_bObjectModified;}
+    virtual void		Modified			(); 
     void __fastcall		OnItemModified		(void); 
+
+    virtual LPCSTR		GetInfo				();
+    
+    virtual void		ZoomObject			(bool bSelOnly);
+
+    virtual bool		Load				(LPCSTR path, LPCSTR name);
+    virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
+    virtual void		Reload				();
+    
+    virtual void		OnDeviceCreate		();
+    virtual void		OnDeviceDestroy		();
+
+    virtual void		Clear				();
+
+    virtual void		OnShowHint			(AStringVec& SS);
+
+    virtual bool __fastcall 	MouseStart  		(TShiftState Shift);
+    virtual bool __fastcall 	MouseEnd    		(TShiftState Shift);
+    virtual void __fastcall 	MouseMove   		(TShiftState Shift);
+
+    virtual bool		Pick				(TShiftState Shift);
+	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
+
+    virtual void		ShowProperties		(){;}
+    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		RefreshProperties	(){;}
+    
+	void				GetStatTime			(float& a, float& b, float& c);
+
+    bool				IsEngineMode		();
+    void 				SelectPreviewObject	(bool bClear);
+    void				SetPreviewObjectPrefs();
+
+    void				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
+
+	void 				ShowClipMaker		();
+    bool				Import				(LPCSTR path, LPCSTR name);
+    bool				ExportOGF			(LPCSTR name);
+    bool				ExportDM			(LPCSTR name);
+    bool				SaveMotions			(LPCSTR name, bool bSelOnly);
+    bool				AppendMotion		(LPCSTR fn);
+    bool				RemoveMotion		(LPCSTR name);
+    void 				WorldMotionRotate	(const Fvector& R);
+    void				MakePreview			();
 
     void __fastcall		OnBoneModified		(void);
     void __fastcall		OnObjectModified	(void);
@@ -232,64 +245,9 @@ public:
     void				StopMotion			();
     void				PauseMotion			();
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
-
-    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
-    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
-    LPCSTR				GetInfo				();
-    
-    void				ZoomObject			(bool bSelOnly);
-    void				ChangeAction		(EAction action);
-    void				MakePreview			();
-
-	void				SetNumPosition		(CCustomObject* p1){;}
-	void				SetNumRotation		(CCustomObject* p1){;}
-	void				SetNumScale			(CCustomObject* p1){;}
-
-    bool				Import				(LPCSTR path, LPCSTR name);
-    bool				Load				(LPCSTR path, LPCSTR name);
-    bool				Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
-    bool				ExportOGF			(LPCSTR name);
-    bool				ExportDM			(LPCSTR name);
-    bool				SaveMotions			(LPCSTR name, bool bSelOnly);
-    bool				AppendMotion		(LPCSTR fn);
-    bool				RemoveMotion		(LPCSTR name);
-    void				Reload				();
-    void 				WorldMotionRotate	(const Fvector& R);
-
-    virtual void		OnDeviceCreate		();
-    virtual void		OnDeviceDestroy		();
-
-    void				Clear				();
-
-    void				OnShowHint			(AStringVec& SS);
-
-    bool __fastcall 	MouseStart  		(TShiftState Shift);
-    bool __fastcall 	MouseEnd    		(TShiftState Shift);
-    void __fastcall 	MouseMove   		(TShiftState Shift);
-	bool __fastcall 	HiddenMode  		(){return m_bHiddenMode;}
-    bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
-
-    bool				Pick				(TShiftState Shift);
-	bool 				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
-
-    void 				SelectPreviewObject	(bool bClear);
-    void				SetPreviewObjectPrefs();
-
-    void				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
-
-	void 				ShowClipMaker		();
-
-    void				ShowProperties		(){;}
-    void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
-    void				RefreshProperties	(){;}
-    
-	void				GetStatTime			(float& a, float& b, float& c);
-
-    bool				IsEngineMode		();
 };
-extern CActorTools	Tools;
+
+extern CActorTools*&	ATools;
 
 #define SURFACES_PREFIX "Surfaces"
 #define BONES_PREFIX 	"Bones"

@@ -52,8 +52,8 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
             }
         }
     }
-	m_ItemProps->AssignItems(props,true);
-    UI.RedrawScene();
+	m_Props->AssignItems(props,true);
+    UI->RedrawScene();
 }
 //------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ void __fastcall CActorTools::PMMotionItemClick(TObject *Sender)
 void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
 {
 //    OnMotionKeysModified();
-	UI.RedrawScene();
+	UI->RedrawScene();
 }
 //------------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ void __fastcall CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif)
             bool bRes = false;
             for (AStringIt it=lst.begin(); it!=lst.end(); it++)
                 if (AppendMotion(it->c_str())) bRes=true;
-            UI.Command	(COMMAND_UPDATE_PROPERTIES);
+            UI->Command	(COMMAND_UPDATE_PROPERTIES);
 			if (bRes)	OnMotionKeysModified();
             else 		ELog.DlgMsg(mtError,"Append not completed.");
             bModif = false;
@@ -107,7 +107,7 @@ void __fastcall CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif)
 		    	m_ObjectItems->LockUpdating();
 				SelectListItem(MOTIONS_PREFIX,0,true,false,false);
 		    	m_ObjectItems->UnlockUpdating();
-                UI.Command(COMMAND_UPDATE_PROPERTIES);
+                UI->Command(COMMAND_UPDATE_PROPERTIES);
 				OnMotionKeysModified();
                 bModif = false;
             }else{
@@ -255,18 +255,18 @@ static const LPCSTR axis[3]=
 
 void __fastcall CActorTools::OnJointTypeChange(PropValue* V)
 {
-	UI.Command(COMMAND_UPDATE_PROPERTIES);
+	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 void __fastcall CActorTools::OnShapeTypeChange(PropValue* V)
 {
-	UI.RedrawScene();
-	UI.Command(COMMAND_UPDATE_PROPERTIES);
+	UI->RedrawScene();
+	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 void __fastcall CActorTools::OnBindTransformChange(PropValue* V)
 {
 	R_ASSERT(m_pEditObject);
     m_pEditObject->OnBindTransformChange();
-	UI.RedrawScene();
+	UI->RedrawScene();
 }
 
 void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif)
@@ -286,7 +286,7 @@ void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif)
     switch (V->btn_num){
     case 0: 
     	m_pEditObject->GotoBindPose(); 
-		UI.Command(COMMAND_UPDATE_PROPERTIES);
+		UI->Command(COMMAND_UPDATE_PROPERTIES);
 	    bModif = false;
     break;
     case 1:
@@ -296,7 +296,7 @@ void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif)
     break;
     case 2:
 		m_pEditObject->ClampByLimits(false); 
-		UI.Command(COMMAND_UPDATE_PROPERTIES);
+		UI->Command(COMMAND_UPDATE_PROPERTIES);
 	    bModif = false;
     break;
 	}
@@ -355,17 +355,17 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
 		PHelper.CreateChoose		(items,	FHelper.PrepareKey(pref,"Bone\\Game Material"),				BONE->game_mtl, sizeof(BONE->game_mtl), smGameMaterial);
         PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
         PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
-//		PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(BONE->_LTransform().c)));
-        V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);V->OnChangeEvent = OnBindTransformChange;
+        V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent = OnBindTransformChange;
         V=PHelper.CreateAngle3		(items, FHelper.PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent = OnBindTransformChange;
-		V=PHelper.CreateToken<u32>	(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				(u32*)&BONE->shape.type, shape_types);		V->OnChangeEvent = OnShapeTypeChange;
+        V=PHelper.CreateFlag<Flags16>(items,FHelper.PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
+		V=PHelper.CreateToken<u16>	(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types);			V->OnChangeEvent = OnShapeTypeChange;
         switch (BONE->shape.type){
         case SBoneShape::stBox:
 	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Box\\Center"),		&BONE->shape.box.m_translate, -10000.f, 10000.f);
 	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Box\\Half Size"),  	&BONE->shape.box.m_halfsize, 0.f, 1000.f);
         break;
         case SBoneShape::stSphere:
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Sphere\\Direction"),	&BONE->shape.sphere.P, -10000.f, 10000.f);
+	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Sphere\\Position"),	&BONE->shape.sphere.P, -10000.f, 10000.f);
 	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Sphere\\Radius"),  	&BONE->shape.sphere.R, 0.f, 1000.f);
         break;
         case SBoneShape::stCylinder:

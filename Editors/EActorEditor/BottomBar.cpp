@@ -4,7 +4,7 @@
 
 #include "BottomBar.h"
 #include "LogForm.h"
-#include "ui_maincustom.h"
+#include "ui_main.h"
 #include "igame_persistent.h"
 #include "environment.h"
 #include "PropertiesListHelper.h"
@@ -12,7 +12,7 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "ExtBtn"
+#pragma link "ExtBtn"          
 #pragma link "MxMenus"
 #pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
@@ -77,8 +77,6 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     else if (N75->Checked)	QualityClick(N75);
     else if (N50->Checked)	QualityClick(N50);
     else if (N25->Checked)	QualityClick(N25);
-    // statistic
-    ebStatClick(Sender);
 
     // setup menu
     miWeather->Clear();

@@ -1927,22 +1927,9 @@ object fraTopBar: TfraTopBar
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
-      'ebASnap.Down'
-      'ebAxisX.Down'
-      'ebAxisY.Down'
-      'ebAxisZ.Down'
-      'ebAxisZX.Down'
-      'ebCSParent.Down'
-      'ebGSnap.Down'
-      'ebMSnap.Down'
-      'ebNUScale.Down'
-      'ebOSnap.Down'
-      'ebVSnap.Down'
       'ebCameraArcBall.Down'
       'ebCameraFly.Down'
-      'ebCameraPlane.Down'
-      'ebMTSnap.Down'
-      'ebNormalAlign.Down')
+      'ebCameraPlane.Down')
     StoredValues = <>
     Left = 65522
     Top = 65520

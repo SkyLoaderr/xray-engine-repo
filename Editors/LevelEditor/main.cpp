@@ -4,7 +4,7 @@
 #pragma hdrstop
 
 #include "main.h"
-#include "ui_maincustom.h"
+#include "ui_main.h"
 
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -12,48 +12,53 @@ TfrmMain *frmMain;
 #pragma link "RenderWindow"
 #pragma resource "*.dfm"
 
-//#include "topbar.h"
-//#include "leftbar.h"
-//#include "bottombar.h"
+#include "topbar.h"
+#include "leftbar.h"
+#include "bottombar.h"
 
 //---------------------------------------------------------------------------
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
-	frmMain					= this;
+// forms
+    fraBottomBar	= xr_new<TfraBottomBar>((TComponent*)0);
+    fraTopBar   	= xr_new<TfraTopBar>((TComponent*)0);
+    fraLeftBar  	= xr_new<TfraLeftBar>((TComponent*)0);
+//-
+
+	fraBottomBar->Parent    = paBottomBar;
+	fraTopBar->Parent       = paTopBar;
+	fraLeftBar->Parent      = paLeftBar;
+	if (paLeftBar->Tag > 0) paLeftBar->Parent = paTopBar;
+	else paLeftBar->Parent = frmMain;
+
 	Device.SetHandle		(Handle,D3DWindow->Handle);
-    if (!UI->Command(COMMAND_INITIALIZE)){ 
+    if (!UI->Command(COMMAND_INITIALIZE,(int)D3DWindow,(int)paRender)){ 
     	FlushLog			();
     	TerminateProcess(GetCurrentProcess(),-1);
     }
-	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
 {
-//.    fraBottomBar->Parent    = paBottomBar;
-//.    fraTopBar->Parent       = paTopBar;
-//.    fraLeftBar->Parent      = paLeftBar;
-//.    if (paLeftBar->Tag > 0) paLeftBar->Parent = paTopBar;
-//.    else paLeftBar->Parent = frmMain;
-
     tmRefresh->Enabled = true; tmRefreshTimer(Sender);
-    UI->Command				(COMMAND_UPDATE_GRID);
+    UI->Command		(COMMAND_UPDATE_GRID);
+    UI->Command		(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 {
     Application->OnIdle     = 0;
 
-//.    fraLeftBar->fsStorage->SaveFormPlacement();
-//.    fraBottomBar->fsStorage->SaveFormPlacement();
-//.    fraTopBar->fsStorage->SaveFormPlacement();
-
-//.    fraTopBar->Parent       = 0;
-//.    fraLeftBar->Parent      = 0;
-//.    fraBottomBar->Parent    = 0;
-
     UI->Command(COMMAND_DESTROY);
+
+	fraTopBar->Parent       = 0;
+	fraLeftBar->Parent      = 0;
+	fraBottomBar->Parent    = 0;
+
+    xr_delete(fraTopBar);
+    xr_delete(fraBottomBar);
+	xr_delete(fraLeftBar);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
@@ -102,7 +107,7 @@ void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
 void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
 {
     UI->Resize();
-}
+}                     
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::D3DWindowKeyDown(TObject *Sender, WORD &Key,
@@ -149,8 +154,8 @@ void __fastcall TfrmMain::tmRefreshTimer(TObject *Sender)
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
-//.    fraLeftBar->OnTimer();
-//.    fraTopBar->OnTimer();
+	fraLeftBar->OnTimer();
+	fraTopBar->OnTimer();
 }
 //---------------------------------------------------------------------------
 
@@ -160,33 +165,6 @@ void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
-{
-//.    fraLeftBar->fsStorage->RestoreFormPlacement();
-//.    fraBottomBar->fsStorage->RestoreFormPlacement();
-//.    fraTopBar->fsStorage->RestoreFormPlacement();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::paWindowResize(TObject *Sender)
-{
-	if (psDeviceFlags.is(rsDrawSafeRect)){
-    	int w=paWindow->Width,h=paWindow->Height,w_2=w/2,h_2=h/2;
-        Irect rect;
-        if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h);
-        else                   			rect.set(0,h_2-0.75f*float(w_2),w,0.75f*w);
-        D3DWindow->Left  	= rect.x1;
-        D3DWindow->Top  	= rect.y1;
-        D3DWindow->Width 	= rect.x2;
-        D3DWindow->Height	= rect.y2;
-    }else{
-	    D3DWindow->Left  	= 0;
-	    D3DWindow->Top  	= 0;
-    	D3DWindow->Width 	= paWindow->Width;
-    	D3DWindow->Height	= paWindow->Height;
-    }
-}
-//---------------------------------------------------------------------------
 
 
 void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
@@ -202,7 +180,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
     }else{
 		UI->OnAppDeactivate();
         UI->IR_Release();
-        paWindow->Color=paWindow->Color; // чтобы не было  internal code gen error
+        paRender->Color=paRender->Color; // чтобы не было  internal code gen error
 //    	paWindow->Color=(TColor)0x00202020;
     }
 }
@@ -245,19 +223,25 @@ void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
 
 void __fastcall TfrmMain::ebAllMinClick(TObject *Sender)
 {
-//.    fraLeftBar->MinimizeAllFrames();
+	fraLeftBar->MinimizeAllFrames();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::ebAllMaxClick(TObject *Sender)
 {
-//.    fraLeftBar->MaximizeAllFrames();
+	fraLeftBar->MaximizeAllFrames();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormResize(TObject *Sender)
 {
-//.    if (fraLeftBar) fraLeftBar->UpdateBar();
+	if (fraLeftBar) fraLeftBar->UpdateBar();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::paRenderResize(TObject *Sender)
+{
+	UI->Command(COMMAND_RENDER_RESIZE);
 }
 //---------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 431
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 431
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 189
+      Top = 35
       Width = 298
       Height = 2
       Cursor = crVSplit
@@ -454,7 +454,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 147
       Width = 298
-      Height = 42
+      Height = 145
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -484,7 +484,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 296
-        Height = 26
+        Height = 129
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -493,7 +493,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentMotion: TPanel
       Left = 1
-      Top = 191
+      Top = 37
       Width = 298
       Height = 239
       Align = alBottom
@@ -643,37 +643,6 @@ object fraLeftBar: TfraLeftBar
     object ExportDM1: TMenuItem
       Caption = 'Export DM...'
       OnClick = ExportDM1Click
-    end
-  end
-  object pmShaderList: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    MarginStartColor = 13158600
-    MarginEndColor = 1644825
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 10
-    Top = 370
-    object N11: TMenuItem
-      Caption = '-'
-    end
-    object CreateFolder1: TMenuItem
-      Caption = 'Create Folder'
-      OnClick = CreateFolder1Click
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
-    object ExpandAll1: TMenuItem
-      Caption = 'Expand All'
-    end
-    object CollapseAll1: TMenuItem
-      Caption = 'Collapse All'
     end
   end
   object pmPreviewObject: TMxPopupMenu

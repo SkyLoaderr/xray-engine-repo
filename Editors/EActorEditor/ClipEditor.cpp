@@ -153,7 +153,7 @@ void __fastcall TClipMaker::FormDestroy(TObject *Sender)
 
 void __fastcall TClipMaker::FormShow(TObject *Sender)
 {
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
@@ -332,7 +332,7 @@ void __fastcall TClipMaker::ClipMouseMove(TObject *Sender,
     	    sel_clip->length += dx;
             if (sel_clip->length<0.01f) sel_clip->length=0.01f;
     		g_X_prev 	= sel_clip->PRight();
-            UI.ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true)));
+            UI->ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true)));
         }
         UpdateClips		();
     }
@@ -343,7 +343,7 @@ void __fastcall TClipMaker::ClipMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbLeft){
-		UI.HideHint	();
+		UI->HideHint	();
         g_resizing	= FALSE;
         UpdateClips	();
     }
@@ -811,8 +811,8 @@ void TClipMaker::PlayAnimation(CUIClip* clip)
 {
     for (u32 k=0; k<m_CurrentObject->BoneParts().size(); k++)
     	if (*clip->cycles[k])
-        	Tools.m_RenderObject.PlayCycle(*clip->cycles[k],k);
-    if (*clip->fx) Tools.m_RenderObject.PlayFX(*clip->fx,clip->fx_power);
+        	ATools->m_RenderObject.PlayCycle(*clip->cycles[k],k);
+    if (*clip->fx) ATools->m_RenderObject.PlayFX(*clip->fx,clip->fx_power);
 }
 //---------------------------------------------------------------------------
 
@@ -915,8 +915,8 @@ void __fastcall TClipMaker::ebStopClick(TObject *Sender)
 
 void TClipMaker::Play(BOOL bLoop)
 {
-    if (Tools.IsEngineMode()){
-        if (!Tools.m_RenderObject.m_pVisual){
+    if (ATools->IsEngineMode()){
+        if (!ATools->m_RenderObject.m_pVisual){
             Log("!Empty visual.");
         }else{
             if (sel_clip){
@@ -939,7 +939,7 @@ void TClipMaker::Stop()
         m_RTFlags.set	(flRT_Playing,FALSE);
         m_CurrentPlayTime=0.f;
         RepaintClips	();
-        Tools.m_RenderObject.StopAnimation();
+        ATools->m_RenderObject.StopAnimation();
     }
 }
 //---------------------------------------------------------------------------

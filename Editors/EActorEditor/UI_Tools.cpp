@@ -9,20 +9,17 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
-#include "topbar.h"
 #include "PropertiesList.h"               
 #include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
 #include "library.h"
-//#include "BodyInstance.h"
 #include "fmesh.h"
 #include "KeyBar.h"
 #include "main.h"
 #include "folderlib.h"
 
-//------------------------------------------------------------------------------
-CActorTools Tools;
+CActorTools*&	ATools=(CActorTools*)Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
@@ -118,10 +115,10 @@ void CActorTools::PreviewModel::Update()
 
 CActorTools::CActorTools()
 {
+    m_Props 			= 0;
 	m_pEditObject		= 0;
     m_bObjectModified	= false;
     m_ObjectItems 		= 0;
-    m_ItemProps 		= 0;
     m_bReady			= false;
     m_KeyBar			= 0;
     m_Flags.zero		();
@@ -138,56 +135,47 @@ CActorTools::~CActorTools()
 
 bool CActorTools::OnCreate()
 {
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
-
+	inherited::OnCreate();
     // props
 	m_ClipMaker		= TClipMaker::CreateForm();
     m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect);
 	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
-    m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
+    m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
 
     // key bar
 	m_KeyBar 		= TfrmKeyBar::CreateKeyBar(frmMain->paMain);
-
-    m_bReady = true;
-
-    ChangeAction(eaSelect);
 
     return true;
 }
 
 void CActorTools::OnDestroy()
 {
-	VERIFY(m_bReady);
-    m_bReady			= false;
+	inherited::OnDestroy();
 
     TClipMaker::DestroyForm	(m_ClipMaker);
 	TItemList::DestroyForm	(m_ObjectItems);
-	TProperties::DestroyForm(m_ItemProps);
+	TProperties::DestroyForm(m_Props);
     m_PreviewObject.OnDestroy();
 
     m_PreviewObject.Clear();
     m_RenderObject.Clear();
 	xr_delete(m_pEditObject);
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
 }
 //---------------------------------------------------------------------------
 
 void CActorTools::Modified()
 {
 	m_bObjectModified	= true;
-    UI.Command			(COMMAND_UPDATE_CAPTION);
+    UI->Command			(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
 bool CActorTools::IfModified(){
     if (IsModified()){
-        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI.GetEditFileName());
+        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI->GetEditFileName());
         switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
+        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
         case mrNo: m_bObjectModified = false; break;
         case mrCancel: return false;
         }
@@ -341,21 +329,19 @@ void CActorTools::OnDeviceDestroy(){
 
 void CActorTools::Clear()
 {
-	VERIFY(m_bReady);
-
     // delete visuals
     xr_delete(m_pEditObject);
     m_RenderObject.Clear();
 //	m_PreviewObject.Clear();
     m_ObjectItems->ClearList();
-    m_ItemProps->ClearProperties();
+    m_Props->ClearProperties();
     m_ClipMaker->HideEditor();
 
 	m_bObjectModified 	= false;
 	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     m_EditMode			= emObject;
     
-    UI.RedrawScene		();
+    UI->RedrawScene		();
 }
 
 bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
@@ -391,7 +377,7 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
         m_pEditObject = O;
         // delete visual
         m_RenderObject.Clear();
-        fraLeftBar->SetRenderStyle(false);
+        fraLeftBar->SetRenderStyle(false); 
 
         UpdateProperties();
         return true;
@@ -456,75 +442,42 @@ void CActorTools::OnItemModified()
     }
 }
 
-void CActorTools::ChangeAction(EAction action)
+void __fastcall CActorTools::OnBoneModified(void)
 {
-	switch(action){
-    case eaSelect: m_bHiddenMode=false; break;
-    case eaAdd:
-    case eaMove:
-    case eaRotate:
-    case eaScale:  m_bHiddenMode=true; break;
-    }
-    m_Action = action;
-    switch(m_Action){
-        case eaSelect:  UI.GetD3DWindow()->Cursor = crCross;     break;
-        case eaAdd:     UI.GetD3DWindow()->Cursor = crArrow;     break;
-        case eaMove:    UI.GetD3DWindow()->Cursor = crSizeAll;   break;
-        case eaRotate:  UI.GetD3DWindow()->Cursor = crSizeWE;    break;
-        case eaScale:   UI.GetD3DWindow()->Cursor = crVSplit;    break;
-        default:        UI.GetD3DWindow()->Cursor = crHelp;
-    }
-    UI.RedrawScene();
-    fraTopBar->ChangeAction(m_Action);
+	Modified				();
+	RefreshSubProperties	();
+    UndoSave				();
 }
 
 extern AnsiString MakeFullBoneName(CBone* bone);
 bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 {
+	inherited::MouseStart(Shift);
 	switch(m_Action){
-    case eaSelect:
+    case etaSelect:
     	switch (m_EditMode){
         case emBone:{
-	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,m_AVTransform);
+	        CBone* B 	= m_pEditObject->PickBone(UI->m_CurrentRStart,UI->m_CurrentRNorm,m_AVTransform);
             bool bVal 	= B?Shift.Contains(ssAlt)?false:(Shift.Contains(ssCtrl)?!B->Selected():true):false;
             SelectListItem(BONES_PREFIX,B?MakeFullBoneName(B).c_str():0,bVal,Shift.Contains(ssCtrl)||Shift.Contains(ssAlt),true);
         }break;
         }
-    return false;
-    case eaAdd:
     break;
-    case eaMove:{
-        if (fraTopBar->ebAxisY->Down){
-            m_MovingXVector.set(0,0,0);
-            m_MovingYVector.set(0,1,0);
-        }else{
-            m_MovingXVector.set( Device.m_Camera.GetRight() );
-            m_MovingXVector.y = 0;
-            m_MovingYVector.set( Device.m_Camera.GetDirection() );
-            m_MovingYVector.y = 0;
-            m_MovingXVector.normalize_safe();
-            m_MovingYVector.normalize_safe();
-        }
-        m_MovingReminder.set(0,0,0);
-    }break;
-    case eaRotate:{
-        m_RotateCenter.set(0,0,0);
-        m_RotateVector.set(0,0,0);
-        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
-        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
-        else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
-        m_fRotateSnapAngle = 0;
-    }break;
+    case etaAdd:
+    break;
+    case etaMove:	break;
+    case etaRotate:	break;
     }
 	return m_bHiddenMode;
 }
 
 bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 {
+	inherited::MouseEnd(Shift);
 	switch(m_Action){
-    case eaSelect: 	break;
-    case eaAdd: 	break;
-    case eaMove:{
+    case etaSelect: 	break;
+    case etaAdd: 	break;
+    case etaMove:{
     	switch (m_EditMode){
         case emObject:
 			if (Shift.Contains(ssCtrl))
@@ -538,7 +491,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
         break;
         }
     }break;
-    case eaRotate:{
+    case etaRotate:{
     	switch (m_EditMode){
         case emObject:	
 			if (Shift.Contains(ssCtrl))
@@ -552,7 +505,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
         break;
         }
     }break;
-    case eaScale:{
+    case etaScale:{
     	switch (m_EditMode){
         case emBone:	
 			if (Shift.Contains(ssCtrl))
@@ -564,47 +517,28 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 	return true;
 }
 
-void __fastcall CActorTools::OnBoneModified(void)
-{
-	Modified				();
-	RefreshSubProperties	();
-    UndoSave				();
-}
-
 void __fastcall CActorTools::MouseMove(TShiftState Shift)
 {
+	inherited::MouseMove(Shift);
 	if (!m_pEditObject) return;
 	switch(m_Action){
-    case eaSelect: 	break;
-    case eaAdd: 	break;
-    case eaMove:{
-    	Fvector amount;
-        amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
-        amount.mad( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
-
-        if( fraTopBar->ebMSnap->Down ){
-        	CHECK_SNAP(m_MovingReminder.x,amount.x,UI.movesnap());
-        	CHECK_SNAP(m_MovingReminder.y,amount.y,UI.movesnap());
-        	CHECK_SNAP(m_MovingReminder.z,amount.z,UI.movesnap());
-        }
-
-        if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
-        if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
-        if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
+    case etaSelect: 	break;
+    case etaAdd: 	break;
+    case etaMove:{
     	switch (m_EditMode){
         case emObject:
 			if (Shift.Contains(ssCtrl))
-	            m_pEditObject->a_vPosition.add(amount);
+	            m_pEditObject->a_vPosition.add(m_MoveAmount);
         break;
         case emBone:
             BoneVec lst;
             if (m_pEditObject->GetSelectedBones(lst)){
                 if (Shift.Contains(ssCtrl)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->ShapeMove(amount);
+                        (*b_it)->ShapeMove(m_MoveAmount);
                 }else if (Shift.Contains(ssAlt)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->BindMove(amount);
+                        (*b_it)->BindMove(m_MoveAmount);
                     m_pEditObject->OnBindTransformChange();
                     RefreshSubProperties();
                 }
@@ -612,18 +546,16 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         break;
         }
     }break;
-    case eaRotate:{
-        float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
-        if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
+    case etaRotate:{
     	switch (m_EditMode){
         case emObject:
 			if (Shift.Contains(ssCtrl))             
-	            m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
+	            m_pEditObject->a_vRotate.mad(m_RotateVector,m_RotateAmount);
         break;
         case emBone:{
             BoneVec lst;
             Fvector rot;
-            rot.mul(m_RotateVector,amount);
+            rot.mul(m_RotateVector,m_RotateAmount);
             if (m_pEditObject->GetSelectedBones(lst)){
                 if (Shift.Contains(ssCtrl)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
@@ -635,32 +567,21 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 	            	RefreshSubProperties();
                 }else{
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->BoneRotate(m_RotateVector,amount);
+                        (*b_it)->BoneRotate(m_RotateVector,m_RotateAmount);
 	            	RefreshSubProperties();
                 }
             }
         }break;
         }
     }break;
-    case eaScale:{
-        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
-        if (dy>1.f) dy=1.f; else if (dy<-1.f) dy=-1.f;
-
-        Fvector amount;
-        amount.set( dy, dy, dy );
-
-        if (fraTopBar->ebNonUniformScale->Down){
-            if (!fraTopBar->ebAxisX->Down && !fraTopBar->ebAxisZX->Down) amount.x = 0.f;
-            if (!fraTopBar->ebAxisZ->Down && !fraTopBar->ebAxisZX->Down) amount.z = 0.f;
-            if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-        }
+    case etaScale:{
     	switch (m_EditMode){
         case emBone:
         	if (Shift.Contains(ssCtrl)){
                 BoneVec lst;
                 if (m_pEditObject->GetSelectedBones(lst))
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->ShapeScale(amount);
+                        (*b_it)->ShapeScale(m_ScaleAmount);
 			}
         break;
         }
@@ -693,18 +614,6 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     	m_pEditObject->SetActiveSMotion(m_pEditObject->FindSMotionByName(name));
         PlayMotion();
     }
-}
-
-void CActorTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
-{
-    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
-    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
-    fog_color 			= dwFogColor;
-}
-
-LPCSTR CActorTools::GetInfo()
-{
-	return 0;
 }
 
 bool CActorTools::Pick(TShiftState Shift)
@@ -749,3 +658,7 @@ bool CActorTools::IsEngineMode()
     return (fraLeftBar->ebRenderEngineStyle->Down);
 }
 
+LPCSTR CActorTools::GetInfo()
+{
+	return 0;
+}

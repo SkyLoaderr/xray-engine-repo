@@ -28,11 +28,6 @@ __published:	// IDE-managed Components
     TPanel *paLeftBar;
 	TFormStorage *fsStorage;
 	TMxPopupMenu *pmSceneFile;
-	TMxPopupMenu *pmShaderList;
-	TMenuItem *ExpandAll1;
-	TMenuItem *CollapseAll1;
-	TMenuItem *N1;
-	TMenuItem *CreateFolder1;
 	TMenuItem *Load1;
 	TMenuItem *Save2;
 	TMenuItem *miExportOGF;
@@ -56,7 +51,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N7;
 	TMenuItem *N8;
 	TMenuItem *N9;
-	TMenuItem *N11;
 	TMenuItem *ExportDM1;
 	TPanel *paScene;
 	TLabel *APHeadLabel2;
@@ -97,9 +91,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall tvMotionsMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
-	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall tvMotionsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
 	void __fastcall tvMotionsDragOver(TObject *Sender, TObject *Source, int X,
@@ -141,10 +132,10 @@ public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
     void 			OnTimer			();
-	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
     void			SetRenderStyle	(bool bEngineStyle);
     void 			MinimizeAllFrames();
     void 			MaximizeAllFrames();
+    void 			RefreshBar		();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

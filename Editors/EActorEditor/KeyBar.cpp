@@ -30,26 +30,26 @@ TfrmKeyBar* TfrmKeyBar::CreateKeyBar(TWinControl* parent)
 
 void __fastcall TfrmKeyBar::seLODLWChange(TObject *Sender, int Val)
 {
-	Tools.m_RenderObject.m_fLOD = seLOD->Value;
+	ATools->m_RenderObject.m_fLOD = seLOD->Value;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmKeyBar::seLODKeyPress(TObject *Sender, char &Key)
 {
-	if (Key==VK_RETURN)	Tools.m_RenderObject.m_fLOD = seLOD->Value;
+	if (Key==VK_RETURN)	ATools->m_RenderObject.m_fLOD = seLOD->Value;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmKeyBar::seLODExit(TObject *Sender)
 {
-	Tools.m_RenderObject.m_fLOD = seLOD->Value;
+	ATools->m_RenderObject.m_fLOD = seLOD->Value;
 }
 //---------------------------------------------------------------------------
 
 void TfrmKeyBar::UpdateBar()
 {
-	seLOD->Value 	= Tools.m_RenderObject.m_fLOD;
-    float a,b,c;	Tools.GetStatTime(a,b,c);
+	seLOD->Value 	= ATools->m_RenderObject.m_fLOD;
+    float a,b,c;	ATools->GetStatTime(a,b,c);
     stStartTime->Caption   	= AnsiString().sprintf("%3.2f",a);
     stEndTime->Caption   	= AnsiString().sprintf("%3.2f",b);
     lbCurrentTime->Caption	= AnsiString().sprintf("%3.2f",c);

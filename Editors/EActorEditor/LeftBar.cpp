@@ -3,7 +3,7 @@
 
 #include "LeftBar.h"
 #include "BottomBar.h"
-#include "UI_Main.h"
+#include "UI_ActorMain.h"
 #include "main.h"
 #include "UI_Tools.h"
 #include "FolderLib.h"
@@ -41,27 +41,24 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    if (FS.exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(u32)fn.c_str());
-    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
+    UI->Command(COMMAND_LOAD,(u32)fn.c_str());
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
-{
-//.    Tools.m_ObjectProps->SaveParams(fsStorage);
-    Tools.m_ItemProps->SaveParams(fsStorage);
-    Tools.m_PreviewObject.SaveParams(fsStorage);
-    Tools.m_RenderObject.SaveParams(fsStorage);
+{                                
+    ATools->m_Props->SaveParams			(fsStorage);
+    ATools->m_PreviewObject.SaveParams	(fsStorage);
+    ATools->m_RenderObject.SaveParams	(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-//.    Tools.m_ObjectProps->RestoreParams(fsStorage);
-    Tools.m_ItemProps->RestoreParams(fsStorage);
-    Tools.m_PreviewObject.RestoreParams(fsStorage);
-    Tools.m_RenderObject.RestoreParams(fsStorage);
+    ATools->m_Props->RestoreParams		(fsStorage);
+    ATools->m_PreviewObject.RestoreParams(fsStorage);
+    ATools->m_RenderObject.RestoreParams	(fsStorage);         
 }
 //---------------------------------------------------------------------------
 
@@ -88,7 +85,7 @@ void TfraLeftBar::UpdateBar(){
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
-    if (ebRenderEngineStyle->Down&&!Tools.IsVisualPresent()) SetRenderStyle(false);
+    if (ebRenderEngineStyle->Down&&!ATools->IsVisualPresent()) SetRenderStyle(false);
 }
 //---------------------------------------------------------------------------
 
@@ -114,25 +111,25 @@ void TfraLeftBar::MaximizeAllFrames()
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI.Command( COMMAND_SAVE );
+	UI->Command( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_REFRESH_TEXTURES );
+	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_CHECK_TEXTURES );
+	UI->Command( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_IMAGE_EDITOR );
+	UI->Command( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
@@ -152,19 +149,19 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI.Command(COMMAND_EDITOR_PREF);
+	UI->Command(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebMakePreviewClick(TObject *Sender)
 {
-	UI.Command( COMMAND_MAKE_PREVIEW );
+	UI->Command( COMMAND_MAKE_PREVIEW );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 {
-	UI.Command( COMMAND_RESET_ANIMATION );
+	UI->Command( COMMAND_RESET_ANIMATION );
 }
 //---------------------------------------------------------------------------
 
@@ -196,38 +193,6 @@ void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvMotionsMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	if (Button==mbRight)	FHelper.ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
-
-void TfraLeftBar::AddMotion(LPCSTR full_name, bool bLoadMode)
-{
-//..	TElTreeItem* node = FHelper.AppendObject(tvMotions,full_name);
-//    if (!bLoadMode){
-//	    if (node&&node->Parent) node->Parent->Expand(false);
-//    	node->Selected = true;
-//		tvMotions->Selected = node;
-//    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
-{
-//.	AnsiString folder;
-//    AnsiString start_folder;
-//    FHelper.MakeName(tvMotions->Selected,0,start_folder,true);
-//    FHelper.GenerateFolderName(tvMotions,tvMotions->Selected,folder);
-//    folder = start_folder+folder;
-//	TElTreeItem* node = FHelper.AppendFolder(tvMotions,folder.c_str());
-//    if (tvMotions->Selected) tvMotions->Selected->Expand(false);
-//    tvMotions->EditItem(node,-1);
-///	Tools.MotionModified();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::tvMotionsStartDrag(TObject *Sender,
       TDragObject *&DragObject)
 {
@@ -243,7 +208,7 @@ void __fastcall TfraLeftBar::tvMotionsDragOver(TObject *Sender,
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType tp)
 {
-    Tools.RenameMotion(p0,p1);
+    ATools->RenameMotion(p0,p1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
@@ -255,106 +220,122 @@ void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::Import1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_IMPORT );
+	UI->Command( COMMAND_IMPORT );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_LOAD );
+	UI->Command( COMMAND_LOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Clear1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_CLEAR );
+	UI->Command( COMMAND_CLEAR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SAVE );
+	UI->Command( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SAVEAS );
+	UI->Command( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
 {
-	frmBonePart->Run(Tools.CurrentObject());
-	UI.Command(COMMAND_UPDATE_PROPERTIES);
+	frmBonePart->Run(ATools->CurrentObject());
+	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::miExportOGFClick(TObject *Sender)
 {
-	UI.Command( COMMAND_EXPORT_OGF );
+	UI->Command( COMMAND_EXPORT_OGF );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
 {
 	if (Sender==ebRenderEngineStyle){
-		if (!Tools.IsVisualPresent()) UI.Command( COMMAND_MAKE_PREVIEW );
-        if (!Tools.IsVisualPresent()) SetRenderStyle(false);
+		if (!ATools->IsVisualPresent()) UI->Command( COMMAND_MAKE_PREVIEW );
+        if (!ATools->IsVisualPresent()) SetRenderStyle(false);
         else						  SetRenderStyle(true);
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::SetRenderStyle(bool bEngineStyle)
 {
-    if (Tools.IsVisualPresent()&&bEngineStyle) 	ebRenderEngineStyle->Down = true;
+    if (ATools->IsVisualPresent()&&bEngineStyle) 	ebRenderEngineStyle->Down = true;
     else 										ebRenderEditorStyle->Down = true;
-	Tools.PlayMotion();
+	ATools->PlayMotion();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Custom1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, false );
+	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, false );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::none1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, true );
+	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, true );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_PREVIEW_OBJ_PREF );
+	UI->Command( COMMAND_PREVIEW_OBJ_PREF );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_EXPORT_DM );
+	UI->Command( COMMAND_EXPORT_DM );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SHOW_CLIPMAKER );
+	UI->Command( COMMAND_SHOW_CLIPMAKER );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem2Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SOUND_EDITOR );
+	UI->Command( COMMAND_SOUND_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem4Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SYNC_SOUNDS );
+	UI->Command( COMMAND_SYNC_SOUNDS );
 }
 //---------------------------------------------------------------------------
+
+void TfraLeftBar::RefreshBar()
+{
+	miRecentFiles->Clear();
+    u32 idx 			= 0;
+	for (AStringIt it=EPrefs.scene_recent_list.begin(); it!=EPrefs.scene_recent_list.end(); it++){
+        TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
+        MI->Caption 	= *it;
+        MI->OnClick 	= miRecentFilesClick;
+        MI->Tag			= 0x1001;
+        miRecentFiles->Insert(idx++,MI);
+    }
+    miRecentFiles->Enabled = miRecentFiles->Count;
+}
+//---------------------------------------------------------------------------
+
 
 
