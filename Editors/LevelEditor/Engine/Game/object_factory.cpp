@@ -128,6 +128,14 @@
 #endif
 ////////////////////////////////////////////////////////////////////////////
 
+CObjectFactory::CObjectFactory			()
+{
+	m_initialized				= false;
+	register_classes			();
+	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
+	m_initialized				= true;
+}
+
 CObjectFactory::~CObjectFactory			()
 {
 	delete_data					(m_clsids);
@@ -157,14 +165,6 @@ void CObjectFactory::script_register	() const
 #else
 #	define ADD(a,b,c,d) add<b>(c,d)
 #endif
-
-CObjectFactory::CObjectFactory			()
-{
-	m_initialized				= false;
-	register_classes			();
-	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
-	m_initialized				= true;
-}
 
 void CObjectFactory::register_classes	()
 {
