@@ -226,10 +226,10 @@ void CDetailManager::Render		(Fvector& EYE)
 	Device.Statistic.RenderDUMP_DT_VIS.End	();
 
 	Device.Statistic.RenderDUMP_DT_Render.Begin	();
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
+//	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
 	if (UseVS())	VS_Render	();
 	else			soft_Render	();
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
+//	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
 	Device.Statistic.RenderDUMP_DT_Render.End	();
 }
 
