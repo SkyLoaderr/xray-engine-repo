@@ -65,4 +65,6 @@ void CHWCaps::Update()
 
 	// FORCE (overwrite) flags
 	if (bForceVertexFog)		bTableFog			=	false;
+	
+	// DEV INFO
 }
