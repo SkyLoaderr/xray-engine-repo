@@ -16,14 +16,14 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAutoRifle::CWeaponAutoRifle(LPCSTR name) : CWeaponMagazined(name)
+CWeaponHPSA::CWeaponHPSA(LPCSTR name) : CWeaponMagazined(name)
 {
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
 }
 
-CWeaponAutoRifle::~CWeaponAutoRifle()
+CWeaponHPSA::~CWeaponHPSA()
 {
 	// sounds
 	SoundDestroy		(sndFireShoot	);
@@ -36,7 +36,7 @@ CWeaponAutoRifle::~CWeaponAutoRifle()
 	SoundDestroy		(sndRicochet[4]	);
 }
 
-void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
+void CWeaponHPSA::Load	(CInifile* ini, const char* section)
 {
 	inherited::Load		(ini, section);
 	
@@ -69,7 +69,7 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	}
 }
 
-void CWeaponAutoRifle::MediaLOAD		()
+void CWeaponHPSA::MediaLOAD		()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
@@ -83,19 +83,19 @@ void CWeaponAutoRifle::MediaLOAD		()
 	}
 }
 
-void CWeaponAutoRifle::MediaUNLOAD	()
+void CWeaponHPSA::MediaUNLOAD	()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
 		ShaderDestroy(hFlames[i]);
 	hFlames.clear();
 }
 
-void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
+void CWeaponHPSA::switch2_Idle	(BOOL bHUDView)
 {
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 	m_pHUD->animPlay(mhud_idle);
 }
-void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
+void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 {
 	// Fire
 	Fvector					p1, d;
@@ -104,26 +104,26 @@ void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 	OnShot					(bHUDView);
 	FireTrace				(p1,vLastFP,d);
 }
-void CWeaponAutoRifle::switch2_Empty	(BOOL bHUDView)
+void CWeaponHPSA::switch2_Empty	(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos(sndEmptyClick,vLastFP);
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
-void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
+void CWeaponHPSA::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
 	m_pHUD->animPlay			(mhud_reload,TRUE,this);
 }
-void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
+void CWeaponHPSA::switch2_Hiding(BOOL bHUDView)
 {
 	switch2_Idle				(bHUDView);
 	m_pHUD->animPlay			(mhud_hide,TRUE,this);
 }
-void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
+void CWeaponHPSA::switch2_Showing(BOOL bHUDView)
 {
 	m_pHUD->animPlay			(mhud_show,FALSE,this);
 }
-void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
+void CWeaponHPSA::OnShot		(BOOL bHUDView)
 {
 	// Sound
 	pSounds->Play3DAtPos	(sndFireShoot,vLastFP);
@@ -137,11 +137,11 @@ void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 	// Animation
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 }
-void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)
+void CWeaponHPSA::OnEmptyClick	(BOOL bHUDView)
 {
-	pSounds->Play3DAtPos	(sndEmptyClick,vLastFP);
 }
-void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
+
+void CWeaponHPSA::OnDrawFlame	(BOOL bHUDView)
 {
 	if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 	
@@ -158,7 +158,7 @@ void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 	}
 }
 
-void CWeaponAutoRifle::OnAnimationEnd()
+void CWeaponHPSA::OnAnimationEnd()
 {
 	switch (st_current)
 	{
@@ -168,7 +168,7 @@ void CWeaponAutoRifle::OnAnimationEnd()
 	}
 }
 
-void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
+void CWeaponHPSA::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 	
@@ -190,7 +190,13 @@ void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }
-void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
+void	CWeaponHPSA::state_Fire		(BOOL bHUD, float dt)
+{
+}
+void	CWeaponHPSA::state_MagEmpty	(BOOL bHUD, float dt)
+{
+}
+void CWeaponHPSA::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
