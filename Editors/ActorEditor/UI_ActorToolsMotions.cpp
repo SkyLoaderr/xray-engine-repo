@@ -49,12 +49,12 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
             I = V->m_cycle->begin(); 
             E = V->m_cycle->end();                  
             for ( ; I != E; ++I) 
-                LHelper().CreateItem(items, PHelper().PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+                LHelper().CreateItem(items, PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
             // fxs
             I = V->m_fx->begin(); 
             E = V->m_fx->end(); 
             for ( ; I != E; ++I)
-                LHelper().CreateItem(items, PHelper().PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+                LHelper().CreateItem(items, PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
         }
     }
 }
