@@ -30,9 +30,9 @@ void	CRender::render_lights	(light_Package& LP)
 
 	// 2. refactor - infact we could go from the backside and sort in ascending order
 	{
-		xr_vector<light*>&		source		= LP.v_spot_s;
+		xr_vector<light*>&		source		= LP.v_shadowed;
 		xr_vector<light*>		refactored	;
-		refactored.reserve		(LP.v_spot_s.size());
+		refactored.reserve		(source.size());
 		u32						total		= source.size();
 
 		for		(u16 smap_ID=0; refactored.size()!=total; smap_ID++)
@@ -57,7 +57,7 @@ void	CRender::render_lights	(light_Package& LP)
 
 		// save (lights are popped from back)
 		std::reverse	(refactored.begin(),refactored.end());
-		LP.v_spot_s		= refactored;
+		LP.v_shadowed	= refactored;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -74,81 +74,51 @@ void	CRender::render_lights	(light_Package& LP)
 	//	if (left_some_lights_that_doesn't cast shadows)
 	//		accumulate them
 	HOM.Disable	();
-	while		(LP.v_point_s.size() || LP.v_spot_s.size() )
+	while		(LP.v_shadowed.size() || LP.v_shadowed.size() )
 	{
-		// if (has_point_shadowed)
-		light*	L_point_s	= 0;	
-		if		(!LP.v_point_s.empty())	{
-			// generate point shadowmap
-			light*	L		= L_point_s	= LP.v_point_s.back();	LP.v_point_s.pop_back();
-			L->vis_update	();
-			if		(!L->vis.visible)	L_point_s = 0;
-			else	{
-				Lights_LastFrame.push_back		(L);
-				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
-					phase									= PHASE_SMAP_P;
-					r_pmask									(true,false);
-					if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
-					L->svis[pls_phase].begin				();
-					r_dsgraph_render_subspace				(L->spatial.sector, L->X.P.combine, L->position, TRUE);
-					LR.compute_xfp_2						(pls_phase, L);
-					if (mapNormal[0].size() || mapMatrix[0].size())	{
-						Target.phase_smap_point				(L,pls_phase);
-						RCache.set_xform_world				(Fidentity);
-						RCache.set_xform_view				(L->X.P.view);
-						RCache.set_xform_project			(L->X.P.project);
-						r_dsgraph_render_graph				(0);
-					}
-					L->svis[pls_phase].end					();
-				}
-			}
-		}
-
 		// if (has_spot_shadowed)
 		xr_vector<light*>	L_spot_s;
-		if	(!LP.v_spot_s.empty())	{
-			stats.s_used++;
+		stats.s_used		++;
 
-			// generate spot shadowmap
-			Target.phase_smap_spot_clear	();
-			xr_vector<light*>&	source		= LP.v_spot_s;
-			light*		L		= source.back	()	;
-			u16			sid		= L->vis.smap_ID	;
-			while (true)	
-			{
-				if	(source.empty())		break;
-				L	= source.back			();
-				if	(L->vis.smap_ID!=sid)	break;
-				L_spot_s.push_back			(L);
-				source.pop_back				();
-				Lights_LastFrame.push_back	(L);
+		// generate spot shadowmap
+		Target.phase_smap_spot_clear	();
+		xr_vector<light*>&	source		= LP.v_shadowed;
+		light*		L		= source.back	()	;
+		u16			sid		= L->vis.smap_ID	;
+		while (true)	
+		{
+			if	(source.empty())		break;
+			L	= source.back			();
+			if	(L->vis.smap_ID!=sid)	break;
+			L_spot_s.push_back			(L);
+			source.pop_back				();
+			Lights_LastFrame.push_back	(L);
 
-				// render
-				phase									= PHASE_SMAP_S;
-				if (RImplementation.b_Tshadows)	r_pmask	(true,true	);
-				else							r_pmask	(true,false	);
-				L->svis[0].begin						();
-				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
-				bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
-				bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
-				if ( bNormal || bSpecial)	{
-					stats.s_merged						++;
-					Target.phase_smap_spot				(L);
-					RCache.set_xform_world				(Fidentity);
-					RCache.set_xform_view				(L->X.S.view);
-					RCache.set_xform_project			(L->X.S.project);
-					r_dsgraph_render_graph				(0);
-					L->X.S.transluent					= FALSE;
-					if (bSpecial)						{
-						L->X.S.transluent					= TRUE;
-						Target.phase_smap_spot_tsh			(L);
-						r_dsgraph_render_graph				(1);			// normal level, secondary priority
-						r_dsgraph_render_sorted				( );			// strict-sorted geoms
-					}
+			// render
+			phase									= PHASE_SMAP_S;
+			if (RImplementation.b_Tshadows)	r_pmask	(true,true	);
+			else							r_pmask	(true,false	);
+			L->svis[0].begin						();
+			r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
+			bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
+			bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+			if ( bNormal || bSpecial)	{
+				stats.s_merged						++;
+				Target.phase_smap_spot				(L);
+				RCache.set_xform_world				(Fidentity);
+				RCache.set_xform_view				(L->X.S.view);
+				RCache.set_xform_project			(L->X.S.project);
+				r_dsgraph_render_graph				(0);
+				L->X.S.transluent					= FALSE;
+				if (bSpecial)						{
+					L->X.S.transluent					= TRUE;
+					Target.phase_smap_spot_tsh			(L);
+					r_dsgraph_render_graph				(1);			// normal level, secondary priority
+					r_dsgraph_render_sorted				( );			// strict-sorted geoms
 				}
-				L->svis[0].end							();
-				r_pmask									(true,false);
 			}
+			L->svis[0].end							();
+			r_pmask									(true,false);
 		}
 
 		//		switch-to-accumulator
@@ -174,12 +144,6 @@ void	CRender::render_lights	(light_Package& LP)
 				Target.accum_spot		(L);
 				render_indirect			(L);
 			}
-		}
-
-		//		if (was_point_shadowed)		->	accum point shadowed
-		if		(L_point_s)					{
-			Target.accum_point			(L_point_s);
-			render_indirect				(L_point_s);
 		}
 
 		//		if (was_spot_shadowed)		->	accum spot shadowed
