@@ -539,6 +539,9 @@
 					RelativePath="ai_alife_templates.h">
 				</File>
 				<File
+					RelativePath=".\AI_Console.h">
+				</File>
+				<File
 					RelativePath="clsid_game.h">
 				</File>
 				<File
