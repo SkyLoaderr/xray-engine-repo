@@ -158,7 +158,7 @@ function load_dialog:InitCallBacks()
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  -- virtual function
-	CUIScriptWind.OnKeyboard(self, dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self, dik, keyboard_action)
 
 	DIK_RETURN = 28
 	WINDOW_KEY_PRESSED = 6
