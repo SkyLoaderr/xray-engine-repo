@@ -211,7 +211,7 @@ RayCollider::RayCollider()
 	mVerts				(null),
 #endif
 	mStabbedFaces		(null),
-	mMaxDist			(MAX_FLOAT)
+	mMaxDist			(flt_max)
 {
 }
 

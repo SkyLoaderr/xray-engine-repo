@@ -62,7 +62,7 @@ BOOL SphereCollider::SphereTriOverlap(const Point& vert0, const Point& vert1, co
 			{
 				u = 0.0f;
 				v = 0.0f;
-				SqrDist = MAX_FLOAT;
+				SqrDist = flt_max;
 			}
 			else
 			{
