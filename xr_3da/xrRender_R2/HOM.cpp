@@ -91,29 +91,10 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	bEnabled			= TRUE;
 	m_ZB.clear			();
-
-	/*
-	h_Geom					= Device.Resources->CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
-	h_Shader				= Device.Resources->Create		("zfill"	);
-	
-	// Debug
-	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&dbg_surf,NULL);
-	R_ASSERT				(dbg_surf);
-	LPCSTR		RTname		= "$user$hom";
-	dbg_geom				= Device.Resources->CreateGeom		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	dbg_texture				= Device.Resources->_CreateTexture	(RTname);
-	dbg_shader				= Device.Resources->Create			("effects\\screen_set",		RTname);
-	dbg_texture->surface_set(dbg_surf);
-	*/
 }
 
 void CHOM::Unload		()
 {
-	/*
-	Device.Resources->Delete		(h_Shader);
-	Device.Resources->DeleteGeom	(h_Geom);
-	_RELEASE	(dbg_surf);
-	*/
 	xr_delete	(m_pModel);
 	xr_free		(m_pTris);
 	bEnabled	= FALSE;
@@ -200,84 +181,6 @@ void CHOM::Render		(CFrustum& base)
 	Device.Statistic.RenderCALC_HOM.End		();
 }
 
-/*
-void CHOM::Render_ZB	()
-{
-	if (m_ZB.empty())		return;
-
-	// Fill VB
-	u32								vCount	= m_ZB.size()*3;
-	u32								vOffset;
-	FVF::L*		V					= (FVF::L*) RCache.Vertex.Lock	(vCount,h_Geom->vb_stride, vOffset);
-
-	xr_vector<u32>::iterator	I		= m_ZB.begin	();
-	xr_vector<u32>::iterator	E		= m_ZB.end		();
-
-	u32 C							= color_rgba	(0xff,0,0,0xff);
-	for (; I!=E; I++)
-	{
-		CDB::TRI& t					= m_pModel->get_tris() [*I];
-		V->set	(*t.verts[0],C);	V++;
-		V->set	(*t.verts[1],C);	V++;
-		V->set	(*t.verts[2],C);	V++;
-	}
-
-	RCache.Vertex.Unlock			(vCount,h_Geom->vb_stride);
-
-	// Render it
-	RCache.set_xform_world			(Fidentity);
-	RCache.set_Shader				(h_Shader);
-	RCache.set_Geometry				(h_Geom);
-	//CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
-	RCache.Render					(D3DPT_TRIANGLELIST,vOffset,vCount/3);
-	//CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
-}
-*/
-void CHOM::Debug		()
-{
-	return;
-/*
-	if (0==dbg_surf)	return;
-
-	// Texture
-	D3DLOCKED_RECT		R;
-	R_CHK				(dbg_surf->LockRect(0,&R,0,0));
-	for (int y=0; y<occ_dim_0; y++)
-	{
-		for (int x=0; x<occ_dim_0; x++)
-		{
-			int*	pD	= Raster.get_depth_level(0);
-			int		D	= pD[y*occ_dim_0+x];
-			float   d	= Raster.d2float(D);
-			int		V	= (d<(1.f-EPS))?0:255;
-			u32	C	= D3DCOLOR_XRGB(V,V,V);
-			LPDWORD(R.pBits)[y*occ_dim_0+x]	= C;
-		}
-	}
-	dbg_surf->UnlockRect	(0);
-	
-	// UV
-	Fvector2		p0,p1;
-	p0.set			(.5f/occ_dim_0, .5f/occ_dim_0);
-	p1.set			((occ_dim_0+.5f)/occ_dim_0, (occ_dim_0+.5f)/occ_dim_0);
-	
-	// Fill vertex buffer
-	u32 vOffset, C=0xffffffff;
-	u32 _w = occ_dim_0*2, _h = occ_dim_0*2;
-	FVF::TL* pv		= (FVF::TL*) RCache.Vertex.Lock(4,dbg_geom->vb_stride,vOffset);
-	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
-	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
-	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
-	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock			(4,dbg_geom->vb_stride);
-	
-	// Actual rendering
-	RCache.set_Shader	(dbg_shader);
-	RCache.set_Geometry	(dbg_geom);
-	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
-*/
-}
-
 IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS) return TRUE;
@@ -322,11 +225,8 @@ BOOL CHOM::visible		(Fbox& B)
 
 BOOL CHOM::visible		(vis_data& vis)
 {
-	if (Device.dwFrame<vis.hom_frame)	return TRUE;	// not at this time :)
-	if (!bEnabled)	{
-		vis.hom_frame	= u32	(-1);					// delay testing as much as possible
-		return TRUE;									// return - everything visible
-	}
+	if (Device.dwFrame<vis.hom_frame)	return TRUE;				// not at this time :)
+	if (!bEnabled)						return TRUE;				// return - everything visible
 	
 	// Now, the test time comes
 	// 0. The object was hidden, and we must prove that each frame	- test		| frame-old, tested-new, hom_res = false;
