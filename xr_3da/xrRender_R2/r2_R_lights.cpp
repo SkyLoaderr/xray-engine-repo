@@ -14,7 +14,7 @@ void	CRender::render_lights	(light_Package& LP)
 	// 1. calculate area + sort in descending order
 	const	u16		smap_unassigned			= u16(-1);
 	{
-		xr_vector<light*>&	source		= LP.v_spot_s;
+		xr_vector<light*>&	source			= LP.v_shadowed;
 		for (u32 it=0; it<source.size(); it++)
 		{
 			light*	L		= source[it];
@@ -37,7 +37,7 @@ void	CRender::render_lights	(light_Package& LP)
 
 		for		(u16 smap_ID=0; refactored.size()!=total; smap_ID++)
 		{
-			LP_smap_pool.initialize	(DSM_size);
+			LP_smap_pool.initialize	(SMAP_size);
 			std::sort				(source.begin(),source.end(),pred_area);
 			for	(u32 test=0; test<source.size(); test++)
 			{

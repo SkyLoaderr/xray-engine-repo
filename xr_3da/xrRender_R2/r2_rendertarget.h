@@ -45,14 +45,10 @@ public:
 	ref_rt						rt_LUM_8;		// 64bit, 8x8,		log-average in all components
 	ref_rt						rt_LUM_result;	// 64bit, 1x1,		exp-result
 
-	// D-smap
-	ref_rt						rt_smap_d_surf;	// 32bit, depth 
-	ref_rt						rt_smap_d_depth;// 24(32) bit, depth 
-	IDirect3DSurface9*			rt_smap_d_ZB;	//
-
-	// P-smap
-	ref_rtc						rt_smap_p;
-	IDirect3DSurface9*			rt_smap_p_ZB;
+	// smap
+	ref_rt						rt_smap_surf;	// 32bit,		color
+	ref_rt						rt_smap_depth;	// 24(32) bit,	depth 
+	IDirect3DSurface9*			rt_smap_ZB;		//
 
 	// Textures
 	IDirect3DTexture9*			t_encodeRG_surf;
@@ -61,8 +57,6 @@ public:
 	ref_texture					t_encodeB;
 	IDirect3DVolumeTexture9*	t_material_surf;
 	ref_texture					t_material;
-	IDirect3DTexture9*			t_ds2fade_surf;
-	ref_texture					t_ds2fade;
 private:
 	// Decompress
 	ref_geom					g_decompress;
@@ -75,13 +69,15 @@ private:
 	ref_shader					s_accum_point;
 	ref_shader					s_accum_spot;
 	ref_shader					s_accum_reflected;
-	ref_geom					g_accum_point;
-	ref_geom					g_accum_spot;
-	ref_geom					g_accum_point_tl;
+
+	ref_geom					g_accum_point	;
+	ref_geom					g_accum_spot	;
+	ref_geom					g_accum_omnipart;
+
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
-	IDirect3DVertexBuffer9*		g_accum_spot_vb;
-	IDirect3DIndexBuffer9*		g_accum_spot_ib;
+	IDirect3DVertexBuffer9*		g_accum_spot_vb	;
+	IDirect3DIndexBuffer9*		g_accum_spot_ib	;
 
 	// Bloom
 	ref_geom					g_bloom_build;

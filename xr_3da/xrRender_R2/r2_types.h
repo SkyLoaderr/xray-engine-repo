@@ -19,25 +19,18 @@
 #define r2_RT_luminance_t8	"$user$lum_t8"			// --- temp
 #define r2_RT_luminance		"$user$tonemap"			// --- result
 
-#define	r2_RT_smap_d_surf	"$user$smap_d_surf"		// ---	directional
-#define	r2_RT_smap_d_depth	"$user$smap_d_depth"	// ---	directional
-#define	r2_RT_smap_p		"$user$smap_p"			// ---	point
+#define	r2_RT_smap_surf		"$user$smap_surf"		// ---	directional
+#define	r2_RT_smap_depth	"$user$smap_depth"		// ---	directional
 
-#define r2_material			"$user$material"						// ---
-#define r2_float2RG			"$user$float2rg"						// --- compression/encoding table
-#define r2_float2B			"$user$float2b"							// --- compression/encoding table
-#define r2_ds2_fade			"$user$ds2_fade"						// ---
+#define r2_material			"$user$material"		// ---
+#define r2_float2RG			"$user$float2rg"		// --- compression/encoding table
+#define r2_float2B			"$user$float2b"			// --- compression/encoding table
+#define r2_ds2_fade			"$user$ds2_fade"		// ---
 
-const u32					DSM_size			= 1024;
-const float					DSM_distance_1		= 15.f;
-const float					DSM_distance_2		= 100.f;
-const float					DSM_d_range			= 100.f;
-const float					SSM_near_plane		= .1f;
+const u32					SMAP_size			= 1024;
+const float					SMAP_near_plane		= .1f;
 
-const u32					PSM_size			= 512;
-const float					PSM_near_plane		= .1f;
-
-const u32					TEX_material_LdotN	= 128;	// diffuse,		X
+const u32					TEX_material_LdotN	= 128;	// diffuse,		X, almost linear = small res
 const u32					TEX_material_LdotH	= 256;	// specular,	Y
 const u32					TEX_ds2_fade_size	= 256;
 const u32					TEX_float2rgb		= 256;
@@ -46,14 +39,14 @@ const u32					BLOOM_size_X		= 256;
 const u32					BLOOM_size_Y		= 256;
 const u32					LUMINANCE_size		= 16;
 
-const u32					occq_size			= 128;
+const u32					occq_size			= 128;	// queue for occlusion queries
 
 // spot
-#define		SE_SPOT_FILL		0
-#define		SE_SPOT_UNSHADOWED	1
-#define		SE_SPOT_NORMAL		2	// typical, scaled
-#define		SE_SPOT_FULLSIZE	3	// full texture coverage
-#define		SE_SPOT_TRANSLUENT	4	// with opacity/color mask
+#define		SE_L_FILL			0
+#define		SE_L_UNSHADOWED		1
+#define		SE_L_NORMAL			2	// typical, scaled
+#define		SE_L_FULLSIZE		3	// full texture coverage
+#define		SE_L_TRANSLUENT		4	// with opacity/color mask
 
 // mask
 #define		SE_MASK_SPOT		0

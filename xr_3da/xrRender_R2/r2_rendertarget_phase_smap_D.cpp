@@ -3,8 +3,8 @@
 void	CRenderTarget::phase_smap_direct(light* L)
 {
 	// Targets
-	if (RImplementation.b_HW_smap)		u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_depth->pRT);
-	else								u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_ZB);
+	if (RImplementation.b_HW_smap)		u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_depth->pRT);
+	else								u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_ZB);
 
 	// Clear
 	CHK_DX								(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,	0xFFFFFFFF, 1.0f, 0L));

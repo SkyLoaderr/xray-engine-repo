@@ -145,31 +145,27 @@ void	CRenderTarget::OnDeviceCreate	()
 	// DIRECT (spot)
 	if (RImplementation.b_HW_smap)
 	{
-		u32	w=DSM_size, h=DSM_size;
+		u32	w=SMAP_size, h=SMAP_size;
 
-		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_A8R8G8B8);
-		rt_smap_d_depth.create		(r2_RT_smap_d_depth,		w,h,D3DFMT_D24X8);
-		rt_smap_d_ZB				= NULL;
+		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_A8R8G8B8);
+		rt_smap_depth.create		(r2_RT_smap_depth,		w,h,D3DFMT_D24X8);
+		rt_smap_ZB					= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 	else
 	{
-		u32	w=DSM_size, h=DSM_size;
+		u32	w=SMAP_size, h=SMAP_size;
 
-		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_R32F);
-		rt_smap_d_depth				= NULL;
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
+		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R32F);
+		rt_smap_depth				= NULL;
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 
 	// POINT
 	{
-		u32 size = PSM_size;
-		// R3xx codepath, nv3x not implemented
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
-		rt_smap_p.create			(r2_RT_smap_p,				size,D3DFMT_R32F);
 		s_accum_point.create		(b_accum_point,				"r2\\accum_point_s");
 		accum_point_geom_create		();
 		g_accum_point.create		(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
@@ -289,7 +285,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build encode table - RG
-		if (1)
+		if (0)
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,TEX_float2rgb,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeRG_surf));
@@ -311,7 +307,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build encode table - B
-		if (1)
+		if (0)
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,1,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeB_surf));
@@ -328,37 +324,6 @@ void	CRenderTarget::OnDeviceCreate	()
 			}
 			R_CHK						(t_encodeB_surf->UnlockRect	(0));
 		}
-
-		// Build shadow2fade
-		if (1)
-		{
-			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade_size,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
-			t_ds2fade					= Device.Resources->_CreateTexture(r2_ds2_fade);
-			t_ds2fade->surface_set		(t_ds2fade_surf);
-
-			// Fill it (addr:depth/DSM_distance_2; res:x=mul,w=add)
-			D3DLOCKED_RECT				R;
-			R_CHK						(t_ds2fade_surf->LockRect	(0,&R,0,0));
-			for (u32 x=0; x<TEX_ds2_fade_size; x++)
-			{
-				u32*	p		= (u32*)	(LPBYTE (R.pBits) + x*4);
-				float	frac	= float(x)  / float	(TEX_ds2_fade_size-1);
-				float	len		= frac		* DSM_distance_2;
-				float	alpha_l	= len		/ DSM_distance_1;	clamp	(alpha_l,	0.f,1.f);
-				float	fade_l	= len		/ DSM_distance_2;	clamp	(fade_l,	0.f,1.f);
-				float	alpha	= _sqr(alpha_l);
-				float	fade	= _sqr(fade_l);
-				float	_mul_	= (1-fade)*alpha;
-				float	_add_	= fade*alpha;
-				s32		_mul_i	= iFloor	(_mul_*255.5f);		clamp	(_mul_i,0,255);
-				s32		_add_i 	= iFloor	(_add_*255.5f);		clamp	(_add_i,0,255);
-				*p				= color_rgba(_mul_i,_mul_i,_mul_i,_add_i);
-			}
-			R_CHK						(t_ds2fade_surf->UnlockRect	(0));
-		}
-
-		// Build NCM
 	}
 
 	// 
@@ -369,8 +334,6 @@ void	CRenderTarget::OnDeviceCreate	()
 void	CRenderTarget::OnDeviceDestroy	()
 {
 	// Textures
-	t_ds2fade->surface_set		(NULL);
-	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);
 	_RELEASE					(t_material_surf);
 	t_encodeRG->surface_set		(NULL);
@@ -378,8 +341,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	t_encodeB->surface_set		(NULL);
 	_RELEASE					(t_encodeB_surf);
 
-	_RELEASE					(rt_smap_p_ZB			);
-	_RELEASE					(rt_smap_d_ZB			);
+	_RELEASE					(rt_smap_ZB				);
 
 	accum_spot_geom_destroy		();
 	accum_point_geom_destroy	();

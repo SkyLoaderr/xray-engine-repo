@@ -6,7 +6,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 
 	// *** assume accumulator setted up ***
 	// texture adjustment matrix
-	float			fTexelOffs			= (.5f / DSM_size);
+	float			fTexelOffs			= (.5f / SMAP_size);
 	u32				uRange				= 1; 
 	float			fRange				= float(uRange);
 	float			fBias				= -0.0035f*fRange;
@@ -39,15 +39,6 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 
 		// Analyze depth
 		float	d_Z	= EPS_S, d_W = 1.f;
-		if (0==dls_phase)
-		{
-			Fvector3				pt;
-			Fvector4				pt_hpos;
-			pt.mad					(Device.vCameraPosition,Device.vCameraDirection,DSM_distance_1);
-			Device.mFullTransform.transform(pt_hpos,pt);
-			d_Z						= pt_hpos.z;
-			d_W						= pt_hpos.w;
-		}
 
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
@@ -59,7 +50,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// Shader + constants
-		float circle				= ps_r2_ls_dsm_kernel / DSM_size;
+		float circle				= ps_r2_ls_dsm_kernel / SMAP_size;
 		Fvector4 J; float scale		= circle/11.f;
 
 		// 1

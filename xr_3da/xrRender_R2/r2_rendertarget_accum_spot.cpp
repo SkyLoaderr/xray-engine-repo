@@ -80,10 +80,10 @@ void CRenderTarget::accum_spot	(light* L)
 	// Shadow xform (+texture adjustment matrix)
 	Fmatrix			m_Shadow,m_Lmap;
 	{
-		float			fTexelOffs			= (.5f / DSM_size);
-		float			view_dim			= float(L->X.S.size)/float(DSM_size);
-		float			view_sx				= float(L->X.S.posX)/float(DSM_size);
-		float			view_sy				= float(L->X.S.posY)/float(DSM_size);
+		float			fTexelOffs			= (.5f / SMAP_size);
+		float			view_dim			= float(L->X.S.size)/float(SMAP_size);
+		float			view_sx				= float(L->X.S.posX)/float(SMAP_size);
+		float			view_sy				= float(L->X.S.posY)/float(SMAP_size);
 		float			fRange				= float(1.f)*ps_r2_ls_depth_scale;
 		float			fBias				= ps_r2_ls_depth_bias;
 		Fmatrix			m_TexelAdjust		= {
@@ -131,12 +131,12 @@ void CRenderTarget::accum_spot	(light* L)
 		// Select shader
 		u32		_id					= 0;
 		if (L->flags.bShadow)		{
-			bool	bFullSize			= (L->X.S.size == DSM_size);
-			if (L->X.S.transluent)	_id	= SE_SPOT_TRANSLUENT;
-			else if		(bFullSize)	_id	= SE_SPOT_FULLSIZE;
-			else					_id	= SE_SPOT_NORMAL;
+			bool	bFullSize			= (L->X.S.size == SMAP_size);
+			if (L->X.S.transluent)	_id	= SE_L_TRANSLUENT;
+			else if		(bFullSize)	_id	= SE_L_FULLSIZE;
+			else					_id	= SE_L_NORMAL;
 		} else {
-			_id						= SE_SPOT_UNSHADOWED;
+			_id						= SE_L_UNSHADOWED;
 			m_Shadow				= m_Lmap;
 		}
 		RCache.set_Element			(shader->E[ _id ]	);
