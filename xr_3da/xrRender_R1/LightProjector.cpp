@@ -162,8 +162,8 @@ void CLightProjector::calculate	()
 		C.UVclamp.set		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,fSlotX+fSlotSize-fTexelOffs,fSlotY+fSlotSize-fTexelOffs);
 
 		// Clear color to ambience
-		float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
-		//int		c_i			=	iFloor(c_a)/2;
+		//float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
+		//int	c_i			=	iFloor(c_a)/2;
 		//CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render

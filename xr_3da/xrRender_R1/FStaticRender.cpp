@@ -309,27 +309,17 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
-void __fastcall normal_L2(FixedMAP<float,IRender_Visual*>::TNode *N)
-{
-	IRender_Visual *V = N->val;
-	V->Render(calcLOD(N->key,V->vis.sphere.R));
-}
-
 extern void __fastcall render_Cached(xr_vector<FCached*>& cache);
 void __fastcall mapNormal_Render	(mapNormalItems& N)
 {
 	// *** DIRECT ***
 	{
 		// DIRECT:SORTED
-		N.sorted.traverseLR		(normal_L2);
-		N.sorted.clear			();
-
-		// DIRECT:UNSORTED
-		xr_vector<IRender_Visual*>&	L			= N.unsorted;
-		IRender_Visual **I=&*L.begin(), **E = &*L.end();
-		for (; I!=E; I++)
-		{
+		std::sort				(N.begin(),N.end(),cmp_normal_items);
+		IRender_Visual			**I=&*N.begin(), **E = &*N.end();
+		for (; I!=E; I++)		{
 			IRender_Visual *V = *I;
+			V->Render	(calcLOD(N->key,V->vis.sphere.R));
 			V->Render	(0);	// zero lod 'cause it is too small onscreen
 		}
 		L.clear	();

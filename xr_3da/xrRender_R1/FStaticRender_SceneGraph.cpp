@@ -10,6 +10,8 @@
 
 #include "particlegroup.h"
 
+using	namespace SceneGraph;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,20 +35,20 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	// Select List and add to it
 	ShaderElement*		sh		= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 	if (val_bInvisible){
-		SceneGraph::mapMatrixItem::TNode C;
+		mapMatrixItem::TNode C;
 		C.val.pObject			= val_pObject;
 		C.val.pVisual			= pVisual;
 		C.val.Matrix			= *val_pTransform;
 		C.val.vCenter.set		(Center);
 		L_Shadows->add_element	(&C);
 	}else if (val_bHUD)	{
-		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
+		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
-		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		if (val_pObject)		VERIFY	(val_pObject->renderable.ROS);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
@@ -54,8 +56,8 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		N->val.vCenter.set		(Center);
 		L_Shadows->add_element	(N);
 	} else {
-		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
-		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
+		mapMatrix_Node* N		= mapMatrix.insert		(sh		);
+		mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
 		C->val.pObject			= val_pObject;
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
@@ -78,7 +80,7 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 		// Select List and add to it
 		ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 		if (sh->Flags.bStrictB2F) {
-			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+			mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pObject			= NULL;
 			N->val.pVisual			= pVisual;
 			N->val.Matrix			= Fidentity;
@@ -86,20 +88,19 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 		} else {
 			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
-				SPass&									pass	= *(sh->Passes[pass_id]);
-				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
-				SceneGraph::mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
-				SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
-				SceneGraph::mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncs->val.insert	(pass.T._get());
-				SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M._get());
-				SceneGraph::mapNormalItems&				item	= Nmat->val;
-				if (pass_id)	{
-					// No need to sort - ZB already setted up
-					item.unsorted.push_back	(pVisual);
-				} else {
+				SPass&						pass	= *(sh->Passes[pass_id]);
+				mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+				mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
+				mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
+				mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+				mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+				mapNormalTextures::TNode*	Ntex	= Ncs->val.insert	(pass.T._get());
+				mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+				mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M._get());
+				mapNormalItems&				items	= Nmat->val;
+				_NormalItem					item	= {SSA,pVisual};
+				items.push_back						(item);
+				if (0==pass_id) {
 					// Need to sort for HZB efficient use
 					if (SSA>Nmat->val.ssa) {
 						Nmat->val.ssa = SSA;
@@ -120,9 +121,6 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 							}
 						}
 					}
-					
-					if (SSA<r_ssaDONTSORT)		item.unsorted.push_back		(pVisual);
-					else						item.sorted.insertInAnyWay	(distSQ,pVisual);
 				}
 			}
 		}
@@ -221,7 +219,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)
 			{
-				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
@@ -375,7 +373,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)	
 			{
-				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
