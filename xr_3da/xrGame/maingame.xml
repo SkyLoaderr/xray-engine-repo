@@ -148,7 +148,7 @@
 	<!-- POWER BAR -->
     <power_bar x="0" y="0" length="100" broad="20" horz="0" min="0" max="100" pos="0">
         <texture tile="0" length="100" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
-    <!--    <background x="0" y="0">ui\ui_inv_progress_end_empty</background> -->
+        <background x="0" y="0">ui\ui_inv_progress_end_empty</background>
     </power_bar>
 	
 	<!-- artefact panel -->
