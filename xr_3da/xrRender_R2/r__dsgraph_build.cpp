@@ -155,7 +155,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// c) Should not cast shadows
 	// d) Should be rendered to accumulation buffer in the second pass
 	if (sh->Flags.bEmissive) {
-		mapEmissive_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		mapSorted_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;
 		N->val.pVisual			= pVisual;
