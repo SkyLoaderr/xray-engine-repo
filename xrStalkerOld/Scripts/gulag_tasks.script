@@ -51,12 +51,6 @@ function loadJob(sj, gname, type, squad, groups)
 	end
 	
 	if type == "blockpost" then
-		t = { section = "sleeper1",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
 	end
 end
 
