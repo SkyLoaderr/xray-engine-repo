@@ -10,7 +10,6 @@
 #include "..\FLightsController.h"
 #include "..\modelpool.h"
 #include "..\hom.h"
-#include "..\lightPPA.h"
 #include "..\PSLibrary.h"
 
 #include "portal.h"
@@ -22,6 +21,7 @@
 #include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
+#include "lightPPA.h"
 
 // defs
 const int max_patches = 512;

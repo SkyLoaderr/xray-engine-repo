@@ -3,10 +3,16 @@
 #pragma once
 
 #ifdef XRSOUND_EXPORTS
-#define XRSOUND_API __declspec(dllexport)
+	#define XRSOUND_API __declspec(dllexport)
 #else
-#define XRSOUND_API __declspec(dllimport)
+	#define XRSOUND_API __declspec(dllimport)
 #endif
+
+#ifdef _EDITOR
+	#define XRSOUND_EDITOR_API XRSOUND_API
+#else
+	#define XRSOUND_EDITOR_API
+#else
 
 #define SNDENV_FILENAME "sEnvironment.xr"
 
