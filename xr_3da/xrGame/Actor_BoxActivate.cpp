@@ -169,6 +169,7 @@ public:
 
 	virtual void PhTune(dReal step)
 	{
+		
 		VelocityLimit();
 	}
 
@@ -320,7 +321,10 @@ bool CActor:: ActivateBox(DWORD id)
 	m_PhysicMovementControl->GetCharacterPosition(pos);
 	const Fbox& box =m_PhysicMovementControl->Box();
 	float pass=box.x2-box.x1;
-	float max_vel=pass/fnum_it/fnum_steps/fixed_step; 
+	float max_vel=pass/fnum_it/fnum_steps/fixed_step;
+	dBodySetForce(m_PhysicMovementControl->GetBody(),0.f,0.f,0.f);
+	dBodySetLinearVel(m_PhysicMovementControl->GetBody(),0.f,0.f,0.f);
+	m_PhysicMovementControl->Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 	CVelocityLimiter vl(m_PhysicMovementControl->GetBody(),max_vel);
 	CGetContactForces gf(m_PhysicMovementControl->GetBody());
 	gf.Activate();
