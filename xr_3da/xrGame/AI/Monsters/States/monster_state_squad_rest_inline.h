@@ -9,8 +9,8 @@
 
 #define CStateMonsterSquadRestAbstract CStateMonsterSquadRest<_Object>
 
-#define MIN_TIME_IDLE	2000
-#define MAX_TIME_IDLE	5000
+#define MIN_TIME_IDLE	5000
+#define MAX_TIME_IDLE	10000
 
 #define LEADER_RADIUS			20.f
 #define FIND_POINT_ATTEMPTS		5

@@ -82,6 +82,11 @@ void CStateManagerZombie::execute()
 
 	// информировать squad о своих целях
 	squad_notify();
+
+	if (squad->GetLeader() == object) {
+		object->HDebug->L_Clear();
+		object->HDebug->L_AddPoint(squad->GetLeader()->Position(), 0.35f, D3DCOLOR_XRGB(0,255,0));
+	}
 }
 
 
