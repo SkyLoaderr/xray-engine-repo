@@ -165,6 +165,19 @@ function proceed(actor)
 	   actor:object("borov_flash") then
 		actor:give_info_portion("val_player_knows_password") 
 	end
+	
+	-- Laboratory X18
+	if actor:dont_has_info("dar_password_info1") and
+	   actor:object("dar_pass_flash") then
+		actor:give_info_portion("dar_password_info1") 
+	end
+	
+	if actor:dont_has_info("dar_password_info2") and
+	   actor:object("dar_document1") then
+		actor:give_info_portion("dar_password_info2") 
+	end
+	
+	
 end
 
 function set_task_state(id_state, id_task, id_subtask)

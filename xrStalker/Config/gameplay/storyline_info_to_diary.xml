@@ -49,6 +49,15 @@
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>    
         <text>mil_flash_max</text>
     </article>
+
+    <article id="dar_password_info1" name="dar_password_info1" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>dar_password_info1</text>
+    </article>
     
+    <article id="dar_password_info2" name="dar_password_info2" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>dar_password_info2</text>
+    </article>
  
 </encyclopedia>
