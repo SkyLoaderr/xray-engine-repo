@@ -66,38 +66,38 @@ function main()
 			    stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.time_end, 10000)
 			)
 --			wait(4000)
 			action(                                                                                                       
 			    stalker2,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.sound_end, 10000)
 			)
 --			wait(3000)
 			action(                                                                                                       
 			    stalker1,
 				sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.sound_end, 10000)
 			)
 --			wait(3000)
 			action(                                                                                                       
 			    stalker2,
 				sound	("scripts\\idle\\say_dai_vipit","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.sound_end, 10000)
 			)
 --			wait(2000)
 			action(                                                                                                       
 			    stalker1,
 				sound	("scripts\\idle\\say_ti_pyuaniy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.sound_end, 10000)
 			)
 --			wait(2000)
 			action(                                                                                                       
 			    stalker2,
 				sound	("scripts\\idle\\say_skuchno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.sound_end, 1000)
+				cond	(cond.sound_end, 10000)
 			)
 --			wait(2000)
 			action(                                                                                                       
