@@ -4,13 +4,11 @@
 
 // refs
 class CCDA;
-class CSoundRender;
 class CMusicStream;
 class CSound;
 
 // t-defs
-class CSoundManager :
-	public CSound_manager_interface
+class CSoundManager					:	public CSound_manager_interface
 {
 public:	
 	BOOL							bPresent;
@@ -25,16 +23,6 @@ public:
 	CCDA*							pCDA;
 	CSoundRender*					pSoundRender;
 	CMusicStream*					pMusicStreams;
-
-	// Collider
-	CDB::COLLIDER					DB;
-
-	// DSound interface
-    IDirectSound8*					pDevice;				// The device itself
-	IDirectSoundBuffer*				pBuffer;				// The primary buffer (mixer destination)
-
-	// Geometry
-	CDB::MODEL*						pGeometry;
 private:
 	BOOL							CreatePrimaryBuffer		( );
 	void							InitDS3D				( );
@@ -44,26 +32,26 @@ public:
 	~CSoundManager					( );
 
 	// General
-	virtual void					Initialize				( )																						;
-	virtual void					Destroy					( )																						;
-	virtual void					Restart					( )																						;
+	virtual void					Initialize				( )																		;
+	virtual void					Destroy					( )																		;
+	virtual void					Restart					( )																		;
 
 	// Sound interface
-	virtual void					Create					( sound& S, BOOL _3D,	LPCSTR fName,	BOOL bCtrlFreq=FALSE,	int		type=0)			;
-	virtual void					Play					( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0)	;
-	virtual void					Play_Unlimited			( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0)	;
-	virtual void					PlayAtPos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false,	int iLoopCnt=0)	;
-	virtual void					PlayAtPos_Unlimited		( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false,	int iLoopCnt=0)	;
-	virtual void					Delete					( sound& S)																				;
-	virtual void					SetGeometry				( CDB::MODEL* M )																		;
-	virtual CDB::MODEL* 			GetGeometry				( )																						;
-	virtual BOOL					IsOccluded				( Fvector& P, float R, Fvector* occ )													;
+	virtual void					Create					( sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)					;
+	virtual void					Play					( sound& S, CObject* O,								BOOL bLoop=false)	;
+	virtual void					Play_Unlimited			( sound& S, CObject* O,								BOOL bLoop=false)	;
+	virtual void					PlayAtPos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)	;
+	virtual void					PlayAtPos_Unlimited		( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)	;
+	virtual void					Delete					( sound& S)																;
+	virtual void					SetGeometry				( CDB::MODEL* M )														;
+	virtual CDB::MODEL* 			GetGeometry				( )																		;
+	virtual BOOL					IsOccluded				( Fvector& P, float R, Fvector* occ )									;
 
 	// Stream interface
-	virtual CSound_stream_interface*CreateStream			( LPCSTR fName )																		;
-	virtual void					DeleteStream			( CSound_stream_interface* pSnd )														;
+	virtual CSound_stream_interface*CreateStream			( LPCSTR fName )														;
+	virtual void					DeleteStream			( CSound_stream_interface* pSnd )										;
 
-	virtual void					OnFrame					( )																						;
+	virtual void					OnFrame					( )																		;
 };
 
 extern CSoundManager				Sound_Implementation;

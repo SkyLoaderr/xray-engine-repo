@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#include "xrSound.h"
-#include "3dsoundrender.h"
 #include "MusicStream.h"
 #include "xr_cda.h"
 
@@ -83,7 +81,8 @@ BOOL CSoundManager::CreatePrimaryBuffer	()
 	CHK_DX				(pDevice->GetCaps (&dsCaps));
 
 	ZeroMemory			( &wfm, sizeof( WAVEFORMATEX ) );
-	switch ( psSoundFreq ){
+	switch ( psSoundFreq )
+	{
 		case sf_11K:	wfm.nSamplesPerSec = 11025; break;
 		case sf_22K:	wfm.nSamplesPerSec = 22050; break;
 		case sf_44K:	wfm.nSamplesPerSec = 44100; break;

@@ -13,26 +13,8 @@ class ENGINE_API CSound;
 class ENGINE_API CInifile;
 
 // CLASS
-class ENGINE_API CSoundRender
+class CSoundRender
 {
-private:
-	struct SListener 
-	{
-		u32				dwSize;
-		Fvector			vPosition;
-		Fvector			vVelocity;
-		Fvector			vOrientFront;
-		Fvector			vOrientTop;
-		float			fDistanceFactor;
-		float			fRolloffFactor;
-		float			fDopplerFactor;
-	};
-private:
-	// DSound interface
-	IDirectSound3DListener8*	pListener;
-	LPKSPROPERTYSET				pExtensions;
-	SListener					Listener;
-	
 	// Containers
 	vector <vector<CSound*> >	sounds;
 	vector <int>				refcounts;
@@ -51,8 +33,8 @@ public:
 
 	void						OnMove				(void);
 
-	CSoundRender();
-	~CSoundRender();
+	CSoundRender				();
+	~CSoundRender				();
 };
 
 #endif // !defined(AFX_3DSOUNDRENDER_H__1D9A4469_E055_453C_8E18_8C5A23820A1A__INCLUDED_)

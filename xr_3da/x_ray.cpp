@@ -12,7 +12,6 @@
 #include "x_ray.h"
 #include "xr_ini.h"
 #include "xr_trims.h"
-#include "3dsoundrender.h"
 #include "xr_streamsnd.h"
 #include "std_classes.h"
 #include "GameFont.h"
@@ -58,7 +57,7 @@ void Startup				()
 #endif
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
-	Sound->Initialize			();
+	Sound->_initialize			();
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
@@ -72,7 +71,7 @@ void Startup				()
 	Engine.Event.Dump			( );
 
 	// Destroying
-	Sound->Destroy				( );
+	Sound->_destroy				( );
 	xr_delete					( pInput		);
 	xr_delete					( pSettings		);
 

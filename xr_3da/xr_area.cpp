@@ -25,7 +25,7 @@ CObjectSpace::CObjectSpace( )
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace( )
 {
-	Sound->SetGeometry			(NULL);
+	Sound->set_geometry			(NULL);
 
 	Device.Shader.Delete		(sh_debug);
 }
@@ -170,7 +170,7 @@ void CObjectSpace::Load	(IReader *F)
 	}
 	pCreator->Load_GameSpecific_CFORM	( tris, H.facecount );
 	Static.build						( verts, H.vertcount, tris, H.facecount );
-	Sound->SetGeometry					( &Static );
+	Sound->set_geometry					( &Static );
     Msg						("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
 	// CForm

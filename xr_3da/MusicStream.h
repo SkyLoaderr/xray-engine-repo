@@ -17,7 +17,6 @@ public:
 							CMusicStream	();
 							~CMusicStream	();
 
-	CSoundStream*			CreateSound		(CInifile *pIni, LPCSTR section);
 	CSoundStream*			CreateSound		(LPCSTR name	);
 	void					DeleteSound		(CSoundStream* pSnd);
 

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "xrSound.h"
 #include "xr_cda.h"
 #include "xr_ini.h"
 

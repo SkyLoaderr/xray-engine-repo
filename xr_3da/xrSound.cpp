@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include <msacm.h>
 
-#include "xrSound.h"
 #include "xr_streamsnd.h"
 #include "xr_cda.h"
 #include "MusicStream.h"
 #include "3dsound.h"
-#include "3DSoundRender.h"
 #include "cl_intersect.h"
  
 CSoundManager							Sound_Implementation;

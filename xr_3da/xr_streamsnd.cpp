@@ -1,10 +1,7 @@
 #include "stdafx.h"
-
-#include "xrSound.h"
+#include "soundrender.h"
+#include "soundrender_core.h"
 #include "xr_streamsnd.h"
-#include "x_ray.h"
-#include "xr_tokens.h"
-#include "xr_ini.h"
 
 const u32 dwDestBufSize = 44*1024;
 const u32 dsBufferSize  = 88*1024;
@@ -181,16 +178,6 @@ void CSoundStream::Load( LPCSTR name )
 	bNeedUpdate = true;
 }
 
-void CSoundStream::Load( CInifile* ini, LPCSTR section )
-{
-	VERIFY(ini && section);
-
-	xr_free	(fName);
-	fName	= xr_strdup			(ini->ReadSTRING( section, "fname" ));
-	fVolume	= ini->ReadFLOAT	( section, "volume");
-	Load	( LPSTR(0));
-}
-
 //--------------------------------------------------------------------------------------------------
 BOOL CSoundStream::Decompress(unsigned char *dest)
 {
@@ -318,5 +305,5 @@ void CSoundStream::LoadADPCM( )
 	// wave source -- alloc on Play
 
     // DSound----------------------------------------------------------------
-	ADPCMCreateSoundBuffer	(Sound_Implementation.pDevice, &pBuffer, pwfx);
+	ADPCMCreateSoundBuffer	(SoundRender.pDevice, &pBuffer, pwfx);
 }

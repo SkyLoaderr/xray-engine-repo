@@ -66,9 +66,7 @@ private:
 
 	void					LoadADPCM				( );
 
-	void					Load					( CInifile* ini, LPCSTR section );
 	void					Load					( LPCSTR _fName );
-
 public:
 							CSoundStream			( );
 							~CSoundStream			( );

@@ -31,21 +31,6 @@ int CMusicStream::FindEmptySlot()
 	return -1;
 }
 
-CSoundStream* CMusicStream::CreateSound	(CInifile *pIni, LPCSTR section)
-{
-	int slot;
-	CSoundStream *pSnd = xr_new<CSoundStream> ();
-	pSnd->Load(pIni, section);
-
-	if ((slot=FindEmptySlot())>=0){
-		streams[slot] = pSnd;
-		return pSnd;
-	}
-
-	streams.push_back(pSnd);
-	return pSnd;
-}
-
 CSoundStream* CMusicStream::CreateSound	(LPCSTR name	)
 {
 	int slot;

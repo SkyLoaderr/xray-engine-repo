@@ -27,6 +27,7 @@ extern FS_Defs				Path_ExternalBuild;
 enum {
 	ssWaveTrace			= (1ul<<0ul),
 	ssEAX				= (1ul<<1ul),
+	ssSoftware			= (1ul<<2ul),
 	ss_forcedword		= u32(-1)
 };
 enum {
