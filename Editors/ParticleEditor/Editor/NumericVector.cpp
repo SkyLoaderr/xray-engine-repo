@@ -32,6 +32,8 @@ void __fastcall TfrmNumericVector::FormKeyDown(TObject *Sender,
 void __fastcall TfrmNumericVector::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

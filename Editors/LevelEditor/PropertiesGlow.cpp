@@ -163,3 +163,10 @@ void __fastcall TfrmPropertiesGlow::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesGlow::FormShow(TObject *Sender)
+{
+	// check window position
+	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
+

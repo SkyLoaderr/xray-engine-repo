@@ -269,3 +269,10 @@ void __fastcall TfrmPropertiesLight::fsStorageSavePlacement(
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesLight::FormShow(TObject *Sender)
+{
+	// check window position
+	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
+

@@ -64,6 +64,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     ObjectList* 	m_Objects;
     void 			GetObjectsInfo();

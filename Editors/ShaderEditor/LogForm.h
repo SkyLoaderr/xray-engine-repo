@@ -27,6 +27,7 @@ __published:	// IDE-managed Components
           TShiftState Shift);
 	void __fastcall ebClearSelectedClick(TObject *Sender);
 	void __fastcall ebCloseClick(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
 	static TfrmLog *form;
 public:		// User declarations

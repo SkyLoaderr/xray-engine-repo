@@ -89,6 +89,8 @@ void __fastcall TfrmPropertiesSector::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
     edName->Enabled		= true;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

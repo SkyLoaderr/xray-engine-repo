@@ -33,6 +33,7 @@ __published:	// IDE-managed Components
           TShiftState Shift);
     void __fastcall ebLinkClick(TObject *Sender);
     void __fastcall ebUnLinkClick(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     list<CCustomObject*>* m_Objects;
     void GetObjectsInfo();

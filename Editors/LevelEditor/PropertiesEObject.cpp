@@ -205,6 +205,8 @@ void __fastcall TfrmPropertiesEObject::tmIdleTimer(TObject *Sender)
 void __fastcall TfrmPropertiesEObject::FormShow(TObject *Sender)
 {
 	tmIdle->Enabled = true;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

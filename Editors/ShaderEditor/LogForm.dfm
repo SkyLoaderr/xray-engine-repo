@@ -18,6 +18,7 @@ object frmLog: TfrmLog
   OldCreateOrder = False
   Scaled = False
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -91,6 +92,8 @@ object frmLog: TfrmLog
     end
   end
   object fsStorage: TFormStorage
+    IniSection = 'Log Form'
+    Version = 1
     StoredValues = <>
     Left = 8
     Top = 8

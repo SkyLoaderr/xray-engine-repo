@@ -348,14 +348,16 @@ void TUI::ProgressStart(float max_val, const char* text)
 	fraBottomBar->cgProgress->Progress=0;
 	fraBottomBar->cgProgress->Visible=true;
 }
-void TUI::ProgressEnd(){
+void TUI::ProgressEnd()
+{
 	VERIFY(m_bReady);
     fraBottomBar->sProgressTitle = "";
 	fraBottomBar->paStatus->Caption="";
     fraBottomBar->paStatus->Repaint();
 	fraBottomBar->cgProgress->Visible=false;
 }
-void TUI::ProgressUpdate(float val){
+void TUI::ProgressUpdate(float val)
+{
 	VERIFY(m_bReady);
 	fraBottomBar->fStatusProgress=val;
     if (fraBottomBar->fMaxVal>=0){
@@ -366,7 +368,8 @@ void TUI::ProgressUpdate(float val){
         }
     }
 }
-void TUI::ProgressInc(const char* info){
+void TUI::ProgressInc(const char* info)
+{
 	VERIFY(m_bReady);
     ProgressInfo(info);
 	fraBottomBar->fStatusProgress++;
@@ -379,7 +382,8 @@ void TUI::ProgressInc(const char* info){
     }
 }
 //---------------------------------------------------------------------------
-void TUI::OutCameraPos(){
+void TUI::OutCameraPos()
+{
 	VERIFY(m_bReady);
     AnsiString s;
 	const Fvector& c 	= Device.m_Camera.GetPosition();
@@ -389,7 +393,8 @@ void TUI::OutCameraPos(){
     fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
 }
 //---------------------------------------------------------------------------
-void TUI::OutUICursorPos(){
+void TUI::OutUICursorPos()
+{
 	VERIFY(m_bReady);
     AnsiString s; POINT pt;
     GetCursorPos(&pt);
@@ -397,11 +402,20 @@ void TUI::OutUICursorPos(){
     fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
 }
 //---------------------------------------------------------------------------
-void TUI::OutGridSize(){
+void TUI::OutGridSize()
+{
 	VERIFY(m_bReady);
     AnsiString s;
     s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
+}
+//---------------------------------------------------------------------------
+void TUI::CheckWindowPos(TForm* form)
+{   
+	if (form->Left+form->Width>Screen->Width) 	form->Left	= Screen->Width-form->Width;
+	if (form->Top+form->Height>Screen->Height)	form->Top 	= Screen->Height-form->Height;
+	if (form->Left<0) 							form->Left	= 0;
+	if (form->Top<0) 							form->Top 	= 0;
 }
 //---------------------------------------------------------------------------
 /*

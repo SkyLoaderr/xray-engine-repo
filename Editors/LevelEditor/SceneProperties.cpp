@@ -106,6 +106,11 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     tvOptions->Items->GetFirstNode()->Focused=true;
 
 	SetForegroundWindow(frmSceneProperties->Handle);
+
+#ifdef _LEVEL_EDITOR
+	// check window position
+	UI.CheckWindowPos(this);
+#endif
 }
 //---------------------------------------------------------------------------
 

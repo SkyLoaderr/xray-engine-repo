@@ -65,6 +65,8 @@ void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
     }
 
     InitItems();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLightAnim::FormClose(TObject *Sender, TCloseAction &Action)

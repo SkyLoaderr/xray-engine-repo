@@ -202,6 +202,8 @@ public:
 	void 			CheckMailslot		();
 	void 			OnReceiveMail		(LPCSTR msg);
 //	void 			SendMail			();
+
+    void			CheckWindowPos		(TForm* form);
 };
 //---------------------------------------------------------------------------
 extern TUI UI;

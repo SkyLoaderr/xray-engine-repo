@@ -149,6 +149,8 @@ void __fastcall TfrmPropertiesWayPoint::FormShow(TObject *Sender)
     tsBasic->TabVisible		= !bPointMode;
     tsWayPoint->TabVisible 	= bPointMode;
     tsBasic->Hide();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

@@ -126,6 +126,7 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall seNavNetConectDistChange(TObject *Sender);
 	void __fastcall stLMTexturesClick(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TfrmEditorPreferences(TComponent* Owner);

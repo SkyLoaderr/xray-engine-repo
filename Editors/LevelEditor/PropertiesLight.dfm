@@ -19,6 +19,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   OnClose = FormClose
   OnKeyDown = FormKeyDown
   OnPaint = FormPaint
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object gbType: TGroupBox

@@ -43,6 +43,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     ObjectList* 	m_Objects;
     void 			GetObjectsInfo();

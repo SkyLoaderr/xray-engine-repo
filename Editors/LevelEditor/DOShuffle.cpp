@@ -39,6 +39,8 @@ void __fastcall TfrmDOShuffle::FormShow(TObject *Sender)
 {
 	bColorIndModif = false;
     GetInfo();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

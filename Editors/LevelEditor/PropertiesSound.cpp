@@ -122,3 +122,10 @@ void __fastcall TfrmPropertiesSound::ebUnLinkClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesSound::FormShow(TObject *Sender)
+{
+	// check window position
+	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
+

@@ -119,3 +119,10 @@ void __fastcall TfrmEditorPreferences::seNavNetConectDistChange(
 
 
 
+void __fastcall TfrmEditorPreferences::FormShow(TObject *Sender)
+{
+	// check window position
+	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
+

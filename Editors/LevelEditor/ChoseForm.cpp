@@ -420,6 +420,8 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         }
     }
     paMulti->Visible = bMultiSel;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

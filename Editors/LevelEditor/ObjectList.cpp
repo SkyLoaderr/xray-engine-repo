@@ -42,6 +42,8 @@ void __fastcall TfrmObjectList::FormShow(TObject *Sender)
     cur_cls = OBJCLASS_DUMMY;
 	tvItems->FilteredVisibility = ((rgSO->ItemIndex==1)||(rgSO->ItemIndex==2));
     InitListBox();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmObjectList::FindFolderByType(int type)

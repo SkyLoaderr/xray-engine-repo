@@ -112,6 +112,8 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 
     if (!m_LastSelection.IsEmpty())
     	FOLDER::RestoreSelection(tvObjects,m_LastSelection.c_str());
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)

@@ -62,6 +62,8 @@ void __fastcall TfrmPropertiesSpawnPoint::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
     GetObjectsInfo		();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

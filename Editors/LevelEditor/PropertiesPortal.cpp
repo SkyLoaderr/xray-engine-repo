@@ -42,6 +42,8 @@ void __fastcall TfrmPropertiesPortal::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesPortal::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
