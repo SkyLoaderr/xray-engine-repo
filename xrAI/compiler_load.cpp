@@ -121,16 +121,16 @@ void xrLoad(LPCSTR name)
 		IReader				*F = FS.r_open(N);
 		IReader				*O = 0;
 
-		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_VERSION));
-		R_ASSERT			(F->r_u16() == AIMAP_VERSION);
+		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_VERSION));
+		R_ASSERT			(F->r_u16() == E_AIMAP_VERSION);
 
-		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_BOX));
+		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_BOX));
 		F->r				(&LevelBB,sizeof(LevelBB));
 
-		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_PARAMS));
+		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_PARAMS));
 		F->r				(&g_params,sizeof(g_params));
 
-		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_NODES));
+		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_NODES));
 		u32					N = F->r_u32();
 		g_nodes.resize		(N);
 		CAI_Map				tAIMap;
