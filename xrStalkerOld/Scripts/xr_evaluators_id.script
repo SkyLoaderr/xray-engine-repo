@@ -18,8 +18,9 @@ stohe_meet_base         = stohe_evaluators + 30
 stohe_reactions_base    = stohe_evaluators + 40
 stohe_state_base        = stohe_evaluators + 50
 stohe_gulag_base        = stohe_evaluators + 60
-stohe_bobik_base    = stohe_evaluators + 70
-stohe_camper_base    = stohe_evaluators + 80
+stohe_bobik_base		= stohe_evaluators + 70
+stohe_camper_base		= stohe_evaluators + 80
+assistance				= stohe_evaluators + 90
 
 --эвалуаторы Сидоровича
 sidor_evaluator                     =   stalker_ids.property_script + 2000

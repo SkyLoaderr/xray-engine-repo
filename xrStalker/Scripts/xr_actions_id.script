@@ -15,11 +15,12 @@ stohe_tradeseller_base      = stohe_actions + 10
 stohe_kamp_base             = stohe_actions + 20
 stohe_meet_base             = stohe_actions + 30
 stohe_reactions_base        = stohe_actions + 40
-stohe_state_base        = stohe_actions + 50
-stohe_position          = stohe_actions + 60
-stohe_gulag_base        = stohe_actions + 70
-stohe_bobik_base    = stohe_actions + 80
-stohe_camper_base    = stohe_actions + 90
+stohe_state_base			= stohe_actions + 50
+stohe_position				= stohe_actions + 60
+stohe_gulag_base			= stohe_actions + 70
+stohe_bobik_base			= stohe_actions + 80
+stohe_camper_base			= stohe_actions + 90
+assistance					= stohe_actions + 100
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024
