@@ -19,6 +19,16 @@ D3DVERTEXELEMENT9		r2_decl[] =	// 36
 	D3DDECL_END()
 };
 
+u32						r2_vec	(Fvector N)
+{
+	N.add				(1.f);
+	N.mul				(.5f*255.f);
+	s32 nx				= iFloor(N.x);	clamp(nx,0,255);
+	s32 ny				= iFloor(N.y);	clamp(ny,0,255);
+	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
+	return				color_rgba(nx,ny,nz,0);
+}
+
 void OGF::Save			(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
@@ -131,6 +141,7 @@ void OGF_Reference::Save	(IWriter &fs)
 void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: cached");
+	R_ASSERT		(0);
 	fs.open_chunk	(OGF_VERTICES);
 	fs.w_u32		(FVF);
 	fs.w_u32		(vertices.size());
@@ -155,18 +166,38 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 {
 //	clMsg			("- saving: normal or clod");
 
+	// Declarator
+	VDeclarator			D;
+	D.set				(r2_decl);
+
 	// Vertices
 	u32 ID,Start;
-	g_VB.Begin		(FVF);
-	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+	if (b_R2)
 	{
-		if (bNeedNormals)	g_VB.Add(V,6*sizeof(float));	// Position & normal
-		else				g_VB.Add(V,3*sizeof(float));	// Position only
-		if (bColors)		g_VB.Add(&(V->Color),4);
-		for (DWORD uv=0; uv<dwRelevantUV; uv++)
-			g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
+		u32 t;
+		g_VB.Begin		(D);
+		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+		{
+			g_VB.Add			(&(V->P),3*sizeof(float));		// Position
+			t=r2_vec(V->N);		g_VB.Add(&t,4);					// Normal
+			t=r2_vec(V->T);		g_VB.Add(&t,4);					// Tangent
+			t=r2_vec(V->B);		g_VB.Add(&t,4);					// Binormal
+			t=V->Color;			g_VB.Add(&t,4);					// Color
+			g_VB.Add			(V->UV.begin(),2*sizeof(float));// TC
+		}
+		g_VB.End		(&ID,&Start);
+	} else {
+		g_VB.Begin		(FVF);
+		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+		{
+			if (bNeedNormals)	g_VB.Add(V,6*sizeof(float));	// Position & normal
+			else				g_VB.Add(V,3*sizeof(float));	// Position only
+			if (bColors)		g_VB.Add(&(V->Color),4);
+			for (DWORD uv=0; uv<dwRelevantUV; uv++)
+				g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
+		}
+		g_VB.End		(&ID,&Start);
 	}
-	g_VB.End		(&ID,&Start);
 	
 	fs.open_chunk	(OGF_VCONTAINER);
 	fs.w_u32		(ID);
