@@ -13,8 +13,8 @@
 class CAI_Map;
 
 typedef struct tagSAIMapData {
-	u32			dwFinishNode;
-	CAI_Map		*m_tpAI_Map;
+	u32				dwFinishNode;
+	const CAI_Map	*m_tpAI_Map;
 } SAIMapData;
 
 #pragma pack(push,4)

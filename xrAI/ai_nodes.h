@@ -25,11 +25,11 @@ class CNodeThread : public CThread
 	CAI_Map			*m_tpAI_Map;
 
 public:
-	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd, CAI_Map &tAI_Map) : CThread(ID)
+	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd, CAI_Map *tpAI_Map) : CThread(ID)
 	{
 		m_dwStart  = dwStart;
 		m_dwEnd	   = dwEnd;
-		m_tpAI_Map = &tAI_Map;
+		m_tpAI_Map = tpAI_Map;
 	}
 	
 	virtual void Execute()
@@ -143,10 +143,10 @@ class CGraphThread : public CThread
 	xrCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
-	CAI_Map				*m_tpAI_Map;
+	const CAI_Map		*m_tpAI_Map;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, CAI_Map &tAI_Map) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CAI_Map &tAI_Map) : CThread(ID)
 	{
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;

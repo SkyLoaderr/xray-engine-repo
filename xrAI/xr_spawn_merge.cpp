@@ -33,9 +33,9 @@ SCompressedGraphVertex			*tpaGameGraph;
 class CSpawnComparePredicate {
 private:
 	u32							m_dwStartNode;
-	CAI_Map						*m_tpAI_Map;
+	const CAI_Map				*m_tpAI_Map;
 public:
-	CSpawnComparePredicate(u32 dwStartNode, CAI_Map &tAI_Map)
+	CSpawnComparePredicate(u32 dwStartNode, const CAI_Map &tAI_Map)
 	{
 		m_dwStartNode	= dwStartNode;
 		m_tpAI_Map		= &tAI_Map;
@@ -65,7 +65,7 @@ public:
 	ALIFE_VECTOR				m_tpResultNodes;
 	CAI_Map						*m_tpAI_Map;
 
-								CSpawn(SLevel &tLevel, u32 dwLevelID) : CThread(dwLevelID)
+								CSpawn(const SLevel &tLevel, u32 dwLevelID) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map

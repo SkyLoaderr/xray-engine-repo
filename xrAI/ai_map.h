@@ -56,17 +56,18 @@ public:
 		// special query tables
 		q_mark_bit.assign	(m_header.count,false);
 	};
-								~CAI_Map()
+
+	virtual							~CAI_Map()
 	{
 		xr_free(m_nodes_ptr);
 		xr_delete(vfs);
 	};
 
-	IC	NodeCompressed*		Node(u32 ID)	{ return vfs?m_nodes_ptr[ID]:NULL; }
+	IC	NodeCompressed*		Node(u32 ID) const { return vfs?m_nodes_ptr[ID]:NULL; }
 
-	IC	u32		UnpackLink		(NodeLink& L) {	return (*LPDWORD(&L))&0x00ffffff;	}
+	IC	u32		UnpackLink		(NodeLink& L)  const {	return (*LPDWORD(&L))&0x00ffffff;	}
 
-	IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc)
+	IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc) const
 	{
 		float sp = 1/m_header.size;
 		int px	= iFloor(Psrc.x*sp+EPS_L + .5f);
@@ -77,20 +78,20 @@ public:
 		clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
 	}
 
-	IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition& P)
+	IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition& P) const
 	{
 		return 	((P.x>=N.p0.x)&&(P.x<=N.p1.x))&&	// X inside
 				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
 
-	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc)
+	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc) const
 	{
 		Pdest.x = float(Psrc.x)*m_header.size;
 		Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
 		Pdest.z = float(Psrc.z)*m_header.size;
 	}
 
-	IC Fvector tfGetNodeCenter(NodeCompressed *tpNode)
+	IC Fvector tfGetNodeCenter(NodeCompressed *tpNode) const
 	{
 		Fvector tP0, tP1;
 		UnpackPosition(tP0, tpNode->p0);
@@ -100,32 +101,32 @@ public:
 		return(tP0);
 	}
 
-	IC Fvector tfGetNodeCenter(u32 tNodeID)
+	IC Fvector tfGetNodeCenter(u32 tNodeID) const
 	{
 		return(tfGetNodeCenter(Node(tNodeID)));
 	}
 
-	IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1)
+	IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1) const
 	{
 		return(tfGetNodeCenter(tpNode0).distance_to(tfGetNodeCenter(tpNode1)));
 	}
 
-	IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1)
+	IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1) const
 	{
 		return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),Node(dwNodeID1)));
 	}
 
-	IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1)
+	IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1) const
 	{
 		return(ffGetDistanceBetweenNodeCenters(tpNode0,Node(dwNodeID1)));
 	}
 
-	IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1)
+	IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1) const
 	{
 		return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),tpNode1));
 	}
 
-	IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float y3, float x4, float y4,	float *x, float *y)
+	IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float y3, float x4, float y4,	float *x, float *y) const
 	{
 		float a1, a2, b1, b2, c1, c2;	/* Coefficients of line eqns. */
 		float r1, r2, r3, r4;			/* 'Sign' values */
@@ -166,7 +167,7 @@ public:
 		return(LI_INTERSECT);
 	}
 
-	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
+	IC float ffGetY(NodeCompressed &tNode, float X, float Z) const
 	{
 		Fvector	DUP, vNorm, v, v1, P0;
 		DUP.set(0,1,0);
@@ -179,7 +180,7 @@ public:
 		return(v1.y);
 	}
 
-	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, bool bUseY = false)
+	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, bool bUseY = false) const
 	{
 		Fvector tP0, tP1;
 		float fHalfSubNodeSize = m_header.size*.5f;
@@ -195,12 +196,12 @@ public:
 		);
 	}
 
-	IC void projectPoint(const Fplane& PL, Fvector& P) 
+	IC void projectPoint(const Fplane& PL, Fvector& P) const
 	{
 		P.y -= PL.classify(P)/PL.n.y; 
 	}
 
-	void UnpackContour(SContour &C, u32 ID)
+	void UnpackContour(SContour &C, u32 ID) const
 	{
 		NodeCompressed *tpNode = Node(ID);
 		
@@ -223,17 +224,17 @@ public:
 		C.v4.set(P0.x-st,P1.y,P1.z+st);	projectPoint(PL,C.v4);	// minX,maxZ
 	}
 
-	IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
+	IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1) const
 	{
 		return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 	}
 
-	IC bool bfInsideContour(Fvector &tPoint, SContour &tContour)
+	IC bool bfInsideContour(Fvector &tPoint, SContour &tContour) const
 	{
 		return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
 	}
 
-	IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &tContour1)
+	IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &tContour1) const
 	{
 		bool bFound = false;
 		
@@ -335,7 +336,7 @@ public:
 			Log("! AI_PathNodes: Can't find intersection segment");
 	}
 
-	void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector tStartPoint, Fvector tFinishPoint, Fvector &tPoint)
+	void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector tStartPoint, Fvector tFinishPoint, Fvector &tPoint) const
 	{
 		u32 dwIntersect, dwCount = 0;
 		Fvector tTravelNode, tPoints[4];
@@ -439,12 +440,12 @@ public:
 		}
 	}
 
-	IC bool bfBetweenPoints(SSegment tSegment, Fvector tPoint)
+	IC bool bfBetweenPoints(SSegment tSegment, Fvector tPoint) const
 	{
 		return(((tSegment.v1.x - EPS_L <= tPoint.x) && (tSegment.v1.z - EPS_L <= tPoint.z) && (tSegment.v2.x + EPS_L >= tPoint.x) && (tSegment.v2.z + EPS_L >= tPoint.z)) || ((tSegment.v2.x - EPS_L <= tPoint.x) && (tSegment.v2.z - EPS_L <= tPoint.z) && (tSegment.v1.x + EPS_L >= tPoint.x) && (tSegment.v1.z + EPS_L >= tPoint.z)));
 	}
 
-	float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, float fMaxDistance)
+	float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, float fMaxDistance) const
 	{
 		NodeCompressed *tpNode;
 		NodeLink *taLinks;
@@ -505,7 +506,7 @@ public:
 			return(MAX_VALUE);
 	}
 	
-	u32 dwfFindCorrespondingNode(Fvector &tLocalPoint)
+	u32 dwfFindCorrespondingNode(Fvector &tLocalPoint) const
 	{
 		NodePosition	P;
 		PackPosition	(P,tLocalPoint);

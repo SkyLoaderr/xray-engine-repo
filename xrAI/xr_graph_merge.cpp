@@ -23,7 +23,7 @@ public:
 	SLevel						m_tLevel;
 	SCompressedGraphVertex		*m_tpaGraph;
 
-								CLevelGraph(SLevel &tLevel, char *S, u32 dwOffset, u32 dwLevelID)
+								CLevelGraph(const SLevel &tLevel, const char *S, u32 dwOffset, u32 dwLevelID)
 	{
 		m_tLevel				= tLevel;
 		CVirtualFileStream		F(S);
