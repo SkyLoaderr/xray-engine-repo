@@ -179,8 +179,6 @@ light_color		         = 0.6,0.5,0.3
 light_range		         = 30.0
 light_time 		         = 1.4
 
-trail_light_color        = 0.6,0.5,0.3
-trail_light_range        = 30.0
 
 ph_mass			 = 5
 engine_f			= 530
@@ -203,7 +201,7 @@ tracer_distance			 = 20
 snd_explode = weapons\f1_explode
 
 
-;свойства которые читаются, но не используются
+;свойства которые читаются, но не используются (надо убрать)
 inv_name		= "VOG-25"
 inv_name_short	= "VOG-25"
 inv_weight		= .2
@@ -212,3 +210,15 @@ inv_grid_width		= 1
 inv_grid_height		= 1
 inv_grid_x			= 19
 inv_grid_y			= 9
+
+
+engine_present		= true		;присутствует ли в ракете двигатель
+engine_work_time	= 5000		;время работы двигателя (в милисекундах)
+engine_impulse		= 10		;
+
+lights_enabled = true			;свет вокруг ракеты, во время полета
+trail_light_color = 0.6,0.5,0.3
+trail_light_range = 30.0
+
+engine_particles = weapons\rpg_trail_01
+;fly_particles	 =
