@@ -165,6 +165,7 @@ function motivator_binder:reload (section)
 	}
     --' Сталкер, который ходит (версия часовых на новой схеме)
     xr_motivator.storage[self.object:id()].walker = { }
+    xr_motivator.storage[self.object:id()].assassin = { }
 	--' Телохранители
     xr_motivator.storage[self.object:id()].bodyguard = {
 		enabled = false,
@@ -241,6 +242,7 @@ function motivator_binder:reload (section)
 	if char_ini:section_exist("zones") == true then
 		xr_sleeper.add_to_binder	(self.object, nil)
 		xr_walker.add_to_binder		(self.object, nil)
+		xr_assassin.add_to_binder	(self.object, nil)
 	--	xr_patrol.add_to_binder		(self.object, nil)
         xr_comm_ptr.add_to_binder   (self.object, nil)
 		xr_follower.add_to_binder	(self.object, nil)
@@ -258,6 +260,7 @@ function motivator_binder:reload (section)
 		xr_commander.add_to_binder		(self.object, char_ini)
 		xr_bodyguard.add_to_binder		(self.object, char_ini)
 		xr_walker.add_to_binder			(self.object, char_ini)
+		xr_assassin.add_to_binder		(self.object, char_ini)
 		xr_guard.add_to_binder			(self.object, char_ini)
 		xr_sleeper.add_to_binder		(self.object, char_ini)
 		xr_kamp.add_to_binder			(self.object, char_ini)
@@ -291,6 +294,7 @@ function checkStorage(npc)
 			k == "patrol" or
 			k == "guard" or
 			k == "walker" or
+			k == "assassin" or
 			k == "bodyguard" or
 			k == "commander" or
 			k == "ambush" or
@@ -311,6 +315,7 @@ function checkStorage(npc)
 				k == "patrol" or
 				k == "guard" or
 				k == "walker" or
+				k == "assassin" or
 				k == "bodyguard" or
 				k == "commander" or
 				k == "ambush" or
