@@ -6,9 +6,6 @@
 #include "UIButton.h"
 
 
-
-//#include "window_xml.h"
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -179,5 +176,25 @@ void  CUIButton::Draw()
 	{
 		m_UIStaticPushed.SetPos(rect.left, rect.top);
 		m_UIStaticPushed.Render();
+	}
+}
+
+void  CUIButton::Update()
+{
+	RECT rect = GetAbsoluteRect();
+
+	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+	{
+			m_pFont->SetColor(0xFF00FF00);
+			
+			m_pFont->Out((float)rect.left, (float)rect.top,	"normal");
+
+			
+			
+	}
+	else
+	{
+			m_pFont->SetColor(0xFF0000FF);
+			m_pFont->Out((float)rect.left, (float)rect.top,	"pushed");
 	}
 }

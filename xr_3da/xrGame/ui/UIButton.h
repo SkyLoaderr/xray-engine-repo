@@ -14,6 +14,7 @@
 #include "..\uistaticitem.h"
 
 
+
 class CUIButton : public CUIWindow  
 {
 public:
@@ -30,6 +31,8 @@ public:
 
 	//прорисовка окна
 	virtual void Draw();
+	//обновление перед прорисовкой
+	virtual void Update();
 
 
 	//режимы в которых можно нажимать кнопку
@@ -41,6 +44,10 @@ public:
 
 	void SetPressMode(E_PRESS_MODE ePressMode) {m_ePressMode = ePressMode;}
 	E_PRESS_MODE GetPressMode() {return m_ePressMode;}
+
+
+	void SetFont(CGameFont* pFont) {
+		m_pFont = pFont;}
 
 protected:
 	
@@ -64,6 +71,8 @@ protected:
 	///////////////////////////////////////
 	CUIStaticItem m_UIStaticNormal;
 	CUIStaticItem m_UIStaticPushed;
+
+	CGameFont* m_pFont;
 
 };
 

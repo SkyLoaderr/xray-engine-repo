@@ -71,6 +71,20 @@ void CUIWindow::Draw()
 }
 
 
+//
+// обновление окна передпрорисовкой
+//
+void CUIWindow::Update()
+{
+	//перерисовать дочерние окна
+	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	{
+		if((*it)->IsShown())
+			(*it)->Update();
+	}
+}
+
+
 //присоединить дочернее окно
 void CUIWindow::AttachChild(CUIWindow* pChild)
 {

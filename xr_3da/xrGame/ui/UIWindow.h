@@ -99,6 +99,8 @@ public:
 	////////////////////////////////////
 	//прорисовка окна
 	virtual void Draw();
+	//обновление окна передпрорисовкой
+	virtual void Update();
 	
 
 protected:
