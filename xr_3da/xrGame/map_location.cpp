@@ -48,12 +48,16 @@ void CMapLocation::LoadSpot(LPCSTR type)
 //	strconcat(path_base,"map_spots:",type);
 	strcpy(path_base,type);
 	R_ASSERT3(uiXml.NavigateToNode(path_base,0), "XML node not found in file map_spots.xml", path_base);
-	LPCSTR hint = uiXml.ReadAttrib(path_base, 0, "hint", "no hint");
-	SetHint(hint);
+	LPCSTR s = uiXml.ReadAttrib(path_base, 0, "hint", "no hint");
+	SetHint(s);
 	
-	LPCSTR s = uiXml.ReadAttrib(path_base, 0, "store", NULL);
+	s = uiXml.ReadAttrib(path_base, 0, "store", NULL);
 	if(s)
 		m_flags.set( eSerailizable, TRUE);
+
+	s = uiXml.ReadAttrib(path_base, 0, "no_offline", NULL);
+	if(s)
+		m_flags.set( eHideInOffline, TRUE);
 
 	strconcat(path,path_base,":level_map");
 	node = uiXml.NavigateToNode(path,0);
@@ -164,7 +168,10 @@ bool CMapLocation::Update() //returns actual
 void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 {
 	if( map->MapName()==LevelName() ){
-
+		if(	m_flags.test(eHideInOffline) && 
+			ai().get_alife() &&
+			ai().alife().objects().object(m_objectID)->m_bOnline )
+		return;
 
 		//update spot position
 		m_position_global = Position();
