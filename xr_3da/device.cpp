@@ -153,6 +153,7 @@ void CRenderDevice::Run			()
 					R_CHK(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE, 63));
 */
 
+/*
 					// Shadow-test
 					Fmatrix		mCam;		mCam.invert	(mView);
 					Fmatrix		L_view;
@@ -246,6 +247,7 @@ void CRenderDevice::Run			()
 
 					mView	= L_view;
 					mProject= L_project;
+*/
 				}
 
 				// Matrices
