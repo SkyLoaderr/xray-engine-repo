@@ -530,6 +530,10 @@ void CWeapon::SwitchState(u32 S)
 	if (Local() && (S!=STATE))	
 	{
 		OnStateSwitch	(S);
+		NET_Packet		P;
+		u_EventGen		(P,GE_WPN_STATECHANGE,ID());
+		P.w_u8			(u8(STATE));
+		u_EventSend		(P);
 	}
 }
 

@@ -259,7 +259,7 @@ GE_DIE
 GE_DESTROY
 {
 }
-GE_WPN_STATE
+GE_WPN_STATECHANGE
 {
 	u8			state;
 }

@@ -107,7 +107,6 @@ protected:
 	{
 		u32					dwTimeStamp;
 		u8					flags;
-		u8					state;
 		u16					ammo_current;
 		u16					ammo_elapsed;
 		Fvector				pos,angles;
@@ -152,7 +151,7 @@ public:
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
-	virtual void			OnStateSwitch		(u32 S)	{};
+	virtual void			OnStateSwitch		(u32 S)		{};
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
