@@ -30,7 +30,7 @@ BOOL CPGDef::Load(IReader& F)
 	R_ASSERT		(F.find_chunk(PGD_CHUNK_VERSION));
 	u16 version		= F.r_u16();
 
-    if (version!=PED_VERSION)
+    if (version!=PGD_VERSION)
     	return FALSE;
 
 	R_ASSERT		(F.find_chunk(PGD_CHUNK_NAME));

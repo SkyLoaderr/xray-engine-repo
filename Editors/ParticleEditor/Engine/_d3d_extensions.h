@@ -35,6 +35,11 @@ public:
 	    specular.mul_rgb	(brightness);
     }
 };
+
+#if (sizeof(Flight)!=sizeof(D3DLIGHT9)) 
+#error Different structure size
+#endif
+
 #endif
 
 #ifndef NO_XR_MATERIAL
@@ -75,6 +80,11 @@ public:
 		power	  = 0;
 	}
 };
+
+#if (sizeof(Fmaterial)!=sizeof(D3DMATERIAL9)) 
+#error Different structure size
+#endif
+
 #endif
 
 #ifndef NO_XR_VDECLARATOR
@@ -101,14 +111,6 @@ struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
 		else					return 0==memcmp(begin(),d.begin(),size()*sizeof(D3DVERTEXELEMENT9));
 	}
 };
-#endif
-
-#if (sizeof(Flight)!=sizeof(D3DLIGHT9)) 
-#error Different structure size
-#endif
-
-#if (sizeof(Fmaterial)!=sizeof(D3DMATERIAL9)) 
-#error Different structure size
 #endif
 
 #endif

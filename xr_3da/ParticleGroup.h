@@ -5,6 +5,8 @@
 #include "FHierrarhyVisual.h"
 
 namespace PS{
+class ENGINE_API CParticleEffect;
+
 class ENGINE_API CPGDef
 {
 public:
