@@ -697,9 +697,21 @@ function is_object_online (object_id)
     if obj == nil then return false end
     return obj.online
 end
+function get_clsid(npc)
+	if npc == nil then return nil end
 
--- проверяет оружие ли это (передавать clsid)
-function isWeapon(id)
+	if is_object_online(npc) then
+		return npc:clsid()		
+	else
+		return nil
+	end
+end
+
+-- проверяет оружие ли это (передавать game_object)
+function isWeapon(object)
+	local id = get_clsid(object)
+	if id == nil then return false
+
     if id == clsid.wpn_vintorez then return true
     elseif id == clsid.wpn_fn2000 then return true
     elseif id == clsid.wpn_ak74 then return true
@@ -724,7 +736,7 @@ function isWeapon(id)
     elseif id == clsid.wpn_grenade_rpg7 then return true
     elseif id == clsid.wpn_grenade_rgd5 then return true
     elseif id == clsid.wpn_grenade_fake then return true
-        else return false end
+    else return false end
 end
 
 --Tvўшёы хЄ yaw т Ёрфшрэрї
@@ -738,4 +750,4 @@ function clear_table (t)
     while table.getn (t) do
           table.remove (t, 1)
     end
-end          
+end

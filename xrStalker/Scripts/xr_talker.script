@@ -195,7 +195,7 @@ function action_talker_activity:say(what)
 end
 
 function action_talker_activity:is_weapon(active_item)
-	return active_item and isWeapon(active_item:clsid())
+	return isWeapon(active_item)
 end
 
 function action_talker_activity:execute()

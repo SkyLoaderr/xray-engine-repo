@@ -319,27 +319,20 @@ function action_contact:initialize()
 end
 function action_contact:execute ()
 	local weap = self.a.actor:active_item()
-	local weap_id
-	if weap ~= nil then
-		weap_id = weap:clsid()
-	end
+
 	local ww = self.object:active_item()
-	local ww_id
-	if ww ~= nil then
-		ww_id = ww:clsid()
-	end
 	
 	-- нужно остановиться и посмотреть в сторону актора
 	local pos = self.a.actor:position()
 
-	local isweap = isWeapon(weap_id)
+	local isweap = isWeapon(weap)
 
 	if self.a.noweap == true then
 		isweap = false
 	end
 
 	if isweap then
-		if isWeapon(ww_id) == false then
+		if isWeapon(ww) == false then
 			self.object:set_item(object.idle, self.object:best_weapon())			
 		end
 		self.object:set_mental_state(anim.danger)
@@ -362,7 +355,7 @@ function action_contact:execute ()
 			end
 		end
 	else
-		if isWeapon(ww_id) == true then
+		if isWeapon(ww) == true then
 			self.object:set_mental_state(anim.free)
 			self.object:clear_animations()
 			self.object:add_animation("torg_0", true)

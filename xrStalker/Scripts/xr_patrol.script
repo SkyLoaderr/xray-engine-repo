@@ -197,7 +197,7 @@ function action_single_patrol:execute ()
     action_base.execute (self)
     
     local wpn = self.object:active_item ()
-    if wpn == nil or isWeapon (wpn:clsid ()) == false then
+    if isWeapon (wpn) == false then
        self.object:set_item                  (object.activate, self.object:best_weapon ())
     else
        self.object:set_item                  (object.idle, self.object:best_weapon ())     

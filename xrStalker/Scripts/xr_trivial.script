@@ -46,7 +46,7 @@ function can_attack_enemy_evaluator:evaluate()
 
     local wpn = self.object:best_weapon()
 
-    if(wpn == nil or isWeapon(wpn:clsid()) == false) then
+    if(isWeapon(wpn) == false) then
         return false
     end
 
