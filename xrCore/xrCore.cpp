@@ -26,9 +26,14 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
 
 void xrCore::_initialize	(const char* _ApplicationName)
 {
+	// Parameters
 	strcpy					(Params,GetCommandLine());
 	strlwr					(Params);
 	strcpy					(ApplicationName,_ApplicationName);
+
+	// User Name
+	DWORD	sz_user				= sizeof(UserName);
+	GetUserName					(UserName,&sz_user);
 
 	// Mathematics & PSI detection
 	InitMath				();
