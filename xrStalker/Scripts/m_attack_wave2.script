@@ -62,8 +62,8 @@ function Defender:find_enemy ()
 	for a = 1, table.getn (self.monsters), 1 do
 		local tmonster = self.monsters[a]
 		if tmonster ~= nil then
-		   local tdist = distance_between (self.npc, tmonster)
-		   if tdist < distance and self.npc:see (tmonster) == true then
+		   local tdist = distance_between (self.npc, tmonster.npc)
+		   if tdist < distance and self.npc:see (tmonster.npc) == true then
 		   	  distance = tdist
 		   	  enemy = tmonster
 		   end	  
@@ -115,18 +115,18 @@ function Defender:process ()
 	
 	if self.enemy ~= enemy then
   	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), cond (cond.time_end, time_infinite))
+	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))
 	   self.enemy = enemy
 	else
   	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), cond (cond.time_end, time_infinite))	
+	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
 	end
  
 	if waiting ~= 0 then
 	   waiting = waiting - game.time ()
 	   if waiting < 0 then
 		  reset_action (self.npc, self.script_name)
-		  action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), object (self.weapon, object.fire1, math.random (2, 4)),
+		  action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy.npc), object (self.weapon, object.fire1, math.random (2, 4)),
 				  cond (cond.time_end, time_infinite))	
 		  waiting = game.time () + math.random (2000, 3000)
 	   end
@@ -166,7 +166,7 @@ function Monster:find_enemy ()
 	local dist = 100000000
 	local enemy = nil
 	for a = 1, table.getn (self.targets), 1 do
-		if self.targets[a].npc:alive () == true then
+		if self.targets[a].npc:alive () == true and self.targets[a].available == true then
 		   local tdist = distance_between (self.npc, self.targets[a]) 
 		   if tdist < dist and self.targets[a].attacker == nil then
 			  dist = tdist
@@ -205,7 +205,7 @@ function Monster:process ()
 
 	if distance_between (self.npc, self.target) < 2 then
        reset_action (self.npc, self.script)
-	   action_first (self.npc, move (act_attack, move.default, self.target), cond (cond.time_end, 1000))
+	   action_first (self.npc, move (act_attack, move.default, self.target.npc), cond (cond.time_end, 1000))
 	end
 	
 end	   
