@@ -19,8 +19,8 @@ void	CRenderTarget::phase_smap_direct		(light* L)
 
 void	CRenderTarget::phase_smap_direct_tsh	(light* L)
 {
-	//. VERIFY								(RImplementation.o.Tshadows);
-	u32		_clr						= color_rgba(127,127,12,12);
+	VERIFY								(RImplementation.o.Tshadows);
+	u32		_clr						= 0xffffffff;	//color_rgba(127,127,12,12);
 	RCache.set_ColorWriteEnable			();
 	CHK_DX								(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	_clr,	1.0f, 0L));
 }

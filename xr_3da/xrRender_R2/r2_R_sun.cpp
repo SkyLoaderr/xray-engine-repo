@@ -358,8 +358,6 @@ void CRender::render_sun				()
 			for						(int p=0; p<8; p++)	{
 				Fvector3				xf	= wform		(fullxform_inv,corners[p]);
 				hull.points.push_back	(xf);
-				//						xf	= wform		(Device.mView,xf);	//. into view
-				//Log					("frustum_A: ",xf);					//.
 			}
 			for (int plane=0; plane<6; plane++)	{
 				hull.polys.push_back(DumbConvexVolume::_poly());
@@ -497,7 +495,7 @@ void CRender::render_sun				()
 		float min_z = min( depthbounds.x, frustumBox.minPt.z );
 		float max_z = max( depthbounds.y, frustumBox.maxPt.z );
 
-		if ( min_z <= 1.f )	//.
+		if ( min_z <= 1.f )	//?
 		{
 			D3DXMATRIX lightSpaceTranslate;
 			D3DXMatrixTranslation( &lightSpaceTranslate, 0.f, 0.f, -min_z + 1.f );
@@ -706,21 +704,17 @@ void CRender::render_sun				()
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
 			Target.phase_smap_direct			(fuckingsun					);
-			Target.phase_smap_direct_tsh		(fuckingsun);	//.
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
-			RCache.set_xform_project			(fuckingsun->X.D.combine	);	//.
+			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
 			r_dsgraph_render_graph				(0);
 			fuckingsun->X.D.transluent			= FALSE;
-			//. 
-			/*
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
 				Target.phase_smap_direct_tsh		(fuckingsun);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
-			*/
 		}
 	}
 

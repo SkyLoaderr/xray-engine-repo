@@ -289,7 +289,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	// COMBINE
 	{
 		s_combine.create					(b_combine,					"r2\\combine");
-		s_combine_dbg_0.create				("effects\\screen_set",		r2_RT_smap_surf		);	//.
+		s_combine_dbg_0.create				("effects\\screen_set",		r2_RT_smap_surf		);	
 		s_combine_dbg_1.create				("effects\\screen_set",		r2_RT_luminance_t8	);
 		s_combine_dbg_Accumulator.create	("effects\\screen_set",		r2_RT_accum			);
 		g_combine.create					(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);

@@ -30,7 +30,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 	case CRender::PHASE_SMAP_D:	// smap-direct
 	case CRender::PHASE_SMAP_P:	// smap-point
 	case CRender::PHASE_SMAP_S:	// smap-spot									//. !!!! "shadow_direct_base_aref"
-		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base_aref","depth",	FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
+		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
 		else							C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
