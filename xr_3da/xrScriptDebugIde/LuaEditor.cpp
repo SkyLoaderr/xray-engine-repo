@@ -172,6 +172,28 @@ void CLuaEditor::SetBreakpoint(int nLine)
 	Sci(SCI_MARKERADD, nLine-1, 0);
 }
 
+void CLuaEditor::SetBookMark(int nLine)
+{
+
+	if ( Sci(SCI_MARKERGET, nLine-1) & 4 )
+	{
+		Sci(SCI_MARKERDELETE, nLine-1, 2);
+	}
+	else
+		Sci(SCI_MARKERADD, nLine-1, 2);
+
+}
+
+void CLuaEditor::GotoNextBookMark(int nLine, bool b)
+{
+	int line = Sci(SCI_MARKERNEXT,nLine,4);
+	if (line == -1 && b)
+		GotoNextBookMark(0,false);
+	if(line!=-1)
+		Sci(SCI_GOTOLINE, line);
+}
+
+
 void CLuaEditor::GotoLine(int nLine)
 {
 	Sci(SCI_GOTOLINE, nLine-1);
@@ -262,7 +284,7 @@ void CLuaEditor::SetEditorMargins()
 	Sci(SCI_SETMARGINWIDTHN, 0, pixelWidth);
 
 	Sci(SCI_SETMARGINTYPEN, 1, SC_MARGIN_SYMBOL);
-	Sci(SCI_SETMARGINWIDTHN, 1, 10);
+	Sci(SCI_SETMARGINWIDTHN, 1, 20);
 	Sci(SCI_SETMARGINSENSITIVEN, 1, TRUE);
 
 	Sci(SCI_MARKERDEFINE, 0, SC_MARK_CIRCLE);
@@ -270,6 +292,11 @@ void CLuaEditor::SetEditorMargins()
 	Sci(SCI_MARKERSETBACK, 0, RGB(0xff, 0x00, 0x00));
 
 	Sci(SCI_MARKERDEFINE, 1, SC_MARK_ARROW);
+
+	Sci(SCI_MARKERDEFINE,  2, SC_MARK_ROUNDRECT);
+	Sci(SCI_MARKERSETBACK, 2, RGB(0x80, 0xff, 0xff));
+	Sci(SCI_MARKERSETFORE, 2, RGB(0x00, 0x00, 0x00));
+
 }
 
 void CLuaEditor::SetCallStackMargins()

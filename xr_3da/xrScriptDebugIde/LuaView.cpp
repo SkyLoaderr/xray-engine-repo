@@ -55,7 +55,12 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 
 	ON_COMMAND(ID_SHOW_FUNCTION_LIST, OnFunctionList)
 	ON_COMMAND(ID_EDIT_COMPLETEWORD, OnCompleteWord)
+
+	ON_COMMAND(ID_EDIT_TOGGLEBOOKMARK, OnToggleBookMark)
+	ON_COMMAND(ID_EDIT_GOTONEXTBOOKMARK, OnNextBookMark)
 	
+		
+
 	
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
@@ -349,6 +354,16 @@ void CLuaView::ToggleBreakPoint(int nLine)
 		GetDocument()->GetProjectFile()->AddBreakPoint(nLine);
 	else
 		GetDocument()->GetProjectFile()->RemoveBreakPoint(nLine);
+}
+
+void CLuaView::OnToggleBookMark()
+{
+		m_editor.SetBookMark( m_editor.GetCurrentLine() );
+}
+
+void CLuaView::OnNextBookMark()
+{
+		m_editor.GotoNextBookMark( m_editor.GetCurrentLine() );
 }
 
 void CLuaView::OnToggleBreakpoint() 

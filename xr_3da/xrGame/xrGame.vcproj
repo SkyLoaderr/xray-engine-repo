@@ -8155,6 +8155,9 @@
 						<File
 							RelativePath=".\PHShellSplitter.cpp">
 						</File>
+						<File
+							RelativePath=".\PHShellSplitter.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="SplitedShell"

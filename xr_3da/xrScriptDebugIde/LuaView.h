@@ -114,6 +114,8 @@ protected:
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	afx_msg void OnFunctionList();
 	afx_msg void OnCompleteWord();
+	afx_msg void OnNextBookMark();
+	afx_msg void OnToggleBookMark();
 //}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()

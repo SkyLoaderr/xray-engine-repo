@@ -70,6 +70,8 @@ public:
 	int LineFromPoint(CPoint& pt);
 	BOOL Create(CWnd* pParentWnd, UINT nCtrlID);
 	virtual ~CLuaEditor();
+	void SetBookMark(int nLine);
+	void GotoNextBookMark(int nLine, bool b = true);
 //find 
 	CString GetSelText();
 	long	GetSelectionStart(BOOL bDirect=TRUE);
