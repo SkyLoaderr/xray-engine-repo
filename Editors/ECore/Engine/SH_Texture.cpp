@@ -91,10 +91,10 @@ void CTexture::Preload	()
 		string256	bmode,bparam;	float mid;
 		sscanf		(descr,"bump_mode[%[^:]:%[^]]], material[%f]",bmode,bparam,&mid);
 		m_material							=	mid;
-		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==':'))
+		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==0))
 		{
 			// bump-map specified
-			m_bumpmap		=	&(bmode[4]);
+			m_bumpmap		=	bparam;
 		}
 	}
 }
