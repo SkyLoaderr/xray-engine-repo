@@ -11,10 +11,8 @@ const float W_DIST_FADE		= 15.f;
 const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
 const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
 
-#include "collide\cl_defs.h"
-
-struct ENGINE_API	CWallmark {
-#pragma pack(push,1)
+struct ENGINE_API	CWallmark 
+{
 	struct Vertex 
 	{
 		Fvector P;
@@ -25,7 +23,7 @@ struct ENGINE_API	CWallmark {
 			P.set(V); C=_C; tu=(u+1)*0.5f; tv=(v+1)*0.5f;
 		}
 	};
-#pragma pack(pop)
+
 	Fsphere			S;
 	Shader*			hShader;
 	vector<Vertex>	verts;
@@ -68,7 +66,7 @@ class ENGINE_API	CWallmarksEngine
 
 	void	BuildMatrix		(Fmatrix &dest, float invsz, const Fvector& from);
 public:
-	void	AddWallmark		(RAPID::tri* pPickedTri, const Fvector &contact_point, Shader* hTexture, float sz);
+	void	AddWallmark		(CDB::TRI* pPickedTri, const Fvector &contact_point, Shader* hTexture, float sz);
 	void	AddShadow		(CObject* E);
 
 	void	Render			();

@@ -29,7 +29,7 @@ namespace CDB {
 			WORD material, WORD sector, DWORD dummy	// misc
 			)
 		{
-			tri T;
+			TRI T;
 			T.IDverts()	[0] = verts.size();
 			T.IDverts()	[1] = verts.size()+1;
 			T.IDverts()	[2] = verts.size()+2;

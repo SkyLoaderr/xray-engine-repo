@@ -80,27 +80,33 @@ IC void CObjectSpace::Object_Move			( CObject *O )
 	int 		ix, iz;
 	for (ix=r0.x1; ix<=r0.x2; ix++)		// remove from slots
 		for (iz=r0.y1; iz<=r0.y2; iz++)
-			if (!r1.in(ix,iz))	Dynamic(ix,iz).lst.erase(O);
-
-	for (ix=r1.x1;ix<=r1.x2;ix++)		// add to slots
-		for (iz=r1.y1;iz<=r1.y2;iz++)
-			if (!r0.in(ix,iz))	Dynamic(ix,iz).lst.push_back(O);
-
-	M->last_rect.set( r1 );				// set model last rect
+			if (!r1.in(ix,iz))	{
+				vector<CObject*>	lst = Dynamic(ix,iz).lst;
+				lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+			}
+			
+			for (ix=r1.x1;ix<=r1.x2;ix++)		// add to slots
+				for (iz=r1.y1;iz<=r1.y2;iz++)
+					if (!r0.in(ix,iz))	Dynamic(ix,iz).lst.push_back(O);
+					
+					M->last_rect.set( r1 );				// set model last rect
 }
 //----------------------------------------------------------------------
 IC void CObjectSpace::Object_Unregister		( CObject *O )
 {
 	R_ASSERT	(O);
 	CCFModel*	M = O->CFORM();
-
+	
 	Irect&		r0 = M->last_rect;
-
+	
 	int 		ix, iz;
 	for (ix=r0.x1; ix<=r0.x2; ix++)
 		for (iz=r0.y1; iz<=r0.y2; iz++)
-			Dynamic(ix,iz).lst.erase( O );
-
+		{
+			vector<CObject*>	lst = Dynamic(ix,iz).lst;
+			lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+		}
+		
 	M->last_rect.invalidate();
 }
 //----------------------------------------------------------------------
