@@ -529,6 +529,7 @@ xrSE_Rat::xrSE_Rat()
 {
 	u32AttackRefreshRate = 1000;
 }
+
 void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
