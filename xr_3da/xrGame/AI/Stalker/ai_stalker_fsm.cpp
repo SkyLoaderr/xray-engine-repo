@@ -222,7 +222,7 @@ void CAI_Stalker::Searching()
 
 	Fvector						tDummy;
 	u32							dwTime = Level().timeServer();
-	tDummy.setHP				(angle_normalize_signed(2*PI*dwTime/20000),0);
+	tDummy.setHP				(angle_normalize_signed(-2*PI*dwTime/20000),0);
 	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tDummy);
 
 	if (m_fCurSpeed < EPS_L)

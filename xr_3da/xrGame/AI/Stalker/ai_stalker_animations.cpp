@@ -293,21 +293,6 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		if (getAI().bfTooSmallAngle(yaw,r_current.yaw,4*PI_DIV_6))
 			// moving left|right
 			if (getAI().bfTooSmallAngle(yaw,angle_normalize_signed(r_current.yaw + PI_DIV_2),PI_DIV_4)) {
-				// moving left, looking right
-				if (m_tMovementDirection == eMovementDirectionLeft)
-					m_dwDirectionStartTime	= Level().timeServer();
-				else
-					if (m_tDesirableDirection != eMovementDirectionLeft) {
-						m_dwDirectionStartTime	= Level().timeServer();
-						m_tDesirableDirection	= eMovementDirectionLeft;
-					}
-					else
-						if ((Level().timeServer() - m_dwDirectionStartTime) > m_dwAnimationSwitchInterval) {
-							m_dwDirectionStartTime	= Level().timeServer();
-							m_tMovementDirection	= eMovementDirectionLeft;
-						}
-			}
-			else {
 				// moving right, looking left
 				if (m_tMovementDirection == eMovementDirectionRight)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -320,6 +305,21 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 						if ((Level().timeServer() - m_dwDirectionStartTime) > m_dwAnimationSwitchInterval) {
 							m_dwDirectionStartTime	= Level().timeServer();
 							m_tMovementDirection	= eMovementDirectionRight;
+						}
+			}
+			else {
+				// moving left, looking right
+				if (m_tMovementDirection == eMovementDirectionLeft)
+					m_dwDirectionStartTime	= Level().timeServer();
+				else
+					if (m_tDesirableDirection != eMovementDirectionLeft) {
+						m_dwDirectionStartTime	= Level().timeServer();
+						m_tDesirableDirection	= eMovementDirectionLeft;
+					}
+					else
+						if ((Level().timeServer() - m_dwDirectionStartTime) > m_dwAnimationSwitchInterval) {
+							m_dwDirectionStartTime	= Level().timeServer();
+							m_tMovementDirection	= eMovementDirectionLeft;
 						}
 			}
 		else {
@@ -339,7 +339,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 	}
 	//Msg("----%d\n[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
-	//Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
+	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
 	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 }
