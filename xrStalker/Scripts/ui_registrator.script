@@ -13,8 +13,6 @@ function get_ui_clsid(game_type_option)
 	if(game_type_option == "artefacthunt") then 
 		return "UI_AHUNT" end
 
-	if(game_type_option == "cs") then 
-		return "UI_CS" end
 
 
 

@@ -27,8 +27,6 @@ function get_game_clsid(game_type_option,is_server)
 		if(game_type_option == "artefacthunt") then 
 			return "SV_AHUNT" end
 
---		if(game_type_option == "cs") then 
---			return "SV_CS" end
 
 		if(game_type_option == "new_dm") then 
 			return "SV_NEWDM" end
@@ -47,8 +45,6 @@ function get_game_clsid(game_type_option,is_server)
 		if(game_type_option == "artefacthunt") then 
 			return "CL_AHUNT" end
 
---		if(game_type_option == "cs") then 
---			return "CL_CS" end
 
 		if(game_type_option == "new_dm") then 
 			return "CL_DM" end
