@@ -57,6 +57,8 @@ v2p_out v_main	( a2v  	IN )
 	float3		T	= normalize(IN.T);
 	float3		B	= normalize(IN.B);
 	float3		N	= normalize(IN.N); //normalize(cross(T,B));
+	T				= normalize(cross(B,N));
+	B				= normalize(cross(N,T));
 	float3x3 xform	= mul	((float3x3)m_model2view, 
 								float3x3(
 								T.x,B.x,N.x,
