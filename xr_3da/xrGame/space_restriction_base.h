@@ -20,7 +20,7 @@ protected:
 
 public:
 									CSpaceRestrictionBase	();
-			bool					inside					(u32 level_vertex_id, bool out, float radius = EPS_L);
+			bool					inside					(u32 level_vertex_id, bool out, float radius = EPS_S);
 	virtual	bool					inside					(const Fvector &position, float radius = EPS_L) = 0;
 	virtual	void					initialize				() = 0;
 	IC		const xr_vector<u32>	&border					(bool out_restriction);
