@@ -800,3 +800,23 @@ function Projector:process ()
 	reset_action (self.projector, self.script)
 	action (self.projector, look (point, self.speedh, self.speedv), cond (cond.look_end))
 end	  
+
+
+----------------------------------------------------------------------------------------------------
+-- класс CWaitTime
+class "CWaitTime"
+
+function CWaitTime:__init ()
+    self.current_time = 0
+    self.wait_time = 0
+end
+
+function CWaitTime:initialize (time)
+    self.current_time = device ():time_global ()
+    self.wait_time = time
+end
+
+function CWaitTime:evaluate ()
+    if device ():time_global () - self.current_time >= self.wait_time then return true end
+    return false
+end        
