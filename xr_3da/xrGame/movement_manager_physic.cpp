@@ -19,7 +19,6 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				precision = 1.f;
 #endif
 
-	Msg					("[%7d] : [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 	if (
 			!enabled() || 
 			path_completed() || 

@@ -157,7 +157,6 @@ void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u
 //	build_criteria_path		(level_path,intermediate_index);
 	VERIFY(!level_path.empty());
 	VERIFY(level_path.size() > intermediate_index);
-	Msg							("[%7d] : New detailed path!",Level().timeServer());
 
 //	if (ai().level_graph().inside(ai().level_graph().vertex(level_path[intermediate_index]),dest_position))
 //		dest_position.y = 
