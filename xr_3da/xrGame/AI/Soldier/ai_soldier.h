@@ -73,6 +73,9 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 		vector<SDynamicSound>	tpaDynamicSounds;
 		DWORD					m_dwMaxDynamicObjectsCount;
 		DWORD					m_dwMaxDynamicSoundsCount;
+		DWORD					m_dwSoundUpdate;
+		float					m_fSoundPower;
+		float					m_fStartPower;
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
@@ -358,6 +361,7 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 		void FollowLeaderPatrol();
 		/**/
 		// miscellanious funtions	
+		void vfUpdateSounds(DWORD dwTimeDelta);
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
@@ -400,7 +404,7 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
-		virtual	void  soundEvent(CObject* who, int type, Fvector& Position, float power);
+		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
 };
 		
 #endif

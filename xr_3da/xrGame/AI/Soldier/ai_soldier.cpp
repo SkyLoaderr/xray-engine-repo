@@ -152,6 +152,7 @@ BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 void CAI_Soldier::Update(DWORD DT)
 {
 	inherited::Update(DT);
+	vfUpdateSounds(DT);
 }
 
 void CAI_Soldier::Exec_Movement	( float dt )

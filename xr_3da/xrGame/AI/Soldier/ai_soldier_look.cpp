@@ -317,44 +317,57 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 	}
 }
 
-void CAI_Soldier::soundEvent(CObject* who, int type, Fvector& Position, float power)
+void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
+{
+	if (m_fSoundPower > EPS_L)
+		m_fSoundPower = m_fStartPower/(float(dwTimeDelta - m_dwSoundUpdate)/1000.f + 1);
+	else
+		m_fSoundPower = 0.f;
+}
+
+void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float power)
 {
 	#ifdef WRITE_LOG
-		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),type,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
+
+	power *= ffGetStartVolume(ESoundTypes(eType));
 	
 	if (who) {
-		
-		if (this == who)
-			return;
-
-		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-		if (tpEntity && !bfCheckForVisibility(tpEntity)) {
-			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(who);
-			if (tpCustomMonster) {
-				for (int j=0; j<tpaDynamicObjects.size(); j++)
-					if (tpCustomMonster == tpaDynamicObjects[j].tpEntity)
-						return;
-				
-				if (j >= tpaDynamicObjects.size()) {
-					//
+		if (this != who) {
+			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+			if (tpEntity && !bfCheckForVisibility(tpEntity)) {
+				CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(who);
+				if (tpCustomMonster) {
+					for (int j=0; j<tpaDynamicObjects.size(); j++)
+						if (tpCustomMonster == tpaDynamicObjects[j].tpEntity)
+							break;
+					
+					if (j >= tpaDynamicObjects.size()) {
+						//
+					}
 				}
 			}
-		}
-		else {
-			CActor *tpActor = dynamic_cast<CActor *>(who);
-			if (tpActor) {
-				for (int j=0; j<tpaDynamicObjects.size(); j++)
-					if (tpActor == tpaDynamicObjects[j].tpEntity)
-						return;
-				
-				if (j >= tpaDynamicObjects.size()) {
-					//
+			else {
+				CActor *tpActor = dynamic_cast<CActor *>(who);
+				if (tpActor) {
+					for (int j=0; j<tpaDynamicObjects.size(); j++)
+						if (tpActor == tpaDynamicObjects[j].tpEntity)
+							break;
+					
+					if (j >= tpaDynamicObjects.size()) {
+						//
+					}
 				}
 			}
 		}
 	}
 	else {
 		//
+	}
+	// computing total power of my own sounds for computing tha ability to hear the others
+	if (m_fSoundPower < power) {
+		m_fSoundPower = m_fStartPower = power;
+		m_dwSoundUpdate = Level().timeServer();
 	}
 }
