@@ -176,7 +176,7 @@ void CRenderTarget::End		()
 	curHeight				= Device.dwHeight;
 	
 	if (!Perform())		return;
-	RCache.set_Shader	(s_postprocess->E[1]);
+	RCache.set_Element	(s_postprocess->E[1]);
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);
