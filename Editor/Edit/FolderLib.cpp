@@ -8,7 +8,7 @@
 #pragma package(smart_init)
 
 // собирает имя от стартового итема до конечного
-// может включать либо не включать имя конечного объекта
+// может включать либо не включать имя объекта
 bool FOLDER::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)
 {
 	if (begin_item){
