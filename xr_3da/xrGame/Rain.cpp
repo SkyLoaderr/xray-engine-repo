@@ -12,13 +12,13 @@ const float snd_fade		= 0.2f;
 const int	desired_items	= 2000;
 const float	drop_length		= 1.5f;
 const float drop_width		= 0.025f;
-const float drop_angle		= 3.f;
+const float drop_angle		= 0.01f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
 
 const int	max_particles	= 1000;
 const int	particles_cache	= 200;
-const float particles_time	= 0.2f;
+const float particles_time	= 1.2f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -102,12 +102,19 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.P.set			(x+view.x,height+view.y,z+view.z);
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
-	dest.fLifetime		= (height*3)/dest.fSpeed;
 
 	// Raytrace
 	Collide::ray_query	RQ;
-	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	dest.fHeight = dest.P.y-RQ.range;
-	else dest.fHeight	= dest.P.y - 2*height;
+	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
+	{
+		dest.fTime_Life	= RQ.range/dest.fSpeed;
+		dest.fTime_Hit	= RQ.range/dest.fSpeed;
+		dest.Phit.direct(dest.P,dest.D,RQ.range);
+	} else {
+		dest.fTime_Life	= (height*3)/dest.fSpeed;
+		dest.fTime_Hit	= (height*4)/dest.fSpeed;
+		dest.Phit.set	(dest.P);
+	}
 }
 
 // initialize particles pool
@@ -147,7 +154,6 @@ void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 	if (prev) prev->next	= next;
 	if (next) next->prev	= prev;
 	if (LST==P)	LST			= next;
-//	if ((0==prev) && (0==next))	LST = 0;
 }
 
 // insert node at the top of the head
@@ -250,15 +256,11 @@ void	CEffect_Rain::Render	()
 	{
 		// Physics and time control
 		Item&	one		=	items[I];
-		one.fLifetime	-=	dt;
-		if (one.fLifetime<0)	Born(one,b_radius,b_height);
+
+		one.fTime_Hit	-=  dt;	if (one.fTime_Hit<0)	Hit (one.Phit);
+		one.fTime_Life	-=	dt; if (one.fTime_Life<0)	Born(one,b_radius,b_height);
+
 		one.P.mad		(one.D,one.fSpeed*dt);
-		
-		if (one.fHeight>one.P.y)	{
-			one.P.y		= one.fHeight;
-			Hit			(one.P);
-			Born		(one,b_radius,b_height);
-		}
 		Fvector&	pos_head	= one.P;
 		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length);
 		
@@ -323,12 +325,15 @@ void	CEffect_Rain::Render	()
 				P				=	next;
 				continue;
 			}
-			float scale			=	dt / particles_time;
+			float scale			=	P->time / particles_time;
 			Fmatrix& M			=	P->mXForm;
+			mXform				=	M;
+			/*
 			mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
 			mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
 			mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
 			mXform._41=M._41;		mXform._42=M._42;		mXform._43=M._43;		mXform._44=1;
+			*/
 			mXform.transform_tiny	(Center,DM_Drop.bounds.P);
 			
 			// Render

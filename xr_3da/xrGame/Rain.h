@@ -14,10 +14,11 @@ private:
 	struct	Item
 	{
 		Fvector			P;
+		Fvector			Phit;
 		Fvector			D;
 		float			fSpeed;
-		float			fLifetime;
-		float			fHeight;
+		float			fTime_Life;
+		float			fTime_Hit;
 	};
 	struct	Particle
 	{
