@@ -316,9 +316,6 @@
 			<File
 				RelativePath=".\x_ray.h">
 			</File>
-			<File
-				RelativePath=".\xr_qlist.h">
-			</File>
 			<Filter
 				Name="Resources"
 				Filter="">
