@@ -19,6 +19,15 @@ function get_money_then_leave(first_speaker, second_speaker)
 	xr_motivator.storage[first_speaker:id()].robber.enabled = true
 end
 
+function dialog_allowed(object, victim, id)
+	if id ~= nil then
+		printf("DIALOG: %s", id)
+	else
+		printf("DIALOG: nil")
+	end
+	return true
+end
+
 -----------------------------------------------------------------------------------
 -- LEVELS
 -----------------------------------------------------------------------------------

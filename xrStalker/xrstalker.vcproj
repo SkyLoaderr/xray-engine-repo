@@ -1495,6 +1495,9 @@
 					RelativePath=".\scripts\xr_chaser.script">
 				</File>
 				<File
+					RelativePath=".\scripts\xr_combat.script">
+				</File>
+				<File
 					RelativePath=".\scripts\xr_comm_ptr.script">
 				</File>
 				<File
@@ -1511,6 +1514,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\xr_dram_scene.script">
+				</File>
+				<File
+					RelativePath=".\scripts\xr_effects.script">
 				</File>
 				<File
 					RelativePath=".\scripts\xr_evaluators.script">
