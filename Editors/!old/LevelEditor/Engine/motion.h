@@ -30,7 +30,7 @@ struct st_BoneMotion
 	enum {
 		flWorldOrient = 1<<0,
 	};
-	ref_str		name;
+	shared_str		name;
 	CEnvelope*	envs			[ctMaxChannel];
 	Flags8		m_Flags;
     			st_BoneMotion()	{name=0; m_Flags.zero(); ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
@@ -53,7 +53,7 @@ protected:
 	int				iFrameStart, iFrameEnd;
 	float			fFPS;
 public:
-	ref_str			name;
+	shared_str			name;
 public:
 					CCustomMotion	();
 					CCustomMotion	(CCustomMotion* src);
@@ -179,9 +179,9 @@ public:
 
 class ENGINE_API CClip{
 public:
-	ref_str			name;
-    ref_str			cycles[4];
-    ref_str			fx;
+	shared_str			name;
+    shared_str			cycles[4];
+    shared_str			fx;
     float			fx_power;
     float			length;
 public:

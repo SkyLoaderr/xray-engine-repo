@@ -107,7 +107,7 @@ public:
 	_DECLARE_FUNCTION11	(setEnabled	,	void, BOOL	);
 	
 			LPCSTR				Name				() const;
-			ref_str				cName				() const;
+			shared_str			cName				() const;
 			LPCSTR				Section				() const;
 	// CInventoryItem
 			u32					Cost				() const;

@@ -29,20 +29,20 @@ struct SMapLocation
 {
 	SMapLocation();
 
-	ref_str LevelName();
+	shared_str LevelName();
 
 	//типы локаций
 	flags32 type_flags;
 
 	//имя уровня
-	ref_str level_name;
+	shared_str level_name;
 	//координаты на уровне
 	float x;
 	float y;
 	//имя локации
-	ref_str name;
+	shared_str name;
 	//текст описания
-	ref_str text;
+	shared_str text;
 
 	//присоединина ли локация к объекту
 	bool attached_to_object;
@@ -62,7 +62,7 @@ struct SMapLocation
 	// Показывать или не показывать отметку этого маплокейшина на карте
 	void	UpdateAnimation();
 	// Задать цветовую анимацию для спота
-	void	SetColorAnimation(const ref_str &animationName);
+	void	SetColorAnimation(const shared_str &animationName);
 
 private:
 	// Анимация индикатора на карте

@@ -124,7 +124,7 @@ public:
 	CSE_Abstract*			ID_to_entity		(u16 ID);
 
 	// main
-	virtual BOOL			Connect				(ref_str& session_name);
+	virtual BOOL			Connect				(shared_str& session_name);
 	virtual void			Disconnect			();
 	virtual void			Update				();
 	void					SLS_Default			();

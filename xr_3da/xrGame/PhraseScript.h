@@ -34,10 +34,10 @@ public:
 	virtual bool   HasText		() const {return *m_sScriptTextFunc!=NULL;}
 
 
-	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
+	DEFINE_VECTOR(shared_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
 	virtual const PRECONDITION_VECTOR& Preconditions() const {return m_Preconditions;}
 	
-	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
+	DEFINE_VECTOR(shared_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
 	virtual const ACTION_NAME_VECTOR& Actions() const {return m_ScriptActions;}
 protected:
 	//загрузка содержания последовательности тагов в контейнер строк 
@@ -50,11 +50,11 @@ protected:
 	virtual void TransferInfo	(const CInventoryOwner* pOwner) const;
 
 	//имя скриптовой функции, которая возвращает какой-то текст
-	ref_str m_sScriptTextFunc;
+	shared_str m_sScriptTextFunc;
 
 	//скриптовые действия, которые активируется после того как 
 	//говорится фраза
-	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
+	DEFINE_VECTOR(shared_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
 	ACTION_NAME_VECTOR m_ScriptActions;
 	
 	DEFINE_VECTOR(INFO_STR_ID, INFO_VECTOR, INFO_VECTOR_IT);
@@ -63,7 +63,7 @@ protected:
 
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//для того чтоб фраза стала доступной
-	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
+	DEFINE_VECTOR(shared_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
 	PRECONDITION_VECTOR m_Preconditions;
 	//проверка наличия/отсутствия информации
 	INFO_VECTOR m_HasInfo;

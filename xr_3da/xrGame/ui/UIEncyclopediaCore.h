@@ -36,7 +36,7 @@ public:
 
 	// Контролы и алгоритмы которые используются для вывода информации
 	// Добавляем статью и возвращаем путь к ней
-	ref_str			SetCurrentArtice(CUITreeViewItem *pTVItem);
+	shared_str			SetCurrentArtice(CUITreeViewItem *pTVItem);
 	// Добавлем 1 энциклопедиционную статью
 	void			AddArticle(ARTICLE_INDEX);
 	void			DeleteArticles();

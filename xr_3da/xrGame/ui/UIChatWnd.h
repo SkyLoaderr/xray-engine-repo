@@ -37,8 +37,8 @@ public:
 	virtual void		Hide				();
 	virtual void		SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
 	void				Init				();
-	void				Say					(const ref_str &phrase);
-	void				SetEditBoxPrefix	(const ref_str &prefix);
+	void				Say					(const shared_str &phrase);
+	void				SetEditBoxPrefix	(const shared_str &prefix);
 	void				TeamChat			() { sendNextMessageToTeam = true; }
 	void				AllChat				() { sendNextMessageToTeam = false; }
 	void				SetOwner			(game_cl_GameState *pO) { pOwner = pO; }
@@ -48,7 +48,7 @@ public:
 protected:
 	CUIChatLog			*pUILogList;
 	CUIStatic			UIPrefix;
-	ref_str				m_AuthorName;
+	shared_str				m_AuthorName;
 	bool				sendNextMessageToTeam;
 	game_cl_GameState	*pOwner;
 };

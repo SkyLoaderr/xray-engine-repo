@@ -11,7 +11,7 @@
 IC	CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart, const PatrolPathManager::EPatrolRouteType tPatrolPathStop, bool bRandom, u32 index)
 {
 	m_path_name			= caPatrolPathToGo;
-	m_path				= Level().patrol_paths().path(ref_str(caPatrolPathToGo));
+	m_path				= Level().patrol_paths().path(shared_str(caPatrolPathToGo));
 	m_tPatrolPathStart	= tPatrolPathStart;
 	m_tPatrolPathStop	= tPatrolPathStop;
 	m_bRandom			= bRandom;

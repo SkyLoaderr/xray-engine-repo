@@ -16,17 +16,17 @@
 //////////////////////////////////////////////////////////////////////////
 struct SArticleData : CSharedResource
 {
-	ref_str name;
-	ref_str group;
+	shared_str name;
+	shared_str group;
 	
 	//картинка
 	CUIStatic image;
 
 	//текст статьи
-	ref_str	text;
+	shared_str	text;
 	
 	//секция ltx, откуда читать данные
-	ref_str ltx;
+	shared_str ltx;
 
 	// Тип статьи
 	ARTICLE_DATA::EArticleType articleType;

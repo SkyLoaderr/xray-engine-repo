@@ -118,7 +118,7 @@ struct CLoader {
 		data							= xr_strdup(S);
 	}
 
-	IC	static void load_data(ref_str &data, M &stream, const P &p)
+	IC	static void load_data(shared_str &data, M &stream, const P &p)
 	{
 		stream.r_stringZ				(data);
 	}

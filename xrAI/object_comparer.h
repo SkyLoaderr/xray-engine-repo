@@ -36,7 +36,7 @@ struct CComparer {
 		return						(p(_1,_2));
 	}
 
-	IC	static bool compare(const ref_str &_1, const ref_str &_2, const P &p)
+	IC	static bool compare(const shared_str &_1, const shared_str &_2, const P &p)
 	{
 		return						(p(_1,_2));
 	}

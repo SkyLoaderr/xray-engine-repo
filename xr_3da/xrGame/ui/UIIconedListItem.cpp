@@ -11,7 +11,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIIconedListItem::SetIcon(ref_str textureName, u32 uIconSize)
+void CUIIconedListItem::SetIcon(shared_str textureName, u32 uIconSize)
 {
 	RECT r		= GetAbsoluteRect();
 	m_uIconSize	= uIconSize;

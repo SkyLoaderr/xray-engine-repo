@@ -31,8 +31,8 @@ public:
 	u16		GetParticleBoneNum	() {return m_iParticleBoneNum;}
 	void	SetParticleBoneNum	(u16 bone_num) {m_iParticleBoneNum = bone_num;}
 
-	const ref_str& GetParticleName	()						{return m_sParticleName;}
-	void	SetParticleName	(ref_str particle_name) {m_sParticleName = particle_name;}
+	const shared_str& GetParticleName	()						{return m_sParticleName;}
+	void	SetParticleName	(shared_str particle_name) {m_sParticleName = particle_name;}
 
 	void  SetDestroy(bool destroy) {m_bToBeDestroy = destroy;}
 	bool  GetDestroy()			   {return m_bToBeDestroy;}
@@ -47,7 +47,7 @@ protected:
 	//косточка, если на ране отыгрывается партикл
 	u16 m_iParticleBoneNum;
 	//имя этого партикла
-	ref_str m_sParticleName;
+	shared_str m_sParticleName;
 
 	//список составляющих раны 
 	HitTypeSVec m_Wounds;

@@ -52,7 +52,7 @@ protected:
 	virtual void			AddShotEffector		();
 	virtual void			RemoveShotEffector	();
 protected:
-	ref_str					m_sAmmoType;
+	shared_str					m_sAmmoType;
 	CCartridge				m_CurrentAmmo;
 
 	//звук стрельбы

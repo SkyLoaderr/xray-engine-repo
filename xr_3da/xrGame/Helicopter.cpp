@@ -189,7 +189,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_time_between_rocket_attack		= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket					= !!pSettings->r_bool(section,"syncronize_rocket");
 	
-	ref_str expl_snd					= pSettings->r_string	(section,"explode_sound");
+	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
 	m_explodeSound.create(TRUE,*expl_snd);
 
 //lighting

@@ -37,7 +37,7 @@ CProfiler::CProfiler		()
 	m_actual					= true;
 }
 
-IC	void CProfiler::convert_string(LPCSTR str, ref_str &out, u32 max_string_size)
+IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_size)
 {
 	LPCSTR						i, j = str;
 	u32							count = 0;
@@ -67,11 +67,11 @@ void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
 			*j					= 0;
 			TIMERS::iterator	m = m_timers.find(m_temp);
 			if (m == m_timers.end())
-				m_timers.insert	(std::make_pair(ref_str(m_temp),CProfileStats()));
+				m_timers.insert	(std::make_pair(shared_str(m_temp),CProfileStats()));
 			*j					= '/';
 			k					= j + 1;
 		}
-		i						= m_timers.insert(std::make_pair(ref_str(timer_id),CProfileStats())).first;
+		i						= m_timers.insert(std::make_pair(shared_str(timer_id),CProfileStats())).first;
 		m_actual				= false;
 	}
 	if (_time > (*i).second.m_time)

@@ -14,7 +14,7 @@ class CAttachableItem : public CInventoryItem
 {
 	typedef CInventoryItem inherited;
 protected:
-	ref_str					m_bone_name;
+	shared_str					m_bone_name;
 	Fmatrix					m_offset;
 	u16						m_bone_id;
 	bool					m_enabled;
@@ -28,7 +28,7 @@ public:
 	virtual	void			reload				(LPCSTR section);
 	virtual void			OnH_A_Chield		();
 	virtual void			renderable_Render	();
-	IC		ref_str			bone_name			() const;
+	IC		shared_str			bone_name			() const;
 	IC		u16				bone_id				() const;
 	IC		void			set_bone_id			(u16 bone_id);
 	IC		const Fmatrix	&offset				() const;

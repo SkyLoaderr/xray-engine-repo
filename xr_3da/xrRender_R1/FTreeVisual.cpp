@@ -7,12 +7,12 @@
 
 #include "ftreevisual.h"
 
-ref_str						c_consts;
-ref_str						c_wave;
-ref_str						c_wind;
-ref_str						c_c_bias;
-ref_str						c_c_scale;
-ref_str						c_c_sun;
+shared_str						c_consts;
+shared_str						c_wave;
+shared_str						c_wind;
+shared_str						c_c_bias;
+shared_str						c_c_scale;
+shared_str						c_c_sun;
 
 FTreeVisual::FTreeVisual	(void)
 {

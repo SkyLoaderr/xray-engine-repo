@@ -11,7 +11,7 @@
 
 using namespace ALife;
 
-CALifeGraphRegistry::CALifeGraphRegistry	(ref_str *server_command_line)
+CALifeGraphRegistry::CALifeGraphRegistry	(shared_str *server_command_line)
 {
 	VERIFY							(server_command_line);
 	m_server_command_line			= server_command_line;

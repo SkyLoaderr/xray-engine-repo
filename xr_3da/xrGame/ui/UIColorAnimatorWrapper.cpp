@@ -27,7 +27,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName, u32 *colorToModify)
+CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName, u32 *colorToModify)
 	:	colorAnimation		(LALib.FindItem(*animationName)),
 		animationTime		(0.0f),
 		color				(colorToModify),
@@ -40,7 +40,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName, u
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName)
+CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName)
 	:	colorAnimation		(LALib.FindItem(*animationName)),
 		animationTime		(0.0f),
 		color				(NULL),
@@ -52,7 +52,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIColorAnimatorWrapper::SetColorAnimation(const ref_str &animationName)
+void CUIColorAnimatorWrapper::SetColorAnimation(const shared_str &animationName)
 {
 	if (animationName.size() != 0)
 	{

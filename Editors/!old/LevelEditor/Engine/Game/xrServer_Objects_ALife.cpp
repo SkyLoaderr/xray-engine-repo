@@ -829,7 +829,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		visual_read				(tNetPacket);
 
 	if (m_wVersion < 49){
-		ref_str s_tmp;
+		shared_str s_tmp;
 		float	f_tmp;
 		// model
 		tNetPacket.r_u32			(color);

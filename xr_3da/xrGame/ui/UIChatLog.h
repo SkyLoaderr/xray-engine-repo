@@ -23,7 +23,7 @@ class CUIChatLog: public CUIDialogWnd
 	typedef CUIDialogWnd inherited;
 
 public:
-	void					AddLogMessage	(const ref_str &msg, const ref_str &author);
+	void					AddLogMessage	(const shared_str &msg, const shared_str &author);
 	CUIListWnd &			GetLogList		()	{ return UILogList; }
 	void					Init			();
 	virtual void			Update			();

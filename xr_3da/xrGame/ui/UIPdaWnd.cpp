@@ -183,7 +183,7 @@ void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 
 void CUIPdaWnd::UpdateDateTime()
 {
-	static ref_str prevStrTime = " ";
+	static shared_str prevStrTime = " ";
 	std::string strTime = *InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes);
 				strTime += " ";
 				strTime += *InventoryUtilities::GetGameDateAsString(InventoryUtilities::edpDateToDay);

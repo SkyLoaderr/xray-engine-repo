@@ -46,7 +46,7 @@ struct SHeliShared{
 	float							m_wrk_altitude;
 
 	int								m_patrol_begin_idx;
-	ref_str							m_patrol_path_name;
+	shared_str						m_patrol_path_name;
 	const CPatrolPath*				m_currPatrolPath;
 	const CPatrolPath::CVertex*		m_currPatrolVertex;
 };
@@ -131,7 +131,7 @@ protected:
 	float							m_light_brightness;
 	float							m_light_range;
 	Fcolor							m_light_color;
-	ref_str							m_l_anim;
+	shared_str							m_l_anim;
 
 	CHelicopterMovManager			m_movMngr;
 
@@ -157,17 +157,17 @@ protected:
 	u32								m_last_rocket_attack;
 
 
-	ref_str							m_sAmmoType;
-	ref_str							m_sRocketSection;
+	shared_str							m_sAmmoType;
+	shared_str							m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
-	ref_str							m_smoke_particle;
-	ref_str							m_explode_particle;
+	shared_str							m_smoke_particle;
+	shared_str							m_explode_particle;
 	CParticlesObject*				m_pParticle;
 	Fmatrix							m_particleXFORM;
 	u16								m_smoke_bone;
 
-	ref_str							m_death_bones_to_hide;
+	shared_str							m_death_bones_to_hide;
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 

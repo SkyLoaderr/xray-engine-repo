@@ -183,7 +183,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	m_completed			= false;
 }
 
-ref_str	CPatrolPathManager::path_name	() const
+shared_str	CPatrolPathManager::path_name	() const
 {
 	if (!m_path) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_restricted_object->cName());

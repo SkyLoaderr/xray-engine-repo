@@ -4,8 +4,8 @@
 
 #pragma once
 
-typedef ref_str	STRING_ID;
-typedef int		STRING_INDEX;
-typedef ref_str	STRING_VALUE;
+typedef shared_str	STRING_ID;
+typedef int			STRING_INDEX;
+typedef shared_str	STRING_VALUE;
 
-#define NO_STRING STRING_INDEX(-1)
+#define NO_STRING	STRING_INDEX(-1)

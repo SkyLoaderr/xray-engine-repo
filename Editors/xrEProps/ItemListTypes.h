@@ -7,7 +7,7 @@
 class ListItem{
 	friend class		CListHelper;
     friend class		TItemList;
-    ref_str				key;
+    shared_str				key;
     int					type;
 	void*				item;
 public:                        

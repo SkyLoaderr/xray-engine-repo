@@ -5,7 +5,7 @@
 #include "xrserver.h"
 #include "level.h"
 
-void	game_sv_TeamDeathmatch::Create					(ref_str& options)
+void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 {
 	inherited::Create					(options);
 //	fraglimit	= get_option_i		(*options,"fraglimit",0);

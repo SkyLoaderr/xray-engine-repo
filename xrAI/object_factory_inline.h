@@ -40,7 +40,7 @@ IC	bool CObjectFactory::CObjectItemPredicateCLSID::operator()	(const CObjectItem
 	return				(m_clsid == item->clsid());
 }
 
-IC	CObjectFactory::CObjectItemPredicateScript::CObjectItemPredicateScript	(const ref_str &script_clsid_name) :
+IC	CObjectFactory::CObjectItemPredicateScript::CObjectItemPredicateScript	(const shared_str &script_clsid_name) :
 	m_script_clsid_name	(script_clsid_name)
 {
 }

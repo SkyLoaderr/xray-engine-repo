@@ -23,7 +23,7 @@ private:
 	};
 	struct ModelDef
 	{
-		ref_str				name;
+		shared_str				name;
 		IRender_Visual*		model;
         u32					refs;
         ModelDef()			{ refs=0;model=0; }

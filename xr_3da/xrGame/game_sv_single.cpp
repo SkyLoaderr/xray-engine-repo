@@ -18,7 +18,7 @@ game_sv_Single::~game_sv_Single			()
 	xr_delete							(m_alife_simulator);
 }
 
-void	game_sv_Single::Create			(ref_str& options)
+void	game_sv_Single::Create			(shared_str& options)
 {
 	inherited::Create					(options);
 	if (strstr(*options,"/alife"))
@@ -204,7 +204,7 @@ bool game_sv_Single::load_game				(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return					(inherited::load_game(net_packet,sender));
-	ref_str						game_name;
+	shared_str						game_name;
 	net_packet.r_stringZ		(game_name);
 	return						(alife().load_game(*game_name,true));
 }

@@ -185,8 +185,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	float							m_fEyeRange;
 	float							m_fHitPower;
 	ALife::EHitType					m_tHitType;
-	ref_str							m_out_space_restrictors;
-	ref_str							m_in_space_restrictors;
+	shared_str							m_out_space_restrictors;
+	shared_str							m_in_space_restrictors;
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
@@ -323,7 +323,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;
 	float							m_fSearchSpeed;
-	ref_str							m_caKnownCustomers;
+	shared_str							m_caKnownCustomers;
 	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
@@ -401,7 +401,7 @@ add_to_type_list(CSE_ALifeHumanStalker)
 #define script_type_list save_type_list(CSE_ALifeHumanStalker)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
-	ref_str							m_caAnimations;
+	shared_str							m_caAnimations;
 	u32								m_dwAniPlayType;
 									CSE_ALifeObjectIdol		(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectIdol	();

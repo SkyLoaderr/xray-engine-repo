@@ -77,13 +77,13 @@ public:
 
 class ENGINE_API	CEnvironment
 {
-	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
-		IC bool operator()(const ref_str& x, const ref_str& y) const
+	struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
+		IC bool operator()(const shared_str& x, const shared_str& y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
 public:
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
-	DEFINE_MAP_PRED			(ref_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
+	DEFINE_MAP_PRED			(shared_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
 
 	// Environments
 	CEnvDescriptor			CurrentEnv;
@@ -92,7 +92,7 @@ public:
     bool					bTerminator;
     
     EnvVec*					CurrentWeather;
-    ref_str					CurrentWeatherName;
+    shared_str					CurrentWeatherName;
 	WeatherMap				Weathers;
 	xr_vector<CEnvModifier>	Modifiers;
 
@@ -134,8 +134,8 @@ public:
 	void					RenderFirst			();
 	void					RenderLast			();
 
-    void					SetWeather			(ref_str name);
-    ref_str					GetWeather			()					{ return CurrentWeatherName;}
+    void					SetWeather			(shared_str name);
+    shared_str					GetWeather			()					{ return CurrentWeatherName;}
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
 	void					OnDeviceCreate		();

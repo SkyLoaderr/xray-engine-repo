@@ -15,8 +15,8 @@ public:
     	float			fOpacity;
 	    float			fRadius;
     	float			fPosition;
-        ref_str			texture;
-        ref_str			shader;
+        shared_str			texture;
+        shared_str			shader;
         ref_shader		hShader;
     	SFlare()		{ fOpacity = fRadius = fPosition = 0; }
 	};
@@ -48,7 +48,7 @@ public:
     void				AddFlare		(float fRadius, float fOpacity, float fPosition, LPCSTR tex_name, LPCSTR sh_name);
     ref_shader			CreateShader	(LPCSTR tex_name, LPCSTR sh_name);
 
-	ref_str				section;
+	shared_str				section;
 public:
     					CLensFlareDescriptor(){m_Flags.zero();section=0;m_StateBlendUpSpeed=m_StateBlendDnSpeed=0.1f;}
     void				load				(CInifile* pIni, LPCSTR section);

@@ -13,7 +13,7 @@ class CStepManager {
 	CCustomMonster	*m_object;
 
 	u16				m_foot_bones[MAX_LEGS_COUNT];
-	ref_str			m_animation;
+	shared_str			m_animation;
 
 	u32				m_time_anim_started;
 
@@ -27,7 +27,7 @@ public:
 	virtual void	reinit						();
 	
 	// call on set animation
-	virtual	void	on_animation_start			(ref_str anim);
+	virtual	void	on_animation_start			(shared_str anim);
 	// call on updateCL
 			void	update						();
 	

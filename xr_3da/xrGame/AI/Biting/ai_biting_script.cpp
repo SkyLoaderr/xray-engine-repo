@@ -340,7 +340,7 @@ void CAI_Biting::TranslateActionToPathParams()
 }
 
 
-void CAI_Biting::SetScriptControl(const bool bScriptControl, ref_str caScriptName)
+void CAI_Biting::SetScriptControl(const bool bScriptControl, shared_str caScriptName)
 {
 	if (CurrentState) CurrentState->Done();
 

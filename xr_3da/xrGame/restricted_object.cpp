@@ -63,12 +63,12 @@ bool CRestrictedObject::accessible			(u32 level_vertex_id, float radius) const
 	return						(Level().space_restriction_manager().accessible(ID(),level_vertex_id,radius));
 }
 
-void CRestrictedObject::add_restrictions	(ref_str out_restrictions, ref_str in_restrictions)
+void CRestrictedObject::add_restrictions	(shared_str out_restrictions, shared_str in_restrictions)
 {
 	Level().space_restriction_manager().add_restrictions	(ID(),out_restrictions,in_restrictions);
 }
 
-void CRestrictedObject::remove_restrictions	(ref_str out_restrictions, ref_str in_restrictions)
+void CRestrictedObject::remove_restrictions	(shared_str out_restrictions, shared_str in_restrictions)
 {
 	Level().space_restriction_manager().remove_restrictions	(ID(),out_restrictions,in_restrictions);
 }
@@ -120,12 +120,12 @@ void CRestrictedObject::remove_all_restrictions	()
 	Level().space_restriction_manager().restrict(ID(),"","");
 }
 
-ref_str	CRestrictedObject::in_restrictions	() const
+shared_str	CRestrictedObject::in_restrictions	() const
 {
 	return						(Level().space_restriction_manager().in_restrictions(ID()));
 }
 
-ref_str CRestrictedObject::out_restrictions	() const
+shared_str CRestrictedObject::out_restrictions	() const
 {
 	return						(Level().space_restriction_manager().out_restrictions(ID()));
 }

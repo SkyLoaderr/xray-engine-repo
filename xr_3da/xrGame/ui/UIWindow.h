@@ -164,15 +164,15 @@ public:
 	void SetAutoDelete(bool auto_delete) {m_bAutoDelete = auto_delete;}
 
 	// Name of the window
-	const ref_str	WindowName() const { return m_windowName; }
+	const shared_str	WindowName() const { return m_windowName; }
 	void			SetWindowName(LPCSTR wn) { m_windowName = wn; }
 	LPCSTR			WindowName_script() {return *m_windowName;}
-	CUIWindow*		FindChild(const ref_str name);
+	CUIWindow*		FindChild(const shared_str name);
 
 	void			EnableDoubleClick(bool value) { m_bDoubleClickEnabled = value; }
 	bool			IsDBClickEnabled() const { return m_bDoubleClickEnabled; }
 protected:
-	ref_str		m_windowName;
+	shared_str		m_windowName;
 	//список дочерних окон
 	WINDOW_LIST m_ChildWndList;
 	

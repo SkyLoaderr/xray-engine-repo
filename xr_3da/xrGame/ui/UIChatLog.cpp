@@ -19,7 +19,7 @@ extern const int			fadeDelay;
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIChatLog::AddLogMessage(const ref_str &msg, const ref_str &author)
+void CUIChatLog::AddLogMessage(const shared_str &msg, const shared_str &author)
 {
 	string256 fullLine;
 	::ZeroMemory(fullLine, 256);

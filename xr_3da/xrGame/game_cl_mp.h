@@ -13,8 +13,8 @@ protected:
 	CUIChatWnd*						pChatWnd;
 	CUIChatLog*						pChatLog;
 
-	virtual	void			ChatSayTeam				(const ref_str &phrase);
-	virtual	void			ChatSayAll				(const ref_str &phrase);
+	virtual	void			ChatSayTeam				(const shared_str &phrase);
+	virtual	void			ChatSayAll				(const shared_str &phrase);
 	virtual	void			OnChatMessage			(NET_Packet* P);
 
 public:

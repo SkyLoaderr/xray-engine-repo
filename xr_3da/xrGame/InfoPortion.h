@@ -55,7 +55,7 @@ struct SInfoPortionData : CSharedResource
 	INFO_INDEX_VECTOR m_DisableInfo;
 
 	//текстовое представление информации	
-	ref_str		m_text;
+	shared_str		m_text;
 };
 
 

@@ -27,7 +27,7 @@ IC	void CPatrolPoint::correct_position	()
 		m_position		= ai().level_graph().vertex_position(level_vertex_id());
 }
 
-CPatrolPoint::CPatrolPoint				(const Fvector &position, u32 level_vertex_id, u32 flags, ref_str name)
+CPatrolPoint::CPatrolPoint				(const Fvector &position, u32 level_vertex_id, u32 flags, shared_str name)
 {
 	m_position			= position;
 	m_level_vertex_id	= level_vertex_id;

@@ -40,7 +40,7 @@ IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, CSpaceRes
 	(*m_clients)[id]				= restriction;
 }
 
-IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, ref_str out_restrictors, ref_str in_restrictors)
+IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, shared_str out_restrictors, shared_str in_restrictors)
 {
 	update_restrictions<true>			(out_restrictors,default_out_restrictions());
 	update_restrictions<true>			(in_restrictors,default_in_restrictions());
@@ -80,7 +80,7 @@ bool CSpaceRestrictionManager::accessible					(ALife::_OBJECT_ID id, u32 level_v
 	return						(true);
 }
 
-CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	(ref_str out_restrictors, ref_str in_restrictors)
+CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	(shared_str out_restrictors, shared_str in_restrictors)
 {
 	if (!xr_strlen(out_restrictors) && !xr_strlen(in_restrictors))
 		return					(0);
@@ -89,7 +89,7 @@ CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	
 	in_restrictors				= normalize_string(in_restrictors);
 
 	strconcat					(m_temp,*out_restrictors,"\x01",*in_restrictors);
-	ref_str						space_restrictions = m_temp;
+	shared_str						space_restrictions = m_temp;
 	
 	SPACE_RESTRICTIONS::const_iterator	I = m_space_restrictions.find(space_restrictions);
 	if (I != m_space_restrictions.end())
@@ -107,7 +107,7 @@ u32	CSpaceRestrictionManager::accessible_nearest			(ALife::_OBJECT_ID id, const 
 	return						(client_restriction->accessible_nearest(position,result));
 }
 
-IC	bool CSpaceRestrictionManager::restriction_presented	(ref_str restrictions, ref_str restriction) const
+IC	bool CSpaceRestrictionManager::restriction_presented	(shared_str restrictions, shared_str restriction) const
 {
 	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
 		if (!xr_strcmp(restriction,_GetItem(*restrictions,i,m_temp)))
@@ -116,7 +116,7 @@ IC	bool CSpaceRestrictionManager::restriction_presented	(ref_str restrictions, r
 }
 
 template <bool add>
-IC	void CSpaceRestrictionManager::update_restrictions		(ref_str &restrictions, ref_str update)
+IC	void CSpaceRestrictionManager::update_restrictions		(shared_str &restrictions, shared_str update)
 {
 //	if (add) {
 //		strcpy						(m_temp2,*restrictions);
@@ -127,7 +127,7 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ref_str &restrictions, r
 //				strcat				(m_temp2,m_temp1);
 //				++count;
 //			}
-//		restrictions				= ref_str(m_temp2);
+//		restrictions				= shared_str(m_temp2);
 //	}
 //	else {
 //		strcpy						(m_temp2,"");
@@ -138,7 +138,7 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ref_str &restrictions, r
 //				strcat				(m_temp2,m_temp1);
 //				++count;
 //			}
-//		restrictions				= ref_str(m_temp2);
+//		restrictions				= shared_str(m_temp2);
 //	}
 
 	// commented code explains what we do here (actually, join or intersect token strings)
@@ -150,11 +150,11 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ref_str &restrictions, r
 			strcat				(m_temp2,m_temp1);
 			++count;
 		}
-	restrictions				= ref_str(m_temp2);
+	restrictions				= shared_str(m_temp2);
 }
 
 template <bool add>
-IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
+IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, shared_str out_restrictions, shared_str in_restrictions)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
 	if (!client_restriction) {
@@ -163,15 +163,15 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, re
 		return;
 	}
 	VERIFY						(!client_restriction->applied());
-	ref_str						new_out_restrictions = client_restriction->out_restrictions();
-	ref_str						new_in_restrictions = client_restriction->in_restrictions();
+	shared_str						new_out_restrictions = client_restriction->out_restrictions();
+	shared_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<add>	(new_out_restrictions,out_restrictions);
 	update_restrictions<add>	(new_in_restrictions,in_restrictions);
 	if ((new_out_restrictions != client_restriction->out_restrictions()) || (new_in_restrictions != client_restriction->in_restrictions()))
 		restrict				(id,new_out_restrictions,new_in_restrictions);
 }
 
-IC	bool CSpaceRestrictionManager::no_default_restrictions	(ref_str restrictions)
+IC	bool CSpaceRestrictionManager::no_default_restrictions	(shared_str restrictions)
 {
 	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
 		if (restriction(_GetItem(*restrictions,i,m_temp))->default_restrictor())
@@ -179,13 +179,13 @@ IC	bool CSpaceRestrictionManager::no_default_restrictions	(ref_str restrictions)
 	return						(true);
 }
 
-void CSpaceRestrictionManager::add_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
+void CSpaceRestrictionManager::add_restrictions				(ALife::_OBJECT_ID id, shared_str out_restrictions, shared_str in_restrictions)
 {
 	VERIFY2						(no_default_restrictions(out_restrictions) && no_default_restrictions(in_restrictions),"You cannot add default restrictions!");
 	update_restrictions<true>	(id,out_restrictions,in_restrictions);
 }
 
-void CSpaceRestrictionManager::remove_restrictions			(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
+void CSpaceRestrictionManager::remove_restrictions			(ALife::_OBJECT_ID id, shared_str out_restrictions, shared_str in_restrictions)
 {
 	VERIFY2						(no_default_restrictions(out_restrictions) && no_default_restrictions(in_restrictions),"You cannot remove default restrictions!");
 	update_restrictions<false>	(id,out_restrictions,in_restrictions);
@@ -198,7 +198,7 @@ void CSpaceRestrictionManager::remove_border				(ALife::_OBJECT_ID id)
 		client_restriction->remove_border	();
 }
 
-ref_str	CSpaceRestrictionManager::in_restrictions			(ALife::_OBJECT_ID id)
+shared_str	CSpaceRestrictionManager::in_restrictions			(ALife::_OBJECT_ID id)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
 	if (client_restriction)
@@ -206,7 +206,7 @@ ref_str	CSpaceRestrictionManager::in_restrictions			(ALife::_OBJECT_ID id)
 	return						("");
 }
 
-ref_str	CSpaceRestrictionManager::out_restrictions			(ALife::_OBJECT_ID id)
+shared_str	CSpaceRestrictionManager::out_restrictions			(ALife::_OBJECT_ID id)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
 	if (client_restriction)
@@ -214,7 +214,7 @@ ref_str	CSpaceRestrictionManager::out_restrictions			(ALife::_OBJECT_ID id)
 	return						("");
 }
 
-void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_str add_out_restrictions, ref_str add_in_restrictions, ref_str remove_out_restrictions, ref_str remove_in_restrictions)
+void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, shared_str add_out_restrictions, shared_str add_in_restrictions, shared_str remove_out_restrictions, shared_str remove_in_restrictions)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
 	if (!client_restriction) {
@@ -222,8 +222,8 @@ void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_
 		return;
 	}
 	VERIFY						(!client_restriction->applied());
-	ref_str						new_out_restrictions = client_restriction->out_restrictions();
-	ref_str						new_in_restrictions = client_restriction->in_restrictions();
+	shared_str						new_out_restrictions = client_restriction->out_restrictions();
+	shared_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<false>	(new_out_restrictions,remove_out_restrictions);
 	update_restrictions<false>	(new_in_restrictions,remove_in_restrictions);
 	update_restrictions<true>	(new_out_restrictions,add_out_restrictions);
@@ -232,7 +232,7 @@ void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_
 		restrict				(id,new_out_restrictions,new_in_restrictions);
 }
 
-void CSpaceRestrictionManager::on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions)
+void CSpaceRestrictionManager::on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions)
 {
 	CLIENT_RESTRICTIONS::const_iterator	I = m_clients->begin();
 	CLIENT_RESTRICTIONS::const_iterator	E = m_clients->end();

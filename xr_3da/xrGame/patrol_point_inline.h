@@ -26,7 +26,7 @@ IC	u32	 CPatrolPoint::flags				() const
 	return				(m_flags);
 }
 
-IC	ref_str	CPatrolPoint::name				() const
+IC	shared_str	CPatrolPoint::name				() const
 {
 	VERIFY				(m_initialized);
 	return				(m_name);

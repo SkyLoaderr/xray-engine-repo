@@ -78,7 +78,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	const int	subitemsOffset	= 20;
 
 	// Массив с именами текстурок - иконок состояний задания
-	static ref_str iconsTexturesArr[3] =
+	static shared_str iconsTexturesArr[3] =
 	{
 		"ui\\ui_pda_icon_mission_failed",
 		"ui\\ui_pda_icon_mission_in_progress",

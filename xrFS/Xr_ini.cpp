@@ -260,10 +260,10 @@ u32		CInifile::line_count(LPCSTR Sname)
 
 
 //--------------------------------------------------------------------------------------
-CInifile::Sect&	CInifile::r_section		( const ref_str& S	)					{ return	r_section(*S);		}
-BOOL			CInifile::line_exist	( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
-u32				CInifile::line_count	( const ref_str& S	)					{ return	line_count(*S);		}
-BOOL			CInifile::section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
+CInifile::Sect&	CInifile::r_section		( const shared_str& S	)					{ return	r_section(*S);		}
+BOOL			CInifile::line_exist	( const shared_str& S, const shared_str& L )	{ return	line_exist(*S,*L);	}
+u32				CInifile::line_count	( const shared_str& S	)					{ return	line_count(*S);		}
+BOOL			CInifile::section_exist	( const shared_str& S	)					{ return	section_exist(*S);	}
 
 //--------------------------------------------------------------------------------------
 // Read functions
@@ -285,15 +285,15 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L)
 	return 0;
 }
 
-ref_str		CInifile::r_string_wb(LPCSTR S, LPCSTR L)	{
+shared_str		CInifile::r_string_wb(LPCSTR S, LPCSTR L)	{
 	LPCSTR		_base		= r_string(S,L);
-	if	(0==_base)					return	ref_str(0);
+	if	(0==_base)					return	shared_str(0);
 	string512	_original;	
 	u32			_len		= xr_strlen(strcpy(_original,_base));
-	if	(0==_len)					return	ref_str("");
+	if	(0==_len)					return	shared_str("");
 	if	('"'==_original[_len-1])	_original[_len-1]=0;				// skip end
-	if	('"'==_original[0])			return	ref_str(&_original[0] + 1);	// skip begin
-	return									ref_str(_original);
+	if	('"'==_original[0])			return	shared_str(&_original[0] + 1);	// skip begin
+	return									shared_str(_original);
 }
 
 u8 CInifile::r_u8(LPCSTR S, LPCSTR L)

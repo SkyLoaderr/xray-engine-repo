@@ -19,7 +19,7 @@ public:
 								CObjectList			( );
 								~CObjectList		( );
 
-	CObject*					FindObjectByName	( ref_str	name	);
+	CObject*					FindObjectByName	( shared_str	name	);
 	CObject*					FindObjectByName	( LPCSTR	name	);
 	CObject*					FindObjectByCLS_ID	( CLASS_ID	cls		);
 

@@ -797,7 +797,7 @@ void	CActor::OnChangeVisual()
 	//-------------------------------------------------------------------------------
 };
 
-void	CActor::ChangeVisual			( ref_str NewVisual )
+void	CActor::ChangeVisual			( shared_str NewVisual )
 {
 	if (NewVisual == NULL || !(*NewVisual)) return;
 	if (cNameVisual() != NULL && (*cNameVisual()))

@@ -19,7 +19,7 @@ public:
 	CObject								*m_tpObject;
 	MonsterSpace::EObjectAction			m_tGoalType;
 	u32									m_dwQueueSize;
-	ref_str								m_caBoneName;
+	shared_str								m_caBoneName;
 
 public:
 	IC				CScriptObjectAction	();

@@ -92,14 +92,14 @@ protected:
 	Fvector m_vHudThrowDir;
 
 	//имена анимаций
-	ref_str	m_sAnimShow;
-	ref_str	m_sAnimHide;
-	ref_str	m_sAnimIdle;
-	ref_str	m_sAnimPlaying;
-	ref_str	m_sAnimThrowBegin;
-	ref_str	m_sAnimThrowIdle;
-	ref_str	m_sAnimThrowAct;
-	ref_str	m_sAnimThrowEnd;
+	shared_str	m_sAnimShow;
+	shared_str	m_sAnimHide;
+	shared_str	m_sAnimIdle;
+	shared_str	m_sAnimPlaying;
+	shared_str	m_sAnimThrowBegin;
+	shared_str	m_sAnimThrowIdle;
+	shared_str	m_sAnimThrowAct;
+	shared_str	m_sAnimThrowEnd;
 
 	//звук анимации "играния"
 	HUD_SOUND sndPlaying;

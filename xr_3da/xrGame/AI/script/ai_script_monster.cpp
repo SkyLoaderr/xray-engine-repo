@@ -69,7 +69,7 @@ void CScriptMonster::reinit()
 	inherited::reinit					();
 }
 
-void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
+void CScriptMonster::SetScriptControl(const bool bScriptControl, shared_str caSciptName)
 {
 	VERIFY				(
 		(
@@ -333,7 +333,7 @@ bool CScriptMonster::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 	return			(true);
 }
 
-const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)
+const Fmatrix CScriptMonster::GetUpdatedMatrix(shared_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)
 {
 	Fmatrix			l_tMatrix;
 

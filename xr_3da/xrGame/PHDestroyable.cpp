@@ -69,7 +69,7 @@ void CPHDestroyable::Load(LPCSTR section)
 		m_flags.set(fl_destroyable,TRUE);
 		m_destroyed_obj_visual_name=pSettings->r_string(section,"destroyed_vis_name");
 		CPhysicsShellHolder * shell_holder=PPhysicsShellHolder();
-		ref_str visual_name;
+		shared_str visual_name;
 		visual_name=shell_holder->cNameVisual();
 		shell_holder->cNameVisual_set(m_destroyed_obj_visual_name);
 		shell_holder->cNameVisual_set(visual_name);

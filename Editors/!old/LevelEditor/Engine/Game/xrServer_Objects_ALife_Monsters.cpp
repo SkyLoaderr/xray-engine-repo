@@ -364,8 +364,8 @@ void CSE_ALifeTrader::FillProps				(LPCSTR _pref, PropItemVec& items)
 	inherited2::FillProps		(_pref,items);
 	PHelper().CreateU32			(items, PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
 
-	ref_str						S;
-    ref_str	pref 				= PrepareKey(_pref,s_name,"ALife\\Supplies");
+	shared_str						S;
+    shared_str	pref 				= PrepareKey(_pref,s_name,"ALife\\Supplies");
 
     supplies_count				= m_tpSupplies.size();
 	PropValue					*V = PHelper().CreateS32(items, PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);

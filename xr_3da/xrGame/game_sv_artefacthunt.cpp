@@ -6,7 +6,7 @@
 #include "Level.h"
 #include "LevelGameDef.h"
 
-void	game_sv_ArtefactHunt::Create					(ref_str& options)
+void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {
 	inherited::Create					(options);
 

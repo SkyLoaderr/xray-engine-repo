@@ -10,7 +10,7 @@
 
 IC	void	CScriptRTokenList::add		(LPCSTR value)
 {
-	m_values.push_back(ref_str(value));
+	m_values.push_back(shared_str(value));
 }
 
 IC	void	CScriptRTokenList::remove	(u32 index)

@@ -236,7 +236,7 @@ void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/, LPSTR, u16 
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::Create					(ref_str &/**options/**/)
+void game_sv_GameState::Create					(shared_str &/**options/**/)
 {
 	string256	fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) 

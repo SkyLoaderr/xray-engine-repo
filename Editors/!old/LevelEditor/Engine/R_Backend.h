@@ -142,7 +142,7 @@ public:
 
 	// constants
 	IC	R_constant*					get_c				(LPCSTR		n)														{ if (ctable)	return ctable->get(n);else return 0;}
-	IC	R_constant*					get_c				(ref_str&	n)														{ if (ctable)	return ctable->get(n);else return 0;}
+	IC	R_constant*					get_c				(shared_str&	n)														{ if (ctable)	return ctable->get(n);else return 0;}
 
 	// constants - direct (fast)
 	IC	void						set_c				(R_constant* C, const Fmatrix& A)									{ if (C)		constants.set(C,A);					}
@@ -160,13 +160,13 @@ public:
 	IC	void						set_ca				(LPCSTR n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
 	IC	void						set_ca				(LPCSTR n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
 
-	// constants - ref_str (average)
-	IC	void						set_c				(ref_str& n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(ref_str& n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(ref_str& n, float x, float y, float z, float w)					{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
-	IC	void						set_ca				(ref_str& n, u32 e, const Fmatrix& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(ref_str& n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(ref_str& n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
+	// constants - shared_str (average)
+	IC	void						set_c				(shared_str& n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	IC	void						set_c				(shared_str& n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	IC	void						set_c				(shared_str& n, float x, float y, float z, float w)					{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
+	IC	void						set_ca				(shared_str& n, u32 e, const Fmatrix& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	IC	void						set_ca				(shared_str& n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	IC	void						set_ca				(shared_str& n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
 
 	IC	void						Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
 	IC	void						Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC);

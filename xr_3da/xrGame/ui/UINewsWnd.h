@@ -32,7 +32,7 @@ public:
 	CUIListWnd		UIListWnd;
 
 private:
-	void			AddNewsItem	(const ref_str &text);
+	void			AddNewsItem	(const shared_str &text);
 };
 
 //////////////////////////////////////////////////////////////////////////

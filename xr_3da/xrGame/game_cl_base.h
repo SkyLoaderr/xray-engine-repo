@@ -88,7 +88,7 @@ public:
 	void							u_EventGen				(NET_Packet& P, u16 type, u16 dest);
 	void							u_EventSend				(NET_Packet& P);
 
-	virtual		void				ChatSayTeam				(const ref_str &phrase)	{};
-	virtual		void				ChatSayAll				(const ref_str &phrase)	{};
+	virtual		void				ChatSayTeam				(const shared_str &phrase)	{};
+	virtual		void				ChatSayAll				(const shared_str &phrase)	{};
 	virtual		void				OnChatMessage			(NET_Packet* P)	{};
 };

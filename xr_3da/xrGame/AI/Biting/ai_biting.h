@@ -167,7 +167,7 @@ public:
 	virtual	CEntity 		*GetCurrentCorpse				();
 	virtual int				get_enemy_strength				();
 	
-	virtual void			SetScriptControl				(const bool bScriptControl, ref_str caSciptName);
+	virtual void			SetScriptControl				(const bool bScriptControl, shared_str caSciptName);
 
 
 	// ---------------------------------------------------------------------------------
@@ -213,7 +213,7 @@ public:
 	
 	virtual void			event_on_step					() {}
 	virtual float			get_current_animation_time		();
-	virtual	void			on_animation_start				(ref_str anim);
+	virtual	void			on_animation_start				(shared_str anim);
 	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist,const CEntity *enemy = 0);

@@ -22,7 +22,7 @@ IC	const CLASS_ID &CObjectItemAbstract::clsid	() const
 	return				(m_clsid);
 }
 
-IC	ref_str	CObjectItemAbstract::script_clsid	() const
+IC	shared_str	CObjectItemAbstract::script_clsid	() const
 {
 	return				(m_script_clsid);
 }

@@ -10,7 +10,7 @@
 
 
 
-void	game_sv_Deathmatch::Create					(ref_str& options)
+void	game_sv_Deathmatch::Create					(shared_str& options)
 {
 	inherited::Create						(options);
 	fraglimit			= get_option_i		(*options,"fraglimit",0);

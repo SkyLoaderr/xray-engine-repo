@@ -106,7 +106,7 @@ str_container::~str_container		()
 	//R_ASSERT(container.empty());
 }
 /*
-ref_str& __cdecl ref_str::sprintf(const char* format, ...)
+shared_str& __cdecl shared_str::sprintf(const char* format, ...)
 {
 	string4096 	buf;
 	va_list		p;
@@ -114,6 +114,6 @@ ref_str& __cdecl ref_str::sprintf(const char* format, ...)
 	int vs_sz	= _vsnprintf(buf,sizeof(buf)-1,format,p); buf[sizeof(buf)-1]=0;
 	va_end		(p);
     if (vs_sz)	_set(buf);	
-    return 		(ref_str&)*this;
+    return 		(shared_str&)*this;
 }
 */

@@ -28,7 +28,7 @@ public:
 	virtual void	Draw					();
 	void			SetColor				(const u32 cl) { UIBorder.SetColor(cl); }
 	// Имя карты
-	ref_str			m_strMapName;
+	shared_str			m_strMapName;
 protected:
 	// Фрейм для оторажения рамочки
 	CUIFrameWindow	UIBorder;

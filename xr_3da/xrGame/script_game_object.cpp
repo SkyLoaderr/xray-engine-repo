@@ -60,7 +60,7 @@ BIND_FUNCTION01	(m_tpGameObject,	CScriptGameObject::SetSatiety,			CEntityAlive,	
 BIND_FUNCTION01	(m_tpGameObject,	CScriptGameObject::SetRadiation,		CEntityAlive,	ChangeRadiation,	float,							float);
 BIND_FUNCTION01	(m_tpGameObject,	CScriptGameObject::SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,							float);
 BIND_FUNCTION01	(m_tpGameObject,	CScriptGameObject::SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,							float);
-BIND_FUNCTION02	(m_tpGameObject,	CScriptGameObject::SetScriptControl,	CScriptMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					ref_str);
+BIND_FUNCTION02	(m_tpGameObject,	CScriptGameObject::SetScriptControl,	CScriptMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					shared_str);
 BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetScriptControl,	CScriptMonster,	GetScriptControl,	bool,								false);
 BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
 BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetEnemyStrength,	CScriptMonster,	get_enemy_strength,	int,								0);

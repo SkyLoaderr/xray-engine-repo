@@ -43,7 +43,7 @@ xrGameSpyClientData::~xrGameSpyClientData()
 	m_bCDKeyAuth = false;
 }
 //-------------------------------------------------------
-BOOL xrGameSpyServer::Connect(ref_str &session_name)
+BOOL xrGameSpyServer::Connect(shared_str &session_name)
 {
 	BOOL res = inherited::Connect(session_name);
 	if (!res) return res;

@@ -162,7 +162,7 @@ LPCSTR EFS_Utils::AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name)
 
 LPCSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name)
 {
-	ref_str tmp = src_name;
+	shared_str tmp = src_name;
     LPCSTR s 	= src_name;
     LPSTR d 	= dest_name;
     int sv_depth= depth;

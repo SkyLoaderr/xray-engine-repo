@@ -33,6 +33,6 @@ IC	CProfiler&	profiler()
 IC	CProfileStats::CProfileStats		()
 {
 	m_time			= 0.f;
-	m_name			= ref_str("");
+	m_name			= shared_str("");
 	m_update_time	= 0;
 }

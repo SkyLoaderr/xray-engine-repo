@@ -147,7 +147,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 void CLocatorAPI::ProcessArchive(const char* _path)
 {
 	// find existing archive
-	ref_str path		= _path;
+	shared_str path		= _path;
 	for (archives_it it=archives.begin(); it!=archives.end(); ++it)
 		if (it->path==path)	return;
 
@@ -448,8 +448,8 @@ void	CLocatorAPI::file_list_close	(xr_vector<char*>* &lst)
 struct fl_mask{
 	bool 	b_cmp_nm;
     bool	b_cmp_ext;
-	ref_str nm;
-    ref_str ext;
+	shared_str nm;
+    shared_str ext;
     fl_mask():b_cmp_nm(false),b_cmp_ext(false){};
 };
 

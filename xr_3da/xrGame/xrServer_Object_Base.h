@@ -56,7 +56,7 @@ public:
 
 	// for ALife control
 	bool							m_bALifeControl;
-	ref_str							m_ini_string;
+	shared_str							m_ini_string;
 	xr_vector<u16>					children;
 
 	//client object custom data serialization

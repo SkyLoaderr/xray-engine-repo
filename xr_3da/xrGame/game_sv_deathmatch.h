@@ -21,7 +21,7 @@ protected:
 
 
 
-	ref_str							m_sBaseWeaponCostSection;
+	shared_str							m_sBaseWeaponCostSection;
 	
 	s32								fraglimit; //dm,tdm,ah
 	s32								timelimit; //dm
@@ -62,7 +62,7 @@ protected:
 	virtual	void					CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 public:
 									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
-	virtual		void				Create					(ref_str &options);
+	virtual		void				Create					(shared_str &options);
 
 	virtual		LPCSTR				type_name				() const { return "deathmatch";};
 	virtual		void				net_Export_State		(NET_Packet& P, ClientID id_to);

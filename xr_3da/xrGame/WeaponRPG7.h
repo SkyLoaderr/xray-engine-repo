@@ -26,10 +26,10 @@ public:
 
 	virtual void net_Import			( NET_Packet& P);				// import from server
 protected:
-	Fvector *m_pGrenadePoint;
+	Fvector *	m_pGrenadePoint;
 
-	ref_str	m_sGrenadeBoneName;
-	ref_str	m_sHudGrenadeBoneName;
+	shared_str	m_sGrenadeBoneName;
+	shared_str	m_sHudGrenadeBoneName;
 
-	ref_str m_sRocketSection;
+	shared_str	m_sRocketSection;
 };

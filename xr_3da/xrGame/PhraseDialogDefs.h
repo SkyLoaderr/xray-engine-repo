@@ -25,7 +25,7 @@ typedef enum {
 //тип id фразы
 typedef int PHRASE_ID;
 
-typedef ref_str	PHRASE_DIALOG_ID;
+typedef shared_str	PHRASE_DIALOG_ID;
 typedef int		PHRASE_DIALOG_INDEX;
 
 DEFINE_VECTOR(PHRASE_DIALOG_ID,		DIALOG_ID_VECTOR,		DIALOG_ID_IT);

@@ -59,7 +59,7 @@ protected:
 	float m_fEnergy;
 	float m_fEnergyMax;
 	float m_fEnergyDecreasePerTime;
-	ref_str	m_sParticleName;
+	shared_str	m_sParticleName;
 
 
 	float m_fRadius;

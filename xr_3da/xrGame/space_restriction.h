@@ -41,8 +41,8 @@ private:
 protected:
 	bool							m_initialized;
 	bool							m_applied;
-	ref_str							m_out_restrictions;
-	ref_str							m_in_restrictions;
+	shared_str						m_out_restrictions;
+	shared_str						m_in_restrictions;
 	xr_vector<u32>					m_border;
 	xr_vector<u32>					m_temp;
 	CSpaceRestrictionManager		*m_space_restriction_manager;
@@ -65,7 +65,7 @@ protected:
 			bool					affect						(CBaseRestrictionPtr bridge, u32 start_vertex_id, u32 dest_vertex_id) const;
 
 public:
-									CSpaceRestriction			(CSpaceRestrictionManager *space_restriction_manager, ref_str out_restrictions, ref_str in_restrictions);
+									CSpaceRestriction			(CSpaceRestrictionManager *space_restriction_manager, shared_str out_restrictions, shared_str in_restrictions);
 			void					initialize					();
 			void					remove_border				();
 	template <typename T1, typename T2>
@@ -74,8 +74,8 @@ public:
 			u32						accessible_nearest			(const Fvector &position, Fvector &result);
 			bool					accessible					(const Fvector &position, float radius);
 			bool					accessible					(u32 level_vertex_id, float radius);
-	IC		ref_str					out_restrictions			() const;
-	IC		ref_str					in_restrictions				() const;
+	IC		shared_str					out_restrictions			() const;
+	IC		shared_str					in_restrictions				() const;
 	IC		bool					applied						() const;
 	IC		bool					inside						(const Fvector &position);
 	IC		bool					inside						(u32 level_vertex_id, bool partially_inside);

@@ -35,17 +35,17 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 {
 	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_ArticleIndex);
 
-	CUIXml uiXml;
-	CUIXmlInit xml_init;
-	string128 xml_file_full;
-	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+	CUIXml		uiXml;
+	CUIXmlInit	xml_init;
+	string_path xml_file_full;
+	strconcat	(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
 	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
 	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(pNode, "encyclopedia article id=", *ref_str(item_data.id));
+	R_ASSERT3(pNode, "encyclopedia article id=", *shared_str(item_data.id));
 
 	//текст
 	data()->text = uiXml.Read(pNode, "text", 0);

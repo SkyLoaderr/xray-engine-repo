@@ -24,26 +24,26 @@ namespace SpaceRestrictionHolder {
 
 class CSpaceRestrictionHolder {
 public:
-	typedef xr_map<ref_str,CSpaceRestrictionBridge*>	RESTRICTIONS;
+	typedef xr_map<shared_str,CSpaceRestrictionBridge*>	RESTRICTIONS;
 
 private:
-	xr_vector<ref_str>				m_temp;
+	xr_vector<shared_str>				m_temp;
 	string4096						m_temp_string;
 	RESTRICTIONS					m_restrictions;
-	ref_str							m_default_out_restrictions;
-	ref_str							m_default_in_restrictions;
+	shared_str							m_default_out_restrictions;
+	shared_str							m_default_in_restrictions;
 
 protected:
-	IC		ref_str					normalize_string				(ref_str space_restrictors);
+	IC		shared_str					normalize_string				(shared_str space_restrictors);
 	IC		void					collect_garbage					();
-	IC		ref_str					default_out_restrictions		() const;
-	IC		ref_str					default_in_restrictions			() const;
-	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions) = 0;
+	IC		shared_str					default_out_restrictions		() const;
+	IC		shared_str					default_in_restrictions			() const;
+	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions) = 0;
 
 public:
 	IC								CSpaceRestrictionHolder			();
 	virtual							~CSpaceRestrictionHolder		();
-			SpaceRestrictionHolder::CBaseRestrictionPtr	restriction	(ref_str space_restrictors);
+			SpaceRestrictionHolder::CBaseRestrictionPtr	restriction	(shared_str space_restrictors);
 			void					register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::ERestrictorTypes &restrictor_type);
 };
 

@@ -37,7 +37,7 @@ typedef lua_State CLuaVirtualMachine;
 struct SMemberCallback {
 	luabind::functor<void>	*m_lua_function;
 	luabind::object			*m_lua_object;
-	ref_str					m_method_name;
+	shared_str				m_method_name;
 };
 
 #include "ai_script_lua_space.h"

@@ -200,20 +200,20 @@ protected:
 	// имена партиклов зоны
 
 	//обычное состояние зоны
-	ref_str m_sIdleParticles;
+	shared_str m_sIdleParticles;
 	//выброс зоны
-	ref_str m_sBlowoutParticles;
+	shared_str m_sBlowoutParticles;
 
 
 	//появление большого и мальнекого объекта в зоне
-	ref_str m_sEntranceParticlesSmall;
-	ref_str m_sEntranceParticlesBig;
+	shared_str m_sEntranceParticlesSmall;
+	shared_str m_sEntranceParticlesBig;
 	//поражение большого и мальнекого объекта в зоне
-	ref_str m_sHitParticlesSmall;
-	ref_str m_sHitParticlesBig;
+	shared_str m_sHitParticlesSmall;
+	shared_str m_sHitParticlesBig;
 	//нахождение большого и мальнекого объекта в зоне
-	ref_str m_sIdleObjectParticlesSmall;
-	ref_str m_sIdleObjectParticlesBig;
+	shared_str m_sIdleObjectParticlesSmall;
+	shared_str m_sIdleObjectParticlesBig;
 
 	ref_sound m_idle_sound;
 	ref_sound m_blowout_sound;
@@ -325,13 +325,13 @@ protected:
 	float m_fArtefactSpawnHeight;
 
 	//имя партиклов, которые проигрываются во время и на месте рождения артефакта
-	ref_str m_sArtefactSpawnParticles;
+	shared_str m_sArtefactSpawnParticles;
 	//звук рождения артефакта
 	ref_sound m_ArtefactBornSound;
 
 	struct ARTEFACT_SPAWN
 	{
-		ref_str section;
+		shared_str section;
 		float probability;
 	};
 

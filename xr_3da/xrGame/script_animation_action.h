@@ -21,7 +21,7 @@ public:
 	};
 
 public:
-	ref_str									m_caAnimationToPlay;
+	shared_str									m_caAnimationToPlay;
 	MonsterSpace::EMentalState				m_tMentalState;
 	EGoalType								m_tGoalType;
 	bool									m_bHandUsage;

@@ -8,8 +8,8 @@
 
 //статьи в энциклопедии
 typedef int			ARTICLE_INDEX;
-typedef ref_str		ARTICLE_STR_ID;
-#define NO_ARTICLE ARTICLE_INDEX(-1)
+typedef shared_str	ARTICLE_STR_ID;
+#define NO_ARTICLE	ARTICLE_INDEX(-1)
 
 struct ARTICLE_DATA
 {

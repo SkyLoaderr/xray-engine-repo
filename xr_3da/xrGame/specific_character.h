@@ -22,9 +22,9 @@ struct SSpecificCharacterData : CSharedResource
 	virtual ~SSpecificCharacterData ();
 
 	//игровое имя персонажа
-	ref_str m_sGameName;
+	shared_str m_sGameName;
 	//текст с биографией персонажа (линк на string table)
-	ref_str m_sBioText;
+	shared_str m_sBioText;
 
 	//начальный диалог
 	PHRASE_DIALOG_INDEX m_iStartDialog;

@@ -32,7 +32,7 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 
 template<typename T>
 IC T*	UIScriptWnd::GetControl(LPCSTR name){
-		ref_str n = name;
+		shared_str n = name;
 		CUIWindow* pWnd = FindChild(n);
 		if(pWnd == NULL)
 			return NULL;

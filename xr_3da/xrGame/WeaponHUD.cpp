@@ -194,7 +194,7 @@ void CWeaponHUD::StopCurrentAnimWithoutCallback		()
 ///////////////////////////////////////////////////////////
 // Синглтоны для загрузки и освобождения общей информации 
 // в HUD
-SHARED_HUD_INFO*  CWeaponHUD::GetHudInfo (ref_str section, CHudItem* pHudItem)
+SHARED_HUD_INFO*  CWeaponHUD::GetHudInfo (shared_str section, CHudItem* pHudItem)
 {
 	SHARED_HUD_INFO* hud_info = NULL;
 
@@ -218,7 +218,7 @@ SHARED_HUD_INFO*  CWeaponHUD::GetHudInfo (ref_str section, CHudItem* pHudItem)
 	return hud_info;
 }
 
-void CWeaponHUD::ReleaseHudInfo		(ref_str section)
+void CWeaponHUD::ReleaseHudInfo		(shared_str section)
 {
 	SHARED_HUD_INFO_MAP_IT it = m_SharedHudInfoMap.find(section);
 

@@ -17,7 +17,7 @@ class CScriptHit {
 public:
 	float				m_fPower; 
 	Fvector				m_tDirection;
-	ref_str				m_caBoneName;
+	shared_str				m_caBoneName;
 	CScriptGameObject		*m_tpDraftsman;
 	float				m_fImpulse;
 	int					m_tHitType;

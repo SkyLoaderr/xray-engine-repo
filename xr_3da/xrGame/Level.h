@@ -47,7 +47,7 @@ protected:
 	// seniority hierarchy holder
 	CSeniorityHierarchyHolder	*m_seniority_hierarchy_holder;
 	// level name
-	ref_str						m_name;
+	shared_str						m_name;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -116,8 +116,8 @@ public:
 	xr_vector<ref_sound*>		static_Sounds;
 
 	// startup options
-	ref_str						m_caServerOptions;
-	ref_str						m_caClientOptions;
+	shared_str						m_caServerOptions;
+	shared_str						m_caClientOptions;
 
 	// Starting/Loading
 	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client);
@@ -172,7 +172,7 @@ public:
 	virtual ~CLevel();
 
 	//названияе текущего уровня
-	IC	ref_str			name					() const;
+	IC	shared_str			name					() const;
 
 	//gets the time from the game simulation
 	
@@ -247,7 +247,7 @@ IC CSeniorityHierarchyHolder &CLevel::seniority_holder()
 	return				(*m_seniority_hierarchy_holder);
 }
 
-IC	ref_str	CLevel::name	() const
+IC	shared_str	CLevel::name	() const
 {
 	return				(m_name);
 }

@@ -16,7 +16,7 @@ class CPatrolPath;
 class CPatrolPathParams {
 public:
 	const CPatrolPath						*m_path;
-	ref_str									m_path_name;
+	shared_str									m_path_name;
 	PatrolPathManager::EPatrolStartType		m_tPatrolPathStart;
 	PatrolPathManager::EPatrolRouteType		m_tPatrolPathStop;
 	bool									m_bRandom;

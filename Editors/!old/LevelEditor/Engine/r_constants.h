@@ -46,7 +46,7 @@ struct	R_constant_load
 
 struct	R_constant
 {
-	ref_str					name;		// HLSL-name
+	shared_str					name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2
 	u16						destination;// pixel/vertex/(or both)/sampler
 
@@ -87,7 +87,7 @@ public:
 	BOOL					parse		(void* desc, u16 destination);
 	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR		name);		// slow search
-	R_constant*				get			(ref_str&	name);		// fast search
+	R_constant*				get			(shared_str&	name);		// fast search
 
 	BOOL					equal		(R_constant_table& C);
 	BOOL					equal		(R_constant_table* C)	{	return equal(*C);		}

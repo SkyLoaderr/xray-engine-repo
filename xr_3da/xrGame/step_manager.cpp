@@ -49,7 +49,7 @@ void CStepManager::reinit()
 	m_time_anim_started	= 0;
 }
 
-void CStepManager::on_animation_start(ref_str anim)
+void CStepManager::on_animation_start(shared_str anim)
 {
 	m_time_anim_started = Level().timeServer(); 
 

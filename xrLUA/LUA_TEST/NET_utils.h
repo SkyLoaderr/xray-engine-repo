@@ -105,7 +105,7 @@ public:
 	{
 		w	(S,(u32)xr_strlen(S)+1);
 	}
-	IC void w_stringZ			( ref_str& p )
+	IC void w_stringZ			( shared_str& p )
 	{
     	if (*p)	w(*p,(u32)xr_strlen(p)+1);
         else	w_u8(0);
@@ -230,7 +230,7 @@ public:
 		r		(S,(u32)len+1);
 	}
     
-	void 		r_stringZ		(ref_str& dest)
+	void 		r_stringZ		(shared_str& dest)
     {
         dest		= LPCSTR(&B.data[r_pos]);
         r_advance	(dest.size()+1);

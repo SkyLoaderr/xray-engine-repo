@@ -240,7 +240,7 @@ enum EPState {
 	PS_STAND_UPPER
 };
 
-typedef		ref_str			anim_string;
+typedef		shared_str			anim_string;
 #define		DEFAULT_ANIM	eAnimStandIdle
 
 DEFINE_VECTOR	(CMotionDef*,		ANIM_VECTOR,			ANIM_IT);
@@ -341,10 +341,10 @@ struct SAAParam {
 	float		dist;
 };
 
-DEFINE_MAP(ref_str,	SAAParam, AA_MAP, AA_MAP_IT);
+DEFINE_MAP(shared_str,	SAAParam, AA_MAP, AA_MAP_IT);
 
 struct SCurrentAnimationInfo {
-	ref_str		name;
+	shared_str		name;
 
 	EMotionAnim	motion;
 	u8			index;
@@ -386,7 +386,7 @@ DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
 DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
 DEFINE_MAP		(u16,				t_fx_index,				FX_MAP_U16,					FX_MAP_U16_IT);	
-DEFINE_MAP		(ref_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
+DEFINE_MAP		(shared_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
 
 
 DEFINE_VECTOR	(SEQ_VECTOR, VELOCITY_CHAIN_VEC, VELOCITY_CHAIN_VEC_IT);

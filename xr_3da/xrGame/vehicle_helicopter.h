@@ -25,7 +25,7 @@ class CVehicleHelicopter :
 protected:
 	ref_sound			m_engine_sound;
 	CObjectAnimator		*m_animator;
-	ref_str				m_animation_sting;
+	shared_str			m_animation_sting;
 	CMotionDef			*m_animation;
 public:
 						CVehicleHelicopter	();
@@ -66,7 +66,7 @@ public:
 	virtual void		HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
 protected:
 	IC		const CObjectAnimator	*animator	() const;
-	IC		const ref_str			&animation	() const;
+	IC		const shared_str			&animation	() const;
 };
 
 #include "vehicle_helicopter_inline.h"

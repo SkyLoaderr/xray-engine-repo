@@ -15,7 +15,7 @@ class CScriptGameObject;
 
 class CScriptSound {
 	mutable ref_sound		m_sound;
-	ref_str					m_caSoundToPlay;
+	shared_str					m_caSoundToPlay;
 
 	friend class CScriptSoundAction;
 public:

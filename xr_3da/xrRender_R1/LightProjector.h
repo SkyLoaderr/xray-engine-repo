@@ -34,9 +34,9 @@ private:
 	xr_vector<int>			taskid;
 
 	ref_rt					RT;
-	ref_str					c_xform;
-	ref_str					c_clamp;
-	ref_str					c_factor;
+	shared_str					c_xform;
+	shared_str					c_clamp;
+	shared_str					c_factor;
 public:
 	void					set_object		(IRenderable*	O);
 	BOOL					shadowing		()			{ return current!=0;	}

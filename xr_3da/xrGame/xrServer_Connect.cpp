@@ -9,7 +9,7 @@
 #include "xrMessages.h"
 
 
-BOOL xrServer::Connect(ref_str &session_name)
+BOOL xrServer::Connect(shared_str &session_name)
 {
 	Msg						("! sv_Connect: %s",	*session_name);
 

@@ -90,7 +90,7 @@ protected:
 
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
-	ref_str					hud_sect;
+	shared_str				hud_sect;
 	bool					m_bRenderHud;
 
 	//время нахождения в текущем состоянии

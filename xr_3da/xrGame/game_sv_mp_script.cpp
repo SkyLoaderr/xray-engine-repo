@@ -64,7 +64,7 @@ void game_sv_mp::script_register(lua_State *L)
 
 
 
-void game_sv_mp_script::Create	(ref_str &options)
+void game_sv_mp_script::Create	(shared_str &options)
 {
 	inherited::Create(options);
 	LPCSTR lpcstr_options = options.c_str();

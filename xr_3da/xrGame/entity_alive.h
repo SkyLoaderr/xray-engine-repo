@@ -4,7 +4,7 @@
 #include "entitycondition.h"
 
 DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
-DEFINE_VECTOR(ref_str, STR_VECTOR, STR_VECTOR_IT);
+DEFINE_VECTOR(shared_str, STR_VECTOR, STR_VECTOR_IT);
 
 class CEntityAlive			: public CEntity, 
 							  virtual public CEntityCondition

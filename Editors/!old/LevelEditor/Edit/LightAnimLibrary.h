@@ -7,13 +7,13 @@
 	#include "FolderLib.h"              
 #endif
 
-class ENGINE_API CLAItem{
+class ENGINE_API CLAItem				{
 public:
-    ref_str		cName;
-    float   	fFPS;
-    DEFINE_MAP(int,u32,KeyMap,KeyPairIt);
-    KeyMap		Keys;
-    int			iFrameCount;
+    shared_str		cName;
+    float   		fFPS;
+    DEFINE_MAP		(int,u32,KeyMap,KeyPairIt);
+    KeyMap			Keys;
+    int				iFrameCount;
 public:
                 	CLAItem				();
 

@@ -565,8 +565,8 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
                 MP->r_stringZ(buf);
                 u32 dwFlags		= MP->r_u32();
                 CMotionDef	D;		D.Load(this,MP,dwFlags);
-                if (dwFlags&esmFX)	m_fx->insert(mk_pair(ref_str(_strlwr(buf)),D));
-                else				m_cycle->insert(mk_pair(ref_str(_strlwr(buf)),D));
+                if (dwFlags&esmFX)	m_fx->insert(mk_pair(shared_str(_strlwr(buf)),D));
+                else				m_cycle->insert(mk_pair(shared_str(_strlwr(buf)),D));
             }
         }
         MP->close();
@@ -592,7 +592,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
         R_ASSERT			(MS->find_chunk(m_idx+1));             
         MS->r_stringZ		(mname);
 
-        ref_str	m_key		= ref_str(strlwr(mname));
+        shared_str	m_key		= shared_str(strlwr(mname));
 //		CKinematics::accel_map::iterator it = motion_map->find(m_key);
 //		if (it!=motion_map->end())	xr_delete (it->second);
         motion_map->insert	(mk_pair(m_key,m_idx));

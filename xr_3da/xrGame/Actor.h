@@ -358,7 +358,7 @@ protected:
 	CHolderCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
 	// Tip for action for object we're looking at
-	ref_str					m_sDefaultObjAction;
+	shared_str				m_sDefaultObjAction;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;
@@ -555,11 +555,11 @@ public:
 		return				(true);
 	}
 
-	virtual	ref_str			GetDefaultVisualOutfit	() const	{return m_DefaultVisualOutfit;};
-	virtual	void			SetDefaultVisualOutfit	(ref_str DefaultOutfit) {m_DefaultVisualOutfit = DefaultOutfit;};
+	virtual	shared_str			GetDefaultVisualOutfit	() const	{return m_DefaultVisualOutfit;};
+	virtual	void			SetDefaultVisualOutfit	(shared_str DefaultOutfit) {m_DefaultVisualOutfit = DefaultOutfit;};
 	virtual void			UpdateAnimation			() 	{ g_SetAnimation(mstate_real); };
 
-	virtual void			ChangeVisual			( ref_str NewVisual );
+	virtual void			ChangeVisual			( shared_str NewVisual );
 	virtual void			OnChangeVisual			();
 	
 
@@ -590,7 +590,7 @@ protected:
 		CStatGraph				*pStatGraph;
 		u32						m_dwStartKickTime;
 
-		ref_str					m_DefaultVisualOutfit;
+		shared_str					m_DefaultVisualOutfit;
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif

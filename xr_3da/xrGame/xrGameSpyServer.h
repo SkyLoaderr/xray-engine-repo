@@ -40,9 +40,9 @@ private:
 protected:
 	virtual bool					NeedToCheckClient	(IClient* CL);
 public:
-	ref_str							HostName;
-	ref_str							MapName;
-	ref_str							Password;
+	shared_str							HostName;
+	shared_str							MapName;
+	shared_str							Password;
 	int								m_iMaxPlayers;
 	bool							m_bCheckCDKey;
 
@@ -52,7 +52,7 @@ public:
 	xrGameSpyServer					();
 	virtual ~xrGameSpyServer		();
 
-	virtual BOOL			Connect				(ref_str& session_name);
+	virtual BOOL			Connect				(shared_str& session_name);
 	virtual void			Update				();
 
 //	virtual void			OnCL_Connected		(IClient* C);

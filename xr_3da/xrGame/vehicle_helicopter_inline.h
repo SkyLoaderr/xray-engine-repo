@@ -13,7 +13,7 @@ IC	const CObjectAnimator *CVehicleHelicopter::animator	() const
 	return					(m_animator);
 }
 
-IC	const ref_str &CVehicleHelicopter::animation		() const
+IC	const shared_str &CVehicleHelicopter::animation		() const
 {
 	return					(m_animation_sting);
 }

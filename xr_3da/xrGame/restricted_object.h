@@ -31,11 +31,11 @@ public:
 			bool		accessible				(const Fvector &position, float radius) const;
 			bool		accessible				(u32 level_vertex_id) const;
 			bool		accessible				(u32 level_vertex_id, float radius) const;
-			void		add_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
-			void		remove_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
+			void		add_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
+			void		remove_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
 			void		remove_all_restrictions	();
-			ref_str		in_restrictions			() const;
-			ref_str		out_restrictions		() const;
+			shared_str		in_restrictions			() const;
+			shared_str		out_restrictions		() const;
 	IC		bool		applied					() const;
 };
 

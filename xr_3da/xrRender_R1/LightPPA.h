@@ -20,7 +20,7 @@ class	CLightR_Manager
 {
 	ref_shader						hShader;
 	ref_geom						hGeom;
-	ref_str							hPPAcolor;
+	shared_str							hPPAcolor;
 	xrXRC							xrc;
 
 	xr_vector<light*>				selected_point;

@@ -26,7 +26,7 @@ public:
 	{}
 
 	// ”станавливаем иконку и ее размер
-	void			SetIcon(ref_str textureName, u32 uIconSize);
+	void			SetIcon(shared_str textureName, u32 uIconSize);
 	virtual void	Draw();
 	virtual void	Show(bool status);
 	// ѕосле смены позиции листа обновить положение иконочки

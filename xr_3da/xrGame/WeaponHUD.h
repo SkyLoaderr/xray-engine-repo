@@ -43,7 +43,7 @@ private:
 
 };
 
-DEFINE_MAP (ref_str, SHARED_HUD_INFO*, SHARED_HUD_INFO_MAP, SHARED_HUD_INFO_MAP_IT);
+DEFINE_MAP (shared_str, SHARED_HUD_INFO*, SHARED_HUD_INFO_MAP, SHARED_HUD_INFO_MAP_IT);
 
 
 //---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ DEFINE_MAP (ref_str, SHARED_HUD_INFO*, SHARED_HUD_INFO_MAP, SHARED_HUD_INFO_MAP_
 class CWeaponHUD
 {
 	//имя секции HUD
-	ref_str				m_sHudSectionName;
+	shared_str				m_sHudSectionName;
 	//родительский объект HUD
 	CHudItem*			m_pParentWeapon;		
 	//флаг, если hud спрятан не показывается
@@ -122,8 +122,8 @@ public:
 
 
 protected:
-	static SHARED_HUD_INFO*				GetHudInfo			(ref_str section, CHudItem* pHudItem);
-	static void							ReleaseHudInfo		(ref_str section);
+	static SHARED_HUD_INFO*				GetHudInfo			(shared_str section, CHudItem* pHudItem);
+	static void							ReleaseHudInfo		(shared_str section);
 	static SHARED_HUD_INFO_MAP			m_SharedHudInfoMap;
 };
  

@@ -178,8 +178,8 @@ protected:
 	//-----------------------------------------------------------------------------/
 
 	// Имя секции из которой читать данные
-	ref_str		m_StrSectionName;
-	ref_str		m_StrPricesSection;
+	shared_str		m_StrSectionName;
+	shared_str		m_StrPricesSection;
 
 	// массив в котором хратнятся названия секций для оружия 
 	DEF_VECTOR(WPN_SECT_NAMES, std::string);
@@ -265,7 +265,7 @@ protected:
 	
 	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется на этапе считывания 
 	// информации из ltx файла соответствующего типу сетевой игры
-	typedef xr_vector<std::pair<ref_str, ref_str> >	CONFORMITY_TABLE;
+	typedef xr_vector<std::pair<shared_str, shared_str> >	CONFORMITY_TABLE;
 	typedef CONFORMITY_TABLE::iterator				CONFORMITY_TABLE_it;
 	CONFORMITY_TABLE								m_ConformityTable;
 	
@@ -277,7 +277,7 @@ protected:
 	bool		IsItemInShop(int idx);
 	
 	// Применить фильтр к секции с определенным оружием по заданной записи в ltx файле
-	void		ApplyFilter(int slotNum, const ref_str &name, const ref_str &value);
+	void		ApplyFilter(int slotNum, const shared_str &name, const shared_str &value);
 	// Заполняем лист с ящиками
 	void		InitWeaponBoxes();
 	void		RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item);

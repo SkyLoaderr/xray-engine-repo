@@ -72,7 +72,7 @@ void CUINewsWnd::AddNews()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUINewsWnd::AddNewsItem(const ref_str &text)
+void CUINewsWnd::AddNewsItem(const shared_str &text)
 {
 	static CUIString	str;
 	str.SetText(*text);

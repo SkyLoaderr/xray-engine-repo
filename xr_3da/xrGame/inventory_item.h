@@ -36,7 +36,7 @@ public:
 	virtual LPCSTR	Name				();
 	virtual LPCSTR	NameShort			();
 	virtual LPCSTR	NameComplex			();
-	ref_str			ItemDescription		() { return m_Description; }
+	shared_str		ItemDescription		() { return m_Description; }
 
 	
 	virtual void	OnEvent				(NET_Packet& P, u16 type);
@@ -91,8 +91,8 @@ public:
 public:
 	// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	CInventory*		m_pInventory;
-	ref_str			m_name;
-	ref_str			m_nameShort;
+	shared_str			m_name;
+	shared_str			m_nameShort;
 	char			m_nameComplex[255];
 	bool			m_drop;
 	//текущее положение вещи в инвентаре
@@ -143,7 +143,7 @@ protected:
 	int 			m_iXPos;											//позиция X в сетке инвенторя
 	int 			m_iYPos;											//позиция Y в сетке инвенторя
 	// Тектс описания вещи
-	ref_str			m_Description;
+	shared_str			m_Description;
 
 	////////// network //////////////////////////////////////////////////
 public:

@@ -65,7 +65,7 @@ namespace PS
 
 		virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_fTimeLimit:-1.f;}
 
-		virtual const ref_str	Name			(){VERIFY(m_Def); return m_Def->m_Name;}
+		virtual const shared_str	Name			(){VERIFY(m_Def); return m_Def->m_Name;}
 
         void				SetDestroyCB		(DestroyCallback 	destroy_cb)		{m_DestroyCallback 	= destroy_cb;}
         void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}

@@ -35,11 +35,11 @@ public:
 		u16					index;
 		Fvector				offset;
 		ParticlesInfoList	particles;
-		SParticlesInfo*		FindParticles			(const ref_str& ps_name);
+		SParticlesInfo*		FindParticles			(const shared_str& ps_name);
 	public:
 							SBoneInfo				(u16 idx, const Fvector& offs):index(idx),offset(offs){;}
-		SParticlesInfo*		AppendParticles			(CObject* object, const ref_str& ps_name);
-		void				StopParticles			(const ref_str& ps_name);
+		SParticlesInfo*		AppendParticles			(CObject* object, const shared_str& ps_name);
+		void				StopParticles			(const shared_str& ps_name);
 		void				StopParticles			(u16 sender_id);
 	};
 	DEFINE_VECTOR			(SBoneInfo,BoneInfoVec,BoneInfoVecIt);
@@ -67,12 +67,12 @@ public:
 	
 	void					UpdateParticles			();
 
-	void					StartParticles			(const ref_str& ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
-	void					StartParticles			(const ref_str& ps_name, const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
+	void					StartParticles			(const shared_str& ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
+	void					StartParticles			(const shared_str& ps_name, const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
 
 	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
-	void					StopParticles			(const ref_str& particles_name, u16 bone_id=BI_NONE);
-	void					AutoStopParticles		(const ref_str& ps_name, u16 bone_id);
+	void					StopParticles			(const shared_str& particles_name, u16 bone_id=BI_NONE);
+	void					AutoStopParticles		(const shared_str& ps_name, u16 bone_id);
 
 	static void				MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
 	static void				GetBonePos				(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result);

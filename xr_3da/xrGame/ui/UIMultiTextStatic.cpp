@@ -106,7 +106,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 }
 
 
-void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, float font_size, 
+void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, 
 								  CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str)
 {
 	R_ASSERT2( (m_indices.find(msg_name) == m_indices.end()),"message already defined !!!" );
@@ -124,7 +124,7 @@ void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, flo
 
 }
 
-EffectParams* CUICaption::customizeMessage(const ref_str& msg_name, const CUITextBanner::TextBannerStyles styleName)
+EffectParams* CUICaption::customizeMessage(const shared_str& msg_name, const CUITextBanner::TextBannerStyles styleName)
 {
 	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
 	
@@ -134,7 +134,7 @@ EffectParams* CUICaption::customizeMessage(const ref_str& msg_name, const CUITex
 	
 }
 
-void CUICaption::setCaption(const ref_str& msg_name, LPCSTR message_to_out, u32 color, bool replaceColor)
+void CUICaption::setCaption(const shared_str& msg_name, LPCSTR message_to_out, u32 color, bool replaceColor)
 {
 	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
 	SinglePhrase * sp = GetPhraseByIndex(m_indices[msg_name]);

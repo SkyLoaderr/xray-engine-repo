@@ -240,7 +240,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 			string16	tmp;
 			_itoa(P->money_for_round, tmp, 10);
-			ref_str PMoney(tmp);
+			shared_str PMoney(tmp);
 			HUD().GetUI()->UIMainIngameWnd.ChangeTotalMoneyIndicator(PMoney);
 
 			if (P->money_for_round != m_iCurrentPlayersMoney)

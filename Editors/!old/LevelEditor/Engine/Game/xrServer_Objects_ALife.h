@@ -51,8 +51,8 @@ add_to_type_list(CSE_ALifeSchedulable)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
-	ref_str							m_caConnectionLevelName;
-	ref_str							m_caConnectionPointName;
+	shared_str							m_caConnectionLevelName;
+	shared_str							m_caConnectionPointName;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
 
 									CSE_ALifeGraphPoint(LPCSTR caSection);
@@ -81,7 +81,7 @@ public:
 	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
-	ref_str							m_caGroupControl;
+	shared_str							m_caGroupControl;
 	flags32							m_flags;
 	ALife::_STORY_ID				m_story_id;
 
@@ -227,8 +227,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeSpaceRestrictor)
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	Fvector							m_tAngles;
-	ref_str							m_caLevelToChange;
-	ref_str							m_caLevelPointToChange;
+	shared_str							m_caLevelToChange;
+	shared_str							m_caLevelPointToChange;
 
 									CSE_ALifeLevelChanger	(LPCSTR caSection);
 	virtual							~CSE_ALifeLevelChanger	();
@@ -239,7 +239,7 @@ add_to_type_list(CSE_ALifeLevelChanger)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 	u32 							type;
 	f32 							mass;
-    ref_str 						fixed_bones;
+    shared_str 						fixed_bones;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);
     virtual 						~CSE_ALifeObjectPhysic	();
 	virtual bool					used_ai_locations		() const;
@@ -268,23 +268,23 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
 // light color    
     u32								color;
     float							brightness;
-    ref_str							color_animator;
+    shared_str							color_animator;
 // light texture    
-	ref_str							light_texture;
+	shared_str							light_texture;
 // range
     float							range;
 	float							m_virtual_size;
 // bones&motions
-	ref_str							guid_bone;
-    ref_str							fixed_bones;
+	shared_str							guid_bone;
+    shared_str							fixed_bones;
 // spot
 	float							spot_cone_angle;
 // ambient    
     float							m_ambient_radius;
     float							m_ambient_power;
-	ref_str							m_ambient_texture;
+	shared_str							m_ambient_texture;
 // glow    
-	ref_str							glow_texture;
+	shared_str							glow_texture;
 	float							glow_radius;
 // game
     float							m_health;
@@ -306,7 +306,7 @@ add_to_type_list(CSE_ALifeObjectProjector)
 #define script_type_list save_type_list(CSE_ALifeObjectProjector)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion,CSE_PHSkeleton)
-	ref_str							engine_sound;
+	shared_str							engine_sound;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
 	virtual	void					load						(NET_Packet &tNetPacket);

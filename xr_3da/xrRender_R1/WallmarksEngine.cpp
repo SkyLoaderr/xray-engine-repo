@@ -345,7 +345,7 @@ void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
 			for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
 				u32 item_cnt= F->r_u32();
 				if (item_cnt){
-					ref_str				tex_name;
+					shared_str				tex_name;
 					F->r_stringZ		(tex_name);
 					ref_shader	sh;		sh.create		("effects\\wallmark",*tex_name);
 					wm_slot* slot		= AppendSlot	(sh);

@@ -48,7 +48,7 @@ private:
 	// Структурка описывающая ньюс
 	typedef struct tagNewsTemplate
 	{
-		ref_str		str;
+		shared_str		str;
 	} SNewsTemplate;
 
 	// Array of news templates

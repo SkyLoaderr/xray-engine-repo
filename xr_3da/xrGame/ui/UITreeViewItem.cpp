@@ -346,7 +346,7 @@ std::string CUITreeViewItem::GetHierarchyAsText()
 // Standalone function for tree hierarchy creation
 //////////////////////////////////////////////////////////////////////////
 
-void CreateTreeBranch(ref_str nesting, ref_str leafName, CUIListWnd *pListToAdd, int leafProperty,
+void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pListToAdd, int leafProperty,
 					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor)
 {
 	// Nested function emulation
@@ -404,7 +404,7 @@ void CreateTreeBranch(ref_str nesting, ref_str leafName, CUIListWnd *pListToAdd,
 		if (pos != std::string::npos)
 		{
 			oneLevel.assign(group, 0, pos);
-			ref_str str(oneLevel.c_str());
+			shared_str str(oneLevel.c_str());
 			groupTree.push_back(CStringTable()(str));
 			group.erase(0, pos + 1);
 		}

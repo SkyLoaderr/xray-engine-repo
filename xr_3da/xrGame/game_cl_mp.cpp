@@ -115,7 +115,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	{
 		if ((kCHAT == key || kCHAT_TEAM == key) && pChatWnd)
 		{
-			ref_str prefix;
+			shared_str prefix;
 
 			if (kCHAT_TEAM == key)
 			{
@@ -133,7 +133,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			StartStopMenu(pChatWnd, false);
 			if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
 			{
-				ref_str phrase = pChatWnd->UIEditBox.GetText();
+				shared_str phrase = pChatWnd->UIEditBox.GetText();
 //				pChatWnd->Say(phrase);
 				(kCHAT == key) ? ChatSayAll(phrase) : ChatSayTeam(phrase);
 				pChatWnd->UIEditBox.SetText("");
@@ -199,7 +199,7 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 //////////////////////////////////////////////////////////////////////////
 
-void game_cl_mp::ChatSayAll(const ref_str &phrase)
+void game_cl_mp::ChatSayAll(const shared_str &phrase)
 {
 	NET_Packet	P;	
 	P.w_begin(M_CHAT_MESSAGE);
@@ -212,7 +212,7 @@ void game_cl_mp::ChatSayAll(const ref_str &phrase)
 
 //////////////////////////////////////////////////////////////////////////
 
-void game_cl_mp::ChatSayTeam(const ref_str &phrase)
+void game_cl_mp::ChatSayTeam(const shared_str &phrase)
 {
 
 	NET_Packet	P;

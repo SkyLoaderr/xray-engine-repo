@@ -7,9 +7,9 @@
 
 #include "alife_space.h"
 
-#define NO_INFO_INDEX (-1)
-typedef int			INFO_INDEX;
-typedef ref_str		INFO_STR_ID;
+#define NO_INFO_INDEX	(-1)
+typedef int				INFO_INDEX;
+typedef shared_str		INFO_STR_ID;
 
 
 struct INFO_DATA

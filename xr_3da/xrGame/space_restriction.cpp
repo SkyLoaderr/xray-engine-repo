@@ -158,7 +158,7 @@ CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictio
 	
 	LPSTR							S = (LPSTR)xr_malloc(acc_length*sizeof(char));
 	S[0]							= 0;
-	ref_str							temp = bridge->name();
+	shared_str						temp = bridge->name();
 	RESTRICTIONS::const_iterator	I = temp_restrictions.begin();
 	RESTRICTIONS::const_iterator	E = temp_restrictions.end();
 	for ( ; I != E; ++I)
@@ -173,7 +173,7 @@ void CSpaceRestriction::merge_free_in_retrictions	()
 {
 	string256								temp;
 	for (u32 i=0, n=_GetItemCount(*m_in_restrictions); i<n ;++i) {
-		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(ref_str(_GetItem(*m_in_restrictions,i,temp)));
+		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(shared_str(_GetItem(*m_in_restrictions,i,temp)));
 		m_free_in_restrictions.push_back	(CFreeInRestriction(bridge,false));
 	}
 

@@ -144,7 +144,7 @@ public:
 class ENGINE_API	CPartDef
 {
 public:
-	ref_str			Name;
+	shared_str			Name;
 	xr_vector<u32>	bones;
 	CPartDef()		: Name(0) {};
 };
@@ -163,7 +163,7 @@ class ENGINE_API	CSkeletonAnimated	: public CKinematics
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
 public: 
-	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
+	typedef xr_map<shared_str,CMotionDef,str_pred>	mdef;
 #ifdef _EDITOR
 public:
 #else

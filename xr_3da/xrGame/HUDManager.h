@@ -28,7 +28,7 @@ private:
 	// Cтруктурка буфера для надписей выводимых шрифтами
 	struct					FontBuffer
 	{
-		ref_str				buf;
+		shared_str				buf;
 		float				outX, outY;
 		FontBuffer():		buf(NULL), outX(0), outY(0) {}
 	};
@@ -91,7 +91,7 @@ public:
 	int						ClientToScreenY		(int top, u32 align);
 	
 	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
-	void __cdecl 			outMessage			(u32 C, const ref_str& from, LPCSTR msg, ...);
+	void __cdecl 			outMessage			(u32 C, const shared_str& from, LPCSTR msg, ...);
 
 
 	//устанвка внешнего вида прицела в зависимости от текущей дисперсии

@@ -28,7 +28,7 @@ SMapLocation::SMapLocation()
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str SMapLocation::LevelName()
+shared_str SMapLocation::LevelName()
 {
 	if(!attached_to_object)
 		return level_name;
@@ -70,7 +70,7 @@ void SMapLocation::UpdateAnimation()
 
 //////////////////////////////////////////////////////////////////////////
 
-void SMapLocation::SetColorAnimation(const ref_str &animationName)
+void SMapLocation::SetColorAnimation(const shared_str &animationName)
 {
 	colorAnimation	= LALib.FindItem(*animationName);
 	R_ASSERT(colorAnimation);

@@ -92,8 +92,8 @@ public:
 
 	xr_vector<Fbox3>											main_coarse_structure;
 
-	ref_str														c_sbase;
-	ref_str														c_lmaterial;
+	shared_str														c_sbase;
+	shared_str														c_lmaterial;
 
 	IDirect3DQuery9*											q_sync_point;
 private:

@@ -122,7 +122,7 @@ void	CCustomOutfit::OnMoveToSlot		()
 		{
 			if (m_ActorVisual != NULL)
 			{
-				ref_str NewVisual = NULL;
+				shared_str NewVisual = NULL;
 				char* TeamSection = Game().getTeamSection(pActor->g_Team());
 				if (TeamSection)
 				{
@@ -163,7 +163,7 @@ void	CCustomOutfit::OnMoveToRuck		()
 		{
 			if (m_ActorVisual != NULL)
 			{
-				ref_str DefVisual = pActor->GetDefaultVisualOutfit();
+				shared_str DefVisual = pActor->GetDefaultVisualOutfit();
 				if (DefVisual != NULL)
 				{
 					pActor->ChangeVisual(DefVisual);

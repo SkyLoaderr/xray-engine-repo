@@ -37,7 +37,7 @@ public:
 	void SetFilter(ETaskState newFilter);
 protected:
 	// Добавляем заголовок крупным шрифтом
-	void AddHeader(ref_str strHeader);
+	void AddHeader(shared_str strHeader);
 
 	CGameFont			*pHeaderFnt;
 	CGameFont			*pSubTasksFnt;

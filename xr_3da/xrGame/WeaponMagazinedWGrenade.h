@@ -85,9 +85,9 @@ public:
 	//для подствольника
 	CWeaponAmmo* m_pAmmo2;
 	char m_ammoSect2[255];
-	xr_vector<ref_str> m_ammoTypes2;
+	xr_vector<shared_str> m_ammoTypes2;
 	u32 m_ammoType2;
-	ref_str m_ammoName2;
+	shared_str m_ammoName2;
 	int iMagazineSize2;
 	xr_stack<CCartridge> m_magazine2;
 	
@@ -98,5 +98,5 @@ public:
 	virtual void UpdateGrenadeVisibility(bool visibility);
 
 	//название косточки для гранаты подствольника в HUD
-	ref_str grenade_bone_name;
+	shared_str grenade_bone_name;
 };

@@ -87,7 +87,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 		int height = xml_doc.ReadAttribInt(path, index, "height");
 
-		ref_str base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
+		shared_str base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
 
 		if(!base_name) return;
 
@@ -97,7 +97,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 		pWnd->Init(*base_name, xC, yC, width, height);
 
 		strconcat(buf,path,":left_top_texture");
-		ref_str tex_name = xml_doc.Read(buf, index, NULL);
+		shared_str tex_name = xml_doc.Read(buf, index, NULL);
 
 		int x = xml_doc.ReadAttribInt(buf, index, "x");
 		int y = xml_doc.ReadAttribInt(buf, index, "y");
@@ -219,8 +219,8 @@ void CUISkinSelectorWnd::InitializeSkins()
 	// Бордюр - 30 пикселов
 	const int border = 30;
 
-	xr_vector<ref_str>		skin_names;
-	ref_str					cfgRecord;
+	xr_vector<shared_str>		skin_names;
+	shared_str					cfgRecord;
 	string256				singleSkinName;
 	
 	// Читаем данные этого поля

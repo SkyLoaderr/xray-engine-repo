@@ -57,7 +57,7 @@ protected:
 public:
 
 									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
-	virtual		void				Create					(ref_str& options);
+	virtual		void				Create					(shared_str& options);
 
 	virtual		LPCSTR				type_name			() const { return "artefacthunt";};
 	// Events	

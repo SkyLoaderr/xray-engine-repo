@@ -6,13 +6,13 @@
 #include "ParticlesPlayer.h"
 //-------------------------------------------------------------------------------------
 
-CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(const ref_str& ps_name)
+CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(const shared_str& ps_name)
 {
 	for (ParticlesInfoListIt it=particles.begin(); it!=particles.end(); it++)
 		if (it->ps->Name()==ps_name) return &(*it);
 	return 0;
 }
-CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(CObject* object, const ref_str& ps_name)
+CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(CObject* object, const shared_str& ps_name)
 {
 	SParticlesInfo* pi	= FindParticles(ps_name);
 	if (pi)				return pi;
@@ -21,7 +21,7 @@ CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(C
 	pi->ps				= xr_new<CParticlesObject>(*ps_name, object->Sector(), false);
 	return pi;
 }
-void CParticlesPlayer::SBoneInfo::StopParticles(const ref_str& ps_name)
+void CParticlesPlayer::SBoneInfo::StopParticles(const shared_str& ps_name)
 {
 	SParticlesInfo* pi	= FindParticles(ps_name);
 	if (pi)				pi->ps->Stop();
@@ -102,7 +102,7 @@ CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics
 
 
 
-void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
+void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
 	R_ASSERT(*particles_name);
 	
@@ -132,7 +132,7 @@ void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_nu
 	m_bActiveBones = true;
 }
 
-void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
+void CParticlesPlayer::StartParticles(const shared_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
 	CObject* object					= smart_cast<CObject*>(this);
 	VERIFY(object);
@@ -167,7 +167,7 @@ void CParticlesPlayer::StopParticles(u16 sender_id, u16 bone_id)
 	}
 }
 
-void CParticlesPlayer::StopParticles(const ref_str& ps_name, u16 bone_id)
+void CParticlesPlayer::StopParticles(const shared_str& ps_name, u16 bone_id)
 {
 	if (BI_NONE==bone_id){
 		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
@@ -179,7 +179,7 @@ void CParticlesPlayer::StopParticles(const ref_str& ps_name, u16 bone_id)
 }
 
 //остановка партиклов, по истечении их времени жизни
-void CParticlesPlayer::AutoStopParticles(const ref_str& ps_name, u16 bone_id)
+void CParticlesPlayer::AutoStopParticles(const shared_str& ps_name, u16 bone_id)
 {
 	if (BI_NONE==bone_id){
 		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)

@@ -83,7 +83,7 @@ public:
 	};
 	struct	archive
 	{
-		ref_str					path;
+		shared_str					path;
 		IReader*				vfs;
 	};
 	DEFINE_MAP_PRED				(LPCSTR,FS_Path*,PathMap,PathPairIt,pred_str);

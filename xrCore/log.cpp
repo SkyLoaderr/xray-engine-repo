@@ -9,7 +9,7 @@ extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static BOOL 				no_log			= TRUE;
 static xrCriticalSection	logCS;
-xr_vector <ref_str>			LogFile;
+xr_vector <shared_str>			LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()
@@ -37,7 +37,7 @@ void AddOne				(const char *split)
 	OutputDebugString	("\n");
 #endif
 
-	LogFile.push_back	(ref_str(split));
+	LogFile.push_back	(shared_str(split));
 
 	//exec CallBack
 	if (LogExecCB&&LogCB)LogCB(split);

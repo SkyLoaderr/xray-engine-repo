@@ -51,5 +51,5 @@ protected:
 	//и теперь может совершить бросок
 	bool m_bStrike;	
 
-	ref_str	m_sParticleName;
+	shared_str	m_sParticleName;
 };

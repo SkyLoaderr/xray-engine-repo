@@ -25,6 +25,6 @@ public:
 		void				set_nonscript_usable	(bool usable);
 private:
 		CScriptCallback		*callback;
-		ref_str				m_sTipText;
+		shared_str				m_sTipText;
 		bool				m_bNonscriptUsable;
 };

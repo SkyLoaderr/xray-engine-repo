@@ -34,7 +34,7 @@ private:
 	CScriptCallback		m_OnTradeCallback;
 
 	struct SAnimInfo {
-		ref_str		name;			// "talk_"
+		shared_str		name;			// "talk_"
 		u8			count;			// количество анимаций данного типа
 	};
 

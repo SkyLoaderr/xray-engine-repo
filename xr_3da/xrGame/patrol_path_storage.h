@@ -12,7 +12,7 @@ class CPatrolPath;
 
 class CPatrolPathStorage {
 public:
-	typedef xr_map<ref_str,CPatrolPath*>	PATROL_REGISTRY;
+	typedef xr_map<shared_str,CPatrolPath*>	PATROL_REGISTRY;
 	typedef PATROL_REGISTRY::iterator		iterator;
 	typedef PATROL_REGISTRY::const_iterator	const_iterator;
 
@@ -23,7 +23,7 @@ public:
 	IC								CPatrolPathStorage	();
 	virtual							~CPatrolPathStorage	();
 	virtual	void					load				(IReader &stream);
-	IC		const CPatrolPath		*path				(ref_str patrol_name, bool no_assert = false) const;
+	IC		const CPatrolPath		*path				(shared_str patrol_name, bool no_assert = false) const;
 	IC		const PATROL_REGISTRY	&patrol_paths		() const;
 };
 

@@ -11,7 +11,7 @@
 #include "attachable_item.h"
 
 struct CStringPredicate {
-	bool		operator()	(const ref_str &s1, const ref_str &s2) const
+	bool		operator()	(const shared_str &s1, const shared_str &s2) const
 	{
 		return			(s1 < s2);
 	}

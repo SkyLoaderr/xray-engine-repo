@@ -83,8 +83,8 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		}
 
 		// Substitute placeholders with real names
-		ref_str name1 = "";
-		ref_str name2 = "";
+		shared_str name1 = "";
+		shared_str name2 = "";
 
 		CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]); VERIFY(newsActorOne);
 		name1 = newsActorOne->s_name_replace;

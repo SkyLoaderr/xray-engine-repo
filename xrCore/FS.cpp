@@ -237,7 +237,7 @@ void	IReader::r_stringZ	(char *dest)
 	*dest		=	0;
 	Pos++;
 }
-void 	IReader::r_stringZ	(ref_str& dest)
+void 	IReader::r_stringZ	(shared_str& dest)
 {
 	dest		= (char*)(data+Pos);
     Pos			+=(dest.size()+1);

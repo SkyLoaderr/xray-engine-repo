@@ -12,7 +12,7 @@ public:
 	virtual ~CInventorySlot();
 
 	PIItem	m_pIItem;
-	ref_str m_name;
+	shared_str m_name;
 	//может ли слот стать активным
 	bool m_bCanBeActivated;
 };

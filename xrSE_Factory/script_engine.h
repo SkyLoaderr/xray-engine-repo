@@ -33,7 +33,7 @@ protected:
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
 	bool						m_reload_modules;
-	ref_str						m_class_registrators;
+	shared_str						m_class_registrators;
 	bool						m_global_script_loaded;
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;

@@ -146,9 +146,9 @@ struct ECORE_API SJointIKData
 
 class ECORE_API CBone
 {
-	ref_str				name;
-	ref_str				parent_name;
-	ref_str				wmap;
+	shared_str			name;
+	shared_str			parent_name;
+	shared_str			wmap;
 	Fvector			    rest_offset;
 	Fvector			    rest_rotate;    // XYZ format (Game format)
 	float			    rest_length;
@@ -176,7 +176,7 @@ public:
         flCalculate	    = (1<<1)
     };
     SJointIKData	    IK_data;
-    ref_str			    game_mtl;
+    shared_str			    game_mtl;
     SBoneShape		    shape;
 
     float			    mass;

@@ -11,7 +11,7 @@ namespace PS
 	class ECORE_API CPGDef
 	{
 	public:
-		ref_str				m_Name;
+		shared_str				m_Name;
 		Flags32				m_Flags;
 		float				m_fTimeLimit;
 		struct SEffect{
@@ -24,10 +24,10 @@ namespace PS
 				flOnDeadChild		= (1<<6),
 			};
 			Flags32			m_Flags;
-			ref_str			m_EffectName;  
-			ref_str			m_OnPlayChildName;
-			ref_str			m_OnBirthChildName;
-			ref_str			m_OnDeadChildName;
+			shared_str			m_EffectName;  
+			shared_str			m_OnPlayChildName;
+			shared_str			m_OnBirthChildName;
+			shared_str			m_OnDeadChildName;
 			float			m_Time0;
 			float			m_Time1;
 							SEffect				(){m_Flags.zero();/*set(flEnabled)*/m_Time0=0;m_Time1=0;}
@@ -38,8 +38,8 @@ namespace PS
 		DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
 		EffectVec			m_Effects;
 #ifdef _EDITOR
-        ref_str				m_OwnerName;
-        ref_str				m_ModifName;
+        shared_str				m_OwnerName;
+        shared_str				m_ModifName;
         time_t				m_CreateTime;
         time_t				m_ModifTime;
 // change Equal if variables changed 
@@ -130,7 +130,7 @@ namespace PS
 
 		virtual float		GetTimeLimit	(){VERIFY(m_Def); return m_Def->m_fTimeLimit;}
 
-		virtual const ref_str	Name		(){VERIFY(m_Def); return m_Def->m_Name;}
+		virtual const shared_str	Name		(){VERIFY(m_Def); return m_Def->m_Name;}
 
         virtual u32 		ParticlesCount	();
 	};

@@ -47,7 +47,7 @@ IC	const Fvector &CPatrolPathManager::destination_position	() const
 	return					(m_dest_position);
 }
 
-IC	void CPatrolPathManager::set_path	(const CPatrolPath *path, ref_str path_name)
+IC	void CPatrolPathManager::set_path	(const CPatrolPath *path, shared_str path_name)
 {
 	if (m_path == path)
 		return;
@@ -87,12 +87,12 @@ IC	void CPatrolPathManager::make_inactual	()
 	m_completed				= false;
 }
 
-IC	void CPatrolPathManager::set_path		(ref_str path_name)
+IC	void CPatrolPathManager::set_path		(shared_str path_name)
 {
 	set_path				(Level().patrol_paths().path(path_name), path_name);
 }
 
-IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType patrol_start_type, const EPatrolRouteType patrol_route_type, bool random)
+IC	void CPatrolPathManager::set_path		(shared_str path_name, const EPatrolStartType patrol_start_type, const EPatrolRouteType patrol_route_type, bool random)
 {
 	set_path				(Level().patrol_paths().path(path_name), path_name);
 	set_start_type			(patrol_start_type);

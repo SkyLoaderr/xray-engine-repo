@@ -23,8 +23,8 @@ public:
 	};
 
 public:
-	ref_str								m_caSoundToPlay;
-	ref_str								m_caBoneName;
+	shared_str								m_caSoundToPlay;
+	shared_str								m_caBoneName;
 	EGoalType							m_tGoalType;
 	bool								m_bLooped;
 	bool								m_bStartedToPlay;

@@ -124,10 +124,10 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 protected:	
 	//имя партиклов двигателя
-	ref_str				m_sEngineParticles;
+	shared_str			m_sEngineParticles;
 	CParticlesObject*	m_pEngineParticles;
 	//имя партиклов полета
-	ref_str				m_sFlyParticles;
+	shared_str			m_sFlyParticles;
 	CParticlesObject*	m_pFlyParticles;
 
 	Fvector				m_vPrevVel;

@@ -172,7 +172,7 @@ void CUIMapWnd::Init()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::SetLocalMap(const ref_str &levelName)
+void CUIMapWnd::SetLocalMap(const shared_str &levelName)
 {
 	UILocalMapBackground.m_pActiveMapSpot = NULL;
 
@@ -703,7 +703,7 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::AddLocalMap(const ref_str levelName, const Ivector4 &v, const Fvector4 &d, const ref_str &textureName)
+void CUIMapWnd::AddLocalMap(const shared_str levelName, const Ivector4 &v, const Fvector4 &d, const shared_str &textureName)
 {
 	R_ASSERT	(v[2] > 0);
 	R_ASSERT	(v[3] > 0);
@@ -764,14 +764,14 @@ void CUIMapWnd::InitLocalMaps()
 	// Loop through all levels in graph and initialize its map data
 	for (CGameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)
 	{
-		ref_str		levelLtxRecord	= it->second.section	();
+		shared_str		levelLtxRecord	= it->second.section	();
  		string32    levelName;
 		strcpy		(levelName, gameLtx.r_string(levelLtxRecord, "name"));
 		_strlwr		(levelName);
 		
 
 		Ivector4	mapCoords;	
-		ref_str		mapTextureName;
+		shared_str		mapTextureName;
 		Fvector4	mapDims;
 
 		if (gameLtx.line_exist(levelLtxRecord, mapTextureKey))
@@ -814,7 +814,7 @@ void CUIMapWnd::DeleteLocalMapsData()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::ApplyFilterToObjectives(const ref_str &levelName)
+void CUIMapWnd::ApplyFilterToObjectives(const shared_str &levelName)
 {
 	for (CUIMapBackground::MAP_SPOT_VECTOR_IT mapSpotIt = UILocalMapBackground.m_vMapSpots.begin();
 											  mapSpotIt != UILocalMapBackground.m_vMapSpots.end();

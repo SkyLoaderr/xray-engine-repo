@@ -42,7 +42,7 @@ CFS_PathNotificator::~CFS_PathNotificator(void)
 void CFS_PathNotificator::RegisterPath(FS_Path& path)
 {                     
 //	R_ASSERT2(Suspended,"Can't register path. Thread already started.");
-	ref_str dir			= path.m_Path;
+	shared_str dir			= path.m_Path;
 	for (PathIt it=events.begin(); it!=events.end(); it++)
     	if ((it->FDirectory==dir)&&(it->bRecurse==path.m_Flags.is(FS_Path::flRecurse))) return;
 

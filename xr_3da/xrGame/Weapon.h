@@ -190,11 +190,11 @@ public:
 	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
 	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
 
-	virtual const ref_str& GetGrenadeLauncherName	()		{return m_sGrenadeLauncherName;}
-	virtual const ref_str& GetScopeName				()		{return  m_sScopeName;}
-	virtual const ref_str& GetSilencerName			()		{return m_sSilencerName;}
+	virtual const shared_str& GetGrenadeLauncherName	()		{return m_sGrenadeLauncherName;}
+	virtual const shared_str& GetScopeName				()		{return m_sScopeName;}
+	virtual const shared_str& GetSilencerName			()		{return m_sSilencerName;}
 
-	virtual	u8		GetAddonsState					()		const		{return m_flagsAddOnState;};
+	virtual	u8		GetAddonsState						()		const		{return m_flagsAddOnState;};
 protected:
 	//состояние подключенных аддонов
 	u8 m_flagsAddOnState;
@@ -205,9 +205,9 @@ protected:
 	ALife::EWeaponAddonStatus	m_eGrenadeLauncherStatus;
 
 	//названия секций подключаемых аддонов
-	ref_str		m_sScopeName;
-	ref_str		m_sSilencerName;
-	ref_str		m_sGrenadeLauncherName;
+	shared_str		m_sScopeName;
+	shared_str		m_sSilencerName;
+	shared_str		m_sGrenadeLauncherName;
 
 	//смещение иконов апгрейдов в инвентаре
 	int	m_iScopeX, m_iScopeY;
@@ -354,7 +354,7 @@ protected:
 	virtual void			StopFlameParticles2	();
 	virtual void			UpdateFlameParticles2();
 protected:
-	ref_str					m_sFlameParticles2;
+	shared_str					m_sFlameParticles2;
 	//объект партиклов для стрельбы из 2-го ствола
 	CParticlesObject*		m_pFlameParticles2;
 
@@ -382,11 +382,11 @@ protected:
 	mutable u32				m_dwAmmoCurrentCalcFrame;	//кадр на котором просчитали кол-во патронов
 
 public:
-	xr_vector<ref_str>		m_ammoTypes;
+	xr_vector<shared_str>		m_ammoTypes;
 
 	CWeaponAmmo*			m_pAmmo;
 	u32						m_ammoType;
-	ref_str					m_ammoName;
+	shared_str					m_ammoName;
 
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;

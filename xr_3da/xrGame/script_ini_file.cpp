@@ -30,7 +30,7 @@ LPCSTR	CScriptIniFile::update		(LPCSTR file_name)
 {
 	string256			S1;
 	FS.update_path		(S1,"$game_data$",file_name);
-	return				(*ref_str(S1));
+	return				(*shared_str(S1));
 }
 
 bool CScriptIniFile::line_exist		(LPCSTR S, LPCSTR L)

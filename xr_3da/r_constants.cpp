@@ -37,7 +37,7 @@ R_constant* R_constant_table::get	(LPCSTR S)
 	if (I==table.end() || (0!=xr_strcmp(*(*I)->name,S)))	return 0;
 	else												return *I;
 }
-R_constant* R_constant_table::get	(ref_str& S)
+R_constant* R_constant_table::get	(shared_str& S)
 {
 	// linear search, but only ptr-compare
 	c_table::iterator I	= table.begin	();

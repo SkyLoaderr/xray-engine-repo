@@ -121,7 +121,7 @@ IC	void CScriptMovementAction::SetPathType			(const DetailPathManager::EDetailPa
 	m_bCompleted		= false;
 }
 
-IC	void CScriptMovementAction::SetPatrolPath		(const CPatrolPath *path, ref_str path_name)
+IC	void CScriptMovementAction::SetPatrolPath		(const CPatrolPath *path, shared_str path_name)
 {
 	m_path				= path;
 	m_path_name			= path_name;

@@ -27,7 +27,7 @@ class CFS_PathNotificator : public CThread
 {
 private:
     struct Path	{
-    	ref_str						FDirectory;
+    	shared_str						FDirectory;
         void* 						FWaitHandle;
         fastdelegate::FastDelegate0	FChangeEvent;
 		BOOL 						bRecurse;

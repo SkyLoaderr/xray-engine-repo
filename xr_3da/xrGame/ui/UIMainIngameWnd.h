@@ -126,9 +126,9 @@ protected:
 	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
 public:
 	// Изменить индикатор текущего количества денег
-	void ChangeTotalMoneyIndicator(ref_str newMoneyString);
+	void ChangeTotalMoneyIndicator(shared_str newMoneyString);
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
-	void DisplayMoneyChange(ref_str deltaMoney);
+	void DisplayMoneyChange(shared_str deltaMoney);
 protected:
 
 	// Надписи armor & health
@@ -222,8 +222,8 @@ protected:
 
 private:
 	// Блок операций работы с текстурами-эффектами ударов когтей на экране(как в Doom 3)
-	DEF_MAP(ClawsTexturesRepository, ref_str /*texture name*/, ref_shader /*actually shader*/);
-	DEF_MAP(MonsterClawsTextures, ref_str /*monster name*/, ref_shader* /*effect texture*/);
+	DEF_MAP(ClawsTexturesRepository, shared_str /*texture name*/, ref_shader /*actually shader*/);
+	DEF_MAP(MonsterClawsTextures, shared_str /*monster name*/, ref_shader* /*effect texture*/);
 	ClawsTexturesRepository		m_ClawsRepos;
 	MonsterClawsTextures		m_ClawsTextures;
 
@@ -236,9 +236,9 @@ private:
 
 public:
 	// Инициализировать текстуры когтей для монстров
-	void				AddMonsterClawsEffect(const ref_str &monsterName, const ref_str &textureName);
+	void				AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName);
 	// Проиграть анимацию текстуры когтей монстра
-	void				PlayClawsAnimation(const ref_str &monsterName);
+	void				PlayClawsAnimation(const shared_str &monsterName);
 	// Установить позицию заряда батарейки
 	void				SetBatteryCharge(float value);
 	// Показать/спрятать батарейку

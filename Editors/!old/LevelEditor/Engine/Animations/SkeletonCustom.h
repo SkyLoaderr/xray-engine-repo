@@ -56,7 +56,7 @@ public:
     Fmatrix				bind_transform;
     Fmatrix				m2b_transform;	// model to bone conversion transform
     SBoneShape			shape;
-    ref_str				game_mtl_name;
+    shared_str			game_mtl_name;
 	u16					game_mtl_idx;
     SJointIKData		IK_data;
     float				mass;
@@ -80,12 +80,12 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	friend class				CBoneData;
 	friend class				CSkeletonX;
 protected:
-	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
-		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return xr_strcmp(x,y)<0;	}
+	struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
+		IC bool operator()(const shared_str& x, const shared_str& y) const	{	return xr_strcmp(x,y)<0;	}
 	};
 public:
-	typedef xr_vector<std::pair<ref_str,u32> >	accel;
-	typedef xr_map<ref_str,u16,str_pred>		accel_map;
+	typedef xr_vector<std::pair<shared_str,u32> >	accel;
+	typedef xr_map<shared_str,u16,str_pred>		accel_map;
 protected:
 	// Globals
     CInifile*					pUserData;
@@ -116,7 +116,7 @@ public:
 
 	// Low level interface
 	u16							LL_BoneID		(LPCSTR  B);
-	u16							LL_BoneID		(const ref_str& B);
+	u16							LL_BoneID		(const shared_str& B);
 	LPCSTR						LL_BoneName_dbg	(u16 ID);
 
     CInifile*					LL_UserData			(){return pUserData;}

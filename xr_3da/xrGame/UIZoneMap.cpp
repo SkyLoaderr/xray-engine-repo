@@ -72,14 +72,14 @@ CUIZoneMap::~CUIZoneMap()
 
 struct FindLevelByName
 {
-	FindLevelByName(const ref_str &l)
+	FindLevelByName(const shared_str &l)
 		:	levelName(l)
 	{}
 	bool operator ()(const CGameGraph::LEVEL_MAP::value_type &lhs)
 	{
 		return 0 == xr_strcmp(levelName, lhs.second.name());
 	}
-	ref_str levelName;
+	shared_str levelName;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ void CUIZoneMap::Init()
 	FindLevelByName currentLevel(Level().name());
 	CGameGraph::LEVEL_MAP::const_iterator currLIt = std::find_if(levelMap.begin(), levelMap.end(), currentLevel);
 
-	ref_str				map_texture;
+	shared_str				map_texture;
 	string256			gameLtxPath;
 	FS.update_path					(gameLtxPath, "$game_data$", "game.ltx");
 	CInifile			gameLtx		(gameLtxPath);

@@ -9,7 +9,7 @@
 #include "object_interfaces.h"
 
 typedef int			TASK_INDEX;
-typedef ref_str		TASK_ID;
+typedef shared_str		TASK_ID;
 #define NO_TASK		TASK_INDEX(-1)
 
 

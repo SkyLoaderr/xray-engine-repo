@@ -66,12 +66,12 @@ public:
 protected:
 	bool m_bReadyToEat;
 
-	ref_str m_sAnimIdle;	
-	ref_str m_sAnimShow;
-	ref_str m_sAnimHide;
-	ref_str m_sAnimPlay;
-	ref_str m_sAnimPrepare;
-	ref_str m_sAnimEat;
+	shared_str m_sAnimIdle;	
+	shared_str m_sAnimShow;
+	shared_str m_sAnimHide;
+	shared_str m_sAnimPlay;
+	shared_str m_sAnimPrepare;
+	shared_str m_sAnimEat;
 
 	//смещения для render
 	Fmatrix m_offset;

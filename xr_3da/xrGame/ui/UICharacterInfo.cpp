@@ -225,7 +225,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 {
-	ref_str relation_str;
+	shared_str relation_str;
 
 	CStringTable stbl;
 

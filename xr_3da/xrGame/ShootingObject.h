@@ -148,21 +148,21 @@ protected:
 												 const Fvector& parent_vel);
 protected:
 	//им€ пратиклов дл€ гильз
-	ref_str				m_sShellParticles;
-	Fvector				vShellPoint;
+	shared_str				m_sShellParticles;
+	Fvector					vShellPoint;
 
 protected:
 	//им€ пратиклов дл€ огн€
-	ref_str				m_sFlameParticlesCurrent;
+	shared_str				m_sFlameParticlesCurrent;
 	//дл€ выстрела 1м и 2м видом стрельбы
-	ref_str				m_sFlameParticles;
+	shared_str				m_sFlameParticles;
 	//объект партиклов огн€
-	CParticlesObject*	m_pFlameParticles;
+	CParticlesObject*		m_pFlameParticles;
 
 	//им€ пратиклов дл€ дыма
-	ref_str				m_sSmokeParticlesCurrent;
-	ref_str				m_sSmokeParticles;
+	shared_str				m_sSmokeParticlesCurrent;
+	shared_str				m_sSmokeParticles;
 	
 	//им€ партиклов следа от пули
-	ref_str				m_sShotParticles;
+	shared_str				m_sShotParticles;
 };

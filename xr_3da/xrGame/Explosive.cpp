@@ -88,7 +88,7 @@ void CExplosive::Load(LPCSTR section)
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
 	tracerMaxLength		= pSettings->r_float		(section,"tracer_max_length"	);
 
-	ref_str				snd_name = pSettings->r_string(section,"snd_explode");
+	shared_str				snd_name = pSettings->r_string(section,"snd_explode");
 	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
 
 	m_fExplodeDurationMax	= pSettings->r_float(section, "explode_duration");

@@ -299,7 +299,7 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 
 void CMotionManager::AA_GetParams(SAAParam &params, LPCSTR anim_name)
 {
-	ref_str st = anim_name;
+	shared_str st = anim_name;
 
 	// искать текущую анимацию в AA_MAP
 	AA_MAP_IT it = get_sd()->aa_map.find(st);
@@ -336,7 +336,7 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 	
 	clamp(amount,0.f,1.f);
 
-	ref_str	*p_str = 0;
+	shared_str	*p_str = 0;
 	switch (side) {
 		case eSideFront:	p_str = &anim_it->second.fxs.front;	break;
 		case eSideBack:		p_str = &anim_it->second.fxs.back;	break;

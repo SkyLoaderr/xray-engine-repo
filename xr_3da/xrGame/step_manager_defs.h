@@ -11,7 +11,7 @@ struct SStepParam {
 	u8			cycles;
 };
 
-DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
+DEFINE_MAP(shared_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
 
 struct SStepInfo {
 	struct {

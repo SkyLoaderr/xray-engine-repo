@@ -10,15 +10,15 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-void CObject::cName_set			(ref_str N)
+void CObject::cName_set			(shared_str N)
 { 
 	NameObject	=	N; 
 }
-void CObject::cNameSect_set		(ref_str N)
+void CObject::cNameSect_set		(shared_str N)
 { 
 	NameSection	=	N; 
 }
-void CObject::cNameVisual_set	(ref_str N)
+void CObject::cNameVisual_set	(shared_str N)
 { 
 	// check if equal
 	if (*N && *NameVisual)

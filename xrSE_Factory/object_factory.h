@@ -41,9 +41,9 @@ protected:
 	};
 
 	struct CObjectItemPredicateScript {
-		ref_str						m_script_clsid_name;
+		shared_str					m_script_clsid_name;
 
-		IC							CObjectItemPredicateScript			(const ref_str &script_clsid_name);
+		IC							CObjectItemPredicateScript			(const shared_str &script_clsid_name);
 		IC	bool					operator()							(const CObjectItemAbstract *item) const;
 	};
 

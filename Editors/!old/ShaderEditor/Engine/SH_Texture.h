@@ -19,7 +19,7 @@ public:
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
 	float								m_material;
-	ref_str								m_bumpmap;
+	shared_str								m_bumpmap;
 
 	// Sequence data
 	u32									seqMSPF;			// milliseconds per frame
@@ -51,7 +51,7 @@ struct ENGINE_API		resptrcode_texture	: public resptr_base<CTexture>
 {
 	void				create			(LPCSTR	_name);
 	void				destroy			()					{ _set(NULL);					}
-	ref_str				bump_get		()					{ return _get()->m_bumpmap;		}
+	shared_str				bump_get		()					{ return _get()->m_bumpmap;		}
 	bool				bump_exist		()					{ return 0!=bump_get().size();	}
 };
 typedef	resptr_core<CTexture,resptrcode_texture >	

@@ -45,11 +45,11 @@ public:
 			void		SetTodoCaption			(LPCSTR str);
 			void		SetBuyMsgCaption		(LPCSTR str);
 protected:
-	ref_str				m_reinforcement_caption;
-	ref_str				m_score_caption;
-	ref_str				m_round_result_caption;		
-	ref_str				m_todo_caption;			
-	ref_str				m_buy_msg_caption;		
+	shared_str				m_reinforcement_caption;
+	shared_str				m_score_caption;
+	shared_str				m_round_result_caption;		
+	shared_str				m_todo_caption;			
+	shared_str				m_buy_msg_caption;		
 
 };
 #endif // __XR_UIGAMEAHUNT_H__

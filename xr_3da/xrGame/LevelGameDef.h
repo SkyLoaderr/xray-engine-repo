@@ -126,7 +126,7 @@ private:
 	float					fBirthProbability;
 	float					fIncreaseCoefficient;
 	float					fAnomalyDeathProbability;
-	ref_str					caRouteGraphPoints;
+	shared_str					caRouteGraphPoints;
 public:
 	virtual void Save		(IWriter &fs)
 	{

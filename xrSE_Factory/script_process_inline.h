@@ -13,7 +13,7 @@ IC	const CScriptProcess::SCRIPT_REGISTRY &CScriptProcess::scripts	() const
 	return	(m_scripts);
 }
 
-IC	ref_str CScriptProcess::name									() const
+IC	shared_str CScriptProcess::name									() const
 {
 	return	(m_name);
 }

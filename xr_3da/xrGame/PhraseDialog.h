@@ -23,17 +23,17 @@ struct SPhraseDialogData : CSharedResource
 	virtual ~SPhraseDialogData ();
 
 	//заголовок диалога, если NULL, то принимается за стартовую фразу
-	ref_str		m_sCaption;
+	shared_str		m_sCaption;
 
 	//однонаправленый граф фраз
 	//описывает все возможные варианты развития диалога
-	CPhraseGraph m_PhraseGraph;
+	CPhraseGraph	m_PhraseGraph;
 
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//для начала диалога
-	CPhraseScript m_PhraseScript;
+	CPhraseScript	m_PhraseScript;
 
-	EDialogType m_eDialogType;
+	EDialogType		m_eDialogType;
 	
 	//произвольное число - приоритет диалога (0 по умолчанию), может быть отрицательным
 	//в окне выбора у актера диалоги будут сортироваться по этому значению от меньшего (снизу) к большему (сверху)

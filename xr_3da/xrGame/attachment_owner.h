@@ -14,7 +14,7 @@ class CInventoryItem;
 
 class CAttachmentOwner {
 protected:
-	xr_vector<ref_str>			m_attach_item_sections;
+	xr_vector<shared_str>			m_attach_item_sections;
 	xr_vector<CAttachableItem*>	m_attached_objects;
 public:
 	IC						CAttachmentOwner	();

@@ -25,7 +25,7 @@ protected:
 	{
 		DPN_APPLICATION_DESC	dpAppDesc;
 		IDirectPlay8Address*	pHostAddress;
-		ref_str					dpSessionName;
+		shared_str				dpSessionName;
 	};
 	CTimer*					device_timer;
 protected:

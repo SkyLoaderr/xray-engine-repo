@@ -52,9 +52,9 @@ public:
 private:
 	// Some property variables
 	ObjectProperties					Props;
-	ref_str								NameObject;
-	ref_str								NameSection;
-	ref_str								NameVisual;
+	shared_str							NameObject;
+	shared_str							NameSection;
+	shared_str							NameVisual;
 protected:
 	// Parentness
 	CObject*							Parent;
@@ -110,12 +110,12 @@ public:
 	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
 
 	// Name management
-	IC ref_str							cName				()			const	{ return NameObject;				}
-	void								cName_set			(ref_str N);
-	IC ref_str							cNameSect			()			const	{ return NameSection;				}
-	void								cNameSect_set		(ref_str N);
-	IC ref_str							cNameVisual			()			const	{ return NameVisual;				}
-	void								cNameVisual_set		(ref_str N);
+	IC shared_str							cName				()			const	{ return NameObject;				}
+	void								cName_set			(shared_str N);
+	IC shared_str							cNameSect			()			const	{ return NameSection;				}
+	void								cNameSect_set		(shared_str N);
+	IC shared_str							cNameVisual			()			const	{ return NameVisual;				}
+	void								cNameVisual_set		(shared_str N);
 	
 	// Properties
 	void								processing_activate		();				// request	to enable	UpdateCL

@@ -96,7 +96,7 @@ protected:
 	float		fWallmarkSize;
 	
 	//эффекты и подсветка
-	ref_str		m_sExplodeParticles;
+	shared_str		m_sExplodeParticles;
 	
 	//подсветка взрыва
 	IRender_Light*		m_pLight;

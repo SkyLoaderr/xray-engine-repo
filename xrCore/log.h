@@ -20,7 +20,7 @@ void 							CreateLog	(BOOL no_log=FALSE);
 void 							CloseLog	();
 void	XRCORE_API	__stdcall	FlushLog	();
 
-extern 	XRCORE_API	xr_vector<ref_str>			LogFile;
+extern 	XRCORE_API	xr_vector<shared_str>			LogFile;
 extern 	XRCORE_API	BOOL						LogExecCB;
 
 #endif

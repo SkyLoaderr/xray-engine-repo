@@ -157,7 +157,7 @@ void	game_sv_mp::SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed
 
 };
 
-void game_sv_mp::Create (ref_str &options)
+void game_sv_mp::Create (shared_str &options)
 {
 	inherited::Create(options);
 };

@@ -28,7 +28,7 @@ public:
 		T_ID		id;
 		T_INDEX		index;
 		int			pos_in_file;
-		ref_str		file_name;
+		shared_str	file_name;
 	};
 
 private:
@@ -88,12 +88,12 @@ const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-#pragma todo("Oles to Yura: Really dumb and slow code. 'ref_str' designed for sharing only!!!")
-		if(ref_str((*it).id) == ref_str(str_id))
+#pragma todo("Oles to Yura: Really dumb and slow code. 'shared_str' designed for sharing only!!!")
+		if(shared_str((*it).id) == shared_str(str_id))
 			break;
 	}
 
-	R_ASSERT3(ItemDataVector().end() != it, "item not found, id", *ref_str(str_id));
+	R_ASSERT3(ItemDataVector().end() != it, "item not found, id", *shared_str(str_id));
 	return *it;
 }
 
@@ -131,7 +131,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 
 			CUIXml uiXml;
 			string128 xml_file_full;
-			strconcat(xml_file_full, *ref_str(xml_file), ".xml");
+			strconcat(xml_file_full, *shared_str(xml_file), ".xml");
 			bool xml_result = uiXml.Init("$game_data$", xml_file_full);
 			R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
@@ -150,7 +150,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 				T_VECTOR::iterator t_it = m_pItemDataVector->begin();
 				for(;m_pItemDataVector->end() != t_it; t_it++)
 				{
-					if(ref_str((*t_it).id) == ref_str(item_name))
+					if(shared_str((*t_it).id) == shared_str(item_name))
 						break;
 				}
 

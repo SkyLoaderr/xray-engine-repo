@@ -142,7 +142,7 @@ add_to_type_list(CSE_Target_CS_Base)
 #define script_type_list save_type_list(CSE_Target_CS_Base)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
-	ref_str							s_Model;
+	shared_str							s_Model;
 									CSE_Target_CS_Cask(LPCSTR caSection);
 	virtual							~CSE_Target_CS_Cask();
 SERVER_ENTITY_DECLARE_END
@@ -150,7 +150,7 @@ add_to_type_list(CSE_Target_CS_Cask)
 #define script_type_list save_type_list(CSE_Target_CS_Cask)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
-	ref_str							s_Model;
+	shared_str							s_Model;
 									CSE_Target_CS	(LPCSTR caSection);
 	virtual							~CSE_Target_CS	();
 SERVER_ENTITY_DECLARE_END

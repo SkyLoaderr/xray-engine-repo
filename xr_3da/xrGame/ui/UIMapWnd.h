@@ -100,7 +100,7 @@ protected:
 	float				m_fWorldMapTop;
 
 	// Список локальных карт для глобальной
-	DEF_VECTOR			(Objectives, ref_str);
+	DEF_VECTOR			(Objectives, shared_str);
 
 	// Описатель локальных карт на глобальной
 	struct LocalMapDef
@@ -129,22 +129,22 @@ protected:
 	};
 
 	// Ассоциативный массив описателей локальных карт (имя->данные)
-	DEF_MAP				(LocalMaps, ref_str, LocalMapDef);
+	DEF_MAP				(LocalMaps, shared_str, LocalMapDef);
 	LocalMaps			m_LocalMaps;
 
 	// Инициализация карт. Выполняется 1 раз при загрузке игры
 	void				InitGlobalMap			();
 	ref_shader			m_GlobalMapShader;
-	void				AddLocalMap				(const ref_str leveName, const Ivector4 &v, const Fvector4 &d, const ref_str &textureName);
+	void				AddLocalMap				(const shared_str leveName, const Ivector4 &v, const Fvector4 &d, const shared_str &textureName);
 	void				InitLocalMaps			();
 	void				DeleteLocalMapsData		();
 	// Инициализация заданий для отображения их на картах. Выполняется при каждом показе.
 	void				InitGlobalMapObjectives	();
 	void				InitLocalMapObjectives	();
 	// Инициализация локальной карты.Выполняется при каждом показе.
-	void				SetLocalMap				(const ref_str &levelName);
+	void				SetLocalMap				(const shared_str &levelName);
 	// Применить фильтр на маплокейшины, для показа соответсвующих на нужной карте
-	void				ApplyFilterToObjectives	(const ref_str &levelName);
+	void				ApplyFilterToObjectives	(const shared_str &levelName);
 
 private:
 	// Размеры глобальной карты в условных единицах

@@ -30,7 +30,7 @@ void CPatrolPathStorage::load				(IReader &stream)
 		R_ASSERT			(sub_chunk->r_u16() == WAYOBJECT_VERSION);
 		R_ASSERT			(sub_chunk->find_chunk(WAYOBJECT_CHUNK_NAME));
 
-		ref_str				patrol_name;
+		shared_str				patrol_name;
 		sub_chunk->r_stringZ(patrol_name);
 		m_registry.insert	(std::make_pair(patrol_name,&xr_new<CPatrolPath>()->load(*sub_chunk)));
 

@@ -20,14 +20,14 @@ struct CThunderboltDesc
 	{
     	float					fOpacity;
 	    Fvector2				fRadius;
-        ref_str					texture;
-        ref_str					shader;
+        shared_str					texture;
+        shared_str					shader;
         ref_shader				hShader;
     	SFlare()				{ fOpacity = 0; fRadius.set(0.f,0.f);}
 	};
     SFlare						m_GradientTop;
     SFlare						m_GradientCenter;
-    ref_str						name;
+    shared_str						name;
 
 public:
 								CThunderboltDesc	(CInifile* pIni, LPCSTR sect);

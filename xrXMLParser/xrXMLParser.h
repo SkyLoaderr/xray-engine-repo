@@ -105,7 +105,7 @@ public:
 	XML_NODE*	GetRoot() {return m_root;}
 
 	// Iterate through attributte
-	typedef std::pair<ref_str, ref_str> AttribPair;
+	typedef std::pair<shared_str, shared_str> AttribPair;
 	// Params:
 	// 1. prevAttrib - pointer to prev attrib. Place NULL to get first
 	XML_ATTRIBUTE * QueryForAttrib(XML_NODE *node, int attribIdx);
@@ -116,7 +116,7 @@ protected:
 	XML_NODE* m_pLocalRoot;
 
 	//буфферный вектор для проверки уникальность аттрибутов
-	std::vector<ref_str> m_AttribValues;
+	std::vector<shared_str> m_AttribValues;
 private:
 	typedef TiXmlElement	XML_ELEM;
 	TiXmlDocument	m_Doc;

@@ -20,7 +20,7 @@ IC	void CAttachableItem::init						()
 	m_enabled			= true;
 }
 
-IC	ref_str CAttachableItem::bone_name				() const
+IC	shared_str CAttachableItem::bone_name				() const
 {
 	return				(m_bone_name);
 }

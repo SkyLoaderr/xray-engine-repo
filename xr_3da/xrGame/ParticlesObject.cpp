@@ -96,7 +96,7 @@ void CParticlesObject::UpdateSpatial()
 	}
 }
 
-const ref_str CParticlesObject::Name()
+const shared_str CParticlesObject::Name()
 {
 	IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	return V->Name();

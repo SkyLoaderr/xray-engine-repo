@@ -22,7 +22,7 @@ CSpaceRestrictionHolder::~CSpaceRestrictionHolder			()
 	delete_data				(m_restrictions);
 }
 
-SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction	(ref_str space_restrictors)
+SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction	(shared_str space_restrictors)
 {
 	if (!xr_strlen(space_restrictors))
 		return				(0);
@@ -43,9 +43,9 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 
 void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::ERestrictorTypes &restrictor_type)
 {
-	ref_str					space_restrictors = space_restrictor->cName();
+	shared_str					space_restrictors = space_restrictor->cName();
 	if (restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone) {
-		ref_str				*temp = 0, temp1;
+		shared_str				*temp = 0, temp1;
 		if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut)
 			temp			= &m_default_out_restrictions;
 		else

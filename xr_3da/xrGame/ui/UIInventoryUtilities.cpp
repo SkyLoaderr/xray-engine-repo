@@ -236,19 +236,19 @@ void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 
 //////////////////////////////////////////////////////////////////////////
 
-const ref_str InventoryUtilities::GetGameDateAsString(EDatePrecision datePrec, char dateSeparator)
+const shared_str InventoryUtilities::GetGameDateAsString(EDatePrecision datePrec, char dateSeparator)
 {
 	return GetDateAsString(Level().GetGameTime(), datePrec, dateSeparator);
 }
 
-const ref_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator)
+const shared_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator)
 {
 	return GetTimeAsString(Level().GetGameTime(), timePrec, timeSeparator);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-const ref_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator)
+const shared_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator)
 {
 	string32 bufTime;
 
@@ -282,7 +282,7 @@ const ref_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETimePre
 
 //////////////////////////////////////////////////////////////////////////
 
-const ref_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePrecision datePrec, char dateSeparator)
+const shared_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePrecision datePrec, char dateSeparator)
 {
 	string32 bufDate;
 

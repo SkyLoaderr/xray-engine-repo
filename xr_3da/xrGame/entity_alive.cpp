@@ -137,7 +137,7 @@ void CEntityAlive::LoadFireParticles(LPCSTR section)
 
 	int cnt		=_GetItemCount(particles_name);
 
-	ref_str	s;
+	shared_str	s;
 	for (int k=0; k<cnt; ++k)
 	{
 		s  = _GetItem(particles_name,k,tmp);

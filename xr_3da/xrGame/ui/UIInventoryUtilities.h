@@ -77,10 +77,10 @@ enum EDatePrecision
 	edpDateToYear
 };
 
-const ref_str GetGameDateAsString(EDatePrecision datePrec, char dateSeparator = '/');
-const ref_str GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator = ':');
-const ref_str GetDateAsString(ALife::_TIME_ID time, EDatePrecision datePrec, char dateSeparator = '/');
-const ref_str GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator = ':');
+const shared_str GetGameDateAsString(EDatePrecision datePrec, char dateSeparator = '/');
+const shared_str GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator = ':');
+const shared_str GetDateAsString(ALife::_TIME_ID time, EDatePrecision datePrec, char dateSeparator = '/');
+const shared_str GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator = ':');
 
 // Отобразить вес, который несет актер
 void UpdateWeight(CUIStatic &wnd, bool withPrefix = false);

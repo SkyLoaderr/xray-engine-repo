@@ -44,7 +44,7 @@ protected:
 	typedef CGameObject inherited;
 	xr_deque<CScriptEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
-	ref_str						m_caScriptName;
+	shared_str						m_caScriptName;
 	CMotionDef					*m_tpNextAnimation;
 	CScriptEntityAction				*m_tpCurrentEntityAction;
 public:
@@ -63,11 +63,11 @@ public:
 	virtual	void				reinit					();
 	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();
-			const Fmatrix		GetUpdatedMatrix		(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
+			const Fmatrix		GetUpdatedMatrix		(shared_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
 			void				vfUpdateParticles		();
 			void				vfUpdateSounds			();
 	virtual	void				vfFinishAction			(CScriptEntityAction		*tpEntityAction);
-	virtual	void				SetScriptControl		(const bool			bScriptControl, ref_str	caSciptName);
+	virtual	void				SetScriptControl		(const bool			bScriptControl, shared_str	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
 	

@@ -58,7 +58,7 @@ void CUIChatWnd::Init()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIChatWnd::SetEditBoxPrefix(const ref_str &prefix)
+void CUIChatWnd::SetEditBoxPrefix(const shared_str &prefix)
 {
 	UIPrefix.SetText(*prefix);
 }
@@ -66,7 +66,7 @@ void CUIChatWnd::SetEditBoxPrefix(const ref_str &prefix)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIChatWnd::Say(const ref_str &phrase)
+void CUIChatWnd::Say(const shared_str &phrase)
 {
 	R_ASSERT(pUILogList);
 	pUILogList->Show();
@@ -97,7 +97,7 @@ void CUIChatWnd::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status
 	{
 		if (xr_strlen(UIEditBox.GetText()) > 0)
 		{
-			ref_str phrase = UIEditBox.GetText();
+			shared_str phrase = UIEditBox.GetText();
 ///			Say(phrase);
 			sendNextMessageToTeam ? Game().ChatSayTeam(phrase) : Game().ChatSayAll(phrase);
 			UIEditBox.SetText("");

@@ -52,5 +52,5 @@ protected:
 
 	HitTypeSVec m_HitTypeProtection;
 
-	ref_str		m_ActorVisual;
+	shared_str		m_ActorVisual;
 };

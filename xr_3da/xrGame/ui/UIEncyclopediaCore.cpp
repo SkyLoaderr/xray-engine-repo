@@ -61,7 +61,7 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
+shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 {
 	R_ASSERT(pTVItem);
 

@@ -18,7 +18,7 @@ protected:
 	float			time2hide;
 
 	u16				guid_bone;
-	ref_str			light_trace_bone;
+	shared_str			light_trace_bone;
 
 	Fvector			m_pos;
 	IRender_Light*	light_render;

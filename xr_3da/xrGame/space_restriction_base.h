@@ -25,7 +25,7 @@ public:
 	virtual	void					initialize				() = 0;
 	IC		const xr_vector<u32>	&border					();
 	IC		bool					initialized				() const;
-	virtual ref_str					name					() const = 0;
+	virtual shared_str					name					() const = 0;
 	virtual bool					shape					() const = 0;
 	virtual bool					default_restrictor		() const = 0;
 };

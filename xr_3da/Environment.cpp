@@ -325,7 +325,7 @@ void CEnvironment::unload	()
 	playlist.clear	();
 }
 
-void CEnvironment::SetWeather(ref_str name)
+void CEnvironment::SetWeather(shared_str name)
 {
 	if (*name && xr_strlen(name))	{
         WeatherPairIt it	= Weathers.find(name);

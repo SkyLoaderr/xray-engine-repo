@@ -167,16 +167,16 @@ void CEntity::Load		(LPCSTR section)
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
 
-/*			ref_str	first;
-		ref_str	second;
-		ref_str	comment;
+/*			shared_str	first;
+		shared_str	second;
+		shared_str	comment;
 
 		Item() : first(0), second(0), comment(0) {};
 	};
 	typedef xr_vector<Item>			Items;
 	typedef Items::iterator			SectIt;
     struct XRCORE_API Sect {
-		ref_str			Name;
+		shared_str			Name;
 		Items			Data;
 
 		IC SectIt		begin()		{ return Data.begin();	}

@@ -27,7 +27,7 @@ CObjectList::~CObjectList	( )
 	R_ASSERT(map_NETID.empty()		);
 }
 
-CObject*	CObjectList::FindObjectByName	( ref_str name )
+CObject*	CObjectList::FindObjectByName	( shared_str name )
 {
 	for (xr_vector<CObject*>::iterator I=objects.begin(); I!=objects.end(); I++)
 		if ((*I)->cName().equal(name))	return (*I);
@@ -35,7 +35,7 @@ CObject*	CObjectList::FindObjectByName	( ref_str name )
 }
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
-	return	FindObjectByName(ref_str(name));
+	return	FindObjectByName(shared_str(name));
 }
 
 CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )

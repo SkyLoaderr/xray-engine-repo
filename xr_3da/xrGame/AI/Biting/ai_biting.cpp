@@ -308,7 +308,7 @@ float CAI_Biting::get_current_animation_time()
 	return MotionMan.GetCurAnimTime();
 }
 
-void CAI_Biting::on_animation_start(ref_str anim)
+void CAI_Biting::on_animation_start(shared_str anim)
 {
 	CStepManager::on_animation_start(anim);
 }

@@ -8,14 +8,14 @@
 
 #pragma once
 
-IC	CSpaceRestrictionComposition::CSpaceRestrictionComposition	(CSpaceRestrictionHolder *space_restriction_holder, ref_str space_restrictors)
+IC	CSpaceRestrictionComposition::CSpaceRestrictionComposition	(CSpaceRestrictionHolder *space_restriction_holder, shared_str space_restrictors)
 {
 	VERIFY						(space_restriction_holder);
 	m_space_restriction_holder	= space_restriction_holder;
 	m_space_restrictors			= space_restrictors;
 }
 
-IC	ref_str	CSpaceRestrictionComposition::name					() const
+IC	shared_str	CSpaceRestrictionComposition::name					() const
 {
 	return						(m_space_restrictors);
 }

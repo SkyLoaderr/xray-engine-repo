@@ -7,7 +7,7 @@ public:
 	CCartridge();
 	void Load(LPCSTR section);
 
-	ref_str	m_ammoSect;
+	shared_str	m_ammoSect;
 	float	m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
 	bool	m_tracer;
 	bool	m_ricochet;

@@ -72,5 +72,5 @@ public:
 	// Cтрелочка - указатель
 	CUIStaticItem		m_Arrow;
 	// Имя уровня которому пренадлежит спот
-	ref_str				m_LevelName;
+	shared_str				m_LevelName;
 };

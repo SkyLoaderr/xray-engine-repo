@@ -258,7 +258,7 @@ void CBaseGraviZone ::	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_
 
 void CBaseGraviZone ::PlayTeleParticles(CGameObject* pObject)
 {
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
@@ -276,7 +276,7 @@ void CBaseGraviZone ::PlayTeleParticles(CGameObject* pObject)
 }
 void CBaseGraviZone ::StopTeleParticles(CGameObject* pObject)
 {
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)

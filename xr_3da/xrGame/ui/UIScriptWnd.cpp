@@ -8,15 +8,15 @@
 
 struct SCallbackInfo{
 	CScriptCallback		m_callback;
-	ref_str				m_controlName;
+	shared_str				m_controlName;
 	s16					m_event;
 	SCallbackInfo():m_controlName(""),m_event(-1){}
 };
 struct event_comparer{
-	ref_str				name;
+	shared_str				name;
 	s16					event;
 
-	event_comparer(ref_str n, s16 e):name(n),event(e){}
+	event_comparer(shared_str n, s16 e):name(n),event(e){}
 	bool operator ()(SCallbackInfo* i){
 		return( (i->m_controlName==name) && (i->m_event==event) );
 	}

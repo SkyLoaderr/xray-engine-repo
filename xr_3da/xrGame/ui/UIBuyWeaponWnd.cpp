@@ -256,8 +256,8 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 struct BoxInfo
 {
-	ref_str		texName;
-	ref_str		filterString;
+	shared_str		texName;
+	shared_str		filterString;
 	int			gridWidth, gridHeight;
 };
 
@@ -334,7 +334,7 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 
 void CUIBuyWeaponWnd::InitBackgroundStatics()
 {
-	static const ref_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
+	static const shared_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
 	CGameFont				*pNumberF		= HUD().pFontBigDigit, 
 							*pCaptionF		= HUD().pFontSmall;
 	const float				numberShiftX	= 30.f;
@@ -688,13 +688,13 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	// Текстуры для иконок кнопок табконтрола
-	static const ref_str	inactiveItems[]	= { "ui\\ui_mp_icon_small_weapons", 
+	static const shared_str	inactiveItems[]	= { "ui\\ui_mp_icon_small_weapons", 
 												"ui\\ui_mp_icon_main_guns",
 												"ui\\ui_mp_icon_grenades",
 												"ui\\ui_mp_icon_suits",
 												"ui\\ui_mp_icon_equipment" };
 
-	static const ref_str	activeItems[]	= { "ui\\ui_mp_icon_small_weapons_over",
+	static const shared_str	activeItems[]	= { "ui\\ui_mp_icon_small_weapons_over",
 												"ui\\ui_mp_icon_main_guns_over",
 												"ui\\ui_mp_icon_grenades_over",
 												"ui\\ui_mp_icon_suits_over",
@@ -1195,7 +1195,7 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 {
 	WPN_SECT_NAMES		wpnOneType;
 	string16			wpnSection;
-	ref_str				iconName;	
+	shared_str				iconName;	
 	string256			wpnNames, wpnSingleName;
 	// Номер секции с арморами
 	const int			armorSectionIndex = 5;
@@ -1231,7 +1231,7 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 			if (armorSectionIndex == i)
 			{
 				iconName	= pSettings->r_string(m_StrSectionName, wpnSingleName);
-				m_ConformityTable.push_back(std::make_pair<ref_str, ref_str>(wpnSingleName, iconName));
+				m_ConformityTable.push_back(std::make_pair<shared_str, shared_str>(wpnSingleName, iconName));
 			}
 		}
 
@@ -1314,7 +1314,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 				// Информация о таком арморе есть
 				if (0 == xr_strcmp(it->first, wpnSectStorage[slotNum][j].c_str()))
 				{
-					ref_str modelName = it->second;
+					shared_str modelName = it->second;
 
 					int m_iSkinX = 0, m_iSkinY = 0;
 					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
@@ -2033,8 +2033,8 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 
 void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 {
-	const ref_str		skinsParamName = "skins";
-	ref_str				tmpStr;
+	const shared_str		skinsParamName = "skins";
+	shared_str				tmpStr;
 
 	// Читаем список скинов
 	tmpStr = pSettings->r_string(m_StrSectionName, *skinsParamName);
@@ -2273,7 +2273,7 @@ bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) con
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::ApplyFilter(int slotNum, const ref_str &name, const ref_str &value)
+void CUIBuyWeaponWnd::ApplyFilter(int slotNum, const shared_str &name, const shared_str &value)
 {
 	CUIDragDropList *shop = m_WeaponSubBags[slotNum];
 

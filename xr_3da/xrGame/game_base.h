@@ -114,7 +114,7 @@ public:
 				u32					Phase					() const						{return phase;};
 				s32					Round					() const						{return round;};
 				s32					StartTime				() const						{return start_time;};
-	virtual		void				Create					(ref_str& options)				{};
+	virtual		void				Create					(shared_str& options)				{};
 	virtual		LPCSTR				type_name				() const						{return "base game";};
 //for scripting enhancement
 	static		CLASS_ID			getCLASS_ID				(LPCSTR game_type_name, bool bServer);

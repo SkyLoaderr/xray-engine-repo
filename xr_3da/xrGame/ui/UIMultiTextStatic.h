@@ -25,7 +25,7 @@ public:
 		int							maxWidth;
 		CUIStatic::EElipsisPosition elipsisPos;
 		CUITextBanner				effect;
-		ref_str						str;
+		shared_str						str;
 
 		void						SetText	(const char *fmt, ...);
 
@@ -52,12 +52,12 @@ public:
 class CUICaption :protected CUIMultiTextStatic
 {
 	typedef CUIMultiTextStatic inherited;
-	xr_map<ref_str,u32>		m_indices;
+	xr_map<shared_str,u32>		m_indices;
 public:
 	virtual void		Draw();
-	void				addCustomMessage(const ref_str& msg_name, float x, float y, float font_size, CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str="");
-	EffectParams*		customizeMessage(const ref_str& msg_name, const CUITextBanner::TextBannerStyles styleName);
-	void				setCaption(const ref_str& msg_name, LPCSTR message_to_out, u32 color=0, bool replaceColor=false);
+	void				addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str="");
+	EffectParams*		customizeMessage(const shared_str& msg_name, const CUITextBanner::TextBannerStyles styleName);
+	void				setCaption(const shared_str& msg_name, LPCSTR message_to_out, u32 color=0, bool replaceColor=false);
 
 };
 #endif	//UI_MULTITEXT_STATIC_H_

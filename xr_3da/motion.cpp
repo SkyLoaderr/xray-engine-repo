@@ -10,7 +10,7 @@
 #define EOBJ_SMOTION_VERSION   	0x0006
 
 #ifdef _LW_EXPORT
-	extern void ReplaceSpaceAndLowerCase(ref_str& s);
+	extern void ReplaceSpaceAndLowerCase(shared_str& s);
 #endif
 //------------------------------------------------------------------------------------------
 // CCustomMotion

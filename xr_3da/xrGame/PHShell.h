@@ -122,7 +122,7 @@ public:
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual ELEMENT_STORAGE&	Elements				  (){return elements;}
 	virtual CPhysicsElement*	get_Element				  (u16 bone_id);
-	virtual CPhysicsElement*	get_Element				  (const ref_str & bone_name);
+	virtual CPhysicsElement*	get_Element				  (const shared_str & bone_name);
 	virtual CPhysicsElement*	get_Element				  (LPCSTR bone_name);
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);
 	virtual u16					get_ElementsNumber		  (){return (u16)elements.size();}
@@ -130,7 +130,7 @@ public:
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 
 	virtual CPhysicsJoint*		get_Joint				  (u16 bone_id);
-	virtual CPhysicsJoint*		get_Joint				  (const ref_str & bone_name);
+	virtual CPhysicsJoint*		get_Joint				  (const shared_str & bone_name);
 	virtual CPhysicsJoint*		get_Joint				  (LPCSTR bone_name);
 	virtual CPhysicsJoint*		get_JointByStoreOrder	  (u16 num);
 	virtual	u16					get_JointsNumber		  ();

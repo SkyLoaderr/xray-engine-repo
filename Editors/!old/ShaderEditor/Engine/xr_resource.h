@@ -14,7 +14,7 @@ public:
 };
 class	ENGINE_API	xr_resource_named	:	public xr_resource		{
 public:
-	ref_str			cName;
+	shared_str		cName;
 
 	const char *	set_name			( const char * name)	
 	{

@@ -147,7 +147,7 @@
 
 // stl ext
 struct XRCORE_API xr_rtoken{
-    ref_str	name;
+    shared_str	name;
     int	   	id;
            	xr_rtoken	(LPCSTR _nm, int _id){name=_nm;id=_id;}
 public:
@@ -155,8 +155,8 @@ public:
     bool	equal		(LPCSTR _nm)		{return (0==xr_strcmp(*name,_nm));}
 };
 
-DEFINE_VECTOR	(ref_str,RStringVec,RStringVecIt);
-DEFINE_SET		(ref_str,RStringSet,RStringSetIt);
+DEFINE_VECTOR	(shared_str,RStringVec,RStringVecIt);
+DEFINE_SET		(shared_str,RStringSet,RStringSetIt);
 DEFINE_VECTOR	(xr_rtoken,RTokenVec,RTokenVecIt);
 
 #include "FS.h"

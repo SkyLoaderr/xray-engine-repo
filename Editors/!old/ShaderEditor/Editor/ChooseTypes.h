@@ -23,8 +23,8 @@ enum EChooseMode{
 };
 
 struct SChooseItem{
-	ref_str				name;
-	ref_str				hint;
+	shared_str				name;
+	shared_str				hint;
     SChooseItem	(LPCSTR nm, LPCSTR ht):name(nm),hint(ht){}
 };
 DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
@@ -38,7 +38,7 @@ typedef fastdelegate::FastDelegate0								TOnChooseClose;
 typedef void (*TOnChooseFillEvents)();
 
 struct SChooseEvents{
-	ref_str				caption;
+	shared_str				caption;
     TOnChooseFillItems	on_fill;
     TOnChooseSelectItem	on_sel;
     TOnDrawThumbnail    on_thm;

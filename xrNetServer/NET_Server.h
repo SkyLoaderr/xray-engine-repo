@@ -14,7 +14,7 @@ public:
 	IClientStatistic	stats;
 
 	ClientID			ID;
-	ref_str				Name;
+	shared_str				Name;
 	Flags				flags;	// local/host/normal
 	u32					dwTime_LastUpdate;
 

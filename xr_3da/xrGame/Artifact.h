@@ -30,17 +30,17 @@ public:
 
 protected:
 	//расстояние обнаружения артифакта детектором
-	float		m_fDetectionDist;
+	float			m_fDetectionDist;
 	
 	//звуки
-	ref_str		m_detectorSoundName;
-	ref_sound	m_detectorSound;
+	shared_str		m_detectorSoundName;
+	ref_sound		m_detectorSound;
 
-	u16			m_CarringBoneID;
+	u16				m_CarringBoneID;
 	
 	static xr_set<CArtefact*> m_all;
 
-	ref_str		m_sParticlesName;
+	shared_str		m_sParticlesName;
 	//////////////////////////////////////////////////////////////////////////
 	//	Lights
 	//////////////////////////////////////////////////////////////////////////

@@ -205,7 +205,7 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIFatigueIcon);
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
 
-	ref_str warningStrings[5] = 
+	shared_str warningStrings[5] = 
 	{	
 		"jammed",
 		"radiation",
@@ -219,7 +219,7 @@ void CUIMainIngameWnd::Init()
 	while (j <= ewiFatigue)
 	{
 		// „итаем данные порогов дл€ каждого индикатора
-		ref_str cfgRecord = pSettings->r_string("main_ingame_indicators_thresholds", *warningStrings[static_cast<int>(j) - 1]);
+		shared_str cfgRecord = pSettings->r_string("main_ingame_indicators_thresholds", *warningStrings[static_cast<int>(j) - 1]);
 		u32 count = _GetItemCount(*cfgRecord);
 
 		char	singleThreshold[8];
@@ -247,7 +247,7 @@ void CUIMainIngameWnd::Init()
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
 
-	ref_str contactsAnimationName			= "ui_pda_contacts";
+	shared_str contactsAnimationName			= "ui_pda_contacts";
 	UIContactsAnimation.SetColorAnimation	(contactsAnimationName);
 	UIContactsAnimation.SetColorToModify	(&UIPdaOnline.GetColorRef());
 	UIContactsAnimation.Cyclic				(false);
@@ -403,7 +403,7 @@ void CUIMainIngameWnd::Update()
 				}
 
 				prevAmmoID			= m_pWeapon->m_ammoType;
-				ref_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
+				shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
 				
 				//properties used by inventory menu
 				int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
@@ -999,7 +999,7 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::ChangeTotalMoneyIndicator(ref_str newMoneyString)
+void CUIMainIngameWnd::ChangeTotalMoneyIndicator(shared_str newMoneyString)
 {
 	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(0);
 	sp->str = newMoneyString;
@@ -1007,7 +1007,7 @@ void CUIMainIngameWnd::ChangeTotalMoneyIndicator(ref_str newMoneyString)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
+void CUIMainIngameWnd::DisplayMoneyChange(shared_str deltaMoney)
 {
 	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
 	sp->str				= deltaMoney;
@@ -1112,7 +1112,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 	{
 		pIcon = xr_new<CUIStatic>();
 		xml_init.InitStatic(node, flashingIconNodeName, i, pIcon);
-		ref_str iconType = node.ReadAttrib(flashingIconNodeName, i, "type", "none");
+		shared_str iconType = node.ReadAttrib(flashingIconNodeName, i, "type", "none");
 
 		// “еперь запоминаем иконку и ее тип
 		EFlashingIcons type = efiPdaTask;
@@ -1126,7 +1126,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		IconInfo &val	= m_FlashingIcons[type];
 		val.first		= pIcon;
 
-		const ref_str colorAnimationName	= "ui_new_jobs";
+		const shared_str colorAnimationName	= "ui_new_jobs";
 		val.second.SetColorAnimation(colorAnimationName);
 		val.second.SetColorToModify(&pIcon->GetColorRef());
 		AttachChild(pIcon);
@@ -1188,7 +1188,7 @@ void CUIMainIngameWnd::AnimateContacts()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddMonsterClawsEffect(const ref_str &monsterName, const ref_str &textureName)
+void CUIMainIngameWnd::AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName)
 {
 	if (m_ClawsTextures.find(monsterName) != m_ClawsTextures.end()) return;
 
@@ -1205,7 +1205,7 @@ void CUIMainIngameWnd::AddMonsterClawsEffect(const ref_str &monsterName, const r
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::PlayClawsAnimation(const ref_str &monsterName)
+void CUIMainIngameWnd::PlayClawsAnimation(const shared_str &monsterName)
 {
 	MonsterClawsTextures_it it = m_ClawsTextures.find(monsterName);
 	R_ASSERT2(it != m_ClawsTextures.end(), "Monster claws texture for this monster doesn't exist");

@@ -155,7 +155,7 @@ LPCSTR CScriptGameObject::Name				() const
 	return			(*m_tpGameObject->cName());
 }
 
-ref_str CScriptGameObject::cName				() const
+shared_str CScriptGameObject::cName				() const
 {
 	VERIFY			(m_tpGameObject);
 	return			(*m_tpGameObject->cName());

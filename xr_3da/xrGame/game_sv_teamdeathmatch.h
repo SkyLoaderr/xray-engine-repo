@@ -12,7 +12,7 @@ protected:
 	virtual		bool				checkForFragLimit		();
 public:	
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
-	virtual		void				Create					(ref_str& options);
+	virtual		void				Create					(shared_str& options);
 
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 

@@ -87,11 +87,11 @@ public:
 //  Function for automatic tree hierarchy creation
 //////////////////////////////////////////////////////////////////////////
 
-DEF_VECTOR(GroupTree, ref_str);
+DEF_VECTOR(GroupTree, shared_str);
 
 //////////////////////////////////////////////////////////////////////////
 
-void CreateTreeBranch(ref_str nestingTree, ref_str leafName, CUIListWnd *pListToAdd, int leafProperty,
+void CreateTreeBranch(shared_str nestingTree, shared_str leafName, CUIListWnd *pListToAdd, int leafProperty,
 					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor);
 
 #endif	//UI_TREE_VIEW_ITEM_H_

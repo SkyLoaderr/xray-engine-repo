@@ -85,7 +85,7 @@ namespace ALife {
 	};
 
 	struct STraderSupply {
-		ref_str					m_caSections;
+		shared_str					m_caSections;
 		u32						m_dwCount;
 		float					m_fMinFactor;
 		float					m_fMaxFactor;

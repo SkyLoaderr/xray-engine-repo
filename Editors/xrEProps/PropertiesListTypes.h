@@ -43,7 +43,7 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 #include "ChooseTypes.H"     
 #include "fastdelegate.h"                         
 //------------------------------------------------------------------------------
-typedef fastdelegate::FastDelegate2<PropValue*, ref_str&> 		TOnDrawTextEvent; 
+typedef fastdelegate::FastDelegate2<PropValue*, shared_str&> 		TOnDrawTextEvent; 
 typedef fastdelegate::FastDelegate1<PropItem*> 					TOnClick;
 //------------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ public:
 public:
 						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0){;}
 	virtual				~PropValue		(){}
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)=0;
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
     IC PropItem*		Owner			(){return m_Owner;}
@@ -96,7 +96,7 @@ public:
     	set_value		(value,val);
     	set_value		(init_value,*val);
     };
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
     virtual bool		Equal			(PropValue* val)
     {
     	CustomValue<T>* prop = (CustomValue<T>*)val;
@@ -118,7 +118,7 @@ class PropItem
 {
 	friend class		CPropHelper;
     friend class		TProperties;
-    ref_str				key;
+    shared_str				key;
     EPropType			type;
 	void*				item;
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
@@ -149,7 +149,7 @@ public:
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	xr_delete	(*it);
     };
-    void				SetName			(const ref_str& name)
+    void				SetName			(const shared_str& name)
     {
     	key=name;
     }
@@ -165,10 +165,10 @@ public:
         	m_Flags.set	(flMixed,TRUE);
     	values.push_back(value);
     }
-    IC ref_str			GetText			()
+    IC shared_str			GetText			()
     {
     	VERIFY(!values.empty()); 
-        return m_Flags.is(flMixed)?ref_str("(mixed)"):values.front()->GetText(OnDrawTextEvent);
+        return m_Flags.is(flMixed)?shared_str("(mixed)"):values.front()->GetText(OnDrawTextEvent);
     }
 	IC void				CheckMixed		()
     {
@@ -246,17 +246,17 @@ public:
 // values
 //------------------------------------------------------------------------------
 class CaptionValue: public PropValue{
-	ref_str				value;
+	shared_str				value;
 public:
-						CaptionValue	(const ref_str& val){value=val;}
-    virtual ref_str		GetText			(TOnDrawTextEvent)	{return value.c_str();}
+						CaptionValue	(const shared_str& val){value=val;}
+    virtual shared_str		GetText			(TOnDrawTextEvent)	{return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)	{return (value==((CaptionValue*)val)->value);}
-    bool				ApplyValue		(const ref_str& val){value=val; return false;}
+    bool				ApplyValue		(const shared_str& val){value=val; return false;}
 };
 
 class CanvasValue: public PropValue{
-	ref_str				value;
+	shared_str				value;
 public:
 	typedef fastdelegate::FastDelegate3<CanvasValue*,CanvasValue*,bool&>					TOnTestEqual;
 	typedef fastdelegate::FastDelegate3<CanvasValue*,void* /* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
@@ -265,8 +265,8 @@ public:
     TOnTestEqual		OnTestEqual;
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
 public:
-						CanvasValue		(const ref_str& val, int h):OnDrawCanvasEvent(0),OnTestEqual(0),height(h){value=val;}
-    virtual ref_str		GetText			(TOnDrawTextEvent){return value.c_str();}
+						CanvasValue		(const shared_str& val, int h):OnDrawCanvasEvent(0),OnTestEqual(0),height(h){value=val;}
+    virtual shared_str		GetText			(TOnDrawTextEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {
@@ -286,7 +286,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						ButtonValue		(const ref_str& val, u32 flags)
+						ButtonValue		(const shared_str& val, u32 flags)
 	{
     	m_Flags.assign	(flags);
     	OnBtnClickEvent	= 0;
@@ -296,7 +296,7 @@ public:
         for (int k=0; k<cnt; ++k)
         	value.push_back(_GetItem(val.c_str(),k,v));
     }
-    virtual ref_str		GetText			(TOnDrawTextEvent)
+    virtual shared_str		GetText			(TOnDrawTextEvent)
     {
         return 			_ListToSequence(value).c_str();
     }
@@ -306,24 +306,24 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class RTextValue: public CustomValue<ref_str>{
+class RTextValue: public CustomValue<shared_str>{
 public:
-						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+						RTextValue		(TYPE* val):CustomValue<shared_str>(val){};
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        ref_str txt		= GetValue();
+        shared_str txt		= GetValue();
         if (!OnDrawText.empty())OnDrawText(this, txt);
         return txt.c_str();
     }
 };
 
 class CTextValue: public PropValue{
-	ref_str				init_value;
+	shared_str				init_value;
 public:
 	LPSTR				value;
 public:
-	typedef fastdelegate::FastDelegate2<PropValue*, ref_str&> 			TOnBeforeEditEvent;
-	typedef fastdelegate::FastDelegate3<PropValue*, ref_str&, bool&> 	TOnAfterEditEvent;
+	typedef fastdelegate::FastDelegate2<PropValue*, shared_str&> 			TOnBeforeEditEvent;
+	typedef fastdelegate::FastDelegate3<PropValue*, shared_str&, bool&> 	TOnAfterEditEvent;
     TOnBeforeEditEvent	OnBeforeEditEvent;
     TOnAfterEditEvent	OnAfterEditEvent;
 public:
@@ -334,9 +334,9 @@ public:
     	OnBeforeEditEvent 	= 0;
         OnAfterEditEvent	= 0;
     };
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        ref_str txt		= GetValue();
+        shared_str txt		= GetValue();
         if (!OnDrawText.empty())OnDrawText(this, txt);
         return txt.c_str();
     }
@@ -361,7 +361,7 @@ class ChooseValue: public RTextValue{
 public:
     int					subitem;		
 	u32					m_ChooseID;
-    ref_str				m_StartPath;
+    shared_str				m_StartPath;
     ChooseItemVec*		m_Items;
 	typedef fastdelegate::FastDelegate1<ChooseValue*>	TOnChooseValueFill;
     TOnChooseValueFill	OnChooseFillEvent;
@@ -370,7 +370,7 @@ public:
 // utils
     void				AppendChooseItem	(LPCSTR name, LPCSTR hint){VERIFY(m_Items); m_Items->push_back(SChooseItem(name,hint));}
 public:
-						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_count):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_count),m_Items(0),m_FillParam(param),OnChooseFillEvent(0),OnDrawThumbnailEvent(0){}
+						ChooseValue			(shared_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_count):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_count),m_Items(0),m_FillParam(param),OnChooseFillEvent(0),OnDrawThumbnailEvent(0){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;
@@ -380,7 +380,7 @@ IC bool operator == (const WaveForm& A, const WaveForm& B){return !!A.Similar(B)
 class WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
-    virtual ref_str		GetText			(TOnDrawTextEvent){return "[Wave]";}
+    virtual shared_str		GetText			(TOnDrawTextEvent){return "[Wave]";}
 };
 //------------------------------------------------------------------------------
 
@@ -416,9 +416,9 @@ public:
     	clamp			(val,lim_mn,lim_mx);
         return CustomValue<T>::ApplyValue(val);
     }
-	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+	virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
 	{
-        ref_str 		draw_val;
+        shared_str 		draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			rstring_sprintf	(draw_val,*value,dec);
         return draw_val.c_str();
@@ -427,12 +427,12 @@ public:
 
 //------------------------------------------------------------------------------
 template <class T>
-IC ref_str rstring_sprintf(ref_str& s, const T& V, int tag)
+IC shared_str rstring_sprintf(shared_str& s, const T& V, int tag)
 {	s.sprintf("%d",V); return s;}
 //------------------------------------------------------------------------------
-IC ref_str rstring_sprintf(ref_str& s, const float& V, int dec)
+IC shared_str rstring_sprintf(shared_str& s, const float& V, int dec)
 {
-    ref_str fmt; fmt.sprintf("%%.%df",dec);
+    shared_str fmt; fmt.sprintf("%%.%df",dec);
     s.sprintf(fmt.c_str(),V);
     return s;
 }
@@ -445,9 +445,9 @@ IC void clamp(Fvector& V, const Fvector& mn, const Fvector& mx)
     clamp(V.y,mn.y,mx.y);
     clamp(V.z,mn.z,mx.z);
 }
-IC ref_str rstring_sprintf(ref_str& s, const Fvector& V, int dec)
+IC shared_str rstring_sprintf(shared_str& s, const Fvector& V, int dec)
 {
-	ref_str fmt;fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
+	shared_str fmt;fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
 	s.sprintf	(fmt.c_str(),V.x,V.y,V.z);
     return s;
 }
@@ -474,7 +474,7 @@ public:
 class FlagValueCustom
 {
 public:
-    ref_str				caption[2];
+    shared_str				caption[2];
     enum{
     	flInvertedDraw	= (1<<0),
     };
@@ -500,9 +500,9 @@ public:
     FLAG_TYPE			mask;
 public:
 						FlagValue		(T* val, FLAG_TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):CustomValue<T>(val),FlagValueCustom(flags,c0,c1),mask(_mask){}
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {	
-        ref_str 		draw_val;
+        shared_str 		draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
         return			draw_val.c_str();
@@ -539,9 +539,9 @@ class TokenValue: public CustomValue<T>, public TokenValueCustom
 {
 public:
 						TokenValue		(T* val, xr_token* _token):TokenValueCustom(_token),CustomValue<T>(val){};
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        ref_str 		draw_val;
+        shared_str 		draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			for(int i=0; token[i].name; i++) if (token[i].id==(int)GetValue()) return token[i].name;
         return draw_val.c_str();
@@ -564,9 +564,9 @@ class RTokenValue: public CustomValue<T>, public RTokenValueCustom
 {
 public:
 						RTokenValue		(T* val, xr_rtoken* _token, u32 _t_cnt):CustomValue<T>(val),RTokenValueCustom(_token,_t_cnt){};
-    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        ref_str draw_val;
+        shared_str draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			for(u32 k=0; k<token_count; k++) if (token[k].id==GetValue()) return *token[k].name;
         return draw_val.c_str();
@@ -589,7 +589,7 @@ public:
     const Item*			items;
 public:
 						TokenValueSH	(u32* val, const Item* _items, u32 _cnt):CustomValue<u32>(val),cnt(_cnt),items(_items){};
-	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+	virtual shared_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         u32 draw_val 	= GetValue();
         for(u32 i=0; i<cnt; i++) if (items[i].ID==draw_val) return items[i].str;
@@ -600,10 +600,10 @@ public:
 
 class RListValue: public RTextValue{
 public:                                   
-	ref_str*			items;
+	shared_str*			items;
     u32					item_count;
 public:                                   
-						RListValue		(ref_str* val, ref_str* _items, u32 cnt):RTextValue(val),items(_items),item_count(cnt){};
+						RListValue		(shared_str* val, shared_str* _items, u32 cnt):RTextValue(val),items(_items),item_count(cnt){};
 	virtual bool		Equal			(PropValue* val)
     {
         if (items!=((RListValue*)val)->items){
@@ -615,10 +615,10 @@ public:
 };
 class CListValue: public CTextValue{
 public:                                   
-	ref_str*			items;
+	shared_str*			items;
     u32					item_count;
 public:                                   
-						CListValue		(LPSTR val, u32 sz, ref_str* _items, u32 cnt):CTextValue(val,sz),items(_items),item_count(cnt){};
+						CListValue		(LPSTR val, u32 sz, shared_str* _items, u32 cnt):CTextValue(val,sz),items(_items),item_count(cnt){};
 	virtual bool		Equal			(PropValue* val)
     {
         if (items!=((CListValue*)val)->items){

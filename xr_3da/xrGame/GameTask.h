@@ -20,9 +20,8 @@ struct SGameTaskObjective
 {
 	SGameTaskObjective() {}
 	//текстовое описание
-	ref_str description;
+	shared_str description;
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 // SPhraseDialogData: данные для представления диалога
@@ -35,7 +34,7 @@ struct SGameTaskData : CSharedResource
 	DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);
 	OBJECTIVE_VECTOR m_Objectives;
 	//название задания
-	ref_str title;
+	shared_str title;
 };
 
 
@@ -66,8 +65,8 @@ public:
 
 public:
 	virtual u32			ObjectivesNum	();
-	virtual ref_str		ObjectiveDesc	(u32 index);
-	virtual ref_str		ObjectiveTitle	() {return data()->title;}
+	virtual shared_str		ObjectiveDesc	(u32 index);
+	virtual shared_str		ObjectiveTitle	() {return data()->title;}
 	virtual ETaskState	ObjectiveState  (u32 index);
 	//инициализируется значениями из реестра актера
 	TASK_STATE_VECTOR	m_ObjectiveStates;

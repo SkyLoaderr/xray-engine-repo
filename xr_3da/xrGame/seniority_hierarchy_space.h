@@ -9,11 +9,11 @@
 #pragma once
 
 namespace SeniorityHierarchy {
-	IC	ref_str to_string		(u32 number)
+	IC	shared_str to_string		(u32 number)
 	{
 		string16	S;
 		sprintf		(S,"%d",number);
-		return		(ref_str(S));
+		return		(shared_str(S));
 	}
 
 	template <typename T1>

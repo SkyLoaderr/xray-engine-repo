@@ -42,7 +42,7 @@ class CPatrolPathManager :
 
 private:
 	const CPatrolPath		*m_path;
-	ref_str					m_path_name;
+	shared_str				m_path_name;
 	EPatrolStartType		m_start_type;
 	EPatrolRouteType		m_route_type;
 	bool					m_actuality;
@@ -62,7 +62,7 @@ protected:
 	IC			bool	failed						() const;
 	IC			bool	random						() const;
 	IC			const Fvector &destination_position	() const;
-	IC			void	set_path					(const CPatrolPath *path, ref_str path_name);
+	IC			void	set_path					(const CPatrolPath *path, shared_str path_name);
 				void	select_point				(const Fvector &position, u32 &dest_vertex_id);
 	IC			bool	accessible					(const Fvector &position) const;
 	IC			bool	accessible					(u32 vertex_id) const;
@@ -76,12 +76,12 @@ public:
 	IC	virtual	void	set_callback				(CScriptCallback &callback);
 	IC			void	make_inactual				();
 	const CPatrolPath	*get_path					() {return m_path;}
-	IC			void	set_path					(ref_str path_name);
-	IC			void	set_path					(ref_str path_name, const EPatrolStartType patrol_start_type = ePatrolStartTypeNearest, const EPatrolRouteType patrol_route_type = ePatrolRouteTypeContinue, bool random = true);
+	IC			void	set_path					(shared_str path_name);
+	IC			void	set_path					(shared_str path_name, const EPatrolStartType patrol_start_type = ePatrolStartTypeNearest, const EPatrolRouteType patrol_route_type = ePatrolRouteTypeContinue, bool random = true);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);
 	IC			void	set_route_type				(const EPatrolRouteType patrol_route_type);
 	IC			void	set_random					(bool random);
-				ref_str	path_name					() const;
+				shared_str	path_name					() const;
 				void	set_previous_point			(int point_index);
 				void	set_start_point				(int point_index);
 };

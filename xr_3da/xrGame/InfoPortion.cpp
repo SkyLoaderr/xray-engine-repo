@@ -59,14 +59,14 @@ void CInfoPortion::load_shared	(LPCSTR)
 
 	CUIXml uiXml;
 	string128 xml_file_full;
-	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
 	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
 	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(pNode, "info_portion id=", *ref_str(item_data.id));
+	R_ASSERT3(pNode, "info_portion id=", *shared_str(item_data.id));
 
 	//текст
 	info_data()->m_text = uiXml.Read(pNode, "text", 0);
@@ -76,7 +76,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_DialogNames.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		ref_str dialog_name = uiXml.Read(pNode, "dialog", i);
+		shared_str dialog_name = uiXml.Read(pNode, "dialog", i);
 		info_data()->m_DialogNames.push_back(dialog_name);
 	}
 

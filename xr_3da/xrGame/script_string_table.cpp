@@ -25,9 +25,9 @@ int CScriptStringTable::index_by_id (LPCSTR str_id) const
 }
 LPCSTR CScriptStringTable::get_by_id (LPCSTR str_id) const
 {
-	return *ref_str((*m_pStringTable)(STRING_ID(str_id)));
+	return *shared_str((*m_pStringTable)(STRING_ID(str_id)));
 }
 LPCSTR CScriptStringTable::get_by_index	(int str_index) const
 {
-	return *ref_str((*m_pStringTable)(STRING_INDEX(str_index)));
+	return *shared_str((*m_pStringTable)(STRING_INDEX(str_index)));
 }

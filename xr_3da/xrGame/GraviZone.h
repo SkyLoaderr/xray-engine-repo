@@ -64,8 +64,8 @@ protected:
 	void			PlayTeleParticles(CGameObject* pObject);
 	void			StopTeleParticles(CGameObject* pObject);
 
-	ref_str			m_sTeleParticlesBig;
-	ref_str			m_sTeleParticlesSmall;
+	shared_str		m_sTeleParticlesBig;
+	shared_str		m_sTeleParticlesSmall;
 };
 
 class CGraviZone	: public CBaseGraviZone

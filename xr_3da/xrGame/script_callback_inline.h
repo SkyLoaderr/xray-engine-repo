@@ -24,7 +24,7 @@ IC	luabind::object	*CScriptCallback::get_object	()
 	return m_lua_object;
 }
 
-IC	ref_str	CScriptCallback::get_method	()
+IC	shared_str	CScriptCallback::get_method	()
 {
 	return m_method_name;
 }

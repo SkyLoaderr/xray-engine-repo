@@ -38,7 +38,7 @@ void CSpaceRestrictionBridge::initialize				()
 	object().initialize	();
 }
 
-ref_str CSpaceRestrictionBridge::name					() const
+shared_str CSpaceRestrictionBridge::name				() const
 {
 	return				(object().name());
 }

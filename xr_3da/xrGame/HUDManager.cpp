@@ -235,7 +235,7 @@ void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 	GetUI()->AddMessage	(from,buffer,C);
 	Msg			("- %s: %s",from,buffer);
 }
-void __cdecl CHUDManager::outMessage(u32 C, const ref_str& from, LPCSTR msg, ...)
+void __cdecl CHUDManager::outMessage(u32 C, const shared_str& from, LPCSTR msg, ...)
 {
 	string256	buffer;
 

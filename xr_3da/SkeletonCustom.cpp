@@ -49,7 +49,7 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-bool	pred_N(const std::pair<ref_str,u32>&	N, LPCSTR B)			{
+bool	pred_N(const std::pair<shared_str,u32>&	N, LPCSTR B)			{
 	return xr_strcmp(*N.first,B)<0;
 }
 u16		CKinematics::LL_BoneID		(LPCSTR B)			{
@@ -58,10 +58,10 @@ u16		CKinematics::LL_BoneID		(LPCSTR B)			{
 	if (0 != xr_strcmp(*(I->first),B))	return BI_NONE;
 	return				u16(I->second);
 }
-bool	pred_P(const std::pair<ref_str,u32>&	N, const ref_str& B)	{
+bool	pred_P(const std::pair<shared_str,u32>&	N, const shared_str& B)	{
 	return N.first._get() < B._get();
 }
-u16		CKinematics::LL_BoneID		(const ref_str& B)	{
+u16		CKinematics::LL_BoneID		(const shared_str& B)	{
 	accel::iterator I	= std::lower_bound	(bone_map_P->begin(),bone_map_P->end(),B,pred_P);
 	if (I == bone_map_P->end())			return BI_NONE;
 	if (I->first._get() != B._get() )	return BI_NONE;
@@ -137,10 +137,10 @@ void	CKinematics::IBoneInstances_Destroy()
 	}
 }
 
-bool	pred_sort_N(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& B)	{
+bool	pred_sort_N(const std::pair<shared_str,u32>& A, const std::pair<shared_str,u32>& B)	{
 	return xr_strcmp(A.first,B.first)<0;
 }
-bool	pred_sort_P(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& B)	{
+bool	pred_sort_P(const std::pair<shared_str,u32>& A, const std::pair<shared_str,u32>& B)	{
 	return A.first._get() < B.first._get();
 }
 
@@ -173,7 +173,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	bone_instances	= NULL;
 
 	// Load bones
-	xr_vector<ref_str>	L_parents;
+	xr_vector<shared_str>	L_parents;
 
 	R_ASSERT		(data->find_chunk(OGF_S_BONE_NAMES));
 
@@ -190,7 +190,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		data->r_stringZ(buf);		strlwr(buf);
 		CBoneData* pBone 			= CreateBoneData(ID);
 		bones->push_back			(pBone);
-		ref_str		bname			= ref_str(buf);
+		shared_str		bname			= shared_str(buf);
 		bone_map_N->push_back		(mk_pair(bname,ID));
 		bone_map_P->push_back		(mk_pair(bname,ID));
 
@@ -207,7 +207,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	// Attach bones to their parents
 	iRoot = BI_NONE;
 	for (u32 i=0; i<bones->size(); i++) {
-		ref_str	P 		= L_parents[i];
+		shared_str	P 		= L_parents[i];
 		CBoneData* B	= (*bones)[i];
 		if (!P||!P[0]) {
 			// no parent - this is root bone

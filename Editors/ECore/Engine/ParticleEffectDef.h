@@ -72,11 +72,11 @@ namespace PS
             dfVelocityScale	= (1<<18),
             dfCollisionDyn	= (1<<19),
 		};
-		ref_str				m_Name;
+		shared_str				m_Name;
 		Flags32				m_Flags;
 	// texture
-		ref_str				m_ShaderName;
-		ref_str				m_TextureName;
+		shared_str				m_ShaderName;
+		shared_str				m_TextureName;
 		ref_shader			m_CachedShader;
 		SFrame				m_Frame;
 	// compiled actions
@@ -110,8 +110,8 @@ namespace PS
 #ifdef _EDITOR         
 // change Copy&Equal if variables changed
 	public:
-        ref_str				m_OwnerName;
-        ref_str				m_ModifName;
+        shared_str				m_OwnerName;
+        shared_str				m_ModifName;
         time_t				m_CreateTime;
         time_t				m_ModifTime;
         
@@ -121,17 +121,17 @@ namespace PS
 		void __stdcall  	FindActionByName	(LPCSTR new_name, bool& res);
 		void __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
 		void __stdcall  	CollisionFrictionOnBeforeEdit	(PropValue* sender, float& edit_val);
-		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, ref_str& draw_val);
+		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, shared_str& draw_val);
 		void __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val, bool& accepted);
 		void __stdcall  	CollisionCutoffOnBeforeEdit		(PropValue* sender, float& edit_val);
-		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, ref_str& draw_val);
+		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, shared_str& draw_val);
 		void __stdcall  	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 	    void __stdcall  	OnFrameResize		(PropValue* sender);
 	    void __stdcall  	OnShaderChange		(PropValue* sender);
 	    void __stdcall  	OnFlagChange		(PropValue* sender);
 		void __stdcall  	OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __stdcall  	OnActionsClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-        void __stdcall  	OnAfterActionNameEdit(PropValue* sender, ref_str& edit_val, bool& accepted);
+        void __stdcall  	OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val, bool& accepted);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
 		BOOL				Equal				(const CPEDef* pe);

@@ -70,15 +70,15 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	CUIXml uiXml;
 	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_iOwnIndex);
 
-	string128 xml_file_full;
-	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+	string_path xml_file_full;
+	strconcat	(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
 	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
 	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
 	XML_NODE* item_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(item_node, "specific_character id=", *ref_str(item_data.id));
+	R_ASSERT3(item_node, "specific_character id=", *shared_str(item_data.id));
 
 	uiXml.SetLocalRoot(item_node);
 
@@ -97,7 +97,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 		data()->m_bDefaultForCommunity = false;
 
 	R_ASSERT3(!(data()->m_bNoRandom && data()->m_bDefaultForCommunity), 
-		"cannot set 'no_random' and 'team_default' flags simultaneously, profile id", *ref_str(item_data.id));
+		"cannot set 'no_random' and 'team_default' flags simultaneously, profile id", *shared_str(item_data.id));
 	
 	/////////////////////////////////////////////////
 
@@ -111,7 +111,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_ActorDialogs.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		ref_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i);
+		shared_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i);
 		data()->m_ActorDialogs.push_back(CPhraseDialog::IdToIndex(dialog_name));
 	}
 

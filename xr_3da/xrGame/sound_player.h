@@ -17,12 +17,12 @@ public:
 	struct CSoundParams {
 		u32										m_priority;
 		u32										m_synchro_mask;
-		ref_str									m_bone_name;
+		shared_str								m_bone_name;
 	};
 
 	struct CSoundCollection : public CSoundParams, public CRandom32 {
 		xr_vector<ref_sound*>					m_sounds;
-		ref_str									m_sound_prefix;
+		shared_str									m_sound_prefix;
 
 		IC				CSoundCollection		()
 		{

@@ -6,7 +6,7 @@ class game_sv_mp_script : public game_sv_mp
 {
 	typedef game_sv_mp inherited;
 private:
-	virtual		void				Create					(ref_str &options);
+	virtual		void				Create					(shared_str &options);
 
 public:
 									game_sv_mp_script		():inherited(){};

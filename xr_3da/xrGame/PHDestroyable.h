@@ -5,7 +5,7 @@ class CPhysicsShellHolder;
 
 class CPHDestroyable
 {
-			ref_str						m_destroyed_obj_visual_name	;
+			shared_str						m_destroyed_obj_visual_name	;
 			Flags8						m_flags						;
 			enum
 			{

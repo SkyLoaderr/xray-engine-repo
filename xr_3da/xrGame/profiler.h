@@ -21,7 +21,7 @@ struct CProfilePortion : public CProfileResultPortion {
 
 struct CProfileStats {
 	float			m_time;
-	ref_str			m_name;
+	shared_str			m_name;
 	u32				m_update_time;
 
 	IC				CProfileStats		();
@@ -30,14 +30,14 @@ struct CProfileStats {
 class CProfiler {
 private:
 	struct pred_rstr {
-		IC	bool operator()	(const ref_str &_1, const ref_str &_2) const
+		IC	bool operator()	(const shared_str &_1, const shared_str &_2) const
 		{
 			return	(xr_strcmp(*_1,*_2) < 0);
 		}
 	};
 protected:
 	typedef xr_vector<CProfileResultPortion>		PORTIONS;
-	typedef xr_map<ref_str,CProfileStats,pred_rstr>	TIMERS;
+	typedef xr_map<shared_str,CProfileStats,pred_rstr>	TIMERS;
 
 protected:
 	PORTIONS		m_portions;
@@ -47,7 +47,7 @@ protected:
 
 protected:
 			void	setup_timer			(LPCSTR timer_id, u64 timer_time);
-	IC		void	convert_string		(LPCSTR str, ref_str &out, u32 max_string_size);
+	IC		void	convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
 
 public:
 					CProfiler			();

@@ -680,7 +680,7 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 {
 	m_hit_sound.play_at_pos(this, pObject->Position());
 
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
@@ -709,7 +709,7 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 {
 	m_entrance_sound.play_at_pos(this, pObject->Position());
 
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
@@ -775,7 +775,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 
 void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 {
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
@@ -801,7 +801,7 @@ void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 	if(m_ObjectInfoMap.end() == it) return;
 	
 	
-	ref_str particle_str = NULL;
+	shared_str particle_str = NULL;
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
 	{

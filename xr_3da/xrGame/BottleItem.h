@@ -44,6 +44,6 @@ public:
 
 protected:
 	//партиклы разбивания бутылки
-	ref_str m_sBreakParticles;
+	shared_str m_sBreakParticles;
 	ref_sound sndBreaking;
 };

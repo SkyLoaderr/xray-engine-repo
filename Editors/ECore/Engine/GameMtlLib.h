@@ -51,12 +51,12 @@
 #endif
 
 #ifdef GM_NON_GAME
-	#define SoundSVec4 		ref_str
-	#define PSSVec4 		ref_str
-	#define ShaderSVec4 	ref_str
+	#define SoundSVec4 		shared_str
+	#define PSSVec4 		shared_str
+	#define ShaderSVec4 	shared_str
 #else
 	DEFINE_SVECTOR(ref_sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
-	DEFINE_SVECTOR(ref_str,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
+	DEFINE_SVECTOR(shared_str,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
 	DEFINE_SVECTOR(ref_shader,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
 #endif
 
@@ -82,8 +82,8 @@ public:
         flSlowDown		= (1ul<<31ul) // flSlowDown = (fFlotationFactor<1.f)
     };
 public:
-	ref_str				m_Name;
-    ref_str				m_Desc;
+	shared_str				m_Name;
+    shared_str				m_Desc;
 
     Flags32				Flags;
     // physics part
@@ -243,7 +243,7 @@ public:
             if (0==strcmpi(*(*it)->m_Name,name)) return it;
         return materials.end();
     }
-    IC GameMtlIt 		GetMaterialIt	(ref_str& name)
+    IC GameMtlIt 		GetMaterialIt	(shared_str& name)
     {
         for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
             if (name.equal((*it)->m_Name)) return it;

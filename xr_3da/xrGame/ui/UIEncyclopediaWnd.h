@@ -28,7 +28,7 @@ class CUIEncyclopediaWnd: public CUIWindow
 private:
 	typedef CUIWindow inherited;
 
-	ref_str m_InfosHeaderStr;
+	shared_str m_InfosHeaderStr;
 
 	// Изменить размер статика по размеру текстуры
 	void RescaleStatic(CUIStatic &s);
