@@ -25,14 +25,14 @@ void CRender::level_Load()
 	LoadVisuals			(chunk);
 	chunk->close		();
 	
-	// Lights
-	pApp->LoadTitle		("Loading lights...");
-	LoadLights			(fs);
-	
 	// Sectors
 	pApp->LoadTitle		("Loading sectors & portals...");
 	LoadSectors			(fs);
-	
+
+	// Lights
+	pApp->LoadTitle		("Loading lights...");
+	LoadLights			(fs);
+
 	// Details
 	pApp->LoadTitle		("Loading details...");
 	Details.Load		();

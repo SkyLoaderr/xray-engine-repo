@@ -288,7 +288,7 @@ void CRender::Calculate()
 			);
 
 		// Exact sorting order (front-to-back)
-		std::sort	(g_SpatialSpace.q_result.begin(),g_SpatialSpace.q_result.end(),pred_sp_sort);
+		std::sort		(g_SpatialSpace.q_result.begin(),g_SpatialSpace.q_result.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
