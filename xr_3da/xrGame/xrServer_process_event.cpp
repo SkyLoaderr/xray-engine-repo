@@ -135,19 +135,20 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 			//
 			
-			// if (c_src->owner->ID == id_src)
-			if (e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-			{
+			if (e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
 				game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
 			}
 
-			// Main unit
-			P.w_begin			(M_EVENT);
-			P.w_u32				(timestamp);
-			P.w_u16				(type);
-			P.w_u16				(destination);
-			P.w_u16				(id_src);
-			P.w_u32				(c_src->ID);
+			if (c_src->owner->ID == id_src) {
+				// Main unit
+				P.w_begin			(M_EVENT);
+				P.w_u32				(timestamp);
+				P.w_u16				(type);
+				P.w_u16				(destination);
+				P.w_u16				(id_src);
+				P.w_u32				(c_src->ID);
+			}
+
 			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;

@@ -418,7 +418,8 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	u32 alive					=	get_alive_count	(ps_killed->team);
 	if (0==alive) {
 		OnTeamScore(ps_killer->team);
-		OnDelayedRoundEnd("ENEMY_quelled");
+		if(get_alive_count(ps_killer->team)) OnDelayedRoundEnd("ENEMY_quelled");
+		else OnRoundEnd("ENEMY_quelled");
 	}
 
 	xrServer*	S					=	Level().Server;
