@@ -3,6 +3,11 @@
 #include "..\feel_touch.h"
 #include "actor.h"
 
+struct SPPInfo {
+	f32 blur, gray, noise, noise_scale;
+	u32 r, g, b, a;
+};
+
 class CCustomZone :
 	public CGameObject,
 	public Feel::Touch
@@ -22,6 +27,8 @@ public:
 	virtual void feel_touch_delete(CObject* O);
 	virtual BOOL feel_touch_contact(CObject* O);
 
+	virtual void Postprocess(f32 val) {}
+
 	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(sound& dest);
 
@@ -34,6 +41,7 @@ public:
 	f32 Power(f32 dist);
 
 	set<CObject*> m_inZone;
+	CActor *m_pLocalActor;
 	f32 m_maxPower, m_attn;
 	u32 m_period;
 	BOOL m_ready;

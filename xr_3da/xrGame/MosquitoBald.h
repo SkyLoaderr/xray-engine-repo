@@ -13,6 +13,9 @@ public:
 	virtual void Update(u32 dt);
 	virtual void Affect(CObject* O);
 
-	u32 m_time;
+	virtual void Postprocess(f32 val);
+
+	u32 m_time, m_pp_time;
 	float m_hitImpulseScale;
+	SPPInfo m_pp;
 };

@@ -23,7 +23,8 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",	false);
 	cameras[eacFreeFly]		= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
 
-	cam_active				= eacFreeFly;
+//	cam_active				= eacFreeFly;
+	cam_active				= eacFreeLook;
 	look_idx				= 0;
 }
 
@@ -47,7 +48,7 @@ void CSpectator::UpdateCL()
 						CGroup& G = S.Groups[j];
 						for (u32 k=0; k<G.Members.size(); k++){
 							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
-							if (A&&A->g_Alive()){
+							if (A/*&&A->g_Alive()*/){
 								if(idx==look_idx){
 									cam_Update	(A);
 									return;
@@ -184,8 +185,9 @@ void CSpectator::cam_Update	(CActor* A)
 		case eacFreeLook:{
 			cam->SetParent			(A);
 			Fvector point, dangle;
-			point.set				(0.f,1.6f,0.f);
+			point.set	(0.f,1.6f,0.f);
 			M.transform_tiny		(point);
+			if(!A->g_Alive()) point.set	(A->Position());
 			cam->Update				(point,dangle);
 			}break;
 		}

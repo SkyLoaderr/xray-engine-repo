@@ -9,6 +9,7 @@ CCustomZone::CCustomZone(void) {
 	m_attn = 1.f;
 	m_period = 1000;
 	m_ready = false;
+	m_pLocalActor = NULL;
 }
 
 CCustomZone::~CCustomZone(void) {}
@@ -56,6 +57,14 @@ void CCustomZone::Load(LPCSTR section) {
 	LPCSTR l_PSnd = pSettings->ReadSTRING(section,"sound");
 	SoundCreate(m_ambient, l_PSnd);
 
+
+// @@@ WT: !!!!!бпелеммн!!!!!
+	CRender_target*		T	= ::Render->getTarget();
+	T->set_duality_h		(0);
+	T->set_duality_v		(0);
+	T->set_noise			(0);
+// @@@ WT
+
 }
 
 void CCustomZone::net_Destroy() {
@@ -84,11 +93,13 @@ void CCustomZone::Update(u32 dt) {
 void CCustomZone::feel_touch_new(CObject* O) {
 	Level().HUD()->outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
+	if(dynamic_cast<CActor*>(O)) m_pLocalActor = dynamic_cast<CActor*>(O);
 }
 
 void CCustomZone::feel_touch_delete(CObject* O) {
 	Level().HUD()->outMessage(0xffffffff,O->cName(),"leaving a zone.");
 	m_inZone.erase(O);
+	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) {
@@ -98,7 +109,9 @@ BOOL CCustomZone::feel_touch_contact(CObject* O) {
 
 f32 CCustomZone::Power(f32 dist) {
 	f32 l_r = cfModel->getRadius();
-	return l_r < dist ? 0 : m_maxPower * (1.f - m_attn*dist/l_r);
+//	return l_r < dist ? 0 : m_maxPower * (1.f - m_attn*dist/l_r);
+	f32 l_pow = l_r < dist ? 0 : m_maxPower * (1.f - m_attn*(dist/l_r)*(dist/l_r));
+	return l_pow < 0 ? 0 : l_pow;
 }
 
 void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
@@ -126,8 +139,12 @@ void CCustomZone::OnRender() {
 		switch(l_pShape->type) {
 			case 0 : {
 				Fsphere &l_sphere = l_pShape->data.sphere;
-				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R); l_ball.translate_add(l_sphere.P);
-				l_ball.mul(clTransform, l_ball);
+				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
+				//l_ball.scale(1.f, 1.f, 1.f);
+				Fvector l_p; clTransform.transform(l_p, l_sphere.P);
+				l_ball.translate_add(l_p);
+				//l_ball.mul(clTransform, l_ball);
+				//l_ball.mul(l_ball, clTransform);
 				Device.Primitive.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
 			} break;
 			case 1 : {
