@@ -264,7 +264,7 @@ void CActor::Load		(LPCSTR section )
 void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
-	R_ASSERT			(Local());
+//	R_ASSERT			(Local());
 
 	u8					flags = 0;
 	P.w_float_q16		(g_Health(),-1000,1000);
@@ -293,7 +293,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 void CActor::net_Import		(NET_Packet& P)					// import from server
 {
 	// import
-	R_ASSERT			(Remote());
+//	R_ASSERT			(Remote());
 
 	net_update			N;
 
@@ -337,8 +337,24 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	setEnabled					(TRUE);
 }
 
+void CActor::net_ImportInput	(NET_Packet &P)
+{
+	u32	xTimeStamp;
+
+	P.r_u32				(xTimeStamp);
+	P.r_u32				(mstate_wishful);
+};
+
 BOOL CActor::net_Spawn		(LPVOID DC)
 {
+	//force actor to be local on server client
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);	
+	if (Level().Server->client_Count())
+	{
+		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
+	};
+
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
@@ -348,9 +364,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_PhysicMovementControl.SetPLastMaterial(&last_gmtl_id);
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
-	
-	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
 
 	// Dima : 24.02.2003
 	cNameVisual_set			(E->get_visual());
@@ -899,6 +912,9 @@ void CActor::shedule_Update	(u32 DT)
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
 		g_cl_Orientate			(mstate_real,dt);
 		g_Orientate				(mstate_real,dt);
+
+		NetInput_Save			( );
+
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
@@ -1527,3 +1543,25 @@ void CActor::OnReceiveInfo(int info_index)
 
 	CInventoryOwner::OnReceiveInfo(info_index);
 }
+
+void CActor::NetInput_Save()
+{
+	if (getSVU()) return; //don't need to store/send input on server
+	
+	//Store Input
+	net_input	NI;
+
+	NI.m_dwTimeStamp		= Level().timeServer();
+	NI.mstate_wishful		= mstate_wishful;
+
+	//Send Input
+	NET_Packet		NP;
+
+	NP.w_begin		(M_CL_INPUT);
+
+	NP.w_u16		(u16(ID()));
+	NP.w_u32		(NI.m_dwTimeStamp);
+	NP.w_u32		(NI.mstate_wishful);
+
+	if (Level().net_HasBandwidth()) u_EventSend(NP);
+};
