@@ -140,17 +140,20 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 	for (DWORD it=0; it<lst_textures.size(); it++)
 	{
 		STextureList*	base		= lst_textures[it];
-		if (L.equal(*base))			return base;
+		if (L.equal(*base))			{
+			base->dwReference	++;
+			return base;
+		}
 	}
-
-	lst_textures.push_back	(new STextureList(L.begin(),L.size()));
-	return lst_textures.back();
+	STextureList*	lst		= new STextureList(L.begin(),L.size());
+	lst->dwReference		= 1;
+	lst_textures.push_back	(lst);
+	return lst;
 }
 void			CShaderManager::_DeleteTextureList(STextureList* &L)
 {
-	for (DWORD it=0; it<L->size(); it++)
-		_DeleteTexture	((*L)[it]);
-	L->clear ();
+	for (DWORD it=0; it<L->size(); it++)	_DeleteTexture	((*L)[it]);
+	L->dwReference	--;
 	L = 0;
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -159,16 +162,20 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 	for (DWORD it=0; it<lst_matrices.size(); it++)
 	{
 		SMatrixList*	base		= lst_matrices[it];
-		if (L.equal(*base))			return base;
+		if (L.equal(*base))			{
+			base->dwReference	++;
+			return base;
+		}
 	}
-	lst_matrices.push_back	(new SMatrixList(L.begin(),L.size()));
-	return lst_matrices.back();
+	SMatrixList*	lst		= new SMatrixList(L.begin(),L.size());
+	lst->dwReference		= 1;
+	lst_matrices.push_back	(lst);
+	return lst;
 }
 void			CShaderManager::_DeleteMatrixList (	SMatrixList* &L )
 {
-	for (DWORD it=0; it<L->size(); it++)
-		_DeleteMatrix ((*L)[it]);
-	L->clear();
+	for (DWORD it=0; it<L->size(); it++)	_DeleteMatrix ((*L)[it]);
+	L->dwReference	--;
 	L = 0;
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -177,16 +184,20 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 	for (DWORD it=0; it<lst_constants.size(); it++)
 	{
 		SConstantList*	base		= lst_constants[it];
-		if (L.equal(*base))			return base;
+		if (L.equal(*base))			{
+			base->dwReference	++;
+			return base;
+		}
 	}
-	lst_constants.push_back	(new SConstantList(L.begin(),L.size()));
-	return lst_constants.back();
+	SConstantList*	lst		= new SConstantList(L.begin(),L.size());
+	lst->dwReference		= 1;
+	lst_constants.push_back	(lst);
+	return lst;
 }
 void			CShaderManager::_DeleteConstantList(SConstantList* &L )
 {
-	for (DWORD it=0; it<L->size(); it++)
-		_DeleteConstant ((*L)[it]);
-	L->clear();
+	for (DWORD it=0; it<L->size(); it++)	_DeleteConstant ((*L)[it]);
+	L->dwReference	--;
 	L = 0;
 }
 
@@ -261,14 +272,53 @@ void	CShaderManager::OnDeviceDestroy(void)
 
 	if (Device.bReady) return;
 
-	// Delete Texture List
-	for (it=0; it<lst_textures.size(); it++)	
-
+	//************************************************************************************
+	// Texture List
+	for (it=0; it<lst_textures.size(); it++)	R_ASSERT(0==lst_textures[it]->dwReference);
 	lst_textures.clear	();
+
+	// Matrix List
+	for (it=0; it<lst_matrices.size(); it++)	R_ASSERT(0==lst_matrices[it]->dwReference);
 	lst_matrices.clear	();
+
+	// Constant List
+	for (it=0; it<lst_constants.size(); it++)	R_ASSERT(0==lst_constants[it]->dwReference);
 	lst_constants.clear	();
 
-	// Dele
+	// Codes
+	for (it=0; it<codes.size(); it++)			{
+		R_ASSERT(0==codes[it].Reference);
+		CHK_DX	(HW.pDevice->DeleteStateBlock(codes[it].SB));
+	}
+	codes.clear	();
+
+	//************************************************************************************
+	// Textures
+	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+	{
+		R_ASSERT	(0==t->second->dwReference);
+		_FREE		(t->first);
+		_DELETE		(t->second);
+	}
+	textures.clear	();
+
+	// Matrices
+	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
+	{
+		R_ASSERT	(0==m->second->dwReference);
+		_FREE		(m->first);
+		_DELETE		(m->second);
+	}
+	matrices.clear	();
+	
+	// Constants
+	for (map<LPSTR,CConstant*,str_pred>::iterator c=constants.begin(); c!=constants.end(); c++)
+	{
+		R_ASSERT	(0==c->second->dwReference);
+		_FREE		(c->first);
+		_DELETE		(c->second);
+	}
+	constants.clear	();
 }
 
 void	CShaderManager::OnDeviceCreate(void) 
