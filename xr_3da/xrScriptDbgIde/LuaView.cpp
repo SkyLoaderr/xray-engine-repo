@@ -863,13 +863,9 @@ void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* p
 	CString msg;
 	if( bActivate && (this==pActivateView) )
 	{
-		msg = "activate";
-		g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
 		GetEditor()->GrabFocus();
-	}else{
-		msg = "de-activate";
-		g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
-	}
+	};
+
 	CView::OnActivateView(bActivate, pActivateView, pDeactiveView);
 }
 
