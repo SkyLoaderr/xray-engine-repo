@@ -9,7 +9,7 @@
 const int	dhm_line		= 4;
 const int	dhm_matrix		= (dhm_line+1+dhm_line);	// 9x9 array
 const float dhm_size		= 4.f;						// 4m per slot
-const int	dhm_precision	= 32;						// 32x32 subdivs per slot
+const int	dhm_precision	= 16;						// 32x32 subdivs per slot
 const int	dhm_total		= dhm_matrix*dhm_matrix;
 
 //
