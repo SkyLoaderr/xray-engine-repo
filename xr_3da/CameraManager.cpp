@@ -37,9 +37,9 @@ CCameraManager::~CCameraManager()
 	_DELETE(pEffector);
 }
 
-void	CCameraManager::AddEffector	(CEffector *pe)
+void	CCameraManager::SetEffector	(CEffector *pe)
 {
-	_DELETE(pEffector);
+	_DELETE		(pEffector);
 	pEffector	= pe;
 }
 

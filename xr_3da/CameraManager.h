@@ -21,7 +21,7 @@ class ENGINE_API CCameraManager
 	float					fFar;
 public:
 	void					Dump				(void);
-	void					AddEffector			(CEffector *pe);
+	void					SetEffector			(CEffector *pe);
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest);
 	void					Update				(const CCameraBase* C);
