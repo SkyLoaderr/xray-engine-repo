@@ -142,13 +142,6 @@ public:
 	void				GetCharacterPosition(Fvector &P)
 	{ m_character->GetPosition(P);}
 
-
-	void				GetBoundingSphere		(Fvector &P, float &R)
-	{
-#pragma todo("Oles to Slipch: Possible incorrect sphere, 'vPosition' points to bottom of character???")
-		P.set			(vPosition);
-		R =				aabb.getradius();
-	}
 	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos);}
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);

@@ -831,7 +831,11 @@ void CActor::shedule_Update	(u32 DT)
 		g_SetAnimation			(mstate_real);
 
 		// Check for game-contacts
-		Fvector C; float R;		ph_Movement.GetBoundingSphere	(C,R);
+		Fvector C; float R;		
+		//ph_Movement.GetBoundingSphere	(C,R);
+		
+		Center(C);
+		R=Radius();
 		feel_touch_update		(C,R);
 
 		// Dropping
