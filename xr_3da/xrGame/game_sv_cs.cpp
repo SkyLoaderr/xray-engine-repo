@@ -287,10 +287,10 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 
 	// Spawn item
 	xrServerEntity*		E	=	spawn_begin	(name);														// create SE
-	strcpy					(A->s_name_replace,name);													// name
-	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
-	A->ID_Parent			=	eid_who;
-	spawn_end				(A,	id_who);
+	strcpy					(E->s_name_replace,name);													// name
+	E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
+	E->ID_Parent			=	u16(eid_who);
+	spawn_end				(E,	id_who);
 }
 
 u8 game_sv_CS::AutoTeam() 
