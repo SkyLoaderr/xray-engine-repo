@@ -49,8 +49,9 @@ void CAI_Zombie::vfAdjustSpeed()
 	
 	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
-			m_fSpeed = 0;
+			m_fSpeed = 0 + m_fMinSpeed;
 			m_fASpeed = PI;
+			r_torso_target.yaw = fAngle;
 		}
 		else 
 		{
@@ -61,8 +62,9 @@ void CAI_Zombie::vfAdjustSpeed()
 	else
 		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
-				m_fSpeed = 0;
+				m_fSpeed = 0 + m_fMinSpeed;
 				m_fASpeed = PI;
+				r_torso_target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
@@ -77,8 +79,9 @@ void CAI_Zombie::vfAdjustSpeed()
 		else
 			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
-					m_fSpeed = 0;
+					m_fSpeed = 0 + m_fMinSpeed;
 					m_fASpeed = PI;
+					r_torso_target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
@@ -96,7 +99,8 @@ void CAI_Zombie::vfAdjustSpeed()
 						}
 			}
 			else {
-				m_fSpeed = 0;
+				r_torso_target.yaw = fAngle;
+				m_fSpeed = 0 + m_fMinSpeed;
 				m_fASpeed = PI;
 			}
 }
@@ -199,39 +203,47 @@ void CAI_Zombie::vfComputeNewPosition(bool bCanAdjustSpeed)
 		UpdateTransform();
 	}
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			if (m_Enemy.Enemy) {
-				if (!::Random.randI(4)) {
-					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				}
-				else {
-					Fvector tTemp;
-					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-					tTemp.normalize_safe();
-					mk_rotation(tTemp,r_torso_target);
-				}
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-			else {
-				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-		}
-		tStateStack.push(eCurrentState = aiZombieTurn);
-	}
-	else 
-		m_fSpeed = m_fSafeSpeed;
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+//		m_fSpeed = .1f;
+//		if (m_bNoWay) {
+//			if (m_Enemy.Enemy) {
+//				if (!::Random.randI(4)) {
+//					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+//					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+//				}
+//				else {
+//					Fvector tTemp;
+//					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+//					tTemp.normalize_safe();
+//					mk_rotation(tTemp,r_torso_target);
+//				}
+//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//			}
+//			else {
+//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//			}
+//		}
+//		tStateStack.push(eCurrentState = aiZombieTurn);
+//	}
+//	else 
+//		m_fSpeed = m_fSafeSpeed;
 }
 
 void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 {
 	if (bCanAdjustSpeed)
 		vfAdjustSpeed();
+
+	if (m_fSpeed < EPS_L) {
+		tStateStack.push(eCurrentState = aiZombieTurn);
+		return;
+	}
+
 	
+	m_fCurSpeed = m_fSpeed;
+
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
 	Fvector& tDirection = mRotate.k;
@@ -321,30 +333,30 @@ void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		m_bNoWay = true;
 	}
 	
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			if (m_Enemy.Enemy) {
-				if (!::Random.randI(4)) {
-					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				}
-				else {
-					Fvector tTemp;
-					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-					tTemp.normalize_safe();
-					mk_rotation(tTemp,r_torso_target);
-				}
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-			else {
-				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-		}
-		tStateStack.push(eCurrentState = aiZombieTurn);
-	}
-	else 
-		m_fSpeed = m_fSafeSpeed;
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+//		m_fSpeed = .1f;
+//		if (m_bNoWay) {
+//			if (m_Enemy.Enemy) {
+//				if (!::Random.randI(4)) {
+//					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+//					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+//				}
+//				else {
+//					Fvector tTemp;
+//					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+//					tTemp.normalize_safe();
+//					mk_rotation(tTemp,r_torso_target);
+//				}
+//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//			}
+//			else {
+//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//			}
+//		}
+//		tStateStack.push(eCurrentState = aiZombieTurn);
+//	}
+//	else 
+//		m_fSpeed = m_fSafeSpeed;
 }

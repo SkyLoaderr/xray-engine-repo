@@ -396,36 +396,44 @@ void CAI_Zombie::AttackRun()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
-		vfAimAtEnemy();
-		UpdateTransform();
-	}
-	else {
-		vfComputeNextDirectionPosition();
-		SetDirectionLook();
-	}
+	m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
+
+	vfComputeNextDirectionPosition();
+
+	SetDirectionLook();
+
+
+//	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+//		vfAimAtEnemy();
+//		//m_fSpeed = 0;
+//		UpdateTransform();
+//	}
+//	else {
+//		vfComputeNextDirectionPosition();
+//		SetDirectionLook();
+//	}
 	
 	vfSetFire(false,Group);
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = EPS_S;
-		if (m_bNoWay) {
-			if (!::Random.randI(4)) {
-				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			}
-			else {
-				Fvector tTemp;
-				tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-				tTemp.normalize_safe();
-				mk_rotation(tTemp,r_torso_target);
-			}
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+//		m_fSpeed = EPS_S;
+//		if (m_bNoWay) {
+//			if (!::Random.randI(4)) {
+//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+//			}
+//			else {
+//				Fvector tTemp;
+//				tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+//				tTemp.normalize_safe();
+//				mk_rotation(tTemp,r_torso_target);
+//			}
+//			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
+//		}
+//	}
+//	else 
+//		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
