@@ -175,7 +175,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-	CObject			*obj		= Level().Objects.FindObjectByName("tele");
+//	CObject			*obj		= Level().Objects.FindObjectByName("tele");
 
 
 //	if (obj) {
