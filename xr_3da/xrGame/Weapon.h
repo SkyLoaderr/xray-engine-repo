@@ -15,6 +15,7 @@
 #include "ShootingObject.h"
 #include "hud_item_object.h"
 #include "Actor_Flags.h"
+#include "../SkeletonAnimated.h"
 
 
 // refs
@@ -112,7 +113,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
-	typedef					svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
+	typedef					svector<MotionID,MAX_ANIM_COUNT>		MotionSVec;
 
 	void					animGet				(MotionSVec& lst, LPCSTR prefix);
 	virtual void			OnAnimationEnd		()			{};

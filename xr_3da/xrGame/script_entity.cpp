@@ -78,9 +78,9 @@ void CScriptEntity::ClearActionQueue()
 		m_tpActionQueue.erase			(m_tpActionQueue.begin());
 	}
 
-	m_tpScriptAnimation					= 0;
+	m_tpScriptAnimation.invalidate		();
 	m_tpCurrentEntityAction				= 0;
-	m_tpNextAnimation					= 0;
+	m_tpNextAnimation.invalidate		();
 }
 
 
@@ -337,7 +337,7 @@ bool CScriptEntity::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 
 bool CScriptEntity::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 {
-	m_tpNextAnimation = 0;
+	m_tpNextAnimation.invalidate();
 	if (GetCurrentAction() && GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 		return		(false);
 	if (!xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay))
@@ -560,7 +560,7 @@ void ScriptCallBack(CBlend* B)
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->object().callback(GameObject::eActionTypeAnimation)(l_tpScriptMonster->object().lua_game_object(),u32(eActionTypeAnimation));
 			
-		l_tpScriptMonster->m_tpScriptAnimation = 0;
+		l_tpScriptMonster->m_tpScriptAnimation.invalidate();
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 		if (l_tpScriptMonster->GetActionCount())
 			l_tpScriptMonster->ProcessScripts();
@@ -587,7 +587,7 @@ bool CScriptEntity::bfScriptAnimation()
 			return		(true);
 		}
 	else {
-		m_tpScriptAnimation	= 0;
+		m_tpScriptAnimation.invalidate();
 		return		(false);
 	}
 }

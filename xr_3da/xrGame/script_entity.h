@@ -9,13 +9,13 @@
 #pragma once
 
 #include "script_entity_space.h"
+#include "../skeletonanimated.h"
 
 class CSE_Abstract;
 class CGameObject;
 class CScriptEntityAction;
 class CEntity;
 class CScriptGameObject;
-class CMotionDef;
 class CCustomMonster;
 
 using namespace ScriptEntity;
@@ -56,11 +56,11 @@ protected:
 	ACTIONS						m_tpActionQueue;
 	bool						m_bScriptControl;
 	shared_str					m_caScriptName;
-	CMotionDef					*m_tpNextAnimation;
+	MotionID					m_tpNextAnimation;
 	CScriptEntityAction			*m_tpCurrentEntityAction;
 
 public:
-	CMotionDef					*m_tpScriptAnimation;
+	MotionID					m_tpScriptAnimation;
 
 protected:
 	ref_sound					*m_current_sound;

@@ -639,8 +639,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if (Level().CurrentViewEntity() == this)
 		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
 		
-	ROS()->force_mode						(IRender_ObjectSpecific::TRACE_ALL);
-	m_pPhysics_support->in_NetSpawn			(e);
+
+	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
+
+	m_pPhysics_support->in_NetSpawn	(e);
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 	m_PhysicMovementControl->ActivateBox	(0);
@@ -893,9 +895,9 @@ void	CActor::OnChangeVisual()
 	//-------------------------------------------------------------------------------
 	SetCallbacks		();
 	//-------------------------------------------------------------------------------
-	m_current_head = 0;
-	m_current_legs = 0;
-	m_current_torso = 0;
+	m_current_head.invalidate	();
+	m_current_legs.invalidate	();
+	m_current_torso.invalidate	();
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )

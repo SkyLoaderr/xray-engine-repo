@@ -115,12 +115,12 @@ void CChimera::reinit()
 	movement().detail().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
-	CMotionDef			*def1, *def2, *def3;
+	MotionID			def1, def2, def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
 
-	def1 = pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
 
 	CJumpingAbility::reinit(def1, def2, def3);
 }

@@ -112,10 +112,10 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 
 void CScriptGameObject::play_cycle(LPCSTR anim)
 {
-	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(object().Visual());
+	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(&object());
 	if(sa){
-		CMotionDef* m= sa->ID_Cycle(anim);
-		if(m) sa->PlayCycle(m);
+		MotionID m	= sa->ID_Cycle(anim);
+		if (m) sa->PlayCycle(m);
 		else 
 		{
 			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError ,"CGameObject : has not cycle %s",anim);

@@ -14,7 +14,7 @@
 #include "script_callback_ex.h"
 #include "ai_space.h"
 
-void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
+void CStalkerAnimationManager::script_play_callback(CBlend *blend)
 {
 	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY						(object);
@@ -34,15 +34,15 @@ void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
 
 void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand_usage)
 {
-	CMotionDef						*motion = m_skeleton_animated->ID_Cycle_Safe(animation);
+	const MotionID					&motion = m_skeleton_animated->ID_Cycle_Safe(animation);
 	if (!motion) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object().cName());
 		return;
 	}
-	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,CAnimationPair(motion,shared_str(animation))));
+	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,motion));
 }
 
-const CAnimationPair *CStalkerAnimationManager::assign_script_animation	()
+MotionID CStalkerAnimationManager::assign_script_animation	()
 {
 	VERIFY				(!script_animations().empty());
 	return				(script_animations().front().animation());

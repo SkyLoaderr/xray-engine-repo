@@ -34,26 +34,25 @@ void CBurer::reinit()
 
 void CBurer::reload(LPCSTR section)
 {
-	inherited::reload(section);
+	inherited::reload	(section);
 
-	sound().add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
-	sound().add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
+	sound().add			(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
+	sound().add			(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 
-	CSkeletonAnimated *pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
 	
 	// Load triple gravi animations
-	CMotionDef *def1, *def2, *def3;
-	def1 = pSkel->ID_Cycle_Safe("stand_gravi_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("stand_gravi_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_gravi_2");	VERIFY(def3);
+	MotionID			def1, def2, def3;
+	def1				= pSkel->ID_Cycle_Safe("stand_gravi_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("stand_gravi_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("stand_gravi_2");	VERIFY(def3);
 	anim_triple_gravi.reinit_external	(&EventMan, def1, def2, def3);
 	
 	// Load triple tele animations
-	def1 = pSkel->ID_Cycle_Safe("stand_tele_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("stand_tele_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_tele_2");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("stand_tele_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("stand_tele_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("stand_tele_2");	VERIFY(def3);
 	anim_triple_tele.reinit_external	(&EventMan, def1, def2, def3);
-
 }
 
 void CBurer::Load(LPCSTR section)

@@ -1,9 +1,10 @@
 #pragma once
+
 #include "monster_event_manager_defs.h"
+#include "../../SkeletonAnimated.h"
 
 class CAnimTriple;
 class CBaseMonster;
-class CMotionDef;
 
 class CJumpingAbility {
 	CBaseMonster	*m_object;
@@ -22,7 +23,7 @@ class CJumpingAbility {
 	u32				m_time_next_allowed;
 	u32				m_time_started;
 
-	CMotionDef		*m_def_glide;
+	MotionID		m_def_glide;
 	
 	// run-time params
 	float			m_jump_time;
@@ -50,7 +51,7 @@ public:
 	virtual void	load				(LPCSTR section);
 	
 	// init on spawn
-	virtual void	reinit				(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3);
+	virtual void	reinit				(const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3);
 	
 	// process jump
 	virtual void	jump				(CObject *obj, u32 vel_mask = u32(-1));
@@ -93,4 +94,3 @@ private:
 
 			void	start_jump			(const Fvector &point);
 };
-

@@ -249,19 +249,19 @@ void CController::reload(LPCSTR section)
 	CPsyAuraController::reload	(section);
 
 	// Load triple gravi animations
-	CMotionDef *def1, *def2, *def3;
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_sit_down_attack_0");
-	VERIFY(def1);
+	MotionID					def1, def2, def3;
+	def1						= smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_sit_down_attack_0");
+	VERIFY						(def1);
 
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("control_attack_0");
-	VERIFY(def2);
+	def2						= smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("control_attack_0");
+	VERIFY						(def2);
 
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("sit_stand_up_attack_0");
-	VERIFY(def3);
+	def3						= smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("sit_stand_up_attack_0");
+	VERIFY						(def3);
 
 	anim_triple_control.reinit_external	(&EventMan, def1, def2, def3);
 
-	CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
+	CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 }
 
 void CController::reinit()

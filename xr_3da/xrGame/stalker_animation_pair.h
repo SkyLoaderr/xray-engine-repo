@@ -10,14 +10,12 @@
 
 #include "../skeletonanimated.h"
 
-//class CMotionDef;
 class CBlend;
 class CAI_Stalker;
-class CAnimationPair;
 
 class CStalkerAnimationPair {
 private:
-	const CAnimationPair	*m_animation;
+	MotionID				m_animation;
 	CBlend					*m_blend;
 	bool					m_actual;
 	bool					m_step_dependence;
@@ -35,10 +33,10 @@ protected:
 public:
 	IC						CStalkerAnimationPair	();
 	IC		void			reset					();
-			void			synchronize				(const CStalkerAnimationPair &stalker_animation_pair) const;
+			void			synchronize				(CSkeletonAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation_pair) const;
 	IC		bool			actual					() const;
-	IC		void			animation				(const CAnimationPair *animation);
-	IC	const CAnimationPair*animation				() const;
+	IC		void			animation				(const MotionID &animation);
+	IC		const MotionID	&animation				() const;
 	IC		CBlend			*blend					() const;
 	IC		void			step_dependence			(bool value);
 	IC		bool			step_dependence			() const;

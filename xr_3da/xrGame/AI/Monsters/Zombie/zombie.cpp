@@ -78,24 +78,23 @@ void CZombie::reload(LPCSTR section)
 	inherited::reload(section);
 
 	// Load triple death animations
-	CMotionDef			*def1, *def2, *def3;
+	MotionID			def1, def2, def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
 	
-	def1 = pSkel->ID_Cycle_Safe("fake_death_0_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("fake_death_0_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("fake_death_0_2");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("fake_death_0_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("fake_death_0_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("fake_death_0_2");	VERIFY(def3);
 	anim_triple_death[0].reinit_external	(&EventMan, def1, def2, def3);
 
 
-	def1 = pSkel->ID_Cycle_Safe("fake_death_1_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("fake_death_1_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("fake_death_1_2");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("fake_death_1_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("fake_death_1_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("fake_death_1_2");	VERIFY(def3);
 	anim_triple_death[1].reinit_external	(&EventMan, def1, def2, def3);
 
-
-	def1 = pSkel->ID_Cycle_Safe("fake_death_2_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("fake_death_2_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("fake_death_2_2");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("fake_death_2_0");	VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("fake_death_2_1");	VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("fake_death_2_2");	VERIFY(def3);
 	anim_triple_death[2].reinit_external	(&EventMan, def1, def2, def3);
 }
 

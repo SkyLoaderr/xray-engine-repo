@@ -45,7 +45,7 @@ void CMotionManager::Init (CBaseMonster	*pM)
 void CMotionManager::reinit()
 {
 	prev_action				= m_tAction	= ACT_STAND_IDLE;
-	m_tpCurAnim				= 0;
+	m_tpCurAnim.invalidate	();
 	spec_params				= 0;
 
 	Seq_Init				();
@@ -91,11 +91,11 @@ bool CMotionManager::PrepareAnimation()
 	if (pJumping && pJumping->IsActive())  {
 		m_cur_anim.speed.current	= -1.f;
 		m_cur_anim.speed.target		= -1.f;
-		return pJumping->PrepareAnimation(&m_tpCurAnim);
+		return pJumping->PrepareAnimation(m_tpCurAnim);
 	}
-	if (0 != m_tpCurAnim) return false;
+	if (m_tpCurAnim) return false;
 	if (TA_IsActive()) {
-		bool ret_value				= pCurAnimTriple->prepare_animation(&m_tpCurAnim);
+		bool ret_value				= pCurAnimTriple->prepare_animation(m_tpCurAnim);
 
 		m_cur_anim.name				= GetAnimTranslation(m_tpCurAnim);
 			
@@ -124,7 +124,10 @@ bool CMotionManager::PrepareAnimation()
 
 	
 	// установить анимацию	
-	m_tpCurAnim = get_motion_def(anim_it,index);
+	{
+		string128			s1,s2;
+		m_tpCurAnim			= smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->second.target_name,itoa(index,s1,10)));
+	}
 
 	// «аполнить текущую анимацию
 	string64 st;
@@ -195,7 +198,7 @@ void CMotionManager::ApplyParams()
 // Callback на завершение анимации
 void CMotionManager::OnAnimationEnd() 
 { 
-	m_tpCurAnim = 0;
+	m_tpCurAnim.invalidate();
 	if (seq_playing) Seq_Switch();
 
 	if (pJumping && pJumping->IsActive()) pJumping->OnAnimationEnd();
@@ -330,7 +333,7 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 
 void CMotionManager::ForceAnimSelect() 
 {
-	m_tpCurAnim = 0; 
+	m_tpCurAnim.invalidate(); 
 	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0);
 }
 
@@ -368,12 +371,12 @@ float CMotionManager::GetCurAnimTime()
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 {
-	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(anim);
-	VERIFY(get_sd()->m_tAnims.end() != anim_it);
+	ANIM_ITEM_MAP_IT	anim_it = get_sd()->m_tAnims.find(anim);
+	VERIFY				(get_sd()->m_tAnims.end() != anim_it);
 
-	CMotionDef *def = get_motion_def(anim_it, 0);
+	CMotionDef			*def = get_motion_def(anim_it, 0);
 
-	return def->Dequantize(def->speed);
+	return				(def->Dequantize(def->speed));
 }
 
 
@@ -494,7 +497,7 @@ void CMotionManager::ValidateAnimation()
 	}
 
 	if (!is_moving_on_path && is_moving_anim) {
-		m_tpCurAnim							= 0;
+		m_tpCurAnim.invalidate				();
 		cur_anim_info().motion				= eAnimStandIdle;
 		pMonster->movement().stop_now();
 		return;
@@ -507,7 +510,7 @@ void CMotionManager::ValidateAnimation()
 
 	float angle_diff = angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw);
 	if (angle_diff < deg(1) && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
-		m_tpCurAnim					= 0;
+		m_tpCurAnim.invalidate		();
 		cur_anim_info().motion		= eAnimStandIdle;
 		return;
 	}
@@ -525,7 +528,7 @@ void CMotionManager::UpdateAnimCount()
 		u8 count = 0;
 		
 		for (int i=0; ; ++i) {
-			if (0 != smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
+			if (smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
 			else break;
 		}
 
@@ -539,8 +542,10 @@ void CMotionManager::UpdateAnimCount()
 
 CMotionDef *CMotionManager::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 index)
 {
-	string128 s1,s2;
-	return smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
+	string128			s1,s2;
+	CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(pMonster->Visual());
+	const MotionID		&motion_id = skeleton_animated->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
+	return				(skeleton_animated->LL_GetMotionDef(motion_id));
 }
 
 
@@ -566,17 +571,16 @@ bool CMotionManager::IsCriticalAction()
 	//return (JumpActive() || Seq_Active());
 }
 
-void CMotionManager::AddAnimTranslation(CMotionDef *motion, LPCSTR str)
+void CMotionManager::AddAnimTranslation(const MotionID &motion, LPCSTR str)
 {
 	m_anim_motion_map.insert(mk_pair(motion, str));	
 }
-shared_str CMotionManager::GetAnimTranslation(CMotionDef *motion)
+shared_str CMotionManager::GetAnimTranslation(const MotionID &motion)
 {
-	shared_str ret_value;
+	shared_str				ret_value;
 
-	ANIM_TO_MOTION_MAP_IT anim_it = m_anim_motion_map.find(motion);
+	ANIM_TO_MOTION_MAP_IT	anim_it = m_anim_motion_map.find(motion);
 	if (anim_it != m_anim_motion_map.end()) ret_value = anim_it->second;
 
 	return ret_value;
 }
-

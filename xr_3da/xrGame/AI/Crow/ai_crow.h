@@ -7,6 +7,7 @@
 #define __XRAY_AI_CROW__
 
 #include "../../entity_alive.h"
+#include "../../../SkeletonAnimated.h"
 
 class CMotionDef;
 class CBlend;
@@ -30,9 +31,9 @@ class CAI_Crow : public CEntity
 	// animations
 	struct SAnim
 	{
-		typedef			svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
+		typedef			svector<MotionID,MAX_ANIM_COUNT> MotionSVec;
 		MotionSVec		m_Animations;
-		CMotionDef*		GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
+		const MotionID	&GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
 		void			Load		(CSkeletonAnimated* visual, LPCSTR prefix);
 	};
 

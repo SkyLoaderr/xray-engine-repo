@@ -104,7 +104,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	const CAI_Stalker						*stalker = smart_cast<const CAI_Stalker*>(monster);
 	const xr_vector<const CEntityAlive*>	&VisibleEnemies = monster->memory().enemy().objects();
 
-	GroupHierarchyHolder::MEMBER_REGISTRY Members;
+	GroupHierarchyHolder::MEMBER_REGISTRY	Members;
 	if (!tpEntity)
 		for (int k=0; k<(int)Group.members().size(); ++k) {
 			if (Group.members()[k]->g_Alive() && ((Group.members()[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
@@ -114,7 +114,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		for (int k=0; k<(int)Group.members().size(); ++k) {
 			if (Group.members()[k]->g_Alive() && ((Group.members()[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
 				if (tpEntity->Position().distance_to(Group.members()[k]->Position()) < fGroupDistance) {
-					
+
 					if (!stalker) {
 						Members.push_back	(Group.members()[k]);
 						continue;
@@ -125,7 +125,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 						Members.push_back	(Group.members()[k]);
 						continue;
 					}
-					
+
 					if (Group.agent_manager().member().registered_in_combat(member))
 						Members.push_back	(Group.members()[k]);
 				}
@@ -171,13 +171,13 @@ void CAniVector::Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 {
 	A.clear		();
 	string256	S1, S2;
-	CMotionDef	*tpMotionDef;
+	MotionID	tpMotionDef;
 	for (int i=0; ; ++i)
-		if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
-			A.push_back(CAnimationPair(tpMotionDef,shared_str(S1)));
+		if (!!(tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
+			A.push_back(tpMotionDef);
 		else
-			if (0 != (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
-				A.push_back(CAnimationPair(tpMotionDef,shared_str(S1)));
+			if (!!(tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
+				A.push_back(tpMotionDef);
 			else
 				if (i<10)
 					continue;

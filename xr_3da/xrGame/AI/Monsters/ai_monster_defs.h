@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../skeletonanimated.h"
+
 typedef u32 TTime;
 
 // Logging
@@ -488,7 +490,7 @@ enum EDangerType {
 	eNone
 };
 
-DEFINE_MAP(CMotionDef*, shared_str, ANIM_TO_MOTION_MAP, ANIM_TO_MOTION_MAP_IT);
+DEFINE_MAP(MotionID, shared_str, ANIM_TO_MOTION_MAP, ANIM_TO_MOTION_MAP_IT);
 
 
 

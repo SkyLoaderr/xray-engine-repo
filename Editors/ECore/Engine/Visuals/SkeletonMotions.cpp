@@ -227,11 +227,11 @@ void CMotionDef::Load(IReader* MP, u32 fl)
 	power		= Quantize(MP->r_float());
 	accrue		= Quantize(MP->r_float());
 	falloff		= Quantize(MP->r_float());
-	flags		= fl;
+	flags		= (u16)fl;
 	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
 }
 bool CMotionDef::StopAtEnd()
 {
-	return flags&esmStopAtEnd;
+	return !!(flags&esmStopAtEnd);
 }
 

@@ -21,7 +21,7 @@ IC	CStalkerAnimationPair::CStalkerAnimationPair	()
 
 IC	void CStalkerAnimationPair::reset				()
 {
-	m_animation				= 0;
+	m_animation.invalidate	();
 	m_blend					= 0;
 	m_actual				= true;
 }
@@ -31,13 +31,13 @@ IC	bool CStalkerAnimationPair::actual				() const
 	return					(m_actual);
 }
 
-IC	void CStalkerAnimationPair::animation			(const CAnimationPair *animation)
+IC	void CStalkerAnimationPair::animation			(const MotionID &animation)
 {
 	m_actual				= m_actual && (m_animation == animation);
 	m_animation				= animation;
 }
 
-IC	const CAnimationPair *CStalkerAnimationPair::animation	() const
+IC	const MotionID &CStalkerAnimationPair::animation() const
 {
 	return					(m_animation);
 }

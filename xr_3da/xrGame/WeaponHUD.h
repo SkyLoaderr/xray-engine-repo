@@ -8,6 +8,8 @@
 #ifndef __XR_WEAPON_HUD_H__
 #define __XR_WEAPON_HUD_H__
 
+#include "../SkeletonAnimated.h"
+
 // refs
 class ENGINE_API IRender_Visual;
 class ENGINE_API CInifile;
@@ -103,9 +105,9 @@ public:
 	
 
 	// Animations
-	void				animPlay		(CMotionDef* M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);
-	void				animDisplay		(CMotionDef* M,	BOOL bMixIn);
-	CMotionDef*			animGet			(LPCSTR name);
+	void				animPlay		(MotionID M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);
+	void				animDisplay		(MotionID M,	BOOL bMixIn);
+	MotionID			animGet			(LPCSTR name);
 	
 	void				UpdatePosition	(const Fmatrix& transform);
 

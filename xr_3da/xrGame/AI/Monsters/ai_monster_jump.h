@@ -1,8 +1,9 @@
 #pragma once
+
 #include "ai_monster_defs.h"
+#include "../../SkeletonAnimated.h"
 
 class CCustomMonster;
-class CMotionDef;
 
 enum EJumpStateType {
 	JT_GLIDE,				
@@ -10,7 +11,7 @@ enum EJumpStateType {
 };
 
 struct SJumpState{
-	CMotionDef		*motion;
+	MotionID		motion;
 	EJumpStateType	type;
 	bool			change;
 
@@ -29,7 +30,7 @@ class CJumping {
 
 	JUMP_STATE_VECTOR		bank;
 	JUMP_STATE_VECTOR_IT	ptr_cur;
-	CMotionDef				*cur_motion;
+	MotionID				cur_motion;
 
 	bool			active;					// состояние прыжка активно?
 	Fvector			from_pos;				// стартовая позиция
@@ -58,13 +59,13 @@ public:
 			void	Load					(LPCSTR section);
 	
 	// Добавление параметров прыжка
-			void	AddState				(CMotionDef *motion, EJumpStateType type, bool change, float linear, float angular);			
+			void	AddState				(const MotionID &motion, EJumpStateType type, bool change, float linear, float angular);			
 			
 	// Общая проверка на прыжок
 			bool	Check					(Fvector from_pos, Fvector to_pos, const CObject *pO);
 
 	// Подготовка текущей анимации прыжка
-			bool	PrepareAnimation		(CMotionDef **m);
+			bool	PrepareAnimation		(MotionID &m);
 	
 			void	OnAnimationEnd			();
 	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)

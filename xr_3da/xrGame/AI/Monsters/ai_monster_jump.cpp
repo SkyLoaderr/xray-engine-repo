@@ -32,7 +32,7 @@ void CJumping::Load(LPCSTR section)
 	m_fTraceDist					= pSettings->r_float(section,"jump_trace_dist");
 }
 
-void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, float linear, float angular)
+void CJumping::AddState(const MotionID &motion, EJumpStateType type, bool change, float linear, float angular)
 {
 	SJumpState jmp;
 
@@ -48,7 +48,7 @@ void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, fl
 void CJumping::Start()
 {
 	ptr_cur		= bank.begin();
-	cur_motion	= 0;
+	cur_motion.invalidate();
 	active		= true;
 
 	ApplyParams();
@@ -63,11 +63,11 @@ void CJumping::Stop()
 	OnJumpStop();
 }
 // вызывается на каждом SelectAnimation
-bool CJumping::PrepareAnimation(CMotionDef **m)
+bool CJumping::PrepareAnimation(MotionID &m)
 {
-	if (0 != cur_motion) return false;
+	if (cur_motion) return false;
 
-	*m = cur_motion = ptr_cur->motion;
+	m = cur_motion = ptr_cur->motion;
 	return true;
 }
 // вызывается по окончанию анимации
@@ -90,7 +90,7 @@ void CJumping::NextState()
 		return;
 	}
 
-	cur_motion = 0;
+	cur_motion.invalidate();
 	ApplyParams();
 
 	if (JT_GLIDE == ptr_cur->type) Execute();

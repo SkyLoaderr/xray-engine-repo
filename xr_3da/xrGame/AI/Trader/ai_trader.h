@@ -45,8 +45,8 @@ private:
 
 	MOTION_MAP head_anims;
 
-	CMotionDef*			m_tpHeadDef;	
-	CMotionDef*			m_tpGlobalDef;
+	MotionID			m_tpHeadDef;	
+	MotionID			m_tpGlobalDef;
 
 	MonsterSpace::EMonsterHeadAnimType m_cur_head_anim_type;
 

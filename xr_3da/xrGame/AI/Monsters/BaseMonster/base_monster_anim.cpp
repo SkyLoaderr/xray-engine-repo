@@ -26,7 +26,8 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
-		info.blend							= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), m_default_bone_part, TRUE, vfPlayEndCallBack, this);
+		CSkeletonAnimated					*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+		info.blend							= skeleton_animated->LL_PlayCycle(m_default_bone_part, MotionMan.m_tpCurAnim, TRUE, vfPlayEndCallBack, this);
 		CStepManager::on_animation_start	(info.name, info.blend);
 	}
 

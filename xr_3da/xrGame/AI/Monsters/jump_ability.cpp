@@ -41,7 +41,7 @@ void CJumpingAbility::load(LPCSTR section)
 	m_max_angle						= pSettings->r_float(section,"jump_max_angle");
 }
 
-void CJumpingAbility::reinit(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3)
+void CJumpingAbility::reinit(const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3)
 {
 	m_time_started			= 0;
 	m_time_next_allowed		= 0;
@@ -154,7 +154,7 @@ void CJumpingAbility::set_animation_speed()
 	SCurrentAnimationInfo &info = m_object->MotionMan.cur_anim_info();
 	if (!info.blend) return;
 	
-	if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide->motion)) {
+	if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide)) {
 		if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
 		info.speed.current = (info.blend->timeTotal / m_jump_time);
 	} else {

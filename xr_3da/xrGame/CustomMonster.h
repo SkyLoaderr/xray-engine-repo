@@ -9,6 +9,7 @@
 #include "../feel_vision.h"
 #include "../feel_sound.h"
 #include "../feel_touch.h"
+#include "../skeletonanimated.h"
 
 namespace MonsterSpace {
 	struct SBoneRotation;
@@ -48,10 +49,10 @@ protected:
 	
 	struct				SAnimState
 	{
-		CMotionDef		*fwd;
-		CMotionDef		*back;
-		CMotionDef		*ls;
-		CMotionDef		*rs;
+		MotionID		fwd;
+		MotionID		back;
+		MotionID		ls;
+		MotionID		rs;
 
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 	};

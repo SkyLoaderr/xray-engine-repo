@@ -66,9 +66,7 @@
 
 #include "material_manager.h"
 #include "IColisiondamageInfo.h"
-
 #include "ui/UIMainIngameWnd.h"
-#include "ui/UIMotionIcon.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -342,13 +340,13 @@ void CActor::Load	(LPCSTR section )
 	cam_Set					(eacFirstEye);
 
 	// motions
-	m_current_legs_blend= 0;
-	m_current_jump_blend= 0;
-	m_current_legs		= 0;
-	m_current_torso		= 0;
-	m_current_head		= 0;
+	m_current_legs_blend		= 0;
+	m_current_jump_blend		= 0;
+	m_current_legs.invalidate	();
+	m_current_torso.invalidate	();
+	m_current_head.invalidate	();
 	// sheduler
-	shedule.t_min		= shedule.t_max = 1;
+	shedule.t_min				= shedule.t_max = 1;
 
 	// настройки дисперсии стрельбы
 	m_fDispBase				= pSettings->r_float		(section,"disp_base"		 );
@@ -519,10 +517,10 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		CSkeletonAnimated *tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
 		VERIFY(tpKinematics);
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef *tpMotionDef = m_anims->m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(r_model_yaw + r_model_yaw_delta,yaw) <= PI_DIV_2 ? 0 : 1))];
+		MotionID motion_ID = m_anims->m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(r_model_yaw + r_model_yaw_delta,yaw) <= PI_DIV_2 ? 0 : 1))];
 		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
-		VERIFY(tpMotionDef);
-		tpKinematics->PlayFX(tpMotionDef,power_factor);
+		VERIFY(motion_ID.valid());
+		tpKinematics->PlayFX(motion_ID,power_factor);
 	}
 }
 
@@ -1401,6 +1399,7 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 			motion_icon.ShowState(CUIMotionIcon::stNormal);
 	}
 }
+
 
 CPHDestroyable*	CActor::ph_destroyable	()
 {

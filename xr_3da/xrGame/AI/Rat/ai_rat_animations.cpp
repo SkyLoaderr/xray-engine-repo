@@ -43,8 +43,8 @@ void CAI_Rat::vfLoadAnimations()
 
 void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
-	CSkeletonAnimated* tpVisualObject = smart_cast<CSkeletonAnimated*>(Visual());
-	CMotionDef*	tpGlobalAnimation=0;
+	CSkeletonAnimated	*tpVisualObject = smart_cast<CSkeletonAnimated*>(Visual());
+	MotionID			tpGlobalAnimation;
 
 	if (!g_Alive()) {
 		for (int i=0 ;i<2; ++i)
@@ -89,7 +89,9 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 #ifdef DEBUG
-	if (psAI_Flags.is(aiAnimation))
-		Msg			("%6d %s animation : %s (%f,%f)",Device.dwTimeGlobal,"Global",smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),movement().m_body.current.yaw,movement().m_body.target.yaw);
+	if (psAI_Flags.is(aiAnimation)) {
+		CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+		Msg					("%6d %s animation : %s (%f,%f)",Device.dwTimeGlobal,"Global",skeleton_animated->LL_MotionDefName_dbg(skeleton_animated->LL_GetMotionDef(m_tpCurrentGlobalAnimation)),movement().m_body.current.yaw,movement().m_body.target.yaw);
+	}
 #endif
 }

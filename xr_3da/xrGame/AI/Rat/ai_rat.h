@@ -16,7 +16,6 @@
 #include "../../group_hierarchy_holder.h"
 #include "../../game_graph_space.h"
 
-class CMotionDef;
 class CBlend;
 enum ESoundTypes;
 
@@ -45,14 +44,14 @@ protected:
 	};
 
 	typedef struct tagSNormalGlobalAnimations{
-		CMotionDef				*tpaDeath[2];
-		CMotionDef				*tpaAttack[3];
-		CMotionDef				*tpaIdle[2];
+		MotionID				tpaDeath[2];
+		MotionID				tpaAttack[3];
+		MotionID				tpaIdle[2];
 		SAnimState				tWalk;
 		SAnimState				tRun;
-		CMotionDef				*tRunAttack;
-		CMotionDef				*tpTurnLeft;
-		CMotionDef				*tpTurnRight;
+		MotionID				tRunAttack;
+		MotionID				tpTurnLeft;
+		MotionID				tpTurnRight;
 	} SNormalGlobalAnimations;
 
 	// normal animations
@@ -95,7 +94,7 @@ protected:
 
 	// ANIMATIONS
 	SRatAnimations				m_tRatAnimations;
-	CMotionDef*					m_tpCurrentGlobalAnimation;
+	MotionID					m_tpCurrentGlobalAnimation;
 	CBlend*						m_tpCurrentGlobalBlend;
 	
 	// ATTACK

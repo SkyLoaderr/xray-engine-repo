@@ -145,7 +145,7 @@ void SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	m_torso[7].Create(K,base,"_8");
 
 
-	m_head_idle		= NULL;///K->ID_Cycle("head_idle_0");
+	m_head_idle.invalidate();///K->ID_Cycle("head_idle_0");
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
@@ -225,10 +225,10 @@ void SActorVehicleAnims::Create(CSkeletonAnimated* V)
 
 SActorVehicleAnims::SOneTypeCollection::SOneTypeCollection()
 {
-	for(u16 i=0;MAX_IDLES>i;++i) idles[i]			=	0		;
-	idles_num										=	0		;
-	steer_left										= NULL		;
-	steer_right										= NULL		;
+	for(u16 i=0;MAX_IDLES>i;++i) idles[i].invalidate();
+	idles_num = 0;
+	steer_left.invalidate();
+	steer_right.invalidate();
 }
 
 void SActorVehicleAnims::SOneTypeCollection::Create(CSkeletonAnimated* V,u16 num)
@@ -238,11 +238,10 @@ void SActorVehicleAnims::SOneTypeCollection::Create(CSkeletonAnimated* V,u16 num
 	steer_left=	V->ID_Cycle(strconcat(buff,"steering_idle_",buff1,"ls"));
 	steer_right=V->ID_Cycle(strconcat(buff,"steering_idle_",buff1,"rs"));
 
-	for(int i=0;MAX_IDLES>i;++i)
-	{
-			idles[i]=V->ID_Cycle_Safe(strconcat(buff,"steering_idle_",buff1,itoa(i,buff2,10)));
-			if(idles[i]) idles_num++;
-			else break;
+	for(int i=0;MAX_IDLES>i;++i){
+		idles[i]=V->ID_Cycle_Safe(strconcat(buff,"steering_idle_",buff1,itoa(i,buff2,10)));
+		if(idles[i]) idles_num++;
+		else break;
 	}
 }
 
@@ -261,20 +260,20 @@ void legs_play_callback		(CBlend *blend)
 {
 	CActor					*object = (CActor*)blend->CallbackParam;
 	VERIFY					(object);
-	object->m_current_legs	= 0;
+	object->m_current_legs.invalidate();
 }
 
-void CActor::g_SetSprintAnimation( u32 mstate_rl,CMotionDef* &head,CMotionDef* &toroso,CMotionDef* &legs)
+void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &toroso,MotionID &legs)
 {
-			SActorMotions::SActorSprintState& sprint=m_anims->m_sprint;
-			CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
-			if(H)
-				head=toroso=sprint.m_toroso[H->animation_slot()];
-			else
-				head=toroso=sprint.m_toroso[0];
-				 if(mstate_rl&mcFwd)		legs	=sprint.legs_fwd;
-			else if (mstate_rl&mcLStrafe)	legs	=sprint.legs_ls;
-			else if (mstate_rl&mcRStrafe)	legs	=sprint.legs_rs;
+	SActorMotions::SActorSprintState& sprint=m_anims->m_sprint;
+	CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
+	if(H)
+		head=toroso=sprint.m_toroso[H->animation_slot()];
+	else
+		head=toroso=sprint.m_toroso[0];
+			if(mstate_rl&mcFwd)		legs	=sprint.legs_fwd;
+	else if (mstate_rl&mcLStrafe)	legs	=sprint.legs_ls;
+	else if (mstate_rl&mcRStrafe)	legs	=sprint.legs_rs;
 }
 
  
@@ -293,10 +292,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
 		else							AS = &ST->m_walk;
 		// анимации
-		CMotionDef* M_legs	= 0;
-		CMotionDef* M_torso	= 0;
-		CMotionDef* M_head	= 0;
-
+		MotionID M_legs;
+		MotionID M_torso;
+		MotionID M_head;
 
 		//если мы просто стоим на месте
 		bool is_standing = false;
@@ -441,16 +439,14 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
 			m_current_legs=M_legs;
 		}
-
-
 	}else{
 		if (m_current_legs||m_current_torso){
 			SActorMotions::SActorState* ST = 0;
-			if (mstate_rl&mcCrouch)	ST = &m_anims->m_crouch;
-			else					ST = &m_anims->m_normal;
-			mstate_real			= 0;
-			m_current_legs		= 0;
-			m_current_torso		= 0;
+			if (mstate_rl&mcCrouch)		ST = &m_anims->m_crouch;
+			else						ST = &m_anims->m_normal;
+			mstate_real					= 0;
+			m_current_legs.invalidate	();
+			m_current_torso.invalidate	();
 
 			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims->m_dead_stop);
 		}

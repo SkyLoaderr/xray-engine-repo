@@ -1,11 +1,11 @@
 #pragma once
 
 #include "ai_monster_shared_data.h"
+#include "../../../SkeletonAnimated.h"
 
 class		CBaseMonster;
 class		CJumping;
 class		CAnimTriple;
-class		CMotionDef;
 
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
@@ -68,7 +68,7 @@ private:
 public:
 
 	EAction					m_tAction;
-	CMotionDef				*m_tpCurAnim;
+	MotionID				m_tpCurAnim;
 
 	float					m_prev_character_velocity;
 
@@ -241,8 +241,8 @@ public:
 		void	SetTurnAnimation		();
 
 	// MotionDef to animation name translation
-		void		AddAnimTranslation		(CMotionDef *motion, LPCSTR str);
-		shared_str	GetAnimTranslation		(CMotionDef *motion);
+		void		AddAnimTranslation		(const MotionID &motion, LPCSTR str);
+		shared_str	GetAnimTranslation		(const MotionID &motion);
 public:
 		
 		// информация о текущей анимации

@@ -8,6 +8,7 @@
 
 #include "../feel_touch.h"
 #include "../iinputreceiver.h"
+#include "../SkeletonAnimated.h"
 #include "actor_flags.h"
 #include "actor_defs.h"
 #include "entity_alive.h"
@@ -31,7 +32,6 @@ class CCharacterPhysicsSupport;
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
-class ENGINE_API CMotionDef;
 class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
@@ -283,9 +283,9 @@ public:
 	CBlend*					m_current_legs_blend;
 	CBlend*					m_current_torso_blend;
 	CBlend*					m_current_jump_blend;
-	CMotionDef*				m_current_legs;
-	CMotionDef*				m_current_torso;
-	CMotionDef*				m_current_head;
+	MotionID				m_current_legs;
+	MotionID				m_current_torso;
+	MotionID				m_current_head;
 
 	// callback на анимации модели актера
 	void					SetCallbacks		();
@@ -300,7 +300,7 @@ public:
 	SRotation				&Orientation		()			 { return r_torso; };
 
 	void					g_SetAnimation		(u32 mstate_rl);
-	void					g_SetSprintAnimation(u32 mstate_rl,CMotionDef* &head,CMotionDef* &toroso,CMotionDef* &legs);
+	void					g_SetSprintAnimation(u32 mstate_rl,MotionID &head,MotionID &toroso,MotionID &legs);
 	//////////////////////////////////////////////////////////////////////////
 	// HUD
 	//////////////////////////////////////////////////////////////////////////

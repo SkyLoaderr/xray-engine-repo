@@ -125,17 +125,16 @@ void CAI_Bloodsucker::reinit()
 
 
 	// Load triple vampire animations
-	CMotionDef			*def1, *def2, *def3;
+	MotionID			def1, def2, def3;
 	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(Visual());
-	def1 = skel_animated->ID_Cycle_Safe("vampire_0");	VERIFY(def1);
-	def2 = skel_animated->ID_Cycle_Safe("vampire_1");	VERIFY(def2);
-	def3 = skel_animated->ID_Cycle_Safe("vampire_2");	VERIFY(def3);
+	def1				= skel_animated->ID_Cycle_Safe("vampire_0");	VERIFY(def1);
+	def2				= skel_animated->ID_Cycle_Safe("vampire_1");	VERIFY(def2);
+	def3				= skel_animated->ID_Cycle_Safe("vampire_2");	VERIFY(def3);
 	anim_triple_vampire.reinit_external	(&EventMan, def1, def2, def3, false);
 
 	MotionMan.AddAnimTranslation	(def1,"vampire_0");
 	MotionMan.AddAnimTranslation	(def2,"vampire_1");
 	MotionMan.AddAnimTranslation	(def3,"vampire_2");
-
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)

@@ -18,7 +18,10 @@ class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
 class	ENGINE_API CInifile;
 
-struct MotionID{
+struct MotionID {
+private:
+	typedef const MotionID *(MotionID::*unspecified_bool_type) () const;
+public:
 	union{
     	struct{
     	    u16		idx:14;
@@ -26,11 +29,23 @@ struct MotionID{
         };
         u16			val;
     };
-    public:
-    				MotionID(){val=u16(-1);}
-    				MotionID(u16 motion_slot, u16 motion_idx){set(motion_slot,motion_idx);}
-    ICF void		set		(u16 motion_slot, u16 motion_idx){slot=motion_slot; idx=motion_idx;}
-    ICF bool		valid	(){return val!=u16(-1);}
+public:
+    				MotionID	(){invalidate();}
+    				MotionID	(u16 motion_slot, u16 motion_idx){set(motion_slot,motion_idx);}
+	ICF bool		operator==	(const MotionID& tgt) const {return tgt.val==val;}
+	ICF bool		operator!=	(const MotionID& tgt) const {return tgt.val!=val;}
+	ICF bool		operator<	(const MotionID& tgt) const {return val<tgt.val;}
+	ICF	bool		operator!	() const					{return !valid();}
+    ICF void		set			(u16 motion_slot, u16 motion_idx){slot=motion_slot; idx=motion_idx;}
+	ICF void		invalidate	() {val=u16(-1);}
+    ICF bool		valid		() const {return val!=u16(-1);}
+	const MotionID*	get			() const {return this;};
+	ICF	operator	unspecified_bool_type () const 
+	{
+		if (valid())	return &MotionID::get;
+		else			return 0;
+//		return(!valid()?0:&MotionID::get);
+	}
 };
 
 //. typedef u16 	BoneID;
@@ -157,9 +172,9 @@ public:
     u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].fx()->size(); return cnt;}
 	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motion_map();}
 	u16							LL_MotionsSlotCount(){return m_Motions.size();}
-    CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}
 	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
 #endif
+	CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}
 
 	// Low level interface
 	MotionID					LL_MotionID		(LPCSTR B);

@@ -12,7 +12,7 @@ CSnorkJump::CSnorkJump(CSnork *monster)
 	
 	m_jumper				= xr_new<CJumpingAbility>();				
 	m_jumper->init_external	(m_object);
-	m_jumper->reinit		(0,0,0);
+	m_jumper->reinit		(MotionID(),MotionID(),MotionID());
 }
 
 CSnorkJump::~CSnorkJump()
@@ -137,26 +137,26 @@ void CSnorkJump::try_jump_specific()
 
 void CSnorkJump::init_jump_normal()
 {
-	CMotionDef			*def1, *def2, *def3;
+	MotionID			def1, def2, def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
-	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("stand_attack_2_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("stand_attack_2_0");		VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("stand_attack_2_1");		VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
 
 	m_jumper->reinit	(def1, def2, def3);
 }
 
 void CSnorkJump::init_jump_specific()
 {
-	CMotionDef			*def1, *def2, *def3;
+	MotionID			def1, def2, def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
-	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("jump_rs_0");			VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
+	def1				= pSkel->ID_Cycle_Safe("stand_attack_2_0");		VERIFY(def1);
+	def2				= pSkel->ID_Cycle_Safe("jump_rs_0");			VERIFY(def2);
+	def3				= pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
 
-	m_jumper->reinit(def1, def2, def3);
+	m_jumper->reinit	(def1, def2, def3);
 }
 
 float CSnorkJump::trace_current(float dist)

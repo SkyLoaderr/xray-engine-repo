@@ -75,26 +75,26 @@ protected:
 			void			fill_object_info				();
 			EBodyState		body_state						() const;
 			u32				object_slot						() const;
-	const CAnimationPair	*no_object_animation			(const EBodyState &body_state) const;
-	const CAnimationPair	*unknown_object_animation		(u32 slot, const EBodyState &body_state) const;
-	const CAnimationPair	*weapon_animation				(u32 slot, const EBodyState &body_state) const;
-	const CAnimationPair	*missile_animation				(u32 slot, const EBodyState &body_state) const;
+			MotionID		no_object_animation				(const EBodyState &body_state) const;
+			MotionID		unknown_object_animation		(u32 slot, const EBodyState &body_state) const;
+			MotionID		weapon_animation				(u32 slot, const EBodyState &body_state) const;
+			MotionID		missile_animation				(u32 slot, const EBodyState &body_state) const;
 			bool			strapped						() const;
 
 protected:
 			void			assign_bone_callbacks			();
-	const CAnimationPair	*assign_global_animation		();
-	const CAnimationPair	*assign_head_animation			();
-	const CAnimationPair	*assign_torso_animation			();
-	const CAnimationPair	*assign_legs_animation			();
-	const CAnimationPair	*assign_script_animation		();
+			MotionID		assign_global_animation			();
+			MotionID		assign_head_animation			();
+			MotionID		assign_torso_animation			();
+			MotionID		assign_legs_animation			();
+			MotionID		assign_script_animation			();
 
 protected:
-	static void				global_play_callback			(CBlend *blend);
-	static void				head_play_callback				(CBlend *blend);
-	static void				torso_play_callback				(CBlend *blend);
-	static void				legs_play_callback				(CBlend *blend);
-	static void				script_play_callback			(CBlend *blend);
+	static	void			global_play_callback			(CBlend *blend);
+	static	void			head_play_callback				(CBlend *blend);
+	static	void			torso_play_callback				(CBlend *blend);
+	static	void			legs_play_callback				(CBlend *blend);
+	static	void			script_play_callback			(CBlend *blend);
 
 public:
 	virtual	void			reinit							();

@@ -55,8 +55,8 @@ void CAI_Trader::reinit	()
 	CInventoryOwner::reinit	();
 	sound().reinit			();
 
-	m_tpHeadDef				= 0;
-	m_tpGlobalDef			= 0;
+	m_tpHeadDef.invalidate	();
+	m_tpGlobalDef.invalidate();
 	m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
 	m_busy_now				= false;
 }
@@ -95,7 +95,7 @@ u8 CAI_Trader::get_anim_count(LPCSTR anim)
 	u8 count = 0;
 
 	for (int i=0; ; ++i) {
-		if (0 != smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
+		if (smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
 		else break;
 	}
 
@@ -124,13 +124,13 @@ void CAI_Trader::select_head_anim(u32 type)
 void __stdcall CAI_Trader::AnimGlobalCallback(CBlend* B)
 {
 	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
-	trader->m_tpGlobalDef = 0;
+	trader->m_tpGlobalDef.invalidate	();
 }
 
 void __stdcall CAI_Trader::AnimHeadCallback(CBlend* B)
 {
 	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
-	trader->m_tpHeadDef = 0;
+	trader->m_tpHeadDef.invalidate	();
 }
 
 
@@ -375,7 +375,7 @@ void CAI_Trader::UpdateCL()
 	}
 
 	if (!m_current_sound) {
-		m_tpHeadDef				= 0;
+		m_tpHeadDef.invalidate	();
 		m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
 	}
 

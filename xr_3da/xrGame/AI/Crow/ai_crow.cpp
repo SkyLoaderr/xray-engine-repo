@@ -15,15 +15,15 @@
 
 void CAI_Crow::SAnim::Load(CSkeletonAnimated* visual, LPCSTR prefix)
 {
-	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
+	const MotionID		&M = visual->ID_Cycle_Safe(prefix);
 	if (M)				m_Animations.push_back(M);
 	for (int i=0; (i<MAX_ANIM_COUNT)&&(m_Animations.size()<MAX_ANIM_COUNT); ++i){
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s_%d",prefix,i);
-		M				= visual->ID_Cycle_Safe(sh_anim);
+		const MotionID	&M = visual->ID_Cycle_Safe(sh_anim);
 		if (M)			m_Animations.push_back(M);
 	}
-	R_ASSERT(m_Animations.size());
+	R_ASSERT			(m_Animations.size());
 }
 
 void CAI_Crow::SSound::Load(LPCSTR prefix)

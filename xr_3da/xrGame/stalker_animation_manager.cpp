@@ -74,7 +74,7 @@ CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state() cons
 
 void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 {
-	m_skeleton_animated->PlayFX	(m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index].animation(),power_factor);
+	m_skeleton_animated->PlayFX	(m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index],power_factor);
 }
 
 void CStalkerAnimationManager::update						()
@@ -99,7 +99,7 @@ void CStalkerAnimationManager::update						()
 	
 	script().reset			();
 
-	const CAnimationPair	*global_animation = assign_global_animation();
+	const MotionID			&global_animation = assign_global_animation();
 	if (global_animation) {
 		head().reset		();
 		torso().reset		();
@@ -124,5 +124,5 @@ void CStalkerAnimationManager::update						()
 	VERIFY					(torso().animation());
 	VERIFY					(legs().animation());
 
-	torso().synchronize		(m_legs);
+	torso().synchronize		(m_skeleton_animated,m_legs);
 }

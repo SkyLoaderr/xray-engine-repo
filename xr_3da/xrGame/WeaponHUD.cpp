@@ -121,12 +121,12 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 	VERIFY							(!fis_zero(DET(Transform())));
 }
 
-CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
+MotionID CWeaponHUD::animGet		(LPCSTR name)
 {
 	return smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(name);
 }
 
-void CWeaponHUD::animDisplay		(CMotionDef* M,	BOOL bMixIn)
+void CWeaponHUD::animDisplay		(MotionID M,	BOOL bMixIn)
 {
 	if(m_bCurrentEntityIsParent)
 	{
@@ -137,21 +137,25 @@ void CWeaponHUD::animDisplay		(CMotionDef* M,	BOOL bMixIn)
 		pSkeletonAnimated->CalculateBones_Invalidate	();
 	}
 }
-void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
+void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CInventoryItem* W)
 {
-	Show	();
+	Show				();
 
-	animDisplay (M, bMixIn);
+	animDisplay			(M, bMixIn);
 
-	if(M->flags&esmStopAtEnd)
-	{
+	CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+	VERIFY				(skeleton_animated);
+	CMotionDef			*motion_def = skeleton_animated->LL_GetMotionDef(M);
+	VERIFY				(motion_def);
+
+	if (motion_def->flags & esmStopAtEnd) {
 		//если предыдущая анимация еще не доигралась, то остановить ее
 		m_bStopAtEndAnimIsRunning = true;
 
 		CBoneData			&bone_data = smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot());
 		CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
-		CMotion& motion		= bone_anim->Motions->at(M->motion);
-		u32 anim_time		= iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
+		CMotion				&motion = bone_anim->Motions[M.slot]->at(M.idx);
+		u32					anim_time = iFloor(0.5f + 1000.f*motion.GetLength()/ motion_def->Dequantize(motion_def->speed));
 		m_pCallbackItem		= W;
 		m_dwAnimEndTime		= Device.dwTimeGlobal + anim_time;
 	}

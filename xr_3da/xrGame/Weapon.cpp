@@ -378,16 +378,16 @@ void CWeapon::LoadZoomOffset (LPCSTR section, LPCSTR prefix)
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 {
-	CMotionDef* M		= m_pHUD->animGet(prefix);
+	const MotionID		&M = m_pHUD->animGet(prefix);
 	if (M)				lst.push_back(M);
 	for (int i=0; i<MAX_ANIM_COUNT; ++i)
 	{
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s%d",prefix,i);
-		M				= m_pHUD->animGet(sh_anim);
+		const MotionID	&M = m_pHUD->animGet(sh_anim);
 		if (M)			lst.push_back(M);
 	}
-	R_ASSERT2(!lst.empty(),prefix);
+	R_ASSERT2			(!lst.empty(),prefix);
 }
 
 

@@ -22,7 +22,7 @@ CAnimTriple::~CAnimTriple()
 
 }
 
-void CAnimTriple::reinit_external(CMonsterEventManager *man, CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3, bool b_execute_once)
+void CAnimTriple::reinit_external(CMonsterEventManager *man, const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3, bool b_execute_once)
 {
 	pool[0]			= m_def1;
 	pool[1]			= m_def2;
@@ -47,7 +47,7 @@ void CAnimTriple::deactivate()
 	m_active		= false;
 }
 
-bool CAnimTriple::prepare_animation(CMotionDef **m)
+bool CAnimTriple::prepare_animation(MotionID &m)
 {
 	if (m_current_state == eStateNone) {
 		deactivate();
@@ -57,7 +57,7 @@ bool CAnimTriple::prepare_animation(CMotionDef **m)
 
 	if ((m_current_state == eStateExecute) && m_execute_once && (m_previous_state == eStateExecute)) return false;
 	
-	*m = pool[m_current_state];
+	m = pool[m_current_state];
 	
 	// raise event
 	if ((m_current_state != eStateExecute) || ((m_current_state == eStateExecute) && (m_previous_state != eStateExecute))) {
