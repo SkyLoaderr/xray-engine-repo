@@ -35,9 +35,9 @@
 #include "xrServer_Objects_ALife.h"
 #include "game_level_cross_table.h"
 
-
 #include "infoportion.h"
 
+#include "patrol_path_storage.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -87,7 +87,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	physics_step_time_callback	= (PhysicsStepTimeCallback*) &PhisStepsCallback;
 
-
+	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -126,16 +126,9 @@ CLevel::~CLevel()
 	//destroy fog of war
 	xr_delete			(m_pFogOfWar);
 	//destroy bullet manager
-	xr_delete			(m_pBulletManager);
+	xr_delete					(m_pBulletManager);
 
-
-	{
-		SPathPairIt			I = m_PatrolPaths.begin();
-		SPathPairIt			E = m_PatrolPaths.end();
-		for (int i=0; I != E; ++I, ++i)
-			xr_free((char*&)(*I).first);
-	}
-	m_PatrolPaths.clear();
+	xr_delete					(m_patrol_path_storage);
 	
 	ai().script_engine().remove_script_processor("level");
 

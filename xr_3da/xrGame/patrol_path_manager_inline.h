@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "script_engine.h"
-
 IC	CPatrolPathManager::CPatrolPathManager		()
 {
 	Init					();
@@ -64,7 +62,7 @@ IC	const Fvector &CPatrolPathManager::destination_position	() const
 	return					(m_dest_position);
 }
 
-IC	void CPatrolPathManager::set_path	(const CLevel::SPath *path, ref_str path_name)
+IC	void CPatrolPathManager::set_path	(const CPatrolPath *path, ref_str path_name)
 {
 	if (m_path == path)
 		return;
@@ -106,14 +104,12 @@ IC	void CPatrolPathManager::make_inactual	()
 
 IC	void CPatrolPathManager::set_path		(ref_str path_name)
 {
-	VERIFY2					(Level().m_PatrolPaths.find(*path_name) != Level().m_PatrolPaths.end(),*path_name);
-	set_path				(&(Level().m_PatrolPaths.find(*path_name)->second), path_name);
+	set_path				(Level().patrol_paths().path(path_name), path_name);
 }
 
 IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType patrol_start_type, const EPatrolRouteType patrol_route_type, bool random)
 {
-	VERIFY2					(Level().m_PatrolPaths.find(*path_name) != Level().m_PatrolPaths.end(),*path_name);
-	set_path				(&(Level().m_PatrolPaths.find(*path_name)->second), path_name);
+	set_path				(Level().patrol_paths().path(path_name), path_name);
 	set_start_type			(patrol_start_type);
 	set_route_type			(patrol_route_type);
 	set_random				(random);
@@ -135,12 +131,13 @@ IC	void CPatrolPathManager::set_previous_point	(int point_index)
 		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
-	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
+	
+	if (!m_path->vertex(point_index)) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);
-	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
+	VERIFY					(m_path->vertex(point_index));
 	m_prev_point_index		= point_index;
 }
 
@@ -150,11 +147,11 @@ IC	void CPatrolPathManager::set_start_point	(int point_index)
 		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
-	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
+	if (!m_path->vertex(point_index)) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);
-	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
+	VERIFY					(m_path->vertex(point_index));
 	m_start_point_index		= point_index;
 }

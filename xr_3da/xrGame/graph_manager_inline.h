@@ -23,7 +23,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CAbstractGraphManager::CGraphManagerAbstract	()
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -33,7 +33,7 @@ CAbstractGraphManager::~CGraphManagerAbstract		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractGraphManager::Init					()
+void CAbstractGraphManager::init					()
 {
 	m_graph					= xr_new<CSGraphAbstract>();
 }

@@ -7,110 +7,29 @@
 #include "script_engine.h"
 #include "level.h"
 #include "game_cl_base.h"
-
-void CLevel::vfCreateAllPossiblePaths(LPCSTR sName, SPath &tpPatrolPath)
-{
-	xr_vector<Fvector>		tpaPoints;
-	xr_vector<Fvector>		tpaDeviations;
-	xr_vector<u32>			tpaNodes;
-
-	int i;
-	int iCurPoint = 0, iPrevPoint = -1;
-	u32 N = (u32)tpPatrolPath.tpaWayPoints.size();
-
-	// building point sequencies and path
-	tpPatrolPath.tpaWayPointIndexes.resize(N);
-	for ( i=0; i<(int)N; ++i) {			
-		tpPatrolPath.tpaWayPointIndexes[i] = iCurPoint;
-		for (int j=0; j<(int)tpPatrolPath.tpaWayLinks.size(); ++j)
-			if ((tpPatrolPath.tpaWayLinks[j].wFrom == iCurPoint) && (tpPatrolPath.tpaWayLinks[j].wTo != iPrevPoint)) {
-				iPrevPoint = iCurPoint;
-				iCurPoint = tpPatrolPath.tpaWayLinks[j].wTo;
-				break;
-			}
-	}
-}
+#include "patrol_path_storage.h"
 
 BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
-	pApp->LoadTitle	("Loading AI objects...");
-	string256		fn_game;
+	pApp->LoadTitle						("Loading AI objects...");
+	string256							fn_game;
 	
 	if (!ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
-		ai().load	(net_SessionName());
+		ai().load						(net_SessionName());
 
 	if (FS.exist(fn_game, "$level$", "level.game")) {
-		IReader *F = FS.r_open	(fn_game);
-		IReader *O = 0;
+		IReader							*stream = FS.r_open		(fn_game);
 
-		// Load WayPoints
-		if (ai().get_level_graph() && (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK)))) { 
-			int chunk = 0;
-			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
-				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
-				u32					dw = OBJ->r_u16();
-				R_ASSERT			(dw == WAYOBJECT_VERSION);
-
-				SPath tPatrolPath;
-
-				LPSTR				sName = (LPSTR)xr_malloc(64*sizeof(char));
-				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
-				OBJ->r_stringZ		(sName);
-
-				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
-				u32					dwCount = OBJ->r_u16();
-				tPatrolPath.tpaWayPoints.resize(dwCount);
-				for (int i=0; i<(int)dwCount; ++i){
-					OBJ->r_fvector3	(tPatrolPath.tpaWayPoints[i].tWayPoint);
-					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
-					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(u32(-1),tPatrolPath.tpaWayPoints[i].tWayPoint);
-					if (!ai().level_graph().inside(tPatrolPath.tpaWayPoints[i].dwNodeID,tPatrolPath.tpaWayPoints[i].tWayPoint))
-						tPatrolPath.tpaWayPoints[i].tWayPoint = ai().level_graph().vertex_position(tPatrolPath.tpaWayPoints[i].dwNodeID);
-
-					string256		S;
-					OBJ->r_stringZ	(S);
-					tPatrolPath.tpaWayPoints[i].name = S;
-				}
-
-				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
-				u32 dwCountL = OBJ->r_u16();
-				tPatrolPath.tpaWayLinks.resize(dwCountL);
-				for ( i=0; i<(int)dwCountL; ++i){
-					tPatrolPath.tpaWayLinks[i].wFrom		= OBJ->r_u16();
-					tPatrolPath.tpaWayLinks[i].wTo			= OBJ->r_u16();
-					tPatrolPath.tpaWayLinks[i].fProbability = OBJ->r_float();
-				}
-
-				OBJ->close();
-
-				// sorting links
-				bool bOk;
-				do {
-					bOk = true;
-					for ( i=1; i<(int)dwCountL; ++i)
-						if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
-							u16 wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
-							tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
-							tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
-							wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
-							tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
-							tPatrolPath.tpaWayLinks[i].wTo = wTemp;
-							bOk = false;
-						}
-				}
-				while (!bOk);
-
-				m_PatrolPaths.insert(mk_pair(sName,tPatrolPath));
-				
-				vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
-			}
-			O->close();
+		if (ai().get_level_graph()) {
+			VERIFY						(m_patrol_path_storage);
+			m_patrol_path_storage->load	(*stream);
 		}
-		FS.r_close(F);
+
+		FS.r_close						(stream);
 	}
 
-	return TRUE;
+	return								(TRUE);
 }
 
 BOOL CLevel::Load_GameSpecific_After()

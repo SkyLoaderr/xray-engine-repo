@@ -35,7 +35,7 @@ public:
 
 class CPatrolPathParams {
 public:
-	const CLevel::SPath						*m_path;
+	const CPatrolPath						*m_path;
 	ref_str									m_path_name;
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
@@ -43,9 +43,8 @@ public:
 
 							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
 	{
-		VERIFY2				(Level().m_PatrolPaths.find(caPatrolPathToGo) != Level().m_PatrolPaths.end(),caPatrolPathToGo);
 		m_path_name			= caPatrolPathToGo;
-		m_path				= &(Level().m_PatrolPaths.find(caPatrolPathToGo)->second);
+		m_path				= Level().patrol_paths().path(ref_str(caPatrolPathToGo));
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
 		m_bRandom			= bRandom;
@@ -57,55 +56,43 @@ public:
 
 	IC	u32					count				() const
 	{
-		return				(m_path->tpaWayPoints.size());
+		return				(m_path->vertices().size());
 	}
 
 	IC	const Fvector		&point				(u32 index) const
 	{
 		VERIFY				(m_path);
-		VERIFY				(!m_path->tpaWayPoints.empty());
-		if (m_path->tpaWayPoints.size() <= index) {
+		VERIFY				(!m_path->vertices().empty());
+		if (!m_path->vertex(index)) {
 			ai().script_engine().script_log(eLuaMessageTypeError,"Can't get information about patrol point number %d in the patrol way %s",index,*m_path_name);
-			index			= m_path->tpaWayPoints.size() - 1;
+			index			= m_path->vertices().begin()->vertex_id();
 		}
-		VERIFY				(m_path->tpaWayPoints.size() > index);
-		return				(m_path->tpaWayPoints[index].tWayPoint);
+		VERIFY				(m_path->vertex(index));
+		return				(m_path->vertex(index)->data().position());
 	}
 
 	IC	u32					level_vertex_id		(u32 index) const
 	{
-		VERIFY				(m_path->tpaWayPoints.size() > index);
-		return				(m_path->tpaWayPoints[index].dwNodeID);
+		VERIFY				(m_path->vertex(index));
+		return				(m_path->vertex(index)->data().level_vertex_id());
 	}
 
 	IC	u32					point				(LPCSTR name) const
 	{
-		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;
-		xr_vector<CLevel::SWayPoint>::const_iterator	e = m_path->tpaWayPoints.end();
-		for ( ; i != e; ++i)
-			if (!xr_strcmp(name,*(*i).name))
-				return		(u32(i - b));
+		if (m_path->point(name))
+			return			(m_path->point(name)->vertex_id());
 		return				(u32(-1));
 	}
 
 	IC	u32					point				(const Fvector &point) const
 	{
-		u32					best_index = u32(-1);
-		float				min_dist = flt_max;
-		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;
-		xr_vector<CLevel::SWayPoint>::const_iterator	e = m_path->tpaWayPoints.end();
-		for ( ; i != e; ++i)
-			if ((*i).tWayPoint.distance_to(point) < min_dist) {
-				min_dist	= (*i).tWayPoint.distance_to(point);
-				best_index	= u32(i - b);
-			}
-		return				(u32(best_index));
+		return				(m_path->point(point)->vertex_id());
 	}
 
 	IC	bool				flag				(u32 index, u8 flag_index) const
 	{
-		VERIFY				((m_path->tpaWayPoints.size() > index) && (flag_index < 32));
-		return				(!!(m_path->tpaWayPoints[index].dwFlags & (u32(1) << flag_index)));
+		VERIFY				(m_path->vertex(index));
+		return				(!!(m_path->vertex(index)->data().flags() & (u32(1) << flag_index)));
 	}
 };
 
@@ -141,7 +128,7 @@ public:
 	MonsterSpace::EMovementType		m_tMovementType;
 	CDetailPathManager::EDetailPathType		m_tPathType;
 	CObject							*m_tpObjectToGo;
-	const CLevel::SPath				*m_path;
+	const CPatrolPath				*m_path;
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	Fvector							m_tDestinationPosition;
@@ -265,7 +252,7 @@ public:
 
 			void			SetObjectToGo		(CLuaGameObject *tpObjectToGo);
 
-			void			SetPatrolPath		(const CLevel::SPath *path, ref_str path_name)
+			void			SetPatrolPath		(const CPatrolPath *path, ref_str path_name)
 	{
 		m_path				= path;
 		m_path_name			= path_name;

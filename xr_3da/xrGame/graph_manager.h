@@ -33,23 +33,23 @@ private:
 	bool						m_actuality;
 
 protected:
-	IC		void		set_current_vertex_id	(const _vertex_id_type dest_vertex_id);
-	IC		CSGraphAbstract	&graph				();
+	IC		void								set_current_vertex_id	(const _vertex_id_type dest_vertex_id);
+	IC		CSGraphAbstract						&graph					();
 
 public:
-	IC					CGraphManagerAbstract	();
-	virtual				~CGraphManagerAbstract	();
-			void		Init					();
-	virtual	void		reinit					(bool clear_all = false);
-	IC		void		set_dest_vertex_id		(const _vertex_id_type dest_vertex_id);
-	IC		const _vertex_id_type &dest_vertex_id	() const;
-	IC		const _vertex_id_type &current_vertex_id() const;
-	IC		bool		actual					() const;
-	IC		const xr_vector<_vertex_id_type> &path() const;
-	IC		xr_vector<_vertex_id_type> &path	();
-	virtual	void		update					(u32 time_delta);
-	IC		const CSGraphAbstract &graph		() const;
-	IC		void		go_path					();
+	IC											CGraphManagerAbstract	();
+	virtual										~CGraphManagerAbstract	();
+			void								init					();
+	virtual	void								reinit					(bool clear_all = false);
+	IC		void								set_dest_vertex_id		(const _vertex_id_type dest_vertex_id);
+	IC		const _vertex_id_type				&dest_vertex_id			() const;
+	IC		const _vertex_id_type				&current_vertex_id		() const;
+	IC		bool								actual					() const;
+	IC		const xr_vector<_vertex_id_type>	&path					() const;
+	IC		xr_vector<_vertex_id_type>			&path					();
+	virtual	void								update					(u32 time_delta);
+	IC		const CSGraphAbstract				&graph					() const;
+	IC		void								go_path					();
 };
 
 #include "graph_manager_inline.h"

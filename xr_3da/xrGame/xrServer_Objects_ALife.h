@@ -64,12 +64,13 @@ public:
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeObject : virtual public CSE_Abstract, public CRandom {
-protected:
+public:
 	enum {
 		flUseSwitches	= u32(1) << 0,
-		flSwitchOnline  = u32(1) << 1,
-		flSwitchOffline = u32(1) << 2,
-		flInteractive   = u32(1) << 3,
+		flSwitchOnline	= u32(1) << 1,
+		flSwitchOffline	= u32(1) << 2,
+		flInteractive	= u32(1) << 3,
+		flVisibleForAI	= u32(1) << 4,
 	};
 public:
 	typedef CSE_Abstract inherited;

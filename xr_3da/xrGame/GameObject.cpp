@@ -199,7 +199,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	setReady						(TRUE);
 	g_pGameLevel->Objects.net_Register	(this);
 
-	if (O->m_flags.is(CSE_ALifeObject::flNotVisibleForAI))
+	if (O->m_flags.is(CSE_ALifeObject::flVisibleForAI))
 		spatial.type				|= STYPE_VISIBLEFORAI;
 	else
 		spatial.type				= (spatial.type | STYPE_VISIBLEFORAI) ^ STYPE_VISIBLEFORAI;

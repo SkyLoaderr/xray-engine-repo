@@ -27,7 +27,7 @@ TEMPLATE_SPECIALIZATION
 CAbstractGraph::~CGraphAbstract			()
 {
 	while (!vertices().empty())
-		remove_vertex(vertices().front().vertex_id());
+		remove_vertex	(vertices().front().vertex_id());
 	VERIFY				(!m_edge_count);
 }
 

@@ -3126,6 +3126,49 @@
 						</Filter>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="PatrolPaths"
+					Filter="">
+					<Filter
+						Name="PatrolPath"
+						Filter="">
+						<File
+							RelativePath=".\patrol_path.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_path.h">
+						</File>
+						<File
+							RelativePath=".\patrol_path_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="PatrolPathStorage"
+						Filter="">
+						<File
+							RelativePath=".\patrol_path_storage.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_path_storage.h">
+						</File>
+						<File
+							RelativePath=".\patrol_path_storage_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="PatrolPoint"
+						Filter="">
+						<File
+							RelativePath=".\patrol_point.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_point.h">
+						</File>
+						<File
+							RelativePath=".\patrol_point_inline.h">
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="AScript"
@@ -4316,6 +4359,12 @@
 							</File>
 							<File
 								RelativePath="PhysicObject.h">
+							</File>
+							<File
+								RelativePath=".\PhysicsShellHolder.cpp">
+							</File>
+							<File
+								RelativePath=".\PhysicsShellHolder.h">
 							</File>
 							<File
 								RelativePath=".\PhysicsShellHolder.cpp">

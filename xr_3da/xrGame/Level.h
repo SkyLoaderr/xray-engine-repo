@@ -18,6 +18,7 @@ class	CEntity;
 class	game_cl_GameState;
 class	NET_Queue_Event;
 class	CSE_Abstract;
+class	CPatrolPathStorage;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -36,7 +37,9 @@ private:
 #endif
 protected:
 	typedef IGame_Level			inherited;
-
+	
+	// patrol path storage
+	CPatrolPathStorage			*m_patrol_path_storage;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -74,6 +77,7 @@ public:
 	NET_Queue_Event				*game_events;
 	xr_deque<CSE_Abstract*>		game_spawn_queue;
 	xrServer*					Server;
+
 public:
 	svector<CTeam,maxTeams>		Teams;
 	CSquadManager				*SquadMan;
@@ -85,34 +89,6 @@ public:
 	LPSTR						m_caServerOptions;
 	LPSTR						m_caClientOptions;
 
-	// waypoints
-	typedef struct tagSWayPoint{
-		Fvector	tWayPoint;
-		u32		dwFlags;
-		u32		dwNodeID;
-		ref_str	name;
-	} SWayPoint;
-	
-	typedef struct tagSWayLink{
-		u16		wFrom;
-		u16		wTo;
-		float	fProbability;
-	} SWayLink;
-
-	typedef struct tagSPath {
-		xr_vector<SWayPoint>			tpaWayPoints;
-		xr_vector<SWayLink>				tpaWayLinks;
-		xr_vector<u32>					tpaWayPointIndexes;
-	} SPath;
-
-	enum EPathTypes {
-		PATH_LOOPED			= u32(1),
-		PATH_BIDIRECTIONAL	= u32(2),
-	};
-	
-	DEFINE_MAP_PRED				(LPCSTR,SPath,SPathMap,SPathPairIt,pred_str);
-	SPathMap					m_PatrolPaths;
-
 	// Starting/Loading
 	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client);
 	virtual void				net_Load				( LPCSTR name );
@@ -121,7 +97,6 @@ public:
 	virtual BOOL				net_Start_client		( LPCSTR name );
 	virtual void				net_Update				( );
 
-	void						vfCreateAllPossiblePaths( LPCSTR sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );
 	virtual BOOL				Load_GameSpecific_After ( );
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count );
@@ -245,6 +220,12 @@ public:
 	// gets current daytime [0..23]
 	IC u8 GetDayTime() { 
 		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
+	}
+
+	IC		const CPatrolPathStorage &patrol_paths		() const
+	{
+		VERIFY				(m_patrol_path_storage);
+		return				(*m_patrol_path_storage);
 	}
 
 	//by Mad Max 

@@ -11,6 +11,9 @@
 #include "ai_object_location.h"
 #include "ai/script/ai_script_monster.h"
 #include "level.h"
+#include "script_engine.h"
+#include "patrol_path_storage.h"
+#include "patrol_path.h"
 
 class CPatrolPathManager : 
 	virtual public CAI_ObjectLocation
@@ -29,7 +32,7 @@ public:
 		ePatrolRouteTypeDummy = u32(-1),
 	};
 private:
-	const CLevel::SPath		*m_path;
+	const CPatrolPath		*m_path;
 	ref_str					m_path_name;
 	EPatrolStartType		m_start_type;
 	EPatrolRouteType		m_route_type;
@@ -48,7 +51,7 @@ protected:
 	IC			bool	failed						() const;
 	IC			bool	random						() const;
 	IC			const Fvector &destination_position	() const;
-	IC			void	set_path					(const CLevel::SPath *path, ref_str path_name);
+	IC			void	set_path					(const CPatrolPath *path, ref_str path_name);
 				void	select_point				(const Fvector &position, u32 &dest_vertex_id);
 public:
 	IC					CPatrolPathManager			();
@@ -57,7 +60,7 @@ public:
 	IC	virtual	void	reinit						();
 	IC	virtual	void	set_callback				(CScriptCallback &callback);
 	IC			void	make_inactual				();
-	const CLevel::SPath	*get_path					() {return m_path;}
+	const CPatrolPath	*get_path					() {return m_path;}
 	IC			void	set_path					(ref_str path_name);
 	IC			void	set_path					(ref_str path_name, const EPatrolStartType patrol_start_type = ePatrolStartTypeNearest, const EPatrolRouteType patrol_route_type = ePatrolRouteTypeContinue, bool random = true);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);

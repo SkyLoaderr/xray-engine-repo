@@ -505,12 +505,18 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 
 	bool	forward_direction = false;
-	if (left_angle(-m_object->head_orientation().current.yaw,-yaw) && (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_6))
-		forward_direction = true;
-	if (!left_angle(-m_object->head_orientation().current.yaw,-yaw) && (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_3))
-		forward_direction = true;
+	bool	left = left_angle(-m_object->head_orientation().current.yaw,-yaw);
+
+	if (left) {
+		if (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_3)
+			forward_direction = true;
+	}
+	else
+		if (angle_difference(yaw,m_object->head_orientation().current.yaw) <= 2*PI_DIV_3)
+			forward_direction = true;
 
 	if (forward_direction) {
+		Msg							("Moving FORWARD");
 		// moving forward
 		if (eMovementDirectionForward == m_tMovementDirection)
 			m_dwDirectionStartTime	= Level().timeServer();
@@ -526,19 +532,19 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				}
 	}
 	else {
-		bool	left = left_angle(-m_object->head_orientation().current.yaw,-yaw);
 		bool	back = false;
 		if (left) {
-			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > PI_DIV_3)
+			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > PI_DIV_2)
 				back = true;
 		}
 		else {
-			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > 2*PI_DIV_6)
+			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > 3*PI_DIV_4)
 				back = true;
 		}
 		if (!back)
 			// moving left|right
 			if (left) {
+				Msg							("Moving LEFT");
 				// moving right, looking left
 				if (eMovementDirectionRight == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -554,6 +560,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 						}
 			}
 			else {
+				Msg							("Moving RIGHT");
 				// moving left, looking right
 				if (eMovementDirectionLeft == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -569,6 +576,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 						}
 			}
 		else {
+			Msg							("Moving BACK");
 			// moving back
 			if (eMovementDirectionBack == m_tMovementDirection)
 				m_dwDirectionStartTime	= Level().timeServer();
@@ -589,13 +597,54 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //	if (eMentalStateFree == m_object->mental_state())
 //		m_tMovementDirection = eMovementDirectionForward;
 
-	tpLegsAnimation					= m_tAnims.A[l_tBodyState].m_tMoves.A[m_object->movement_type()].A[m_tMovementDirection].A[0];
 	MonsterSpace::SBoneRotation		body_orientation = m_object->body_orientation();
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	m_object->set_body_orientation	(body_orientation);
 //	Msg								("Setting up body orientation %f, %f, speed : %f, %d",m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->speed(),m_object->movement_type());
 	m_object->adjust_speed_to_animation(m_tMovementDirection);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw,m_object->head_orientation().target.yaw,m_object->head_orientation().current.yaw);
+	
+	forward_direction	= false;
+	left				= left_angle(-m_object->body_orientation().current.yaw,-yaw);
+
+	if (left) {
+		if (angle_difference(yaw,m_object->body_orientation().current.yaw) <= PI_DIV_3)
+			forward_direction = true;
+	}
+	else
+		if (angle_difference(yaw,m_object->body_orientation().current.yaw) <= 2*PI_DIV_3)
+			forward_direction = true;
+
+	bool				back = false;
+
+	if (left) {
+		if (angle_difference(m_object->head_orientation().current.yaw,yaw) > PI_DIV_2)
+			back = true;
+	}
+	else {
+		if (angle_difference(m_object->head_orientation().current.yaw,yaw) > 3*PI_DIV_4)
+			back = true;
+	}
+	
+	EMovementDirection				direction;
+	if (left)
+		if (forward_direction)
+			direction				= eMovementDirectionForward;
+		else
+			if (back)
+				direction			= eMovementDirectionBack;
+			else
+				direction			= eMovementDirectionLeft;
+	else
+		if (forward_direction)
+			direction				= eMovementDirectionForward;
+		else
+			if (back)
+				direction			= eMovementDirectionBack;
+			else
+				direction			= eMovementDirectionRight;
+
+	tpLegsAnimation					= m_tAnims.A[l_tBodyState].m_tMoves.A[m_object->movement_type()].A[direction].A[0];
 }
 
 static void	HeadPlayCallback(CBlend *B)

@@ -12,60 +12,60 @@
 
 void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_id)
 {
-	VERIFY					(m_path && !m_path->tpaWayPoints.empty());
-	u32						temp = u32(-1);
-	if (!actual() || (m_curr_point_index >= m_path->tpaWayPoints.size())) {
+	VERIFY						(m_path && !m_path->vertices().empty());
+	const CPatrolPath::CVertex	*vertex = 0;
+	if (!actual() || !m_path->vertex(m_curr_point_index)) {
 		switch (m_start_type) {
 			case ePatrolStartTypeFirst : {
-				temp		= 0;
+				vertex		= m_path->vertex(0);
 				break;
 			}
 			case ePatrolStartTypeLast : {
-				temp		= m_path->tpaWayPoints.size() - 1;
+				vertex		= m_path->vertex(m_path->vertices().size() - 1);
 				break;
 			}
 			case ePatrolStartTypeNearest : {
-				float				min_dist = flt_max;
-				for (u32 i=0, n=m_path->tpaWayPoints.size(); i<n; ++i) {
-					float			dist = m_path->tpaWayPoints[i].tWayPoint.distance_to(position);
-					if (dist < min_dist) {
-						temp		= i;
-						min_dist	= dist;
-					}
-				}
+				vertex		= m_path->point(position);
 				break;
 			}
 			case ePatrolStartTypePoint : {
-				VERIFY		(m_start_point_index < m_path->tpaWayPoints.size());
-				temp		= m_start_point_index;
+				VERIFY		(m_path->vertex(m_start_point_index));
+				vertex		= m_path->vertex(m_start_point_index);
 				break;
 			}
 			default			: NODEFAULT;
 		}
-		VERIFY				(temp < m_path->tpaWayPoints.size());
-		if (m_prev_point_index >= m_path->tpaWayPoints.size())
-			m_prev_point_index	= temp;
-		m_curr_point_index	= temp;
-		dest_vertex_id		= m_path->tpaWayPoints[m_curr_point_index].dwNodeID;
-		m_dest_position		= m_path->tpaWayPoints[m_curr_point_index].tWayPoint;
+		VERIFY				(vertex);
+		if (!m_path->vertex(m_prev_point_index))
+			m_prev_point_index	= vertex->vertex_id();
+
+		m_curr_point_index	= vertex->vertex_id();
+		dest_vertex_id		= vertex->data().level_vertex_id();
+		m_dest_position		= vertex->data().position();
 		m_actuality			= true;
 		m_completed			= false;
 		return;
 	}
-	VERIFY					(m_curr_point_index < m_path->tpaWayPoints.size());
+	VERIFY					(m_path->vertex(m_curr_point_index));
 
 	if (m_callback)
 		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 
-	u32						count = 0;
-	float					sum = 0.f;
-	for (u32 i=0, n=m_path->tpaWayLinks.size(); i<n; ++i)
-		if ((m_path->tpaWayLinks[i].wFrom == m_curr_point_index) && (m_path->tpaWayLinks[i].wTo != m_prev_point_index)) {
-			if (!count)
-				temp		= i;
-			sum				+= m_path->tpaWayLinks[i].fProbability;
-			++count;
-		}
+	u32							count = 0;
+	float						sum = 0.f;
+	vertex						= m_path->vertex(m_curr_point_index);
+	CPatrolPath::const_iterator	I = vertex->edges().begin(), E = vertex->edges().end();
+	u32							temp = u32(-1);
+	for ( ; I != E; ++I) {
+		if ((*I).vertex_id() == m_curr_point_index)
+			continue;
+
+		if (!count)
+			temp				= (*I).vertex_id();
+		
+		sum						+= (*I).weight();
+		++count;
+	}
 
 	if (!count) {
 		switch (m_route_type) {
@@ -74,15 +74,11 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 				return;
 			}
 			case ePatrolRouteTypeContinue : {
-				for (u32 i=0, n=m_path->tpaWayLinks.size(); i<n; ++i)
-					if (m_path->tpaWayLinks[i].wFrom == m_curr_point_index) {
-						temp = i;
-						break;
-					}
-				if (temp == u32(-1)) {
+				if (vertex->edges().empty()) {
 					m_completed	= true;
 					return;
 				}
+				temp			= vertex->edges().begin()->vertex_id();
 				break;
 			}
 			default : NODEFAULT;
@@ -93,19 +89,23 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		if (random() && (count > 1))
 			fChoosed	= ::Random.randF(sum);
 		sum				= 0.f;
-		for (int i=0, n=(int)m_path->tpaWayLinks.size(); i<n; ++i)
-			if ((m_path->tpaWayLinks[i].wFrom == m_curr_point_index) && (m_path->tpaWayLinks[i].wTo != m_prev_point_index)) {
-				sum		+= m_path->tpaWayLinks[i].fProbability;
-				if (sum >= fChoosed) {
-					temp = i;
-					break;
-				}
+		I				= vertex->edges().begin();
+		for ( ; I != E; ++I) {
+			if ((*I).vertex_id() == m_prev_point_index)
+				continue;
+
+			sum			+= (*I).weight();
+
+			if (sum >= fChoosed) {
+				temp	= (*I).vertex_id();
+				break;
 			}
-		VERIFY			(temp < m_path->tpaWayLinks.size());
+		}
+		VERIFY			(m_path->vertex(temp));
 	}
 	
 	m_prev_point_index	= m_curr_point_index;
-	m_curr_point_index	= m_path->tpaWayLinks[temp].wTo;
-	dest_vertex_id		= m_path->tpaWayPoints[m_curr_point_index].dwNodeID;
-	m_dest_position		= m_path->tpaWayPoints[m_curr_point_index].tWayPoint;
+	m_curr_point_index	= temp;
+	dest_vertex_id		= m_path->vertex(m_curr_point_index)->data().level_vertex_id();
+	m_dest_position		= m_path->vertex(m_curr_point_index)->data().position();
 }

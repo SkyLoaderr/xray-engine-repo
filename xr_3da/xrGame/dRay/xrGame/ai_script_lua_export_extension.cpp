@@ -182,7 +182,7 @@ void CScriptEngine::export_effector()
 
 bool patrol_path_exists(LPCSTR patrol_path)
 {
-	return		(Level().m_PatrolPaths.find(patrol_path) != Level().m_PatrolPaths.end());
+	return		(!!Level().patrol_paths().path(patrol_path,true));
 }
 
 void CScriptEngine::export_level()

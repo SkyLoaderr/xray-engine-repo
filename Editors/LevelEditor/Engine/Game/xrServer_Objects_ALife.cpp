@@ -246,9 +246,6 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			);
 #pragma warning(pop)
 
-		if (!xr_strcmp(s_name_replace,"guard_soldier_0_3")) {
-			m_flags = m_flags;
-		}
 		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
 			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
 	}
@@ -286,6 +283,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}
 	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
+	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Not visible for AI"),&m_flags,			flNotVisibleForAI);
 
 	if (story_names.empty()){
 		string256					gm_name;
