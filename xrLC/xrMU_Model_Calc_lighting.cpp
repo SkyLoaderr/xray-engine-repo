@@ -223,7 +223,7 @@ void xrMU_Model::calc_lighting		()
 	export_cform_rcast		(CL,Fidentity);
 
 	CDB::MODEL*				M	= xr_new<CDB::MODEL>	();
-	M->build				(CL.getV(),CL.getVS(),CL.getT(),CL.getTS(),FALSE);
+	M->build				(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	calc_lighting			(color,Fidentity,M,pBuild->L_hemi,FALSE);
 
 	xr_delete				(M);
