@@ -117,7 +117,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		// check if that node is our goal
 		if (tpBestNode->iIndex == (int)dwGoalNode) {
 			fDistance = tpBestNode->g;
-			/**
+			/**/
 			float fStraightDistance = fDistance;
 
 			tpTemp1 = tpBestNode;
