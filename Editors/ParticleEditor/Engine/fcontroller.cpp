@@ -26,7 +26,7 @@ void CController::OnInputDeactivate			(void)
 {
 	int i;
 	for (i = 0; i < CInput::COUNT_KB_BUTTONS; i++ )
-		OnKeyboardRelease( i );
+		if (iGetKeyState(i))	OnKeyboardRelease	(i);
 	for (i = 0; i < CInput::COUNT_MOUSE_BUTTONS; i++ )
 		OnMouseRelease( i );
 	OnMouseStop	( DIMOFS_X, 0 );

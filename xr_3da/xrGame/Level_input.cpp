@@ -9,7 +9,8 @@ void CLevel::OnKeyboardPress(int key)
 {
 	if (pHUD->IsUIActive())			if (pHUD->GetUI()->OnKeyboardPress(key)) return;
 
-	switch (key) {
+	switch (key) 
+	{
 	case DIK_GRAVE:
 		Console.Show				();
 		return;
