@@ -41,13 +41,13 @@ void CUIRadioGroup::DetachChild(CUIRadioButton* pChild)
 void CUIRadioGroup::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//обрабатываем сообщения только от дочерних окон
-	if(pWnd->GetParent()!=this) return;
+	if(this != pWnd->GetParent()) return;
 
 	//переустановить флажки на кнопках в группе
 	if(msg == CUIRadioButton::RADIO_BUTTON_SET)
 	{
 		//сбросить флажки на всех кнопках
-		for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+		for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 		{
 			((CUIRadioButton*)(*it))->ResetCheck();
 		}
@@ -61,7 +61,7 @@ void CUIRadioGroup::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 int CUIRadioGroup::GetCheckedPos()
 {
 	
-	/*for(int i=0; i<m_ChildWndList.size(); i++, it++)
+	/*for(int i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
 		if(PtInRect(&(*it)->GetWndRect(), cursor_pos))
 		{
@@ -81,7 +81,7 @@ int CUIRadioGroup::GetCheckedPos()
 void CUIRadioGroup::SetCheckedPos(int new_pos)
 {
 		/*//сбросить флажки на всех кнопках
-		for(WINDOW_LIST_IT it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+		for(WINDOW_LIST_IT it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 		{
 			((CRadioButton*)(*it))->ResetCheck();
 		}

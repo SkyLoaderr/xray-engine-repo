@@ -50,7 +50,7 @@ void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 
 
 	inherited::Init(tex_name, x, y, width, height);
-	/*if(tex_name!=NULL)
+	/*if(NULL != tex_name)
 	{
         m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
 		m_bAvailableTexture = true;

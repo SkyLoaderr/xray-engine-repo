@@ -65,7 +65,7 @@ void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)
 								  m_ChildWndList.end(), 
 								  pChild);
 	
-	if( it != m_ChildWndList.end())
+	if( m_ChildWndList.end() != it)
 	{
 		RemoveItemFromGrid(pChild);
 		DetachChild((CUIWindow*)pChild);
@@ -99,13 +99,13 @@ void CUIDragDropList::DropAll()
 	GetParent()->SetCapture(this, false);
 	m_pMouseCapturer = NULL;
 
-	for(u32 i=0; i<m_vCellStatic.size(); i++)
+	for(u32 i=0; i<m_vCellStatic.size(); ++i)
 	{
 		AttachChild(&m_vCellStatic[i]);
 	}
 	AttachChild(&m_ScrollBar);
 
-/*	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+/*	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem) DetachChild(pDragDropItem);
@@ -115,9 +115,9 @@ void CUIDragDropList::DropAll()
 
 	int k,m;
 
-	for(k=0; k<GetRows(); k++)
+	for(k=0; k<GetRows(); ++k)
 	{
-		for(m=0; m<GetCols(); m++)
+		for(m=0; m<GetCols(); ++m)
 		{
 			GetCell(k, m) = CELL_EMPTY;
 		}
@@ -146,7 +146,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		//элемент наш, поднять окно на вершину списка, 
 		//чтоб оно могло выводить себя и этот элемент поверх всех окон
 		//и получило сообщения DRAG в последнюю очередь
-		if( it != m_ChildWndList.end())
+		if( m_ChildWndList.end() != it)
 		{
 			//поднять окно вместе с родителями на вершину
 			(*it)->BringAllToTop(); 
@@ -314,9 +314,9 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
 		
-		for(i=0; i<GetViewRows(); i++)
+		for(i=0; i<GetViewRows(); ++i)
 		{
-			for(j=0; j<GetCols(); j++)
+			for(j=0; j<GetCols(); ++j)
 			{
 
 				(*it).Init("ui\\ui_inv_lattice", 
@@ -329,7 +329,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 				
 				(*it).SetTextureScale(scale);
 
-				it++;
+				++it;
 			}
 		}
 
@@ -407,25 +407,25 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		else if(CanPlace(place_row, place_col+1, pItem))
 		{
 			place_row;
-			place_col++;
+			++place_col;
 			found_place = true;
 		}
 		else if(CanPlace(place_row+1, place_col, pItem))
 		{
-			place_row++;
+			++place_row;
 			place_col;
 			found_place = true;
 		}
 		else if(CanPlace(place_row-1, place_col, pItem))
 		{
-			place_row--;
+			--place_row;
 			place_col;
 			found_place = true;
 		}
 		else if(CanPlace(place_row, place_col-1, pItem))
 		{
 			place_row;
-			place_col--;
+			--place_col;
 			found_place = true;
 		}
 	}
@@ -436,9 +436,9 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	//проверить можно ли разместить элемент,
 	//проверяем последовательно каждую клеточку
 
-	for(i=0; (i<GetRows()-pItem->GetGridHeight()+1) && !found_place; i++)
+	for(i=0; (i<GetRows()-pItem->GetGridHeight()+1) && !found_place; ++i)
 	{
-		for(j=0; (j<GetCols()-pItem->GetGridWidth()+1) && !found_place; j++)
+		for(j=0; (j<GetCols()-pItem->GetGridWidth()+1) && !found_place; ++j)
 		{
 			can_place = CanPlace(i,j, pItem);
 			
@@ -456,9 +456,9 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	//разместить элемент на найденном месте
 	if(found_place)
 	{
-		for(k=0; k<pItem->GetGridHeight(); k++)
+		for(k=0; k<pItem->GetGridHeight(); ++k)
 		{
-			for(m=0; m<pItem->GetGridWidth(); m++)
+			for(m=0; m<pItem->GetGridWidth(); ++m)
 			{
 				GetCell(place_row+k, place_col+m) = CELL_FULL;
 				pItem->SetGridRow(place_row);
@@ -495,9 +495,9 @@ bool CUIDragDropList::CanPlace(int row, int col, CUIDragDropItem* pItem)
 
 
 
-	for(k=0; k<pItem->GetGridHeight(); k++)
+	for(k=0; k<pItem->GetGridHeight(); ++k)
 	{
-		for(m=0; m<pItem->GetGridWidth(); m++)
+		for(m=0; m<pItem->GetGridWidth(); ++m)
 		{
 			if(GetCellState(row+k, col+m) == CELL_FULL)
 				return false;
@@ -515,9 +515,9 @@ void CUIDragDropList::RemoveItemFromGrid(CUIDragDropItem* pItem)
 	int place_row = pItem->GetGridRow();
 	int place_col = pItem->GetGridCol();
 
-    for(k=0; k<pItem->GetGridHeight(); k++)
+    for(k=0; k<pItem->GetGridHeight(); ++k)
 	{
-		for(m=0; m<pItem->GetGridWidth(); m++)
+		for(m=0; m<pItem->GetGridWidth(); ++m)
 		{
 			GetCell(place_row+k, place_col+m) = CELL_EMPTY;
 		}
@@ -544,7 +544,7 @@ void CUIDragDropList::Update()
 
 void CUIDragDropList::UpdateList()
 {
-	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)

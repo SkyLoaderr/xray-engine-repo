@@ -2,7 +2,7 @@
 #define __XR_HUDMANAGER_H__
 #pragma once
 
-#include "..\CustomHUD.h"
+#include "../CustomHUD.h"
 #include "HitMarker.h"
 #include "UI.h"
 #include "HUDCursor.h"

@@ -11,7 +11,7 @@
 #include "UIWindow.h"
 
 
-#include "..\uistaticitem.h"
+#include "../uistaticitem.h"
 #include "UIStatic.h"
 
 
