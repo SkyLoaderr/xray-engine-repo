@@ -752,6 +752,22 @@
 					RelativePath=".\tga.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="SPATIAL"
+				Filter="">
+				<File
+					RelativePath="ISpatial.cpp">
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="ISpatial.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Game API"
