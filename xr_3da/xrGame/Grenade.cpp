@@ -250,8 +250,8 @@ void CGrenade::UpdateCL()
 	{		
 		if (m_constpower && CMissile::State() == MS_READY)
 		{
-			m_throw = true; 
-			SwitchState(MS_THROW);
+//			m_throw = true; 
+//			SwitchState(MS_THROW);
 		}
 	};
 	////////////////////////////////////
