@@ -31,8 +31,7 @@ BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector
 	nPos.y				+= .1f;
 	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
-		Msg					("! ERROR: AI node not found for monster %s. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-		// R_ASSERT		(node>=0);
+		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
 		AI_NodeID			= DWORD(-1);
 		AI_Node				= NULL;
 	} else {
@@ -46,21 +45,30 @@ BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector
 
 void CGameObject::Sector_Detect	()
 {
-	// We was moved - so find new AI-Node
-	if (AI_Node)
+	if (H_Parent())
 	{
-		Fvector		Pos	= pVisual->bv_Position;
-		Pos.add		(vPosition);
-		CAI_Space&	AI = Level().AI;
+		// Use parent information
+		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+		AI_NodeID		= O->AI_NodeID;
+		AI_Node			= O->AI_Node;
+		Sector_Move		(O->Sector());
+	} else {
+		// We was moved - so find new AI-Node
+		if (AI_Node)
+		{
+			Fvector		Pos	= pVisual->bv_Position;
+			Pos.add		(vPosition);
+			CAI_Space&	AI = Level().AI;
 
-		AI.ref_dec  (AI_NodeID);
-		AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);
-		AI.ref_add  (AI_NodeID);
-		AI_Node		= AI.Node	(AI_NodeID);
+			AI.ref_dec  (AI_NodeID);
+			AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);
+			AI.ref_add  (AI_NodeID);
+			AI_Node		= AI.Node	(AI_NodeID);
+		}
+
+		// Perform sector detection
+		CObject::Sector_Detect	();
 	}
-	
-	// Perform sector detection
-	CObject::Sector_Detect	();
 }
 
 void CGameObject::OnVisible	()
@@ -69,6 +77,7 @@ void CGameObject::OnVisible	()
 	::Render->set_Transform		(&clTransform);
 	::Render->add_Visual		(Visual());
 }
+
 float CGameObject::Ambient	()
 {
 	return AI_Node?float(AI_Node->light):255;

@@ -19,18 +19,18 @@
 
 CWeapon::CWeapon(LPCSTR name)
 {
-	fTimeToFire	= 0;
-	iHitPower	= 0;
-	bVisible	= false;
-	SetDefaults	();
-	m_pHUD		= new CWeaponHUD();
-	m_WpnName	= strupr(strdup(name));
-	m_pContainer= 0;
+	fTimeToFire		= 0;
+	iHitPower		= 0;
+	bVisible		= FALSE;
+	SetDefaults		();
+	m_pHUD			= new CWeaponHUD();
+	m_WpnName		= strupr(strdup(name));
+	m_pContainer	= 0;
 	m_Offset.identity();
 
-	pstrWallmark= 0;
-	hUIIcon		= 0;
-	hWallmark	= 0;
+	pstrWallmark	= 0;
+	hUIIcon			= 0;
+	hWallmark		= 0;
 
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
@@ -49,25 +49,28 @@ CWeapon::CWeapon(LPCSTR name)
 	iAmmoCurrent	= -1;
 	iAmmoElapsed	= -1;
 	iMagazineSize	= -1;
+
+	hud_mode		= FALSE;
 }
 
-CWeapon::~CWeapon()
+CWeapon::~CWeapon		()
 {
-	_FREE		(m_WpnName);
-	_DELETE		(pVisual);
-	_DELETE		(m_pHUD);
+	_FREE				(m_WpnName);
+	_DELETE				(pVisual);
+	_DELETE				(m_pHUD);
 	
-	_FREE		(pstrWallmark);
+	_FREE				(pstrWallmark);
 	
 	Device.Shader.Delete(hUIIcon);
-	if (hWallmark) Device.Shader.Delete(hWallmark);
+	if (hWallmark)		Device.Shader.Delete(hWallmark);
 }
 
-void CWeapon::animGet(MotionSVec& lst, LPCSTR prefix)
+void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 {
 	CMotionDef* M		= m_pHUD->animGet(prefix);
 	if (M)				lst.push_back(M);
-	for (int i=0; i<MAX_ANIM_COUNT; i++){
+	for (int i=0; i<MAX_ANIM_COUNT; i++)
+	{
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s%d",prefix,i);
 		M				= m_pHUD->animGet(sh_anim);
@@ -92,10 +95,12 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 	}
 	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());
 }
+
 void CWeapon::SoundDestroy	(	sound& dest)
 {
 	pSounds->Delete			(dest);
 }
+
 void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 {
 	if (dest)	return;
@@ -130,6 +135,7 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 	}
 	Device.Fatal("Can't find texture '%s' for weapon '%s'",T,GetName());
 }
+
 void CWeapon::ShaderDestroy	(Shader* &dest)
 {
 	if (0==dest)	return;
@@ -165,7 +171,7 @@ void CWeapon::Load		(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
-	CObject::Load		(section);
+	inherited::Load		(section);
 
 	SectorMode			= EPM_AT_LOAD;
 	if (pSector)		pSector->objectRemove	(this);
@@ -187,9 +193,9 @@ void CWeapon::Load		(LPCSTR section)
 	pstrWallmark		= strdup(name);
 	if (0==pstrWallmark)hWallmark = 0; 
 	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWallmark);
-	fWallmarkSize		= pSettings->ReadFLOAT	(section,"wm_size");
+	fWallmarkSize		= pSettings->ReadFLOAT		(section,"wm_size");
 
-	LPCSTR hud_sect		= pSettings->ReadSTRING	(section,"hud");
+	LPCSTR hud_sect		= pSettings->ReadSTRING		(section,"hud");
 	m_pHUD->Load		(hud_sect);
 
 	iAmmoLimit			= pSettings->ReadINT		(section,"ammo_limit"		);
@@ -197,77 +203,111 @@ void CWeapon::Load		(LPCSTR section)
 	iAmmoElapsed		= pSettings->ReadINT		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->ReadINT		(section,"ammo_mag_size"	);
 	
-	fireDistance		= pSettings->ReadFLOAT	(section,"fire_distance"	);
-	fireDispersionBase	= pSettings->ReadFLOAT	(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
-	fireDispersion		= pSettings->ReadFLOAT	(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
-	fireDispersion_Inc	= pSettings->ReadFLOAT	(section,"fire_dispersion_add"); 
-	fireDispersion_Dec	= pSettings->ReadFLOAT	(section,"fire_dispersion_relax"); 
+	fireDistance		= pSettings->ReadFLOAT		(section,"fire_distance"	);
+	fireDispersionBase	= pSettings->ReadFLOAT		(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
+	fireDispersion		= pSettings->ReadFLOAT		(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
+	fireDispersion_Inc	= pSettings->ReadFLOAT		(section,"fire_dispersion_add"); 
+	fireDispersion_Dec	= pSettings->ReadFLOAT		(section,"fire_dispersion_relax"); 
 	fireDispersion_Current	= 0;
 
-	camMaxAngle			= pSettings->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= pSettings->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= pSettings->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camMaxAngle			= pSettings->ReadFLOAT		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->ReadFLOAT		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->ReadFLOAT		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
-	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
-	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
+	dispVelFactor		= pSettings->ReadFLOAT		(section,"disp_vel_factor"	);
+	dispJumpFactor		= pSettings->ReadFLOAT		(section,"disp_jump_factor"	);
+	dispCrouchFactor	= pSettings->ReadFLOAT		(section,"disp_crouch_factor");
 
 	// tracer
-	tracerHeadSpeed		= pSettings->ReadFLOAT	(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= pSettings->ReadFLOAT	(section,"tracer_trail_scale"	);
-	tracerStartLength	= pSettings->ReadFLOAT	(section,"tracer_start_length"	);
-	tracerWidth			= pSettings->ReadFLOAT	(section,"tracer_width"			);
+	tracerHeadSpeed		= pSettings->ReadFLOAT		(section,"tracer_head_speed"	);
+	tracerTrailCoeff	= pSettings->ReadFLOAT		(section,"tracer_trail_scale"	);
+	tracerStartLength	= pSettings->ReadFLOAT		(section,"tracer_start_length"	);
+	tracerWidth			= pSettings->ReadFLOAT		(section,"tracer_width"			);
 
 	// light
-	Fvector clr			= pSettings->ReadVECTOR	(section,"light_color"		);
+	Fvector clr			= pSettings->ReadVECTOR		(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
 	light_base.SetRange	(pSettings->ReadFLOAT		(section,"light_range"		));
-	light_var_color		= pSettings->ReadFLOAT	(section,"light_var_color"	);
-	light_var_range		= pSettings->ReadFLOAT	(section,"light_var_range"	);
-	light_lifetime		= pSettings->ReadFLOAT	(section,"light_time"		);
+	light_var_color		= pSettings->ReadFLOAT		(section,"light_var_color"	);
+	light_var_range		= pSettings->ReadFLOAT		(section,"light_var_range"	);
+	light_lifetime		= pSettings->ReadFLOAT		(section,"light_time"		);
 	light_time			= -1.f;
 	iHitPower			= pSettings->ReadINT		(section,"hit_power"		);
 
-	vFirePoint			= pSettings->ReadVECTOR	(section,"fire_point"		);
-	vShellPoint			= pSettings->ReadVECTOR	(section,"shell_point"		);
+	vFirePoint			= pSettings->ReadVECTOR		(section,"fire_point"		);
+	vShellPoint			= pSettings->ReadVECTOR		(section,"shell_point"		);
 
 	// flames
 	iFlameDiv			= pSettings->ReadINT		(section,"flame_div"		);
-	fFlameLength		= pSettings->ReadFLOAT	(section,"flame_length"		);
-	fFlameSize			= pSettings->ReadFLOAT	(section,"flame_size"		);
+	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
+	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
 
 	bVisible			= FALSE;
 }
 
+BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+{
+	return inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+}
+
+void CWeapon::net_Destroy	()
+{
+	inherited::net_Destroy	();
+}
+
+void CWeapon::Update		(DWORD dT)
+{
+	inherited::Update		(dT);
+
+	float dt				= float(dT)/1000.f;
+	fireDispersion_Current	-=	fireDispersion_Dec*dt;
+	clamp					(fireDispersion_Current,0.f,1.f);
+	if (light_time>0)		light_time -= dt;
+}
+
+void CWeapon::OnVisible		()
+{
+	if (light_time>0) 
+	{
+		UpdateFP	();
+		Light_Render(vLastFP);
+	}
+	if (m_pHUD && hud_mode)	PKinematics(m_pHUD->Visual())->Update	();
+}
+
 void CWeapon::OnDeviceCreate()
 {
-	CObject::OnDeviceCreate();
+	inherited::OnDeviceCreate();
 
 	ShaderCreate		(hUIIcon,"hud\\default","");
 
 	if (0==pstrWallmark)hWallmark	= 0; 
 	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
 }
+
 void CWeapon::OnDeviceDestroy()
 {
-	CObject::OnDeviceDestroy();
+	inherited::OnDeviceDestroy	();
 	
-	ShaderDestroy		(hUIIcon);
-	Device.Shader.Delete(hWallmark);
+	ShaderDestroy				(hUIIcon);
+	Device.Shader.Delete		(hWallmark);
 }
 
 void CWeapon::Hide		()
 {
-	FireEnd				();
-	OnHide				();
-	bPending			= TRUE;
+	FireEnd							();
+	OnHide							();
+	bPending						= TRUE;
+
 	// add shot effector
 	Level().Cameras.RemoveEffector	(cefShot);
 }
+
 void CWeapon::signal_HideComplete()
 {
 	bVisible		= FALSE;
 }
+
 void CWeapon::Show		()
 {
 	OnShow				();
@@ -307,13 +347,6 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			fWallmarkSize,
 			pCreator->ObjectSpace.GetStaticTris()+R.element);
 	}
-}
-
-void CWeapon::Update		(float dt, BOOL bHUDView)
-{
-	fireDispersion_Current	-= fireDispersion_Dec*dt;
-	clamp					(fireDispersion_Current,0.f,1.f);
-	if (light_time>0)		light_time -= dt;
 }
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
@@ -390,16 +423,7 @@ void CWeapon::Light_Render	(Fvector& P)
 	::Render->L_add				(&light_render);
 }
 
-void CWeapon::Render(BOOL bHUDView)
-{
-	if (light_time>0) {
-		UpdateFP	(bHUDView);
-		Light_Render(vLastFP);
-	}
-	if (m_pHUD)	PKinematics(m_pHUD->Visual())->Update	();
-}
-
-void CWeapon::OnDrawFlame(BOOL bHUDView)
+void CWeapon::OnDrawFlame	()
 {
 	if (fFlameTime>0)	
 	{
@@ -413,7 +437,7 @@ void CWeapon::OnDrawFlame(BOOL bHUDView)
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;

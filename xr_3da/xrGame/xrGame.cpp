@@ -84,7 +84,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 // Factory
 #include "actor.h"
-//#include "weaponrail.h"
 #include "customitem.h"
 #include "flyer.h"
 #include "customevent.h"
@@ -94,40 +93,44 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "demoactor.h"
 #include "hudmanager.h"
 
+#include "weaponM134.h"
+#include "weaponAK74.h"
+#include "weaponLR300.h"
+#include "weaponFN2000.h"
+#include "weaponHPSA.h"
+#include "weaponPM.h"
+#include "weaponFORT.h"
+#include "weaponBINOCULARS.h"
+
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
 	{
-		/*
-		char N[20];
-		CLSID2TEXT(cls,N);
-		Log("CLS:",N);
-		*/
-
-		DLL_Pure*	P = 0;
+		DLL_Pure*	P	= 0;
 		switch (cls)
 		{
-		case CLSID_LEVEL:			P = new CLevel();			break;
-		case CLSID_HUDMANAGER:		P = new CHUDManager();		break;
-		case CLSID_OBJECT_ACTOR:	P = new CActor();			break;
-//		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
-//		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
-//		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
-		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
-		case CLSID_EVENT:			P = new CCustomEvent();		break;
-//		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
-//		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;
-//		case CLSID_OBJECT_DACTOR:	P = new CDemoActor();		break;
-//		case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
-		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
-		case CLSID_AI_RAT:			P = new CAI_Rat();			break;
-		case CLSID_AI_SOLDIER:		P =	new CAI_Soldier();		break;
-		case CLSID_AI_ZOMBIE:		P = new CAI_Zombie();		break;
-		case CLSID_AI_CROW:			P = new CAI_Crow();			break;
+		case CLSID_LEVEL:				P = new CLevel();				break;
+		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
+		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
+		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
+		case CLSID_EVENT:				P = new CCustomEvent();			break;
+		case CLSID_AI_HEN:				P = new CAI_Hen();				break;
+		case CLSID_AI_RAT:				P = new CAI_Rat();				break;
+		case CLSID_AI_SOLDIER:			P =	new CAI_Soldier();			break;
+		case CLSID_AI_ZOMBIE:			P = new CAI_Zombie();			break;
+		case CLSID_AI_CROW:				P = new CAI_Crow();				break;
+		case CLSID_CAR_NIVA:			P = new CCar();					break;
 
-		case CLSID_CAR_NIVA:		P = new CCar();				break;
+		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
+		case CLSID_OBJECT_W_FN2000:		P = new CWeaponFN2000();		break;
+		case CLSID_OBJECT_W_AK74:		P = new CWeaponAK74();			break;
+		case CLSID_OBJECT_W_LR300:		P = new CWeaponLR300();			break;
+		case CLSID_OBJECT_W_HPSA:		P = new CWeaponHPSA	();			break;
+		case CLSID_OBJECT_W_PM:			P = new CWeaponPM	();			break;
+		case CLSID_OBJECT_W_FORT:		P = new CWeaponFORT	();			break;
+		case CLSID_OBJECT_W_BINOCULAR:	P = new CWeaponBinoculars();	break;
 		}
-		R_ASSERT(P);
-		P->SUB_CLS_ID = cls;
+		R_ASSERT		(P);
+		P->SUB_CLS_ID	= cls;
 		return P;
 	}
 	DLL_API void		__cdecl	xrFactory_Destroy		(DLL_Pure* O)
@@ -135,3 +138,13 @@ extern "C" {
 		delete O;
 	}
 };
+
+/*
+//		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
+//		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
+//		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
+//		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
+//		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;
+//		case CLSID_OBJECT_DACTOR:	P = new CDemoActor();		break;
+//		case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
+*/

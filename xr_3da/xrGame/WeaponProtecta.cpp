@@ -67,7 +67,7 @@ void CWeaponProtecta::FireEnd(){
 }
 
 
-void CWeaponProtecta::UpdateXForm(BOOL bHUDView)
+void CWeaponProtecta::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{

@@ -203,9 +203,6 @@ objQualifier* CAI_Soldier::GetQualifier	()
 void CAI_Soldier::OnVisible()
 {
 	inherited::OnVisible();
-	
-	Weapons->OnRender(FALSE);
-	//return(0);
 }
 
 Fvector tfGetDirection(CEntity *tpEntity)

@@ -216,8 +216,6 @@ public:
 	virtual void			net_Import			(NET_Packet* P);				// import from server
 	virtual BOOL			net_Relevant		()	{ return net_Local; };		// relevant for export to server
 	
-//	virtual BOOL			TakeItem			( DWORD CID );
-
 	virtual void			OnMouseMove			(int x, int y);
 	virtual void			OnKeyboardPress		(int dik);
 	virtual void			OnKeyboardRelease	(int dik);
@@ -233,7 +231,7 @@ public:
 
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
-	CWeaponList			*tpfGetWeapons			(){return Weapons;}
+	CWeaponList				*tpfGetWeapons		(){return Weapons;}
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

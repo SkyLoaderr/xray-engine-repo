@@ -25,8 +25,8 @@ protected:
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
-	virtual void	UpdateFP		(BOOL bHUD);
-	virtual void	UpdateXForm		(BOOL bHUD);
+	virtual void	UpdateFP		();
+	virtual void	UpdateXForm		();
 protected:
 	enum EState
 	{
@@ -36,29 +36,28 @@ protected:
 		eHiding
 	};
 	EState			st_current, st_target;
-	virtual void	switch2_Idle	(BOOL bHUD);
-	virtual void	switch2_Hiding	(BOOL bHUD);
-	virtual void	switch2_Showing	(BOOL bHUD);
-	virtual void	switch2_Zooming	(BOOL bHUD);
+	virtual void	switch2_Idle	();
+	virtual void	switch2_Hiding	();
+	virtual void	switch2_Showing	();
+	virtual void	switch2_Zooming	();
 	virtual void	OnShow			();
 	virtual void	OnHide			();
 	virtual void	OnZoomIn		();
 	virtual void	OnZoomOut		();
 	virtual void	OnAnimationEnd	();
 
-	void			state_Zooming	(BOOL bHUD, float dt);
+	void			state_Zooming	(float dt);
 public:
 					CWeaponBinoculars(); 
 	virtual			~CWeaponBinoculars();
-	virtual BOOL	HasOpticalAim	()		{ return TRUE; }
-	void			Load			(LPCSTR section);
 
-	virtual	void	Update			(float dt, BOOL bHUDView);
-	virtual	void	Render			(BOOL bHUDView);
+	void			Load			(LPCSTR section);
+	virtual	void	Update			(DWORD	dT);
+	virtual	void	OnVisible		();
 
 	virtual void	Hide			();
 	virtual void	Show			();
-
+	virtual BOOL	HasOpticalAim	()		{ return TRUE; }
 	virtual float	GetZoomFactor	();
 };
 

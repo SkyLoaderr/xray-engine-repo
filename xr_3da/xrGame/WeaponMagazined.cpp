@@ -78,12 +78,13 @@ void CWeaponMagazined::OnDeviceDestroy()
 	MediaUNLOAD	();
 }
 
-void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
+void CWeaponMagazined::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame){
 		dwXF_Frame = Device.dwFrame;
 
-		if (bHUDView){
+		if (hud_mode)
+		{
 			if (m_pHUD){
 				Fmatrix			trans;
 				Level().Cameras.affected_Matrix(trans);
@@ -107,15 +108,15 @@ void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponMagazined::UpdateFP		(BOOL bHUDView)
+void CWeaponMagazined::UpdateFP		()
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
 		dwFP_Frame = Device.dwFrame;
 		
-		UpdateXForm		(bHUDView);
+		UpdateXForm		();
 
-		if (bHUDView)	
+		if (hud_mode)	
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
@@ -213,9 +214,11 @@ void CWeaponMagazined::ReloadMagazine	()
 	}
 }
 
-void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
+void CWeaponMagazined::Update			(DWORD T)
 {
-	inherited::Update	(dt,bHUDView);
+	inherited::Update	(T);
+	float dt			= float(T)/1000.f;
+
 	VERIFY				(H_Parent());
 	
 	// on state change
@@ -225,23 +228,23 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		{
 		case eIdle:
 			bFlame			= FALSE;
-			switch2_Idle	(bHUDView);
+			switch2_Idle	();
 			break;
 		case eFire:
-			switch2_Fire	(bHUDView);
+			switch2_Fire	();
 			break;
 		case eMagEmpty:
 			bFlame			= FALSE;
-			switch2_Empty	(bHUDView);
+			switch2_Empty	();
 			break;
 		case eReload:
-			switch2_Reload	(bHUDView);
+			switch2_Reload	();
 			break;
 		case eShowing:
-			switch2_Showing	(bHUDView);
+			switch2_Showing	();
 			break;
 		case eHiding:
-			switch2_Hiding	(bHUDView);
+			switch2_Hiding	();
 			break;
 		}
 		st_current = st_target;
@@ -257,14 +260,14 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
-	case eFire:			state_Fire		(bHUDView,dt);	break;
-	case eMagEmpty:		state_MagEmpty	(bHUDView,dt);	break;
+	case eFire:			state_Fire		(dt);	break;
+	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	}
 	bVisible			= TRUE;
 	bPending			= FALSE;
 	
 	// sound fire loop
-	UpdateFP					(bHUDView);
+	UpdateFP					();
 	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
 	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
 	if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
@@ -272,9 +275,9 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
 }
 
-void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
+void CWeaponMagazined::state_Fire	(float dt)
 {
-	UpdateFP				(bHUDView);
+	UpdateFP				();
 	fTime					-=dt;
 	Fvector					p1, d;
 	dynamic_cast<CEntity*>(H_Parent())->g_fireParams	(p1,d);
@@ -284,23 +287,23 @@ void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
 		bFlame			=	TRUE;
 		fTime			+=	fTimeToFire;
 		
-		OnShot			(bHUDView);
+		OnShot			();
 		FireTrace		(p1,vLastFP,d);
 	}
 }
 
-void CWeaponMagazined::state_MagEmpty(BOOL bHUDView, float dt)
+void CWeaponMagazined::state_MagEmpty	(float dt)
 {
-	UpdateFP	(bHUDView);
-	OnEmptyClick(bHUDView);
-	st_target	= eIdle;
+	UpdateFP		();
+	OnEmptyClick	();
+	st_target		= eIdle;
 }
 
-void CWeaponMagazined::Render		(BOOL bHUDView)
+void CWeaponMagazined::OnVisible	()
 {
-	inherited::Render		(bHUDView);
-	UpdateXForm				(bHUDView);
-	if (bHUDView && m_pHUD)
+	inherited::OnVisible	();
+	UpdateXForm				();
+	if (hud_mode && m_pHUD)
 	{ 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
@@ -314,8 +317,8 @@ void CWeaponMagazined::Render		(BOOL bHUDView)
 	}
 	if (((eFire==st_current) || (eReload==st_current))&& bFlame) 
 	{
-		UpdateFP	(bHUDView);
-		OnDrawFlame	(bHUDView);
+		UpdateFP	();
+		OnDrawFlame	();
 	}
 }
 
@@ -370,7 +373,7 @@ void CWeaponMagazined::MediaUNLOAD	()
 	hFlames.clear();
 }
 
-void CWeaponMagazined::OnShellDrop(BOOL bHUD)
+void CWeaponMagazined::OnShellDrop	()
 {
 	// shells
 	CPSObject* PS				= new CPSObject("weapons\\shells_generic",H_Parent()->Sector(),true);
@@ -381,23 +384,28 @@ void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 	PS->PlayAtPos				(vLastSP);
 }
 
-void CWeaponMagazined::OnShot(BOOL bHUD)
+void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	pSounds->PlayAtPos		(sndShot,H_Root(),vLastFP);
+	pSounds->PlayAtPos			(sndShot,H_Root(),vLastFP);
+
 	// Camera
-	if (bHUD)	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot)); 
+	if (hud_mode)	
+	{
+		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
 		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(new CEffectorShot(camMaxAngle,camRelaxSpeed));
-		R_ASSERT(S);
+		R_ASSERT				(S);
 		S->Shot					(camDispersion);
 	}
+	
 	// Animation
 	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	
 	// Flames
 	fFlameTime					= .1f;
+	
 	// Shell Drop
-	OnShellDrop					(bHUD);
+	OnShellDrop					();
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
@@ -427,7 +435,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 	}
 }
 
-void CWeaponMagazined::OnEmptyClick	(BOOL bHUDView)
+void CWeaponMagazined::OnEmptyClick	()
 {
 	pSounds->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
 }
@@ -443,30 +451,30 @@ void CWeaponMagazined::OnAnimationEnd()
 }
 
 
-void CWeaponMagazined::switch2_Idle	(BOOL bHUDView)
+void CWeaponMagazined::switch2_Idle	()
 {
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
-void CWeaponMagazined::switch2_Fire	(BOOL bHUDView)
+void CWeaponMagazined::switch2_Fire	()
 {
 }
-void CWeaponMagazined::switch2_Empty(BOOL bHUDView)
+void CWeaponMagazined::switch2_Empty()
 {
 }
-void CWeaponMagazined::switch2_Reload(BOOL bHUDView)
+void CWeaponMagazined::switch2_Reload()
 {
 	pSounds->PlayAtPos		(sndReload,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
+	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
-void CWeaponMagazined::switch2_Hiding(BOOL bHUDView)
+void CWeaponMagazined::switch2_Hiding()
 {
-	switch2_Idle				(bHUDView);
+	switch2_Idle			();
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
-void CWeaponMagazined::switch2_Showing(BOOL bHUDView)
+void CWeaponMagazined::switch2_Showing()
 {
 	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay			(mhud_show[Random.randI(mhud_show.size())],FALSE,this);

@@ -2,16 +2,6 @@
 #include "xr_weapon_list.h"
 #include "entity.h"
 
-// Factory
-#include "WeaponM134.h"
-#include "WeaponFN2000.h"
-#include "WeaponAK74.h"
-#include "WeaponLR300.h"
-#include "WeaponHPSA.h"
-#include "WeaponPM.h"
-#include "WeaponFORT.h"
-#include "WeaponBinoculars.h"
-
 class fClassEQ {
 	CLASS_ID cls;
 public:
@@ -149,59 +139,6 @@ void CWeaponList::Reload()
 	if (W)		W->Reload		();
 }
 
-CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
-{
-	string128	sect_name;
-	CWeapon*	pWeapon	= NULL;
-	switch (cls)
-	{
-	case CLSID_OBJECT_W_M134:
-		pWeapon = new CWeaponM134(); 
-		strcpy(sect_name,"wpn_m134");
-		break;
-	case CLSID_OBJECT_W_M134_en:
-		pWeapon = new CWeaponM134(); 
-		strcpy(sect_name,"wpn_m134en");
-		break;
-	case CLSID_OBJECT_W_FN2000:
-		pWeapon = new CWeaponFN2000	(); 
-		strcpy(sect_name,"wpn_fn2000");
-		break;
-	case CLSID_OBJECT_W_AK74:
-		pWeapon = new CWeaponAK74	(); 
-		strcpy(sect_name,"wpn_ak74");
-		break;
-	case CLSID_OBJECT_W_LR300:
-		pWeapon = new CWeaponLR300	(); 
-		strcpy(sect_name,"wpn_lr300");
-		break;
-	case CLSID_OBJECT_W_HPSA:
-		pWeapon = new CWeaponHPSA	(); 
-		strcpy(sect_name,"wpn_HPSA");
-		break;
-	case CLSID_OBJECT_W_PM:
-		pWeapon = new CWeaponPM	(); 
-		strcpy(sect_name,"wpn_PM");
-		break;
-	case CLSID_OBJECT_W_FORT:
-		pWeapon = new CWeaponFORT	(); 
-		strcpy(sect_name,"wpn_FORT");
-		break;
-	case CLSID_OBJECT_W_BINOCULAR:
-		pWeapon = new CWeaponBinoculars	(); 
-		strcpy(sect_name,"wpn_BINOC");
-		break;
-	}
-
-	// load weapon
-	R_ASSERT			(pWeapon);
-	pWeapon->SUB_CLS_ID = cls;
-	pWeapon->Load		(sect_name);
-	pWeapon->SetParent	(m_pParent,this);
-	m_Weapons.push_back	(pWeapon);
-	return pWeapon;
-}
-
 BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 {
 	int idx				= -1;
@@ -233,8 +170,7 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 	}else{
 		if (bTakeWeapon){
 			// add weapon
-			CWeapon* wpn = LoadOne(cls);
-			wpn->AddAmmo(iAmmoCount);
+			// wpn->AddAmmo(iAmmoCount);
 			if (m_Weapons.size()==1) ActivateWeapon(cls);
 			return true;
 		}
@@ -246,7 +182,7 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 {
 }
 
-void CWeaponList::Update(float dt, BOOL bHUDView)
+void CWeaponList::Update	(float dt, BOOL bHUDView)
 {
 	// Change weapon if needed and can be done
 	if (m_iSelectedWeapon>=0)	
@@ -259,14 +195,10 @@ void CWeaponList::Update(float dt, BOOL bHUDView)
 	}
 
 	// Update all needed weapons
+	/*
 	for (DWORD it=0; it<m_Weapons.size(); it++)
-		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update(dt,bHUDView);
-}
-
-void CWeaponList::OnRender(BOOL bHUDView)
-{
-	if (m_iActiveWeapon==-1) return;
-	m_Weapons[m_iActiveWeapon]->Render(bHUDView);
+		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update();
+	*/
 }
 
 void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir){

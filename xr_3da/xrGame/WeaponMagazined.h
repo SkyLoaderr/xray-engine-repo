@@ -58,27 +58,27 @@ protected:
 
 	virtual void	MediaLOAD		();
 	virtual void	MediaUNLOAD		();
-	virtual void	switch2_Idle	(BOOL bHUD);
-	virtual void	switch2_Fire	(BOOL bHUD);
-	virtual void	switch2_Empty	(BOOL bHUD);
-	virtual void	switch2_Reload	(BOOL bHUD);
-	virtual void	switch2_Hiding	(BOOL bHUD);
-	virtual void	switch2_Showing	(BOOL bHUD);
-	virtual void	OnShot			(BOOL bHUD);
-	virtual void	OnShellDrop		(BOOL bHUD);
-	virtual void	OnEmptyClick	(BOOL bHUD);
+	virtual void	switch2_Idle	();
+	virtual void	switch2_Fire	();
+	virtual void	switch2_Empty	();
+	virtual void	switch2_Reload	();
+	virtual void	switch2_Hiding	();
+	virtual void	switch2_Showing	();
+	virtual void	OnShot			();
+	virtual void	OnShellDrop		();
+	virtual void	OnEmptyClick	();
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnShow			();
 	virtual void	OnHide			();
 	virtual void	OnAnimationEnd	();
 	void			TryReload		();
 protected:
-	virtual void	UpdateFP		(BOOL bHUD);
-	virtual void	UpdateXForm		(BOOL bHUD);
+	virtual void	UpdateFP		();
+	virtual void	UpdateXForm		();
 	virtual void	ReloadMagazine	();
 
-	virtual void	state_Fire		(BOOL bHUD, float dt);
-	virtual void	state_MagEmpty	(BOOL bHUD, float dt);
+	virtual void	state_Fire		(float dt);
+	virtual void	state_MagEmpty	(float dt);
 public:
 					CWeaponMagazined	(LPCSTR name,ESoundTypes eSoundType);
 	virtual			~CWeaponMagazined	();
@@ -93,8 +93,8 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual	void	Update			(float dt, BOOL bHUDView);
-	virtual	void	Render			(BOOL bHUDView);
+	virtual	void	Update			(DWORD T		);
+	virtual	void	OnVisible		();
 
 	virtual void	OnDeviceCreate	();
 	virtual void	OnDeviceDestroy	();

@@ -172,13 +172,13 @@ void CWeaponM134::FireEnd(){
 	}
 }
 
-void CWeaponM134::UpdateXForm(BOOL bHUDView)
+void CWeaponM134::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
 		dwXF_Frame = Device.dwFrame;
 
-		if (bHUDView) {
+		if (hud_mode) {
 			if (m_pHUD)	{
 				Fmatrix			trans;
 				Level().Cameras.affected_Matrix(trans);
@@ -202,22 +202,22 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponM134::UpdateFP	(BOOL bHUDView)
+void CWeaponM134::UpdateFP	()
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
 		dwFP_Frame = Device.dwFrame;
 
 		// update animation
-		CKinematics* V	= bHUDView?PKinematics(m_pHUD->Visual()):PKinematics(Visual());
+		CKinematics* V	= hud_mode?PKinematics(m_pHUD->Visual()):PKinematics(Visual());
 		V->Calculate	();
 
 		// fire point&direction
-		UpdateXForm				(bHUDView);
-		Fmatrix& fire_mat		= V->LL_GetTransform(bHUDView?m_pHUD->iFireBone:iFireBone);
-		Fmatrix& parent			= bHUDView?m_pHUD->Transform():svTransform;
-		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
-		Fvector& sp				= bHUDView?m_pHUD->vShellPoint:vShellPoint;
+		UpdateXForm				();
+		Fmatrix& fire_mat		= V->LL_GetTransform(hud_mode?m_pHUD->iFireBone:iFireBone);
+		Fmatrix& parent			= hud_mode?m_pHUD->Transform():svTransform;
+		Fvector& fp				= hud_mode?m_pHUD->vFirePoint:vFirePoint;
+		Fvector& sp				= hud_mode?m_pHUD->vShellPoint:vShellPoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
 		parent.transform_tiny	(vLastFP);
 		fire_mat.transform_tiny	(vLastSP,sp);
@@ -227,16 +227,17 @@ void CWeaponM134::UpdateFP	(BOOL bHUDView)
 	}
 }
 
-void CWeaponM134::Update	(float dt, BOOL bHUDView)
+void CWeaponM134::Update	(DWORD T)
 {
-	BOOL bShot = false;
+	BOOL bShot			= false;
 
-	inherited::Update(dt,bHUDView);
+	inherited::Update	(T);
+	float dt			= float(T)/1000.f;
 
 	// on state change
 	if (st_target!=st_current)
 	{
-		if (st_target != eM134Idle) UpdateFP(bHUDView);
+		if (st_target != eM134Idle) UpdateFP();
 
 		switch(st_target){
 		case eM134Spinup:
@@ -274,7 +275,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 	}
 
 	// cycle update
-	if (st_current != eM134Idle) UpdateFP(bHUDView);
+	if (st_current != eM134Idle) UpdateFP();
 	switch (st_current)
 	{
 	case eM134Idle:
@@ -315,14 +316,14 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			{
 				fTime			+=fTimeToFire;
 				
-				if (bHUDView)	{
+				if (hud_mode)	{
 					CEffectorShot*	S		= (CEffectorShot*)Level().Cameras.GetEffector(cefShot); 
 					if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(new CEffectorShot(camMaxAngle,camRelaxSpeed));
 					R_ASSERT(S); 
 					S->Shot					(camDispersion); 
 				}
 
-				UpdateFP		(bHUDView);
+				UpdateFP		();
 				FireTrace		(p1,vLastFP,d);
 			}
 
@@ -341,11 +342,11 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 #endif
 }
 
-void CWeaponM134::Render	(BOOL bHUDView)
+void CWeaponM134::OnVisible	()
 {
-	inherited::Render		(bHUDView);
-	UpdateXForm	(bHUDView);
-	if (bHUDView && m_pHUD)
+	inherited::OnVisible	();
+	UpdateXForm				();
+	if (hud_mode && m_pHUD)
 	{ 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
@@ -359,8 +360,8 @@ void CWeaponM134::Render	(BOOL bHUDView)
 	}
 	if (st_current==eM134Fire) 
 	{
-		UpdateFP	(bHUDView);
-		OnDrawFlame	(bHUDView);
+		UpdateFP	();
+		OnDrawFlame	();
 	}
 }
 

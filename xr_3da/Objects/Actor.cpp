@@ -536,13 +536,13 @@ void CActor::Update	(DWORD DT)
 	
 	if (IsMyCamera())		{
 		if (!pCamBobbing){ 
-			pCamBobbing = new CEffectorBobbing();
-			Level().Cameras.AddEffector(pCamBobbing);
+			pCamBobbing = new CEffectorBobbing	();
+			Level().Cameras.AddEffector			(pCamBobbing);
 		}
-		pCamBobbing->SetState(mstate_real);
-		cam_Update	(dt,Weapons->getZoomFactor());
+		pCamBobbing->SetState					(mstate_real);
+		cam_Update								(dt,Weapons->getZoomFactor());
 	} else {
-		if (pCamBobbing){ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
+		if (pCamBobbing)						{ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
 	}
 
 	bVisible				= !HUDview	();
@@ -564,9 +564,7 @@ void CActor::Update	(DWORD DT)
 
 void CActor::OnVisible()
 {
-	inherited::OnVisible();
-
-	Weapons->OnRender(HUDview());
+	inherited::OnVisible	();
 }
 
 void CActor::g_cl_ValidateMState(DWORD mstate_wf)
@@ -788,7 +786,7 @@ void CActor::g_fireEnd	( )
 	Weapons->FireEnd	( );
 }
 
-void CActor::Statistic()
+void CActor::Statistic	( )
 {
 	//-------------------------------------------------------------------
 	pApp->pFont->OutSet(0,0);
@@ -806,22 +804,20 @@ void CActor::Statistic()
 	//-------------------------------------------------------------------
 }
 
-void CActor::OnRender()
+void CActor::OnRender	()
 {
-	Movement.dbg_Draw();
+	Movement.dbg_Draw	();
 	PKinematics(pVisual)->DebugRender(svTransform);
 }
 
 // HUD
-void CActor::OnHUDDraw(CCustomHUD* hud)
+void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
-	if (HUDview())					Weapons->OnRender(HUDview());
-
-	CHUDManager* HUD = (CHUDManager*)hud;
-	CUI* pUI=HUD->GetUI();
-	pUI->OutHealth	(iHealth,iArmor);
-	pUI->OutWeapon	(Weapons->ActiveWeapon());
-	pUI->SetHeading	(-r_torso.yaw);
+	CHUDManager* HUD	= (CHUDManager*)hud;
+	CUI* pUI=HUD->GetUI	();
+	pUI->OutHealth		(iHealth,iArmor);
+	pUI->OutWeapon		(Weapons->ActiveWeapon());
+	pUI->SetHeading		(-r_torso.yaw);
 
 	/**
 	char buf[128];

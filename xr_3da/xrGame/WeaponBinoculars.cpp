@@ -74,12 +74,12 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	animGet				(mhud_hide,		"holster");
 }
 
-void CWeaponBinoculars::UpdateXForm(BOOL bHUDView)
+void CWeaponBinoculars::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame){
 		dwXF_Frame = Device.dwFrame;
 
-		if (bHUDView){
+		if (hud_mode){
 			if (m_pHUD){
 				Fmatrix			trans;
 				Level().Cameras.affected_Matrix(trans);
@@ -103,15 +103,15 @@ void CWeaponBinoculars::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponBinoculars::UpdateFP		(BOOL bHUDView)
+void CWeaponBinoculars::UpdateFP		()
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
-		dwFP_Frame = Device.dwFrame;
+		dwFP_Frame		= Device.dwFrame;
 
-		UpdateXForm		(bHUDView);
+		UpdateXForm		();
 
-		if (bHUDView)	
+		if (hud_mode)	
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
@@ -141,11 +141,11 @@ void CWeaponBinoculars::UpdateFP		(BOOL bHUDView)
 	}
 }
 
-void CWeaponBinoculars::Render		(BOOL bHUDView)
+void CWeaponBinoculars::OnVisible	()
 {
-	inherited::Render		(bHUDView);
-	UpdateXForm				(bHUDView);
-	if (bHUDView && m_pHUD)
+	inherited::OnVisible			();
+	UpdateXForm						();
+	if (hud_mode && m_pHUD)
 	{ 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
@@ -159,10 +159,12 @@ void CWeaponBinoculars::Render		(BOOL bHUDView)
 	}
 }
 
-void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
+void CWeaponBinoculars::Update			(DWORD T)
 {
-	inherited::Update	(dt,bHUDView);
+	inherited::Update	(T);
 	VERIFY				(H_Parent());
+
+	float dt			= float(T)/1000.f;
 	
 	// on state change
 	if (st_target!=st_current)
@@ -170,16 +172,16 @@ void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
 		switch (st_target)
 		{
 		case eIdle:
-			switch2_Idle	(bHUDView);
+			switch2_Idle	();
 			break;
 		case eShowing:
-			switch2_Showing	(bHUDView);
+			switch2_Showing	();
 			break;
 		case eHiding:
-			switch2_Hiding	(bHUDView);
+			switch2_Hiding	();
 			break;
 		case eZooming:
-			switch2_Zooming	(bHUDView);
+			switch2_Zooming	();
 			break;
 		}
 		st_current = st_target;
@@ -189,7 +191,7 @@ void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
 	switch (st_current)
 	{
 	case eZooming:
-		state_Zooming	(bHUDView,dt);
+		state_Zooming	(dt);
 		break;
 	}
 
@@ -197,46 +199,54 @@ void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
 	bPending			= FALSE;
 	
 	// sound fire loop
-	UpdateFP					(bHUDView);
+	UpdateFP					();
 	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
 	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
 	if (sndGyro.feedback)		sndGyro.feedback->SetPosition		(vLastFP);
 	if (sndZoomIn.feedback)		sndZoomIn.feedback->SetPosition		(vLastFP);
 	if (sndZoomOut.feedback)	sndZoomOut.feedback->SetPosition	(vLastFP);
 }
+
 void CWeaponBinoculars::Hide	()
 {
 	inherited::Hide				();
 }
+
 void CWeaponBinoculars::Show	()
 {
 	inherited::Show				();
 }
+
 void CWeaponBinoculars::OnShow	()
 {
 	st_target	= eShowing;
 }
+
 void CWeaponBinoculars::OnHide	()
 {
 	st_target	= eHiding;
 }
+
 float CWeaponBinoculars::GetZoomFactor()
 {
 	if (st_target=eZooming)	return	fMaxZoomFactor;
 	else					return	inherited::GetZoomFactor();
 }
+
 void CWeaponBinoculars::OnZoomIn()
 {
 	inherited::OnZoomIn			();
 	st_target	= eZooming;
 	fGyroSpeed  = 0;
 }
+
 void CWeaponBinoculars::OnZoomOut()
 {
 	inherited::OnZoomOut();
 	st_target	= eIdle;
 	fGyroSpeed  = 0;
 }
+
 void CWeaponBinoculars::OnAnimationEnd()
 {
 	switch (st_current)
@@ -245,7 +255,8 @@ void CWeaponBinoculars::OnAnimationEnd()
 	case eShowing:	st_target = eIdle;		break;	// End of Show
 	}
 }
-void CWeaponBinoculars::state_Zooming(BOOL bHUDView,float dt)
+
+void CWeaponBinoculars::state_Zooming	(float dt)
 {
 	fGyroSpeed += dt;
 	if (sndGyro.feedback){
@@ -255,12 +266,14 @@ void CWeaponBinoculars::state_Zooming(BOOL bHUDView,float dt)
 		sndGyro.feedback->SetFrequencyScale(k);
 	}
 }
-void CWeaponBinoculars::switch2_Zooming(BOOL bHUDView)
+
+void CWeaponBinoculars::switch2_Zooming	()
 {
 	pSounds->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
 	pSounds->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
 }
-void CWeaponBinoculars::switch2_Idle	(BOOL bHUDView)
+
+void CWeaponBinoculars::switch2_Idle	()
 {
 	switch (st_current)
 	{
@@ -271,13 +284,15 @@ void CWeaponBinoculars::switch2_Idle	(BOOL bHUDView)
 	}
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
-void CWeaponBinoculars::switch2_Hiding(BOOL bHUDView)
+
+void CWeaponBinoculars::switch2_Hiding	()
 {
-	switch2_Idle			(bHUDView);
+	switch2_Idle			();
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
-void CWeaponBinoculars::switch2_Showing(BOOL bHUDView)
+
+void CWeaponBinoculars::switch2_Showing	()
 {
 	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);

@@ -62,9 +62,9 @@ private:
 	CMotionDef*		mhud_fire;	
 	CMotionDef*		mhud_spinup;
 	
-	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	virtual void	UpdateFP		(BOOL bHUD);
-	virtual void	UpdateXForm		(BOOL bHUD);
+	void			DrawFlame		(const Fvector& fp, const Fvector& fd);
+	virtual void	UpdateFP		();
+	virtual void	UpdateXForm		();
 protected:
 	void			FlameLOAD		();
 	void			FlameUNLOAD		();
@@ -84,8 +84,8 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual	void	Update			(float dt, BOOL bHUDView);
-	virtual	void	Render			(BOOL bHUDView);
+	virtual	void	Update			(DWORD	dT		);
+	virtual	void	OnVisible		();
 	
 	virtual void	OnDeviceCreate	();
 	virtual void	OnDeviceDestroy	();

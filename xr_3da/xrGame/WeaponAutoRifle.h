@@ -7,7 +7,7 @@
 class CWeaponAutoRifleA: public CWeaponMagazined
 {
 private:
-	typedef CWeaponMagazined inherited;
+	typedef			CWeaponMagazined inherited;
 public:
 					CWeaponAutoRifleA	(LPCSTR name, ESoundTypes eSoundType);
 	virtual			~CWeaponAutoRifleA	();

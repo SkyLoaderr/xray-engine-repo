@@ -13,7 +13,7 @@ CWeaponCustomPistol::CWeaponCustomPistol(LPCSTR name) : CWeaponMagazined(name,SO
 CWeaponCustomPistol::~CWeaponCustomPistol()
 {
 }
-void CWeaponCustomPistol::switch2_Fire	(BOOL bHUDView)
+void CWeaponCustomPistol::switch2_Fire	()
 {
 	if (fTime<=0){
 		// Fire
@@ -21,23 +21,23 @@ void CWeaponCustomPistol::switch2_Fire	(BOOL bHUDView)
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
 		bFlame						=	TRUE;
-		OnShot						(bHUDView);
+		OnShot						();
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
 	}
 }
-void CWeaponCustomPistol::switch2_Empty	(BOOL bHUDView)
+void CWeaponCustomPistol::switch2_Empty	()
 {
 	pSounds->PlayAtPos(sndEmptyClick,this,vLastFP);
 }
-void CWeaponCustomPistol::OnEmptyClick	(BOOL bHUDView)
+void CWeaponCustomPistol::OnEmptyClick	()
 {
 }
 
-void	CWeaponCustomPistol::state_Fire		(BOOL bHUD, float dt)
+void	CWeaponCustomPistol::state_Fire	(float dt)
 {
 	fTime					-=dt;
 }
-void	CWeaponCustomPistol::state_MagEmpty	(BOOL bHUD, float dt)
+void	CWeaponCustomPistol::state_MagEmpty	(float dt)
 {
 }
