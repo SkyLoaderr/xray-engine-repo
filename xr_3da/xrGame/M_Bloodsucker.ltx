@@ -14,21 +14,33 @@ vampire_2		=	  	0.60,		30,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 
 
 
 
+[m_bloodsucker_vampire_effector]
+duality_h			= 0.08
+duality_v			= 0.06
+blur				= 0.71
+gray				= 0.5
+noise_intensity 	= 0.5
+noise_grain			= 0.3 
+noise_fps			= 30
+color_base			= 0.255,0.0,0.0
+color_gray			= 0.333,0.333,0.333
+color_add			= 0,0,0
+
 [m_bloodsucker_attack_effector]
 
-duality_h			= 0.08;0.01
-duality_v			= 0.06;0.01
+duality_h			= 0.08
+duality_v			= 0.06
 blur				= 0.01
 gray				= 0.5
 noise_intensity 	= 0.0
 noise_grain			= 0.1 ;1.0
 noise_fps			= 30
-color_base			= 0.255,0.0,0.0;0.65,0.15,0.1
+color_base			= 0.255,0.0,0.0
 color_gray			= 0.333,0.333,0.333
 color_add			= 0,0,0
 time				= 0.65 ;0.3
-time_attack			= 0.05		; fade in
-time_release		= 0.35		; fade out
+time_attack			= 0.1		; fade in
+time_release		= 0.45		; fade out
 
 ; camera effects
 ce_time				= 0.65 ;time 
@@ -256,10 +268,14 @@ squad_attack_algorithm		= 1
 
 attack_effector				= m_bloodsucker_attack_effector
 attack_params				= m_bloodsucker_attack_params
+vampire_effector			= m_bloodsucker_vampire_effector
+
 
 step_params					= m_bloodsucker_step_params
 postprocess_new				= postprocess_new
 damage						= m_Bloodsucker_damage
+
+
 
 LegsCount					= 2
 

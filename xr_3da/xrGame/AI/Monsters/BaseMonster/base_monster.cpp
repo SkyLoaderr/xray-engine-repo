@@ -136,6 +136,8 @@ void CBaseMonster::Die(CObject* who)
 {
 	inherited::Die(who);
 
+	if (StateMan) StateMan->critical_finalize();
+	
 	if (is_special_killer(who))
 		sound().play			(MonsterSpace::eMonsterSoundDieInAnomaly);
 	else

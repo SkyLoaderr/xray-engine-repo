@@ -201,5 +201,7 @@ void CBaseMonster::net_Destroy()
 	inherited::net_Destroy				();
 	m_pPhysics_support->in_NetDestroy	();
 
+	if (StateMan) StateMan->critical_finalize();
+	
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }

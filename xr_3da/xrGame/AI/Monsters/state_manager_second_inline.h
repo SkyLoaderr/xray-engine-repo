@@ -50,6 +50,11 @@ bool CStateManagerSecondAbstract::check_state(u32 state_id)
 	return false;
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateManagerSecondAbstract::critical_finalize()
+{
+	inherited::critical_finalize();
+}
 
 #undef CStateManagerSecondAbstract 
 #undef TEMPLATE_SPECIALIZATION

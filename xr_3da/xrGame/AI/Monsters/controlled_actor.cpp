@@ -30,6 +30,8 @@ void CControlledActor::take_control()
 
 void CControlledActor::free_from_control()
 {
+	if (!is_controlled())			return;
+
 	m_actor->SetControlled			(false);
 	reset();
 }

@@ -21,4 +21,6 @@ public:
 		bool	is_face_target		(const CObject *obj,		float eps_angle);
 		
 		void	use_path_direction	(bool reversed = false);
+
+		void	force_direction		(const Fvector &dir);
 };

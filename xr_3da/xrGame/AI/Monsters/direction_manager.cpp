@@ -62,3 +62,14 @@ bool CDirectionManager::is_face_target(const CObject *obj, float eps_angle)
 	return is_face_target(obj->Position(), eps_angle);
 }
 
+void CDirectionManager::force_direction(const Fvector &dir)
+{
+	float	yaw, pitch;
+	
+	dir.getHP	(yaw,pitch);
+	yaw			*= -1;
+	yaw			= angle_normalize(yaw);
+
+	m_object->movement().m_body.current.yaw		= yaw;
+	m_object->movement().m_body.target.yaw		= yaw;
+}

@@ -29,6 +29,7 @@ public:
 	virtual void	update					();
 	virtual void	force_script_state		(EGlobalStates state);
 	virtual void	execute_script_state	();
+	virtual	void	critical_finalize		();
 
 protected:
 			bool	can_eat					();

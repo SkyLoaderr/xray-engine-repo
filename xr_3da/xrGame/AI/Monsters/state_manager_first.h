@@ -23,6 +23,7 @@ public:
 	virtual void	force_script_state			(EGlobalStates state);
 	virtual void	execute_script_state		();
 	virtual void	reinit						();	
+	virtual	void	critical_finalize			() {}
 
 protected:
 
