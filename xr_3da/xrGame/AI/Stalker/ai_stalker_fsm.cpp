@@ -449,7 +449,7 @@ void CAI_Stalker::SearchEnemy()
 					}
 				
 				if (!bOk)
-					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) {
+					if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) && (getAI().u_SqrDistance2Node(vPosition,getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) < .35f)) {
 						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
 					}
@@ -700,8 +700,10 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	// going via graph nodes
 	WRITE_TO_LOG			("Accomplishing task");
 	vfUpdateSearchPosition	();
-	if (m_bStateChanged)
+	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
+		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
+	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	float					yaw,pitch;
