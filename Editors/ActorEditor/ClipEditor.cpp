@@ -258,13 +258,23 @@ void __fastcall TClipMaker::ClipDragDrop(TObject *Sender,
         if (tv->SelectedCount){
             for (TElTreeItem* item 	= tv->GetNextSelected(0); item; item = tv->GetNextSelected(item)){
                 ListItem* prop		= (ListItem*)item->Tag; VERIFY(prop);
-                CMotionDef* SM 		= (CMotionDef*)prop->m_Object;
-                LPCSTR m_name		= prop->Key()+xr_strlen(MOTIONS_PREFIX);
-                if (m_name[0]=='\\')m_name++;
-                if (SM->flags&esmFX){
+                u16 bp;
+                BOOL fx;
+	            if (m_CurrentObject->m_SMotionRefs.size()){
+                    CMotionDef* SM 		= (CMotionDef*)prop->m_Object;
+                    bp					= SM->bone_or_part;
+                    fx					= SM->flags&esmFX;
+                }else{
+                    CSMotion* SM 		= (CSMotion*)prop->m_Object;
+                    bp					= SM->m_BoneOrPart;
+                    fx					= SM->m_Flags.is(esmFX);
+                }
+                LPCSTR m_name			= prop->Key()+xr_strlen(MOTIONS_PREFIX);
+                if (m_name[0]=='\\')	m_name++;
+                if (fx){
                 	tgt->SetFX		(m_name);
                 }else{
-                    tgt->SetCycle	(m_name,SM->bone_or_part);
+                    tgt->SetCycle	(m_name,bp);
                 }
             }
         }

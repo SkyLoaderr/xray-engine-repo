@@ -138,7 +138,7 @@ bool CActorTools::OnCreate()
 	inherited::OnCreate();
     // props
 	m_ClipMaker		= TClipMaker::CreateForm();
-    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect);
+    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect|TItemList::ilSuppressStatus);
 	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
     m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
@@ -661,7 +661,7 @@ bool CActorTools::RayPick(const Fvector& start, const Fvector& dir, float& dist,
 #include "ClipEditor.h"
 void CActorTools::ShowClipMaker()
 {
-	if (CurrentObject()&&CurrentObject()->IsSkeleton()&&CurrentObject()->SMotionCount())
+	if (CurrentObject()&&CurrentObject()->IsSkeleton()&&CurrentObject()->IsAnimated())
     	m_ClipMaker->ShowEditor(CurrentObject());
 }
 

@@ -159,7 +159,7 @@ void CActorTools::EngineModel::PlayMotion(LPCSTR name)
                 	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
                     CBlend* B=0;
                     if (D){
-                    	B = D->PlayCycle(PSkeletonAnimated(m_pVisual),k,(idx==k)?!(D->flags&esmNoMix):FALSE,0,0);
+                    	B = D->PlayCycle(PSkeletonAnimated(m_pVisual),k,((idx==k)||(BI_NONE==idx))?!(D->flags&esmNoMix):FALSE,0,0);
 						if (idx==k) m_pBlend = B;
                     }
     	    	}
