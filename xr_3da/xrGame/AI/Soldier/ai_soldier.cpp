@@ -122,7 +122,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fCrouchVisibilityMultiplier = pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
 	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
 	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
-	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
+	m_fLateralMultiplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
 	
 	//fire
