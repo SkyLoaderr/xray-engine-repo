@@ -57,6 +57,7 @@
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
 
+namespace boost {	ENGINE_API	void __stdcall throw_exception(const exception &A);	};
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
