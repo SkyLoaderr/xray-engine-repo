@@ -8,6 +8,7 @@ class "se_monster" (cse_alife_monster_base)
 function se_monster:__init (section) super (section)
 	self.ini = nil
 	self.spawner_present = false
+	self.check_distance = 0
 end
 --------------------
 function se_monster:can_switch_offline ()
@@ -26,15 +27,49 @@ function se_monster:can_switch_online ()
 	if self.ini == nil then
 		self.ini = self:spawn_ini () 
 		self.spawner_present = self.ini:section_exist ("spawner")
+		if self.ini ~= nil and self.spawner_present == true and self.ini:line_exist ("spawner", "check_distance") == true then
+		   self.check_distance = self.ini:r_u32 ("spawner", "check_distance")
+		   if self.check_distance == nil then 
+		      self.check_distance = 0
+		   end   
+		end
 	end
 
-	if self.ini == nil or self.spawner_present == false or 
-	   (db.actor ~= nil and db.actor:alive () == false)
+    --стандартная проверка у родителя, если нет спавнера или игрок помер
+	if self.ini == nil or self.spawner_present == false or (db.actor ~= nil and db.actor:alive () == false)
 	then 
-		return cse_alife_monster_base.can_switch_online (self)
+	    return cse_alife_monster_base.can_switch_online (self)
 	end    
-
-	return xr_spawner.check_spawn (self)
+	
+	if self.online == false then
+   	    -- если игрока нет, то в оффлайн
+        if db.actor == nil then 
+           return false 
+        end
+        
+        --если задана дистанция проверки, то проверим.
+        if self.check_distance ~= 0 then
+           --получим позицию. 
+           local pos = level.vertex_position (self.level_vertex_id)
+            -- проверим дистанцию до игрока. если меньше требуемой, то от винта
+            if pos:distance_to (db.actor:position ()) < self.check_distance then
+               return false 
+            end    
+        end   
+        --все проверки прошли - финал, вызов спавнера
+	    return xr_spawner.check_spawn (self) and cse_alife_monster_base.can_switch_online (self)
+    else
+        if db.actor == nil then return true end
+        if xr_spawner.check_spawn (self) == true then 
+           return true
+        end
+        local pos = level.vertex_position (self.level_vertex_id)
+        -- проверим дистанцию до игрока. если больше требуемой, то от винта
+        if pos:distance_to (db.actor:position ()) > self.check_distance then
+           return false 
+        end    
+        return true
+    end    	    
 end    
 --------------------
 function se_monster:STATE_Write (packet)
