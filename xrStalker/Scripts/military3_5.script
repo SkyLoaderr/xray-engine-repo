@@ -53,9 +53,10 @@ function Patrol:add_path (path_name, alternate)
 end		
 
 function Patrol:reset ()
+	printf ("Reset start object %s, script %s", self.npc:name (), self.script)
 	self.npc:script (false, self.script)
 	self.npc:script (true, self.script)
-	printf ("Reset object %s, script %s", self.npc:name (), self.script)
+	printf ("Reset end object %s, script %s", self.npc:name (), self.script)
 end
 
 function Patrol:start ()
