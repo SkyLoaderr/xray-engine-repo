@@ -16,5 +16,13 @@ CStalkerSoundData::~CStalkerSoundData	()
 
 void CStalkerSoundData::accept			(CSoundUserDataVisitor *visitor)
 {
+	if (!m_object)
+		return;
+
 	visitor->visit	(this);
+}
+
+void CStalkerSoundData::invalidate		()
+{
+	m_object		= 0;
 }

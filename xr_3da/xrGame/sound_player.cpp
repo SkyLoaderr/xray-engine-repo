@@ -49,6 +49,18 @@ void CSoundPlayer::unload			()
 {
 	remove_active_sounds			(u32(-1));
 	VERIFY							(m_playing_sounds.empty());
+
+	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.begin();
+	xr_map<u32,CSoundCollection>::iterator	E = m_sounds.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_sounds.empty())
+			continue;
+
+		if (!(*I).m_sounds.front().g_userdata)
+			continue;
+		
+		(*I).m_sounds.front().g_userdata->invalidate();
+	}
 }
 
 u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, CSoundUserDataPtr data)

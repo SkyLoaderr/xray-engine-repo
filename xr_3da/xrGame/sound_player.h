@@ -21,7 +21,7 @@ public:
 
 	struct CSoundCollection : public CSoundParams, public CRandom32 {
 		xr_vector<ref_sound*>					m_sounds;
-		shared_str									m_sound_prefix;
+		shared_str								m_sound_prefix;
 
 		IC				CSoundCollection		()
 		{
