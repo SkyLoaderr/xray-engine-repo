@@ -27,13 +27,13 @@ function action_tip:update(delta)
 	end	
 	
 	if self.object:inside( actor:position() ) and
-	   ( self.conditions == nil or
-	     xr_logic.pick_section_from_condlist( actor, nil, self.conditions.condlist ) ~= nil )
+	   ( self.st.conditions == nil or
+	     xr_logic.pick_section_from_condlist( actor, nil, self.st.conditions.condlist ) ~= nil )
 	then
-		if self.type == "tips" then
-			news_manager.send_tip( actor, self.info, nil, self.sender )
-		elseif self.type == "news" then
-			news_manager.send_news( actor, self.info )
+		if self.st.type == "tips" then
+			news_manager.send_tip( actor, self.st.info, nil, self.st.sender )
+		elseif self.st.type == "news" then
+			news_manager.send_news( actor, self.st.info )
 		end
 	end
 end
@@ -52,10 +52,10 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
 
-	self.info   = utils.cfg_get_string( ini, section, "name",   obj, true,  "", "" )
-	self.type   = utils.cfg_get_string( ini, section, "type",   obj, false, "", "news" )
-	self.sender = utils.cfg_get_string( ini, section, "sender", obj, false, "", nil )
+	st.info   = utils.cfg_get_string( ini, section, "name",   obj, true,  "", "" )
+	st.type   = utils.cfg_get_string( ini, section, "type",   obj, false, "", "news" )
+	st.sender = utils.cfg_get_string( ini, section, "sender", obj, false, "", nil )
 
-	self.conditions = xr_logic.cfg_get_condlist( ini, section, "cond", obj )
+	st.conditions = xr_logic.cfg_get_condlist( ini, section, "cond", obj )
 end
 
