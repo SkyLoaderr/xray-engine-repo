@@ -222,24 +222,25 @@ IC u32	IReader::advance_term_string()
 	char *src 	= (char *) data;
 	while (!eof()) {
         Pos++;
+        sz++;
 		if (is_term(src[Pos])) {
-			if (!eof() && is_term(src[Pos])) Pos++;
+        	while(!eof()&&is_term(src[Pos])) Pos++;
 			break;
 		}
-        sz++;
 	}
     return sz;
 }
 void	IReader::r_string	(char *dest, u32 tgt_sz)
 {
-	char *src 	= (char *) data;
+	char *src 	= (char *) data+Pos;
 	u32 sz 		= advance_term_string();
-    R_ASSERT2(sz<tgt_sz,"Dest string less than needed.");
+    R_ASSERT2(sz<(tgt_sz-1),"Dest string less than needed.");
     strncpy		(dest,src,sz);
+    dest[sz]	= 0;
 }
 void	IReader::r_string	(std::string& dest)
 {
-	char *src 	= (char *) data;
+	char *src 	= (char *) data+Pos;
 	u32 sz 		= advance_term_string();
     dest.assign	(src,sz);
 }
