@@ -18,6 +18,9 @@
 #include "net_utils.h"
 #include "object_broker.h"
 #include "xr_graph_merge.h"
+#include "spawn_constructor_space.h"
+
+using namespace SpawnConstructorSpace;
 using namespace ALife;
 
 class CLevelGameGraph;
@@ -61,7 +64,7 @@ public:
 	CGameGraph::SLevel			m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
-	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
+	LEVEL_POINT_STORAGE			m_tpLevelPoints;
 	CGameGraph					*m_tpGraph;
 
 								CLevelGameGraph(const CGameGraph::SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
@@ -252,7 +255,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, xr_vector<CGameGraph::CLevelPoint> *tpLevelPoints)
+	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, LEVEL_POINT_STORAGE *tpLevelPoints)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -318,8 +321,8 @@ public:
 
 		u32						m = l_dwaNodes.size() > 10 ? _min(iFloor(.1f*l_dwaNodes.size()),255) : l_dwaNodes.size(), l_dwStartIndex = m_tpLevelPoints.size();
 		m_tpLevelPoints.resize	(l_dwStartIndex + m);
-		xr_vector<CGameGraph::CLevelPoint>::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
-		xr_vector<CGameGraph::CLevelPoint>::iterator E = m_tpLevelPoints.end();
+		LEVEL_POINT_STORAGE::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
+		LEVEL_POINT_STORAGE::iterator E = m_tpLevelPoints.end();
 		xr_vector<u32>::iterator		 i = l_dwaNodes.begin();
 
 		dwDeathPointCount		= m;
@@ -463,7 +466,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	CGameGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
 	u32								l_dwPointOffset = 0;
-	xr_vector<CGameGraph::CLevelPoint>			l_tpLevelPoints;
+	LEVEL_POINT_STORAGE				l_tpLevelPoints;
 	l_tpLevelPoints.clear			();
 
 	xr_set<CLevelInfo>				levels;
@@ -603,8 +606,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	}
 	R_ASSERT2						(l_dwStartPointOffset == F.size() - l_dwOffset,"Graph file format is corrupted");
 	{
-		xr_vector<CGameGraph::CLevelPoint>::const_iterator	I = l_tpLevelPoints.begin();
-		xr_vector<CGameGraph::CLevelPoint>::const_iterator	E = l_tpLevelPoints.end();
+		LEVEL_POINT_STORAGE::const_iterator	I = l_tpLevelPoints.begin();
+		LEVEL_POINT_STORAGE::const_iterator	E = l_tpLevelPoints.end();
 		for ( ; I != E; ++I)
 			save_data				(*I,F);
 	}

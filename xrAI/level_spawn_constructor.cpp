@@ -320,14 +320,15 @@ void CLevelSpawnConstructor::correct_objects					()
 void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 {
 	// create graph engine
-	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
+	VERIFY								(!m_graph_engine);
+	m_graph_engine						= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
 
-	xr_vector<u32>			l_tpaStack;
-	l_tpaStack.reserve		(1024);
-	SPAWN_STORAGE::iterator	B = m_spawns.begin(), I = B;
-	SPAWN_STORAGE::iterator	E = m_spawns.end();
+	xr_vector<u32>						l_tpaStack;
+	l_tpaStack.reserve					(1024);
+	SPAWN_STORAGE::iterator				I = m_spawns.begin();
+	SPAWN_STORAGE::iterator				E = m_spawns.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeAnomalousZone *zone = smart_cast<CSE_ALifeAnomalousZone*>(*I);
+		CSE_ALifeAnomalousZone			*zone = smart_cast<CSE_ALifeAnomalousZone*>(*I);
 		if (!zone)
 			continue;
 
@@ -340,8 +341,8 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 
 		zone->m_dwStartIndex			= m_level_points.size();
 		m_level_points.resize			(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
-		xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
-		xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
+		LEVEL_POINT_STORAGE::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
+		LEVEL_POINT_STORAGE::iterator	E = m_level_points.end();
 		xr_vector<u32>::iterator		i = l_tpaStack.begin();
 		for ( ; I != E; ++I, ++i) {
 			(*I).tNodeID				= *i;
