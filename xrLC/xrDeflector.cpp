@@ -46,7 +46,6 @@ CDeflector::CDeflector()
 {
 	Deflector	= this;
 	lm.pSurface = 0;
-	lm_rad		= 0;
 }
 CDeflector::~CDeflector()
 {

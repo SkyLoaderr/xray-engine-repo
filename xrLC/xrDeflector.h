@@ -45,7 +45,10 @@ public:
 	{
 		DWORD			id;
 		b_texture		lm;
-	}					Layers;
+
+		Layer()			{ ZeroMemory(this,sizeof(*this)); }
+	};
+	vector<Layer>		layers;
 
 	Fvector				Center;
 	float				Radius;

@@ -403,108 +403,117 @@ VOID CDeflector::Light(HASH& H)
 	}
 	bb.getsphere(Center,Radius);
 	
-	// Convert lights to local form
+	for (DWORD layer=0; layer<pBuild->lights_soften.size(); layer++)
 	{
-		R_Light*	L = pBuild->lights_soften.begin();
-		for (; L!=pBuild->lights_soften.end(); L++)
+		// Convert lights to local form
+		vector<R_Light>&	layer_lights	= pBuild->lights_soften[layer];
 		{
-			if (L->type==LT_POINT) {
-				float dist = Center.distance_to(L->position);
-				if (dist>(Radius+L->range)) continue;
+			LightsSelected.clear	();
+			R_Light*	L			= layer_lights.begin();
+			for (; L!=pBuild->layer_lights.end(); L++)
+			{
+				if (L->type==LT_POINT) {
+					float dist = Center.distance_to(L->position);
+					if (dist>(Radius+L->range)) continue;
+				}
+				LightsSelected.push_back(*L);
 			}
-			LightsSelected.push_back		(*L);
 		}
-	}
+		if (layer && LightsSelected.empty())	continue;
 
-	// Calculate and fill borders
-	L_Calculate	(H);
-	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-
-	// Compression
-	const	DWORD rms		= 8;
-	DWORD	w,h;
-	if (compress_Zero(lm,rms))	return;		// already with borders
-	else if (compress_RMS(lm,rms*2,w,h))	
-	{
-		// Reacalculate lightmap at lower resolution
-		lm.dwWidth	= w;
-		lm.dwHeight	= h;
-		_FREE		(lm.pSurface);
+		// Register new layer
+		layers.push_back(Layer());
+		Layer&	layer_data	= layers.back();
+		layer_data.id		= layer;
+		b_texture& lm		= layer_data.lm;
+		
+		// Calculate and fill borders
 		L_Calculate	(H);
-	}
-
-	// Expand with borders
-	if (lm.dwWidth==1)	
-	{
-		// Horizontal ZERO - vertical line
-		b_texture		T;
-		T.dwWidth		= 2*BORDER;
-		T.dwHeight		= lm.dwHeight+2*BORDER;
-		DWORD size		= T.dwWidth*T.dwHeight*4;
-		T.pSurface		= LPDWORD(malloc(size));
-		ZeroMemory		(T.pSurface,size);
-
-		// Transfer
-		for (DWORD y=0; y<T.dwHeight; y++)
+		for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+		
+		// Compression
+		const	DWORD rms		= 8;
+		DWORD	w,h;
+		if (compress_Zero(lm,rms))	return;		// already with borders
+		else if (compress_RMS(lm,rms*2,w,h))	
 		{
-			int		py			= int(y)-BORDER;
-			clamp	(py,0,int(lm.dwHeight-1));
-			DWORD	C			= lm.pSurface[py];
-			T.pSurface[y*2+0]	= C;
-			T.pSurface[y*2+1]	= C;
+			// Reacalculate lightmap at lower resolution
+			lm.dwWidth	= w;
+			lm.dwHeight	= h;
+			_FREE		(lm.pSurface);
+			L_Calculate	(H);
 		}
-
-		// Exchange
-		_FREE			(lm.pSurface);
-		T.dwWidth		= 0;
-		T.dwHeight		= lm.dwHeight;
-		lm				= T;
-	} else if (lm.dwHeight==1) 
-	{
-		// Vertical ZERO - horizontal line
-		b_texture		T;
-		T.dwWidth		= lm.dwWidth+2*BORDER;
-		T.dwHeight		= 2*BORDER;
-		DWORD size		= T.dwWidth*T.dwHeight*4;
-		T.pSurface		= LPDWORD(malloc(size));
-		ZeroMemory		(T.pSurface,size);
-
-		// Transfer
-		for (DWORD x=0; x<T.dwWidth; x++)
+		
+		// Expand with borders
+		if (lm.dwWidth==1)	
 		{
-			int		px			= int(x)-BORDER;
-			clamp	(px,0,int(lm.dwWidth-1));
-			DWORD	C			= lm.pSurface[px];
-			T.pSurface[0*T.dwWidth+x]	= C;
-			T.pSurface[1*T.dwWidth+x]	= C;
+			// Horizontal ZERO - vertical line
+			b_texture		T;
+			T.dwWidth		= 2*BORDER;
+			T.dwHeight		= lm.dwHeight+2*BORDER;
+			DWORD size		= T.dwWidth*T.dwHeight*4;
+			T.pSurface		= LPDWORD(malloc(size));
+			ZeroMemory		(T.pSurface,size);
+			
+			// Transfer
+			for (DWORD y=0; y<T.dwHeight; y++)
+			{
+				int		py			= int(y)-BORDER;
+				clamp	(py,0,int(lm.dwHeight-1));
+				DWORD	C			= lm.pSurface[py];
+				T.pSurface[y*2+0]	= C;
+				T.pSurface[y*2+1]	= C;
+			}
+			
+			// Exchange
+			_FREE			(lm.pSurface);
+			T.dwWidth		= 0;
+			T.dwHeight		= lm.dwHeight;
+			lm				= T;
+		} else if (lm.dwHeight==1) 
+		{
+			// Vertical ZERO - horizontal line
+			b_texture		T;
+			T.dwWidth		= lm.dwWidth+2*BORDER;
+			T.dwHeight		= 2*BORDER;
+			DWORD size		= T.dwWidth*T.dwHeight*4;
+			T.pSurface		= LPDWORD(malloc(size));
+			ZeroMemory		(T.pSurface,size);
+			
+			// Transfer
+			for (DWORD x=0; x<T.dwWidth; x++)
+			{
+				int		px			= int(x)-BORDER;
+				clamp	(px,0,int(lm.dwWidth-1));
+				DWORD	C			= lm.pSurface[px];
+				T.pSurface[0*T.dwWidth+x]	= C;
+				T.pSurface[1*T.dwWidth+x]	= C;
+			}
+			
+			// Exchange
+			_FREE			(lm.pSurface);
+			T.dwWidth		= lm.dwWidth;
+			T.dwHeight		= 0;
+			lm				= T;
+		} else {
+			// Generic blit
+			b_texture		lm_old	= lm;
+			b_texture		lm_new;
+			lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
+			lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
+			DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
+			lm_new.pSurface	= LPDWORD(malloc(size));
+			ZeroMemory		(lm_new.pSurface,size);
+			blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
+			_FREE			(lm_old.pSurface);
+			lm				= lm_new;
+			ApplyBorders	(lm,254);
+			ApplyBorders	(lm,253);
+			ApplyBorders	(lm,252);
+			ApplyBorders	(lm,251);
+			for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+			lm.dwWidth		= lm_old.dwWidth;
+			lm.dwHeight		= lm_old.dwHeight;
 		}
-
-		// Exchange
-		_FREE			(lm.pSurface);
-		T.dwWidth		= lm.dwWidth;
-		T.dwHeight		= 0;
-		lm				= T;
-	} else {
-		// Generic blit
-		b_texture		lm_old	= lm;
-		b_texture		lm_new;
-		lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
-		lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
-		DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-		lm_new.pSurface	= LPDWORD(malloc(size));
-		ZeroMemory		(lm_new.pSurface,size);
-		blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
-		_FREE			(lm_old.pSurface);
-		lm				= lm_new;
-		ApplyBorders	(lm,254);
-		ApplyBorders	(lm,253);
-		ApplyBorders	(lm,252);
-		ApplyBorders	(lm,251);
-		for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-		lm.dwWidth		= lm_old.dwWidth;
-		lm.dwHeight		= lm_old.dwHeight;
 	}
-
-	// Cleanup
-	LightsSelected.clear	();
 }

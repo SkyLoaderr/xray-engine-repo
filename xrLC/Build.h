@@ -55,7 +55,7 @@ public:
 	vector<b_light>			lights_lmaps;
 	vector<Flight>			lights_keys;
 
-	vector<R_Light>			lights_soften;
+	vector<vector<R_Light> >lights_soften;
 
 	Fbox					scene_bb;
 
