@@ -369,6 +369,12 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
     V->OnChangeEvent		= OnChangeTransform;
     V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent = OnChangeTransform;
 
+    FillSummaryProps		(pref,items);
+}
+//---------------------------------------------------------------------------
+
+void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
+{
     AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
     PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"Summary\\Object"),t.c_str());
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){

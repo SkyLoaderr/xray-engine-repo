@@ -120,7 +120,7 @@ CSMotion::CSMotion():CCustomMotion(){
     fAccrue			=2.0f;
     fFalloff		=2.0f;
     fPower			=1.f;
-	m_dwFlags		=0;
+	m_Flags.zero	();
 }
 
 CSMotion::CSMotion(CSMotion* source):CCustomMotion(source){
@@ -211,7 +211,7 @@ bool CSMotion::LoadMotion(const char* buf){
 void CSMotion::Save(CFS_Base& F){ 
 	CCustomMotion::Save(F);
 	F.Wword		(EOBJ_SMOTION_VERSION);
-	F.Wdword	(m_dwFlags);
+	F.Wdword	(m_Flags.get());
     F.Wdword	(iBoneOrPart);
     F.Wfloat	(fSpeed);
     F.Wfloat	(fAccrue);
@@ -231,8 +231,8 @@ bool CSMotion::Load(CStream& F){
 	WORD vers	= F.Rword();
 	if (vers==0x0004){
 	    iBoneOrPart	= F.Rdword();
-		SetFlag		(esmFX,F.Rbyte());
-		SetFlag		(esmStopAtEnd,F.Rbyte());
+		m_Flags.set	(esmFX,F.Rbyte());
+		m_Flags.set	(esmStopAtEnd,F.Rbyte());
 		fSpeed		= F.Rfloat();
 	    fAccrue		= F.Rfloat();
 		fFalloff	= F.Rfloat();
@@ -249,7 +249,7 @@ bool CSMotion::Load(CStream& F){
 		}
 	}else{
 		if (vers!=EOBJ_SMOTION_VERSION) return false;
-		m_dwFlags	= F.Rdword();
+		m_Flags.set	(F.Rdword());
 		iBoneOrPart	= F.Rdword();
 		fSpeed		= F.Rfloat();
 		fAccrue		= F.Rfloat();

@@ -66,7 +66,8 @@
       Intermediate\SoundManager.obj Intermediate\UI_MainMail.obj 
       Intermediate\defines.obj Intermediate\hw.obj Intermediate\GameFont.obj 
       Intermediate\Blender_Model_EbB.obj Intermediate\GameMtlLib.obj 
-      Intermediate\PSLibrary.obj Intermediate\Blender_B.obj"/>
+      Intermediate\PSLibrary.obj Intermediate\Blender_B.obj 
+      Intermediate\PropertiesListHelper.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -263,6 +264,7 @@
       <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

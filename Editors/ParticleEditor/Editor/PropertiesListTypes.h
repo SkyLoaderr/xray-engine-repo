@@ -187,6 +187,7 @@ public:
     }
     IC PropValue*		GetFrontValue	(){VERIFY(!values.empty()); return values.front(); };
     IC EPropType		Type			(){return type;}
+	IC TElTreeItem*		Item			(){return item;}
 
 	IC void				OnBeforeEdit	(LPVOID edit_val)
     {

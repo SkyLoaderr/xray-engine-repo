@@ -16,7 +16,8 @@
 //---------------------------------------------------------------------------
 void TUI::Redraw(){
 	VERIFY(m_bReady);               
-	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
+    if (!(psDeviceFlags&rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
+	if (m_Flags.is(flResize)){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE); }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
@@ -80,7 +81,6 @@ void TUI::Redraw(){
         Device.End();
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
-    if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 }
 //---------------------------------------------------------------------------
 
@@ -93,8 +93,8 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
 //    EEditorState est = GetEState();
-    if (bRedraw){
-        Tools.Update();
+    if (m_Flags.is(flRedraw)){
+        Tools.OnFrame();
         Redraw();
     }
 
@@ -104,7 +104,7 @@ void TUI::Idle()
 	ResetBreak();
 	// check mail    
     CheckMailslot	();
-    if (bNeedQuit) 	frmMain->Close();
+    if (m_Flags.is(flNeedQuit)) 	frmMain->Close();
 }
 //---------------------------------------------------------------------------
 

@@ -33,7 +33,7 @@ void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
     int val;
     val					= s->ReadInteger("preview_speed",0); 	m_fSpeed 	= *((float*)&val);
     val					= s->ReadInteger("preview_segment",0); 	m_fSegment	= *((float*)&val);
-    m_dwFlags			= s->ReadInteger("preview_flags",0);
+    m_Flags.set			(s->ReadInteger("preview_flags",0));
     m_ScrollAxis		= s->ReadInteger("preview_scaxis",0);
 }
 
@@ -43,7 +43,7 @@ void CActorTools::PreviewModel::SaveParams(TFormStorage* s)
     s->WriteString	("preview_name",	m_LastObjectName);
     s->WriteInteger	("preview_speed",	*((int*)&m_fSpeed));
     s->WriteInteger	("preview_segment",	*((int*)&m_fSegment));
-    s->WriteInteger	("preview_flags",	m_dwFlags);
+    s->WriteInteger	("preview_flags",	m_Flags.get());
     s->WriteInteger	("preview_scaxis",	m_ScrollAxis);
 }
 
@@ -81,12 +81,12 @@ xr_token		sa_token					[ ]={
 
 void CActorTools::PreviewModel::SetPreferences()
 {
-	PropValueVec values;
-	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PHelper.CreateFlag	(pmScroll));
-	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PHelper.CreateFloat	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PHelper.CreateFloat	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PHelper.CreateToken	(sa_token,sizeof(m_ScrollAxis)));
-	m_Props->AssignValues(values,true,"Preview prefs");
+	PropItemVec items;
+    PHelper.CreateFlag32(items, 	"Scroll", 		&m_Flags, 		pmScroll);
+    PHelper.CreateFloat	(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
+    PHelper.CreateFloat	(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
+    PHelper.CreateToken	(items,		"Scroll axis",	&m_ScrollAxis,	sa_token,sizeof(m_ScrollAxis));
+	m_Props->AssignItems(items,true,"Preview prefs");
     m_Props->ShowProperties();
 }
 void CActorTools::PreviewModel::Render()
@@ -109,7 +109,7 @@ void CActorTools::PreviewModel::Render()
 }
 void CActorTools::PreviewModel::Update()
 {
-    if (m_dwFlags&pmScroll){
+    if (m_Flags.is(pmScroll)){
         m_vPosition.z += m_fSpeed*Device.fTimeDelta;
         if (m_vPosition.z>m_fSegment) m_vPosition.z-=m_fSegment;
     }
@@ -182,7 +182,9 @@ bool CActorTools::IfModified(){
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::ObjectModified(){
+void CActorTools::ObjectModified()
+{
+	if (m_pEditObject) m_pEditObject->Modified();
 	m_bObjectModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
@@ -234,7 +236,7 @@ void CActorTools::Render(){
         mTranslate.translate	(m_pEditObject->a_vPosition);
         mTransform.mul			(mTranslate,mRotate);
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
-        	m_RenderObject.Render(mTransform);
+        	m_RenderObject.Render(Fidentity);//mTransform);
         }else{
 	        // update transform matrix
     		m_pEditObject->RenderSkeletonSingle(mTransform);
@@ -243,7 +245,7 @@ void CActorTools::Render(){
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::Update(){
+void CActorTools::OnFrame(){
 	if (!m_bReady) return;
     if (m_KeyBar) m_KeyBar->UpdateBar();
     m_PreviewObject.Update();
@@ -514,38 +516,10 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     }
 }
 
-void __fastcall CActorTools::RotateOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	Fvector* V = (Fvector*)edit_val;
-	V->x = deg2rad(V->x);
-	V->y = deg2rad(V->y);
-	V->z = deg2rad(V->z);
-	UI.RedrawScene();
-}
-
-void __fastcall CActorTools::RotateOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	Fvector* V = (Fvector*)edit_val;
-	V->x = rad2deg(V->x);
-	V->y = rad2deg(V->y);
-	V->z = rad2deg(V->z);
-}
-
-void __fastcall CActorTools::RotateOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	Fvector* V = (Fvector*)draw_val;
-	V->x = rad2deg(V->x);
-	V->y = rad2deg(V->y);
-	V->z = rad2deg(V->z);
-}
 void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
 {
+	MotionModified();
 	UI.RedrawScene();
-}
-
-void __fastcall CActorTools::OnChangeShader(PropValue* sender)
-{
-	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
@@ -553,16 +527,20 @@ void CActorTools::FillObjectProperties()
 {
 	R_ASSERT(m_pEditObject);
 
-	PropValueVec values;
-
-    FILL_PROP(values, "Make Progressive",		&m_pEditObject->m_Flags.flags, 	PHelper.CreateFlag	(CEditableObject::eoProgressive));
-    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,0,OnChangeTransform));
-    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PHelper.CreateVector(-10000,	10000,0.1,1,0,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-
-    m_pEditObject->FillPropSurf		(0,values,OnChangeShader);
-    m_pEditObject->FillPropSummary	(0,values);
+	PropItemVec items;
+	PropValue* V=0;
+	PHelper.CreateFlag32	(items, "Make Progressive",		&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
+    V=PHelper.CreateVector	(items, "Transform\\Position",	&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
+    V->OnChangeEvent		= OnChangeTransform;
+    V=PHelper.CreateVector	(items, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);
+    V->OnChangeEvent		= OnChangeTransform;
+    V->OnAfterEditEvent		= PHelper.FvectorRDOnAfterEdit;
+    V->OnBeforeEditEvent	= PHelper.FvectorRDOnBeforeEdit;
+    V->Owner()->OnDrawEvent	= PHelper.FvectorRDOnDraw;
+    m_pEditObject->FillPropSurf		(0,items);
+    m_pEditObject->FillSummaryProps	(0,items);
     
-	m_ObjectProps->AssignValues(values,false);
+	m_ObjectProps->AssignItems(items,false);
 }
                                
 

@@ -331,6 +331,7 @@ public:
 #ifdef _EDITOR
     void			FillPropSurf			(LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
+	void 			FillSummaryProps		(LPCSTR pref, PropItemVec& items);
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 

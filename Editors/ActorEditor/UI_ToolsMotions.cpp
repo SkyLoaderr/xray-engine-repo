@@ -169,8 +169,8 @@ void CActorTools::MakePreview()
 
 void CActorTools::MotionOnChange(PropValue* sender)
 {
-	FlagValue* V = (FlagValue*)sender;
-    if (V->GetValue()){
+	Flag32Value* V = (Flag32Value*)sender;
+    if (V->GetValueEx()){
 	    m_pCycleNode->Hidden	= true;
     	m_pFXNode->Hidden		= false;
     }else{
@@ -204,37 +204,43 @@ void CActorTools::FillMotionProperties()
 	R_ASSERT(m_pEditObject);
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
     if (SM){
-		PropValueVec values;
+		PropItemVec items;
         PropValue* P=0;
-    	FILL_PROP(values, "Name",		&SM->Name(),  	P=PHelper.CreateText	(sizeof(SM->Name()),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
-        P->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->tag);
-    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
+        P=PHelper.CreateText	(items,"Name",		&SM->Name(), sizeof(SM->Name()));
+        P->OnAfterEditEvent		= FHelper.NameAfterEdit;
+        P->OnBeforeEditEvent	= FHelper.NameBeforeEdit;
+        P->Owner()->OnDrawEvent	= FHelper.NameDraw;
+        P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->Owner()->tag);
+        PHelper.CreateFloat		(items,"Speed",		&SM->fSpeed,  0.f,20.f,0.01f,2);
+        PHelper.CreateFloat		(items,"Accrue",	&SM->fAccrue, 0.f,20.f,0.01f,2);
+        PHelper.CreateFloat		(items,"Falloff", 	&SM->fFalloff,0.f,20.f,0.01f,2);
 
-        FlagValue* TV = PHelper.CreateFlag(esmFX,0,0,0,0,MotionOnChange);
-        FILL_PROP(values, "Type FX", 	&SM->m_dwFlags, TV);
+        PropValue *C=0,*F=0,*TV=0;
+        TV = PHelper.CreateFlag32(items,"Type FX", &SM->m_Flags, esmFX);
+        TV->OnChangeEvent		= MotionOnChange;
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PHelper.CreateToken2(&lst,0,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
-            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PHelper.CreateFlag(esmStopAtEnd));
-            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PHelper.CreateFlag(esmNoMix));
+			C=PHelper.CreateToken2	(items,"Cycle\\Bone part",	(u32*)&SM->iBoneOrPart,	&lst);
+            C->OnAfterEditEvent		= BPOnAfterEdit;
+            C->OnBeforeEditEvent	= BPOnBeforeEdit;
+            C->Owner()->OnDrawEvent=BPOnDraw;
+            PHelper.CreateFlag32	(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
+            PHelper.CreateFlag32	(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
         }
         {
             AStringVec lst;
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PHelper.CreateToken2(&lst));
-	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PHelper.CreateFloat	(0.f,20.f,0.01f,2));
+            F=PHelper.CreateToken2	(items,"FX\\Start bone",		(u32*)&SM->iBoneOrPart,&lst);
+            PHelper.CreateFloat		(items,"FX\\Power",				&SM->fPower,   	0.f,20.f,0.01f,2);
         }
         // fill values
-        m_MotionProps->AssignValues(values,true);
+        m_MotionProps->AssignItems(items,true);
         // find cycle/fx root node
-	    PropValue* C 	= PHelper.FindProp(values,"Cycle\\Bone part");	R_ASSERT(C&&C->item);
-        m_pCycleNode 	= C->item->Parent; R_ASSERT(m_pCycleNode); 
-	    PropValue* F 	= PHelper.FindProp(values,"FX\\Start bone");		R_ASSERT(F&&F->item);
-        m_pFXNode 		= F->item->Parent; R_ASSERT(m_pFXNode); 
+	    R_ASSERT(C&&C->Owner()->Item()&&F&&F->Owner()->Item());
+        m_pCycleNode 	= C->Owner()->Item()->Parent; R_ASSERT(m_pCycleNode); 
+        m_pFXNode 		= F->Owner()->Item()->Parent; R_ASSERT(m_pFXNode); 
 		// first init node
         MotionOnChange(TV);
     }else{
@@ -251,8 +257,8 @@ void CActorTools::PlayMotion()
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
             CSMotion* M=m_pEditObject->GetActiveSMotion();
             if (M&&m_RenderObject.IsRenderable())
-            	if (M->IsFlag(esmFX))	m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
-                else					m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
+            	if (M->m_Flags.is(esmFX))	m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
+                else						m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
         }
 }
 

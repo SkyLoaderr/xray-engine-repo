@@ -126,7 +126,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot){
 	m_ActiveSMotion=mot;
-	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->IsFlag(esmStopAtEnd));
+	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->m_Flags.is(esmStopAtEnd));
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();
@@ -263,7 +263,7 @@ int CEditableObject::BoneIDByName(LPCSTR name){
 
 int CEditableObject::GetRootBoneID(){
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-    	if (-1==(*b_it)->ParentIndex()) return b_it-m_Bones.begin();
+    	if ((*b_it)->IsRoot()) return b_it-m_Bones.begin();
     THROW;
     return -1;
 }

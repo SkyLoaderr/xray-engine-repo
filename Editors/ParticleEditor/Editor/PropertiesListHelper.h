@@ -24,24 +24,29 @@ class CPropHelper{
         return val;
     }
 //------------------------------------------------------------------------------
-public:
 	static AnsiString XKey; 
+    IC AnsiString		FolderAppend	(LPCSTR val)
+    {
+    	if (val&&val[0]) return AnsiString(val)+"\\";
+        return   		"";
+    }
+public:
     IC LPCSTR			PrepareKey		(LPCSTR pref, LPCSTR key)
     {
-        R_ASSERT(pref&&key);
-    	XKey			= AnsiString(pref)+"\\"+AnsiString(key); 
+        R_ASSERT(key);
+    	XKey			= FolderAppend(pref)+AnsiString(key); 
         return XKey.c_str();
     }
     IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
     {
-        R_ASSERT(pref0&&pref1&&key);
-    	XKey			= AnsiString(pref0)+"\\"+AnsiString(pref1)+"\\"+AnsiString(key); 
+        R_ASSERT(key);
+    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key); 
         return XKey.c_str();
     }
     IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
     {
-        R_ASSERT(pref0&&pref1&&pref2&&key);
-    	XKey			= AnsiString(pref0)+"\\"+AnsiString(pref1)+"\\"+AnsiString(pref2)+"\\"+AnsiString(key); 
+        R_ASSERT(key);
+    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key); 
         return XKey.c_str();
     }
     IC PropItem* 		FindItem		(PropItemVec& items,	LPCSTR key, EPropType type)

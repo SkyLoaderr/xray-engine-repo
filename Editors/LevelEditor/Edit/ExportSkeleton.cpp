@@ -177,7 +177,6 @@ void CExportSkeleton::SSplit::Save(CFS_Base& F, BOOL b2Link)
 }
 
 void CExportSkeleton::SSplit::MakeProgressive(){
-    // Progressive
     I_Current=V_Minimal=-1;
     if (m_Faces.size()>1) {
         // Options
@@ -344,8 +343,9 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     // fill per bone vertices
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		SkelVertVec& lst = split_it->getV_Verts();
-	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
+	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points[sv_it->B0].push_back(sv_it->O0);
+        }
         if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		UI.ProgressInc();
     }
@@ -421,6 +421,13 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
     F.Wdword(m_Source->SMotionCount());
     F.close_chunk();
     int smot = 1;
+
+    // use global transform
+    Fmatrix	mGT,mTranslate,mRotate;
+    mRotate.setHPB			(m_Source->a_vRotate.y, m_Source->a_vRotate.x, m_Source->a_vRotate.z);
+    mTranslate.translate	(m_Source->a_vPosition);
+    mGT.mul					(mTranslate,mRotate);
+    
     for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++, smot++){
         CSMotion* motion = *motion_it;
         F.open_chunk(smot);
@@ -451,11 +458,17 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
                     }
                     Fmatrix 	rot;
                     rot.setHPB	(-R.x,-R.y,-R.z);
-                    mat.mul	(inv_parent,rot);
+                    mat.mul		(inv_parent,rot);
                 }else{
                     mat.setHPB	(-R.x,-R.y,-R.z);
                 }
 
+                // aply global transform
+                if (B->IsRoot()){
+                	mGT.transform_tiny(T);
+                    mat.mulB(mGT);
+                }
+                
                 q.set		(mat);
 
                 // Quantize quaternion
@@ -498,7 +511,7 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
     for (motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         F.WstringZ	(motion->Name());
-        F.Wdword	(motion->m_dwFlags);
+        F.Wdword	(motion->m_Flags.get());
 		F.Wword		(motion->iBoneOrPart);
         F.Wword		(motion_it-sm_lst.begin());
         F.Wfloat	(motion->fSpeed);
@@ -524,4 +537,12 @@ bool CExportSkeleton::Export(CFS_Base& F){
 //----------------------------------------------------
 
 //------------------------------------------------------------------------------
+/*
+    // Progressive              	int idx = GetRootBoneID(); 
+        CBone* bone = m_Bones[idx];
+        {
+            Fvector& pos = bone->get_rest_offset();
+            pos.add(parent.c);
+        }
 
+*/

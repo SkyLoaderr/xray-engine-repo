@@ -113,7 +113,7 @@ public:
     float			fAccrue;
     float			fFalloff;
     float			fPower;
-	u32			m_dwFlags;
+	Flags32			m_Flags;
 
     void			Clear			();
 public:
@@ -135,9 +135,6 @@ public:
 
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
-
-	IC void			SetFlag			(ESMFlags flag, BOOL value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag; }
-	IC BOOL			IsFlag			(ESMFlags flag){return m_dwFlags&flag;}
 
     void			SortBonesBySkeleton(BoneVec& bones);
     void			WorldRotate		(int boneId, float h, float p, float b);

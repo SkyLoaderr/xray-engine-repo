@@ -43,6 +43,7 @@ public:
     IC Fmatrix&		LTransform		(){return last_transform;}
     IC Fmatrix&		LITransform		(){return last_i_transform;}
     IC int&			ParentIndex		(){return parent_idx;}
+    IC BOOL			IsRoot			(){return parent_idx==-1;}
 
 	void			Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
     void			Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
@@ -52,6 +53,11 @@ public:
 
 #ifdef _LW_EXPORT
 	void			ParseBone		(LWItemID bone);
+#endif
+#ifdef _EDITOR
+	Fvector&		get_rest_offset	(){return rest_offset;}
+	Fvector&		get_rest_rotate	(){return rest_rotate;}
+	float&			get_rest_length	(){return rest_length;}
 #endif
 };
 DEFINE_VECTOR(CBone*,BoneVec,BoneIt);

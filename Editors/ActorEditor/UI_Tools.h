@@ -37,13 +37,13 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 		CEditableObject*m_pObject;
         float			m_fSpeed;
         float			m_fSegment;
-        DWORD			m_dwFlags;
+        Flags32			m_Flags;
         Fvector			m_vPosition;
         AnsiString 		m_LastObjectName;
     public:
     	enum{
         	pmScroll	= (1<<0),
-        	force_dword = DWORD(-1)
+        	force_dword = u32(-1)
         };
         enum EScrollAxis{
         	saZp,
@@ -54,7 +54,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         };
         EScrollAxis		m_ScrollAxis;
     public:
-        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;m_vPosition.set(0,0,0);m_ScrollAxis=saZp;}
+        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_Flags.zero();m_Props=0;m_vPosition.set(0,0,0);m_ScrollAxis=saZp;}
     	void			OnCreate			();
     	void			OnDestroy			();
     	void			Clear				();
@@ -106,11 +106,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     TElTreeItem*		m_pFXNode;
 	void __fastcall		MotionOnChange			(PropValue* sender);
 
-	void __fastcall 	RotateOnAfterEdit	 	(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	RotateOnBeforeEdit		(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	RotateOnDraw			(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
-	void __fastcall 	OnChangeShader			(PropValue* sender);
 	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
@@ -130,7 +126,7 @@ public:
     virtual 			~CActorTools		();
 
     void				Render				();
-    void				Update				();
+    void				OnFrame				();
 
     bool				OnCreate			();
     void				OnDestroy			();
