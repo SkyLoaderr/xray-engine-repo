@@ -48,6 +48,7 @@ struct ENGINE_API DetailSlot
 	u32				r_yaw;
 	u32 			r_scale;
 	DetailItem		items[4];
+	u16				color;
 };
 
 #pragma pack(pop)
