@@ -2,6 +2,7 @@
 #include "fstaticrender_rendertarget.h"
 
 static LPCSTR		RTname	= "$user$rendertarget";
+static LPCSTR		RTtemp	= "$user$temp_small";
 static CPS*			hPS		= 0;
 static CTexture*	hTex	= 0;
 
@@ -22,18 +23,20 @@ BOOL CRenderTarget::Create	()
 {
 	// 
 	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
+	RT_temp		= Device.Shader._CreateRT		(RTtemp,64,64);
 	
 	// Shaders and stream
-	pStream		= Device.Streams.Create			(FVF::F_TL,8);
+	pStream		= Device.Streams.Create			(FVF::F_TL,12);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend= Device.Shader.Create			("effects\\screen_blend",	RTname);
-	return	RT->Valid();
+	pShaderAdd	= Device.Shader.Create			("effects\\screen_add",		RTtemp);
+	return	RT->Valid() && RT_temp->Valid();
 }
 
 void CRenderTarget::OnDeviceCreate	()
 {
-	// hPS			= Device.Shader._CreatePS		("transfer");
+	// hPS			= Device.Shader._CreatePS		("hdr");
 	// hTex		= Device.Shader._CreateTexture	("transfer3");
 
 	bAvailable	= Create	();
@@ -41,9 +44,11 @@ void CRenderTarget::OnDeviceCreate	()
 
 void CRenderTarget::OnDeviceDestroy	()
 {
+	Device.Shader.Delete		(pShaderAdd);
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
+	Device.Shader._DeleteRT		(RT_temp);
 	Device.Shader._DeleteRT		(RT);
 
 	// Device.Shader._DeletePS		(hPS);
@@ -72,10 +77,12 @@ void CRenderTarget::End		()
 	DWORD	Cgray	= D3DCOLOR_RGBA	(90,90,90,0);
 	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
 	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
-	float	tw		= 512; //float(Device.dwWidth);
-	float	th		= 512; //float(Device.dwHeight);
+	float	tw		= float(Device.dwWidth);
+	float	th		= float(Device.dwHeight);
 	DWORD	_w		= Device.dwWidth;
 	DWORD	_h		= Device.dwHeight;
+	DWORD	xW		= 64;
+	DWORD	xH		= 64;
 	
 	// UV
 	Fvector2		shift,p0,p1;
@@ -87,7 +94,7 @@ void CRenderTarget::End		()
 	p1.add			(shift);
 	
 	// Fill vertex buffer
-	FVF::TL* pv = (FVF::TL*) pStream->Lock(8,Offset);
+	FVF::TL* pv = (FVF::TL*) pStream->Lock(12,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
@@ -96,35 +103,48 @@ void CRenderTarget::End		()
 	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
-	pStream->Unlock			(8);
+
+	pv->set(0,			float(xH),	.0001f,.9999f, Calpha,p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
+	pv->set(float(xW),	float(xH),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
+	pv->set(float(xW),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
+
+	pStream->Unlock			(12);
 
 	// Actual rendering
-	if (param_gray>0.001f) {
-		// Draw GRAY
-		Device.Shader.set_Shader(pShaderGray);
-		Device.Primitive.Draw	(pStream,4,2,Offset+0,Device.Streams_QuadIB);
-		if (param_gray<0.999f) {
-			// Blend COLOR
-			Device.Shader.set_Shader		(pShaderBlend);
-			Device.Primitive.setVerticesUC	(pStream->getFVF(), pStream->getStride(), pStream->getBuffer());
-			Device.Primitive.setIndicesUC	(Offset+4, Device.Streams_QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-		}
-	} else {
-		// Draw COLOR
-
-		Device.Shader.set_Shader	(pShaderSet);
-		Device.Primitive.Draw		(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-
-		
-/*
+	if (TRUE)
+	{
+		// Render to temporary buffer (PS)
+		Device.Shader.set_RT				(RT_temp->pRT,HW.pTempZB);
 		Device.Shader.set_Shader			(pShaderSet);
-		hTex->Apply							(1);
 		HW.pDevice->SetPixelShader			(hPS->dwHandle);
-		HW.pDevice->SetTextureStageState	(1,D3DTSS_ADDRESSU,				D3DTADDRESS_CLAMP	);
-		HW.pDevice->SetTextureStageState	(1,D3DTSS_ADDRESSV,				D3DTADDRESS_CLAMP	);
-		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		Device.Primitive.Draw				(pStream,4,2,Offset+8,Device.Streams_QuadIB);
 		HW.pDevice->SetPixelShader			(0);
-*/
+
+		// Render to screen
+		Device.Shader.set_RT				(HW.pBaseRT,HW.pBaseZB);
+		Device.Shader.set_Shader			(pShaderSet);
+		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+
+		// Add to screen
+		Device.Shader.set_Shader			(pShaderAdd);
+		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+	} else {
+		if (param_gray>0.001f) {
+			// Draw GRAY
+			Device.Shader.set_Shader(pShaderGray);
+			Device.Primitive.Draw	(pStream,4,2,Offset+0,Device.Streams_QuadIB);
+			if (param_gray<0.999f) {
+				// Blend COLOR
+				Device.Shader.set_Shader		(pShaderBlend);
+				Device.Primitive.setVerticesUC	(pStream->getFVF(), pStream->getStride(), pStream->getBuffer());
+				Device.Primitive.setIndicesUC	(Offset+4, Device.Streams_QuadIB);
+				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			}
+		} else {
+			// Draw COLOR
+			Device.Shader.set_Shader	(pShaderSet);
+			Device.Primitive.Draw		(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		}
 	}
 }

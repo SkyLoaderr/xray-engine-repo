@@ -6,10 +6,12 @@ private:
 	BOOL				bAvailable;
 
 	CRT*				RT;
+	CRT*				RT_temp;
 
 	Shader*				pShaderSet;
 	Shader*				pShaderGray;
 	Shader*				pShaderBlend;
+	Shader*				pShaderAdd;
 	CVertexStream*		pStream;
 	
 	BOOL				Create				();
