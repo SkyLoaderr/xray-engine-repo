@@ -518,7 +518,10 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	if (0==pstrWallmark)		hWallmark			= 0; 
 	else						hWallmark.create	("effects\\wallmark",*pstrWallmark);
-
+	VERIFY						(m_pPhysicsShell);
+	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
+	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
+/*
 	if (0==m_pPhysicsShell)
 	{
 		// Physics (Box)
@@ -542,7 +545,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
-
+*/
 	UpdateAddonsVisibility();
 	StopFlameParticles();
 

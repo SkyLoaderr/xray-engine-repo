@@ -9,7 +9,7 @@
 #include "PhysicsShell.h"
 #include "weaponammo.h"
 #include "UIStaticItem.h"
-
+#include "PHShellCreator.h"
 // refs
 class CEntity;
 class CWeaponHUD;
@@ -23,7 +23,9 @@ class CParticlesObject;
 extern BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
 
 
-class CWeapon : public CInventoryItem//CGameObject
+class CWeapon : public CInventoryItem,
+				public CPHShellSimpleCreator
+				//CGameObject
 {
 private:
 	typedef CInventoryItem		inherited;
