@@ -418,13 +418,15 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-//	if (!path().empty()) {
-//		Msg				("Path : ");
-//		xr_vector<u32>::const_iterator	I = path().begin();
-//		xr_vector<u32>::const_iterator	E = path().end();
-//		for ( ; I != E; ++I)
-//			Msg			("%s",to_string(*I));
-//	}
+	if (!path().empty()) {
+		Msg				("Path : ");
+		xr_vector<u32>::const_iterator	I = path().begin();
+		xr_vector<u32>::const_iterator	E = path().end();
+		for ( ; I != E; ++I)
+			Msg			("%s",to_string(*I));
+	}
+	else
+		Msg			("Path : %s",to_string(current_state_id()));
 #endif
 }
 
@@ -459,7 +461,7 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 
 u32 CObjectHandler::object_state() const
 {
-	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent())// || !inventory().ActiveItem()->getDestroy())
+	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent() || inventory().ActiveItem()->getDestroy())
 		return			(eObjectActionNoItems);
 
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
@@ -638,8 +640,8 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 //		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionMisfire1,id),	0);
 //		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionEmpty1,id),	0);
 
-		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1);
-		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1);
+		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
+		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionDrop,id),		1);
 		add_transition	(uid(eObjectActionStrap,id),		uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionAim1,id),			uid(eObjectActionIdle,id),		1,		1);
@@ -678,8 +680,8 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_state		(xr_new<CObjectStateSwitch>(inventory_item,MS_READY,true),	uid(eObjectActionSwitch1,id),	0);
 		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_END),	uid(eObjectActionFire1,id),		0);
 
-		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1);
-		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1);
+		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
+		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionDrop,id),		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionFire2,id),		1);
 		add_transition	(uid(eObjectActionFire2,id),		uid(eObjectActionSwitch1,id),	1);
@@ -693,30 +695,30 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 	// нож, (еда, питьё), приборы
 
 	//
-	PSPIItem				I = inventory().m_all.begin();
-	PSPIItem				E = inventory().m_all.end();
-	for ( ; I != E; ++I)
-		if (*I != inventory_item) {
-			// hide_i -> show_new
-			if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
-				add_transition	(uid(eObjectActionHide,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
-			// hide_new -> show_i
-			if (graph().vertex(uid(eObjectActionHide,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
-				add_transition	(uid(eObjectActionHide,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
-			// drop_i -> show_new
-			if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
-				add_transition	(uid(eObjectActionDrop,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
-			// drop_new -> show_i
-			if (graph().vertex(uid(eObjectActionDrop,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
-				add_transition	(uid(eObjectActionDrop,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
-		}
+//	PSPIItem				I = inventory().m_all.begin();
+//	PSPIItem				E = inventory().m_all.end();
+//	for ( ; I != E; ++I)
+//		if (*I != inventory_item) {
+//			// hide_i -> show_new
+//			if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
+//				add_transition	(uid(eObjectActionHide,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
+//			// hide_new -> show_i
+//			if (graph().vertex(uid(eObjectActionHide,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
+//				add_transition	(uid(eObjectActionHide,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
+//			// drop_i -> show_new
+//			if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
+//				add_transition	(uid(eObjectActionDrop,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
+//			// drop_new -> show_i
+//			if (graph().vertex(uid(eObjectActionDrop,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
+//				add_transition	(uid(eObjectActionDrop,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
+//		}
 
 	if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())))
 		add_transition		(uid(eObjectActionHide,inventory_item->ID()),u32(eObjectActionNoItems),1.f);
 	if (graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
 		add_transition		(u32(eObjectActionNoItems),uid(eObjectActionShow,inventory_item->ID()),1.f);
-	if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())))
-		add_transition		(uid(eObjectActionDrop,inventory_item->ID()),u32(eObjectActionNoItems),1.f);
+//	if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())))
+//		add_transition		(uid(eObjectActionDrop,inventory_item->ID()),u32(eObjectActionNoItems),1.f);
 }
 
 void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
