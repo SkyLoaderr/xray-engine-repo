@@ -136,7 +136,7 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
     
 	// Update occlusion
 	float occ			=	_min(scale, (SoundRender->get_occlusion	(p_source.position,.2f,occluder))?-1.f:1.f);
-	occluder_volume		+=	dt*2.f*occ;
+	occluder_volume		+=	dt*1.f*occ;
 	clamp				(occluder_volume,0.f,1.f);
 
 	// Update smoothing

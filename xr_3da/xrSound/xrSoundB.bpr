@@ -18,7 +18,7 @@
       Intermediate\SoundRender_Target.obj Intermediate\stdafx.obj 
       Intermediate\cl_collector.obj Intermediate\guids.obj 
       Intermediate\SoundRender_Cache.obj Intermediate\SoundRender_TargetA.obj 
-      Intermediate\SoundRender_TargetD.obj Intermediate\SoundRender_CoreD.obj 
+      Intermediate\soundrender_targetD.obj Intermediate\SoundRender_CoreD.obj 
       Intermediate\SoundRender_CoreA.obj Intermediate\sound.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
@@ -104,7 +104,7 @@
       <FILE FILENAME="xr_streamsnd.h" FORMNAME="" UNITNAME="xr_streamsnd.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrCDB.h" FORMNAME="" UNITNAME="xrCDB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_TargetA.cpp" FORMNAME="" UNITNAME="SoundRender_TargetA" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SoundRender_TargetD.cpp" FORMNAME="" UNITNAME="SoundRender_TargetD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="soundrender_targetD.cpp" FORMNAME="" UNITNAME="SoundRender_TargetD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreD.cpp" FORMNAME="" UNITNAME="SoundRender_CoreD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreA.cpp" FORMNAME="" UNITNAME="SoundRender_CoreA.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="sound.cpp" FORMNAME="" UNITNAME="sound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -216,7 +216,7 @@ Item4=!run
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=-dsound
+RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
