@@ -16,7 +16,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const		ENCYCLOPEDIA_CORE_XML		= "encyclopedia_core.xml";
+const char * const		ENCYCLOPEDIA_CORE_XML		= "encyclopedia.xml";
 static int				MAX_PICTURE_WIDTH			= 0;
 static const int		MIN_PICTURE_FRAME_WIDTH		= 64;
 static const int		MIN_PICTURE_FRAME_HEIGHT	= 64;
@@ -43,15 +43,18 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 	pIdxList	= idxList;
 	pInfoList	= infoList;
 
+	CUIXml		uiXml;
+	bool xml_result = uiXml.Init("$game_data$", ENCYCLOPEDIA_CORE_XML);
+	R_ASSERT3(xml_result, "xml file not found", ENCYCLOPEDIA_CORE_XML);
+
+	CUIXmlInit	xml_init;
+
 	inherited::Init(0,0, UI_BASE_WIDTH,	UI_BASE_HEIGHT);
 
-//	// mask
-//	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
-//	// Image position
-//	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
-//	m_iItemY = uiXml.ReadAttribInt("item_static", 0, "y", 0);
-	m_iItemY = 0;
-	m_iItemX = 0;
+	// mask
+	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIImgMask);
+//	pInfoList->AttachChild(&UIImgMask);
+	UIImgMask.SetClipper(true, pInfoList->GetAbsoluteRect());
 	m_iCurrentInfoListPos = 0;
 }
 
@@ -70,16 +73,16 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		if (m_pCurrArticle)
 		{
 			pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-			m_pCurrArticle->data()->image.SetMask(NULL);
 		}
+		pInfoList->ScrollToBegin();
 		pInfoList->RemoveAll();
 
 		// Image
 		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
+		img.SetClipRect(pInfoList->GetAbsoluteRect());
+		img.SetMask(&UIImgMask);
+		AdjustImagePos(img);
 
-//		img.ClipperOn();
-//		img.Enable(false);
-//		img.SetClipRect(pInfoList->GetWndRect());
 //		pItemImage = xr_new<CUIStatic>();
 //		pItemImage->Init("ui\\ui_inv_box_heavy_weapons", 0, 0, 1000, 1000);
 //		pItemImage->Enable(false);
@@ -107,7 +110,6 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 //		if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
 //			UIImgMask.Show(false);
 //		else
-//			UIImgMask.Show(true);
 
 		// «апоминаем текущий эдемент
 		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
@@ -142,8 +144,11 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 	CEncyclopediaArticle*& a = m_ArticlesDB.back();
 	a = xr_new<CEncyclopediaArticle>();
 	a->Load(article_index);
-//	RescaleStatic(a->data()->image);
-	a->data()->image.MoveWindow(m_iItemX, m_iItemY);
+
+	CUIStatic &img = a->data()->image;
+
+	img.ClipperOn();
+	img.Enable(false);
 
 	// “еперь создаем иерархию вещи по заданному пути
 
@@ -155,32 +160,15 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 
 void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 {
-	Irect	r		= s.GetUIStaticItem().GetOriginalRect();
+	// ¬ыравниваем текстурку по центру листа
+	s.MoveWindow(((pInfoList->GetWndRect().right - pInfoList->GetWndRect().left) - (s.GetWndRect().right - s.GetWndRect().left) - 15) / 2, s.GetWndRect().top);
 
-	// ≈сли картинка не пoмещаетс€ в максимальную допустимую длинну
-	s.SetWidth(MAX_PICTURE_WIDTH);
+	// “еперь добавл€ем в лист столько пустых айтемов, чтобы они полностью перекрыли нашу картинку
+	int emptyItemsCnt = iCeil(static_cast<float>(s.GetWndRect().bottom) / pInfoList->GetItemHeight());
 
-	if (r.width() > MAX_PICTURE_WIDTH)
+	for (int i = 0; i < emptyItemsCnt; ++i)
 	{
-		float scale = static_cast<float>(MAX_PICTURE_WIDTH) / r.width();
-		s.SetTextureScale(scale);
-		s.SetHeight(static_cast<int>(r.height() * scale));
-	}
-	// ≈сли помещаетс€, то центрируем ее в отведенной области
-	else
-	{
-		s.SetHeight(r.height());
-	}
-
-	if (r.height() < MIN_PICTURE_FRAME_HEIGHT)
-	{
-		s.SetHeight(MIN_PICTURE_FRAME_HEIGHT);
-		s.SetTextureOffset(0, (MIN_PICTURE_FRAME_HEIGHT - r.height()) / 2);
-	}
-
-	if (r.width() < MAX_PICTURE_WIDTH)
-	{
-		s.SetTextureOffset((MAX_PICTURE_WIDTH - r.width()) / 2, s.GetTextureOffeset()[1]);
+		pInfoList->AddItem<CUIListItem>("");
 	}
 }
 
