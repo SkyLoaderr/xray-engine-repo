@@ -108,7 +108,6 @@ IC const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CL
 IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
 {
 	float				sp = 1/header().cell_size();
-	VERIFY				(iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f)) < (int)m_row_length);
 	VERIFY				(iFloor((source_position.z - header().box().min.z)*sp  + EPS_S + .5f) < (int)m_row_length);
 	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp + EPS_S + .5f);
 	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_S);
