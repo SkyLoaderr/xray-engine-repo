@@ -655,10 +655,10 @@ IC u32 it_gloss_rev		(u32 d, u32 s)
 IC u32 it_difference	(u32 d, u32 orig, u32 ucomp)	
 {	
 	return	color_rgba(
-	128+0*(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
-	128+0*(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
-	128+1*(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
-	128+0*(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
+	128+1*(int(color_get_R(orig))-int(color_get_R(ucomp))),		// R-error
+	128+1*(int(color_get_G(orig))-int(color_get_G(ucomp))),		// G-error
+	128+1*(int(color_get_B(orig))-int(color_get_B(ucomp))),		// B-error
+	128+1*(int(color_get_A(orig))-int(color_get_A(ucomp)))	);	// A-error	
 }
 IC u32 it_height_rev	(u32 d, u32 s)	
 {
