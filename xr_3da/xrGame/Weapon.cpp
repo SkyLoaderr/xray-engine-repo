@@ -75,6 +75,11 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	camRelax		= ini->ReadFLOAT	(section,"cam_relax"		);
 	camDispersion	= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
+	tracerHeadSpeed	= ini->ReadFLOAT	(section,"tracer_head_speed"	);
+	tracerTrailCoeff= ini->ReadFLOAT	(section,"tracer_trail_scale"	);
+	tracerStartLength= ini->ReadFLOAT	(section,"tracer_start_length"	);
+	tracerWidth		= ini->ReadFLOAT	(section,"tracer_width"			);
+
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 	
 	bVisible		= FALSE;
@@ -148,8 +153,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	}
 
 	// tracer
-	Fcolor		c; c.set(1,.7f,.1f,1);
-	Level().Tracers.Add	(Peff,end_point,1000,0.1f,2,c);
+	Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
 
 	return				bResult;
 }

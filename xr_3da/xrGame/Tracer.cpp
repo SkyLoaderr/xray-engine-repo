@@ -24,7 +24,7 @@ CTracer::~CTracer()
 	Device.Shader.Delete	(sh_Tracer);
 }
 
-void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, const Fcolor& color)
+void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width)
 {
 	bullets.push_back	(Bullet());
 	Bullet&	B			= bullets.back();
@@ -40,9 +40,9 @@ void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, f
 	B.pos_trail.set		(from);
 	B.speed_head =		bullet_speed;
 	B.speed_trail =		bullet_speed*trail_speed_factor;
-	B.color.set			(color);
+	B.width =			width;
 //	B.life_time =		(path.magnitude()-start_length/2)/bullet_speed;
-	B.life_time =		(path.magnitude()-start_length)/bullet_speed;
+	B.life_time =		(path.magnitude()-start_length)/bullet_speed + Device.fTimeDelta;
 	if (B.life_time<0)	bullets.pop_back();
 }
 
@@ -87,14 +87,14 @@ void	CTracer::Render	()
 		camDir.sub			(sC,vCenter);
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
-		DWORD	C	= B.color.get	();
-		P.mad(B.pos_trail,lineTop,-TRACER_SIZE);	verts->set(P,C,0,1);	verts++;
-		P.mad(B.pos_trail,lineTop,TRACER_SIZE);		verts->set(P,C,0,0);	verts++;
-		P.mad(B.pos_head, lineTop,-TRACER_SIZE);	verts->set(P,C,1,1);	verts++;
-		P.mad(B.pos_head, lineTop,TRACER_SIZE);		verts->set(P,C,1,0);	verts++;
+		float	w = B.width;
+		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,0,1);	verts++;
+		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0,0);	verts++;
+		P.mad(B.pos_head, lineTop,-w);	verts->set(P,0,1,1);	verts++;
+		P.mad(B.pos_head, lineTop,w);	verts->set(P,0,1,0);	verts++;
 	}
 
-	DWORD vCount = verts-start;
+	DWORD vCount			= verts-start;
 	VS->Unlock				(vCount);
 	
 	if (vCount)	{

@@ -16,7 +16,7 @@ class CTracer
 		Fvector	pos_trail;
 		float	speed_head;
 		float	speed_trail;
-		Fcolor	color;
+		float	width;
 
 		float	life_time;
 	};
@@ -27,7 +27,7 @@ protected:
 
 	vector<Bullet>		bullets;
 public:
-	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, const Fcolor& color);
+	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width);
 	void		Render	();
 
 	CTracer();
