@@ -67,6 +67,10 @@ public:
 	int   ReadInt(XML_NODE* start_node,  LPCSTR path, int index,  int default_int_val = 0);
 	int   ReadInt(XML_NODE* node,  int default_int_val);
 
+	float   ReadFlt(LPCSTR path, int index,  float default_flt_val = 0.0f);
+	float   ReadFlt(XML_NODE* start_node,  LPCSTR path, int index,  float default_flt_val = 0.0f);
+	float   ReadFlt(XML_NODE* node,  float default_flt_val);
+
 
 	LPCSTR ReadAttrib(LPCSTR path,  int index, 
 		LPCSTR attrib, LPCSTR default_str_val = "");
@@ -81,6 +85,10 @@ public:
 		LPCSTR attrib, int default_int_val = 0);
 	int   ReadAttribInt(XML_NODE* node,
 		LPCSTR attrib, int default_int_val);
+
+	float   ReadAttribFlt(LPCSTR path,	int index,  LPCSTR attrib, float default_flt_val = 0.0f);
+	float   ReadAttribFlt(XML_NODE* start_node, LPCSTR path, int index,  LPCSTR attrib, float default_flt_val = 0.0f);
+	float   ReadAttribFlt(XML_NODE* node,	LPCSTR attrib, float default_flt_val = 0.0f);
 
 	//нахождение элемента по содержимому 
 	//по параметру

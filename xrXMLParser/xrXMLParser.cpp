@@ -200,9 +200,7 @@ int CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 	LPCSTR result_str = Read(node, NULL ); 
 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
 
 	return atoi(result_str);
 }
@@ -210,19 +208,43 @@ int CUIXml::ReadInt(LPCSTR path, int index, int default_int_val)
 {
 	LPCSTR result_str = Read(path, index, NULL ); 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
+
 	return atoi(result_str);
 }
 int CUIXml::ReadInt(XML_NODE* start_node, LPCSTR path, int index, int default_int_val)
 {
 	LPCSTR result_str = Read(start_node, path, index, NULL ); 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
+
 	return atoi(result_str);
+}
+
+float   CUIXml::ReadFlt(LPCSTR path, int index,  float default_flt_val)
+{
+	LPCSTR result_str = Read(path, index, NULL ); 
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
+}
+float   CUIXml::ReadFlt(XML_NODE* start_node,  LPCSTR path, int index,  float default_flt_val)
+{
+	LPCSTR result_str = Read(start_node, path, index, NULL ); 
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
+}
+float   CUIXml::ReadFlt(XML_NODE* node,  float default_flt_val)
+{
+	LPCSTR result_str = Read(node, NULL ); 
+
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
 }
 
 
@@ -279,9 +301,8 @@ int CUIXml::ReadAttribInt(XML_NODE* node, LPCSTR attrib, int default_int_val)
 	LPCSTR result_str = ReadAttrib(node, attrib, NULL); 
 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
+
 	return atoi(result_str);
 }
 
@@ -291,9 +312,7 @@ int CUIXml::ReadAttribInt(LPCSTR path, int index,
 	LPCSTR result_str = ReadAttrib(path, index, attrib, NULL); 
 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
 
 	return atoi(result_str);
 }
@@ -305,11 +324,37 @@ int CUIXml::ReadAttribInt(XML_NODE* start_node, LPCSTR path, int index,
 	LPCSTR result_str = ReadAttrib(start_node, path, index, attrib, NULL); 
 
 	if(result_str==NULL)
-	{
 		return default_int_val;
-	}
-
 	return atoi(result_str);
+}
+
+float   CUIXml::ReadAttribFlt(LPCSTR path,	int index,  LPCSTR attrib, float default_flt_val)
+{
+	LPCSTR result_str = ReadAttrib(path, index, attrib, NULL); 
+
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
+}
+
+float   CUIXml::ReadAttribFlt(XML_NODE* start_node, LPCSTR path, int index,  LPCSTR attrib, float default_flt_val)
+{
+	LPCSTR result_str = ReadAttrib(start_node, path, index, attrib, NULL); 
+
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
+}
+float   CUIXml::ReadAttribFlt(XML_NODE* node,	LPCSTR attrib, float default_flt_val)
+{
+	LPCSTR result_str = ReadAttrib(node, attrib, NULL); 
+
+	if(result_str==NULL)
+		return default_flt_val;
+
+	return (float)atof(result_str);
 }
 
 int CUIXml::GetNodesNum(LPCSTR path, int index, LPCSTR  tag_name)
