@@ -14,14 +14,43 @@
 #define		BP_R_MARKER()	R_ASSERT(BPID_MARKER==BP_read(FS))
 #define		BP_READ(a,c)	R_ASSERT(a==BP_read(FS)); FS.Read(&c,sizeof(c))
 
+class ENGINE_API CBlender_DESC
+{
+public:
+	char		cName		[128];
+	char		cComputer	[32];
+	DWORD		cTime;
 
-class ENGINE_API CBlender  
+	void					Setup	(LPCSTR N)
+	{
+		// Name
+		VERIFY(strlen(N)<128);
+		VERIFY(0==strchr(N,'.'));
+		strcpy(cName,N);
+		strlwr(cName);
+
+		// Computer
+		const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
+		char	buf	[comp];
+		DWORD	sz = comp;
+		GetComputerName(buf,&sz);
+		if (sz > 31) sz=31;
+		buf[sz] = 0;
+		strcpy(cComputer,buf);
+
+		// Time
+		_tzset(); time( (long*)&cTime );
+	};
+};
+
+class ENGINE_API CBlender
 {
 protected:
-	BP_Integer	oPriority;
-	BP_BOOL		oStrictSorting;
-	BP_TCS		oTCS;
-	BP_TCM		oTCM;
+	CBlender_DESC	description;
+	BP_Integer		oPriority;
+	BP_BOOL			oStrictSorting;
+	BP_TCS			oTCS;
+	BP_TCM			oTCM;
 
 	static		BP_TCS		oTCS_identity;
 	static		BP_TCM		oTCM_identity;
@@ -32,6 +61,8 @@ protected:
 	DWORD		BP_read_c   (CStream&  FS);
 	BOOL		c_XForm		();
 public:
+	static		CBlender*	Create			(CLSID cls);
+
 	virtual		LPCSTR		getName()		= 0;
 	virtual		LPCSTR		getComment()	= 0;
 

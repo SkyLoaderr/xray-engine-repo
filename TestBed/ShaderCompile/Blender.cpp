@@ -67,3 +67,20 @@ void	CBlender::Load(	CStream& FS )
 	BP_READ		(BPID_TCS,		oTCS);
 	BP_READ 	(BPID_TCM,		oTCM);
 }
+//////////////////////////////////////////////////////////////////////
+#include "blender_clsid.h"
+#include "blenderdefault.h"
+#include "blender_default_aref.h"
+#include "blender_vertex.h"
+#include "blender_aref.h"
+CBlender*	CBlender::Create	(CLSID cls)
+{	
+	switch (cls)
+	{
+	case B_DEFAULT:			return new CBlender_default;		break;
+	case B_DEFAULT_AREF:	return new CBlender_default_aref;	break;
+	case B_VERT:			return new CBlender_Vertex;			break;
+	case B_VERT_AREF:		return new CBlender_Vertex_aref;	break;
+	default:				return 0;
+	}
+}

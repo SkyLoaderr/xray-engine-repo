@@ -519,6 +519,10 @@ SOURCE=.\Blender.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blender_CLSID.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blender_Params.h
 # End Source File
 # End Group
