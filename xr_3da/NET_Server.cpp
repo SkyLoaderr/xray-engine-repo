@@ -154,7 +154,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 	net_Address_device = NULL;
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
 	CHK_DX(net_Address_device->SetSP		(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
-//	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
+	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
 	
 	// dump_URL		("! sv ",	net_Address_device);
 
@@ -181,8 +181,7 @@ BOOL IPureServer::Connect(LPCSTR options)
     // Now set up the Application Description
     ZeroMemory					(&dpAppDesc, sizeof(DPN_APPLICATION_DESC));
     dpAppDesc.dwSize			= sizeof(DPN_APPLICATION_DESC);
-    dpAppDesc.dwFlags			= DPNSESSION_CLIENT_SERVER;// | DPNSESSION_NODPNSVR;
-	dpAppDesc.dwMaxPlayers		= 32;
+    dpAppDesc.dwFlags			= DPNSESSION_CLIENT_SERVER | DPNSESSION_NODPNSVR;
     dpAppDesc.guidApplication	= NET_GUID;
     dpAppDesc.pwszSessionName	= SessionNameUNICODE;
 	dpAppDesc.pvApplicationReservedData	= session_options;
@@ -247,7 +246,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			string256				cname;
 			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
 			
-			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
+			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
 			new_client(clientID, cname, bLocal);
 
