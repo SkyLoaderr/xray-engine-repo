@@ -14,7 +14,7 @@ void CBuild::SaveLights(CFS_Base &fs)
 		L.flags.bAffectDynamic	= BL.flags.bAffectDynamic;
 		L.flags.bAffectStatic	= BL.flags.bAffectStatic;
 		L.flags.bProcedural		= BL.flags.bProcedural;
-		strcpy		(L.name,BL.name);
+		CopyMemory	(&L.name,&BL.name,sizeof(L.name));
 		fs.write	(&L,sizeof(L));
 	}
 	fs.close_chunk();
