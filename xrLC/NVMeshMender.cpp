@@ -262,15 +262,15 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
                 edge0 = pPositions[ indices[ t + 1 ] ] - pPositions[ indices[ t + 0 ] ];
                 edge1 = pPositions[ indices[ t + 2 ] ] - pPositions[ indices[ t + 0 ] ];
 
-				edge0.normalize();
-				edge1.normalize();
+				exact_normalize(&edge0.x);
+				exact_normalize(&edge1.x);
 			
                 vec3 faceNormal = edge0 ^ edge1;
 
                 if ( _WeightNormalsByFaceSize == DontWeightNormalsByFaceSize )
                 {
                     // Renormalize face normal, so it's not weighted by face size
-					faceNormal.normalize();
+					exact_normalize(&faceNormal.x);
                 }
                 else
                 {

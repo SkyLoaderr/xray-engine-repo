@@ -9,7 +9,8 @@ const	u32								c_SS_HighVertLimit	= 3*1024;		// polys
 const	u32								c_SS_maxsize		= 48;			// meters
 const	u32								c_PM_LowVertLimit	= 128;			// vertices
 
-BOOL	exact_normalize					(Fvector3& a);
+BOOL	exact_normalize					(Fvector3&	a);
+BOOL	exact_normalize					(float*		a);
 
 #include "xrPool.h"
 #include "xrFace.h"

@@ -288,9 +288,9 @@ BOOL	Face::hasImplicitLighting()
 	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
 
-IC		double rsqrt	(double v)	{	return 1.0/_sqrt(v); }
-
-BOOL	exact_normalize (Fvector3& a)
+IC		double rsqrt	(double v)		{	return 1.0/_sqrt(v);			}
+BOOL	exact_normalize	(Fvector3& a)	{	return exact_normalize(&a.x);	}
+BOOL	exact_normalize (float* a)
 {
 	double	sqr_magnitude	= a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
 	double	epsilon			= 1.192092896e-05F;
