@@ -1,0 +1,22 @@
+
+news = {}
+
+
+
+
+
+
+
+
+function send_news(actor, news_id, nosound)
+	if actor == nil or news_id == nil then return false end
+	
+	if nosound ~= true then
+		if news[news_id] ~= nil then
+			--' Играем звук забитый
+		else
+			--' Играем один из рандомных звуков
+		end
+	end
+	actor:give_game_news(news_id, "ui\ui_icons_npc", 50,0,50,50)
+end

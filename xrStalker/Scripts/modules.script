@@ -91,6 +91,7 @@ module ("xr_sniper")
 module ("xr_heli")
 module ("small_script")
 module ("monster")
+module ("news_manager")
 
 ----------------------------------------------------------------------
 -- Загрузка модулей сталкеров:
