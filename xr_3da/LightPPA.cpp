@@ -102,9 +102,14 @@ void CLightPPA_Manager::Render()
 	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
 
 	// Create D3D unattenuated light
-	// D3D.diffuse.set		(color);
-	// D3D.position.set		(sphere.P);
-	// D3D.range			= sphere.R;
+	Flight					D3D;
+	D3D.type				= D3DLIGHT_POINT;
+	D3D.specular.set		(0,0,0,0)
+	D3D.ambient.set			(0,0,0,0);
+	D3D.range				= 100.f;
+	D3D.attenuation0		= 1.f;
+	D3D.attenuation1		= 0;
+	D3D.attenuation2		= 0;
 
 	Device.Shader.Set		(SH);
 	for (DWORD L=0; L<container.size(); L++)
@@ -115,6 +120,10 @@ void CLightPPA_Manager::Render()
 		// Culling
 		if (alpha>=1)	continue;
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
+
+		// Setup D3D light
+		D3D.diffuse.mul_rgb	(PPL.color,alpha);
+		D3D.position.set	(PPL.sphere.P);
 
 		// Calculations and rendering
 		PPL.Render	(VS);
