@@ -891,7 +891,7 @@ function action_security_stand:on_position()
 
 --            printf("%f", yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) )
             --Проверяем угол
-            if(yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1)then
+            if(level.actor() and yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1.5)then
             	--Угол не большой, смотрим на актера
 	            local pos = level.actor():position()
 	            pos.y     = pos.y + 1.4
