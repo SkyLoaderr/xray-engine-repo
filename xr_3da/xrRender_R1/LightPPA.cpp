@@ -185,7 +185,8 @@ void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 
 	// ???
 	xr_delete	(L);
-	Msg			("! xrRENDER: unregistered light destroyed");
+	//Msg		("! xrRENDER: unregistered light destroyed");
+	#pragma todo("rewrite OnDeviceDestroy/OnDeviceCreate in FStaticRender.cpp")
 }
 
 void	CLightPPA_Manager::Activate		(CLightPPA* L)

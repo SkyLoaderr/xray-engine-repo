@@ -36,6 +36,7 @@ CPGObject::CPGObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 //----------------------------------------------------
 CPGObject::~CPGObject()
 {
+	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
 }
 
 LPCSTR CPGObject::dbg_ref_name()
