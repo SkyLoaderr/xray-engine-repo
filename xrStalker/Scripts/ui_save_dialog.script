@@ -33,7 +33,7 @@ function save_dialog:InitControls()
 							 height = 0}
 	local edit_rect       = {x = indent, 
 						     y = caption_rect.y + caption_rect.height + indent,
-						     width = 500, 
+						     width = caption_rect.width - indent*2, 
 						     height = 60}
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
