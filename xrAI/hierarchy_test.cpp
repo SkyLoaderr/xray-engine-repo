@@ -305,7 +305,6 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 	f							= CPU::GetCycleCount();
 	Msg							("Recursive fill time %f",CPU::cycles2seconds*float(f - s));
 
-#ifdef DEBUG
 	{
 		VERTEX_VECTOR2::iterator	I = table.begin() + min_z, B = table.begin();
 		VERTEX_VECTOR2::iterator	E = table.end();
@@ -321,7 +320,6 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			}
 		}
 	}
-#endif
 	f								= CPU::GetCycleCount();
 	Msg								("Check marks time %f",CPU::cycles2seconds*float(f - s));
 
@@ -366,13 +364,12 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 	Msg								("Sector Graph : %d vertices, %d edges",sector_graph.vertex_count(),sector_graph.edge_count());
 
-#ifdef DEBUG
 	CSectorGraph::const_vertex_iterator	I = sector_graph.vertices().begin();
 	CSectorGraph::const_vertex_iterator	E = sector_graph.vertices().end();
 	for ( ; I != E; ++I) {
 		VERIFY						(!(*I)->edges().empty());
 	}
-#endif
+	
 	f								= CPU::GetCycleCount();
 	Msg								("Check edges time %f",CPU::cycles2seconds*float(f - s));
 }
