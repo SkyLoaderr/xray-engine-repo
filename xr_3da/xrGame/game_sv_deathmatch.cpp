@@ -563,7 +563,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 
 					if (MinEnemyDist > Dist) MinEnemyDist = Dist;
 				};
-				if (MinEnemyDist>MinTeamPRointDist)
+				if (MinEnemyDist>MinTeamPRointDist || Pass == 1)
 				{
 					pRPDist.push_back(RPointData(it, MinEnemyDist, IsPointFreezed(&r)));
 				}
