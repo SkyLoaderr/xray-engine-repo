@@ -13,8 +13,15 @@ function set_enemy( obj )
 	enemy = obj
 end
 
+function onHeliEvent(p)
+		local str = p:r_stringZ()
+      printf(str)
+end
+
 function main()
-	local heli = get_level_object( "heli" )
+--	local heli = get_level_object( "heli" )
+	local heli = get_level_object( "helicopter" )
+   heli:AddEventCallback(1,onHeliEvent)
 
 	while true do
 		active = true
@@ -22,7 +29,8 @@ function main()
 			wait()
 		end
 
-		heli:heli_go_by_patrol_path( "way_raid_heli" )
+--		heli:heli_go_by_patrol_path( "way_raid_heli" )
+		heli:heli_go_by_patrol_path( "heli_way_1" )
 		wait( 1000 ) -- чтобы update сработал у вертолёта
 
 		local t = heli:heli_last_point_time() * 1000

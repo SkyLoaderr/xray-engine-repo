@@ -167,7 +167,6 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 	if (m_heli->state() == CHelicopter::eInitiateGoToPoint) {
 		addGoToPointPath(lt);
 		m_heli->m_data.m_time_last_patrol_start = lt;
-//		heli->setState(CHelicopter::eMovingByPatrolZonePath);
 		m_heli->setState(CHelicopter::eMovingToPoint);
 	};
 

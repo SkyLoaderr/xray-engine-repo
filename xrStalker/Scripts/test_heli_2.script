@@ -1,92 +1,38 @@
-local active = false
-local enemy
 
-function activate()
-	active = true
+class "HeliManager";
+function HeliManager:__init()
 end
 
-function deactivate()
-	active = false
+function HeliManager:__finalize()
 end
 
-function set_enemy( obj )
-	enemy = obj
+
+function HeliManager:Init()
+   self.m_heli = get_level_object( "helicopter" )
+   self.m_heli:AddEventCallback(1,self,"onHeliEvent")
 end
 
-function onHeliEvent(p)
+function HeliManager:onHeliEvent(p)
 		local str = p:r_stringZ()
       printf(str)
+      local player = get_actor()
+      
+      self.m_heli:heli_go_to_point(player:position(),player:position(),6)
 end
 
-function main()
---	local heli = get_level_object( "heli" )
-	local heli = get_level_object( "helicopter" )
-   heli:AddEventCallback(1,onHeliEvent)
-
+function HeliManager:Start()
 	while true do
-		active = true
-		while not active do
-			wait()
-		end
 
---		heli:heli_go_by_patrol_path( "way_raid_heli" )
-		heli:heli_go_by_patrol_path( "heli_way_1" )
-		wait( 1000 ) -- чтобы update сработал у вертолёта
+   wait()
+   end
+end
 
-		local t = heli:heli_last_point_time() * 1000
 
-		printf( "[raid_heli] BEGIN PATROL" )
+function main()
 
-		while active and not enemy and device():time_global() < t do
-			wait()
-		end
+local heli_mngr = HeliManager()
+heli_mngr:Init()
+heli_mngr:Start()
 
-		printf( "[raid_heli] PATROL IS FINISHED OR INTERRUPTED" )
-
-		if enemy then
-			printf( "[raid_heli] AIR ATTACK!" )
-			heli:air_attack( enemy )
-			wait( 1000 )
-			while heli:air_attack_active() and active do
-				wait()
-			end
-			printf( "[raid_heli] FIN AIR ATTACK!" )
-			enemy = nil
-		end
-	end
-
---	enemy = get_actor()
---[[
-	while active do
-		heli:heli_go_to_point( path:point( pnt + 1 ), path:point( pnt ), 0 )
-		wait( 200 ) -- чтобы update сработал у вертолёта
-
-		local t = heli:heli_last_point_time() * 1000
-		if not start then
-			t = t - 1000
-			start = false
-		end
-
-		printf( "%d -> %d", pnt, pnt + 1 )
-
-		while t > device():time_global() and active and not enemy do
-			wait()
-		end
-
-		if enemy then
-			printf( "AIR ATTACK!" )
-			heli:air_attack( enemy )
-			wait( 1000 )
-			while heli:air_attack_active() and active do
-				wait()
-			end
-			printf( "FIN AIR ATTACK!" )
-			enemy = nil
-		else
-			pnt = pnt + 2
-			if pnt >= path:count() then
-				pnt = 0
-			end
-		end
-	end]]
+--		heli:heli_go_by_patrol_path( "heli_way_1" )
 end
