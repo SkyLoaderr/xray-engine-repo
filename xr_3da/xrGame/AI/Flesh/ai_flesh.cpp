@@ -156,7 +156,7 @@ void CAI_Flesh::StateSelector()
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))
 		SetState(stateEat);
 #else
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
 		SetState(stateEat);
 #endif
 	else						SetState(stateRest); 

@@ -133,7 +133,7 @@ void CAI_Dog::StateSelector()
 	else if (D || E || F)		SetState(stateAttack);
 	else if (A && !K)			SetState(stateExploreNDE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
 
@@ -207,13 +207,13 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		
 		CMovementManager::m_body.target.yaw = yaw;
 
-		// calculate angular speed
-		float new_angular_velocity = 4.0f;
-		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
-		float time = MotionMan.GetAnimTime(anim, 0);
-		//new_angular_velocity = 2.5f * delta_yaw / time; 
+//		// calculate angular speed
+//		float new_angular_velocity = 4.0f;
+//		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+//		float time = MotionMan.GetAnimTime(anim, 0);
+//		//new_angular_velocity = 2.5f * delta_yaw / time; 
 
-		MotionMan.ForceAngularSpeed(new_angular_velocity);
+//		MotionMan.ForceAngularSpeed(new_angular_velocity);
 
 	}
 
