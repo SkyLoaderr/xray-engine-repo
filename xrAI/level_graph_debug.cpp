@@ -527,7 +527,8 @@ IC	void assign_angle(
 	float				&angle, 
 	const float			start_yaw, 
 	const float			dest_yaw, 
-	const bool			positive
+	const bool			positive,
+	const bool			start = true
 )
 {
 	if (positive)
@@ -540,6 +541,12 @@ IC	void assign_angle(
 			angle		= dest_yaw - start_yaw;
 		else
 			angle		= dest_yaw - start_yaw - PI_MUL_2;
+
+	if (!start)
+		if (angle < 0.f)
+			angle = -angle - PI_MUL_2;
+		else
+			angle = PI_MUL_2 - angle;
 }
 
 IC	void compute_circles(
@@ -629,8 +636,8 @@ IC	bool compute_tangent(
 	
 		// angle between internal tangents and circle centers segment
 		alpha1			= angle_normalize(acosf((start_circle.radius + dest_circle.radius)/distance));
-		alpha2			= angle_normalize(PI + alpha1);
-		//yaw2			= angle_normalize(yaw1 + PI);
+		alpha2			= alpha1;;
+		yaw2			= angle_normalize(yaw1 + PI);
 	}
 
 	tangents[0]			= start_circle;
@@ -646,16 +653,16 @@ IC	bool compute_tangent(
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = cross_product_2D_y(direction,temp);
 	if (start_cp*tangent_cp >= 0) {
-		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha1),		start_cp >= 0);
-		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha2),dest_cp  >= 0);
+		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha1),start_cp >= 0);
+		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha2),dest_cp  >= 0,false);
 		return			(true);
 	}
 
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 - alpha1,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center,yaw2  - alpha2,	dest_circle.radius, tangents[1].point);
-	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha1),		start_cp >= 0);
-	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha2),dest_cp  >= 0);
+	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha1),start_cp >= 0);
+	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha2),dest_cp  >= 0,false);
 
 	return				(true);
 }
@@ -732,13 +739,19 @@ bool build_trajectory(
 	xr_vector<Fvector>		&path
 )
 {
-	if (!build_circle_trajectory(start,path,true))
+	if (!build_circle_trajectory(start,path,true)) {
+		Msg				("FALSE : Circle 0");
 		return			(false);
-	if (!build_line_trajectory(start,dest,path))
+	}
+	if (!build_line_trajectory(start,dest,path)) {
+		Msg				("FALSE : Line");
 		return			(false);
-	if (!build_circle_trajectory(dest,path,false))
+	}
+	if (!build_circle_trajectory(dest,path,false)) {
+		Msg				("FALSE : Circle 1");
 		return			(false);
-	path.push_back		(dest.position);
+	}
+	Msg					("TRUE");
 	return				(true);
 }
 
@@ -774,11 +787,11 @@ bool compute_trajectory(
 
 void CLevelGraph::compute_path()
 {
-//	STrajectoryPoint		start, dest;
+	STrajectoryPoint		start, dest;
 
 //	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
 //	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-//	obj						= Level().Objects.FindObjectByName("localhost/dima");
+//	obj						= Level().CurrentEntity();
 //	CActor					*actor = dynamic_cast<CActor*>(obj);
 //	
 //	start.angular_velocity	= PI_DIV_2;
@@ -793,19 +806,20 @@ void CLevelGraph::compute_path()
 //	dest.direction.setHP	(actor->r_model_yaw,0);
 //	dest.vertex_id			= actor->level_vertex_id();
 	
-//	start.angular_velocity	= 1.f;
-//	start.linear_velocity	= 2.f;
-//	start.position			= Fvector().set(-50,0,-40);
-//	start.direction.set		(0,0,1);
-//	start.vertex_id			= vertex(start.position);
-//	
-//	dest.angular_velocity	= 1.f;
-//	dest.linear_velocity	= 2.f;
-//	dest.position			= Fvector().set(-40,0,-40);
-//	dest.direction.set		(0,0,-1);
-//	dest.vertex_id			= vertex(dest.position);
-//
-//	compute_trajectory		(start,dest,m_tpTravelLine);
+	start.angular_velocity	= 1.f;
+	start.linear_velocity	= 2.f;
+	start.position			= Fvector().set(-50,0,-40);
+	start.direction.set		(0,0,1);
+	start.vertex_id			= vertex(start.position);
+	
+	dest.angular_velocity	= 1.f;
+	dest.linear_velocity	= 2.f;
+	dest.position			= Fvector().set(-54,0,-40);
+	dest.direction.set		(0,0,-1);
+	dest.vertex_id			= vertex(dest.position);
+
+	m_tpTravelLine.clear	();
+	compute_trajectory		(start,dest,m_tpTravelLine);
 	return;
 	//	u32						l_dwStartNodeID		= vertex(m_start_point);
 	//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
