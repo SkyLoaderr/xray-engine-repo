@@ -227,9 +227,9 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 void	CShaderManager::_DeletePS			(SPS* ps)
 {
 	LPSTR N				= LPSTR		(ps->cName);
-	map_VS::iterator I	= m_vs.find	(N);
-	if (I!=m_vs.end())	{
-		m_vs.erase(I);
+	map_VS::iterator I	= m_ps.find	(N);
+	if (I!=m_ps.end())	{
+		m_ps.erase(I);
 		return;
 	}
 	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",ps->cName);
@@ -242,6 +242,11 @@ R_constant_table*	CShaderManager::_CreateConstantTable	(R_constant_table& C)
 		if (v_constant_tables[it]->equal(C))	return v_constant_tables[it];
 	v_constant_tables.push_back		(xr_new<R_constant_table>(C));
 	return v_constant_tables.back	();
+}
+void				CShaderManager::_DeleteConstantTable	(R_constant_table* C)
+{
+	if (reclaim(v_constant_tables,C))			return;
+	Msg	("! ERROR: Failed to find compiled constant-table");
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -261,17 +266,15 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 		return				RT;
 	}
 }
-void	CShaderManager::_DeleteRT		(CRT* &RT)
+void	CShaderManager::_DeleteRT		(CRT* RT)
 {
-	if	(0==RT)		return;
-	RT				= 0;
-}
-LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
-{
-	R_ASSERT(T);
-	for (map_RT::iterator I=m_rtargets.begin(); I!=m_rtargets.end(); I++)
-		if (I->second == T)	return I->first;
-		return 0;
+	LPSTR N				= LPSTR		(RT->cName);
+	map_VS::iterator I	= m_rtargets.find	(N);
+	if (I!=m_rtargets.end())	{
+		m_rtargets.erase(I);
+		return;
+	}
+	Msg	("! ERROR: Failed to find render-target '%s'",RT->cName);
 }
 //--------------------------------------------------------------------------------------------------------------
 CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
@@ -281,11 +284,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	// ***** first pass - search already created RTC
 	LPSTR N = LPSTR(Name);
 	map_RTC::iterator I = m_rtargets_c.find	(N);
-	if (I!=m_rtargets_c.end())
-	{
-		CRTC *RT			=	I->second;
-		return		RT;
-	}
+	if (I!=m_rtargets_c.end())	return I->second;
 	else
 	{
 		CRTC *RT			=	xr_new<CRTC>();
@@ -294,10 +293,15 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 		return				RT;
 	}
 }
-void	CShaderManager::_DeleteRTC		(CRTC* &RT)
+void	CShaderManager::_DeleteRTC		(CRTC* RT)
 {
-	if	(0==RT)		return;
-	RT				= 0;
+	LPSTR N				= LPSTR		(RT->cName);
+	map_VS::iterator I	= m_rtargets_c.find	(N);
+	if (I!=m_rtargets_c.end())	{
+		m_rtargets_c.erase(I);
+		return;
+	}
+	Msg	("! ERROR: Failed to find render-target '%s'",RT->cName);
 }
 //--------------------------------------------------------------------------------------------------------------
 void	CShaderManager::DBG_VerifyGeoms	()

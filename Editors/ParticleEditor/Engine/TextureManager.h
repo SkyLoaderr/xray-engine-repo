@@ -71,11 +71,6 @@ public:
     map_Blender&					_GetBlenders		()		{	return m_blenders;	}
 
 	// Debug
-	LPCSTR							DBG_GetTextureName	(CTexture*);
-	LPCSTR							DBG_GetMatrixName	(CMatrix*);
-	LPCSTR							DBG_GetConstantName	(CConstant*);
-	LPCSTR							DBG_GetRTName		(CRT*);
-	LPCSTR							DBG_GetVSName		(SGeometry*);
 	void							DBG_VerifyGeoms		();
 
 	// Editor cooperation
@@ -97,6 +92,7 @@ public:
 	void							_DeleteConstant		(CConstant* C);
 
 	R_constant_table*				_CreateConstantTable(R_constant_table& C);
+	void							_DeleteConstantTable(R_constant_table* C);
 
 	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f);
 	void							_DeleteRT			(CRT*	RT	);
