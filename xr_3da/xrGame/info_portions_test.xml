@@ -11,7 +11,6 @@
 		</location>
 		<!-- список диалогов, который может инициировать InfoPortion -->
 		<dialog>trader_job</dialog>
-		<dialog>trader_talk_about</dialog>
 		<dialog>stalker_talk_about</dialog>
 	</info_portion>
 
