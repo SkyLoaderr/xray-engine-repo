@@ -535,7 +535,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u8					(flags);
 
 	P.w_u16					(u16(0/*iAmmoCurrent*/));
-	P.w_u16					(u16(0/*iAmmoElapsed*/));
+	P.w_u16					(u16(iAmmoElapsed));
 
 	//////
 	P.w_vec3				(Position());
@@ -716,6 +716,16 @@ void CWeapon::UpdateCL		()
 		NET_Last = N;
 		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
 		Position().set(NET_Last.pos);
+
+		iAmmoElapsed		= NET_Last.ammo_elapsed;
+
+		if (NET_Last.flags&M_UPDATE_WEAPON_wfWorking)
+		{
+			if (!IsWorking())	{ FireStart(); }
+		} else {
+			if (IsWorking())	{ FireEnd(); }
+		}
+
 /*
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{

@@ -651,7 +651,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		::Sound->play_at_pos	(S,this,Position());
 
 		// hit marker
-		if (Local() && (this!=who))	
+		if (Local() && (this!=who) && Level().CurrentEntity() == this)	
 		{
 			int id		= -1;
 			float x		= _abs(vLocalDir.x);

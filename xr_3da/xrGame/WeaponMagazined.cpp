@@ -391,16 +391,19 @@ void CWeaponMagazined::state_Fire	(float dt)
 		dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
 	else 
 		return;
-	
-	while (fTime<0)
-	{
-		bFlame			=	TRUE;
-		fTime			+=	fTimeToFire;
 
-		++m_shotNum;
-		OnShot			();
-		FireTrace		(p1,vLastFP,d);
-	}
+	if (Local())
+	{
+		while (fTime<0)
+		{
+			bFlame			=	TRUE;
+			fTime			+=	fTimeToFire;
+
+			++m_shotNum;
+			OnShot			();
+			FireTrace		(p1,vLastFP,d);
+		}
+	};
 
 	UpdateSounds			();
 
