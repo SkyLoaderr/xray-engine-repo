@@ -27,31 +27,28 @@ BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 //--------------------------------------------------------------------------------------------------------------
 class	includer				: public ID3DXInclude
 {
-	xr_vector<IReader*>			_2close;
 public:
 	HRESULT __stdcall	Open	(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
 	{
 		string256				pname;
 		IReader*		R		= FS.r_open	("$game_shaders$",strconcat(pname,::Render->getShaderPath(),pFileName));
 		if (0==R)				return			E_FAIL;
-		_2close.push_back		(R);
-		*ppData					= R->pointer();
-		*pBytes					= R->length();
+
+		// duplicate and zero-terminate
+		u32				size	= R->length();
+		u8*				data	= xr_alloc<u8>	(size + 1);
+		Memory.mem_copy			(data,R->pointer(),size);
+		data[size]				= 0;
+		FS.r_close				(R);
+
+		*ppData					= data;
+		*pBytes					= size;
 		return	D3D_OK;
 	}
 	HRESULT __stdcall	Close	(LPCVOID	pData)
 	{
-		for (xr_vector<IReader*>::iterator	I=_2close.begin(); I!=_2close.end(); I++)
-		{
-			IReader*	R		= *I;
-			if (R->pointer() == pData)
-			{
-				FS.r_close		(*I);
-				_2close.erase	(I);
-				return			D3D_OK;
-			}
-		}
-		return			E_FAIL;
+		xr_free	(pData);
+		return	D3D_OK;
 	}
 };
 
@@ -237,28 +234,33 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		includer					Includer;
 		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),name,".ps"));
-		IReader*					fs			= FS.r_open(cname);
-		R_ASSERT2					(fs,cname);
+
+		// duplicate and zero-terminate
+		IReader*		R		= FS.r_open(cname);
+		R_ASSERT2				(R,cname);
+		u32				size	= R->length();
+		char*			data	= xr_alloc<char>(size + 1);
+		Memory.mem_copy			(data,R->pointer(),size);
+		data[size]				= 0;
+		FS.r_close				(R);
 
 		// Select target
 		LPCSTR						c_target	= "ps_2_0";
 		LPCSTR						c_entry		= "main";
-		LPSTR						text		= LPSTR(fs->pointer());
-		u32							text_size	= fs->length();
-		text[text_size-1]						= 0;
-		if (strstr(text,"main_ps_1_1"))			{ c_target = "ps_1_1"; c_entry = "main_ps_1_1";	}
-		if (strstr(text,"main_ps_1_2"))			{ c_target = "ps_1_2"; c_entry = "main_ps_1_2";	}
-		if (strstr(text,"main_ps_1_3"))			{ c_target = "ps_1_3"; c_entry = "main_ps_1_3";	}
-		if (strstr(text,"main_ps_1_4"))			{ c_target = "ps_1_4"; c_entry = "main_ps_1_4";	}
+		if (strstr(data,"main_ps_1_1"))			{ c_target = "ps_1_1"; c_entry = "main_ps_1_1";	}
+		if (strstr(data,"main_ps_1_2"))			{ c_target = "ps_1_2"; c_entry = "main_ps_1_2";	}
+		if (strstr(data,"main_ps_1_3"))			{ c_target = "ps_1_3"; c_entry = "main_ps_1_3";	}
+		if (strstr(data,"main_ps_1_4"))			{ c_target = "ps_1_4"; c_entry = "main_ps_1_4";	}
 
 		// Compile
 		LPD3DXBUFFER				pShaderBuf	= NULL;
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
-		_hr = ::Render->CompileShader(text,text_size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = ::Render->CompileShader(data,size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		//_hr = D3DXCompileShader		(text,text_size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
-		FS.r_close					(fs);
+		xr_free						(data);
+
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf)
