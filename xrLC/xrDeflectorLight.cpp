@@ -425,7 +425,7 @@ VOID CDeflector::Light(HASH& H)
 	const	DWORD rms		= 8;
 	DWORD	w,h;
 	if (compress_Zero(lm,rms))	return;		// already with borders
-	else if (compress_RMS(lm,rms,w,h))	
+	else if (compress_RMS(lm,rms*2,w,h))	
 	{
 		// Reacalculate lightmap at lower resolution
 		lm.dwWidth	= w;
