@@ -493,9 +493,8 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 
 bool CAI_Biting::useful(const CGameObject *object) const
 {
-	if (!CItemManager::useful(object))
-		return			(false);
-
+	//if (!CItemManager::useful(object))
+	//	return			(false);
 
 	const CEntityAlive *pCorpse = dynamic_cast<const CEntityAlive *>(object); 
 	if (!pCorpse) return false;
@@ -503,6 +502,14 @@ bool CAI_Biting::useful(const CGameObject *object) const
 	if (!pCorpse->g_Alive()) return true;
 	return false;
 }
+
+float CAI_Biting::evaluate(const CGameObject *object) const
+{
+	return (0.f);
+}
+
+
+
 
 void CAI_Biting::reload	(LPCSTR section)
 {
