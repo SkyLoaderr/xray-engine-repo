@@ -80,15 +80,19 @@ local snd = {
 		[[device\door_servomotor]]
 	},
 
-	-- UNUSED:
-	hello = {
-			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
-			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
-			[[characters_voice\human_01\scenario\trader\trader_script1a_3]],
-			[[characters_voice\human_01\scenario\trader\trader_script1a_4]],
-			[[characters_voice\human_01\scenario\trader\trader_script1a_5]]
+	trader_hello_what_have_you_got = {
+		[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
+		[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
+		[[characters_voice\human_01\scenario\trader\trader_script1a_3]],
+		[[characters_voice\human_01\scenario\trader\trader_script1a_4]],
+		[[characters_voice\human_01\scenario\trader\trader_script1a_5]]
 	},
 
+	trader_bye = {
+		[[characters_voice\human_01\scenario\trader\trader3c]]
+	},
+
+	-- UNUSED:
 	go_out = {
 			[[characters_voice\human_01\scenario\trader\trader_script1b_1]],
 			[[characters_voice\human_01\scenario\trader\trader_script1b_2]],

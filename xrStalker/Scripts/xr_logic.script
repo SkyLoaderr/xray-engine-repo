@@ -243,7 +243,7 @@ function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 end
 
 function activate_by_section(npc, ini, section)
-	--printf("DEBUG: activate_by_section: looking for section '%s'", section)
+	printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
 
 	local npc_id = npc:id()
 	if xr_motivator.storage[npc_id]["active_section"] then
@@ -538,7 +538,7 @@ function try_switch_to_another_section(npc, st, actor)
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
-		elseif c.name == "on_actor_dist_ge_nvis" then
+		elseif c.name == "on_actor_dist_ge_nvis" or c.name == "on_actor_dist_ge_nvis2" then
 			-- ТУТ УМЫШЛЕННО >, А НЕ >=, потому что оно составляет пару с on_actor_dist_le_nvis, где <=
 			if distance_between(actor, npc) > c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
@@ -770,6 +770,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge",       npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis",  npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis2", npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
