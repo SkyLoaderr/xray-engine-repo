@@ -552,7 +552,7 @@ misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
 direction                = 0, 0, 1
-shell_point		         = 0.0, 0.0, 0.0
+
 fire_point               = 0.0, 0.02, 0.6
 flame_div                = 7
 flame_length             = .3
@@ -560,6 +560,10 @@ flame_size               = 0.07
 flame			         = ShotFlame1, ShotFlame2, ShotFlame3
 
 smoke_particles			= weapons\generic_shoot_00
+
+shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+shell_particles	 = weapons\generic_shells
 
 rpm_empty_click 	     = 200
 
@@ -615,7 +619,11 @@ snd_reload_grenade	= weapons\gen_grenload
 
 
 [wpn_vintorez_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
+
 fire_point               = 0.2, -0.07, 0.1
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
@@ -683,7 +691,7 @@ condition_shot_dec = 0.0003
 ;cam_relax                = 0.15
 ;cam_dispersion           = 0.8
 direction                = 0, 0, 1
-shell_point		 = 0.0, 0.0, 0.0
+
 fire_point               = 0.0, 0.065, 0.65
 flame_div                = 7
 flame_length             = .3
@@ -692,6 +700,10 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles			= weapons\generic_weapon05
 smoke_particles         = weapons\generic_shoot_00
+
+shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+shell_particles	 = weapons\generic_shells
 
 rpm_empty_click 	 = 200
 ; ttc
@@ -739,7 +751,10 @@ snd_reload			= weapons\ak74_reload, 0.7, 0.35
 
 
 [wpn_lr300_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.07, -0.05, 0.11
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
@@ -804,7 +819,7 @@ misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
 direction                = 0, 0, 1
-shell_point		 = 0.0, 0.0, 0.0
+
 fire_point               = 0.0, 0.0, 0.75
 flame_div                = 7
 flame_length             = .3
@@ -812,6 +827,10 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 smoke_particles			= weapons\generic_shoot_00
+
+shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+shell_particles	 = weapons\generic_shells
 
 rpm_empty_click 	 = 200
 
@@ -867,6 +886,8 @@ snd_close			= weapons\generic_close
  
 [wpn_val_hud]
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.0, -0.07, 0.1
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
@@ -1183,7 +1204,10 @@ snd_switch			= weapons\generic_empty
 
  
 [wpn_groza_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.05, -0.05, 0.11
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
@@ -1275,6 +1299,10 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 flame_particles		   = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
+
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 50
@@ -1320,7 +1348,10 @@ snd_close			= weapons\generic_close
 
  
 [wpn_hpsa_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0, 0.0, 0.1
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -1401,6 +1432,10 @@ flame_size               = 0.09
 flame_particles			= weapons\generic_weapon05
 smoke_particles			= weapons\generic_shoot_00
 
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
+
 rpm_empty_click 	 = 200
 
 ; ttc
@@ -1449,6 +1484,7 @@ snd_close			= weapons\generic_close
  
 [wpn_pm_hud]
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
 fire_point               = 0.05, 0.07, 0.05
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -1522,13 +1558,17 @@ condition_shot_dec = 0.0003
 ;cam_dispersion           = 2
 
 direction                = 0, 0, 1
-shell_point		 = 0.0, 0.0, 0.0
+
 fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
 
 smoke_particles		   = weapons\generic_shoot_00
+
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
  
 rpm_empty_click 	 = 200
 
@@ -1578,6 +1618,7 @@ snd_close			= weapons\generic_close
  
 [wpn_pb_hud]
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
 fire_point               = 0.05, 0.07, 0.05
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -1664,6 +1705,10 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 flame_particles		   = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
+
 rpm_empty_click 	 = 200
 
 ; ttc
@@ -1713,6 +1758,8 @@ snd_close			= weapons\generic_close
  
 [wpn_walther_hud]
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.05, 0.07, 0.05
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -1793,6 +1840,10 @@ flame_size               = 0.09
 flame_particles		   = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
+
 rpm_empty_click 	 = 200
 
 ; ttc
@@ -1841,7 +1892,10 @@ snd_close			= weapons\generic_close
 
  
 [wpn_usp_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.05, 0.07, 0.05
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -2112,6 +2166,9 @@ flame_particles		   = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 rpm_empty_click 	 = 200
 ; ttc
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
 
 hit_power                = 35 ;30
 hit_impulse		 		 = 55
@@ -2156,7 +2213,10 @@ snd_close			= weapons\generic_close
 
 
 [wpn_fort_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.05, 0.05, 0.05
 fire_bone                = wpn_body
 orientation              = 0,0,0
@@ -2475,6 +2535,9 @@ flame_particles		    = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 rpm_empty_click 		= 200
 ; ttc
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
 
 hit_power                = 65
 hit_impulse		 		 = 200		;120
@@ -2523,7 +2586,10 @@ snd_reload			= weapons\svd_reload
 
  
 [wpn_svd_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.3, -0.07, 0.15
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
@@ -2599,6 +2665,9 @@ flame_particles		   = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 rpm_empty_click 	 = 200
 ; ttc
+shell_point		 = 0.0, 0.0, 0.4
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
 
 hit_power                = 65
 hit_impulse		 = 127
@@ -2648,7 +2717,10 @@ snd_close			= weapons\generic_close
 
  
 [wpn_svu_hud]
+
 shell_point		 = 0.0, 0.0, 0.0
+shell_dir		 = 0.0, 1.0, 0.0
+
 fire_point               = 0.07, -0.05, 0.11
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
