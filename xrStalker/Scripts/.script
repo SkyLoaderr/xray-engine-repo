@@ -175,9 +175,9 @@ function FSM:run()
 								self:reset_script_control()
 							end
 
-							if  self.current_state == 0 then 
-								self:set_script_control()
-							end
+							--if  self.current_state == 0 then 
+							--	self:set_script_control()
+							--end
 				
 							self.current_state = to_state_num
 							return true
@@ -217,11 +217,13 @@ end
 
 -- взятие под контроль скрипта NPC (переход из нулевого состояния)
 function FSM:set_script_control()
+	printf("set script control for FSM of NPC %s", self.npc:name())
 	self.npc:script(true, self.script_name)
 end
 
 -- отпускание из под контроля скрипта NPC (переход в нулевое состояние)
 function FSM:reset_script_control()
+	printf("reset script control for FSM of NPC %s", self.npc:name())
 	self.npc:script(false, self.script_name)
 end
 
