@@ -306,4 +306,5 @@ CSE_Abstract*	xrServer::GetEntity			(u32 Num)
 	{
 		if (C == Num) return I->second;
 	};
+	return NULL;
 };
