@@ -41,7 +41,7 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability[2]	= .4f;
 	m_fAttackSuccessProbability[3]	= .2f;
 
-	InitMemory						(20000,20000);
+	InitMemory						(20000,15000);
 
 	CDetailPathManager::Init();
 

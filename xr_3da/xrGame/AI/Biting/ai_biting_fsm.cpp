@@ -45,7 +45,6 @@ void CAI_Biting::Think()
 		UpdatePathWithAction					();
 	}
 	
-
 	// построить путь
 	CMonsterMovement::Frame_Update			();
 

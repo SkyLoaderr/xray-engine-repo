@@ -14,9 +14,9 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
 	stateEat			= xr_new<CBitingEat>			(this, false);
-	stateAttack			= xr_new<CBitingAttack>			(this, true);
+	stateAttack			= xr_new<CBitingAttack>			(this, /*true*/ false);
 	statePanic			= xr_new<CBitingPanic>			(this, false);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, true);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, /*true*/ false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 	stateSquadTask		= xr_new<CBitingSquadTask>		(this);
 	
@@ -117,10 +117,13 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
 
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 600, 700, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
 	//MotionMan.FX_LoadMap(section); 
 
 	END_LOAD_SHARED_MOTION_DATA();
