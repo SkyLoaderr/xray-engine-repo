@@ -123,8 +123,8 @@ function main ()
     --check move
     reset_action (stalker1, military2_1.script_name ())
     reset_action (stalker2, military2_1.script_name ())
-	action (stalker1, look (look.point, stalker3), anim ("stalker_1_2"), cond (cond.anim_end))
-	action (stalker2, look (look.point, stalker3), anim ("stalker_2_1"), cond (cond.anim_end))
+	action (stalker1, look (look.fire_point, stalker3), anim ("stalker_1_2"), cond (cond.anim_end))
+	action (stalker2, look (look.fire_point, stalker3), anim ("stalker_2_1"), cond (cond.anim_end))
 
     reset_action (stalker3, military2_1.script_name ())
     action (stalker3, move (pos, 0.26), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
@@ -139,7 +139,7 @@ function main ()
     reset_action (stalker2, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
 
-    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.path_dir), cond (cond.move_end))
+    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.search), cond (cond.move_end))
     action (stalker1, anim ("stalker_2_up"), cond (cond.anim_end))
     action (stalker2, anim ("stalker_1_up"), cond (cond.anim_end))
     action (stalker1, move (move.standing, move.walk, move.line, patrol ("way_test")), object (weapon1, object.activate), 
