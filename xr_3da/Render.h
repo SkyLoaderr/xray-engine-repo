@@ -53,6 +53,13 @@ public:
 class	ENGINE_API	IRender_Light
 {
 public:
+	enum LT
+	{
+		POINT	= 0,
+		SPOT	= 1
+	};
+public:
+	virtual void					set_type			(LT type)							= 0;
 	virtual void					set_active			(bool)								= 0;
 	virtual void					set_shadow			(bool)								= 0;
 	virtual void					set_position		(const Fvector& P)					= 0;
