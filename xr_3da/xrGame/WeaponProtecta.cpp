@@ -1,15 +1,14 @@
 #include "stdafx.h"
 #include "effectornoise.h"
-#include "..\xr_tokens.h"
-#include "..\PSObject.h"
-#include "..\PSVisual.h"
-#include "..\xr_trims.h"
+#include "../xr_tokens.h"
+#include "../PSObject.h"
+#include "../PSVisual.h"
+#include "../xr_trims.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
 #include "WeaponProtecta.h"
 #include "entity.h"
-#include "xr_weapon_list.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -35,7 +34,7 @@ CWeaponProtecta::~CWeaponProtecta()
 {
 	// sounds
 	pSounds->Delete(sndShoot);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
+	for (int i=0; i<SND_RIC_COUNT; ++i) pSounds->Delete(sndRicochet[i]);
 	
 	xr_delete			(m_pShootPS);
 }
@@ -171,13 +170,13 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 				m_pShootPS->play_at_pos	(vLastFP);
 
 				BOOL			bHit = FALSE;
-				for (int i=0; i<iShotCount; i++)
+				for (int i=0; i<iShotCount; ++i)
 				{
 					Fvector p1=p1_base, d=d_base;
 					bHit |=		FireTrace(p1,vLastFP,d);
 				}
 //				if (bHit)		pSounds->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
-				iAmmoElapsed	--;
+				--iAmmoElapsed;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot	();
 			}
@@ -200,7 +199,7 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		float l_f	= Device.fTimeDelta*fLightSmoothFactor;
 		float l_i	= 1.f-l_f;
 		float&	LL	= m_pParent->AI_Lighting;
-		NodeCompressed*	NODE = m_pParent->AI_Node;
+		CLevelGraph::CVertex*	NODE = m_pParent->level_vertex();
 		float	CL	= NODE?float(NODE->light):255;
 		LL			= l_i*LL + l_f*CL; 
 

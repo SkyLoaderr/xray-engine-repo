@@ -135,7 +135,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 		{
 			string128		_eff;
 			int				count		= _GetItemCount	(S);
-			for (int it=0; it<count; it++)	
+			for (int it=0; it<count; ++it)	
 				m_effects.push_back	(_GetItem(S,it,_eff));
 		}
 	}
@@ -147,7 +147,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 		{
 			string128		_eff;
 			int				count		= _GetItemCount	(S);
-			for (int it=0; it<count; it++)	
+			for (int it=0; it<count; ++it)	
 				m_trailEffects.push_back(_GetItem(S,it,_eff));
 		}
 	}
@@ -179,7 +179,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_flashTime		= FLASH_TIME;
 	setVisible(false);
 	xr_list<CParticlesObject*>::iterator l_it;
-	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); 	l_it++) 
+	for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; 	++l_it) 
 		(*l_it)->Stop();
 	
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
@@ -222,7 +222,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			l_m.k.set(l_dir);
 			GetBasis(l_m.k, l_m.i, l_m.j);
 			
-			for(int i = 0; i < 8; i++)
+			for(int i = 0; i < 8; ++i)
 			{
 				Fvector l_v;
 				l_b1.getpoint(i, l_v);
@@ -278,7 +278,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 
 	Collide::ray_query RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; i++) 
+	for(s32 i = 0; i < m_frags; ++i) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.5f), 
@@ -320,7 +320,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	l_m.c.set(pos);l_m.j.set(normal); 
 	GetBasis(normal, l_m.k, l_m.i);
 	
-	for(s32 i = 0; i < l_c; i++) 
+	for(s32 i = 0; i < l_c; ++i) 
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
@@ -416,7 +416,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	return l_res;
 }
 
-void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponRPG7Grenade::FragWallmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (!hWallmark)	return;
 	
@@ -475,7 +475,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 void CWeaponRPG7Grenade::feel_touch_new(CObject* O)
 {
 	CGameObject *l_pGO = dynamic_cast<CGameObject*>(O);
-	if(l_pGO && l_pGO != this) m_blasted.push_back(l_pGO);
+	if(l_pGO && this != l_pGO) m_blasted.push_back(l_pGO);
 }
 
 void CWeaponRPG7Grenade::net_Destroy() 
@@ -521,7 +521,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent()
 
 		CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
-		for(s32 i = 0; i < l_c; i++) 
+		for(s32 i = 0; i < l_c; ++i) 
 		{
 			pStaticPG = xr_new<CParticlesObject>(*m_trailEffects[i],Sector(),false);
 			pStaticPG->SetTransform(l_m);
@@ -582,7 +582,7 @@ void CWeaponRPG7Grenade::UpdateCL()
 				m_state		= stFlying;
 				// остановить двигатель
 				xr_list<CParticlesObject*>::iterator l_it;
-				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+				for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) (*l_it)->Stop();
 			}
 			else
 			{
@@ -598,7 +598,7 @@ void CWeaponRPG7Grenade::UpdateCL()
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
-				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) 
+				for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) 
 							(*l_it)->UpdateParent(XFORM(),vel);
 			}
 		}
@@ -614,7 +614,7 @@ void CWeaponRPG7Grenade::UpdateCL()
 	}
 }
 
-void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\","rpg7","_",s_name,".ogg");
@@ -671,7 +671,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 		R_ASSERT			(D);
 		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
 		R_ASSERT							(l_tpTemporary);
-		l_tpTemporary->m_tNodeID	= AI_NodeID;
+		l_tpTemporary->m_tNodeID	= level_vertex_id();
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");
@@ -713,7 +713,7 @@ void CWeaponRPG7::ReloadMagazine()
 		R_ASSERT			(D);
 		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
 		R_ASSERT							(l_tpTemporary);
-		l_tpTemporary->m_tNodeID	= AI_NodeID;
+		l_tpTemporary->m_tNodeID	= level_vertex_id();
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");
@@ -795,7 +795,7 @@ void CWeaponRPG7::switch2_Fire	()
 		pStaticPG = xr_new<CParticlesObject>("weapons\\rpg_shoot_01",Sector());
 		Fmatrix l_pos; l_pos.set(XFORM()); //l_pos.c.set(p1);
 		pStaticPG->SetTransform(l_pos); pStaticPG->Play();
-	//for(s32 i = 0; i < l_c; i++) {
+	//for(s32 i = 0; i < l_c; ++i) {
 	//}
 
 		// Patch for "previous frame position" :)))

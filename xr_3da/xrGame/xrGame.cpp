@@ -6,33 +6,33 @@
 
 #pragma comment(lib,"ode.lib" )
  
-#include "..\xr_ioconsole.h"
-#include "..\xr_ioc_cmd.h"
-#include "..\customhud.h"
-#include "ai_console.h"
+#include "../xr_ioconsole.h"
+#include "../xr_ioc_cmd.h"
+#include "../customhud.h"
+#include "ai_debug.h"
 #include "Actor_Flags.h"
-#include "ai\\crow\\ai_crow.h"
-#include "ai\\rat\\ai_rat.h"
-#include "ai\\soldier\\ai_soldier.h"
-#include "ai\\stalker\\ai_stalker.h"
-#include "ai\\zombie\\ai_zombie.h"
-#include "ai\\idol\\ai_idol.h"
-#include "ai\\flesh\\ai_flesh.h"
-#include "ai\\chimera\\ai_chimera.h"
-#include "ai\\bloodsucker\\ai_bloodsucker.h"
-#include "ai\\dog\\ai_dog.h"
-#include "ai\\pseudodog\\ai_pseudodog.h"
-#include "ai\\boar\\ai_boar.h"
-#include "ai\\trader\\ai_trader.h"
+#include "ai/crow/ai_crow.h"
+#include "ai/rat/ai_rat.h"
+#include "ai/stalker/ai_stalker.h"
+#include "ai/zombie/ai_zombie.h"
+#include "ai/idol/ai_idol.h"
+#include "ai/flesh/ai_flesh.h"
+#include "ai/chimera/ai_chimera.h"
+#include "ai/bloodsucker/ai_bloodsucker.h"
+#include "ai/dog/ai_dog.h"
+#include "ai/pseudodog/ai_pseudodog.h"
+#include "ai/boar/ai_boar.h"
+#include "ai/trader/ai_trader.h"
 #include "car.h"
 #include "customtarget.h"
-#include "..\fdemorecord.h"
-#include "..\fdemoplay.h"
-#include "a_star.h"
+#include "../fdemorecord.h"
+#include "../fdemoplay.h"
+#include "graph_engine.h"
 #include "game_sv_single.h"
 #include "ai_alife.h"
 #include "HangingLamp.h"
 #include "trade.h"
+#include "actor.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -59,7 +59,7 @@ public:
 class CCC_Restart : public CConsoleCommand {
 public:
 	CCC_Restart(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if(Level().Server) {
 			Level().Server->game->OnRoundEnd("GAME_restarted");
 			Level().Server->game->round = -1;
@@ -136,28 +136,30 @@ public:
 	}
 };
 
+#include "game_graph.h"
+
 class CCC_ALifePath : public CConsoleCommand {
 public:
 	CCC_ALifePath(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (!getAI().bfCheckIfGraphLoaded())
+		if (!ai().get_level_graph())
 			Msg("! there is no graph!");
 		else {
 			int id1=-1, id2=-1;
 			sscanf(args ,"%d %d",&id1,&id2);
-			if ((id1 != -1) && (id2 != -1))
-				if (_max(id1,id2) > (int)getAI().GraphHeader().dwVertexCount - 1)
-					Msg("! there are only %d vertexes!",getAI().GraphHeader().dwVertexCount);
+			if ((-1 != id1) && (-1 != id2))
+				if (_max(id1,id2) > (int)ai().game_graph().header().vertex_count() - 1)
+					Msg("! there are only %d vertexes!",ai().game_graph().header().vertex_count());
 				else
 					if (_min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",_min(id1,id2));
 					else {
 						Sleep				(1);
 						u64 t1x = CPU::GetCycleCount();
-						float fValue = getAI().m_tpAStar->ffFindMinimalPath(id1,id2);
+//						float fValue = ai().m_tpAStar->ffFindMinimalPath(id1,id2);
 						u64 t2x = CPU::GetCycleCount();
 						t2x -= t1x;
-						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,getAI().m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
+//						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,ai().m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
 					}
 			else
 				Msg("! not enough parameters!");
@@ -169,7 +171,7 @@ public:
 class CCC_ALifeListAll : public CConsoleCommand {
 public:
 	CCC_ALifeListAll(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -190,7 +192,7 @@ public:
 class CCC_ALifeListObjects : public CConsoleCommand {
 public:
 	CCC_ALifeListObjects(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -207,7 +209,7 @@ public:
 class CCC_ALifeListEvents : public CConsoleCommand {
 public:
 	CCC_ALifeListEvents(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -224,7 +226,7 @@ public:
 class CCC_ALifeListTasks : public CConsoleCommand {
 public:
 	CCC_ALifeListTasks(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -241,7 +243,7 @@ public:
 class CCC_ALifeListTerrain : public CConsoleCommand {
 public:
 	CCC_ALifeListTerrain(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -258,7 +260,7 @@ public:
 class CCC_ALifeListSpawns : public CConsoleCommand {
 public:
 	CCC_ALifeListSpawns(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -338,7 +340,7 @@ public:
 class CCC_ALifeSpawnInfo : public CConsoleCommand {
 public:
 	CCC_ALifeSpawnInfo(LPCSTR N) : CConsoleCommand(N)  { };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 //		if (Level().game.type == GAME_SINGLE) {
 //			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 //			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
@@ -365,10 +367,10 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (getAI().bfCheckIfGraphLoaded()) {
+			if (ai().get_level_graph()) {
 				u32 id1 = u32(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= getAI().GraphHeader().dwVertexCount)
+				if (id1 >= ai().game_graph().header().vertex_count())
 					Msg("Invalid task ID! (%d)",id1);
 				else {
 					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);
@@ -591,7 +593,7 @@ public:
 class CCC_ALifeSave : public CConsoleCommand {
 public:
 	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded)
@@ -630,7 +632,7 @@ public:
 class CCC_ALifeReload : public CConsoleCommand {
 public:
 	CCC_ALifeReload(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		if (Level().game.type == GAME_SINGLE)
 			Level().IR_OnKeyboardPress(DIK_F7);
 		else
@@ -681,7 +683,7 @@ public:
 class CCC_FlushLog : public CConsoleCommand {
 public:
 	CCC_FlushLog(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
+	virtual void Execute(LPCSTR /**args/**/) {
 		FlushLog();
 		Msg		("! Log file has been saved successfully!");
 	}
@@ -689,11 +691,12 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "ui\\xrXMLParser.h"
+#include "ui/xrXMLParser.h"
+#include "ai_space.h"
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
+BOOL APIENTRY DllMain( HANDLE /**hModule/**/, 
                        u32  ul_reason_for_call, 
-                       LPVOID lpReserved
+                       LPVOID /**lpReserved/**/
 					 )
 {
 	switch (ul_reason_for_call)
@@ -766,14 +769,17 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 		// keyboard binding
 		CCC_RegisterInput			();
-//		HMODULE h = LoadLibrary("x:\\xrXMLParser.dll");
+//		HMODULE h = LoadLibrary("x:/xrXMLParser.dll");
 //		h=h;
-		XML_DisableStringCaching();
+		XML_DisableStringCaching	();
+		VERIFY						(!g_ai_space);
+		g_ai_space					= xr_new<CAI_Space>();
 		}
 		break;
 	case DLL_PROCESS_DETACH:
-		xr_delete			(g_tpAI_Space);
-		XML_CleanUpMemory();
+		XML_CleanUpMemory			();
+		VERIFY						(g_ai_space);
+		xr_delete					(g_ai_space);
 		break;
 	}
     return TRUE;
@@ -879,7 +885,7 @@ extern "C" {
 			case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
 			case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
 			case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
-			case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
+			case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Stalker>();			break;
 			case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
 			case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
 			case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
@@ -943,6 +949,11 @@ extern "C" {
 			case  CLSID_OBJECT_W_SILENCER:	P = xr_new<CSilencer>();			break;
 			case  CLSID_OBJECT_W_GLAUNCHER:	P = xr_new<CGrenadeLauncher>();		break;
 
+			//Weapons Add-on
+			case  CLSID_OBJECT_W_SCOPE:		P = xr_new<CScope>();				break;
+			case  CLSID_OBJECT_W_SILENCER:	P = xr_new<CSilencer>();			break;
+			case  CLSID_OBJECT_W_GLAUNCHER:	P = xr_new<CGrenadeLauncher>();		break;
+
 			// Inventory
 			case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
 			case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
@@ -992,6 +1003,7 @@ extern "C" {
 		P->SUB_CLS_ID	= cls;
 		return P;
 	}
+
 	DLL_API void		__cdecl	xrFactory_Destroy		(DLL_Pure* O)
 	{
 		xr_delete(O);

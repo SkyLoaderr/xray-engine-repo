@@ -117,7 +117,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 {
 	CMotionDef* M		= m_pHUD->animGet(prefix);
 	if (M)				lst.push_back(M);
-	for (int i=0; i<MAX_ANIM_COUNT; i++)
+	for (int i=0; i<MAX_ANIM_COUNT; ++i)
 	{
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s%d",prefix,i);
@@ -127,7 +127,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 	R_ASSERT2(!lst.empty(),prefix);
 }
 
-void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
+void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name,".ogg");
@@ -339,7 +339,7 @@ void CWeapon::Load		(LPCSTR section)
 	{
 		string128		_ammoItem;
 		int				count		= _GetItemCount	(S);
-		for (int it=0; it<count; it++)	
+		for (int it=0; it<count; ++it)	
 		{
 			_GetItem				(S,it,_ammoItem);
 			m_ammoTypes.push_back	(_ammoItem);
@@ -457,7 +457,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	{
 		CCartridge l_cartridge; 
 		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-		for(int i = 0; i < iAmmoElapsed; i++) 
+		for(int i = 0; i < iAmmoElapsed; ++i) 
 			m_magazine.push(l_cartridge);
 	}
 	
@@ -642,7 +642,7 @@ int CWeapon::Ammo_eject		()
 	return	save;  
 }
 
-void CWeapon::Ammo_add(int iValue) 
+void CWeapon::Ammo_add(int /**iValue/**/) 
 {
 	//SpawnAmmo();
 	//iAmmoCurrent+=iValue;
@@ -688,7 +688,7 @@ void CWeapon::UpdateCL		()
 
 			// Search 2 keyframes for interpolation
 			int select		= -1;
-			for (u32 id=0; id<NET.size()-1; id++)
+			for (u32 id=0; id<NET.size()-1; ++id)
 			{
 				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 			}
@@ -769,7 +769,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 	XFORM().mul	(trans,m_Offset);
 }
 
-void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (!hWallmark)	return;
 	
@@ -821,7 +821,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	BOOL bResult = false;
 
-	for(int i = 0; i < l_cartridge.m_buckShot; i++) 
+	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
 	{
 		dir1.random_dir(dir, fireDispersionBase * l_cartridge.m_kDisp, Random);
 
@@ -941,7 +941,7 @@ void CWeapon::OnDrawFlame	()
 		float k=fFlameTime/FLAME_TIME;
 		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
 		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++)
+		for (int i=0; i<iFlameDiv; ++i)
 		{
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
@@ -1051,9 +1051,9 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 
 	if(!ammoSect) 
 		ammoSect = *m_ammoTypes[l_type/*m_ammoType*/]; 
-	//m_ammoType++; m_ammoType %= m_ammoTypes.size();
+	//++m_ammoType; m_ammoType %= m_ammoTypes.size();
 	
-	l_type++; 
+	++l_type; 
 	l_type %= m_ammoTypes.size();
 
 	// Create
@@ -1071,7 +1071,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 	D->ID_Phantom = 0xffff;
 	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
-	l_pA->m_tNodeID	= AI_NodeID;
+	l_pA->m_tNodeID	= level_vertex_id();
 	
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;
@@ -1106,13 +1106,13 @@ int CWeapon::GetAmmoCurrent()
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
 
-	for(int i = 0; i < (int)m_ammoTypes.size(); i++) 
+	for(int i = 0; i < (int)m_ammoTypes.size(); ++i) 
 	{
 		LPCSTR l_ammoType = *m_ammoTypes[i];
 //		if(dynamic_cast<CActor*>(H_Parent())) 
 		{
 			TIItemList &l_list = m_pInventory->m_belt;
-			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 			{
 				CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
 				
@@ -1124,7 +1124,7 @@ int CWeapon::GetAmmoCurrent()
 		}
 		
 		TIItemList &l_list = m_pInventory->m_ruck;
-		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 		{
 			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
 			if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
@@ -1186,35 +1186,35 @@ bool CWeapon::Detach(const char* item_section_name)
 
 bool CWeapon::IsGrenadeLauncherAttached()
 {
-	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0) || 
-			m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonPermanent;
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)) || 
+			CSE_ALifeItemWeapon::eAddonPermanent == m_eGrenadeLauncherStatus;
 }
 bool CWeapon::IsScopeAttached()
 {
-	return (m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0) || 
-			m_eScopeStatus == CSE_ALifeItemWeapon::eAddonPermanent;
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eScopeStatus &&
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope)) || 
+			CSE_ALifeItemWeapon::eAddonPermanent == m_eScopeStatus;
 
 }
 bool CWeapon::IsSilencerAttached()
 {
-	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0) || 
-			m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonPermanent;
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eSilencerStatus &&
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer)) || 
+			CSE_ALifeItemWeapon::eAddonPermanent == m_eSilencerStatus;
 }
 
 bool CWeapon::GrenadeLauncherAttachable()
 {
-	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus);
 }
 bool CWeapon::ScopeAttachable()
 {
-	return (m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eScopeStatus);
 }
 bool CWeapon::SilencerAttachable()
 {
-	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eSilencerStatus);
 }
 
 void CWeapon::UpdateAddonsVisibility()
