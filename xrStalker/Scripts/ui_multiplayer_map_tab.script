@@ -16,8 +16,6 @@ end
 class "map_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)													   
 
 function map_tab:__init() super()
-	self:InitControls()
-	self:InitCallbacks()
 end
 
 function map_tab:__finalize()
@@ -48,6 +46,8 @@ function map_tab:InitControls(x_pos, y_pos)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
+	
+	self:InitCallbacks()
 end
 
 function map_tab:InitCallbacks()

@@ -61,10 +61,8 @@ function multiplayer_create_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
-	local frame = CUIFrameWindow()
-	frame:SetAutoDelete(true)
-	frame:SetWindowName("tab_frame")
-	frame:Init("ui\\ui_frame_very_small", tab_rect.x, tab_rect.y, 490, tab_rect.height)
+	local frame = ui_multiplayer_map_tab.map_tab()
+	frame:InitControls(self.left_align_x, self.top_align_y)
 	self.main_frame:AttachChild(frame)
 	
 end
