@@ -191,14 +191,14 @@ function fract:print()
 		printf("id: %d name: %s", k, v.object:name())
 	end
 end
-function fract:loadJob(name) -- загружает список заданий
+function fract:loadJob(name)
 	if name == "dolg" then
 		local t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_1",
@@ -207,9 +207,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_2",
@@ -218,9 +218,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_3",
@@ -229,9 +229,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_4",
@@ -240,9 +240,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_5",
@@ -251,9 +251,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_6",
@@ -262,9 +262,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			running = false,
 			search_light = nil,
 			path_main = "dolg_sleep_6",
@@ -273,9 +273,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "bodyguard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 2,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			path_main = "dolg_guard_2_main",
 			path_side = "dolg_guard_2_side",
 			path_guard = "dolg_guard_2_guard",
@@ -285,9 +285,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "bodyguard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 2,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			path_main = "dolg_guard_1_main",
 			path_side = "dolg_guard_1_side",
 			path_guard = "dolg_guard_1_guard",
@@ -297,9 +297,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "bodyguard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 2,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			path_main = "dolg_guard_3_main",
 			path_side = "dolg_guard_3_side",
 			path_guard = "dolg_guard_3_4_guard",
@@ -309,9 +309,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "bodyguard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 2,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0 },
 			path_main = "dolg_guard_4_main",
 			path_side = "dolg_guard_4_side",
 			path_guard = "dolg_guard_3_4_guard",
@@ -321,13 +321,12 @@ function fract:loadJob(name) -- загружает список заданий
 	end
  
 	if name == "blockpost" then
-		-- общие для всех состояний
 		local t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 9,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			running = false,
 			search_light = nil, --' "blockpost_search_light",
 			path_main = "blockpost_guard_light",
@@ -336,9 +335,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 10,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_center",
@@ -347,86 +346,85 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "patrol",
 			object = nil,
 			begin = nil, 
-			idle = 6*60*60*1000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,
 			prior = 8,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			patrol_path = "blockpost_patrol_0",
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
-			idle = 6*60*60*1000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,
 			prior = 7,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
-			idle = 6*60*60*1000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,
 			prior = 7,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_1"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_2"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_3"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_4"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_5"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 1,
-			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			state = { 0, 1, 2},
 			path_main = "blockpost_sleep_6"}
 		table.insert(self.Job, t)			
 
-		-- только для спокойного состояния и для поиска вора
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 0, 2 }, -- в каких состояниях это задание существует
+			state = { 0, 2 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_left",
@@ -435,22 +433,21 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 0, 2 }, -- в каких состояниях это задание существует
+			state = { 0, 2 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_right",
 			path_hideout = "blockpost_guard_right" }
 		table.insert(self.Job, t)
 
-		-- только для тревоги (состояние 1)
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 1 }, -- в каких состояниях это задание существует
+			state = { 1 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_left",
@@ -459,9 +456,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 1 }, -- в каких состояниях это задание существует
+			state = { 1 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_right",
@@ -470,9 +467,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 1 }, -- в каких состояниях это задание существует
+			state = { 1 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_house",
@@ -481,22 +478,21 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 5,
-			state = { 1 }, -- в каких состояниях это задание существует
+			state = { 1 },
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_center",
 			path_hideout = "blockpost_alarm_center" }
 		table.insert(self.Job, t)
 		
-		-- Только для поиска украденного ящика
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 2 }, -- в каких состояниях это задание существует
+			state = { 2 },
 			running = true,
 			search_light = nil,
 			path_main = "blockpost_search1",
@@ -505,9 +501,9 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
-			idle = 0,	-- раз в какое время запускается работа
+			idle = 0,
 			prior = 6,
-			state = { 2 }, -- в каких состояниях это задание существует
+			state = { 2 },
 			running = true,
 			search_light = nil,
 			path_main = "blockpost_search2",
@@ -516,14 +512,14 @@ function fract:loadJob(name) -- загружает список заданий
 	end
 end
 function fract:setJob(npc, job) 
-	-- удаляем у этого npc все работы (в сторадже)
 	self:clearAllJob(npc)
 
-	--устанавливаем данные для текущей работы	
 	if job.name == "guard" then
 		job.object = npc
 		job.begin = game.time()
-	        xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
+		printf("JOB %s", job.path_main)
+		if job.running == true then printf("running") else printf("walking") end
+	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
 	end
 	if job.name == "bodyguard" then
 		job.object = npc
@@ -545,7 +541,7 @@ function fract:setJob(npc, job)
 		if nn ~= nil then
 			job.object = npc
 			job.begin = game.time()
-		        xr_follower.set_follower(npc, true, nn, job.escape_path)			
+		    xr_follower.set_follower(npc, true, nn, job.escape_path)			
 		end
 	end
 end
