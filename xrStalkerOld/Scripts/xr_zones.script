@@ -88,31 +88,7 @@ function zone_binder:net_spawn( server_object )
 	end
 
 	if ini:section_exist( "tips" ) then
-		if ini:line_exist("tips", "name") then
-			local distance = 2
-			if 	ini:line_exist("tips", "distance") then
-				distance = ini:r_s32("tips", "distance")
-			end
-			local type = nil
-			if 	ini:line_exist("tips", "type") then
-				type = ini:r_string("tips", "type")
-			end
-			local sender = nil
-			if 	ini:line_exist("tips", "sender") then
-				sender = ini:r_string("tips", "sender")
-			end
-			
-			level_tips.fill_tips(self.object, 
-								ini:r_string("tips", "name"), 
-								distance,
-								type,
-								sender,
-								xr_logic.cfg_get_condlist(ini,"tips","conditions",self.object))
-		end
-	end
-
-	if ini:section_exist("no_weapon") then
-		self.managers.no_weapon = CZoneNotWeapon(self.object)
+		utils.abort( "script zone %s: You must use restrictor instead of sctript zone for level tips", self.object:name() )
 	end
 
 	return true
@@ -170,30 +146,4 @@ function zone_binder:on_leave( zone, obj )
 
 	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( self.managers, function( k, v ) if v.on_leave then v:on_leave( obj ) end end )
-end
-
-
-----------------------------------------------------------------------------------------------------------------------
--- Класс CZoneNotWeapon. При входе игрока в зону, у него убирается оружие. При выходы - достается
-----------------------------------------------------------------------------------------------------------------------
-class "CZoneNotWeapon"
-function CZoneNotWeapon:__init(zone_object)
-	// Если уже есть актер и он в зоне, то убераем оружие
-	if( level.actor() and 
-	    zone_object:active_zone_contact(level.actor():id())
-	   ) then
-		level.actor():hide_weapon()
-	end
-end
-
-function CZoneNotWeapon:on_enter(obj)
-	if(obj:id() == get_actor_id()) then
-		obj:hide_weapon()
-	end
-end
-
-function CZoneNotWeapon:on_leave(obj)
-	if(obj:id() == get_actor_id()) then
-		obj:restore_weapon()
-	end
 end

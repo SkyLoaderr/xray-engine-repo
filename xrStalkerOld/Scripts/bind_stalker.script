@@ -1,5 +1,3 @@
-module("level_tips")
-
 function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end
@@ -52,8 +50,8 @@ if false then
 	lasttime = game.time()
 end
 
-	--' Выдача подсказок
-	level_tips.get_tips(self.object)
+	--' обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
+	bind_restrictor.update( self.object )
 
 	--' Сюжет
 	level_tasks.proceed(self.object)

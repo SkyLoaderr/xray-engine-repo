@@ -1,7 +1,22 @@
 --[[------------------------------------------------------------------------------------------------
 Space restrictor binder
 Чугай Саша
+
+Примечания:
+	- обновлений у рестрикторов нету, поэтому для тех, кому надо, актёр вызывает искусственно на своём обновлении
+	- callbacks вызывается только на актёра
 --------------------------------------------------------------------------------------------------]]
+
+module "level_tips"
+module "zone_no_weapon"
+
+local updatable_binders = {}    -- биндеры, которые требуют обновлений (update)
+
+function update( actor )
+	for i, v in updatable_binders do
+		v:update( actor )
+	end
+end
 
 function bind( obj )
 	obj:bind_object( restrictor_binder( obj ) )
@@ -20,11 +35,57 @@ function restrictor_binder:net_spawn(data)
 
 	db.add_zone( self.object )
 
+	self.actor_inside = db.actor ~= nil and self.object:inside( db.actor:position() )
+	self.managers     = {}
+
+	local ini = self.object:spawn_ini()
+
+	if not ini then
+		return true
+	end
+
+	local need_update = false
+
+	if ini:section_exist( "tips" ) then
+		self.managers.level_tip = level_tips.level_tip( self.object, self, ini )
+		need_update = true
+	end
+
+	if ini:section_exist("no_weapon") then
+		self.managers.no_weapon = zone_no_weapon.CZoneNoWeapon( self.object, self, ini )
+		need_update = true
+	end
+
+	if need_update then
+		updatable_binders[self.object:id()] = self
+	end
+
 	return true
 end
 
 function restrictor_binder:net_destroy()
+	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
+
 	db.del_zone( self.object )
 
+	updatable_binders[self.object:id()] = nil
+
 	object_binder.net_destroy(self)
+end
+
+-- вызывается из обновления актёра!
+function restrictor_binder:update( actor )
+	if self.object:inside( actor:position() ) then
+		if not self.actor_inside then
+			self.actor_inside = true
+			table.foreach( self.managers, function( k, v ) if v.on_enter then v:on_enter( actor ) end end )
+		end
+	else
+		if self.actor_inside then
+			self.actor_inside = false
+			table.foreach( self.managers, function( k, v ) if v.on_leave then v:on_leave( actor ) end end )
+		end
+	end
+
+	table.foreach( self.managers, function( k, v ) if v.update then v:update() end end )
 end

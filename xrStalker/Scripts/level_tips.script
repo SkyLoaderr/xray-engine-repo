@@ -1,31 +1,30 @@
-tips = {}
+--[[------------------------------------------------------------------------------------------------
+Подсказки на уровне
+Автор: Диденко Руслан (Stohe)
+Переделка под рестрикторы: Чугай Саша (Chugai)
+--------------------------------------------------------------------------------------------------]]
 
-function fill_tips(object, name, distance, type, sender, cond)
-	if tips[object:id()..name] == nil then
-		t = { info = name,
-			position = object:position(),
-			radius = distance,
-			type = type,
-			sender = sender,
-			conditions = cond}
-		tips[object:id()..name] = t
-	end	
+class "level_tip"
+
+function level_tip:__init( zone, binder, ini )
+	self.object = zone
+	self.binder = binder
+
+	self.info   = utils.cfg_get_string( ini, "tips", "name",   zone, true,  "", "" )
+	self.type   = utils.cfg_get_string( ini, "tips", "type",   zone, false, "", "news" )
+	self.sender = utils.cfg_get_string( ini, "tips", "sender", zone, false, "", nil )
+	self.conditions = xr_logic.cfg_get_condlist( ini, "tips", "conditions", zone )
 end
 
-function get_tips(actor)
-	--print_table(tips)
-	for k,v in tips do
-		if actor:position():distance_to(v.position) <= v.radius then
-			if v.conditions == nil or
-				xr_logic.pick_section_from_condlist(actor,nil,v.conditions.condlist) ~= nil 
-			then
-				if v.type == "tips" then
-					news_manager.send_tip(actor, v.info, nil, v.sender)
-				elseif v.type == "news" then
-					news_manager.send_news(actor, v.info)
-				end
-				tips[k] = nil				
-			end
+function level_tip:update()
+	if self.binder.actor_inside and
+	   ( self.conditions == nil or
+	   xr_logic.pick_section_from_condlist( db.actor, nil, self.conditions.condlist ) ~= nil )
+	then
+		if self.type == "tips" then
+			news_manager.send_tip( db.actor, self.info, nil, self.sender )
+		elseif self.type == "news" then
+			news_manager.send_news( db.actor, self.info )
 		end
-	end 
+	end
 end
