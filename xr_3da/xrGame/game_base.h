@@ -53,8 +53,10 @@ struct	game_PlayerState
 	game_PlayerState();
 	~game_PlayerState();
 
+#ifndef AI_COMPILER
 	void	net_Export		(NET_Packet& P);
 	void	net_Import		(NET_Packet& P);
+#endif
 
 	//selected weapons & etc.
 	u8			Slots[8];
