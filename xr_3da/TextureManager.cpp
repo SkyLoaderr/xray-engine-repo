@@ -258,7 +258,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 
 	// Search equal in shaders array
 	for (DWORD it=0; it<shaders.size(); it++)
-		if (S.equal(shaders[it]))	{
+		if (S.equal(*(shaders[it])))	{
 			shaders[it]->dwReference	++;
 			return shaders[it];
 		}

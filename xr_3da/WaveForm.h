@@ -1,5 +1,6 @@
 #pragma once
 
+#pragma pack(push,4)
 struct ENGINE_API WaveForm
 {
 	enum EFunction
@@ -57,3 +58,4 @@ public:
 	}
 };
 
+#pragma pack(pop)
