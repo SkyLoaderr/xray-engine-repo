@@ -12,18 +12,22 @@ function save_dialog:__finilize()
 end
 
 function save_dialog:InitControls()
-	self:Init(100,100,257,271) --init self position and size
+	local screen = {width = 1024,height = 768}	
+	local main_rect = {x = 0, x = 0, width = 800, height = 600}
 	
-	local screen_height = 768
-	local screen_width  = 1024
+	main_rect.x = (screen.width - main_rect.width)/2
+	mian_rect.y = (screen.height - main_rect.height)/2
 	
+	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height) --init self position and size
+	
+	
+	
+	-- Init Mant Static	
 		
-	local txt_main   = CUIStatic()
-	txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
-	txt_main:SetWindowName("static_0")
-	txt_main:SetText("Save Dialog")
-	txt_main:SetTextAlign(CGameFont.alCenter)
-	txt_main:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
+	local main_static = CUIStatic()
+	main_static:SetAutoDelete(true)              --parent will delete this item on destructor
+	main_static:SetWindowName("static_0")	
+	main_static:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
     --textures name, root is Gamedata\Textures folder
 	txt_main:ClipperOn() --clip texture by window region
 	self:AttachChild(txt_main)
