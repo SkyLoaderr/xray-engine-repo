@@ -33,6 +33,8 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	R_ASSERT				(po);
 	inherited::net_Spawn	(DC);
 
+	m_flags					= po->flags;
+//	m_flags.set				(flSpawnCopy,FALSE);
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 	m_startup_anim=po->startup_animation;
@@ -237,8 +239,9 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 
 void CPhysicObject::net_Export(NET_Packet& P)
 {
-	inherited::net_Export(P);
+	inherited::net_Export			(P);
 	R_ASSERT						(Local());
+	P.w_u8							(m_flags.get());
 	//m_pPhysicsShell->net_Export(P);
 }
 
@@ -247,6 +250,7 @@ void CPhysicObject::net_Import(NET_Packet& P)
 	inherited::net_Import(P);
 	//m_pPhysicsShell->net_Import(P);
 	R_ASSERT						(Remote());
+	m_flags.set						(P.r_u8());
 }
 
 

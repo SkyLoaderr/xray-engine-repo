@@ -13,10 +13,13 @@ class CPhysicObject :
 	float				m_mass;
 	bool				b_recalculate;
 	bool				b_removing;
-static u32				remove_time;
+	static u32			remove_time;
 	u32					m_unsplit_time;
 	PHSHELL_PAIR_VECTOR m_unsplited_shels;
 	ref_str				m_startup_anim;
+	flags8				m_flags;
+
+private:
 	//CPhysicObject*		m_source;
 	void			CreateSkeleton  (CSE_ALifeObjectPhysic	*po);
 	void			CreateBody		(CSE_ALifeObjectPhysic	*po);
