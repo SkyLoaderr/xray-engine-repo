@@ -1,12 +1,6 @@
 #ifndef __XR_TOKENS_H__
 #define __XR_TOKENS_H__
 
-struct ENGINE_API xr_token
-{
-	const char	*name;
-	int 		id;
-};
-
 extern ENGINE_API xr_token					menu_style_token		[];
 extern ENGINE_API xr_token					menu_type_token			[];
 extern ENGINE_API xr_token					BOOL_token				[];
