@@ -157,6 +157,11 @@ end
 --------
 function action_follow:finalize ()
     action_base.finalize (self)
+    if self.index ~= nil then
+       table.remove (db.storage[self.st.leader_id].followers, self.index)
+       printf ("REMOVED !!!")
+       self.index = nil
+    end   
 end
 --------
 function action_follow:calculate_position ()
@@ -269,10 +274,8 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     manager:add_action (operators["attendant_follow"], action)
     military_radio.add (npc, action)
     
-    --xr_logic.subscribe_action_for_events (npc, storage, action)
     action = manager:action     (xr_actions_id.alife)
     action:add_precondition     (world_property (properties["attendant_follow"], false))
-    
     
 end
 
