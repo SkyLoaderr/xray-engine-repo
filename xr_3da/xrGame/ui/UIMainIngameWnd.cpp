@@ -1016,8 +1016,8 @@ void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCS
 		pItem->InitCharacter(pSender);
 
 	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
-	//if (pItem)	
-	//	pItem->InitCharacter(pSender);	
+	if (pItem)	
+		pItem->InitCharacter(pSender);	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1035,12 +1035,12 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 
 	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
 
-	//if (pItem)
-	//{
-	//	pItem->UIIcon.InitTexture(textureName);
-	//	pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-	//	pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
-	//}
+	if (pItem)
+	{
+		pItem->UIIcon.InitTexture(textureName);
+		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+		pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
