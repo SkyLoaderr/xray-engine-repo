@@ -187,6 +187,8 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Debug		()
 {
+	return;
+	
 	// Texture
 	D3DLOCKED_RECT		R;
 	R_CHK				(m_pDBG->LockRect(0,&R,0,0));
