@@ -9,8 +9,7 @@ void CPoltergeist::LoadFlame(LPCSTR section)
 
 	m_flame_prepare.particle	= pSettings->r_string(section,"particle_fireball_perpare");
 	m_flame_fire.particle		= pSettings->r_string(section,"particle_fireball_fire");
-	m_flame_finalize.particle	= pSe
-		ttings->r_string(section,"particle_fireball_finalize");
+	m_flame_finalize.particle	= pSettings->r_string(section,"particle_fireball_finalize");
 }
 
 void CPoltergeist::StartFlame()
