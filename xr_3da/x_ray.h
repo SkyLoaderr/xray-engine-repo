@@ -17,10 +17,10 @@ class ENGINE_API CApplication	:
 	};
 	
 private:
-	Shader*					ll_hLogo;
-	Shader*					ll_hLogo1;
-	Shader*					ll_hLogo2;
-	SGeometry*				ll_hGeom;
+	ref_shader				ll_hLogo;
+	ref_shader				ll_hLogo1;
+	ref_shader				ll_hLogo2;
+	ref_geom				ll_hGeom;
 	u32						ll_dwReference;
 private:
 	EVENT					eQuit;

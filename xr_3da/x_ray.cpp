@@ -257,7 +257,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 
 		// start any console command
 		if (strstr(Core.Params,"-$")) {
-			string64			buf,cmd,param;
+			string128			buf,cmd,param;
 			sscanf				(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
 			strconcat			(buf,cmd," ",param);
 			Console.Execute		(buf);
@@ -286,11 +286,6 @@ void CApplication::LoadBegin()
 void CApplication::LoadEnd()
 {
 	ll_dwReference--;
-	if (0==ll_dwReference) {
-		Device.Shader.Delete	(ll_hLogo2);
-		Device.Shader.Delete	(ll_hLogo1);
-		Device.Shader.DeleteGeom	(ll_hGeom);
-	}
 }
 
 void CApplication::LoadTitle	(char *S, char *S2)
@@ -304,12 +299,12 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	u32	C						= 0xffffffff;
 	u32	_w						= Device.dwWidth;
 	u32	_h						= Device.dwHeight;
-	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom->vb_stride,Offset);
+	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
 	pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
 	pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
 	pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	0+EPS_S, 1, C, 1, 1);	pv++;
 	pv->set						(float(_w+EPS_S),	EPS_S,				0+EPS_S, 1, C, 1, 0);	pv++;
-	RCache.Vertex.Unlock		(4,ll_hGeom->vb_stride);
+	RCache.Vertex.Unlock		(4,ll_hGeom.stride());
 	
 	RCache.set_Shader			(ll_hLogo);
 	RCache.set_Geometry			(ll_hGeom);
@@ -331,8 +326,8 @@ void CApplication::LoadTitle	(char *S, char *S2)
 
 void CApplication::LoadSwitch()
 {
-	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
-	else						ll_hLogo = ll_hLogo1;
+	if (ll_hLogo() == ll_hLogo1())	ll_hLogo = ll_hLogo2;
+	else							ll_hLogo = ll_hLogo1;
 }
 
 void CApplication::OnFrame( )
