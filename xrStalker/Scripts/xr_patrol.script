@@ -16,6 +16,26 @@ local anim_pris = {
                   {anim = "prisluh_2", flag = false}
                   }
 
+local anim_raid = {
+                  {anim = "spetsnaz_0", flag = false},
+                  {anim = "spetsnaz_1", flag = false},
+                  {anim = "spetsnaz_2", flag = false},
+                  {anim = "spetsnaz_3", flag = false},
+                  {anim = "spetsnaz_4", flag = false},
+                  {anim = "spetsnaz_5", flag = false},
+                  {anim = "spetsnaz_6", flag = false},
+                  {anim = "spetsnaz_7", flag = false}
+                  }
+                  
+local anim_find_stop = {
+                  {anim = "poisk_idle_0", flag = true},                  
+                  {anim = "poisk_idle_1", flag = true},                  
+                  {anim = "poisk_idle_2", flag = true},
+                  {anim = "poisk_idle_3", flag = true},
+                  {anim = "poisk_idle_4", flag = true},
+                  {anim = "poisk_idle_5", flag = true}
+                  }
+
 ---------------------------------------------------------------------------------------------------------------------
 -- Sounds id's
 ---------------------------------------------------------------------------------------------------------------------
@@ -68,6 +88,18 @@ function evaluator_complete:__init (name, storage) super ()
 end
 function evaluator_complete:evaluate ()
 	return not (self.a.enabled == true)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Окончание рейда
+class "evaluator_raid" (property_evaluator)
+function evaluator_raid:__init (name, storage) super ()
+	self.a = storage
+end
+--------------
+function evaluator_raid:evaluate ()
+    return not (self.a.raid_enabled == true)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -231,7 +263,8 @@ function action_single_patrol:process_radio ()
              self.object:add_animation ("raciya_4", true)
              return false
           else
-             self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+             xr_sounds.play_sound (self.object, 0, "commander_radio", nil, self.current_phrase)
+             --self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
              self.current_phrase = self.current_phrase + 1
           end   
        return false
@@ -342,6 +375,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
     end   
     
     if ptr:flag (index, 4) and self.a.raid_enabled == true then
+       xr_motivator.storage[self.object:id()].follower.raid_enabled = true
        local size = table.getn (xr_motivator.storage[self.object:id()].followers)
        if size == 0 then return end
        for a = 1, size, 1 do
@@ -396,6 +430,176 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 
 
+-- рейд
+class "action_raid" (action_base)
+--------------
+function action_raid:__init (name, storage) super (nil, name)
+	self.a = storage
+    self.current_animation = 0
+    self.move_type = move.walk
+    self.body_state = move.standing
+    self.mental_state = anim.free
+    self.stage = 0 
+    self.in_find = false
+end
+--------------
+function action_raid:initialize ()
+    action_base.initialize (self)
+    
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (self.body_state)
+    self.object:set_movement_type         (self.move_type)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (self.a.raid_path, patrol.nearest, patrol.continue, true)
+    self.object:set_mental_state          (self.mental_state)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    self.stage = 0
+    self.in_find = false
+end
+--------------
+function action_raid:execute ()
+    action_base.execute                 (self)
+    if self.stage == 0 then
+       return  
+    elseif self.stage == 1 then
+           if self.object:animation_count () == 0 then
+              self.object:set_body_state            (self.body_state)
+              self.object:set_movement_type         (self.move_type)
+              self.object:set_mental_state          (self.mental_state)
+              if self.in_find == true then
+                 local num = math.random (1, 4)
+                 self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+                 self.stage = 2
+              else
+                 self.stage = 0   
+              end   
+           end
+    elseif self.stage == 2 then
+           self:update_stage2 ()
+    end      
+           
+end
+--------------
+function action_raid:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:clear_callback (game_object.movement)
+end
+--------------
+function action_raid:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+--------------
+function action_raid:update_stage2 ()
+    if self.object:animation_count () >= 2 then return end
+    local num = math.random (1, 4)
+    self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+end
+--------------
+function action_raid:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    
+    local ptr = patrol (self.object:patrol ())
+    if ptr:flag (index, 4) == true then
+       self.a.raid_enabled = false
+       return
+    end   
+    
+    if ptr:flag (index, 8) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.walk
+       self.body_state = move.standing
+       self.mental_state = anim.free
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.walk)
+       self.object:set_mental_state          (anim.free)
+       return
+    end
+
+    if ptr:flag (index, 9) == true then
+       self.object:set_movement_type (move.stand)
+       self.body_state = move.standing
+       self.move_type = move.run
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+    
+    if ptr:flag (index, 10) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.run
+       self.body_state = move.crouch
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.crouch)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+        
+    if ptr:flag (index, 11) == true then
+       self.object:set_movement_type (move.stand)
+       self.object:set_mental_state (anim.free)
+       local num
+       if self.in_find == false then
+          if self.body_state == move.crouch then     
+             num = math.random (1, 4)  
+          else
+             num = math.random (5, 8)
+          end
+          self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
+       else
+          num = math.random (1, 6)
+          self.object:clear_animations ()
+          self.object:add_animation (anim_find_stop[num].anim,  anim_find_stop[num].flag)
+       end    
+       self.stage = 1
+       return
+    end
+    
+    if ptr:flag (index, 12) == true then
+       self.in_find = true
+       --self.move_type = move.run
+       --self.body_state = move.crouch
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.crouch)
+       --self.object:set_movement_type         (move.run)
+       --self.object:set_mental_state          (anim.danger)
+       --self.stage = 2
+       --local num = math.random (1, 4)
+       --self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+       return 
+    end   
+    
+    if ptr:flag (index, 13) == true then
+       --self.move_type = move.walk
+       --self.body_state = move.standing
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.standing)
+       --self.object:set_movement_type         (move.walk)
+       --self.object:set_mental_state          (anim.danger)
+       --self.object:clear_animations ()
+       self.in_find = false
+       --self.stage = 0
+    end   
+        
+end
+
+
 ----------------------------------------------------------------------------------------------------------------------
 --patrol binder
 ----------------------------------------------------------------------------------------------------------------------
@@ -404,6 +608,12 @@ function add_to_binder(obj)
 	local operators		= {}
 	local properties	= {}
 
+    xr_sounds.load_sounds (obj)
+--    local t = xr_sounds.create_sound_constructor ("commander_radio", 1)
+
+--    for a = 1, table.getn (t.sounds), 1 do
+--        printf ("NAMESPACE %d, ID %d", t.sounds[a].pack, t.sounds[a].id)
+--    end        
 
     obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
     obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
@@ -417,25 +627,93 @@ function add_to_binder(obj)
     obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
     obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
     obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
-   
     
     printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
     
 	properties["complete"]           = xr_evaluators_id.sidor_patrol_base_property + 0
+	properties["raid"]               = xr_evaluators_id.sidor_patrol_base_property + 1
 
  	operators["single_patrol"]       = xr_actions_id.sidor_act_patrol + 0
+	operators["raid"]                = xr_actions_id.sidor_act_patrol + 1
 
   
 	local manager  = obj:motivation_action_manager ()
   	manager:add_evaluator (properties["complete"], this.evaluator_complete ("property_complete", xr_motivator.storage[obj:id()].patrol))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
     
   	local action = this.action_single_patrol ("action_single_patrol", xr_motivator.storage[obj:id()].patrol)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["complete"],        false))
+    action:add_precondition         (world_property (properties["raid"],            true))
    	action:add_effect           	(world_property (properties["complete"],        true))
    	manager:add_action              (operators["single_patrol"], action)
 
+    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition     (world_property (properties["raid"],            false))
+    action:add_effect           (world_property (properties["raid"],            true))
+    manager:add_action          (operators["raid"], action)
+
    	action = manager:action (stalker_ids.action_puzzle_solver)
    	action:add_precondition (world_property (properties["complete"],  true))   	
+end
+----------------------------------------------------------------------------------------------------------------------
+function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_path)
+	local char_ini = npc:spawn_ini()
+	local st = xr_motivator.storage[npc:id()].patrol
+	
+    if enabled == nil then
+       if char_ini:line_exist("patrol", "enabled") == true then
+          st.enabled = char_ini:r_bool("patrol", "enabled")
+       else 
+          st.enabled = false   
+       end
+    else
+       st.enabled = enabled     
+    end
+    
+    if patrol_path == nil then   
+       if char_ini:line_exist("patrol", "patrol_path") == true then
+          st.patrol_path = char_ini:r_string("patrol", "patrol_path")
+       else
+          st.enabled = false
+       end
+    else
+       st.patrol_path = patrol_path
+    end
+           
+    if escape_path == nil then
+       if char_ini:line_exist("patrol", "escape_path") == true then
+          st.escape_path = char_ini:r_string("patrol", "escape_path")
+       else
+          st.escape_path = st.patrol_path
+       end
+    else
+       st.escape_path = escape_path
+    end       
+    
+    if raid_enabled == nil then
+       if char_ini:line_exist ("patrol", "raid_enabled") == true then
+          st.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
+       else
+          st.raid_enabled = false
+       end
+    else
+       st.raid_enabled = raid_enabled
+    end   
+    
+    if raid_path == nil then
+      if char_ini:line_exist ("patrol", "raid_path") == true then
+          st.raid_path = char_ini:r_string ("patrol", "raid_path")
+      else
+          st.raid_path = st.patrol_path
+      end
+    else
+       st.raid_path = raid_path
+    end      
+    
+	xr_motivator.checkStorage (npc)
+	
 end

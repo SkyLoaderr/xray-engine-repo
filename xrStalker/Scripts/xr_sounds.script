@@ -1,45 +1,32 @@
-local themes = {name = "themes"}
+local themes = {}   --name = "themes"
 
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sounds (obj)
     local sounds_base = stalker_ids.sound_script + 8192
+    --printf ("SOUNDS BASE %d", stalker_ids.sound_script)
     sounds_base = this.load_common (obj, sounds_base)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
-function load_common (obj, sounds_base)
-    -- create patrol commander radio speech
-    themes["commander_radio"] = {}
-    local t = {} 
-    t[1] = 5
-    local num = obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base)
-    table.insert (t, num)
-    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, sounds_base + 1))
-    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 2))
-    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, sounds_base + 3))
-    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 4))
-    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, sounds_base + 5))
-    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, sounds_base + 6))
-    table.insert (themes["commander_radio"], t)                         
-    
-    sounds_base = sounds_base + 7
-    return sounds_base                             
-end
------------------------------------------------------------------------------------------------------------------------------------
-function play_sound (obj, delay, theme, sub_theme, num_phrase, sub_phrase)
+function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
 
     if obj == nil or theme == nil then return end
+    --printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
        sub_theme = math.random (1, table.getn (themes[theme]))
     end
-    if phrase_set == nil or table.getn (themes[theme][sub_theme]) < num_phrase - 1 then
-       num_phrase = math.random (2, table.getn (themes[theme][sub_theme]))
+    --printf ("Sub_theme %d", sub_theme)
+    if phrase_set == nil or table.getn (themes[theme][sub_theme]) < phrase_set - 1 then
+       phrase_set = math.random (2, table.getn (themes[theme][sub_theme]))
     end
-    if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, num_phrase) < sub_phrase then
-       sub_phrase = math.random (1, this.get_num_subphrases (theme, sub_theme, num_phrase))
+    --printf ("Phrase_set %d", phrase_set)
+    if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
+       sub_phrase = math.random (0, this.get_num_subphrases (theme, sub_theme, phrase_set) - 1)
     end   
+    --printf ("Sub_phrase %d", sub_phrase)
     obj:set_sound_mask (-1)
     obj:set_sound_mask (0)
-    obj:play_sound (themes[theme][sub_theme][1], delay + 1, delay, 1, 0, sub_phrase)
+    --printf ("NAMESPACE %d", themes[theme][sub_theme][1] + phrase_set)
+    obj:play_sound (themes[theme][sub_theme][1] + phrase_set - 1, delay + 1, delay, 1, 0, sub_phrase)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function get_num_themes ()
@@ -48,16 +35,108 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 function get_num_sub_themes (theme)
     if theme == nil then return 0 end
-    return table.getn (themes[themes])
+    return table.getn (themes[theme])
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function get_num_phrases (theme, sub_theme)
     if theme == nil or sub_theme == nil then return 0 end
-    return table.getn (themes[themes][sub_theme]) - 1
+    return table.getn (themes[theme][sub_theme]) - 1
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function get_num_subphrases (theme, sub_theme, phrases)
     if theme == nil or sub_theme == nil or phrases == nil then return 0 end
-    return themes[themes][sub_theme][phrases + 1]
+    return themes[theme][sub_theme][phrases + 1]
 end
 -----------------------------------------------------------------------------------------------------------------------------------
+function create_sound_constructor (theme, sub_theme)
+    if theme == nil then return nil end
+    if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
+       sub_theme = math.random (1, table.getn (themes[theme]))
+    end
+    local t = {
+              idle = 0,
+              begin = nil, 
+              maxidle = 10,
+              sumidle = 10,
+              rnd = 100,
+              lastsound = nil,
+              sounds = {}
+              }
+    local num = this.get_num_phrases (theme, sub_theme)
+    for a = 1, num, 1 do
+        local index = themes[theme][sub_theme][a + 1]
+        t.sounds[a] = {pack = themes[theme][sub_theme][1] + a - 1, id = math.random (0, index)}
+    end    
+    return t                            
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+--  Пример конструктора, описывающего звуки
+--
+--	self.sound = {idle = 0,    	-- служебное поле
+--		     begin = nil,	-- служебное поле
+--		     maxidle = 10, 	-- максимальное время между звуками
+--		     sumidle = 10,	-- надбавочное время, добавляется к рандомно выбранному от 1 до максимального.
+--   		     rnd = 100,		-- вероятность, с которой будет проигран звук, если пришло время
+--		     lastsound = nil,	-- служебное поле
+--		 	sounds = {      {pack = sounds["idle"], id = 0},	-- пачка звуков, из которых будет выбираться
+--					{pack = sounds["idle"], id = 1}, 
+--					{pack = sounds["idle"], id = 3}, 
+--					{pack = sounds["idle"], id = 4}, 
+--					{pack = sounds["idle"], id = 7}, 
+--					{pack = sounds["idle"], id = 9}, 
+--					{pack = sounds["idle"], id = 11}, 
+--					{pack = sounds["idle"], id = 12}, 
+--					{pack = sounds["idle"], id = 14} 	}}
+--
+-- 
+-- Проигрыш саундов (By Stohe)
+-- npc - object который будет играть звук
+-- sound - конструктр звуков, см выше
+-- now - если звук отыграть надо прямо сейчас
+-----------------------------------------------------------------------------------------------------------------------------------
+function set_sound(npc, sound, now)
+	local a = now
+
+	if sound.begin == nil or
+	   (device():time_global()/1000 - sound.begin) > sound.idle then
+		sound.begin = device():time_global()/1000
+		sound.idle = math.random(sound.maxidle) + sound.sumidle
+		a = true
+	end		
+
+	if a == true then
+		if math.random(100) < sound.rnd or now == true then
+			local r
+			if sound.lastsound == nil then
+				r = math.random(table.getn(sound.sounds))
+			else
+				r = math.random(table.getn(sound.sounds)-1)
+				if r >= sound.lastsound then
+					r = r + 1
+				end
+			end
+			sound.lastsound = r
+			npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
+		end
+	end
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_common (obj, sounds_base)
+
+    -- create patrol commander radio speech
+    themes["commander_radio"] = {
+               --speech 1
+               {
+               sounds_base, 
+               obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base),  
+               obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, sounds_base + 1),
+               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 2), 
+               obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, sounds_base + 3),
+               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 4),
+               obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, sounds_base + 5),
+               obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, sounds_base + 6)
+              }
+              }
+    sounds_base = sounds_base + table.getn (themes["commander_radio"][1])
+    return sounds_base                             
+end

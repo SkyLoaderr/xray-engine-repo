@@ -543,7 +543,7 @@ function action_raid:move_callback (obj, action_type, index)
           self.object:add_animation (anim_find_stop[num].anim,  anim_find_stop[num].flag)
        end    
        self.stage = 1
-       return
+       return 
     end
     
     if ptr:flag (index, 12) == true then
@@ -630,4 +630,61 @@ function  add_to_binder(obj)
 
     --xr_report.AddScheme (obj)
     
+end
+
+function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path)
+	local char_ini = npc:spawn_ini()
+	local st = xr_motivator.storage[npc:id()].follower
+	
+	if enabled == nil then
+       if char_ini:line_exist("follower", "enabled") == true then
+          st.enabled = char_ini:r_bool("follower", "enabled")
+       else
+          st.enabled = false     
+       end
+    else
+        st.enabled = enabled
+    end
+    
+    if leader_name == nil then 
+       if char_ini:line_exist("follower", "leader_name") == true then
+          st.leader_name = char_ini:r_string("follower", "leader_name")
+       else
+          st.leader_name = nil
+       end
+    else
+       st.leader_name = leader_name
+    end          
+
+    if escape_path == nil then
+       if char_ini:line_exist("follower", "escape_path") == true then
+          st.escape_path = char_ini:r_string("follower", "escape_path")
+       else
+          st.escape_path = st.patrol_path
+       end
+    else
+       st.escape_path = escape_path
+    end       
+    
+    if raid_enabled == nil then
+       if char_ini:line_exist ("follower", "raid_enabled") == true then
+          st.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
+       else
+          st.raid_enabled = false
+       end
+    else
+       st.raid_enabled = raid_enabled
+    end   
+    
+    if raid_path == nil then
+      if char_ini:line_exist ("follower", "raid_path") == true then
+          st.raid_path = char_ini:r_string ("follower", "raid_path")
+      else
+          st.raid_path = st.patrol_path
+      end
+    else
+       st.raid_path = raid_path
+    end      
+
+	xr_motivator.checkStorage (npc)
 end
