@@ -41,19 +41,6 @@ local siren_on2 = 2     --Не опасный
 local siren_on1 = 1		--Опасность
 local siren_off = 0
 
-function main()
-    gramofon_event = -1
-
-    music = this.m_gramofon( "record_player" )
-
-    while( true ) do
---      printf( "%d:%d:%d", this.local_time() )
-      music:update()
-      wait()
-    end
-
-end
-
 class "m_gramofon"
 function m_gramofon:__init( obj_name )
   	self.npc_name     = obj_name
