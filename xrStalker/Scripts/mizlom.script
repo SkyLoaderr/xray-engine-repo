@@ -48,6 +48,7 @@ function CIzlom:execute()
 	end
 	
 	if(level.object(self.name)) then
+		//'Объект в online
 		if(self.npc == nil) then
 			self.npc	= level.object(self.name)
 			printf("_____set script control")
@@ -146,6 +147,7 @@ function CIzlom:state_attack()
 
 
 	if(level.actor() and level.actor():alive()) then
+		//'Если много жизни, то атакуем, в противном случае убегаем
 		if(self.npc.health > 0.5 and self.start_panic == false) then
 			if(self.npc:action()) then return end
 			action(self.npc, act(act.attack, level.actor()), cond(cond.time_end, 60000))
@@ -164,14 +166,14 @@ function CIzlom:state_attack()
 end
 
 function CIzlom:off_line()
-		self.sim:set_switch_online(self.npc_id, false)
-		self.sim:set_switch_offline(self.npc_id, true)
-		self.npc	= nil
+	self.sim:set_switch_online(self.npc_id, false)
+	self.sim:set_switch_offline(self.npc_id, true)
+	self.npc	= nil
 end
 
 function CIzlom:on_line()
-		self.sim:set_switch_online(self.npc_id, true)
-		self.sim:set_switch_offline(self.npc_id, true)
+	self.sim:set_switch_online(self.npc_id, true)
+	self.sim:set_switch_offline(self.npc_id, true)
 end
 
 function CIzlom:zone_enter_callback(zone, obj)
