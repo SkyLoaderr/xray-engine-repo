@@ -107,7 +107,9 @@ public:
 	void							_DeleteRT			(CRT* &RT);
 	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl);
 	void							_DeleteVS			(CVS* &VS);
-
+	CPS*							_CreatePS			(LPCSTR Name);
+	void							_DeletePS			(CPS* &PS);
+	
 	// Shader compiling / optimizing
 	DWORD							_CreateCode			(SimulatorStates& Code);
 	void							_DeleteCode			(DWORD& SB);

@@ -899,6 +899,10 @@ SOURCE=.\SH_Matrix.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\SH_PS.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\SH_RT.cpp
 # End Source File
 # Begin Source File

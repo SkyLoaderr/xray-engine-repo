@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "fstaticrender_rendertarget.h"
 
-LPCSTR	RTname	= "$user$rendertarget";
+static LPCSTR	RTname	= "$user$rendertarget";
+DWORD			hPS		= 0;
 
 CRenderTarget::CRenderTarget()
 {
@@ -18,6 +19,10 @@ CRenderTarget::CRenderTarget()
 
 BOOL CRenderTarget::Create	()
 {
+	// Temp
+	D3DXAssembleShader(pPS,strlen(pPS),)
+
+	// 
 	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
 	
 	// Shaders and stream

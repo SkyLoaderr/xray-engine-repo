@@ -91,7 +91,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl)
 	strlwr				(strcpy(Name,cName));
 	if (strext(Name))	*strext(Name)=0;
 	
-	// ***** first pass - search already loaded texture
+	// ***** first pass - search already loaded shader
 	LPSTR N = LPSTR(Name);
 	VSMap::iterator I = vs.find	(N);
 	if (I!=vs.end())	
@@ -134,6 +134,51 @@ LPCSTR	CShaderManager::DBG_GetVSName(CVS* T)
 	for (VSMap::iterator I=vs.begin(); I!=vs.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
+}
+//--------------------------------------------------------------------------------------------------------------
+CPS*	CShaderManager::_CreatePS		(LPCSTR cName) 
+{
+	R_ASSERT			(cName && cName[0]);
+	string256			Name;
+	strlwr				(strcpy(Name,cName));
+	if (strext(Name))	*strext(Name)=0;
+	
+	// ***** first pass - search already loaded shader
+	LPSTR N = LPSTR(Name);
+	VSMap::iterator I = ps.find	(N);
+	if (I!=ps.end())	
+	{
+		CPS *PS			=	I->second;
+		PS->dwReference	+=	1;
+		return		PS;
+	}
+	else 
+	{
+		CPS *PS			=	new CPS;
+		PS->dwReference	=	1;
+		ps.insert		(make_pair(strdup(Name),PS));
+		
+		// Load vertex shader
+		string256		fname;
+		strconcat		(fname,"data\\shaders\\",Name,".ps");
+		LPD3DXBUFFER	code	= 0;
+		LPD3DXBUFFER	errors	= 0;
+		CStream*		fs		= Engine.FS.Open(fname);
+		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
+		Engine.FS.Close	(fs);
+		R_CHK			(HW.pDevice->CreatePixelShader(LPDWORD(code->GetBufferPointer()),&PS->dwHandle));
+		_RELEASE		(code);
+		_RELEASE		(errors);
+		
+		// Return
+		return			PS;
+	}
+}
+void	CShaderManager::_DeletePS	(CPS* &PS)
+{
+	R_ASSERT		(PS);
+	PS->dwReference	--;
+	PS = 0;
 }
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name) 
