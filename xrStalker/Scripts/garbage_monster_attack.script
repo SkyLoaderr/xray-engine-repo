@@ -64,17 +64,18 @@ local g_monsters_id 	= {}
 
 function main()
 	
+	printf("___start")
 	while(monster_on_line() == false) do
 		printf("wait monster...")
 		wait()
 	end
 	
-	printf("start print")
+	printf("___start print")
 	Print(g_monsters_id)
 	local GarbageTroop = GarbageRaidManager(ways, g_monsters_id, zone_name, zone_count)
 	
 	GarbageTroop:Initialize()
-	
+	printf("___initialize()")
 	while(true) do
 		GarbageTroop:Update()
 		wait()
