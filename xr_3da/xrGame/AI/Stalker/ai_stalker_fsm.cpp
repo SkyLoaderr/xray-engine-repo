@@ -136,5 +136,7 @@ void CAI_Stalker::Searching()
 
 	vfChoosePointAndBuildPath(m_tSelectorFreeHunting);
 
-	vfSetMovementType(eBodyStateCrouch,eMovementTypeRun,eLookTypeDanger);
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw = r_target.yaw;
 }

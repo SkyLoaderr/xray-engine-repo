@@ -86,6 +86,7 @@ private:
 	float					m_fLateralMultiplier;
 	float					m_fShadowWeight;
 	ELookType				m_tLookType;
+	float					r_head_speed;
 	// movement
 	EBodyState				m_tBodyState;
 	EMovementType			m_tMovementType;
@@ -130,8 +131,41 @@ private:
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle);
 			// movement and look
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
+			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
 			// miscellanious
 			void			DropItem						();
+	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
+	{
+		yaw						= pitch = 0;
+		Fvector					tDirection;
+		
+		int						i = ps_Size	();
+		if (!i) 
+			return;
+		
+		CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tDirection.magnitude() < EPS_L)
+			return;
+		
+		tDirection.getHP		(yaw,pitch);
+	};
+	
+	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d, bool bCheck = false)
+	{
+		float fDifference;
+		if ((fDifference = _abs(a - b)) > PI - EPS_L)
+			fDifference = PI_MUL_2 - fDifference;
+
+		if (c*d >= fDifference) {
+			a = b;
+			return(true);
+		}
+		
+		angle_lerp(a,b,c,d);
+
+		return(false);
+	};
 public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker						();
@@ -153,4 +187,5 @@ public:
 	virtual void			feel_touch_new					(CObject* O);
 	virtual void			OnVisible						();
 	virtual void			Exec_Movement					(float dt);
+	virtual void			Exec_Look						(float dt);
 };

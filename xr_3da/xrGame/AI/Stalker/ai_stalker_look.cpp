@@ -200,3 +200,15 @@ void CAI_Stalker::SetLessCoverLook()
 	}
 }
 
+void CAI_Stalker::Exec_Look(float dt)
+{
+	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt,true);
+	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
+
+	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,dt,true);
+	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
+
+	mRotate.setHPB			(-NET_Last.o_model,0,0);
+	Engine.Sheduler.Slice	();
+}
+

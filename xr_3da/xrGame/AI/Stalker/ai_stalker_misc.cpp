@@ -127,6 +127,13 @@ void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector)
 
 void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
 {
+	VERIFY(tLookType != eLookTypePoint);
+	Fvector tDummy;
+	vfSetMovementType(tBodyState,tMovementType,tLookType,tDummy);
+}
+
+void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+{
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tLookType		= tLookType;
@@ -177,7 +184,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			break;
 		}
 		case eLookTypePoint : {
-			//SetLook();
+			SetLook(tPointToLook);
 			break;
 		}
 	}

@@ -19,7 +19,7 @@ static const float p_head_factor		= 0.1f;
 
 float faTurnAngles			[] = {
 	0.f,
-	-3.1415f,
+	2*PI_DIV_2,
 	PI_DIV_6,
 	0.f,
 };
@@ -227,24 +227,20 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	if (m_fCurSpeed < EPS_L) {
 		// standing
-		tpLegsAnimation		= m_tAnims.A[1]->m_tInPlace.A[0];
+		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
+			tpLegsAnimation		= m_tAnims.A[1]->m_tInPlace.A[0];
+//			Msg("Standing");
+		}
+		else {
+			tpLegsAnimation		= m_tAnims.A[1]->m_tInPlace.A[1];
+//			Msg("Turning");
+		}
 		return;
 	}
-	Fvector					tDirection;
-	float					yaw, pitch;
-	
-	int						i = ps_Size	();
-	if (!i)
-		return;
-	
-	CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-	tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-	if (tDirection.magnitude() < EPS_L)
-		return;
-	
-	tDirection.getHP		(yaw,pitch);
-	yaw						= angle_normalize_signed(-yaw);
 	// moving
+	float					yaw, pitch;
+	GetDirectionAngles		(yaw,pitch);
+	yaw						= angle_normalize_signed(-yaw);
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
 		if (m_tMovementDirection == eMovementDirectionForward)
@@ -310,28 +306,28 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 	}
 	
-	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
+//	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[m_tMovementDirection]->A[0];
 	r_target.yaw			= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
 	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	r_target.yaw			= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-	Msg("[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+//	Msg("[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics				&tVisualObject		=	*(PKinematics(pVisual));
 	CMotionDef				*tpGlobalAnimation	=	0;
-	CMotionDef				*tpTorsoAnimation	=	0;
-	CMotionDef				*tpLegsAnimation	=	0;
 
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
-	vfAssignTorsoAnimation	(tpTorsoAnimation);
-	vfAssignLegsAnimation	(tpLegsAnimation);
 
 	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation))
 		tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 	else {
+		CMotionDef				*tpTorsoAnimation	=	0;
+		CMotionDef				*tpLegsAnimation	=	0;
+		vfAssignTorsoAnimation	(tpTorsoAnimation);
+		vfAssignLegsAnimation	(tpLegsAnimation);
 		if ((tpTorsoAnimation) && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
 			tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
 		if ((tpLegsAnimation) && (m_tpCurrentLegsAnimation != tpLegsAnimation))
