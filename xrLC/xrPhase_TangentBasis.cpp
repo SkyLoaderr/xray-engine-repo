@@ -2,8 +2,50 @@
 
 void CBuild::xrPhase_TangentBasis()
 {
+	// ************************************* Declare inputs
+	Status						("Declarator...");
+	u32 v_count_reserve			= iFloor(float(g_vertices.size())*1.5f);
+	u32 i_count_reserve			= 3*g_faces.size();
+
+	std::vector<NVMeshMender::VertexAttribute> input;
+	input.push_back(NVMeshMender::VertexAttribute());
+	input.push_back(NVMeshMender::VertexAttribute());
+	input.push_back(NVMeshMender::VertexAttribute());
+	input.push_back(NVMeshMender::VertexAttribute());
+	
+	input[0].Name_= "position";	vector<float>&	v_position	= input[0].floatVector_;	v_position.reserve	(v_count_reserve);
+	input[1].Name_= "normal";	vector<float>&	v_normal	= input[1].floatVector_;	v_normal.reserve	(v_count_reserve);
+	input[2].Name_= "tex0";		vector<float>&	v_tc		= input[2].floatVector_;	v_tc.reserve		(v_count_reserve);
+	input[3].Name_= "indices";	vector<int>&	v_indices	= input[3].intVector_;		v_indices.reserve	(i_count_reserve);
+
+	// ************************************* Build vectors + expand TC if nessesary
+	Status						("Building inputs...");
+	std::sort					(g_vertices.begin(),g_vertices.end());
+	vector<vector<u32> >		remap;
+	remap.resize				(g_vertices.size());
+	for (u32 f=0; f<g_faces.size(); f++)
+	{
+		Progress	(float(f)/float(g_faces.size()));
+		Face*		F	= g_faces[f];
+
+		for (u32 v=0; v<3; v++)
+		{
+			Vertex*		V	= F->v[v];	
+			Fvector2	Ftc = F->tc.front()
+			u32 ID			= lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin();
+			vector<u32>& m	= remap[ID];
+
+			BOOL bFound		= FALSE;
+			for (u32 it=0; it<m.size(); it++)
+			{
+				u32		m_id	= m[it];
+				float*	tc		= v_tc.begin()+m_id*3;
+				if (!fsimilar(tc[0],F))
+			}
+		}
+	}
+
 	// ************************************* Perform mungle
-	D3DXVECTOR3			vecModelCenter;
 	{
 		unsigned int i;
 
@@ -45,29 +87,6 @@ void CBuild::xrPhase_TangentBasis()
 		// Prepare the parameters to the mesh mender
 
 		// Fill in the input to the mesh mender
-		// Positions
-		NVMeshMender::VertexAttribute positionAtt;
-		positionAtt.Name_			= "position";
-		positionAtt.floatVector_	= position;
-		// Normals
-		NVMeshMender::VertexAttribute normalAtt;
-		normalAtt.Name_				= "normal";
-		normalAtt.floatVector_		= normals;
-		// Texture coordinates
-		NVMeshMender::VertexAttribute texCoordAtt;
-		texCoordAtt.Name_			= "tex0";
-		texCoordAtt.floatVector_	= texCoord;
-		// Indices
-		NVMeshMender::VertexAttribute indexAtt;
-		indexAtt.Name_				= "indices";
-		indexAtt.intVector_			= index;
-
-		// Fill in input list
-		std::vector<NVMeshMender::VertexAttribute> inputAtts;
-		inputAtts.push_back(positionAtt);
-		inputAtts.push_back(normalAtt);
-		inputAtts.push_back(indexAtt);
-		inputAtts.push_back(texCoordAtt);
 
 		// Specify the requested output
 		// Tangents
