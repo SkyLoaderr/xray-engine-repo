@@ -15,7 +15,7 @@
 	const int	dm_size				= 20;
 #else
 	const int	dm_max_decompress	= 7;
-	const int	dm_size				= 40;
+	const int	dm_size				= 30;
 #endif
 const int		dm_max_objects		= 64;
 const int		dm_obj_in_slot		= 4;
@@ -28,30 +28,28 @@ const float		dm_slot_radius		= DETAIL_SLOT_SIZE*0.707106781186547524400844362104
 class CDetailManager
 {
 public:
-	struct	SlotItem
-	{
+	struct	SlotItem	{
 		Fvector				P;
 		float				scale;
-		float				C;
-		u32					C_dw;
 		float				scale_calculated;
 		Fmatrix				mRotY;
 		u32					vis_ID;
+		Fvector				c_rgb;
+		float				c_hemi;
+		float				c_sun;
+		u32					C_dw;
 	};
-	struct	SlotPart
-	{
+	struct	SlotPart	{
 		u32						id;
 		xr_vector<SlotItem*>	items;
 	};
-	enum	SlotType
-	{
-		stReady		= 0,	// Ready to use
-		stPending,			// Pending for decompression
+	enum	SlotType	{
+		stReady			= 0,	// Ready to use
+		stPending,				// Pending for decompression
 
-		stFORCEDWORD = 0xffffffff
+		stFORCEDWORD	= 0xffffffff
 	};
-	struct Slot
-	{
+	struct	Slot		{
 		u32					type;
 		int					sx,sz;
 		vis_data			vis;
@@ -60,7 +58,7 @@ public:
 		Slot()				{ type=stReady; sx=sz=0; vis.clear(); }
 	};
 
-	typedef		xr_vector <xr_vector<SlotItem*> >			vis_list;
+	typedef		xr_vector <xr_vector<SlotItem*> >	vis_list;
 	typedef		svector<CDetail*,dm_max_objects>	DetailVec;
 	typedef		DetailVec::iterator					DetailIt;
 	typedef		poolSS<SlotItem,4096>				PSS;
@@ -77,9 +75,9 @@ public:
 	vis_list						visible	[3];	// 0=still, 1=Wave1, 2=Wave2
 
 	xrXRC							xrc;
-	Slot*							cache[dm_cache_line][dm_cache_line];		// grid-cache itself
+	Slot*							cache		[dm_cache_line][dm_cache_line];	// grid-cache itself
 	svector<Slot*,dm_cache_size>	cache_task;									// non-unpacked slots
-	Slot							cache_pool[dm_cache_size];					// just memory for slots
+	Slot							cache_pool	[dm_cache_size];				// just memory for slots
 	int								cache_cx;
 	int								cache_cz;
 

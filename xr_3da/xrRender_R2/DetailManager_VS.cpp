@@ -143,15 +143,15 @@ void CDetailManager::hw_Render()
 
 	// Wave0
 	float scale				=	1.f/float(quant);
-	RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);			// consts
-	RCache.set_c			(hwc_wave,		1.f/5.f,	1.f/7.f,	1.f/3.f,			Device.fTimeGlobal*ps_r__Detail_w_speed);// wave
-	RCache.set_c			(hwc_wind,		dir1);																				// wind-dir
-	RCache.set_c			(hwc_xform,		Device.mFullTransform);																// xform
+	RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
+	RCache.set_c			(hwc_wave,		1.f/5.f,	1.f/7.f,	1.f/3.f,			Device.fTimeGlobal*ps_r__Detail_w_speed);	// wave
+	RCache.set_c			(hwc_wind,		dir1);																					// wind-dir
+	RCache.set_c			(hwc_xform,		Device.mFullTransform);																	// xform
 	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1
 	RCache.set_c			(hwc_wave,		1.f/3.f,	1.f/7.f,	1.f/5.f,			Device.fTimeGlobal*ps_r__Detail_w_speed);	// wave
-	RCache.set_c			(hwc_wind,		dir2);																				// wind-dir
+	RCache.set_c			(hwc_wind,		dir2);																					// wind-dir
 	hw_Render_dump			(hwc_array,		2, 0, c_hdr );
 
 	// Still
@@ -168,11 +168,18 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 
 	vis_list& list	=	visible	[var_id];
 
+	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+	Fvector					c_sun,c_ambient,c_lmap,c_hemi;
+	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);
+	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
+	c_ambient.set			(desc.ambient.x, desc.ambient.y, desc.ambient.z);
+	c_hemi.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z);
+
 	// Iterate
 	for (u32 O=0; O<objects.size(); O++)
 	{
 		xr_vector<SlotItem*>&	vis = list		[O];
-		CDetail&	Object		= *objects	[O];
+		CDetail&	Object			= *objects	[O];
 
 		if (!vis.empty())
 		{
@@ -183,16 +190,21 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 			for (u32 item = 0; item<vis.size(); item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
-				float	scale			= Instance.scale_calculated;
-				float	C				= Instance.C;
+				u32			base		= dwBatch*4;
 
 				// Build matrix ( 3x4 matrix, last row - color )
-				u32 base				= dwBatch*4;
-				Fmatrix& M				= Instance.mRotY;
+				float		scale		= Instance.scale_calculated;
+				Fmatrix&	M			= Instance.mRotY;
 				RCache.set_ca			(x_array,		base+0,		M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
 				RCache.set_ca			(x_array,		base+1,		M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
 				RCache.set_ca			(x_array,		base+2,		M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
-				RCache.set_ca			(x_array,		base+3,		C,				C,				C,				1.f		);
+
+				// Build color
+				Fvector C;
+				C.mad					(c_ambient,c_lmap,Instance.c_rgb);
+				C.mad					(c_sun,Instance.c_sun);
+				C.mad					(c_hemi,Instance.c_hemi);
+				RCache.set_ca			(x_array,		base+3,		C.x,			C.y,			C.z,			1.f		);
 
 				dwBatch	++;
 				if (dwBatch == hw_BatchSize)
