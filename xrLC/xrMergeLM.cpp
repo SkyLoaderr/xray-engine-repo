@@ -128,11 +128,11 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 		{
 			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
 			DWORD*	S = lm + y*s_x;
-			for (DWORD x=0; x<s_x; x++) 
+			for (DWORD x=0; x<s_x; x++,P++) 
 			{
 				DWORD C = *S++;
-				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=alpha_ref)?255:0;
+				DWORD A = RGBA_GETALPHA	(C);
+				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
 	} else {
@@ -140,11 +140,11 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 		for (DWORD y=0; y<s_x; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
-			for (DWORD x=0; x<s_y; x++)
+			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
 				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=alpha_ref)?255:0;
+				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
 	}
@@ -154,7 +154,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 {
 	LPDWORD lm			= D->lm.pSurface;
-	DWORD	s_x			= D->lm.dwWidth+2*BORDER;
+	DWORD	s_x			= D->lm.dwWidth	+2*BORDER;
 	DWORD	s_y			= D->lm.dwHeight+2*BORDER;
 	
 	if (!bRotate) {
