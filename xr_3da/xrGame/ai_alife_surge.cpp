@@ -18,7 +18,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i							= dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 	R_ASSERT2					(i,"Non-ALife object in the 'game.spawn'");
 
-	NET_Packet					tNetPacket;
+	NET_Packet	tNetPacket;
 	j->Spawn_Write				(tNetPacket,TRUE);
 	i->Spawn_Read				(tNetPacket);
 	tNetPacket.w_begin			(M_UPDATE);
@@ -27,7 +27,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	tNetPacket.r_begin			(id);
 	i->UPDATE_Read				(tNetPacket);
 	
-	R_ASSERT3					(i->m_tNodeID && (i->m_tNodeID < getAI().Header().count),"Invalid node for object ",i->s_name_replace);
+	R_ASSERT3					(int(i->m_tNodeID) > 0,"Invalid node for object ",i->s_name_replace);
 
 	i->m_tSpawnID				= tSpawnID;
 	if (!m_tpActor && dynamic_cast<CSE_ALifeCreatureActor*>(i))
