@@ -214,6 +214,29 @@ namespace ALife {
 		eHitTypeMax,
 	};
 
+	IC EHitType	g_tfString2HitType(LPCSTR caHitType)
+	{
+		if (!stricmp(caHitType,"burn"))
+			return(eHitTypeBurn);
+		else
+			if (!stricmp(caHitType,"shock"))
+				return(eHitTypeShock);
+			else
+				if (!stricmp(caHitType,"strike"))
+					return(eHitTypeStrike);
+				else
+					if (!stricmp(caHitType,"wound"))
+						return(eHitTypeWound);
+					else
+						if (!stricmp(caHitType,"radiation"))
+							return(eHitTypeRadiation);
+						else
+							if (!stricmp(caHitType,"telepatic"))
+								return(eHitTypeTelepatic);
+							else
+								R_ASSERT2(false,"Unsupported hit type!");
+		__assume(0);
+	}
 
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
