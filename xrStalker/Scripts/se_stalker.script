@@ -5,12 +5,13 @@ function se_stalker:__init (section) super (section)
 end
 --------------------
 function se_stalker:can_switch_offline ()
-	return true
+	return cse_alife_human_stalker.can_switch_offline (self)
 end
 --------------------
 function se_stalker:can_switch_online ()
-    if self:spawn_ini () == nil then 
-       return self:can_switch_online ()
+    local ini = self:spawn_ini ()
+    if ini == nil or ini:section_exist ("spawner") == false then 
+       return cse_alife_human_stalker.can_switch_online (self)
     end    
     return xr_spawner.check_spawn (self)
 end    

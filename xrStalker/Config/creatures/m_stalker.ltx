@@ -173,7 +173,7 @@ min_wound_size				= 0.01
 	044,043,042,041
 
 [stalker]
-class							= AI_STL						; Class identifier
+class							= AI_STL_S						; Class identifier
 
 ;---EVALUATION FUNCTIONS----------------------------------------------
 ef_creature_type				= 17							; option for evaluation functions
@@ -338,170 +338,170 @@ ph_skel_shot_up_factor        = 2.2
 ;---------------------------------------------------------------------
 
 
-[script_stalker]
-class							= AI_STL_S						; Class identifier
+;[script_stalker]
+;class							= AI_STL_S						; Class identifier
 
 ;---EVALUATION FUNCTIONS----------------------------------------------
-ef_creature_type				= 17							; option for evaluation functions
+;ef_creature_type				= 17							; option for evaluation functions
 
 ;---LEVEL EDITOR------------------------------------------------------
-$spawn							= "stalkers\test\script_stalker"		; option for Level Editor
-$npc							= on							; option for Level Editor
-visual							= actors\hero\stalker_novice.ogf; option for Level Editor
+;$spawn							= "stalkers\test\script_stalker"		; option for Level Editor
+;$npc							= on							; option for Level Editor
+;visual							= actors\hero\stalker_novice.ogf; option for Level Editor
 
 ;---GAME--------------------------------------------------------------
-$prefetch 						= 32							
-cform							= skeleton						; collision class
+;$prefetch 						= 32							
+;cform							= skeleton						; collision class
 ;биолог вид существа
-species							= human
+;species							= human
 
 ;---MATERIAL----------------------------------------------------------
-material						= creatures\human
+;material						= creatures\human
 
 ;---DEAD_VISUAL-------------------------------------------------------
-destroyed_vis_name				= physics\Dead_Body\skelet_crash
+;destroyed_vis_name				= physics\Dead_Body\skelet_crash
 
 ;---SCRIPTS-----------------------------------------------------------
-script_binding					= bind_stalker.init
+;script_binding					= bind_stalker.init
 
 ;---GROUP SECTIONS----------------------------------------------------
-GroupControlSection				= spawn_group
-SpaceRestrictionSection 		= space_restrictor
-attachable_items				= device_torch,attachable_item,hand_radio
+;GroupControlSection				= spawn_group
+;SpaceRestrictionSection 		= space_restrictor
+;attachable_items				= device_torch,attachable_item,hand_radio
 
 ;---SECTIONS----------------------------------------------------------
-damage							= stalker_damage
-immunities_sect					= stalker_immunities
-condition_sect					= stalker_condition
+;damage							= stalker_damage
+;immunities_sect					= stalker_immunities
+;condition_sect					= stalker_condition
 
 ;---VISUALS-----------------------------------------------------------
-texture_prefetch				= actors\bandit\stalker_bandit_1, actors\bandit\stalker_bandit_2, actors\bandit\stalker_bandit_3, actors\bandit\stalker_bandit_4, actors\bandit\stalker_bandit_5, actors\bandit\stalker_bandit_6, actors\bandit\stalker_bandit_7, actors\bandit\stalker_bandit_8, actors\bandit\stalker_bandit_9, actors\dolg\stalker_do_balon_2, actors\dolg\stalker_do_balon_3, actors\dolg\stalker_do_balon_5, actors\dolg\stalker_do_balon_8, actors\dolg\stalker_do_balon_80, actors\dolg\stalker_do_mask, actors\dolg\stalker_do_antigas, actors\dolg\stalker_do_exoskeleton, actors\dolg\stalker_do_nauchniy, actors\ecolog\stalker_ecolog, actors\ecolog\stalker_ecolog_military, actors\killer\stalker_ki_head_1, actors\killer\stalker_ki_head_2, actors\killer\stalker_ki_head_3, actors\killer\stalker_ki_head_4, actors\killer\stalker_ki_head_5, actors\killer\stalker_ki_head_6, actors\killer\stalker_ki_mask, actors\killer\stalker_ki_antigas, actors\killer\stalker_ki_exoskeleton, actors\killer\stalker_ki_nauchniy, actors\militari\stalker_militari_1, actors\militari\stalker_militari_2, actors\militari\stalker_militari_antigas_1, actors\militari\stalker_militari_antigas_2, actors\monolit\stalker_mo_hood_9, actors\monolit\stalker_mo_exo, actors\monolit\stalker_mo_nauchniy, actors\novice\green_stalker_1, actors\novice\green_stalker_2, actors\novice\green_stalker_3, actors\novice\green_stalker_4, actors\novice\green_stalker_5, actors\novice\green_stalker_6, actors\novice\green_stalker_7, actors\neytral\stalker_neytral_balon_1, actors\neytral\stalker_neytral_balon_2, actors\neytral\stalker_neytral_balon_3, actors\neytral\stalker_neytral_balon_4, actors\neytral\stalker_neytral_balon_5, actors\neytral\stalker_neytral_balon_6, actors\neytral\stalker_neytral_balon_7, actors\neytral\stalker_neytral_balon_8, actors\neytral\stalker_neytral_hood_1, actors\neytral\stalker_neytral_hood_2, actors\neytral\stalker_neytral_hood_3, actors\neytral\stalker_neytral_hood_4, actors\neytral\stalker_neytral_hood_5, actors\neytral\stalker_neytral_hood_6, actors\neytral\stalker_neytral_hood_7, actors\neytral\stalker_neytral_hood_8, actors\neytral\stalker_neytral_hood_9, actors\neytral\stalker_neytral_rukzak_1, actors\neytral\stalker_neytral_rukzak_2, actors\neytral\stalker_neytral_rukzak_3, actors\neytral\stalker_neytral_rukzak_4, actors\neytral\stalker_neytral_rukzak_5, actors\neytral\stalker_neytral_rukzak_6, actors\neytral\stalker_neytral_rukzak_7, actors\neytral\stalker_neytral_exoskeleton, actors\neytral\stalker_neytral_nauchniy, actors\soldier\soldier_mask, actors\soldier\soldier_antigas, actors\soldier\soldier_obichniy, actors\soldier\soldier_beret, actors\soldier\soldier_beret_1, actors\soldier\soldier_beret_2, actors\soldier\soldier_beret_3, actors\soldier\soldier_beret_4, actors\soldier\soldier_bandana, actors\soldier\soldier_bandana_1, actors\soldier\soldier_bandana_2, actors\soldier\soldier_bandana_3, actors\soldier\soldier_bandana_4, actors\soldier\soldier_bandana_5, actors\soldier\soldier_bandana_6, actors\soldier\soldier_spetsnaz, actors\svoboda\stalker_sv_balon_1, actors\svob oda\stalker_sv_balon_10, actors\svoboda\stalker_sv_hood_9, actors\svoboda\stalker_sv_hood_91, actors\svoboda\stalker_sv_rukzak_1, actors\svoboda\stalker_sv_rukzak_2, actors\svoboda\stalker_sv_rukzak_3, actors\svoboda\stalker_sv_exoskeleton, actors\svoboda\stalker_sv_nauchniy, actors\stalker_zombi\stalker_zombie1, actors\stalker_zombi\stalker_zombie2, actors\stalker_zombi\stalker_zombie3, actors\stalker_zombi\stalker_zombie4, actors\stalker_zombi\stalker_zombie5, actors\stalker_zombi\stalker_zombie6, actors\stalker_zombi\stalker_zombie7
+;texture_prefetch				= actors\bandit\stalker_bandit_1, actors\bandit\stalker_bandit_2, actors\bandit\stalker_bandit_3, actors\bandit\stalker_bandit_4, actors\bandit\stalker_bandit_5, actors\bandit\stalker_bandit_6, actors\bandit\stalker_bandit_7, actors\bandit\stalker_bandit_8, actors\bandit\stalker_bandit_9, actors\dolg\stalker_do_balon_2, actors\dolg\stalker_do_balon_3, actors\dolg\stalker_do_balon_5, actors\dolg\stalker_do_balon_8, actors\dolg\stalker_do_balon_80, actors\dolg\stalker_do_mask, actors\dolg\stalker_do_antigas, actors\dolg\stalker_do_exoskeleton, actors\dolg\stalker_do_nauchniy, actors\ecolog\stalker_ecolog, actors\ecolog\stalker_ecolog_military, actors\killer\stalker_ki_head_1, actors\killer\stalker_ki_head_2, actors\killer\stalker_ki_head_3, actors\killer\stalker_ki_head_4, actors\killer\stalker_ki_head_5, actors\killer\stalker_ki_head_6, actors\killer\stalker_ki_mask, actors\killer\stalker_ki_antigas, actors\killer\stalker_ki_exoskeleton, actors\killer\stalker_ki_nauchniy, actors\militari\stalker_militari_1, actors\militari\stalker_militari_2, actors\militari\stalker_militari_antigas_1, actors\militari\stalker_militari_antigas_2, actors\monolit\stalker_mo_hood_9, actors\monolit\stalker_mo_exo, actors\monolit\stalker_mo_nauchniy, actors\novice\green_stalker_1, actors\novice\green_stalker_2, actors\novice\green_stalker_3, actors\novice\green_stalker_4, actors\novice\green_stalker_5, actors\novice\green_stalker_6, actors\novice\green_stalker_7, actors\neytral\stalker_neytral_balon_1, actors\neytral\stalker_neytral_balon_2, actors\neytral\stalker_neytral_balon_3, actors\neytral\stalker_neytral_balon_4, actors\neytral\stalker_neytral_balon_5, actors\neytral\stalker_neytral_balon_6, actors\neytral\stalker_neytral_balon_7, actors\neytral\stalker_neytral_balon_8, actors\neytral\stalker_neytral_hood_1, actors\neytral\stalker_neytral_hood_2, actors\neytral\stalker_neytral_hood_3, actors\neytral\stalker_neytral_hood_4, actors\neytral\stalker_neytral_hood_5, actors\neytral\stalker_neytral_hood_6, actors\neytral\stalker_neytral_hood_7, actors\neytral\stalker_neytral_hood_8, actors\neytral\stalker_neytral_hood_9, actors\neytral\stalker_neytral_rukzak_1, actors\neytral\stalker_neytral_rukzak_2, actors\neytral\stalker_neytral_rukzak_3, actors\neytral\stalker_neytral_rukzak_4, actors\neytral\stalker_neytral_rukzak_5, actors\neytral\stalker_neytral_rukzak_6, actors\neytral\stalker_neytral_rukzak_7, actors\neytral\stalker_neytral_exoskeleton, actors\neytral\stalker_neytral_nauchniy, actors\soldier\soldier_mask, actors\soldier\soldier_antigas, actors\soldier\soldier_obichniy, actors\soldier\soldier_beret, actors\soldier\soldier_beret_1, actors\soldier\soldier_beret_2, actors\soldier\soldier_beret_3, actors\soldier\soldier_beret_4, actors\soldier\soldier_bandana, actors\soldier\soldier_bandana_1, actors\soldier\soldier_bandana_2, actors\soldier\soldier_bandana_3, actors\soldier\soldier_bandana_4, actors\soldier\soldier_bandana_5, actors\soldier\soldier_bandana_6, actors\soldier\soldier_spetsnaz, actors\svoboda\stalker_sv_balon_1, actors\svob oda\stalker_sv_balon_10, actors\svoboda\stalker_sv_hood_9, actors\svoboda\stalker_sv_hood_91, actors\svoboda\stalker_sv_rukzak_1, actors\svoboda\stalker_sv_rukzak_2, actors\svoboda\stalker_sv_rukzak_3, actors\svoboda\stalker_sv_exoskeleton, actors\svoboda\stalker_sv_nauchniy, actors\stalker_zombi\stalker_zombie1, actors\stalker_zombi\stalker_zombie2, actors\stalker_zombi\stalker_zombie3, actors\stalker_zombi\stalker_zombie4, actors\stalker_zombi\stalker_zombie5, actors\stalker_zombi\stalker_zombie6, actors\stalker_zombi\stalker_zombie7
 
 ;---OFFLINE ALIFE------------------------------------------------------------------
-Health							= 100					; option for ALife Simulator
-money							= 5000					; option for ALife Simulator
-going_speed						= 1.5					; option for ALife Simulator
-search_speed					= 0.5					; option for ALife Simulator
-going_item_detect_probability	= 0.1					; option for ALife Simulator
-search_item_detect_probability	= 0.9					; option for ALife Simulator
-max_item_mass					= 40.0					; option for ALife Simulator
-MaxHealthValue					= 100					; option for ALife Simulator, range [0..200]
+;Health							= 100					; option for ALife Simulator
+;money							= 5000					; option for ALife Simulator
+;going_speed						= 1.5					; option for ALife Simulator
+;search_speed					= 0.5					; option for ALife Simulator
+;going_item_detect_probability	= 0.1					; option for ALife Simulator
+;search_item_detect_probability	= 0.9					; option for ALife Simulator
+;max_item_mass					= 40.0					; option for ALife Simulator
+;MaxHealthValue					= 100					; option for ALife Simulator, range [0..200]
 
 ;---ONLINE ALIFE-------------------------------------------------------------------
-time_to_search_for_artefacts	= 60000 ; in milliseconds
-distance_to_search_for_artefacts= 30.0	; in meters
+;time_to_search_for_artefacts	= 60000 ; in milliseconds
+;distance_to_search_for_artefacts= 30.0	; in meters
 
 ;---ONLINE-OFFLINE ALIFE-----------------------------------------------------------
-terrain							= 255,255,255,255,0,1
+;terrain							= 255,255,255,255,0,1
 
 ;---SOUND-------------------------------------------------------------
-sound_threshold					= 0.08
-self_sound_factor				= 0.0	;1.0
-self_decrease_quant				= 250	; in milliseconds
-self_decrease_factor			= 0.95	; fading factor 
-killer_clsids					= Z_MINCER,Z_GALANT
+;sound_threshold					= 0.08
+;self_sound_factor				= 0.0	;1.0
+;self_decrease_quant				= 250	; in milliseconds
+;self_decrease_factor			= 0.95	; fading factor 
+;killer_clsids					= Z_MINCER,Z_GALANT
 
 ;---VISIBILITY--------------------------------------------------------
-vision_danger_section			= stalker_vision_danger
-vision_free_section				= stalker_vision_free
-eye_fov							= 170	
-eye_range						= 70	
-far_plane_factor				= 1.0				; фактор дальности тумана
-fog_density_factor				= 1.0				; фактор плотности тумана
+;vision_danger_section			= stalker_vision_danger
+;vision_free_section				= stalker_vision_free
+;eye_fov							= 170	
+;eye_range						= 70	
+;far_plane_factor				= 1.0				; фактор дальности тумана
+;fog_density_factor				= 1.0				; фактор плотности тумана
 
 ;---MEMORY------------------------------------------------------------
-DynamicObjectsCount				= 32
-DynamicSoundsCount				= 32 
-DynamicHitCount					= 32
+;DynamicObjectsCount				= 32
+;DynamicSoundsCount				= 32 
+;DynamicHitCount					= 32
 
 ;---ENEMY------------------------------------------------------------
-ignore_monster_threshold		= 0.0	;0.6	;0.8
-max_ignore_distance				= 15.0
-panic_threshold					= 0.1
+;ignore_monster_threshold		= 0.0	;0.6	;0.8
+;max_ignore_distance				= 15.0
+;panic_threshold					= 0.1
 
 ;---SOUND PLAYER------------------------------------------------------
-sound_death						= characters_voice\human_01\fight\death\stalker\death_ ;monsters\stalker\death\em1_killed
-sound_anomaly_death				= characters_voice\human_01\fight\death\stalker\death_ ;monsters\stalker\death\em1_killed
-sound_hit						= characters_voice\human_01\fight\hit\stalker\hit_ ;monsters\human\combat\ukr\ukr1_damage,monsters\stalker\wound\wound
-sound_humming					= characters_voice\human_01\states\idle\stalker\idle_ ;monsters\stalker\humming\em1_humming,monsters\stalker\humming\em1_whistle
-sound_alarm						= characters_voice\human_01\fight\enemy\stalker\enemy_ ;monsters\human\combat\ukr\alarm\ukr1_
-sound_attack					= characters_voice\human_01\fight\attack\stalker\attack_ ;monsters\human\combat\ukr\attack\ukr1_attack
-sound_backup					= characters_voice\human_01\fight\backup\stalker\backup_ ;monsters\human\combat\ukr\backup\ukr1_otstup
-sound_detour					= characters_voice\human_01\fight\detour\stalker\detour_ ;monsters\human\combat\ukr\detour\ukr1_detour
-sound_search					= characters_voice\human_01\fight\searching_enemy\stalker\search_ ;monsters\human\combat\ukr\search\ukr1_finding
-sound_friendly_fire				= characters_voice\human_01\fight\friendly_fire\stalker\friendly_fire_ ;script_sound\reactions\friendly_fire\soldier\soldier_friendlyfire_
-sound_panic_human				= characters_voice\human_01\states\panic_human\stalker\panic_ ;monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\surrender\em1_surrender,monsters\stalker\copy\default\surrender\em1_surrender
-sound_panic_monster				= characters_voice\human_01\states\panic_monster\stalker\panic_ ;script_sound\help\soldier\soldier_help_
-sound_tolls						= script_replics\radio\message\radio_voice_; characters_voice\human_01\states\idle\stalker\idle_
-sound_grenade_alarm				= characters_voice\human_01\fight\grenade\grenade_
-sound_friendly_grenade_alarm	= characters_voice\human_01\fight\friendly_grenade\friendly_grenade_
+;sound_death						= characters_voice\human_01\fight\death\stalker\death_ ;monsters\stalker\death\em1_killed
+;sound_anomaly_death				= characters_voice\human_01\fight\death\stalker\death_ ;monsters\stalker\death\em1_killed
+;sound_hit						= characters_voice\human_01\fight\hit\stalker\hit_ ;monsters\human\combat\ukr\ukr1_damage,monsters\stalker\wound\wound
+;sound_humming					= characters_voice\human_01\states\idle\stalker\idle_ ;monsters\stalker\humming\em1_humming,monsters\stalker\humming\em1_whistle
+;sound_alarm						= characters_voice\human_01\fight\enemy\stalker\enemy_ ;monsters\human\combat\ukr\alarm\ukr1_
+;sound_attack					= characters_voice\human_01\fight\attack\stalker\attack_ ;monsters\human\combat\ukr\attack\ukr1_attack
+;sound_backup					= characters_voice\human_01\fight\backup\stalker\backup_ ;monsters\human\combat\ukr\backup\ukr1_otstup
+;sound_detour					= characters_voice\human_01\fight\detour\stalker\detour_ ;monsters\human\combat\ukr\detour\ukr1_detour
+;sound_search					= characters_voice\human_01\fight\searching_enemy\stalker\search_ ;monsters\human\combat\ukr\search\ukr1_finding
+;sound_friendly_fire				= characters_voice\human_01\fight\friendly_fire\stalker\friendly_fire_ ;script_sound\reactions\friendly_fire\soldier\soldier_friendlyfire_
+;sound_panic_human				= characters_voice\human_01\states\panic_human\stalker\panic_ ;monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\surrender\em1_surrender,monsters\stalker\copy\default\surrender\em1_surrender
+;sound_panic_monster				= characters_voice\human_01\states\panic_monster\stalker\panic_ ;script_sound\help\soldier\soldier_help_
+;sound_tolls						= script_replics\radio\message\radio_voice_; characters_voice\human_01\states\idle\stalker\idle_
+;sound_grenade_alarm				= characters_voice\human_01\fight\grenade\grenade_
+;sound_friendly_grenade_alarm	= characters_voice\human_01\fight\friendly_grenade\friendly_grenade_
 
 ;---STEP MANAGER------------------------------------------------------
-LegsCount						= 2
-step_params						= stalker_step_manager
-foot_bones						= stalker_foot_bones
+;LegsCount						= 2
+;step_params						= stalker_step_manager
+;foot_bones						= stalker_foot_bones
 
 ;---MOVEMENT----------------------------------------------------------
-CrouchFactor					= 0.33
-WalkFactor						= 1.3	;2.15
-WalkBackFactor					= 1.2	;2.15
-RunFactor						= 6.0
-RunBackFactor					= 2.5
-WalkFreeFactor					= 1.25 ;1.00
-RunFreeFactor					= 5.0
-PanicFactor						=7.4
-DamagedWalkFactor				= 1.3
-DamagedRunFactor				= 2.0
-DamagedWalkFreeFactor			= 0.8
-DamagedRunFreeFactor			=  0.8
-DamagedPanicFactor				= 2.0
+;CrouchFactor					= 0.33
+;WalkFactor						= 1.3	;2.15
+;WalkBackFactor					= 1.2	;2.15
+;RunFactor						= 6.0
+;RunBackFactor					= 2.5
+;WalkFreeFactor					= 1.25 ;1.00
+;RunFreeFactor					= 5.0
+;PanicFactor						=7.4
+;DamagedWalkFactor				= 1.3
+;DamagedRunFactor				= 2.0
+;DamagedWalkFreeFactor			= 0.8
+;DamagedRunFreeFactor			=  0.8
+;DamagedPanicFactor				= 2.0
 
 ;---LIMPING STATE-----------------------------------------------------
-use_limping_state				= on
-limping_threshold				= 0.5
+;use_limping_state				= on
+;limping_threshold				= 0.5
 
 ;---WEAPON BONES------------------------------------------------------------------
-weapon_bone0					= bip01_r_finger1
-weapon_bone1					= bip01_l_finger1
-weapon_bone2					= bip01_r_finger11
+;weapon_bone0					= bip01_r_finger1
+;weapon_bone1					= bip01_l_finger1
+;weapon_bone2					= bip01_r_finger11
 
 ;---ANIMATION BONES------------------------------------------------------------------
-bone_head						= bip01_head
-bone_shoulder					= bip01_spine2
-bone_spin						= bip01_spine1
-bone_model						= bip01
+;bone_head						= bip01_head
+;bone_shoulder					= bip01_spine2
+;bone_spin						= bip01_spine1
+;bone_model						= bip01
 
 ;---FIRE DISPERSIONS--------------------------------------------------
-disp_walk_stand					= 16
-disp_walk_crouch				= 16	
-disp_run_stand					= 16
-disp_run_crouch					= 16
-disp_stand_stand				= 16
-disp_stand_crouch				= 16
+;disp_walk_stand					= 16
+;disp_walk_crouch				= 16	
+;disp_run_stand					= 16
+;disp_run_crouch					= 16
+;disp_stand_stand				= 16
+;disp_stand_crouch				= 16
 
 ;---HIT INFO---------------------------------------------------------
-hit_power						= 10
-hit_type						= strike
+;hit_power						= 10
+;hit_type						= strike
 
 ;---PHYSICS-----------------------------------------------------------
-ph_box0_center 					= 0.0,  0.9,  0.0
-ph_box0_size 		 			= 0.35, 0.9,  0.35
-ph_box1_center 		 			= 0.0,  0.6,  0.0
-ph_box1_size 		 			= 0.40, 0.6,  0.40
+;ph_box0_center 					= 0.0,  0.9,  0.0
+;ph_box0_size 		 			= 0.35, 0.9,  0.35
+;ph_box1_center 		 			= 0.0,  0.6,  0.0
+;ph_box1_size 		 			= 0.40, 0.6,  0.40
 ;---------------------------------------------------------------------
-ph_crash_speed_min       		= 16
-ph_crash_speed_max       		= 30
+;ph_crash_speed_min       		= 16
+;ph_crash_speed_max       		= 30
 ;---------------------------------------------------------------------
-ph_mass 				 		= 120;80
+;ph_mass 				 		= 120;80
 ;---------------------------------------------------------------------
 
 ;---------------------------------------------------------------------
-ph_skeleton_airr_lin_factor   	= 2.5
-ph_skeleton_airr_ang_factor   	= 0.5
-ph_skeleton_hinger_factor1    	= 10
-ph_skeleton_hinge_vel	      	= 10
-ph_skeleton_ddelay	     	  	= 50
-ph_skel_fatal_impulse_factor  	= 8.0
-ph_after_death_velocity_factor	= 1.3
-ph_skel_shot_up_factor        	= 2.2
+;ph_skeleton_airr_lin_factor   	= 2.5
+;ph_skeleton_airr_ang_factor   	= 0.5
+;ph_skeleton_hinger_factor1    	= 10
+;ph_skeleton_hinge_vel	      	= 10
+;ph_skeleton_ddelay	     	  	= 50
+;ph_skel_fatal_impulse_factor  	= 8.0
+;ph_after_death_velocity_factor	= 1.3
+;ph_skel_shot_up_factor        	= 2.2
 ;---------------------------------------------------------------------

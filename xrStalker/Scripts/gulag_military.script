@@ -26,7 +26,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_follower11",
 		idle = 0,
 		prior = 10, state = {0},
-		squad = squad, group = groups[2],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		leader = "logic@mil_freedom_patrol1",
 		predicate = function(obj) 
@@ -37,7 +37,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_follower12",
 		idle = 0,
 		prior = 10, state = {0},
-		squad = squad, group = groups[3],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		leader = "logic@mil_freedom_patrol1",
 		predicate = function(obj) 
@@ -48,7 +48,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_patrol2",
 		idle = 4 * 1000 * 60 * 60,
 		prior = 9, state = {0},
-		squad = squad, group = groups[4],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_specnaz"
@@ -59,7 +59,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_follower21",
 		idle = 0,
 		prior = 10, state = {0},
-		squad = squad, group = groups[5],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		leader = "logic@mil_freedom_patrol2",
 		predicate = function(obj) 
@@ -70,7 +70,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_follower22",
 		idle = 0,
 		prior = 10, state = {0},
-		squad = squad, group = groups[6],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		leader = "logic@mil_freedom_patrol2",
 		predicate = function(obj) 
@@ -81,7 +81,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_walker1",
 		idle = 0,
 		prior = 10, state = {0, 2},
-		squad = squad, group = groups[7],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_sniper"
@@ -91,7 +91,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_walker2",
 		idle = 0,
 		prior = 10, state = {0, 2},
-		squad = squad, group = groups[8],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_sniper"
@@ -101,7 +101,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_zoneguard1",
 		idle = 0,
 		prior = 10, state = {0, 2},
-		squad = squad, group = groups[9],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_specnaz"
@@ -111,7 +111,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
 		prior = 4, state = {0},
-		squad = squad, group = groups[10],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_master"
@@ -121,7 +121,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
 		prior = 4, state = {0},
-		squad = squad, group = groups[11],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_regular"
@@ -131,7 +131,7 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
 		prior = 4, state = {0},
-		squad = squad, group = groups[12],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "svoboda_regular"
@@ -141,21 +141,21 @@ function load_job (sj, gname, type, squad, groups)
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
 		prior = 1, state = {0},
-		squad = squad, group = groups[13],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor"
 	}
 	table.insert(sj, t)
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
 		prior = 1, state = {0},
-		squad = squad, group = groups[14],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor"
 	}
 	table.insert(sj, t)
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
 		prior = 1, state = {0},
-		squad = squad, group = groups[15],
+		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "mil_freedom_restrictor"
 	}
 	table.insert(sj, t)
