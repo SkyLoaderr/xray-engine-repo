@@ -107,7 +107,7 @@ void	game_sv_ArtefactHunt::RemoveItemFromActor		(CSE_Abstract* pItem)
 	xr_vector<u16>::const_iterator	I = pItem->children.begin	();
 	xr_vector<u16>::const_iterator	E = pItem->children.end		();
 	for ( ; I != E; ++I) {
-		CSE_Abstract	*e_dest	= get_entity_from_eid(*I);
+//		CSE_Abstract	*e_dest	= get_entity_from_eid(*I);
 		u_EventGen			(P,GE_DESTROY,*I);
 		Level().Send(P,net_flags(TRUE,TRUE));
 	}
@@ -120,9 +120,11 @@ BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 	CSE_ALifeItemWeapon* pWeapon = dynamic_cast<CSE_ALifeItemWeapon*> (pItem);
 	if (!pWeapon) return true;
 
-	u8 Addons = pWeapon->m_addon_flags.get();
-	u8 Upgrades = IItem >> 0x05;
-	return Addons == Upgrades;
+//	u8 Addons = pWeapon->m_addon_flags.get();
+//	u8 Upgrades = IItem >> 0x05;
+//	return Addons == Upgrades;
+	pWeapon->m_addon_flags.set(IItem >> 0x05);
+	return true;
 };
 
 void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
@@ -171,8 +173,9 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 			game_PlayerState::BeltItem	DItem = *II; 
 			const char* Name = GetItemForSlot(DItem.SlotID, DItem.ItemID, ps);
 			if (!Name) continue;
-			if (!xr_strcmp(Name, pItem->s_name) && CheckUpgrades(pItem, DItem.ItemID))
+			if (!xr_strcmp(Name, pItem->s_name))
 			{
+				CheckUpgrades(pItem, DItem.ItemID);
 				found = true;
 				ItemsDesired.erase(II);
 				break;

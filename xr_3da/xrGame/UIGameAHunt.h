@@ -45,6 +45,8 @@ public:
 
 	virtual void		OnBuyMenu_Ok			();
 
+	virtual BOOL		CanCallBuyMenu			();
+
 /*
 	virtual void		Render				();
 	virtual void		OnFrame				();

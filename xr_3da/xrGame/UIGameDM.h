@@ -71,6 +71,7 @@ public:
 	virtual CUIDialogWnd*	GetSkinWnd			()	{ return (CUIDialogWnd*) pCurSkinMenu; };
 
 	virtual bool		CanBeReady				();
+	virtual BOOL		CanCallBuyMenu			();
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;

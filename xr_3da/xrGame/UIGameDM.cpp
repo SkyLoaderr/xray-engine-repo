@@ -110,6 +110,11 @@ void CUIGameDM::OnFrame()
 		}break;
 	break;
 	}
+
+	if (pCurBuyMenu && pCurBuyMenu->IsShown() && !CanCallBuyMenu())
+	{
+		StartStopMenu(pCurBuyMenu);
+	};
 }
 //--------------------------------------------------------------------
 
@@ -160,6 +165,20 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
+			case DIK_1:
+			case DIK_2:
+			case DIK_3:
+			case DIK_4:
+			case DIK_5:
+			case DIK_6:
+			case DIK_7:
+			case DIK_8:
+			case DIK_9:
+			case DIK_0:
+				{
+					if (pCurBuyMenu->IsShown() || pCurSkinMenu->IsShown())
+						return true;
+				}break;
 		case DIK_TAB:	
 			{
 				SetFlag		(flShowFragList,TRUE);	
@@ -167,9 +186,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			}break;
 		case DIK_B:
 			{
-				if (!m_bBuyEnabled) break;
-				CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
-				if (!pCurActor || !pCurActor->g_Alive()) break;
+				if (!CanCallBuyMenu()) break;
 
 				SetCurrentBuyMenu	();
 
@@ -325,4 +342,8 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	P.w_u8			(pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
+};
+BOOL		CUIGameDM::CanCallBuyMenu			()
+{
+	return m_bBuyEnabled;
 };

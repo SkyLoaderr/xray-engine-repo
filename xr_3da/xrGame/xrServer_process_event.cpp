@@ -219,7 +219,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				xr_vector<u16>::const_iterator	I = e_dest->children.begin	();
 				xr_vector<u16>::const_iterator	E = e_dest->children.end		();
 				for ( ; I != E; ++I) {
-					CSE_Abstract	*e_child	= game->get_entity_from_eid(*I);
+//					CSE_Abstract	*e_child	= game->get_entity_from_eid(*I);
 					NET_Packet			P2;
 					P2.w_begin			(M_EVENT);
 					P2.w_u32			(timestamp);

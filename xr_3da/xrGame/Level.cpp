@@ -246,7 +246,7 @@ void CLevel::OnRender()
 	
 	//отрисовать трассы пуль
 	BulletManager().Render();
-	//отрисовать интерфей пользователя
+	//отрисовать интерфейc пользователя
 	HUD().RenderUI();
 
 #ifdef DRAW_CONTACTS
@@ -258,6 +258,15 @@ void CLevel::OnRender()
 		ai().level_graph().render();
 	if (bDebug)	{
 		ObjectSpace.dbgRender	();
+
+		//---------------------------------------------------------------------
+		HUD().pFontSmall->OutSet	(170,630);
+		HUD().pFontSmall->SetSize	(16.0f);
+		HUD().pFontSmall->SetColor	(0xffff0000);
+		HUD().pFontSmall->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
+		HUD().pFontSmall->OutNext	("Server Objects:      [%d]",Objects.objects.size());
+		HUD().pFontSmall->SetSize	(8.0f);
+		//---------------------------------------------------------------------
 	}
 #endif
 }

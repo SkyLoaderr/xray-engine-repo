@@ -601,6 +601,8 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId, LPCSTR N, u8 Addons)
 	{
 		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
 
+		pWeapon->m_addon_flags.set(Addons);
+		/*
 		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonScope)
 		{
 			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonScope);
@@ -613,6 +615,7 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId, LPCSTR N, u8 Addons)
 		{
 			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonSilencer);
 		}
+		*/
 	};
 	/////////////////////////////////////////////////////////////////////////////////
 

@@ -174,3 +174,14 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 	*/
 	l_pPlayer->u_EventSend		(P);
 };
+
+BOOL		CUIGameAHunt::CanCallBuyMenu			()
+{
+	BOOL res = inherited::CanCallBuyMenu();
+	if (!res) return FALSE;
+
+	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+	if (!pCurActor || !pCurActor->g_Alive()) return FALSE;
+
+	return TRUE;
+};
