@@ -37,6 +37,7 @@ public:
 	CSoundRender_Source*		source;
 	ref_sound*					owner;
 
+	float						priority_scale;
 	float						smooth_volume;
 	float 						occluder_volume;		// USER
 	Fvector						occluder	[3];
@@ -64,6 +65,7 @@ public:
 	virtual void				set_frequency			(float scale)			{ p_source.freq=scale;									}
 	virtual void				set_range				(float min, float max)	{ p_source.min_distance=min; p_source.max_distance=max;	}
 	virtual void				set_volume				(float vol)				{ p_source.volume = vol;								}
+	virtual void				set_priority			(float p)				{ priority_scale = p;									}
 	virtual	const CSound_params* get_params				( )						{ return &p_source;										}
 
 	void						fill_block				(void*	ptr, u32 size);

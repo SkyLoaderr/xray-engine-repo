@@ -135,6 +135,7 @@ struct	ref_sound
 	IC void					set_frequency			( float freq);
 	IC void					set_range				( float min, float max );
 	IC void					set_volume				( float vol );
+	IC void					set_priority			( float vol );
 
 	IC const CSound_params*	get_params				( );
     IC void					set_params				( CSound_params* p );
@@ -256,6 +257,7 @@ IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedb
 IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
 IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
 IC void	ref_sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
+IC void	ref_sound::set_priority					( float p )												{	if (feedback)	feedback->set_priority(vol);						}
 IC void	ref_sound::stop							( )														{	if (feedback)	feedback->stop();									}
 IC const CSound_params*	ref_sound::get_params	( )														{	if (feedback)	return feedback->get_params(); else return NULL;	}
 IC void	ref_sound::set_params					( CSound_params* p )									

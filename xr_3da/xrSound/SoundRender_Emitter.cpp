@@ -33,6 +33,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	dwTimeToPropagade	= 0;
 	marker				= 0xabababab;
 	starting_delay		= 0.f;
+	priority_scale		= 1.f;
 }
 
 CSoundRender_Emitter::~CSoundRender_Emitter(void)

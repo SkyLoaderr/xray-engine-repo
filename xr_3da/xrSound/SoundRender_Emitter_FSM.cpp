@@ -153,7 +153,7 @@ float	CSoundRender_Emitter::priority				()
 {
 	float	dist		= SoundRender->listener_position().distance_to	(p_source.position);
 	float	att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
-	return	smooth_volume*att;
+	return	smooth_volume*att*priority_scale;
 }
 
 void	CSoundRender_Emitter::update_environment	(float dt)
