@@ -211,9 +211,8 @@ void CObject::shedule_Update	( u32 T )
 			Fvector			C;
 			Center			(C);
 			if (!C.similar(spatial.center,eps_P))	spatial_move();
-		} else			{
-			// nothing to do :_)
 		}
+		// else nothing to do :_)
 	}
 }
 
