@@ -8,6 +8,7 @@
 
 #pragma once
 
+using namespace AI;
 using namespace ALife;
 
 class IPureALifeObject {
@@ -43,7 +44,7 @@ public:
 
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
-	ETaskState						m_tTaskState;
+	EStalkerRank					m_tRank;
 	OBJECT_VECTOR					m_tpItemIDs;
 
 	virtual void					Save(CFS_Memory	&tMemoryStream)
@@ -51,7 +52,7 @@ public:
 		inherited::Save				(tMemoryStream);
 		tMemoryStream.Wfloat		(m_fCumulativeItemMass);
 		tMemoryStream.Wdword		(m_dwMoney);
-		tMemoryStream.Wdword		(m_tTaskState);
+		tMemoryStream.Wdword		(m_tRank);
 		tMemoryStream.Wdword		(m_tpItemIDs.size());
 		OBJECT_IT					I = m_tpItemIDs.begin();
 		OBJECT_IT					E = m_tpItemIDs.end();
@@ -64,7 +65,7 @@ public:
 		inherited::Load				(tFileStream);
 		m_fCumulativeItemMass		= tFileStream.Rfloat();
 		m_dwMoney					= tFileStream.Rdword();
-		m_tTaskState				= ETaskState(tFileStream.Rdword());
+		m_tRank						= EStalkerRank(tFileStream.Rdword());
 		m_tpItemIDs.resize			(tFileStream.Rdword());
 		OBJECT_IT					I = m_tpItemIDs.begin();
 		OBJECT_IT					E = m_tpItemIDs.end();
@@ -77,7 +78,7 @@ public:
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_fCumulativeItemMass		= 0.0f;
 		m_dwMoney					= 0;
-		m_tTaskState				= eTaskStateNone;
+		m_tRank						= EStalkerRank(pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "rank"));
 		m_tpItemIDs.clear			();
 	};
 };
@@ -92,29 +93,29 @@ public:
 	
 	virtual	void					Save(CFS_Memory	&tMemoryStream)
 	{
-		tMemoryStream.write	(&m_tClassID,	sizeof(m_tClassID));
-		tMemoryStream.write	(&m_tObjectID,	sizeof(m_tObjectID));
-		tMemoryStream.write	(&m_tSpawnID,	sizeof(m_tSpawnID));
-		tMemoryStream.write	(&m_tGraphID,	sizeof(m_tGraphID));
-		tMemoryStream.write	(&m_wCount,		sizeof(m_wCount));
+		tMemoryStream.write			(&m_tClassID,	sizeof(m_tClassID));
+		tMemoryStream.write			(&m_tObjectID,	sizeof(m_tObjectID));
+		tMemoryStream.write			(&m_tSpawnID,	sizeof(m_tSpawnID));
+		tMemoryStream.write			(&m_tGraphID,	sizeof(m_tGraphID));
+		tMemoryStream.write			(&m_wCount,		sizeof(m_wCount));
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		tFileStream.Read	(&m_tClassID,	sizeof(m_tClassID));
-		tFileStream.Read	(&m_tObjectID,	sizeof(m_tObjectID));
-		tFileStream.Read	(&m_tSpawnID,	sizeof(m_tSpawnID));
-		tFileStream.Read	(&m_tGraphID,	sizeof(m_tGraphID));
-		tFileStream.Read	(&m_wCount,		sizeof(m_wCount));
+		tFileStream.Read			(&m_tClassID,	sizeof(m_tClassID));
+		tFileStream.Read			(&m_tObjectID,	sizeof(m_tObjectID));
+		tFileStream.Read			(&m_tSpawnID,	sizeof(m_tSpawnID));
+		tFileStream.Read			(&m_tGraphID,	sizeof(m_tGraphID));
+		tFileStream.Read			(&m_wCount,		sizeof(m_wCount));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		LPCSTR				S = pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class");
-		memcpy				(&m_tClassID,S,sizeof(m_tClassID));
-		m_tGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tSpawnID			= tSpawnID;
-		m_wCount			= tpSpawnPoints[tSpawnID].wCount;
+		LPCSTR						S = pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class");
+		memcpy						(&m_tClassID,S,sizeof(m_tClassID));
+		m_tGraphID					= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tSpawnID					= tSpawnID;
+		m_wCount					= tpSpawnPoints[tSpawnID].wCount;
 	};
 };
 
@@ -125,20 +126,20 @@ public:
 	
 	virtual	void					Save(CFS_Memory	&tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_wCountAfter,sizeof(m_wCountAfter));
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.write			(&m_wCountAfter,sizeof(m_wCountAfter));
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_wCountAfter,sizeof(m_wCountAfter));
+		inherited::Load				(tFileStream);
+		tFileStream.Read			(&m_wCountAfter,sizeof(m_wCountAfter));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_wCountAfter		= m_wCount;
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_wCountAfter				= m_wCount;
 	};
 };
 
@@ -150,20 +151,20 @@ public:
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_tTimeID,	sizeof(m_tTimeID));
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.write			(&m_tTimeID,	sizeof(m_tTimeID));
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_tTimeID,	sizeof(m_tTimeID));
+		inherited::Load				(tFileStream);
+		tFileStream.Read			(&m_tTimeID,	sizeof(m_tTimeID));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tTimeID			= 0;
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tTimeID					= 0;
 	};
 };
 
@@ -177,29 +178,29 @@ public:
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.Wfloat(m_fMass);
-		tMemoryStream.Wfloat(m_fPrice);
-		tMemoryStream.Wfloat(m_fHealthValue);
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.Wfloat		(m_fMass);
+		tMemoryStream.Wfloat		(m_fPrice);
+		tMemoryStream.Wfloat		(m_fHealthValue);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		m_fMass				= tFileStream.Rfloat();
-		m_fPrice			= tFileStream.Rfloat();
-		m_fHealthValue		= tFileStream.Rfloat();
+		inherited::Load				(tFileStream);
+		m_fMass						= tFileStream.Rfloat();
+		m_fPrice					= tFileStream.Rfloat();
+		m_fHealthValue				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
-		m_fPrice			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "cost");
-		if (pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "health_value"))
-			m_fHealthValue		= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_fMass						= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
+		m_fPrice					= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "cost");
+		if (pSettings->LineExists	(tpSpawnPoints[tSpawnID].caModel, "health_value"))
+			m_fHealthValue			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
 		else
-			m_fHealthValue		= 0;
+			m_fHealthValue			= 0;
 	};
 };
 
@@ -217,38 +218,38 @@ public:
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-		tMemoryStream.write	(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tMemoryStream.write	(&m_fMinSpeed,				sizeof(m_fMinSpeed));
-		tMemoryStream.write	(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
-		tMemoryStream.write	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-		tMemoryStream.write	(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-		tMemoryStream.write	(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.write			(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+		tMemoryStream.write			(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
+		tMemoryStream.write			(&m_fMinSpeed,				sizeof(m_fMinSpeed));
+		tMemoryStream.write			(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
+		tMemoryStream.write			(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+		tMemoryStream.write			(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
+		tMemoryStream.write			(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-		tFileStream.Read	(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tFileStream.Read	(&m_fMinSpeed,				sizeof(m_fMinSpeed));
-		tFileStream.Read	(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
-		tFileStream.Read	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-		tFileStream.Read	(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-		tFileStream.Read	(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
+		inherited::Load				(tFileStream);
+		tFileStream.Read			(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+		tFileStream.Read			(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
+		tFileStream.Read			(&m_fMinSpeed,				sizeof(m_fMinSpeed));
+		tFileStream.Read			(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
+		tFileStream.Read			(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+		tFileStream.Read			(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
+		tFileStream.Read			(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tNextGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tPrevGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_fMinSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "minSpeed");
-		m_fMaxSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "maxSpeed");
-		m_fCurSpeed			= 0.0f;
-		m_fDistanceFromPoint= 0.0f;
-		m_fDistanceToPoint	= 0.0f;
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tNextGraphID				= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tPrevGraphID				= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_fMinSpeed					= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "minSpeed");
+		m_fMaxSpeed					= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "maxSpeed");
+		m_fCurSpeed					= 0.0f;
+		m_fDistanceFromPoint		= 0.0f;
+		m_fDistanceToPoint			= 0.0f;
 	};
 };
 
@@ -260,20 +261,20 @@ public:
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		m_tMonsterParams.Save(tMemoryStream);
+		inherited::Save				(tMemoryStream);
+		m_tMonsterParams.Save		(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		m_tMonsterParams.Load(tFileStream);
+		inherited::Load				(tFileStream);
+		m_tMonsterParams.Load		(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tMonsterParams.Init(tSpawnID,tpSpawnPoints);
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tMonsterParams.Init		(tSpawnID,tpSpawnPoints);
 	};
 };
 
@@ -285,32 +286,32 @@ public:
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.Wdword(m_tpMembers.size());
-		MONSTER_PARAMS_IT I = m_tpMembers.begin();
-		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.Wdword		(m_tpMembers.size());
+		MONSTER_PARAMS_IT 			I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT 			E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Save(tMemoryStream);
+			(*I).Save				(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		m_tpMembers.resize(tFileStream.Rdword());
-		MONSTER_PARAMS_IT I = m_tpMembers.begin();
-		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		inherited::Load				(tFileStream);
+		m_tpMembers.resize			(tFileStream.Rdword());
+		MONSTER_PARAMS_IT 			I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT 			E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Load(tFileStream);
+			(*I).Load				(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tpMembers.resize	(m_wCount);
-		MONSTER_PARAMS_IT I = m_tpMembers.begin();
-		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tpMembers.resize			(m_wCount);
+		MONSTER_PARAMS_IT 			I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT 			E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Init(tSpawnID,tpSpawnPoints);
+			(*I).Init				(tSpawnID,tpSpawnPoints);
 	};
 };
 
@@ -321,18 +322,21 @@ public:
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 	float							m_fMaxItemMass;
+	ETaskState						m_tTaskState;
+	u32								m_dwCurTask;
+	DWORD_VECTOR					m_tpaVertices;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		// calling inherited
-		inherited::Save(tMemoryStream);
+		inherited::Save				(tMemoryStream);
 		// saving events
 		{
-			tMemoryStream.Wdword(m_tpEvents.size());
-			PERSONAL_EVENT_IT it	= m_tpEvents.begin();
-			PERSONAL_EVENT_IT E		= m_tpEvents.end();
-			for ( ; it != E; it++) {
-				SPersonalEvent &tPersonalEvent = *it;
+			tMemoryStream.Wdword	(m_tpEvents.size());
+			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
+			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
+			for ( ; I != E; I++) {
+				SPersonalEvent		&tPersonalEvent = *I;
 				tMemoryStream.write	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
 				tMemoryStream.write	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
 				tMemoryStream.write	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
@@ -345,26 +349,35 @@ public:
 		}
 		// saving tasks
 		{
-			tMemoryStream.Wdword(m_tpTaskIDs.size());
-			TASK_IT it				= m_tpTaskIDs.begin();
-			TASK_IT E				= m_tpTaskIDs.end();
-			for ( ; it != E; it++)
-				tMemoryStream.write	(it,sizeof(*it));
+			tMemoryStream.Wdword	(m_tpTaskIDs.size());
+			TASK_IT 				I = m_tpTaskIDs.begin();
+			TASK_IT 				E = m_tpTaskIDs.end();
+			for ( ; I != E; I++)
+				tMemoryStream.write	(I,sizeof(*I));
 		}
-		tMemoryStream.Wfloat(m_fMaxItemMass);
+		{
+			tMemoryStream.Wdword	(m_tpaVertices.size());
+			DWORD_IT 				I = m_tpaVertices.begin();
+			DWORD_IT 				E = m_tpaVertices.end();
+			for ( ; I != E; I++)
+				tMemoryStream.write	(I,sizeof(*I));
+		}
+		tMemoryStream.Wfloat		(m_fMaxItemMass);
+		tMemoryStream.Wdword		(m_tTaskState);
+		tMemoryStream.Wdword		(m_dwCurTask);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		// calling inherited
-		inherited::Load(tFileStream);
+		inherited::Load				(tFileStream);
 		// loading events
 		{
-			m_tpEvents.resize(tFileStream.Rdword());
-			PERSONAL_EVENT_IT it	= m_tpEvents.begin();
-			PERSONAL_EVENT_IT E		= m_tpEvents.end();
-			for ( ; it != E; it++) {
-				SPersonalEvent &tPersonalEvent = *it;
+			m_tpEvents.resize		(tFileStream.Rdword());
+			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
+			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
+			for ( ; I != E; I++) {
+				SPersonalEvent		&tPersonalEvent = *I;
 				tFileStream.Read	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
 				tFileStream.Read	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
 				tFileStream.Read	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
@@ -377,21 +390,25 @@ public:
 		}
 		// loading tasks
 		{
-			m_tpTaskIDs.resize(tFileStream.Rdword());
-			TASK_IT it				= m_tpTaskIDs.begin();
+			m_tpTaskIDs.resize		(tFileStream.Rdword());
+			TASK_IT I				= m_tpTaskIDs.begin();
 			TASK_IT E				= m_tpTaskIDs.end();
-			for ( ; it != E; it++)
-				tFileStream.Read	(it,sizeof(*it));
+			for ( ; I != E; I++)
+				tFileStream.Read	(I,sizeof(*I));
 		}
 		m_fMaxItemMass				= tFileStream.Rfloat();
+		m_tTaskState				= ETaskState(tFileStream.Rdword());
+		m_dwCurTask					= tFileStream.Rdword();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init(tSpawnID,tpSpawnPoints);
+		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear			();
 		m_tpTaskIDs.clear			();
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
+		m_tTaskState				= eTaskStateNone;
+		m_dwCurTask					= u32(-1);
 	};
 };
 
@@ -400,23 +417,27 @@ public:
 	typedef	CALifeHumanAbstract inherited;
 
 	CALifeHumanParams				m_tHumanParams;
+	bool							m_bIsTrader;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		m_tHumanParams.Save	(tMemoryStream);
+		inherited::Save				(tMemoryStream);
+		m_tHumanParams.Save			(tMemoryStream);
+		tMemoryStream.Wdword		(m_bIsTrader);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		m_tHumanParams.Load	(tFileStream);
+		inherited::Load				(tFileStream);
+		m_tHumanParams.Load			(tFileStream);
+		m_bIsTrader					= !!(tFileStream.Rdword());
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tHumanParams.Init	(tSpawnID,tpSpawnPoints);
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tHumanParams.Init			(tSpawnID,tpSpawnPoints);
+		m_bIsTrader					= pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "trader") && pSettings->ReadBOOL(tpSpawnPoints[tSpawnID].caModel, "trader");
 	};
 };
 
@@ -428,40 +449,40 @@ public:
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.Wdword(m_tpMembers.size());
-		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
-		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.Wdword		(m_tpMembers.size());
+		HUMAN_PARAMS_IT				I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT				E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Save(tMemoryStream);
+			(*I).Save				(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load		(tFileStream);
-		m_tpMembers.resize	(tFileStream.Rdword());
-		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
-		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		inherited::Load				(tFileStream);
+		m_tpMembers.resize			(tFileStream.Rdword());
+		HUMAN_PARAMS_IT				I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT				E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Load(tFileStream);
+			(*I).Load				(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tpMembers.resize	(m_wCount);
-		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
-		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tpMembers.resize			(m_wCount);
+		HUMAN_PARAMS_IT				I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT				E = m_tpMembers.end();
 		for ( ; I != E; I++)
-			(*I).Init(tSpawnID,tpSpawnPoints);
+			(*I).Init				(tSpawnID,tpSpawnPoints);
 	};
 };
 
 class CRemovePersonalEventPredicate {
 private:
-	EVENT_MAP	*m_tpMap;
+	EVENT_MAP						*m_tpMap;
 public:
-	CRemovePersonalEventPredicate(EVENT_MAP &tpMap)
+	CRemovePersonalEventPredicate	(EVENT_MAP &tpMap)
 	{
 		m_tpMap = &tpMap;
 	};
@@ -472,11 +493,11 @@ public:
 	};
 };
 
-class CSortItemPrdicate {
+class CSortItemPredicate {
 private:
-	OBJECT_MAP	*m_tpMap;
+	OBJECT_MAP						*m_tpMap;
 public:
-	CSortItemPrdicate(OBJECT_MAP &tpMap)
+	CSortItemPredicate				(OBJECT_MAP &tpMap)
 	{
 		m_tpMap = &tpMap;
 	};

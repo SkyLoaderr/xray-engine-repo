@@ -33,6 +33,7 @@ class CALifeHumanParams;
 class CALifeEventGroup;
 class CALifeDynamicObject;
 class CALifeMonsterAbstract;
+class CALifeHuman;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -47,8 +48,6 @@ namespace ALife {
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
-	DEFINE_VECTOR	(DWORD,						DWORD_VECTOR,			DWORD_IT);
-	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,			OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,			OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,			EVENT_IT);
@@ -58,6 +57,7 @@ namespace ALife {
 	DEFINE_VECTOR	(CALifeMonsterParams,		MONSTER_PARAMS_VECTOR,	MONSTER_PARAMS_IT);
 	DEFINE_VECTOR	(CALifeHumanParams,			HUMAN_PARAMS_VECTOR,	HUMAN_PARAMS_IT);
 	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR, ALIFE_MONSTER_P_IT);
+	DEFINE_VECTOR	(CALifeHuman *,				HUMAN_P_VECTOR,			HUMAN_P_IT);
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,			GRAPH_VECTOR_SVECTOR,	GRAPH_VECTOR_IT);
 	
@@ -104,6 +104,14 @@ namespace ALife {
 		eTaskStateReturningSuccess,
 		eTaskStateReturningFailed,
 		eTaskStateDummy = u32(-1),
+	};
+
+	enum EStalkerRank {
+		eStalkerRankNovice = u32(0),
+		eStalkerRankExperienced,
+		eStalkerRankVeteran,
+		eStalkerRankMaster,
+		eStalkerRankDummy = u32(-1),
 	};
 
 	typedef struct tagSTask {

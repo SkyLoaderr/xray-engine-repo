@@ -210,6 +210,8 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Distance to   : %7.2f",tpALifeHuman->m_fDistanceToPoint);
 		Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
 		
+		Msg("* Trader        : %d",tpALifeHuman->m_bIsTrader);
+
 		Msg("* Health        : %d",tpALifeHuman->m_tHumanParams.m_iHealth);
 		Msg("* Money         : %d",tpALifeHuman->m_tHumanParams.m_dwMoney);
 		Msg("* Item mass     : %7.2f",tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass);

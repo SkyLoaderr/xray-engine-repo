@@ -54,7 +54,7 @@ float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode)
 	return(ffFindMinimalPath(dwStartNode,dwGoalNode,m_tpaNodes));
 }
 
-float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpaNodes)
+float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::DWORD_VECTOR &tpaNodes)
 {
 	float									fDistance;
 	m_tAIMapData.dwFinishNode				= dwGoalNode;

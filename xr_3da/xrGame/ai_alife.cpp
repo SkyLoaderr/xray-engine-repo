@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-//#define WRITE_TO_LOG
 #define TOTAL_COUNT			  50
 #define MONSTER_FACTOR		.40f
 #define HUMAN_FACTOR		.10f
@@ -106,11 +105,11 @@ void CAI_ALife::vfInitTerrain()
 void CAI_ALife::vfInitLocationOwners()
 {
 	m_tpLocationOwners.resize(Level().AI.GraphHeader().dwVertexCount);
-	OBJECT_PAIR_IT   it = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT   I = m_tObjectRegistry.m_tppMap.begin();
 	OBJECT_PAIR_IT   E  = m_tObjectRegistry.m_tppMap.end();
-	for ( ; it != E; it++) {
-		_SPAWN_ID	tSpawnID	= (*it).second->m_tSpawnID;
-		_OBJECT_ID	tObjectID	= (*it).second->m_tObjectID;
+	for ( ; I != E; I++) {
+		_SPAWN_ID	tSpawnID	= (*I).second->m_tSpawnID;
+		_OBJECT_ID	tObjectID	= (*I).second->m_tObjectID;
 		for (int j=0, iCount = (int)m_tpSpawnPoints[tSpawnID].ucRoutePointCount; j<iCount; j++)
 			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].tpRouteGraphPoints[j]].push_back(tObjectID);
 	}
@@ -120,29 +119,36 @@ void CAI_ALife::vfInitGraph()
 {
 	m_tpGraphObjects.resize(Level().AI.GraphHeader().dwVertexCount);
 	{
-		OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
-		OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
-		for ( ; it != E; it++)
-			m_tpGraphObjects[(*it).second->m_tGraphID].tpObjectIDs.push_back((*it).second->m_tObjectID);
+		OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
+		OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
+		for ( ; I != E; I++)
+			m_tpGraphObjects[(*I).second->m_tGraphID].tpObjectIDs.push_back((*I).second->m_tObjectID);
 	}
 	{
-		EVENT_PAIR_IT	it = m_tEventRegistry.m_tpMap.begin();
-		EVENT_PAIR_IT	E  = m_tEventRegistry.m_tpMap.end();
-		for ( ; it != E; it++)
-			m_tpGraphObjects[(*it).second.tGraphID].tpEventIDs.push_back((*it).second.tEventID);
+		EVENT_PAIR_IT	I = m_tEventRegistry.m_tpMap.begin();
+		EVENT_PAIR_IT	E = m_tEventRegistry.m_tpMap.end();
+		for ( ; I != E; I++)
+			m_tpGraphObjects[(*I).second.tGraphID].tpEventIDs.push_back((*I).second.tEventID);
 	}
 }
 
 void CAI_ALife::vfInitScheduledObjects()
 {
 	m_tpScheduledObjects.clear();
-	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
-	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
-	for ( ; it != E; it++) {
-		CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*it).second);
+	OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
+	for ( ; I != E; I++) {
+		CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
 		if (tpALifeMonsterAbstract)
 			m_tpScheduledObjects.push_back(tpALifeMonsterAbstract);
 	}
+	I = m_tObjectRegistry.m_tppMap.begin();
+	for ( ; I != E; I++) {
+		CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*I).second);
+		if (tpALifeHuman && (tpALifeHuman->m_bIsTrader))
+			m_tpTraders.push_back(tpALifeHuman);
+	}
+	sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate(*this));
 }
 
 // temporary
@@ -310,21 +316,23 @@ void CAI_ALife::vfSaveSpawnPoints()
 	tStream.write		(&m_tSpawnHeader,sizeof(m_tSpawnHeader));
 	tStream.close_chunk	();
 	tStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
-	for (int i=0; i<(int)m_tSpawnHeader.dwCount; i++) {
-		tStream.Wword	(m_tpSpawnPoints[i].tNearestGraphPointID);
-		tStream.Wstring	(m_tpSpawnPoints[i].caModel);
-		tStream.Wbyte	(m_tpSpawnPoints[i].ucTeam);
-		tStream.Wbyte	(m_tpSpawnPoints[i].ucSquad);
-		tStream.Wbyte	(m_tpSpawnPoints[i].ucGroup);
-		tStream.Wword	(m_tpSpawnPoints[i].wGroupID);
-		tStream.Wword	(m_tpSpawnPoints[i].wCount);
-		tStream.Wfloat	(m_tpSpawnPoints[i].fBirthRadius);
-		tStream.Wfloat	(m_tpSpawnPoints[i].fBirthProbability);
-		tStream.Wfloat	(m_tpSpawnPoints[i].fIncreaseCoefficient);
-		tStream.Wfloat	(m_tpSpawnPoints[i].fAnomalyDeathProbability);
-		tStream.Wbyte	(m_tpSpawnPoints[i].ucRoutePointCount);
-		for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-			tStream.Wword(m_tpSpawnPoints[i].tpRouteGraphPoints[j]);
+	SPAWN_IT			I = m_tpSpawnPoints.begin();
+	SPAWN_IT			E = m_tpSpawnPoints.end();
+	for ( ; I != E; I++) {
+		tStream.Wword	((*I).tNearestGraphPointID);
+		tStream.Wstring	((*I).caModel);
+		tStream.Wbyte	((*I).ucTeam);
+		tStream.Wbyte	((*I).ucSquad);
+		tStream.Wbyte	((*I).ucGroup);
+		tStream.Wword	((*I).wGroupID);
+		tStream.Wword	((*I).wCount);
+		tStream.Wfloat	((*I).fBirthRadius);
+		tStream.Wfloat	((*I).fBirthProbability);
+		tStream.Wfloat	((*I).fIncreaseCoefficient);
+		tStream.Wfloat	((*I).fAnomalyDeathProbability);
+		tStream.Wbyte	((*I).ucRoutePointCount);
+		for (int j=0; j<(int)(*I).ucRoutePointCount; j++)
+			tStream.Wword((*I).tpRouteGraphPoints[j]);
 	}
 	tStream.close_chunk	();
 	tStream.SaveTo		("game.spawn",0);
@@ -338,22 +346,26 @@ void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
 		THROW;
 	R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_DATA));
 	m_tpSpawnPoints.resize(m_tSpawnHeader.dwCount);
-	for (int i=0; i<(int)m_tSpawnHeader.dwCount; i++) {
-		m_tpSpawnPoints[i].tNearestGraphPointID		= tpStream->Rword();
-		tpStream->Rstring							(m_tpSpawnPoints[i].caModel);
-		m_tpSpawnPoints[i].ucTeam					= tpStream->Rbyte();
-		m_tpSpawnPoints[i].ucSquad					= tpStream->Rbyte();
-		m_tpSpawnPoints[i].ucGroup					= tpStream->Rbyte();
-		m_tpSpawnPoints[i].wGroupID					= tpStream->Rword();
-		m_tpSpawnPoints[i].wCount					= tpStream->Rword();
-		m_tpSpawnPoints[i].fBirthRadius				= tpStream->Rfloat();
-		m_tpSpawnPoints[i].fBirthProbability		= tpStream->Rfloat();
-		m_tpSpawnPoints[i].fIncreaseCoefficient		= tpStream->Rfloat();
-		m_tpSpawnPoints[i].fAnomalyDeathProbability	= tpStream->Rfloat();
-		m_tpSpawnPoints[i].ucRoutePointCount		= tpStream->Rbyte();
-		m_tpSpawnPoints[i].tpRouteGraphPoints.resize(m_tpSpawnPoints[i].ucRoutePointCount);
-		for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-			m_tpSpawnPoints[i].tpRouteGraphPoints[j] = tpStream->Rword();
+	SPAWN_IT			I = m_tpSpawnPoints.begin();
+	SPAWN_IT			E = m_tpSpawnPoints.end();
+	for ( ; I != E; I++) {
+		(*I).tNearestGraphPointID		= tpStream->Rword();
+		tpStream->Rstring				((*I).caModel);
+		(*I).ucTeam						= tpStream->Rbyte();
+		(*I).ucSquad					= tpStream->Rbyte();
+		(*I).ucGroup					= tpStream->Rbyte();
+		(*I).wGroupID					= tpStream->Rword();
+		(*I).wCount						= tpStream->Rword();
+		(*I).fBirthRadius				= tpStream->Rfloat();
+		(*I).fBirthProbability			= tpStream->Rfloat();
+		(*I).fIncreaseCoefficient		= tpStream->Rfloat();
+		(*I).fAnomalyDeathProbability	= tpStream->Rfloat();
+		(*I).ucRoutePointCount			= tpStream->Rbyte();
+		(*I).tpRouteGraphPoints.resize	((*I).ucRoutePointCount);
+		GRAPH_IT						i = (*I).tpRouteGraphPoints.begin();
+		GRAPH_IT						e = (*I).tpRouteGraphPoints.end();
+		for ( ; i != e; i++)
+			*i	= tpStream->Rword();
 	}
 }
 
@@ -374,7 +386,7 @@ void CAI_ALife::Load()
 	// loading spawn-points
 	CStream		*tpStream;
 	FILE_NAME	caFileName;
-	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn")) {
+	if (!Engine.FS.Exist(caFileName, ::Path.GameData, "game.spawn")) {
 //		THROW;
 #ifdef DEBUG
 		fpFactors.push_back(MONSTER_FACTOR);
@@ -395,12 +407,12 @@ void CAI_ALife::Load()
 		Engine.FS.Close(tpStream);
 	}
 
-	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife")) {
+	if (!Engine.FS.Exist(caFileName,::Path.GameData,"game.alife")) {
 		Generate();
 		Save();
 	}
 	
-	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife"))
+	if (!Engine.FS.Exist(caFileName,::Path.GameData,"game.alife"))
 		THROW;
 	
 	tpStream = Engine.FS.Open(caFileName);
@@ -456,15 +468,15 @@ void CAI_ALife::Generate()
 {
 //	SPAWN_IT	B = m_tpSpawnPoints.begin();
 //	SPAWN_IT	E  = m_tpSpawnPoints.end();
-//	for (SPAWN_IT it = B ; it != E; ) {
-//		u16	wGroupID = it->wGroupID;
-//		float fSum = it->fBirthProbability;
-//		for (SPAWN_IT j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++)
+//	for (SPAWN_IT I = B ; I != E; ) {
+//		u16	wGroupID = I->wGroupID;
+//		float fSum = I->fBirthProbability;
+//		for (SPAWN_IT j= I + 1; (j != E) && (j->wGroupID == wGroupID); j++)
 //			fSum += j->fBirthProbability;
 //		float fProbability = ::Random.randF(0,fSum);
-//		fSum = it->fBirthProbability;
-//		SPAWN_IT m = j, k = it;
-//		for ( j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
+//		fSum = I->fBirthProbability;
+//		SPAWN_IT m = j, k = I;
+//		for ( j= I + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
 //			fSum += j->fBirthProbability;
 //			if (fSum > fProbability) {
 //				k = j;
@@ -472,7 +484,7 @@ void CAI_ALife::Generate()
 //			}
 //		}
 //		vfCreateNewDynamicObject(k);
-//		it = m;	
+//		I = m;	
 //	}
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
@@ -480,182 +492,4 @@ void CAI_ALife::Generate()
 
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		= 0;
-}
-
-void CAI_ALife::Update(u32 dt)
-{
-	inherited::Update(dt);
-	if (!m_bLoaded)
-		return;
-#ifdef WRITE_TO_LOG
-	Msg("* %7.2fs",Level().timeServer()/1000.f);
-#endif
-	u64	qwStartTime = CPU::GetCycleCount();
-	if (m_tpScheduledObjects.size()) {
-		int i=0;
-		do {
-			i++;
-			m_dwObjectsBeingProcessed = ((m_dwObjectsBeingProcessed + 1) % m_tpScheduledObjects.size());
-			vfProcessNPC(m_tpScheduledObjects[m_dwObjectsBeingProcessed]);
-		}
-		while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tpScheduledObjects.size()));
-	}
-#ifdef WRITE_TO_LOG
-	u64 t2x = CPU::GetCycleCount() - qwStartTime;
-	Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
-#endif
-}
-
-void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
-{
-	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
-	if (tpALifeHumanAbstract) {
-		vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
-		vfCheckForTheBattle		(tpALifeMonsterAbstract);
-		vfCheckForItems			(tpALifeHumanAbstract);
-		vfCheckForDeletedEvents	(tpALifeHumanAbstract);
-	}
-	else {
-		vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
-		vfCheckForTheBattle		(tpALifeMonsterAbstract);
-	}
-
-	tpALifeMonsterAbstract->m_tTimeID = Level().timeServer();
-}
-
-void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
-{
-	if (tpALifeMonsterAbstract->m_tNextGraphID != tpALifeMonsterAbstract->m_tGraphID) {
-		u32 dwCurTime = Level().timeServer();
-		tpALifeMonsterAbstract->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonsterAbstract->m_tTimeID)/1000.f * tpALifeMonsterAbstract->m_fCurSpeed;
-		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
-			vfChangeObjectGraphPoint(tpALifeMonsterAbstract->m_tObjectID,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
-			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
-			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-			tpALifeMonsterAbstract->m_tGraphID			= tpALifeMonsterAbstract->m_tNextGraphID;
-		}
-	}
-	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
-		_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
-		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
-		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
-		int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].ucRoutePointCount;
-		GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints;
-		int					iBranches		= 0;
-		bool bOk = false;
-		for (int i=0; i<wNeighbourCount; i++)
-			for (int j=0; j<iPointCount; j++)
-				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID))
-					iBranches++;
-		if (!iBranches) {
-			for (int i=0; i<wNeighbourCount; i++) {
-				for (int j=0; j<iPointCount; j++)
-					if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
-						tpALifeMonsterAbstract->m_tNextGraphID = wpaVertexes[j];
-						tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
-						bOk = true;
-						break;
-					}
-				if (bOk)
-					break;
-			}
-		}
-		else {
-			int iChosenBranch = ::Random.randI(0,iBranches);
-			iBranches = 0;
-			for (int i=0; i<wNeighbourCount; i++) {
-				for (int j=0; j<iPointCount; j++)
-					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID)) {
-						if (iBranches == iChosenBranch) {
-							tpALifeMonsterAbstract->m_tNextGraphID = wpaVertexes[j];
-							tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
-							bOk = true;
-							break;
-						}
-						iBranches++;
-					}
-				if (bOk)
-					break;
-			}
-		}
-		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
-		if (!bOk) {
-			tpALifeMonsterAbstract->m_fCurSpeed			= 0.0f;
-			tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
-		}
-		else {
-			tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
-		}
-	}
-}
-
-void CAI_ALife::vfCheckForTheBattle(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
-{
-}
-
-void CAI_ALife::vfCheckForDeletedEvents(CALifeHumanAbstract	*tpALifeHuman)
-{
-	PERSONAL_EVENT_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry.m_tpMap));
-	tpALifeHuman->m_tpEvents.erase(it,tpALifeHuman->m_tpEvents.end());
-}
-
-void CAI_ALife::vfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
-{
-	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
-	if (tpALifeHuman)
-		vfProcessItems(tpALifeHuman->m_tHumanParams,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass);
-	else {
-		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
-		VERIFY(tpALifeHumanGroup);
-		HUMAN_PARAMS_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
-		HUMAN_PARAMS_IT	E = tpALifeHumanGroup->m_tpMembers.end();
-		for ( ; I != E; I++)
-			vfProcessItems(*I,tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass);
-	}
-}
-
-void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass)
-{
-	OBJECT_IT	it = m_tpGraphObjects[tGraphID].tpObjectIDs.begin();
-	OBJECT_IT	E  = m_tpGraphObjects[tGraphID].tpObjectIDs.end();
-	for ( ; it != E; it++) {
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*it);
-		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
-		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
-		VERIFY(tpALifeDynamicObject);
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
-		if (tpALifeItem) {
-			// adding new item to the item list
-			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-				tHumanParams.m_tpItemIDs.push_back(*it);
-				m_tpGraphObjects[tGraphID].tpObjectIDs.erase(it);
-				tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-			}
-			else {
-				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPrdicate(m_tObjectRegistry.m_tppMap));
-				OBJECT_IT	I = tHumanParams.m_tpItemIDs.end();
-				OBJECT_IT	S = tHumanParams.m_tpItemIDs.begin();
-				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
-				for ( ; I != S; I--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
-					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
-					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
-					VERIFY(tpALifeItemIn);
-					tHumanParams.m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
-					if (tpALifeItemIn->m_fPrice/tpALifeItemIn->m_fMass >= tpALifeItem->m_fPrice/tpALifeItem->m_fMass)
-						break;
-					if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass)
-						break;
-				}
-				if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-					tHumanParams.m_tpItemIDs.erase		(I,tHumanParams.m_tpItemIDs.end());
-					tHumanParams.m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
-					tHumanParams.m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
-				}
-				else
-					tHumanParams.m_fCumulativeItemMass	= fItemMass;
-			}
-		}
-	}
 }

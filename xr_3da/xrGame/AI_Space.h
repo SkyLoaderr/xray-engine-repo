@@ -10,6 +10,9 @@
 #include "..\xrLevel.h"
 
 namespace AI {
+	DEFINE_VECTOR	(DWORD,						DWORD_VECTOR,			DWORD_IT);
+	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
+
 	#pragma pack(push,4)
 	typedef struct tagSGraphEdge {
 		u32		dwVertexNumber;
@@ -53,7 +56,7 @@ namespace AI {
 	class	Path
 	{
 	public:
-		vector<u32>	Nodes;
+		AI::DWORD_VECTOR	Nodes;
 	};
 	#define	DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define	DEFAULT_COVER_WEIGHT		 10.f 

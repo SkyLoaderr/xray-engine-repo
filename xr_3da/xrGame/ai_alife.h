@@ -25,6 +25,9 @@ public:
 	SSpawnHeader					m_tSpawnHeader;
 	SALifeHeader					m_tALifeHeader;
 
+	// static
+	SPAWN_VECTOR					m_tpSpawnPoints;		// массив spawn-point-ов
+
 	// auto
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
@@ -34,10 +37,8 @@ public:
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
 	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
+	HUMAN_P_VECTOR					m_tpTraders;			// массив торговцев
 	
-	// static
-	SPAWN_VECTOR					m_tpSpawnPoints;		// массив spawn-point-ов
-
 	// dynamic
 	CALifeObjectRegistry			m_tObjectRegistry;		// карта объектов
 	CALifeEventRegistry				m_tEventRegistry;		// карта событий
@@ -106,7 +107,11 @@ public:
 		m_tObjectRegistry.Add(tpALifeDynamicObject);
 	};
 
-	void							vfProcessItems			(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
+	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	void							vfUpdateTrader			(CALifeHuman			*tpALifeHuman);
+	void							vfUpdateHumanGroup		(CALifeHumanGroup		*tpALifeHumanGroup);
+	void							vfUpdateHuman			(CALifeHuman			*tpALifeHuman);
+	void							vfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
 	void							vfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
@@ -143,4 +148,18 @@ public:
 			void					vfTaskInfo				(_TASK_ID &tTaskID);
 			void					vfSpawnPointInfo		(_SPAWN_ID &tSpawnID);
 #endif
+};
+  		
+class CCompareTraderRanksPredicate {
+	CAI_ALife	*m_tpALife;
+public:
+	CCompareTraderRanksPredicate	(CAI_ALife &tALife)
+	{
+		m_tpALife = &tALife;
+	};
+
+	bool operator()(const CALifeHuman *tpALifeHuman1, const CALifeHuman *tpALifeHuman2) const
+	{
+		return(tpALifeHuman1->m_tHumanParams.m_tRank < tpALifeHuman2->m_tHumanParams.m_tRank);
+	};
 };

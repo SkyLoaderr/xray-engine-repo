@@ -1561,7 +1561,13 @@
 					RelativePath="ai_alife_console.cpp">
 				</File>
 				<File
+					RelativePath="ai_alife_misc.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_objects.h">
+				</File>
+				<File
+					RelativePath="ai_alife_process.cpp">
 				</File>
 				<File
 					RelativePath="ai_alife_registries.h">

@@ -41,16 +41,16 @@ public:
 	}
 	
 	void vfFindOptimalPath(
-			SNode		*tpHeap,
-			SIndexNode	*tpIndexes,
-			u32			&dwAStarStaticCounter,
-			SData		&tData,
-			u32			dwStartNode, 
-			u32			dwGoalNode, 
-			float		fMaxValue, 
-			float		&fValue, 
-			vector<u32> &tpaNodes,
-			bool		bUseMarks)
+			SNode			*tpHeap,
+			SIndexNode		*tpIndexes,
+			u32				&dwAStarStaticCounter,
+			SData			&tData,
+			u32				dwStartNode, 
+			u32				dwGoalNode, 
+			float			fMaxValue, 
+			float			&fValue, 
+			AI::DWORD_VECTOR&tpaNodes,
+			bool			bUseMarks)
 	{
 		Device.Statistic.AI_Path.Begin();
 
