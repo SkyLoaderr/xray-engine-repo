@@ -283,8 +283,6 @@ VOID CDeflector::Light()
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 	
-	return;
-
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
 		// Calculate average color
