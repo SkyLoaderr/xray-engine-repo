@@ -323,13 +323,24 @@ bool CInventory::DropAll()
 bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
 	VERIFY(pIItem);
-	//Msg("put item %s in inventory slot %d", *pIItem->cName(), pIItem->GetSlot());
+	
+#ifdef _DEBUG
+	Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->cName(), pIItem->GetSlot());
+#endif
+		
 	if (GameID() != GAME_SINGLE)
 	{
 ///		bNotActivate = true;
 	}
 
-	if(!CanPutInSlot(pIItem)) return false;
+	if(!CanPutInSlot(pIItem)) 
+	{
+#ifdef _DEBUG
+		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->cName(), pIItem->GetSlot());
+#endif
+
+		return false;
+	}
 
 
 	m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
