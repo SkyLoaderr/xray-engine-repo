@@ -126,5 +126,4 @@ end
 function give_lucky_pda(first_speaker, second_speaker)
 	local lucky_pda = first_speaker:object("bar_lucky_pda")
 	first_speaker:transfer_item(lucky_pda, second_speaker)
---	level_tasks.set_task_state(task.completed, "bar_drunk_dolg_quest", 0)
 end
