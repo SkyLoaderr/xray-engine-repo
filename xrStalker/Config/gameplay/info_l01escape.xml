@@ -37,9 +37,11 @@
 		<task>tutorial_help_wounded</task>
 	</info_portion>
 	<info_portion id="tutorial_wounded_help">
+		<task>tutorial_help_wounded</task>
 		<disable>tutorial_wounded_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_wounded_die">
+		<task>tutorial_help_wounded</task>
 		<disable>tutorial_wounded_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_end">
