@@ -11,15 +11,12 @@ xr_motivator.storage[object:id()].robber = {
     if char_ini:section_exist ("robber") == true then
         if char_ini:line_exist("robber", "enabled") == true then
                 xr_motivator.storage[object:id()].robber.enabled = char_ini:r_bool("robber", "enabled")
-            printf("_bp: enabled = true")
         end
         if char_ini:line_exist("robber", "leader") == true then
                 xr_motivator.storage[object:id()].robber.leader = char_ini:r_bool("robber", "leader")
-            printf("_bp: leader = true")
         end
         if char_ini:line_exist("robber", "helper") == true then
                 xr_motivator.storage[object:id()].robber.helper = char_ini:r_bool("robber", "helper")
-            printf("_bp: helper = true")
         end
         if char_ini:line_exist("robber", "teammate1") == true then
                 xr_motivator.storage[object:id()].robber.teammate1 = char_ini:r_string("robber", "teammate1")
