@@ -98,12 +98,13 @@ template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocat
 	explicit xr_vector	(size_t _count)						: std::vector<T,xr_allocator_t<T> > (_count)		{}
 	u32		size() const									{ return (u32)__super::size(); } 
 
-#ifdef M_DONTDEFERCLEAR_EXT
-	void	clear()											{ __super::clear();		} 
 	void	clear_and_free()								{ __super::clear();		}
+	void	clear_not_free()								{ erase(begin(),end());	}
+
+#ifdef M_DONTDEFERCLEAR_EXT
+	void	clear()											{ clear_and_free	();	} 
 #else
-	void	clear()											{ erase(begin(),end());} 
-	void	clear_and_free()								{ __super::_Tidy();		}
+	void	clear()											{ clear_not_free	();	} 
 #endif
 
 	const_reference operator[](size_type _Pos) const		{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }

@@ -20,7 +20,7 @@ public:
 	{
 		int				p0,p1;
 		int				counter;
-		_edge		(int _p0, int _p1, int m) : p0(_p0), p1(_p1), counter(m){ if (p0>p1)	swap(p0,p1); 	}
+						_edge		(int _p0, int _p1, int m) : p0(_p0), p1(_p1), counter(m){ if (p0>p1)	swap(p0,p1); 	}
 		bool			equal		(_edge& E)												{ return p0==E.p0 && p1==E.p1;	}
 	};
 public:
@@ -113,8 +113,6 @@ public:
 
 void CRender::render_sun				()
 {
-	return;	//.
-
 	light*	fuckingsun					= Lights.sun;
 
 	// 
@@ -151,6 +149,7 @@ void CRender::render_sun				()
 
 	// Compute volume(s) - something like a frustum for infinite directional light
 	// Also compute virtual light position and sector it is inside
+	CFrustum					cull_frustum;
 	xr_vector<Fplane>			cull_planes;
 	Fvector3					cull_COP;
 	CSector*					cull_sector;
@@ -175,7 +174,12 @@ void CRender::render_sun				()
 
 		// COP - 100 km away
 		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, - 100000.f);
+
+		// Create frustum for query
+		for (int p=0; p<cull_planes.size(); p++)
+			cull_frustum._add		(cull_planes[p]);
 	}
+
 
 	// Fill the database
 	{
@@ -183,6 +187,6 @@ void CRender::render_sun				()
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
 		fuckingsun->svis.begin					();
-		r_dsgraph_render_subspace				(cull_sector, fuckingsun->X.S.combine, cull_COP, TRUE);
+		r_dsgraph_render_subspace				(cull_sector, &cull_frustum, fuckingsun->X.S.combine, cull_COP, TRUE);
 	}
 }
