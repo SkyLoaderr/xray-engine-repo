@@ -35,16 +35,6 @@ IC	bool CPatrolPathManager::actual				() const
 	return					(m_actuality);
 }
 
-IC	bool CPatrolPathManager::need_selection		(const Fvector &position) const
-{
-	return					(
-		m_path && 
-		!m_path->tpaWayPoints.empty() &&
-		(m_curr_point_index < m_path->tpaWayPoints.size()) &&
-		(m_path->tpaWayPoints[m_curr_point_index].tWayPoint.distance_to_sqr(position) > .5f)
-	);
-}
-
 IC	bool CPatrolPathManager::failed				() const
 {
 	return					(m_failed);

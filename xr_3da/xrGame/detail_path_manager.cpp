@@ -41,8 +41,11 @@ bool CDetailPathManager::valid			() const
 	bool					b = true;
 	b						= b && !m_path.empty();
 	b						= b && fis_zero(m_path.front().position.distance_to_xz_sqr(m_start_position));
-	b						= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position));
-	return					(!m_path.empty() && fis_zero(m_path.front().position.distance_to_xz_sqr(m_start_position)) && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position)));
+	if (m_state_patrol_path)
+		b					= b && (fis_zero(m_path[m_last_patrol_point].position.distance_to_xz_sqr(m_dest_position)));
+	else
+		b					= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position));
+	return					(b);
 }
 
 bool CDetailPathManager::valid			(const Fvector &position) const

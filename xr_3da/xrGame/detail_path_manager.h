@@ -118,6 +118,8 @@ private:
 	u32											m_velocity_mask;
 	bool										m_try_min_time;
 	bool										m_use_dest_orientation;
+	bool										m_state_patrol_path;
+	u32											m_last_patrol_point;
 
 	// old heritage
 	xr_vector<Fvector>							m_tpaPoints;
@@ -140,6 +142,7 @@ private:
 			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine, 	const xr_vector<STravelParamsIndex> &m_start_params,const xr_vector<STravelParamsIndex> &m_dest_params);
 			bool	init_build				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
 			bool	fill_key_points			(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
+			void	add_patrol_point		();
 			void	build_path_via_key_points(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params);
 			void	build_smooth_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
 			void	build_criteria_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
@@ -157,6 +160,7 @@ protected:
 	IC		void	set_desirable_mask		(const u32 mask);
 	IC		void	set_try_min_time		(const bool try_min_time);
 	IC		void	set_use_dest_orientation(const bool use_dest_orientation);
+	IC		void	set_state_patrol_path	(const bool state_patrol_path);
 
 	friend class CScriptMonster;
 	friend class CMovementManager;
@@ -172,7 +176,7 @@ public:
 			const	Fvector direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
-	IC		bool	completed				(const Fvector &position) const;
+	IC		bool	completed				(const Fvector &position, bool bRealCompleted = true) const;
 			bool	valid					(const Fvector &position) const;
 	IC		u32		curr_travel_point_index	() const;
 

@@ -532,9 +532,42 @@ void CDetailPathManager::build_path_via_key_points(
 		compute_path(s,d,&m_path,m_start_params,finish_params);
 		VERIFY							(false);
 	}
-	
+
+	add_patrol_point();
 	ai().level_graph().assign_y_values	(m_path);
 	m_failed							= false;
+}
+
+void CDetailPathManager::add_patrol_point()
+{
+	m_last_patrol_point					= m_path.size() - 1;
+	if ((m_path.size() > 1) && m_state_patrol_path) {
+		STravelPathPoint				t;
+		Fvector							v;
+		v.sub							(m_path.back().position,m_path[m_path.size() - 2].position);
+		v.y								= 0.f;
+		if (v.square_magnitude() > EPS_L)
+			v.normalize					();
+		else
+			v.set						(0,0,1);
+
+		v.mul							(2.f);
+		t								= m_path.back();
+		t.position.add					(v);
+		t.vertex_id						= ai().level_graph().check_position_in_direction(m_path.back().vertex_id,m_path.back().position,t.position);
+		if (ai().level_graph().valid_vertex_id(t.vertex_id)) {
+			bool						b = ai().level_graph().create_straight_PTN_path<false>(
+				m_path.back().vertex_id,
+				ai().level_graph().v2d(m_path.back().position),
+				ai().level_graph().v2d(t.position),
+				m_path,
+				m_path.back(),
+				false,
+				false
+			);
+			VERIFY						(b);
+		}
+	}
 }
 
 void CDetailPathManager::build_smooth_path		(
@@ -559,6 +592,7 @@ void CDetailPathManager::build_smooth_path		(
 	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
 
 	if (compute_path(start,dest,&m_path,m_start_params,finish_params)) {
+		add_patrol_point();
 		ai().level_graph().assign_y_values(m_path);
 		m_failed						= false;
 		Device.Statistic.AI_Range.End	();

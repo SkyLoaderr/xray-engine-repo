@@ -172,7 +172,7 @@ void CAI_Stalker::vfSetParameters(
 		VERIFY							(I != m_movement_params.end());
 
 		m_fCurSpeed						= (*I).second.linear_velocity;
-		m_body.speed					= 2*(*I).second.angular_velocity;
+		m_body.speed					= 2.f*(*I).second.angular_velocity;
 		m_head.speed					= 3*PI_DIV_2;
 
 		if (m_tMovementType != eMovementTypeStand)

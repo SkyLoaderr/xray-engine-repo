@@ -63,6 +63,7 @@ void CMovementManager::process_game_path()
 		}
 		case ePathStateBuildDetailPath : {
 			Device.Statistic.TEST2.Begin();
+			CDetailPathManager::set_state_patrol_path(false);
 			CDetailPathManager::set_start_position(Position());
 			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 			CDetailPathManager::set_dest_position( 

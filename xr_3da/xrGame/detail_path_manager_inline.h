@@ -13,10 +13,9 @@ IC	bool CDetailPathManager::failed() const
 	return					(m_failed);
 }
 
-IC	bool CDetailPathManager::completed(const Fvector &position) const
+IC	bool CDetailPathManager::completed(const Fvector &position, bool bRealCompleted) const
 {
-//	return					(m_path.empty() || (m_dest_position.similar(m_path.back().position) && position.similar(m_dest_position,.1f)));
-	return					(m_path.empty() || (curr_travel_point_index() == m_path.size() - 1));
+	return					(m_path.empty() || ((bRealCompleted || !m_state_patrol_path) ? (curr_travel_point_index() == m_path.size() - 1) : curr_travel_point_index() >= m_last_patrol_point));
 }
 
 IC	const xr_vector<CDetailPathManager::STravelPathPoint> &CDetailPathManager::path() const
@@ -185,4 +184,10 @@ IC	const bool CDetailPathManager::use_dest_orientation		() const
 IC	bool CDetailPathManager::check_mask					(u32 mask, u32 test) const
 {
 	return					((mask & test) == test);
+}
+
+IC	void CDetailPathManager::set_state_patrol_path		(const bool state_patrol_path)
+{
+	m_actuality				= m_actuality && (state_patrol_path == m_state_patrol_path);
+	m_state_patrol_path		= state_patrol_path;
 }
