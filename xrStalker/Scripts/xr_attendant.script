@@ -86,7 +86,6 @@ end
 --------
 function action_wait:initialize ()
     action_base.initialize (self)
-    state_mgr.set_state (self.object, "idle")
 end
 --------
 function action_wait:execute ()
@@ -95,7 +94,6 @@ end
 --------
 function action_wait:finalize ()
     action_base.finalize (self)
-    state_mgr.set_state (self.object, "idle")
 end
 -----------------------------------------------------------------------------------
 
@@ -113,7 +111,6 @@ end
 --------
 function action_follow:initialize ()
     action_base.initialize (self)
-    state_mgr.set_state(self.object, "idle")
     self.st.signals = {}
 end
 --------
@@ -152,13 +149,11 @@ function action_follow:execute ()
           end   
        else
           self.state = 1
-          state_mgr.set_state(self.object, "idle")
        end        
     else
        if vdist > 3 then 
           self.state = 0
        else
-          state_mgr.set_state(self.object, "idle")
        end   
     end    
         
@@ -170,7 +165,6 @@ function action_follow:finalize ()
        table.remove (db.storage[self.st.leader_id].followers, self.index)
        self.index = nil
     end   
-    state_mgr.set_state (self.object, "idle")
 end
 --------
 function action_follow:calculate_position ()
