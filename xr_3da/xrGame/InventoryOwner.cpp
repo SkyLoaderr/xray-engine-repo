@@ -222,7 +222,7 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 
 	//выкинуть те info portions которые стали неактуальными
 	for(i=0; i<info_portion.DisableInfos().size(); i++)
-		DisableInfo(i);
+		DisableInfo(info_portion.DisableInfos()[i]);
 }
 
 void CInventoryOwner::DisableInfo(INFO_ID info_index)

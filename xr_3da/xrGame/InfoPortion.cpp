@@ -68,10 +68,21 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 		info_data()->m_DialogNames.push_back(dialog_name);
 	}
 
+
+	//список названий порций информации, которые деактивируются,
+	//после получения этой порции
+	int disable_num = uiXml.GetNodesNum(pNode, "disable");
+	info_data()->m_DisableInfo.clear();
+	for(i=0; i<disable_num; ++i)
+	{
+		INFO_ID info_id = (INFO_ID)uiXml.ReadInt(pNode, "disable", i);
+		info_data()->m_DisableInfo.push_back(info_id);
+	}
+
 	//имена скриптовых функций
 	int script_actions_num = uiXml.GetNodesNum(pNode, "action");
 	info_data()->m_ScriptActions.clear();
-	for(int i=0; i<script_actions_num; i++)
+	for(i=0; i<script_actions_num; i++)
 	{
 		ref_str action_name = uiXml.Read(pNode, "action", i, NULL);
 		info_data()->m_ScriptActions.push_back(action_name);

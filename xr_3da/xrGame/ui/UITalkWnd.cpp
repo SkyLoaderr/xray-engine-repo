@@ -142,13 +142,18 @@ void CUITalkWnd::UpdateQuestions()
 			}
 
 			//выбор доступных фраз из активного диалога
-			for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
-				it != m_pCurrentDialog->PhraseList().end();
-				it++)
-			{
-				CPhrase* phrase = *it;
-				AddQuestion(phrase->GetText(), NULL, (PHRASE_ID)phrase->GetIndex());
+			if(m_pCurrentDialog)
+			{			
+				for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
+					it != m_pCurrentDialog->PhraseList().end();
+					it++)
+				{
+					CPhrase* phrase = *it;
+					AddQuestion(phrase->GetText(), NULL, (PHRASE_ID)phrase->GetIndex());
+				}
 			}
+			else
+				UpdateQuestions();
 		}
 	}
 }

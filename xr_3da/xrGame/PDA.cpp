@@ -451,6 +451,6 @@ void CPda::OnReceiveInfo(INFO_ID info_index)
 void  CPda::RemoveInfo(INFO_ID info_index)
 {
 	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
-	if(m_KnownInfo.end() != it) return;
+	if(m_KnownInfo.end() == it) return;
 	m_KnownInfo.erase(it);
 }

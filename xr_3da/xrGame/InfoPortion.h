@@ -38,7 +38,7 @@ struct SInfoPortionData : CSharedResource
 
 	//массив с индексами тех порций информации, которые
 	//исчезнут, после получения этой info_portion
-	DEFINE_VECTOR(int, INFO_INDEX_VECTOR, INFO_INDEX_VECTOR_IT);
+	DEFINE_VECTOR(INFO_ID, INFO_INDEX_VECTOR, INFO_INDEX_VECTOR_IT);
 	INFO_INDEX_VECTOR m_DisableInfo;
 
 	//текстовое представление информации	

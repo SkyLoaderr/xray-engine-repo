@@ -72,6 +72,7 @@ void CInventoryItem::Load(LPCSTR section)
 	m_nameShort = pSettings->r_string(section, "inv_name_short");
 	NameComplex();
 	m_weight = pSettings->r_float(section, "inv_weight");
+	R_ASSERT(m_weight>=0.f);
 
 	m_cost = pSettings->r_u32(section, "cost");
 
