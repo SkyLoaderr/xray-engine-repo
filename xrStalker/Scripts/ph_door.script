@@ -45,7 +45,7 @@ function action_door:initialize()
 	self:close_door(true)
 
 	self.object:set_nonscript_usable(false)
-	self.object:set_use_callback(self, "door_callback")
+	self.object:set_callback(callback.use_object, self.door_callback, self)
 
 	-- Не надо: делается в close_door
 	--printf("_bp: action_door: setting physics callback from initialize")
