@@ -134,8 +134,8 @@ void CBitingRest::Replanning()
 		m_tAction = ACTION_TURN;
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
-		dwMinRand = 1200;
-		dwMaxRand = 1500;
+		dwMinRand = 1100;
+		dwMaxRand = 1200;
 
 	}
 	
@@ -341,12 +341,6 @@ void CBitingEat::Run()
 
 bool CBitingEat::CheckCompletion() 
 {
-	// если труп съеден || монстр достаточно сыт
-	if ((pCorpse->m_fFood <= 0.f) || !IsInertia()) {
-//		pMonster->RemoveObjectFromMem(pCorpse);
-		Msg("--Eating complete! -- ");
-		return true;
-	}
 	return false;
 }	
 
@@ -368,6 +362,7 @@ void CBitingHide::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
+	pMonster->SaveEnemy();
 
 	SetInertia(30000);
 
@@ -429,12 +424,9 @@ void CBitingDetour::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->m_tPathType = ePathTypeStraight;
+	pMonster->SaveEnemy();
 
-	SetInertia(10000);
-	// Test
-	Msg("_ Detour Init _");
-
+	Msg(" DETOUR init!");
 }
 
 void CBitingDetour::Run()
@@ -454,19 +446,16 @@ void CBitingDetour::Run()
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = 15;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + 3.f;
 	
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, false, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
 	// ”становить параметры движени€
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 
-	SetNextThink(1000);
 }
 
 bool CBitingDetour::CheckCompletion()
 {	
-	// если больша€ дистанци€ || враг забыт
-	if (!IsInertia()) return true;
 	return false;
 }
 
@@ -494,13 +483,9 @@ void CBitingPanic::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->m_tPathType = ePathTypeStraight;
+	pMonster->SaveEnemy();
 
 	SetInertia(30000);
-
-	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
-	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
 	// Test
 	Msg("_ Panic Init _");
@@ -509,7 +494,17 @@ void CBitingPanic::Init()
 
 void CBitingPanic::Run()
 {
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, false, 0);
+	VisionElem tempEnemy;
+	if (pMonster->GetEnemy(tempEnemy)) {
+		m_tEnemy = tempEnemy;
+		SetInertia(20000);
+	}
+
+	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
+	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
 
 	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -517,8 +512,6 @@ void CBitingPanic::Run()
 
 bool CBitingPanic::CheckCompletion()
 {	
-	// если больша€ дистанци€ || враг забыт
-	if (!IsInertia()) return true;
 	return false;
 }
 

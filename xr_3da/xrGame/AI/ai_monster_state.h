@@ -188,11 +188,11 @@ public:
 				bool	IsLocked		() {return m_bLocked;}
 
 	/* определение приоритета состояния (реализация инерции) */ 
-				void	SetLowPriority	() {m_tPriority = PRIORITY_LOW;}
-				void	SetNormalPriority() {m_tPriority = PRIORITY_NORMAL;}
-				void	SetHighPriority	() {m_tPriority = PRIORITY_HIGH;}
-				void	SetInertia		(TTime inertia) {m_dwInertia = inertia + m_dwCurrentTime;}
-				bool 	IsInertia		() {return ((m_tPriority != PRIORITY_NONE) && (m_dwInertia > m_dwCurrentTime));}
-			EPriority	GetPriority		() {return m_tPriority;}
+	IC			void	SetLowPriority	() {m_tPriority = PRIORITY_LOW;}
+	IC			void	SetNormalPriority() {m_tPriority = PRIORITY_NORMAL;}
+	IC			void	SetHighPriority	() {m_tPriority = PRIORITY_HIGH;}
+	IC			void	SetInertia		(TTime inertia) {m_dwInertia = inertia + m_dwCurrentTime;}
+	IC			bool 	IsInertia		() {return ((m_tPriority != PRIORITY_NONE) && (m_dwInertia > m_dwCurrentTime));}
+	IC		EPriority	GetPriority		() {return m_tPriority;}
 };
 

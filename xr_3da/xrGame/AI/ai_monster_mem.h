@@ -47,7 +47,7 @@ typedef struct tagSoundElement
 {
 	CObject				*who;
 	TSoundDangerValue	type;
-	Fvector				Position;
+	Fvector				Position;		// позиция звука, не объекта, издавшего звук
 	float				power;
 	TTime				time;			// время обнаружения звука
 
@@ -124,10 +124,11 @@ class CVisionMemory
 	TTime					MemoryTime;				// время хранения визуальных объектов
 	TTime					CurrentTime;			// текущее время
 	
-	VisionElem				Selected;
-
 	xr_vector<VisionElem>	Objects;
 	xr_vector<VisionElem>	Enemies;
+
+	VisionElem				Selected;
+	VisionElem				Saved;
 
 	enum EObjectType {ENEMY, OBJECT};
 
@@ -139,6 +140,8 @@ public:
 
 	IC	bool		GetEnemy(VisionElem &ve) {return Get(ve);} 	
 	IC	bool		GetCorpse(VisionElem &ve) {return Get(ve);}
+
+	IC	void		SaveEnemy() {if (Selected.obj) Saved = Selected;}
 
 protected:
 		void		Init(TTime mem_time);
@@ -168,6 +171,7 @@ private:
 //---------------------------------------------------------------------------------------------------------
 
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
+	
 public:
 	void InitMemory(TTime sound_mem, TTime vision_mem){
 		CSoundMemory::Init(sound_mem);

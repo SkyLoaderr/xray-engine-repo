@@ -161,7 +161,6 @@ void CVisionMemory::UpdateVision(TTime dt)
 	if (IsEnemy()) SelectEnemy();
 	else if (IsObject()) SelectCorpse();
 	else Selected.obj = 0;
-
 }
  
 
@@ -211,8 +210,10 @@ void CVisionMemory::SelectCorpse()
 
 bool CVisionMemory::Get(VisionElem &ve)
 {
-	if (!Selected.obj) return false;
-	else ve = Selected;
+	if (!Selected.obj) {
+		ve = Saved;
+		return false;
+	} else ve = Selected;
 	return true;
 }
 
@@ -252,5 +253,6 @@ void CMonsterMemory::UpdateMemory()
 
 	UpdateVision(curtime);
 	UpdateHearing(curtime);
+
 }
 

@@ -68,16 +68,16 @@ void CAI_Biting::Think()
 		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
 		else if (E && H && I)		SetState(stateAttack); 
 		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (E && !H && I) 		SetState(stateDetour); 
-		else if (E && !H && !I)		SetState(stateDetour); 
+		else if (E && !H && I) 		SetState(statePanic); 
+		else if (E && !H && !I)		SetState(statePanic); 
 		else if (F && H && I) 		SetState(stateAttack); 		
 		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateDetour);	
-		else if (A && !K && !H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
-		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (F && !H && I)  	SetState(statePanic); 
+		else if (F && !H && !I) 	SetState(statePanic);	
+//		else if (A && !K && !H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+//		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
+//		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+//		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
 									SetState(stateEat);
 		else						SetState(stateRest); 

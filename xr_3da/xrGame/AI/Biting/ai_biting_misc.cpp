@@ -55,12 +55,6 @@ void CAI_Biting::vfUpdateParameters()
 {
 	UpdateMemory();
 
-	VisionElem ve;
-	if (GetEnemy(ve)) {
-		Msg("I have an enemy!");
-	}
-	
-
 	//------------------------------------
 	// слух
 	A = B = false;
@@ -79,7 +73,7 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
-	
+	VisionElem ve;
 	if (GetEnemy(ve)) {
 		VisibleEnemies.insert(ve.obj);
 
@@ -165,7 +159,6 @@ void CAI_Biting::vfUpdateParameters()
 //		E = true;
 //	}
 	H = false;
-	H= true;
 }
 
 
