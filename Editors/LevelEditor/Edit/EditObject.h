@@ -132,6 +132,8 @@ class CEditableObject{
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
 
+    Shader*			m_LODShader;
+
 	// skeleton
 	BoneVec			m_Bones;
 	SMotionVec		m_SMotions;
@@ -177,6 +179,8 @@ protected:
     void			UpdateRenderBuffers		();
 
 	void 			UpdateBoneParenting		();
+
+    void			CreateLODShader			();
 public:
     DWORD			m_LoadState;
 

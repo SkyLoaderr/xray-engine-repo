@@ -398,10 +398,10 @@ IC void SetCamera(float angle, const Fvector& C, float height, float radius, flo
     Device.SetTransform		(D3DTS_PROJECTION,P);
 }
 
-IC void CopyLODImage(DWORDVec& src, DWORDVec& dest, int w, int h, int offs_w, int offs_h)
+IC void CopyLODImage(DWORDVec& src, DWORDVec& dest, int src_w, int src_h, int id, int pitch)
 {
-	for (int y=0; y<h; y++)
-    	CopyMemory(dest.begin()+(y+offs_h)*w*2+offs_w,src.begin()+y*w,w*sizeof(DWORD));
+	for (int y=0; y<src_h; y++)
+    	CopyMemory(dest.begin()+y*pitch+id*src_w,src.begin()+y*src_w,src_w*sizeof(DWORD));
 }
 
 IC void GET(DWORDVec& pixels, int w, int h, int x, int y, DWORD ref, DWORD &count, DWORD &r, DWORD &g, DWORD &b)
@@ -429,7 +429,7 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
         result.resize(w*h);
 
         CopyMemory(result.begin(),pixels.begin(),w*h*4);
-        for (int y=0; y<w; y++){
+        for (int y=0; y<h; y++){
             for (int x=0; x<w; x++){
                 if (RGBA_GETALPHA(pixels[y*w+x])==0) {
                     DWORD C=0,r=0,g=0,b=0;
@@ -459,7 +459,7 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
     return bNeedContinue;
 }
 
-void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int age)
+void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int samples, int age)
 {
     int src_w=tgt_w,src_h=tgt_h;
 	DWORDVec pixels;
@@ -467,7 +467,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
     Fvector C;
     Fvector S;
     bbox.getradius(S);
-    float R = sqrtf(S.x*S.x+S.z*S.z);
+    float R = max(S.x,S.z);// sqrtf(S.x*S.x+S.z*S.z);
     bbox.getcenter(C);
 
     Fmatrix save_projection	= Device.mProjection;
@@ -475,38 +475,30 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
     Fvector save_hpb 		= Device.m_Camera.GetHPB();
 	ECameraStyle save_style = Device.m_Camera.GetStyle();
 
-    float D		= 100.f;
+    float D		= 500.f;
     DWORDVec new_pixels;
-    new_pixels.resize(src_w*src_h*4);           
+    new_pixels.resize(src_w*src_h*samples);
 	Device.m_Camera.SetStyle(csPlaneMove);
-    SetCamera(deg2rad(45),C,S.y,R,D);
-    if (Device.MakeScreenshot(pixels,src_w,src_h)){
-    	CopyLODImage(pixels, new_pixels, src_w, src_h, 0, 0);
-	    SetCamera(deg2rad(135),C,S.y,R,D);
-        if (Device.MakeScreenshot(pixels,src_w,src_h)){
-	    	CopyLODImage(pixels, new_pixels, src_w, src_h, src_w, 0);
-		    SetCamera(deg2rad(225),C,S.y,R,D);
-            if (Device.MakeScreenshot(pixels,src_w,src_h)){
-		    	CopyLODImage(pixels, new_pixels, src_w, src_h, 0, src_h);
-			    SetCamera(deg2rad(315),C,S.y,R,D);
-                if (Device.MakeScreenshot(pixels,src_w,src_h)){
-			    	CopyLODImage(pixels, new_pixels, src_w, src_h, src_w, src_h);
+
+    int pitch 	= src_w*samples;
+
+    for (int frame=0; frame<samples; frame++){
+    	float angle = frame*(PI_MUL_2/samples);
+	    SetCamera(angle,C,S.y,R,D);
+	    Device.MakeScreenshot(pixels,src_w,src_h);
+        // copy LOD to final
+		for (int y=0; y<src_h; y++)
+    		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(DWORD));
+    }
+
+    DWORDVec border_pixels = new_pixels;
+    for (DWORDIt it=new_pixels.begin(); it!=new_pixels.end(); it++)
+        *it=(RGBA_GETALPHA(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
+    for (DWORD ref=254; ref>0; ref--)
+        ApplyBorders(new_pixels,pitch,src_h,ref);
+    for (int t=0; t<new_pixels.size(); t++)
+        new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
 /*
-					DWORDVec border_pixels = new_pixels;
-                    int cnt = tgt_w*2*tgt_h*2;
-
-                    for (int t=0; t<cnt; t++){
-                    	if (RGBA_GETALPHA(new_pixels[t])>200)
-		                    new_pixels[t]=subst_alpha(new_pixels[t],0xFF);
-                        else
-		                    new_pixels[t]=subst_alpha(new_pixels[t],0x00);
-                    }
-
-			        for (DWORD ref=254; ref>0; ref--)
-	                    ApplyBorders(new_pixels,tgt_w*2,tgt_h*2,ref);
-
-                    for (t=0; t<cnt; t++) new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
-
                     DWORDVec final_pixels;
                     final_pixels.resize(src_h*src_w*4);
                     // scale down(lanczos3) and up (bilinear, as video board)
@@ -518,23 +510,20 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
                         return;
                     }
 */
-                    CImage* I = new CImage();
-                    I->Create	(tgt_w*2,tgt_h*2,new_pixels.begin());
-                    I->Vflip	();
-                    I->SaveTGA	(out_name);
-                    _DELETE		(I);
-                    Engine.FS.SetFileAge(out_name, age);
-                    ELog.Msg(mtInformation,"LOD texture created.");
-                }
-            }
-        }
-    }else{
-        ELog.DlgMsg(mtError,"Can't make screenshot.");
-    }
+    CImage* I = new CImage();
+    I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
+    I->Vflip	();
+    I->SaveTGA	(out_name);
+    _DELETE		(I);
+    Engine.FS.SetFileAge(out_name, age);
+    ELog.Msg(mtInformation,"LOD texture created.");
+//    }else{
+//        ELog.DlgMsg(mtError,"Can't make screenshot.");
+//    }
 
-//	Device.m_Camera.SetStyle(save_style);
-//    Device.SetTransform	(D3DTS_PROJECTION,save_projection);
-//    Device.m_Camera.Set(save_hpb,save_pos);
+	Device.m_Camera.SetStyle(save_style);
+    Device.SetTransform	(D3DTS_PROJECTION,save_projection);
+    Device.m_Camera.Set(save_hpb,save_pos);
 }
 
 

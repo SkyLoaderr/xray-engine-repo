@@ -19,7 +19,7 @@ CEditableObject::CEditableObject(LPCSTR name)
 {
 	m_LibName		= name;
 
-	m_dwFlags 		= eoProgressive;
+	m_dwFlags 		= 0;
     m_ObjVer.reset	();
 
 	m_Box.invalidate();
@@ -38,6 +38,8 @@ CEditableObject::CEditableObject(LPCSTR name)
     bOnModified		= false;
 
     m_RefCount		= 0;
+
+    m_LODShader		= 0;
 }
 
 CEditableObject::~CEditableObject(){
@@ -99,6 +101,7 @@ void CEditableObject::ClearGeometry (){
     // skeletal motions
     for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) _DELETE(*s_it);
     m_SMotions.clear();
+    Device.Shader.Delete(m_LODShader);
 #endif
     m_ActiveSMotion = 0;
 }

@@ -188,6 +188,8 @@ bool CEditableObject::Load(CStream& F){
 
         ResetAnimation();
 
+        CreateLODShader();
+
         if (!bRes) break;
         UpdateBox();
     }while(0);

@@ -9,45 +9,13 @@
 #include "bone.h"
 #include "ExportSkeleton.h"
 #include "ExportObjectOGF.h"
+#include "xr_trims.h"
 
-#define EPS_LOD 1.f/64.f
-
-static FVF::LIT LOD[6]={
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 0
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.0f, // F 1
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // F 2
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 0
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // F 2
-	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 3
-/*
+static FVF::LIT LOD[4]={
 	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 1
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 2
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 2
-	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.5f, // F 3
-
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // B
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.0f, // B
-    -1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // B
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // B
-    -1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // B
-     1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // B
-
-	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF,	0.0f,0.5f,// L
-	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f,// L
-     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f,// L
-	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f,// L
-     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f,// L
-     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 0.0f,1.0f,// L
-
-	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
-	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 1.0f,0.5f, // R
-     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
-	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
-     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
-     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // R
-*/
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 1
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 2
+	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 3
 };
 
 bool CEditableObject::Reload()
@@ -113,10 +81,6 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 void CEditableObject::RenderSkeletonSingle(const Fmatrix& parent)
 {
 	RenderSingle(parent);
-//	for (int i=0; i<4; i++){
-//		Render(parent, 0, false);
-//		Render(parent, 0, true);
-//    }
     if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
 }
 
@@ -126,11 +90,13 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
 		Render(parent, i, false);
 		Render(parent, i, true);
     }
+/*
     Device.SetTransform(D3DTS_WORLD,parent);
 	Fvector offs, size;
 	m_Box.get_CD(offs,size);
 	Device.SetShader(Device.m_WireShader);
 	DU::DrawBox(offs,size,true,0xFFFFFFFF);
+*/
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
@@ -179,32 +145,73 @@ void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh
     Device.ResetNearer();
 }
 
-void CEditableObject::RenderLOD(const Fmatrix& parent)
-{
-    Shader* SH = Device.Shader.Create("def_shaders\\def_aref_v_lod","lod\\lod_trees_tree_green3");
-    Fvector P,S;
-    m_Box.get_CD(P,S);
-    float r = sqrtf(S.x*S.x+S.z*S.z);
-    Fmatrix matrix,scale;
-    matrix.rotateY(-PI_DIV_4);
-    matrix.translate_over(P);
-    scale.scale(r,S.y,r);
-    matrix.mulB(scale);
-    matrix.mulA(parent);
-    Device.SetTransform(D3DTS_WORLD,matrix);
-    Device.SetShader(SH);
-//    Device.SetShader(Device.m_WireShader);//SH);
-//	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
-    DU::DrawPrimitiveLIT(D3DPT_TRIANGLELIST, 2, LOD, 6, true, false);
-    Device.Shader.Delete(SH);
+IC static void CalculateLODTC(int frame, int w_cnt, int h_cnt, Fvector2& lt, Fvector2& rb){
+	Fvector2	ts;
+    ts.set		(1.f/(float)w_cnt,1.f/(float)h_cnt);
+    lt.x        = (frame%w_cnt)*ts.x;
+    lt.y        = (frame/w_cnt)*ts.y+0.5f*(1.f/64.f);
+    rb.x        = lt.x+ts.x;
+    rb.y        = lt.y+ts.y;
 }
 
-void CEditableObject::OnDeviceCreate(){
+void CEditableObject::RenderLOD(const Fmatrix& parent)
+{
+    Fvector P,S;
+    m_Box.get_CD(P,S);
+    float r = max(S.x,S.z);//sqrtf(S.x*S.x+S.z*S.z);
+    Fmatrix T,matrix,rot;
+    T.scale(r,S.y,r);
+    T.translate_over(P);
+    T.mulA(parent);
+
+    int samples = 8;
+    Fvector C=Device.m_Camera.GetDirection();
+    C.y=0;
+    float m = C.magnitude();
+    if (m<EPS) return;
+    C.div(m);
+    for (int frame=0; frame<samples; frame++){
+    	float angle = frame*(PI_MUL_2/samples);
+
+        Fvector D;
+        D.setHP(angle,0);
+        float dot = C.dotproduct(D);
+        if (dot<0.7070f) continue;
+
+	    rot.rotateY(-angle);
+        matrix.mul(T,rot);
+    	Fvector2 lt, rb;
+	    CalculateLODTC(frame,samples,1,lt,rb);
+        LOD[0].t.set(lt);
+        LOD[1].t.set(rb.x,lt.y);
+        LOD[2].t.set(rb);
+        LOD[3].t.set(lt.x,rb.y);
+    	Device.SetTransform(D3DTS_WORLD,matrix);
+        Device.SetShader(m_LODShader?m_LODShader:Device.m_WireShader);
+    	DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
+    }
+}
+
+void CEditableObject::CreateLODShader()
+{
+	AnsiString l_name;
+    string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
+    l_name = "lod_"+AnsiString(nm);
+    l_name = Engine.FS.UpdateTextureNameWithFolder(l_name);
+    AnsiString fname = l_name+AnsiString(".tga");
+    Device.Shader.Delete(m_LODShader);
+    if (Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str()))
+    	m_LODShader = Device.Shader.Create("flora\\lod",l_name.c_str());
+}
+
+void CEditableObject::OnDeviceCreate()
+{
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	UpdateRenderBuffers();
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->CreateShader();
+    CreateLODShader();
 }
 
 void CEditableObject::OnDeviceDestroy(){
@@ -213,6 +220,8 @@ void CEditableObject::OnDeviceDestroy(){
 		// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
         (*s_it)->DeleteShader();
+    // LOD
+    Device.Shader.Delete(m_LODShader);
 }
 
 void CEditableObject::LightenObject(){
