@@ -392,14 +392,6 @@ SOURCE=.\x_ray.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\xr_func.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_func.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\xr_mac.h
 # End Source File
 # End Group

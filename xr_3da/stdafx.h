@@ -116,7 +116,6 @@ using namespace std;
 #define NO_XR_NETWORK
 #define	NO_XR_VERTEX
 #include "engine.h"
-#include "xr_func.h"
 #ifndef NO_MMGR
 #include "fmemorymanager.h"
 #endif
