@@ -62,22 +62,22 @@ void CAI_ALife::vfNewGame()
 				break;
 			}
 		}
-//		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
-//		R_ASSERT2				(tpServerEntity,"Can't create entity.");
-//		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
-//		R_ASSERT				(i);
-//		NET_Packet				tNetPacket;
-//		(*I)->Spawn_Write		(tNetPacket,TRUE);
-//		i->Spawn_Read			(tNetPacket);
-//		tNetPacket.w_begin		(M_UPDATE);
-//		(*I)->UPDATE_Write		(tNetPacket);
-//		u16						id;
-//		tNetPacket.r_begin		(id);
-//		i->UPDATE_Read			(tNetPacket);
-		(*I)->ID				= 0xffff;
-		vfCreateObject			(*I);
-		(*I)->m_tObjectID		= (*I)->ID;
-		m_tObjectRegistry.insert(make_pair((*I)->m_tObjectID,*I));
+		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
+		R_ASSERT2				(tpServerEntity,"Can't create entity.");
+		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+		R_ASSERT				(i);
+		NET_Packet				tNetPacket;
+		(*I)->Spawn_Write		(tNetPacket,TRUE);
+		i->Spawn_Read			(tNetPacket);
+		tNetPacket.w_begin		(M_UPDATE);
+		(*I)->UPDATE_Write		(tNetPacket);
+		u16						id;
+		tNetPacket.r_begin		(id);
+		i->UPDATE_Read			(tNetPacket);
+		i->ID					= 0xffff;
+		vfCreateObject			(i);
+		i->m_tObjectID			= i->ID;
+		m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 		I						= m;	
 	}
 	m_tALifeVersion				= ALIFE_VERSION;
