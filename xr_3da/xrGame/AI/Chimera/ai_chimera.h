@@ -24,6 +24,22 @@ class CAI_Chimera : public CCustomMonster,
 		CEntity *tpEntity;
 		u32	dwTime;
 	} SHurt;
+	
+	typedef struct {
+		u32		i_anim;				// анимация аттаки
+
+		TTime	time_started;		//
+		TTime	time_from;			// диапазон времени когда можно наносить hit
+		TTime	time_to;
+
+		Fvector	TraceFrom;
+		float	dist;
+
+		TTime	LastAttack;
+		bool	b_fire_anyway;		// трассировка не нужна
+		bool	b_attack_rat;
+
+	} SAttackAnimation;
 
 public:
 
@@ -196,5 +212,8 @@ private:
 	// Animations
 	EMotionAnim		m_tAnimPrevFrame;
 	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
+
+	SAttackAnimation	m_tAttack;
+	void				FillAttackStructure(u32 i, TTime t);
 
 };

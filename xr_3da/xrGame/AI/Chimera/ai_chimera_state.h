@@ -59,10 +59,13 @@ class CChimeraRest : public IState {
 			ACTION_STAND,
 			ACTION_LIE,
 			ACTION_TURN,
+			ACTION_WALK_GRAPH_END,
 	} m_tAction;
 	
 	TTime			m_dwReplanTime;						//!< время через, которое делать планирование
 	TTime			m_dwLastPlanTime;					//!< последнее время планирования
+
+	bool			m_bFollowPath;
 
 	typedef IState inherited;
 
@@ -74,6 +77,7 @@ public:
 	virtual TTime UnlockState(TTime cur_time);
 private:
 	virtual void Run();
+	virtual	void Init();
 	void Replanning();
 };
 
@@ -91,7 +95,7 @@ class CChimeraAttack : public IState {
 		ACTION_ATTACK_MELEE,
 	} m_tAction;
 
-	CEntity			*pEnemy;
+	VisionElem		m_tEnemy;
 	bool			m_bAttackRat;
 
 	float			m_fDistMin;						//!< минимально допустимое расстояния для аттаки

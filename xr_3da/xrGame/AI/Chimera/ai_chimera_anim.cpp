@@ -87,6 +87,11 @@ void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, fl
 		
 			m_tpCurrentGlobalAnimation = m_tAnimations.A[i1].A[i2].A[i3];
 			PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+
+			if (i2 == 9) FillAttackStructure(i3, m_dwCurrentUpdate);
+//			else if (i2 == 10) FillAttackStructure(4, m_dwCurrentUpdate); // атака крыс
+//			else if (i2 == 19) FillAttackStructure(5, m_dwCurrentUpdate); // атака крыс|прыжок
+			else m_tAttack.time_started = 0;
 		}
 }
 
@@ -114,5 +119,5 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
-	}
+	} 
 }

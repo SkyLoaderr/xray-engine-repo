@@ -71,6 +71,7 @@ void CAI_Chimera::Init()
 	Motion.Init						();
 
 	m_dwPathBuiltLastTime			= 0;
+	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
 }
 
 void CAI_Chimera::Die()
