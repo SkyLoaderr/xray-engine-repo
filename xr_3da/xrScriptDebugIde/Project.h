@@ -27,8 +27,6 @@ public:
 	CProject();
 	virtual ~CProject();
 
-	BOOL PositionBreakPoints();
-	BOOL CheckBeforeBuild();
 
 	void SetModifiedFlag(BOOL bModified);
 	void SaveModified();

@@ -26,7 +26,8 @@ static char THIS_FILE[]=__FILE__;
 void CProjectFile::FillBreakPoints(CMailSlotMsg* msg)
 {
 	if( m_breakPoints.GetSize() ){
-		CString fName = GetName(GetName());
+//		CString fName = GetName(GetName());
+		CString fName = GetName();
 		msg->w_string(fName.GetBuffer());
 		msg->w_int(m_breakPoints.GetSize());
 
@@ -43,9 +44,12 @@ void CProjectFile::FillBreakPoints(CMailSlotMsg* msg)
 
 CProjectFile::CProjectFile()
 {
+	m_pluaview = NULL;
+	m_ss_working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "" );
+	Change_status(vss_unknown);
+
 	RemoveAllDebugLines();
 	RemoveAllBreakPoints();
-	m_bBreakPointsSaved = FALSE;
 	SetLuaView(NULL);
 }
 
@@ -117,79 +121,12 @@ void CProjectFile::RemoveBreakPoint(int nLine)
 	pProject->SetModifiedFlag(TRUE);
 }
 
-int CProjectFile::GetNextDebugLine(int nLine)
+CString CProjectFile::GetName()
 {
-	int nTemp;
-	++nLine;
-
-	while ( nLine<=m_nMaxDebugLine )
-		if ( m_debugLines.Lookup(nLine, nTemp) )
-			return nLine;
-		else
-			++nLine;
-
-	return 0;
+	return GetFileName(m_strPathName);
 }
 
-int CProjectFile::GetPreviousDebugLine(int nLine)
-{
-	int nTemp;
-	--nLine;
-
-	while ( nLine>=m_nMinDebugLine )
-		if ( m_debugLines.Lookup(nLine, nTemp) )
-			return nLine;
-		else
-			--nLine;
-
-	return 0;
-}
-
-int CProjectFile::GetNearestDebugLine(int nLine)
-{
-	int nTemp, nNearest;
-	if ( m_debugLines.Lookup(nLine, nTemp) )
-		return nLine;
-
-	if ( (nNearest=GetNextDebugLine(nLine)) > 0 )
-		return nNearest;
-
-	if ( (nNearest=GetPreviousDebugLine(nLine)) > 0 )
-		return nNearest;
-
-	return 0;
-}
-
-BOOL CProjectFile::PositionBreakPoints()
-{
-/*	if ( !CLuaHelper::LoadDebugLines(this) )
-		return FALSE;
-
-	BOOL bModified = FALSE;
-	POSITION pos = m_breakPoints.GetStartPosition();
-	int nLine, nTemp, nNearest;
-	while (pos != NULL)
-	{
-		m_breakPoints.GetNextAssoc( pos, nLine, nTemp );
-		nNearest = GetNearestDebugLine(nLine);
-		if ( nNearest == 0 )
-		{
-			m_breakPoints.RemoveKey(nLine);
-			bModified = TRUE;
-		}
-		else if ( nLine != nNearest )
-		{
-			m_breakPoints.RemoveKey(nLine);
-			m_breakPoints.SetAt(nNearest, 1);
-			bModified = TRUE;
-		}
-	}
-
-	return bModified;
-*/
-	return FALSE;
-}
-CString	CProjectFile::GetName(CString& str)
+CString CProjectFile::GetFileName(CString& str )
 {
 	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
@@ -197,17 +134,6 @@ CString	CProjectFile::GetName(CString& str)
 	char ext[_MAX_EXT];
 
 	_splitpath( str, drive, dir, fname, ext );
-	return CString(fname);
-}
-
-CString CProjectFile::GetName()
-{
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-
-	_splitpath( m_strPathName, drive, dir, fname, ext );
 	return CString(fname);
 }
 
@@ -230,7 +156,6 @@ BOOL CProjectFile::HasBreakPoint(int nLine)
 
 void CProjectFile::SetBreakPointsIn(CLuaEditor *pEditor)
 {
-	m_bBreakPointsSaved = FALSE;
 	pEditor->ClearAllBreakpoints();
 
 	POSITION pos = m_breakPoints.GetStartPosition();
@@ -240,39 +165,31 @@ void CProjectFile::SetBreakPointsIn(CLuaEditor *pEditor)
 		m_breakPoints.GetNextAssoc( pos, nLine, nTemp );
 		pEditor->SetBreakpoint(nLine);
 	}
-	m_bBreakPointsSaved = TRUE;
 }
-
+/*
 BOOL CProjectFile::HasFile(CString strPathName)
 {
  	if(!GetName(m_strPathName).CompareNoCase(GetName(strPathName)))
  		return TRUE;
- /*
- 	//should actually search using the luasearch path
- 	DWORD n=MAX_PATH;
- 	CString sFullPath;	
- 	::GetFullPathName(strPathName,n,sFullPath.GetBuffer(n),NULL);
- 	sFullPath.ReleaseBuffer();
  
- 	if(!m_strPathName.CompareNoCase(sFullPath))
- 		return TRUE;
- 	return FALSE;*/
- 	return FALSE;
-}
+	return FALSE;
+}*/
 
+BOOL CProjectFile::Is(CString& strPathName)
+{
+ 	if(!GetName().CompareNoCase(GetFileName(strPathName)))
+ 		return TRUE;
+ 
+	return FALSE;
+}
 
 BOOL CProjectFile::Load(CArchive &ar)
 {
 	RemoveAllDebugLines();
 	RemoveAllBreakPoints();
 
-//	ar >> m_strRelPathName;
 	ar >> m_strPathName;
 
-/*	CProject* pProject = ((CMainFrame*)AfxGetMainWnd())->GetProject();
-	m_strPathName = pProject->GetProjectDir();
-	PathAppend(m_strPathName.GetBuffer(MAX_PATH), m_strRelPathName);
-*/
 	ar >> m_nMinBreakPoint;
 	ar >> m_nMaxBreakPoint;
 
@@ -286,13 +203,12 @@ BOOL CProjectFile::Load(CArchive &ar)
 
 		m_breakPoints[nLine] = 1;
 	}
-
+	UpdateSS_status();
 	return TRUE;
 }
 
 BOOL CProjectFile::Save(CArchive &ar)
 {
-//	ar << m_strRelPathName;
 	ar << m_strPathName;
 	ar << m_nMinBreakPoint;
 	ar << m_nMaxBreakPoint;
@@ -309,4 +225,204 @@ BOOL CProjectFile::Save(CArchive &ar)
 	}
 
 	return TRUE;
+}
+
+void CProjectFile::SaveFile()
+{
+	if(GetLuaView())
+		GetLuaView()->_save();
+}
+
+void CProjectFile::ReloadFile()
+{
+	if(!GetLuaView())
+		return;
+
+	CFile fin;
+	if ( fin.Open(GetPathName(), CFile::modeRead) )
+		GetLuaView()->GetEditor()->Load(&fin);
+}
+
+void CProjectFile::Check_view ()
+{
+	if(GetLuaView())
+		GetLuaView()->GetEditor()->SetReadOnly(m_ssStatus==vss_not_checked_out);
+}
+
+void CProjectFile::Change_status(EVSSStatus st)
+{
+	m_ssStatus = st;
+	Check_view();
+}
+
+
+EVSSStatus CProjectFile::GetSS_status	()
+{
+	return m_ssStatus;
+}
+
+void CProjectFile::UpdateSS_status()
+{
+	if(!theApp.m_ssConnection.b_IsConnected()){
+		Change_status(vss_unknown);
+		return;
+	}
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CString str_;
+	str_.Format("%s%s",m_ss_working_folder,str);
+	CComBSTR file_name = str_;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	if(vssItem==NULL){
+		Change_status(vss_no_ss);
+		return;
+	}
+
+	long stat;
+	HRESULT hr;
+	CString str_temp;
+	if((hr = vssItem->get_IsCheckedOut(&stat)) == S_OK){
+		if(stat == VSSFILE_NOTCHECKEDOUT){
+			Change_status(vss_not_checked_out);
+		}else if(stat == VSSFILE_CHECKEDOUT){
+			Change_status(vss_checked_out);
+		}else if(stat == VSSFILE_CHECKEDOUT_ME){
+			Change_status(vss_checked_out_me);
+		}
+	}
+}
+void CProjectFile::SS_check_in	()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = m_ss_working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_comment("no comment");
+	CComBSTR bstr_localSpec;
+	SaveFile();
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Checkin(bstr_comment, bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		UpdateSS_status();
+	}
+}
+void CProjectFile::SS_check_out	()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = m_ss_working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_comment("no comment");
+	CComBSTR bstr_localSpec;
+
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Checkout(bstr_comment, bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		ReloadFile();
+		UpdateSS_status();
+	}
+
+}
+void CProjectFile::SS_undo_check_out ()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = m_ss_working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->UndoCheckout(bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		ReloadFile();
+		UpdateSS_status();
+	}
+
+}
+void CProjectFile::SS_difference ()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = m_ss_working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	VARIANT_BOOL res;
+	vssItem->get_IsDifferent(bstr_localSpec, &res);
+	if (b_DisplayAnyError())
+		return;
+
+	if(res==0){
+		AfxMessageBox("The files are identical");
+		return;
+	}else{
+		CComBSTR bstr_localSpec_ss = bstr_localSpec;//+".ssver";
+		bstr_localSpec_ss.Append(".ssver");
+		vssItem->Get(&bstr_localSpec_ss,0);
+		if (b_DisplayAnyError())
+			return;
+
+		CString f1,f2;
+		f1 = CW2A(bstr_localSpec);
+		f2 = CW2A(bstr_localSpec_ss);
+		CFileStatus fs;
+		CFile::GetStatus(f2,fs);
+		fs.m_attribute &= ~(CFile::readOnly);
+		CFile::SetStatus(f2,fs);
+		CString cmd = ((CIdeApp*)AfxGetApp())->m_comparerCmd;
+		if(cmd.GetLength()==0){
+			AfxMessageBox("File comparer executable not defined");
+			return;
+		}
+
+		CString args;
+		args.Format(((CIdeApp*)AfxGetApp())->m_comparerFormat, f1, f2);
+		spawnl(_P_NOWAIT, cmd.GetBuffer(), args.GetBuffer());
+	}
+
+}
+void CProjectFile::SS_get_latest ()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = m_ss_working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Get(&bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		ReloadFile();
+		UpdateSS_status();
+	}
+
 }

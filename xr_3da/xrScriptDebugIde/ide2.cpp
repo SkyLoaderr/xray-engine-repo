@@ -79,6 +79,9 @@ BOOL CIdeApp::InitInstance()
 
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
+
+
+
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
 
@@ -97,11 +100,11 @@ BOOL CIdeApp::InitInstance()
 	if (!g_mainFrame->LoadFrame(IDR_MAINFRAME))
 		return FALSE;
 	g_mainFrame->SetMode(CMainFrame::modeNoProject);
-	g_mainFrame->OpenDefaultProject();
+//	g_mainFrame->OpenDefaultProject();
 
 	// Parse command line for standard shell commands, DDE, file open
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
+//	CCommandLineInfo cmdInfo;
+//	ParseCommandLine(cmdInfo);
 
 	// Dispatch commands specified on the command line
 //	if (!ProcessShellCommand(cmdInfo))
@@ -119,9 +122,10 @@ CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
 	if(ss_ini.GetLength()>0)
 		m_ssConnection.b_Connect("","",ss_ini);
 
-
 	m_comparerCmd = GetProfileString("options","fileComaprer", "" );
 	m_comparerFormat = GetProfileString("options","fileComparerFormat", "" );
+
+	g_mainFrame->OpenDefaultProject();
 
 	return TRUE;
 }
@@ -167,6 +171,7 @@ CProjectFile * g_pPF = NULL;
 CLuaView* CIdeApp::OpenProjectFilesView(CProjectFile *pPF, int nLine)
 {
 	g_pPF = pPF;
+	pPF->UpdateSS_status();
 	CLuaView* pView = FindProjectFilesView(pPF);
 	if ( !pView )
 		pView = LoadProjectFilesView(pPF);
@@ -179,7 +184,7 @@ CLuaView* CIdeApp::OpenProjectFilesView(CProjectFile *pPF, int nLine)
 		if ( nLine>=0 )
 			pView->GetEditor()->GotoLine(nLine);
 	}
-
+	
 	return pView;
 }
 
@@ -232,7 +237,7 @@ const char *g_rComparerFormat			= "fileComparerFormat";
 
 const char *g_rSSafeIniDefValue			    = "\\\\X-RAY\\VSS$\\srcsafe.ini";
 const char *g_rSSafeFolderDefValue          = "$/xrStalker/Scripts/";
-const char *g_rComparerCmdDef				= "x:\wincmp.exe";
+const char *g_rComparerCmdDef				= "x:\\wincmp.exe";
 const char *g_rComparerFormatDef			= " %s %s";
 
 HKEY hk;

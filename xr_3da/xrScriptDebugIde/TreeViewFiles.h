@@ -7,8 +7,7 @@
 // TreeViewFiles.h : header file
 //
 
-/////////////////////////////////////////////////////////////////////////////
-// CTreeViewFiles view
+#include "projectFile.h"
 
 class CTreeViewFiles : public CTreeView
 {
@@ -41,7 +40,7 @@ protected:
 	CTreeCtrl* m_pTree;
 	HTREEITEM m_hRoot, m_hFilesFolder;
 	CImageList m_images;
-	CString working_folder;
+//	CString working_folder;
 //drag-n-drop
 protected:	
    CImageList*	m_pDragImage;	//содержит список изображений используемый  во  время переноса
@@ -95,7 +94,7 @@ protected:
 
 //}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-	long VSSGetStatus(HTREEITEM);
+/*	long VSSGetStatus(HTREEITEM);
 	void VSSCheckIn(HTREEITEM);
 	void VSSCheckOut(HTREEITEM);
 	void VSSUndoCheckOut(HTREEITEM);
@@ -103,9 +102,10 @@ protected:
 	void VSSGetLatest(HTREEITEM itm);
 	void Reload(HTREEITEM itm);
 	void Save(HTREEITEM itm);
-
+*/
 public:
 	void VSSUpdateStatus(HTREEITEM);
+	EVSSStatus GetItemStatus(HTREEITEM itm);
 
 };
 

@@ -21,9 +21,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 CProject::CProject()
 {
@@ -35,27 +32,6 @@ CProject::~CProject()
 	RemoveProjectFiles();
 }
 
-//--------------------------------------------------------------------------------------------------
-//- file and directory functions
-//--------------------------------------------------------------------------------------------------
-
-/*
-CString CProject::GetNameExt()
-{
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-
-	_splitpath( m_strPathName, drive, dir, fname, ext );
-	return CString(fname)+ext;
-}
-*/
-
-
-//--------------------------------------------------------------------------------------------------
-//- project files functions
-//--------------------------------------------------------------------------------------------------
 
 void CProject::RedrawFilesTree()
 {
@@ -77,13 +53,15 @@ CProjectFile* CProject::GetProjectFile(CString strPathName)
 {
 	int nSize = m_files.GetSize();
 	for ( int i=0; i<nSize; ++i )
-		if ( m_files[i]->HasFile(strPathName) )
+//		if ( m_files[i]->HasFile(strPathName) )
+		if ( m_files[i]->Is(strPathName) )
 			return m_files[i];
 
 	AddFile(strPathName, FALSE);
 	nSize = m_files.GetSize();
 	for ( int i=0; i<nSize; ++i )
-		if ( m_files[i]->HasFile(strPathName) )
+//		if ( m_files[i]->HasFile(strPathName) )
+		if ( m_files[i]->Is(strPathName) )
 			return m_files[i];
 
 	return NULL;
@@ -171,16 +149,12 @@ BOOL CProject::New()
 	
 
 	CNewProjectDlg dlg;
-//	dlg.m_project_name.Format("%s_scr_dbg",UserName);
 	CString s;
 	s.Format("%s_scr_dbg",UserName);
 	dlg.SetFileName(s);
 	if ( dlg.DoModal()!=IDOK ){
 		return FALSE;
 	}
-/*	if(dlg.m_project_name.Find(".lpr")!=dlg.m_project_name.GetLength()-4)
-		m_strName = dlg.m_project_name + ".lpr";
-*/
 	m_strName = dlg.GetProjectName();
 
 	RedrawFilesTree();
@@ -288,18 +262,6 @@ BOOL CProject::Load(CArchive &ar)
 
 BOOL CProject::Save()
 {
-/*
-	CString sFileName;
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-
-	AfxGetModuleShortFileName(AfxGetInstanceHandle(),sFileName);
-	_splitpath( sFileName, drive, dir, fname, ext );
-
-	sFileName.Format("%s%s%s",drive,dir,m_strPathName);
-*/
 	return Save( GetName() );
 }
 
@@ -351,7 +313,6 @@ BOOL CProject::SaveAs()
 {
 	CFileDialog fd(FALSE, "lpr", GetName(), OFN_PATHMUSTEXIST, 
 		"Project files (*.lpr)", g_mainFrame);
-//		"Project files (*.lpr)|*.lpr|All files (*.*)|*.*||", g_mainFrame);
 
 	if ( fd.DoModal()!=IDOK )
 		return FALSE;
@@ -370,44 +331,6 @@ void CProject::SaveModified()
 			Save();
 	}
 }
-
-//--------------------------------------------------------------------------------------------------
-//- compile/build functions
-//--------------------------------------------------------------------------------------------------
-
-BOOL CProject::PositionBreakPoints()
-{
-	BOOL bModified = FALSE;
-	int nFiles = m_files.GetSize();
-	for ( int i=0; i<nFiles; ++i )
-	{
-		if ( m_files[i]->PositionBreakPoints() )
-		{
-			bModified = TRUE;
-			CLuaView* pView = theApp.FindProjectFilesView(m_files[i]);
-			if ( pView )
-				m_files[i]->SetBreakPointsIn(pView->GetEditor());
-		}
-	}
-
-	if ( bModified )
-		SetModifiedFlag(TRUE);
-
-	return bModified;
-}
-/*
-CString CProject::GetProjectDir()
-{
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-
-	_splitpath( m_strPathName, drive, dir, fname, ext );
-	if ( dir[strlen(dir)-1]=='\\' )
-		dir[strlen(dir)-1] = '\0';
-	return CString(drive)+dir;	
-}*/
 
 void CProject::FillBreakPoints(CMailSlotMsg* msg)
 {
