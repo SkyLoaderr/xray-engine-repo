@@ -129,7 +129,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		uber_deffer			(C,false,"tree","base",oBlend.value);
 		break;
 	case SE_R2_SHADOW:		// smap-spot
-		if (oBlend.value)	C.r_Pass	("shadow_direct_tree","shadow_direct_base_aref",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ONE,D3DBLEND_ZERO,TRUE,220);
+		if (oBlend.value)	C.r_Pass	("shadow_direct_tree","shadow_direct_base_aref",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ONE,D3DBLEND_ZERO,TRUE,200);
 		else				C.r_Pass	("shadow_direct_base","shadow_direct_base",		FALSE);
 		C.r_Sampler			("s_base",C.L_textures[0]);
 		C.r_End				();
