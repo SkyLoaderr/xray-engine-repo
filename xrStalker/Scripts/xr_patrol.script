@@ -1,10 +1,100 @@
+local Patrols = {}
+
+function FindCommand (_group, _command)
+    if table.getn (Patrols) == 0 then return 0 end
+    for a = 1, table.getn (Patrols), 1 do
+        if Patrols[a].group == _group and Patrols[a].command == _command then
+           return a
+        end
+    end
+    return 0
+end
+
+function AddToCommand (_group, _command, _member, _npc)
+    --find command
+    local index = this.FindCommand (_group, _command)
+--    printf ("Index = %d", index)
+    --if command present - add the new member
+    if index ~= 0 then
+--       printf ("Find command %s_%d", _group, _command)
+       local t = {npc = _npc, member = _member, variables = {}}
+       table.insert (Patrols[index].members, t)
+--       printf ("New member successfully added")
+       return
+    end
+
+    --create new command
+    local temp = {
+                 group = _group,
+                 command = _command,
+                 members = {}
+                 }
+    local t =
+             {
+             npc = _npc,
+             member = _member,
+             variables = {}
+             }
+    table.insert (temp.members, t)
+    table.insert (Patrols, temp)
+--    printf ("New command successfully added")
+end
+
+function RemoveFromCommand (_group, _command, _member)
+
+    if table.getn (Patrols) == 0 then
+       printf ("ERROR !!! Requested remove patrol member %s_%d_%d. Patrols table is empty !!!", _group, _command, _member)
+       return
+    end
+
+    for a = 1, table.getn (Patrols), 1 do
+        if Patrols[a].group == _group and Patrols[a].command == _command then
+--           printf ("Find in %s_%d", _group, _command)
+--           printf ("Size of table Patrols[a].members is %d units", table.getn (Patrols[a].members))
+           for b = 1, table.getn (Patrols[a].members), 1 do
+--               printf ("Member %d", Patrols[a].members[b].member)
+              if Patrols[a].members[b].member == _member then
+                 table.remove (Patrols[a].members, b)
+                 printf ("Remove member %s_%d_%d", _group, _command, _member)
+                 if table.getn (Patrols[a].members) == 0 then
+                    table.remove (Patrols, a)
+                    printf ("Patrol group %s_%d is empty. Removed", _group, _command)
+                 end
+                 return
+              end
+           end
+        end
+    end
+    printf ("ERROR !!! Requested remove patrol member %s_%d_%d. Member not found !!!", _group, _command, _member)
+end
+
+
+function PrintTable ()
+
+    printf ("----------------------Start table---------------------------------")
+    if table.getn (Patrols) == 0 then printf ("Table is empty") end
+    for a = 1, table.getn (Patrols), 1 do
+        printf ("Patrol Unit %d", a)
+        printf ("Patrol group : %s, patrol command : %d", Patrols[a].group, Patrols[a].command)
+        if table.getn (Patrols[a].members) == 0 then
+           printf ("Member table is empty")
+        else
+           for b = 1, table.getn (Patrols[a].members), 1 do
+               printf ("NPC : %s, member %d", Patrols[a].members[b].npc, Patrols[a].members[b].member)
+           end
+        end
+    end
+    printf ("----------------------End table-----------------------------------")
+end
+
+
 ----------------------------------------------------------------------------------------------------------------------
 --Motivation global
 ----------------------------------------------------------------------------------------------------------------------
 class "motivation_global"	(motivation)
 ----------------------------------------------------------------------------------------------------------------------
 function motivation_global:__init(motivations) super()
-	self.motivations		= motivations
+	self.motivations = motivations
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivation_global:evaluate(motivation_id)
@@ -32,11 +122,11 @@ end
 class "evaluator_const"		(property_evaluator)
 ----------------------------------------------------------------------------------------------------------------------
 function evaluator_const:__init(value) super()
-	self.value				= value
+	self.value = value
 end
 ----------------------------------------------------------------------------------------------------------------------
 function evaluator_const:evaluate()
-	return					self.value
+	return self.value
 end
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -47,11 +137,11 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_alive"		(property_evaluator)
 ----------------------------------------------------------------------------------------------------------------------
-function evaluator_alive:__init() super()
+function evaluator_alive:__init () super ()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function evaluator_alive:evaluate()
-	return					self.object:alive()
+	return self.object:alive ()
 end
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -106,17 +196,17 @@ class "patrol_binder" (object_binder)
 function patrol_binder:__init (object) super(object)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:reinit		()
+function patrol_binder:reinit ()
 	object_binder.reinit	(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:reload		(section)
-	object_binder.reload	(self,section)
+function patrol_binder:reload (section)
+	object_binder.reload	(self, section)
 	local					motivations	= {}
-	local					operators	= {}
-	local					properties	= {}
-	local					manager		= self.object:motivation_action_manager()
-	local					goal		= world_state()
+	local					operators = {}
+	local					properties = {}
+	local					manager	= self.object:motivation_action_manager ()
+	local					goal = world_state ()
 	
 	manager:clear			()
 
@@ -167,24 +257,23 @@ end
 function patrol_binder:net_spawn	(server_object)
     printf ("NetSpawn called")
 	if (object_binder.net_spawn(self,server_object) == false) then
-		return		false
+	   return false
 	end
-	return			true
+	local group, command, member = str_split (self:object)
+    this.AddToCommand (group, command, member, self:object)
+    this.PrintTable ()
+	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_destroy	()
     printf ("NetDestroy called")
+	local group, command, member = str_split (self:object)
+    this.RemoveFromCommand (group, command, member)
 	object_binder.net_destroy	(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:net_export	(packet)
-    printf ("NetExport called")
-	object_binder.net_export	(self,packet)
+
+function AddToPatrol (npc, group, command, member)
+    npc:bind_object	(this.patrol_binder (obj))
 end
-----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:net_import	(packet)
-    printf ("NetImport called")
-	object_binder.net_import	(self,packet)
-end
-----------------------------------------------------------------------------------------------------------------------
 
