@@ -241,5 +241,5 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 
 void CAI_Soldier::soundEvent(CObject* who, int type, Fvector& Position, float power)
 {
-	Msg("%s - sound type %i from %s at %d in (.2f,%.2f,%.2f) with power %.2f",cName(),type,who->cName(),Level().timeServer(),Position.x,Position.y,Position.z,power);
+	Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),type,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 }
