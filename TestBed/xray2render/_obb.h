@@ -4,7 +4,7 @@
 struct	Fobb
 {
 protected:
-    static bool clip (float fDenom, float fNumer, float& rfT0, float& rfT1)
+    static bool		clip		(float fDenom, float fNumer, float& rfT0, float& rfT1)
     {
         // Return value is 'true' if line segment intersects the current test
         // plane.  Otherwise 'false' is returned in which case the line segment
@@ -22,6 +22,20 @@ protected:
             return fNumer <= 0.0f;
         }
     }
+	static bool 	intersect	(const Fvector& start, const Fvector& dir, const Fvector& extent, float& rfT0, float& rfT1) const
+	{
+		float fSaveT0 = rfT0, fSaveT1 = rfT1;
+
+		bool bNotEntirelyClipped =
+			clip(+dir.x,-start.x-extent[0],rfT0,rfT1) &&
+			clip(-dir.x,+start.x-extent[0],rfT0,rfT1) &&
+			clip(+dir.y,-start.y-extent[1],rfT0,rfT1) &&
+			clip(-dir.y,+start.y-extent[1],rfT0,rfT1) &&
+			clip(+dir.z,-start.z-extent[2],rfT0,rfT1) &&
+			clip(-dir.z,+start.z-extent[2],rfT0,rfT1);
+
+		return bNotEntirelyClipped && ( rfT0 != fSaveT0 || rfT1 != fSaveT1 );
+	}
 public:
 	Fmatrix33	m_rotate;
 	Fvector		m_translate;
@@ -64,21 +78,6 @@ public:
 		xform_set(destR);
 		m_halfsize.set	(src.m_halfsize);
 	}
-
-    IC bool 	intersect(const Fvector& start, const Fvector& dir, const Fvector& extent, float& rfT0, float& rfT1) const
-    {
-        float fSaveT0 = rfT0, fSaveT1 = rfT1;
-
-        bool bNotEntirelyClipped =
-            clip(+dir.x,-start.x-extent[0],rfT0,rfT1) &&
-            clip(-dir.x,+start.x-extent[0],rfT0,rfT1) &&
-            clip(+dir.y,-start.y-extent[1],rfT0,rfT1) &&
-            clip(-dir.y,+start.y-extent[1],rfT0,rfT1) &&
-            clip(+dir.z,-start.z-extent[2],rfT0,rfT1) &&
-            clip(-dir.z,+start.z-extent[2],rfT0,rfT1);
-
-        return bNotEntirelyClipped && ( rfT0 != fSaveT0 || rfT1 != fSaveT1 );
-    }
 
     IC bool 	intersect(const Fvector& start, const Fvector& dir, float& dist) const
     {
