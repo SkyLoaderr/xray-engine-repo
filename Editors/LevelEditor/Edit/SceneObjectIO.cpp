@@ -12,6 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 // export spawn
+#include "xrServer_Entities.h"
 #include "net_utils.h"
 #include "xrMessages.h"
 #include "builder.h"
@@ -164,50 +165,40 @@ bool CSceneObject::ExportGame(SExportStreams& F)
     if (IsDynamic()&&IsFlag(eDummy)){
     	R_ASSERT(m_pRefs);
     	// export spawn packet
-        NET_Packet Packet;
-        Packet.w_begin		(M_SPAWN);
-        Packet.w_string		("M_DUMMY");
-        Packet.w_string		(Name);
-        Packet.w_u8 		(0xFE);
-        Packet.w_vec3		(PPosition);
-        Fvector a; a.set	(0,0,0);
-        Packet.w_vec3		(a);
-        Packet.w_u16		(0xffff);
-        Packet.w_u16		(0xffff);
-        WORD fl 			= M_SPAWN_OBJECT_ACTIVE;//(m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
-        Packet.w_u16		(fl);
-
-        u32	position		= Packet.w_tell	();
-        Packet.w_u16		(0);
-        // spawn info
+        xrSE_Dummy			dummy; 
+        strcpy(dummy.s_name, "m_dummy");
+        strcpy(dummy.s_name_replace,Name);
+        dummy.o_Position.set(PPosition);
+        dummy.o_Angle.set	(PRotation);
+        dummy.s_flags		= M_SPAWN_OBJECT_ACTIVE;
         // esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
-        Packet.w_u8 		((IsOMotionable()?(1<<0):0)|
+        dummy.s_style		= (IsOMotionable()?(1<<0):0)|
         					 (1<<1)|
-                             (IsSoundable()?(1<<3):0));
+                             (IsSoundable()?(1<<3):0); 
 		// verify path
 		// esAnimated
         if (IsOMotionable()){
 	        string256 anm_name;	strconcat(anm_name,Name,".anms");
-    	    Packet.w_string	(anm_name);
+            dummy.s_Animation = xr_strdup(anm_name);
         	strconcat		(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
 	        Engine.FS.VerifyPath(anm_name);
     	    SaveOMotions	(anm_name);
         }
 		// esModel
         string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
-        Packet.w_string		(mdl_name);
+        dummy.s_Model 		= xr_strdup(mdl_name);
         strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
 		Engine.FS.VerifyPath(mdl_name);
         if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
 		// esSound
         if (IsSoundable()){
 	        string256 snd_name;	strconcat(snd_name,Name,".wav");
-    	    Packet.w_string		(m_Sounds.front().c_str());
+	        dummy.s_Sound		= xr_strdup(m_Sounds.front().c_str());
         }
-        // data size
-        u16 size			= u16(Packet.w_tell()-position);
-        Packet.w_seek		(position,&size,sizeof(u16));
 
+        NET_Packet Packet;
+        dummy.Spawn_Write	(Packet,TRUE);
+        
 	    F.spawn.stream.open_chunk	(F.spawn.chunk++);
         F.spawn.stream.write		(Packet.B.data,Packet.B.count);
         F.spawn.stream.close_chunk	();
