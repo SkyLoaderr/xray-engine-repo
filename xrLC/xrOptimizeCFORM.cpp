@@ -47,7 +47,8 @@ void	CBuild::BuildCForm	()
 
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
 	{
-		Face* F = *I;
+		Progress	(float(I-g_faces.begin())/float(g_faces.size()));
+		Face* F		= *I;
 		if (F->Shader().flags.bCollision) 
 		{
 			// test correctness
