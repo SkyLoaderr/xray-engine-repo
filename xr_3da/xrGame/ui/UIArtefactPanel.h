@@ -9,6 +9,7 @@
 
 #pragma once
 #include "UIWindow.h"
+#include "UIStatic.h"
 #include "../UIStaticItem.h"
 
 class CUIArtefactPanel : public CUIWindow{
@@ -24,6 +25,7 @@ public:
 	virtual void Draw();
 
 protected:
-	xr_vector<CUIStaticItem*> m_vIcons;
+	xr_vector<RECT>           m_vRects;
+	CUIStaticItem             m_si;
 
 };

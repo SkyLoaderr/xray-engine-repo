@@ -9,39 +9,47 @@
 
 #include "StdAfx.h"
 #include "UIArtefactPanel.h"
+#include "UIInventoryUtilities.h"
+
+using namespace InventoryUtilities;
 
 CUIArtefactPanel::CUIArtefactPanel(){	
-
 }
 
 CUIArtefactPanel::~CUIArtefactPanel(){
 
 }
 
-void CUIArtefactPanel::InitIcons(const xr_vector<RECT>& vect){	
-	for (ITr it = vect.begin(); it != vect.end(); ++it)
-	{
-		const RECT &rect = *it;
-		CUIStaticItem* si = new CUIStaticItem;		
-		si->Init("ui\\ui_icon_equipment", "hud\\default", 0, 0, alNone);
-		si->SetOriginalRect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-		m_vIcons.push_back(si);
-	}
+void CUIArtefactPanel::InitIcons(const xr_vector<RECT>& vect){
+
+	m_si.SetShader(GetEquipmentIconsShader());
+
+	this->m_vRects.clear();
+	this->m_vRects.assign(vect.begin(), vect.end());	
 }
 
 void CUIArtefactPanel::Draw(){
-	const int iWidth  = m_vIcons[1]->GetRect().width();
-	const int iHeight = m_vIcons[1]->GetRect().height();
 	const int iIndent = 8;
 	      int x = 0;
-	const int y = 0;
+		  int y = 0;
 
-	for (ITsi it = m_vIcons.begin(); it != m_vIcons.end(); ++it)
+	RECT rect = GetAbsoluteRect();
+	x = rect.left;
+	y = rect.top;	
+
+	for (ITr it = m_vRects.begin(); it != m_vRects.end(); ++it)
 	{
-        CUIStaticItem& si = **it;
-		si.SetPos(x,y);
-		si.Render(0, 0, iWidth, iHeight);
+		const RECT& r = *it;		
 
-		x = x + iWidth + iIndent;
+		m_si.SetOriginalRect(r.left, r.top, 0, 0);
+		m_si.SetRect(0, 0, r.right - r.left, r.bottom - r.top);
+
+		m_si.SetPos(x, y);
+
+		x = x + iIndent + (r.right - r.left);
+
+        m_si.Render();
 	}
+
+	CUIWindow::Draw();
 }

@@ -14,6 +14,7 @@
 #include "UIListWnd.h"
 #include "UIMultiTextStatic.h"
 #include "UIColorAnimatorWrapper.h"
+#include "UIArtefactPanel.h"
 
 #include "../UIZoneMap.h"
 
@@ -151,6 +152,7 @@ protected:
 	CUIStatic			UIWoundIcon;
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
+	CUIArtefactPanel    m_artefactPanel;
 	
 public:
 	
