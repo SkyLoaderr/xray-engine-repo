@@ -141,8 +141,8 @@ void CTorch::UpdateCL()
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
 		H_Parent()->setEnabled		(true);
-		light_render->set_direction	(l_d);//clXFORM().k);
-		light_render->set_position	(l_p);//clXFORM().c);
+		light_render->set_direction	(svTransform.k);//clXFORM().k); // l_d
+		light_render->set_position	(svTransform.c);//clXFORM().c); // l_p
 	}
 	// update light source
 	if (light_render->get_active()){
