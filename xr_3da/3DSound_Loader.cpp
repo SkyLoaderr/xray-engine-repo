@@ -141,7 +141,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 
 	dsBD.dwBufferBytes			= dwLen;
 	dsBD.lpwfxFormat			= &wfxdest;
-	dwFreq						= wfxdest.nSamplesPerSec;
+	dwFreq = dwFreqBase			= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
 	if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
@@ -238,7 +238,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	dsBD.dwBufferBytes	= dwLen;
 	dsBD.lpwfxFormat	= &wfxdest;
 
-	dwFreq				= wfxdest.nSamplesPerSec;
+	dwFreq = dwFreqBase			= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
     if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){

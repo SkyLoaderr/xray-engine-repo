@@ -55,6 +55,7 @@ private:
 	BOOL					_3D;
 	BOOL					_Freq;
 	DWORD					dwFreq;
+	DWORD					dwFreqBase;
 
 	DWORD					dwLastTimeActive;
 private:
@@ -74,6 +75,7 @@ public:
 	void					Stop					(void);
 	void					SetPosition				(const Fvector &pos);
 	void					SetFrequency			(DWORD freq);
+	void					SetFrequencyScale		(float scale);
 	void					SetMinMax				(float min, float max);
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 

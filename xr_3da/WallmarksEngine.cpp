@@ -197,15 +197,18 @@ void CWallmarksEngine::Render()
 				DWORD w_count	= w_verts-w_start;
 				if (((w_count+W.verts.size())>=(MAX_TRIS*3))||(w_S!=W.hShader))
 				{
-					// Flush stream
-					VS->Unlock				(w_count);
-					Device.Shader.set_Shader(w_S);
-					Device.Primitive.Draw	(VS,w_count/3,w_offset);
+					if (w_count)	
+					{
+						// Flush stream
+						VS->Unlock				(w_count);
+						Device.Shader.set_Shader	(w_S);
+						Device.Primitive.Draw	(VS,w_count/3,w_offset);
 
-					// Restart (re-lock/re-calc)
-					w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
-					w_start		= w_verts;
-					w_S			= W.hShader;
+						// Restart (re-lock/re-calc)
+						w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
+						w_start		= w_verts;
+						w_S			= W.hShader;
+					}
 				}
 
 				W.Draw	(w_verts);

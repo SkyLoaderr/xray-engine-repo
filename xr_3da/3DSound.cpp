@@ -253,7 +253,11 @@ void CSound::SetFrequency	(DWORD freq)
 	dwFreq				= freq;
 	bNeedUpdate			= true;
 }
-
+void CSound::SetFrequencyScale(float S)
+{
+	dwFreq				= iFloor(float(dwFreqBase)*S);
+	bNeedUpdate			= true;
+}
 void CSound::SetMinMax		(float min, float max)
 {
 	ps.flMinDistance	= min;
