@@ -138,8 +138,7 @@ function action_weapon:initialize()
 	self.object:set_desired_direction()
 
 	stop_play_sound(self.object)
-	--state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true})
-	state_mgr.set_state(self.object, "hide", nil, nil, {look_object = db.actor}, {animation = true})
+	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true})
 end
 function action_weapon:execute()
 	action_base.execute (self)
