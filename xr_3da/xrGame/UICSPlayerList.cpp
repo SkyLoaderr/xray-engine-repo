@@ -31,7 +31,7 @@ void CUICSPlayerList::OnFrame()
 	sort(items.begin(),items.end(),pred_player);
 
 	// out info
-	CGameFont* H		= Level().HUD()->pFontSmall;
+	CGameFont* H		= Level().HUD()->pFontMedium;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	H->SetColor(0xf0ffa0a0); H->OutNext("Team 1:");
 	int k=1;
