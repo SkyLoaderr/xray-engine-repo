@@ -43,14 +43,14 @@ void CLight_DB::Load			(IReader *fs)
 				sun_base			= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_direction	(Ldata->direction);
+				L->set_direction	(Ldata.direction);
 				
 				// copy to env-sun
 				sun		=	L		= Create();
 				L->flags.bStatic	= true;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_direction	(Ldata->direction);
+				L->set_direction	(Ldata.direction);
 			}
 			else
 			{
