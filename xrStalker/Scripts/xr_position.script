@@ -16,7 +16,7 @@ function evaluator_on_position:evaluate()
 	local tt
 	if self.a.position == nil then return true end
 
-	local dd = self.object:position():distance_to(level.vertex_position(self.a.position))
+	local dd = self.object:position():distance_to_sqr(level.vertex_position(self.a.position))
 	tt = dd < self.a.dist
 	return tt
 end
@@ -37,7 +37,6 @@ function action_go_position:initialize()
 	self.object:set_desired_direction()    
 
 	xr_state.change_state(self.object, 0)
-	self.object:set_item(object.idle, self.object:best_weapon())
 	if xr_state.finish_state(self.object) == true then
 		self.object:clear_animations()
 		self.object:set_mental_state(anim.free)
