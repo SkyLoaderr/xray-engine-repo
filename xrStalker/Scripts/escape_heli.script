@@ -11,9 +11,10 @@ local actor, actor_dist
 local wounded_tip
 
 local state_before      = 0
-local state_heli_fly    = 1
-local state_heli_attack = 2
-local state_after       = 3
+local state_wait_spawn  = 1
+local state_heli_fly    = 2
+local state_heli_attack = 3
+local state_after       = 4
 
 local state_init
 
@@ -40,31 +41,63 @@ function update()
 			heli_mgr.not_die = true
 			heli_mgr.heliObject:TurnEngineSound( false )
 
-			-- запомнить ID раненого и тут же его спрятать
+			-- запомнить ID новичков и тут же их спрятать
 			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
+			table.insert( newbies, get_level_object( "esc_vagon_newbie1" ):id() )
+			table.insert( newbies, get_level_object( "esc_vagon_newbie2" ):id() )
 
 			local sim = alife()
 			if sim then
 				sim:set_switch_online(  wounded_id, false )
 				sim:set_switch_offline( wounded_id, true )
+
+				sim:set_switch_online(  newbies[1], false )
+				sim:set_switch_offline( newbies[1], true )
+
+				sim:set_switch_online(  newbies[2], false )
+				sim:set_switch_offline( newbies[2], true )
 			end
 
 			state_init = false
 		end
 
 		if actor:has_info( "tutorial_artefact_gain" ) then
-			chst( state_heli_fly )
+			chst( state_wait_spawn )
 		end
 	end
+
+	-- ждём рождения новичков
+	if state == state_wait_spawn then
+		if state_init then
+			local sim = alife()
+			if sim then
+				sim:set_switch_online(  newbies[1], true )
+				sim:set_switch_offline( newbies[1], false )
+
+				sim:set_switch_online(  newbies[2], true )
+				sim:set_switch_offline( newbies[2], false )
+			end
+
+			state_init = false
+		end
+
+		if type( newbies[1] ) == "number" then
+			newbies[1] = level.object( "esc_vagon_newbie1" ) or newbies[1]
+		end
+
+		if type( newbies[2] ) == "number" then
+			newbies[2] = level.object( "esc_vagon_newbie2" ) or newbies[2]
+		end
+
+		if type( newbies[1] ) ~= "number" and type( newbies[2] ) ~= "number" then
+			chst( state_heli_fly )
+		end
+	end	
 
 	-- вертолёт летит к новичкам
 	if state == state_heli_fly then
 		if state_init then
 			heli_mgr.heliObject:TurnEngineSound( true )
-
-			for i = 1, 2 do
-				table.insert( newbies, get_level_object( "esc_vagon_newbie" .. i ) )
-			end
 
 			heli_mgr:set_enemy( newbies[1], 1000 )
 
