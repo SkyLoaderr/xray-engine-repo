@@ -452,6 +452,9 @@
 						RelativePath=".\Config\text\eng\stable_dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\string_table_artefacts.xml">
 					</File>
 					<File
