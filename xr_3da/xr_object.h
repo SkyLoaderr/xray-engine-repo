@@ -20,12 +20,12 @@ enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 //	CObject
 //-----------------------------------------------------------------------------------------------------------
 class	ENGINE_API						CObject :	
-	public CEventBase,
-	public CSheduled,
-	public DLL_Pure, 
-	public CController,
-	public pureDeviceDestroy,
-	public pureDeviceCreate
+public CEventBase,
+public CSheduled,
+public DLL_Pure, 
+public CController,
+public pureDeviceDestroy,
+public pureDeviceCreate
 {
 public:
 	struct SavedPosition
@@ -61,23 +61,30 @@ protected:
 
 	// Information and status
 	void								StatusBegin		();
-public:
+
+	// Network
 	DWORD								net_ID;
 	BOOL								net_Local;
 	BOOL								net_Ready;
+
+	// Geometry xform
+	Fmatrix								svTransform;
+	Fmatrix								clTransform;
+public:
+	// Network
 	IC BOOL								Local()			{ return net_Local;		}
 	IC BOOL								Remote()		{ return !net_Local;	}
 
-	// Geometry management
-	Fmatrix								svTransform;
-	Fmatrix								clTransform;
+	// Geometry xform
 	void								UpdateTransform	(void);
-
+	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
+	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
+	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
+	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
+	
 	virtual BOOL						Ready			()					{ return net_Ready; }		
 
 	IC CSector*							Sector			()					{ return pSector; }
-	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
-	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
 
 	IC float							Radius			() const			{ VERIFY(pVisual); return pVisual->bv_Radius;}
 	virtual Fvector&					Position		() 					{ return vPosition; }
