@@ -99,6 +99,7 @@ enum
 	R2FLAG_FASTBLOOM		= (1<<7),
 	R2FLAG_GLOBALMATERIAL	= (1<<8),
 	R2FLAG_ZFILL			= (1<<9),
+	R2FLAG_R1LIGHTS			= (1<<10),
 };
 
 extern void						xrRender_initconsole	();
