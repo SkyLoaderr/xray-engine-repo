@@ -22,8 +22,8 @@
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
 static u32 dwAStarStaticCounter = 0;
-TNode		*taHeap;
-TIndexNode	*tpaIndexes;
+SNode		*taHeap;
+SIndexNode	*tpaIndexes;
 
 #define OPTINAL_ENEMY_DISTANCE 40.f
 
@@ -87,9 +87,9 @@ IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fvector tEnemy
 	return(fCriteriaEnemyViewWeight*(_sqrt((float)(fSize2*(_sqr(x3 - x1) + _sqr(z3 - z1)) + fYSize2*_sqr(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + fYSize2*_sqr(y2 - y1))));
 }
 
-IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
+IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
 {
-	TNode *tpTemp = tpList->tpForward;
+	SNode *tpTemp = tpList->tpForward;
 	while (tpTemp) {
 		if (tpTemp->tpForward)
 			vfUpdateSuccessors(tpTemp->tpForward,dDifference);
@@ -102,7 +102,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 				if (tpTemp->tpOpenedNext)
 					tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
 				float dTemp = tpTemp->f;
-				TNode *tpTemp1 = tpTemp;
+				SNode *tpTemp1 = tpTemp;
 				for (tpTemp = tpTemp->tpOpenedPrev; tpTemp; tpTemp = tpTemp->tpOpenedPrev)
 					if (tpTemp->f <= dTemp) {
 						tpTemp1->tpOpenedNext = tpTemp->tpOpenedNext;
@@ -125,11 +125,11 @@ void CAI_Space::vfLoadSearch()
 	fYSize2		= _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
 //	u32 M1	= Engine.mem_Usage();
-	u32 S1	= (MAX_NODES + 1)*sizeof(TNode);
-	taHeap		= (TNode *)xr_malloc(S1);
+	u32 S1	= (MAX_NODES + 1)*sizeof(SNode);
+	taHeap		= (SNode *)xr_malloc(S1);
 	ZeroMemory(taHeap,S1);
-	u32 S2	= (this->m_header.count)*sizeof(TIndexNode);
-	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
+	u32 S2	= (this->m_header.count)*sizeof(SIndexNode);
+	tpaIndexes	= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory(tpaIndexes,S2);
 //	u32 M2	= Engine.mem_Usage();
 	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
@@ -153,14 +153,14 @@ float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 
 	uint uiHeap = 0;
 
-	TNode  *tpOpenedList = taHeap + uiHeap++,
+	SNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
 	
-	memset(tpOpenedList,0,sizeof(TNode));
-	memset(tpTemp,0,sizeof(TNode));
+	memset(tpOpenedList,0,sizeof(SNode));
+	memset(tpTemp,0,sizeof(SNode));
 	
 	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
@@ -335,14 +335,14 @@ float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 
 	uint uiHeap = 0;
 
-	TNode  *tpOpenedList = taHeap + uiHeap++,
+	SNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
 	
-	memset(tpOpenedList,0,sizeof(TNode));
-	memset(tpTemp,0,sizeof(TNode));
+	memset(tpOpenedList,0,sizeof(SNode));
+	memset(tpTemp,0,sizeof(SNode));
 	
 	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
@@ -516,14 +516,14 @@ float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 
 	uint uiHeap = 0;
 
-	TNode  *tpOpenedList = taHeap + uiHeap++,
+	SNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
 	
-	memset(tpOpenedList,0,sizeof(TNode));
-	memset(tpTemp,0,sizeof(TNode));
+	memset(tpOpenedList,0,sizeof(SNode));
+	memset(tpTemp,0,sizeof(SNode));
 	
 	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
