@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "gamepersistent.h"
 
 #include "..\xr_ioconsole.h"
