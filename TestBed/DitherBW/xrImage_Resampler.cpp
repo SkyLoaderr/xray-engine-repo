@@ -426,7 +426,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	_FREE(raster);
 
 	/* _FREE the memory allocated for vertical filter weights */
-	for	(i = 0; i < tmp->ysize; ++i) _FREE(contrib[i].p);
+	for	(i = 0; i < dst.ysize; ++i) _FREE(contrib[i].p);
 	_FREE(contrib);
 
 	free_image(tmp);

@@ -43,7 +43,7 @@ void main(int argc, char* argv[])
 	CImage			tex,scaled;
 	tex.LoadTGA		("x:\\dbg\\test.tga");
 	scaled.Create	((tex.dwWidth*75)/100,(tex.dwHeight*75)/100);
-
+ 
 	// filters
 	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_filter);
 	scaled.SaveTGA	("x:\\dbg\\f_filter.tga");
