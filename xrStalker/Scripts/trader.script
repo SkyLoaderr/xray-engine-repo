@@ -153,6 +153,7 @@ function Trader:process_end_trade ()
        return
     end
 
+    self.next_state = trader_end
     self:play_queue ()
 
 end
@@ -246,7 +247,7 @@ function Trader:set_trade_end ()
     self.current.end_current = false
     self.current.use_start_end = true
     action (self.npc, anim (self.current.process_anim), cond (cond.anim_end))
-    self.current_state = trader_wait
+    self.current_state = trader_end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:on_start_trade ()
