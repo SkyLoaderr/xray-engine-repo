@@ -605,7 +605,7 @@ function CStateAmbush:execute()
 end
 
 function CStateAmbush:on_position()
-  return(self.npc:level_vertex_id() == self.ambush_way:level_vertex_id(0))
+	return(self.npc:position():distance_to(self.ambush_way:point(0)) < 1)
 end
 
 function CStateAmbush:finalize()
