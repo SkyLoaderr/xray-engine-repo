@@ -10,6 +10,7 @@
 #include "ui_main.h"
 #include "ui_tools.h"
 #include "ui_aimaptools.h"
+#include "PropertiesListHelper.h"
 
 // chunks
 #define AIMAP_VERSION  				0x0002
@@ -20,6 +21,7 @@
 #define AIMAP_CHUNK_PARAMS			0x0004
 #define AIMAP_CHUNK_NODES			0x0006
 #define AIMAP_CHUNK_SNAP_OBJECTS	0x0007
+#define AIMAP_CHUNK_INTERNAL_DATA	0x0008
 //----------------------------------------------------
 
 void SAINode::PointLF(Fvector& D, float patch_size)
@@ -102,6 +104,7 @@ ESceneAIMapTools::ESceneAIMapTools()
 //    m_Header.size_y				= m_Header.aabb.max.y-m_Header.aabb.min.y+EPS_L;
 	hash_Initialize();
     m_VisRadius	= 30;
+    m_BrushSize	= 1;
     m_CFModel	= 0;
 }
 //----------------------------------------------------
@@ -214,6 +217,11 @@ bool ESceneAIMapTools::Load(IReader& F)
     }
 	DenumerateNodes	();
 
+    if (F.find_chunk(AIMAP_CHUNK_INTERNAL_DATA)){
+    	m_VisRadius	= F.r_float();
+    	m_BrushSize	= F.r_u32();
+    }
+    
 	// snap objects
     if (F.find_chunk(AIMAP_CHUNK_SNAP_OBJECTS)){
     	string128 	buf;
@@ -263,6 +271,11 @@ void ESceneAIMapTools::Save(IWriter& F)
     F.w_u32			(m_Nodes.size());
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
     	(*it)->Save	(F,this);
+	F.close_chunk	();
+
+	F.open_chunk	(AIMAP_CHUNK_INTERNAL_DATA);
+    F.w_float		(m_VisRadius);
+    F.w_u32			(m_BrushSize);
 	F.close_chunk	();
 
 	F.open_chunk	(AIMAP_CHUNK_SNAP_OBJECTS);
@@ -452,5 +465,9 @@ int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSel
 
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
+	PropValue* P;
+    P=PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Visibility radius"),	&m_VisRadius, 10, 250);
+//    P->OnChangeEvent		= OnDensityChange;
+    PHelper.CreateU32		(items, FHelper.PrepareKey(pref,"Brush size"),	&m_BrushSize, 1, 100);
 }
 

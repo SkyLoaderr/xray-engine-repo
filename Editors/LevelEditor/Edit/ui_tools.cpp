@@ -299,7 +299,7 @@ void TUI_Tools::RealUpdateProperties()
         if (OBJCLASS_DUMMY==cls_id){
             for (int i=0; i<OBJCLASS_COUNT; i++){
                 ESceneCustomMTools* mt 	= Scene.GetMTools(EObjClass(i));
-                if (mt)	mt->FillProp	(GetClassNameByClassID(cls_id),items);
+                if (mt)	mt->FillProp	(GetClassNameByClassID(i),items);
             }
         }else{
             ESceneCustomMTools* mt		= Scene.GetMTools(cls_id);

@@ -1,29 +1,27 @@
 object fraWayPoint: TfraWayPoint
   Left = 0
   Top = 0
-  Width = 123
+  Width = 198
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 154
-  Constraints.MinWidth = 123
+  Constraints.MaxWidth = 198
+  Constraints.MinWidth = 198
   Color = 10528425
   ParentColor = False
   TabOrder = 0
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 198
     Height = 49
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -33,7 +31,7 @@ object fraWayPoint: TfraWayPoint
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -53,7 +51,7 @@ object fraWayPoint: TfraWayPoint
     object ebModeWay: TExtBtn
       Left = 2
       Top = 17
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -113,7 +111,7 @@ object fraWayPoint: TfraWayPoint
     object ebModePoint: TExtBtn
       Left = 2
       Top = 33
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -173,17 +171,15 @@ object fraWayPoint: TfraWayPoint
   object paLink: TPanel
     Left = 0
     Top = 49
-    Width = 123
+    Width = 198
     Height = 99
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 1
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -193,7 +189,7 @@ object fraWayPoint: TfraWayPoint
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -213,7 +209,7 @@ object fraWayPoint: TfraWayPoint
     object ebInvertLink: TExtBtn
       Left = 2
       Top = 67
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -233,7 +229,7 @@ object fraWayPoint: TfraWayPoint
     object ebAdd1Link: TExtBtn
       Left = 2
       Top = 37
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -253,7 +249,7 @@ object fraWayPoint: TfraWayPoint
     object ebRemoveLinks: TExtBtn
       Left = 2
       Top = 82
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -273,7 +269,7 @@ object fraWayPoint: TfraWayPoint
     object ebAdd2Link: TExtBtn
       Left = 2
       Top = 52
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -293,7 +289,7 @@ object fraWayPoint: TfraWayPoint
     object ebAutoLink: TExtBtn
       Left = 2
       Top = 17
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -354,7 +350,7 @@ object fraWayPoint: TfraWayPoint
     object Bevel1: TBevel
       Left = 2
       Top = 35
-      Width = 120
+      Width = 195
       Height = 2
     end
   end

@@ -402,9 +402,10 @@ bool CWayObject::FrustumPick(const CFrustum& frustum)
 
 bool CWayObject::IsPointMode()
 {
-	VERIFY(Tools.GetTargetClassID()==OBJCLASS_WAY);
-    TfraWayPoint* frame=(TfraWayPoint*)Tools.GetFrame(); R_ASSERT(frame);
-    return frame->ebModePoint->Down;
+	if (Tools.GetTargetClassID()==OBJCLASS_WAY){
+	    TfraWayPoint* frame=(TfraWayPoint*)Tools.GetFrame(); R_ASSERT(frame);
+    	return frame->ebModePoint->Down;
+    }else return false;
 }
 
 bool CWayObject::Load(IReader& F)

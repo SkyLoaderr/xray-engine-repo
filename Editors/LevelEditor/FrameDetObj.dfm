@@ -1,29 +1,27 @@
 object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
-  Width = 123
-  Height = 277
+  Width = 198
+  Height = 289
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 154
-  Constraints.MinWidth = 123
+  Constraints.MaxWidth = 198
+  Constraints.MinWidth = 198
   Color = 10528425
   ParentColor = False
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
     Top = 140
-    Width = 123
+    Width = 198
     Height = 34
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -33,7 +31,7 @@ object fraDetailObject: TfraDetailObject
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -53,7 +51,7 @@ object fraDetailObject: TfraDetailObject
     object ebReinitializeSlotObjects: TExtBtn
       Left = 2
       Top = 16
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -75,17 +73,15 @@ object fraDetailObject: TfraDetailObject
   object paCommand: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 198
     Height = 140
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 1
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -95,7 +91,7 @@ object fraDetailObject: TfraDetailObject
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -115,7 +111,7 @@ object fraDetailObject: TfraDetailObject
     object ExtBtn1: TExtBtn
       Left = 2
       Top = 17
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -136,7 +132,7 @@ object fraDetailObject: TfraDetailObject
     object ExtBtn6: TExtBtn
       Left = 2
       Top = 32
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -157,7 +153,7 @@ object fraDetailObject: TfraDetailObject
     object ExtBtn4: TExtBtn
       Left = 2
       Top = 47
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -178,7 +174,7 @@ object fraDetailObject: TfraDetailObject
     object ebResetSlots: TExtBtn
       Left = 2
       Top = 87
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -199,7 +195,7 @@ object fraDetailObject: TfraDetailObject
     object ExtBtn7: TExtBtn
       Left = 2
       Top = 67
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -220,7 +216,7 @@ object fraDetailObject: TfraDetailObject
     object ebClearDetails: TExtBtn
       Left = 2
       Top = 102
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -241,19 +237,19 @@ object fraDetailObject: TfraDetailObject
     object Bevel3: TBevel
       Left = 1
       Top = 83
-      Width = 121
+      Width = 196
       Height = 2
     end
     object Bevel4: TBevel
       Left = 1
       Top = 63
-      Width = 121
+      Width = 196
       Height = 2
     end
     object ExtBtn5: TExtBtn
-      Left = 1
+      Left = 2
       Top = 122
-      Width = 119
+      Width = 194
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -274,7 +270,7 @@ object fraDetailObject: TfraDetailObject
     object Bevel1: TBevel
       Left = 1
       Top = 118
-      Width = 121
+      Width = 196
       Height = 2
     end
   end

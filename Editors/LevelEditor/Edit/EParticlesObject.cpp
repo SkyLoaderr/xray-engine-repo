@@ -9,6 +9,7 @@
 #include "PSLibrary.h"
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
+#include "render.h"
 
 #define CPSOBJECT_VERSION  				0x0011
 //----------------------------------------------------
@@ -16,6 +17,8 @@
 #define CPSOBJECT_CHUNK_REFERENCE		0x0002
 #define CPSOBJECT_CHUNK_PARAMS			0x0003
 //----------------------------------------------------
+
+#define PSOBJECT_SIZE 0.5f
 
 //using namespace PS;
 
@@ -28,6 +31,7 @@ EParticlesObject::EParticlesObject(LPVOID data, LPCSTR name):CCustomObject(data,
 void EParticlesObject::Construct(LPVOID data)
 {
 	ClassID   	= OBJCLASS_PS;
+    m_Particles	= 0;
 }
 //----------------------------------------------------
 
@@ -53,7 +57,7 @@ void EParticlesObject::OnUpdateTransform()
 {
 	inherited::OnUpdateTransform	();
 	Fvector v={0.f,0.f,0.f};
-	m_PE.UpdateParent(_Transform(),v);
+	if (m_Particles) m_Particles->UpdateParent(_Transform(),v);
 }
 //----------------------------------------------------
 
@@ -62,7 +66,7 @@ void EParticlesObject::OnFrame()
 	inherited::OnFrame();
     Fbox bb; GetBox(bb);
     if (::Render->occ_visible(bb))
-	    m_PE.OnFrame(Device.dwTimeDelta);
+	    if (m_Particles) m_Particles->OnFrame(Device.dwTimeDelta);
 }
 //----------------------------------------------------
 
@@ -71,11 +75,13 @@ void EParticlesObject::Render(int priority, bool strictB2F)
 	inherited::Render(priority,strictB2F);
     Fbox bb; GetBox(bb);
 	if (::Render->occ_visible(bb)){
+        RCache.set_xform_world(Fidentity);
 	    if (1==priority){
             if (false==strictB2F){
                 // draw emitter
-                u32 C = 0xFFFFEBAA;
-                DU.DrawLineSphere(PPosition, PSOBJECT_SIZE/10, C, true);
+	    		Device.SetShader(Device.m_WireShader);
+    			DU.DrawCross	(PPosition,0.20f,0.25f,0.20f,0.20f,0.25f,0.20f,0xFFFFEBAA,false);
+//                DU.DrawLineSphere(PPosition, PSOBJECT_SIZE/10, C, true);
                 if( Selected() ){
                     Fbox bb; GetBox(bb);
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -83,7 +89,7 @@ void EParticlesObject::Render(int priority, bool strictB2F)
                 }
             }
         }
-	    Device.Models.Render(&m_PE,_Transform(),priority,strictB2F,1.f);
+        if (m_Particles) Device.Models.Render(m_Particles,_Transform(),priority,strictB2F,1.f);
     }
 }
 //----------------------------------------------------
@@ -123,13 +129,13 @@ bool EParticlesObject::RayPick(float& distance, const Fvector& start, const Fvec
 
 void EParticlesObject::Play()
 {
-	m_PE.Play();
+	if (m_Particles) m_Particles->Play();
 }
 //----------------------------------------------------
 
 void EParticlesObject::Stop()
 {
-	m_PE.Stop();
+	if (m_Particles) m_Particles->Stop();
 }
 //----------------------------------------------------
 
@@ -153,7 +159,7 @@ bool EParticlesObject::Load(IReader& F)
     }
 
     if (F.find_chunk(CPSOBJECT_CHUNK_PARAMS)){
-    	m_PE.m_RT_Flags.set(F.r_u32());
+//.    	if (m_Particles) m_Particles->m_RT_Flags.set(F.r_u32());
     }
 
     return true;
@@ -168,14 +174,15 @@ void EParticlesObject::Save(IWriter& F)
 	F.w_u16			(CPSOBJECT_VERSION);
 	F.close_chunk	();
 
-    VERIFY(m_PE.GetDefinition());
+//.    VERIFY(m_PE.GetDefinition());
 	F.open_chunk	(CPSOBJECT_CHUNK_REFERENCE);
-    F.w_stringZ		(m_PE.GetDefinition()->m_Name);
+    F.w_stringZ		(m_RefName.c_str());
 	F.close_chunk	();
-
+/*
 	F.open_chunk	(CPSOBJECT_CHUNK_PARAMS);
 	F.w_u32			(m_PE.m_RT_Flags.get());
 	F.close_chunk	();
+*/
 }
 //----------------------------------------------------
 
@@ -200,12 +207,15 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-    PS::CPEDef* def 		= ::Render->PSLibrary.FindPED(ref_name);
-    if (m_PE.Compile(def)){
-		m_RefName			= ref_name;
+	xr_delete				(m_Particles);
+    if (ref_name){
+		m_Particles 		= (IParticleCustom*)::Render->model_CreateParticles(ref_name);
+        R_ASSERT			(m_Particles);
 		UpdateTransform		();
+	    m_RefName			= ref_name;
         return true;
     }
+    m_RefName				= "";
     return false;
 }
 
@@ -214,27 +224,42 @@ void __fastcall EParticlesObject::OnRefChange(PropValue* V)
 	if (!Compile(m_RefName.c_str())){
         ELog.Msg( mtError, "Can't compile particle system '%s'", m_RefName.c_str() );
     }else{
-		m_RefName	= m_PE.GetDefinition()?m_PE.GetDefinition()->m_Name:"";
         UI.Command(COMMAND_REFRESH_PROPERTIES);
     }
+}
+
+void __fastcall EParticlesObject::OnControlClick(PropValue* sender, bool& bModif)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: Play();	break;
+    case 1: Stop();	break;
+	}
+    UI.RedrawScene();
+    bModif = false;
 }
 
 void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V;
-    V=PHelper.CreateALibPE	(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName);
+    V=PHelper.CreateALibParticles(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName);
     V->OnChangeEvent		= OnRefChange;
+	ButtonValue* B;
+    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop",0);
+    B->OnBtnClickEvent		= OnControlClick;
 }
 //----------------------------------------------------
 
 bool EParticlesObject::GetSummaryInfo(SSceneSummary* inf)
 {
+/*
 	if (!m_RefName.IsEmpty()&&m_PE.GetDefinition()){ 
     	inf->pe_static.insert(m_PE.GetDefinition()->m_Name);
 		if (m_PE.GetDefinition()->m_TextureName&&m_PE.GetDefinition()->m_TextureName[0]) inf->textures.insert(ChangeFileExt(m_PE.GetDefinition()->m_TextureName,"").LowerCase());
     }
 	inf->pe_static_cnt++;
+*/
 	return true;
 }
 //----------------------------------------------------

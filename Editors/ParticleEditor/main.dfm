@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 265
   Top = 199
-  Width = 660
+  Width = 770
   Height = 446
   Color = clBtnFace
   Constraints.MinHeight = 446
@@ -24,27 +24,27 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object paLeftBar: TPanel
-    Left = 512
+    Left = 547
     Top = 0
-    Width = 140
+    Width = 215
     Height = 402
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 140
-    Constraints.MinWidth = 140
+    Constraints.MaxWidth = 215
+    Constraints.MinWidth = 215
     TabOrder = 0
     object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 138
+      Width = 213
       Height = 16
       Align = alTop
       TabOrder = 0
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 136
+        Width = 211
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -54,7 +54,7 @@ object frmMain: TfrmMain
         OnClick = TopClick
       end
       object sbToolsMin: TExtBtn
-        Left = 124
+        Left = 200
         Top = 2
         Width = 11
         Height = 11
@@ -76,7 +76,7 @@ object frmMain: TfrmMain
   object paBottomBar: TPanel
     Left = 0
     Top = 402
-    Width = 652
+    Width = 762
     Height = 17
     Align = alBottom
     BevelInner = bvLowered
@@ -86,7 +86,7 @@ object frmMain: TfrmMain
   object paMain: TPanel
     Left = 0
     Top = 0
-    Width = 512
+    Width = 547
     Height = 402
     Align = alClient
     BevelOuter = bvNone
@@ -94,7 +94,7 @@ object frmMain: TfrmMain
     object paTopBar: TPanel
       Left = 0
       Top = 0
-      Width = 512
+      Width = 547
       Height = 18
       Align = alTop
       BevelOuter = bvNone
@@ -103,7 +103,7 @@ object frmMain: TfrmMain
     object paWindow: TPanel
       Left = 0
       Top = 18
-      Width = 512
+      Width = 547
       Height = 384
       Align = alClient
       BevelOuter = bvNone
@@ -111,10 +111,10 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnResize = paWindowResize
       object D3DWindow: TD3DWindow
-        Left = 6
-        Top = 6
-        Width = 495
-        Height = 366
+        Left = 22
+        Top = 22
+        Width = 339
+        Height = 259
         FocusedColor = 9502719
         UnfocusedColor = 9211020
         OnChangeFocus = D3DWindowChangeFocus

@@ -16,9 +16,41 @@ __fastcall TfraSpawnPoint::TfraSpawnPoint(TComponent* Owner)
         : TFrame(Owner)
 {
     DEFINE_INI(fsStorage);
-    ebCurObj->Caption=NONE_CAPTION;
+    m_Current = 0;
 }
 //---------------------------------------------------------------------------
+void __fastcall TfraSpawnPoint::OnEnter()
+{
+    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
+    m_Items->OnItemsFocused	= OnItemFocused;
+    m_Items->LoadSelection	(fsStorage);
+    ListItemsVec items;
+    LHelper.CreateItem		(items,RPOINT_CHOOSE_NAME,0,0,RPOINT_CHOOSE_NAME);
+    CInifile::Root& data 	= pSettings->sections();
+    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
+    	LPCSTR val;
+    	if (it->line_exist	("$spawn",&val))
+	    	LHelper.CreateItem(items,val,0,0,it->Name);
+    }
+    m_Items->AssignItems	(items,false,"",true);
+	fsStorage->RestoreFormPlacement();
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraSpawnPoint::OnExit()
+{
+    m_Items->SaveSelection	(fsStorage);
+	fsStorage->SaveFormPlacement();
+    TItemList::DestroyForm	(m_Items);
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraSpawnPoint::OnItemFocused(ListItemsVec& items)
+{
+	VERIFY(items.size()<=1);
+    m_Current 			= 0;
+    for (ListItemsIt it=items.begin(); it!=items.end(); it++)
+        m_Current 		= (*it)->Key();
+}
+//------------------------------------------------------------------------------
 void __fastcall TfraSpawnPoint::PaneMinClick(TObject *Sender)
 {
     PanelMinimizeClick(Sender);
@@ -28,18 +60,6 @@ void __fastcall TfraSpawnPoint::PaneMinClick(TObject *Sender)
 void __fastcall TfraSpawnPoint::ExpandClick(TObject *Sender)
 {
     PanelMaximizeOnlyClick(Sender);
-}
-//---------------------------------------------------------------------------
-
-AnsiString TfraSpawnPoint::GetCurrentEntity(BOOL bForceSelect)
-{
-	if ((bForceSelect)||(ebCurObj->Caption==NONE_CAPTION)) ebCurObjClick(0);
-    return (ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption:AnsiString("");
-}
-void __fastcall TfraSpawnPoint::ebCurObjClick(TObject *Sender)
-{
-	LPCSTR N;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smEntity,N,1,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)) ebCurObj->Caption = N;
 }
 //---------------------------------------------------------------------------
 

@@ -21,9 +21,42 @@ __fastcall TfraObject::TfraObject(TComponent* Owner)
         : TFrame(Owner)
 {
     DEFINE_INI(fsStorage);
-    OutCurrentName();
+    m_Current = 0;
 }
 //---------------------------------------------------------------------------
+void __fastcall TfraObject::OnEnter()
+{
+    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
+    m_Items->OnItemsFocused	= OnItemFocused;
+    m_Items->LoadSelection	(fsStorage);
+    ListItemsVec items;
+    
+    FS_QueryMap lst;
+    if (Lib.GetObjects(lst)){
+	    FS_QueryPairIt	it	  = lst.begin();
+    	FS_QueryPairIt	_E	  = lst.end();
+	    for (; it!=_E; it++)
+	    	LHelper.CreateItem(items,it->first.c_str(),0,0,0);
+    }
+    m_Items->AssignItems	(items,false,"",true);
+	fsStorage->RestoreFormPlacement();
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraObject::OnExit()
+{
+    m_Items->SaveSelection	(fsStorage);
+	fsStorage->SaveFormPlacement();
+    TItemList::DestroyForm	(m_Items);
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
+{
+	VERIFY(items.size()<=1);
+    m_Current 			= 0;
+    for (ListItemsIt it=items.begin(); it!=items.end(); it++)
+        m_Current 		= (*it)->Key();
+}
+//------------------------------------------------------------------------------
 void __fastcall TfraObject::PaneMinClick(TObject *Sender)
 {
     PanelMinimizeClick(Sender);
@@ -94,8 +127,8 @@ void TfraObject::SelByRefObject( bool flag )
     LPCSTR sel_name=0;
     if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
         sel_name = ((CSceneObject*)objlist.front())->GetRefName();
-	LPCSTR N;
-    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,sel_name)) return;
+	LPCSTR N=Current();
+//    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,sel_name)) return;
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
@@ -107,29 +140,10 @@ void TfraObject::SelByRefObject( bool flag )
 }
 //---------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------
-// Add new
-//---------------------------------------------------------------------------
-void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
-{
-	LPCSTR N;
-    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)) return;
-    Lib.SetCurrentObject(N);
-    // set current object
-    OutCurrentName();
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraObject::OutCurrentName()
-{
-	LPCSTR N = Lib.GetCurrentObject();
-	ebCurObj->Caption = (N&&N[0])?N:NONE_CAPTION;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
 {
 	LPCSTR N;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,32,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)){
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,32,0)){
     	Fvector pos={0.f,0.f,0.f};
     	Fvector up={0.f,1.f,0.f};
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);

@@ -122,6 +122,7 @@ public:
     Flags32				m_Flags;
 
     float 				m_VisRadius;
+    u32					m_BrushSize;
 public:
 						ESceneAIMapTools 	   	();
 	virtual        	 	~ESceneAIMapTools 		();

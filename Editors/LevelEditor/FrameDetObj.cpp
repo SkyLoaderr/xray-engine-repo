@@ -113,3 +113,4 @@ void __fastcall TfraDetailObject::OnExit()
 	fsStorage->SaveFormPlacement();
 }
 
+

@@ -41,11 +41,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebFull;
 	TExtBtn *ebModeInvert;
 	TExtBtn *ebSmoothNodes;
-	TLabel *Label4;
 	TLabel *Label5;
-	TMultiObjSpinEdit *seBrushSize;
-	TMultiObjSpinEdit *seVisRadius;
-	TLabel *Label6;
 	TExtBtn *ebRemove0LNodes;
 	TExtBtn *ebRemove1LNodes;
 	TExtBtn *ebIgnoreConstraints;
@@ -60,7 +56,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebInvertLinkClick(TObject *Sender);
 	void __fastcall ebSideClick(TObject *Sender);
 	void __fastcall ebSmoothNodesClick(TObject *Sender);
-	void __fastcall seVisRadiusChange(TObject *Sender);
 	void __fastcall ebRemove0LNodesClick(TObject *Sender);
 	void __fastcall ebRemove1LNodesClick(TObject *Sender);
 private:	// User declarations

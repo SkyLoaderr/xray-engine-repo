@@ -4,25 +4,23 @@
 #ifndef EParticlesObjectH
 #define EParticlesObjectH
 
-#define PSOBJECT_SIZE 0.5f
-
-#include "ParticleGroup.h"
-
 class EParticlesObject: public CCustomObject
 {
 	typedef CCustomObject inherited;
     Fbox				m_BBox;
     AnsiString			m_RefName;
 
-    PS::CParticleEffect	m_PE;
+    IParticleCustom*	m_Particles;
     
 	void __fastcall 	OnRefChange			(PropValue* V);
+	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif);
 public:
 	                	EParticlesObject   	(LPVOID data, LPCSTR name);
     void            	Construct   		(LPVOID data);
 	virtual         	~EParticlesObject  	();
 
-	PS::CPEDef*			GetReference		(){return m_PE.GetDefinition();}
+    IParticleCustom*	GetParticles		(){return m_Particles;}
+	LPCSTR				GetReferenceName	(){return m_Particles?m_Particles->Name():0;}
 
     void				RenderSingle		();
 	virtual void    	Render      		(int priority, bool strictB2F);
@@ -41,7 +39,7 @@ public:
 
     virtual void 		OnUpdateTransform	();
 
-    IC bool				RefCompare			(LPCSTR ref_name){VERIFY(ref_name&&ref_name[0]); return (0==stricmp(ref_name,m_PE.GetDefinition()->m_Name));}
+    IC bool				RefCompare			(LPCSTR ref_name){VERIFY(ref_name&&ref_name[0]); return (0==stricmp(ref_name,GetReferenceName()));}
 
     bool				Compile				(LPCSTR ref_name);
     

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 785
+  Height = 502
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -21,18 +21,18 @@ object fraLeftBar: TfraLeftBar
   object paLeftBar: TPanel
     Left = 0
     Top = 0
-    Width = 125
+    Width = 200
     Height = 713
     BevelInner = bvLowered
     BevelOuter = bvNone
     Color = 10528425
-    Constraints.MaxWidth = 125
-    Constraints.MinWidth = 125
+    Constraints.MaxWidth = 200
+    Constraints.MinWidth = 200
     TabOrder = 0
     object paScene: TPanel
       Left = 1
       Top = 1
-      Width = 123
+      Width = 198
       Height = 153
       Hint = 'Scene commands'
       Align = alTop
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 121
+        Width = 196
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -53,7 +53,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object sbSceneMin: TExtBtn
-        Left = 109
+        Left = 185
         Top = 2
         Width = 11
         Height = 11
@@ -79,7 +79,7 @@ object fraLeftBar: TfraLeftBar
       object ebSceneFile: TExtBtn
         Left = 2
         Top = 16
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -112,7 +112,7 @@ object fraLeftBar: TfraLeftBar
       object ebScene: TExtBtn
         Left = 2
         Top = 31
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -143,7 +143,7 @@ object fraLeftBar: TfraLeftBar
       object ebObjectList: TExtBtn
         Left = 2
         Top = 121
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -164,7 +164,7 @@ object fraLeftBar: TfraLeftBar
       object ebPreferences: TExtBtn
         Left = 2
         Top = 136
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -185,7 +185,7 @@ object fraLeftBar: TfraLeftBar
       object ebLightAnimationEditor: TExtBtn
         Left = 2
         Top = 106
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
       object ebImages: TExtBtn
         Left = 2
         Top = 76
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -237,7 +237,7 @@ object fraLeftBar: TfraLeftBar
       object ebSounds: TExtBtn
         Left = 2
         Top = 91
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -268,7 +268,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn2: TExtBtn
         Left = 2
         Top = 61
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -299,7 +299,7 @@ object fraLeftBar: TfraLeftBar
       object ebCompile: TExtBtn
         Left = 2
         Top = 46
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -331,7 +331,7 @@ object fraLeftBar: TfraLeftBar
     object paEdit: TPanel
       Left = 1
       Top = 154
-      Width = 123
+      Width = 198
       Height = 128
       Align = alTop
       Color = 10528425
@@ -339,7 +339,7 @@ object fraLeftBar: TfraLeftBar
       object lbTools: TLabel
         Left = 1
         Top = 1
-        Width = 121
+        Width = 196
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -349,7 +349,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object sbEditMin: TExtBtn
-        Left = 109
+        Left = 185
         Top = 2
         Width = 11
         Height = 11
@@ -375,7 +375,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn7: TExtBtn
         Left = 2
         Top = 16
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -408,7 +408,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn8: TExtBtn
         Left = 2
         Top = 31
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -439,7 +439,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn9: TExtBtn
         Left = 2
         Top = 61
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -470,7 +470,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn10: TExtBtn
         Left = 2
         Top = 46
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -503,7 +503,7 @@ object fraLeftBar: TfraLeftBar
       object ebRandomAdd: TExtBtn
         Left = 2
         Top = 78
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         AllowAllUp = True
@@ -526,7 +526,7 @@ object fraLeftBar: TfraLeftBar
       object ebProperties: TExtBtn
         Left = 2
         Top = 112
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -547,7 +547,7 @@ object fraLeftBar: TfraLeftBar
       object ebIgnoreMode: TExtBtn
         Left = 2
         Top = 95
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         AllowAllUp = True
@@ -571,7 +571,7 @@ object fraLeftBar: TfraLeftBar
     object paTarget: TPanel
       Left = 1
       Top = 282
-      Width = 123
+      Width = 198
       Height = 231
       Align = alTop
       Color = 10528425
@@ -579,7 +579,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetObject: TExtBtn
         Left = 2
         Top = 16
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -641,7 +641,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetLight: TExtBtn
         Left = 2
         Top = 31
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -702,7 +702,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetSoundSrc: TExtBtn
         Left = 2
         Top = 46
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -763,7 +763,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetSoundEnv: TExtBtn
         Left = 2
         Top = 61
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -772,7 +772,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '4. Sound Env'
+        Caption = '4. Sound Environment'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -824,7 +824,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetGlow: TExtBtn
         Left = 2
         Top = 76
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -885,7 +885,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetSpawnPoint: TExtBtn
         Left = 2
         Top = 106
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -946,7 +946,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetWay: TExtBtn
         Left = 2
         Top = 121
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1007,7 +1007,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetSector: TExtBtn
         Left = 2
         Top = 136
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1068,7 +1068,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetPortal: TExtBtn
         Left = 2
         Top = 151
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1129,7 +1129,7 @@ object fraLeftBar: TfraLeftBar
       object lbEditMode: TLabel
         Left = 1
         Top = 1
-        Width = 121
+        Width = 196
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -1139,7 +1139,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object sbTargetMin: TExtBtn
-        Left = 109
+        Left = 185
         Top = 2
         Width = 11
         Height = 11
@@ -1165,7 +1165,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetGroup: TExtBtn
         Left = 2
         Top = 166
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1226,7 +1226,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetPS: TExtBtn
         Left = 2
         Top = 181
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1287,7 +1287,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetShape: TExtBtn
         Left = 2
         Top = 91
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1348,7 +1348,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetDO: TExtBtn
         Left = 2
         Top = 199
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1409,7 +1409,7 @@ object fraLeftBar: TfraLeftBar
       object ebTargetAIMap: TExtBtn
         Left = 2
         Top = 214
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1471,7 +1471,7 @@ object fraLeftBar: TfraLeftBar
     object paSnapList: TPanel
       Left = 1
       Top = 513
-      Width = 123
+      Width = 198
       Height = 124
       Align = alTop
       Color = 10528425
@@ -1479,7 +1479,7 @@ object fraLeftBar: TfraLeftBar
       object Bevel2: TBevel
         Left = 2
         Top = 46
-        Width = 119
+        Width = 195
         Height = 18
         Shape = bsTopLine
         Style = bsRaised
@@ -1487,7 +1487,7 @@ object fraLeftBar: TfraLeftBar
       object Label1: TLabel
         Left = 1
         Top = 1
-        Width = 121
+        Width = 196
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -1497,7 +1497,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object ExtBtn16: TExtBtn
-        Left = 109
+        Left = 185
         Top = 2
         Width = 11
         Height = 11
@@ -1523,7 +1523,7 @@ object fraLeftBar: TfraLeftBar
       object ebUseSnapList: TExtBtn
         Left = 2
         Top = 31
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         AllowAllUp = True
@@ -1546,7 +1546,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn1: TExtBtn
         Left = 2
         Top = 16
-        Width = 120
+        Width = 195
         Height = 15
         Align = alNone
         BevelShow = False
@@ -1577,7 +1577,7 @@ object fraLeftBar: TfraLeftBar
       object Bevel1: TBevel
         Left = 2
         Top = 64
-        Width = 119
+        Width = 195
         Height = 57
       end
       object ebSnapListMode: TExtBtn
@@ -1656,7 +1656,7 @@ object fraLeftBar: TfraLeftBar
       object lbSnapList: TListBox
         Left = 4
         Top = 66
-        Width = 115
+        Width = 190
         Height = 52
         BorderStyle = bsNone
         Color = clBtnShadow
@@ -1676,19 +1676,19 @@ object fraLeftBar: TfraLeftBar
   object paFrames: TPanel
     Left = 0
     Top = 739
-    Width = 125
+    Width = 200
     Height = 31
     BevelOuter = bvLowered
     Color = 10528425
-    Constraints.MaxWidth = 125
-    Constraints.MinWidth = 125
+    Constraints.MaxWidth = 200
+    Constraints.MinWidth = 200
     TabOrder = 1
   end
   object fsStorage: TFormStorage
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 12
+    Version = 13
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1718,7 +1718,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 16
     object N12: TMenuItem
       Caption = '-'
@@ -1767,7 +1767,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 32
     object N13: TMenuItem
       Caption = '-'
@@ -1804,7 +1804,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 185
     object N19: TMenuItem
       Caption = '-'
@@ -1851,7 +1851,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 201
     object N18: TMenuItem
       Caption = '-'
@@ -1882,7 +1882,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 217
     object N17: TMenuItem
       Caption = '-'
@@ -1920,7 +1920,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 233
     object N16: TMenuItem
       Caption = '-'
@@ -1966,7 +1966,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 519
     object N15: TMenuItem
       Caption = '-'
@@ -2011,7 +2011,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 125
+    Left = 133
     Top = 1
     object miVisibility: TMenuItem
       Caption = 'Visibility'
@@ -2126,7 +2126,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 48
     object MenuItem19: TMenuItem
       Caption = '-'
@@ -2183,7 +2183,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 62
     object MenuItem13: TMenuItem
       Caption = '-'
@@ -2221,7 +2221,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 78
     object N11: TMenuItem
       Caption = '-'
@@ -2262,7 +2262,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 85
+    Left = 165
     Top = 96
     object MenuItem11: TMenuItem
       Caption = '-'

@@ -1,12 +1,12 @@
 object fraObject: TfraObject
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 198
+  Height = 261
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 123
-  Constraints.MinWidth = 123
+  Constraints.MaxWidth = 198
+  Constraints.MinWidth = 198
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -19,8 +19,8 @@ object fraObject: TfraObject
   object paSelectObject: TPanel
     Left = 0
     Top = 33
-    Width = 443
-    Height = 64
+    Width = 198
+    Height = 47
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -71,7 +71,7 @@ object fraObject: TfraObject
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -81,7 +81,7 @@ object fraObject: TfraObject
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -123,14 +123,14 @@ object fraObject: TfraObject
       OnClick = ebMultiSelectByRefMoveClick
     end
     object Bevel1: TBevel
-      Left = 60
-      Top = 45
-      Width = 51
+      Left = 124
+      Top = 28
+      Width = 60
       Height = 16
     end
     object Label1: TLabel
-      Left = 112
-      Top = 47
+      Left = 186
+      Top = 30
       Width = 8
       Height = 13
       Caption = '%'
@@ -160,9 +160,9 @@ object fraObject: TfraObject
       OnClick = ebMultiSelectByRefAppendClick
     end
     object seSelPercent: TMultiObjSpinEdit
-      Left = 61
-      Top = 47
-      Width = 49
+      Left = 125
+      Top = 30
+      Width = 58
       Height = 13
       LWSensitivity = 1
       ButtonKind = bkLightWave
@@ -179,7 +179,7 @@ object fraObject: TfraObject
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 198
     Height = 33
     Align = alTop
     ParentColor = True
@@ -187,7 +187,7 @@ object fraObject: TfraObject
     object ebMultiAppend: TExtBtn
       Left = 2
       Top = 16
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -206,7 +206,7 @@ object fraObject: TfraObject
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -216,7 +216,7 @@ object fraObject: TfraObject
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -242,35 +242,16 @@ object fraObject: TfraObject
   end
   object paAddObject: TPanel
     Left = 0
-    Top = 97
-    Width = 443
-    Height = 32
+    Top = 80
+    Width = 198
+    Height = 175
     Align = alTop
     ParentColor = True
     TabOrder = 2
-    object ebCurObj: TExtBtn
-      Left = 2
-      Top = 16
-      Width = 120
-      Height = 14
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = '<none>'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsUnderline]
-      ParentFont = False
-      OnClick = ebCurObjClick
-    end
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -280,7 +261,7 @@ object fraObject: TfraObject
       OnClick = ExpandClick
     end
     object ExtBtn1: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -303,11 +284,29 @@ object fraObject: TfraObject
       ParentFont = False
       OnClick = PaneMinClick
     end
+    object Bevel2: TBevel
+      Left = 1
+      Top = 14
+      Width = 196
+      Height = 1
+      Align = alTop
+      Shape = bsSpacer
+    end
+    object paItems: TPanel
+      Left = 1
+      Top = 15
+      Width = 196
+      Height = 159
+      Align = alClient
+      BevelOuter = bvNone
+      ParentColor = True
+      TabOrder = 0
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameObject'
     Options = []
-    Version = 2
+    Version = 4
     StoredProps.Strings = (
       'paCommands.Tag'
       'paCommands.Height'

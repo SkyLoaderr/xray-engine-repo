@@ -34,11 +34,12 @@ public:
 	virtual 				~CRender		();
 
     void					Calculate		();
-    void					Render			();
+    void					Render	 		();
 
 	IRender_Target*			getTarget		(){return &Target;}
 
-	virtual IRender_Visual*	model_CreatePE	(LPCSTR name);
+	virtual IRender_Visual*	model_CreatePE			(LPCSTR name);
+	virtual IRender_Visual*	model_CreateParticles	(LPCSTR name);
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

@@ -1,12 +1,12 @@
 object fraGroup: TfraGroup
   Left = 0
   Top = 0
-  Width = 443
+  Width = 198
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 154
-  Constraints.MinWidth = 123
+  Constraints.MaxWidth = 198
+  Constraints.MinWidth = 198
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -19,17 +19,15 @@ object fraGroup: TfraGroup
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 198
     Height = 98
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -39,7 +37,7 @@ object fraGroup: TfraGroup
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -65,7 +63,7 @@ object fraGroup: TfraGroup
     object ebUngroup: TExtBtn
       Left = 2
       Top = 31
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -85,7 +83,7 @@ object fraGroup: TfraGroup
     object ebGroup: TExtBtn
       Left = 2
       Top = 16
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -105,7 +103,7 @@ object fraGroup: TfraGroup
     object ebCenterToGroup: TExtBtn
       Left = 2
       Top = 65
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -138,7 +136,7 @@ object fraGroup: TfraGroup
     object ebAlignToObject: TExtBtn
       Left = 2
       Top = 80
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True

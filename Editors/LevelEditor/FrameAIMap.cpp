@@ -70,7 +70,6 @@ void __fastcall TfraAIMap::ebChangeCurrentClick(TObject *Sender)
 void __fastcall TfraAIMap::fsStorageRestorePlacement(TObject *Sender)
 {
 //.	Tools.SetSubTarget				(estAIMapNode);
-	tools->m_VisRadius		= seVisRadius->Value;
 }
 //---------------------------------------------------------------------------
 
@@ -125,13 +124,4 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     UI.RedrawScene();      
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfraAIMap::seVisRadiusChange(TObject *Sender)
-{
-	tools->m_VisRadius		= seVisRadius->Value;
-    UI.RedrawScene					();
-}
-//---------------------------------------------------------------------------
-
-
 

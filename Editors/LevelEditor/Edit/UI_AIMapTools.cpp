@@ -44,7 +44,8 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 	Fvector p;
     if (parent_tool->SceneTools()->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
     	parent_tool->SceneTools()->SelectObjects(false);
-	    append_nodes=((ESceneAIMapTools*)(parent_tool->SceneTools()))->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,((TfraAIMap*)parent_tool->pFrame)->seBrushSize->Value);
+        ESceneAIMapTools* S = (ESceneAIMapTools*)(parent_tool->SceneTools());
+	    append_nodes=S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
 		if (!Shift.Contains(ssAlt)){ 
 		    if (append_nodes) Scene.UndoSave();
         	ResetActionToSelect();
@@ -57,7 +58,8 @@ void TUI_ControlAIMapNodeAdd::Move(TShiftState _Shift)
 {
 	Fvector p;
     if (parent_tool->SceneTools()->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
-	    append_nodes+=((ESceneAIMapTools*)parent_tool->SceneTools())->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,((TfraAIMap*)parent_tool->pFrame)->seBrushSize->Value);
+        ESceneAIMapTools* S = (ESceneAIMapTools*)(parent_tool->SceneTools());
+	    append_nodes+=S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
     }
 }
 bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)

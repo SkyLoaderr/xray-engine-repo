@@ -176,6 +176,10 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
         prop->item			= FHelper.AppendObject(tvItems,prop->key);
+        if (!prop->item){
+        	ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
+            break;
+        }
         prop->item->ImageIndex= prop->icon_index;
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
@@ -295,8 +299,9 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
     ListItemsVec sel_items;
     GetSelected	(0,sel_items,false);
     if (OnItemsFocused) 	OnItemsFocused(sel_items);
-    for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
+    for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++){
         if ((*it)->OnItemFocused)(*it)->OnItemFocused(*it);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -435,6 +440,32 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 		if (Key==VK_DELETE) 
 			FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemove);
     }
+}
+//---------------------------------------------------------------------------
+
+void TItemList::LoadSelection(TFormStorage* storage)
+{
+	last_selected_items.clear();
+    for (int k=0; ;k++){
+    	AnsiString tmp = storage->ReadString(AnsiString().sprintf("sel%d",k),"");
+        if (tmp.IsEmpty()) break;
+        last_selected_items.push_back(tmp);
+    }
+}
+//---------------------------------------------------------------------------
+
+void TItemList::SaveSelection(TFormStorage* storage)
+{
+    ElItemsVec items;
+    if (GetSelected(items)){
+        for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
+            AnsiString s;
+            FHelper.MakeFullName(*l_it,0,s);
+	    	storage->WriteString(AnsiString().sprintf("sel%d",l_it-items.begin()),s);
+        }
+    }
+//    for (AStringIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
+//    	storage->WriteString(AnsiString().sprintf("sel%d",s_it-last_selected_items.begin()),*s_it);
 }
 //---------------------------------------------------------------------------
 

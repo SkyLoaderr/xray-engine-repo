@@ -16,7 +16,6 @@ class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 	bool				m_bReady;
 	friend class TfrmChoseObject;
 	EditObjMap			m_EditObjects;
-    AnsiString			m_Current;
 
     CEditableObject*	LoadEditObject		(LPCSTR full_name);
 public:
@@ -31,8 +30,6 @@ public:
     void 				RefreshLibrary		();
     void 				ReloadObject		(LPCSTR name);
 
-    void				SetCurrentObject	(LPCSTR T);
-    LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
     CEditableObject*	CreateEditObject	(LPCSTR name);
     void				RemoveEditObject	(CEditableObject*& object);
 

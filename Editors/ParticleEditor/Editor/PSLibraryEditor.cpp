@@ -6,28 +6,6 @@
 #include "ParticleEffect.h"
 //------------------------------------------------------------------------------
 
-LPCSTR CPSLibrary::ChoosePED()
-{
-	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPE,T,1,m_CurrentPED)){
-    	strcpy(m_CurrentPED,T);
-        return m_CurrentPED;
-    }else return 0;
-}
-//------------------------------------------------------------------------------
-
-LPCSTR CPSLibrary::ChoosePGD()
-{
-/*/..
-	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPG,T,1,m_CurrentPE)){
-    	strcpy(m_CurrentPGD,T);
-        return m_CurrentPGD;
-    }else 
-*/    return 0;
-}
-//------------------------------------------------------------------------------
-
 char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
 {
     int cnt = 0;

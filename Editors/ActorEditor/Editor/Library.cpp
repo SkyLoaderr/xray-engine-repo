@@ -13,19 +13,19 @@
 //----------------------------------------------------
 ELibrary Lib;
 //----------------------------------------------------
-ELibrary::ELibrary(){
-	m_Current = "";
+ELibrary::ELibrary()
+{
     m_bReady  = false;
 }
 //----------------------------------------------------
 
-ELibrary::~ELibrary(){
+ELibrary::~ELibrary()
+{
 }
 //----------------------------------------------------
 
 void ELibrary::OnCreate()
 {
-	m_Current = "";
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_bReady = true;
@@ -38,7 +38,6 @@ void ELibrary::OnDestroy()
     m_bReady = false;
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
-	m_Current = "";
 
     // remove all instance CEditableObject
 	EditObjPairIt O = m_EditObjects.begin();
@@ -54,16 +53,8 @@ void ELibrary::OnDestroy()
 }
 //----------------------------------------------------
 
-void ELibrary::SetCurrentObject(LPCSTR nm)
+void ELibrary::RefreshLibrary()
 {
-	VERIFY(m_bReady);
-	R_ASSERT(nm&&nm[0]);
-    string256 name; strcpy(name,nm); strlwr(name);
-    m_Current = name;
-}
-//----------------------------------------------------
-
-void ELibrary::RefreshLibrary(){
 	VERIFY(m_bReady);
     OnDestroy();
     OnCreate();

@@ -20,33 +20,33 @@ TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT,true){
 void TUI_ObjectTools::OnActivate  ()
 {
     pFrame = xr_new<TfraObject>((TComponent*)0);
-    ((TfraObject*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
+    ((TfraObject*)pFrame)->OnEnter();
 }
 void TUI_ObjectTools::OnDeactivate()
 {
+    ((TfraObject*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
-    ((TfraObject*)pFrame)->fsStorage->SaveFormPlacement();
     xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-__fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
+{
 }
 
-bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
+bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
+{
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p,n;
 	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)) return false;
-    LPCSTR N = Lib.GetCurrentObject();
+    LPCSTR N = ((TfraObject*)parent_tool->pFrame)->Current();
     if(!N){
-    	fraObject->ebCurObjClick(0);
-	    N = Lib.GetCurrentObject();
-
+    	ELog.DlgMsg(mtInformation,"Nothing selected.");
+     	return false;
     }
-    if(!N) return false;
 
     { // pick already executed (see top)
         string256 namebuffer;

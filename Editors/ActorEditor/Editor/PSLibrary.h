@@ -11,11 +11,12 @@
 class ENGINE_API CPSLibrary{
     PS::PSVec			m_PSs;
 
-    string256			m_CurrentPED;
     PS::PEDVec			m_PEDs;
-
-    string256			m_CurrentPGD;            
     PS::PGDVec			m_PGDs;
+
+#ifdef _EDITOR    
+    AnsiString			m_CurrentParticles;
+#endif
 
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
@@ -50,12 +51,6 @@ public:
     void				RenamePED		(PS::CPEDef* src, LPCSTR new_name);
     void				RenamePGD		(PS::CPGDef* src, LPCSTR new_name);
 
-#ifdef _EDITOR
-	LPCSTR				GetCurrentPED	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPED[0])?ChoosePED():(m_CurrentPED[0]?m_CurrentPED:0);}
-    LPCSTR				ChoosePED		();
-	LPCSTR				GetCurrentPGD	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPGD[0])?ChoosePGD():(m_CurrentPGD[0]?m_CurrentPGD:0);}
-    LPCSTR				ChoosePGD		();
-#endif
     void				Reload			();
     void				Save			();
 

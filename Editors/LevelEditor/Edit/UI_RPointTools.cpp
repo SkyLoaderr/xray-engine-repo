@@ -9,16 +9,19 @@
 #include "SpawnPoint.h"
 //---------------------------------------------------------------------------
 
-TUI_SpawnPointTools::TUI_SpawnPointTools():TUI_CustomTools(OBJCLASS_SPAWNPOINT,true){
+TUI_SpawnPointTools::TUI_SpawnPointTools():TUI_CustomTools(OBJCLASS_SPAWNPOINT,true)
+{
     AddControlCB(xr_new<TUI_ControlSpawnPointAdd>(estDefault,eaAdd,	this));
 }
-void TUI_SpawnPointTools::OnActivate  (){
+void TUI_SpawnPointTools::OnActivate  ()
+{
     pFrame = xr_new<TfraSpawnPoint>((TComponent*)0);
-    ((TfraSpawnPoint*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
+    ((TfraSpawnPoint*)pFrame)->OnEnter();
 }
-void TUI_SpawnPointTools::OnDeactivate(){
-    ((TfraSpawnPoint*)pFrame)->fsStorage->SaveFormPlacement();
+void TUI_SpawnPointTools::OnDeactivate()
+{
+    ((TfraSpawnPoint*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
     xr_delete(pFrame);
 }
@@ -29,7 +32,12 @@ __fastcall TUI_ControlSpawnPointAdd::TUI_ControlSpawnPointAdd(int st, int act, T
 
 bool __fastcall TUI_ControlSpawnPointAdd::AppendCallback(SBeforeAppendCallbackParams* p)
 {
-	p->name_prefix 	= ((TfraSpawnPoint*)parent_tool->pFrame)->GetCurrentEntity();
+	LPCSTR ref_name = ((TfraSpawnPoint*)parent_tool->pFrame)->Current();
+    if (!ref_name){
+    	ELog.DlgMsg(mtInformation,"Nothing selected.");
+    	return false;
+    }
+	p->name_prefix 	= ref_name;
 	p->data 		= p->name_prefix.c_str();
     return !p->name_prefix.IsEmpty();
 }

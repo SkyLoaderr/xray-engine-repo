@@ -13,6 +13,9 @@
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"
 #include "mxPlacemnt.hpp"
+
+#include "ItemList.h"
+
 // refs
 class CEditableObject;
 //---------------------------------------------------------------------------
@@ -26,7 +29,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSelectByRefs;
 	TExtBtn *ebDeselectByRefs;
     TPanel *paAddObject;
-	TExtBtn *ebCurObj;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TLabel *APHeadLabel2;
@@ -39,11 +41,12 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TLabel *Label1;
 	TExtBtn *ebMultiSelectByRefAppend;
+	TBevel *Bevel2;
+	TPanel *paItems;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
-    void __fastcall ebCurObjClick(TObject *Sender);
 	void __fastcall ebMultiAppendClick(TObject *Sender);
 	void __fastcall ebMultiSelectByRefMoveClick(TObject *Sender);
 	void __fastcall ebMultiSelectByRefAppendClick(TObject *Sender);
@@ -51,12 +54,14 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
-    void __fastcall OutCurrentName();
+    TItemList* m_Items;
+    void __fastcall OnItemFocused	(ListItemsVec& items);
+    LPCSTR m_Current;
 public:		// User declarations
         __fastcall TfraObject(TComponent* Owner);
-    void SetPosition(CEditableObject* O=0);
-    void SetRotation(CEditableObject* O=0);
-    void SetScale(CEditableObject* O=0);
+    void __fastcall OnEnter	();
+    void __fastcall OnExit	();
+    LPCSTR 			Current	(){return m_Current;}
 };
 //---------------------------------------------------------------------------
 #endif

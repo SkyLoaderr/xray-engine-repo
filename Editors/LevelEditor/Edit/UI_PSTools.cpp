@@ -18,9 +18,11 @@ void TUI_PSTools::OnActivate  ()
 {
     pFrame = xr_new<TfraPS>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
+    ((TfraPS*)pFrame)->OnEnter();
 }
 void TUI_PSTools::OnDeactivate()
 {
+    ((TfraPS*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
     xr_delete(pFrame);
 }
@@ -33,8 +35,11 @@ __fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, TUI_CustomTools* 
 bool __fastcall TUI_ControlPSAdd::AfterAppendCallback(TShiftState Shift, CCustomObject* obj)
 {
 	EParticlesObject* pg= dynamic_cast<EParticlesObject*>(obj); R_ASSERT(pg);
-    LPCSTR ref_name		= ::Render->PSLibrary.GetCurrentPED();
-    if (!ref_name)		return false;
+    LPCSTR ref_name		= ((TfraPS*)parent_tool->pFrame)->Current();
+    if (!ref_name){
+    	ELog.DlgMsg(mtInformation,"Nothing selected.");
+    	return false;
+    }
 	if (!pg->Compile(ref_name)){
     	ELog.DlgMsg(mtInformation,"Can't compile particle system '%s'.",ref_name);
         return false;

@@ -8,9 +8,11 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-
-#include "ui_customtools.h"
 #include "ExtBtn.hpp"
+
+#include "ItemList.h"
+#include "mxPlacemnt.hpp"
+#include <ImgList.hpp>
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
@@ -24,24 +26,31 @@ __published:	// IDE-managed Components
 	TLabel *Label;
 	TExtBtn *ExtBtn3;
 	TPanel *Panel1;
-	TExtBtn *ebCurObj;
 	TLabel *APHeadLabel2;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebCurrentPSPlay;
 	TExtBtn *ebCurrentPSStop;
 	TLabel *Label1;
+	TPanel *paItems;
+	TFormStorage *fsStorage;
+	TImageList *ilModeIcons;
+	TBevel *Bevel1;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
-	void __fastcall ebCurObjClick(TObject *Sender);
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
 private:	// User declarations
-    void __fastcall SelByRef(bool flag);
-    void __fastcall OutCurrentName();
+    void __fastcall SelByRef		(bool flag);
+    TItemList* m_Items;
+    void __fastcall OnItemFocused	(ListItemsVec& items);
+    LPCSTR m_Current;
 public:		// User declarations
-        __fastcall TfraPS(TComponent* Owner);
+	__fastcall 		TfraPS	(TComponent* Owner);
+    void __fastcall OnEnter	();
+    void __fastcall OnExit	();
+    LPCSTR 			Current	(){return m_Current;}
 };
 //---------------------------------------------------------------------------
 #endif

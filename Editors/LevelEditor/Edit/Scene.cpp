@@ -546,16 +546,18 @@ void EScene::Render( const Fmatrix& camera )
         }
     }
 // priority #0
-    // render normal objects
+    // normal
     mapRenderObjects.traverseLR		(object_Normal_0);
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		false);
-
-    // draw detail objects (normal)
+    RENDER_CLASS			(0,OBJCLASS_PS,			false);
+	// alpha
     GetMTools(OBJCLASS_DO)->OnRender	(0,false);
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		true);
+    RENDER_CLASS			(0,OBJCLASS_PS,			true);
 
 // priority #1
+	// normal
     mapRenderObjects.traverseLR		(object_Normal_1);
 	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL		(1,OBJCLASS_LIGHT);
@@ -564,12 +566,12 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL		(1,OBJCLASS_SPAWNPOINT);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_WAY);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		false);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_PS);
+    RENDER_CLASS			(1,OBJCLASS_PS,			false);
 	RENDER_CLASS_NORMAL		(1,OBJCLASS_PORTAL);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		false);
     GetMTools(OBJCLASS_DO)->OnRender		(1,false);
     GetMTools(OBJCLASS_AIMAP)->OnRender		(1,false);
-
+	// alpha
     mapRenderObjects.traverseRL(object_StrictB2F_1);
     GetMTools(OBJCLASS_DO)->OnRender		(1,true);
     GetMTools(OBJCLASS_AIMAP)->OnRender		(1,true);
@@ -579,42 +581,41 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		true);
+    RENDER_CLASS			(1,OBJCLASS_PS,			true);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		true);
     RENDER_CLASS			(1,OBJCLASS_SPAWNPOINT,	true);
 
 // priority #2
+	// normal
     mapRenderObjects.traverseLR(object_Normal_2);
     GetMTools(OBJCLASS_DO)->OnRender(2,				false);
     RENDER_CLASS_NORMAL		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		false);
+    RENDER_CLASS			(2,OBJCLASS_PS,			false);
+	// alpha
     mapRenderObjects.traverseRL(object_StrictB2F_2);
     GetMTools(OBJCLASS_DO)->OnRender(2,				true);
 	RENDER_CLASS_ALPHA		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		true);
+    RENDER_CLASS			(2,OBJCLASS_PS,			true);
 
 // priority #3
+	// normal
     mapRenderObjects.traverseLR(object_Normal_3);
     GetMTools(OBJCLASS_DO)->OnRender(3,				false);
 	RENDER_CLASS			(3,OBJCLASS_GROUP,		false);
+    RENDER_CLASS			(3,OBJCLASS_PS,			false);
+	// alpha
     mapRenderObjects.traverseRL(object_StrictB2F_3);
     GetMTools(OBJCLASS_DO)->OnRender(3,				true);
 	RENDER_CLASS			(3,OBJCLASS_GROUP,		true);
+    RENDER_CLASS			(3,OBJCLASS_PS,			true);
 
 	// draw lights (flares)
     RENDER_CLASS			(3,OBJCLASS_LIGHT,		true);
 
     // render snap
     RenderSnapList			();
-
-	// draw PS
-    RCache.set_xform_world(Fidentity);
-    _F = FirstObj(OBJCLASS_PS);
-    _E = LastObj(OBJCLASS_PS);
-   	for(;_F!=_E;_F++)
-    	if((*_F)->Visible()){
-        	(*_F)->Render(1,false);
-			(*_F)->Render(1,true);
-        }
 
     // draw compiler errors
 	if (1){
@@ -821,7 +822,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
         ObjectList& lst = ListObj(OBJCLASS_PS);
         for(ObjectIt it=lst.begin();it!=lst.end();it++){
         	EParticlesObject* S = (EParticlesObject*)(*it);
-            if (!S->GetReference()){
+            if (!S->GetParticles()){
 		    	ELog.Msg(mtError,"*ERROR: Particle System hasn't reference.");
                 bRes = false;
             }

@@ -58,3 +58,13 @@ IRender_Visual*	CRender::model_CreatePE			(LPCSTR name)
 	return Device.Models.CreatePE	(source);
 }
 
+IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
+{ 
+	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);
+	if (SE) return		Device.Models.CreatePE	(SE);
+	else{
+		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
+		return			Device.Models.CreatePG	(SG);
+	}
+}
+

@@ -117,6 +117,9 @@ public:		// User declarations
     bool				IsLocked				(){ return m_Flags.is(ilLocked); }
 
     void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
+
+    void				LoadSelection			(TFormStorage* storage);
+    void				SaveSelection			(TFormStorage* storage);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -12,8 +12,6 @@
 //----------------------------------------------------
 void CPSLibrary::OnCreate()
 {
-	m_CurrentPED[0]	= 0;
-	m_CurrentPGD[0]	= 0;
 	string256 fn;
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
 	if (FS.exist(fn)){

@@ -1,12 +1,12 @@
 object fraAIMap: TfraAIMap
   Left = 0
   Top = 0
-  Width = 443
+  Width = 198
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 220
-  Constraints.MinWidth = 123
+  Constraints.MaxWidth = 198
+  Constraints.MinWidth = 198
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -19,7 +19,7 @@ object fraAIMap: TfraAIMap
   object paObjectList: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 198
     Height = 78
     Align = alTop
     ParentColor = True
@@ -27,7 +27,7 @@ object fraAIMap: TfraAIMap
     object Label2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -37,7 +37,7 @@ object fraAIMap: TfraAIMap
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -63,7 +63,7 @@ object fraAIMap: TfraAIMap
     object ebGenerateMap: TExtBtn
       Left = 1
       Top = 16
-      Width = 121
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -83,7 +83,7 @@ object fraAIMap: TfraAIMap
     object ebSmoothNodes: TExtBtn
       Left = 1
       Top = 31
-      Width = 121
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -103,7 +103,7 @@ object fraAIMap: TfraAIMap
     object ebRemove0LNodes: TExtBtn
       Left = 1
       Top = 46
-      Width = 121
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -123,7 +123,7 @@ object fraAIMap: TfraAIMap
     object ebRemove1LNodes: TExtBtn
       Left = 1
       Top = 61
-      Width = 121
+      Width = 195
       Height = 15
       Align = alNone
       BevelShow = False
@@ -144,17 +144,15 @@ object fraAIMap: TfraAIMap
   object paLink: TPanel
     Left = 0
     Top = 78
-    Width = 123
-    Height = 153
+    Width = 198
+    Height = 117
     Align = alTop
-    Constraints.MaxWidth = 123
-    Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 1
     object Label3: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 196
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -164,7 +162,7 @@ object fraAIMap: TfraAIMap
       OnClick = ExpandClick
     end
     object ExtBtn4: TExtBtn
-      Left = 110
+      Left = 185
       Top = 2
       Width = 11
       Height = 11
@@ -189,8 +187,8 @@ object fraAIMap: TfraAIMap
     end
     object ebModeAppend: TExtBtn
       Left = 6
-      Top = 105
-      Width = 24
+      Top = 69
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -210,8 +208,8 @@ object fraAIMap: TfraAIMap
     end
     object ebModeRemove: TExtBtn
       Left = 6
-      Top = 120
-      Width = 24
+      Top = 84
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -230,9 +228,9 @@ object fraAIMap: TfraAIMap
     end
     object ebUp: TExtBtn
       Tag = 1
-      Left = 67
-      Top = 105
-      Width = 27
+      Left = 106
+      Top = 69
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -251,9 +249,9 @@ object fraAIMap: TfraAIMap
     end
     object ebDown: TExtBtn
       Tag = 3
-      Left = 67
-      Top = 135
-      Width = 27
+      Left = 106
+      Top = 99
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -271,9 +269,9 @@ object fraAIMap: TfraAIMap
       OnClick = ebSideClick
     end
     object ebLeft: TExtBtn
-      Left = 40
-      Top = 120
-      Width = 27
+      Left = 61
+      Top = 84
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -292,9 +290,9 @@ object fraAIMap: TfraAIMap
     end
     object ebRight: TExtBtn
       Tag = 2
-      Left = 94
-      Top = 120
-      Width = 27
+      Left = 151
+      Top = 84
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -313,9 +311,9 @@ object fraAIMap: TfraAIMap
     end
     object ebFull: TExtBtn
       Tag = 4
-      Left = 67
-      Top = 120
-      Width = 27
+      Left = 106
+      Top = 84
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -334,8 +332,8 @@ object fraAIMap: TfraAIMap
     end
     object ebModeInvert: TExtBtn
       Left = 6
-      Top = 135
-      Width = 24
+      Top = 99
+      Width = 45
       Height = 15
       Align = alNone
       BevelShow = False
@@ -352,22 +350,9 @@ object fraAIMap: TfraAIMap
       ParentFont = False
       FlatAlwaysEdge = True
     end
-    object Label4: TLabel
-      Left = 5
-      Top = 72
-      Width = 53
-      Height = 13
-      Caption = 'Brush Size:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
     object Label5: TLabel
       Left = 5
-      Top = 89
+      Top = 53
       Width = 78
       Height = 13
       Caption = 'Link Commands:'
@@ -378,23 +363,10 @@ object fraAIMap: TfraAIMap
       Font.Style = [fsUnderline]
       ParentFont = False
     end
-    object Label6: TLabel
-      Left = 5
-      Top = 54
-      Width = 75
-      Height = 13
-      Caption = 'Visibility Radius:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
     object ebIgnoreConstraints: TExtBtn
       Left = 2
       Top = 16
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -418,7 +390,7 @@ object fraAIMap: TfraAIMap
     object ebAutoLink: TExtBtn
       Left = 2
       Top = 31
-      Width = 120
+      Width = 195
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -443,45 +415,14 @@ object fraAIMap: TfraAIMap
     object Bevel2: TBevel
       Left = 1
       Top = 48
-      Width = 121
+      Width = 196
       Height = 2
-    end
-    object seBrushSize: TMultiObjSpinEdit
-      Left = 80
-      Top = 70
-      Width = 40
-      Height = 17
-      LWSensitivity = 0.01
-      ButtonKind = bkLightWave
-      Decimal = 0
-      MaxValue = 100
-      MinValue = 1
-      Value = 1
-      AutoSize = False
-      Color = 10526880
-      TabOrder = 0
-    end
-    object seVisRadius: TMultiObjSpinEdit
-      Left = 80
-      Top = 52
-      Width = 40
-      Height = 17
-      LWSensitivity = 0.01
-      ButtonKind = bkLightWave
-      Decimal = 0
-      MaxValue = 250
-      MinValue = 10
-      Value = 30
-      AutoSize = False
-      Color = 10526880
-      TabOrder = 1
-      OnChange = seVisRadiusChange
     end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameAIMap'
     Options = []
-    Version = 9
+    Version = 10
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paObjectList.Tag'
@@ -490,9 +431,7 @@ object fraAIMap: TfraAIMap
       'paLink.Height'
       'ebModeAppend.Down'
       'ebModeInvert.Down'
-      'ebModeRemove.Down'
-      'seBrushSize.Value'
-      'seVisRadius.Value')
+      'ebModeRemove.Down')
     StoredValues = <>
     Left = 65528
     Top = 65528
