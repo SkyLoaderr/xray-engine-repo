@@ -29,15 +29,15 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	
 	local rbtn_dm_rect	= { x		= rbtn_group_rect.x,
 							y		= rbtn_group_rect.y,
-							width	= rbtn_rect.widht,
+							width	= rbtn_rect.width,
 							height	= rbtn_rect.height}
 	local rbtn_tdm_rect	= { x		= rbtn_group_rect.x,
 							y		= rbtn_group_rect.y + rbtn_rect.height + self.indent,
-							width	= rbtn_rect.widht,
+							width	= rbtn_rect.width,
 							height	= rbtn_rect.height}
 	local rbtn_ah_rect	= { x		= rbtn_group_rect.x,
 							y		= rbtn_group_rect.y + rbtn_rect.height + self.indent*2,
-							width	= rbtn_rect.widht,
+							width	= rbtn_rect.width,
 							height	= rbtn_rect.height}
 	
 	-- Radio group
