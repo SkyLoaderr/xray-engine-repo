@@ -6,7 +6,7 @@ function main()
 	
 	action(                                                                                                       
 	    obj1,                                                                                                      
-		move(move.act_walk_fwd, level.object("m_blood"):position()),
+		move(move.act_walk_fwd, level.object("m_blood")),
 	    cond(cond.time_end + cond.move_end,10000)                                                                                 
 	)                                                                                                             
 
@@ -17,7 +17,7 @@ function main()
 	)                                                                                                             
 	action(
 		obj1,
-		move(move.act_drag, level.object("localhost/jim"):position()),
+		move(move.act_drag, level.object("localhost/jim")),
 	    cond(cond.time_end + cond.move_end,10000)                                                                                 
 	)	                                               	
 	action(
