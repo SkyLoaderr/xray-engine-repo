@@ -7,7 +7,7 @@
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
-	LPCSTR					fname;
+	ref_str					fname;
 	void*					wave;
 	BOOL					_3D;
 	u32						dwTimeTotal;			// всего
