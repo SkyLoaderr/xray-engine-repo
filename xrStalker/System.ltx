@@ -2891,7 +2891,7 @@ tracer			= off
 $spawn 			     = on			; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
-Scheduled		     = off			; option for ALife Simulator
+Scheduled		     = on			; option for ALife Simulator
 Human		     	 = off			; optionww for ALife Simulator
 Health			     = 100			; option for ALife Simulator
 cform                = skeleton		; collision class
@@ -2903,17 +2903,29 @@ DynamicSoundsCount	 = 32
 terrain		         = 255,255,255,255,0,1,
 going_speed          = 1.5                      ; option for ALife Simulator
 
+eye_fov              = 145	;170
+eye_range            = 80	;150
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		 = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+
 ph_box0_center 		 = 0.0,  0.9,  0.0
 ph_box0_size 		 = 0.35, 0.9,  0.35
 ph_box1_center 		 = 0.0,  0.6,  0.0
 ph_box1_size 		 = 0.40, 0.6,  0.40
 ph_foot_center		 = 0.0,  0.2,  0.0
 ph_foot_size 		 = 0.20, 0.23, 0.20
-ph_crash_speed_min       = 16
-ph_crash_speed_max       = 30
-ph_mass 		 = 120
-ph_friction_air          = 0.05 ;0.05
-ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
-ph_friction_wall         = 4.0                              ; ???
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 			 = 120
+ph_friction_air      = 0.05 ;0.05
+ph_friction_ground   = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall     = 4.0                              ; ???
+
+
 
 animations			 = norm_idle
