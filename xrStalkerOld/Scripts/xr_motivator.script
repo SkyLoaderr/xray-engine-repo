@@ -36,7 +36,7 @@ end
 function motivator_binder:reinit()
     object_binder.reinit(self)
     printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
-    self.object:set_hear_callback(hear_callback)
+--  self.object:set_hear_callback(hear_callback)
     self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
         
     local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy")
@@ -181,7 +181,7 @@ end
 function motivator_binder:reload(section)
 	object_binder.reload(self, section)
 	printf("motivator_binder:reload(): self.object:name()='%s'", self.object:name())
-	self.object:set_pda_callback(pda_callback)
+--	self.object:set_pda_callback(pda_callback)
 end
 
 function motivator_binder:net_save_relevant()
