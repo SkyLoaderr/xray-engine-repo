@@ -18,6 +18,26 @@ class	ENGINE_API				CSkeletonRigid;
 class	ENGINE_API				CKinematics;
 class	ENGINE_API				IParticleCustom;
 
+struct	ENGINE_API				IRender_Mesh	
+{
+	// format
+	ref_geom					geom;
+
+	// verts
+	IDirect3DVertexBuffer9*		pVertices;
+	u32							vBase;
+	u32							vCount;
+
+	// indices
+	IDirect3DIndexBuffer9*		pIndices;
+	u32							iBase;
+	u32							iCount;
+	u32							dwPrimitives;
+
+	_mesh()						{ pVertices=0; pIndices=0;					}
+	~_mesh()					{ _RELEASE(pVertices); _RELEASE(pIndices);	}
+};
+
 // The class itself
 class	ENGINE_API				IRender_Visual
 {

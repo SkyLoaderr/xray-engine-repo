@@ -1,9 +1,9 @@
 #pragma once
 
 // refs
-struct FSlideWindowItem;
+struct	FSlideWindowItem;
 
-class FTreeVisual :	public IRender_Visual
+class	FTreeVisual				:	public IRender_Visual, public IRender_Mesh
 {
 private:
 	struct	_5color
@@ -13,15 +13,6 @@ private:
 		float					sun;		// - sun
 	};
 protected:
-	IDirect3DVertexBuffer9*		pVertices;
-	u32							vBase;
-	u32							vCount;
-
-	IDirect3DIndexBuffer9*		pIndices;
-	u32							iBase;
-	u32							iCount;
-	u32							dwPrimitives;
-
 	_5color						c_scale;
 	_5color						c_bias;
 	Fmatrix						xform;
