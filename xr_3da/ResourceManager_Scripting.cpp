@@ -229,7 +229,7 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	lua_State*			LSVM	= Device.Resources->LSVM; 
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
-	element						();
+	element						(ac);
 	r_End						();
 
 	return				Device.Resources->_CreateElement(E);
