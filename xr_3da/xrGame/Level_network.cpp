@@ -163,16 +163,26 @@ void CLevel::ClientReceive()
 				P->r_u16				(count);
 				for (; count; count--)	
 				{
-/*
-// Register
-CSquad& S			= Level().get_squad	(s_team,s_squad);
-CGroup& G			= Level().get_group	(s_team,s_squad,s_group);
-if (S.Leader==0)	S.Leader			=this;
-else				G.Members.push_back	(this);
-*/
-
-					P->r_u16				(ID);
-					Objects.DestroyObject	(u32(ID));
+					P->r_u16			(ID);
+					CObject* O			= Objects.net_Find(u32(ID));
+					CEntity* E			= dynamic_cast<CEntity*> (O);
+					if (E)	
+					{
+						CSquad& S			= Level().get_squad	(E->g_Team(),E->g_Squad());
+						CGroup& G			= Level().get_group	(E->g_Team(),E->g_Squad(),E->g_Group());
+						if (E==S.Leader)	
+						{
+							S.Leader		= 0;
+							if (!G.Members.empty())	{
+								S.Leader	= G.Members.back();
+								G.Member_Remove(S.Leader);
+							}
+						}
+						else {
+							G.Member_Remove	(E);
+						}
+					}
+					Objects.DestroyObject	(O);
 				}
 			}
 			break;
