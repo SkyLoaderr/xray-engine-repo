@@ -27,7 +27,7 @@ IC		void		gm_SetLevel		(int iLevel)
 	if (_abs(gm_Level-s32(iLevel))>2) {
 		gm_Level	= iLevel;
 		float c		= float(gm_Level)/255.f;
-		gm_Data.diffuse.set		(c,c,c,c);
+		gm_Data.diffuse.set				(c,c,c,c);
 		CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	}
 }
@@ -42,9 +42,10 @@ IC		void		gm_SetAmbient	(DWORD C)
 
 IC		void		gm_SetAmbientLevel(DWORD C)
 {
-	DWORD C2		= C/3;
-	gm_SetAmbient	(D3DCOLOR_XRGB(C2,C2,C2));
-	gm_SetLevel		(C);
+	DWORD Camb		= C/2;
+	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
+	DWORD Clevel	= C/3;
+	gm_SetLevel		(Clevel);
 }
 
 // Textures
