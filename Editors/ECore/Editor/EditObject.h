@@ -305,6 +305,7 @@ public:
     void			OnBindTransformChange	();
 
     // statistics methods
+	void 			GetFaceWorld			(const Fmatrix& parent, CEditableMesh* M, int idx, Fvector* verts);
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(LPCSTR surf_name);

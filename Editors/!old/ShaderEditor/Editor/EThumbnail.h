@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 // Custom class
 //------------------------------------------------------------------------------
-class ECustomThumbnail{   
+class ECORE_API ECustomThumbnail{   
 public:
 	enum THMType{
     	ETUndef		= -1,
@@ -39,7 +39,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class EImageThumbnail: public ECustomThumbnail{
+class ECORE_API EImageThumbnail: public ECustomThumbnail{
 	friend class CImageManager;
 protected:
     U32Vec 			m_Pixels;
@@ -56,7 +56,7 @@ public:
     virtual	int		MemoryUsage		()=0;
 };
 
-class ETextureThumbnail: public EImageThumbnail{
+class ECORE_API ETextureThumbnail: public EImageThumbnail{
 	friend class CImageManager;
 	typedef EImageThumbnail inherited;
 private:
@@ -85,7 +85,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class EObjectThumbnail: public EImageThumbnail{   
+class ECORE_API EObjectThumbnail: public EImageThumbnail{   
 	friend class CImageManager;
 	typedef EImageThumbnail inherited;
 private:
@@ -113,7 +113,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ESoundThumbnail: public ECustomThumbnail{   
+class ECORE_API ESoundThumbnail: public ECustomThumbnail{   
 	friend class CSoundManager;
 	typedef ECustomThumbnail inherited;
 private:

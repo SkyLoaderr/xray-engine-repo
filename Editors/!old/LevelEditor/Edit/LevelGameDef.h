@@ -24,7 +24,7 @@ enum ERPpointType{		// [0..255]
 	rptActorSpawn		= 0,
 	rptArtefactSpawn	,
 };
-extern xr_token rpoint_type[];
+extern ECORE_API xr_token rpoint_type[];
 
 // BASE offset
 #define WAY_BASE					0x1000

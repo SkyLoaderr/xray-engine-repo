@@ -6,7 +6,7 @@
 #include "etextureparams.h"
 #include "EThumbnail.h"
 
-class CImageManager{
+class ECORE_API CImageManager{
     void		MakeThumbnailImage	(ETextureThumbnail* THM, u32* data, u32 w, u32 h, u32 a);
     bool		MakeGameTexture		(ETextureThumbnail* THM, LPCSTR game_name, u32* data);
     bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap);
@@ -45,6 +45,6 @@ public:
     void		WriteAssociation	(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt);
 };
 
-extern CImageManager ImageLib;
+extern ECORE_API CImageManager ImageLib;
 //---------------------------------------------------------------------------
 #endif

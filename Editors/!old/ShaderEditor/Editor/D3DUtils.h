@@ -57,7 +57,7 @@ public:
 //----------------------------------------------------
 // Utilities
 //----------------------------------------------------
-class CDrawUtilities{
+class ECORE_API CDrawUtilities{
 	SPrimitiveBuffer		m_SolidCone;
 	SPrimitiveBuffer		m_WireCone;
     SPrimitiveBuffer		m_SolidSphere;
@@ -153,7 +153,7 @@ public:
 
     void DrawText	(const Fvector& pos, LPCSTR text, u32 color=0xFF000000, u32 shadow_color=0xFF909090);
 };
-extern CDrawUtilities DU;
+extern ECORE_API CDrawUtilities DU;
 //----------------------------------------------------
 #endif /*_INCDEF_D3DUtils_H_*/
 

@@ -7,8 +7,8 @@
 float ssaDISCARD		= 4.f;
 float ssaDONTSORT		= 32.f;
 
-float 	r_ssaDISCARD;
-float	g_fSCREEN;
+ECORE_API float r_ssaDISCARD;
+ECORE_API float	g_fSCREEN;
 
 CRender 	RImplementation;
 CRender* 	Render = &RImplementation;
@@ -104,19 +104,19 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 
 void	CRender::rmNear		()
 {
-	IRender_Target* T	=	getTarget	();
+	CRenderTarget* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
-	IRender_Target* T	=	getTarget	();
+	CRenderTarget* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
-	IRender_Target* T	=	getTarget	();
+	CRenderTarget* T	=	getTarget	();
 	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
@@ -202,5 +202,14 @@ HRESULT	CRender::shader_compile			(
 	LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
 	LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
 	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+}
+
+void					CRender::reset_begin			()
+{
+	xr_delete			(Target);
+}
+void					CRender::reset_end				()
+{
+	Target			=	xr_new<CRenderTarget>			();
 }
 

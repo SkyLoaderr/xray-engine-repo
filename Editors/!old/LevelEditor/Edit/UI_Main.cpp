@@ -332,44 +332,45 @@ void TUI::Redraw(){
 //    try
     {
     	Device.Statistic.RenderDUMP_RT.Begin();
-        Device.Begin			();
-        Device.UpdateView		();
-		Device.ResetMaterial	();
+        if (Device.Begin()){
+            Device.UpdateView		();
+            Device.ResetMaterial	();
 
-        Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
-		Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
+            Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
+            Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-        Tools->RenderEnvironment	();
-        //. temporary reset filter (уберется после того как Олесь сделает шейдеры)
-        for (u32 k=0; k<HW.Caps.raster.dwStages; k++){
-            if( psDeviceFlags.is(rsFilterLinear)){
-                Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
-                Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
-                Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
-            } else {
-                Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
-                Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
-                Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
+            Tools->RenderEnvironment	();
+            //. temporary reset filter (уберется после того как Олесь сделает шейдеры)
+            for (u32 k=0; k<HW.Caps.raster.dwStages; k++){
+                if( psDeviceFlags.is(rsFilterLinear)){
+                    Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
+                    Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
+                    Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
+                } else {
+                    Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
+                    Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
+                    Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
+                }
             }
-        }
 
-        RCache.set_xform_world	(Fidentity);
+            RCache.set_xform_world	(Fidentity);
         
-    	// draw grid
-    	if (psDeviceFlags.is(rsDrawGrid)){
-	        DU.DrawGrid		();
-    	    DU.DrawPivot		(m_Pivot);
+            // draw grid
+            if (psDeviceFlags.is(rsDrawGrid)){
+                DU.DrawGrid		();
+                DU.DrawPivot		(m_Pivot);
+            }
+
+            Tools->Render			();
+
+            // draw selection rect
+            if(m_SelectionRect) 	DU.DrawSelectionRect(m_SelStart,m_SelEnd);
+
+            // draw axis
+            DU.DrawAxis(Device.m_Camera.GetTransform());
+            // end draw
+            Device.End();
         }
-
-		Tools->Render			();
-
-    	// draw selection rect
-		if(m_SelectionRect) 	DU.DrawSelectionRect(m_SelStart,m_SelEnd);
-
-    	// draw axis
-        DU.DrawAxis(Device.m_Camera.GetTransform());
-    	// end draw
-        Device.End();
     	Device.Statistic.RenderDUMP_RT.End();
     }
 /*    catch(...)

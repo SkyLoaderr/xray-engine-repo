@@ -13,14 +13,14 @@
 #include "ModelPool.h"
 
 // definition (Renderer)
-class IRender_Target{
+class CRenderTarget{
 public:	
 	virtual u32			get_width			()				{ return Device.dwWidth;	}
 	virtual u32			get_height			()				{ return Device.dwHeight;	}
 };
 
 class	ECORE_API CRender{
-    IRender_Target			Target;
+    CRenderTarget*			Target;
     Fmatrix					current_matrix;
 public:
 	// options
@@ -56,8 +56,10 @@ public:
 	void					add_Visual   	(IRender_Visual* visual);
 
 	virtual ref_shader		getShader		(int id);
-	IRender_Target*			getTarget		(){return &Target;}
+	CRenderTarget*			getTarget		(){return Target;}
 
+    void					reset_begin				();
+    void					reset_end				();
 	virtual IRender_Visual*	model_Create			(LPCSTR name, IReader* data=0);
 	virtual IRender_Visual*	model_CreateChild		(LPCSTR name, IReader* data);
 	virtual IRender_Visual*	model_CreatePE			(LPCSTR name);

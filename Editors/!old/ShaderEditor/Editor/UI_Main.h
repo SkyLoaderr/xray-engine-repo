@@ -205,7 +205,7 @@ public:
 //---------------------------------------------------------------------------
 extern ECORE_API TUI* UI;  
 //---------------------------------------------------------------------------
-void ResetActionToSelect();
+void ECORE_API ResetActionToSelect();
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 extern ECORE_API void __fastcall PanelMinMax		(TPanel *pa);

@@ -43,7 +43,7 @@ enum ETFlags{
 	etfMSnap      	= (1<<8),
 };
 
-class CToolsCustom: public pureDeviceCreate, public pureDeviceDestroy
+class ECORE_API CToolsCustom: public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class CEditorPreferences;
 protected:
@@ -129,7 +129,7 @@ public:
     virtual void		UpdateProperties	(bool bForced=false)=0;
     virtual void		RefreshProperties	()=0;
 };
-extern CToolsCustom*	Tools;
+extern ECORE_API CToolsCustom*	Tools;
 
 #define SURFACES_PREFIX "Surfaces"
 #define BONES_PREFIX 	"Bones"

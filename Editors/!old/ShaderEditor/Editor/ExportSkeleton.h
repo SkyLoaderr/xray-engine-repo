@@ -13,7 +13,7 @@ class CEditableObject;
 class CSurface;
 class CInifile;
 
-struct SSkelVert{
+struct ECORE_API SSkelVert{
 	Fvector		P;
 	Fvector		O0;
 	Fvector		O1;
@@ -68,14 +68,14 @@ struct SSkelVert{
 	}
 };
 
-struct SSkelFace{
+struct ECORE_API SSkelFace{
 	WORD		v[3];
 };
 
 DEFINE_VECTOR(SSkelVert,SkelVertVec,SkelVertIt);
 DEFINE_VECTOR(SSkelFace,SkelFaceVec,SkelFaceIt);
 
-class CSkeletonCollectorPacked
+class ECORE_API CSkeletonCollectorPacked
 {
 protected:
     SkelVertVec		m_Verts;
@@ -122,9 +122,9 @@ public:
 };
 //----------------------------------------------------
 
-class CExportSkeletonCustom{
+class ECORE_API CExportSkeletonCustom{
 protected:
-    struct SSplit: public CSkeletonCollectorPacked{
+    struct ECORE_API SSplit: public CSkeletonCollectorPacked{
         ref_str			m_Shader;
         ref_str			m_Texture;
         Fbox			m_Box;
@@ -156,7 +156,7 @@ public:
 };
 
 
-class CExportSkeleton: public CExportSkeletonCustom{
+class ECORE_API CExportSkeleton: public CExportSkeletonCustom{
 	CEditableObject*	m_Source;
 public:
 						CExportSkeleton		(CEditableObject* object);

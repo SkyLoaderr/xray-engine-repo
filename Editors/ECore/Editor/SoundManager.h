@@ -7,7 +7,7 @@
 // refs
 class ESoundThumbnail;
 
-class CSoundManager{
+class ECORE_API CSoundManager{
 	void 		MakeGameSound		(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR game_name);
 public:
 				CSoundManager		(){}
@@ -39,6 +39,6 @@ public:
     AnsiString	UpdateFileName		(AnsiString& fn);
 };
 
-extern CSoundManager* SndLib;
+extern ECORE_API CSoundManager* SndLib;
 //---------------------------------------------------------------------------
 #endif

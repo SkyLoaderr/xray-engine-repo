@@ -29,8 +29,10 @@ class ECORE_API CRenderDevice{
 
     ref_shader				m_CurrentShader;
 
+    void					_SetupStates();
 	void					_Create		(IReader* F);
 	void					_Destroy	(BOOL	bKeepTextures);
+	void 					Reset  		();
 public:
     ref_shader				m_WireShader;
     ref_shader				m_SelectionShader;
@@ -96,19 +98,21 @@ public:
 
 	bool 					Create			();
 	void 					Destroy			();
-    void 					Resize			(int w, int h, bool bRefreshDevice=true);
+    void 					Resize			(int w, int h);
 	void 					ReloadTextures	();
 	void 					UnloadTextures	();
 
     void 					RenderNearer	(float f_Near);
     void 					ResetNearer		();
 
-	void 					Begin			();
+	BOOL 					Begin			();
 	void 					End				();
 
 	void 					Initialize		(void);
 	void 					ShutDown		(void);
 	void 					Reset			(IReader* F, BOOL bKeepTextures);
+
+	IC CTimer* GetTimerGlobal				(){return &TimerGlobal;}
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering

@@ -36,7 +36,7 @@ struct SExportStreams{
 	SExportStreamItem	envmodif;
 };
 
-class CCustomObject {
+class ECORE_API CCustomObject {
 	EObjClass 		FClassID;
     ESceneCustomOTools* FParentTools;
 

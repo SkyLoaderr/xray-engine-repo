@@ -3,65 +3,65 @@
 #pragma once
 
 // Common
-extern int			ps_r__Supersample;
-extern int			ps_r__Anisotropic;
-extern int			ps_r__LightSleepFrames;
+extern ECORE_API int			ps_r__Supersample;
+extern ECORE_API int			ps_r__Anisotropic;
+extern ECORE_API int			ps_r__LightSleepFrames;
 
-extern float		ps_r__Detail_w_rot1;
-extern float		ps_r__Detail_w_rot2;
-extern float		ps_r__Detail_w_speed;
-extern float		ps_r__Detail_l_ambient;
-extern float		ps_r__Detail_l_aniso;
-extern float		ps_r__Detail_density;
-extern float		ps_r__Detail_rainbow_hemi;
+extern ECORE_API float			ps_r__Detail_w_rot1;
+extern ECORE_API float			ps_r__Detail_w_rot2;
+extern ECORE_API float			ps_r__Detail_w_speed;
+extern ECORE_API float			ps_r__Detail_l_ambient;
+extern ECORE_API float			ps_r__Detail_l_aniso;
+extern ECORE_API float			ps_r__Detail_density;
+extern ECORE_API float			ps_r__Detail_rainbow_hemi;
 
-extern float		ps_r__Tree_w_rot;
-extern float		ps_r__Tree_w_speed;
-extern float		ps_r__Tree_w_amp;
-extern Fvector		ps_r__Tree_Wave;
+extern ECORE_API float			ps_r__Tree_w_rot;
+extern ECORE_API float			ps_r__Tree_w_speed;
+extern ECORE_API float			ps_r__Tree_w_amp;
+extern ECORE_API Fvector		ps_r__Tree_Wave;
 
 // R1
-extern float		ps_r1_ssaDISCARD;
-extern float		ps_r1_ssaDONTSORT;
-extern float		ps_r1_ssaLOD_A;
-extern float		ps_r1_ssaLOD_B;
-extern float		ps_r1_ssaHZBvsTEX;
+extern ECORE_API float			ps_r1_ssaDISCARD;
+extern ECORE_API float			ps_r1_ssaDONTSORT;
+extern ECORE_API float			ps_r1_ssaLOD_A;
+extern ECORE_API float			ps_r1_ssaLOD_B;
+extern ECORE_API float			ps_r1_ssaHZBvsTEX;
 
 // R1-specific
-extern int			ps_r1_GlowsPerFrame;	// r1-only
-extern int			ps_r1_SH_Blur;			// r1-only
+extern ECORE_API int			ps_r1_GlowsPerFrame;	// r1-only
+extern ECORE_API int			ps_r1_SH_Blur;			// r1-only
 
 // R2
-extern float		ps_r2_ssaDISCARD;
-extern float		ps_r2_ssaDONTSORT;
-extern float		ps_r2_ssaLOD_A;
-extern float		ps_r2_ssaLOD_B;
-extern float		ps_r2_ssaHZBvsTEX;
+extern ECORE_API float			ps_r2_ssaDISCARD;
+extern ECORE_API float			ps_r2_ssaDONTSORT;
+extern ECORE_API float			ps_r2_ssaLOD_A;
+extern ECORE_API float			ps_r2_ssaLOD_B;
+extern ECORE_API float			ps_r2_ssaHZBvsTEX;
 
 // R2-specific
-extern Flags32		ps_r2_ls_flags;				// r2-only
-extern float		ps_r2_df_parallaxh;			// r2-only
-extern float		ps_r2_tonemap_middlegray;	// r2-only
-extern float		ps_r2_tonemap_adaptation;	// r2-only
-extern float		ps_r2_tonemap_low_lum;		// r2-only
-extern float		ps_r2_ls_dynamic_range;		// r2-only
-extern float		ps_r2_ls_bloom_kernel_g;	// r2-only	// gauss
-extern float		ps_r2_ls_bloom_kernel_b;	// r2-only	// bilinear
-extern float		ps_r2_ls_bloom_threshold;	// r2-only
-extern float		ps_r2_ls_bloom_speed;		// r2-only
-extern float		ps_r2_ls_dsm_kernel;		// r2-only
-extern float		ps_r2_ls_psm_kernel;		// r2-only
-extern float		ps_r2_ls_ssm_kernel;		// r2-only
-extern Fvector		ps_r2_aa_barier;			// r2-only
-extern Fvector		ps_r2_aa_weight;			// r2-only
-extern float		ps_r2_aa_kernel;			// r2-only
-extern int			ps_r2_GI_depth;				// 1..5
-extern int			ps_r2_GI_photons;			// 8..256
-extern float		ps_r2_GI_clip;				// EPS
-extern float		ps_r2_GI_refl;				// .9f
-extern float		ps_r2_emap_height;			// 0.05f
-extern float		ps_r2_emap_range;			// 30.f
-extern int			ps_r2_emap_slices;			// 4
+extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only
+extern ECORE_API float			ps_r2_df_parallaxh;			// r2-only
+extern ECORE_API float			ps_r2_tonemap_middlegray;	// r2-only
+extern ECORE_API float			ps_r2_tonemap_adaptation;	// r2-only
+extern ECORE_API float			ps_r2_tonemap_low_lum;		// r2-only
+extern ECORE_API float			ps_r2_ls_dynamic_range;		// r2-only
+extern ECORE_API float			ps_r2_ls_bloom_kernel_g;	// r2-only	// gauss
+extern ECORE_API float			ps_r2_ls_bloom_kernel_b;	// r2-only	// bilinear
+extern ECORE_API float			ps_r2_ls_bloom_threshold;	// r2-only
+extern ECORE_API float			ps_r2_ls_bloom_speed;		// r2-only
+extern ECORE_API float			ps_r2_ls_dsm_kernel;		// r2-only
+extern ECORE_API float			ps_r2_ls_psm_kernel;		// r2-only
+extern ECORE_API float			ps_r2_ls_ssm_kernel;		// r2-only
+extern ECORE_API Fvector		ps_r2_aa_barier;			// r2-only
+extern ECORE_API Fvector		ps_r2_aa_weight;			// r2-only
+extern ECORE_API float			ps_r2_aa_kernel;			// r2-only
+extern ECORE_API int			ps_r2_GI_depth;				// 1..5
+extern ECORE_API int			ps_r2_GI_photons;			// 8..256
+extern ECORE_API float			ps_r2_GI_clip;				// EPS
+extern ECORE_API float			ps_r2_GI_refl;				// .9f
+extern ECORE_API float			ps_r2_emap_height;			// 0.05f
+extern ECORE_API float			ps_r2_emap_range;			// 30.f
+extern ECORE_API int			ps_r2_emap_slices;			// 4
 
 enum
 {
@@ -73,5 +73,5 @@ enum
 	R2FLAG_FASTBLOOM	= (1<<5),
 };
 
-extern void			xrRender_initconsole	();
+extern void						xrRender_initconsole	();
 #endif

@@ -228,3 +228,14 @@ void CEditableObject::SetVersionToCurrent(BOOL bCreate, BOOL bModif)
 		m_ModifTime		= time(NULL);
 	}
 }
+
+void CEditableObject::GetFaceWorld(const Fmatrix& parent, CEditableMesh* M, int idx, Fvector* verts)
+{
+	const Fvector* PT[3];
+	M->GetFacePT(idx, PT);
+	parent.transform_tiny(verts[0],*PT[0]);
+    parent.transform_tiny(verts[1],*PT[1]);
+	parent.transform_tiny(verts[2],*PT[2]);
+}
+
+

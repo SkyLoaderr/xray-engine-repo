@@ -57,7 +57,7 @@ enum OGF_Chuncks {
 const u16	xrOGF_SMParamsVersion	= 3;
 
 // OGF_DESC
-struct ogf_desc{
+struct ECORE_API ogf_desc{
 	ref_str	source_file;
     ref_str	build_name;
     time_t	build_time;

@@ -2,19 +2,19 @@
 #define GeometryCollectorH
 //---------------------------------------------------------------------------
 
-struct GCVertex{
+struct ECORE_API GCVertex{
 	Fvector				pos;
     u32					refs;
     					GCVertex	(const Fvector& p){pos=p;refs=1;}
 	bool				similar		(const GCVertex& v, float eps=EPS){return pos.similar(v.pos);}
 };
 
-struct GCFace{
+struct ECORE_API GCFace{
 	u32 				verts[3];
     bool				valid;
 };
 
-class VCPacked
+class ECORE_API VCPacked
 {
 protected:
 	DEFINE_VECTOR(U32Vec,GCHash,GCHashIt);
@@ -43,7 +43,7 @@ public:
     U32Vec&				getHASH_elem(u32 ix, u32 iy, u32 iz){return get_element(ix,iy,iz);}
 };
 
-class GCPacked: public VCPacked
+class ECORE_API GCPacked: public VCPacked
 {
     xr_vector<GCFace>	faces;
     void				validate   	(GCFace& F)

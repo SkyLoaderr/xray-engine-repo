@@ -161,11 +161,8 @@ void CRenderDevice::Destroy(){
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 //---------------------------------------------------------------------------
-void CRenderDevice::_Create(IReader* F)
+void CRenderDevice::_SetupStates()
 {
-	bReady				= TRUE;
-
-	// General Render States
 	HW.Caps.Update();
 	for (u32 i=0; i<HW.Caps.raster.dwStages; i++){
 		float fBias = -1.f;
@@ -187,7 +184,15 @@ void CRenderDevice::_Create(IReader* F)
 	Device.SetRS(D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	);
 
     ResetMaterial();
+}
+//---------------------------------------------------------------------------
+void CRenderDevice::_Create(IReader* F)
+{
+	bReady				= TRUE;
 
+	// General Render States
+    _SetupStates		();
+    
     RCache.OnDeviceCreate		();
 	Resources->OnDeviceCreate	(F);
     ::Render->OnDeviceCreate	();
@@ -224,7 +229,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
+void __fastcall CRenderDevice::Resize(int w, int h)
 {
     m_RealWidth 	= w;
     m_RealHeight 	= h;
@@ -235,13 +240,11 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     m_RenderWidth_2 = dwWidth * 0.5f;
     m_RenderHeight_2= dwHeight * 0.5f;
 
-    if (bRefreshDevice) Destroy();
-
     fASPECT 		= (float)dwHeight / (float)dwWidth;
     mProjection.build_projection( deg2rad(fFOV), fASPECT, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer 		= mProjection._43;
 
-    if (bRefreshDevice) Create();
+    Reset			();
 
     RCache.set_xform_project(mProjection);
     RCache.set_xform_world	(Fidentity);
@@ -249,23 +252,54 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     UI->RedrawScene	();
 }
 
-void CRenderDevice::Begin()
+void CRenderDevice::Reset  	()
+{
+    u32 tm_start			= TimerAsync();
+    Resources->reset_begin	();
+    Memory.mem_compact		();
+    HW.DevPP.BackBufferWidth= dwWidth;
+    HW.DevPP.BackBufferHeight= dwHeight;
+    HW.Reset				();
+    dwWidth					= HW.DevPP.BackBufferWidth;
+    dwHeight				= HW.DevPP.BackBufferHeight;
+    m_RenderWidth_2 		= dwWidth * 0.5f;
+    m_RenderHeight_2		= dwHeight * 0.5f;
+//		fWidth_2			= float(dwWidth/2);
+//		fHeight_2			= float(dwHeight/2);
+    Resources->reset_end	();
+    _SetupStates			();
+    u32 tm_end				= TimerAsync();
+    Msg						("*** RESET [%d ms]",tm_end-tm_start);
+}
+
+BOOL CRenderDevice::Begin	()
 {
 	VERIFY(bReady);
-	HW.Validate	();
-    if (HW.pDevice->TestCooperativeLevel()!=D3D_OK){
-		Sleep	(500);
-		Destroy	();
-		Create	();
+	HW.Validate		();
+	HRESULT	_hr		= HW.pDevice->TestCooperativeLevel();
+    if (FAILED(_hr))
+	{
+		// If the device was lost, do not render until we get it back
+		if		(D3DERR_DEVICELOST==_hr)		{
+			Sleep	(33);
+			return	FALSE;
+		}
+
+		// Check if the device is ready to be reset
+		if		(D3DERR_DEVICENOTRESET==_hr)
+		{
+			Reset	();
+		}
 	}
 
-	CHK_DX(HW.pDevice->BeginScene());
+	CHK_DX					(HW.pDevice->BeginScene());
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|D3DCLEAR_TARGET|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
 		EPrefs.scene_clear_color,1,0
 		));
-	RCache.OnFrameBegin();
+	RCache.OnFrameBegin		();
+	return		TRUE;
 }
 
 //---------------------------------------------------------------------------

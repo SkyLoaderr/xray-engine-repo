@@ -170,7 +170,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
 	u32			sw_bones	= 0;
 #ifdef _EDITOR
-	u32			hw_bones	= 0;
+	hw_bones	= 0;
 #endif
 
 	u32			dwVertType,size,it,crc;

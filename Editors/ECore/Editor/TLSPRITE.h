@@ -57,7 +57,7 @@ public:
 	}
 } FTLpolygon;
 
-class	CTLSprite
+class	ECORE_API CTLSprite
 {
 	FTLpolygon		mesh;
 public:

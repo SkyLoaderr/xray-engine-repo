@@ -60,7 +60,7 @@
 	DEFINE_SVECTOR(ref_shader,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
 #endif
 
-struct SGameMtl
+struct ECORE_API SGameMtl
 {
 	friend class CGameMtlLibrary;
 protected:
@@ -126,7 +126,7 @@ public:
 };
 DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);
 
-struct SGameMtlPair{
+struct ECORE_API SGameMtlPair{
 	friend class CGameMtlLibrary;
     CGameMtlLibrary*	m_Owner;
 private:
@@ -194,7 +194,7 @@ public:
 
 DEFINE_VECTOR(SGameMtlPair*,GameMtlPairVec,GameMtlPairIt);
 
-class CGameMtlLibrary{
+class ECORE_API CGameMtlLibrary{
 	int					material_index;
 	int					material_pair_index;
 
@@ -323,6 +323,6 @@ public:
 	_res_=(_mtl_pair_##->_a_vector_[Random.randI(_mtl_pair_##->_a_vector_.size())]);\
 	}
 
-extern CGameMtlLibrary GMLib;
+extern ECORE_API CGameMtlLibrary GMLib;
 #endif
 
