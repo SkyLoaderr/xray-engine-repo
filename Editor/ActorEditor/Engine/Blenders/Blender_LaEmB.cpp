@@ -142,20 +142,20 @@ void	CBlender_LaEmB::Compile(CBlender_Compile& C)
 		switch (HW.Caps.pixel.dwStages)
 		{
 		case 2:		// Geforce1/2/MX
-			if (0==stricmp(oT2_const,"$null"))	compile_2	(RS,L_textures,L_matrices,L_constants);
-			else								compile_2c	(RS,L_textures,L_matrices,L_constants);
+			if (0==stricmp(oT2_const,"$null"))	compile_2	(C);
+			else								compile_2c	(C);
 			break;
 		case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
 		default:
-			if (0==stricmp(oT2_const,"$null"))	compile_3	(RS,L_textures,L_matrices,L_constants);
-			else								compile_3c	(RS,L_textures,L_matrices,L_constants);
+			if (0==stricmp(oT2_const,"$null"))	compile_3	(C);
+			else								compile_3c	(C);
 			break;
 		}
 	}
 }
 
 //
-void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LaEmB::compile_2	(CBlender_Compile& C)
 {
 	C.RS.PassBegin		();
 	{
@@ -167,11 +167,11 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.Stage_Texture	("$base1",		L_textures	);
-			C.RS.Stage_Matrix		("$null",		L_matrices,	1);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.Stage_Texture		("$base1",		C.L_textures	);
+			C.RS.Stage_Matrix		("$null",		C.L_matrices,	1);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 		
@@ -179,11 +179,11 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.Stage_Texture	(oT2_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.Stage_Texture		(oT2_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}
@@ -192,26 +192,26 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	// Pass2 - Base map
 	C.RS.PassBegin		();
 	{
-		C.RS.PassSET_ZB		(TRUE,FALSE);
-		C.RS.PassSET_Blend_MUL();
+		C.RS.PassSET_ZB			(TRUE,FALSE);
+		C.RS.PassSET_Blend_MUL	();
 		C.RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Detail
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.Stage_Texture	(oT_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.Stage_Texture		(oT_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}
 	C.RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LaEmB::compile_2c	(CBlender_Compile& C)
 {
 	C.RS.PassBegin		();
 	{
@@ -223,11 +223,11 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.RS.Stage_Texture	(oT2_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	(oT2_const,		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			C.RS.Stage_Texture		(oT2_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		(oT2_const,		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 
@@ -235,11 +235,11 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.Stage_Texture	("$base1",		L_textures	);
-			C.RS.Stage_Matrix		("$null",		L_matrices,	1);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.Stage_Texture		("$base1",		C.L_textures	);
+			C.RS.Stage_Matrix		("$null",		C.L_matrices,	1);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}
@@ -256,18 +256,18 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.Stage_Texture	(oT_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.Stage_Texture		(oT_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}
 	C.RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LaEmB::compile_3	(CBlender_Compile& C)
 {
 	C.RS.PassBegin		();
 	{
@@ -279,11 +279,11 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.RS.Stage_Texture	("$base1",		L_textures	);
-			C.RS.Stage_Matrix		("$null",		L_matrices, 1);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.Stage_Texture		("$base1",		C.L_textures	);
+			C.RS.Stage_Matrix		("$null",		C.L_matrices, 1);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 		
@@ -291,11 +291,11 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.Stage_Texture	(oT2_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.Stage_Texture		(oT2_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 		
@@ -303,18 +303,18 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-			C.RS.Stage_Texture	(oT_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			C.RS.Stage_Texture		(oT_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}
 	C.RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LaEmB::compile_3c	(CBlender_Compile& C)
 {
 	C.RS.PassBegin		();
 	{
@@ -326,11 +326,11 @@ void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.RS.Stage_Texture	(oT2_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	(oT2_const,		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			C.RS.Stage_Texture		(oT2_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		(oT2_const,		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 		
@@ -338,11 +338,11 @@ void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			C.RS.Stage_Texture	("$base1",		L_textures	);
-			C.RS.Stage_Matrix		("$null",		L_matrices, 1);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			C.RS.Stage_Texture		("$base1",		C.L_textures	);
+			C.RS.Stage_Matrix		("$null",		C.L_matrices,	1);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 		
@@ -350,11 +350,11 @@ void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 		C.RS.StageBegin		();
 		{
 			C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-			C.RS.Stage_Texture	(oT_Name,		L_textures	);
-			C.RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
-			C.RS.Stage_Constant	("$null",		L_constants	);
+			C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			C.RS.Stage_Texture		(oT_Name,		C.L_textures	);
+			C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,	0);
+			C.RS.Stage_Constant		("$null",		C.L_constants	);
 		}
 		C.RS.StageEnd			();
 	}

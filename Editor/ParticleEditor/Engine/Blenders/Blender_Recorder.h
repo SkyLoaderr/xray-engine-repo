@@ -46,8 +46,10 @@ public:
 	void				Stage_Constant		(LPCSTR name, sh_list& lst);
 	void				StageEnd			();
 
-	CBlender_Recorder	(Shader* _SH);
+	CBlender_Recorder	();
 	~CBlender_Recorder	();
+	
+	void				Initialize			(Shader* _SH);
 };
 
 #endif // !defined(AFX_BLENDER_RECORDER_H__1F549674_8674_4EB2_95E6_E6BC19218A6C__INCLUDED_)

@@ -11,14 +11,16 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Recorder::CBlender_Recorder		(Shader* _SH)
+CBlender_Recorder::CBlender_Recorder		()
 {
-	RS.Invalidate	();
-	SH =			_SH;
 }
 CBlender_Recorder::~CBlender_Recorder		()
 {
-
+}
+void	CBlender_Recorder::Initialize		(Shader* _SH)
+{
+	RS.Invalidate	();
+	SH =			_SH;
 }
 void	CBlender_Recorder::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
 {

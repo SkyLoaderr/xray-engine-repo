@@ -78,68 +78,68 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 	}
 }
 
-void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(RS,L_textures,L_constants,L_matrices,param,bEditor);
-	RS.PassBegin		();
+	CBlender::Compile		(C);
+	C.RS.PassBegin		();
 	{
-		RS.PassSET_ZB		(oZTest.value,oZWrite.value);
+		C.RS.PassSET_ZB		(oZTest.value,oZWrite.value);
 		switch (oBlend.IDselected)
 		{
 		case 0:	// SET
-			RS.PassSET_Blend	(FALSE,	D3DBLEND_ONE,D3DBLEND_ZERO,				FALSE,0);
+			C.RS.PassSET_Blend	(FALSE,	D3DBLEND_ONE,D3DBLEND_ZERO,				FALSE,0);
 			break;
 		case 1: // BLEND
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			break;
 		case 2:	// ADD
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_ONE,D3DBLEND_ONE,				FALSE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_ONE,D3DBLEND_ONE,				FALSE,oAREF.value);
 			break;
 		case 3:	// MUL
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,		FALSE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,		FALSE,oAREF.value);
 			break;
 		case 4:	// MUL_2X
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,oAREF.value);
 			break;
 		case 5:	// ALPHA-ADD
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_ONE,			FALSE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_ONE,			FALSE,oAREF.value);
 			break;
 		case 6:	// MUL_2X + A-test
-			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
+			C.RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
 			break;
 		}
-		RS.PassSET_LightFog	(oLighting.value,oFog.value);
+		C.RS.PassSET_LightFog	(oLighting.value,oFog.value);
 
 		if (oBlend.IDselected==6)	
 		{
 			// Usually for wallmarks
-			RS.StageBegin		();
-			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			RS.Stage_Texture	(oT_Name,	L_textures);
-			RS.Stage_Matrix		("$null",	L_matrices,	0);
-			RS.Stage_Constant	("$null",	L_constants);
-			RS.StageEnd			();
+			C.RS.StageBegin		();
+			C.RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
+			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.RS.Stage_Texture	(oT_Name,	C.L_textures);
+			C.RS.Stage_Matrix		("$null",	C.L_matrices,	0);
+			C.RS.Stage_Constant	("$null",	C.L_constants);
+			C.RS.StageEnd			();
 
-			RS.StageBegin		();
-			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_BLENDDIFFUSEALPHA,	D3DTA_CURRENT);
-			RS.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-			RS.Stage_Texture	("$null",	L_textures);
-			RS.Stage_Matrix		("$null",	L_matrices,	0);
-			RS.Stage_Constant	("$null",	L_constants);
-			RS.StageEnd			();
+			C.RS.StageBegin		();
+			C.RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
+			C.RS.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_BLENDDIFFUSEALPHA,	D3DTA_CURRENT);
+			C.RS.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+			C.RS.Stage_Texture	("$null",	C.L_textures);
+			C.RS.Stage_Matrix		("$null",	C.L_matrices,	0);
+			C.RS.Stage_Constant	("$null",	C.L_constants);
+			C.RS.StageEnd			();
 		} else {
-			RS.StageBegin		();
-			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-			RS.Stage_Texture	(oT_Name,	L_textures);
-			RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
-			RS.Stage_Constant	("$null",	L_constants);
-			RS.StageEnd			();
+			C.RS.StageBegin		();
+			C.RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
+			C.RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			C.RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			C.RS.Stage_Texture	(oT_Name,	C.L_textures);
+			C.RS.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
+			C.RS.Stage_Constant	("$null",	C.L_constants);
+			C.RS.StageEnd			();
 		}
 	}
-	RS.PassEnd			();
+	C.RS.PassEnd			();
 }

@@ -321,28 +321,30 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
     if (0==s_textures) 	s_textures 	= "$null";
     if (0==s_constants) s_constants = "$null";
     if (0==s_matrices) 	s_matrices 	= "$null";
-	
-//	Msg("--- %s --- %s",s_shader,s_textures);
 
+	// Options + Shader def
+	Shader				S;
+	CBlender_Compile	C;
+	C.RS.Initialize		(&S);
+	C.bEditor			= FALSE;
+	C.bLighting			= FALSE;
+	C.iLayers			= 1;
+	
 	// Parse names
-	sh_list				L_textures,L_constants,L_matrices;
-	_ParseList			(L_textures,s_textures	);
-	_ParseList			(L_constants,s_constants);
-	_ParseList			(L_matrices,s_matrices	);
+	_ParseList			(C.L_textures,	s_textures	);
+	_ParseList			(C.L_constants,	s_constants	);
+	_ParseList			(C.L_matrices,	s_matrices	);
 
 	// Compile shader
-	Shader		S;
 	CBlender*	B		= _GetBlender	(s_shader);
-	CBlender_Recorder	Recorder		(&S);
 #ifdef M_BORLAND
     if (!B){
     	ELog.Msg(mtError,"Can't find shader '%s'",s_shader);
     	return 0;
     }
-	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,TRUE);
-#else
-	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,FALSE);
+	C.bEditor			= TRUE;
 #endif
+	B->Compile			(C);
 	
 	// Search equal in shaders array
 	for (DWORD it=0; it<shaders.size(); it++) 

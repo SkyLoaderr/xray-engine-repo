@@ -14,8 +14,8 @@ public:
 	string64	oT2_Name;		// name of secondary texture
 	string64	oT2_xform;		// xform for secondary texture
 	
-	void		compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
+	void		compile_2	(CBlender_Compile& C);
+	void		compile_3	(CBlender_Compile& C);
 public:
 	virtual		LPCSTR		getComment()	{ return "lmap*(env^base)";	}
 
