@@ -38,7 +38,7 @@ void CBuild::Light()
 		);
 
 	// Main process (4 threads)
-	const	DWORD			thNUM = 4;
+	const	DWORD			thNUM = 5;
 	DWORD	dwTimeStart = timeGetTime();
 	CLMThread*	threads[thNUM];
 	ZeroMemory	(threads,sizeof(threads));
