@@ -125,7 +125,7 @@ void CBitingRest::Run()
 void CBitingRest::Replanning()
 {
 	// Test
-	Msg("_ Rest replanning _");
+	///Msg("_ Rest replanning _");
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
@@ -236,7 +236,7 @@ void CBitingAttack::Init()
 	else pMonster->SetMemoryTime(3000);
 
 	// Test
-	Msg("_ Attack Init _");
+	//Msg("_ Attack Init _");
 }
 
 void CBitingAttack::Run()
@@ -380,7 +380,7 @@ void CBitingEat::Init()
 	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
 
 	// Test
-	Msg("_ Eat Init _");
+	//Msg("_ Eat Init _");
 }
 
 void CBitingEat::Run()
@@ -425,7 +425,7 @@ void CBitingEat::Run()
 			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
 				m_dwLastTimeEat = m_dwCurrentTime;
-				Msg("Food = [%f]",pCorpse->m_fFood);
+				//Msg("Food = [%f]",pCorpse->m_fFood);
 			}
 			break;
 	}
@@ -460,7 +460,7 @@ void CBitingHide::Init()
 	pMonster->SetMemoryTime(30000);
 
 	// Test
-	Msg("_ Hide Init _");
+	//Msg("_ Hide Init _");
 }
 
 void CBitingHide::Reset()
@@ -520,12 +520,12 @@ void CBitingDetour::Init()
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
-	Msg(" DETOUR init!");
+	//Msg(" DETOUR init!");
 }
 
 void CBitingDetour::Run()
 {
-	Msg("--- DETOUR ---");
+	//Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
@@ -580,7 +580,7 @@ void CBitingPanic::Init()
 	pMonster->SetMemoryTime(15000);
 
 	// Test
-	Msg("_ Panic Init _");
+	//Msg("_ Panic Init _");
 
 }
 
@@ -622,7 +622,7 @@ void CBitingExploreDNE::Reset()
 void CBitingExploreDNE::Init()
 {
 	// Test
-	Msg("_ ExploreDNE Init _");
+	//Msg("_ ExploreDNE Init _");
 
 	inherited::Init();
 
@@ -682,7 +682,7 @@ void CBitingExploreDE::Reset()
 void CBitingExploreDE::Init()
 {
 	// Test
-	Msg("_ ExploreDE Init _");
+	//Msg("_ ExploreDE Init _");
 
 	inherited::Init();
 
@@ -746,7 +746,7 @@ void CBitingExploreNDE::Reset()
 void CBitingExploreNDE::Init()
 {
 	// Test
-	Msg("_ ExploreNDE Init _");
+	//Msg("_ ExploreNDE Init _");
 
 	inherited::Init();
 

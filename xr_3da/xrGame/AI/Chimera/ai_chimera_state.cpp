@@ -130,7 +130,7 @@ void CChimeraRest::Run()
 void CChimeraRest::Replanning()
 {
 	// Test
-	Msg("_ Rest replanning _");
+	///Msg("_ Rest replanning _");
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
@@ -228,7 +228,7 @@ void CChimeraAttack::Init()
 	pMonster->SetMemoryTime(3000);
 
 	// Test
-	Msg("_ Attack Init _");
+	//Msg("_ Attack Init _");
 }
 
 void CChimeraAttack::Run()
@@ -348,7 +348,7 @@ void CChimeraEat::Init()
 	m_fDistToCorpse = 1.5f;
 
 	// Test
-	Msg("_ Eat Init _");
+	//Msg("_ Eat Init _");
 }
 
 void CChimeraEat::Run()
@@ -393,7 +393,7 @@ void CChimeraEat::Run()
 			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
 				m_dwLastTimeEat = m_dwCurrentTime;
-				Msg("Food = [%f]",pCorpse->m_fFood);
+				//Msg("Food = [%f]",pCorpse->m_fFood);
 			}
 			break;
 	}
@@ -428,7 +428,7 @@ void CChimeraHide::Init()
 	pMonster->SetMemoryTime(30000);
 
 	// Test
-	Msg("_ Hide Init _");
+	//Msg("_ Hide Init _");
 }
 
 void CChimeraHide::Reset()
@@ -488,12 +488,12 @@ void CChimeraDetour::Init()
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
-	Msg(" DETOUR init!");
+	//Msg(" DETOUR init!");
 }
 
 void CChimeraDetour::Run()
 {
-	Msg("--- DETOUR ---");
+	//Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
@@ -548,7 +548,7 @@ void CChimeraPanic::Init()
 	pMonster->SetMemoryTime(15000);
 
 	// Test
-	Msg("_ Panic Init _");
+	//Msg("_ Panic Init _");
 
 }
 
@@ -590,7 +590,7 @@ void CChimeraExploreDNE::Reset()
 void CChimeraExploreDNE::Init()
 {
 	// Test
-	Msg("_ ExploreDNE Init _");
+	//Msg("_ ExploreDNE Init _");
 
 	inherited::Init();
 
@@ -650,7 +650,7 @@ void CChimeraExploreDE::Reset()
 void CChimeraExploreDE::Init()
 {
 	// Test
-	Msg("_ ExploreDE Init _");
+	//Msg("_ ExploreDE Init _");
 
 	inherited::Init();
 
@@ -714,7 +714,7 @@ void CChimeraExploreNDE::Reset()
 void CChimeraExploreNDE::Init()
 {
 	// Test
-	Msg("_ ExploreNDE Init _");
+	//Msg("_ ExploreNDE Init _");
 
 	inherited::Init();
 
