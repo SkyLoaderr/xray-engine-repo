@@ -167,7 +167,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 		C.detail_scaler		= NULL;
 		C.bDetail			= Device.Resources->_GetDetailTexture(C.L_textures[0],C.detail_texture,C.detail_scaler);
 		if (C.bDetail)		S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal_hq"));
-		else				S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal"))
+		else				S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal"));
 	} else {
 		C.iElement			= 0;
 		C.bDetail			= FALSE;
@@ -225,8 +225,8 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR name)
 
 	// Compile
 	adopt_compiler		ac		(this);
-	LPCSTR				t_0		= C.L_textures[0];
-	LPCSTR				t_1		= (C.L_textures.size() > 1) ? C.L_textures[1] : "null";
+	LPCSTR				t_0		= L_textures[0];
+	LPCSTR				t_1		= (L_textures.size() > 1) ? L_textures[1] : "null";
 	call_function<void>	(Device.Resources->LSVM,name,ac,t_0,t_1);
 	r_End				();
 
