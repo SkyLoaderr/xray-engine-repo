@@ -864,6 +864,14 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
+	// NCM
+	m_pd3dDevice->SetTexture				(2, t_NCM);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MIPFILTER,	D3DTEXF_NONE);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
 	// Setup stencil and culling
 	m_pd3dDevice->SetRenderState			( D3DRS_CULLMODE,			D3DCULL_CCW			);
 
@@ -895,6 +903,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetTexture				(2, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 	m_pd3dDevice->SetRenderTarget			(1, 0	);
 	m_pd3dDevice->SetRenderTarget			(2, 0	);
