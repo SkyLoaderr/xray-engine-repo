@@ -1,37 +1,139 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="escape_talk_about_agroprom">
-        <precondition>dialogs.level_agroprom</precondition>
+    <dialog id="agr_stalker_talk_level">
         <phrase_list>
-            <phrase id="10">
-                <text>escape_talk_about_agroprom_10</text>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="1">
+                <text>agr_stalker_talk_level_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <text>agr_stalker_talk_level_4</text>
             </phrase>
             <phrase id="2">
-                <text>escape_talk_about_agroprom_2</text>
+                <text>agr_stalker_talk_level_2</text>
                 <next>21</next>
             </phrase>
             <phrase id="21">
-                <text>escape_talk_about_agroprom_21</text>
+                <text>agr_stalker_talk_level_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="3">
+                <text>agr_stalker_talk_level_3</text>
+                <next>31</next>
             </phrase>
             <phrase id="0">
-                <text>escape_talk_about_agroprom_0</text>
+                <text>agr_stalker_talk_level_0</text>
                 <next>1</next>
             </phrase>
-            <phrase id="1">
-                <text>escape_talk_about_agroprom_1</text>
-                <next>2</next>
-                <next>10</next>
+            <phrase id="31">
+                <text>agr_stalker_talk_level_31</text>
+                <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_factory_stalkers">
+    <dialog id="agr_factory_stalker_start">
         <phrase_list>
             <phrase id="0">
-                <text>agr_factory_stalkers_0</text>
+                <text>agr_factory_stalker_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_stalker_about">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_stalker_about_0</text>
                 <next>1</next>
             </phrase>
             <phrase id="1">
-                <text>agr_factory_stalkers_1</text>
+                <text>agr_factory_stalker_about_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_about">
+        <phrase_list>
+            <phrase id="5">
+                <text>agr_factory_krot_about_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>agr_factory_krot_about_51</text>
+            </phrase>
+            <phrase id="1">
+                <text>agr_factory_krot_about_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="31">
+                <text>agr_factory_krot_about_31</text>
+            </phrase>
+            <phrase id="3">
+                <text>agr_factory_krot_about_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="4">
+                <text>agr_factory_krot_about_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>agr_factory_krot_about_41</text>
+            </phrase>
+            <phrase id="21112">
+                <text>agr_factory_krot_about_21112</text>
+                <next>211121</next>
+            </phrase>
+            <phrase id="21111">
+                <text>agr_factory_krot_about_21111</text>
+                <next>211111</next>
+                <next>211112</next>
+            </phrase>
+            <phrase id="2">
+                <text>agr_factory_krot_about_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>agr_factory_krot_about_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>agr_factory_krot_about_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>agr_factory_krot_about_2111</text>
+                <next>21111</next>
+                <next>21112</next>
+            </phrase>
+            <phrase id="211111">
+                <text>agr_factory_krot_about_211111</text>
+            </phrase>
+            <phrase id="211112">
+                <text>agr_factory_krot_about_211112</text>
+            </phrase>
+            <phrase id="211121">
+                <text>agr_factory_krot_about_211121</text>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_about_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
