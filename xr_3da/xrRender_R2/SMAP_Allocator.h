@@ -15,7 +15,7 @@ struct	SMAP_Rect
 		if (min.y==max.y)		return false;
 		return	true;
 	}
-	bool					setup		(Ivector2& p, u32 size)			{
+	void					setup		(Ivector2& p, u32 size)			{
 		min	= max =	p;
 		max.add		(size-1);
 	}
