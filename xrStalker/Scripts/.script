@@ -66,6 +66,13 @@ function action_first(obj,...)
 	return	entity_action(act)
 end
 
+function round (value)
+    local min = math.floor (value)
+    local max = min + 1
+    if value - min > max - value then return max end
+    return min
+end
+
 class "pp_effector" (effector)
 
 function pp_effector:__init(effector_type,start_time,dest_power,life_time) super(effector_type,start_time)
