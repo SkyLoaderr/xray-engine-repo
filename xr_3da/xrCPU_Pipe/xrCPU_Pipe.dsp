@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCPU_PIPE_EXPORTS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /G6 /Gz /MT /Ze /W3 /Gi- /GR /GX /Zi /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCPU_PIPE_EXPORTS" /FAs /Fr /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /G6 /Gz /MT /W3 /GR /GX /Zi /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCPU_PIPE_EXPORTS" /FAs /Fr /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
@@ -138,7 +138,7 @@ SOURCE=".\xrSkin1W_3DNow!.cpp"
 SOURCE=.\xrSkin1W_SSE.cpp
 # End Source File
 # End Group
-# Begin Group "Generic FPU"
+# Begin Group "Generic x86"
 
 # PROP Default_Filter ""
 # Begin Source File
