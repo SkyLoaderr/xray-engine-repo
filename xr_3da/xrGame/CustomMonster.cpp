@@ -626,9 +626,7 @@ void CCustomMonster::OnRender()
 	{
 		//m_PhysicMovementControl.dbg_Draw();
 	}
-//	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
-
-
+	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 }
 #endif
 
