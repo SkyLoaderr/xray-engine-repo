@@ -1261,6 +1261,9 @@
 					RelativePath=".\scripts\mob_sound.script">
 				</File>
 				<File
+					RelativePath=".\scripts\mob_walker.script">
+				</File>
+				<File
 					RelativePath=".\scripts\modules.script">
 				</File>
 				<File
