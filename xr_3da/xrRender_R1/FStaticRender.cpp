@@ -234,14 +234,14 @@ void CRender::Calculate				()
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
-	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD)*2;
-	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)		/g_fSCREEN;
-	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)		/g_fSCREEN;
-	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)		/g_fSCREEN;
-	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B)		/g_fSCREEN;
-	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start)	/g_fSCREEN;
-	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end)	/g_fSCREEN;
-	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX)		/g_fSCREEN;
+	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD);
+	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD/2)	/g_fSCREEN;
+	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT/2)	/g_fSCREEN;
+	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A/2)		/g_fSCREEN;
+	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B/2)		/g_fSCREEN;
+	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start/2)/g_fSCREEN;
+	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end/2)	/g_fSCREEN;
+	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX/2)	/g_fSCREEN;
 
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
