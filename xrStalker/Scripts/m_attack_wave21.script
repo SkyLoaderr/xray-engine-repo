@@ -1,3 +1,15 @@
+--прожектора на вышках при нападении на базу
+-- Прожектора -  projector1, projector2
+-- Точки для прожекторов:
+--					project1_point1
+--					project1_point2
+--					project2_point1
+--					project2_point2
+--					project2_point3
+-- Скриптовая зона для переключения прожекторов - projector_zone
+
+function main ()
+
   local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
   local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
 
@@ -10,17 +22,5 @@
       wait ()
   end
 
---  local projector = get_level_object ("projector1")
---  projector:script (true, military3_5.script_name ())
 
---  local actor = get_actor()
-
---  while true do
-
---    action (projector, look(actor,0.5,0.5), cond(cond.look_end))
---    while projector:action () do wait () end
-
---  end
-
---  projector:script (false, military3_5.script_name ())
-
+end
