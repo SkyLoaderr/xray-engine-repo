@@ -11,7 +11,7 @@ enum fsL_Chunks {
 	fsL_LIGHT_DYNAMIC,	//*
 	fsL_GLOWS,			//*		- All glows inside level
 	fsL_SECTORS,		//*		- All sectors on level
-	fsL_IBUFFERS,		//*
+	fsL_IBUFFERS_DX9,	//*
 	fsL_VBUFFERS_DX9,	//*
     fsL_forcedword		= 0xFFFFFFFF
 };

@@ -53,7 +53,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		Shader_xrLCVec&			v	= shaders.Library();
 		for (u32 it=0; it<v.size(); it++)
 		{
-			v[it].flags.bSaveNormals	= TRUE;
 			v[it].flags.bLIGHT_Vertex	= TRUE;
 			v[it].vert_ambient			= 0;
 			v[it].vert_translucency		= 0;
@@ -63,8 +62,10 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	else 
 	{
 		Shader_xrLCVec&			v	= shaders.Library();
+		/*
 		for (u32 it=0; it<v.size(); it++)
 			clMsg ("-",v[it].Name);
+		*/
 	}
 
 	//*******

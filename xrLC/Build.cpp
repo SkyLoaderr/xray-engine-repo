@@ -62,7 +62,6 @@ void CBuild::Run	(LPCSTR P)
 	fs->open_chunk				(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory	(&H,sizeof(H));
 	H.XRLC_version				= XRCL_PRODUCTION_VERSION;
-	strcpy						(H.name,g_params.L_name);
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
 
