@@ -635,13 +635,17 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(WORD));
 		}
 
+		m_cycle = new mdef;
+		m_fx	= new mdef;
+
 		// motion defs (cycle&fx)
 		WORD mot_count			= MP->Rword();
 		for (WORD mot_i=0; mot_i<mot_count; mot_i++){
 			MP->RstringZ(buf);
 			BYTE bCycle			= MP->Rbyte();
 			CMotionDef	D;		D.Load(this,MP,bCycle);
-			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+            if (bCycle)			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+            else				m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
 		}
 	}else{
 		// old variant (read params from ltx)
@@ -654,14 +658,14 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 		}
 		m_cycle = new mdef;
 		m_fx	= new mdef;
-		
+
 		CInifile DEF(def_N);
 		CInifile::SectIt I;
-		
+
 		// partitions
 		CInifile::Sect& S = DEF.ReadSection("partition");
 		int pid = 0;
-		for (I=S.begin(); I!=S.end(); I++,pid++) 
+		for (I=S.begin(); I!=S.end(); I++,pid++)
 		{
 			if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
 			CPartDef&	PART		= (*partition)[pid];
@@ -676,22 +680,22 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 				PART.bones.push_back(bone);
 			}
 		}
-		
+
 		// cycles
 		{
 			CInifile::Sect& S = DEF.ReadSection("cycle");
-			for (I=S.begin(); I!=S.end(); I++) 
+			for (I=S.begin(); I!=S.end(); I++)
 			{
 				CMotionDef	D;
 				D.Load(this,&DEF,I->first, true);
 				m_cycle->insert(make_pair(_strlwr(strdup(I->first)),D));
 			}
 		}
-		
+
 		// FXes
 		{
 			CInifile::Sect& F = DEF.ReadSection("fx");
-			for (I=F.begin(); I!=F.end(); I++) 
+			for (I=F.begin(); I!=F.end(); I++)
 			{
 				CMotionDef	D;
 				D.Load(this,&DEF,I->first, false);
