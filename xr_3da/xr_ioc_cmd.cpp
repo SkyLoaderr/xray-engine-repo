@@ -302,7 +302,7 @@ void CCC_Register()
 	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,	snd_freq_token	);
 	CMD3(CCC_Token,		"snd_model",			&psSoundModel,	snd_model_token	);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
-	CMD3(CCC_Mask,		"snd_wavetracing",		&psSoundFlags,	ssWaveTrace);
+	CMD3(CCC_Mask,		"snd_occlusion",		&psSoundFlags,	ssWaveTrace);
 	CMD4(CCC_Integer,	"snd_relaxtime",		&psSoundRelaxTime,1,10);
 	
 	// Mouse
