@@ -14,6 +14,10 @@
 	#include "clsid_game.h"
 #endif
 
+#ifdef _EDITOR
+	#include "clsid_game.h"
+#endif
+
 #include "xrServer_Objects_ALife_Items.h"
 
 ////////////////////////////////////////////////////////////////////////////
