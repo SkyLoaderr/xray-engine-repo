@@ -4,12 +4,12 @@
 void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV, float p_A, float p_FAR )
 {
 	// calc window extents in camera coords
-	float YFov		=	deg2rad(p_FOV);
-	float XFov		=	deg2rad(p_FOV/p_A);
-	float wR		=	tanf(XFov*0.5f);
-	float wL		=	-wR;
-	float wT		=	tanf(YFov*0.5f);
-	float wB		=	-wT;
+	float YFov			=	deg2rad(p_FOV);
+	float XFov			=	deg2rad(p_FOV/p_A);
+	float wR			=	tanf(XFov*0.5f);
+	float wL			=	-wR;
+	float wT			=	tanf(YFov*0.5f);
+	float wB			=	-wT;
 
 	// calculate the corner vertices of the window
 	// R,N,D,P = i,j,k,c
@@ -47,4 +47,21 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV,
 	// L-view matrix
 	Fmatrix				L_view;
 	L_view.build_camera_dir	(L_pos,L_dir,L_up);
+
+	// L-view corner points and box
+	Fvector vmin,vmax;
+	vmin.set	(flt_max,flt_max,flt_max);
+	vmax.set	(flt_min,flt_min,flt_min);
+	for (int i=0; i<5; i++)
+	{
+		L_view.transform_tiny	(T,_F[i]);
+		vmin.min(T); vmax.max	(T);
+	}
+
+	// L_project
+	Fmatrix				L_project;
+	D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
+
+	// Combine
+	mDest.mul			(L_project,L_view);
 }
