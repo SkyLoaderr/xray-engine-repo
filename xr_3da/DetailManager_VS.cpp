@@ -2,24 +2,22 @@
 #include "detailmanager.h"
 
 const int			quant	= 16384;
-const int			c_hdr	= 6;
+const int			c_hdr	= 5;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
 static DWORD dwDecl[] =
 {
     D3DVSD_STREAM	(0),
-	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_SHORT4),	// pos
-	D3DVSD_REG		(D3DVSDE_DIFFUSE,	D3DVSDT_D3DCOLOR),	// matrix id
-	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT2),	// uv
+	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
+	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT4),	// uv
 	D3DVSD_END		()
 };
 #pragma pack(push,1)
 struct	vertHW
 {
-	short		x,y,z,w;
-	DWORD		M;
-	short		u,v;
+	float		x,y,z;
+	short		u,v,t,mid;
 };
 #pragma pack(pop)
 
@@ -82,13 +80,13 @@ void CDetailManager::VS_Load()
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
-					pV->x	=	QC(vP.x);
-					pV->y	=	QC(vP.y);
-					pV->z	=	QC(vP.z);
-					pV->w	=	QC(1.f);
-					pV->M	=	M;
+					pV->x	=	vP.x;
+					pV->y	=	vP.y;
+					pV->z	=	vP.z;
 					pV->u	=	QC(D.vertices[v].u);
 					pV->v	=	QC(D.vertices[v].v);
+					pV->t	=	0;
+					pV->mid	=	short(mid);
 					pV++;
 				}
 			}
@@ -128,14 +126,13 @@ void CDetailManager::VS_Render()
 	// Phase
 	float	fPhaseRange	=	PI/16;
 	float	fPhaseX		=	sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
+	float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);
-	VSC.set					(0,255.01f,255.01f,255.01f,1.f);
-	VSC.set					(1,scale,scale,scale,1.f);
-	VSC.set					(2,Device.mFullTransform);
+	VSC.set					(0,scale,scale,scale,1.f);
+	VSC.set					(1,Device.mFullTransform);
 	VSC.flush				(0,c_hdr);
 	
 	// Matrices and offsets

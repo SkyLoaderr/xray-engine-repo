@@ -305,7 +305,7 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
-		D.G[i].id		= DS.items[i].id;
+		D.G[i].id			= DS.items[i].id;
 		D.G[i].items.clear	();
 	}
 }
