@@ -34,9 +34,9 @@ public:
 		if (bClass3)	{
 			sPoly		src,dst;
 			src.resize	(3);
-			src[0]		= *tris[prim].verts[0];
-			src[1]		= *tris[prim].verts[1];
-			src[2]		= *tris[prim].verts[2];
+			src[0]		= verts[ tris[prim].verts[0] ];
+			src[1]		= verts[ tris[prim].verts[1] ];
+			src[2]		= verts[ tris[prim].verts[2] ];
 			if (F->ClipPoly(src,dst))
 			{
 				RESULT& R	= dest->r_add();
