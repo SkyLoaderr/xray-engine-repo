@@ -43,11 +43,11 @@ private:
 	};
 
 private:
-	typedef std::set<CStats> STATS;
+	typedef xr_set<CStats> STATS;
 
 private:
 	STATS							m_stats;
-	std::vector<CStats>				m_temp;
+	xr_vector<CStats>				m_temp;
 
 public:
 	IC	static	CSmartCastStats*	instance	();
@@ -105,8 +105,8 @@ IC	void CSmartCastStats::show					()
 	std::sort							(m_temp.begin(),m_temp.end(),CStatsPredicate());
 	u32									total = 0;
 
-	std::vector<CStats>::const_iterator	I = m_temp.begin();
-	std::vector<CStats>::const_iterator	E = m_temp.end();
+	xr_vector<CStats>::const_iterator	I = m_temp.begin();
+	xr_vector<CStats>::const_iterator	E = m_temp.end();
 	for ( ; I != E; ++I)
 		total							+= (*I).m_count;
 

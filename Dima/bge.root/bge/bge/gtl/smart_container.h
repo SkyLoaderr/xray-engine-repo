@@ -22,7 +22,7 @@
 // if you'd like to use shared_ptr or intrusive_ptr -> please inform me,
 // since this version doesn't support them
 
-#define DEFAULT_CONTAINER	std::vector
+#define DEFAULT_CONTAINER	xr_vector
 // you can use the following containers :
 // vector,
 // deque,

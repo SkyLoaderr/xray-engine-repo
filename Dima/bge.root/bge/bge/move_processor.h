@@ -25,7 +25,7 @@ public:
 	typedef typename move_container::const_reverse_iterator	const_reverse_move_iterator;
 
 public:
-	typedef std::vector<CSPositionMoves>					game_moves;
+	typedef xr_vector<CSPositionMoves>					game_moves;
 	typedef typename game_moves::iterator					position_move_iterator;
 
 protected:

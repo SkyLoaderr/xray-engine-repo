@@ -17,7 +17,7 @@ public:
 	typedef move_type				move_type;
 
 public:
-	typedef std::vector<move_type>	position_moves;
+	typedef xr_vector<move_type>	position_moves;
 
 private:
 	position_moves			m_moves;

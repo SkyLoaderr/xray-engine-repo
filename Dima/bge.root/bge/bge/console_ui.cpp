@@ -59,11 +59,11 @@ LPSTR CConsoleUI::process_compile	()
 	return		(result);
 }
 
-void CConsoleUI::show_header(const std::vector<LPCSTR> &strings)
+void CConsoleUI::show_header(const xr_vector<LPCSTR> &strings)
 {
 	char								temp[g_display_width];
-	std::vector<LPCSTR>::const_iterator	I = strings.begin();
-	std::vector<LPCSTR>::const_iterator	E = strings.end();
+	xr_vector<LPCSTR>::const_iterator	I = strings.begin();
+	xr_vector<LPCSTR>::const_iterator	E = strings.end();
 	for ( ; I != E; ++I) {
 		size_t				n = strlen(*I);
 		bool				parity = !((g_display_width - n) & 1);
@@ -87,7 +87,7 @@ void CConsoleUI::show_header()
 	sprintf					(compile,"Compiled on %s %s",temp,__TIME__,SHAPE_CHARACTER);
 	c_free					(temp);
 
-	std::vector<LPCSTR>		strings;
+	xr_vector<LPCSTR>		strings;
 	
 	char					string[g_display_width - 1];
 	Memory::mem_fill		(string,SHAPE_CHARACTER,(g_display_width - 2)*sizeof(char));

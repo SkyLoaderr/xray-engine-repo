@@ -58,7 +58,7 @@ private:
 	typedef char TABLE[256];
 
 private:
-	std::vector<TABLE>	m_table;
+	xr_vector<TABLE>	m_table;
 	LPCSTR				m_pattern;
 	int					m_length
 

@@ -56,7 +56,7 @@ public:
 	};
 	
 public:
-	typedef std::stack<CStackCell,std::vector<CStackCell> > flip_stack;
+	typedef xr_stack<CStackCell,xr_vector<CStackCell> > flip_stack;
 
 public:
 	typedef CMoveProcessor<cell_index,120,120>	move_processor;

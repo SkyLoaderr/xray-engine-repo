@@ -28,7 +28,7 @@ private:
 
 protected:
 			LPSTR		process_compile	();
-			void		show_header		(const std::vector<LPCSTR> &strings);
+			void		show_header		(const xr_vector<LPCSTR> &strings);
 	virtual	void		show_header		();
 			int			pure_log		(LPCSTR format, va_list list = va_list());
 

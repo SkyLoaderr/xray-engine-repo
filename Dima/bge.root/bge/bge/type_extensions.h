@@ -36,3 +36,9 @@ typedef	char	string512	[512];
 typedef	char	string1024	[1024];
 typedef	char	string2048	[2048];
 typedef	char	string4096	[4096];
+
+#define xr_vector	std::vector
+#define xr_set		std::set
+#define xr_map		xr_map
+#define xr_list		std::list
+#define xr_stack	std::stack

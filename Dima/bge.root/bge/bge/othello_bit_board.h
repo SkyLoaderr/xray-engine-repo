@@ -52,7 +52,7 @@ public:
 	};
 	
 public:
-	typedef std::stack<CStackCell,std::vector<CStackCell> > flip_stack;
+	typedef xr_stack<CStackCell,xr_vector<CStackCell> > flip_stack;
 
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
