@@ -800,7 +800,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage)
+CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
 {
 	CUIPdaMsgListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaMsgListItem>();
@@ -811,8 +811,33 @@ void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMess
 
 	UIPdaMsgListWnd.Show(true);	
 
-	pItem->UIMsgText.SetText(TextMessage);
-};
+	pItem->UIMsgText.SetText(message);
+	return pItem;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR TextMessage)
+{
+	CUIPdaMsgListItem *pItem = AddGameMessage(TextMessage);
+	if (pItem)
+	{
+		pItem->InitCharacter(pSender);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRect, LPCSTR message)
+{
+	CUIPdaMsgListItem* pItem = AddGameMessage(message);
+
+	if (pItem)
+	{
+		pItem->UIIcon.InitTexture(textureName);
+		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -903,17 +928,18 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 
 	if (!g_bNewsDisable)
 	{
-		CUIPdaMsgListItem* pItem = NULL;
-		pItem = xr_new<CUIPdaMsgListItem>();
-		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem); 
-		UIPdaMsgListWnd.ScrollToBegin();
-
-		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
-		pItem->SetValue(m_dwMaxShowTime);
-
-		UIPdaMsgListWnd.Show(true);	
-
-		pItem->UIMsgText.SetText(result);
+//		CUIPdaMsgListItem* pItem = NULL;
+//		pItem = xr_new<CUIPdaMsgListItem>();
+//		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem); 
+//		UIPdaMsgListWnd.ScrollToBegin();
+//
+//		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
+//		pItem->SetValue(m_dwMaxShowTime);
+//
+//		UIPdaMsgListWnd.Show(true);	
+//
+//		pItem->UIMsgText.SetText(result);
+		AddPersonalizedGameMessage(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()), result);
 	}
 
 	CUIGameSP* pGameSP		= dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());

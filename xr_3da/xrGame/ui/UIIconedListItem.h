@@ -21,7 +21,8 @@ class CUIIconedListItem: public CUIListItem
 	typedef CUIListItem inherited;
 public:
 	CUIIconedListItem(): m_uIconSize		(0),
-						 m_bTexturePresent	(false)
+						 m_bTexturePresent	(false),
+						 m_bIconDraw		(true)
 	{}
 
 	// Устанавливаем иконку и ее размер

@@ -25,6 +25,8 @@ extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
 extern int				g_bNewsDisable;
 
+class					CUIPdaMsgListItem;
+
 struct CUSTOM_TEXTURE
 {
 	CUSTOM_TEXTURE(CUIStaticItem* si, int left, int top, int right, int bottom)
@@ -59,10 +61,12 @@ public:
 	//для отображения сообщения пришедшего по PDA
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index);
 	
-	void AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage);
-	void AddStaticItem	(CUIStaticItem* si, int left, int top, int right, int bottom);
+	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message);
+	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage);
+	void AddIconedGameMessage			(LPCSTR textureName, RECT originalRect, LPCSTR message);
+	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
-	// "рюкзак переполнен", и т.д.
+	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
 	void AddInfoMessage	(LPCSTR message);
 
 protected:

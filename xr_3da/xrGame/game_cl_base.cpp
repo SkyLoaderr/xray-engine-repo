@@ -213,7 +213,7 @@ void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
 	if (!HUD().GetUI()) 
 		return;
-	HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, msg);
+	HUD().GetUI()->UIMainIngameWnd.AddGameMessage(msg);
 }
 
 float game_cl_GameState::shedule_Scale		()
