@@ -635,6 +635,11 @@ function day_time()
     return math.mod( game.time(), ms_per_day )
 end
 
+--Time in hours
+function local_hour()
+    return math.floor( math.mod( game.time()/1000, 86400 )/ 3600 )
+end
+
 -- парсит строку вида "ааа, ббб, ввв..." в таблицу { "ааа", "ббб", "ввв", ... }
 -- Чугай
 function parse_names( s )
