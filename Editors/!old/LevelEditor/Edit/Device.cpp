@@ -69,7 +69,7 @@ void CRenderDevice::Initialize()
     GMLib.Load	();
 
 	// compiler shader
-	AnsiString fn;
+	ref_str fn;
     FS.update_path(fn,_game_data_,"shaders_xrlc.xr");
     if (FS.exist(fn.c_str())){
     	ShaderXRLC.Load(fn.c_str());
@@ -128,7 +128,7 @@ bool CRenderDevice::Create()
 	// after creation
 	dwFrame				= 0;
 
-	AnsiString sh;
+	ref_str sh;
     FS.update_path		(sh,_game_data_,"shaders.xr");
 
     IReader* F			= 0;

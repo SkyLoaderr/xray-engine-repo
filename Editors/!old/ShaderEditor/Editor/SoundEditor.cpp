@@ -269,7 +269,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 		AnsiString m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             AnsiString 			dest_name = AnsiString(folder+ExtractFileName(*it));
-            AnsiString			dest_full_name;
+            ref_str				dest_full_name;
             FS.update_path		(dest_full_name,_sounds_,dest_name.c_str());
             if (FS.exist(dest_full_name.c_str())){
             	int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"File '%s' already exist. Owerwrite it?",ExtractFileName(*it).c_str());

@@ -140,7 +140,7 @@ void CEditorPreferences::Edit()
 
 void CEditorPreferences::OnCreate()
 {
-	AnsiString 	fn;
+	ref_str 	fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
 
@@ -203,7 +203,7 @@ void CEditorPreferences::OnDestroy()
 {
     TProperties::DestroyForm(m_ItemProps);
 
-	AnsiString 	fn;
+	ref_str 	fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
 

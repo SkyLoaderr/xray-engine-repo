@@ -105,9 +105,9 @@ void __fastcall TfrmImageLib::UpdateLib()
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	fn = ChangeFileExt(it->first,"");
+        	fn = ChangeFileExt(it->first.c_str(),"");
         	ImageLib.UpdateFileName(fn);
-            texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
+            texture_map.insert(mk_pair(fn.c_str(),FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync
 		ImageLib.SynchronizeTextures(true,true,true,&texture_map,&modif);
@@ -205,7 +205,7 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
 {
 	if (m_ItemProps->IsModified()||bImportMode){
 	    for (THMIt t_it=m_THM_Current.begin(); t_it!=m_THM_Current.end(); t_it++){
-            AnsiString fn = (*t_it)->SrcName();
+            ref_str fn = (*t_it)->SrcName();
             FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
             modif_map.insert(*it);
         }
@@ -239,7 +239,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
         }
     }
 
-	AnsiString nm;
+	ref_str nm;
     FS.update_path			(nm,_game_textures_,"textures.ltx");
 	CInifile* ini 			= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
@@ -252,10 +252,10 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
     bool bRes=true;
     for (;it!=_E; it++){
         ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
-	    UI->ProgressInc(it->first.c_str());
-        AnsiString base_name= ChangeFileExt(it->first,"");
+	    UI->ProgressInc		(it->first.c_str());
+        AnsiString base_name= ChangeFileExt(it->first.c_str(),"");
         ImageLib.WriteAssociation	(ini,base_name.c_str(),m_Thm->_Format());
-        xr_delete(m_Thm);
+        xr_delete			(m_Thm);
 		if (UI->NeedAbort()){ bRes=false; break; }
     }
     UI->ProgressEnd();
