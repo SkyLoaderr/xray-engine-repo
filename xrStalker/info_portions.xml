@@ -22,7 +22,7 @@
 		<location >
 			<level>0</level>
 			<object>wounded_stalker_0_1</object>
-			<icon name="unknown" x="2" y="2" width="1" height="1"></icon>
+			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
 			<text>аптечку...</text>
 		</location>
 		<!-- список диалогов, который может инициировать InfoPortion -->
