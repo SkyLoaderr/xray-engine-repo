@@ -105,9 +105,8 @@ function main ()
     action (stalker3, move (pos, 0.26), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
     action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
-	action (stalker3, anim ("prisluh_v_torso_idle_2"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
-			cond (cond.sound_end))
-	action (stalker3, anim ("norm_torso_2_idle_0"), object (torch, object.deactivate), cond (cond.object_end))
+	action (stalker3, anim ("prisluh_v_torso_idle_2"), 	cond (cond.anim_end))
+	action (stalker3, anim ("norm_torso_2_idle_0"), object (torch, object.deactivate), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.sound_end))
 
 	while stalker3:action () do wait () end
 
