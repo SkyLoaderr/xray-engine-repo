@@ -124,6 +124,16 @@ namespace ETOOLS{
 		return true;
 	}
 
+	ETOOLS_API CDB::MODEL*	create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
+	{
+		CDB::MODEL* M		= xr_new<CDB::MODEL> ();
+		M->build			(V,Vcnt,T,Tcnt);
+		return M;
+	}
+	ETOOLS_API void			destroy_model	(CDB::MODEL*& M)
+	{
+		xr_delete			(M);
+	}
 	ETOOLS_API CDB::RESULT*	r_begin	()	{	return XRC.r_begin();		};
 	ETOOLS_API CDB::RESULT*	r_end	()	{	return XRC.r_end();			};
 	ETOOLS_API int	r_count			()	{	return XRC.r_count();		};
