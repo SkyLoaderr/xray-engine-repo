@@ -32,6 +32,8 @@ CPEDef::CPEDef()
     m_CollideOneMinusFriction 	= 1.f;
     m_CollideResilience			= 0.f;
     m_CollideSqrCutoff			= 0.f;
+    // velocity scale
+    m_VelocityScale.set	(0.f,0.f,0.f);
 }
 
 CPEDef::~CPEDef()
@@ -47,6 +49,11 @@ void CPEDef::SetName(LPCSTR name)
 void CPEDef::pAlignToPath()
 {
 	m_Flags.set			(dfAlignToPath,TRUE);
+}
+void CPEDef::pVelocityScale(float scale_x, float scale_y, float scale_z)
+{
+	m_Flags.set			(dfVelocityScale,TRUE);
+    m_VelocityScale.set	(scale_x, scale_y, scale_z);
 }
 void CPEDef::pCollision(float friction, float resilience, float cutoff, BOOL destroy_on_contact)
 {
@@ -207,6 +214,11 @@ BOOL CPEDef::Load(IReader& F)
         m_CollideResilience			= F.r_float();
         m_CollideSqrCutoff			= F.r_float();
     }
+
+    if (m_Flags.is(dfVelocityScale)){
+    	R_ASSERT(F.find_chunk(PED_CHUNK_VEL_SCALE));
+        F.r_fvector3				(m_VelocityScale);
+    }
     
 #ifdef _PARTICLE_EDITOR
 	F.find_chunk	(PED_CHUNK_SOURCETEXT);
@@ -264,6 +276,11 @@ void CPEDef::Save(IWriter& F)
         F.close_chunk	();
     }
     
+    if (m_Flags.is(dfVelocityScale)){
+        F.open_chunk	(PED_CHUNK_VEL_SCALE);
+        F.w_fvector3	(m_VelocityScale);
+        F.close_chunk	();
+    }
 #ifdef _PARTICLE_EDITOR
 	F.open_chunk	(PED_CHUNK_SOURCETEXT);
     F.w_stringZ		(m_SourceText.c_str());
@@ -394,18 +411,8 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 					if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
 					vis.box.modify((Fvector&)m.pos);
 					if (m.size.x>p_size) p_size = m.size.x;
-                    // ---
-		            if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
-                    	u32 a0 = iFloor((m.age-fDT_STEP)*1000.f)/mb_dt;
-                    	u32 a1 = iFloor(m.age*1000.f)/mb_dt;
-                    	if (a0!=a1){
-	                        Msg("%3.2f, %3.2f, %3.2f, %3.2f",m.pos.y,m.p[0].y,m.p[1].y,m.p[2].y);
-                            m.p[3] = m.p[2];
-                            m.p[2] = m.p[1];
-                            m.p[1] = m.p[0];
-                            m.p[0] = m.pos;
-                        }
-                    }
+					if (m.size.y>p_size) p_size = m.size.y;
+					if (m.size.z>p_size) p_size = m.size.z;
 				}
 				vis.box.grow		(p_size);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
@@ -461,44 +468,51 @@ void CParticleEffect::Copy(IRender_Visual* pFrom)
 }
 
 //----------------------------------------------------
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, float angle, float scale, float w_2, float h_2)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r_x, float r_y, u32 clr, float angle, float scale, float w_2, float h_2)
 {
 	FVF::TL			PT;
 
 	PT.transform	(pos, M);
-	float sz		= scale * radius / PT.p.w;
+//	float sz		= scale * radius / PT.p.w;
+    r_x				*= scale / PT.p.w;
+    r_y				*= scale / PT.p.w;
 	// 'Cause D3D clipping have to clip Four points
 	// We can help him :)
 
-	if (sz<1.5f)	return;
-	if (PT.p.x< -1)	return;
-	if (PT.p.x>  1)	return;
-	if (PT.p.y< -1)	return;
-	if (PT.p.y>  1)	return;
-	if (PT.p.z<  0) return;
+	if (r_x<1.f)	return;
+	if (r_y<1.f)	return;
+	if (PT.p.x<-1)	return;
+	if (PT.p.x> 1)	return;
+	if (PT.p.y<-1)	return;
+	if (PT.p.y> 1)	return;
+	if (PT.p.z< 0) 	return;
 
 	// Convert to screen coords
 	Fvector2	c;
 	c.x				= (PT.p.x+1)*w_2;
 	c.y				= (PT.p.y+1)*h_2;
 
-	// Rotation
+	// Rotation                         
 	float	_sin1,_cos1,_sin2,_cos2,da;
-	da = angle;		 _sin1=_sin(da); _cos1=_cos(da);
-	da += PI_DIV_2;  _sin2=_sin(da); _cos2=_cos(da);
+	da = angle+PI_DIV_4;	
+    	_sin1=r_y*_sin(da); 
+        _cos1=r_x*_cos(da);  
+	da += PI_DIV_2;  		
+    	_sin2=r_y*_sin(da); 
+        _cos2=r_x*_cos(da);
 
-	pv->set	(c.x+sz*_sin1,	c.y+sz*_cos1,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set	(c.x-sz*_sin2,	c.y-sz*_cos2,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set	(c.x+sz*_sin2,	c.y+sz*_cos2,	PT.p.z, PT.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
+	pv->set	(c.x+_sin1,	c.y+_cos1,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
+	pv->set	(c.x-_sin2,	c.y-_cos2,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
+	pv->set	(c.x+_sin2,	c.y+_cos2,	PT.p.z, PT.p.w, clr, rb.x,rb.y);	pv++;
+	pv->set	(c.x-_sin1,	c.y-_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float size_x, float size_y, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
 {
 	Fvector			P1,P2;
 
-	P1.mad			(pos,D,-radius*factor);
-	P2.mad			(pos,D,radius*factor);
+	P1.mad			(pos,D,-size_x*factor);
+	P2.mad			(pos,D,size_x*factor);
 
 	FVF::TL			s1,s2;
 	s1.transform	(P1,M);
@@ -506,7 +520,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 
 	if ((s1.p.w<=0)||(s2.p.w<=0)) return;
 
-    float l1,l2		= 0.7071f*scale*radius; l1 = l2;
+    float l1,l2		= 0.7071f*scale*size_y; l1 = l2;
 	l1				/= s1.p.w;
 	l2				/= s2.p.w;
 
@@ -519,34 +533,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
 	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
-/*
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& p0, const Fvector& p1, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
-{
-	Fvector			P1,P2;
 
-	P1.mad			(p0,D,-radius*factor);
-	P2.mad			(p1,D,radius*factor);
-
-	FVF::TL			s1,s2;
-	s1.transform	(P1,M);
-	s2.transform	(P2,M);
-
-	if ((s1.p.w<=0)||(s2.p.w<=0)) return;
-
-    float l1,l2		= 0.7071f*scale*radius; l1 = l2;
-	l1				/= s1.p.w;
-	l2				/= s2.p.w;
-
-	Fvector2		dir,R;
-	R.cross			(dir.set(s2.p.x-s1.p.x,s2.p.y-s1.p.y).norm());
-	s1.p.x = (s1.p.x+1)*w_2; s1.p.y	= (s1.p.y+1)*h_2;
-	s2.p.x = (s2.p.x+1)*w_2; s2.p.y	= (s2.p.y+1)*h_2;
-	pv->set			(s1.p.x+l1*R.x,	s1.p.y+l1*R.y,	s2.p.z, s2.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set			(s2.p.x+l2*R.x,	s2.p.y+l2*R.y,	s2.p.z, s2.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
-}
-*/
 void CParticleEffect::Render(float LOD)
 {
 	u32			dwOffset,dwCount;
@@ -577,31 +564,21 @@ void CParticleEffect::Render(float LOD)
             lt.set			(0.f,0.f);
             rb.set			(1.f,1.f);
             if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(m.frame),lt,rb);
+            float r_x		= m.size.x*0.5f;
+            float r_y		= m.size.y*0.5f;
+            if (m_Def->m_Flags.is(CPEDef::dfVelocityScale)){
+	            float speed	= m.vel.magnitude();
+                r_x			+= speed*m_Def->m_VelocityScale.x;
+                r_y			+= speed*m_Def->m_VelocityScale.y;
+            }
             if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
                 Fvector 	dir;
-                dir.sub		(m.pos,m.posB);
-                float dist 	= dir.magnitude();
-                if (dist>=EPS_S)dir.div(dist);
-                else			dir.set(0,1,0);
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
-                dir.sub		(m.p[0],m.p[1]);
-                dist 		= dir.magnitude();
-                if (dist>=EPS_S)dir.div(dist);
-                else			dir.set(0,1,0);
-                FillSprite	(pv,mSpriteTransform,m.p[1],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
-				dir.sub		(m.p[1],m.p[2]);
-                dist 		= dir.magnitude();
-                if (dist>=EPS_S)dir.div(dist);
-                else			dir.set(0,1,0);
-                FillSprite	(pv,mSpriteTransform,m.p[2],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
-                dir.sub		(m.p[2],m.p[3]);
-                dist 		= dir.magnitude();
-                if (dist>=EPS_S)dir.div(dist);
-                else			dir.set(0,1,0);
-                FillSprite	(pv,mSpriteTransform,m.p[3],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
-
+	            float speed	= m.vel.magnitude();
+                if (speed>=EPS_S)	dir.div	(m.vel,speed);
+                else				dir.set	(0.f,1.f,0.f);
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,C,dir,fov_scale_w,factor_r,w_2,h_2);
             }else{
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,m.size.x*.5f,C,m.rot.x,fov_scale_w,w_2,h_2);
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,C,m.rot.x,fov_scale_w,w_2,h_2);
             }
         }
         dwCount 			= u32(pv-pv_start);

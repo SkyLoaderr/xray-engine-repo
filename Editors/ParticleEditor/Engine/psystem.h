@@ -62,9 +62,10 @@ namespace PAPI
 
 	// refs
 	struct PAHeader;
-	#pragma pack (push,4)
-	// A single particle
 
+	#pragma pack (push,4)
+
+	// A single particle
 	struct Particle
 	{
 		enum{
@@ -76,8 +77,7 @@ namespace PAPI
 		pVector	posB;
 		pVector	size;
 		pVector	rot;
-		pVector	vel;
-		pVector	velB;	// Used to compute binormal, normal, etc.
+		pVector	vel;     
 		pVector	color;	// Color must be next to alpha so glColor4fv works.
 		float	alpha;	// This is both cunning and scary.
 		float	age;
@@ -115,7 +115,7 @@ namespace PAPI
 				P.size = size;
 				P.rot = rot;
 				P.vel = vel;
-				P.velB = vel;	// XXX This should be fixed.
+//				P.velB = vel;	// XXX This should be fixed.
 				P.color = color;
 				P.alpha = alpha;
 				P.age = age;

@@ -75,6 +75,7 @@ namespace PS
             dfAlignToPath	= (1<<15),
             dfCollision		= (1<<16),
             dfCollisionDel	= (1<<17),
+            dfVelocityScale	= (1<<18),
 		};
 
 		string64			m_Name;
@@ -93,6 +94,9 @@ namespace PS
 		PAPI::PAHeader*		m_ActionList;
 
 		ref_shader			m_CachedShader;
+
+    // align to path
+	    Fvector				m_VelocityScale;
 	protected:
     // collision
 	    float 				m_CollideOneMinusFriction;
@@ -111,6 +115,7 @@ namespace PS
 		// state api                                      
 		void				pSprite				(string128& sh_name, string128& tex_name);
 		void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
+        void				pVelocityScale		(float scale_x=0.f, float scale_y=0.f, float scale_z=0.f);
 		void 				pAlignToPath		();
         void				pCollision			(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);
 		// action api
@@ -214,6 +219,7 @@ namespace PS
 #define PED_CHUNK_TIMELIMIT2	0x0009
 #define PED_CHUNK_SOURCETEXT   	0x0020
 #define PED_CHUNK_COLLISION	   	0x0021
+#define PED_CHUNK_VEL_SCALE		0x0022
 
 //---------------------------------------------------------------------------
 #endif
