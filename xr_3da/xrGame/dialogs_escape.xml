@@ -4,7 +4,7 @@
     <dialog id="escape_trader_start_dialog">
 	<phrase_list>
 	    	<phrase id="0">
-			<text>Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
+			<text>.Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
 	    	</phrase>                                                                                               
 	</phrase_list>
     </dialog>
