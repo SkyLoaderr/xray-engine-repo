@@ -51,7 +51,7 @@ void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, u32 address, u3
 	R_ASSERT				(stage<16);
 
 	// Create texture
-	while (stage>=passTextures.size())	passTextures.push_back	(NULL);
+	while (stage>=passTextures.size())	passTextures.push_back		(NULL);
 	passTextures[stage]		= Device.Resources->_CreateTexture		(texture);
 
 	// Sampler states

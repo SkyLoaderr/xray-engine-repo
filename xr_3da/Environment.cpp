@@ -35,8 +35,8 @@ public:
 	virtual		void		Compile			(CBlender_Compile& C)
 	{
 		C.r_Pass			("null",			"r1_sky2",		FALSE,	TRUE, FALSE);
-		C.r_Sampler			("s_sky0",			"null",			D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
-		C.r_Sampler			("s_sky1",			"null",			D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+		C.r_Sampler			("s_sky0",			"$null",		D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+		C.r_Sampler			("s_sky1",			"$null",		D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r_End				();
 	}
 };

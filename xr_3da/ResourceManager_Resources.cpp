@@ -421,7 +421,7 @@ void		CResourceManager::DeleteGeom		(const SGeometry* Geom)
 CTexture* CResourceManager::_CreateTexture	(LPCSTR Name)
 {
 	// DBG_VerifyTextures	();
-
+	if (0==strcmp(Name,"null"))	return 0;
 	R_ASSERT(Name && Name[0]);
 
 	//.
