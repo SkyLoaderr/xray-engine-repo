@@ -37,7 +37,7 @@
 	</chicon_frame_line>
 	
 	<!--  ANIMATED STATIC TEST -->
-	<a_static x="220" y="10" width="32" height="32"
+	<a_static x="210" y="1" width="32" height="32"
 			frames			= "16"
 			duration		= "500"
 			columns			= "8"
