@@ -495,13 +495,13 @@ void CActor::Die	( )
 	TIItemList &l_blist = inventory().m_belt;
 	while (!l_blist.empty())	inventory().Ruck(l_blist.front());
 
-	if (OnServer() && Game().type != GAME_SINGLE)
+	if (OnServer() && GameID() != GAME_SINGLE)
 	{
 		//if we are on server and actor has PDA - destroy PDA
 		TIItemList &l_rlist = inventory().m_ruck;
 		for(PPIItem l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
 		{
-			if (Game().type == GAME_ARTEFACTHUNT)
+			if (GameID() == GAME_ARTEFACTHUNT)
 			{
 				if ((*l_it)->SUB_CLS_ID == CLSID_ARTEFACT)
 				{
@@ -888,7 +888,7 @@ void CActor::shedule_Update	(u32 DT)
 		m_pVehicleWeLookingAt			= dynamic_cast<CHolderCustom*>(RQ.O);
 		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
 		
-		if (Game().type == GAME_SINGLE)
+		if (GameID() == GAME_SINGLE)
 		{
 			// Анализируем какой объект мы видим, и назначаем соответсвующее
 			// действие по умолчанию, которое будет определять всплывающую 
@@ -1078,14 +1078,14 @@ void CActor::UpdateCondition()
 
 bool		CActor::use_bolts				() const
 {
-	if (Game().type != GAME_SINGLE) return false;
+	if (GameID() != GAME_SINGLE) return false;
 	return CInventoryOwner::use_bolts();
 };
 
 
 bool  CActor::NeedToDestroyObject() const
 {
-	if(Level().game->type == GAME_SINGLE)
+	if(GameID() == GAME_SINGLE)
 	{
 		return false;
 	}
@@ -1112,7 +1112,7 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake(inventory_item);
 	if (OnClient()) return;
 	
-	switch (Game().type)
+	switch (GameID())
 	{
 	case GAME_DEATHMATCH:
 	case GAME_TEAMDEATHMATCH:
@@ -1128,7 +1128,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemDrop(inventory_item);
 	if (OnClient()) return;
 
-	switch (Game().type)
+	switch (GameID())
 	{
 	case GAME_DEATHMATCH:
 	case GAME_TEAMDEATHMATCH:

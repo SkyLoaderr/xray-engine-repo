@@ -523,7 +523,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_bInInterpolation = false;
 	m_bInterpolate = false;
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		processing_activate();
 	}
