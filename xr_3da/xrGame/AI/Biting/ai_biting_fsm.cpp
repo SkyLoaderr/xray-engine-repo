@@ -20,13 +20,13 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
-	if (I) {
-		HDebug->M_Add(0,"Enemy SEE me",D3DCOLOR_XRGB(0,255,255));
-	} else {
-		HDebug->M_Add(0,"Enemy DONT SEE! me",D3DCOLOR_XRGB(255,0,0));
-	}
-	
-	HDebug->SetActive(true);	
+//	if (I) {
+//		HDebug->M_Add(0,"Enemy SEE me",D3DCOLOR_XRGB(0,255,255));
+//	} else {
+//		HDebug->M_Add(0,"Enemy DONT SEE! me",D3DCOLOR_XRGB(255,0,0));
+//	}
+//	
+//	HDebug->SetActive(true);	
 
 
 
@@ -40,8 +40,8 @@ void CAI_Biting::Think()
 		SetState							(stateRest);
 	}
 
-	//StateSelector							();
-	//CurrentState->Execute					(m_current_update);
+	StateSelector							();
+	CurrentState->Execute					(m_current_update);
 
 	// update path
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
