@@ -22,7 +22,7 @@ BOOL CEffectorHit::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, floa
 	Fvector dangle;
 	dangle.x = m_x * fLifeTime / fTime;
 	dangle.y = m_y * fLifeTime / fTime;
-	dangle.z = dangle.x + dangle.y;
+	dangle.z = dangle.x /*+ dangle.y*/;
 
 	Fmatrix		R;
 	R.setHPB	(dangle.x,dangle.y,dangle.z);
