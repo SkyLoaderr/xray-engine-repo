@@ -33,8 +33,7 @@ Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
 		ConfigName.1 = Mixed
-		ConfigName.2 = Mixed (for debug only)
-		ConfigName.3 = Release
+		ConfigName.2 = Release
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.0 = {CCCA7859-EB86-493E-9B53-C4235F45B3C5}
@@ -48,30 +47,24 @@ Global
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Mixed|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.Build.0 = Mixed|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed (for debug only).ActiveCfg = Mixed (for debug only)|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed (for debug only).Build.0 = Mixed (for debug only)|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.ActiveCfg = Release|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.Build.0 = Release|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Debug.ActiveCfg = Debug|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Debug.Build.0 = Debug|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Mixed.ActiveCfg = Mixed|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Mixed.Build.0 = Mixed|Win32
-		{CA0649DD-D089-423A-981C-46B57A884EB9}.Mixed (for debug only).ActiveCfg = Mixed|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Release.ActiveCfg = Release|Win32
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.Release.Build.0 = Release|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.ActiveCfg = Debug|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.Build.0 = Debug|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.ActiveCfg = Mixed|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.Build.0 = Mixed|Win32
-		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed (for debug only).ActiveCfg = Mixed|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.ActiveCfg = Release|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.Build.0 = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Debug.ActiveCfg = Debug|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Debug.Build.0 = Debug|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed.ActiveCfg = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed.Build.0 = Release|Win32
-		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed (for debug only).ActiveCfg = Release|Win32
-		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed (for debug only).Build.0 = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.ActiveCfg = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.Build.0 = Release|Win32
 	EndGlobalSection
