@@ -419,7 +419,7 @@ IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::
 	return (N1->val.ssa > N2->val.ssa);		
 }
 
-const float	ssa_important		= .05f;
+const float	ssa_important		= .005f;
 IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float val)
 {
 	return	(N1->val.ssa > ssa_important);
