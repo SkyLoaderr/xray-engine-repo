@@ -128,7 +128,12 @@ void CheckPrivilegySlowdown		( )
 #ifdef	DEBUG
 	BOOL	bDima	= (0==stricmp(Core.CompName,"dima-ai"))&&(0==stricmp(Core.CompName,"dima"));
 	BOOL	bJim	= (0==stricmp(Core.CompName,"shuttle"))&&(0==stricmp(Core.CompName,"jim"));
-	if	(bDima || bJim)	_beginthread(slowdownthread,0,0);
+	BOOL	bDandy	= (0==stricmp(Core.CompName,"london"))&&(0==stricmp(Core.CompName,"dandy"));
+	if	(bDima || bJim || bDandy)	{
+		Log			("! slowdown enabled for your pleasure :)");
+		_beginthread(slowdownthread,0,0);
+		_beginthread(slowdownthread,0,0);
+	}
 #endif
 }
 
