@@ -778,6 +778,9 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	cc.set									(s_Light_Direct.constants.get("light_color"),		.8f,		.7f,		.9,			1	);
 	cc.flush								(m_pd3dDevice);
 
+	// Blend mode - directional light comes first - means no blending
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
