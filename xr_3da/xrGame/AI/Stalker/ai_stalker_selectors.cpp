@@ -16,6 +16,9 @@ CStalkerSelectorFreeHunting::CStalkerSelectorFreeHunting()
 
 float CStalkerSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
-	return(0.0f);
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	return(m_tEnemyPosition.distance_to(m_tCurrentPosition)*1000.f);
 }
 

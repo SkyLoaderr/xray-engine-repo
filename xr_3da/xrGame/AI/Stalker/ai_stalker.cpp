@@ -101,3 +101,8 @@ void CAI_Stalker::net_Import(NET_Packet& P)
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 }
+
+void CAI_Stalker::Exec_Movement	(float dt)
+{
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+}

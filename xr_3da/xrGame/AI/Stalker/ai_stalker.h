@@ -13,7 +13,8 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_selectors.h"
 
-#define MAX_STATE_LIST_SIZE 256
+#define MAX_STATE_LIST_SIZE				256
+#define MAX_TIME_RANGE_SEARCH			5000.f
 
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
 private:
@@ -70,7 +71,8 @@ private:
 			///
 			void			DropItem();
 			void			vfBuildPathToDestinationPoint(CAISelectorBase *S);
-
+			void			vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
+			void			vfInitSelector			(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker				();
@@ -89,6 +91,7 @@ public:
 	virtual void			net_Import				(NET_Packet& P);
 	virtual void			SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void			OnEvent					(NET_Packet& P, u16 type);
-			void			feel_touch_new			(CObject* O);
-			void			OnVisible				();
+	virtual void			feel_touch_new			(CObject* O);
+	virtual void			OnVisible				();
+	virtual void			Exec_Movement			(float dt);
 };

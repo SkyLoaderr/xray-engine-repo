@@ -11,8 +11,8 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
+//Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 //#define WRITE_TO_LOG(s) m_bStopThinking = true;
-	//Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);
 #define WRITE_TO_LOG(s) {\
 	m_bStopThinking = true;\
 }
@@ -119,4 +119,14 @@ void CAI_Stalker::Searching()
 {
 	WRITE_TO_LOG("Searching");
 
+	INIT_SQUAD_AND_LEADER;
+	
+	if (AI_Path.bNeedRebuild) {
+		vfBuildPathToDestinationPoint(0);
+		m_fCurSpeed = 1.f;
+	}
+	else {
+		vfInitSelector(m_tSelectorFreeHunting,Squad,Leader);
+		vfSearchForBetterPosition(m_tSelectorFreeHunting,Squad,Leader);
+	}
 }
