@@ -93,7 +93,8 @@ bool CRestrictedObject::accessible		(u32 vertex_id) const
 		accessible(Fvector().set(position.x + offset,position.y,position.z + offset)) || 
 		accessible(Fvector().set(position.x + offset,position.y,position.z - offset)) || 
 		accessible(Fvector().set(position.x - offset,position.y,position.z + offset)) || 
-		accessible(Fvector().set(position.x - offset,position.y,position.z - offset))
+		accessible(Fvector().set(position.x - offset,position.y,position.z - offset)) ||
+		accessible(Fvector().set(position.x,position.y,position.z))
 	);
 }
 
