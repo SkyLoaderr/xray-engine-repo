@@ -13,12 +13,17 @@
 #include "net_queue.h"
 #include "ai/ai_monster_group.h"
 #include "memory_space.h"
+#include "memory_space.h"
 
 class	CHUDManager;
 class	CParticlesObject;
 
 #define DEFAULT_FOV				90.f
 const int maxGroups				= 32;
+
+
+struct SMapLocation;
+DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 
 class CSquad
 {
@@ -259,12 +264,26 @@ public:
 		return			(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
 	}
 
+protected:
 	CFogOfWar*			m_pFogOfWar;
+public:
 	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
 
-	CBulletManager*		m_pBulletManager;
-	IC CBulletManager&	BulletManager() {return	*m_pBulletManager;}
+	//список локаций на карте, которые отображаются в данный момент
+protected:	
+	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
+public:
+	LOCATIONS_PTR_VECTOR&   MapLocations				() {return m_MapLocationVector;}
+	void					AddObjectMapLocation		(const CGameObject* object);
+	void					AddMapLocation				(const SMapLocation& map_location);
+	bool					RemoveMapLocationByID		(u16 object_id);
+	bool					RemoveMapLocationByInfo		(int info_portion_index);
 
+	//работа с пулями
+protected:	
+	CBulletManager*		m_pBulletManager;
+public:
+	IC CBulletManager&	BulletManager() {return	*m_pBulletManager;}
 
 	// by Jim
 	// gets current daytime [0..23]

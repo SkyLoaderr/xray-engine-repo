@@ -90,6 +90,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		VERIFY(pEntity);
 		CharacterInfo().m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_iIconY = pEntity->GetTradeIconY();
+
+		CharacterInfo().m_iMapIconX = pEntity->GetMapIconX();
+		CharacterInfo().m_iMapIconY = pEntity->GetMapIconY();
+
 	}
 
 

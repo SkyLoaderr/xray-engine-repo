@@ -44,7 +44,8 @@ bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 			m_sVisualName		= xml_doc.Read("visual", 0, NULL);
 			m_iIconX			= xml_doc.ReadAttribInt("icon", 0, "x");
 			m_iIconY			= xml_doc.ReadAttribInt("icon", 0, "y");
-
+			m_iMapIconX			= xml_doc.ReadAttribInt("map_icon", 0, "x");
+			m_iMapIconY			= xml_doc.ReadAttribInt("map_icon", 0, "y");
 			return true;
 		}
 	}
@@ -53,22 +54,22 @@ bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 }
 
 
-LPCSTR CCharacterInfo::Name() 
+LPCSTR CCharacterInfo::Name() const 
 {
 	return	*m_sGameName;
 }
-LPCSTR CCharacterInfo::Rank()
+LPCSTR CCharacterInfo::Rank() const 
 {
 	return	*m_sRank;
 }
-LPCSTR CCharacterInfo::Community()
+LPCSTR CCharacterInfo::Community() const 
 {
 	return	*m_sTeamName;
 }
 
-ALife::ERelationType  CCharacterInfo::GetRelation	(u16 person_id)
+ALife::ERelationType  CCharacterInfo::GetRelation	(u16 person_id) const 
 {
-	RELATION_MAP_IT it = m_RelationMap.find(person_id);
+	RELATION_MAP::const_iterator it = m_RelationMap.find(person_id);
 	if(m_RelationMap.end() != it)
 		return (*it).second;
 	else

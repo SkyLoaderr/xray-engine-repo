@@ -73,7 +73,7 @@ void CPhraseDialog::Load(LPCSTR xml_file)
 	R_ASSERT2(xml_result, "xml file not found");
 
 	//загрузить все части информации
-	int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");
+	//int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");
 }
 
 

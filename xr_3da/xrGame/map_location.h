@@ -3,10 +3,15 @@
 // структура для локации на карте
 ///////////////////////////////////////////////////////////////
 
+#pragma once
+
+#include "ui/uistring.h"
+
 struct SMapLocation
 {
 	SMapLocation() 
 	{
+		info_portion_index = -1;
 		level_num = 0;
 		x = y = 0;
 		name.SetText("");
@@ -30,7 +35,11 @@ struct SMapLocation
 	bool attached_to_object;
 	//id объекта на уровне
 	u16 object_id;
+	//индекс части информации
+	int	info_portion_index;
 
 	//размеры и положение иконки
 	int icon_x, icon_y, icon_width, icon_height;
 };
+
+DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);

@@ -288,9 +288,6 @@ public:
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
 	EActorAction			GetDefaultActionForObject	() {return m_eDefaultObjAction;}
-	CEntityAlive*			WaitingTradePartner			() {return m_pWaitingTradePartner;}
-	CInventoryOwner*		WaitingTradePartnerInvOwner	() {return m_pWaitingTradePartnerInvOwner;}
-
 protected:
 
 	// Person we're looking at
@@ -300,9 +297,6 @@ protected:
 	CGameObject*			m_pObjectWeLookingAt;
 	// Default action for object we're looking at
 	EActorAction			m_eDefaultObjAction;
-	//партнер по торговле, который нас ждет (для отображения на карте)
-	CEntityAlive*			m_pWaitingTradePartner;
-	CInventoryOwner*		m_pWaitingTradePartnerInvOwner;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;

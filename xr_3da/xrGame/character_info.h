@@ -18,19 +18,22 @@ public:
 	CCharacterInfo();
 	~CCharacterInfo();
 
-	virtual LPCSTR Name();
-	virtual LPCSTR Rank();
-	virtual LPCSTR Community();
+	virtual LPCSTR Name() const ;
+	virtual LPCSTR Rank() const ;
+	virtual LPCSTR Community() const ;
 
-	int		TradeIconX() {return m_iIconX;}
-	int		TradeIconY() {return m_iIconY;}
+	int		TradeIconX()	const	 {return m_iIconX;}
+	int		TradeIconY()	const	 {return m_iIconY;}
+	int		MapIconX()		const 	{return m_iMapIconX;}
+	int		MapIconY()		const	{return m_iMapIconY;}
+
 
 	//загрузка профиля персонажа из xml файла,
 	//если профиль не найден - возвращаем false, иначе true
 	bool Load(LPCSTR name_id, LPCSTR xml_file = DEFAULT_CHARACTER_FILE);
 
 
-	ALife::ERelationType GetRelation	(u16 person_id);
+	ALife::ERelationType GetRelation	(u16 person_id) const ;
 	void				 SetRelation	(u16 person_id, ALife::ERelationType new_relation);
 	void				 ClearRelations	();
 

@@ -3426,6 +3426,9 @@
 						RelativePath="Level_load.cpp">
 					</File>
 					<File
+						RelativePath=".\level_map_locations.cpp">
+					</File>
+					<File
 						RelativePath="Level_network.cpp">
 					</File>
 					<File

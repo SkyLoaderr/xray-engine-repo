@@ -123,6 +123,8 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 
 		if(pMapNode)
 		{
+			map_location.info_portion_index = m_iIndex;
+
 			map_location.level_num = uiXml.ReadInt(pMapNode,"level",0);
 			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
 			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));

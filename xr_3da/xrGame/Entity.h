@@ -117,10 +117,10 @@ public:
 	virtual void			g_fireParams		(const CHudItem*, Fvector &, Fvector &){}; 
 
 	//icon
-	virtual int GetTradeIconX() {return m_iTradeIconX;}
-	virtual int GetTradeIconY() {return m_iTradeIconY;}
-	virtual int GetMapIconX() {return m_iMapIconX;}
-	virtual int GetMapIconY() {return m_iMapIconY;}
+	virtual int GetTradeIconX() const {return m_iTradeIconX;}
+	virtual int GetTradeIconY() const {return m_iTradeIconY;}
+	virtual int GetMapIconX()   const {return m_iMapIconX;}
+	virtual int GetMapIconY()	const {return m_iMapIconY;}
 
 	//time of entity death
 	ALife::_TIME_ID			m_dwDeathTime;

@@ -26,6 +26,8 @@
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
 
+#include "character_info.h"
+
 
 
 // breakpoints
@@ -135,8 +137,6 @@ CActor::CActor() : CEntityAlive()
 	m_pPersonWeLookingAt	= NULL;
 	m_pVehicleWeLookingAt	= NULL;
 	m_pObjectWeLookingAt	= NULL;
-	m_pWaitingTradePartner	= NULL;
-	m_pWaitingTradePartnerInvOwner = NULL;
 	m_bPickupMode			= false;
 
 	////////////////////////////////////
@@ -812,16 +812,6 @@ void CActor::shedule_Update	(u32 DT)
 	inherited::shedule_Update	(DT);
 
 
-/*	if(WaitingTradePartner() &&
-		!WaitingTradePartnerInvOwner()->IsTalkEnabled())
-	{
-		m_pWaitingTradePartner = NULL;
-		m_pWaitingTradePartnerInvOwner = NULL;
-	}*/
-		
-
-
-
 	//эффектор включаемый при ходьбе
 	if (!pCamBobbing)
 	{
@@ -1097,6 +1087,14 @@ void CActor::OnReceiveInfo(int info_index)
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
+	CInfoPortion info_portion;
+	info_portion.Load(info_index);
+	
+	//добавить отметки на карте
+	for(int i=0; i<info_portion.GetLocationsNum(); i++)
+		Level().AddMapLocation(info_portion.GetLocation(i));
+
+
 	if(pGameSP->TalkMenu.IsShown())
 	{
 		if(pGameSP->TalkMenu.IsShown())
@@ -1127,23 +1125,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 
 	SPdaMessage last_pda_message;
 	bool prev_msg = GetPDA()->GetLastMessageFromLog(who, last_pda_message);
-	
 
-	//если сталкер согласился торговать, то дать возможность отметить
-	//его иконку на карте
-	if(!m_pWaitingTradePartner && prev_msg && last_pda_message.question && 
-		ePdaMsgTrade == last_pda_message.msg &&
-		ePdaMsgAccept == msg)
-	{
-		m_pWaitingTradePartnerInvOwner = pPda->GetOriginalOwner();
-		m_pWaitingTradePartner = dynamic_cast<CEntityAlive*>(pPda->GetOwnerObject());
-	}
-	else if (ePdaMsgILeave == msg && m_pWaitingTradePartner == dynamic_cast<CEntityAlive*>(pPda->GetOriginalOwner()))
-	{
-		m_pWaitingTradePartner = NULL;
-		m_pWaitingTradePartnerInvOwner = NULL;
-	}
-		
 
     CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }

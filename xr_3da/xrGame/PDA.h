@@ -52,7 +52,7 @@ public:
 	void OnEvent(NET_Packet& P, u16 type);
 
 
-	virtual u32 GetOriginalOwnerID() {return m_idOriginalOwner;}
+	virtual u16 GetOriginalOwnerID() {return m_idOriginalOwner;}
 	virtual CInventoryOwner* GetOriginalOwner();
 	virtual CObject*		 GetOwnerObject();
 
@@ -122,7 +122,7 @@ protected:
 	float m_fRadius;
 
 	//первый владелец PDA
-	u32 m_idOriginalOwner;
+	u16 m_idOriginalOwner;
 
 	//пассивный режим работы PDA
 	bool m_bPassiveMode;

@@ -91,6 +91,16 @@ u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distan
 	return			(result);
 }
 
+void map_add_object_icon(CLuaGameObject* lua_object, u16 text_id)
+{
+	Level().AddObjectMapLocation(lua_object->object());
+}
+void map_remove_object_icon(CLuaGameObject* lua_object)
+{
+	Level().RemoveMapLocationByID(lua_object->object()->ID());
+}
+
+
 void CScriptEngine::export_artifact_merger()
 {
 	module(lua())
@@ -167,7 +177,10 @@ void CScriptEngine::export_level()
 		def("get_time_factor",					get_time_factor),
 		def("cover_in_direction",				cover_in_direction),
 		def("vertex_in_direction",				vertex_in_direction),
-		def("rain_factor",						rain_factor)
+		def("rain_factor",						rain_factor),
+		
+		def("map_add_object_icon",				map_add_object_icon),
+		def("map_remove_object_icon",			map_remove_object_icon)
 	];
 
 	module(lua())

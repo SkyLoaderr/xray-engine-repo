@@ -40,7 +40,6 @@ typedef struct tagSInfoQuestion
 
 
 DEF_LIST (INFO_QUESTIONS_LIST, SInfoQuestion);
-DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);
 
 //квант  - порция информации
 class CInfoPortion 

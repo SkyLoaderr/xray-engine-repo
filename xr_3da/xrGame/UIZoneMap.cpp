@@ -160,17 +160,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
-	// render enemy
-	/*
-	for (u32 i=0; i<Team.KnownEnemys.size(); ++i){
-		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
-		if (E->IsVisibleForHUD()){
-			ConvertToLocal(LM,E->Position(),P);
-			entity.Out	(P.x,P.y,COLOR_ENEMY,alLeft|alTop);
-		}
-	}
-	*/
-
 	// render friend
 	BOOL	bRender = FALSE;
 	switch (GameID())
@@ -256,44 +245,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				};
 			};
 	};
-/*	if (bRender)
-	{
-		for (u32 i=0; i<Team.Squads.size(); ++i){
-			CSquad& S = Team.Squads[i];
-			for (u32 j=0; j<S.Groups.size(); ++j){
-				CGroup& G = S.Groups[j];
-				for (u32 k=0; k<G.Members.size(); ++k){
-					if (G.Members[k]->IsVisibleForHUD()){
-						ConvertToLocal(LM,G.Members[k]->Position(),P);
-						EntityOut(G.Members[k]->Position().y-Actor->Position().y,COLOR_FRIEND,P);
-					}
-				}
-			}
-		}
-		for(u32 i=0; i<Game().targets.size(); ++i) {
-			// draw artifacts
-			CObject* T = dynamic_cast<CTargetCS*>(Game().targets[i]);
-			if (T){
-				if (T->H_Parent()) {
-					CTargetCSCask *l_TC = dynamic_cast<CTargetCSCask*>(T->H_Parent());
-					if(l_TC) T = T->H_Parent();
-					else continue;
-				}
-				ConvertToLocal(LM,T->Position(),P);
-				EntityOut(T->Position().y-Actor->Position().y,COLOR_TARGET,P);
-			}else{
-				// draw artifacts
-				CTargetCSBase* TB = dynamic_cast<CTargetCSBase*>(Game().targets[i]);
-				if (TB){
-					if (TB->g_Team()==Actor->g_Team()){
-						ConvertToLocal(LM,TB->Position(),P);
-						EntityOut(TB->Position().y-Actor->Position().y,COLOR_BASE,P);
-					}
-				}
-			}
-		}
-	}*/
-
 
 	if(!pActor->g_Alive())return;
 #pragma todo("Костя то Юра : я вставил здесь проверку, чтобы не вылетало при смерти актера - надо разобраться ...............")
@@ -306,73 +257,47 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Fvector  src;
 
 
-	if (pActor->GetPDA())
+	//цвет по умолчанию
+	u32 entity_color = COLOR_BASE;
+
+	for(LOCATIONS_PTR_VECTOR_IT it = Level().MapLocations().begin();
+		Level().MapLocations().end() != it;
+		it++)
 	{
-#pragma todo("Mad Max то Юра : я вставил здесь проверку, чтобы не вылетало если нет PDA надо разобраться..............")
-		for(KNOWN_INFO_PAIR_IT it = pActor->GetPDA()->m_mapKnownInfo.begin();
-			pActor->GetPDA()->m_mapKnownInfo.end() != it;
-			++it)
+		SMapLocation& map_location = *(*it);
+		if(map_location.attached_to_object)
 		{
-			//подгрузить кусочек информации с которым мы работаем
-			CInfoPortion info_portion;
-			info_portion.Load((*it).first);
+			pObject = Level().Objects.net_Find	(map_location.object_id);
 
-			//цвет по умолчанию
-			u32 entity_color = COLOR_BASE;
+			CEntityAlive* pEntityAlive = NULL;
+			if(pObject)
+				pEntityAlive = dynamic_cast<CEntityAlive*>(pObject);
 
-			//локации заданные в порцие информации	
-			for(int i=0; i<info_portion.GetLocationsNum(); i++)
+			if(pEntityAlive)
 			{
-				SMapLocation& map_location = info_portion.GetLocation(i);
-				if(map_location.attached_to_object)
-				{
-					pObject = Level().Objects.net_Find	(map_location.object_id);
-
-					CEntity* pEntity = NULL;
-					if(pObject)
-						pEntity = dynamic_cast<CEntity*>(pObject);
-
-					if(pEntity)
-					{
-						if(pEntity->g_Team() == pActor->g_Team())
-							entity_color = COLOR_FRIEND;
-						else
-							entity_color = COLOR_ENEMY;
-					}
-
-					src.x = pObject->Position().x;
-					src.y = 0;
-					src.z = pObject->Position().z;
-				}
+				if(ALife::eRelationTypeEnemy == pActor->tfGetRelationType(pEntityAlive))
+					entity_color = COLOR_FRIEND;
 				else
-				{
-					src.x = map_location.x;
-					src.y = 0;
-					src.z = map_location.y;
-
-					pObject = NULL;
-					world_pos.set(map_location.x,0.f,map_location.y);
-				}
-
-				ConvertToLocal(LM, src, P);
-				entity.Out(P.x,P.y,entity_color);
+					entity_color = COLOR_ENEMY;
 			}
-		}
 
-
-
-		//добавить отметку ожидающего партнера по торговле
-		if(pActor->WaitingTradePartner())
-		{
-			src.x = pActor->WaitingTradePartner()->Position().x;
+			src.x = pObject->Position().x;
 			src.y = 0;
-			src.z = pActor->WaitingTradePartner()->Position().z;
-			ConvertToLocal(LM, src, P);
-			entity.Out(P.x,P.y,COLOR_BASE);
+			src.z = pObject->Position().z;
 		}
-	};
+		else
+		{
+			src.x = map_location.x;
+			src.y = 0;
+			src.z = map_location.y;
 
+			pObject = NULL;
+			world_pos.set(map_location.x,0.f,map_location.y);
+		}
 
+		ConvertToLocal(LM, src, P);
+		entity.Out(P.x,P.y,entity_color);
+	}
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
@@ -381,8 +306,8 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	/////////////////////
 	// calc coord for the part of the landscape texture to show
 	float map_x = Actor->Position().x;
-    float map_y = Actor->Position().z;
-	
+	float map_y = Actor->Position().z;
+
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;
 
@@ -441,7 +366,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	string256 buf;
 	sprintf(buf, "%dx", int(m_fScale));
 	l_pF->Out(float(BASE_LEFT + 12), 
-			  float(map_center.y + map_radius - l_pF->CurrentHeight()),  buf);
+		float(map_center.y + map_radius - l_pF->CurrentHeight()),  buf);
 }
 //--------------------------------------------------------------------
 
