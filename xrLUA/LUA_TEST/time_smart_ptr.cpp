@@ -20,21 +20,19 @@ struct CTest : public CTimeIntrusiveBase {
 	}
 };
 
-CTest *foo(CIntrusivePtr<CTest,CTimeIntrusiveBase> ptr)
+typedef CIntrusivePtr<CTest,CTimeIntrusiveBase> intrusive_ptr;
+
+intrusive_ptr foo(intrusive_ptr ptr)
 {
-	return &*ptr;
+	return ptr;
 }
 
 void time_smart_ptr_test()
 {
-	std::vector<CIntrusivePtr<CTest,CTimeIntrusiveBase> >	test;
-	CTest									*t = new CTest();
-	CIntrusivePtr<CTest,CTimeIntrusiveBase>	a = t, b = t;
-	foo(a);
-	delete_data								(a);
-//	a=b=0;
-//	CTimeSmartPtr<CTest>					a = t, b = t;
-//	for (u32 i=0; i<100; ++i)
-//		test.push_back						(a);//i % 2 ? a : new CTest());
-	test.clear								();
+	std::vector<intrusive_ptr>	test;
+	CTest						*t = new CTest();
+//	intrusive_ptr				a = t, b = t;
+	foo							(t);
+//	delete_data					(a);
+	test.clear					();
 }
