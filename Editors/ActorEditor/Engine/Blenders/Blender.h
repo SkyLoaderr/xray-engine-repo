@@ -50,7 +50,9 @@ public:
 	CBlender_DESC&			getDescription	()	{return description;}
 	virtual 	LPCSTR		getName			()	{return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
-	virtual		BOOL		canBeDetailed()	{ return FALSE; }
+
+	virtual		BOOL		canBeDetailed	()	{ return FALSE; }
+	virtual		BOOL		canBeLMAPped	()	= 0;
 	
 	virtual		void		Save			(IWriter& FS);
 	virtual		void		Load			(IReader& FS, WORD version);
