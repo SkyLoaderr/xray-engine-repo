@@ -304,7 +304,7 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+				if (id1 >= tpGame->m_tALife.m_tObjectID)
 					Msg("Invalid object ID! (%d)",id1);
 				else
 					tpGame->m_tALife.vfObjectInfo(id1);
@@ -326,7 +326,7 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_EVENT_ID id1 = ALife::_EVENT_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tEventRegistry.m_tEventID)
+				if (id1 >= tpGame->m_tALife.m_tEventID)
 					Msg("Invalid event ID! (%d)",id1);
 				else
 					tpGame->m_tALife.vfEventInfo(id1);
@@ -348,7 +348,7 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_TASK_ID id1 = ALife::_TASK_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tTaskRegistry.m_tTaskID)
+				if (id1 >= tpGame->m_tALife.m_tTaskID)
 					Msg("Invalid task ID! (%d)",id1);
 				else
 					tpGame->m_tALife.vfTaskInfo(id1);

@@ -18,8 +18,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 			if (tpALifeHumanAbstract && (tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching)) {
-				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].begin();
-				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].end();
+				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.m_tLocationID].begin();
+				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.m_tLocationID].end();
 				GRAPH_IT	I = B;
 				for (; I != E; I++) {
 					if (*I == tpALifeHumanAbstract->m_tGraphID)
@@ -65,10 +65,10 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 						break;
 					}
 				if ((tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching) || (tpALifeHumanAbstract->m_tTaskState == eTaskStateGoing)) {
-					switch (tpALifeHumanAbstract->m_tCurTask.tTaskType) {
+					switch (tpALifeHumanAbstract->m_tCurTask.m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
-							if (tpALifeHumanAbstract->m_tNextGraphID == tpALifeHumanAbstract->m_tCurTask.tGraphID) {
+							if (tpALifeHumanAbstract->m_tNextGraphID == tpALifeHumanAbstract->m_tCurTask.m_tGraphID) {
 								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
 								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
 							}
@@ -80,8 +80,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 						}
 						case eTaskTypeSearchForItemCL :
 						case eTaskTypeSearchForItemOL : {
-							VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
-							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tCurTask.tLocationID) {
+							VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size());
+							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tCurTask.m_tLocationID) {
 								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
 								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
 							}
@@ -101,8 +101,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			}
 		}
 		else {
-			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].ucRoutePointCount;
-			GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints;
+			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_ucRoutePointCount;
+			GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints;
 			int					iBranches		= 0;
 			bool bOk = false;
 			for (int i=0; i<wNeighbourCount; i++)
@@ -157,7 +157,7 @@ void CAI_ALife::vfCheckForTheBattle(CALifeMonsterAbstract *tpALifeMonsterAbstrac
 
 void CAI_ALife::vfCheckForDeletedEvents(CALifeHumanAbstract	*tpALifeHuman)
 {
-	PERSONAL_EVENT_IT I = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry.m_tpMap));
+	PERSONAL_EVENT_P_IT I = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry));
 	tpALifeHuman->m_tpEvents.erase(I,tpALifeHuman->m_tpEvents.end());
 }
 
@@ -169,11 +169,11 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 	else {
 		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
 		VERIFY(tpALifeHumanGroup);
-		HUMAN_PARAMS_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
-		HUMAN_PARAMS_IT	E = tpALifeHumanGroup->m_tpMembers.end();
+		HUMAN_PARAMS_P_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
+		HUMAN_PARAMS_P_IT	E = tpALifeHumanGroup->m_tpMembers.end();
 		bool bOk = false;
 		for ( ; I != E; I++)
-			bOk = bOk || bfProcessItems(*I,tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass);
+			bOk = bOk || bfProcessItems(*(*I),tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass);
 		return(bOk);
 	}
 }
@@ -204,8 +204,8 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	DYNAMIC_OBJECT_P_IT		E  = m_tpGraphObjects[tGraphID].tpObjects.end();
 	for ( ; I != E; I++) {
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find((*I)->m_tObjectID);
-		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
+		OBJECT_PAIR_IT	i = m_tObjectRegistry.find((*I)->m_tObjectID);
+		VERIFY(i != m_tObjectRegistry.end());
 		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
 		VERIFY(tpALifeDynamicObject);
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
@@ -216,15 +216,15 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 				return(true);
 			}
 			else {
-				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry.m_tppMap));
+				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry));
 				OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
 				OBJECT_IT	S = tHumanParams.m_tpItemIDs.begin();
 				OBJECT_IT	I = E - 1;
 				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
 #pragma todo("Reimplement with the reverse iterator because of the possible ERROR!")
 				for ( ; I != S; I--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
-					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
+					OBJECT_PAIR_IT II = m_tObjectRegistry.find((*I));
+					VERIFY(II != m_tObjectRegistry.end());
 					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
 					VERIFY(tpALifeItemIn);
 					tHumanParams.m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
@@ -272,11 +272,11 @@ CALifeTrader *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader)
 {
 	// update items
-	TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tCurTask.tTaskID);
-	if (T != m_tTaskRegistry.m_tpMap.end()) {
+	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tCurTask.m_tTaskID);
+	if (T != m_tTaskRegistry.end()) {
 		OBJECT_IT	I;
 		if (bfCheckIfTaskCompleted(tpALifeHuman, I)) {
-			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
+			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry[*I]);
 			if (tpTrader->m_dwMoney >= tpALifeItem->m_dwCost) {
 				tpALifeHuman->m_tpaVertices.clear();
 				tpTrader->m_tpItemIDs.push_back(*I);
@@ -285,7 +285,7 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader 
 				tpALifeHuman->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 				tpTrader->m_dwMoney -= tpALifeItem->m_dwCost;
 				tpALifeHuman->m_dwMoney += tpALifeItem->m_dwCost;
-				m_tTaskRegistry.m_tpMap.erase(T);
+				m_tTaskRegistry.erase(T);
 				tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
 				tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));
 			}

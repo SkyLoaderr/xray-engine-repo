@@ -180,11 +180,11 @@ void CAI_Space::Render()
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame->m_tALife.m_bLoaded) {
-				OBJECT_PAIR_IT	I = tpGame->m_tALife.m_tObjectRegistry.m_tppMap.begin();
-				OBJECT_PAIR_IT	E = tpGame->m_tALife.m_tObjectRegistry.m_tppMap.end();
+				OBJECT_PAIR_IT	I = tpGame->m_tALife.m_tObjectRegistry.begin();
+				OBJECT_PAIR_IT	E = tpGame->m_tALife.m_tObjectRegistry.end();
 				for ( ; I != E; I++) {
 					{
-						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID].tNearestGraphPointID].tPoint;
+						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tPoint;
 						t1.y += .6f;
 						NORMALIZE_VECTOR(t1);
 						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));

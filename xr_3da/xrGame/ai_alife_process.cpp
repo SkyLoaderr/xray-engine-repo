@@ -14,7 +14,7 @@
 
 void CAI_ALife::Update(u32 dt)
 {
-	inherited::Update(dt);
+	CSheduled::Update(dt);
 	if (!m_bLoaded)
 		return;
 #ifdef WRITE_TO_LOG
@@ -70,7 +70,7 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
 				tpALifeHuman->m_dwCurNode = 0;
 				tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
-				tpALifeHuman->m_tCurTask.tCustomerID = _OBJECT_ID(-1);
+				tpALifeHuman->m_tCurTask.m_tCustomerID = _OBJECT_ID(-1);
 			}
 			else
 				tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
@@ -81,9 +81,9 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 				tpALifeHuman->m_tpaVertices.clear();
 				tpALifeHuman->m_dwCurNode = u32(-1);
 				if (tpALifeHuman->m_tpTaskIDs.size()) {
-					OBJECT_PAIR_IT I = m_tObjectRegistry.m_tppMap.find(tpALifeHuman->m_tCurTask.tCustomerID);
+					OBJECT_PAIR_IT I = m_tObjectRegistry.find(tpALifeHuman->m_tCurTask.m_tCustomerID);
 					CALifeTrader *tpTrader = 0;
-					if (I != m_tObjectRegistry.m_tppMap.end())
+					if (I != m_tObjectRegistry.end())
 						tpTrader = dynamic_cast<CALifeTrader *>(I->second);
 					if (tpTrader)
 						vfCommunicateWithTrader(tpALifeHuman,tpTrader);
@@ -97,20 +97,20 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 			break;
 		}
 		case eTaskStateChooseTask : {
-			tpALifeHuman->m_tCurTask = m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[0]];
+			tpALifeHuman->m_tCurTask = *(m_tTaskRegistry[tpALifeHuman->m_tpTaskIDs[0]]);
 			_GRAPH_ID tGraphID = _GRAPH_ID(-1);
-			switch (tpALifeHuman->m_tCurTask.tTaskType) {
+			switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
-					tGraphID = tpALifeHuman->m_tCurTask.tGraphID;
+					tGraphID = tpALifeHuman->m_tCurTask.m_tGraphID;
 					break;
 				}
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemOL : {
-					VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
-					tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
-					tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size(),false);
-					tGraphID = m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
+					VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size());
+					tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size());
+					tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size(),false);
+					tGraphID = m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
 					tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
 					break;
 				}
@@ -124,12 +124,12 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 		case eTaskStateGoing : {
 			if ((tpALifeHuman->m_dwCurNode + 1 >= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
 				if (bfCheckIfTaskCompleted(tpALifeHuman)) {
-					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
+					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry[tpALifeHuman->m_tCurTask.m_tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
 					tpALifeHuman->m_dwCurNode = 0;
 					tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
 				}
 				else {
-					switch (tpALifeHuman->m_tCurTask.tTaskType) {
+					switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
 							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
@@ -142,10 +142,10 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 						}
 						case eTaskTypeSearchForItemCL :
 						case eTaskTypeSearchForItemOL : {
-							for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
-							if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) {
+							for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
+							if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size()) {
 								tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
-								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
+								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
 								tpALifeHuman->m_dwCurNode = 0;
 							}
 							else
@@ -161,12 +161,12 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 		case eTaskStateSearching : {
 			if ((tpALifeHuman->m_dwCurNode + 1 >= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
 				if (bfCheckIfTaskCompleted(tpALifeHuman)) {
-					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
+					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry[tpALifeHuman->m_tCurTask.m_tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
 					tpALifeHuman->m_dwCurNode = 0;
 					tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
 				}
 				else {
-					switch (tpALifeHuman->m_tCurTask.tTaskType) {
+					switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
 							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
@@ -179,10 +179,10 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 						}
 						case eTaskTypeSearchForItemCL :
 						case eTaskTypeSearchForItemOL : {
-							for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
-							if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) {
+							for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
+							if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size()) {
 								tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
-								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
+								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
 								tpALifeHuman->m_dwCurNode = 0;
 							}
 							else

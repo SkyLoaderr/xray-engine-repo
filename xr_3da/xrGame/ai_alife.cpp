@@ -103,9 +103,9 @@ void CAI_ALife::vfInitTerrain()
 }
 
 // temporary
-IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
+IC bool	bfSpawnPointPredicate(CALifeSpawnPoint *v1, CALifeSpawnPoint *v2)
 {
-	return(v1.wGroupID <= v2.wGroupID);
+	return(v1->m_wGroupID <= v2->m_wGroupID);
 }
 
 void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors)
@@ -202,61 +202,60 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 			}
 		}
 	/**/
-	m_tSpawnHeader.dwCount		= Level().AI.GraphHeader().dwVertexCount + 2;
-	m_tSpawnHeader.dwVersion	= SPAWN_POINT_VERSION;
+	m_tSpawnVersion				= SPAWN_POINT_VERSION;
 	u16 wGroupID				= 0;
-	m_tpSpawnPoints.resize		(m_tSpawnHeader.dwCount);
+	m_tpSpawnPoints.resize		(Level().AI.GraphHeader().dwVertexCount + 2);
 	int							j;
-	SPAWN_IT					B = m_tpSpawnPoints.begin();
-	SPAWN_IT					E = m_tpSpawnPoints.end() - 2;
-	SPAWN_IT					I = B;
+	SPAWN_P_IT					B = m_tpSpawnPoints.begin();
+	SPAWN_P_IT					E = m_tpSpawnPoints.end() - 2;
+	SPAWN_P_IT					I = B;
 	for ( ; I != E; I++) {
-		(*I).tNearestGraphPointID		= _GRAPH_ID(I - B);
-		(*I).wGroupID					= wGroupID++;
+		(*I)->m_tNearestGraphPointID	= _GRAPH_ID(I - B);
+		(*I)->m_wGroupID				= wGroupID++;
 		j								= ::Random.randI(5);
-		PSGP.memCopy					((*I).caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
-		(*I).ucTeam						= 0;
-		(*I).ucSquad					= 0;
-		(*I).ucGroup					= 0;
-		(*I).wCount						= 1;
-		(*I).fBirthRadius				= 10.f;
-		(*I).fBirthProbability			= 1.0f;
-		(*I).fIncreaseCoefficient		= 1.0f;
-		(*I).fAnomalyDeathProbability	= 0.0f;
-		(*I).ucRoutePointCount			= 0;
-		(*I).tpRouteGraphPoints.clear	();
+		PSGP.memCopy					((*I)->m_caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
+		(*I)->m_ucTeam					= 0;
+		(*I)->m_ucSquad					= 0;
+		(*I)->m_ucGroup					= 0;
+		(*I)->m_wCount					= 1;
+		(*I)->m_fBirthRadius			= 10.f;
+		(*I)->m_fBirthProbability		= 1.0f;
+		(*I)->m_fIncreaseCoefficient	= 1.0f;
+		(*I)->m_fAnomalyDeathProbability= 0.0f;
+		(*I)->m_ucRoutePointCount		= 0;
+		(*I)->m_tpRouteGraphPoints.clear();
 	}
-	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
-	(*I).wGroupID					= wGroupID++;
+	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
+	(*I)->m_wGroupID				= wGroupID++;
 	j								= 1;
-	PSGP.memCopy					((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
-	(*I).ucTeam						= 1;
-	(*I).ucSquad					= 0;
-	(*I).ucGroup					= 0;
-	(*I).wCount						= 1;
-	(*I).fBirthRadius				= 10.f;
-	(*I).fBirthProbability			= 1.0f;
-	(*I).fIncreaseCoefficient		= 1.0f;
-	(*I).fAnomalyDeathProbability	= 0.0f;
-	(*I).ucRoutePointCount			= 0;
-	(*I).tpRouteGraphPoints.clear	();
+	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	(*I)->m_ucTeam					= 1;
+	(*I)->m_ucSquad					= 0;
+	(*I)->m_ucGroup					= 0;
+	(*I)->m_wCount					= 1;
+	(*I)->m_fBirthRadius			= 10.f;
+	(*I)->m_fBirthProbability		= 1.0f;
+	(*I)->m_fIncreaseCoefficient	= 1.0f;
+	(*I)->m_fAnomalyDeathProbability= 0.0f;
+	(*I)->m_ucRoutePointCount		= 0;
+	(*I)->m_tpRouteGraphPoints.clear();
 
 	I++;
 
-	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
-	(*I).wGroupID					= wGroupID++;
+	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(Level().AI.GraphHeader().dwVertexCount);
+	(*I)->m_wGroupID				= wGroupID++;
 	j								= 2;
-	PSGP.memCopy					((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
-	(*I).ucTeam						= 1;
-	(*I).ucSquad					= 0;
-	(*I).ucGroup					= 0;
-	(*I).wCount						= 1;
-	(*I).fBirthRadius				= 10.f;
-	(*I).fBirthProbability			= 1.0f;
-	(*I).fIncreaseCoefficient		= 1.0f;
-	(*I).fAnomalyDeathProbability	= 0.0f;
-	(*I).ucRoutePointCount			= 0;
-	(*I).tpRouteGraphPoints.clear	();
+	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	(*I)->m_ucTeam					= 1;
+	(*I)->m_ucSquad					= 0;
+	(*I)->m_ucGroup					= 0;
+	(*I)->m_wCount					= 1;
+	(*I)->m_fBirthRadius			= 10.f;
+	(*I)->m_fBirthProbability		= 1.0f;
+	(*I)->m_fIncreaseCoefficient	= 1.0f;
+	(*I)->m_fAnomalyDeathProbability= 0.0f;
+	(*I)->m_ucRoutePointCount		= 0;
+	(*I)->m_tpRouteGraphPoints.clear();
 	/**/
 	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
 }
@@ -265,26 +264,26 @@ void CAI_ALife::vfSaveSpawnPoints()
 {
 	CFS_Memory	tStream;
 	tStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
-	tStream.write		(&m_tSpawnHeader,sizeof(m_tSpawnHeader));
+	tStream.write		(&m_tSpawnVersion,sizeof(m_tSpawnVersion));
 	tStream.close_chunk	();
 	tStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
-	SPAWN_IT			I = m_tpSpawnPoints.begin();
-	SPAWN_IT			E = m_tpSpawnPoints.end();
+	SPAWN_P_IT			I = m_tpSpawnPoints.begin();
+	SPAWN_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++) {
-		tStream.Wword	((*I).tNearestGraphPointID);
-		tStream.Wstring	((*I).caModel);
-		tStream.Wbyte	((*I).ucTeam);
-		tStream.Wbyte	((*I).ucSquad);
-		tStream.Wbyte	((*I).ucGroup);
-		tStream.Wword	((*I).wGroupID);
-		tStream.Wword	((*I).wCount);
-		tStream.Wfloat	((*I).fBirthRadius);
-		tStream.Wfloat	((*I).fBirthProbability);
-		tStream.Wfloat	((*I).fIncreaseCoefficient);
-		tStream.Wfloat	((*I).fAnomalyDeathProbability);
-		tStream.Wbyte	((*I).ucRoutePointCount);
-		for (int j=0; j<(int)(*I).ucRoutePointCount; j++)
-			tStream.Wword((*I).tpRouteGraphPoints[j]);
+		tStream.Wword	((*I)->m_tNearestGraphPointID);
+		tStream.Wstring	((*I)->m_caModel);
+		tStream.Wbyte	((*I)->m_ucTeam);
+		tStream.Wbyte	((*I)->m_ucSquad);
+		tStream.Wbyte	((*I)->m_ucGroup);
+		tStream.Wword	((*I)->m_wGroupID);
+		tStream.Wword	((*I)->m_wCount);
+		tStream.Wfloat	((*I)->m_fBirthRadius);
+		tStream.Wfloat	((*I)->m_fBirthProbability);
+		tStream.Wfloat	((*I)->m_fIncreaseCoefficient);
+		tStream.Wfloat	((*I)->m_fAnomalyDeathProbability);
+		tStream.Wbyte	((*I)->m_ucRoutePointCount);
+		for (int j=0; j<(int)(*I)->m_ucRoutePointCount; j++)
+			tStream.Wword((*I)->m_tpRouteGraphPoints[j]);
 	}
 	tStream.close_chunk	();
 	tStream.SaveTo		("game.spawn",0);
@@ -321,37 +320,6 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 #endif
 
 // end of temporary
-void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
-{
-	R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_VERSION));
-	tpStream->Read(&m_tSpawnHeader,sizeof(m_tSpawnHeader));
-	if (m_tSpawnHeader.dwVersion != SPAWN_POINT_VERSION)
-		THROW;
-	R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_DATA));
-	m_tpSpawnPoints.resize(m_tSpawnHeader.dwCount);
-	SPAWN_IT			I = m_tpSpawnPoints.begin();
-	SPAWN_IT			E = m_tpSpawnPoints.end();
-	for ( ; I != E; I++) {
-		(*I).tNearestGraphPointID		= tpStream->Rword();
-		tpStream->Rstring				((*I).caModel);
-		(*I).ucTeam						= tpStream->Rbyte();
-		(*I).ucSquad					= tpStream->Rbyte();
-		(*I).ucGroup					= tpStream->Rbyte();
-		(*I).wGroupID					= tpStream->Rword();
-		(*I).wCount						= tpStream->Rword();
-		(*I).fBirthRadius				= tpStream->Rfloat();
-		(*I).fBirthProbability			= tpStream->Rfloat();
-		(*I).fIncreaseCoefficient		= tpStream->Rfloat();
-		(*I).fAnomalyDeathProbability	= tpStream->Rfloat();
-		(*I).ucRoutePointCount			= tpStream->Rbyte();
-		(*I).tpRouteGraphPoints.resize	((*I).ucRoutePointCount);
-		GRAPH_IT						i = (*I).tpRouteGraphPoints.begin();
-		GRAPH_IT						e = (*I).tpRouteGraphPoints.end();
-		for ( ; i != e; i++)
-			*i	= tpStream->Rword();
-	}
-}
-
 void CAI_ALife::Load()
 {
 	shedule_Min					=     1;
@@ -389,7 +357,7 @@ void CAI_ALife::Load()
 	}
 	else {
 		tpStream = Engine.FS.Open(caFileName);
-		vfLoadSpawnPoints(tpStream);
+		CALifeSpawnRegistry::Load(*tpStream);
 		Engine.FS.Close(tpStream);
 	}
 
@@ -403,22 +371,10 @@ void CAI_ALife::Load()
 	
 	tpStream = Engine.FS.Open(caFileName);
 	
-	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_VERSION));
-	tpStream->Read(&m_tALifeHeader,sizeof(m_tALifeHeader));
-	if (m_tALifeHeader.dwVersion != ALIFE_VERSION)
-		THROW;
-	
-	R_ASSERT(tpStream->FindChunk(OBJECT_CHUNK_DATA));
-	m_tObjectRegistry.Load(*tpStream);
-	
-	R_ASSERT(tpStream->FindChunk(EVENT_CHUNK_DATA));
-	m_tEventRegistry.Load(*tpStream);
-	
-	R_ASSERT(tpStream->FindChunk(TASK_CHUNK_DATA));
-	m_tTaskRegistry.Load(*tpStream);
-
-	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
-	tpStream->Read(&m_tGameTime,sizeof(m_tGameTime));
+	CALifeHeader::Load(*tpStream);
+	CALifeObjectRegistry::Load(*tpStream);
+	CALifeEventRegistry::Load(*tpStream);
+	CALifeTaskRegistry::Load(*tpStream);
 	
 	vfUpdateDynamicData();
 
@@ -429,44 +385,27 @@ void CAI_ALife::Load()
 
 void CAI_ALife::Save()
 {
-	CFS_Memory	tStream;
-	// version chunk
-	tStream.open_chunk	(ALIFE_CHUNK_VERSION);
-	tStream.write		(&m_tALifeHeader,sizeof(m_tALifeHeader));
-	tStream.close_chunk	();
-	
-	tStream.open_chunk	(OBJECT_CHUNK_DATA);
-	m_tObjectRegistry.Save(tStream);
-	tStream.close_chunk	();
-	
-	tStream.open_chunk	(EVENT_CHUNK_DATA);
-	m_tEventRegistry.Save(tStream);
-	tStream.close_chunk	();
-	
-	tStream.open_chunk	(TASK_CHUNK_DATA);
-	m_tTaskRegistry.Save(tStream);
-	tStream.close_chunk	();
-	
-	tStream.open_chunk	(ALIFE_CHUNK_DATA);
-	m_tGameTime			= tfGetGameTime();
-	tStream.write		(&m_tGameTime,sizeof(m_tGameTime));
-	tStream.close_chunk	();
-	
-	tStream.SaveTo		("game.alife",0);
+	CFS_Memory					tStream;
+	m_tGameTime					= tfGetGameTime();
+	CALifeHeader::Save			(tStream);
+	CALifeObjectRegistry::Save	(tStream);
+	CALifeEventRegistry::Save	(tStream);
+	CALifeTaskRegistry::Save	(tStream);
+	tStream.SaveTo				("game.alife",0);
 }
 
 void CAI_ALife::Generate()
 {
-//	SPAWN_IT	B = m_tpSpawnPoints.begin();
-//	SPAWN_IT	E  = m_tpSpawnPoints.end();
-//	for (SPAWN_IT I = B ; I != E; ) {
+//	SPAWN_P_IT	B = m_tpSpawnPoints.begin();
+//	SPAWN_P_IT	E  = m_tpSpawnPoints.end();
+//	for (SPAWN_P_IT I = B ; I != E; ) {
 //		u16	wGroupID = I->wGroupID;
 //		float fSum = I->fBirthProbability;
-//		for (SPAWN_IT j= I + 1; (j != E) && (j->wGroupID == wGroupID); j++)
+//		for (SPAWN_P_IT j= I + 1; (j != E) && (j->wGroupID == wGroupID); j++)
 //			fSum += j->fBirthProbability;
 //		float fProbability = ::Random.randF(0,fSum);
 //		fSum = I->fBirthProbability;
-//		SPAWN_IT m = j, k = I;
+//		SPAWN_P_IT m = j, k = I;
 //		for ( j= I + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
 //			fSum += j->fBirthProbability;
 //			if (fSum > fProbability) {
@@ -480,6 +419,6 @@ void CAI_ALife::Generate()
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
 
-	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
+	m_tALifeVersion				= ALIFE_VERSION;
 	m_tGameTime					= u64(Level().timeServer());
 }

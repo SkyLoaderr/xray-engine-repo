@@ -8,36 +8,39 @@
 
 #pragma once
 
+#include "ai_alife_static_objects.h"
+
 using namespace ALife;
 
 class CAI_ALife;
 
-class CALifeObjectRegistry {
+class CALifeObjectRegistry : public IPureALifeLSObject {
 public:
 	_OBJECT_ID						m_tObjectID;			// идентификатор карты событий
-	OBJECT_MAP						m_tppMap;				// список событий игры
+	OBJECT_MAP						m_tObjectRegistry;		// список событий игры
 
 	CALifeObjectRegistry()
 	{
 		m_tObjectID					= 0;
-		m_tppMap.clear				();
+		m_tObjectRegistry.clear		();
 	};
 
 	virtual							~CALifeObjectRegistry()
 	{
-		OBJECT_PAIR_IT it			= m_tppMap.begin();
-		OBJECT_PAIR_IT E			= m_tppMap.end();
+		OBJECT_PAIR_IT it			= m_tObjectRegistry.begin();
+		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 		for ( ; it != E; it++)
 			_DELETE((*it).second);
-		m_tppMap.clear();
+		m_tObjectRegistry.clear();
 	};
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
+		tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
 		tMemoryStream.write			(&m_tObjectID,sizeof(m_tObjectID));
-		tMemoryStream.Wdword		(m_tppMap.size());
-		OBJECT_PAIR_IT it			= m_tppMap.begin();
-		OBJECT_PAIR_IT E			= m_tppMap.end();
+		tMemoryStream.Wdword		(m_tObjectRegistry.size());
+		OBJECT_PAIR_IT it			= m_tObjectRegistry.begin();
+		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 		for ( ; it != E; it++) {
 			CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>((*it).second);
 			if (tpALifeTrader)
@@ -79,10 +82,12 @@ public:
 			}
 			(*it).second->Save(tMemoryStream);
 		}
+		tMemoryStream.close_chunk	();
 	};
 	
 	void CALifeObjectRegistry::Load(CStream	&tFileStream)
 	{
+		R_ASSERT(tFileStream.FindChunk(OBJECT_CHUNK_DATA));
 		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
@@ -113,120 +118,140 @@ public:
 					break;
 				}
 				case ALIFE_ANOMALOUS_ZONE_ID : {
-					tpALifeDynamicObject = new CALifeAnomalousZone;
+					tpALifeDynamicObject = new CALifeDynamicAnomalousZone;
 					break;
 				}
 				default : NODEFAULT;
 			};
 			tpALifeDynamicObject->Load	(tFileStream);
-			m_tppMap.insert			(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
+			m_tObjectRegistry.insert			(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
 	virtual	void					Add	(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		m_tppMap.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
+		m_tObjectRegistry.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
 	};
 
 };
 
-class CALifeEventRegistry {
+class CALifeEventRegistry : public IPureALifeLSObject {
 public:
 	_EVENT_ID						m_tEventID;				// идентификатор карты событий
-	EVENT_MAP						m_tpMap;				// список событий игры
+	EVENT_MAP						m_tEventRegistry;		// список событий игры
 
 	CALifeEventRegistry()
 	{
 		m_tEventID					= 0;
-		m_tpMap.clear				();
+		m_tEventRegistry.clear		();
 	};
 
 	virtual							~CALifeEventRegistry()
 	{
-		EVENT_PAIR_IT it			= m_tpMap.begin();
-		EVENT_PAIR_IT E				= m_tpMap.end();
+		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
+		EVENT_PAIR_IT E				= m_tEventRegistry.end();
 		for ( ; it != E; it++) {
-			_DELETE((*it).second.tpMonsterGroup1);
-			_DELETE((*it).second.tpMonsterGroup2);
+			_DELETE((*it).second->m_tpMonsterGroup1);
+			_DELETE((*it).second->m_tpMonsterGroup2);
 		}
-		m_tpMap.clear();
+		m_tEventRegistry.clear();
 	};
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
+		tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 		tMemoryStream.write			(&m_tEventID,sizeof(m_tEventID));
-		tMemoryStream.Wdword		(m_tpMap.size());
-		EVENT_PAIR_IT it			= m_tpMap.begin();
-		EVENT_PAIR_IT E				= m_tpMap.end();
+		tMemoryStream.Wdword		(m_tEventRegistry.size());
+		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
+		EVENT_PAIR_IT E				= m_tEventRegistry.end();
 		for ( ; it != E; it++) {
-			SEvent					&tEvent = (*it).second;
-			tMemoryStream.write		(&tEvent.tEventID,		sizeof(tEvent.tEventID		));
-			tMemoryStream.write		(&tEvent.tTimeID,		sizeof(tEvent.tTimeID		));
-			tMemoryStream.write		(&tEvent.tGraphID,		sizeof(tEvent.tGraphID		));
-			tMemoryStream.write		(&tEvent.tBattleResult,	sizeof(tEvent.tBattleResult	));
-			tEvent.tpMonsterGroup1->Save(tMemoryStream);
-			tEvent.tpMonsterGroup2->Save(tMemoryStream);
+			CALifeEvent				&tEvent = *((*it).second);
+			tMemoryStream.write		(&tEvent.m_tEventID,		sizeof(tEvent.m_tEventID		));
+			tMemoryStream.write		(&tEvent.m_tTimeID,			sizeof(tEvent.m_tTimeID		));
+			tMemoryStream.write		(&tEvent.m_tGraphID,		sizeof(tEvent.m_tGraphID		));
+			tMemoryStream.write		(&tEvent.m_tBattleResult,	sizeof(tEvent.m_tBattleResult	));
+			tEvent.m_tpMonsterGroup1->Save(tMemoryStream);
+			tEvent.m_tpMonsterGroup2->Save(tMemoryStream);
 		}
+		tMemoryStream.close_chunk	();
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
 	{
+		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			SEvent					tEvent;
-			tFileStream.Read		(&tEvent.tEventID,		sizeof(tEvent.tEventID		));
-			tFileStream.Read		(&tEvent.tTimeID,		sizeof(tEvent.tTimeID		));
-			tFileStream.Read		(&tEvent.tGraphID,		sizeof(tEvent.tGraphID		));
-			tFileStream.Read		(&tEvent.tBattleResult,	sizeof(tEvent.tBattleResult	));
-			tEvent.tpMonsterGroup1	= new CALifeEventGroup;
-			tEvent.tpMonsterGroup2	= new CALifeEventGroup;
-			tEvent.tpMonsterGroup1->Load(tFileStream);
-			tEvent.tpMonsterGroup2->Load(tFileStream);
-			m_tpMap.insert			(make_pair(tEvent.tEventID,tEvent));
+			CALifeEvent				tEvent;
+			tFileStream.Read		(&tEvent.m_tEventID,		sizeof(tEvent.m_tEventID		));
+			tFileStream.Read		(&tEvent.m_tTimeID,		sizeof(tEvent.m_tTimeID		));
+			tFileStream.Read		(&tEvent.m_tGraphID,		sizeof(tEvent.m_tGraphID		));
+			tFileStream.Read		(&tEvent.m_tBattleResult,	sizeof(tEvent.m_tBattleResult	));
+			tEvent.m_tpMonsterGroup1	= new CALifeEventGroup;
+			tEvent.m_tpMonsterGroup2	= new CALifeEventGroup;
+			tEvent.m_tpMonsterGroup1->Load(tFileStream);
+			tEvent.m_tpMonsterGroup2->Load(tFileStream);
+			m_tEventRegistry.insert	(make_pair(tEvent.m_tEventID,&tEvent));
 		}
 	};
 	
-	virtual	void					Add	(SEvent	&tEvent)
+	virtual	void					Add	(CALifeEvent	*tpEvent)
 	{
-		m_tpMap.insert				(make_pair(tEvent.tEventID = m_tEventID++,tEvent));
+		m_tEventRegistry.insert		(make_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
 	};
 };
 
-class CALifeTaskRegistry {
+class CALifeTaskRegistry : public IPureALifeLSObject {
 public:
 	_TASK_ID						m_tTaskID;				// идентификатор карты событий
-	TASK_MAP						m_tpMap;				// список событий игры
+	TASK_MAP						m_tTaskRegistry;		// список событий игры
 
 	CALifeTaskRegistry()
 	{
 		m_tTaskID					= 0;
-		m_tpMap.clear				();
+		m_tTaskRegistry.clear				();
 	};
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
+		tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 		tMemoryStream.write			(&m_tTaskID,sizeof(m_tTaskID));
-		tMemoryStream.Wdword		(m_tpMap.size());
-		TASK_PAIR_IT it				= m_tpMap.begin();
-		TASK_PAIR_IT E				= m_tpMap.end();
+		tMemoryStream.Wdword		(m_tTaskRegistry.size());
+		TASK_PAIR_IT it				= m_tTaskRegistry.begin();
+		TASK_PAIR_IT E				= m_tTaskRegistry.end();
 		for ( ; it != E; it++)
 			tMemoryStream.write		(&((*it).second),		sizeof((*it).second));
+		tMemoryStream.close_chunk	();
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
+		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
 		tFileStream.Read(&m_tTaskID,sizeof(m_tTaskID));
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			STask					tTask;
+			CALifeTask				tTask;
 			tFileStream.Read		(&tTask,		sizeof(tTask));
-			m_tpMap.insert			(make_pair(tTask.tTaskID,tTask));
+			m_tTaskRegistry.insert	(make_pair(tTask.m_tTaskID,&tTask));
 		}
 	};
 	
-	virtual	void					Add	(STask	&tTask)
+	virtual	void					Add	(CALifeTask	*tpTask)
 	{
-		m_tpMap.insert				(make_pair(tTask.tTaskID = m_tTaskID++,tTask));
+		m_tTaskRegistry.insert		(make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
+	};
+};
+
+class CALifeSpawnRegistry : public CALifeSpawnHeader {
+public:
+	typedef CALifeSpawnHeader inherited;
+	
+	SPAWN_P_VECTOR					m_tpSpawnPoints;
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		inherited::Load(tFileStream);
+		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
+		load_vector(m_tpSpawnPoints,tFileStream);
 	};
 };
