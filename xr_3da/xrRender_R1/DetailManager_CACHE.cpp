@@ -15,7 +15,7 @@ void CDetailManager::cache_Initialize	()
 			cache			[i][j]	= slt;
 			cache_Task		(j,i,slt);
 		}
-	R_ASSERT	(cache_Validate());
+	VERIFY	(cache_Validate());
 }
 
 CDetailManager::Slot*	CDetailManager::cache_Query	(int r_x, int r_z)

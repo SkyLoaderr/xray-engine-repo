@@ -23,7 +23,7 @@ dcTriListCollider* GetData(dxGeom* TriList){
 
 
 inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
-//return true;
+	//return true;
 	dxBody* b1 = dGeomGetBody(o1);
 
 	dxBody* b2 = dGeomGetBody(o2);
@@ -50,8 +50,8 @@ inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
 
 	}
 
-return b1 || b2;
-//return true;
+	return b1 || b2;
+	//return true;
 }
 
 
@@ -101,8 +101,8 @@ int dCollideCTL(dxGeom* TriList, dxGeom* Cyl, int Flags, dContactGeom* Contact, 
 
 dColliderFn* dTriListColliderFn(int num)
 {
-//	Log("in dTriListColliderFn ");
-//	Msg("num=%d",num);
+	//	Log("in dTriListColliderFn ");
+	//	Msg("num=%d",num);
 	if (num ==dBoxClass){ 
 		return 	(dColliderFn*)&dCollideBTL;
 	}
