@@ -79,7 +79,7 @@ void CWeaponPistol::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	sndShot.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndShot.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShot_delay);
 
 	// Camera
 	if (hud_mode)	
@@ -91,18 +91,20 @@ void CWeaponPistol::OnShot		()
 	}
 	
 	// Animation
-	if(/*m_pAmmo->m_magCurr*/iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
-	else { m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); m_opened = true; }
-	
+	if(iAmmoElapsed > 1) 
+		m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
+	else 
+	{
+		m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); 
+		m_opened = true; 
+	}
 
 	// Shell Drop
 	OnShellDrop					();
 
-/*	
-	CParticlesObject* pStaticPG;
-	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_weapon",Sector());
-	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
-	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
-*/
+	// ќгонь из ствола
+	StartFlameParticles	();
+
+	//дым из ствола
+	StartSmokeParticles	();
 }
