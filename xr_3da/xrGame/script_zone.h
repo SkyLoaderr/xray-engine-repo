@@ -28,7 +28,7 @@ public:
 			void	UpdateCL			();
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
-			void	set_callback		(luabind::functor<void> tpZoneCallback, bool bOnEnter);
+			void	set_callback		(const luabind::functor<void> &tpZoneCallback, bool bOnEnter);
 			void	clear_callback		(bool bOnEnter);
 #ifdef DEBUG
 	virtual	void	OnRender			();

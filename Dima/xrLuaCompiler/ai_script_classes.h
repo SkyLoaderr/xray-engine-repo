@@ -453,7 +453,7 @@ public:
 		}
 	}
 
-	void SetCallback(luabind::functor<void> tpZoneCallback, bool bOnEnter)
+	void SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
 		if (!l_tpScriptZone)
@@ -471,23 +471,23 @@ public:
 			l_tpScriptZone->clear_callback(bOnEnter);
 	}
 
-//	void SetCallback(luabind::functor<void> tpActionCallback, const CScriptMonster::EActionType tActionType)
-//	{
-//		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
-//		if (!l_tpScriptMonster)
-//			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
-//		else
-//			l_tpScriptMonster->set_callback(tpActionCallback,tActionType);
-//	}
-//	
-//	void ClearCallback(const CScriptMonster::EActionType tActionType)
-//	{
-//		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
-//		if (!l_tpScriptMonster)
-//			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
-//		else
-//			l_tpScriptMonster->clear_callback(tActionType);
-//	}
+	void SetCallback(const luabind::functor<void> &tpActionCallback, const CScriptMonster::EActionType tActionType)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+		else
+			l_tpScriptMonster->set_callback(tpActionCallback,tActionType);
+	}
+	
+	void ClearCallback(const CScriptMonster::EActionType tActionType)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+		else
+			l_tpScriptMonster->clear_callback(tActionType);
+	}
 };
 
 class CLuaEffector : public CEffectorPP {

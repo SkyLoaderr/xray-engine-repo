@@ -19,6 +19,8 @@ CScriptMonster::CScriptMonster()
 	m_tpActionQueue.clear	();
 	m_caScriptName			= "";
 	m_bScriptControl		= false;
+	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i)
+		m_tpCallbacks[i]	= 0;
 	InitScript				();
 }
 
@@ -183,13 +185,35 @@ void CScriptMonster::ProcessScripts()
 		return;
 	}
 
+	bool			l_bCompleted;
 	PKinematics(Visual())->Callback(ActionCallback,this);
+	
+	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignWatch	(l_tpEntityAction);
+	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch])
+		(*m_tpCallbacks[eActionTypeWatch])(u32(eActionTypeWatch));
+
 	bfAssignAnimation(l_tpEntityAction);
+
+	l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
 	bfAssignSound	(l_tpEntityAction);
+	if (l_tpEntityAction->m_tSoundAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeSound])
+		(*m_tpCallbacks[eActionTypeSound])(u32(eActionTypeSound));
+	
+	l_bCompleted	= l_tpEntityAction->m_tParticleAction.m_bCompleted;
 	bfAssignParticles(l_tpEntityAction);
+	if (l_tpEntityAction->m_tParticleAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeParticle])
+		(*m_tpCallbacks[eActionTypeParticle])(u32(eActionTypeParticle));
+	
+	l_bCompleted	= l_tpEntityAction->m_tObjectAction.m_bCompleted;
 	bfAssignObject	(l_tpEntityAction);
+	if (l_tpEntityAction->m_tObjectAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeObject])
+		(*m_tpCallbacks[eActionTypeObject])(u32(eActionTypeObject));
+	
+	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignMovement(l_tpEntityAction);
+	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeMovement])
+		(*m_tpCallbacks[eActionTypeMovement])(u32(eActionTypeMovement),u32(-1));
 }
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
@@ -340,6 +364,10 @@ void CScriptMonster::InitScript()
 	}
 	// animation
 	m_tpScriptAnimation		= 0;
+
+	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i)
+		xr_delete			(m_tpCallbacks[i]);
+
 	// callbacks
 	if (Visual())
 		PKinematics(Visual())->Callback(0,0);
@@ -350,3 +378,23 @@ void CScriptMonster::net_Destroy()
 	inherited::net_Destroy	();
 	InitScript				();
 }
+
+void CScriptMonster::set_callback	(const luabind::functor<void> &tpActionCallback, const CScriptMonster::EActionType tActionType)
+{
+	VERIFY					(tActionType < eActionTypeCount);
+	xr_delete				(m_tpCallbacks[tActionType]);
+	m_tpCallbacks[tActionType] = xr_new<luabind::functor<void> >(tpActionCallback);
+}
+
+void CScriptMonster::clear_callback	(const CScriptMonster::EActionType tActionType)
+{
+	VERIFY					(tActionType < eActionTypeCount);
+	xr_delete				(m_tpCallbacks[tActionType]);
+}
+
+void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
+{
+	if (m_tpCallbacks[tActionType])
+		(*m_tpCallbacks[tActionType])(u32(tActionType));
+}
+

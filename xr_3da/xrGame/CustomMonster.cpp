@@ -784,8 +784,11 @@ void ScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
-	if (l_tpScriptMonster->GetCurrentAction())
+	if (l_tpScriptMonster->GetCurrentAction()) {
+		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
+			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
+	}
 }
 
 bool CCustomMonster::bfScriptAnimation()

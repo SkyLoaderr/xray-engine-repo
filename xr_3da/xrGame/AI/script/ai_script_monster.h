@@ -9,20 +9,28 @@
 #pragma once
 
 #include "../../GameObject.h"
+#include "../../ai_script_space.h"
 
 class CEntityAction;
 
 class CScriptMonster : virtual public CGameObject {
 public:
-//	enum EActionType {
-//		eActionType
-//	};
+	enum EActionType {
+		eActionTypeMovement = u32(0),
+		eActionTypeWatch,
+		eActionTypeAnimation,
+		eActionTypeSound,
+		eActionTypeParticle,
+		eActionTypeObject,
+		eActionTypeCount
+	};
 protected:
 	typedef CGameObject inherited;
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
 	CMotionDef					*m_tpScriptAnimation;
+	luabind::functor<void>		*m_tpCallbacks[eActionTypeCount];
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
@@ -51,4 +59,9 @@ public:
 	virtual	bool				bfAssignSound			(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
+
+	virtual void				set_callback			(const luabind::functor<void> &tpActionCallback, const CScriptMonster::EActionType tActionType);
+	virtual void				clear_callback			(const CScriptMonster::EActionType tActionType);
+
+	virtual	void				callback				(const EActionType tActionType);
 };

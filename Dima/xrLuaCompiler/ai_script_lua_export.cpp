@@ -591,6 +591,16 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("master",					int(ALife::eStalkerRankMaster)),
 				value("dummy",					int(ALife::eStalkerRankDummy))
 			]
+			.enum_("action_types")
+			[
+				value("movement",				int(CScriptMonster::eActionTypeMovement)),
+				value("watch",					int(CScriptMonster::eActionTypeWatch)),
+				value("animation",				int(CScriptMonster::eActionTypeAnimation)),
+				value("sound",					int(CScriptMonster::eActionTypeSound)),
+				value("particle",				int(CScriptMonster::eActionTypeParticle)),
+				value("object",					int(CScriptMonster::eActionTypeObject)),
+				value("action_type_count",		int(CScriptMonster::eActionTypeCount))
+			]
 
 			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
 			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
@@ -643,8 +653,10 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
-			.def("set_callback",				&CLuaGameObject::SetCallback)
-			.def("clear_callback",				&CLuaGameObject::ClearCallback)
+			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, bool))(CLuaGameObject::SetCallback))
+			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
+			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
+			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 	];
 }
