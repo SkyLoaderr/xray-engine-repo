@@ -169,7 +169,7 @@ void CEditableMesh::GenerateSVertices()
                 st_FaceVert& fv = F.pv[k];
                 if (fv.pindex==int(i)){
                     VMapPtSVec& vmpt_lst = m_VMRefs[fv.vmref];
-                    WBVec 		wb;
+                    st_VertexWB		wb;
                     for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
                         st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
                         if (VM.type==vmtWeight){
@@ -182,7 +182,7 @@ void CEditableMesh::GenerateSVertices()
                             }
                         }
                     }
-                    WB_NormalizeWeights(wb,2);
+                    wb.normalize_weights(2);
                     int cnt = wb.size();
 					CBone* B=0;
                     switch (cnt){
