@@ -102,7 +102,7 @@ function Monster:process ()
 	      if table.getn (self.attack) ~= 0 then
 	         update_action (self.npc, self.script, sound (self.attack[math.random (1, table.getn (self.attack))], "bip01_head", v, v, false))
 	      end
-	      self.tw = 1000 + math.random (2000, 5000)
+	      self.tw = 1000 + math.random (2000, 3000)
 	      self.ctime = device():time_global ()
 	   end   
     end	         
