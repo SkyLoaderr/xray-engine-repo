@@ -85,7 +85,7 @@ end
 -- Константа
 class "evaluator_need_talker" (property_evaluator)
 
-function evaluator_need_talker:__init(storage) super ()
+function evaluator_need_talker:__init(storage, name) super (nil, name)
 	self.stor = storage
 end
 
@@ -298,7 +298,7 @@ function add_to_binder(npc)
 	operators["action_talker"]   = xr_actions_id.zmey_talker_base + 1
 
 	-- // evaluators
-	manager:add_evaluator (properties["need_talker"],   this.evaluator_need_talker  (xr_motivator.storage[npc:id()].talker))
+	manager:add_evaluator (properties["need_talker"],   this.evaluator_need_talker  (xr_motivator.storage[npc:id()].talker, "talker_need"))
 
 	local new_action = this.action_talker_activity(npc, "action_talker_activity", xr_motivator.storage[npc:id()].talker)
 	new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
