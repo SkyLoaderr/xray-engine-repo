@@ -26,18 +26,18 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
 
-	u16 id;
-	P.r_u16		(id);
-	CObject* O	= Level().Objects.net_Find	(id);
-	
-	//. hack
-	if (!O)
-		return;
-
 	switch (type)
 	{
 		case GE_TRADE_BUY :
 		case GE_OWNERSHIP_TAKE : {
+
+			u16 id;
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+
+			//. hack
+			if (!O)
+				return;
 
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
@@ -66,6 +66,14 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 		}
 		case GE_TRADE_SELL :
 		case GE_OWNERSHIP_REJECT : {
+			u16 id;
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+
+			//. hack
+			if (!O)
+				return;
+
 			if (inventory().Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) {
 				O->H_SetParent	(0);
 				feel_touch_deny	(O,2000);
