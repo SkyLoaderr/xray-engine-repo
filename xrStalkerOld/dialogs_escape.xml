@@ -634,6 +634,7 @@
             <phrase id="321">
                 <text>escape_trader_start_dialog_321</text>
                 <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
                 <give_info>esc_trader_tutorial_chosen</give_info>
             </phrase>
             <phrase id="0">
@@ -648,6 +649,7 @@
             <phrase id="311">
                 <text>escape_trader_start_dialog_311</text>
                 <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
                 <give_info>esc_trader_tutorial_chosen</give_info>
             </phrase>
             <phrase id="211">
