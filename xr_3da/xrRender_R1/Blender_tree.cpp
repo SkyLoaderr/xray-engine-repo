@@ -106,13 +106,22 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile	(C);
 
-	if (C.bLighting)	
+	switch (C.iElement)
 	{
-	} else {
+	case 0:		// deffer
 		if (oBlend.value)		C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_aref_flat");
 		else					C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_flat");
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
+		break;
+	case 1:		// smap-direct
+		if (oBlend.value)		C.r2_Pass				("r2_shadow_direct_aref","r2_shadow_direct_aref");
+		else					C.r2_Pass				("r2_shadow_direct_base","r2_shadow_direct_base");
+		C.r2_Sampler			("s_base",C.L_textures[0]);
+		C.r2_End				();
+		break;
+	case 2:		// smap-point
+		break;
 	}
 }
 #endif
