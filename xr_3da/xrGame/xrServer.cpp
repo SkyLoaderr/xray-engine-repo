@@ -50,7 +50,6 @@ void xrServer::Update	()
 		xrServerEntity*	Base	= Client->owner;
 
 		Packet.w_begin	(M_UPDATE);
-//		Packet.w_u32	(0);		// reserve place for "server_time"
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
 		for (; I!=E; I++)
 		{
@@ -60,18 +59,76 @@ void xrServer::Update	()
 			if (Test.owner == Client)	continue;	// Can't be relevant
 
 			if (Test.RelevantTo(Base))	{
-				Packet.w_u8	(Test.ID);
-				Test.Write	(Packet);
+				Packet.w_u16		(Test.ID);
+				Test.UPDATE_Write	(Packet	);
 			}
 		}
 		if (Packet.B.count > 2)	
 		{
-//			DWORD	server_time		= Device.TimerAsync();
-//			Packet.w_seek	(0,&server_time,4);
 			SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
 		}
 	}
 	csPlayers.Leave		();
+}
+
+BOOL	ProcessRP		(xrServerEntity* EEE, xrS_entities& ent)
+{
+	// Get list of respawn points
+	if (EEE->s_team >= int(Level().Teams.size()))	return FALSE;
+	svector<Fvector4,maxRP>&	RP					= Level().Teams[EEE->s_team].RespawnPoints;
+	if (RP.empty())									return FALSE;
+	
+	DWORD	selected	= 0;
+	switch (EEE->s_RP)	{
+	case 0xFE:	// Use supplied coords
+		return;
+	default:	// Use specified RP
+		if (EEE->s_RP>=RP.size())	Msg("! ERROR: Can't spawn entity at RespawnPoint #%d.", DWORD(EEE->s_RP));
+		selected = DWORD(EEE->s_RP);
+		break;
+	case 0xFF:	// Search for best RP for this entity
+		{
+			float	best		= -1;
+			for (DWORD id=0; id<RP.size(); id++)
+			{
+				Fvector4&	P = RP[id]; 
+				Fvector		POS;
+				POS.set		(P.x,P.y,P.z);
+				float		cost	=0;
+				DWORD		count	=0;
+				
+				for (DWORD o=0; o<ent.size(); o++) 
+				{
+					// Get entity & it's position
+					xrServerEntity*	E	= ent[o];
+					float	dist		= POS.distance_to(E->o_Position);
+					float	e_cost		= 0;
+					
+					if (EEE->s_team == E->s_team)	{
+						// same teams, try to spawn near them, but not so near
+						if (dist<5)		e_cost += 3*(5-dist);
+					} else {
+						// different teams, try to avoid them
+						if (dist<30)	e_cost += 3*(30-dist);
+					}
+					
+					cost	+= dist;
+					count	+= 1;
+				}
+				
+				if (0==count)	{ selected = id; break; }
+				cost /= float(count);
+				if (cost>best)	{ selected = id; best = cost; }
+			}
+		}
+		break;
+	}
+
+	// Perform spawn
+	Fvector4&			P = Level().Teams[s_team].RespawnPoints[selected];
+	EEE->o_Position.set	(P.x,P.y,P.z);
+	EEE->o_Angle.set	(P.w);
+	return TRUE;
 }
 
 DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadcasting with "flags" as returned
@@ -86,16 +143,14 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			xrClientData* CL		= ID_to_client(sender);
 			CL->net_Ready			= TRUE;
 
-//			if (entities.size()>1)	__asm int 3;
-			
 			// while has information
 			while (!P.r_eof())
 			{
 				// find entity
-				xrServerEntity* E	= ID_to_entity(P.r_u8());
+				xrServerEntity* E	= ID_to_entity(P.r_u16());
 				if (E)				{
 					E->net_Ready	= TRUE;
-					E->Read			(P);
+					E->UPDATE_Read	(P);
 				}
 			}
 		}
@@ -105,20 +160,14 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 	case M_FIRE_END:
 	case M_FIRE_HIT:	// Simply broadcast this message to everyone except sender
 		return net_flags(TRUE);
-	case M_CL_SPAWN:
+	case M_SPAWN:
 		{
 			// read spawn information
-			char	s_name[128];
-			BYTE	s_team,	s_squad, s_group, s_rp;
-
-			P.r_string(s_name);
-			s_team	= P.r_u8();
-			s_squad	= P.r_u8();
-			s_group	= P.r_u8();
-			s_rp	= P.r_u8();
-
+			string64	s_name;
+			P.r_string	(s_name);
+			
 			// generate/find new ID for entity
-			BYTE ID = 0;
+			u16 ID		= 0;
 			if (!entities.empty())
 			{
 				ID = entities.back()->ID+1;
@@ -137,44 +186,38 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			}
 			
 			// create server entity
-			xrServerEntity*	E	= entity_Create(s_name);
+			xrClientData* CL	= ID_to_client	(sender);
+			xrServerEntity*	E	= entity_Create	(s_name);
 			R_ASSERT			(E);
-			char*				NameReplace="";
-			xrClientData* CL	= ID_to_client(sender);
-			if (0==CL->owner)	{
-				CL->owner	= E;
-				NameReplace	= CL->Name;
-
-				// find empty squad (no leader)
-				for (s_squad=0; s_squad<64; s_squad++ )
-				{
-					CSquad& S = Level().get_squad(s_team,s_squad);
-					if (0==S.Leader)	break;
-				}
-			} else {
-				// accept squad as is - it's AI or decorative entity
-			}
+			entities.push_back	(E);
+			E->Spawn_Read		(P);
+			
+			// ID, owner, etc
 			E->ID				= ID;
 			E->owner			= CL;
-			E->s_name			= strdup(s_name);
-			E->s_name_replace	= strdup(NameReplace);
-			E->s_team			= s_team;
-			E->s_squad			= s_squad;
-			E->s_group			= s_group;
-			E->Spawn			(s_rp,entities);
-			entities.push_back	(E);
+
+			// PROCESS NAME; Name this entity
+			LPCSTR				NameReplace = 0;
+			if (0 == CL->owner)	{
+				CL->owner		= E;
+				NameReplace		= CL->Name;
+			} else {
+			}
+			if (NameReplace)	strcpy	(E->s_name_replace,NameReplace);
+			
+			// PROCESS RP;	 3D position/orientation
+			
 
 			// log
-			Level().HUD()->outMessage(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'",
-				E->s_name,s_team,s_squad,s_group,E->ID,CL->Name);
+			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->s_team, E->s_squad, E->s_group, E->ID, CL->Name);
 
 			// create packet and broadcast packet to everybody
 			NET_Packet			Packet;
 
-			E->msgSpawn			(Packet,TRUE);
+			E->Spawn_Write		(Packet,TRUE	);
 			SendTo				(sender,Packet,net_flags(TRUE));
 
-			E->msgSpawn			(Packet,FALSE);
+			E->Spawn_Write		(Packet,FALSE	);
 			SendBroadcast		(sender,Packet,net_flags(TRUE));
 		}
 		return 0;

@@ -131,9 +131,8 @@ void CObject::Load				( CInifile* ini, const char *section )
 BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle)
 {
 	// XForm
-	Fvector4&			P = o_pos;
-	vPosition.set		(P.x,P.y,P.z);
-	mRotate.setXYZ		(0,P.w,0);
+	vPosition.set		(o_pos);
+	mRotate.setXYZ		(o_angle.x,o_angle.y,o_angle.z);
 	UpdateTransform		();
 
 	// Net params

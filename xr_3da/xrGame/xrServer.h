@@ -12,7 +12,7 @@
 class xrServerEntity;
 
 // t-defs
-typedef svector<xrServerEntity*,256>	xrS_entities;
+typedef vector<xrServerEntity*>	xrS_entities;
 
 class xrClientData	: public IClient
 {
@@ -32,50 +32,83 @@ class xrServerEntity
 public:
 	BOOL					net_Ready;
 
-	BYTE					ID;				// internal ID
+	u16						ID;				// internal ID
 	xrClientData*			owner;
 
 	// spawn data
-	LPSTR					s_name;
-	LPSTR					s_name_replace;
-	BYTE					s_team;
-	BYTE					s_squad;
-	BYTE					s_group;
+	string64				s_name;
+	string64				s_name_replace;
+	u8						s_team;
+	u8						s_squad;
+	u8						s_group;
+	u8						s_RP;
+	Fvector					o_Position;
+	Fvector					o_Angle;
+	
+	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
+	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
+	virtual void			STATE_Read		(NET_Packet& P, u16 size)	= 0;
+	virtual void			STATE_Write		(NET_Packet& P)				= 0;
 
-	virtual void			Read			(NET_Packet& P)		= 0;
-	virtual void			Write			(NET_Packet& P)		= 0;
 	virtual BOOL			RelevantTo		(xrServerEntity* E)	= 0;
-	virtual BOOL			Spawn			(BYTE rp, xrS_entities& ent)	= 0;
-	virtual void			GetPlacement	(Fvector4& dest)	= 0;
 
 	// utils
-	void					msgSpawn		(NET_Packet& P, BOOL bLocal)
+	void					Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	{
-		P.w_begin			(M_SV_SPAWN);
-		P.w_string			(s_name);
-		P.w_string			(s_name_replace);
-		P.w_u8				(s_team);
-		P.w_u8				(s_squad);
-		P.w_u8				(s_group);
-		P.w_u8				(ID);
-		P.w_u8				(bLocal);
+		// generic
+		P.w_begin			(M_SPAWN		);
+		P.w_string			(s_name			);
+		P.w_string			(s_name_replace	);
+		P.w_u8				(s_team			);
+		P.w_u8				(s_squad		);
+		P.w_u8				(s_group		);
+		P.w_u8				(0xFE			);	// No need for RP, use supplied (POS,ANGLEs)
+		P.w_vec3			(o_Position		);
+		P.w_vec3			(o_Angle		);
+		P.w_u16				(ID				);
+		P.w_u8				(bLocal			);
 
-		Fvector4			Placement;
-		GetPlacement		(Placement);
-		P.w					(&Placement,3*sizeof(float));
-		P.w_angle8			(Placement.w);
+		// write specific data
+		u32	position		= P.w_tell	();
+		P.w_u16				(0);
+		STATE_Write			(P);
+		u16 size			= u16		(P.w_tell()-position);
+		P.w_seek			(position,&size,sizeof(u16));
+	}
+	void					Spawn_Read		(NET_Packet& P)
+	{
+		u8					dummy8;
+		// generic
+		P.r_begin			(M_SPAWN		);
+		P.r_string			(s_name			);
+		P.r_string			(s_name_replace	);
+		P.r_u8				(s_team			);
+		P.r_u8				(s_squad		);
+		P.r_u8				(s_group		);
+		P.r_u8				(s_RP			);
+		P.r_vec3			(o_Position		);
+		P.r_vec3			(o_Angle		);
+		P.r_u16				(ID				);
+		P.r_u8				(dummy8			);	// bLocal
+
+		// read specific data
+		u16					size;
+		P.r_u16				(size			);	// size
+		STATE_Read			(P,size			);
 	}
 
 	xrServerEntity			()
 	{
 		net_Ready			= FALSE;
-		ID					= 0xff;
+		ID					= 0xffff;
 		owner				= 0;
+		ZeroMemory			(s_name,		sizeof(string64));
+		ZeroMemory			(s_name_replace,sizeof(string64));
 	}
 	~xrServerEntity			()
 	{
-		_FREE	(s_name_replace);
-		_FREE	(s_name);
+		_FREE				(s_name_replace);
+		_FREE				(s_name);
 	}
 };
 
