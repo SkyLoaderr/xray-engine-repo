@@ -272,3 +272,12 @@ void CAI_Idol::OnVisible	()
 	if(m_inventory.ActiveItem())
 		m_inventory.ActiveItem()->OnVisible();
 }
+
+void CAI_Idol::g_fireParams(Fvector& P, Fvector& D)
+{
+	if (g_Alive()) {
+		clCenter(P);
+		D.setHP(-r_current.yaw,-r_current.pitch);
+		D.normalize_safe();
+	}
+}
