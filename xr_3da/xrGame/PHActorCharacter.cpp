@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "PhysicsShellHolder.h"
 #include "ai/stalker/ai_stalker.h"
+#include "Actor.h"
 //const float JUMP_HIGHT=0.5;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
@@ -101,17 +102,25 @@ void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl
 	
 	if(!(o1&&o2))return;
 	
-	CGameObject					*go1		= static_cast<CGameObject*>(o1);
-	CGameObject					*go2		= static_cast<CGameObject*>(o2);
-	CAI_Stalker					*S			= NULL;
-	if(go1->cast_actor())
+	CGameObject					*go1		=	static_cast<CGameObject*>(o1);
+	CGameObject					*go2		=	static_cast<CGameObject*>(o2);
+	CAI_Stalker					*S			=	NULL;
+	CActor						*A			=	go1->cast_actor();
+
+	if(A)
 	{
 		 S=smart_cast<CAI_Stalker*>(go2);
 	}
 	else
 	{
 		 S=smart_cast<CAI_Stalker*>(go1);
+		 A=go2->cast_actor();
 	}
-
-	if(S&&S->g_Alive())	do_colide=true;
+	VERIFY2(A,"wrong callback or reference object");
+	
+	if(S&&S->g_Alive())	
+	{
+		do_colide=true;
+		A->movement_control()->MulFrictionFactor(0.1f);
+	}
 }

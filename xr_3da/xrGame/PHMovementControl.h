@@ -233,6 +233,9 @@ public:
 	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag;if(m_character&&m_character->b_exist)m_character->SetApplyGravity(flag); }
 	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}
 	void				SetEnvironment			( int enviroment,int old_enviroment);
+	void				SetFrictionFactor		(float f);
+	float				GetFrictionFactor		();
+	void				MulFrictionFactor		(float f);
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										;
 	void				ApplyHit				(const Fvector& dir,const dReal P,ALife::EHitType hit_type)				;
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}

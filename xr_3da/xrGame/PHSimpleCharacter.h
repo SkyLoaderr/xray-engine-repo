@@ -147,6 +147,7 @@ public:
 																					return b_jumping||b_jump;
 																					};
 	virtual	const Fvector&  ControlAccel						()const				{return m_acceleration;}
+	virtual		float		&FrictionFactor						()					{return m_friction_factor;}
 	virtual		void		SetMas								(dReal mass)		;
 	virtual		float		Mass								()					{return m_mass;};
 	virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);

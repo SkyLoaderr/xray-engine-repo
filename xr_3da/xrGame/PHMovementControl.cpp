@@ -932,3 +932,16 @@ void CPHMovementControl::ApplyHit(const Fvector& dir,const dReal P,ALife::EHitTy
 	if(hit_type==ALife::eHitTypeExplosion||hit_type==ALife::eHitTypeWound)
 																ApplyImpulse(dir,P);
 }
+
+void CPHMovementControl::SetFrictionFactor(float f)
+{
+	m_character->FrictionFactor()=f;
+}
+float CPHMovementControl::GetFrictionFactor()
+{
+	return m_character->FrictionFactor();
+}
+void CPHMovementControl::MulFrictionFactor(float f)
+{
+	m_character->FrictionFactor()*=f;
+}

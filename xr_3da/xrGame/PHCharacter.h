@@ -115,6 +115,7 @@ virtual		void		set_State							(const	SPHNetState&	state)								;
 virtual		void		cv2obj_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}
 virtual		void		cv2bone_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}
 virtual	const Fvector&  ControlAccel						()const														=0;
+virtual		float		&FrictionFactor						()															=0;
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };
