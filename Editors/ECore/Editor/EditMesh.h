@@ -282,6 +282,7 @@ public:
     int 			GetFaceCount			(bool bMatch2Sided=true);
 	int 			GetVertexCount			(){return m_Points.size();}
     int 			GetSurfFaceCount		(CSurface* surf, bool bMatch2Sided=true);
+    float			CalculateSurfaceArea	(CSurface* surf, bool bMatch2Sided);
 
     // IO - routine
     void			SaveMesh				(IWriter&);

@@ -5,7 +5,7 @@
 #define ETextureParamsH
 
 #pragma pack(push,1)
-struct XR_EPROPS_API STextureParams{
+struct ECORE_API STextureParams{
 	enum ETType{
     	ttImage	= 0,
         ttCubeMap,
@@ -137,6 +137,8 @@ struct XR_EPROPS_API STextureParams{
 	PropValue::TOnChange			OnTypeChangeEvent;
 	void __stdcall	OnTypeChange	(PropValue* v);
     void 			FillProp		(LPCSTR base_name, PropItemVec& items, PropValue::TOnChange OnChangeEvent);
+    LPCSTR 			FormatString	();
+	u32 			MemoryUsage		(LPCSTR base_name);
 #endif
 };
 #pragma pack( pop )

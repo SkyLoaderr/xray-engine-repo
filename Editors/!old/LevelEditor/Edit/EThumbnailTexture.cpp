@@ -148,7 +148,7 @@ void ETextureThumbnail::FillInfo(PropItemVec& items)
 
 LPCSTR ETextureThumbnail::FormatString()
 {
-    return get_token_name(tfmt_token,m_TexParams.fmt);
+    return m_TexParams.FormatString();
 }
 //------------------------------------------------------------------------------
 

@@ -80,10 +80,15 @@ bool CEditableObject::BoxPick(CCustomObject* obj, const Fbox& box, const Fmatrix
 bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (IsStatic()||IsMUStatic()){
-        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            inf->textures.insert(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str());
+        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+			float area	= 0.f;
+            for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++){
+            	area	+= (*m)->CalculateSurfaceArea(*s_it,true);
+            }
+            inf->AppendTexture(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str(),SSceneSummary::sttBase,area);
+        }
         if (m_Flags.is(eoUsingLOD)){
-            inf->textures.insert	(GetLODTextureName().c_str());
+            inf->AppendTexture(GetLODTextureName().c_str(),SSceneSummary::sttLOD,0);
             inf->lod_objects.insert	(m_LibName.c_str());
             inf->object_lod_ref_cnt++;
         }

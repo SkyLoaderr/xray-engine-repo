@@ -208,4 +208,38 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
     break;
     }
 }
+LPCSTR STextureParams::FormatString	()
+{
+	return get_token_name(tfmt_token,fmt);
+}
+
+u32 STextureParams::MemoryUsage(LPCSTR base_name)
+{
+	u32 mem_usage = width*height*4;
+    switch (fmt){
+    case STextureParams::tfDXT1:
+    case STextureParams::tfADXT1: 	mem_usage/=6; break;
+    case STextureParams::tfDXT3:
+    case STextureParams::tfDXT5: 	mem_usage/=4; break;
+    case STextureParams::tf4444:
+    case STextureParams::tf1555:
+    case STextureParams::tf565: 	mem_usage/=2; break;
+    case STextureParams::tfRGBA:	break;
+    }
+    std::string fn;
+    FS.update_path	(fn,_game_textures_,EFS.ChangeFileExt(base_name,".seq").c_str());
+    if (FS.exist(fn.c_str())){
+        string128		buffer;
+        IReader* F		= FS.r_open(0,fn.c_str());
+        F->r_string		(buffer);
+        int cnt = 0;
+        while (!F->eof()){
+            F->r_string(buffer);
+            cnt++;
+        }
+        FS.r_close		(F);
+        mem_usage *= cnt?cnt:1;
+    }
+    return mem_usage;
+}
 #endif

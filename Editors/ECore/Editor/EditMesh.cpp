@@ -290,7 +290,25 @@ int CEditableMesh::GetFaceCount(bool bMatch2Sided){
     return f_cnt;
 }
 
-int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided){
+float CEditableMesh::CalculateSurfaceArea	(CSurface* surf, bool bMatch2Sided)
+{
+	SurfFacesPairIt sp_it 	= m_SurfFaces.find(surf);
+    if (sp_it==m_SurfFaces.end()) return 0;
+    float area				= 0;
+    IntVec& 	pol_lst = sp_it->second;
+    for (int k=0; k<int(pol_lst.size()); k++){
+        st_Face& F		= m_Faces[pol_lst[k]];
+        Fvector 		c,e01,e02;
+        e01.sub			(m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex]);
+        e02.sub			(m_Points[F.pv[2].pindex],m_Points[F.pv[0].pindex]);
+        area			+= c.crossproduct(e01,e02).magnitude()/2.f;
+    }
+    if (bMatch2Sided&&sp_it->first->m_Flags.is(CSurface::sf2Sided)) area*=2;
+    return area;
+}
+
+int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided)
+{
 	SurfFacesPairIt sp_it = m_SurfFaces.find(surf);
     if (sp_it==m_SurfFaces.end()) return 0;
 	int f_cnt = sp_it->second.size();
