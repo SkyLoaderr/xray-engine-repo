@@ -1,7 +1,7 @@
 #ifndef FCYLINDER_H
 #define FCYLINDER_H
 
-struct	Fcylinder
+struct	Pcylinder
 {
 	Fmatrix33	m_rotate;
 	Fvector		m_translate;

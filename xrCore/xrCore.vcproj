@@ -281,6 +281,9 @@
 				RelativePath="_compressed_normal.h">
 			</File>
 			<File
+				RelativePath=".\_cylinder.h">
+			</File>
+			<File
 				RelativePath="_fbox.h">
 			</File>
 			<File

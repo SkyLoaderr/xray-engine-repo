@@ -149,12 +149,12 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 		}
 };
-void CPHElement::add_Cylinder	(const Fcylinder& V)
+void CPHElement::add_Cylinder	(const Pcylinder& V)
 {
 	m_cylinders_data.push_back(V);
 }
 
-void CPHElement::create_Cylinder(const Fcylinder& V)
+void CPHElement::create_Cylinder(const Pcylinder& V)
 {
 	dGeomID geom,trans;
 
@@ -263,7 +263,7 @@ void CPHElement::			build	(dSpaceID space){
 		create_Sphere(*i_sphere);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<Fcylinder>::iterator i_cylinder;
+	xr_vector<Pcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
 		create_Cylinder(*i_cylinder);
 	}
@@ -351,7 +351,7 @@ Fvector CPHElement::			get_mc_data	(){
 	}
 
 
-	xr_vector<Fcylinder>::iterator i_cylider;
+	xr_vector<Pcylinder>::iterator i_cylider;
 	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
 		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_halflength*2.f;
 		s.mul((*i_cylider).m_translate,pv);
@@ -417,7 +417,7 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 	}
 
-	xr_vector<Fcylinder>::iterator i_cylinder;
+	xr_vector<Pcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
 		Fvector& pos=(*i_cylinder).m_translate;
 		Fvector l;
@@ -476,7 +476,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 
 	}
 
-	xr_vector<Fcylinder>::iterator i_cylinder;
+	xr_vector<Pcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
 		Fvector& pos=(*i_cylinder).m_translate;
 		Fvector l;

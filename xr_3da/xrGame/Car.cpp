@@ -559,8 +559,7 @@ void CCar::CreateShell()
 	static const dReal scaleParam=1.f;
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	Fobb jeepBox,cabinBox;
-	//Fcylinder w_bl,w_br,w_fl,w_fr;
-	Fcylinder wheel;
+	Pcylinder wheel;
 	jeepBox.m_halfsize.x =REAL(3.680)*scaleBox[0]/2.f;jeepBox.m_halfsize.y=REAL(0.612)*scaleBox[1]/2.f;jeepBox.m_halfsize.z=0.88f*2.f*scaleBox[2]/2.f;
 
 	cabinBox.m_halfsize.x=scaleBox[0]*1.7f/2.f;cabinBox.m_halfsize.y=scaleBox[1]*0.66f/2.f;cabinBox.m_halfsize.z=scaleBox[2]*2.f*0.76f/2.f;

@@ -29,15 +29,6 @@ struct SJointLimit
     }
 };
 
-struct Fcylinder
-{
-    Fvector m_center;
-    Fvector m_direction;
-    float	m_height;
-    float	m_radius;
-    void	invalidate()	{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
-};
-
 struct SBoneShape
 {
     enum EShapeType
