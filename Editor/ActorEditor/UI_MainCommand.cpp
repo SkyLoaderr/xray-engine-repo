@@ -82,6 +82,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_SAVEAS:{
 		AnsiString fn = m_LastFileName;
 		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
+        if (bRes){
+        	strcpy(m_LastFileName,fn.c_str());
+        	Command(COMMAND_UPDATE_CAPTION);
+        }
     	}break;
 	case COMMAND_SAVE:{
     	AnsiString fn;
@@ -107,7 +111,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             	bRes=false;
             	break;
             }
-			strcpy(m_LastFileName,"");
+			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
 			if (Command( COMMAND_SAVEAS )){
 	            Engine.FS.MarkFile(fn.c_str());
 			    fraLeftBar->UpdateMotionList();
