@@ -49,6 +49,5 @@ end
 
 function disable_scheme(npc, scheme)
 	npc:set_callback(callback.use_object, nil)
-	st.logic.on_use = nil
 end
 
