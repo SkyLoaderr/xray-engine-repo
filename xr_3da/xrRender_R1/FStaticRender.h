@@ -1,20 +1,21 @@
 #pragma once
 
-#include "..\FLightsController.h"
 #include "..\modelpool.h"
 #include "..\PSLibrary.h"
 
 #include "portal.h"
 #include "hom.h"
-#include "lightShadows.h"
-#include "lightProjector.h"
 #include "detailmanager.h"
 #include "glowmanager.h"
 #include "wallmarksengine.h"
 #include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
+
+#include "lightShadows.h"
+#include "lightProjector.h"
 #include "lightPPA.h"
+#include "FLightsController.h"
 
 // defs
 const int max_patches = 512;
