@@ -1,16 +1,26 @@
 
-local shooting_stalkers = {
-	{ stalker="m_stalker_shooting_1", distance=15, wpn="wpn_ak74_1", run=false }
+local stalkers = {
+	{ stalker="m_stalker_shooting_1", distance=15, wpn="wpn_ak74_1", run=false },
 	{ stalker="m_stalker_shooting_2", distance=15, wpn="wpn_ak74_2", run=true  }
 }
 
 function main()
 	local actor = get_actor()
-	local zombies = {}
-	local num_stalkers = table.getn(zombied_stalker_names)
+	local num_stalkers = table.getn(stalkers)
 
 	for i = 1, num_stalkers do
-		zombies[i] = get_level_object(zombied_stalker_names[i])
+		stalkers[i].level_obj = get_level_object(stalkers[i].stalker)
+	end
+
+	while true do
+		for i = 1, num_stalkers do
+			if stalkers[i].is_shooting and distance_between(stalkers[i].level_obj, actor) > stalkers[i].distance then
+				interrupt_action
+		end
+	end
+	
+	for i = 1, num_stalkers do
+		shooting_stalkers[i].level_object = get_level_object(shooting_stalkers[i].stalker)
 		zombies[i]:script(true, zmey_zombie_stalkers.script_name())
 		action( zombies[i], anim("norm_dmg_torso_1_idle_0"), cond(cond.anim_end, time_infinite) )
 	end
