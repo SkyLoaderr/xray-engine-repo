@@ -119,7 +119,8 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 		static_cast<int>(5.07f*ICON_GRID_WIDTH));
 
 	UIHighlight.ClipperOn();
-	UIHighlight.SetTextureScaleXY(stretchKoeff,stretchKoeff);
+//	UIHighlight.SetTextureScaleXY(stretchKoeff,stretchKoeff);
+	UIHighlight.SetStretchTexture(true);
 
 	if (0 == index)
         UIHighlight.GetUIStaticItem().SetColor(clActive);
