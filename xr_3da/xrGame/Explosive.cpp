@@ -49,6 +49,7 @@ void CExplosive::Load(LPCSTR section)
 	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
 
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
+	R_ASSERT(fWallmarkSize>0);
 
 	m_sExplodeParticles = pSettings->r_string(section,"explode_particles");
 
