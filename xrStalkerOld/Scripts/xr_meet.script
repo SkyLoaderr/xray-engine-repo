@@ -470,8 +470,10 @@ function dialog_manager_reset(npc)
 	if overrides ~= nil and
 		overrides.meet_dialog ~= nil
 	then
+		printf("_bp: Set start dialog %s", overrides.meet_dialog)
 		npc:set_start_dialog(overrides.meet_dialog)
 	else
+		printf("_bp: Restore start dialog")
 		npc:restore_default_start_dialog()	
 	end	
 end
