@@ -16,7 +16,7 @@ function evaluator_new:__init(name, storage) super()
 end
 function evaluator_new:evaluate()
 	self.a.evn:calculate()
-	self.a.evn:print()
+--	self.a.evn:print()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 	if self.a.id == nil and self.a.evn:isEvents() then
 		self.a.evn:get_event(self.a)
