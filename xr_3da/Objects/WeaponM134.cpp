@@ -51,15 +51,15 @@ void __stdcall CWeaponM134::RotateCallback_hud(CBoneInstance* B)
 //////////////////////////////////////////////////////////////////////
 CWeaponM134::CWeaponM134() : CWeapon("M134")
 {
-	pSounds->Create3D(sndFireStart,	"weapons\\m134_fire_start");
-	pSounds->Create3D(sndFireLoop,	"weapons\\m134_fire_loop");
-	pSounds->Create3D(sndFireEnd,	"weapons\\m134_fire_end");
-	pSounds->Create3D(sndServo,		"weapons\\m134_servo",TRUE);
-	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
-	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
-	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
-	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
-	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
+	pSounds->Create3D(sndFireStart,		"weapons\\m134_fire_start");
+	pSounds->Create3D(sndFireLoop,		"weapons\\m134_fire_loop");
+	pSounds->Create3D(sndFireEnd,		"weapons\\m134_fire_end");
+	pSounds->Create3D(sndServo,			"weapons\\m134_servo",TRUE);
+	pSounds->Create3D(sndRicochet[0],	"weapons\\generic_ric1");
+	pSounds->Create3D(sndRicochet[1],	"weapons\\generic_ric2");
+	pSounds->Create3D(sndRicochet[2],	"weapons\\generic_ric3");
+	pSounds->Create3D(sndRicochet[3],	"weapons\\generic_ric4");
+	pSounds->Create3D(sndRicochet[4],	"weapons\\generic_ric5");
 
 	fRotateSpeed	= 0;
 	fRotateAngle	= 0;
