@@ -205,10 +205,10 @@
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
 
-		<team>Svoboda_master</team>
+		<team>Zombied</team>
 		
 		<class>Svoboda_zombi_stalker</class>
-		<community>freedom</community>
+		<community>zombied</community>
 
 		
 		<rank>40</rank>
