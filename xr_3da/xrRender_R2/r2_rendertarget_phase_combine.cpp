@@ -158,8 +158,9 @@ void	CRenderTarget::phase_combine	()
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
-
+#ifdef DEBUG
 	dbg_spheres.clear	();
+#endif
 }
 
 void CRenderTarget::phase_wallmarks		()
