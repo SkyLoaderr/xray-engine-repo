@@ -131,7 +131,16 @@ void	CCar::net_Destroy()
 void CCar::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
+}
 
+void	CCar::UpdateCL				( )
+{
+	inherited::UpdateCL();
+
+//////////////////////////////////////////////////////////////////////////
+// scripts
+//////////////////////////////////////////////////////////////////////////
+#pragma todo("Dima to Oles : I put script update on UpdateCL in the Car for the precise action computation, is this correct?!")
 	if (GetScriptControl())
 		ProcessScripts();
 	else {
@@ -142,12 +151,9 @@ void CCar::shedule_Update(u32 dt)
 			m_tpActionQueue.erase(m_tpActionQueue.begin());
 		}
 	}
-}
-
-void	CCar::UpdateCL				( )
-{
-	inherited::UpdateCL();
-
+//////////////////////////////////////////////////////////////////////////
+// end of scripts
+//////////////////////////////////////////////////////////////////////////
 
 //#ifdef DEBUG
 	if(m_pPhysicsShell&&m_owner)
