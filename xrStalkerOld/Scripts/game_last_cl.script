@@ -12,6 +12,9 @@ module("ui_options_dialog")
 module("ui_options_base_tab")
 module("ui_options_video_tab")
 module("ui_options_sound_tab")
+module("ui_options_game_tab")
+module("ui_options_controls_tab")
+
 
 module("ui_save_dialog")
 module("ui_load_dialog")

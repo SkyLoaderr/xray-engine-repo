@@ -150,6 +150,14 @@ function options_dialog:InitControls()
 	self.tab_sound = ui_options_sound_tab.options_sound_tab()
 	self.tab_sound:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
 	self.main_frame:AttachChild(self.tab_sound)
+	---- >> GAME
+	self.tab_game = ui_options_game_tab.options_game_tab()
+	self.tab_game:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
+	self.main_frame:AttachChild(self.tab_game)
+	---- >> CONTROLS
+	self.tab_controls = ui_options_controls_tab.options_controls_tab()
+	self.tab_controls:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
+	self.main_frame:AttachChild(self.tab_controls)
 end
 
 function options_dialog:InitCallBacks()
@@ -178,12 +186,12 @@ end
 
 function options_dialog:OnButton_game()
 	self:HideAllTabs()
-	
+	self.tab_game:Show(true)	
 end
 
 function options_dialog:OnButton_controls()
 	self:HideAllTabs()
-	
+	self.tab_controls:Show(true)
 end
 
 function options_dialog:OnButton_accept()
