@@ -12,8 +12,8 @@ struct ENGINE_API FSlideWindowItem;
 class	ENGINE_API		FProgressive : public Fvisual
 {
 protected:
-	FSlideWindowItem*	pSWI;
-	u32					last_lod;
+	FSlideWindowItem*	pSWI		;
+	u32					last_lod	;
 public:
     					FProgressive();
 	virtual 			~FProgressive();
