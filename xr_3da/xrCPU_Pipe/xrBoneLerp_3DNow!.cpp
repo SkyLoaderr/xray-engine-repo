@@ -13,7 +13,7 @@ template <class T>
 union __m64t
 {
     T       t;
-    __m64   m64;
+    __m64   m;
 
     operator __m64 ()       { return m64; }
     operator __m64 () const { return m64; }

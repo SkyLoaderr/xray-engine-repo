@@ -39,7 +39,7 @@ void CLightTrack::remove(int id)
 	}
 }
 
-IC bool	pred_energy		(CLightTrack::Light& L1, CLightTrack::Light& L2)
+IC bool	pred_energy		(const CLightTrack::Light& L1, const CLightTrack::Light& L2)
 {
 	return L1.energy>L2.energy;
 }

@@ -64,10 +64,10 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	entity.Clear();
 	Fvector2 P;
 
-	Fmatrix LM;
-	LM.rotateY			(-heading);
-	LM.translate_over	(Actor->Position());
-	LM.invert			();
+	Fmatrix LM,T;
+	T.rotateY			(-heading);
+	T.translate_over	(Actor->Position());
+	LM.invert			(T);
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);

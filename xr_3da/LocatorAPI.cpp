@@ -176,7 +176,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 	int base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
-		file& entry = *I;
+		const file& entry = *I;
 		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
 		const char* end_symbol = entry.name+strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
@@ -208,7 +208,7 @@ CStream* CLocatorAPI::Open	(const char* F)
 	if (I == files.end()) return NULL;
 
 	// OK, analyse
-	file& desc		= *I;
+	const file& desc	= *I;
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
