@@ -1054,6 +1054,9 @@
 					<File
 						RelativePath=".\config\scripts\dar\dar_door2.ltx">
 					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_monster_holder.ltx">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
