@@ -210,10 +210,10 @@ void CCustomZone::Load(LPCSTR section)
 
 	//загрузить параметры для разбрасывания артефактов
 	
-	if (Game().Type() == GAME_SINGLE)
+//	if (Game().Type() == GAME_SINGLE)
 		m_bSpawnBlowoutArtefacts = !!pSettings->r_bool(section,"spawn_blowout_artefacts");
-	else
-		m_bSpawnBlowoutArtefacts = false;
+//	else
+//		m_bSpawnBlowoutArtefacts = false;
 	
 	
 	if(m_bSpawnBlowoutArtefacts)
