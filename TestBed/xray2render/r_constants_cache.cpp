@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "r_constants_cache.h"
 
+void R_constant_array::fatal()
+{
+}
+
 void R_constants::flush_cache(IDirect3DDevice9* D)
 {
 	if (a_pixel.b_dirty)

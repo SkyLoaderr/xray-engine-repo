@@ -651,9 +651,9 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
 	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
-	cc.set									(s_Scene2fat.constants.get("m_model2view"),				dm_model2world2view);
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	dm_model2world2view2projection);
-	cc.flush								();
+	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
+	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	cc.flush								(m_pd3dDevice);
 
 	// Render model
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
@@ -717,12 +717,12 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXMatrixTranslation		(&matTranslate, vModelOffs.x, vModelOffs.y, vModelOffs.z);
 	D3DXMatrixMultiply			(&matWorldModel, m_ArcBall.GetRotationMatrix(), &matTranslate);
 	dm_model2world				= matWorldModel;
-	D3DXMatrixMultiply			(dm_model2world2view,			&dm_model2world, &dm_2view);
-	D3DXMatrixMultiply			(dm_model2world2view2projection,&dm_model2world, &dm_world2view2projection);
-	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel, &mat);
+	D3DXMatrixMultiply			(&dm_model2world2view,				&dm_model2world, &dm_2view);
+	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
+	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel,	&mat);
 
 	D3DXMatrixIdentity			(&matWorldFloor);
-	D3DXMatrixMultiplyTranspose	(&m_matFloorMVP, &matWorldFloor, &mat);
+	D3DXMatrixMultiplyTranspose	(&m_matFloorMVP, &matWorldFloor,	&mat);
 
 	// Light direction
 	D3DXVECTOR3 vLightDir		= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
