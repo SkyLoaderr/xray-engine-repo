@@ -93,10 +93,6 @@ function evaluator_factory_bandit:__init( name, storage ) super ()
 end
 
 function evaluator_factory_bandit:evaluate()
-    if not the_actor then
-    	the_actor = level.actor()
-    end
-
     --printf( "s1" )
     local b = self.a.enabled == true
 --    if b then sb = "true" else sb = "false" end
@@ -349,11 +345,15 @@ end
 function action_dead_hook:initialize()
     action_base.initialize( self )
 
+    if not the_actor then
+        the_actor = level.actor()
+    end
+
     self.a.dead_hook = true
 
     -- отослать партнёра в безопасную точку и сделать актёра врагом
     if self.a.partner and is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
-        local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
+        local pa        = xr_motivator.storage[self.a.partner_id].escape_factory_bandit
         pa.way_safe     = patrol( "way_factory_bandits_safe" )
         pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
 
