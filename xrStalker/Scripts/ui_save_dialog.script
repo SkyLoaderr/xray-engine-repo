@@ -251,7 +251,7 @@ function save_dialog:OnButton_ok_clicked()
 	local file_struct = f:exist("$game_saves$", new_save)
 	if file_struct ~= nil then
 		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
-		message_box:SetText("The file with this name already exist. Do you want to owerwrite it?")
+		message_box:SetText("The file with this name already exist. Do you want to overwrite it?")
 		message_box:Show()
 		return
 	end
