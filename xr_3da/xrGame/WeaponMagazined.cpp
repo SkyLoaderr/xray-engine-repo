@@ -157,12 +157,14 @@ void CWeaponMagazined::OnMagazineEmpty	()
 	st_target			=	eMagEmpty;
 	fTime				=	fTimeToEmptyClick;
 }
+
 void CWeaponMagazined::ReloadMagazine	()
 {
 	st_target			=	eIdle;
 	if (iAmmoCurrent>=iMagazineSize)	{ iAmmoElapsed = iMagazineSize; iAmmoCurrent -= iMagazineSize;	}
 	else								{ iAmmoElapsed = iAmmoCurrent;	iAmmoCurrent =  0;				}
 }
+
 void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 {
 	inherited::Update	(dt,bHUDView);
