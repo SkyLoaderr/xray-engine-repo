@@ -117,6 +117,7 @@ void CFoodItem::OnH_A_Chield()
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 
 	m_bReadyToEat = false;
+	STATE = FOOD_HIDDEN;
 }
 
 void CFoodItem::OnH_B_Independent() 
