@@ -6,8 +6,8 @@
 #define	GI_THREADS		4
 const	u32				gi_num_photons		= 256;
 const	float			gi_optimal_range	= 15.f;
-const	float			gi_reflect			= .75f;
-const	float			gi_clip				= 0.25f;
+const	float			gi_reflect			= .77f;
+const	float			gi_clip				= 0.1f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
@@ -83,7 +83,7 @@ public:
 			} else {
 				src				= (*task)[task_it];
 				dst				= src;
-				//if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				//.if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type		= LT_SECONDARY;
 				dst.level		++;
 				task_it			++;
@@ -94,9 +94,9 @@ public:
 			// analyze
 			CRandom				random;
 			random.seed			(0x12071980);
-			float	factor		= (src.range / gi_optimal_range);	// smaller lights get smaller amount of photons
-			if (LT_SECONDARY == src.type)	factor *= .5f;			// secondary lights get half the photons
-					factor		*= (src.energy / 3.f);				// 3.f is optimal energy = baseline
+			float	factor		= _sqrt(src.range / gi_optimal_range);	// smaller lights get smaller amount of photons
+			if (LT_SECONDARY == src.type)	factor *= .5f;				// secondary lights get half the photons
+					factor		*= _sqrt(src.energy / 2.f);				// 3.f is optimal energy = baseline
 			int		count		= iCeil( factor * float(gi_num_photons) );
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
@@ -135,7 +135,10 @@ public:
 				if (dst.energy < gi_clip)	continue;
 
 				// scale range in proportion with energy
-				dst.range			=	src.range * (1+_sqrt(dst.energy / src.energy))/2; 
+				float	_r1			= src.range * _sqrt(dst.energy / src.energy);
+				float	_r2			= (dst.energy - gi_clip)/gi_clip;
+				float	_r3			= src.range;
+				dst.range			= (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f;
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer

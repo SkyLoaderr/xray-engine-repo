@@ -259,7 +259,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 					Fvector	Psave	= L->position, Pdir;
 					L->position.mad	(Pdir.random_dir(L->direction,PI_DIV_4),.05f);
 					float R			= _sqrt(sqD);
-					float scale		= D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+					float scale		= _sqrt(D)*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
 					float A			= scale * (1-R/L->range);
 					L->position		= Psave;
 
