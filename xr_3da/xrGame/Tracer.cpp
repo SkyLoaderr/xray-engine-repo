@@ -6,7 +6,7 @@
 #include "Tracer.h"
 #include "..\fstaticrender.h"
 
-const DWORD	MAX_TRACERS	= (1024*3);
+const DWORD	MAX_TRACERS	= (1024*6);
 const float TRACER_SIZE = 0.2f;
 
 //////////////////////////////////////////////////////////////////////

@@ -106,11 +106,11 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// weapons
 	Weapons					= new CWeaponList(this);
-	Weapons->Init			("head","torso2");
+	Weapons->Init			("torso2","head");
 	Weapons->TakeItem		(CLSID_OBJECT_W_M134,0);
 
 	// take index spine bone
-	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine1");
+	int spine_bone			= PKinematics(pVisual)->LL_BoneID("torso1");
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
 	// Pathfinding
