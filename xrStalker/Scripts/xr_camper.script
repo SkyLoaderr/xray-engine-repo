@@ -7,7 +7,10 @@
 -- EVALUATORS
 ----------------------------------------------------------------------------------------------------------------------
 	function id(npc)
-		return npc:id()
+		if npc then
+			return npc:id()
+		end
+		return nil
 	end
 
 --' Условие завершения скрипта
@@ -17,29 +20,6 @@ function evaluator_end:__init(name, storage) super (nil, name)
 end
 function evaluator_end:evaluate()
 	return not xr_logic.is_active(self.object, self.a)
-end
-
---' Находимся ли мы недалеко от своей позиции
-class "evaluator_place" (property_evaluator)
-function evaluator_place:__init(name, storage) super (nil, name)
-	self.a = storage
-end
-function evaluator_place:evaluate()
-	if self.a.no_retreat == true then 
-		return true
-	end
-	
-	local path = patrol(self.a.path_walk)
-	if path ~= nil then
-		for k = 0, path:count() - 1 do
-			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
-				return true
-			end
-		end
-		return false
-	end
-	
-	return true
 end
 
 --' Обычный комбат или кемперский
@@ -54,7 +34,7 @@ function evaluator_close_combat:evaluate()
 	end
 
 	local best_enemy = self.object:best_enemy()
-	if best_enemy == nil then return true end
+	if best_enemy == nil then return false end
 --printf("%s %s %s", self.a.radius, self.a.big_radius, distance_between(self.object, self.object:best_enemy()))
 --printf("%s", utils.to_str(self.close_combat))
 
@@ -95,6 +75,7 @@ function action_patrol:initialize()
 	self.object:set_desired_direction()    
 	
 	self:reset_scheme()
+	self.enemy_position = nil
 end
 function action_patrol:reset_scheme()
 	state_mgr.set_state(self.object, "patrol")
@@ -108,6 +89,22 @@ function action_patrol:reset_scheme()
 end
 function action_patrol:execute()
 	action_base.execute (self)
+
+	--' Находимся ли мы недалеко от своей позиции
+	function on_place()
+		if self.a.no_retreat == true then return false end
+	
+		local path = patrol(self.a.path_walk)
+		if path ~= nil then
+			for k = 0, path:count() - 1 do
+				if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
+					return true
+				end
+			end
+			return false
+		end
+	end
+
 	
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
@@ -115,6 +112,65 @@ function action_patrol:execute()
 			return
 		end
 	end
+
+
+	if self.a.enemy_id == nil or
+	  self.a.enemy_id ~= id(self.object:best_enemy()) 
+	then
+		self.a.enemy_id = id(self.object:best_enemy())
+	end
+	
+	if self.a.enemy_id ~= nil then		
+		self.enemy = level.object_by_id(self.a.enemy_id)
+	end
+	
+	if self.enemy ~= nil then		
+		if self.object:memory_time(self.enemy) == nil then
+			self.a.enemy_id = nil
+			self.enemy = nil
+		else
+			self.a.mem_enemy = self.object:memory_time(self.enemy)
+		end
+	else
+		self.a.enemy_id = nil
+		self.enemy = nil
+	end
+	
+		
+	if self.a.mem_enemy ~= nil then
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
+		if device():time_global()- self.a.mem_enemy > self.a.idle then
+			if self.enemy then
+				self.object:enable_memory_object(self.enemy, false)
+			end
+			self.a.enemy_id = nil
+			self.enemy = nil
+		end
+	end
+
+	if self.enemy ~= nil then 
+		-- отстрел
+		if self.object:see(self.enemy) == true then
+			if self.a.suggested_state.campering_fire then
+				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
+			else
+				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
+			end
+			self.enemy_position = self.enemy:position()
+		else
+			-- если норетрит или мы на месте - ныкаться, иначе идти на точку
+			if on_place() then 
+				if self.a.suggested_state.campering then
+					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
+				else
+					state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
+				end		
+			else
+				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
+			end		
+		end
+	end
+
 end
 function action_patrol:process_point(mode, number)
 	return false
@@ -124,154 +180,6 @@ function action_patrol:finalize()
 	action_base.finalize (self)
 end
 
---' Убивать врага на большом расстоянии
-class "action_kill" (action_base)
-function action_kill:__init (npc_name,action_name,storage) super (nil,action_name)
-    self.a = storage
-end
-function action_kill:initialize ()
-    action_base.initialize(self)    
-    self.enemy_position = nil
-end
-function action_kill:execute ()
-	action_base.execute(self)
-
-	if self.a.enemy_id == nil or
-	  self.a.enemy_id ~= id(self.object:best_enemy()) 
-	then
-		self.a.enemy_id = id(self.object:best_enemy())
-	end
-	
-	if self.a.enemy_id ~= nil then		
-		self.enemy = level.object_by_id(self.a.enemy_id)
-	end
-	
-	if self.enemy ~= nil then		
-		if self.object:memory_time(self.enemy) == nil then
-			self.a.enemy_id = nil
-			self.enemy = nil
-		else
-			self.a.mem_enemy = self.object:memory_time(self.enemy)
-		end
-	else
-		self.a.enemy_id = nil
-		self.enemy = nil
-	end
-	
-		
-	if self.a.mem_enemy ~= nil then
---		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
-		if device():time_global()- self.a.mem_enemy > self.a.idle then
-			self.object:enable_memory_object(self.enemy, false)
-			self.a.enemy_id = nil
-			self.enemy = nil
-		end
-	end
-
-	if self.enemy ~= nil then 
-		if self.object:see(self.enemy) == true then
-			if self.a.suggested_state.campering_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
-			else
-				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
-				--self.object:set_queue_size(1)
-			end
-			self.enemy_position = self.enemy:position()
-		else
-
-			if self.a.no_retreat == true then 
-				state_mgr.set_state(self.object, "sneak")
-			else		
-				if self.a.suggested_state.campering then
-					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-				else
-					state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-				end
-			end			
-		end
-	end
-end
-function action_kill:finalize ()
-    action_base.finalize(self)
-end
-
---' Отступление на позиции
-class "action_retreat" (action_base)
-function action_retreat:__init(npc_name,action_name,storage) super(nil,action_name)
-    self.a = storage
-end
-function action_retreat:initialize()
-    action_base.initialize(self)
-       
-    local path_walk = patrol(self.a.path_walk)
-    if path_walk then
-		local point = utils.get_nearest_waypoint(self.object, self.a.path_walk, path_walk, path_walk:count())
-
-		if self.object:accessible(point) and self.object:best_enemy()
-		then
-			printf("RETREAT")
-			self.object:set_dest_level_vertex_id(path_walk:level_vertex_id(point))
-			state_mgr.set_state(self.object, "sneak")
-		else
-			printf("ERROR: RETREAT NODE NOT ACCESIBLE")
-		end						
-    end
-end
-function action_retreat:execute()
-	action_base.execute(self)
-
-	if self.a.enemy_id == nil or
-	  self.a.enemy_id ~= id(self.object:best_enemy()) 
-	then
-		self.a.enemy_id = id(self.object:best_enemy())
-	end
-	
-	if self.a.enemy_id ~= nil then		
-		self.enemy = level.object_by_id(self.a.enemy_id)
-	end
-	
-	if self.enemy ~= nil then		
-		if self.object:memory_time(self.enemy) == nil then
-			self.a.enemy_id = nil
-			self.enemy = nil
-		else
-			self.a.mem_enemy = self.object:memory_time(self.enemy)
-		end
-	else
-		self.a.enemy_id = nil
-		self.enemy = nil
-	end
-		
-	if self.a.mem_enemy ~= nil then
---		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
-		if device():time_global()- self.a.mem_enemy > self.a.idle then
-			self.object:enable_memory_object(self.enemy, false)
-			self.a.enemy_id = nil
-			self.enemy = nil
-		end
-	end
-
-
-	if self.enemy ~= nil then 
-		if self.object:see(self.enemy) == true then
-			if self.a.suggested_state.moving_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = self.enemy})
-			else
-				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.enemy})
-			end
-			self.enemy_position = self.enemy:position()
-		else
-			if self.a.suggested_state.moving then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-			else
-				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-			end
-		end
-	end	
-end
-function action_retreat:finalize()
-    action_base.finalize(self)
-end
 ----------------------------------------------------------------------------------------------------------------------
 -- BINDER
 ----------------------------------------------------------------------------------------------------------------------
@@ -282,46 +190,28 @@ function add_to_binder(object, ini, scheme, section, storage)
 	   	local manager = object:motivation_action_manager()
 
 		operators["patrol"]			= xr_actions_id.stohe_camper_base + 1
-		operators["kill"]			= xr_actions_id.stohe_camper_base + 2
-		operators["retreat"]		= xr_actions_id.stohe_camper_base + 3
 	
 		properties["end"]			= xr_evaluators_id.stohe_camper_base + 1
 		properties["close_combat"]	= xr_evaluators_id.stohe_camper_base + 2
-		properties["place"]			= xr_evaluators_id.stohe_camper_base + 3
 		
 		manager:add_evaluator (properties["end"], this.evaluator_end("camper_end", db.storage[object:id()].camper))
-		manager:add_evaluator (properties["place"], this.evaluator_place("camper_place", db.storage[object:id()].camper))
 		manager:add_evaluator (properties["close_combat"], this.evaluator_close_combat("camper_close_combat", db.storage[object:id()].camper))
 
-		local action = this.action_patrol (object:name(),"action_patrol", db.storage[object:id()].camper)
+		local action = this.action_patrol (object:name(),"action_camper_patrol", db.storage[object:id()].camper)
 		action:add_precondition	(world_property(stalker_ids.property_alive, true))
-		action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
+		action:add_precondition	(world_property(properties["close_combat"],	false))
 		xr_motivator.addCommonPrecondition(action)
 		action:add_effect (world_property(properties["end"],				true))
+		action:add_effect (world_property(stalker_ids.property_enemy,	false))
 		manager:add_action (operators["patrol"], action)
 		xr_logic.subscribe_action_for_events(object, storage, action)
-
-		action = this.action_kill (object:name(),"action_kill", db.storage[object:id()].camper)
-		action:add_precondition	(world_property(stalker_ids.property_alive, true))
-		action:add_precondition (world_property(properties["close_combat"],	false))
-		action:add_precondition (world_property(properties["place"],		true))
-		xr_motivator.addCommonPrecondition(action)
-		action:add_effect (world_property(stalker_ids.property_enemy,		false))		
-		manager:add_action (operators["kill"], action)
-
-		action = this.action_retreat (object:name(),"action_retreat", db.storage[object:id()].camper)
-		action:add_precondition	(world_property(stalker_ids.property_alive, true))
-		action:add_precondition (world_property(properties["close_combat"],	false))
-		action:add_precondition (world_property(properties["place"],		false))
-		xr_motivator.addCommonPrecondition(action)
-		action:add_effect (world_property(stalker_ids.property_enemy,		false))		
-		manager:add_action (operators["retreat"], action)
 
 		action = manager:action (xr_actions_id.alife)	
 		action:add_precondition	(world_property(properties["end"],			true))
 
 		action = manager:action (stalker_ids.action_combat_planner)
 		action:add_precondition (world_property(properties["close_combat"],	true))
+		action:add_effect (world_property(properties["close_combat"],	false))
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
