@@ -43,6 +43,7 @@ public:
 		friend class CGraphSaver;
 		friend class CGraphMerger;
 		friend class CSpawn;
+		friend class CLevelAssigner;
 #endif
 	};
 

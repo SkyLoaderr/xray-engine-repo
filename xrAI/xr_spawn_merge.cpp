@@ -350,6 +350,14 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 	return					("game.spawn");
 }
 
+class CLevelAssigner {
+public:
+	void assign(CGameGraph::SLevel &level, LPCSTR S)
+	{
+		Memory.mem_copy(level.caLevelName,S,(u32)xr_strlen(S) + 1);
+	}
+};
+
 void xrMergeSpawns(LPCSTR name)
 {
 	xr_vector<CGameGraph::CLevelPoint>		l_tpLevelPoints;
@@ -381,7 +389,7 @@ void xrMergeSpawns(LPCSTR name)
 		V						= Ini->r_string(N,"name");
 		if (xr_strlen(name) && stricmp(name,V))
 			continue;
-		Memory.mem_copy			(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
+		CLevelAssigner().assign	(tLevel,V);
 		Msg						("Reading level %s...",tLevel.name());
 		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,id,&dwGroupOffset));
