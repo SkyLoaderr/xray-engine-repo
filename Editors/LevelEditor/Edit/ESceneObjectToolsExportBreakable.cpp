@@ -7,10 +7,12 @@
 #include "SceneObject.h"
 #include "scene.h"
 #include "ExportSkeleton.h"
-#include "xrServer_Objects_ALife.h"
 #include "clsid_game.h"
 #include "ui_main.h"
 #include "GeometryCollector.h"
+
+#include "xrServer_Objects_Abstract.h"
+#include "xrSE_Factory_import_export.h"
 
 //----------------------------------------------------
 
@@ -112,9 +114,9 @@ public:
             }     
             // recurse adjs   	
             for (SBFaceVecIt a_it=r_vec.begin(); a_it!=r_vec.end(); a_it++){
-                if (cnt>=max_faces)				break;
-                if ((*a_it)->bone_id!=bone_id)	continue;
-                recurse_fragment				(*a_it,cnt,bone_id,max_faces,area);
+                if (cnt>=max_faces)					break;
+                if ((*a_it)->bone_id!=(int)bone_id)	continue;
+                recurse_fragment					(*a_it,cnt,bone_id,max_faces,area);
             } 
         }
     }
@@ -545,14 +547,14 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 // export spawn object
                 {
                     AnsiString entity_ref		= "breakable_object";
-                    CSE_ALifeObjectBreakable*	m_Data	= dynamic_cast<CSE_ALifeObjectBreakable*>(F_entity_Create(entity_ref.c_str())); VERIFY(m_Data);
+                    CSE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
+                    CSE_Visual* m_Visual		= dynamic_cast<CSE_Visual*>(m_Data);	VERIFY(m_Visual);
                     // set params
                     strcpy	  					(m_Data->s_name,entity_ref.c_str());
                     strcpy	  					(m_Data->s_name_replace,sn.c_str());
                     m_Data->o_Position.set		(P->m_RefOffset); 
                     m_Data->o_Angle.set			(P->m_RefRotate);
-                    m_Data->set_visual			(sn.c_str(),false);
-                    m_Data->m_health			= 100.f;
+                    m_Visual->set_visual		(sn.c_str(),false);
 
                     NET_Packet					Packet;
                     m_Data->Spawn_Write			(Packet,TRUE);
@@ -560,6 +562,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     F.spawn.stream.open_chunk	(F.spawn.chunk++);
                     F.spawn.stream.w			(Packet.B.data,Packet.B.count);
                     F.spawn.stream.close_chunk	();
+                    destroy_entity				(m_Data);
                 }
             }else{
             	ELog.Msg(mtError,"Can't export invalid part #%d",p_it-parts.begin());

@@ -105,8 +105,8 @@ bool ESoundEnvironment::GetSummaryInfo(SSceneSummary* inf)
 
 void ESoundEnvironment::get_box(Fmatrix& m)
 {
-	CSE_Shape::shape_def& shape = get_shape(0);
-    R_ASSERT(shape.type==CSE_Shape::cfBox);
+	CShapeData::shape_def shape = get_shape(0);
+    R_ASSERT(shape.type==CShapeData::cfBox);
     m.mul				(_Transform(),shape.data.box);
 }
 

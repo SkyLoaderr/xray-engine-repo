@@ -5,7 +5,7 @@
 #ifndef SpawnPointH
 #define SpawnPointH
 
-#include "xrServer_Objects_ALife_All.h"
+#include "xrServer_Objects_Abstract.h"
 #include "LevelGameDef.h"
 
 DEFINE_MAP(AnsiString,ref_shader,ShaderMap,ShaderPairIt);

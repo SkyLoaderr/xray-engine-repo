@@ -12,6 +12,7 @@
 #include "object_interfaces.h"
 #include "xrServer_Space.h"
 #include "xrCDB.h"
+#include "ShapeData.h"
 #ifdef XRSE_FACTORY_EXPORTS
 #	include "Sound.h"
 #endif
@@ -79,23 +80,7 @@ public:
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)
 
-SERVER_ENTITY_DECLARE_BEGIN0(CSE_Shape)
-	enum{
-    	cfSphere=0,
-        cfBox
-    };
-	union shape_data
-	{
-		Fsphere		sphere;
-		Fmatrix		box;
-	};
-	struct shape_def
-	{
-		u8			type;
-		shape_data	data;
-	};
-    DEFINE_VECTOR					(shape_def,ShapeVec,ShapeIt);
-	ShapeVec						shapes;
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Shape,CShapeData)
 public:
 	void							cform_read		(NET_Packet& P);
 	void							cform_write		(NET_Packet& P);
@@ -106,17 +91,8 @@ add_to_type_list(CSE_Shape)
 #define script_type_list save_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
-private:
-	ref_str							visual_name;
 public:
-
-#ifdef _EDITOR
-	AnsiString						play_animation;
-	IRender_Visual*		   			visual;
-    void __stdcall					OnChangeVisual	(PropValue* sender);
-    void 							PlayAnimation	(LPCSTR name);
-#endif
-
+	ref_str							visual_name;
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
@@ -126,8 +102,6 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
-    
-    void 							FillProp		(LPCSTR pref, PropItemVec& values);
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
@@ -137,16 +111,8 @@ add_to_type_list(CSE_Visual)
 #endif
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
-private:
-	ref_str							motion_name;
 public:
-
-#ifdef _EDITOR
-	CObjectAnimator*	   			animator;
-    void __stdcall 					OnChangeMotion	(PropValue* sender);
-    void 							PlayMotion		(LPCSTR name=0);
-#endif
-
+	ref_str							motion_name;
 public:
 									CSE_Motion 		(LPCSTR name=0);
 	virtual							~CSE_Motion		();
@@ -156,8 +122,6 @@ public:
 
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
-    
-    void 							FillProp		(LPCSTR pref, PropItemVec& values);
 };
 add_to_type_list(CSE_Motion)
 #define script_type_list save_type_list(CSE_Motion)

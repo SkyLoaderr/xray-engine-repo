@@ -316,6 +316,7 @@
       <FILE FILENAME="Engine\Game\object_type_traits.h" FORMNAME="" UNITNAME="object_type_traits.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_cloner.h" FORMNAME="" UNITNAME="object_cloner.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_comparer.h" FORMNAME="" UNITNAME="object_comparer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ShapeData.h" FORMNAME="" UNITNAME="ShapeData.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

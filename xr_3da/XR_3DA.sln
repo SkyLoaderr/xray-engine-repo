@@ -84,9 +84,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrNetServer", "..\xrNetServ
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrSE_Factory", "..\xrSE_Factory\xrSE_Factory.vcproj", "{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 14
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -137,6 +141,10 @@ Global
 		SccProjectUniqueName12 = ..\\xrNetServer\\xrNetServer.vcproj
 		SccProjectName12 = \u0022$/xrNetServer\u0022,\u0020CDRAAAAA
 		SccLocalPath12 = ..\\xrNetServer
+		CanCheckoutShared = true
+		SccProjectUniqueName13 = ..\\xrSE_Factory\\xrSE_Factory.vcproj
+		SccProjectName13 = \u0022$/xrSE_Factory\u0022,\u0020XWTAAAAA
+		SccLocalPath13 = ..\\xrSE_Factory
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -223,6 +231,12 @@ Global
 		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Mixed.Build.0 = Mixed|Win32
 		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Release.ActiveCfg = Release|Win32
 		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Release.Build.0 = Release|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Debug.ActiveCfg = Debug|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Debug.Build.0 = Debug|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Mixed.ActiveCfg = Mixed|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Mixed.Build.0 = Mixed|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Release.ActiveCfg = Release|Win32
+		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
