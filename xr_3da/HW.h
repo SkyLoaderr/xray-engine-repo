@@ -10,6 +10,7 @@
 
 class ENGINE_API CHW
 {
+	HINSTANCE 				hD3D9;
 public:
 	IDirect3D9* 			pD3D;		// D3D
 	IDirect3DDevice9*		pDevice;	// render device
@@ -24,6 +25,7 @@ public:
 
 	CHW()
 	{
+    	hD3D9		= NULL;
 		pD3D		= NULL;
 		pDevice		= NULL;
 		pBaseRT		= NULL;

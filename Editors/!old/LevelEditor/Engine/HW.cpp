@@ -19,12 +19,17 @@ IDirect3DStateBlock9*	dwDebugSB = 0;
 
 void CHW::CreateD3D()
 {
-    HW.pD3D = Direct3DCreate9( D3D_SDK_VERSION );
-    R_ASSERT(HW.pD3D);
+	hD3D9            			= LoadLibrary("d3d9.dll");
+	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'");
+    typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
+    _Direct3DCreate9* createD3D	= (_Direct3DCreate9*)GetProcAddress(hD3D9,"Direct3DCreate9");	R_ASSERT(createD3D);
+    HW.pD3D 					= createD3D( D3D_SDK_VERSION );
+    R_ASSERT					(HW.pD3D);
 }
 void CHW::DestroyD3D()
 {
-	_RELEASE(HW.pD3D);
+	_RELEASE					(HW.pD3D);
+    FreeLibrary					(hD3D9);
 }
 
 //////////////////////////////////////////////////////////////////////
