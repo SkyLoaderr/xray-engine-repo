@@ -111,7 +111,7 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 			if (PMON>1000.f)	
 			{
 				Msg	("! SHEDULER: thread '%s' exceeds time limit. [%d/%d] mcs",
-					T->Object->cName(),iFloor(PMON),1000);
+					T.Object->cName(),iFloor(PMON),1000);
 			}
 		}
 	}
