@@ -476,6 +476,10 @@ SOURCE=.\Blender.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blender_Params.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blender_Recorder.cpp
 # End Source File
 # Begin Source File

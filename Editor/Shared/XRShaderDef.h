@@ -9,11 +9,12 @@ struct ENGINE_API SH_Function
 {
 	enum EFunction
 	{
-		fSIN			= 0,
-		fTRIANGLE		= 1,
-		fSQUARE			= 2,
-		fSAWTOOTH		= 3,
-		fINVSAWTOOTH	= 4,
+		fCONSTANT		= 0,
+		fSIN,
+		fTRIANGLE,
+		fSQUARE,
+		fSAWTOOTH,
+		fINVSAWTOOTH,
 		fFORCE32		= DWORD(-1)
 	};
 	IC float signf		(float t) { return t/fabsf(t); }
@@ -21,6 +22,7 @@ struct ENGINE_API SH_Function
 	{
 		switch (F)
 		{
+			case fCONSTANT:		return 0;
 			case fSIN:			return sinf(t*PI_MUL_2); 
 			case fTRIANGLE:		return asinf(sinf((t-0.25f)*PI_MUL_2))/PI_DIV_2;
 			case fSQUARE:		return signf(cosf(t*PI));
