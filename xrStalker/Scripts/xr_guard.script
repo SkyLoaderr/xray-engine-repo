@@ -1,26 +1,26 @@
 local anim_pris = {
-                  {anim = "prisluh_0", flag = false},
-                  {anim = "prisluh_1", flag = false},
-                  {anim = "prisluh_2", flag = false}
-                  }
+				  {anim = "prisluh_0", flag = false},
+				  {anim = "prisluh_1", flag = false},
+				  {anim = "prisluh_2", flag = false}
+				  }
 
 local sounds = {}
 
 function action2(obj,...)
-    local act = entity_action()
-    local i = 1
-    while true do
-        if (arg[i] ~= nil) then
-            act:set_action(arg[i])
-        else
-            break
-        end
-        i = i + 1
-    end
-    if (obj ~= nil) then
-        obj:command(act,false)
-    end
-    return  entity_action(act)
+	local act = entity_action()
+	local i = 1
+	while true do
+		if (arg[i] ~= nil) then
+			act:set_action(arg[i])
+		else
+			break
+		end
+		i = i + 1
+	end
+	if (obj ~= nil) then
+		obj:command(act,false)
+	end
+	return  entity_action(act)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ function evaluator_need_guard:evaluate ()
 
   	tt = self.a.enabled == true
 	
-     	return tt
+	 	return tt
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -46,12 +46,12 @@ end
 -- Обычное поведение
 class "action_guard_activity" (action_base)
 function action_guard_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-  self.a = storage
+	self.a = storage
 
-    self.state_none = 0
-    self.state_standing_before_anim = 1
-    self.state_anim_playing = 3
-    self.state_moving = 4
+	self.state_none = 0
+	self.state_standing_before_anim = 1
+	self.state_anim_playing = 3
+	self.state_moving = 4
 
 end
 
@@ -72,7 +72,25 @@ function action_guard_activity:initialize()
 	self:reset_scheme()
 end
 
+function action_guard_activity:simulate_callback_if_neccessary()
+	local pos = self.object:position()
+	local ptr = patrol(self.path_active)
+	local num_points = ptr:count()
+	for i = 0, num_points - 1 do
+		--if ptr:flag(i, 0) then
+			local distance = pos:distance_to(ptr:point(i))
+			if distance <= 1 then
+				printf("simulating callback")
+				self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+				break
+			end
+		--end
+	end
+end
+
 function action_guard_activity:reset_scheme()
+	self.last_seen_actor = nil
+
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
 	self.path_main = self.a.path_main
 	if self.a.path_hideout then
@@ -80,9 +98,10 @@ function action_guard_activity:reset_scheme()
 	else
 		self.path_hideout = self.path_main
 	end
+	self.path_camp = self.a.path_camp
 	self.projector_name = self.a.projector_name
-	self.path_active =  self.path_main
-
+	self.path_active = self:pick_path()
+	
 	-- Флажок, включить если прибыли в путь, состоящий из одной точки
 	self.arrived_to_single_point_path = false
 
@@ -106,220 +125,239 @@ function action_guard_activity:reset_scheme()
 
 	self.last_index = -1
 
-	local pos = self.object:position()
-	local ptr = patrol(self.path_active)
-        local num_points = ptr:count()
-        for i = 0, num_points - 1 do
-		if ptr:flag(i, 0) then
-			local distance = pos:distance_to(ptr:point(i))
-			if distance <= 1 then
-				printf("simulating callback")
-				self:waypoint_callback(self.object, self.last_action_type, self.last_index)
-				break
-			end
-		end
-	end
+	self:simulate_callback_if_neccessary()
 end	
 
 function action_guard_activity:waypoint_callback(obj, action_type, index)
-    -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
-    self.last_action_type = action_type
-    self.last_index = index
+	-- Будет использоваться позже для вызова этой функции с целью иммитации коллбека
+	-- (для путей, состоящих из одной точки):
+	self.last_action_type = action_type
+	self.last_index = index
 
-    if index == -1 then
-        return
-    end
+	if index == -1 then
+		return
+	end
 
-    local ptr = patrol(self.path_active)
-    if ptr:flag(index, 1) then
-        self.arrived_to_single_point_path = true
-        self.object:set_movement_type(move.stand)
-    else
-	self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
-        self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
-        self.arrived_to_single_point_path = false
-    end
+	if self.path_active == self.path_camp then
+		local actor = level.actor()
+		if actor and self.object:relation(actor) ~= game_object.enemy then
+			self.object:set_relation(game_object.enemy, actor)
+		end
+	end
+	
+	local ptr = patrol(self.path_active)
 
-    local flagnum = nil
-    for f = 2, 31 do -- точка 0 зарезервирована для начала пути, 1 - для задания пути, состоящего из одной точки
-        if ptr:flag(index, f) then
-            flagnum = f
-        end
-    end
+	if ptr:flag(index, 30) then
+		self.a.running = false
+	elseif ptr:flag(index, 31) then
+		self.a.running = true
+	end
+	
+	if ptr:flag(index, 1) then
+		self.arrived_to_single_point_path = true
+		self.object:set_movement_type(move.stand)
+	else
+		self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
+		self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
+		self.arrived_to_single_point_path = false
+	end
 
-    -- Выбрать случайно одну из точек, помеченных тем же самым флагом, чтобы посмотреть в нее:
-    if flagnum then
-        local pt_chosen = nil
-        local pt_found = 0
+	local flagnum = nil
+	for f = 2, 29 do -- точка 0 зарезервирована для начала пути, 1 - для задания пути, состоящего из одной точки
+	-- 30 и 31 зарезервированы для состояний ходьбы и бега
+		if ptr:flag(index, f) then
+			flagnum = f
+		end
+	end
 
-        local num_points = ptr:count()
-        for i = 0, num_points - 1 do
-            if i ~= index and ptr:flag(i, flagnum) then
-              pt_found = pt_found + 1
-              local r = math.random(1, pt_found)
-              if r == 1 then
-                  pt_chosen = i
-              end
-            end
-        end
+	-- Выбрать случайно одну из точек, помеченных тем же самым флагом, чтобы посмотреть в нее:
+	if flagnum then
+		local pt_chosen = nil
+		local pt_found = 0
 
-        if pt_chosen then
-            if pt_chosen ~= self.last_look_index then
-              self.object:clear_animations () -- не играть анимацию во время поворота!
-              self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
-              self:look_at_waypoint(pt_chosen) -- поворачиваемся
-           else
-              self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
-            end
-            self.state = self.state_standing_before_anim
-            self.object:set_movement_type(move.stand)
-        end
-    end
+		local num_points = ptr:count()
+		for i = 0, num_points - 1 do
+			if i ~= index and ptr:flag(i, flagnum) then
+			  pt_found = pt_found + 1
+			  local r = math.random(1, pt_found)
+			  if r == 1 then
+				  pt_chosen = i
+			  end
+			end
+		end
+
+		if pt_chosen then
+			if pt_chosen ~= self.last_look_index then
+			  self.object:clear_animations () -- не играть анимацию во время поворота!
+			  self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
+			  self:look_at_waypoint(pt_chosen) -- поворачиваемся
+		   else
+			  self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
+			end
+			self.state = self.state_standing_before_anim
+			self.object:set_movement_type(move.stand)
+		end
+	end
 end
 
 -- Посмотреть в направлении указанной точки текущего маршрута
 function action_guard_activity:look_at_waypoint(pt)
-    local way = patrol (self.object:patrol ())
-    local look_pt = xr_guard.vector_copy_by_val(way:point(pt)):sub (self.object:position ())
-    self.object:set_sight(look.direction, look_pt, 0)
-    self.last_look_index = pt
+	local way = patrol (self.object:patrol ())
+	local look_pt = xr_guard.vector_copy_by_val(way:point(pt)):sub (self.object:position ())
+	self.object:set_sight(look.direction, look_pt, 0)
+	self.last_look_index = pt
 
   if self.projector_name then
-    if not self.projector then
-      self.projector = level.object(self.projector_name)
-      if not self.projector then
-        --printf("xr_guard: WARNING: unable to initialize projector")
-      end
-    end
-    if self.projector then
-      reset_action(self.projector, "xr_guard")
---      action(self.projector, look(self.object:position(), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
---      action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
---        action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
-        this.action2(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
-    end
+	if not self.projector then
+	  self.projector = level.object(self.projector_name)
+	  if not self.projector then
+		--printf("xr_guard: WARNING: unable to initialize projector")
+	  end
+	end
+	if self.projector then
+	  reset_action(self.projector, "xr_guard")
+--	  action(self.projector, look(self.object:position(), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+--	  action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+--		action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+		this.action2(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+	end
   end
+end
+
+function action_guard_activity:pick_path()
+	if self.last_seen_actor and self.path_camp then
+		return self.path_camp
+	elseif level.rain_factor() < 0.0006 then
+		return self.path_hideout
+	else
+		return self.path_main
+	end
 end
 
 function action_guard_activity:execute()
   --[[printf("_debug_guard [%s]: state [%d], animation_count [%d]",
-    self.object:name(), self.state, self.object:animation_count())]]
+	self.object:name(), self.state, self.object:animation_count())]]
 
-    self.object:set_item(object.idle, self.object:best_weapon())
+	local actor = level.actor()
+	if actor and self.object:see(actor) then
+		self.last_seen_actor = device():time_global()
+		printf("_bp")
+	end
+	
+	self.object:set_item(object.idle, self.object:best_weapon())
 
-    if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
-    --printf("_debug_guard [%s]: adding animations", self.object:name())
-        while self.object:animation_count() <= 1 do
-            local animate = math.random(1, 10)
-            if animate == 1 then
-                            self.object:add_animation("stoya_ruje_ 0", true)
-                        elseif animate == 2 then
-                            self.object:add_animation("vishka_3", false)
-                        elseif animate == 3 then
-                            self.object:add_animation("norm_torso_2_idle_1", false)
-                        elseif animate == 4 then
-                            self.object:add_animation("norm_torso_2_idle_2", true)
-                        elseif animate == 5 then
-                            self.object:add_animation("norm_torso_2_idle_3", false)
-                        elseif animate == 6 then
-                            self.object:add_animation("chasovoy_0", true)
-                        elseif animate == 7 then
-                            self.object:add_animation("chasovoy_1", true)
-                        elseif animate == 8 then
-                            self.object:add_animation("chasovoy_2", true)
-                        elseif animate == 9 then
-                            self.object:add_animation("chasovoy_3", true)
-                        elseif animate == 10 then
-                            self.object:add_animation("chasovoy_4", true)
-                        end
-        end
-    self.state = self.state_anim_playing
-    end
+	if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
+	--printf("_debug_guard [%s]: adding animations", self.object:name())
+		while self.object:animation_count() <= 1 do
+			local animate = math.random(1, 10)
+			if animate == 1 then
+							self.object:add_animation("stoya_ruje_ 0", true)
+						elseif animate == 2 then
+							self.object:add_animation("vishka_3", false)
+						elseif animate == 3 then
+							self.object:add_animation("norm_torso_2_idle_1", false)
+						elseif animate == 4 then
+							self.object:add_animation("norm_torso_2_idle_2", true)
+						elseif animate == 5 then
+							self.object:add_animation("norm_torso_2_idle_3", false)
+						elseif animate == 6 then
+							self.object:add_animation("chasovoy_0", true)
+						elseif animate == 7 then
+							self.object:add_animation("chasovoy_1", true)
+						elseif animate == 8 then
+							self.object:add_animation("chasovoy_2", true)
+						elseif animate == 9 then
+							self.object:add_animation("chasovoy_3", true)
+						elseif animate == 10 then
+							self.object:add_animation("chasovoy_4", true)
+						end
+		end
+	self.state = self.state_anim_playing
+	end
 
   --printf("_debug_guard [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
 
-  if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
-     -- Очищать анимации, только если собираемся идти дальше по пути...
-        -- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
-        if not self.arrived_to_single_point_path then
-            self.object:clear_animations ()
-        end
+  local suggested_path = self:pick_path()
+  if (self.state == self.state_anim_playing and self.object:animation_count() <= 1) or
+       suggested_path ~= self.path_active then
+	 -- Очищать анимации, только если собираемся идти дальше по пути...
+		-- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
+		if not self.arrived_to_single_point_path then
+			self.object:clear_animations ()
+		end
 
-        if level.rain_factor() < 0.0006 then
-            if self.path_active ~= self.path_main then
-              self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
-              self.path_active = self.path_main
-              self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-            end
-        else
-            if self.path_active ~= self.path_hideout then
-              self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
-              self.path_active = self.path_hideout
-              self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-            end
-        end
+		local need_callback = false
+		if self.path_active ~= suggested_path then
+			self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
+			self.path_active = suggested_path
+			self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
+			need_callback = true
+		end
 
-        self.state = self.state_moving
+		self.state = self.state_moving
 
-        if self.arrived_to_single_point_path then
-            self:waypoint_callback(self.object, self.last_action_type, self.last_index)
-        else
-            self.last_look_index = nil
-            self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
-            self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
-            --self.object:set_sight(look.search, nil, 0)
-            self.object:set_sight(look.danger, nil, 0)
-        end
-    end
+		if self.arrived_to_single_point_path then
+			self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+		else
+			self.last_look_index = nil
+			self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
+			self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
+			--self.object:set_sight(look.search, nil, 0)
+			self.object:set_sight(look.danger, nil, 0)
+			if need_callback then
+				self:simulate_callback_if_neccessary()
+			end
+		end
+	end
 end
 
 function action_guard_activity:finalize()
   --printf("_bp: FINALIZE")
   self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
 
-    self.object:clear_callback(game_object.movement)
-    self.object:clear_animations()
+	self.object:clear_callback(game_object.movement)
+	self.object:clear_animations()
 
-    local enemy = self.object:best_enemy()
-    if enemy then
-        if enemy:alive() and self.object:see(enemy) then
-            if not self.a.alarm_activated then
-              self.object:play_sound (sounds["soldier_alarm"], 1, 0, 1, 0, 3) -- was 1
-              self.a.alarm_activated = true
-            end
-        end
-    end
+	local enemy = self.object:best_enemy()
+	if enemy then
+		if enemy:alive() and self.object:see(enemy) then
+			if not self.a.alarm_activated then
+			  self.object:play_sound (sounds["soldier_alarm"], 1, 0, 1, 0, 3) -- was 1
+			  self.a.alarm_activated = true
+			end
+		end
+	end
 
   if self.projector then
-    if self.projector:get_script() then
-      self.projector:script(false, "xr_guard")
-    end
+	if self.projector:get_script() then
+	  self.projector:script(false, "xr_guard")
+	end
   end
 
-    action_base.finalize(self)
+	action_base.finalize(self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-    if char_ini == nil  or char_ini:section_exist ("guard") == true then
-  	local operators    = {}
+	if char_ini == nil  or char_ini:section_exist ("guard") == true then
+  	local operators	= {}
   	local properties  = {}
 
-  	sounds["commander_snd"]     	= xr_sounds_id.zmey_guard_base + 1
-  	sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_guard_base + 2
-  	sounds["soldiers_idle2_snd"]    = xr_sounds_id.zmey_guard_base + 3
+  	sounds["commander_snd"]	 	= xr_sounds_id.zmey_guard_base + 1
+  	sounds["soldiers_idle_snd"]	 = xr_sounds_id.zmey_guard_base + 2
+  	sounds["soldiers_idle2_snd"]	= xr_sounds_id.zmey_guard_base + 3
   	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_guard_base + 4
-  	sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_guard_base + 5
-  	sounds["soldier_alarm"]     	= xr_sounds_id.zmey_guard_base + 6
+  	sounds["soldiers_hear_snd"]	 = xr_sounds_id.zmey_guard_base + 5
+  	sounds["soldier_alarm"]	 	= xr_sounds_id.zmey_guard_base + 6
 
-  	npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
-     	npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
-     	npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
-     	npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
-     	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
-    	npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+  	npc:add_sound ("Scripts\\Patrol\\Commander1_",		   20, snd_type.talk, 2, 1, sounds["commander_snd"])
+	 	npc:add_sound ("Scripts\\Patrol\\soldier_idle_",		 20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
+	 	npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",	 20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
+	 	npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",	 20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
+	 	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
+		npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",	 20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
 
    	local manager = npc:motivation_action_manager()
 
@@ -330,35 +368,35 @@ function add_to_binder(npc, char_ini)
  	operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
 
    	-- // evaluators
-    	manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
+		manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
 
 	local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
-    	new_action:add_precondition    (world_property(stalker_ids.property_alive,   	true))
-    	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   	false))
-      	new_action:add_precondition    (world_property(properties["need_guard"],   	true))
-	new_action:add_precondition    (world_property(properties["event"],		false))
-	new_action:add_precondition    (world_property(properties["state_end"],		true))
+		new_action:add_precondition	(world_property(stalker_ids.property_alive,   	true))
+		new_action:add_precondition	(world_property(stalker_ids.property_enemy,   	false))
+	  	new_action:add_precondition	(world_property(properties["need_guard"],   	true))
+	new_action:add_precondition	(world_property(properties["event"],		false))
+	new_action:add_precondition	(world_property(properties["state_end"],		true))
    	new_action:add_effect(world_property(properties["need_guard"], false))
-    	manager:add_action(operators["action_guard"], new_action)
+		manager:add_action(operators["action_guard"], new_action)
 
   	new_action = manager:action(stalker_ids.action_puzzle_solver)
-      	new_action:add_precondition    (world_property(properties["need_guard"],   	false))
+	  	new_action:add_precondition	(world_property(properties["need_guard"],   	false))
 
 	if char_ini ~= nil then xr_guard.set_guard(npc) end
-    end
+	end
 end
 
 -- функции
 function vector_copy_by_val(vec)
-  local newvec = vector()
-  newvec.x = vec.x
-  newvec.y = vec.y
-  newvec.z = vec.z
-  return newvec
+	local newvec = vector()
+	newvec.x = vec.x
+	newvec.y = vec.y
+	newvec.z = vec.z
+	return newvec
 end
 
 -- включение лагеря
-function set_guard(object, enable, path_main, path_hideout, running, search_light)
+function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp)
 	-- enable - будет ли работать схема в принципе
 	-- path_main - основной патрульный путь
 	-- path_hideout - патрульный путь во время дождя
@@ -366,54 +404,65 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].guard
 	if enable == nil then
-       		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "enabled") == true then
-               		st.enabled = char_ini:r_bool("guard", "enabled")
+	   		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "enabled") == true then
+			   		st.enabled = char_ini:r_bool("guard", "enabled")
 		else
 			st.enabled = false
-	        end
+			end
 	else
 		st.enabled = enable		
 	end	
 	if st.enabled == true then
 		if path_main == nil then
-        		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_main") == true then
-	        	        st.path_main = char_ini:r_string("guard", "path_main")
-        		else
-	        	    	st.enabled = false
-		        end
+			if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_main") == true then
+					st.path_main = char_ini:r_string("guard", "path_main")
+			else
+					st.enabled = false
+			end
 		else
 			st.path_main = path_main
 		end
 	end
 	if st.enabled == true then
 		if path_hideout == nil then
-        		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_hideout") == true then
-	        	        st.path_hideout = char_ini:r_string("guard", "path_hideout")
-        		else
-	        	    	st.path_hideout = st.path_main
-		        end
+			if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_hideout") == true then
+					st.path_hideout = char_ini:r_string("guard", "path_hideout")
+			else
+					st.path_hideout = st.path_main
+			end
 		else
 			st.path_hideout = path_hideout
 		end
 	end
 	if st.enabled == true then
 		if running == nil then
-        		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "running") == true then
-	        	        st.running = char_ini:r_bool("guard", "running")
-        		else
-	        	    	st.running = false
-		        end
+			if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "running") == true then
+					st.running = char_ini:r_bool("guard", "running")
+			else
+					st.running = false
+			end
 		else
 			st.running = running
 		end
 	end
 	if st.enabled == true then
 		if search_light == nil then
-        		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "search_light") == true then
-	        	        st.projector_name = char_ini:r_string("guard", "search_light")
-		        end
+			if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "search_light") == true then
+					st.projector_name = char_ini:r_string("guard", "search_light")
+			end
 		else
 			st.projector_name = search_light
+		end
+	end
+	if st.enabled == true then
+		if path_camp == nil then
+			if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_camp") == true then
+					st.path_camp = char_ini:r_string("guard", "path_camp")
+			else
+					st.path_camp = nil
+			end
+		else
+			st.path_camp = path_camp
 		end
 	end
 	if st.action ~= nil then
