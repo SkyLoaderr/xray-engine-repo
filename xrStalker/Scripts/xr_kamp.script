@@ -549,22 +549,54 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(properties["kamp_end"],		true))
 end
 -- включение лагеря
-function set_kamp(object)
-    local char_ini = object:spawn_ini()
+function set_kamp(object, enable, center_point, patrol_path)
+	-- enable - будет ли работать схема в принципе
+	-- center_point - центр лагеря
+	-- patrol_path - патрульные пути для обхода
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].kamp
 
-    if char_ini:section_exist ("kamp") == true then
-        if char_ini:line_exist("kamp", "enabled") == true then
-                xr_motivator.storage[object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
-        end
-        if char_ini:line_exist("kamp", "center_point") == true then
-                xr_motivator.storage[object:id()].kamp.center_point = char_ini:r_string("kamp", "center_point")
-        else
-            xr_motivator.storage[object:id()].kamp.enabled = false
-        end
-        local i = 1
-        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do
-            xr_motivator.storage[object:id()].kamp.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
-            i = i + 1
-        end
-    end
+	if enable == nil then
+	    	if char_ini:section_exist ("kamp") == true then
+        		if char_ini:line_exist("kamp", "enabled") == true then
+                		st.enabled = char_ini:r_bool("kamp", "enabled")
+			else
+				st.enabled = false
+		        end
+		else
+			st.enabled = false
+		end
+	else
+		st.enabled = enable		
+	end	
+
+	if st.enabled == true then
+		if center_point == nil then
+		    	if char_ini:section_exist ("kamp") == true then
+	        		if char_ini:line_exist("kamp", "center_point") == true then
+		        	        st.center_point = char_ini:r_string("kamp", "center_point")
+	        		else
+		        	    	st.enabled = false
+			        end
+			else
+				st.enabled = false
+			end
+		else
+			st.center_point = center_point
+		end
+	end
+	if st.enabled == true then
+		if patrol_path == nil then
+		    	if char_ini:section_exist ("kamp") == true then
+	        		local i = 1
+			        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do
+        				st.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
+					i = i + 1
+		    		end
+			end
+		else
+			st.patrol_path = patrol_path
+		end
+	end
+	xr_motivator.checkStorage(object)
 end
