@@ -14,13 +14,13 @@ states = {
 				animation = nil
 			},
 	
-	wait = {	weapon = "strapped",
+	wait = {	weapon = "unstrapped",
 				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
+				mental = anim.danger,
+				bodystate = move.crouch,
 				direction = "object",
-				animstate = "sit",
-				animation = "eating"
+				animstate = "stand",
+				animation = nil
 			},
 
 	threat = {	weapon = "strapped",
@@ -28,8 +28,8 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				direction = "object",
-				animstate = "wounded",
-				animation = nil
+				animstate = "sit",
+				animation = "eating"
 			}
 
 }
