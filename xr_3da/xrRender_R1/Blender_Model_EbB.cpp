@@ -99,6 +99,7 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 			sname_ps			= "add_point";
 			C.r_Pass			(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf		("s_lmap",	TEX_POINT_ATT);
 			C.r_Sampler_clf		("s_att",	TEX_POINT_ATT);
 			C.r_End				();
 			break;

@@ -70,7 +70,8 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 			break;
 		case SE_R1_LPOINT:
 			C.r_Pass		("lmap_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
-			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler		("s_base",	C.L_textures[0]		);
+			C.r_Sampler_clf	("s_lmap",	TEX_POINT_ATT		);
 			C.r_Sampler_clf	("s_att",	TEX_POINT_ATT		);
 			C.r_End			();
 			break;

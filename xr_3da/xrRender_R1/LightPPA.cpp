@@ -16,7 +16,8 @@ const float	SSM_tex_size 			=	32.f;
 void cl_light_PR::setup		(R_constant* C)					{
 	Fvector&	P	= RImplementation.r1_dlight_light->position;
 	float		R	= RImplementation.r1_dlight_light->range;
-	RCache.set_c	(C,P.x,P.y,P.z,1.f/R);
+	if (RImplementation.phase==CRender::PHASE_POINT)		RCache.set_c	(C,P.x,P.y,P.z,.5f/R);
+	else													RCache.set_c	(C,P.x,P.y,P.z,1.f/R);
 }
 void cl_light_C::setup		(R_constant* C)					{
 	Fcolor&		_C	= RImplementation.r1_dlight_light->color;
@@ -138,7 +139,7 @@ void CLightR_Manager::render_point	()
 void CLightR_Manager::render_point	()
 {
 	// for each light
-	for (xr_vector<light*>::iterator it=selected_spot.begin(); it!=selected_spot.end(); it++)
+	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		light*	L					= *it;
 

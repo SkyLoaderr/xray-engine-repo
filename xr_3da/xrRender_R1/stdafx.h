@@ -26,5 +26,5 @@
 #include "xrRender_console.h"
 #include "FStaticRender.h"
 
-#define		TEX_POINT_ATT	"internal\\internal_light_r2att"
+#define		TEX_POINT_ATT	"internal\\internal_light_attpoint"
 #define		TEX_SPOT_ATT	"internal\\internal_light_attclip"
