@@ -65,7 +65,10 @@ extern	float	g_fMinReconSpeed	;
 extern	float	g_fMaxReconSpeed	;
 
 BOOL	g_bCheckTime = TRUE;
+int		g_dwEventDelay = 0;
 
+//extern int x_m_x = 0;
+//extern int x_m_z = 0;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -988,6 +991,10 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	1.0f, 180.0f);
 
 		CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
+		CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
+
+//		CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
+//		CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
 
 
 		// keyboard binding

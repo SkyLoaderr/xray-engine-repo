@@ -2,6 +2,9 @@
 
 #include "xrMessages.h"
 
+extern BOOL		g_bCheckTime;
+extern int		g_dwEventDelay;
+
 class	NET_Event
 {
 public:
@@ -16,6 +19,7 @@ public:
 		u16				ID;	
 		P.r_begin		(ID			);	VERIFY(M_EVENT==ID);
 		P.r_u32			(timestamp	);
+		timestamp += u32(g_dwEventDelay);
 		P.r_u16			(type		);
 		P.r_u16			(destination);
 
@@ -45,7 +49,7 @@ public:
 
 IC bool operator < (const NET_Event& A, const NET_Event& B)	{ return A.timestamp<B.timestamp; }
 
-extern BOOL		g_bCheckTime;
+
 
 class	NET_Queue_Event
 {
@@ -66,7 +70,9 @@ public:
 		else 
 		{
 			if (!g_bCheckTime) return TRUE;
+#ifdef _DEBUG
 			if (T<queue.begin()->timestamp) return FALSE;
+#endif
 			return TRUE;
 		}
 	}

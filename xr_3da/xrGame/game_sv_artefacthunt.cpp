@@ -10,6 +10,7 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 
 	m_dwArtefactRespawnDelta = get_option_i		(options,"artefactrdelta",0);
 	m_ArtefactsNum	= u8(get_option_i		(options,"numberartefacts",1));
+	m_dwArtefactStayTime	= u32(get_option_i		(options,"artefactstaytime",5))*60000;
 	fraglimit = 0;	
 
 	m_delayedRoundEnd = false;
@@ -56,6 +57,7 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	m_dwArtefactSpawnTime = 0;
 	m_ArtefactBearerID = 0;
 	m_TeamInPosession = 0;
+	m_dwArtefactRemoveTime = -1;
 
 	m_ArtefactsSpawnedTotal = 0;
 }
@@ -285,6 +287,7 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
 			};
+			m_dwArtefactRemoveTime = -1;
 			return TRUE;
 		};
 	}
@@ -318,6 +321,7 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
 			};
+			m_dwArtefactRemoveTime = 0;
 			return TRUE;
 		};
 	}
@@ -424,7 +428,25 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	P.w_u32				(GMSG_ARTEFACT_SPAWNED);
 	u_EventSend(P);
 	//-----------------------------------------------
+	m_dwArtefactSpawnTime = -1;
+	m_dwArtefactRemoveTime = 0;
+
 	m_ArtefactsSpawnedTotal++;
+};
+
+void	game_sv_ArtefactHunt::RemoveArtefact			()
+{
+	//-----------------------------------------------
+	NET_Packet	P;
+	u_EventGen(P, GE_DESTROY, m_dwArtefactID);
+	u_EventSend(P);
+	//-----------------------------------------------
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_ARTEFACT_DESTROYED);
+	u_EventSend(P);
+	//-----------------------------------------------
+	m_dwArtefactSpawnTime = 0;
+	m_dwArtefactRemoveTime = -1;
 };
 
 void	game_sv_ArtefactHunt::Update			()
@@ -461,9 +483,24 @@ void	game_sv_ArtefactHunt::Update			()
 						};
 					};
 				};
+
+				if (m_dwArtefactStayTime != 0)
+				{
+
+					if (m_dwArtefactRemoveTime == 0)
+					{					
+						m_dwArtefactRemoveTime = Device.dwTimeGlobal+m_dwArtefactStayTime;
+					}
+					else
+					{
+						if ((m_dwArtefactRemoveTime != -1) && (u32(m_dwArtefactRemoveTime) < Device.dwTimeGlobal))
+						{
+							RemoveArtefact();
+						};
+					};
+				};
 			}break;
 	}
-
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {

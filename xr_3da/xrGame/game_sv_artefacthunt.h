@@ -17,6 +17,9 @@ protected:
 
 	u16			m_ArtefactsSpawnedTotal;
 
+	s32			m_dwArtefactStayTime;
+	s32			m_dwArtefactRemoveTime;
+
 	xr_vector<RPoint>				Artefact_rpoints;
     	
 public:
@@ -51,6 +54,7 @@ public:
 
 				void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
 				void				SpawnArtefact			();
+				void				RemoveArtefact			();
 				void				Assign_Artefact_RPoint	(CSE_Abstract* E);
 
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state

@@ -250,6 +250,12 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 				Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
+	case GMSG_ARTEFACT_DESTROYED:
+		{
+			sprintf(Text, "%sArtefact has been destroyed.", 
+				Color_Main);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
 	default:
 		{
 			R_ASSERT2(0,"Unknown Game Message");
