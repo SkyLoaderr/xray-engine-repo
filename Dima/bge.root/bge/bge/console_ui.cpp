@@ -21,12 +21,14 @@ LPCSTR		header[]					= {
 
 CConsoleUI::CConsoleUI		()
 {
-	m_log		= fopen(log_file_name,"at");
+	m_log			= fopen(log_file_name,"at");
+	m_use_stdout	= true;
+	m_use_log		= true;
 	if (!m_log) {
-		fprintf	(stderr,"Cannot open file %s!\n",log_file_name);
-		exit	(1);
+		fprintf		(stderr,"Cannot open file %s!\n",log_file_name);
+		exit		(1);
 	}
-	show_header	();
+	show_header		();
 }
 
 CConsoleUI::~CConsoleUI		()
@@ -103,10 +105,21 @@ void CConsoleUI::show_header()
 	show_header				(strings);
 }
 
-int __cdecl CConsoleUI::pure_log	(LPCSTR format, va_list list)
+int CConsoleUI::pure_log	(LPCSTR format, va_list list)
 {
-	int						result = vfprintf(stdout,format,list);
-	vfprintf				(m_log,format,list);
+	int						result = 0;
+	
+	if (m_use_stdout)
+		result				= vfprintf(stdout,format,list);
+	
+	if (m_use_log)
+		result				= vfprintf(m_log,format,list);
+
+#ifdef _DEBUG
+	string256				temp;
+	vsprintf				(temp,format,list);
+	OutputDebugString		(temp);
+#endif
 	return					(result);
 }
 
@@ -207,7 +220,9 @@ void CConsoleUI::execute	(char argc, char *argv[])
 		log					("bge>");
 		xr_strcpy			(s,"");
 		scanf				("%[^\n]s %c",s);
-		fprintf				(m_log,"%s\n",s);
+		m_use_stdout		= false;
+		log					("%s\n",s);
+		m_use_stdout		= true;
 		script().run_string	(s);
 		scanf				("%c",s);
 	}

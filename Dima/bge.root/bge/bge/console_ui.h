@@ -23,12 +23,14 @@ public:
 private:
 	FILE				*m_log;
 	static const int	g_display_width;
+	bool				m_use_stdout;
+	bool				m_use_log;
 
 protected:
 			LPSTR		process_compile	();
 			void		show_header		(const vector<LPCSTR> &strings);
 	virtual	void		show_header		();
-			int __cdecl pure_log		(LPCSTR format, va_list list = va_list());
+			int			pure_log		(LPCSTR format, va_list list = va_list());
 
 	template <EMessageType type>
 			int __cdecl log				(LPCSTR format, va_list list);
