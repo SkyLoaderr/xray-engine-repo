@@ -238,7 +238,7 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Render_ZB	()
 {
-	if (m_ZB.empty())	return;
+	if (m_ZB.empty())		return;
 
 	// Fill VB
 	DWORD							vCount	= m_ZB.size()*3;
@@ -248,9 +248,21 @@ void CHOM::Render_ZB	()
 	vector<occTri*>::iterator	I	= m_ZB.begin	();
 	vector<occTri*>::iterator	E	= m_ZB.end		();
 
+	for (; I!=E; I++)
+	{
+		CDB::TRI& t				= m_pModel->get_tris() [(*I)->id];
+		V->set	(*t.verts[0]);	V++;
+		V->set	(*t.verts[1]);	V++;
+		V->set	(*t.verts[2]);	V++;
+	}
+
 	Device.Streams.Vertex.Unlock	(vCount,m_VS->dwStride);
 
-	// 
+	// Render it
+	Device.set_xform_world			(Fidentity);
+	Device.Primitive.setIndices		(0,0);
+	Device.Primitive.setVertices	(m_VS->dwHandle,m_VS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
 }
 
 void CHOM::Debug		()
