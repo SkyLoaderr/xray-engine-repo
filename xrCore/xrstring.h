@@ -93,6 +93,7 @@ IC int	xr_strcmp		(const ref_str & a, const ref_str & b)		{
 	else				return xr_strcmp(*a,*b);
 }
 IC void	xr_strlwr		(std::string& src)							{ for(std::string::iterator it=src.begin(); it!=src.end(); it++) *it=std::string::value_type(tolower(*it));}
+IC void	xr_strlwr		(ref_str& src)								{ if (*src){LPSTR lp=xr_strdup(*src); xr_strlwr(lp); src=lp; xr_free(lp);} }
 
 #pragma pack(pop)
 
