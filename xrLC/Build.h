@@ -54,6 +54,11 @@ struct R_Layer
 class CBuild  
 {
 public:
+	CFS_Memory				err_invalid;
+	CFS_Memory				err_tjunction;
+	CFS_Memory				err_multiedge;
+	void					err_save	();
+
 	Fbox					scene_bb;
 	
 	vector<b_material>		materials;

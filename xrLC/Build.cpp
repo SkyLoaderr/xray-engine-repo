@@ -252,7 +252,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			Msg		("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
-				Msg	("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
+				Msg		("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
 			M.reserved = WORD(id);
@@ -404,7 +404,7 @@ void CBuild::Run	(string& P)
 		fs.Wdword(RegisterString(T));
 		fs.Wdword(RegisterString(S));
 	}
-	fs.close_chunk();
+	fs.close_chunk	();
 
 	FPU::m64r		();
 	Phase			("Saving static geometry...");
@@ -414,4 +414,13 @@ void CBuild::Run	(string& P)
 	Phase			("Saving sectors...");
 	mem_Compact		();
 	SaveSectors		(fs);
+
+/*
+	string256	log_name,log_user;
+	DWORD		buffer_size		= 128;
+	GetUserName	(log_user,&buffer_size);
+	strconcat	(log_name,"build_",strlwr(log_user),".log");
+	FILE *F = fopen(log_name, "wt");
+	R_ASSERT(F);
+*/
 }
