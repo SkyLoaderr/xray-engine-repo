@@ -98,13 +98,13 @@ begin
 		strCmdLine = strCmdLine + " /M" + PRODUCT_GUID; 
 	endif;  
 	// Create the shortcut. 
-	AddFolderIcon(SHELL_OBJECT_FOLDER, @IDSL_REMOVE_KAS,strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+	AddFolderIcon(SHELL_OBJECT_FOLDER, @IDSL_REMOVE_KAS,strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", REPLACE );  
 end;
 //---------------------------------------------------------------------------
 function CreateStartServerShortcut()   
 begin   
 	if ( SYSINFO.WIN9X.bWin9X ) then   
-		AddFolderIcon	(FOLDER_STARTUP, "Start KAS SQLServer","\""+MSDE_START_SERVER_CMD+"\" "+MSDE_START_SERVER_PAR, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+		AddFolderIcon	(FOLDER_STARTUP, "Start KAS SQLServer","\""+MSDE_START_SERVER_CMD+"\" "+MSDE_START_SERVER_PAR, "",TARGETDIR^"MDISplit.ico",0, "", REPLACE );  
 	endif;  
 end;
 //---------------------------------------------------------------------------
