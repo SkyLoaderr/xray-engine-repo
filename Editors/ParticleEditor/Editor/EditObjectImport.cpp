@@ -125,6 +125,11 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         bResult = false;
                         break;
                     }
+                    if (en_name.c_str()==0){
+						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Shader empty.",Osf->_Name());
+                        bResult = false;
+                        break;
+                    }
 
                     Osf->SetShader		(en_name.c_str());
 					Osf->SetShaderXRLC	(lc_name.c_str());
