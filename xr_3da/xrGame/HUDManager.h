@@ -35,12 +35,12 @@ public:
 	//חאדמכמגמקםûי רנטפע
 	CGameFont*				pFontHeaderRussian;
 	CGameFont*				pFontHeaderEurope;
-
+	//רנטפעû הכÿ טםעונפויסא
 	CGameFont*				pArialN21Russian;
 	CGameFont*				pFontGraffiti19Russian;
 	CGameFont*				pFontGraffiti22Russian;
 	CGameFont*				pFontLetterica16Russian;
-	CGameFont*				pFontLetterica16Russian;
+	CGameFont*				pFontLetterica18Russian;
 
 
 public:
