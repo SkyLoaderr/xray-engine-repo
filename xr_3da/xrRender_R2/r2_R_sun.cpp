@@ -238,6 +238,7 @@ void CRender::render_sun				()
 
 	// Begin SMAP-render
 	{
+		Lights_LastFrame.push_back				(fuckingsun	);
 		HOM.Disable								();
 		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
