@@ -3,6 +3,23 @@
 #include "../feel_touch.h"
 #include "customzone.h"
 
+//описание типа зоны
+struct ZONE_TYPE
+{
+	//интервал частот отыгрывания звука
+	float		min_freq;
+	float		max_freq;
+	//звук реакции детектора на конкретную зону
+	ref_sound*	detect_snd;
+};
+
+//описание зоны, обнаруженной детектором
+struct ZONE_INFO
+{
+	u32 snd_time;
+};
+
+
 class CCustomDetector :
 	public CInventoryItem,
 	public Feel::Touch
@@ -27,17 +44,21 @@ public:
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
+protected:
 	void SoundCreate				(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy				(ref_sound& dest);
 
-	FLOAT m_radius, m_buzzer_radius;
+	float m_fRadius;
+	float m_fBuzzerRadius;
 	
-	//список обнаруженных зон
-	xr_list<CCustomZone*>			m_zones;
-	//звуки
-	xr_map<CLASS_ID, ref_sound*>	m_sounds;
-	//время, для воспроизведения звуков с различной скоростью
-	xr_map<CCustomZone*, u32>		m_times;
+
+	//информация об онаруживаемых зонах
+	DEFINE_MAP(CLASS_ID, ZONE_TYPE, ZONE_TYPE_MAP, ZONE_TYPE_MAP_IT);
+	ZONE_TYPE_MAP m_ZoneTypeMap;
+	
+	//список обнаруженных зон и информация о них
+	DEFINE_MAP(CCustomZone*, ZONE_INFO, ZONE_INFO_MAP, ZONE_INFO_MAP_IT);
+	ZONE_INFO_MAP m_ZoneInfoMap;
 	
 	//звуки
 	ref_sound m_noise, m_buzzer;
