@@ -11,6 +11,8 @@
 //		algorithms
 #include "a_star.h"
 #include "dijkstra.h"
+//		path builders
+#include "edge_path.h"
 //		vertex managers
 #include "vertex_manager_generic.h"
 #include "vertex_manager_fixed.h"
@@ -88,7 +90,7 @@ protected:
 		CSolverVertexManager,
 		CSolverVertexAllocator,
 		true,
-		CDataStorageEdgePath<
+		CEdgePath<
 			_solver_edge_type,
 			true
 		>

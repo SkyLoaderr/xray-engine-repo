@@ -153,7 +153,7 @@ IC	bool CGraphEngine::search			(
 //		CVertexManager,
 //		CVertexAllocator,
 //		true,
-//		CDataStorageEdgePath<
+//		CEdgePath<
 //			_edge_type,
 //			true
 //		>

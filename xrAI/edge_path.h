@@ -14,7 +14,7 @@ template <
 	typename	_edge_type,
 	bool		bEuclidianHeuristics = true
 >
-struct CDataStorageEdgePath {
+struct CEdgePath {
 
 	template <template <typename _T> class T1>
 	struct DataStorageEdgePath {
@@ -30,9 +30,9 @@ struct CDataStorageEdgePath {
 	};
 
 	template <template <typename _T> class _vertex> 
-	class CDataStorage : public CDataStoragePath<bEuclidianHeuristics>::CDataStorage<DataStorageEdgePath<_vertex>::_vertex> {
+	class CDataStorage : public CVertexPath<bEuclidianHeuristics>::CDataStorage<DataStorageEdgePath<_vertex>::_vertex> {
 	public:
-		typedef typename CDataStoragePath<
+		typedef typename CVertexPath<
 			bEuclidianHeuristics
 			>::CDataStorage<
 				DataStorageEdgePath<_vertex>::_vertex
@@ -49,4 +49,4 @@ struct CDataStorageEdgePath {
 	};
 };
 
-#include "data_storage_edge_path_inline.h"
+#include "edge_path_inline.h"

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "data_storage_edge_path.h"
+#include "vertex_path.h"
 #include "data_storage_constructor.h"
 
 template <
@@ -17,7 +17,7 @@ template <
 	typename _vertex_manager, 
 	typename _vertex_allocator,
 	bool	 euclidian_heuristics = true,
-	typename _data_storage_base = CDataStoragePath<euclidian_heuristics>,
+	typename _data_storage_base = CVertexPath<euclidian_heuristics>,
 	template <typename _T> class _vertex = CEmptyClassTemplate,
 	template <
 		typename _1,
