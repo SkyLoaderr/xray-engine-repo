@@ -320,7 +320,8 @@ void CRender::Calculate				()
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
-		g_pGameLevel->pHUD->Render_First	( );
+		g_pGameLevel->pHUD->Render_First	( );	// R1 shadows
+		g_pGameLevel->pHUD->Render_Last		( );	
 		u32 uID_LTRACK						= 0xffffffff;
 		if (phase==PHASE_NORMAL)			{
 			uLastLTRACK	++;
@@ -380,7 +381,6 @@ void CRender::Calculate				()
 				break;	// exit loop on frustums
 			}
 		}
-		g_pGameLevel->pHUD->Render_Last						();	
 
 		// Calculate miscelaneous stuff
 		L_Shadows->calculate								();
