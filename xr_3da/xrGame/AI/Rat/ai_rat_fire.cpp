@@ -66,7 +66,6 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	return  f1*f2;//*f3;
 }
 
-// when someone hit rat
 void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
@@ -134,12 +133,12 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
 	while ((i < I) && (j < J)) {
 		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
-		if (!(Level().m_tpAI_DDD->m_tpCurrentMember)) {
+		if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
 			i++;
 			continue;
 		}
 		Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-		if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy)) {
+		if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
 			j++;
 			continue;
 		}
@@ -148,7 +147,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 			fCurrentProbability = fProbability;
 			for (j++; (i < I) && (j < J); j++) {
 				Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-				if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy)) {
+				if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
 					j++;
 					continue;
 				}
@@ -165,7 +164,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 			fCurrentProbability = 1.0f - fProbability;
 			for (i++; (i < I) && (j < J); i++) {
 				Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
-				if (!(Level().m_tpAI_DDD->m_tpCurrentMember)) {
+				if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
 					i++;
 					continue;
 				}
