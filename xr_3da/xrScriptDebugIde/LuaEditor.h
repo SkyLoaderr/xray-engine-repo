@@ -79,9 +79,12 @@ public:
 	void	HideSelection(BOOL normal, BOOL bDirect = TRUE);
 	void	ReplaceSel(const char* text, BOOL bDirect = TRUE);
 	long	FindText(int flags, TextToFind* ft, BOOL bDirect = TRUE);
+	long	FindTextNext(int flags, TextToFind* ft, BOOL bDirect = TRUE);
 	void	SetSel(long start, long end, BOOL bDirect = TRUE);
 	int		PointXFromPosition(long pos, BOOL bDirect = TRUE);
 	int		PointYFromPosition(long pos, BOOL bDirect = TRUE);
+
+	void	createFunctionList(CMenu& mnu);
 //lexer
 	void	SetLexer(int lexer, BOOL bDirect = TRUE);
 	void	SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect = TRUE);

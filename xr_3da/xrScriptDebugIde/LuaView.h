@@ -82,6 +82,9 @@ protected:
   virtual void AdjustFindDialogPosition();
   virtual CScintillaFindReplaceDlg* CreateFindReplaceDialog();
 	void OnEditFindNext();
+
+//
+	void createFunctionList(CMenu& mnu);
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CLuaView)
@@ -106,7 +109,8 @@ protected:
 	afx_msg void OnEditFind();
 	afx_msg void OnEditReplace();
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
-	//}}AFX_MSG
+	afx_msg void OnFunctionList();
+//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };

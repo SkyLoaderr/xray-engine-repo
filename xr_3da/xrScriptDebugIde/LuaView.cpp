@@ -53,7 +53,8 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REPLACE, OnUpdateFind)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_FINDNEXT, OnUpdateFind)
 
-
+	ON_COMMAND(ID_SHOW_FUNCTION_LIST, OnFunctionList)
+	
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
 END_MESSAGE_MAP()
@@ -712,3 +713,21 @@ void CLuaView::_save()
 	Serialize(saveArchive);
 	}
 }
+
+void CLuaView::OnFunctionList()
+{
+	CMenu mnu;
+	mnu.CreatePopupMenu();
+	GetEditor()->createFunctionList(mnu);
+
+
+	POINT mouse;
+	GetCursorPos(&mouse);
+	::SetForegroundWindow(m_hWnd);	
+	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD,mouse.x, mouse.y,this,NULL); 
+	if( 0 != idx ){
+		GetEditor()->GotoLine(idx);
+	}
+	
+}
+
