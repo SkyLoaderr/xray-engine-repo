@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "net_utils.h"
 #include "xrServer_Objects_Abstract.h"
 #include "xrMessages.h"
