@@ -377,4 +377,12 @@ void						CSoundRender_Core::refresh_env_library()
 	env_load			();
 	env_apply			();
 }
+void						CSoundRender_Core::refresh_sources()
+{
+	for (u32 sit=0; sit<s_sources.size(); sit++){
+    	CSoundRender_Source* s = s_sources[sit];
+        s->unload		();
+        s->load			(*s->fname,s->_3D);
+    }
+}
 #endif

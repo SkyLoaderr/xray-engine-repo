@@ -82,6 +82,7 @@ public:
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
 	virtual void						refresh_env_library		();
 	virtual void						set_user_env			( CSound_environment* E);
+	virtual void						refresh_sources			();
 #endif
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);

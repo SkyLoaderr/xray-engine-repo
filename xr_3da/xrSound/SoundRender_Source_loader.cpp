@@ -35,24 +35,15 @@ long ov_tell_func(void *datasource)
 	return ((IReader*)datasource)->tell(); 
 }
 
-int ov_seek_func1(void *datasource, s64 offset, int whence){ return fseek((FILE*)datasource, offset, whence); }
-size_t ov_read_func1(void *ptr, size_t size, size_t nmemb, void *datasource){ return fread(ptr, size, nmemb, (FILE*)datasource);}
-int ov_close_func1(void *datasource){return fclose((FILE*)datasource);}
-long ov_tell_func1(void *datasource){return ftell((FILE*)datasource);}
-
 void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
-	/// fname					= pName;
 	// Load file into memory and parse WAV-format
 	wave					= FS.r_open(pName); 
 	R_ASSERT2				(wave,pName);
+
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
 	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
-/*
-	ov_callbacks ovc		= {ov_read_func1,ov_seek_func1,ov_close_func1,ov_tell_func1};
-	FILE* F = fopen(pName,"rb");
-	ov_open_callbacks		(F,&ovf,NULL,0,ovc);
-*/
+
 	vorbis_info* ovi		= ov_info(&ovf,-1);
 	// verify
 	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
@@ -73,7 +64,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	dwTimeTotal				= sdef_source_footer + (dwBytesTotal*1000)/wfxdest.nAvgBytesPerSec;
 }
 
-void CSoundRender_Source::load		(LPCSTR name,	BOOL b3D)
+void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 {
 	string256			fn,N;
 	strcpy				(N,name);
@@ -94,3 +85,11 @@ void CSoundRender_Source::load		(LPCSTR name,	BOOL b3D)
 		Msg	("! WARNING: Invalid wave length (must be at least 100ms), file: %s",fn);
 	}
 }
+
+void CSoundRender_Source::unload()
+{
+	ov_clear			(&ovf);
+	FS.r_close			(wave);
+	SoundRender.cache.cat_destroy			(CAT);
+}
+

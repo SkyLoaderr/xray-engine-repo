@@ -222,6 +222,7 @@ public:
 	virtual SoundEnvironment_LIB*	get_env_library			()																						= 0;
 	virtual void					refresh_env_library		()																						= 0;
 	virtual void					set_user_env			( CSound_environment* E)																= 0;
+	virtual void					refresh_sources			()																						= 0;
 #endif
 };
 extern XRSOUND_API CSound_manager_interface*		Sound;

@@ -8,8 +8,8 @@
 // and not in this file
 
 #ifdef __BORLANDC__
-	#pragma comment(lib,	"x:\\vorbis.lib")
-	#pragma comment(lib,	"x:\\vorbisfile.lib")
+    #pragma comment(lib,	"x:\\oggB.lib"			)
+    #pragma comment(lib,	"x:\\vorbisfileB.lib"	)
     #pragma comment(lib,	"xrCoreB.lib"		)
     #pragma comment(lib,	"xrCDBB.lib"		)
     #pragma comment(lib,	"dsound.lib" 		)

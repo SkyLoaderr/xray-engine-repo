@@ -12,11 +12,8 @@ CSoundRender_Source::CSoundRender_Source	()
 
 CSoundRender_Source::~CSoundRender_Source	()
 {
-	FS.r_close(wave);
-
-	SoundRender.cache.cat_destroy			(CAT);
+	unload		();
 }
-
 
 void CSoundRender_Source::decompress		(u32 line)
 {

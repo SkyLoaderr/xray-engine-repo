@@ -24,6 +24,7 @@ public:
 	~CSoundRender_Source	();
 
 	void					load					(LPCSTR name,	BOOL b3D);
+    void					unload					();
 	void					decompress				(u32	line);
 };
 #endif
