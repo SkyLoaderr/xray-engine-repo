@@ -12,73 +12,41 @@
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIInventoryUtilities.h"
+#include "xrXMLParser.h"
+#include "UIXmlInit.h"
+#include "UISkinWindow.h"
 
 using namespace InventoryUtilities;
 
-// Количество скинов 
-const u8				SKINS_COUNT			= 4;
-// Размеры иконки персонажа в пикселях
-extern const u16		SKIN_TEX_HEIGHT;
-extern const u16		SKIN_TEX_WIDTH;
-
-//-----------------------------------------------------------------------------/
-//  Класс окна для выбора скинов
-//-----------------------------------------------------------------------------/
+const u32			SKIN_TEX_HEIGHT			= 341;
+const u32			SKIN_TEX_WIDTH			= 128;
 
 class CUISkinSelectorWnd: public CUIDialogWnd
 {
 	typedef CUIDialogWnd inherited;
-public:
-	// Ctor and Dtor
+public:	
 	CUISkinSelectorWnd(const char* strSectionName);
 	CUISkinSelectorWnd();
 	~CUISkinSelectorWnd();
-
-	// Инициализация
+	
 	virtual void	Init(const char *strSectionName);
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData = NULL);
 	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void	Draw();
+	// event handlers
+	virtual void	OnBtnOK();
+	virtual void	OnBtnCancel();
 
-	// Получаем индекс (0 <= Index < SKINS_COUNT) выбранного скина
-	u8				GetActiveIndex()		{ return m_uActiveIndex; }
-	// Переключаем скин
-	// Params:	idx - индекс нового скина
-	// Return:	индекс предыдущего скина
-	u8				SwitchSkin(const u8 idx);
-
+	int				GetActiveIndex()		{ return m_uActiveIndex; } 	// Получаем индекс (0 <= Index < SKINS_COUNT) выбранного скина	
+	int				SwitchSkin(const int idx);  // returns previous skin
 protected:
-	// Запоминаем имя секции откуда читать инфу о скинах
-	shared_str		m_strSection;
-
-	// Индекс текущего выбранного скина
-	u8				m_uActiveIndex;
-	
-	// Вычисление ширины окон со скинами и расстояния между окнами в зависимости
-	// от количества скинов.
-	// Return:	ширина одного окна
-	u32				CalculateSkinWindowWidth() const;
-
-	// Инициализация скинов.
-	void			InitializeSkins();
-
-	// Отобразить подписи-клавиатурные акселераторы, для каждого скина
-	void			DrawKBAccelerators();
-
-	// Кнопки Ок и Отмена
+	shared_str		m_strSection;    // Запоминаем имя секции откуда читать инфу о скинах
+	int				m_uActiveIndex;  // Индекс текущего выбранного скина
 	CUIButton		UIOkBtn, UICancelBtn;
-
-	// Cтруктурка - набор необходимых элементов окошка со скином
-	typedef struct tagSkinWindow
-	{
-		CUIStatic		UIHighlight;
-		CUIFrameWindow	UIBackground;
-	} SkinWindow;
-
-	// Массив окошек со скинами
-	SkinWindow	m_vSkinWindows[SKINS_COUNT];
-
+	void			DrawKBAccelerators();	// Отобразить подписи-клавиатурные акселераторы, для каждого скина
+	
+	CUISkinWindow	m_vSkinWindows[SKINS_COUNT];	// Массив окошек со скинами
 };
 
 #endif

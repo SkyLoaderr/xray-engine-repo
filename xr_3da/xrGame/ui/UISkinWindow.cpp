@@ -67,7 +67,7 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 	AttachChild(&UIHighlight);
 	UIHighlight.Init(0, 0, width, height);
 
-	RECT r	= UIBackground.GetAbsoluteRect();
+	Irect r	= UIBackground.GetAbsoluteRect();
 
 	// Координаты бекграунда
 	r.bottom	-= BORDER;
