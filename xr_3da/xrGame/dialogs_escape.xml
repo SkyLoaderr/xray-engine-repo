@@ -10,7 +10,7 @@
 	</phrase_list>
     </dialog>
 
-	<!-- STABLE -->
+	<!-- DONE -->
     <dialog id="escape_trader_jobs">
 	<phrase_list>
 	    	<phrase id="0">
@@ -111,82 +111,78 @@
 	</phrase_list>
     </dialog>
 
+	<!-- DONE -->
     <dialog id="escape_trader_done_artefact">
     <precondition>escape_dialog.have_artefact_nightstar</precondition>
 	<phrase_list>
 		<phrase id="0">
-			<text>Вот твой артефакт. Забавная вещица.</text>
+			<text>escape_trader_done_artefact__0</text>
 	        <action>escape_dialog.give_artefact_nightstar</action>
 	        <give_info>escape_trader_have_artefact</give_info>
 			<next>2</next>			
 		</phrase>			
 		<phrase id="2">
-			<text>Заметано.</text>
+			<text>escape_trader_done_artefact__2</text>
 		</phrase>
 	</phrase_list>
     </dialog>
 
+	<!-- DONE -->
     <dialog id="escape_trader_done_blockpost_box">
     <precondition>escape_dialog.have_blockpost_case</precondition>
 	<phrase_list>
 		<phrase id="0">
-			<text>Вот твой ящик.</text>
+			<text>escape_trader_done_blockpost_box__0</text>
 	        <action>escape_dialog.give_blockpost_case</action>
 	        <give_info>escape_have_blockpost_case</give_info>
 			<next>2</next>			
 		</phrase>			
 		<phrase id="2">
-			<text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
+			<text>escape_trader_done_blockpost_box__2</text>
 		</phrase>
 	</phrase_list>
     </dialog>
 
+	<!-- DONE -->
 	<dialog id="escape_trader_talk_about">
 	<phrase_list>
 	   	<phrase id="0">
-			<text>Расскажи мне о ...</text>
+			<text>escape_trader_talk_about__0</text>
 			<next>1</next>
 		</phrase>                                                                                               
 	   	<phrase id="10">
-			<text>Спасибо, это все на сегодня.</text>
+			<text>escape_trader_talk_about__10</text>
 		</phrase>                                                                                               	
 	    <phrase id="1">
-			<text>Спрашивай, только я многого не знаю. Сам понимаешь, сижу тут целыми днями, а жизнь она вся там, снаружи.</text>
+			<text>escape_trader_talk_about__1</text>
 			<next>2</next>
 			<next>3</next>
 			<next>10</next>
 	    </phrase>                                                                                               
 	    <phrase id="2">
-			<text>Расскажи мне о военных сталкерах.</text>
+			<text>escape_trader_talk_about__2</text>
 			<next>21</next>
 	    </phrase>
 	    <phrase id="21">
-			<text>Военные, что с них взять. Смотрят на всех свысока, как будто богами тут заделались. 
-			Обряды не чтят, на помощь никогда не прийдут, сколько не зови. Разве что пристрелят, но не из жалости, 
-			а потому что натура их такая - сперва стреляй, потом думай. Но я с ними нашел общий разговор. 
-			Водку, журнальчики там разные в обмен на спокойствие. Ну, ты понимаешь о чем я.</text>
+			<text>escape_trader_talk_about__21</text>
 			<next>22</next>
 	    </phrase>
 	    <phrase id="22">
-			<text>Что в Зоне делают военные?</text>
+			<text>escape_trader_talk_about__22</text>
 			<next>221</next>
 	    </phrase>
 	    <phrase id="221">
-			<text>Охраняют, что ж еще. То ли саму зону охраняют, то ли весь мир от зоны. Непонятно. Иногда 
-			в зону даже целые экспедиции военных проходят. Значит ищут что-то. Но я тебе вот что скажу. Военные 
-			зону не уважают, и зона их не любит. То и дело цинковые гробы увозят.</text>
+			<text>escape_trader_talk_about__221</text>
 			<next>2</next>
 			<next>3</next>
 			<next>10</next>
 	    </phrase>
 	   	<phrase id="3">
-			<text>Расскажи мне о Зоне.</text>
+			<text>escape_trader_talk_about__3</text>
 			<next>31</next>
 	   	</phrase>
 	   	<phrase id="31">
-			<text>В Зоне без оружия опасно... а его завсегда сможешь прикупить у меня, для тебя почти по самым низким 
-			ценам: практически по самым... ну почти... В центре Зоны точно есть клондайк артефактов и тот, кто проберется 
-			туда, сказочно разбогатеет. Понимаешь куда клоню?</text>
+			<text>escape_trader_talk_about__31</text>
 			<next>2</next>
 			<next>3</next>
 			<next>10</next>
@@ -194,57 +190,51 @@
 	</phrase_list>
 	</dialog>
 
+	<!-- DONE -->
 	<dialog id="escape_trader_talk_level">
 	<phrase_list>
 	   	<phrase id="0">
-			<text>Расскажи мне об этом месте.</text>
+			<text>escape_trader_talk_level__0</text>
 			<next>1</next>
 		</phrase>                                                                                               
 	   	<phrase id="10">
-			<text>Ладно, спасибо.</text>
+			<text>escape_trader_talk_level__10</text>
 		</phrase>                                                                                               	
 	    <phrase id="1">
-   			<text>Предбанник Зоны, армейский кордон. На равнинах стаи слепых псов бродят. Иногда сюда забегают мутанты
-			Вообще тут почти всегда тихо и спокойно, вот только военные иногда развлекаются. Сталкеры тут только мимоходом. 
-			Только новички иногда задерживаются. Хорошего хабара здесь не сыщешь. Что еще сказать, Мост есть разрушенный, 
-			да фабрика заброшенная. Вроде все.</text>
+   			<text>escape_trader_talk_level__1</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
 			<next>10</next>
 		</phrase>
 	   	<phrase id="2">
-			<text>Расскажи побольше о блокпосте.</text>
+			<text>escape_trader_talk_level__2</text>
 			<next>21</next>
 	   	</phrase>
 	   	<phrase id="21">
-			<text>Несколько десятков солдат и приказ стрелять без предупреждения. Лучьше обходить стороной. Когда обижаются,
-			то зовут бравых спецназовцев. Те наверху такой шмон наводят, что у меня потом месяц клиентов нет. Так что ты их лучше
-			не обижай. Командира их знаю немного. Алкаголик полный. Благодаря ему и держусь здесь.</text>
+			<text>escape_trader_talk_level__21</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>
 			<next>10</next>						
 	    </phrase>
 	   	<phrase id="3">
-			<text>Расскажи побольше о разрушенном мосте.</text>
+			<text>escape_trader_talk_level__3</text>
 			<next>31</next>
 	   	</phrase>
 	   	<phrase id="31">
-			<text>Если идти по дороге вглубь зоны, то увидишь насыпь железнодорожную. Раньше там мост над дорогой был, а потом
-			взял и упал во время выброса. Военные там любят поджидать сталкеров, возвращающихся с хабаром.</text>
+			<text>escape_trader_talk_level__31</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
 			<next>10</next>
 	   	</phrase>
 	   	<phrase id="4">
-			<text>Расскажи побольше о заброшенной фабрике.</text>
+			<text>escape_trader_talk_level__4</text>
 			<next>41</next>
 	   	</phrase>
 	   	<phrase id="41">
-			<text>Как дорогу перейдешь, там и увидишь ее. Белое такое здание. Что смогли украсть - давно украли, а что не смогли
-			то давно заржавело. Излюбленное место бандитов. Рядом с ней ложбинка есть, так вот там можно даже артефактами разжиться.</text>
+			<text>escape_trader_talk_level__41</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
@@ -253,61 +243,59 @@
 	</phrase_list>
 	</dialog>
 
+	<!-- DONE -->
 	<dialog id="escape_trader_talk_flame">
 	<phrase_list>
 	   	<phrase id="0">
-			<text>Давай поболтаем.</text>
+			<text>escape_trader_talk_flame__0</text>
 			<next>1</next>
 		</phrase>                                                                                               
 	   	<phrase id="10">
-			<text>Ладно, спасибо.</text>
+			<text>escape_trader_talk_flame__10</text>
 		</phrase>                                                                                               	
 	    <phrase id="1">
-   			<text>Давай.</text>
+   			<text>escape_trader_talk_flame__1</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
 			<next>10</next>
 		</phrase>	   	
 		<phrase id="2">
-			<text>Что ты знаешь о Стрелке?</text>
+			<text>escape_trader_talk_flame__2</text>
 			<next>21</next>
 	    </phrase>
 	    <phrase id="21">
-			<text>Слухи разные ходят. Вроде местная знаменитость какая-то. Вроде в центр зоны ходил. 
-			Спрашивай сталкеров, они больше знают.</text>
+			<text>escape_trader_talk_flame__21</text>
 			<next>22</next>
 	    </phrase>
 	    <phrase id="22">
-			<text>Как Стрелок прошел к центру Зоны?</text>
+			<text>escape_trader_talk_flame__22</text>
 			<next>221</next>
 	    </phrase>
 	    <phrase id="221">
-			<text>Не знаю. Возможно, знает бармен или кто-то из сталкеров ветеранов.</text>
+			<text>escape_trader_talk_flame__221</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
 			<next>10</next>
 	    </phrase>
 		<phrase id="3">
-			<text>Мне нужна экипировка, где я могу ее раздобыть? Тут вообще магазины какие-нибудь есть?</text>
+			<text>escape_trader_talk_flame__3</text>
 			<next>31</next>
 	   	</phrase>
 	   	<phrase id="31">
-			<text>Ну, ты прямо сейчас в одном из них и стоишь. Продаю все по самым низким ценам. С боеприпасами правда 
-			в зоне туговато, поэтому и стоят так дорого.</text>
+			<text>escape_trader_talk_flame__31</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
 			<next>10</next>
 	   	</phrase>
 	   	<phrase id="4">
-			<text>Мне нужны деньги, как их можно заработать?</text>
+			<text>escape_trader_talk_flame__4</text>
 			<next>41</next>
 	   	</phrase>
 	   	<phrase id="41">
-			<text>Все очень просто. Делаешь другим услуги, если они тебя не убьют, то дадут денег. Можешь артефакты
-			мне продавать. Заплачу хорошую цену, не то что некоторые барыги.</text>
+			<text>escape_trader_talk_flame__41</text>
 			<next>2</next>
 			<next>3</next>
 			<next>4</next>						
@@ -316,10 +304,11 @@
 	</phrase_list>
 	</dialog>
 
+	<!-- DONE -->
     <dialog id="loser_hello_dialog">
         <phrase_list>
             <phrase id="0">
-                <text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие. Правда стрелять я умею только из калаша да еще из двустволки...\nПринеси! Я этого не забуду...</text>
+                <text>loser_hello_dialog__0</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -327,41 +316,42 @@
             </phrase>
             <phrase id="1">
 				<precondition>escape_dialog.novice_gane_job</precondition>
-                <text>Я посмотрю что можно сделать.[Задание]</text>
+                <text>loser_hello_dialog__1</text>
                 <give_info>escape_novice_need_weapon</give_info>
                 <next>5</next>
             </phrase>
             <phrase id="2">
-                <text>Как нибудь в другой раз.</text>
+                <text>loser_hello_dialog__2</text>
             </phrase>
             <phrase id="3">
                 <precondition>escape_dialog.haveAK</precondition>
-                <text>На, возьми калаш, может он тебе подойдет...</text>
+                <text>loser_hello_dialog__3</text>
                 <next>4</next>
                 <action>escape_dialog.give_kalash_to_loser</action>
                 <give_info>escape_novice_has_weapon</give_info>
             </phrase>
             <phrase id="6">
                 <precondition>escape_dialog.haveTOZ</precondition>
-                <text>На, возьми винтовку, может она тебе подойдет...</text>
+                <text>loser_hello_dialog__6</text>
                 <next>4</next>
                 <action>escape_dialog.give_toz_to_loser</action>
                 <give_info>escape_novice_has_weapon</give_info>
             </phrase>
             <phrase id="4">
-                <text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
+                <text>loser_hello_dialog__4</text>
 				<action>escape_dialog.set_dialog_thank</action>
             </phrase>
             <phrase id="5">
-                <text>Ну давай, я буду тут если что.</text>
+                <text>loser_hello_dialog__5</text>
             </phrase>
         </phrase_list>
     </dialog>
 
+	<!-- DONE -->
     <dialog id="escape_novice_thank_actor">
         <phrase_list>
             <phrase id="0">
-                <text>Ну спасибо браток. Не забуду. Я твой должник навеки.</text>
+                <text>escape_novice_thank_actor__0</text>
             </phrase>
         </phrase_list>
     </dialog>
