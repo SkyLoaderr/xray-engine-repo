@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xrMessages.h"
+
 #ifdef AI_COMPILER
 	#include "net_utils.h"
 	#include "clsid_game.h"

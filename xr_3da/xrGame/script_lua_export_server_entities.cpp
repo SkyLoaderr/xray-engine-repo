@@ -10,13 +10,16 @@
 #include "script_space.h"
 #include "script_engine.h"
 #include "ai_space.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "luabind/adopt_policy.hpp"
 
 using namespace luabind;
 
 void CScriptEngine::export_server_entities()
 {
-//	module(lua())
-//	[
-//	]
+	module(lua())
+	[
+		class_<CSE_ALifeObject>("se_alife_object")
+			.def(				constructor<LPCSTR>())
+	];
 }

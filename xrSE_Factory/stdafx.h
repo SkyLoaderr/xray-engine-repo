@@ -14,7 +14,7 @@
 
 #define ENGINE_API
 #define ECORE_API
-#define DLL_API					__declspec(dllimport)
+#define DLL_API					__declspec(dllexport)
 
 #include "clsid_game.h"
 

@@ -7,8 +7,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xrSE_Factory.h"
 #include "ai_space.h"
 #include "script_engine.h"
+
+DLL_API CSE_Abstract *create_object(LPCSTR section)
+{
+	return				(F_entity_Create(section));
+}
 
 BOOL APIENTRY DllMain	(HANDLE module_handle, DWORD call_reason, LPVOID reserved)
 {

@@ -155,6 +155,9 @@
 			<File
 				RelativePath=".\xrSE_Factory.cpp">
 			</File>
+			<File
+				RelativePath=".\xrSE_Factory.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="ObjectFactory"
@@ -640,6 +643,9 @@
 				</File>
 				<File
 					RelativePath=".\xrServer_Objects.h">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_Abstract.h">
 				</File>
 				<File
 					RelativePath=".\xrServer_Objects_ALife.cpp">
