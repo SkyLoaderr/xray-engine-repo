@@ -1106,6 +1106,17 @@ float CActor::HitScale	(int element)
 	return hit_factor*scale;
 }
 
+void CActor::create_Skeleton(){
+	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+
+	M->LL_BoneID("phy_wheel_frontl");
+	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
+	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
+	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
+	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
+}
+
+
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()

@@ -1,5 +1,6 @@
 #pragma once
 
+typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
 // ABSTRACT:
 class	CPhysicsJoint
 {
@@ -16,13 +17,15 @@ public:
 	float					fDesiredStrength;		// Desire strength, [0..1]%
 public:
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)		= 0;
+	virtual void			Activate				()											= 0;
+
 	virtual void			Deactivate				()											= 0;
-
+	
 	virtual void			setMass					(float M)									= 0;
-
+	
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
-
+	
 	virtual ~CPhysicsBase	()																	{};
 };
 
@@ -31,8 +34,9 @@ public:
 class	CPhysicsElement		: public CPhysicsBase
 {
 public:
-	virtual	void			add_Sphere				(const Fsphere&	V)									= 0;
+	virtual	void			add_Sphere				(const Fsphere&		V)								= 0;
 	virtual	void			add_Box					(const Fobb&		V)								= 0;
+	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 };
 
 // ABSTRACT: 
@@ -44,9 +48,9 @@ public:
 	virtual	void			add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
-
+	virtual BoneCallbackFun* GetBonesCallback		()													= 0;
 	virtual void			Update					()													= 0;
-};
+	};
 
 // Implementation creator
 CPhysicsJoint*				P_create_Joint			(int type);

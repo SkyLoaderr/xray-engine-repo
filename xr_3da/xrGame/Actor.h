@@ -212,7 +212,7 @@ private:
 
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);
-
+	void					create_Skeleton			();
 public:
 							CActor					( );
 	virtual					~CActor					( );

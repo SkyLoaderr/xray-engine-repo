@@ -714,7 +714,7 @@
 					Name="_actor"
 					Filter="">
 					<File
-						RelativePath=".\Actor.cpp">
+						RelativePath="Actor.cpp">
 					</File>
 					<File
 						RelativePath=".\Actor.h">
