@@ -402,6 +402,53 @@ IC DWORD convert(float a)
 	else if (a>=1)	return 255;
 	else			return iFloor(a*255.f);
 }
+IC void pixel(int x, int y,  b_texture* T)
+{
+	// wrap pixels
+	if (x<0) return;
+	else if (x>=(int)T->dwWidth)	return;
+	if (y<0) return;
+	else if (y>=(int)T->dwHeight)	return;
+
+	T->pSurface[y*T->dwWidth+x]	= RGBA_MAKE(0,255,0,0);
+}
+
+void line ( int x1, int y1, int x2, int y2, b_texture* T )
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x2 >= x1 ? 1 : -1;
+    int sy = y2 >= y1 ? 1 : -1;
+
+    if ( dy <= dx ){
+        int d  = ( dy << 1 ) - dx;
+        int d1 = dy << 1;
+        int d2 = ( dy - dx ) << 1;
+
+		pixel(x1,y1,T);
+
+        for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
+            if ( d > 0){
+                d += d2; y += sy;
+            }else
+                d += d1;
+			pixel(x,y,T);
+        }
+    }else{
+        int d  = ( dx << 1 ) - dy;
+        int d1 = dx << 1;
+        int d2 = ( dx - dy ) << 1;
+
+		pixel(x1,y1,T);
+        for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
+            if ( d > 0){
+                d += d2; x += sx;
+            }else
+                d += d1;
+			pixel(x,y,T);
+        }
+    }
+}
 
 void CDeflector::Save()
 {
