@@ -312,7 +312,7 @@ function fract:nameStalkerOnJob(job_name)
 end
 function fract:loadStates(name) -- загружает список заданий
 	if name == "blockpost" then
-		local t = { id = 1,
+		local t = { id = 1,  -- состояние тревоги
 			    timeout = 300000 }
 		table.insert(self.States, t)			
 	end
