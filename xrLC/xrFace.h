@@ -52,13 +52,12 @@ public:
 	WORD					dwMaterial;			// index of material
 	WORD					dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
 
-	struct					flags
-	{
+	struct					{
 		u8					bSplitted			:		1;
 		u8					bProcessed			:		1;
 		u8					bDisableShadowCast	:		1;
 		u8					bOpaque				:		1;	// For ray-tracing speedup
-	};
+	}						flags;
 
 	virtual	Shader_xrLC&	Shader				( );
 	virtual void			CacheOpacity		( );
