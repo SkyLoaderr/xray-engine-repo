@@ -7,6 +7,11 @@ void	game_sv_Deathmatch::Create					(LPCSTR options)
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 }
 
+void	game_sv_Deathmatch::OnRoundStart			()
+{
+	phase		= 
+}
+
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 {
 	Lock	();
@@ -40,5 +45,36 @@ void	game_sv_Deathmatch::Update					()
 }
 BOOL	game_sv_Deathmatch::OnTargetTouched			(u32 id_who, u32 eid_target)
 {
-	return FALSE;
+	return TRUE;
+}
+void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
+{
+	if	(GAME_PHASE_INPROGRESS == phase) return;
+
+	Lock	();
+	game_PlayerState*	ps	=	get_id	(id_killer);
+	if (ps)
+	{
+		if (ps->flags & GAME_PLAYER_FLAG_READY)	
+		{
+			ps->flags &= ~GAME_PLAYER_FLAG_READY;
+		} else {
+			ps->flags |= GAME_PLAYER_FLAG_READY;
+
+			// Check if all players ready
+			u32		cnt		= get_count	();
+			u32		ready	= 0;
+			for		(u32 it=0; it<cnt; it++)	
+			{
+				ps		=	get_it	(it);
+				if (ps->flags & GAME_PLAYER_FLAG_READY)	ready++;
+			}
+
+			if (ready == cnt)
+			{
+				OnRoundStart	();
+			}
+		}
+	}
+	Unlock	();
 }

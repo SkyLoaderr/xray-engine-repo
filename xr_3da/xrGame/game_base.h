@@ -9,6 +9,7 @@ enum
 	GAME_ASSAULT				= 4,	// Team1 - assaulting, Team0 - Defending
 	GAME_CS						= 5
 };
+
 enum
 {
 	GAME_PLAYER_FLAG_LOCAL		= (1<<0),
