@@ -863,7 +863,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
 
 	// Create bloom filter
-	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.0f,2.f,w/2.f,h/2.f);
+	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.9f,1.f,w/2.f,h/2.f);
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
@@ -1624,7 +1624,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// TARGET: BLOOM-1
-	/*
+	//*
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
 	m_pd3dDevice->SetTexture				(0, d_Bloom_2		);
 
@@ -1635,7 +1635,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-	*/
+	//*/
 
 	// Cleanup
 	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
@@ -1660,7 +1660,7 @@ HRESULT CMyD3DApplication::RenderOverlay()
 	m_pd3dDevice->SetFVF				(TVERTEX_FVF);
 	m_pd3dDevice->SetStreamSource		(0, m_pOverlayVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->SetPixelShader		(0);
-	m_pd3dDevice->SetTexture			(0, d_Bloom_2);
+	m_pd3dDevice->SetTexture			(0, d_Bloom_1);
 	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLORARG1,	D3DTA_TEXTURE);
 	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLOROP,		D3DTOP_SELECTARG1);
 	m_pd3dDevice->DrawPrimitive			(D3DPT_TRIANGLESTRIP, 0, 2);
