@@ -73,6 +73,10 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();
 	m_tHitPosition = who->Position();
+	SHurt	tHurt;
+	tHurt.dwTime	= Level().timeServer();
+	if (tHurt.tpEntity	= dynamic_cast<CEntity*>(who))
+		m_tpaHurts.push_back(tHurt);
 	
 	// Play hit-sound
 //	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];

@@ -282,6 +282,14 @@ int	 CAI_Stalker::ifFindDynamicObject(CEntity *tpEntity)
 	return(-1);
 }
 
+int	 CAI_Stalker::ifFindHurtIndex(CEntity *tpEntity)
+{
+	for (int i=0; i<(int)m_tpaHurts.size(); i++)
+		if (m_tpaHurts[i].tpEntity == tpEntity)
+			return(i);
+	return(-1);
+}
+
 bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
 {
 	for (int i=0; i<(int)tpStalker->m_tpaDynamicObjects.size(); i++) {
@@ -381,7 +389,6 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	power *= ffGetStartVolume(ESoundTypes(eType));
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
-	power = 0;
 	u32 dwTime = m_dwCurrentUpdate;
 	
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {

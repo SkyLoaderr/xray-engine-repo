@@ -207,21 +207,6 @@ private:
 		tStalkerStates.eState = eState;
 		m_tStateList.push_back(tStalkerStates);
 	}
-			// states
-//			void			AccomplishTask					();
-//			void			Attack							();
-//			void			Defend							();
-//			void			RetreatKnown					();
-//			void			RetreatUnknown					();
-//			void			PursuitKnown					();
-//			void			PursuitUnknown					();
-//			void			SearchCorp						();
-//
-//			void			Recharge						();
-//			void			HolsterItem						();
-//			void			TakeItem						();
-//			void			DropItem						();
-
 			void			BackStraight					();
 			void			BackCover						(bool bFire = true);
 			void			ForwardCover					();
@@ -278,6 +263,7 @@ private:
 			void			SelectSound						(int &iIndex);
 			void			vfUpdateDynamicObjects			();
 			int				ifFindDynamicObject				(CEntity *tpEntity);
+			int				ifFindHurtIndex					(CEntity *tpEntity);
 			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
 			bool			bfCheckIfSound					();
 			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);

@@ -162,25 +162,15 @@ void CAI_Stalker::vfUpdateSearchPosition()
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
 {
+	// sound
 	SelectSound			(m_iSoundIndex);
-	A					= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_MONSTER);
+	A					= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
 	B					= (m_iSoundIndex > -1) && !A;
 	J					= A || B;
 	
+	// victory probability
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-//	if (m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime  < 20000)) {
-//		bool	bOk = false;
-//		u32		N = VisibleEnemies.size();
-//		for (int i=0; i<N; i++) {
-//			if (VisibleEnemies[i].key == m_tSavedEnemy) {
-//				bOk = true;
-//				break;
-//			}
-//		}
-//		if (!bOk)
-//			VisibleEnemies.insert(m_tSavedEnemy);
-//	}
 	if (VisibleEnemies.size()) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
 			case 4 : 
@@ -201,6 +191,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		}
 	}
 	K					= C | D | E | F | G;
+	
+	// does enemy see me?
 	SelectEnemy			(m_tEnemy);
 	I					= false;
 	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
@@ -242,6 +234,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 			break;
 	}
 	
+	// is enemy expedient?
 	H = false;
 	getAI().m_tpCurrentMember = this;
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
@@ -249,6 +242,9 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 			continue;
 		if (H	= !!getAI().pfExpediency.dwfGetDiscreteValue(2))
 			break;
+		else
+			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
+				H = true;
 	}
 	
 	L = false;
