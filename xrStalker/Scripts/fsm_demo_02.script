@@ -96,7 +96,7 @@ function main()
 --	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
 --	fsm_stalker:set_transition(1, 0, this.finished_talking)
 	fsm_stalker:set_transition(0, 1, this.if_actor_is_dead)
-	fsm_stalker:set_transition(1, 0, this.finished_talking)
+--	fsm_stalker:set_transition(1, 0, this.finished_talking)
 
 	-- запуск бесконечного цикла для одного FSM
 	fsm_stalker:run_loop()
