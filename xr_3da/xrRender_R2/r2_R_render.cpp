@@ -17,6 +17,7 @@ void CRender::Render		()
 
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
+	r_pmask									(true,true);	// enable priority "0" and "1"
 	lstRecorded.clear						();
 	if (b_emap)	set_RecordMP				(true);
 	{
@@ -123,6 +124,7 @@ void CRender::Render		()
 		}
 	}
 	set_RecordMP								(false);	
+	r_pmask										(true,false);	// disable priority "1"
 	Device.Statistic.RenderCALC.End				();
 
 	//******* Main render
