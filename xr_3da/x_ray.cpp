@@ -170,8 +170,8 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		}
 	} else if (E==eStart) {
 		Console.Hide();
-		LPCSTR		op_server		= LPCSTR(P1);
-		LPCSTR		op_client		= LPCSTR(P2);
+		LPSTR		op_server		= LPSTR	(P1);
+		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Start(op_server,op_client));

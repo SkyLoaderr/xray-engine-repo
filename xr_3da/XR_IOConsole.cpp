@@ -234,11 +234,12 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 		ExecuteCommand();
 		break;
 	case DIK_INSERT:
-		if( OpenClipboard(0) ){
+		if( OpenClipboard(0) )
+		{
 			HGLOBAL hmem = GetClipboardData(CF_OEMTEXT);
 			if( hmem ){
 				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
-				strncpy (editor,clipdata,255); editor[255]=0;
+				strncpy (editor,clipdata,MAX_LEN-1); editor[MAX_LEN-1]=0;
 				for (u32 i=0; i<strlen(editor); i++)
 					if (isprint(editor[i]))	editor[i]=char(_tolower(editor[i]));
 					else					editor[i]=' ';
@@ -251,9 +252,9 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	default:
 		break;
 	}
-	if (strlen(editor)>64) editor[64]=0;
-	bRepeat=false;
-	rep_time=0;
+	if (strlen(editor)>=MAX_LEN) editor[MAX_LEN-1]=0;
+	bRepeat		= false;
+	rep_time	= 0;
 }
 
 void CConsole::OnKeyboardPress(int dik)
@@ -263,9 +264,10 @@ void CConsole::OnKeyboardPress(int dik)
 
 void CConsole::OnKeyboardRelease(int dik)
 {
-	fAccel=1.0f;
-	rep_time=0;
-	switch (dik) {
+	fAccel		= 1.0f;
+	rep_time	= 0;
+	switch (dik) 
+	{
 	case DIK_LSHIFT:
 	case DIK_RSHIFT:
 		bShift = false;
@@ -275,16 +277,16 @@ void CConsole::OnKeyboardRelease(int dik)
 
 void CConsole::OnKeyboardHold(int dik)
 {
-	float fRep = rep_time;
+	float fRep	= rep_time;
 	if (bRepeat) { OnPressKey(dik, true); bRepeat=false; }
-	rep_time=fRep;
+	rep_time	= fRep;
 }
 
 void CConsole::ExecuteCommand()
 {
-	char	first_word[64];
-	char	last_word [64];
-	char	converted [256];
+	char	first_word[2*64];
+	char	last_word [2*64];
+	char	converted [2*256];
 	int		i,j,len;
 
 	scroll_delta	= 0;
@@ -393,18 +395,18 @@ void CConsole::SelectCommand()
 	}
 }
 
-void CConsole::Execute(char *cmd)
+void CConsole::Execute		(LPCSTR cmd)
 {
-	strncpy			(editor,cmd,63); editor[63]=0;
+	strncpy			(editor,cmd,MAX_LEN-1); editor[MAX_LEN-1]=0;
 	RecordCommands	= false;
 	ExecuteCommand	();
 	RecordCommands	= true;
 }
-void CConsole::ExecuteScript(char* N)
+void CConsole::ExecuteScript(LPCSTR N)
 {
-	string128	cmd;
-	strconcat	(cmd,"cfg_load ",N);
-	Execute		(cmd);
+	string128		cmd;
+	strconcat		(cmd,"cfg_load ",N);
+	Execute			(cmd);
 }
 
 /*

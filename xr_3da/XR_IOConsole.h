@@ -27,7 +27,7 @@ public:
 	};
 	typedef map<LPSTR,CConsoleCommand*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;
-
+	enum			{ MAX_LEN = 512 };
 private:
 	float			cur_time;
 	float			rep_time;
@@ -35,7 +35,7 @@ private:
 	int				scroll_delta;
 	int				cmd_delta;
 	int				old_cmd_delta;
-	string512		editor;
+	char			editor[MAX_LEN];
 	char			*editor_last;
 	BOOL			bShift;
 	BOOL			bCursor;
@@ -54,16 +54,16 @@ public:
 	void			Hide				();
 
 	void			Save				();
-	void			Execute				(char *cmd);
-	void			ExecuteScript		(char *name);
+	void			Execute				(LPCSTR cmd);
+	void			ExecuteScript		(LPCSTR name);
 	void			ExecuteCommand		();
 
 	// get
-	BOOL			GetBool				(char *cmd);
-	FLOAT			GetFloat			(char *cmd);
-	char *			GetValue			(char *cmd);
-	char *			GetNextValue		(char *cmd);
-	char *			GetPrevValue		(char *cmd);
+	BOOL			GetBool				(LPCSTR cmd);
+	FLOAT			GetFloat			(LPCSTR cmd);
+	char *			GetValue			(LPCSTR cmd);
+	char *			GetNextValue		(LPCSTR cmd);
+	char *			GetPrevValue		(LPCSTR cmd);
 
 	void			SelectCommand		();
 
