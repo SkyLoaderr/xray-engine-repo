@@ -45,9 +45,9 @@ end
 
 function HeliManager:HeliOnPoint(p)
 --      format:
---		   local dist_to_point =	p:r_float()
---      local point  = p:r_vec3()
---      local path_idx = p:r_s16() ; -- ==-1 if no path moving
+	  local dist_to_point =	p:r_float()
+      local point  = p:r_vec3()
+      local path_idx = p:r_s16() ; -- ==-1 if no path moving
 
 
    if self.m_heliObject:GetState() == CHelicopter.eMovingToPoint then
