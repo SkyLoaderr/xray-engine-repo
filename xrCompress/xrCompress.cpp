@@ -14,6 +14,7 @@ struct	ALIAS
 {
 	LPCSTR			path;
 	u32				size;
+	u32				crc;
 	u32				c_mode;
 	u32				c_ptr;
 	u32				c_size;

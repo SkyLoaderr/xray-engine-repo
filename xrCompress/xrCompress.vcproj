@@ -288,6 +288,9 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
+				RelativePath="crc32.cpp">
+			</File>
+			<File
 				RelativePath=".\xrCompress.cpp">
 			</File>
 		</Filter>
