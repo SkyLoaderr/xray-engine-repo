@@ -121,7 +121,8 @@ function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
       self:OnPlayerDisconnect(cl_id, player_name)
    elseif type == game_messages.GAME_EVENT_PLAYER_KILL then --on "g_kill" console command
 		
-      self:KillPlayer(cl_id)
+ 	 local	ps_who	=	self:get_id	(cl_id)
+     self:KillPlayer(cl_id, ps_who.GameID)
 
    elseif type == game_messages.GAME_EVENT_PLAYER_KILLED then
       local cl_id_killer    = P:r_clientID()

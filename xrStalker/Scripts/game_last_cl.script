@@ -4,6 +4,7 @@ module("game_last_ps")
 module("game_last_tmp")
 module("game_last_dialog")
 module("game_last_charselect_dlg")
+module("game_last_header_wnd")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -46,7 +47,10 @@ function game_cl_LastStanding:shedule_Update (dt)
       if self:Phase()==game_phases.GAME_PHASE_INPROGRESS then
          local ps_local	= self:GetLocalPlayer()
          local msg = string.format("You have %d lives", ps_local.lifecount)
-         self.m_game_ui:SetLifeCaption(msg)
+            self.m_game_ui:SetLifeCaption(msg)
+            msg = string.format("%d:%d",ps_local.lifecount,ps_local.lifecount)
+            self.m_header_wnd:SetScore(msg)
+            self.m_header_wnd:SetRoundTime(self:GetRoundTime())
          
          if   ps_local.lifecount~=0 then
             if ps_local:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD) then
@@ -78,20 +82,11 @@ function game_cl_LastStanding:createGameUI ()
    self.m_char_dlg = game_last_charselect_dlg.char_dialog()
    self.m_char_dlg:SetClGame(self)
 
+   self.m_header_wnd = game_last_header_wnd.header_wnd()
+   self.m_game_ui:AddDialogToRender(self.m_header_wnd)
    return self.m_game_ui
 end
 
---   self.m_dialog = UIScriptWnd()
---   self.m_dialog:AddCallback("btn_ok", ui_events.ON_CLICKED, self.cb)
---   self.m_dialog:test()
-
-function cb_1()
-   printf("--------cb_1 called")
-end
-
-function game_cl_LastStanding:cb()
-   printf("--------game_cl_LastStanding:cb called")
-end
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
    local D = SZoneMapEntityData()
