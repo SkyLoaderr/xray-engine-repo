@@ -86,15 +86,15 @@ local walk      = 3
 
 class "action_sniper_idle" (action_base)
 function action_sniper_idle:__init (name, storage) super (nil, name)
-    self.a         = storage
-    self.state       = -1 //sit_idle
-    self.animation  = nil
-    self.time      = 0
-    self.time_sight = 0                --Используется при остановке
-    local path       = patrol(self.a.rest_path)
-    self.last_point = path:level_vertex_id  (path:count() - 1)      --Последняя точка пути
-    self.rest_point = point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
-  printf("rest point __________%d", self.rest_point)
+    self.a			= storage
+    self.state		= sit_idle
+    self.animation	= nil
+    self.time		= 0
+    self.time_sight	= 0                --Используется при остановке
+    local path		= patrol(self.a.rest_path)
+    self.last_point	= path:level_vertex_id  (path:count() - 1)      --Последняя точка пути
+    self.rest_point	= point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
+	printf("rest point __________%d", self.rest_point)
     self.prev_point = -1
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -111,13 +111,13 @@ function action_sniper_idle:initialize ()
     end
 
      self.object:set_callback (self, "move_callback", game_object.movement)
-     printf("1")
+     //printf("1")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down  ()
-     printf("2")
+     //printf("2")
     if( self.object:level_vertex_id() ~= self.rest_point ) then
-      printf("rest point __________%d", self.rest_point)
+      //printf("rest point __________%d", self.rest_point)
       self.object:set_dest_level_vertex_id(self.rest_point)
         self.object:set_movement_type      (move.walk)
         self.object:set_path_type          (game_object.level_path)
@@ -134,7 +134,7 @@ function action_sniper_idle:init_state_sit_down  ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_walk()
-     printf("3")
+     //printf("3")
     self.state      = walk
     self.time       = 0
 
@@ -154,16 +154,16 @@ function action_sniper_idle:init_state_walk()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:state_sit_down    ()
-     printf("4")
+     //printf("4")
   --Подходит с точки сидения, садится, а потом проигруется idle анимация
     if(self.object:level_vertex_id() == self.rest_point) then
 
-        printf("_1")
+        //printf("_1")
         self.object:set_movement_type  (move.stand)
 
 		if(xr_state.change_state(self.object, 2) == false) then
 			--self.animation:update    ("idle")
-			printf("_2")
+			//printf("_2")
             if(self.time == 0) then
 				--Запоминаем время, когда присели
 				self.time = device():time_global()
@@ -172,22 +172,22 @@ function action_sniper_idle:state_sit_down    ()
             if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
 				--Когда насиделись, встаем и идем
 				//self.animation:update  (nil)
-				printf("_3")
+				//printf("_3")
 				self:init_state_walk  ()
-				printf("_4")
+				//printf("_4")
 				end
 		else
 			--Когда садимся, убераем оружие
-			printf("_5")
+			//printf("_5")
 			//self.object:set_item            (object.deactivate, self.object:best_weapon())
-			printf("_6")
+			//printf("_6")
 		end
 
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:state_walk      ()
-     printf("5")
+     //printf("5")
   --Идем до конца маршрута, если остановились, то стоим некоторое время, а потом идем
     if(self.state == LOOK) then
         if(device():time_global() > self.time_sight and self.object:is_body_turning() == false) then
@@ -210,7 +210,7 @@ function action_sniper_idle:state_walk      ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:execute       ()
-     printf("6")
+     //printf("6")
     action_base.execute             (self)
 
     if(self.state == sit_idle) then
@@ -221,7 +221,7 @@ function action_sniper_idle:execute       ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:move_callback(obj, action_type, index)
-     printf("7")
+     //printf("7")
     if(index == patrol(self.a.rest_path):count() - 1)then          --Дошли до последней точки пути
       self:init_state_sit_down  ()
       return
@@ -238,7 +238,7 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:finalize ()
-     printf("8")
+     //printf("8")
     action_base.finalize       (self)
     self.object:clear_callback  (game_object.movement)
 	xr_state.change_state(self.object, 0)							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -512,6 +512,7 @@ function add_to_binder(obj, char_ini)
     if(char_ini:line_exist ("sniper", "camper_path") == true) then
         xr_motivator.storage[obj:id()].sniper.camper_path = char_ini:r_string("sniper", "camper_path")
     end
+	
 	if(char_ini:line_exist ("sniper", "chiter") == true) then
 		printf("REad zone name")
 		xr_motivator.storage[obj:id()].sniper.zone = char_ini:r_string("sniper", "zone")
@@ -604,7 +605,7 @@ function enemy_evaluator:evaluate()
 		self.zone:set_callback(self, "exit_zone", false)
 	end
 
-	if(self.object:best_enemy() ~= nil) then printf("false") return false end	//Это херня, но без нее не возможно построить цепочку
+	if(self.object:best_enemy() ~= nil) then return false end		//Это херня, но без нее не возможно построить цепочку
 	
 	if(self.a.enter) then
 		//'Зашел ли актера в зону. Если зашел, то живой ли он
@@ -650,10 +651,10 @@ function action_kill_enemy2:initialize ()
     self.object:clear_animations    ()
     self.object:set_movement_type       (move.stand)
     if(level.actor() and self.a.enter) then
-		self.object:set_sight               (look.fire_point, level.actor():position(), 0)	
+		self.object:set_sight               (look.fire_point, level.actor(), 0)	
 	else
 		//Тут по идее может вылетать, но если вылетает, то ошибка где-то в эвалуаторе
-		self.object:set_sight               (look.fire_point, self.object:best_enemy():position(), 0)
+		self.object:set_sight               (look.fire_point, self.object:best_enemy(), 0)
 	end
 	
 	self.object:set_item                (object.activate, self.object:best_weapon())    
@@ -675,8 +676,9 @@ function action_kill_enemy2:execute ()
 	end
       
 	if(self.object:see(self.enemy) == false) then
-		self.object:set_sight           (look.fire_point, self.enemy:position(), 0)		
+		self.object:set_sight           (look.fire_point, self.enemy, 0)		
 		self.state	= sight
+		printf("Not see enemy")
 		return
 	end
 
@@ -686,11 +688,11 @@ function action_kill_enemy2:execute ()
             self.state  = fire
             self.time   = device():time_global() + 1500
             self.object:set_item            (object.fire1, self.object:best_weapon())
-            self.object:set_sight           (look.fire_point, self.enemy:position(), 0)
+            self.object:set_sight           (look.fire_point, self.enemy, 0)
         elseif(self.state == fire) then
             self.state  = sight
             self.time   = device():time_global() + 2000
-            self.object:set_sight           (look.fire_point, self.enemy:position(), 0)
+            self.object:set_sight           (look.fire_point, self.enemy, 0)
             self.object:set_item            (object.idle, self.object:best_weapon())
             self.object:set_mental_state    (anim.danger)
         end
@@ -720,7 +722,7 @@ function chiter_binding(obj)
 
     operators["idle"]                = xr_actions_id.jon_sniper_enabled
     operators["kill_enemy"]          = xr_actions_id.jon_sniper_see_enemy
-
+    operators["wait_enemy"]          = xr_actions_id.jon_sniper_camper
 
     local manager  = obj:motivation_action_manager ()
 
@@ -732,33 +734,34 @@ function chiter_binding(obj)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
-    //action:add_precondition         (world_property (properties["wait_enemy"],      false))
-    //action:add_precondition         (world_property (properties["event"],           false))
-    //action:add_precondition         (world_property (properties["state_end"],       true))
+    action:add_precondition         (world_property (properties["wait_enemy"],      false))
+    action:add_precondition         (world_property (properties["event"],           false))
+    action:add_precondition         (world_property (properties["state_end"],       true))
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_effect               (world_property (properties["enabled"],         false))
     manager:add_action              (operators["idle"], action)
 
-    //action = this.action_kill_enemy2("wait_enemy", xr_motivator.storage[obj:id()].sniper)
+    action = this.action_kill_enemy2("wait_enemy", xr_motivator.storage[obj:id()].sniper)
  
-	//action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
-    //action:add_precondition       (world_property (properties["stand"],			true))
-    //action:add_precondition         (world_property (properties["wait_enemy"],		true))
-    //action:add_effect               (world_property (properties["wait_enemy"],		false))
-    //manager:add_action              (operators["kill_enemy"], action)
+	action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition       (world_property (properties["stand"],			true))
+    action:add_precondition         (world_property (properties["wait_enemy"],		true))
+    action:add_effect               (world_property (properties["wait_enemy"],		false))
+    manager:add_action              (operators["kill_enemy"], action)
 
     action = this.action_kill_enemy2("kill_enemy", xr_motivator.storage[obj:id()].sniper)
 
     action:add_precondition         (world_property (properties["enemy_near"],      false))
+	action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,    true))
     action:add_effect               (world_property (stalker_ids.property_enemy,    false))
-  
-
+	manager:add_action              (operators["wait_enemy"], action)
+    
     action = manager:action         (stalker_ids.action_combat_planner)
     action:add_precondition         (world_property (properties["enemy_near"],      true))
 
     action = manager:action         (stalker_ids.action_puzzle_solver)
     action:add_precondition         (world_property (properties["enabled"],  false))
 
-    //xr_reactions.add_rule			(obj,"no_visual")
+    xr_reactions.add_rule			(obj,"no_visual")
 end
