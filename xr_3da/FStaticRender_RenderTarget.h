@@ -13,15 +13,16 @@ private:
 	u32					curHeight;
 
 	CRT*				RT;
-	IDirect3DSurface8*	ZB;
+	IDirect3DSurface9*	ZB;
 
 	Shader*				pShaderSet;
 	Shader*				pShaderGray;
 	Shader*				pShaderBlend;
 	Shader*				pShaderDuality;
 	Shader*				pShaderNoise;
-	CVS*				pVS;
-	CVS*				pVS2;
+
+	SGeometry*			pGeom;
+	SGeometry*			pGeom2;
 	
 	BOOL				Create				();
 	

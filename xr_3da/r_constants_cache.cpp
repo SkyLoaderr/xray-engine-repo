@@ -5,7 +5,7 @@ void R_constant_array::fatal()
 {
 }
 
-void R_constants::flush_cache(IDirect3DDevice9* D)
+void R_constants::flush_cache()
 {
 	if (a_pixel.b_dirty)
 	{
@@ -14,8 +14,8 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 		{
 			u32		count		= F.r_hi()-F.r_lo();
 			if (count)			{
-				D->SetPixelShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count);
-				F.flush			();
+				CHK_DX	(HW.pDevice->SetPixelShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count));
+				F.flush	();
 			}
 		}
 		a_pixel.b_dirty		= false;
@@ -27,8 +27,8 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 		{
 			u32		count		= F.r_hi()-F.r_lo();
 			if (count)			{
-				D->SetVertexShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count);
-				F.flush			();
+				CHK_DX	(HW.pDevice->SetVertexShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count));
+				F.flush	();
 			}
 		}
 		a_vertex.b_dirty	= false;

@@ -31,7 +31,7 @@ public:
 public:
 	void					fatal	();
 
-	void					set		(R_constant* C, R_constant_load& L, Fmatrix& A)
+	void					set		(R_constant* C, R_constant_load& L, const Fmatrix& A)
 	{
 		VERIFY		(RC_float == C->type);
 		Fvector4*	it	= c_f.access	(L.index);
@@ -56,7 +56,7 @@ public:
 		}
 	}
 
-	void					set		(R_constant* C, R_constant_load& L, Fvector4& A)
+	void					set		(R_constant* C, R_constant_load& L, const Fvector4& A)
 	{
 		VERIFY		(RC_float	== C->type);
 		VERIFY		(RC_1x4		== L.cls);
@@ -64,7 +64,7 @@ public:
 		c_f.dirty	(L.index,L.index+1);
 	}
 
-	void					seta	(R_constant* C, R_constant_load& L, u32 e, Fmatrix& A)
+	void					seta	(R_constant* C, R_constant_load& L, u32 e, const Fmatrix& A)
 	{
 		VERIFY		(RC_float == C->type);
 		u32			base;
@@ -94,7 +94,7 @@ public:
 		}
 	}
 
-	void					seta	(R_constant* C, R_constant_load& L, u32 e, Fvector4& A)
+	void					seta	(R_constant* C, R_constant_load& L, u32 e, const Fvector4& A)
 	{
 		VERIFY		(RC_float	== C->type);
 		VERIFY		(RC_1x4		== L.cls);
@@ -104,20 +104,20 @@ public:
 	}
 };
 
-class	R_constants 
+class	ENGINE_API R_constants 
 {
 private:
 	R_constant_array		a_pixel;
 	R_constant_array		a_vertex;
 	
-	void					flush_cache	(IDirect3DDevice9* D);
+	void					flush_cache	();
 public:
 	// fp, non-array versions
-	void					set		(R_constant* C, Fmatrix& A)		{
+	void					set		(R_constant* C, const Fmatrix& A)		{
 		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;		}
 		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;		}
 	}
-	void					set		(R_constant* C, Fvector4& A)	{
+	void					set		(R_constant* C, const Fvector4& A)		{
 		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;		}
 		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;		}
 	}
@@ -127,11 +127,11 @@ public:
 	}
 
 	// fp, array versions
-	void					seta	(R_constant* C, u32 e, Fmatrix& A)		{
+	void					seta	(R_constant* C, u32 e, const Fmatrix& A)		{
 		if (C->destination&1)		{ a_pixel.seta	(C,C->ps,e,A); a_pixel.b_dirty=TRUE;	}
 		if (C->destination&2)		{ a_vertex.seta	(C,C->vs,e,A); a_vertex.b_dirty=TRUE;	}
 	}
-	void					seta	(R_constant* C, u32 e, Fvector4& A)	{
+	void					seta	(R_constant* C, u32 e, const Fvector4& A)		{
 		if (C->destination&1)		{ a_pixel.seta	(C,C->ps,e,A); a_pixel.b_dirty=TRUE;	}
 		if (C->destination&2)		{ a_vertex.seta	(C,C->vs,e,A); a_vertex.b_dirty=TRUE;	}
 	}
@@ -141,8 +141,8 @@ public:
 	}
 
 	// 
-	void					flush	(IDirect3DDevice9* D)
+	void					flush	()
 	{
-		if (a_pixel.b_dirty || a_vertex.b_dirty)	flush_cache(D);
+		if (a_pixel.b_dirty || a_vertex.b_dirty)	flush_cache();
 	}
 };

@@ -107,7 +107,7 @@ void CCameraDebug::OnRender()
 {
 	Fmatrix mView;
 	mView.invert			(*((Fmatrix *)&g_matPosition));
-	Device.set_xform_view	(mView);
+	RCache.set_xform_view	(mView);
 //	Device.Frustum.DrawFrustum();
 }
 

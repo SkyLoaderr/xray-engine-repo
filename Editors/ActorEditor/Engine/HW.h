@@ -10,12 +10,12 @@
 class ENGINE_API CHW 
 {
 public:
-	IDirect3D8* 			pD3D;		// D3D
-	IDirect3DDevice8*       pDevice;	// render device
+	IDirect3D9* 			pD3D;		// D3D
+	IDirect3DDevice9*		pDevice;	// render device
 
-	IDirect3DSurface8*		pBaseRT;
-	IDirect3DSurface8*		pBaseZB;
-	IDirect3DSurface8*		pTempZB;
+	IDirect3DSurface9*		pBaseRT;
+	IDirect3DSurface9*		pBaseZB;
+	IDirect3DSurface9*		pTempZB;
 	
 	CHWCaps					Caps;
 
@@ -36,7 +36,7 @@ public:
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
 	u32						selectPresentInterval	();
 	u32						selectGPU				();
-	u32						selectRefresh			(u32 dwWidth, u32 dwHeight);
+	u32						selectRefresh			(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt);
 
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };

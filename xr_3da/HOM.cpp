@@ -53,6 +53,7 @@ void CHOM::Load			()
 		Msg		("! Occlusion map '%s' not found.",fName);
 		return;
 	}
+	Msg	("* Loading HOM: %s",fName);
 	
 	destructor<CStream> FS	(Engine.FS.Open(fName));
 	destructor<CStream>	S	(FS().OpenChunk(1));
@@ -92,15 +93,15 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	m_ZB.clear			();
 
-	m_VS				= Device.Shader._CreateVS	(FVF::F_L	);
-	m_Shader			= Device.Shader.Create		("zfill"	);
+	h_Geom				= Device.Shader.CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
+	h_Shader			= Device.Shader.Create		("zfill"	);
 	
 	// Debug
 /*
 	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&m_pDBG);
 	R_ASSERT			(m_pDBG);
 	LPCSTR		RTname	= "$user$hom";
-	pStream		= Device.Streams.Create			(FVF::F_TL,4);
+	pStream		= RCache.Create			(FVF::F_TL,4);
 	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShader		= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pTexture->surface_set	(m_pDBG);
@@ -109,8 +110,8 @@ void CHOM::Load			()
 
 void CHOM::Unload		()
 {
-	Device.Shader.Delete	(m_Shader);
-	Device.Shader._DeleteVS	(m_VS);
+	Device.Shader.Delete		(h_Shader);
+	Device.Shader.DeleteGeom	(h_Geom);
 //	_RELEASE	(m_pDBG);
 	xr_delete	(m_pModel);
 	xr_free		(m_pTris);
@@ -247,7 +248,7 @@ void CHOM::Render_ZB	()
 	// Fill VB
 	u32							vCount	= m_ZB.size()*3;
 	u32							vOffset;
-	FVF::L*		V					= (FVF::L*) Device.Streams.Vertex.Lock	(vCount,m_VS->dwStride, vOffset);
+	FVF::L*		V					= (FVF::L*) RCache.Vertex.Lock	(vCount,m_VS->vb_stride, vOffset);
 
 	vector<u32>::iterator	I		= m_ZB.begin	();
 	vector<u32>::iterator	E		= m_ZB.end		();
@@ -261,15 +262,15 @@ void CHOM::Render_ZB	()
 		V->set	(*t.verts[2],C);	V++;
 	}
 
-	Device.Streams.Vertex.Unlock	(vCount,m_VS->dwStride);
+	RCache.Vertex.Unlock	(vCount,m_VS->vb_stride);
 
 	// Render it
-	Device.set_xform_world			(Fidentity);
-	Device.Shader.set_Shader		(m_Shader);
-	Device.Primitive.setIndices		(0,0);
-	Device.Primitive.setVertices	(m_VS->dwHandle,m_VS->dwStride,Device.Streams.Vertex.Buffer());
+	RCache.set_xform_world			(Fidentity);
+	RCache.set_Shader				(m_Shader);
+	RCache.set_Indices		(0,0);
+	RCache.set_Vertices	(m_VS->dwHandle,m_VS->vb_stride,RCache.Vertex.Buffer());
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
+	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
 	*/
 }
@@ -312,8 +313,8 @@ void CHOM::Debug		()
 	pStream->Unlock			(4);
 	
 	// Actual rendering
-	Device.Shader.set_Shader(pShader);
-	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
+	RCache.set_Shader(pShader);
+	RCache.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 */
 }
 
@@ -334,7 +335,6 @@ IC	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _
 	t 			= 1.f+(_x*X._11 + _y*X._21 + _z*X._31 + X._41)*w;	if (t<min.x) min.x=t; else if (t>max.x) max.x=t;
 	t			= 1.f-(_x*X._12 + _y*X._22 + _z*X._32 + X._42)*w;	if (t<min.y) min.y=t; else if (t>max.y) max.y=t;
 	t			= 0.f+z*w;											if (t<minz)			minz  =t;
-	// if (bHOM_ModeS)		{ Fvector T; T.set(_x,_y,_z);	t = Device.vCameraPosition.distance_to(T); }
 	return FALSE;
 }
 IC	BOOL	_visible	(Fbox& B)

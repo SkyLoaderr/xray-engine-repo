@@ -39,8 +39,8 @@ void CSkeletonX_PM::Copy(CVisual *V)
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 	BYTE*	bytes		= 0;
 
-	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
-	R_CHK				(pIndices->Lock(0,0,&bytes,0));
+	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices,0));
+	R_CHK				(pIndices->Lock(0,0,(void**)&bytes,0));
 	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 }
@@ -54,20 +54,20 @@ void CSkeletonX_ST::Copy(CVisual *P)
 void CSkeletonX_PM::Render	(float LOD) 
 {
 	SetLOD		(LOD);
-	_Render		(hVS,V_Current,I_Current/3,pIndices);
+	_Render		(hGeom,V_Current,I_Current/3);
 }
 void CSkeletonX_ST::Render	(float LOD) 
 {
-	_Render		(hVS,vCount,dwPrimitives,pIndices);
+	_Render		(hGeom,vCount,dwPrimitives);
 }
-void CSkeletonX::_Render	(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer8* IB)
+void CSkeletonX::_Render	(SGeometry* hGeom, u32 vCount, u32 pCount)
 {
-	u32 vOffset			= cache_vOffset;
+	u32 vOffset				= cache_vOffset;
 
-	_VertexStream&	_VS		= Device.Streams.Vertex;
+	_VertexStream&	_VS		= RCache.Vertex;
 	if (cache_DiscardID!=_VS.DiscardID() || vCount>=cache_vCount )
 	{
-		vertRender*	Dest	= (vertRender*)_VS.Lock(vCount,hVS->dwStride,vOffset);
+		vertRender*	Dest	= (vertRender*)_VS.Lock(vCount,hGeom->vb_stride,vOffset);
 		cache_DiscardID		= _VS.DiscardID();
 		cache_vCount		= vCount;
 		cache_vOffset		= vOffset;
@@ -90,13 +90,13 @@ void CSkeletonX::_Render	(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer
 				);
 		}
 		Device.Statistic.RenderDUMP_SKIN.End	();
-		_VS.Unlock			(vCount,hVS->dwStride);
+		_VS.Unlock			(vCount,hGeom->vb_stride);
 	}
 
-	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,_VS.Buffer());
-	Device.Primitive.setIndices		(vOffset,IB);
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,pCount);
+	RCache.set_Geometry		(hGeom);
+	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,pCount);
 }
+
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Release()
 {
@@ -148,30 +148,32 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags)
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
-	hVS					= Device.Shader._CreateVS	(vertRenderFVF);
 
 	// Load indices with replication in mind
 	R_ASSERT			(data->FindChunk(OGF_INDICES));
-	u32				dwCount = data->Rdword();
+	u32					dwCount = data->Rdword();
 	R_ASSERT			(dwCount%3 == 0);
 	indices				= LPWORD(xr_malloc(dwCount*2));
 	Memory.mem_copy		(indices,data->Pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
 
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
-	u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 	BYTE*	bytes		= 0;
 
-	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
-	R_CHK				(pIndices->Lock(0,0,&bytes,0));
+	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices,0));
+	R_CHK				(pIndices->Lock(0,0,(void**)&bytes,0));
 	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
+
+	hGeom				= Device.Shader.CreateGeom	(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }
 
 void CSkeletonX_ST::Load(const char* N, CStream *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);
-	hVS					= Device.Shader._CreateVS	(vertRenderFVF);
+
+	hGeom				= Device.Shader.CreateGeom	(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }

@@ -7,7 +7,7 @@
 class CUIStaticItem: public CUICustomItem
 {
 	Shader*			hShader;
-	CVS*			hVS;	
+	SGeometry*		hVS;	
 
 	Ivector2		iPos;
 	u32				dwColor;

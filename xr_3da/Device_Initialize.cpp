@@ -52,18 +52,5 @@ void CRenderDevice::Initialize()
 	else										HW.Caps.bForceGPU_SW		= FALSE;
 	if (strstr(lpCmdLine,"-gpu_nopure")!=NULL)	HW.Caps.bForceGPU_NonPure	= TRUE;
 	else										HW.Caps.bForceGPU_NonPure	= FALSE;
-
-	// Startup shaders
-	Shader.xrStartUp	();
 }
 
-void CRenderDevice::ShutDown()
-{
-	// destroy context
-	Destroy				();
-
-	// destroy shaders
-	Shader.xrShutDown	();
-
-	// destroy streams
-}

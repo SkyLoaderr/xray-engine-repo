@@ -7,7 +7,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 	HRESULT		_hr;
 	
 	// Get caps
-	D3DCAPS8	caps;
+	D3DCAPS9	caps;
 	R_CHK		(HW.pDevice->GetDeviceCaps(&caps));
 	
 	// Pow2
@@ -33,7 +33,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 
 	// Try to create texture/surface
 	Device.Shader.Evict				();
-	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, HW.Caps.fTarget, D3DPOOL_DEFAULT, &pSurface);
+	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, HW.Caps.fTarget, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 	
 	// OK

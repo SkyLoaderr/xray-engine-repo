@@ -42,11 +42,11 @@ void CHitMarker::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	hShader		= Device.Shader.Create		("hud\\hitmarker","ui\\hud_hitmarker");
-	hVS			= Device.Shader._CreateVS	(FVF::F_TL);
+	hVS			= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), NULL);
 }
 void CHitMarker::OnDeviceDestroy()
 {
-	Device.Shader._DeleteVS		(hVS);
+	Device.Shader.DeleteGeom	(hVS);
 	Device.Shader.Delete		(hShader);
 }
 
@@ -59,7 +59,7 @@ void CHitMarker::Render()
 		float		h_2		= float(::Render->getTarget()->get_height())/2;
 
 		u32			dwOffset;
-		FVF::TL* D		= (FVF::TL*)Device.Streams.Vertex.Lock(12,hVS->dwStride,dwOffset);
+		FVF::TL* D		= (FVF::TL*)RCache.Vertex.Lock(12,hVS->vb_stride,dwOffset);
 		FVF::TL* Start	= D;
 		for (int i=0; i<4; i++){
 			if (fHitMarks[i]>0){
@@ -74,13 +74,12 @@ void CHitMarker::Render()
 			}
 		}
 		u32 Count						= D-Start;
-		Device.Streams.Vertex.Unlock	(Count,hVS->dwStride);
+		RCache.Vertex.Unlock	(Count,hVS->vb_stride);
 		if (Count)
 		{
-			Device.Shader.set_Shader	(hShader);
-			Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices	(0,0);
-			Device.Primitive.Render		(D3DPT_TRIANGLELIST,dwOffset,Count/3);
+			RCache.set_Shader	(hShader);
+			RCache.set_Geometry (hVS);
+			RCache.Render		(D3DPT_TRIANGLELIST,dwOffset,Count/3);
 		}
 	}
 }

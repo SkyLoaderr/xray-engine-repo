@@ -11,11 +11,11 @@
 class CGlow  
 {
 public:
-	Fvector	C;
-	float	R;
-	float	fade;
-	Shader*	hShader;
-	u32	dwFrame;
+	Fvector				C;
+	float				R;
+	float				fade;
+	Shader*				hShader;
+	u32					dwFrame;
 
 	// Ray-testing cache
 	BOOL				bTestResult;
@@ -26,20 +26,17 @@ public:
 
 class ENGINE_API CGlowManager 
 {
-	vector<CGlow>		Glows;
-	CGlow*				Selected[MAX_GlowsPerFrame];
-	u32				Selected_Count;
-	CVS*				VS;
+	vector<CGlow>			Glows;
+	CGlow*					Selected[MAX_GlowsPerFrame];
+	u32						Selected_Count;
+	SGeometry*				hGeom;
 
-	u32				dwTestID;
+	u32						dwTestID;
 public:
 	void	add				(vector<WORD> &V);
 
 	void	Load			(CStream *fs);
 	void	Unload			();
-
-	void	OnDeviceCreate	();
-	void	OnDeviceDestroy	();
 
 	void	Render			();
 

@@ -19,7 +19,7 @@ CVisual::CVisual		()
 {
 	Type				= 0;
 	hShader				= 0;
-	hVS					= 0;
+	hGeom				= 0;
 
 	bv_Radius			= 0.f;
 	bv_Position.set		(0,0,0);
@@ -34,8 +34,8 @@ CVisual::~CVisual		()
 
 void CVisual::Release	()
 {
-	Device.Shader.Delete	(hShader);
-	Device.Shader._DeleteVS	(hVS);
+	Device.Shader.Delete		(hShader);
+	Device.Shader.DeleteGeom	(hGeom	);
 }
 
 void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
@@ -96,7 +96,7 @@ void	CVisual::Copy(CVisual *pFrom)
 {
 	PCOPY(Type);
 	PCOPY(hShader);
-	PCOPY(hVS);
+	PCOPY(hGeom);
 	PCOPY(bv_Position);
 	PCOPY(bv_Radius);
 	PCOPY(bv_BBox);

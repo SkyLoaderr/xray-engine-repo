@@ -116,7 +116,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 	up.normalize();
 
     matNewView.build_camera	(from, at, up	);
-    Device.set_xform_view	(matNewView		);
+    RCache.set_xform_view	(matNewView		);
 
     // Do the planar projection
     pProjected->ProcessVertices( D3DVOP_TRANSFORM, 0, dwNumVertices, pVB, 0, HW.pDevice, 0 );

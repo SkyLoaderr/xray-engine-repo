@@ -45,10 +45,10 @@ void CRender::Screenshot		(BOOL bSquare)
 	}
 	
 	// Create temp-surface
-	IDirect3DSurface8*	pFB;
-	R_CHK(HW.pDevice->CreateImageSurface(
-		Device.dwWidth,Device.dwHeight,D3DFMT_A8R8G8B8,&pFB));
-	R_CHK(HW.pDevice->GetFrontBuffer(pFB));
+	IDirect3DSurface9*	pFB;
+	R_CHK(HW.pDevice->CreateOffscreenPlainSurface(
+		Device.dwWidth,Device.dwHeight,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&pFB,NULL));
+	R_CHK(HW.pDevice->GetFrontBufferData(0,pFB));
 	
 	D3DLOCKED_RECT	D;
 	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
@@ -92,8 +92,6 @@ void CRender::Screenshot		(BOOL bSquare)
 	}else{
 		// 
 		p.scanlenght	= D.Pitch;
-		Log("a",p.scanlenght);
-		Log("b",Device.dwWidth);
 		p.width			= Device.dwWidth;
 		p.height		= Device.dwHeight;
 		p.data			= D.pBits;

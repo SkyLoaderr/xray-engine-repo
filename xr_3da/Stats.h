@@ -15,18 +15,17 @@ class ENGINE_API CStats
 public:
 	CGameFont*	pFont;
 
-	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
-	u32		dwShader_Codes;		// Number of times the shader-code changes
-	u32		dwShader_Textures;	// Number of times the shader-tex changes
-	u32		dwShader_Matrices;	// Number of times the shader-xform changes
-	u32		dwShader_Constants;	// Number of times the shader-consts changes
-	u32		dwXFORMs;
-	u32		dwSND_Played,dwSND_Allocated;	// Play/Alloc
+	float		fFPS,fRFPS,fTPS;				// FPS, RenderFPS, TPS
+	float		fMem_calls;
+	u32			dwMem_calls;
+	u32			dwSND_Played,dwSND_Allocated;	// Play/Alloc
 
 	CStatTimer	EngineTOTAL;		// 
 	CStatTimer	Sheduler;			// 
 	CStatTimer	UpdateClient;		// 
 	CStatTimer	Physics;			// movement+collision
+	CStatTimer	ph_collision;		// collision
+	CStatTimer	ph_core;			// collision
 	CStatTimer	AI_Think;			// thinking
 	CStatTimer	AI_Range;			// query: range
 	CStatTimer	AI_Path;			// query: path

@@ -458,14 +458,14 @@ void CCustomMonster::OnRender()
 	//if (!bDebug)					return;
 	if (!psAI_Flags.test(aiDebug))	return;
 	
-	Device.Shader.OnFrameEnd	();
+	RCache.OnFrameEnd				();
 	{
 	for (u32 I=1; I<AI_Path.TravelPath.size(); I++)
 	{
 		CPathNodes::CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CPathNodes::CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
-		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+		RCache.dbg_DrawLINE			(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 		
 		/**/
 		Fvector         T;
@@ -486,8 +486,8 @@ void CCustomMonster::OnRender()
 	{
 		CTrevelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTrevelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
-		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+		RCache.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
+		RCache.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 	}
 	}
 	*/
@@ -498,9 +498,9 @@ void CCustomMonster::OnRender()
 		CPathNodes::PSegment& S = AI_Path.Segments[I];
 		Fvector P1;	P1.set(S.v1); P1.y+=0.1f;
 		Fvector P2;	P2.set(S.v2); P2.y+=0.1f;
-		Device.Primitive.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		Device.Primitive.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
 	}
 	}
 
@@ -510,39 +510,39 @@ void CCustomMonster::OnRender()
 			Fvector tP0 = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 			tP0.y += .35f;
 			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
-				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
+				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
 			else
 				if (Group.m_tpaSuspiciousNodes[i].dwSearched == 1)		
-					Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
 				else
-					Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
 			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
 				case 0 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 					break;
 				}
 				case 1 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
 					break;
 				}
 				case 2 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 					break;
 				}
 				case 3 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
 					break;
 				}
 				case 4 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
 					break;
 				}
 				case 5 : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
 					break;
 				}
 				default : {
-					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
 					break;
 				}
 			}

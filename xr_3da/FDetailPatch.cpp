@@ -30,7 +30,7 @@ void FDetailPatch::Load(const char* N, CStream* fs, u32 dwFlags)
 	patches.resize	(count);
 	Memory.mem_copy	(&*patches.begin(),fs->Pointer(),size);
 
-	Stream			= Device.Streams.Create(FVF::F_TL,count*4);
+	Stream			= RCache.Create(FVF::F_TL,count*4);
 }
 
 void FDetailPatch::Render(float LOD)
@@ -84,5 +84,5 @@ void FDetailPatch::Render(float LOD)
 	u32 dwNumVerts = pv-pv_start;
 	Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
-		Device.Primitive.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
+		RCache.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
 }

@@ -25,7 +25,7 @@ void FLOD::Load			(LPCSTR N, CStream *data, u32 dwFlags)
 	}
 
 	// VS
-	hVS					= Device.Shader._CreateVS	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+	hGeom				= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 void FLOD::Copy			(CVisual *pFrom	)
 {
@@ -54,16 +54,15 @@ void FLOD::Render		(float LOD		)
 
 	// Fill VB
 	_face&		F					= facets[best_id];
-	u32		vOffset				= 0;
-	FVF::LIT*	V					= (FVF::LIT*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
+	u32			vOffset				= 0;
+	FVF::LIT*	V					= (FVF::LIT*) RCache.Vertex.Lock(4,hGeom->vb_stride,vOffset);
 	V[0].set	(F.v[0].v,F.v[0].c,F.v[0].t.x,F.v[0].t.y);
 	V[1].set	(F.v[1].v,F.v[1].c,F.v[1].t.x,F.v[1].t.y);
 	V[2].set	(F.v[2].v,F.v[2].c,F.v[2].t.x,F.v[2].t.y);
 	V[3].set	(F.v[3].v,F.v[3].c,F.v[3].t.x,F.v[3].t.y);
-	Device.Streams.Vertex.Unlock	(4,hVS->dwStride);
+	RCache.Vertex.Unlock			(4,hGeom->vb_stride);
 
 	// Draw IT
-	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(0,0);
-	Device.Primitive.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
+	RCache.set_Geometry		(hGeom);
+	RCache.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
 }

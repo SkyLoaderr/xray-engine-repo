@@ -38,7 +38,7 @@ void CPSObject::Update(u32 dt)
 {
 	CPSVisual* V	= (CPSVisual*)m_pVisual;
 	V->Update		(dt);
-	if (m_Emitter.m_dwFlag&PS_EM_PLAY_ONCE)
+	if (m_Emitter.m_Flags.is(PS_EM_PLAY_ONCE))
 	{
 		if ((0==V->ParticleCount())&&!m_Emitter.IsPlaying()) Stop();
 	}

@@ -20,17 +20,17 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	for (u32 i=0; i<HW.Caps.pixel.dwStages; i++) 
 	{
 		if (psDeviceFlags.test(rsAnisotropic))	{
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC ));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC ));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAXANISOTROPY, 4					));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_ANISOTROPIC ));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAGFILTER,	D3DTEXF_ANISOTROPIC ));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR		));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
 		} else {
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR 		));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR 		));
+			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR		));
 		}
 		float fBias = -1.f;
-		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
+		CHK_DX(HW.pDevice->SetSamplerState		( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DITHERENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_COLORVERTEX,		TRUE				));
@@ -72,12 +72,11 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	}
 
 	// Signal everyone - device created
+	RCache.OnDeviceCreate		();
 	Gamma.Update				();
 	Shader.OnDeviceCreate		(shName);
 	seqDevCreate.Process		(rp_DeviceCreate);
-	Primitive.OnDeviceCreate	();
 	Statistic.OnDeviceCreate	();
-	Streams.OnDeviceCreate		();
 	dwFrame						= 0;
 }
 

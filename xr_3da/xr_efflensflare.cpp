@@ -46,7 +46,7 @@ CLensFlare::CLensFlare()
     LightColor.set				( 0xFFFFFFFF );
 	fGradientValue				= 0.f;
 
-	VS							= 0;
+	hGeom						= 0;
 }
 
 
@@ -62,7 +62,7 @@ CLensFlare::~CLensFlare()
 void CLensFlare::OnDeviceCreate	()
 {
 	// VS
-	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
+	hGeom				= Device.Shader.CreateGeom	(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
@@ -78,7 +78,7 @@ void CLensFlare::OnDeviceDestroy()
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
 
 	// VS
-	Device.Shader._DeleteVS						(VS);
+	Device.Shader.DeleteGeom(hGeom);
 }
 
 Shader* CLensFlare::CreateSourceShader(const char* tex_name)
@@ -253,8 +253,8 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	dwLight.set							( LightColor );
 	svector<Shader*,MAX_Flares>			_2render;
 	
-	u32								VS_Offset;
-	FVF::LIT *pv						= (FVF::LIT*) Device.Streams.Vertex.Lock(2*MAX_Flares*4,VS->dwStride,VS_Offset);
+	u32									VS_Offset;
+	FVF::LIT *pv						= (FVF::LIT*) RCache.Vertex.Lock(2*MAX_Flares*4,hGeom->vb_stride,VS_Offset);
 	
 	float 	fDistance					= FAR_DIST*0.75f;
 	
@@ -315,19 +315,17 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		}
 	}
 	
-	Device.Streams.Vertex.Unlock	(_2render.size()*4,VS->dwStride);
+	RCache.Vertex.Unlock	(_2render.size()*4,hGeom->vb_stride);
 
-	Device.set_xform_world		(Fidentity);
-	Device.Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
+	RCache.set_xform_world	(Fidentity);
+	RCache.set_Geometry		(hGeom);
 	for (u32 i=0; i<_2render.size(); i++)
 	{
     	if (_2render[i])
 		{
-			Device.Shader.set_Shader		(_2render[i]);
-
-			u32							vBase	= i*4+VS_Offset;
-			Device.Primitive.setIndices		(vBase, Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			u32						vBase	= i*4+VS_Offset;
+			RCache.set_Shader		(_2render[i]);
+			RCache.Render			(D3DPT_TRIANGLELIST,vBase, 0,4,0,2);
 	    }
 	}
 }

@@ -10,7 +10,7 @@ class	ENGINE_API	CFS_Base;
 class	ENGINE_API	CConstant
 {
 public:
-	enum { modeProgrammable=0, modeWaveForm	};
+	enum			{ modeProgrammable=0, modeWaveForm	};
 public:
 	Fcolor			const_float;
 	u32				const_dword;

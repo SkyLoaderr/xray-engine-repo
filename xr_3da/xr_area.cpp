@@ -201,22 +201,22 @@ void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
 
-	Device.Shader.set_Shader(sh_debug);
+	RCache.set_Shader(sh_debug);
 	for (u32 i=0; i<q_debug.boxes.size(); i++)
 	{
 		Fobb&		obb		= q_debug.boxes[i];
 		Fmatrix		X,S,R;
 		obb.xform_get(X);
-		Device.Primitive.dbg_DrawOBB(X,obb.m_halfsize,D3DCOLOR_XRGB(255,0,0));
+		RCache.dbg_DrawOBB(X,obb.m_halfsize,D3DCOLOR_XRGB(255,0,0));
 		S.scale		(obb.m_halfsize);
 		R.mul		(X,S);
-		Device.Primitive.dbg_DrawEllipse(R,D3DCOLOR_XRGB(0,0,255));
+		RCache.dbg_DrawEllipse(R,D3DCOLOR_XRGB(0,0,255));
 	}
 	q_debug.boxes.clear();
 
 	for (i=0; i<dbg_E.size(); i++)
 	{
-		Device.Primitive.dbg_DrawEllipse(dbg_E[i],D3DCOLOR_XRGB(0,255,0));
+		RCache.dbg_DrawEllipse(dbg_E[i],D3DCOLOR_XRGB(0,255,0));
 	}
 	dbg_E.clear();
 
@@ -227,7 +227,7 @@ void CObjectSpace::dbgRender()
 		Fmatrix		M;
 		M.scale		(S.R,S.R,S.R);
 		M.translate_over(S.P);
-		Device.Primitive.dbg_DrawEllipse(M,P.second);
+		RCache.dbg_DrawEllipse(M,P.second);
 	}
 	dbg_S.clear();
 
@@ -249,8 +249,8 @@ void CObjectSpace::dbgRender()
 				if (B) break;
 			}
 			
-			Device.Primitive.dbg_DrawAABB(c,1.f,.1f,1.f,B?C1s:C1);
-			Device.Primitive.dbg_DrawAABB(c,cl_2,0,cl_2,B?C2s:C2);
+			RCache.dbg_DrawAABB(c,1.f,.1f,1.f,B?C1s:C1);
+			RCache.dbg_DrawAABB(c,cl_2,0,cl_2,B?C2s:C2);
 		}
 	}
 	c.set(pCreator->CurrentEntity()->Position());

@@ -4,12 +4,10 @@ void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
 	// before destroy
 	bReady						= FALSE;
-	Streams.OnDeviceDestroy		();
 	Statistic.OnDeviceDestroy	();
-	Primitive.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
-	Streams.OnDeviceDestroy		();
 	Shader.OnDeviceDestroy		(bKeepTextures);
+	RCache.OnDeviceDestroy		();
 
 	Memory.mem_compact			();
 }

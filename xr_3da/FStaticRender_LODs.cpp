@@ -24,8 +24,8 @@ void CRender::flush_LODs()
 	CVisual*					firstV		= lstLODs[0].pVisual;
 	Shader*						cur_S		= firstV->hShader;
 	int							cur_count	= 0;
-	u32						vOffset;
-	FVF::LIT*					V	= (FVF::LIT*)Device.Streams.Vertex.Lock	(lstLODs.size()*4,firstV->hVS->dwStride, vOffset);
+	u32							vOffset;
+	FVF::LIT*					V	= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
 	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
@@ -74,18 +74,16 @@ void CRender::flush_LODs()
 		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	vecGroups.push_back				(cur_count);
-	Device.Streams.Vertex.Unlock	(lstLODs.size()*4,firstV->hVS->dwStride);
+	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
 
 	// *** Render
 	int current=0;
 	for (u32 g=0; g<vecGroups.size(); g++)
 	{
-		int p_count						= vecGroups[g];
-		Device.Shader.set_Shader		(lstLODs[current].pVisual->hShader);
-
-		Device.Primitive.setVertices	(firstV->hVS->dwHandle,firstV->hVS->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4*p_count,0,2*p_count);
+		int p_count				= vecGroups[g];
+		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
+		RCache.set_Geometry		(firstV->hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;
 	}

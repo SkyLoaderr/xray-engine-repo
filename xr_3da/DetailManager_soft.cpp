@@ -8,12 +8,12 @@ const u32	vs_size				= 3000;
 void CDetailManager::soft_Load		()
 {
 	// Vertex Stream
-	soft_VS	= Device.Shader._CreateVS(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+	soft_Geom	= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 }
 
 void CDetailManager::soft_Unload	()
 {
-	Device.Shader._DeleteVS			(soft_VS);
+	Device.Shader.DeleteGeom				(soft_Geom);
 }
 
 void CDetailManager::soft_Render	()
@@ -24,8 +24,8 @@ void CDetailManager::soft_Render	()
 	// float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Get index-stream
-	_IndexStream&	_IS		= Device.Streams.Index;
-	_VertexStream&	_VS		= Device.Streams.Vertex;
+	_IndexStream&	_IS		= RCache.Index;
+	_VertexStream&	_VS		= RCache.Vertex;
 
 	for (u32 O=0; O<objects.size(); O++)
 	{
@@ -47,7 +47,7 @@ void CDetailManager::soft_Render	()
 		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
 
 		// Fill VB (and flush it as nesessary)
-		Device.Shader.set_Shader		(Object.shader);
+		RCache.set_Shader	(Object.shader);
 
 		Fmatrix		mXform;
 		for (u32 L_ID=0; L_ID<lock_count; L_ID++)
@@ -65,7 +65,7 @@ void CDetailManager::soft_Render	()
 
 			// Lock buffers
 			u32	vBase,iBase,iOffset=0;
-			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_VS->dwStride,vBase);
+			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_Geom->vb_stride,vBase);
 			WORD*	iDest					= (WORD*)					_IS.Lock(iCount_Lock,iBase);
 
 			// Filling itself
@@ -114,14 +114,13 @@ void CDetailManager::soft_Render	()
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
 			}
-			_VS.Unlock		(vCount_Lock,soft_VS->dwStride);
+			_VS.Unlock		(vCount_Lock,soft_Geom->vb_stride);
 			_IS.Unlock		(iCount_Lock);
 
 			// Render
-			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.Buffer());
-			Device.Primitive.setIndices		(vBase, _IS.Buffer());
-			u32	dwNumPrimitives			= iCount_Lock/3;
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
+			u32	dwNumPrimitives		= iCount_Lock/3;
+			RCache.set_Geometry		(soft_Geom);
+			RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount_Lock,iBase,dwNumPrimitives);
 		}
 
 		// Clean up

@@ -29,6 +29,8 @@ CWallmarksEngine::CWallmarksEngine	()
 {
 	pool.reserve	(256);
 	marks.reserve	(256);
+
+	hGeom	= Device.Shader.CreateGeom	(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
 }
 
 CWallmarksEngine::~CWallmarksEngine	()
@@ -43,15 +45,8 @@ CWallmarksEngine::~CWallmarksEngine	()
 			xr_delete	(pool[it]);
 		pool.clear	();
 	}
-}
 
-void CWallmarksEngine::OnDeviceCreate()
-{
-	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
-}
-void CWallmarksEngine::OnDeviceDestroy()
-{
-	Device.Shader._DeleteVS	(VS);
+	Device.Shader.DeleteGeom			(hGeom);
 }
 
 // allocate
@@ -228,13 +223,13 @@ void CWallmarksEngine::Render()
 	// Projection and xform
 	float _43					= Device.mProject._43;
 	Device.mProject._43			-= 0.001f; 
-	Device.set_xform_world		(Fidentity);
-	Device.set_xform_project	(Device.mProject);
+	RCache.set_xform_world		(Fidentity);
+	RCache.set_xform_project	(Device.mProject);
 
 	Device.Statistic.RenderDUMP_WM.Begin	();
 
-	u32				w_offset= 0;
-	FVF::LIT*			w_verts = (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
+	u32					w_offset= 0;
+	FVF::LIT*			w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 	FVF::LIT*			w_start = w_verts;
 
 	Shader*	w_S			= marks.front()->shader;
@@ -254,14 +249,13 @@ void CWallmarksEngine::Render()
 					if (w_count)	
 					{
 						// Flush stream
-						Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
-						Device.Shader.set_Shader		(w_S);
-						Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-						Device.Primitive.setIndices		(0,0);
-						Device.Primitive.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+						RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+						RCache.set_Shader		(w_S);
+						RCache.set_Geometry		(hGeom);
+						RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
 
 						// Restart (re-lock/re-calc)
-						w_verts		= (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
+						w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 						w_start		= w_verts;
 						w_S			= W->shader;
 					}
@@ -275,12 +269,12 @@ void CWallmarksEngine::Render()
 
 	// Flush stream
 	u32 w_count			= w_verts-w_start;
-	Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
-	if (w_count)			{
-		Device.Shader.set_Shader		(w_S);
-		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(0,0);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+	RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+	if (w_count)			
+	{
+		RCache.set_Shader		(w_S);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
 	}
 
 	// Remove last used wallmarks
@@ -293,5 +287,5 @@ void CWallmarksEngine::Render()
 
 	// Projection
 	Device.mProject._43			= _43;
-	Device.set_xform_project	(Device.mProject);
+	RCache.set_xform_project	(Device.mProject);
 }

@@ -437,76 +437,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Primitives Render"
-					Filter="">
-					<File
-						RelativePath=".\FVF.h">
-					</File>
-					<File
-						RelativePath=".\Primitive.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed (for debug only)|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\Primitive.h">
-					</File>
-					<File
-						RelativePath=".\PrimitivesR.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed (for debug only)|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\PrimitivesR.h">
-					</File>
-					<File
-						RelativePath=".\PrimitivesR_Runtime.h">
-					</File>
-					<File
-						RelativePath=".\SharedPrimitive.cpp">
-					</File>
-					<File
-						RelativePath=".\SharedPrimitive.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="Gamma"
 					Filter="">
 					<File
@@ -520,39 +450,6 @@
 					Name="Shaders"
 					Filter="">
 					<File
-						RelativePath=".\SH_Constant.cpp">
-					</File>
-					<File
-						RelativePath=".\SH_Constant.h">
-					</File>
-					<File
-						RelativePath=".\SH_Matrix.cpp">
-					</File>
-					<File
-						RelativePath=".\SH_Matrix.h">
-					</File>
-					<File
-						RelativePath="SH_PS.h">
-					</File>
-					<File
-						RelativePath=".\SH_RT.cpp">
-					</File>
-					<File
-						RelativePath=".\SH_RT.h">
-					</File>
-					<File
-						RelativePath=".\SH_Texture.cpp">
-					</File>
-					<File
-						RelativePath=".\SH_Texture.h">
-					</File>
-					<File
-						RelativePath=".\SH_VS.cpp">
-					</File>
-					<File
-						RelativePath=".\SH_VS.h">
-					</File>
-					<File
 						RelativePath=".\Shader.cpp">
 					</File>
 					<File
@@ -560,9 +457,6 @@
 					</File>
 					<File
 						RelativePath=".\Shader_xrLC.h">
-					</File>
-					<File
-						RelativePath=".\VS_Constants.h">
 					</File>
 					<File
 						RelativePath=".\WaveForm.h">
@@ -741,6 +635,78 @@
 							RelativePath=".\Texture.h">
 						</File>
 						<File
+							RelativePath="xrImage_Resampler.cpp">
+						</File>
+						<File
+							RelativePath="xrImage_Resampler.h">
+						</File>
+						<File
+							RelativePath=".\xr_avi.cpp">
+						</File>
+						<File
+							RelativePath=".\xr_avi.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Shaders "
+						Filter="">
+						<File
+							RelativePath=".\SH_Constant.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Constant.h">
+						</File>
+						<File
+							RelativePath=".\SH_Matrix.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Matrix.h">
+						</File>
+						<File
+							RelativePath=".\SH_RT.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_RT.h">
+						</File>
+						<File
+							RelativePath=".\SH_Texture.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Texture.h">
+						</File>
+						<Filter
+							Name="dx9_R_shader"
+							Filter="">
+							<File
+								RelativePath="r_constants.cpp">
+							</File>
+							<File
+								RelativePath="r_constants.h">
+							</File>
+							<File
+								RelativePath="r_constants_cache.cpp">
+							</File>
+							<File
+								RelativePath="r_constants_cache.h">
+							</File>
+							<File
+								RelativePath="r_shader.cpp">
+							</File>
+							<File
+								RelativePath="r_shader.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="ShaderManager"
+						Filter="">
+						<File
+							RelativePath="ShaderCompiler.cpp">
+						</File>
+						<File
+							RelativePath="ShaderCompiler.h">
+						</File>
+						<File
 							RelativePath=".\TextureManager.cpp">
 							<FileConfiguration
 								Name="Mixed|Win32">
@@ -767,22 +733,35 @@
 						<File
 							RelativePath=".\TextureManager_Loader.cpp">
 						</File>
-						<File
-							RelativePath=".\TextureManager_Runtime.h">
-						</File>
-						<File
-							RelativePath="xrImage_Resampler.cpp">
-						</File>
-						<File
-							RelativePath="xrImage_Resampler.h">
-						</File>
-						<File
-							RelativePath=".\xr_avi.cpp">
-						</File>
-						<File
-							RelativePath=".\xr_avi.h">
-						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="Backend"
+					Filter="">
+					<File
+						RelativePath=".\FVF.h">
+					</File>
+					<File
+						RelativePath="R_Backend.cpp">
+					</File>
+					<File
+						RelativePath="R_Backend.h">
+					</File>
+					<File
+						RelativePath="R_Backend_DBG.cpp">
+					</File>
+					<File
+						RelativePath="R_Backend_Runtime.cpp">
+					</File>
+					<File
+						RelativePath="R_Backend_Runtime.h">
+					</File>
+					<File
+						RelativePath="R_DStreams.cpp">
+					</File>
+					<File
+						RelativePath="R_DStreams.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -914,39 +893,6 @@
 					RelativePath=".\EventAPI.h">
 				</File>
 				<File
-					RelativePath=".\ScriptAPI.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\ScriptAPI.h">
-				</File>
-				<File
-					RelativePath=".\ScriptAPI_Export.cpp">
-				</File>
-				<File
 					RelativePath=".\clsid.cpp">
 				</File>
 				<File
@@ -986,10 +932,6 @@
 						RelativePath=".\lzhuf.h">
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="Debug"
-				Filter="">
 			</Filter>
 			<Filter
 				Name="Client - Server"
@@ -1098,36 +1040,6 @@
 				<File
 					RelativePath=".\CustomHUD.h">
 				</File>
-				<File
-					RelativePath=".\XR_Animator.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\XR_Animator.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="Environment"
@@ -1212,60 +1124,6 @@
 				</File>
 				<File
 					RelativePath=".\xr_area.h">
-				</File>
-				<File
-					RelativePath=".\xr_area_collide.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\xr_area_debug.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\xr_area_movement.cpp">

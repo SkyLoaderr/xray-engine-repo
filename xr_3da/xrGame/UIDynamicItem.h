@@ -14,7 +14,7 @@ DEFINE_VECTOR(SDynamicItemData,DIDVec,DIDIt);
 class CUIDynamicItem: public CUICustomItem
 {
 	Shader*			hShader;
-	CVS*			hVS;	
+	SGeometry*		hVS;	
 		
 	DIDVec			data;
 	u32				item_cnt;

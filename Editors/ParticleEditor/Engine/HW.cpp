@@ -7,11 +7,11 @@
 
 ENGINE_API CHW HW;
 
-u32 dwDebugSB = 0;
+IDirect3DStateBlock9*	dwDebugSB = 0;
 
 void CHW::CreateD3D()
 {
-    HW.pD3D = Direct3DCreate8( D3D_SDK_VERSION );
+    HW.pD3D = Direct3DCreate9( D3D_SDK_VERSION );
     R_ASSERT(HW.pD3D);
 
 }
@@ -53,7 +53,7 @@ void	CHW::DestroyDevice	()
 	_RELEASE				(pTempZB);
 	_RELEASE				(pBaseZB);
 	_RELEASE				(pBaseRT);
-	R_CHK					(HW.pDevice->DeleteStateBlock(dwDebugSB));
+	_RELEASE				(dwDebugSB);
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE				(HW.pDevice);
 	DestroyD3D				();
@@ -85,9 +85,9 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 #endif
 	// Display the name of video board
-	D3DADAPTER_IDENTIFIER8	adapterID;
-	R_CHK(pD3D->GetAdapterIdentifier(D3DADAPTER_DEFAULT,D3DENUM_NO_WHQL_LEVEL,&adapterID));
-	Msg("* Video board: %s",adapterID.Description);
+	D3DADAPTER_IDENTIFIER9	adapterID;
+	R_CHK	(pD3D->GetAdapterIdentifier(D3DADAPTER_DEFAULT,0,&adapterID));
+	Msg		("* GPU: %s",adapterID.Description);
 
 	// Retreive windowed mode
 	D3DDISPLAYMODE mWindowed;
@@ -140,7 +140,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     P.BackBufferHeight		= dwHeight;
 	P.BackBufferFormat		= fTarget;
 	if (bWindowed)			P.BackBufferCount	= 1;
-	else					P.BackBufferCount	= psDeviceFlags.is(rsTriplebuffer)?2:1;
+	else					P.BackBufferCount	= 1;
 
 	// Multisample
 	if ((!bWindowed) && psDeviceFlags.is(rsAntialias))
@@ -149,6 +149,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	} else {
 	    P.MultiSampleType	= D3DMULTISAMPLE_NONE;
 	}
+	P.MultiSampleQuality	= 0;
     
 	// Windoze
     P.SwapEffect			= D3DSWAPEFFECT_DISCARD;
@@ -158,18 +159,12 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Depth/stencil
 	P.EnableAutoDepthStencil= TRUE;
     P.AutoDepthStencilFormat= fDepth;
+	P.Flags					= D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
 
 	// Refresh rate
-    if( !bWindowed )
-	{
-		P.FullScreen_RefreshRateInHz		= selectRefresh			(dwWidth,dwHeight);
-		P.FullScreen_PresentationInterval	= selectPresentInterval	();
-	}
-    else
-	{
-		P.FullScreen_RefreshRateInHz		= D3DPRESENT_RATE_DEFAULT;
-		P.FullScreen_PresentationInterval	= D3DPRESENT_INTERVAL_DEFAULT;
-	}
+	P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
+    if( !bWindowed )		P.FullScreen_RefreshRateInHz	= selectRefresh	(dwWidth,dwHeight,fTarget);
+    else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 
     // Create the device
 	u32 GPU = selectGPU();
@@ -183,32 +178,33 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	switch (GPU)
 	{
 	case D3DCREATE_SOFTWARE_VERTEXPROCESSING:
-		Log	("* Geometry Processor: SOFTWARE");
+		Log	("* Vertex Processor: SOFTWARE");
 		break;
 	case D3DCREATE_MIXED_VERTEXPROCESSING:
-		Log	("* Geometry Processor: MIXED");
+		Log	("* Vertex Processor: MIXED");
 		break;
 	case D3DCREATE_HARDWARE_VERTEXPROCESSING:
-		Log	("* Geometry Processor: HARDWARE");
+		Log	("* Vertex Processor: HARDWARE");
 		break;
 	case D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_PUREDEVICE:
-		Log	("* Geometry Processor: PURE HARDWARE");
+		Log	("* Vertex Processor: PURE HARDWARE");
 		break;
 	}
 
 	// Capture misc data
-	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,LPDWORD(&dwDebugSB)));
-	R_CHK	(pDevice->GetRenderTarget			(&pBaseRT));
+	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+	R_CHK	(pDevice->GetRenderTarget			(0,&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
-	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
-	u32	memory								= pDevice->GetAvailableTextureMem	();
-	Msg		("* Texture memory:     %d M",		memory/(1024*1024));
+	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&pTempZB,NULL));
+	u32	memory									= pDevice->GetAvailableTextureMem	();
+	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
+	Msg		("*          DDI-level: %2.1f",		float(D3DXGetDriverLevel(pDevice))/100.f);
 	return dwWindowStyle;
 }
 
 u32	CHW::selectPresentInterval	()
 {
-	D3DCAPS8	caps;
+	D3DCAPS9	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
 
 	if (psDeviceFlags.is(rsNoVSync)) {
@@ -224,7 +220,7 @@ u32 CHW::selectGPU ()
 {
 	if (Caps.bForceGPU_SW) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
-	D3DCAPS8	caps;
+	D3DCAPS9	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
 
     if(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT) 
@@ -238,17 +234,17 @@ u32 CHW::selectGPU ()
 	} else return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 }
 
-u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight)
+u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt)
 {
 	if (psDeviceFlags.is(rsRefresh60hz))	return D3DPRESENT_RATE_DEFAULT;
 	else 
 	{
 		u32 selected	= D3DPRESENT_RATE_DEFAULT;
-		u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
+		u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT,fmt);
 		for (u32 I=0; I<count; I++)
 		{
 			D3DDISPLAYMODE	Mode;
-			pD3D->EnumAdapterModes(D3DADAPTER_DEFAULT,I,&Mode);
+			pD3D->EnumAdapterModes(D3DADAPTER_DEFAULT,fmt,I,&Mode);
 			if (Mode.Width==dwWidth && Mode.Height==dwHeight)
 			{
 				if (Mode.RefreshRate>selected) selected = Mode.RefreshRate;

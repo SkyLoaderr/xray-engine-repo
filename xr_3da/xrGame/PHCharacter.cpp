@@ -822,8 +822,8 @@ void CPHSimpleCharacter::OnRender(){
 	Fvector n=*(Fvector*)m_ground_contact_normal;
 	n.mul(100.f);
 	Fvector pos=GetPosition();
-	Device.Primitive.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
-	Device.Primitive.dbg_DrawLINE(m,pos,n, 0xefffffff);
+	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
+	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
 
 	
 	Fvector scale;
@@ -834,10 +834,10 @@ void CPHSimpleCharacter::OnRender(){
 	M.c.set(pos);
 	
 
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 
 	M.c.set(0.f,1.f,0.f);
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 }
 #endif
 

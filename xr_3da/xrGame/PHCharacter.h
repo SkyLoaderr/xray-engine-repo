@@ -72,7 +72,7 @@ bool b_pure_climb;
 bool b_at_wall;
 bool was_control;
 bool b_stop_control;
-UINT m_contact_count;
+u32 m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
 dReal m_friction_factor;
@@ -80,8 +80,8 @@ dReal m_friction_factor;
 dVector3 previous_p;
 dVector3 previous_p1;
 dReal previous_v;
-UINT dis_count_f;
-UINT dis_count_f1;
+u32 dis_count_f;
+u32 dis_count_f1;
 u32* p_lastMaterial;
 /////////////////////////////////////////////////////////////////////////////
 

@@ -27,8 +27,8 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 		}
 		else	hr = E_FAIL;
 	}
-	SAFE_RELEASE	(pShaderBuf);
-	SAFE_RELEASE	(pErrorBuf);
+	_RELEASE		(pShaderBuf);
+	_RELEASE		(pErrorBuf);
 	pConstants		= NULL;
 	if (FAILED(hr))	return FALSE;
 
@@ -51,8 +51,8 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 		}
 		else	hr = E_FAIL;
 	}
-	SAFE_RELEASE	(pShaderBuf);
-	SAFE_RELEASE	(pErrorBuf);
+	_RELEASE	(pShaderBuf);
+	_RELEASE	(pErrorBuf);
 	pConstants		= NULL;
 	if (FAILED(hr))	return FALSE;
 

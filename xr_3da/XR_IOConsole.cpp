@@ -37,25 +37,18 @@ void CConsole::Initialize()
 	fAccel			= 1.0f;
 	bVisible		= false;
 	rep_time		= 0;
-
-	pFont			= xr_new<CGameFont>	("console_font",CGameFont::fsDeviceIndependent);
-	Device.seqDevDestroy.Add(this);
+	pFont			= 0;
 
 	// Commands
 	extern void CCC_Register();
 	CCC_Register	();
 }
 
-void CConsole::OnDeviceDestroy()
-{
-}
-
 void CConsole::Destroy	()
 {
 	Execute						("cfg_save");
 
-	Device.seqDevDestroy.Remove	(this);
-	xr_delete						(pFont);
+	xr_delete					(pFont);
 
 	Commands.clear				();
 }
@@ -74,6 +67,8 @@ void CConsole::OnRender	()
 	BOOL			bGame;
 
 	if (!bVisible) return;
+	if (0==pFont)
+		pFont		= xr_new<CGameFont>	("console_font",CGameFont::fsDeviceIndependent);
 
 	bGame=false; if (pCreator && pCreator->bReady) bGame=true;
 

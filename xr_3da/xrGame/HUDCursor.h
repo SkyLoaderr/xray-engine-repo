@@ -5,7 +5,7 @@
 class CHUDCursor : public pureDeviceDestroy, public pureDeviceCreate
 {
 	Shader*					hShader;
-	CVS*					hVS;	
+	SGeometry*				hVS;
 	float					fuzzyShowInfo;
 public:
 							CHUDCursor	();

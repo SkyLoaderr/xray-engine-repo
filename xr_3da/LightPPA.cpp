@@ -34,7 +34,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 	D.v1	=.5f;
 }
 
-void CLightPPA::Render	(CVS* VS)
+void CLightPPA::Render	(SGeometry* hGeom)
 {
 	VERIFY	(pCreator);
 
@@ -51,7 +51,7 @@ void CLightPPA::Render	(CVS* VS)
 
 	// Lock
 	u32	vOffset;
-	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)Device.Streams.Vertex.Lock(triCount*3,VS->dwStride,vOffset);
+	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)RCache.Vertex.Lock(triCount*3,hGeom->vb_stride,vOffset);
 
 	// Cull and triangulate polygons
 	Fvector	cam		= Device.vCameraPosition;
@@ -78,49 +78,33 @@ void CLightPPA::Render	(CVS* VS)
 	}
 
 	// Unlock and render
-	Device.Streams.Vertex.Unlock		(actual*3,VS->dwStride);
+	RCache.Vertex.Unlock		(actual*3,hGeom->vb_stride);
 	if (actual) {
-		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(0,0);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,actual);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,actual);
 	}
-}
-
-void CLightPPA_Manager::OnDeviceCreate	()
-{
-	REQ_CREATE	();
-	SH	= Device.Shader.Create		("effects\\light","effects\\light,effects\\light");
-	VS	= Device.Shader._CreateVS	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2);
-}
-
-void CLightPPA_Manager::OnDeviceDestroy	()
-{
-	Device.Shader._DeleteVS			(VS);
-	Device.Shader.Delete			(SH);
 }
 
 void CLightPPA_Manager::Initialize	()
 {
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
-	OnDeviceCreate				();
+	hShader	= Device.Shader.Create		("effects\\light","effects\\light,effects\\light");
+	hGeom	= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
 void CLightPPA_Manager::Destroy		()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy				();
+	Device.Shader.DeleteGeom	(hGeom);
+	Device.Shader.Delete		(hShader);
 }
 
 void CLightPPA_Manager::Render()
 {
 	// Projection
-	float _43 = Device.mProject._43;
+	float _43			 = Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
-	Device.set_xform_project	(Device.mProject);
+	RCache.set_xform_project	(Device.mProject);
 
-	Device.Shader.set_Shader	(SH);
+	RCache.set_Shader	(hShader);
 	for (u32 L=0; L<container.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];
@@ -135,7 +119,7 @@ void CLightPPA_Manager::Render()
 		Fcolor				factor;
 		factor.mul_rgba		(PPL.color,(1-alpha));
 		CHK_DX				(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,factor.get()));
-		PPL.Render			(VS);
+		PPL.Render			(hGeom);
 		Device.Statistic.RenderDUMP_Lights.End	();
 	}
 
@@ -144,5 +128,5 @@ void CLightPPA_Manager::Render()
 
 	// Projection
 	Device.mProject._43 = _43;
-	Device.set_xform_project	(Device.mProject);
+	RCache.set_xform_project	(Device.mProject);
 }

@@ -71,7 +71,7 @@ ENGINE_API char* TUsf2string(D3DFORMAT f) {
 }
 */
 /*
-ENGINE_API IDirect3DTexture8*	TUCreateTexture(
+ENGINE_API IDirect3DTexture9*	TUCreateTexture(
 		u32 *f, u32 *w, u32 *h, D3DFORMAT *fmt,
 		u32 *m)
 {
@@ -411,7 +411,7 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (h<1)	h=1;
 }
 
-ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
+ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 (
 		const char *		fRName,
 		ETexturePF			Algorithm,
@@ -428,10 +428,10 @@ ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
 		)
 {
 	CImage					Image;
-	u32					dwMipCount		= 9;
-//	IDirect3DBaseTexture8*	pTexture		= NULL;
-	IDirect3DTexture8*		pTexture2D		= NULL;
-	IDirect3DCubeTexture8*	pTextureCUBE	= NULL;
+	u32						dwMipCount		= 9;
+//	IDirect3DBaseTexture9*	pTexture		= NULL;
+	IDirect3DTexture9*		pTexture2D		= NULL;
+	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	FILE_NAME				fn;
 
 	// validation
@@ -502,7 +502,7 @@ _DDS_2D:
 		}
 
 		// Load   SYS-MEM-surface, bound to device restrictions
-		IDirect3DTexture8*		T_sysmem;
+		IDirect3DTexture9*		T_sysmem;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx( 
 			HW.pDevice,
 			S->Pointer(),S->Length(),
@@ -536,26 +536,26 @@ _DDS_2D:
 			));
 
 		// Copy surfaces & destroy temporary
-		IDirect3DTexture8* T_src= T_sysmem;
-		IDirect3DTexture8* T_dst= pTexture2D;
+		IDirect3DTexture9* T_src= T_sysmem;
+		IDirect3DTexture9* T_dst= pTexture2D;
+
 		int		L_src			= T_src->GetLevelCount	()-1;
 		int		L_dst			= T_dst->GetLevelCount	()-1;
 		for (; L_dst>=0; L_src--,L_dst--)
 		{
-			D3DSURFACE_DESC			D_src, D_dst;
-			T_src->GetLevelDesc		(L_src,&D_src);
-			T_dst->GetLevelDesc		(L_dst,&D_dst);
-			R_ASSERT				(D_src.Size		==	D_dst.Size);
+			// Get surfaces
+			IDirect3DSurface9		*S_src, *S_dst;
+			R_CHK	(T_src->GetSurfaceLevel	(L_src,&S_src));
+			R_CHK	(T_dst->GetSurfaceLevel	(L_dst,&S_dst));
 
-			D3DLOCKED_RECT			R_src, R_dst;
-			T_src->LockRect			(L_src,&R_src,0,0);
-			T_dst->LockRect			(L_dst,&R_dst,0,0);
+			// Copy
+			R_CHK	(D3DXLoadSurfaceFromSurface(S_dst,NULL,NULL,S_src,NULL,NULL,D3DX_FILTER_NONE,0));
 
-			Memory.mem_copy			(R_dst.pBits,R_src.pBits,D_dst.Size);
-
-			T_dst->UnlockRect		(L_dst);
-			T_src->UnlockRect		(L_src);
+			// Release surfaces
+			_RELEASE				(S_src);
+			_RELEASE				(S_dst);
 		}
+
 		_RELEASE				(T_sysmem);
 
 		// Log
@@ -617,7 +617,7 @@ _TGA:
 	if (Mipgen==tmDisable)
 	{
 		R_CHK(HW.pDevice->CreateTexture(
-			dwWidth,dwHeight,1,0,fmt,D3DPOOL_MANAGED,&pTexture2D
+			dwWidth,dwHeight,1,0,fmt,D3DPOOL_MANAGED,&pTexture2D,0
 			));
 	} else {
 		R_CHK(D3DXCreateTexture( 
@@ -632,7 +632,7 @@ _TGA:
 	if (dwMipCount<=1)
 	{
 		// no mip-maps
-		IDirect3DSurface8*	pTMP;
+		IDirect3DSurface9*	pTMP;
 		R_CHK(pTexture2D->GetSurfaceLevel(0,&pTMP));
 
 		RECT RC = {0,0,dwWidth,dwHeight};
@@ -669,7 +669,7 @@ _TGA:
 		//		pNewPixels		- NULL
 		//		dwW,dwH,dwP		- are correct
 		for (u32 i=0; i<dwMipCount; i++) {
-			IDirect3DSurface8*	pTMP;
+			IDirect3DSurface9*	pTMP;
 			R_CHK(pTexture2D->GetSurfaceLevel(i,&pTMP));
 			RECT RC = {0,0,dwW,dwH};
 			R_CHK(D3DXLoadSurfaceFromMemory(

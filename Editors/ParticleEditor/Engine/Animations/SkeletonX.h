@@ -47,12 +47,12 @@ protected:
 	CKinematics*			Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
 	vertBoned2W*			Vertices2W;		// shared
-	u32					cache_DiscardID;
-	u32					cache_vCount;
-	u32					cache_vOffset;
+	u32						cache_DiscardID;
+	u32						cache_vCount;
+	u32						cache_vOffset;
 	
 	void					_Copy			(CSkeletonX *V);
-	void					_Render			(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer8* IB);
+	void					_Render			(SGeometry* hGeom, u32 vCount, u32 pCount);
 	void					_Release		();
 	void					_Load			(const char* N, CStream *data, u32& dwVertCount);
 public:

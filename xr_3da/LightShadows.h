@@ -47,11 +47,11 @@ private:
 	Shader*					sh_Texture;
 	Shader*					sh_BlurTR;
 	Shader*					sh_BlurRT;
-	CVS*					vs_Blur;
+	SGeometry*				geom_Blur;
 	Shader*					sh_World;
-	CVS*					vs_World;
+	SGeometry*				geom_World;
 	Shader*					sh_Screen;
-	CVS*					vs_Screen;
+	SGeometry*				geom_Screen;
 private:
 public:
 	void					set_object		(CObject*	O);

@@ -7,7 +7,7 @@ class CHitMarker	: public pureDeviceDestroy, public pureDeviceCreate
 public:
 	float					fHitMarks[4];
 	Shader*					hShader;
-	CVS*					hVS;
+	SGeometry*				hVS;
 public:
 							CHitMarker	();
 							~CHitMarker	();

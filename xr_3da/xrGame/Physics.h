@@ -25,9 +25,9 @@ public:
 
 class CPHJeep {
 	dGeomID GeomsGroup;
-	static const	UINT NofGeoms=8;
-	static const	UINT NofBodies=5;
-	static const	UINT NofJoints=4;
+	static const	u32 NofGeoms=8;
+	static const	u32 NofBodies=5;
+	static const	u32 NofJoints=4;
 	dReal MassShift;
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
@@ -124,13 +124,13 @@ class CPHMan{
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
-	__int64 m_steps_num;
-	double m_start_time;
-	UINT   m_delay;
-	UINT   m_previous_delay;
-	UINT   m_reduce_delay;
-	UINT   m_update_delay_count;
-	static const UINT update_delay=1;
+	u64		m_steps_num;
+	double	m_start_time;
+	u32		m_delay;
+	u32		m_previous_delay;
+	u32		m_reduce_delay;
+	u32		m_update_delay_count;
+	static const u32 update_delay=1;
 	dSpaceID Space;
 	
 	CPHMesh Mesh;
@@ -222,8 +222,8 @@ dMatrix3 previous_r1;
 //dVector3 previous_t;
 dReal previous_dev;
 dReal previous_v;
-UINT dis_count_f;
-UINT dis_count_f1;
+u32 dis_count_f;
+u32 dis_count_f1;
 dReal k_w;
 dReal k_l;//1.8f;
 bool attached;

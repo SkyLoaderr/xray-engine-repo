@@ -14,7 +14,7 @@ void CRenderDevice::Begin	()
 	}
 
 	CHK_DX		(HW.pDevice->BeginScene());
-	Streams.BeginFrame();
+	RCache.OnFrameBegin	();
 	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r();
 }
@@ -48,8 +48,7 @@ void CRenderDevice::End		(void)
 	}
 
 	// end scene
-	Shader.OnFrameEnd	();
-	Primitive.Reset		();
+	RCache.OnFrameEnd	();
     CHK_DX(HW.pDevice->EndScene());
 
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
@@ -88,7 +87,6 @@ void CRenderDevice::Run			()
     MSG         msg;
     BOOL		bGotMsg;
 
-	Create		();
 	Log			("Starting engine...");
 
 	// Startup timers and calculate timer delta
@@ -254,8 +252,8 @@ void CRenderDevice::Run			()
 
 				// Matrices
 				mFullTransform.mul			( mProject,mView	);
-				Device.set_xform_view		( mView				);
-				Device.set_xform_project	( mProject			);
+				RCache.set_xform_view		( mView				);
+				RCache.set_xform_project	( mProject			);
 
 				// *** Resume threads
 				// Capture end point - thread must run only ONE cycle
@@ -292,8 +290,6 @@ void CRenderDevice::Run			()
 	while (mt_bMustExit)	Sleep(0);
 	DeleteCriticalSection	(&mt_csEnter);
 	DeleteCriticalSection	(&mt_csLeave);
-
-	Destroy					();
 }
 
 void CRenderDevice::FrameMove()

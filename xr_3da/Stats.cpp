@@ -12,6 +12,7 @@ CStats::CStats()
 	fRFPS		= 30.f;
 	fTPS		= 0;
 	pFont		= 0;
+	fMemRequests= 0;
 }
 
 CStats::~CStats()
@@ -71,7 +72,6 @@ void CStats::Show()
 	}
 
 	// calc FPS & TPS
-	CDraw&	DPS = Device.Primitive;
 	if (Device.fTimeDelta>EPS_S) {
 		float fps  = 1.f/Device.fTimeDelta;
 		float fOne = 0.3f;
@@ -79,9 +79,15 @@ void CStats::Show()
 		fFPS = fInv*fFPS + fOne*fps;
 
 		if (RenderTOTAL.result>EPS_S) {
-			fTPS = fInv*fTPS + fOne*float(DPS.stat_polys)/(RenderTOTAL.result*1000.f);
+			fTPS = fInv*fTPS + fOne*float(RCache.stat.polys)/(RenderTOTAL.result*1000.f);
 			fRFPS= fInv*fRFPS+ fOne*1000.f/RenderTOTAL.result;
 		}
+	}
+	{
+		float mem_count	=	float	(Memory.stat_calls - dwMem_calls);
+		dwMem_calls		=	Memory.stat_calls;
+		if (mem_count>fMem_calls)	fMem_calls	=	mem_count;
+		else						fMem_calls	=	.9f*fMem_calls + .1f*mem_count;
 	}
 
 	// Show them
@@ -97,17 +103,21 @@ void CStats::Show()
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",fTPS);
-		F.OutNext	("VERT:        %d/%d",DPS.stat_verts,DPS.stat_calls?DPS.stat_verts/DPS.stat_calls:0);
-		F.OutNext	("POLY:        %d/%d",DPS.stat_polys,DPS.stat_calls?DPS.stat_polys/DPS.stat_calls:0);
-		F.OutNext	("DIP/DP:      %d",DPS.stat_calls);
-		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
-		F.OutNext	("VS/VB/IB:    %d/%d/%d",   DPS.stat_vs,DPS.stat_vb,DPS.stat_ib);
-		F.OutNext	("xforms:      %d",dwXFORMs);
+		F.OutNext	("VERT:        %d/%d",		RCache.stat.verts,RCache.stat.calls?RCache.stat.verts/RCache.stat.calls:0);
+		F.OutNext	("POLY:        %d/%d",		RCache.stat.polys,RCache.stat.calls?RCache.stat.polys/RCache.stat.calls:0);
+		F.OutNext	("DIP/DP:      %d",			RCache.stat.calls);
+		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",RCache.stat.states,RCache.stat.textures,RCache.stat.matrices,RCache.stat.constants);
+		F.OutNext	("PS/VS:       %d/%d",		RCache.stat.ps,RCache.stat.vs);
+		F.OutNext	("DCL/VB/IB:   %d/%d/%d",   RCache.stat.decl,RCache.stat.vb,RCache.stat.ib);
+		F.OutNext	("xforms:      %d",			RCache.stat.xforms);
 		F.OutSkip	();
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
+		F.OutNext	("Memory:      %2.2fa",fMem_calls);
 		F.OutNext	("uSheduled:   %2.2fms",Sheduler.result);
 		F.OutNext	("uClients:    %2.2fms",UpdateClient.result);
 		F.OutNext	("Physics:     %2.2fms, %d",Physics.result,Physics.count);	
+		F.OutNext	("  collider:  %2.2fms", ph_collision.result);	
+		F.OutNext	("  solver:    %2.2fms", ph_core.result);	
 		F.OutNext	("aiThink:     %2.2fms, %d",AI_Think.result,AI_Think.count);	
 		F.OutNext	("  aiRange:   %2.2fms, %d",AI_Range.result,AI_Range.count);
 		F.OutNext	("  aiPath:    %2.2fms, %d",AI_Path.result,AI_Path.count);
@@ -200,15 +210,6 @@ void CStats::Show()
 		TEST3.FrameStart			();
 	}
 	dwSND_Played = dwSND_Allocated = 0;
-	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
-	dwXFORMs		= 0;
-
-	DPS.stat_polys	= 0;
-	DPS.stat_verts	= 0;
-	DPS.stat_calls	= 0;
-	DPS.stat_vs		= 0;
-	DPS.stat_vb		= 0;
-	DPS.stat_ib		= 0;
 }
 
 void CStats::OnDeviceCreate			()

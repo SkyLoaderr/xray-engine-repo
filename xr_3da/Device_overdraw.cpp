@@ -22,19 +22,18 @@ void CRenderDevice::overdrawBegin	()
 void CRenderDevice::overdrawEnd		()
 {
 	// Set up the stencil states
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0xff				));
+	CHK_DX	(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX	(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX	(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX	(HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
+	CHK_DX	(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0xff				));
 
 	// Set the background to black
-	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,0,0),0,0));
+	CHK_DX	(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,0,0),0,0));
 
 	// Draw a rectangle wherever the count equal I
-	Primitive.Reset		();
-	Shader.OnFrameEnd	();
-	CHK_DX	(HW.pDevice->SetVertexShader( FVF::F_TL ));
+	RCache.OnFrameEnd	();
+	CHK_DX	(HW.pDevice->SetFVF( FVF::F_TL ));
 
 	// Render gradients
 	for (int I=0; I<12; I++ ) 

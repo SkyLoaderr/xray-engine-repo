@@ -55,16 +55,15 @@ void Startup()
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
 	Sound->Initialize			();
-	pApp						= xr_new<CApplication>	();
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
 	if (pStartup)				Console.Execute	(pStartup+1);
 
-
 	// Main cycle
+	Device.Create				( );
+	pApp						= xr_new<CApplication>	();
 	Device.Run					( );
-
 	xr_delete					( pApp			);
 	Engine.Event.Dump			( );
 
@@ -74,8 +73,8 @@ void Startup()
 	xr_delete					( pSettings		);
 
 	Console.Destroy				( );
-	Device.ShutDown				( );
 	Engine.Destroy				( );
+	Device.Destroy				( );
 }
 
 WORD getFPUsw() 
@@ -102,22 +101,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 
-	// _CrtSetDbgFlag( _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);
-	if (bCaptureExceptions)	
-	{
-		// __try {
-			Startup	();
-		/*
-		} __except(Debug.LogStack(GetExceptionInformation())) {
-			MessageBox(0,"Unhandled exception. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
-		}
-		*/
-	} else {
-		Startup();
-	}
+	Startup			();
 	
-	CloseLog	();
-	// mmgrDone	();
+	CloseLog		();
 
 	// check for need to execute something external
 	if (strstr(lpCmdLine,"-exec ")) 
@@ -206,7 +192,7 @@ void CApplication::LoadBegin()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
-		ll_hVS		= Device.Shader._CreateVS	(FVF::F_TL);
+		ll_hGeom		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 		ll_hLogo1	= Device.Shader.Create		("font","ui\\logo");
 		ll_hLogo2	= Device.Shader.Create		("font","ui\\ui_logo_nv");
 		ll_hLogo	= ll_hLogo2;
@@ -219,7 +205,7 @@ void CApplication::LoadEnd()
 	if (0==ll_dwReference) {
 		Device.Shader.Delete	(ll_hLogo2);
 		Device.Shader.Delete	(ll_hLogo1);
-		Device.Shader._DeleteVS	(ll_hVS);
+		Device.Shader.DeleteGeom	(ll_hGeom);
 	}
 }
 
@@ -234,16 +220,16 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	u32	C						= 0xffffffff;
 	u32	_w						= Device.dwWidth;
 	u32	_h						= Device.dwHeight;
-	FVF::TL* pv						= (FVF::TL*) Device.Streams.Vertex.Lock(4,ll_hVS->dwStride,Offset);
-	pv->set(0, float(_h), 1, 1, C, 0, 1);			pv++;
-	pv->set(0, 0, 1, 1, C, 0, 0);					pv++;
-	pv->set(float(_w), float(_h), 1, 1, C, 1, 1);	pv++;
-	pv->set(float(_w), 0, 1, 1, C, 1, 0);			pv++;
-	Device.Streams.Vertex.Unlock	(4,ll_hVS->dwStride);
-	Device.Shader.set_Shader		(ll_hLogo);
-	Device.Primitive.setVertices	(ll_hVS->dwHandle,ll_hVS->dwStride,Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);;
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom->vb_stride,Offset);
+	pv->set						(0, float(_h), 1, 1, C, 0, 1);			pv++;
+	pv->set						(0, 0, 1, 1, C, 0, 0);					pv++;
+	pv->set						(float(_w), float(_h), 1, 1, C, 1, 1);	pv++;
+	pv->set						(float(_w), 0, 1, 1, C, 1, 0);			pv++;
+	RCache.Vertex.Unlock		(4,ll_hGeom->vb_stride);
+	
+	RCache.set_Shader			(ll_hLogo);
+	RCache.set_Geometry			(ll_hGeom);
+	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 
 	// Draw title
 	Log			(S,S2);

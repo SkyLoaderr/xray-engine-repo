@@ -21,11 +21,9 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_RALT:
 		ShowLM						= TRUE;
 		return;
-#ifdef DEBUG
 	case DIK_BACK:
 		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
-#endif
 	case DIK_F6:
 		net_Save					("quick.save");
 		return;

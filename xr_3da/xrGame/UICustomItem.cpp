@@ -20,7 +20,7 @@ CUICustomItem::~CUICustomItem()
  
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, int x1, int y1, int x2, int y2)
 {
-	CTexture* T		= Device.Shader.get_ActiveTexture(0);
+	CTexture* T		= RCache.get_ActiveTexture(0);
 	Ivector2		ts;
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
@@ -51,7 +51,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle)
 {
-	CTexture* T		= Device.Shader.get_ActiveTexture(0);
+	CTexture* T		= RCache.get_ActiveTexture(0);
 	Ivector2		ts;
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());

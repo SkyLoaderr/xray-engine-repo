@@ -1871,9 +1871,6 @@
 		<File
 			RelativePath=".\todo.txt">
 		</File>
-		<File
-			RelativePath="todo2.txt">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

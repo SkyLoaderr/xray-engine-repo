@@ -8,7 +8,7 @@ class ENGINE_API CLensFlare : public pureDeviceCreate, public pureDeviceDestroy
 protected:
 	BOOL			bInit;
 	float			fBlend;
-	u32			dwFrame;
+	u32				dwFrame;
 
 	Fvector			vSunDir;
 	Fvector			vecLight;
@@ -19,7 +19,7 @@ protected:
     Fcolor			LightColor;
 	float			fGradientValue;
 
-	CVS*			VS;
+	SGeometry*		hGeom;
 
 	void			SetGradient	(float fMaxRadius, float fOpacity, const char* tex_name);
     void			SetSource	(float fRadius, const char* tex_name);

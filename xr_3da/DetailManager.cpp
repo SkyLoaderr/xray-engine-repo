@@ -60,9 +60,8 @@ CDetailManager::CDetailManager	()
 {
 	dtFS 		= 0;
 	dtSlots		= 0;
-	soft_VS		= 0;
-	hw_VS_wave	= 0;
-	hw_VS_still	= 0;
+	soft_Geom	= 0;
+	hw_Geom		= 0;
 	hw_BatchSize= 0;
 	hw_VB		= 0;
 	hw_IB		= 0;

@@ -14,7 +14,6 @@ class ENGINE_API CConsoleCommand;
 
 class ENGINE_API CConsole  :
 	public CController,
-	public pureDeviceDestroy,
 	public pureRender,
 	public pureFrame
 {
@@ -76,9 +75,6 @@ public:
 	// render & onmove
 	virtual void	OnRender			(void);
 	virtual void	OnFrame				(void);
-
-	// device dependent
-	virtual void	OnDeviceDestroy		(void);
 
 	void	Initialize	();
 	void	Destroy		();

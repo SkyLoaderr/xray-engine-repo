@@ -33,14 +33,14 @@ public:
 		Fvector				P;
 		float				scale;
 		float				C;
-		u32				C_dw;
+		u32					C_dw;
 		float				scale_calculated;           
 		Fmatrix				mRotY;
-		u32				vis_ID;
+		u32					vis_ID;
 	};
 	struct	SlotPart
 	{
-		u32				id;	
+		u32					id;	
 		vector<SlotItem*>	items;
 	};
 	enum	SlotType
@@ -52,7 +52,7 @@ public:
 	};
 	struct Slot 
 	{
-		u32				type;
+		u32					type;
 		int					sx,sz;
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
@@ -91,21 +91,28 @@ public:
 	IC bool							UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
 	// Software processor
-	CVS*							soft_VS;
+	SGeometry*						soft_Geom;
 	void							soft_Load		();
 	void							soft_Unload		();
 	void							soft_Render		();
 
 	// Hardware processor
-	CVS*							hw_VS_wave;
-	CVS*							hw_VS_still;
-	u32							hw_BatchSize;
-	IDirect3DVertexBuffer8*			hw_VB;
-	IDirect3DIndexBuffer8*			hw_IB;
+	SGeometry*						hw_Geom;
+	u32								hw_BatchSize;
+	IDirect3DVertexBuffer9*			hw_VB;
+	IDirect3DIndexBuffer9*			hw_IB;
+	R_constant*						hwc_consts;
+	R_constant*						hwc_wave;
+	R_constant*						hwc_wind;
+	R_constant*						hwc_xform;
+	R_constant*						hwc_array;
+	R_constant*						hwc_s_consts;
+	R_constant*						hwc_s_xform;
+	R_constant*						hwc_s_array;
 	void							hw_Load			();
 	void							hw_Unload		();
 	void							hw_Render		();
-	void							hw_Render_dump	(CVS* vs, vis_list& vis, u32 c_base);
+	void							hw_Render_dump	(R_constant* array, vis_list& vis, u32 c_base);
 
 public:
 	DetailSlot&						QueryDB			(int sx, int sz);

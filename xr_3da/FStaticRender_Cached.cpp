@@ -10,10 +10,10 @@ const u32	v_limit			= 2048;
 void __fastcall render_Cached(std::vector<FCached*>& cache)
 {
 /*
-	_VertexStream*			vs	= Device.Streams.Vertex;
-	_IndexStream*			is	= Device.Streams.Index;
+	_VertexStream*			vs	= RCache.Vertex;
+	_IndexStream*			is	= RCache.Index;
 
-	Device.Primitive.Reset		();
+	RCache.Reset		();
 	for (u32 Start=0; Start<cache.size(); )
 	{
 		// Calculate lock parameters

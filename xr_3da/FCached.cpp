@@ -107,26 +107,27 @@ void FCached::Load(const char* N, CStream *data, u32 dwFlags)
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
 		R_ASSERT(data->FindChunk(OGF_VERTICES));
 		
-		u32 dwVertType;
+		u32			dwVertType;
 		
-		dwVertType	= data->Rdword();
-		vCount		= data->Rdword();
-		hVS			= Device.Shader._CreateVS	(dwVertType);
+		dwVertType		= data->Rdword();
+		vCount			= data->Rdword();
+		hGeom			= Device.Shader.CreateGeom	(dwVertType, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 		
-		u32		mem_size = vCount*hVS->dwStride;
-		pVertices	= xr_malloc		(mem_size);
-		data->Read	(pVertices,mem_size);
+		u32	mem_size	= vCount*hGeom->vb_stride;
+		pVertices		= xr_malloc		(mem_size);
+		data->Read		(pVertices,mem_size);
 	}
 
 	// indices
-	if ((dwFlags&VLOAD_NOINDICES)==0) {
-		R_ASSERT(data->FindChunk(OGF_INDICES));
-		iCount	= data->Rdword();
-		R_ASSERT(iCount%3 == 0);
+	if ((dwFlags&VLOAD_NOINDICES)==0) 
+	{
+		R_ASSERT		(data->FindChunk(OGF_INDICES));
+		iCount			= data->Rdword();
+		R_ASSERT		(iCount%3 == 0);
 
-		u32		mem_size = iCount*2;
-		pIndices	= (WORD*)xr_malloc(mem_size);
-		data->Read	(pIndices,mem_size);
+		u32	mem_size	= iCount*2;
+		pIndices		= (WORD*)xr_malloc(mem_size);
+		data->Read		(pIndices,mem_size);
 	}
 	
 	// checking indices range

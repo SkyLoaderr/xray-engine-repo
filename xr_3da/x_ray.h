@@ -20,7 +20,7 @@ private:
 	Shader*					ll_hLogo;
 	Shader*					ll_hLogo1;
 	Shader*					ll_hLogo2;
-	CVS*					ll_hVS;
+	SGeometry*				ll_hGeom;
 	u32						ll_dwReference;
 private:
 	EVENT					eQuit;

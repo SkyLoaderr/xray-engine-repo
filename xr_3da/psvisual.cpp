@@ -161,13 +161,12 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 void CPSVisual::Render		(float LOD)
 {
 	u32			vOffset;
-	FVF::TL*		pv		= (FVF::TL*)Device.Streams.Vertex.Lock(m_Particles.size()*4,hVS->dwStride,vOffset);
-	u32			dwCount	= RenderTO(pv);
-	Device.Streams.Vertex.Unlock(dwCount,hVS->dwStride);
+	FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(m_Particles.size()*4,hGeom->vb_stride,vOffset);
+	u32			dwCount		= RenderTO(pv);
+	RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
 	if (dwCount)    {
-		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCount,0,dwCount/2);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
 	}
 }
  
@@ -199,7 +198,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 		u32 	C;
 		float 	sz;
 		float 	angle;
-        if (m_Definition->m_dwFlag&PS_MOTIONBLUR)
+        if (m_Definition->m_Flags.is(PS_MOTIONBLUR))
 		{
             float T 	=	fTime-P->m_Time.start;
             float k 	=	T/(P->m_Time.end-P->m_Time.start);
@@ -216,7 +215,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
             if (T<0)		continue;
             float mb_v	=	1-float(sample)/float(mb_samples);
             float k 	=	T/(P->m_Time.end-P->m_Time.start);
-			if ((m_Emitter->m_dwFlag&PS_EM_PLAY_ONCE) && (k>1)) continue;
+			if ((m_Emitter->m_Flags.is(PS_EM_PLAY_ONCE)) && (k>1)) continue;
             float k_inv =	1-k;
 			
             Fvector Pos;
@@ -228,7 +227,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 			if (sz>p_size)		p_size = sz;
 			
             Fvector D;
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) {
+			if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)) {
 				Fvector p;
                 float PT = T-0.1f;
 				float kk = PT/(P->m_Time.end-P->m_Time.start);
@@ -236,9 +235,9 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 				D.sub				(Pos,p);
                 D.normalize_safe	();
 				
-				if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+				if (m_Definition->m_Flags.is(PS_FRAME_ENABLED)){
 					int frame;
-					if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,&*P,T);
+					if (m_Definition->m_Flags.is(PS_FRAME_ANIMATE))PS::SimulateAnimation(frame,m_Definition,&*P,T);
 					else										frame = P->m_iAnimStartFrame;
 					m_Definition->m_Animation.CalculateTC	(frame,lt,rb);
 				}
@@ -246,9 +245,9 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 			}else{
 				PS::SimulateAngle	(angle,&*P,T,k,k_inv);
 				
-				if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+				if (m_Definition->m_Flags.is(PS_FRAME_ENABLED)){
 					int frame;
-					if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,&*P,T);
+					if (m_Definition->m_Flags.is(PS_FRAME_ANIMATE)) PS::SimulateAnimation(frame,m_Definition,&*P,T);
 					else										frame = P->m_iAnimStartFrame;
 					m_Definition->m_Animation.CalculateTC(frame,lt,rb);
 				}
@@ -274,7 +273,7 @@ void CPSVisual::Compile(PS::SDef_RT* source, PS::SEmitter* E)
 	VERIFY				(source);
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
-	hVS					= Device.Shader._CreateVS	(FVF::F_TL);
+	hGeom				= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 
 	// set default emitter data

@@ -13,7 +13,7 @@ void CGammaControl::Update()
 	if (HW.pDevice) {
 		D3DGAMMARAMP G;
 		GenLUT(G);
-		HW.pDevice->SetGammaRamp(D3DSGR_NO_CALIBRATION,&G);
+		HW.pDevice->SetGammaRamp(0,D3DSGR_NO_CALIBRATION,&G);
 	}
 }
 void CGammaControl::GenLUT(D3DGAMMARAMP &G)

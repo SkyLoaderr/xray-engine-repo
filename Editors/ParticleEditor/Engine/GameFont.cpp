@@ -20,22 +20,20 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
 	Initialize	(shader,texture,flags);
 }
-void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
+void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 {
 	eCurrentAlignment			= alLeft;
 	uFlags						= flags;
-	cShader						= xr_strdup(shader);
-	cTexture					= xr_strdup(texture);
 	pShader						= 0;
+	pGeom						= 0;
 	vInterval.set				(1.f,1.f);
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
+
 	for (int i=0; i<256; i++)	CharMap[i] = i;
 	strings.reserve				(128);
 
 	// check ini exist
 	string256 fn,buf;
-	strcpy(buf,texture); if (strext(buf)) *strext(buf)=0;
+	strcpy		(buf,cTexture); if (strext(buf)) *strext(buf)=0;
 #ifdef M_BORLAND
 	R_ASSERT2(Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,".ini"),fn);
 #else
@@ -71,45 +69,25 @@ void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
 		SetSize					(fHeight);
 	CInifile::Destroy			(ini);
 
-	OnDeviceCreate				();
+	// Shading
+	pShader						= Device.Shader.Create		(cShader,cTexture);
+	pGeom						= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 CGameFont::~CGameFont()
 {
-	xr_free						(cShader);
-	xr_free						(cTexture);
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	Device.Shader.Delete		(pShader);
-	OnDeviceDestroy				();
+	// Shading
+	Device.Shader.Delete		(pShader	);
+	Device.Shader.DeleteGeom	(pGeom		);
 }
-
-void CGameFont::OnDeviceCreate()
-{
-	REQ_CREATE				();
-	pShader					= Device.Shader.Create		(cShader,cTexture);
-	VS						= Device.Shader._CreateVS	(FVF::F_TL);
-}
-void CGameFont::OnDeviceDestroy()
-{
-	REQ_DESTROY				();
-	Device.Shader.Delete	(pShader);
-	Device.Shader._DeleteVS	(VS);
-}
-
-#ifndef RGBA_GETALPHA
-#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
-#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
-#endif
 
 void CGameFont::OnRender()
 {
-	if (pShader) Device.Shader.set_Shader	(pShader);
+	if (pShader) RCache.set_Shader	(pShader);
 
-	if (!(uFlags&fsValid)){
-		CTexture* T		= Device.Shader.get_ActiveTexture(0);
+	if (!(uFlags&fsValid))
+	{
+		CTexture* T		= RCache.get_ActiveTexture(0);
 		vTS.set			((int)T->get_Width(),(int)T->get_Height());
 		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
 		for (int i=0; i<256; i++){ 
@@ -141,7 +119,7 @@ void CGameFont::OnRender()
 
 		// lock AGP memory
 		u32	vOffset;
-		FVF::TL* v		= (FVF::TL*)Device.Streams.Vertex.Lock	(length*4,VS->dwStride,vOffset);
+		FVF::TL* v		= (FVF::TL*)RCache.Vertex.Lock	(length*4,pGeom->vb_stride,vOffset);
 		FVF::TL* start	= v;
 		
 		// fill vertices
@@ -150,35 +128,36 @@ void CGameFont::OnRender()
 			String		&PS	= strings[i];
 			int			len	= strlen(PS.string);
 			if (len) {
-				float	X	= float(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
-				float	Y	= float(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
-				float	S	= ConvertSize(PS.size);
+				float	X	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
+				float	Y	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
+				float	S	= ConvertSize	(PS.size);
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
-				switch(PS.align){
+				switch(PS.align)
+				{
 				case alCenter:	X-=SizeOf(PS.string,PS.size)*.5f;	break;
 				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
 				}
 
 				u32	clr,clr2; 
-				clr			= PS.c; 
+				clr2 = clr	= PS.c; 
 				if (uFlags&fsGradient){
-					u32	_R	= RGBA_GETRED	(clr)/2;
-					u32	_G	= RGBA_GETGREEN	(clr)/2;
-					u32	_B	= RGBA_GETBLUE	(clr)/2;
-					u32	_A	= RGBA_GETALPHA	(clr);
-					clr2	= D3DCOLOR_RGBA	(_R,_G,_B,_A);
-				}else{
-					clr2	= clr;
+					u32	_R	= color_get_R	(clr)/2;
+					u32	_G	= color_get_G	(clr)/2;
+					u32	_B	= color_get_B	(clr)/2;
+					u32	_A	= color_get_A	(clr);
+					clr2	= color_rgba	(_R,_G,_B,_A);
 				}
 
 				float	tu,tv;
-				for (int j=0; j<len; j++) {
+				for (int j=0; j<len; j++) 
+				{
 					int c		= CharMap	[(u8)PS.string[j]];
 					Fvector& l	= TCMap		[(u8)PS.string[j]];
 					float scw	= S*l.z;
-					if ((c>=0)&&!fis_zero(l.z)){
+					if ((c>=0)&&!fis_zero(l.z))
+					{
 						tu		= l.x+vHalfPixel.x;
 						tv		= l.y+vHalfPixel.y;
 						v->set	(X,		Y2,	clr2,tu,		tv+fTCHeight);	v++;
@@ -193,12 +172,11 @@ void CGameFont::OnRender()
 
 		// Unlock and draw
 		u32 vCount = v-start;
-		Device.Streams.Vertex.Unlock		(vCount,VS->dwStride);
+		RCache.Vertex.Unlock		(vCount,pGeom->vb_stride);
 		if (vCount) 
 		{
-			Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
+			RCache.set_Geometry		(pGeom);
+			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		}
 	}
 	strings.clear();

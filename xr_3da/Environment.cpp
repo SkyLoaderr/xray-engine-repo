@@ -216,7 +216,7 @@ void CEnvironment::RenderFirst()
 
 		Fmatrix						mSky;
 		mSky.translate				(Device.vCameraPosition);
-		Device.set_xform_world		(mSky);
+		RCache.set_xform_world		(mSky);
 
 		switch (pSkydome->Type)
 		{
@@ -229,14 +229,14 @@ void CEnvironment::RenderFirst()
 				for (; I!=E; I++)		
 				{
 					CVisual* V				= *I;
-					Device.Shader.set_Shader	(V->hShader);
+					RCache.set_Shader	(V->hShader);
 					CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
 					V->Render					(1.f);
 				}
 			}
 			break;
 		default:
-			Device.Shader.set_Shader	(pSkydome->hShader);
+			RCache.set_Shader	(pSkydome->hShader);
 			CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
 			pSkydome->Render			(1.f);
 			break;

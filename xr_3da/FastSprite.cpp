@@ -15,7 +15,7 @@
 CFastSprite::CFastSprite(char *tex_name) : CVisual()
 {
 	Type		= MT_SPRITE;
-	Stream		= Device.Streams.Create(FVF::F_TL,MAX_SPRITES*4);
+	Stream		= RCache.Create(FVF::F_TL,MAX_SPRITES*4);
 	hShader		= Device.Shader.Create("sprite",tex_name);
 
 	fTTL		= 0;
@@ -100,7 +100,7 @@ void CFastSprite::Render(float L)
 	u32 dwNumVerts = pv-pv_start;
 	Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
-		Device.Primitive.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
+		RCache.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
 }
 
 void CFastSprite::Update()

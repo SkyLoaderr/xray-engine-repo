@@ -11,14 +11,14 @@
 class ENGINE_API Fvisual : public CVisual
 {
 protected:
-	IDirect3DVertexBuffer8*		pVertices;
-	u32						vBase;
-	u32						vCount;
+	IDirect3DVertexBuffer9*		pVertices;
+	u32							vBase;
+	u32							vCount;
 
-	IDirect3DIndexBuffer8*		pIndices;
-	u32						iBase;
-	u32						iCount;
-	u32						dwPrimitives;
+	IDirect3DIndexBuffer9*		pIndices;
+	u32							iBase;
+	u32							iCount;
+	u32							dwPrimitives;
 public:
 	virtual void Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
 	virtual void Load			(LPCSTR N, CStream *data, u32 dwFlags);

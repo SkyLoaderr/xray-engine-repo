@@ -133,7 +133,7 @@ void CCustomZone::SoundDestroy(sound& dest) {
 //#ifdef DEBUG
 void CCustomZone::OnRender() {
 	if(!bDebug) return;
-	Device.Shader.OnFrameEnd();
+	RCache.OnFrameEnd();
 	Fvector l_half; l_half.set(.5f, .5f, .5f);
 	Fmatrix l_ball, l_box;
 	vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)cfModel)->Shapes();
@@ -148,11 +148,11 @@ void CCustomZone::OnRender() {
 				l_ball.translate_add(l_p);
 				//l_ball.mul(clTransform, l_ball);
 				//l_ball.mul(l_ball, clTransform);
-				Device.Primitive.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
+				RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
 			} break;
 			case 1 : {
 				l_box.mul(clTransform, l_pShape->data.box);
-				Device.Primitive.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
+				RCache.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
 			} break;
 		}
 	}

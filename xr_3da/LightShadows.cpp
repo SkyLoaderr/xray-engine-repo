@@ -53,25 +53,25 @@ void CLightShadows::OnDeviceCreate	()
 	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	vs_World	= Device.Shader._CreateVS	(FVF::F_LIT);
+	geom_World	= Device.Shader.CreateGeom	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	vs_Blur		= Device.Shader._CreateVS	(FVF::F_TL2uv);
+	geom_Blur	= Device.Shader.CreateGeom	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// Debug
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
-	vs_Screen	= Device.Shader._CreateVS	(FVF::F_TL);
+	geom_Screen	= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void CLightShadows::OnDeviceDestroy	()
 {
 	// Debug
 	Device.Shader.Delete					(sh_Screen	);
-	Device.Shader._DeleteVS					(vs_Screen	);
+	Device.Shader.DeleteGeom				(geom_Screen	);
 	
 	// 
-	Device.Shader._DeleteVS					(vs_Blur);
-	Device.Shader._DeleteVS					(vs_World);
+	Device.Shader.DeleteGeom				(geom_Blur);
+	Device.Shader.DeleteGeom				(geom_World);
 
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
@@ -183,8 +183,8 @@ void CLightShadows::calculate	()
 			// setup rt+state(s) for first use
 			if (!bRTS)	{
 				bRTS						= TRUE;
-				Device.Shader.set_RT		(RT_temp->pRT,HW.pTempZB);
-				Device.Shader.set_Shader	(sh_Texture);
+				RCache.set_RT		(RT_temp->pRT,HW.pTempZB);
+				RCache.set_Shader			(sh_Texture);
 				HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 			}
 
@@ -222,7 +222,7 @@ void CLightShadows::calculate	()
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
 			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
-			Device.set_xform_project		(mProject);
+			RCache.set_xform_project		(mProject);
 			
 			// calculate view-matrix
 			Fmatrix		mView;
@@ -233,7 +233,7 @@ void CLightShadows::calculate	()
 			v_R.crossproduct		(v_N,v_D);
 			v_N.crossproduct		(v_D,v_R);
 			mView.build_camera		(Lpos,C.C,v_N);
-			Device.set_xform_view	(mView);
+			RCache.set_xform_view	(mView);
 			
 			// combine and build frustum
 			Fmatrix		mCombine,mCombineR;
@@ -243,7 +243,7 @@ void CLightShadows::calculate	()
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;
 			int		s_y			=	slot_id/slot_line;
-			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
+			D3DVIEWPORT9 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
 			CHK_DX					(HW.pDevice->SetViewport(&VP));
 			
 			// Render object-parts
@@ -251,7 +251,7 @@ void CLightShadows::calculate	()
 			{
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
-				Device.set_xform_world	(N.val.Matrix);
+				RCache.set_xform_world	(N.val.Matrix);
 				V->Render				(-1.0f);
 			}
 			
@@ -278,7 +278,7 @@ void CLightShadows::calculate	()
 		
 		// Fill VB
 		u32 C							=	0xffffffff, Offset;
-		FVF::TL2uv* pv					=	(FVF::TL2uv*) Device.Streams.Vertex.Lock(8,vs_Blur->dwStride,Offset);
+		FVF::TL2uv* pv					=	(FVF::TL2uv*) RCache.Vertex.Lock(8,geom_Blur->vb_stride,Offset);
 		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
 		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
 		pv->set							(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
@@ -288,30 +288,27 @@ void CLightShadows::calculate	()
 		pv->set							(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
 		pv->set							(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
 		pv->set							(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
-		Device.Streams.Vertex.Unlock	(8,vs_Blur->dwStride);
+		RCache.Vertex.Unlock	(8,geom_Blur->vb_stride);
 		
 		// Actual rendering (pass0, temp2real)
-		Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
-		Device.Shader.set_Shader		(sh_BlurTR	);
-		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+		RCache.set_RT			(RT->pRT,HW.pTempZB);
+		RCache.set_Shader		(sh_BlurTR	);
+		RCache.set_Geometry		(geom_Blur	);
+		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		
 		for (int it=0; it<psSH_Blur; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
-			Device.Shader.set_RT			(RT_temp->pRT,HW.pTempZB);
-			Device.Shader.set_Shader		(sh_BlurRT	);
-			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices		(Offset+4,Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			RCache.set_RT			(RT_temp->pRT,HW.pTempZB);
+			RCache.set_Shader		(sh_BlurRT	);
+			RCache.set_Geometry		(geom_Blur	);
+			RCache.Render			(D3DPT_TRIANGLELIST,Offset+4,0,4,0,2);
 			
 			// Actual rendering (pass2, temp2real)
-			Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
-			Device.Shader.set_Shader		(sh_BlurTR	);
-			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			RCache.set_RT			(RT->pRT,HW.pTempZB);
+			RCache.set_Shader		(sh_BlurTR	);
+			RCache.set_Geometry		(geom_Blur	);
+			RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
 	
@@ -319,8 +316,8 @@ void CLightShadows::calculate	()
 	HW.pDevice->SetRenderState				(D3DRS_ZENABLE, D3DZB_TRUE);
 	Device.Statistic.RenderDUMP_Scalc.End	();
 	
-	Device.set_xform_project	(Device.mProject);
-	Device.set_xform_view		(Device.mView);
+	RCache.set_xform_project	(Device.mProject);
+	RCache.set_xform_view		(Device.mView);
 }
 
 #define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
@@ -336,15 +333,15 @@ void CLightShadows::render	()
 	// Projection and xform
 	float _43			= Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
-	Device.set_xform_world	(Fidentity);
-	Device.set_xform_project(Device.mProject);
+	RCache.set_xform_world	(Fidentity);
+	RCache.set_xform_project(Device.mProject);
 	Fvector	View		= Device.vCameraPosition;
 	
 	// Render shadows
-	Device.Shader.set_Shader	(sh_World);
+	RCache.set_Shader	(sh_World);
 	int batch					= 0;
 	u32 Offset				= 0;
-	FVF::LIT* pv				= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
+	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
@@ -422,25 +419,23 @@ void CLightShadows::render	()
 			batch++;
 			if (batch==batch_size)	{
 				// Flush
-				Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
+				RCache.Vertex.Unlock	(batch*3,geom_World->vb_stride);
 
-				Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
-				Device.Primitive.setIndices		(0,0);
-				Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
+				RCache.set_Geometry		(geom_World);
+				RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 
-				pv								= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
-				batch							= 0;
+				pv						= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
+				batch					= 0;
 			}
 		}
 	}
 
 	// Flush if nessesary
-	Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
+	RCache.Vertex.Unlock	(batch*3,geom_World->vb_stride);
 	if (batch)				
 	{
-		Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(0,0);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
+		RCache.set_Geometry		(geom_World);
+		RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 	}
 	
 	// Clear all shadows
@@ -457,21 +452,21 @@ void CLightShadows::render	()
 		// Fill vertex buffer
 		C			=	0xffffffff;
 		u32 _w	=	S_rt_size/2, _h = S_rt_size/2;
-		FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
+		FVF::TL* pv =	(FVF::TL*) geom_Screen->Lock(4,Offset);
 		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
 		pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
 		pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-		vs_Screen->Unlock			(4);
+		geom_Screen->Unlock			(4);
 		
 		// Actual rendering
-		Device.Shader.set_Shader(sh_Screen);
-		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
+		RCache.set_Shader(sh_Screen);
+		RCache.Draw	(geom_Screen,4,2,Offset,Device.Streams_QuadIB);
 	}
 //*/
 
 	// Projection
 	Device.mProject._43 = _43;
-	Device.set_xform_project	(Device.mProject);
+	RCache.set_xform_project	(Device.mProject);
 	Device.Statistic.RenderDUMP_Srender.End	();
 }

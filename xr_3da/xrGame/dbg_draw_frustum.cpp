@@ -100,20 +100,20 @@ void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 //	u32 CT	= D3DCOLOR_RGBA(255,255,255,64);
 	u32 CL	= D3DCOLOR_RGBA(255,0,0,255);
 	Fmatrix& M	= Fidentity;
-	Device.Shader.set_Shader		(Level().ObjectSpace.dbgGetShader());
-//	Device.Primitive.dbg_DrawTRI	(M,COP,_F[0],_F[1],CT);
-//	Device.Primitive.dbg_DrawTRI	(M,COP,_F[1],_F[2],CT);
-//	Device.Primitive.dbg_DrawTRI	(M,COP,_F[2],_F[3],CT);
-//	Device.Primitive.dbg_DrawTRI	(M,COP,_F[3],_F[0],CT);
-	Device.Primitive.dbg_DrawLINE	(M,COP,_F[0],CL);
-	Device.Primitive.dbg_DrawLINE	(M,COP,_F[1],CL);
-	Device.Primitive.dbg_DrawLINE	(M,COP,_F[2],CL);
-	Device.Primitive.dbg_DrawLINE	(M,COP,_F[3],CL);
+	RCache.set_Shader		(Level().ObjectSpace.dbgGetShader());
+//	RCache.dbg_DrawTRI	(M,COP,_F[0],_F[1],CT);
+//	RCache.dbg_DrawTRI	(M,COP,_F[1],_F[2],CT);
+//	RCache.dbg_DrawTRI	(M,COP,_F[2],_F[3],CT);
+//	RCache.dbg_DrawTRI	(M,COP,_F[3],_F[0],CT);
+	RCache.dbg_DrawLINE	(M,COP,_F[0],CL);
+	RCache.dbg_DrawLINE	(M,COP,_F[1],CL);
+	RCache.dbg_DrawLINE	(M,COP,_F[2],CL);
+	RCache.dbg_DrawLINE	(M,COP,_F[3],CL);
 
-	Device.Primitive.dbg_DrawLINE	(M,_F[0],_F[1],CL);
-	Device.Primitive.dbg_DrawLINE	(M,_F[1],_F[2],CL);
-	Device.Primitive.dbg_DrawLINE	(M,_F[2],_F[3],CL);
-	Device.Primitive.dbg_DrawLINE	(M,_F[3],_F[0],CL);
+	RCache.dbg_DrawLINE	(M,_F[0],_F[1],CL);
+	RCache.dbg_DrawLINE	(M,_F[1],_F[2],CL);
+	RCache.dbg_DrawLINE	(M,_F[2],_F[3],CL);
+	RCache.dbg_DrawLINE	(M,_F[3],_F[0],CL);
 
     CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_CCW			));
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,	0						));

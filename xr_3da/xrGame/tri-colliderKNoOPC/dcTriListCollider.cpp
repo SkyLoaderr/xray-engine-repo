@@ -1086,7 +1086,7 @@ void dcTriListCollider::OnRender()
 	if (!bDebug && BoxCenter){
 		Fvector C;
 		C.set(0,0,0);
-		Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+		RCache.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
 	}
 }
 #endif

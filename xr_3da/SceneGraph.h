@@ -57,7 +57,7 @@ namespace SceneGraph
 	{
 		float								ssa;
 	};
-	typedef FixedMAP<u32,mapNormalTextures>		mapNormalCodes;
+	typedef FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	mapNormalCodes;
 
 	// Higher level - MATRIX
 	typedef FixedMAP<float,_MatrixItem>				mapMatrixItem;

@@ -29,9 +29,9 @@ CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	retur
 CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
-u32		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
-IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
-IDirect3DIndexBuffer8*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
+u32			CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
+IDirect3DVertexBuffer9*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
+IDirect3DIndexBuffer9*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 CRender_target* CRender::getTarget		()					{ return &Target;										}
 
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
@@ -59,7 +59,7 @@ void		CRender::add_Patch			(Shader* S, const Fvector& P1, float s, float a, BOOL
 }
 void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 {
-	Wallmarks.AddWallmark	(T,P,S,s);
+	Wallmarks->AddWallmark	(T,P,S,s);
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
@@ -95,7 +95,7 @@ IC		void		gm_SetLevel			(int iLevel)
 		gm_Level	= iLevel;
 		float c		= 0.1f+float(gm_Level)/255.f;
 		gm_Data.diffuse.set				(c,c,c,c);
-		CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
+		CHK_DX(HW.pDevice->SetMaterial	((D3DMATERIAL9*)&gm_Data));
 	}
 }
 
@@ -147,7 +147,7 @@ IC		void		gm_SetLighting		(CObject* O)
 		// set up to 8 lights to device
 		int			 max	= _min	(int(LT.lights.size()),8);
 		for (int L=0; L<max; L++)
-			CHK_DX(HW.pDevice->SetLight(L, LT.lights[L].L.d3d()) );
+			CHK_DX(HW.pDevice->SetLight(L, (D3DLIGHT9*)&LT.lights[L].L) );
 
 		// enable them, disable others
 		for (L=gm_Lcount; L<max; L++)	{ CHK_DX(HW.pDevice->LightEnable(L,TRUE));	}
@@ -203,7 +203,7 @@ void CRender::Calculate()
 	gm_Data.power					= 15.f;
 	gm_Level						= 255;
 	gm_Ambient						= 0xffffffff;
-	CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
+	CHK_DX(HW.pDevice->SetMaterial	((D3DMATERIAL9*)&gm_Data));
 	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
 	gm_SetLighting					(0);
@@ -301,14 +301,14 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
 	CVisual *V				= N->val.pVisual;
-	Device.set_xform_world	(N->val.Matrix);
+	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
 
 void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 {
-	Device.Shader.set_Element	(N->key);
+	RCache.set_Element	(N->key);
 	N->val.traverseLR			(matrix_L2);
 	N->val.clear				();
 }
@@ -317,8 +317,8 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
 	CVisual *V = N->val.pVisual;
-	Device.Shader.set_Shader(V->hShader);
-	Device.set_xform_world	(N->val.Matrix);
+	RCache.set_Shader		(V->hShader);
+	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
@@ -333,7 +333,7 @@ void CRender::flush_Patches	()
 {
 	// *** Fill VB
 	u32							vOffset;
-	FVF::TL*					V		= (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
+	FVF::TL*					V		= (FVF::TL*)RCache.Vertex.Lock	(vecPatches.size()*4,hGeomPatches->vb_stride, vOffset);
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
@@ -382,18 +382,16 @@ void CRender::flush_Patches	()
 							TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
 	}
 	groups.push_back				(cur_count);
-	Device.Streams.Vertex.Unlock	(vecPatches.size()*4,vsPatches->dwStride);
+	RCache.Vertex.Unlock			(vecPatches.size()*4,hGeomPatches->vb_stride);
 	
 	// *** Render
 	int current=0;
 	for (u32 g=0; g<groups.size(); g++)
 	{
-		int p_count						= groups[g];
-		Device.Shader.set_Element		(vecPatches[current].S);
-
-		Device.Primitive.setVertices	(vsPatches->dwHandle,vsPatches->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4*p_count,0,2*p_count);
+		int p_count				= groups[g];
+		RCache.set_Element		(vecPatches[current].S);
+		RCache.set_Geometry		(hGeomPatches);
+		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;
 	}
@@ -405,19 +403,19 @@ void CRender::flush_Patches	()
 void	CRender::rmNear		()
 {
 	CRender_target* T	=	getTarget	();
-	D3DVIEWPORT8 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
 	CRender_target* T	=	getTarget	();
-	D3DVIEWPORT8 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
 	CRender_target* T	=	getTarget	();
-	D3DVIEWPORT8 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
+	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
@@ -527,7 +525,7 @@ void	CRender::Render		()
 			Device.fASPECT, VIEWPORT_NEAR, 
 			pCreator->Environment.Current.Far);
 		Device.mFullTransform.mul	(Device.mProject, Device.mView);
-		Device.set_xform_project	(Device.mProject);
+		RCache.set_xform_project	(Device.mProject);
 
 		// Rendering
 		rmNear						();
@@ -538,14 +536,14 @@ void	CRender::Render		()
 		// Restore projection
 		Device.mProject				= Pold;
 		Device.mFullTransform		= FTold;
-		Device.set_xform_project	(Device.mProject);
+		RCache.set_xform_project	(Device.mProject);
 	}
 
 	// Environment render
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
-	Device.set_xform_world			(Fidentity);
+	RCache.set_xform_world			(Fidentity);
 
 	// Sorting by SSA and changes minimizations
 	for (u32 pr=0; pr<4; pr++)
@@ -563,14 +561,14 @@ void	CRender::Render		()
 			{
 				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
 				SceneGraph::mapNormalTextures&	textures	= Ncode->val;
-				Device.Shader.set_Code	(Ncode->key);
+				RCache.set_States		(Ncode->key);
 
 				sort_tlist				(lstTextures, lstTexturesTemp, textures, sort); 
 				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
 					SceneGraph::mapNormalMatrices& matrices				= Ntexture->val;
-					Device.Shader.set_Textures	(Ntexture->key);
+					RCache.set_Textures	(Ntexture->key);
 
 					matrices.getANY_P	(lstMatrices);
 					if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
@@ -578,7 +576,7 @@ void	CRender::Render		()
 					{
 						SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
 						SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
-						Device.Shader.set_Matrices	(Nmatrix->key);
+						RCache.set_Matrices	(Nmatrix->key);
 
 						constants.getANY_P	(lstConstants);
 						if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
@@ -586,7 +584,7 @@ void	CRender::Render		()
 						{
 							SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
 							SceneGraph::mapNormalItems&	items					= Nconstant->val;
-							Device.Shader.set_Constants	(Nconstant->key,FALSE);
+							RCache.set_Constants	(Nconstant->key,FALSE);
 							mapNormal_Render			(Nconstant->val);
 							items.ssa					= 0;
 						}
@@ -608,7 +606,7 @@ void	CRender::Render		()
 		}
 
 		if (1==pr)			{
-			Device.set_xform_world	(Fidentity);
+			RCache.set_xform_world	(Fidentity);
 			Details.Render			(Device.vCameraPosition);
 
 			pCreator->Environment.RenderFirst	();
@@ -617,13 +615,13 @@ void	CRender::Render		()
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
 
-			Device.set_xform_world	(Fidentity);
-			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
+			RCache.set_xform_world	(Fidentity);
+			Wallmarks->Render		();		// Wallmarks has priority as normal geometry
 
-			Device.set_xform_world	(Fidentity);
+			RCache.set_xform_world	(Fidentity);
 			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
 
-			Device.set_xform_world	(Fidentity);
+			RCache.set_xform_world	(Fidentity);
 			L_Shadows.render		();
 		}
 	}
@@ -677,8 +675,6 @@ void CRender::OnDeviceCreate	()
 	PSystems.OnDeviceCreate		();
 	level_Load					();
 	L_Dynamic.Initialize		();
-	Glows.OnDeviceCreate		();
-	Wallmarks.OnDeviceCreate	();
 
 	gm_Nearer					= FALSE;
 	rmNormal					();
@@ -692,8 +688,6 @@ void CRender::OnDeviceDestroy	()
 	Device.Shader._DeleteMatrix	(matFogPass);
 	Device.Shader._DeleteMatrix	(matDetailTexturing);
 
-	Wallmarks.OnDeviceDestroy	();
-	Glows.OnDeviceDestroy		();
 	L_Dynamic.Destroy			();
 	level_Unload				();
 	PSystems.OnDeviceDestroy	();

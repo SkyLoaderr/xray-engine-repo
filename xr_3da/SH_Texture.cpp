@@ -25,18 +25,18 @@ CTexture::CTexture		()
 
 CTexture::~CTexture() 
 {
-	R_ASSERT(dwReference==0);
+//	R_ASSERT(dwReference==0);
 	Unload	();
 }
 
-void					CTexture::surface_set	(IDirect3DBaseTexture8* surf)
+void					CTexture::surface_set	(IDirect3DBaseTexture9* surf)
 {
 	if (surf)			surf->AddRef		();
 	_RELEASE			(pSurface);
 	pSurface			= surf;
 }
 
-IDirect3DBaseTexture8*	CTexture::surface_get	()
+IDirect3DBaseTexture9*	CTexture::surface_get	()
 {
 	if (pSurface)		pSurface->AddRef	();
 	return pSurface;
@@ -47,7 +47,7 @@ void CTexture::Apply	(u32 dwStage)
 	if (pAVI && pAVI->NeedUpdate())
 	{
 		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
-		IDirect3DTexture8*	T2D		= (IDirect3DTexture8*)pSurface;
+		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
 
 		// AVI
 		D3DLOCKED_RECT R;
@@ -102,10 +102,10 @@ void CTexture::Load(LPCSTR cName)
 			dwMemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
 
 			// Now create texture
-			IDirect3DTexture8*	pTexture = 0;
+			IDirect3DTexture9*	pTexture = 0;
 			HRESULT hrr = HW.pDevice->CreateTexture(
 				pAVI->dwWidth,pAVI->dwHeight,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,
-				&pTexture
+				&pTexture,NULL
 				);
 			pSurface	= pTexture;
 			if (FAILED(hrr)) 
@@ -197,20 +197,21 @@ void CTexture::Load(LPCSTR cName)
 	}
 }
 
-u32 CTexture::MemUsage	(IDirect3DBaseTexture8* pTexture)
+u32 CTexture::MemUsage	(IDirect3DBaseTexture9* pTexture)
 {
 	switch (pTexture->GetType())
 	{
 	case D3DRTYPE_TEXTURE:
 		{
-			IDirect3DTexture8*	T		= (IDirect3DTexture8*)pTexture;
+			IDirect3DTexture9*	T		= (IDirect3DTexture9*)pTexture;
 			u32 dwMemory	= 0;
 			if (T) {
 				for (u32 L=0; L<T->GetLevelCount(); L++)
 				{
 					D3DSURFACE_DESC	desc;
 					R_CHK			(T->GetLevelDesc(L,&desc));
-					dwMemory		+= desc.Size;
+#pragma todo("DX9: surf.desc.size used :(")
+					//dwMemory		+= desc.Size;
 				}
 			}
 			return	dwMemory;
@@ -238,7 +239,7 @@ void CTexture::desc_update()
 	desc_cache	= pSurface;
 	if (pSurface && (D3DRTYPE_TEXTURE == pSurface->GetType()))
 	{
-		IDirect3DTexture8*	T	= (IDirect3DTexture8*)pSurface;
+		IDirect3DTexture9*	T	= (IDirect3DTexture9*)pSurface;
 		R_CHK					(T->GetLevelDesc(0,&desc));
 	}
 }

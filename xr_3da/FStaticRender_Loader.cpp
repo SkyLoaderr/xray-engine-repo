@@ -24,7 +24,7 @@ void CRender::level_Load()
 	LoadBuffers			(fs);
 	
 	// Visuals
-	pApp->LoadTitle		("Loading spatialization...");
+	pApp->LoadTitle		("Loading spatial-DB...");
 	chunk				= fs->OpenChunk(fsL_VISUALS);
 	LoadVisuals			(chunk);
 	chunk->Close		();
@@ -41,8 +41,11 @@ void CRender::level_Load()
 	pApp->LoadTitle		("Loading details...");
 	Details.Load		();
 
+	// Wallmarks
+	Wallmarks			= xr_new<CWallmarksEngine>	();
+
 	// Streams
-	vsPatches			= Device.Shader._CreateVS	(FVF::F_TL);
+	hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 	
 	// HOM
 	HOM.Load			();
@@ -61,14 +64,17 @@ void CRender::level_Unload()
 	HOM.Unload				();
 
 	//*** Streams
-	Device.Shader._DeleteVS	(vsPatches);
+	Device.Shader.DeleteGeom(hGeomPatches);
 
+	// Wallmarks
+	xr_delete				(Wallmarks);
+	
 	//*** Details
 	Details.Unload			();
 
 	//*** Sectors
 	// 1.
-	xr_delete					(rmPortals);
+	xr_delete				(rmPortals);
 	pLastSector				= 0;
 	vLastCameraPos.set		(0,0,0);
 	// 2.
@@ -122,8 +128,8 @@ void CRender::LoadBuffers	(CStream *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,dwPool,&VB[i]));
-			R_CHK				(VB[i]->Lock(0,0,&pData,0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,dwPool,&VB[i],0));
+			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
 			VB[i]->Unlock		();
 
@@ -144,8 +150,8 @@ void CRender::LoadBuffers	(CStream *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&IB[i]));
-			R_CHK				(IB[i]->Lock(0,0,&pData,0));
+			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&IB[i],0));
+			R_CHK				(IB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().Pointer(),iCount*2);
 			IB[i]->Unlock		();
 

@@ -6,16 +6,18 @@
 #define SHADER__INCLUDED_
 #pragma once
 
+#include "r_constants.h"
+#include "tss_def.h"
+
+typedef svector<string64,8>			sh_list;
+
 class	ENGINE_API	CBlender_Compile;
 class	ENGINE_API	CBlender;
 class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
 class	ENGINE_API	CRT;
-class	ENGINE_API	CVS;
-class	ENGINE_API	CPS;
 
-#pragma warning(disable : 4275)
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
 {
 	u32	dwReference;
@@ -28,20 +30,57 @@ struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
 {
 	u32	dwReference;
 };
-#pragma warning(default : 4275)
-
-typedef svector<string64,8>			sh_list;
-
-struct	ENGINE_API		CPass 
+struct	ENGINE_API	SVS
 {
-	u32				dwStateBlock;
-	STextureList*		T;
-	SMatrixList*		M;
-	SConstantList*		C;
+	u32								dwReference;
 
-	BOOL				equal	(CPass& P);
+	IDirect3DVertexShader9*			vs;
+	R_constant_table				constants;
 };
+struct	ENGINE_API	SPS
+{
+	u32								dwReference;
 
+	IDirect3DPixelShader9*			ps;
+	R_constant_table				constants;
+};
+struct	ENGINE_API	SState
+{
+	u32								dwReference;
+
+	IDirect3DStateBlock9*			state;
+	SimulatorStates					state_code;
+};
+struct	ENGINE_API	SDeclaration
+{
+	u32								dwReference;
+
+	IDirect3DVertexDeclaration9*	dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
+	vector<D3DVERTEXELEMENT9>		dcl_code;
+};
+struct	ENGINE_API	SGeometry
+{
+	u32								dwReference;
+
+	IDirect3DVertexDeclaration9*	dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
+	IDirect3DVertexBuffer9*			vb;
+	IDirect3DIndexBuffer9*			ib;
+	u32								vb_stride;
+};
+struct	ENGINE_API		SPass 
+{
+	IDirect3DStateBlock9*			state;		// Generic state, like Z-Buffering, samplers, etc
+	IDirect3DPixelShader9*			ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
+	IDirect3DVertexShader9*			vs;			// may be NULL = FFP, in that case "state" must contain RS setup, *and* FVF-compatible declaration must be used
+
+	R_constant_table*				constants;
+
+	STextureList*					T;
+	SMatrixList*					M;
+	SConstantList*					C;
+
+	BOOL							equal		(SPass& P);
+};
 struct ENGINE_API		ShaderElement
 {
 public:
@@ -50,19 +89,17 @@ public:
 		u32	iPriority	:	2;
 		u32	bStrictB2F	:	1;
 		u32	bLighting	:	1;
-		u32	bPixelShader:	1;
 	};
 public:
-	ShaderElement		();
+	ShaderElement			();
 public:
-	u32					dwReference;
+	u32						dwReference;
 	SFlags					Flags;
-	svector<CPass,8>		Passes;
+	svector<SPass*,8>		Passes;
 	
 	BOOL					equal	(ShaderElement& S);
 	BOOL					equal	(ShaderElement* S);
 };
-
 struct ENGINE_API		Shader 
 {
 public:

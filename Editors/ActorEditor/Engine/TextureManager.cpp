@@ -11,35 +11,37 @@
 #include "blenders\blender_recorder.h"
 
 //--------------------------------------------------------------------------------------------------------------
-u32		CShaderManager::_CreateCode		(SimulatorStates& code)
+IDirect3DStateBlock9*	CShaderManager::_CreateState		(SimulatorStates& state_code)
 {
 	// Search equal code
-	for (u32 it=0; it<codes.size(); it++)
+	for (u32 it=0; it<v_states.size(); it++)
 	{
-		sh_Code&			C		= codes[it];;
-		SimulatorStates&	base	= C.Code;
-		if (base.equal(code))	{
-			C.Reference	+= 1;
-			return C.SB;
+		SState&				C		= *v_states[it];;
+		SimulatorStates&	base	= C.state_code;
+		if (base.equal(state_code))	{
+			C.dwReference	++;
+			return C.state;
 		}
 	}
 
 	// Create New
-	codes.push_back			(sh_Code());
-	codes.back().SB			= code.record();
-	codes.back().Reference	= 1;
-	codes.back().Code		= code;
-	return codes.back().SB;
+	v_states.push_back				(xr_new<SState>());
+	v_states.back()->state			= state_code.record();
+	v_states.back()->dwReference	= 1;
+	v_states.back()->state_code		= state_code;
+	return v_states.back()->state;
 }
-void		CShaderManager::_DeleteCode		(u32& SB)
+
+void		CShaderManager::_DeleteState	(IDirect3DStateBlock9*& state)
 {
-	R_ASSERT(SB);
+	R_ASSERT	(state);
+
 	// Dummy search
-	for (u32 it=0; it<codes.size(); it++)
+	for (u32 it=0; it<v_states.size(); it++)
 	{
-		sh_Code&			C		= codes[it];;
-		if (C.SB == SB)	{
-			C.Reference	--;
+		SState&			C		= *(v_states[it]);
+		if (C.state == state)	{
+			C.dwReference	--;
 			return;
 		}
 	}
@@ -47,25 +49,208 @@ void		CShaderManager::_DeleteCode		(u32& SB)
 	// Fail
 	Debug.fatal("Failed to find compiled shader or stateblock");
 }
+
+SPass*							CShaderManager::_CreatePass			(SPass& P)
+{
+	for (u32 it=0; it<v_passes.size(); it++)
+	{
+		if (v_passes[it]->equal(P))	return v_passes[it];
+	}
+
+	v_passes.push_back			(xr_new<SPass>(P));
+	return v_passes.back();
+}
+
+void							CShaderManager::_DeletePass			(SPass* &P)
+{
+	P	=	NULL;
+}
+
+
 //--------------------------------------------------------------------------------------------------------------
-CRT* CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h) 
+static BOOL	dcl_equal			(D3DVERTEXELEMENT9* a, D3DVERTEXELEMENT9* b)
+{
+	// check sizes
+	u32 a_size	= D3DXGetDeclLength(a);
+	u32 b_size	= D3DXGetDeclLength(b);
+	if (a_size!=b_size)	return FALSE;
+	return 0==memcmp	(a,b,a_size*sizeof(D3DVERTEXELEMENT9));
+}
+
+IDirect3DVertexDeclaration9*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl)
+{
+	// Search equal code
+	for (u32 it=0; it<v_declarations.size(); it++)
+	{
+		SDeclaration&		D		= *v_declarations[it];;
+		if (dcl_equal(dcl,D.dcl_code.begin()))	
+		{
+			D.dwReference	++;
+			return D.dcl;
+		}
+	}
+
+	// Create new
+	SDeclaration* D			= xr_new<SDeclaration>();
+	D->dwReference			= 1;
+	u32 dcl_size			= D3DXGetDeclLength(dcl)+1;
+	CHK_DX					(HW.pDevice->CreateVertexDeclaration(dcl,&D->dcl));
+	D->dcl_code.assign		(dcl,dcl+dcl_size);
+	v_declarations.push_back(D);
+	return D->dcl;
+}
+
+void		CShaderManager::_DeleteDecl		(IDirect3DVertexDeclaration9*& dcl)
+{
+	R_ASSERT(dcl);
+
+	// Dummy search
+	for (u32 it=0; it<v_declarations.size(); it++)
+	{
+		SDeclaration&		D	= *(v_declarations[it]);
+		if (D.dcl == dcl)	{
+			D.dwReference	--;
+			return;
+		}
+	}
+
+	// Fail
+	Debug.fatal("Failed to find compiled declaration");
+}
+
+//--------------------------------------------------------------------------------------------------------------
+SVS*	CShaderManager::_CreateVS		(LPCSTR name)
+{
+	LPSTR N				= LPSTR(name);
+	map_VS::iterator I	= m_vs.find	(N);
+	if (I!=m_vs.end())	
+	{
+		SVS *vs				=	I->second;
+		vs->dwReference		+=	1;
+		return		vs;
+	}
+	else 
+	{
+		SVS*	_vs					= xr_new<SVS>	();
+		m_vs.insert					(make_pair(xr_strdup(name),_vs));
+		if (0==stricmp(name,"null"))	{
+			_vs->dwReference	= 1;
+			_vs->vs				= NULL;
+			return _vs;
+		}
+
+		LPD3DXBUFFER				pShaderBuf	= NULL;
+		LPD3DXBUFFER				pErrorBuf	= NULL;
+		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
+		HRESULT						_hr			= S_OK;
+
+		// vertex
+		_hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "v_main", "vs_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		if (SUCCEEDED(_hr))
+		{
+			if (pShaderBuf) 
+			{
+				_hr = HW.pDevice->CreateVertexShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_vs->vs);
+				if (SUCCEEDED(_hr))	{
+					LPCVOID			data		= NULL;
+					_hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
+					if (SUCCEEDED(_hr) && data) 
+					{
+						pConstants				= LPD3DXSHADER_CONSTANTTABLE(data);
+						_vs->constants.parse	(pConstants,0x2);
+					} else	_hr = E_FAIL;
+				}
+			}
+			else	_hr = E_FAIL;
+		}
+		_RELEASE	(pShaderBuf);
+		_RELEASE	(pErrorBuf);
+		pConstants	= NULL;
+		R_CHK		(_hr);
+		return		_vs;
+	}
+}
+void	CShaderManager::_DeleteVS			(IDirect3DVertexShader9* &vs)
+{
+	vs = NULL;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+SPS*	CShaderManager::_CreatePS			(LPCSTR name)
+{
+	LPSTR N				= LPSTR(name);
+	map_PS::iterator I	= m_ps.find	(N);
+	if (I!=m_ps.end())	
+	{
+		SPS *ps				=	I->second;
+		ps->dwReference		+=	1;
+		return		ps;
+	}
+	else 
+	{
+		SPS*	_ps					= xr_new<SPS>	();
+		m_ps.insert					(make_pair(xr_strdup(name),_ps));
+		if (0==stricmp(name,"null"))	{
+			_ps->dwReference	= 1;
+			_ps->ps				= NULL;
+			return _ps;
+		}
+
+		LPD3DXBUFFER				pShaderBuf	= NULL;
+		LPD3DXBUFFER				pErrorBuf	= NULL;
+		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
+		HRESULT						_hr			= S_OK;
+
+		// pixel
+		_hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "p_main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		if (SUCCEEDED(_hr))
+		{
+			if (pShaderBuf) 
+			{
+				_hr = HW.pDevice->CreatePixelShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_ps->ps);
+				if (SUCCEEDED(_hr))	{
+					LPCVOID			data		= NULL;
+					_hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
+					if (SUCCEEDED(_hr) && data) 
+					{
+						pConstants				= LPD3DXSHADER_CONSTANTTABLE(data);
+						_ps->constants.parse	(pConstants,0x1);
+					} else	_hr = E_FAIL;
+				}
+			}
+			else	_hr = E_FAIL;
+		}
+		_RELEASE		(pShaderBuf);
+		_RELEASE		(pErrorBuf);
+		pConstants		= NULL;
+		R_CHK			(_hr);
+		return			_ps;
+	}
+}
+void	CShaderManager::_DeletePS			(IDirect3DPixelShader9* &ps)
+{
+	ps = NULL;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h) 
 {
 	R_ASSERT(Name && Name[0] && w && h);
 	
 	// ***** first pass - search already created RT
 	LPSTR N = LPSTR(Name);
-	RTMap::iterator I = rtargets.find	(N);
-	if (I!=rtargets.end())	
+	map_RT::iterator I = m_rtargets.find	(N);
+	if (I!=m_rtargets.end())	
 	{
-		CRT *RT			=	I->second;
-		RT->dwReference	+=	1;
+		CRT *RT				=	I->second;
+		RT->dwReference		+=	1;
 		return		RT;
 	}
 	else 
 	{
-		CRT *RT			=	xr_new<CRT>();
-		RT->dwReference	=	1;
-		rtargets.insert	(make_pair(xr_strdup(Name),RT));
+		CRT *RT				=	xr_new<CRT>();
+		RT->dwReference		=	1;
+		m_rtargets.insert		(make_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h);
 		return		RT;
 	}
@@ -79,102 +264,83 @@ void	CShaderManager::_DeleteRT		(CRT* &RT)
 LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 {
 	R_ASSERT(T);
-	for (RTMap::iterator I=rtargets.begin(); I!=rtargets.end(); I++)
+	for (map_RT::iterator I=m_rtargets.begin(); I!=m_rtargets.end(); I++)
 		if (I->second == T)	return I->first;
 		return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
-CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, u32 stride) 
+void	CShaderManager::DBG_VerifyGeoms	()
 {
-	R_ASSERT			(cName && cName[0] && decl);
-	string256			Name;
-	strlwr				(strcpy(Name,cName));
-	if (strext(Name))	*strext(Name)=0;
-	
-	// ***** first pass - search already loaded shader
-	LPSTR N = LPSTR(Name);
-	VSMap::iterator I = vs.find	(N);
-	if (I!=vs.end())	
+	for (u32 it=0; it<v_geoms.size(); it++)
 	{
-		CVS *VS			=	I->second;
-		VS->dwReference	+=	1;
-		return		VS;
-	}
-	else 
-	{
-		CVS *VS			=	xr_new<CVS>();
-		VS->dwReference	=	1;
-		VS->dwStride	=	stride;
-		VS->bFFP		=	FALSE;
-		vs.insert		(make_pair(xr_strdup(Name),VS));
-		
-		// Load vertex shader
-		string256		fname;
-		strconcat		(fname,Path.GameData,"shaders\\",Name,".vs");
-		LPD3DXBUFFER	code	= 0;
-		LPD3DXBUFFER	errors	= 0;
-		CStream*		fs		= Engine.FS.Open(fname);
-		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
-		Engine.FS.Close	(fs);
-		R_CHK			(HW.pDevice->CreateVertexShader(decl,LPDWORD(code->GetBufferPointer()),LPDWORD(&VS->dwHandle),0));
-		_RELEASE		(code);
-		_RELEASE		(errors);
-		
-		// Return
-		return			VS;
+		SGeometry* G					= v_geoms[it];
+
+		D3DVERTEXELEMENT9		test	[MAX_FVF_DECL_SIZE];
+		u32						size	= 0;
+		G->dcl->GetDeclaration			(test,&size);
+		u32 vb_stride					= D3DXGetDeclVertexSize	(test,0);
+		u32 vb_stride_cached			= G->vb_stride;
+		R_ASSERT						(vb_stride == vb_stride_cached);
 	}
 }
-CVS*	CShaderManager::_CreateVS	(u32 FVF)
+
+SGeometry*	CShaderManager::CreateGeom		(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	string256			Name;
-	sprintf				(Name,"FVF:%x",FVF);
+	DBG_VerifyGeoms						();
+	R_ASSERT							(decl && vb);
+
+	IDirect3DVertexDeclaration9* dcl 	= _CreateDecl			(decl);
+	u32 vb_stride						= D3DXGetDeclVertexSize	(decl,0);
 
 	// ***** first pass - search already loaded shader
-	LPSTR N = LPSTR(Name);
-	VSMap::iterator I = vs.find	(N);
-	if (I!=vs.end())	
+	for (u32 it=0; it<v_geoms.size(); it++)
 	{
-		CVS *VS			=	I->second;
-		VS->dwReference	+=	1;
-		return			VS;
+		SGeometry& G	= *(v_geoms[it]);
+		if ((G.dcl==dcl) && (G.vb==vb) && (G.ib==ib) && (G.vb_stride==vb_stride))
+		{
+			// match found
+			G.dwReference	++;
+			return v_geoms[it];
+		}
 	}
-	else
-	{
-		CVS *VS			=	xr_new<CVS>();
-		VS->dwReference	=	1;
-		VS->dwStride	=	D3DXGetFVFVertexSize	(FVF);
-		VS->bFFP		=	TRUE;
-		vs.insert		(make_pair(xr_strdup(Name),VS));
 
-		// Create shader
-		/*
-		u32			decl[MAX_FVF_DECL_SIZE];
-		R_CHK			(D3DXDeclaratorFromFVF(FVF,decl));
-		R_CHK			(HW.pDevice->CreateVertexShader(decl,0,&VS->dwHandle,0));
-		*/
-		VS->dwHandle	=	FVF;
-
-		// Return
-		return			VS;
-	}
+	SGeometry *Geom		=	xr_new<SGeometry>();
+	Geom->dwReference	=	1;
+	Geom->dcl			=	dcl;
+	Geom->vb			=	vb;
+	Geom->vb_stride		=	vb_stride;
+	Geom->ib			=	ib;
+	v_geoms.push_back	(Geom);
+	return	Geom;
 }
-
-void	CShaderManager::_DeleteVS	(CVS* &VS)
+SGeometry*	CShaderManager::CreateGeom	(u32 FVF, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	if (VS)	
+	DBG_VerifyGeoms						();
+	D3DVERTEXELEMENT9	dcl	[MAX_FVF_DECL_SIZE];
+	CHK_DX				(D3DXDeclaratorFromFVF(FVF,dcl));
+	SGeometry* g		=  CreateGeom	(dcl,vb,ib);
+	DBG_VerifyGeoms						();
+	return	g;
+}
+
+void	CShaderManager::DeleteGeom		(SGeometry* &Geom)
+{
+	if (Geom)	
 	{
-		VS->dwReference	--;
-		VS = 0;
+		Geom->dwReference	--;
+		Geom = 0;
 	}
 }
 
-LPCSTR	CShaderManager::DBG_GetVSName(CVS* T)
+/*
+LPCSTR	CShaderManager::DBG_GetVSName(SGeometry* T)
 {
 	R_ASSERT(T);
-	for (VSMap::iterator I=vs.begin(); I!=vs.end(); I++)
+	for (map_VSIt I=m_vs.begin(); I!=vs.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
+
 //--------------------------------------------------------------------------------------------------------------
 CPS*	CShaderManager::_CreatePS		(LPCSTR cName) 
 {
@@ -221,15 +387,17 @@ void	CShaderManager::_DeletePS	(CPS* &PS)
 	PS->dwReference	--;
 	PS = 0;
 }
+*/
+
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
 
 	// ***** first pass - search already loaded texture
-	LPSTR N = LPSTR(Name);
-	map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(N);
-	if (I!=textures.end())	
+	LPSTR N			= LPSTR(Name);
+	map_TextureIt I = m_textures.find	(N);
+	if (I!=m_textures.end())	
 	{
 		CTexture *T		=	I->second;
 		T->dwReference	+=	1;
@@ -239,7 +407,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	{
 		CTexture *T		= xr_new<CTexture>();
 		T->dwReference	= 1;
-		textures.insert	(make_pair(xr_strdup(Name),T));
+		m_textures.insert	(make_pair(xr_strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
 	}
@@ -253,7 +421,7 @@ void	CShaderManager::_DeleteTexture		(CTexture* &T)
 LPCSTR	CShaderManager::DBG_GetTextureName	(CTexture* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CTexture*,str_pred>::iterator I=textures.begin(); I!=textures.end(); I++)
+	for (map<LPSTR,CTexture*,str_pred>::iterator I=m_textures.begin(); I!=m_textures.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
@@ -264,8 +432,8 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(N);
-	if (I!=matrices.end())
+	map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
+	if (I!=m_matrices.end())
 	{
 		CMatrix* M		=	I->second;
 		M->dwReference	+=	1;
@@ -275,7 +443,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	{
 		CMatrix* M		=	xr_new<CMatrix>();
 		M->dwReference	=	1;
-		matrices.insert	(make_pair(xr_strdup(Name),M));
+		m_matrices.insert	(make_pair(xr_strdup(Name),M));
 		return	M;
 	}
 }
@@ -288,7 +456,7 @@ void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CMatrix*,str_pred>::iterator I=matrices.begin(); I!=matrices.end(); I++)
+	for (map<LPSTR,CMatrix*,str_pred>::iterator I=m_matrices.begin(); I!=m_matrices.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
@@ -306,8 +474,8 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 	
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(N);
-	if (I!=constants.end())	
+	map<LPSTR,CConstant*,str_pred>::iterator I = m_constants.find	(N);
+	if (I!=m_constants.end())	
 	{
 		CConstant* C	=	I->second;
 		C->dwReference	+=	1;
@@ -317,7 +485,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	{
 		CConstant* C	=	xr_new<CConstant>();
 		C->dwReference	=	1;
-		constants.insert	(make_pair(xr_strdup(Name),C));
+		m_constants.insert	(make_pair(xr_strdup(Name),C));
 		return	C;
 	}
 }
@@ -330,9 +498,9 @@ void	CShaderManager::_DeleteConstant		(CConstant* &C)
 LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CConstant*,str_pred>::iterator I=constants.begin(); I!=constants.end(); I++)
+	for (map<LPSTR,CConstant*,str_pred>::iterator I=m_constants.begin(); I!=m_constants.end(); I++)
 		if (I->second == T)	return I->first;
-		return 0;
+	return 0;
 }
 void	CShaderManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)
 {
@@ -347,11 +515,11 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 	
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
+	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
 #ifdef _EDITOR
-	if (I==blenders.end())	return 0;
+	if (I==m_blenders.end())	return 0;
 #else
-	if (I==blenders.end())	{ Debug.fatal("Shader '%s' not found in library.",Name); return 0; }
+	if (I==m_blenders.end())	{ Debug.fatal("Shader '%s' not found in library.",Name); return 0; }
 #endif
 	else					return I->second;
 }
@@ -361,21 +529,21 @@ CBlender* CShaderManager::_FindBlender		(LPCSTR Name)
 	if (!(Name && Name[0])) return 0;
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
-	if (I==blenders.end())	return 0;
-	else					return I->second;
+	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	if (I==m_blenders.end())	return 0;
+	else						return I->second;
 }
 
 void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 {
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
-	if (I!=blenders.end())	{
+	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	if (I!=m_blenders.end())	{
 		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
 		xr_delete	(I->second);
 		I->second	= data;
 	} else {
-		blenders.insert	(make_pair(xr_strdup(Name),data));
+		m_blenders.insert	(make_pair(xr_strdup(Name),data));
 	}
 }
 
@@ -497,18 +665,18 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 	C.Compile			(&S);
 	
 	// Search equal in shaders array
-	for (u32 it=0; it<elements.size(); it++) 
+	for (u32 it=0; it<v_elements.size(); it++) 
 	{
-		if (S.equal(*(elements[it])))	{
-			elements[it]->dwReference	++;
-			return elements[it];
+		if (S.equal(*(v_elements[it])))	{
+			v_elements[it]->dwReference	++;
+			return v_elements[it];
 		}
 	}
 	
 	// Create _new_ entry
 	ShaderElement*	N	= xr_new<ShaderElement>(S);
 	N->dwReference		= 1;
-	elements.push_back	(N);
+	v_elements.push_back	(N);
 	return N;
 }
 
@@ -551,18 +719,18 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	S.lighting			= _CreateElement	(C);
 	
 	// Search equal in shaders array
-	for (u32 it=0; it<shaders.size(); it++) 
+	for (u32 it=0; it<v_shaders.size(); it++) 
 	{
-		if (S.equal(shaders[it]))	{
-			shaders[it]->dwReference	++;
-			return shaders[it];
+		if (S.equal(v_shaders[it]))	{
+			v_shaders[it]->dwReference	++;
+			return v_shaders[it];
 		}
 	}
 	
 	// Create _new_ entry
 	Shader*		N		= xr_new<Shader>(S);
 	N->dwReference		= 1;
-	shaders.push_back	(N);
+	v_shaders.push_back	(N);
 	return N;
 }
 
@@ -572,8 +740,10 @@ void CShaderManager::_DeleteElement(ShaderElement* &S)
 
 	for (u32 p=0; p<S->Passes.size(); p++)
 	{
-		CPass& P = S->Passes[p];
-		_DeleteCode			(P.dwStateBlock);
+		SPass& P			= *S->Passes[p];
+		_DeleteState		(P.state);
+		_DeletePS			(P.ps);
+		_DeleteVS			(P.vs);
 		_DeleteTextureList	(P.T);
 		_DeleteMatrixList	(P.M);
 		_DeleteConstantList	(P.C);
@@ -592,24 +762,17 @@ void CShaderManager::Delete(Shader* &S)
 	S				= 0;
 }
 
-void	CShaderManager::OnFrameEnd	()
-{
-	for (u32 stage=0; stage<HW.Caps.pixel.dwStages; stage++)
-		CHK_DX(HW.pDevice->SetTexture(0,0));
-	cache.Invalidate	();
-}
-
 void	CShaderManager::DeferredUpload	()
 {
 	if (!Device.bReady)				return;
-	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Load(t->first);
 }
 
 void	CShaderManager::DeferredUnload	()
 {
 	if (!Device.bReady)				return;
-	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Unload();
 }
 
@@ -619,11 +782,11 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
     if (names){
         for (u32 nid=0; nid<names->size(); nid++)
         {
-            map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	((*names)[nid]);
-            if (I!=textures.end())	I->second->Unload();
+            map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid]);
+            if (I!=m_textures.end())	I->second->Unload();
         }
     }else{
-		for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+		for (map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
 			t->second->Unload();
     }
 
@@ -634,8 +797,8 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 u32	CShaderManager::_GetMemoryUsage()
 {
 	u32 mem = 0;
-	map<LPSTR,CTexture*,str_pred>::iterator I = textures.begin	();
-	map<LPSTR,CTexture*,str_pred>::iterator E = textures.end	();
+	map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.begin	();
+	map<LPSTR,CTexture*,str_pred>::iterator E = m_textures.end		();
 	for (; I!=E; I++)
 	{
 		mem += I->second->dwMemoryUsage;
@@ -645,14 +808,14 @@ u32	CShaderManager::_GetMemoryUsage()
 
 void	CShaderManager::Evict()
 {
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
+	CHK_DX(HW.pDevice->EvictManagedResources());
 }
 
 BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
 {
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,texture_detail,str_pred>::iterator I = td.find	(N);
-	if (I!=td.end())	
+	map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
+	if (I!=m_td.end())	
 	{
 		T = I->second.T;
 		M = I->second.M;

@@ -12,151 +12,165 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 
 	if (Device.bReady) return;
 
-	cache.pRT		= 0;
-	cache.pZB		= 0;
-	
 	//************************************************************************************
 	// RTargets
-	for (map<LPSTR,CRT*,str_pred>::iterator r=rtargets.begin(); r!=rtargets.end(); r++)
+	for (map<LPSTR,CRT*,str_pred>::iterator r=m_rtargets.begin(); r!=m_rtargets.end(); r++)
 	{
 		R_ASSERT	(0==r->second->dwReference);
 		xr_free		((char*)r->first);
 		r->second->Destroy	();
 		xr_delete   (r->second);
 	}
-	rtargets.clear	();
+	m_rtargets.clear	();
 	
 	//************************************************************************************
 	// Shaders
-	for (it=0; it!=shaders.size(); it++)	
+	for (it=0; it!=v_shaders.size(); it++)	
 	{
-		Shader& S = *(shaders[it]);
+		Shader& S = *(v_shaders[it]);
 		if (0!=S.dwReference)	{
-			STextureList*		T	= S.lod0->Passes.front().T;
+			STextureList*		T	= S.lod0->Passes.front()->T;
+			/*
 			if (T)	Debug.fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
 			else	Debug.fatal	("Shader still referenced (%d).",S.dwReference);
+			*/
 		}
-		xr_delete(shaders[it]);
+		xr_delete(v_shaders[it]);
 	}
-	shaders.clear();
+	v_shaders.clear();
 
 	// Elements
-	for (it=0; it!=elements.size(); it++)
+	for (it=0; it!=v_elements.size(); it++)
 	{
-		ShaderElement& S = *(elements[it]);
-		if (0!=S.dwReference)		Debug.fatal("Element still referenced.");
-		xr_delete(elements[it]);
+		ShaderElement& S = *(v_elements[it]);
+		// if (0!=S.dwReference)	Debug.fatal("Element still referenced.");
+		xr_delete(v_elements[it]);
 	}
-	elements.clear();
+	v_elements.clear();
 	
 	//************************************************************************************
 	// Texture List
 	for (it=0; it<lst_textures.size(); it++)	{
-		if (0!=lst_textures[it]->dwReference)
-			Debug.fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
+//		if (0!=lst_textures[it]->dwReference)
+//			Debug.fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
 		xr_delete (lst_textures[it]);
 	}
 	lst_textures.clear	();
 	
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
-		if (0!=lst_matrices[it]->dwReference)
-			Debug.fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
+//		if (0!=lst_matrices[it]->dwReference)
+//			Debug.fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
 		xr_delete (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
 	
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
-		if (0!=lst_constants[it]->dwReference)
-			Debug.fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
+//		if (0!=lst_constants[it]->dwReference)
+//			Debug.fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
 		xr_delete (lst_constants[it]);
 	}
 	lst_constants.clear	();
 	
 	// Codes
-	for (it=0; it<codes.size(); it++)			{
-		R_ASSERT(0==codes[it].Reference);
-		CHK_DX	(HW.pDevice->DeleteStateBlock(codes[it].SB));
+	for (it=0; it<v_states.size(); it++)			{
+//		R_ASSERT	(0==v_states[it]->dwReference);
+		_RELEASE	(v_states[it]->state);
+		xr_delete	(v_states[it]);
 	}
-	codes.clear	();
-	
+	v_states.clear	();
+
+	// Decls
+	for (it=0; it<v_declarations.size(); it++)			{
+		// R_ASSERT	(0==v_declarations[it]->dwReference);
+		_RELEASE	(v_declarations[it]->dcl);
+		xr_delete	(v_declarations[it]);
+	}
+	v_declarations.clear	();
+
 	//************************************************************************************
 	// Textures
 	if (!bKeepTextures)	{
-		for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+		for (map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
 		{
-			R_ASSERT	(0==t->second->dwReference);
+//			R_ASSERT	(0==t->second->dwReference);
 			xr_free		((char*)t->first);
 			xr_delete	(t->second);
 		}
-		textures.clear	();
+		m_textures.clear	();
 	}
 	
 	// Matrices
-	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
+	for (map<LPSTR,CMatrix*,str_pred>::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
 	{
-		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
+//		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
 		xr_free		((char*)m->first);
 		xr_delete	(m->second);
 	}
-	matrices.clear	();
+	m_matrices.clear	();
 	
 	// Constants
-	for (map<LPSTR,CConstant*,str_pred>::iterator c=constants.begin(); c!=constants.end(); c++)
+	for (map<LPSTR,CConstant*,str_pred>::iterator c=m_constants.begin(); c!=m_constants.end(); c++)
 	{
-		R_ASSERT	(0==c->second->dwReference);
+//		R_ASSERT	(0==c->second->dwReference);
 		xr_free		((char*)c->first);
 		xr_delete	(c->second);
 	}
-	constants.clear	();
+	m_constants.clear	();
 
 	// VS
-	for (map<LPSTR,CVS*,str_pred>::iterator v=vs.begin(); v!=vs.end(); v++)
+	for (map_VSIt v=m_vs.begin(); v!=m_vs.end(); v++)
 	{
-		if (0!=v->second->dwReference)
-			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
+//		if (0!=v->second->dwReference)
+//			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
 		xr_free		((char*)v->first);
-		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
 		xr_delete	(v->second);
 	}
-	vs.clear	();
+	m_vs.clear	();
 	
+	// PS
+	for (map_PSIt v=m_ps.begin(); v!=m_ps.end(); v++)
+	{
+//		if (0!=v->second->dwReference)
+//			Msg("! WARNING: Pixel shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
+		xr_free		((char*)v->first);
+		xr_delete	(v->second);
+	}
+	m_ps.clear	();
+
 	// Release blenders
-	for (map<LPSTR,CBlender*,str_pred>::iterator b=blenders.begin(); b!=blenders.end(); b++)
+	for (map_BlenderIt b=m_blenders.begin(); b!=m_blenders.end(); b++)
 	{
 		xr_free		((char*)b->first);
 		xr_delete	(b->second);
 	}
-	blenders.clear	();
+	m_blenders.clear	();
 
 	// destroy TD
-	for (TDPairIt _t=td.begin(); _t!=td.end(); _t++)
+	for (map_TDIt _t=m_td.begin(); _t!=m_td.end(); _t++)
 	{
 		xr_free((char*)_t->first);
 		xr_free((char*&)_t->second.T);
 		xr_free((char*&)_t->second.M);
 	}
-	td.clear();
+	m_td.clear();
 }
 
 void	CShaderManager::OnDeviceCreate	(CStream* FS)
 {
 	if (!Device.bReady) return;
-	cache.Invalidate	();
-	cache.pRT			= HW.pBaseRT;
-	cache.pZB			= HW.pBaseZB;
 
 	string256	name;
 
 	// Load constants
 	{
-		CStream*	fs		= FS->OpenChunk(0);
-		while (fs&&!fs->Eof())	{
+		CStream*	fs		= FS->OpenChunk	(0);
+		while (fs && !fs->Eof())	{
 			fs->RstringZ	(name);
 			CConstant*		C = xr_new<CConstant>();
 			C->Load			(fs);
-			constants.insert(make_pair(xr_strdup(name),C));
+			m_constants.insert(make_pair(xr_strdup(name),C));
 		}
 		fs->Close();
 	}
@@ -166,9 +180,9 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 		CStream*	fs		= FS->OpenChunk(1);
 		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
-			CMatrix*		M = xr_new<CMatrix>();
-			M->Load			(fs);
-			matrices.insert	(make_pair(xr_strdup(name),M));
+			CMatrix*		M	= xr_new<CMatrix>();
+			M->Load				(fs);
+			m_matrices.insert	(make_pair(xr_strdup(name),M));
 		}
 		fs->Close();
 	}
@@ -192,7 +206,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
             chunk->Seek		(0);
             B->Load			(*chunk,desc.version);
 
-			pair<BlenderPairIt, bool> I =  blenders.insert	(make_pair(xr_strdup(desc.cName),B));
+			pair<map_BlenderIt, bool> I =  m_blenders.insert	(make_pair(xr_strdup(desc.cName),B));
             R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
 
 			chunk->Close	();
@@ -220,7 +234,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 
                 // Search or create matrix
                 M[0]			= 0;
-                for (MatrixPairIt m=matrices.begin(); m!=matrices.end(); m++)
+                for (map_MatrixIt m=m_matrices.begin(); m!=m_matrices.end(); m++)
                 {
                     if (CMatrix::modeDetail == m->second->dwMode)
                     {
@@ -242,7 +256,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
                 D.T				= xr_strdup	(T);
                 D.M				= xr_strdup	(M);
                 LPSTR N			= xr_strdup	(item.first);
-                td.insert		(make_pair(N,D));
+                m_td.insert		(make_pair(N,D));
             }
         }
 	}
@@ -267,12 +281,4 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	CStream&				FS	= *F;
 
 	OnDeviceCreate			(&FS);
-}
-
-void CShaderManager::xrStartUp()
-{
-}
-
-void CShaderManager::xrShutDown()
-{
 }

@@ -10,7 +10,7 @@ private:
 	CTimer		T;
 	__int64		accum;
 	float		result;
-	u32		count;
+	u32			count;
 public:
 	CStatTimer()
 	{

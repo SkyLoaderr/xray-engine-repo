@@ -35,19 +35,19 @@ void CPHWorld::Render()
 {
 	if (!bDebug)	return;
 	/*
-	Device.Shader.OnFrameEnd		();
-	Device.set_xform_world			(Fidentity);
+	RCache.OnFrameEnd		();
+	RCache.set_xform_world	(Fidentity);
 	Fmatrix M;
 	Fvector scale;
 
 
 	Jeep.DynamicData.GetWorldMX(M);
 	scale.set(Jeep.jeepBox[0]/2.f,Jeep.jeepBox[1]/2.f,Jeep.jeepBox[2]/2.f);
-	Device.Primitive.dbg_DrawOBB	(M,scale,0xffffffff);
+	RCache.dbg_DrawOBB	(M,scale,0xffffffff);
 
 	Jeep.DynamicData.GetTGeomWorldMX(M);
 	scale.set(Jeep.cabinBox[0]/2.f,Jeep.cabinBox[1]/2.f,Jeep.cabinBox[2]/2.f);
-	Device.Primitive.dbg_DrawOBB	(M,scale,0xffffffff);
+	RCache.dbg_DrawOBB	(M,scale,0xffffffff);
 
 
 
@@ -58,22 +58,22 @@ void CPHWorld::Render()
 	M.scale(scale);
 	M.c = t;
 
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 	Jeep.DynamicData[1].GetWorldMX(M);
 	t = M.c;
 	M.scale(scale);
 	M.c = t;
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 	Jeep.DynamicData[2].GetWorldMX(M);
 	t = M.c;
 	M.scale(scale);
 	M.c = t;
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 	Jeep.DynamicData[3].GetWorldMX(M);
 	t = M.c;
 	M.scale(scale);
 	M.c = t;
-	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
 	*/
 }
 
@@ -147,7 +147,7 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 	dMassAdjust(&m, 10); // mass
 	dQuaternion q;
 	dQFromAxisAndAngle(q, 1, 0, 0, M_PI * 0.5);
-	UINT i;
+	u32 i;
 	for(i = 1; i <= 4; ++i)
 	{
 		Bodies[i] = dBodyCreate(world);
@@ -267,7 +267,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dMassAdjust(&m, 20); // mass
 	dQuaternion q;
 	dQFromAxisAndAngle(q, 1, 0, 0, M_PI * 0.5);
-	UINT i;
+	u32 i;
 	for(i = 1; i <= 4; ++i)
 	{
 		Bodies[i] = dBodyCreate(world);
@@ -332,7 +332,7 @@ CreateDynamicData();
 void CPHJeep::JointTune(dReal step){
 const	dReal k_p=30000.f;//30000.f;
 const	dReal k_d=1000.f;//1000.f;
-	for(UINT i = 0; i < 4; ++i)
+	for(u32 i = 0; i < 4; ++i)
 	{
 
 		
@@ -350,18 +350,18 @@ const	dReal k_d=1000.f;//1000.f;
 }
 /////////
 void CPHJeep::Destroy(){
-	for(UINT i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
+	for(u32 i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
 	DynamicData.Destroy();
 	
-	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
-	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
+	for(u32 i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
+	for(u32 i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
 
 	dGeomDestroyUserData(Geoms[5]);
 	dGeomDestroyUserData(Geoms[7]);
 	dGeomDestroyUserData(Geoms[0]);
 	dGeomDestroyUserData(Geoms[6]);
 
-	for(UINT i=0;i<5;i++) {
+	for(u32 i=0;i<5;i++) {
 		dGeomDestroy(Geoms[i]);
 	}
 	dGeomDestroy(Geoms[6]);
@@ -600,7 +600,7 @@ if(!Breaks)
 /////////////////////////////////////////
 void CPHJeep::NeutralDrive(){
 	//////////////////
-	for(UINT i = 0; i < 4; ++i){
+	for(u32 i = 0; i < 4; ++i){
 			dJointSetHinge2Param(Joints[i], dParamFMax2, 10);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 			}
@@ -657,77 +657,76 @@ void CPHWorld::Destroy(){
 //static dReal frame_time=0.f;
 void CPHWorld::Step(dReal step)
 {
-	
-			// compute contact joints and forces
+
+	// compute contact joints and forces
 
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
-	
+
 	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	//const dReal k_d=400000.f;
-	UINT it_number;
+	u32 it_number;
 	frame_time+=step;
 	//m_frame_sum+=step;
-	
-	if(!(frame_time<fixed_step)){
-	it_number=(UINT)(frame_time/fixed_step);
-	frame_time-=it_number*fixed_step;
+
+	if(!(frame_time<fixed_step))
+	{
+		it_number	=	iFloor	(frame_time/fixed_step);
+		frame_time	-=	it_number*fixed_step;
 	}
 	else return;
-/*
+	/*
 	m_update_delay_count++;
-	
+
 	if(m_update_delay_count==update_delay){
-		if(m_delay){
-		if(m_delay<m_previous_delay) m_reduce_delay--;
-		else 	m_reduce_delay++;
-		}
-		m_previous_delay=m_delay;
-		m_update_delay_count=0;
+	if(m_delay){
+	if(m_delay<m_previous_delay) m_reduce_delay--;
+	else 	m_reduce_delay++;
+	}
+	m_previous_delay=m_delay;
+	m_update_delay_count=0;
 	}
 
 	m_delay+=(it_number-m_reduce_delay-1);
-*/
-	//for(UINT i=0;i<(m_reduce_delay+1);i++)
-	for(UINT i=0; i<it_number;i++)
-		{
-				
-			disable_count++;		
-			if(disable_count==dis_frames+1) disable_count=0;
-			
-			m_steps_num++;
-			double dif=m_frame_sum-Time();
-			if(fabs(dif)>fixed_step) 
-				m_start_time+=dif;
+	*/
+	//for(u32 i=0;i<(m_reduce_delay+1);i++)
+	for(u32 i=0; i<it_number;i++)
+	{
+
+		disable_count++;		
+		if(disable_count==dis_frames+1) disable_count=0;
+
+		m_steps_num++;
+		float dif=m_frame_sum-Time();
+		if(_abs(dif)>fixed_step) 
+			m_start_time+=dif;
 
 		//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
 		//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
 
-			//dWorldSetERP(phWorld,  0.8);
-			//dWorldSetCFM(phWorld,  0.00000001);
+		//dWorldSetERP(phWorld,  0.8);
+		//dWorldSetCFM(phWorld,  0.00000001);
 
 
 
-			dSpaceCollide(Space, 0, &NearCallback); 
+		Device.Statistic.ph_collision.Begin	();
+		dSpaceCollide		(Space, 0, &NearCallback); 
+		Device.Statistic.ph_collision.End	();
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhTune(fixed_step);	
-	
+			(*iter)->PhTune(fixed_step);	
 
+		Device.Statistic.ph_core.Begin		();
+		dWorldStep			(phWorld, fixed_step);
+		dJointGroupEmpty	(ContactGroup);
+		Device.Statistic.ph_core.End		();
 
-			dWorldStep(phWorld, fixed_step);
-			dJointGroupEmpty(ContactGroup);
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhDataUpdate(fixed_step);
-	
+			(*iter)->PhDataUpdate(fixed_step);
 
 
-
-
-		
-
-	//	for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-	//			(*iter)->StepFrameUpdate(step);
+		//	for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+		//			(*iter)->StepFrameUpdate(step);
 
 	}
 

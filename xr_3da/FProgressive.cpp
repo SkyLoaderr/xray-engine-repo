@@ -98,7 +98,7 @@ void FProgressive::Render		(float LOD)
 	int lod_id				= iFloor(LOD*float(LODs.size()));
 	VERIFY					(lod_id>=0 && lod_id<int(LODs.size()));
 	primLOD& L				= LODs[lod_id];
-	Device.Primitive.Draw	(L.P,L.dwVertCount,L.dwPrimsCount);
+	RCache.Draw	(L.P,L.dwVertCount,L.dwPrimsCount);
 }
 
 #define PCOPY(a)	a = pFrom->a

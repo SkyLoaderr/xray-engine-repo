@@ -22,21 +22,21 @@ void CMovementControl::dbg_Draw()
 	if (!bDebug)		return;
 	/*
 	Fvector P2; P2.add(vPosition,vVelocity);
-	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));
+	RCache.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));
 	P2.add(vPosition,vLastMotion);
-	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
+	RCache.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
 	*/
 
 	Fvector sz,C; aabb.getsize(sz); sz.div(2); aabb.getcenter(C);
 	Fmatrix	M = pObject->svXFORM();
 	M.c.add (C);
-	Device.Primitive.dbg_DrawOBB (M,sz,D3DCOLOR_RGBA(0,0,255,255));
+	RCache.dbg_DrawOBB (M,sz,D3DCOLOR_RGBA(0,0,255,255));
 
 	Fvector fct;
 	pObject->svXFORM().transform_tiny(fct,vFootCenter);
 	Fmatrix fm;
 	fm.translate(fct);
-	Device.Primitive.dbg_DrawOBB (fm,vFootExt,D3DCOLOR_RGBA(255,0,255,255));
+	RCache.dbg_DrawOBB (fm,vFootExt,D3DCOLOR_RGBA(255,0,255,255));
 
 	Fmatrix	A;	A.set(pObject->Rotation());
 	Fmatrix		xform	=	pObject->svXFORM();
@@ -45,11 +45,11 @@ void CMovementControl::dbg_Draw()
 	foot_ext.set(foot_ext.x*.5f,vFootExt.y,foot_ext.z*.5f);
 	xform.transform_tiny(foot_center,vFootCenter);
 	A.c.set		(foot_center);
-	Device.Primitive.dbg_DrawOBB (A,foot_ext,D3DCOLOR_RGBA(255,255,255,255));
+	RCache.dbg_DrawOBB (A,foot_ext,D3DCOLOR_RGBA(255,255,255,255));
 /*	
 	Fvector		foot_ext;
 	foot_ext.set	(2.f*vFootExt.x,vFootExt.y,2.f*vFootExt.z);
-	Device.Primitive.dbg_DrawAABB (fct,foot_ext.x,foot_ext.y,foot_ext.z,D3DCOLOR_RGBA(255,255,255,255));
+	RCache.dbg_DrawAABB (fct,foot_ext.x,foot_ext.y,foot_ext.z,D3DCOLOR_RGBA(255,255,255,255));
 */
 }
 

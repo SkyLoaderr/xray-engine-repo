@@ -114,12 +114,12 @@ void CAI_Space::Render()
 			Fvector t1 = m_tpaGraph[i].tGlobalPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
-			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 			for (int j=0; j<(int)m_tpaGraph[i].tNeighbourCount; j++) {
 				Fvector t2 = m_tpaGraph[((CALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
 				t2.y += .6f;
 				NORMALIZE_VECTOR(t2);
-				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
+				RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
 			}
 			Fvector         T;
 			Fvector4        S;
@@ -135,13 +135,13 @@ void CAI_Space::Render()
 			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
-			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 			for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
 				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tGlobalPoint;
 				t2.y += .6f;
 				NORMALIZE_VECTOR(t2);
-				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
+				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+				RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
 				t1 = t2;
 			}
 //			i=1;
@@ -149,7 +149,7 @@ void CAI_Space::Render()
 //				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tGlobalPoint;
 //				t2.y += .6f;
 //				NORMALIZE_VECTOR(t2);
-//				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 //			}
 		}
 		if (Level().game.type == GAME_SINGLE) {
@@ -162,7 +162,7 @@ void CAI_Space::Render()
 //						Fvector t1 = m_tpaGraph[tpGame->m_tpALife->m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
 //						t1.y += .6f;
 //						NORMALIZE_VECTOR(t1);
-//						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+//						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 //					}
 					{
 						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
@@ -172,13 +172,13 @@ void CAI_Space::Render()
 								Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
-								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 								for (int i=1; i<(int)tpALifeHuman->m_tpaVertices.size(); i++) {
 									Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tGlobalPoint;
 									t2.y += .6f;
 									NORMALIZE_VECTOR(t2);
-									Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-									Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,0,255));
+									RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+									RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,0,255));
 									t1 = t2;
 								}
 							}
@@ -190,13 +190,13 @@ void CAI_Space::Render()
 								t1.add(t2);
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
-								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 							}
 							else {
 								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
-								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 							}
 						}
 						else {
@@ -205,7 +205,7 @@ void CAI_Space::Render()
 								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
-								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
 							}
 						}
 					}
@@ -256,7 +256,7 @@ void CAI_Space::Render()
 
 	Fvector	DUP;	DUP.set(0,1,0);
 
-	Device.Shader.set_Shader(sh_debug);
+	RCache.set_Shader(sh_debug);
 	F->SetColor		(D3DCOLOR_RGBA(255,255,255,255));
 
 	for (u32 Nid=0; Nid<m_header.count; Nid++)
@@ -298,11 +298,11 @@ void CAI_Space::Render()
 			v.set(P0.x-st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
 
 			// render quad
-			Device.Primitive.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
-			Device.Primitive.dbg_DrawTRI	(Fidentity,v1,v4,v3,CT);
+			RCache.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
+			RCache.dbg_DrawTRI	(Fidentity,v1,v4,v3,CT);
 
 			// render center
-			Device.Primitive.dbg_DrawAABB	(PC,sc,sc,sc,CC);
+			RCache.dbg_DrawAABB	(PC,sc,sc,sc,CC);
 
 			// render id
 			if (bHL) {

@@ -6,7 +6,7 @@
  
 void CHWCaps::Update()
 {
-	D3DCAPS8 caps;
+	D3DCAPS9 caps;
 	HW.pDevice->GetDeviceCaps(&caps);
 
 	// ***************** GEOMETRY
@@ -14,9 +14,8 @@ void CHWCaps::Update()
 	vertex.bSoftware	= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
 	vertex.bPointSprites= FALSE;
 	vertex.bNPatches	= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
-	vertex.bMPS			= (caps.VertexProcessingCaps&D3DVTXPCAPS_NO_VSDT_UBYTE4)!=0;
+	vertex.bMPS			= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	vertex.dwRegisters	= (caps.MaxVertexShaderConst);
-	Device.Shader.VSC.init(caps.MaxVertexShaderConst);
 
 	// ***************** PIXEL processing
 	pixel.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);
@@ -40,7 +39,7 @@ void CHWCaps::Update()
 
 	// Detect if stencil available
 	bStencil			=	FALSE;
-	IDirect3DSurface8*	surfZS=0;
+	IDirect3DSurface9*	surfZS=0;
 	D3DSURFACE_DESC		surfDESC;
 	CHK_DX		(HW.pDevice->GetDepthStencilSurface(&surfZS));
 	R_ASSERT	(surfZS);

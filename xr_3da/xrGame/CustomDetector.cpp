@@ -178,10 +178,10 @@ void CCustomDetector::OnH_B_Independent() {
 
 void CCustomDetector::OnRender() {
 	if(!bDebug) return;
-	Device.Shader.OnFrameEnd();
+	RCache.OnFrameEnd();
 	Fmatrix l_ball;
 	l_ball.scale(m_buzzer_radius, m_buzzer_radius, m_buzzer_radius);
 	Fvector l_p; l_p.set(0, 1.f, 0); clTransform.transform(l_p, l_p);
 	l_ball.translate_add(l_p);
-	Device.Primitive.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
+	RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
 }

@@ -84,9 +84,9 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 		} else {
 			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
-				CPass&									pass	= sh->Passes[pass_id];
+				SPass&									pass	= *(sh->Passes[pass_id]);
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
 				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
 				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
 				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
@@ -130,9 +130,9 @@ void CRender::InsertSG_Cached(CVisual *V)
 		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
 		for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 		{
-			CPass&									pass	= sh->Passes[pass_id];
+			SPass&									pass	= *(sh->Passes[pass_id]);
 			SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-			SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+			SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
 			SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
 			SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
 			SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);

@@ -27,32 +27,18 @@ int psGlowsPerFrame		= 7;
 
 CGlowManager::CGlowManager()
 {
-	VS		= 0;
 }
 
-CGlowManager::~CGlowManager()
+CGlowManager::~CGlowManager	()
 {
-	Unload	();
 }
 
-void CGlowManager::OnDeviceCreate()
+void CGlowManager::Load		(CStream* fs)
 {
-	VS	= Device.Shader._CreateVS	(FVF::F_TL);
-}
-
-void CGlowManager::OnDeviceDestroy()
-{
-	Device.Shader._DeleteVS			(VS);
-}
-
-void CGlowManager::Load(CStream* fs)
-{
-	OnDeviceCreate		();
-
 	// glows itself
-	u32 size  = fs->Length();
+	u32 size	= fs->Length();
 	R_ASSERT	(size);
-	u32 one	= 4*sizeof(float)+2*sizeof(u32);
+	u32 one		= 4*sizeof(float)+2*sizeof(u32);
 	R_ASSERT	(size%one == 0);
 	u32 count	= size/one;
 	Glows.reserve(count);
@@ -75,11 +61,13 @@ void CGlowManager::Load(CStream* fs)
 	}
 	Selected_Count	= 0;
 	dwTestID		= 0;
+
+	hGeom	= Device.Shader.CreateGeom	(FVF::F_TL,RCache.Vertex.Buffer(),RCache.QuadIB);
 }
 
-void CGlowManager::Unload()
+void CGlowManager::Unload	()
 {
-	OnDeviceDestroy		();
+	Device.Shader.DeleteGeom			(hGeom);
 
 	// shaders
 	for(u32 i=0; i<Glows.size(); i++) 
@@ -88,9 +76,6 @@ void CGlowManager::Unload()
 	// glows
 	Glows.clear		();
 	Selected_Count	= 0;
-
-	// stream
-	VS				= 0;
 }
 
 IC bool glow_compare(CGlow* g1, CGlow *g2)
@@ -182,7 +167,7 @@ void CGlowManager::Render()
 			
 			u32		vOffset;
 			u32		end		= pos+count;
-			FVF::TL	*	pvs		= pv = (FVF::TL*) Device.Streams.Vertex.Lock(count*4,VS->dwStride,vOffset);
+			FVF::TL	*	pvs		= pv = (FVF::TL*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
 			for (; pos<end; pos++)
 			{
 				CGlow&	G			= *Selected[pos];
@@ -204,12 +189,11 @@ void CGlowManager::Render()
 				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
 			}
 			int vCount				= pv-pvs;
-			Device.Streams.Vertex.Unlock		(vCount,VS->dwStride);
+			RCache.Vertex.Unlock		(vCount,hGeom->vb_stride);
 			if (vCount) {
-				Device.Shader.set_Shader		(T);
-				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-				Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
-				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
+				RCache.set_Shader		(T);
+				RCache.set_Geometry		(hGeom);
+				RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 			}
 		}
 	}

@@ -36,9 +36,9 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD alig
 
 void CUIFrameRect::UpdateSize()
 {
-	Device.Shader.set_Shader(back.GetShader());
+	RCache.set_Shader(back.GetShader());
 	// texture size
-	CTexture* T		= Device.Shader.get_ActiveTexture(0);
+	CTexture* T		= RCache.get_ActiveTexture(0);
 	Ivector2		ts;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	// tile

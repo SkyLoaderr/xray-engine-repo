@@ -30,16 +30,16 @@ private:
 	STextureList		passTextures;
 	SMatrixList			passMatrices;
 	SConstantList		passConstants;
-	u32				dwStage;
+	u32					dwStage;
 
-	u32				BC					(BOOL v)	{ return v?0xff:0; }
+	u32					BC					(BOOL v)	{ return v?0xff:0; }
 public:
 	CSimulator&			R()					{ return RS; }
 	
 	void				SetParams			(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader);
 
 	void				PassBegin			();
-	u32				Pass				()  { return SH->Passes.size(); }
+	u32					Pass				()  { return SH->Passes.size(); }
 	void				PassSET_ZB			(BOOL bZTest, BOOL bZWrite);
 	void				PassSET_Blend		(BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef);
 	void				PassSET_Blend_SET	()	{ PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);				}
@@ -51,7 +51,7 @@ public:
 	void				PassTemplate_Detail	(LPCSTR T);
 
 	void				StageBegin			();
-	u32				Stage				()	{ return dwStage; }
+	u32					Stage				()	{ return dwStage; }
 	void				StageTemplate_LMAP0	();
 	void				StageSET_Address	(u32 adr);
 	void				StageSET_XForm		(u32 tf, u32 tc);

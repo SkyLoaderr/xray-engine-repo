@@ -22,7 +22,7 @@ struct	R_constant_load
 	u16						index;		// linear index (pixel)
 	u16						cls;		// element class
 
-	R_constant_load() : index(-1), cls(-1) {};
+	R_constant_load() : index(u16(-1)), cls(u16(-1)) {};
 };
 
 struct	R_constant 
@@ -34,7 +34,7 @@ struct	R_constant
 	R_constant_load			ps;
 	R_constant_load			vs;
 
-	R_constant() : type(-1), destination(0) { name[0]=0; };
+	R_constant() : type(u16(-1)), destination(0) { name[0]=0; };
 };
 
 class	R_constant_table

@@ -67,7 +67,9 @@ struct ENGINE_API SEmitterDef
         M.setHPB(m_ConeHPB.x,m_ConeHPB.y,m_ConeHPB.z);
         M.transform_tiny(m_ConeDirection);
     }
+#ifdef _EDITOR
     void 			FillProp(LPCSTR pref, PropItemVec& items);
+#endif
 };
 
 struct ENGINE_API SAnimation
@@ -102,7 +104,9 @@ struct ENGINE_API SAnimation
     	rb.x        = lt.x+m_TexSize.x;
 	    rb.y        = lt.y+m_TexSize.y;
     }
+#ifdef _EDITOR
     void 			FillProp(LPCSTR pref, PropItemVec& items);
+#endif
 };
 
 struct ENGINE_API 	SParams
@@ -130,7 +134,9 @@ struct ENGINE_API 	SParams
 
 	//member variables
 	Flags32			m_Flags;
+#ifdef _EDITOR
     void 			FillProp(LPCSTR pref, PropItemVec& items);
+#endif
 };
 
 struct ENGINE_API SDef: public SParams
@@ -223,7 +229,9 @@ struct ENGINE_API SDef: public SParams
     	VERIFY(strlen(tx)<64);
         strcpy(m_TextureName,tx);
     }
+#ifdef _EDITOR
     void 				FillProp(LPCSTR pref, PropItemVec& items);
+#endif
 };
 #pragma pack( pop )
 

@@ -7,27 +7,31 @@ int					psSupersample	= 0;
 
 CRenderTarget::CRenderTarget()
 {
-	bAvailable		= FALSE;
-	RT				= 0;
+	bAvailable			= FALSE;
+	RT					= 0;
 
-	pShaderSet		= 0;
-	pShaderGray		= 0;
-	pVS				= 0;
+	pShaderSet			= 0;
+	pShaderGray			= 0;
+	pGeom				= 0;
+	pGeom2				= 0;
 
-	param_blur		= 0.f;
-	param_gray		= 0.f;
-	param_noise		= 0.f;
-	param_duality_h	= 0.f;
-	param_duality_v	= 0.f;
-	param_noise_fps	= 25.f;
+	param_blur			= 0.f;
+	param_gray			= 0.f;
+	param_noise			= 0.f;
+	param_duality_h		= 0.f;
+	param_duality_v		= 0.f;
+	param_noise_fps		= 25.f;
 
-	im_noise_time	= 1/100;
-	im_noise_shift_w= 0;
-	im_noise_shift_h= 0;
+	im_noise_time		= 1/100;
+	im_noise_shift_w	= 0;
+	im_noise_shift_h	= 0;
 }
 
 BOOL CRenderTarget::Create	()
 {
+	curWidth			= Device.dwWidth;
+	curHeight			= Device.dwHeight;
+
 	// Select mode to operate in
 	switch (psSupersample)
 	{
@@ -44,7 +48,7 @@ BOOL CRenderTarget::Create	()
 	RT				= Device.Shader._CreateRT		(RTname,rtWidth,rtHeight);
 	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))
 	{
-		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,&ZB));
+		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&ZB,NULL));
 	} else {
 		ZB			= HW.pBaseZB;
 		ZB->AddRef	();
@@ -53,8 +57,8 @@ BOOL CRenderTarget::Create	()
 	// Shaders and stream
 	string64	_rt_2_name;
 	strconcat					(_rt_2_name,RTname,",",RTname);
-	pVS							= Device.Shader._CreateVS		(FVF::F_TL);
-	pVS2						= Device.Shader._CreateVS		(FVF::F_TL2uv);
+	pGeom						= Device.Shader.CreateGeom		(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	pGeom2						= Device.Shader.CreateGeom		(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 	pShaderSet					= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray					= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend				= Device.Shader.Create			("effects\\screen_blend",	RTname);
@@ -78,8 +82,8 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
-	Device.Shader._DeleteVS		(pVS);
-	Device.Shader._DeleteVS		(pVS2);
+	Device.Shader.DeleteGeom	(pGeom);
+	Device.Shader.DeleteGeom	(pGeom2);
 }
 
 void CRenderTarget::eff_load	(LPCSTR n)
@@ -95,9 +99,9 @@ void CRenderTarget::eff_load	(LPCSTR n)
 
 void CRenderTarget::e_render_noise	()
 {
-	Device.Shader.set_Shader		(pShaderNoise);
+	RCache.set_Shader				(pShaderNoise);
 	
-	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
+	CTexture*	T					= RCache.get_ActiveTexture	(0);
 	u32			tw					= iFloor(float(T->get_Width	())*param_noise_scale+EPS_S);
 	u32			th					= iFloor(float(T->get_Height())*param_noise_scale+EPS_S);
 
@@ -132,22 +136,21 @@ void CRenderTarget::e_render_noise	()
 
 	// 
 	u32			Offset;
-	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(4,pVS->dwStride,Offset);
+	FVF::TL* pv			= (FVF::TL*) RCache.Vertex.Lock	(4,pGeom->vb_stride,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, Cgray, p1.x, p0.y);	pv++;
-	Device.Streams.Vertex.Unlock	(4,pVS->dwStride);
+	RCache.Vertex.Unlock	(4,pGeom->vb_stride);
 
 	// Draw Noise
-	Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(Offset+0,Device.Streams.QuadIB);
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	RCache.set_Geometry		(pGeom);
+	RCache.Render			(D3DPT_TRIANGLELIST,Offset+0,0,4,0,2);
 }
 
 void CRenderTarget::e_render_duality()
 {
-	Device.Shader.set_Shader		(pShaderDuality);
+	RCache.set_Shader		(pShaderDuality);
 
 	float		shift_u				= param_duality_h*.5f;
 	float		shift_v				= param_duality_v*.5f;
@@ -162,17 +165,16 @@ void CRenderTarget::e_render_duality()
 
 	// 
 	u32			Offset;
-	FVF::TL2uv* pv					= (FVF::TL2uv*) Device.Streams.Vertex.Lock	(4,pVS2->dwStride,Offset);
+	FVF::TL2uv* pv					= (FVF::TL2uv*) RCache.Vertex.Lock	(4,pGeom2->vb_stride,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, r0.x, r1.y, l0.x, l1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, r0.x, r0.y, l0.x, l0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, r1.x, r1.y, l1.x, l1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, C, r1.x, r0.y, l1.x, l0.y);	pv++;
-	Device.Streams.Vertex.Unlock	(4,pVS2->dwStride);
+	RCache.Vertex.Unlock	(4,pGeom2->vb_stride);
 
 	// Draw Noise
-	Device.Primitive.setVertices	(pVS2->dwHandle, pVS2->dwStride, Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(Offset+0,Device.Streams.QuadIB);
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	RCache.set_Geometry		(pGeom2);
+	RCache.Render			(D3DPT_TRIANGLELIST,Offset+0,0,4,0,2);
 }
 
 BOOL CRenderTarget::Perform		()
@@ -185,12 +187,12 @@ void CRenderTarget::Begin		()
 	if (!Perform())	
 	{
 		// Base RT
-		Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
+		RCache.set_RT			(HW.pBaseRT,HW.pBaseZB);
 		curWidth				= Device.dwWidth;
 		curHeight				= Device.dwHeight;
 	} else {
 		// Our 
-		Device.Shader.set_RT	(RT->pRT,ZB);
+		RCache.set_RT			(RT->pRT,ZB);
 		curWidth				= rtWidth;
 		curHeight				= rtHeight;
 	}
@@ -199,7 +201,7 @@ void CRenderTarget::Begin		()
 
 void CRenderTarget::End		()
 {
-	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
+	RCache.set_RT				(HW.pBaseRT,HW.pBaseZB);
 	curWidth					= Device.dwWidth;
 	curHeight					= Device.dwHeight;
 	
@@ -228,7 +230,7 @@ void CRenderTarget::End		()
 	p1.add				(shift);
 	
 	// Fill vertex buffer
-	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(12,pVS->dwStride,Offset);
+	FVF::TL* pv			= (FVF::TL*) RCache.Vertex.Lock	(12,pGeom->vb_stride,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
@@ -244,7 +246,7 @@ void CRenderTarget::End		()
 	pv->set(float(xW),	float(xH),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
 	pv->set(float(xW),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
 
-	Device.Streams.Vertex.Unlock	(12,pVS->dwStride);
+	RCache.Vertex.Unlock	(12,pGeom->vb_stride);
 
 	// Actual rendering
 	if (param_duality_h>0.001f || param_duality_v>0.001f)
@@ -255,24 +257,21 @@ void CRenderTarget::End		()
 		if (param_gray>0.001f) 
 		{
 			// Draw GRAY
-			Device.Shader.set_Shader		(pShaderGray);
-			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices		(Offset+0,Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			RCache.set_Shader		(pShaderGray);
+			RCache.set_Geometry		(pGeom);
+			RCache.Render			(D3DPT_TRIANGLELIST,Offset+0,0,4,0,2);
 
 			if (param_gray<0.999f) {
 				// Blend COLOR
-				Device.Shader.set_Shader		(pShaderBlend);
-				Device.Primitive.setVertices	(pVS->dwHandle, pVS->dwStride,Device.Streams.Vertex.Buffer());
-				Device.Primitive.setIndices		(Offset+4, Device.Streams.QuadIB);
-				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+				RCache.set_Shader		(pShaderBlend);
+				RCache.set_Geometry		(pGeom);
+				RCache.Render			(D3DPT_TRIANGLELIST,Offset+4, 0,4,0,2);
 			}
 		} else {
 			// Draw COLOR
-			Device.Shader.set_Shader		(pShaderSet);
-			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
-			Device.Primitive.setIndices		(Offset+4,Device.Streams.QuadIB);
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			RCache.set_Shader		(pShaderSet);
+			RCache.set_Geometry		(pGeom);
+			RCache.Render			(D3DPT_TRIANGLELIST,Offset+4,0,4,0,2);
 		}
 	}
 

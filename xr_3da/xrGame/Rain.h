@@ -41,11 +41,11 @@ private:
 
 	// Visualization	(rain)
 	Shader*				SH_Rain;
-	CVS*				VS_Rain;
+	SGeometry*			hGeom_Rain;
 
 	// Visualization	(drops)
 	CDetail				DM_Drop;
-	CVS*				VS_Drops;
+	SGeometry*			hGeom_Drops;
 	
 	// Data and logic
 	vector<Item>		items;

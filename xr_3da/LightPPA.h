@@ -28,19 +28,16 @@ public:
 	IC void			SetColor		(const Fcolor& C)				{ color.set(C);		}
 	IC void			SetColor		(float r, float g, float b)		{ color.set(r,g,b,1); }
 
-	void			Render			(CVS* VS);
+	void			Render			(SGeometry* hGeom);
 };
 
-class ENGINE_API	CLightPPA_Manager	: public pureDeviceCreate, pureDeviceDestroy
+class ENGINE_API	CLightPPA_Manager
 {
 	svector<CLightPPA*,128>			container;
 	
-	Shader*							SH;
-	CVS*							VS;
+	Shader*							hShader;
+	SGeometry*						hGeom;
 public:
-	virtual	void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
-
 	void			Initialize		();
 	void			Destroy			();
 

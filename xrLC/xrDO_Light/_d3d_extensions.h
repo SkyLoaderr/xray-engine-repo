@@ -18,10 +18,9 @@ public:
     float	        theta;            /* Inner angle of spotlight cone */
     float	        phi;              /* Outer angle of spotlight cone */
 	
-	IC	D3DLIGHT8	*d3d() { return (D3DLIGHT8 *)this; };
-	IC	void	set(u32 ltType, float x, float y, float z) 
+	IC	void		set	(u32 ltType, float x, float y, float z) 
 	{
-		VERIFY(sizeof(_light)==sizeof(D3DLIGHT8));
+		VERIFY(sizeof(_light)==sizeof(D3DLIGHT9));
 		ZeroMemory( this, sizeof(_light) );
 		type=ltType;
 		diffuse.set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -48,11 +47,10 @@ public:
     Fcolor			emissive;       /* Emissive color RGB */
     float			power;          /* Sharpness if specular highlight */
 	
-	IC	D3DMATERIAL8	*d3d(void) { return (D3DMATERIAL8 *)this; };
-	IC	void	set(float r, float g, float b)
+	IC	void		set	(float r, float g, float b)
 	{
-		VERIFY(sizeof(_material)==sizeof(D3DMATERIAL8));
-		ZeroMemory( this, sizeof(_material) );
+		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
+		ZeroMemory	(this, sizeof(_material));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
 		diffuse.b = ambient.b = b;
@@ -61,8 +59,8 @@ public:
 	}
 	IC	void	set(float r, float g, float b, float a)
 	{
-		VERIFY(sizeof(_material)==sizeof(D3DMATERIAL8));
-		ZeroMemory( this, sizeof(_material) );
+		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
+		ZeroMemory	(this, sizeof(_material));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
 		diffuse.b = ambient.b = b;
@@ -71,8 +69,8 @@ public:
 	}
 	IC	void	set(Fcolor &c)
 	{
-		VERIFY(sizeof(_material)==sizeof(D3DMATERIAL8));
-		ZeroMemory( this, sizeof(_material) );
+		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
+		ZeroMemory	( this, sizeof(_material) );
 		diffuse.r = ambient.r = c.r;
 		diffuse.g = ambient.g = c.g;
 		diffuse.b = ambient.b = c.b;

@@ -13,12 +13,12 @@ class ENGINE_API CHOM
 private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
-	vector<u32>			m_ZB;
+	vector<u32>				m_ZB;
 
-	Shader*					m_Shader;
-	CVS*					m_VS;
+	Shader*					h_Shader;
+	SGeometry*				h_Geom;
 
-//	IDirect3DTexture8*		m_pDBG;
+//	IDirect3DTexture9*		m_pDBG;
 //	CTexture*				pTexture;
 //	Shader*					pShader;
 //	CVertexStream*			pStream;

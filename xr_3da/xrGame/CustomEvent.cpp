@@ -192,6 +192,6 @@ void CCustomEvent::OnRender()
 	if (!bDebug)	return;
 
 	Fvector H1; H1.set(0.5f,0.5f,0.5f);
-	Device.Primitive.dbg_DrawOBB(svTransform,H1,D3DCOLOR_XRGB(255,255,255));
+	RCache.dbg_DrawOBB(svTransform,H1,D3DCOLOR_XRGB(255,255,255));
 }
 #endif

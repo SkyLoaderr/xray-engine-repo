@@ -44,7 +44,6 @@ void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F, bool bLightin
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;
 	SH->Flags.bLighting		= FALSE;
-	SH->Flags.bPixelShader	= bPixelShader;
 }
 
 //
@@ -59,16 +58,22 @@ void	CBlender_Compile::PassBegin		()
 void	CBlender_Compile::PassEnd			()
 {
 	// Last Stage - disable
-	RS.SetTSS	(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
-	RS.SetTSS	(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
+	RS.SetTSS		(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
+	RS.SetTSS		(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
-	CPass	P;
-	P.dwStateBlock	= Device.Shader._CreateCode			(RS.GetContainer());
-	P.T				= Device.Shader._CreateTextureList	(passTextures);
-	P.M				= Device.Shader._CreateMatrixList	(passMatrices);
-	P.C				= Device.Shader._CreateConstantList	(passConstants);
-	SH->Passes.push_back(P);
+	SPS* ps					= Device.Shader._CreatePS			("null");
+	SVS* vs					= Device.Shader._CreateVS			("null");
+
+	SPass					P;
+	P.ps					= ps->ps;
+	P.vs					= vs->vs;
+	P.constants				= NULL;
+	P.state					= Device.Shader._CreateState		(RS.GetContainer());
+	P.T						= Device.Shader._CreateTextureList	(passTextures);
+	P.M						= Device.Shader._CreateMatrixList	(passMatrices);
+	P.C						= Device.Shader._CreateConstantList	(passConstants);
+	SH->Passes.push_back	(Device.Shader._CreatePass(P));
 }
 
 void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
@@ -146,8 +151,8 @@ void	CBlender_Compile::StageEnd		()
 }
 void	CBlender_Compile::StageSET_Address	(u32 adr)
 {
-	RS.SetTSS	(Stage(),D3DTSS_ADDRESSU,	adr);
-	RS.SetTSS	(Stage(),D3DTSS_ADDRESSV,	adr);
+	RS.SetSAMP	(Stage(),D3DSAMP_ADDRESSU,	adr);
+	RS.SetSAMP	(Stage(),D3DSAMP_ADDRESSV,	adr);
 }
 void	CBlender_Compile::StageSET_XForm	(u32 tf, u32 tc)
 {
@@ -195,8 +200,8 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 }
 void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {
-	sh_list& lst= L_matrices; 
-	int id		= ParseName(name);
+	sh_list& lst	= L_matrices; 
+	int id			= ParseName(name);
 	CMatrix*	M	= Device.Shader._CreateMatrix	((id>=0)?lst[id]:name);
 	passMatrices.push_back(M);
 

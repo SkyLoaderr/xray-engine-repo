@@ -7,8 +7,8 @@ class	ENGINE_API	CTexture;
 class	ENGINE_API	CRT
 {
 public:
-	IDirect3DTexture8*	pSurface;
-	IDirect3DSurface8*	pRT;
+	IDirect3DTexture9*	pSurface;
+	IDirect3DSurface9*	pRT;
 	CTexture*			pTexture;
 	
 	u32					dwReference;

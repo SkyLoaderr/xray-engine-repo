@@ -95,7 +95,7 @@ return pos;
 double current_time=ph_world->m_frame_sum-fixed_step;
 Fvector pos, add_pos;
 double dif=current_time-(ph_world->Time()-fixed_step*5.f);
-UINT i_num=dif/fixed_step;
+u32 i_num=dif/fixed_step;
 if(i_num<0)
 i_num=0;
 if(i_num>5)

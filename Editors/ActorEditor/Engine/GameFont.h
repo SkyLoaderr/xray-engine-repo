@@ -2,9 +2,9 @@
 #define _XR_GAMEFONT_H_
 #pragma once
 
-class ENGINE_API CGameFont: public pureDeviceDestroy, public pureDeviceCreate
+class ENGINE_API CGameFont
 #ifndef M_BORLAND
-	, public pureRender
+	: public pureRender
 #endif
 {
 public:
@@ -14,15 +14,14 @@ public:
 		alCenter
 	};
 private:
-	struct String {
+	struct String 
+	{
 		string256	string;
 		float		x,y;
 		float		size;
 		u32			c;
 		EAligment	align;
 	};
-	LPSTR					cShader;
-	LPSTR					cTexture;
 protected:
 	Fvector2				vHalfPixel;
 	Ivector2				vTS;
@@ -40,7 +39,7 @@ protected:
 	vector<String>			strings;
 
 	Shader*					pShader;
-	CVS*					VS;
+	SGeometry*				pGeom;
 
 	u32						uFlags;
 public:
@@ -75,8 +74,6 @@ public:
 	void					OutSkip			(float val=1.f);
 	
 	virtual void			OnRender		();
-	virtual void			OnDeviceCreate	();
-	virtual void			OnDeviceDestroy	();
 
 	IC	void				Clear			()  { strings.clear(); }
 };

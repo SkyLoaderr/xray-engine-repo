@@ -70,7 +70,7 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 	// First cycle - try to improve quality
 	if (V_Current!=dwCount) {
 		WORD*					Indices = 0;
-		R_CHK					(pIndices->Lock	(0,0,(BYTE**)&Indices,0));
+		R_CHK					(pIndices->Lock	(0,0,(void**)&Indices,0));
 		
 		while (V_Current<dwCount) {
 			Vsplit&	S	=	vsplit[V_Current-V_Minimal];
@@ -120,9 +120,8 @@ void FProgressiveFixedVisual::Render(float LOD)
 		SetLOD(LOD);
 	}
 	if (V_Current && I_Current) {
-		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,pVertices);
-		Device.Primitive.setIndices		(vBase,	pIndices);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,V_Current,iBase,I_Current/3);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,V_Current,iBase,I_Current/3);
 	}
 }
 
@@ -151,9 +150,9 @@ void	FProgressiveFixedVisual::Copy(CVisual *pFrom)
 	BYTE *d_src=0, *d_dst=0;
 	D3DINDEXBUFFER_DESC		desc;
 	R_CHK					(pSrc->pIndices->GetDesc	(&desc));
-	R_CHK					(pSrc->pIndices->Lock		(0,0,&d_src,D3DLOCK_READONLY));
-	R_CHK					(HW.pDevice->CreateIndexBuffer(iCount*2,desc.Usage,D3DFMT_INDEX16,desc.Pool,&pIndices));
-	R_CHK					(pIndices->Lock				(0,0,&d_dst,0));
+	R_CHK					(pSrc->pIndices->Lock		(0,0,(void**)&d_src,D3DLOCK_READONLY));
+	R_CHK					(HW.pDevice->CreateIndexBuffer(iCount*2,desc.Usage,D3DFMT_INDEX16,desc.Pool,&pIndices,0));
+	R_CHK					(pIndices->Lock				(0,0,(void**)&d_dst,0));
 	Memory.mem_copy			(d_dst,d_src,desc.Size);
 	R_CHK					(pIndices->Unlock());
 	R_CHK					(pSrc->pIndices->Unlock());

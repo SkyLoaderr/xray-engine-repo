@@ -49,7 +49,7 @@ public:
 	vector<SceneGraph::_LodItem>					lstLODs;
 	vector<CVisual*>								lstVisuals;
 
-	CVS*											vsPatches;
+	SGeometry*										hGeomPatches;
 
 	// Sector detection and visibility
 	CSector*										pLastSector;
@@ -61,8 +61,8 @@ public:
 	
 	// Global vertex-buffer container
 	vector<u32>										FVF;
-	vector<IDirect3DVertexBuffer8*>					VB;
-	vector<IDirect3DIndexBuffer8*>					IB;
+	vector<IDirect3DVertexBuffer9*>					VB;
+	vector<IDirect3DIndexBuffer9*>					IB;
 	vector<CVisual*>								Visuals;
 	CPSLibrary										PSystems;
 
@@ -71,7 +71,7 @@ public:
 	CLightShadows									L_Shadows;
 	CLightProjector									L_Projector;
 	CGlowManager									Glows;
-	CWallmarksEngine								Wallmarks;
+	CWallmarksEngine*								Wallmarks;
 	CDetailManager									Details;
 	CModelPool										Models;
 
@@ -113,8 +113,8 @@ public:
 	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
 	virtual u32						getFVF					(int id);
-	virtual IDirect3DVertexBuffer8*	getVB					(int id);
-	virtual IDirect3DIndexBuffer8*	getIB					(int id);
+	virtual IDirect3DVertexBuffer9*	getVB					(int id);
+	virtual IDirect3DIndexBuffer9*	getIB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);
 	virtual CRender_target*			getTarget				();
 	

@@ -12,8 +12,9 @@
 #include "texturemanager.h"
 #include "ftimer.h"
 #include "stats.h"
-#include "primitivesR.h"
 #include "xr_effgamma.h"
+
+#include "R_Backend.h"
 
 #define VIEWPORT_NEAR 0.2f
 
@@ -59,11 +60,7 @@ public:
 	// Dependent classes
 	CShaderManager							Shader;
 	CStats									Statistic;
-	CDraw									Primitive;
 	CGammaControl							Gamma;
-
-	// Shared Streams
-	CSharedStreams							Streams;
 
 	// Engine flow-control
 	float									fTimeDelta;
@@ -81,10 +78,6 @@ public:
 	Fmatrix									mFullTransform;
 	float									fFOV;
 	float									fASPECT;
-	IC void									set_xform			(u32 ID, const Fmatrix& M);
-	IC void									set_xform_world		(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
-	IC void									set_xform_view		(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
-	IC void									set_xform_project	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
 	
 	CRenderDevice() 
 	{
@@ -130,16 +123,9 @@ public:
 	CRITICAL_SECTION	mt_csLeave;
 	volatile BOOL		mt_bMustExit;
 };
-
 extern ENGINE_API CRenderDevice Device;
 
-IC void	CRenderDevice::set_xform	(u32 ID, const Fmatrix& M)
-{
-	Statistic.dwXFORMs++;
-	CHK_DX(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));
-}
-
-#include "TextureManager_Runtime.h"
+#include "R_Backend_Runtime.h"
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;
