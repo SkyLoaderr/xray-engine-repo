@@ -84,9 +84,8 @@ void CGameObject::reinit	()
 	if (!frame_check(m_dwFrameReinit))
 		return;
 
-	m_visual_callback.clear		();
+	m_visual_callback.clear	();
 	ai_location().reinit	();
-	CScriptBinder::reinit		();
 }
 
 void CGameObject::reload	(LPCSTR section)
@@ -95,7 +94,6 @@ void CGameObject::reload	(LPCSTR section)
 		return;
 
 	m_script_clsid				= object_factory().script_clsid(CLS_ID);
-	CScriptBinder::reload		(section);
 }
 
 void CGameObject::net_Destroy	()
@@ -231,7 +229,10 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	}
 
 	reload						(*cNameSect());
+	CScriptBinder::reload		(*cNameSect());
+	
 	reinit						();
+	CScriptBinder::reinit		();
 
 	//load custom user data from server
 	if(!E->client_data.empty())
