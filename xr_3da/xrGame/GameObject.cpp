@@ -231,10 +231,13 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 	if (!UsedAI_Locations() || !ai().get_level_graph())
 		return;
 
-#ifdef _DEBUG
-	//Msg								("%6d Searching for node for object %s",Level().timeServer(),cName());
-#endif
+//	u64								start = CPU::GetCycleCount();
 	u32								l_dwNewLevelVertexID = ai().level_graph().vertex(level_vertex_id(),Position());
+//	u64								stop = CPU::GetCycleCount();
+
+#ifdef _DEBUG
+//	Msg								("%6d Searching for node for object %s (%.5f seconds)",Level().timeServer(),cName(),float(s64(stop - start))*CPU::cycles2seconds);
+#endif
 	VERIFY							(ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID));
 
 	if (decrement_reference && (level_vertex_id() == l_dwNewLevelVertexID))

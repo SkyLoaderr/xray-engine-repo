@@ -116,6 +116,7 @@ public:
 
 	virtual BOOL	IsVisibleForHUD	()	{ return FALSE;		}
 	virtual bool	IsVisibleForZones() { return false;		}
+	virtual BOOL	UsedAI_Locations();
 };
 
 #endif

@@ -405,3 +405,8 @@ void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in
 {
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
 }
+
+BOOL CAI_Crow::UsedAI_Locations()
+{
+	return		(FALSE);
+}
