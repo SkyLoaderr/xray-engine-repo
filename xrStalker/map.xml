@@ -28,7 +28,7 @@
 	</static>
 
 	<gl_button x="630" y="18" width="115" height="18">
-		<text font="letterica16" r="255" g="255" b="255">Global Map</text>
+		<text font="letterica16" r="255" g="255" b="255" align="l">Global Map</text>
 	</gl_button>
 
 
