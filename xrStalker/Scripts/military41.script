@@ -25,7 +25,7 @@ function main ()
     action (hero, move (pos, 1.0), anim ("mashina_2"), cond (cond.anim_end))
     action (hero, move (pos, 1.0), anim ("mashina_3"), cond (cond.anim_end))
     action (hero, anim ("mashina_4"), cond (cond.anim_end))
-    action (hero, anim ("mashina_5"), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+    action (hero, anim ("mashina_5"), sound ("Scripts\\Rolik\\hi_boys.ogg", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
      	    cond (cond.anim_end))
 
     while hero:action () do wait () end
