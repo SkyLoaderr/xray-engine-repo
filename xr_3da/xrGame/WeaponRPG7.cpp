@@ -131,7 +131,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
-		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR));
+		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_pGO->Radius()*l_pGO->Radius();
 		if(l_impuls > .001f) {
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
@@ -336,6 +336,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+		m_pPhysicsShell->set_ContactCallback(NULL);
 		m_engineTime = 3000;
 		CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
 		Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);

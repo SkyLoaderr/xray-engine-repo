@@ -31,6 +31,7 @@ public:
 	virtual void Explode();
 	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 
+	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();
 
 	CGrenade *m_pFake;

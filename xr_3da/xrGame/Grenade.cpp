@@ -150,7 +150,7 @@ void CGrenade::Explode() {
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
-		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR));
+		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_pGO->Radius()*l_pGO->Radius();
 		if(l_impuls > .001f) {
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
@@ -316,4 +316,39 @@ void CGrenade::UpdateCL() {
 			m_pLight->set_range(m_lightRange*l_scale);
 		} else m_pLight->set_range(0);
 	} else m_pLight->set_active(false);
+}
+
+bool CGrenade::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_NEXT : {
+			if(flags&CMD_START) {
+				if(m_pInventory) {
+					PPIItem l_it = m_pInventory->m_belt.begin();
+					while(l_it != m_pInventory->m_belt.end() && strcmp((*l_it)->cNameSect(), cNameSect())) l_it++;
+					if(l_it != m_pInventory->m_belt.end()) {
+						while(l_it != m_pInventory->m_belt.end()) {
+							CGrenade *l_pG = dynamic_cast<CGrenade*>(*l_it);
+							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) {
+								m_pInventory->Ruck(this); m_pInventory->Slot(l_pG); m_pInventory->Belt(this); m_pInventory->Activate(l_pG->m_slot);
+								return true;
+							}
+							l_it++;
+						}
+						l_it = m_pInventory->m_belt.begin();
+						while(*l_it != this) {
+							CGrenade *l_pG = dynamic_cast<CGrenade*>(*l_it);
+							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) {
+								m_pInventory->Ruck(this); m_pInventory->Slot(l_pG); m_pInventory->Belt(this); m_pInventory->Activate(l_pG->m_slot);
+								return true;
+							}
+							l_it++;
+						}
+					}
+					return true;
+				}
+			}
+		} return true;
+	}
+	return false;
 }
