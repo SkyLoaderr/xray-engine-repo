@@ -176,7 +176,7 @@ namespace PAPI2
 		domain_enum_force_dword = DWORD(-1)
 	};
 
-	struct pDomain
+	struct PARTICLEDLL_API pDomain
 	{
 		PDomainEnum type;	// PABoxDomain, PASphereDomain, PAConeDomain...
 		pVector p1, p2;		// Box vertices, Sphere center, Cylinder/Cone ends
