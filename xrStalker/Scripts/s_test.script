@@ -151,7 +151,7 @@ function setup(obj_name0,obj_name1,patrol_path)
 	-- define action conditions and effects
 	
 	_action_patrol:add_precondition		(world_property(property_patrol_over,	false))
-	_action_patrol:add_precondition		(world_property(property_say_hi,		false))
+	_action_patrol:add_precondition		(world_property(property_first_meet,	false))
 	_action_patrol:add_effect			(world_property(property_patrol_over,	true))
 
 	_action_patrol_hi:add_precondition	(world_property(property_first_meet,	true))
