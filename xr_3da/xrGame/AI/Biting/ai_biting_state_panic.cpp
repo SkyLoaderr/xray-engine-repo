@@ -60,6 +60,7 @@ void CBitingPanic::Run()
 			
 			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking	(false);
+			pMonster->CMonsterMovement::set_try_min_time(false);
 
 			//if (!pMonster->MotionStats->is_good_motion(3)) m_tAction = ACTION_FACE_BACK_SCARED;
 			if (pMonster->EnemyMan.get_enemy_time_last_seen() + 10000 < m_dwCurrentTime) m_tAction = ACTION_FACE_BACK_SCARED;

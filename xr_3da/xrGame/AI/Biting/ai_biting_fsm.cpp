@@ -63,6 +63,20 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
+	//if (IsMovingOnPath()) {
+	//	HDebug->L_Clear();
+	//	for (u32 i=0; i<CDetailPathManager::path().size();i++) {
+	//		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = m_movement_params.find(CDetailPathManager::path()[i].velocity);
+	//		VERIFY(it != m_movement_params.end());
+
+	//		if (fis_zero((*it).second.linear_velocity))
+	//			HDebug->L_AddPoint(CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(255,0,100));
+	//		else 
+	//			HDebug->L_AddPoint(CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));
+	//	}
+	//}
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
