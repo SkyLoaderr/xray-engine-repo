@@ -27,17 +27,20 @@ SExts formats;
 void	Surface_FormatExt(FREE_IMAGE_FORMAT f)
 {
 	LPCSTR n=FreeImage_GetFIFExtensionList(f);
-    LPSTR ext = xr_strdup(n);
-	LPSTR cur = ext;
-	for	(; ext[0]; ext++){
-   	if (ext[0]==','){ 
-        	ext[0] = 0;
-            formats.format_register(cur);
-            cur = ++ext;
+    if (n){
+        LPSTR base = xr_strdup(n);
+        LPSTR ext = base;
+        LPSTR cur = ext;
+        for	(; ext[0]; ext++){
+        if (ext[0]==','){ 
+                ext[0] = 0;
+                formats.format_register(cur);
+                cur = ++ext;
+            }
         }
-	}
-    if (cur&&cur[0]) formats.format_register(cur);
-    xr_free(ext);
+        if (cur&&cur[0]) formats.format_register(cur);
+        xr_free(base);
+    }
 }
 void	Surface_Init()
 {
