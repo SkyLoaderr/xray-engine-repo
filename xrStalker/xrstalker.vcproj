@@ -1343,6 +1343,9 @@
 							RelativePath=".\scripts\state_mgr.script">
 						</File>
 						<File
+							RelativePath=".\scripts\state_mgr_animstate.script">
+						</File>
+						<File
 							RelativePath=".\scripts\state_mgr_bodystate.script">
 						</File>
 						<File
