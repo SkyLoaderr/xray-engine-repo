@@ -293,8 +293,7 @@ end
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
 function npc_class(avail_types, npc, target)
-	type = "soldier"
-	return type
+	return "soldier"
 end
 function weather_class(avail_types, npc, target)
 	local type = "good"
