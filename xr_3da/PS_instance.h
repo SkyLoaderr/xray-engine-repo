@@ -11,8 +11,8 @@ class ENGINE_API CPS_Instance	:
 	public IRenderable
 {
 protected:
-	int					m_iLifeTime;
-	BOOL				m_bAutoRemove;
+	int						m_iLifeTime;
+	BOOL					m_bAutoRemove;
 public:
 	CPS_Instance			();
 	virtual					~CPS_Instance		();

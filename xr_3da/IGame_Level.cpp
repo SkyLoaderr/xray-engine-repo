@@ -19,7 +19,6 @@ IGame_Level::IGame_Level	()
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	pCurrentViewEntity			= NULL;
-	LL_Stream					= NULL;
 }
 
 IGame_Level::~IGame_Level	()
@@ -31,7 +30,6 @@ IGame_Level::~IGame_Level	()
 	// 
 	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
-	FS.r_close					( LL_Stream		);
 
 	// Render-level unload
 	Render->level_Unload		();
