@@ -763,8 +763,6 @@ public:
 	CCC_BanPlayer(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
 	virtual void Execute(LPCSTR args) 
 	{
-		if (!OnServer())	return;
-		
 		char	Name[128] = {0};
 		char	Number[128] = {0};
 		char	Time[128] = {0};

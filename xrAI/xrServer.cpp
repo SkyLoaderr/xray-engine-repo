@@ -11,6 +11,7 @@
 #include "ai_space.h"
 
 #include "script_space.h"
+#include "../XR_IOConsole.h"
 //#include "script_engine.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -458,6 +459,11 @@ void		xrServer::OnChatMessage(NET_Packet* P, xrClientData* CL)
 		SendTo(Client->ID, *P);
 	};
 };
+
+void		xrServer::BannedList_Load		()
+{
+	Console->ExecuteScript(GetBannedListName());
+}
 
 #ifdef DEBUG
 

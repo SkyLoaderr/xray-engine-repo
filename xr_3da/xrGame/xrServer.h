@@ -58,6 +58,7 @@ private:
 	>							m_tID_Generator;
 protected:
 	void						Server_Client_Check (IClient* CL);
+	virtual	void				BannedList_Load		();
 
 public:
 	game_sv_GameState*			game;
