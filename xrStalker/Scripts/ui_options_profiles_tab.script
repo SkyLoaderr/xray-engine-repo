@@ -37,7 +37,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
     local frame_info = CUIFrameWindow()
 	frame_info:SetAutoDelete(true)
 	frame_info:SetWindowName("info_label")
-	frame_info:Init("ui\\ui_frame_very_small", btn_rect.x, btn_rect.y, btn_rect.width, btn_rect.height)
+	frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
 	self.main_frame:AttachChild(frame_info)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
