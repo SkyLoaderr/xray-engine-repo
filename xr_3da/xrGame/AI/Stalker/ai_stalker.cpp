@@ -791,7 +791,7 @@ CMovementManager *CAI_Stalker::create_movement_manager	()
 	return	(m_movement_manager = xr_new<CStalkerMovementManager>(this));
 }
 
-CSoundUserDataVisitor *CAI_Stalker::create_sound_visitor		()
+CSound_UserDataVisitor *CAI_Stalker::create_sound_visitor		()
 {
 	return	(m_sound_user_data_visitor	= xr_new<CStalkerSoundDataVisitor>(this));
 }

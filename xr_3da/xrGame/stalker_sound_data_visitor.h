@@ -13,7 +13,7 @@
 class CAI_Stalker;
 class CStalkerSoundData;
 
-class CStalkerSoundDataVisitor : public CSoundUserDataVisitor {
+class CStalkerSoundDataVisitor : public CSound_UserDataVisitor {
 private:
 	CAI_Stalker			*m_object;
 

@@ -10,7 +10,7 @@
 
 class CAI_Stalker;
 
-class CStalkerSoundData : public CSoundUserData {
+class CStalkerSoundData : public CSound_UserData {
 private:
 	CAI_Stalker			*m_object;
 
@@ -18,7 +18,7 @@ public:
 	IC					CStalkerSoundData	(CAI_Stalker *object);
 	virtual				~CStalkerSoundData	();
 	virtual void		invalidate			();
-	virtual void		accept				(CSoundUserDataVisitor *visitor);
+	virtual void		accept				(CSound_UserDataVisitor *visitor);
 	IC		CAI_Stalker &object				() const;
 };
 

@@ -24,7 +24,7 @@
 #include "level_navigation_graph.h"
 #include "profiler.h"
 
-CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSoundUserDataVisitor *visitor)
+CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSound_UserDataVisitor *visitor)
 {
 	VERIFY				(monster);
 	m_object			= monster;

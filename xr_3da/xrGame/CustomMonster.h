@@ -241,7 +241,7 @@ public:
 	IC		CMovementManager		&movement				() const;
 	IC		CSoundPlayer			&sound					() const;
 	IC		CMaterialManager		&material				() const;
-	IC		CSoundUserDataVisitor	*sound_user_data_visitor() const;
+	IC		CSound_UserDataVisitor	*sound_user_data_visitor() const;
 
 protected:
 	float							m_far_plane_factor;

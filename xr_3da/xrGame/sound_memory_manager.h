@@ -25,7 +25,7 @@ public:
 private:
 	CCustomMonster				*m_object;
 	CAI_Stalker					*m_stalker;
-	CSoundUserDataVisitor		*m_visitor;
+	CSound_UserDataVisitor		*m_visitor;
 
 private:
 	SOUNDS						*m_sounds;
@@ -58,7 +58,7 @@ protected:
 	IC		void				priority				(const ESoundTypes &sound_type, u32 priority);
 
 public:
-	IC							CSoundMemoryManager		(CCustomMonster *object, CAI_Stalker *stalker, CSoundUserDataVisitor *visitor);
+	IC							CSoundMemoryManager		(CCustomMonster *object, CAI_Stalker *stalker, CSound_UserDataVisitor *visitor);
 	virtual						~CSoundMemoryManager	();
 	virtual	void				Load					(LPCSTR section);
 	virtual	void				reinit					();

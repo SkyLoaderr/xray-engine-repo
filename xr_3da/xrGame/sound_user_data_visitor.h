@@ -10,9 +10,9 @@
 
 class CStalkerSoundData;
 
-class CSoundUserDataVisitor {
+class CSound_UserDataVisitor {
 public:
-	virtual			~CSoundUserDataVisitor	()							{};
-	virtual void	visit					(CSoundUserData *data)		{};
+	virtual			~CSound_UserDataVisitor	()							{};
+	virtual void	visit					(CSound_UserData *data)		{};
 	virtual void	visit					(CStalkerSoundData *data)	{};
 };

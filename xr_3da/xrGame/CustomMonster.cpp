@@ -982,9 +982,9 @@ CMovementManager *CCustomMonster::create_movement_manager	()
 	return	(xr_new<CMovementManager>(this));
 }
 
-CSoundUserDataVisitor *CCustomMonster::create_sound_visitor		()
+CSound_UserDataVisitor *CCustomMonster::create_sound_visitor		()
 {
-	return	(m_sound_user_data_visitor	= xr_new<CSoundUserDataVisitor>());
+	return	(m_sound_user_data_visitor	= xr_new<CSound_UserDataVisitor>());
 }
 
 CMemoryManager *CCustomMonster::create_memory_manager		()

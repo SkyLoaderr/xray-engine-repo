@@ -15,7 +15,7 @@ CStalkerSoundData::~CStalkerSoundData	()
 {
 }
 
-void CStalkerSoundData::accept			(CSoundUserDataVisitor *visitor)
+void CStalkerSoundData::accept			(CSound_UserDataVisitor *visitor)
 {
 	if (!m_object || m_object->getDestroy())
 		return;
