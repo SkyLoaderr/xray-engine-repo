@@ -248,7 +248,7 @@ void	CHelicopterMovManager::addHuntPath(float from_time, const Fvector& enemyPos
 
 	xr_vector<Fvector> vAddedKeys;
 
-	createHuntPathTrajectory(from_time, fromPos, enemyPos, 0.0f, vAddedKeys);
+	createHuntPathTrajectory(from_time, fromPos, enemyPos, vAddedKeys);
 	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false);
 	fixateKeyPath(safe_time);
 	updatePathHPB(safe_time);
@@ -257,29 +257,42 @@ void	CHelicopterMovManager::addHuntPath(float from_time, const Fvector& enemyPos
 
 void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPos)
 {
-/*	Fvector fromPos;
-
+	Fvector fromPos;
+	Fvector dstPos = enemyPos;
 	float safe_time;
 
 	truncatePathSafe(from_time, safe_time, fromPos);
 
 	xr_vector<Fvector> vAddedKeys;
+	Fvector dir;
+	dir.sub(dstPos, fromPos).normalize_safe();
+	float dist = fromPos.distance_to(dstPos);
+	if(dist>20.0f){
+		dstPos.mad(fromPos,dir,dist-20.0f);
+	}
 
-	createHuntPathTrajectory(from_time, fromPos, enemyPos, 20.0f, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed);
+	createHuntPathTrajectory(from_time, fromPos, dstPos, vAddedKeys);
+	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false);
+	fixateKeyPath(safe_time);
 
-	Fvector last = vAddedKeys.back();
+	dstPos = vAddedKeys.back();
+	
+	Fvector dstPos2,T,R;
+	CHelicopterMotion::_Evaluate(m_endTime-0.1f,T,R);
+	dir.sub(T, dstPos).normalize_safe();
+	dstPos2.mad(dstPos,dir,1.0f);
 	vAddedKeys.clear();
-	vAddedKeys.push_back(last);
-	vAddedKeys.back().y -= 2.0f;
-	insertKeyPoints(m_endTime+10.0f, vAddedKeys, 0.03f);
-*/
+	vAddedKeys.push_back(dstPos);
+	vAddedKeys.push_back(dstPos2);
+
+	insertKeyPoints(m_endTime, vAddedKeys, 0.2f, false);
+	updatePathHPB(safe_time);
+
 }
 
 void CHelicopterMovManager::createHuntPathTrajectory(float from_time, 
 													 const Fvector& fromPos, 
 													 const Fvector& enemyPos, 
-													 float dist,
 													 xr_vector<Fvector>& keys)
 {
 	Fvector destPos = enemyPos;

@@ -44,7 +44,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	insertRounding			(const Fvector& fromPos, const Fvector& destPos, float radius, xr_vector<Fvector>& vKeys);
 	void	makeSmoothKeyPath		(float from_time, const xr_vector<Fvector>& vAddedKeys, xr_vector<Fvector>& vSmoothKeys);
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
-	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, float dist, xr_vector<Fvector>& keys );
+	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
 	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
 	void	fixateKeyPath			(float from_time);
