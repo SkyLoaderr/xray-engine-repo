@@ -20,11 +20,28 @@ public:
         flPointFuzzy	= (1<<4),
     };
     Flags32			m_Flags;
-	Flight			m_D3D;
+
+    enum ELightType{
+    	ltPointR1	= 1,
+    	ltSpotR1  	= 2,
+        ltDirectR1	= 3,
+    	ltPointR2	= 4,
+    	ltSpotR2  	= 5,
+    	lt_max_type = u32(-1),
+    };
+    
+    // light
+    ELightType     	m_Type;             /* Type of light source */
+    Fcolor          m_Color;            /* Diffuse color of light */
+    float 			m_Brightness;
+    float		    m_Range;            /* Cutoff range */
+    float	        m_Attenuation0;     /* Constant attenuation */
+    float	        m_Attenuation1;     /* Linear attenuation */
+    float	        m_Attenuation2;     /* Quadratic attenuation */
+    float	        m_Cone;             /* Outer angle of spotlight cone */
 
 	// build options
     BOOL 			m_UseInD3D;
-    float 			m_Brightness;
 
     // fuzzy
     struct SFuzzyData{
@@ -99,8 +116,8 @@ public:
     void __fastcall OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect);
     bool __fastcall	OnPointDataTestEqual(PropValue* a, PropValue* b);
 protected:
-    virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
-    virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
+//    virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
+//    virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
 public:
 					CLight			(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);

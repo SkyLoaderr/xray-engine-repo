@@ -46,17 +46,24 @@ void ESceneLightTools::SelectLightsForObject(CCustomObject* obj)
 //        if (!obj->IsDynamic()&&!l->m_Flags.is(CLight::flAffectStatic)) continue;
         Fbox bb; 	obj->GetBox(bb);
         Fvector C; 	float R; bb.getsphere(C,R);
-        float d 	= C.distance_to(*((Fvector*)&l->m_D3D.position)) - l->m_D3D.range - R;
+        float d 	= C.distance_to(l->PPosition) - l->m_Range - R;
         Device.LightEnable(i,(d<0));
     }
 }
 
 void ESceneLightTools::AppendFrameLight(CLight* src)
 {
-    Flight L			= src->m_D3D;
-    L.diffuse.mul_rgb	(src->m_Brightness);
-    L.ambient.mul_rgb	(src->m_Brightness);
-    L.specular.mul_rgb	(src->m_Brightness);
+    Flight L;
+    L.diffuse.mul_rgb	(src->m_Color,src->m_Brightness);
+    L.mul				(src->m_Brightness);
+    L.position.set		(src->PPosition);
+    Fvector dir;    	dir.setHP(src->PRotation.y,src->PRotation.x);
+    L.direction.set		(dir);
+    L.range				= src->m_Range;
+    L.attenuation0		= src->m_Attenuation0;
+    L.attenuation1		= src->m_Attenuation1;
+    L.attenuation2		= src->m_Attenuation2;
+    L.phi				= src->m_Cone;
     Device.SetLight		(frame_light.size(),L);
     frame_light.push_back(src);
 }
@@ -70,7 +77,7 @@ void ESceneLightTools::BeforeRender()
             CLight* l 		= (CLight*)(*_F);
             l_cnt++;
             if (l->Visible()&&l->m_UseInD3D&&l->m_Flags.is_any(CLight::flAffectDynamic|CLight::flAffectStatic))
-                if (::Render->ViewBase.testSphere_dirty(l->m_D3D.position,l->m_D3D.range))
+                if (::Render->ViewBase.testSphere_dirty(l->PPosition,l->m_Range))
                 	AppendFrameLight(l);
         }
     	// set sun

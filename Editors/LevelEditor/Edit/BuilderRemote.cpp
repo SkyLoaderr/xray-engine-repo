@@ -496,16 +496,31 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     }
         
     b_light	L;
-    L.data			= e->m_D3D;
-    L.data.mul		(e->m_Brightness);
+    switch(e->m_Type){
+    case CLight::ltPointR1:	L.data.type	= D3DLIGHT_POINT; 	break;
+    case CLight::ltSpotR1: 	L.data.type	= D3DLIGHT_SPOT; 	break;
+    default: return FALSE;
+    }
+    
+    L.data.diffuse.mul_rgb		(e->m_Color,e->m_Brightness);
+    L.data.mul					(e->m_Brightness);
+    L.data.position.set			(e->PPosition);
+    Fvector dir;    dir.setHP	(e->PRotation.y,e->PRotation.x);
+    L.data.direction.set		(dir);
+    L.data.range				= e->m_Range;
+    L.data.attenuation0			= e->m_Attenuation0;
+    L.data.attenuation1			= e->m_Attenuation1;
+    L.data.attenuation2			= e->m_Attenuation2;
+    L.data.phi					= e->m_Cone;
+    
     L.controller_ID	= BuildLightControl(e->GetLControlName()); //BuildLightControl(LCONTROL_STATIC); 
 
 	svector<WORD,16>* lpSectors;
     if (e->m_Flags.is(CLight::flAffectDynamic)){
 		svector<WORD,16> sectors;
         lpSectors		= &sectors;
-        Fvector& pos 	= e->m_D3D.position;
-        float& range 	= e->m_D3D.range;
+        Fvector& pos 	= e->PPosition;
+        float& range 	= e->m_Range;
         if (Scene.ObjCount(OBJCLASS_SECTOR)){
             // test fully and partial inside
             ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
@@ -533,8 +548,8 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     }
 
 
-    switch (e->m_D3D.type){
-    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
+    switch (e->m_Type){
+    case CLight::ltPointR1:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
 	    return FALSE;

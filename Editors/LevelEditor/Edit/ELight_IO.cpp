@@ -5,10 +5,7 @@
 #pragma hdrstop
 
 #include "ELight.h"
-#include "ui_main.h"
-#include "d3dutils.h"
 #include "LightAnimLibrary.h"
-#include "scene.h"
 #include "escenelighttools.h"
 
 static const u32 LIGHT_VERSION   			= 0x0011;
@@ -42,7 +39,7 @@ bool CLight::Load(IReader& F)
 	CCustomObject::Load(F);
 
     if (F.find_chunk(LIGHT_CHUNK_D3D_PARAMS)){
-        m_Type			= F.r_u32();            
+        m_Type			= (ELightType)F.r_u32();            
         F.r_fcolor		(m_Color);  	        
         m_Brightness   	= F.r_float();			
         m_Range			= F.r_float();			
@@ -54,7 +51,7 @@ bool CLight::Load(IReader& F)
 	    R_ASSERT(F.find_chunk(LIGHT_CHUNK_D3D_PARAMS));
         Flight			d3d;
 	    F.r				(&d3d,sizeof(d3d));
-        m_Type			= d3d.type;   	        
+        m_Type			= (ELightType)d3d.type;   	        
         m_Color.set		(d3d.diffuse); 	        
         m_Range			= d3d.range;			
         m_Attenuation0	= d3d.attenuation0;		

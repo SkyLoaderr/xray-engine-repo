@@ -75,7 +75,8 @@
       intermediate\ESceneSoundSrcToolsIO.obj intermediate\ESceneWayToolsIO.obj 
       intermediate\ESceneGroupToolsIO.obj intermediate\ESceneDOTools_Pick.obj 
       intermediate\ESceneDOTools_Controls.obj 
-      intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj"/>
+      intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj 
+      intermediate\ELight_props.obj intermediate\ELight_IO.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -264,6 +265,8 @@
       <FILE FILENAME="Edit\ESceneDOTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneDOTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Generate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ObjectAnimator.cpp" FORMNAME="" UNITNAME="ObjectAnimator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ELight_props.cpp" FORMNAME="" UNITNAME="ELight_props" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ELight_IO.cpp" FORMNAME="" UNITNAME="ELight_IO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

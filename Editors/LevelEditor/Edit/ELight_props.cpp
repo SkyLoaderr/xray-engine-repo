@@ -5,8 +5,10 @@
 #pragma hdrstop
 
 #include "ELight.h"
+#include "escenelighttools.h"
 #include "LightAnimLibrary.h"
 #include "PropertiesListHelper.h"
+#include "ui_main.h"
 
 //----------------------------------------------------
 void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif)
@@ -191,8 +193,8 @@ void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 //----------------------------------------------------
 
 xr_token			token_light_type[ ]	=	{
-    { "Point",		CLight::ltPoint			},
-    { "Spot",		CLight::ltSpot			},
+    { "Point",		CLight::ltPointR1		},
+    { "Spot",		CLight::ltSpotR1		},
     { 0,			0	  					}
 };
 
@@ -218,8 +220,8 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 //    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
     switch(m_Type){
-    case ltPoint:	 		FillPointProp	(pref, items);	break;
-    case ltSpot: 			FillSpotProp 	(pref, items);	break;
+    case ltPointR1:	 		FillPointProp	(pref, items);	break;
+    case ltSpotR1: 			FillSpotProp 	(pref, items);	break;
     default: THROW;
     }
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
@@ -232,4 +234,24 @@ void __fastcall	CLight::OnTypeChange(PropValue* value)
 	Update			();
 }
 //----------------------------------------------------
+
+void CLight::OnShowHint(AStringVec& dest){
+    CCustomObject::OnShowHint(dest);
+    AnsiString temp;
+    temp.sprintf("Type:  ");
+    switch(m_Type){
+    case ltPointR1:	        temp+="point"; break;
+    case ltSpotR1:			temp+="spot"; break;
+    default: temp+="undef";
+    }
+    dest.push_back(temp);
+    temp = "Flags: ";
+    if (m_Flags.is(flAffectStatic))  	temp+="Stat ";
+    if (m_Flags.is(flAffectDynamic)) 	temp+="Dyn ";
+    if (m_Flags.is(flProcedural))		temp+="Proc ";
+    dest.push_back(temp);
+    temp.sprintf("Pos:   %3.2f, %3.2f, %3.2f",PPosition.x,PPosition.y,PPosition.z);
+    dest.push_back(temp);
+}
+
 
