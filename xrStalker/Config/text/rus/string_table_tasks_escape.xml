@@ -28,7 +28,7 @@
         <text>Найти и принести артефакт из грави-аномалии.</text>
     </string>
     <string id="esc_trader_need_electra_artefact_0">
-        <text>Торговцу нужен любой артефакт из грави-аномалии.</text>
+        <text>Торговцу нужен артефакт.</text>
     </string>
     <string id="esc_trader_need_electra_artefact_1">
         <text>Найти артефакт. Получить его можно, попытавшись загнать кого-то в аномалию.</text>
@@ -82,7 +82,7 @@
         <text>Встретиться со сталкером в гараже на свалке на счет информации о группировке Стрелка.</text>
     </string>
     <string id="agroprom_get_military_documents">
-        <text>Достать документы военных из НИИ "Агропром".</text>
+        <text>Достать документы военных.</text>
     </string>
     <string id="agroprom_get_military_documents_0">
         <text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
