@@ -184,6 +184,17 @@ void __fastcall TfrmText::ebClearClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TfrmText::InsertTextCP(const AnsiString& line, bool bCommas)
+{
+	AnsiString txt = (bCommas)?AnsiString("\"")+line+AnsiString("\""):line;
+	if (!txt.IsEmpty()){
+    	AnsiString h 	= mmText->Lines->Strings[mmText->CaretPos.y];
+        h.Insert		(txt,mmText->CaretPos.x+1);
+        mmText->Lines->Strings[mmText->CaretPos.y] = h;
+    }
+}
+//---------------------------------------------------------------------------
+
 void TfrmText::InsertLine(const AnsiString& line)
 {
 	if (!line.IsEmpty())

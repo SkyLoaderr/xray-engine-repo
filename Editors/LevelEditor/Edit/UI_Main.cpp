@@ -16,6 +16,7 @@
 #include "d3dutils.h"
 #include "editorpref.h"
 #include "SoundManager.h"
+#include "PSLibrary.h"
 
 TUI UI;
 
@@ -63,11 +64,13 @@ TUI::~TUI()
 void TUI::OnDeviceCreate()
 {
 	DU::OnDeviceCreate();
+    PSLib.OnDeviceCreate();
 }
 
 void TUI::OnDeviceDestroy()
 {
 	DU::OnDeviceDestroy();
+    PSLib.OnDeviceDestroy();
 }
 
 bool TUI::OnCreate(){

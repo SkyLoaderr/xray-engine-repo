@@ -4,7 +4,6 @@
 
 #include "ParticleGroup.h"
 #include "TLSprite.h"
-#include "particles/general.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -12,6 +11,15 @@ using namespace PS;
 //------------------------------------------------------------------------------
 // Render part
 //------------------------------------------------------------------------------
+void CParticleGroup::Copy(IVisual*)
+{
+	THROW;
+}
+void CParticleGroup::Render(float)
+{
+	THROW;
+}
+
 void CParticleGroup::RenderEditor()
 {
 	if (m_Def){
@@ -21,8 +29,7 @@ void CParticleGroup::RenderEditor()
         if(pg == NULL)		return; // ERROR
         if(pg->p_count < 1)	return;
 
-        Device.SetShader	(m_Shader);
-        RCache.set_xform_world(Fidentity);
+        Device.SetShader	(m_Def->m_CachedShader);
         CTLSprite 			m_Sprite;
         for(int i = 0; i < pg->p_count; i++){
             Particle &m = pg->list[i];
@@ -32,13 +39,11 @@ void CParticleGroup::RenderEditor()
             p.set(m.pos.x,m.pos.y,m.pos.z);
             c.set(m.color.x,m.color.y,m.color.z,m.alpha);
             if (m_Def->m_Flags.is(CPGDef::flFramed)){
-    //        	||m_Flags.test(flAnimated)){
                 Fvector2 lt,rb;
                 m_Def->m_Frame.CalculateTC(m.frame,lt,rb);
                 m_Sprite.Render(p,c.get(),m.size.x,m.rot.x,lt,rb);
             }else
                 m_Sprite.Render(p,c.get(),m.size.x,m.rot.x);
-    //		DU::DrawCross(p,m.size.x,m.size.y,m.size.z,m.size.x,m.size.y,m.size.z,c.get(),false);
         }
     }
 }

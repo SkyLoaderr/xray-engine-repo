@@ -55,6 +55,7 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     TfrmText*			m_TextPG;
     PS::CPGDef*			m_LibPGD;
     PS::CParticleGroup*	m_EditPG;
+
     void __fastcall		OnApplyClick		();
     void __fastcall		OnCloseClick		(bool& can_close);
 	bool __fastcall 	OnCodeInsight		(const AnsiString& src_line, AnsiString& hint);
@@ -133,6 +134,7 @@ public:
 
     void				ShowProperties		(){;}
     void				UpdateProperties	(){;}
+    void				RefreshProperties	(){;}
 };
 extern CParticleTools	Tools;
 //---------------------------------------------------------------------------

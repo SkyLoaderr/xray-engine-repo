@@ -81,10 +81,13 @@ void CPSLibrary::RenamePG(PS::CPGDef* src, LPCSTR new_name)
 void CPSLibrary::Remove(const char* nm)
 {
     PS::SDef* sh = FindPS(nm);
-    if (sh) m_PSs.erase(sh);
-    else{
+    if (sh){ 
+    	Device.Shader.Delete(sh->m_CachedShader);
+    	m_PSs.erase(sh);
+    }else{
     	PS::PGIt it = FindPGIt(nm);
         if (it!=m_PGs.end()){
+	    	Device.Shader.Delete((*it)->m_CachedShader);
 	       	m_PGs.erase	(it);
         	xr_delete	(*it);
         }
@@ -108,6 +111,8 @@ bool CPSLibrary::Load(const char* nm)
     if (count){
         m_PSs.resize		(count);
         F->r				(m_PSs.begin(), count*sizeof(PS::SDef));
+        for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+            s_it->m_CachedShader = 0;
     }
     // second generation
     IReader* OBJ 			= F->open_chunk(PS_CHUNK_SECONDGEN);

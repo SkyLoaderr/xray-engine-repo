@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 682
+  Height = 567
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 682
+    Height = 567
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -162,7 +162,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 68
       Width = 210
-      Height = 221
+      Height = 106
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -184,13 +184,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 189
+        Height = 74
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 187
+          Top = 72
           Width = 208
           Height = 2
           Align = alBottom
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 151
+          Height = 36
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -413,7 +413,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 203
+        Top = 88
         Width = 208
         Height = 17
         Align = alBottom
@@ -464,7 +464,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 331
+      Top = 216
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -522,7 +522,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 289
+      Top = 174
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -881,7 +881,7 @@ object fraLeftBar: TfraLeftBar
     Left = 96
     Top = 104
     Bitmap = {
-      494C010102000400040009000E00FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010102000400040009000E00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000240000000E0000000100200000000000E007
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -951,6 +951,7 @@ object fraLeftBar: TfraLeftBar
       000000000000000000000000FFFFFF00FFFFC00000000000FFFFC00000000000
       FFFFC0000000000079BE0000000000007EBD8000000000001D8D000000000000
       6BB5C000000000001C8E000000000000FFFFC00000000000FFFFC00000000000
-      FFFFC00000000000FFFFC00000000000FFFFC00000000000FFFFC00000000000}
+      FFFFC00000000000FFFFC00000000000FFFFC00000000000FFFFC00000000000
+      00000000000000000000000000000000000000000000}
   end
 end

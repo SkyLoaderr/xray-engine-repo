@@ -16,13 +16,8 @@
 #include "xr_trims.h"
 #include "library.h"
 
-#include "engine/particles/papi.h"
-
-#include "xr_tokens.h"
 #include "TextForm.h"
 #include "d3dutils.h"
-#include "engine/particles/papi.h"
-#include "engine/particles/general.h"
 //------------------------------------------------------------------------------
 CParticleTools Tools;
 //------------------------------------------------------------------------------
@@ -47,8 +42,9 @@ CParticleTools::~CParticleTools()
 
 bool CParticleTools::OnCreate(){
 	// shader test locking
-	AnsiString fn = "particles.xr"; Engine.FS.m_GameRoot.Update(fn);
-	if (Engine.FS.CheckLocking(0,fn.c_str(),false,true))
+	AnsiString fn; 
+    FS.update_path(fn,_game_data_,"particles.xr");
+	if (EFS.CheckLocking(0,fn.c_str(),false,true))
     	return false;
 
     Device.seqDevCreate.Add(this);
@@ -66,7 +62,7 @@ bool CParticleTools::OnCreate(){
     ChangeAction(eaSelect);
 
 	// lock
-    Engine.FS.LockFile(0,fn.c_str());
+    EFS.LockFile(0,fn.c_str());
 
     m_EditPG = xr_new<PS::CParticleGroup>();
 
@@ -77,7 +73,7 @@ void CParticleTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
 	// unlock
-    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr");
+    EFS.UnlockFile		(_game_data_,"particles.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
     xr_delete			(m_EditPG);
@@ -114,7 +110,10 @@ void CParticleTools::Render(){
     if (m_LibPGD) m_EditPG->RenderEditor();
     else if (m_LibPS){
         if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
-        if (m_TestObject)	m_TestObject->RenderSingle();
+        if (m_TestObject){	
+	        RCache.set_xform_world		(Fidentity);
+        	m_TestObject->RenderSingle	();
+        }
     }
 }
 
@@ -129,7 +128,7 @@ void CParticleTools::OnFrame(){
 	if (m_EditObject)
     	m_EditObject->OnFrame();
         
-    m_EditPG->OnFrame();
+    m_EditPG->OnFrame(Device.dwTimeDelta);
 }
 
 void CParticleTools::ZoomObject(BOOL bObjectOnly){
@@ -223,11 +222,11 @@ void CParticleTools::Save()
     ApplyChanges();
 	m_bModified = false;
 	// backup
-    Engine.FS.BackupFile(&Engine.FS.m_GameRoot,"particles.xr");
+    EFS.BackupFile	(_game_data_,"particles.xr");
 	// save   
-    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
+    EFS.UnlockFile	(_game_data_,"particles.xr",false);
 	PSLib.Save();
-    Engine.FS.LockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
+    EFS.LockFile	(_game_data_,"particles.xr",false);
 }
 
 void CParticleTools::Reload()
@@ -561,7 +560,15 @@ extern const AnsiString GetFunctionTemplate(const AnsiString& command);
 void __fastcall	CParticleTools::OnPPMenuItemClick(TObject* sender)
 {
 	TMenuItem* mi = dynamic_cast<TMenuItem*>(sender);
-    if (m_TextPG&&mi) m_TextPG->InsertLine(GetFunctionTemplate(mi->Caption));
+    if (m_TextPG&&mi){ 
+		LPCSTR T;
+    	switch(mi->Tag){
+        case -2: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,T)) m_TextPG->InsertTextCP(T); break;
+        case -1: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smShader,T)) m_TextPG->InsertTextCP(T); break;
+        case 0: 	m_TextPG->InsertLine(GetFunctionTemplate(mi->Caption)); break;
+        }
+    	
+    }
 }
 
 void __fastcall CParticleTools::EditActionList()
@@ -581,6 +588,20 @@ void __fastcall CParticleTools::EditActionList()
     TMenuItem* miActionCommands	= xr_new<TMenuItem>((TComponent*)0);
     miActionCommands->Caption 	= "Insert Action Commands";
     m_TextPG->pmTextMenu->Items->Add(miActionCommands);
+
+    mi 							= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 				= "-";
+    m_TextPG->pmTextMenu->Items->Add(mi);
+    mi 							= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 				= "Insert Shader";
+    mi->OnClick					= OnPPMenuItemClick;
+    mi->Tag						= -1;
+    m_TextPG->pmTextMenu->Items->Add(mi);
+    mi 							= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 				= "Insert Texture";
+    mi->OnClick					= OnPPMenuItemClick;
+    mi->Tag						= -2;
+    m_TextPG->pmTextMenu->Items->Add(mi);
 
     mi 							= xr_new<TMenuItem>((TComponent*)0);
     mi->Caption 				= "-";
@@ -610,14 +631,6 @@ void __fastcall CParticleTools::EditActionList()
 void __fastcall CParticleTools::ResetState()
 {
 	PAPI::pResetState();
-#if 0
-    CFS_Memory F;
-    m_EditGroup->Save(F);
-    F.SaveTo("c:\\test.al",0);
-//#else
-    CFileStream S("c:\\test.al");
-    m_EditGroup->Load(S);
-#endif
 }
 
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)

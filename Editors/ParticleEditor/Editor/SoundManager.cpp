@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "SoundManager.h"
+#include "soundrender_environment.h"
 CSoundManager SndLib;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

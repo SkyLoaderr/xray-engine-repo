@@ -60,6 +60,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include <xrCore.h>
 #include <xrCDB.h>
 #include <Sound.h>
+#include <PSystem.h>
 
 // DirectX headers
 #include <d3d9.h>

@@ -3,8 +3,6 @@
 #pragma hdrstop
 
 #include "ParticleGroup.h"
-#include "particles/papi.h"
-#include "particles/general.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -503,6 +501,8 @@ void CPGDef::Compile()
 	// load templates
 	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
 
+    Device.Shader.Delete(m_CachedShader);
+    
     // parse
     LPSTRVec 			lst;
     _SequenceToList		(lst,m_SourceText.c_str(),';');
@@ -571,6 +571,10 @@ void CPGDef::Compile()
     // destroy temporary handls
 	pDeleteParticleGroups	(group_handle);
 	pDeleteActionLists		(action_list_handle);
+
+    if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0]){
+	    m_CachedShader		= Device.Shader.Create(m_ShaderName,m_TextureName);
+    }
 }
 
 

@@ -2,7 +2,6 @@
 #ifndef SoundManagerH
 #define SoundManagerH
 
-#include "soundrender_environment.h"
 class CSoundManager{
 	bool		bNeedRefreshEnvGeom;
     void		RealRefreshEnvGeometry();
