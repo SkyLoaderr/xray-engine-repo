@@ -381,19 +381,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 G
 {
 //	__super::OnPlayerDisconnect	(id_who);
 	inherited::OnPlayerDisconnect	(id_who, Name, GameID);
-	
-	KillPlayer	(id_who, GameID);
-	{
-		NET_Packet			P;
-		GenerateGameMessage (P);
-		P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
-		P.w_stringZ			(Name);
-		u_EventSend(P);
-	};
 };
-
-
-
 
 /*
 void	game_sv_Deathmatch::OnPlayerWantsDie		(ClientID id_who)

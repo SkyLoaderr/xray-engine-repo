@@ -302,6 +302,15 @@ void game_sv_mp::OnPlayerConnect			(ClientID id_who)
 
 void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID)
 {
+	//---------------------------------------------------
+	NET_Packet			P;
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
+	P.w_stringZ			(Name);
+	u_EventSend(P);
+	//---------------------------------------------------
+	KillPlayer	(id_who, GameID);
+	
 	AllowDeadBodyRemove(id_who, GameID);
 	inherited::OnPlayerDisconnect (id_who, Name, GameID);
 }
