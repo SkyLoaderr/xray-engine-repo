@@ -190,9 +190,10 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Console.Hide();
 		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(new CDemoPlay(fn,1.3f));
+		pCreator->Cameras.SetEffector(new CDemoPlay(fn,1.3f));
 	}
 };
+
 //-----------------------------------------------------------------------
 class CCC_Gamma : public CCC_Float
 {
