@@ -2,7 +2,7 @@
 
 <xml>
 	<specific_character id="svoboda_leader">
-		<name>Лидер группировки "Свобода"</name>
+		<name>"Лукаш". Лидер группировки "Свобода"</name>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Лидер группировки "Свобода".</bio>
@@ -30,7 +30,36 @@
 <!---------------------------SVOBODA REGULAR----------------------->
 	<specific_character id="svoboda_regular_default1" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
-		<icon x="22" y="10"></icon>
+		<icon x="22" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>Svoboda_regular</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="svoboda_regular_default2" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="24" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
 
@@ -57,45 +86,16 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-	<specific_character id="svoboda_regular_default2" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="22" y="10"></icon>
+<!---------------------------SVOBODA BODYGUARD---------------------->
+	<specific_character id="svoboda_bodyguard1" team_default = "1">
+		<name>"Капец"</name>
+		<icon x="24" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
 
 		<team>Svoboda_regular</team>
 		
-		<class>Svoboda_regular</class>
-		<community>freedom</community>
-		
-		<rank>40</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
-			device_torch \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-
-	<specific_character id="svoboda_regular_default3" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="22" y="10"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_regular</team>
-		
-		<class>Svoboda_regular</class>
+		<class>Svoboda_bodyguard</class>
 		<community>freedom</community>
 		
 		<rank>40</rank>
@@ -116,29 +116,116 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-<!---------------------------SVOBODA SNIPER---------------------->
-	<specific_character id="svoboda_sniper_default1" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="10" y="2"></icon>
+	<specific_character id="svoboda_bodyguard2" team_default = "1">
+		<name>"Мановар"</name>
+		<icon x="24" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
 
-		<team>Svoboda_sniper</team>
+		<team>Svoboda_regular</team>
 		
-		<class>Svoboda_sniper</class>
+		<class>Svoboda_bodyguard</class>
 		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
 
-		<rank>50</rank>
+		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<specific_character id="svoboda_bodyguard3" team_default = "1">
+		<name>"Угол"</name>
+		<icon x="24" y="16"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>Svoboda_bodyguard</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
 			[spawn] \n
+			wpn_wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_zhekan = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<specific_character id="svoboda_bodyguard4" team_default = "1">
+		<name>"Дядя"</name>
+		<icon x="22" y="6"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>Svoboda_bodyguard</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_balon_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 = 1 \n
+			ammo_12x76_zhekan = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+
+<!---------------------------SVOBODA SNIPER---------------------->
+	<specific_character id="svoboda_sniper_default1" team_default = "1">
+	<name>Сталкер группировки "Свобода"</name>
+		<icon x="24" y="6"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>Svoboda_sniper</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
+		<supplies>
+			[spawn] \n
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
-			wpn_svd \n
-			ammo_7.62x54_ap = 1 \n
-			device_torch \n
+			wpn_svu \n
+			ammo_7.62x54_7h14 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -166,8 +253,7 @@
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
 			wpn_svd \n
-			ammo_7.62x54_ap = 1 \n
-			device_torch \n
+			ammo_7.62x54_7h14 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -195,8 +281,7 @@
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
 			wpn_svd \n
-			ammo_7.62x54_ap = 1 \n
-			device_torch \n
+			ammo_7.62x54_7h14 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -207,7 +292,7 @@
 <!---------------------------SVOBODA SPECNAZ---------------------->
 	<specific_character id="svoboda_veteran_default1" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
-		<icon x="22" y="10"></icon>
+		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
 
@@ -222,8 +307,8 @@
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_pbp = 1 \n
+			wpn_ups  \n
+			ammo_11.43x23_hydro = 1 \n
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
@@ -259,7 +344,6 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_fn2000 \n
 			ammo_5.56x45_ap = 1 \n
-			device_torch \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
