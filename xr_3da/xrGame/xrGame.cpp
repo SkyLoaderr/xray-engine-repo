@@ -27,7 +27,9 @@
 #include "a_star.h"
 #include "game_sv_single.h"
 #include "HangingLamp.h"
-    
+
+#include "trade.h"
+
 ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
 extern float				psSqueezeVelocity;
@@ -574,9 +576,21 @@ class CCC_Trader : public CConsoleCommand {
 public:
 	CCC_Trader(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		Msg("Trader test activated!!!");
+		CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+		if (!pActor) return;
+		
+		string128 param1;
+		_GetItem(args,0,param1,' ');
+		if (strcmp(param1,"show_items") == 0) {
+			pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
+		} else if (strcmp(param1,"show_my_items") == 0) {
+			pActor->m_trade->ShowItems();
+		} else if (strcmp(param1,"show_money") == 0) {
+			pActor->m_trade->ShowMoney();
+		}
 	}
 };
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -640,7 +654,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
 
 		// Trader
-		CMD1(CCC_Trader,			"trader"				);		
+		CMD1(CCC_Trader,			"trade");		
 
 		// keyboard binding
 		CCC_RegisterInput			();

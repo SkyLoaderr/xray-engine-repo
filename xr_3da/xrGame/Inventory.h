@@ -107,5 +107,9 @@ public:
 
 	CInventory	m_inventory;									// Инвентарь
 
-	CTrade		*m_trade;
+	CTrade		*m_trade;										// торговля
+
+	// свойства
+	u32					m_dwMoney;
+	EStalkerRank		m_tRank;
 };

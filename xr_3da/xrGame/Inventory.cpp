@@ -424,19 +424,6 @@ void CInventory::Clear()
 	m_belt.clear();
 }
 
-// CInventoryOwner class //////////////////////////////////////////////////////////////////////////
-
-CInventoryOwner::CInventoryOwner() {
-	m_inventory.m_pOwner = this;
-
-	m_trade = xr_new<CTrade>(this);
-}
-
-CInventoryOwner::~CInventoryOwner() 
-{
-	xr_delete(m_trade); 
-}
-
 // CInventorySlot class //////////////////////////////////////////////////////////////////////////
 
 CInventorySlot::CInventorySlot() {
@@ -444,3 +431,17 @@ CInventorySlot::CInventorySlot() {
 }
 
 CInventorySlot::~CInventorySlot() {}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// CInventoryOwner class //////////////////////////////////////////////////////////////////////////
+CInventoryOwner::CInventoryOwner() {
+	m_inventory.m_pOwner = this;
+
+	m_dwMoney	= 0;
+	m_tRank		= eStalkerRankNone;
+}
+
+CInventoryOwner::~CInventoryOwner() 
+{
+}

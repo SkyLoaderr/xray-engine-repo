@@ -10,13 +10,18 @@
 #include "ai_trader.h"
 #include "..\\..\\bolt.h"
 
+#include "..\\..\\trade.h"
+
 CAI_Trader::CAI_Trader()
 {
 	m_bPlaying						= false;
+
+	m_trade = xr_new<CTrade>(this);
 } 
 
 CAI_Trader::~CAI_Trader()
 {
+	xr_delete(m_trade);
 }
 
 void CAI_Trader::Load(LPCSTR section)

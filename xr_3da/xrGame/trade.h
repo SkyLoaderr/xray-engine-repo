@@ -13,30 +13,34 @@ class CTrade {
 	} EOwnerType;
 
 	struct SInventoryOwner {
-		EOwnerType	type;
-		CEntity		*base;
+		EOwnerType		type;
+		CEntity			*base;
+		CInventoryOwner	*inv_owner;
 
-		void Set (EOwnerType t, CEntity	*b) { type = t; base = b;}
+		void Set (EOwnerType t, CEntity	*b, CInventoryOwner *io) { type = t; base = b; inv_owner = io;}
 	};
-
+public:
 	SInventoryOwner	pThis;
 	SInventoryOwner pPartner;
-
-	CInventoryOwner	*pInvOwner;			// указатель
 
 public:
 	
 	CTrade(CInventoryOwner	*p_io);
 	~CTrade();
 
-	void		UpdateInventoryOwnerInfo();							// заполнение pThis, вызывается потомком данного класса
 
 
-	bool		CanTrade();		// Устанавливает pPartner
+	bool		CanTrade();								// Проверяет, может ли данный объект торговать и устанавливает pPartner
 	bool		IsInTradeState() {return TradeState;}
 
 	void		StartTrade();
-
+	void		StopTrade();
+	void		Communicate();
+	
+	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
+	
+	void		ShowItems();
+	void		ShowMoney();
 private:
 	bool		SetPartner(CEntity *p);
 

@@ -106,8 +106,8 @@ CActor::CActor() : CEntityAlive()
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
-
-	m_trade->UpdateInventoryOwnerInfo();
+	
+	m_trade = xr_new<CTrade>(this);
 }
 
 CActor::~CActor()
@@ -129,6 +129,8 @@ CActor::~CActor()
 	if(m_phSkeleton) {
 		m_phSkeleton->Deactivate();
 		xr_delete<CPhysicsShell>(m_phSkeleton);}
+
+	xr_delete(m_trade);
 }
 
 void CActor::Load		(LPCSTR section )
@@ -353,6 +355,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	hit_factor				= 1.f;
 
 	m_pArtifact				= 0;
+
+	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
+	m_dwMoney	= pTA->m_dwMoney;
+	m_tRank		= pTA->m_tRank;
 
 
 // @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор

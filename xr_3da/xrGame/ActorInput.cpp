@@ -26,16 +26,12 @@ void CActor::OnKeyboardPress(int cmd)
 
 	if (!g_Alive())												return;
 
-//	if (IsInTradeState()) {
-//		return;
-//	}
-//
 	if (cmd == kUSE) {
 		if (m_trade->CanTrade()) {
-			m_trade->StartTrade();			
+			m_trade->Communicate();		
+			return;
 		}
 	}
-
 
 
 
