@@ -1,4 +1,4 @@
-local flesh_distance 	= 10
+local flesh_distance 	= 6
 
 
 // Плоть которая бежит в аномалию при приближении актера
@@ -45,8 +45,8 @@ function CDeadFlesh:update(delta)
 		end
 	end
 
-	//if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
-	if(self.actor_near == false) then	
+	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	//if(self.actor_near == false) then	
 		// Актер далеко, ходит просто по маршруту
 		action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
 		action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
