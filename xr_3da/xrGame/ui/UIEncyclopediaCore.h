@@ -38,6 +38,7 @@ public:
 	// Добавлем 1 энциклопедиционную статью
 	void			AddArticle		(ARTICLE_INDEX, bool bReaded);
 	void			DeleteArticles	();
+	bool			HasArticle		(ARTICLE_INDEX article_index);
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual void	Show			(bool status);
 	// Opens tree at item with specified value

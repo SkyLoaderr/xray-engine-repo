@@ -142,6 +142,14 @@ void CUIEncyclopediaCore::DeleteArticles()
 }
 
 //////////////////////////////////////////////////////////////////////////
+bool CUIEncyclopediaCore::HasArticle		(ARTICLE_INDEX article_index)
+{
+	for(std::size_t i = 0; i<m_ArticlesDB.size(); ++i)
+	{
+		if(m_ArticlesDB[i]->Index() == article_index) return true;
+	}
+	return false;
+}
 
 void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index, bool bReaded)
 {
@@ -223,6 +231,13 @@ void CUIEncyclopediaCore::Show(bool status)
 
 void CUIEncyclopediaCore::OpenTree(int value)
 {
+	int itemVal = -1;
+	for(std::size_t k = 0; k<m_ArticlesDB.size(); ++k)
+	{
+		if(m_ArticlesDB[k]->Index() == value)
+		itemVal = k;
+	}
+
 	R_ASSERT(pIdxList);
 	// Find tree item
 
@@ -234,7 +249,8 @@ void CUIEncyclopediaCore::OpenTree(int value)
 		pItem = smart_cast<CUITreeViewItem*>(pIdxList->GetItem(i));
 		if (pItem)
 		{
-			result = pItem->Find(value);
+			result = pItem->Find(itemVal);
+//			result = pItem->Find(value);
 			if (result) break;
 		}
 	}

@@ -69,7 +69,9 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index) const
 	const CGameObject* pThisGameObject = smart_cast<const CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
-	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
+//	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
+	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), *CInfoPortion::IndexToId(info_index));
+	
 
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);

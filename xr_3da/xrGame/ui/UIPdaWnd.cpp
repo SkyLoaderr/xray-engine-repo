@@ -169,6 +169,16 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			Game().StartStopMenu(this,true);
 			//HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
+	else if (PDA_ENCYCLOPEDIA_HAS_ARTICLE == msg)
+	{
+		CUIJobItem *pItem = smart_cast<CUIJobItem*>(pWnd);
+		if (pItem)
+		{
+			bool* b = (bool*)pData;
+			*b = UIEncyclopediaWnd.HasArticle(pItem->GetAdditionalMaterialID());
+			//SetActiveSubdialog(epsEncyclopedia, pItem->GetAdditionalMaterialID());
+		}
+	}
 	else if (PDA_OPEN_ENCYCLOPEDIA_ARTICLE == msg)
 	{
 		CUIJobItem *pItem = smart_cast<CUIJobItem*>(pWnd);
@@ -267,8 +277,9 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, int addiotionalValue)
 		UITabControl.SetNewActiveTab	(eptComm);
 		break;
 	case epsEncyclopedia:
-		UITabControl.SetNewActiveTab	(eptEncyclopedia);
+//		UITabControl.SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd.OpenTree		(addiotionalValue);
+		UITabControl.SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd.UIBack.Show	(true);
 		break;
 	case epsDiaryArticle:

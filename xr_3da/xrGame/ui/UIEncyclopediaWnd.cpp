@@ -205,6 +205,12 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX idx, bool bReaded)
 	UIInfo.AddArticle(idx, bReaded);
 }
 
+bool CUIEncyclopediaWnd::HasArticle(ARTICLE_INDEX index)
+{
+	ReloadArticles();
+	return UIInfo.HasArticle(index);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::DeleteArticles()

@@ -43,6 +43,7 @@ public:
 
 	void			AddArticle(ARTICLE_INDEX, bool bReaded);
 	void			DeleteArticles();
+	bool			HasArticle(ARTICLE_INDEX);
 
 	void			OpenTree(int idx) { UIInfo.OpenTree(idx); }
 	//  нопка возврата в меню заданий

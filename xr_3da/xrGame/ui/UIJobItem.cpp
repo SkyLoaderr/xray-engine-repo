@@ -106,6 +106,10 @@ void CUIJobItem::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if (&UIAdditionalMaterials == pWnd && BUTTON_CLICKED == msg)
 	{
-		GetTop()->SendMessage(this, static_cast<s16>(articleTypeMsg), NULL);
+		bool bEncHasArticle = false;
+		GetTop()->SendMessage(this,PDA_ENCYCLOPEDIA_HAS_ARTICLE,(void*)(&bEncHasArticle));
+		
+		if(bEncHasArticle)
+			GetTop()->SendMessage(this, static_cast<s16>(articleTypeMsg), NULL);
 	}
 }
