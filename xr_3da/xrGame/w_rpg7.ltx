@@ -174,8 +174,6 @@ blast_impulse_factor = 1.0	;доля хита от взрыва которая пойдет на физ.импульс
 
 wm_size                  = 0.05
 
-effects				= explosions\explosion_01c 
-trail				= weapons\rpg_trail_01
 
 light_color		         = 0.6,0.5,0.3
 light_range		         = 30.0
@@ -210,7 +208,9 @@ inv_grid_height		= 1
 inv_grid_x			= 19
 inv_grid_y			= 9
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Свойства CustomRocket
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 engine_present		= true		;присутствует ли в ракете двигатель
 engine_work_time	= 5000		;время работы двигателя (в милисекундах)
 engine_impulse		= 10		;
@@ -221,3 +221,7 @@ trail_light_range = 30.0
 
 engine_particles = weapons\rpg_trail_01
 ;fly_particles	 = weapons\rpg_trail_01
+
+;to be destroy!!!
+effects				= explosions\explosion_01c 
+trail				= weapons\rpg_trail_01
