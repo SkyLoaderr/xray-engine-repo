@@ -24,7 +24,7 @@ local patrols = {
                       on_move = false,
                       dead = false,
                       npc = nil
-                      } 
+                      }, 
                       {
                       name = "raid_soldier_0_4",
                       id = -1,
@@ -65,7 +65,7 @@ local patrols = {
                       on_move = false,
                       dead = false,
                       npc = nil
-                      } 
+                      }, 
                       {
                       name = "raid_soldier_1_4",
                       id = -1,
