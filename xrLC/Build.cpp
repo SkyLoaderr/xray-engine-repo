@@ -121,12 +121,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		R_ASSERT				(F);
 		u32 count				= F->Rdword	();
 
-	}
-	{
-		F = FS.OpenChunk		(EB_MU_models);
-		R_ASSERT				(F);
-		u32 count				= F->Rdword	();
-	
 		while (count && !F->Eof())
 		{
 			mu_models.push_back		(xr_new<xrMU_Model>());
@@ -134,6 +128,13 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			count--;
 		}
 
+		F->Close				();
+	}
+	{
+		F = FS.OpenChunk		(EB_MU_refs);
+		R_ASSERT				(F);
+		u32 count				= F->Rdword	();
+		
 		F->Close				();
 	}
 
