@@ -38,6 +38,7 @@ public:
 	virtual CParticlesObject* StartParticles(ref_str particles_name,
 											 int bone_num, 
 											 const Fvector& bone_pos,
+											 const Fvector& dir,
 											 u16 sender_id,
 											 bool auto_remove = true);
 	

@@ -512,7 +512,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//. temporary
 	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
 
-
 	return					TRUE;
 }
 

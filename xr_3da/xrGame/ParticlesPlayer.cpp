@@ -21,6 +21,7 @@ CParticlesPlayer::~CParticlesPlayer ()
 CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 											 int bone_num, 
 											 const Fvector& bone_pos,
+											 const Fvector& dir,
 											 u16 sender_id,
 											 bool auto_remove)
 
@@ -34,6 +35,7 @@ CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 	pParticlesInfo->particles_name = particles_name;
 	pParticlesInfo->bone = bone_num;
 	pParticlesInfo->bone_pos = bone_pos;
+	pParticlesInfo->dir = dir;
 	pParticlesInfo->sender_id = sender_id;
 	pParticlesInfo->auto_remove = auto_remove;
 
