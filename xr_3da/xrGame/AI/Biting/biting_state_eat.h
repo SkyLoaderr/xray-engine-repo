@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../state_manager_state.h"
+#include "../../state_base.h"
 
 class CAI_Biting;
 
@@ -23,5 +24,20 @@ public:
 	virtual	void		initialize			();
 	virtual	void		execute				();
 	virtual	void		finalize			();
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+class CStateBitingEatCheckCorpse : public CStateBase<CAI_Biting> {
+	typedef CStateBase<CAI_Biting> inherited;
+
+public:
+						CStateBitingEatCheckCorpse	(LPCSTR state_name) : inherited(state_name) {}
+
+	virtual	void		initialize					();
+	virtual	void		execute						();
+	virtual	void		finalize					();
+
+	virtual	bool		completed					() const;
 };
 

@@ -119,12 +119,15 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S);
 
-
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 
-
 	END_LOAD_SHARED_MOTION_DATA();
+
+	MotionMan.accel_load			(section);
+	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
 }
 
 
@@ -293,4 +296,33 @@ void CAI_Dog::OnJumpStop()
 //	}
 //}
 
+
+void CAI_Dog::ProcessTurn()
+{
+	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
+	if (delta_yaw < deg(1)) {
+		m_body.current.yaw = m_body.target.yaw;
+		return;
+	}
+
+	EMotionAnim anim = MotionMan.GetCurAnim();
+
+	bool turn_left = true;
+	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
+
+	switch (anim) {
+		case eAnimStandIdle: 
+			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			return;
+		case eAnimJumpLeft:
+		case eAnimJumpRight:
+			MotionMan.SetCurAnim(anim);
+			return;
+		default:
+			if (delta_yaw > deg(30)) {
+				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			}
+			return;
+	}
+}
 

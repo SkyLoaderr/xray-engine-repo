@@ -4,32 +4,36 @@
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-CStateBitingEatPrepreDrag::CStateBitingEatPrepreDrag(LPCSTR state_name) : inherited(state_name)
+CStateBitingEatPrepareDrag::CStateBitingEatPrepareDrag(LPCSTR state_name) : inherited(state_name)
 {
 }
 
-CStateBitingEatPrepreDrag::~CStateBitingEatPrepreDrag()
+CStateBitingEatPrepareDrag::~CStateBitingEatPrepareDrag()
 {
 }
 
 
-void CStateBitingEatPrepreDrag::initialize()
+void CStateBitingEatPrepareDrag::initialize()
 {
 	inherited::initialize();
 }
 
-void CStateBitingEatPrepreDrag::execute()
+void CStateBitingEatPrepareDrag::execute()
 {
 	m_object->MotionMan.m_tAction = ACT_SLEEP;
+
+	// если монстр подбежал к трупу, необходимо отыграть проверку трупа
+	m_object->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
 }
 
-void CStateBitingEatPrepreDrag::finalize()
+void CStateBitingEatPrepareDrag::finalize()
 {
 	inherited::finalize();
 }
 
-bool CStateBitingEatPrepreDrag::completed() const
+bool CStateBitingEatPrepareDrag::completed() const
 {
+
 	return false;
 }
 

@@ -18,7 +18,7 @@ void CStateBitingEat::Load(LPCSTR section)
 {
 	add_state				(xr_new<CStateBitingEatApproach>	("Approach"),		eES_ApproachCorpse,	1);
 	add_state				(xr_new<CStateBitingEatEat>			("Eat"),			eES_Eat,			0);
-	add_state				(xr_new<CStateBitingEatPrepreDrag>	("Prepare Drag"),	eES_PrepareDrag,	1);
+	//add_state				(xr_new<CStateBitingEatPrepreDrag>	("Prepare Drag"),	eES_PrepareDrag,	1);
 	add_state				(xr_new<CStateBitingEatDrag>		("Drag"),			eES_Drag,			1);
 
 	add_transition			(eES_ApproachCorpse,eES_PrepareDrag,1);
@@ -50,4 +50,31 @@ void CStateBitingEat::finalize()
 {
 	inherited::finalize();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CStateBitingEatCheckCorpse::initialize()
+{
+	// если монстр подбежал к трупу, необходимо отыграть проверку трупа
+	m_object->MotionMan.SetSpecParams	(ASP_CHECK_CORPSE);
+	
+
+	inherited::initialize();
+}
+
+void CStateBitingEatCheckCorpse::execute()
+{
+}
+
+void CStateBitingEatCheckCorpse::finalize()
+{
+	inherited::finalize();
+}
+
+bool CStateBitingEatCheckCorpse::completed() const
+{
+	return false;
+}
+
+
 

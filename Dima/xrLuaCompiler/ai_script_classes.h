@@ -79,6 +79,7 @@ public:
 	// CGameObject
 	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	SUB_CLS_ID,			CLASS_ID,						CLASS_ID(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
+	BIND_FUNCTION10	(m_tpGameObject,	Direction,			CGameObject,	Direction,			Fvector,						Fvector());
 	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,							u32(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,							FALSE);
@@ -171,6 +172,10 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
 //	BIND_FUNCTION02	(m_tpGameObject,	AddAction,			CScriptMonster,	AddAction,			const CEntityAction *,				bool,					const CEntityAction *,	bool);
 //	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
+	
+	BIND_FUNCTION10	(m_tpGameObject,	GetEnemyStrength,	CScriptMonster,	get_enemy_strength,	int,								0);
+
+
 
 	IC		CEntityAction	*GetCurrentAction	() const
 	{

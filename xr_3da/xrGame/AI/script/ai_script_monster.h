@@ -97,6 +97,8 @@ public:
 
 	virtual CEntity				*GetCurrentEnemy		();
 	virtual CEntity				*GetCurrentCorpse		();
+	virtual int					get_enemy_strength		();
+
 private:
 			void				FreeAll					();
 };

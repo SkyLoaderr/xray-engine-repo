@@ -139,8 +139,10 @@ public:
 
 	virtual	CEntity			*GetCurrentEnemy				();
 	virtual	CEntity 		*GetCurrentCorpse				();
+	virtual int				get_enemy_strength				();
 	
 	virtual void			SetScriptControl				(const bool bScriptControl, ref_str caSciptName);
+
 
 
 	// ---------------------------------------------------------------------------------

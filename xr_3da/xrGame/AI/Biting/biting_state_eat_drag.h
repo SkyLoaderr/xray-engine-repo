@@ -8,12 +8,12 @@ class CAI_Biting;
 // тянуть труп
 //////////////////////////////////////////////////////////////////////////
 
-class CStateBitingEatPrepreDrag : public CStateBase<CAI_Biting> {
+class CStateBitingEatPrepareDrag : public CStateBase<CAI_Biting> {
 	typedef CStateBase<CAI_Biting> inherited;
 
 public:
-						CStateBitingEatPrepreDrag	(LPCSTR state_name);
-	virtual				~CStateBitingEatPrepreDrag	();
+						CStateBitingEatPrepareDrag	(LPCSTR state_name);
+	virtual				~CStateBitingEatPrepareDrag	();
 
 	virtual	void		initialize				();
 	virtual	void		execute					();

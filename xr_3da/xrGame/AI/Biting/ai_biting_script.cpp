@@ -144,29 +144,32 @@ void CAI_Biting::ProcessScripts()
 	b_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
 	
+	m_dwLastUpdateTime						= m_current_update;
+	m_current_update						= Level().timeServer();
+
 	// обновить мир (память, враги, объекты)
 	vfUpdateParameters							();
 	
+
+	MotionMan.accel_deactivate					();
+
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
 	if (b_script_state_must_execute && !CurrentState->CheckCompletion())			
 		CurrentState->Execute					(m_current_update);
-	
-	// Удалить все враги и объекты, которые были принудительно установлены
-	// во время выполнения скриптового действия
-	ClearForcedEntities							();
 	
 	TranslateActionToPathParams					();
 
 	// обновить путь
 	CMonsterMovement::Frame_Update				();
 
-//	MotionMan.accel_activate					(eAT_Сalm);
-//	MotionMan.accel_set_braking					(false);
-
 	MotionMan.Update							();
 	
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize			();
+
+	// Удалить все враги и объекты, которые были принудительно установлены
+	// во время выполнения скриптового действия
+	ClearForcedEntities							();
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()
@@ -257,4 +260,20 @@ void CAI_Biting::SetScriptControl(const bool bScriptControl, ref_str caScriptNam
 	if (CurrentState) CurrentState->Done();
 
 	CScriptMonster::SetScriptControl(bScriptControl, caScriptName);
+}
+
+
+int	CAI_Biting::get_enemy_strength()
+{
+	if (m_tEnemy.obj) {
+		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
+			case 4 : 	return (1);
+			case 3 : 	return (2);
+			case 2 : 	return (3);
+			case 1 : 
+			case 0 : 	return (4);
+		}
+	} 
+	
+	return (0);
 }

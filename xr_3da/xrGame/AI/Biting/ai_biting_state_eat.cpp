@@ -79,9 +79,8 @@ void CBitingEat::Run()
 	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
 	if (pCorpse != ve.obj) Init();
 
-	
-	Fvector nearest_bone_pos;
 	// Определить позицию ближайшей боны у трупа
+	Fvector nearest_bone_pos;
 	if (dynamic_cast<CGameObject *>(pCorpse)->m_pPhysicsShell == NULL) {
 		bCanDrag			= false;
 		nearest_bone_pos	= pCorpse->Position(); 

@@ -27,4 +27,6 @@ public:
 	virtual bool	CanJump				() {return true;}
 	virtual bool	CanExecRotationJump	() {return true;}
 
+	virtual void	ProcessTurn			();
+
 };

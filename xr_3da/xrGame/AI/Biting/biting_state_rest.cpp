@@ -21,7 +21,6 @@ void CStateBitingRest::Load(LPCSTR section)
 	add_transition			(eRS_Sleep,eRS_WalkGraphPoint,	1,1);
 
 	inherited::Load			(section);
-
 }
 
 void CStateBitingRest::reinit(CAI_Biting *object)

@@ -13,6 +13,8 @@ class CAI_Biting;
 class CStateBitingEatApproach : public CStateBase<CAI_Biting> {
 	typedef CStateBase<CAI_Biting> inherited;
 
+	float				cur_dist;
+
 public:
 						CStateBitingEatApproach	(LPCSTR state_name);
 	virtual				~CStateBitingEatApproach();

@@ -758,3 +758,7 @@ CEntity	*CScriptMonster::GetCurrentCorpse()
 	return (0);
 }
 
+int CScriptMonster::get_enemy_strength()
+{
+	return (0);
+}
