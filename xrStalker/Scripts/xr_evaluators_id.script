@@ -65,3 +65,6 @@ jon_stalker_novice   = jon_evaluators + 1
 jon_stalker_novice2  = jon_evaluators + 2
 jon_stalker_novice3  = jon_evaluators + 3
 jon_stalker_attack   = jon_evaluators + 4
+
+jon_scientist        = jon_evaluators + 5
+jon_security         = jon_evaluators + 6

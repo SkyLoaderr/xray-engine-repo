@@ -68,3 +68,6 @@ jon_stalker_novice     = jon_actions + 1
 jon_stalker_novice2    = jon_actions + 2
 jon_stalker_novice3    = jon_actions + 3
 jon_stalker_attack     = jon_actions + 4
+
+jon_scientist          = jon_actions + 5
+jon_security 		   = jon_actions + 6
