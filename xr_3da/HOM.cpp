@@ -121,7 +121,7 @@ void CHOM::Render		(CFrustum& base)
 	Raster.clear		();
 
 	// Query DB
-	XRC.frustum_options	(0);
+	XRC.frustum_options	();
 	XRC.frustum_query	(m_pModel,base);
 
 	// Perfrom selection, sorting, culling
