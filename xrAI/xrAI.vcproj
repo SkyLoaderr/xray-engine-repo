@@ -838,6 +838,16 @@
 									RelativePath=".\vertex_manager_generic_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="hash_fixed"
+								Filter="">
+								<File
+									RelativePath=".\vertex_manager_hash_fixed.h">
+								</File>
+								<File
+									RelativePath=".\vertex_manager_hash_fixed_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -904,6 +914,9 @@
 							<Filter
 								Name="operator_condition"
 								Filter="">
+								<File
+									RelativePath=".\operator_condition.cpp">
+								</File>
 								<File
 									RelativePath=".\operator_condition.h">
 								</File>

@@ -16,6 +16,7 @@
 //		vertex managers
 #include "vertex_manager_generic.h"
 #include "vertex_manager_fixed.h"
+#include "vertex_manager_hash_fixed.h"
 //		allocators
 #include "vertex_allocator_generic.h"
 #include "vertex_allocator_fixed.h"
@@ -68,7 +69,13 @@ protected:
 //	typedef CPriorityQueue<boost::pairing_heap>				CPriorityQueue;
 	
 	typedef CVertexManagerFixed<u32,u32,8>					CVertexManager;
-	typedef CVertexManagerGeneric<u32,_solver_index_type>	CSolverVertexManager;
+//	typedef CVertexManagerGeneric<u32,_solver_index_type>	CSolverVertexManager;
+	typedef CVertexManagerHashFixed<
+				u32,
+				_solver_index_type,
+				65536,
+				1024*1024
+			>												CSolverVertexManager;
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
 	typedef CVertexAllocatorFixed<1024*1024>				CSolverVertexAllocator;
 

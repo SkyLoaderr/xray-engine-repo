@@ -20,6 +20,12 @@ IC	CAbstractOperatorCondition::COperatorConditionAbstract	(const _condition_type
 	m_condition			(condition),
 	m_value				(value)
 {
+	u32					seed = rand32.seed();
+	rand32.seed			(u32(condition));
+	m_hash				= rand32.random(0xffffffff);
+	rand32.seed			(u32(condition) + u32(value) + 1);
+	m_hash				^= rand32.random(0xffffffff);
+	rand32.seed			(seed);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -37,6 +43,12 @@ TEMPLATE_SPECIALIZATION
 IC	const _value_type &CAbstractOperatorCondition::value			() const
 {
 	return				(m_value);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const u32 &CAbstractOperatorCondition::hash_value	() const
+{
+	return				(m_hash);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -41,11 +41,11 @@ COperator *random_operator()
 	return		(xr_new<COperator>(0,random_condition().conditions(),random_condition().conditions()));
 }
 
-LPSTR show_condition(const CState &condition, LPSTR s)
+LPSTR show_condition(const xr_vector<CCondition> &condition, LPSTR s)
 {
 	char					*s1 = s;
-	xr_vector<CCondition>::const_iterator	i = condition.conditions().begin();
-	xr_vector<CCondition>::const_iterator	e = condition.conditions().end();
+	xr_vector<CCondition>::const_iterator	i = condition.begin();
+	xr_vector<CCondition>::const_iterator	e = condition.end();
 	for (u32 I=0; (I < world_state_dimension) && (i != e); ++I)
 		if (I == u32((*i).condition())) {
 			s1				+= sprintf(s1,"%d ",(*i).value());
@@ -62,7 +62,7 @@ LPSTR show_condition(const CState &condition, LPSTR s)
 void show_condition(const CState &condition, u32 i = 0)
 {
 	string256				s;
-	Msg						("condition %2d : %s",i,show_condition(condition,s));
+	Msg						("condition %2d : %s",i,show_condition(condition.conditions(),s));
 }
 
 void show_operator(const COperator &_operator, u32 i)

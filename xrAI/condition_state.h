@@ -21,10 +21,10 @@ protected:
 
 protected:
 	xr_vector<COperatorCondition>				m_conditions;
+	u32											m_hash;
 
 public:
 	IC											CConditionState		();
-	IC											CConditionState		(const xr_vector<COperatorCondition> &conditions);
 	virtual										~CConditionState	();
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	void									add_condition		(const COperatorCondition &condition);
@@ -35,6 +35,9 @@ public:
 	IC	bool									includes			(const CConditionState &condition, const CConditionState &start) const;
 	IC	void									clear				();
 	IC	CSConditionState						&operator-=			(const CConditionState &condition);
+	IC	bool 									operator==			(const CConditionState &condition);
+	IC											operator u32		() const;
+	IC	u32										hash_value			() const;
 };
 
 #include "condition_state_inline.h"

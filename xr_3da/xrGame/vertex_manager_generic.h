@@ -63,7 +63,6 @@ struct CVertexManagerGeneric {
 		template <typename _path_id_type>
 		struct SGraphIndexVertex : public _index_vertex<CGraphVertex,SGraphIndexVertex> {
 			CGraphVertex	*m_vertex;
-			bool			m_opened;
 		};
 #pragma pack(pop)
 

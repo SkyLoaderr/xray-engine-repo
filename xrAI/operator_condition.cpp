@@ -9,17 +9,4 @@
 #include "stdafx.h"
 #include "operator_condition.h"
 
-#define TEMPLATE_SPECIALIZATION template<\
-	typename T2,\
-	typename T3\
->
-
-#define CAbstractOperatorCondition COperatorConditionAbstract<T2,T3>
-
-TEMPLATE_SPECIALIZATION
-CAbstractOperatorCondition::~COperatorConditionAbstract		()
-{
-}
-
-#undef TEMPLATE_SPECIALIZATION
-#undef CAbstractOperatorCondition
+CRandom32 rand32;
