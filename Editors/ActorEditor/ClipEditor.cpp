@@ -504,9 +504,9 @@ void TClipMaker::RealUpdateProperties()
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
             ref_str tmp;
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
-            if (BP)				PHelper().CreateCaption	(p_items,PHelper().PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
+            if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
-        if (*sel_clip->fx)		PHelper().CreateFloat		(p_items,PHelper().PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
+        if (*sel_clip->fx)		PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
     }
 	m_ClipProps->AssignItems(p_items);
 }
