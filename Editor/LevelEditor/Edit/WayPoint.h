@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: aitraffic.h
+// file: WayPoint.h
 //----------------------------------------------------
 
 #ifndef _INCDEF_AITraffic_H_
@@ -9,7 +9,7 @@
 
 class CFrustum;
 
-class CAITPoint: public CCustomObject {
+class CWayPoint: public CCustomObject {
 	friend class 	SceneBuilder;
 
     ObjectList		m_Links;
@@ -19,15 +19,15 @@ class CAITPoint: public CCustomObject {
     void            DrawPoint		(Fcolor& c);
     void			DrawLinks		(Fcolor& c);
 
-    void			AppendLink		(CAITPoint* P);
-    bool			DeleteLink		(CAITPoint* P);
+    void			AppendLink		(CWayPoint* P);
+    bool			DeleteLink		(CWayPoint* P);
 
     typedef CCustomObject inherited;
 public:
-	                CAITPoint		();
-	                CAITPoint   	(char *name);
+	                CWayPoint		();
+	                CWayPoint   	(char *name);
     void            Construct   	();
-	virtual         ~CAITPoint  	();
+	virtual         ~CWayPoint  	();
 
 	virtual void    Render      	(int priority, bool strictB2F);
 	virtual bool    RayPick	    	(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf = NULL);
@@ -38,8 +38,8 @@ public:
 	virtual void 	OnDestroy		();
 	virtual void 	OnSynchronize	();
 
-    bool			AddLink			(CAITPoint* P);
-    bool			RemoveLink		(CAITPoint* P);
+    bool			AddLink			(CWayPoint* P);
+    bool			RemoveLink		(CWayPoint* P);
 };
-#endif /*_INCDEF_NavPoint_H_*/
+#endif /*_INCDEF_WayPoint_H_*/
 

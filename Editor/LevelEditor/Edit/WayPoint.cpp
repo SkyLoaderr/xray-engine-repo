@@ -4,82 +4,82 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "AITraffic.h"
+#include "WayPoint.h"
 #include "SceneClassList.h"
 #include "UI_Main.h"
 #include "D3DUtils.h"
 #include "Scene.h"
 
-#define AITPOINT_VERSION				0x0011
+#define WAYPOINT_VERSION				0x0011
 //----------------------------------------------------
-#define AITPOINT_CHUNK_VERSION			0xE501
-#define AITPOINT_CHUNK_POINT			0xE502
-#define AITPOINT_CHUNK_LINKS			0xE503
+#define WAYPOINT_CHUNK_VERSION			0xE501
+#define WAYPOINT_CHUNK_POINT			0xE502
+#define WAYPOINT_CHUNK_LINKS			0xE503
 //----------------------------------------------------
 
-#define AITPOINT_SIZE 	1.5f
-#define AITPOINT_RADIUS AITPOINT_SIZE*.5f
+#define WAYPOINT_SIZE 	1.5f
+#define WAYPOINT_RADIUS WAYPOINT_SIZE*.5f
 //------------------------------------------------------------------------------
 // AI Traffic points
 //------------------------------------------------------------------------------
-CAITPoint::CAITPoint(char *name):CCustomObject(){
+CWayPoint::CWayPoint(char *name):CCustomObject(){
 	Construct();
 	Name		= name;
 }
 
-CAITPoint::CAITPoint():CCustomObject(){
+CWayPoint::CWayPoint():CCustomObject(){
 	Construct();
 }
 
-void CAITPoint::Construct(){
+void CWayPoint::Construct(){
 	ClassID   	= OBJCLASS_AITPOINT;
 }
 
-CAITPoint::~CAITPoint(){
+CWayPoint::~CWayPoint(){
 	OnDestroy();
 }
 //----------------------------------------------------
 
-void CAITPoint::OnDestroy(){
+void CWayPoint::OnDestroy(){
 	inherited::OnDestroy();
 	// удалить у всех линков себя
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
-    	((CAITPoint*)(*o_it))->DeleteLink(this);
+    	((CWayPoint*)(*o_it))->DeleteLink(this);
 }
 //----------------------------------------------------
 
-bool CAITPoint::GetBox( Fbox& box ){
+bool CWayPoint::GetBox( Fbox& box ){
 	box.set( PPosition, PPosition );
-	box.min.x -= AITPOINT_RADIUS;
+	box.min.x -= WAYPOINT_RADIUS;
 	box.min.y -= 0;
-	box.min.z -= AITPOINT_RADIUS;
-	box.max.x += AITPOINT_RADIUS;
-	box.max.y += AITPOINT_SIZE;
-	box.max.z += AITPOINT_RADIUS;
+	box.min.z -= WAYPOINT_RADIUS;
+	box.max.x += WAYPOINT_RADIUS;
+	box.max.y += WAYPOINT_SIZE;
+	box.max.z += WAYPOINT_RADIUS;
 	return true;
 }
 
-void CAITPoint::DrawPoint(Fcolor& c){
+void CWayPoint::DrawPoint(Fcolor& c){
 	Fvector pos;
-    pos.set	(PPosition.x,PPosition.y+AITPOINT_SIZE*0.85f,PPosition.z);
-    DU::DrawCross(pos,AITPOINT_RADIUS,AITPOINT_SIZE*0.85f,AITPOINT_RADIUS,AITPOINT_RADIUS,AITPOINT_SIZE*0.15f,AITPOINT_RADIUS,c.get());
+    pos.set	(PPosition.x,PPosition.y+WAYPOINT_SIZE*0.85f,PPosition.z);
+    DU::DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,c.get());
 }
 //----------------------------------------------------
 
-void CAITPoint::DrawLinks(Fcolor& c){
+void CWayPoint::DrawLinks(Fcolor& c){
 	Fvector p1,p2;
-    p1.set	(PPosition.x,PPosition.y+AITPOINT_SIZE*0.85f,PPosition.z);
+    p1.set	(PPosition.x,PPosition.y+WAYPOINT_SIZE*0.85f,PPosition.z);
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++){
-    	CAITPoint* O = (CAITPoint*)(*o_it);
-	    p2.set	(O->PPosition.x,O->PPosition.y+AITPOINT_SIZE*0.85f,O->PPosition.z);
+    	CWayPoint* O = (CWayPoint*)(*o_it);
+	    p2.set	(O->PPosition.x,O->PPosition.y+WAYPOINT_SIZE*0.85f,O->PPosition.z);
     	DU::DrawLine(p1,p2,c.get());
     }
 }
 //----------------------------------------------------
 
-void CAITPoint::Render(int priority, bool strictB2F){
+void CWayPoint::Render(int priority, bool strictB2F){
     if ((1==priority)&&(false==strictB2F)){
-        if (Device.m_Frustum.testSphere(PPosition,AITPOINT_SIZE)){
+        if (Device.m_Frustum.testSphere(PPosition,WAYPOINT_SIZE)){
             Fcolor c1,c2;
             c1.set(0.f,1.f,0.f,1.f);
             c2.set(1.f,1.f,0.f,1.f);
@@ -95,19 +95,19 @@ void CAITPoint::Render(int priority, bool strictB2F){
 }
 //----------------------------------------------------
 
-bool CAITPoint::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(PPosition,AITPOINT_SIZE))?true:false;
+bool CWayPoint::FrustumPick(const CFrustum& frustum){
+    return (frustum.testSphere(PPosition,WAYPOINT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
-bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf){
+bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf){
 	Fvector ray2;
 	ray2.sub( PPosition, S );
 
     float d = ray2.dotproduct(D);
     if( d > 0  ){
         float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (AITPOINT_SIZE*AITPOINT_SIZE)) && (d>AITPOINT_SIZE) ){
+        if( ((d2*d2-d*d) < (WAYPOINT_SIZE*WAYPOINT_SIZE)) && (d>WAYPOINT_SIZE) ){
         	if (d<distance){
 	            distance = d;
     	        return true;
@@ -118,25 +118,25 @@ bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* p
 }
 //----------------------------------------------------
 
-bool CAITPoint::Load(CStream& F){
+bool CWayPoint::Load(CStream& F){
 	DWORD version = 0;
 	char buf[1024];
 
-    R_ASSERT(F.ReadChunk(AITPOINT_CHUNK_VERSION,&version));
-    if((version!=0x0010)&&(version!=AITPOINT_VERSION)){
-        ELog.DlgMsg( mtError, "CAITPoint: Unsupported version.");
+    R_ASSERT(F.ReadChunk(WAYPOINT_CHUNK_VERSION,&version));
+    if((version!=0x0010)&&(version!=WAYPOINT_VERSION)){
+        ELog.DlgMsg( mtError, "CWayPoint: Unsupported version.");
         return false;
     }
 
 	CCustomObject::Load(F);
 
     if (version==0x0010){
-	    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
+	    R_ASSERT(F.FindChunk(WAYPOINT_CHUNK_POINT));
     	F.Rvector	(PPosition);
         UpdateTransform();
     }
 
-    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_LINKS));
+    R_ASSERT(F.FindChunk(WAYPOINT_CHUNK_LINKS));
     m_NameLinks.resize(F.Rdword());
     for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++){
 		F.RstringZ	(buf); *s_it = buf;
@@ -146,14 +146,14 @@ bool CAITPoint::Load(CStream& F){
 }
 //----------------------------------------------------
 
-void CAITPoint::Save(CFS_Base& F){
+void CWayPoint::Save(CFS_Base& F){
 	CCustomObject::Save(F);
 
-	F.open_chunk	(AITPOINT_CHUNK_VERSION);
-	F.Wword			(AITPOINT_VERSION);
+	F.open_chunk	(WAYPOINT_CHUNK_VERSION);
+	F.Wword			(WAYPOINT_VERSION);
 	F.close_chunk	();
 
-    F.open_chunk	(AITPOINT_CHUNK_LINKS);
+    F.open_chunk	(WAYPOINT_CHUNK_LINKS);
     F.Wdword		(m_Links.size());
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
     	F.WstringZ	((*o_it)->Name);
@@ -161,7 +161,7 @@ void CAITPoint::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-void CAITPoint::OnSynchronize(){
+void CWayPoint::OnSynchronize(){
 	m_Links.resize(m_NameLinks.size());
     ObjectIt o_it = m_Links.begin();
 	for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++,o_it++){
@@ -172,12 +172,12 @@ void CAITPoint::OnSynchronize(){
 }
 //----------------------------------------------------
 
-void CAITPoint::AppendLink(CAITPoint* P){
+void CWayPoint::AppendLink(CWayPoint* P){
 	m_Links.push_back(P);
 }
 //----------------------------------------------------
 
-bool CAITPoint::AddLink(CAITPoint* P){
+bool CWayPoint::AddLink(CWayPoint* P){
 	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);
         P->AppendLink(this);
@@ -188,7 +188,7 @@ bool CAITPoint::AddLink(CAITPoint* P){
 }
 //----------------------------------------------------
 
-bool CAITPoint::DeleteLink(CAITPoint* P){
+bool CWayPoint::DeleteLink(CWayPoint* P){
 	ObjectIt it = find(m_Links.begin(),m_Links.end(),P);
 	if (it!=m_Links.end()){
 		m_Links.erase(it);
@@ -200,7 +200,7 @@ bool CAITPoint::DeleteLink(CAITPoint* P){
 }
 //----------------------------------------------------
 
-bool CAITPoint::RemoveLink(CAITPoint* P){
+bool CWayPoint::RemoveLink(CWayPoint* P){
 	if (DeleteLink(P)){
     	P->DeleteLink(this);
         return true;
