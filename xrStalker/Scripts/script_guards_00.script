@@ -1,0 +1,81 @@
+function main()
+
+	local stalker_zomby	= get_level_object("m_stalker_e0002")
+
+	local prof_zomby = sound_object("scripts\\stalker_prof\\prof_zomby")
+	local prof_privet_hosh_potorgovat = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat")
+	local prof_privet_hosh_potorgovat2 = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat2")
+
+	wait(1000)			
+	stalker_zomby:script	(true,this.script_name())
+
+	action(
+		stalker_zomby,
+		  	move	(move.crouch, move.walk,move.line,patrol("way0006")),
+			anim	(anim.danger),
+			cond	(cond.time_end,10000000)
+		)
+	wait()
+
+	while stalker_zomby:action() do	
+		if stalker_zomby:see(actor) then
+			printf("script 2!")
+			flush()
+			stalker_zomby:script	(false,this.script_name())
+			stalker_zomby:script	(true,this.script_name())
+			action(
+				stalker_zomby,
+			  	move	(move.crouch, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 10000)
+			)
+			prof_privet_hosh_potorgovat2:play_at_pos	(stalker_zomby,stalker_zomby:position(),0);
+			wait(3000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+			wait(2000)			
+			stalker_zomby:script	(false,this.script_name())
+			prof_zomby:play_at_pos						(stalker_zomby,stalker_zomby:position(),0);
+			break
+		end
+		wait()
+	end
+
+	while true do
+		if actor.health <= 0 and stalker1.health > 0 and stalker1:see(actor) then
+			stalker_zomby:script	(false,this.script_name())
+			stalker_zomby:script	(true,this.script_name())
+			action(
+				stalker_zomby,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 10000)
+			)
+		wait(2000)			
+			prof_privet_hosh_potorgovat2:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(4000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(3000)			
+			prof_privet_hosh_potorgovat2:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(4000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(3000)			
+			prof_privet_hosh_potorgovat2:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(4000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(3000)			
+			prof_privet_hosh_potorgovat2:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(4000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(3000)			
+			prof_privet_hosh_potorgovat2:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(4000)			
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker_zomby,stalker_zomby:position(),0);
+		wait(3000)			
+		stalker_zomby:script	(false, this.script_name())
+		break
+		end
+		wait()			
+	end
+end
