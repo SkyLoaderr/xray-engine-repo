@@ -146,6 +146,7 @@ void CMissile::OnH_B_Independent() {
 		float rxy=r*_sin(teta);
 		a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
+
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);

@@ -410,7 +410,7 @@ void CAI_Stalker::CreateSkeleton()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.GetDeathPosition(vPosition);
-	//vPosition.y+=.1f;
+	 //vPosition.y+=.1f;
 	UpdateTransform();
 //#else
 	//vPosition.y+=0.1f;
@@ -742,6 +742,7 @@ void CAI_Stalker::CreateSkeleton()
 	//joint->SetLimits(0,M_PI*1/3.5f,0);
 	joint->SetLimits(-M_PI*1/8.f,0,0);
 	joint->SetForceAndVelocity(hinge_force*2.f);
+	joint->SetForceAndVelocity(hinge_force*2.f,hinge_vel*3.f,2);
 	m_pPhysicsShell->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -796,6 +797,7 @@ void CAI_Stalker::CreateSkeleton()
 	joint->SetLimits(0.f,0.f,1);
 	joint->SetLimits(0,M_PI*1/8.f,0);
 	joint->SetForceAndVelocity(hinge_force*2.f);
+	joint->SetForceAndVelocity(hinge_force*2.f,hinge_vel*3.f,2);
 	m_pPhysicsShell->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -852,10 +854,17 @@ void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
 	if(m_pPhysicsShell)
+	{
 		clTransform.set(m_pPhysicsShell->mXFORM);
+	//	if(Device.dwTimeGlobal-m_dwDeathTime>5000)
+	//	{
+	//			m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
+	//	}
+	}
 	else
 		if (!g_Alive())
 		{
+
 			CreateSkeleton();
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	//	Movement.GetDeathPosition(vPosition);
@@ -1046,6 +1055,7 @@ void CAI_Stalker::Update	( u32 DT )
 		if(skel_ddelay==0)
 		{
 		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
+		//m_pPhysicsShell->SetAirResistance()
 		
 		}
 		skel_ddelay--;

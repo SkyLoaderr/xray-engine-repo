@@ -134,3 +134,10 @@ void CBolt::Destroy()
 {
 	inherited::Destroy();
 }
+
+void CBolt::OnH_B_Independent()
+{
+	inherited::OnH_B_Independent();
+
+	m_pPhysicsShell->SetAirResistance(.0001f);
+}

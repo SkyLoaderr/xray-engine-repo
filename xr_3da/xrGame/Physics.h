@@ -474,6 +474,8 @@ void CreateFullControl();
 	
 public:
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
+	virtual void SetForce					(const float force,const int axis_num=-1);
+	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
 						if(bActive) Deactivate();
@@ -565,8 +567,12 @@ public:
 	virtual void			set_JointResistance		(float force)
 														{
 														vector<CPHJoint*>::iterator i;
-														for(i=joints.begin();i!=joints.end();i++) 
-															(*i)->SetForceAndVelocity(force);
+														for(i=joints.begin();i!=joints.end();i++)
+														{
+															(*i)->SetForce(force);
+															(*i)->SetVelocity();
+														}
+															//(*i)->SetForceAndVelocity(force);
 														}
 	virtual void			set_ContactCallback		  (ContactCallbackFun* callback)				;
 	virtual void			set_ObjectContactCallback (ObjectContactCallbackFun* callback);
