@@ -22,14 +22,16 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
-		info.blend = MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
+		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
 	}
 	
 	// установить скорость текущей анимации
-	if (info.blend && (info.speed.current > 0.f)) info.blend->speed = info.speed.current;
+	if (info.blend && (info.speed.current > 0.f)) {
+		info.blend->speed = info.speed.current;
+		//Msg("Anim = [%s] Set Blend Speed = [%f]", smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(info.blend->motionID), info.blend->speed);	
+	}
 
 	//Msg("Anim = [%s] cur_anim_speed = [%f] target_anim_speed = [%f]",*info.name,info.speed.current, info.speed.target);
-
 }
 
 

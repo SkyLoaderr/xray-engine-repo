@@ -229,16 +229,16 @@ bool CMonsterMovement::check_build_conditions()
 		return		true;
 	}
 	
-	if (m_intermediate.position.similar(m_target.position) || CDetailPathManager::actual()) {
-		m_path_end	= true;
-		return		true;
-	}
-
 	if (Position().similar(m_target.position)) {
 		m_path_end	= true;
 		return false;
 	}
 	
+	if (m_intermediate.position.similar(m_target.position) || CDetailPathManager::actual()) {
+		m_path_end	= true;
+		return		true;
+	}
+
 	if (CLevelPathManager::failed()) {
 		m_failed	= true;
 		return		false;

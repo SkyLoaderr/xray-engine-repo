@@ -33,5 +33,7 @@ public:
 	// завершить фиксированную анимацию (вторую) и перейти к финальной
 	virtual void		pointbreak			();
 
+	EStateAnimTriple	get_state			(){return cur_state;}
+
 };
 

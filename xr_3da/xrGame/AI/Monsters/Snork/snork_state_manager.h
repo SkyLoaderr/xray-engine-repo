@@ -12,6 +12,7 @@ class CStateManagerSnork : public CStateManagerSecond<CSnork> {
 		eStateAttack,
 		eStateThreaten,
 		eStateInterestingSound,
+		eStateDangerousSound,
 		eStateHitted,
 		eStateFindEnemy,
 		eStateFakeDeath,
@@ -23,9 +24,5 @@ public:
 						CStateManagerSnork		(CSnork *obj);
 	virtual				~CStateManagerSnork		();
 
-	virtual void		initialize				();
 	virtual	void		execute					();
-
-			void		squad_notify			();
-
 };

@@ -33,8 +33,6 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 
 	u32						spec_params;			// дополнительные параметры
 
-	bool					should_play_die_anim;	// должен отыгрывать анимацию смерти
-
 	bool					transition_sequence_used;	// запомнить анимацию конца перехода
 	EMotionAnim				target_transition_anim;
 

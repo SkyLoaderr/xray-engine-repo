@@ -47,8 +47,6 @@ void CMotionManager::reinit()
 	m_tpCurAnim				= 0;
 	spec_params				= 0;
 
-	should_play_die_anim	= true;			//этот флаг на NetSpawn должен устанавливатьс€ в true
-	
 	Seq_Init				();
 	
 	fx_time_last_play		= 0;
@@ -85,18 +83,10 @@ void CMotionManager::reinit()
 // ¬озвращает false, если в смене анимации нет необходимости
 bool CMotionManager::PrepareAnimation()
 {
-	// проверка на отыгрывание анимации смерти
-	if (!pMonster->g_Alive()) 
-		if (should_play_die_anim) {
-			should_play_die_anim = false;  // отыграть анимацию смерти только раз
-			if (get_sd()->m_tAnims.find(eAnimDie) != get_sd()->m_tAnims.end()) cur_anim_info().motion = eAnimDie;
-			else return false;
-		} else return false;
-
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
 	
 	if (0 != m_tpCurAnim) return false;
-	
+
 	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
 
 	// перекрыть все определени€ и установть анимацию
@@ -127,8 +117,6 @@ bool CMotionManager::PrepareAnimation()
 	m_cur_anim.speed.current	= -1.f;
 	m_cur_anim.speed.target		= -1.f;
 
-	// инициализировать информацию о текущей анимации шагани€
-	//STEPS_Initialize();
 	pMonster->on_animation_start(m_cur_anim.name);
 
 	return true;

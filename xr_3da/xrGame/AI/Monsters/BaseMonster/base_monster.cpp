@@ -130,8 +130,6 @@ void CBaseMonster::Die()
 	inherited::Die( );
 
 	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
-	MotionMan.ForceAnimSelect();
-
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 

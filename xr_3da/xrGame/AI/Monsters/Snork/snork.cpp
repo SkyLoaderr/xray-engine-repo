@@ -25,6 +25,10 @@ void CSnork::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
 		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
 		MotionMan.AddAnim(eAnimDie,				"stand_die_",			0,  &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::get_sd()->m_fsVelocitySteal,			PS_STAND);
+		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
@@ -32,15 +36,17 @@ void CSnork::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimRun);
 		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimRun);
 		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-		MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
+		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 		MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
 		MotionMan.LinkAction(ACT_REST,			eAnimStandIdle);
 		MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-		MotionMan.LinkAction(ACT_STEAL,			eAnimRun);
-		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
+		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
+		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+		
 		MotionMan.finish_load_shared();
 	}
 
@@ -49,3 +55,44 @@ void CSnork::Load(LPCSTR section)
 #endif
 
 }
+
+void CSnork::reinit()
+{
+	inherited::reinit();
+	
+	CMotionDef			*def1, *def2, *def3;
+	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+
+	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("stand_attack_2_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("stand_attack_2_2");	VERIFY(def3);
+	
+	CJumpingAbility::init_external(this, def1, def2, def3);
+}
+
+void CSnork::UpdateCL()
+{
+	inherited::UpdateCL();
+	//CJumpingAbility::update_frame();
+}
+
+void CSnork::test()
+{
+	//CJumpingAbility::jump(CJumpingAbility::get_target(Level().CurrentEntity()));
+}
+
+void CSnork::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+
+	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+		MotionMan.SetCurAnim(eAnimLookAround);
+		return;
+	}
+}
+
+
+

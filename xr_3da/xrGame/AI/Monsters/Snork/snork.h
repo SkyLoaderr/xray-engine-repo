@@ -1,10 +1,8 @@
 #pragma once
-#include "../../monsters/BaseMonster/base_monster.h"
+#include "../BaseMonster/base_monster.h"
+#include "../jump_ability.h"
 
-class CStateManagerSnork;
-
-class CSnork :	public CBaseMonster {
-
+class CSnork :	public CBaseMonster, public CJumpingAbility {
 	typedef		CBaseMonster		inherited;
 
 public:
@@ -12,4 +10,9 @@ public:
 	virtual			~CSnork				();	
 
 	virtual void	Load				(LPCSTR section);
+	virtual void	reinit				();				
+	virtual void	UpdateCL			();
+	virtual void	CheckSpecParams		(u32 spec_params);
+			void	test				();
+
 };

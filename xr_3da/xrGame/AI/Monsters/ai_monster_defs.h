@@ -358,7 +358,6 @@ struct SCurrentAnimationInfo {
 
 	float		speed_change_vel;
 	CBlend		*blend;
-
 };
 
 

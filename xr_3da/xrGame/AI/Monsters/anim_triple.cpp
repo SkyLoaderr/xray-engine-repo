@@ -49,6 +49,7 @@ bool CAnimTriple::prepare_animation(CMotionDef **m)
 	
 	if (is_active()) *m = pool[cur_state];
 	if (cur_state != eStateExecute) cur_state = EStateAnimTriple(cur_state + 1);
+	
 	return true;
 }
 
