@@ -201,14 +201,14 @@ public:
 		}
 	};
 
-	void						Save(CFS_Memory &FS)
+	void						Save(CFS_Memory &FS, u32 &dwID)
 	{
 		NET_Packet		P;
 		u32				position;
-		for (u32 i=0; i<m_tpSpawnPoints.size(); i++) {
+		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			xrServerEntity*	E	= m_tpSpawnPoints[i];
 
-			FS.open_chunk		(i);
+			FS.open_chunk		(dwID);
 
 			// Spawn
 			E->Spawn_Write		(P,TRUE);
@@ -226,7 +226,7 @@ public:
 			FS.write			(P.B.data,P.B.count);
 
 			FS.close_chunk		();
-			FS.open_chunk		(++i);
+			FS.open_chunk		(dwID++);
 			FS.write			(m_tpResultNodes.begin() + i,sizeof(SALife));
 			FS.close_chunk		();
 		}
@@ -296,8 +296,8 @@ void xrMergeSpawns()
 	tMemoryStream.write			(&tSpawnHeader,sizeof(tSpawnHeader));
 	tMemoryStream.close_chunk	();
 	//tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
-	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		tpLevels[i]->Save		(tMemoryStream);
+	for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
+		tpLevels[i]->Save		(tMemoryStream,dwID);
 	//tMemoryStream.close_chunk	();
 	tMemoryStream.SaveTo		("game.spawn",0);
 
