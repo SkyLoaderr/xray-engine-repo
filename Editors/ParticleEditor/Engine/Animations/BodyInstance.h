@@ -16,7 +16,8 @@ const	u32		MAX_PARTS			=	4;
 const	u32		MAX_BLENDED_POOL	=	(MAX_BLENDED*MAX_PARTS);
 const	f32		SAMPLE_FPS			=	30.f;
 const	f32		SAMPLE_SPF			=	(1.f/SAMPLE_FPS);
-const	u32		BONE_NONE			=	u32(-1);
+
+const	u16		BI_NONE				=	u16(-1);
 
 // refs
 class	ENGINE_API CKinematics;
@@ -45,7 +46,7 @@ struct ENGINE_API CKey
 };
 struct ENGINE_API CKeyQ
 {
-	s16		x,y,z,w;	// rotation
+	s16			x,y,z,w;	// rotation
 	Fvector		t;			// translation
 };
 #pragma pack(pop)
@@ -65,8 +66,8 @@ public:
 	float			blendAmount;
 	float			timeCurrent;
 	float			timeTotal;
-	int				motionID;
-	int				bone_or_part;	// startup parameters
+	u16				motionID;
+	u16				bone_or_part;	// startup parameters
 
 	ECurvature		blend;
 	float			blendAccrue;	// increasing
@@ -123,7 +124,7 @@ class ENGINE_API		CBoneData
 public:
 	typedef svector<int,128>	BoneDebug;
 public:
-	int					SelfID;
+	u16					SelfID;
 	vecBones			children;		// bones which are slaves to this
 	xr_vector<CMotion>	Motions;		// all known motions
 	Fobb				obb;			
@@ -146,14 +147,14 @@ public:
 	void				Calculate		(CKinematics* K, Fmatrix *Parent);
 	void				DebugQuery		(BoneDebug& L);
 
-	CBoneData(int ID) : SelfID	(ID)	{}
+	CBoneData(u16 ID) : SelfID	(ID)	{}
 };
 
 //*** Shared motion Data **************************************************************************
 class ENGINE_API CMotionDef
 {
 public:
-	s16			bone_or_part;
+	u16			bone_or_part;
 	u16			motion;
 	u16			speed;		// quantized: 0..10
 	u16			power;		// quantized: 0..10
@@ -162,13 +163,13 @@ public:
     u32			flags;
 
 	IC float	Dequantize	(u16 V)		{	return  float(V)/655.35f; }
-	IC u16		Quantize	(float V)		{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return u16(t); }
+	IC u16		Quantize	(float V)	{	s32		t = iFloor(V*655.35f); clamp(t,0,65535); return u16(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
 	void		Load		(CKinematics* P, IReader* MP, u32 fl);
-	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*		PlayCycle	(CKinematics* P, int part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*		PlayFX		(CKinematics* P, float power_scale);
+	CBlend*		PlayCycle	(CKinematics* P, BOOL	bMixIn, PlayCallback Callback, LPVOID Callback_Param);
+	CBlend*		PlayCycle	(CKinematics* P, u16	part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
+	CBlend*		PlayFX		(CKinematics* P, float	power_scale);
 };
 
 //*** Shared partition Data ***********************************************************************
@@ -176,14 +177,14 @@ class ENGINE_API	CPartDef
 {
 public:
 	ref_str			Name;
-	xr_vector<int>	bones;
+	xr_vector<u32>	bones;
 	CPartDef()		: Name(0) {};
 };
 class ENGINE_API	CPartition
 {
 	CPartDef		P[MAX_PARTS];
 public:
-	IC CPartDef&	operator[] (int id)	{ return P[id]; }
+	IC CPartDef&	operator[] (u16 id)	{ return P[id]; }
 };
 
 //*** The visual itself ***************************************************************************
@@ -200,14 +201,14 @@ private:
 
 	typedef FHierrarhyVisual					inherited;
 public:
-	typedef xr_map<ref_str,int,str_pred>		accel;
+	typedef xr_map<ref_str,u16,str_pred>		accel;
 	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
 private:
 	// Globals
     CInifile*									pUserData;
 	vecBones*									bones;			// all bones+motions	(shared)
 	CBoneInstance*								bone_instances;	// bone instances
-	u32											iRoot;			// Root bone index
+	u16											iRoot;			// Root bone index
 
 	// Fast search
 	accel*										motion_map;		// motion assotiations	(shared)
@@ -223,7 +224,7 @@ private:
 	BlendList									blend_cycles	[MAX_PARTS];
 	BlendList									blend_fx;
 
-	int											Update_ID;
+	s32											Update_ID;
 	u32											Update_LastTime;
 	u32											Update_Frame;
 
@@ -235,24 +236,24 @@ private:
 	CBlend*						IBlend_Create			();
 public:
 	// Low level interface
-	int							LL_BoneID		(LPCSTR B);
-	int							LL_MotionID		(LPCSTR B);
-	int							LL_PartID		(LPCSTR B);
+	u16							LL_BoneID		(LPCSTR B);
+	u16							LL_MotionID		(LPCSTR B);
+	u16							LL_PartID		(LPCSTR B);
 
     CInifile*					LL_UserData		(){return pUserData;}
 	accel*						LL_Bones		(){return bone_map;}
 	accel*						LL_Motions		(){return motion_map;}
-	CBoneInstance&				LL_GetInstance	(u32 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return bone_instances[bone_id];	}
-	CBoneData&					LL_GetData		(u32 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
-	u32							LL_BoneRoot		()					{	return iRoot;													}
-	u32							LL_BoneCount	()					{	return bones->size();											}
-	Fmatrix&					LL_GetTransform	(u32 bone_id)		{	return LL_GetInstance(bone_id).mTransform;						}
-	Fobb&						LL_GetBox		(u32 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}
+	CBoneInstance&				LL_GetInstance	(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return bone_instances[bone_id];	}
+	CBoneData&					LL_GetData		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
+	u16							LL_BoneRoot		()					{	return iRoot;													}
+	u16							LL_BoneCount	()					{	return bones->size();											}
+	Fmatrix&					LL_GetTransform	(u16 bone_id)		{	return LL_GetInstance(bone_id).mTransform;						}
+	Fobb&						LL_GetBox		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}
 
-	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
-	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
-	void						LL_FadeCycle	(int partition, float falloff);
-	void						LL_CloseCycle	(int partition);
+	CBlend*						LL_PlayFX		(u16 bone,		u16		motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
+	CBlend*						LL_PlayCycle	(u16 partition, u16		motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
+	void						LL_FadeCycle	(u16 partition, float	falloff);
+	void						LL_CloseCycle	(u16 partition);
 	
 	// Main functionality
 	void						Update			();						// Update motions

@@ -60,43 +60,11 @@ void CMotionDef::Load(CKinematics* P, IReader* MP, u32 fl)
 	flags		= fl;
 	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
 }
-void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycle)
-{
-	int	b = -1;
-	if (bCycle)	{
-		// partition
-		LPCSTR  B	= INI->r_string	(section,"part");
-		b			= P->LL_PartID		(B);
-	} else {
-		// bone
-		LPCSTR  B	= INI->r_string	(section,"bone");
-		b			= P->LL_BoneID		(B); 
-		if (b<0) b	= P->LL_BoneRoot	();
-	}
-
-	// motion
-	LPCSTR  M = INI->r_string	(section,"motion");
-	_strlwr((char*)M);
-	int		m = P->LL_MotionID(M);
-	if (m<0) Debug.fatal("Can't find motion '%s'",M);
-	R_ASSERT(m>=0);
-
-	// params
-	bone_or_part= short	(b);
-	motion		= u16	(m);
-	speed		= Quantize(INI->r_float(section,"speed"));
-	power		= Quantize(INI->r_float(section,"power"));
-	accrue		= Quantize(INI->r_float(section,"accrue"));
-	falloff		= Quantize(INI->r_float(section,"falloff"));
-	flags		= (INI->r_bool(section,"stop@end")?esmStopAtEnd:0);
-
-	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
-}
 
 CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
 {
 	return P->LL_PlayCycle(
-		int(bone_or_part),int(motion),bMixIn,
+		bone_or_part,motion,bMixIn,
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
@@ -105,10 +73,10 @@ CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn, PlayCallback Callback
 		);
 }
 
-CBlend*	CMotionDef::PlayCycle(CKinematics* P, int part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
+CBlend*	CMotionDef::PlayCycle(CKinematics* P, u16 part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
 {
 	return P->LL_PlayCycle(
-		part,int(motion),bMixIn,
+		part,motion,bMixIn,
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
@@ -120,7 +88,7 @@ CBlend*	CMotionDef::PlayCycle(CKinematics* P, int part, BOOL bMixIn, PlayCallbac
 CBlend*	CMotionDef::PlayFX(CKinematics* P, float power_scale)
 {
 	return P->LL_PlayFX(
-		int(bone_or_part),int(motion),
+		bone_or_part,motion,
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
@@ -162,27 +130,27 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-int	CKinematics::LL_BoneID		(LPCSTR B)
+u16	CKinematics::LL_BoneID		(LPCSTR B)
 {
 	accel::iterator I = bone_map->find(LPSTR(B));
-	if (I==bone_map->end())		return -1;
+	if (I==bone_map->end())		return BI_NONE;
 	else						return I->second;
 }
-int	CKinematics::LL_MotionID	(LPCSTR B)
+u16	CKinematics::LL_MotionID	(LPCSTR B)
 {
 	accel::iterator I = motion_map->find(LPSTR(B));
-	if (I==motion_map->end())	return -1;
+	if (I==motion_map->end())	return BI_NONE;
 	else						return I->second;
 }
-int CKinematics::LL_PartID		(LPCSTR B)
+u16 CKinematics::LL_PartID		(LPCSTR B)
 {
-	if (0==partition)			return -1;
-	for (int id=0; id<MAX_PARTS; id++) {
+	if (0==partition)			return BI_NONE;
+	for (u16 id=0; id<MAX_PARTS; id++) {
 		CPartDef&	P = (*partition)[id];
 		if (0==P.Name)	continue;
 		if (0==stricmp(B,*P.Name)) return id;
 	}
-	return -1;
+	return BI_NONE;
 }
 
 // cycles
@@ -225,14 +193,14 @@ CBlend*	CKinematics::PlayFX			(LPCSTR  N, float power_scale)
 	else					{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 }
 
-CBlend*	CKinematics::LL_PlayFX		(int bone, int motion, float blendAccrue, float blendFalloff, float Speed, float Power)
+CBlend*	CKinematics::LL_PlayFX		(u16 bone, u16 motion, float blendAccrue, float blendFalloff, float Speed, float Power)
 {
-	if (motion<0)	return 0;
+	if (BI_NONE==motion)	return 0;
 //.	if (blend_fx.size()>=MAX_BLENDED) return 0;
-	if (bone<0)		bone = iRoot;
+	if (BI_NONE==bone)		bone = iRoot;
 	
 	CBlend*	B		= IBlend_Create();
-	CBoneData*	Bone	= (*bones)[bone];
+	CBoneData*	Bone= (*bones)[bone];
 	Bone->Motion_Start(this,B);
 	
 	B->blend		= CBlend::eAccrue;
@@ -253,7 +221,7 @@ CBlend*	CKinematics::LL_PlayFX		(int bone, int motion, float blendAccrue, float 
 	return			B;
 }
 
-void	CKinematics::LL_FadeCycle(int part, float falloff)
+void	CKinematics::LL_FadeCycle(u16 part, float falloff)
 {
 	BlendList&	Blend	= blend_cycles[part];
 	
@@ -272,7 +240,7 @@ void	CKinematics::LL_FadeCycle(int part, float falloff)
 	}
 }
 
-void	CKinematics::LL_CloseCycle(int part)
+void	CKinematics::LL_CloseCycle(u16 part)
 {
 	// destroy cycle(s)
 	BlendListIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
@@ -283,7 +251,7 @@ void	CKinematics::LL_CloseCycle(int part)
 		B.blend = CBlend::eFREE_SLOT;
 		
 		CPartDef& P	= (*partition)[B.bone_or_part];
-		for (int i=0; i<int(P.bones.size()); i++)
+		for (u16 i=0; i<P.bones.size(); i++)
 			(*bones)[P.bones[i]]->Motion_Stop(this,*I);
 		
 		blend_cycles[part].erase(I);
@@ -291,13 +259,13 @@ void	CKinematics::LL_CloseCycle(int part)
 	}
 }
 
-CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
+CBlend*	CKinematics::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
 {
 	// validate and unroll
-	if (motion<0)			return 0;
+	if (BI_NONE==motion)	return 0;
 	if (part>=MAX_PARTS)	return 0;
-	if (part<0)	{
-		for (int i=0; i<MAX_PARTS; i++)
+	if (BI_NONE==part)		{
+		for (u16 i=0; i<MAX_PARTS; i++)
 			LL_PlayCycle(i,motion,bMixing,blendAccrue,blendFalloff,Speed,noloop,Callback,CallbackParam);
 		return 0;
 	}
@@ -310,7 +278,7 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	CBlend*	B	=	IBlend_Create();
 
 	CBoneData*	Bone=0;
-	for (int i=0; i<int(P.bones.size()); i++)
+	for (u16 i=0; i<P.bones.size(); i++)
 	{
 		Bone	= (*bones)[P.bones[i]];
 		Bone->Motion_Start_IM	(this,B);
@@ -352,7 +320,7 @@ void CKinematics::Update ()
 	BlendListIt	I,E;
 
 	// Cycles
-	for (u32 part=0; part<MAX_PARTS; part++) 
+	for (u16 part=0; part<MAX_PARTS; part++) 
 	{
 		if (0==(*partition)[part].Name)	continue;
 
@@ -393,7 +361,7 @@ void CKinematics::Update ()
 					B.blend 		= CBlend::eFREE_SLOT;
 
 					CPartDef& P		= (*partition)[B.bone_or_part];
-					for (int i=0; i<int(P.bones.size()); i++)
+					for (u16 i=0; i<P.bones.size(); i++)
 						(*bones)[P.bones[i]]->Motion_Stop(this,*I);
 
 					blend_cycles[part].erase(I);
@@ -493,10 +461,10 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 void CKinematics::Release()
 {
 	// xr_free bones
-	for (u32 i=0; i<bones->size(); i++)
+	for (u16 i=0; i<bones->size(); i++)
 	{
 		CBoneData* &B = (*bones)[i];
-		for (u32 m=0; m<B->Motions.size(); m++)
+		for (u16 m=0; m<B->Motions.size(); m++)
 			xr_free(B->Motions[m]._keys);
 		xr_delete(B);
 	}
@@ -594,7 +562,7 @@ void CKinematics::IBlend_Startup	()
 	CBlend B; ZeroMemory(&B,sizeof(B));
 	B.blend				= CBlend::eFREE_SLOT;
 	blend_pool.clear	();
-	for (int i=0; i<MAX_BLENDED_POOL; i++)
+	for (u32 i=0; i<MAX_BLENDED_POOL; i++)
 		blend_pool.push_back(B);
 
 	// cycles+fx clear
@@ -640,7 +608,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		char buf[256];
 
 		// Bone
-		int		ID = bones->size();
+		u16			ID = bones->size();
 		data->r_stringZ(buf);	strlwr(buf);
 		CBoneData*	pBone = xr_new<CBoneData> (ID);
 		bones->push_back(pBone);
@@ -654,22 +622,22 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// Attach bones to their parents
-	iRoot = BONE_NONE;
-	for (u32 i=0; i<bones->size(); i++) {
+	iRoot = BI_NONE;
+	for (u16 i=0; i<bones->size(); i++) {
 		LPCSTR 	P = L_parents[i];
 		CBoneData*	B = (*bones)[i];
 		if (!P[0]) {
 			// no parent - this is root bone
-			R_ASSERT(BONE_NONE==iRoot);
+			R_ASSERT(BI_NONE==iRoot);
 			iRoot	= i;
 			continue;
 		} else {
-			u32 ID	= LL_BoneID(P);
-			R_ASSERT(ID>=0);
+			u16 ID	= LL_BoneID(P);
+			R_ASSERT(ID!=BI_NONE);
 			(*bones)[ID]->children.push_back(B);
 		}
 	}
-	R_ASSERT(BONE_NONE != iRoot);
+	R_ASSERT(BI_NONE != iRoot);
 
 	// Free parents
 	for (u32 aaa=0; aaa<L_parents.size(); aaa++)
@@ -718,6 +686,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     if (MP){
 	    u16 vers = MP->r_u16();
         R_ASSERT(vers==xrOGF_SMParamsVersion);
+
         // partitions
         u16 part_count;
         part_count = MP->r_u16();
@@ -727,7 +696,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
             MP->r_stringZ(buf);
             PART.Name			= _strlwr(buf);
             PART.bones.resize	(MP->r_u16());
-            MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+            MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
         }
 
         m_cycle = xr_new<mdef> ();
@@ -755,7 +724,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
                 MP->r_stringZ(buf);
                 PART.Name			= ref_str(_strlwr(buf));
                 PART.bones.resize	(MP->r_u16());
-                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
             }
 
             m_cycle = xr_new<mdef> ();

@@ -64,7 +64,7 @@ public:
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 		SWheel(CCar* acar)
 		{
-			bone_id=BONE_NONE;
+			bone_id=BI_NONE;
 			car=acar;
 			joint=NULL;
 			inited=false;
@@ -125,7 +125,7 @@ public:
 		void Clear ();
 		SExhaust(CCar* acar)
 		{
-			bone_id=BONE_NONE;
+			bone_id=BI_NONE;
 			pcar=acar;
 			p_pgobject=NULL;
 			pelement=NULL;
@@ -179,7 +179,7 @@ public:
 		eState state;
 		SDoor(CCar* acar)
 		{
-			bone_id=BONE_NONE;
+			bone_id=BI_NONE;
 			pcar=acar;
 			joint=NULL;
 			state=closed;
