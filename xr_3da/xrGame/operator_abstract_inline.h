@@ -19,6 +19,7 @@ TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	()
 {
 	m_actual			= true;
+	m_weight_actual		= true;
 	m_min_weight		= 0;
 }
 
@@ -28,6 +29,7 @@ IC	CAbstractOperator::COperatorAbstract	(const CSConditionState &conditions, con
 	m_conditions		= conditions;
 	m_effects			= effects;
 	m_actual			= false;
+	m_weight_actual		= false;
 	m_min_weight		= 0;
 }
 
@@ -369,7 +371,7 @@ IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::weight	(const
 TEMPLATE_SPECIALIZATION
 IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::min_weight	() const
 {
-	if (m_actual)
+	if (m_weight_actual)
 		return				(m_min_weight);
 
 	m_min_weight			= 0;
@@ -395,8 +397,20 @@ IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::min_weight	()
 	if (i != e)
 		m_min_weight		= m_min_weight + _edge_value_type(e - i);
 
-	m_actual				= true;
+	m_weight_actual			= true;
 	return					(m_min_weight);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperator::actual	() const
+{
+	return					(m_actual);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::actual	(bool value)
+{
+	m_actual				= value;
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -103,13 +103,16 @@ protected:
 	typedef typename CGraphVertex::_index_type	_index_type;
 
 protected:
+	bool				m_search_started;
 	CDataStorage		*m_data_storage;
 
 protected:
 	template <typename _PathManager>
-	IC		void				init			(_PathManager &path_manager);
+	IC		void				initialize		(_PathManager &path_manager);
 	template <typename _PathManager>
 	IC		bool				step			(_PathManager &path_manager);
+	template <typename _PathManager>
+	IC		void				finalize		(_PathManager &path_manager);
 
 public:
 	IC							CDijkstra		(const u32 max_vertex_count);

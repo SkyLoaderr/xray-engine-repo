@@ -87,10 +87,12 @@ CSAStar::~CAStar					()
 
 TEMPLATE_SPECIALIZATION
 template <typename _PathManager>
-IC	void CSAStar::init				(_PathManager &path_manager)
+IC	void CSAStar::initialize		(_PathManager &path_manager)
 {
+	THROW2					(!m_search_started,"Recursive graph engine usage is not allowed!");
+	m_search_started		= true;
 	// initialize data structures before we started path search
-	data_storage().init	();
+	data_storage().init		();
 	
 	// initialize path manager before we started path search
 	path_manager.init		();
@@ -235,28 +237,28 @@ template <typename _PathManager>
 IC	bool CSAStar::find				(_PathManager &path_manager)
 {
 	// initialize data structures with new search
-	init					(path_manager);
+	initialize			(path_manager);
 	// iterate while opened list is not empty
 	for (_iteration_type i = _iteration_type(0); !data_storage().is_opened_empty(); ++i) {
 		// check if we reached limit
 		if (path_manager.is_limit_reached(i)) {
 			// so we reached limit, return failure
-			path_manager.finalize();
-			return			(false);
+			finalize	(path_manager);
+			return		(false);
 		}
 		
 		// so, limit is not reached
 		// check if new step will get us success
 		if (step(path_manager)) {
 			// so this step reached the goal, return success
-			path_manager.finalize();
-			return			(true);
+			finalize	(path_manager);
+			return		(true);
 		}
 	}
 
 	// so, opened list is empty, return failure
-	path_manager.finalize	();
-	return					(false);
+	finalize			(path_manager);
+	return				(false);
 }
 
 #undef TEMPLATE_SPECIALIZATION

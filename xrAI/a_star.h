@@ -121,7 +121,7 @@ protected:
 
 protected:
 	template <typename _PathManager>
-	IC		void				init			(_PathManager &path_manager);
+	IC		void				initialize		(_PathManager &path_manager);
 	template <typename _PathManager>
 	IC		bool				step			(_PathManager &path_manager);
 

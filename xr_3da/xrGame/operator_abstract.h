@@ -28,6 +28,7 @@ protected:
 	CSConditionState				m_conditions;
 	CSConditionState				m_effects;
 	mutable bool					m_actual;
+	mutable bool					m_weight_actual;
 	mutable _edge_value_type		m_min_weight;
 
 public:
@@ -45,16 +46,18 @@ public:
 	IC		_edge_value_type		min_weight			() const;
 	
 	template <typename T>
-			bool					applicable			(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition, T &problem_solver) const;
+	IC		bool					applicable			(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition, T &problem_solver) const;
 	
 	virtual bool					applicable_reverse	(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition) const;
 	
 	template <typename T>
-			const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result, CSConditionState &current, T &problem_solver) const;
+	IC		const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result, CSConditionState &current, T &problem_solver) const;
 	virtual const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result) const;
 	
 	virtual bool					apply_reverse		(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result, const CSConditionState &self_condition) const;
 	virtual _edge_value_type		weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+	IC		bool					actual				() const;
+	IC		void					actual				(bool value);
 };
 
 #include "operator_abstract_inline.h"

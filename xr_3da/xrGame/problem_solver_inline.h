@@ -355,6 +355,25 @@ IC	void CProblemSolverAbstract::solve			()
 				break;
 			}
 		}
+
+		if (actual) {
+			{
+				OPERATOR_VECTOR::const_iterator	I = operators().begin();
+				OPERATOR_VECTOR::const_iterator	E = operators().end();
+				for ( ; I != E; ++I)
+					if (!(*I).get_operator()->actual()) {
+						actual		= false;
+						break;
+					}
+			}
+			if (!actual) {
+				OPERATOR_VECTOR::const_iterator	I = operators().begin();
+				OPERATOR_VECTOR::const_iterator	E = operators().end();
+				for ( ; I != E; ++I)
+					(*I).get_operator()->actual(true);
+			}
+		}
+
 		if (actual)
 			return;
 	}

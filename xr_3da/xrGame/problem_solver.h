@@ -52,7 +52,7 @@ public:
 			return			(m_operator_id < operator_id);
 		}
 
-		_operator_ptr		get_operator()
+		_operator_ptr		get_operator() const
 		{
 			return			(m_operator);
 		}
