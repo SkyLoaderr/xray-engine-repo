@@ -35,4 +35,12 @@ public:
 	{
 		w			(&value,sizeof(value));
 	}
+
+	IC		void	open_chunk	(int)
+	{
+	}
+
+	IC		void	close_chunk	()
+	{
+	}
 };

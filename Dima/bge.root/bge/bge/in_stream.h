@@ -37,4 +37,13 @@ public:
 		r			(&temp,sizeof(temp));
 		return		(temp);
 	}
+
+	IC		IReader	*open_chunk	(int)
+	{
+		return		(this);
+	}
+
+	IC		void	close		()
+	{
+	}
 };
