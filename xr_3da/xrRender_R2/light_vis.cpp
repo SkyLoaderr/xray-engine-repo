@@ -20,23 +20,17 @@ void	light::vis_prepare			()
 	u32	frame	= Device.dwFrame;
 	if (frame	<	vis.frame2test)		return;
 
-	BOOL	near_intersect				= FALSE;
+	float	safe_area					= VIEWPORT_NEAR;
 	{
-		Fmatrix& M						= Device.mFullTransform;
-		Fvector4 plane;
-		plane.x							= -(M._14 + M._13);
-		plane.y							= -(M._24 + M._23);
-		plane.z							= -(M._34 + M._33);
-		plane.w							= -(M._44 + M._43);
-		float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-		plane.mul						(denom);
-		Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-		float	p_dist					= P.classify	(spatial.center) - spatial.radius;
-		near_intersect					= (p_dist<=0);
+		float	a0	= deg2rad(Device.fFOV*Device.fASPECT/2.f);
+		float	a1	= deg2rad(Device.fFOV/2.f);
+		float	x0	= VIEWPORT_NEAR/_cos	(a0);
+		float	x1	= VIEWPORT_NEAR/_cos	(a1);
+		safe_area	= _max(VIEWPORT_NEAR,_max(x0,x1));
 	}
 	//Msg	("sc[%f,%f,%f]/c[%f,%f,%f] - sr[%f]/r[%f]",VPUSH(spatial.center),VPUSH(position),spatial.radius,range);
 	//Msg	("dist:%f",Device.vCameraPosition.distance_to(spatial.center));
-	if (near_intersect || Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius+VIEWPORT_NEAR+EPS_S))	{	// small error
+	if (Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius+safe_area))	{	// small error
 		vis.visible		=	true;
 		vis.pending		=	false;
 		vis.frame2test	=	frame	+ ::Random.randI(delay_small_min,delay_small_max);

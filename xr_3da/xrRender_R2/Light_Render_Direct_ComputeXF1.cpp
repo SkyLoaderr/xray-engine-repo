@@ -49,7 +49,6 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 
 	// Build L-view vectors
 	Fvector					L_dir,L_up,L_right,L_pos;
-
 	L_dir.set				(RImplementation.Lights.sun->direction);	L_dir.normalize		();
 	L_up.set				(0,0,-1);									L_up.normalize		();
 	L_right.crossproduct	(L_up,L_dir);								L_right.normalize	();
