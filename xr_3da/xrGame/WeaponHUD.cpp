@@ -56,7 +56,9 @@ void CWeaponHUD::Load			(LPCSTR section)
 	{
 		LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
 		iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
-		if (iFireBone<0)			Debug.fatal	("There is no 'fire_bone' for weapon '%s'.",section);
+		if (iFireBone>=PKinematics(Visual())->LL_BoneCount())	
+			Debug.fatal	("There is no '%s' bone for weapon '%s'.",fire_bone, section);
+
 		vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
 	}
 	else
