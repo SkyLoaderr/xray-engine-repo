@@ -189,8 +189,8 @@ void CPHWorld::Step()
 #else
 	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
 
-	//dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
-		dWorldQuickStep(phWorld,fixed_step);
+	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
+	//	dWorldQuickStep(phWorld,fixed_step);
 #endif
 	Device.Statistic.ph_core.End		();
 
