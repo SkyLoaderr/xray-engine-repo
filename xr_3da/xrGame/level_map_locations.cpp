@@ -88,7 +88,7 @@ void CLevel::RemoveMapLocationByInfo(INFO_INDEX info_portion_id)
 struct FindLocationByID{
 	u16 m_id;
 	FindLocationByID(u16 id):m_id(id){};
-	bool operator == (const SMapLocation* loc){
+	bool operator () (const SMapLocation* loc){
 		return (loc->object_id == m_id);
 	}
 };
