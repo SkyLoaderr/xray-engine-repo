@@ -105,8 +105,9 @@
 // 86 - CSE_AlifeTraderAbstract			appended with m_community_index
 // 87 - CSE_AlifeTraderAbstract			appended with m_rank, m_reputation
 // 88 - CSE_ALifeCreatureAbstract		appended with m_dynamic_restrictions property
+// 89 - CSE_AlifeCreatureActor			appended with m_holderID
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(88)
+#define SPAWN_VERSION	u16(89)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
@@ -210,7 +211,7 @@ enum{
 	flActive					= (1<<0),
 	flSpawnCopy					= (1<<1),
 	flSavedData					= (1<<2),
-	flNotSave					= (1<<3),
+	flNotSave					= (1<<3)
 };
 	Flags8							_flags;
 	SPHBonesData					saved_bones;
@@ -220,7 +221,7 @@ protected:
 	virtual void					data_load				(NET_Packet &tNetPacket);
 	virtual void					data_save				(NET_Packet &tNetPacket);
 public:
-	SERVER_ENTITY_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 		add_to_type_list(CSE_PHSkeleton)
 #define script_type_list save_type_list(CSE_PHSkeleton)
 

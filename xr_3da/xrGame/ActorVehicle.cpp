@@ -41,7 +41,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	//setVisible(true);
 	//clear actor movement states 
 	mstate_wishful=0;
-
+	m_holderID=car->ID();
 }
 
 void CActor::detach_Vehicle()
@@ -65,6 +65,7 @@ void CActor::detach_Vehicle()
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;
+	m_holderID=u16(-1);
 }
 
 bool CActor::use_Vehicle(CPhysicsShellHolder* object)
@@ -98,4 +99,10 @@ bool CActor::use_Vehicle(CPhysicsShellHolder* object)
 		}
 		return false;
 	}
+}
+
+void CActor::on_reguested_spawn(CObject *object)
+{
+	CCar * car= smart_cast<CCar*>(object);
+	attach_Vehicle(car);
 }

@@ -252,7 +252,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	u8								weapon;
 	///////////////////////////////////////////
 	u16								m_u16NumItems;
-
+	u16								m_holderID;
 //	DEF_DEQUE		(PH_STATES, SPHNetState); 
 	SPHNetState						m_AliveState;
 //	PH_STATES						m_DeadStates;
@@ -266,6 +266,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
 	virtual CSE_Abstract			*init					();
+	virtual void					load					(NET_Packet &tNetPacket);
+	virtual bool					can_save				()const{return true;}
 
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();

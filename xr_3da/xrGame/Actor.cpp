@@ -139,6 +139,7 @@ CActor::CActor() : CEntityAlive()
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
 	m_holder				=	NULL;
+	m_holderID				=	u16(-1);
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::actor);
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);

@@ -232,9 +232,10 @@ public:
 public:
 	void					detach_Vehicle			();
 	void					steer_Vehicle			(float angle);
+	void					attach_Vehicle			(CHolderCustom* vehicle);
 protected:
 	CHolderCustom*			m_holder;
-	void					attach_Vehicle			(CHolderCustom* vehicle);
+	u16						m_holderID;
 	bool					use_Vehicle				(CPhysicsShellHolder* object);
 	bool					use_MountedWeapon		(CPhysicsShellHolder* object);
 	void					ActorUse				();
@@ -457,11 +458,12 @@ public:
 	virtual void						net_ImportInput		( NET_Packet& P);				// import input from remote client
 	virtual BOOL						net_Relevant		();//	{ return getSVU() | getLocal(); };		// relevant for export to server
 	virtual	void						net_Relcase			( CObject* O );					//
-
+	virtual void						on_reguested_spawn  (CObject *object);
 	//object serialization
 	virtual void						save				(NET_Packet &output_packet);
 	virtual void						load				(IReader &input_packet);
-
+	virtual void						net_Save			(NET_Packet& P)																	;
+	virtual	BOOL						net_SaveRelevant	()																				;
 protected:
 	xr_deque<net_update>	NET;
 	Fvector					NET_SavedAccel;

@@ -141,6 +141,7 @@ void	CCar::net_Destroy()
 		m_pPhysicsShell->ZeroCallbacks();
 		xr_delete(m_pPhysicsShell);
 	}
+	CHolderCustom::detach_Actor();
 	ClearExhausts();
 	m_wheels_map.clear();
 	m_steering_wheels.clear();
@@ -158,6 +159,7 @@ void	CCar::net_Destroy()
 		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(0,0);
 		
 	}
+	
 	CPHSkeleton::RespawnInit();
 	m_damage_particles.Clear();
 	CPHCollisionDamageReceiver::Clear();
@@ -307,6 +309,7 @@ void	CCar::UpdateCL				( )
 void	CCar::renderable_Render				( )
 {
 	inherited::renderable_Render			();
+	
 }
 
 void	CCar::net_Export			(NET_Packet& P)
@@ -387,6 +390,7 @@ void CCar::detach_Actor()
 	m_current_rpm=m_min_rpm;
 	HUD().GetUI()->UIMainIngameWnd.CarPanel().Show(false);
 	///Break();
+	//H_SetParent(NULL);
 }
 
 bool CCar::attach_Actor(CActor* actor)
@@ -419,6 +423,7 @@ bool CCar::attach_Actor(CActor* actor)
 	//driver_pos_tranform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
 	//driver_pos_tranform.c.set(bone_data.bind_translate);
 	//m_sits_transforms.push_back(driver_pos_tranform);
+	//H_SetParent(actor);
 	return true;
 }
 
@@ -1321,7 +1326,6 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
-
 			if(GetInventory()->Take(smart_cast<CGameObject*>(O), false, false)) 
 			{
 				O->H_SetParent(this);

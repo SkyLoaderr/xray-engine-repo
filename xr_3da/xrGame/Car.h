@@ -482,6 +482,7 @@ protected:
 			void					SaveNetState						(NET_Packet& P)																	;
 	virtual	void					RestoreNetState						(CSE_PHSkeleton* po)															;
 			void					SetDefaultNetState					(CSE_PHSkeleton* po)															;
+
 	
 public:
 	CCar(void);

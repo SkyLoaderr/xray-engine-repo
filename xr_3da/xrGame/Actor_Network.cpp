@@ -21,7 +21,7 @@
 #include "infoportion.h"
 #include "alife_registry_wrappers.h"
 #include "../skeletonanimated.h"
-
+#include "client_spawn_manager.h"
 //static u32	g_dwStartTime		= 0;
 //static u32	g_dwLastUpdateTime	;
 //static u32	g_dwNumUpdates		= 0;
@@ -728,6 +728,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		m_HeavyBreathSnd.stop();
 		m_bHeavyBreathSndPlaying = false;
 	}
+	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
 	return					TRUE;
 }
 
@@ -758,6 +759,8 @@ void CActor::net_Destroy	()
 #endif
 
 	processing_deactivate();
+	m_holder=NULL;
+	m_holderID=u16(-1);
 }
 
 void CActor::net_Relcase	(CObject* O)
@@ -1484,3 +1487,15 @@ void		CActor::RestoreHidedWeapon		()
 		u_EventSend(P);
 	};
 }
+
+void CActor::net_Save(NET_Packet& P)
+{
+	inherited::net_Save(P);
+	P.w_u16(m_holderID);
+}
+
+BOOL CActor::net_SaveRelevant()
+{
+ return TRUE;
+}
+
