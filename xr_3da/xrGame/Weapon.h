@@ -265,7 +265,7 @@ public:
 	float					GetConditionDispersionFactor	();
 	float					GetConditionMisfireProbability	();
 
-	int						GetAmmoCurrent		();
+	int						GetAmmoCurrent		()  const;
 	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
 	
 	void					animGet	(MotionSVec& lst, LPCSTR prefix);

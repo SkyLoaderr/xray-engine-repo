@@ -809,7 +809,7 @@ const char* CWeapon::Name()
 	return m_tmpName;
 }
 
-int CWeapon::GetAmmoCurrent()
+int CWeapon::GetAmmoCurrent() const
 {
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;

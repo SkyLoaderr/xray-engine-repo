@@ -14,6 +14,12 @@
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
 #include "ai_script_actions.h"
+#include "weapon.h"
+#include "WeaponMagazined.h"
+#include "enemy_manager.h"
+#include "item_manager.h"
+#include "hit_memory_manager.h"
+#include "sound_memory_manager.h"
 
 class CInventoryItem;
 
@@ -579,8 +585,131 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_callback!");
 		else
 			l_tpScriptMonster->clear_callback(tActionType);
+	}
+
+	u32 GetAmmoElapsed(const CLuaGameObject *game_object)
+	{
+		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(game_object);
+		if (!weapon)
+			return		(0);
+		return			(weapon->GetAmmoElapsed());
+	}
+
+	u32 GetAmmoCurrent(const CLuaGameObject *game_object) const
+	{
+		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(game_object);
+		if (!weapon)
+			return		(0);
+		return			(weapon->GetAmmoCurrent());
+	}
+
+	void SetQueueSize(u32 queue_size)
+	{
+		CWeaponMagazined	*weapon = dynamic_cast<CWeaponMagazined*>(m_tpGameObject);
+		if (!weapon)
+			return;
+		weapon->SetQueueSize(queue_size);
+	}
+
+	const CHitObject	*GetBestHit	() const
+	{
+		const CHitMemoryManager	*hit_memory_manager = dynamic_cast<const CHitMemoryManager*>(m_tpGameObject);
+		if (!hit_memory_manager)
+			return				(0);
+		return					(hit_memory_manager->hit());
+	}
+
+	const CSoundObject	*GetBestSound	() const
+	{
+		const CSoundMemoryManager	*sound_memory_manager = dynamic_cast<const CSoundMemoryManager*>(m_tpGameObject);
+		if (!sound_memory_manager)
+			return				(0);
+		return					(sound_memory_manager->sound());
+	}
+
+	CLuaGameObject	*GetBestEnemy()
+	{
+		const CEnemyManager	*enemy_manager = dynamic_cast<const CEnemyManager*>(m_tpGameObject);
+		if (!enemy_manager)
+			return				(0);
+		return					(xr_new<CLuaGameObject>(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(enemy_manager->selected()))));
+	}
+
+	CLuaGameObject	*GetBestItem()
+	{
+		const CItemManager	*item_manager = dynamic_cast<const CItemManager*>(m_tpGameObject);
+		if (!item_manager)
+			return				(0);
+		return					(xr_new<CLuaGameObject>(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(item_manager->selected()))));
+	}
+
+	BIND_FUNCTION10			(m_tpGameObject,	GetActionCount,		CScriptMonster,	GetActionCount,		u32,					0);
+	
+	const CEntityAction		*GetActionByIndex(u32 action_index = 0)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster) {
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member GetActionByIndex!");
+			return			(0);
+		}
+		else
+			return			(l_tpScriptMonster->GetActionByIndex(action_index));
+	}
+
+	void SetSoundCallback(const luabind::object &lua_object, LPCSTR method)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
+		else
+			l_tpScriptMonster->set_sound_callback(lua_object,method);
+	}
+
+	void SetSoundCallback(const luabind::functor<void> &lua_function)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
+		else
+			l_tpScriptMonster->set_sound_callback(lua_function);
+	}
+	
+	void ClearSoundCallback(bool member_callback)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
+		else
+			l_tpScriptMonster->clear_sound_callback(member_callback);
+	}
+
+	void SetHitCallback(const luabind::object &lua_object, LPCSTR method)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
+		else
+			l_tpScriptMonster->set_hit_callback(lua_object,method);
+	}
+
+	void SetHitCallback(const luabind::functor<void> &lua_function)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
+		else
+			l_tpScriptMonster->set_hit_callback(lua_function);
+	}
+	
+	void ClearHitCallback(bool member_callback)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
+		else
+			l_tpScriptMonster->clear_hit_callback(member_callback);
 	}
 };

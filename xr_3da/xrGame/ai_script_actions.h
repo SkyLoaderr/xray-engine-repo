@@ -25,6 +25,11 @@ public:
 	virtual					~CAbstractAction	()
 	{
 	}
+
+	virtual	bool			completed			()
+	{
+		return				(m_bCompleted);
+	}
 };
 
 class CPatrolPathParams {
@@ -727,6 +732,10 @@ public:
 	{
 		m_tStartTime		= Level().GetGameTime();
 	}
+
+			bool			completed				() const
+	{
+	}
 };
 
 class CEntityAction {
@@ -738,17 +747,16 @@ public:
 	CParticleAction					m_tParticleAction;
 	CObjectAction					m_tObjectAction;
 	CActionCondition				m_tActionCondition;
-	bool							m_bFirstTime;
+	void							*m_user_data;
 
 							CEntityAction		()
 	{
-		m_bFirstTime				= true;
+		m_user_data					= 0;
 	}
 
 							CEntityAction		(const CEntityAction *entity_action)
 	{
 		*this						= *entity_action;
-		m_bFirstTime				= true;
 	}
 
 	virtual					~CEntityAction		()
@@ -796,6 +804,11 @@ public:
 		SetAction			(tActionCondition,m_tActionCondition);
 	}
 
+	IC		void			SetAction(void *user_data)
+	{
+		m_user_data			= user_data;
+	}
+
 	IC		bool			CheckIfActionCompleted(const CAbstractAction &tAbstractAction) const
 	{
 		return				(tAbstractAction.m_bCompleted);
@@ -833,10 +846,6 @@ public:
 
 	IC		bool			CheckIfTimeOver()
 	{
-		if (m_bFirstTime) {
-			m_tActionCondition.m_tStartTime	= Device.TimerAsync();
-			m_bFirstTime	= false;
-		}
 		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Device.TimerAsync()));
 	}
 
@@ -879,5 +888,40 @@ public:
 		m_tParticleAction.initialize	();
 		m_tObjectAction.initialize		();
 		m_tActionCondition.initialize	();
+	}
+
+			const CMovementAction	&move()
+	{
+		return				(m_tMovementAction);
+	}
+	
+			const CWatchAction		&look()
+	{
+		return				(m_tWatchAction);
+	}
+	
+			const CAnimationAction	&anim()
+	{
+		return				(m_tAnimationAction);
+	}
+	
+			const CParticleAction	&particle()
+	{
+		return				(m_tParticleAction);
+	}
+	
+			const CObjectAction	&object()
+	{
+		return				(m_tObjectAction);
+	}
+	
+			const CActionCondition	&cond()
+	{
+		return				(m_tActionCondition);
+	}
+	
+			void					*data()
+	{
+		return				(m_user_data);
 	}
 };

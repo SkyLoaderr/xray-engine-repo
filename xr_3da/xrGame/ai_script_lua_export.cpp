@@ -453,7 +453,9 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("patrol",						&CMovementAction::SetPatrolPath)
 			.def("position",					&CMovementAction::SetPosition)
 			.def("input",						&CMovementAction::SetInputKeys)
-			.def("act",							&CMovementAction::SetAct),
+			.def("act",							&CMovementAction::SetAct)
+			.def("completed",					(bool (CMovementAction::*)())(CMovementAction::completed)),
+
 
 		class_<CWatchAction>("look")
 			.enum_("look")
@@ -479,7 +481,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object",						&CWatchAction::SetWatchObject)		// time
 			.def("direct",						&CWatchAction::SetWatchDirection)		// time
 			.def("type",						&CWatchAction::SetWatchType)
-			.def("bone",						&CWatchAction::SetWatchBone),
+			.def("bone",						&CWatchAction::SetWatchBone)
+			.def("completed",					(bool (CWatchAction::*)())(CWatchAction::completed)),
 
 		class_<CAnimationAction>("anim")
 			.enum_("type")
@@ -495,7 +498,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,bool>())
 			.def(								constructor<MonsterSpace::EMentalState>())
 			.def("anim",						&CAnimationAction::SetAnimation)
-			.def("type",						&CAnimationAction::SetMentalState),
+			.def("type",						&CAnimationAction::SetMentalState)
+			.def("completed",					(bool (CAnimationAction::*)())(CAnimationAction::completed)),
 
 		class_<CSoundAction>("sound")
 			.def(								constructor<>())
@@ -509,7 +513,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_sound",					&CSoundAction::SetSound)
 			.def("set_bone",					&CSoundAction::SetBone)
 			.def("set_position",				&CSoundAction::SetPosition)
-			.def("set_angles",					&CSoundAction::SetAngles),
+			.def("set_angles",					&CSoundAction::SetAngles)
+			.def("completed",					(bool (CSoundAction::*)())(CSoundAction::completed)),
 
 		class_<CParticleParams>("particle_params")
 			.def(								constructor<>())
@@ -528,7 +533,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_bone",					&CParticleAction::SetBone)
 			.def("set_position",				&CParticleAction::SetPosition)
 			.def("set_angles",					&CParticleAction::SetAngles)
-			.def("set_velocity",				&CParticleAction::SetVelocity),
+			.def("set_velocity",				&CParticleAction::SetVelocity)
+			.def("completed",					(bool (CParticleAction::*)())(CParticleAction::completed)),
 
 		class_<CObjectAction>("object")
 			.enum_("state")
@@ -558,7 +564,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,MonsterSpace::EObjectAction>())
 			.def("action",						&CObjectAction::SetObjectAction)
 			.def("object",						(void (CObjectAction::*)(LPCSTR))(CObjectAction::SetObject))
-			.def("object",						(void (CObjectAction::*)(CLuaGameObject*))(CObjectAction::SetObject)),
+			.def("object",						(void (CObjectAction::*)(CLuaGameObject*))(CObjectAction::SetObject))
+			.def("completed",					(bool (CObjectAction::*)())(CObjectAction::completed)),
 			
 		class_<CActionCondition>("cond")
 			.enum_("cond")
@@ -592,6 +599,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object",						&CEntityAction::CheckIfObjectCompleted)
 			.def("time",						&CEntityAction::CheckIfTimeOver)
 			.def("all",							(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
+			.def("completed",					(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
 	];
 }
 
@@ -688,6 +696,22 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
 			.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetTradeCallback))
 			.def("clear_trade_callback",		(void (CLuaGameObject::*)())(CLuaGameObject::ClearTradeCallback))
+			.def("get_ammo_in_magazine",		&CLuaGameObject::GetAmmoElapsed)
+			.def("get_ammo_total",				&CLuaGameObject::GetAmmoCurrent)
+			.def("set_queue_size",				&CLuaGameObject::SetQueueSize)
+			.def("best_hit",					&CLuaGameObject::GetBestHit)
+			.def("best_sound",					&CLuaGameObject::GetBestSound)
+			.def("best_enemy",					&CLuaGameObject::GetBestEnemy, adopt(return_value))
+			.def("best_item",					&CLuaGameObject::GetBestItem, adopt(return_value))
+			.def("action_count",				&CLuaGameObject::GetActionCount)
+			.def("action_by_index",				&CLuaGameObject::GetActionByIndex)
+			.def("set_hit_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetHitCallback))
+			.def("set_hit_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetHitCallback))
+			.def("clear_hit_callback",			&CLuaGameObject::ClearHitCallback)
+			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetSoundCallback))
+			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetSoundCallback))
+			.def("clear_hear_callback",			&CLuaGameObject::ClearSoundCallback)
+
 	];
 }
 

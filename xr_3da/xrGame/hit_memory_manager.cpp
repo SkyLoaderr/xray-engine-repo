@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "hit_memory_manager.h"
+#include "ai/script/ai_script_monster.h"
 
 CHitMemoryManager::CHitMemoryManager		()
 {
@@ -47,6 +48,10 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 		m_hits->clear			();
 		return;
 	}
+
+	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
+	if (script_monster)
+		script_monster->hit_callback(amount,vLocalDir,who,element);
 
 	CObject						*object = dynamic_cast<CObject*>(this);
 	VERIFY						(object);

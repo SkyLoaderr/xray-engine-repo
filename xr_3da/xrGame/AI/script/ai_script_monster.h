@@ -31,6 +31,7 @@ protected:
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
 	CMotionDef					*m_tpScriptAnimation;
+	CMotionDef					*m_tpNextAnimation;
 	CEntityAction				*m_tpCurrentEntityAction;
 public:
 	struct SMemberCallback {
@@ -40,6 +41,8 @@ public:
 	};
 protected:
 	SMemberCallback				m_tpCallbacks[eActionTypeCount];
+	SMemberCallback				m_tSoundCallback;
+	SMemberCallback				m_tHitCallback;
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
@@ -75,6 +78,16 @@ public:
 	virtual void				set_callback			(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType);
 	virtual void				clear_callback			(const CScriptMonster::EActionType tActionType);
 
+	virtual void				set_sound_callback		(const luabind::object &lua_object, LPCSTR method);
+	virtual void				set_sound_callback		(const luabind::functor<void> &lua_function);
+	virtual void				clear_sound_callback	(bool member_callback);
+	virtual void				sound_callback			(CObject *object, int sound_type, const Fvector &position, float sound_power);
+
+	virtual void				set_hit_callback		(const luabind::object &lua_object, LPCSTR method);
+	virtual void				set_hit_callback		(const luabind::functor<void> &lua_function);
+	virtual void				clear_hit_callback		(bool member_callback);
+	virtual void				hit_callback			(float amount, const Fvector &vLocalDir, CObject *who, s16 element);
+
 	virtual	void				callback				(const EActionType tActionType);
 
 	virtual LPCSTR				GetPatrolPathName		();
@@ -82,4 +95,6 @@ public:
 	virtual void				shedule_Update			(u32				DT);
 	virtual void				UpdateCL				();
 			bool				bfScriptAnimation		();
+			u32					GetActionCount			() const;
+	const CEntityAction			*GetActionByIndex		(u32 action_index) const;
 };

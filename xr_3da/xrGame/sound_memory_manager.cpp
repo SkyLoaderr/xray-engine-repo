@@ -11,6 +11,7 @@
 #include "hit_memory_manager.h"
 #include "visual_memory_manager.h"
 #include "memory_manager.h"
+#include "ai/script/ai_script_monster.h"
 
 CSoundMemoryManager::CSoundMemoryManager		()
 {
@@ -58,6 +59,10 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",self->cName(),Level().timeServer(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
+	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
+	if (script_monster)
+		script_monster->sound_callback(object,sound_type,position,sound_power);
+		
 	update_sound_threshold	();
 
 	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
