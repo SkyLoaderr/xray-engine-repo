@@ -54,7 +54,7 @@ function eva_state_mgr_weapon_strapped:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_strapped:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "strapped" and strappable_weapon(self.object:best_weapon())
+	return state_lib.states[self.st.target_state].weapon == "strapped"
 end
 --' Висит ли уже оружие на спине
 class "eva_state_mgr_weapon_strapped_now" (property_evaluator)
@@ -96,9 +96,7 @@ function eva_state_mgr_weapon_none:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_none:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "none" or
-	       (state_lib.states[self.st.target_state].weapon == "strapped" and not strappable_weapon(self.object:best_weapon()))
-			
+	return state_lib.states[self.st.target_state].weapon == "none"			
 end
 --' Спрятано ли оружие вообще.
 class "eva_state_mgr_weapon_none_now" (property_evaluator)
@@ -131,7 +129,11 @@ function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
 end
 function act_state_mgr_weapon_strapp:initialize()
 	action_base.initialize(self)
-	self.object:set_item(object.strap, self.object:best_weapon())
+	if strappable_weapon(self.object:best_weapon()) then
+		self.object:set_item(object.strap, self.object:best_weapon())
+	else
+		self.object:set_item(object.idle, nil)
+	end
 end
 function act_state_mgr_weapon_strapp:execute()
 	printf("*STATE MGR* Weapon Strap action")

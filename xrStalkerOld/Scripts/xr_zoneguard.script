@@ -119,20 +119,21 @@ function action_zoneguard_activity:go_to_actor(actor)
 		if_then_else(sug_body_state == body_state_free, "run", "assault"),
 		nil,
 		nil,
-		{ look_object = actor })
+		{ look_object = actor }, 
+		{animation = true})
 end
 
 function action_zoneguard_activity:stand_still(actor)
 	local sug_body_state = self:get_sug_body_state(actor)
 	if self.st.anim then
 		state_mgr.set_state(self.object, self.st.anim, nil, nil,
-			{ look_object = actor })
+			{ look_object = actor }, {animation = true})
 	else
 		state_mgr.set_state(self.object,
 			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
 			nil,
 			nil,
-			{ look_object = actor })
+			{ look_object = actor }, {animation = true})
 	end
 end
 	
