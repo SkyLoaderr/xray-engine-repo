@@ -102,6 +102,40 @@ function action_zoneguard_activity:talk_with_plr(actor)
 	end
 end
 
+function action_zoneguard_activity:get_sug_body_state(actor)
+	if self.st.no_danger or self.object:relation(actor) == game_object.friend then
+		return body_state_free --"guard"
+	else
+		return body_state_danger --"threat"
+	end
+end
+
+function action_zoneguard_activity:go_to_actor(actor)
+	local sug_body_state = self:get_sug_body_state(actor)
+
+	self.object:set_path_type(game_object.level_path)
+	self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+	state_mgr.set_state(self.object,
+		if_then_else(sug_body_state == body_state_free, "run", "assault"),
+		nil,
+		nil,
+		{ look_direction = actor:direction() })
+end
+
+function action_zoneguard_activity:stand_still(actor)
+	local sug_body_state = self:get_sug_body_state(actor)
+	if self.st.anim then
+		state_mgr.set_state(self.object, self.st.anim, nil, nil,
+			{ look_object = actor })
+	else
+		state_mgr.set_state(self.object,
+			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
+			nil,
+			nil,
+			{ look_object = actor })
+	end
+end
+	
 function action_zoneguard_activity:execute()
 	action_base.execute(self)
 
@@ -169,35 +203,11 @@ function action_zoneguard_activity:execute()
 		   teams[self.st.team].triggered == nil and
 		   (not self.st.ignore_friends or self.object:relation(actor) ~= game_object.friend)
 		then
-			local sug_body_state
-			if self.st.no_danger or self.object:relation(actor) == game_object.friend then
-				sug_body_state = body_state_free --"guard"
-			else
-				sug_body_state = body_state_danger --"threat"
-			end
 			if not self.st.no_move then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_dest_level_vertex_id(actor:level_vertex_id())
-				state_mgr.set_state(self.object,
-					if_then_else(sug_body_state == body_state_free, "run", "assault"),
-					nil,
-					nil,
-					{ look_direction = actor:direction() })
-				
+				self:go_to_actor(actor)
 				self.state = state_going_to_plr
 			else
-				if self.st.anim then
-					--printf("_bp: anim_update: %s", self.st.anim)
-					--xr_state.anim_update(self.st.anim, self.object)
-					state_mgr.set_state(self.object, self.st.anim, nil, nil,
-						{ look_object = actor })
-				else
-					state_mgr.set_state(self.object,
-						if_then_else(sug_body_state == body_state_free, "guard", "threat"),
-						nil,
-						nil,
-						{ look_object = actor })
-				end
+				self:stand_still(actor)
 				self.state = state_standing
 			end
 			--utils.stalker_look_at_stalker(self.object, actor)
@@ -239,13 +249,7 @@ function action_zoneguard_activity:execute()
 	if self.state == state_standing then
 		if not self.st.no_move then
 			if distance_between(self.object, actor) >= 4 then
-				if self.st.anim then
-					xr_state.anim_update(nil, self.object)
-					self.object:clear_animations()
-				end
-				self.object:set_movement_type(move.run)
-				self.object:set_desired_direction(actor:direction())
-				self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+				self:go_to_actor(actor)
 				self.state = state_going_to_plr
 				return
 			end
@@ -263,11 +267,9 @@ function action_zoneguard_activity:execute()
 
 	if self.state == state_going_to_plr then
 		if distance_between(self.object, actor) >= 3 then
-			self.object:set_movement_type(move.run)
-			self.object:set_desired_direction(actor:direction())
-			self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+			self:go_to_actor(actor)
 		else
-			self.object:set_movement_type(move.stand)
+			self:stand_still(actor)
 			self:talk_with_plr(actor)
 			self.state = state_standing
 		end
@@ -281,9 +283,6 @@ function action_zoneguard_activity:finalize()
 	self:reset_trigger()
 	self.move_mgr:finalize()
 	
-	--xr_state.anim_update(nil, self.object)
-	--self.object:clear_animations()
-
 	action_base.finalize(self)
 end
 
