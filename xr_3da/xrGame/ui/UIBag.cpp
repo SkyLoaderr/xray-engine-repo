@@ -255,6 +255,10 @@ void CUIBag::Draw(){
 
 void CUIBag::OnBoxDbClick(CUIDragDropItemMP* pDDItem){
 	R_ASSERT2(pDDItem, "OnBoxDbClick");
+
+	if (!IsItemInBag(pDDItem))
+		return;
+
 	shared_str section = pDDItem->GetSectionName();
 
 	int iActiveSection = -1;
@@ -320,8 +324,6 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	case DRAG_DROP_ITEM_DROP:
 		OnItemDrop(pDDItem);
 		return;
-
-		break;
 
 	case DRAG_DROP_ITEM_DB_CLICK:
 		if (GetMenuLevel() == mlBoxes)

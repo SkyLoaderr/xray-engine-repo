@@ -796,11 +796,8 @@ bool CUIBuyWeaponWnd::ToSlot()
 		SlotToSection(itemSlot);
 
 		m_pCurrentDragDropItem->MoveOnNextDrop();
+//		m_pCurrentDragDropItem->GetParent()->SendMessage(
 		UITopList[itemSlot].SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
-
-		if (m_pCurrentDragDropItem->m_bIsInfinite)
-		{
-		}
 
 		BuyReaction();
 

@@ -282,7 +282,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
 
-			pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
+//			pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 
 			ScrollBarRecalculate(false);
 
@@ -542,8 +542,7 @@ void CUIDragDropList::PlaceItemAtPos(int place_row, int place_col, CUIDragDropIt
 	pItem->SetWndPos(place_col*GetCellWidth(),
 		(place_row-m_iCurrentFirstRow)*GetCellHeight());
 
-	pItem->SetWidth(GetCellWidth()*pItem->GetGridWidth());
-	pItem->SetHeight(GetCellHeight()*pItem->GetGridHeight());
+	pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 
 	pItem->m_bInFloat = false;
 }
