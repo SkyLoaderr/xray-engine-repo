@@ -673,10 +673,34 @@
 				Name="Visuals"
 				Filter="">
 				<File
+					RelativePath=".\FLOD.cpp">
+				</File>
+				<File
+					RelativePath=".\FLOD.h">
+				</File>
+				<File
+					RelativePath=".\FProgressive.cpp">
+				</File>
+				<File
+					RelativePath=".\FProgressive.h">
+				</File>
+				<File
+					RelativePath=".\FSkinned.cpp">
+				</File>
+				<File
+					RelativePath=".\FSkinned.h">
+				</File>
+				<File
 					RelativePath="FTreeVisual.cpp">
 				</File>
 				<File
 					RelativePath="FTreeVisual.h">
+				</File>
+				<File
+					RelativePath=".\FVisual.cpp">
+				</File>
+				<File
+					RelativePath=".\FVisual.h">
 				</File>
 				<File
 					RelativePath=".\ParticleEffect.cpp">
