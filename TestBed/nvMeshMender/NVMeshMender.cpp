@@ -707,15 +707,16 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             nv_scalar a = sxt.x;
             nv_scalar b = sxt.y;
             nv_scalar c = sxt.z;
-
+			
+			nv_scalar _eps	= type_zero(nv_scalar)*10;
             nv_scalar ds_dx = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 ds_dx = - b / a;
             }
 
             nv_scalar dt_dx = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 dt_dx = - c / a;
             }
@@ -732,13 +733,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             c = sxt.z;
 
             nv_scalar ds_dy = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 ds_dy = -b / a;
             }
 
             nv_scalar dt_dy = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 dt_dy = -c / a;
             }
@@ -755,13 +756,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             c = sxt.z;
 
             nv_scalar ds_dz = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 ds_dz = -b / a;
             }
 
             nv_scalar dt_dz = nv_zero;
-            if ( _abs( a ) > nv_eps )
+            if ( _abs( a ) > _eps )
             {
                 dt_dz = -c / a;
             }
