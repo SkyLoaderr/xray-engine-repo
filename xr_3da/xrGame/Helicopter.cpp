@@ -107,7 +107,6 @@ void CHelicopter::init()
 	m_time_between_rocket_attack = 0;
 	m_last_rocket_attack		= Device.dwTimeGlobal;
 
-	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
 
 	m_data.m_stayPoint.set(0.0f, 0.0f, 0.0f);
@@ -210,6 +209,7 @@ void CHelicopter::reload(LPCSTR section)
 BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
 	SetfHealth(100.0f);
+	setState(CHelicopter::eIdleState);
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
@@ -274,7 +274,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	}
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
-
+	
 	CShootingObject::Light_Create();
 
 
@@ -322,6 +322,10 @@ void CHelicopter::net_Destroy()
 	inherited::net_Destroy();
 	CShootingObject::Light_Destroy();
 	CPHSkeleton::RespawnInit();
+	m_engineSound.stop();
+//	m_pParticle->Stop();
+	xr_delete(m_pParticle);
+	m_pParticle = NULL;
 }
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	
@@ -454,7 +458,6 @@ void CHelicopter::UpdateCL()
 */
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
-	UpdateHeliParticles();
 
 	//weapon
 	MGunUpdateFire();
@@ -465,6 +468,7 @@ void CHelicopter::UpdateCL()
 	//smoke
 	m_particleXFORM	= K->LL_GetTransform(m_smoke_bone);
 	m_particleXFORM.mulA(XFORM());
+	UpdateHeliParticles();
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj ){
 
@@ -855,6 +859,8 @@ void CHelicopter::Explode ()
 	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
 
 	m_explodeSound.play_at_pos(0,XFORM().c);
+	m_explodeSound.set_position(XFORM().c);
+
 	m_pParticle->Play();
 }
 
