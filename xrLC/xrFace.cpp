@@ -71,6 +71,68 @@ Shader_xrLC&	Face::Shader()
 	DWORD shader_id = pBuild->materials[dwMaterial].reserved;
 	return *(pBuild->shaders.Get(shader_id));
 }
+
+void	Face::CalcNormal	()
+{
+	Fvector t1,t2;
+
+	Fvector*	v0 = &(v[0]->P);
+	Fvector*	v1 = &(v[1]->P);
+	Fvector*	v2 = &(v[2]->P);
+	t1.sub			(*v1,*v0);
+	t2.sub			(*v2,*v1);
+	N.crossproduct	(t1,t2);
+	float mag		= N.magnitude();
+	if (mag<EPS_S)
+	{
+		CalcNormal2();
+	} else {
+		N.div(mag);
+	}
+};
+
+void	Face::CalcNormal2	()
+{
+	FPU::m64r		();
+	Dvector			v0,v1,v2,t1,t2,dN;
+	v0.set			(v[0]->P);
+	v1.set			(v[1]->P);
+	v2.set			(v[2]->P);
+	t1.sub			(v1,v0);
+	t2.sub			(v2,v1);
+	dN.crossproduct	(t1,t2);
+	double mag		= dN.magnitude();
+	if (mag<dbl_zero)
+	{
+		Dvector Nabs;
+		Nabs.abs	(dN);
+
+#define SIGN(a) ((a>=0.f)?1.f:-1.f)
+
+		if (Nabs.x>Nabs.y && Nabs.x>Nabs.z)			N.set(SIGN(N.x),0.f,0.f);
+		else if (Nabs.y>Nabs.x && Nabs.y>Nabs.z)	N.set(0.f,SIGN(N.y),0.f);
+		else if (Nabs.z>Nabs.x && Nabs.z>Nabs.y)	N.set(0.f,0.f,SIGN(N.z));
+		else {
+			Msg		("* ERROR: Invalid face: Can't calc normal. (A=%f,e0=%f,e1=%f,e2=%f)",
+				CalcArea(),
+				v[0]->P.distance_to(v[1]->P),
+				v[0]->P.distance_to(v[2]->P),
+				v[1]->P.distance_to(v[2]->P)
+				);
+			Msg		("*        v0[%f,%f,%f], v1[%f,%f,%f], v2[%f,%f,%f]",
+				VPUSH(v[0]),
+				VPUSH(v[1]),
+				VPUSH(v[2])
+				);
+			N.set	(0,1,0); 
+		}
+#undef SIGN
+	} else {
+		dN.div	(mag);
+		N.set	(dN);
+	}
+}
+
 float Face::CalcArea()
 {
 	float	e1 = v[0]->P.distance_to(v[1]->P);
