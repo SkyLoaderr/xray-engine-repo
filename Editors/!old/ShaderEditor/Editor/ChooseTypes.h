@@ -6,6 +6,7 @@ enum EChooseMode{
     smSoundSource,
     smSoundEnv,
     smObject,
+    smGroup,
     smEShader,
     smCShader,
     smPE,
