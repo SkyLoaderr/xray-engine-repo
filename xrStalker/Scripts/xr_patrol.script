@@ -136,11 +136,16 @@ function action_single_patrol:initialize ()
     self.object:set_body_state            (move.standing)
     self.object:set_path_type             (game_object.patrol_path)
     if self.a.first_init == true then 
+       self.waypoint = -1
+       self.stage = 0
+       self.current_animation = 0
+       self.speak_time = 0
+       self.sub_stage = 0
+       self.current_phrase = 0
+       self.phrases = {}
        self.path_type = patrol.start
        self.mental_state = anim.danger
        self.move_type = move.run
-       self.a.patrol_end = false
-       self.stage = 0
        printf ("PATROL PATH IS %s", self.a.patrol_path)
     else  
        self.path_type = patrol.nearest 
