@@ -526,7 +526,7 @@ void CRender::render_sun				()
 
 	//	Prepare to interact with D3DX code
 	const D3DXMATRIX&	m_View			= *((D3DXMATRIX*)(&Device.mView));
-	const D3DXMATRIX&	m_Projection	= *((D3DXMATRIX*)(&Device.mProject));
+	const D3DXMATRIX&	m_Projection	= *((D3DXMATRIX*)(&ex_project));
 	const D3DXVECTOR3	m_lightDir		= -D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
 
 	//  these are the limits specified by the physical camera
