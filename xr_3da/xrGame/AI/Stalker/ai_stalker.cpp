@@ -46,7 +46,7 @@ void CAI_Stalker::Die				()
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
-	CreateSkeleton					();
+//	CreateSkeleton					();
 }
 
 void CAI_Stalker::OnDeviceCreate	()
@@ -115,8 +115,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	cNameVisual_set					(tpHuman->caModel);
 	
 	fHealth							= tpHuman->fHealth;
-	if (fHealth <= 0)
-		Die();
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 
@@ -185,6 +183,8 @@ void CAI_Stalker::Exec_Movement		(float dt)
 
 void CAI_Stalker::CreateSkeleton()
 {
+	if (!pVisual)
+		return;
 	Fmatrix ident;
 	float density=100.f*skel_density_factor;
 	float hinge_force=5.f*hinge_force_factor;
@@ -657,8 +657,9 @@ void CAI_Stalker::UpdateCL(){
 		clTransform.set(m_pPhysicsShell->mXFORM);
 		
 	}
-	
-	
+	else
+		if (fHealth <= 0)
+			CreateSkeleton();
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){

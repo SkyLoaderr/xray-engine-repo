@@ -75,8 +75,6 @@ void CAI_Rat::Die()
 	Group.m_dwAliveCount--;
 	m_eCurrentState = aiRatDie;
 	m_dwDeathTime = Level().timeServer();
-	CreateSkeleton();
-	
 }
 
 void CAI_Rat::OnDeviceCreate()
@@ -273,6 +271,8 @@ void CAI_Rat::net_Import(NET_Packet& P)
 }
 void CAI_Rat::CreateSkeleton(){
 	
+	if (!pVisual)
+		return;
 	CPhysicsElement* element=P_create_Element();
 	Fobb box;
 	box.m_rotate.identity();
@@ -351,8 +351,9 @@ void CAI_Rat::UpdateCL(){
 		clTransform.set(m_pPhysicsShell->mXFORM);
 		
 	}
-	
-	
+	else
+		if (fHealth <= 0)
+			CreateSkeleton();
 }
 
 void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
