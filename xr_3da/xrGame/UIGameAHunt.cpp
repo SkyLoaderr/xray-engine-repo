@@ -79,7 +79,7 @@ void		CUIGameAHunt::Init				()
 	pSkinMenuTeam1 = InitSkinMenu(1);
 	pSkinMenuTeam2 = InitSkinMenu(2);
 	//----------------------------------------------------------------
-	BuyMsg.SetStyleParams		(CUITextBanner::tbsFade, 1);
+	BuyMsg.SetStyleParams		(CUITextBanner::tbsNone, 1);
 	BuyMsg.SetFont				(HUD().pFontDI);
 	BuyMsg.SetTextColor			(0xffffff00);
 
