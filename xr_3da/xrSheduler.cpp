@@ -45,7 +45,17 @@ void CSheduler::Destroy			()
 {
 	R_ASSERT			(Items.empty());
 	DeleteFiber			(fiber_thread);
-	// DeleteFiber			(fiber_main);
+}
+
+void CSheduler::RegisterRT		(CSheduled* O)
+{
+	// Fill item structure
+	Item						TNext;
+	TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
+	TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
+	TNext.Object				= O;
+
+	ItemsRT.push_back			(TNext);
 }
 
 void CSheduler::Register		(CSheduled* O)
@@ -58,6 +68,17 @@ void CSheduler::Register		(CSheduled* O)
 	
 	// Insert into priority Queue
 	Push						(TNext);
+}
+
+void CSheduler::UnregisterRT	(CSheduled* O)
+{
+	for (DWORD i=0; i<ItemsRT.size(); i++)
+	{
+		if (ItemsRT[i].Object==O) {
+			ItemsRT.erase(ItemsRT.begin()+i);
+			return;
+		}
+	}
 }
 
 void CSheduler::Unregister		(CSheduled* O)
@@ -85,9 +106,10 @@ void CSheduler::Pop		()
 
 void CSheduler::ProcessStep			()
 {
-	if (Items.empty())				return;
-
 	DWORD	dwTime					= Device.dwTimeGlobal;
+
+	// Normal priority
+	if (Items.empty())				return;
 	while (Top().dwTimeForExecute < dwTime)
 	{
 		// Update
@@ -115,7 +137,6 @@ void CSheduler::ProcessStep			()
 		if (T.Object->Ready())		T.Object->Update		(Elapsed);
 
 		Slice						();
-		dwTime						= Device.dwTimeGlobal;
 	}
 }
 
@@ -126,6 +147,16 @@ void CSheduler::Switch				()
 
 void CSheduler::Update				(DWORD mcs)
 {
+	// Realtime priority
+	for (u32 it=0; it<ItemsRT.size(); it++)
+	{
+		Item&	T					= ItemsRT[it];
+		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		T.Object->Update			(Elapsed);
+		T.dwTimeOfLastExecute		= dwTime;
+	}
+
+	// Normal (sheduled)
 	Device.Statistic.Sheduler.Begin	();
 	cycles_limit					= CPU::cycles_per_microsec * u64(mcs);
 	cycles_start					= CPU::GetCycleCount();

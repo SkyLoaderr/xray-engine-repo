@@ -34,6 +34,7 @@ private:
 		{	return dwTimeForExecute > I.dwTimeForExecute; }
 	};
 private:
+	vector<Item>	ItemsRT;
 	vector<Item>	Items;
 
 	IC void			Push	(Item& I);
@@ -51,12 +52,14 @@ public:
 	void			Update		(DWORD mcs		);
 
 	void			Switch		();
-	void			Slice		()
+	IC void			Slice		()
 	{
 		if ((CPU::GetCycleCount()-cycles_start)>cycles_limit)
 			Switch();
 	}
 
+	void			RegisterRT	(CSheduled* A	);
+	void			UnregisterRT(CSheduled* A	);
 	void			Register	(CSheduled* A	);
 	void			Unregister	(CSheduled* A	);
 
