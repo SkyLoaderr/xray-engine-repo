@@ -32,6 +32,7 @@ protected:
 			void		init_ef_storage			() const;
 			void		update					(bool switch_objects);
 	virtual	void		reload					(LPCSTR section);
+			void		update_parent_data		(CSE_ALifeObject *parent, CSE_ALifeObject *child);
 
 public:
 						CALifeUpdateManager		(xrServer *server, LPCSTR section);

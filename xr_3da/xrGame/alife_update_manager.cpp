@@ -106,6 +106,16 @@ void CALifeUpdateManager::init_ef_storage() const
 	ai().ef_storage().m_tpGameObject	= 0;
 }
 
+void CALifeUpdateManager::update_parent_data	(CSE_ALifeObject *parent, CSE_ALifeObject *child)
+{
+	parent->m_tGraphID			= child->m_tGraphID;
+	parent->m_tNodeID			= child->m_tNodeID;
+	parent->o_Position			= child->o_Position;
+	parent->o_Angle				= child->o_Angle;
+	if (parent->ID_Parent != 0xffff)
+		update_parent_data		(objects().object(parent->ID_Parent),child);
+}
+
 bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 {
 	if (m_changing_level)
@@ -124,7 +134,10 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	net_packet.r				(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
 	net_packet.r_vec3			(graph().actor()->o_Position);
 	net_packet.r_vec3			(graph().actor()->o_Angle);
-	
+
+	if (graph().actor()->ID_Parent != 0xffff)
+		update_parent_data		(objects().object(graph().actor()->ID_Parent),graph().actor());
+
 	save						();
 
 	graph().actor()->m_tGraphID	= safe_graph_vertex_id;

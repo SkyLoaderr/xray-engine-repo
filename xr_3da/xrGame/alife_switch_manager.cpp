@@ -85,6 +85,9 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 		OBJECT_IT					I = object->children.begin();
 		OBJECT_IT					E = object->children.end();
 		for ( ; I != E; ++I) {
+			if (*I == graph().actor()->ID)
+				continue;
+
 			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = objects().object(*I);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
@@ -376,7 +379,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeGroupAbstract) {
 				// checking if the object is ready to switch offline
-				if (I->can_switch_offline() && (!I->can_switch_online() || (graph().actor()->o_Position.distance_to(I->o_Position) > offline_distance())))
+				if (I->can_switch_offline() && (graph().actor()->ID_Parent != I->ID) && (!I->can_switch_online() || (graph().actor()->o_Position.distance_to(I->o_Position) > offline_distance())))
 					switch_offline(I);
 			}
 			else {
