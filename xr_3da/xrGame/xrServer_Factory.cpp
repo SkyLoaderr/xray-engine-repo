@@ -63,6 +63,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		return xr_new<CSE_ALifeItemDetector>			(caSection);
+		case CLSID_DEVICE_PDA:			return xr_new<CSE_ALifeItemPDA>					(caSection);
 
 		case CLSID_OBJECT_W_M134:					
 		case CLSID_OBJECT_W_FN2000:		

@@ -29,10 +29,8 @@
 #include "game_sv_single.h"
 #include "ai_alife.h"
 #include "HangingLamp.h"
-
 #include "trade.h"
-
-#define	 eHitTypeWound	3  // todo: IF YOU SEE IT DELETE IT!!!
+#include "pda.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -917,6 +915,7 @@ extern "C" {
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
 
+		case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
 		// Devices
 		case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
 

@@ -387,3 +387,34 @@ void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemPDA
+////////////////////////////////////////////////////////////////////////////
+void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemPDA::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeItemPDA::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemPDA::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+}
+#endif
+

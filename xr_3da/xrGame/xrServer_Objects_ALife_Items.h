@@ -91,4 +91,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
 	};
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
+
+									CSE_ALifeItemPDA(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+	{
+	};
+SERVER_ENTITY_DECLARE_END
+
 #endif
