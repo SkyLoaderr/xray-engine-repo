@@ -83,8 +83,10 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		self.running = if_then_else(mode.running, true, false)
 		self.danger = if_then_else(mode.danger, true, false)
 	end
-	self.standing_croush = self.crouch
+	self.standing_crouch = self.crouch
 	self.standing_danger = self.danger
+
+	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
 
 	self.retval_after_rotation = nil
 
@@ -420,6 +422,7 @@ function move_mgr:update_movement_state()
 	self.object:set_body_state(if_then_else(self.crouch, move.crouch, move.standing))
 	self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
 	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+	self.moving = true
 
 	self.object:set_sight(look.danger, nil, 0)
 end
@@ -675,6 +678,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.state = state_standing_before_anim
 		self.object:set_movement_type(move.stand)
 		self:update_standing_state()
+		self.moving = false
 
 		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
 		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
