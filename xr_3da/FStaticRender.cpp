@@ -347,7 +347,7 @@ void	CRender::Render()
 	static	CLightPPA	TEST;
 
 	TEST.SetPosition	(Device.vCameraPosition);
-	TEST.SetRange		(8.f);
+	TEST.SetRange		(4.f);
 	TEST.SetColor		(1,1,1);
 	Lights_Dynamic.Add	(&TEST);
 
