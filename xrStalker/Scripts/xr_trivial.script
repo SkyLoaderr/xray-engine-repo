@@ -706,7 +706,7 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
-    self.walk_time   = device():time_global() + 4000
+    self.walk_time   = device():time_global() + 10000
 
     if(self.a.say_kill == false) then
       --Один раз говорит, что убем бандитов и больше токого не говорим
