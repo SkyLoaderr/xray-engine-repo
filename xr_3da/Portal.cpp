@@ -65,8 +65,8 @@ void CSector::Render(CFrustum &F)
 	Occluders.InitCache(vcc);
 
 	// Render everything
-	float l_f = Device.fTimeDelta*fLightSmoothFactor;
-	float l_i = 1.f-l_f;
+//	float l_f = Device.fTimeDelta*fLightSmoothFactor;
+//	float l_i = 1.f-l_f;
 	{
 		Fvector	Tpos;
 		::Render.set_Occluders	(&Occluders);
@@ -83,11 +83,7 @@ void CSector::Render(CFrustum &F)
 				O->clTransform.transform_tiny(Tpos, pV->bv_Position);
 				if (Occluders.visibleSphereNC(Tpos,pV->bv_Radius)!=fcvNone)
 				{
-					O->OnMoveVisible		();
-					float&	LL				= O->AI_Lighting;
-					NodeCompressed* NODE	= O->AI_Node;
-					float	CL				= NODE?float(NODE->light):255;
-					LL	= l_i*LL + l_f*CL; 
+					float LL					= O->OnVisible	(); 
 					::Render.set_Transform		(&(O->clTransform));
 					::Render.set_LightLevel		(iFloor(LL));
 					::Render.add_leafs_Dynamic	(pV);
