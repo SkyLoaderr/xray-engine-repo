@@ -286,7 +286,7 @@ function activate_by_section(npc, ini, section)
 
 	if section == "nil" then
 		db.storage[npc_id].overrides = nil
-		reset_generic_schemes_on_scheme_switch(npc)
+		reset_generic_schemes_on_scheme_switch(npc, "nil")
 		db.storage[npc_id]["active_section"] = nil
 		db.storage[npc_id]["active_scheme"] = nil
 		return
@@ -303,7 +303,7 @@ function activate_by_section(npc, ini, section)
 		db.storage[npc_id].overrides = cfg_get_overrides(ini, section, npc)
 
 		-- Сбросить общие схемы:
-		reset_generic_schemes_on_scheme_switch(npc)
+		reset_generic_schemes_on_scheme_switch(npc, scheme)
 
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
@@ -332,7 +332,7 @@ end
 --	Производит сброс состояния объекта (снимает коллбеки, отключает разговор) непосредственно перед включением
 --	новой схемы.
 --]]
-function reset_generic_schemes_on_scheme_switch(npc)
+function reset_generic_schemes_on_scheme_switch(npc, scheme)
 	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = db.storage[npc:id()]
 
@@ -348,10 +348,21 @@ function reset_generic_schemes_on_scheme_switch(npc)
 		--npc:disable_talk() -- теперь делается в dialog_manager_reset
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		mob_release(npc)
+		if get_clsid(npc) == clsid.bloodsucker_s then
+			if scheme == "nil" then
+				npc:set_manual_invisibility(false)
+			else
+				npc:set_manual_invisibility(true)
+				npc:set_invisible(false)
+			end
+		end
 	elseif st.stype == modules.stype_item then
 		npc:clear_use_callback()
 		npc:set_nonscript_usable(true)
-		mob_release(npc)
+		if get_clsid(npc) == clsid.car then
+			-- Другие объекты под скрипт не берутся, поэтому для них не надо сбрасывать
+			mob_release(npc)
+		end
 	end
 end
 
@@ -565,6 +576,16 @@ function try_switch_to_another_section(npc, st, actor)
 			end
 		elseif c.name == "on_npc_not_in_zone" then
 			if not npc_in_zone(db.obj_by_id[c.npc_id], db.zone_by_name[c.v2]) then
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
+		elseif c.name == "on_actor_inside" then
+			printf("_bp: on_actor_inside")
+			if npc_in_zone(actor, npc) then
+				printf("_bp: TRUE")
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
+		elseif c.name == "on_actor_outside" then
+			if not npc_in_zone(actor, npc) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		else
@@ -801,6 +822,8 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer2",              npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone",       npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_not_in_zone",   npc))
+	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_actor_inside",        npc))
+	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_actor_outside",       npc))
 	n = add_condition(l, n, cfg_get_npc_and_zone       (ini, section, "on_npc_in_zone",         npc))
 	n = add_condition(l, n, cfg_get_npc_and_zone       (ini, section, "on_npc_not_in_zone",     npc))
 

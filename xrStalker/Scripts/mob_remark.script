@@ -91,10 +91,7 @@ function mob_remark:update(delta)
 	--	return
 	--end
 
-	local actor = level.actor()
-	if not actor then
-		return
-	end
+	local actor = db.actor
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
@@ -151,7 +148,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
 	st.dialog_cond    = xr_logic.cfg_get_condlist(ini, section, "dialog_cond", npc)
-	st.no_reset       = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+	-- Не работает, т.к. при переключении схем в данный момент монстр всегда
+	-- уходит из под скрипта, соответственно, сбрасывает свою очередь actions.
+	--st.no_reset       = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+	st.no_reset = true
 	st.anim           = utils.cfg_get_string(ini, section, "anim", npc, false, "")
 	st.anim_head      = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
 	st.tip            = utils.cfg_get_string(ini, section, "tip", npc, false, "")
