@@ -150,6 +150,9 @@ public:
     void				PauseMotion			();
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
+    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
+    LPCSTR				GetInfo				();
+    
     void				ZoomObject			(bool bSelOnly);
     void				ChangeAction		(EAction action);
     void				MakePreview			();

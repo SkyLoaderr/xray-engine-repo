@@ -472,9 +472,6 @@ void TUI::Redraw(){
     	// draw selection rect
 		if(m_SelectionRect) 	DU::DrawSelectionRect(m_SelStart,m_SelEnd);
 
-    	// draw cursor
-        m_Cursor->Render();
-
     	// draw axis
         DU::DrawAxis(Device.m_Camera.GetTransform());
     	// end draw
@@ -490,7 +487,7 @@ void TUI::Redraw(){
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
 
-//	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
+	fraBottomBar->paSel->Caption = Tools.GetInfo();
 }
 //---------------------------------------------------------------------------
 void TUI::Idle()

@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 604
+  Width = 832
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 604
+    Width = 832
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -19,7 +19,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 471
+      Width = 699
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -29,7 +29,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 116
         Top = 0
-        Width = 131
+        Width = 301
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -43,7 +43,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 2
+          Left = 172
           Top = 2
           Width = 127
           Height = 11
@@ -72,7 +72,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCamera: TPanel
-        Left = 247
+        Left = 475
         Top = 0
         Width = 130
         Height = 15
@@ -142,7 +142,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paUICursor: TPanel
-        Left = 377
+        Left = 605
         Top = 0
         Width = 94
         Height = 15
@@ -158,6 +158,23 @@ object fraBottomBar: TfraBottomBar
         Font.Style = []
         ParentFont = False
         TabOrder = 4
+      end
+      object paSel: TPanel
+        Left = 417
+        Top = 0
+        Width = 58
+        Height = 15
+        Align = alRight
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Color = 10528425
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
       end
     end
     object paMenu: TPanel
@@ -191,7 +208,7 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object paGridSquareSize: TPanel
-      Left = 545
+      Left = 773
       Top = 1
       Width = 58
       Height = 15
