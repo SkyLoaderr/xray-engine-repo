@@ -68,9 +68,10 @@ end
 class "action_commander" ( action_base )
 
 function action_commander:__init( name, storage )  super ( nil, name )
+    self.a = storage
 --    self.drunk = true
     self.decision = true
-    self.a = storage
+    self.box_alarm = false
 
     self.sounds_sleeping = {
         idle    = 0,
@@ -102,7 +103,10 @@ function action_commander:finalize()
     self.object:set_sound_mask( 0 )
 
     local enemy = self.object:best_enemy()
+
     if enemy and is_object_online( enemy:id() ) then
+        xr_gulag.setFractionState( "blockpost", 1 )
+
         if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
             self.object:play_sound( snd_enemy_stalker, 1, 0 )
         else
@@ -280,7 +284,7 @@ function action_commander:exec_walk_inside()
             self.last_inside_point = i
             self:walk_to_pos( self.a.way_inside, i )
 
-            self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 )
+            self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 ) and not self.box_alarm
 
             local rnd = math.random( 100 )
 
@@ -315,7 +319,7 @@ function action_commander:exec_look_box()
             if self.time_end <= device():time_global() then
                 if not self.object:see( self.box ) then
                     printf( "[commander] : ящик украли! “ревога!!!" )
-                    
+
                     self.object:set_sound_mask( -1 )
                     self.object:set_sound_mask( 0 )
 
@@ -326,6 +330,8 @@ function action_commander:exec_look_box()
                     end
 
                     xr_gulag.setFractionState( "blockpost", 2 )
+
+                    self.box_alarm = true
                 else
                     printf( "[commander] : ящик на месте" )
                     self:add_inside_animations( 2 )
