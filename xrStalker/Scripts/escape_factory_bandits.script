@@ -232,7 +232,10 @@ function action_dead_hook:initialize()
 
     self.a.dead_hook = true
 
-    printf( "-- INFO PORTION --" )
+	local actor = level.actor()
+	if actor ~= nil then
+		actor:give_info_portion("escape_factory_bandits_dead")
+	end
 end
 
 function action_dead_hook:execute()
