@@ -555,6 +555,7 @@ void CActor::Update	(u32 DT)
 				Movement.SetVelocity	(NET_Last.p_velocity);
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				vPosition.set			(NET_Last.p_pos);
+				ph_Movement.SetPosition(NET_Last.p_pos);
 				UpdateTransform			();
 			}
 
@@ -587,6 +588,7 @@ void CActor::Update	(u32 DT)
 				g_sv_Orientate	(NET_Last.mstate,dt);
 				g_Orientate		(NET_Last.mstate,dt);
 				vPosition.set	(NET_Last.p_pos);		// physics :)
+				ph_Movement.SetPosition(NET_Last.p_pos);
 				g_SetAnimation	(NET_Last.mstate);
 				
 				// Change weapon if needed
