@@ -28,4 +28,9 @@ public:
 ENGINE_API extern xrDispatchTable	PSGP;
 ENGINE_API extern CEngine			Engine;
 
+#define		xr_malloc	malloc
+#define		xr_free		free
+#define		xr_realloc	realloc
+#define		xr_strdup	strdup
+
 #endif // !defined(AFX_ENGINE_H__22802DD7_D7EB_4234_9781_E237657471AC__INCLUDED_)
