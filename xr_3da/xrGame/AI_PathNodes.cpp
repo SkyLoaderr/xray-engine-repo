@@ -450,7 +450,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 //	else
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Me->setEnabled(false);
-	Level().ObjectSpace.GetNearest(p_dest,1.f); 
+	Level().ObjectSpace.GetNearest(p_dest,3.f); 
 	CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest; 
 	Me->setEnabled(true);
 #endif

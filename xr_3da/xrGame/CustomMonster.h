@@ -15,7 +15,7 @@
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
-#define NO_PHYSICS_IN_AI_MOVE
+
 //#define IGNORE_ACTOR
 
 class CCustomMonster : 

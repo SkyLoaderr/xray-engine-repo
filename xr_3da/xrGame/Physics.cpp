@@ -19,6 +19,7 @@ struct Fcylinder;
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 Shader* CPHElement::hWallmark=NULL;
+
 // #include "contacts.h"
 
 
@@ -760,8 +761,8 @@ void CPHWorld::Step(dReal step)
 			(*iter)->PhTune(fixed_step);	
 
 		Device.Statistic.ph_core.Begin		();
-		dWorldStep			(phWorld, fixed_step);
-		//dWorldStepFast (phWorld,fixed_step,10);
+		//dWorldStep			(phWorld, fixed_step);
+		dWorldStepFast (phWorld,fixed_step,10);
 		Device.Statistic.ph_core.End		();
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
@@ -1743,7 +1744,7 @@ void CPHElement::PhDataUpdate(dReal step){
 
 ///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
-					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
+				//	if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
 					return;
 				}
 
@@ -1905,9 +1906,9 @@ void	CPHElement::Disabling(){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					if(mag_v<0.001f* dis_frames && deviation<0.00001f*dis_frames)
+					if(mag_v<0.005f* dis_frames && deviation<0.00005f*dis_frames)
 						Disable();//dBodyDisable(m_body);//
-					if((previous_dev>deviation&&previous_v>mag_v)
+					if((previous_dev+0.005f* dis_frames>deviation&&previous_v+0.00005f*dis_frames>mag_v)
 					  ) 
 					{
 					dis_count_f++;
@@ -1919,8 +1920,10 @@ void	CPHElement::Disabling(){
 					previous_dev=0;
 					previous_v=0;
 					dis_count_f=1;
+					dis_count_f1=0;
 					Memory.mem_copy(previous_p,current_p,sizeof(dVector3));
 					Memory.mem_copy(previous_r,current_r,sizeof(dMatrix3));
+					previous_p[0]=dInfinity;
 					}
 
 					{
@@ -1946,7 +1949,7 @@ void	CPHElement::Disabling(){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					if(mag_v<0.04* dis_frames && deviation<0.01*dis_frames)
+					if(mag_v<0.16* dis_frames && deviation<0.06*dis_frames)
 						dis_count_f1++;
 					else{
 						Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));

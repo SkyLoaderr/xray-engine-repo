@@ -23,6 +23,7 @@ CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElemen
 
 void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 {
+	
 	dBodyID body1=dGeomGetBody(c.geom.g1);
 	dBodyID body2=dGeomGetBody(c.geom.g2);
 	if(!(body1&&body2)) 
@@ -59,7 +60,7 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 			if(usr_data_1->object_callback==PushOutCallback&&usr_data_1->object_callback==PushOutCallback)
 			*/
 		const dReal erp=0.2f;
-		const dReal cfm=0.00000001f;
+		const dReal cfm=0.001f;
 
 		//c.surface.soft_erp=5000.f;
 		//c.surface.soft_cfm=0.0001f;

@@ -18,7 +18,7 @@ private:
 	int				light_bone_idx;
 	IRender_Light*	light_render;
 	CLAItem*		lanim;
-	CPhysicsShell*	body;
+	
 	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
 public:

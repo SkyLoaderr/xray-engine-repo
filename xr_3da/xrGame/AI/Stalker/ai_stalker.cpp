@@ -798,7 +798,7 @@ void CAI_Stalker::CreateSkeleton()
 	
 
 }
-
+#define NO_PHYSICS_IN_AI_MOVE
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
