@@ -55,7 +55,7 @@ void CHOM::Load			()
 	Msg	("* Loading HOM: %s",fName);
 	
 	destructor<IReader> FS	(Engine.FS.Open(fName));
-	destructor<IReader>	S	(FS().OpenChunk(1));
+	destructor<IReader>	S	(FS().open_chunk(1));
 
 	// Load tris and merge them
 	CDB::Collector		CL;

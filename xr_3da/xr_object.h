@@ -112,7 +112,7 @@ public:
 	virtual BOOL						ShadowReceive		()					{ return TRUE;				}
 
 	// SLS
-	virtual void						SLS_Save			(CFS_Base& fs)		{};
+	virtual void						SLS_Save			(IWriter& fs)		{};
 	virtual void						SLS_Load			(IReader& fs)		{};
 	
 	// Accessors

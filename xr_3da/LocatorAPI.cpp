@@ -71,7 +71,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	strcat				(base,"\\");
 
 	// Read headers
-	IReader*	hdr		= A.vfs->OpenChunk(1);
+	IReader*	hdr		= A.vfs->open_chunk(1);
 	while (!hdr->Eof())
 	{
 		string512		name,full;
@@ -79,9 +79,9 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		strconcat		(full,base,name);
 
 		u32 vfs			= archives.size()-1;
-		BOOL  bPacked	= (hdr->Rdword())?FALSE:TRUE;
-		u32 ptr			= hdr->Rdword();
-		u32 size		= hdr->Rdword();
+		BOOL  bPacked	= (hdr->r_u32())?FALSE:TRUE;
+		u32 ptr			= hdr->r_u32();
+		u32 size		= hdr->r_u32();
 		Register		(full,vfs,ptr,size,bPacked);
 	}
 	hdr->Close			();

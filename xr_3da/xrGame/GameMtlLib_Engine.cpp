@@ -64,26 +64,26 @@ void SGameMtlPair::Load(IReader& fs)
 {
 	string128			buf;
 
-	R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_PAIR));
-    mtl0				= fs.Rdword();
-    mtl1				= fs.Rdword();
-    ID					= fs.Rdword();
-    ID_parent			= fs.Rdword();
-    OwnProps.set		(fs.Rdword());
-
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_FLOTATION));
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
+    mtl0				= fs.r_u32();
+    mtl1				= fs.r_u32();
+    ID					= fs.r_u32();
+    ID_parent			= fs.r_u32();
+    OwnProps.set		(fs.r_u32());
+ 
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
     fFlotation			= fs.Rfloat();
 
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_BREAKING));
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
     fs.RstringZ			(buf); 		CreateSounds		(BreakingSounds,buf);
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_STEP));
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
     fs.RstringZ			(buf);		CreateSounds		(StepSounds,buf);
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
     fs.RstringZ			(buf);		CreateSounds		(CollideSounds,buf);
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_HIT));
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
     fs.RstringZ			(buf);		CreateSounds		(HitSounds,buf);
     fs.RstringZ			(buf);		CreatePSs			(HitParticles,buf);
     fs.RstringZ			(buf);		CreateMarks			(HitMarks,buf);

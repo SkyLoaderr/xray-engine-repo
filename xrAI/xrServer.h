@@ -96,7 +96,7 @@ public:
 	void					Update				();
 	void					SLS_Default			();
 	void					SLS_Clear			();
-	void					SLS_Save			(CFS_Base& FS);
+	void					SLS_Save			(IWriter& FS);
 	void					SLS_Load			(IReader&  FS);
 };
 

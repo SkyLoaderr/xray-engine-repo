@@ -11,11 +11,11 @@ void CDetail::Load		(IReader* S)
 	shader			= Device.Shader.Create(fnS,	fnT);
 
 	// Params
-	flags			= S->Rdword	();
+	flags			= S->r_u32	();
 	s_min			= S->Rfloat	();
 	s_max			= S->Rfloat	();
-	number_vertices	= S->Rdword	();
-	number_indices	= S->Rdword	();
+	number_vertices	= S->r_u32	();
+	number_indices	= S->r_u32	();
 	R_ASSERT		(0==(number_indices%3));
 	
 	// Vertices

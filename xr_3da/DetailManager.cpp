@@ -108,14 +108,14 @@ void CDetailManager::Load		()
 		IReader* S			= m_fs->open_chunk(m_id);
 		dt->Load			(S);
 		objects.push_back	(dt);
-		S->Close			();
+		S->close			();
 	}
-	m_fs->Close		();
+	m_fs->close		();
 
 	// Get pointer to database (slots)
 	IReader* m_slots	= dtFS->open_chunk(2);
-	dtSlots				= (DetailSlot*)m_slots->Pointer();
-	m_slots->Close		();
+	dtSlots				= (DetailSlot*)m_slots->pointer();
+	m_slots->close		();
 
 	// Initialize 'vis' and 'cache'
 	visible[0].resize	(objects.size());	// dump(visible[0]);

@@ -25,9 +25,9 @@ void CRender::level_Load()
 	
 	// Visuals
 	pApp->LoadTitle		("Loading spatial-DB...");
-	chunk				= fs->OpenChunk(fsL_VISUALS);
+	chunk				= fs->open_chunk(fsL_VISUALS);
 	LoadVisuals			(chunk);
-	chunk->Close		();
+	chunk->close		();
 	
 	// Lights
 	pApp->LoadTitle		("Loading lights...");
@@ -111,23 +111,23 @@ void CRender::LoadBuffers	(IReader *base_fs)
 	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 
 	// Vertex buffers
-	if (base_fs->FindChunk(fsL_VBUFFERS_DX9))
+	if (base_fs->find_chunk(fsL_VBUFFERS_DX9))
 	{
 		// Use DX9-style declarators
-		destructor<IReader>		fs	(base_fs->OpenChunk(fsL_VBUFFERS_DX9));
-		u32 count				= fs().Rdword();
+		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VBUFFERS_DX9));
+		u32 count				= fs().r_u32();
 		DCL.resize				(count);
 		VB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
 			// decl
-			D3DVERTEXELEMENT9*	dcl		= (D3DVERTEXELEMENT9*) fs().Pointer();
+			D3DVERTEXELEMENT9*	dcl		= (D3DVERTEXELEMENT9*) fs().pointer();
 			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
 			DCL[i].resize		(dcl_len);
-			fs().Read			(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
+			fs().r				(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
 
 			// count, size
-			u32 vCount			= fs().Rdword	();
+			u32 vCount			= fs().r_u32	();
 			u32 vSize			= D3DXGetDeclVertexSize	(dcl,0);
 			Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
@@ -135,21 +135,21 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
+			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);
 			VB[i]->Unlock		();
 
-			fs().Advance		(vCount*vSize);
+			fs().advance		(vCount*vSize);
 		}
 	} else {
 		// Use DX7-style FVFs
-		destructor<IReader>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
-		u32 count				= fs().Rdword();
+		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VBUFFERS));
+		u32 count				= fs().r_u32();
 		DCL.resize				(count);
 		VB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
-			u32 vFVF			= fs().Rdword	();
-			u32 vCount			= fs().Rdword	();
+			u32 vFVF			= fs().r_u32	();
+			u32 vCount			= fs().r_u32	();
 			u32 vSize			= D3DXGetFVFVertexSize	(vFVF);
 			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
@@ -160,32 +160,32 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
+			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);
 			VB[i]->Unlock		();
 
-			fs().Advance		(vCount*vSize);
+			fs().advance		(vCount*vSize);
 		}
 	}
 
 	// Index buffers
-	if (base_fs->FindChunk(fsL_IBUFFERS))
+	if (base_fs->find_chunk(fsL_IBUFFERS))
 	{
-		destructor<IReader>		fs	(base_fs->OpenChunk	(fsL_IBUFFERS));
-		u32 count				= fs().Rdword();
+		destructor<IReader>		fs	(base_fs->open_chunk	(fsL_IBUFFERS));
+		u32 count				= fs().r_u32();
 		IB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
-			u32 iCount		= fs().Rdword	();
+			u32 iCount		= fs().r_u32	();
 			Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
 
 			// Create and fill
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&IB[i],0));
 			R_CHK				(IB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().Pointer(),iCount*2);
+			Memory.mem_copy		(pData,fs().pointer(),iCount*2);
 			IB[i]->Unlock		();
 
-			fs().Advance		(iCount*2);
+			fs().advance		(iCount*2);
 		}
 	}
 }
@@ -197,9 +197,9 @@ void CRender::LoadVisuals(IReader *fs)
 	CVisual*		V		= 0;
 	ogf_header		H;
 
-	while ((chunk=fs->OpenChunk(index))!=0)
+	while ((chunk=fs->open_chunk(index))!=0)
 	{
-		chunk->ReadChunkSafe		(OGF_HEADER,&H,sizeof(H));
+		chunk->r_chunk_safe		(OGF_HEADER,&H,sizeof(H));
 		V = Models.Instance_Create	(H.type);
 		V->Load(0,chunk,0);
 		Visuals.push_back(V);
@@ -215,7 +215,7 @@ void CRender::LoadLights(IReader *fs)
 	L_DB.Load	(fs);
 
 	// glows
-	IReader*	chunk = fs->OpenChunk(fsL_GLOWS);
+	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
 	Glows.Load(chunk);
 	chunk->Close();
@@ -231,16 +231,16 @@ struct b_portal
 void CRender::LoadSectors(IReader* fs)
 {
 	// allocate memory for portals
-	u32 size = fs->FindChunk(fsL_PORTALS); 
+	u32 size = fs->find_chunk(fsL_PORTALS); 
 	R_ASSERT(0==size%sizeof(b_portal));
 	u32 count = size/sizeof(b_portal);
 	Portals.resize(count);
 
 	// load sectors
-	IReader* S = fs->OpenChunk(fsL_SECTORS);
+	IReader* S = fs->open_chunk(fsL_SECTORS);
 	for (u32 i=0; ; i++)
 	{
-		IReader* P = S->OpenChunk(i);
+		IReader* P = S->open_chunk(i);
 		if (0==P) break;
 
 		Sectors.push_back(xr_new<CSector> (i));
@@ -254,7 +254,7 @@ void CRender::LoadSectors(IReader* fs)
 	if (count) 
 	{
 		CDB::Collector	CL;
-		fs->FindChunk(fsL_PORTALS);
+		fs->find_chunk(fsL_PORTALS);
 		for (i=0; i<count; i++)
 		{
 			b_portal	P;

@@ -79,14 +79,14 @@ BOOL CCreator::Load(u32 dwNum)
 	
 	// Header
 	hdrLEVEL H;
-	fs.ReadChunkSafe			(fsL_HEADER,&H,sizeof(H));
+	fs.r_chunk_safe				(fsL_HEADER,&H,sizeof(H));
 	R_ASSERT2					(XRCL_PRODUCTION_VERSION==H.XRLC_version,"Incompatible level version.");
 	pApp->LoadTitle				("Description string: ",H.name);
 	
 	// Textures
-	chunk = fs.OpenChunk		(fsL_STRINGS);
+	chunk = fs.open_chunk		(fsL_STRINGS);
 	R_ASSERT2					(chunk,"Level doesn't builded correctly.");
-	count = chunk->Rdword		();
+	count = chunk->r_u32		();
 	LL_strings.resize			(count);
 	for(i=0; i<count; i++) {
 		LL_strings[i] = LPSTR(chunk->Pointer());
@@ -96,7 +96,7 @@ BOOL CCreator::Load(u32 dwNum)
 	
 	// CForms
 	pApp->LoadTitle				("Loading CFORM...");
-	chunk = fs.OpenChunk		(fsL_CFORM);
+	chunk = fs.open_chunk		(fsL_CFORM);
 	ObjectSpace.Load			(chunk);
 	chunk->Close				();
 	pApp->LoadSwitch			();

@@ -34,7 +34,7 @@ public:
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT					(tFileStream.FindChunk(GAME_TIME_CHUNK_DATA));
+		R_ASSERT					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA));
 		tFileStream.Read			(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.Read			(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
 		m_fTimeFactor				= tFileStream.Rfloat();
@@ -77,7 +77,7 @@ public:
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT					(tFileStream.FindChunk(ALIFE_CHUNK_DATA));
+		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
 		tFileStream.Read			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
 		if (m_tALifeVersion != ALIFE_VERSION)
 			THROW;
@@ -90,14 +90,14 @@ public:
 	u32								m_tSpawnVersion;
 	u32								m_dwSpawnCount;
 	u32								m_dwLevelCount;
-	
+	 
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_VERSION));
-		m_tSpawnVersion				= tFileStream.Rdword();
+		R_ASSERT(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION));
+		m_tSpawnVersion				= tFileStream.r_u32();
 		if (m_tSpawnVersion != XRAI_CURRENT_VERSION)
 			THROW;
-		m_dwSpawnCount				= tFileStream.Rdword();
-		m_dwLevelCount				= tFileStream.Rdword();
+		m_dwSpawnCount				= tFileStream.r_u32();
+		m_dwLevelCount				= tFileStream.r_u32();
 	};
 };

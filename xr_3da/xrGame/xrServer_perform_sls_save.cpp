@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void xrServer::SLS_Save	(CFS_Base& FS)
+void xrServer::SLS_Save	(IWriter& FS)
 {
 	// Generate spawn+update
 	NET_Packet		P;

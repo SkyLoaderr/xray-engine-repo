@@ -39,32 +39,32 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 	CVisual::Load(N,data,dwFlags);
 	
 	LODs.reserve(8);
-	IReader*	lods = data->OpenChunk	(OGF_P_LODS);
+	IReader*	lods = data->open_chunk	(OGF_P_LODS);
 	R_ASSERT	(lods);
 	u32		lod_id=0;
-	while (lods->FindChunk(lod_id))
+	while (lods->find_chunk(lod_id))
 	{
-		IReader* ONE = lods->OpenChunk(lod_id);
+		IReader* ONE = lods->open_chunk(lod_id);
 		primLOD	LOD;
 		
 		// read vertices
 		u32 dwVertStart=0;
-		if (ONE->FindChunk(OGF_VCONTAINER)) 
+		if (ONE->find_chunk(OGF_VCONTAINER)) 
 		{
 #ifndef _EDITOR
-			u32 ID		= ONE->Rdword();
-			dwVertStart		= ONE->Rdword();
-			LOD.dwVertCount	= ONE->Rdword();
+			u32 ID		= ONE->r_u32();
+			dwVertStart		= ONE->r_u32();
+			LOD.dwVertCount	= ONE->r_u32();
 			LOD.P.VB_Attach	(::Render->getFVF(ID),::Render->getVB(ID));
 #endif
 		} else {
-			R_ASSERT(ONE->FindChunk(OGF_VERTICES));
+			R_ASSERT(ONE->find_chunk(OGF_VERTICES));
 			
 			u32 dwVertType;
 			
 			dwVertStart		= 0;
-			dwVertType		= ONE->Rdword();
-			LOD.dwVertCount	= ONE->Rdword();
+			dwVertType		= ONE->r_u32();
+			LOD.dwVertCount	= ONE->r_u32();
 			
 			// But texture coords must be expanded
 			LOD.P.VB_Create	(dwVertType,LOD.dwVertCount,
@@ -76,8 +76,8 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 		// indices
 		LOD.dwPrimsCount = 0;
 
-		R_ASSERT(ONE->FindChunk(OGF_INDICES));
-		u32	dwCount = ONE->Rdword();
+		R_ASSERT(ONE->find_chunk(OGF_INDICES));
+		u32	dwCount = ONE->r_u32();
 		R_ASSERT(dwCount%3 == 0);
 		
 		LOD.P.IB_Create(dwVertStart,dwCount,

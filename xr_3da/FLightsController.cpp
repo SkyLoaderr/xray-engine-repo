@@ -48,30 +48,30 @@ void CLightDB_Static::Load			(IReader *fs)
 
 	// Controlles/Layers
 	{
-		F				= fs->OpenChunk		(fsL_LIGHT_CONTROL);
+		F				= fs->open_chunk		(fsL_LIGHT_CONTROL);
 		xrLIGHT_control	temp;
 		string128		c_name;
 
-		while (!F->Eof())
+		while (!F->eof())
 		{
-			F->Read				(temp.name,sizeof(temp.name));
-			u32 cnt			= F->Rdword();
+			F->r				(temp.name,sizeof(temp.name));
+			u32 cnt				= F->r_u32();
 			temp.data.resize	(cnt);
-			F->Read				(temp.data.begin(),cnt*sizeof(u32));
+			F->r				(temp.data.begin(),cnt*sizeof(u32));
 			strconcat			(c_name,"$light$",temp.name);
 			temp.dest			= Device.Shader._CreateConstant(c_name);
 			Layers.push_back	(temp);
 		}
 
-		F->Close		();
+		F->close		();
 	}
 
 	// Lights itself
 	{
-		F				= fs->OpenChunk		(fsL_LIGHT_DYNAMIC);
+		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
 
-		u32 size		= F->Length();
-		u32 element	= sizeof(Flight)+4;
+		u32 size		= F->length();
+		u32 element		= sizeof(Flight)+4;
 		u32 count		= size/element;
 		R_ASSERT		(count*element == size);
 		Lights.resize	(count);
@@ -81,8 +81,8 @@ void CLightDB_Static::Load			(IReader *fs)
 		for (u32 i=0; i<count; i++) 
 		{
 			
-			F->Read						(&Lights[i].dwController,4);
-			F->Read						(&Lights[i],sizeof(Flight));
+			F->r						(&Lights[i].dwController,4);
+			F->r						(&Lights[i],sizeof(Flight));
 
 			Lights[i].specular.set		(Lights[i].diffuse);
 			Lights[i].specular.mul_rgb	(0.2f);
@@ -95,7 +95,7 @@ void CLightDB_Static::Load			(IReader *fs)
 			Enabled[i]	= FALSE;
 		}
 
-		F->Close		();
+		F->close		();
 	}
 	Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
 }

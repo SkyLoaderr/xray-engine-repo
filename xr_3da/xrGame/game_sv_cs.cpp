@@ -145,7 +145,7 @@ void game_sv_CS::SpawnPlayer(u32 it, CFS_Memory &weapon) {
 		u32 l_chunk = 0;
 		u16 skip_header;
 		IReader l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
-		while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
+		while(NULL != (l_pS = l_stream.open_chunk(l_chunk++))) {
 			l_packet.B.count = l_pS->Length();
 			l_pS->Read(l_packet.B.data, l_packet.B.count);
 			l_packet.r_begin(skip_header);
@@ -345,7 +345,7 @@ void game_sv_CS::OnRoundStart() {
 //			u32 l_chunk = 0;
 //			u16 skip_header;
 //			IReader l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
-//			while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
+//			while(NULL != (l_pS = l_stream.open_chunk(l_chunk++))) {
 //				l_packet.B.count = l_pS->Length();
 //				l_pS->Read(l_packet.B.data, l_packet.B.count);
 //				l_packet.r_begin(skip_header);

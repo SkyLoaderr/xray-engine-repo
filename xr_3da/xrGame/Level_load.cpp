@@ -200,30 +200,30 @@ BOOL CLevel::Load_GameSpecific_Before()
 		IReader *O = 0;
 
 		// Load WayPoints
-		if (0!=(O = F->OpenChunk	(WAY_PATROLPATH_CHUNK)))
-		{
+		if (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK)))
+		{ 
 			int chunk = 0;
-			for (IReader *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
-				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_VERSION));
+			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
+				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
 				u32 dw = OBJ->Rword();
 				R_ASSERT(dw == WAYOBJECT_VERSION);
 
 				SPath tPatrolPath;
 
 				string64 sName;
-				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_NAME));
+				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
 				OBJ->RstringZ(sName);
 
-				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
+				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
 				u32 dwCount = OBJ->Rword();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
 				for (int i=0; i<(int)dwCount; i++){
 					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
-					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
+					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = getAI().q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 
-				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
+				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
 				u32 dwCountL = OBJ->Rword();
 				tPatrolPath.tpaWayLinks.resize(dwCountL);
 				for ( i=0; i<(int)dwCountL; i++){

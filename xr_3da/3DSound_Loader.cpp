@@ -6,9 +6,9 @@
 
 void* ParseWave		(IReader *data, LPWAVEFORMATEX &wfx, u32 &len)
 {
-    u32	dwRiff		= data->Rdword();
-    u32	dwLength	= data->Rdword();
-    u32	dwType		= data->Rdword();
+    u32	dwRiff		= data->r_u32();
+    u32	dwLength	= data->r_u32();
+    u32	dwType		= data->r_u32();
 	u32	dwPos;
 	void	*ptr		= NULL;
 	wfx					= NULL;
@@ -16,27 +16,27 @@ void* ParseWave		(IReader *data, LPWAVEFORMATEX &wfx, u32 &len)
 	if (dwRiff != mmioFOURCC('R', 'I', 'F', 'F')) return NULL;
 	if (dwType != mmioFOURCC('W', 'A', 'V', 'E')) return NULL;
 
-	while (!data->Eof()) {
-        dwType		= data->Rdword();
-        dwLength	= data->Rdword();
-		dwPos		= data->Tell();
+	while (!data->eof()) {
+        dwType		= data->r_u32();
+        dwLength	= data->r_u32();
+		dwPos		= data->tell();
 
         switch (dwType){
         case mmioFOURCC('f', 'm', 't', ' '):
 			if (!wfx) {
 				wfx = LPWAVEFORMATEX (xr_malloc(dwLength));
-				data->Read(wfx,dwLength);
+				data->r(wfx,dwLength);
 			}
             break;
         case mmioFOURCC('d', 'a', 't', 'a'):
 			if (!ptr) {
-				ptr = data->Pointer();
+				ptr = data->pointer();
 				len = dwLength;
             }
             break;
         }
 		if (wfx && ptr) return ptr;
-		data->Seek(dwPos+dwLength);
+		data->seek(dwPos+dwLength);
 	}
 	return NULL;
 }

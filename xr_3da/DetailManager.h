@@ -9,6 +9,7 @@
 #include "xrpool.h"
 #include "detailformat.h"
 #include "detailmodel.h"
+#include "vis_common.h"
 
 #ifdef _EDITOR
 	const int	dm_max_decompress	= 14;

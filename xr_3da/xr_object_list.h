@@ -44,7 +44,7 @@ public:
 	void						net_Import			(NET_Packet* P		);
 	CObject*					net_Find			(u32 ID				);
 
-	void						SLS_Save			(CFS_Base&	fs		);
+	void						SLS_Save			(IWriter&	fs		);
 	void						SLS_Load			(IReader&	fs		);
 
 	virtual void				OnDeviceCreate		();

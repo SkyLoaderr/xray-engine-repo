@@ -54,14 +54,14 @@ public:
 	{
 		m_tpCrossTableVFS					= xr_new<CVirtualFileStream>(fName);
 		R_ASSERT							(m_tpCrossTableVFS);
-		R_ASSERT							(m_tpCrossTableVFS->FindChunk(CROSS_TABLE_CHUNK_VERSION));
-		m_tpCrossTableVFS->OpenChunk		(CROSS_TABLE_CHUNK_VERSION);
-		m_tCrossTableHeader.dwVersion		= m_tpCrossTableVFS->Rdword();
-		m_tCrossTableHeader.dwNodeCount		= m_tpCrossTableVFS->Rdword();
-		m_tCrossTableHeader.dwGraphPointCount	= m_tpCrossTableVFS->Rdword();
+		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION));
+		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);
+		m_tCrossTableHeader.dwVersion		= m_tpCrossTableVFS->r_u32();
+		m_tCrossTableHeader.dwNodeCount		= m_tpCrossTableVFS->r_u32();
+		m_tCrossTableHeader.dwGraphPointCount	= m_tpCrossTableVFS->r_u32();
 		R_ASSERT							(m_tCrossTableHeader.dwVersion == XRAI_CURRENT_VERSION);
-		R_ASSERT							(m_tpCrossTableVFS->FindChunk(CROSS_TABLE_CHUNK_DATA));
-		m_tpCrossTableVFS->OpenChunk		(CROSS_TABLE_CHUNK_DATA);
+		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA));
+		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
 		m_tpaCrossTable						= (SCrossTableCell*)m_tpCrossTableVFS->Pointer();
 	};
 

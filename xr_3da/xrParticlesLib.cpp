@@ -35,7 +35,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	LIB.clear			();
     WORD version		= FS.Rword();
     if (version!=PARTICLESYSTEM_VERSION) return false;
-    u32 count = FS.Rdword();
+    u32 count = FS.r_u32();
     if (count){
         LIB.resize		(count);
         FS.Read			(&*LIB.begin(), count*sizeof(PS::SDef));

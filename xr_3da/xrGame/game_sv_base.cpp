@@ -232,16 +232,16 @@ void game_sv_GameState::Create					(LPCSTR options)
 		IReader *O = 0;
 
 		// Load RPoints
-		if (0!=(O = F->OpenChunk	(RPOINT_CHUNK)))
-		{
-			for (int id=0; O->FindChunk(id); id++)
+		if (0!=(O = F->open_chunk	(RPOINT_CHUNK)))
+		{ 
+			for (int id=0; O->find_chunk(id); id++)
 			{
 				RPoint					R;
 				int						team;
 
 				O->Rvector				(R.P);
 				O->Rvector				(R.A);
-				team					= O->Rdword	();
+				team					= O->r_u32	();
 				VERIFY					(team>=0 && team<4);
 				rpoints[team].push_back	(R);
 			}

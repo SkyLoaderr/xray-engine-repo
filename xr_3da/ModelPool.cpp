@@ -93,7 +93,7 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	// Actual loading
 	IReader*			data	= Engine.FS.Open(fn);
 	ogf_header			H;
-	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(fn,data,0);
 	Engine.FS.Close		(data);
@@ -110,7 +110,7 @@ CVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 	
 	// Actual loading
 	ogf_header			H;
-	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(name,data,0);
 

@@ -7,7 +7,7 @@ void xrServer::SLS_Load	(IReader& FS)
 	u16				u_id	= 0xffff;
 	for (u32 C=0; ; C++)
 	{
-		IReader* F			= FS.OpenChunk(C);
+		IReader* F			= FS.open_chunk(C);
 		if (0==F)			break;
 
 		// Spawn

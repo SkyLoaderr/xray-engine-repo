@@ -36,7 +36,7 @@ CGlowManager::~CGlowManager	()
 void CGlowManager::Load		(IReader* fs)
 {
 	// glows itself
-	u32 size	= fs->Length();
+	u32 size	= fs->length();
 	R_ASSERT	(size);
 	u32 one		= 4*sizeof(float)+2*sizeof(u32);
 	R_ASSERT	(size%one == 0);
@@ -46,11 +46,11 @@ void CGlowManager::Load		(IReader* fs)
 	for (;count;count--)
 	{
 		CGlow G;
-		fs->Read(&G.C,3*sizeof(float));
-		fs->Read(&G.R,1*sizeof(float));
+		fs->r		(&G.C,3*sizeof(float));
+		fs->r		(&G.R,1*sizeof(float));
 
-		u32 T		= fs->Rdword();
-		u32 S		= fs->Rdword();
+		u32 T		= fs->r_u32();
+		u32 S		= fs->r_u32();
 		G.hShader	= pCreator->LL_CreateShader(S,T,-1,-1);
 
 		G.fade		= 255.f;

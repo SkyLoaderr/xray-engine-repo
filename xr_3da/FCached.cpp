@@ -105,12 +105,12 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// read vertices
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
-		R_ASSERT(data->FindChunk(OGF_VERTICES));
+		R_ASSERT(data->find_chunk(OGF_VERTICES));
 		
 		u32			dwVertType;
 		
-		dwVertType		= data->Rdword();
-		vCount			= data->Rdword();
+		dwVertType		= data->r_u32();
+		vCount			= data->r_u32();
 		hGeom			= Device.Shader.CreateGeom	(dwVertType, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 		
 		u32	mem_size	= vCount*hGeom->vb_stride;
@@ -121,8 +121,8 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 	// indices
 	if ((dwFlags&VLOAD_NOINDICES)==0) 
 	{
-		R_ASSERT		(data->FindChunk(OGF_INDICES));
-		iCount			= data->Rdword();
+		R_ASSERT		(data->find_chunk(OGF_INDICES));
+		iCount			= data->r_u32();
 		R_ASSERT		(iCount%3 == 0);
 
 		u32	mem_size	= iCount*2;

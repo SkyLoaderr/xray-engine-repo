@@ -85,7 +85,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 	WaveSource = (unsigned char *)xr_malloc(dwSrcBufSize);
 
 	// seek to data start
-	hf->Seek	(DataPos);
+	hf->seek	(DataPos);
 	writepos	= 0;
 	Decompress	(WaveDest);
 	writepos	=stream.cbDstLengthUsed;
@@ -204,7 +204,7 @@ BOOL CSoundStream::Decompress(unsigned char *dest)
 		dwSrcSize=dwTotalSize-dwDecPos;
 		r=false;
 	}
-	hf->Read(WaveSource,dwSrcSize);
+	hf->r	(WaveSource,dwSrcSize);
 
     stream.cbStruct=sizeof(stream);
     stream.fdwStatus=0;
@@ -245,7 +245,7 @@ void CSoundStream::AppWriteDataToBuffer(
 	}
 }
 
-#define XRead(a) hf->Read(&a,sizeof(a))
+#define XRead(a) hf->r(&a,sizeof(a))
 
 //--------------------------------------------------------------------------------------------------
 BOOL ADPCMCreateSoundBuffer(IDirectSound8* lpDS, IDirectSoundBuffer* *pDSB, WAVEFORMATEX* fmt)
@@ -289,25 +289,25 @@ void CSoundStream::LoadADPCM( )
     Memory.mem_copy	(buf,riff.id,4); buf[4]=0;
     Memory.mem_copy	(buf,riff.wave_id,4); buf[4]=0;
 
-    while (!hf->Eof()) 
+    while (!hf->eof()) 
 	{
 		XRead			(hdr);
         Memory.mem_copy	(buf,hdr.id,4); buf[4]=0;
-        pos				= hf->Tell();
+        pos				= hf->tell();
         if (stricmp(buf, "fmt ")==0) {
-			dwFMT_Size = hdr.len;
-			psrc		= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
-			pwfx		= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
-			hf->Read	(psrc,		dwFMT_Size);
-			Memory.mem_copy(pwfx,psrc,	dwFMT_Size);
+			dwFMT_Size		= hdr.len;
+			psrc			= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
+			pwfx			= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
+			hf->r			(psrc,		dwFMT_Size);
+			Memory.mem_copy	(pwfx,psrc,	dwFMT_Size);
 			pwfx->wFormatTag = WAVE_FORMAT_PCM;
         } else {
             if (stricmp(buf,"data")==0) {
-                DataPos=hf->Tell();
+                DataPos=hf->tell();
 				dwTotalSize=hdr.len;
             }
 		}
-        hf->Seek(hdr.len+pos);
+        hf->seek(hdr.len+pos);
     }
 
 	VERIFY	(DataPos);

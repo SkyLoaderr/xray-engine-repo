@@ -79,11 +79,11 @@ public:
 	};
 
 	IC void Load							(LPCSTR fName)
-	{
+	{ 
 		m_tpGraphVFS					= xr_new<CVirtualFileStream>(fName);
-		m_tGraphHeader.dwVersion		= m_tpGraphVFS->Rdword();
-		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->Rdword();
-		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
 		{
 			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();

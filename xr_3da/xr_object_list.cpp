@@ -172,7 +172,7 @@ CObject* CObjectList::net_Find			(u32 ID)
 	return (it==map_NETID.end())?0:it->second;
 }
 
-void	CObjectList::SLS_Save			(CFS_Base&	fs		)
+void	CObjectList::SLS_Save			(IWriter&	fs		)
 {
 	for (u32 i=0; i<objects.size(); i++) 
 	{
@@ -187,7 +187,7 @@ void	CObjectList::SLS_Save			(CFS_Base&	fs		)
 void	CObjectList::SLS_Load			(IReader&	fs		)
 {
 	u32 ID	= 0; 
-	while (fs.FindChunk(ID)) 
+	while (fs.find_chunk(ID)) 
 	{
 		u16 net_ID		= fs.Rword();
 		CObject* O		= net_Find(net_ID);

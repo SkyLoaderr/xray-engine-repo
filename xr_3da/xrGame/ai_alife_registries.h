@@ -53,10 +53,10 @@ public:
 	};
 	
 	void CALifeObjectRegistry::Load(IReader	&tFileStream)
-	{
-		R_ASSERT(tFileStream.FindChunk(OBJECT_CHUNK_DATA));
+	{ 
+		R_ASSERT(tFileStream.find_chunk(OBJECT_CHUNK_DATA));
 		m_tObjectRegistry.clear();
-		u32 dwCount = tFileStream.Rdword();
+		u32 dwCount = tFileStream.r_u32();
 		for (u32 i=0; i<dwCount; i++) {
 			NET_Packet				tNetPacket;
 			u16						u_id;
@@ -151,7 +151,7 @@ public:
 
 	virtual	void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
+		R_ASSERT(tFileStream.find_chunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
 		//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
@@ -188,11 +188,11 @@ public:
 	
 	virtual	void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
+		R_ASSERT(tFileStream.find_chunk(TASK_CHUNK_DATA));
 		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
 //		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
-	
+	 
 	virtual	void					Add	(CALifeTask	*tpTask)
 	{
 		m_tTaskRegistry.insert		(make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
@@ -400,7 +400,7 @@ public:
 		IReader						*S = 0;
 		u16							ID;
 		for (int id=0; I != E; I++, id++) {
-			R_ASSERT				(0!=(S = tFileStream.OpenChunk(id)));
+			R_ASSERT				(0!=(S = tFileStream.open_chunk(id)));
 			// Spawn
 			tNetPacket.B.count		= S->Rword();
 			S->Read					(tNetPacket.B.data,tNetPacket.B.count);

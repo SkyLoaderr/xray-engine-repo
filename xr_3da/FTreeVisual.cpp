@@ -30,30 +30,30 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	D3DVERTEXELEMENT9*	vFormat	= NULL;
 
 	// read vertices
-	R_ASSERT			(data->FindChunk(OGF_VCONTAINER));
+	R_ASSERT			(data->find_chunk(OGF_VCONTAINER));
 	{
-		u32 ID				= data->Rdword				();
-		vBase				= data->Rdword				();
-		vCount				= data->Rdword				();
+		u32 ID				= data->r_u32				();
+		vBase				= data->r_u32				();
+		vCount				= data->r_u32				();
 		vFormat				= ::Render->getVB_Format	(ID);
 		pVertices			= ::Render->getVB			(ID);
 		pVertices->AddRef	();
 	}
 
 	// indices
-	R_ASSERT			(data->FindChunk(OGF_ICONTAINER));
+	R_ASSERT			(data->find_chunk(OGF_ICONTAINER));
 	{
 		dwPrimitives		= 0;
-		u32 ID				= data->Rdword			();
-		iBase				= data->Rdword			();
-		iCount				= data->Rdword			();
+		u32 ID				= data->r_u32			();
+		iBase				= data->r_u32			();
+		iCount				= data->r_u32			();
 		dwPrimitives		= iCount/3;
 		pIndices			= ::Render->getIB		(ID);
 		pIndices->AddRef	();
 	}
 
 	// load tree-def
-	R_ASSERT			(data->FindChunk(OGF_TREEDEF));
+	R_ASSERT			(data->find_chunk(OGF_TREEDEF));
 	{
 		data->Read			(&xform,	sizeof(xform));
 		data->Read			(&c_scale,	sizeof(c_scale));

@@ -283,7 +283,7 @@ void CSector::DebugDump()
 void CSector::Load(IReader& fs)
 {
 	// Assign portal polygons
-	u32 size	= fs.FindChunk(fsP_Portals); R_ASSERT(0==(size&1));
+	u32 size	= fs.find_chunk(fsP_Portals); R_ASSERT(0==(size&1));
 	u32 count	= size/2;
 	while (count) {
 		WORD ID		= fs.Rword();
@@ -293,11 +293,11 @@ void CSector::Load(IReader& fs)
 	}
 
 	// Assign visual
-	size = fs.FindChunk(fsP_Root);	R_ASSERT(size==4);
-	pRoot = ::Render->getVisual(fs.Rdword());
+	size = fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
+	pRoot = ::Render->getVisual(fs.r_u32());
 
 	// Load glows
-	size	= fs.FindChunk(fsP_Glows);
+	size	= fs.find_chunk(fsP_Glows);
 	if (size) {
 		R_ASSERT	(0==(size&1));
 		count		= size/sizeof(WORD);
@@ -306,7 +306,7 @@ void CSector::Load(IReader& fs)
 	}
 
 	// Load lights
-	size	= fs.FindChunk(fsP_Lights);	
+	size	= fs.find_chunk(fsP_Lights);	
 	if (size) {
 		R_ASSERT		(0==(size&1));
 		count			= size/sizeof(WORD);
