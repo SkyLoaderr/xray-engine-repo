@@ -19,7 +19,6 @@ end
 class "base_dialog" (CUIScriptWnd)
 
 function base_dialog:__init() super()
-	self:SetFont(GetFontMendium())	
 	self:InitControls("base dialog")
 end
 
