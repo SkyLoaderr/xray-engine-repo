@@ -3,17 +3,17 @@
 #pragma once
 
 // ---==( Extended Debugging Support (R) )==---
-#define R_ASSERT(expr) if (!(expr)) Debug.fail(#expr,__FILE__, __LINE__)
-#define R_ASSERT2(expr,e2) if (!(expr)) Debug.fail(#expr,e2,__FILE__, __LINE__)
-#define R_ASSERT3(expr,e2,e3) if (!(expr)) Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) Debug.error(hr,#expr,__FILE__, __LINE__); }
+#define R_ASSERT(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
+#define R_ASSERT2(expr,e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
+#define R_ASSERT3(expr,e2,e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
+#define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
 
 #ifdef DEBUG
 #define	NODEFAULT VERIFY2(0,"nodefault: reached")
-#define VERIFY(expr) if (!(expr)) Debug.fail(#expr,__FILE__, __LINE__)
-#define VERIFY2(expr, e2) if (!(expr)) Debug.fail(#expr,e2,__FILE__, __LINE__)
-#define VERIFY3(expr, e2, e3) if (!(expr)) Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) Debug.error(hr,#expr,__FILE__, __LINE__); }
+#define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
+#define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
+#define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
+#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
 #else
 #define NODEFAULT __assume(0)
 #define VERIFY(expr)
