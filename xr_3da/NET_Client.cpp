@@ -61,7 +61,7 @@ void			INetQueue::Release	()
 
 //
 const u32 syncQueueSize		= 256;
-const int syncSamples		= 16;
+const int syncSamples		= 32;
 class ENGINE_API syncQueue
 {
 	u32				table[syncQueueSize];
@@ -80,7 +80,7 @@ public:
 	IC u32*		begin	()	{ return table;			}
 	IC u32*		end		()	{ return table+count;	}
 	IC u32		size	()	{ return count;			}
-	IC void         clear	()	{ write=0; count=0;		}
+	IC void     clear	()	{ write=0; count=0;		}
 } net_DeltaArray;
 
 //-------
