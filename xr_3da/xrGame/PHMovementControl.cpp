@@ -882,6 +882,7 @@ void CPHMovementControl::CreateCharacter()
 	m_character->Create(size);
 	m_character->SetMaterial(m_material);
 	m_character->SetAirControlFactor(fAirControlParam);
+	m_character->SetPosition(vPosition);
 }
 CPHSynchronize*	CPHMovementControl::GetSyncItem()
 {
