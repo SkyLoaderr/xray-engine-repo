@@ -38,7 +38,7 @@ function save_dialog:FillList()
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)
 		
-		file = string.sub(s, string.len(s) - 4)
+		file = string.sub(file, string.len(file) - 4)
 		
 		printf("file[%d]=%s",it,file)
 		table.insert(self.FileTable,file)
