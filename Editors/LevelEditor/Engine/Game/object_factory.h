@@ -9,8 +9,9 @@
 #pragma once
 
 #ifndef _EDITOR
-#include <boost/type_traits/is_base_and_derived.hpp>
+#	include <boost/type_traits/is_base_and_derived.hpp>
 #endif
+
 #include "xrServer_Objects.h"
 
 class CObjectFactory {
@@ -84,6 +85,30 @@ protected:
 		virtual CLIENT_BASE_CLASS	*client_object		() const;
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
+
+    template<bool>
+    struct CompileTimeError;
+
+    template<>
+    struct CompileTimeError<true>
+    {
+    };
+
+	template <typename a, typename b, typename c>
+	struct CType {
+		template <bool value>
+		struct CInternalType {
+			typedef b type;
+		};
+
+		template <>
+		struct CInternalType<true> {
+			typedef a type;
+		};
+
+		typedef typename CInternalType<boost::is_base_and_derived<c,a>::value>::type type;
+	};
+
 #endif
 
 
@@ -150,4 +175,21 @@ IC	const CObjectFactory &object_factory()
 	return	(object_factory);
 }
 
+#ifndef _EDITOR
+
+#ifdef STATIC_CHECK
+#	undef STATIC_CHECK
+#endif
+
+#define STATIC_CHECK(expr, msg) \
+{ \
+        CompileTimeError<((expr) != 0)> ERROR_##msg; \
+        (void)ERROR_##msg; \
+}
+#endif
+
 #include "object_factory_inline.h"
+
+#ifndef _EDITOR
+#	undef STATIC_CHECK
+#endif

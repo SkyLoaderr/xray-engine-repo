@@ -241,11 +241,11 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 			dwCurNode		= saved_index;
 		}
 		else
-			return(fCurDistance);
+			return			(fCurDistance);
 
 		if (tpaMarks)
 			(*tpaMarks)[dwCurNode]	= true;
-		finish_vertex_id		= dwCurNode;
+		finish_vertex_id	= dwCurNode;
 	}
 	return					(fCurDistance);
 }
