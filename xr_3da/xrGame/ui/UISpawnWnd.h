@@ -18,7 +18,9 @@ public:
 	CUISpawnWnd();
 	virtual ~CUISpawnWnd();
 
-	virtual void Init(const char *strCaptionPrimary, const char *strCaptionSecondary, bool bDual = false);
+	virtual void Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
+						const char *strCaptionSecondary, const u32 ColorSecondary, 
+						bool bDual = false);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 
@@ -37,6 +39,9 @@ protected:
 	// Статик контролы для вывода текста
 	CUIStatic			UIStaticTextPrimary;
 	CUIStatic			UIStaticTextSecondary;
+	CUIStatic			UITeamSign1;
+	CUIStatic			UITeamSign2;
+
 	// Кнопки
 	CUIButton			UIButtonPrimary;
 	CUIButton			UIButtonSecondary;

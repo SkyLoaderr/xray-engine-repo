@@ -15,7 +15,7 @@ CUISpawnWnd::CUISpawnWnd()
 	  m_iResult(-1)//,
 //	  pCallbackFunc(NULL)
 {
-	Init("-= Red Team =-", "-= Blue Team =-", true);
+	Init("-= Green Team =-", 0xff40ff40, "-= Blue Team =-", 0xff4040ff, true);
 
 	SetFont(HUD().pFontMedium);
 }
@@ -29,7 +29,9 @@ CUISpawnWnd::~CUISpawnWnd()
 //{
 //	pCallbackFunc = pFunc;
 //};
-void CUISpawnWnd::Init(const char *strCaptionPrimary, const char *strCaptionSecondary, bool bDual)
+void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
+						const char *strCaptionSecondary, const u32 ColorSecondary, 
+						bool bDual)
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", "spawn.xml");
@@ -46,11 +48,16 @@ void CUISpawnWnd::Init(const char *strCaptionPrimary, const char *strCaptionSeco
 	UIFrameWndPrimary.AttachChild(&UIStaticTextPrimary);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextPrimary);
 	UIStaticTextPrimary.SetText(strCaptionPrimary);
+	UIStaticTextPrimary.SetTextColor(ColorPrimary);
 
 	UIFrameWndPrimary.AttachChild(&UIButtonPrimary);
 	// Устанавливем получателем сообщений родительское окно, так как FrameWindow не обрабатывает сообщения
 	UIButtonPrimary.SetMessageTarget(this);
 	xml_init.InitButton(uiXml, "button", 0, &UIButtonPrimary);
+
+	// sign
+	UIFrameWndPrimary.AttachChild(&UITeamSign1);
+	xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
 
 	// вторичный фрейм не аттачится, так как по умолчанию режим отображения одиночный
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndSecondary);
@@ -58,6 +65,12 @@ void CUISpawnWnd::Init(const char *strCaptionPrimary, const char *strCaptionSeco
 	UIFrameWndSecondary.AttachChild(&UIStaticTextSecondary);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextSecondary);
 	UIStaticTextSecondary.SetText(strCaptionSecondary);
+	UIStaticTextSecondary.SetTextColor(ColorSecondary);
+
+	// sign
+	UIFrameWndSecondary.AttachChild(&UITeamSign2);
+	xml_init.InitStatic(uiXml, "t2_static", 0, &UITeamSign2);
+
 
 	UIFrameWndSecondary.AttachChild(&UIButtonSecondary);
 	// Устанавливем получателем сообщений родительское окно, так как FrameWindow не ретровает сообщения

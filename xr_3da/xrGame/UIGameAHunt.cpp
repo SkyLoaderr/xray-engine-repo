@@ -184,7 +184,7 @@ void			CUIGameAHunt::OnFrame()
 			HUD().GetUI()->HideIndicators();
 
 			StaticMsg.SetTextColor		(0xfff0fff0);
-			StaticMsg.Out				(0.f,0.0f,"Team Red WINS!");
+			StaticMsg.Out				(0.f,0.0f,"Team Green WINS!");
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
