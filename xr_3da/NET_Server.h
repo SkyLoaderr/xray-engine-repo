@@ -58,6 +58,8 @@ protected:
 	xr_vector<IClient*>		net_Players;
 	IClient*				SV_Client;
 
+	int						psNET_Port;	
+
 	// Compressor configuration
 	MSYS_CONFIG				msgConfig;
 	void					config_Load			();
@@ -112,4 +114,5 @@ public:
 	
 	BOOL					HasBandwidth		(IClient* C);
 
+	IC int					GetPort				()			{ return psNET_Port; };
 };

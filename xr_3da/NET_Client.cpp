@@ -104,7 +104,7 @@ XRNETSERVER_API Flags32	psNET_Flags			= {0};
 XRNETSERVER_API int		psNET_ClientUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ClientPending	= 2;
 XRNETSERVER_API char	psNET_Name[32]		= "Player";
-extern int				psNET_Port;
+int				psNET_Port	= 5445;
 
 // {0218FA8B-515B-4bf2-9A5F-2F079D1759F3}
 static const GUID NET_GUID = 
