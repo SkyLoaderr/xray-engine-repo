@@ -17,6 +17,7 @@
 
 void CSE_ALifeGraph::Load				(LPCSTR fName)
 { 
+	R_ASSERT3							(FS.exist(fName),"There is no graph for the level ",fName);
 	m_tpGraphVFS						= FS.r_open(fName);
 	m_tGraphHeader.dwVersion			= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwLevelCount			= m_tpGraphVFS->r_u32();
