@@ -288,7 +288,7 @@ void CWeapon::Load		(LPCSTR section)
 	//m_ammoSect	= pSettings->r_string		(section,"ammo_class");
 	strcpy(m_ammoSect, pSettings->r_string(section,"ammo_class"));
 	char* l_ammoSect = m_ammoSect; R_ASSERT(l_ammoSect);
-	m_ammoTypes.push_back(l_ammoSect);
+	m_ammoTypes.clear(); m_ammoTypes.push_back(l_ammoSect);
 	while(*l_ammoSect) {
 		if(*l_ammoSect == ',') {
 			*l_ammoSect = 0; l_ammoSect++;
@@ -865,7 +865,7 @@ bool CWeapon::Action(s32 cmd, u32 flags) {
 bool CWeapon::Attach(PIItem pIItem, bool force) {
 	// Аргумент force всегда равен false
 	// наследник должен изменить его на true
-	// если данный IItem МОЖЕТ быть к нему присоединен,
+	// если данный IItem *МОЖЕТ* быть к нему присоединен,
 	// и вызвать return CInventoryItem::Attach(pIItem, force);
 	//if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && /*так надо*/(force = CheckAmmoType((CWeaponAmmo*)pIItem))/*так надо*/) m_pAmmo = (CWeaponAmmo*)pIItem;
 	/*if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && !strcmp(m_ammoSect, pIItem->cName())) { force = true; m_pAmmo = (CWeaponAmmo*)pIItem; }
@@ -875,7 +875,7 @@ bool CWeapon::Attach(PIItem pIItem, bool force) {
 bool CWeapon::Detach(PIItem pIItem, bool force) {
 	// Аргумент force всегда равен true
 	// наследник должен изменить его на false
-	// если данный IItem НЕ МОЖЕТ быть отсоединен,
+	// если данный IItem *НЕ МОЖЕТ* быть отсоединен,
 	// и вызвать return CInventoryItem::Detach(pIItem, force);
 	return CInventoryItem::Detach(pIItem, false);
 }

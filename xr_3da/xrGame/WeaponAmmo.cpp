@@ -53,30 +53,23 @@ void CWeaponAmmo::Load(LPCSTR section) {
 BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 	xrSE_WeaponAmmo *l_pW = (xrSE_WeaponAmmo*)DC;
 	m_boxCurr = l_pW->a_elapsed;
+	R_ASSERT(m_boxCurr <= m_boxSize);
 
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle");
 
-	if (0==m_pPhysicsShell)
-	{
+	if (0==m_pPhysicsShell) {
 		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
+		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
 		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
-
+		CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(2000.f);
-		if(!H_Parent())m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
+		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element(E);
+		m_pPhysicsShell->setMass(2000.f);
+		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity();
+		m_pPhysicsShell->fDesiredStrength = 0.f;
 	}
 
 	return inherited::net_Spawn(DC);
