@@ -184,10 +184,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 #ifdef DEFAULT_KILL_BEHAVIOUR
 				CHARACTER_GOODWILL community_goodwill = 
-#endif
+
 					(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
 					(float)(delta_goodwill+community_member_kill_goodwill));
-
+#endif
 				//сталкер при нападении на членов своей же группировки отношения не меняют
 				//(считается, что такое нападение всегда случайно)
 				bool stalker_kills_team_mate = stalker_from && (stalker_from->Community() == stalker->Community());
