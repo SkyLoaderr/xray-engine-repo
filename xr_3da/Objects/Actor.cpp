@@ -461,11 +461,8 @@ void CActor::Update	(u32 DT)
 		g_SetAnimation			(mstate_real);
 
 		// Check for game-contacts
-		if (Local())
-		{
-			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-			feel_touch_update		(C,R);
-		}
+		Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+		feel_touch_update		(C,R);
 		
 		// Dropping
 		if (b_DropActivated)	{
