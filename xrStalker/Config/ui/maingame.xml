@@ -43,22 +43,22 @@
 		<font font="letterica25" r="255" g="0" b="0" />
 	</info_list>
 	<!-- health bar -->
-	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
+	<progress_bar x="16" y="20" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" width="128" height="16" length="120" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0" width="128" height="16" >ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
 	<!-- armor bar -->
-	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
+	<progress_bar x="16" y="20" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" width="128" height="16" length="120" r="0" g="0" b="255">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0" width="128" height="16" >ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
 	<!-- battery bar -->
-	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
+	<progress_bar x="16" y="20" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" width="128" height="16" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0" width="128" height="16" >ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
 	<!-- car health bar -->
-	<car_health_progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
+	<car_health_progress_bar x="16" y="20" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" width="128" height="16" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0" width="128" height="16">ui\ui_mg_progress_efficiency_empty</background>
 	</car_health_progress_bar>
