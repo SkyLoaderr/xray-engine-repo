@@ -131,7 +131,7 @@ void CDetail::Optimize	()
 		// Msg					("* DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
 
 		// Copy faces
-		Memory.mem_copy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(u16));
+		Memory.mem_copy			(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(u16));
 
 		// Permute vertices
 		xr_vector<fvfVertexIn>	verts;
