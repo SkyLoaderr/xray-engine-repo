@@ -111,21 +111,35 @@ public:
 
 	IC	void						set_RT				(IDirect3DSurface9* RT, u32 ID=0);
 	IC	void						set_ZB				(IDirect3DSurface9* ZB);
-	IC	void						set_Textures		(STextureList* T);
-	IC	void						set_Matrices		(SMatrixList* M);
 	IC	void						set_Constants		(R_constant_table* C);
+
+	IC	void						set_Textures		(STextureList* T);
+	IC	void						set_Textures		(ref_texture_list& T)				{ set_Textures(&*T);			}
+
+	IC	void						set_Matrices		(SMatrixList* M);
+	IC	void						set_Matrices		(ref_matrix_list& M)				{ set_Matrices(&*M);			}
+
 	IC	void						set_Element			(ShaderElement* S, u32	pass=0);
+	IC	void						set_Element			(ref_selement& S, u32	pass=0)		{ set_Element(&*S,pass);		}
+
 	IC	void						set_Shader			(Shader* S, u32 pass=0);
-	IC	void						set_Shader			(ref_shader& S, u32 pass=0);
+	IC	void						set_Shader			(ref_shader& S, u32 pass=0)			{ set_Shader(&*S,pass);			}
 
 	IC	void						set_States			(IDirect3DStateBlock9* _state);
+	IC	void						set_States			(ref_state& _state)					{ set_States(_state->state);	}
+
 	IC  void						set_Format			(IDirect3DVertexDeclaration9* _decl);
+
 	IC  void						set_PS				(IDirect3DPixelShader9* _ps);
+	IC  void						set_PS				(ref_ps& _ps)						{ set_PS(_ps->ps);				}
+
 	IC  void						set_VS				(IDirect3DVertexShader9* _vs);
+	IC  void						set_VS				(ref_vs& _vs)						{ set_VS(_vs->vs);				}
+
 	IC	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
 	IC	void						set_Indices			(IDirect3DIndexBuffer9* _ib);
 	IC  void						set_Geometry		(SGeometry* _geom);
-	IC  void						set_Geometry		(ref_geom& _geom);
+	IC  void						set_Geometry		(ref_geom& _geom)					{	set_Geometry(&*_geom);		}
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
 
 	// constants

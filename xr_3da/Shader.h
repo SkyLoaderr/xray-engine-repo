@@ -28,16 +28,26 @@ struct	ENGINE_API		SVS				: public xr_resorce									{
 	R_constant_table					constants;
 	void				_release_		(SVS * ptr);
 };
+typedef	resptr_core<SVS,resptr_base<SVS> >	
+	ref_vs;
+
+//////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SPS				: public xr_resorce									{
 	IDirect3DPixelShader9*				ps;
 	R_constant_table					constants;
 	void				_release_		(SPS * ptr);
 };
+typedef	resptr_core<SPS,resptr_base<SPS> >	
+	ref_ps;
+
+//////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SState			: public xr_resorce									{
 	IDirect3DStateBlock9*				state;
 	SimulatorStates						state_code;
 	void				_release_		(SState * ptr);
 };
+typedef	resptr_core<SState,resptr_base<SState> >	
+	ref_state;
 
 // Non-atomic, ref-counted resources
 struct	ENGINE_API		STextureList	: public xr_resorce, public svector<CTexture*,8>	{
@@ -88,15 +98,14 @@ typedef	resptr_core<SGeometry,resptrcode_geom>	ref_geom;
 
 //////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SPass			: public xr_resorce									{
-	IDirect3DStateBlock9*				state;		// Generic state, like Z-Buffering, samplers, etc
-	IDirect3DPixelShader9*				ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
-	IDirect3DVertexShader9*				vs;			// may be NULL = FFP, in that case "state" must contain RS setup, *and* FVF-compatible declaration must be used
-
+	ref_state							state;		// Generic state, like Z-Buffering, samplers, etc
+	ref_ps								ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
+	ref_vs								vs;			// may be NULL = FFP, in that case "state" must contain RS setup, *and* FVF-compatible declaration must be used
 	R_constant_table*					constants;
 
-	STextureList*						T;
-	SMatrixList*						M;
-	SConstantList*						C;
+	ref_texture_list					T;
+	ref_matrix_list						M;
+	ref_constant_list					C;
 
 	void				_release_		(SPass * ptr);
 	BOOL				equal			(SPass& P);
@@ -114,11 +123,10 @@ public:
 		u32	bLighting	:	1;
 	};
 public:
-	ShaderElement			();
-public:
 	SFlags				Flags;
-	svector<SPass*,4>	Passes;
+	svector<ref_pass,4>	Passes;
 
+						ShaderElement	();
 	BOOL				equal			(ShaderElement& S);
 	BOOL				equal			(ShaderElement* S);
 	void				_release_		(ShaderElement * ptr);
@@ -129,7 +137,7 @@ typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		Shader			: public xr_resorce									{
 public:
-	ShaderElement*		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=*undefined*
+	ref_selement		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=*undefined*
 										// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)
 
 	BOOL				equal			(Shader& S);

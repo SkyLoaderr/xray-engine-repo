@@ -202,13 +202,11 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
 }
 
-IC void CBackend::set_Shader			(ref_shader& S, u32 pass)	{	set_Shader	(&*S,pass);	}
 IC void CBackend::set_Shader			(Shader* S, u32 pass)
 {
 	set_Element			(S->E[0],pass);
 }
 
-IC void CBackend::set_Geometry			(ref_geom& _geom)			{	set_Geometry(&*_geom);	}
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {
 	set_Format			(_geom->dcl);
