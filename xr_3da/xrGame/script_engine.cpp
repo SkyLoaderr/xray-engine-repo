@@ -8,12 +8,15 @@
 
 #include "stdafx.h"
 #include "script_engine.h"
-//#include "ai_script_processor.h"
 #include "ai_space.h"
 #include "object_factory.h"
 
 #ifdef USE_DEBUGGER
 #	include "script_debugger.h"
+#endif
+
+#ifdef XRGAME_EXPORTS
+#	include "ai_script_processor.h"
 #endif
 
 CScriptEngine::CScriptEngine	()
