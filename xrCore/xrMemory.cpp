@@ -70,10 +70,11 @@ void	xrMemory::mem_compact	()
 {
 	RegFlushKey						( HKEY_CLASSES_ROOT );
 	RegFlushKey						( HKEY_CURRENT_USER );
-	_heapmin						();
+	_heapmin						( );
 	HeapCompact						(GetProcessHeap(),0);
 	if (g_pStringContainer)			g_pStringContainer->clean		();
 	if (g_pSharedMemoryContainer)	g_pSharedMemoryContainer->clean	();
+	SetProcessWorkingSetSize		(GetCurrentProcess(),-1,-1);
 }
 
 u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
