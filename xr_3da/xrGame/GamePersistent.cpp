@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "gamepersistent.h"
-#include "..\xr_ioconsole.h"
+#include "../xr_ioconsole.h"
 
 CGamePersistent::CGamePersistent(void)
 {

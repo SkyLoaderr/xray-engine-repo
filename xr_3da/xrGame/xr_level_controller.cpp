@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "..\xr_ioconsole.h"
-#include "..\xr_input.h"
-#include "..\xr_ioc_cmd.h"
+#include "../xr_ioconsole.h"
+#include "../xr_input.h"
+#include "../xr_ioc_cmd.h"
 #include "xr_level_controller.h"
  
 //************************************************ Input
@@ -139,10 +139,10 @@ public:
 		char	action[256],key[256];
 
 		sscanf(args,"%s %s",action,key);
-		for (int i=0; keybind[i].name; i++) {
+		for (int i=0; keybind[i].name; ++i) {
 			if (_stricmp(keybind[i].name,action)==0) {
 				// i = action num
-				for (int j=0; keynames[j].name; j++) {
+				for (int j=0; keynames[j].name; ++j) {
 					if (_stricmp(keynames[j].name,key)==0) {
 						// j = key
 						binded=true;
@@ -159,11 +159,11 @@ public:
 	virtual void Save(IWriter* F) 
 	{
 		F->w_printf("unbindall\n");
-		for (int i=0; i<2048; i++) {
+		for (int i=0; i<2048; ++i) {
 			if (key_binding[i]) {
-				for (int j=0; keybind[j].name; j++) {
+				for (int j=0; keybind[j].name; ++j) {
 					if (keybind[j].DIK==key_binding[i]) {
-						for (int k=0; keynames[k].name; k++) {
+						for (int k=0; keynames[k].name; ++k) {
 							if (keynames[k].DIK==i) {
 								F->w_printf("bind %s %s\n", keybind[j].name, keynames[k].name);
 							}
@@ -181,10 +181,10 @@ public:
 	CCC_UnBind(LPCSTR N) : CConsoleCommand(N) 
 	{ bEmptyArgsHandled=TRUE; };
 	virtual void Execute(LPCSTR args) {
-		for (int i=0; keybind[i].name; i++) {
+		for (int i=0; keybind[i].name; ++i) {
 			if (_stricmp(keybind[i].name,args)==0) {
 				// i = action num
-				for (int j=0; j<2048; j++) {
+				for (int j=0; j<2048; ++j) {
 					if (key_binding[j]==keybind[i].DIK) key_binding[j]=0;
 				}
 			}
@@ -200,7 +200,7 @@ public:
 
 	virtual void Execute(LPCSTR args) {
 		Log("- --- Action list start ---");
-		for (int i=0; keybind[i].name; i++) {
+		for (int i=0; keybind[i].name; ++i) {
 			Log("-",keybind[i].name);
 		}
 		Log("- --- Action list end   ---");
