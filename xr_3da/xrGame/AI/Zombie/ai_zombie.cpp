@@ -117,9 +117,19 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");
 	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
 	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
+	
 	//fire
 	m_fHitPower       = (float)(pSettings->ReadINT(section,"HitPower"));
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
+	//
+	eye_fov			  = pSettings->ReadFLOAT(section,"eye_fov");
+	eye_range		  = pSettings->ReadFLOAT(section,"eye_range");
+	
+	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
+	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
+	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
+	m_fCurSpeed				= m_fMaxSpeed;
+	m_current				= 0;
 }
 
 BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
