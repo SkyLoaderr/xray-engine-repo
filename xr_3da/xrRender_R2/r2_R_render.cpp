@@ -1,10 +1,14 @@
 #include "stdafx.h"
+#include "..\fbasicvisual.h"
+#include "..\customhud.h"
 
 extern float		r_ssaDISCARD;
 extern float		r_ssaDONTSORT;
 extern float		r_ssaLOD_A;
 extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
+
+extern float		g_fLOD, g_fFarSq;
 
 IC float calcLOD	(float fDistSq, float R)
 {
@@ -21,7 +25,6 @@ void __fastcall normal_L2(FixedMAP<float,IVisual*>::TNode *N)
 	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
-extern void __fastcall render_Cached(vector<FCached*>& cache);
 void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 {
 	// *** DIRECT ***
@@ -66,16 +69,13 @@ void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
-IC	bool	cmp_codes			(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
 IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_ps				(SceneGraph::mapNormalPS::TNode* N1, SceneGraph::mapNormalPS::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_states			(SceneGraph::mapNormalStates::TNode* N1, SceneGraph::mapNormalStates::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_vb				(SceneGraph::mapNormalVB::TNode* N1, SceneGraph::mapNormalVB::TNode* N2)

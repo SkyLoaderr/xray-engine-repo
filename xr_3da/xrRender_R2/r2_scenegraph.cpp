@@ -65,10 +65,10 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 			N->val.vCenter.set		(pVisual->vis.sphere.P);
 		} else {
 			SPass&									pass	= *sh->Passes.front();
-			SceneGraph::mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority];
+			SceneGraph::mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
 			SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
 			SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-			SceneGraph::mapNormalCodes::TNode*		Nstate	= Nps->val.insert	(pass.state);
+			SceneGraph::mapNormalStates::TNode*		Nstate	= Nps->val.insert	(pass.state);
 			SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
 			SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 			SceneGraph::mapNormalItems&				item	= Nvb->val;
