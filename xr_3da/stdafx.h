@@ -62,9 +62,9 @@
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
 
-#ifndef DEBUG
-#define LUABIND_NO_ERROR_CHECKING
-#endif
+//#ifndef DEBUG
+//#define LUABIND_NO_ERROR_CHECKING
+//#endif
 #define LUABIND_NO_EXCEPTIONS
 #define LUABIND_DONT_COPY_STRINGS
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
