@@ -69,6 +69,8 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
 	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
+	virtual void			setTorque				(const Fvector& torque)									= 0;
+	virtual void			setForce				(const Fvector& force)									= 0;
 	virtual void			applyGravityAccel		(const Fvector& accel)									= 0;
 	virtual void			SetAirResistance		(float linear=default_k_l, float angular=default_k_w)	= 0;
 	virtual void			GetAirResistance		(float	&linear, float &angular)						= 0;
@@ -116,7 +118,7 @@ public:
 	virtual void			addInertia				(const dMass& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
-	virtual void			setTorque				(const Fvector& torque)							= 0;
+
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual u16				setGeomFracturable		(CPHFracture &fracture)							= 0;
 	virtual CPHFracture&	Fracture				(u16 num)										= 0;

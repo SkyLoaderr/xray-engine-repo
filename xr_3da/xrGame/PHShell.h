@@ -91,6 +91,8 @@ public:
 		EnableObject(0);
 	};
 	virtual void			applyGravityAccel		(const Fvector& accel);
+	virtual void			setTorque				(const Fvector& torque);
+	virtual void			setForce				(const Fvector& force);
 	virtual void			set_JointResistance		(float force)
 	{
 		JOINT_I i;

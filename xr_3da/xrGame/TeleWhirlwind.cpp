@@ -231,6 +231,8 @@ void		CTeleWhirlwindObject::		raise					(float step)
 		Fvector dist;dist.sub(center,maxE->mass_Center());
 		if(dist.magnitude()<m_telekinesis->keep_radius())
 		{
+			p->setTorque(Fvector().set(0,0,0));
+			p->setForce(Fvector().set(0,0,0));
 			p->set_LinearVel(Fvector().set(0,0,0));
 			p->set_AngularVel(Fvector().set(0,0,0));
 			switch_state(TS_Keep);
@@ -266,7 +268,8 @@ void		CTeleWhirlwindObject::		keep					()
 		if(force<0.f)
 		{
 			dir.mul(force);
-			E->applyForce(dir.x,dir.y+world_gravity*E->getMass(),dir.z);
+			//E->applyForce(dir.x,dir.y+world_gravity*E->getMass(),dir.z);
+			//E->applyForce(0.f,world_gravity*E->getMass(),0.f);
 		}
 	}
 	
@@ -275,8 +278,11 @@ void		CTeleWhirlwindObject::		keep					()
 	Fvector dist;dist.sub(center,maxE->mass_Center());
 	if(dist.magnitude()>m_telekinesis->keep_radius()*1.5f)
 	{
+		p->setTorque(Fvector().set(0,0,0));
+		p->setForce(Fvector().set(0,0,0));
 		p->set_LinearVel(Fvector().set(0,0,0));
 		p->set_AngularVel(Fvector().set(0,0,0));
+		p->set_ApplyByGravity(TRUE);
 		switch_state(TS_Raise);
 	}
 

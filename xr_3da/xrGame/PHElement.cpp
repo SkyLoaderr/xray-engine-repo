@@ -881,6 +881,8 @@ void	CPHElement::getTorque(Fvector& torque)
 void	CPHElement::setForce(const Fvector& force)
 {
 	if(!bActive||m_flags.test(flFixed)) return;
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	m_shell->EnableObject(0);
 	dBodySetForce(m_body,force.x,force.y,force.z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }

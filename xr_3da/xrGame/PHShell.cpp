@@ -1209,7 +1209,20 @@ void CPHShell::PlaceBindToElForms()
 	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	PlaceBindToElFormsRecursive(Fidentity,m_pKinematics->LL_GetBoneRoot(),0,mask);
 }
-
+void	CPHShell::		setTorque				(const Fvector& torque)
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		(*i)->setTorque(torque);
+}
+void	CPHShell::		setForce				(const Fvector& force)
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		(*i)->setForce(force);
+}
 void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Flags64 &mask)
 {
 	
