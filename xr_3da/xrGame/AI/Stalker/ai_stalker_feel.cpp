@@ -316,6 +316,8 @@ bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
 		if (tpStalker->m_tpaDynamicObjects[i].tpEntity == m_tSavedEnemy) {
 			u32 dwTime = m_dwCurrentUpdate;
 			CEntity *tpEntity = m_tSavedEnemy;
+			if (tpEntity && !tpEntity->AI_NodeID)
+				return;
 			for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
 				if (m_tSavedEnemy == m_tpaDynamicObjects[j].tpEntity) {
 					m_tpaDynamicObjects[j].dwTime = tpStalker->m_tpaDynamicObjects[i].dwTime;
@@ -422,6 +424,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		// if enemy made a shot to us, add a fictitious hurt
 		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 		if (tpEntity) {
+			if (!tpEntity->AI_NodeID)
+				return;
 			bool bFound = false;
 			objVisible	&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 			for (int i=0, n=VisibleEnemies.size(); i<n; i++)
