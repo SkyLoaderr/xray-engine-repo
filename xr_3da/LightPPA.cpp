@@ -87,7 +87,7 @@ void CLightPPA::Render	(CVertexStream* VS)
 void CLightPPA_Manager::OnDeviceCreate	()
 {
 	REQ_CREATE	();
-	SH	= Device.Shader.Create	("effects\\light");
+	SH	= Device.Shader.Create	("effects\\light","effects\\light,effects\\light");
 	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
 }
 
