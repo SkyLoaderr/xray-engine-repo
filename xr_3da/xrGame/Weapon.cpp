@@ -400,6 +400,7 @@ void CWeapon::Update		(DWORD dT)
 	{
 		setVisible				(true);
 		setEnabled				(true);
+		hud_mode				= FALSE;
 	} else {
 		setEnabled				(false);
 	}
