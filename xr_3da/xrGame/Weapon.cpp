@@ -190,6 +190,7 @@ void CWeapon::Update		(float dt, BOOL bHUDView)
 {
 	fireDispersion_Current	-= fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
+	if (light_time>0)		light_time -= dt;
 }
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
@@ -252,4 +253,8 @@ void CWeapon::Light_Render	(Fvector& P)
 	light_render.SetRange		(light_build.sphere.R*light_scale);
 	
 	::Render.Lights_Dynamic.Add	(&light_render);
+}
+
+void CWeapon::Render(BOOL bHUDView)
+{
 }

@@ -93,7 +93,7 @@ public:
 	virtual BOOL	HasOpticalAim	()				{ return FALSE; }
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
-	virtual	void	Render			(BOOL bHUDView)				{};
+	virtual	void	Render			(BOOL bHUDView);
 
 	IC const char*	GetName			()				{return m_WpnName;		}
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
