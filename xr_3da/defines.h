@@ -7,6 +7,7 @@ typedef	char				FILE_NAME	[ _MAX_PATH	];
 
 struct ENGINE_API			FS_Defs
 {
+	const char*				GameData;
 	const char*				Levels;
 	const char*				Textures;
 	const char*				Sounds;

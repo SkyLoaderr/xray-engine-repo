@@ -4,6 +4,7 @@ ENGINE_API BOOL bDebug	= FALSE;
 
 ENGINE_API FS_Defs		Path =
 {
+	"GameData\\",
 	"GameData\\levels\\",
 	"GameData\\textures\\",
 	"GameData\\sounds\\",
