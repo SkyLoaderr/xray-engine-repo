@@ -404,6 +404,7 @@ function action_contact:execute ()
 end
 function action_contact:finalize ()
 	self.object:clear_animations()
+	self.object:disable_talk()
 	action_base.finalize (self)
 end
 
