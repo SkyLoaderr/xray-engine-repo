@@ -82,9 +82,6 @@ function options_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
-	self.tab_video = ui_options_video_tab.options_video_tab()
-	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_alingn_y)
-	
 	--------->> SOUND
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -143,6 +140,10 @@ function options_dialog:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
+	
+	--------- >> TABS
+--	self.tab_video = ui_options_video_tab.options_video_tab()
+--	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_alingn_y)
 end
 
 function options_dialog:InitCallBacks()

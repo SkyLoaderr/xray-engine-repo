@@ -22,7 +22,6 @@ function options_base_tab:__finalize()
 end
 
 function options_base_tab:InitControls(caption, x_pos, y_pos)
-	self:Show(false)
 	--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA
 	self.indent = 10
 	self.button_indent = -1
@@ -47,8 +46,6 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 					  y = 0, 
 					  width = 135, 
 					  height = 40 }
-	
-	
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2	
 	
 	-- Fonts
@@ -68,9 +65,10 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	self.main_frame = CUIFrameWindow()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
-	self.main_frame:Init("ui\\ui_frame", 0, 0, 
-										 self.main_rect.width, 
-										 self.main_rect.height)
+	self.main_frame:Init("ui\\ui_frame", 0, 0,
+						 self.main_rect.width,
+						 self.main_rect.height)
+	self.Show(false)
 	self:AttachChild(self.main_frame)
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 end
