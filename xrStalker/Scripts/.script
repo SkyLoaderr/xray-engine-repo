@@ -476,6 +476,8 @@ end
 function set_current_time (hour, min, sec)
   	local current_time_factor = level.get_time_factor ()
 
+	printf ("Need time : %d:%d:%d", hour, min, sec)
+
 	local current_time = game.time ()
 	local c_day = math.floor (current_time / 86400000)
 	local c_time = current_time - c_day * 86400000
@@ -484,7 +486,7 @@ function set_current_time (hour, min, sec)
 	if c_time > n_time then c_day = c_day + 1 end
 	n_time = n_time + c_day * 86400000
 
-	level.set_time_factor (1000)
+	level.set_time_factor (10000)
 	while game.time () < n_time do wait () end
 
 	level.set_time_factor (current_time_factor)
