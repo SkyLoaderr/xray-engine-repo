@@ -1082,8 +1082,8 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
         for (u32 k = 0; pSettings->ReadLINE("terrain_ids",k,&N,&V); k++) {
    			terrain_ids.push_back	(TokenValue4::Item());
             TokenValue4::Item& val	= terrain_ids.back();
-            val.str			= V;
-            val.ID			= atoi(N);
+            val.str					= V;
+            val.ID					= atoi(N);
         }
     }
     
@@ -1093,8 +1093,8 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
         for (u32 k = 0; pSettings->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
    			terrain_sub_ids.push_back	(TokenValue4::Item());
             TokenValue4::Item& val	= terrain_sub_ids.back();
-            val.str			= V;
-            val.ID			= atoi(N);
+            val.str					= V;
+            val.ID					= atoi(N);
         }
     }
     
@@ -1102,11 +1102,14 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
         CInifile					*Ini = xr_new<CInifile>("xrAI.ini");
 		R_ASSERT					(Ini->SectionExists("game_levels"));
         LPCSTR N,V;
-        for (u32 k = 0; pSettings->ReadLINE("game_levels",k,&N,&V); k++) {
-   			terrain_sub_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item& val	= terrain_sub_ids.back();
-            val.str			= V;
-            val.ID			= atoi(N);
+        for (u32 k = 0; Ini->ReadLINE("game_levels",k,&N,&V); k++) {
+   			level_ids.push_back		(TokenValue4::Item());
+            TokenValue4::Item& val	= level_ids.back();
+            LPCSTR					S;
+			float					fDummy;
+			sscanf(V,"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S)
+			val.str					= S;
+            val.ID					= atoi(N);
         }
 		xr_delete(Ini);
     }
