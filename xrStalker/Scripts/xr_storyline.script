@@ -172,6 +172,7 @@ function set_storyline(object, char_ini)
                 xr_motivator.storage[object:id()].security.path     = patrol(char_ini:r_string("security", "path"))
             end
             xr_trivial.add_security    (object)
+    		object:set_start_dialog    ("bar_security_dialog")            
      end
 
 

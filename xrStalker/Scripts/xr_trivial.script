@@ -838,22 +838,20 @@ class "action_security_stand" (action_base)
 function action_security_stand:__init (name, storage) super (nil, name)
     self.a 				= storage
     self.stand_point_id = self.a.path:level_vertex_id(0)
-    self.animation		= nil
+    self.animations		= nil
     self.time           = 0
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:initialize ()
     action_base.initialize (self)
-	self.animation		= xr_state.anims(self.object)
+	self.animations		= xr_state.anims(self.object)
 
     self.object:set_body_state      (move.standing)
     self.object:set_sight           (look.point, self.a.path:point(1), 0)
     self.object:set_item          	(object.activate, self.object:best_weapon () )
 
 	self.object:enable_talk			()
-	self.object:set_start_dialog	("bar_security_dialog")
 
---    xr_position.setPosition         (self.object, self.stand_point)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:execute ()
@@ -894,34 +892,40 @@ function action_security_stand:on_position()
 	--Когда пришли в указанную позицию, две секунды не проигруем анимацию, врдуг разворачиваемся
 	if(self.time == 0) then self.time = device():time_global() + 2000 end
 
+	--Если точно не поворачиваемя, то: если актер далеко проигруем анимации, если рядом и угол между направлением
+    --наблюдения и актером меньше величины, то смотрим на актера, в противном случае - в наблюдаемую точку
     if(device():time_global() > self.time) then
 		if(level.actor() and distance_between(level.actor(), self.object) > 5) then
-			self.animation:update("idle")
+			self.animations:update("idle")
 			self.object:set_sight               (look.point, self.a.path:point(1), 0)
         else
-	        local pos = level.actor():position()
-	        pos.y     = pos.y + 1.4
-	        self.object:set_sight               (look.point, pos, 0)
+            if(self.object:animation_count() ~= 0) then
+                self.animations:update(nil)
+            end
+
+            printf("%f", yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) )
+            --Проверяем угол
+            if(yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1)then
+            	--Угол не большой, смотрим на актера
+	            local pos = level.actor():position()
+	            pos.y     = pos.y + 1.4
+	            self.object:set_sight               (look.point, pos, 0)
+            else
+                --Смотрим в точку
+                self.object:set_sight               (look.point, self.a.path:point(1), 0)
+            end
 		end
     else
 		self.object:set_sight               (look.point, self.a.path:point(1), 0)
     end
-
-
-
-    --	self.object:set_sight				(look.point, self.a.path:point(1), 0)
---        local pos = level.actor():position()
---        pos.y     = pos.y + 1.4
---        self.object:set_sight               (look.point, pos, 0)
 
     self.object:set_movement_type		(move.stand)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:finalize ()
     action_base.finalize 		(self)
-	self.animation				= nil
+	self.animations				= nil
 	self.object:disable_talk	()
-    self.object:set_start_dialog    ("bar_security")
     self.object:clear_animations()
 end
 ----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-local walk_after_speak  = 7000
+local walk_after_speak  = 7000				//—колько стоим, после некоторого событи€, а потом начинаем идти
+local stand_play_anim	= 10000				//—колько времени, когда останавливаемс€, проигруем анимаию
+local time_to_walk		= 10000				//—колько времени ходим, перед проигрыванием анимации
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
 ---------------------------------------------------------------------------------------------------------------------
@@ -7,18 +9,22 @@ function action_scientist_walk:__init (name, storage) super (nil, name)
     self.a 	  = storage
     self.time = 0
     self.zone = nil
-    self.walk_time      	= 0
+    self.walk_time      	= 0				--”казывает когда можно перестать сто€ть и можно идти при self.can_walk == true
     self.actor_enter 		= false
     self.say_remove_weapon	= 0
     self.speek_with_actor 	= false
 	self.can_walk       	= false
+	self.play_anim			= false
+    self.animations			= nil
+    self.time				= 0				--»спользует дл€ определени€, сколько мы ходим
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_scientist_walk:initialize ()
     action_base.initialize (self)
 
-    self.object:set_item          	(object.deactivate, self.object:best_weapon () )
+	self.animations			= xr_state.anims(self.object)
 
+    self.object:set_item          	(object.deactivate, self.object:best_weapon () )
     self.object:set_body_state      (move.standing)
     self.object:set_mental_state    (anim.free)
     self.object:set_path_type    	(game_object.patrol_path)
@@ -42,9 +48,11 @@ function action_scientist_walk:execute ()
 		self.walk_time		= device():time_global() + 5000
 		self.can_walk		= false
         self.speak			= true
-		self.object:set_movement_type(move.stand)
         if(self.object:active_sound_count() ~= 0) then
         	stop_play_sound(self.object)
+        end
+		if(self.object:animation_count() ~= 0) then
+            self.animations:update          (nil)
         end
         return
     end
@@ -61,23 +69,53 @@ function action_scientist_walk:execute ()
     	if(self.can_walk == true and device():time_global() > self.walk_time) then
             self:walk			()
         else
---            printf("time   %d  walk_time %d", device():time_global(), self.walk_time)
             self:actor_near     ()
         end
     else
-        self:walk           ()
+        self:walk           	()
     end
 
     action_base.execute (self)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_scientist_walk:walk()
-	self.object:set_movement_type	(move.walk)
-    self.object:set_sight			(look.path_dir, nil, 0)
+	if(self.time == 0) then
+    	self.time 		= device():time_global() + time_to_walk
+        self.play_anim	= false
+    end
+
+    if(device():time_global() > self.time) then
+    	--”же долго либо ходим, либо стоим
+        if(self.play_anim == false) then
+        	self.object:set_movement_type	(move.stand)
+            self.animations:update			("idle")
+            self.play_anim		= true
+            self.time			= device():time_global() + stand_play_anim
+		else
+        	self.animations:update			(nil)
+            self.play_anim		= false
+            self.time			= device():time_global() + time_to_walk
+        end
+    else
+        --ѕродолжаем ходить либо проигрывать анимацию
+        if(self.play_anim) then
+        	self.animations:update			("idle")
+        else
+        	self.object:set_movement_type	(move.walk)
+    		self.object:set_sight			(look.path_dir, nil, 0)
+        end
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_scientist_walk:actor_near()
-	self:look_to_actor()
+    if(self.object:animation_count() ~= 0) then
+        self.animations:update      (nil)
+    end
+
+	self:look_to_actor				()
+	self.object:set_movement_type	(move.stand)
+	self.time	= 0
+
     if(self.object:see(level.actor()) and distance_between(self.object, level.actor()) < 4) then
 		if(self.speek_with_actor == false) then
 
@@ -95,7 +133,6 @@ function action_scientist_walk:actor_near()
 			--”же что-то сказали актеру
         	if(self.object:active_sound_count() == 0 and self.can_walk == false) then
             	self.walk_time  	= device():time_global() + walk_after_speak
-	            printf("time   %d  walk_time %d", device():time_global(), self.walk_time)
                 self.can_walk		= true
             end
         end
@@ -104,7 +141,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_scientist_walk:zone_callback_exit(zone, obj)
     if(level.actor() and obj:id() == level.actor():id()) then
-        self.actor_enter     = false
+        self.actor_enter     		= false
         printf("exit")
     end
 end
@@ -132,6 +169,7 @@ function action_scientist_walk:zone_callback_enter(zone, obj)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_scientist_walk:look_to_actor()
+
     local pos = level.actor():position()
     pos.y     = pos.y + 1.4
 
