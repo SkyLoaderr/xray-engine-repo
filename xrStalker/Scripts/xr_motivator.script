@@ -143,7 +143,7 @@ function motivator_binder:update(delta)
 		-- Все CALLBACK-и ставить здесь:
 		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
 		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
-		self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
+		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
 	self.torch:update()
