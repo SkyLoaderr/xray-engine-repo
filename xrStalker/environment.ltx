@@ -1,11 +1,11 @@
 [thunderbolt_common]
-altitude				= 10, 20 			;altitude in deg
-delta_longitude			= 20				;in deg
-min_dist_factor			= 0.75				;(<0.95)
-tilt					= 20				;lightning tilt in deg (15-30)
-second_propability		= 0.5				;(0-1)
-sky_color				= 0.1				;(0-1)
-sun_color				= 0.9				;(0-1)
+altitude				= 10, 20 			;altitude in deg (min/max по вертикали)
+delta_longitude			= 20				;in deg 	(разброс по горизонту)
+min_dist_factor			= 0.75				;(<0.95) 	(расстояние от FAR_PLANE)
+tilt					= 20				;lightning tilt in deg (15-30) (отклонение молнии от оси)
+second_propability		= 0.5				;(0-1) 		(вероятность появления следующей молнии после этой)
+sky_color				= 0.1				;(0-2) 		(сколько прибавится к цвету неба)
+sun_color				= 0.9				;(0-2) 		(сколько прибавится к цвету солнца)
 
 [thunderbolts]
 thunderbolt_00			= sect_thunderbolt_00
@@ -15,7 +15,6 @@ thunderbolt_03			= sect_thunderbolt_03
 
 [sect_thunderbolt_00]
 lightning_model			= dm\dm_lightning-01.dm
-glow_model				= 
 sound					= nature\thunder_0
 gradient_top_opacity   	= 0.6
 gradient_top_radius     = 0.500, 0.250
@@ -28,7 +27,6 @@ gradient_center_shader 	= effects\sun
 
 [sect_thunderbolt_01]
 lightning_model			= dm\dm_lightning-02.dm
-glow_model				= 
 sound					= nature\thunder_1
 gradient_top_opacity   	= 0.6
 gradient_top_radius     = 0.500, 0.250
@@ -41,7 +39,6 @@ gradient_center_shader 	= effects\sun
 
 [sect_thunderbolt_02]
 lightning_model			= dm\dm_lightning-03.dm
-glow_model				= 
 sound					= nature\thunder_2
 gradient_top_opacity   	= 0.6
 gradient_top_radius     = 0.500, 0.250
@@ -54,7 +51,6 @@ gradient_center_shader 	= effects\sun
 
 [sect_thunderbolt_03]
 lightning_model			= dm\dm_lightning-04.dm
-glow_model				= 
 sound					= nature\thunder_3
 gradient_top_opacity   	= 0.6
 gradient_top_radius     = 0.500, 0.250
@@ -73,7 +69,7 @@ source_radius           = 0.05
 source_texture          = fx\fx_moon.tga
 source_shader			= effects\moon
 source_ignore_color		= true
-blend_time				= 1.f
+blend_time				= 1 ;(сек)
 
 [flares_bbb]
 flares                  = off
@@ -83,21 +79,25 @@ source_radius           = 0.05
 source_texture          = fx\fx_moon.tga
 source_shader			= effects\moon
 source_ignore_color		= true
-blend_time				= 1.f
+blend_time				= 1 ;(сек)
 
 [flares_default]
 flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
 flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
 flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
 flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
+flare_shader			= effects\flare
 flares                   = off
 gradient                 = on
 gradient_opacity         = 0.75
 gradient_radius          = 1.000
 gradient_texture         = fx\fx_gradient.tga
+gradient_shader          = effects\flare
 source                   = on
 source_radius            = 0.150
 source_texture           = fx\fx_sun.tga
+source_shader            = effects\sun
+source_ignore_color		= false
 
 [flares_gradient]
 flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
