@@ -74,9 +74,8 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	
 	m_crouch_walk.Create(PKinematics(pVisual),"cr_walk");
 	m_crouch_run.Create(PKinematics(pVisual),"cr_run");
-	m_crouch_run;
 	m_crouch_idle = PKinematics(pVisual)->ID_Cycle_Safe("cr_idle");
-	m_tpaDeathCrouchAnimations[0] = PKinematics(pVisual)->ID_Cycle_Safe("cr_death");
+	m_crouch_death = PKinematics(pVisual)->ID_Cycle_Safe("cr_death");
 
 }
 
@@ -1362,18 +1361,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 
 	CMotionDef*	S=0;
 
-	bool bCrouched = false; 
-
 	if (iHealth<=0) {
-		if (bCrouched) {
-			for (int i=0 ;i<1; i++)
-				if (m_tpaDeathCrouchAnimations[i] == m_current) {
-					S = m_current;
-					break;
-				}
-			if (!S)
-				S = m_tpaDeathCrouchAnimations[::Random.randI(0,1)];
-		}
+		if (m_bCrouched)
+			S = m_crouch_death;
 		else {
 			for (int i=0 ;i<2; i++)
 				if (m_tpaDeathAnimations[i] == m_current) {
@@ -1386,7 +1376,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	} else {
 		if (speed<0.2f) {
 			// idle
-			if (bCrouched)	
+			if (m_bCrouched)	
 				S = m_crouch_idle;
 			else
 				S = m_idle;
@@ -1396,13 +1386,13 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			float	dot  = view.dotproduct(move);
 			
 			SAnimState* AState = 0;
-			if (bCrouched)	
+			if (m_bCrouched)	
 				AState = &m_crouch_walk;
 			else 
 				AState = &m_walk;
 			
 			if (speed>2.f){
-				if (bCrouched)	
+				if (m_bCrouched)	
 					AState = &m_crouch_run;
 				else		
 					AState = &m_run;

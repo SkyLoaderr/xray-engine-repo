@@ -70,12 +70,21 @@ public:
 
 	// Motions
 	DWORD				dwMoveState;
+	int					m_iHealth;
+
 	CMotionDef*			m_current;
+	
 	CMotionDef*			m_death;
 	CMotionDef*			m_idle;
 	SAnimState			m_walk;
 	SAnimState			m_run;
-	int					m_iHealth;
+	
+	CMotionDef* 		m_crouch_death;
+	CMotionDef* 		m_crouch_idle;
+	SAnimState 			m_crouch_walk;
+	SAnimState 			m_crouch_run;
+
+	bool				m_bCrouched; 
 
 	// movement
 	float				m_fWalkAccel;
@@ -152,6 +161,8 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
  IC virtual bool		bfExecMovement			(){return(false);};
+ IC			void		Squat(){m_bCrouched = true;};
+ IC			void		StandUp(){m_bCrouched = false;};
 };
 
 namespace AI{

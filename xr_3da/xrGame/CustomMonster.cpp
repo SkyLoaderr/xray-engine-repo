@@ -55,6 +55,7 @@ CCustomMonster::CCustomMonster()
 
 	Weapons				= 0;
 	tWatchDirection = Direction();
+	m_bCrouched = false;
 }
 
 CCustomMonster::~CCustomMonster()
