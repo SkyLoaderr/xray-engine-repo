@@ -103,9 +103,8 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-			wait(7000)		
-			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
-
+--			wait(7000)		
+--			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
 
 	while final_guard01:action() and final_guard02:action() do
 		if final_guard01:see("actor") or final_guard02:see("actor") then
