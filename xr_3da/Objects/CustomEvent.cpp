@@ -136,6 +136,7 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	cfModel						= new CCF_EventBox(this);
 	pCreator->ObjectSpace.Object_Register(this);
 	cfModel->OnMove				();
+	return TRUE;
 }
 
 void CCustomEvent::Update (DWORD dt)
