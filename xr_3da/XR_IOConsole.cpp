@@ -133,7 +133,6 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_ESCAPE:
 		if (!bHold) {
 			if  (pCreator) Hide();
-//			else PutMessage(msg_show_menu);
 		}
 		break;
 	case DIK_GRAVE:
