@@ -64,6 +64,194 @@ if(depth<0.f) return 0;
 
 
 dReal depth0,depth1,depth2;
+dReal dist0,dist1,dist2;
+
+
+//sepparation along box axes
+//box ax0
+dist0=dDOT14(v0,R+0)-dDOT14(p,R+0);
+dist1=dDOT14(v1,R+0)-dDOT14(p,R+0);
+dist2=dDOT14(v2,R+0)-dDOT14(p,R+0);
+
+if(
+   (dist0>0.f&&dist1>0.f&&dist2>0.f)
+   ||
+   (dist0<0.f&&dist1<0.f&&dist2<0.f)
+   )
+{
+depth0=side[0]/2.f-dFabs(dist0);
+depth1=side[0]/2.f-dFabs(dist1);
+depth2=side[0]/2.f-dFabs(dist2);
+
+if(depth0>depth1) 
+		if(depth0>depth2) 	
+			if(depth0>0.f){
+				if(depth0<outDepth) 
+					{
+					outDepth=depth0;
+					outDist=dist0;
+					code=10;
+					}
+				}
+			else return 0;
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=12;
+					}
+			}
+			else return 0;
+else
+		if(depth1>depth2)
+			if(depth1>0.f){
+				if(depth1<outDepth) 
+					{
+					outDepth=depth1;
+					outDist=dist1;
+					code=11;
+					}
+			}
+			else return 0;
+
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=12;
+					}
+			}
+			else return 0;
+			
+
+}
+
+//box ax1
+dist0=dDOT14(v0,R+1)-dDOT14(p,R+1);
+dist1=dDOT14(v1,R+1)-dDOT14(p,R+1);
+dist2=dDOT14(v2,R+1)-dDOT14(p,R+1);
+if(
+   (dist0>0.f&&dist1>0.f&&dist2>0.f)
+   ||
+   (dist0<0.f&&dist1<0.f&&dist2<0.f)
+   )
+{
+depth0=side[1]/2.f-dFabs(dist0);
+depth1=side[1]/2.f-dFabs(dist1);
+depth2=side[1]/2.f-dFabs(dist2);
+
+if(depth0>depth1) 
+		if(depth0>depth2) 	
+			if(depth0>0.f){
+				if(depth0<outDepth) 
+					{
+					outDepth=depth0;
+					outDist=dist0;
+					code=13;
+					}
+				}
+			else return 0;
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=15;
+					}
+			}
+			else return 0;
+else
+		if(depth1>depth2)
+			if(depth1>0.f){
+				if(depth1<outDepth) 
+					{
+					outDepth=depth1;
+					outDist=dist1;
+					code=14;
+					}
+			}
+			else return 0;
+
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=15;
+					}
+			}
+			else return 0;
+			
+
+}
+
+
+// box ax2
+dist0=dDOT14(v0,R+2)-dDOT14(p,R+2);
+dist1=dDOT14(v1,R+2)-dDOT14(p,R+2);
+dist2=dDOT14(v2,R+2)-dDOT14(p,R+2);
+if(
+   (dist0>0.f&&dist1>0.f&&dist2>0.f)
+   ||
+   (dist0<0.f&&dist1<0.f&&dist2<0.f)
+   )
+{
+depth0=side[2]/2.f-dFabs(dist0);
+depth1=side[2]/2.f-dFabs(dist1);
+depth2=side[2]/2.f-dFabs(dist2);
+
+if(depth0>depth1) 
+		if(depth0>depth2) 	
+			if(depth0>0.f){
+				if(depth0<outDepth) 
+					{
+					outDepth=depth0;
+					outDist=dist0;
+					code=16;
+					}
+				}
+			else return 0;
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=18;
+					}
+			}
+			else return 0;
+else
+		if(depth1>depth2)
+			if(depth1>0.f){
+				if(depth1<outDepth) 
+					{
+					outDepth=depth1;
+					outDist=dist1;
+					code=17;
+					}
+			}
+			else return 0;
+
+		else
+			if(depth2>0.f){
+				if(depth2<outDepth) 
+					{
+					outDepth=depth2;
+					outDist=dist2;
+					code=18;
+					}
+			}
+			else return 0;
+			
+
+}
 
 //sepparation along tri sides
 
@@ -74,9 +262,9 @@ sidePr=
 	dFabs(dDOT14(triSideAx0,R+1)*side[1])+
 	dFabs(dDOT14(triSideAx0,R+2)*side[2]);
 
-dReal dist0=dDOT(v0,triSideAx0)-dDOT(p,triSideAx0);
-dReal dist1=dDOT(v1,triSideAx0)-dDOT(p,triSideAx0);
-dReal dist2=dDOT(v2,triSideAx0)-dDOT(p,triSideAx0);
+dist0=dDOT(v0,triSideAx0)-dDOT(p,triSideAx0);
+dist1=dDOT(v1,triSideAx0)-dDOT(p,triSideAx0);
+dist2=dDOT(v2,triSideAx0)-dDOT(p,triSideAx0);
 
 if(
    (dist0>0.f&&dist1>0.f&&dist2>0.f)
@@ -274,191 +462,8 @@ else
 
 }
 
-//sepparation along box axes
-//box ax0
-dist0=dDOT14(v0,R+0)-dDOT14(p,R+0);
-dist1=dDOT14(v1,R+0)-dDOT14(p,R+0);
-dist2=dDOT14(v2,R+0)-dDOT14(p,R+0);
-
-if(
-   (dist0>0.f&&dist1>0.f&&dist2>0.f)
-   ||
-   (dist0<0.f&&dist1<0.f&&dist2<0.f)
-   )
-{
-depth0=side[0]/2.f-dFabs(dist0);
-depth1=side[0]/2.f-dFabs(dist1);
-depth2=side[0]/2.f-dFabs(dist2);
-
-if(depth0>depth1) 
-		if(depth0>depth2) 	
-			if(depth0>0.f){
-				if(depth0<outDepth) 
-					{
-					outDepth=depth0;
-					outDist=dist0;
-					code=10;
-					}
-				}
-			else return 0;
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=12;
-					}
-			}
-			else return 0;
-else
-		if(depth1>depth2)
-			if(depth1>0.f){
-				if(depth1<outDepth) 
-					{
-					outDepth=depth1;
-					outDist=dist1;
-					code=11;
-					}
-			}
-			else return 0;
-
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=12;
-					}
-			}
-			else return 0;
-			
-
-}
-
-//box ax1
-dist0=dDOT14(v0,R+1)-dDOT14(p,R+1);
-dist1=dDOT14(v1,R+1)-dDOT14(p,R+1);
-dist2=dDOT14(v2,R+1)-dDOT14(p,R+1);
-if(
-   (dist0>0.f&&dist1>0.f&&dist2>0.f)
-   ||
-   (dist0<0.f&&dist1<0.f&&dist2<0.f)
-   )
-{
-depth0=side[1]/2.f-dFabs(dist0);
-depth1=side[1]/2.f-dFabs(dist1);
-depth2=side[1]/2.f-dFabs(dist2);
-
-if(depth0>depth1) 
-		if(depth0>depth2) 	
-			if(depth0>0.f){
-				if(depth0<outDepth) 
-					{
-					outDepth=depth0;
-					outDist=dist0;
-					code=13;
-					}
-				}
-			else return 0;
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=15;
-					}
-			}
-			else return 0;
-else
-		if(depth1>depth2)
-			if(depth1>0.f){
-				if(depth1<outDepth) 
-					{
-					outDepth=depth1;
-					outDist=dist1;
-					code=14;
-					}
-			}
-			else return 0;
-
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=15;
-					}
-			}
-			else return 0;
-			
-
-}
 
 
-// box ax2
-dist0=dDOT14(v0,R+2)-dDOT14(p,R+2);
-dist1=dDOT14(v1,R+2)-dDOT14(p,R+2);
-dist2=dDOT14(v2,R+2)-dDOT14(p,R+2);
-if(
-   (dist0>0.f&&dist1>0.f&&dist2>0.f)
-   ||
-   (dist0<0.f&&dist1<0.f&&dist2<0.f)
-   )
-{
-depth0=side[2]/2.f-dFabs(dist0);
-depth1=side[2]/2.f-dFabs(dist1);
-depth2=side[2]/2.f-dFabs(dist2);
-
-if(depth0>depth1) 
-		if(depth0>depth2) 	
-			if(depth0>0.f){
-				if(depth0<outDepth) 
-					{
-					outDepth=depth0;
-					outDist=dist0;
-					code=16;
-					}
-				}
-			else return 0;
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=18;
-					}
-			}
-			else return 0;
-else
-		if(depth1>depth2)
-			if(depth1>0.f){
-				if(depth1<outDepth) 
-					{
-					outDepth=depth1;
-					outDist=dist1;
-					code=17;
-					}
-			}
-			else return 0;
-
-		else
-			if(depth2>0.f){
-				if(depth2<outDepth) 
-					{
-					outDepth=depth2;
-					outDist=dist2;
-					code=18;
-					}
-			}
-			else return 0;
-			
-
-}
 int i;
 //sepparation along cross axes (tri normal X box axes) code 19-27
 

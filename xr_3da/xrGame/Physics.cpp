@@ -198,12 +198,12 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	Breaks=false;
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
-	MassShift=1.f;
+	MassShift=0.25f;
 	dMass m;
 
 	// car body
 	//dMass m;
-	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
+	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1]/4., jeepBox[2]); // density,lx,ly,lz
 	dMassAdjust(&m, 800.f); // mass
 	//dMassTranslate(&m,0.f,-1.f,0.f);
 	Bodies[0] = dBodyCreate(world);
@@ -384,7 +384,7 @@ Fmatrix Translate;
 DynamicData.CalculateData();
 DynamicData.SetAsZeroRecursive();
 
-Translate.translate(0,MassShift,0);
+Translate.translate(0,MassShift-1.f,0);
 DynamicData.SetZeroTransform(Translate);
 
 }
@@ -481,8 +481,8 @@ if(!Breaks)
 		return;
 	}
 	else {
-		for(i = 0; i < 4; ++i){
-			dJointSetHinge2Param(Joints[i], dParamFMax2, 500);
+		for(i = 0; i < 2; ++i){
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 5000);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 			}
 		return;
@@ -568,7 +568,7 @@ void CPHWorld::Step(dReal step){
 			
 				
 			dWorldStep(phWorld, step);
-			Jeep.DynamicData.CalculateData();
+			//Jeep.DynamicData.CalculateData();
 			
 			dJointGroupEmpty(ContactGroup);
 	
@@ -590,7 +590,7 @@ void CPHWorld::Step(dReal step){
 			dSpaceCollide(Space, 0, &NearCallback);
 				
 			dWorldStep(phWorld, step/n);
-			Jeep.DynamicData.CalculateData();
+			//Jeep.DynamicData.CalculateData();
 	
 			dJointGroupEmpty(ContactGroup);
 	
@@ -598,7 +598,7 @@ void CPHWorld::Step(dReal step){
 
 		}
 	}
-
+Jeep.DynamicData.CalculateData();
 }
 
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){

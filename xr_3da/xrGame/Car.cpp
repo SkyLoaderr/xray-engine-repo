@@ -144,11 +144,11 @@ void	CCar::Update				( DWORD T )
 void	CCar::UpdateCL				( )
 {
 	// Transform
-	Fmatrix mY,Tr;
-	Tr.translate		(0,-1.f,0);
+	Fmatrix mY;//,Tr;
+	//Tr.translate		(0,-1.f,0);
 	mY.rotateY			(deg2rad(90.f));
 	clTransform.mul		(ph_world->Jeep.DynamicData.BoneTransform,mY);
-	clTransform.mulB	(Tr);
+	//clTransform.mulB	(Tr);
 
 	// Sound
 	Fvector		C,V;

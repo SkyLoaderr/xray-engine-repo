@@ -62,8 +62,8 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 
 void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 {
-Fmatrix parent_transform,mYM;
-mYM.rotateY			(deg2rad(-90.f));
+Fmatrix parent_transform;//,mYM;
+//mYM.rotateY			(deg2rad(-90.f));
 DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
 DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
 parent_transform.mulB(ZeroTransform);
