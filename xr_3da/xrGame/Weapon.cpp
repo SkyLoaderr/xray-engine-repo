@@ -258,6 +258,7 @@ void CWeapon::Light_Render	(Fvector& P)
 void CWeapon::Render(BOOL bHUDView)
 {
 	if (light_time>0) {
-		Light_Render()
+		UpdateFP	(bHUDView);
+		Light_Render(vLastFP);
 	}
 }
