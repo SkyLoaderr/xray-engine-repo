@@ -118,6 +118,8 @@ protected:
 
 	int					m_HandleGroup;
 	int					m_HandleActionList;
+
+	s32					m_MemDT;
 protected:
 	void				ResetParticles		();
 

@@ -183,6 +183,7 @@ CParticleGroup::CParticleGroup():IVisual()
     m_bPlaying			= FALSE;
     m_Def				= 0;
     m_ElapsedLimit		= 0;
+	m_MemDT				= 0;
 }
 CParticleGroup::~CParticleGroup()
 {
@@ -221,42 +222,46 @@ void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 	pSetActionListParenting(m_HandleActionList,m,velocity);
 }
 
-void CParticleGroup::OnFrame(u32 dt)
+static const u32	uDT_STEP = 33;
+static const float	fDT_STEP = float(uDT_STEP)/1000.f;
+void CParticleGroup::OnFrame(u32 frame_dt)
 {
 	if (m_Def&&m_bPlaying){
-    	if (m_Def->m_Flags.is(CPGDef::dfTimeLimit)){ 
-        	m_ElapsedLimit 	-= dt;
-            if (m_ElapsedLimit<0){
-            	m_ElapsedLimit 	= m_Def->m_TimeLimit;
-		    	// reset old particles
-                m_bPlaying		= FALSE;
-                ResetParticles	();
-                return;
-            }
-        }
-        float fdt			= float(dt)/1000.f; 
-        pTimeStep			(fdt);
-        pCurrentGroup		(m_HandleGroup);
+		m_MemDT			+= frame_dt;
+		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
+    		if (m_Def->m_Flags.is(CPGDef::dfTimeLimit)){ 
+        		m_ElapsedLimit 	-= uDT_STEP;
+				if (m_ElapsedLimit<0){
+            		m_ElapsedLimit 	= m_Def->m_TimeLimit;
+		    		// reset old particles
+					m_bPlaying		= FALSE;
+					ResetParticles	();
+					return;
+				}
+			}
+			pTimeStep			(fDT_STEP);
+			pCurrentGroup		(m_HandleGroup);
 
-        // execute action list
-        pCallActionList		(m_HandleActionList);
-        ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
-        // our actions
-        if (m_Def->m_Flags.is(CPGDef::dfFramed))    		  		m_Def->pFrameInitExecute(pg);
-        if (m_Def->m_Flags.is(CPGDef::dfFramed|CPGDef::dfAnimated))	m_Def->pAnimateExecute	(pg,fdt);
-        //-move action
-		vis.box.invalidate	();
-		float p_size = 0.f;
-        for(int i = 0; i < pg->p_count; i++){
-            Particle &m 	= pg->list[i]; 
-            if (m.flags.is(Particle::DYING)){}
-            if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
-			vis.box.modify((Fvector&)m.pos);
-			if (m.size.x>p_size) p_size = m.size.x;
-        }
-		vis.box.grow		(p_size);
-		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
-    }
+			// execute action list
+			pCallActionList		(m_HandleActionList);
+			ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
+			// our actions
+			if (m_Def->m_Flags.is(CPGDef::dfFramed))    		  		m_Def->pFrameInitExecute(pg);
+			if (m_Def->m_Flags.is(CPGDef::dfFramed|CPGDef::dfAnimated))	m_Def->pAnimateExecute	(pg,fDT_STEP);
+			//-move action
+			vis.box.invalidate	();
+			float p_size = 0.f;
+			for(int i = 0; i < pg->p_count; i++){
+				Particle &m 	= pg->list[i]; 
+				if (m.flags.is(Particle::DYING)){}
+				if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
+				vis.box.modify((Fvector&)m.pos);
+				if (m.size.x>p_size) p_size = m.size.x;
+			}
+			vis.box.grow		(p_size);
+			vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
+		}
+	}
 }
 
 BOOL CParticleGroup::Compile(CPGDef* def)
