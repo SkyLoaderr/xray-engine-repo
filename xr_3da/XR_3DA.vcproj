@@ -112,7 +112,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="scripting\,.."
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,ENGINE_BUILD,SECURE_GAMEDATA"
+				PreprocessorDefinitions="MIXED,NDEBUG,WIN32,_WINDOWS,ENGINE_BUILD"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
