@@ -122,14 +122,18 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
 					if (speed < 0.2f) {
-						for (int i=0 ;i<2; i++)
-							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
-								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-								break;
-							}
-						
-						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+//						for (int i=0 ;i<2; i++)
+//							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+//								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+//								break;
+//							}
+//						
+//						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
 						if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
@@ -144,14 +148,18 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
 				else
 					if (speed < 0.2f) {
-						for (int i=0 ;i<2; i++)
-							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
-								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-								break;
-							}
-						
-						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+//						for (int i=0 ;i<2; i++)
+//							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+//								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+//								break;
+//							}
+//						
+//						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
 						if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
