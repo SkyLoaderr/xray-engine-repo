@@ -31,7 +31,7 @@ struct HOM_poly
 };
 #pragma pack(pop)
 
-float	Area (Fvector& v0, Fvector& v1, Fvector& v2)
+IC float	Area (Fvector& v0, Fvector& v1, Fvector& v2)
 {
 	float	e1 = v0.distance_to(v1);
 	float	e2 = v0.distance_to(v2);
@@ -76,7 +76,7 @@ void CHOM::Load			()
 		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[1]);
 		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[2]);
 		rT.flags		= clT.dummy;
-		rT.area			= 
+		rT.area			= Area(CL.getV()[clT.IDverts()[0]],CL.getV()[clT.IDverts()[1]],CL.getV()[clT.IDverts()[2]]);
 	}
 
 	// Create AABB-tree
