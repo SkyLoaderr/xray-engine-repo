@@ -78,16 +78,12 @@ local the_actor
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_commander" (property_evaluator)
 
-function evaluator_commander:__init( name, storage ) super ()
+function evaluator_commander:__init( name, storage ) super ( nil, name )
     self.a = storage
 end
 
-function evaluator_commander:evaluate ()
-    --printf( "s1" )
-    local b = self.a.enabled == true
---    if b then sb = "true" else sb = "false" end
---    printf( "s2 "..sb )
-    return b
+function evaluator_commander:evaluate()
+  	return xr_logic.is_active( self.object, self.a )
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -95,7 +91,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_actor_is_close" ( property_evaluator )
 
-function evaluator_actor_is_close:__init( name, npc ) super()
+function evaluator_actor_is_close:__init( name, npc ) super( nil, name )
     self.npc = npc
 end
 
@@ -112,7 +108,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_dead_hook" ( property_evaluator )
 
-function evaluator_dead_hook:__init( name, storage ) super()
+function evaluator_dead_hook:__init( name, storage ) super( nil, name )
     self.a = storage
 end
 
@@ -157,6 +153,10 @@ function action_commander:initialize()
         self.zone:set_callback( self, "zone_callback", true )
     end
 --    printf( "action_commander initialized" )
+    self:reset_scheme()
+end
+
+function action_commander:reset_scheme()
 end
 
 function action_commander:finalize()
@@ -232,6 +232,10 @@ end
 function action_commander:execute()
     action_base.execute( self )
 
+	if not xr_state.finish_state( self.object ) then	
+		return
+	end
+
     if not the_actor then
         the_actor = level.actor()
     end
@@ -279,7 +283,7 @@ function action_commander:execute()
 			xr_sounds.play_sound( self.object, math.random( 500 ), self.a.snd_theme, 1,
                                   random_choice( snd_walking, snd_singing ) )
         end
---        printf( "decision: act=%d last_act=%d", self.act, self.last_act or -1 )
+        printf( "decision: act=%d last_act=%d", self.act, self.last_act or -1 )
     end
 
     if self.act == walk_random then
@@ -315,6 +319,8 @@ function action_commander:execute()
     else
         self.decision = true
     end
+
+    xr_logic.try_switch_to_another_section( self.object, self.a )
 end
 
 -- анимации для стояния в домике
@@ -491,7 +497,9 @@ end
 
 function action_commander:exec_walk_path()
     if not self.sub_act then
+    	printf( "-------------" )
         if not xr_state.change_state( self.object, 0 ) then
+        	printf( "=============" )
             self.object:clear_animations()
 
             self.object:set_node_evaluator    ()
@@ -585,6 +593,7 @@ function action_commander:exec_stretch_himself()
         end
     else
         if not xr_state.change_state( self.object, 0 ) then
+        	printf( "=-=-=-=-=---=-=-=-=--" )
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "near_door" )
 --            printf( "[commander] : stretch_himself" )
@@ -881,19 +890,19 @@ function action_commander:move_callback( obj, action_type, index )
         end
     end
 
-    if math.random( 100 ) <= 60 then
-        local pos = self.object:position()
+    if self.a.soldiers and math.random( 100 ) <= 60 then
+   	    local pos = self.object:position()
 
-        for i, name in ipairs( self.a.soldiers ) do
-            local soldier = level.object( name )
+        for i, name in self.a.soldiers do
+   	        local soldier = level.object( name )
 
             if soldier and soldier:alive() and pos:distance_to_sqr( soldier:position() ) <= 64 then
-                --and self.object:see( soldier ) then
-                self.act = path_talk
-                self.soldier_to_look_at = soldier
-                break
+  	            --and self.object:see( soldier ) then
+       	        self.act = path_talk
+           	    self.soldier_to_look_at = soldier
+               	break
             end
-        end
+   	    end
     else
         --self.object:play_sound( random_choice( snd_walking, snd_drunk ), 1, 0 )
         xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, random_choice( snd_walking, snd_drunk ) )
@@ -991,13 +1000,7 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 
-function add_to_binder( npc, char_ini )
-    if char_ini and not char_ini:section_exist( "commander" ) then
-        return
-    end
-
-    local a = xr_motivator.storage[npc:id()].commander
-
+function add_to_binder( npc, ini, scheme, section, a )
     a.dead_hook = false
 
     local manager = npc:motivation_action_manager()
@@ -1005,7 +1008,7 @@ function add_to_binder( npc, char_ini )
     manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
     manager:add_evaluator( prop_dead_hook, this.evaluator_dead_hook( "property_dead_hook", a ) )
     manager:add_evaluator( prop_actor_is_close, this.evaluator_actor_is_close( "property_actor_is_close", npc ) )
-    
+
     local action = this.action_look_at_actor( "action_look_at_actor", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
     action:add_effect( world_property( prop_actor_is_close, false ) )
@@ -1013,7 +1016,6 @@ function add_to_binder( npc, char_ini )
 
     action = this.action_commander( "action_commander", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
-    action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
     action:add_precondition( world_property( prop_actor_is_close, false ) )
     action:add_effect( world_property( prop_commander, false ) )
     manager:add_action( act_commander, action )
@@ -1028,16 +1030,12 @@ function add_to_binder( npc, char_ini )
     action = manager:action( stalker_ids.action_death_planner )
     action:add_precondition( world_property( prop_dead_hook, true ) )
 
-    xr_report.AddScheme( npc, act_commander )
-
-    if char_ini then
-        this.set_commander( npc )
-    end
+--    xr_report.AddScheme( npc, act_commander )
 
     the_actor = nil
 end
 
-function init_commander( npc, a )
+function init_commander( npc, section, a )
     function remove_acts( ... )
         for i = 1, 3 do
             for j = 1, arg.n do
@@ -1048,148 +1046,131 @@ function init_commander( npc, a )
 
     local char_ini = npc:spawn_ini()
 
-    if char_ini:section_exist( "commander" ) then
-        -- включен?
-        if char_ini:line_exist( "commander", "enabled" ) then     
-            if not char_ini:r_bool( "commander", "enabled" ) then
-                return false
-            end
-        else
-            return false
-        end
+    a.acts = {}
+    -- веса решений
+    for i = 1, 3 do
+        a.acts[i] = {}
+    end
 
-        a.acts = {}
-        -- веса решений
-        for i = 1, 3 do
-            a.acts[i] = {}
-        end
-    
-        for s, n in pairs( act_str2num ) do
-            remove_acts( n )
+    for s, n in pairs( act_str2num ) do
+        remove_acts( n )
 
-            if char_ini:line_exist( "commander", s ) then
-                local w = parse_names( char_ini:r_string( "commander", s ) )
+        if char_ini:line_exist( section, s ) then
+            local w = parse_names( char_ini:r_string( section, s ) )
 
-                for i = 1, 3 do
-                    if w[i] and w[i] ~= "" then
-                        a.acts[i][n] = tonumber( w[i] )
-                    end
+            for i = 1, 3 do
+                if w[i] and w[i] ~= "" then
+                    a.acts[i][n] = tonumber( w[i] )
                 end
             end
         end
-        
+    end
+    
 --        for s, n in pairs( act_str2num ) do
 --            printf( "%s = %d", s, a.acts[1][n] )
 --        end
-        
-        -- объект для присмотра и зона, в которой он оглядывается на этот объект
-        if char_ini:line_exist( "commander", "look_after" ) then
-            a.obj_look_after_name = char_ini:r_string( "commander", "look_after" )
-        end
+    
+    -- объект для присмотра и зона, в которой он оглядывается на этот объект
+    if char_ini:line_exist( section, "look_after" ) then
+        a.obj_look_after_name = char_ini:r_string( section, "look_after" )
+    end
 
-        if char_ini:line_exist("commander", "zone_look_after") and a.obj_look_after_name then
-            a.zone_name = char_ini:r_string( "commander", "zone_look_after" )
-        end
+    if char_ini:line_exist(section, "zone_look_after") and a.obj_look_after_name then
+        a.zone_name = char_ini:r_string( section, "zone_look_after" )
+    end
 
-        -- пути --
-        -- way
-        if char_ini:line_exist( "commander", "way" ) then
-            local name = char_ini:r_string( "commander", "way" )
-            if level.patrol_path_exists( name ) then
-                a.way = patrol( name )
+    -- пути --
+    -- way
+    if char_ini:line_exist( section, "way" ) then
+        local name = char_ini:r_string( section, "way" )
+        if level.patrol_path_exists( name ) then
+            a.way = patrol( name )
 
-                if a.way:index( "level_map" ) < 0 then
-                    remove_acts( look_map )
-                end
+            if a.way:index( "level_map" ) < 0 then
+                remove_acts( look_map )
+            end
 
-                if a.way:index( "near_door" ) < 0 then
-                    remove_acts( stretch_himself )
-                end
+            if a.way:index( "near_door" ) < 0 then
+                remove_acts( stretch_himself )
+            end
 
-                if a.way:index( "look_after" ) < 0 then
-                    a.zone_name = nil
-                end
+            if a.way:index( "look_after" ) < 0 then
+                a.zone_name = nil
+            end
 
-                if a.way:index( "mattress" ) < 0 or a.way:index( "mattress_dir" ) < 0 then
-                    remove_acts( sleep, drink_vodka )
-                end
-            else
-                remove_acts( look_map, stretch_himself, drink_vodka, sleep )
-                printf( "ERR commander: path way=%s not found!", name )
+            if a.way:index( "mattress" ) < 0 or a.way:index( "mattress_dir" ) < 0 then
+                remove_acts( sleep, drink_vodka )
             end
         else
             remove_acts( look_map, stretch_himself, drink_vodka, sleep )
+            printf( "ERR commander: path way=%s not found!", name )
         end
+    else
+        remove_acts( look_map, stretch_himself, drink_vodka, sleep )
+    end
 
-        -- way_random
-        if char_ini:line_exist( "commander", "way_random" ) then
-            local name = char_ini:r_string( "commander", "way_random" )
-            if level.patrol_path_exists( name ) then
-                a.way_random = patrol( name )
-            else
-                remove_acts( walk_random )
-                printf( "ERR commander: path way_random=%s not found!", name )
-            end
+    -- way_random
+    if char_ini:line_exist( section, "way_random" ) then
+        local name = char_ini:r_string( section, "way_random" )
+        if level.patrol_path_exists( name ) then
+            a.way_random = patrol( name )
         else
             remove_acts( walk_random )
+            printf( "ERR commander: path way_random=%s not found!", name )
         end
+    else
+        remove_acts( walk_random )
+    end
 
-        -- way_path
-        if char_ini:line_exist( "commander", "way_path" ) then
-            local name = char_ini:r_string( "commander", "way_path" )
+    -- way_path
+    if char_ini:line_exist( section, "way_path" ) then
+        local name = char_ini:r_string( section, "way_path" )
 
-            if level.patrol_path_exists( name ) then
-                a.way_path = name
+        if level.patrol_path_exists( name ) then
+            a.way_path = name
 
-                a.near_door_index = patrol( name ):index( "near_door" )
-                if a.near_door_index < 0 then
-                    a.near_door_index = 0
-                end
-            else
-                remove_acts( walk_path )
-                printf( "ERR commander: path way_path=%s not found!", name )
+            a.near_door_index = patrol( name ):index( "near_door" )
+            if a.near_door_index < 0 then
+                a.near_door_index = 0
             end
         else
             remove_acts( walk_path )
-        end
-
-        -- солдаты
-        if char_ini:line_exist( "commander", "soldiers" ) then
-            local soldiers = char_ini:r_string( "commander", "soldiers" )
-            a.soldiers = parse_names( soldiers )
-        end
-
-        -- тема звуков
-        if char_ini:line_exist( "commander", "sound_theme" ) then
-            a.snd_theme = char_ini:r_string( "commander", "sound_theme" )
-        end
-
-        -- имя группировки (лагеря)
-        if char_ini:line_exist( "commander", "fraction" ) then
-            a.fraction = char_ini:r_string( "commander", "fraction" )
-        end
-
-        -- диалог
-        if char_ini:line_exist( "commander", "dialog" ) then
-            a.dialog = char_ini:r_string( "commander", "dialog" )
+            printf( "ERR commander: path way_path=%s not found!", name )
         end
     else
-        --printf( "no section" )
-        return false
+        remove_acts( walk_path )
     end
 
-    return true
+    -- солдаты
+    if char_ini:line_exist( section, "soldiers" ) then
+        local soldiers = char_ini:r_string( section, "soldiers" )
+        a.soldiers = parse_names( soldiers )
+    end
+
+    -- тема звуков
+    if char_ini:line_exist( section, "sound_theme" ) then
+        a.snd_theme = char_ini:r_string( section, "sound_theme" )
+    end
+
+    -- имя группировки (лагеря)
+    if char_ini:line_exist( section, "fraction" ) then
+        a.fraction = char_ini:r_string( section, "fraction" )
+    end
+
+    -- диалог
+    if char_ini:line_exist( section, "dialog" ) then
+        a.dialog = char_ini:r_string( section, "dialog" )
+    end
 end
 
-function set_commander( npc, enable )
+function set_scheme( npc, ini, scheme, section, gulag_name )
     printf( "SET COMMANDER" )
-    local a = xr_motivator.storage[npc:id()].commander
 
-    if enable == nil then
-        a.enabled = this.init_commander( npc, a )
-    else
-        a.enabled = enable and this.init_commander( npc, a )
-    end
+    local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 
-    xr_motivator.checkStorage( npc )
+    a.logic = xr_logic.cfg_get_switch_conditions( ini, section, npc )
+
+    init_commander( npc, section, a )
+
+--    xr_logic.reset_actions( st )
 end
