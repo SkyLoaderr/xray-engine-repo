@@ -16,9 +16,10 @@ function main()
 	end
 end
 
-class "multiplayer_crate_base_tab" (CUIScriptWnd)
+class "multiplayer_create_base_tab" (CUIScriptWnd)
 
 function multiplayer_create_base_tab:__init() super()
+		 
 end
 
 function multiplayer_create_base_tab:__finalize()
