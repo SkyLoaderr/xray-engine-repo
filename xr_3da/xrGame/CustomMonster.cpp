@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "ai_debug.h"
 #include "CustomMonster.h"
-#include "customitem.h"
+//#include "customitem.h"
 #include "hudmanager.h"
 #include "ai_space.h"
 #ifdef IGNORE_ACTOR
