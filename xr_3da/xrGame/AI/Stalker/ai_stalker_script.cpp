@@ -94,7 +94,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 	
 	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
-	float			yaw = 0, pitch = 0;
+	float			yaw = m_head.target.yaw, pitch = m_head.target.pitch;
 
 	switch (l_tWatchAction.m_tGoalType) {
 		case CWatchAction::eGoalTypeObject : {
