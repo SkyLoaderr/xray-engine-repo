@@ -8,7 +8,7 @@ class R_dsgraph_structure
 public:
 	// Dynamic scene graph
 	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)
-	R_dsgraph::mapMatrix_T										mapMatrix;
+	R_dsgraph::mapMatrix_T										mapMatrix	[2];
 	R_dsgraph::mapSorted_T										mapSorted;
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;

@@ -44,13 +44,11 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 #endif
 
 	// Create common node
-	_MatrixItem		item	= {SSA,val_pObject,pVisual,*val_pTransform,Center};
-
-	// Invisible elements exist only in R1
+	// NOTE: Invisible elements exist only in R1
+	_MatrixItem		item	= {SSA,val_pObject,pVisual,*val_pTransform};
 #if RENDER==R_R1
-	if (val_bInvisible)	{
-		L_Shadows->add_element	(item);
-	} else
+	if (!val_bHUD)			L_Shadows->add_element	(item);
+	if (val_bInvisible)		return;
 #endif
 
 	// HUD rendering
@@ -63,9 +61,6 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val					= item;
-#if RENDER==R_R1
-		L_Shadows->add_element	(item);
-#endif
 	} else
 
 	// the most common node
@@ -80,10 +75,6 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 		mapMatrixItems&				items	= Nvb->val;
 		items.push_back						(item);
-
-#if RENDER==R_R1
-		L_Shadows->add_element				(item);
-#endif
 
 		// Need to sort for HZB efficient use
 		if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
