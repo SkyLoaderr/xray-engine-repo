@@ -49,6 +49,10 @@ function activate_by_section(npc, ini, section)
 			section, npc:name(), xr_motivator.storage[npc_id]["active_section"])
 	end
 
+	if section == "nil" then
+		return
+	end
+
 	if ini:section_exist(section) then
 		local scheme = utils.get_scheme_by_section(section)
 		if scheme == nil then
@@ -73,6 +77,8 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 	if not xr_motivator.storage[npc_id][scheme] then
 		xr_motivator.storage[npc_id][scheme] = {}
 		st = xr_motivator.storage[npc_id][scheme]
+
+		st["npc"] = npc
 		
 		-- —хема стартует впервые - прибиндить
 		printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
@@ -127,7 +133,7 @@ function try_switch_to_another_section(npc, st)
 
 	if l.on_actor_dist_le then
 		local actor = level.actor()
-		if distance_between(actor, npc) <= l.on_actor_dist_le.dist then
+		if npc:see(actor) and distance_between(actor, npc) <= l.on_actor_dist_le.dist then
 			xr_motivator.storage[npc_id]["active_section"] = nil
 			activate_by_section(npc, st.ini, pick_random_section_from_list(l.on_actor_dist_le.sections))
 			printf("DEBUG: try_switch_to_another_section: returning true")
