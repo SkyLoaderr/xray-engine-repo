@@ -223,6 +223,9 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section)
 	case epsMap:
 		UITabControl.SetNewActiveTab(eptMap);
 		break;
+	case epsContacts:
+		UITabControl.SetNewActiveTab(eptComm);
+		break;
 	default:
 		NODEFAULT;
 	}

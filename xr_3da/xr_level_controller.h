@@ -57,6 +57,7 @@ enum	EKeyBinding
 	kPDA			,
 	kACTIVE_JOBS	,
 	kMAP			,
+	kCONTACTS		,
 	kEXT_1			,
 	kEXT_2			,
 	kEXT_3			,

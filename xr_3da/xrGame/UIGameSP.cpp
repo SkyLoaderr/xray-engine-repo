@@ -47,6 +47,11 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		PdaMenu.SetActiveSubdialog(epsMap);
 		return true;
 		break;
+	case kCONTACTS:
+		m_game->StartStopMenu(&PdaMenu);
+		PdaMenu.SetActiveSubdialog(epsContacts);
+		return true;
+		break;
 /*
 	case DIK_B:
 ///		StartStopMenu(&UIStatsWnd);

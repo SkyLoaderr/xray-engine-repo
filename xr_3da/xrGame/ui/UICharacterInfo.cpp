@@ -163,16 +163,22 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	sprintf(str, "%d", pCharInfo->Rank());
 	if (m_bInfoAutoAdjust)
 	{
-		offset = static_cast<int>(UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5);
-		UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
+		if (UIRankCaption.IsEnabled() && UIRankCaption.GetFont())
+		{
+			offset = static_cast<int>(UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5);
+			UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
+		}
 	}
 	UIRank.SetText(str);
 
 	sprintf(str, "%s", *pCharInfo->Community());
 	if (m_bInfoAutoAdjust)
 	{
-		offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
-		UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
+		if (UICommunityCaption.IsEnabled() && UICommunityCaption.GetFont())
+		{
+			offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
+			UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
+		}
 	}
 	UICommunity.SetText(str);
 

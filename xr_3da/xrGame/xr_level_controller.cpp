@@ -65,6 +65,7 @@ _keybind  keybind[]		= {
 	{ "pda",			kPDA			},
 	{ "active_jobs",	kACTIVE_JOBS	},
 	{ "map",			kMAP			},
+	{ "contacts",		kCONTACTS		},
 
 	{ "ext_1",			kEXT_1			},
 	{ "ext_2",			kEXT_2			},

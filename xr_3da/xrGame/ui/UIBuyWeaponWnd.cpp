@@ -805,10 +805,11 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (&UIWeaponsTabControl == pWnd && TAB_CHANGED == msg)
 	{
-//		if (mlAddons == m_mlCurrLevel)
-//		{
-//			MenuLevelDown();
-//		}
+		if (mlWpnSubType  == m_mlCurrLevel)
+		{
+			MenuLevelDown();
+			MenuLevelDown();
+		}
 		if (RIFLE_SLOT == *static_cast<int*>(pData) + 1)
 		{
 			m_WeaponSubBags.back()->Show(false);
@@ -938,7 +939,7 @@ void CUIBuyWeaponWnd::Update()
 	static CUIDragDropItemMP *pOldCurrentDragDropItem = reinterpret_cast<CUIDragDropItemMP*>(1);
 	static string16		str;
 
-	if (pOldCurrentDragDropItem != m_pCurrentDragDropItem)
+	if (pOldCurrentDragDropItem != m_pCurrentDragDropItem && m_pCurrentDragDropItem)
 	{
 		pOldCurrentDragDropItem	= m_pCurrentDragDropItem;
 		pOldCurrentDragDropItem->Highlight(false);
@@ -1521,6 +1522,9 @@ const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum)
 {
 	u8 returnID = static_cast<u8>(-1);
 	sectionNum = 0;
+
+	// Отменяем фильтр
+	ApplyFilter(RIFLE_SLOT, NULL, NULL);
 
 	CUIDragDropItemMP *pDDItemMP = GetWeapon(slotNum, idx);
 	if (!pDDItemMP) return returnID;
