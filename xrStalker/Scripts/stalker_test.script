@@ -5,7 +5,7 @@ function main()
     position			= actor:position();
     position.y			= position.y + 2
     
-    snd:play_at_pos_unlimited(actor,position,0)
+    snd:play_at_pos		(actor,position,0,sound_object.looped)
 	
 	while true do
 		wait			()
