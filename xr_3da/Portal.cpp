@@ -228,7 +228,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 			if (!oQuery.Qualifier(O,oQuery.Param))	continue;
 
 			Fvector		Pos;
-			O->clXFORM().transform_tiny	(Pos,O->Visual()->bv_Position);
+			O->clCenter	(Pos);
 			if (F.testSphere_dirty	(Pos,O->Radius()))
 				oQuery.Collector->push_back(O);
 		}

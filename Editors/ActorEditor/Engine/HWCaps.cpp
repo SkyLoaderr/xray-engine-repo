@@ -3,7 +3,7 @@
 
 #include "hwcaps.h"
 #include "hw.h"
-
+ 
 void CHWCaps::Update()
 {
 	D3DCAPS8 caps;
@@ -30,6 +30,9 @@ void CHWCaps::Update()
 
 	// ***************** Compatibility
 	if (0==pixel.dwVersion)	vertex.dwVersion=0;			// Disable VS if no PS
+#ifdef _EDITOR
+	vertex.dwVersion	= 0;
+#endif
 
 	bTableFog			=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
 
