@@ -196,7 +196,7 @@ void CWeaponKnife::switch2_Attacking	()
 {
 	if(m_bPending) return;
 
-	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())], FALSE, this);
+	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())],		FALSE, this);
 	m_attackStart = true;
 	m_bPending = true;
 }
@@ -205,7 +205,7 @@ void CWeaponKnife::switch2_Attacking2	()
 {
 	if(m_bPending) return;
 
-	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())], FALSE, this);	//. mix=on????
+	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())],	FALSE, this);
 	m_attackStart = true;
 	m_bPending = true;
 }
