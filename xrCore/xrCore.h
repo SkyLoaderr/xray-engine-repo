@@ -9,7 +9,7 @@
 #define xrCoreH
 #pragma once
 
-// #include "xrCore_platform.h"
+#include "xrCore_platform.h"
 
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL

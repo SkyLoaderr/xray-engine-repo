@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xrCore_platform.h"
 #include "fs_internal.h"
 
 #pragma warning(disable:4995)

@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "FileSystem.h"
+
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>

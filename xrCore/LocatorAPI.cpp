@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xrCore_platform.h"
+
 #pragma warning(disable:4995)
 #include <io.h>
 #include <direct.h>
@@ -174,7 +176,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	A.vfs->seek			(0);
 }
 
-void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
+void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 {
 	_finddata_t& F	= *((_finddata_t*)_F);
 
@@ -242,7 +244,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 void CLocatorAPI::_initialize	(u32 flags)
 {
 	Log				("Initializing File System...");
-	DWORD	M1		= Memory.mem_usage();
+	u32	M1			= Memory.mem_usage();
 
 	m_Flags.set		(flags,TRUE);
 
@@ -296,7 +298,7 @@ void CLocatorAPI::_initialize	(u32 flags)
         R_ASSERT	(I.second);
 	}
 	r_close			(F);
-	DWORD	M2		= Memory.mem_usage();
+	u32	M2		= Memory.mem_usage();
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 
 #ifdef __BORLANDC__

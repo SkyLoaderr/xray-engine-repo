@@ -41,8 +41,8 @@ public:
 	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
 	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
 
-    std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
-    std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
+    static		std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
+    static		std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
 };
 extern XRCORE_API	EFS_Utils*	xr_EFS;
 #define EFS (*xr_EFS)
