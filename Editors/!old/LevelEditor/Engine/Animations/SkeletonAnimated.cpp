@@ -528,7 +528,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
                 PART.Name			= _strlwr(buf);
                 PART.bones.resize	(MP->r_u16());
                 MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
-                part_bone_cnt		+= PART.bones.size();
+                part_bone_cnt		+= (u16)PART.bones.size();
             }
         }else{
 	        R_ASSERT(vers==xrOGF_SMParamsVersion);
@@ -552,7 +552,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 					VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
 #endif
                 }
-                part_bone_cnt		+= PART.bones.size();
+                part_bone_cnt		+= (u16)PART.bones.size();
             }
         }
 
@@ -565,7 +565,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
             Msg("!#Different bone count [Object: '%d' <-> Motions: '%d']",bones->size(),part_bone_cnt);
         }
 #else
-        VERIFY3(part_bone_cnt==(u16)bones->size(),"Different bone count '%s'",nm);
+        VERIFY3(part_bone_cnt==(u16)bones->size(),"Different bone count '%s'",N);
 #endif
         if (bRes){
             // motion defs (cycle&fx)
