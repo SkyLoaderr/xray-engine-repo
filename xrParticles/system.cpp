@@ -35,8 +35,6 @@ _ParticleState::_ParticleState()
 	in_call_list	= FALSE;
 	in_new_list		= FALSE;
 	
-	dt				= 1.0f;
-	
 	effect_id		= -1;
 	list_id			= -1;
 	peff			= NULL;
@@ -222,16 +220,6 @@ void _pCallActionList(ParticleActions* pa, ParticleEffect *pe, float dt)
     	(*it)->Execute(pe,dt);
 }
 
-void _pCallAction(ParticleAction* pa, ParticleEffect *pe, float dt)
-{
-	// All these require a particle effect, so check for it.
-	if(pe == NULL)
-		return;
-	
-	// Step through all the actions in the action list.
-    pa->Execute(pe,dt);
-}
-
 // Add the incoming action to the end of the current action list.
 void _pAddActionToList(ParticleAction *S)
 {
@@ -368,13 +356,6 @@ PARTICLEDLL_API void pStartingAge(float age, float sigma)
 	_ps.AgeSigma = sigma;
 }
 
-PARTICLEDLL_API void pTimeStep(float newDT)
-{
-	_ParticleState &_ps = _GetPState();
-
-	_ps.dt = newDT;
-}
-
 ////////////////////////////////////////////////////////
 // Action List Calls
 
@@ -442,7 +423,7 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 
 void _pSendAction(ParticleAction *S);
 
-PARTICLEDLL_API void pCallActionList(int action_list_num)
+PARTICLEDLL_API void pCallActionList(int action_list_num, float dt)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -464,7 +445,7 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 		
 		_ps.in_call_list 	= TRUE;
 
-		_pCallActionList	(pa, _ps.peff, _ps.dt);
+		_pCallActionList	(pa, _ps.peff, dt);
 
 		_ps.in_call_list 	= FALSE;
 	}
@@ -473,8 +454,6 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& full, const Fvector& vel)
 {
 	_ParticleState &_ps = _GetPState();
-
-	if(_ps.in_new_list) return; // ERROR
 
 	// Execute the specified action list.
 	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
@@ -496,7 +475,6 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 		case PASourceID:
 			dynamic_cast<PASource*>(*it)->parent_vel = pVector(vel.x,vel.y,vel.z)*dynamic_cast<PASource*>(*it)->parent_motion;
 			break;
-//.            
 		}
 	}
 }

@@ -524,7 +524,6 @@ namespace PAPI
 	// Global state _vector
 	struct _ParticleState
 	{
-		float			dt;
 		BOOL			in_call_list;
 		BOOL			in_new_list;
 
@@ -600,8 +599,6 @@ namespace PAPI
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL single_size=TRUE);
 
 	PARTICLEDLL_API void pStartingAge(float age, float sigma = 1.0f);
-
-	PARTICLEDLL_API void pTimeStep(float new_dt);
 
 	PARTICLEDLL_API void pVelocity(float x, float y, float z);
 
