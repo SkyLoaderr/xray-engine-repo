@@ -64,6 +64,8 @@ void CActor::feel_touch_new				(CObject* O)
 
 void CActor::feel_touch_delete	(CObject* O)
 {
+	NET_Packet	P;
+
 	switch (GameID())
 	{
 	case GAME_CS:
