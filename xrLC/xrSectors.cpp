@@ -23,7 +23,6 @@ void CBuild::BuildSectors()
 	{
 		DWORD Sector = g_tree[I]->Sector;
 		if (0==g_sectors[Sector]) g_sectors[Sector] = new CSector(Sector);
-//		g_sectors[I]->add_geometry(g_tree[I]);
 	}
 
 	Status("Building hierrarhy...");
