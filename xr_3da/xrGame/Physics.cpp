@@ -568,7 +568,6 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					ps->UpdateParent(pos,zero_vel);
 					Level().ps_needtoplay.push_back(ps);
 				}
-
 			}
 		}
 
