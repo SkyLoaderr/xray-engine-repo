@@ -93,8 +93,7 @@ void CAI_Space::Render()
 	Fvector	DUP;	DUP.set(0,1,0);
 
 	Device.Shader.OnFrameEnd();
-
-	pApp->pFont->Color	(D3DCOLOR_RGBA(255,255,255,255));
+	pApp->pFont->Color		(D3DCOLOR_RGBA(255,255,255,255));
 
 	for (DWORD Nid=0; Nid<m_header.count; Nid++)
 	{
