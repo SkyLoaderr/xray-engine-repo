@@ -11,7 +11,7 @@
 #include "PhraseDialogDefs.h"
 #include "xml_str_id_loader.h"
 
-typedef CGraphAbstract<CPhrase*, float, PHRASE_ID, u32> CPhraseGraph;
+typedef CGraphAbstract<CPhrase*, float, PHRASE_ID> CPhraseGraph;
 
 
 //////////////////////////////////////////////////////////////////////////

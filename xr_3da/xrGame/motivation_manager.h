@@ -24,13 +24,14 @@ class CMotivationManager {
 public:
 	typedef _motivation_type<_object_type>			CSMotivation;
 	typedef _motivation_action_type<_object_type>	CSMotivationAction;
+	typedef xr_map<u32,CSMotivationAction*>			ACTIONS;
+
+public:
 	typedef CGraphAbstract<
-		CSMotivation*,
-		float,
-		u32,
-		u16
-	> CSGraphAbstract;
-	typedef xr_map<u32,CSMotivationAction*>	ACTIONS;
+				CSMotivation*,
+				float,
+				u32
+			>										CSGraphAbstract;
 
 protected:
 	struct CMotivationWeight {

@@ -116,27 +116,29 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 
 void CALifeSpawnRegistry::save_updates			(IWriter &stream)
 {
-	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
-	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	SPAWN_GRAPH::vertex_iterator			I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator			E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		if ((*I)->edges().empty())
+		if ((*I).second->edges().empty())
 			continue;
-		stream.open_chunk			((*I)->vertex_id());
-		(*I)->data()->save_update	(stream);
-		stream.close_chunk			();
+
+		stream.open_chunk					((*I).second->vertex_id());
+		(*I).second->data()->save_update	(stream);
+		stream.close_chunk					();
 	}
 }
 
 void CALifeSpawnRegistry::load_updates			(IReader &stream)
 {
-	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
-	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	SPAWN_GRAPH::vertex_iterator			I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator			E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		if ((*I)->edges().empty())
+		if ((*I).second->edges().empty())
 			continue;
-		IReader						*chunk = stream.open_chunk((*I)->vertex_id());
-		(*I)->data()->load_update	(*chunk);
-		chunk->close				();
+
+		IReader								*chunk = stream.open_chunk((*I).second->vertex_id());
+		(*I).second->data()->load_update	(*chunk);
+		chunk->close						();
 	}
 }
 
@@ -148,7 +150,7 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(&(*I)->data()->object());
+		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(&(*I).second->data()->object());
 		if (anomaly) {
 			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
 			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {
@@ -175,15 +177,15 @@ void CALifeSpawnRegistry::build_root_spawns		()
 		SPAWN_GRAPH::const_vertex_iterator	I = m_spawns.vertices().begin();
 		SPAWN_GRAPH::const_vertex_iterator	E = m_spawns.vertices().end();
 		for ( ; I != E; ++I)
-			m_temp0.push_back				((*I)->vertex_id());
+			m_temp0.push_back				((*I).second->vertex_id());
 	}
 
 	{
 		SPAWN_GRAPH::const_vertex_iterator	I = m_spawns.vertices().begin();
 		SPAWN_GRAPH::const_vertex_iterator	E = m_spawns.vertices().end();
 		for ( ; I != E; ++I) {
-			SPAWN_GRAPH::const_iterator	i = (*I)->edges().begin();
-			SPAWN_GRAPH::const_iterator	e = (*I)->edges().end();
+			SPAWN_GRAPH::const_iterator	i = (*I).second->edges().begin();
+			SPAWN_GRAPH::const_iterator	e = (*I).second->edges().end();
 			for ( ; i != e; ++i)
 				m_temp1.push_back			((*i).vertex_id());
 		}

@@ -165,19 +165,19 @@ IC	void CSMotivationManager::update_motivations()
 	m_temp.clear			();
 	m_motivations.clear		();
 	
-	xr_vector<CSGraphAbstract::CVertex*>::const_iterator	I = graph().vertices().begin();
-	xr_vector<CSGraphAbstract::CVertex*>::const_iterator	E = graph().vertices().end();
+	CSGraphAbstract::const_vertex_iterator	I = graph().vertices().begin();
+	CSGraphAbstract::const_vertex_iterator	E = graph().vertices().end();
 	for ( ; I != E; ++I) {
-		xr_vector<CSGraphAbstract::CEdge>::const_iterator i = (*I)->edges().begin();
-		xr_vector<CSGraphAbstract::CEdge>::const_iterator e = (*I)->edges().end();
+		CSGraphAbstract::const_iterator i = (*I).second->edges().begin();
+		CSGraphAbstract::const_iterator e = (*I).second->edges().end();
 		for ( ; i != e; ++i)
 			m_temp.insert	((*i).vertex_id());
 	}
 	
 	I						= graph().vertices().begin();
 	for ( ; I != E; ++I)
-		if (m_temp.find((*I)->vertex_id()) == m_temp.end())
-			m_motivations.push_back	((*I)->vertex_id());
+		if (m_temp.find((*I).second->vertex_id()) == m_temp.end())
+			m_motivations.push_back	((*I).second->vertex_id());
 }
 
 TEMPLATE_SPECIALIZATION
@@ -212,9 +212,9 @@ IC	void CSMotivationManager::select_action		()
 TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 {
-	CSGraphAbstract::CVertex	*vertex	= graph().vertex(motivation_id);
-	xr_vector<CSGraphAbstract::CEdge>::const_iterator	I = vertex->edges().begin(), B = I;
-	xr_vector<CSGraphAbstract::CEdge>::const_iterator	E = vertex->edges().end();
+	CSGraphAbstract::CVertex		*vertex	= graph().vertex(motivation_id);
+	CSGraphAbstract::const_iterator	I = vertex->edges().begin(), B = I;
+	CSGraphAbstract::const_iterator	E = vertex->edges().end();
 
 	if (I == E) {
 		xr_vector<CMotivationWeight>::iterator	i = std::find(m_actions.begin(),m_actions.end(),motivation_id);
