@@ -309,6 +309,9 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
+IC	bool	cmp_normal_items		(const _NormalItem& N1, const _NormalItem& N2)
+{	return (N1.ssa > N2.ssa);		}
+
 extern void __fastcall render_Cached(xr_vector<FCached*>& cache);
 void __fastcall mapNormal_Render	(mapNormalItems& N)
 {
@@ -316,13 +319,12 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 	{
 		// DIRECT:SORTED
 		std::sort				(N.begin(),N.end(),cmp_normal_items);
-		IRender_Visual			**I=&*N.begin(), **E = &*N.end();
+		_NormalItem				*I=&*N.begin(), *E = &*N.end();
 		for (; I!=E; I++)		{
-			IRender_Visual *V = *I;
-			V->Render	(calcLOD(N->key,V->vis.sphere.R));
-			V->Render	(0);	// zero lod 'cause it is too small onscreen
+			_NormalItem&		Ni	= *I;
+			Ni.pVisual->Render	(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
 		}
-		L.clear	();
+		N.clear	();
 	}
 }
 

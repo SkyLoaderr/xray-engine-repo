@@ -25,7 +25,7 @@ void CRender::level_Load()
 			string512				n_sh,n_tlist;
 			LPCSTR			n		= LPCSTR(chunk->pointer());
 			strcpy					(n_sh,n);
-			LPCSTR			delim	= strchr(n_sh,'/');
+			LPSTR			delim	= strchr(n_sh,'/');
 			*delim					= 0;
 			strcpy					(n_tlist,delim+1);
 			chunk->skip_stringZ		();
