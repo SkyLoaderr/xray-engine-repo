@@ -93,8 +93,8 @@ public:
 
 	u32						dwState;
 
-    LPDIRECTSOUNDBUFFER     pBuffer;
-    LPDIRECTSOUND3DBUFFER   pBuffer3D;
+    IDirectSoundBuffer*		pBuffer;
+    IDirectSound3DBuffer8*	pBuffer3D;
 	LPKSPROPERTYSET			pExtensions;
 	u32						dwBytesPerMS;
 	Control					ps;						// property sets for the 3d-buffer
@@ -111,8 +111,8 @@ public:
 
 	u32						dwLastTimeActive;
 public:
-	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name,	BOOL bCtrlFreq);
-	LPDIRECTSOUNDBUFFER		LoadWaveAs2D			(LPCSTR name,	BOOL bCtrlFreq);
+	IDirectSoundBuffer*		LoadWaveAs3D			(LPCSTR name,	BOOL bCtrlFreq);
+	IDirectSoundBuffer*		LoadWaveAs2D			(LPCSTR name,	BOOL bCtrlFreq);
 	void					Load					(LPCSTR,		BOOL bCtrlFreq=FALSE);		// wav-file
 	void					Load					(const CSound *);							// clone
 

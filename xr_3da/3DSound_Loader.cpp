@@ -87,11 +87,11 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &
 	return dest;
 }
 
-LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
+IDirectSoundBuffer* CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 {
 	Log						("----- 2D sound!!! ",pName);
 	DSBUFFERDESC			dsBD = {0};
-	LPDIRECTSOUNDBUFFER		pBuf = NULL;
+	IDirectSoundBuffer*		pBuf = NULL;
 
 	// Fill caps structure
 	dsBD.dwSize				= sizeof(dsBD);
@@ -175,10 +175,10 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	return pBuf;
 }
 
-LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
+IDirectSoundBuffer*	CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 {
     DSBUFFERDESC			dsBD = {0};
-	LPDIRECTSOUNDBUFFER		pBuf = NULL;
+	IDirectSoundBuffer*		pBuf = NULL;
 
 	// Fill caps structure
     dsBD.dwSize		= sizeof(dsBD);
@@ -304,7 +304,7 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 		pBuffer				= LoadWaveAs3D( fn, _Freq );
 		if (!pBuffer)		THROW;
 
-		pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
+		pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,(void **)(&pBuffer3D));
 		ps.dwMode			= DS3DMODE_DISABLE;
 		bNeedUpdate			= true;
 	} else {
@@ -334,7 +334,7 @@ void CSound::Load		(const CSound *pOriginal)
 	VERIFY				(pBuffer);
 	if (_3D)
 	{
-		pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
+		pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,(void **)(&pBuffer3D));
 		ps.dwMode			= DS3DMODE_DISABLE;
 	}
 	bNeedUpdate			= true;

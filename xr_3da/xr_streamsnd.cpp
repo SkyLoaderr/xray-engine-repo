@@ -240,7 +240,7 @@ void CSoundStream::AppWriteDataToBuffer(
 		// Write to pointers.
 		Memory.mem_copy	(lpvPtr1, lpbSoundData, dwBytes1);
 		if(NULL != lpvPtr2) Memory.mem_copy (lpvPtr2, lpbSoundData+dwBytes1, dwBytes2);
-		// Release the data back to DirectSound.
+		// Release the data back to DSound.
 		CHK_DX(pBuffer->Unlock(lpvPtr1, dwBytes1, lpvPtr2, dwBytes2));
 	}
 }
@@ -248,7 +248,7 @@ void CSoundStream::AppWriteDataToBuffer(
 #define XRead(a) hf->Read(&a,sizeof(a))
 
 //--------------------------------------------------------------------------------------------------
-BOOL ADPCMCreateSoundBuffer(LPDIRECTSOUND lpDS, LPDIRECTSOUNDBUFFER *pDSB, WAVEFORMATEX* fmt)
+BOOL ADPCMCreateSoundBuffer(IDirectSound8* lpDS, IDirectSoundBuffer* *pDSB, WAVEFORMATEX* fmt)
 {
     DSBUFFERDESC    dsBD;
 

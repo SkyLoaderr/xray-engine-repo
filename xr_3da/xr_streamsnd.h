@@ -39,7 +39,7 @@ private:
 	u32						dwStatus;
 	BOOL					isPause;
 
-    LPDIRECTSOUNDBUFFER     pBuffer;
+    IDirectSoundBuffer*		pBuffer;
 
 	// ADPCM
 	HACMSTREAM				hAcmStream;

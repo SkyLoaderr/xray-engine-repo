@@ -24,7 +24,7 @@ CSoundRender::CSoundRender()
 	pExtensions					= NULL;
 
     // Get listener interface.
-    Sound_Implementation.pBuffer->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
+    Sound_Implementation.pBuffer->QueryInterface( IID_IDirectSound3DListener8, (VOID**)&pListener );
 	R_ASSERT					(pListener);
 
 	// Initialize listener data
@@ -200,7 +200,7 @@ void CSoundRender::Reload	()
 				_RELEASE(sounds[i][j]->pBuffer);
 				Sound_Implementation.pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
 				VERIFY	(sounds[i][j]->pBuffer);
-				sounds[i][j]->pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&sounds[i][j]->pBuffer3D));
+				sounds[i][j]->pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,(void **)(&sounds[i][j]->pBuffer3D));
 				sounds[i][j]->bNeedUpdate = true;
 				if (sounds[i][j]->isPlaying()) {
 					sounds[i][j]->Play(sounds[i][j]->owner,sounds[i][j]->bMustLoop, sounds[i][j]->iLoopCount);

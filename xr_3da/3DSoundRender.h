@@ -28,8 +28,8 @@ private:
 		float			fDopplerFactor;
 	};
 private:
-	// DirectSound interface
-	LPDIRECTSOUND3DLISTENER		pListener;
+	// DSound interface
+	IDirectSound3DListener8*	pListener;
 	LPKSPROPERTYSET				pExtensions;
 	SListener					Listener;
 	

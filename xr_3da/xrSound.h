@@ -29,8 +29,8 @@ public:
 	// Collider
 	CDB::COLLIDER					DB;
 
-	// DirectSound interface
-    IDirectSound*					pDevice;				// The device itself
+	// DSound interface
+    IDirectSound8*					pDevice;				// The device itself
 	IDirectSoundBuffer*				pBuffer;				// The primary buffer (mixer destination)
 
 	// Geometry

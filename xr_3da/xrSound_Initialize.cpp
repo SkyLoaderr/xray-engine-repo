@@ -102,8 +102,8 @@ BOOL CSoundManager::CreatePrimaryBuffer	()
 }
 
 //-----------------------------------------------------------------------------
-// Name: InitDirectSound()
-// Desc: Creates the DirectSound object, primary buffer, and 3D listener
+// Name: InitDSound()
+// Desc: Creates the DSound object, primary buffer, and 3D listener
 //-----------------------------------------------------------------------------
 void CSoundManager::InitDS3D	( )
 {
@@ -111,7 +111,7 @@ void CSoundManager::InitDS3D	( )
 
 	if (strstr(Core.Params,"-nosound"))	return;
 
-	if( FAILED		( DirectSoundCreate( NULL, &pDevice, NULL ) ) )
+	if( FAILED		( DirectSoundCreate8( NULL, &pDevice, NULL ) ) )
 		return;
 
 	// Set cooperative level.
