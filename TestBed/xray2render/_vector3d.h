@@ -399,8 +399,36 @@ public:
             up.z = -dir.y*fInvLength;
         }
 
-        right.crossproduct(dir,up); //. <->
+        right.crossproduct(up,dir); //. <->
     }
+	IC static void generate_orthonormal_basis_normalized(_vector3<T>& dir, _vector3<T>& up, _vector3<T>& right)
+	{
+		T fInvLength;
+		dir.normalize();
+		if (fsimilar(dir.y,1.f,EPS)){	
+			up.set		(0.f,0.f,1.f);
+			fInvLength	= 1.f/_sqrt(dir.x*dir.x+dir.y*dir.y);
+			// cross (up,dir) and normalize (right)
+			right.x		= -dir.y * fInvLength;					
+			right.y		= dir.x	 * fInvLength;					
+			right.z		= 0.f;
+			// cross (dir,right)
+			up.x		= -dir.z * right.y;
+			up.y		= dir.z  * right.x;
+			up.z		= dir.x  * right.y  - dir.y  * right.x ;
+		}else{
+			up.set		(0.f,1.f,0.f);
+			fInvLength	= 1.f/_sqrt(dir.x*dir.x+dir.z*dir.z);
+			// cross (up,dir) and normalize (right)
+			right.x		= dir.z  * fInvLength;
+			right.y		= 0.f;
+			right.z		= -dir.x * fInvLength;
+			// cross (dir,right)
+			up.x		= dir.y  * right.z;
+			up.y		= dir.z  * right.x  - dir.x  * right.z ;
+			up.z		= -dir.y * right.x ;
+		}
+	}
 };
 typedef _vector3<float>		Fvector;
 typedef _vector3<float>		Fvector3;
