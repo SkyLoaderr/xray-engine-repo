@@ -38,7 +38,7 @@ public:
 		m_tpaCrossTable						= 0;
 	};
 
-	CALifeCrossTable						(const FILE_NAME &fName)
+	CALifeCrossTable						(LPCSTR fName)
 	{
 		m_tpCrossTableVFS					= 0;
 		m_tpaCrossTable						= 0;
@@ -50,7 +50,7 @@ public:
 		Unload();
 	};
 
-	IC void Load							(const FILE_NAME &fName)
+	IC void Load							(LPCSTR fName)
 	{
 		m_tpCrossTableVFS					= xr_new<CVirtualFileStream>(fName);
 		R_ASSERT							(m_tpCrossTableVFS);

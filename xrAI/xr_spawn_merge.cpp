@@ -8,20 +8,20 @@
 
 #include "stdafx.h"
 #include "xr_ini.h"
-
 #include "xrAI.h"
 #include "xrLevel.h"
 #include "xrGraph.h"
 #include "ai_nodes.h"
-
 #include "xrServer_Entities.h"
 #include "game_base.h"
 #include "xr_spawn_merge.h"
+#include "xrCrossTable.h"
 
 DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
-CVirtualFileStream				*tpGraphVFS = 0;
-SCompressedGraphVertex			*tpaGameGraph;
+CGraph								*tpGraph = 0;
+//CVirtualFileStream				*tpGraphVFS = 0;
+//SCompressedGraphVertex			*tpGraph->m_tpaGraph;
 
 class CSpawnComparePredicate {
 private:
@@ -162,12 +162,12 @@ public:
 		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
 		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount, dwCount = 0;
 		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
-			if (tpaGameGraph[i].tLevelID == m_dwLevelID)
+			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID)
 				dwCount++;
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
-			if (tpaGameGraph[i].tLevelID == m_dwLevelID) {
-				R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpaGameGraph[i].tLocalPoint))!=-1);
+			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
+				R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpGraph->m_tpaGraph[i].tLocalPoint))!=-1);
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
@@ -208,12 +208,12 @@ public:
 						fDistance,
 						fCurrentBestDistance,
 						m_tpSpawnPoints[i]->o_Position,
-						tpaGameGraph[I - BB].tLocalPoint,
+						tpGraph->m_tpaGraph[I - BB].tLocalPoint,
 						m_tpaNodes,
 						m_dwMaxNodeCount);
 				}
 				else
-					fDistance = m_tpSpawnPoints[i]->o_Position.distance_to(tpaGameGraph[I - BB].tLocalPoint);
+					fDistance = m_tpSpawnPoints[i]->o_Position.distance_to(tpGraph->m_tpaGraph[I - BB].tLocalPoint);
 				if (fDistance < fCurrentBestDistance) {
 					fCurrentBestDistance = fDistance;
 					dwBest = I - BB;
@@ -252,22 +252,23 @@ public:
 
 void vfLoadGameGraph()
 {
-	string256						fName = "gamedata\\game.graph";
-	tpGraphVFS						= xr_new<CVirtualFileStream>(fName);
-	tGraphHeader.dwVersion			= tpGraphVFS->Rdword();
-	tGraphHeader.dwVertexCount		= tpGraphVFS->Rdword();
-	tGraphHeader.dwLevelCount		= tpGraphVFS->Rdword();
-	tGraphHeader.tpLevels.resize	(tGraphHeader.dwLevelCount);
-	R_ASSERT						(tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-	{
-		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			tpGraphVFS->RstringZ	((*I).caLevelName);
-			tpGraphVFS->Rvector		((*I).tOffset);
-		}
-	}
-	tpaGameGraph					= (SCompressedGraphVertex *)tpGraphVFS->Pointer();
+//	string256						fName = "gamedata\\game.graph";
+//	tpGraphVFS						= xr_new<CVirtualFileStream>(fName);
+//	tGraphHeader.dwVersion			= tpGraphVFS->Rdword();
+//	tGraphHeader.dwVertexCount		= tpGraphVFS->Rdword();
+//	tGraphHeader.dwLevelCount		= tpGraphVFS->Rdword();
+//	tGraphHeader.tpLevels.resize	(tGraphHeader.dwLevelCount);
+//	R_ASSERT						(tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
+//	{
+//		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+//		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+//		for ( ; I != E; I++) {
+//			tpGraphVFS->RstringZ	((*I).caLevelName);
+//			tpGraphVFS->Rvector		((*I).tOffset);
+//		}
+//	}
+//	tpGraph->m_tpaGraph					= (SCompressedGraphVertex *)tpGraphVFS->Pointer();
+	tpGraph							= xr_new<CGraph>("gamedata\\game.graph");
 }
 
 void xrMergeSpawns()

@@ -12,9 +12,10 @@ void xrBuildCrossTable(LPCSTR caProjectName);
 
 #include "xrLevel.h"
 #include "ai_alife_space.h"
-typedef	char FILE_NAME[ _MAX_PATH	];
 #include "ai_alife_cross_table.h"
 #define CROSS_TABLE_NAME_RAW	"level.gct.raw"
+
+typedef	char FILE_NAME[ _MAX_PATH	];
 
 class CGraph {
 public:
@@ -57,7 +58,7 @@ public:
 		m_tpaGraph							= 0;
 	};
 
-	CGraph									(const FILE_NAME &fName)
+	CGraph									(LPCSTR fName)
 	{
 		m_tpGraphVFS						= 0;
 		m_tpaGraph							= 0;
@@ -74,7 +75,7 @@ public:
 		return								(m_tGraphHeader);
 	};
 
-	IC void Load							(const FILE_NAME &fName)
+	IC void Load							(LPCSTR fName)
 	{
 		m_tpGraphVFS						= xr_new<CVirtualFileStream>(fName);
 		m_tGraphHeader.dwVersion			= m_tpGraphVFS->Rdword();
