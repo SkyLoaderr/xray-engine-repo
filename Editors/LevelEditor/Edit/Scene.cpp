@@ -73,6 +73,8 @@ void st_LevelOptions::Reset(){
     m_Envs.resize	(1);
 
     m_SkydomeObjName= "";
+    m_HOMObjName	= "";
+
     InitDefaultText	();
 
     m_CurEnv		= 0;
@@ -97,8 +99,9 @@ EScene::EScene(){
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
     m_DetailObjects	= new CDetailManager();
-    m_SkyDome = 0;
-    ClearSnapList();
+    m_SkyDome 		= 0;
+    m_HOM 			= 0;
+    ClearSnapList	();
 }
 
 EScene::~EScene(){
@@ -127,6 +130,7 @@ void EScene::OnDestroy(){
 	m_Valid = false;
     _DELETE(m_DetailObjects);
     _DELETE(m_SkyDome);
+    _DELETE(m_HOM);
 }
 
 void EScene::AddObject( CCustomObject* object, bool bManual ){
@@ -442,6 +446,13 @@ void EScene::RenderSky(const Fmatrix& camera)
     }
 }
 
+void EScene::RenderHOM(const Fmatrix& parent)
+{
+//	draw sky
+	if (m_HOM&&fraBottomBar->miDrawHOM->Checked)
+    	m_HOM->RenderSingle();
+}
+
 void EScene::Render( const Fmatrix& camera )
 {
 	if( !valid() )	return;
@@ -464,6 +475,8 @@ void EScene::Render( const Fmatrix& camera )
         }
     }
 // priority #0
+	RenderHOM						(Fidentity);
+
     // render normal objects
     mapRenderObjects.traverseLR		(object_Normal_0);
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
@@ -533,14 +546,28 @@ void EScene::Render( const Fmatrix& camera )
 	ClearLights();
 }
 
-void EScene::UpdateSkydome(){
+void EScene::UpdateSkydome()
+{
 	_DELETE(m_SkyDome);
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
         m_SkyDome = new CSceneObject(0,"$sky");
         CEditableObject* EO = m_SkyDome->SetReference(m_LevelOp.m_SkydomeObjName.c_str());
-        if (!EO||!EO->IsDynamic()){
-        	ELog.DlgMsg(mtError,"Object %s can't find in library or non dynamic model",m_LevelOp.m_SkydomeObjName.c_str());
+        if (!EO){
+        	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
             _DELETE(m_SkyDome);
+        }
+    }
+}
+
+void EScene::UpdateHOM()
+{
+	_DELETE(m_HOM);
+    if (!m_LevelOp.m_HOMObjName.IsEmpty()){
+        m_HOM = new CSceneObject(0,"$hom");
+        CEditableObject* EO = m_HOM->SetReference(m_LevelOp.m_HOMObjName.c_str());
+        if (!EO){
+        	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_HOMObjName.c_str());
+            _DELETE(m_HOM);
         }
     }
 }
@@ -565,6 +592,7 @@ void EScene::ClearObjects(bool bDestroy){
     }
     m_DetailObjects->Clear();
     _DELETE(m_SkyDome);
+    _DELETE(m_HOM);
     ClearSnapList();
 }
 //----------------------------------------------------
@@ -616,7 +644,7 @@ void EScene::Unload(){
 }
 
 
-bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
+bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
 	if (bTestPortal){
 //        if (ObjCount(OBJCLASS_SECTOR)<2){
 //            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
@@ -630,6 +658,10 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
 			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
 	    	return false;
     	}
+    }
+    if (!m_HOM){
+    	ELog.DlgMsg(mtError,"*ERROR: Can't find HOM.");
+        return false;
     }
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
     	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");
@@ -652,7 +684,7 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
     	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
         return false;
     }
-    if (bNeedMsg)
+    if (bNeedOkMsg)
     	ELog.DlgMsg(mtInformation,"Validation OK!");
     return true;
 }

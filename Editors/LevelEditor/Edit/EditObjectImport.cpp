@@ -62,7 +62,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     Isf->alpha_mode=i; // перетираем для внутренних целей !!!
                     CSurface* Osf = new CSurface();
                     m_Surfaces.push_back(Osf);
-                    if (Isf->name) Osf->SetName(Isf->name); else Osf->SetName("Default");
+                    if (Isf->name&&Isf->name[0]) Osf->SetName(Isf->name); else Osf->SetName("Default");
                     Osf->Set2Sided((Isf->sideflags==3)?TRUE:FALSE);
                     AnsiString en_shader="default", lc_shader="default";
                     XRShader* sh_info = 0;

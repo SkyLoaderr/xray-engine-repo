@@ -12,22 +12,76 @@ object fraBottomBar: TfraBottomBar
     Width = 443
     Height = 17
     Align = alTop
-    BevelInner = bvLowered
-    BevelOuter = bvNone
+    BevelOuter = bvLowered
     TabOrder = 0
     object paInfo: TPanel
-      Left = 74
+      Left = 326
       Top = 1
-      Width = 310
+      Width = 116
       Height = 15
-      Align = alClient
-      Alignment = taLeftJustify
+      Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      object paStatus: TPanel
-        Left = 150
+      object paSel: TPanel
+        Left = 0
         Top = 0
-        Width = 51
+        Width = 58
+        Height = 15
+        Align = alLeft
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'Sel: 1024'
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+      end
+      object paGridSquareSize: TPanel
+        Left = 58
+        Top = 0
+        Width = 58
+        Height = 15
+        Align = alRight
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'Grid: 0.1 m'
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+    object paStatusBar: TPanel
+      Left = 176
+      Top = 1
+      Width = 150
+      Height = 15
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 1
+      object paStatusLabel: TPanel
+        Left = 0
+        Top = 0
+        Width = 48
+        Height = 15
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvNone
+        Caption = 'Status:'
+        TabOrder = 0
+      end
+      object paStatus: TPanel
+        Left = 48
+        Top = 0
+        Width = 102
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -38,9 +92,9 @@ object fraBottomBar: TfraBottomBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 0
+        TabOrder = 1
         object cgProgress: TCGauge
-          Left = -78
+          Left = -27
           Top = 2
           Width = 127
           Height = 11
@@ -56,153 +110,15 @@ object fraBottomBar: TfraBottomBar
           Visible = False
         end
       end
-      object paStatusLabel: TPanel
-        Left = 102
-        Top = 0
-        Width = 48
-        Height = 15
-        Align = alLeft
-        BevelInner = bvRaised
-        BevelOuter = bvNone
-        Caption = 'Status:'
-        TabOrder = 1
-      end
-      object paCameraPos: TPanel
-        Left = 86
-        Top = 0
-        Width = 130
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Cam: (123,123,123)'
-        Color = clSilver
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-      end
-      object paButtons: TPanel
-        Left = 0
-        Top = 0
-        Width = 102
-        Height = 15
-        Align = alLeft
-        BevelOuter = bvNone
-        TabOrder = 3
-        object ebLog: TExtBtn
-          Left = 0
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          CloseButton = False
-          Caption = 'Log'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Spacing = 0
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebLogClick
-        end
-        object ebStop: TExtBtn
-          Left = 68
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          CloseButton = False
-          Caption = 'Break'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebStopClick
-        end
-        object ebStat: TExtBtn
-          Left = 34
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          AllowAllUp = True
-          BevelShow = False
-          CloseButton = False
-          GroupIndex = 1
-          Caption = 'Stat'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Spacing = 0
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebStatClick
-        end
-      end
-      object paSel: TPanel
-        Left = 28
-        Top = 0
-        Width = 58
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Sel: 1024'
-        Color = clSilver
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 4
-      end
-      object paUICursor: TPanel
-        Left = 216
-        Top = 0
-        Width = 94
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Cursor:1025, 2048'
-        Color = clSilver
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 5
-      end
     end
-    object paMenu: TPanel
+    object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 73
+      Width = 175
       Height = 15
       Align = alLeft
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 2
       object ebOptions: TExtBtn
         Left = 0
         Top = 0
@@ -222,29 +138,75 @@ object fraBottomBar: TfraBottomBar
         FlatAlwaysEdge = True
         OnMouseDown = ebOptionsMouseDown
       end
-    end
-    object paGridSquareSize: TPanel
-      Left = 384
-      Top = 1
-      Width = 58
-      Height = 15
-      Align = alRight
-      Alignment = taLeftJustify
-      BevelInner = bvLowered
-      Caption = 'Grid: 0.1 m'
-      Color = clSilver
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 2
+      object ebLog: TExtBtn
+        Left = 73
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Log'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        Spacing = 0
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebLogClick
+      end
+      object ebStat: TExtBtn
+        Left = 107
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        AllowAllUp = True
+        BevelShow = False
+        CloseButton = False
+        GroupIndex = 1
+        Caption = 'Stat'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        Spacing = 0
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebStatClick
+      end
+      object ebStop: TExtBtn
+        Left = 141
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Break'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebStopClick
+      end
     end
   end
   object fsStorage: TFormStorage
     IniSection = 'Bottom Bar'
-    Options = [fpState]
+    Options = []
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
@@ -263,7 +225,6 @@ object fraBottomBar: TfraBottomBar
       'miObjectLoopedAnimation.Checked'
       'miDrawSky.Checked'
       'miDrawObjectAnimPath.Checked'
-      'ebStat.Down'
       'miFog.Checked'
       'miLightScene.Checked'
       'miRealTime.Checked'
@@ -283,7 +244,8 @@ object fraBottomBar: TfraBottomBar
       'miGlowTestVisibility.Checked'
       'miDrawObjectsPivot.Checked'
       'miDrawDOBaseTexture.Checked'
-      'miDrawDOBlended.Checked')
+      'miDrawDOBlended.Checked'
+      'miDrawHOM.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -513,6 +475,12 @@ object fraBottomBar: TfraBottomBar
     end
     object miDrawSky: TMenuItem
       Caption = 'Draw Sky'
+      Checked = True
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
+    object miDrawHOM: TMenuItem
+      Caption = 'Draw HOM'
       Checked = True
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem

@@ -32,6 +32,7 @@
 #define CHUNK_LO_SKYDOME	 	0x7804
 #define CHUNK_LO_ENVS		 	0x7805
 #define CHUNK_LO_DOCLUSTERSIZE	0x7806
+#define CHUNK_LO_HOM		 	0x7807
 #define CHUNK_BUILD_PARAMS		0x7850
 
 //------------------------------------------------------------------------------------------------
@@ -107,6 +108,10 @@ void st_LevelOptions::Read(CStream& F){
 
     R_ASSERT(F.FindChunk(CHUNK_LO_SKYDOME));
 	F.RstringZ	(buf); m_SkydomeObjName=buf;
+
+    if (F.FindChunk(CHUNK_LO_HOM)){
+		F.RstringZ	(buf); m_HOMObjName=buf;
+    }
 
     R_ASSERT(F.FindChunk(CHUNK_LO_ENVS));
 	m_CurEnv	= F.Rdword( );
@@ -236,9 +241,6 @@ bool EScene::Load(char *_FileName){
             F = new CCompressedStream(_FileName,"LEVEL");
         }
 
-//      CCompressedStream F(_FileName,"LEVEL");
-//        CFileStream F(_FileName);
-
         // Version
         R_ASSERT(F->ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
@@ -251,9 +253,10 @@ bool EScene::Load(char *_FileName){
         // Lev. ops.
         CStream* LOP = F->OpenChunk(CHUNK_LEVELOP);
         if (LOP){
-	        m_LevelOp.Read(*LOP);
-    	    UpdateSkydome();
-        	LOP->Close();
+	        m_LevelOp.Read	(*LOP);
+    	    UpdateSkydome	();
+            UpdateHOM		();
+        	LOP->Close		();
         }else{
 			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
 	    }

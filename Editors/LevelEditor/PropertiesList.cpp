@@ -331,7 +331,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	    case PROP_MARKER:		
         break;
     	case PROP_MARKER2:{
-		   	Surface->Font->Style = TFontStyles()<< fsBold;
+		    Surface->Font->Color = clSilver;
+//		   	Surface->Font->Style = TFontStyles()<< fsBold;
             R.Right-= 1;
             R.Left += 1;
             AnsiString name = Item->ColumnText->Strings[0];

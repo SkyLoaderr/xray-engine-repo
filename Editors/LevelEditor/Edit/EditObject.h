@@ -148,6 +148,7 @@ public:
 		eoDynamic 	 	= (1<<0),
 		eoProgressive 	= (1<<1),
         eoUsingLOD		= (1<<2),	
+        eoHOM			= (1<<3),	
 		eoFORCE32		= DWORD(-1)
     };
 private:

@@ -65,7 +65,7 @@ void TUI::OutCameraPos(){
 //	s.sprintf(" Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
     const Fvector& hpb 	= Device.m_Camera.GetHPB();
     s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
-    fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
+//    fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutUICursorPos(){
@@ -73,7 +73,7 @@ void TUI::OutUICursorPos(){
     AnsiString s; POINT pt;
     GetCursorPos(&pt);
     s.sprintf("Cursor: %d, %d",pt.x,pt.y);
-    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+//    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutGridSize(){

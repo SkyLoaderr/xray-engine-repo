@@ -490,7 +490,17 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     new_pixels.resize(src_w*src_h*samples);
 	Device.m_Camera.SetStyle(csPlaneMove);
 
-    int pitch 	= src_w*samples;
+    int pitch 		= src_w*samples;
+
+    // save render params
+    DWORD old_flag 	= 	psDeviceFlags;
+    // set render params
+    dwClearColor 	= 	0x0000000;
+	psDeviceFlags 	&=~	rsStatistic;
+    psDeviceFlags 	&=~	rsDrawGrid;
+    psDeviceFlags 	|= 	rsFilterLinear;
+    psDeviceFlags 	&=~	rsLighting;
+    psDeviceFlags 	&=~	rsFog;
 
     for (int frame=0; frame<samples; frame++){
     	float angle = frame*(PI_MUL_2/samples);
@@ -500,6 +510,9 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 		for (int y=0; y<src_h; y++)
     		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(DWORD));
     }
+    // restore render params
+    psDeviceFlags 	= old_flag;
+    dwClearColor	= DEFAULT_CLEARCOLOR;
 
     DWORDVec border_pixels = new_pixels;
     for (DWORDIt it=new_pixels.begin(); it!=new_pixels.end(); it++)
@@ -528,5 +541,30 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     Device.m_Camera.Set(save_hpb,save_pos);
 }
 
+BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
+{
+	BOOL bResult = TRUE;
+    // save render params
+    DWORD old_flag 	= 	psDeviceFlags;
+    // set render params
+	psDeviceFlags 	&=~	rsStatistic;
+    psDeviceFlags 	&=~	rsDrawGrid;
+
+	DWORDVec pixels;
+    DWORD w=256,h=256;
+    if (Device.MakeScreenshot(pixels,w,h)){
+        EImageThumbnail tex(tex_name,EImageThumbnail::EITObject,false);
+        tex.CreateFromData(pixels.begin(),w,h);
+        tex.Save(age);
+        ELog.Msg(mtInformation,"Thumbnail created.");
+    }else{
+    	bResult = FALSE;
+        ELog.DlgMsg(mtError,"Can't make screenshot.");
+    }
+    
+    // restore render params
+    psDeviceFlags 	= old_flag;
+    return bResult;
+}
 
 

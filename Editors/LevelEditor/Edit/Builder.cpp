@@ -88,7 +88,6 @@ BOOL SceneBuilder::MakeGame( )
     	    VERIFY_COMPILE(Scene.Validate(false,false),	"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");

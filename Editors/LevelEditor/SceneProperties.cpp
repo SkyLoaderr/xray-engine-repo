@@ -84,6 +84,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 	seCurEnv->Value			= Scene.m_LevelOp.m_CurEnv;
 	mmText->Text			= Scene.m_LevelOp.m_BOPText;
 	edSkydomeObjectName->Text = Scene.m_LevelOp.m_SkydomeObjName;
+	edHOMObjectName->Text 	= Scene.m_LevelOp.m_HOMObjName;
 
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
@@ -234,13 +235,14 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 	Scene.m_LevelOp.m_BOPText		= mmText->Text;			// Text
 	Scene.m_LevelOp.m_CurEnv		= seCurEnv->Value;
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++)
-    	(*f_it)->UpdateEnvData();
+    	(*f_it)->UpdateEnvData		();
 	Scene.m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
-    Scene.UpdateSkydome();
+    Scene.UpdateSkydome				();
+    Scene.UpdateHOM					();
 #endif
-    SetSceneParams();
-    Close();
-    ModalResult = mrOk;
+    SetSceneParams					();
+    Close							();
+    ModalResult 					= mrOk;
 }
 //---------------------------------------------------------------------------
 
@@ -311,13 +313,35 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
     	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return;
 	}
-    if (!O->IsDynamic()){
-    	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
+//    if (!O->IsDynamic()){
+//    	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
+//        Lib.RemoveEditObject(O);
+//        return ;
+//	}
+	Lib.RemoveEditObject(O);
+	edSkydomeObjectName->Text = N;
+#endif
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSceneProperties::ebChooseHOMClick(TObject *Sender)
+{
+#ifdef _LEVEL_EDITOR
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,edHOMObjectName->Text.c_str());
+	if (!N) return;
+
+	CEditableObject* O = Lib.CreateEditObject(N);
+	if (!O){
+    	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
+        return;
+	}
+    if (!O->IsFlag(CEditableObject::eoHOM)){
+    	ELog.DlgMsg(mtError,"Non-HOM models can't be used as HOM.");
         Lib.RemoveEditObject(O);
         return ;
 	}
 	Lib.RemoveEditObject(O);
-	edSkydomeObjectName->Text = N;
+	edHOMObjectName->Text = N;
 #endif
 }
 //---------------------------------------------------------------------------
@@ -325,6 +349,12 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 void __fastcall TfrmSceneProperties::ebClearSkydomeClick(TObject *Sender)
 {
 	edSkydomeObjectName->Text = "";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSceneProperties::ebClearHOMClick(TObject *Sender)
+{
+	edHOMObjectName->Text = "";
 }
 //---------------------------------------------------------------------------
 static bool bUpdateMode = false;
@@ -456,5 +486,7 @@ void __fastcall TfrmSceneProperties::seLMFuzzyMinExit(TObject *Sender)
 	UpdateMinValue(seLMFuzzyMax,seLMFuzzyMin->Value);
 }
 //---------------------------------------------------------------------------
+
+
 
 

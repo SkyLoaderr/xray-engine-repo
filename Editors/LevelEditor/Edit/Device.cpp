@@ -420,8 +420,6 @@ void CRenderDevice::UnloadTextures(){
 bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
 	if (!bReady) return false;
 
-    dwClearColor = 0x0000000;
-
     IDirect3DSurface8* pZB=0;
     IDirect3DSurface8* pRT=0;
     IDirect3DSurface8* poldRT=0;
@@ -431,14 +429,7 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 	HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,TRUE,&pRT);
     HW.pDevice->SetRenderTarget(pRT,pZB);
 
-    DWORD old_flag = psDeviceFlags;
-	psDeviceFlags &=~rsStatistic;
-    psDeviceFlags &=~rsDrawGrid;
-    psDeviceFlags |= rsFilterLinear;
-    psDeviceFlags &=~rsLighting;
-    psDeviceFlags &=~rsFog;
 	UI.Redraw();
-    psDeviceFlags = old_flag;
 
 	D3DLOCKED_RECT	D;
 	R_CHK(pRT->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
@@ -461,8 +452,6 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     _RELEASE(pZB);
     _RELEASE(pRT);
     _RELEASE(poldRT);
-
-    dwClearColor = DEFAULT_CLEARCOLOR;
 
     return true;
 }

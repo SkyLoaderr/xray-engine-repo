@@ -434,7 +434,8 @@ bool CEvent::ExportSpawn( CFS_Base& F, int chunk_id )
     Packet.w_vec3		(PPosition);
     Fvector a; a.set	(0,0,0);
     Packet.w_vec3		(a);
-    Packet.w_u16		(0);
+    Packet.w_u16		(0xffff);
+    Packet.w_u16		(0xffff);
     WORD fl 			= M_SPAWN_OBJECT_ACTIVE;
     Packet.w_u16		(fl);
 

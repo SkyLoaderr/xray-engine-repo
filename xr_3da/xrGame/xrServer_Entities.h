@@ -73,7 +73,7 @@ public:
 		ID					= 0xffff;
         ID_Parent			= 0xffff;
 		owner				= 0;
-        s_flags				= 0;
+        s_flags				= M_SPAWN_OBJECT_ACTIVE;
 		ZeroMemory			(s_name,		sizeof(string64));
 		ZeroMemory			(s_name_replace,sizeof(string64));
         o_Angle.set			(0.f,0.f,0.f);

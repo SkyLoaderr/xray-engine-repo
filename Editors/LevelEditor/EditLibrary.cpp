@@ -303,20 +303,10 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
         int age;
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj&&cbPreview->Checked){
-            AnsiString obj_name, tex_name;
-            obj_name = ChangeFileExt(obj->GetName(),".object");
-            tex_name = ChangeFileExt(obj_name,".thm");
-            Engine.FS.m_Objects.Update(obj_name);
-            src_age = age;
-            if (Device.MakeScreenshot(pixels,w,h)){
-	            EImageThumbnail tex(tex_name.c_str(),EImageThumbnail::EITObject,false);
-    	        tex.CreateFromData(pixels.begin(),w,h);
-        	    tex.Save(src_age);
+            AnsiString tex_name;
+            tex_name = ChangeFileExt(obj->GetName(),".thm");
+            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),age))
                 tvObjectsItemFocused(Sender);
-            	ELog.Msg(mtInformation,"Thumbnail created.");
-            }else{
-	            ELog.DlgMsg(mtError,"Can't make screenshot.");
-            }
 	    }else{
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
         }
