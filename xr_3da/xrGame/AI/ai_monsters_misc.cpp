@@ -806,13 +806,15 @@ IC	float ffGetSquare(float a1, float b1, float fAlpha = PI_DIV_2)
 
 float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b2, float b3)
 {
+	fAngle -= PI_DIV_2;
+
 	while (fAngle >= PI_MUL_2)
 		fAngle -= PI_MUL_2;
 	
 	while (fAngle < 0)
 		fAngle += PI_MUL_2;
 	
-	float fSquare, bx;
+	float fSquare, bx, by;
 	
 	if (fAngle < PI_DIV_2) {
 		if (fAngle + fAngleOfView >= PI_DIV_2) {
@@ -840,10 +842,10 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b
 		if (fAngle < PI) {
 			fAngle -= PI_DIV_2;
 			bx = b2;
-			b2 = b1;
-			b1 = b0;
-			b0 = b3;
-			b3 = bx;
+			b2 = b3;
+			b1 = bx;
+			b0 = b1;
+			b3 = b0;
 			if (fAngle + fAngleOfView >= PI_DIV_2) {
 				if (fAngle - fAngleOfView < 0) {
 					fSquare = ffGetSquare(b2,b1);
@@ -869,10 +871,11 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b
 			if (fAngle < 3*PI_DIV_2) {
 				fAngle -= PI;
 				bx = b2;
+				by = b1;
 				b2 = b0;
 				b1 = b3;
 				b0 = bx;
-				b3 = b1;
+				b3 = by;
 				if (fAngle + fAngleOfView >= PI_DIV_2) {
 					if (fAngle - fAngleOfView < 0) {
 						fSquare = ffGetSquare(b2,b1);
@@ -897,10 +900,10 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b
 			else {
 				fAngle -= 3*PI_DIV_2;
 				bx = b2;
-				b2 = b3;
-				b1 = bx;
-				b0 = b1;
-				b3 = b0;
+				b2 = b1;
+				b1 = b0;
+				b0 = b3;
+				b3 = bx;
 				if (fAngle + fAngleOfView >= PI_DIV_2) {
 					if (fAngle - fAngleOfView < 0) {
 						fSquare = ffGetSquare(b2,b1);

@@ -62,8 +62,6 @@ CAI_Soldier::CAI_Soldier()
 	m_dwLastUpdate = 0;
 	m_dwCurrentUpdate = Level().timeServer();
 	m_dwUpdateCount = 0;
-//	NodeCompressed *tpNode0 = Level().AI.Node(909);
-//	NodeCompressed *tpNode1 = Level().AI.Node(1147);
 }
 
 CAI_Soldier::~CAI_Soldier()
