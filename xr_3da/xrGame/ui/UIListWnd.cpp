@@ -47,7 +47,8 @@ CUIListWnd::~CUIListWnd()
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
 	{
 		CUIListItem* itm = (*it);
-		bool bAuto = itm->IsAutoDelete();
+//		bool bAuto = 
+			itm->IsAutoDelete();
 //		bool bManual = itm->IsManualDelete();
 //		VERIFY( !( bAuto && bManual ) );
 
