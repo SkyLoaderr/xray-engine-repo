@@ -10,6 +10,8 @@
 
 #include "ai_biting.h"
 
+using namespace AI_Biting;
+
 CAI_Biting::CAI_Biting()
 {
 	Init();
@@ -26,6 +28,23 @@ void CAI_Biting::Init()
 	m_tCurGP					= _GRAPH_ID(-1);
 	m_tNextGP					= _GRAPH_ID(-1);
 	m_fGoingSpeed				= 0.f;
+	
+	m_tEnemy.Enemy				= 0;
+	m_tSavedEnemy				= 0;
+	m_tSavedEnemyPosition.set	(0,0,0);
+	m_tpSavedEnemyNode			= 0;
+	m_dwSavedEnemyNodeID		= u32(-1);
+	m_dwLostEnemyTime			= 0;
+	m_tMySavedPosition.set		(0,0,0);
+	m_dwMyNodeID				= u32(-1);
+	
+	m_dwLastRangeSearch			= 0;
+
+
+	m_tPostureAnim	= ePostureStand;
+	m_tActionAnim	= eActionIdle;
+
+
 }
 
 void CAI_Biting::Die()
@@ -37,6 +56,26 @@ void CAI_Biting::Load(LPCSTR section)
 {
 	// load parameters from ".ltx" file
 	inherited::Load		(section);
+	
+	// группы маск точек графа с параметрами
+	m_tpaTerrain.clear				();
+	LPCSTR							S = pSettings->r_string(section,"terrain");
+	u32								N = _GetItemCount(S);
+	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	STerrainPlace					tTerrainPlace;
+	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
+	m_tpaTerrain.reserve			(32);
+	string16						I;
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
+		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
+		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
+		m_tpaTerrain.push_back		(tTerrainPlace);
+	}
+	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+
+	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	
 	// loading sounds
 //	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
@@ -87,6 +126,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	xrSE_Biting						*l_tpSE_Biting = (xrSE_Biting*)DC;
 	
 	cNameVisual_set					(l_tpSE_Biting->visual_name);
+	
+	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animations
 	CBitingAnimations::Load			(PKinematics(pVisual));
@@ -157,9 +198,5 @@ void CAI_Biting::net_Import(NET_Packet& P)
 //////////////////////////////////////////////////////////////////////
 
 void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
-{
-}
-
-void CAI_Biting::Think()
 {
 }

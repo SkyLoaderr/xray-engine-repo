@@ -467,6 +467,21 @@
 									Name="VCCustomBuildTool"/>
 							</FileConfiguration>
 						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_fire.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_fsm.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_misc.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_path.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_space.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="ai_crow"

@@ -21,9 +21,9 @@ CAI_Stalker::~CAI_Stalker			()
 
 void CAI_Stalker::Init()
 {
-	m_tStateList.clear				();
-	while (m_tStateStack.size())
-		m_tStateStack.pop			();
+//	m_tStateList.clear				();
+//	while (m_tStateStack.size())
+//		m_tStateStack.pop			();
 	
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;

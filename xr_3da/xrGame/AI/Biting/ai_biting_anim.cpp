@@ -21,7 +21,9 @@ namespace AI_Biting {
 	LPCSTR caGlobalNames		[] = {
 		"idle_",
 		"walk_fwd_",
+		"walk_bkwd_",
 		"walk_ls_",
+		"walk_rs_",
 		"run_",
 		"attack_",
 		"eat_",
@@ -38,9 +40,15 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
+	
 	if (!m_tpCurrentGlobalAnimation) {
-		m_tpCurrentGlobalAnimation = m_tAnims.A[0].A[0].A[::Random.randI(m_tAnims.A[0].A[0].A.size())];
+		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[0 * ::Random.randI(m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
 		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 	}
+
+//	if (!m_tpCurrentGlobalAnimation) {
+//		m_tpCurrentGlobalAnimation = m_tAnims.A[0].A[0].A[::Random.randI(m_tAnims.A[0].A[0].A.size())];
+//		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+//	}
 
 }

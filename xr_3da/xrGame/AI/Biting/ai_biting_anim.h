@@ -15,6 +15,11 @@ namespace AI_Biting {
 	extern LPCSTR caGlobalNames		[];
 };
 
+
+#define FORCE_ANIMATION_SELECT() m_tpCurrentGlobalAnimation = 0; \
+						  SelectAnimation(clTransform.k,mRotate.k,0);
+
+
 class CBitingAnimations {
 protected:
 	CBitingAnimations()
