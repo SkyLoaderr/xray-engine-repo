@@ -188,6 +188,8 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
 {
+	m_pPhysics_support->in_NetSpawn();
+
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
@@ -200,8 +202,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	// Установить новый Visual, перезагрузить анимации
 	MotionMan.UpdateVisual();
-
-	m_pPhysics_support->in_NetSpawn();
 
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
