@@ -6,7 +6,9 @@
 void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 {
 	// read spawn information
+	u16					s_respawntime;
 	string64			s_name;
+	P.r_u16				(s_respawntime);
 	P.r_string			(s_name);
 
 	// create server entity
@@ -20,41 +22,13 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		F_entity_Destroy(E);
 		return;
 	}
+
+	// check for respawn-capability
  
 	// generate/find new ID for entity
-	u16 ID		=		E->ID;
-	if (0xffff==ID)		
-	{
-		// Find
-		if (ids_used.size())	
-		{
-			for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
-			{
-				if (!(*I))	{ ID = u16(I-ids_used.begin()); break; }
-			}
-			if (0xffff==ID)	{
-				ID			= u16(ids_used.size	());
-				ids_used.push_back			(false);
-			}
-		} else {
-			ID		= 0;
-			ids_used.push_back	(false);
-		}
-	} else {
-		// Try to use supplied ID
-		if (ID<ids_used.size())
-		{
-			R_ASSERT		(false==ids_used[ID]);
-			ids_used[ID]	= true;
-		} else {
-			ids_used.resize	(ID+1);
-			ids_used[ID]	= true;
-		}
-	}
-
-	// ID, owner, etc
-	E->ID				= ID;
-	E->owner			= CL;
+	u16 ID				=	PerformIDgen(E->ID);
+	E->ID				=	ID;
+	E->owner			=	CL;
 
 	// PROCESS NAME; Name this entity
 	// LPCSTR				NameReplace = 0;

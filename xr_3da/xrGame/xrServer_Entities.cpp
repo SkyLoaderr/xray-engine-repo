@@ -16,6 +16,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 {
 	// generic
 	P.w_begin			(M_SPAWN		);
+	P.w_u16				(RespawnTime	);
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
 	P.w_u8				(s_gameid		);
@@ -34,11 +35,13 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	u16 size			= u16			(P.w_tell()-position);
 	P.w_seek			(position,&size,sizeof(u16));
 }
+
 void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 {
 	u16					dummy16;
 	// generic
-	P.r_begin			(dummy16		);
+	P.r_begin			(dummy16		);	R_ASSERT(M_SPAWN==dummy16);
+	P.r_u16				(RespawnTime	);
 	P.r_string			(s_name			);
 	P.r_string			(s_name_replace	);
 	P.r_u8				(s_gameid		);

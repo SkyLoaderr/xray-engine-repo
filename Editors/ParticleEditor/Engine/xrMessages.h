@@ -37,6 +37,7 @@ enum
 
 	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
 };
+
 enum
 {
 	M_UPDATE_WEAPON_wfWorking	= (1<<0),
@@ -62,6 +63,7 @@ M_EVENT
 
 M_SPAWN
 {	
+	u16			RespawnTime;		// time in sec, when respawn must be performed, 0=no respawn
 	stringZ		Name_section;		// section in SYSTEM.LTX
 	stringZ		Name_replace;		// Name of EDITOR's object, user can change this
 

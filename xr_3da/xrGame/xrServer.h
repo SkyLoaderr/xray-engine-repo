@@ -35,6 +35,7 @@ private:
 	vector<bool>			ids_used;
 	BOOL					PerformRP			(xrServerEntity* E);
 	void					PerformMigration	(xrServerEntity* E, xrClientData* from, xrClientData* to);
+	u16						PerformIDgen		(u16 desired);
 
 	void					Process_spawn		(NET_Packet& P, DPNID sender);
 	void					Process_update		(NET_Packet& P, DPNID sender);

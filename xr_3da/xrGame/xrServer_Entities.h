@@ -37,6 +37,8 @@ public:
 public:
 	BOOL					net_Ready;
 
+	u16						RespawnTime;
+
 	u16						ID;				// internal ID
 	u16						ID_Parent;		// internal ParentID, 0xffff means no parent
 	xrClientData*			owner;
@@ -72,6 +74,7 @@ public:
 
 	xrServerEntity			()
 	{
+		RespawnTime			= 0;
 		net_Ready			= FALSE;
 		ID					= 0xffff;
         ID_Parent			= 0xffff;
