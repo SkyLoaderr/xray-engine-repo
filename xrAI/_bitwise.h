@@ -78,7 +78,7 @@ IC	u64	btwCount1(u64 v)
 }
 
 
-IC int iFloor (float x)
+ICF int iFloor (float x)
 {
     int a			= *(const int*)(&x);
     int exponent	= (127 + 31) - ((a >> 23) & 0xFF);
@@ -99,7 +99,7 @@ IC int iFloor (float x)
 /* intCeil() is a non-interesting variant, since effectively
    ceil(x) == -floor(-x)
 */
-IC int iCeil (float x)
+ICF int iCeil (float x)
 {
     int a			= (*(const int*)(&x));
     int exponent	= (127 + 31) - ((a >> 23) & 0xFF);

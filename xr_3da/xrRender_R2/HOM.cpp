@@ -188,7 +188,7 @@ void CHOM::Render		(CFrustum& base)
 	Device.Statistic.RenderCALC_HOM.End		();
 }
 
-IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
+ICF	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS) return TRUE;
 	float iw	= 1.f/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);		
@@ -197,7 +197,7 @@ IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _
 	minz		= 0.f+z*iw;
 	return FALSE;
 }
-IC	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
+ICF	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float t;
 	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;		if (z<EPS)	return TRUE;
