@@ -11,9 +11,26 @@ void	EV_LIST::_CreateOne(const char* DEF)
 	Event[0]=0; Param[0]=0;
 	sscanf	(DEF,"%[^,],%s",Event,Param);
 	if (Event[0]) {
+		// Parse param's macroses
+		char	Parsed	[128];
+		char	Name	[128];
+		LPSTR	pRP_Name	=	strstr(Param,"$rp$");
+		if (pRP_Name)	{
+			strncpy			(Parsed,pRP_Name,pRP_Name-Param);
+			Parsed			[pRP_Name-Param]	= 0;
+			sscanf			(pRP_Name,"$rp$%[^$]$",Name);
+			int id			= Level().get_RPID(Name);
+			R_ASSERT		(id>=0);
+
+		} else {
+			strcpy(Parsed,Param);
+		}
+
+
+		// Create
 		EV_DEF	D;
 		D.E  = Engine.Event.Create(Event); 
-		D.P1 = strdup(Param); 
+		D.P1 = strdup(Parsed); 
 		List.push_back	(D);
 	}
 }
