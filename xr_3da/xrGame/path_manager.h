@@ -717,8 +717,8 @@ public:
 	{
 		VERIFY					(path);
 		path->push_back			(node_index);
-		best_node				= *graph->vertex(node_index);
-		y1						= (float)(tNode0.position().y());
+		best_node				= graph->vertex(node_index);
+		y1						= (float)(best_node->position().y());
 		return					(false);
 	}
 
