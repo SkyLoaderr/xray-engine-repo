@@ -53,7 +53,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Give a LOG-thread a chance to startup
 	//_set_sbh_threshold(1920);
 	InitCommonControls		();
-	thread_spawn			(logThread, "log-update",		0,0);
+	thread_spawn			(logThread, "log-update",	1024*1024,0);
 	Sleep					(150);
 	
 	// Faster FPU 
