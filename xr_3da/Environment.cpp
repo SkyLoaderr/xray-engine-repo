@@ -279,6 +279,21 @@ void CEnvironment::load		()
     }
 
 	// music
+	{
+		CInifile::Sect&		S	= pSettings->r_section	("music");
+		CInifile::SectIt	it	= S.begin(), end = S.end();
+		for (;it!=end; it++)
+		{
+			string256	_n, _l, _r;
+			strcpy		(_n,*it->first);
+			strconcat	(_l,_n,"_l");
+			strconcat	(_r,_n,"_r");
+			music*		m = xr_new<music>	();
+			m->left.create		(true,_l,0);
+			m->right.create		(true,_l,0);
+			playlist.push_back	(m);
+		}
+	}
 }
 
 void CEnvironment::unload	()
@@ -298,6 +313,16 @@ void CEnvironment::unload	()
     CurrentA			= 0;
     CurrentB			= 0;
 	tonemap				= 0;
+
+	// music
+	for (int m=0; m<playlist.size(); m++)
+	{
+		music*	M		= playlist	[m];
+		M->left.stop	();
+		M->right.stop	();
+		xr_delete		(M);
+	}
+	playlist.clear	();
 }
 
 void CEnvironment::SetWeather(ref_str name)
@@ -423,6 +448,30 @@ void CEnvironment::OnFrame()
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(CurrentEnv.fog_color.x,CurrentEnv.fog_color.y,CurrentEnv.fog_color.z,0) )); 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&CurrentEnv.fog_near)	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&CurrentEnv.fog_far)	));
+
+	// ******************** Music
+	if (!playlist.front()->playing())	{
+		// shedule next item
+		music*	_old		= playlist.front();
+		playlist.pop_front	();
+		playlist.push_back	(_old);
+		playlist.front()->left.play_at_pos	(Device.vCameraPosition);
+		playlist.front()->right.play_at_pos	(Device.vCameraPosition);
+	}
+
+	// update
+	CSound_params		spL,spR;
+	spL.freq				= 1.f;
+	spL.min_distance		= 10.f;
+	spL.max_distance		= 100.f;
+	spL.volume				= psSoundVMusic;
+	spR						= spL;
+	spL.position.mad(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,-1.f).mad(Device.vCameraTop,.1f);
+	spR.position.mad(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,+1.f).mad(Device.vCameraTop,.1f);
+
+	music*	_m				= playlist.front	();
+	_m->left.set_params		(spL);
+	_m->right.set_params	(spR);
 }
 
 extern float psHUD_FOV;
