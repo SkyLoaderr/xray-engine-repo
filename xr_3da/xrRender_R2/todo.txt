@@ -38,6 +38,7 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +		:	light-sleeping logic
 +		:	faster bloom blur
 +		:	fading of bloom
++BUG	:	jumping transform for projected texture
 
 self-ilum
 volume-fog

@@ -71,7 +71,7 @@ void CRenderTarget::accum_spot	(light* L)
 		float			view_sx				= float(L->X.S.posX)/float(DSM_size);
 		float			view_sy				= float(L->X.S.posY)/float(DSM_size);
 		float			fRange				= float(1.f);
-		float			fBias				= -0.0002f*fRange;
+		float			fBias				= -0.0001f*fRange;
 		Fmatrix			m_TexelAdjust		= {
 			view_dim/2.f,							0.0f,									0.0f,		0.0f,
 			0.0f,									-view_dim/2.f,							0.0f,		0.0f,
