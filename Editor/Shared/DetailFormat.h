@@ -76,7 +76,7 @@ struct ENGINE_API DetailItem
 	u8				id;		// 0xff - empty
 	DetailPalette	palette;
 };
-struct ENGINE_API DetailSlot// 4+4+3*4+2
+struct ENGINE_API DetailSlot// 4+4+3*4+2 = 22b
 {
 	float			y_min,y_max;
 	DetailItem		items[4];
