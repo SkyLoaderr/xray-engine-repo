@@ -87,16 +87,16 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	export2lua		(luaVM);
 
 	// do some stuff
-	lua_dofile						(luaVM, "test.lua");
+	lua_dofile						(luaVM, "cf.lua");
 
-	try 
-	{
-		luabind::call_function<void>	(luaVM, "a_lua_function");
-	} catch(luabind::error& e)
-	{
-		lua_State*	L	= e.state();
-		printf			("%s",lua_tostring(L, 0));
-	}
+//	try 
+//	{
+//		luabind::call_function<void>	(luaVM, "a_lua_function");
+//	} catch(luabind::error& e)
+//	{
+//		lua_State*	L	= e.state();
+//		printf			("%s",lua_tostring(L, 0));
+//	}
 
 	lua_close		(luaVM);
 	return 0;
