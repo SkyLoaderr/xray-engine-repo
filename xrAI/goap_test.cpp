@@ -17,10 +17,10 @@ typedef u32																				_condition_type;
 typedef bool																			_value_type;
 typedef u16																				_edge_value_type;
 typedef u32																				_operator_id_type;
-typedef CProblemSolver<_condition_type,_value_type,_edge_value_type,_operator_id_type>	CSProblemSolver;
-typedef CConditionState<_condition_type,_value_type>									CState;
 typedef COperatorConditionAbstract<_condition_type,_value_type>							CCondition;
-typedef COperatorAbstract<_condition_type,_value_type,_edge_value_type>					COperator;
+typedef CConditionState<CCondition>														CState;
+typedef COperatorAbstract<CCondition,_edge_value_type>									COperator;
+typedef CProblemSolver<CCondition,CState,COperator,IConditionEvaluator<bool>,_operator_id_type>CSProblemSolver;
 typedef u8																				_dist_type;
 typedef u32																				_iteration_type;
 typedef CSProblemSolver::_edge_type														_edge_type;
@@ -23539,7 +23539,7 @@ void test_goap	()
 		problem_solver.set_target_state	(random_condition(100,100,4,3));
 		u32						operator_count = random.random(max_operator_count - min_operator_count + 1) + min_operator_count;
 		for (u32 i=0; i<operator_count; ++i)
-			problem_solver.add_operator	(random_operator(),i);
+			problem_solver.add_operator	(i,random_operator());
 
 		path.clear						();
 
