@@ -140,6 +140,17 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	string64						server_name;
 	strcpy							(server_name,options);
 	if (strchr(server_name,'/'))	*strchr(server_name,'/') = 0;
+
+	string64				password_str = "";
+	if (strstr(options, "psw="))
+	{
+		char* PSW = strstr(options, "psw=") + 4;
+		if (strchr(PSW, '/')) 
+			strncpy(password_str, PSW, strchr(PSW, '/') - PSW);
+		else
+			strcpy(password_str, PSW);
+	}
+
 	
 	int				psNET_Port	= 5445;
 	if (strstr(options, "port="))
@@ -203,6 +214,13 @@ BOOL IPureClient::Connect	(LPCSTR options)
     ZeroMemory					(&dpAppDesc, sizeof(DPN_APPLICATION_DESC));
     dpAppDesc.dwSize			= sizeof(DPN_APPLICATION_DESC);
     dpAppDesc.guidApplication	= NET_GUID;
+	WCHAR	SessionPasswordUNICODE[4096];
+	if (xr_strlen(password_str))
+	{
+		CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
+		dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
+		dpAppDesc.pwszPassword = SessionPasswordUNICODE;
+	};
 	
 	// Setup client info
 	WCHAR	ClientNameUNICODE	[256];

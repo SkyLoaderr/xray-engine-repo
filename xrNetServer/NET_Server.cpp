@@ -135,10 +135,19 @@ BOOL IPureServer::Connect(LPCSTR options)
 	// Parse options
 	string4096				session_name;
 	string4096				session_options = "";
+	string64				password_str = "";
 
 	strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
 	if (strchr(options,'/'))	strcpy(session_options, strchr(options,'/')+1);
+	if (strstr(options, "psw="))
+	{
+		char* PSW = strstr(options, "psw=") + 4;
+		if (strchr(PSW, '/')) 
+			strncpy(password_str, PSW, strchr(PSW, '/') - PSW);
+		else
+			strcpy(password_str, PSW);
+	}
 
     // Create the IDirectPlay8Client object.
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
@@ -184,6 +193,14 @@ BOOL IPureServer::Connect(LPCSTR options)
     dpAppDesc.pwszSessionName	= SessionNameUNICODE;
 	dpAppDesc.pvApplicationReservedData	= session_options;
 	dpAppDesc.dwApplicationReservedDataSize = xr_strlen(session_options)+1;
+
+	WCHAR	SessionPasswordUNICODE[4096];
+	if (xr_strlen(password_str))
+	{
+		CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
+		dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
+		dpAppDesc.pwszPassword = SessionPasswordUNICODE;
+	};
 	
 	// Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device = NULL;

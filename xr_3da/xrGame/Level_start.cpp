@@ -81,12 +81,26 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		string64	PortStr;
 		sprintf(PortStr, "/port=%d", Server->GetPort());
 
-		string1024	tmp;
+		string4096	tmp;
 		strcpy(tmp, m_caClientOptions.c_str());
 		strcat(tmp, PortStr);
 		
 		m_caClientOptions = tmp;
 	}
+	//add password string to client, if don't have one
+	if (strstr(m_caServerOptions.c_str(), "psw=") && !strstr(m_caClientOptions.c_str(), "psw="))
+	{
+		string64	PasswordStr = "";
+		char* PSW = strstr(m_caServerOptions.c_str(), "psw=") + 4;
+		if (strchr(PSW, '/')) 
+			strncpy(PasswordStr, PSW, strchr(PSW, '/') - PSW);
+		else
+			strcpy(PasswordStr, PSW);
+
+		string4096	tmp;
+		sprintf(tmp, "%s/psw=%s", m_caClientOptions.c_str(), PasswordStr);
+		m_caClientOptions = tmp;
+	};
 	//=============================================================================
 
 	// Start client
