@@ -255,10 +255,10 @@ IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPos
 	AI.UnpackPosition(tP1,tpNode->p1);
 	float fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f;
 	return(
-		(tCurrentPosition.x + EPS_L >= tP0.x - fHalfSubNodeSize) &&
-		(tCurrentPosition.z + EPS_L >= tP0.z - fHalfSubNodeSize) &&
-		(tCurrentPosition.x - EPS_L <= tP1.x + fHalfSubNodeSize) &&
-		(tCurrentPosition.z - EPS_L <= tP1.z + fHalfSubNodeSize)
+		(tCurrentPosition.x + .0*EPS_L >= tP0.x - fHalfSubNodeSize) &&
+		(tCurrentPosition.z + .0*EPS_L >= tP0.z - fHalfSubNodeSize) &&
+		(tCurrentPosition.x - .0*EPS_L <= tP1.x + fHalfSubNodeSize) &&
+		(tCurrentPosition.z - .0*EPS_L <= tP1.z + fHalfSubNodeSize)
 	);
 }
 
@@ -276,7 +276,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	DWORD dwCurNode, dwPrevNode;
 	float fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
 	CAI_Space &AI = Level().AI;
-	bool bStop = false, bEqualLine = false;
+	bool bStop = false;
 
 	Msg("%d",m_iPathCount++);
 	
@@ -286,6 +286,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		fRadius = ::Random.randF(fRadiusMin,fRadiusMax), fAlpha = ::Random.randF(0.f,PI_MUL_2);
 		_sincos(fAlpha,fAlpha0,fTemp);
 		tpaDeviations[i].set(fTemp*fRadius,0,fAlpha0*fRadius);
+		tTempPoint.add(tpaPoints[i],tpaDeviations[i]);
 	}
 		
 	// init start data
@@ -294,6 +295,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	tStartPoint.add(tpaPoints[0],tpaDeviations[0]);
 	tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 	
+	dwPrevNode = DWORD(-1);
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode.P = tPrevPoint = tStartPoint;
 	
@@ -304,8 +306,9 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 			// if distance is small enough - round the corner
 			if (COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L) {
 				int iStartI = tpaPath.size() - 1;
+				DWORD dwPrevPrevNode = dwPrevNode;
 				dwPrevNode = dwCurNode;
-				Fvector tPrevPrevPoint = tPrevPoint;
+				Fvector tPrevPrevPoint = tpaPath[tpaPath.size() - 1].P;
 				tCurrentPosition = tFinishPoint;
 				tCurrentPosition.sub(tStartPoint);
 				tCurrentPosition.normalize();
@@ -400,7 +403,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 							UnpackContour(tNextContour,iNodeIndex);
 							vfIntersectContours(tSegment,tCurContour,tNextContour);
 							DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
-							if ((dwIntersect) && (fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x- tTravelNode.P.z) > EPS_L)) {
+							if ((dwIntersect) && (COMPUTE_DISTANCE_2D(tPrevPoint,tTravelNode.P) >= 2*EPS_L)) {
 								dwCurNode = iNodeIndex;
 								tPrevPoint = tFinishPoint;
 								break;
@@ -420,15 +423,16 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				fDistance = COMPUTE_DISTANCE_2D(tStartPoint,tFinishPoint);
 				dwCurNode = dwPrevNode;
+				dwPrevNode = dwPrevPrevNode;
 				tTravelNode.P = tPrevPoint = tPrevPrevPoint;
 
-				do {
+				while (!bfInsideNode(AI,AI.Node(dwCurNode),tFinishPoint)) {
 					UnpackContour(tCurContour,dwCurNode);
 					tpNode = AI.Node(dwCurNode);
 					taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 					iCount = tpNode->link_count;
 					iSavedIndex = -1;
-					bEqualLine = false;
+					tTempPoint = tStartPoint;
 					for ( i=0; i < iCount; i++) {
 						iNodeIndex = AI.UnpackLink(taLinks[i]);
 						UnpackContour(tNextContour,iNodeIndex);
@@ -436,16 +440,13 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 						if (dwIntersect == LI_INTERSECT) {
 							if (
-								(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < EPS_L) && 
-								(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) >= COMPUTE_DISTANCE_2D(tStartPoint,tPrevPoint) - EPS_L) &&
-								(fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x - tTravelNode.P.z) >= EPS_L)
+								(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) &&
+								(iNodeIndex != dwPrevNode)
 								) {
-									tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-									tPrevPoint = tTravelNode.P;
-									dwPrevNode = dwCurNode;
-									dwCurNode = iNodeIndex;
-									break;
-								}
+								tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+								tTempPoint = tTravelNode.P;
+								iSavedIndex = iNodeIndex;
+							}
 						}
 						else
 							if (dwIntersect == LI_EQUAL) {
@@ -453,57 +454,52 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 									if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
 										tTempPoint = tSegment.v1;
 										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
 									}
 									else {
 										tTempPoint = tSegment.v2;
 										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
 									}
 								else
 									if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
 										tTempPoint = tSegment.v2;
 										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
 									}
 
 							}
 					}
-					
-					if (bEqualLine) {
+
+					if (iSavedIndex > -1) {
 						tTravelNode.P = tTempPoint;
 						tPrevPoint = tTravelNode.P;
 						dwPrevNode = dwCurNode;
 						dwCurNode = iSavedIndex;
 					}
-
-					if ((i >= iCount) && (bfInsideNode(AI,tpNode,tFinishPoint))) {
-						tTravelNode.P = tFinishPoint;
-						tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-						tPrevPoint = tTravelNode.P;
-						dwPrevNode = dwCurNode;
-						break;
-					}
-					
-					if (i >= iCount) {
-						i=i;
-					}
-
-					VERIFY(i<iCount);
+					else
+						if (bfInsideNode(AI,tpNode,tFinishPoint)) {
+							tTravelNode.P = tFinishPoint;
+							tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+							tPrevPoint = tTravelNode.P;
+							dwPrevNode = dwCurNode;
+							break;
+						}
+						else {
+							i=i;
+						}
 				}
-				while (!bfInsideNode(AI,AI.Node(dwCurNode),tFinishPoint));
 
 				tStartPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				iCurrentPatrolPoint = iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
 				tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				fDistance = COMPUTE_DISTANCE_2D(tStartPoint,tFinishPoint);
 				tTempPoint = tTravelNode.P = tPrevPoint = tStartPoint;
-				
+
 				bStop = iCurrentPatrolPoint == 1;
 
 				fPreviousRoundedDistance = fRoundedDistance;
 				fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
 
+				dwPrevNode = DWORD(-1);
+				
 				break;
 			}
 			else {
@@ -512,6 +508,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 				iCount = tpNode->link_count;
 				iSavedIndex = -1;
+				tTempPoint = tStartPoint;
 				for ( i=0; i < iCount; i++) {
 					iNodeIndex = AI.UnpackLink(taLinks[i]);
 					UnpackContour(tNextContour,iNodeIndex);
@@ -519,29 +516,13 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 					if (dwIntersect == LI_INTERSECT) {
 						if (
-							(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < EPS_L) && 
-							(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) >= COMPUTE_DISTANCE_2D(tStartPoint,tPrevPoint) - EPS_L) &&
-							(fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x - tTravelNode.P.z) >= EPS_L)
+							//(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint) + EPS_L) &&
+							(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) &&
+							(iNodeIndex != dwPrevNode)
 							) {
-							if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) - fPreviousRoundedDistance >= -EPS_L) {
-								tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-								if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
-									tpaPath.push_back(tTravelNode);
-								else
-									tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
-								
-								tPrevPoint = tTravelNode.P;
-								dwPrevNode = dwCurNode;
-								dwCurNode = iNodeIndex;
-								break;
-							}
-							else {
-								tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-								tPrevPoint = tTravelNode.P;
-								dwPrevNode = dwCurNode;
-								dwCurNode = iNodeIndex;
-								break;
-							}
+							tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+							tTempPoint = tTravelNode.P;
+							iSavedIndex = iNodeIndex;
 						}
 					}
 					else
@@ -550,95 +531,122 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 								if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
 									tTempPoint = tSegment.v1;
 									iSavedIndex = iNodeIndex;
-									bEqualLine = true;
 								}
 								else {
 									tTempPoint = tSegment.v2;
 									iSavedIndex = iNodeIndex;
-									bEqualLine = true;
 								}
 							else
 								if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
 									tTempPoint = tSegment.v2;
 									iSavedIndex = iNodeIndex;
-									bEqualLine = true;
 								}
 
 						}
 				}
-				
-				if ((i >= iCount) && (bfInsideNode(AI,tpNode,tFinishPoint))) {
-					tTravelNode.P = tFinishPoint;
-					tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+
+				if (iSavedIndex > -1) {
+					tTravelNode.P = tTempPoint;
+					if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) {
+						if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
+							tpaPath.push_back(tTravelNode);
+						else
+							tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
+					}
 					tPrevPoint = tTravelNode.P;
 					dwPrevNode = dwCurNode;
-					if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
-						tpaPath.push_back(tTravelNode);
-					else
-						tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
-					break;
+					dwCurNode = iSavedIndex;
 				}
-				
-				if (i >= iCount) {
-					i=i;
-					iSavedIndex = -1;
-					for ( i=0; i < iCount; i++) {
-						iNodeIndex = AI.UnpackLink(taLinks[i]);
-						UnpackContour(tNextContour,iNodeIndex);
-						vfIntersectContours(tSegment,tCurContour,tNextContour);
-						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
-						if (dwIntersect == LI_INTERSECT) {
-							if (
-								(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < EPS_L) && 
-								(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) >= COMPUTE_DISTANCE_2D(tStartPoint,tPrevPoint) - EPS_L) &&
-								(fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x - tTravelNode.P.z) >= EPS_L)
-								) {
-								if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) - fPreviousRoundedDistance >= -EPS_L) {
-									tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-									if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
-										tpaPath.push_back(tTravelNode);
-									else
-										tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
-									
-									tPrevPoint = tTravelNode.P;
-									dwPrevNode = dwCurNode;
-									dwCurNode = iNodeIndex;
-									break;
-								}
-								else {
-									tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-									tPrevPoint = tTravelNode.P;
-									dwPrevNode = dwCurNode;
-									dwCurNode = iNodeIndex;
-									break;
-								}
-							}
-						}
-						else
-							if (dwIntersect == LI_EQUAL) {
-								if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint))
-									if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
-										tTempPoint = tSegment.v1;
-										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
-									}
-									else {
-										tTempPoint = tSegment.v2;
-										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
-									}
-								else
-									if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
-										tTempPoint = tSegment.v2;
-										iSavedIndex = iNodeIndex;
-										bEqualLine = true;
-									}
-
-							}
+				else
+					if (bfInsideNode(AI,tpNode,tFinishPoint)) {
+						tTravelNode.P = tFinishPoint;
+						tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+						tPrevPoint = tTravelNode.P;
+						dwPrevNode = dwCurNode;
+						break;
 					}
-				}
+					else {
+						tTempPoint = tPrevPoint;
+						bool bOk = false;
+						for ( i=0; i < iCount; i++) {
+							iNodeIndex = AI.UnpackLink(taLinks[i]);
+							UnpackContour(tNextContour,iNodeIndex);
+							for ( j=0; j<4; j++) {
+								switch(j) {
+									case 0: {
+										tSegment.v1 = tNextContour.v1;
+										tSegment.v2 = tNextContour.v2;
+										break;
+									}
+									case 1: {
+										tSegment.v1 = tNextContour.v2;
+										tSegment.v2 = tNextContour.v3;
+										break;
+									}
+									case 2: {
+										tSegment.v1 = tNextContour.v3;
+										tSegment.v2 = tNextContour.v4;
+										break;
+									}
+									case 3: {
+										tSegment.v1 = tNextContour.v4;
+										tSegment.v2 = tNextContour.v1;
+										break;
+									}
+								}
+								DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
+								if (dwIntersect == LI_INTERSECT) {
+									if (COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) {
+										if (bOk)
+											break;
+										tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+										tTempPoint = tTravelNode.P;
+										iSavedIndex = iNodeIndex;
+										bOk = true;
+									}
+									else 
+										if (bOk) {
+											tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+											tTempPoint = tTravelNode.P;
+											iSavedIndex = iNodeIndex;
+											break;
+										}
+									
+								}
+								else
+									if (dwIntersect == LI_EQUAL) {
+										if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint))
+											if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
+												tTempPoint = tSegment.v1;
+												iSavedIndex = iNodeIndex;
+											}
+											else {
+												tTempPoint = tSegment.v2;
+												iSavedIndex = iNodeIndex;
+											}
+										else
+											if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
+												tTempPoint = tSegment.v2;
+												iSavedIndex = iNodeIndex;
+											}
 
-				VERIFY(i<iCount);
+									}
+							}
+							if (bOk)
+								break;
+						}
+						if (iSavedIndex > -1) {
+							tTravelNode.P = tTempPoint;
+							if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance)
+								tpaPath.push_back(tTravelNode);
+							tPrevPoint = tTravelNode.P;
+							dwPrevNode = dwCurNode;
+							dwCurNode = iSavedIndex;
+						}
+						else {
+							i=i;
+						}
+					}
 			}
 		}
 		while (true);
@@ -786,9 +794,10 @@ void CAI_Soldier::Patrol()
 	}
 	else
 		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2)) {
-			::Random.seed(6);
-			for (int i=0; i<10000; i++)
-				vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
+			//::Random.seed(6);
+			//for (int i=0; i<10000; i++)
+			//	vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
+			vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
 			AI_Path.TravelStart = 0;
 		}
 
