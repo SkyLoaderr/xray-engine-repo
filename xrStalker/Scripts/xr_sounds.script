@@ -233,21 +233,21 @@ function load_common (obj, sounds_base)
               {
               {
               sounds_base,
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, sounds_base + 0)
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, sounds_base + 1)
-              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, sounds_base + 2)
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, sounds_base + 3)
-              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, sounds_base + 4)
-              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, sounds_base + 5)
-              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, sounds_base + 6)
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, sounds_base + 7)
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, sounds_base + 8)
-              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, sounds_base + 9)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, sounds_base + 0),
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, sounds_base + 1),
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, sounds_base + 2),
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, sounds_base + 3),
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, sounds_base + 4),
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, sounds_base + 5),
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, sounds_base + 6),
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, sounds_base + 7),
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, sounds_base + 8),
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, sounds_base + 9),
 
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, sounds_base + 10)
-              obj:add_sound ("script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, sounds_base + 11)
-              obj:add_sound ("script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, sounds_base + 12)
-              obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, sounds_base + 13)
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, sounds_base + 10),
+              obj:add_sound ("script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, sounds_base + 11),
+              obj:add_sound ("script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, sounds_base + 12),
+              obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, sounds_base + 13),
               obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_",            5, snd_type.talk, 2, 1, sounds_base + 14)
               }
               }
