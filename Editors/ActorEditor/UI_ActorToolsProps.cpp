@@ -32,13 +32,13 @@ void CActorTools::OnObjectItemFocused(ListItemsVec& items)
                 m_EditMode = EEditMode(prop->Type());
                 switch(m_EditMode){
                 case emObject:
-                    FillObjectProperties(props,MOTIONS_PREFIX,prop);
+                    FillObjectProperties(props,OBJECT_PREFIX,prop);
                 break;
-                case emMotion:{ 	
-                	LPCSTR m_name		= prop->Key()+xr_strlen(MOTIONS_PREFIX);
-                    if (m_name[0]=='\\')m_name++;
+                case emMotion:{
+                	LPCSTR m_name		= ExtractMotionName(prop->Key());
+                    u16 slot			= ExtractMotionSlot(prop->Key());
                     FillMotionProperties(props,MOTIONS_PREFIX,prop);
-                    SetCurrentMotion	(m_name);
+                    SetCurrentMotion	(m_name,slot);
                 }break;
                 case emBone:{
                     FillBoneProperties	(props,BONES_PREFIX,prop);
@@ -158,7 +158,7 @@ void CActorTools::RealUpdateProperties()
 		SelectListItem(MOTIONS_PREFIX,0,true,false,true);
     	m_ObjectItems->LockUpdating();
 		for (SMotionIt m_it=appended_motions.begin(); m_it!=appended_motions.end(); m_it++)
-			SelectListItem(MOTIONS_PREFIX,(*m_it)->Name(),true,true,false);
+			SelectListItem(MOTIONS_PREFIX,(*m_it)->Name(),true,true,true);
     	m_ObjectItems->UnlockUpdating();
 		appended_motions.clear();
     }
@@ -214,11 +214,13 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
     }
                                             
     PHelper().CreateCaption			(items, PrepareKey(pref,"Global\\Motion count"),	m_cnt.c_str());
-    V=PHelper().CreateChoose		(items, PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions);
+    V=PHelper().CreateChoose		(items, PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions,0,0,MAX_ANIM_REFS);
     V->OnChangeEvent.bind			(this,&CActorTools::OnMotionRefsChange);
-    ButtonValue* B;                         
-    B=PHelper().CreateButton		(items, PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent.bind			(this,&CActorTools::OnMotionEditClick); 
+    ButtonValue* B;             
+    if (m_pEditObject->m_SMotionRefs.size()==0) {            
+        B=PHelper().CreateButton	(items, PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
+        B->OnBtnClickEvent.bind		(this,&CActorTools::OnMotionEditClick); 
+    }
     if (SM){                                                                     
         B=PHelper().CreateButton	(items, PrepareKey(pref,"Motion\\Control"),	"Play,Stop,Pause",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent.bind		(this,&CActorTools::OnMotionControlClick);
@@ -233,7 +235,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
         PHelper().CreateFloat		(items,PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,10.f,0.01f,2);
 
         PropValue /**C=0,*/*TV=0;
-        TV = PHelper().CreateFlag8(items,PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
+        TV = PHelper().CreateFlag8	(items,PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
         TV->OnChangeEvent.bind	(this,&CActorTools::OnMotionTypeChange);
         m_BoneParts.clear		();
         if (SM->m_Flags.is(esmFX)){

@@ -939,7 +939,7 @@ object ClipMaker: TClipMaker
           FlatAlwaysEdge = True
           OnClick = ebSyncClick
         end
-        object ExtBtn2: TExtBtn
+        object ebClear: TExtBtn
           Left = 85
           Top = 15
           Width = 42
@@ -950,8 +950,7 @@ object ClipMaker: TClipMaker
           HotColor = 15790320
           BtnColor = 10528425
           CloseButton = False
-          Caption = '-'
-          Enabled = False
+          Caption = 'Clear'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -960,6 +959,7 @@ object ClipMaker: TClipMaker
           ParentFont = False
           Transparent = False
           FlatAlwaysEdge = True
+          OnClick = ebClearClick
         end
       end
     end

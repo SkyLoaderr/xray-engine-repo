@@ -82,7 +82,7 @@ __published:	// IDE-managed Components
 	TMxPanel *paFXs;
 	TBevel *Bevel21;
 	TExtBtn *ebSync;
-	TExtBtn *ExtBtn2;
+	TExtBtn *ebClear;
 	void __fastcall ebInsertClipClick(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
@@ -133,6 +133,7 @@ __published:	// IDE-managed Components
 	void __fastcall ClipEndDrag(TObject *Sender, TObject *Target, int X,
           int Y);
 	void __fastcall ebSyncClick(TObject *Sender);
+	void __fastcall ebClearClick(TObject *Sender);
 public:
 	class CUIClip: public CClip{
     public:                               
@@ -148,10 +149,12 @@ public:
         int				PRight			(){return PLeft()+PWidth();}
         float			Length			(){return length;}
         float			RunTime			(){return run_time;}
-        AnsiString		CycleName		(u16 bp){VERIFY(bp<4); 	return *cycles[bp];	}
-        AnsiString		FXName			()      {				return *fx;			}
-        void			SetCycle		(LPCSTR name, u16 part);
-        void			SetFX			(LPCSTR name);
+        AnsiString		CycleName		(u16 bp){VERIFY(bp<4); 	return *cycles[bp].name;}
+        u16				CycleSlot		(u16 bp){VERIFY(bp<4); 	return cycles[bp].slot;	}
+        AnsiString		FXName			()      {				return *fx.name;		}
+        u16				FXSlot			()      {				return fx.slot;			}
+        void			SetCycle		(LPCSTR name, u16 part, u16 slot);
+        void			SetFX			(LPCSTR name, u16 slot);
     };
 protected:
     enum{

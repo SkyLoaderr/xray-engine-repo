@@ -235,11 +235,19 @@ void __stdcall  FillSkeletonAnims(ChooseItemVec& items, void* param)
 {
 	IRender_Visual* V 				= ::Render->model_Create((LPCSTR)param);
     if (PSkeletonAnimated(V)){
-        accel_map *ll_motions		= PSkeletonAnimated(V)->LL_Motions();
-        accel_map::iterator 		_I, _E;
-        _I							= ll_motions->begin();
-        _E							= ll_motions->end();
-        for (; _I!=_E; ++_I) 		items.push_back(SChooseItem(*_I->first,""));
+		u32 cnt						= PSkeletonAnimated(V)->LL_MotionsSlotCount();
+    	for (u32 k=0; k<cnt; k++){
+            accel_map *ll_motions	= PSkeletonAnimated(V)->LL_Motions(k);
+            accel_map::iterator 	_I, _E;
+            _I						= ll_motions->begin();
+            _E						= ll_motions->end();
+            for (; _I!=_E; ++_I){ 
+            	bool bFound			= false;
+            	for (ChooseItemVecIt it=items.begin(); it!=items.end(); it++)
+                	if (it->name==_I->first){bFound=true; break;}
+                if (!bFound)		items.push_back(SChooseItem(*_I->first,""));
+            }
+        }
     }
 	::Render->model_Delete			(V);
 }

@@ -362,6 +362,7 @@ void CActorTools::Clear()
 {
 	inherited::Clear	();
     m_CurrentMotion		= "";
+    m_CurrentSlot		= 0;
     // delete visuals
     xr_delete(m_pEditObject);
     m_RenderObject.Clear();
@@ -666,11 +667,12 @@ CSMotion* CActorTools::FindMotion(LPCSTR name)
 	return m_pEditObject?m_pEditObject->FindSMotionByName(name):0;
 }
 
-void CActorTools::SetCurrentMotion(LPCSTR name)
+void CActorTools::SetCurrentMotion(LPCSTR name, u16 slot)
 {
 	if (m_pEditObject){
-        if (m_CurrentMotion!=name){
+        if ((m_CurrentMotion!=name)||(m_CurrentSlot!=slot)){
         	m_CurrentMotion	= name;
+            m_CurrentSlot	= slot;
             CSMotion* M 	= m_pEditObject->FindSMotionByName(name);
             if (M)			m_pEditObject->SetActiveSMotion(M);
             PlayMotion		();
@@ -781,6 +783,32 @@ bool CActorTools::BatchConvert(LPCSTR fn)
         }
     }
     return bRes;
+}
+
+u16 CActorTools::ExtractMotionSlot(LPCSTR full_name, LPCSTR prefix)
+{
+	u16 slot					= 0;
+    LPCSTR slot_nm				= strstr(full_name,"\\Slot ");
+	if (0!=slot_nm){
+    	string16 tmp;
+        strcpy					(tmp,slot_nm+xr_strlen("\\Slot "));
+        tmp[1]					= 0;
+        slot					= atoi(tmp)-1;
+    }
+    return slot;
+}
+
+LPCSTR CActorTools::ExtractMotionName(LPCSTR full_name, LPCSTR prefix)
+{
+	if (0==strstr(full_name,"\\Slot "))	return full_name+xr_strlen(prefix)+1;
+	else								return full_name+xr_strlen(prefix)+1+xr_strlen("Slot X")+1;
+}
+
+xr_string CActorTools::BuildMotionPref(u16 slot, LPCSTR prefix)
+{
+	VERIFY						(slot<10);
+	string32 slot_nm; 			sprintf(slot_nm,"Slot %1d",slot+1);
+	return PrepareKey			(prefix,slot_nm).c_str();
 }
 
 

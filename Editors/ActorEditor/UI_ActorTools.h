@@ -7,6 +7,7 @@
 #include "ItemListHelper.h"
 #include "EditObject.h"
 #include "SkeletonCustom.h"
+#include "SkeletonAnimated.h"
 #include "ClipEditor.h"
 #include "UI_ToolsCustom.h"
 // refs
@@ -80,7 +81,11 @@ class CActorTools: public CToolsCustom
     	float			m_fLOD;
 	    IRender_Visual*	m_pVisual;
         CBlend*			m_pBlend;
-        AnsiString		m_BPPlayCache[4];
+        struct BPPlayItem{
+        	AnsiString	name;
+        	u16			slot;
+    	};
+        BPPlayItem		m_BPPlayItems[4];
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
         void			DeleteVisual		(){::Render->model_Delete(m_pVisual);m_pBlend=0;}
@@ -93,21 +98,23 @@ class CActorTools: public CToolsCustom
         }
         bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom, bool bUpdKeys, bool bUpdDefs);
         bool			IsRenderable		(){return !!m_pVisual;}
-        void			PlayMotion			(LPCSTR name); 
+        void			PlayMotion			(LPCSTR name, u16 slot); 
         void			RestoreParams		(TFormStorage* s);
         void			SaveParams			(TFormStorage* s);
-        void			PlayCycle			(LPCSTR name, int part);
-        void			PlayFX				(LPCSTR name, float power);
+        void			PlayCycle			(LPCSTR name, int part, u16 slot);
+        void			PlayFX				(LPCSTR name, float power, u16 slot);
         void			StopAnimation		();
 		void 			FillMotionList		(LPCSTR pref, ListItemsVec& items, int modeID);
-        CMotionDef*		FindMotionDef		(LPCSTR name);
-        CMotion*		FindMotionKeys		(LPCSTR name);
+        MotionID		FindMotionID		(LPCSTR name, u16 slot);
+        CMotionDef*		FindMotionDef		(LPCSTR name, u16 slot);
+        CMotion*		FindMotionKeys		(LPCSTR name, u16 slot);
     };
 
     bool				m_bObjectModified;
 
     EEditMode			m_EditMode;
     AnsiString			m_CurrentMotion;
+    u16					m_CurrentSlot;
 
     RTokenVec			m_BoneParts;
 
@@ -248,9 +255,12 @@ public:
     bool				IsVisualPresent		(){return m_RenderObject.IsRenderable();}
 
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
-    void				SetCurrentMotion	(LPCSTR name);
+    void				SetCurrentMotion	(LPCSTR name, u16 slot);
     CSMotion*			GetCurrentMotion	();       
-    CSMotion*			FindMotion			(LPCSTR name);       
+    CSMotion*			FindMotion			(LPCSTR name);
+    LPCSTR 				ExtractMotionName	(LPCSTR full_name, LPCSTR prefix=MOTIONS_PREFIX);
+    u16 				ExtractMotionSlot	(LPCSTR full_name, LPCSTR prefix=MOTIONS_PREFIX);
+    xr_string			BuildMotionPref		(u16 slot, LPCSTR prefix=MOTIONS_PREFIX);
 	void				FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillSurfaceProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);

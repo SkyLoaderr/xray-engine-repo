@@ -47,7 +47,6 @@ TClipMaker::CUIClip::CUIClip(LPCSTR n, TClipMaker* own, float r_t)
 	owner				= own;
 	run_time			= r_t;
 	length				= 2.f;
-    cycles[0]=cycles[1]=cycles[2]=cycles[3]="";
     name				= n;
     idx					= -1;
     fx_power			= 1.f;
@@ -57,18 +56,18 @@ TClipMaker::CUIClip::~CUIClip()
 {
 };
 
-void TClipMaker::CUIClip::SetCycle(LPCSTR name, u16 part)
+void TClipMaker::CUIClip::SetCycle(LPCSTR name, u16 part, u16 slot)
 {
     if (part==BI_NONE){
-        for (int k=0; k<4; k++) cycles[k]=name;
+        for (int k=0; k<4; k++)	cycles[k].set(name,slot);
     }else{
-        cycles[part]=name;
+        cycles[part].set(name,slot);
     }
 }
 
-void TClipMaker::CUIClip::SetFX(LPCSTR name)
+void TClipMaker::CUIClip::SetFX(LPCSTR name, u16 slot)
 {
-    fx = name; 
+    fx.set(name,slot); 
 }
 
 IC bool clip_pred(TClipMaker::CUIClip* x, TClipMaker::CUIClip* y)
@@ -260,21 +259,21 @@ void __fastcall TClipMaker::ClipDragDrop(TObject *Sender,
                 ListItem* prop		= (ListItem*)item->Tag; VERIFY(prop);
                 u16 bp;
                 BOOL fx;
+                LPCSTR m_name			= ATools->ExtractMotionName(prop->Key());
+                u16 m_slot				= ATools->ExtractMotionSlot(prop->Key());
 	            if (m_CurrentObject->m_SMotionRefs.size()){
-                    CMotionDef* SM 		= (CMotionDef*)prop->m_Object;
+		            CMotionDef* SM		= ATools->m_RenderObject.FindMotionDef(m_name,m_slot);	VERIFY(SM);
                     bp					= SM->bone_or_part;
                     fx					= SM->flags&esmFX;
                 }else{
-                    CSMotion* SM 		= (CSMotion*)prop->m_Object;
+                	CSMotion* SM 		= ATools->FindMotion(m_name); VERIFY(SM);
                     bp					= SM->m_BoneOrPart;
                     fx					= SM->m_Flags.is(esmFX);
                 }
-                LPCSTR m_name			= prop->Key()+xr_strlen(MOTIONS_PREFIX);
-                if (m_name[0]=='\\')	m_name++;
                 if (fx){
-                	tgt->SetFX		(m_name);
+                	tgt->SetFX		(m_name,m_slot);
                 }else{
-                    tgt->SetCycle	(m_name,bp);
+                    tgt->SetCycle	(m_name,bp,m_slot);
                 }
             }
         }
@@ -399,25 +398,21 @@ void __fastcall TClipMaker::BPDragDrop(TObject *Sender, TObject *Source,
     CUIClip* src = sel_clip;
     if (P->Tag==-2){
         if (drag_state.Contains(ssAlt)){
-        	shared_str s 		= tgt->fx;
-            tgt->fx 		= src->fx;
-            src->fx 		= s;
+        	std::swap		(tgt->fx,src->fx);
         }else if (drag_state.Contains(ssCtrl)){
             tgt->fx 		= src->fx;
         }else{
             tgt->fx 		= src->fx;
-            src->fx			= "";
+            src->fx.clear	();
         }
     }else{
         if (drag_state.Contains(ssAlt)){
-            shared_str s 		= tgt->cycles[P->Tag];
-            tgt->cycles[P->Tag] = src->cycles[P->Tag];
-            src->cycles[P->Tag] = s;
+        	std::swap		(tgt->cycles[P->Tag],src->cycles[P->Tag]);
         }else if (drag_state.Contains(ssCtrl)){
             tgt->cycles[P->Tag] = src->cycles[P->Tag];
         }else{
             tgt->cycles[P->Tag] = src->cycles[P->Tag];
-            src->cycles[P->Tag] = "";
+            src->cycles[P->Tag].clear();
         }
     }
     RepaintClips();
@@ -500,14 +495,15 @@ void TClipMaker::RealUpdateProperties()
         V->OnChangeEvent.bind	(this,&TClipMaker::OnClipLengthChange);
         for (u32 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
-            CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
-            CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
+            u16 slot			= sel_clip->CycleSlot(k);	
+            CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
+            CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
             shared_str tmp;
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
-        if (sel_clip->fx.size())PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
+        if (sel_clip->fx.valid())PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx.name), &sel_clip->fx_power, 0.f, 1000.f);
     }
 	m_ClipProps->AssignItems(p_items);
 }
@@ -822,9 +818,9 @@ void __fastcall TClipMaker::fsStorageSavePlacement(TObject *Sender)
 void TClipMaker::PlayAnimation(CUIClip* clip)
 {
     for (u32 k=0; k<m_CurrentObject->BoneParts().size(); k++)
-    	if (*clip->cycles[k])
-        	ATools->m_RenderObject.PlayCycle(*clip->cycles[k],k);
-    if (clip->fx.size()) ATools->m_RenderObject.PlayFX(*clip->fx,clip->fx_power);
+    	if (clip->cycles[k].valid())
+        	ATools->m_RenderObject.PlayCycle(*clip->cycles[k].name,k,clip->cycles[k].slot);
+    if (clip->fx.valid()) ATools->m_RenderObject.PlayFX(*clip->fx.name,clip->fx_power,clip->fx.slot);
 }
 //---------------------------------------------------------------------------
 
@@ -889,8 +885,9 @@ void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
             float len = 0.f;
             for (u32 k=0; k<4; k++){
                 AnsiString mname	= (*c_it)->CycleName(k);	
-                CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
-                if (MI&&(len<MI->GetLength())) len = MI->GetLength();
+                u16 slot			= (*c_it)->CycleSlot(k);	
+				CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
+				if (MI&&(len<MI->GetLength())) len = MI->GetLength();
             }            
             (*c_it)->length = fis_zero(len)?2.f:len;
         }
@@ -977,14 +974,9 @@ void TClipMaker::Stop()
 
 void __fastcall TClipMaker::ebTrashClick(TObject *Sender)
 {
-	if (!clips.empty()){
-    	int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbAll << mbOK << mbCancel, "Remove selected or all clip?");
-        switch(res){
-        case mrAll: Clear(); 				break;
-        case mrOk: 	RemoveClip (sel_clip); 	break;
-        case mrCancel: 						break;
-        }
-    }
+	if (!clips.empty())
+    	if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo, "Remove selected clip?"))
+        	RemoveClip	(sel_clip);
 }
 //---------------------------------------------------------------------------
 
@@ -1004,11 +996,17 @@ void __fastcall TClipMaker::ebTrashDragDrop(TObject *Sender,
     if (P==paClips){
 	    RemoveClip(sel_clip);
     }else{
-    	if (P->Tag==-2)	sel_clip->fx="";
-        else 			sel_clip->cycles[P->Tag]="";
+    	if (P->Tag==-2)	sel_clip->fx.clear();
+        else 			sel_clip->cycles[P->Tag].clear();
         UpdateClips();
     }
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TClipMaker::ebClearClick(TObject *Sender)
+{
+    if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbCancel, "Remove all clips?"))
+		Clear();
+}
+//---------------------------------------------------------------------------
 
