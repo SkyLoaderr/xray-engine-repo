@@ -10,10 +10,27 @@ const	float				lt_inc			= 4.f;
 const	float				lt_dec			= 2.f;
 const	float				lt_smooth		= 4.f;
 
+/*
+---		Not implemented
+
+class	CShadowGeomCache
+{
+public:
+	struct	Item
+	{
+		Fvector		Lpos;
+		void*		data;
+		u32			frame;
+	};
+public:
+	Fvector					cached_pos;
+	xr_map<light*,Item>		cache;
+};
+*/
 class	CLightTrack			: public IRender_ObjectSpecific
 {
 public:
-	struct Item 
+	struct	Item 
 	{
 		u32					frame_touched;
 		light*				source;
@@ -21,7 +38,7 @@ public:
 		float				test;			// note range: (-1[no]..1[yes])
 		float				energy;
 	};
-	struct Light
+	struct	Light
 	{
 		light*				source;
 		float				energy;
@@ -34,6 +51,7 @@ public:
 public:
 	u32						Shadowed_dwFrame;
 	int						Shadowed_Slot;
+	//CShadowGeomCache		ShadowGeomCache;			
 
 	void					add				(light*			L);
 	void					ltrack			(IRenderable*	O);
