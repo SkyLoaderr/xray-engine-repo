@@ -245,7 +245,9 @@ void CHangingLamp::TurnOff	()
 	if (glow_render)	glow_render->set_active		(false);
 	if (light_ambient)	light_ambient->set_active	(false);
 	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
-	processing_deactivate	();
+	if(!PPhysicsShell())//if we have physiccs_shell it will call processing deactivate when disable
+			processing_deactivate	();
+		
 }
 
 void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
@@ -267,6 +269,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 {
 	if (!Visual())			return;
 	if (m_pPhysicsShell)	return;
+	
 	CKinematics* pKinematics= PKinematics	(Visual());
 
 	m_pPhysicsShell			= P_create_Shell();
@@ -314,8 +317,8 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	for(;i!=e;i++)
 	{
 		CPhysicsElement* fixed_element=i->second.element;
-		R_ASSERT2(fixed_element,"fixed bone has no physics");
-		FixBody(fixed_element->get_body());
+		///R_ASSERT2(fixed_element,"fixed bone has no physics");
+		if(fixed_element)FixBody(fixed_element->get_body());
 	}
 
 	m_pPhysicsShell->mXFORM.set(XFORM());
