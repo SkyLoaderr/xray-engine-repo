@@ -23,8 +23,9 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>mil_lukash_dialog_first</actor_dialog>
+		<actor_dialog>mil_lukash_dialog_second</actor_dialog>
+		<actor_dialog>mil_lukash_dialog_third</actor_dialog>
 	</specific_character>	
 
 <!---------------------------SVOBODA REGULAR----------------------->
@@ -350,8 +351,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>mil_max_dialog_first</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->

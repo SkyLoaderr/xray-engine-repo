@@ -213,18 +213,29 @@ function military_dolg_dead (actor, npc)
     end    
     -- проапдейтим количество мертвых долговцев
     db.storage[db.actor:id ()].mil_dolg["killed"] = db.storage[db.actor:id ()].mil_dolg["killed"] + 1
-    -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
-    -- ставим задачу, как не выполненую
-    if db.storage[db.actor:id ()].mil_dolg["killed"] == 6 and db.actor:has_info ("mil_sniper_get_job") then
-       db.actor:set_task_state (task.fail, "mil_kill_sniper", 0)
-       db.actor:set_task_state (task.fail, "mil_kill_sniper", 2)
-       db.actor:disable_info_portion ("mil_sniper_get_job")
-    end   
+
     -- взведем флажок, что мужика замочили мы (нужно для Свободы) 
     local st = db.storage[npc:id ()]
     if st.death.killer == -1 then return end
     if actor:id () == st.death.killer then 
        db.storage[db.actor:id ()].mil_dolg["killed_by_actor"] = true
     end
+    
+    -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
+    -- ставим задачу, как не выполненую
+    if db.storage[db.actor:id ()].mil_dolg["killed"] == 1 then
+       if db.actor:has_info ("mil_sniper_get_job") then 
+          db.actor:set_task_state (task.fail, "mil_kill_sniper", 0)
+          db.actor:set_task_state (task.fail, "mil_kill_sniper", 2)
+          db.actor:disable_info_portion ("mil_sniper_get_job")
+       end
+       if db.actor:has_info ("mil_lukash_get_job") then
+          if db.storage[db.actor:id ()].mil_dolg["killed_by_actor"] == true then
+             db.actor:give_info_portion ("mil_lukash_job_complete")
+          else
+             --failed
+          end
+       end        
+    end   
     
 end

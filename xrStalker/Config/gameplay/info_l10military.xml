@@ -30,6 +30,7 @@
 	<info_portion id="mil_zoneguard_talk"></info_portion>
 	
 	<!-- Диалог с Максом-->
+	<info_portion id="mil_max_first"></info_portion>
 	<info_portion id="mil_max_talk"></info_portion>
 	<info_portion id="mil_max_job"><task>mil_mad_job</task></info_portion>
 	<info_portion id="mil_max_lukash_call"></info_portion>
@@ -39,7 +40,12 @@
 	<!-- Диалог с Лукашем-->
 	<info_portion id="mil_lukash_first_talk"></info_portion>
 	<info_portion id="mil_lukash_get_job"></info_portion>
+	<info_portion id="mil_lukash_go_to_max"></info_portion>
 	<info_portion id="mil_lukash_job_failed"></info_portion>
+	<info_portion id="mil_lukash_job_complete"></info_portion>
+	<info_portion id="mil_lukash_final"></info_portion>
+	
+	
 	
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
