@@ -98,9 +98,9 @@ void CAI_Zombie::vfLoadAnimations()
 void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
-	CMotionDef*	tpGlobalAnimation=0;
+	CMotionDef*	tpGlobalAnimation = 0;
 
-	if (fHealth <= 0) {
+	if (!g_Alive()) {
 		for (int i=0 ;i<3; i++)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -132,6 +132,13 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i];
 						break;
 					}
+				
+				if (!tpGlobalAnimation)
+					for ( i=0; i<3; i++)
+						if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i];
+							break;
+						}
 			}
 		}
 		else
