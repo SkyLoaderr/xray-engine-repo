@@ -516,32 +516,70 @@ void		CUIGameDM::SetBuyMenuItems		()
 			pCurBuyMenu->GetWeaponIndexByName(*pItem->cNameSect(), SlotID, ItemID);
 			if (SlotID == 0xff || ItemID == 0xff) continue;
 			//-----------------------------------------------------
-			CWeapon* pWeapon = dynamic_cast<CWeapon*> (pItem);
-			if (pWeapon)
-			{
-				u8 Addons = 0;
-				if (pWeapon->IsScopeAttached() && pWeapon->ScopeAttachable())
-					Addons |= CSE_ALifeItemWeapon::eWeaponAddonScope;
-				if (pWeapon->IsGrenadeLauncherAttached() && pWeapon->GrenadeLauncherAttachable())
-					Addons |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
-				if (pWeapon->IsSilencerAttached() && pWeapon->SilencerAttachable())
-					Addons |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
-
-				ItemID |= Addons << 0x05;
-			};
 			pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
 			//-----------------------------------------------------
 			s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
+			s16 DesiredAddons = 0;
 			It = TmpPresetItems.begin();
 			Et = TmpPresetItems.end();
 			for ( ; It != Et; ++It) 
 			{
 				if (BigID == ((*It)& 0xff1f))
 				{
+					DesiredAddons = ((*It)&0x00ff)>>5;
 					TmpPresetItems.erase(It);
 					break;
 				}
 			}
+			//-----------------------------------------------------
+			CWeapon* pWeapon = dynamic_cast<CWeapon*> (pItem);
+			if (pWeapon)
+			{
+				if (pWeapon->ScopeAttachable())
+				{
+					pCurBuyMenu->GetWeaponIndexByName(*pWeapon->GetScopeName(), SlotID, ItemID);
+					if (SlotID != 0xff && ItemID != 0xff)
+					{
+						if (pWeapon->IsScopeAttached())
+							pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+						else
+						{
+							if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonScope)
+								pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						}
+					}
+				};
+
+				if (pWeapon->GrenadeLauncherAttachable())
+				{
+					pCurBuyMenu->GetWeaponIndexByName(*pWeapon->GetGrenadeLauncherName(), SlotID, ItemID);
+					if (SlotID != 0xff && ItemID != 0xff)
+					{
+						if (pWeapon->IsGrenadeLauncherAttached())
+							pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+						else
+						{
+							if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
+								pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						}
+					}
+				};
+				
+				if (pWeapon->SilencerAttachable())
+				{
+					pCurBuyMenu->GetWeaponIndexByName(*pWeapon->GetSilencerName(), SlotID, ItemID);
+					if (SlotID != 0xff && ItemID != 0xff)
+					{
+						if (pWeapon->IsSilencerAttached())
+							pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+						else
+						{
+							if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
+								pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						}
+					}
+				};
+			};
 		};
 	};
 	//---------------------------------------------------------
