@@ -76,7 +76,7 @@ void SetMinStripSize(const unsigned int _minStripSize)
 // primGroups: array of optimized/stripified PrimitiveGroups
 // numGroups: number of groups returned
 //
-// Be sure to call delete[] on the returned primGroups to avoid leaking mem
+// Be sure to call xr_free on the returned primGroups to avoid leaking mem
 //
 void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numIndices,
 					PrimitiveGroup** primGroups, unsigned short* numGroups)
@@ -102,7 +102,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 	{
 		//if we're outputting only lists, we're done
 		*numGroups = 1;
-		(*primGroups) = new PrimitiveGroup[*numGroups];
+		(*primGroups) = xr_alloc<PrimitiveGroup>(numGroups);
 		PrimitiveGroup* primGroupArray = *primGroups;
 
 		//count the total number of indices
@@ -117,7 +117,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 
 		primGroupArray[0].type       = PT_LIST;
 		primGroupArray[0].numIndices = numIndices;
-		primGroupArray[0].indices    = new unsigned short[numIndices];
+		primGroupArray[0].indices    = xr_alloc<u16> (numIndices);
 
 		//do strips
 		unsigned int indexCtr = 0;
@@ -150,7 +150,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		*numGroups = u16(numSeparateStrips); //for the strips
 		if(tempFaces.size() != 0)
 			(*numGroups)++;  //we've got a list as well, increment
-		(*primGroups) = new PrimitiveGroup[*numGroups];
+		(*primGroups) = xr_alloc<PrimitiveGroup> (*numGroups);
 		
 		PrimitiveGroup* primGroupArray = *primGroups;
 		
@@ -174,7 +174,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 				stripLength = stripIndices.size();
 			
 			primGroupArray[stripCtr].type       = PT_STRIP;
-			primGroupArray[stripCtr].indices    = new unsigned short[stripLength];
+			primGroupArray[stripCtr].indices    = xr_alloc<u16>	(stripLength);
 			primGroupArray[stripCtr].numIndices = stripLength;
 			
 			int indexCtr = 0;
@@ -189,7 +189,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		{
 			int faceGroupLoc = (*numGroups) - 1;    //the face group is the last one
 			primGroupArray[faceGroupLoc].type       = PT_LIST;
-			primGroupArray[faceGroupLoc].indices    = new unsigned short[tempFaces.size() * 3];
+			primGroupArray[faceGroupLoc].indices    = xr_alloc<u16>	(tempFaces.size() * 3);
 			primGroupArray[faceGroupLoc].numIndices = tempFaces.size() * 3;
 			int indexCtr = 0;
 			for(int i = 0; i < tempFaces.size(); i++)
@@ -203,23 +203,20 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 
 	//clean up everything
 
-	//delete strips
+	//_delete strips
 	for(i = 0; i < tempStrips.size(); i++)
 	{
 		for(int j = 0; j < tempStrips[i]->m_faces.size(); j++)
 		{
-			delete tempStrips[i]->m_faces[j];
-			tempStrips[i]->m_faces[j] = NULL;
+			xr_delete(tempStrips[i]->m_faces[j]);
 		}
-		delete tempStrips[i];
-		tempStrips[i] = NULL;
+		xr_delete(tempStrips[i]);
 	}
 
-	//delete faces
+	//_delete faces
 	for(i = 0; i < tempFaces.size(); i++)
 	{
-		delete tempFaces[i];
-		tempFaces[i] = NULL;
+		xr_delete(tempFaces[i]);
 	}
 }
 
@@ -241,11 +238,11 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numGroups,
 				  const unsigned short numVerts, PrimitiveGroup** remappedGroups)
 {
-	(*remappedGroups) = new PrimitiveGroup[numGroups];
+	(*remappedGroups) = xr_alloc<PrimitiveGroup> (numGroups);
 
 	//caches oldIndex --> newIndex conversion
 	int *indexCache;
-	indexCache = new int[numVerts];
+	indexCache = xr_alloc<int> (numVerts);
 	FillMemory(indexCache, sizeof(int)*numVerts, -1);
 	
 	//loop over primitive groups
@@ -257,7 +254,7 @@ void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numG
 		//init remapped group
 		(*remappedGroups)[i].type       = in_primGroups[i].type;
 		(*remappedGroups)[i].numIndices = numIndices;
-		(*remappedGroups)[i].indices    = new unsigned short[numIndices];
+		(*remappedGroups)[i].indices    = xr_alloc<u16>	(numIndices);
 
 		for(int j = 0; j < numIndices; j++)
 		{
@@ -278,5 +275,5 @@ void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numG
 		}
 	}
 
-	delete[] indexCache;
+	xr_free(indexCache);
 }

@@ -58,14 +58,13 @@ public:
 		m_nextV1   = NULL;
 		
 		// we will appear in 2 lists.  this is a good
-		// way to make sure we delete it the second time
+		// way to make sure we _delete it the second time
 		// we hit it in the edge infos
 		m_refCount = 2;    
-		
 	}
 	
 	// ref and unref
-	void Unref () { if (--m_refCount == 0) delete this; }
+	void Unref ()	{ if (--m_refCount == 0) xr_delete(this); }
 	
 	// data members are left public
 	UINT         m_refCount;

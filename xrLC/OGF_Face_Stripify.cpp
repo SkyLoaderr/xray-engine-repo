@@ -54,8 +54,8 @@ void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iCac
 	CopyMemory(indices.begin(),xPGROUP->indices,indices.size()*sizeof(WORD));
 
 	// Release memory
-	delete[]	xPGROUP;
-	delete[]	PGROUP;
+	xr_free		(xPGROUP);
+	xr_free		(PGROUP);
 }
 
 void OGF::Stripify()

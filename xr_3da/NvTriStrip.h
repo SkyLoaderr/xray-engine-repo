@@ -26,8 +26,8 @@ enum PrimType
 
 struct PrimitiveGroup
 {
-	PrimType type;
-	unsigned int numIndices;
+	PrimType		type;
+	unsigned int	numIndices;
 	unsigned short* indices;
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -35,9 +35,7 @@ struct PrimitiveGroup
 	PrimitiveGroup() : type(PT_STRIP), numIndices(0), indices(NULL) {}
 	~PrimitiveGroup()
 	{
-		if(indices)
-			delete[] indices;
-		indices = NULL;
+		if(indices)	xr_free(indices);
 	}
 };
 
@@ -96,7 +94,7 @@ void SetListsOnly(const bool bListsOnly);
 // primGroups: array of optimized/stripified PrimitiveGroups
 // numGroups: number of groups returned
 //
-// Be sure to call delete[] on the returned primGroups to avoid leaking mem
+// Be sure to call xr_free on the returned primGroups to avoid leaking mem
 //
 void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numIndices,
 					PrimitiveGroup** primGroups, unsigned short* numGroups);
