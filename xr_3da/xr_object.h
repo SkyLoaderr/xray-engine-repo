@@ -21,6 +21,7 @@ enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 //Контейнерный класс для мобильных обьектов
 //-----------------------------------------------------------------------------------------------------------
 class	ENGINE_API						CObject :	
+	public CEventBase,
 	public CSheduled,
 	public DLL_Pure, 
 	public CController,

@@ -28,7 +28,9 @@ protected:
 	// health & shield
 	int					iHealth,	iMAX_Health;
 	int					iArmor,		iMAX_Armor;
-
+protected:
+	EVENT*				
+	
 public:
 	// movement
 	CMovementControl	Movement;
