@@ -281,15 +281,16 @@ void	test_rtc	()
 extern void	testbed	(void);
 
 // video
+/*
 static	HINSTANCE	g_hInstance		;
 static	HINSTANCE	g_hPrevInstance	;
 static	int			g_nCmdShow		;
-
 void	__cdecl		intro_dshow_x	(void*)
 {
 	IntroDSHOW_wnd		(g_hInstance,g_hPrevInstance,"GameData\\Stalker_Intro.avi",g_nCmdShow);
 	g_bIntroFinished	= TRUE	;
 }
+*/
 
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
