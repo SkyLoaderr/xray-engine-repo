@@ -581,15 +581,13 @@ void CActor::net_Destroy	()
 	for (it=0; it<SND_HIT_COUNT; ++it)	::Sound->destroy	(sndHit[it]);
 	for (it=0; it<SND_DIE_COUNT; ++it)	::Sound->destroy	(sndDie[it]);
 	m_PhysicMovementControl->DestroyCharacter();
-	if(m_pPhysicsShell) 
-	{
+	if(m_pPhysicsShell)			{
 		m_pPhysicsShell->Deactivate();
 		xr_delete<CPhysicsShell>(m_pPhysicsShell);
 	};
 
-	xr_delete(pStatGraph);
-
-	xr_delete(m_pActorEffector);
+	xr_delete	(pStatGraph);
+	xr_delete	(m_pActorEffector);
 	pCamBobbing = NULL;
 }
 
