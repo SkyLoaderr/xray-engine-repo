@@ -50,11 +50,6 @@ void CGrenade::net_Destroy()
 
 void CGrenade::OnH_B_Independent() 
 {
-	if(MS_READY == STATE || 
-		MS_THROW == STATE ||
-		MS_END == STATE)
-		PutNextToSlot();
-
 	m_pHUD->StopCurrentAnimWithoutCallback();
 	inherited::OnH_B_Independent();
 }
@@ -75,14 +70,39 @@ void CGrenade::OnH_A_Chield()
 
 u32 CGrenade::State(u32 state) 
 {
-	if(state == MS_THREATEN) 
+	switch (state)
 	{
-		//UpdateFP();
+	case MS_THREATEN:
+		{
+			//UpdateFP();
 #pragma todo("Oles to Yura: position can be under level, use 'Center' instead")
-		Fvector		C;
-		Center		(C);
-		PlaySound	(sndCheckout,C);	// 
-	}
+			Fvector		C;
+			Center		(C);
+			PlaySound	(sndCheckout,C);	// 
+		}break;
+	case MS_HIDDEN:
+		{
+			if (m_state == MS_END)
+			{
+//				Msg("MS_HIDDEN grenade");
+				if (m_pPhysicsShell)
+					m_pPhysicsShell->Deactivate();
+				xr_delete(m_pPhysicsShell);
+
+				m_dwDestroyTime = 0;
+
+				PutNextToSlot();
+
+				if (Local())
+				{
+					NET_Packet			P;
+					u_EventGen			(P,GE_DESTROY,ID());
+//					Msg					("* ge_destroy: [%d] - %s",ID(),*cName());
+					u_EventSend			(P);
+				};
+			};
+		}break;
+	};
 	return inherited::State(state);
 }
 
@@ -142,12 +162,17 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 
 void CGrenade::PutNextToSlot	()
 {
+//	R_ASSERT(m_pInventory);
+//	R_ASSERT(H_Parent());
+	R_ASSERT(!getDestroy());
 	//выкинуть гранату из инвентаря
 	if (m_pInventory)
 	{
 		m_pInventory->Ruck(this);
 		m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
 	}
+	else
+		Msg ("! PutNextToSlot : m_pInventory = 0");	
 
 	if(dynamic_cast<CActor*>(H_Parent()) && m_pInventory)
 	{
@@ -161,6 +186,8 @@ void CGrenade::PutNextToSlot	()
 		if(pNext)
 			m_pInventory->Slot(pNext);
 	}
+	else
+		Msg ("! PutNextToSlot : Parent = 0");
 }
 
 void CGrenade::OnAnimationEnd() 
@@ -170,21 +197,25 @@ void CGrenade::OnAnimationEnd()
 
 	case MS_END:
 		{
+			/*
+			Msg("MS_END grenade");
 			if (m_pPhysicsShell)
 				m_pPhysicsShell->Deactivate();
 			xr_delete(m_pPhysicsShell);
 			
 			m_dwDestroyTime = 0;
+
 			
 			if (Local())
 			{
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
-//				Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+				Msg					("* ge_destroy: [%d] - %s",ID(),*cName());
 				u_EventSend			(P);
 			};
-
 			PutNextToSlot();
+			*/
+			SwitchState(MS_HIDDEN);
 		}
 		break;
 		default : inherited::OnAnimationEnd();
