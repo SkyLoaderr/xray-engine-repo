@@ -965,53 +965,55 @@ sun                      = 32
 ui\logo                  = 32
  
 [wpn_fn2000]
-$spawn 			 = on
-$npc			 = on				; option for Level Editor
-$prefetch 		= 8
-scheduled            = off              ; option for ALife Simulator
+$spawn                   = on								; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_FN2000
+min_radius               = 50
+max_radius               = 150
 
-ammo_limit		 = 180
-ammo_current		 = 90
-ammo_elapsed		 = 30
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 30
 
-ammo_mag_size		 = 30
+ammo_mag_size		     = 30
 
-hand_dependence		 = 2
-ammo_class		 = ammo_5.56x45_ss190, ammo_5.56x45_ap
+hand_dependence		     = 2
+ammo_class		         = ammo_5.56x45_ss190, ammo_5.56x45_ap
 
-resource		= 6000
+resource		         = 6000
 
-slot 			 = 2		; // secondary
-inv_name		= FN2000
-inv_name_short		= FN2000
-inv_weight		= 2
+slot 			         = 2		; // secondary
+inv_name		         = FN2000
+inv_name_short		     = FN2000
+inv_weight		         = 2
 
 cam_relax_speed          = 5.0
 cam_dispersion           = 0.9
-cam_max_angle		 = 7
+cam_max_angle		     = 7
 
 fire_dispersion          = 0.5
 fire_dispersion_add      = 5.3
 fire_dispersion_relax    = 0.6
 fire_dispersion_base	 = 0.5
-disp_vel_factor		 = 0.9
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 7
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
 
 direction                = 0, 0, 1
-shell_point		 = 0.0, 0.0, 0.0
+shell_point		         = 0.0, 0.0, 0.0
 fire_point               = 0.0, 0.1, 0.4
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
-rpm_empty_click 	 = 200
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
 
 ; ttc
 hit_power                = 30 		;//WAS "60"!!!
-hit_impulse		 = 60
+hit_impulse		         = 60
 fire_distance            = 600
 rpm                      = 600
 ; end ttc
@@ -1024,20 +1026,20 @@ startup_ammo             = 1000
 visual                   = weapon\fn2000\wpn_fn2000.ogf
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
-ui_icon			 = ui\hud_wpn_fn2000
-tracer_head_speed	 = 300
-tracer_trail_scale	 = 0.75
-tracer_start_length	 = 1
-tracer_width		 = 0.07
-light_color		 = 0.17,0.13,0.12
-light_range		 = 3.0
-light_var_color		 = 0.05
-light_var_range		 = 0.1
-light_time 		 = 0.2
-max_zoom_factor		 = 20.f
+ui_icon			         = ui\hud_wpn_fn2000
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.17,0.13,0.12
+light_range		         = 3.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+max_zoom_factor		     = 20.f
 
-ph_mass			 = 4
-cost			 = 5000
+ph_mass			         = 4
+cost			         = 5000
 
 [wpn_fn_ammo]
 $spawn			= on
@@ -1064,6 +1066,8 @@ $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_LR300
+min_radius               = 0
+max_radius               = 50
 
 ammo_limit		 = 210
 ammo_current		 = 30
@@ -1145,6 +1149,8 @@ $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_AK74
+min_radius               = 0
+max_radius               = 50
 
 ammo_limit		 = 210
 ammo_current		 = 180
@@ -1230,6 +1236,8 @@ $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_HPSA
+min_radius               = 0
+max_radius               = 30
 
 ammo_limit		 = 120
 ammo_current		 = 0
@@ -1311,6 +1319,8 @@ $prefetch 		= 8
 scheduled            	= off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_PM
+min_radius               = 0
+max_radius               = 30
 
 ammo_limit		 = 120
 ammo_current		 = 96
@@ -1396,6 +1406,8 @@ $npc			 = on		; option for Level Editor
 scheduled            	= off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_RPG7
+min_radius               = 50
+max_radius               = 150
 
 ammo_limit		 = 120
 ammo_current		 = 96
@@ -1481,6 +1493,8 @@ $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
 cform                    = skeleton
 class                    = W_FORT
+min_radius               = 0
+max_radius               = 30
 
 ammo_limit		 = 120
 ammo_current		 = 90
