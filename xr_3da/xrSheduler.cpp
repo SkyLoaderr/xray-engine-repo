@@ -47,8 +47,27 @@ void	CSheduler::internal_Registration()
 	for (u32 it=0; it<Registration.size(); it++)
 	{
 		ItemReg&	R	= Registration	[it];
-		if (R.OP)	internal_Register	(R.Object,R.RT);
-		else		internal_Unregister	(R.Object,R.RT);
+		if (R.OP)	{
+			// register
+			// search for paired "unregister"
+			BOOL	bFoundAndErased		= FALSE;
+			for (u32 pair=it+1; pair<Registration.size(); pair++)
+			{
+				ItemReg&	R_pair	= Registration	[pair];
+				if	((!R_pair.OP)&&(R_pair.Object == R.Object))	{
+					bFoundAndErased		= TRUE;
+					Registration.erase	(Registration.begin()+pair	);
+					break				;
+				}
+			}
+
+			// register if non-paired
+			if (!bFoundAndErased)		internal_Register	(R.Object,R.RT);
+		}
+		else		{
+			// unregister
+			internal_Unregister	(R.Object,R.RT);
+		}
 	}
 	Registration.clear	();
 }
