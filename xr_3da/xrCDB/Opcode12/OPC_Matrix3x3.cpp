@@ -50,10 +50,10 @@ Matrix3x3::operator Matrix4x4() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
- *	Creates a rotation matrix that rotates a vector "from" into another vector "to".
- *	Original code by Tomas Möller. It has been modified to match ICE maths conventions (vector * matrix)
- *	\param		from	[in] normalized source vector
- *	\param		to		[in] normalized destination vector
+ *	Creates a rotation matrix that rotates a vector3 "from" into another vector3 "to".
+ *	Original code by Tomas Möller. It has been modified to match ICE maths conventions (vector3 * matrix)
+ *	\param		from	[in] normalized source vector3
+ *	\param		to		[in] normalized destination vector3
  *	\return		Self-Reference
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ Matrix3x3& Matrix3x3::FromTo(const Point& from, const Point& to)
 	Point v = from^to;
 	float e = from|to;
 
-	// "from" almost or equal to "to"-vector?
+	// "from" almost or equal to "to"-vector3?
 	if(e>1.0f - EPSILON)
 	{
 		// return identity

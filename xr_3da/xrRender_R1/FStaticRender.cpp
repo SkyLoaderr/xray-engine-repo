@@ -60,7 +60,7 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic.Destroy((CLightPPA*)L); L=0; }		}
-void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
+void					CRender::L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 
 void					CRender::flush					()					{ flush_Models();									}
@@ -71,8 +71,8 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 			
 void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Lights				(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
-void					CRender::add_Glows				(vector<WORD> &	V )	{ Glows.add(V);										}
+void					CRender::add_Lights				(xr_vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
+void					CRender::add_Glows				(xr_vector<WORD> &	V )	{ Glows.add(V);										}
 void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
@@ -279,7 +279,7 @@ void __fastcall normal_L2(FixedMAP<float,IVisual*>::TNode *N)
 	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
-extern void __fastcall render_Cached(vector<FCached*>& cache);
+extern void __fastcall render_Cached(xr_vector<FCached*>& cache);
 void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 {
 	// *** DIRECT ***
@@ -289,7 +289,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		N.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		vector<IVisual*>&	L			= N.unsorted;
+		xr_vector<IVisual*>&	L			= N.unsorted;
 		IVisual **I=&*L.begin(), **E = &*L.end();
 		for (; I!=E; I++)
 		{
@@ -473,8 +473,8 @@ IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::
 
 void		sort_tlist			
 	(
-	vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
-	vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
 	SceneGraph::mapNormalTextures& textures, 
 	BOOL	bSSA
 	)

@@ -5,7 +5,7 @@
 // based on work of Rafael Baptista (rafael@oroboro.com)
 // Accuracy improved by O.D. (punkfloyd@rocketmail.com)
 
-// a compressed unit vector. reasonable fidelty for unit vectors in a 16 bit
+// a compressed unit vector3. reasonable fidelty for unit vectors in a 16 bit
 // package. Good enough for surface normals we hope.
 
 XRCORE_API u16		pvCompress			( const Fvector& vec );

@@ -13,7 +13,7 @@ class CSector;
 class CPortal				: public IRender_Portal
 {
 private:
-	vector<Fvector>			poly;
+	xr_vector<Fvector>		poly;
 	CSector					*pFace,*pBack;
 public:
 	Fplane					P;
@@ -24,7 +24,7 @@ public:
 
 	void					Setup						(Fvector* V, int vcnt, CSector* face, CSector* back);
 
-	vector<Fvector>&		getPoly()					{ return poly;		}
+	xr_vector<Fvector>&		getPoly()					{ return poly;		}
 	CSector*				Back()						{ return pBack;		}
 	CSector*				Front()						{ return pFace;		}
 
@@ -57,17 +57,17 @@ public:
 	};
 protected:
 	IVisual*				pRoot;			// whole geometry of that sector
-	vector<CPortal*>		Portals;
+	xr_vector<CPortal*>		Portals;
 
-	vector<CObject*>		Objects;
-	vector<CTempObject*>	tempObjects;	// $$$temp: временные псевдостатические объекты
+	xr_vector<CObject*>		Objects;
+	xr_vector<CTempObject*>	tempObjects;	// $$$temp: временные псевдостатические объекты
 
 #if RENDER==R_R2
-	vector<light*>			tempLights;
+	xr_vector<light*>			tempLights;
 #endif
 
-	vector<WORD>			Glows;
-	vector<WORD>			Lights;
+	xr_vector<WORD>			Glows;
+	xr_vector<WORD>			Lights;
 
 	// object query
 	void					ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM);
@@ -81,7 +81,7 @@ public:
 	}
 	void					objectRemove	(CObject* O)
 	{
-		vector<CObject*>::iterator I = find(Objects.begin(),Objects.end(),O);
+		xr_vector<CObject*>::iterator I = find(Objects.begin(),Objects.end(),O);
 		if (I!=Objects.end()) Objects.erase(I);
 	}
 
@@ -90,7 +90,7 @@ public:
 	{	tempObjects.push_back	(O); }
 	void					tempRemove	(CTempObject* O)
 	{
-		vector<CTempObject*>::iterator I = find(tempObjects.begin(),tempObjects.end(),O);
+		xr_vector<CTempObject*>::iterator I = find(tempObjects.begin(),tempObjects.end(),O);
 		if (I!=tempObjects.end()) tempObjects.erase(I);
 	}
 
@@ -99,7 +99,7 @@ public:
 	{	tempLights.push_back	(O); }
 	void					lightRemove	(light* O)
 	{
-		vector<light*>::iterator I = find(tempLights.begin(),tempLights.end(),O);
+		xr_vector<light*>::iterator I = find(tempLights.begin(),tempLights.end(),O);
 		if (I!=tempLights.end()) tempLights.erase(I);
 	}
 #endif

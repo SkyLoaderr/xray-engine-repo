@@ -61,7 +61,7 @@ public:
 		mul(l/magnitude());
 	} 
 
-	// Align vector by axis (!y)
+	// Align vector3 by axis (!y)
 	IC	void	align() {
 		y = 0;
 		if (_abs(z)>=_abs(x))	{ z /= _abs(z?z:1);	x = 0; }
@@ -75,7 +75,7 @@ public:
 		if (_abs(z) < Epsilon) z = 0;
 	}
 
-	// Clamp vector
+	// Clamp vector3
 	IC	void	clamp(const Self &min, const Self max) {
 		::clamp(x,min.x,max.x);
 		::clamp(y,min.y,max.y);
@@ -113,7 +113,7 @@ public:
 		z = p1.z*invt + p2.z*t;
 	}
 
-	// Direct vector from point P by dir D with length M
+	// Direct vector3 from point P by dir D with length M
 	IC	void	mad(const Self &d, T m) {
 		x += d.x*m;
 		y += d.y*m;

@@ -69,7 +69,7 @@ public:
 		if( min.y > max.y ) { tmp = min.y; min.y = max.y; max.y = tmp; }
 	};
 
-	// Does the vector intersects box
+	// Does the vector3 intersects box
 	IC BOOL Pick( const Fvector2& start, const Fvector2& dir ){
 		float	alpha,xt,yt;
 		Fvector2 rvmin,rvmax;

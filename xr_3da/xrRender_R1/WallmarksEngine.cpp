@@ -193,8 +193,8 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	}
 
 	// search if similar wallmark exists
-	vector<wallmark*>::iterator		it	=marks.begin();
-	vector<wallmark*>::iterator		end	=marks.end	();
+	xr_vector<wallmark*>::iterator		it	=marks.begin();
+	xr_vector<wallmark*>::iterator		end	=marks.end	();
 	for (; it!=end; it++)
 	{
 		wallmark* wm	= *it;

@@ -31,7 +31,7 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 	N.sorted.clear			();
 
 	// DIRECT:UNSORTED
-	vector<IVisual*>&	L			= N.unsorted;
+	xr_vector<IVisual*>&	L			= N.unsorted;
 	IVisual **I=&*L.begin(), **E = &*L.end();
 	for (; I!=E; I++)
 	{
@@ -57,7 +57,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	N.sorted.clear			();
 
 	// DIRECT:UNSORTED
-	vector<_MatrixItem>&	L			= N.unsorted;
+	xr_vector<_MatrixItem>&	L			= N.unsorted;
 	_MatrixItem *it =L.begin(), *end	= L.end();
 	for (; it!=end; it++)
 	{
@@ -148,8 +148,8 @@ IC	bool	cmp_textures_ssa_mat	(mapMatrixTextures::TNode* N1, mapMatrixTextures::T
 
 void		sort_tlist_nrm			
 (
- vector<mapNormalTextures::TNode*>& lst, 
- vector<mapNormalTextures::TNode*>& temp, 
+ xr_vector<mapNormalTextures::TNode*>& lst, 
+ xr_vector<mapNormalTextures::TNode*>& temp, 
  mapNormalTextures&					textures, 
  BOOL	bSSA
  )
@@ -194,8 +194,8 @@ void		sort_tlist_nrm
 
 void		sort_tlist_mat			
 (
- vector<mapMatrixTextures::TNode*>& lst,
- vector<mapMatrixTextures::TNode*>& temp,
+ xr_vector<mapMatrixTextures::TNode*>& lst,
+ xr_vector<mapMatrixTextures::TNode*>& temp,
  mapMatrixTextures&					textures,
  BOOL	bSSA
  )

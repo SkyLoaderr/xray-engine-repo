@@ -40,8 +40,8 @@ public:
 	};
 	struct	SlotPart
 	{
-		u32					id;
-		vector<SlotItem*>	items;
+		u32						id;
+		xr_vector<SlotItem*>	items;
 	};
 	enum	SlotType
 	{
@@ -60,7 +60,7 @@ public:
 		Slot()				{ type=stReady; sx=sz=0; vis.clear(); }
 	};
 
-	typedef		vector <vector<SlotItem*> >			vis_list;
+	typedef		xr_vector <xr_vector<SlotItem*> >			vis_list;
 	typedef		svector<CDetail*,dm_max_objects>	DetailVec;
 	typedef		DetailVec::iterator					DetailIt;
 	typedef		poolSS<SlotItem,4096>				PSS;

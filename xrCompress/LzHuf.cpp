@@ -44,7 +44,7 @@ int prnt[T + N_CHAR+1];	/* pointers to parent nodes, except for the				*/
 int son[T];				/* pointers to child nodes (son[], son[] + 1)			*/
 
 //************************** Internal FS
-//typedef vector<BYTE>	vecB;
+//typedef xr_vector<BYTE>	vecB;
 class LZfs {
 private:
 	unsigned	getbuf;

@@ -173,7 +173,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 	// Iterate
 	for (u32 O=0; O<objects.size(); O++)
 	{
-		vector<SlotItem*>&	vis = list		[O];
+		xr_vector<SlotItem*>&	vis = list		[O];
 		CDetail&	Object		= *objects	[O];
 
 		if (!vis.empty())

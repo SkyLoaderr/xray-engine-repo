@@ -45,7 +45,7 @@ public:
 	IC	void	merge		(const _fbox &b1, const _fbox &b2) { invalidate(); merge(b1); merge(b2); }
 	IC	void	xform		(const _fbox &B, const Fmatrix &m)
 	{
-		// The three edges transformed: you can efficiently transform an X-only vector
+		// The three edges transformed: you can efficiently transform an X-only vector3
 		// by just getting the "X" column of the matrix
 		Fvector vx,vy,vz;
 		vx.mul				(m.i, B.max.x-B.min.x);	
@@ -107,7 +107,7 @@ public:
 		return TRUE;
 	};
 
-	// Does the vector intersects box
+	// Does the vector3 intersects box
 	IC BOOL Pick( const Fvector& start, const Fvector& dir )
 	{
 		float	alpha,xt,yt,zt;

@@ -51,7 +51,7 @@
 		//! Destructor
 		inline_					~Point()													{}
 
-		//! Clears the vector
+		//! Clears the vector3
 		inline_	Point&			Zero()									{ x =			y =			z = 0.0f;			return *this;	}
 
 		//! + infinity
@@ -59,9 +59,9 @@
 		//! - infinity
 		inline_	Point&			SetMinusInfinity()						{ x =			y =			z = flt_min;		return *this;	}
 
-		//! Sets positive unit random vector
+		//! Sets positive unit random vector3
 				Point&			PositiveUnitRandomVector();
-		//! Sets unit random vector
+		//! Sets unit random vector3
 				Point&			UnitRandomVector();
 
 		//! Assignment from values
@@ -71,20 +71,20 @@
 		//! Assignment from another point
 		inline_	Point&			Set(const Point& src)					{ x  = src.x;	y  = src.y;	z  = src.z;			return *this;	}
 
-		//! Adds a vector
+		//! Adds a vector3
 		inline_	Point&			Add(const Point& p)						{ x += p.x;		y += p.y;	z += p.z;			return *this;	}
-		//! Adds a vector
+		//! Adds a vector3
 		inline_	Point&			Add(float _x, float _y, float _z)		{ x += _x;		y += _y;	z += _z;			return *this;	}
-		//! Adds a vector
+		//! Adds a vector3
 		inline_	Point&			Add(float f[3])							{ x += f[_X];	y += f[_Y];	z += f[_Z];			return *this;	}
 		//! Adds vectors
 		inline_	Point&			Add(const Point& p, const Point& q)		{ x = p.x+q.x;	y = p.y+q.y;	z = p.z+q.z;	return *this;	}
 
-		//! Subtracts a vector
+		//! Subtracts a vector3
 		inline_	Point&			Sub(const Point& p)						{ x -= p.x;		y -= p.y;	z -= p.z;			return *this;	}
-		//! Subtracts a vector
+		//! Subtracts a vector3
 		inline_	Point&			Sub(float _x, float _y, float _z)		{ x -= _x;		y -= _y;	z -= _z;			return *this;	}
-		//! Subtracts a vector
+		//! Subtracts a vector3
 		inline_	Point&			Sub(float f[3])							{ x -= f[_X];	y -= f[_Y];	z -= f[_Z];			return *this;	}
 		//! Subtracts vectors
 		inline_	Point&			Sub(const Point& p, const Point& q)		{ x = p.x-q.x;	y = p.y-q.y;	z = p.z-q.z;	return *this;	}
@@ -260,7 +260,7 @@
 											Dummy = (IR(z)&TWEAKNOTMASK);	if(IS_NEGATIVE_FLOAT(z))	Dummy+=TWEAKMASK+1;	z = FR(Dummy);
 								}
 
-		//! Normalizes the vector
+		//! Normalizes the vector3
 		inline_	Point&			Normalize()
 								{
 									float M = x*x + y*y + z*z;
@@ -274,7 +274,7 @@
 									return *this;
 								}
 
-		//! Sets vector length
+		//! Sets vector3 length
 		inline_	Point&			SetLength(float length)
 								{
 									float NewLength = length / Magnitude();

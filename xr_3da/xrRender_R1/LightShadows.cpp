@@ -168,7 +168,7 @@ void CLightShadows::calculate	()
 		
 		// Select lights and calc importance
 		CLightTrack* LT			= (CLightTrack*)C.O->ROS();
-		vector<CLightTrack::Light>& lights = LT->lights;
+		xr_vector<CLightTrack::Light>& lights = LT->lights;
 		
 		// iterate on lights
 		for (u32 l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)

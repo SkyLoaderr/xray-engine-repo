@@ -15,7 +15,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 		IVisual*	V		= 	lstVisuals[test];
 		
 		// Visual is 100% visible - simply add it
-		vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+		xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 		
 		switch (V->Type) {
 		case MT_HIERRARHY:

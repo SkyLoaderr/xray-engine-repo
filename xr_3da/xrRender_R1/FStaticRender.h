@@ -32,33 +32,33 @@ public:
 	SceneGraph::mapLOD_T									mapLOD;
 	SceneGraph::vecPatches_T								vecPatches;
 
-	vector<int>												vecGroups;
-	vector<SceneGraph::mapNormalCodes::TNode*>				lstCodes;
-	vector<SceneGraph::mapNormalVS::TNode*>					lstVS;
-	vector<SceneGraph::mapNormalConstants::TNode*>			lstCS;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;
-	vector<SceneGraph::mapNormalVB::TNode*>					lstVB;
-	vector<SceneGraph::mapNormalMatrices::TNode*>			lstMatrices;
-	vector<SceneGraph::_LodItem>							lstLODs;
-	vector<IVisual*>										lstVisuals;
+	xr_vector<int>											vecGroups;
+	xr_vector<SceneGraph::mapNormalCodes::TNode*>			lstCodes;
+	xr_vector<SceneGraph::mapNormalVS::TNode*>				lstVS;
+	xr_vector<SceneGraph::mapNormalConstants::TNode*>		lstCS;
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTextures;
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTexturesTemp;
+	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
+	xr_vector<SceneGraph::mapNormalMatrices::TNode*>		lstMatrices;
+	xr_vector<SceneGraph::_LodItem>							lstLODs;
+	xr_vector<IVisual*>										lstVisuals;
 
 	SGeometry*												hGeomPatches;
 
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;
-	vector<IRender_Portal*>									Portals;
-	vector<IRender_Sector*>									Sectors;
+	xr_vector<IRender_Portal*>									Portals;
+	xr_vector<IRender_Sector*>									Sectors;
 	CDB::MODEL*												rmPortals;
 	CHOM													HOM;
 	
 	// Global vertex-buffer container
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
-	vector<VertexDeclarator>								DCL;
-	vector<IDirect3DVertexBuffer9*>							VB;
-	vector<IDirect3DIndexBuffer9*>							IB;
-	vector<IVisual*>										Visuals;
+	xr_vector<VertexDeclarator>								DCL;
+	xr_vector<IDirect3DVertexBuffer9*>							VB;
+	xr_vector<IDirect3DIndexBuffer9*>							IB;
+	xr_vector<IVisual*>										Visuals;
 	CPSLibrary												PSystems;
 
 	CLightDB_Static											L_DB;
@@ -118,8 +118,8 @@ public:
 	virtual void					set_Object				(CObject*	O	);
 	virtual void					add_Visual				(IVisual*	V	);			// add visual leaf (no culling performed at all)
 	virtual void					add_Geometry			(IVisual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Lights				(vector<WORD> &V);
-	virtual void					add_Glows				(vector<WORD> &V);
+	virtual void					add_Lights				(xr_vector<WORD> &V);
+	virtual void					add_Glows				(xr_vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 	
@@ -134,7 +134,7 @@ public:
 	// Lighting
 	virtual IRender_Light*			light_create			();
 	virtual void					light_destroy			(IRender_Light* &);
-	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
+	virtual void					L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest);
 	
 	// Models
 	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);

@@ -431,7 +431,7 @@
 				float			m[4][4];
 	};
 
-	//! Quickly rotates & translates a vector, using the 4x3 part of a 4x4 matrix
+	//! Quickly rotates & translates a vector3, using the 4x3 part of a 4x4 matrix
 	inline_ void TransformPoint4x3(Point& dest, const Point& source, const Matrix4x4& rot)
 	{
 		dest.x = rot.m[3][0] + source.x * rot.m[0][0] + source.y * rot.m[1][0] + source.z * rot.m[2][0];
@@ -439,7 +439,7 @@
 		dest.z = rot.m[3][2] + source.x * rot.m[0][2] + source.y * rot.m[1][2] + source.z * rot.m[2][2];
 	}
 
-	//! Quickly rotates a vector, using the 3x3 part of a 4x4 matrix
+	//! Quickly rotates a vector3, using the 3x3 part of a 4x4 matrix
 	inline_ void TransformPoint3x3(Point& dest, const Point& source, const Matrix4x4& rot)
 	{
 		dest.x = source.x * rot.m[0][0] + source.y * rot.m[1][0] + source.z * rot.m[2][0];

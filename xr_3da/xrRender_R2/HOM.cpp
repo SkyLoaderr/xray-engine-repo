@@ -210,8 +210,8 @@ void CHOM::Render_ZB	()
 	u32								vOffset;
 	FVF::L*		V					= (FVF::L*) RCache.Vertex.Lock	(vCount,h_Geom->vb_stride, vOffset);
 
-	vector<u32>::iterator	I		= m_ZB.begin	();
-	vector<u32>::iterator	E		= m_ZB.end		();
+	xr_vector<u32>::iterator	I		= m_ZB.begin	();
+	xr_vector<u32>::iterator	E		= m_ZB.end		();
 
 	u32 C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
 	for (; I!=E; I++)

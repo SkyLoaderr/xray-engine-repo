@@ -26,14 +26,14 @@ public:
 
 class CGlowManager 
 {
-	vector<CGlow>			Glows;
+	xr_vector<CGlow>			Glows;
 	CGlow*					Selected[MAX_GlowsPerFrame];
 	u32						Selected_Count;
 	SGeometry*				hGeom;
 
 	u32						dwTestID;
 public:
-	void	add				(vector<WORD> &V);
+	void	add				(xr_vector<WORD> &V);
 
 	void	Load			(IReader *fs);
 	void	Unload			();

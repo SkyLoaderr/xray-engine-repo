@@ -104,7 +104,7 @@ void CSector::Render_objects	(CFrustum& F)
 {
 	// Persistant models
 	Fvector	Tpos;
-	vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+	xr_vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 	for (; I!=E; I++) {
 		CObject* O = *I;
 		if (O->getVisible()) 
@@ -130,7 +130,7 @@ void CSector::Render_objects_s	(CFrustum& F, Fvector& __P, Fmatrix& __X)
 		RImplementation.add_Geometry	(pRoot);
 
 		// Persistant models
-		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+		xr_vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) {
 			CObject* O = *I;
 			if (O->getVisible()) 
@@ -175,7 +175,7 @@ void CSector::Render_objects_s	(CFrustum& F, Fvector& __P, Fmatrix& __X)
 			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum
-			vector<Fvector> &	POLY = PORTAL->getPoly();
+			xr_vector<Fvector> &	POLY = PORTAL->getPoly();
 			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
@@ -217,7 +217,7 @@ void CSector::Render			(CFrustum &F)
 		// R2-lights/spots
 #if RENDER==R_R2
 		{
-			vector<light*>::iterator I=tempLights.begin(), E=tempLights.end();
+			xr_vector<light*>::iterator I=tempLights.begin(), E=tempLights.end();
 			for (; I!=E; I++) {
 				light* O = *I;
 				if (!O->get_active())	continue;
@@ -254,7 +254,7 @@ void CSector::Render			(CFrustum &F)
 		}
 
 		// Persistant models
-		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+		xr_vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) {
 			CObject* O = *I;
 			if (O->getVisible()) 
@@ -323,7 +323,7 @@ void CSector::Render			(CFrustum &F)
 			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum
-			vector<Fvector> &	POLY = PORTAL->getPoly();
+			xr_vector<Fvector> &	POLY = PORTAL->getPoly();
 			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
@@ -357,7 +357,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	// Traverse objects
 	{
-		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+		xr_vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) 
 		{
 			CObject*	O	= *I;
@@ -375,7 +375,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 	{
 		sPoly	S,D;
 		if (Portals[I]->dwFrameObject != oQuery.dwMark) {
-			vector<Fvector> &POLY = Portals[I]->getPoly();
+			xr_vector<Fvector> &POLY = Portals[I]->getPoly();
 			S.assign(&*POLY.begin(),POLY.size()); D.clear();
 			
 			// Clip by frustum
@@ -401,7 +401,7 @@ void CSector::DebugDump()
 	for (u32 i=0; i<Portals.size(); i++)
 	{
 		CPortal* P			= Portals[i];
-		vector<Fvector>& V	= P->getPoly();
+		xr_vector<Fvector>& V	= P->getPoly();
 		Fplane PL;			PL.build(V[0],V[1],V[2]);
 
 		Msg("#%d --- verts: %d, front(%d), back(%d), F(%d), B(%d), (%.2f,%.2f,%.2f)",

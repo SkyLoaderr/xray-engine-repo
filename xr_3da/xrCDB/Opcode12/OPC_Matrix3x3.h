@@ -241,7 +241,7 @@
 					m[2][2] = a.m[2][0] * b.m[2][0] + a.m[2][1] * b.m[2][1] + a.m[2][2] * b.m[2][2];
 				}
 
-		//! Makes a rotation matrix mapping vector "from" to vector "to".
+		//! Makes a rotation matrix mapping vector3 "from" to vector3 "to".
 				Matrix3x3&		FromTo(const Point& from, const Point& to);
 
 		//! Set a rotation matrix around the X axis.

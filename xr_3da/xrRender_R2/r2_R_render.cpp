@@ -86,7 +86,7 @@ void CRender::Render	()
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
-		vector<light*>&	Lvec			= Lights.v_selected_unshadowed;
+		xr_vector<light*>&	Lvec			= Lights.v_selected_unshadowed;
 		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];
@@ -99,7 +99,7 @@ void CRender::Render	()
 	if (1)
 	{
 		HOM.Disable								();
-		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
+		xr_vector<light*>&	Lvec	= Lights.v_selected_shadowed;
 		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];

@@ -9,7 +9,7 @@
 	more numericaly stable for repeated rotations than matrices.
 
 
-	A quaternion is a 4 element 'vector'  [w,x,y,z] where:
+	A quaternion is a 4 element 'vector3'  [w,x,y,z] where:
 
 	q = w + xi + yj + zk
 	i*i = -1
@@ -29,7 +29,7 @@
 	or as in this implementation (s,v) where s=w, and v=[x,y,z]
 
 	quaternions can represent a rotation.  The rotation is an angle t, around a
-	unit vector u.   q=(s,v);  s= cos(t/2);   v= u*sin(t/2).
+	unit vector3 u.   q=(s,v);  s= cos(t/2);   v= u*sin(t/2).
 
 	quaternions can apply the rotation to a point.  let the point be p [px,py,pz],
 	and let P be a quaternion(0,p).  Protated = q*P*qinverse
@@ -65,7 +65,7 @@
 	since q == -q, care must be taken to rotate the proper way.
 
 	this implementation uses the notation quaternion q = (quatS,quatV)
-	  where quatS is a scalar, and quatV is a 3 element vector.
+	  where quatS is a scalar, and quatV is a 3 element vector3.
 
 	***************************************************************************
 
@@ -83,7 +83,7 @@
 	cos(phi/2) + b*sin(phi/2)*i + c*sin(phi/2)*j + d*sin(phi/2)*k
 
 	This corresponds to a rotation of an angle phi about the axis [ b c d ]
-	(which is a unit vector, of course).  A unit quaternion can also be
+	(which is a unit vector3, of course).  A unit quaternion can also be
 	thought of as a point on the surface of a four-dimensional hypersphere,
 	so if you try to interpolate between two unit quaternions, you can get
 	an intermediate rotation.  Gamasutra describes Shoemake's spherical

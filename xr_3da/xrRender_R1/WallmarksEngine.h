@@ -11,15 +11,15 @@ public:
 	public:
 		Fsphere				bounds;
 		Shader*				shader;
-		vector<FVF::LIT>	verts;
+		xr_vector<FVF::LIT>	verts;
 		float				ttl;
 	};
 private:
-	vector<wallmark*>				pool;
-	vector<wallmark*>				marks;
+	xr_vector<wallmark*>				pool;
+	xr_vector<wallmark*>				marks;
 	SGeometry*						hGeom;
 
-	vector<CDB::TRI*>				sml_processed;
+	xr_vector<CDB::TRI*>				sml_processed;
 	Fvector							sml_normal;
 	sPoly							sml_poly_dest;
 	sPoly							sml_poly_src;

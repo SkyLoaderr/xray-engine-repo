@@ -96,15 +96,15 @@ public:
 };
 
 
-typedef std::vector<NvFaceInfo*>     NvFaceInfoVec;
-typedef std::list  <NvFaceInfo*>     NvFaceInfoList;
-typedef std::list  <NvFaceInfoVec*>  NvStripList;
-typedef std::vector<NvEdgeInfo*>     NvEdgeInfoVec;
+typedef std::xr_vector<NvFaceInfo*>     NvFaceInfoVec;
+typedef std::xr_list  <NvFaceInfo*>     NvFaceInfoList;
+typedef std::xr_list  <NvFaceInfoVec*>  NvStripList;
+typedef std::xr_vector<NvEdgeInfo*>     NvEdgeInfoVec;
 
-typedef std::vector<WORD> WordVec;
-typedef std::vector<int> IntVec;
-typedef std::vector<MyVertex> MyVertexVec;
-typedef std::vector<MyFace> MyFaceVec;
+typedef std::xr_vector<WORD> WordVec;
+typedef std::xr_vector<int> IntVec;
+typedef std::xr_vector<MyVertex> MyVertexVec;
+typedef std::xr_vector<MyFace> MyFaceVec;
 
 template<class T> 
 inline void SWAP(T& first, T& second) 
@@ -162,7 +162,7 @@ public:
 	bool visited;
 };
 
-typedef std::vector<NvStripInfo*>    NvStripInfoVec;
+typedef std::xr_vector<NvStripInfo*>    NvStripInfoVec;
 
 
 //The actual stripifier

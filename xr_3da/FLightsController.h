@@ -12,12 +12,12 @@ class CLightDB_Static
 {
 	DEF_VECTOR(vecI,int);
 
-	vector<xrLIGHT_control>	Layers;
-	vector<xrLIGHT>			Lights;			// -- Lights itself
-	vector<BYTE>			Enabled;		// -- is Enabled
-	vecI					Distance;		// -- Only selected are valid!!!
+	xr_vector<xrLIGHT_control>	Layers;
+	xr_vector<xrLIGHT>			Lights;			// -- Lights itself
+	xr_vector<BYTE>				Enabled;		// -- is Enabled
+	vecI						Distance;		// -- Only selected are valid!!!
 
-	vecI					Selected;		// Selected (static only) in one frame
+	vecI						Selected;		// Selected (static only) in one frame
 private:
 	IC	void	Disable		(int num) {
 		if (Enabled[num]) {
@@ -33,11 +33,11 @@ private:
 		}
 	}
 public:
-	void	add_sector_lights	(vector<WORD> &L);
+	void	add_sector_lights	(xr_vector<WORD> &L);
 
 	void	UnselectAll			(void);			// Disables all lights
 
-	void	Select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
+	void	Select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest);
 	void	Select				(Fvector &pos, float fRadius);
 	void	Track				(CObject* O);
 

@@ -7,7 +7,7 @@ namespace CDB
 {
 	u32		Collector::VPack	(Fvector& V, float eps)
 	{
-		vector<Fvector>::iterator I,E;
+		xr_vector<Fvector>::iterator I,E;
 		I=verts.begin(); E=verts.end();
 		for (;I!=E;I++) if (I->similar(V,eps)) return (I-verts.begin());
 		verts.push_back(V);

@@ -31,7 +31,7 @@ private:
 	typedef map<IVisual*,LPCSTR>					REGISTRY;
 	typedef REGISTRY::iterator						REGISTRY_IT;
 private:
-	vector<ModelDef>	Models;				// Reference / Base
+	xr_vector<ModelDef>	Models;				// Reference / Base
 	REGISTRY			Registry;			// Just pairing of pointer / Name
 	POOL				Pool;				// Unused / Inactive
 

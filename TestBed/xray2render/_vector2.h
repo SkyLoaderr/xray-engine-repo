@@ -47,7 +47,7 @@ public:
         y = p.y + d.y*r;
     }
     IC Self Cross()                   {
-        // vector orthogonal to (x,y) is (y,-x)
+        // vector3 orthogonal to (x,y) is (y,-x)
         Self kCross;
         kCross.x = y;
         kCross.y = -x;

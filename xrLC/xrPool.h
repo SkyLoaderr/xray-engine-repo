@@ -7,7 +7,7 @@ class	poolSS
 {
 private:
 	T*					list;
-	vector<T*>			blocks;
+	xr_vector<T*>		blocks;
 private:
 	T**					access			(T* P)	{ return (T**) LPVOID(P);	}
 	void				block_create	()

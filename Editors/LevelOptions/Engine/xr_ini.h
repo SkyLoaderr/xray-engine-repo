@@ -21,8 +21,8 @@ public:
 
 		Item() : first(0), second(0), comment(0) {};
 	};
-	typedef std::vector<Item>	Items;
-	typedef Items::iterator		SectIt;
+	typedef std::xr_vector<Item>	Items;
+	typedef Items::iterator			SectIt;
     struct XRCORE_API Sect {
 		LPSTR			Name;
 		Items			Data;
@@ -33,7 +33,7 @@ public:
 		IC void			clear()		{ Data.clear();			}
 	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
 	};
-	typedef	std::vector<Sect>	Root;
+	typedef	std::xr_vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
 
 	struct sect_pred : public std::binary_function<Sect&, Sect&, bool>

@@ -178,8 +178,8 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	if (0==s_environment)	return;
 
 	// Assosiate names
-	vector<u16>			ids;
-	IReader*			names	= I->open_chunk(0);
+	xr_vector<u16>			ids;
+	IReader*				names	= I->open_chunk(0);
 	while (!names->eof())
 	{
 		string256			n;

@@ -25,7 +25,7 @@ private:
 	};
 private:
 	CObject*				current;
-	vector<recv>			receivers;
+	xr_vector<recv>			receivers;
 
 	CRT*					RT;
 	CRT*					RT_temp;

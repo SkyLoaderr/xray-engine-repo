@@ -13,7 +13,7 @@
 // lower 7 bits - ybits
 #define pvBOTTOM_MASK	0x007f
 
-// static lookup table for unit vector decompression
+// static lookup table for unit vector3 decompression
 float pvUVAdjustment	[0x2000];
 
 void pvInitializeStatics	(void)
@@ -45,7 +45,7 @@ u16 pvCompress				( const Fvector& vec )
 	// save copy
 	Fvector tmp		= vec;
 
-	// input vector does not have to be unit length
+	// input vector3 does not have to be unit length
 	u16 mVec		= 0;
 
 	if ( negative(tmp.x) ) { mVec |= pvXSIGN_MASK; set_positive(tmp.x); }
@@ -96,7 +96,7 @@ void pvDecompress		( Fvector& vec, u16 mVec )
 	// however we need points on a sphere that goes through these points.
 	// therefore we need to adjust x,y,z so that x^2+y^2+z^2=1
 	
-	// by normalizing the vector. We have already precalculated the amount
+	// by normalizing the vector3. We have already precalculated the amount
 	// by which we need to scale, so all we do is a table lookup and a 
 	// multiplication
 	

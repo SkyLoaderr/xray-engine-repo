@@ -25,7 +25,7 @@
  *		If P0 and P1 are two 3D points, let's define:
  *		- d = distance between P0 and P1
  *		- Origin	= P0
- *		- Direction	= (P1 - P0) / d = normalized direction vector
+ *		- Direction	= (P1 - P0) / d = normalized direction vector3
  *		- A parameter t such as a point P on the line (P0,P1) is P = Origin + t * Direction
  *		- t = 0  -->  P = P0
  *		- t = d  -->  P = P1

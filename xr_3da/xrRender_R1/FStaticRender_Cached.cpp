@@ -6,7 +6,7 @@
 const u32	v_limit			= 2048;
 
 // Render of cached meshes
-void __fastcall render_Cached(std::vector<FCached*>& cache)
+void __fastcall render_Cached(std::xr_vector<FCached*>& cache)
 {
 /*
 	_VertexStream*			vs	= RCache.Vertex;

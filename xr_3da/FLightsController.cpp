@@ -27,7 +27,7 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
 		}
 	}
 }
-void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
+void	CLightDB_Static::Select		(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
 {
 	// for all dynamic objects we apply not only dynamic but static lights too.
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
@@ -123,9 +123,9 @@ IC void t_spline(float t, float *m)
 	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
 	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
 }
-void	CLightDB_Static::add_sector_lights(vector<WORD> &L)
+void	CLightDB_Static::add_sector_lights(xr_vector<WORD> &L)
 {
-	for (vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
+	for (xr_vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
 	{
 		WORD ID		= *I;
 		xrLIGHT&  T	= Lights[ID];

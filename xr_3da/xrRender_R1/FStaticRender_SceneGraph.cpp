@@ -128,7 +128,7 @@ void CRender::InsertSG_Static(IVisual *pVisual)
 void CRender::add_leafs_Dynamic(IVisual *pVisual)
 {
 	// Visual is 100% visible - simply add it
-	vector<IVisual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
+	xr_vector<IVisual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -167,7 +167,7 @@ void CRender::add_leafs_Static(IVisual *pVisual)
 	if (!HOM.visible(pVisual->vis))		return;
 
 	// Visual is 100% visible - simply add it
-	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -232,7 +232,7 @@ BOOL CRender::add_Dynamic(IVisual *pVisual, u32 planes)
 	if (fcvNone==VIS) return FALSE;
 
 	// If we get here visual is visible or partially visible
-	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -287,7 +287,7 @@ void CRender::add_Static(IVisual *pVisual, u32 planes)
 	if (!HOM.visible(vis))	return;
 	
 	// If we get here visual is visible or partially visible
-	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:

@@ -39,9 +39,9 @@ private:
 	};
 private:
 	CObject*				current;
-	vector<caster>			casters;
-	vector<shadow>			shadows;
-	vector<tess_tri>		tess;
+	xr_vector<caster>		casters;
+	xr_vector<shadow>		shadows;
+	xr_vector<tess_tri>		tess;
 
 	CRT*					RT;
 	CRT*					RT_temp;

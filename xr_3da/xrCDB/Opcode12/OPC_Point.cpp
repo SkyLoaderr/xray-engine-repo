@@ -11,7 +11,7 @@
 /**
  *	3D point.
  *
- *	The name is "Point" instead of "Vector" since a vector is N-dimensional, whereas a point is an implicit "vector of dimension 3".
+ *	The name is "Point" instead of "Vector" since a vector3 is N-dimensional, whereas a point is an implicit "vector3 of dimension 3".
  *	So the choice was between "Point" and "Vector3", the first one looked better (IMHO).
  *
  *	Some people, then, use a typedef to handle both points & vectors using the same class: typedef Point Vector3;
@@ -60,8 +60,8 @@ Point& Point::Refract(const Point& eye, const Point& n, float refractindex, Poin
 	//	Point EyePt = eye position
 	//	Point p = current vertex
 	//	Point n = vertex normal
-	//	Point rv = refracted vector
-	//	Eye vector - doesn't need to be normalized
+	//	Point rv = refracted vector3
+	//	Eye vector3 - doesn't need to be normalized
 	Point Env;
 	Env.x = eye.x - x;
 	Env.y = eye.y - y;
@@ -71,7 +71,7 @@ Point& Point::Refract(const Point& eye, const Point& n, float refractindex, Poin
 	float NDotN = n|n;
 	NDotE /= refractindex;
 
-	// Refracted vector
+	// Refracted vector3
 	refracted = n*NDotE - Env*NDotN;
 
 	return *this;

@@ -11,8 +11,8 @@ class ENGINE_API CSoundStream;
 class ENGINE_API CInifile;
 
 class CMusicStream {
-	vector<CSoundStream*>	streams;
-	int						FindEmptySlot();
+	xr_vector<CSoundStream*>	streams;
+	int							FindEmptySlot();
 public:
 							CMusicStream	();
 							~CMusicStream	();

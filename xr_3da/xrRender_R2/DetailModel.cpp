@@ -47,7 +47,7 @@ void CDetail::Load		(IReader* S)
 
 void CDetail::Optimize	()
 {
-	vector<WORD>		vec_indices, vec_permute;
+	xr_vector<WORD>		vec_indices, vec_permute;
 	const int			cache	= HW.Caps.vertex.dwVertexCache;
 
 	// Stripify
@@ -64,7 +64,7 @@ void CDetail::Optimize	()
 		Memory.mem_copy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(WORD));
 
 		// Permute vertices
-		vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
+		xr_vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
 		for(u32 i=0; i<verts.size(); i++)
 			vertices[i]=verts[vec_permute[i]];
 	}

@@ -19,7 +19,7 @@ public:
 	void			Set		(int index, int value);
 
 private:
-	vector<int>	entries;
+	xr_vector<int>	entries;
 };
 
 inline bool VertexCache::InCache(int entry)

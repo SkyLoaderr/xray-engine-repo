@@ -340,7 +340,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 	return exist(fn);
 }
 
-vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
+xr_vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 {
 	VERIFY			(flags);
 	
@@ -352,7 +352,7 @@ vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 	files_it	I	= files.find(desc);
 	if (I==files.end())	return 0;
 	
-	vector<char*>*	dest	= xr_new<vector<char*> > ();
+	xr_vector<char*>*	dest	= xr_new<xr_vector<char*> > ();
 
 	size_t base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
@@ -382,11 +382,11 @@ vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 	return dest;
 }
 
-void	CLocatorAPI::file_list_close	(vector<char*>* &lst)
+void	CLocatorAPI::file_list_close	(xr_vector<char*>* &lst)
 {
 	if (lst) 
 	{
-		for (vector<char*>::iterator I=lst->begin(); I!=lst->end(); I++)
+		for (xr_vector<char*>::iterator I=lst->begin(); I!=lst->end(); I++)
 			xr_free	(*I);
 		xr_delete	(lst);
 	}

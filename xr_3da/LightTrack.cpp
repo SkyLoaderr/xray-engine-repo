@@ -13,7 +13,7 @@
 void CLightTrack::add	(int id)
 {
 	// Search
-	for (vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (id == I->id)	return;
+	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (id == I->id)	return;
 		
 	// Register _new_
 	track.push_back		(Item());
@@ -28,7 +28,7 @@ void CLightTrack::add	(int id)
 void CLightTrack::remove(int id)
 {
 	// Search
-	for (vector<Item>::iterator I=track.begin(); I!=track.end(); I++)
+	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)
 	{
 		if (id == I->id)
 		{
@@ -78,8 +78,8 @@ void	CLightDB_Static::Track	(CObject* O)
 	
 	// Trace visibility
 	dest.lights.clear	();
-	vector<CLightTrack::Item>& track		= dest.track;
-	vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
+	xr_vector<CLightTrack::Item>& track		= dest.track;
+	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
 	float R									= fRadius*.5f;
 	for (; I!=E; I++)
 	{

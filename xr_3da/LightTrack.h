@@ -25,8 +25,8 @@ public:
 		Flight				L;
 		float				energy;
 	};
-	vector<Item>			track;
-	vector<Light>			lights;
+	xr_vector<Item>			track;
+	xr_vector<Light>			lights;
 	float					ambient;
 	u32						dwFrame;
 public:

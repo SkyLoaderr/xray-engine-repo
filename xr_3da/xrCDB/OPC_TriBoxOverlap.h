@@ -74,7 +74,7 @@ inline_ BOOL planeBoxOverlap(const Point& normal, const float d, const Point& ma
 // - edges lazy evaluated to take advantage of early exits
 // - fabs precomputed (half less work, possible since extents are always >0)
 // - customized macros to take advantage of the null component
-// - axis vector discarded, possibly saves useless movs
+// - axis vector3 discarded, possibly saves useless movs
 #define IMPLEMENT_CLASS3_TESTS						\
 	float rad;										\
 	float min, max;									\

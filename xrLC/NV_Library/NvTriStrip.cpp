@@ -78,7 +78,7 @@ void SetMinStripSize(const unsigned int _minStripSize)
 //
 // Be sure to call xr_free on the returned primGroups to avoid leaking mem
 //
-void GenerateStrips(const u16* in_indices, const s32 in_numIndices, vector<PrimitiveGroup> &primGroups)
+void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<PrimitiveGroup> &primGroups)
 {
 	//put data in format that the stripifier likes
 	WordVec				tempIndices;
@@ -230,7 +230,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, vector<Primi
 // Note that, according to the remapping handed back to you, you must reorder your 
 //  vertex buffer.
 //
-void RemapIndices(const vector<PrimitiveGroup> &in_primGroups, const u16 numVerts, vector<PrimitiveGroup> &remappedGroups)
+void RemapIndices(const xr_vector<PrimitiveGroup> &in_primGroups, const u16 numVerts, xr_vector<PrimitiveGroup> &remappedGroups)
 {
 	int numGroups			= in_primGroups.size();
 	remappedGroups.resize	(numGroups);

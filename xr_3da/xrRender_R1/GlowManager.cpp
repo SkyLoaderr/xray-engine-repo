@@ -73,7 +73,7 @@ void CGlowManager::Unload	()
 IC bool glow_compare(CGlow* g1, CGlow *g2)
 {	return g1->hShader < g2->hShader; }
 
-void CGlowManager::add(vector<WORD> &V)
+void CGlowManager::add(xr_vector<WORD> &V)
 {
 	if (!psEnvFlags.test(effGlows))		return;
 
@@ -84,7 +84,7 @@ void CGlowManager::add(vector<WORD> &V)
 	float	dt		= Device.fTimeDelta;
 	float	dlim2	= MAX_GlowsDist2;
 
-	for (vector<WORD>::iterator I=V.begin(); I!=V.end(); I++)
+	for (xr_vector<WORD>::iterator I=V.begin(); I!=V.end(); I++)
 	{
 		CGlow&	G	 = Glows[*I];
 		if (G.dwFrame==mark) continue;

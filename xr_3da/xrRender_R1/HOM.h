@@ -10,7 +10,7 @@ class CHOM
 private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
-	vector<u32>				m_ZB;
+	xr_vector<u32>			m_ZB;
 	BOOL					bEnabled;
 
 	/*

@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "errors.h"
-#include "vector.h"
 #include "resource.h"
 #include "log.h"
 
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static xrCriticalSection	logCS;
-std::vector <LPCSTR>		LogFile;
+std::xr_vector <LPCSTR>		LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()

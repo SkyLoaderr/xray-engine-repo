@@ -29,7 +29,7 @@ void CDetailManager::soft_Render	()
 
 	for (u32 O=0; O<objects.size(); O++)
 	{
-		vector<SlotItem*>&	vis = visible[0][O];
+		xr_vector<SlotItem*>&	vis = visible[0][O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *objects[O];

@@ -36,45 +36,45 @@ public:
 	SceneGraph::mapSorted_T									mapSorted;
 	SceneGraph::mapHUD_T									mapHUD;
 
-	vector<SceneGraph::mapNormalVS::TNode*>					nrmVS;
-	vector<SceneGraph::mapNormalPS::TNode*>					nrmPS;
-	vector<SceneGraph::mapNormalCS::TNode*>					nrmCS;
-	vector<SceneGraph::mapNormalStates::TNode*>				nrmStates;
-	vector<SceneGraph::mapNormalTextures::TNode*>			nrmTextures;
-	vector<SceneGraph::mapNormalTextures::TNode*>			nrmTexturesTemp;
-	vector<SceneGraph::mapNormalVB::TNode*>					nrmVB;
+	xr_vector<SceneGraph::mapNormalVS::TNode*>					nrmVS;
+	xr_vector<SceneGraph::mapNormalPS::TNode*>					nrmPS;
+	xr_vector<SceneGraph::mapNormalCS::TNode*>					nrmCS;
+	xr_vector<SceneGraph::mapNormalStates::TNode*>				nrmStates;
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>			nrmTextures;
+	xr_vector<SceneGraph::mapNormalTextures::TNode*>			nrmTexturesTemp;
+	xr_vector<SceneGraph::mapNormalVB::TNode*>					nrmVB;
 
-	vector<SceneGraph::mapMatrixVS::TNode*>					matVS;
-	vector<SceneGraph::mapMatrixPS::TNode*>					matPS;
-	vector<SceneGraph::mapMatrixCS::TNode*>					matCS;
-	vector<SceneGraph::mapMatrixStates::TNode*>				matStates;
-	vector<SceneGraph::mapMatrixTextures::TNode*>			matTextures;
-	vector<SceneGraph::mapMatrixTextures::TNode*>			matTexturesTemp;
-	vector<SceneGraph::mapMatrixVB::TNode*>					matVB;
+	xr_vector<SceneGraph::mapMatrixVS::TNode*>					matVS;
+	xr_vector<SceneGraph::mapMatrixPS::TNode*>					matPS;
+	xr_vector<SceneGraph::mapMatrixCS::TNode*>					matCS;
+	xr_vector<SceneGraph::mapMatrixStates::TNode*>				matStates;
+	xr_vector<SceneGraph::mapMatrixTextures::TNode*>			matTextures;
+	xr_vector<SceneGraph::mapMatrixTextures::TNode*>			matTexturesTemp;
+	xr_vector<SceneGraph::mapMatrixVB::TNode*>					matVB;
 
 	// Sector detection and visibility
-	CSector*												pLastSector;
-	Fvector													vLastCameraPos;
-	vector<IRender_Portal*>									Portals;
-	vector<IRender_Sector*>									Sectors;
-	CDB::MODEL*												rmPortals;
-	CHOM													HOM;
+	CSector*													pLastSector;
+	Fvector														vLastCameraPos;
+	xr_vector<IRender_Portal*>									Portals;
+	xr_vector<IRender_Sector*>									Sectors;
+	CDB::MODEL*													rmPortals;
+	CHOM														HOM;
 
 	// Global vertex-buffer container
-	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
-	vector<VertexDeclarator>								DCL;
-	vector<IDirect3DVertexBuffer9*>							VB;
-	vector<IDirect3DIndexBuffer9*>							IB;
-	vector<IVisual*>										Visuals;
-	CPSLibrary												PSystems;
+	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
+	xr_vector<VertexDeclarator>									DCL;
+	xr_vector<IDirect3DVertexBuffer9*>							VB;
+	xr_vector<IDirect3DIndexBuffer9*>							IB;
+	xr_vector<IVisual*>											Visuals;
+	CPSLibrary													PSystems;
 
-	CDetailManager											Details;
-	CModelPool												Models;
+	CDetailManager												Details;
+	CModelPool													Models;
 
-	CRenderTarget											Target;			// Render-target
-	CLight_DB												Lights;
-	CLight_Render_Direct									LR;
-	cl_binders												Binders;
+	CRenderTarget												Target;			// Render-target
+	CLight_DB													Lights;
+	CLight_Render_Direct										LR;
+	cl_binders													Binders;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
@@ -121,8 +121,8 @@ public:
 	virtual void					set_Object				(CObject*	O	);
 	virtual void					add_Visual				(IVisual*	V	);			// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IVisual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Lights				(vector<WORD> &V);
-	virtual void					add_Glows				(vector<WORD> &V);
+	virtual void					add_Lights				(xr_vector<WORD> &V);
+	virtual void					add_Glows				(xr_vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 
@@ -137,7 +137,7 @@ public:
 	// Lighting
 	virtual IRender_Light*			light_create			();
 	virtual void					light_destroy			(IRender_Light* &);
-	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
+	virtual void					L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest);
 
 	// Models
 	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);

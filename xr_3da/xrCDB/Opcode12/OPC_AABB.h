@@ -53,7 +53,7 @@
 		/**
 		 *	Setups an AABB from center & extents vectors.
 		 *	\param		c			[in] the center point
-		 *	\param		e			[in] the extents vector
+		 *	\param		e			[in] the extents vector3
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						void		SetCenterExtents(const Point& c, const Point& e)	{ mMin = c - e;		mMax = c + e;								}
@@ -172,7 +172,7 @@
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		inline_			void		Rotate(const Matrix4x4& mtx, AABB& aabb)	const
 						{
-							// The three edges transformed: you can efficiently transform an X-only vector
+							// The three edges transformed: you can efficiently transform an X-only vector3
 							// by just getting the "X" column of the matrix
 							Point vx,vy,vz;
 							mtx.GetRow(0, vx);	vx *= (mMax.x - mMin.x);
@@ -267,7 +267,7 @@
 		/**
 		 *	Setups an AABB from center & extents vectors.
 		 *	\param		c			[in] the center point
-		 *	\param		e			[in] the extents vector
+		 *	\param		e			[in] the extents vector3
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						void		SetCenterExtents(const Point& c, const Point& e)	{ mCenter = c;	 mExtents = e;									}

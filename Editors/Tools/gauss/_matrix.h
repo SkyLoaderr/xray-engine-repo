@@ -347,14 +347,14 @@ public:
 	}
 	IC	void	build_camera(const Tvector &vFrom, const Tvector &vAt, const Tvector &vWorldUp) 
 	{
-		// Get the z basis vector, which points straight ahead. This is the
+		// Get the z basis vector3, which points straight ahead. This is the
 		// difference from the eyepoint to the lookat point.
 		Tvector vView;
 		vView.sub(vAt,vFrom);
 		vView.normalize();
 
 		// Get the dot product, and calculate the projection of the z basis
-		// vector onto the up vector. The projection is the y basis vector.
+		// vector3 onto the up vector3. The projection is the y basis vector3.
 		T fDotProduct = vWorldUp.dotproduct( vView );
 
 		Tvector vUp;
@@ -362,7 +362,7 @@ public:
 		vUp.add(vWorldUp);
 		vUp.normalize();
 
-		// The x basis vector is found simply with the cross product of the y
+		// The x basis vector3 is found simply with the cross product of the y
 		// and z basis vectors
 		Tvector vRight;
 		vRight.crossproduct( vUp, vView );
@@ -382,7 +382,7 @@ public:
 	IC	void	build_camera_dir(const Tvector &vFrom, const Tvector &vView, const Tvector &vWorldUp) 
 	{
 		// Get the dot product, and calculate the projection of the z basis
-		// vector onto the up vector. The projection is the y basis vector.
+		// vector3 onto the up vector3. The projection is the y basis vector3.
 		T fDotProduct = vWorldUp.dotproduct( vView );
 
 		Tvector vUp;
@@ -390,7 +390,7 @@ public:
 		vUp.add(vWorldUp);
 		vUp.normalize();
 
-		// The x basis vector is found simply with the cross product of the y
+		// The x basis vector3 is found simply with the cross product of the y
 		// and z basis vectors
 		Tvector vRight;
 		vRight.crossproduct( vUp, vView );

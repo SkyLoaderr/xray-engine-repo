@@ -69,7 +69,7 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
-void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
+void					CRender::L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
 {	
 	//Msg		("! NotImplemented: CRender::L_select");
 }
@@ -82,11 +82,11 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Lights				(vector<WORD> &	V )	
+void					CRender::add_Lights				(xr_vector<u16> &	V )	
 { 
 	Lights.add_sector_lights(V);						
 }
-void					CRender::add_Glows				(vector<WORD> &	V )	
+void					CRender::add_Glows				(xr_vector<u16> &	V )	
 {
 	//Msg		("! NotImplemented: CRender::add_Glows");
 }
@@ -184,7 +184,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 		IVisual*	V		= 	lstVisuals[test];
 		
 		// Visual is 100% visible - simply add it
-		vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+		xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 		
 		switch (V->Type) {
 		case MT_HIERRARHY:

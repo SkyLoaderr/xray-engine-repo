@@ -59,7 +59,7 @@ public:
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
 	
-		if (_abs(denom)<EPS_S)  // normal is orthogonal to vector, cant intersect
+		if (_abs(denom)<EPS_S)  // normal is orthogonal to vector3, cant intersect
 			return false;
 	
 		dist = -(numer / denom);
@@ -69,7 +69,7 @@ public:
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
 	
-		if (_abs(denom)<EPS_S) return false; // normal is orthogonal to vector, cant intersect
+		if (_abs(denom)<EPS_S) return false; // normal is orthogonal to vector3, cant intersect
 		else {
 			dest.mad(P,D,-(numer / denom));
 			return true;
