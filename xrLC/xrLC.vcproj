@@ -962,6 +962,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\reader\BaseReader.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -974,6 +986,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\writer\BaseWriter.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -985,6 +1009,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\BinaryHelper.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1019,6 +1055,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Utils\Endian.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1052,6 +1100,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\IOManager.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1079,6 +1139,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Templates\newClass.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1090,6 +1162,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Templates\newClassT.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1106,6 +1190,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\reader\OBJReader.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1117,6 +1213,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\writer\OBJWriter.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1133,6 +1241,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\reader\OFFReader.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1144,6 +1264,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\writer\OFFWriter.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1157,6 +1289,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\OMFormat.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1168,6 +1312,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\reader\OMReader.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1181,6 +1337,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\System\omstream.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1192,6 +1360,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\writer\OMWriter.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1211,6 +1391,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Mesh\PolyMeshT.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1228,6 +1420,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Utils\SingletonT.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1268,6 +1472,18 @@
 				<File
 					RelativePath=".\OpenMesh\Core\Io\reader\STLReader.cc">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1279,6 +1495,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Io\writer\STLWriter.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
@@ -1300,6 +1528,18 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Mesh\TriMeshT.cc">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
