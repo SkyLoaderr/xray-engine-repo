@@ -450,8 +450,10 @@ void CScriptGameObject::set_desired_position	(const Fvector *desired_position)
 	CAI_Stalker							*stalker = smart_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
 		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
+	else {
+		VERIFY2							(stalker->accessible(desired_position),*stalker->cName());
 		stalker->set_desired_position	(desired_position);
+	}
 }
 
 void  CScriptGameObject::set_desired_direction	()
@@ -530,6 +532,7 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 #endif
 			return;
 		}
+		VERIFY2							(stalker->accessible(level_vertex_id),*stalker->cName());
 		stalker->set_level_dest_vertex	(level_vertex_id);
 	}
 }
