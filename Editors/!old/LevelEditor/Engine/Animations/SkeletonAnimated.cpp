@@ -652,6 +652,17 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 	// sort in decreasing order
 	std::sort(keys,keys+count);
 }
+template <class T>
+IC void clamp_a	( T& val, const T& _low, const T& _high ){
+	if( val<_low ) val = _low; else if( val>_high ) val = _high;
+};
+template <class T>
+IC T clamp_a	( const T val, const T _low, const T _high ){
+	if		( val<_low	)	return _low; 
+	else if	( val>_high )	return _high;
+	else					return val;
+};
+
 void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 {
 	CSkeletonAnimated* K 			= dynamic_cast<CSkeletonAnimated*>(_K); R_ASSERT(K);
@@ -738,7 +749,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     float w;
                     if (fis_zero(ws))	w = 0;
                     else				w = w1/ws;
-                    KEY_Interp	(Result,R[0],R[1], clamp(w,0.f,1.f));
+                    KEY_Interp	(Result,R[0],R[1], clampr(w,0.f,1.f));
                 }
                 break;
             default:
@@ -746,7 +757,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     int count = BLEND_INST.Blend.size();
                     for (int i=0; i<count; i++)		S[i].set(R+i,BI[i]->blendAmount);
                     std::sort	(S,S+count);
-                    KEY_Interp	(Result,*S[0].K, *S[1].K, clamp(S[1].w/(S[0].w+S[1].w),0.f,1.f) );
+                    KEY_Interp	(Result,*S[0].K, *S[1].K, clampr(S[1].w/(S[0].w+S[1].w),0.f,1.f) );
                 }
                 break;
             }
