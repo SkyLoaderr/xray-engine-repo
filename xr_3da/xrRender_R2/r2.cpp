@@ -78,11 +78,11 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
+void					CRender::add_Patch				(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	//Msg		("! NotImplemented: CRender::add_Patch");
 }
-void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
+void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
 	//Msg		("! NotImplemented: CRender::add_Wallmark");
 }

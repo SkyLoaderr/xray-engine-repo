@@ -252,7 +252,7 @@ void CGrenade::Explode() {
 }
 
 void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) {
-	if (0==hWallmark)	return;
+	if (!hWallmark)	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)

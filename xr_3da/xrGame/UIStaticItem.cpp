@@ -33,7 +33,7 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 	SetAlign		(align);
 }
 
-void CUIStaticItem::Render		(ref_shader& sh)
+void CUIStaticItem::Render		(const ref_shader& sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	RCache.set_Shader			(sh?sh:hShader);
@@ -83,7 +83,7 @@ void CUIStaticItem::Render		(ref_shader& sh)
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,v_cnt,0,v_cnt/2);
 }
 //--------------------------------------------------------------------
-void CUIStaticItem::Render(float angle, ref_shader& sh)
+void CUIStaticItem::Render(float angle, const ref_shader& sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	RCache.set_Shader			(sh?sh:hShader);

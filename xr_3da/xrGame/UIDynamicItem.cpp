@@ -18,8 +18,8 @@ CUIDynamicItem::~CUIDynamicItem()
 //--------------------------------------------------------------------
 void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh)
 {
-	if (0==hGeom)	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	if (0==hShader)	hShader.create	(sh,tex);
+	if (!hGeom)		hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	if (!hShader)	hShader.create	(sh,tex);
 }
 
 void CUIDynamicItem::Out(int left, int top, u32 color)
