@@ -210,6 +210,7 @@ CMyD3DApplication::CMyD3DApplication()
 	m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
 	m_d3dEnumeration.AppMinStencilBits	= 1;
 	m_d3dEnumeration.AppRequiresFullscreen = TRUE;
+
 	m_dwCreationWidth					= OUT_WIDTH;
 	m_dwCreationHeight					= OUT_HEIGHT;
 
@@ -517,7 +518,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	pDstT[3].tv = 0.0f;
 	m_pOverlayVB->Unlock();
 
-	// Create overlay VB
+	// Full-screen-quad VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float _w	= w-1, _h = h-1;
