@@ -21,6 +21,10 @@ function save_dialog:InitControls()
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
 	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+	local captiontxt_rect = {x = caption_rect.x/2,
+							 y = caption_rext.y/2,
+							 width = 0,
+							 height = 0}
 	local edit_rect       = {x = indent, 
 						     y = caption_rect.y + caption_rect.height + indent,
 						     width = 500, 
@@ -54,12 +58,19 @@ function save_dialog:InitControls()
 --	main_static:ClipperOn() --clip texture by window region
 	self:AttachChild(main_frame)
 	
-	-- CAPTION --
+	-- CAPTION frame --
 	local wnd_caption = CUIFrameWindow()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
 	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(wnd_caption)
+	
+	local txt_caption = CUIStatic()
+	txt_caption:SetAutoDelete(true)
+	txt_caption:SetWindowName("txt_caption")
+	txt_caption:SetText("SAVE DIALOG")
+	txt_caption:SetTextAlign(CGameFont.alCenter)
+	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 
 
 	------------LIST-----------------
