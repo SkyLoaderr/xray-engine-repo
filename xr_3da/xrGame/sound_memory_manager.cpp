@@ -150,12 +150,12 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
+	const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
+	const CGameObject		*self = dynamic_cast<const CGameObject*>(this);
+
 	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
 	if (m_sounds->end() == J) {
 		CSoundObject			sound_object;
-
-		const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
-		const CGameObject		*self = dynamic_cast<const CGameObject*>(this);
 
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
 		sound_object.m_first_level_time	= Level().timeServer();
