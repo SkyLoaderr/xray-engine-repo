@@ -16,11 +16,9 @@ function evaluator_satiety:__init (treshold, name) super ()
 end
 ----------------------
 function evaluator_satiety:evaluate ()
-    --printf ("CURRENT SATIETY %f", self.object.satiety)
     if self.object.satiety < self.treshold then
        self.value = true
     end    
-    --if self.value == true then printf ("ZHRAT !!!") else printf ("NA PARASHU !!!") end
     return self.value
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -86,15 +84,17 @@ end
 function action_rest:initialize ()
     action_base.initialize (self)
     
-    self.object:set_movement_type (move.stand)
-    --self.object:set_item (object.hide, self.object:best_weapon ())
+    if self.state == 2 then return end
     
-    --if self.state == 0 then
-       --if xr_state.change_state (self.object, xr_state.sit) == true then
-          --printf ("CHANGE STATE")  
-          --return
-       --end   
-    --end   
+    self.object:set_movement_type (move.stand)
+    if self.state == 0 then
+       if xr_state.change_state (self.object, xr_state.sit_wait) == true then
+          if self.object:active_item () ~= nil then
+             self.object:set_item (object.deactivate, self.object:active_item ())
+          end   
+          return
+       end   
+    end   
     
     self.eat_object = self.object:object ("bread")
     if self.eat_object == nil then
@@ -112,7 +112,7 @@ function action_rest:initialize ()
        self.state = 1  
        return 
     end
-       
+    
     self.time_to_eat = device ():time_global () + 30000
     self.stage = 0
     
@@ -121,17 +121,18 @@ end
 function action_rest:execute ()
     action_base.execute (self)
 
-    if xr_state.change_state (self.object, xr_state.sit) == true then
-       --printf ("CHANGE STATE")
-       return 
-    end    
+    local hand_object = self.object:active_item ()
     
     if self.eat_enable == true then
-       self.object:set_item (object.use, self.eat_object)
-       printf ("EAT object %s", self.eat_object:name ())
+       if self.stage == 0 then  
+         if hand_object ~= nil and hand_object:name () == self.eat_object:name () then
+             self.object:clear_animations () 
+             self.stage = 1
+             self.object:set_callback (self, "anim_callback", game_object.animation)
+          end   
+          self.object:set_item (object.use, self.eat_object)
+       end   
        if device ():time_global () - self.time_to_eat > 0 then
-          printf ("EAT END")
-          --self.object:set_item (object.deactivate, self.eat_object)
           self.eat_enable = false
           self.stage = 0
           self.time_to_eat = device ():time_global () + 20000
@@ -140,19 +141,25 @@ function action_rest:execute ()
     end   
     
     if self.drink_enable == true then
-       self.object:set_item (object.use, self.drink_object)
-       printf ("USE drink object %s", self.drink_object:name ())
+       if self.stage == 0 then  
+         if hand_object ~= nil and hand_object:name () == self.drink_object:name () then
+            self.object:clear_animations () 
+            self.stage = 1
+          end   
+          self.object:set_item (object.use, self.drink_object)
+       end   
        if device ():time_global () - self.time_to_eat > 0 then
           self.object:set_item (object.deactivate, self.drink_object)
           self.drink_enable = false
+          self.state = 2
+          xr_state.change_state (self.object, 0)
+          self.object:clear_callback (game_object.animation)
        end
        return
-    else   
-       self.drink_enable = false
-       self.object:motivation_action_manager ():evaluator (properties["rest"]).value = false
-       self.object:set_item (object.activate, self.object:best_weapon ())
-    end
+    end   
     
+    self.object:motivation_action_manager ():evaluator (properties["rest"]).value = false
+    self.object:set_item (object.activate, self.object:best_weapon ())
 end
 ----------------------
 function  action_rest:finalize ()
@@ -161,11 +168,17 @@ function  action_rest:finalize ()
        self.state = 1 
        return
     end
-    xr_state.change_state (self.object, 0)
+    self.object:clear_callback (game_object.animation)
 end    
 ----------------------
-
-
+function action_rest:anim_callback (obj, action_type, index)
+    --if action_type ~= game_object.animation then return end
+    printf ("ANIMATION CALLBACK 1")
+    if self.object:active_item () == nil then
+       printf ("ANIMATION CALLBACK 2") 
+       self.object:add_animation ("item_1_draw_0", true)
+    end        
+end
 
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -173,12 +186,11 @@ function add_to_binder (obj, property_id)
 
 	local manager  = obj:motivation_action_manager ()
 
-   	--local ini = obj:spawn_ini ()
-   	--if ini == nil or ini:section_exist ("rest") == false or ini:line_exist ("rest", "satiety_threshold") == false then return end
-    
-    --local satiety = ini:r_u32 ("rest", "satiety_threshold")
+   	local ini = obj:spawn_ini ()
+   	if ini == nil or ini:section_exist ("rest") == false or ini:line_exist ("rest", "satiety_threshold") == false then return end
+    local satiety = ini:r_u32 ("rest", "satiety_threshold") / 100.0
    	
-    manager:add_evaluator (properties["rest"], this.evaluator_satiety (0.2, "evaluator_satiety"))
+    manager:add_evaluator (properties["rest"], this.evaluator_satiety (satiety, "evaluator_satiety"))
     manager:add_evaluator (properties["food"], this.evaluator_food ("evaluator_food"))
     
     local action = this.action_rest ("action_rest")
