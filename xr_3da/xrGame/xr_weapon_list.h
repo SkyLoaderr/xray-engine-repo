@@ -52,6 +52,7 @@ public:
 	void			Update				(float dt, bool bHUDView);
 	void			OnRender			(bool bHUDView);
 
-	IC CWeapon*		ActiveWeapon			(){ return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; };
+	IC CWeapon*		ActiveWeapon		() { return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; }
+};
 
 #endif //__XR_OBJECT_LIST_H__

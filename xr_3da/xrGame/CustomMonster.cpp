@@ -6,10 +6,10 @@
 #include "..\xr_mac.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
+#include "ai_console.h"
 #include "CustomMonster.h"
 #include "xr_weapon_list.h"
 #include "customitem.h"
-#include "ai_console.h"
 #include "hudmanager.h"
 #include "..\xr_hudfont.h"
 
