@@ -88,6 +88,322 @@ LINK32=link.exe
 # Begin Group "Kernel"
 
 # PROP Default_Filter ""
+# Begin Group "Resources"
+
+# PROP Default_Filter ""
 # End Group
+# Begin Group "Math"
+
+# PROP Default_Filter ""
+# Begin Group "CPUID"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\cpuid.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cpuid.h
+# End Source File
+# End Group
+# Begin Group "EXT"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FixedVector.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\_bitwise.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_color.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_compressed_normal.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_compressed_normal.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_d3d_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fbox2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fpoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_frect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_intersection_quad.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_ipoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_irect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_math.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_math.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_matrix33.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_obb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_plane.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_quaternion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_quaternion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_random.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_sphere.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_sphere.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_std_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_stl_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_types.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector4.h
+# End Source File
+# End Group
+# Begin Group "Log"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\DebugKernel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DebugKernel.h
+# End Source File
+# End Group
+# Begin Group "Rapid"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\cl_bboxcollide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_build.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_collector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_collector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_collide.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_defs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_intersect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_intersect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_moments.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_overlap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_RAPID.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_RAPID.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_raypick.cpp
+# End Source File
+# End Group
+# Begin Group "FS"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FS.h
+# End Source File
+# End Group
+# Begin Group "Generic"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\clsid.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\clsid.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\defines.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FTimer.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Image.cpp
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Image.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\log.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\log.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LzHuf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lzhuf.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\std_classes.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\vector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_func.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_list.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrSyncronize.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrThread.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrThread.h
+# End Source File
 # End Target
 # End Project
