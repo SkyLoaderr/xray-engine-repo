@@ -55,6 +55,11 @@ void CAttachableItem::renderable_Render()
 
 void CAttachableItem::enable		(bool value)
 {
+	if (!H_Parent()) {
+		m_enabled			= value;
+		return;
+	}
+
 	if (value && !enabled() && H_Parent()) {
 		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(H_Parent());
 		VERIFY				(owner);

@@ -232,6 +232,10 @@ void CTorch::OnH_A_Chield()
 //	Switch							(false);
 	// end of comments
 }
+void CTorch::OnH_A_Independent	()
+{
+	enable(true);
+}
 
 void CTorch::OnH_B_Independent() 
 {
@@ -323,6 +327,16 @@ void CTorch::UpdateCL	()
 void CTorch::renderable_Render	() 
 {
 	inherited::renderable_Render();
+	float box_size = .05f;
+	RCache.dbg_DrawAABB  (XFORM().c ,box_size,box_size,box_size,D3DCOLOR_XRGB(0,255,0));
+
+	Fvector dir = XFORM().c;
+	Fvector dir_mul = m_focus; 
+	dir_mul.mul(3.0f);
+	dir.add(m_focus);
+	RCache.dbg_DrawLINE (Fidentity, XFORM().c, dir, D3DCOLOR_XRGB(0,255,0));
+
+	RCache.dbg_DrawAABB  (m_pos ,box_size,box_size,box_size,D3DCOLOR_XRGB(0,0,255));
 }
 
 void CTorch::reinit				()
