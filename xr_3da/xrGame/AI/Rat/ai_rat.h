@@ -83,6 +83,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// CLASS MEMBERS
 		//////////////////////////
+		
 		// ANIMATIONS
 		SRatAnimations		m_tRatAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
@@ -184,7 +185,9 @@ class CAI_Rat : public CCustomMonster
 		float				m_fAttackAngle;
 		float				m_fMaxPursuitRadius;
 		float				m_fMaxHomeRadius;
-		DWORD				m_dwAttackRefreshRate;
+
+		// DDD
+		DWORD				m_dwActionRefreshRate;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

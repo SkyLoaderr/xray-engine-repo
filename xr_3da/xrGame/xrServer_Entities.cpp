@@ -481,6 +481,45 @@ public:
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
+// Rat
+//////////////////////////////////////////////////////////////////////////
+
+xrSE_Rat::xrSE_Rat()
+{
+	u32ActionRefreshRate = 1000;
+}
+
+void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P,size);
+}
+
+void xrSE_Rat::STATE_Write(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+}
+
+void xrSE_Rat::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+	P.r_u32(u32ActionRefreshRate);
+}
+
+void xrSE_Rat::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+	P.w_u32(u32ActionRefreshRate);
+}
+
+#ifdef _EDITOR
+void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
+{
+   	inherited::FillProp(pref, values);
+   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Attack refresh rate",	&u32AttackRefreshRate, PHelper.CreateU32(0,10000,100));
+}
+#endif
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
@@ -520,42 +559,3 @@ void			F_entity_Destroy	(xrServerEntity* P)
 {
 	_DELETE		(P);
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Rat
-//////////////////////////////////////////////////////////////////////////
-
-xrSE_Rat::xrSE_Rat()
-{
-	u32AttackRefreshRate = 1000;
-}
-
-void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
-{
-	inherited::STATE_Read(P,size);
-}
-
-void xrSE_Rat::STATE_Write(NET_Packet& P)
-{
-	inherited::STATE_Write(P);
-}
-
-void xrSE_Rat::UPDATE_Read(NET_Packet& P)
-{
-	inherited::UPDATE_Read(P);
-	P.r_u32(u32AttackRefreshRate);
-}
-
-void xrSE_Rat::UPDATE_Write(NET_Packet& P)
-{
-	inherited::UPDATE_Write(P);
-	P.w_u32(u32AttackRefreshRate);
-}
-
-#ifdef _EDITOR
-void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
-{
-   	inherited::FillProp(pref, values);
-   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Attack refresh rate",	&u32AttackRefreshRate, PHelper.CreateU32(0,10000,100));
-}
-#endif
