@@ -169,7 +169,7 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 	}
 }
 
-VOID CDeflector::Capture(CDeflector *D, int b_u, int b_v, int s_u, int s_v)
+VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v)
 {
 	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
 	UVpoint guard;	guard.set	(1.f/512.f, 1.f/512.f);
