@@ -7,7 +7,10 @@
 
 BOOL				SphereValid	(vector<Fvector>& geom, Fsphere& test)
 {
-	if (fis_gremlin(test.P.x) || fis_denormal(test.R))	return FALSE;
+	if (fis_gremlin(test.P.x) || fis_denormal(test.R))	{
+		clMsg	("*** Attention ***: Gremlin sphere")
+		return FALSE;
+	}
 
 	Fsphere	S	=	test;
 	S.R			+=	EPS_L;
@@ -25,12 +28,7 @@ void				OGF_Base::CalcBounds	()
 	GetGeometry					(V);
 	FPU::m64					();
 
-	// 1: calc first variation
-	Fsphere	S1;
-	S1.compute					(V.begin(),V.size());
-	BOOL B1						= SphereValid(V,S1);
-
-	// 2: calc ordinary algorithm
+	// 1: calc ordinary algorithm (2nd)
 	Fsphere	S2;
 	bbox.invalidate				();
 	for (I=V.begin(); I!=V.end(); I++)	bbox.modify(*I);
@@ -43,7 +41,13 @@ void				OGF_Base::CalcBounds	()
 	}
 	S2.R = _sqrt (S2.R);
 	BOOL B2						= SphereValid(V,S2);
+	while (!B2)	{ S2.R+=EPS_S; B2 = SphereValid(V,S2); }
 	R_ASSERT					(B2);
+
+	// 2: calc first variation
+	Fsphere	S1;
+	S1.compute					(V.begin(),V.size());
+	BOOL B1						= SphereValid(V,S1);
 
 	// 3: calc magic-fm
 	Mgc::Sphere _S3				= Mgc::MinSphere(V.size(), (const Mgc::Vector3*) V.begin());
