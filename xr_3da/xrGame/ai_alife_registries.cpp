@@ -358,13 +358,12 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 #endif
 		CSE_Abstract.children.push_back(tpALifeItem->ID);
 		tpALifeItem->ID_Parent = CSE_Abstract.ID;
+		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 	}
 #ifdef DEBUG_LOG
 	else
 		Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
 #endif
-
-	vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 
 	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 	VERIFY(tpALifeTraderParams);

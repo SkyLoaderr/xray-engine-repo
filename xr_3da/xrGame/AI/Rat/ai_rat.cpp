@@ -376,3 +376,7 @@ void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 		m_saved_hit_position.set(p_in_object_space);
 	}
 }
+
+void CAI_Rat::feel_touch_new(CObject* O)
+{
+}
