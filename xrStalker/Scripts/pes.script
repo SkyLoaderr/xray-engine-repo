@@ -1,3 +1,37 @@
+-- Сталкер - pes
+-- Скриптовая зона - pes_zone
+-- путь - way_chief
+-- pes использует путь way_chief после падения с моста. Анимация norm_dmg_escape_0
+
+
+local entered = false
+
+function on_enter (zone, obj)
+    entered = true
+    zone:clear_callback (true)
+end
+
 function main ()
+
+    local stalker = get_level_object ("pes")
+    stalker:script (true, pes.script_name ())
+    
+    local z = get_level_object ("pes_zone")
+    z:set_callback (pes.on_enter, true)
+    
+    action (stalker, anim (anim.free), cond (cond.time_end, 2000))
+    while stalker:action () do wait () end
+    
+    reset_action (stalker, pes.script_name ())
+    action (stalker, object (stalker:best_weapon (), object.activate), cond (cond.time_end, time_infinite))
+    
+    while entered == false do wait () end
+    
+    reset_action (stalker, pes.script_name ())
+    action (stalker, move (move.standing, move.walk, move.line, patrol ("way_chief")),
+            anim ("norm_dmg_escape_0"), look (look.path_dir), cond (cond.time_end, time_infinite))
+            
+    while stalker:action () do wait () end            
+    stalker:script (false, pes.script_name ())
 
 end
