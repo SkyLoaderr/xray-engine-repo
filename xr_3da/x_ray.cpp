@@ -182,19 +182,6 @@ void	test_rtc	()
 }
 */
 
-class _A 
-{
-	int _a;
-public:
-	virtual ~_A()	{}
-};
-
-class _B : public _A
-{
-	int _b;
-public:
-};
-
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
