@@ -67,7 +67,7 @@ void CSector::Render(CFrustum &F)
 //	num_portals++;
 
 	// Occluders
-	Occluders.Select	(F);
+	Occluders.Select	(F,Device.vCameraPosition,Device.mFullTransform);
 	CVisiCache vcc; 
 	Occluders.InitCache	(vcc);
 

@@ -91,7 +91,7 @@ protected:
 	COccluderSystem			Occluders;
 
 	// object query
-	void					ll_GetObjects(CFrustum& F);
+	void					ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM);
 public:
 	int						SelfID;
 
