@@ -34,7 +34,7 @@ end
 
 -- функция перехода из первого состояние в нулевое
 function dont_see_actor(npc, fsm)
-	if npc:see(actor) == false or !npc:action() then
+	if npc:see(actor) == false or not npc:action() then
 		log("i lost a trace of this fucking actor")
 		return true
 	end
