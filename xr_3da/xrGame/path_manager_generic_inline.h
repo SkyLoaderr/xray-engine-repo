@@ -89,6 +89,12 @@ IC	const _index_type &CGenericPathManager::start_node		() const
 }
 
 TEMPLATE_SPECIALIZATION
+IC	const _index_type &CGenericPathManager::goal_node		() const
+{
+	return					(goal_node_index);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	bool CGenericPathManager::is_goal_reached		(const _index_type &vertex_id) const
 {
 	return					(vertex_id == goal_node_index);

@@ -11,6 +11,7 @@
 //		algorithms
 #include "a_star.h"
 #include "dijkstra.h"
+//#include "dijkstra_bidirectional.h"
 //		path builders
 #include "edge_path.h"
 //		vertex managers
@@ -105,7 +106,9 @@ protected:
 		CVertexManager,
 		CVertexAllocator
 	>														CAlgorithm;
+	
 	typedef CDijkstra<
+//	typedef CDijkstraBidirectional<
 		_solver_dist_type,
 		CSolverPriorityQueue,
 		CSolverVertexManager,

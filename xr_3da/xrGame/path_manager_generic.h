@@ -40,6 +40,7 @@ public:
 	template <typename T>
 	IC		void		create_path			(T &vertex);
 	IC		const _index_type &start_node	() const;
+	IC		const _index_type &goal_node	() const;
 	IC		bool		is_goal_reached		(const _index_type &vertex_id) const;
 	IC		bool		is_limit_reached	(const _iteration_type iteration_count) const;
 	IC		bool		is_accessible		(const _index_type &vertex_id) const;
