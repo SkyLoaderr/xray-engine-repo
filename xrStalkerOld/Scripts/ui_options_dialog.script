@@ -148,9 +148,12 @@ function options_dialog:InitControls()
 end
 
 function options_dialog:InitCallBacks()
-	self:AddCallback("btn_accept", ui_events.BUTTON_CLICKED, self, "OnButton_accept")
-	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self, "OnButton_cancel")
-	self:AddCallback("btn_video",  ui_events.BUTTON_CLICKED, self, "OnButton_video")
+	self:AddCallback("btn_accept",   ui_events.BUTTON_CLICKED, self, "OnButton_accept")
+	self:AddCallback("btn_cancel",   ui_events.BUTTON_CLICKED, self, "OnButton_cancel")
+	self:AddCallback("btn_video",    ui_events.BUTTON_CLICKED, self, "OnButton_video")
+	self:AddCallback("btn_sound",    ui_events.BUTTON_CLICKED, self, "OnButton_sound")
+	self:AddCallback("btn_game",     ui_events.BUTTON_CLICKED, self, "OnButton_game")
+	self:AddCallback("btn_controls", ui_events.BUTTON_CLICKED, self, "OnButton_controls")
 end
 
 function options_dialog:HideAllTabs()
@@ -158,7 +161,22 @@ function options_dialog:HideAllTabs()
 end
 
 function options_dialog:OnButton_video()
-	
+	HideAllTabs()
+	self.tab_video:Show(true)
+end
+
+function options_dialog:OnButton_sound()
+	HideAllTabs()
+	self.tab_video:Show(true)
+end
+
+function options_dialog:OnButton_game()
+	HideAllTabs()
+	self.tab_video:Show(true)
+end
+
+function options_dialog:OnButton_controls()
+	HideAllTabs()
 	self.tab_video:Show(true)
 end
 
