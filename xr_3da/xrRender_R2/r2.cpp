@@ -181,9 +181,18 @@ IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size(
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
 IRender_Visual*			CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
-D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
-IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
-IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
+D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id, BOOL	_alt)	{ 
+	if (_alt)	{ VERIFY(id<int(xDC.size()));	return xDC[id].begin();	}
+	else		{ VERIFY(id<int(nDC.size()));	return nDC[id].begin(); }
+}
+IDirect3DVertexBuffer9*	CRender::getVB					(int id, BOOL	_alt)	{
+	if (_alt)	{ VERIFY(id<int(xVB.size()));	return xVB[id];		}
+	else		{ VERIFY(id<int(nVB.size()));	return nVB[id];		}
+}
+IDirect3DIndexBuffer9*	CRender::getIB					(int id, BOOL	_alt)	{ 
+	if (_alt)	{ VERIFY(id<int(xIB.size()));	return xIB[id];		}
+	else		{ VERIFY(id<int(nIB.size()));	return nIB[id];		}
+}
 FSlideWindowItem*		CRender::getSWI					(int id)			{ VERIFY(id<int(SWIs.size()));		return &SWIs[id];	}
 IRender_Target*			CRender::getTarget				()					{ return Target;										}
 
