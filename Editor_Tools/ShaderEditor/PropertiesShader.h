@@ -69,13 +69,11 @@ private:	// User declarations
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);
 	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0);
-	static CFS_Memory m_Stream;
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();
     static void __fastcall HideProperties();
-    static void __fastcall LoadProperties();
-    static void __fastcall SaveProperties();
+    static void __fastcall InitProperties();
 };
 //---------------------------------------------------------------------------
 #endif

@@ -26,6 +26,10 @@
 #define atan2f atan2
 #define logf log
 
+#ifndef O_SEQUENTIAL
+#define O_SEQUENTIAL 0
+#endif
+
 #define DIRECTSOUND_VERSION 0x0700
 #define DIRECTINPUT_VERSION 0x0700
 

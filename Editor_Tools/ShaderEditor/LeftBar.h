@@ -1,6 +1,4 @@
 //---------------------------------------------------------------------------
-
-
 #ifndef LeftBarH
 #define LeftBarH
 //---------------------------------------------------------------------------
@@ -85,21 +83,21 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
+	void __fastcall tvShadersAfterSelectionChange(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 	TElTreeItem* 	FindFolder(LPCSTR full_name);
 	TElTreeItem* 	AppendFolder(LPCSTR full_name);
-	void __fastcall MakeFolderName(TElTreeItem* select_item, AnsiString& folder);
+	bool __fastcall MakeName(TElTreeItem* select_item, AnsiString& folder, bool bFull);
 	void __fastcall GenerateFolderName(TElTreeItem* node,AnsiString& name);
 	TElTreeItem* 	FindFolderItem(TElTreeItem* start_item, const AnsiString& name);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
-    void 			InitPalette	(TemplateVec& lst);
-    void 			FillBlenderTree(BlenderMap* blenders);
-	void 			AddBlender(LPCSTR full_name);
+    void 			InitPalette		(TemplateVec& lst);
+	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

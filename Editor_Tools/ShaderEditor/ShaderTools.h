@@ -51,16 +51,19 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     void				RemoveConstant		(LPCSTR name);
 
 friend class CCollapseBlender;
-friend class CExpandBlender;
+friend class CRefsBlender;
 friend class TfrmShaderProperties;
     void				CollapseMatrix		(LPSTR name);
     void				CollapseConstant	(LPSTR name);
-    void				ExpandMatrix		(LPSTR name);
-    void				ExpandConstant		(LPSTR name);
-    void				ExpandReferences	();
     void				CollapseReferences	();
+    void				UpdateMatrixRefs	(LPSTR name);
+    void				UpdateConstantRefs	(LPSTR name);
+    void				UpdateRefCounters	();
 
     void 				ParseBlender		(CBlender* B, CParseBlender& P);
+
+	CFS_Memory 			m_BlenderStream;
+    bool 				m_bUpdateCurrent;
 public:
     CBlender*			m_CurrentBlender;
 public:
@@ -91,9 +94,9 @@ public:
 
     // misc
     void				SetCurrentBlender(CBlender* B);
+    void				SetCurrentBlender(LPCSTR name);
     CBlender*			AppendBlender	(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
-    bool				GetCurrentBlender(CFS_Base& data);
-    void				SetCurrentBlender(CStream& data);
+    void				ApplyChanges	();
 };
 extern CShaderTools	SHTools;
 //---------------------------------------------------------------------------

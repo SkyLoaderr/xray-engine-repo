@@ -160,7 +160,7 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
-{
+{                                   
     if (Shift.Contains(ssCtrl)){
         if (Key=='S')					UI->Command(COMMAND_SAVE);
     }
@@ -171,7 +171,7 @@ void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 void __fastcall TfrmMain::UpdateCaption()
 {
     AnsiString name;
-    name.sprintf("Shader Editor - [%s%s]",UI->GetEditFileName()[0]?UI->GetEditFileName():"noname","");//Scene->IsModified()?"*":"");
+    name.sprintf("Shader Editor - [shaders.xr%s]",SHTools.IsModified()?"*":"");
     Caption = name;
 }
 //---------------------------------------------------------------------------

@@ -68,6 +68,9 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_SELECT_PREVIEW_OBJ:
 		SHTools.SelectPreviewObject(p1);
     	break;
+    case COMMAND_APPLY_CHANGES:
+    	SHTools.ApplyChanges();
+    	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;

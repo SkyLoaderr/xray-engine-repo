@@ -20,6 +20,8 @@ CShaderTools::CShaderTools(){
 	m_LibObject 		= 0;
 	m_EditObject 		= 0;
     m_CurrentBlender 	= 0;
+    m_bUpdateCurrent	= false;
+    m_BlenderStream.clear();
 }
 
 CShaderTools::~CShaderTools(){
@@ -160,9 +162,18 @@ void CShaderTools::ResetPreviewObject(){
     UI->RedrawScene();
 }
 
+void CShaderTools::ApplyChanges(){
+    if (m_CurrentBlender){
+        CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
+        m_CurrentBlender->Load(data);
+    }
+}
+
 void CShaderTools::Load(){
 	AnsiString fn = "shaders.xr";
     FS.m_GameRoot.Update(fn);
+
+    m_bUpdateCurrent	= false;
 
     if (FS.Exist(fn.c_str())){
         CCompressedStream		FS(fn.c_str(),"shENGINE");
@@ -171,7 +182,7 @@ void CShaderTools::Load(){
         // Load constants
         {
             CStream*	fs		= FS.OpenChunk(0);
-            while (!fs->Eof())	{
+            while (fs&&!fs->Eof())	{
                 fs->RstringZ	(name);
                 CConstant*		C = new CConstant;
                 C->Load			(fs);
@@ -183,7 +194,7 @@ void CShaderTools::Load(){
         // Load matrices
         {
             CStream*	fs		= FS.OpenChunk(1);
-            while (!fs->Eof())	{
+            while (fs&&!fs->Eof())	{
                 fs->RstringZ	(name);
                 CMatrix*		M = new CMatrix;
                 M->Load			(fs);
@@ -195,43 +206,90 @@ void CShaderTools::Load(){
         // load blenders
         {
             CStream*	fs		= FS.OpenChunk(2);
-            while (!fs->Eof())	{
+            while (fs&&!fs->Eof())	{
                 CBlender_DESC	desc;
                 fs->Read		(&desc,sizeof(desc));
                 CBlender*		B = CBlender::Create(desc.CLS);
                 fs->Seek		(fs->Tell()-sizeof(desc));
                 B->Load			(*fs);
                 m_Blenders.insert(make_pair(strdup(desc.cName),B));
-                fraLeftBar->AddBlender(desc.cName);
+                fraLeftBar->AddBlender(desc.cName,false);
             }
             fs->Close();
         }
-
-        ExpandReferences();
+        UpdateRefCounters		();
+//        ExpandReferences		();
+	    m_bUpdateCurrent		= true;
+        if (fraLeftBar->tvShaders->Selected) 	SetCurrentBlender(AnsiString(fraLeftBar->tvShaders->Selected->Text).c_str());
+        else					    	   		SetCurrentBlender((CBlender*)0);
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file 'shaders.xr'");
     }
 }
 
 void CShaderTools::Save(){
+    ApplyChanges();
+    LPCSTR name					= m_CurrentBlender?m_CurrentBlender->getName():0;
+	SetCurrentBlender			((CBlender*)0);
+	m_bUpdateCurrent			= false;
+
 	CollapseReferences();
     // save
-    //...
-    ExpandReferences();
+	AnsiString fn = "shaders.xr";
+    FS.m_GameRoot.Update(fn);
+
+    CFS_Memory F;
+
+    // Save constants
+    {
+    	F.open_chunk(0);
+		for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++){
+        	F.WstringZ(c->first);
+        	c->second->Save(&F);
+    	}
+        F.close_chunk();
+    }
+
+    // Save matrices
+    {
+    	F.open_chunk(1);
+		for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++){
+        	F.WstringZ(m->first);
+        	m->second->Save(&F);
+        }
+        F.close_chunk();
+    }
+
+    // Save blenders
+    {
+    	F.open_chunk(2);
+		for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
+        	b->second->Save(F);
+        F.close_chunk();
+    }
+    // copy exist file
+    FS.MarkFile(fn);
+    // save new file
+    F.SaveTo(fn.c_str(), "shENGINE");
+    //expand
+//    ExpandReferences();
+	m_bUpdateCurrent		= true;
+	SetCurrentBlender		(name);
 }
 
 CBlender* CShaderTools::FindBlender(LPCSTR name){
-	R_ASSERT(name && name[0]);
-	LPSTR N = LPSTR(name);
-	BlenderPairIt I = m_Blenders.find	(N);
-	if (I==m_Blenders.end())return 0;
-	else					return I->second;
+	if (name && name[0]){
+		LPSTR N = LPSTR(name);
+		BlenderPairIt I = m_Blenders.find	(N);
+		if (I==m_Blenders.end())return 0;
+		else					return I->second;
+    }else return 0;
 }
 
 CMatrix* CShaderTools::FindMatrix(LPCSTR name){
 	R_ASSERT(name && name[0]);
 	LPSTR N = LPSTR(name);
-	MatrixPairIt I = m_Matrices.find	(N);    
+	MatrixPairIt I = m_Matrices.find	(N);
 	if (I==m_Matrices.end())return 0;
 	else					return I->second;
 }
@@ -299,9 +357,11 @@ CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlen
         }
         data.Advance(sz);
     }
+    data.Seek(0);
+    B->Load(data);
     // insert blender
 	m_Blenders.insert(make_pair(strdup(name),B));
-	fraLeftBar->AddBlender(name);
+	fraLeftBar->AddBlender(name,true);
     return B;
 }
 
@@ -356,26 +416,30 @@ void CShaderTools::RemoveConstant(LPCSTR name){
 }
 
 void CShaderTools::SetCurrentBlender(CBlender* B){
-	m_CurrentBlender = B;
-    TfrmShaderProperties::LoadProperties();
+    if (!m_bUpdateCurrent) return;
+
+    if (m_CurrentBlender){
+        CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
+        m_CurrentBlender->Load(data);
+    }
+	if (m_CurrentBlender!=B){
+        m_BlenderStream.clear();
+        m_CurrentBlender = B;
+        if (m_CurrentBlender)
+            m_CurrentBlender->Save(m_BlenderStream);
+		TfrmShaderProperties::InitProperties();
+    }
 }
 
-bool CShaderTools::GetCurrentBlender(CFS_Base& data){
-	if (m_CurrentBlender)
-		m_CurrentBlender->Save(data);
-    return !!m_CurrentBlender;
+void CShaderTools::SetCurrentBlender(LPCSTR name){
+	SetCurrentBlender(FindBlender(name));
 }
-
-void CShaderTools::SetCurrentBlender(CStream& data){
-	if (m_CurrentBlender)
-		m_CurrentBlender->Load(data);
-}
-
+/*
 void CShaderTools::ExpandMatrix(LPSTR name){
 	if (name&&name[0]){
     	CMatrix* M = FindMatrix(name); VERIFY(M);
-		if (M->dwReference>0)
-        	strcpy(name,AppendMatrix(M));
+		if (M->dwReference==0) 	M->dwReference++;
+        else 					strcpy(name,AppendMatrix(M));
     }else{
     	strcpy(name,AppendMatrix());
     }
@@ -384,13 +448,12 @@ void CShaderTools::ExpandMatrix(LPSTR name){
 void CShaderTools::ExpandConstant(LPSTR name){
 	if (name&&name[0]){
     	CConstant* C = FindConstant(name); VERIFY(C);
-		if (C->dwReference>0)
-        	strcpy(name,AppendConstant(C));
+		if (C->dwReference==0)	C->dwReference++;
+        else 					strcpy(name,AppendConstant(C));
     }else{
     	strcpy(name,AppendMatrix());
     }
 }
-
 //
 class CExpandBlender: public CParseBlender{
 public:
@@ -401,6 +464,7 @@ public:
         };
     }
 };
+*/
 
 class CCollapseBlender: public CParseBlender{
 public:
@@ -412,12 +476,25 @@ public:
     }
 };
 
+class CRefsBlender: public CParseBlender{
+public:
+	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
+    	switch(type){
+        case BPID_MATRIX: 	SHTools.UpdateMatrixRefs	((LPSTR)data); break;
+        case BPID_CONSTANT: SHTools.UpdateConstantRefs	((LPSTR)data); break;
+        };
+    }
+};
+
 void CShaderTools::CollapseMatrix(LPSTR name){
 	R_ASSERT(name&&name[0]);
     CMatrix* M = FindMatrix(name); VERIFY(M);
     for (MatrixPairIt m=m_OptMatrices.begin(); m!=m_OptMatrices.end(); m++){
+    	if (M==m->second){ m->second->dwReference++; return; }
         if (m->second->Similar(*M)){
             strcpy(name,m->first);
+            _DELETE(M);
+            m->second->dwReference++;
             return;
         }
     }
@@ -429,8 +506,11 @@ void CShaderTools::CollapseConstant(LPSTR name){
 	R_ASSERT(name&&name[0]);
     CConstant* C = FindConstant(name); VERIFY(C);
     for (ConstantPairIt c=m_OptConstants.begin(); c!=m_OptConstants.end(); c++){
+    	if (C==c->second){ c->second->dwReference++; return; }
         if (c->second->Similar(*C)){
             strcpy(name,c->first);
+            _DELETE(C);
+            c->second->dwReference++;
             return;
         }
     }
@@ -438,8 +518,21 @@ void CShaderTools::CollapseConstant(LPSTR name){
 	m_OptConstants.insert(make_pair(strdup(name),C));
 }
 
-static CExpandBlender 	ExpandBlender;
+void CShaderTools::UpdateMatrixRefs(LPSTR name){
+	R_ASSERT(name&&name[0]);
+	CMatrix* M = FindMatrix(name); R_ASSERT(M);
+	M->dwReference++;
+}
+
+void CShaderTools::UpdateConstantRefs(LPSTR name){
+	R_ASSERT(name&&name[0]);
+	CConstant* C = FindConstant(name); R_ASSERT(C);
+	C->dwReference++;
+}
+
+//static CExpandBlender 	ExpandBlender;
 static CCollapseBlender CollapseBlender;
+static CRefsBlender 	UpdateBlenderRefs;
 
 void CShaderTools::ParseBlender(CBlender* B, CParseBlender& P){
     CFS_Memory M;
@@ -467,13 +560,16 @@ void CShaderTools::ParseBlender(CBlender* B, CParseBlender& P){
         P.Parse(type, key, data.Pointer());
         data.Advance(sz);
     }
-}
 
+    data.Seek(0);
+    B->Load(data);
+}
+/*
 void CShaderTools::ExpandReferences(){
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,ExpandBlender);
 }
-
+*/
 void CShaderTools::CollapseReferences(){
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,CollapseBlender);
@@ -486,4 +582,10 @@ void CShaderTools::CollapseReferences(){
 	m_OptConstants.clear();
     m_OptMatrices.clear	();
 }
+
+void CShaderTools::UpdateRefCounters(){
+	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
+    	ParseBlender(b->second,UpdateBlenderRefs);
+}
+
 

@@ -302,6 +302,7 @@ object fraLeftBar: TfraLeftBar
           VertScrollBarStyles.ButtonSize = 16
           VirtualityLevel = vlNone
           BkColor = clGray
+          OnAfterSelectionChange = tvShadersAfterSelectionChange
           OnMouseDown = tvShadersMouseDown
         end
       end

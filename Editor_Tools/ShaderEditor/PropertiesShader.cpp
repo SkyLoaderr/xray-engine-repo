@@ -16,7 +16,6 @@
 #pragma link "ExtBtn"
 #pragma resource "*.dfm"
 
-CFS_Memory TfrmShaderProperties::m_Stream;
 const LPSTR BOOLString[2]={"False","True"};
 
 TfrmShaderProperties* TfrmShaderProperties::form=0;
@@ -63,7 +62,7 @@ void __fastcall TfrmShaderProperties::FormShow(TObject *Sender)
     InplaceCustom->Editor->ReadOnly	= true;
     InplaceCustom->Editor->OnButtonClick = CustomClick;
 
-	LoadProperties();
+	InitProperties();
 }
 //---------------------------------------------------------------------------
 
@@ -76,7 +75,7 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
 
     switch (type){
     case BPID_MARKER:	CS->CellType = sftUndef;	break;
-    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Matrix]");   break;
+    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Matrix]"+AnsiString((LPSTR)value));   break;
     case BPID_CONSTANT:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Color]");	break;
     case BPID_TEXTURE:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Textures]");	break;
     case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->Add	(AnsiString(*(int*)value));		break;
@@ -232,46 +231,43 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 // DWORD	type
 // stringZ	name
 // []		data
-void __fastcall TfrmShaderProperties::LoadProperties(){
-	m_Stream.clear();
-	if (form&&SHTools.GetCurrentBlender(m_Stream)){ // fill Tree
-        CStream data(m_Stream.pointer(), m_Stream.size());
-        data.Advance(sizeof(CBlender_DESC));
-        DWORD type;
-        char key[255];
-        TElTreeItem* marker_node=0;
-        TElTreeItem* node;
-		form->tvProperties->IsUpdating = true;
-    	form->tvProperties->Items->Clear();
+void __fastcall TfrmShaderProperties::InitProperties(){
+	if (form){
+    	if (SHTools.m_CurrentBlender){ // fill Tree
+            CStream data(SHTools.m_BlenderStream.pointer(), SHTools.m_BlenderStream.size());
+            data.Advance(sizeof(CBlender_DESC));
+            DWORD type;
+            char key[255];
+            TElTreeItem* marker_node=0;
+            TElTreeItem* node;
+            form->tvProperties->IsUpdating = true;
+            form->tvProperties->Items->Clear();
 
-        while (!data.Eof()){
-	        int sz=0;
-            type = data.Rdword();
-            data.RstringZ(key);
-            switch(type){
-            case BPID_MARKER:	break;
-            case BPID_TOKEN: 	break;
-            case BPID_MATRIX:	sz=sizeof(string64);	break;
-            case BPID_CONSTANT:	sz=sizeof(string64); 	break;
-            case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
-            case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
-            case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
-            case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
+            while (!data.Eof()){
+                int sz=0;
+                type = data.Rdword();
+                data.RstringZ(key);
+                switch(type){
+                case BPID_MARKER:	break;
+                case BPID_TOKEN: 	break;
+                case BPID_MATRIX:	sz=sizeof(string64);	break;
+                case BPID_CONSTANT:	sz=sizeof(string64); 	break;
+                case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
+                case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
+                case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
+                case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
+                }
+                if (type==BPID_MARKER) marker_node = 0;
+                node = form->AddItem(marker_node,type,key,(LPDWORD)data.Pointer());
+                if (type==BPID_MARKER) marker_node = node;
+                data.Advance(sz);
             }
-            if (type==BPID_MARKER) marker_node = 0;
-            node = form->AddItem(marker_node,type,key,(LPDWORD)data.Pointer());
-            if (type==BPID_MARKER) marker_node = node;
-            data.Advance(sz);
+            form->tvProperties->FullExpand();
+            form->tvProperties->IsUpdating = false;
+        }else{
+	    	form->tvProperties->Items->Clear();
         }
-		form->tvProperties->IsUpdating = false;
-	    form->tvProperties->FullExpand();
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmShaderProperties::SaveProperties(){
-	CStream data(m_Stream.pointer(), m_Stream.size());
-    SHTools.SetCurrentBlender(data);
 }
 //---------------------------------------------------------------------------
 
