@@ -280,13 +280,9 @@ VOID CDeflector::Light()
 
 	// Calculate color of border pixels
 	lm.dwWidth	= s_x;	lm.dwHeight	= s_y;
-	ApplyBorders(lm,254);
-	ApplyBorders(lm,253);
-	ApplyBorders(lm,252);
+	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 	
-	// return;
-
 	// Try to shrink lightmap in U & V direction to ONE pixel
 	{
 		// Calculate average color
@@ -328,12 +324,13 @@ VOID CDeflector::Light()
 		// Compress if needed
 		if (bCompress)
 		{
+			Msg		("Compressing");
 			DWORD	c_x			= BORDER*2;
 			DWORD	c_y			= BORDER*2;
 			DWORD   c_size		= c_x*c_y;
 			LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
 			ZeroMemory			(compressed,c_size*4);
-			DWORD	c_fill		= RGBA_MAKE		(_r,_g,_b,253);
+			DWORD	c_fill		= RGBA_MAKE		(_r,_g,_b,255-BORDER);
 			for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
 
 			_FREE				(lm.pSurface);
@@ -567,8 +564,7 @@ void CDeflector::Save()
 	}
 	
 	// Borders correction
-	for (DWORD ref=253/*-BORDER*/; ref>0; ref--)
-		if (!ApplyBorders(lm,ref)) break;
+	for (DWORD ref=254-BORDER; ref>0; ref--) ApplyBorders(lm,ref);
 
 	// Saving
 	char FN[_MAX_PATH];
