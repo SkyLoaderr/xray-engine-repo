@@ -21,12 +21,12 @@ IC	CAbstractOperatorCondition::COperatorConditionAbstract	(const _condition_type
 	m_value				(value)
 {
 #ifdef USE_HASH
-	u32					seed = rand32.seed();
-	rand32.seed			(u32(condition) + 1);
-	m_hash				= rand32.random(0xffffffff);
-	rand32.seed			(m_hash + u32(value));
-	m_hash				^= rand32.random(0xffffffff);
-	rand32.seed			(seed);
+	u32					seed = ::Random32.seed();
+	::Random32.seed		(u32(condition) + 1);
+	m_hash				= ::Random32.random(0xffffffff);
+	::Random32.seed		(m_hash + u32(value));
+	m_hash				^= ::Random32.random(0xffffffff);
+	::Random32.seed		(seed);
 #endif
 }
 

@@ -22,8 +22,6 @@ public:
 	typedef CConditionState<_condition_type,_value_type>			CState;
 	typedef CState													_index_type;
 	typedef _operator_id_type										_edge_type;
-//	typedef xr_map<_operator_id_type,COperator*>					OPERATOR_MAP;
-//	typedef typename OPERATOR_MAP::const_iterator					const_iterator;
 	struct SOperator {
 		_operator_id_type	m_operator_id;
 		COperator			*m_operator;

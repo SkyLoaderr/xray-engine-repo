@@ -370,6 +370,16 @@
 					RelativePath=".\xrCDB.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Random32"
+				Filter="">
+				<File
+					RelativePath=".\random32.cpp">
+				</File>
+				<File
+					RelativePath=".\random32.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Compiler"
@@ -941,9 +951,6 @@
 							<Filter
 								Name="operator_condition"
 								Filter="">
-								<File
-									RelativePath=".\operator_condition.cpp">
-								</File>
 								<File
 									RelativePath=".\operator_condition.h">
 								</File>
