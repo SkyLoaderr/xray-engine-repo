@@ -29,34 +29,39 @@ struct st_WB{
 	void	set		(int b, float w){bone=b;weight=w;}
 };
 DEFINE_VECTOR(st_WB,WBVec,WBIt);
-bool compare_by_weight(const st_WB& a, const st_WB& b)
-{
-	return a.weight > b.weight; // отсортировать по убыванию
-}
-bool compare_by_bone(const st_WB& a, const st_WB& b)
-{
-	return a.bone < b.bone; // отсортировать по возрастанию
-}
-IC void WB_SortByBone(WBVec& wb)
-{
-	std::sort(wb.begin(),wb.end(),compare_by_weight);
-}
-IC void WB_SortByWeight(WBVec& wb)
-{
-	std::sort(wb.begin(),wb.end(),compare_by_bone);
-}
-IC void WB_NormalizeWeights(WBVec& wb, int max_influence)
-{
-	if (wb.size()>max_influence){	
-		WBIt it;
-		wb.erase		(wb.begin()+2,wb.end()); // delete >2 weight
-		WB_SortByWeight	(wb);
-		float sum_weight=0;
-		for (it=wb.begin(); it!=wb.end(); it++) sum_weight+=it->weight;
-		for (it=wb.begin(); it!=wb.end(); it++) it->weight/=sum_weight;
-		WB_SortByBone	(wb);
+struct st_VertexWB:public WBVec{
+protected:
+	static bool compare_by_weight(const st_WB& a, const st_WB& b)
+	{
+		return a.weight > b.weight; // отсортировать по убыванию
 	}
-}
+	static bool compare_by_bone(const st_WB& a, const st_WB& b)
+	{
+		return a.bone < b.bone; // отсортировать по возрастанию
+	}
+public:
+	void sort_by_bone(WBVec& wb)
+	{
+		std::sort(wb.begin(),wb.end(),compare_by_weight);
+	}
+	void sort_by_weight(WBVec& wb)
+	{
+		std::sort(wb.begin(),wb.end(),compare_by_bone);
+	}
+	void normalize_weights(WBVec& wb, int max_influence)
+	{
+		if ((int)wb.size()>max_influence){	
+			WBIt it;
+			wb.erase		(wb.begin()+2,wb.end()); // delete >2 weight
+			sort_by_weight	(wb);
+			float sum_weight=0;
+			for (it=wb.begin(); it!=wb.end(); it++) sum_weight+=it->weight;
+			for (it=wb.begin(); it!=wb.end(); it++) it->weight/=sum_weight;
+			sort_by_bone	(wb);
+		}
+	}
+};
+DEFINE_VECTOR(st_VertexWB,VWBVec,VWBIt);
 
 struct st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
