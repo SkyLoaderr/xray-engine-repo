@@ -170,7 +170,7 @@ public:
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_stringZ							(fName);
 				CSE_Abstract						*E = F_entity_Create(fName);
-				R_ASSERT2							(E,"Can't create entity.");
+				R_ASSERT3							(E,"Can't create entity.",fName);
 				E->Spawn_Read						(P);
 				CSE_ALifeGraphPoint					*tpGraphPoint = smart_cast<CSE_ALifeGraphPoint*>(E);
 				if (tpGraphPoint) {
