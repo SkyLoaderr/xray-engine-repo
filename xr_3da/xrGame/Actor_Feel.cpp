@@ -11,7 +11,8 @@
 #include "level.h"
 #include "GameMtlLib.h"
 
-#define PICKUP_INFO_COLOR 0xFFAAAAAA
+#define PICKUP_INFO_COLOR 0xFFCCCCCC
+//AAAAAA
 
 void CActor::feel_touch_new				(CObject* O)
 {

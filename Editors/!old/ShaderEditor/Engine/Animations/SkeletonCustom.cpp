@@ -433,9 +433,10 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	cache_obb.resize		(LL_BoneCount());
 
 	for (u16 k=0; k<LL_BoneCount(); k++){
-		if (LL_GetBoneVisible(k)){
+		CBoneData& BD		= LL_GetData(k);
+		if (LL_GetBoneVisible(k)&&!BD.shape.flags.is(SBoneShape::sfNoPickable)){
 			Fobb& obb		= cache_obb[k];
-			obb.transform	(LL_GetData(k).obb,LL_GetBoneInstance(k).mTransform);
+			obb.transform	(BD.obb,LL_GetBoneInstance(k).mTransform);
 			if (CDB::TestRayOBB(S,D, obb))
 				for (u32 i=0; i<children.size(); i++)
 					if (LL_GetChild(i)->PickBone(normal,dist,S,D,k)) picked=TRUE;
@@ -452,7 +453,8 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	U16Vec					test_bones;
 	test_bones.reserve		(LL_BoneCount());
 	for (k=0; k<LL_BoneCount(); k++){
-		if (LL_GetBoneVisible(k)){
+		CBoneData& BD		= LL_GetData(k); 
+		if (LL_GetBoneVisible(k)&&!BD.shape.flags.is(SBoneShape::sfNoPickable)){
 			Fobb& obb		= cache_obb[k];
 			if (CDB::TestSphereOBB(test_sphere, obb))
 				test_bones.push_back(k);
