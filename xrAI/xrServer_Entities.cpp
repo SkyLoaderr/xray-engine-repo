@@ -1427,14 +1427,14 @@ void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 	visual_write			(P);
 }
 void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{};
-void xrSE_PhysicObject::UPDATE_Write		(NET_Packet& P)	{};
+void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
 #ifdef _EDITOR
 xr_token po_types[]={
 	{ "Box",		epotBox		}
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp		(pref,values);
-	PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"Type"),			&s_gameid,		po_types, 1);
+	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,"Type"), &s_gameid,	po_types, 1);
 }
 #endif
 
