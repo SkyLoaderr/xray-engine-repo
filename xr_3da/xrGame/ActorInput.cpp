@@ -36,7 +36,7 @@ void CActor::OnKeyboardPress(int cmd)
 //	case kWPN_9:	
 		Weapons->ActivateWeaponID(cmd-kWPN_1);			
 		break;
-	case kBINOCULAR:
+	case kBINOCULARS:
 		Weapons->ActivateWeaponID(Weapons->WeaponCount()-1);
 		break;
 	case kWPN_RELOAD:
