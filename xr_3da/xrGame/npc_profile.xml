@@ -318,6 +318,10 @@
 		<class>bar_crazy_veterans</class>
 	</character>
 
+	<character id="bar_arena_manager">
+		<class>bar_arena_manager</class>
+	</character>
+
 	<!-- X18 -->
 	<character id="dar_stalker_explorer">
 		<class>dar_stalker_explorer</class>
