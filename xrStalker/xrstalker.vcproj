@@ -734,9 +734,6 @@
 					RelativePath=".\scripts\ui_load_dialog.script">
 				</File>
 				<File
-					RelativePath=".\Scripts\ui_main_base_tab.script">
-				</File>
-				<File
 					RelativePath=".\scripts\ui_main_menu.script">
 				</File>
 				<File
@@ -854,6 +851,9 @@
 					RelativePath=".\scripts\agroprom_factory_combat.script">
 				</File>
 				<File
+					RelativePath=".\scripts\agroprom_heli.script">
+				</File>
+				<File
 					RelativePath=".\scripts\alife_test.script">
 				</File>
 				<File
@@ -873,6 +873,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\bind_escape.script">
+				</File>
+				<File
+					RelativePath=".\scripts\bind_garbage.script">
 				</File>
 				<File
 					RelativePath=".\scripts\blood_sucker.script">
@@ -1178,6 +1181,12 @@
 					RelativePath=".\scripts\mizlom_part2.script">
 				</File>
 				<File
+					RelativePath=".\scripts\mob_remark.script">
+				</File>
+				<File
+					RelativePath=".\scripts\mob_sound.script">
+				</File>
+				<File
 					RelativePath=".\scripts\modules.script">
 				</File>
 				<File
@@ -1220,6 +1229,9 @@
 					RelativePath=".\scripts\path_old.script">
 				</File>
 				<File
+					RelativePath=".\scripts\ph_door.script">
+				</File>
+				<File
 					RelativePath=".\scripts\ph_test.script">
 				</File>
 				<File
@@ -1233,6 +1245,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\ptr.script">
+				</File>
+				<File
+					RelativePath=".\scripts\rostok.script">
 				</File>
 				<File
 					RelativePath=".\scripts\rostok_bar.script">
@@ -1316,6 +1331,12 @@
 					RelativePath=".\scripts\test_bug.script">
 				</File>
 				<File
+					RelativePath=".\scripts\test_cast.script">
+				</File>
+				<File
+					RelativePath=".\scripts\test_client_spawner.script">
+				</File>
+				<File
 					RelativePath=".\scripts\test_debugger.script">
 				</File>
 				<File
@@ -1323,6 +1344,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\test_heli_2.script">
+				</File>
+				<File
+					RelativePath=".\scripts\test_heli_attack.script">
 				</File>
 				<File
 					RelativePath=".\scripts\test_id.script">
@@ -1358,6 +1382,21 @@
 					RelativePath=".\scripts\trader_job.script">
 				</File>
 				<File
+					RelativePath=".\scripts\tutorial_flesh_scream.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_main_base_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_multiplayer_create_base_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_multiplayer_create_map_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_multiplayer_options_tab.script">
+				</File>
+				<File
 					RelativePath=".\scripts\utils.script">
 				</File>
 				<File
@@ -1365,6 +1404,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\walk.script">
+				</File>
+				<File
+					RelativePath=".\scripts\x2.script">
 				</File>
 				<File
 					RelativePath=".\scripts\xr_actions_id.script">
@@ -1403,6 +1445,9 @@
 					RelativePath=".\scripts\xr_commander.script">
 				</File>
 				<File
+					RelativePath=".\scripts\xr_conditions.script">
+				</File>
+				<File
 					RelativePath=".\scripts\xr_death.script">
 				</File>
 				<File
@@ -1439,6 +1484,9 @@
 					RelativePath=".\scripts\xr_heli.script">
 				</File>
 				<File
+					RelativePath=".\scripts\xr_heli_hunter.script">
+				</File>
+				<File
 					RelativePath=".\scripts\xr_kamp.script">
 				</File>
 				<File
@@ -1455,6 +1503,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\xr_outcast.script">
+				</File>
+				<File
+					RelativePath=".\scripts\xr_patrol.script">
 				</File>
 				<File
 					RelativePath=".\scripts\xr_position.script">
@@ -1566,6 +1617,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\yantar_monster.script">
+				</File>
+				<File
+					RelativePath=".\scripts\zone_spawner.script">
 				</File>
 			</Filter>
 		</Filter>
