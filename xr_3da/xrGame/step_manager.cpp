@@ -62,7 +62,7 @@ void CStepManager::reinit()
 
 void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 {
-	if (!m_blend) return;
+	if (!blend) return;
 
 	m_time_anim_started = Device.dwTimeGlobal; 
 	
