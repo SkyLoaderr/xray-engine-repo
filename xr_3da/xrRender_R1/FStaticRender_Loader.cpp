@@ -9,8 +9,9 @@ void CRender::level_Load()
 	R_ASSERT			(0!=g_pGameLevel);
 
 	// Begin
-	pApp->LoadBegin				();
-	IReader*	fs				= g_pGameLevel->LL_Stream;
+	pApp->LoadBegin					();
+	Device->Resources->DeferredLoad	(TRUE);
+	IReader*	fs					= g_pGameLevel->LL_Stream;
 	IReader*	chunk;
 
 	// Shaders
