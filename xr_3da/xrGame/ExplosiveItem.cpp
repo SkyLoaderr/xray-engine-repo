@@ -39,7 +39,7 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 	if(GetCondition()<=0.f)
 	{
 		//запомнить того, кто взорвал вещь
-		m_iCurrentParentID = who->ID();
+		SetInitiator( who->ID());
 
 		Fvector normal;
 		FindNormal(normal);

@@ -3,10 +3,12 @@
 #include "Physics.h"
 #include "MathUtils.h"
 #include "ElevatorState.h"
+#include "IColisiondamageInfo.h"
 //#define DRAW_BOXES
 
-class CPHSimpleCharacter : public CPHCharacter
-
+class CPHSimpleCharacter : 
+	public CPHCharacter,
+	ICollisionDamageInfo
 {
 #ifdef DRAW_BOXES
 	Fvector m_bcenter;
@@ -18,9 +20,20 @@ class CPHSimpleCharacter : public CPHCharacter
 protected:
 	CElevatorState			m_elevator_state;
 	////////////////////////////damage////////////////////////////////////////
-	dContact				m_damege_contact;
-	float					m_dmc_signum;
-	enum{ctStatic,ctObject}	m_dmc_type;
+	struct SCollisionDamageInfo
+	{
+										SCollisionDamageInfo		()										;
+				float					ContactVelocity				()				const					;
+				void					HitDir						(Fvector &dir)	const					;
+			IC	const Fvector&			HitPos						()				const					{return cast_fv(m_damege_contact.geom.pos);}
+				u16						DamageInitiatorID			()				const					;
+				dContact				m_damege_contact;
+				CPhysicsShellHolder		*m_object;
+				float					m_dmc_signum;
+				enum{ctStatic,ctObject}	m_dmc_type;
+		mutable	float					m_contact_velocity;
+	};							
+	SCollisionDamageInfo		m_collision_damage_info;
 	/////////////////////////// callback
 	ObjectContactCallbackFun*	m_object_contact_callback;
 	////////////////////////// geometry
@@ -110,9 +123,17 @@ public:
 
 
 	//Check state
-	virtual		bool			 ContactWas						()					{if(b_meet_control) {b_meet_control=false;return true;} else return false;}
-	virtual		EEnvironment	 CheckInvironment				()					;
-	virtual		void			 GroundNormal					(Fvector &norm)		;
+	virtual		bool			 		ContactWas						()					{if(b_meet_control) {b_meet_control=false;return true;} else return false;}
+	virtual		EEnvironment	 		CheckInvironment				()					;
+	virtual		void			 		GroundNormal					(Fvector &norm)		;
+	virtual		const ICollisionDamageInfo	*CollisionDamageInfo ()const {return this;}
+private:
+	virtual		float			 ContactVelocity				()const				{return m_collision_damage_info.ContactVelocity();}
+	virtual		void			 HitDir							(Fvector& dir)const	{return m_collision_damage_info.HitDir(dir);}
+	virtual		const Fvector&	 HitPos							()const				{return m_collision_damage_info.HitPos();}
+	virtual		u16				 DamageInitiatorID				()const				;
+	virtual CObject				*DamageInitiator				()const				;
+public:
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
 	virtual		void		Destroy								(void)				;

@@ -39,11 +39,17 @@ dGeomID plane;
 
 void CPHWorld::OnRender()
 {
-	CONTACT_I i=Contacts.begin(),e=Contacts.end();
-	for(;i!=e;i++)
+	CONTACT_I i=Contacts.begin();
+
+	for(;(Contacts.end()-i)>0;i++)
 	{
-		dContact& c=*i;
+		try{
+		
+		dContact c=*i;
 		int geom_class;
+		if(dGeomID(0xbaadf00dLL)==c.geom.g1||dGeomID(0xbaadf00dLL)==c.geom.g2||
+			dGeomID(0xfeeefeeeLL)==c.geom.g1||dGeomID(0xfeeefeeeLL)==c.geom.g2
+		)continue;
 		if(dGeomGetBody(c.geom.g1))
 		{
 			geom_class=dGeomGetClass(retrieveGeom(c.geom.g1));
@@ -59,6 +65,11 @@ void CPHWorld::OnRender()
 		dir.mul(c.geom.depth*100.f);
 		dir.add(*((Fvector*)c.geom.pos));
 		RCache.dbg_DrawLINE(Fidentity,*((Fvector*)c.geom.pos),dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+		}
+		catch(...)
+		{
+			continue;
+		}
 	}
 }
 #endif

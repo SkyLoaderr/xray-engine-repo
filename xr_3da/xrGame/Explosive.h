@@ -11,10 +11,13 @@
 #include "inventory_item.h"
 #include "ai_sounds.h"
 #include "script_export_space.h"
-
+#include "DamageSource.h"
 class IRender_Light;
 
-class CExplosive : public Feel::Touch {
+class CExplosive : 
+	public Feel::Touch,
+	public IDamageSource
+{
 
 public:
 								CExplosive(void);
@@ -40,6 +43,10 @@ public:
 	virtual void				OnBeforeExplosion();
 	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
 	IC		u16 				CurrentParentID		() const {return m_iCurrentParentID;}
+
+	virtual	void				SetInitiator(u16 id){SetCurrentParentID(id);}
+	virtual	u16					Initiator(){return CurrentParentID();}
+
 	virtual void				UpdateExplosionPos(){}
 	virtual void				GetExplVelocity(Fvector	&v);
 	virtual void				GetExplPosition(Fvector &p) ;
@@ -48,6 +55,7 @@ public:
 	virtual void 				FindNormal(Fvector& normal);
 	virtual CGameObject			*cast_game_object()=0;
 	virtual CExplosive*			cast_explosive(){return this;}
+	virtual IDamageSource*		cast_IDamageSource()	{return this;}
 private:
 			void				PositionUpdate();
 protected:

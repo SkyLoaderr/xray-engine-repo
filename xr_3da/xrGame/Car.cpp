@@ -382,7 +382,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	P *= m_HitTypeK[hit_type]*hitScale;
 	
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-
+	if(fEntityHealth<=0.f)CExplosive::SetInitiator(who->ID());
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
@@ -529,7 +529,7 @@ void CCar::ParseDefinitions()
 	CInifile* ini = pKinematics->LL_UserData();
 	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
 	CExplosive::Load(ini,"explosion");
-	CExplosive::SetCurrentParentID(ID());
+	CExplosive::SetInitiator(ID());
 	m_camera_position			= ini->r_fvector3("car_definition","camera_pos");
 	///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
@@ -1666,4 +1666,13 @@ DLL_Pure *CCar::_construct			()
 	inherited::_construct		();
 	CScriptEntity::_construct	();
 	return						(this);
+}
+
+u16 CCar::Initiator()
+{
+	if(g_Alive() && Owner())
+	{
+		return Owner()->ID();
+	}
+	else return CExplosive::Initiator();
 }

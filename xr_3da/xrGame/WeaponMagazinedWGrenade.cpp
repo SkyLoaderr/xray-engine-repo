@@ -307,7 +307,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 
 		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket()/*m_pRocket*/);
 		VERIFY(pGrenade);
-		pGrenade->SetCurrentParentID(H_Parent()->ID());
+		pGrenade->SetInitiator(H_Parent()->ID());
 
 		
 		if (Local() && OnServer())

@@ -145,7 +145,7 @@ float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_
 
 void CExplosive::Explode()
 {
-	VERIFY(0xffff != m_iCurrentParentID);
+	VERIFY(0xffff != Initiator());
 	VERIFY(m_bReadyToExplode);
 
 	m_bExploding = true;
@@ -211,7 +211,7 @@ void CExplosive::Explode()
 		cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);	//. hack???
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
-											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,
+											m_fCurrentHitPower, m_fCurrentHitImpulse, Initiator(),
 											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
 	}	
 
@@ -285,7 +285,7 @@ void CExplosive::Explode()
 				Fvector l_bs_pos = *l_bs_positions.begin();
 				NET_Packet		P;
 				cast_game_object()->u_EventGen		(P,GE_HIT,l_pGO->ID());
-				P.w_u16			(m_iCurrentParentID);
+				P.w_u16			(Initiator());
 				P.w_u16			(cast_game_object()->ID());
 				P.w_dir			(l_dir);
 				P.w_float		(l_hit);
@@ -411,7 +411,7 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 			P.r_vec3(pos);
 			P.r_vec3(normal);
 			
-			SetCurrentParentID(parent_id);
+			SetInitiator(parent_id);
 			ExplodeParams(pos,normal);
 			Explode();
 			m_fExplodeDuration = m_fExplodeDurationMax;
@@ -438,7 +438,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 
 	NET_Packet		P;
 	cast_game_object()->u_EventGen		(P,GE_GRENADE_EXPLODE,cast_game_object()->ID());	
-	P.w_u16			(m_iCurrentParentID);
+	P.w_u16			(Initiator());
 	P.w_vec3		(const_cast<Fvector&>(pos));
 	P.w_vec3		(const_cast<Fvector&>(normal));
 	cast_game_object()->u_EventSend		(P);

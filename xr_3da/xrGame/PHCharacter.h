@@ -6,6 +6,7 @@
 class CPhysicsShellHolder;
 class CClimableObject;
 class CGameObject;
+class ICollisionDamageInfo;
  static enum EEnvironment
 			{
 				peOnGround,
@@ -27,8 +28,7 @@ public:
 bool b_exist;
 
 protected:
-////////////////////////////damage////////////////////////////////////////
-float					m_contact_velocity;
+
 ////////////////////////// dynamic
 
 CPHInterpolation m_body_interpolation;
@@ -59,8 +59,7 @@ public:
 	virtual	void		ReEnable							()															{;}																				
 			void		Enable								()															;											//!!
 			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
-			float		ContactVelocity						()															{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}			//!!
-
+virtual		const ICollisionDamageInfo	*CollisionDamageInfo()const														=0;
 
 
 void					SetPLastMaterial					(u16* p)													{p_lastMaterial=p;}													

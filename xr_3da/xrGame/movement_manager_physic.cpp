@@ -12,7 +12,7 @@
 #include "detail_path_manager.h"
 #include "level.h"
 #include "custommonster.h"
-
+#include "IColisiondamageInfo.h"
 #define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
 float CMovementManager::speed			(CPHMovementControl *movement_control) const
@@ -27,6 +27,16 @@ float CMovementManager::speed			(CPHMovementControl *movement_control) const
 	return					(m_speed);
 }
 
+void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
+{
+	if (object().g_Alive()&&!fsimilar(0.f,movement_control->gcontact_HealthLost))
+	{
+		const ICollisionDamageInfo * di=movement_control->CollisionDamageInfo();
+		Fvector dir;
+		di->HitDir(dir);
+		object().Hit	(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
+	}
+}
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	Fvector				motion;
@@ -58,11 +68,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		}
 
 		// проверка на хит
-		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) {
-			Fvector		d;
-			d.set		(0,1,0);
-			object().Hit(movement_control->gcontact_HealthLost,d,m_object,movement_control->ContactBone(),dest_position,0);
-		}
+		apply_collision_hit(movement_control);
 		return;
 	}
 
@@ -154,7 +160,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
 			// проверка на хит
-			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) object().Hit	(movement_control->gcontact_HealthLost,dir_to_target,m_object,movement_control->ContactBone(),dest_position,0);
+			apply_collision_hit(movement_control);
 
 		} else {
 			movement_control->b_exect_position	=	true;
@@ -167,7 +173,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		movement_control->GetPosition			(dest_position);
 		
 		// проверка на хит
-		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) object().Hit	(movement_control->gcontact_HealthLost,dir_to_target,m_object,movement_control->ContactBone(),dest_position,0);
+		apply_collision_hit						(movement_control);
 	}
 	
 	// установить скорость

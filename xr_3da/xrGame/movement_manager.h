@@ -177,6 +177,7 @@ private:
 			void	process_level_path		();
 			void	process_patrol_path		();
 			void	verify_detail_path		();
+			void	apply_collision_hit		(CPHMovementControl *movement_control);
 
 protected:
 	virtual void	teleport				(u32 game_vertex_id);
@@ -212,6 +213,7 @@ public:
 	IC		u32		refresh_rate			() const;
 			void	update_path				();
 	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
+
 	IC		float	speed					() const;
 			float	speed					(CPHMovementControl *movement_control) const;
 

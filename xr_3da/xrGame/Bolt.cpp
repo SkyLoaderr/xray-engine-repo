@@ -10,6 +10,7 @@ CBolt::CBolt(void)
 	m_weight = .1f;
 	m_slot = BOLT_SLOT;
 	m_ruck = false;
+	m_thrower_id=u16(-1);
 }
 
 CBolt::~CBolt(void) 
@@ -19,6 +20,9 @@ CBolt::~CBolt(void)
 void CBolt::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield();
+	CObject* o= H_Parent()->H_Parent();
+	if(o)SetInitiator(o->ID());
+	
 }
 
 void CBolt::OnEvent(NET_Packet& P, u16 type) 
@@ -84,4 +88,13 @@ void CBolt::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 	m_pPhysicsShell->SetAirResistance(.0001f);
+}
+
+void CBolt::SetInitiator			(u16 id)
+{
+	m_thrower_id=id;
+}
+u16	CBolt::Initiator				()
+{
+	return m_thrower_id;
 }

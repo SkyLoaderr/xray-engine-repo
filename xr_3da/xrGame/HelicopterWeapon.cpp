@@ -127,7 +127,7 @@ void CHelicopter::startRocket(u16 idx)
 	if((getRocketCount()>=1)&&m_use_rocket_on_attack) {
 		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket());
 		VERIFY(pGrenade);
-		pGrenade->SetCurrentParentID(this->ID());
+		pGrenade->SetInitiator(this->ID());
 		
 		Fmatrix rocketXFORM;
 		(idx==1)?rocketXFORM=m_left_rocket_bone_xform:rocketXFORM=m_right_rocket_bone_xform;

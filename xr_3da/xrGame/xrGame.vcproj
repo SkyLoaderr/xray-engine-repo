@@ -8980,6 +8980,9 @@
 							Name="BaseCharacter"
 							Filter="">
 							<File
+								RelativePath=".\IColisiondamageInfo.h">
+							</File>
+							<File
 								RelativePath=".\PHCharacter.cpp">
 							</File>
 							<File

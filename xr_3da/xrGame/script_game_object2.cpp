@@ -46,7 +46,7 @@ void CScriptGameObject::explode	(u32 level_time)
 	else {
 		Fvector normal;
 		explosive->FindNormal(normal);
-		explosive->SetCurrentParentID(object().ID());
+		explosive->SetInitiator(object().ID());
 		explosive->GenExplodeEvent(object().Position(), normal);
 	}
 }
@@ -115,6 +115,7 @@ void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
 	CScriptHit		&tLuaHit = *tpLuaHit;
 	NET_Packet		P;
 	object().u_EventGen(P,GE_HIT,object().ID());
+	THROW2			(tLuaHit.m_tpDraftsman,"Where is hit initiator??!");
 	P.w_u16			(u16(tLuaHit.m_tpDraftsman->ID()));
 	P.w_u16			(0);
 	P.w_dir			(tLuaHit.m_tDirection);

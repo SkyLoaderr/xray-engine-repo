@@ -65,7 +65,7 @@
 #include "CharacterPhysicsSupport.h"
 
 #include "material_manager.h"
-
+#include "IColisiondamageInfo.h"
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -660,10 +660,10 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local() && g_Alive()) {
 			if (m_PhysicMovementControl->gcontact_Was) 
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
-			Fvector D; D.set					(0,1,0);
-			Fvector positionInBoneSpace; positionInBoneSpace.set(0,0,0);
-			if (m_PhysicMovementControl->gcontact_HealthLost)	{
-				Hit	(m_PhysicMovementControl->gcontact_HealthLost,D,this,m_PhysicMovementControl->ContactBone(),positionInBoneSpace,0,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
+			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
+				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
+				Fvector hdir;di->HitDir(hdir);
+				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
 				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());
 			}

@@ -151,7 +151,7 @@ void CGrenade::Throw()
 //		pGrenade->m_dwDestroyTime = m_dwDestroyTimeMax + Level().timeServer();
 		pGrenade->set_destroy_time(m_dwDestroyTimeMax);
 		//установить ID того кто кинул гранату
-		pGrenade->m_iCurrentParentID = H_Parent()->ID();
+		SetInitiator( H_Parent()->ID() );
 	}
 
 	inherited::Throw			();

@@ -499,7 +499,7 @@ public:
 	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
 	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};
 	virtual void			g_fireParams		(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/)											{};
-
+	virtual u16				Initiator			();
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
 
@@ -536,6 +536,7 @@ private:
 	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer	*cast_particles_player		()	{return this;}
 	virtual CScriptEntity		*cast_script_entity			()	{return this;}
+	virtual IDamageSource		*cast_IDamageSource			()	{return this;}
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CCar)

@@ -1,5 +1,3 @@
-
-
 #include "stdafx.h"
 #include "PHDynamicData.h"
 
@@ -18,7 +16,7 @@
 #include "physicsshellholder.h"
 #include "../skeletoncustom.h"
 #include "PHSimpleCharacterInline.h"
-
+#include "DamageSource.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
@@ -983,9 +981,8 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 
 {
 	Fvector dir;
-	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
-
-	collide::ray_defs Q(*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST,collide::rqtBoth);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	m_collision_damage_info.HitDir(dir);
+	collide::ray_defs Q(m_collision_damage_info.HitPos(), dir, m_radius, CDB::OPT_ONLYNEAREST,collide::rqtBoth);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	u16 contact_bone=0;
 	CObject* object=smart_cast<CObject*>(m_phys_ref_object);
 	if (g_pGameLevel->ObjectSpace.RayQuery(object->collidable.model,Q)){
@@ -1013,7 +1010,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 		u16 count=K->LL_BoneCount();
 		CBoneInstance* bone_instances=&K->LL_GetBoneInstance(0);
 		Fvector pos_in_object;
-		pos_in_object.sub(*(Fvector*)m_damege_contact.geom.pos,object->Position());//vector from object center to contact position currently in global frame
+		pos_in_object.sub(m_collision_damage_info.HitPos(),object->Position());//vector from object center to contact position currently in global frame
 		Fmatrix object_form;
 		object_form.set(object->XFORM());
 		object_form.transpose();
@@ -1266,3 +1263,45 @@ void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
 	 m_max_velocity+=vel.magnitude();
 }
 
+u16 CPHSimpleCharacter::DamageInitiatorID()const
+{
+	u16 ret=m_collision_damage_info.DamageInitiatorID();
+	if(ret==u16(-1)) ret = m_phys_ref_object->ID();
+	return ret;
+}
+
+CObject* CPHSimpleCharacter::DamageInitiator() const
+{
+	if(m_collision_damage_info.m_dmc_type==SCollisionDamageInfo::ctStatic) return (CObject*) (m_phys_ref_object);
+	CObject* ret = (CObject*) (m_collision_damage_info.m_object);
+	u16 initiator_id=m_collision_damage_info.DamageInitiatorID();
+	if(initiator_id!=u16())
+	{
+		ret=Level().Objects.net_Find(initiator_id);
+	}
+	if(!ret) ret = (CObject*) (m_phys_ref_object);
+	return ret;
+}
+
+CPHSimpleCharacter::SCollisionDamageInfo::SCollisionDamageInfo()
+{
+	m_contact_velocity=0.f;
+}
+float CPHSimpleCharacter::SCollisionDamageInfo::ContactVelocity()const
+{
+	 dReal ret= m_contact_velocity; 
+	 m_contact_velocity=0;
+	 return ret;
+}
+
+void CPHSimpleCharacter::SCollisionDamageInfo::HitDir(Fvector& dir)	const
+{
+	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
+}
+
+u16 CPHSimpleCharacter::SCollisionDamageInfo::DamageInitiatorID() const
+{
+	IDamageSource* ds=m_object->cast_IDamageSource();
+	if(ds) return ds->Initiator();
+	return u16(-1);
+}

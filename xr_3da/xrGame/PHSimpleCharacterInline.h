@@ -14,12 +14,13 @@ void CPHSimpleCharacter::UpdateStaticDamage(dContact* c,SGameMtl* tri_material,b
 					float				vel_prg;vel_prg=_max(plane_pgr*tri_material->fPHFriction,norm_prg);
 					mag					=	(vel_prg)*tri_material->fBounceDamageFactor;
 				}
-				if(mag>m_contact_velocity)
+				if(mag>m_collision_damage_info.m_contact_velocity)
 				{
-  					m_contact_velocity	=	mag;
-					m_dmc_signum		=	bo1 ? 1.f : -1.f;
-					m_dmc_type			=	ctStatic;
-					m_damege_contact	=	*c;
+  					m_collision_damage_info.m_contact_velocity	=	mag;
+					m_collision_damage_info.m_dmc_signum		=	bo1 ? 1.f : -1.f;
+					m_collision_damage_info.m_dmc_type			=	SCollisionDamageInfo::ctStatic;
+					m_collision_damage_info.m_damege_contact	=	*c;
+					m_collision_damage_info.m_object			=	0;
 				}
 }
 
@@ -53,11 +54,12 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,SGameMtl* obj_material,
 		c_vel=dSqrt(accepted_energy/m_mass*2.f)*obj_material->fBounceDamageFactor;
 	else c_vel=0.f;
 
-	if(c_vel>m_contact_velocity) 
+	if(c_vel>m_collision_damage_info.m_contact_velocity) 
 	{
-		m_contact_velocity=c_vel;
-		m_dmc_signum=bo1 ? 1.f : -1.f;
-		m_dmc_type=ctObject;
-		m_damege_contact=*c;
+		m_collision_damage_info.m_contact_velocity=c_vel;
+		m_collision_damage_info.m_dmc_signum=bo1 ? 1.f : -1.f;
+		m_collision_damage_info.m_dmc_type=SCollisionDamageInfo::ctObject;
+		m_collision_damage_info.m_damege_contact=*c;
+		m_collision_damage_info.m_object=bo1 ? retrieveRefObject(c->geom.g2) : retrieveRefObject(c->geom.g1);
 	}
 }

@@ -125,7 +125,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	fContactSpeed=0.f;
 
  	{
-		fContactSpeed=m_character->ContactVelocity();
+		fContactSpeed=m_character->CollisionDamageInfo()->ContactVelocity();
 
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
@@ -263,7 +263,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	fContactSpeed=0.f;
 
 	{
-		fContactSpeed=m_character->ContactVelocity();
+		fContactSpeed=m_character->CollisionDamageInfo()->ContactVelocity();
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 		gcontact_HealthLost			= 0;
 		if (fContactSpeed>fMinCrashSpeed) 
