@@ -353,6 +353,11 @@ class xrSE_Zone : public xrServerEntity, public xrSE_CFormed { typedef xrServerE
 	u32 m_period;
 xrSE_DECLARE_END
 
+xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
+public:
+	string32				m_caConnectionPointName;
+xrSE_DECLARE_END
+
 // 
 #undef xrSE_EDITOR_METHODS
 #undef xrSE_DECLARE_BEGIN

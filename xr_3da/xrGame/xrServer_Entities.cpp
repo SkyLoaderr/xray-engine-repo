@@ -1036,6 +1036,26 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+xrGraphPoint::xrGraphPoint() {
+	m_caConnectionPointName[0] = 0;
+}
+
+void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
+{
+	P.r_string(m_caConnectionPointName);
+};
+
+void xrGraphPoint::STATE_Write		(NET_Packet& P)
+{
+	P.w_string(m_caConnectionPointName);
+};
+
+#ifdef _EDITOR
+void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"ConnectionPoint"),m_caConnectionPointName,sizeof(m_caConnectionPointName));
+}
+#endif
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
