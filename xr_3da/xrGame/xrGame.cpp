@@ -14,6 +14,7 @@
 #include "ai\\crow\\ai_crow.h"
 #include "ai\\rat\\ai_rat.h"
 #include "ai\\soldier\\ai_soldier.h"
+#include "ai\\stalker\\ai_stalker.h"
 #include "ai\\zombie\\ai_zombie.h"
 #include "car.h"
 #include "dummyobject.h"
@@ -671,7 +672,9 @@ extern "C" {
 		case CLSID_AI_GRAPH:												break;
 		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
+		case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
+		
 		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
 		case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
 

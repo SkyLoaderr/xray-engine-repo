@@ -61,16 +61,17 @@ public:
 	virtual void			Death					();
 	virtual void			OnDeviceCreate			();
 	virtual void			Load					(LPCSTR	section );				
-//	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who);
-//	virtual void			g_WeaponBones			(int& L,	int& R	);
-//	virtual void			Think					();
+	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who, s16 element){};
+	virtual void			g_WeaponBones			(int& L,	int& R	){};
+	virtual void			Think					(){};
+	virtual void			Die						(){};
 //
 //	// Fire control
-//	virtual void			g_fireParams			(Fvector& P, Fvector& D);
+	virtual void			g_fireParams			(Fvector& P, Fvector& D){};
 //
 //	// Network
 //	virtual void			net_Export				(NET_Packet& P);				// export to server
 //	virtual void			net_Import				(NET_Packet& P);				// import from server
 //
-//	virtual void			SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );
+	virtual void			SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed ){};
 };

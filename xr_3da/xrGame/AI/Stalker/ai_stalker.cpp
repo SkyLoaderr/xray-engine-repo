@@ -54,5 +54,6 @@ BOOL CAI_Stalker::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
+	cNameVisual_set		("actors\\Different_stalkers\\stalker_no_hood_singleplayer.ogf");
 	return				(TRUE);
 }
