@@ -12,9 +12,10 @@ typedef void CollideCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomI
 class CPHObject :
 	public ISpatial 
 {
-	DECLARE_PHSTACK_ITEM(CPHObject)
+	DECLARE_PHLIST_ITEM(CPHObject)
 				//PH_OBJECT_I m_ident;
 				bool		b_activated;
+				bool		b_dirty;
 								
 protected:
 				Fvector		AABB;
@@ -62,6 +63,6 @@ public:
 	virtual void	PhTune			(dReal step)								=0;
 };
 
-DEFINE_PHITEM_STACK(CPHObject,PH_OBJECT_STORAGE,PH_OBJECT_I)
+DEFINE_PHITEM_LIST(CPHObject,PH_OBJECT_STORAGE,PH_OBJECT_I)
 DEFINE_PHITEM_LIST(CPHUpdateObject,PH_UPDATE_OBJECT_STORAGE,PH_UPDATE_OBJECT_I)
 #endif//CPHOBJECT

@@ -16,6 +16,7 @@ void CPHObject::Activate()
 	if(b_activated)return;
 	ph_world->AddObject(this);
 	b_activated=true;
+
 }
 
 void CPHObject::EnableObject()
@@ -35,6 +36,7 @@ void CPHObject::spatial_move()
 {
 	get_spatial_params();
 	ISpatial::spatial_move();
+	b_dirty=true;
 }
 
 void CPHObject::Collide()
@@ -48,11 +50,12 @@ void CPHObject::Collide()
 	{
 		
 		CPHObject* obj2=static_cast<CPHObject*>(*i);
-		if(obj2==this||(obj2->b_activated&&obj2->stack_pos<stack_pos))				continue;
+		if(obj2==this || !obj2->b_dirty)		continue;
 		NearCallback(this,obj2,(dGeomID)dSpace(),(dGeomID)obj2->dSpace());
 	}
 ///////////////////////////////
 	CollideStatic((dGeomID)dSpace());
+	b_dirty=false;
 	//near_callback(this,0,(dGeomID)dSpace(),ph_world->GetMeshGeom());
 }
 
