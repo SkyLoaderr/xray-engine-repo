@@ -33,38 +33,38 @@ struct SCoverCluster : public SCover {
 
 	IC void set_sort()
 	{
-		sort_cover		= cover[3];
-		sort_cover		<<= 8;
-		sort_cover		|= cover[2];
-		sort_cover		<<= 8;
-		sort_cover		|= cover[1];
-		sort_cover		<<= 8;
-		sort_cover		|= cover[0];
+		sort_cover			= cover[3];
+		sort_cover			<<= 8;
+		sort_cover			|= cover[2];
+		sort_cover			<<= 8;
+		sort_cover			|= cover[1];
+		sort_cover			<<= 8;
+		sort_cover			|= cover[0];
 	}
 
 	IC void set_magnitude()
 	{
-		m_magnitude		= _sqr((u32)cover[0]) + _sqr((u32)cover[1]) + _sqr((u32)cover[2]) + _sqr((u32)cover[3]);
+		m_magnitude			= _sqr((u32)cover[0]) + _sqr((u32)cover[1]) + _sqr((u32)cover[2]) + _sqr((u32)cover[3]);
 	}
 
 	IC void	compress(const u32 &node)
 	{
 		Memory.mem_copy	(cover,&node,sizeof(cover));
 		for (int i=0; i<4; ++i)
-			acc_cover[i] = cover[i];
-		set_sort		();
-		set_magnitude	();
+			acc_cover[i]	= cover[i];
+		set_sort			();
+		set_magnitude		();
 	}
 
 	IC void merge(const SCoverCluster &cluster)
 	{
 		indexes.insert				(indexes.end(),cluster.indexes.begin(),cluster.indexes.end());
-		for (u32 i=0; i<4; ++i)
-			acc_cover[i] += cluster.acc_cover[i];
-		for (u32 i=0, n = indexes.size(); i<4; ++i)
-			cover[i]	= acc_cover[i]/n;
-		set_sort		();
-		set_magnitude	();
+		for (u32 i=0, n = indexes.size(); i<4; ++i) {
+			acc_cover[i]	+= cluster.acc_cover[i];
+			cover[i]		= acc_cover[i]/n;
+		}
+		set_sort			();
+		set_magnitude		();
 	}
 
 	IC u32 magnitude() const
@@ -104,6 +104,31 @@ struct cover_predicate_magnitude {
 	}
 };
 
+IC u64 single(u64 n)
+{
+	return(n*(n + 1)/2);
+}
+
+IC u64 square(u64 n)
+{
+	return(n*(n + 1)*(2*n + 1)/6);
+}
+
+IC u64 cub(u64 n)
+{
+	return(_sqr(single(n)));
+}
+
+IC u64 compute_formula(u64 n, u64 k)
+{
+	return(cub(n) - (k - 1)*square(n) - k*single(n));
+}
+
+IC float compute_percents(u64 n, u64 i, u64 k)
+{
+	return(_abs(1.f - (float)compute_formula(i,k)/(float)compute_formula(n,k)));
+}
+
 void xrPalettizeCovers(u32 *data, u32 N)
 {
 	xr_vector<SCoverCluster*>	g_cover_clusters;
@@ -124,12 +149,11 @@ void xrPalettizeCovers(u32 *data, u32 N)
 
 	{
 		{
-			printf	("Sorting vectors...");
+			printf	("\tSorting vectors...");
 			sort	(g_cover_clusters.begin(),g_cover_clusters.end(),cover_predicate());
-			printf	("completed!\nRemoving duplicates...");
+			printf	("completed!\n\tRemoving duplicates...");
 			for (int i=1, j=0, n=g_cover_clusters.size(); i<n; ++i)
 				if (!g_cover_clusters[j]->distance(*g_cover_clusters[i])) {
-					//g_cover_clusters[j]->indexes.push_back(g_cover_clusters[i]->indexes[0]);
 					g_cover_clusters[j]->merge(*g_cover_clusters[i]);
 					xr_delete		(g_cover_clusters[i]);
 				}
@@ -137,17 +161,26 @@ void xrPalettizeCovers(u32 *data, u32 N)
 					j = i;
 
 			g_cover_clusters.erase	(remove_if(g_cover_clusters.begin(),g_cover_clusters.end(),cover_predicate_equal()),g_cover_clusters.end());
-			printf	("completed\nRemoved duplicates : %d\nElements left      : %d\n",n - g_cover_clusters.size(),g_cover_clusters.size());
+			printf	("completed\n\tRemoved duplicates : %d\n\tElements left      : %d\n",n - g_cover_clusters.size(),g_cover_clusters.size());
 		}
-		printf	("Sorting magnitudes...");
+		printf	("\tSorting magnitudes...");
 		sort						(g_cover_clusters.begin(),g_cover_clusters.end(),cover_predicate_magnitude());
 		printf	("completed!\n");
 		// clasterizing covers
 		u32						best_pair[2];
 		u32						best_distance;
-		for (int ii=0; g_cover_clusters.size() > 256; ++ii) {
-			if (ii % 100 == 0)
-				printf			("Iteration : %d\n",ii);
+		u64						iterations = compute_formula(g_cover_clusters.size(),256);
+		u64						portion = iterations/10000;
+		u64						accumulator = 0;
+		printf					("\t\tIteration : %5.2f%",0.f);
+		for (int ii=0, nn = g_cover_clusters.size(); g_cover_clusters.size() > 256; ++ii) {
+			if (accumulator >= portion) {
+				for (int j=0; j<32; j++)
+					printf			("\b \b");
+				printf				("\t\tIteration : %5.2f%",100.f*compute_percents(nn,nn - ii,256));
+				accumulator			= 0;
+			}
+			accumulator			+= square(nn - ii);
 			// choosing the nearest pair
 			best_pair[0]		= 0;
 			best_pair[1]		= 1;
@@ -164,12 +197,12 @@ void xrPalettizeCovers(u32 *data, u32 N)
 							best_pair[0]	= u32(i - b);
 							best_pair[1]	= u32(j - b);
 							best_distance	= distance;
-							max_magnitude	= iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)));
-							k				= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
 							if (!best_distance) {
 								i = b + g_cover_clusters.size() - 1;
 								break;
 							}
+							max_magnitude	= iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)));
+							k				= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
 							if (j == k)
 								break;
 						}
@@ -197,50 +230,23 @@ void xrPalettizeCovers(u32 *data, u32 N)
 			g_cover_clusters.erase	(g_cover_clusters.begin() + best_pair[0]);
 			kk						= lower_bound(g_cover_clusters.begin(),g_cover_clusters.end(),magnitude,cover_predicate_magnitude());
 			g_cover_clusters.insert	(kk,t);
-			
-//			for (int i=1, j=0, n = g_cover_clusters.size(); i<n; ++i, ++j) {
-//				VERIFY(g_cover_clusters[i]->magnitude() >= g_cover_clusters[j]->magnitude());
-//				VERIFY(g_cover_clusters[i] != g_cover_clusters[j]);
-//				VERIFY(g_cover_clusters[i]->indexes.size());
-//				VERIFY(g_cover_clusters[j]->indexes.size());
-//			}
-//			{
-//				xr_set<u32>		set;
-//				for (int i=0, n = g_cover_clusters.size(); i<n; ++i) {
-//					for (int j=0; j<(int)g_cover_clusters[i]->indexes.size(); ++j) {
-//						VERIFY(set.find(g_cover_clusters[i]->indexes[j]) == set.end());
-//						set.insert(g_cover_clusters[i]->indexes[j]);
-//					}
-//				}
-//				VERIFY			(set.size() == N);
-//			}
 		}
+		
+		for (int j=0; j<32; j++)
+			printf					("\b \b");
+		printf						("\t\tIteration : %5.2f%\n",100.f);
 
-		for (int i=0; i<(int)N; ++i)
-			data[i]									= 0;
+		Memory.mem_fill				(data,0,N*sizeof(u32));
 
-//		xr_vector<u32>								test;
-		xr_vector<SCoverCluster*>::const_iterator	I = g_cover_clusters.begin(), B = I;
-		xr_vector<SCoverCluster*>::const_iterator	E = g_cover_clusters.end();
-		printf										("%d\n",g_cover_clusters.size());
+		xr_vector<SCoverCluster*>::iterator			I = g_cover_clusters.begin(), B = I;
+		xr_vector<SCoverCluster*>::iterator			E = g_cover_clusters.end();
+		printf										("\tTotal colors : %d\n",g_cover_clusters.size());
 		for ( ; I != E; ++I) {
 			xr_vector<u32>::const_iterator			i = (*I)->indexes.begin();
 			xr_vector<u32>::const_iterator			e = (*I)->indexes.end();
-			for ( ; i != e; ++i) {
+			for ( ; i != e; ++i)
 				data[*i]							= (*I)->sort_cover;
-				//test.push_back						(*i);
-			}
-		}
-//		printf("%d\n",test.size());
-//
-//		sort(test.begin(),test.end());
-//		xr_vector<u32>::iterator u = unique(test.begin(),test.end());
-//		test.erase(u,test.end());
-//
-//		printf("%d\n",test.size());
-		for (I = B; I != E; ++I) {
-			SCoverCluster	*t = *I;
-			xr_delete		(t);
+			xr_delete								(*I);
 		}
 	}
 }
@@ -260,18 +266,19 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	image.Load			(argv[1]);
 	image.Vflip			();
 	printf				("completed!\n");
+	
+	printf				("Reindexing colors started\n");
+	u64					l_qwStartTime = CPU::GetCycleCount(), l_qwFinishTime;
 	xrPalettizeCovers	(image.pData,image.dwWidth*image.dwHeight);
+	l_qwFinishTime		= CPU::GetCycleCount();
+	printf				("Reindexing colors finished\n");
+	printf				("Time : %f seconds\n",CPU::cycles2seconds*s64(l_qwFinishTime - l_qwStartTime));
+	
 	printf				("Saving image...");
 	string256			S;
 	image.SaveTGA		(strconcat(S,argv[1],".tga"));
 	printf				("completed!\n");
-	image.Load			(S);
-	xr_set<u32>			set;
-	for (int i=0; i<(int)(image.dwHeight*image.dwWidth); ++i)
-		if (set.find(*(image.pData + i)) == set.end())
-			set.insert	(*(image.pData + i));
-	printf				("%d\n",set.size());
-
+	
 	printf				("Finalizing...");
 	Core._destroy		();
 	printf				("completed!\n");
