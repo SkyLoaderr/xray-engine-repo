@@ -13,13 +13,15 @@ class frustum_collider
 public:
 	COLLIDER*		dest;
 	TRI*			tris;
+	Fvector*		verts;
 	
 	const CFrustum*	F;
 	
-	IC void			_init		(COLLIDER* CL, TRI* T, const CFrustum* _F)
+	IC void			_init		(COLLIDER* CL, Fvector* V, TRI* T, const CFrustum* _F)
 	{
 		dest		= CL;
 		tris		= T;
+		verts		= V;
 		F			= _F;
 	}
 	IC EFC_Visible	_box		(Fvector& C, Fvector& E, u32& mask)
