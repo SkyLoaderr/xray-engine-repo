@@ -36,7 +36,7 @@ class XRNETSERVER_API IClientStatistic
 	u32					dwBaseTime;
 	CTimer*				device_timer;
 public:
-			IClientStatistic	(CTimer* timer){ ZeroMemory(this,sizeof(*this)); device_timer(timer); dwBaseTime=TimeGlobal(device_timer); }
+			IClientStatistic	(CTimer* timer){ ZeroMemory(this,sizeof(*this)); device_timer=timer; dwBaseTime=TimeGlobal(device_timer); }
 
 	void	Update				(DPN_CONNECTION_INFO& CI);
 
