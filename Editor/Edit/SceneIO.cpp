@@ -183,8 +183,8 @@ void EScene::Save(char *_FileName, bool bUndo){
 }
 //--------------------------------------------------------------------------------------------------
 
-SceneObject* EScene::ReadObject( CStream* F ){
-	SceneObject *currentobject = 0;
+CCustomObject* EScene::ReadObject( CStream* F ){
+	CCustomObject *currentobject = 0;
     DWORD clsid=0;
     R_ASSERT(F->FindChunk(CHUNK_OBJECT_CLASS));
     clsid = F->Rdword();
@@ -258,7 +258,7 @@ bool EScene::Load(char *_FileName){
 	        CStream* O   = OBJ->OpenChunk(0);
     	    for (int count=1; O; count++) {
 			    UI->ProgressInc();
-        	    SceneObject* obj = ReadObject(O);
+        	    CCustomObject* obj = ReadObject(O);
                 if (obj) AddObject(obj, false);
             	O->Close();
 	            O = OBJ->OpenChunk(count);
@@ -371,7 +371,7 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
         if (OBJ){
             CStream* O   = OBJ->OpenChunk(0);
             for (int count=1; O; count++) {
-                SceneObject* obj = ReadObject(O);
+                CCustomObject* obj = ReadObject(O);
                 O->Close();
                 O = OBJ->OpenChunk(count);
                 if (obj){
@@ -398,7 +398,7 @@ bool EScene::LoadSelection( const char *_FileName ){
     if (LoadSelection(_FileName,lst)){
         SelectObjects( false );
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	SceneObject* obj = *it;
+        	CCustomObject* obj = *it;
             char buf[MAX_OBJ_NAME];
             GenObjectName(obj->ClassID(),buf);
             strcpy(obj->GetName(),buf);

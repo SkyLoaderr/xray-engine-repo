@@ -83,9 +83,9 @@ public:
     void __fastcall OnObjectsUpdate	();
     void __fastcall ShowProperties	();
 
-    void __fastcall	SetNumPosition	(SceneObject* O);
-    void __fastcall	SetNumRotation	(SceneObject* O);
-    void __fastcall	SetNumScale		(SceneObject* O);
+    void __fastcall	SetNumPosition	(CCustomObject* O);
+    void __fastcall	SetNumRotation	(CCustomObject* O);
+    void __fastcall	SetNumScale		(CCustomObject* O);
 
     bool __fastcall MouseStart  	(TShiftState Shift);
     bool __fastcall MouseEnd    	(TShiftState Shift);

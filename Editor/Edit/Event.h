@@ -5,14 +5,14 @@
 #ifndef _INCDEF_CEvent_H_
 #define _INCDEF_CEvent_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 #define MIN_OCCLUDER_POINTS 3
 #define MAX_OCCLUDER_POINTS 6
 
 class CFrustum;
 
-class CEvent: public SceneObject {
+class CEvent: public CCustomObject {
     void			RenderBox	(bool bAlpha);
 public:
 	enum EEventType{

@@ -13,7 +13,7 @@ extern bool g_bEditorValid;
 
 
 // refs
-class SceneObject;
+class CCustomObject;
 class TUI_Tools;
 class TUI_Tools;
 class C3DCursor;
@@ -39,7 +39,7 @@ class TUI: public CController{
 	char m_LastFileName[MAX_PATH];
     TD3DWindow* m_D3DWindow;
 
-    TShiftState m_KeyState;
+    TShiftState m_ShiftState;
 protected:
     EStateList m_EditorState;
 public:

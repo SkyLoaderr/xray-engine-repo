@@ -13,7 +13,7 @@
 #include "CSPIN.h"
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 
 #include "ELight.h"
@@ -132,7 +132,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebAnimForwardClick(TObject *Sender);
 	void __fastcall btAdjustSceneClick(TObject *Sender);
 private:	// User declarations
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo();
     bool ApplyObjectsInfo();
     void __fastcall DrawGraph();

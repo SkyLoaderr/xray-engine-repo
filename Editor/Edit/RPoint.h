@@ -5,13 +5,13 @@
 #ifndef _INCDEF_RPoint_H_
 #define _INCDEF_RPoint_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 #define RPOINT_SIZE 0.5f
 
 class CFrustum;
 
-class CRPoint : public SceneObject {
+class CRPoint : public CCustomObject {
     friend class    SceneBuilder;
 
     Fvector         m_Position;

@@ -19,15 +19,15 @@ class TfraSector;
 
 enum ESectorAction{
     saNone,
-    saAddFace,
-    saDelFace,
-    saFaceBoxSelection
+    saAddMesh,
+    saDelMesh,
+    saMeshBoxSelection
 };
 
 class TUI_ControlSectorAdd: public TUI_CustomControl{
 	ESectorAction 	m_Action;
-	void 			AddFace();
-	void 			DelFace();
+	void 			AddMesh();
+	void 			DelMesh();
     TfraSector*		fraSector;
 public:
     TUI_ControlSectorAdd(int st, int act, TUI_CustomTools* parent);

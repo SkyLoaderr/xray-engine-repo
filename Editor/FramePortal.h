@@ -12,7 +12,7 @@
 #include "RXCtrls.hpp"
 #include "RxMenus.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ui_customtools.h"
 //refs
 class CSector;

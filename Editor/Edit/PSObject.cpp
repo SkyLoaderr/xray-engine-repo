@@ -21,13 +21,13 @@
 
 //using namespace PS;
 
-CPSObject::CPSObject( char *name ):SceneObject(){
+CPSObject::CPSObject( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 //----------------------------------------------------
 
-CPSObject::CPSObject():SceneObject(){
+CPSObject::CPSObject():CCustomObject(){
 	Construct();
 }
 //----------------------------------------------------
@@ -336,7 +336,7 @@ bool CPSObject::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
 	char buf[1024];
     R_ASSERT(F.FindChunk(CPSOBJECT_CHUNK_REFERENCE));
@@ -355,7 +355,7 @@ bool CPSObject::Load(CStream& F){
 //----------------------------------------------------
 
 void CPSObject::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(CPSOBJECT_CHUNK_VERSION);
 	F.Wword			(CPSOBJECT_VERSION);

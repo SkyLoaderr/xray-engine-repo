@@ -6,7 +6,7 @@
 
 //----------------------------------------------------
 #include "cl_rapid.h"
-#include "sceneobject.h"
+#include "CustomObject.h"
 
 // refs
 struct st_Surface;

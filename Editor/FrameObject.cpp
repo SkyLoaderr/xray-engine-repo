@@ -4,7 +4,7 @@
 #include "ui_tools.h"
 #include "FrameObject.h"
 #include "scene.h"
-#include "sceneobject.h"
+#include "CustomObject.h"
 #include "sceneclasslist.h"
 #include "EditObject.h"
 #include "propertiesobject.h"

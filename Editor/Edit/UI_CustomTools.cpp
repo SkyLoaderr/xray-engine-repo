@@ -104,7 +104,7 @@ void TUI_CustomTools::ShowProperties(){
 	}
 }
 
-void TUI_CustomTools::SetNumPosition(SceneObject* O){
+void TUI_CustomTools::SetNumPosition(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene->GetQueryObjects(objset,objclass);
@@ -124,7 +124,7 @@ void TUI_CustomTools::SetNumPosition(SceneObject* O){
     }
 }
 
-void TUI_CustomTools::SetNumRotation(SceneObject* O){
+void TUI_CustomTools::SetNumRotation(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene->GetQueryObjects(objset,objclass);
@@ -148,7 +148,7 @@ void TUI_CustomTools::SetNumRotation(SceneObject* O){
     }
 }
 
-void TUI_CustomTools::SetNumScale(SceneObject* O){
+void TUI_CustomTools::SetNumScale(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene->GetQueryObjects(objset,objclass);

@@ -5,7 +5,7 @@
 #ifndef _INCDEF_DetailObjects_H_
 #define _INCDEF_DetailObjects_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "DetailFormat.h"
 #include "EditObject.h"
 
@@ -78,7 +78,10 @@ DEFINE_MAP(DWORD,DOVec,ColorIndexMap,ColorIndexPairIt);
 #define DETAIL_SLOT_SIZE_2 	DETAIL_SLOT_SIZE*0.5f
 #define DETAIL_SLOT_RADIUS	DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f
 
-class CDetailManager{
+class CDetailManager:
+	public pureDeviceCreate,
+	public pureDeviceDestroy
+{
 	friend class TfrmDOShuffle;
 
 	DetailHeader		m_Header;
@@ -202,8 +205,8 @@ public:
 
     bool				Valid					(){return !!m_Slots.size()||!!m_Objects.size();}
 
-	void				OnDeviceCreate			();
-	void				OnDeviceDestroy			();
+	virtual void		OnDeviceCreate			();
+	virtual void		OnDeviceDestroy			();
 };
 #endif /*_INCDEF_DetailObjects_H_*/
 

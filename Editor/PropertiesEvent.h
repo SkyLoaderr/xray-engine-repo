@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
@@ -47,7 +47,7 @@ __published:	// IDE-managed Components
 	void __fastcall cbTargetClassChange(TObject *Sender);
 	void __fastcall edOnEnterChange(TObject *Sender);
 private:	// User declarations
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
 public:		// User declarations

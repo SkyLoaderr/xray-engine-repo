@@ -5,7 +5,7 @@
 #ifndef _INCDEF_Occluder_H_
 #define _INCDEF_Occluder_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 #define MIN_OCCLUDER_POINTS 3
 #define MAX_OCCLUDER_POINTS 6
@@ -13,7 +13,7 @@
 class CFrustum;
 
 
-class COccluder: public SceneObject {
+class COccluder: public CCustomObject {
     void CreatePlane();
 	struct S3DPoints{
 		DWORD		dwFrame;

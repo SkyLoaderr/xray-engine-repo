@@ -24,14 +24,14 @@
 #define SOUND_CHUNK_PARAMS				0x0212
 //----------------------------------------------------
 CSound::CSound( char *name )
-	:SceneObject()
+	:CCustomObject()
 {
 	Construct();
 	strcpy( m_Name, name );
 }
 
 CSound::CSound()
-	:SceneObject()
+	:CCustomObject()
 {
 	Construct();
 }
@@ -131,7 +131,7 @@ bool CSound::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS));
 	F.RstringZ		(m_fName);
@@ -142,7 +142,7 @@ bool CSound::Load(CStream& F){
 }
 
 void CSound::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(SOUND_CHUNK_VERSION);
 	F.Wword			(SOUND_VERSION);

@@ -15,7 +15,7 @@
 #include <Forms.hpp>
 
 // refs
-class SceneObject;
+class CCustomObject;
 
 class TfrmPropertiesPS : public TForm
 {
@@ -43,12 +43,12 @@ private:	// User declarations
 
     SH_Function		m_BirthFunc;
 
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
 public:		// User declarations
     __fastcall TfrmPropertiesPS(TComponent* Owner);
-    static int __fastcall Run(list<SceneObject*>* pObjects, bool& bChange);
+    static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);
     static bool __fastcall Visible(){return !!form;}
     static TfrmPropertiesPS* GetForm(){VERIFY(form); return form;}
 };

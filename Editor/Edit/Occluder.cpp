@@ -26,12 +26,12 @@
 #define OCCLUDER_CHUNK_SEL_VERTICES			0x0113
 //----------------------------------------------------
 
-COccluder::COccluder( char *name ):SceneObject(){
+COccluder::COccluder( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-COccluder::COccluder():SceneObject(){
+COccluder::COccluder():CCustomObject(){
 	Construct();
 }
 
@@ -340,7 +340,7 @@ bool COccluder::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.FindChunk(OCCLUDER_CHUNK_TRANSFORM));
     F.Rvector		(m_vRotate);
@@ -359,7 +359,7 @@ bool COccluder::Load(CStream& F){
 }
 
 void COccluder::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(OCCLUDER_CHUNK_VERSION);
 	F.Wword			(OCCLUDER_VERSION);

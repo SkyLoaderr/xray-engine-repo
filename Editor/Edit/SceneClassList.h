@@ -30,7 +30,7 @@ struct SBoxPickInfo{
 DEFINE_VECTOR(SBoxPickInfo,SBoxPickInfoVec,SBoxPickInfoIt);
 
 //----------------------------------------------------
-class SceneObject;
+class CCustomObject;
 
 enum EObjClass{
     OBJCLASS_DUMMY     	= -1,
@@ -52,7 +52,7 @@ enum EObjClass{
 };
 
 //----------------------------------------------------
-SceneObject*	NewObjectFromClassID	(int _ClassID);
+CCustomObject*	NewObjectFromClassID	(int _ClassID);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);

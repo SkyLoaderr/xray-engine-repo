@@ -1,12 +1,12 @@
 #ifndef _INCDEF_Portal_H_
 #define _INCDEF_Portal_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 // refs
 class CSector;
 
-class CPortal: public SceneObject {
+class CPortal: public CCustomObject {
 	friend class TfrmPropertiesPortal;
     friend class CSector;
     friend class TfraPortal;

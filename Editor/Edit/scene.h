@@ -4,7 +4,7 @@
 #ifndef _INCDEF_Scene_H_
 #define _INCDEF_Scene_H_
 
-#include "SceneObject.h";
+#include "CustomObject.h";
 #include "SceneClassList.h"
 #include "SceneGraph.h"
 #include "Communicate.h"
@@ -114,7 +114,7 @@ protected:
     GroupMap	m_Groups;
 
 protected:
-	SceneObject* ReadObject(CStream*);
+	CCustomObject* ReadObject(CStream*);
 
 public:
     bool m_Modified;
@@ -152,11 +152,11 @@ public:
     void ClearSnapList				();
     void UpdateSnapList 			();
 
-	void AddObject                  (SceneObject* object, bool bManual=true);
-	void RemoveObject               (SceneObject* object, bool bManual=true);
-    bool ContainsObject             (SceneObject* object, EObjClass classfilter);
+	void AddObject                  (CCustomObject* object, bool bManual=true);
+	void RemoveObject               (CCustomObject* object, bool bManual=true);
+    bool ContainsObject             (CCustomObject* object, EObjClass classfilter);
 
-	SceneObject *RayPick           	(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
+	CCustomObject *RayPick           	(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
 	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
 
 	int FrustumSelect               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
@@ -178,7 +178,7 @@ public:
 	void GroupDestroy				();
 	void GroupSave					();
 	bool GroupAddItems				(int idx, ObjectList& lst);
-	bool GroupAddItem				(int idx, SceneObject* O, bool bLoadMode=false);
+	bool GroupAddItem				(int idx, CCustomObject* O, bool bLoadMode=false);
 	void GroupRemove				(int idx);
 	void GroupUpdateBox				(int idx);
     void UngroupAll					();
@@ -189,8 +189,8 @@ public:
 	int FrustumPick					(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
 	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
-	SceneObject* FindObjectByName	(char *name, EObjClass classfilter);
-    SceneObject* FindObjectByName   (char *name, SceneObject* pass_object);
+	CCustomObject* FindObjectByName	(char *name, EObjClass classfilter);
+    CCustomObject* FindObjectByName   (char *name, CCustomObject* pass_object);
     bool FindDuplicateName          ();
 
 	void UndoClear					();
@@ -211,7 +211,7 @@ public:
     void WriteToLTX					(CInifile* pIni);
 
 public:
-	SceneObject* GetQueryObject		(EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
+	CCustomObject* GetQueryObject		(EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
 	int  GetQueryObjects			(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
     template <class Predicate>
     int  GetQueryObjects_if			(ObjectList& dest, EObjClass classfilter, Predicate cmp){

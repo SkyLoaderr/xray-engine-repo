@@ -12,7 +12,7 @@
 #include "RXCtrls.hpp"
 #include "RxMenus.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
 //---------------------------------------------------------------------------
@@ -20,8 +20,8 @@ class TfraSector : public TFrame
 {
 __published:	// IDE-managed Components
 	TPanel *paSectorActions;
-	TExtBtn *ebAddFace;
-	TExtBtn *ebDelFace;
+	TExtBtn *ebAddMesh;
+	TExtBtn *ebDelMesh;
     TExtBtn *ebFaceBoxPick;
 	TRxLabel *RxLabel1;
 	TPanel *paCommands;

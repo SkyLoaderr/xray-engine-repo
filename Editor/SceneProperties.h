@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
 
-//#include "SceneObject.h"
+//#include "CustomObject.h"
 #include "ToolEdit.hpp"
 #include <Mask.hpp>
 #include "ElTree.hpp"

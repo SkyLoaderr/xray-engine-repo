@@ -5,7 +5,7 @@
 #ifndef _INCDEF_PSObject_H_
 #define _INCDEF_PSObject_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ParticleSystem.h"
 #define PSOBJECT_SIZE 0.5f
 
@@ -14,7 +14,7 @@ class CFrustum;
 class CParticleSystem;
 class Shader;
 
-class CPSObject: public SceneObject{
+class CPSObject: public CCustomObject{
 	PS::SParams*		m_Definition;
 
 	PS::Particles	  	m_Particles;

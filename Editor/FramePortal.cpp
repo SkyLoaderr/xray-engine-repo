@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "FramePortal.h"
-#include "sceneobject.h"
+#include "CustomObject.h"
 #include "scene.h"
 #include "portal.h"
 #include "propertiessector.h"

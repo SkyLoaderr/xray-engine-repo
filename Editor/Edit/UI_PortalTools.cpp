@@ -51,7 +51,7 @@ bool __fastcall TUI_ControlPortalAdd::Start(TShiftState Shift)
     TfraPortal* fraPortal = (TfraPortal*)parent_tool->pFrame; VERIFY(fraPortal);
 
     if (fraPortal->ebPickSectors->Down){
-	    SceneObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SECTOR, 0, false, false);
+	    CCustomObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SECTOR, 0, false, false);
 		if( obj ){
      		obj->Select(true);
 	        fraPortal->SetSector((CSector*)obj);

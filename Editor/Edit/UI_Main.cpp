@@ -448,14 +448,14 @@ void TUI::ShowObjectHint(){
 
 bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
-	m_KeyState = Shift;
+	m_ShiftState = Shift;
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
     return m_Tools->KeyDown(Key, Shift);
 }
 
 bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
 {
-	m_KeyState = Shift;
+	m_ShiftState = Shift;
 	if (Device.m_Camera.KeyUp(Key,Shift)) return true;
     return m_Tools->KeyUp(Key, Shift);
 }
@@ -486,13 +486,13 @@ void TUI::OnMousePress(int btn){
 
     // test owner
     Ipoint pt;
-	iGetMousePosReal(Device.m_hRenderWnd, pt);
+	iGetMousePosScreen(pt);
     TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
     if (ctr!=m_D3DWindow) return;
 
     bMouseInUse = true;
 
-    TShiftState Shift = m_KeyState;
+    TShiftState Shift = m_ShiftState;
     if (iGetBtnState(0)) Shift << ssLeft;
     if (iGetBtnState(1)) Shift << ssRight;
 
@@ -527,7 +527,7 @@ void TUI::OnMousePress(int btn){
 void TUI::OnMouseRelease(int btn){
 	if(!g_bEditorValid) return;
 
-    TShiftState Shift = m_KeyState;
+    TShiftState Shift = m_ShiftState;
     if (iGetBtnState(0)) Shift << ssLeft;
     if (iGetBtnState(1)) Shift << ssRight;
 
@@ -562,7 +562,7 @@ void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
 
-    TShiftState Shift = m_KeyState;
+    TShiftState Shift = m_ShiftState;
     if (iGetBtnState(0)) Shift << ssLeft;
     if (iGetBtnState(1)) Shift << ssRight;
 

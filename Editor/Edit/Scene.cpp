@@ -135,7 +135,7 @@ void EScene::Clear(){
     _DELETE(m_SkyDome);
 }
 
-void EScene::AddObject( SceneObject* object, bool bManual ){
+void EScene::AddObject( CCustomObject* object, bool bManual ){
 	VERIFY( object );
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
@@ -147,7 +147,7 @@ void EScene::AddObject( SceneObject* object, bool bManual ){
     }
 }
 
-void EScene::RemoveObject( SceneObject* object, bool bUndo ){
+void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
 	VERIFY( object );
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
@@ -161,7 +161,7 @@ void EScene::RemoveObject( SceneObject* object, bool bUndo ){
 	if (bUndo) UndoSave();
 }
 
-bool EScene::ContainsObject( SceneObject* object, EObjClass classfilter ){
+bool EScene::ContainsObject( CCustomObject* object, EObjClass classfilter ){
 	VERIFY( object );
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(classfilter);
@@ -347,12 +347,12 @@ int EScene::RemoveSelection( EObjClass classfilter ){
 	return count;
 }
 
-SceneObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList){
+CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList){
 	if( !valid() )
 		return 0;
 
 	float nearest_dist = flt_max;
-	SceneObject *nearest_object = 0;
+	CCustomObject *nearest_object = 0;
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		ObjectList* lst=0;
@@ -657,14 +657,14 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
     return true;
 }
 
-SceneObject* EScene::FindObjectByName( char *name, EObjClass classfilter ){
+CCustomObject* EScene::FindObjectByName( char *name, EObjClass classfilter ){
 	ObjectIt _F = FirstObj(classfilter);
     ObjectIt _E = LastObj(classfilter);
 	for(;_F!=_E;_F++) if(0==stricmp((*_F)->GetName(),name)) return (*_F);
     return 0;
 }
 
-SceneObject* EScene::FindObjectByName( char *name, SceneObject* pass_object ){
+CCustomObject* EScene::FindObjectByName( char *name, CCustomObject* pass_object ){
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	ObjectIt _F = lst.begin();
@@ -709,7 +709,6 @@ void EScene::OnDeviceCreate(){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceCreate();
 	}
-    if (m_DetailObjects) m_DetailObjects->OnDeviceCreate();
 }
 
 void EScene::OnDeviceDestroy(){
@@ -718,7 +717,6 @@ void EScene::OnDeviceDestroy(){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceDestroy();
 	}
-    if (m_DetailObjects) m_DetailObjects->OnDeviceDestroy();
 }
 
 int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){
@@ -732,8 +730,8 @@ int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel,
     return objset.size();
 }
 
-SceneObject* EScene::GetQueryObject(EObjClass classfilter, int iSel, int iVis, int iLock){
-    SceneObject* O=0;
+CCustomObject* EScene::GetQueryObject(EObjClass classfilter, int iSel, int iVis, int iLock){
+    CCustomObject* O=0;
     int cnt=0;
 	ObjectIt _F = FirstObj(classfilter);
 	ObjectIt _E = LastObj(classfilter);
@@ -789,7 +787,7 @@ int EScene::GroupGetEmptyIndex(){
     return idx;
 }
 //--------------------------------------------------------------------------------------------------
-bool EScene::GroupAddItem(int idx, SceneObject* O, bool bLoadMode){
+bool EScene::GroupAddItem(int idx, CCustomObject* O, bool bLoadMode){
 	if (bLoadMode||O->Group(idx)){
     	m_Groups[idx].objects.push_back(O);
         return true;
@@ -1003,7 +1001,7 @@ void EScene::SynchronizeObjects(){
 }
 
 void EScene::OnShowHint(AStringVec& dest){
-    SceneObject* obj = RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->CurrentClassID(),0,true,false);
+    CCustomObject* obj = RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->CurrentClassID(),0,true,false);
     if (obj) obj->OnShowHint(dest);
 }
 

@@ -5,7 +5,7 @@
 #ifndef _INCDEF_Light_H_
 #define _INCDEF_Light_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "Light.h"
 
 struct SAnimLightItem: public Flight{
@@ -19,7 +19,7 @@ typedef ALItemList::iterator ALItemIt;
 typedef vector<Flight> FlightList;
 typedef FlightList::iterator FlightIt;
 
-class CLight : public SceneObject{
+class CLight : public CCustomObject{
 	// d3d's light parameters (internal use)
 	int m_D3DIndex;
     BOOL m_Enabled;

@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "APHeadLabel.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ui_customtools.h"
 //---------------------------------------------------------------------------
 class TfraNavPoint : public TFrame

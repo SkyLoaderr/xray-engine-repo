@@ -4,7 +4,7 @@
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditMesh;
@@ -46,7 +46,7 @@ struct st_AnimParam{
     void			Update	(float dt);
 };
 
-class CEditObject : public SceneObject {
+class CEditObject : public CCustomObject {
 	friend class CEditMesh;
     friend class TfrmPropertiesObject;
     friend class CSector;
@@ -226,8 +226,8 @@ public:
     virtual void 	SetScale				(Fvector& scale){vScale.set(scale);}
 
     // clone/copy methods
-	virtual void 	CloneFromLib			(SceneObject *source);
-	virtual void 	LibReference			(SceneObject *source);
+	virtual void 	CloneFromLib			(CCustomObject *source);
+	virtual void 	LibReference			(CCustomObject *source);
 	virtual void 	ResolveReference		();
     void			RemoveMesh				(CEditMesh* mesh);
     void			RemoveOMotion			(const char* name);

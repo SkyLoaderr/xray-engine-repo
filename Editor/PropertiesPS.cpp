@@ -3,7 +3,7 @@
 
 #include "PropertiesPS.h"
 #include "SceneClassList.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "PSObject.h"
 #include "ShaderFunction.h"
 //---------------------------------------------------------------------------

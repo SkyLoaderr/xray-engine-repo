@@ -401,13 +401,13 @@ bool TUI::Command( int _Command, int p1 ){
         }
     	break;
     case COMMAND_SET_NUMERIC_POSITION:
-    	m_Tools->SetNumPosition((SceneObject*)p1);
+    	m_Tools->SetNumPosition((CCustomObject*)p1);
     	break;
     case COMMAND_SET_NUMERIC_ROTATION:
-    	m_Tools->SetNumRotation((SceneObject*)p1);
+    	m_Tools->SetNumRotation((CCustomObject*)p1);
     	break;
     case COMMAND_SET_NUMERIC_SCALE:
-    	m_Tools->SetNumScale((SceneObject*)p1);
+    	m_Tools->SetNumScale((CCustomObject*)p1);
     	break;
     case COMMAND_LOCK_ALL:
 		if( !Scene->locked() ){

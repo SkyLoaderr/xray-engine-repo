@@ -5,7 +5,7 @@
 #ifndef _INCDEF_DPatch_H_
 #define _INCDEF_DPatch_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "tlsprite.h"
 class Shader;
 

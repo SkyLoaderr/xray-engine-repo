@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>

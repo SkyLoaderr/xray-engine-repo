@@ -6,7 +6,7 @@ class TUI_CustomControl;
 class TUI_Control;
 
 #include "SceneClassList.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 //---------------------------------------------------------------------------
 class TUI_CustomTools{
@@ -41,9 +41,9 @@ public:
 
     virtual void	ShowProperties	();
 
-    virtual void 	SetNumPosition	(SceneObject* O);
-    virtual void 	SetNumRotation	(SceneObject* O);
-    virtual void 	SetNumScale		(SceneObject* O);
+    virtual void 	SetNumPosition	(CCustomObject* O);
+    virtual void 	SetNumRotation	(CCustomObject* O);
+    virtual void 	SetNumScale		(CCustomObject* O);
 
 	const EObjClass	ObjClass		()const {return objclass;}
 };

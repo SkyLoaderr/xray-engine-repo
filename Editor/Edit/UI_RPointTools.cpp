@@ -31,7 +31,7 @@ __fastcall TUI_ControlRPointAdd::TUI_ControlRPointAdd(int st, int act, TUI_Custo
 }
 
 bool __fastcall TUI_ControlRPointAdd::Start(TShiftState Shift){
-	SceneObject* obj = DefaultAddObject(Shift);
+	CCustomObject* obj = DefaultAddObject(Shift);
 	((CRPoint*)obj)->m_dwTeamID = ((TfraRPoint*)parent_tool->pFrame)->seTeamID->Value;
     return false;
 }

@@ -22,7 +22,7 @@
 #include "DetailObjects.h"
 //----------------------------------------------------
 
-SceneObject *NewObjectFromClassID( int _ClassID ){
+CCustomObject *NewObjectFromClassID( int _ClassID ){
 	switch( _ClassID ){
 		case OBJCLASS_EDITOBJECT: return new CEditObject();
 		case OBJCLASS_LIGHT:    return new CLight();

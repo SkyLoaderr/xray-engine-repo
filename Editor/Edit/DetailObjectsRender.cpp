@@ -160,21 +160,21 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 						if (sp.id==0xff)	continue;
 						vector<SlotItem*>&	vis = m_Visible	[sp.id];
 						float				R   = m_Objects	[sp.id]->m_fRadius;
-						
+
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++) 
+						for (; siIT!=siEND; siIT++)
 						{
 							SlotItem& Item	= *siIT;
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-							
+
 							if (Device.m_Frustum.testSphere(siIT->P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
-								
+
 								if (Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
 
 								Item.scale_calculated = scale; //alpha;
@@ -194,13 +194,13 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++) 
+						for (; siIT!=siEND; siIT++)
 						{
 							SlotItem& Item	= *siIT;
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-							
+
 							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;

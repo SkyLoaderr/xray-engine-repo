@@ -40,17 +40,17 @@ void __fastcall TUI_ControlSectorAdd::OnEnter()
 {
     m_Action = saNone;
     fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-    fraSector->paSectorActions->Show();
+//    fraSector->paSectorActions->Show();
 }
 
 void __fastcall TUI_ControlSectorAdd::OnExit()
 {
-    fraSector->paSectorActions->Hide();
+//    fraSector->paSectorActions->Hide();
 	fraSector = 0;
 }
 
-void TUI_ControlSectorAdd::AddFace(){
-    m_Action = saAddFace;
+void TUI_ControlSectorAdd::AddMesh(){
+    m_Action = saAddMesh;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
     SRayPickInfo pinf;
@@ -58,8 +58,8 @@ void TUI_ControlSectorAdd::AddFace(){
 		sector->AddMesh(pinf.obj,pinf.mesh);
 }
 
-void TUI_ControlSectorAdd::DelFace(){
-    m_Action = saDelFace;
+void TUI_ControlSectorAdd::DelMesh(){
+    m_Action = saDelMesh;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     SRayPickInfo pinf;
     if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false))
@@ -69,18 +69,18 @@ void TUI_ControlSectorAdd::DelFace(){
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
-	if (fraSector->ebAddFace->Down||fraSector->ebDelFace->Down){
+	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){
 		if (fraSector->cbItems->ItemIndex==-1) return false;
 		bool bBoxSelection = Shift.Contains(ssCtrl) || fraSector->ebFaceBoxPick->Down;
 
         if( bBoxSelection ){
             UI->EnableSelectionRect( true );
             UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
-			m_Action = saFaceBoxSelection;
+			m_Action = saMeshBoxSelection;
             return true;
         } else {
-            if (fraSector->ebAddFace->Down)	AddFace();
-            if (fraSector->ebDelFace->Down)	DelFace();
+            if (fraSector->ebAddMesh->Down)	AddMesh();
+            if (fraSector->ebDelMesh->Down)	DelMesh();
             return true;
         }
     }
@@ -90,9 +90,9 @@ bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 void __fastcall TUI_ControlSectorAdd::Move(TShiftState _Shift)
 {
     switch (m_Action){
-    case saAddFace:	AddFace();	break;
-    case saDelFace:	DelFace();	break;
-    case saFaceBoxSelection:UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp); break;
+    case saAddMesh:	AddMesh();	break;
+    case saDelMesh:	DelMesh();	break;
+    case saMeshBoxSelection:UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp); break;
     }
 }
 
@@ -100,7 +100,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 {
 	if (fraSector->cbItems->ItemIndex>-1){
         CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
-        if (m_Action==saFaceBoxSelection){
+        if (m_Action==saMeshBoxSelection){
             UI->EnableSelectionRect( false );
             DWORDVec fl;
             Fmatrix matrix;
@@ -115,16 +115,16 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                     for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
                         fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);
-                        if (fraSector->ebAddFace->Down)	sector->AddMesh(O_ref,*m_def);
-                        if (fraSector->ebDelFace->Down)	sector->DelMesh(O_ref,*m_def);
+                        if (fraSector->ebAddMesh->Down)	sector->AddMesh(O_ref,*m_def);
+                        if (fraSector->ebDelMesh->Down)	sector->DelMesh(O_ref,*m_def);
                     }
                 }
             }
         }
         switch (m_Action){
-        case saAddFace:
-        case saDelFace:
-        case saFaceBoxSelection:
+        case saAddMesh:
+        case saDelMesh:
+        case saMeshBoxSelection:
         	sector->SectorChanged(fraSector->ebAutoUpdateConvex->Down);
             fraSector->OnSectorUpdate();
 			Scene->UndoSave();

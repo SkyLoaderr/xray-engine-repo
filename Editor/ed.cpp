@@ -4,7 +4,6 @@ USERES("ed.res");
 USE("!.txt", File);
 USEUNIT("edit\Texture.cpp");
 USEUNIT("edit\Library.cpp");
-USEUNIT("edit\SceneObject.cpp");
 USEUNIT("edit\Scene.cpp");
 USEUNIT("edit\SceneUndo.cpp");
 USEUNIT("edit\FileSystem.cpp");
@@ -180,6 +179,7 @@ USEUNIT("shared\XR_HUDFont.cpp");
 USELIB("lib\DX\dinput.lib");
 USEUNIT("lib\DX\c_dinput.cpp");
 USEUNIT("shared\pure.cpp");
+USEUNIT("edit\CustomObject.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

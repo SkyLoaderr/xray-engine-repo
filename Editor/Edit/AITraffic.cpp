@@ -22,12 +22,12 @@
 //------------------------------------------------------------------------------
 // AI Traffic points
 //------------------------------------------------------------------------------
-CAITPoint::CAITPoint(char *name):SceneObject(){
+CAITPoint::CAITPoint(char *name):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CAITPoint::CAITPoint():SceneObject(){
+CAITPoint::CAITPoint():CCustomObject(){
 	Construct();
 }
 
@@ -155,7 +155,7 @@ bool CAITPoint::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
     F.Rvector		(m_Position);
@@ -171,7 +171,7 @@ bool CAITPoint::Load(CStream& F){
 //----------------------------------------------------
 
 void CAITPoint::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(AITPOINT_CHUNK_VERSION);
 	F.Wword			(AITPOINT_VERSION);

@@ -5,11 +5,11 @@
 #ifndef _INCDEF_AITraffic_H_
 #define _INCDEF_AITraffic_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 class CFrustum;
 
-class CAITPoint: public SceneObject {
+class CAITPoint: public CCustomObject {
 	friend class 	SceneBuilder;
 
     Fvector         m_Position;

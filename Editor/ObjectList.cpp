@@ -113,7 +113,7 @@ void TfrmObjectList::UpdateState()
 
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext()){
         if (node&&(node->Level>0)){
-        	SceneObject* O = (SceneObject*)node->Data;
+        	CCustomObject* O = (CCustomObject*)node->Data;
             node->ParentStyle = false;
             node->StrikeOut = !O->Visible();
             if (rgSO->ItemIndex==1) 	 node->Hidden = !O->Visible();
@@ -144,7 +144,7 @@ void TfrmObjectList::UpdateSelection()
 {
 	Scene->SelectObjects( false, cur_cls );
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
-        if (node->Parent) ((SceneObject*)(node->Data))->Select(true);
+        if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -168,7 +168,7 @@ void __fastcall TfrmObjectList::tvItemsItemSelectedChange(
 void __fastcall TfrmObjectList::ebHideSelClick(TObject *Sender)
 {
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
-        if (node->Parent) ((SceneObject*)(node->Data))->Show(false);
+        if (node->Parent) ((CCustomObject*)(node->Data))->Show(false);
     UpdateState();
 }
 //---------------------------------------------------------------------------
@@ -177,8 +177,8 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 {
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
         if (node->Parent){
-            ((SceneObject*)(node->Data))->Show(true);
-            ((SceneObject*)(node->Data))->Select(true);
+            ((CCustomObject*)(node->Data))->Show(true);
+            ((CCustomObject*)(node->Data))->Select(true);
         }
     UpdateState();
 }

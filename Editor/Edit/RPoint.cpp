@@ -22,12 +22,12 @@
 #define MAX_TEAM 8
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x7f0000,0x007f00,0x00007f};
 
-CRPoint::CRPoint( char *name ):SceneObject(){
+CRPoint::CRPoint( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CRPoint::CRPoint():SceneObject(){
+CRPoint::CRPoint():CCustomObject(){
 	Construct();
 }
 
@@ -134,7 +134,7 @@ bool CRPoint::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_POSITION,&m_Position));
 
@@ -145,7 +145,7 @@ bool CRPoint::Load(CStream& F){
 }
 
 void CRPoint::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(RPOINT_CHUNK_VERSION);
 	F.Wword			(RPOINT_VERSION);

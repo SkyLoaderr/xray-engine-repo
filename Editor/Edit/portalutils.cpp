@@ -5,7 +5,7 @@
 #pragma hdrstop
 
 #include "portalutils.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "Scene.h"
 #include "Portal.h"
 #include "Sector.h"
@@ -215,7 +215,7 @@ bool CPortalUtils::CreateDefaultSector(){
 
 bool CPortalUtils::RemoveDefaultSector(){
 	UI->BeginEState(esSceneLocked);
-    SceneObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
+    CCustomObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (O){
     	Scene->RemoveObject(O,false);
         _DELETE(O);
@@ -279,7 +279,7 @@ void CPortalUtils::TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl){
     	((CSector*)(*_F))->TestUsedFaces(o,m,fl);
 }
 */
-CSector* FindSector(CEditObject* o, CEditMesh* m){
+CSector* CPortalUtils::FindSector(CEditObject* o, CEditMesh* m){
 	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
 	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++) if (((CSector*)(*_F))->Contains(o,m)) return (CSector*)(*_E);

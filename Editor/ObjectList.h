@@ -13,7 +13,7 @@
 #include "CSPIN.h"
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include <Buttons.hpp>
 #include <ImgList.hpp>
 #include "ElTree.hpp"

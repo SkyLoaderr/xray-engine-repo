@@ -53,7 +53,7 @@ void __fastcall TfrmEditLibrary::EditLibrary()
     Show();
 }
 //---------------------------------------------------------------------------
-SceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+CCustomObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
     CEditObject* O = m_SelectedObject->GetReference();
     if (O){
     	float dist=flt_max;

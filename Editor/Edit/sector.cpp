@@ -46,12 +46,12 @@ bool CSectorItem::IsItem(const char* O, const char* M){
 }
 //------------------------------------------------------------------------------
 
-CSector::CSector( char *name ):SceneObject(){
+CSector::CSector( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CSector::CSector():SceneObject(){
+CSector::CSector():CCustomObject(){
 	Construct();
 }
 
@@ -557,7 +557,7 @@ bool CSector::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.ReadChunk(SECTOR_CHUNK_COLOR,&sector_color));
 
@@ -599,7 +599,7 @@ bool CSector::Load(CStream& F){
 }
 
 void CSector::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(SECTOR_CHUNK_VERSION);
 	F.Wword			(SECTOR_VERSION);

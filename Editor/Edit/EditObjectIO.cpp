@@ -83,7 +83,7 @@ bool CEditObject::Load(CStream& F){
             break;
         }
 
-		SceneObject::Load(F);
+		CCustomObject::Load(F);
 
         R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
         F.Rvector(vPosition);
@@ -217,7 +217,7 @@ bool CEditObject::Load(CStream& F){
 }
 
 void CEditObject::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.Wword			(EOBJ_CURRENT_VERSION);

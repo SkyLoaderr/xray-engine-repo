@@ -107,7 +107,7 @@ void CRenderDevice::OnDeviceCreate(){
     m_NullShader 		= Shader.Create();
     m_WireShader 		= Shader.Create("$ed_wire");
     m_SelectionShader 	= Shader.Create("$ed_selection");
-    
+
 	// General Render States
 	HW.Caps.Update();
 	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
@@ -240,7 +240,7 @@ void __fastcall CRenderDevice::Resize(int w, int h)
 
     m_Camera.m_Aspect = (float)dwHeight / (float)dwWidth;
     mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
-    m_fNearer = mProjection._43;
+    m_fNearer 		= mProjection._43;
 
     Create			(m_hRenderWnd);
 

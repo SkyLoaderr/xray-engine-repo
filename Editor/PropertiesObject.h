@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
@@ -257,7 +257,7 @@ private:	// User declarations
     DEFINE_VECTOR(AnsiString,SH_NamesList,SH_NamesIt);
     SH_NamesList SH_Names;
 
-    list<SceneObject*> m_Objects;
+    list<CCustomObject*> m_Objects;
 
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();

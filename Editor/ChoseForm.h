@@ -12,7 +12,7 @@
 #include <ExtCtrls.hpp>
 #include <ImgList.hpp>
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "Library.h"
 #include <Dialogs.hpp>
 #include "ElTree.hpp"

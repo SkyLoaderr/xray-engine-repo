@@ -5,12 +5,12 @@
 #ifndef _INCDEF_Glow_H_
 #define _INCDEF_Glow_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "tlsprite.h"
 class Shader;
 class CFrustum;
 
-class CGlow : public SceneObject {
+class CGlow : public CCustomObject {
     CTLSprite       m_RenderSprite;
 public:
     Shader*       	m_GShader;

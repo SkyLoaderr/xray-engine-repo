@@ -5,11 +5,11 @@
 #ifndef _INCDEF_NavPoint_H_
 #define _INCDEF_NavPoint_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 
 class CFrustum;
 
-class CNavPoint : public SceneObject {
+class CNavPoint : public CCustomObject {
     friend class    SceneBuilder;
     friend class    TfrmPropertiesNavPoint;
     friend class    CNavNetwork;

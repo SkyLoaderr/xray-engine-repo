@@ -25,12 +25,12 @@
 //------------------------------------------------------------------------------
 // Naviagtion points
 //------------------------------------------------------------------------------
-CNavPoint::CNavPoint( char *name ):SceneObject(){
+CNavPoint::CNavPoint( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CNavPoint::CNavPoint():SceneObject(){
+CNavPoint::CNavPoint():CCustomObject(){
 	Construct();
 }
 
@@ -136,7 +136,7 @@ bool CNavPoint::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.FindChunk(NAVPOINT_CHUNK_POINTS));
     m_Type 			= F.Rdword();
@@ -146,7 +146,7 @@ bool CNavPoint::Load(CStream& F){
 }
 
 void CNavPoint::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(NAVPOINT_CHUNK_VERSION);
 	F.Wword			(NAVPOINT_VERSION);

@@ -3,7 +3,7 @@
 
 #include "PreviewImage.h"
 #include "SceneClassList.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "Texture.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

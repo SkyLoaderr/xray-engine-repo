@@ -12,7 +12,7 @@
 #include <ExtCtrls.hpp>
 #include <ImgList.hpp>
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "Library.h"
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
@@ -120,7 +120,7 @@ public:		// User declarations
     void __fastcall OnRender();
     void __fastcall OnIdle();
     void __fastcall ZoomObject();
-	SceneObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
+	CCustomObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmEditLibrary *frmEditLibrary;

@@ -32,12 +32,12 @@
 #define NORM_DYN_COLOR 	0x0000FF00
 #define LOCK_COLOR 		0x00FF0000
 
-CLight::CLight( char *name ):SceneObject(){
+CLight::CLight( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CLight::CLight():SceneObject(){
+CLight::CLight():CCustomObject(){
 	Construct();
 }
 
@@ -248,7 +248,7 @@ void CLight::Update(){
 //----------------------------------------------------
 
 void CLight::OnShowHint(AStringVec& dest){
-    SceneObject::OnShowHint(dest);
+    CCustomObject::OnShowHint(dest);
     AnsiString temp;
     temp.sprintf("Type:  ");
     switch(m_D3D.type){
@@ -276,7 +276,7 @@ bool CLight::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.FindChunk(LIGHT_CHUNK_BUILD_OPTIONS));
 	m_CastShadows 	= F.Rword();
@@ -315,7 +315,7 @@ bool CLight::Load(CStream& F){
 }
 
 void CLight::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(LIGHT_CHUNK_VERSION);
 	F.Wword			(LIGHT_VERSION);

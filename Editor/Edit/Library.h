@@ -5,11 +5,11 @@
 #ifndef _INCDEF_Library_H_
 #define _INCDEF_Library_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "pure.h"
 //----------------------------------------------------
 class ETexture;
-class SceneObject;
+class CCustomObject;
 class CEditObject;
 struct FSChunkDef;
 

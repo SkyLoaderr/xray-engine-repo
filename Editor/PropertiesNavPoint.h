@@ -11,7 +11,7 @@
 #include <ExtCtrls.hpp>
 #include "RXSpin.hpp"
 #include "multiobj.hpp"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "RXCtrls.hpp"
 #include "CloseBtn.hpp"
 //---------------------------------------------------------------------------
@@ -31,7 +31,7 @@ __published:	// IDE-managed Components
     void __fastcall cbTypeStandartClick(TObject *Sender);
     void __fastcall cbTypeItemClick(TObject *Sender);
 private:	// User declarations
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo();
     void ApplyObjectsInfo();
 public:		// User declarations

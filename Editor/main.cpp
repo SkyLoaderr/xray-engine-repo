@@ -47,7 +47,7 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
     fraLeftBar->Parent      = paLeftBar;
     UI->Command(COMMAND_CHANGE_TARGET, etObject);
     UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
-    if (paLeftBar->Tag > 0) paLeftBar->Parent = D3DWindow;
+    if (paLeftBar->Tag > 0) paLeftBar->Parent = paTopBar;
     else paLeftBar->Parent = frmMain;
 
     tmRefresh->Enabled = true; tmRefreshTimer(Sender);
@@ -92,15 +92,11 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 void __fastcall TfrmMain::sbToolsMinClick(TObject *Sender)
 {
     if (paLeftBar->Tag > 0){
-        paLeftBar->Align  = alRight;
         paLeftBar->Parent = frmMain;
-        paLeftBar->Height = paLeftBar->Tag;
         paLeftBar->Tag    = 0;
     }else{
-        paLeftBar->Align  = alNone;
-        paLeftBar->Parent = D3DWindow;
-        paLeftBar->Tag    = paLeftBar->Height;
-        paLeftBar->Height = MIN_PANEL_HEIGHT;
+        paLeftBar->Parent = paTopBar;//D3DWindow;
+        paLeftBar->Tag    = 1;//paLeftBar->Height;
     }
 }
 //---------------------------------------------------------------------------

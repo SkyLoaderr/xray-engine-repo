@@ -3,7 +3,7 @@
 
 #include "ui_tools.h"
 #include "FrameDPatch.h"
-#include "sceneobject.h"
+#include "CustomObject.h"
 #include "scene.h"
 #include "sceneclasslist.h"
 #include "dpatch.h"

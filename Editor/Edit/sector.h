@@ -5,7 +5,7 @@
 #ifndef _INCDEF_Sector_H_
 #define _INCDEF_Sector_H_
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "portalutils.h"
 enum EVisible{
 	fvNone,
@@ -47,7 +47,7 @@ struct CHFace {
 DEFINE_VECTOR(CHFace,CHFaceVec,CHFaceIt);
 DEFINE_VECTOR(CSectorItem,SItemVec,SItemIt);
 
-class CSector : public SceneObject {
+class CSector : public CCustomObject {
 	friend class TfrmPropertiesSector;
 	friend class SceneBuilder;
     friend class CPortalUtils;

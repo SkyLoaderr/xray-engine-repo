@@ -26,12 +26,12 @@
 #define PORTAL_CHUNK_VERTICES				0xFA50
 //----------------------------------------------------
 
-CPortal::CPortal( char *name ):SceneObject(){
+CPortal::CPortal( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CPortal::CPortal():SceneObject(){
+CPortal::CPortal():CCustomObject(){
 	Construct();
 }
 
@@ -391,7 +391,7 @@ bool CPortal::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
 	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_FRONT)){
         F.RstringZ	(buf);
@@ -427,7 +427,7 @@ bool CPortal::Load(CStream& F){
 }
 
 void CPortal::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(PORTAL_CHUNK_VERSION);
 	F.Wword			(PORTAL_VERSION);

@@ -210,15 +210,15 @@ void __fastcall TUI_Tools::ShowProperties(){
 	if (pCurTools) pCurTools->ShowProperties();
 }
 //---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumPosition(SceneObject* O){
+void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){
 	if (pCurTools) pCurTools->SetNumPosition(O);
 }
 //---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumRotation(SceneObject* O){
+void __fastcall	TUI_Tools::SetNumRotation(CCustomObject* O){
 	if (pCurTools) pCurTools->SetNumRotation(O);
 }
 //---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumScale(SceneObject* O){
+void __fastcall	TUI_Tools::SetNumScale(CCustomObject* O){
 	if (pCurTools) pCurTools->SetNumScale(O);
 }
 //---------------------------------------------------------------------------

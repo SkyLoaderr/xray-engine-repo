@@ -10,7 +10,7 @@
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
 #include "RXSpin.hpp"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "RXCtrls.hpp"
 #include "CloseBtn.hpp"
 #include "multi_edit.hpp"
@@ -37,7 +37,7 @@ __published:	// IDE-managed Components
     void __fastcall ebLinkClick(TObject *Sender);
     void __fastcall ebUnLinkClick(TObject *Sender);
 private:	// User declarations
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo();
     void ApplyObjectsInfo();
     bool bMultipleSelection;

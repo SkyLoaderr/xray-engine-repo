@@ -1,8 +1,8 @@
 object fraSector: TfraSector
   Left = 0
   Top = 0
-  Width = 123
-  Height = 322
+  Width = 443
+  Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -22,13 +22,12 @@ object fraSector: TfraSector
   object paSectorActions: TPanel
     Left = 0
     Top = 125
-    Width = 123
+    Width = 443
     Height = 98
     Align = alTop
     ParentColor = True
     TabOrder = 1
-    Visible = False
-    object ebAddFace: TExtBtn
+    object ebAddMesh: TExtBtn
       Left = 59
       Top = 67
       Width = 29
@@ -88,7 +87,7 @@ object fraSector: TfraSector
       Spacing = 0
       Transparent = False
     end
-    object ebDelFace: TExtBtn
+    object ebDelMesh: TExtBtn
       Left = 92
       Top = 67
       Width = 29
@@ -218,7 +217,7 @@ object fraSector: TfraSector
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -314,14 +313,14 @@ object fraSector: TfraSector
     object Bevel1: TBevel
       Left = 1
       Top = 64
-      Width = 151
+      Width = 121
       Height = 2
     end
   end
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 125
     Align = alTop
     ParentColor = True
@@ -386,7 +385,7 @@ object fraSector: TfraSector
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -507,7 +506,7 @@ object fraSector: TfraSector
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = 'Capture Inside Volume'
+      Caption = 'Capture Volume'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

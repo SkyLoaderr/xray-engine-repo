@@ -15,7 +15,7 @@
 #include <Forms.hpp>
 
 // refs
-class SceneObject;
+class CCustomObject;
 
 class TfrmPropertiesRPoint : public TForm
 {
@@ -40,12 +40,12 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	static TfrmPropertiesRPoint* form;
     static bool bLoadMode;
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
 public:		// User declarations
     __fastcall TfrmPropertiesRPoint(TComponent* Owner);
-    static int __fastcall Run(list<SceneObject*>* pObjects, bool& bChange);
+    static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);
     static bool __fastcall Visible(){return !!form;}
     static TfrmPropertiesRPoint* GetForm(){VERIFY(form); return form;}
 };

@@ -29,18 +29,18 @@ st_Surface::~st_Surface(){
 // mimimal bounding box size
 float g_MinBoxSize = 0.05f;
 
-CEditObject::CEditObject( char *name, bool bLib ):SceneObject(){
+CEditObject::CEditObject( char *name, bool bLib ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
     bLibItem = bLib;
 }
 
-CEditObject::CEditObject( bool bLib ):SceneObject(){
+CEditObject::CEditObject( bool bLib ):CCustomObject(){
 	Construct();
     bLibItem = bLib;
 }
 
-CEditObject::CEditObject(CEditObject* source):SceneObject((SceneObject*)source){
+CEditObject::CEditObject(CEditObject* source):CCustomObject((CCustomObject*)source){
     CloneFrom(source,true);
 }
 
@@ -584,7 +584,7 @@ void CEditObject::RemoveMesh(CEditMesh* mesh){
     _DELETE(mesh);
 }
 
-void CEditObject::CloneFromLib( SceneObject *source ){
+void CEditObject::CloneFromLib( CCustomObject *source ){
 	VERIFY( source );
 	VERIFY( source->ClassID() == ClassID() );
 	CEditObject *obj = (CEditObject*)source;
@@ -626,7 +626,7 @@ void CEditObject::TranslateToWorld() {
 	UpdateBox();
 }
 
-void CEditObject::LibReference( SceneObject *source ){
+void CEditObject::LibReference( CCustomObject *source ){
 	VERIFY( source );
 	VERIFY( source->ClassID() == ClassID() );
 
@@ -674,7 +674,7 @@ void CEditObject::OnDeviceDestroy(){
     //	ClearRenderBuffers();
 		// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        if ((*s_it)->shader) Device.Shader.Delete((*s_it)->shader);
+        if ((*s_it)->shader){ Device.Shader.Delete((*s_it)->shader); (*s_it)->shader=0; }
 }
 
 void CEditObject::LightenObject(){

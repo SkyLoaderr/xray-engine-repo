@@ -49,7 +49,7 @@ void TUI_ControlOccluderAdd::OnExit (){
 }
 bool __fastcall TUI_ControlOccluderAdd::Start(TShiftState Shift){
 	if (pFrame->ebModePlane->Down){
-		SceneObject* obj = DefaultAddObject(Shift);
+		CCustomObject* obj = DefaultAddObject(Shift);
     }
     return false;
 }

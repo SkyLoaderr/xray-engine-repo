@@ -14,7 +14,7 @@
 #include "RXCtrls.hpp"
 #include "RXSpin.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
@@ -44,7 +44,7 @@ __published:	// IDE-managed Components
     void __fastcall OnModified(TObject *Sender);
 	void __fastcall ebInvertOrientationClick(TObject *Sender);
 private:	// User declarations
-    list<SceneObject*>* m_Objects;
+    list<CCustomObject*>* m_Objects;
     CPortal* m_CurPortal;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();

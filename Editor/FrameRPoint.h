@@ -11,7 +11,7 @@
 #include "CloseBtn.hpp"
 #include "RXCtrls.hpp"
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
 #include "Placemnt.hpp"

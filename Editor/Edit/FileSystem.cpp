@@ -6,7 +6,7 @@
 #pragma hdrstop
 
 #include "FileSystem.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include <io.h>
 
 CFileSystem FS;

@@ -7,7 +7,7 @@
 #include <ExtCtrls.hpp>
 #include <StdCtrls.hpp>
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "CloseBtn.hpp"
 #include "Placemnt.hpp"
 

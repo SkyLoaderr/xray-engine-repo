@@ -70,14 +70,13 @@ CDetail::~CDetail(){
 }
 
 void CDetail::OnDeviceCreate(){
-    m_pRefs->OnDeviceCreate();
     st_Surface* surf	= *m_pRefs->FirstSurface();
-    R_ASSERT			(surf);
+    VERIFY				(surf);
+    VERIFY				(surf->shader);
     m_pShader			= surf->shader;
 }
 
 void CDetail::OnDeviceDestroy(){
-    m_pRefs->OnDeviceDestroy();
     m_pShader 			= 0;
 }
 
@@ -222,9 +221,13 @@ CDetailManager::CDetailManager(){
     m_Selected.clear	();
     InitRender			();
 	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
+	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
+	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 
 CDetailManager::~CDetailManager(){
+	Device.seqDevCreate.Remove(this);
+	Device.seqDevDestroy.Remove(this);
 	Clear();
     m_Slots.clear		();
 	m_Cache.clear		();

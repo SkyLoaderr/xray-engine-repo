@@ -1,12 +1,11 @@
 object frmMain: TfrmMain
-  Left = 291
-  Top = 132
-  BorderStyle = bsSingle
-  ClientHeight = 602
-  ClientWidth = 804
+  Left = 693
+  Top = 301
+  Width = 660
+  Height = 446
   Color = clBtnFace
-  Constraints.MinHeight = 480
-  Constraints.MinWidth = 640
+  Constraints.MinHeight = 446
+  Constraints.MinWidth = 660
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -25,10 +24,10 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object paLeftBar: TPanel
-    Left = 664
+    Left = 512
     Top = 0
     Width = 140
-    Height = 585
+    Height = 402
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -76,8 +75,8 @@ object frmMain: TfrmMain
   end
   object paBottomBar: TPanel
     Left = 0
-    Top = 585
-    Width = 804
+    Top = 402
+    Width = 652
     Height = 17
     Align = alBottom
     BevelInner = bvLowered
@@ -87,15 +86,15 @@ object frmMain: TfrmMain
   object paMain: TPanel
     Left = 0
     Top = 0
-    Width = 664
-    Height = 585
+    Width = 512
+    Height = 402
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
     object paTopBar: TPanel
       Left = 0
       Top = 0
-      Width = 664
+      Width = 512
       Height = 18
       Align = alTop
       BevelOuter = bvNone
@@ -104,8 +103,8 @@ object frmMain: TfrmMain
     object paWindow: TPanel
       Left = 0
       Top = 18
-      Width = 664
-      Height = 567
+      Width = 512
+      Height = 384
       Align = alClient
       BevelOuter = bvNone
       Color = clGray
@@ -134,8 +133,6 @@ object frmMain: TfrmMain
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsMainFormRestorePlacement
     StoredProps.Strings = (
-      'paLeftBar.Align'
-      'paLeftBar.Height'
       'paLeftBar.Tag')
     StoredValues = <>
     Left = 185

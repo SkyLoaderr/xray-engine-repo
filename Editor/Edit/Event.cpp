@@ -22,12 +22,12 @@
 #define EVENT_CHUNK_EXECUTE_ONCE			0x0314
 //----------------------------------------------------
 
-CEvent::CEvent( char *name ):SceneObject(){
+CEvent::CEvent( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CEvent::CEvent():SceneObject(){
+CEvent::CEvent():CCustomObject(){
 	Construct();
 }
 
@@ -222,7 +222,7 @@ bool CEvent::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     R_ASSERT(F.ReadChunk(EVENT_CHUNK_TYPE,&eEventType));
 
@@ -249,7 +249,7 @@ bool CEvent::Load(CStream& F){
 }
 
 void CEvent::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(EVENT_CHUNK_VERSION);
 	F.Wword			(EVENT_VERSION);

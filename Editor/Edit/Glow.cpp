@@ -21,12 +21,12 @@
 #define GLOW_CHUNK_TEXTURES				0xC415
 //----------------------------------------------------
 
-CGlow::CGlow( char *name ):SceneObject(){
+CGlow::CGlow( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
 
-CGlow::CGlow():SceneObject(){
+CGlow::CGlow():CCustomObject(){
 	Construct();
 }
 
@@ -143,7 +143,7 @@ bool CGlow::Load(CStream& F){
         return false;
     }
 
-	SceneObject::Load(F);
+	CCustomObject::Load(F);
 
     if (F.FindChunk(GLOW_CHUNK_SHADER)) F.RstringZ (sh_name);
 
@@ -163,7 +163,7 @@ bool CGlow::Load(CStream& F){
 }
 
 void CGlow::Save(CFS_Base& F){
-	SceneObject::Save(F);
+	CCustomObject::Save(F);
 
 	F.open_chunk	(GLOW_CHUNK_VERSION);
 	F.Wword			(GLOW_VERSION);

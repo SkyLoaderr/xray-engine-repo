@@ -3,7 +3,7 @@
 
 #include "PropertiesPSDef.h"
 #include "SceneClassList.h"
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "EditParticles.h"
 #include "ParticleSystem.h"
 #include "FileSystem.h"

@@ -61,10 +61,10 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 // add
 //------------------------------------------------------------------------------
-SceneObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift){
+CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift){
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return 0;}
     Fvector p;
-    SceneObject* obj=0;
+    CCustomObject* obj=0;
     if (UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)){
 		char namebuffer[MAX_OBJ_NAME];
 		Scene->GenObjectName(parent_tool->objclass, namebuffer);
@@ -101,7 +101,7 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if (!Shift.Contains(ssCtrl)) Scene->SelectObjects( false, cls);
 
-    SceneObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
+    CCustomObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
     if( bBoxSelection ){
