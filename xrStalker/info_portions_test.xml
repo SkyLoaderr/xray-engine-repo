@@ -6,7 +6,7 @@
 			<level></level>
 			<x>-250</x>
 			<y>-127</y>
-			<icon name="Dealer" x="2" y="2" width="1" height="1"></icon>
+			<icon name="Dealer" x="2" y="2" width="1" height="1" r="255" g="0" b="0"></icon>
 			<text>Bring artefacts to the Dealer</text>
 		</location>
 		<!-- список диалогов, который может инициировать InfoPortion -->
