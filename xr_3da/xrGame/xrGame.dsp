@@ -763,6 +763,14 @@ SOURCE=.\AI_Utilities.cpp
 # Begin Group "Spawn Process"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Spawn.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Spawn.h
+# End Source File
 # End Group
 # Begin Source File
 

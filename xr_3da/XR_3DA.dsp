@@ -807,10 +807,6 @@ SOURCE=.\Blenders\Blender_CLSID.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blenders\Blender_Params.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Blenders\Blender_Recorder.cpp
 # End Source File
 # Begin Source File
@@ -1817,6 +1813,10 @@ SOURCE=.\tga.h
 # Begin Source File
 
 SOURCE=.\FTimer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Properties.h
 # End Source File
 # Begin Source File
 
