@@ -545,16 +545,6 @@ CScriptGameObject *CGameObject::lua_game_object		() const
 	return							(m_lua_game_object);
 }
 
-bool CGameObject::frame_check(u32 &frame)
-{
-	if (Device.dwFrame == frame)
-		return		(false);
-
-	frame			= Device.dwFrame;
-	return			(true);
-}
-
-
 
 bool CGameObject::NeedToDestroyObject()	const
 {
