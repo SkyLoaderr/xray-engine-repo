@@ -211,8 +211,8 @@ CRender::CRender()
 	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE:TRUE;
 	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE:TRUE;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE:FALSE;
-	o.nvstecil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE:TRUE;
-	o.nvstecil			= FALSE;
+	o.nvstencil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE:TRUE;
+	o.nvstencil			= FALSE;
 }
 
 CRender::~CRender()
@@ -271,17 +271,17 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 	// options
-	if (b_fp16_filter)		{
+	if (o.fp16_filter)		{
 		defines[def_it].Name		=	"FP16_FILTER";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	if (b_fp16_blend)		{
+	if (o.fp16_blend)		{
 		defines[def_it].Name		=	"FP16_BLEND";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	if (b_HW_smap)			{
+	if (o.HW_smap)			{
 		defines[def_it].Name		=	"USE_HWSMAP";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
@@ -291,7 +291,7 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	if (b_Tshadows)			{
+	if (o.Tshadows)			{
 		defines[def_it].Name		=	"USE_TSHADOWS";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
@@ -332,7 +332,7 @@ HRESULT	CRender::shader_compile			(
     LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
     LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
 	HRESULT		_result	= D3DXCompileShader(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
-	if (b_disasm)
+	if (o.disasm)
 	{
 	}
 	return		_result;

@@ -96,7 +96,7 @@ void	CRender::render_lights	(light_Package& LP)
 
 			// render
 			phase									= PHASE_SMAP_S;
-			if (RImplementation.b_Tshadows)	r_pmask	(true,true	);
+			if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 			else							r_pmask	(true,false	);
 			L->svis.begin							();
 			r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
