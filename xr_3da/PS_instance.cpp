@@ -45,3 +45,7 @@ void CPS_Instance::PSI_destroy		()
 	g_pGameLevel->ps_destroy.push_back	(this);
 }
 //----------------------------------------------------
+void CPS_Instance::PSI_internal_delete		()
+{
+	delete			(this);
+}

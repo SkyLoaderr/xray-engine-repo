@@ -18,10 +18,10 @@ protected:
 	bool				m_bStoppig;			//вызвана функция Stop()
 protected:
 	u32					mt_dt;
+	virtual				~CParticlesObject	();
 public:
 						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);
-	virtual				~CParticlesObject	();
 
 	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 	virtual void		shedule_Update		(u32 dt);

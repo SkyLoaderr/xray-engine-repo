@@ -22,7 +22,7 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 	Init					(p_name,S,bAutoRemove);
 }
 
-void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
+void CParticlesObject::Init	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 {
 	m_bLooped = false;
 	m_bStoppig = false;
@@ -50,7 +50,6 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 			m_bLooped = true;
 		}
 	}
-
 
 
 	// spatial
