@@ -50,3 +50,24 @@ IC	void CObjectHandlerGOAP::add_effect				(CObjectActionBase *action, u16 id, EW
 {
 	action->add_effect	(CWorldProperty(uid(id,property),value));
 }
+
+IC	CObjectHandlerGOAP::EWorldProperties CObjectHandlerGOAP::object_property(MonsterSpace::EObjectAction object_action) const
+{
+	switch (object_action) {
+		case eObjectActionSwitch1		: return(eWorldPropertySwitch1);
+		case eObjectActionSwitch2		: return(eWorldPropertySwitch2);
+		case eObjectActionAim1			: return(eWorldPropertyAiming1);
+		case eObjectActionAim2			: return(eWorldPropertyAiming2);
+		case eObjectActionFire1			: return(eWorldPropertyFiring1);
+		case eObjectActionFire2			: return(eWorldPropertyFiring2);
+		case eObjectActionIdle			: return(eWorldPropertyIdle);
+		case eObjectActionStrapped		: return(eWorldPropertyIdleStrap);
+		case eObjectActionDrop			: return(eWorldPropertyDropped);
+		case eObjectActionActivate		: return(eWorldPropertyIdle);
+		case eObjectActionDeactivate	: return(eWorldPropertyNoItemsIdle);
+		default							: NODEFAULT;
+	}
+#ifdef DEBUG
+	return	(eWorldPropertyDummy);
+#endif
+}

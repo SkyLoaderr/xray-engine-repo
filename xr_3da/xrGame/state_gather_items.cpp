@@ -68,7 +68,7 @@ void CStateGatherItems::execute			()
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionNoItems);
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
 #endif
 }
 

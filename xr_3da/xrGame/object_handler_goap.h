@@ -57,6 +57,7 @@ protected:
 		eWorldPropertyIdleStrap,
 		eWorldPropertyDropped,
 		eWorldPropertyQueueWait,
+		eWorldPropertyNoItemsIdle	= eWorldPropertyIdle | u16(-1),
 		eWorldPropertyDummy			= u32(-1),
 	};
 
@@ -77,6 +78,7 @@ protected:
 		eWorldOperatorSwitch1,
 		eWorldOperatorSwitch2,
 		eWorldOperatorQueueWait,
+		eWorldOperatorNoItemsIdle	= eWorldOperatorIdle | u16(-1),
 		eWorldOperatorDummy			= u32(-1),
 	};
 
@@ -114,6 +116,7 @@ protected:
 			void			add_operators			(CEatableItem	*eatable_item);
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
+	IC		EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
 
 public:
 							CObjectHandlerGOAP		();
@@ -136,7 +139,7 @@ public:
 			u32				weapon_state			(const CWeapon *weapon) const;
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
-			void			set_goal				(const MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
+			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
 	IC		void			add_condition			(CObjectActionBase *action, u16 id, EWorldProperties property, bool value);
 	IC		void			add_effect				(CObjectActionBase *action, u16 id, EWorldProperties property, bool value);
 };

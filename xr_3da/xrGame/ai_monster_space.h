@@ -66,36 +66,32 @@ namespace MonsterSpace {
 //	};
 
 	enum EObjectAction {
-		eObjectActionIdle = u32(0),
-		eObjectActionShow,		
-		eObjectActionHide,		
-		eObjectActionTake,		
-		eObjectActionDrop,		
-		eObjectActionAim1,		
-		eObjectActionAim2,		
-		eObjectActionReload1,	
-		eObjectActionReload2,	
-		eObjectActionFire1,		
-		eObjectActionFire2,		
-		eObjectActionSwitch1,	
-		eObjectActionSwitch2,	
-		eObjectActionMisfire1,
-		eObjectActionMisfire2,
-		eObjectActionEmpty1,
-		eObjectActionEmpty2,
-		eObjectActionStrapping,
+		eObjectActionSwitch1,
+		eObjectActionSwitch2,
+		eObjectActionReload1,
+		eObjectActionReload2,
+		eObjectActionAim1,
+		eObjectActionAim2,
+		eObjectActionFire1,
+		eObjectActionFire2,
+		eObjectActionIdle,
 		eObjectActionStrapped,
-		eObjectActionUnstrapping,
-		
+		eObjectActionDrop,
+		// for scripts only
 		eObjectActionActivate,
 		eObjectActionDeactivate,
 		eObjectActionUse,
 		eObjectActionTurnOn,
 		eObjectActionTurnOff,
-		
-		eObjectActionNoItems = eObjectActionIdle | u16(-1),
-		
-		eObjectActionDummy = u32(-1)
+		// for old object handler only
+		eObjectActionShow,
+		eObjectActionHide,
+		eObjectActionTake,
+		eObjectActionMisfire1,
+		eObjectActionEmpty1,
+		eObjectActionNoItems		= eObjectActionIdle | u16(-1),
+		// 
+		eObjectActionDummy			= u32(-1),
 	};
 
 	enum EMentalState {

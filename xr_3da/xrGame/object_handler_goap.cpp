@@ -72,6 +72,10 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CInventoryOwner::reinit		();
 	m_aimed1					= false;
 	m_aimed2					= false;
+	add_evaluator				(eWorldPropertyNoItemsIdle,	xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
+	CObjectActionBase			*action = xr_new<CObjectActionBase>(m_object,m_object);
+	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,true));
+	add_operator				(eWorldOperatorNoItemsIdle,action);
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
@@ -83,6 +87,11 @@ void CObjectHandlerGOAP::reload			(LPCSTR section)
 void CObjectHandlerGOAP::update(u32 time_delta)
 {
 	inherited::update			(time_delta);
+	if (!solution().empty()) {
+		Msg						("%6d : solution",Level().timeServer());
+		for (int i=0; i<(int)solution().size(); ++i)
+			Msg					("%d",solution()[i]);
+	}
 }
 
 void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
@@ -208,6 +217,28 @@ void CObjectHandlerGOAP::remove_item		(CInventoryItem *inventory_item)
 				remove_evaluators(eatable);
 				remove_operators(eatable);
 			}
+}
+
+void CObjectHandlerGOAP::remove_evaluators	(CObject *object)
+{
+#pragma todo("Dima to Dima : safe, but not optimal!")
+	for (;;) {
+		EVALUATOR_MAP::iterator	I = std::lower_bound(m_evaluators.begin(),m_evaluators.end(),object->ID(),CMapLocator<EVALUATOR_MAP>());
+		if (!object_action((*I).first,object))
+			break;
+		remove_evaluator((*I).first);
+	}
+}
+
+void CObjectHandlerGOAP::remove_operators	(CObject *object)
+{
+#pragma todo("Dima to Dima : safe, but not optimal!")
+	for (;;) {
+		OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(),m_operators.end(),object->ID());
+		if (!object_action((*I).m_operator_id,object))
+			break;
+		remove_operator	((*I).m_operator_id);
+	}
 }
 
 void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
@@ -383,46 +414,16 @@ void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
 {
 }
 
-void CObjectHandlerGOAP::remove_evaluators	(CObject *object)
-{
-#pragma todo("Dima to Dima : safe, but not optimal!")
-	for (;;) {
-		EVALUATOR_MAP::iterator	I = std::lower_bound(m_evaluators.begin(),m_evaluators.end(),object->ID(),CMapLocator<EVALUATOR_MAP>());
-		if (!object_action((*I).first,object))
-			break;
-		remove_evaluator((*I).first);
-	}
-}
-
-void CObjectHandlerGOAP::remove_operators	(CObject *object)
-{
-#pragma todo("Dima to Dima : safe, but not optimal!")
-	for (;;) {
-		OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(),m_operators.end(),object->ID());
-		if (!object_action((*I).m_operator_id,object))
-			break;
-		remove_operator	((*I).m_operator_id);
-	}
-}
-
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {
-//	if (object_action == MonsterSpace::eObjectActionActivate)
-//		object_action					= MonsterSpace::eObjectActionIdle;
-//
-//	if (object_action == MonsterSpace::eObjectActionDeactivate)
-//		object_action					= MonsterSpace::eObjectActionNoItems;
-//
-//	if (object_action == MonsterSpace::eObjectActionNoItems) {
-//		inherited::set_dest_state		(object_action);
-//		return;
-//	}
-//
-//	if (game_object)
-//		inherited::set_dest_state		(uid(object_action, game_object->ID()));
-//	else
-//		if (inventory().ActiveItem())
-//			inherited::set_dest_state	(uid(object_action, inventory().ActiveItem()->ID()));
-//		else
-//			inherited::set_dest_state	(u32(MonsterSpace::eObjectActionNoItems));
+	EWorldProperties	goal = object_property(object_action);
+	u32					condition_id = goal;
+
+	if (game_object && (eWorldPropertyNoItemsIdle != goal))
+		condition_id	= uid(game_object->ID(), goal);
+	else
+		condition_id	= eWorldPropertyNoItemsIdle;
+
+	m_target_state.clear();
+	m_target_state.add_condition(CWorldProperty(condition_id,true));
 }

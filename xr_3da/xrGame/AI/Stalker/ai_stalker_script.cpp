@@ -154,7 +154,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 #ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-			CObjectHandlerGOAP::set_goal	(eObjectActionNoItems);
+			CObjectHandlerGOAP::set_goal	(eObjectActionIdle);
 #endif
 		}
 		else {
@@ -319,7 +319,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 #ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-			CObjectHandlerGOAP::set_goal	(eObjectActionNoItems);
+			CObjectHandlerGOAP::set_goal	(eObjectActionIdle);
 #endif
 #ifdef OLD_OBJECT_HANDLER
 			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
