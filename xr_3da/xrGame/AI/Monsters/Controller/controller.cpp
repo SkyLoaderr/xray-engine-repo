@@ -91,23 +91,23 @@ void CController::Load(LPCSTR section)
 		//SVelocityParam &velocity_drag		= movement().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
 
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND);
+		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
 		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
 		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
-		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &velocity_none,				PS_SIT);
-		MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &velocity_none,				PS_SIT);
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND);
+		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &velocity_none,		PS_SIT);
+		MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &velocity_none,		PS_SIT);
+		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND);
 		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND);
 		MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
 		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &velocity_run_dmg,	PS_STAND);
 		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,			PS_STAND);
-		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,				PS_STAND);	
-		MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,				PS_SIT);
-		MotionMan.AddAnim(eAnimSleep,			"sit_sleep_",			-1, &velocity_none,				PS_SIT);
+		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
+		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,		PS_STAND);	
+		MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,		PS_SIT);
+		MotionMan.AddAnim(eAnimSleep,			"sit_sleep_",			-1, &velocity_none,		PS_SIT);
 
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
@@ -151,25 +151,6 @@ void CController::UpdateControlled()
 			}
 		}
 	}
-
-	// удалить мертвые объекты	
-	if (!m_controlled_objects.empty()) 
-		for (int i=m_controlled_objects.size()-1; i>=0;i--) {
-			if (!m_controlled_objects[i]->g_Alive() || m_controlled_objects[i]->getDestroy()) {
-				m_controlled_objects[i] = m_controlled_objects.back();
-				m_controlled_objects.pop_back();
-			}  
-		}
-
-
-//////////////////////////////////////////////////////////////////////////
-// Test	
-//////////////////////////////////////////////////////////////////////////
-	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
-	if (!pA) return;
-	//pA->SetControlled();
-//////////////////////////////////////////////////////////////////////////
-
 }
 
 void CController::set_controlled_task(u32 task)
@@ -335,13 +316,13 @@ void CController::Jump()
 void CController::Die(CObject* who)
 {
 	inherited::Die(who);
+	FreeFromControl();
+
 	CPsyAuraController::deactivate();
 	CPsyAuraController::set_auto_activate(false);
 	
 	processing_activate();
 	int_need_deactivate = true;
-	
-	FreeFromControl();
 }
 
 void CController::net_Destroy()
@@ -352,7 +333,17 @@ void CController::net_Destroy()
 
 void CController::FreeFromControl()
 {
-	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control(this);
+	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control();
+}
+
+void CController::OnFreedFromControl(const CEntity *entity)
+{
+	for	(u32 i=0; i<m_controlled_objects.size(); i++) 
+		if (m_controlled_objects[i] == entity) {
+			m_controlled_objects[i] = m_controlled_objects.back();
+			m_controlled_objects.pop_back();
+			return;
+	}
 }
 
 #ifdef DEBUG

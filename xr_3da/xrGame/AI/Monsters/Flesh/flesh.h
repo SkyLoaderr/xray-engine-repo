@@ -6,8 +6,8 @@
 class CAI_Flesh : public CBaseMonster,
 				  public CControlledEntity<CAI_Flesh> {
 
-	typedef		CBaseMonster						inherited;
-	typedef		CControlledEntity<CAI_Flesh>	controlled;
+	typedef		CBaseMonster					inherited;
+	typedef		CControlledEntity<CAI_Flesh>	CControlled;
 
 public:
 							CAI_Flesh		();
@@ -15,6 +15,10 @@ public:
 	
 	virtual	void	Load					(LPCSTR section);
 	virtual	BOOL	net_Spawn				(CSE_Abstract* DC);
+	virtual void	reinit					();
+
+	virtual void	Die						(CObject* who);
+	virtual void	net_Destroy				();
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
 

@@ -11,7 +11,7 @@ class CZombie :	public CBaseMonster,
 				public CControlledEntity<CZombie> {
 	
 	typedef		CBaseMonster				inherited;
-	typedef		CControlledEntity<CZombie>	controlled;
+	typedef		CControlledEntity<CZombie>	CControlled;
 
 	bonesManipulation	Bones;
 
@@ -21,8 +21,11 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
+	virtual void	net_Destroy			();
 	virtual void	reinit				();
 	virtual	void	reload				(LPCSTR section);
+	
+	virtual void	Die					(CObject* who);
 
 	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
 

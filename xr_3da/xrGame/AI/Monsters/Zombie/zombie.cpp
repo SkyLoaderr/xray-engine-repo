@@ -11,13 +11,15 @@ CZombie::CZombie()
 {
 	StateMan = xr_new<CStateManagerZombie>(this);
 	
-	controlled::init_external(this);
+	CControlled::init_external(this);
 }
 
 CZombie::~CZombie()
 {
 	xr_delete		(StateMan);
 }
+
+
 
 void CZombie::Load(LPCSTR section)
 {
@@ -77,6 +79,8 @@ void CZombie::Load(LPCSTR section)
 void CZombie::reinit()
 {
 	inherited::reinit();
+	CControlled::reinit();
+
 	Bones.Reset();
 	
 	time_dead_start			= 0;
@@ -192,4 +196,16 @@ void CZombie::shedule_Update(u32 dt)
 			time_resurrect = Device.dwTimeGlobal;
 		}
 	}
+}
+
+void CZombie::Die(CObject* who)
+{
+	inherited::Die		(who);
+	CControlled::on_die	();
+}
+
+void CZombie::net_Destroy()
+{
+	CControlled::on_destroy	();
+	inherited::net_Destroy	();
 }

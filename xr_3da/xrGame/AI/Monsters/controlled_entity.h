@@ -1,5 +1,4 @@
 #pragma once
-
 #include "controller/controller.h"
 
 class CEntity;
@@ -29,13 +28,15 @@ public:
 	virtual void			set_task_attack		(const CEntity *e)				= 0;
 	
 	virtual void			set_under_control	(CController *controller)		= 0;
-	virtual void			free_from_control	(CController *controller)		= 0;
+	virtual void			free_from_control	()								= 0;
 };
 
 
 template<typename _Object>
 class CControlledEntity : public CControlledEntityBase {
-	bool				m_controlled;
+	
+	friend	class	CController;
+	
 	SControlledInfo		m_data;
 	
 	struct SGroupID {
@@ -45,28 +46,27 @@ class CControlledEntity : public CControlledEntityBase {
 	} saved_id;
 
 	_Object				*m_object;
+	CController			*m_controller;
 
 public:
-							CControlledEntity	();
-	virtual					~CControlledEntity	();
 
-	virtual bool			is_under_control	() {return m_controlled;}
+	virtual bool			is_under_control		() {return (m_controller != 0);}
 
-	virtual void			set_data			(const SControlledInfo &info) {m_data = info;}
-	virtual SControlledInfo &get_data			(){return m_data;}
+	virtual void			set_data				(const SControlledInfo &info) {m_data = info;}
+	virtual SControlledInfo &get_data				(){return m_data;}
 
-	virtual void			set_task_follow		(const CEntity *e);
-	virtual void			set_task_attack		(const CEntity *e);
+	virtual void			set_task_follow			(const CEntity *e);
+	virtual void			set_task_attack			(const CEntity *e);
+	
 
 protected:
-			void			init_external		(_Object *obj) {m_object = obj;}
-			void			update				();
+			void			reinit					();
+			void			init_external			(_Object *obj) {m_object = obj;}
+			void			on_die					();
+			void			on_destroy				();
 
-private:
-	friend	class	CController;
-	
-	virtual void			set_under_control	(CController *controller); 
-	virtual void			free_from_control	(CController *controller);
+	virtual void			set_under_control		(CController *controller); 
+	virtual void			free_from_control		();
 };
 
 #include "controlled_entity_inline.h"

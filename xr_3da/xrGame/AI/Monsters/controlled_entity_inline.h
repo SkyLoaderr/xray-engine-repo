@@ -7,36 +7,11 @@
 #define CControlledEntityAbstract CControlledEntity<_Object>
 
 TEMPLATE_SPECIALIZATION
-CControlledEntityAbstract::CControlledEntity()
+void CControlledEntityAbstract::reinit()
 {
-	m_controlled	= false; 
 	m_data.m_object = 0;
-	m_object		= 0;
+	m_controller	= 0; 
 }
-
-TEMPLATE_SPECIALIZATION
-CControlledEntityAbstract::~CControlledEntity()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-void CControlledEntityAbstract::set_under_control(CController *controller)
-{
-	saved_id.team_id	= m_object->g_Team	();
-	saved_id.squad_id	= m_object->g_Squad	();
-	saved_id.group_id	= m_object->g_Group	();
-
-	m_object->ChangeTeam(controller->g_Team(), controller->g_Squad(), controller->g_Group());
-
-	m_controlled = true;
-}
-
-TEMPLATE_SPECIALIZATION
-void CControlledEntityAbstract::free_from_control(CController *controller)
-{
-	m_object->ChangeTeam(saved_id.team_id, saved_id.squad_id, saved_id.group_id);
-	m_controlled = false;
-}	
 
 TEMPLATE_SPECIALIZATION
 void CControlledEntityAbstract::set_task_follow(const CEntity *e)
@@ -52,14 +27,44 @@ void CControlledEntityAbstract::set_task_attack(const CEntity *e)
 }
 
 TEMPLATE_SPECIALIZATION
-void CControlledEntityAbstract::update()
+void CControlledEntityAbstract::set_under_control(CController *controller)
 {
-	if (!m_controlled) return;
-	if (m_data.m_object && m_data.m_object->getDestroy() && (m_data.m_task != eTaskNone)) {
-		m_data.m_object = 0;
-		m_data.m_task	= eTaskNone;
-	}
+	m_controller		= controller;
+	
+	saved_id.team_id	= m_object->g_Team	();
+	saved_id.squad_id	= m_object->g_Squad	();
+	saved_id.group_id	= m_object->g_Group	();
+
+	m_object->ChangeTeam(m_controller->g_Team(), m_controller->g_Squad(), m_controller->g_Group());
 }
+
+TEMPLATE_SPECIALIZATION
+void CControlledEntityAbstract::free_from_control()
+{
+	m_object->ChangeTeam			(saved_id.team_id, saved_id.squad_id, saved_id.group_id);
+	m_controller					= 0;
+}	
+
+TEMPLATE_SPECIALIZATION
+void CControlledEntityAbstract::on_die()
+{
+	if (!is_under_control())			return;
+
+	m_controller->OnFreedFromControl	(m_object);
+	m_controller						= 0;
+}
+TEMPLATE_SPECIALIZATION
+void CControlledEntityAbstract::on_destroy()
+{
+	if (!is_under_control())			return;
+
+	m_object->ChangeTeam				(saved_id.team_id, saved_id.squad_id, saved_id.group_id);
+
+	m_controller->OnFreedFromControl	(m_object);
+	m_controller						= 0;
+}
+
+
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CControlledEntityAbstract

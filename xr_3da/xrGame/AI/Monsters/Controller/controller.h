@@ -53,11 +53,13 @@ public:
 			
 			void	Jump				();
 
+	//-------------------------------------------------------------------
 	// Controller ability
 			bool	HasUnderControl		() {return (!m_controlled_objects.empty());}
 			void	TakeUnderControl	(CEntity *);
 			void	UpdateControlled	();
 			void	FreeFromControl		();
+			void	OnFreedFromControl	(const CEntity *);  // если монстр сам себя освободил (destroyed || die)
 
 			void	set_controlled_task (u32 task);
 
@@ -67,6 +69,7 @@ public:
 			void	play_control_sound_hit		();
 
 			void	control_hit					();
+	//-------------------------------------------------------------------
 
 public:
 	virtual bool	use_center_to_aim			() const {return true;}
