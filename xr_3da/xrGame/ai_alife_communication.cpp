@@ -289,6 +289,69 @@ int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanA
 	return(0);
 }
 
+void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, int i, int j, int &i1, int &i2)
+{
+	switch (i) {
+		case 0 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseEquipment	(&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseEquipment	(&m_tpBlockedItems2);
+			break;
+		}
+		case 1 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeKnife,&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeKnife,&m_tpBlockedItems2);
+			break;
+		}
+		case 2 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeSecondary,&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeSecondary,&m_tpBlockedItems2);
+			break;
+		}
+		case 3 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypePrimary,&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypePrimary,&m_tpBlockedItems2);
+			break;
+		}
+		case 4 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeGrenade,&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeGrenade,&m_tpBlockedItems2);
+			break;
+		}
+		case 5 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseFood		(&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseFood		(&m_tpBlockedItems2);
+			break;
+		}
+		case 6 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseMedikit	(&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseMedikit	(&m_tpBlockedItems2);
+			break;
+		}
+		case 7 : {
+			if (!j)
+				i1	= tpALifeHumanAbstract1->ifChooseDetector	(&m_tpBlockedItems1);
+			else
+				i2	= tpALifeHumanAbstract2->ifChooseDetector	(&m_tpBlockedItems2);
+			break;
+		}
+		default :			NODEFAULT;
+	}
+}
+
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItemVector);
@@ -309,59 +372,63 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	tpALifeHumanAbstract2->vfDetachAll();
 
 	int					l_iItemCount1 = -1, l_iItemCount2 = -1;
-	for (int j=0; j<8; j++) {
-		switch (j) {
+	for (int j=0, k=0; j<8; j++) {
+		switch (k) {
 			case 0 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseEquipment	(false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseEquipment	(false);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,0,l_iItemCount1,l_iItemCount2);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,1,l_iItemCount1,l_iItemCount2);
 				break;
 			}
 			case 1 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeKnife,false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeKnife,false);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,0,l_iItemCount1,l_iItemCount2);
 				break;
 			}
 			case 2 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeSecondary,false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeSecondary,false);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,1,l_iItemCount1,l_iItemCount2);
 				break;
 			}
 			case 3 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypePrimary,false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypePrimary,false);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,0,l_iItemCount1,l_iItemCount2);
+				
+				m_tpBlockedItems1.clear();
+				m_tpBlockedItems1.insert(m_tpBlockedItems1.begin(),tpALifeHumanAbstract1->children.begin() + l_iItemCount1,tpALifeHumanAbstract1->children.begin());
+				
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,1,l_iItemCount1,l_iItemCount2);
 				break;
 			}
-			case 4 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeGrenade,false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeGrenade,false);
-				break;
-			}
-			case 5 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseFood		(false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseFood		(false);
-				break;
-			}
-			case 6 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseMedikit	(false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseMedikit	(false);
-				break;
-			}
-			case 7 : {
-				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseDetector	(false);
-				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseDetector	(false);
-				break;
-			}
-			default : NODEFAULT;
 		}
 		
 		if (l_iItemCount1*l_iItemCount2) {
+			m_tpBlockedItems1.clear();
+			m_tpBlockedItems2.clear();
+			
 			OBJECT_IT			I = tpALifeHumanAbstract1->children.begin() + l_iItemCount1, J;
 			OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
 			for ( ; I != E; I++) {
 				J				= std::find(tpALifeHumanAbstract2->children.begin() + l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
 				if (J != tpALifeHumanAbstract2->children.end()) {
-
+					ITEM_P_IT	K = std::find(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
+					if (K != m_tpItems1.end())
+						m_tpBlockedItems1.push_back(*I);
+					else {
+						R_ASSERT2(std::find(m_tpItems2.begin(),m_tpItems2.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I))) != m_tpItems2.end(),"Unknown item parent");
+						m_tpBlockedItems2.push_back(*I);
+					}
 				}
+			}
+			
+			if (!(m_tpBlockedItems1.size() + m_tpBlockedItems1.size()))
+				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1*l_iItemCount2,m_tpItemVector.end());
+			else {
+				if (m_tpBlockedItems1.size())
+					if (m_tpBlockedItems2.size())
+						k = 3;
+					else
+						k = 2;
+				else
+					k = 1;
+				j--;
+				continue;
 			}
 		}
 	}

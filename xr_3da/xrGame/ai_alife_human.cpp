@@ -548,7 +548,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 	return							(false);
 }
 
-int CSE_ALifeHumanAbstract::ifChooseEquipment(bool bErase)
+int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing equipment
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
@@ -573,14 +573,14 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(bool bErase)
 	}
 	if (l_tpALifeItemBest) {
 		m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
-		if (bErase)
+		if (tpObjectVector)
 			m_tpALife->m_tpItemVector.erase(X);
 		return					(1);
 	}
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, bool bErase)
+int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector)
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
@@ -631,14 +631,14 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 		attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector);
 		ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 		size_t					l_dwItemCount = m_tpALife->m_tpItemVector.end() - I;
-		if (bErase)
+		if (tpObjectVector)
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 		return					(int(l_dwItemCount));
 	}
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseFood(bool bErase)
+int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
@@ -658,13 +658,13 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(bool bErase)
 	}
 	if (l_dwCount) {
 		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		if (bErase)
+		if (tpObjectVector)
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseMedikit(bool bErase)
+int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing medikits
 	u32							l_dwCount = 0;
@@ -682,13 +682,13 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(bool bErase)
 	}
 	if (l_dwCount) {
 		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		if (bErase)
+		if (tpObjectVector)
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseDetector(bool bErase)
+int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing detector
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
@@ -713,14 +713,14 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(bool bErase)
 	}
 	if (l_tpALifeItemBest) {
 		m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
-		if (bErase)
+		if (tpObjectVector)
 			m_tpALife->m_tpItemVector.erase(X);
 		return					(1);
 	}
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseValuables(bool bErase)
+int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
@@ -731,7 +731,7 @@ int  CSE_ALifeHumanAbstract::ifChooseValuables(bool bErase)
 
 	I						= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 	size_t					l_dwItemCount = m_tpALife->m_tpItemVector.end() - I;
-	if (bErase)
+	if (tpObjectVector)
 		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	return					(int(l_dwItemCount));
 }

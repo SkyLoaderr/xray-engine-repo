@@ -30,6 +30,8 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 
 	m_tpItems1.reserve		(MAX_STACK_DEPTH);
 	m_tpItems2.reserve		(MAX_STACK_DEPTH);
+	m_tpBlockedItems1.reserve(MAX_STACK_DEPTH);
+	m_tpBlockedItems2.reserve(MAX_STACK_DEPTH);
 	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
 	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
 	m_tpSums1.reserve		(MAX_STACK_DEPTH);
