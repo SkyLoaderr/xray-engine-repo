@@ -7,7 +7,8 @@
 ENGINE_API extern BOOL	ShowLM;
 void CLevel::OnKeyboardPress(int key)
 {
-	if (pHUD->IsUIActive())			if (pHUD->GetUI()->OnKeyboardPress(key)) return;
+//	if (pHUD->IsUIActive())			
+	if (pHUD->GetUI()->OnKeyboardPress(key)) return;
 
 	switch (key) 
 	{
@@ -51,7 +52,8 @@ void CLevel::OnKeyboardPress(int key)
 
 void CLevel::OnKeyboardRelease(int key)
 {
-	if (pHUD->IsUIActive()) if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
+//	if (pHUD->IsUIActive()) 
+	if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
 
 	switch (key)
 	{

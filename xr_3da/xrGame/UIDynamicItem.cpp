@@ -20,14 +20,14 @@ CUIDynamicItem::~CUIDynamicItem()
 }
 
 //--------------------------------------------------------------------
-void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh, float tx_width, float tx_height)
+void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh, int tx_width, int tx_height)
 {
 	inherited::Init(tx_width,tx_height);
 	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
 }
 
-void CUIDynamicItem::Out(float left, float top, DWORD color, DWORD align)
+void CUIDynamicItem::Out(int left, int top, DWORD color, DWORD align)
 {
 	SDynamicItemData* D = 0;
 	if (data.size()<=item_cnt){ 

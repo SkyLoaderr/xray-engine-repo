@@ -20,7 +20,7 @@ CCFModel::CCFModel( CObject* _owner )
 {
 	owner				= _owner;
 	Sphere.identity		( );
-	last_rect.invalidate( );
+	last_rect.null		( );
 	enabled_prev=enabled= true;
 }
 

@@ -996,28 +996,10 @@
 					RelativePath=".\UICursor.h">
 				</File>
 				<File
-					RelativePath=".\UICustomItem.cpp">
-				</File>
-				<File
-					RelativePath=".\UICustomItem.h">
-				</File>
-				<File
-					RelativePath=".\UIDynamicItem.cpp">
-				</File>
-				<File
-					RelativePath=".\UIDynamicItem.h">
-				</File>
-				<File
 					RelativePath="UIFragList.cpp">
 				</File>
 				<File
 					RelativePath="UIFragList.h">
-				</File>
-				<File
-					RelativePath="UIFrameRect.cpp">
-				</File>
-				<File
-					RelativePath="UIFrameRect.h">
 				</File>
 				<File
 					RelativePath=".\UIGroup.cpp">
@@ -1032,12 +1014,6 @@
 					RelativePath=".\UIHealth.h">
 				</File>
 				<File
-					RelativePath=".\UIStaticItem.cpp">
-				</File>
-				<File
-					RelativePath=".\UIStaticItem.h">
-				</File>
-				<File
 					RelativePath=".\UIWeapon.cpp">
 				</File>
 				<File
@@ -1049,6 +1025,34 @@
 				<File
 					RelativePath=".\UIZoneMap.h">
 				</File>
+				<Filter
+					Name="Custom"
+					Filter="">
+					<File
+						RelativePath=".\UICustomItem.cpp">
+					</File>
+					<File
+						RelativePath=".\UICustomItem.h">
+					</File>
+					<File
+						RelativePath=".\UIDynamicItem.cpp">
+					</File>
+					<File
+						RelativePath=".\UIDynamicItem.h">
+					</File>
+					<File
+						RelativePath="UIFrameRect.cpp">
+					</File>
+					<File
+						RelativePath="UIFrameRect.h">
+					</File>
+					<File
+						RelativePath=".\UIStaticItem.cpp">
+					</File>
+					<File
+						RelativePath=".\UIStaticItem.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

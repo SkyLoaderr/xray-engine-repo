@@ -15,20 +15,20 @@ class CUICustomItem
 	Fvector2		vHalfPixel;
 	bool			bInit;
 protected:
-	Fvector2		vTexSize;
-	Frect			Rect;
+	Ivector2		iTexSize;
+	Irect			iRect;
 protected:
-	void			Init			(float tx_width, float tx_height);
+	void			Init			(int tx_width, int tx_height);
 public:
 					CUICustomItem	();
 	virtual			~CUICustomItem	();
-	IC void			SetRect			(float x1, float y1, float x2, float y2){Rect.set(x1,y1,x2,y2);}
-	IC void			SetRect			(const Frect& r, float part_x, float part_y){Rect.lt.set(r.lt);Rect.rb.set(r.rb.x*part_x,r.rb.y*part_y);}
-	IC void			SetRect			(const Frect& r){Rect.set(r);}
-	const Frect&	GetRect			(){return Rect;}
-	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, int x1, int y1, int x2, int y2);
-	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color);
-	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, float angle);
+	IC void			SetRect			(int x1, int y1, int x2, int y2){iRect.set(x1,y1,x2,y2);}
+//	IC void			SetRect			(const Irect& r, float part_x, float part_y){iRect.lt.set(r.lt);iRect.rb.set(iFloor(float(r.rb.x)*part_x),iFloor(float(r.rb.y)*part_y));}
+	IC void			SetRect			(const Irect& r){iRect.set(r);}
+	const Irect&	GetRect			(){return iRect;}
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, int x1, int y1, int x2, int y2);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, float angle);
 };
 
 #endif //__XR_UICUSTOMITEM_H__

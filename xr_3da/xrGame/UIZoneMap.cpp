@@ -34,7 +34,7 @@ void CUIZoneMap::Init()
 	DWORD align = alLeft|alTop;
 	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,256,256,align);
 	back.SetRect(0,0,153,148);
-	compass.Init("ui\\hud_map_arrow",	"hud\\default",124,117,32,32,align);
+	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,32,32,align);
 	entity.Init	("ui\\hud_map_point",	"hud\\default",4,4);
 	entity.SetRect(0,0,3,3);
 
@@ -43,16 +43,15 @@ void CUIZoneMap::Init()
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Fvector2& dest)
+void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest)
 {
 	float k = map_radius/VIEW_DISTANCE;
-
 	Fvector p;
-	Fvector2 Pt;
+	Ivector2 Pt;
 	LM.transform_tiny(p,src);
-	Pt.set(p.x,p.z);
-	Pt.mul(k);
-	float r=Pt.magnitude();
+	p.mul(k);
+	Pt.set(iFloor(p.x),iFloor(p.z));
+	int r=Pt.magnitude();
 	if (r>map_radius) Pt.mul(map_radius/r);
 	Pt.y*=-1;
 	dest.add(map_center,Pt);
@@ -62,10 +61,10 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Fvector2
 void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 {
 	entity.Clear();
-	Fvector2 P;
+	Ivector2 P;
 
 	Fmatrix LM,T;
-	T.rotateY			(heading);
+	T.rotateY			(heading); 
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
@@ -96,7 +95,8 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::Render(){
+void CUIZoneMap::Render()
+{
 	back.Render		();
 	compass.Render	(heading);
 	entity.Render	();

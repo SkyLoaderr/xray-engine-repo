@@ -10,10 +10,11 @@ public:
 	typedef Self&		SelfRef;
 	typedef const Self&	SelfCRef;
 public:
-	float x,y;
+	T x,y;
 
 	IC void set(float _u, float _v)			{ x=_u; y=_v;					}
 	IC void set(double _u, double _v)		{ x=_u; y=_v;					}
+	IC void set(int _u, int _v)				{ x=_u; y=_v;					}
 	IC void set(const Self &p)				{ x=p.x; y=p.y;					}
 	IC void abs(const Self &p)				{ x=_abs(p.x); y=_abs(p.y);		}
 	IC void min(const Self &p)				{ x=_min(x,p.x); y=_min(y,p.y);	}
@@ -28,8 +29,9 @@ public:
 	IC void add(const Self &p)				{ x+=p.x; y+=p.y;				}
 	IC void add(const Self &p1, const Self &p2)	{ x=p1.x+p2.x; y=p1.y+p2.y;		}
 	IC void add(const Self &p, float d)		{ x=p.x+d; y=p.y+d; }
-	IC void mul(const float s)				{ x*=s; y*=s;					}
+	IC void mul(const T s)					{ x*=s; y*=s;					}
 	IC void mul(Self &p)					{ x*=p.x; y*=p.y;				}
+	IC void div(const T s)					{ x/=s; y/=s;					}
 	IC void rot90(void)						{ float t=-x; x=y; y=t;			}
     IC void cross(Self &D)					{ x = D.y; y = -D.x;            }
 	IC T dot(Self &p)						{ return x*p.x + y*p.y;			}
@@ -80,5 +82,6 @@ public:
 
 typedef _vector2<float>		Fvector2;
 typedef _vector2<double>	Dvector2;
+typedef _vector2<int>		Ivector2;
 
 #endif

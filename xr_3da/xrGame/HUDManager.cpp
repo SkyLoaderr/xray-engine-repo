@@ -34,33 +34,37 @@ CHUDManager::~CHUDManager()
 }
 //--------------------------------------------------------------------
 
-void CHUDManager::ClientToScreenScaled(Fvector2& dest, float left, float top, DWORD align)
+void CHUDManager::ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align)
 {
 	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
 }
 
-float CHUDManager::ClientToScreenScaledX(float left, DWORD align)
+int CHUDManager::ClientToScreenScaledX(int left, DWORD align)
 {
-	if (align&alRight)	return Device.dwWidth-UI_BASE_WIDTH*fScale + left*fScale;
-	else				return left*fScale;
+	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left*fScale);
+	else				return iFloor(left*fScale);
 }
 
-float CHUDManager::ClientToScreenScaledY(float top, DWORD align){
-	if (align&alBottom)	return Device.dwHeight-UI_BASE_HEIGHT*fScale + top*fScale;
-	else				return top*fScale;
+int CHUDManager::ClientToScreenScaledY(int top, DWORD align)
+{
+	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top*fScale);
+	else				return iFloor(top*fScale);
 }
 
-void CHUDManager::ClientToScreen(Fvector2& dest, float left, float top, DWORD align){
+void CHUDManager::ClientToScreen(Ivector2& dest, int left, int top, DWORD align)
+{
 	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
 }
 
-float CHUDManager::ClientToScreenX(float left, DWORD align){
-	if (align&alRight)	return Device.dwWidth-UI_BASE_WIDTH*fScale + left;
+int CHUDManager::ClientToScreenX(int left, DWORD align)
+{
+	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left);
 	else				return left;
 }
 
-float CHUDManager::ClientToScreenY(float top, DWORD align){
-	if (align&alBottom)	return Device.dwHeight-UI_BASE_HEIGHT*fScale + top;
+int CHUDManager::ClientToScreenY(int top, DWORD align)
+{
+	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top);
 	else				return top;
 }
 

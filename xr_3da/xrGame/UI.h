@@ -62,7 +62,7 @@ class CUI{
 
 	// 
 	bool				bShift;
-	bool				bDrawFragList;
+	bool				bShowFragList;
 
 	// group management
 	bool				bSelGroups			[MAX_GROUPS];
@@ -90,6 +90,9 @@ public:
 	// frag-list.....
 
 	void				AddMessage			(LPCSTR S, LPCSTR M, DWORD C=0xffffffff, float life_time=LIFE_TIME);
+
+	// misc
+	void				ShowFragList		(BOOL bShow){bShowFragList=bShow;}
 
 	void				Activate			();
 	void				Deactivate			();

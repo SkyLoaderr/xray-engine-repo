@@ -107,7 +107,7 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 			lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
 		}
 		
-	M->last_rect.invalidate();
+	M->last_rect.null();
 }
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )

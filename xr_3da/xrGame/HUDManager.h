@@ -58,12 +58,12 @@ public:
 	float					GetScale			(){return fScale;}
 	void					SetScale			(float s);
 
-	void					ClientToScreenScaled(Fvector2& dest, float left, float top, DWORD align);
-	float					ClientToScreenScaledX(float left, DWORD align);
-	float					ClientToScreenScaledY(float top, DWORD align);
-	void					ClientToScreen		(Fvector2& dest, float left, float top, DWORD align);
-	float					ClientToScreenX		(float left, DWORD align);
-	float					ClientToScreenY		(float top, DWORD align);
+	void					ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align);
+	int						ClientToScreenScaledX(int left, DWORD align);
+	int						ClientToScreenScaledY(int top, DWORD align);
+	void					ClientToScreen		(Ivector2& dest, int left, int top, DWORD align);
+	int						ClientToScreenX		(int left, DWORD align);
+	int						ClientToScreenY		(int top, DWORD align);
 	
 	void __cdecl 			outMessage			(DWORD C, LPCSTR from, LPCSTR msg, ...);
 };

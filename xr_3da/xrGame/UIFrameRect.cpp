@@ -14,7 +14,6 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int sx, int sy, int tex_
 {
 	rect.set		(x,y,x+sx,y+sy);
 	// tile
-	Fvector2		tile;
 	int	rem_x		= sx%tex_x;
 	int rem_y		= sy%tex_y;
 	int tile_x		= iFloor(float(sx)/tex_x); tile_x-=2; R_ASSERT(tile_x>=0);

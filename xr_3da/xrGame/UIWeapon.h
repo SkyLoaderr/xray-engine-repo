@@ -9,7 +9,7 @@ class CWeapon;
 
 class CUIWeapon
 {
-	Fvector2		position;
+	Ivector2		position;
 
 	CUIStaticItem	back;
 	CUIStaticItem	weapon;

@@ -26,7 +26,8 @@ void CUIHealth::Init(){
 }
 //--------------------------------------------------------------------
 
-void CUIHealth::Out	(float _health, float _armor){
+void CUIHealth::Out	(float _health, float _armor)
+{
 	health = _health;
 	armor = _armor;
 
@@ -35,13 +36,13 @@ void CUIHealth::Out	(float _health, float _armor){
 	// health bar
 	val = health/100.f; clamp(val,0.f,1.f);
 	C.lerp(s_color,m_color,e_color,val);
-	health_bar.SetRect(health_rect,val,1);
-	health_bar.SetColor(C);
+	health_bar.SetRect	(health_rect.x1,health_rect.y1,iFloor(float(health_rect.x2)*val),health_rect.y2);
+	health_bar.SetColor	(C);
 	// armor bar
-	val = armor/100.f; clamp(val,0.f,1.f);
+	val = armor/100.f;	clamp(val,0.f,1.f);
 	C.lerp(s_color,m_color,e_color,val);
-	armor_bar.SetRect(armor_rect,val,1);
-	armor_bar.SetColor(C);
+	armor_bar.SetRect	(armor_rect.x1,armor_rect.y1,iFloor(float(armor_rect.x2)*val),armor_rect.y2);
+	armor_bar.SetColor	(C);
 
 	// 
 	CFontSmall* F = Level().HUD()->pSmallFont;

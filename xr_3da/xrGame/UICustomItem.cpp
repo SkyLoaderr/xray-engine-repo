@@ -16,17 +16,17 @@ CUICustomItem::~CUICustomItem()
 }
 //--------------------------------------------------------------------
  
-void CUICustomItem::Init(float tx_width, float tx_height)
+void CUICustomItem::Init(int tx_width, int tx_height)
 {
-	VERIFY(!bInit);
-	vTexSize.set(tx_width,tx_height);
-	Rect.lt.set	(0.f,0.f); Rect.rb.set(vTexSize);
-	vHalfPixel.set(0.5f/vTexSize.x,0.5f/vTexSize.y);
-	bInit		= true;
+	VERIFY			(!bInit);
+	iTexSize.set	(tx_width,tx_height);
+	iRect.lt.set	(0,0); iRect.rb.set(iTexSize);
+	vHalfPixel.set	(0.5f/float(iTexSize.x),0.5f/float(iTexSize.y));
+	bInit			= true;
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, int x1, int y1, int x2, int y2)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, int x1, int y1, int x2, int y2)
 {
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
@@ -34,8 +34,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, 
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
 
-	LTt.set			(x1/vTexSize.x+vHalfPixel.x,y1/vTexSize.y+vHalfPixel.y);
-	RBt.set			(x2/vTexSize.x+vHalfPixel.x,y2/vTexSize.y+vHalfPixel.y);
+	LTt.set			(float(x1)/float(iTexSize.x)+vHalfPixel.x,float(y1)/float(iTexSize.y)+vHalfPixel.y);
+	RBt.set			(float(x2)/float(iTexSize.x)+vHalfPixel.x,float(y2)/float(iTexSize.y)+vHalfPixel.y);
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
@@ -44,13 +44,13 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, 
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color)
 {
-	Render(Pointer,pos,color,Rect.x1,Rect.y1,Rect.x2,Rect.y2);
+	Render(Pointer,pos,color,iRect.x1,iRect.y1,iRect.x2,iRect.y2);
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, float angle)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, float angle)
 {
 	float			_sin1,_cos1,_sin2,_cos2;
 	angle			-=PI_DIV_4;
@@ -58,17 +58,17 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, 
 	angle			+=PI_DIV_2;
 	_sincos			(angle,_sin2,_cos2);
 
-	Fvector2 C,RS;
-	Rect.getsize	(RS);
+	Ivector2 C,RS;
+	iRect.getsize	(RS);
 	float sc		= Level().HUD()->GetScale();
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
-	LTt.set			(Rect.x1/vTexSize.x+vHalfPixel.x,Rect.y1/vTexSize.y+vHalfPixel.y);
-	RBt.set			(Rect.x2/vTexSize.x+vHalfPixel.x,Rect.y2/vTexSize.y+vHalfPixel.y);
+	LTt.set			(float(iRect.x1)/float(iTexSize.x)+vHalfPixel.x,float(iRect.y1)/float(iTexSize.y)+vHalfPixel.y);
+	RBt.set			(float(iRect.x2)/float(iTexSize.x)+vHalfPixel.x,float(iRect.y2)/float(iTexSize.y)+vHalfPixel.y);
 
 	// Rotation
-	Rect.getcenter	(C); 
+	iRect.getcenter	(C); 
 	C.mul			(sc);
 	C.add			(pos);
 

@@ -5,7 +5,7 @@
 #include "uicustomitem.h"
 
 struct SDynamicItemData{
-	Fvector2		pos;
+	Ivector2		pos;
 	DWORD			color;
 };
 
@@ -23,8 +23,8 @@ protected:
 public:
 					CUIDynamicItem	();
 	virtual			~CUIDynamicItem	();
-	void			Init			(LPCSTR tex, LPCSTR sh, float tx_width, float tx_height);
-	void			Out				(float left, float top, DWORD color, DWORD align);
+	void			Init			(LPCSTR tex, LPCSTR sh, int width, int tx_height);
+	void			Out				(int left, int top, DWORD color, DWORD align);
 	void			Clear			(){item_cnt=0;}
 	void			Render			();
 	void			Render			(float angle);

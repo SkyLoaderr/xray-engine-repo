@@ -13,10 +13,11 @@ CUIWeapon::CUIWeapon()
 }
 //--------------------------------------------------------------------
 
-void CUIWeapon::Init(){
-	Level().HUD()->ClientToScreen(position, 694.f, 525.f, alRight|alBottom);
+void CUIWeapon::Init()
+{
+	Level().HUD()->ClientToScreen(position, 694, 525, alRight|alBottom);
 	// back frame with tex
-	back.Init		("ui\\hud_weapon_back","font",694.f,525.f,128,64,alRight|alBottom);
+	back.Init		("ui\\hud_weapon_back","font",694,525,128,64,alRight|alBottom);
 	back.SetRect	(0,0,90,61);
 	// weapon frame
 	weapon.Init		(697,540,128,32,alRight|alBottom);

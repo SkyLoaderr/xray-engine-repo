@@ -8,15 +8,6 @@
 #include "Group.h"
 #include "xr_weapon_list.h"
 
-static LPCSTR group_state_list[gsLast]={
-	{"Free hunting"},
-	{"Follow me"},
-	{"Go in this direction"},
-	{"Go to that position"},
-	{"Hold position"}
-};
-
-
 #define MSGS_OFFS 510
 #define MENU_OFFS 200
 
@@ -33,7 +24,7 @@ CUI::CUI(CHUDManager* p)
 	m_Parent		= p;
 	bActive			= false;
 	bShift			= false;
-	bDrawFragList	= false;
+	bShowFragList	= FALSE;
 	ResetSelected	();
 
 	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
@@ -41,13 +32,15 @@ CUI::CUI(CHUDManager* p)
 }
 //--------------------------------------------------------------------
 
-CUI::~CUI(){
+CUI::~CUI()
+{
 	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
 		_DELETE(*it);
 }
 //--------------------------------------------------------------------
 
-void CUI::ResetSelected(){
+void CUI::ResetSelected()
+{
 	ZeroMemory		(bSelGroups,sizeof(bool)*10);
 }
 //--------------------------------------------------------------------
@@ -67,7 +60,7 @@ DWORD ScaleAlpha(DWORD val, float factor)
 void CUI::OnFrame()
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor&&m_Actor->Local()){
+	if (m_Actor){
 		// radar
 		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
 		// viewport
@@ -80,12 +73,11 @@ void CUI::OnFrame()
 		CWeaponList* wpns = m_Actor->GetItemList();
 		if (wpns&&wpns->ActiveWeapon()) UIWeapon.Out(wpns->ActiveWeapon());
 		// out GAME-style depend information
-		UIFragList.OnFrame();
 		switch (GAME){
 			case GAME_SINGLE:		
 				break;
 			case GAME_DEATHMATCH:
-				if (bDrawFragList) UIFragList.OnFrame();
+				if (bShowFragList) UIFragList.OnFrame();
 				break;
 			case GAME_CTF:			
 				// time
@@ -106,15 +98,7 @@ void CUI::OnFrame()
 		m_Parent->pHUDFont->OutNext			("4: xyz");
 		m_Parent->pHUDFont->OutNext			("5: xyz");
 		m_Parent->pHUDFont->OutNext			("6: xyz");
-/*		m_Parent->pSmallFont->OutNext		("R: %s",group_state_list[0]);
-		m_Parent->pSmallFont->OutNext		("T: %s",group_state_list[1]);
-		m_Parent->pSmallFont->OutNext		("Y: %s",group_state_list[2]);
-		m_Parent->pSmallFont->OutNext		("U: %s",group_state_list[3]);
-		m_Parent->pSmallFont->OutNext		("I: %s",group_state_list[4]);
-		m_Parent->pSmallFont->OutNext		("F: Agressive");
-		m_Parent->pSmallFont->OutNext		("G: Quiet");
-		m_Parent->pSmallFont->OutNext		("F1:cfg_load s.ltx");
-*/	}
+	}
 
 	if (!messages.empty()){
 		m_Parent->pHUDFont->OutSet(0,msgs_offs);
@@ -143,14 +127,12 @@ bool CUI::Render()
 	UIWeapon.Render();
 	UIHealth.Render();
 
-	UIFragList.Render();
-
 	// out GAME-style depend information
 	switch (GAME){
 	case GAME_SINGLE:		
 		break;
 	case GAME_DEATHMATCH:
-		if (bDrawFragList) UIFragList.Render();
+		if (bShowFragList) UIFragList.Render();
 		break;
 	case GAME_CTF:			
 		// time
@@ -161,7 +143,7 @@ bool CUI::Render()
 	}
 
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor&&m_Actor->Local())
+	if (m_Actor)
 		UISquad.Render(Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad],bSelGroups,bActive);
 
 	return false;
@@ -173,7 +155,7 @@ bool CUI::FindGroup(int idx)
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if ((idx<0)||(idx>9)) return false;
-	if (m_Actor&&m_Actor->Local())
+	if (m_Actor)
 	{
 		CSquad& S = Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad];
 		if (idx>=int(S.Groups.size())) return false;
@@ -183,7 +165,8 @@ bool CUI::FindGroup(int idx)
 }
 //--------------------------------------------------------------------
 
-void CUI::SelectGroup(int idx){
+void CUI::SelectGroup(int idx)
+{
 	if (FindGroup(idx)){ 
 		if (!bShift) ResetSelected();
 		bSelGroups[idx]=true;
@@ -192,33 +175,39 @@ void CUI::SelectGroup(int idx){
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	// mode event
-	switch (dik){
-	// global
-	case DIK_LSHIFT: bShift = true; break;
-	case DIK_F1:Console.Execute("cfg_load s");return true;
-	case DIK_P:	break;
-	// select group
-	case DIK_1: SelectGroup(0);	break;
-	case DIK_2: SelectGroup(1); break;
-	case DIK_3: SelectGroup(2); break;
-	case DIK_4: SelectGroup(3); break;
-	case DIK_5: SelectGroup(4); break;
-	case DIK_6: SelectGroup(5); break;
-	case DIK_7: SelectGroup(6); break;
-	case DIK_8: SelectGroup(7); break;
-	case DIK_9: SelectGroup(8); break;
-	case DIK_0: SelectGroup(9); break;
-	// set command
-	case DIK_R: SetState(gsHoldPosition);		break;
-	case DIK_T: SetState(gsFollowMe);			break;
-	case DIK_Y: SetState(gsGoInThisDirection);	break;
-	case DIK_U: SetState(gsGoToThisPosition);	break;
-	case DIK_I: SetState(gsFreeHunting);		break;
-	// set trigger
-	case DIK_F: InvertFlag(gtAgressive);		break;
-	case DIK_G: InvertFlag(gtQuiet);			break;
-	default: return false;
+	if (!bActive){
+		// global
+		switch (dik){
+		case DIK_TAB: ShowFragList	(TRUE);			break;
+		default: return false;
+		}
+	}else{
+		// only if active
+		// mode event
+		switch (dik){
+		case DIK_LSHIFT: bShift = true;				break;
+		// select group
+		case DIK_1: SelectGroup(0);					break;
+		case DIK_2: SelectGroup(1);					break;
+		case DIK_3: SelectGroup(2);					break;
+		case DIK_4: SelectGroup(3);					break;
+		case DIK_5: SelectGroup(4);					break;
+		case DIK_6: SelectGroup(5);					break;
+		case DIK_7: SelectGroup(6);					break;
+		case DIK_8: SelectGroup(7);					break;
+		case DIK_9: SelectGroup(8);					break;
+		case DIK_0: SelectGroup(9);					break;
+		// set command
+		case DIK_R: SetState(gsHoldPosition);		break;
+		case DIK_T: SetState(gsFollowMe);			break;
+		case DIK_Y: SetState(gsGoInThisDirection);	break;
+		case DIK_U: SetState(gsGoToThisPosition);	break;
+		case DIK_I: SetState(gsFreeHunting);		break;
+		// set trigger
+		case DIK_F: InvertFlag(gtAgressive);		break;
+		case DIK_G: InvertFlag(gtQuiet);			break;
+		default: return false;
+		}
 	}
 	return true;
 }
@@ -226,9 +215,15 @@ bool CUI::OnKeyboardPress(int dik)
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	switch (dik){
-	case DIK_LALT: Deactivate(); break;
-	case DIK_LSHIFT: bShift = false; break;
+	if (!bActive){
+		switch (dik){
+		case DIK_TAB: ShowFragList	(FALSE);		break;
+		}
+	}else{
+		switch (dik){
+		case DIK_LALT: Deactivate();				break;
+		case DIK_LSHIFT: bShift = false;			break;
+		}
 	}
 	return false;
 }
@@ -245,46 +240,53 @@ bool CUI::OnMouseMove	(int dx, int dy)
 }
 //--------------------------------------------------------------------
 
-void CUI::SetState(EGroupState st){
+void CUI::SetState(EGroupState st)
+{
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor||!m_Actor->Local()) return;
+	if (!m_Actor) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetState(st);
 }
 //--------------------------------------------------------------------
 
-void CUI::SetFlag(EGroupTriggers tr, BOOL f){
+void CUI::SetFlag(EGroupTriggers tr, BOOL f)
+{
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor||!m_Actor->Local()) return;
+	if (!m_Actor) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetFlag(tr,f);
 }
 //--------------------------------------------------------------------
 
-void CUI::InvertFlag(EGroupTriggers tr){
+void CUI::InvertFlag(EGroupTriggers tr)
+{
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor||!m_Actor->Local()) return;
+	if (!m_Actor) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].InvertFlag(tr);
 }
 //--------------------------------------------------------------------
 
-void CUI::Activate(){
+void CUI::Activate()
+{
 	bShift				= false;
 	bActive				= true;
-	for (int i=0; i<MAX_GROUPS; i++)
+	for (int i=0; i<MAX_GROUPS; i++){
 		if (bSelGroups[i]&&FindGroup(i)) bSelGroups[i]=true;
 		else							 bSelGroups[i]=false;
+	}
 }
 //--------------------------------------------------------------------
 
-void CUI::Deactivate(){
+void CUI::Deactivate()
+{
 	bActive = false;
 }
 //--------------------------------------------------------------------
 
 
-void CUI::AddMessage(LPCSTR S, LPCSTR M, DWORD C, float life_time){
+void CUI::AddMessage(LPCSTR S, LPCSTR M, DWORD C, float life_time)
+{
 	if (messages.size()==MAX_UIMESSAGES){ 
 		_DELETE(messages.front());
 		messages.erase(DWORD(0));

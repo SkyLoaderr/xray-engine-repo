@@ -441,16 +441,10 @@
 				RelativePath=".\_fpoint.h">
 			</File>
 			<File
-				RelativePath=".\_frect.h">
-			</File>
-			<File
 				RelativePath=".\_intersection_quad.h">
 			</File>
 			<File
 				RelativePath=".\_ipoint.h">
-			</File>
-			<File
-				RelativePath=".\_irect.h">
 			</File>
 			<File
 				RelativePath=".\_math.cpp">
@@ -478,6 +472,9 @@
 			</File>
 			<File
 				RelativePath=".\_random.h">
+			</File>
+			<File
+				RelativePath="_rect.h">
 			</File>
 			<File
 				RelativePath=".\_sphere.cpp">
