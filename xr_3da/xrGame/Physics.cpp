@@ -18,22 +18,19 @@
 //union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 
 const dReal fixed_step=0.02f;
-const u16 dis_frames=11;
+const u32	dis_frames=11;
 const dReal default_w_limit = M_PI/16.f/fixed_step;
 const dReal default_l_limit = 3.f/fixed_step;
 const dReal default_l_scale=1.01f;
 const dReal default_w_scale=1.01f;
 const dReal default_disw=0.00005f;
 const dReal default_disl=0.005f;
-// #include "contacts.h"
+
+int			phFPS			= 50;
+int			phIterations	= 18;
 
 
-
-
-
-
-
-dWorldID phWorld;
+dWorldID	phWorld;
 /////////////////////////////////////
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
@@ -221,9 +218,9 @@ void CPHWorld::Step(dReal step)
 			(*iter)->PhTune(fixed_step);	
 
 		#ifdef ODE_SLOW_SOLVER
-		dWorldStep		(phWorld, fixed_step);
+		dWorldStep		(phWorld,	fixed_step);
 		#else
-		dWorldStepFast	(phWorld,fixed_step,18);
+		dWorldStepFast	(phWorld,	fixed_step,	phIterations);
 		#endif
 		Device.Statistic.ph_core.End		();
 

@@ -31,9 +31,10 @@
 
 #include "trade.h"
 
-ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
-extern float				psSqueezeVelocity;
+extern	float				psSqueezeVelocity;
+extern	int					phFPS;
+extern	int					phIterations;
 
 // console commands
 class CCC_Spawn : public CConsoleCommand
@@ -758,6 +759,10 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 		// Trader
 		CMD1(CCC_Trader,			"trade");		
+
+		// Physics
+		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,100);
+		CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,50);
 
 		// keyboard binding
 		CCC_RegisterInput			();
