@@ -33,6 +33,7 @@ public:
 	
 	// Update
 	void				OnFrame			();
+    void				DrawPath		();
 };
 
 #endif //ObjectAnimatorH

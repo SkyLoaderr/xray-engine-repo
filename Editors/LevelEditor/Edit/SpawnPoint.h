@@ -39,7 +39,7 @@ public:
 
 		void		FillProp(LPCSTR pref, PropItemVec& values);
 
-		void    	Render	(const Fmatrix& parent,int priority, bool strictB2F);
+		void    	Render	(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F);
 		void    	OnFrame	();
 
     	void		OnDeviceCreate	();

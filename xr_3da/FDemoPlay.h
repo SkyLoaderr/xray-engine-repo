@@ -7,7 +7,7 @@
 
 #include "ftimer.h"
 #include "effector.h"
-#include "ObjectAnimator.h"
+#include "motion.h"
 
 // refs
 class COMotion;
@@ -16,7 +16,7 @@ class ENGINE_API CDemoPlay :
 	public CEffector
 {
     COMotion*			m_pMotion;
-    st_AnimParam		m_MParam;
+    SAnimParams			m_MParam;
 
 	xr_vector	<Fmatrix>	seq;
 	int					m_count;

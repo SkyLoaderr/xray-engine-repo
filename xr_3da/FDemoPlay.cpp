@@ -28,7 +28,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 	{
 		m_pMotion				= xr_new<COMotion> ();
 		m_pMotion->LoadMotion	(fn);
-		m_MParam.Set			(m_pMotion, true);
+		m_MParam.Set			(m_pMotion);
 	}else{
 		if (!FS.exist(name)) {
 			g_pGameLevel->Cameras.RemoveEffector(cefDemo);
@@ -101,9 +101,10 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 		Fvector R;
 		Fmatrix mRotate;
 		m_pMotion->_Evaluate(m_MParam.Frame(),P,R);
-		if (!m_MParam.Update(Device.fTimeDelta)) fLifeTime-=Device.fTimeDelta;
+		m_MParam.Update(Device.fTimeDelta,1.f,true);
+		fLifeTime		-= Device.fTimeDelta;
 		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
-		mRotate.setHPB	(-R.x,-R.y,-R.z);
+		mRotate.setXYZ	(R);
 		D.set			(mRotate.k);
 		N.set			(mRotate.j);
 	}

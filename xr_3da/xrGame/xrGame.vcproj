@@ -3228,12 +3228,30 @@
 						Filter="">
 						<File
 							RelativePath=".\DemoActor.cpp">
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\DemoActor.h">
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\DemoActorCameras.cpp">
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 					<Filter

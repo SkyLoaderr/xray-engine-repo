@@ -428,16 +428,19 @@ void SAnimParams::Set(CCustomMotion* M)
 void SAnimParams::Update(float dt, float speed, bool loop)
 {
 	if (!bPlay) return;
-	t+=speed*dt;
+	bWrapped	= false;
+	t			+=speed*dt;
     if (t>max_t){
-#ifdef _EDITOR
+		bWrapped= true;
+//.#ifdef _EDITOR
 		if (loop){ 
         	float len = max_t-min_t;
         	float k = iFloor((t-min_t)/len);
-        	t=t-k*len; 
-        }else
-#endif
-		t=max_t;
+        	t	= t-k*len; 
+        }
+//.		else
+//.#endif
+//.		t		= max_t;
 	}
 }
 

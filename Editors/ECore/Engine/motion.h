@@ -162,8 +162,9 @@ struct SAnimParams{
     float			min_t;
     float			max_t;
     BOOL			bPlay;
+	BOOL			bWrapped;
 public:
-					SAnimParams(){bPlay=false;t=0.f;min_t=0.f;max_t=0.f;}
+					SAnimParams(){bWrapped=false;bPlay=false;t=0.f;min_t=0.f;max_t=0.f;}
     void			Set		(CCustomMotion* M);
 	void 			Set		(float start_frame, float end_frame, float fps);
     float			Frame	()			{ return t;}
