@@ -116,7 +116,7 @@ void	game_sv_CS::Update			()
 		OnTimelimitExceed	();
 }
 
-void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
+void	game_sv_CS::OnPlayerReady			(u32 id)
 {
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
