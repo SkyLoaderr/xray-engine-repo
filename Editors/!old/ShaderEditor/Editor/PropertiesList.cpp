@@ -555,6 +555,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 DrawText	(Surface->Handle, prop->GetDrawText().c_str(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }break;
             case PROP_FCOLOR:{
+                R.Left 	-= 	4;
+                R.Bottom+= 	1;
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
                 Surface->FrameRect(R);
@@ -567,6 +569,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->FillRect(R);
             }break;
             case PROP_VCOLOR:{
+                R.Left 	-= 	4;
+                R.Bottom+= 	1;
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
                 Surface->FrameRect(R);
