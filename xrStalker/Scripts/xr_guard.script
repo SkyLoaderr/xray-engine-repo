@@ -75,6 +75,9 @@ end
 
 function action_guard_activity:reset_scheme()
 	utils.trace(script_name(), "xr_guard:reset_scheme called: self.object:name()='%s'", self.object:name())
+
+	self.object:set_item(object.idle, self.object:best_weapon())
+
 	self.last_seen_actor = nil
 
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
@@ -119,6 +122,8 @@ function action_guard_activity:reset_scheme()
 	self.object:set_sight(look.danger, nil, 0)
 
 	self.cur_anim_set = "idle"
+	self.shall_shoot = nil
+	self.is_shooting = false
 
 	self.state = self.state_moving
 
@@ -181,6 +186,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		self.loudspeaker_enabled = false
 	end	
 
+	--[[
 	if ptr:flag(index, 29) then
 		local phrase = math.random(1, 3)
 		while phrase == self.prev_phrase do
@@ -195,7 +201,16 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		end
 		self.prev_phrase = phrase
 	end
+	]]
 	
+	if ptr:flag(index, 28) then
+		self.shall_shoot = 1
+	elseif ptr:flag(index, 29) then
+		self.shall_shoot = 2
+	else
+		self.shall_shoot = nil
+	end
+
 	if ptr:flag(index, 1) then
 		self.arrived_to_single_point_path = true
 		self.object:set_movement_type(move.stand)
@@ -303,14 +318,30 @@ function action_guard_activity:execute()
 		end
 	end
 	
-	self.object:set_item(object.idle, self.object:best_weapon())
+	if not self.is_shooting then 
+		self.object:set_item(object.idle, self.object:best_weapon())
+	else
+		local best_weap = self.object:best_weapon()
+		if best_weap then
+			if self.shall_shoot == 1 then
+				self.object:set_item(object.fire1, best_weap)
+			else
+				self.object:set_item(object.fire2, best_weap)
+			end
+		end
+	end
 
 	if self.state == self.state_standing_before_anim and
 	   self.expiration_time and device():time_global() >= self.expiration_time and
 	   self.object:is_body_turning() then
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
-		if self.object:animation_count() <= 1 then
-			xr_state.anim_update(self.cur_anim_set, self.object)
+		if self.object:animation_count() <= 0 then
+			if not self.shall_shoot then
+				xr_state.anim_update(self.cur_anim_set, self.object)
+			else
+				xr_state.anim_update(self.cur_anim_set, self.object)
+				self.is_shooting = true
+			end
 
 			if self.loudspeaker_enabled then
 				if not self.st.loudspeaker_name then
@@ -342,11 +373,13 @@ function action_guard_activity:execute()
 
 	local suggested_path = self:pick_path()
 	if (self.state == self.state_anim_playing and device():time_global() >= self.expiration_time and
-	    xr_state.anim_safe_to_break(self.object)) or
+	    (self.is_shooting or xr_state.anim_safe_to_break(self.object))) or
 	   suggested_path ~= self.path_active then
+		if self.is_shooting then
+			self.is_shooting = false
 		-- ќчищать анимации, только если собираемс€ идти дальше по пути...
 		-- Ќе очищать, если дальше будем сто€ть, т.к. иначе будут рывки
-		if not self.arrived_to_single_point_path then
+		elseif not self.arrived_to_single_point_path then
 			xr_state.anim_update(nil, self.object)
 		end
 
@@ -402,6 +435,8 @@ function action_guard_activity:finalize()
 			self.projector:script(false, "xr_guard")
 		end
 	end
+
+	self.object:set_item(object.idle, self.object:best_weapon())
 
 	action_base.finalize(self)
 end

@@ -135,9 +135,13 @@ function action_robber_activity:reset_scheme()
 
 	this.register_robber(self.object, self.stor.team)
 
-	self.patrol_rob = patrol(self.stor.path_rob)
-	if not self.patrol_rob then
-		utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_rob .. "'")
+	if self.stor.path_rob then
+		self.patrol_rob = patrol(self.stor.path_rob)
+		if not self.patrol_rob then
+			utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_rob .. "'")
+		end
+	else
+		self.patrol_rob = nil
 	end
 
 	if not self.stor.bait_path then
@@ -316,10 +320,13 @@ function action_robber_activity:fsm_step()
 		end
 	end
 	----------------------------------------------------------------------------------------------------
-	if self.state == state_none and not utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
+	if self.state == state_none and
+	   (not self.patrol_rob or not utils.stalker_at_waypoint(self.object, self.patrol_rob, 0)) then
 		self.object:set_item(object.idle, self.object:best_weapon())
 
-		utils.stalker_go_to_waypoint(self.object, self.patrol_rob, 0)
+		if self.patrol_rob then
+			utils.stalker_go_to_waypoint(self.object, self.patrol_rob, 0)
+		end
 
 		self.state = state_going_to_camp_point
 		--utils.trace(script_name(), "_bp: xr_robbers [%s]: 2 state change: %s",
@@ -328,7 +335,7 @@ function action_robber_activity:fsm_step()
 	end
 
 	if self.state == state_going_to_camp_point then
-		if utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
+		if not self.patrol_rob or utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
 			utils.stalker_stop(self.object)
 			self.state = state_looking_at_bait
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 3 state change: %s",
@@ -345,7 +352,9 @@ function action_robber_activity:fsm_step()
 		if dist <= 20 and see_actor then
 			utils.stalker_look_at_stalker(self.object, actor)
 		else
-			utils.stalker_look_at_waypoint(self.object, self.patrol_rob, 1)
+			if self.patrol_rob then
+				utils.stalker_look_at_waypoint(self.object, self.patrol_rob, 1)
+			end
 		end
 
 		--[[ НЕ РАБОТАЕТ
@@ -611,7 +620,8 @@ function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bai
 
 	st.enabled = utils.conf_get_bool(char_ini, "robber", "enabled", enabled, object, true)
 	st.team = utils.conf_get_string(char_ini, "robber", "team", team, object, true)
-	st.path_rob = utils.conf_get_string(char_ini, "robber", "path_rob", path_rob, object, true)
+
+	st.path_rob = utils.conf_get_string(char_ini, "robber", "path_rob", path_rob, object, false)
 
 	-- Настройка приманки:
 	st.bait_path = utils.conf_get_string(char_ini, "robber", "bait_path", bait_path, object, false)
