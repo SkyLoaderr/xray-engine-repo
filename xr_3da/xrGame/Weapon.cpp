@@ -136,10 +136,8 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 
 	fTimeToEmptyClick	= ini->ReadFLOAT	(section,"rpm_empty_click");
 	fTimeToEmptyClick	= 60 / fTimeToEmptyClick;
-	
-	LPCSTR	tex			= ini->ReadSTRING	(section,"ui_icon");
-	pstrUIIcon			= strdup(tex);
-	hUIIcon				= Device.Shader.Create("font",pstrUIIcon);
+
+	ShaderCreate		(hUIIcon,"font","");
 	
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
 	pstrWallmark		= strdup(name);

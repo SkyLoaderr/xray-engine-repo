@@ -30,7 +30,6 @@ protected:
 	CWeaponHUD*		m_pHUD;
 
 	LPSTR			pstrWallmark;
-	LPSTR			pstrUIIcon;
 	Shader*			hWallmark;
 	Shader*			hUIIcon;
 	float			fWallmarkSize;
