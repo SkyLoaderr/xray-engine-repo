@@ -687,12 +687,10 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				}
 
 
-				LPCSTR ps_name = (mtl_pair->CollideParticles.empty())?
-					NULL:
-					*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-				
-				if(ps_name)
+								
+				if(vel_cret>15.f && !mtl_pair->CollideParticles.empty())
 				{
+					LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 					//отыграть партиклы столкновения в материалов
 					CParticlesObject* pStaticPG;
 					pStaticPG = xr_new<CParticlesObject>(ps_name);
