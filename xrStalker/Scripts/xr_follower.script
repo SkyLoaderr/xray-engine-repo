@@ -733,4 +733,5 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     end      
 
 	xr_motivator.checkStorage (npc)
+	xr_state.change_state(npc, xr_state.stand, false)
 end

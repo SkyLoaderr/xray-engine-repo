@@ -108,11 +108,15 @@ function fract:updateJob()
 				break
 			end
 		end
+
 		if avail == false then
 			v.object = nil
 		else
 			-- Если данная должность занята - продолжаем
-			if v.object == nil then
+			if v.object == nil and
+        	           (v.begin == nil or
+			   game.time() - v.begin > v.idle)	
+			then
 				-- Находим одного из свободных 
 				for k,v in self.Object do
 					if self:getJob(v) == nil then
@@ -135,7 +139,7 @@ function fract:updateJob()
 			end
         	end
 	end
-	self:print()
+--	self:print()
 end
 function fract:print()
 	printf("---------------------- %s ---------------------- State: %d", self.name, self.state)

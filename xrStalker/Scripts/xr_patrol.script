@@ -767,4 +767,6 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
 	xr_motivator.checkStorage (npc)
 	
 	st.first_init = true	
+
+	xr_state.change_state(npc, xr_state.stand, false)
 end

@@ -163,12 +163,6 @@ end
 
 --функция смены положения тела
 function change_state(object, new, emerg)
-	-- ОПИСАНИЕ ИДЕНТИФИКАТОРОВ ПОЗИЦИЙ:
-	-- 0 - стоит                             
-	-- 1 - сидит в положении для курения
-	-- 2 - сидит в положении для водки
-	-- 3 - сидит в положении для еды
-	-- 4 - спит сидя
 	local st = xr_motivator.storage[object:id()].state
 
 	if new == st.target_state then
