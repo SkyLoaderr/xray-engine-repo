@@ -13,6 +13,8 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
+const DWORD    patch_frames = 50;
+
 // breakpoints
 #include "..\xr_input.h"
 
@@ -38,7 +40,7 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	Fmatrix				spin;
 	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
 	float				bone_pitch	= A->r_torso.pitch;
-	// clamp			(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	// clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
 }
@@ -81,7 +83,7 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	R_ASSERT		(!net_Local);
 	net_update		N;
 
-	u8				flags, wpn, tmp;
+	u8	 flags, wpn, tmp;
 	P->r_u32		(N.dwTimeStamp	);
 	P->r_u8			(flags			);
 	P->r_vec3		(N.p_pos		);
@@ -91,7 +93,6 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	P->r_angle8		(N.o_torso.pitch);
 	P->r_sdir		(N.p_accel		);
 	P->r_sdir		(N.p_velocity	);
-	Log				("P:",rad2deg(N.o_torso.pitch));
 
 	P->r_u8			(wpn);
 	if (0xff==wpn)	N.weapon		= -1;
@@ -219,7 +220,20 @@ void CActor::Load		(LPCSTR section )
 	m_crouch.Create		(V,"cr");
 
 	// sheduler
-	dwMinUpdate			= dwMaxUpdate = 1;
+	shedule_Min			= shedule_Max = 1;
+
+	// patch : ZoneAreas
+	if (Level().pLevel->SectionExists("zone_areas"))
+	{
+		Log("...Using zones...");
+		CInifile::Sect&		S = Level().pLevel->ReadSection("zone_areas");
+		for (CInifile::SectIt I = S.begin(); I!=S.end(); I++)
+		{
+			Fvector4 a;
+			sscanf				(I->second,"%f,%f,%f,%f",&a.x,&a.y,&a.z,&a.w);
+			zone_areas.push_back(a);
+		}
+	}
 }
 
 BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -246,6 +260,9 @@ BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 	NET_WasInterpolating= TRUE;
 
 	bActive				= TRUE;
+
+	patch_frame			= 0;
+	patch_position.set	(vPosition);
 
 	return				TRUE;
 }
@@ -326,6 +343,8 @@ BOOL CActor::TakeItem		( DWORD CID )
 
 void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
+	if (patch_frame<patch_frames)	return;
+
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
 	float step = 0.1f;
@@ -384,9 +403,9 @@ void CActor::ZoneEffect	(float z_amount)
 	// Fov/Shift + Pulse
 	CCameraBase* C		= cameras	[cam_active];
 	float	shift		= z_amount*F*.1f;
-	C->f_fov			= 90.f+z_amount*45.f + shift;
-	C->f_aspect			= 1.f+cam_shift;
-	cam_shift			= shift/3.f;
+	C->f_fov			= 90.f+z_amount*15.f + shift;
+	C->f_aspect			= 1.f+cam_shift/3;
+	cam_shift			= shift/(3.f*3.f);
 
 	// Sounds
 	Fvector				P;
@@ -403,12 +422,22 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
-/*
-	// zone test
-	Fvector z_P			= {1.803f, -0.012f, -22.089f};
-	float	z_R			= 15.f;
+	// patch
+	if (patch_frame<patch_frames)	{
+		vPosition.set		(patch_position);
+		patch_frame			+= 1;
+	}
 
-	float	z_amount	= 1-(Position().distance_to(z_P)/z_R);
+	// zone test
+	float z_amount		= 0;
+	for (int za=0; za<zone_areas.size(); za++)
+	{
+		Fvector	P; 
+		P.set			(zone_areas[za].x,zone_areas[za].y,zone_areas[za].z);
+		float D			= 1-(Position().distance_to(P)/zone_areas[za].w);
+		z_amount		= _max(D,z_amount);
+	}
+
 	if (z_amount>EPS)	ZoneEffect	(z_amount);
 	else				{
 		cam_shift		= 0.f;
