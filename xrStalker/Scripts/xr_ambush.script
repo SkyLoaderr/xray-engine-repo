@@ -160,7 +160,7 @@ function action_sit:initialize()
 
 	self.object:set_item            ( object.idle, self.object:best_weapon() )
 	self.object:set_movement_type   ( move.stand )
-	self.object:set_sight           ( look.direction, self.a.path:point( 1 ):sub( self.object:position() ), 0 )
+	--self.object:set_sight           ( look.direction, self.a.path:point( 1 ):sub( self.object:position() ), 0 )
 	self.object:set_body_state      ( move.crouch )
 	self.object:set_mental_state    ( anim.danger )
 
@@ -175,17 +175,16 @@ function action_sit:execute()
 	if self.a.victim then
 		self.object:clear_animations()
 
-		self.object:set_body_state  ( move.crouch )
-		self.object:set_mental_state( anim.danger )
-
 		self.object:set_sight( look.direction, vector():set( self.a.victim:position() ):sub( self.object:position() ), 0 )
 	else
 		if self.point_time_end < game.time() then
-			local p = math.random( 1, self.a.path:count() - 1 )
+			local p = 2 --math.random( 1, self.a.path:count() - 1 )
 			self.object:set_sight( look.direction, self.a.path:point( p ):sub( self.object:position() ), 0 )
 
 			self.point_time_end = game.time() + math.random( 30000, 40000 )
 		end
+
+		xr_state.anim_update( "hide", self.object )
 
 		xr_sounds.set_sound( self.object, self.a.sounds_idle )
 	end
