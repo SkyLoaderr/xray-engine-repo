@@ -10,13 +10,13 @@ void CSE_AbstractVisual::script_register(lua_State *L)
 	module(L)[
 		luabind_class_abstract2(
 			CSE_AbstractVisual,
-			"cse_abstract_visual",
+			"CSE_AbstractVisual",
 			CSE_Visual,
 			CSE_Abstract
 			)
 	];
 }
-
+/*
 void CSE_Trigger::script_register(lua_State *L)
 {
 		module(L)[
@@ -27,3 +27,4 @@ void CSE_Trigger::script_register(lua_State *L)
 				)
 		];
 }
+*/

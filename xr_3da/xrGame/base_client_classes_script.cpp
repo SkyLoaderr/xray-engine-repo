@@ -11,6 +11,8 @@
 #include "base_client_classes.h"
 #include "base_client_classes_wrappers.h"
 #include "../feel_sound.h"
+#include "../fbasicvisual.h"
+#include "../skeletonanimated.h"
 #include "ai/stalker/ai_stalker.h"
 
 using namespace luabind;
@@ -116,4 +118,55 @@ void CObjectScript::script_register		(lua_State *L)
 //		,class_<CAI_Stalker,CCustomMonster>("CAI_Stalker")
 //			.def(constructor<>())
 	];
+}
+
+void IRender_VisualScript::script_register		(lua_State *L)
+{
+	module(L)
+	[
+		class_<IRender_Visual>("IRender_Visual")
+			.def(constructor<>())
+			.def("dcast_PSkeletonAnimated",&IRender_Visual::dcast_PSkeletonAnimated)
+	];
+}
+
+void CSkeletonAnimated_PlayCycle(CSkeletonAnimated* sa, LPCSTR anim)
+{
+	sa->PlayCycle(anim);
+}
+
+void CSkeletonAnimatedScript::script_register		(lua_State *L)
+{
+	module(L)
+	[
+		class_<CSkeletonAnimated,CKinematics>("CSkeletonAnimated")
+			.def("PlayCycle",		&CSkeletonAnimated_PlayCycle)
+	];
+}
+
+void CKinematicsScript::script_register		(lua_State *L)
+{
+	module(L)
+		[
+			class_<CKinematics, FHierrarhyVisual>("CKinematics")
+			//			.def(constructor<>())
+		];
+}
+
+void FHierrarhyVisualScript::script_register		(lua_State *L)
+{
+	module(L)
+		[
+			class_<FHierrarhyVisual, IRender_Visual>("FHierrarhyVisual")
+			//			.def(constructor<>())
+		];
+}
+
+void CBlendScript::script_register		(lua_State *L)
+{
+	module(L)
+		[
+			class_<CBlendScript>("CBlendScript")
+			//			.def(constructor<>())
+		];
 }

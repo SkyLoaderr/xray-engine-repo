@@ -538,6 +538,7 @@ void CSE_AbstractVisual::FillProps		(LPCSTR pref, PropItemVec& values)
 	inherited1::FillProps			(pref,values);
 	inherited2::FillProps			(pref,values);
 }
+
 void CSE_AbstractVisual::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 }
@@ -550,6 +551,8 @@ CSE_Visual* CSE_AbstractVisual::visual					()
 {
 	return this;
 }
+
+/*
 CSE_Trigger::CSE_Trigger			(LPCSTR section):CSE_AbstractVisual(section),m_state(0)
 {}
 
@@ -585,4 +588,4 @@ void CSE_Trigger::FillProps		(LPCSTR pref, PropItemVec& values)
 	inherited::FillProps			(pref,values);
 	PHelper().CreateU32		(values, PrepareKey(pref,*s_name,"InitialState"),			&m_state,			0, 10000);
 }
-
+*/

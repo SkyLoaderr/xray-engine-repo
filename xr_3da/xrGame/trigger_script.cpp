@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "trigger.h"
 #include "script_space.h"
 #include "net_utils.h"
@@ -36,10 +37,5 @@ void CTrigger::script_register(lua_State *L)
 			.def("net_Import",							&BaseType::net_Import, &WrapType::net_Import_static)
 
 		];
-
-	/*
-	// Methods
-	virtual BOOL			net_Spawn			( LPVOID DC );
-	virtual void			net_Destroy			();
-	*/
 }
+*/

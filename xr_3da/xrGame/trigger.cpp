@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "trigger.h"
 #include "net_utils.h"
 #include "xrServer_Objects_Alife.h"
@@ -67,3 +68,4 @@ void CTrigger::net_Import			( NET_Packet& P )
 }
 
 
+*/

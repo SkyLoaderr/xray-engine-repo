@@ -239,6 +239,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_AbstractVisual)
 #define script_type_list save_type_list(CSE_AbstractVisual)
 
+/*
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Trigger,CSE_AbstractVisual)
 typedef CSE_AbstractVisual			inherited;
 	u32								m_state;
@@ -248,7 +249,7 @@ typedef CSE_AbstractVisual			inherited;
 
 add_to_type_list(CSE_Trigger)
 #define script_type_list save_type_list(CSE_Trigger)
-
+*/
 #ifndef AI_COMPILER
 extern CSE_Abstract	*F_entity_Create	(LPCSTR caSection);
 #endif
