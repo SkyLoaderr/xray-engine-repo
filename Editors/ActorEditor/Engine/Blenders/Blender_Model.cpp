@@ -56,6 +56,13 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			{
 			case 0:	// Highest LOD
 				C.StageBegin		();
+				C.StageSET_Color	(D3DTA_TEXTURE,	D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_TMC		("$user$projector", "$user$projector", "$null", 0	);
+				C.StageEnd			();
+
+				/*
+				C.StageBegin		();
 				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
 				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 				C.StageSET_TMC		("$user$projector", "$user$projector", "$null", 0	);
@@ -66,6 +73,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
 				C.StageSET_TMC		(oT_Name, "$null", "$null", 0			);
 				C.StageEnd			();
+				*/
 				break;
 			case 1:	// Lowest LOD
 				C.StageBegin		();
