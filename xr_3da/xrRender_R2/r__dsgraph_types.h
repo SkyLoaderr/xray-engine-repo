@@ -1,8 +1,10 @@
 #pragma once
 
-#include "fixedmap.h"
+#include	"fixedmap.h"
 
-namespace R_dsgraph
+// #define	USE_RESOURCE_DEBUGGER
+
+namespace	R_dsgraph
 {
 	// Elementary types
 	struct _NormalItem	{
@@ -23,7 +25,7 @@ namespace R_dsgraph
 		float				ssa;
 		IRender_Visual*		pVisual;
 	};
-#ifdef DEBUG
+#ifdef USE_RESOURCE_DEBUGGER
 	typedef	ref_vs						vs_type;
 	typedef	ref_ps						ps_type;
 #else
