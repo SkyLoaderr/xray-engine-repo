@@ -152,7 +152,8 @@ int dSortTriPrimitiveCollide (
 				o2,
 				3,
 				CONTACT(contact, ret * skip),   skip);
-			if(no_last_pos)pos_tries.push_back(tri);
+			if(no_last_pos)
+				pos_tries.push_back(tri);
 		}
 	}
 
