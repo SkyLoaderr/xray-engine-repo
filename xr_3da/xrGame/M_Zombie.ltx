@@ -206,10 +206,23 @@ material				= creatures\medium
 DynamicObjectsCount		= 32
 
 squad_attack_algorithm	= 1
-attack_effector			= m_zombie_attack_effector
-
-step_params				= m_zombie_step_params
-
 LegsCount				= 2
 
+attack_effector			= m_zombie_attack_effector
+step_params				= m_zombie_step_params
 attack_params			= m_zombie_attack_params
+damage					= m_zombie_damage
+
+
+[m_zombie_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+default				= 0.0,	-1,	0.0
+
+bip01_pelvis 		= 0.0, -1, 0.0
+bip01_spine 		= 0.3, -1, 0.8
+bip01_spine1 		= 0.3, -1, 0.8
+bip01_neck 			= 5.0, -1, 1.0
+bip01_head 			= 5.0, -1, 1.0
+
