@@ -129,10 +129,11 @@ void CDetailManager::Unload		()
 extern float g_fSCREEN;
 extern float ssaLIMIT;
 
-void CDetailManager::Render		(Fvector& EYE)
+void CDetailManager::Render		(Fvector& vecEYE)
 {
 	if (0==dtFS)	return;
 
+	Fvector  EYE				= vecEYE;
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
