@@ -16,8 +16,8 @@ public:
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			();					// Called each frame, so no need for dt
-	virtual BOOL			ShadowGenerate		()					{ return FALSE;	}
-	virtual BOOL			ShadowReceive		()					{ return FALSE;	}
+	virtual BOOL			renderable_ShadowGenerate		()					{ return FALSE;	}
+	virtual BOOL			renderable_ShadowReceive		()					{ return FALSE;	}
 	//virtual	void			Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){
 	//											m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P/5.f);
 	//											}

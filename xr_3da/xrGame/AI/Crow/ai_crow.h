@@ -94,8 +94,8 @@ public:
 	virtual			~CAI_Crow();
 	virtual void	Load			( LPCSTR section );
 	virtual BOOL	net_Spawn		( LPVOID DC );
-	virtual BOOL	ShadowGenerate	()			{ return FALSE;	}
-	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
+	virtual BOOL	renderable_ShadowGenerate	()			{ return FALSE;	}
+	virtual BOOL	renderable_ShadowReceive	()			{ return FALSE;	}
 	virtual void	shedule_Update	(u32 DT);
 	virtual void	UpdateCL		();
 

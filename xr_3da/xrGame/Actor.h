@@ -318,9 +318,9 @@ public:
 		state.fVelocity		= ph_Movement.GetVelocityActual();
 		return TRUE;
 	}
-	virtual BOOL						ShadowGenerate	( ) {
+	virtual BOOL						renderable_ShadowGenerate	( ) {
 															if(m_vehicle)return FALSE;
-															return inherited::ShadowGenerate();
+															return inherited::renderable_ShadowGenerate();
 															}
 	virtual void						g_PerformDrop		( );
 	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);

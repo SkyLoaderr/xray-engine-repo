@@ -43,14 +43,14 @@ IC bool	pred_energy		(const CLightTrack::Light& L1, const CLightTrack::Light& L2
 	return L1.energy>L2.energy;
 }
 
-void	CLightDB_Static::Track	(CObject* O)
+void	CLightDB_Static::Track	(IRenderable* O)
 {
 	Fvector				pos; 
 	float				fRadius;
 
 	// Prepare
 	if					(0==O)							return;
-	CLightTrack* pROS	= dynamic_cast<CLightTrack*>(O->ROS());
+	CLightTrack* pROS	= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
 	R_ASSERT			(pROS);
 	CLightTrack& dest	= *pROS;
 	if					(dest.dwFrame==Device.dwFrame)	return;

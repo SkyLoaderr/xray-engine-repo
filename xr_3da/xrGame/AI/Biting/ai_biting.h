@@ -109,7 +109,7 @@ public:
 
 							CAI_Biting		();
 	virtual					~CAI_Biting		();
-	virtual	BOOL			ShadowReceive	()			{ return FALSE;	}
+	virtual	BOOL			renderable_ShadowReceive	()			{ return FALSE;	}
 	virtual void			Die				();
 	virtual void			HitSignal		(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed );

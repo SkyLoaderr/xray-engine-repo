@@ -35,8 +35,8 @@ public:
 	virtual void	UpdateCL		( );								// Called each frame, so no need for dt
 	virtual void	renderable_Render		( );
 
-	virtual BOOL	ShadowGenerate	( ) { return TRUE;	}
-	virtual BOOL	ShadowReceive	( ) { return TRUE;	}
+	virtual BOOL	renderable_ShadowGenerate	( ) { return TRUE;	}
+	virtual BOOL	renderable_ShadowReceive	( ) { return TRUE;	}
 	
 	virtual	void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
 	virtual void	net_Export		(NET_Packet& P);
