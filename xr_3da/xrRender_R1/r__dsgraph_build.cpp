@@ -23,9 +23,9 @@ float		r_ssaHZBvsTEX;
 
 IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 {
-	float R	= V->vis.sphere.R;
+	float R	= powf(V->vis.sphere.R,ps_r__LOD_Power);
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
-	return	R*R/distSQ;
+	return	R/distSQ;
 }
 
 void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
