@@ -14,7 +14,6 @@ USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 USEFORM("Editor\ItemList.cpp", ItemList);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);

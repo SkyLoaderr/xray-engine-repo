@@ -59,17 +59,17 @@
       Intermediate\ELog.obj Intermediate\engine.obj Intermediate\EStats.obj 
       Intermediate\ETextureParams.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ExportSkeleton.obj Intermediate\FolderLib.obj 
-      Intermediate\FrameEmitter.obj Intermediate\ImageEditor.obj 
-      Intermediate\ImageManager.obj Intermediate\ImageThumbnail.obj 
-      Intermediate\ItemList.obj Intermediate\ItemListHelper.obj 
-      Intermediate\ItemListTypes.obj Intermediate\Library.obj 
-      Intermediate\LightAnimLibrary.obj Intermediate\ModelPool.obj 
-      Intermediate\NumericVector.obj Intermediate\PropertiesList.obj 
-      Intermediate\PropertiesListHelper.obj Intermediate\PropertiesListTypes.obj 
-      Intermediate\PSLibrary.obj Intermediate\render.obj 
-      Intermediate\ShaderFunction.obj Intermediate\SoundManager.obj 
-      Intermediate\TextForm.obj Intermediate\TLSPRITE.obj 
-      Intermediate\TopBar.obj Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
+      Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
+      Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
+      Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
+      Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
+      Intermediate\ModelPool.obj Intermediate\NumericVector.obj 
+      Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
+      Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
+      Intermediate\render.obj Intermediate\ShaderFunction.obj 
+      Intermediate\SoundManager.obj Intermediate\TextForm.obj 
+      Intermediate\TLSPRITE.obj Intermediate\TopBar.obj 
+      Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
       Intermediate\UI_MainCommand.obj Intermediate\UI_MainMail.obj 
       Intermediate\ResourceManager_Resources.obj 
       Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
@@ -84,9 +84,9 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BonePart.dfm BottomBar.dfm EditorPref.dfm KeyBar.dfm 
       LeftBar.dfm LogForm.dfm main.dfm Splash.dfm Editor\ChoseForm.dfm 
-      Editor\FrameEmitter.dfm Editor\ImageEditor.dfm Editor\ItemList.dfm 
-      Editor\NumericVector.dfm Editor\PropertiesList.dfm 
-      Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm"/>
+      Editor\ImageEditor.dfm Editor\ItemList.dfm Editor\NumericVector.dfm 
+      Editor\PropertiesList.dfm Editor\ShaderFunction.dfm Editor\TextForm.dfm 
+      Editor\TopBar.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="editor.lib elpackB6.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
@@ -246,7 +246,6 @@
       <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -294,7 +293,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=94
+Build=97
 Debug=1
 PreRelease=0
 Special=0
@@ -306,7 +305,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.94
+FileVersion=1.0.2.97
 InternalName=
 LegalCopyright=
 LegalTrademarks=

@@ -513,6 +513,12 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 	F.w_u16(sm_lst.size());
     for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
+        // verify
+        if ((motion->iBoneOrPart==-1)&&(!motion->m_Flags.is(esmFX))){
+        	ELog.Msg(mtError,"Motion '%s' - invalid 'Bone Part' (== -1).",motion->Name());
+            return false;
+        }
+    	// export
         F.w_stringZ	(motion->Name());
         F.w_u32		(motion->m_Flags.get());
 		F.w_s16		(motion->iBoneOrPart);

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 562
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 562
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 560
+      Height = 275
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 319
+        Top = 34
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 321
+        Top = 36
         Width = 298
         Height = 239
         Align = alBottom
@@ -565,7 +565,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = Clear1Click
     end
     object Load1: TMenuItem
-      Caption = 'Load'
+      Caption = 'Load...'
       OnClick = Load1Click
     end
     object Save2: TMenuItem
@@ -594,7 +594,7 @@ object fraLeftBar: TfraLeftBar
       Caption = '-'
     end
     object miExportOGF: TMenuItem
-      Caption = 'Export OGF'
+      Caption = 'Export OGF...'
       OnClick = miExportOGFClick
     end
   end

@@ -386,7 +386,7 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
 	VERIFY(m_bReady);
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
-	if (O->Load(full_name.c_str())){
+	if (FS.exist(full_name.c_str())&&O->Load(full_name.c_str())){
         xr_delete(m_pEditObject);
         m_pEditObject = O;
         // delete visual

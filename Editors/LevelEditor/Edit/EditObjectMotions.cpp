@@ -93,6 +93,8 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
 		if (parent_bone) 
         	M.mulA	(parent_bone->_LITransform());
     }else{
+	    if (0==strcmp(bone->Name(),"phy_door_left"))	Log("phy_door_left",r);
+//	    if (0==strcmp(bone->Name(),"phy_door_right"))	Log("phy_door_right",r);
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
         L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
