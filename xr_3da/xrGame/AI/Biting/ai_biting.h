@@ -13,16 +13,6 @@
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
 
-typedef struct {
-	AI_Biting::EMotionType motion;
-	Fvector dest;
-	float angle;
-
-	u32 time;				// время нахождения в этом состоянии (in ms)
-	u32 time_started;
-
-} TMotionState;
-
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
@@ -88,11 +78,16 @@ private:
 	
 	/////////////////////////////////////////////////////
 	AI_Biting::EMovementType		m_tMovementType;
+	AI_Biting::EBodyState			m_tBodyState;
 	AI_Biting::EStateType			m_tStateType;
-	AI_Biting::EMovementDirection	m_tMovementDir;
+	AI_Biting::EMovementDir			m_tMovementDir;
+	AI_Biting::EActionType			m_tActionType;
+
 	AI_Biting::EPathState			m_tPathState;
 	AI_Biting::EPathType			m_tPathType;
 	AI_Biting::EPathType			m_tPrevPathType;
+	
+
 	
 	float					m_fWalkFactor;
 	float					m_fWalkFreeFactor;
@@ -123,13 +118,20 @@ private:
 	u32						m_dwPathTypeRandomFactor;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 
-//	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook, u32 dwLookOverDelay);
-
+	
+	// построение пути и установка параметров скорости
+	// tpPoint - куда смотреть при движении
+	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, 
+						 bool bSearchNode, AI_Biting::EPathType tPathType, AI_Biting::EBodyState tBodyState, 
+						 AI_Biting::EMovementType tMovementType, AI_Biting::EStateType tStateType,  Fvector *tpPoint = 0);
+	
+	
 	// Animation Parameters
 	AI_Biting::EActionAnim		m_tActionAnim;
 	AI_Biting::EPostureAnim		m_tPostureAnim;
-	void				TurnAround();  // TEMP
-	bool				ExecMovement(TMotionState &motion);
 
-	void SetDirectionLook();		// TEMP
+	void vfSetMotionActionParams(AI_Biting::EBodyState, AI_Biting::EMovementType, AI_Biting::EMovementDir, AI_Biting::EStateType, AI_Biting::EActionType);
+	void vfSetAnimation();
+
+	void SetDirectionLook();
 };

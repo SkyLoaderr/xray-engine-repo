@@ -27,7 +27,7 @@
 namespace AI_Biting {
 	enum EBodyState {
 		eBodyStateLie = 0,
-		eBodyStateCrouch,
+		eBodyStateSit,
 		eBodyStateStand,
 	};
 
@@ -43,22 +43,23 @@ namespace AI_Biting {
 		eStateTypePanic,
 	};
 
-	enum EMovementDirection {
+	enum EMovementDir {
 		eMovementDirectionForward = 0,
 		eMovementDirectionBack,
 		eMovementDirectionLeft,
 		eMovementDirectionRight,
+		eMovementDirectionNone
 	};
 
-	enum EDirectionType {
-		eDirectionTypeForward = 0,
-		eDirectionTypeForwardDodge,
-		eDirectionTypeForwardCover,
-		eDirectionTypeBack,
-		eDirectionTypeBackDodge,
-		eDirectionTypeBackCover,
+	enum EActionType {
+		eActionTypeRun = 0,
+		eActionTypeStand,
+		eActionTypeTurn,
+		eActionTypeWalk,
+		eActionTypeAttack
 	};
 
+	// Paths
 	enum EPathState {
 		ePathStateSearchNode = 0,
 		ePathStateBuildNodePath,
@@ -71,15 +72,7 @@ namespace AI_Biting {
 		ePathTypeStraightCriteria,
 	};
 
-	enum EActionState {
-		eActionStateRun = 0,
-		eActionStateStand,
-		eActionStateDontWatch,
-		eActionStateWatch,
-		eActionStateWatchGo,
-		eActionStateWatchLook,
-	};
-
+	// Animations
 	enum EPostureAnim {
 		ePostureStand = 0,
 		ePostureSit,
@@ -91,21 +84,10 @@ namespace AI_Biting {
 		eActionWalkFwd,
 		eActionWalkBkwd,
 		eActionTurnLeft,
-		eActionTurnRight
+		eActionTurnRight,
+		eActionRun
 	};
 
-	enum EMotionType {
-		eNothing = 0,
-		
-		eStandUp,
-		eSitDown,
-		eLieDown,
-		eMoveFwd,
-		eMoveBkwd,
-		eTurnLeft,
-		eTurnRight,	
-		eRun
-	};
 
 };
 

@@ -41,9 +41,17 @@ void CAI_Biting::Init()
 	m_dwLastRangeSearch			= 0;
 
 
+	// Инициализация параметров состояния
+	vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+							eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+
+	// Инициализация параметров анимации
 	m_tPostureAnim	= ePostureStand;
 	m_tActionAnim	= eActionIdle;
 
+
+
+	m_tPathType				= ePathTypeStraightCriteria;
 
 }
 

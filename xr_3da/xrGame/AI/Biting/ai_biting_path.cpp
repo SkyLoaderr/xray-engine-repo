@@ -103,9 +103,9 @@ void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEval
 		return;
 	}
 
-	if (tpNodeEvaluator)
-		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
-	else
+//	if (tpNodeEvaluator)
+//		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
+//	else
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 
 	if (AI_Path.Nodes.empty()) {
