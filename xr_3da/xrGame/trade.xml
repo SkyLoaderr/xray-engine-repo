@@ -68,10 +68,20 @@
 	</desc_frame_window>
 
 	<price_mt_static x="35" y="10" width="347" height="40">
-		<phrase x="0" y="0" font="graffiti22" r="238" g="153" b="26">Your items</phrase>
+		<phrase x="0" y="0" width="200" font="graffiti22" r="238" g="153" b="26">Your items</phrase>
 		<phrase x="175" y="0" font="graffiti22" r="220" g="185" b="140">Price:</phrase>
 		<phrase x="230" y="0" font="graffiti22" r="240" g="215" b="185"></phrase>
 	</price_mt_static>
+	
+	<!-- DEAL INFO -->
+	<deal_static x="10" y="10" width="347" height="212">
+		<text font="letterica18" r="255" g="255" b="255" x="50" y="10">SOSO</text>
+	</deal_static>
 
+	<!-- DEAL BUTTON -->
+	<deal_button x="20" y="100" width="107" height="36">
+		<texture>ui\ui_button_06</texture>
+		<text font="graffiti22" r="238" g="153" b="26" align="c">Ok</text>
+	</deal_button>
 </window>
 
