@@ -142,7 +142,13 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 
 void CAI_Crow::net_Destroy		()
 {
-	inherited::net_Destroy		();
+	inherited::net_Destroy					();
+
+	m_Anims.m_death.m_Animations.clear		();
+	m_Anims.m_death_dead.m_Animations.clear	();
+	m_Anims.m_death_idle.m_Animations.clear	();
+	m_Anims.m_fly.m_Animations.clear		();
+	m_Anims.m_idle.m_Animations.clear		();
 }
 
 // crow update
