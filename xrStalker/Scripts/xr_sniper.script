@@ -258,7 +258,7 @@ function action_sniper_idle:init_state_walk()
     self.object:set_path_type           (game_object.patrol_path)
     self.object:set_patrol_path			(self.a.rest_path, patrol.start, patrol.continue, true)
     self.object:set_movement_type       (move.walk)
-    self.object:set_previous_point  	()
+    self.object:set_previous_point  	(-1)
 
 	self.object:set_sight				(look.path_dir, nil, 0)
 
