@@ -77,7 +77,7 @@ CRenderTarget::~CRenderTarget	()
 	RT.destroy					();
 }
 
-void CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1);
+void CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1)
 {
 	CTexture*	T					= RCache.get_ActiveTexture	(3);
 	VERIFY2		(T, "Texture #3 in noise shader should be setted up");
@@ -105,7 +105,6 @@ void CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1);
 	float		end_u				= start_u + float(cnt_w) + 1;
 	float		end_v				= start_v + float(cnt_h) + 1;
  
-	Fvector2	p0,p1;
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 }
@@ -203,12 +202,12 @@ void CRenderTarget::End		()
 	calc_tc_noise		(n0,n1);
 
 	// Fill vertex buffer
-	TL_2c3uv* pv		= (TL_2c3uv*) RCache.Vertex.Lock	(4,pGeom->g_postprocess,Offset);
+	TL_2c3uv* pv		= (TL_2c3uv*) RCache.Vertex.Lock	(4,g_postprocess.stride(),Offset);
 	pv->set(0,			float(_h),	p_color, p_gray, r0.x, r1.y, l0.x, l1.y, n0.x, n1.y);	pv++;
 	pv->set(0,			0,			p_color, p_gray, r0.x, r0.y, l0.x, l0.y, n0.x, n0.y);	pv++;
 	pv->set(float(_w),	float(_h),	p_color, p_gray, r1.x, r1.y, l1.x, l1.y, n1.x, n1.y);	pv++;
 	pv->set(float(_w),	0,			p_color, p_gray, r1.x, r0.y, l1.x, l0.y, n1.x, n0.y);	pv++;
-	RCache.Vertex.Unlock									(4,pGeom->g_postprocess);
+	RCache.Vertex.Unlock									(4,g_postprocess.stride());
 
 	// Actual rendering
 	RCache.set_Geometry	(g_postprocess);
