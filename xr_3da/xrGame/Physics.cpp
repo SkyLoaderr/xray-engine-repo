@@ -347,7 +347,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(fis_zero (dif)) continue;
 		}
 
-			bool pushing_neg=false;
+			bool pushing_neg=	false;
+			bool do_collide	=	true;
 			dxGeomUserData* usr_data_1		=NULL;
 			dxGeomUserData* usr_data_2		=NULL;
 			u16				material_id_1	=0;
@@ -378,19 +379,14 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			surface.mu=material_2->fPHFriction*material_1->fPHFriction;
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_2&&usr_data_2->object_callback){
-				bool do_colide=true;
-				usr_data_2->object_callback(do_colide,c);
-				if(!do_colide) continue;
+				usr_data_2->object_callback(do_collide,c);
 			}
 
 			if(usr_data_1&&usr_data_1->object_callback){
-				bool do_colide=true;
-				usr_data_1->object_callback(do_colide,c);
-				if(!do_colide) continue;
+				usr_data_1->object_callback(do_collide,c);
 			}
 
 			if(usr_data_2){
-
 				pushing_neg=	(usr_data_2->pushing_b_neg
 								&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 								)
@@ -434,7 +430,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					add_contact_body_effector(body,c,material_1->fFlotationFactor);
 				}
 				if(material_1->Flags.is(SGameMtl::flPassable)) 
-															continue;
+															do_collide=false;
 			}
 			if(is_tri_2)
 			{
@@ -447,7 +443,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					add_contact_body_effector(body,c,material_2->fFlotationFactor);
 				}
 				if(material_2->Flags.is(SGameMtl::flPassable)) 
-															continue;
+															do_collide=false;
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////params can not be changed by calbacks/////////////////////////////////
@@ -461,9 +457,11 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(pushing_neg) 
 					surface.mu=dInfinity;
-			
-			dJointID contact_joint = dJointCreateContact(phWorld, ContactGroup, &c);
-			dJointAttach(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
+			if(do_collide)
+			{
+				dJointID contact_joint = dJointCreateContact(phWorld, ContactGroup, &c);
+				dJointAttach(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
+			}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -417,8 +417,8 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 		case CPHShellSplitter::splElement:
 			{
 				CPHElement* element=m_pShell->elements[i->m_element];
-				dBodyID body=element->get_body();
-				if(!dBodyIsEnabled(body)) return;
+				dBodyID body=element->get_body();//!element->EnabledStateOnStep()
+				if(!dBodyIsEnabled(body)) return;//
 				i->m_breaked=(element->FracturesHolder()->PhDataUpdate(element))||i->m_breaked;
 				break;
 			}

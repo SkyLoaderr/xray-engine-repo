@@ -497,7 +497,7 @@ bool CPHFracture::Update(CPHElement* element)
 	vtemp.set(second_part_force);
 	vtemp.mul(m_firstM.mass);
 	break_force.sub(vtemp);
-	break_force.mul(1.f/body->mass.mass);
+	break_force.mul(1.f/element->getMass());//element->getMass()//body->mass.mass
 	
 	//vtemp.crossproduct(second_in_bone,second_part_torque);
 	//break_force.add(vtemp);
