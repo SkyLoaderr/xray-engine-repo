@@ -1,4 +1,3 @@
- 
 List of the classes exported to LUA
 
 C++ class entity_memory_object : memory_object {
@@ -746,6 +745,16 @@ C++ class SZoneMapEntityData {
     
 };
 
+C++ class fs_file {
+    property modif;
+    property name;
+    property ptr;
+    property size_compressed;
+    property size_real;
+    property vfs;
+    
+};
+
 C++ class game_PlayerState {
     property GameID;
     property LastBuyAcount;
@@ -1183,50 +1192,83 @@ C++ class CHelicopter {
     function Explode();
     function SetState(number);
     function GetCurrVelocity();
+    function SetCurrAltitude(number);
     function GoPatrolByPatrolPath(string, number);
     function SetDestPosition(vector*);
     function GetState();
-    function Die();
+    function SetfHealth(number);
     function SetCurrVelocity(number);
     function GetCurrAltitude();
     function GetDistanceToDestPosition();
     function TurnLighting(boolean);
     function GetRealAltitude();
     function PrepareDie();
-    function SetfHealth(number);
+    function Die();
     function SetEnemy(game_object*);
+};
+
+C++ class FS {
+    const FS_ClampExt = 4;
+    const FS_ListFiles = 1;
+    const FS_ListFolders = 2;
+    const FS_RootOnly = 8;
+    
+    function get_file_age(string);
+    function file_length(string);
+    function file_rename(string, string, boolean);
+    function r_open(string, string);
+    function r_open(string);
+    function append_path(string, string, string, number);
+    function file_copy(string, string);
+    function get_file_age_str(FS*, string);
+    function dir_delete(FS*, string, number);
+    function dir_delete(FS*, string, string, number);
+    function update_path(FS*, string, string);
+    function r_close(reader*&);
+    function exist(string);
+    function exist(string, string);
+    function w_close(class IWriter*&);
+    function path_exist(string);
+    function file_list_open(FS*, string, number);
+    function file_list_open(FS*, string, string, number);
+    function get_path(string);
+    function file_delete(string, string);
+    function file_delete(string);
+    function w_open(string, string);
+    function w_open(string);
 };
 
 C++ class stalker_ids {
     const action_accomplish_task = 5;
-    const action_aim_enemy = 15;
+    const action_aim_enemy = 16;
     const action_already_dead = 0;
-    const action_anomaly_planner = 28;
-    const action_camping = 19;
-    const action_combat_planner = 28;
+    const action_anomaly_planner = 29;
+    const action_camping = 20;
+    const action_combat_planner = 29;
+    const action_communicate_with_customer = 7;
     const action_dead = 1;
-    const action_death_planner = 26;
-    const action_find_ammo = 14;
-    const action_find_item_to_kill = 12;
-    const action_follow_customer = 6;
-    const action_free = 3;
-    const action_free_no_alife = 2;
-    const action_gather_items = 7;
-    const action_get_enemy = 9;
-    const action_get_enemy_seen = 10;
-    const action_get_enemy_seen_moderate = 20;
-    const action_get_item_to_kill = 11;
-    const action_get_kill_distance = 8;
-    const action_get_ready_to_kill_moderate = 17;
-    const action_kill_enemy_moderate = 18;
-    const action_make_item_killing = 13;
-    const action_puzzle_solver = 27;
+    const action_death_planner = 27;
+    const action_find_ammo = 15;
+    const action_find_item_to_kill = 13;
+    const action_gather_items = 8;
+    const action_get_enemy = 10;
+    const action_get_enemy_seen = 11;
+    const action_get_enemy_seen_moderate = 21;
+    const action_get_item_to_kill = 12;
+    const action_get_kill_distance = 9;
+    const action_get_ready_to_kill_moderate = 18;
+    const action_kill_enemy_moderate = 19;
+    const action_make_item_killing = 14;
+    const action_no_alife = 2;
+    const action_puzzle_solver = 28;
+    const action_reach_customer_location = 6;
     const action_reach_task_location = 4;
-    const action_retreat_from_enemy = 16;
-    const action_script = 30;
-    const action_squad_action = 25;
-    const detect_anomaly = 24;
-    const get_out_of_anomaly = 23;
+    const action_retreat_from_enemy = 17;
+    const action_script = 31;
+    const action_solve_zone_puzzle = 3;
+    const action_squad_action = 26;
+    const detect_anomaly = 25;
+    const get_out_of_anomaly = 24;
     const motivation_alive = 1;
     const motivation_dead = 2;
     const motivation_global = 0;
@@ -1238,25 +1280,26 @@ C++ class stalker_ids {
     const property_alife = 3;
     const property_alive = 0;
     const property_already_dead = 2;
-    const property_anomaly = 22;
-    const property_customer_satisfied = 7;
+    const property_anomaly = 23;
+    const property_customer_satisfied = 8;
     const property_dead = 1;
-    const property_enemy = 9;
-    const property_enemy_aimed = 16;
-    const property_fire_enough = 18;
-    const property_found_ammo = 14;
-    const property_found_item_to_kill = 12;
-    const property_inside_anomaly = 23;
-    const property_item_can_kill = 13;
-    const property_item_to_kill = 11;
-    const property_items = 8;
+    const property_enemy = 10;
+    const property_enemy_aimed = 17;
+    const property_fire_enough = 19;
+    const property_found_ammo = 15;
+    const property_found_item_to_kill = 13;
+    const property_inside_anomaly = 24;
+    const property_item_can_kill = 14;
+    const property_item_to_kill = 12;
+    const property_items = 9;
     const property_puzzle_solved = 4;
+    const property_reach_customer_location = 7;
     const property_reach_task_location = 5;
-    const property_ready_to_kill = 15;
-    const property_safe_to_kill = 17;
-    const property_script = 24;
-    const property_see_enemy = 10;
-    const property_squad_action = 20;
+    const property_ready_to_kill = 16;
+    const property_safe_to_kill = 18;
+    const property_script = 25;
+    const property_see_enemy = 11;
+    const property_squad_action = 21;
     const property_task_completed = 6;
     const sound_alarm = 3;
     const sound_attack = 6;
@@ -4454,6 +4497,21 @@ C++ class ClientID {
 C++ class dll_pure {
 };
 
+C++ class FS_Path {
+    property m_Add;
+    property m_DefExt;
+    property m_FilterCaption;
+    property m_Path;
+    property m_Root;
+    
+};
+
+C++ class FS_file_list {
+    function Free();
+    function GetAt(number);
+    function Size();
+};
+
 C++ class reader {
     function r_advance(number);
     function r_u64(unsigned __int64&);
@@ -4806,35 +4864,33 @@ namespace  {
     function bit_or(number, number);
     function GetFontArialN21Russian();
     function GetFontDI();
+    function system_ini();
     function module(string);
     function GetFontHeaderRussian();
     function dik_to_bind(number);
     function cast_planner_to_action(action_planner*);
     function GetFontGraffiti19Russian();
     function GetFontLetterica25();
+    function device();
+    function GetFontLetterica16Russian();
     function GetFontMedium();
-    function bit_xor(number, number);
+    function GetFontGraffiti50Russian();
     function GetFontSmall();
     function user_name();
-    function log(string);
     function GetFontGraffiti22Russian();
     function GetFontLetterica18Russian();
     function GetFontBigDigit();
     function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
     function script_server_object_version();
-    function device();
-    function GetFontGraffiti50Russian();
-    function GetFontLetterica16Russian();
+    function getFS();
+    function bit_xor(number, number);
     function GetFontHeaderEurope();
     function flush();
     function editor();
     function GetARGB(number, number, number, number);
+    function log(string);
     function bit_not(number);
- 
-    namespace game {
-        function time();
-    };
  
     namespace level {
         function map_remove_object_icon(game_object*);
@@ -4855,5 +4911,8 @@ namespace  {
         function rain_factor();
         function object_by_id(number);
     };
+ 
+    namespace game {
+        function time();
+    };
 };
-
