@@ -110,13 +110,11 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 	CObject* Obj;
 
 	switch (type) {
-		case GE_TRADE_BUY:
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
 			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
 			break;
-		case GE_TRADE_SELL:
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
@@ -125,18 +123,18 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_TRANSFER_AMMO:
 			break;
 		
-//			// Trade is accomplishing through 'm_trade_storage'
-//		case GE_TRADE_BUY:		// equal to GE_OWNERSHIP_TAKE
-//			P.r_u16		(id);
-//			Obj			= Level().Objects.net_Find	(id);
-//			
-//			if(g_Alive() && m_trade_storage.Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
-//			break;
-//		case GE_TRADE_SELL:
-//			P.r_u16		(id);
-//			Obj			= Level().Objects.net_Find	(id);
-//			if	(m_trade_storage.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
-//			break;
+			// Trade is accomplishing through 'm_trade_storage'
+		case GE_TRADE_BUY:		// equal to GE_OWNERSHIP_TAKE
+			P.r_u16		(id);
+			Obj			= Level().Objects.net_Find	(id);
+			
+			if(g_Alive() && m_trade_storage.Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
+			break;
+		case GE_TRADE_SELL:
+			P.r_u16		(id);
+			Obj			= Level().Objects.net_Find	(id);
+			if	(m_trade_storage.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
+			break;
 	}
 }
 
@@ -206,3 +204,9 @@ void CAI_Trader::Think()
 {
 	SelectAnimation(XFORM().k,XFORM().k,0);
 }
+
+void CAI_Trader::Die ( )
+{
+	m_inventory.DropAll();
+}
+

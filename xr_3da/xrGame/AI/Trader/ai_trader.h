@@ -27,7 +27,7 @@ public:
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& P);
 	virtual void		net_Import		(NET_Packet& P);
-	virtual void		Die				(){};
+	virtual void		Die				();
 	virtual void		Think			();
 	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};
 	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};

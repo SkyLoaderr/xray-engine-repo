@@ -371,6 +371,6 @@ CInventory &CTrade::GetTradeInv(SInventoryOwner owner)
 {
 	R_ASSERT(owner.type != TT_NONE);
 
-	//return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
-	return (owner.inv_owner->m_inventory);
+	return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
+	///return (owner.inv_owner->m_inventory);
 }
