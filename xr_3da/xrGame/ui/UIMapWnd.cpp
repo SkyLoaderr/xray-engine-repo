@@ -861,3 +861,10 @@ void CUIMapWnd::ApplyFilterToObjectives(const shared_str &levelName)
 		(*mapSpotIt)->Show(levelName == (*mapSpotIt)->m_LevelName);
 	}	
 }
+void CUIMapWnd::OnMouseWheel(int direction)
+{
+	if(direction<0)
+		UIMapBgndV.TryScrollInc();
+	else
+		UIMapBgndV.TryScrollDec();
+}

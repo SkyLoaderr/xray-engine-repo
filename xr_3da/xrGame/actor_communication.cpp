@@ -93,21 +93,23 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime(), article.data()->articleType));
 	}
 
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP) 
-	{
-		if(actor_diary_article && pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
-			pGameSP->PdaMenu.UIDiaryWnd.UIActorDiaryWnd.IsShown())
+	if( HUD().GetUI() ){
+
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) 
 		{
-			pGameSP->PdaMenu.UIDiaryWnd.ReloadArticles();
-		}
-		
-		if(encyclopedia_article && pGameSP->PdaMenu.UIEncyclopediaWnd.IsShown())
-		{
-			pGameSP->PdaMenu.UIEncyclopediaWnd.ReloadArticles();
+			if(actor_diary_article && pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+				pGameSP->PdaMenu.UIDiaryWnd.UIActorDiaryWnd.IsShown())
+			{
+				pGameSP->PdaMenu.UIDiaryWnd.ReloadArticles();
+			}
+			
+			if(encyclopedia_article && pGameSP->PdaMenu.UIEncyclopediaWnd.IsShown())
+			{
+				pGameSP->PdaMenu.UIEncyclopediaWnd.ReloadArticles();
+			}
 		}
 	}
-
 }
 
 void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
@@ -140,13 +142,15 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 		if(HUD().GetUI())
 			HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP) 
-	{
-		if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
-			pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.IsShown())
+	if( HUD().GetUI() ){
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) 
 		{
-			pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.ReloadJobs();
+			if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+				pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.IsShown())
+			{
+				pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.ReloadJobs();
+			}
 		}
 	}
 }
@@ -175,17 +179,19 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	if(HUD().GetUI())
 		HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
 
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP) 
-	{
-		if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
-			pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.IsShown())
+	if( HUD().GetUI() ){
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) 
 		{
-			pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.AddNews();
-			pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(true);
+			if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+				pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.IsShown())
+			{
+				pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.AddNews();
+				pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(true);
+			}
+			else
+				pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(false);
 		}
-		else
-			pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(false);
 	}
 }
 
