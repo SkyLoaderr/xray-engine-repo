@@ -6,7 +6,7 @@
             <level></level>
             <object>001</object>
             <icon name="" x="2" y="3" width="1" height="1" marker="0"></icon>
-            <text>Help robbed rookie</text>
+            <text>Помочь ограбленному новичку</text>
         </location>
         <task>escape_novice_need_weapon</task>        
     </info_portion>
@@ -22,7 +22,7 @@
             <level></level>
             <object>000</object>
 			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Steal the box from the block.</text>
+            <text>Украсть ящик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>
     </info_portion>
@@ -40,29 +40,29 @@
             <level>l01_escape</level>
             <x>163</x>
             <y>72</y>
-			<icon name="Anomaly" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Possible whereabouts of the artifact.</text>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level>l01_escape</level>
             <x>208</x>
             <y>108</y>
-			<icon name="Anomaly" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Possible whereabouts of the artifact.</text>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level>l01_escape</level>
             <x>221</x>
             <y>154</y>
-			<icon name="Anomaly" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Possible whereabouts of the artifact.</text>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level>l01_escape</level>
             <x>186</x>
             <y>159</y>
-			<icon name="Anomaly" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Possible whereabouts of the artifact.</text>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level>l01_escape</level>
@@ -77,7 +77,7 @@
             <level>l01_escape</level>
             <object>003</object>            
 			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Deliver artifact to the Dealer.</text>
+            <text>Принеси артефакт торговцу.</text>
         </location>   
         <disable>escape_trader_need_artefact</disable>
 		<dialog>escape_trader_done_artefact</dialog>        
@@ -91,8 +91,8 @@
         <location>
             <level>l03_agroprom</level>
             <object>200</object>
-			<icon name="Documents" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Important military documents.</text>
+			<icon name="Документы" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Важные военные документы.</text>
         </location>
         <task>agroprom_get_military_documents</task>
     </info_portion>
@@ -113,7 +113,7 @@
             <x>-118</x>
             <y>263</y>
 			<icon x="0" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Meet the stalker.</text>
+            <text>Встретьтесь с сталкером.</text>
         </location>   
         <task>garbage_meet_stalker</task>
     </info_portion>
@@ -127,7 +127,7 @@
             <x>-18</x>
             <y>18</y>
 			<icon x="5" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Meet Gunslinger group.</text>
+            <text>Встретьтесь с группировкой Стрелка.</text>
         </location>   
 		<task>agroprom_meet_gunslinger_band</task>    
     </info_portion>
@@ -137,9 +137,11 @@
             <x>-47</x>
             <y>-37</y>
 			<icon x="4" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Find Gunslinger group cache.</text>
+            <text>Найдите тайник группировки Стрелка.</text>
         </location>   
 		<task>agroprom_find_gunslinger_hide</task>
 		<disable>agroprom_meet_gunslinger_band</disable>
-    </info_portion>    
+    </info_portion>
+
+    
 </game_information_portions>

@@ -1,67 +1,37 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
- 
-
 <game_dialogs>
-
-      <dialog id="escape_talk_about_agroprom">
-
-      <precondition>dialogs.level_agroprom</precondition>
-
-      <phrase_list>
-
-            <phrase id="0">
-
-                  <text>Tell me about this place.</text>
-
-                  <next>1</next>
-
-            </phrase>                                                                                               
-
-            <phrase id="10">
-
-                  <text>‘Ї бЁЎ®.</text>
-
-            </phrase>   
-
-            <phrase id="1">
-
-                  <text>Stalkers call this territory dead, radiation is too strong here... If you go deep into the area, you`ll reach the radioactive plains 
-
-                  and find shallow rusty lake. All lake is filled with remains of vehicles - a heap of rusty trash, covered with water. You can also find
-
-                  old scientific research institute and a factory, but I is all covered with some mutated muck. Don`t go there without gas-mask, too  
-
-                  dangerous.</text>
-
-                  <next>2</next>
-
-                  <next>10</next>
-
-            </phrase>
-
-            <phrase id="2">
-
-                  <text>And what is nearby?</text>
-
-                  <next>21</next>
-
-            </phrase>                                                                                               
-
-            <phrase id="21">
-
-                  <text>If you go East, you`ll reach the Garbage. 
-
-                  Go North - you`ll reach the Yantar lake, rumors tell there is a scientists camp there.</text>
-
-            </phrase>                                                                                                           
-
-      </phrase_list>
-
-      </dialog>
-
+	<dialog id="escape_talk_about_agroprom">
+	<precondition>dialogs.level_agroprom</precondition>
+	<phrase_list>
+	   	<phrase id="0">
+			<text>Расскажи мне об этом месте.</text>
+			<next>1</next>
+		</phrase>                                                                                               
+	   	<phrase id="10">
+			<text>Спасибо.</text>
+		</phrase>	
+	   	<phrase id="1">
+			<text>Сталкеры называют эту территорию мертвой, тут
+			слишком сильная радиация... Если продвигаться вглубь местности, то выйдешь на
+			радиоактивные равнины, можно найти мелкое ржавое озеро. Все озеро заполнено
+			останками машин, одна большая куча ржавого хлама, слегка покрытая водой. Еще
+			можно найти старый институт и фабрику, только она слишком обросла какой-то
+			мутированной гадостью. Без противогаза не ходи, на раз схлопочешь дозу.</text>
+			<next>2</next>
+			<next>10</next>
+		</phrase>
+	   	<phrase id="2">
+			<text>А что есть рядом?</text>
+			<next>21</next>
+		</phrase>                                                                                               
+	   	<phrase id="21">
+			<text>Если идти на восток, то попадешь на Свалку. 
+			Пойдешь на север - попадешь на берег озера Янтарь, там еще, по
+			слухам, научный лагерь есть.</text>
+		</phrase>                                                                                               		
+	</phrase_list>
+	</dialog>
     
-
 </game_dialogs>
 
- 

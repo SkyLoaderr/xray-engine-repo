@@ -3,86 +3,83 @@
 <game_tasks_data>
 
 	<game_task id="escape_blockpost_case">
-		<title>Steal box from the block.</title>
+		<title>Украсть ящик с блокпоста.</title>
 		<objective>
-			<text>Steal box with the documents from block commander.</text>
+			<text>Украсть у командира блокпоста ящик с важными документами.</text>
 		</objective>
 		<objective>
-			<text>Steal box from the block.</text>
+			<text>Украсть ящик с блокпоста.</text>
 		</objective>
 		<objective>
-			<text>Deliver box to the dealer.</text>
+			<text>Принести ящик торговцу.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="escape_novice_need_weapon">
-		<title>Help rookie to find weapon.</title>
+		<title>Помочь новичку найти оружие.</title>
 		<objective>
-			<text>Robbed rookie near the ruined plant is looking for the weapon to avenge the bandits</text>
+			<text>Ограбленный новичок возле разрушенной фабрики ищет оружие, чтобы отомстить бандитам.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="storyline_eliminate_gunslinger">
-		<title>Kill the Gunslinger</title>
+		<title>Убить Стрелка.</title>
 		<objective>
-			<text>You must find and kill Gunslinger.</text>
+			<text>Необходимо найти и уничтожить Стрелка.</text>
 		</objective>
 		<objective>
-			<text>Find Gunslinger</text>
+			<text>Найти Стрелка.</text>
 		</objective>
 		<objective>
-			<text>Kill Gunslinger</text>
+			<text>Убить Стрелка.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="escape_trader_need_artefact">
-		<title>Deliver artifact to the Dealer.</title>
+		<title>Принести артефакт торговцу.</title>
 		<objective>
-			<text>Dealer is looking for the rare artifact “Night star”. Find and deliver it to him and in exchange 
-			he will gather for you information about Gunslinger.</text>
+			<text>Торговец разыскивает особо редкий артефакт "Ночная звезда". Найдите его
+			и принесите торговцу. Взамен торговец обещал разузнать о Стрелке.</text>
 		</objective>
 		<objective>
-			<text>Find "Night Star"</text>
+			<text>Найдите "Ночную звезду".</text>
 		</objective>
 		<objective>
-			<text>Deliver “Night Star” to the Dealer.</text>
+			<text>Принесите "Ночную звезду" торговцу.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="garbage_meet_stalker">
-		<title>Meet stalker at the garbage.</title>
+		<title>Встретиться на свалке со сталкером.</title>
 		<objective>
-			<text>Dealer arranged for you a meeting with a stalker that may know something about Gunslinger group. Meet him at the garage near garbage.</text>
+			<text>Торговец договорился для вас о встрече со сталкером, знающим кое-что о группировке Стрелка. Встретьтесь с ним в гараже на свалке.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_get_military_documents">
-		<title>Get the documents from the Research Institute “Agroprom”.</title>
+		<title>Достать документы военных из НИИ "Агропром".</title>
 		<objective>
-			<text>You must get military documents and deliver them to barmen in stalkers bar.</text>
+			<text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
 		</objective>
 		<objective>
-			<text>Get the military documents from Research Institute “Agroprom”.</text>
+			<text>Добудьте военные документы из НИИ "Агропром".</text>
 		</objective>
 		<objective>
-			<text>Deliver military documents to barmen in stalkers bar.</text>
+			<text>Отнесите документы бармену в баре сталкеров.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_meet_gunslinger_band">
-		<title>Meet Gunslinger group.</title>
+		<title>Встретиться с группировкой Стрелка.</title>
 		<objective>
-			<text>You got the information about Gunslinger group. 
-			Some of the members are situated near Research Institute “Agroprom”. 
-			They may lead you to Gunslinger.</text>
+			<text>Вам стало известно, что оставшаяся часть группировки Стрелка обитает на заводе возле НИИ "Агропром". Может быть они выведут вас на Стрелка.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_find_gunslinger_hide">
-		<title>Find Gunslinger group cache.</title>
+		<title>Найти тайник группировки Стрелка.</title>
 		<objective>
-			<text>Find and search Gunslinger group cache. There 
-			may be some information about Gunslinger whereabouts.</text>
+			<text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
 		</objective>
 	</game_task>
 	
