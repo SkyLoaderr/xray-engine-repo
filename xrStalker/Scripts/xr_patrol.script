@@ -739,7 +739,7 @@ function add_to_binder(obj, char_ini)
    	action = manager:action (stalker_ids.action_puzzle_solver)
    	action:add_precondition (world_property (properties["complete"],  true))
 
-	this.set_patrol (obj)
+	if char_ini ~= nil then this.set_patrol (obj) end
 	xr_report.AddScheme (obj, operators["single_patrol"])
     end
 end
