@@ -1,7 +1,8 @@
 #pragma once
 
 #ifndef SG_REALLOC_ADVANCE
-#define SG_REALLOC_ADVANCE 64
+#define SG_REALLOC_ADVANCE	64
+#define SG_REALLOC_ALIGN	64
 #endif
 
 #include "xr_list.h"
@@ -29,7 +30,7 @@ private:
 	{
 		DWORD	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = (TNode*) malloc(Size(newLimit));
+		TNode*	newNodes = (TNode*) _aligned_malloc	(Size(newLimit),SG_REALLOC_ALIGN);
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
@@ -50,23 +51,13 @@ private:
 				Nnew->right		= newNodes + Rid;
 			}
 		}
-		if (nodes) free(nodes);
+		if (nodes) _aligned_free(nodes);
 
 		nodes = newNodes;
 		limit = newLimit;
 	}
 
-	IC TNode*	Alloc(const K& key, const T& val)
-	{
-		if (pool==limit) Realloc();
-		TNode *node = nodes + pool;
-		node->key	= key;
-		node->val	= val;
-		node->right = node->left = 0;
-		pool++;
-		return node;
-	}
-	IC TNode*	Alloc(const K& key)
+	IC TNode*	Alloc		(const K& key)
 	{
 		if (pool==limit) Realloc();
 		TNode *node = nodes + pool;
@@ -75,14 +66,7 @@ private:
 		pool++;
 		return node;
 	}
-	IC TNode*	CreateChild(TNode* &parent, const K& key, const T& val)
-	{
-		DWORD PID	= parent-nodes;
-		TNode*	N	= Alloc(key,val);
-		parent		= nodes+PID;
-		return	N;
-	}
-	IC TNode*	CreateChild(TNode* &parent, const K& key)
+	IC TNode*	CreateChild	(TNode* &parent, const K& key)
 	{
 		DWORD PID	= parent-nodes;
 		TNode*	N	= Alloc(key);
@@ -133,66 +117,9 @@ public:
 		nodes	= 0; 
 	}
 	~FixedMAP() {
-		_FREE(nodes);
-	}
-	IC TNode*	insert(const K& k, const T& v)
-	{
-		if (pool) {
-			TNode*	node = nodes;
-
-			once_more:
-			if (k < node->key) {
-				if (node->left) {
-					node = node->left;
-					goto once_more;
-				} else {
-					TNode* N = CreateChild(node,k,v);
-					node->left = N;
-					return N;
-				}
-			} else if (k > node->key) {
-				if (node->right) {
-					node = node->right;
-					goto once_more;
-				} else {
-					TNode* N = CreateChild(node,k,v);
-					node->right = N;
-					return N;
-				}
-			} else return node;
-			
-		} else {
-			return Alloc(k,v);
-		}
-	}
-	IC TNode*	insertInAnyWay(const K& k, const T& v)
-	{
-		if (pool) {
-			TNode*	node = nodes;
-
-			once_more:
-			if (k <= node->key) {
-				VERIFY(node->val != v);
-				if (node->left) {
-					node = node->left;
-					goto once_more;
-				} else {
-					TNode* N = CreateChild(node,k,v);
-					node->left = N;
-					return N;
-				}
-			} else {
-				if (node->right) {
-					node = node->right;
-					goto once_more;
-				} else {
-					TNode* N = CreateChild(node,k,v);
-					node->right = N;
-					return N;
-				}
-			}
-		} else {
-			return Alloc(k,v);
+		if (nodes) {
+			_aligned_free(nodes);
+			nodes	= 0;
 		}
 	}
 	IC TNode*	insert(const K& k) {
@@ -252,13 +179,25 @@ public:
 			return Alloc(k);
 		}
 	}
-	IC void		discard()	{ _FREE(nodes); pool=0; limit=0;	}
+	IC TNode*	insert		(const K& k, const T& v)
+	{
+		TNode*	N	= insert(k);
+		N->val		= v;
+		return	N;
+	}
+	IC TNode*	insertInAnyWay(const K& k, const T& v)
+	{
+		TNode*	N	= insertInAnyWay(k);
+		N->val		= v;
+		return	N;
+	}
+	IC void		discard()	{ if (nodes) _aligned_free(nodes); nodes = 0; pool=0; limit=0;	}
 	IC DWORD	allocated()	{ return this->limit;				}
-	IC void		clear() { pool=0;				}
-	IC TNode*	begin() { return nodes;			}
-	IC TNode*	end()	{ return nodes+pool;	}
-	IC TNode*	last()	{ return nodes+limit;	}	// for setup only
-	IC DWORD	size()	{ return pool;			}
+	IC void		clear()		{ pool=0;				}
+	IC TNode*	begin()		{ return nodes;			}
+	IC TNode*	end()		{ return nodes+pool;	}
+	IC TNode*	last()		{ return nodes+limit;	}	// for setup only
+	IC DWORD	size()		{ return pool;			}
 	IC TNode&	operator[] (int v) { return nodes[v]; }
 
 	IC void		traverseLR	(callback CB) 
