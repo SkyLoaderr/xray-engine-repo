@@ -2,10 +2,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "..\psystem.h"
 #include "ParticleGroup.h"
-#include "psystem.h"
 #include "PSLibrary.h"
-#include "render.h"
 
 using namespace PS;
 

@@ -4,9 +4,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "render.h"
 #include "PSVisual.h"
-#include "PSLibrary.h"
+#include "..\PSLibrary.h"
 
 CPSVisual::CPSVisual():IRender_Visual()
 {

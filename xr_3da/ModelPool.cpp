@@ -10,11 +10,11 @@
 #include "..\fprogressivefixedvisual.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
-#include "..\PSVisual.h"
-#include "..\ParticleGroup.h"
 #include "..\fcached.h"
 #include "..\flod.h"
 #include "ftreevisual.h"
+#include "PSVisual.h"
+#include "ParticleGroup.h"
 
 IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
