@@ -5299,16 +5299,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Multiplayer"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIBuyWeaponWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIBuyWeaponWnd.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="NewsWnd"
 					Filter="">
 					<File
@@ -5638,6 +5628,36 @@
 					</File>
 					<File
 						RelativePath=".\UITDMPlayerList.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Multiplayer"
+				Filter="">
+				<File
+					RelativePath=".\ui\UIBuyWeaponWnd.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIBuyWeaponWnd.h">
+				</File>
+				<Filter
+					Name="Stats"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIStatsWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStatsWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Spawn"
+					Filter="">
+					<File
+						RelativePath=".\ui\UISpawnWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISpawnWnd.h">
 					</File>
 				</Filter>
 			</Filter>
