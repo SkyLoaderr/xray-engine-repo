@@ -470,6 +470,14 @@ SOURCE=.\Blender_default_aref.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blender_Vertex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Vertex.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\BlenderDefault.cpp
 # End Source File
 # Begin Source File
