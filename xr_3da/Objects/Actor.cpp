@@ -47,9 +47,10 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	CActor*	A			= (CActor*)B->Callback_Param;
 
 	Fmatrix				spin;
-	float				bone_yaw	= A->r_torso.pitch;
-	float				bone_pitch	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
-	spin.setXYZ			(bone_pitch,bone_yaw,0);
+	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
+	float				bone_pitch	= A->r_torso.pitch;
+	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mul_43(spin);
 }
 
@@ -475,11 +476,10 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 				Movement.SetBox(bbStandBox);
 			}
 		}
-		// закончить прыжок
-		if (mstate_real&mcJump){
-			if (Movement.gcontact_Was)	mstate_real &= ~mcJump;
-		}
 	}
+	// закончить прыжок
+	if (mstate_real&mcJump)
+		if (Movement.gcontact_Was)	mstate_real &= ~mcJump;
 	if ((mstate_wf&mcJump)==0)	m_bJumping = false;
 
 	// Зажало-ли меня/уперся - не двигаюсь
@@ -491,6 +491,8 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 
 void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
 {
+	if (!bAlive)	return;
+
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
 	if (Movement.Environment()==CMovementControl::peOnGround)

@@ -141,8 +141,8 @@ Sanya:
 		. дополнительный интерфейс (полный захват ввода):
 			. перегруппировка
 	. TODO: 2 models, fully working and animated
-	. TODO: контроль 2-циклов анимации в актере
-	- TODO: Particles in engine
+	+ TODO: контроль 2-циклов анимации в актере
+	+ TODO: Particles in engine
 	. TODO: Weapons
 		. Пулемет 6-ти ствольный (переделать дизайн/HUD)
 		. EMS Rifle
