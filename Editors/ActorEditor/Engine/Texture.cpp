@@ -429,7 +429,6 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
  )
 {
 	CImage					Image;
-	u32						dwMipCount		= 9;
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	FILE_NAME				fn;
