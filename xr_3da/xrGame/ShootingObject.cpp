@@ -155,7 +155,7 @@ void CShootingObject::StartParticles (CParticlesObject*& pParticles, LPCSTR part
 		return;
 	}
 
-	pParticles = xr_new<CParticlesObject>(particles_name,0,auto_remove_flag);
+	pParticles = xr_new<CParticlesObject>(particles_name,(IRender_Sector *)0,auto_remove_flag);
 	
 	UpdateParticles(pParticles, pos, vel);
 	pParticles->Play();
