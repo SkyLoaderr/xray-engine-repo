@@ -12,6 +12,7 @@
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"
 #include "UIAnimatedStatic.h"
+#include "UIMultiTextStatic.h"
 
 class CUIPdaDialogWnd: public CUIWindow  
 {
@@ -64,6 +65,8 @@ public:
 	CUIAnimatedStatic	UIAnimatedIcon;
 
 	//информация о персонаже
-	CUIWindow		 UICharacterWindow;
-	CUICharacterInfo UICharacterInfo;
+	CUIWindow			UICharacterWindow;
+	CUICharacterInfo	UICharacterInfo;
+	CUIFrameWindow		UIMask;
+	CUIMultiTextStatic	UIMTStatic;
 };

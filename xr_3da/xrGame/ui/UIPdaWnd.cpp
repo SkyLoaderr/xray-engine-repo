@@ -173,13 +173,15 @@ void CUIPdaWnd::AddNewsItem(const char *sData)
 
 void CUIPdaWnd::UpdateDateTime()
 {
-	static ref_str prevStrTime;
-	const ref_str strTime = InventoryUtilities::GetGameDateTimeAsString(InventoryUtilities::edpDateToDay, InventoryUtilities::etpTimeToMinutes);
+	static ref_str prevStrTime = " ";
+	std::string strTime = *InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes);
+				strTime += " ";
+				strTime += *InventoryUtilities::GetGameDateAsString(InventoryUtilities::edpDateToDay);
 
-	if (strTime != prevStrTime)
+	if (xr_strcmp(strTime.c_str(), prevStrTime))
 	{
-		UITimerBackground.UITitleText.SetText(*strTime);
-		prevStrTime = strTime;
+		UITimerBackground.UITitleText.SetText(strTime.c_str());
+		prevStrTime = strTime.c_str();
 	}
 }
 

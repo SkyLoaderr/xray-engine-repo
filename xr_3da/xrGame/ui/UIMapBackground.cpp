@@ -349,7 +349,38 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 
 	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
-			GetParent()->SetCapture(this, cursor_on_button);
+	{
+		GetParent()->SetCapture(this, cursor_on_button);
+		// Check for spot arrow hit
+		RECT r, absR = GetAbsoluteRect();
+		POINT p;
+		p.x = x;
+		p.y = y;
+
+		for (WINDOW_LIST_it it = GetChildWndList().begin(); it != GetChildWndList().end(); ++it)
+		{
+			CUIMapSpot				*pSpot		= dynamic_cast<CUIMapSpot*>(*it);
+			if (!pSpot) continue;
+
+			if (pSpot->m_bArrowVisible)
+			{
+				r.left		= pSpot->m_Arrow.GetPosX() - absR.left;
+				r.top		= pSpot->m_Arrow.GetPosY() - absR.top;
+				r.right		= ARROW_DIMENTIONS + r.left;
+				r.bottom	= ARROW_DIMENTIONS + r.top;
+
+				if (PtInRect(&r, p))
+				{
+					m_pActiveMapSpot = pSpot;
+					GetMessageTarget()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED, NULL);
+				}
+				else
+				{
+					GetMessageTarget()->SendMessage(this, MAPSPOT_FOCUS_LOST, NULL);
+				}
+			}
+		}
+	}
 
 	if(mouse_action == LBUTTON_DB_CLICK && m_bCursorOverButton)
 	{
@@ -492,4 +523,17 @@ void CUIMapBackground::MoveMap(const int deltaX, const int deltaY)
 	if(m_fMapY<0) m_fMapY = 0;
 	if(m_fMapY>m_fMapHeightMeters - m_fMapViewHeightMeters) 
 		m_fMapY = m_fMapHeightMeters - m_fMapViewHeightMeters;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMapBackground::RemoveAllSpots()
+{
+	for(u32 i=0; i<m_vMapSpots.size(); ++i)
+	{	
+		m_vMapSpots[i]->GetParent()->DetachChild(m_vMapSpots[i]);
+		xr_delete(m_vMapSpots[i]);
+	}
+
+	m_vMapSpots.clear();
 }

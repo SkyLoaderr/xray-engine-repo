@@ -251,13 +251,13 @@ void CUIPdaCommunication::InitPdaDialog()
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
 	//инициализировать окошко с информацие о собеседнике
-	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
+	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner, false);
 
 	CActor* pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
 	if(pActor)
 	{
 		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pContactInvOwner);
-		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(pActor)));
+		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(pActor)), false);
 	}
 
 	UpdateMessageLog();
@@ -266,7 +266,6 @@ void CUIPdaCommunication::InitPdaDialog()
 	std::string		buf;
 	string128		buf2;
 	buf = UIPdaDialogWnd.UICharacterInfo.UIName.GetText();
-	if (buf.size() > 6) buf.erase(0, 6);
 //	strcpy(buf, UIPdaDialogWnd.UICharacterInfo.UIName.GetText());
 	UIPdaDialogWnd.UICharIconHeader.UITitleText.SetText(buf.c_str());
 	strconcat(buf2, ALL_PDA_HEADER_PREFIX, PDA_CONTACTS_HEADER_SUFFIX, "/", buf.c_str());

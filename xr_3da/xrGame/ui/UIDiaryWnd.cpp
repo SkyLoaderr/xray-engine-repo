@@ -35,7 +35,11 @@ enum EDiaryIDs
 //	Default constructor
 //-----------------------------------------------------------------------------/
 CUIDiaryWnd::CUIDiaryWnd()
-	: m_pActiveSubdialog(NULL)
+	:	m_pActiveSubdialog	(NULL),
+		m_pTreeItemFont		(NULL),
+		m_pTreeRootFont		(NULL),
+		m_uTreeRootColor	(0xffffffff),
+		m_uTreeItemColor	(0xffffffff)
 {
 	Hide();
 }
@@ -62,6 +66,11 @@ void CUIDiaryWnd::Init()
 
 	UITreeViewBg.AttachChild(&UITreeViewHeader);
 	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, &UITreeViewHeader);
+
+	xml_init.InitFont(uiXml, "tree_item_font", 0, m_uTreeItemColor, m_pTreeItemFont);
+	R_ASSERT(m_pTreeItemFont);
+	xml_init.InitFont(uiXml, "tree_root_font", 0, m_uTreeRootColor, m_pTreeRootFont);
+	R_ASSERT(m_pTreeRootFont);
 
 	UITreeViewHeader.AttachChild(&UIAnimation);
 	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, &UIAnimation);
@@ -178,9 +187,13 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText("News & Events");
 	pTVItem->SetRoot(true);
+	pTVItem->SetFont(m_pTreeRootFont);
+	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItemSub->SetText("News");
 	pTVItemSub->SetValue(idNews);
 	pTVItem->AddItem(pTVItemSub);
@@ -189,42 +202,58 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText("Jobs");
 	pTVItem->SetRoot(true);
+	pTVItem->SetFont(m_pTreeRootFont);
+	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Current");
 	pTVItemSub->SetValue(idJobsCurrent);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Accomplished");
 	pTVItemSub->SetValue(idJobsAccomplished);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Failed");
 	pTVItemSub->SetValue(idJobsFailed);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	// Contracts section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText("Contracts");
 	pTVItem->SetRoot(true);
+	pTVItem->SetFont(m_pTreeRootFont);
+	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Current");
 	pTVItemSub->SetValue(idContractsCurrent);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Accomplished");
 	pTVItemSub->SetValue(idContractsAccomplished);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText("Failed");
 	pTVItemSub->SetValue(idContractsFailed);
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 }
 

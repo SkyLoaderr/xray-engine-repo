@@ -25,7 +25,11 @@ static const int	MIN_PICTURE_FRAME_HEIGHT	= 64;
 //////////////////////////////////////////////////////////////////////////
 
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
-	:	m_pCurrArticle		(NULL)
+	:	m_pCurrArticle		(NULL),
+		m_pTreeItemFont		(NULL),
+		m_pTreeRootFont		(NULL),
+		m_uTreeRootColor	(0xffffffff),
+		m_uTreeItemColor	(0xffffffff)
 {
 }
 
@@ -52,6 +56,11 @@ void CUIEncyclopediaWnd::Init()
 	// Load xml data
 	AttachChild(&UIEncyclopediaIdxBkg);
 	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, &UIEncyclopediaIdxBkg);
+
+	xml_init.InitFont(uiXml, "tree_item_font", 0, m_uTreeItemColor, m_pTreeItemFont);
+	R_ASSERT(m_pTreeItemFont);
+	xml_init.InitFont(uiXml, "tree_root_font", 0, m_uTreeRootColor, m_pTreeRootFont);
+	R_ASSERT(m_pTreeRootFont);
 
 	UIEncyclopediaIdxBkg.AttachChild(&UIEncyclopediaIdxHeader);
 	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, &UIEncyclopediaIdxHeader);
@@ -243,6 +252,8 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 	{
 		pTVItemChilds = xr_new<CUITreeViewItem>();
 		pTVItemChilds->SetText(*groupTree.front());
+		pTVItemChilds->SetFont(m_pTreeRootFont);
+		pTVItemChilds->SetTextColor(m_uTreeRootColor);
 		pTVItemChilds->SetRoot(true);
 		UIIdxList.AddItem<CUITreeViewItem>(pTVItemChilds);
 
@@ -261,6 +272,8 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 //	if (!pTVItemChilds->Find(*name))
 //	{
 	pTVItem		= xr_new<CUITreeViewItem>();
+	pTVItem->SetFont(m_pTreeItemFont);
+	pTVItem->SetTextColor(m_uTreeItemColor);
 	pTVItem->SetText(*name);
 	pTVItem->SetValue(m_ArticlesDB.size() - 1);
 	pTVItemChilds->AddItem(pTVItem);
@@ -281,6 +294,8 @@ CUITreeViewItem * CUIEncyclopediaWnd::AddTreeTail(GroupTree_it it, GroupTree &co
 		pNewItem = xr_new<CUITreeViewItem>();
 		pItemToIns->AddItem(pNewItem);
 		pNewItem->SetText(*(*it2));
+		pNewItem->SetFont(m_pTreeRootFont);
+		pNewItem->SetTextColor(m_uTreeRootColor);
 		pNewItem->SetRoot(true);
 		pItemToIns = pNewItem;
 	}

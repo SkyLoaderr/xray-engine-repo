@@ -94,18 +94,34 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 }
 
-void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
+void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes)
 {
 	VERIFY(pInvOwner);
 
+	static const ref_str withPrefixesPatterns[3] =
+	{
+		"name: %s",
+		"rank: %s",
+		"community: %s"
+	};
+
+	static const ref_str withoutPrefixesPatterns[3] =
+	{
+		"%s",
+		"%s",
+		"%s"
+	};
+
+	const ref_str * patterns = withPrefixes ? withPrefixesPatterns : withoutPrefixesPatterns;
+
 	string256 str;
-	sprintf(str, "name: %s", pInvOwner->CharacterInfo().Name());
+	sprintf(str, *patterns[0], pInvOwner->CharacterInfo().Name());
 	UIName.SetText(str);
 
-	sprintf(str, "rank: %s", pInvOwner->CharacterInfo().Rank());
+	sprintf(str, *patterns[1], pInvOwner->CharacterInfo().Rank());
 	UIRank.SetText(str);
 
-	sprintf(str, "community: %s", pInvOwner->CharacterInfo().Community());
+	sprintf(str, *patterns[2], pInvOwner->CharacterInfo().Community());
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());
@@ -116,7 +132,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 					pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }
 
-void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
+void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPrefix)
 {
 	LPCSTR relation_str = NULL;
 
@@ -136,7 +152,10 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 
 
 	string256 str;
-	sprintf(str, "relation: %s", relation_str);
+	if (withPrefix)
+		sprintf(str, "relation: %s", relation_str);
+	else
+		sprintf(str, "%s", relation_str);
 	UIRelation.SetText(str);
 }
 

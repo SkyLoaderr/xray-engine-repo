@@ -78,17 +78,17 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	};
 
 	// Первый таск у нас являет собой заголовок задания
-	CUIListItem			*pHeader1 = xr_new<CUIListItem>();
+//	CUIListItem			*pHeader1 = xr_new<CUIListItem>();
 	CUIIconedListItem	*pHeader2 = xr_new<CUIIconedListItem>();
-	CUIListItem			*pHeader3 = xr_new<CUIListItem>();
-	UIList.AddItem<CUIListItem>(pHeader1);
+//	CUIListItem			*pHeader3 = xr_new<CUIListItem>();
+//	UIList.AddItem<CUIListItem>(pHeader1);
 	UIList.AddItem<CUIIconedListItem>(pHeader2);
 	pHeader2->SetIcon(iconsTexturesArr[task->ObjectiveState(0)], uTaskIconSize);
 	pHeader2->SetFont(pHeaderFnt);
 	pHeader2->SetTextColor(clTaskHeaderColor);
 	pHeader2->SetText(*task->ObjectiveDesc(0));
 	pHeader2->SetTextX(15);
-	UIList.AddItem<CUIListItem>(pHeader3);
+//	UIList.AddItem<CUIListItem>(pHeader3);
 
 	// Теперь пробегаемся по остальным таскам и заносим их как задания
 

@@ -31,6 +31,8 @@ public:
 	Ivector2		iSize;
 	Irect			list_rect;
 public:
+	friend class CUIFrameWindow;
+
 					CUIFrameRect	();
 	void			Init			(LPCSTR base_name, int x, int y, int w, int h, DWORD align);
 	void			Render			();

@@ -46,7 +46,11 @@ public:
 	virtual void Draw();
 	
 	//текст заголовка
-	CUIStatic UITitleText;	
+	CUIStatic UITitleText;
+
+	bool		GetClipper()							{ return m_bClipper; }
+	void		SetClipper(bool value, RECT clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
+
 protected:
 
 	///////////////////////////////////////	
@@ -55,6 +59,8 @@ protected:
 	
 	//основной фрейм 
 	CUIFrameRect m_UIWndFrame;
+
+	void		FrameClip(const RECT parentAbsR);
 	
 	//заголовки поверх него
 
@@ -69,4 +75,11 @@ protected:
 
 	CUIStaticItem m_UIStaticOverLeftTop;
 	CUIStaticItem m_UIStaticOverLeftBottom;
+
+	// clipper
+	bool	m_bClipper;
+	RECT	m_ClipRect;
+
+private:
+	inline void ClampMax_Zero(Irect &r);
 };

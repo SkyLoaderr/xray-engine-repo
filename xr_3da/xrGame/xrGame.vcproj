@@ -7758,6 +7758,12 @@
 					Name="MapWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIGlobalMapLocation.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIGlobalMapLocation.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMapBackground.cpp">
 					</File>
 					<File

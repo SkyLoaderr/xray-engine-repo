@@ -201,12 +201,10 @@ void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 
 //////////////////////////////////////////////////////////////////////////
 
-const ref_str InventoryUtilities::GetGameDateTimeAsString(EDatePrecision datePrec, ETimePrecision timePrec,
-													  char dateSeparator, char timeSeparator, char dateTimeSeparatator)
+const ref_str InventoryUtilities::GetGameDateAsString(EDatePrecision datePrec, char dateSeparator)
 {
-	string32 bufTime, bufDate;
+	string32 bufDate;
 
-	ZeroMemory(bufTime, 32);
 	ZeroMemory(bufDate, 32);
 
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
@@ -220,16 +218,27 @@ const ref_str InventoryUtilities::GetGameDateTimeAsString(EDatePrecision datePre
 		sprintf(bufDate, "%04i", year);
 		break;
 	case edpDateToMonth:
-		sprintf(bufDate, "%04i%c%02i", year, dateSeparator, month);
+		sprintf(bufDate, "%02i%c%04i", month, dateSeparator, year);
 		break;
 	case edpDateToDay:
-		sprintf(bufDate, "%04i%c%02i%c%02i", year, dateSeparator, month, dateSeparator, day);
-		break;
-	case edpDateNone:
+		sprintf(bufDate, "%02i%c%02i%c%04i", day, dateSeparator, month, dateSeparator, year);
 		break;
 	default:
 		R_ASSERT(!"Unknown type of date precision");
 	}
+
+	return bufDate;
+}
+
+const ref_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator)
+{
+	string32 bufTime;
+
+	ZeroMemory(bufTime, 32);
+
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+
+	Level().GetGameDateTime(year, month, day, hours, mins, secs, milisecs);
 
 	// Time
 	switch (timePrec)
@@ -246,25 +255,9 @@ const ref_str InventoryUtilities::GetGameDateTimeAsString(EDatePrecision datePre
 	case etpTimeToMilisecs:
 		sprintf(bufTime, "%02i%c%02i%c%02i%c%02i", hours, timeSeparator, month, timeSeparator, day, timeSeparator, milisecs);
 		break;
-	case etpTimeNone:
-		break;
 	default:
 		R_ASSERT(!"Unknown type of date precision");
 	}
 
-	string32 buf;
-	if (xr_strlen(bufTime) && xr_strlen(bufDate))
-	{
-		sprintf(buf, "%s%c%s", bufDate, dateTimeSeparatator, bufTime);
-	}
-	else if (xr_strlen(bufTime))
-	{
-		strcpy(buf, bufTime);
-	}
-	else if (xr_strlen(bufDate))
-	{
-		strcpy(buf, bufDate);
-	}
-
-	return buf;
+	return bufTime;
 }

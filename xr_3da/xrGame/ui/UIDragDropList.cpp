@@ -129,6 +129,8 @@ void CUIDragDropList::DropAll()
 			GetCell(k, m) = CELL_EMPTY;
 		}
 	}
+
+	ScrollBarRecalculate(true);
 }
 
 

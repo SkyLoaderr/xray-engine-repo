@@ -12,9 +12,11 @@
 
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
+#include "UIFrameLineWnd.h"
 
 #include "UIMapSpot.h"
 #include "UIMapBackground.h"
+#include "UIGlobalMapLocation.h"
 
 #include "UICharacterInfo.h"
 
@@ -29,7 +31,9 @@ public:
 	virtual ~CUIMapWnd();
 
 	virtual void Init();
-	virtual void InitMap();
+	virtual void InitLocalMap();
+	virtual void InitGlobalMap();
+	virtual void InitMaps();
 	virtual void Show();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
@@ -40,41 +44,52 @@ public:
 	// Установить новую позицию на карте, по кторой она будет отцентрована
 	void SetActivePoint(const Fvector &vNewPoint);
 
+	// Переключить режим карты
+	enum EMapModes { emmGlobal, emmLocal };
+	void SwitchMapMode(const EMapModes mode);
+	void AddGlobalMapLocation(float x, float y, int width, int height);
+
 protected:
 
-	void DrawMap();
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);
 
-	void RemoveAllSpots();
 	void AddObjectSpot(CGameObject* pGameObject);
 
 	//элементы интерфейса
-	CUIFrameWindow	UIMainMapFrame;
+	CUIFrameWindow		UIMainMapFrame;
 
-//	CUIStatic UIStaticTop;
-//	CUIStatic UIStaticBottom;
-
-	//верхушка PDA для кнопочек переключения режима
-//	CUIStatic			UIPDAHeader;
+	//верхушка PDA
+	CUIFrameLineWnd		UIPDAHeader;
 	
-	CUICheckButton UICheckButton1;
-	CUICheckButton UICheckButton2;
-	CUICheckButton UICheckButton3;
-	CUICheckButton UICheckButton4;
+	CUICheckButton		UICheckButton1;
+	CUICheckButton		UICheckButton2;
+	CUICheckButton		UICheckButton3;
+	CUICheckButton		UICheckButton4;
 		
-	//окошко с информацией
-	CUIStatic UIStaticInfo;
+	//окошко с информацией для локальной карты
+	CUIStatic			UIStaticInfo;
 	//информация о пресонаже
-	CUICharacterInfo UICharacterInfo;
+	CUICharacterInfo	UICharacterInfo;
 
 	// Карта и скроллбары
-	CUIMapBackground	UIMapBackground;
+	CUIMapBackground	UILocalMapBackground;
+	CUIMapBackground	UIGlobalMapBackground;
+	// Информация о локации на глобальной карте
+	CUIStatic			UIMapName;
+	CUIListWnd			UIMapGoals;
+
+	// Current map
+	CUIMapBackground	*m_pCurrentMap;
 	CUIScrollBar		UIMapBgndV, UIMapBgndH;
 	//иконка актера
 	CUIMapSpot*			m_pActorSpot;
+	// Кнопка переключения глобальная/локальная карта
+	CUIButton			UIMapTypeSwitch;
+	// Текущий режим
+	EMapModes			m_eCurrentMode;
 
 	//подложка для карты
-	CUIStaticItem	landscape;
+	CUIStaticItem		landscape;
 
 	//ширина и высота карты в пикселях на экране
 	int m_iMapWidth;
@@ -85,4 +100,8 @@ protected:
 	float m_fWorldMapHeight;
 	float m_fWorldMapLeft;
 	float m_fWorldMapTop;
+
+	// Список локальных карт для глобальной
+	DEF_VECTOR(MapLocations, CUIGlobalMapLocation*);
+	MapLocations	m_MapLocations;
 };

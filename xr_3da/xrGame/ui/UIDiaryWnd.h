@@ -55,6 +55,12 @@ protected:
 	// Заголовок отображаемого в основном поле текущего раздела
 	CUIStatic			UIArticleCaption;
 
+	// Цвета и шрифты элементов тривью
+	CGameFont			*m_pTreeRootFont;
+	u32					m_uTreeRootColor;
+	CGameFont			*m_pTreeItemFont;
+	u32					m_uTreeItemColor;
+
 	// Инициализируем TreeView
 	void				InitTreeView();
 };

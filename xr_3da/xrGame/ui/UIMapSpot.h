@@ -9,9 +9,10 @@
 
 #include "../InfoPortion.h"
 
-#define MAP_ICON_WIDTH  64
-#define MAP_ICON_HEIGHT 64
+#define MAP_ICON_WIDTH  32
+#define MAP_ICON_HEIGHT 32
 
+extern const int			ARROW_DIMENTIONS;
 
 
 class CUIMapSpot: public CUIButton
@@ -24,8 +25,7 @@ public:
 
 	virtual void Draw();
 	virtual void Update();
-
-
+	
 	//указатель на объект, который показываетс€
 	//на карте,
 	//если такого нет то NULL
@@ -37,6 +37,10 @@ public:
 	CUIString m_sNameText;
 	//если есть текст с описанием 
 	CUIString m_sDescText;
+	// ¬кл/выкл стрелку-указатель
+	bool m_bArrowEnabled;
+	// ѕризнак видимости стрелочки
+	bool m_bArrowVisible;
 	
 	//центрирование иконки 
 	enum EMapSpotAlign {eBottom, eCenter, eNone};
@@ -45,4 +49,7 @@ public:
 	//направление иконки
 	bool	m_bHeading;
 	float	m_fHeading;
+
+	// Cтрелочка - указатель
+	CUIStaticItem m_Arrow;
 };

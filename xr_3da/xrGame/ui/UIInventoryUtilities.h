@@ -61,8 +61,7 @@ enum ETimePrecision
 	etpTimeToHours = 0,
 	etpTimeToMinutes,
 	etpTimeToSeconds,
-	etpTimeToMilisecs,
-	etpTimeNone
+	etpTimeToMilisecs
 };
 
 // Точность возвращаемого функцией GetGameDateTimeAsString значения: до года, до месяца, до дня
@@ -70,10 +69,9 @@ enum EDatePrecision
 {
 	edpDateToDay,
 	edpDateToMonth,
-	edpDateToYear,
-	edpDateNone
+	edpDateToYear
 };
 
-const ref_str GetGameDateTimeAsString(EDatePrecision datePrec, ETimePrecision timePrec,
-									  char dateSeparator = '/', char timeSeparator = ':', char dateTimeSeparatator = ' ');
+const ref_str GetGameDateAsString(EDatePrecision datePrec, char dateSeparator = '/');
+const ref_str GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator = ':');
 };

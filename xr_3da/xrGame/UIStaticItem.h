@@ -15,6 +15,7 @@ class CUIStaticItem: public CUICustomItem
 	int				iTileY;
 	int				iRemX;
 	int				iRemY;
+	bool			bReverseRemX, bReverseRemY;
 
 protected:
 	typedef CUICustomItem inherited;
@@ -49,6 +50,7 @@ public:
 	IC void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
 	IC u32			GetColor		() const					{return dwColor;}
 	IC ref_shader&	GetShader		()							{return hShader;}
+	IC void			SetReverseRem	(bool valueX, bool valueY)	{bReverseRemX = valueX; bReverseRemY = valueY;}
 };
 
 #endif //__XR_UISTATICITEM_H__

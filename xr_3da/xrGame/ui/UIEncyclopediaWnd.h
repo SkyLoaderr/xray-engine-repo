@@ -64,6 +64,11 @@ protected:
 	// Маска для изображения предмета текущей статьи
 	CUIFrameWindow		UIImgMask;
 
+	CGameFont			*m_pTreeRootFont;
+	u32					m_uTreeRootColor;
+	CGameFont			*m_pTreeItemFont;
+	u32					m_uTreeItemColor;
+
 	// Стуктура статьи
 	struct Article
 	{

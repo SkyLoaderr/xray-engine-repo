@@ -23,26 +23,26 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 
 void CUIMultiTextStatic::Draw()
 {
-	inherited::Draw();
-
 	RECT r = GetAbsoluteRect();
 
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
 		it->effect.Out(it->outX + r.left, it->outY + r.top, *it->str);
 	}
+
+	inherited::Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMultiTextStatic::Update()
 {
-	inherited::Update();
-
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
 		it->effect.Update();
 	}
+
+	inherited::Update();
 }
 
 //////////////////////////////////////////////////////////////////////////

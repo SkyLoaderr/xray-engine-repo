@@ -1416,7 +1416,7 @@ void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 void CUIInventoryWnd::UpdateTime()
 {
 	static ref_str prevStrTime;
-	const ref_str strTime = InventoryUtilities::GetGameDateTimeAsString(InventoryUtilities::edpDateNone, InventoryUtilities::etpTimeToMinutes);
+	const ref_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes);
 
 	if (strTime != prevStrTime)
 	{

@@ -9,13 +9,15 @@
 //////////////////////////////////////////////////////////////////////
 CUIStaticItem::CUIStaticItem()
 {    
-	dwColor		= 0xffffffff;
-	iTileX		= 1;
-	iTileY		= 1;
-	iRemX		= 0;
-	iRemY		= 0;
+	dwColor			= 0xffffffff;
+	iTileX			= 1;
+	iTileY			= 1;
+	iRemX			= 0;
+	iRemY			= 0;
+	bReverseRemX	= false;
+	bReverseRemY	= false;
 
-	hShader = NULL;
+	hShader			= NULL;
 
 	hGeom.create(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
@@ -78,7 +80,13 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 		for (y=0; y<iTileY; ++y){
 			pos.set					(iCeil(bp.x+iTileX*fw),iCeil(bp.y+y*fh));
 //			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
-			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iVisRect.y2);	
+			if (bReverseRemX)
+			{
+				pos.x -= iVisRect.x2 - iRemX;
+				inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iVisRect.y2);	
+			}
+			else
+				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iVisRect.y2);	
 			v_cnt	+=4;
 		}
 	}
@@ -86,14 +94,37 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 		for (x=0; x<iTileX; ++x){
 			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+iTileY*fh));
 //			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
-			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
+			if (bReverseRemY)
+			{
+				pos.y -= iVisRect.y2 - iRemY;
+				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY,iVisRect.x2,iVisRect.y2);	
+			}
+			else
+				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemX&&iRemY){
 		pos.set						(iCeil(bp.x+iTileX*fw),iCeil(bp.y+iTileY*fh));
 //		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
-		inherited::Render			(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
+		if (bReverseRemY && bReverseRemX)
+		{
+			pos.x -= iVisRect.x2 - iRemX;
+			pos.y -= iVisRect.y2 - iRemY;
+			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX, iVisRect.y2 - iRemY, iVisRect.x2, iVisRect.y2);	
+		}
+		else if (bReverseRemY)
+		{
+			pos.y -= iVisRect.y2 - iRemY;
+			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY, iRemX, iVisRect.y2);
+		}
+		else if (bReverseRemX)
+		{
+			pos.x -= iVisRect.x2 - iRemX;
+			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iRemY);	
+		}
+		else
+			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
 		v_cnt		+=4;
 	}
 
