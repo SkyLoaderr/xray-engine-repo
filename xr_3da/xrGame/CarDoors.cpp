@@ -508,3 +508,20 @@ void CCar::SDoor::SetDefaultNetState()
 {
 	ClosingToClosed();
 }
+
+CCar::SDoor::SDoorway::SDoorway()
+{
+	door=NULL;
+	form_in_object.identity();
+	extensions.x=0.f;
+	extensions.y=0.f;
+	
+}
+void CCar::SDoor::SDoorway::Init(SDoor* door)
+{
+	
+}
+void CCar::SDoor::SDoorway::Trace(const Fvector &point,const Fvector &dir)
+{
+
+}

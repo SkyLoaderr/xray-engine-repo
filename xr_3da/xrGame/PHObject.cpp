@@ -4,7 +4,7 @@
 #include "PHWorld.h"
 #include "level.h"
 
-DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
+
 
 	CPHObject::CPHObject()
 {

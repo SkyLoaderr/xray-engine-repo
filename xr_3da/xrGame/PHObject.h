@@ -4,8 +4,10 @@
 #include "../ispatial.h"
 #include "PHItemList.h"
 #include "PHIsland.h"
-class CPHObject;
 
+
+DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
+class CPHObject;
 class CPHUpdateObject;
 
 typedef void CollideCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2);
@@ -67,8 +69,7 @@ virtual		void		activate		()										;
 		IC	bool		is_active		()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void		deactivate		()										;
 virtual		void		Collide			()										;
-virtual		void		RMotionsColllide()										{;}
-
+virtual		void		RMotionsQuery	(qResultVec	&res)						{;}
 virtual		void		vis_update_activate(){}
 virtual		void		vis_update_deactivate(){}
 };

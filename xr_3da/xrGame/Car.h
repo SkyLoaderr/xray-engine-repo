@@ -156,6 +156,16 @@ public:
 		float			opened_angle;
 		float			closed_angle;
 		u32				open_time;
+		struct SDoorway
+		{
+			Fmatrix			form_in_object;
+			Fvector2		extensions;
+			SDoor			*door;
+				 SDoorway	();
+			void SPass		();
+			void Init		(SDoor	*door);
+			void Trace		(const Fvector &point,const Fvector &dir);
+		};
 		Fvector2		door_plane_ext;
 		_vector2<int>	door_plane_axes;
 		Fvector			door_dir_in_door;
