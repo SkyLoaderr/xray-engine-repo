@@ -29,13 +29,13 @@ void CLevel::IR_OnKeyboardPress(int key)
 		if (Game().type == GAME_SINGLE)
 			bDebug	= !bDebug;
 		return;
-#endif
-	case DIK_F12:
-		Render->Screenshot			();
-		return;
 	case DIK_BACK:
 		if (Game().type == GAME_SINGLE)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
+		return;
+#endif
+	case DIK_F12:
+		Render->Screenshot			();
 		return;
 	case DIK_F6: {
 		if (Game().type != GAME_SINGLE) return;
@@ -96,6 +96,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #endif
 
+#ifdef DEBUG
 	case DIK_DIVIDE:
 		Level().SetGameTimeFactor(1.f);	
 		break;
@@ -117,7 +118,6 @@ void CLevel::IR_OnKeyboardPress(int key)
 		}
 		break;
 
-#ifdef DEBUG
 	case DIK_F9:{
 //		ai().level_graph().set_start_point();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
