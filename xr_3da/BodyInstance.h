@@ -9,7 +9,7 @@
 #include "skeletonX.h"
 #include "fhierrarhyvisual.h"
 
-#define MAX_BLENDED			8
+#define MAX_BLENDED			16
 #define MAX_PARTS			4
 #define MAX_BLENDED_POOL	(MAX_BLENDED*MAX_PARTS)
 #define SAMPLE_FPS			30.f
