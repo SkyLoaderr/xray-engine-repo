@@ -781,35 +781,6 @@ void CUIStatic::Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsis
 	str.insert(cutPos, 3, '.');
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
-{
-	bool cursor_on_window;
-
-	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
-	{
-		cursor_on_window = true;
-	}
-	else
-	{
-		cursor_on_window = false;
-	}
-
-	
-	if(m_bCursorOverWindow != cursor_on_window)
-	{
-		if(cursor_on_window)
-            OnFocusReceive();			
-		else
-			OnFocusLost();			
-	}
-
-	m_bCursorOverWindow = cursor_on_window;
-
-	inherited::OnMouse(x, y, mouse_action);
-}
-
 void CUIStatic::OnFocusReceive(){
 	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
 }

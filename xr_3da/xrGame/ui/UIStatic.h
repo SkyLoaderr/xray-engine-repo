@@ -13,7 +13,6 @@
 #include "../uistaticitem.h"
 #include "../script_export_space.h"
 #include "../../gamefont.h"
-//#include "UILines.h"
 
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
@@ -38,9 +37,8 @@ public:
 	virtual void	DrawTexture				();
 	virtual void	DrawText				();
 	virtual void	Update					();
-	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
-	virtual void	OnFocusReceive();
-	virtual void	OnFocusLost();
+	virtual void	OnFocusReceive			();
+	virtual void	OnFocusLost				();
 
 
 	static void		SetText					(LPCSTR str, STRING &arr);
