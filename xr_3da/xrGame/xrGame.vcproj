@@ -1543,9 +1543,27 @@
 			</File>
 			<File
 				RelativePath=".\ai_a_star.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ai_a_star.h">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCustomBuildTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ai_a_star_nodes.h">
+			</File>
+			<File
+				RelativePath="ai_a_star_search.h">
 			</File>
 			<File
 				RelativePath="ai_misc.cpp">

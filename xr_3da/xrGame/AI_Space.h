@@ -8,6 +8,8 @@
 
 //#include "virtualvector.h"
 #include "..\xrLevel.h"
+#include "ai_a_star_search.h"
+//#include "ai_a_star_nodes.h"
 
 namespace AI {
 	class	NodeEstimator
@@ -37,6 +39,11 @@ namespace AI {
 	};
 };
 
+class CAIMapShortestPathNode;
+class CAIMapLCDPathNode;
+class CAIMapEnemyPathNode;
+class CAIGraphShortestPathNode;
+
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
 private:
@@ -54,7 +61,7 @@ private:
 		float	fPathDistance;
 	} SGraphEdge;
 
-#pragma pack(4)
+	#pragma pack(push,4)
 	typedef struct tagSGraphVertex {
 		Fvector				tPoint;
 		u32					dwNodeID:24;
@@ -62,7 +69,7 @@ private:
 		u32					dwNeighbourCount;
 		u32					dwEdgeOffset;
 	} SGraphVertex;
-#pragma pack()
+	#pragma pack(pop)
 
 	typedef struct tagSGraphHeader {
 		u32					dwVersion;
@@ -94,16 +101,22 @@ public:
 	//void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, u32 &BestNode, float &BestCost);
 	u32			q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
 
-	// yet another A* search
-	#define DEFAULT_LIGHT_WEIGHT		  5.f 
-	#define DEFAULT_COVER_WEIGHT		 10.f 
-	#define DEFAULT_DISTANCE_WEIGHT		 40.f
-	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
-	void			vfLoadSearch();
-	void			vfUnloadSearch();
+	SNode									*m_tpHeap;
+	SIndexNode								*m_tpIndexes;
+	CAStarSearch<CAIMapShortestPathNode>	*tpMapPath;
+	CAStarSearch<CAIMapLCDPathNode>			*tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode>		*tpEnemyPath;
+	CAStarSearch<CAIGraphShortestPathNode>	*tpGraphPath;
+//	// yet another A* search
+//	#define DEFAULT_LIGHT_WEIGHT		  5.f 
+//	#define DEFAULT_COVER_WEIGHT		 10.f 
+//	#define DEFAULT_DISTANCE_WEIGHT		 40.f
+//	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
+//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
+//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
+//	void			vfLoadSearch();
+//	void			vfUnloadSearch();
 	// 
 
 	// yet another best node search
@@ -192,15 +205,15 @@ public:
 	Fvector	tfGetNodeCenter(u32 dwNodeID);
 	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
 	
-	float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1);
-	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1);
-	float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1);
-	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
-	void  vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
-	float ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
-	bool  bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
-	u32 dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
-	void  vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2);
+	float	ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1);
+	float	ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1);
+	float	ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1);
+	float	ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
+	void	vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
+	float	ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
+	bool	bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
+	u32		dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
+	//void	vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2);
 
 	// Device dependance
 	virtual void	OnDeviceCreate	();
