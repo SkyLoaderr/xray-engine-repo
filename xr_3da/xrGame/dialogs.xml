@@ -307,8 +307,7 @@
 
 
 	<dialog id="job_medkit">
---		<precondition>trader_job.is_wounded</precondition>
-	        <precondition>trader_job.is_medkit_present</precondition>
+--	        <precondition>trader_job.is_medkit_present</precondition>
 		<phrase_list>
 			<phrase id="0">
 				<text>Я пришел спасти тебя, возьми эту аптечку.</text>
