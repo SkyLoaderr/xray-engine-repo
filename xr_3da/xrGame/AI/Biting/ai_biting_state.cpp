@@ -540,8 +540,8 @@ void CBitingPanic::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->SaveEnemy();
+	// Получить врага
+	m_tEnemy = pMonster->m_tEnemy;
 
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
