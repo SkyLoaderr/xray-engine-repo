@@ -24,7 +24,11 @@
 			wpn_toz34 \n
 			ammo_12x76_zhekan = 1 \n
 		</supplies>
-	</specific_character>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+</specific_character>
 
 	<specific_character id="bandit_novice_default2" team_default = "1">
 		<name>Неизвестный бандит</name>
@@ -48,6 +52,10 @@
 			wpn_bm16 = 1 \n
 			ammo_12x76_zhekan = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_novice_default3" team_default = "1">
@@ -72,6 +80,10 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 <!---------------------------BANDIT GENERAL---------------------->
@@ -97,6 +109,10 @@
 			wpn_bm16 \n
 			ammo_12x76_dart = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_general_default2" team_default = "1">
@@ -121,6 +137,10 @@
 			wpn_ak74 = 1, 0, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_general_default3" team_default = "1">
@@ -145,6 +165,10 @@
 			wpn_mp5 \n
 			ammo_9x19_pbp = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 <!---------------------------BANDIT VETERAN---------------------->
@@ -170,6 +194,10 @@
 			wpn_spas12 \n
 			ammo_12x76_dart = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_veteran_default2" team_default = "1">
@@ -194,6 +222,10 @@
 			wpn_val \n
 			ammo_9x39_pab9 = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_veteran_default3" team_default = "1">
@@ -218,6 +250,10 @@
 			wpn_lr300 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ss190 = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 <!---------------------------BANDIT MASTER----------------------->
@@ -243,6 +279,10 @@
 			wpn_ak74 = 1, 1, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_master_default2" team_default = "1">
@@ -267,6 +307,10 @@
 			wpn_l85 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bandit_master_default3" team_default = "1">
@@ -291,5 +335,9 @@
 			wpn_lr300 = 1, 1, 1, 0 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>	
 </xml>
