@@ -142,11 +142,11 @@ function stalker_novice_action:state_walk( param )
     self.object:set_mental_state    ( anim.free )
     if( device():time_global() > self.a.time + 3000 ) then
         --Первые 3 секунды идем просто, потом начинаем что-то искать
-        printf( "Search" )
+        --printf( "Search" )
         self.object:set_sight       ( look.search, nil, 0 )
     else
 		self.object:set_sight       ( look.path_dir, nil, 0 )
-        printf( "Path dir" )
+        --printf( "Path dir" )
     end
     self.object:set_item            ( object.idle, self.object:best_weapon() )
 end
@@ -154,7 +154,7 @@ end
 function stalker_novice_action:state_sit_down( param )
 	if( param )	then                        --Init state sit
     	printf( "Init state sit_down" )
-        printf( "Numbet wayPoint %d", patrol( self.a.rest):count() )
+        --printf( "Numbet wayPoint %d", patrol( self.a.rest):count() )
         self.a.index = math.random( 1, patrol( self.a.rest):count() - 1 )
         self.object:set_dest_level_vertex_id( patrol( self.a.rest ):level_vertex_id( self.a.index ) )
         self.object:set_path_type 			( game_object.level_path )
@@ -167,7 +167,7 @@ function stalker_novice_action:state_sit_down( param )
     if( self.a.curState == go_sit ) then
         if( self.object:level_vertex_id() == patrol( self.a.rest ):level_vertex_id( self.a.index ) ) then
 			--Дошли
-        	printf( "New State sit_down" )
+        	--printf( "New State sit_down" )
             self.a.curState = sit_down
             self.object:add_animation( "stalker_1_down", true )
 			self.object:add_animation( "stalker_1_2",    true )
@@ -188,7 +188,7 @@ function stalker_novice_action:state_sit_down( param )
         end
         --Сидим уже больше, чем отведенно время на отдых, тогда начинаем вставать
         if( device():time_global() > self.a.time + time_rest ) then
-            printf( "Device_time %d  need_time %d", device():time_global(), self.a.time + time_rest )
+            --printf( "Device_time %d  need_time %d", device():time_global(), self.a.time + time_rest )
             self.object:clear_animations()
             self.a.curState = stand_up
             self.object:add_animation( "stalker_1_up", true )
@@ -221,11 +221,11 @@ function add_novice(obj)
     if( char_ini:section_exist ("novice") == true ) then
         if( char_ini:line_exist("novice", "way") == true ) then
 			st.path = char_ini:r_string("novice", "way")
-            printf( "Read path: %s", st.path )
+            --printf( "Read path: %s", st.path )
         end
         if( char_ini:line_exist("novice", "rest") == true ) then
             st.rest = char_ini:r_string("novice", "rest")
-            printf( "Read path: %s", st.path )
+            --printf( "Read path: %s", st.path )
         end
 
     end
@@ -233,7 +233,7 @@ function add_novice(obj)
     xr_motivator.storage[obj:id()] = { novice = {} }
     xr_motivator.storage[obj:id()].novice = st
 
-    printf( "stalker_novice_action" )
+    --printf( "stalker_novice_action" )
     --    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
 
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_zombe
