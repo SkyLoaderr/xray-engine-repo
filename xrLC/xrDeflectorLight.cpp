@@ -311,6 +311,7 @@ VOID CDeflector::Light()
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
+	Msg("--- %3d/%3d",lm.dwWidth,lm.dwHeight);
 
 	// Filling it with new triangles
 	Fbox bb; bb.invalidate	();
@@ -341,7 +342,6 @@ VOID CDeflector::Light()
 			LightsSelected.push_back		(*L);
 		}
 	}
-	if (LightsSelected.empty()) return;
 
 	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
 	else						L_Direct	(hash);
@@ -355,7 +355,7 @@ VOID CDeflector::Light()
 		const DWORD rms		= 4;
 		DWORD _r, _g, _b, _count;
 
-		// Averarge color
+		// Average color
 		_count	= rms_average(lm,_r,_g,_b);
 
 		if (0==_count)	{
@@ -363,13 +363,12 @@ VOID CDeflector::Light()
 			return;
 		} else {
 			_r	/= _count;	_g	/= _count;	_b	/= _count;
-			Msg("* average: %d,%d,%d",_r,_g,_b);
 		}
 		
 		// Compress if needed
 		if (rms_test(lm,_r,_g,_b,rms))
 		{
-			Msg		("*** ZERO compress");
+//			Msg		("*** ZERO compress");
 			_FREE	(lm.pSurface);		// release OLD
 			DWORD	c_x			= BORDER*2;
 			DWORD	c_y			= BORDER*2;
@@ -424,4 +423,5 @@ VOID CDeflector::Light()
 	ApplyBorders	(lm,252);
 	ApplyBorders	(lm,251);
 	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+	Msg("*** %3d/%3d",lm.dwWidth,lm.dwHeight);
 }
