@@ -5,16 +5,10 @@
 #ifndef fsH
 #define fsH
 
-#include "lzhuf.h"
-
-XRCORE_API void* __stdcall FileDownload(LPCSTR fn, u32* pdwSize=NULL);
-XRCORE_API void		FileCompress	(const char *fn, const char* sign, void* data, u32 size);
-XRCORE_API void * 	FileDecompress	(const char *fn, const char* sign, u32* size=NULL);
-
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
 
-XRCORE_API void VerifyPath(LPCSTR path);
+XRCORE_API void VerifyPath	(LPCSTR path);
 //------------------------------------------------------------------------------------
 // Write
 //------------------------------------------------------------------------------------
