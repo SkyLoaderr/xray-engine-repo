@@ -31,6 +31,17 @@ return 0;
 }
 */
 
+struct R_Control
+{
+	string64				name;
+	xr_vector<u32>			data;
+};
+struct R_Layer
+{
+	R_Control				control;
+	xr_vector<R_Light>		lights;
+};
+
 void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 {
 	IReader&	fs	= const_cast<IReader&>(_in_FS);
@@ -80,7 +91,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			Vertex*	pV			= VertexPool.create();
 			F->r_fvector3		(pV->P);
 			pV->N.set			(0,0,0);
-			pV->C.set			(0,0,0,0);
 			scene_bb.modify		(pV->P);
 		}
 		Progress			(p_total+=p_cost);
@@ -172,16 +182,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	// Load lights
 	Status	("Loading lights...");
 	{
-		struct R_Control
-		{
-			string64				name;
-			xr_vector<u32>			data;
-		};
-		struct R_Layer
-		{
-			R_Control				control;
-			xr_vector<R_Light>		lights;
-		};
 		xr_vector<R_Layer>			L_layers;
 		xr_vector<BYTE>				L_control_data;
 
