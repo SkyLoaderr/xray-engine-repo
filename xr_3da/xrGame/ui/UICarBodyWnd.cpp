@@ -276,7 +276,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
-		bool bTakeAll = (*(int*)pData==111) ;
+		bool bTakeAll = pData && (*(int*)pData==111) ;
 		if (!bTakeAll && m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		
