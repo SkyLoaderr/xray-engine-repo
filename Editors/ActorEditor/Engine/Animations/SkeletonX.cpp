@@ -5,6 +5,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#pragma warning(disable:4995)
+#include <d3dx9.h>
+#pragma warning(default:4995)
+
 #include "SkeletonX.h"
 #include "SkeletonCustom.h"
 #include "fmesh.h"
@@ -214,7 +218,6 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	{
 		VERIFY				(Vertices1W);
 		vBase				= 0;
-		CHK_DX				(D3DXDeclaratorFromFVF(vertRenderFVF,dcl));
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
 		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
@@ -248,7 +251,6 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	{
 		VERIFY				(Vertices1W);
 		vBase				= 0;
-		CHK_DX				(D3DXDeclaratorFromFVF(vertRenderFVF,dcl));
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
 		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
