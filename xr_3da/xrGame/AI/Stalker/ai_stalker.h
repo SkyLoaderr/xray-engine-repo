@@ -411,4 +411,5 @@ public:
 	virtual float			EnemyHeuristics					(CEntity* E);
 	virtual void			SelectEnemy						(SEnemySelected& S);
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
+	virtual float			Radius							() const;
 };

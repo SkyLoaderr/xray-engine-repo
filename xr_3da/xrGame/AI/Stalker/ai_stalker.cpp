@@ -994,3 +994,11 @@ void CAI_Stalker::Update	( u32 DT )
 			
 	}
 }
+
+float CAI_Stalker::Radius()const
+{ 
+	float R		= inherited::Radius();
+	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (W) R	+= W->Radius();
+	return R;
+}

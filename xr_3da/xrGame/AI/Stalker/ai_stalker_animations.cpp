@@ -245,7 +245,6 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		tpTorsoAnimation = 0;
 		VERIFY(m_tBodyState == eBodyStateStand);
 		if (m_tMovementType == eMovementTypeStand)
-			//tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[9].A[0];
 			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
 			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7 + m_tMovementType].A[1];
