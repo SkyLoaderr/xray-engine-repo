@@ -31,13 +31,15 @@ void	CCar::IR_OnKeyboardPress(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	CircleSwitchTransmission();	break;
+	case kACCEL:	TransmisionUp();			break;
+	case kCROUCH:	TransmisionDown();			break;
 	case kFWD:		PressForward();				break;
 	case kBACK:		PressBack();				break;
 	case kR_STRAFE:	PressRight();	m_owner->steer_Vehicle(1);	break;
 	case kL_STRAFE:	PressLeft();	m_owner->steer_Vehicle(-1);	break;
 	case kJUMP:		PressBreaks();				break;
-	case kUSE:		break;
+	case kWPN_FIRE: SwitchEngine();				break;
+	case kUSE:									break;
 	};
 
 }

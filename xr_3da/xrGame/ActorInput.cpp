@@ -169,3 +169,4 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 		cam_Active()->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }
+//void CActor::IR_OnMousePress(int btn)

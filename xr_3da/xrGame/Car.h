@@ -48,7 +48,9 @@ public:
 
 	eStateSteer e_state_steer;
 	bool b_wheels_limited;
-	bool b_exhausts_plaing;
+	bool b_engine_on;
+	bool b_clutch;
+	bool b_starting;
 	struct SWheel 
 	{
 		int bone_id;
@@ -110,7 +112,7 @@ public:
 	{
 		int					bone_id;
 		Fmatrix				transform;
-		CParticlesObject*			p_pgobject;
+		CParticlesObject*	p_pgobject;
 		CPhysicsElement*	pelement;
 		CCar*				pcar;
 		void Init();
@@ -209,9 +211,12 @@ private:
 	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 	float					m_current_gear_ratio;
 
-	float					m_power;
+	/////////////////////////////////////////////////////////////
+	bool					b_auto_switch_transmission;
+	Fvector2				m_auto_switch_rpm;//lo,hi
+	/////////////////////////////////////////////////////////////
+
 	float					m_power_on_min_rpm;
-	//float					m_power_on_max_rpm;
 	float					m_max_power;//best rpm
 
 	/////////////////////porabola
@@ -224,7 +229,7 @@ private:
 	float					m_min_rpm;
 	float					m_best_rpm;//max power
 
-	float					m_idling_rpm;
+
 	float					m_steering_speed;
 	float					m_ref_radius;
 	float					m_break_torque;
@@ -238,8 +243,18 @@ private:
 	float GetSteerAngle();
 	void LimitWheels();
 	void Drive();
+	
+	void Starter();
+
+	void StartEngine();
+	void StopEngine();
+	void Clutch();
+	void Unclutch();
+	void SwitchEngine();
 	void NeutralDrive();
 	void UpdatePower();
+	void ReleasePedals();
+
 	////////////////////////////////////////////////////////////////////////
 	float RefWheelMaxSpeed()
 	{
@@ -253,6 +268,8 @@ private:
 	void SteerIdle();
 	void Transmision(size_t num);
 	void CircleSwitchTransmission();
+	void TransmisionUp();
+	void TransmisionDown();
 	void PressRight();
 	void PressLeft();
 	void PressForward();

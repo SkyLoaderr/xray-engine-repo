@@ -16,6 +16,7 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
+	
 	active_camera	= 0;
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
 	camera[ectFirst]->tag	= ectFirst;
@@ -32,7 +33,7 @@ CCar::CCar(void)
 	//////////////////////////////
 	/////////////////////////////
 	b_wheels_limited=false;
-	b_exhausts_plaing=false;
+	b_engine_on=false;
 	e_state_steer=idle;
 	e_state_drive=neutral;
 	m_current_gear_ratio=dInfinity;
@@ -309,17 +310,15 @@ void CCar::ParseDefinitions()
 	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
 
 	///////////////////////////car properties///////////////////////////////
-	m_power				=		ini->r_float("car_definition","engine_power");
-	m_power				*=		(0.8f*1000.f);
 
-	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_power");
-	m_power_on_min_rpm			*=		(0.8f*1000.f)/10.f;///10 -temp
-
-	//m_power_on_max_rpm  =		ini->r_float("car_definition","engine_power");
-	//m_power_on_max_rpm			*=		(0.8f*1000.f);
+	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_min_power");
+	m_power_on_min_rpm			*=		(0.8f*1000.f);
 
 	m_max_power  =				ini->r_float("car_definition","engine_power");
 	m_max_power			*=		(0.8f*1000.f);
+
+	//m_max_power			/=		m_driving_wheels.size();
+	//m_power_on_min_rpm	/=		m_driving_wheels.size();
 
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
 	m_max_rpm			*=		(1.f/60.f*2.f*M_PI);
@@ -328,12 +327,11 @@ void CCar::ParseDefinitions()
 	m_min_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
 	m_min_rpm			*=		(1.f/60.f*2.f*M_PI);
 
-	m_best_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
-	m_best_rpm			*=		(1.f/60.f*2.f*M_PI)*2.f;//
-
-	m_idling_rpm		=		ini->r_float("car_definition","idling_engine_rpm");
-	m_idling_rpm		*=		(1.f/60.f*2.f*M_PI);
-
+	m_best_rpm			=		ini->r_float("car_definition","optimal_engine_rpm");
+	m_best_rpm			*=		(1.f/60.f*2.f*M_PI);//
+	
+	b_auto_switch_transmission= !!ini->r_bool("car_definition","auto_transmission");
+	m_auto_switch_rpm.set(ini->r_fvector2("car_definition","auto_transmission_rpm"));
 	InitParabola		();
 
 	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
@@ -342,14 +340,16 @@ void CCar::ParseDefinitions()
 	m_hand_break_torque	=		ini->r_float("car_definition","break_torque");
 
 	/////////////////////////transmission////////////////////////////////////////////////////////////////////////
+	float main_gear_ratio=ini->r_float("car_definition","main_gear_ratio");
+	
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
-	m_gear_ratious.push_back(-ini->r_float("transmission_gear_ratio","R"));
+	m_gear_ratious.push_back(-ini->r_float("transmission_gear_ratio","R")*main_gear_ratio);
 	string32 rat_num;
 	for(int i=1;true;i++)
 	{
 		sprintf(rat_num,"N%d",i);
 		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
-		m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
+		m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num)*main_gear_ratio);
 	}
 	///////////////////////////////steer/////////////////////////////////////////////////////////////////
 
@@ -385,7 +385,10 @@ void CCar::Init()
 		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
 	ref_wheel.Init();
 	m_ref_radius=ref_wheel.radius;
-	m_power/=m_driving_wheels.size();
+
+	b_engine_on=false;
+	b_clutch   =false;
+	b_starting =false;
 	m_root_transform.set(bone_map.find(pKinematics->LL_BoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
@@ -438,6 +441,7 @@ void CCar::Init()
 		i->second.Init();
 }
 Break();
+Transmision(1);
 }
 
 void CCar::Revert()
@@ -451,7 +455,7 @@ void CCar::Revert()
 
 void CCar::NeutralDrive()
 {
-	StopExhausts();
+
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
@@ -471,7 +475,8 @@ void CCar::Unbreak()
 }
 void CCar::Drive()
 {
-	PlayExhausts();
+	
+	if(!(b_clutch&&b_engine_on)) return;
 	m_pPhysicsShell->Enable();
 	m_current_engine_power=EnginePower();
 	xr_vector<SWheelDrive>::iterator i,e;
@@ -483,6 +488,46 @@ void CCar::Drive()
 
 }
 
+void CCar::StartEngine()
+{
+PlayExhausts();
+b_engine_on=true;
+}
+void CCar::StopEngine()
+{
+
+StopExhausts();
+NeutralDrive();//set zero speed
+UpdatePower();//set engine friction;
+b_engine_on=false;
+}
+
+void CCar::ReleasePedals()
+{
+	Clutch();
+	NeutralDrive();//set zero speed
+	UpdatePower();//set engine friction;
+}
+
+void CCar::SwitchEngine()
+{
+if(b_engine_on) StopEngine();
+else			StartEngine();
+}
+void CCar::Clutch()
+{
+b_clutch=true;
+}
+
+void CCar::Unclutch()
+{
+b_clutch=false;
+}
+
+void CCar::Starter()
+{
+b_starting=true;
+}
 void CCar::UpdatePower()
 {
 	m_current_engine_power=EnginePower();
@@ -572,20 +617,32 @@ void CCar::PressLeft()
 }
 void CCar::PressForward()
 {
-	if(bkp) NeutralDrive();
+	if(bkp) 
+	{	
+		Unclutch();
+		NeutralDrive();
+	}
 	else 
 	{
-		Transmision(1);
+		Clutch();
+		if(m_current_transmission_num==0) Transmision(1);
+		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
 		Drive();
 	}
 	fwp=true;
 }
 void CCar::PressBack()
 {
-	if(fwp) NeutralDrive();
+	if(fwp) 
+	{
+		Unclutch();
+		NeutralDrive();
+	}
 	else 
 	{
+		Clutch();
 		Transmision(0);
+		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
 		Drive();
 	}
 	bkp=true;
@@ -616,11 +673,16 @@ void CCar::ReleaseForward()
 {
 	if(bkp)
 	{
+		Clutch();
 		Transmision(0);
+		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
 		Drive();
 	}
 	else
+	{
+		Unclutch();
 		NeutralDrive();
+	}
 
 	fwp=false;
 }
@@ -628,11 +690,14 @@ void CCar::ReleaseBack()
 {
 	if(fwp)
 	{
-		Transmision(1);
+		Clutch();
+		if(m_current_transmission_num==0) Transmision(1);
+		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
 		Drive();
 	}
 	else
 	{
+		Unclutch();
 		NeutralDrive();
 	}
 	bkp=false;
@@ -645,6 +710,7 @@ void CCar::ReleaseBreaks()
 
 void CCar::Transmision(size_t num)
 {
+
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
@@ -661,6 +727,24 @@ void CCar::CircleSwitchTransmission()
 	Drive();
 }
 
+void CCar::TransmisionUp()
+{
+	if(m_current_transmission_num==0)return;
+	m_current_transmission_num++;
+	size_t max_transmition_num=m_gear_ratious.size()-1;
+	m_current_transmission_num>max_transmition_num ? m_current_transmission_num=max_transmition_num :m_current_transmission_num;
+	Transmision(m_current_transmission_num);
+	Drive();
+}
+
+void CCar::TransmisionDown()
+{
+	if(m_current_transmission_num==0)return;
+	m_current_transmission_num--;
+	m_current_transmission_num<1 ? m_current_transmission_num=1 : m_current_transmission_num;
+	Transmision(m_current_transmission_num);
+	Drive();
+}
 void CCar::InitParabola()
 {
 	m_b=(m_power_on_min_rpm-m_max_power)/
@@ -691,29 +775,28 @@ void CCar::PhTune(dReal step)
 
 void CCar::PlayExhausts()
 {
-	if(b_exhausts_plaing) return;
+	if(b_engine_on) return;
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
 	for(;i!=e;i++)
 		i->Play();
-	b_exhausts_plaing=true;
+
 }
 
 void CCar::StopExhausts()
 {
-	if(!b_exhausts_plaing) return;
+	if(!b_engine_on) return;
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
 	for(;i!=e;i++)
 		i->Stop();
-	b_exhausts_plaing=false;
 }
 
 void CCar::UpdateExhausts()
 {
-	if(!b_exhausts_plaing) return;
+	if(!b_engine_on) return;
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
@@ -767,24 +850,34 @@ return false;
 
 float CCar::Parabola(float rpm)
 {
-	return m_a*rpm*rpm+m_b*rpm+m_c;
+	float value=m_a*rpm*rpm+m_b*rpm+m_c;
+	if(value<0.f) return 0.f;
+	return value;
 }
 
 float CCar::EnginePower()
 {
-	//float power;
-	//power=m_power/50.f+EngineDriveSpeed()/m_max_rpm*(m_power);
-	//return power;
-	float rpm=EngineDriveSpeed();
-	if(rpm>m_min_rpm)
-	{
-		///if(rpm<m_max_rpm)
-		return Parabola(rpm);
-		//else
-		//	return Parabola(m_max_rpm);
-	}
-	else	return m_power_on_min_rpm;
 
+	float ret;
+	float rpm=EngineDriveSpeed();
+
+	if(rpm<m_min_rpm)
+	{
+		if(b_starting) ret=m_power_on_min_rpm;
+		else		   ret=Parabola(rpm);
+	}
+	else
+	{
+		b_starting=false;
+		ret=Parabola(rpm);
+	}
+
+		if(b_auto_switch_transmission) 
+		{
+		if(rpm<m_auto_switch_rpm.x) TransmisionDown();
+		if(rpm>m_auto_switch_rpm.y) TransmisionUp();
+		}
+	return ret;
 }
 
 float CCar::EngineDriveSpeed()
