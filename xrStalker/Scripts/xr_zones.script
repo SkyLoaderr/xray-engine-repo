@@ -3,11 +3,9 @@
 Чугай Саша
 
 Сделать:
+	- free stalker
 	- если нету такого типа
-	- два одинаковых name
 	- fraction types->gulag
-	- createGulag
-	- capacity
 
 	- если сталкер под фракцией заходит в зону другой фракции
 
@@ -290,12 +288,10 @@ end
 -- добавить сталкера во фракцию
 function zone_fractions:add_stalker( obj )
 	if not self.fraction:stalkerExist( obj ) then
-		local i = 0
-		for k, v in self.fraction.Object do
-			i = i + 1
-		end
 		-- если во фракции есть свободные места, то добавить
-		if i < self.capacity then
+		local n = self.fraction:get_population()
+
+		if n < self.capacity and n < self.fraction:get_capacity() then
 			self.fraction:addObject( obj )
 			self.stalkers[obj:id()] = {
 				group    = obj:group(),
