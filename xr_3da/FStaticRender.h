@@ -15,13 +15,12 @@
 #include "portal.h"
 #include "modelpool.h"
 #include "fstaticrender_types.h"
+#include "detailmanager.h"
 
 // refs
 class ENGINE_API CStream;
 class ENGINE_API FCached;
-namespace RAPID { 
-class ENGINE_API Model;
-};
+namespace RAPID { class ENGINE_API Model; };
 
 // defs
 const int max_patches = 512;
@@ -64,6 +63,7 @@ public:
 	CLightsController				Lights;
 	CGlowManager					Glows;
 	CWallmarksEngine				Wallmarks;
+	CDetailManager					Details;
 	CModelPool						Models;
 
 	CFrustum						ViewBase;
