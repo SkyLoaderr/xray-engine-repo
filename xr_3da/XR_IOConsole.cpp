@@ -96,8 +96,8 @@ void CConsole::OnRender	()
 		ypos-=LDIST;
 		if (ypos<-1.f)	break;
 		LPCSTR			ls = *LogFile[i];
-		if	(0==ls)		ls = "";
-		switch (LogFile[i][0]) {
+		if	(0==ls)		continue;
+		switch (ls[0]) {
 		case '~':
 			pFont->SetColor(color_rgba(0  ,0  ,255, 255));
 			pFont->Out  (-1.f,ypos,"%s",&ls[2]);
