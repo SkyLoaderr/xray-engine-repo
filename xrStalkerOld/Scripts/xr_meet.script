@@ -130,19 +130,19 @@ function action_wait_for_buyer:initialize()
 
 	self.anim_s = {idle = 0,
 		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 3,
+		     maxidle = 3, 
+		     sumidle = 5,
    		     rnd = 80,
 		     lastanim = nil}
 
 	self.sound_s = { rnd = 100,
-				   maxidle = 5, 
-				   sumidle = 2,
+				   maxidle = 2, 
+				   sumidle = 5,
 				   themes = { "weather", "state", "hail" } }
 
 	self.sound_w = { rnd = 100,
-				   maxidle = 7, 
-				   sumidle = 5,
+				   maxidle = 5, 
+				   sumidle = 7,
 				   themes = { "weather", "state", "wait" } }
 	
 	xr_state.change_state(self.object, xr_state.stand)
@@ -219,8 +219,8 @@ function action_meet_wait:__init (npc_name,action_name, storage, char_ini) super
 	self.a = storage
 
 	self.sound_w = { rnd = 80,
-				   maxidle = 5, 
-				   sumidle = 2,
+				   maxidle = 2, 
+				   sumidle = 8,
 				   themes = { "weather", "state", "wait" } }
 end
 function action_meet_wait:initialize()
@@ -235,8 +235,7 @@ function action_meet_wait:initialize()
 	self.object:set_mental_state(anim.free)
 
    	xr_state.change_state(self.object,xr_state.stand)
-   	printf("strap weapon")
-   	self.object:set_item(object.strap, self.object:best_weapon())
+   	self.object:set_item(object.deactivate, self.object:best_weapon())
 	
    	self.a.Buyer = nil
 end
@@ -274,7 +273,7 @@ function action_weapon:__init (npc_name,action_name, storage) super (nil, action
 
 	self.sound_e = { rnd = 100,
 				   maxidle = 3, 
-				   sumidle = 2,
+				   sumidle = 5,
 				   themes = { "threat_weap" } }
 end
 function action_weapon:initialize()
@@ -294,7 +293,7 @@ end
 function action_weapon:execute ()
 	printf("unstrap weapon1")
    	self.object:set_item(object.idle, self.object:best_weapon())
-
+	
 	-- нужно остановиться и посмотреть в сторону актора
 	local pos = self.a.actor:position()
 
@@ -318,7 +317,7 @@ function action_threat:__init (npc_name,action_name, storage) super (nil, action
 
 	self.sound_e = { rnd = 100,
 				   maxidle = 3, 
-				   sumidle = 2,
+				   sumidle = 5,
 				   themes = { "threat_back" } }
 end
 function action_threat:initialize()
@@ -360,7 +359,7 @@ end
 function attack(npc, st)
 	sound_f = { rnd = 100,
 			   maxidle = 3, 
-			   sumidle = 2,
+			   sumidle = 5,
 			   themes = { "talk_abuse" } }					
 
 	-- если актер ближе какого-то радиуса - открывать огонь
