@@ -362,9 +362,9 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         PHelper().CreateCaption(props,"File Length",	ref_str().sprintf("%.2f Kb",float(size)/1024.f));
         PHelper().CreateCaption(props,"Total Time",	ref_str().sprintf("%.2f sec",float(time)/1000.f));
         ButtonValue* B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent		= OnControlClick;
+        B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControlClick);
         B=PHelper().CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent		= OnControl2Click;
+        B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControl2Click);
     }
     
 	m_ItemProps->AssignItems		(props);

@@ -38,21 +38,21 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 
 //------------------------------------------------------------------------------
 #include "ChooseTypes.H"     
+#include "fastdelegate.h"     
+//------------------------------------------------------------------------------
+typedef fastdelegate::FastDelegate2<PropValue*, ref_str&> 		TOnDrawTextEvent; 
+typedef fastdelegate::FastDelegate1<PropValue*> 				TOnChange;
+typedef fastdelegate::FastDelegate1<PropItem*> 					TOnClick;
+typedef fastdelegate::FastDelegate3<PropValue*, bool&, bool&> 	TOnBtnClick;
+typedef fastdelegate::FastDelegate0 							TOnCloseEvent;
+typedef fastdelegate::FastDelegate0 							TOnModifiedEvent;
+typedef fastdelegate::FastDelegate1<PropItem*> 					TOnPropItemFocused;
+typedef fastdelegate::FastDelegate3<PropValue*,TCanvas*, const TRect&>	TOnDrawCanvasEvent;
+typedef fastdelegate::FastDelegate3<PropValue*,PropValue*,bool&>TOnTestEqual;
+typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
 //------------------------------------------------------------------------------
 
-typedef void 	__stdcall (__closure *TOnDrawTextEvent)		(PropValue* sender, ref_str& draw_val);
-typedef void 	__stdcall (__closure *TOnChange)			(PropValue* sender);
-typedef void 	__stdcall (__closure *TOnClick)				(PropItem* sender);
-typedef void 	__stdcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified, bool& bSafe);
-typedef void 	__stdcall (__closure *TOnCloseEvent)		(void);
-typedef void 	__stdcall (__closure *TOnModifiedEvent)		(void);
-typedef void 	__stdcall (__closure *TOnPropItemFocused)	(PropItem* sender);
-typedef void 	__stdcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
-typedef void 	__stdcall (__closure *TOnTestEqual)			(PropValue* a, PropValue* b, bool& result);
-typedef void 	__stdcall (__closure *TOnChooseFillProp)	(ChooseItemVec& lst);
-//------------------------------------------------------------------------------
-
-class XR_EPROPS_API PropValue
+class PropValue
 {
 	friend class		CPropHelper;
     friend class		PropItem;
@@ -79,7 +79,7 @@ IC void set_value(T& val, const T& _val)
 };
 
 template <class T>
-class XR_EPROPS_API CustomValue: public PropValue
+class CustomValue: public PropValue
 {
 public:
 	typedef T			TYPE;
@@ -115,7 +115,7 @@ public:
     }
 };
 
-class XR_EPROPS_API PropItem
+class PropItem
 {
 	friend class		CPropHelper;
     friend class		TProperties;
@@ -210,7 +210,7 @@ public:
         	T1* CV		= dynamic_cast<T1*>(*it); VERIFY(CV);
         	if (CV->ApplyValue(val)){
             	bChanged = true;
-                if (CV->OnChangeEvent) CV->OnChangeEvent(*it);
+                if (!CV->OnChangeEvent.empty()) CV->OnChangeEvent(*it);
             }
             if (!CV->Equal(values.front()))
                 m_Flags.set	(flMixed,TRUE);
@@ -229,7 +229,8 @@ public:
 	IC void				OnChange		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
-        	if ((*it)->OnChangeEvent) 	(*it)->OnChangeEvent(*it);
+        	if (!(*it)->OnChangeEvent.empty()) 	
+            	(*it)->OnChangeEvent(*it);
     }
 /*    
     template <class T1, class T2>
@@ -246,7 +247,7 @@ public:
 //------------------------------------------------------------------------------
 // values
 //------------------------------------------------------------------------------
-class XR_EPROPS_API CaptionValue: public PropValue{
+class CaptionValue: public PropValue{
 	ref_str				value;
 public:
 						CaptionValue	(const ref_str& val){value=val;}
@@ -256,7 +257,7 @@ public:
     bool				ApplyValue		(const ref_str& val){value=val; return false;}
 };
 
-class XR_EPROPS_API CanvasValue: public PropValue{
+class CanvasValue: public PropValue{
 	ref_str				value;
 public:
     int					height;
@@ -268,12 +269,12 @@ public:
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {
-    	if (OnTestEqual){bool res=true; OnTestEqual(this,val,res); return res;}
+    	if (!OnTestEqual.empty()){bool res=true; OnTestEqual(this,val,res); return res;}
     	return false;
     }
 };
 
-class XR_EPROPS_API ButtonValue: public PropValue{
+class ButtonValue: public PropValue{
 public:
 	RStringVec			value;
     int					btn_num;
@@ -298,23 +299,23 @@ public:
         return 			_ListToSequence(value).c_str();
     }
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val)					{return true;}
-    bool				OnBtnClick		(bool& bSafe){if(OnBtnClickEvent)	{bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
+    virtual	bool		Equal			(PropValue* val)							{return true;}
+    bool				OnBtnClick		(bool& bSafe){if(!OnBtnClickEvent.empty())	{bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API RTextValue: public CustomValue<ref_str>{
+class RTextValue: public CustomValue<ref_str>{
 public:
 						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         ref_str txt		= GetValue();
-        if (OnDrawText)	OnDrawText(this, txt);
+        if (!OnDrawText.empty())OnDrawText(this, txt);
         return txt.c_str();
     }
 };
 
-class XR_EPROPS_API ChooseValue: public RTextValue{
+class ChooseValue: public RTextValue{
 public:
 	u32					choose_id;
     ref_str				start_path;
@@ -323,11 +324,11 @@ public:
 						ChooseValue			(ref_str* val, u32 cid, LPCSTR path):RTextValue(val),choose_id(cid),start_path(path),OnChooseFillEvent(0){}
 };
 
-typedef XR_EPROPS_API CustomValue<BOOL>		BOOLValue;
+typedef CustomValue<BOOL>		BOOLValue;
 //------------------------------------------------------------------------------
 
 IC bool operator == (const WaveForm& A, const WaveForm& B){return A.Similar(B);}
-class XR_EPROPS_API WaveValue: public CustomValue<WaveForm>{
+class WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
     virtual ref_str		GetText			(TOnDrawTextEvent){return "[Wave]";}
@@ -340,7 +341,7 @@ typedef CustomValue<Fcolor>		ColorValue;
 //------------------------------------------------------------------------------
 
 template <class T>
-class XR_EPROPS_API NumericValue: public CustomValue<T>
+class NumericValue: public CustomValue<T>
 {
 public:
     T					lim_mn;
@@ -369,7 +370,7 @@ public:
 	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
 	{
         ref_str 		draw_val;
-        if (OnDrawText)	OnDrawText(this, draw_val);
+        if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			rstring_sprintf	(draw_val,*value,dec);
         return draw_val.c_str();
     }
@@ -402,14 +403,14 @@ IC ref_str rstring_sprintf(ref_str& s, const Fvector& V, int dec)
     return s;
 }
 //------------------------------------------------------------------------------
-typedef NumericValue<u8>	XR_EPROPS_API U8Value;
-typedef NumericValue<u16>	XR_EPROPS_API U16Value;
-typedef NumericValue<u32>	XR_EPROPS_API U32Value;
-typedef NumericValue<s8>	XR_EPROPS_API S8Value;
-typedef NumericValue<s16>	XR_EPROPS_API S16Value;
-typedef NumericValue<s32>	XR_EPROPS_API S32Value;
-typedef NumericValue<float>	XR_EPROPS_API FloatValue;
-class XR_EPROPS_API VectorValue: public NumericValue<Fvector>{
+typedef NumericValue<u8>	U8Value;
+typedef NumericValue<u16>	U16Value;
+typedef NumericValue<u32>	U32Value;
+typedef NumericValue<s8>	S8Value;
+typedef NumericValue<s16>	S16Value;
+typedef NumericValue<s32>	S32Value;
+typedef NumericValue<float>	FloatValue;
+class VectorValue: public NumericValue<Fvector>{
 public:
 						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val)
     {
@@ -421,7 +422,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API FlagValueCustom
+class FlagValueCustom
 {
 public:
     ref_str				caption[2];
@@ -441,7 +442,7 @@ public:
 };
 
 template <class T>
-class XR_EPROPS_API FlagValue: public CustomValue<T>, public FlagValueCustom
+class FlagValue: public CustomValue<T>, public FlagValueCustom
 {
 public:
 	typedef T			TYPE;
@@ -452,7 +453,7 @@ public:
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {	
         ref_str 		draw_val;
-        if (OnDrawText)	OnDrawText(this, draw_val);
+        if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
         return			draw_val.c_str();
     }
@@ -478,20 +479,20 @@ template <class T>
 bool operator == (_flags<T> const & A, _flags<T>  const & B){return A.flags==B.flags;}
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API TokenValueCustom{
+class TokenValueCustom{
 public:                                          
 	xr_token* 			token;
     					TokenValueCustom(xr_token* _token):token(_token){;}
 };
 template <class T>
-class XR_EPROPS_API TokenValue: public CustomValue<T>, public TokenValueCustom
+class TokenValue: public CustomValue<T>, public TokenValueCustom
 {
 public:
 						TokenValue		(T* val, xr_token* _token):TokenValueCustom(_token),CustomValue<T>(val){};
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         ref_str 		draw_val;
-        if (OnDrawText)	OnDrawText(this, draw_val);
+        if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			for(int i=0; token[i].name; i++) if (token[i].id==GetValue()) return token[i].name;
         return draw_val.c_str();
     }
@@ -502,20 +503,20 @@ typedef TokenValue<u16>	Token16Value;
 typedef TokenValue<u32>	Token32Value;
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API RTokenValueCustom{
+class RTokenValueCustom{
 public:
 	RTokenVec*			token;
     					RTokenValueCustom(RTokenVec* _token):token(_token){;}
 };
 template <class T>
-class XR_EPROPS_API RTokenValue: public CustomValue<T>, public RTokenValueCustom
+class RTokenValue: public CustomValue<T>, public RTokenValueCustom
 {
 public:
 						RTokenValue		(T* val, RTokenVec* _token):CustomValue<T>(val),RTokenValueCustom(_token){};
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         ref_str draw_val;
-        if (OnDrawText)	OnDrawText(this, draw_val);
+        if (!OnDrawText.empty())	OnDrawText(this, draw_val);
         else			for(RTokenVecIt it=token->begin(); it!=token->end(); it++) if (it->id==GetValue()) return *it->name;
         return draw_val.c_str();
     }
@@ -526,7 +527,7 @@ typedef RTokenValue<u16>RToken16Value;
 typedef RTokenValue<u32>RToken32Value;
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API TokenValueSH: public CustomValue<u32>{
+class TokenValueSH: public CustomValue<u32>{
 public:
 	struct Item {
 		u32				ID;
@@ -546,7 +547,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API ListValue: public RTextValue{
+class ListValue: public RTextValue{
 public:                                   
 	RStringVec*			items;
 public:                                   

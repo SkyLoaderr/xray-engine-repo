@@ -224,11 +224,11 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
     PHelper().CreateNameCB		(items,PHelper().PrepareKey(pref, "Name"),&FName,NULL,NULL,&OnObjectNameAfterEdit);
     PropValue* V;
     V = PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
-    V->OnChangeEvent	= OnNumChangePosition;
+    V->OnChangeEvent.bind		(this,&CCustomObject::OnNumChangePosition);
     V = PHelper().CreateAngle3	(items, PHelper().PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
-    V->OnChangeEvent	= OnNumChangeRotation;
+    V->OnChangeEvent.bind		(this,&CCustomObject::OnNumChangeRotation);
     V = PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
-    V->OnChangeEvent	= OnNumChangeScale;
+    V->OnChangeEvent.bind		(this,&CCustomObject::OnNumChangeScale);
 }
 //----------------------------------------------------
 

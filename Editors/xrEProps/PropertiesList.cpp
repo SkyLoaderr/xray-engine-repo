@@ -217,7 +217,7 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 {
 	HideExtBtn			();
 	ApplyEditControl	();
-    if (Visible&&OnCloseEvent) 	OnCloseEvent();
+    if (Visible&&!OnCloseEvent.empty()) 	OnCloseEvent();
 	ClearParams			();
 }
 //---------------------------------------------------------------------------
@@ -532,7 +532,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Right-= 1;
                 R.Left += 1;
                 CanvasValue* val = dynamic_cast<CanvasValue*>(prop->GetFrontValue()); R_ASSERT(val);
-                if (val->OnDrawCanvasEvent)
+                if (!val->OnDrawCanvasEvent.empty())
 	                val->OnDrawCanvasEvent(val,Surface,R);
                 DrawText	(Surface->Handle, prop->GetText(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }break;
@@ -811,7 +811,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     break;
                 };
             }
-	        if (prop&&prop->OnClickEvent) prop->OnClickEvent(prop);
+	        if (prop&&!prop->OnClickEvent.empty()) prop->OnClickEvent(prop);
         }else if (Button==mbRight){
             TPoint P; P.x = X; P.y = Y;
             P=tvProperties->ClientToScreen(P);
@@ -1339,7 +1339,7 @@ void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
         PropItem* prop 		= (PropItem*)tvProperties->Selected->Tag;
         if (prop&&prop->m_Flags.is(PropItem::flShowExtBtn))
             pbExtBtn->Tag	= (int)prop;
-        if (prop&&prop->OnItemFocused)prop->OnItemFocused(prop);
+        if (prop&&!prop->OnItemFocused.empty())prop->OnItemFocused(prop);
     }
 	m_FirstClickItem 	= 0;
 }

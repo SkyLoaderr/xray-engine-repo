@@ -152,7 +152,7 @@ void STextureParams::OnTypeChange(PropValue* prop)
 void STextureParams::FillProp(PropItemVec& items)
 {                             
     PropValue* P	= PHelper().CreateToken32	(items, "Type",				(u32*)&type,		ttype_token);
-    P->OnChangeEvent= OnTypeChange;
+    P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
     PHelper().CreateCaption			(items, "Source\\Width",			ref_str().sprintf("%d",width));
     PHelper().CreateCaption			(items, "Source\\Height",			ref_str().sprintf("%d",height));
     PHelper().CreateCaption			(items, "Source\\Alpha",			HasAlphaChannel()?"on":"off"); 
@@ -165,7 +165,7 @@ void STextureParams::FillProp(PropItemVec& items)
     	PHelper().CreateToken32		(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
 
     	P = PHelper().CreateToken32	(items, "Bump\\Mode",				(u32*)&bump_mode,	tbmode_token);
-        P->OnChangeEvent			= OnTypeChange;
+        P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
         if (tbmUse==bump_mode)
         	PHelper().CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture);
         if (tbmAutogen==bump_mode)

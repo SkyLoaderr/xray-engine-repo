@@ -195,7 +195,7 @@ void CEditorPreferences::OnCreate()
 
     ApplyValues			();
 
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,OnClose,TProperties::plItemFolders|TProperties::plFullExpand|TProperties::plFullSort);
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullExpand|TProperties::plFullSort);
 }
 //---------------------------------------------------------------------------
 

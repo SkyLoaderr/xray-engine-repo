@@ -125,7 +125,7 @@ private:	// User declarations
     TOnItemFocused      OnItemFocused;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnCloseEvent		OnCloseEvent;
-    void 				Modified				(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
+    void 				Modified				(){bModified=true; if (OnModifiedEvent.empty()) OnModifiedEvent();}
     void 				ClearParams				(TElTreeItem* node=0);
     void 				ApplyEditControl		();
     void 				CancelEditControl		();

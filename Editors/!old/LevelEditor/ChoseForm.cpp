@@ -66,7 +66,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     form->tvItems->Selected 		= 0;
 
     // fill items
-    if (item_fill){
+    if (item_fill.empty()){
     	// custom
         item_fill					(form->m_Items);
 	    form->Caption				= "Select Item";

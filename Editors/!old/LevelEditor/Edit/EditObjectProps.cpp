@@ -19,12 +19,12 @@ void CEditableObject::OnChangeShader(PropValue* prop)
 void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec& items)
 {
     PropValue* V;
-    V=PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,"Texture"), 	&SURF->m_Texture, 	smTexture);		V->OnChangeEvent=OnChangeShader;
-    V=PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName,smEShader);		V->OnChangeEvent=OnChangeShader;
-    V=PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName,smCShader);
+    V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,"Texture"), 	&SURF->m_Texture, 	smTexture);		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeShader);
+    V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,"Shader"), 	&SURF->m_ShaderName,smEShader);		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeShader);
+    V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName,smCShader);
     PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName, smGameMaterial);
-    V=PHelper().CreateFlag32		(items, PHelper().PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
-	PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Face Count"),	ref_str().sprintf("%d",GetSurfFaceCount(SURF->_Name())));   
+    V=PHelper().CreateFlag32	(items, PHelper().PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent.bind(this,&CEditableObject::OnChangeShader);
+	PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Face Count"),ref_str().sprintf("%d",GetSurfFaceCount(SURF->_Name())));   
 }
 //---------------------------------------------------------------------------
 
@@ -38,11 +38,11 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))).c_str());
     PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
     PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
-    V=PHelper().CreateFlag32		(items,PHelper().PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD); V->OnChangeEvent=OnChangeShader;
+    V=PHelper().CreateFlag32		(items,PHelper().PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);	V->OnChangeEvent.bind(this,&CEditableObject::OnChangeShader);
     PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
-    V=PHelper().CreateVector		(items, PHelper().PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent=OnChangeTransform;
-    V=PHelper().CreateAngle3		(items, PHelper().PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	V->OnChangeEvent=OnChangeTransform;
-    V=PHelper().CreateVector		(items, PHelper().PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent=OnChangeTransform;
+    V=PHelper().CreateVector		(items, PHelper().PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
+    V=PHelper().CreateAngle3		(items, PHelper().PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
+    V=PHelper().CreateVector		(items, PHelper().PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);			V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
     V=PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Transform\\BBox Min"),	ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().min)));
     V=PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Transform\\BBox Max"),	ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().max)));
 

@@ -128,21 +128,21 @@ FloatValue* 	CPropHelper::CreateAngle 	(PropItemVec& items, ref_str key, float* 
 {   FloatValue* V				= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_NUMERIC);
     V->OnAfterEditEvent			= floatRDOnAfterEdit;
     V->OnBeforeEditEvent		= floatRDOnBeforeEdit; 
-    V->Owner()->OnDrawTextEvent = floatRDOnDraw;
+    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::floatRDOnDraw);
     return V;						
 }
 VectorValue* 	CPropHelper::CreateAngle3	(PropItemVec& items, ref_str key, Fvector* val, float mn, float mx, float inc, int decim)
 {   VectorValue* V				= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
     V->OnAfterEditEvent			= FvectorRDOnAfterEdit;
     V->OnBeforeEditEvent		= FvectorRDOnBeforeEdit;
-    V->Owner()->OnDrawTextEvent	= FvectorRDOnDraw;
+    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::FvectorRDOnDraw);
     return V;					
 }
 RTextValue* 	CPropHelper::CreateName		(PropItemVec& items, ref_str key, ref_str* val, ListItem* owner)  
 {   RTextValue* V				= (RTextValue*) CreateRText	(items,key,val);
     V->OnAfterEditEvent   		= NameAfterEdit;
     V->OnBeforeEditEvent  		= NameBeforeEdit;
-    V->Owner()->OnDrawTextEvent = NameDraw;
+    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::NameDraw);
     V->tag						= (u32)owner; VERIFY(owner);
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     return V;					

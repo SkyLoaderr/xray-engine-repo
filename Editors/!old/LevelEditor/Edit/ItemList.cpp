@@ -485,7 +485,7 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
         bool bRes						= FHelper.RenameItem(tvItems,IE->Item,new_text,RenameItem); 
         if (bRes){
 	        if (tvItems->OnAfterSelectionChange)tvItems->OnAfterSelectionChange(0);
-            if (OnModifiedEvent)		OnModifiedEvent();
+            if (OnModifiedEvent.empty())OnModifiedEvent();
             // ensure visible
             IE->Item->Text				= new_text;
 			tvItems->EnsureVisible		(IE->Item); 
@@ -540,7 +540,7 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 	if (m_Flags.is(ilEditMenu)){
 		if (Key==VK_DELETE) 
 			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemoveEvent))
-            	if (OnModifiedEvent) OnModifiedEvent();
+            	if (OnModifiedEvent.empty()) OnModifiedEvent();
     }
 }
 //---------------------------------------------------------------------------
@@ -615,7 +615,7 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
             }
         if (bSelChanged||bRes){
             tvItemsAfterSelectionChange	(0);
-            if (bRes&&OnModifiedEvent)	OnModifiedEvent(); 
+            if (bRes&&OnModifiedEvent.empty())	OnModifiedEvent(); 
         }
     	tvItems->IsUpdating 		= false;
     }
