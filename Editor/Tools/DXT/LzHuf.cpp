@@ -64,9 +64,9 @@ public:
 	IC void		_putb(int c) {
 		if (out_iterator==out_end) {
 			int			out_size	= out_end-out_start;
-			out_start	= (BYTE*) realloc(out_start,out_size+512);
+			out_start	= (BYTE*) realloc(out_start,out_size+1024);
 			out_iterator= out_start+out_size;
-			out_end		= out_iterator+512;
+			out_end		= out_iterator+1024;
 		}
 		*out_iterator++ = BYTE(c);
 	}

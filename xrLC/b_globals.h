@@ -1,5 +1,7 @@
 #pragma once
 
+const	int						lmap_size	= 512;
+
 #include "xrFace.h"
 #include "cl_rapid.h"
 #include "xrDeflector.h"

@@ -40,14 +40,14 @@ IC bool cmp_rect(int r1, int r2)
 	return selected[r1].iArea > selected[r2].iArea;	// Need decreasing order
 }
 
-static	BYTE	surface[512*512];
+static	BYTE	surface[lmap_size*lmap_size];
 static	int		current_rect	= 0;
 const	DWORD	alpha_ref		= 254-BORDER;
 
 // Initialization
 void InitSurface()
 {
-	FillMemory(surface,512*512,0);
+	FillMemory(surface,lmap_size*lmap_size,0);
 }
 
 // Rendering of rect
@@ -63,7 +63,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 		// Normal (and fastest way)
 		for (DWORD y=0; y<s_y; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			DWORD*	S = lm + y*s_x;
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
@@ -76,7 +76,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 		// Rotated :(
 		for (DWORD y=0; y<s_x; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
@@ -98,7 +98,7 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 		// Normal (and fastest way)
 		for (DWORD y=0; y<s_y; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			DWORD*	S = lm + y*s_x;
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
@@ -111,7 +111,7 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 		// Rotated :(
 		for (DWORD y=0; y<s_x; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
@@ -131,13 +131,13 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 	// Normal
 	{
 		_rect R;
-		DWORD x_max = 512-r.b.x; 
-		DWORD y_max = 512-r.b.y; 
+		DWORD x_max = lmap_size-r.b.x; 
+		DWORD y_max = lmap_size-r.b.y; 
 		for (DWORD _Y=0; _Y<y_max; _Y++)
 		{
 			for (DWORD _X=0; _X<x_max; _X++)
 			{
-				if (surface[_Y*512+_X]) continue;
+				if (surface[_Y*lmap_size+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
 				if (Place_Perpixel(R,D,FALSE)) {
 					_rect_register(R,D,FALSE);
@@ -150,13 +150,13 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 	// Rotated
 	{
 		_rect R;
-		DWORD x_max = 512-r.b.y; 
-		DWORD y_max = 512-r.b.x; 
+		DWORD x_max = lmap_size-r.b.y; 
+		DWORD y_max = lmap_size-r.b.x; 
 		for (DWORD _Y=0; _Y<y_max; _Y++)
 		{
 			for (DWORD _X=0; _X<x_max; _X++)
 			{
-				if (surface[_Y*512+_X]) continue;
+				if (surface[_Y*lmap_size+_X]) continue;
 
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
 				if (Place_Perpixel(R,D,TRUE)) {
@@ -202,7 +202,7 @@ void CBuild::MergeLM()
 			std::sort	(Layer.begin()+1,Layer.end(),cmp_defl);
 
 			// Select first deflectors which can fit
-			int maxarea = 512*512*6;	// Max up to 6 lm selected
+			int maxarea = lmap_size*lmap_size*6;	// Max up to 6 lm selected
 			int curarea = 0;
 			for (it=1; it<(int)Layer.size(); it++)
 			{
@@ -259,8 +259,8 @@ void CBuild::MergeLM()
 				Msg("%3d / %3d - [%d,%d]",best.size(),selected.size(),brect.SizeX(),brect.SizeY());
 				CDeflector*	pDEFL = new CDeflector;
 				pDEFL->lm.bHasAlpha = FALSE;
-				pDEFL->lm.dwWidth   = 512;
-				pDEFL->lm.dwHeight  = 512;
+				pDEFL->lm.dwWidth   = lmap_size;
+				pDEFL->lm.dwHeight  = lmap_size;
 				for (K = 0; K<(int)best.size(); K++) 
 				{
 					int			iRealIndex	= best_seq	[K];

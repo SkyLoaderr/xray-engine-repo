@@ -31,17 +31,17 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 {
 	// Allocate 512x512 texture if needed
 	if (0==lm.pSurface)	{
-		DWORD	size	= 512*512*sizeof(u32);
+		DWORD	size	= lmap_size*lmap_size*sizeof(u32);
 		lm.pSurface		= LPDWORD(malloc(size));
-		lm.dwWidth		= 512;
-		lm.dwHeight		= 512;
+		lm.dwWidth		= lmap_size;
+		lm.dwHeight		= lmap_size;
 		lm.bHasAlpha	= FALSE;
 		ZeroMemory		(lm.pSurface,size);
 	}
 	
 	// Addressing
 	vector<UVtri>		tris;
-	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,512,512,bRotated);
+	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,lmap_size,lmap_size,bRotated);
 	
 	// Capture faces and setup their coords
 	for (UVIt T=tris.begin(); T!=tris.end(); T++)
@@ -59,11 +59,11 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	{
 		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
-		blit	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
+		blit	(lm.pSurface,lmap_size,lmap_size,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
 		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
-		blit_r	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
+		blit_r	(lm.pSurface,lmap_size,lmap_size,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }
 
@@ -122,11 +122,11 @@ void CLightmap::Save()
 	static int		lmapNameID = 0; ++lmapNameID;
 
 	// Borders correction
-	for (DWORD _y=0; _y<512; _y++)
+	for (DWORD _y=0; _y<lmap_size; _y++)
 	{
-		for (DWORD _x=0; _x<512; _x++)
+		for (DWORD _x=0; _x<lmap_size; _x++)
 		{
-			DWORD pixel = lm.pSurface[_y*512+_x];
+			DWORD pixel = lm.pSurface[_y*lmap_size+_x];
 			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&RGBA_MAKE(255,255,255,0))|RGBA_MAKE(0,0,0,255);
 			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
 		}

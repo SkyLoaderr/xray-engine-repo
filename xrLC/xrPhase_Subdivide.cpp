@@ -42,8 +42,8 @@ void CBuild::xrPhase_Subdivide()
 		if		(int(g_XSplit[X].size()) > g_params.m_SS_High)	bSplit	= TRUE;
 		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X].front()->pDeflector;
 		if		(!bSplit && defl_base)	{
-			if (defl_base->dwWidth  >=	(512-2*BORDER))		bSplit	= TRUE;
-			if (defl_base->dwHeight >=	(512-2*BORDER))		bSplit	= TRUE;
+			if (defl_base->dwWidth  >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
+			if (defl_base->dwHeight >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
 		}
 
 		// perform subdivide if needed

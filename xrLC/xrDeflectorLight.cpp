@@ -68,10 +68,10 @@ BOOL ApplyBorders(b_texture &lm, DWORD ref)
 	BOOL	bNeedContinue = FALSE;
 	
 	try {
-		DWORD	result[512*512];
+		DWORD	result[lmap_size*lmap_size];
 		
-		R_ASSERT(lm.dwHeight<=512	);
-		R_ASSERT(lm.dwWidth<=512	);
+		R_ASSERT(lm.dwHeight<=lmap_size	);
+		R_ASSERT(lm.dwWidth<=lmap_size	);
 		
 		CopyMemory(result,lm.pSurface,lm.dwHeight*lm.dwWidth*4);
 		for (int y=0; y<(int)lm.dwHeight; y++) {
@@ -406,8 +406,8 @@ VOID CDeflector::L_Calculate(HASH& H)
 		
 		// Calculate
 		{
-			R_ASSERT	(lm.dwWidth<=(512-2*BORDER));
-			R_ASSERT	(lm.dwHeight<=(512-2*BORDER));
+			R_ASSERT	(lm.dwWidth<=(lmap_size-2*BORDER));
+			R_ASSERT	(lm.dwHeight<=(lmap_size-2*BORDER));
 			DWORD size = lm.dwWidth*lm.dwHeight*4;
 			lm.pSurface = (DWORD *)malloc(size);
 			ZeroMemory	(lm.pSurface,size);
