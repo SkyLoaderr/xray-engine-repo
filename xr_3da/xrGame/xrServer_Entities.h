@@ -183,6 +183,7 @@ xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	Fvector					velocity;
 	float					fHealth;
 	float					fArmor;
+	u8						weapon;
 xrSE_DECLARE_END
 
 //***** Enemy

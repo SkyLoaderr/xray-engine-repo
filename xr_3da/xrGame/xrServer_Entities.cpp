@@ -278,6 +278,7 @@ void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 	P.r_sdir			(velocity	);
 	P.r_float_q16		(fHealth,	-1000,1000);
 	P.r_float_q16		(fArmor,	-1000,1000);
+	P.r_u8				(weapon		);
 };
 void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 {
@@ -292,6 +293,7 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 	P.w_sdir			(velocity	);
 	P.w_float_q16		(fHealth,	-1000,1000);
 	P.w_float_q16		(fArmor,	-1000,1000);
+	P.w_u8				(weapon		);
 }
 #ifdef _EDITOR
 void	xrSE_Actor::FillProp			(LPCSTR pref, PropValueVec& values)
