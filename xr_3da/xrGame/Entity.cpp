@@ -116,7 +116,7 @@ void CEntity::Load		(LPCSTR section)
 	setVisible			(FALSE);
 	CLS_ID				= CLSID_ENTITY;
 	
-	m_fMaxHealthValue = fHealth;
+	m_fMaxHealthValue = fHealth = 100;
 	//fHealth				= fArmor = 100;
 
 	// Team params
