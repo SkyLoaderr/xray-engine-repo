@@ -81,10 +81,8 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	update_sound_threshold	();
 
 	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
-	if (entity_alive && !entity_alive->g_Alive()) {
-		m_sounds->clear		();
+	if (entity_alive && !entity_alive->g_Alive())
 		return;
-	}
 	
 	sound_power				*= 1;//ffGetStartVolume(ESoundTypes(eType));
 	
