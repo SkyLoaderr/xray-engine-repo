@@ -491,7 +491,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	float dt			= float(DT)/1000.f;
 
 	if (g_Alive()) {
-		bool			check = !!memory().enemy().selected();
+//		bool			check = !!memory().enemy().selected();
 		memory().update					(dt);
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
