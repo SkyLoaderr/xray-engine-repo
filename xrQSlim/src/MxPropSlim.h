@@ -70,8 +70,7 @@ il	unsigned int quadric_count() const { return __quadrics.length(); }
 	MxQuadric&       quadric(unsigned int i)       { return *(__quadrics(i)); }
 	const MxQuadric& quadric(unsigned int i) const { return *(__quadrics(i)); }
 ilil	void initialize();
-	bool decimate(unsigned int);
-
+	bool decimate(unsigned int, float max_error);
 ics(i)); }
 };
 

@@ -152,8 +152,10 @@ edge_links(_m->vert_count())
 MxEdgeQSlim::~MxEdgeQSlim()
 {
 	// Delete everything remaining in the heap
-	for(unsigned int i=0; i<heap.size(); i++)
-		delete ((MxQSlimEdge *)heap.item(i));
+	for(unsigned int i=0; i<heap.size(); i++){
+		MxQSlimEdge	*edge	= ((MxQSlimEdge *)heap.item(i));
+		xr_delete			(edge);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////

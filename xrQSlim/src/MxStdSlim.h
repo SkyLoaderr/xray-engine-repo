@@ -30,6 +30,8 @@
 #define MX_WEIGHT_AREA_AVG      4
 #define MX_WEIGHT_RAWNORMALS    5
 
+#define EDGE_BASE_ERROR		1.f
+
 class MxStdSlim
 {
 protected:

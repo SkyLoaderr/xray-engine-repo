@@ -135,8 +135,8 @@ inline ostream& mxm_write(const __T *a, __DIM) {return mxm_write(cout, a, N);}
 #    define mxm_local_block(a,T,N)  T *a = (T *)alloca(sizeof(T)*(N)*(N))
 #    define mxm_free_local(a)
 #  else
-#    define mxm_local_block(a,T,N)  T *a = new T[(N)*(N)]
-#    define mxm_free_local(a)       delete[] a
+#    define mxm_local_block(a,T,N)  T *a = xr_alloc<T>(sizeof(T)*(N)*(N))
+#    define mxm_free_local(a)       xr_free(a)
 #  endif
 #endif
 #endif

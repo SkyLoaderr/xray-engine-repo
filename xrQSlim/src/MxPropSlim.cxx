@@ -270,7 +270,7 @@ void MxPropSlim::compute_face_quadric(MxFaceID i, MxQuadric& Q)
 void MxPropSlim::collect_quadrics()
 {
 	for(unsigned int j=0; j<quadric_count(); j++)
-		__quadrics[j] = new MxQuadric(dim());
+		__quadrics[j] = xr_new<MxQuadric>(dim());
 
 	for(MxFaceID i=0; i<m->face_count(); i++)
 	{
@@ -334,18 +334,24 @@ r(MxV		else
 	// 	err / Q.area();
 	info->heap_key(-err);
 );
-}bool MxPropSlim::decimate(unsigned int target)
+}bool MxPropSlim::decimate(unsigned int target, float max_error)
 s)
 {
-	MxPairContraction conx;R;
+	MxPairContraction conx;
+
+	max_error								+= EDGE_BASE_ERROR;
 	while( valid_faces > target )
-		edge_info *info = (edge_info *)heap.extract();
-		if( !info )  return false;
-()		MxVertexID v1=info->v1, v2=info->v2;
-2;
+	{
+		MxHeapable *top						= heap.top();
+		if( !top )							{ return false; }
+		if( -top->heap_key()>max_error )	{ return true;	}
+
+		edge_info *info						= (edge_info *)heap.extract();
+		MxVertexID v1						= info->v1;
+		MxVertexID v2						= info->v2;
 
 		if( m->vertex_is_valid(v1) && m->vertex_is_valid(v2) ){
-			m->compute_contraction(v1, v2, &conx);
+			m->compute_contraction				(v1, v2, &conx);
 et			conx.dv1[0] = info->target[0] - m->vertex(v1)[0];
 			conx.dv1[1] = info->target[1] - m->vertex(v1)[1];
 			conx.dv1[2] = info->target[2] - m->vertex(v1)[2];
@@ -354,8 +360,8 @@ et			conx.dv1[0] = info->target[0] - m->vertex(v1)[0];
 			conx.dv2[2] = info->target[2] - m->vertex(v2)[2];
 o);
 
-			const MxFaceList& N2			= conx.delt		delete info;
-2 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)
+			const MxFaceList& N2			= conx.delta_faces;
+			for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)
 				mark_face(N2[f_idx],1000.f);
 		}
 
@@ -367,8 +373,7 @@ o);
 
 void aaaa(MxPropSlim::edge_info* info, MxFaceID v1, MxFaceID v2)
 {
-	if (info-	edge_info *info = new edge_info(dim());
-=v2)
+	if (info->v1==v1||info->v2==v1||info->v1==v2||info->v2==v2)
 		info->heap_key(-1000.f);
 }
 
@@ -517,8 +522,10 @@ lize_error )
 void MxPropSlim::finalize_edge_update(edge_info *info)
 {
 	if( meshing_penalty > 1.0 )
-		apply_mes			if( u!=v1 ) delete e; // (v1,v2) will be deleted later
-info);
+		apply_mesh_penalties(info);
+
+	if( info->is_in_heap() )
+		heap.update(info);
 	else
 		heap.insert(info);
 }

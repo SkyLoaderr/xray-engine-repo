@@ -60,21 +60,24 @@ protected:
 	}
     void free_block()
 	{
+/*
+//.
 #if defined(_MSC_VER)
 	    // The Microsoft compiler has a problem with the 
 	    // standard syntax below.  For some reason,
 	    // expanding it into the following pointer-based
 	    // version makes it work.  Don't ask me why.
 	    //
-	    for(int i=0; i<N; i++)  { T *p = &block[i]; p->~T(); }
+		for(int i=0; i<N; i++)  { T *p = &block[i]; p->~T(); }
 	    xr_free(block);
 #else
+*/
 	    // Call the relevant destructors for each element before
 	    // freeing the block.  Has now effect for types like 'int'.
 	    //
 	    for(int i=0; i<N; i++)  block[i].~T();
-	    free(block);
-#endif
+	    xr_free(block);
+//#endif
 	}
 
 public:
