@@ -28,6 +28,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			if (A) 
 			{
+				if(!BE(Local(),A->Local())) Log("TAKE ERROR: BE(Local(),A->Local()))");
 				R_ASSERT							(BE(Local(),A->Local()));	// remote can't take local
 				A->H_SetParent(this);
 				
@@ -41,6 +42,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
+				if(!BE(Local(),W->Local())) Log("TAKE ERROR: BE(Local(),W->Local()))");
 				R_ASSERT							(BE(Local(),W->Local()));				// remote can't take local
 				R_ASSERT							(Weapons->isSlotEmpty(W->GetSlot()));
 				W->H_SetParent						(this);
@@ -61,8 +63,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
-				if(!BE(Local(),W->Local())) Log("ERROR: BE(Local(),W->Local()))");
-				R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
+				//R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
 				Weapons->weapon_remove				(W);
 				Weapons->ActivateWeaponHistory		();
 				W->H_SetParent						(0);

@@ -23,7 +23,7 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
 	cameras[eacFreeFly]		= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 
-	cam_active				= eacFreeLook;
+	cam_active				= eacFreeFly;
 	look_idx				= 0;
 }
 

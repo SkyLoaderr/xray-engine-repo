@@ -24,7 +24,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire			= 0;
 	iHitPower			= 0;
-	STATE				= 0;
+	STATE		= NEXT_STATE		= 0;
 
 	SetDefaults			();
 	m_pHUD				= new CWeaponHUD();
@@ -338,7 +338,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
 	
-	OnStateSwitch					(E->state);
+	//if(Local()) OnStateSwitch					(E->state);
+	STATE = NEXT_STATE = E->state;
 
 	setVisible						(true);
 	setEnabled						(true);
@@ -409,6 +410,7 @@ void CWeapon::OnH_B_Independent	()
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
+	FireEnd();
 	hud_mode					= FALSE;
 	UpdateXForm					();
 //	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
@@ -431,7 +433,7 @@ void CWeapon::OnH_B_Chield		()
 	setEnabled					(false);
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
 
-	OnStateSwitch(eShowing);
+	if(Local()) OnStateSwitch(eShowing);
 
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{

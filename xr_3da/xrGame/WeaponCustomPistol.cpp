@@ -22,10 +22,12 @@ void CWeaponCustomPistol::switch2_Fire	()
 		// Fire
 		Fvector						p1, d;
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(p1,d);
-		bFlame						=	TRUE;
-		OnShot						();
-		FireTrace					(p1,vLastFP,d);
+		if (E) {
+			E->g_fireParams		(p1,d);
+			bFlame						=	TRUE;
+			OnShot						();
+			FireTrace					(p1,vLastFP,d);
+		}
 		fTime						+= fTimeToFire;
 
 		// Patch for "previous frame position" :)))

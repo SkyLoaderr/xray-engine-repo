@@ -235,7 +235,8 @@ void CWeaponMagazined::state_Fire	(float dt)
 	UpdateFP				();
 	fTime					-=dt;
 	Fvector					p1, d;
-	dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
+	if(H_Parent()) dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
+	else return;
 	
 	while (fTime<0)
 	{

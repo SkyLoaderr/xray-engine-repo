@@ -10,7 +10,7 @@ void CActor::OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
-	if (GAME_PHASE_PENDING	== Game().phase || !g_Alive())
+	if (GAME_PHASE_PENDING == Game().phase || !g_Alive())
 	{
 		if (kWPN_FIRE == cmd)	
 		{
@@ -85,7 +85,7 @@ void CActor::OnKeyboardRelease(int cmd)
 		case kWPN_ZOOM:	g_fire2End();					break;
 //		case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
 
-		case kDROP:		g_PerformDrop();				break;
+		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().phase) g_PerformDrop();				break;
 		}
 	}
 }

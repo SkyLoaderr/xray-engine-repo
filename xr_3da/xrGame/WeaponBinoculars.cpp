@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponBinoculars::CWeaponBinoculars() : CWeapon("BINOCULARS")
 {
-	fMaxZoomFactor		= 35.f;
+	fMaxZoomFactor		= 40.f;
 	fGyroSpeed			= 0.f;
 }
 
