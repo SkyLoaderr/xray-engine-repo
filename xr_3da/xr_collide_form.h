@@ -198,7 +198,7 @@ public:
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
 
 	void			add_sphere		( Fsphere& S	);
-	void			add_box			( Fbox& B		);
+	void			add_box			( Fmatrix& B	);
 	BOOL			Contact			( CObject* O	);
 };
 

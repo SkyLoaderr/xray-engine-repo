@@ -316,5 +316,21 @@ BOOL CCF_Shape::_clRayTest(RayQuery& Q)
 {	return FALSE; }
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 {   return; }
+
+
+void CCF_Shape::add_sphere	(Fsphere& S )
+{
+	shapes.push_back(shape_def());
+	shapes.back().type	= 0;
+	shapes.back().data.sphere.set(S);
+}
+
+void CCF_Shape::add_box		(Fmatrix& B )
+{
+	shapes.push_back(shape_def());
+	shapes.back().type	= 1;
+	shapes.back().data.box.set(B);
+}
+
 BOOL CCF_Shape::Contact( CObject* O )
 {	return FALSE; }
