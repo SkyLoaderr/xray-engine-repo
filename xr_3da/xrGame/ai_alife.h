@@ -74,8 +74,8 @@ private:
 			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfChooseNextRoutePoint		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfProcessNPC				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bAddToScheduled = true);
-			void					vfCreateObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bRemoveFromScheduled = true);
+			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bAddToScheduled = true);
+			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bRemoveFromScheduled = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -96,7 +96,7 @@ public:
 			void					Save						();
 			void					Generate					();
 			void					vfNewGame					(LPCSTR						caSaveName);
-			void					vfRemoveObject				(CSE_Abstract				*tpSE_Abstract);
+			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
 			void					vfListEvents				();

@@ -357,9 +357,9 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 	vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 }
 
-void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild)
+void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	if (bAddChild) {
+	if (bALifeRequest) {
 #ifdef DEBUG_LOG
 		Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
 #endif
@@ -377,9 +377,9 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 	tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 }
 
-void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild)
+void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	if (bRemoveChild) {
+	if (bALifeRequest) {
 		xr_vector<u16>				&tChildren = CSE_Abstract.children;
 		xr_vector<u16>::iterator	I = std::find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
 		VERIFY					(I != tChildren.end());

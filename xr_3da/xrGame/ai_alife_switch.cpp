@@ -11,20 +11,22 @@
 #include "ai_space.h"
 #include "GameObject.h"
 
-void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
+void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract)
 {
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
 	VERIFY							(tpALifeDynamicObject);
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
-	vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-	vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
+	if (!dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject) || !dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject)->bfAttached()) {
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
+	}
 	vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 
-	tpSE_Abstract->m_bALifeControl = false;
+	xr_delete						(tpSE_Abstract);
 }
 
-void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
+void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
 {
 	NET_Packet						tNetPacket;
 	
@@ -64,7 +66,7 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 	}
 }
 
-void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
+void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
@@ -127,14 +129,14 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
-			vfCreateObject		((*J).second, false);
+			vfCreateOnlineObject	((*J).second, false);
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
 	else
-		vfCreateObject					(tpALifeDynamicObject);
+		vfCreateOnlineObject		(tpALifeDynamicObject);
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -170,19 +172,19 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 				CSE_ALifeGraph::SGraphEdge				*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
 				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[randI(0,wNeighbourCount)].dwVertexNumber);
 			}
-			vfReleaseObject			((*J).second, false);
+			vfRemoveOnlineObject	((*J).second, false);
 			I++;
 		}
 		for ( ; I != E; I++) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
-			vfReleaseObject			((*J).second);
+			vfRemoveOnlineObject	((*J).second);
 		}
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
 	else
-		vfReleaseObject				(tpALifeDynamicObject);
+		vfRemoveOnlineObject		(tpALifeDynamicObject);
 }
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)

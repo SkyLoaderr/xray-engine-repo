@@ -124,7 +124,8 @@ void CAI_Space::Load()
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 void CAI_Space::Render()
 {
-	
+	if (!psHUD_Flags.test(HUD_DRAW))
+		return;
 	if (psAI_Flags.test(aiBrain)) {
 		if (bfCheckIfGraphLoaded()) {
 			if (!Level().CurrentEntity())
