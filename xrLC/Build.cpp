@@ -93,6 +93,9 @@ void CBuild::Run	(LPCSTR P)
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
 
+	//****************************************** Dumb entry in shader-registration
+	RegisterShader				("");
+
 	//****************************************** Saving lights
 	{
 		string256			fn;

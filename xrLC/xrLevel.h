@@ -3,16 +3,15 @@
 #pragma once
 
 enum fsL_Chunks {
-	fsL_HEADER2	=1,		//*
-	fsL_STRINGS,		//*
-	fsL_VISUALS,		//*
-	fsL_PORTALS,		//*		- Portal polygons
-	fsL_LIGHT_CONTROL,	//*
-	fsL_LIGHT_DYNAMIC,	//*
-	fsL_GLOWS,			//*		- All glows inside level
-	fsL_SECTORS,		//*		- All sectors on level
-	fsL_IBUFFERS,		//*
-	fsL_VBUFFERS_DX9,	//*
+	fsL_HEADER2			=1,		//*
+	fsL_SHADERS			=2,		//*
+	fsL_VISUALS			=3,		//*
+	fsL_PORTALS			=4,		//*		- Portal polygons
+	fsL_LIGHT_DYNAMIC	=6,		//*
+	fsL_GLOWS			=7,		//*		- All glows inside level
+	fsL_SECTORS			=8,		//*		- All sectors on level
+	fsL_IB				=9,		//*
+	fsL_VB				=10,	//*
     fsL_forcedword		= 0xFFFFFFFF
 };
 enum fsESectorChunks {
