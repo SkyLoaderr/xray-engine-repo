@@ -11,7 +11,7 @@ function main ()
     zone:clear_callback (true)
     zone:set_callback (bar.on_enter, true)
 
-    while entered == false then  wait () end
+    while entered == false do  wait () end
 
     local h = hit ()
     h.power = 1
