@@ -52,6 +52,13 @@ u16	CKinematics::LL_BoneID		(LPCSTR B)
 	else						return I->second;
 }
 
+LPCSTR CKinematics::LL_BoneName	(u16 ID)
+{
+	CKinematics::accel::iterator _I, _E=bone_map->end();
+	for (_I	= bone_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
+	return 0;
+}
+
 void CKinematics::DebugRender(Fmatrix& XFORM)
 {
 	Calculate();

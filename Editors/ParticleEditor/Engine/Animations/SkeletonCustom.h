@@ -106,6 +106,7 @@ public:
 
 	// Low level interface
 	u16							LL_BoneID		(LPCSTR B);
+	LPCSTR						LL_BoneName		(u16 ID);
 
     CInifile*					LL_UserData		(){return pUserData;}
 	accel*						LL_Bones		(){return bone_map;}
