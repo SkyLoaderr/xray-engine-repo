@@ -96,7 +96,8 @@ function stalker_script:__init		(object) super(object)
 end
 
 function stalker_script:reinit		()
-printf					("point 0")
+	object_binder.reinit	()
+	printf					("point 0")
 	local					motivations	= {}
 	local					operators	= {}
 	local					properties	= {}
@@ -158,22 +159,26 @@ printf					("point 0")
 end
 
 function stalker_script:reload		(section)
+	object_binder.reload	(section)
 end
 
 function stalker_script:net_spawn	(server_object)
-	if (object_binder.net_spawn(server_object) == false) then
+	if (object_binder.net_spawn(self,server_object) == false) then
 		return		false
 	end
 	return			true
 end
 
 function stalker_script:net_destroy	()
+object_binder.net_destroy	(self)
 end
 
 function stalker_script:net_export	(packet)
+	object_binder.net_export(self)
 end
 
 function stalker_script:net_import	(packet)
+	object_binder.net_import(self)
 end
 
 function init		(obj)
