@@ -15,6 +15,7 @@
 		
 		<class>trader</class>
 		<community>trader</community>
+		<visual>actors\trader\trader</visual>
 				
 		<rank>70</rank>
 		<reputation>65</reputation>
@@ -25,8 +26,8 @@
 		<actor_dialog>escape_trader_talk_flame</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 		<actor_dialog>escape_trader_done_gift</actor_dialog>
-		<visual>actors\trader\trader</visual>
-		
+		<actor_dialog>escape_trader_done_artefact</actor_dialog>
+		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>		
 	</specific_character>
 
 	<specific_character id="rostok_barman" no_random = "1">
