@@ -1,12 +1,11 @@
-local 	box01 = get_level_object("box01")
-local 	box02 = get_level_object("box02")
-
 function main()
 
 	wait(1000)
 	local 	actor = get_actor()
 	local 	trader = get_level_object("m_trader")
 	local 	stalker = get_level_object("tradeseller_stalker_0_1")
+	local 	box01 = get_level_object("box01")
+	local 	box02 = get_level_object("box02")
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
 
@@ -48,7 +47,7 @@ end
 function is_box_present(first_speaker, second_speaker)
 
 	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
-	if( first_speaker:object(box01)  ) then
+	if( first_speaker:object("box01")  ) then
 		return true
 	end
 	return false
@@ -58,7 +57,7 @@ end
 function is_box02_present(first_speaker, second_speaker)
 
 	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
-	if( first_speaker:object(box02)  ) then
+	if( first_speaker:object("box02")  ) then
 		return true
 	end
 	return false
