@@ -84,7 +84,6 @@ void CScriptGameObject::script_register(lua_State *L)
 			.property("circumspection",			&CScriptGameObject::GetCircumspection,	&CScriptGameObject::SetCircumspection)
 			.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
 
-			.def(								constructor<LPCSTR>())
 			.def("position",					&CScriptGameObject::Position)
 			.def("direction",					&CScriptGameObject::Direction)
 			.def("clsid",						&CScriptGameObject::clsid)

@@ -68,9 +68,6 @@ class CScriptGameObject {
 	CGameObject				*m_tpGameObject;
 public:
 
-							CScriptGameObject		(CGameObject *tpGameObject);
-							CScriptGameObject		(const CScriptGameObject *tpLuaGameObject);
-							CScriptGameObject		(LPCSTR caObjectName);
 	virtual					~CScriptGameObject		();
 							operator CObject*		();
 

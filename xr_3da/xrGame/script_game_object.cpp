@@ -91,18 +91,6 @@ BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetActionCount,		CScriptMons
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CScriptGameObject::CScriptGameObject		(CGameObject *tpGameObject)
-{
-	m_tpGameObject	= tpGameObject;
-	R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
-}
-
-CScriptGameObject::CScriptGameObject		(LPCSTR caObjectName)
-{
-	m_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
-	R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
-}
-
 CScriptGameObject::~CScriptGameObject		()
 {
 }
