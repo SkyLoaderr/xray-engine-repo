@@ -450,18 +450,23 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
   dxBox *b2 = (dxBox*) CLASSDATA(o2);
   dxBox *box;
   dReal* R;
+  
   int ret = dBoxBox (o1->pos,o1->R,b1->side, o2->pos,o2->R,b2->side,
 		     normal,&depth,&code,flags & NUMC_MASK,contact,skip);
   if(ret==0) return 0;
 
 ////////////////////////////////////////////////////////////////////////////////////
   dVector3 p;
+  dVector3 n;
   if(code<3){
   p[0] = o2->pos[0];
   p[1] = o2->pos[1];
   p[2] = o2->pos[2];
   box=b2;
   R=o2->R;
+  n[0]=-normal[0];
+  n[1]=-normal[1];
+  n[2]=-normal[2];
   }
   else if(code<6)
   {
@@ -470,6 +475,9 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
   p[2] = o1->pos[2];
   box=b1;
   R=o1->R;
+  n[0]=normal[0];
+  n[1]=normal[1];
+  n[2]=normal[2];
   }
   if(code<6){
 
@@ -478,9 +486,9 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
   if (maxc > 3) maxc = 3;	// no more than 3 contacts per box allowed
 
 
-  dReal Q1 = dDOT14(normal,R+0);
-  dReal Q2 = dDOT14(normal,R+1);
-  dReal Q3 = dDOT14(normal,R+2);
+  dReal Q1 = dDOT14(n,R+0);
+  dReal Q2 = dDOT14(n,R+1);
+  dReal Q3 = dDOT14(n,R+2);
   dReal A1 = box->side[0] * Q1;
   dReal A2 = box->side[1] * Q2;
   dReal A3 = box->side[2] * Q3;
