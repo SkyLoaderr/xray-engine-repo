@@ -149,7 +149,6 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	if (Level().timeServer() >= m_playing_sounds.back().m_start_time) {
 		m_playing_sounds.back().m_sound->play_at_pos(object,compute_sound_point(m_playing_sounds.back()));
 		m_playing_sounds.back().m_start_time = m_playing_sounds.back().m_stop_time + 1;
-
 	}
 }
 
