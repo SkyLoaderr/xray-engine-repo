@@ -533,6 +533,11 @@ class CCC_DemoRecord : public IConsole_Command
 public:
 	CCC_DemoRecord(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
+		if (Game().type != GAME_SINGLE) 
+		{
+			Msg("For this game type Demo Record is disabled.");
+			return;
+		};
 		Console->Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
 		g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));

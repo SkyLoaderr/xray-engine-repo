@@ -47,6 +47,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 #ifdef DEBUG
 	case DIK_F5: {
+		if (Game().type != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
@@ -75,8 +76,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 			if (bOk) {
 				CObject *tpObject = CurrentEntity();
 				SetEntity(*I);
-				Engine.Sheduler.Unregister	(tpObject);
-				Engine.Sheduler.Register	(tpObject);
+				if (tpObject)
+				{
+					Engine.Sheduler.Unregister	(tpObject);
+					Engine.Sheduler.Register	(tpObject);
+				};
 				Engine.Sheduler.Unregister	(*I);
 				Engine.Sheduler.Register	(*I, TRUE);
 			}
