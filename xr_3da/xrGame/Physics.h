@@ -62,7 +62,7 @@ public:
 		dMatrix3 relRot;
 		dMULTIPLYOP1_333(relRot,=,R,currentR);
 		dBodySetRotation(Bodies[0],R);
-		//return;
+		
 		
 		for(unsigned int i=1;i<NofBodies; i++ ){
 			const dReal* currentPos=dBodyGetPosition(Bodies[i]);

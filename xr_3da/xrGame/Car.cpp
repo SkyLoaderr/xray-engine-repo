@@ -114,8 +114,13 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	setVisible						(TRUE);
 	m_jeep.SetPosition				(vPosition);
 	dMatrix3 Rot;
+	Fmatrix ry,mr;
+	ry.rotateY		(deg2rad(90.f));
+	ry.invert();
 	Fmatrix33 m33;
-	m33.set(mRotate);
+	mr.mul(ry,mRotate);
+	m33.set(mr);
+	
 	PHDynamicData::FMX33toDMX(m33,Rot);
 	m_jeep.SetRotation(Rot);
 	pSounds->PlayAtPos				(snd_engine,this,vPosition,true);
