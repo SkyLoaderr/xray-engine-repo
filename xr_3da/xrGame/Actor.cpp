@@ -708,13 +708,16 @@ void CActor::UpdateCL()
 		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_idx(),last_material_idx());
 		
-		CMaterialManager::set_run_mode(isAccelerated(mstate_real));
-		CMaterialManager::update		(
-			Device.fTimeDelta,
-			s_vol,
-			tm,
-			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall))))
-		);
+		if(!m_holder)
+		{
+			CMaterialManager::set_run_mode(isAccelerated(mstate_real));
+			CMaterialManager::update		(
+				Device.fTimeDelta,
+				s_vol,
+				tm,
+				!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall))))
+			);
+		}
 
 		// landing sounds
 		if (mtl_pair && (mstate_real & (mcLanding | mcLanding2))){
