@@ -53,6 +53,7 @@ void CBurer::reinit()
 void CBurer::Load(LPCSTR section)
 {
 	inherited::Load				(section);
+	CStateManagerBurer::Load	(section);
 
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 	
@@ -141,9 +142,8 @@ void CBurer::ProcessTurn()
 
 bool CBurer::UpdateStateManager()
 {
-	
-	//CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
-	return false;
+	CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
+	return true;
 }
 
 

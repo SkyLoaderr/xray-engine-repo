@@ -187,10 +187,10 @@ public:
 	void 				FillProp		(PropItemVec& values);
     void				TransferFromParent(SGameMtlPair* parent);
 #endif
+#ifdef DEBUG
+	LPCSTR				dbg_Name		();
+#endif
 };
-
-#define SELECT_RANDOM_SAFE(a_vector)	((a_vector.empty()) ? 0 : (a_vector[Random.randI(a_vector.size())]))
-#define SELECT_RANDOM(a_vector)			(a_vector[Random.randI(a_vector.size())])
 
 DEFINE_VECTOR(SGameMtlPair*,GameMtlPairVec,GameMtlPairIt);
 
@@ -315,6 +315,11 @@ public:
 	void				Load				();
 	void				Save				();
 };
+
+#define SELECT_RANDOM(_res_, _mtl_pair_, _a_vector_)\
+	{ VERIFY2(!_mtl_pair_##->_a_vector_.empty(),_mtl_pair_->dbg_Name());\
+	_res_=(_mtl_pair_##->_a_vector_[Random.randI(_mtl_pair_##->_a_vector_.size())]);\
+	}
 
 extern CGameMtlLibrary GMLib;
 #endif

@@ -320,9 +320,10 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 
 				if(vel_cret>10.0f && !mtl_pair->CollideSounds.empty())
 				{
-					::Sound->play_at_pos(
-						SELECT_RANDOM(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
-						);
+					ref_sound sound;
+					
+					SELECT_RANDOM(sound, mtl_pair, CollideSounds);
+					::Sound->play_at_pos(sound, 0,*((Fvector*)c->pos));
 				}
 
 

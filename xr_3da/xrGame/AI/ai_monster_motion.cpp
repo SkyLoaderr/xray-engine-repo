@@ -596,7 +596,8 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 			
 			// Играть звук
 			if (!mtl_pair->StepSounds.empty()) {
-				step_info.activity[i].sound = SELECT_RANDOM(mtl_pair->StepSounds);
+				
+				SELECT_RANDOM(step_info.activity[i].sound, mtl_pair, StepSounds);
 				step_info.activity[i].sound.play_at_pos	(pMonster,pMonster->Position());
 			}
 			

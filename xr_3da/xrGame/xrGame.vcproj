@@ -2189,6 +2189,22 @@
 					<File
 						RelativePath=".\ai\Monsters\Burer\burer_state_manager.h">
 					</File>
+					<Filter
+						Name="Burer States"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_attack.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_attack_inline.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Controller"

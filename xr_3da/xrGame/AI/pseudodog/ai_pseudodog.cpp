@@ -150,6 +150,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	m_anger_hunger_threshold	= pSettings->r_float(section, "anger_hunger_threshold");
 	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
 
+	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 }
 
 void CAI_PseudoDog::StateSelector()

@@ -45,6 +45,13 @@ void CWound::Incarnation	(float percent)
 {
 	float total_size = TotalSize();
 
+	if(fis_zero(total_size))
+	{
+		for(int i=0; i<ALife::eHitTypeMax; i++)
+			m_Wounds[i] = 0.f;
+		return;
+	}
+
 	//заживить все раны пропорционально их размеру
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 	{
