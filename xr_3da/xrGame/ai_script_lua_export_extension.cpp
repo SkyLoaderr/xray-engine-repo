@@ -443,7 +443,7 @@ void CScriptEngine::export_object()
 			.def("level_vertex_id",				&CLuaGameObject::level_vertex_id)
 			
 			// sound_player
-//			.def("add_sound",					&CLuaGameObject::add_sound)
+			.def("add_sound",					&CLuaGameObject::add_sound)
 			.def("remove_sound",				&CLuaGameObject::remove_sound)
 			.def("set_sound_mask",				&CLuaGameObject::set_sound_mask)
 			.def("play_sound",					(void (CLuaGameObject::*)(u32))(CLuaGameObject::play_sound))

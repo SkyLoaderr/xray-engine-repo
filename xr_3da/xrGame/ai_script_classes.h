@@ -554,7 +554,7 @@ public:
 			void				set_mental_state		(EMentalState mental_state);
 			void				set_path_type			(CMovementManager::EPathType path_type);
 			void				set_detail_path_type	(CMovementManager::EDetailPathType detail_path_type);
-			void				add_sound				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
+			void				add_sound				(LPCSTR prefix, ESoundTypes type, u32 priority, u32 mask, u32 internal_type);
 			void				remove_sound			(u32 internal_type);
 			void				set_sound_mask			(u32 sound_mask);
 			void				set_sight				(SightManager::ESightType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));

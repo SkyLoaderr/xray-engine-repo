@@ -317,13 +317,13 @@ void  CLuaGameObject::set_detail_path_type	(CMovementManager::EDetailPathType de
 		stalker->set_detail_path_type	(detail_path_type);
 }
 
-void  CLuaGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
+void  CLuaGameObject::add_sound		(LPCSTR prefix, ESoundTypes type, u32 priority, u32 mask, u32 internal_type)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 	else
-		sound_player->add		(prefix,max_count,type,priority,mask,internal_type,bone_name);
+		sound_player->add		(prefix,255,type,priority,mask,internal_type,"bip01_head");
 }
 
 void CLuaGameObject::remove_sound	(u32 internal_type)

@@ -32,6 +32,8 @@
 #include "stalker_decision_space.h"
 #include "property_evaluator_const.h"
 
+#include "ai/stalker/ai_stalker_space.h"
+
 using namespace luabind;
 
 void CScriptEngine::export_action_management()
@@ -178,6 +180,7 @@ void CScriptEngine::export_motivation_management()
 				value("motivation_solve_zone_puzzle",StalkerDecisionSpace::eMotivationSolveZonePuzzle),
 				value("motivation_script",			StalkerDecisionSpace::eMotivationScript)
 			]
+			
 			.enum_("properties")
 			[
 				value("property_alive",				StalkerDecisionSpace::eWorldPropertyAlive),
@@ -196,6 +199,7 @@ void CScriptEngine::export_motivation_management()
 				value("property_kill_distance",		StalkerDecisionSpace::eWorldPropertyKillDistance),
 				value("property_script",			StalkerDecisionSpace::eWorldPropertyScript)
 			]
+			
 			.enum_("action")
 			[
 				value("action_already_dead",		StalkerDecisionSpace::eWorldOperatorAlreadyDead),
@@ -220,6 +224,16 @@ void CScriptEngine::export_motivation_management()
 				value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
 				value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
 				value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy)
+			]
+
+			.enum_("sounds")
+			[
+				value("sound_die",					StalkerSpace::eStalkerSoundDie),
+				value("sound_injuring",				StalkerSpace::eStalkerSoundInjuring),
+				value("sound_humming",				StalkerSpace::eStalkerSoundHumming),
+				value("sound_alarm",				StalkerSpace::eStalkerSoundAlarm),
+				value("sound_surrender",			StalkerSpace::eStalkerSoundSurrender),
+				value("sound_script",				StalkerSpace::eStalkerSoundScript)
 			]
 	];
 }
