@@ -18,7 +18,6 @@ xrServerEntity*		game_sv_Single::get_entity_from_eid		(u16 id)
 
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {
-	xrServer*			S		= m_tpServer;
 	xrServerEntity*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 	xrServerEntity*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
