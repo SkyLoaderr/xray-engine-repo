@@ -40,10 +40,10 @@ void CStateManagerAbstract::Load			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateManagerAbstract::reinit			(_Object *object)
+void CStateManagerAbstract::reinit			(_Object *object, bool clear_all)
 {
 	CSStateBase::reinit				(object);
-	CSStateManagerAbstract::reinit	();
+	CSStateManagerAbstract::reinit	(clear_all);
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
 		graph().vertices()[i].data().m_state->reinit(object);
 }

@@ -36,9 +36,9 @@ void CAbstractStateManager::Load			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::reinit			()
+void CAbstractStateManager::reinit			(bool clear_all)
 {
-	inherited::reinit		();
+	inherited::reinit		(clear_all);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -18,6 +18,10 @@ protected:
 	enum ENoALifeStates {
 		eNoALifeStateFree = u32(0),
 		eNoALifeGatherItems,
+		eNoALifeAnomalyCheck,
+		eNoALifeHiddenEnemyCheck,
+		eNoALifeBackEnemyCheck,
+		eNoALifeWatchOver,
 		eNoALifeStateDummy = u32(-1),
 	};
 
@@ -31,6 +35,13 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
+
+private:
+	float				m_free_probability;
+	float				m_watch_probability;
+	float				m_anomaly_probability;
+	float				m_hidden_probability;
+	float				m_back_probability;
 };
 
 #include "state_manager_no_alife_inline.h"

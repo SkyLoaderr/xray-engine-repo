@@ -39,7 +39,7 @@ public:
 	IC					CGraphManagerAbstract	();
 	virtual				~CGraphManagerAbstract	();
 			void		Init					();
-	virtual	void		reinit					();
+	virtual	void		reinit					(bool clear_all = false);
 	IC		void		set_dest_vertex_id		(const _vertex_id_type dest_vertex_id);
 	IC		const _vertex_id_type &dest_vertex_id	() const;
 	IC		const _vertex_id_type &current_vertex_id() const;

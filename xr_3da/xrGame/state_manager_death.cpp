@@ -26,15 +26,16 @@ void CStateManagerDeath::Init			()
 
 void CStateManagerDeath::Load			(LPCSTR section)
 {
+	add_state				(xr_new<CStateDeathRecentlyDead>("RecentlyDead"),	eDeathStateRecentlyDead,	0);
+	add_state				(xr_new<CStateDeathAlreadyDead>("AlreadyDead"),		eDeathStateAlreadyDead,		0);
+	add_transition			(eDeathStateRecentlyDead,eDeathStateAlreadyDead,1);
+	
 	inherited::Load			(section);
 }
 
 void CStateManagerDeath::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
-	add_state				(xr_new<CStateDeathRecentlyDead>("RecentlyDead"),	eDeathStateRecentlyDead,	0);
-	add_state				(xr_new<CStateDeathAlreadyDead>("AlreadyDead"),		eDeathStateAlreadyDead,		0);
-	add_transition			(eDeathStateRecentlyDead,eDeathStateAlreadyDead,1);
 	set_current_state		(eDeathStateRecentlyDead);
 	set_dest_state			(eDeathStateRecentlyDead);
 }

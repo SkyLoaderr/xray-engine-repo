@@ -31,7 +31,7 @@ public:
 	virtual				~CStateManagerState		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_Object *object);
+	virtual	void		reinit					(_Object *object, bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		initialize				();
 	virtual	void		execute					();
@@ -43,7 +43,8 @@ public:
 	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority)
 	{
 		CSStateManagerAbstract::add_state(state,state_id,priority);
-		state->reinit		(m_object);
+		if (m_object)
+			state->reinit(m_object);
 	}
 };
 

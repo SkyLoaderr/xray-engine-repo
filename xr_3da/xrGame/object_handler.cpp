@@ -62,7 +62,7 @@ void CObjectHandler::Load			(LPCSTR section)
 
 void CObjectHandler::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit				(object);
+	inherited::reinit				(object,true);
 	CInventoryOwner::reinit			();
 	add_state						(xr_new<CObjectStateBase>((CInventoryItem*)0,CWeapon::EWeaponStates(-1)),u32(eObjectActionNoItems),0);
 	state(eObjectActionNoItems).initialize();

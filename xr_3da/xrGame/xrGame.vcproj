@@ -1386,6 +1386,32 @@
 								RelativePath=".\state_manager_no_alife_inline.h">
 							</File>
 							<Filter
+								Name="StateAnomalyCheck"
+								Filter="">
+								<File
+									RelativePath=".\state_anomaly_check.cpp">
+								</File>
+								<File
+									RelativePath=".\state_anomaly_check.h">
+								</File>
+								<File
+									RelativePath=".\state_anomaly_check_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="StateBackEnemyCheck"
+								Filter="">
+								<File
+									RelativePath=".\state_back_enemy_check.cpp">
+								</File>
+								<File
+									RelativePath=".\state_back_enemy_check.h">
+								</File>
+								<File
+									RelativePath=".\state_back_enemy_check_inline.h">
+								</File>
+							</Filter>
+							<Filter
 								Name="StateFreeNoALife"
 								Filter="">
 								<File
@@ -1409,6 +1435,32 @@
 								</File>
 								<File
 									RelativePath=".\state_gather_items_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="StateHiddenEnemyCheck"
+								Filter="">
+								<File
+									RelativePath=".\state_hidden_enemy_check.cpp">
+								</File>
+								<File
+									RelativePath=".\state_hidden_enemy_check.h">
+								</File>
+								<File
+									RelativePath=".\state_hidden_enemy_check_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="StateWatchOver"
+								Filter="">
+								<File
+									RelativePath=".\state_watch_over.cpp">
+								</File>
+								<File
+									RelativePath=".\state_watch_over.h">
+								</File>
+								<File
+									RelativePath=".\state_watch_over_inline.h">
 								</File>
 							</Filter>
 						</Filter>

@@ -39,10 +39,12 @@ void CAbstractGraphManager::Init					()
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractGraphManager::reinit					()
+void CAbstractGraphManager::reinit					(bool clear_all)
 {
-	xr_delete				(m_graph);
-	m_graph					= xr_new<CSGraphAbstract>();
+	if (clear_all) {
+		xr_delete			(m_graph);
+		m_graph				= xr_new<CSGraphAbstract>();
+	}
 	m_current_vertex_id		= m_dest_vertex_id = _vertex_id_type(-1);
 	m_path.clear			();
 	m_actuality				= true;

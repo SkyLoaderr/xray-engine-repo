@@ -60,7 +60,7 @@ public:
 	virtual				~CStateManagerAbstract	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					();
+	virtual	void		reinit					(bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		update					(u32 time_delta);
 	IC		T			&state					(const u32 state_id);
