@@ -164,6 +164,8 @@ public:		// User declarations
         __fastcall TfraLeftBar			(TComponent* Owner);
 	void 			ChangeTarget		(int tgt);
     void 			UpdateBar			();
+    void 			MinimizeAllFrames();
+    void 			MaximizeAllFrames();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -23,6 +23,30 @@
 #define CUSTOMOBJECT_CHUNK_MOTION_PARAM	0xF908
 //----------------------------------------------------
 
+void st_AnimParams::Set(float start_frame, float end_frame, float fps)
+{
+    min_t=start_frame/fps;
+    max_t=end_frame/fps;
+}
+
+void st_AnimParams::Set(CCustomMotion* M)
+{
+    Set((float)M->FrameStart(),(float)M->FrameEnd(),M->FPS());
+	t=min_t;
+//    bPlay=true;
+}
+void st_AnimParams::Update(float dt, float speed, bool loop)
+{
+	if (!bPlay) return;
+	t+=speed*dt;
+    if (t>max_t){
+#ifdef _EDITOR
+		if (loop) t=t-max_t+min_t; else
+#endif
+		t=max_t;
+	}
+}
+
 CCustomObject::~CCustomObject()
 {
 	xr_delete				(m_Motion);
@@ -160,7 +184,7 @@ void CCustomObject::Render(int priority, bool strictB2F)
             Device.SetShader(Device.m_WireShader);
             DU.DrawObjectAxis(FTransformRP);
         }
-        if (Visible()&&Selected()&&fraBottomBar->miDrawObjectAnimPath->Checked&&m_Motion)
+        if (m_Motion&&Visible()&&Selected())
             AnimationDrawPath();
     }
 }

@@ -77,7 +77,8 @@
       Intermediate\SHSoundEnvTools.obj Intermediate\SHToolsInterface.obj 
       Intermediate\Splash.obj Intermediate\stdafx.obj 
       Intermediate\UI_MainExtern.obj Intermediate\UI_MainShader.obj 
-      Intermediate\SceneObject.obj Intermediate\SceneObjectIO.obj"/>
+      Intermediate\SceneObject.obj Intermediate\SceneObjectIO.obj 
+      Intermediate\CustomObjectAnimation.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -280,6 +281,7 @@
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
