@@ -379,6 +379,7 @@ HRESULT CPracticalPSM::RenderShadowMap()
 	case smap_UNIFORM:	BuildOrthoShadowProjectionMatrix();	break;
 	case smap_PSM:		BuildPSMProjectionMatrix();			break;
 	case smap_LiSPSM:	BuildLIPSMProjectionMatrix();		break;
+	case smap_TSM:		BuildTSMProjectionMatrix();			break;
 	}
     
     if (FAILED(SetRenderStates(true)))

@@ -70,6 +70,7 @@ enum	SM_Mode
 	smap_UNIFORM	= 0,	// traditional
 	smap_PSM,				// perspective + Kozlov improvements
 	smap_LiSPSM,			// light-space perspective (Michael Wimmer, Daniel Scherzer and Werner Purgathofer)
+	smap_TSM,
 
 	smap_count,
 	smap_force32BIT = unsigned(-1)
