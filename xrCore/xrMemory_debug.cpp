@@ -31,7 +31,10 @@ void	xrMemory::dbg_unregister	(void* _p)
 	else					{ debug_info[_found]=NULL; debug_info_update++; }
 
 	if (debug_info_update>1024)
-		debug_info.erase(std::remove(debug_info.begin(),debug_info.end(),(void*)0),debug_info.end());
+	{
+		debug_info_update	= 0;
+		debug_info.erase	(std::remove(debug_info.begin(),debug_info.end(),(void*)0),debug_info.end());
+	}
 
 	debug_mode		= TRUE;
 	debug_cs.Leave	();
