@@ -211,7 +211,14 @@ void CRender::Render		()
 	//******* Decompression on some HW :)
 	Target.phase_decompress				();
 
-	// $$$
+	// Update incremental shadowmap-visibility solver
+	{
+		for (u32 it=0; it<Lights_LastFrame.size(); it++)
+			Lights_LastFrame[it]->svis.flushoccq	();
+		Lights_LastFrame.clear	();
+	}
+
+	// Lighting
 	Target.phase_accumulator			();
 	HOM.Disable							();
 	render_lights						(LP_normal);

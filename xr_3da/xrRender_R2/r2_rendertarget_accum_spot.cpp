@@ -4,6 +4,7 @@ extern Fvector du_cone_vertices[DU_CONE_NUMVERTEX];
 
 void CRenderTarget::accum_spot	(light* L)
 {
+	RImplementation.Lights_LastFrame.push_back	(L);
 	RImplementation.stats.l_visible	++;
 
 	// *** assume accumulator setted up ***
