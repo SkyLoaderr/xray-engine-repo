@@ -243,7 +243,7 @@ if(spl_inf.m_end_jt_num!=u16(-1))
 }
 
 static ELEMENT_PAIR_VECTOR new_elements;
-shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &split_elem)
+shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &split_elem,const CPHElement* source_element)
 {
 
 	//const CPHShellSplitter& splitter=m_splitters[aspl];
@@ -255,7 +255,17 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	const u16& end_joint=split_elem.second.m_end_jt_num;
 	//it is not right for multiple joints attached to the unsplited part becource all these need to be reattached
 	if(start_joint!=end_joint)
-		m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
+	{
+		JOINT_STORAGE& joints=m_pShell->joints;
+		JOINT_I i=joints.begin()+ start_joint,e=joints.begin()+ end_joint;
+		for(;i!=e;i++)
+		{
+			CPHJoint* joint=(*i);
+			if(joint->PFirst_element()==source_element)
+				joint->ReattachFirstElement(split_elem.first);
+		}
+	//	m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
+	}
 
 	//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
 	//m_splitters.erase(m_splitters.begin()+aspl);
@@ -295,7 +305,7 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shel
 
 	for(;i!=e;i++)
 	{
-		out_shels.push_back(ElementSingleSplit(*i));
+		out_shels.push_back(ElementSingleSplit(*i,E));
 	}
 
 	if(!E->FracturesHolder()) m_splitters.erase(spl_i);//delete splitter if the element no longer have fractures

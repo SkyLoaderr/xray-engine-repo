@@ -154,7 +154,8 @@ void CPHFracturesHolder::PhTune(dBodyID body)
 		}
 		else
 		{
-			dJointSetFeedback(joint,ContactFeedBacks.add());
+			CPHJoint* ph_joint=(CPHJoint*)dJointGetData(joint);
+			if(!(ph_joint&&ph_joint->JointDestroyInfo())) dJointSetFeedback(joint,ContactFeedBacks.add());
 			//if(!dJointGetFeedback(joint))
 			//{
 			//	m_feedbacks.push_back(dJointFeedback());

@@ -769,11 +769,12 @@ void CPHShell::ResetCallbacks(u16 id,Flags64 &mask)
 void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 {
 
-	//if(element==elements.size())	return;
+ 	//if(element==elements.size())	return;
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
-	if(mask.test(1<<id))
+
+	if(mask.is(1ui64<<(u64)id))
 	{
 
 		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
