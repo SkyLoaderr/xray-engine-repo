@@ -19,6 +19,7 @@ function main ()
     
     action				(
 		stalker,
+		look			(look.fire_point,actor),
 		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.fire1),
 		cond			(cond.time_end,200000)
@@ -26,6 +27,7 @@ function main ()
     
     action				(
 		stalker,
+		look			(look.fire_point,actor),
 		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.activate),
 		cond			(cond.time_end,2000)
@@ -33,6 +35,7 @@ function main ()
     
     action				(
 		stalker,
+		look			(look.fire_point,actor),
 		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.reload),
 		cond			(cond.time_end,2000)
@@ -40,6 +43,7 @@ function main ()
     
     action				(
 		stalker,
+		look			(look.fire_point,actor),
 		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.deactivate),
 		cond			(cond.time_end,2000)
