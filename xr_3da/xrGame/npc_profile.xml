@@ -9,6 +9,7 @@
 		<visual>string_name</visual>
 		<rank>Novice</rank>
 		<team>Lonewolf</team>
+		<start_dialog>stalker_hello_dialog</start_dialog>
 	</character>
 	<character name_id="veteran">
 		<name>Unknown Stalker</name>
