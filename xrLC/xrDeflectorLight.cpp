@@ -441,8 +441,8 @@ VOID CDeflector::Light(HASH& H)
 		
 		// Compression
 		DWORD	w,h;
-		if (compress_Zero(lm,rms))	return;		// already with borders
-		else if (compress_RMS(lm,rms*2,w,h))	
+		if (compress_Zero(lm,rms_zero))	return;		// already with borders
+		else if (compress_RMS(lm,rms_shrink,w,h))	
 		{
 			// Reacalculate lightmap at lower resolution
 			lm.dwWidth	= w;
@@ -525,7 +525,7 @@ VOID CDeflector::Light(HASH& H)
 
 		// Test if layer really needed 
 		{
-			if (layer==pBuild->lights.begin())	continue;	// base, ambient layer - SKIP
+			if (layer==pBuild->lights.begin())	continue;	// base, ambient layer - always present
 			BOOL			bSkip	= TRUE;
 			DWORD			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 			for (DWORD pix=0; pix<size; pix++)	{
