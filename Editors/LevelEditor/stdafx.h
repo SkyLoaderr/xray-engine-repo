@@ -176,6 +176,11 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 
 // external dependencies
+
+#ifndef _ECOREB
+	#pragma comment(lib,"ECoreB.lib")
+#endif
+
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"xrSoundB.lib")
 #pragma comment(lib,"xrCDBB.lib")
