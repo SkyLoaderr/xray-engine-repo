@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 extern void	 ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSource, DWORD dwCount);
 

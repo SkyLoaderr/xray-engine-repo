@@ -1,8 +1,5 @@
-// PrimitivesR.cpp: implementation of the CPrimitivesR class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
+#pragma hdrstop
 
 // Device dependance
 const DWORD Lines_BatchSize = 64;
