@@ -68,7 +68,7 @@ function action_alive:initialize()
 end
 
 function action_alive:execute()
-	action_base.execute		(self)
+	action_base.execute					(self)
 	
 	self.object:play_sound				(2,60000,10000)
 
@@ -96,7 +96,7 @@ function stalker_script:__init		(object) super(object)
 end
 
 function stalker_script:reinit		()
-	object_binder.reinit	()
+	object_binder.reinit	(self)
 	printf					("point 0")
 	local					motivations	= {}
 	local					operators	= {}
@@ -159,7 +159,7 @@ function stalker_script:reinit		()
 end
 
 function stalker_script:reload		(section)
-	object_binder.reload	(section)
+	object_binder.reload	(self,section)
 end
 
 function stalker_script:net_spawn	(server_object)
@@ -170,15 +170,15 @@ function stalker_script:net_spawn	(server_object)
 end
 
 function stalker_script:net_destroy	()
-object_binder.net_destroy	(self)
+	object_binder.net_destroy	(self)
 end
 
 function stalker_script:net_export	(packet)
-	object_binder.net_export(self)
+	object_binder.net_export	(self)
 end
 
 function stalker_script:net_import	(packet)
-	object_binder.net_import(self)
+	object_binder.net_import	(self)
 end
 
 function init		(obj)
