@@ -41,6 +41,8 @@ void CStateManagerZombie::initialize()
 
 void CStateManagerZombie::execute()
 {
+	if (object->MotionMan.TA_IsActive()) return;
+	
 	u32 state_id = u32(-1);
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
