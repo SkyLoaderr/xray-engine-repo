@@ -29,6 +29,6 @@
 		<texture	x="64" y="0" width="64" height="64" >ui\ui_motion_icon</texture>
 	</climb>
 	<power_bar_climb x="0" y="0" length="64" broad="64" horz="0" min="0" max="100" pos="0">
-		<texture x="0" y="64" width="64" height="64" tile="0" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
+		<texture x="64" y="64" width="64" height="64" tile="0" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
 	</power_bar_climb>
 </window>
