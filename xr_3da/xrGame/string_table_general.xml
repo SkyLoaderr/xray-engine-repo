@@ -11,12 +11,23 @@
 		<text>Weapon</text>
 		<text ln="rus">Оружие</text>
 	</string>
+	<string id="Machineguns">
+		<text>Weapon</text>
+		<text ln="rus">Автоматы</text>
+	</string>
 	<string id="ak_74_desc">
 		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
 			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
 		    30 bullet
 		</text>
 		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском</text>
+	</string>
+	<string id="ak_74_info">
+		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
+			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
+		    30 bullet
+		</text>
+		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском бла бла бла</text>
 	</string>
 </string_table>
 

@@ -1,9 +1,13 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <encyclopedia>
     <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
     <article id="one" name="AK-74" group="Weapons/Machineguns">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
         <text>ak_74_desc</text>
+    </article>
+    <article id="one" name="AK-74" group="Weapons/Machineguns">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>ak_74_info</text>
     </article>
 
     <article id="two" name="Groza" group="Weapons/Machineguns">
