@@ -24,6 +24,7 @@ class CPHJeep {
 	void CreateDynamicData();
 public:
 	//CPHJeep(){}
+
 	void Create(dSpaceID space, dWorldID world);
 	void Create1(dSpaceID space, dWorldID world);
 	void Destroy();
@@ -41,7 +42,14 @@ public:
 		dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
 		}
 	}
-	
+	Fvector GetVelocity(){
+		Fvector ret;
+		const dReal* vel=dBodyGetLinearVel(Bodies[0]);
+		ret.x=vel[0];
+		ret.y=vel[1];
+		ret.z=vel[2];
+		return ret;
+	}
 	PHDynamicData DynamicData;
 	dVector3 jeepBox;
 	dVector3 cabinBox;

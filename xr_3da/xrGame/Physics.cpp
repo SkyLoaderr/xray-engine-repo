@@ -263,13 +263,13 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamFMax, 500);
-		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.05);
+		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.02);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 800);
 
-		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.4f);
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.0005f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.3f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.0002f);
 	}
 
 	GeomsGroup = dCreateGeomGroup(space);  
@@ -362,8 +362,8 @@ DynamicData.SetAsZeroRecursive();
 
 void CPHJeep::Steer(const char& steering)
 {
-	static const dReal steeringRate = M_PI * 1 / 6;
-	static const dReal steeringLimit = M_PI / 4;
+	static const dReal steeringRate = M_PI * 2 / 6;
+	static const dReal steeringLimit = M_PI / 3;
 	
 	ULONG i;
 	switch(steering)
@@ -534,7 +534,7 @@ if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2000;
+		contacts[i].surface.mu = 2500;
 		contacts[i].surface.bounce = 0.3f;
 		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -547,7 +547,7 @@ else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
 		{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2000.f;
+		contacts[i].surface.mu = 2500.f;
 		contacts[i].surface.bounce = 0.3f;
 		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -560,7 +560,7 @@ else
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2000.f;
+		contacts[i].surface.mu = 2500.f;
 		contacts[i].surface.bounce = 0.01f;
 		contacts[i].surface.bounce_vel =0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
