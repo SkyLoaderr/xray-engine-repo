@@ -153,7 +153,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 	UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
 	UIRank.SetText(str);
 
-	sprintf(str, "%s", pCharInfo->Community());
+	sprintf(str, "%s", *pCharInfo->Community());
 	offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
 	UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
 	UICommunity.SetText(str);
