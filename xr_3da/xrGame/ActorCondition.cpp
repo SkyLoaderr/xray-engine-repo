@@ -114,8 +114,7 @@ void CActorCondition::ConditionStand(float weight)
 {	
 	float delta_time = float(m_iDeltaTime)/1000.f;
 	float power = m_fStandPower;
-//	power += m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
-	power *= delta_time;//*(accel?m_fAccelK:1.f);
+	power *= delta_time;
 	m_fPower -= power;
 }
 

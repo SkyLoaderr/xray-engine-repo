@@ -21,6 +21,7 @@
 #include "huditem.h"
 
 bool g_bDisableAllInput = false;
+extern	float	g_fTimeFactor;
 
 void CLevel::IR_OnMouseWheel( int direction )
 {
@@ -163,14 +164,14 @@ void CLevel::IR_OnKeyboardPress(int key)
 #ifdef DEBUG
 	case DIK_DIVIDE:
 		if( OnServer() ){
-			float NewTimeFactor				= pSettings->r_float("alife","time_factor");
+//			float NewTimeFactor				= pSettings->r_float("alife","time_factor");
 			
 			if (GameID() == GAME_SINGLE)
-				Server->game->SetGameTimeFactor(NewTimeFactor);
+				Server->game->SetGameTimeFactor(g_fTimeFactor);
 			else
 			{
-				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
-				Server->game->SetGameTimeFactor(NewTimeFactor);
+				Server->game->SetEnvironmentGameTimeFactor(g_fTimeFactor);
+				Server->game->SetGameTimeFactor(g_fTimeFactor);
 			};
 		}
 		break;	
@@ -182,7 +183,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			else
 			{
 				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
-				Server->game->SetGameTimeFactor(NewTimeFactor);
+//				Server->game->SetGameTimeFactor(NewTimeFactor);
 			};
 		}
 		break;
