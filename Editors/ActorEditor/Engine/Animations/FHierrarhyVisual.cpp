@@ -35,6 +35,7 @@ FHierrarhyVisual::~FHierrarhyVisual()
 
 void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 {
+	Log("!!! node !!!");
 	CVisual::Load(N,data,dwFlags);
 	if (data->FindChunk(OGF_CHIELDS_L)) 
 	{
