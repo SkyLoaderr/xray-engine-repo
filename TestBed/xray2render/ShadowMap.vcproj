@@ -346,6 +346,12 @@
 		<File
 			RelativePath="r_constants_cache.h">
 		</File>
+		<File
+			RelativePath="r_shader.cpp">
+		</File>
+		<File
+			RelativePath="r_shader.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
