@@ -291,17 +291,7 @@ IC	u8	CLevelGraph::CVertex::light() const
 
 IC	u32	CLevelGraph::CVertex::link(int index) const
 {
-	switch (index) {
-		case 0 :	return	((*(u32*)data) & 0x007fffff);
-		case 1 :	return	(((*(u32*)(data + 2)) >> 7) & 0x007fffff);
-		case 2 :	return	(((*(u32*)(data + 5)) >> 6) & 0x007fffff);
-		case 3 :	return	(((*(u32*)(data + 8)) >> 5) & 0x007fffff);
-		default :	NODEFAULT;
-	}
-#ifdef DEBUG
-	return			(0);
-#endif
-//	return		(NodeCompressed::link(u8(index)));
+	return		(NodeCompressed::link(u8(index)));
 }
 
 IC	u16	CLevelGraph::CVertex::cover(u8 index) const
@@ -481,8 +471,6 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 
 				clamp			(tIntersectPoint.x,_min(next1.x,next2.x),_max(next1.x,next2.x));
 				clamp			(tIntersectPoint.z,_min(next1.y,next2.y),_max(next1.y,next2.y));
-//				if (!dwIntersect)
-//					continue;
 				if (bAssignY)
 					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 				path_node.set_position(tIntersectPoint);

@@ -143,39 +143,9 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 
-//protected:
-	// movement and look setup functions
-//			void				vfSetParameters					(
-//				CAbstractVertexEvaluator *tpPathEvaluator, 
-//				Fvector *tpDesiredPosition, 
-//				CAbstractVertexEvaluator *tpNodeEvaluator, 
-//				EObjectAction tWeaponState, 
-//				EPathType		tGlobalPathType,
-//				EDetailPathType	tPathType, 
-//				EBodyState tBodyState, 
-//				EMovementType tMovementType, 
-//				EMentalState tMentalState, 
-//				ELookType tLookType
-//			);
-//			void				vfSetParameters					(
-//				CAbstractVertexEvaluator *tpPathEvaluator, 
-//				Fvector *tpDesiredPosition, 
-//				CAbstractVertexEvaluator *tpNodeEvaluator, 
-//				EObjectAction tWeaponState, 
-//				EPathType		tGlobalPathType,
-//				EDetailPathType	tPathType, 
-//				EBodyState tBodyState, 
-//				EMovementType tMovementType, 
-//				EMentalState tMentalState, 
-//				ELookType tLookType, 
-//				const Fvector &tPointToLook, 
-//				u32 dwLookOverDelay = 2000
-//			);
-			
 	// miscellanious functions
 			void				DropItemSendMessage				(CObject *O);
 			bool				bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
-			void				vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);
 			bool				bfIfHuman						(const CEntity *tpEntity = 0);
 
 	// states

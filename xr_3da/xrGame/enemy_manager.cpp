@@ -30,12 +30,12 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 
 float CEnemyManager::evaluate				(const CEntityAlive *object) const
 {
-//	ai().ef_storage().m_tpCurrentMember = dynamic_cast<const CEntityAlive *>(this);
-//	ai().ef_storage().m_tpCurrentEnemy	= dynamic_cast<const CEntityAlive *>(object);
-//	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue());
-	float				distance = dynamic_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
-	distance			= !fis_zero(distance) ? distance : EPS_L;
-	return				(1.f/distance);
+	ai().ef_storage().m_tpCurrentMember = dynamic_cast<const CEntityAlive *>(this);
+	ai().ef_storage().m_tpCurrentEnemy	= dynamic_cast<const CEntityAlive *>(object);
+	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue());
+//	float				distance = dynamic_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+//	distance			= !fis_zero(distance) ? distance : EPS_L;
+//	return				(1.f/distance);
 }
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const

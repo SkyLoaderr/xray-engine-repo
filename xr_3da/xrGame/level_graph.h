@@ -242,19 +242,16 @@ private:
 	ref_shader			sh_debug;
 	xr_vector<Fvector>	m_tpTravelLine;
 	xr_vector<Fvector>	m_tpaPoints;
-	xr_vector<Fvector>	m_tpaDeviations;
 	xr_vector<Fvector>	m_tpaTravelPath;
 	xr_vector<u32>		m_tpaPointNodes;
 	xr_vector<Fvector>	m_tpaLine;
 	xr_vector<u32>		m_tpaNodes;
-	xr_vector<Fvector>	m_tpaTempPath;
+
 private:
 	STrajectoryPoint	start, dest;
 	CCoverPoint			*m_best_point;
-public:
-	xr_vector<BYTE>		q_mark;			// temporal usage mark for queries
-	xr_vector<u32>		q_stack;		// temporal usage stack for search enemy queries
 
+public:
 			void	render						();
 			void	set_start_point				();
 			void	set_dest_point				();
