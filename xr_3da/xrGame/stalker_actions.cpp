@@ -104,7 +104,7 @@ CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCST
 void CStalkerActionGatherItems::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGatherItems::finalize	()
@@ -151,7 +151,7 @@ CStalkerActionGetKillDistance::CStalkerActionGetKillDistance	(CAI_Stalker *objec
 void CStalkerActionGetKillDistance::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetKillDistance::finalize	()
@@ -196,7 +196,7 @@ CStalkerActionGetEnemy::CStalkerActionGetEnemy	(CAI_Stalker *object, LPCSTR acti
 void CStalkerActionGetEnemy::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetEnemy::finalize	()
@@ -240,7 +240,7 @@ CStalkerActionGetEnemySeen::CStalkerActionGetEnemySeen	(CAI_Stalker *object, LPC
 void CStalkerActionGetEnemySeen::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetEnemySeen::finalize	()
@@ -317,7 +317,7 @@ CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CAI_Stalker *object, L
 void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_object->CSightManager::clear();
 	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
@@ -372,7 +372,7 @@ CStalkerActionFindItemToKill::CStalkerActionFindItemToKill	(CAI_Stalker *object,
 void CStalkerActionFindItemToKill::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionFindItemToKill::finalize	()
@@ -416,7 +416,7 @@ CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CAI_Stalker *objec
 void CStalkerActionMakeItemKilling::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_object->CSightManager::clear();
 	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_ammo->Position(),false)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
@@ -472,7 +472,7 @@ CStalkerActionFindAmmo::CStalkerActionFindAmmo	(CAI_Stalker *object, LPCSTR acti
 void CStalkerActionFindAmmo::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionFindAmmo::finalize	()
@@ -516,7 +516,7 @@ CStalkerActionGetReadyToKillVeryAggressive::CStalkerActionGetReadyToKillVeryAggr
 void CStalkerActionGetReadyToKillVeryAggressive::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetReadyToKillVeryAggressive::finalize	()
@@ -593,7 +593,7 @@ CStalkerActionKillEnemyVeryAggressive::CStalkerActionKillEnemyVeryAggressive	(CA
 void CStalkerActionKillEnemyVeryAggressive::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionKillEnemyVeryAggressive::finalize	()
@@ -664,7 +664,7 @@ void CStalkerActionGetReadyToKillAggressive::initialize	()
 {
 	set_inertia_time		(1000);
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetReadyToKillAggressive::finalize	()
@@ -747,7 +747,7 @@ CStalkerActionKillEnemyAggressive::CStalkerActionKillEnemyAggressive	(CAI_Stalke
 void CStalkerActionKillEnemyAggressive::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
 	if (distance >= 30.f) {
@@ -835,8 +835,14 @@ CStalkerActionAimEnemy::CStalkerActionAimEnemy	(CAI_Stalker *object, LPCSTR acti
 void CStalkerActionAimEnemy::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
+//	if (m_object->enemy()) {
+//		CMemoryInfo				mem_object = m_object->memory(m_object->enemy());
+//		if (mem_object.m_object && m_object->visible(m_object->enemy())) {
+//			m_object->play		(eStalkerSoundAlarm);
+//		}
+//	}
 	if (distance >= 50.f) {
 		set_inertia_time	(1500);
 		m_run				= true;
@@ -916,7 +922,7 @@ CStalkerActionGetReadyToKillAvoid::CStalkerActionGetReadyToKillAvoid	(CAI_Stalke
 void CStalkerActionGetReadyToKillAvoid::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionGetReadyToKillAvoid::finalize	()
@@ -990,7 +996,7 @@ CStalkerActionKillEnemyAvoid::CStalkerActionKillEnemyAvoid	(CAI_Stalker *object,
 void CStalkerActionKillEnemyAvoid::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionKillEnemyAvoid::finalize	()
@@ -1062,7 +1068,7 @@ CStalkerActionRetreatFromEnemy::CStalkerActionRetreatFromEnemy	(CAI_Stalker *obj
 void CStalkerActionRetreatFromEnemy::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionRetreatFromEnemy::finalize	()
@@ -1135,7 +1141,7 @@ CStalkerActionCamp::CStalkerActionCamp	(CAI_Stalker *object, LPCSTR action_name)
 void CStalkerActionCamp::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionCamp::finalize	()
@@ -1210,7 +1216,7 @@ CStalkerActionGetReadyToKillModerate::CStalkerActionGetReadyToKillModerate	(CAI_
 void CStalkerActionGetReadyToKillModerate::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 	m_storage->set_property	(eWorldPropertySafeToKill,true);
 	m_storage->set_property	(eWorldPropertyFireEnough,false);
@@ -1284,7 +1290,7 @@ CStalkerActionKillEnemyModerate::CStalkerActionKillEnemyModerate	(CAI_Stalker *o
 void CStalkerActionKillEnemyModerate::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
 	if (distance >= 30.f) {
@@ -1384,7 +1390,7 @@ CStalkerActionGetEnemySeenModerate::CStalkerActionGetEnemySeenModerate	(CAI_Stal
 void CStalkerActionGetEnemySeenModerate::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_storage->set_property	(eWorldPropertyFireEnough,false);
 	m_storage->set_property	(eWorldPropertySafeToKill,true);
 	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
@@ -1499,7 +1505,7 @@ CStalkerActionKillEnemyLostModerate::CStalkerActionKillEnemyLostModerate	(CAI_St
 void CStalkerActionKillEnemyLostModerate::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionKillEnemyLostModerate::finalize	()
@@ -1577,7 +1583,7 @@ CStalkerActionTakeCover::CStalkerActionTakeCover	(CAI_Stalker *object, LPCSTR ac
 void CStalkerActionTakeCover::initialize()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 }
 
@@ -1619,7 +1625,7 @@ void CStalkerActionTakeCover::execute	()
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_mental_state		(eMentalStateDanger);
 	m_object->set_body_state		(eBodyStateStand);
-	if (!point->position().similar(m_object->Position(),1.5f))
+	if (!point || !point->position().similar(m_object->Position(),1.5f))
 		m_object->set_movement_type	(eMovementTypeRun);
 	else
 		m_object->set_movement_type	(eMovementTypeWalk);
