@@ -4,7 +4,7 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(17)
+#define SPAWN_VERSION	u16(18)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -16,6 +16,7 @@
 // 15 - xrSE_Zone append 			inherited calls from CALifeDynamicObject
 // 16 - xrSE_PhysicObject append 	inherited from CALifeDynamicObject
 // 17 - xrSE_...		  append 	inherited from xrSE_Visualed for smart Level Editor
+// 18 - xrSE_HangingLamp  append 	'startup_animation'
 //------------------------------------------------------------------------------
 
 class xrClientData;
