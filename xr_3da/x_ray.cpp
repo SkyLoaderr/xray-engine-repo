@@ -87,6 +87,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     // Init COM so we can use CoCreateInstance
     CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 	Core._initialize		("xray");
+	WORD sw					= CPU::getC
 	FPU::m24r				();
 
 	// mmgrInitialize	(0);
