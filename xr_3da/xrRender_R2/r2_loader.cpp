@@ -36,12 +36,6 @@ void CRender::level_Load()
 	pApp->LoadTitle		("Loading details...");
 	Details.Load		();
 
-	// Wallmarks
-	// Wallmarks			= xr_new<CWallmarksEngine>	();
-
-	// Streams
-	// hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-
 	// HOM
 	HOM.Load			();
 
@@ -57,12 +51,6 @@ void CRender::level_Unload()
 
 	// HOM
 	HOM.Unload				();
-
-	//*** Streams
-	// Device.Shader.DeleteGeom(hGeomPatches);
-
-	// Wallmarks
-	// xr_delete			(Wallmarks);
 
 	//*** Details
 	Details.Unload			();

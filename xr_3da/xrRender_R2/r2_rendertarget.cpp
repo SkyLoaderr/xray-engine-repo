@@ -8,7 +8,7 @@
 #include "blender_bloom_build.h"
 #include "blender_decompress.h"
 
-void	CRenderTarget::u_setrt			(ref_rt& _1, ref_rt& _2, ref_rt& _3, IDirect3DSurface9* zb)
+void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb)
 {
 	VERIFY									(_1);
 	dwWidth									= _1->dwWidth;
@@ -76,27 +76,26 @@ void	CRenderTarget::OnDeviceCreate	()
 	if (RImplementation.b_nv3x)
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Deffer					= Device.Shader._CreateRT	(r2_RT_DEFFER,	w,h,(D3DFORMAT)MAKEFOURCC('N','V','E','3'));
-		R_ASSERT					(rt_Deffer);
-		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
-		s_decompress				= Device.Shader.Create_B	(b_decompress,	"r2\\met_decompress");
+		rt_Deffer.create			(r2_RT_DEFFER,	w,h,(D3DFORMAT)MAKEFOURCC('N','V','E','3'));
+		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
+		s_decompress.create			(b_decompress,	"r2\\met_decompress");
 	}
 	else
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
+		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
 		s_decompress				= NULL;
 	}
 
 	// NORMAL-part2
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Accumulator				= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
-		rt_Generic					= Device.Shader._CreateRT	(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
+		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
+		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
 	}
 
 	// DIRECT
@@ -104,21 +103,21 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		u32	w=DSM_size, h=DSM_size;
 
-		rt_smap_d_surf				= Device.Shader._CreateRT	(r2_RT_smap_d_surf,			w,h,D3DFMT_A8R8G8B8);
-		rt_smap_d_depth				= Device.Shader._CreateRT	(r2_RT_smap_d_depth,		w,h,D3DFMT_D24X8);
+		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_A8R8G8B8);
+		rt_smap_d_depth.create		(r2_RT_smap_d_depth,		w,h,D3DFMT_D24X8);
 		rt_smap_d_ZB				= NULL;
-		s_accum_mask				= Device.Shader.Create_B	(b_accum_mask,				"r2\\accum_mask");
-		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,			"r2\\accum_direct");
+		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
+		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 	else
 	{
 		u32	w=DSM_size, h=DSM_size;
 
-		rt_smap_d_surf				= Device.Shader._CreateRT	(r2_RT_smap_d_surf,			w,h,D3DFMT_R32F);
+		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_R32F);
 		rt_smap_d_depth				= NULL;
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
-		s_accum_mask				= Device.Shader.Create_B	(b_accum_mask,				"r2\\accum_mask");
-		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,			"r2\\accum_direct");
+		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
+		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 
 	// POINT
@@ -132,21 +131,20 @@ void	CRenderTarget::OnDeviceCreate	()
 		{
 			// R3xx codepath, nv3x not implemented
 			R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
-			rt_smap_p					= Device.Shader._CreateRTC	(r2_RT_smap_p,				size,D3DFMT_R32F);
+			rt_smap_p.create			(r2_RT_smap_p,				size,D3DFMT_R32F);
 		}
-		s_accum_point_s				= Device.Shader.Create_B	(b_accum_point_s,			"r2\\accum_point_s");
-		s_accum_point_uns			= Device.Shader.Create_B	(b_accum_point_uns,			"r2\\accum_point_uns");
+		s_accum_point_s.create			(b_accum_point_s,			"r2\\accum_point_s");
+		s_accum_point_uns.create		(b_accum_point_uns,			"r2\\accum_point_uns");
 
 		accum_point_geom_create		();
-		g_accum_point				= Device.Shader.CreateGeom	(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
+		g_accum_point.create		(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
 	}
 
 	// SPOT
 	{
-		s_accum_spot_s				= Device.Shader.Create_B	(b_accum_spot_s,			"r2\\accum_spot_s",	"lights\\lights_spot01");
-
+		s_accum_spot_s.create		(b_accum_spot_s,			"r2\\accum_spot_s",	"lights\\lights_spot01");
 		accum_spot_geom_create		();
-		g_accum_spot				= Device.Shader.CreateGeom	(D3DFVF_XYZ,				g_accum_spot_vb, g_accum_spot_ib);
+		g_accum_spot.create			(D3DFVF_XYZ,				g_accum_spot_vb, g_accum_spot_ib);
 	}
 
 	// BLOOM
@@ -154,13 +152,13 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth/2, h=Device.dwHeight/2;
 		u32 fvf_build				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
 		u32 fvf_filter				= (u32)D3DFVF_XYZRHW|D3DFVF_TEX8|D3DFVF_TEXCOORDSIZE4(0)|D3DFVF_TEXCOORDSIZE4(1)|D3DFVF_TEXCOORDSIZE4(2)|D3DFVF_TEXCOORDSIZE4(3)|D3DFVF_TEXCOORDSIZE4(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6)|D3DFVF_TEXCOORDSIZE4(7);
-		rt_Bloom_1					= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
-		rt_Bloom_2					= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
-		g_bloom_build				= Device.Shader.CreateGeom	(fvf_build,		RCache.Vertex.Buffer(), RCache.QuadIB);
-		g_bloom_filter				= Device.Shader.CreateGeom	(fvf_filter,	RCache.Vertex.Buffer(), RCache.QuadIB);
-		s_bloom_dbg_1				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom1);
-		s_bloom_dbg_2				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom2);
-		s_bloom						= Device.Shader.Create_B	(b_bloom,					"r2\\bloom");
+		rt_Bloom_1.create			(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
+		rt_Bloom_2.create			(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
+		g_bloom_build.create		(fvf_build,		RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_bloom_filter.create		(fvf_filter,	RCache.Vertex.Buffer(), RCache.QuadIB);
+		s_bloom_dbg_1.create		("effects\\screen_set",		r2_RT_bloom1);
+		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
+		s_bloom.create				(b_bloom,					"r2\\bloom");
 		rt_Bloom_ZB					= NULL;
 		if (RImplementation.b_nv3x)
 			R_CHK					(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_Bloom_ZB,NULL));
@@ -168,17 +166,17 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// COMBINE
 	{
-		s_combine					= Device.Shader.Create_B	(b_combine,					"r2\\combine");
-		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N_H);
-		s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_accum);
-		s_combine_dbg_DepthD		= Device.Shader.Create		("effects\\screen_set",		r2_RT_smap_d_surf);
-		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+		s_combine.create					(b_combine,					"r2\\combine");
+		s_combine_dbg_Normal.create			("effects\\screen_set",		r2_RT_N_H);
+		s_combine_dbg_Accumulator.create	("effects\\screen_set",		r2_RT_accum);
+		s_combine_dbg_DepthD.create			("effects\\screen_set",		r2_RT_smap_d_surf);
+		g_combine.create					(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_blur				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
-		g_aa_blur					= Device.Shader.CreateGeom	(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_aa_blur.create			(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_AA				= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
-		g_aa_AA						= Device.Shader.CreateGeom	(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_aa_AA.create				(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// Build textures

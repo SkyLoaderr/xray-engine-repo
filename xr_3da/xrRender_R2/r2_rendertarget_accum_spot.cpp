@@ -7,7 +7,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
 	ref_shader		shader		= L->s_spot_s;
-	if (0==shader)				shader = s_accum_spot_s;
+	if (!shader)	shader		= s_accum_spot_s;
 
 	if (1)
 	{
