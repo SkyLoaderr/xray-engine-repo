@@ -4,3 +4,138 @@
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
 module("state_lib")
+
+--' Эвалуатор, который синхронизирует менеджер.
+class "evaluator_state_mgr" (property_evaluator)
+function evaluator_state_mgr:__init(name, manager) super (nil, name)
+	self.mgr = manager
+end
+function evaluator_state_mgr:evaluate()
+	self.mgr:update()
+	return true
+end
+
+--'-------------------------------------------------------------------------------------
+--' Эвалуаторы и экшены менеджера
+--'-------------------------------------------------------------------------------------
+--' Соответствует ли состояние оружия требуемому
+class "eva_state_mgr_weapon" (property_evaluator)
+function eva_state_mgr_weapon:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon:evaluate()
+	return true
+end
+--' Висит ли оружие на спине
+class "eva_state_mgr_weapon_strapped" (property_evaluator)
+function eva_state_mgr_weapon_strapped:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_strapped:evaluate()
+	return true
+end
+--' Держит ли он оружие в руках
+class "eva_state_mgr_weapon_unstrapped" (property_evaluator)
+function eva_state_mgr_weapon_unstrapped:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_unstrapped:evaluate()
+	return true
+end
+
+--' Спрятать оружие
+class "act_state_mgr_weapon_unstrapp" (action_base)
+function act_state_mgr_weapon_unstrapp:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_unstrapp:initialize()
+	action_base.initialize(self)
+end
+function act_state_mgr_weapon_unstrapp:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_unstrapp:finalize()
+	action_base.finalize(self)
+end
+--' Достать оружие
+class "act_state_mgr_weapon_strapp" (action_base)
+function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_strapp:initialize()
+	action_base.initialize(self)
+end
+function act_state_mgr_weapon_strapp:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_strapp:finalize()
+	action_base.finalize(self)
+end
+
+
+--' Сам менеджер
+class "state_manager"
+function state_manager:__init(npc)
+	self.planner = state_mgr.action_planner()
+	self.planner:setup(npc)
+	
+	local properties = {}
+	local operators = {}
+	
+	properties["weapon"]			= 1
+	properties["weapon_strapped"]	= 2
+	properties["weapon_unstrapped"] = 3
+	self.planner:add_evaluator(properties["weapon"],			this.eva_state_mgr_weapon("state_mgr_weapon"))
+	self.planner:add_evaluator(properties["weapon_strapped"],	this.eva_state_mgr_weapon_strapped("state_mgr_weapon_strapped"))
+	self.planner:add_evaluator(properties["weapon_unstrapped"],	this.eva_state_mgr_weapon_unstrapped("state_mgr_weapon_unstrapped"))
+
+	operators["weapon_strapp"]		= 1
+	operators["weapon_unstrapp"]	= 2
+	
+	--' Actions
+	local action = this.act_state_mgr_weapon_unstrapp("state_mgr_weapon_unstrapp")
+	action:add_precondition		(world_property(properties["weapon_strapped"],true))
+	action:add_precondition		(world_property(properties["weapon_unstrapped"],false))
+	action:add_effect 			(world_property(properties["weapon"], 		true))
+	self.planner:add_action(operators["weapon_unstrapp"], action)
+	
+	action = this.act_state_mgr_weapon_strapp("state_mgr_weapon_strapp")
+	action:add_precondition		(world_property(properties["weapon_strapped"],false))
+	action:add_precondition		(world_property(properties["weapon_unstrapped"],true))
+	action:add_effect 			(world_property(properties["weapon"], 		true))
+	self.planner:add_action(operators["weapon_strapp"], action)
+
+	local goal = world_state()			
+	goal:add_property(world_property(properties["weapon"],true))
+	self.planner:set_goal_world_state(goal)
+		
+	self.current_state = idle
+	self.target_state = idle
+end
+function state_manager:update()
+	printf("Update called")
+	--self.planner:update()
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function bind_manager(object, manager)
+	local manager = object:motivation_action_manager()
+	
+	local properties	= {}
+	properties["state_mgr"] 		= xr_evaluators_id.state_mgr
+
+	manager:add_evaluator(properties["state_mgr"], 	evaluator_state_mgr("state_mgr_allow", state_mgr.state_manager(object)))
+
+	local action = manager:action(xr_actions_id.alife)	
+	action:add_precondition(world_property(properties["state_mgr"],		true))
+
+end
+

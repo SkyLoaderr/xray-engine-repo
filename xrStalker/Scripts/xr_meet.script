@@ -67,140 +67,10 @@ function evaluator_weapon:evaluate()
 	end
 	return false
 end
---' нужно ли отпугивать клиента
-class "evaluator_threat" (property_evaluator)
-function evaluator_threat:__init(name, storage) super (nil, name)
-	self.a = storage
-end
-function evaluator_threat:evaluate()
-	--' Если рядом с нами член другой группировки
-	return false
-end
---' ждать появления клиента
-class "evaluator_wait" (property_evaluator)
-function evaluator_wait:__init(name, storage) super (nil, name)
-	self.a = storage
-end
-function evaluator_wait:evaluate()
-	return self.a.Buyer ~= nil
-end
 
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
---' Ожидание появления покупателя
-class "action_wait_for_buyer" (action_base)
-function action_wait_for_buyer:__init (npc_name,action_name,storage) super (nil, action_name)
-	self.a = storage
-end
-function action_wait_for_buyer:initialize()
-	action_base.initialize(self)
-
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	level.map_add_object_icon(self.object, 0)	
-	self.object:set_item(object.idle, self.object:best_weapon())
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.free)
-
-	self.act = {type = 1,
-		     begin = nil,
-		     time = 6}
-
-	self.anim = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 5,
-   		     rnd = 100,
-		     lastanim = nil}
-
-	self.anim_s = {idle = 0,
-		     begin = nil,
-		     maxidle = 3, 
-		     sumidle = 5,
-   		     rnd = 80,
-		     lastanim = nil}
-
-	self.sound_s = { rnd = 100,
-				   maxidle = 2, 
-				   sumidle = 5,
-				   themes = { "weather", "state", "hail" } }
-
-	self.sound_w = { rnd = 100,
-				   maxidle = 5, 
-				   sumidle = 7,
-				   themes = { "weather", "state", "wait" } }
-	
-	xr_state.change_state(self.object, xr_state.stand)
-end
-function action_wait_for_buyer:execute ()
-	action_base.execute (self)
-
-	if xr_state.finish_state(self.object) ~= nil then
-		return
-	end
-	
-	-- Проверка, видим ли мы актора или нет
-	if self.object:see(self.a.Buyer) == true then
-		-- смотрим на клиента
-		local pos = self.a.Buyer:position()
-   		pos.y = pos.y + 1
-   		self.object:set_sight(look.point, pos, 0)
-
-		-- секция анимации
-		xr_state.anim_update("idle", self.object)
-		-- надо изредка рукой махать
-		if (self.anim_s.begin == nil or
-		   (device():time_global()/1000 - self.anim_s.begin) > self.anim_s.idle) then
-			if math.random(100) < self.anim_s.rnd then
-				xr_state.anim_update("hello", self.object)
-			end
-			self.anim_s.begin = device():time_global()/1000
-			self.anim_s.idle = math.random(self.anim_s.maxidle) + self.anim_s.sumidle
-		end
-		                           
-		-- секция озвучки
-		if self.object:active_sound_count() == 0 then
-			xr_sound.sound_update(self.object, self.sound_s)		
-		end
-	else
-		-- секция анимации
-		-- 1: если не отыгрываем никаких анимаций - то поворачиваемся в случайную сторону
-		-- 2: выжидаем, иногда отыгрывая какую либо анимацию
-		if self.act.type == 1 then
-			self.act.begin = device():time_global()/1000
-			self.act.type = 2
-
-			local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
-			self.object:set_sight(look.direction, dir, 0)
-			self.object:set_body_state(move.standing)
-		else
-			xr_state.anim_update("idle", self.object)
-
-			if (device():time_global()/1000 - self.act.begin) > self.act.time then
-				self.act.type = 1
-			end
-		end
-
-		-- секция озвучки
-		if self.object:active_sound_count() == 0 then
-			xr_sound.sound_update(self.object, self.sound_w)		
-		end
-	end
-
-	-- проверять условия завершения ожидания
-	if db.storage[self.object:id()].meet.actor ~= nil then
-		self.a.Buyer = nil
-	end
-end
-function action_wait_for_buyer:finalize ()
-	level.map_remove_object_icon(self.object)
-	action_base.finalize (self)
-end
-
 --' Приглашение к тороговле
 class "action_meet_wait" (action_base)
 function action_meet_wait:__init (npc_name,action_name, storage, char_ini) super (nil, action_name)
@@ -298,48 +168,6 @@ function action_weapon:finalize ()
 	action_base.finalize (self)
 end
 
---' Типа свали отсюда, чувак
-class "action_threat" (action_base)
-function action_threat:__init (npc_name,action_name, storage) super (nil, action_name)
-	self.a = storage
-
-	self.sound_e = { rnd = 100,
-				   maxidle = 3, 
-				   sumidle = 5,
-				   themes = { "threat_back" } }
-end
-function action_threat:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.danger)
-
-	self.object:clear_animations()
-	stop_play_sound(self.object)
-end
-function action_threat:execute ()
-   	self.object:set_item(object.idle, self.object:best_weapon())
-
-	-- нужно остановиться и посмотреть в сторону актора
-	local pos = self.a.actor:position()
-
-	local dir = self.a.actor:position():sub(self.object:position())
-	self.object:set_sight(look.direction, dir, 0)
-
-	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, self.sound_e)		
-	end	
-	xr_meet.attack(self.object, self.a)
-	action_base.execute (self)
-end
-function action_threat:finalize ()
-	action_base.finalize (self)
-end
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
@@ -381,23 +209,16 @@ function add_to_binder(object, char_ini)
 	local manager = object:motivation_action_manager()
 
 	properties["event"] 		= xr_evaluators_id.reaction
-	properties["wait_buyer"] 	= xr_evaluators_id.stohe_tradeseller_base + 1
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
-	properties["threat"]		= xr_evaluators_id.stohe_meet_base + 3
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
-	operators["wait_buyer"] 		= xr_actions_id.stohe_tradeseller_base + 2
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
 	operators["weapon"]				= xr_actions_id.stohe_meet_base + 2
-	operators["threat"]				= xr_actions_id.stohe_meet_base + 3
-	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
-	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", db.storage[object:id()].meet, "meet_wait_buyer"))
 	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", db.storage[object:id()].meet, "meet_contact"))
 	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", db.storage[object:id()].meet, "meet_weapon"))
-	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", db.storage[object:id()].meet, "meet_threat"))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", db.storage[object:id()].meet, char_ini)
@@ -405,7 +226,6 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		false))
-	action:add_precondition		(world_property(properties["threat"], 		false))
 	action:add_effect 			(world_property(properties["contact"], 		false))
 	manager:add_action (operators["wait_trade"], action)
 
@@ -417,26 +237,9 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["weapon"], 			false))
 	manager:add_action (operators["weapon"], action)
 
-	action = action_threat (object:name(),"action_threat", db.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["contact"], 		true))
-	action:add_precondition		(world_property(properties["threat"], 		true))
-	action:add_effect 		(world_property(properties["threat"], 			false))
-	manager:add_action (operators["threat"], action)
-
-	-- Ожидание торговца
-	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", db.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
-	action:add_precondition		(world_property(properties["event"], 		false))
-	action:add_effect 		(world_property(properties["wait_buyer"], 		false))
-	manager:add_action (operators["wait_buyer"], action)
 
 	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
-	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
 
     if char_ini ~= nil and char_ini:section_exist("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
