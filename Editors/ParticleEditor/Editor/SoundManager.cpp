@@ -142,6 +142,7 @@ void CSoundManager::CreateSoundThumbnail(ESoundThumbnail* THM, const AnsiString&
 	AnsiString base_name;
     if (initial)	FS.update_path(base_name,initial,src_name.c_str());
     else			FS.update_path(base_name,_sounds_,src_name.c_str());
+	base_name		= ChangeFileExt(base_name,".wav");
 
     // выставить начальные параметры
 	if (bSetDefParam){
