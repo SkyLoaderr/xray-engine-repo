@@ -947,18 +947,18 @@ void CAI_Rat::Die()
 	bActive = false;
 	bEnabled = false;
 
-	Fvector tPosition = Position();
-	float fY = ffGetY(*AI_Node,tPosition.x,tPosition.z);
-	if (tPosition.y - fY > 0.01f) {
-		Fvector tAcceleration;
-		tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
-		vfNormalizeSafe(tAcceleration);
-		tAcceleration.mul(5);
-		Movement.SetPosition(vPosition);
-		Movement.Calculate	(tAcceleration,0,0,0.01f,false);
-		Movement.GetPosition(vPosition);
-	}
-	else {
+	if (m_tpEnemyBeingAttacked) {
+		Fvector tPosition = Position();
+		float fY = ffGetY(*AI_Node,tPosition.x,tPosition.z);
+		if (tPosition.y - fY > 0.01f) {
+			Fvector tAcceleration;
+			tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+			vfNormalizeSafe(tAcceleration);
+			tAcceleration.mul(5);
+			Movement.SetPosition(vPosition);
+			Movement.Calculate	(tAcceleration,0,0,0.01f,false);
+			Movement.GetPosition(vPosition);
+		}
 	}
 
 	bStopThinking = true;
