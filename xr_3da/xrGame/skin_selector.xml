@@ -11,11 +11,11 @@
 	</frame_window>
 
 	<!-- OK and CANCEL buttons -->
-	<button x="600" y="900" width="150" height="40">
+	<button x="0" y="900" width="150" height="40">
 		<texture>ui\ui_button_01</texture>
 		<text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Ok</text>
 	</button>
-	<button x="300" y="900" width="150" height="40">
+	<button x="0" y="900" width="150" height="40">
 		<texture>ui\ui_button_01</texture>
 		<text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Cancel</text>
 	</button>
