@@ -240,25 +240,25 @@ void CWeaponProtecta::Show		()
 	inherited::Show				();
 }
 
-void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	inherited::AddShotmark(vDir, vEnd, R);
+	inherited::FireShotmark	(vDir, vEnd, R);
 
 	// particles
-	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
 	Fvector N,D;
-	N.mknormal(pTri->V(0),pTri->V(1),pTri->V(2));
-	D.reflect(vDir,N);
+	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
+	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
+	D.reflect			(vDir,N);
+
 	CSector* S			= ::Render.getSector(pTri->sector);
-// stones
+
+	// stones
 	CPSObject* PS		= new CPSObject("stones",S,true);
-	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 
-// smoke
+	// smoke
 	PS					= new CPSObject("smokepuffs_1",S,true);
-	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }

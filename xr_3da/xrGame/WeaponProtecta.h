@@ -43,7 +43,7 @@ private:
 	void			UpdateXForm		(BOOL bHUD);
 
 protected:
-	virtual void	AddShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
 					CWeaponProtecta	();
 	virtual			~CWeaponProtecta();

@@ -101,7 +101,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans){
 	svTransform.set	(trans);
 }
 
-void CWeapon::AddShotmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (0==hWallmark)	return;
 	if (R.O)			return;
@@ -113,7 +113,7 @@ void CWeapon::AddShotmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray
 	);
 }
 
-BOOL CWeapon::FireTrace(const Fvector& P, const Fvector& Peff, Fvector& D)
+BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
 	Collide::ray_query	RQ;
 
@@ -145,7 +145,7 @@ BOOL CWeapon::FireTrace(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// tracer
 	Fcolor		c; c.set(1,1,1,1);
-	Level().Tracers.Add(Peff,end_point,300,0.5f,1,c);
+	Level().Tracers.Add	(Peff,end_point,300,0.5f,1,c);
 
 	return				bResult;
 }
