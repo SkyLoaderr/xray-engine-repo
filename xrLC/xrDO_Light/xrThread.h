@@ -4,10 +4,10 @@ class ENGINE_API CThread
 {
 	static void __cdecl startup(void* P);
 public:
-	DWORD		thID;
-	float		thProgress;
-	BOOL		thCompleted;
-	BOOL		thMessages;
+	volatile DWORD		thID;
+	volatile float		thProgress;
+	volatile BOOL		thCompleted;
+	volatile BOOL		thMessages;
 
 	CThread				(DWORD _ID)	
 	{

@@ -6,17 +6,26 @@ extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, 
 
 class CLMThread : public CThread
 {
-	CDeflector*	defl;
+public:
+	CDeflector *	volatile defl;
+	BOOL			volatile bContinue;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{
 		defl		= D;
 		thMessages	= FALSE;
+		bContinue	= TRUE;
 	}
 
 	virtual void	Execute()
 	{
-		defl->Light	();
+		while (bContinue) 
+		{
+			defl->Light	();
+			defl = 0;
+			
+			while ((0==defl) && bContinue) Sleep(1);
+		}
 	}
 };
 
@@ -36,12 +45,17 @@ void CBuild::Light()
 	DWORD		N=0;
 	for (;;) {
 		for (int L=0; L<thNUM; L++) {
-			if ((0==threads[L]) || threads[L]->thCompleted)
+			if ((0==threads[L]) || (0==threads[L]->defl))
 			{
-				_DELETE	(threads[L]);
-				if (N>=g_deflectors.size())	continue;
-				threads[L]			= new CLMThread(N,g_deflectors[N]);	N++;
-				threads[L]->Start	();
+				if (N>=g_deflectors.size())		continue;
+				if (0==threads[L])	{
+					// Start NEW thread
+					threads[L]			= new CLMThread(N,g_deflectors[N]);	N++;
+					threads[L]->Start	();
+				} else {
+					// Use existing one
+					threads[L]->defl	= g_deflectors[N];
+				}
 				
 				// Info
 				float	P = float(N)/float(g_deflectors.size());
@@ -53,6 +67,11 @@ void CBuild::Light()
 		for (L=0; L<thNUM; L++)	thOK += (threads[L]?0:1);
 		if		(thOK==thNUM)	break;
 		Sleep	(50);
+	}
+	for (int L=0; L<thNUM; L++)	{
+		threads[L]->bContinue	= FALSE;
+		while	(!threads[L]->thCompleted) Sleep(1);
+		_DELETE	(threads[L]);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 }
