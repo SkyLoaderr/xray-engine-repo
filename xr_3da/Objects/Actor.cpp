@@ -257,12 +257,12 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 	pSounds->PlayAtPos(S,this,vPosition);
 
 	// hit marker
-	if (net_Local && (who!=this))	
+	if (Local() && (who!=this))	
 	{
-		Msg("%s",who->cName());
-		int id = -1;
-		float x = fabsf(vLocalDir.x);
-		float z = fabsf(vLocalDir.z);
+		Msg		("%s",who->cName());
+		int id		= -1;
+		float x		= _abs(vLocalDir.x);
+		float z		= _abs(vLocalDir.z);
 		if (z>x)	id = (vLocalDir.z<0)?2:0;
 		else		id = (vLocalDir.x<0)?3:1;
 		Level().HUD()->Hit(id);

@@ -70,30 +70,33 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GE_HIT:
 		{
 			// Parse message
-			u16					id_dest =destination, id_src;
+			u16					id_dest		=	destination, id_src;
 			P.r_u16				(id_src);
-			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);
-			xrServerEntity*		e_src		= ID_to_entity	(id_src	);
+			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);	// кто повредился
+			xrServerEntity*		e_src		= ID_to_entity	(id_src	);	// благодаря кому
 			xrClientData*		c_dest		= e_dest->owner;
 			xrClientData*		c_src		= e_src->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
 			R_ASSERT			(c_src == c_from);		// assure client ownership of event
 
-			// Signal just to destination
+			// Signal just to destination (тому, кто повредился)
 			SendTo				(c_dest->ID,P,net_flags(TRUE,TRUE));
 		}
 		break;
 	case GE_DIE:
 		{
 			// Parse message
-			u16					id_dest =	destination, id_src;
+			u16					id_dest		=	destination, id_src;
 			P.r_u16				(id_src);
-			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);
-			xrServerEntity*		e_src		= ID_to_entity	(id_src	);
-			xrClientData*		c_dest		= e_dest->owner;
-			xrClientData*		c_src		= e_src->owner;
-			xrClientData*		c_from		= ID_to_client	(sender);
-			R_ASSERT			(c_src == c_from);		// assure client ownership of event
+			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);	// кто умер
+			xrServerEntity*		e_src		= ID_to_entity	(id_src	);	// кто убил
+
+			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
+			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
+			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
+			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
+
+			// 
 		}
 		break;
 	default:

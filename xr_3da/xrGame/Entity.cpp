@@ -60,13 +60,23 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_HIT:
 		{
-			u16			id;
-			Fvector		dir;
-			float		power;
-			P.r_u16		(id);
-			P.r_dir		(dir);
-			P.r_float	(power);
-			Hit			(power,dir,Level().Objects.net_Find(id));
+			u16				id;
+			Fvector			dir;
+			float			power;
+			P.r_u16			(id);
+			P.r_dir			(dir);
+			P.r_float		(power);
+			Hit				(power,dir,Level().Objects.net_Find(id));
+		}
+		break;
+	case GE_DIE:
+		{
+			u16				id;
+			P.r_u16			(id);
+			CObject* who	= Level().Objects.net_Find	(id);
+			if (who!=this)	Level().HUD()->outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
+			else			Level().HUD()->outMessage	(0xffffffff,cName(),"Crashed...");
+			Die				();
 		}
 		break;
 	}
@@ -89,33 +99,33 @@ BOOL CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	// hit impulse
 	HitImpulse				(perc,dir,vLocalDir);
 	
-	// Calc HitAmount
-	float fHitAmount=0, fOldHealth=fHealth;
-	if (Local()) 
+	// Calc amount (correct only on local player)
+	float	lost_health,		lost_armor;
+	if (fArmor>0)
 	{
-		if (fArmor)
+		lost_health		=	(fMAX_Armor-fArmor)/fMAX_Armor*perc;
+		lost_armor		=	(perc*9.f)/10.f;
+	} else {
+		lost_health		=	perc;
+		lost_armor		=	0;
+	}
+
+	// Signal hit
+	HitSignal				(lost_health,vLocalDir,who);
+
+	// If Local() - perform some logic
+	if (Local())
+	{
+		if (lost_health>fHealth)	
 		{
-			fHealth		-=	(fMAX_Armor-fArmor)/fMAX_Armor*perc;
-			fHitAmount	=	(perc*9)/10;
-			fArmor		-=	fHitAmount;
-		} else {
-			fHitAmount	=	perc;
-			fHealth		-=	fHitAmount;
+			// die
+			NET_Packet		P;
+			u_EventGen		(P,GE_DIE,ID()	);
+			P.w_u16			(who->ID()		);
+			u_EventSend		(P);
 		}
-	}
-	
-	// Update state and play sounds, etc
-	if (fHealth<=0 && fOldHealth>0)
-	{ 
-		if (who!=this)	Level().HUD()->outMessage(0xffffffff,cName(),"Killed by '%s'...",who->cName());
-		else			Level().HUD()->outMessage(0xffffffff,cName(),"Crashed...");
-		Die				();
-		return TRUE;
-	}
-	else
-	{
-		HitSignal		(fHitAmount,vLocalDir,who);
-		return FALSE;
+		fHealth			-=	lost_health;
+		fArmor			-=	lost_armor;
 	}
 }
 

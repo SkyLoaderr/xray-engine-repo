@@ -215,7 +215,7 @@ GE_TRANSFER_AMMO
 }
 GE_HIT									// попадание (пулей)
 {
-	u16			id_entity;				// кто попал
+	u16			id_entity;				// dest=кто повредился, entity=кто попал
 	direction	dir;
 	float		power;
 }

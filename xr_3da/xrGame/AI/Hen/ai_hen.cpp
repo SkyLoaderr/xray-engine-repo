@@ -69,17 +69,17 @@ void CAI_Hen::Load	(LPCSTR section)
 void CAI_Hen::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
-	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
-	dwHitTime = Level().timeServer();
-	tHitDir.set(D);
-	tHitDir.normalize();
+	Fvector							D;
+	svTransform.transform_dir		(D,vLocalDir);
+	dwHitTime = Level().timeServer	();
+	tHitDir.set						(D);
+	tHitDir.normalize				();
 
 	// Play hit-sound
-	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
-	if (S.feedback)			return;
-	if (Random.randI(2))	return;
-	pSounds->PlayAtPos	(S,this,vPosition);
+	sound& S						= sndHit[Random.randI(SND_HIT_COUNT)];
+	if (S.feedback)					return;
+	if (Random.randI(2))			return;
+	pSounds->PlayAtPos				(S,this,vPosition);
 }
 
 // when someone hit hen

@@ -108,7 +108,7 @@ public:
 	int						g_Group				()	{ return id_Group;	}
 
 	// Health calculations
-	virtual	BOOL			Hit					(float P, Fvector &dir,			CObject* who);		// TRUE if died
+	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual void			Die					()													= 0;
