@@ -9,9 +9,9 @@
 #include "..\psvisual.h"
 
 const float snd_fade		= 0.2f;
-const int	desired_items	= 1000;
+const int	desired_items	= 2000;
 const float	drop_length		= 1.5f;
-const float drop_width		= 0.05f;
+const float drop_width		= 0.025f;
 const float drop_angle		= 3.f;
 const float drop_speed_min	= 20.f;
 const float drop_speed_max	= 40.f;
