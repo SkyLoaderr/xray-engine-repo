@@ -53,8 +53,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_float_q16		(fArmor,-1000,1000);
 
 	int w_id = Weapons->SelectedWeaponID	();
-	if (w_id<0)			P->w_u8(0xff);
-	else				P->w_u8(u8(w_id&0xff));
+	if (w_id<0)			P.w_u8(0xff);
+	else				P.w_u8(u8(w_id&0xff));
 }
 
 void CActor::net_Import		(NET_Packet& P)					// import from server
@@ -77,7 +77,7 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	P.r_float_q16		(fArmor,-1000,1000);
 
 	u8					wpn;
-	P->r_u8				(wpn);
+	P.r_u8				(wpn);
 	if (0xff==wpn)		N.weapon		= -1;
 	else				N.weapon		= int(wpn);
 
