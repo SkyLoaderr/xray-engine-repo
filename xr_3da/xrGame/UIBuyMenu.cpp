@@ -11,9 +11,9 @@
 CUIBuyMenu::CUIBuyMenu()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	menu_offs			= HUD->ClientToScreenScaledY(BUY_MENU_OFFS,alLeft|alTop)/HUD->pHUDFont->GetScale();
-	menu_offs_col[0]	= HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL1,alLeft|alTop)/HUD->pHUDFont->GetScale();
-	menu_offs_col[1]	= HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL2,alLeft|alTop)/HUD->pHUDFont->GetScale();
+	menu_offs			= iFloor(HUD->ClientToScreenScaledY(BUY_MENU_OFFS,alLeft|alTop)/HUD->pHUDFont->GetScale());
+	menu_offs_col[0]	= iFloor(HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL1,alLeft|alTop)/HUD->pHUDFont->GetScale());
+	menu_offs_col[1]	= iFloor(HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL2,alLeft|alTop)/HUD->pHUDFont->GetScale());
 	menu_root			= 0;
 	menu_active			= 0;
 }
@@ -72,13 +72,13 @@ void CUIBuyMenu::OnFrame()
 		CGameFont* F	= Level().HUD()->pHUDFont2;
 		F->Color		(0xFFFFFFFF);
 		if (menu_active->m_Parent){
-			F->OutSet	(menu_offs_col[1],menu_offs);
+			F->OutSet	(float(menu_offs_col[1]),float(menu_offs));
 			F->OutNext	("$ Cost");
 		}
-		F->OutSet		(menu_offs_col[0],menu_offs);
+		F->OutSet		(float(menu_offs_col[0]),float(menu_offs));
 		F->OutNext		("Buy %s",menu_active->caption);
 		for (int col=0; col<2; col++){
-			F->OutSet	(menu_offs_col[col],menu_offs);
+			F->OutSet	(float(menu_offs_col[col]),float(menu_offs));
 			F->OutSkip	();
 			F->OutSkip	();
 			int k=1;
@@ -134,8 +134,8 @@ bool CUIBuyMenu::OnKeyboardPress(int dik)
 
 bool CUIBuyMenu::OnKeyboardRelease(int dik)
 {
-	switch (dik){
-	}
+//	switch (dik){
+//	}
 	return false;
 }
 //--------------------------------------------------------------------

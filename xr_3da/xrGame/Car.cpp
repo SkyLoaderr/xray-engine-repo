@@ -128,7 +128,6 @@ void	CCar::Update				( DWORD T )
 {
 	inherited::Update				(T);
 
-	float dt						= float(T)/1000.f;
 	vPosition.set	(m_jeep.DynamicData.BoneTransform.c);
 	
 	Fmatrix mY;

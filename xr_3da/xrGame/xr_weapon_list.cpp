@@ -103,7 +103,7 @@ void CWeaponList::weapon_die		()
 {
 	NET_Packet		P;
 
-	for (int it=0; it<m_Weapons.size(); it++)
+	for (int it=0; it<int(m_Weapons.size()); it++)
 	{
 		CWeapon* W	= m_Weapons[it];
 		if (it==m_iActiveWeapon)

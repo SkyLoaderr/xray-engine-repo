@@ -44,7 +44,7 @@ class CUIBuyMenu{
 		{
 			id--;
 			if (-1==id) return m_Parent;
-			if (id<items.size()) return items[id];
+			if (id<int(items.size())) return items[id];
 			return 0;
 		}
 		IC void			Execute				()			{if (OnExecute) OnExecute(this);}

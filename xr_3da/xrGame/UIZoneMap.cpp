@@ -10,11 +10,11 @@
 #define COLOR_FRIEND	0xffffffff
 #define COLOR_SELF		0xff00ff00
 
-#define BASE_LEFT		9.f
-#define BASE_TOP		6.f
-#define MAP_LEFT		76.f
-#define MAP_TOP			80.f
-#define MAP_RADIUS		66.f
+#define BASE_LEFT		9
+#define BASE_TOP		6
+#define MAP_LEFT		76
+#define MAP_TOP			80
+#define MAP_RADIUS		66
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
