@@ -107,8 +107,8 @@ void SGameMtlPair::FillProp(PropValueVec& values)
     if (ID_parent!=-1){ 
        	OnChange 		= OnFlagChange;
         mask		    = PropValue::flShowCB;
-		int cnt 		= GMLib.GetParents(this,parents); R_ASSERT(cnt);
-	    FILL_PROP(values,"Parent", (void*)GMLib.MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()),	PHelper.CreateMarker());
+		int cnt 		= m_Owner->GetParents(this,parents); R_ASSERT(cnt);
+	    FILL_PROP(values,"Parent", (void*)m_Owner->MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()),	PHelper.CreateMarker());
     }
     
 	propFlotation		= PHelper.CreateFloat		(0.f,1.f,0.01f,2,SetMask(mask,OwnProps,flFlotation), 	0,0,0,OnChange);
@@ -197,7 +197,7 @@ SGameMtlPair* CGameMtlLibrary::AppendMaterialPair(int m0, int m1, SGameMtlPair* 
 {
     SGameMtlPair*	S = GetMaterialPair(m0,m1);
     if (!S){
-        SGameMtlPair* M	= new SGameMtlPair	();
+        SGameMtlPair* M	= new SGameMtlPair	(this);
         if (parent){
             M->ID_parent = parent->ID;
             M->OwnProps.zero();

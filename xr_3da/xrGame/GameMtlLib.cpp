@@ -43,6 +43,9 @@ void CGameMtlLibrary::Load(LPCSTR name)
     material_index		= fs.Rdword();
     material_pair_index	= fs.Rdword();
 
+    materials.clear		();
+    material_pairs.clear();
+    
     CStream* OBJ 		= fs.OpenChunk(GAMEMTLS_CHUNK_MTLS);
     if (OBJ){
         CStream* O   	= OBJ->OpenChunk(0);
@@ -60,7 +63,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     if (OBJ){
         CStream* O   	= OBJ->OpenChunk(0);
         for (int count=1; O; count++) {
-        	SGameMtlPair* M	= new SGameMtlPair();
+        	SGameMtlPair* M	= new SGameMtlPair(this);
 	        M->Load		(*O);
         	material_pairs.push_back(M);
     	    O->Close	();

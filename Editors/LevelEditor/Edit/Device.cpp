@@ -6,6 +6,7 @@
 #include "ImageManager.h"
 #include "ui_main.h"
 #include "render.h"
+#include "GameMtlLib.h"
 
 #pragma package(smart_init)
 
@@ -85,6 +86,16 @@ void CRenderDevice::Initialize()
 
 	Surface_Init();
 
+	// game materials
+	AnsiString fn_gm = "gamemtl.xr";
+    Engine.FS.m_GameRoot.Update(fn_gm);
+    if (Engine.FS.Exist(fn_gm.c_str())){
+    	GMLib.Load(fn_gm.c_str());
+    }else{
+    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn_gm.c_str());
+    }
+
+	// compiler shader
 	AnsiString fn = "shaders_xrlc.xr";
     Engine.FS.m_GameRoot.Update(fn);
     if (Engine.FS.Exist(fn.c_str())){
