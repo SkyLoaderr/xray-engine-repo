@@ -129,7 +129,7 @@ void	CBlender_LmBmmD::Compile	(CBlender_Compile& C)
 					// Stage0 - Lightmap
 					C.StageBegin			();
 					C.StageTemplate_LMAP0	();
-					C.StageEnd			();
+					C.StageEnd				();
 					
 					// Stage1 - Base texture
 					C.StageBegin			();
