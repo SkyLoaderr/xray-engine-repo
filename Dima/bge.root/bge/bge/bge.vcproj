@@ -308,7 +308,7 @@
 					Name="luabind"
 					>
 					<File
-						RelativePath=".\luabind\class.cpp"
+						RelativePath=".\luabind\luabind\src\class.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -328,7 +328,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\class_info.cpp"
+						RelativePath=".\luabind\luabind\src\class_info.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -348,7 +348,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\class_registry.cpp"
+						RelativePath=".\luabind\luabind\src\class_registry.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -368,7 +368,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\class_rep.cpp"
+						RelativePath=".\luabind\luabind\src\class_rep.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -388,7 +388,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\create_class.cpp"
+						RelativePath=".\luabind\luabind\src\create_class.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -408,7 +408,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\error.cpp"
+						RelativePath=".\luabind\luabind\src\error.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -428,7 +428,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\find_best_match.cpp"
+						RelativePath=".\luabind\luabind\src\find_best_match.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -448,7 +448,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\function.cpp"
+						RelativePath=".\luabind\luabind\src\function.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -468,7 +468,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\implicit_cast.cpp"
+						RelativePath=".\luabind\luabind\src\implicit_cast.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -488,7 +488,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\link_compatibility.cpp"
+						RelativePath=".\luabind\luabind\src\link_compatibility.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -508,7 +508,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\object.cpp"
+						RelativePath=".\luabind\luabind\src\object.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -528,7 +528,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\object_rep.cpp"
+						RelativePath=".\luabind\luabind\src\object_rep.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -548,7 +548,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\open.cpp"
+						RelativePath=".\luabind\luabind\src\open.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -568,7 +568,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\pcall.cpp"
+						RelativePath=".\luabind\luabind\src\pcall.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -588,7 +588,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\ref.cpp"
+						RelativePath=".\luabind\luabind\src\ref.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -608,7 +608,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\scope.cpp"
+						RelativePath=".\luabind\luabind\src\scope.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -628,7 +628,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\stack_content_by_name.cpp"
+						RelativePath=".\luabind\luabind\src\stack_content_by_name.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -648,7 +648,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\weak_ref.cpp"
+						RelativePath=".\luabind\luabind\src\weak_ref.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -668,7 +668,7 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\luabind\wrapper_base.cpp"
+						RelativePath=".\luabind\luabind\src\wrapper_base.cpp"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -691,6 +691,724 @@
 				<Filter
 					Name="engine"
 					>
+				</Filter>
+				<Filter
+					Name="lua"
+					>
+					<File
+						RelativePath=".\lua\src\debug_str.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\debug_str.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lapi.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lapi.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lcode.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lcode.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\ldebug.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\ldebug.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\ldo.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\ldo.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\ldump.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lfunc.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lfunc.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lgc.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lgc.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\llex.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\llex.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\llimits.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lmem.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lmem.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lobject.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lobject.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lopcodes.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lopcodes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lparser.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lparser.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lstate.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lstate.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lstring.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lstring.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\ltable.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\ltable.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\ltests.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\ltm.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\ltm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lundump.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lundump.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lvm.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lvm.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\lzio.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\lzio.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\xr_LuaAllocator.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\xr_LuaAllocator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\lua\src\xr_print.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="2"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\lua\src\xr_print.h"
+						>
+					</File>
+					<Filter
+						Name="lib"
+						>
+						<File
+							RelativePath=".\lua\src\lib\lauxlib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\lbaselib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\ldblib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\liolib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\lmathlib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\loadlib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\lstrlib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\lua\src\lib\ltablib.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									CompileAs="2"
+								/>
+							</FileConfiguration>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>
