@@ -450,8 +450,6 @@ void CDetailManager::UpdateCache	(int limit)
 
 DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 {
-	static DetailSlot	DS;
-
 	int db_x = sx+dtH.offs_x;
 	int db_z = sz+dtH.offs_z;
 	if ((db_x>=0) && (db_x<int(dtH.size_x)) && (db_z>=0) && (db_z<int(dtH.size_z)))
@@ -460,15 +458,15 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 		return dtSlots			[linear_id];
 	} else {
 		// Empty slot
-		DS.y_min				= 0;
-		DS.y_max				= EPS_L;
+		DS_empty.y_min				= 0;
+		DS_empty.y_max				= EPS_L;
 		
-		DS.items[0].id			= 0xff;
-		DS.items[1].id			= 0xff;
-		DS.items[2].id			= 0xff;
-		DS.items[3].id			= 0xff;
+		DS_empty.items[0].id		= 0xff;
+		DS_empty.items[1].id		= 0xff;
+		DS_empty.items[2].id		= 0xff;
+		DS_empty.items[3].id		= 0xff;
 		
-		DS.color				= 0xffff;
-		return DS;
+		DS_empty.color				= 0xffff;
+		return DS_empty;
 	}
 }

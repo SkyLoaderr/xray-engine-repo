@@ -21,7 +21,10 @@ private:
 	CCDA*					pCDA;
 	CSoundRender*			pSoundRender;
 	CMusicStream*			pMusicStreams;
-	
+
+	// Collider
+	CDB::COLLIDER			DB;
+
 	// DirectSound interface
     LPDIRECTSOUND		    pDevice;				// The device itself
     LPDIRECTSOUNDBUFFER		pBuffer;				// The primary buffer (mixer destination)

@@ -7,8 +7,8 @@
 #include "xr_tokens.h"
 #include "xr_ini.h"
 
-static DWORD dwDestBufSize = 44*1024;
-static DWORD dsBufferSize  = 88*1024;
+const DWORD dwDestBufSize = 44*1024;
+const DWORD dsBufferSize  = 88*1024;
 
 CSoundStream::CSoundStream	( )
 {

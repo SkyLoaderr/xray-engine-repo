@@ -134,9 +134,6 @@ void CFlyer::SetAnimation( )
 }
 
 #define BANK_FACTOR 1.25f
-static float Vy=0;
-
-
 void CFlyer::Update(DWORD DT)
 {
 	if (!bEnabled) return;

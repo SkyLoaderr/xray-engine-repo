@@ -32,7 +32,7 @@ static Fbox		bbCrouchBox;
 static Fvector	vFootCenter;
 static Fvector	vFootExt;
 
-DWORD psActorFlags=0;
+DWORD			psActorFlags=0;
 
 //--------------------------------------------------------------------
 void __stdcall CActor::SpinCallback(CBoneInstance* B)

@@ -9,8 +9,6 @@
 #include "ParticleSystem.h"
 #include "PSLibrary.h"
 
-static int dwPCNT=0;
-
 CPSVisual::CPSVisual():CVisual()
 {
 	m_Stream	= Device.Streams.Create(FVF::F_TL,MAX_PARTICLES*4);

@@ -386,7 +386,6 @@ BOOL CSoundManager::IsOccluded(	Fvector& P, float R, soundOccluder& occ )
 		if (_range>0 && _range<range) return TRUE;
 
 	// 2. Polygon doesn't picked up - real database query
-	static CDB::COLLIDER	DB;
 	DB.ray_options			(CDB::OPT_ONLYNEAREST);
 	DB.ray_query			(pGeometry,base,dir,range);
 	if (0==DB.r_count()) {

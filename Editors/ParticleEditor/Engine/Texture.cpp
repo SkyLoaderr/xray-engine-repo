@@ -554,7 +554,7 @@ _TGA:
 	// find optimal format
 	if (pSettings->LineExists("textures",fname))
 	{
-		static xr_token				token		[ ]={
+		xr_token				token		[ ]	=	{
 			{ "16",					tpf16			},
 			{ "32",					tpf32			},
 			{ "DXTC",				tpfCompressed	},

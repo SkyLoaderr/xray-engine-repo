@@ -9,11 +9,11 @@
 #include "xrSyncronize.h"
 #include "log.h"
 
-CDebugKernel Debug;
+CDebugKernel		Debug;
 
 static const char * dlgExpr = NULL;
 static const char * dlgFile = NULL;
-static char			dlgLine[16];
+static char			dlgLine	[16];
 
 static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {

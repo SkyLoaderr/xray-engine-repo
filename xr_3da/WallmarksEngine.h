@@ -19,6 +19,11 @@ private:
 	vector<wallmark*>				marks;
 	CVertexStream*					VS;
 
+	vector<CDB::TRI*>				sml_processed;
+	Fvector							sml_normal;
+	sPoly							sml_poly_dest;
+	sPoly							sml_poly_src;
+private:
 	void		BuildMatrix			(Fmatrix &dest, float invsz, const Fvector& from);
 
 	wallmark*	wm_allocate			(Shader*	S	);

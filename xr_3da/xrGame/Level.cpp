@@ -620,23 +620,13 @@ void CLevel::OnKeyboardHold(int key)
 	if (CurrentEntity())	CurrentEntity()->OnKeyboardHold(key_binding[key]);
 }
 
+static int mouse_button_2_key []={MOUSE_1,MOUSE_2,MOUSE_3};
 void CLevel::OnMousePress(int btn)
-{
-	static int m[]={MOUSE_1,MOUSE_2,MOUSE_3};
-	OnKeyboardPress(m[btn]);
-}
-
+{	OnKeyboardPress(mouse_button_2_key[btn]);}
 void CLevel::OnMouseRelease(int btn)
-{
-	static int m[]={MOUSE_1,MOUSE_2,MOUSE_3};
-	OnKeyboardRelease(m[btn]);
-}
-
+{	OnKeyboardRelease(mouse_button_2_key[btn]);}
 void CLevel::OnMouseHold(int btn)
-{
-	static int m[]={MOUSE_1,MOUSE_2,MOUSE_3};
-	OnKeyboardHold(m[btn]);
-}
+{	OnKeyboardHold(mouse_button_2_key[btn]);}
 
 void CLevel::OnMouseMove( int dx, int dy )
 {

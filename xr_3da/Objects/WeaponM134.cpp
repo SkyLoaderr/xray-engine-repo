@@ -27,8 +27,6 @@ void __stdcall CWeaponM134::RotateCallback_norm(CBoneInstance* B)
 	xform.mulB	(spin);
 }
 
-static float AA=0.f;
-
 void __stdcall CWeaponM134::RotateCallback_hud(CBoneInstance* B)
 {
 	CWeaponM134*W		= (CWeaponM134*)B->Callback_Param;

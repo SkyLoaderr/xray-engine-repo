@@ -55,6 +55,7 @@ public:
 	CStream*				dtFS;
 	DetailHeader			dtH;
 	DetailSlot*				dtSlots;		// note: pointer into VFS
+	DetailSlot				DS_empty;
 public:
 	svector<CDetail,dm_max_objects>			objects;
 	svector<Slot,dm_cache_size>				cache;

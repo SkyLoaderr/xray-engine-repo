@@ -25,7 +25,6 @@ const int	MAX_TRIS		= 512;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-#pragma optimize("",off)
 CWallmarksEngine::CWallmarksEngine	()
 {
 	VS = Device.Streams.Create		(FVF::F_LIT,MAX_TRIS*3);
@@ -33,7 +32,6 @@ CWallmarksEngine::CWallmarksEngine	()
 	marks.reserve	(256);
 }
 
-#pragma optimize("",off)
 CWallmarksEngine::~CWallmarksEngine	()
 {
 	{
@@ -49,7 +47,6 @@ CWallmarksEngine::~CWallmarksEngine	()
 }
 
 // allocate
-#pragma optimize("",off)
 CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
 {
 	wallmark*			W = 0;
@@ -62,13 +59,11 @@ CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
 	return W;
 }
 // destroy
-#pragma optimize("",off)
 void		CWallmarksEngine::wm_destroy		(wallmark*	W	)
 {
 	pool.push_back		(W);
 }
 // render
-#pragma optimize("",off)
 void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 {
 	float		a	= 1-(W->ttl/W_TTL);
@@ -86,7 +81,6 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 }
 
 //--------------------------------------------------------------------------------
-#pragma optimize("",off)
 void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 {
 	Fvector				UV;
@@ -100,12 +94,6 @@ void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 	}
 }
 
-static vector<CDB::TRI*>	sml_processed;
-static Fvector				sml_normal;
-static sPoly				sml_poly_dest;
-static sPoly				sml_poly_src;
-
-#pragma optimize("",off)
 void RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
 {
 	// Check if triangle already processed
@@ -158,7 +146,6 @@ void RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFru
 	}
 }
 
-#pragma optimize("",off)
 void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& from)
 {
 	// build projection
@@ -174,7 +161,6 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mulA			(mScale);
 }
 
-#pragma optimize("",off)
 void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, Shader* hShader, float sz)
 {
 	// calc face normal
@@ -227,7 +213,6 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 }
 
 extern float g_fSCREEN;
-#pragma optimize("",off)
 void CWallmarksEngine::Render()
 {
 	if (marks.empty())			return;

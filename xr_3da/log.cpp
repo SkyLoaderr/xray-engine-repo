@@ -4,11 +4,11 @@
 #include "resource.h"
 #include "log.h"
 
-static const char *		logFName	= "engine.log";
-static HWND				logWindow	= NULL;
-static HWND				logoWindow	= NULL;
-static HWND				logControl	= NULL;
-static DWORD			dwMainThreadID = 0;
+static const char *		logFName		= "engine.log";
+static HWND				logWindow		= NULL;
+static HWND				logoWindow		= NULL;
+static HWND				logControl		= NULL;
+static DWORD			dwMainThreadID	= 0;
 std::vector <char *>	LogFile;
 std::vector <char *>	LogFileAddons;
 

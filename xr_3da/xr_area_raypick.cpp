@@ -12,10 +12,6 @@
 using namespace	Collide;
 
 //----------------------------------------------------------------------
-static int test_cnt = 0;
-static int slot_cnt = 0;
-static int nl_cnt = 0;
-
 BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 {
 	if(bDebug) nl_cnt++;
