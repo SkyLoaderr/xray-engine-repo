@@ -177,7 +177,7 @@ void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 
 void TfraLeftBar::InitPalette(TemplateVec& lst){
 	for (TemplateIt it=lst.begin(); it!=lst.end(); it++){
-    	TMenuItem* mi= new TMenuItem(0);
+    	TMenuItem* mi= xr_new<TMenuItem>((TComponent*)0);
 		mi->Caption = (*it)->getComment();
 		mi->Tag     = int(*it);
 		mi->OnClick = TemplateClick;

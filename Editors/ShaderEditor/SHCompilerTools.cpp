@@ -14,6 +14,7 @@
 
 //------------------------------------------------------------------------------
 CSHCompilerTools::CSHCompilerTools(){
+	m_EditShader		= 0;
     m_bModified 		= FALSE;
     m_LibShader 		= 0;
     m_bUpdateCurrent	= false;
@@ -35,12 +36,15 @@ void CSHCompilerTools::Update()
 }
 //---------------------------------------------------------------------------
 
-void CSHCompilerTools::OnCreate(){
+void CSHCompilerTools::OnCreate()
+{
+	m_EditShader		= xr_new<Shader_xrLC>();
     Load();
 }
 
 void CSHCompilerTools::OnDestroy(){
-    m_bModified = FALSE;
+    m_bModified 		= FALSE;
+	xr_delete			(m_EditShader);
 }
 
 bool CSHCompilerTools::IfModified(){
@@ -56,7 +60,7 @@ bool CSHCompilerTools::IfModified(){
 }
 
 void CSHCompilerTools::ApplyChanges(){
-    if (m_LibShader) *m_LibShader = m_EditShader;
+    if (m_LibShader) *m_LibShader = *m_EditShader;
 }
 
 void CSHCompilerTools::Reload(){
@@ -157,7 +161,7 @@ void CSHCompilerTools::RenameShader(LPCSTR old_full_name, LPCSTR new_full_name){
 	Shader_xrLC* S = m_Library.Get(old_full_name); R_ASSERT(S);
     strcpy(S->Name,new_full_name);
 	if (S==m_LibShader){
-    	m_EditShader = *S;
+    	*m_EditShader = *S;
         UpdateProperties();
     }
 }
@@ -173,11 +177,11 @@ void CSHCompilerTools::SetCurrentShader(Shader_xrLC* S){
 
     // save changes
     if (m_LibShader)
-    	*m_LibShader = m_EditShader;
+    	*m_LibShader = *m_EditShader;
     // load shader
 	if (m_LibShader!=S){
         m_LibShader = S;
-        if (m_LibShader) m_EditShader = *m_LibShader;
+        if (m_LibShader) *m_EditShader = *m_LibShader;
         UpdateProperties();
     }
 	if (S) fraLeftBar->SetCurrentCShader(S->Name);

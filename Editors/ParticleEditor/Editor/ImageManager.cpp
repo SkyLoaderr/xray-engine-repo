@@ -237,7 +237,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 Engine.FS.m_GameTextures.Update(game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
                 Engine.FS.SetFileAge(game_name, it->second);
-                if (sync_list) sync_list->push_back(strdup(base_name));
+                if (sync_list) sync_list->push_back(xr_strdup(base_name));
                 if (modif_map) (*modif_map)[it->first]=it->second;
             }else{
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);

@@ -42,11 +42,10 @@ void CShaderTools::OnChangeEditor()
 
 EActiveEditor CShaderTools::ActiveEditor()
 {
-	if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsEngine) 			return aeEngine;
-	else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsCompiler)		return aeCompiler;
-    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterial) 	return aeMaterial;
-    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterialPair) return aeMaterialPair;
-    THROW;
+	if (fraLeftBar->pcShaders->ActivePageIndex==aeEngine) 			return aeEngine;
+	else if (fraLeftBar->pcShaders->ActivePageIndex==aeCompiler)	return aeCompiler;
+    else if (fraLeftBar->pcShaders->ActivePageIndex==aeMaterial) 	return aeMaterial;
+    else if (fraLeftBar->pcShaders->ActivePageIndex==aeMaterialPair)return aeMaterialPair;
 }
 //---------------------------------------------------------------------------
 

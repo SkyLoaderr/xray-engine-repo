@@ -19,7 +19,7 @@ class CSHCompilerTools
     bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
 public:
     Shader_xrLC*		m_LibShader;
-    Shader_xrLC			m_EditShader;
+    Shader_xrLC*		m_EditShader;
     Shader_xrLC*		AppendShader		(LPCSTR folder_name, Shader_xrLC* parent);
     Shader_xrLC*		CloneShader			(LPCSTR name);
     void				RemoveShader		(LPCSTR name);

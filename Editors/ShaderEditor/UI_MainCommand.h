@@ -31,6 +31,9 @@ enum ECommands{
 
     COMMAND_BREAK_LAST_OPERATION,
 
+    COMMAND_TOGGLE_SAFE_RECT,
+    COMMAND_TOGGLE_GRID,
+    
 	COMMAND_CHANGE_ACTION,
     // unused (only for compatibility)
     COMMAND_UNDO,

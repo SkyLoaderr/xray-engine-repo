@@ -40,7 +40,7 @@ void SGameMtl::FillProp		(PropItemVec& items)
 }
 SGameMtl* CGameMtlLibrary::AppendMaterial(SGameMtl* parent)
 {
-    SGameMtl* M	= new SGameMtl		();
+    SGameMtl* M	= xr_new<SGameMtl>();
     if (parent)	*M=*parent;
     M->ID		= material_index++;
     materials.push_back			(M);
@@ -54,7 +54,7 @@ void CGameMtlLibrary::RemoveMaterial(LPCSTR name)
     // remove dependent pairs
     RemoveMaterialPair((*rem_it)->GetID());
     // destroy material
-    _DELETE		(*rem_it);
+    xr_delete		(*rem_it);
     materials.erase	(rem_it);
 }
 SGameMtl* CGameMtlLibrary::GetMaterialByID	(int id)
@@ -207,7 +207,7 @@ SGameMtlPair* CGameMtlLibrary::AppendMaterialPair(int m0, int m1, SGameMtlPair* 
 {
     SGameMtlPair*	S = GetMaterialPair(m0,m1);
     if (!S){
-        SGameMtlPair* M	= new SGameMtlPair	(this);
+        SGameMtlPair* M	= xr_new<SGameMtlPair>(this);
         if (parent){
             M->ID_parent = parent->ID;
             M->OwnProps.zero();
@@ -237,7 +237,7 @@ void CGameMtlLibrary::RemoveMaterialPair(GameMtlPairIt rem_it)
             (*it)->ID_parent=-1;
         }
     // erase from list and remove physically
-    _DELETE			(*rem_it);
+    xr_delete			(*rem_it);
     material_pairs.erase	(rem_it);
 }
 void CGameMtlLibrary::RemoveMaterialPair(int mtl)

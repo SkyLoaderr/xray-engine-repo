@@ -148,10 +148,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebMaterialPairCloneClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick	(TObject *Sender);
-    TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
-									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
-                                        else if (pcShaders->ActivePage==tsMaterial) return tvMaterial;
-                                        else if (pcShaders->ActivePage==tsMaterialPair) return tvMaterialPair;
+    TElTree*		CurrentView		(){ if (pcShaders->ActivePageIndex==aeEngine) 			return tvEngine;
+									    else if (pcShaders->ActivePageIndex==aeCompiler)	return tvCompiler;
+                                        else if (pcShaders->ActivePageIndex==aeMaterial) 	return tvMaterial;
+                                        else if (pcShaders->ActivePageIndex==aeMaterialPair)return tvMaterialPair;
                                         THROW;
     								  }
 	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);

@@ -24,11 +24,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
 		Engine.Initialize	();
-		InitMath			();
         // make interface
-	    fraBottomBar		= new TfraBottomBar(0);
-    	fraLeftBar  		= new TfraLeftBar(0);
-	    fraTopBar   		= new TfraTopBar(0);
+	    fraBottomBar		= xr_new<TfraBottomBar>((TComponent*)0);
+    	fraLeftBar  		= xr_new<TfraLeftBar>((TComponent*)0);
+	    fraTopBar   		= xr_new<TfraTopBar>((TComponent*)0);
 		//----------------
         if (UI.OnCreate()){
 			if (!Tools.OnCreate()){
@@ -52,9 +51,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         UI.OnDestroy	();
         Engine.Destroy	();
 		//----------------
-        _DELETE(fraLeftBar);
-	    _DELETE(fraTopBar);
-    	_DELETE(fraBottomBar);
+        xr_delete(fraLeftBar);
+	    xr_delete(fraTopBar);
+    	xr_delete(fraBottomBar);
 		//----------------
     	break;
     case COMMAND_EVICT_OBJECTS:
@@ -133,6 +132,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
    		break;
     case COMMAND_SELECT_PREVIEW_OBJ:
 		Tools.SelectPreviewObject(p1);
+    	break;
+    case COMMAND_TOGGLE_SAFE_RECT:
+    	psDeviceFlags.set(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
+        frmMain->paWindowResize(0);
+    	break;
+    case COMMAND_TOGGLE_GRID:
+    	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
     	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
