@@ -84,9 +84,8 @@ end
 function give_medkit_to_wounded(first_speaker, second_speaker)
 	local med = second_speaker:object("medkit")
 	second_speaker:transfer_item (med, first_speaker)
-	second_speaker:disable_info_portion ("wounded_start2")
 -- передать деньги актеру
-	first_speaker:transfer_money (500, second_speaker)
+	first_speaker:transfer_money (1500, second_speaker)
 end
 
 
