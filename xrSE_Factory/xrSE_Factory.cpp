@@ -37,7 +37,7 @@ FACTORY_API ISE_Abstract *create_entity	(LPCSTR section)
 
 FACTORY_API void destroy_entity			(ISE_Abstract *&abstract)
 {
-	CSE_Abstract			*object = dynamic_cast<CSE_Abstract*>(abstract);
+	CSE_Abstract			*object = smart_cast<CSE_Abstract*>(abstract);
 	F_entity_Destroy		(object);
 	abstract				= 0;
 }

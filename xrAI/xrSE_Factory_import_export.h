@@ -18,7 +18,7 @@ extern "C" {
 IC	CSE_Abstract *F_entity_Create(LPCSTR section)
 {
 	ISE_Abstract	*i = create_entity(section);
-	CSE_Abstract	*j = dynamic_cast<CSE_Abstract*>(i);
+	CSE_Abstract	*j = smart_cast<CSE_Abstract*>(i);
 	return			(j);
 }
 
