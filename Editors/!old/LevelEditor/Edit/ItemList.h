@@ -180,6 +180,8 @@ public:		// User declarations
     void 				RenameSelItem			();
     void				FireOnItemFocused		();
 
+    void				GetFolders				(AStringVec& folders);
+    
 	virtual void		AAA(){}
 };
 //---------------------------------------------------------------------------

@@ -422,8 +422,8 @@ void __fastcall	CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 }
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp				(pref, items);
-	PHelper::CreateRText			(pref,items,"custom data",m_ini_string);
+	inherited::FillProp				(pref, 	items);
+	PHelper.CreateRText				(items,	FHelper.PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
     RChooseValue* V;
     V=PHelper.CreateChoose			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);

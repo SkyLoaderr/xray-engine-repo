@@ -42,6 +42,8 @@ bool ESceneObjectTools::Load(IReader& F)
         }
     };
 
+    m_Flags.set(flAppendRandom,FALSE);
+    
     return true;
 }
 //----------------------------------------------------

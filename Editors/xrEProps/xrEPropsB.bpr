@@ -27,7 +27,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;XR_EPROPS_EXPORTS"/>
+    <USERDEFINES value="_EDITOR;XR_EPROPS_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrEPropsB.bpf"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore"/>
@@ -40,13 +40,13 @@
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -IP:\xrCore -src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -boa"/>
-    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
-      -6 -b- -k -vi -tWD -tWM -c"/>
-    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -IP:\xrCore -src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
+    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
+      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
+    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zn"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gi"/>
+    <AFLAGS value="/mu /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -135,8 +135,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=5
-Item0=_EDITOR;XR_EPROPS_EXPORTS
-Item1=_EDITOR;XR_EPROPS_EXPORTS;_DEBUG
+Item0=_EDITOR;XR_EPROPS_EXPORTS;_DEBUG
+Item1=_EDITOR;XR_EPROPS_EXPORTS
 Item2=_EDITOR;_XR_EPROPSB;_DEBUG
 Item3=_EDITOR;_EPROPSB;_DEBUG
 Item4=_DEBUG

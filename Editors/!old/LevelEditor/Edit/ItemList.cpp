@@ -648,3 +648,15 @@ void TItemList::FireOnItemFocused()
 }
 //---------------------------------------------------------------------------
 
+void TItemList::GetFolders(AStringVec& folders)
+{
+    for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
+        if (FHelper.IsFolder(item)){
+            AnsiString nm;
+            FHelper.MakeFullName(item,0,nm);
+            folders.push_back	(nm+'\\');
+        }
+    }
+}
+//---------------------------------------------------------------------------
+

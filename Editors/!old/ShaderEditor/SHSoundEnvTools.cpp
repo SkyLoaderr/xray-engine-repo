@@ -96,10 +96,18 @@ void CSHSoundEnvTools::Reload()
 
 void CSHSoundEnvTools::FillItemList()
 {
+	// store folders
+	AStringVec folders;
+	Ext.m_Items->GetFolders(folders);
+    // fill items
 	ListItemsVec items;
     SoundEnvironment_LIB::SE_VEC& lst = m_Library.Library();
     for (SoundEnvironment_LIB::SE_IT it=lst.begin(); it!=lst.end(); it++)
         LHelper.CreateItem(items,*(*it)->name,0);
+    // fill folders
+    for (AStringIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
+        LHelper.CreateItem(items,s_it->c_str(),0);
+    // assign items
 	Ext.m_Items->AssignItems(items,false,true);
 }
 

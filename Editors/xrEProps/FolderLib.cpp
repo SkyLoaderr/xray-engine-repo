@@ -462,8 +462,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
 	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
 		AnsiString full_name;
     	if (IsFolder(pNode)){
-//!	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes)
-            {
+            if (mrYes==MessageDlg("Delete selected folder?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0)){
                 bRes = TRUE;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,0,full_name,false);
@@ -479,8 +478,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
         	}
         }
     	if (IsObject(pNode)){
-//!	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected item?") == mrYes)
-            {
+            if (mrYes==MessageDlg("Delete selected item?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0)){
 				MakeName(pNode,0,full_name,false);
                 bRes = OnRemoveItem(full_name.c_str(),TYPE_OBJECT);
 	            if (bRes){

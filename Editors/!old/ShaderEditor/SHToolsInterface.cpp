@@ -98,6 +98,7 @@ void ISHTools::OnDeactivate()
 	Ext.m_PreviewProps->ClearProperties();
     m_LastSelection					= ViewGetCurrentItem(false);
     ResetCurrentItem				();
+    Ext.m_Items->ClearList			();
 }
 //---------------------------------------------------------------------------
 

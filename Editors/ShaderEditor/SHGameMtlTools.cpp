@@ -70,9 +70,17 @@ void CSHGameMtlTools::Reload()
 
 void CSHGameMtlTools::FillItemList()
 {
+	// store folders
+	AStringVec folders;
+	Ext.m_Items->GetFolders(folders);
+    // fill items
 	ListItemsVec items;
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
         LHelper.CreateItem(items,*(*m_it)->m_Name,0);
+    // fill folders
+    for (AStringIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
+        LHelper.CreateItem(items,s_it->c_str(),0);
+    // assign items
 	Ext.m_Items->AssignItems(items,false,true);
 }
 

@@ -60,6 +60,9 @@ bool CParticleMain::Command(int _Command, int p1, int p2)
     case COMMAND_PLAY_CURRENT:
     	PTools->PlayCurrent();
     	break;
+    case COMMAND_STOP_CURRENT:
+    	PTools->StopCurrent(p1);
+    	break;
 //------        
     case COMMAND_REFRESH_UI_BAR:
         fraTopBar->RefreshBar	();
@@ -111,6 +114,8 @@ bool __fastcall CParticleMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 	bool bExec = false;
     if (Shift.Empty()){
         if (Key==VK_F5)    	COMMAND0(COMMAND_PLAY_CURRENT)
+        else if (Key==VK_F6)COMMAND1(COMMAND_STOP_CURRENT,FALSE)
+        else if (Key==VK_F7)COMMAND1(COMMAND_STOP_CURRENT,TRUE)
     }
     return bExec;
 }
