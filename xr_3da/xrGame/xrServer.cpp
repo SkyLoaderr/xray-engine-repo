@@ -34,8 +34,6 @@ void		xrServer::client_Destroy	(IClient* C)
 	// Delete assosiated entity
 	xrClientData*	D = (xrClientData*)C;
 	xrServerEntity* E = D->owner;
-	entities.erase	(E->ID);
-	entity_Destroy	(E);
 
 	_DELETE			(C);
 }
@@ -257,8 +255,29 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 {
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
 
+	// Collect entities
+	svector<u16,256>	IDs;
+	xrS_entities::iterator	I=entities.begin(),E=entities.end();
+	for (; I!=E; I++)
+	{
+		xrServerEntity*	E = I->second;
+		if (E->owner == CL)	{
+			IDs.push_back	(E->ID);
+			entity_Destroy	(E);
+		}
+	}
+
+	// Destroy from the map and create message
+	NET_Packet			P;
+	P.w_begin			(M_DESTROY);
+	P.w_u16				(IDs.size());
+	for (int i=0; i<IDs.size(); i++)
+	{
+		u16		ID			= IDs[i];
+		P.w_u16				(ID);
+		entities.erase		(ID);
+	}
+
 	// Send this to all other clients
-	NET_Packet		P;
-	P.w_begin		(M_DESTROY);
-	SendBroadcast	(CL->ID,P,net_flags(TRUE));
+	SendBroadcast		(CL->ID,P,net_flags(TRUE));
 }
