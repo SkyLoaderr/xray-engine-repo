@@ -136,7 +136,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			//
 			
 			// if (c_src->owner->ID == id_src)
-			if ((e_src->s_flags&M_SPAWN_OBJECT_ASPLAYER) && (e_dest->s_flags&M_SPAWN_OBJECT_ASPLAYER))
+			if (e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 			{
 				game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
 			}
