@@ -36,6 +36,7 @@ Fbox					LevelBB;
 CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
+b_transfer				Header;
 
 //-----------------------------------------------------------------
 // hemi
@@ -47,7 +48,7 @@ struct		hemi_data
 void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
 {
 	hemi_data*	H		= (hemi_data*)P;
-	H->T.amount			= E;
+	H->T.amount			= E * Header.params.area_color.magnitude_rgb();
 	H->T.direction.set	(x,y,z);
 	H->dest->push_back	(H->T);
 }
@@ -91,7 +92,7 @@ void xrLoad(LPCSTR name)
 		CVirtualFileStream	FS(N);
 		void*				data = FS.Pointer();
 		
-		b_transfer	Header		= *((b_transfer *) data);
+		Header				= *((b_transfer *) data);
 		R_ASSERT(XRCL_CURRENT_VERSION==Header._version);
 		Header.lights			= (b_light*)	(DWORD(data)+DWORD(Header.lights));
 
@@ -193,7 +194,7 @@ void xrLoad(LPCSTR name)
 						hemi_data				h_data;
 						h_data.dest				= dest;
 						h_data.T				= RL;
-						h_data.T.amount			= Header.params.area_color.magnitude_rgb();
+						h_data.T.amount			= 0;
 						xrHemisphereBuild		(Header.params.area_quality,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
 					}
 				} else {
