@@ -8,11 +8,9 @@ end
 
 
 function main ()
-	zone0			= get_level_object ("script_zone0000")
-	zone1			= get_level_object ("script_zone0001")
-	
---	zone0:script	(true,stalker_test:script_name())
---	zone1:script	(true,stalker_test:script_name())
+--[
+	zone0				= get_level_object ("script_zone0000")
+	zone1				= get_level_object ("script_zone0001")
 	
 	zone0:set_callback	(stalker_test.callback_enter,true);
 	zone0:set_callback	(stalker_test.callback_exit,false);
@@ -23,38 +21,33 @@ function main ()
 	while true do
 		wait			()
 	end
-	
---	zone0:script	(false,stalker_test:script_name())
---	zone1:script	(false,stalker_test:script_name())
-	
---[
-    stalker			= get_level_object ("m_stalker_e0000")
-    actor			= get_actor()
+--]
+    stalker				= get_level_object ("m_stalker_e0000")
+    actor				= get_actor()
 
-    stalker:script	(true,stalker_test:script_name());
+    stalker:script		(true,stalker_test:script_name());
     
-	printf			("%d",device():time_global())
+	printf				("%d",device():time_global())
 	action (
 		stalker, 
-		anim		("stalker_2_1"),
-		cond		(cond.time_end,500000000)
+		anim			("stalker_2_1"),
+		cond			(cond.time_end,500000000)
 	)
 	
-	wait			(5000)
+	wait				(5000)
 	
-	printf			("%d",device():time_global())
-	reset_action	(stalker,stalker_test:script_name())
+	printf				("%d",device():time_global())
+	reset_action		(stalker,stalker_test:script_name())
 	
 	action (
 		stalker, 
-		anim		(anim.danger),
-		cond		(cond.time_end,500000000)
+		anim			(anim.danger),
+		cond			(cond.time_end,500000000)
 	)
 	
 	while stalker:action() do
-		wait		()
+		wait			()
 	end
 	
-    stalker:script	(false,stalker_test:script_name());
-    --]
+    stalker:script		(false,stalker_test:script_name());
 end
