@@ -5,12 +5,17 @@
 #include "hudmanager.h"
 #include "PGObject.h"
 
-CCustomZone::CCustomZone(void) {
+CCustomZone::CCustomZone(void) 
+{
 	m_maxPower = 100.f;
 	m_attn = 1.f;
 	m_period = 1000;
 	m_ready = false;
 	m_pLocalActor = NULL;
+#pragma todo("AlexMX to Oles: Can't dynamic cast ICollidable to ISpatial!!!")
+#pragma todo("AlexMX: Remove next line after Oles fix bug.")
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
 }
 
 CCustomZone::~CCustomZone(void) {}
@@ -160,9 +165,11 @@ void CCustomZone::SoundDestroy(ref_sound& dest) {
 
 void CCustomZone::spatial_register()
 {
-	R_ASSERT2			(CFORM(),"Invalid or no CForm!");
-	spatial.center.set	(CFORM()->getSphere().P);
-	spatial.radius		= CFORM()->getRadius();
+	R_ASSERT2				(CFORM(),"Invalid or no CForm!");
+	Fvector					P;
+	XFORM().transform_tiny	(P,CFORM()->getSphere().P);
+	spatial.center.set		(P);
+	spatial.radius			= CFORM()->getRadius();
 	ISpatial::spatial_register();
 }
 
@@ -173,10 +180,12 @@ void CCustomZone::spatial_unregister()
 
 void CCustomZone::spatial_move()
 {
-	R_ASSERT2			(CFORM(),"Invalid or no CForm!");
-	spatial.center.set(CFORM()->getSphere().P);
-	spatial.radius	= CFORM()->getRadius();
-	ISpatial::spatial_move();
+	R_ASSERT2				(CFORM(),"Invalid or no CForm!");
+	Fvector					P;
+	XFORM().transform_tiny	(P,CFORM()->getSphere().P);
+	spatial.center.set		(P);
+	spatial.radius			= CFORM()->getRadius();
+	ISpatial::spatial_move	();
 }
 
 

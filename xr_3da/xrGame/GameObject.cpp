@@ -17,11 +17,11 @@ CGameObject::CGameObject		()
 	AI_NodeID		= 0;
 	AI_Node			= 0;
 	m_pPhysicsShell = NULL;
-	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	//////////////////////////////////////
 	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
 	// Почему CGameObject не был VISIBLEFORAI ???
 	//////////////////////////////////////
+	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
 	//////////////////////////////////////
