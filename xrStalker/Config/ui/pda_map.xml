@@ -3,7 +3,7 @@
 <!-- global map  -->	
 <window>
 
-	<main_wnd x="57" y="16" width="891" height="643"> 
+	<main_wnd x="62" y="66" width="891" height="643"> 
 		<global_map>	
 		
 			<background>
