@@ -377,6 +377,9 @@
 					<File
 						RelativePath=".\damage_manager_inline.h">
 					</File>
+					<File
+						RelativePath=".\DamageSource.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="DecisionManagement"
