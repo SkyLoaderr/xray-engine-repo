@@ -24,6 +24,7 @@ enum {
 	rsStatistic			= (1ul<<6ul),
 	rsDetails			= (1ul<<7ul),
 	rsRefresh60hz		= (1ul<<8ul),
+	rsConstantFPS		= (1ul<<9ul),
 	mtSound				= (1ul<<10ul),
 	mtPhysics			= (1ul<<11ul),
 	mtNetwork			= (1ul<<12ul)
