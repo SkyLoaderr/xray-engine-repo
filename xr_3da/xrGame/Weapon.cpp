@@ -827,7 +827,7 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 bool CWeapon::Activate() {
 	// Вызывается при активации слота в котором находится объект
 	// Если объект может быть активирован вернуть true, иначе false
-	if(H_Parent() && m_ammoSect) SpawnAmmo();
+	//if(H_Parent() && m_ammoSect) SpawnAmmo();
 	//if(!IsValid()) return false;
 	Show();
 	return true;

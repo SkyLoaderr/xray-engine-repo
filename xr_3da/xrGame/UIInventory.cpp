@@ -4,6 +4,8 @@
 #include "actor.h"
 #include "HUDManager.h"
 
+#include "weapon.h"
+
 #define INV_OFFS_ROW	20
 #define INV_SKIP_ROW	35
 #define INV_OFFS_COL1	50
@@ -132,6 +134,8 @@ bool CUIInventory::OnKeyboardPress(int dik) {
 							if(m_shift) l_inv.Ruck(l_pItem);
 							else if(l_inv.Slot(l_pItem)) {
 								if(l_pItem->m_slot < 0xffffffff) l_inv.Activate(l_pItem->m_slot);
+								CWeapon *l_pW = dynamic_cast<CWeapon*>(l_pItem);
+								if(l_pW) l_pW->SpawnAmmo();
 							} else l_inv.Belt(l_pItem);
 						}
 						return true;
