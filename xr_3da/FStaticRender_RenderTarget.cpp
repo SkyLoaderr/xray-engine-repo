@@ -37,7 +37,7 @@ BOOL CRenderTarget::Create	()
 		D3DFMT_R5G6B5
 		);
 	if (FAILED(_hr))													return FALSE;
-
+	
 	// Try to create texture/surface
 	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,D3DFMT_R5G6B5,D3DPOOL_DEFAULT,&pSurface);
 	if (FAILED(_hr) || (0==pSurface))									return FALSE;
@@ -67,4 +67,33 @@ void CRenderTarget::Begin	()
 void CRenderTarget::End		(float blur)
 {
 	R_CHK		(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
+	
+	// Draw full-screen quad textured with our scene image
+	DWORD	Offset;
+	DWORD	C		= 0xffffffff;
+	float	tw		= float(Device.dwWidth);
+	float	th		= float(Device.dwHeight);
+	DWORD	_w		= Device.dwWidth-1;
+	DWORD	_h		= Device.dwHeight-1;
+	
+	// UV
+	Fvector2		shift,p0,p1;
+	shift.set		(.5f/tw, .5f/th);
+	shift.mul		(blur);
+	p0.set			(.5f/tw, .5f/th);
+	p1.set			((tw-.5f)/tw, (th-.5f)/th );
+	p0.add			(shift);
+	p1.add			(shift);
+	
+	// Fill vertex buffer
+	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
+	pv->set(0,			float(_h),	1, 1, C, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			1, 1, C, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	1, 1, C, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			1, 1, C, p1.x, p0.y);	pv++;
+	pStream->Unlock			(4);
+
+	// Actual rendering
+	Device.Shader.set_Shader(pShader);
+	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }

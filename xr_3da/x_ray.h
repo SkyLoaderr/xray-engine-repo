@@ -2,7 +2,7 @@
 #define __X_RAY_H__
 
 // refs
-class	CFontSmall;
+class ENGINE_API CFontSmall;
 
 // definition
 class ENGINE_API CApplication	:

@@ -9,6 +9,9 @@ private:
 	IDirect3DSurface8*	pBaseRT;
 	IDirect3DSurface8*	pBaseZB;
 	
+	Shader*				pShader;
+	CVertexStream*		pStream;
+	
 	BOOL				Create				();
 public:
 	CRenderTarget		();
