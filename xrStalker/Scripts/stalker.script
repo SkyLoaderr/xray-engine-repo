@@ -1,4 +1,4 @@
 function init    (obj)
---	xr_motivator.AddToMotivator(obj)
+	xr_motivator.AddToMotivator(obj)
 end
 
