@@ -160,6 +160,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	s_occq.create					(b_occq,		"r2\\occq");
 
 	// DECOMPRESSION
+	g_decompress.create				(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	if (RImplementation.b_nv3x)
 	{
 		s_decompress.create			(b_decompress,	"r2\\met_decompress");
