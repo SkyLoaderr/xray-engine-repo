@@ -34,7 +34,7 @@ void CRender::Render	()
 		mapSorted.clear							();
 	}
 
-	if (1 || ps_r2_ls_flags.test(R2FLAG_SUN) )
+	if (ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<1; dls_phase++)
 		{

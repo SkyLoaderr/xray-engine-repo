@@ -74,7 +74,7 @@ void CRenderTarget::phase_accumulator_init()
 	// Stencil	- draw only where stencil >= 0x1
 	// Stencil	- increment value if both (stencil,aref) pass
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
-	if (1 || ps_r2_ls_flags.test(R2FLAG_SUN))	//$$$
+	if (ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
 		// Restore targets
 		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
