@@ -24,8 +24,8 @@ public:
 	DWORD				DestNode;
 
 	DWORD				TravelStart;
-	CList<CTravelNode>	TravelPath;
-	CList<PSegment>		Segments;
+	vector<CTravelNode>	TravelPath;
+	vector<PSegment>	Segments;
 
 	float				fSpeed;
 	bool				m_bCollision;

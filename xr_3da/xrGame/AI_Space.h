@@ -34,7 +34,7 @@ namespace AI {
 	class	Path
 	{
 	public:
-		CList<DWORD>	Nodes;
+		vector<DWORD>	Nodes;
 	};
 };
 
@@ -50,7 +50,7 @@ private:
 	// Query
 	vector<BYTE>					q_mark;			// temporal usage mark for queries
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries
-	CList<DWORD>					q_stack;
+	vector<DWORD>					q_stack;
 	
 	// Debug
 	Shader*							sh_debug;

@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\collide\cl_intersect.h"
+#include "..\cl_intersect.h"
 
 #include "MovementControl.h"
 #include "entity.h"
@@ -323,7 +323,7 @@ void CMovementControl::CheckEnvironment()
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];
 			// все что ниже пояса
-			if (RAPID::TestBBoxTri(A,C,vFootExt,&T.p[0],false))
+			if (CDB::TestBBoxTri(A,C,vFootExt,&T.p[0],false))
 			{
 				Fvector N; 
 				N.mknormal(T.p[0],T.p[1],T.p[2]);

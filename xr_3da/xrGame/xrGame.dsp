@@ -831,6 +831,7 @@ SOURCE=.\xrServer_Entities.cpp
 # Begin Source File
 
 SOURCE=.\DynamicHeightMap.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
