@@ -1060,6 +1060,7 @@ extern void registry_test();
 extern void abstract_registry_test();
 extern void broker_test();
 extern void box_collision_test();
+extern void directx_test();
 
 class CLuaValue {
 protected:
@@ -1221,11 +1222,12 @@ struct vB : virtual public vA{virtual ~vB(){}};
 
 void test1()
 {
-	printf("%s",y(__LINE__));
+//	printf("%s",y(__LINE__));
 //	aa(z(x));
 //	test0();
 //	box_collision_test	();
-//	broker_test		();
+	directx_test		();
+
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;

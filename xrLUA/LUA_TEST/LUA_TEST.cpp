@@ -418,17 +418,17 @@ void print_stack(lua_State *L);
 void vfPrintTable(lua_State *L, LPCSTR S, bool bRecursive = false)
 {
 	int t			= -2;
-	print_stack		(L);
+//	print_stack		(L);
 		
 	lua_pushstring	(L, S);
 	lua_gettable	(L, LUA_GLOBALSINDEX);  /* check whether lib already exists */
 	
-	print_stack		(L);
+//	print_stack		(L);
 
 	if (!lua_istable(L,-1))
 		lua_error	(L);
 	
-	print_stack		(L);
+//	print_stack		(L);
 	
 	printf			("\nContent of the table \"%s\" :\n",S);
 	
@@ -436,12 +436,12 @@ void vfPrintTable(lua_State *L, LPCSTR S, bool bRecursive = false)
 	while (lua_next(L, t) != 0) {
 		printf		("%16s - %s\n", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
 		
-		print_stack		(L);
+//		print_stack		(L);
 		
 		lua_pop		(L, 1);  /* removes `value'; keeps `key' for next iteration */
 	}
 	
-	print_stack		(L);
+//	print_stack		(L);
 	
 	if (!bRecursive) {
 		lua_pop		(L,1);
@@ -450,7 +450,7 @@ void vfPrintTable(lua_State *L, LPCSTR S, bool bRecursive = false)
 
 	lua_pushnil		(L);
 	while (lua_next(L, t) != 0) {
-		print_stack	(L);
+//		print_stack	(L);
 		if (lua_istable(L, -1) && xr_strcmp("_G",lua_tostring(L, -2))) {
 			vfPrintTable(L,lua_tostring(L, -2),true);
 		}
@@ -1363,7 +1363,7 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 {
 	LPSTR				SS = (LPSTR)xr_malloc(4096), SS1 = (LPSTR)xr_malloc(4096);
 	string256			S1;
-	sprintf				(SS,"local this = %s; function %s.script_name() return \"%s\" end local function script_name() return \"%s\" end ",N,N,N,N);
+	sprintf				(SS,"local this = %s; function %s.script_name() return \"%s\" end ",N,N,N);
 	strcpy				(S1,"@");
 	strcat				(S1,S);
 //	luaL_loadbuffer		(L,SS,xr_strlen(SS),S1);
@@ -1445,12 +1445,12 @@ void set_namespace(lua_State *L)
 
 bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
 {
-	if (!create_namespace_table(L,N))
-		return		(false);
-	copy_globals	(L);
+//	if (!create_namespace_table(L,N))
+//		return		(false);
+//	copy_globals	(L);
 	if (!do_file(L,N,S,bCall))
 		return		(false);
-	set_namespace	(L);
+//	set_namespace	(L);
 	return			(true);
 }
 
@@ -1499,74 +1499,92 @@ extern void test1();
 
 int __cdecl main(int argc, char* argv[])
 {
-	test1();
+//	test1();
 //	test0();
-	return 0;
-//
-//	printf	("xrLuaCompiler v0.1\n");
-////	if (argc < 2) {
-////		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
-////		return 0;
-////	}
-//
-//	string4096		SSS;
-//	strcpy			(SSS,"");
-//	g_ca_stdout		= SSS;
-//
-//	L = lua_open();
-//
-//	if (!L)
-//		lua_error	(L);
-//
-//	luaopen_base	(L);
-//	luaopen_string	(L);
-//	luaopen_math	(L);
-//	luaopen_table	(L);
-//	luaopen_debug	(L);
-//
-//	lua_settop		(L,0);
-//
-//	lua_pushstring	(L,"_0");
-//	lua_pushstring	(L,"_1");
-//	lua_pushstring	(L,"_2");
-//	lua_pushstring	(L,"_3");
-//	lua_pushstring	(L,"_4");
-//
-//	open			(L);
-//	
-//	printf			("Stack level %d",lua_gettop(L));
-//
+//	return 0;
+
+	printf	("xrLuaCompiler v0.1\n");
+//	if (argc < 2) {
+//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+//		return 0;
+//	}
+
+	string4096		SSS;
+	strcpy			(SSS,"");
+	g_ca_stdout		= SSS;
+
+	L = lua_open();
+
+	if (!L)
+		lua_error	(L);
+
+	luaopen_base	(L);
+	luaopen_string	(L);
+	luaopen_math	(L);
+	luaopen_table	(L);
+	luaopen_debug	(L);
+
+	lua_settop		(L,0);
+
+	lua_pushstring	(L,"_0");
+	lua_pushstring	(L,"_1");
+	lua_pushstring	(L,"_2");
+	lua_pushstring	(L,"_3");
+	lua_pushstring	(L,"_4");
+
+	open			(L);
+	
+	printf			("Stack level %d",lua_gettop(L));
+
 //	vfPrintTable	(L,"_G",true);
-////	function		(L,"this",lua_this);
-////	for (int i=1; i<argc; i++) {
-////		string256	l_caScriptName;
-////		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
-////		printf		("File %s : ",l_caScriptName);
-////		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
-////		print_stack	(L);
-////		lua_dostring	(L,"test_this._1._2._3.main()");
-////		if (xr_strlen(SSS)) {
-////			printf		("\n%s\n",SSS);
-////			strcpy		(SSS,"");
-////		}
-////		else
-////			if (b)
-////				printf	("0 syntax errors\n");
-////	}
-//
-//	printf			("Stack level %d\n",lua_gettop(L));
-//	
-//	print_stack		(L);
-//	
-//	printf			("%s\n",lua_tostring(L,1));
-//	printf			("%s\n",lua_tostring(L,2));
-//	printf			("%s\n",lua_tostring(L,3));
-//	printf			("%s\n",lua_tostring(L,4));
-//	printf			("%s\n",lua_tostring(L,5));
-//
-//	lua_close		(L);
-//
-////	check if we are yielded
-//
-////	L->ci->state & CI_YIELD
+//	function		(L,"this",lua_this);
+//	for (int i=1; i<argc; i++) 
+//	{
+//		string256		l_caScriptName;
+//		strcpy			(l_caScriptName,"x:\\test_test.script");
+//		printf			("File %s : ",l_caScriptName);
+//		bool			b = load_file_into_namespace(L,l_caScriptName,"test_test",true);
+//		print_stack		(L);
+//		vfPrintTable	(L,"_G",true);
+//		lua_dostring	(L,"test_test.main()");
+//		if (xr_strlen(SSS)) {
+//			printf		("\n%s\n",SSS);
+//			strcpy		(SSS,"");
+//		}
+//		else
+//			if (b)
+//				printf	("0 syntax errors\n");
+//	}
+	luaL_loadfile		(L,"x:\\test_test.script");
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+	}
+	lua_pcall			(L,0,0,0);
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+	}
+	lua_dostring		(L,"test_test.main()");
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+	}
+	vfPrintTable	(L,"_G",true);
+
+	printf			("Stack level %d\n",lua_gettop(L));
+	
+	print_stack		(L);
+	
+	printf			("%s\n",lua_tostring(L,1));
+	printf			("%s\n",lua_tostring(L,2));
+	printf			("%s\n",lua_tostring(L,3));
+	printf			("%s\n",lua_tostring(L,4));
+	printf			("%s\n",lua_tostring(L,5));
+
+	lua_close		(L);
+
+//	check if we are yielded
+
+//	L->ci->state & CI_YIELD
 }

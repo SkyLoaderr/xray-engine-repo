@@ -441,6 +441,9 @@
 				RelativePath=".\delegate_test.cpp">
 			</File>
 			<File
+				RelativePath=".\directx_test.cpp">
+			</File>
+			<File
 				RelativePath=".\FastDelegate.h">
 			</File>
 			<File

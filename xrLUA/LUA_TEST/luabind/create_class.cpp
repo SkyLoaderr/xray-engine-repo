@@ -124,13 +124,10 @@ namespace luabind { namespace detail
 
 		const char* name = lua_tostring(L, 1);
 
-		void* c = lua_newuserdata(L, sizeof(class_rep));
-		new(c) class_rep(L, name);
-
 		//////////////////////////////////////////////////////////////////////////
 		// Here we are trying to add the class to the namespace in the local variable "this" if exist
 		//////////////////////////////////////////////////////////////////////////
-		
+
 		lua_Debug ar;
 		bool found = false;
 		if ( lua_getstack (L, 1, &ar) )
@@ -149,15 +146,18 @@ namespace luabind { namespace detail
 			}
 		}
 		int index = !found ? LUA_GLOBALSINDEX : lua_gettop(L);
-
-		// make the class globally available
-		lua_pushstring(L, name);
-		lua_pushvalue(L, -2 - found ? -1 : 0);
-		lua_settable(L, index);
-
+		
 		//////////////////////////////////////////////////////////////////////////
 		// End of change
 		//////////////////////////////////////////////////////////////////////////
+
+		void* c = lua_newuserdata(L, sizeof(class_rep));
+		new(c) class_rep(L, name);
+
+		// make the class globally available
+		lua_pushstring(L, name);
+		lua_pushvalue(L, -2);
+		lua_settable(L, index);
 
 		// also add it to the closure as return value
 		lua_pushcclosure(L, &stage2, 1);
