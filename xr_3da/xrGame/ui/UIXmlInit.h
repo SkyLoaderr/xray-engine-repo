@@ -101,7 +101,7 @@ public:
 	static void					ApplyAlign(int &x, int &y, u32 align);
 
 	// Initialize and store predefined colors
-	typedef std::pair<shared_str, int> ColorMap;
+	typedef std::pair<shared_str, u32> ColorMap;
 	DEF_VECTOR(ColorDefs, ColorMap);
 
 	static const ColorDefs		*GetColorDefs()		{ R_ASSERT(m_pColorDefs); return m_pColorDefs; }

@@ -50,7 +50,7 @@ void CUINewsWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
 	UIListWnd.ActivateList(false);
 	UIListWnd.EnableScrollBar(true);
-	UIListWnd.SetRightIndention(static_cast<int>(15 * HUD().GetScale()));
+	UIListWnd.SetRightIndention(static_cast<int>(20 * HUD().GetScale()));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ void CUINewsWnd::AddNews()
 	if (pActor)
 	{
 		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry.objects();
-		for (GAME_NEWS_IT it = news_vector.begin(); it != news_vector.end(); ++it)
+		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend(); ++it)
 		{
 			AddNewsItem(it->FullText());
 		}

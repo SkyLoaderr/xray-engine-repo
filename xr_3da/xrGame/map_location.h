@@ -7,12 +7,7 @@
 
 #include "ui/uistring.h"
 #include "infoportiondefs.h"
-
-//-----------------------------------------------------------------------------/
-//  Forward declarations
-//-----------------------------------------------------------------------------/
-
-class CLAItem;
+#include "ui/UIColorAnimatorWrapper.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -66,10 +61,7 @@ struct SMapLocation
 
 private:
 	// Анимация индикатора на карте
-	CLAItem	*colorAnimation;
-	// Текущиее время проигрывания анимации
-	float	animationTime;
-	float	prevTimeGlobal;
+	CUIColorAnimatorWrapper	animation;
 };
 
 DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);

@@ -99,8 +99,6 @@ void CUIColorAnimatorWrapper::Update()
 				// Индицируем конец анимации
 				isDone = true;
 			}
-
-			prevGlobalTime = Device.fTimeGlobal;
 		}
 		else
 		{
@@ -113,6 +111,8 @@ void CUIColorAnimatorWrapper::Update()
 			*color		= currColor;
 		}
 	}
+
+	prevGlobalTime = Device.fTimeGlobal;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -187,7 +187,7 @@ protected:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 
 	// Вспомогательная функци нахождения начала следующего слова начиная с текущей позиции
-	LPCSTR	FindNextWord(LPCSTR currPos) const;
+	LPSTR	FindNextWord(LPSTR currPos) const;
 	// Вспомогательная функци определения длинны строки до конца слова начиная с текущей позиции
 	int		WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const;
 	bool	IsEmptyDelimiter(const char c) const;

@@ -271,7 +271,8 @@ void CHUDManager::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fm
 	{
 		R_ASSERT(pFont);
 		va_list	lst;
-		string256 buf;
+		static string512 buf;
+		::ZeroMemory(buf, 512);
 		std::string str;
 
 		va_start(lst, fmt);

@@ -769,7 +769,7 @@ void CUIXmlInit::InitColorDefs()
 	int num = uiXml.GetNodesNum("colors", 0, "color");
 
 	shared_str name;
-	int r, b, g;
+	int r, b, g, a;
 
 	for (int i = 0; i < num; ++i)
 	{
@@ -777,7 +777,8 @@ void CUIXmlInit::InitColorDefs()
 		r		= uiXml.ReadAttribInt("color", i, "r", 0);
 		g		= uiXml.ReadAttribInt("color", i, "g", 0);
 		b		= uiXml.ReadAttribInt("color", i, "b", 0);
-
-		m_pColorDefs->push_back(std::make_pair<shared_str, int>(name, (r<<16) | (g<<8) | b));
+		a		= uiXml.ReadAttribInt("color", i, "a", 255);
+		
+		m_pColorDefs->push_back(std::make_pair<shared_str, u32>(name, (a<<24) | (r<<16) | (g<<8) | b));
 	}
 }

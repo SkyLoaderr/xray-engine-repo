@@ -7,23 +7,22 @@
 
 #include "xrServer.h"
 #include "xrServer_Objects_ALife.h"
-#include "../LightAnimLibrary.h"
 
 //////////////////////////////////////////////////////////////////////////
 
 SMapLocation::SMapLocation()
 {
-	info_portion_id			= NO_INFO_INDEX;
-	level_name				= NULL;
-	x						= y = 0;
-	name					= NULL;
-	text					= NULL;
-	attached_to_object		= false;
-	object_id				= 0xffff;
-	marker_show				= false;
-	icon_color				= 0xffffffff;
-	type_flags.zero			();
-	colorAnimation			= NULL;
+	info_portion_id				= NO_INFO_INDEX;
+	level_name					= NULL;
+	x							= y = 0;
+	name						= NULL;
+	text						= NULL;
+	attached_to_object			= false;
+	object_id					= 0xffff;
+	marker_show					= false;
+	icon_color					= 0xffffffff;
+	type_flags.zero				();
+	animation.Cyclic			(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,28 +51,14 @@ shared_str SMapLocation::LevelName()
 
 void SMapLocation::UpdateAnimation()
 {
-	if (colorAnimation)
-	{
-		// Если не прошли один цикл анимации, то игрпть дальше
-		if (animationTime <= (colorAnimation->iFrameCount / colorAnimation->fFPS))
-		{
-			int	currentFrame	= 0;
-			u32 colorBGR		= colorAnimation->CalculateBGR(animationTime, currentFrame);
-			icon_color			= color_rgba(color_get_B(colorBGR), color_get_G(colorBGR), color_get_R(colorBGR), 255 /*color_get_A(colorBGR)*/);
-			// обновим время
-			animationTime		+= Device.fTimeGlobal - prevTimeGlobal;
-		}
-	}
-
-	prevTimeGlobal = Device.fTimeGlobal;
+	animation.Update();
+	icon_color = animation.GetColor();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void SMapLocation::SetColorAnimation(const shared_str &animationName)
 {
-	colorAnimation	= LALib.FindItem(*animationName);
-	R_ASSERT(colorAnimation);
-	animationTime	= 0.0f;
-	prevTimeGlobal	= Device.fTimeGlobal;
+	animation.SetColorAnimation(animationName);
+	animation.Reset();
 }

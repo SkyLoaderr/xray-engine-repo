@@ -551,9 +551,9 @@ int CUIListWnd::GetItemPos(CUIListItem *pItem)
 
 //////////////////////////////////////////////////////////////////////////
 
-LPCSTR CUIListWnd::FindNextWord(LPCSTR currPos) const
+LPSTR CUIListWnd::FindNextWord(LPSTR currPos) const
 {
-	VERIFY(currPos);
+	if (!currPos) return NULL;
 	bool delimPass	= false;
 	while (0 != *currPos && (!delimPass || IsEmptyDelimiter(*currPos)))
 	{
@@ -581,9 +581,16 @@ int CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) c
 		charsCount++;
 		currPos++;
 	}
+
 	clamp(charsCount, 0, 256);
-	strncpy(str, memorizedPos, charsCount);
-	return static_cast<int>(font->SizeOf(str));
+
+	if (currPos)
+	{
+		strncpy(str, memorizedPos, charsCount);
+		return static_cast<int>(font->SizeOf(str));
+	}
+	else
+		return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -37,112 +37,107 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 	// I know, i know. :) But for optimization purposes I really need this.
 	// Actually I didn't change string contents. I only temorary replace some symbols
 	STRING&	text			= const_cast<STRING&>(str.m_str);
-	STRING	buf;
 
 	LPCSTR	clDefault		= "default";
 
 	CGameFont *elementFont = (NULL == pFont) ? this->GetFont() : pFont;
 	R_ASSERT(elementFont);
 
-	u32			last_pos		= 0;
-	int			GroupID			= GetSize();
-	bool		wrapWord		= false;
-	int			lineWidth		= this->GetItemWidth() - shift - this->GetRightIndention();
-	int			width			= 0;
-	LPCSTR		nextWord		= &text.front();
-	LPCSTR		memorizedWord	= 0;
-	char		tmpC			= 0;
-	int			lastWordWidth	= 0;
-	int			charsCount		= 0;
-	int			symToSkip		= 0;
+	int			GroupID				= GetSize();
+	int			lineTotalWidth		= this->GetItemWidth() - shift - this->GetRightIndention();
+	LPSTR		nextWord			= &text.front();
+	LPSTR		memorizedWord		= &text.front();
+	LPSTR		prevWord			= nextWord;
+	bool		wrapSentence		= false;
+	char		tmpChar				= 0;
+	int			lineLength			= 0;
+	int			wordLength			= 0;
+	int			totalWordLength		= 0;
+	int			wordLengthInChars	= 0;
+	int			symToSkip			= 0;
+	size_t		stringLength		= text.size();
+	int			spaceSize			= static_cast<int>(elementFont->SizeOf(' '));
 
-	for(int i = 0; i < static_cast<int>(text.size()) - 2;)
+	while (prevWord < str + xr_strlen(str))
 	{
-		// '\n' - переход на новую строку
-		//			if((text[i] == '\\' && text[i+1]== 'n') ||
-		//			   (10 == text[i] && 13 == text[i + 1]) ||
-		//			   (length >= this->GetItemWidth() - shift - this->GetRightIndention()))
-		if ('\\' == text[i] && 'n' == text[i + 1])
+		prevWord	= nextWord;
+		nextWord	= FindNextWord(nextWord);
+
+		if (!prevWord)
 		{
-			wrapWord		= true;
-			symToSkip		= 2;
-			nextWord		+= symToSkip;
+			prevWord		= &text.front() + stringLength - 1;
+			wrapSentence	= true;
 		}
 
-		if ('%' == text[i] && 'c' == text[i + 1])
+		if (prevWord + 2 <= &text.front() + stringLength && (*prevWord == '\\' || *prevWord == '%'))
 		{
-			// Try default color first
-			if (strstr(&text[i + 2], clDefault) == &text[i + 2])
+			if (*(prevWord + 1) == 'n')
 			{
-				i += 2 + xr_strlen(clDefault);
+				symToSkip		= 2;
+				wrapSentence	= true;
+				lineLength		= 0;
 			}
-			else
+
+			if (*(prevWord + 1) == 'c')
 			{
-				// Try predefined colors
-				for (CUIXmlInit::ColorDefs::const_iterator it2 = CUIXmlInit::GetColorDefs()->begin(); it2 != CUIXmlInit::GetColorDefs()->end(); ++it2)
+				for (CUIXmlInit::ColorDefs::const_iterator colorIt = CUIXmlInit::GetColorDefs()->begin();
+														   colorIt != CUIXmlInit::GetColorDefs()->end();
+														   ++colorIt)
 				{
-					if (strstr(&text[i + 2], *it2->first) == &text[i + 2])
+					if (prevWord + 2 == strstr(prevWord + 2, *colorIt->first))
 					{
-						i += 2 + xr_strlen(*it2->first);
+						symToSkip = 2 + colorIt->first.size();
 						break;
 					}
 				}
+				if (prevWord + 2 == strstr(prevWord + 2, clDefault))
+				{
+					symToSkip = 2 + xr_strlen(clDefault);
+				}
+//				if (prevWord + 2 + xr_strlen("red") < &text.front() + stringLength &&
+//					prevWord + 2 == strstr(prevWord + 2, "red"))
+//				{
+//					symToSkip = 2 + xr_strlen("red");
+//				}
 			}
 		}
 
-		lastWordWidth = WordTailSize(nextWord, elementFont, charsCount);
-		if (width + lastWordWidth > lineWidth)
+		wordLength		= WordTailSize(prevWord + symToSkip, elementFont, wordLengthInChars);
+
+		if (0 != symToSkip && 0 != lineLength)
 		{
-			wrapWord	= true;
-			width		= 0;
+			int dummy = 0;
+			totalWordLength = WordTailSize(prevWord, elementFont, dummy);
 		}
-		memorizedWord	= nextWord;
-		nextWord		= FindNextWord(&text[i]);
-
-		width	+= static_cast<int>(elementFont->SizeOf(' ') * (nextWord - memorizedWord - charsCount) + lastWordWidth);
-
-		if (wrapWord || !nextWord)
-		{	
-			if (nextWord && i != 0)
-			{
-				tmpC = text[i - 1];
-				text[i - 1] = 0;
-			}
-			//			buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
-			//			buf.push_back(0);
-			ReturnStatus &= AddItem<Element>(&text[last_pos], shift, pData, value, insertBeforeIdx);
-			Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
-			pLocalItem->SetGroupID(GroupID);
-			pLocalItem->SetTextColor(MsgColor);
-			pLocalItem->SetFont(pFont);
-			if (nextWord && i != 0)
-			{
-				text[i - 1]		= tmpC;
-			}
-			last_pos		= i + symToSkip;
-			wrapWord		= false;
-		}
-
-		if (nextWord && memorizedWord)
-			i		+= static_cast<int>(nextWord - memorizedWord + symToSkip);
 		else
-			i		= static_cast<int>(text.size());
+		{
+			totalWordLength = wordLength;
+		}
 
+		if (lineLength + wordLength > lineTotalWidth)
+		{
+			wrapSentence	= true;
+			lineLength		= 0;
+		}
+
+		wordLength		=  static_cast<int>(wordLength + (nextWord - prevWord - wordLengthInChars) * spaceSize + wordLength - totalWordLength);
+		lineLength		+= wordLength;
+
+		if (wrapSentence)
+		{
+			tmpChar					= *prevWord;
+			*prevWord				= 0;
+			ReturnStatus			&= AddItem<Element>(memorizedWord, shift, pData, value, insertBeforeIdx);
+			Element *pLocalItem		= smart_cast<Element*>(GetItem(GetSize() - 1));
+			pLocalItem->SetGroupID	(GroupID);
+			pLocalItem->SetTextColor(MsgColor);
+			pLocalItem->SetFont		(pFont);
+			*prevWord				= tmpChar;
+			memorizedWord			= prevWord + symToSkip;
+			wrapSentence			= false;
+		}
 		symToSkip = 0;
 	}
-
-//	if(last_pos<text.size())
-//	{
-//		buf.clear();
-//		buf.insert(buf.begin(), text.begin()+last_pos, text.end());
-//		buf.push_back(0);
-//		AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
-//		GetItem(GetSize() - 1)->SetGroupID(GroupID);
-//		Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
-//		pLocalItem->SetGroupID(GroupID);
-//		pLocalItem->SetTextColor(MsgColor);
-//		pLocalItem->SetFont(pFont);
-//	}
 
 	return ReturnStatus;
 }
