@@ -12,11 +12,12 @@
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "stalker_movement_manager.h"
-#include "ai/monsters/snork/snork.h"
 #include "Inventory.h"
 #include "WeaponHUD.h"
 #include "xrServer.h"
 #include "autosave_manager.h"
+#include "ai/monsters/bloodsucker/bloodsucker.h"
+
 
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
@@ -210,22 +211,23 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 #ifdef _DEBUG
 
-	CObject *obj = Level().Objects.FindObjectByName("monster");
-	if (obj) {
-		CSnork *monster = smart_cast<CSnork *>(obj);
+	//CObject *obj = Level().Objects.FindObjectByName("monster");
+	//if (obj) {
+	//	CAI_Bloodsucker *monster = smart_cast<CAI_Bloodsucker *>(obj);
 
-		switch (key) {
-		case DIK_1:
-			//monster->SetUpperState();
-			break;
-		case DIK_2:
-			//monster->SetUpperState(false);
-			break;
-		case DIK_5:
-			monster->try_to_jump();
-			break;
-		}
-	}
+	//	switch (key) {
+	//	case DIK_1:
+	////		monster->turn_actor_to_me();
+	//		break;
+	////	case DIK_2:
+	////		//monster->SetUpperState(false);
+	////		break;
+	////	case DIK_5:
+	////		monster->try_to_jump();
+	////		break;
+	//	}
+	//}
+
 #endif
 
 

@@ -3,9 +3,12 @@
 #include "../BaseMonster/base_monster.h"
 #include "../ai_monster_bones.h"
 #include "../invisibility.h"
+#include "../controlled_actor.h"
+#include "../anim_triple.h"
 
 class CAI_Bloodsucker : public CBaseMonster, 
-						public CInvisibility {
+						public CInvisibility,
+						public CControlledActor {
 
 	typedef		CBaseMonster	inherited;
 	
@@ -22,6 +25,10 @@ class CAI_Bloodsucker : public CBaseMonster,
 
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
+
+public:
+
+	CAnimTriple				anim_triple_vampire;
 	
 public:
 							CAI_Bloodsucker	();
@@ -57,5 +64,4 @@ public:
 	virtual	void			on_activate				();
 	virtual	void			on_deactivate			();
 	virtual	void			on_change_visibility	(bool b_visibility);
-
 };

@@ -1,0 +1,35 @@
+#pragma once
+
+class CActor;
+
+class CControlledActor {
+	CActor *m_actor;
+	
+	float	m_speed;
+	
+	bool	m_active_turn;
+
+	float	target_yaw, target_pitch;
+	
+	u8		yaw_dir;		// 0 - right dir,	1 - left dir,	2 - none
+	u8		pitch_dir;		// 0 - up dir,		1 - bottom dir, 2 - none
+
+public:
+	void	reinit				();
+
+	// disable any input
+	void	take_control		();
+	// restore input
+	void	free_from_control	();
+
+	void	look_point			(float speed, const Fvector &point);
+	
+	void	frame_update		();
+
+private:
+	void	reset				();
+	
+	void	update_turn			();
+	
+};	
+

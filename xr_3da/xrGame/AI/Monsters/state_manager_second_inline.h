@@ -29,5 +29,21 @@ void CStateManagerSecondAbstract::execute_script_state()
 	get_state_current()->execute();
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateManagerSecondAbstract::can_eat()
+{
+	if (!object->CorpseMan.get_corpse()) return false;
+	
+	if (prev_substate == eStateEat) {
+		if (!get_state_current()->check_completion())		return true;
+	} else {
+		if (get_state(eStateEat)->check_start_conditions())	return true;
+	}
+
+	return false;
+}
+
+
+
 #undef CStateManagerSecondAbstract 
 #undef TEMPLATE_SPECIALIZATION

@@ -6,6 +6,8 @@
 #include "bloodsucker_state_manager.h"
 #include "../../../../skeletoncustom.h"
 #include "../../../detail_path_manager.h"
+#include "../../../actor.h"
+#include "../../../../skeletonanimated.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -84,7 +86,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
-		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 		MotionMan.finish_load_shared();
 	}
@@ -97,10 +98,20 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 void CAI_Bloodsucker::reinit()
 {
-	inherited::reinit();
-	CInvisibility::reinit();
+	inherited::reinit			();
+	CInvisibility::reinit		();
+	CControlledActor::reinit	();
 
 	Bones.Reset();
+
+
+	// Load triple vampire animations
+	CMotionDef			*def1, *def2, *def3;
+	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(Visual());
+	def1 = skel_animated->ID_Cycle_Safe("vampire_0");	VERIFY(def1);
+	def2 = skel_animated->ID_Cycle_Safe("vampire_1");	VERIFY(def2);
+	def3 = skel_animated->ID_Cycle_Safe("vampire_2");	VERIFY(def3);
+	anim_triple_vampire.reinit_external	(&EventMan, def1, def2, def3, false);
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -233,8 +244,9 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 
 void CAI_Bloodsucker::UpdateCL()
 {
-	inherited::UpdateCL();
-	CInvisibility::frame_update();
+	inherited::UpdateCL				();
+	CInvisibility::frame_update		();
+	CControlledActor::frame_update	();
 }
 
 

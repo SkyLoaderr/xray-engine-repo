@@ -2350,6 +2350,16 @@
 									RelativePath=".\ai\Monsters\monster_morale_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Actor Controller"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\controlled_actor.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\controlled_actor.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2793,6 +2803,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_state_manager.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_inline.h">
 						</File>
 					</Filter>
 					<Filter
@@ -7031,6 +7047,10 @@
 								RelativePath=".\explode_effector.h">
 							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="Camera"
+						Filter="">
 					</Filter>
 				</Filter>
 			</Filter>

@@ -124,9 +124,11 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 	Morale.on_hit		();
 
 	CScriptMonster	*script_monster = smart_cast<CScriptMonster*>(this);
-	if (script_monster)
-		script_monster->hit_callback(amount,vLocalDir,who,element);
-	
+	if (script_monster)	script_monster->hit_callback(amount,vLocalDir,who,element);
+
+	// если нейтрал - добавить как врага
+	CEntityAlive	*obj = smart_cast<CEntityAlive*>(who);
+	if (obj && (tfGetRelationType(obj) == ALife::eRelationTypeNeutral)) EnemyMan.add_enemy(obj);
 }
 
 void CBaseMonster::SetAttackEffector() 

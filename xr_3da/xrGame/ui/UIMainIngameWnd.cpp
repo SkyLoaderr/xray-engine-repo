@@ -337,8 +337,12 @@ void CUIMainIngameWnd::Draw()
 	// Render claws
 	if (!m_ClawsAnimation.Done() && m_ClawsTexture.GetShader())
 	{
-		m_ClawsTexture.SetPos(0, 0);
-		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+		m_ClawsTexture.SetPos	(0, 0);
+		//m_ClawsTexture.Render	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+		//m_ClawsTexture.SetRect	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+
+		m_ClawsTexture.Render	(PI_DIV_3);
+		m_ClawsTexture.SetScale	(0.5f);
 	}
 }
 
@@ -1223,8 +1227,10 @@ void CUIMainIngameWnd::PlayClawsAnimation(const shared_str &monsterName)
 {
 	MonsterClawsTextures_it it = m_ClawsTextures.find(monsterName);
 	R_ASSERT2(it != m_ClawsTextures.end(), "Monster claws texture for this monster doesn't exist");
-	m_ClawsTexture.SetShader(*it->second);
-	m_ClawsAnimation.Reset();
+	
+	m_ClawsTexture.SetShader	(*it->second);
+	m_ClawsAnimation.Reset		();
+
 //	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
 //	m_ClawsAnimation.Play();
 }
