@@ -86,7 +86,7 @@ public:
 		return(true);
 	}
 
-	IC		float					ffGetDistanceBetweenGraphPoints(_GRAPH_ID tGraphID0, _GRAPH_ID tGraphID1)
+	IC		float					ffGetDistanceBetweenGraphPoints(ALife::_GRAPH_ID tGraphID0, ALife::_GRAPH_ID tGraphID1)
 	{
 		SGraphEdge					*i = (SGraphEdge*)((BYTE*)m_tpaGraph + m_tpaGraph[tGraphID0].dwEdgeOffset);
 		SGraphEdge					*e = i + m_tpaGraph[tGraphID0].tNeighbourCount;
@@ -94,6 +94,6 @@ public:
 			if (i->dwVertexNumber == tGraphID1)
 				return				(i->fPathDistance);
 		R_ASSERT2					(false,"There is no proper graph point neighbour!");
-		return						(_GRAPH_ID(-1));
+		return						(ALife::_GRAPH_ID(-1));
 	}
 };

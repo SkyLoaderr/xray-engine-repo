@@ -11,7 +11,6 @@
 #include "xrLevel.h"
 #include "xrAI.h"
 #include "xrGraph.h"
-#include "ai_alife_space.h"
 #include "game_base.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "xrCrossTable.h"

@@ -11,6 +11,7 @@
 
 #ifdef AI_COMPILER
 	#include "net_utils.h"
+	#include "xrServer_Objects_ALife_Items.h"
 #endif
 
 #include "xrServer_Objects_ALife_Monsters.h"
