@@ -160,5 +160,6 @@ struct SRemoveRped
 };
 void CPHCommander::remove_calls(CPHReqComparerV* cmp_object)
 {
-	remove_if(m_calls.begin(),m_calls.end(),SRemoveRped(cmp_object));
+	PHCALL_I I= remove_if(m_calls.begin(),m_calls.end(),SRemoveRped(cmp_object));
+	m_calls.erase(I,m_calls.end());
 }
