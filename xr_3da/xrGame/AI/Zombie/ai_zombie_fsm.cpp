@@ -74,13 +74,13 @@ void CAI_Zombie::FreeHunting()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
 
-//	SelectSound(m_iSoundIndex);
-//
-//	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
-//		tHitDir.sub(vPosition,tpaDynamicSounds[m_iSoundIndex].tSavedPosition);
-//		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
-//		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
-//	}
+	SelectSound(m_iSoundIndex);
+
+	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
+		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
+		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
+		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
+	}
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -319,12 +319,13 @@ void CAI_Zombie::Pursuit()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
 	
-//	SelectSound(m_iSoundIndex);
-//
-//	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
-//		tHitDir.sub(vPosition,tpaDynamicSounds[m_iSoundIndex].tSavedPosition);
-//		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
-//	}
+	SelectSound(m_iSoundIndex);
+
+	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
+		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
+		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
+		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
+	}
 	
 	INIT_SQUAD_AND_LEADER;
 	
