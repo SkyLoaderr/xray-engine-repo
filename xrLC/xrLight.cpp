@@ -10,7 +10,8 @@ class CLMThread : public CThread
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{
-		defl = D;
+		defl		= D;
+		thMessages	= FALSE;
 	}
 
 	virtual void	Execute()
