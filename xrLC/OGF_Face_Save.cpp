@@ -28,14 +28,13 @@ s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
 	return	s16	(t);
 }
 
-D3DVERTEXELEMENT9		r2_decl			[] =	// 36
+D3DVERTEXELEMENT9		r2_decl			[] =	// 32
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
 	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,	0 },
 	{0, 20, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,	0 },
-	{0, 24, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
-	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 24, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
 D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 12+4+8	= 24 / 28
@@ -55,6 +54,28 @@ D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24 / 28
 	D3DDECL_END()
 };
 #pragma pack(push,1)
+struct	r2v
+{
+	Fvector3	P;
+	u32			N;
+	u32			T;
+	u32			B;
+	float		tc0x,tc0y;
+
+	r2v			(Fvector3 _P, Fvector _N, Fvector _T, Fvector _B, base_color _CC, Fvector2 tc_base)
+	{
+		base_color_c	_C;	_CC._get	(_C);
+		_N.normalize	();
+		_T.normalize	();
+		_B.normalize	();
+		P				= _P;
+		N				= u8_vec4		(_N,u8_clr(_C.hemi));
+		T				= u8_vec4		(_T);
+		B				= u8_vec4		(_B);
+		tc0x			= tc_base.x;
+		tc0y			= tc_base.y;
+	}
+};
 struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
@@ -230,7 +251,6 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	u32 ID,Start;
 	if (b_R2)
 	{
-#pragma todo("R2 saving incorrect")
 		VDeclarator		D;
 		D.set			(r2_decl);
 
@@ -238,12 +258,8 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 		g_VB.Begin		(D);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 		{
-			g_VB.Add			(&(V->P),3*sizeof(float));		// Position
-			t=u8_vec4(V->N);	g_VB.Add(&t,4);					// Normal
-			t=u8_vec4(V->T);	g_VB.Add(&t,4);					// Tangent
-			t=u8_vec4(V->B);	g_VB.Add(&t,4);					// Binormal
-			// t=V->Color;		g_VB.Add(&t,4);					// Color
-			g_VB.Add			(V->UV.begin(),2*sizeof(float));// TC
+			r1v_vert	v	(V->P,V->N,V->T,V->B,V->Color,V->UV[0]);
+			g_VB.Add		(&v,sizeof(v));
 		}
 		g_VB.End		(&ID,&Start);
 	} else {
