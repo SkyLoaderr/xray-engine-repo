@@ -45,8 +45,9 @@ const dReal	world_gravity=2.f*9.81f;
 
 int			phFPS			= 50;
 int			phIterations	= 18;
+int			phIterationCycle= 5;
 
-
+static int IterationCycleI= 0;
 dWorldID	phWorld;
 /////////////////////////////////////
 static dJointGroupID ContactGroup;
@@ -85,11 +86,6 @@ IC void add_contact_body_effector(dBodyID body,dContact& c,float flotation)
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
-void CPHWorld::Render()
-{
-	if (!bDebug)	return;
-
-}
 
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
@@ -117,7 +113,23 @@ void CPHMesh ::Destroy(){
 #ifdef PH_PLAIN
 dGeomID plane;
 #endif
+void CPHWorld::Render()
+{
+	if (!bDebug)	return;
 
+}
+CPHWorld::CPHWorld()
+{
+	disable_count=0;
+	m_frame_time=0.f;
+	m_steps_num=0;
+	m_frame_sum=0.f;
+	m_delay=0; 
+	m_previous_delay=0;
+	m_reduce_delay=0;
+	m_update_delay_count=0;
+	b_world_freezed=false;
+}
 void CPHWorld::Create()
 {
 	if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
@@ -171,16 +183,67 @@ void CPHWorld::OnFrame()
 {
 	// Msg									("------------- physics: %d / %d",u32(Device.dwFrame),u32(m_steps_num));
 	Device.Statistic.Physics.Begin		();
-	Step								(Device.fTimeDelta);
+	FrameStep								(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //static dReal frame_time=0.f;
-void CPHWorld::Step(dReal step)
+void CPHWorld::Step()
+{
+	xr_list<CPHObject*>::iterator iter;
+
+	++disable_count;		
+	if(disable_count==dis_frames+1) disable_count=0;
+
+	++m_steps_num;
+	//double dif=m_frame_sum-Time();
+	//if(fabs(dif)>fixed_step) 
+	//	m_start_time+=dif;
+
+	//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
+	//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
+
+	//dWorldSetERP(phWorld,  0.8);
+	//dWorldSetCFM(phWorld,  0.00000001);
+
+
+
+	Device.Statistic.ph_collision.Begin	();
+	dSpaceCollide		(Space, 0, &NearCallback); 
+	Device.Statistic.ph_collision.End	();
+
+	//		ContactEffectors.for_each(SApplyBodyEffectorPred());
+
+	Device.Statistic.ph_core.Begin		();
+	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
+		(*iter)->PhTune(fixed_step);	
+
+#ifdef ODE_SLOW_SOLVER
+	dWorldStep		(phWorld,	fixed_step);
+#else
+	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
+
+	dWorldStepFast	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
+#endif
+	Device.Statistic.ph_core.End		();
+
+	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
+		(*iter)->PhDataUpdate(fixed_step);
+	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
+	ContactFeedBacks.empty();
+	ContactEffectors.empty();
+
+
+
+
+	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
+	//			(*iter)->StepFrameUpdate(step);
+}
+void CPHWorld::FrameStep(dReal step)
 {
 	// compute contact joints and forces
-	xr_list<CPHObject*>::iterator iter;
+
 	//step+=astep;
 
 	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;
@@ -216,58 +279,35 @@ void CPHWorld::Step(dReal step)
 	m_delay+=(it_number-m_reduce_delay-1);
 	*/
 	//for(UINT i=0;i<(m_reduce_delay+1);++i)
-	for(UINT i=0; i<it_number;++i)
-	{
-
-		++disable_count;		
-		if(disable_count==dis_frames+1) disable_count=0;
-
-		++m_steps_num;
-		//double dif=m_frame_sum-Time();
-		//if(fabs(dif)>fixed_step) 
-		//	m_start_time+=dif;
-
-		//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
-		//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
-
-		//dWorldSetERP(phWorld,  0.8);
-		//dWorldSetCFM(phWorld,  0.00000001);
+	for(UINT i=0; i<it_number;++i)	Step();
 
 
-
-		Device.Statistic.ph_collision.Begin	();
-		dSpaceCollide		(Space, 0, &NearCallback); 
-		Device.Statistic.ph_collision.End	();
-
-//		ContactEffectors.for_each(SApplyBodyEffectorPred());
-
-		Device.Statistic.ph_core.Begin		();
-		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
-			(*iter)->PhTune(fixed_step);	
-
-#ifdef ODE_SLOW_SOLVER
-		dWorldStep		(phWorld,	fixed_step);
-#else
-		dWorldStepFast	(phWorld,	fixed_step,	phIterations);
-#endif
-		Device.Statistic.ph_core.End		();
-
-		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
-			(*iter)->PhDataUpdate(fixed_step);
-		dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
-		ContactFeedBacks.empty();
-		ContactEffectors.empty();
-
-
-
-
-		//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
-		//			(*iter)->StepFrameUpdate(step);
-
-	}
 
 }
 
+void CPHWorld::Freeze()
+{
+	R_ASSERT2(!b_world_freezed,"already freezed!!!");
+	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
+	e=	m_objects.end()	;
+	
+	for(; e != iter;++iter)
+		(*iter)->Freeze();
+	b_world_freezed=true;
+}
+void CPHWorld::UnFreeze()
+{
+	R_ASSERT2(!b_world_freezed,"is not freezed!!!");
+	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
+		e=	m_objects.end()	;
+	for(; e != iter;++iter)
+		(*iter)->UnFreeze();	
+	b_world_freezed=false;
+}
+bool CPHWorld::IsFreezed()
+{
+	return b_world_freezed;
+}
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	const ULONG N = 800;
 	static dContact contacts[N];

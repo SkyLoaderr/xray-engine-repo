@@ -145,6 +145,8 @@ virtual ~CPHShell				()
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);
 	virtual void				InitContact					(dContact* c){};
+	virtual void				Freeze						();
+	virtual void				UnFreeze					();
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	virtual void				preBuild_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map);

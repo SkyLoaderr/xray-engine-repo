@@ -778,6 +778,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 
 }
 
+
 void	CPHSimpleCharacter::IPosition(Fvector& pos) {
 
 	if(!b_exist){

@@ -266,7 +266,18 @@ void CPHShell::Update(){
 	R_ASSERT2(_valid(mXFORM),"invalid position in update");
 }
 
-
+void	CPHShell::Freeze()
+{
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->Freeze();
+}
+void	CPHShell::UnFreeze()
+{
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->UnFreeze();
+}
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);

@@ -32,7 +32,7 @@ CPhysicsRefObject* m_phys_ref_object;
 
 
 dReal m_mass;
-
+bool					was_enabled_before_freeze;
 ////////////////////////////////////////////////////////////////////////////
 /////disable////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,9 @@ dVector3 m_safe_velocity;
 dVector3 m_safe_position;
 
 
-void		Disabling										()															;
-
+void				Disabling										()															;
+virtual void		Freeze											();
+virtual void		UnFreeze										();
 public:
 
 	void	Enable											()															{if(m_body)dBodyEnable(m_body);}											//!!

@@ -36,7 +36,15 @@ CPHCharacter::~CPHCharacter(void)
 
 }
 
-
+void	CPHCharacter::Freeze()
+{
+	was_enabled_before_freeze=!!dBodyIsEnabled(m_body);
+	dBodyDisable(m_body);
+}
+void	CPHCharacter::UnFreeze()
+{
+	if(was_enabled_before_freeze)dBodyEnable(m_body);
+}
 
 //////////////////////////////////////////////////////////////////////////
 /////////////////////CPHWheeledCharacter//////////////////////////////////

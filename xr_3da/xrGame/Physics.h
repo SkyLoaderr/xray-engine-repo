@@ -52,6 +52,7 @@ class CPHWorld	: public pureFrame
 	u32		m_previous_delay;
 	u32		m_reduce_delay;
 	u32		m_update_delay_count;
+	bool	b_world_freezed;
 	static const u32 update_delay=1;
 	dSpaceID Space;
 
@@ -65,8 +66,7 @@ public:
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//xr_vector<CPHElement*> elements;
-	CPHWorld(){disable_count=0;m_frame_time=0.f;m_steps_num=0;m_frame_sum=0.f;
-	m_delay=0; m_previous_delay=0;m_reduce_delay=0;m_update_delay_count=0;}
+	CPHWorld();
 	virtual ~CPHWorld(){};
 	//double Time(){return m_start_time+m_steps_num*fixed_step;}
 	dSpaceID GetSpace(){return Space;};
@@ -84,9 +84,12 @@ public:
 
 	void Destroy();
 
-	void Step	(dReal step=0.025f);
-
-	void Render	();
+	void FrameStep	(dReal step=0.025f);
+	void Step		();
+	void Freeze		();
+	void UnFreeze	();
+	bool IsFreezed	();
+	void Render		();
 
 
 	virtual void OnFrame ();

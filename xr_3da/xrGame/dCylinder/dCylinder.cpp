@@ -958,6 +958,7 @@ int dCollideCylS (dxGeom *o1, dxGeom *o2, int flags,
   dReal cylRadius;
   dReal hl;
   dGeomCylinderGetParams(o1,&cylRadius,&hl);
+  hl/=2.f;
   dReal sphereRadius;
   sphereRadius=dGeomSphereGetRadius(o2);
   

@@ -24,6 +24,8 @@ class CCar :
 	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact* /**c/**/){};
 	virtual void StepFrameUpdate(dReal /**step/**/){};
+	virtual void Freeze		(){};
+	virtual void UnFreeze	(){};
 protected:
 	enum ECarCamType{
 		ectFirst	= 0,

@@ -33,6 +33,7 @@ class CPHElement	:  public CPhysicsElement
 	CPHShell				*m_shell;					//e					//bl
 	CPHInterpolation		m_body_interpolation;		//e					//bl
 	CPHFracturesHolder		*m_fratures_holder;			//e					//bl
+	bool					was_enabled_before_freeze;
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
@@ -104,6 +105,8 @@ public:
 	void					CallBack1						(CBoneInstance* B);																//called from updateCL visual influent
 	void					PhDataUpdate					(dReal step);																	//ph update
 	void					PhTune							(dReal step);																	//ph update
+	virtual void			Freeze							()				;
+	virtual void			UnFreeze						()				;
 	virtual CPhysicsShell*	PhysicsShell					();																				//aux
 	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}							//aux
