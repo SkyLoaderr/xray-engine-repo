@@ -69,7 +69,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		if (2==C.iElement)
 		{
 			// Lighting only
-			C.r_Pass	("r1_lmap_l","r1_lmap_l",FALSE);
+			C.r_Pass	("r1_impl_l","r1_impl_l",FALSE);
 			C.r_Sampler	("s_base",C.L_textures[0]);
 			C.r_Sampler	("s_lmap",C.L_textures[1]);
 			C.r_End		();
@@ -77,14 +77,14 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			// Level view
 			if (C.bDetail)
 			{
-				C.r_Pass	("r1_lmap_dt","r1_lmap_dt",TRUE);
+				C.r_Pass	("r1_impl_dt","r1_impl_dt",TRUE);
 				C.r_Sampler	("s_base",	C.L_textures[0]);
 				C.r_Sampler	("s_lmap",	C.L_textures[1]);
 				C.r_Sampler	("s_detail",oT2_Name);
 				C.r_End		();
 			} else
 			{
-				C.r_Pass	("r1_lmap","r1_lmap",TRUE);
+				C.r_Pass	("r1_impl","r1_impl",TRUE);
 				C.r_Sampler	("s_base",C.L_textures[0]);
 				C.r_Sampler	("s_lmap",C.L_textures[1]);
 				C.r_End		();
