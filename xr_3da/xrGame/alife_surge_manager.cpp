@@ -303,7 +303,7 @@ void CALifeSurgeManager::update_tasks()
 						jj = ii;
 					}
 				}
-				R_ASSERT3				(jj != ee,"There is no way from trader to artefact",ai().game_graph().header().level(ai().game_graph().vertex((*II)->game_vertex_id())->level_id()).name());
+				R_ASSERT3				(jj != ee,"There is no way from trader to artefact",*ai().game_graph().header().level(ai().game_graph().vertex((*II)->game_vertex_id())->level_id()).name());
 
 				// creating _new task
 				CALifeTask					*l_tpALifeTask = xr_new<CALifeTask>();

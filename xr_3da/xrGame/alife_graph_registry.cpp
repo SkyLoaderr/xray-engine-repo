@@ -95,7 +95,7 @@ void CALifeGraphRegistry::setup_current_level	()
 	int							id = pApp->Level_ID((*I).second.name());
 	VERIFY						(id >= 0);
 	pApp->Level_Set				(id);
-	ai().load					((*I).second.name());
+	ai().load					(*(*I).second.name());
 }
 
 void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, ALife::_GRAPH_ID game_vertex_id, bool alife_query)

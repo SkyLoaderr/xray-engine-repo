@@ -29,8 +29,8 @@ public:
 		shared_str				m_section;
 
 	public:
-		IC LPCSTR name() const {
-			return				(*caLevelName);
+		IC shared_str name() const {
+			return				caLevelName;
 		}
 
 		IC const Fvector &offset() const {
