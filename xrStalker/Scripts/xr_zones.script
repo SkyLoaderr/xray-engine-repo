@@ -5,10 +5,9 @@ module("script_zone")
 Чугай Саша
 
 Сделать:
-	- сталкер в группировке?
-	- условия приёма во фракцию
-
-	- если нету такого типа
+	- условия создания фракции в custom data
+	- если зона создалась, а сталкер не добавился
+	- если нету такого типа гулага
 	- fraction types->gulag
 
 	- если сталкер под фракцией заходит в зону другой фракции
@@ -29,8 +28,9 @@ local h2ms = 60 * 60 * 1000
 local check_period = 300000
 
 local zones        = {} -- объекты управления для каждой зоны
-local zones_inside = {} -- списки сталкеров, находящихся в каждой зоне
+local zones_inside = {} -- списки объектов, находящихся в каждой зоне
 
+local the_actor
 -- находится ли объект в скриптовой зоне
 function is_in_zone( obj, zone_id )
 	return zones_inside[zone_id][obj:id()] == true
@@ -166,7 +166,6 @@ function zone_binder:reload( section )
 			end
 		end
   end
-
 end
 
 -- callback на вход в зону
@@ -187,85 +186,6 @@ function zone_binder:on_leave( zone, obj )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- класс фракции типа "несколько спящих на базе xr_sleeper"
-----------------------------------------------------------------------------------------------------------------------
-class "fraction_sleepers"
-
-function fraction_sleepers:__init()
-end
-
--- при загрузке работ, ёмкость фракции может уменьшиться (к примеру, если на уровне нету всех необходимых путей)
-function fraction_sleepers.setup_jobs( a )
-	local i = 1
-	local prefix = a.prefix .. "_sleep_"
-
-	repeat
-		local pname = prefix .. i
-
-		if not level.patrol_path_exists( pname ) then
-			a.capacity = i - 1	-- мужиков больше, чем кол-во путей всё равно не влезет
-			break
-		end
-
-		table.insert(
-			a.fraction.Job,
-			{
-				name      = "sleeper",
-				idle      = 0,
-				prior     = 1,
-				state     = { 0 },
-				group     = a.group,
-				squad     = a.squad,
-				path_main = pname
-			}
-		)
-
-		i = i + 1
-
-		if i > a.capacity then
-			break
-		end
-	until false
-
---	printf( "capacity = %d", a.capacity )
-end
-
-----------------------------------------------------------------------------------------------------------------------
--- класс фракции типа "один сталкер что-то ищет"
-----------------------------------------------------------------------------------------------------------------------
-class "fraction_searcher"
-
-function fraction_searcher:__init()
-end
-
-function fraction_searcher.setup_jobs( a )
-	table.insert(
-		a.fraction.Job,
-		{
-			name      = "search",
-			idle      = 0,
-			prior     = 1,
-			state     = { 0 },
-			group     = a.group,
-			squad     = a.squad,
-			path_main = a.prefix .. "_search"
-		}
-	)
-
-	a.capacity = 1 -- searcher всегда одиночка
-end
-
-----------------------------------------------------------------------------------------------------------------------
--- регистрация всех типов фракций
-----------------------------------------------------------------------------------------------------------------------
-
-local fraction_types = {}
-fraction_types.sleepers = fraction_sleepers()
-fraction_types.searcher = fraction_searcher()
-
-
-
-----------------------------------------------------------------------------------------------------------------------
 --Класс zone_fractions. Он управляет фракциями (гулагами), которые могут образоваться в этой схеме.
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -275,7 +195,7 @@ function zone_fractions:__init( zone, ini )
 	local sect
 
 	self.zone            = zone
-	self.stalkers        = {}    -- group и squad для каждого
+	self.stalkers        = {}    -- group и squad для каждого сталкера
 	self.fractions       = {}    -- настройки фракций, возможных в этой зоне
 	self.fraction        = nil   -- экземпляр текущей фракции
 	self.fraction_name   = nil   -- имя текущей фракции
@@ -300,14 +220,19 @@ function zone_fractions:__init( zone, ini )
 			ffi.type                            = ini:r_string( sect, "type" )
 			ffi.idle_min, ffi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
 			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
-			ffi.prefix                          = r_str ( ini, sect, "prefix",     self.zone:name() )
+--			ffi.prefix                          = r_str ( ini, sect, "prefix",     self.zone:name() )
 			ffi.capacity                        = r_num ( ini, sect, "capacity",   100 )
 			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24,     48 )
 			ffi.squad                           = r_num ( ini, sect, "squad" )
 			ffi.group                           = r_num ( ini, sect, "group" )
+			ffi.preconditions                   = r_str ( ini, sect, "preconditions" )
 		else
 			table.remove( f, fi )
 			break
+		end
+
+		if ffi.preconditions then
+			ffi.preconditions = parse_names( ffi.preconditions )
 		end
 
 		fi = fi + 1
@@ -326,6 +251,7 @@ function zone_fractions:add_stalker( obj )
 		-- если во фракции есть свободные места, то добавить
 		local n = self.fraction:get_population()
 
+--		printf( "%d %d %d", n, self.capacity, self.fraction:get_capacity() )
 		if n < self.capacity and n < self.fraction:get_capacity() then
 			if self.fraction:addObject( obj ) then
 				self.stalkers[obj:id()] = {
@@ -347,33 +273,64 @@ function zone_fractions:free_stalker( obj )
 	local backup = self.stalkers[obj:id()]
 	obj:change_team( obj:team(), backup.squad, backup.group )
 
---	self.stalkers[obj:id()] = nil
+	self.stalkers[obj:id()] = nil
 
 	printf( "[zone %s] removing %s from fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
 end
 
+-- может ли данная фракция создаться в данный момент?
+function zone_fractions:is_fract_available( fract_params )
+	if fract_params.preconditions then
+		for i, v in fract_params.preconditions do
+			if not the_actor:has_info( v ) then
+				return false
+			end
+		end
+	end
+
+	return true
+end
+
 -- создание новой фракции по конфигурации для данной зоны
 function zone_fractions:create_fraction()
-	local fn      = math.random( 1, table.getn( self.fractions ) )
-	local fparams = self.fractions[fn]
+	if not the_actor then
+		the_actor = level.actor()
+	end
 
-	self.fraction_params = fparams
+	-- выбор фракций, которые могут быть созданы
+	local avail_fracts = {}
+	for i, v in self.fractions do
+		if self:is_fract_available( v ) then
+			table.insert( avail_fracts, v )
+		end
+	end
 
-	self.fraction_type = fparams.type
-	self.fraction_name = self.zone:name() --.. "_" .. fparams.type
-	self.prefix        = fparams.prefix
-	self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
-	self.capacity      = fparams.capacity
-	self.squad         = fparams.squad
-	self.group         = fparams.group
-	self.check_time    = game.time() + check_period
+	if table.getn( avail_fracts ) > 0 then
+		-- создание 
+		local fparams = avail_fracts[math.random( 1, table.getn( avail_fracts ) )]
 
---	self.fraction      = xr_gulag.fract( self.fraction_name )
-	self.fraction      = xr_gulag.createGulag( self.fraction_name, fparams.type )
+		self.fraction_params = fparams
 
---	fraction_types[fparams.type].setup_jobs( self )
+		self.fraction_type = fparams.type
+		self.fraction_name = self.zone:name() --.. "_" .. fparams.type
+--		self.prefix        = fparams.prefix
+		self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
+		self.capacity      = fparams.capacity
+		self.squad         = fparams.squad
+		self.group         = fparams.group
+		self.check_time    = game.time() + check_period
 
-	printf( "[zone %s] creating fraction of type %s", self.zone:name(), fparams.type )
+--		self.fraction      = xr_gulag.fract( self.fraction_name )
+		self.fraction      = xr_gulag.createGulag( self.fraction_name, self.fraction_type )
+
+--		fraction_types[fparams.type].setup_jobs( self )
+
+		printf( "[zone %s] creating fraction of type %s", self.zone:name(), fparams.type )
+
+		return true
+	else
+		return false
+	end
 end
 
 -- всех освободить, убить фракцию
@@ -399,8 +356,9 @@ function zone_fractions:on_enter( obj )
 				self:add_stalker( obj )
 			else
 				if not self.idle_end or self.idle_end < game.time() then
-					self:create_fraction()
-					self:add_stalker( obj )
+					if self:create_fraction() then
+						self:add_stalker( obj )
+					end
 				end
 			end
 		end
