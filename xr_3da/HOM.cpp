@@ -213,7 +213,7 @@ void CHOM::Debug		()
 	
 	// Fill vertex buffer
 	DWORD Offset, C=0xffffffff;
-	DWORD _w = 800, _h = 600;
+	DWORD _w = occ_dim_0*2, _h = occ_dim_0*2;
 	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
