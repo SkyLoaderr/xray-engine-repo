@@ -450,11 +450,11 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 
 	// Debug purposes
 	DS.y_min				= 0;
-	DS.y_max				= .5f;
+	DS.y_max				= .3f;
 	DS.r_yaw				= 0xaaaaaaaa;
 	DS.r_scale				= 0xaaaaaaaa;
 
-	DS.items[0].id			= 1;
+	DS.items[0].id			= 2;
 	DS.items[0].palette.a0	= 7;
 	DS.items[0].palette.a1	= 0;
 	DS.items[0].palette.a2	= 0;
