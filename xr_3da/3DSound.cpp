@@ -286,26 +286,27 @@ void C3DSound::Update()
 	{
 		if (bCtrlFreq) pBuffer->SetFrequency(dwFreq);
 		fRealVolume = .9f*fRealVolume + .1f*fVolume;
-		pBuffer->SetVolume( LONG((1-fRealVolume*psSoundVEffects*fBaseVolume)*float(DSBVOLUME_MIN)) );
-		pBuffer3D->SetAllParameters( ps.d3d(), DS3D_DEFERRED );
+		pBuffer->SetVolume			( LONG((1-fRealVolume*psSoundVEffects*fBaseVolume)*float(DSBVOLUME_MIN)) );
+		pBuffer3D->SetAllParameters	( ps.d3d(), DS3D_DEFERRED );
 		bNeedUpdate = false;
+
+		// Dbg mode
+		DWORD	mode=ps.dwMode;		// pBuffer3D->GetMode(&mode);
+		switch (mode)
+		{
+		case DS3DMODE_DISABLE:		Log("disable"); break;
+		case DS3DMODE_HEADRELATIVE: Log("headrel"); break;
+		case DS3DMODE_NORMAL:		Log("normal");	break;
+		}
 	}
 }
 
 void C3DSound::OnMove()
 {
-	DWORD	mode;
-	pBuffer3D->GetMode(&mode);
-	switch (mode)
-	{
-	case DS3DMODE_DISABLE:		Log("disable"); break;
-	case DS3DMODE_HEADRELATIVE: Log("headrel"); break;
-	case DS3DMODE_NORMAL:		Log("normal");	break;
-	}
-
 	DWORD old_Status	= dwStatus;
 	pBuffer->GetStatus	(&dwStatus);
-	if ( dwStatus & DSBSTATUS_PLAYING ) {
+	if ( dwStatus & DSBSTATUS_PLAYING ) 
+	{
 		Update();
 		if ((dwStatus&DSBSTATUS_LOOPING)&&(iLoopCountRested>0)) {
 			// лупимся не вообще а определенное к-во раз
