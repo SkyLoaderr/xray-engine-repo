@@ -4,10 +4,10 @@
 
 class base_lighting
 {
-	xr_vector<R_Light>		rgb;
-	xr_vector<Fvector>		hemi;
+	xr_vector<R_Light>		rgb;		// P,N
+	xr_vector<Fvector>		hemi;		// P,N
 	float					hemi_e;
-	xr_vector<Fvector>		sun;
+	xr_vector<Fvector>		sun;		// P
 	float					sun_e;
 };
 class base_color
