@@ -209,6 +209,8 @@ function sound_update(npc, sound, now)
 		for k,v in sound.themes do
 			if theme[v] ~= nil then
 				get_sound(theme[v])
+			else
+				printf("ERROR: invalid theme %s", v)
 			end
 		end
 
