@@ -183,7 +183,7 @@ public:
 	void TurnOffWarningIcon(EWarningIcons icon);
 
 	// Пороги изменения цвета индикаторов, загружаемые из system.ltx
-	typedef std::map<EWarningIcons, xr_vector<float> >	Thresholds;
+	typedef xr_map<EWarningIcons, xr_vector<float> >	Thresholds;
 	typedef Thresholds::iterator						Thresholds_it;
 	Thresholds	m_Thresholds;
 

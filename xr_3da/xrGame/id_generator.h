@@ -20,23 +20,30 @@ template<
 	VALUE_ID tInvalidValueID = tMaxValue,
 	TIME_ID	 tStartTime = 0> 
 class CID_Generator {
-	typedef xr_multimap< TIME_ID , BLOCK_ID >	TIME_BLOCK_MAP;
-	typedef typename TIME_BLOCK_MAP::iterator	TIME_BLOCK_PAIR_IT;
-
+private:
 	struct SID_Block {
-		CHUNK_ID				m_tCount;
-		TIME_ID					m_tTimeID;
-		TYPE_ID					m_tpIDs[tBlockSize];
-		SID_Block				() : m_tCount(0) {}
+		CHUNK_ID	m_tCount;
+		TIME_ID		m_tTimeID;
+		TYPE_ID		m_tpIDs[tBlockSize];
+
+		IC				SID_Block	() : m_tCount(0) {}
+		
+		IC	bool		operator<	(const SID_Block &b) const
+		{
+			return	(m_tCount && ((m_tTimeID < b.m_tTimeID) || !b.m_tCount));
+		}
 	};
 
+private:
 	enum {
-		m_tBlockCount = u32(tMaxValue - tMinValue)/tBlockSize + 1,
+		m_tBlockCount			= u32(tMaxValue - tMinValue)/tBlockSize + 1,
 	};
 
-	TIME_BLOCK_MAP				m_tpTimeMap;
-	SID_Block					m_tppBlocks			[m_tBlockCount];
+private:
+	u32							m_available_count;
+	SID_Block					m_tppBlocks	[m_tBlockCount];
 
+private:
 	IC		BLOCK_ID			tfGetBlockByValue(VALUE_ID tValueID)
 	{
 		BLOCK_ID				l_tBlockID = BLOCK_ID((tValueID - tMinValue)/tBlockSize);
@@ -44,15 +51,15 @@ class CID_Generator {
 		return					(l_tBlockID);
 	}
 
-			VALUE_ID			tfGetFromBlock	(TIME_BLOCK_PAIR_IT &tIterator, VALUE_ID tValueID)
+	IC		VALUE_ID			tfGetFromBlock	(SID_Block &l_tID_Block, VALUE_ID tValueID)
 	{
-		BLOCK_ID				l_tBlockID = (*tIterator).second;
-		SID_Block				&l_tID_Block = m_tppBlocks[l_tBlockID];
-
 		VERIFY					(l_tID_Block.m_tCount);
+		BLOCK_ID				l_tBlockID = BLOCK_ID(&l_tID_Block - m_tppBlocks);
 
-		if (l_tID_Block.m_tCount == 1)
-			m_tpTimeMap.erase	(tIterator);
+		if (l_tID_Block.m_tCount == 1) {
+			--m_available_count;
+			VERIFY				(m_available_count >= 0);
+		}
 
 		if (tInvalidValueID == tValueID)
 			return				(VALUE_ID(l_tID_Block.m_tpIDs[--l_tID_Block.m_tCount]) + l_tBlockID*tBlockSize + tMinValue);
@@ -66,14 +73,16 @@ class CID_Generator {
 public:
 	VALUE_ID					m_tInvalidValueID;
 
-								CID_Generator	()
+	IC							CID_Generator	()
 	{
 		m_tInvalidValueID		= tInvalidValueID;
-		for (VALUE_ID i=0; ; ++i) {
+		m_available_count		= 0;
+		for (VALUE_ID i=tMinValue; ; ++i) {
 			vfFreeID			(i,tStartTime);
 			if (i >= tMaxValue)
 				break;
 		}
+		VERIFY					(m_available_count == m_tBlockCount);
 		for (u32 j=0; j<m_tBlockCount; ++j)
 			std::reverse		(m_tppBlocks[j].m_tpIDs,m_tppBlocks[j].m_tpIDs + m_tppBlocks[j].m_tCount);
 	}
@@ -82,47 +91,27 @@ public:
 	{
 	}
 
-			VALUE_ID			tfGetID			(VALUE_ID tValueID = tInvalidValueID)
+	IC		VALUE_ID			tfGetID			(VALUE_ID tValueID = tInvalidValueID)
 	{
-		if (tInvalidValueID == tValueID) {
-			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.begin();
-			R_ASSERT2			(m_tpTimeMap.end() != I,"Not enough IDs");
-			return				(tfGetFromBlock(I,tValueID));
-		}
-		else {
-			BLOCK_ID			l_tBlockID = tfGetBlockByValue(tValueID);
-			TIME_ID				l_tTimeID = m_tppBlocks[l_tBlockID].m_tTimeID;
-			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tTimeID);
-			TIME_BLOCK_PAIR_IT	E = m_tpTimeMap.end();
-			for ( ; I != E; ++I)
-				if ((*I).second == l_tBlockID)
-					return		(tfGetFromBlock(I,tValueID));
-			R_ASSERT2			(false,"Requesting ID has already been used!");
-			return				(tInvalidValueID);
-		}
+		if (tInvalidValueID != tValueID)
+			return				(tfGetFromBlock(m_tppBlocks[tfGetBlockByValue(tValueID)],tValueID));
+
+		R_ASSERT2				(m_available_count,"Not enough IDs");
+		SID_Block*				I = std::min_element(m_tppBlocks,m_tppBlocks + m_tBlockCount);
+		VERIFY					(I != m_tppBlocks + m_tBlockCount);
+		return					(tfGetFromBlock(*I,tValueID));
 	}
 
-			void				vfFreeID		(VALUE_ID tValueID, TIME_ID tTimeID)
+	IC		void				vfFreeID		(VALUE_ID tValueID, TIME_ID tTimeID)
 	{
 		BLOCK_ID				l_tBlockID = tfGetBlockByValue(tValueID);
 		SID_Block				&l_tID_Block = m_tppBlocks[l_tBlockID];
 
 		VERIFY					(l_tID_Block.m_tCount < tBlockSize);
 
-		if (!l_tID_Block.m_tCount)
-			m_tpTimeMap.insert	(mk_pair(tTimeID,l_tBlockID));
-		else {
-			bool				bOk = false;
-			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tID_Block.m_tTimeID);
-			TIME_BLOCK_PAIR_IT	E = m_tpTimeMap.end();
-			for ( ; I != E; ++I)
-				if ((*I).second == l_tBlockID) {
-					m_tpTimeMap.erase	(I);
-					m_tpTimeMap.insert	(mk_pair(tTimeID,l_tBlockID));
-					bOk					= true;
-					break;
-				}
-			VERIFY				(bOk);
+		if (!l_tID_Block.m_tCount) {
+			++m_available_count;
+			VERIFY				(m_available_count <= m_tBlockCount);
 		}
 
 #ifdef DEBUG
@@ -133,4 +122,3 @@ public:
 		l_tID_Block.m_tTimeID	= tTimeID;
 	}
 };
-

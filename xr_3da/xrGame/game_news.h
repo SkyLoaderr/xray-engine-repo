@@ -51,7 +51,7 @@ private:
 	} SNewsTemplate;
 
 	// Array of news templates
-	typedef std::map<u32, SNewsTemplate>	NewsTemplates;
+	typedef xr_map<u32, SNewsTemplate>	NewsTemplates;
 	NewsTemplates							m_NewsTemplates;
 
 	void LoadNewsTemplates();
