@@ -28,18 +28,19 @@ void CSightManager::Load			(LPCSTR section)
 {
 }
 
-void CSightManager::reinit			()
+void CSightManager::reinit			(CAI_Stalker *object)
 {
-	m_dwLookChangedTime			= 0;
-	m_tLookType					= MonsterSpace::eLookTypePathDirection;
+	VERIFY						(object);
+	clear						();
+	m_current_action			= 0;
+	m_object					= object;
+	m_actuality					= false;
 }
 
 void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
 {
-	CCustomMonster	*custom_mosnter = dynamic_cast<CCustomMonster*>(this);
-	VERIFY			(custom_mosnter);
 	Fvector			tTemp;
-	tTemp.sub		(tPosition,custom_mosnter->eye_matrix.c);
+	tTemp.sub		(tPosition,m_object->eye_matrix.c);
 	tTemp.getHP		(yaw,pitch);
 	VERIFY			(_valid(yaw));
 	VERIFY			(_valid(pitch));
@@ -49,10 +50,8 @@ void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, flo
 
 void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
 {
-	CObject			*object = dynamic_cast<CObject*>(this);
-	VERIFY			(object);
 	Fvector			tTemp;
-	object->Center	(tTemp);
+	m_object->Center(tTemp);
 	tTemp.sub		(tPosition,tTemp);
 	tTemp.getHP		(yaw,pitch);
 	VERIFY			(_valid(yaw));
@@ -63,13 +62,11 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 
 void CSightManager::SetDirectionLook()
 {
-	CAI_Stalker						*stalker = dynamic_cast<CAI_Stalker*>(this);
-	VERIFY							(stalker);
-	MonsterSpace::SBoneRotation		orientation = stalker->m_head, body_orientation = stalker->body_orientation();
-	GetDirectionAngles				(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-	stalker->m_head.target.yaw		*= -1;
-	stalker->m_head.target.pitch	*= -1;
-	stalker->m_body.target			= stalker->m_head.target;
+	MonsterSpace::SBoneRotation		orientation = m_object->m_head, body_orientation = m_object->body_orientation();
+	GetDirectionAngles				(m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+	m_object->m_head.target.yaw		*= -1;
+	m_object->m_head.target.pitch	*= -1;
+	m_object->m_body.target			= m_object->m_head.target;
 }
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
@@ -80,14 +77,12 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bD
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
 {
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
-	VERIFY					(stalker);
-	float fAngleOfView		= stalker->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = stalker->m_head.target.yaw;
+	float fAngleOfView		= m_object->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = m_object->m_head.target.yaw;
 
 	CLevelGraph::CVertex	*tpNextNode = 0;
 	u32						node_id;
 	bool bOk = false;
-	if (bDifferenceLook && !stalker->CDetailPathManager::path().empty() && (stalker->CDetailPathManager::path().size() - 1 > stalker->CDetailPathManager::curr_travel_point_index())) {
+	if (bDifferenceLook && !m_object->CDetailPathManager::path().empty() && (m_object->CDetailPathManager::path().size() - 1 > m_object->CDetailPathManager::curr_travel_point_index())) {
 		CLevelGraph::const_iterator	i, e;
 		ai().level_graph().begin(tpNode,i,e);
 		for ( ; i != e; ++i) {
@@ -95,7 +90,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			if (!ai().level_graph().valid_vertex_id(node_id))
 				continue;
 			tpNextNode = ai().level_graph().vertex(node_id);
-			if (ai().level_graph().inside(tpNextNode,stalker->CDetailPathManager::path()[stalker->CDetailPathManager::curr_travel_point_index() + 1].position)) {
+			if (ai().level_graph().inside(tpNextNode,m_object->CDetailPathManager::path()[m_object->CDetailPathManager::curr_travel_point_index() + 1].position)) {
 				bOk = true;
 				break;
 			}
@@ -103,7 +98,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 	}
 
 	if (!bDifferenceLook || !bOk) 
-		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+		for (float fIncrement = m_object->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= m_object->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
 			float fSquare = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
 			if (fSquare > fMaxSquare) {
 				fMaxSquare = fSquare;
@@ -111,8 +106,8 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			}
 		}
 	else {
-		float fMaxSquareSingle = -1.f, fSingleIncrement = stalker->m_head.target.yaw;
-		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+		float fMaxSquareSingle = -1.f, fSingleIncrement = m_object->m_head.target.yaw;
+		for (float fIncrement = m_object->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= m_object->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
 			float fSquare0 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
 			float fSquare1 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNextNode);
 			if (fSquare1 - fSquare0 > fMaxSquare) {
@@ -128,21 +123,19 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			fBestAngle = fSingleIncrement;
 	}
 
-	stalker->m_head.target.yaw = fBestAngle;
-	VERIFY					(_valid(stalker->m_head.target.yaw));
+	m_object->m_head.target.yaw = fBestAngle;
+	VERIFY					(_valid(m_object->m_head.target.yaw));
 }
 
 bool CSightManager::bfIf_I_SeePosition(Fvector tPosition) const
 {
-	const CAI_Stalker	*stalker = dynamic_cast<const CAI_Stalker*>(this);
-	VERIFY				(stalker);
 	float				yaw, pitch;
 	Fvector				tVector;
-	tVector.sub			(tPosition,stalker->Position());
+	tVector.sub			(tPosition,m_object->Position());
 	tVector.getHP		(yaw,pitch);
 	yaw					= angle_normalize_signed(-yaw);
 	pitch				= angle_normalize_signed(-pitch);
-	return				(angle_difference(yaw,stalker->m_head.current.yaw) <= PI_DIV_6);// && angle_difference(pitch,stalker->m_head.current.pitch,PI_DIV_6));
+	return				(angle_difference(yaw,m_object->m_head.current.yaw) <= PI_DIV_6);// && angle_difference(pitch,m_object->m_head.current.pitch,PI_DIV_6));
 }
 
 void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
@@ -155,148 +148,131 @@ void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
 
 void CSightManager::Exec_Look(float dt)
 {
-	CAI_Stalker			*stalker = dynamic_cast<CAI_Stalker*>(this);
-	VERIFY				(stalker);
 	// normalizing torso angles
-	stalker->m_body.current.yaw		= angle_normalize_signed	(stalker->m_body.current.yaw);
-	stalker->m_body.current.pitch	= angle_normalize_signed	(stalker->m_body.current.pitch);
-	stalker->m_body.target.yaw		= angle_normalize_signed	(stalker->m_body.target.yaw);
-	stalker->m_body.target.pitch	= angle_normalize_signed	(stalker->m_body.target.pitch);
+	m_object->m_body.current.yaw		= angle_normalize_signed	(m_object->m_body.current.yaw);
+	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
+	m_object->m_body.target.yaw		= angle_normalize_signed	(m_object->m_body.target.yaw);
+	m_object->m_body.target.pitch	= angle_normalize_signed	(m_object->m_body.target.pitch);
 
 	// normalizing head angles
-	stalker->m_head.current.yaw		= angle_normalize_signed	(stalker->m_head.current.yaw);
-	stalker->m_head.current.pitch	= angle_normalize_signed	(stalker->m_head.current.pitch);
-	stalker->m_head.target.yaw		= angle_normalize_signed	(stalker->m_head.target.yaw);
-	stalker->m_head.target.pitch	= angle_normalize_signed	(stalker->m_head.target.pitch);
+	m_object->m_head.current.yaw		= angle_normalize_signed	(m_object->m_head.current.yaw);
+	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
+	m_object->m_head.target.yaw		= angle_normalize_signed	(m_object->m_head.target.yaw);
+	m_object->m_head.target.pitch	= angle_normalize_signed	(m_object->m_head.target.pitch);
 
 	// validating angles
 	//#ifdef DEBUG
-	//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),*cName(),stalker->m_head.target.yaw,stalker->m_head.current.yaw,stalker->m_body.target.yaw,stalker->m_body.current.yaw);
-	VERIFY					(_valid(stalker->m_head.current.yaw));
-	VERIFY					(_valid(stalker->m_head.current.pitch));
-	VERIFY					(_valid(stalker->m_head.target.yaw));
-	VERIFY					(_valid(stalker->m_head.target.pitch));
-	VERIFY					(_valid(stalker->m_body.current.yaw));
-	VERIFY					(_valid(stalker->m_body.current.pitch));
-	VERIFY					(_valid(stalker->m_body.target.yaw));
-	VERIFY					(_valid(stalker->m_body.target.pitch));
+	//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),*cName(),m_object->m_head.target.yaw,m_object->m_head.current.yaw,m_object->m_body.target.yaw,m_object->m_body.current.yaw);
+	VERIFY					(_valid(m_object->m_head.current.yaw));
+	VERIFY					(_valid(m_object->m_head.current.pitch));
+	VERIFY					(_valid(m_object->m_head.target.yaw));
+	VERIFY					(_valid(m_object->m_head.target.pitch));
+	VERIFY					(_valid(m_object->m_body.current.yaw));
+	VERIFY					(_valid(m_object->m_body.current.pitch));
+	VERIFY					(_valid(m_object->m_body.target.yaw));
+	VERIFY					(_valid(m_object->m_body.target.pitch));
 	//#endif
-	vfValidateAngleDependency(stalker->m_head.current.yaw,stalker->m_head.target.yaw,stalker->m_body.target.yaw);
-	vfValidateAngleDependency(stalker->m_body.current.yaw,stalker->m_body.target.yaw,stalker->m_head.current.yaw);
+	vfValidateAngleDependency(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
+	vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
 
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
-	stalker->angle_lerp_bounds		(stalker->m_body.current.yaw,stalker->m_body.target.yaw,fSpeedFactor*stalker->m_body.speed,dt);
-	stalker->angle_lerp_bounds		(stalker->m_body.current.pitch,stalker->m_body.target.pitch,stalker->m_body.speed,dt);
+	m_object->angle_lerp_bounds		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,fSpeedFactor*m_object->m_body.speed,dt);
+	m_object->angle_lerp_bounds		(m_object->m_body.current.pitch,m_object->m_body.target.pitch,m_object->m_body.speed,dt);
 
 	// updating head angles
-	stalker->angle_lerp_bounds		(stalker->m_head.current.yaw,stalker->m_head.target.yaw,stalker->m_head.speed,dt);
-	stalker->angle_lerp_bounds		(stalker->m_head.current.pitch,stalker->m_head.target.pitch,stalker->m_head.speed,dt);
+	m_object->angle_lerp_bounds		(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_head.speed,dt);
+	m_object->angle_lerp_bounds		(m_object->m_head.current.pitch,m_object->m_head.target.pitch,m_object->m_head.speed,dt);
 
 	// normalizing torso angles
-	stalker->m_body.current.yaw		= angle_normalize_signed	(stalker->m_body.current.yaw);
-	stalker->m_body.current.pitch	= angle_normalize_signed	(stalker->m_body.current.pitch);
+	m_object->m_body.current.yaw		= angle_normalize_signed	(m_object->m_body.current.yaw);
+	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
 
 	// normalizing head angles
-	stalker->m_head.current.yaw		= angle_normalize_signed	(stalker->m_head.current.yaw);
-	stalker->m_head.current.pitch	= angle_normalize_signed	(stalker->m_head.current.pitch);
+	m_object->m_head.current.yaw		= angle_normalize_signed	(m_object->m_head.current.yaw);
+	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
 
-	VERIFY					(_valid(stalker->m_head.current.yaw));
-	VERIFY					(_valid(stalker->m_head.current.pitch));
-	VERIFY					(_valid(stalker->m_head.target.yaw));
-	VERIFY					(_valid(stalker->m_head.target.pitch));
-	VERIFY					(_valid(stalker->m_body.current.yaw));
-	VERIFY					(_valid(stalker->m_body.current.pitch));
-	VERIFY					(_valid(stalker->m_body.target.yaw));
-	VERIFY					(_valid(stalker->m_body.target.pitch));
+	VERIFY					(_valid(m_object->m_head.current.yaw));
+	VERIFY					(_valid(m_object->m_head.current.pitch));
+	VERIFY					(_valid(m_object->m_head.target.yaw));
+	VERIFY					(_valid(m_object->m_head.target.pitch));
+	VERIFY					(_valid(m_object->m_body.current.yaw));
+	VERIFY					(_valid(m_object->m_body.current.pitch));
+	VERIFY					(_valid(m_object->m_body.target.yaw));
+	VERIFY					(_valid(m_object->m_body.target.pitch));
 }
 
-void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *tPointToLook, u32 dwLookOverDelay)
+void CSightManager::select_action	()
 {
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
-	VERIFY					(stalker);
-
-	bool					bLookChanged = (m_tLookType != tLookType);
-	m_tLookType				= tLookType;
-
-	switch (m_tLookType) {
-		case eLookTypePathDirection : {
-			SetDirectionLook();
-			break;
+	if (!m_actuality || m_current_action->completed()) {
+		m_actuality			= true;
+		if (m_actions.size() == 1) {
+			m_current_action = m_actions.back();
+			m_current_action->initialize();
+			return;
 		}
-		case eLookTypeDirection : {
-			tPointToLook->getHP	(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-			stalker->m_head.target.yaw		*= -1;
-			stalker->m_head.target.pitch	*= -1;
-			break;
+		
+		float				m_total_weight = 0.f;
+		xr_vector<CSightAction*>::const_iterator	I = m_actions.begin();
+		xr_vector<CSightAction*>::const_iterator	E = m_actions.end();
+		for ( ; I != E; ++I)
+			if (*I != m_current_action)
+				m_total_weight += (*I)->weight();
+		VERIFY				(!fis_zero(m_total_weight));
+		
+		float				m_random = ::Random.randF(m_total_weight);
+		m_total_weight		= 0.f;
+		I					= m_actions.begin();
+		for ( ; I != E; ++I) {
+			if (*I != m_current_action)
+				m_total_weight += (*I)->weight();
+			if (m_total_weight > m_random) {
+				if (m_current_action)
+					m_current_action->finalize();
+				m_current_action = *I;
+				m_current_action->initialize();
+				break;
+			}
 		}
-		case eLookTypeSearch : {
-			SetLessCoverLook(stalker->level_vertex(),true);
-			break;
-		}
-		case eLookTypeDanger : {
-			SetLessCoverLook(stalker->level_vertex(),PI,true);
-			break;
-		}
-		case eLookTypePoint : {
-			SetPointLookAngles(*tPointToLook,stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-			break;
-		}
-		case eLookTypeFirePoint : {
-			SetFirePointLookAngles(*tPointToLook,stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-//			stalker->m_head.target.pitch = 0;
-			break;
-		}
-		case eLookTypeLookOver : {
-			if (bLookChanged)
-				m_dwLookChangedTime = Level().timeServer();
-			Fvector tTemp;
-			tTemp.sub				(*tPointToLook,stalker->eye_matrix.c);
-			tTemp.getHP				(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-			VERIFY					(_valid(stalker->m_head.target.yaw));
-			VERIFY					(_valid(stalker->m_head.target.pitch));
-			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
-				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
-					stalker->m_head.target.yaw += PI_DIV_6*2;
-				else {
-					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
-						m_dwLookChangedTime = Level().timeServer();
-					stalker->m_head.target.yaw -= PI_DIV_6*2;
-				}
-			stalker->m_head.target.yaw *= -1;
-			stalker->m_head.target.pitch *= -1;
-			break;
-		}
-		case eLookTypeLookFireOver : {
-			if (bLookChanged)
-				m_dwLookChangedTime = Level().timeServer();
-			Fvector tTemp;
-			stalker->Center(tTemp);
-			tTemp.sub	(*tPointToLook,tTemp);
-			tTemp.getHP	(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-			VERIFY					(_valid(stalker->m_head.target.yaw));
-			VERIFY					(_valid(stalker->m_head.target.pitch));
-			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
-				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
-					stalker->m_head.target.yaw += PI_DIV_6*2;
-				else {
-					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
-						m_dwLookChangedTime = Level().timeServer();
-					stalker->m_head.target.yaw -= PI_DIV_6*2;
-				}
-			stalker->m_head.target.yaw *= -1;
-			stalker->m_head.target.pitch *= -1;
-			break;
-		}
-		case eLookTypeCurrentDirection : {
-			stalker->m_head.target	= stalker->m_head.current;
-			break;
-		}
-		default : NODEFAULT;
 	}
+}
+
+void CSightManager::update		(u32 time_delta)
+{
+	select_action	();
 	
-	if (stalker->speed() < EPS_L)
-		if (angle_difference(stalker->m_body.target.yaw,stalker->m_head.target.yaw) > PI_DIV_2) {
-			stalker->m_body.target.yaw = stalker->m_head.target.yaw;
-		}
+	m_current_action->execute();
+	
+	if ((m_object->speed() < EPS_L) && (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_2))
+		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
+}
+
+void CSightManager::update		(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
+{
+	if (m_actions.size() > 2)
+		clear				();
+
+	if (!m_actions.empty())
+		if ((m_actions.front()->sight_type() != sight_type) && 
+			((sight_type != SightManager::eSightTypeFirePosition) || 
+			(m_actions.front()->sight_type() != SightManager::eSightTypePosition) || 
+			!m_actions.front()->use_torso_look())
+			)
+			clear();
+		else
+			if (vector3d)
+				if (!m_actions.front()->vector3d().similar(*vector3d))
+					clear();
+				else
+					return;
+			else
+				return;
+
+	if (vector3d)
+		if (sight_type == SightManager::eSightTypeFirePosition)
+			add_action	(xr_new<CSightAction>(SightManager::eSightTypePosition,*vector3d,true));
+		else
+			add_action	(xr_new<CSightAction>(sight_type,*vector3d,false));
+	else
+		add_action		(xr_new<CSightAction>(sight_type));
 }

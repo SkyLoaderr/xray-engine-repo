@@ -344,7 +344,7 @@ void CLuaGameObject::set_sound_mask	(u32 sound_mask)
 		sound_player->set_sound_mask(sound_mask);
 }
 
-void CLuaGameObject::set_sight		(ELookType tLookType, const Fvector	*tPointToLook, u32 dwLookOverDelay)
+void CLuaGameObject::set_sight		(SightManager::ESightType tLookType, const Fvector	*tPointToLook, u32 dwLookOverDelay)
 {
 	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
 	if (!sight_manager)

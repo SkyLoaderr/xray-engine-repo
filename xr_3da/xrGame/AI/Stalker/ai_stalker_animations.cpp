@@ -109,25 +109,13 @@ void __stdcall CStalkerAnimations::HeadCallback(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->look_type()) {
-		case eLookTypeLookFireOver :
-		case eLookTypeFirePoint : {
-			yaw_factor		= y_head_fire_factor;
-			pitch_factor	= p_head_fire_factor;
-			break;
-		}
-		case eLookTypeLookOver :
-		case eLookTypePathDirection :
-		case eLookTypeDirection :
-		case eLookTypeCurrentDirection :
-		case eLookTypeSearch :
-		case eLookTypeDanger :
-		case eLookTypePoint : {
-			yaw_factor		= y_head_factor;
-			pitch_factor	= p_head_factor;
-			break;
-		}
-		default : NODEFAULT;
+	if (A->use_torso_look()) {
+		yaw_factor			= y_head_fire_factor;
+		pitch_factor		= p_head_fire_factor;
+	}
+	else {
+		yaw_factor			= y_head_factor;
+		pitch_factor		= p_head_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
@@ -143,25 +131,13 @@ void __stdcall CStalkerAnimations::ShoulderCallback(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->look_type()) {
-		case eLookTypeLookFireOver :
-		case eLookTypeFirePoint : {
-			yaw_factor		= y_shoulder_fire_factor;
-			pitch_factor	= p_shoulder_fire_factor;
-			break;
-		}
-		case eLookTypeLookOver :
-		case eLookTypePathDirection :
-		case eLookTypeDirection :
-		case eLookTypeCurrentDirection :
-		case eLookTypeSearch :
-		case eLookTypeDanger :
-		case eLookTypePoint : {
-			yaw_factor		= y_shoulder_factor;
-			pitch_factor	= p_shoulder_factor;
-			break;
-		}
-		default : NODEFAULT;
+	if (A->use_torso_look()) {
+		yaw_factor			= y_shoulder_fire_factor;
+		pitch_factor		= p_shoulder_fire_factor;
+	}
+	else {
+		yaw_factor			= y_shoulder_factor;
+		pitch_factor		= p_shoulder_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
@@ -177,25 +153,13 @@ void __stdcall CStalkerAnimations::SpinCallback(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->look_type()) {
-		case eLookTypeLookFireOver :
-		case eLookTypeFirePoint : {
-			yaw_factor		= y_spin_fire_factor;
-			pitch_factor	= p_spin_fire_factor;
-			break;
-		}
-		case eLookTypeLookOver :
-		case eLookTypePathDirection :
-		case eLookTypeDirection :
-		case eLookTypeCurrentDirection :
-		case eLookTypeSearch :
-		case eLookTypeDanger :
-		case eLookTypePoint : {
-			yaw_factor		= y_spin_factor;
-			pitch_factor	= p_spin_factor;
-			break;
-		}
-		default : NODEFAULT;
+	if (A->use_torso_look()) {
+		yaw_factor			= y_spin_fire_factor;
+		pitch_factor		= p_spin_fire_factor;
+	}
+	else {
+		yaw_factor			= y_spin_factor;
+		pitch_factor		= p_spin_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));

@@ -52,7 +52,7 @@ void CAI_Stalker::reinit			()
 #else
 	CObjectHandlerGOAP::reinit		(this);
 #endif
-	CSightManager::reinit			();
+	CSightManager::reinit			(this);
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
 #ifdef OLD_DECISION_BLOCK

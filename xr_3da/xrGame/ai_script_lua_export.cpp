@@ -477,19 +477,19 @@ void CScriptEngine::export_actions()
 		class_<CWatchAction>("look")
 			.enum_("look")
 			[
-				value("path_dir",				int(MonsterSpace::eLookTypePathDirection)),
-				value("search",					int(MonsterSpace::eLookTypeSearch)),
-				value("danger",					int(MonsterSpace::eLookTypeDanger)),
-				value("point",					int(MonsterSpace::eLookTypePoint)),
-				value("fire_point",				int(MonsterSpace::eLookTypeFirePoint)),
-				value("cur_dir",				int(MonsterSpace::eLookTypeCurrentDirection)),
-				value("direction",				int(MonsterSpace::eLookTypeDirection))
+				value("path_dir",				int(SightManager::eSightTypePathDirection)),
+				value("search",					int(SightManager::eSightTypeSearch)),
+				value("danger",					int(SightManager::eSightTypeCover)),
+				value("point",					int(SightManager::eSightTypePosition)),
+				value("fire_point",				int(SightManager::eSightTypeFirePosition)),
+				value("cur_dir",				int(SightManager::eSightTypeCurrentDirection)),
+				value("direction",				int(SightManager::eSightTypeDirection))
 			]
 			.def(								constructor<>())
-			.def(								constructor<MonsterSpace::ELookType>())
-			.def(								constructor<MonsterSpace::ELookType, const Fvector &>())
-			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*>())
-			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*, LPCSTR>())
+				.def(							constructor<SightManager::ESightType>())
+			.def(								constructor<SightManager::ESightType, const Fvector &>())
+			.def(								constructor<SightManager::ESightType, CLuaGameObject*>())
+			.def(								constructor<SightManager::ESightType, CLuaGameObject*, LPCSTR>())
 
 			// searchlight 
 			.def(								constructor<const Fvector &,float,float>())

@@ -552,7 +552,7 @@ public:
 			void				add_sound				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
 			void				remove_sound			(u32 internal_type);
 			void				set_sound_mask			(u32 sound_mask);
-			void				set_sight				(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));
+			void				set_sight				(SightManager::ESightType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));
 			u32					GetRank					();
 			void				play_sound				(u32 internal_type);
 			void				play_sound				(u32 internal_type, u32 max_start_time);

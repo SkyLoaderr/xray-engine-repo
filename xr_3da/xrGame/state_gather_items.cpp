@@ -64,7 +64,7 @@ void CStateGatherItems::execute			()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::update				(eLookTypePathDirection);
+	m_object->CSightManager::update				(SightManager::eSightTypePathDirection);
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else

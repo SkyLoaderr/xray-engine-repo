@@ -72,7 +72,7 @@ void CStateAttackWeak::execute			()
 #endif
 		Fvector									position;
 		m_object->enemy()->Center				(position);
-		m_object->CSightManager::update			(eLookTypeFirePoint,&position);
+		m_object->CSightManager::update			(SightManager::eSightTypeFirePosition,&position);
 	}
 	else {
 		if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
@@ -84,7 +84,7 @@ void CStateAttackWeak::execute			()
 		
 		Fvector			direction;
 		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
-		m_object->CSightManager::update				(eLookTypeDirection,&direction);
+		m_object->CSightManager::update				(SightManager::eSightTypeDirection,&direction);
 	}
 
 	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {

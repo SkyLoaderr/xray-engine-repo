@@ -29,18 +29,6 @@ namespace MonsterSpace {
 		eMovementDirectionRight,
 	};
 
-	enum ELookType {
-		eLookTypePathDirection = 0,
-		eLookTypeSearch,
-		eLookTypeDanger,
-		eLookTypePoint,
-		eLookTypeFirePoint,
-		eLookTypeLookOver,
-		eLookTypeLookFireOver,
-		eLookTypeDirection,
-		eLookTypeCurrentDirection
-	};
-
 	enum EDirectionType {
 		eDirectionTypeForward = 0,
 		eDirectionTypeForwardDodge,

@@ -2,6 +2,7 @@
 #include "ai_biting.h"
 #include "../../ai_script_actions.h"
 #include "../../phmovementcontrol.h"
+#include "../../sight_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
@@ -62,10 +63,10 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 
 	Fvector new_pos;
 	switch (l_tWatchAction.m_tWatchType) {
-		case MonsterSpace::eLookTypePoint:
+		case SightManager::eSightTypePosition:
 			LookPosition(l_tWatchAction.m_tWatchVector);
 			break;
-		case MonsterSpace::eLookTypeDirection:
+		case SightManager::eSightTypeDirection:
 			new_pos.mad(Position(), l_tWatchAction.m_tWatchVector, 2.f);
 			LookPosition(new_pos);
 			break;

@@ -12,6 +12,7 @@
 #include "car.h"
 #include "movement_manager.h"
 #include "ai_script_sound.h"
+#include "sight_manager_space.h"
 
 class CAbstractAction {
 public:
@@ -312,7 +313,7 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 	CObject							*m_tpObjectToWatch;
-	MonsterSpace::ELookType			m_tWatchType;
+	SightManager::ESightType		m_tWatchType;
 	EGoalType						m_tGoalType;
 	Fvector							m_tWatchVector;
 	ref_str							m_bone_to_watch;
@@ -326,24 +327,24 @@ public:
 							CWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
-		m_tWatchType		= MonsterSpace::eLookTypeCurrentDirection;
+		m_tWatchType		= SightManager::eSightTypeCurrentDirection;
 		m_tWatchVector.set	(0,0,0);
 		m_tGoalType			= eGoalTypeCurrent;
 	}
 
-							CWatchAction		(MonsterSpace::ELookType tWatchType)
+							CWatchAction		(SightManager::ESightType tWatchType)
 	{
 		SetWatchType		(tWatchType);
 		m_tGoalType			= eGoalTypeWatchType;
 	}
 
-							CWatchAction		(MonsterSpace::ELookType tWatchType, const Fvector &tDirection)
+							CWatchAction		(SightManager::ESightType tWatchType, const Fvector &tDirection)
 	{
 		SetWatchDirection	(tDirection);
 		SetWatchType		(tWatchType);
 	}
 
-							CWatchAction		(MonsterSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "")
+							CWatchAction		(SightManager::ESightType tWatchType, CLuaGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "")
 	{
 		SetWatchType		(tWatchType);
 		SetWatchObject		(tpObjectToWatch);
@@ -373,7 +374,7 @@ public:
 	
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
 
-			void			SetWatchType		(MonsterSpace::ELookType tWatchType)
+			void			SetWatchType		(SightManager::ESightType tWatchType)
 	{
 		m_tWatchType		= tWatchType;
 		m_bCompleted		= false;

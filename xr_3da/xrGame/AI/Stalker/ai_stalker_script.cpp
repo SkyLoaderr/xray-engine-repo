@@ -83,6 +83,7 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
 	CSightManager::update			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
 	CStalkerMovementManager::update	(Device.dwTimeDelta);
+	CSightManager::update			(Device.dwTimeDelta);
 
 	return							(true);
 }
@@ -120,7 +121,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 			break;
 		}
 		case CWatchAction::eGoalTypeCurrent : {
-			l_tWatchAction.m_tWatchType	= eLookTypeCurrentDirection;
+			l_tWatchAction.m_tWatchType	= SightManager::eSightTypeCurrentDirection;
 			l_tWatchAction.m_bCompleted = true;
 			return						(false);
 		}
