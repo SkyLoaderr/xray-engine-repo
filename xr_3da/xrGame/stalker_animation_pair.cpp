@@ -69,6 +69,6 @@ void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCa
 
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))
-		Msg					("%6d [%s][%s][%s]",Device.dwTimeGlobal,m_object_name,m_animation_type_name,*animation()->name());
+		Msg					("%6d [%s][%s][%s][%d] - LOOPED: %d",Device.dwTimeGlobal,m_object_name,m_animation_type_name,*animation()->name(),animation()->animation()->bone_or_part,!(animation()->animation()->flags&esmStopAtEnd));
 #endif
 }

@@ -12,6 +12,7 @@ IC	CStalkerAnimationPair::CStalkerAnimationPair	()
 {
 	reset					();
 	m_step_dependence		= false;
+	m_global_animation		= false;
 #ifdef DEBUG
 	m_object_name			= "unassigned";
 	m_animation_type_name	= "unassigned";
