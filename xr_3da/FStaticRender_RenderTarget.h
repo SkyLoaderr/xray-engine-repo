@@ -45,7 +45,7 @@ public:
 	void				OnDeviceCreate		();
 	void				OnDeviceDestroy		();
 
-	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f)||(param_noise>0.01f)||(param_duality>0.01f); }
+	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f)||(param_noise>0.01f)||(param_duality>0.001f); }
 	BOOL				Available			()	{ return bAvailable; }
 	BOOL				Perform				();
 
