@@ -66,22 +66,25 @@ public:
 		eFORCEDWORD = DWORD(-1)
 	};
 public:
-	float		blendAmount;
-	float		timeCurrent;
-	float		timeTotal;
-	int			motionID;
-	int			bone_or_part;	// startup parameters
+	float			blendAmount;
+	float			timeCurrent;
+	float			timeTotal;
+	int				motionID;
+	int				bone_or_part;	// startup parameters
 
-	ECurvature	blend;
-	float		blendAccrue;	// increasing
-	float		blendFalloff;	// decreasing
-	float		blendPower;			
-	float		speed;
+	ECurvature		blend;
+	float			blendAccrue;	// increasing
+	float			blendFalloff;	// decreasing
+	float			blendPower;			
+	float			speed;
 
-	BOOL		playing;
-	BOOL		noloop;
+	BOOL			playing;
+	BOOL			noloop;
 
-	DWORD		dwFrame;
+	PlayCallback	Callback;
+	void*			Callback_Param;
+	
+	DWORD			dwFrame;
 };
 typedef svector<CBlend*,MAX_BLENDED>	BlendList;
 typedef BlendList::iterator				BlendListIt;
@@ -281,7 +284,7 @@ public:
 	}
 
 	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
-	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop);
+	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
 	void						LL_FadeCycle	(int partition, float falloff);
 	void						LL_CloseCycle	(int partition);
 	

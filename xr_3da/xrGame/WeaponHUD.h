@@ -6,57 +6,38 @@ class ENGINE_API FBasicVisual;
 class ENGINE_API CInifile;
 class ENGINE_API CMotionDef;
 class CEntity;
+class CWeapon;
 
 class CWeaponHUD : 
 	public pureDeviceCreate, 
 	public pureDeviceDestroy
 {
-	Fmatrix			m_Offset;
-
-	Fmatrix			mTransform;
-	LPSTR			pVisualName;
-	FBasicVisual*	pVisual;
-
-	enum EHUDState{
-		hsIdle = 0,
-		hsReload,
-		hsFireCycle,
-		hsFireSpinup,
-		hsShoot
-	};
-
-	EHUDState		new_mstate, cur_mstate;
-
-	CMotionDef*		mIdle;
-	CMotionDef*		mFireCycled;
-	CMotionDef*		mFireSpinup;
-	vector<CMotionDef*>mShoots;
+	Fmatrix				m_Offset;
+	Fmatrix				mTransform;
+	LPSTR				pVisualName;
+	FBasicVisual*		pVisual;
 public:	
-	int				iFireBone;
-	Fvector			vFirePoint;
+	int					iFireBone;
+	Fvector				vFirePoint;
 public:
-					CWeaponHUD		();
-	virtual			~CWeaponHUD		();
+						CWeaponHUD		();
+	virtual				~CWeaponHUD		();
 
 	// misc
-	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void		Load			(CInifile* ini, const char* section);
 
-	IC FBasicVisual*Visual			()	{ return pVisual; }
-	IC Fmatrix&		Transform		()	{ return mTransform; }
+	IC FBasicVisual*	Visual			()	{ return pVisual; }
+	IC Fmatrix&			Transform		()	{ return mTransform; }
 
-	// logic & effects
-	void			Shoot			();
-	void			stateSpinup		()	{ new_mstate = hsFireSpinup;}
-	void			stateCycleStart	()	{ new_mstate = hsFireCycle;	}
-	void			stateIdle		()	{ new_mstate = hsIdle;		}
-	void			stateReload		()	{ new_mstate = hsReload;	}
+	// Animations
+	void				animPlay		(CMotionDef* M);
+	CMotionDef*			animGet			(LPCSTR name);
 	
-	void			UpdatePosition	(const Fmatrix& transform);
-	void			UpdateAnimation	();
+	void				UpdatePosition	(const Fmatrix& transform);
 
 	// device
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
+	virtual void		OnDeviceCreate	();
+	virtual void		OnDeviceDestroy	();
 };
  
 #endif // __XR_WEAPON_HUD_H__

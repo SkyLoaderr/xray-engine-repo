@@ -14,8 +14,6 @@
 
 CWeaponHUD::CWeaponHUD()
 {
-	cur_mstate					= hsIdle;
-	new_mstate					= hsIdle;
 	mTransform.identity			();
 	m_Offset.identity			();
 	pVisualName					= 0;
@@ -52,10 +50,14 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 
 	// fire bone	
-	LPCSTR fire_bone			= ini->ReadSTRING	(section,"fire_bone");
-	iFireBone					= PKinematics(Visual())->LL_BoneID(fire_bone);
-	vFirePoint					= ini->ReadVECTOR(section,"fire_point");
+	LPCSTR fire_bone			= ini->ReadSTRING					(section,"fire_bone");
+	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
+	vFirePoint					= ini->ReadVECTOR					(section,"fire_point");
 
+	// play default animation
+	PKinematics					(pVisual)->PlayCycle(mIdle);
+
+	/*
 	// init anims
 	mIdle						= PKinematics(Visual())->ID_Cycle		("idle");
 	mFireCycled					= PKinematics(Visual())->ID_Cycle_Safe	("fire");
@@ -69,9 +71,8 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 		mShoots.push_back		(M);
 	}
 	R_ASSERT					(mShoots.size());
-	
-	// play default animation
-	PKinematics					(pVisual)->PlayCycle(mIdle);
+	*/
+
 }
 
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
@@ -79,6 +80,7 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 	mTransform.mul	(trans,m_Offset);
 }
 
+/*
 void CWeaponHUD::Shoot()
 { 
 	VERIFY			(mShoots.size());
@@ -96,11 +98,12 @@ void CWeaponHUD::UpdateAnimation()
 		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle);							break;
 		case hsFireSpinup:	if (mFireSpinup) PKinematics(pVisual)->PlayCycle(mFireSpinup);	break;
 		case hsFireCycle:	if (mFireCycled) PKinematics(pVisual)->PlayCycle(mFireCycled);	break;
+		case hs
 		}
 		cur_mstate = new_mstate;
 	}
 }
-
+*/
 void CWeaponHUD::OnDeviceDestroy	()
 {
 	::Render.Models.Delete		(pVisual);
@@ -109,4 +112,11 @@ void CWeaponHUD::OnDeviceCreate	()
 {
 	pVisual						= ::Render.Models.Create(pVisualName);
 }
-
+CMotionDef* CWeaponHUD::animGet	(LPCSTR name)
+{
+	return PKinematics(Visual())->ID_Cycle(name);
+}
+void CWeaponHUD::animPlay		(CMotionDef* M)
+{
+	PKinematics(pVisual)->PlayCycle(M);
+}
