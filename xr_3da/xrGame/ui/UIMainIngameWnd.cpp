@@ -277,7 +277,7 @@ void CUIMainIngameWnd::Init()
 
 	xml_init.InitWindow(uiXml, "artefact_panel", 0, &m_artefactPanel);
 	this->AttachChild(&m_artefactPanel);	
-	xr_vector<RECT> vRects; RECT rect;
+	xr_vector<RECT> vRects;
 
 	m_artefactPanel.InitIcons(vRects); 
 }
