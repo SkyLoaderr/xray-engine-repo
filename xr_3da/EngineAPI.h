@@ -12,10 +12,10 @@
 class ENGINE_API DLL_Pure {
 public:
 	CLASS_ID				CLS_ID;
-	CLASS_ID				SUB_CLS_ID;
 
-	DLL_Pure(void *params)	{CLS_ID=SUB_CLS_ID=0; };
-	DLL_Pure()				{CLS_ID=SUB_CLS_ID=0; };
+	DLL_Pure(void *params)	{CLS_ID=0; };
+	DLL_Pure()				{CLS_ID=0; };
+	virtual	DLL_Pure*		_construct		()	{ return this; 	}
 	virtual ~DLL_Pure()		{};
 };
 

@@ -53,7 +53,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 	if (!EnemyMan.get_enemy()) return;
 
-	if ((CLSID_ENTITY == EnemyMan.get_enemy()->CLS_ID) && (EnemyMan.get_enemy() == pEntity)) {
+	if (EnemyMan.get_enemy() == pEntity) {
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
 
@@ -83,7 +83,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 {
 	if (!g_Alive())					return FALSE;
-	if (CLSID_ENTITY != O->CLS_ID)	return FALSE;
+	if (0==smart_cast<CEntity*>(O))	return FALSE;
 	
 	if ((O->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI) return FALSE;
 	

@@ -14,14 +14,10 @@
 
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {
-	if (CLSID_ENTITY!=O->CLS_ID)			
-		return FALSE;
-	else  {
-		CEntityAlive* E = smart_cast<CEntityAlive*> (O);
-		if (!E) return FALSE;
-		if ((E->g_Team() == g_Team()) && (E->g_Alive())) return FALSE;
-		return TRUE;
-	}
+	CEntityAlive* E = smart_cast<CEntityAlive*> (O);
+	if (!E) return FALSE;
+	if ((E->g_Team() == g_Team()) && (E->g_Alive())) return FALSE;
+	return TRUE;
 }
 
 void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)

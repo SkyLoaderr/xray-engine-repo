@@ -155,8 +155,6 @@ void CEntity::Load		(LPCSTR section)
 	inherited::Load		(section);
 
 	setVisible			(FALSE);
-	CLS_ID				= CLSID_ENTITY;
-	
 	m_fMaxHealthValue = fEntityHealth = 100;
 	
 	// Team params
