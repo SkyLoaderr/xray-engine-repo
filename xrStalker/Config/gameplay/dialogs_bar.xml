@@ -3147,26 +3147,44 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_bar_hunter_quest_finish">
+        <has_info>bar_bar_hunter_quest_start</has_info>
+        <dont_has_info>bar_bar_hunter_quest_finish</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_bar_hunter_quest_finish_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="12">
+                <text>bar_bar_hunter_quest_finish_12</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_hunter_quest_finish_111</text>
+            </phrase>
+            <phrase id="1">
+                <text>bar_bar_hunter_quest_finish_1</text>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_hunter_quest_finish_11</text>
+                <precondition>bar_dialogs.have_hunters_toz</precondition>
+                <action>bar_dialogs.give_hunters_toz</action>
+                <give_info>bar_bar_hunter_quest_finish</give_info>
+                <has_info>bar_bar_hunter_quest_find_rifle</has_info>
+                <next>111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_bar_hunter_quest_start">
         <dont_has_info>bar_bar_hunter_quest_start</dont_has_info>
         <dont_has_info>bar_bar_hunter_quest_finish</dont_has_info>
         <phrase_list>
-            <phrase id="1212">
-                <text>bar_bar_hunter_quest_start_1212</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="12">
-                <text>bar_bar_hunter_quest_start_12</text>
-                <next>121</next>
-            </phrase>
             <phrase id="1">
                 <text>bar_bar_hunter_quest_start_1</text>
                 <next>11</next>
                 <next>12</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_bar_hunter_quest_start_121</text>
-                <next>1212</next>
             </phrase>
             <phrase id="0">
                 <text>bar_bar_hunter_quest_start_0</text>
@@ -3185,34 +3203,16 @@
                 <give_info>bar_bar_hunter_quest_start</give_info>
                 <next>111</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_hunter_quest_finish">
-        <has_info>bar_bar_hunter_quest_start</has_info>
-        <dont_has_info>bar_bar_hunter_quest_finish</dont_has_info>
-        <phrase_list>
-            <phrase id="11">
-                <text>bar_bar_hunter_quest_finish_11</text>
-                <precondition>bar_dialogs.have_hunters_toz</precondition>
-                <action>bar_dialogs.give_hunters_toz</action>
-                <give_info>bar_bar_hunter_quest_finish</give_info>
-                <has_info>bar_bar_hunter_quest_find_rifle</has_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_hunter_quest_finish_111</text>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_hunter_quest_finish_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_hunter_quest_finish_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="12">
-                <text>bar_bar_hunter_quest_finish_12</text>
+                <text>bar_bar_hunter_quest_start_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_bar_hunter_quest_start_121</text>
+                <next>1212</next>
+            </phrase>
+            <phrase id="1212">
+                <text>bar_bar_hunter_quest_start_1212</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
