@@ -23,7 +23,7 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_toz34 \n
 			ammo_12x76_zhekan = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -52,7 +52,7 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_bm16 = 1 \n
 			ammo_12x76_zhekan = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -81,7 +81,7 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -111,7 +111,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_bm16 \n
 			ammo_12x76_dart = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -140,7 +140,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_ak74 = 1, 0, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -169,7 +169,7 @@
 			ammo_11.43x23_hydro	= 1 \n
 			wpn_mp5 \n
 			ammo_9x19_pbp = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -199,7 +199,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_spas12 \n
 			ammo_12x76_dart = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -228,7 +228,7 @@
 			ammo_9x19_pbp = 1 \n	
 			wpn_val \n
 			ammo_9x39_pab9 = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -257,7 +257,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_lr300 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ss190 = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -287,7 +287,7 @@
 			ammo_9x19_pbp = 1 \n			
 			wpn_ak74 = 1, 1, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -316,7 +316,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_l85 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ap = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -345,7 +345,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_lr300 = 1, 1, 1, 0 \n
 			ammo_5.56x45_ap = 1 \n
-			torch \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
