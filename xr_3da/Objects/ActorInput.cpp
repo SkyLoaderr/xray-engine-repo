@@ -7,7 +7,7 @@
 
 
 void CActor::OnKeyboardPress(int cmd){
-	if (!bAlive)	return;
+	if (Remote() || !bAlive)	return;
 
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;		break;
@@ -39,7 +39,7 @@ void CActor::OnKeyboardPress(int cmd){
 }
 
 void CActor::OnKeyboardRelease(int cmd){
-	if (!bAlive)	return;
+	if (Remote() || !bAlive)	return;
 
 	switch(cmd){
 	case kACCEL:	mstate_wishful &=~mcAccel;		break;
@@ -57,7 +57,7 @@ void CActor::OnKeyboardRelease(int cmd){
 
 void CActor::OnKeyboardHold(int cmd)
 {
-	if (!bAlive)	return;
+	if (Remote() || !bAlive)	return;
 
 	switch(cmd)
 	{
@@ -74,6 +74,7 @@ void CActor::OnKeyboardHold(int cmd)
 
 void CActor::OnMouseMove(int dx, int dy)
 {
+	if (Remote())	return;
 	float scale		= psMouseSens * psMouseSensScale/50.f;
 	if (dx){
 		float d = float(dx)*scale;
