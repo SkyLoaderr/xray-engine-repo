@@ -12,7 +12,6 @@
 #include "SceneClassList.h"
 #include "SceneObject.h"
 #include "EditObject.h"
-#include "DPATCH.h"
 #include "Sector.h"
 //----------------------------------------------------
 bool SceneBuilder::PreparePath(){
@@ -96,8 +95,6 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
 	}
 
 	UI->ProgressEnd();
-
-    Scene->m_DetailPatches->Lock( false );
     return true;
 }
 

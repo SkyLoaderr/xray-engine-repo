@@ -64,44 +64,42 @@ void CDetailManager::InitRender(){
 }
 //------------------------------------------------------------------------------
 
-void CDetailManager::Render(ERenderPriority flag){
+void CDetailManager::Render(int priority, bool strictB2F){
 	if (m_Slots.size()){
-    	switch (flag){
-		case rpNormal:{
-            Device.SetTransform(D3DTS_WORLD,precalc_identity);
-            Device.Shader.Set(Device.m_WireShader);
+    	if (1==priority){
+        	if (false==strictB2F){
+                Device.SetTransform(D3DTS_WORLD,precalc_identity);
+                Device.SetShader(Device.m_WireShader);
 
-			Fvector			c;
-            Fbox			bbox;
-            DWORD			inactive = 0xff808080;
-            DWORD			selected = 0xffffffff;
-            for (DWORD z=0; z<m_Header.size_z; z++){
-                c.z			= fromSlotZ(z);
-                for (DWORD x=0; x<m_Header.size_x; x++){
-                    bool bSel = m_Selected[z*m_Header.size_x+x];
-                    if (bSel||fraBottomBar->miDrawDOSlotBoxes->Checked){
-                        DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
-                        c.x			= fromSlotX(x);
-                        c.y			= (slot->y_max+slot->y_min)*0.5f;
-                        bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
-                        bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
-                        bbox.shrink	(0.05f);
+                Fvector			c;
+                Fbox			bbox;
+                DWORD			inactive = 0xff808080;
+                DWORD			selected = 0xffffffff;
+                for (DWORD z=0; z<m_Header.size_z; z++){
+                    c.z			= fromSlotZ(z);
+                    for (DWORD x=0; x<m_Header.size_x; x++){
+                        bool bSel = m_Selected[z*m_Header.size_x+x];
+                        if (bSel||fraBottomBar->miDrawDOSlotBoxes->Checked){
+                            DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
+                            c.x			= fromSlotX(x);
+                            c.y			= (slot->y_max+slot->y_min)*0.5f;
+                            bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
+                            bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
+                            bbox.shrink	(0.05f);
 
-                        if (Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
-	                        DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+                            if (Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
+                                DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+                        }
                     }
                 }
+            }else{
+                if (fraBottomBar->miDODrawObjects->Checked)
+                    RenderObjects(Device.m_Camera.GetPosition());
             }
-        }break;
-		case rpAlphaNormal:{
-        	if (fraBottomBar->miDODrawObjects->Checked)
-	        	RenderObjects(Device.m_Camera.GetPosition());
-        }break;
-		case rpAlphaLast:{
-        	if (fraBottomBar->miDrawDOBaseTexture->Checked)
-	        	RenderTexture(1.0f);
-        }break;
         }
+//            case rpAlphaLast:{
+//                if (fraBottomBar->miDrawDOBaseTexture->Checked)
+//                    RenderTexture(1.0f);
     }
 }
 
@@ -115,7 +113,7 @@ void CDetailManager::RenderTexture(float alpha){
 	V[2].set(m_BBox.max.x,m_BBox.max.y,m_BBox.max.z,color,1,0);
 	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
 
-	Device.Shader.Set(m_pBaseShader);
+//S	Device.SetShader(m_pBaseShader);
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
     DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN,2,V,4,false,false);
 }
@@ -249,8 +247,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
 
 		// Fill VB (and flush it as nesessary)
-		Device.Shader.Set				(Object.m_pShader);
-		Device.Shader.SetupPass			(0);
+		Device.Shader.set_Shader		(Object.m_pShader,0);
 		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 
 		Fmatrix		mXform,mRotXZ;

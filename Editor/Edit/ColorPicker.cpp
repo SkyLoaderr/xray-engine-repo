@@ -5,6 +5,7 @@
 
 #include "ColorPicker.h"
 #include "D3DUtils.h"
+#include "xr_func.h"
 
 class CTCD{
 public:
@@ -24,9 +25,9 @@ extern "C" DLL_API bool FSColorPickerExecute(LPDWORD currentColor, LPDWORD origi
 bool SelectColor(LPDWORD currentcolor, LPDWORD originalcolor, bool bDefaultPicker){
 	VERIFY(currentcolor);
 	if (bDefaultPicker){
-        if (originalcolor) TCD.cdColor->Color = DU::rgb2bgr(*originalcolor);
+        if (originalcolor) TCD.cdColor->Color = rgb2bgr(*originalcolor);
         if (TCD.cdColor->Execute()){
-			*currentcolor = DU::bgr2rgb(TCD.cdColor->Color);
+			*currentcolor = bgr2rgb(TCD.cdColor->Color);
         	return true;
         }
         return false;
@@ -45,15 +46,15 @@ bool SelectColorWin(LPDWORD currentcolor, LPDWORD originalcolor, bool bDefaultPi
         }
         return false;
     }else{
-        DWORD cur = DU::bgr2rgb(*currentcolor);
+        DWORD cur = bgr2rgb(*currentcolor);
         bool bRes;
         if (originalcolor){
-            DWORD orig = DU::bgr2rgb(*originalcolor);
+            DWORD orig = bgr2rgb(*originalcolor);
             bRes = FSColorPickerExecute(&cur, &orig, 0);
         }else
             bRes = FSColorPickerExecute(&cur, 0, 0);
 
-        if (bRes) *currentcolor = DU::rgb2bgr(cur);
+        if (bRes) *currentcolor = rgb2bgr(cur);
 	    return bRes;
     }
 }

@@ -6,12 +6,10 @@
 #pragma hdrstop
 
 #include "SceneObject.h"
-#include "FileSystem.h"
 #include "Library.h"
 #include "UI_Main.h"
 #include "Shader.h"
 #include "EditMesh.h"
-#include "xrShader.h"
 #include "bone.h"
 #include "motion.h"
 

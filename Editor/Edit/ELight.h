@@ -6,37 +6,25 @@
 #define _INCDEF_Light_H_
 
 #include "CustomObject.h"
-#include "Light.h"
-
-struct SAnimLightItem: public Flight{
-	float m_Brightness;
-    SAnimLightItem(){ZeroMemory(this,sizeof(SAnimLightItem));}
-};
-
-typedef vector<SAnimLightItem> ALItemList;
-typedef ALItemList::iterator ALItemIt;
-
-typedef vector<Flight> FlightList;
-typedef FlightList::iterator FlightIt;
 
 class CLight : public CCustomObject{
 	// d3d's light parameters (internal use)
-	int m_D3DIndex;
-    BOOL m_Enabled;
-    FlightList		m_TempPlayData;
+	int 			m_D3DIndex;
+    BOOL 			m_Enabled;
     Fvector			vRotate; // HPB rotate
     void			UpdateTransform();
 public:
-	xrLIGHT			m_D3D;
-    ALItemList      m_Data;
+	struct {
+		DWORD		bAffectStatic	: 1;
+		DWORD		bAffectDynamic	: 1;
+		DWORD		bProcedural		: 1;
+	}				m_Flags;
+	Flight			m_D3D;
 
 	// build options
-	int m_CastShadows;
-	int m_Flares;
-    int m_UseInD3D;
-
-    float m_Brightness;
-    float m_ShadowedScale;
+	int 			m_Flares;
+    int 			m_UseInD3D;
+    float 			m_Brightness;
 
     // flares
 	AnsiString m_FlaresText;
@@ -77,7 +65,7 @@ public:
     void 			Enable		(BOOL flag);
     void 			AffectD3D	(BOOL flag);
 
-	virtual void 	Render		(ERenderPriority flag);
+	virtual void 	Render		(int priority, bool strictB2F);
 	virtual void 	RTL_Update	(float dT);
     void 			Update		();
 

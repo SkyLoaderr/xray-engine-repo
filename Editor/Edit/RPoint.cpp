@@ -55,8 +55,8 @@ bool CRPoint::GetBox( Fbox& box ){
 	return true;
 }
 
-void CRPoint::Render( ERenderPriority flag ){
-    if (flag==rpNormal){
+void CRPoint::Render( int priority, bool strictB2F ){
+    if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
 		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID]);
             if( Selected() ){

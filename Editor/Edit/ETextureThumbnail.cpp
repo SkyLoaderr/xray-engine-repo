@@ -5,12 +5,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Texture.h"
+#include "ETexture.h"
 #include "Log.h"
 #include "ui_main.h"
 #include "xrImage_Resampler.h"
-
-#define THM_SIGN "THM"
 
 //----------------------------------------------------
 extern "C" float DLL_API gauss [7][7];
@@ -30,10 +28,7 @@ ETextureThumbnail::~ETextureThumbnail(){
 }
 
 STextureParams* ETextureThumbnail::GetTextureParams(){
-	if (!m_TexParams){
-    	if (!LoadTexParams())
-        	m_TexParams=new STextureParams();
-    }
+	if (!m_TexParams) LoadTexParams();
     return m_TexParams;
 }
 
@@ -109,6 +104,10 @@ bool ETextureThumbnail::CreateFromTexture(ETextureCore* tex){
 	AnsiString name=tex->m_LoadName;
     FS.m_Textures.Update(name);
 	STextureParams* TP=GetTextureParams();
+    if (!TP){
+    	m_TexParams = new STextureParams();
+        TP = m_TexParams;
+    }
     if (FS.Exist(name.c_str())){
         int src_age = FS.GetFileAge(name);
         if (!tex->Load()) return false;

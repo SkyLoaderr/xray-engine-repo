@@ -146,14 +146,10 @@ int FindVertex(ogf_vertex_list& V, ogf_vertex& v, b_material& mat, vector<b_text
         if(!V[vid].point[0].similar(v.point[0])) continue; // position
         if(!V[vid].point[1].similar(v.point[1])) continue; // normal
 
-        bool bContinue=false;
-        for (int i=0; i<mat.dwTexCount; i++) {
-            b_texture   *B = &(textures[mat.surfidx[i]]);
-            float		eu = 1.f/float(B->dwWidth );
-            float		ev = 1.f/float(B->dwHeight);
-            if (!similar(v.uv_maps[i],V[vid].uv_maps[i],eu,ev)) {bContinue=true;continue;}
-        }
-        if (bContinue) continue;
+		b_texture   *B = &(textures[mat.surfidx]);
+		float		eu = 1.f/float(B->dwWidth );
+        float		ev = 1.f/float(B->dwHeight);
+        if (!similar(v.uv_maps[0],V[vid].uv_maps[0],eu,ev)) continue;
         return vid;
     }
     return -1;
@@ -189,14 +185,12 @@ bool SceneBuilder::BuildSingleOGF( CFS_Base& FM, DWORD fid_start, DWORD f_cnt, i
     FM.open_chunk	(OGF_TEXTURE);
 	AnsiString Tname;
     b_material& mat = l_materials[mid];
-	for (WORD t_i=0; t_i<mat.dwTexCount; t_i++){
-		if (!Tname.IsEmpty()) Tname+=',';
-        Tname		= Tname.TrimRight();
-		char fname[MAX_PATH];
-        strcpy		(fname,l_textures[mat.surfidx[t_i]].name);
-		if (strchr(fname,'.')) *strchr(fname,'.')=0;
-		Tname+=fname;
-	}
+
+    char fname[MAX_PATH];
+    strcpy			(fname,l_textures[mat.surfidx].name);
+    if (strchr(fname,'.')) *strchr(fname,'.')=0;
+    Tname			= fname;
+
 	FM.WstringZ		(Tname.c_str());
  	FM.WstringZ		(l_shaders[mat.shader].name);
 	FM.close_chunk	();
@@ -213,10 +207,10 @@ bool SceneBuilder::BuildSingleOGF( CFS_Base& FM, DWORD fid_start, DWORD f_cnt, i
             ogf_vertex v;
             v.point.push_back(l_vertices[l_faces[fid].v[k]]);
             v.point.push_back(l_vnormals[l_faces[fid].v[k]]);
-        	for (WORD tid=0; tid<mat.dwTexCount; tid++){
+            {
                 v.uv_maps.push_back(b_uvmap());
-                v.uv_maps.back().tu=l_faces[fid].t[tid][k].tu;
-                v.uv_maps.back().tv=l_faces[fid].t[tid][k].tv;
+                v.uv_maps.back().tu=l_faces[fid].t[k].tu;
+                v.uv_maps.back().tv=l_faces[fid].t[k].tv;
             }
             int v_idx = FindVertex(V, v, mat, l_textures);
             if (v_idx==-1){
@@ -234,13 +228,13 @@ bool SceneBuilder::BuildSingleOGF( CFS_Base& FM, DWORD fid_start, DWORD f_cnt, i
 	FM.close_chunk	();
 
 	// point list
-    DWORD dwFVF=D3DFVF_XYZ|D3DFVF_NORMAL|(mat.dwTexCount<<D3DFVF_TEXCOUNT_SHIFT);
+    DWORD dwFVF=D3DFVF_XYZ|D3DFVF_NORMAL|(1<<D3DFVF_TEXCOUNT_SHIFT);
 	FM.open_chunk	(OGF_VERTICES);
     FM.Wdword		(dwFVF);
     FM.Wdword		(V.size());
     for(DWORD p_i=0;p_i<V.size();p_i++){
         FM.write	(V[p_i].point.begin(),V[p_i].point.size()*sizeof(Fvector));
-        FM.write	(V[p_i].uv_maps.begin(),mat.dwTexCount*sizeof(b_uvmap));
+        FM.write	(V[p_i].uv_maps.begin(),1*sizeof(b_uvmap));
     }
 	FM.close_chunk	();
 	return true;

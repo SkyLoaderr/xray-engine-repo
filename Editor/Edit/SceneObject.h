@@ -46,7 +46,7 @@ public:
 
     // render methods
 	virtual bool 	IsRender				();
-	virtual void 	Render					(ERenderPriority flag);
+	virtual void 	Render					(int priority, bool strictB2F);
 	void 			RenderSelection			();
 	void 			RenderEdge				(CEditableMesh* m=0);
 	void 			RenderBones				();

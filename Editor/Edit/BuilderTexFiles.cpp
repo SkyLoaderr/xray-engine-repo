@@ -18,8 +18,7 @@
 void SceneBuilder::AddUniqueTexName(CSceneObject* obj){
 	CEditableObject *O = obj->GetRef();
     for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++)
-        for (AStringIt t_it=(*s_it)->textures.begin(); t_it!=(*s_it)->textures.end(); t_it++)
-            AddUniqueTexName(t_it->c_str());
+		AddUniqueTexName((*s_it)->_Texture());
 }
 //----------------------------------------------------
 
@@ -54,9 +53,9 @@ bool SceneBuilder::WriteTextures(){
         if (NeedAbort()) break;
 		char out_filename[MAX_PATH];
 		_splitpath(m_TexNames[i].filename,0,0,out_filename,0);
-		ETextureCore *t = new ETextureCore( out_filename );
-        if(!t->MakeGameTexture(out_filename)) bRes = false;
-		_DELETE(t);
+//S		ETextureCore *t = new ETextureCore( out_filename );
+//S        if(!t->MakeGameTexture(out_filename)) bRes = false;
+//S		_DELETE(t);
 	    UI->ProgressInc();
 	}
     UI->ProgressEnd();

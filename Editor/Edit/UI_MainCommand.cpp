@@ -7,7 +7,6 @@
 #include "leftbar.h"
 #include "bottombar.h"
 #include "EditLibrary.h"
-#include "EditShaders.h"
 #include "ObjectList.h"
 #include "EditorPref.h"
 #include "main.h"
@@ -31,13 +30,12 @@ bool TUI::Command( int _Command, int p1 ){
 	    EEditorState est = GetEState();
     	switch(est){
         case esEditLibrary: 	if(frmEditLibrary) if (!frmEditLibrary->FinalClose()) return false; break;
-        case esEditShaders: 	if(frmEditShaders) if (!frmEditShaders->FinalClose()) return false;  break;
         case esEditParticles:	if (!TfrmEditParticles::FinalClose()) return false;  break;
         case esEditImages:		if (!TfrmImageLib::HideImageLib()) return false; break;
         case esEditScene:		if (!Scene->IfModified()) return false; break;
         }
         SetStatus("Editor unloading...");
-        Clear();
+        OnDestroy();
         SetStatus("");
 		}break;
 	case COMMAND_SHOWPROPERTIES:
@@ -68,14 +66,6 @@ bool TUI::Command( int _Command, int p1 ){
             else							ELog.DlgMsg(mtError, "Scene must be empty before editing library!");
         }else{
             frmEditLibraryEditLibrary();
-        }
-        break;
-    case COMMAND_SHADER_EDITOR:
-        if (Scene->ObjCount()||(GetEState()!=esEditScene)){
-        	if (GetEState()==esEditShaders)	frmEditShadersEditShaders();
-            else							ELog.DlgMsg(mtError, "Scene must be empty before editing shaders!");
-        }else{
-			frmEditShadersEditShaders();
         }
         break;
     case COMMAND_PARTICLE_EDITOR:
@@ -392,12 +382,10 @@ bool TUI::Command( int _Command, int p1 ){
 		} else {
         	if (GetEState()==esEditLibrary){
             	frmEditLibrary->ZoomObject();
-            }else if (GetEState()==esEditShaders){
-            	frmEditShaders->ZoomObject();
-                }else{
-                    ELog.DlgMsg( mtError, "Scene sharing violation" );
-                    bRes = false;
-                }
+            }else{
+                ELog.DlgMsg( mtError, "Scene sharing violation" );
+                bRes = false;
+            }
         }
     	break;
     case COMMAND_SET_NUMERIC_POSITION:

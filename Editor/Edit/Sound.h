@@ -24,7 +24,7 @@ public:
 		if (strchr(m_fName,'.')) *strchr(m_fName,'.')=0;
 	}
 
-	virtual void Render( ERenderPriority flag );
+	virtual void Render(int priority, bool strictB2F);
 
 	virtual bool RayPick(
 		float& distance,

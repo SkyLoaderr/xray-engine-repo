@@ -30,7 +30,7 @@ public:
 	                COccluder   (char *name);
 	virtual         ~COccluder  ();
 
-	virtual void    Render      (ERenderPriority flag);
+	virtual void    Render      (int priority, bool strictB2F);
 
 	virtual bool    RayPick		(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf = NULL);
 

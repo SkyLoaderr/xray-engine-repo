@@ -56,7 +56,7 @@ public:
     virtual void 	SetRotate		(Fvector& rot){vRotate.set(rot);}
     virtual void 	SetScale		(Fvector& scale){vScale.set(scale);}
 
-	virtual void 	Render			( ERenderPriority flag );
+	virtual void 	Render			( int priority, bool strictB2F );
 	virtual bool 	RayPick 		( float& distance, Fvector& start,
 									Fvector& direction, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		( const CFrustum& frustum );

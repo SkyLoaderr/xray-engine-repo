@@ -15,13 +15,12 @@
 #define LIGHT_VERSION   				0x0010
 //----------------------------------------------------
 #define LIGHT_CHUNK_VERSION				0xB411
-#define LIGHT_CHUNK_BUILD_OPTIONS		0xB412
+#define LIGHT_CHUNK_FLAG				0xB413
 #define LIGHT_CHUNK_BRIGHTNESS			0xB425
 #define LIGHT_CHUNK_FLARES		        0xB430
 #define LIGHT_CHUNK_D3D_PARAMS         	0xB435
 #define LIGHT_CHUNK_USE_IN_D3D			0xB436
 #define LIGHT_CHUNK_HPB_ROTATION		0xB437
-#define LIGHT_CHUNK_PROCEDURAL_DATA		0xB455
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -45,7 +44,6 @@ void CLight::Construct(){
 	m_ClassID 		= OBJCLASS_LIGHT;
 
     m_Flares 		= true;
-	m_CastShadows 	= false;
     m_UseInD3D		= true;
 
     ZeroMemory		(&m_D3D,sizeof(m_D3D));
@@ -54,10 +52,8 @@ void CLight::Construct(){
 	m_D3D.diffuse.set(1.f,1.f,1.f,0);
 	m_D3D.attenuation0 = 1.f;
 	m_D3D.range 	= 8.f;
-    m_D3D.p_speed 	= 0.5f;
 
     m_Brightness 	= 1;
-    m_ShadowedScale	= 0.05f;
 
 	m_D3DIndex 		= -1;
     m_Enabled 		= TRUE;
@@ -65,7 +61,9 @@ void CLight::Construct(){
     Fvector temp; 	temp.set(0.f,0.f,0.f);
     SetRotate		(temp);
 
-    m_D3D.flags 	= XRLIGHT_LMAPS;
+    m_Flags.bAffectStatic 	= TRUE;
+    m_Flags.bAffectDynamic 	= FALSE;
+    m_Flags.bProcedural 	= FALSE;
 
     InitDefaultFlaresText();
 }
@@ -80,16 +78,14 @@ void CLight::UpdateTransform(){
 void CLight::CopyFrom(CLight* src){
     m_Enabled 		= src->m_Enabled;
 	m_D3D			= src->m_D3D;
-    m_Data			= src->m_Data;
 
-	m_CastShadows	= src->m_CastShadows;
 	m_Flares		= src->m_Flares;
     m_UseInD3D		= src->m_UseInD3D;
 
     m_Brightness	= src->m_Brightness;
-    m_ShadowedScale	= src->m_ShadowedScale;
-
 	m_FlaresText	= src->m_FlaresText;
+
+    m_Flags			= src->m_Flags;
 }
 
 void CLight::AffectD3D(BOOL flag){
@@ -123,10 +119,10 @@ bool CLight::GetBox( Fbox& box ){
 	return true;
 }
 
-void CLight::Render( ERenderPriority flag ){
-    if (flag==rpNormal){
+void CLight::Render(int priority, bool strictB2F){
+    if ((1==priority)&&(false==strictB2F)){
     	DWORD clr;
-        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_D3D.flags&XRLIGHT_MODELS?NORM_DYN_COLOR:NORM_COLOR));
+        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.bAffectDynamic?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
             if (Selected()) DU::DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
@@ -192,7 +188,6 @@ void CLight::Move( Fvector& amount ){
         return;
     }
 	m_D3D.position.add(amount);
-    for (ALItemIt it=m_Data.begin(); it!=m_Data.end(); it++) it->position.add(amount);
     Update();
     UI->UpdateScene();
 }
@@ -229,21 +224,15 @@ void CLight::LocalRotate(Fvector& axis, float angle){
 
 void CLight::RTL_Update	(float dT){
 	if (!Locked()&&Visible()&&fraBottomBar->miDrawAnimateLight->Checked){
-		if (m_D3D.flags&XRLIGHT_PROCEDURAL)
-    		if (m_Data.size()>=2) m_D3D.interpolate(dT,m_TempPlayData.begin());
+//S		if (m_Flags.bProcedural)
+//S    		if (m_Data.size()>=2) m_D3D.interpolate(dT,m_TempPlayData.begin());
     }
 }
 //----------------------------------------------------
 
 void CLight::Update(){
-	m_TempPlayData.clear();
-    for (ALItemIt it=m_Data.begin(); it!=m_Data.end(); it++){
-        Flight l=*it;
-        l.diffuse.mul_rgb(it->m_Brightness);
-		m_TempPlayData.push_back(l);
-    }
-    m_D3D.p_key_start = 0;
-    m_D3D.p_key_count = m_Data.size();
+//S    m_D3D.p_key_start = 0;
+//S    m_D3D.p_key_count = m_Data.size();
 }
 //----------------------------------------------------
 
@@ -258,9 +247,9 @@ void CLight::OnShowHint(AStringVec& dest){
     }
     dest.push_back(temp);
     temp = "Flags: ";
-    if (m_D3D.flags&XRLIGHT_LMAPS)      temp+="Lmap ";
-    if (m_D3D.flags&XRLIGHT_MODELS)     temp+="Dyn ";
-    if (m_D3D.flags&XRLIGHT_PROCEDURAL) temp+="Proc ";
+    if (m_Flags.bAffectStatic)  temp+="Stat ";
+    if (m_Flags.bAffectDynamic) temp+="Dyn ";
+    if (m_Flags.bProcedural) 	temp+="Proc ";
     dest.push_back(temp);
     temp.sprintf("Pos:   %3.2f, %3.2f, %3.2f",m_D3D.position.x,m_D3D.position.y,m_D3D.position.z);
     dest.push_back(temp);
@@ -278,22 +267,15 @@ bool CLight::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.FindChunk(LIGHT_CHUNK_BUILD_OPTIONS));
-	m_CastShadows 	= F.Rword();
-    m_ShadowedScale	= F.Rfloat();
-
     R_ASSERT(F.FindChunk(LIGHT_CHUNK_FLARES));
     m_Flares 		= F.Rword();
     F.RstringZ		(buf); m_FlaresText = buf;
 
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness));
-    R_ASSERT(F.ReadChunk(LIGHT_CHUNK_D3D_PARAMS,&m_D3D));
-    F.ReadChunk		(LIGHT_CHUNK_USE_IN_D3D, &m_UseInD3D);
-
-	R_ASSERT(F.FindChunk(LIGHT_CHUNK_PROCEDURAL_DATA));
-    DWORD cnt 		= F.Rword();
-	m_Data.resize	(cnt);
-    F.Read(m_Data.begin(), sizeof(SAnimLightItem) *cnt);
+    R_ASSERT(F.FindChunk(LIGHT_CHUNK_D3D_PARAMS));
+    F.Read(&m_D3D,sizeof(m_D3D));
+    R_ASSERT(F.ReadChunk(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D));
+    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_Flags,sizeof(DWORD));
 
     if (F.FindChunk(LIGHT_CHUNK_HPB_ROTATION)){
     	F.Rvector	(vRotate);
@@ -321,11 +303,6 @@ void CLight::Save(CFS_Base& F){
 	F.Wword			(LIGHT_VERSION);
 	F.close_chunk	();
 
-	F.open_chunk	(LIGHT_CHUNK_BUILD_OPTIONS);
-	F.Wword			(m_CastShadows);
-	F.Wfloat		(m_ShadowedScale);
-	F.close_chunk	();
-
 	F.open_chunk	(LIGHT_CHUNK_FLARES);
 	F.Wword			(m_Flares);
 	F.WstringZ		(m_FlaresText.c_str());
@@ -335,12 +312,9 @@ void CLight::Save(CFS_Base& F){
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
 
-	F.open_chunk	(LIGHT_CHUNK_PROCEDURAL_DATA);
-    F.Wdword		(m_Data.size());
-	F.write			(m_Data.begin(), sizeof(SAnimLightItem)*m_Data.size());
-	F.close_chunk	();
-
 	F.write_chunk	(LIGHT_CHUNK_HPB_ROTATION,&vRotate,sizeof(vRotate));
+
+    F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(DWORD));
 }
 //----------------------------------------------------
 

@@ -4,6 +4,7 @@
 #include "tlsprite.h"
 #include "ui_main.h"
 #include "texture.h"
+#include "d3dutils.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -38,6 +39,7 @@ void CTLSprite::Render(Fvector &pos, float radius){
 	mesh.setdepth	( P.p.z, P.p.w );
 	mesh.setcolor	( 0xffffffff );
 
+    DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 //    Device.DP		( D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 }
 
@@ -69,7 +71,7 @@ void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
 	mesh.setdepth	(P.p.z, P.p.w);
 	mesh.setcolor	(color);
 
-//    Device.DP		(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 }
 
 void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& D ){
@@ -98,7 +100,7 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
 
 	mesh.setcolor	(color);
 
-//    Device.DP		(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 /*
 	float radius	= size*0.5f;
 

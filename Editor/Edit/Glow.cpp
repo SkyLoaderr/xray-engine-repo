@@ -9,16 +9,16 @@
 #include "SceneClassList.h"
 #include "UI_Main.h"
 #include "D3DUtils.h"
-#include "xrShader.h"
 #include "Frustum.h"
 #include "Scene.h"
+#include "xr_trims.h"
 
-#define GLOW_VERSION	   				0x0010
+#define GLOW_VERSION	   				0x0011
 //----------------------------------------------------
 #define GLOW_CHUNK_VERSION				0xC411
 #define GLOW_CHUNK_PARAMS				0xC413
 #define GLOW_CHUNK_SHADER				0xC414
-#define GLOW_CHUNK_TEXTURES				0xC415
+#define GLOW_CHUNK_TEXTURE				0xC415
 //----------------------------------------------------
 
 CGlow::CGlow( char *name ):CCustomObject(){
@@ -43,7 +43,7 @@ CGlow::~CGlow(){
 
 void CGlow::Compile(){
 	if (m_GShader) Device.Shader.Delete(m_GShader);
-	if (!m_TexNames.empty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexNames);
+	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box ){
@@ -53,8 +53,8 @@ bool CGlow::GetBox( Fbox& box ){
 	return true;
 }
 
-void CGlow::Render( ERenderPriority flag ){
-    if (flag==rpAlphaNormal){
+void CGlow::Render(int priority, bool strictB2F){
+    if ((1==priority)&&(true==strictB2F)){
     	// определяем параметры для RayPick
     	Fvector D;
         SRayPickInfo pinf;
@@ -66,8 +66,8 @@ void CGlow::Render( ERenderPriority flag ){
         if (Device.m_Frustum.testSphere(m_Position,m_Range)){
         	// рендерим Glow
 //        	if (!Scene->RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
-                if (m_GShader){	Device.Shader.Set(m_GShader);
-                }else{			Device.Shader.Set(Device.m_WireShader);}
+                if (m_GShader){	Device.SetShader(m_GShader);
+                }else{			Device.SetShader(Device.m_WireShader);}
                 m_RenderSprite.Render(m_Position,m_Range);
 //			}else{
                 // рендерим bounding sphere
@@ -78,7 +78,7 @@ void CGlow::Render( ERenderPriority flag ){
             if( Selected() ){
             	Fbox bb; GetBox(bb);
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                Device.Shader.Set(Device.m_WireShader);
+                Device.SetShader(Device.m_WireShader);
                 DU::DrawSelectionBox(bb,&clr);
             }
         }
@@ -144,11 +144,8 @@ bool CGlow::Load(CStream& F){
 
     if (F.FindChunk(GLOW_CHUNK_SHADER)) F.RstringZ (sh_name);
 
-    R_ASSERT(F.FindChunk(GLOW_CHUNK_TEXTURES));
-	m_TexNames.resize(F.Rbyte());
-	for (AStringIt s_it=m_TexNames.begin(); s_it!=m_TexNames.end(); s_it++){
-		F.RstringZ	(tex_name); *s_it = tex_name;
-    }
+    R_ASSERT(F.FindChunk(GLOW_CHUNK_TEXTURE));
+	F.RstringZ	(tex_name); m_TexName = tex_name;
 
     R_ASSERT(F.FindChunk(GLOW_CHUNK_PARAMS));
 	m_Range  		= F.Rfloat();
@@ -177,10 +174,8 @@ void CGlow::Save(CFS_Base& F){
 		F.close_chunk();
     }
 
-	F.open_chunk	(GLOW_CHUNK_TEXTURES);
-    F.Wbyte		  	(m_TexNames.size());
-    for (AStringIt s_it=m_TexNames.begin(); s_it!=m_TexNames.end(); s_it++)
-	    F.WstringZ	(s_it->c_str());
+	F.open_chunk	(GLOW_CHUNK_TEXTURE);
+	F.WstringZ		(m_TexName.c_str());
 	F.close_chunk	();
 }
 //----------------------------------------------------

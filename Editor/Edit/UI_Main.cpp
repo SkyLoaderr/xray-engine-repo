@@ -17,9 +17,7 @@
 #include "bottombar.h"
 #include "EditorPref.h"
 #include "EditLibrary.h"
-#include "EditShaders.h"
 #include "EditParticles.h"
-#include "PropertiesShader.h"
 #include "ImageEditor.h"
 #include "main.h"
 #include "xr_trims.h"
@@ -68,7 +66,7 @@ TUI::TUI()
     FS.Init			();
     Scene           = new EScene();
     Lib             = new ELibrary();
-    SHLib			= new CShaderLibrary();
+//S    SHLib			= new CShaderLibrary();
     PSLib			= new CPSLibrary();
     Builder         = new SceneBuilder();
 }
@@ -80,23 +78,20 @@ TUI::~TUI()
     _DELETE(m_Cursor);
 // clear globals
     _DELETE(Scene);
-    _DELETE(SHLib);
+//S    _DELETE(SHLib);
     _DELETE(PSLib);
     _DELETE(Lib);
     _DELETE(Builder);
 }
 
-bool TUI::Init(TD3DWindow* wnd){
+bool TUI::OnCreate(TD3DWindow* wnd){
     m_D3DWindow = wnd;
     VERIFY(m_D3DWindow);
 	InitMath		();
-    SHLib->Init		();
+//S    SHLib->Init		();
     PSLib->Init		();
+    Device.Initialize();
 
-    if (!Device.Create(m_D3DWindow->Handle)){
-        ELog.DlgMsg(mtError,"Can't create DirectX device. Editor halted!");
-        return false;
-     }
     m_Tools         = new TUI_Tools(fraLeftBar->paFrames);
     m_Cursor        = new C3DCursor();
 
@@ -116,7 +111,7 @@ bool TUI::Init(TD3DWindow* wnd){
     return true;
 }
 
-void TUI::Clear()
+void TUI::OnDestroy()
 {
     EndEState();
 	DU::UninitUtilLibrary();
@@ -127,10 +122,10 @@ void TUI::Clear()
     Scene->UndoClear();
     Scene->Clear();
     Lib->Clear();
-    SHLib->Clear();
+//S    SHLib->Clear();
     PSLib->Clear();
 //    TM->Clear();
-    Device.Destroy();
+    Device.ShutDown	();
     g_bEditorValid = false;
 }
 
@@ -272,7 +267,7 @@ void TUI::Redraw(){
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // filter
-    for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
+    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags&rsFilterLinear){
             Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
@@ -304,7 +299,6 @@ void TUI::Redraw(){
 	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary: 	if (frmEditLibrary) frmEditLibrary->OnRender(); break;
-        case esEditShaders: 	if (frmEditShaders) frmEditShaders->OnRender(); break;
         case esEditParticles: 	TfrmEditParticles::OnRender(); break;
         case esEditImages:	 	TfrmImageLib::OnRender(); break;
         case esEditScene:		Scene->Render(&precalc_identity); break;
@@ -338,9 +332,8 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditShaders)||(est==esEditParticles)||(est==esEditImages)){
+    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditParticles)||(est==esEditImages)){
     	switch(est){
-        case esEditShaders: 	if (frmEditShaders) frmEditShaders->OnIdle(); break;
     	case esEditParticles: 	TfrmEditParticles::OnIdle(); break;
     	case esEditImages: 		TfrmImageLib::OnIdle(); break;
         }
@@ -495,7 +488,6 @@ void TUI::OnMousePress(int btn){
 				SRayPickInfo pinf;
                 frmEditLibrary->RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,&pinf);
             }break;
-            case esEditShaders:		break;
             case esEditParticles: 	break;
             case esEditImages: 		break;
             }

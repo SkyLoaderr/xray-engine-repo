@@ -22,7 +22,6 @@ struct UndoItem {
 
 class CLight;
 class CSceneObject;
-class CDPatchSystem;
 class CDetailManager;
 class CInifile;
 class CStream;
@@ -82,7 +81,6 @@ class EScene:
 {
 public:
 	// addition objects
-    CDPatchSystem* 	m_DetailPatches;
     CDetailManager*	m_DetailObjects;
     CSceneObject*	m_SkyDome;
 

@@ -57,8 +57,8 @@ bool CSound::GetBox( Fbox& box ){
 	return true;
 }
 
-void CSound::Render( ERenderPriority flag ){
-    if(flag==rpNormal){
+void CSound::Render(int priority, bool strictB2F){
+    if((1==priority)&&(false==strictB2F)){
         DWORD clr=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL_COLOR:SOUND_NORM_COLOR);
         if (Selected()) DU::DrawLineSphere( m_Position, m_Range, clr, true );
         DU::DrawSound(m_Position,VIS_RADIUS, clr);

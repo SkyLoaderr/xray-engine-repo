@@ -6,7 +6,6 @@
 #define _INCDEF_Builder_H_
 
 #include "communicate.h"
-#include "FileSystem.h"
 #include "EditMesh.h"
 //----------------------------------------------------
 
@@ -15,13 +14,11 @@ class CSceneObject;
 class CEditableMesh;
 class EScene;
 class CLight;
-class ETextureCore;
 class CGlow;
 class COccluder;
-class CDPatch;
 class CPortal;
 struct st_SPData;
-struct st_Surface;
+class CSurface;
 struct st_DPSurface;
 //----------------------------------------------------
 // some types
@@ -45,10 +42,10 @@ class SceneBuilder{
     SVertVec				l_svertices;
     vector<b_texture>       l_textures;
     vector<b_shader>        l_shaders;
+    vector<b_shader>        l_shaders_xrlc;
     vector<b_material>      l_materials;
     vector<b_vnormal>       l_vnormals;
     vector<b_glow>          l_glows;
-    vector<b_particle>      l_dpatches;
     vector<b_occluder>      l_occluders;
     vector<b_portal>        l_portals;
     vector<Flight>          l_light_keys;
@@ -56,7 +53,6 @@ class SceneBuilder{
     void    GetBBox         (DWORD st_fid, DWORD cnt, Fbox& box);
 
     void    BuildGlow       (b_glow* b, CGlow* e);
-    void    BuildDPatch   	(b_particle* b, st_SPData* e, st_DPSurface* surf);
     void    BuildLight      (b_light* b, CLight* e);
     void    BuildOccluder   (b_occluder* b, COccluder* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
@@ -67,13 +63,16 @@ class SceneBuilder{
     void    ResetStructures ();
 
     int     FindInShaders   (b_shader* s);
-    int     BuildShader     (const char* s);
+    int     BuildShader     (LPCSTR s);
 
-	int 	FindInTextures	(const char* name);
-    int     BuildTexture    (ETextureCore* e_tex, const char* name);
+	int 	FindInShadersXRLC(b_shader* s);
+	int 	BuildShaderXRLC	(const char * s);
+
+	int 	FindInTextures	(LPCSTR name);
+    int     BuildTexture    (LPCSTR name);
 
     int     FindInMaterials (b_material* m);
-	int 	BuildMaterial	(CEditableMesh* m, st_Surface* surf, int sector_num );
+	int 	BuildMaterial	(CEditableMesh* m, CSurface* surf, int sector_num );
 protected:
 	friend void SaveBuild(b_transfer *info);
     friend class TfrmBuildProgress;

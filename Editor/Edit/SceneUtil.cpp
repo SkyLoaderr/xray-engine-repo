@@ -87,9 +87,9 @@ void EScene::TurnLightsForObject(CSceneObject* obj){
     for (DWORD i=0; i<frame_light.size(); i++){
         CLight* l = frame_light[i];
 
-        if (!(l->m_D3D.flags&XRLIGHT_MODELS)&&!(l->m_D3D.flags&XRLIGHT_LMAPS)) continue;
-        if (obj->IsDynamic()&&!(l->m_D3D.flags&XRLIGHT_MODELS)) continue;
-        if (!obj->IsDynamic()&&!(l->m_D3D.flags&XRLIGHT_LMAPS)) continue;
+        if (!l->m_Flags.bAffectDynamic&&!l->m_Flags.bAffectStatic) continue;
+        if (obj->IsDynamic()&&!l->m_Flags.bAffectDynamic) continue;
+        if (!obj->IsDynamic()&&!l->m_Flags.bAffectStatic) continue;
 
         if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
             l->Enable(TRUE);

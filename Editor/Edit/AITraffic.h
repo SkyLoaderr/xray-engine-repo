@@ -28,7 +28,7 @@ public:
     void            Construct   	();
 	virtual         ~CAITPoint  	();
 
-	virtual void    Render      	(ERenderPriority flag);
+	virtual void    Render      	(int priority, bool strictB2F);
 	virtual bool    RayPick	    	(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
 	virtual void    Move        	(Fvector& amount);

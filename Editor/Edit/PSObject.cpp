@@ -95,8 +95,8 @@ void CPSObject::RTL_Update(float dT){
 //this draws the particle system in the ogl window
 void CPSObject::DrawPS(){
 	float fTime = Device.fTimeGlobal;
-    if (m_Shader) 	Device.Shader.Set(m_Shader);
-    else			Device.Shader.Set(Device.m_WireShader);
+    if (m_Shader) 	Device.SetShader(m_Shader);
+    else			Device.SetShader(Device.m_WireShader);
 
     CTLSprite m_Sprite;
     int 	mb_samples 	= 1;
@@ -160,40 +160,42 @@ void CPSObject::DrawPS(){
 }
 //----------------------------------------------------
 
-void CPSObject::Render( ERenderPriority flag ){
-    if (flag==rpNormal){
-    	// draw emitter
-       	DWORD C = 0xFFFFEBAA;
-        switch (m_Emitter.m_EmitterType){
-        case PS::SEmitter::emPoint:
-			DU::DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
-            break;
-        case PS::SEmitter::emCone:
-			DU::DrawFaceNormal(m_Emitter.m_Position, m_Emitter.m_ConeDirection, 1, C);
-            break;
-        case PS::SEmitter::emSphere:
-			DU::DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
-            break;
-        case PS::SEmitter::emBox:
-        	DU::DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
-            break;
-        default: THROW;
-    	}
-        if( Selected() ){
-            Fbox bb; GetBox(bb);
-            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-            DU::DrawSelectionBox(bb,&clr);
+void CPSObject::Render(int priority, bool strictB2F){
+    if (1==priority){
+    	if (false==strictB2F){
+            // draw emitter
+            DWORD C = 0xFFFFEBAA;
+            switch (m_Emitter.m_EmitterType){
+            case PS::SEmitter::emPoint:
+                DU::DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
+                break;
+            case PS::SEmitter::emCone:
+                DU::DrawFaceNormal(m_Emitter.m_Position, m_Emitter.m_ConeDirection, 1, C);
+                break;
+            case PS::SEmitter::emSphere:
+                DU::DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
+                break;
+            case PS::SEmitter::emBox:
+                DU::DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
+                break;
+            default: THROW;
+            }
+            if( Selected() ){
+                Fbox bb; GetBox(bb);
+                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                DU::DrawSelectionBox(bb,&clr);
+            }
+        }else{
+            if (Device.m_Frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))
+                DrawPS();
         }
-    }else if (flag==rpAlphaNormal){
-        if (Device.m_Frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))
-            DrawPS();
     }
 }
 //----------------------------------------------------
 
 void CPSObject::RenderSingle(){
-	Render(rpNormal);
-	Render(rpAlphaNormal);
+	Render(1,false);
+	Render(1,true);
 }
 //----------------------------------------------------
 

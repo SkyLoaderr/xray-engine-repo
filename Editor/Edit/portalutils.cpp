@@ -134,7 +134,9 @@ int CPortalUtils::CalculateAllPortals2(){
 CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
 	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
 	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++) if (((CSector*)(*_F))->Contains(o,m)) return (CSector*)(*_E);
+    for(;_F!=_E;_F++)
+    	if (((CSector*)(*_F))->Contains(o,m))
+        	return (CSector*)(*_F);
     return 0;
 }
 
@@ -181,7 +183,6 @@ bool CPortalUtils::Validate(bool bMsg){
 }
 
 void CPortalUtils::CreateDebugCollection(){
-	ELog.DlgMsg(mtError,"TODO: CPortalUtils::CreateDebugCollection");
 	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
 
     UI->ProgressStart(6,"Create debug sectors and portal...");

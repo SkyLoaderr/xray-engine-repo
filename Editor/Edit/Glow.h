@@ -15,7 +15,7 @@ class CGlow : public CCustomObject {
 public:
     Shader*       	m_GShader;
     AnsiString		m_ShaderName;
-    AStringVec		m_TexNames;
+    AnsiString		m_TexName;
     float           m_Range;
     Fvector         m_Position;
 public:
@@ -26,7 +26,7 @@ public:
 
     void			Compile		();
 
-	virtual void    Render      ( ERenderPriority flag );
+	virtual void    Render      (int priority, bool strictB2F);
 	virtual bool    RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
 		                          SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	( const CFrustum& frustum );

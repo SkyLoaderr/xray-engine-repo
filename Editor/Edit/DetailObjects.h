@@ -165,8 +165,8 @@ public:
 public:
     ColorIndexMap		m_ColorIndices;
 	BOOLVec				m_Selected;
-	Shader*				m_pBaseShader;
-	ETextureCore*		m_pBaseTexture;
+//	Shader*				m_pBaseShader;
+//	ETextureCore*		m_pBaseTexture;
 public:
 						CDetailManager			();
     virtual 			~CDetailManager			();
@@ -194,7 +194,7 @@ public:
     CDetail*			FindObjectInColorIndices(DWORD index, LPCSTR name);
 
     int					ObjCount				(){return m_Slots.size();}
-    void				Render					(ERenderPriority flag);
+    void				Render					(int priority, bool strictB2F);
     void				Clear					();
 
 	void				RayPickSelect			(float& distance, Fvector& start, Fvector& direction);

@@ -95,7 +95,6 @@ void TUI_CustomTools::ShowProperties(){
 	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
 	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
 //	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;
-    	case OBJCLASS_DPATCH:   	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
     	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }

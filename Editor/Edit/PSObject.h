@@ -35,7 +35,7 @@ public:
 	virtual         	~CPSObject  ();
 
     void				RenderSingle();
-	virtual void    	Render      (ERenderPriority flag );
+	virtual void    	Render      (int priority, bool strictB2F);
 	virtual bool    	RayPick     (float& distance,	Fvector& start,	Fvector& direction,
 		                          	SRayPickInfo* pinf = NULL );
     virtual bool 		FrustumPick	(const CFrustum& frustum);

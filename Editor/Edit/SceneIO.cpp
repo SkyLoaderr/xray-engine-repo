@@ -7,7 +7,6 @@
 
 #include "scene.h"
 #include "ui_main.h"
-#include "DPatch.h"
 #include "DetailObjects.h"
 
 // file: SceneChunks.h
@@ -131,12 +130,6 @@ void EScene::Save(char *_FileName, bool bUndo){
     F.open_chunk	(CHUNK_OBJECT_COUNT);
     F.Wdword		(ObjCount());
 	F.close_chunk	();
-
-    if (m_DetailPatches->ObjCount()){
-		F.open_chunk	(CHUNK_DETAILPATCHES);
-    	m_DetailPatches->Save(F);
-		F.close_chunk	();
-    }
 
     if (m_DetailObjects->Valid()){
 		F.open_chunk	(CHUNK_DETAILOBJECTS);
@@ -277,13 +270,6 @@ bool EScene::Load(char *_FileName){
                 VERIFY	(*_F);
             }
             UpdateSnapList();
-        }
-
-        // detail patches
-	    CStream* DP = F->OpenChunk(CHUNK_DETAILPATCHES);
-		if (DP){
-	    	m_DetailPatches->Load(*DP);
-            DP->Close();
         }
 
         // detail objects

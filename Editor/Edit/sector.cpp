@@ -82,8 +82,9 @@ bool CSector::FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it){
 
 void CSector::AddMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
-    if (!FindSectorItem(O, M, it))
-     	sector_items.push_back(CSectorItem(O, M));
+	if (!PortalUtils.FindSector(O,M))
+	    if (!FindSectorItem(O, M, it))
+    	 	sector_items.push_back(CSectorItem(O, M));
 }
 
 void CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
@@ -312,8 +313,8 @@ bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
 	return true;
 }
 
-void CSector::Render( ERenderPriority flag ){
-    if (flag==rpAlphaNormal){
+void CSector::Render(int priority, bool strictB2F){
+    if ((1==priority)&&(true==strictB2F)){
         Fmatrix matrix;
         Fcolor color;
         float k = Selected()?0.4f:0.2f;
@@ -328,7 +329,7 @@ void CSector::Render( ERenderPriority flag ){
         }
         if (fraBottomBar->miDrawSectorCHull->Checked)
         	RenderCHull(color.get(),true,false,true);
-    }else if (flag==rpNormal){
+    }else if ((1==priority)&&(false==strictB2F)){
         Fmatrix matrix;
         Fcolor color;
         float k = Selected()?0.4f:0.2f;

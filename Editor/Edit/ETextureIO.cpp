@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Texture.h"
+#include "ETexture.h"
 #include "Log.h"
 #include "FileSystem.h"
 #include "nvdxt_options.h"
@@ -386,12 +386,12 @@ bool ETextureCore::MakeGameTexture(LPCSTR filename){
 
     STextureParams* TP=GetTextureParams();
     VERIFY(TP);
-    if (TP->flag&EF_IMPLICIT_LIGHTED){
-	    // save to game folder
-	    AnsiString game_name=AnsiString(filename)+AnsiString(".tga");
-		FS.m_GameTextures.Update(game_name);
-	    return SaveAsTGA(game_name.c_str());
-    }
+//S    if (TP->flag&EF_IMPLICIT_LIGHTED){
+//S	    // save to game folder
+//S	    AnsiString game_name=AnsiString(filename)+AnsiString(".tga");
+//S		FS.m_GameTextures.Update(game_name);
+//S	    return SaveAsTGA(game_name.c_str());
+//S    }
     return true;
 }
 

@@ -83,12 +83,12 @@ bool __inline CSceneObject::IsRender(){
     return bRes;
 }
 
-void CSceneObject::Render(ERenderPriority flag){
+void CSceneObject::Render(int priority, bool strictB2F){
     Scene->TurnLightsForObject(this);
-	m_pRefs->Render(mTransform, flag);
-    if (flag==rpNormal){
+	m_pRefs->Render(mTransform, priority, strictB2F);
+    if ((1==priority)&&(false==strictB2F)){
         if (Selected()){
-	        Device.Shader.Set(Device.m_WireShader);
+	        Device.SetShader(Device.m_WireShader);
     	    Device.SetTransform(D3DTS_WORLD,mTransform);
         	DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 	        DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);

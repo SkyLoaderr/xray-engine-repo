@@ -12,7 +12,6 @@
 #include "ui_main.h"
 #include "Frustum.h"
 #include "SceneObject.h"
-#include "DPatch.h"
 #include "DetailObjects.h"
 #include "Sector.h"
 #include "Library.h"
@@ -102,7 +101,6 @@ EScene::EScene(){
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
     m_BuildParams.Init();
-    m_DetailPatches = new CDPatchSystem();
     m_DetailObjects	= new CDetailManager();
     m_SkyDome = 0;
     ClearSnapList();
@@ -130,7 +128,6 @@ void EScene::Clear(){
 	ELog.Msg( mtInformation, "Scene: cleared" );
 	m_LastAvailObject = 0;
 	m_Valid = false;
-    _DELETE(m_DetailPatches);
     _DELETE(m_DetailObjects);
     _DELETE(m_SkyDome);
 }
@@ -174,7 +171,6 @@ int EScene::ObjCount(){
 	int cnt = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	cnt+=(*it).second.size();
-	cnt+=m_DetailPatches->ObjCount(); // добавить патчи
 	return cnt;
 }
 
@@ -289,12 +285,10 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 }
 
 int EScene::InvertSelection( EObjClass classfilter ){
-    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->InvertSelection();
     if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->InvertSelection();
 
 	int count = 0;
     if (classfilter==OBJCLASS_DUMMY){
-    	count += m_DetailPatches->InvertSelection();
 		count += m_DetailObjects->InvertSelection();
     }
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
@@ -312,10 +306,7 @@ int EScene::InvertSelection( EObjClass classfilter ){
 }
 
 int EScene::RemoveSelection( EObjClass classfilter ){
-    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->RemoveSelection();
-
 	int count = 0;
-    if (classfilter==OBJCLASS_DUMMY) count += m_DetailPatches->RemoveSelection();
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
@@ -360,18 +351,14 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         	 lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?&m_SnapObjects:&(it->second);
         else lst=&(it->second);
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
-		    if (classfilter==OBJCLASS_DPATCH){
-            	m_DetailPatches->RayPickSelect(nearest_dist,start,direction);
+            if (classfilter==OBJCLASS_DO){
+                m_DetailObjects->RayPickSelect(nearest_dist,start,direction);
             }else{
-            	if (classfilter==OBJCLASS_DO){
-	            	m_DetailObjects->RayPickSelect(nearest_dist,start,direction);
-    	        }else{
-        	        for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
-            	        if((*_F)->Visible()){
-                	        if((classfilter==OBJCLASS_SCENEOBJECT)&&!bDynamicTest&&((CSceneObject*)(*_F))->IsDynamic()) continue;
-                    	    if((*_F)->RayPick(nearest_dist,start,direction,pinf))
-                        	    nearest_object = (*_F);
-	                    }
+                for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
+                    if((*_F)->Visible()){
+                        if((classfilter==OBJCLASS_SCENEOBJECT)&&!bDynamicTest&&((CSceneObject*)(*_F))->IsDynamic()) continue;
+                        if((*_F)->RayPick(nearest_dist,start,direction,pinf))
+                            nearest_object = (*_F);
                     }
                 }
             }
@@ -388,12 +375,10 @@ int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_lis
 }
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
-    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->SelectionCount(testflag);
     if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->SelectionCount(testflag);
 
 	int count = 0;
     if (classfilter==OBJCLASS_DUMMY){
-    	count += m_DetailPatches->SelectionCount(testflag);
 		count += m_DetailObjects->SelectionCount(testflag);
     }
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
@@ -404,35 +389,30 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
     }
 	return count;
 }
-
+                             
 //----------------------------------------------------
-void __fastcall object_Normal(EScene::mapObject_Node *N)
-{
-    ((CSceneObject*)N->val)->Render( rpNormal );
-}
+void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 0, false ); }
+void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 1, false ); }
+void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 2, false ); }
+void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 3, false ); }
 //----------------------------------------------------
-void __fastcall object_AlphaNormal(EScene::mapObject_Node *N)
-{
-    ((CSceneObject*)N->val)->Render( rpAlphaNormal );
-}
-//----------------------------------------------------
-void __fastcall object_AlphaLast(EScene::mapObject_Node *N)
-{
-    ((CSceneObject*)N->val)->Render( rpAlphaLast );
-}
+void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 0, true );}
+void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 1, true );}
+void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 2, true );}
+void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 3, true );}
 //----------------------------------------------------
 
 #define RENDER_CLASS_NORMAL(C)\
- 	Device.Shader.Set(Device.m_WireShader);\
+ 	Device.SetShader(Device.m_WireShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpNormal);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(1,false);
 
 #define RENDER_CLASS_ALPHA(C)\
- 	Device.Shader.Set(Device.m_SelectionShader);\
+ 	Device.SetShader(Device.m_SelectionShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpAlphaNormal);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(1,true);
 
 void EScene::Render( Fmatrix *_Camera ){
 	if( !valid() )	return;
@@ -451,7 +431,29 @@ void EScene::Render( Fmatrix *_Camera ){
     	m_SkyDome->RenderSingle();
     }
 
-// draw lights, sounds, respawn points, pclipper, sector, event
+	// sort objects
+    const Fvector& cam_pos=Device.m_Camera.GetPosition();
+    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
+    _E=lst.end(); _F=lst.begin();
+    for(;_F!=_E;_F++){
+        if( (*_F)->Visible()&& (*_F)->IsRender( ) ){
+            CSceneObject* _pT = (CSceneObject*)(*_F);
+            Fmatrix m; _pT->GetFullTransformToWorld(m);
+            float distSQ = cam_pos.distance_to_sqr(m.c);
+            mapRenderObjects.insertInAnyWay(distSQ,_pT);
+        }
+    }
+// priority #0
+    // render normal objects
+    mapRenderObjects.traverseLR		(object_Normal_0);
+    mapRenderObjects.traverseRL		(object_StrictB2F_0);
+    mapRenderObjects.traverseLR		(object_Normal_1);
+
+    // draw detail objects (normal)
+    m_DetailObjects->Render			(0,false);
+
+// priority #1
+	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL(OBJCLASS_LIGHT);
     RENDER_CLASS_NORMAL(OBJCLASS_SOUND);
     RENDER_CLASS_NORMAL(OBJCLASS_RPOINT);
@@ -461,47 +463,9 @@ void EScene::Render( Fmatrix *_Camera ){
     RENDER_CLASS_NORMAL(OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL(OBJCLASS_PS);
 
-// draw objects
-	{
-    	const Fvector& cam_pos=Device.m_Camera.GetPosition();
-        ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
-        ObjectIt _E=lst.end(); _F=lst.begin();
-        for(;_F!=_E;_F++){
-            if( (*_F)->Visible()&& (*_F)->IsRender( ) ){
-                CSceneObject* _pT = (CSceneObject*)(*_F);
-                Fmatrix m; _pT->GetFullTransformToWorld(m);
-                float distSQ = cam_pos.distance_to_sqr(m.c);
-                mapRenderObjects.insertInAnyWay(distSQ,_pT);
-            }
-        }
-    	// render normal objects
-	    mapRenderObjects.traverseLR		(object_Normal);
-    }
-    // draw detail objects (normal)
-    m_DetailObjects->Render(rpNormal);
-
-	// draw detail patches
-    m_DetailPatches->Render();
-
-    // render normal alpha objects
-    mapRenderObjects.traverseRL		(object_AlphaNormal);
-
-    // render snap
-    if (fraLeftBar->ebEnableSnapList->Down)
-		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
-
-    // draw detail objects (alpha)
-    m_DetailObjects->Render(rpAlphaNormal);
-
-    // draw detail objects (alpha)
-    m_DetailObjects->Render(rpAlphaLast);
-
-	// draw PS
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);
-    _F = FirstObj(OBJCLASS_PS);
-    _E = LastObj(OBJCLASS_PS);
-   	for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpAlphaNormal);
-
+    mapRenderObjects.traverseRL		(object_StrictB2F_1);
+    m_DetailObjects->Render			(1,false);
+    m_DetailObjects->Render			(1,true);
 	// draw clip planes, glows, event, sectors, portals
 	RENDER_CLASS_ALPHA(OBJCLASS_OCCLUDER);
 	RENDER_CLASS_ALPHA(OBJCLASS_GLOW);
@@ -509,8 +473,32 @@ void EScene::Render( Fmatrix *_Camera ){
 	RENDER_CLASS_ALPHA(OBJCLASS_SECTOR);
 	RENDER_CLASS_ALPHA(OBJCLASS_PORTAL);
 
-    // render last alpha objects
-    mapRenderObjects.traverseRL		(object_AlphaLast);
+// priority #2
+    mapRenderObjects.traverseLR		(object_Normal_2);
+    m_DetailObjects->Render			(2,false);
+    mapRenderObjects.traverseRL		(object_StrictB2F_2);
+    m_DetailObjects->Render			(2,true);
+
+// priority #3
+    mapRenderObjects.traverseLR		(object_Normal_3);
+    m_DetailObjects->Render			(3,false);
+    mapRenderObjects.traverseRL		(object_StrictB2F_3);
+    m_DetailObjects->Render			(3,true);
+
+    // render snap
+    if (fraLeftBar->ebEnableSnapList->Down)
+		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
+
+	// draw PS
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);
+    _F = FirstObj(OBJCLASS_PS);
+    _E = LastObj(OBJCLASS_PS);
+   	for(;_F!=_E;_F++)
+    	if((*_F)->Visible()){
+        	(*_F)->Render(1,false);
+			(*_F)->Render(1,true);
+        }
+
     mapRenderObjects.clear			();
 
 	ClearLights();
@@ -554,7 +542,6 @@ void EScene::ClearObjects(bool bDestroy){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) delete (*_F);
         lst.clear();
     }
-    m_DetailPatches->Clear();
     m_DetailObjects->Clear();
     _DELETE(m_SkyDome);
     ClearSnapList();

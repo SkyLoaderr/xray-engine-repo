@@ -143,9 +143,9 @@ bool COccluder::GetBox( Fbox& box ){
 	return true;
 }
 
-void COccluder::Render( ERenderPriority flag ){
+void COccluder::Render(int priority, bool strictB2F){
 	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
-	if (flag==rpAlphaNormal){
+	if ((1==priority)&&(true==strictB2F)){
 		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
         // draw plane
         DU::DrawPlane(m_vCenter,m_vPlaneSize,m_vRotate,D3DCOLOR_RGBA(128,255,128,Selected()?BYTE(255*0.15f):BYTE(255*0.07f)),false,false,0);
@@ -153,7 +153,7 @@ void COccluder::Render( ERenderPriority flag ){
         // draw convex plane
         DU::DrawPrimitiveL(D3DPT_TRIANGLEFAN,m_3DPoints.m_Points.size()-2,m_3DPoints.m_Points.begin(),m_3DPoints.m_Points.size(),C,false,false);
     }
-    if (flag==rpNormal){
+    if ((1==priority)&&(false==strictB2F)){
         if(Selected()){
             Fbox bb;
             if (GetBox(bb)){

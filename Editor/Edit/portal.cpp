@@ -56,8 +56,8 @@ bool CPortal::GetBox( Fbox& box ){
 	return true;
 }
 
-void CPortal::Render( ERenderPriority flag ){
-	if (flag==rpAlphaNormal){
+void CPortal::Render(int priority, bool strictB2F){
+	if ((1==priority)&&(true==strictB2F)){
         Fcolor 				col;
 		col.set				(color.r,color.g,color.b,Selected()?0.6f:0.6f);
 		if (!Selected()) 	col.mul_rgb(0.75f);
@@ -72,13 +72,13 @@ void CPortal::Render( ERenderPriority flag ){
         V[V.size()-1].set	(src[0]);
 		Device.RenderNearer(0.0002);
         // render normal
-        Device.Shader.Set	(Device.m_WireShader);
+        Device.SetShader	(Device.m_WireShader);
         DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,0xff00ff00);
 		// render portal tris
-        Device.Shader.Set	(Device.m_SelectionShader);
+        Device.SetShader	(Device.m_SelectionShader);
         DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), C, false, false);
 		// render portal edges
-        Device.Shader.Set	(Device.m_WireShader);
+        Device.SetShader	(Device.m_WireShader);
         DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), C, true, true);
         Device.ResetNearer	();
    	}

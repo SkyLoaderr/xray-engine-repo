@@ -76,8 +76,8 @@ void CAITPoint::DrawLinks(Fcolor& c){
 }
 //----------------------------------------------------
 
-void CAITPoint::Render( ERenderPriority flag ){
-    if (flag==rpNormal){
+void CAITPoint::Render(int priority, bool strictB2F){
+    if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(m_Position,AITPOINT_SIZE)){
             Fcolor c1,c2;
             c1.set(0.f,1.f,0.f,1.f);

@@ -12,13 +12,10 @@
 #include "EditMesh.h"
 #include "Texture.h"
 #include "glow.h"
-#include "dpatch.h"
 #include "sector.h"
 #include "portal.h"
 #include "frustum.h"
 #include "xrLevel.h"
-#include "xrShader.h"
-#include "shader.h"
 #include "UI_main.h"
 
 #define vSpecular			1
@@ -63,6 +60,7 @@ void SaveBuild(b_transfer *info)
 	pF.faces		= (b_face*		)transfer(F, L->faces,		L->face_count);
 	pF.material		= (b_material*	)transfer(F, L->material,	L->mtl_count);
 	pF.shaders		= (b_shader*	)transfer(F, L->shaders,	L->shader_count);
+	pF.shaders_xrlc	= (b_shader*	)transfer(F, L->shaders_xrlc,L->shader_xrlc_count);
 	pF.textures		= (b_texture*	)transfer(F, L->textures,	L->tex_count);
 	pF.lights		= (b_light*		)transfer(F, L->lights,  	L->light_count);
 	pF.glows		= (b_glow*		)transfer(F, L->glows,		L->glow_count);
@@ -130,10 +128,10 @@ void SceneBuilder::ResetStructures (){
     _DELETEARRAY(l_faces);
     l_textures.clear();
     l_shaders.clear();
+    l_shaders_xrlc.clear();
     l_materials.clear();
     l_vnormals.clear();
     l_glows.clear();
-    l_dpatches.clear();
     l_occluders.clear();
     l_portals.clear();
     l_light_keys.clear();
@@ -170,8 +168,9 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
-        st_Surface* surf = sp_it->first;
-		DWORD dwTexCnt = ((surf->dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        CSurface* surf = sp_it->first;
+		DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        R_ASSERT(dwTexCnt==1);
 	    for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
@@ -192,13 +191,13 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                             continue;
                         }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
-                        new_face.t[t][k].tu = uv.x;
-                        new_face.t[t][k].tv = uv.y;
+                        new_face.t[k].tu 	= uv.x;
+                        new_face.t[k].tv 	= uv.y;
                     }
                 }
             }
 
-	        if (surf->sideflag){
+	        if (surf->_2Sided()){
                 b_face& new_face 	= l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
                 for (int k=0; k<3; k++){
@@ -216,8 +215,8 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                             continue;
                         }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
-                        new_face.t[t][k].tu = uv.x;
-                        new_face.t[t][k].tv = uv.y;
+                        new_face.t[k].tu = uv.x;
+                        new_face.t[k].tv = uv.y;
                     }
                 }
             }
@@ -252,44 +251,41 @@ void SceneBuilder::BuildObjectDynamic(CEditableObject* O){
 // light build functions
 //------------------------------------------------------------------------------
 void SceneBuilder::BuildLight(b_light* b, CLight* e){
-	CopyMemory		(b,&e->m_D3D,sizeof(xrLIGHT));
+	strcpy(b->name,e->GetName());
+	CopyMemory		(b,&e->m_D3D,sizeof(Flight));
     b->diffuse.mul_rgb(e->m_Brightness);
     b->ambient.mul_rgb(e->m_Brightness);
     b->specular.mul_rgb(e->m_Brightness);
-	b->shadowed_scale=e->m_ShadowedScale;
 
-    if (e->m_D3D.flags&XRLIGHT_PROCEDURAL){
-    	b->p_key_start = l_light_keys.size();
-        b->p_key_count = e->m_Data.size();
-        for (ALItemIt it=e->m_Data.begin(); it!=e->m_Data.end(); it++){
-            Flight l=*it; l.diffuse.mul_rgb(it->m_Brightness);
-            l_light_keys.push_back(l);
-        }
+    b->flags.bAffectStatic 	= e->m_Flags.bAffectStatic;
+    b->flags.bAffectDynamic = e->m_Flags.bAffectDynamic;
+    b->flags.bProcedural 	= e->m_Flags.bProcedural;
+    if (e->m_Flags.bProcedural){
     }
 
     if (b->type==D3DLIGHT_POINT){
-        b->s_count=0;
         // test fully and partial inside
         ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
         ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
         for(;_F!=_E;_F++){
+			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
             EVisible vis=_S->TestCHullSphereIntersection(b->position,b->range);
             if ((vis==fvPartialInside)||(vis==fvFully))
-            	b->s_sectors[b->s_count++] = _S->sector_num;
-			if (b->s_count>=XRLIGHT_MAX_SECTORS) break;
+            	b->sectors.push_back(_S->sector_num);
         }
         // test partial outside
         _F = Scene->FirstObj(OBJCLASS_SECTOR);
         for(;_F!=_E;_F++){
+			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
             EVisible vis=_S->TestCHullSphereIntersection(b->position,b->range);
             if (vis==fvPartialOutside)
-            	b->s_sectors[b->s_count++] = _S->sector_num;
-			if (b->s_count>=XRLIGHT_MAX_SECTORS) break;
+            	b->sectors.push_back(_S->sector_num);
         }
-        if ((b->s_count==0)||(b->s_count<XRLIGHT_MAX_SECTORS))
-        	b->s_sectors[b->s_count++] = m_iDefaultSectorNum;
+        R_ASSERT(b->sectors.size());
+//S        if ((b->sectors.size()==0)||(b->sectors.size()<16))
+//S        	b->s_sectors[b->s_count++] = m_iDefaultSectorNum;
     }
 }
 //------------------------------------------------------------------------------
@@ -301,11 +297,10 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
 // material
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     int mtl_idx;
-    mtl.dwTexCount  = 1;
     VERIFY(!e->m_ShaderName.IsEmpty());
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
-    for (AStringIt s_it=e->m_TexNames.begin(); s_it!=e->m_TexNames.end(); s_it++)
-        mtl.surfidx[s_it-e->m_TexNames.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
+    mtl.shader_xrlc	= -1;
+	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());
     mtl.sector		= CalculateSector	(e->m_Position,e->m_Range);
 
     mtl_idx = FindInMaterials(&mtl);
@@ -316,33 +311,6 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
 
 // fill params
 	b->P.set        (e->m_Position);
-    b->size         = e->m_Range;
-	b->dwMaterial   = mtl_idx;
-}
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Particle build functions
-//------------------------------------------------------------------------------
-void SceneBuilder::BuildDPatch(b_particle* b, st_SPData* e, st_DPSurface* surf){
-// material
-    b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
-    int mtl_idx;
-    mtl.dwTexCount  = 1;
-    VERIFY(surf->m_Shader);
-    mtl.shader      = BuildShader		(surf->m_Shader->shader->cName);
-    for (AStringIt s_it=surf->m_Textures.begin(); s_it!=surf->m_Textures.end(); s_it++)
-        mtl.surfidx[s_it-surf->m_Textures.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
-    mtl.sector		= CalculateSector	(e->m_Position,e->m_Range);
-
-    mtl_idx = FindInMaterials(&mtl);
-    if (mtl_idx<0){
-        l_materials.push_back(mtl);
-        mtl_idx = l_materials.size()-1;
-    }
-// fill params
-	b->P.set        (e->m_Position);
-    b->N.set        (e->m_Normal);
     b->size         = e->m_Range;
 	b->dwMaterial   = mtl_idx;
 }
@@ -354,10 +322,8 @@ void SceneBuilder::BuildDPatch(b_particle* b, st_SPData* e, st_DPSurface* surf){
 void SceneBuilder::BuildOccluder(b_occluder* b, COccluder* e){
     e->Optimize();
     e->UpdatePoints3D();
-    b->vert_count = e->Get3DPoints().size();
-    R_ASSERT(b->vert_count<=MAX_OCCLUDER_POINTS);
-    R_ASSERT(b->vert_count>=MIN_OCCLUDER_POINTS);
-    CopyMemory(b->vertices,e->Get3DPoints().begin(),sizeof(Fvector)*b->vert_count);
+    b->vertices.resize(e->Get3DPoints().size());
+    CopyMemory(b->vertices.begin(),e->Get3DPoints().begin(),sizeof(Fvector)*e->Get3DPoints().size());
     b->sector=m_iDefaultSectorNum;//CalculateSector(e->m_vCenter,e->m_vPlaneSize.magnitude());
 }
 //------------------------------------------------------------------------------
@@ -368,8 +334,8 @@ void SceneBuilder::BuildOccluder(b_occluder* b, COccluder* e){
 void SceneBuilder::BuildPortal(b_portal* b, CPortal* e){
 	b->sector_front	= e->m_SectorFront->sector_num;
 	b->sector_back	= e->m_SectorBack->sector_num;
-    b->vert_count	= e->m_SimplifyVertices.size();
-    CopyMemory(b->vertices,e->m_SimplifyVertices.begin(),e->m_SimplifyVertices.size()*sizeof(Fvector));
+    b->vertices.resize(e->m_SimplifyVertices.size());
+    CopyMemory(b->vertices.begin(),e->m_SimplifyVertices.begin(),e->m_SimplifyVertices.size()*sizeof(Fvector));
 }
 
 //------------------------------------------------------------------------------
@@ -395,6 +361,28 @@ int SceneBuilder::BuildShader(const char * s){
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+// shader xrlc build functions
+//------------------------------------------------------------------------------
+int SceneBuilder::FindInShadersXRLC(b_shader* s){
+    for (DWORD i=0; i<l_shaders_xrlc.size(); i++)
+        if(strcmp(l_shaders_xrlc[i].name, s->name)==0)return i;
+    return -1;
+}
+//------------------------------------------------------------------------------
+
+int SceneBuilder::BuildShaderXRLC(const char * s){
+    b_shader sh;
+    strcpy(sh.name,s);
+    int sh_id = FindInShadersXRLC(&sh);
+    if (sh_id<0){
+        l_shaders_xrlc.push_back(sh);
+        return l_shaders_xrlc.size()-1;
+    }
+    return sh_id;
+}
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 // texture build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInTextures(const char* name){
@@ -404,20 +392,11 @@ int SceneBuilder::FindInTextures(const char* name){
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildTexture(ETextureCore* e_tex, const char* name){
+int SceneBuilder::BuildTexture(const char* name){
     int tex_idx     = FindInTextures(name);
     if(tex_idx<0){
-		b_texture       tex; ZeroMemory(&tex,sizeof(tex));
-	    if (!e_tex){
-            tex.dwWidth     = 1;
-            tex.dwHeight    = 1;
-            tex.bHasAlpha   = 0;
-    	}else{
-            tex.dwWidth     = e_tex->m_Width;
-            tex.dwHeight    = e_tex->m_Height;
-            tex.bHasAlpha   = e_tex->m_AlphaPresent;
-        }
-	    tex.pSurface    = 0;
+		b_texture       tex;
+        ZeroMemory(&tex,sizeof(tex));
 		strcpy          (tex.name,name);
     	l_textures.push_back(tex);
 		tex_idx         = l_textures.size()-1;
@@ -432,49 +411,29 @@ int SceneBuilder::BuildTexture(ETextureCore* e_tex, const char* name){
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInMaterials(b_material* m){
     for (DWORD i=0; i<l_materials.size(); i++){
-        if( (l_materials[i].dwTexCount==m->dwTexCount) &&
-            (l_materials[i].shader==m->shader) &&
-            (l_materials[i].sector==m->sector) &&
-            (memcmp(l_materials[i].surfidx,m->surfidx,sizeof(m->surfidx[0])*XR_MAX_TEXTURES)==0))return i;
+        if( (l_materials[i].surfidx		== m->surfidx) 		&&
+            (l_materials[i].shader		== m->shader) 		&&
+            (l_materials[i].shader_xrlc	== m->shader_xrlc) 	&&
+            (l_materials[i].sector		== m->sector)) return i;
     }
     return -1;
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildMaterial(CEditableMesh* m, st_Surface* surf, int sector_num ){
+int SceneBuilder::BuildMaterial(CEditableMesh* m, CSurface* surf, int sector_num ){
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
-	DWORD tex_cnt 	= ((surf->dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
-    mtl.dwTexCount  = tex_cnt;  VERIFY(mtl.dwTexCount);
-    mtl.shader      = BuildShader(surf->shader->shader->cName);
+	DWORD tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
+    mtl.shader      = BuildShader(surf->_ShaderName());
+    mtl.shader_xrlc	= BuildShaderXRLC(surf->_ShaderXRLCName());
     mtl.sector		= sector_num;
-    for (AStringIt s_it=surf->textures.begin(); s_it!=surf->textures.end(); s_it++)
-        mtl.surfidx[s_it-surf->textures.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
-    mtl_idx = FindInMaterials(&mtl);
+	mtl.surfidx		= BuildTexture(surf->_Texture());
+    mtl_idx 		= FindInMaterials(&mtl);
     if (mtl_idx<0){
         l_materials.push_back(mtl);
-        mtl_idx = l_materials.size()-1;
+        mtl_idx 	= l_materials.size()-1;
     }
-/*    b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
-    VERIFY(sector_num>=0);
-    int mtl_idx;
-    mtl.dwTexCount  = l_ids.size();  VERIFY(mtl.dwTexCount);
-    mtl.shader      = BuildShader(m,l_ids);
-    mtl.sector		= sector_num;
-    VERIFY((l_ids.size()<XR_MAX_TEXTURES)&&(l_ids.size()>0));
-    for(DWORD i=0; i<l_ids.size(); i++){
-        mtl.surfidx[i]=BuildTexture(m->GetLayer(l_ids[i])->GetTexture());
-        mtl.tclass[i]=m->GetLayer(l_ids[i])->GetTClass();
-        mtl.script[i]=BuildScript(m,l_ids[i]);
-    }
-    mtl_idx = FindInMaterials(&mtl);
-    if (mtl_idx<0){
-        l_materials.push_back(mtl);
-        mtl_idx = l_materials.size()-1;
-    }
-    bHasAlpha = m->GetLayer(l_ids[0])->HasAlpha();
-*/
     return mtl_idx;
 }
 //------------------------------------------------------------------------------
@@ -563,68 +522,57 @@ bool SceneBuilder::RemoteStaticBuild()
 	UI->ProgressEnd();
 
     // add to used shader textures to texture export list
-    for (DWORD k=0; k<l_shaders.size(); k++){
+//S
+/*    for (DWORD k=0; k<l_shaders.size(); k++){
     	SH_ShaderDef* sh = SHLib->FindShader(AnsiString(l_shaders[k].name));
         VERIFY(sh);
         for (DWORD ps=0; ps<sh->Passes_Count; ps++)
 	        for (DWORD st=0; st<sh->Passes[ps].Stages_Count; st++)
             	 if (sh->Passes[ps].Stages[st].Tname[0]!='$') AddUniqueTexName(sh->Passes[ps].Stages[st].Tname);
     }
-
+*/
     if (!NeedAbort()){
-	    UI->ProgressStart(Scene->m_DetailPatches->ObjCount(),"Saving detail patches...");
-        for(PatchMapIt p_it=Scene->m_DetailPatches->m_Patches.begin();p_it!=Scene->m_DetailPatches->m_Patches.end(); p_it++){
-            PatchVec& lst = (*p_it).second;
-            st_DPSurface* surf = (*p_it).first;
-            for(PatchIt i = lst.begin();i!=lst.end();i++){
-			    UI->ProgressInc();
-                l_dpatches.push_back(b_particle());
-                BuildDPatch(&l_dpatches.back(),i, surf);
-            }
-        }
-	    UI->ProgressEnd();
-
 	    UI->ProgressStart(11,"Saving geometry to file...");
     // shaders
         TSData.shader_count = l_shaders.size();
         TSData.shaders      = new b_shader[TSData.shader_count+1];
         CopyMemory(TSData.shaders,l_shaders.begin(),sizeof(b_shader)*TSData.shader_count);
-
 	    UI->ProgressUpdate(1);
+
+    // shaders xrlc
+        TSData.shader_xrlc_count = l_shaders_xrlc.size();
+        TSData.shaders_xrlc      = new b_shader[TSData.shader_xrlc_count+1];
+        CopyMemory(TSData.shaders_xrlc,l_shaders_xrlc.begin(),sizeof(b_shader)*TSData.shader_xrlc_count);
+
+	    UI->ProgressUpdate(2);
     // materials
         TSData.mtl_count    = l_materials.size();
         TSData.material     = new b_material[TSData.mtl_count+1];
         CopyMemory(TSData.material,l_materials.begin(),sizeof(b_material)*TSData.mtl_count);
 
-	    UI->ProgressUpdate(2);
+	    UI->ProgressUpdate(3);
 		VERIFY(l_vertices_cnt==l_vertices_it);
     // vertices
         TSData.vertex_count = l_vertices_cnt;
         TSData.vertices     = l_vertices;
 
-	    UI->ProgressUpdate(3);
+	    UI->ProgressUpdate(4);
 		VERIFY(l_faces_cnt==l_faces_it);
     // faces
         TSData.face_count   = l_faces_cnt;
         TSData.faces        = l_faces;
 
-	    UI->ProgressUpdate(4);
+	    UI->ProgressUpdate(5);
     // textures
         TSData.tex_count    = l_textures.size();
         TSData.textures     = new b_texture[TSData.tex_count+1];
         CopyMemory(TSData.textures,l_textures.begin(),sizeof(b_texture)*TSData.tex_count);
 
-	    UI->ProgressUpdate(5);
+	    UI->ProgressUpdate(6);
     // glows
         TSData.glow_count   = l_glows.size();
         TSData.glows        = new b_glow[TSData.glow_count+1];
         CopyMemory(TSData.glows,l_glows.begin(),sizeof(b_glow)*TSData.glow_count);
-
-	    UI->ProgressUpdate(6);
-    // particles
-        TSData.particle_count= l_dpatches.size();
-        TSData.particles    = new b_particle[TSData.particle_count+1];
-        CopyMemory(TSData.particles,l_dpatches.begin(),sizeof(b_particle)*TSData.particle_count);
 
 	    UI->ProgressUpdate(7);
     // occluders
@@ -653,6 +601,7 @@ bool SceneBuilder::RemoteStaticBuild()
 
     _DELETEARRAY(TSData.material);
     _DELETEARRAY(TSData.shaders);
+    _DELETEARRAY(TSData.shaders_xrlc);
     _DELETEARRAY(TSData.textures);
     _DELETEARRAY(TSData.lights);
     _DELETEARRAY(TSData.glows);

@@ -6,7 +6,7 @@
 #pragma hdrstop
 
 #include "Log.h"
-#include "Texture.h"
+#include "ETexture.h"
 #include "ui_main.h"
 //#include "d3dx.h"
 //----------------------------------------------------

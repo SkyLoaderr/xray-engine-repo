@@ -5,7 +5,7 @@
 #ifndef _INCDEF_Texture_H_
 #define _INCDEF_Texture_H_
 
-#include "TextureParams.h"
+#include "ETextureParams.h"
 //----------------------------------------------------
 
 class ETextureCore;

@@ -118,8 +118,7 @@ struct st_SPLIT
 		F.open_chunk(OGF_TEXTURE);
         b_material& M 	= Builder->l_materials[mtl];
         b_shader& B 	= Builder->l_shaders[M.shader];
-        R_ASSERT(M.dwTexCount);
-        b_texture& T 	= Builder->l_textures[M.surfidx[0]];
+        b_texture& T 	= Builder->l_textures[M.surfidx];
 		AnsiString Tname= AnsiString(T.name);
 		F.WstringZ		(Tname.c_str());
 		Tname 			= AnsiString(B.name);
@@ -276,7 +275,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
             v->P.set		(l_vertices[vert_id]);
             v->O.set		(l_svertices[vert_id].offs);
             v->SetBone		(l_svertices[vert_id].bone);
-            v->AppendUV		(gF->t[0][k].tu,gF->t[0][k].tv);
+            v->AppendUV		(gF->t[k].tu,gF->t[k].tv);
             v->N.set		(l_vnormals[vert_id]);
 			CBone* B		= obj->GetBone(v->bone);
             B->LITransform().transform_dir(v->N);
@@ -529,8 +528,9 @@ void SceneBuilder::AssembleSkeletonMesh(CEditableMesh* mesh){
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
-        st_Surface* surf = sp_it->first;
-		DWORD dwTexCnt = ((surf->dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        CSurface* surf = sp_it->first;
+		DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        R_ASSERT(dwTexCnt==1);
 	    for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
@@ -547,13 +547,13 @@ void SceneBuilder::AssembleSkeletonMesh(CEditableMesh* mesh){
                         st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){ offs++; t--; continue; }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
-                        new_face.t[t][k].tu = uv.x;
-                        new_face.t[t][k].tv = uv.y;
+                        new_face.t[k].tu = uv.x;
+                        new_face.t[k].tv = uv.y;
                     }
                 }
             }
 
-	        if (surf->sideflag){
+	        if (surf->_2Sided()){
                 b_face& new_face = l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
                 for (int k=0; k<3; k++){
@@ -567,8 +567,8 @@ void SceneBuilder::AssembleSkeletonMesh(CEditableMesh* mesh){
                         st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){ offs++; t--; continue; }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
-                        new_face.t[t][k].tu = uv.x;
-                        new_face.t[t][k].tv = uv.y;
+                        new_face.t[k].tu 	= uv.x;
+                        new_face.t[k].tv 	= uv.y;
                     }
                 }
             }
