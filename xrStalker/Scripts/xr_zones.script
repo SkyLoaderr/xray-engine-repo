@@ -343,7 +343,7 @@ function zone_fractions:create_fraction()
 	self.fraction_params = fparams
 
 	self.fraction_type = fparams.type
-	self.fraction_name = self.zone:name() .. "_" .. fparams.type
+	self.fraction_name = self.zone:name() --.. "_" .. fparams.type
 	self.prefix        = fparams.prefix
 	self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
 	self.capacity      = fparams.capacity
