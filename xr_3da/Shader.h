@@ -9,7 +9,7 @@
 #include "r_constants.h"
 #include "tss_def.h"
 
-typedef svector<string64,8>			sh_list;
+typedef svector<string64,4>	sh_list;
 
 class	ENGINE_API	CBlender_Compile;
 class	ENGINE_API	IBlender;
