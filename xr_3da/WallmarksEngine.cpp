@@ -126,7 +126,7 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 	Fmatrix				mView,mRot;
 	BuildMatrix			(mView,1/sz,contact_point);
 	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
-	mView.mul			(mRot);
+//	mView.mul			(mRot);
 	CFrustum			F;
 	F.CreateFromMatrix	(mView);
 
