@@ -4,6 +4,8 @@
 #define GAMESPY_GAMENAME		"stalkersc"
 #define	GAMESPY_BASEPORT		5447
 
+#define	DEDICATED_KEY			100
+
 class xrGameSpyServer	: public xrServer
 {
 private:
@@ -18,6 +20,8 @@ public:
 	ref_str							MapName;
 	ref_str							Password;
 	int								m_iMaxPlayers;
+
+	int								GetPlayersCount();
 public:
 	xrGameSpyServer					();
 	virtual ~xrGameSpyServer		();

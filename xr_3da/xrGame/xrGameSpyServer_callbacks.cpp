@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "xrGameSpyServer.h"
-#include "xrGameSpyServer.h"
 #include "xrGameSpyServer_callbacks.h"
 
 void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
@@ -20,7 +19,7 @@ void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 		qr2_buffer_add(outbuf, pServer->game->type_name());
 		break;
 	case NUMPLAYERS_KEY:
-		qr2_buffer_add_int(outbuf, pServer->client_Count());
+		qr2_buffer_add_int(outbuf, pServer->GetPlayersCount());
 		break;
 	case MAXPLAYERS_KEY:
 		qr2_buffer_add_int(outbuf, pServer->m_iMaxPlayers);
@@ -35,6 +34,10 @@ void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 	case GAMEVER_KEY:
 		qr2_buffer_add(outbuf, "0.1");
 		break;
+	case DEDICATED_KEY:
+		{
+			qr2_buffer_add_int(outbuf, g_pGamePersistent->bDedicatedServer);
+		}break;
 	}
 	GSI_UNUSED(userdata);
 };
@@ -60,6 +63,8 @@ void callback_keylist(qr2_key_type keytype, qr2_keybuffer_t keybuffer, void *use
 
 		qr2_keybuffer_add(keybuffer, GAMETYPE_KEY);
 		qr2_keybuffer_add(keybuffer, PASSWORD_KEY);
+
+		qr2_keybuffer_add(keybuffer, DEDICATED_KEY);
 		break;
 	case key_player:
 //		qr2_keybuffer_add(keybuffer, PLAYER__KEY);

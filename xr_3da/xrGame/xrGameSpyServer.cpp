@@ -58,6 +58,7 @@ BOOL xrGameSpyServer::Connect(ref_str &session_name)
 
 void			xrGameSpyServer::QR2_Init			()
 {	
+	qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
 	//--------- QR2 Init -------------------------/
 	//call qr_init with the query port number and gamename, default IP address, and no user data
 	if (qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, secret_key, (m_iReportToMasterServer == 0)?0:1, 1,
@@ -106,3 +107,10 @@ void			xrGameSpyServer::Update				()
 		qr2_think(NULL);
 	};
 }
+
+int				xrGameSpyServer::GetPlayersCount()
+{
+	int NumPlayers = client_Count();
+	if (!g_pGamePersistent->bDedicatedServer || NumPlayers < 1) return NumPlayers;
+	return NumPlayers - 1;
+};
