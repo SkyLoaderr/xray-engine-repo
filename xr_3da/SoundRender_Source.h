@@ -1,5 +1,5 @@
 #ifndef SoundRender_SourceH
-#endif SoundRender_SourceH
+#define SoundRender_SourceH
 #pragma once
 
 #include "soundrender.h"

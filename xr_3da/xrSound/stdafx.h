@@ -3,7 +3,7 @@
 // are changed infrequently
 //
 #ifndef stdafxH
-#endif stdafxH
+#define stdafxH
 #pragma once
 
 #include <xrCore.h>

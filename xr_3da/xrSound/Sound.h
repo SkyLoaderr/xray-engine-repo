@@ -1,3 +1,5 @@
+#ifndef SoundH
+#define SoundH
 #pragma once
 
 #ifdef XRSOUND_EXPORTS
@@ -154,3 +156,4 @@ IC void	sound::clone						( const sound& from, bool leave_type)
 	if (!leave_type) 
 		g_type	= from.g_type;
 }
+#endif
