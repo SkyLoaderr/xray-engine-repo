@@ -182,6 +182,8 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 
 void			xrServer::entity_Destroy	(xrServerEntity* P)
 {
+	R_ASSERT	(P);
+	ids_used	[P->ID]	= false;
 	_DELETE		(P);
 }
 

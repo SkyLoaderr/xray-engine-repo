@@ -116,7 +116,7 @@ class xrServer	: public IPureServer
 {
 private:
 	xrS_entities			entities;
-	
+	vector<bool>			ids_used;
 	BOOL					ProcessRP			(xrServerEntity* E);
 public:
 	// constr / destr

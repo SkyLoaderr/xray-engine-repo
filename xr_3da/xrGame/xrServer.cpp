@@ -81,7 +81,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 	DWORD	selected	= 0;
 	switch (EEE->s_RP)	{
 	case 0xFE:	// Use supplied coords
-		return;
+		return TRUE;
 	default:	// Use specified RP
 		if (EEE->s_RP>=RP.size())	Msg("! ERROR: Can't spawn entity at RespawnPoint #%d.", DWORD(EEE->s_RP));
 		selected = DWORD(EEE->s_RP);
@@ -97,7 +97,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 				float		cost	=0;
 				DWORD		count	=0;
 				
-				for (xrS_entities::iterator o_it=0; o_it!=entities.size(); o_it++) 
+				for (xrS_entities::iterator o_it=0; o_it!=entities.end(); o_it++) 
 				{
 					// Get entity & it's position
 					xrServerEntity*	E	= o_it->second;
@@ -127,7 +127,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 	// Perform spawn
 	Fvector4&			P = Level().Teams[EEE->s_team].RespawnPoints[selected];
 	EEE->o_Position.set	(P.x,P.y,P.z);
-	EEE->o_Angle.set	(P.w);
+	EEE->o_Angle.set	(0,P.w,0);
 	return TRUE;
 }
 
@@ -147,7 +147,9 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			while (!P.r_eof())
 			{
 				// find entity
-				xrServerEntity* E	= ID_to_entity(P.r_u16());
+				u16		ID;
+				P.r_u16	(ID);
+				xrServerEntity* E	= ID_to_entity(ID);
 				if (E)				{
 					E->net_Ready	= TRUE;
 					E->UPDATE_Read	(P);
@@ -167,23 +169,22 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			P.r_string	(s_name);
 			
 			// generate/find new ID for entity
-			u16 ID		= 0;
-			if (!entities.empty())
+			u16 ID		= 0xffff;
+			if (ids_used.size())	
 			{
-				ID = entities.back()->ID+1;
-			}
-			if (entities.size()>1)	
-			{
-				for (DWORD e=0; e<entities.size()-1; e++)
+				for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
 				{
-					BYTE id_cur		= entities[e+0]->ID;
-					BYTE id_next	= entities[e+1]->ID;
-					if ((id_next-id_cur)>1)	{
-						ID = id_cur+1;
-						break;
-					}
+					if (!(*I))	{ ID = I-ids_used.begin(); break; }
 				}
+				if (0xffff==ID)	{
+					ID			= ids_used.size	();
+					ids_used.push_back			(false);
+				}
+			} else {
+				ID		= 0;
+				ids_used.push_back	(false);
 			}
+			ids_used[ID]		= true;	
 			
 			// create server entity
 			xrClientData* CL	= ID_to_client	(sender);
@@ -199,10 +200,8 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			LPCSTR				NameReplace = 0;
 			if (0 == CL->owner)	{
 				CL->owner		= E;
-				NameReplace		= CL->Name;
-			} else {
+				strcpy			(E->s_name_replace,CL->Name);
 			}
-			if (NameReplace)	strcpy	(E->s_name_replace,NameReplace);
 			
 			// PROCESS RP;	 3D position/orientation
 			ProcessRP			(E);
