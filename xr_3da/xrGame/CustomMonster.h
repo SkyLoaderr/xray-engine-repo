@@ -12,9 +12,17 @@
 #include "entity.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
-#include "ai_funcs.h"
 
 #define MAX_FUNCTION_COUNT 64
+
+class  CBaseFunction;
+class  CPatternFunction;
+class  CHealthFunction;
+class  CArmorFunction;
+class  CMoraleFunction;
+class  CStrengthFunction;
+class  CAccuracyFunction;
+class  CReactionFunction;
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;

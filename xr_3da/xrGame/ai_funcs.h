@@ -85,4 +85,118 @@ public:
 	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
 };
 
+class CHealthFunction : public CBaseFunction {
+	
+public:
+	CHealthFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = tpCustomMonster->g_Health());
+	};
+	
+};
+ 
+class CArmorFunction : public CBaseFunction {
+	
+public:
+	CArmorFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = tpCustomMonster->g_Armor());
+	};
+	
+};
+ 
+class CMoraleFunction : public CBaseFunction {
+	
+public:
+	CMoraleFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CStrengthFunction : public CBaseFunction {
+	
+public:
+	CStrengthFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CAccuracyFunction : public CBaseFunction {
+	
+public:
+	CAccuracyFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CReactionFunction : public CBaseFunction {
+	
+public:
+	CReactionFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
 #endif

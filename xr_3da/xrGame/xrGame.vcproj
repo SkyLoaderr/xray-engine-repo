@@ -517,6 +517,9 @@
 					RelativePath="ai_funcs.h">
 				</File>
 				<File
+					RelativePath="ai_m_funcs.h">
+				</File>
+				<File
 					RelativePath=".\AI\ai_monsters.cpp">
 				</File>
 				<File
