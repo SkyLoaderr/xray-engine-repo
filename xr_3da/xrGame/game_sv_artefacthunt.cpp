@@ -276,6 +276,7 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 			m_TeamInPosession = A->g_team();
 			signal_Syncronize();
 
+			m_eAState = IN_POSESSION;
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -308,6 +309,7 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 			m_ArtefactBearerID = 0;
 			m_TeamInPosession = 0;
 			signal_Syncronize();
+			m_eAState = ON_FIELD;
 
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
@@ -474,6 +476,7 @@ void	game_sv_ArtefactHunt::Update			()
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
+//	return true;
 	// Check if all players ready
 	u32		cnt		= get_count	();
 	

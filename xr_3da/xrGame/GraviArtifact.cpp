@@ -66,5 +66,24 @@ void CGraviArtifact::UpdateCL()
 			}
 			setEnabled(true);
 		}
-	} else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
+	} else 
+		if(H_Parent()) 
+		{
+			XFORM().set(H_Parent()->XFORM());
+			
+			if (Game().type == GAME_ARTEFACTHUNT && m_CarringBoneID != u16(-1))
+			{
+				CKinematics* K	= PKinematics(H_Parent()->Visual());
+				if (K)
+				{
+					K->Calculate	();
+					Fmatrix Ruck_MTX	= K->LL_GetTransform(m_CarringBoneID);
+					Fvector	x;
+					x.set(-0.1, 0, -0.3);
+					Ruck_MTX.translate_add(x);
+					Ruck_MTX.mulA		(XFORM());
+					XFORM().set(Ruck_MTX);
+				};
+			};
+		};
 }

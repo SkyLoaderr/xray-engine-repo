@@ -75,6 +75,9 @@ BOOL CArtifact::net_Spawn(LPVOID DC)
 	m_pTrailLight->set_shadow(true);
 
 	StartLights();
+	/////////////////////////////////////////
+	m_CarringBoneID = u16(-1);
+	/////////////////////////////////////////
 
 	return result;	
 }
@@ -98,9 +101,20 @@ void CArtifact::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 
 	StopLights();
-	if (*m_sParticlesName) 
-	{	
-		CParticlesPlayer::StopParticles(m_sParticlesName);
+	if (Game().type == GAME_SINGLE)
+	{
+		if (*m_sParticlesName) 
+		{	
+			CParticlesPlayer::StopParticles(m_sParticlesName);
+		}
+	}
+	else
+	{
+		CKinematics* K	= PKinematics(H_Parent()->Visual());
+		if (K)
+			m_CarringBoneID			= K->LL_BoneID("bip01_head");
+		else
+			m_CarringBoneID = u16(-1);
 	}
 }
 
@@ -119,6 +133,10 @@ void CArtifact::OnH_B_Independent()
 
 void CArtifact::UpdateCL() 
 {
+	Fvector vel = {0, 0, 0};
+	if (H_Parent()) dynamic_cast<CGameObject*>(H_Parent())->PHGetLinearVell(vel);
+
+	CParticlesPlayer::SetParentVel(vel);
 	inherited::UpdateCL();
 
 	UpdateLights();

@@ -402,7 +402,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			float mb	= b.magnitude();		
 			if (!fis_zero(mb)){
 				b.mul	(1.f/mb);
-				bool FB	= _abs(a.dotproduct(b))<0.7071f;
+				bool FB	= _abs(a.dotproduct(b))>0.7071f;
 //				float x	= _abs(vLocalDir.x);
 //				float z	= _abs(vLocalDir.z);
 				if (FB)	id = (vLocalDir.z<0)?2:0;

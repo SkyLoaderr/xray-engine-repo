@@ -39,6 +39,8 @@ CParticlesPlayer::CParticlesPlayer ()
 	bone_mask			= u64(1)<<u64(0);
 	
 	m_bActiveBones = false;
+
+	SetParentVel(zero_vel);
 }
 
 CParticlesPlayer::~CParticlesPlayer ()
@@ -211,7 +213,7 @@ void CParticlesPlayer::UpdateParticles()
 			//обновить позицию партиклов
 			Fmatrix xform;
 			MakeXFORM				(object,b_info.index,p_info.dir,b_info.offset,xform);
-			p_info.ps->UpdateParent(xform,zero_vel);
+			p_info.ps->UpdateParent(xform, parent_vel);
 
 			//обновить время существования
 			p_info.cur_time += Device.dwTimeDelta;

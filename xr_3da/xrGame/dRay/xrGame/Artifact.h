@@ -38,6 +38,8 @@ protected:
 	//звуки
 	ref_str		m_detectorSoundName;
 	ref_sound	m_detectorSound;
+
+	u16			m_CarringBoneID;
 	
 	static xr_set<CArtifact*> m_all;
 
