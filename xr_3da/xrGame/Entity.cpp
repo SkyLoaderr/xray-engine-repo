@@ -79,7 +79,8 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 			if (who!=this)	Level().HUD()->outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 			else			Level().HUD()->outMessage	(0xffffffff,cName(),"Crashed...");
 			Die				();
-			Level().Players.access(cl).score			++;
+			CPlayers::Item*	I = Level().Players.access(cl);
+			if (I)			I->score++;
 		}
 		break;
 	}

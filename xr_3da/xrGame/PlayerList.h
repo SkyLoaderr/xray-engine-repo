@@ -12,7 +12,7 @@ public:
 public:
 	void			add		(NET_Packet& P);
 	void			remove	(NET_Packet& P);
-	Item&			access	(DWORD ID);
+	Item*			access	(DWORD ID);
 
 	CPlayers(void);
 	~CPlayers(void);
