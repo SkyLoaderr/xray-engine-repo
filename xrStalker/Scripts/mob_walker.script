@@ -1,0 +1,152 @@
+----------------------------------------------------------------------------------------------------
+-- Mob remarks
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+-- Исходный скрипт (trader): Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+----------------------------------------------------------------------------------------------------
+
+class "mob_walker"
+
+function mob_walker:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function mob_walker:reset_scheme()
+	printf("_bp: mob_walker:reset_scheme: %s", self.object:name())
+	if not self.st.dialog_enabled then
+		self.object:disable_talk()
+	else
+		self.object:enable_talk()
+	end
+
+	if not self.st.no_reset then
+		printf("_bp: mob_walker:reset_scheme: %s: reset_action()", self.object:name())
+		--printf("__bp: action reset: %d", device():time_global())
+		reset_action(self.object, script_name())
+	else
+		if not self.object:get_script() then
+			printf("_bp8")
+			self.object:script(true, script_name())
+		end
+	end
+
+	local anims = parse_names(self.st.anim)
+	
+	local snds
+	if self.st.snd then
+		snds = parse_names(self.st.snd)
+	else
+		snds = {}
+	end
+	local sndset
+
+	local times
+	if self.st.time then
+		times = parse_names(self.st.time)
+	else
+		times = {}
+	end
+	local tm
+	
+	local cnd
+	for num, an in pairs(anims) do
+		sndset = snds[num]
+		if times[num] then
+			tm = tonumber(times[num])
+		else
+			tm = 0
+		end
+		if sndset and an then
+			local snd = mob_sound.pick_sound_from_set(self.object, sndset, {})
+			if not snd then
+				utils.abort("mobile '%s': section '%s': sound set '%s' does not exist",
+					self.object:name(), self.st.section, sndset)
+			end
+			
+			if tm == 0 then
+				cnd = cond(cond.sound_end)
+			else
+				cnd = cond(cond.time_end, tm)
+			end
+			if self.st.anim_head then
+				--printf("__bp: action set: %d", device():time_global())
+				action(self.object, anim(an), sound(snd, "bip01_head",
+					MonsterSpace[self.st.anim_head]), cnd)
+			else
+				--printf("__bp: action set: %d", device():time_global())
+				action(self.object, anim(an), sound(snd, "bip01_head"), cnd)
+			end
+		elseif an then
+			if tm == 0 then
+				cnd = cond(cond.anim_end)
+			else
+				cnd = cond(cond.time_end, tm)
+			end
+			--printf("__bp: action set: %d", device():time_global())
+			action(self.object, anim(an), cnd)
+		--else
+		--	if npc:get_script() then
+		--		npc:script(false, script_name())
+		--	end
+		end
+	end
+
+	if self.st.tip then
+		local actor = level.actor()
+		if actor then
+			--actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
+			news_manager.send_news(actor, self.st.tip)
+		end
+	end
+	
+	self.st.signals = {}
+	self.action_end_signalled = false
+	--printf("_bp: mob_walker:reset_scheme end")
+end
+
+function mob_walker:update(delta)
+	--printf("__bp: mob_walker update: %d", device():time_global())
+	if not xr_logic.is_active(self.object, self.st) then
+		return
+	end
+
+	--printf("_bp: mob_walker:update [%s]", self.object:name())
+	
+	if self.object:get_script() and not self.object:action() then
+		self.object:script(false, script_name())
+		--printf("__bp: free from script: %d", device():time_global())
+
+		if not self.action_end_signalled then
+			self.action_end_signalled = true
+			self.st.signals["action_end"] = true
+			printf("mob_walker: signalling action_end")
+		end
+	end
+
+	xr_logic.try_switch_to_another_section(self.object, self.st)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+	local new_action = mob_walker(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.dialog_enabled = utils.cfg_get_bool(ini, section, "dialog_enabled", npc, false)
+	st.no_reset       = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+	st.anim           = utils.cfg_get_string(ini, section, "anim", npc, false, "")
+	st.anim_head      = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
+	st.tip            = utils.cfg_get_string(ini, section, "tip", npc, false, "")
+	st.snd            = utils.cfg_get_string(ini, section, "snd", npc, false, "")
+	st.time           = utils.cfg_get_string(ini, section, "time", npc, false, "")
+end
