@@ -114,12 +114,14 @@ void FTreeVisual::Render	(float LOD)
 	static FTreeVisual_setup	tvs;
 	if (tvs.dwFrame!=Device.dwFrame)	tvs.calculate();
 
+
+#pragma todo("5color scale/bias")
 	// setup constants
 	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);	// consts/scale
 	RCache.set_c			(c_wave,	tvs.wave);					// wave
 	RCache.set_c			(c_wind,	tvs.wind);					// wind
-	RCache.set_c			(c_c_scale,	c_scale);					// scale
-	RCache.set_c			(c_c_bias,	c_bias);					// bias
+	RCache.set_c			(c_c_scale,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,1);	// scale
+	RCache.set_c			(c_c_bias,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,1);		// bias
 	RCache.set_c			(c_l_dir,	tvs.l_dir);					// L-dir
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
