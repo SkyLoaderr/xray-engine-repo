@@ -16,9 +16,9 @@
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
 // #define _STLP_NO_EXCEPTIONS	1
-#ifdef DEBUG
-	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
-#endif
+// #ifdef DEBUG
+// 	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
+// #endif
 
 // *** try to minimize code bloat of STLport
 #ifdef __BORLANDC__
@@ -107,7 +107,7 @@
 #pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 #pragma warning (disable : 4127 )		// conditional expression is constant
-#pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
+//#pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning (disable : 4345 )
 #pragma warning (disable : 4714 )		// __forceinline not inlined
 #ifndef DEBUG
