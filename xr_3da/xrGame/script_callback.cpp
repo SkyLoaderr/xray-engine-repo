@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "script_callback.h"
 #include "script_space.h"
-#include <luabind/operator.hpp>
 
 CScriptCallback::~CScriptCallback	()
 {
