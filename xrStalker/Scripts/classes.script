@@ -88,7 +88,7 @@ function SinglePatrol:callback (obj, action_type, index)
 
 	for anim_num = 1, self.anims.n do
 		if ptr:flag(index, anim_num) then
-			action_first (obj, --move (move.standing, move.stand, move.line, ptr),
+			action_first (obj, move (move.standing, move.stand, move.line, ptr),
 				self.anims[anim_num]:get_animation (), cond (cond.anim_end))
 			return
 		end
