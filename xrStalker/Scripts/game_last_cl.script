@@ -1,6 +1,7 @@
 module("game_types")
 module("game_last_ui")
 module("game_last_ps")
+module("game_last_tmp")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -66,7 +67,23 @@ function game_cl_LastStanding:createGameUI ()
    self.m_game_ui:Init()
    
    self.m_inventory_wnd = CUIInventoryWnd()
+
+   self.m_testWnd = game_last_tmp.test_dialog()
+   self.m_testWnd:SetClGame(self)
+
    return self.m_game_ui
+end
+
+--   self.m_dialog = UIScriptWnd()
+--   self.m_dialog:AddCallback("btn_ok", ui_events.ON_CLICKED, self.cb)
+--   self.m_dialog:test()
+
+function cb_1()
+   printf("--------cb_1 called")
+end
+
+function game_cl_LastStanding:cb()
+   printf("--------game_cl_LastStanding:cb called")
 end
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
@@ -167,6 +184,12 @@ function game_cl_LastStanding:OnKeyboardPress(key)
       (key_bindings.kCONSOLE ~= key)  then	
          return  true
       end
+
+   if key_bindings.kEXT_1 == key then
+      self:StartStopMenu(self.m_testWnd)
+      return true
+   end
+
 
 	return game_cl_mp_script.OnKeyboardPress(self, key)
 

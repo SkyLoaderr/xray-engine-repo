@@ -9,6 +9,7 @@ class "game_sv_LastStanding" (game_sv_mp_script)
 ---------------------------------------------------------
 function game_sv_LastStanding:__init() super()
 	self.type = game_types.game_types.GAME_LASTSTANDING
+
 end
 
 ---------------------------------------------------------

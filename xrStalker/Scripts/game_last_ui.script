@@ -43,7 +43,7 @@ function ui_game_LastStanding:Init()
    players_list:SetWndRect( (ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH )
    self.m_players_list:AttachChild(players_list)
 
-
+   
 end
 
 function ui_game_LastStanding:SetClGame(cl_game)
