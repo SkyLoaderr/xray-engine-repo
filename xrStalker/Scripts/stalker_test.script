@@ -20,10 +20,18 @@ function main ()
     
     action				(
 		stalker,
+		move			(move.standing,move.walk,move.line,patrol("way0000")),
+		cond			(cond.move_end)
+    )
+    
+    wait				(5000)
+    
+    action_first		(
+		stalker,
 		look			(look.fire_point,actor),
 		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.fire1),
-		cond			(cond.time_end,200000)
+		cond			(cond.time_end,5000)
     )
     
 --[
