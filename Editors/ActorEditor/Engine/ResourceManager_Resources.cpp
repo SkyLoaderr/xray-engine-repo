@@ -232,6 +232,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,*HLSL_Path,name,".ps"));
 		IReader*					fs			= FS.r_open(cname);
+		R_ASSERT2					(fs,cname);
 
 		// Select target
 		LPCSTR						c_target	= "ps_2_0";
