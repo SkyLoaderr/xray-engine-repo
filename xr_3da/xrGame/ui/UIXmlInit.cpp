@@ -199,7 +199,7 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 	int cols_num = xml_doc.ReadAttribInt(path, index, "cols_num");
 	int rows_num_view = xml_doc.ReadAttribInt(path, index, "rows_num_view");
 	
-	ref_str show_grid_str = xml_doc.ReadAttrib(path, index, "show_grid");
+	ref_str show_grid_str = xml_doc.ReadAttrib(path, index, "show_grid", NULL);
 	int show_grid = 1;
 	if(*show_grid_str) show_grid = atoi(*show_grid_str);
 
@@ -310,14 +310,14 @@ bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pPa
 
 bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
-	ref_str font_name = xml_doc.ReadAttrib(path, index, "font");
+	ref_str font_name = xml_doc.ReadAttrib(path, index, "font", NULL);
 
 	int r = xml_doc.ReadAttribInt(path, index, "r");
 	int g = xml_doc.ReadAttribInt(path, index, "g");
 	int b = xml_doc.ReadAttribInt(path, index, "b");
 
 	//чтоб не было тупых ошибок когда забыли поставить альфу
-	ref_str alpha = xml_doc.ReadAttrib(path, index, "a");
+	ref_str alpha = xml_doc.ReadAttrib(path, index, "a", NULL);
 	int a = 0xFF;
 	if(*alpha) a = xml_doc.ReadAttribInt(path, index, "a");
 
