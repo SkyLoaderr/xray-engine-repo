@@ -38,15 +38,19 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 			{
 				// Fill in two parts - looping :)
 				u32		sz_first	= source->dwBytesTotal - position;
-				u32		sz_second	= (position+size) - source->dwBytesTotal;
-				VERIFY				(size == (sz_first+sz_second));
-				VERIFY				(position<source->dwBytesTotal);
-				Memory.mem_copy		(dest,wave+position,sz_first);
-				Memory.mem_copy		(dest+sz_first,wave,sz_second);
+                if (0==sz_first)
+                {
+                    Memory.mem_copy		(dest,wave,size);
+                } else {
+                    u32		sz_second	= (position+size) - source->dwBytesTotal;
+                    VERIFY				(size == (sz_first+sz_second));
+                    VERIFY				(position<source->dwBytesTotal);
+                    Memory.mem_copy		(dest,wave+position,sz_first);
+                    Memory.mem_copy		(dest+sz_first,wave,sz_second);
+                }
 				//Msg					("        looping: [%d]-first,[%d]-second",sz_first,sz_second);
 				position			+= size;
 				position			%= source->dwBytesTotal;
-				VERIFY				(position==sz_second);
 			}
 			break;
 		default:
@@ -56,7 +60,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 	} else {
 		// Everything OK, just stream
 		//Msg				("        normal");
-		Memory.mem_copy	(dest,wave+position,size);
-		position		+= size;
+		Memory.mem_copy		(dest,wave+position,size);
+		position			+= size;
 	}
 }
