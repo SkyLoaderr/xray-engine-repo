@@ -59,7 +59,7 @@
 	</map_goals_list>
 	
 	<!-- Name of global map location frame -->
-	<map_location_frame>ui\ui_pda_frame2</map_location_frame>
+	<map_location_frame>ui\ui_frame_very_small</map_location_frame>
 
 </window>
 
