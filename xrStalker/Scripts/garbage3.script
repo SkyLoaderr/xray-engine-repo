@@ -1,0 +1,15 @@
+module( "m_monster_ai" )
+
+function main()
+
+   local boar = m_monster_ai.garbage_boar( "m_boar1", this.script_name(), "way01", vector():set( 0, 0, -1 ) )
+
+	boar:initialize()
+
+    while( boar:check_completed() == false ) do
+		boar:execute()
+    	wait()
+    end
+
+    boar:finalize()
+end

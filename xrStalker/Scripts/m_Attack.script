@@ -1,0 +1,132 @@
+
+--------------------------------------------------------------------------------
+class "stateAttack"
+function stateAttack:__init( script_name, mem )
+    self.scr_name   = script_name
+	self.memory     = mem
+    self.enemy      = nil
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:initialize()
+	self.memory.npc:script( true, self.scr_name )
+    self.enemy = self.memory.enemy
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:finalize()
+	self.memory.npc:script( false, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:execute()
+--    printf( "stateAttack executed" )
+
+	self:testing()
+
+	if( self.memory.npc:action() == nil ) then
+    	action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:testing()
+	--Проверяем, не поменялся ли враг
+	if( self.enemy ) then
+    	if( self.memory.enemy == nil ) then
+        	self.enemy = nil
+            return
+        end
+        if( self.enemy:id() ~= self.memory.enemy:id() ) then
+        	self.enemy = self.memory.enemy
+            printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
+            self:update()
+        end
+    else
+    	if( self.memory.enemy ) then
+        	self.enemy = self.memory.enemy
+            self:update()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:can_start()
+    return ( self.memory.enemy ~= nil )
+end
+
+--------------------------------------------------------------------------------
+
+--Врага нет, значит закончили выполнятся
+function stateAttack:check_complited()
+    return ( self.memory.enemy == nil )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:update()
+	reset_action( self.memory.npc, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:id()
+    return 1
+end
+
+--==============================================================================
+--==============================================================================
+
+class "stateCowardAttack" ( stateAttack )
+function stateCowardAttack:__init( mnstr, script_name, mem ) super( mnstr, script_name, mem )
+
+end
+
+--------------------------------------------------------------------------------
+
+function stateCowardAttack:execute()
+    self:testing()
+
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, act( act.panic, self.enemy ), cond( cond.time_end, 100000 ) )
+    end
+end
+--==============================================================================
+--==============================================================================
+
+class "stateAttackThreaten" ( stateAttack )
+function stateAttackThreaten:__init( mnstr, script_name, mem ) super( mnstr, script_name, mem )
+
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackThreaten:execute()
+    self:testing()
+
+    if( self.memory.npc:action() == nil ) then
+		if(self.memory.hit.time ~= 0) then
+        --If hit, attack enemy
+        	action(self.memory.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 20000))
+        	return
+        end
+
+		if(distance_between(self.memory.npc, self.memory.enemy) > 7) then
+		--If enemy near, retreat
+        	action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
+        	action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
+        else
+			local new_pos = self.memory.npc:position()
+            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(10) )
+			action(self.memory.npc, move(move.drag, new_pos), sound(sound.idle, 500), cond(cond.time_end, 2000))
+        end
+    end
+end
+
+
+
