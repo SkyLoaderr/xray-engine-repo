@@ -4,10 +4,7 @@
 #include "PHObject.h"
 #include "AmebaZone.h"
 #include "hudmanager.h"
-
-#ifdef DEBUG
-#	include "level.h"
-#endif
+#include "level.h"
 
 CAmebaZone::CAmebaZone()
 {
