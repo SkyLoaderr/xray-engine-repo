@@ -53,7 +53,7 @@ public:
 	virtual		IC CUI*		GetUI				(){return pUI;}
 	virtual		void		UIActivate			();
 	virtual		void		UIDeactivate		();
-	virtual		bool		IsUIActive			(){return pUI->IsActive();}
+	virtual		BOOL		IsUIActive			(){return pUI->IsActive();}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
 	virtual		void		RenderModel			(FBasicVisual* V, Fmatrix& M, int iLightLevel)
