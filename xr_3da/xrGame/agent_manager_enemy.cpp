@@ -321,14 +321,6 @@ void CAgentManager::remove_old_danger_covers	()
 
 float CAgentManager::cover_danger		(CCoverPoint *cover) const
 {
-//	const CDangerCover	*danger = danger_cover(cover);
-//	if (!danger)
-//		return		(1.f);
-//
-//	if (Level().timeServer() > danger->m_level_time + DANGER_INTERVAL)
-//		return		(1.f);
-//	
-//	return			(float(Level().timeServer() - danger->m_level_time)/float(DANGER_INTERVAL));
 	float			result = 1;
 	xr_vector<CDangerCover>::const_iterator	I = m_danger_covers.begin();
 	xr_vector<CDangerCover>::const_iterator	E = m_danger_covers.end();
