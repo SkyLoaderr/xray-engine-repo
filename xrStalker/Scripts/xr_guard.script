@@ -31,6 +31,7 @@ class "evaluator_need_guard" (property_evaluator)
 function evaluator_need_guard:__init(storage) super ()
   	self.a = storage
 end
+
 function evaluator_need_guard:evaluate ()
   	local tt
 
@@ -53,6 +54,7 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
     self.state_moving = 4
 
 end
+
 function action_guard_activity:initialize()
 	--printf("_bp: action_guard_activity: initialize")
 	action_base.initialize(self)
@@ -69,6 +71,7 @@ function action_guard_activity:initialize()
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 	self:reset_scheme()
 end
+
 function action_guard_activity:reset_scheme()
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
 	self.path_main = self.a.path_main
@@ -98,7 +101,24 @@ function action_guard_activity:reset_scheme()
 	self.object:set_sight(look.danger, nil, 0)
 
 	self.state = self.state_moving
+
+	self.last_index = -1
+
+	local pos = self.object:position()
+	local ptr = patrol(self.path_active)
+        local num_points = ptr:count()
+        for i = 0, num_points - 1 do
+		if ptr:flag(i, 0) then
+			local distance = pos:distance_to(ptr:point(i))
+			if distance <= 1 then
+				printf("simulating callback")
+				self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+				break
+			end
+		end
+	end
 end	
+
 function action_guard_activity:waypoint_callback(obj, action_type, index)
     -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
     self.last_action_type = action_type
@@ -152,6 +172,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
         end
     end
 end
+
 -- Посмотреть в направлении указанной точки текущего маршрута
 function action_guard_activity:look_at_waypoint(pt)
     local way = patrol (self.object:patrol ())
@@ -175,6 +196,7 @@ function action_guard_activity:look_at_waypoint(pt)
     end
   end
 end
+
 function action_guard_activity:execute()
   --[[printf("_debug_guard [%s]: state [%d], animation_count [%d]",
     self.object:name(), self.state, self.object:animation_count())]]
