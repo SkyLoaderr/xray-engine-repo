@@ -5,7 +5,7 @@ local on_active = false
 function add_member (obj)
     if on_active == true then return end
     local ini = obj:spawn_ini ()
-    if ini == nil or ini:section_exist ("factory") == false then
+    if ini == nil or ini:section_exist ("zone_spawner") == false then
        return 
     end
     table.insert (members, obj.id)
