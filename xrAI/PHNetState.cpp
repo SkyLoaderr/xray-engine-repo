@@ -203,6 +203,7 @@ void SPHBonesData::net_Save(NET_Packet &P)
 
 void SPHBonesData::net_Load(NET_Packet &P)
 {
+	bones.clear();
 	bones_mask					=P.r_u64();
 	root_bone					=P.r_u16();
 	P.r_vec3					(min);
