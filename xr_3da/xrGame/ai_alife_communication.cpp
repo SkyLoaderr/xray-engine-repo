@@ -312,7 +312,7 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 			}
 			if (iSum1 > iBallance + iSum2)
 				S1			+= sprintf(S1," + $%d",iSum1 - iBallance - iSum2);
-			Msg				("%s",S);
+			Msg				("%s\n Can trade!",S);
 #endif
 			return			(true);
 		}
@@ -400,20 +400,20 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract 
 		{
 			string4096		S;
 			char			*S1 = S;
-			S1				+= sprintf(S1,"%s [%3d]: ",tpALifeHumanAbstract1->s_name_replace,tpALifeHumanAbstract1->m_dwMoney);
+			S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->s_name_replace,tpALifeHumanAbstract1->m_dwMoney);
 			for (int i=0, n=m_tpTrader1.size(); i<n; i++)
-				S1			+= sprintf(S1,"%4d",m_tpTrader1[i]->m_dwCost);
+				S1			+= sprintf(S1,"%6d",m_tpTrader1[i]->m_dwCost);
 			Msg				("%s",S);
 		}
 		{
 			string4096		S;
 			char			*S1 = S;
-			S1				+= sprintf(S1,"%s [%3d]: ",tpALifeHumanAbstract2->s_name_replace,tpALifeHumanAbstract2->m_dwMoney);
+			S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->s_name_replace,tpALifeHumanAbstract2->m_dwMoney);
 			for (int i=0, n=m_tpTrader2.size(); i<n; i++)
-				S1			+= sprintf(S1,"%4d",m_tpTrader2[i]->m_dwCost);
+				S1			+= sprintf(S1,"%6d",m_tpTrader2[i]->m_dwCost);
 			Msg				("%s",S);
 		}
-		Msg					("Ballance : %3d",iBallance);
+		Msg					("Ballance : %6d",iBallance);
 #endif
 
 		vfGenerateSums		(m_tpTrader1,m_tpSums1);
@@ -450,14 +450,14 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract 
 
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
-	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItemVector);
-	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItemVector);
-
 	m_tpItems1.clear	();
 	m_tpItems2.clear	();
-	
-	m_tpItems1.insert	(m_tpItems1.end(),m_tpItemVector.begin(),m_tpItemVector.begin() + tpALifeHumanAbstract1->children.size());
-	m_tpItems2.insert	(m_tpItems2.end(),m_tpItemVector.begin() + tpALifeHumanAbstract1->children.size(),m_tpItemVector.end());
+
+	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItems1);
+	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItems2);
+
+	m_tpItemVector		= m_tpItems1;
+	m_tpItemVector.insert(m_tpItemVector.end(),m_tpItems2.begin(),m_tpItems2.end());
 	
 	sort				(m_tpItems1.begin(),m_tpItems1.end());
 	sort				(m_tpItems2.begin(),m_tpItems2.end());
