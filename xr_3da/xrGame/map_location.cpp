@@ -170,7 +170,7 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 	if( map->MapName()==LevelName() ){
 		if(	m_flags.test(eHideInOffline) && 
 			ai().get_alife() &&
-			ai().alife().objects().object(m_objectID)->m_bOnline )
+			!ai().alife().objects().object(m_objectID)->m_bOnline )
 		return;
 
 		//update spot position

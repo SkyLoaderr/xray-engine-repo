@@ -12,7 +12,7 @@
 #include "script_game_object.h"
 #include "game_object_space.h"
 
-#define ENEMIES_RADIUS				30.f
+#define ENEMIES_RADIUS				20.f
 
 CActorCondition::CActorCondition(CActor *object) :
 	inherited	(object)
@@ -241,9 +241,9 @@ EActorSleep CActorCondition::CanSleepHere()
 	}*/
 
 	//проверить нет ли в радиусе врагов
-	if (!Level().autosave_manager().ready_for_autosave())
+/*	if (!Level().autosave_manager().ready_for_autosave())
 		return easEnemies;
-
+*/
 	object().setEnabled(false);
 	Level().ObjectSpace.GetNearest	(pos, ENEMIES_RADIUS); 
 	xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
