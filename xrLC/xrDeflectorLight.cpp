@@ -332,10 +332,10 @@ BOOL	compress_Zero			(b_texture& lm, DWORD rms)
 	}
 	return FALSE;
 }
-BOOL	compress_RMS			(b_texture& lm, DWORD rms)
+BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 {
 	// *** Try to bilinearly filter lightmap down and up
-	DWORD	w=0, h=0;
+	w=0, h=0;
 	if (lm.dwWidth>=2)	{
 		w = lm.dwWidth/2;
 		if (!rms_test(lm,w,lm.dwHeight,rms))	{
@@ -364,14 +364,6 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms)
 		if (0==w)	w = lm.dwWidth;
 		if (0==h)	h = lm.dwHeight;
 		Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
-		
-		LPDWORD		pScaled	= LPDWORD(malloc(w*h*4));
-		imf_Process	(pScaled,w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3);
-		_FREE		(lm.pSurface);	
-
-		lm.pSurface	= pScaled;
-		lm.dwWidth	= w;
-		lm.dwHeight	= h;
 		return TRUE;
 	}
 	return FALSE;
@@ -389,12 +381,6 @@ VOID CDeflector::Light()
 		DWORD size = lm.dwWidth*lm.dwHeight*sizeof(Fvector);
 		lm_rad = (Fvector*)malloc(size);
 		ZeroMemory	(lm_rad,size);
-	}
-
-	{
-		DWORD size = lm.dwWidth*lm.dwHeight*4;
-		lm.pSurface = (DWORD *)malloc(size);
-		ZeroMemory	(lm.pSurface,size);
 	}
 
 	// Filling it with new triangles
@@ -427,17 +413,37 @@ VOID CDeflector::Light()
 		}
 	}
 
+	// Calculate
+	{
+		DWORD size = lm.dwWidth*lm.dwHeight*4;
+		lm.pSurface = (DWORD *)malloc(size);
+		ZeroMemory	(lm.pSurface,size);
+	}
 	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
 	else						L_Direct	(hash);
-	LightsSelected.clear	();
 
 	// Expand LMap with borders
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
 	// Compression
-	const DWORD rms		= 4;
+	const	DWORD rms		= 4;
+	DWORD	w,h;
 	if (compress_Zero(lm,rms))	return;		// already with borders
-	else compress_RMS(lm,rms);
+	else if (compress_RMS(lm,rms,w,h))	
+	{
+		// Reacalculate lightmap at lower resolution
+		{
+			lm.dwWidth	= w;
+			lm.dwHeight	= h;
+			_FREE		(lm.pSurface);
+
+			DWORD size	= w*h*4;
+			lm.pSurface = (DWORD *)malloc(size);
+			ZeroMemory	(lm.pSurface,size);
+		}
+		if (g_params.m_bRadiosity)	L_Radiosity	(hash);
+		else						L_Direct	(hash);
+	}
 
 	// Expand with borders
 	b_texture		lm_old	= lm;
@@ -457,4 +463,7 @@ VOID CDeflector::Light()
 	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 	lm.dwWidth		= lm_old.dwWidth;
 	lm.dwHeight		= lm_old.dwHeight;
+
+	// Cleanup
+	LightsSelected.clear	();
 }
