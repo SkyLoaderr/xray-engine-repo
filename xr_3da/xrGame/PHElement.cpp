@@ -1315,8 +1315,8 @@ void CPHElement::CallBack1(CBoneInstance* B)
 	if(! bActive)return;
 	if(bActivating)
 	{
-		if(!dBodyIsEnabled(m_body))
-			dBodyEnable(m_body);
+		//if(!dBodyIsEnabled(m_body))
+		//	dBodyEnable(m_body);
 		if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
