@@ -32,7 +32,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
 	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
-
+	this.process_task_changing(self.object, info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
@@ -111,4 +111,49 @@ end
 
 function script_zone_init(obj)
 	obj:bind_object(xr_zones.zone_binder(obj))
+end
+
+
+function process_task_changing(actor, info)
+	if info == "tutorial_artefact_start" or
+	   info == "tutorial_artefact_gain" or
+	   info == "tutorial_artefact_done" or
+	   
+	   info == "tutorial_wounded_start" or
+	   info == "tutorial_wounded_help" or
+	   info == "tutorial_wounded_die" or
+	   
+	   info == "escape_artefact_start" or
+	   info == "escape_artefact_gain" or
+	   info == "escape_artefact_done" or
+	   
+	   info == "escape_stalker_meet" or
+	   info == "escape_stalker_give" or
+	   info == "escape_stalker_done" or
+
+	   info == "escape_blockpost_case" or
+	   info == "escape_blockpost_case_have" or
+	   info == "escape_blockpost_case_done" or
+
+	   info == "escape_dynamite_meet" or
+	   info == "escape_dynamite_gain" or
+	   info == "escape_dynamite_have" or
+	   info == "escape_dynamite_done" or
+
+	   info == "garbage_meetstalker_start" or
+	   info == "garbage_meet_stalker" or
+	   info == "garbage_meetstalker_start" or
+
+	   info == "agroprom_military_case" or
+	   info == "agroprom_military_case_have" or
+	   info == "agroprom_military_case_done" or
+
+	   info == "agroprom_gunslinger_band" or
+	   info == "agroprom_gunslinger_band_find" or
+	   info == "agroprom_gunslinger_band_done" or
+
+	   info == "agroprom_find_gunslinger_hide"
+	then
+		news_manager.send_task(actor, info)
+	end
 end
