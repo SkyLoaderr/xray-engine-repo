@@ -465,7 +465,8 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
 	ANIM_ITEM_MAP_IT  item_it = m_tAnims.find(a);
-	R_ASSERT(item_it != m_tAnims.end());
+#pragma todo("Dima to Jim : find out why compiler generate fatal error here")
+//	R_ASSERT(item_it != m_tAnims.end());
 
 	return item_it->second.pos_state;
 }
