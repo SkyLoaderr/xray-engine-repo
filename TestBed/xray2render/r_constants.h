@@ -23,7 +23,7 @@ struct	R_constant_load
 	u16						cls;		// element class
 };
 
-class	R_constant 
+struct	R_constant 
 {
 	string64				name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2
@@ -31,6 +31,10 @@ class	R_constant
 
 	R_constant_load			ps;
 	R_constant_load			vs;
+};
 
-	void					parse		();
+class	R_constant_table
+{
+private:
+
 };
