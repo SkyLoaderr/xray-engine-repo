@@ -205,9 +205,11 @@ CObject::SavedPosition CObject::ps_Element(DWORD ID)
 	return PositionStack[ID];
 }
 
-float CObject::OnVisible	()
+void CObject::OnVisible	()
 {
-	return 1.f;
+	::Render.set_Transform		(&clTransform);
+	::Render.set_LightLevel		(255);
+	::Render.add_leafs_Dynamic	(Visual());
 }
 
 void CObject::Sector_Detect	()

@@ -78,13 +78,7 @@ void CSector::Render(CFrustum &F)
 			{
 				FBasicVisual*	pV = O->Visual();
 				O->clTransform.transform_tiny(Tpos, pV->bv_Position);
-				if (F.testSphere_dirty(Tpos,pV->bv_Radius))
-				{
-					float LL					= O->OnVisible	(); 
-					::Render.set_Transform		(&(O->clTransform));
-					::Render.set_LightLevel		(iFloor(LL));
-					::Render.add_leafs_Dynamic	(pV);
-				}
+				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	O->OnVisible	();
 			}
 		}
 
