@@ -553,7 +553,7 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 		max_square			= right*down;
 		vertex_id			= (*I)->m_vertex_id;
 	}
-	return					(false);
+	return					(!!max_square);
 }
 
 IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 right, u32 down, u32 &group_id)
