@@ -44,7 +44,7 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	}
 
 	// Analyze game and perform apropriate CLIENT spawning
-	DWORD	spawn_flags				= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
+	u16	spawn_flags					= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
 	switch (GAME)
 	{
 	case GAME_SINGLE:
