@@ -26,6 +26,7 @@ function main ()
 		cond			(cond.time_end,200000)
     )
     
+--[
     action				(
 		stalker,
 		look			(look.fire_point,actor),
@@ -49,6 +50,7 @@ function main ()
 		object			(ak,object.deactivate),
 		cond			(cond.time_end,2000)
     )
+--]
     
     while stalker:action() do
 		wait			()
