@@ -87,6 +87,21 @@ void CTexture::Preload	()
 {
 	// Material
 	if (Device.Resources->m_description->line_exist("specification",*cName))	{
+//		if (strstr(*cName,"ston_stena"))	__asm int 3;
+		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
+		string256	bmode;
+		sscanf		(descr,"bump_mode[%[^]]], material[%f]",bmode,&m_material);
+		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==':'))
+		{
+			// bump-map specified
+			m_bumpmap		=	bmode+4;
+		}
+//		Msg	("mid[%f] : %s",m_material,*cName);
+	}
+	/*
+	// Material
+	if (Device.Resources->m_description->line_exist("specification",*cName))	{
+		if (strstr(*cName,"ston_stena"))	__asm int 3;
 		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
 		string256	bmode,bparam;	float mid;
 		sscanf		(descr,"bump_mode[%[^:]:%[^]]], material[%f]",bmode,bparam,&mid);
@@ -98,6 +113,7 @@ void CTexture::Preload	()
 		}
 		Msg	("mid[%f] : %s",m_material,*cName);
 	}
+	*/
 }
 
 void CTexture::Load		()
