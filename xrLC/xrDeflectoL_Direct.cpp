@@ -70,8 +70,8 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	
 	for (u32 V=0; V<lm.height; V++)	{
 		for (u32 U=0; U<lm.width; U++)	{
-			u32			Fcount	= 0;
-			base_color	C;
+			u32				Fcount	= 0;
+			base_color_c	C;
 			
 			try {
 				for (u32 J=0; J<Jcount; J++) 
@@ -113,10 +113,10 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 			if (Fcount) {
 				C.scale			(Fcount);
 				C.mul			(.5f);
-				lm.surface		[V*lm.width+U] = C;
+				lm.surface		[V*lm.width+U]._set(C);
 				lm.marker		[V*lm.width+U] = 255;
 			} else {
-				lm.surface		[V*lm.width+U] = C;	// 0-0-0-0-0
+				lm.surface		[V*lm.width+U]._set(C);	// 0-0-0-0-0
 				lm.marker		[V*lm.width+U] = 0;
 			}
 		}

@@ -110,8 +110,8 @@ public:
 
 	xr_vector<base_color>	color;
 
-	base_color				c_scale;
-	base_color				c_bias;
+	base_color_c			c_scale;
+	base_color_c			c_bias;
 public:
 	void					Load				(IReader& fs);
 	void					calc_lighting		();
