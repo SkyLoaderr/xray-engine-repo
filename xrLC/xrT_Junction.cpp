@@ -56,8 +56,8 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		vecJunctions.push_back	(rec);
 
 		// display
-		if (bWeld)	Msg	("ERROR. non-welded vertex    [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
-		else		Msg	("ERROR. t-junction at vertex [%3.1f,%3.1f,%3.1f]",			VPUSH(vTEST->P));
+		if (bWeld)	Msg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		else		Msg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
 	}
 }
 
