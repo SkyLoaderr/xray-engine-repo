@@ -1,0 +1,31 @@
+function main ()
+
+	printf ("call zmey_walker");
+
+	walker = get_level_object("m_stalker_walker")
+	wpn = get_level_object("wpn_walker")
+	actor = get_actor();
+	
+	wait(3000)
+	
+	walker:script (true, zmey_walker.script_name())
+	
+	--action (walker, move (move.standing, move.walk, move.line, patrol ("way0002")),
+	--		anim ("sidya_boltaet_ 0"), cond (cond.time_end, time_infinite))
+	action(walker,
+	       look(look.fire_point, actor),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, actor),
+	       --object(walker.wpn, object.fire1),
+	       cond(cond.time_end, time_infinite)
+	)
+
+	while walker:action() do
+		wait()
+	end
+
+	walker:script(false, zmey_walker.script_name())
+
+	printf ("exit zmey_walker");
+end
+
