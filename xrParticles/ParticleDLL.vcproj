@@ -115,6 +115,7 @@
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile=".\Debug/ParticleDLL.pch"
 				AssemblerListingLocation=".\Debug/"

@@ -174,6 +174,7 @@
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 				AssemblerOutput="0"

@@ -177,6 +177,7 @@
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
 				TreatWChar_tAsBuiltInType="FALSE"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 				AssemblerOutput="0"
