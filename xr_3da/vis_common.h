@@ -7,7 +7,6 @@ struct	vis_data
 	u32			frame;			// when it was tested, and accepted
 	u32			hom_frame;		// when to perform test - shedule
 	u32			hom_tested;		// when it was last time tested
-	BOOL		hom_result;		//
 
 	IC void		clear			()
 	{
@@ -17,6 +16,5 @@ struct	vis_data
 		frame			= 0;
 		hom_frame		= 0;
 		hom_tested		= 0;
-		hom_result		= TRUE;
 	}
 };

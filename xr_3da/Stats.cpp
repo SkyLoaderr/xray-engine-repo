@@ -130,7 +130,7 @@ void CStats::Show()
 		F.OutSkip	();
 		F.OutNext	("*** RENDER:  %2.2fms",RenderTOTAL.result);
 		F.OutNext	("R_CALC:      %2.2fms",RenderCALC.result);	
-		F.OutNext	("  HOM:       %2.2fms",RenderCALC_HOM.result);
+		F.OutNext	("  HOM:       %2.2fms, %d",RenderCALC_HOM.result,RenderCALC_HOM.count);
 		F.OutNext	("  Skeletons: %2.2fms, %d",Animation.result,Animation.count);
 		F.OutNext	("R_DUMP:      %2.2fms",RenderDUMP.result);	
 		F.OutNext	("  Skinning:  %2.2fms",RenderDUMP_SKIN.result);	
