@@ -277,7 +277,7 @@ void CRender::render_scenegraph	()
 						RCache.set_States					(Nstate->key);
 
 						mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
-						sort_tlist							(nrmTextures,nrmTexturesTemp,tex,true);
+						sort_tlist_nrm						(nrmTextures,nrmTexturesTemp,tex,true);
 						for (u32 tex_id=0; tex_id<nrmTextures.size(); tex_id++)
 						{
 							mapNormalTextures::TNode*	Ntex		= nrmTextures[tex_id];
