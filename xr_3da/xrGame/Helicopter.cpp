@@ -619,7 +619,8 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-/*
+	if(GetfHealth()<0.5f)
+		return;
 
 inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
 if(state() == CHelicopter::eDead ) return;
@@ -644,7 +645,7 @@ if(who==this)
 		Log("----Helicopter::Hit(). health=",h);
 		Log("----------------------------------------");
 	};
-*/	
+	
 	if (who){
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: {
