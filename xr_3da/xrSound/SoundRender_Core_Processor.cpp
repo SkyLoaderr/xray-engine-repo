@@ -100,10 +100,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 //.		
 		Listener.vVelocity.set				(0,0,0);
 
-		BOOL bMoved							= FALSE;		
         if (!Listener.vPosition.similar(P)){
 			Listener.vPosition.set			(P);
-            bMoved							= TRUE;
+            bListenerMoved					= TRUE;
         }
 		//last_pos							= P;
 		Listener.vOrientFront.set			(D);
@@ -114,8 +113,10 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
         
 // EAX        
 		if (psSoundFlags.test(ssFX)&&pExtensions){
-//.		if (bMoved)			
-            e_target						= *get_environment	(Listener.vPosition);
+        	if (bListenerMoved){
+	        	bListenerMoved				= FALSE;
+    	        e_target					= *get_environment	(Listener.vPosition);
+            }
             e_current.lerp					(e_current,e_target,dt);
 
             EAXLISTENERPROPERTIES eax_props;

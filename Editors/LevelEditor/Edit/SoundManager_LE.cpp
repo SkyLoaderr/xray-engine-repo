@@ -61,6 +61,7 @@ bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
 
         // get env name indices
         if (E->m_EnvInner==E->m_EnvOuter) continue;
+        if ((0==E->m_EnvInner.Length())||(0==E->m_EnvOuter.Length())) continue;
 
         int inner = -1;
         int outer = -1;
@@ -69,7 +70,7 @@ bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         	if ((-1==outer)&&(E->m_EnvOuter==*e_it)) outer = e_it-env_names.begin();
             if ((inner>-1)&&(outer>-1)) break;
         }
-        if ((-1==inner)||(-1==outer)) continue;
+
         if (-1==inner){ inner=env_names.size(); env_names.push_back(E->m_EnvInner);}
         if (-1==outer){ outer=env_names.size(); env_names.push_back(E->m_EnvOuter);}
         u32 idx = (inner<<16)|(outer);
@@ -79,8 +80,8 @@ bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         
         Fvector bv[DU_BOX_NUMVERTEX];
         for (int k=0; k<DU_BOX_NUMVERTEX; k++) M.transform_tiny(bv[k],du_box_vertices[k]);
-        for (k=0; k<DU_BOX_NUMFACES; k++)
-        	CP.add_face_packed_D(bv[du_box_faces[k*3+0]],bv[du_box_faces[k*3+1]],bv[du_box_faces[k*3+2]],idx);
+    	for (k=8; k<DU_BOX_NUMFACES; k++)
+			CP.add_face_packed_D(bv[du_box_faces[k*3+0]],bv[du_box_faces[k*3+1]],bv[du_box_faces[k*3+2]],idx);
     }
 
     if (env_names.empty()) return false;

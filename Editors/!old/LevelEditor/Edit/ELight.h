@@ -99,7 +99,7 @@ public:
     CLAItem*		m_pAnimRef;
 
     // spot light
-    AnsiString		m_SpotAttTex;
+    AnsiString		m_FalloffTex;
 
     // controller
     u32				m_LControl;

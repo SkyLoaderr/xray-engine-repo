@@ -21,7 +21,7 @@
 //----------------------------------------------------
 
 ESoundEnvironment::ESoundEnvironment(LPVOID data, LPCSTR name)
-	:CCustomObject(data,name)
+	:CEditShape(data,name)
 {
 	Construct(data);
 }
@@ -30,41 +30,16 @@ void ESoundEnvironment::Construct(LPVOID data)
 {
 	ClassID					= OBJCLASS_SOUND_ENV;
     
-    m_Shape					= xr_new<CEditShape>((LPVOID)NULL,"internal");
-	m_Shape->add_box		(Fidentity);
-	m_Shape->SetDrawColor	(0x205050FF, 0xFF202020);
+	add_box					(Fidentity);
+	SetDrawColor			(0x205050FF, 0xFF202020);
     m_EnvInner				= "";
     m_EnvOuter				= "";
 }
 
 ESoundEnvironment::~ESoundEnvironment()
 {
-    xr_delete				(m_Shape);
 }
 
-//----------------------------------------------------
-
-bool ESoundEnvironment::GetBox( Fbox& box )
-{
-	return m_Shape->GetBox(box);
-}
-
-void ESoundEnvironment::Render(int priority, bool strictB2F)
-{
-	m_Shape->Select			(Selected());
-    m_Shape->Lock			(Locked());
-    m_Shape->Render			(priority,strictB2F);
-}
-
-bool ESoundEnvironment::FrustumPick(const CFrustum& frustum)
-{
-    return m_Shape->FrustumPick(frustum);
-}
-
-bool ESoundEnvironment::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
-{
-    return m_Shape->RayPick(distance, start, direction, pinf);
-}
 //----------------------------------------------------
 
 bool ESoundEnvironment::Load(IReader& F)
@@ -77,12 +52,6 @@ bool ESoundEnvironment::Load(IReader& F)
         return false;
     }
 	inherited::Load			(F);
-
-    IReader* OBJ			= F.open_chunk(SOUND_CHUNK_ENV_SHAPE);
-    if (OBJ){
-    	m_Shape->Load		(*OBJ);
-        OBJ->close			();
-    }
 
     R_ASSERT(F.find_chunk(SOUND_CHUNK_ENV_REFS));
     F.r_stringZ				(m_EnvInner);
@@ -99,10 +68,6 @@ void ESoundEnvironment::Save(IWriter& F)
 	F.w_u16			(SOUND_ENV_VERSION);
 	F.close_chunk	();
 
-    F.open_chunk	(SOUND_CHUNK_ENV_SHAPE);
-    m_Shape->Save	(F);
-    F.close_chunk	();
-    
     F.open_chunk	(SOUND_CHUNK_ENV_REFS);
     F.w_stringZ		(m_EnvInner.c_str());
     F.w_stringZ		(m_EnvOuter.c_str());
@@ -118,10 +83,11 @@ void __fastcall ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
 
 void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 {
+	inherited::FillProp			(pref, values);
 	PropValue* P;
-    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Evironment Inner"),	&m_EnvInner, smSoundEnv);
+    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Environment Inner"),	&m_EnvInner, smSoundEnv);
     P->OnChangeEvent			= OnChangeEnvs;
-    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Evironment Outer"),	&m_EnvOuter, smSoundEnv);
+    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Environment Outer"),	&m_EnvOuter, smSoundEnv);
     P->OnChangeEvent			= OnChangeEnvs;
 }
 //----------------------------------------------------
@@ -131,21 +97,11 @@ bool ESoundEnvironment::GetSummaryInfo(SSceneSummary* inf)
 	return true;
 }
 
-void ESoundEnvironment::OnFrame()
-{
-	m_Shape->OnFrame();
-}
-
-void ESoundEnvironment::Scale(Fvector& amount)
-{
-	m_Shape->Scale(amount);
-}
-
 void ESoundEnvironment::get_box(Fmatrix& m)
 {
-	CSE_Shape::shape_def& shape = m_Shape->get_shape(0);
+	CSE_Shape::shape_def& shape = get_shape(0);
     R_ASSERT(shape.type==CSE_Shape::cfBox);
-    m.mul				(m_Shape->_Transform(),shape.data.box);
+    m.mul				(_Transform(),shape.data.box);
 }
 
 void ESoundEnvironment::OnSceneUpdate()

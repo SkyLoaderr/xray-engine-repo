@@ -42,7 +42,7 @@ CLevelMain::~CLevelMain()
     xr_delete(m_Cursor);
 }
 
-bool CLevelMain::CommandExt(int _Command, int p1, int p2)
+bool CLevelMain::Command(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	switch (_Command){
@@ -579,8 +579,7 @@ bool CLevelMain::CommandExt(int _Command, int p1, int p2)
     	SndLib		= xr_new<CLevelSoundManager>();
     	break;
     default:
-		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
-        bRes = false;
+    	return inherited::Command(_Command, p1, p2);
     }
     return 	bRes;
 }
@@ -593,9 +592,12 @@ char* CLevelMain::GetCaption()
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 
-bool __fastcall CLevelMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CLevelMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyShortCut(Key,Shift)) return true;
+
 	bool bExec = false;
+
     if (Shift.Contains(ssCtrl)){
         if (Shift.Contains(ssShift)){
             if (Key==VK_F5)    			COMMAND0(COMMAND_MAKE_GAME)
@@ -637,8 +639,9 @@ bool __fastcall CLevelMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall CLevelMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CLevelMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
         if (Shift.Contains(ssShift)){

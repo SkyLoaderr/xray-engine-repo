@@ -197,7 +197,7 @@ void CEditShape::Detach()
 
 bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
-    bool bPick			= FALSE;
+    float dist					= distance;
 
 	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
@@ -208,7 +208,8 @@ bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& d
             M.transform_dir		(D,direction);
             FITransform.transform_tiny(S,start);
             Fsphere&	T		= it->data.sphere;
-            if (T.intersect(S,D,distance)) bPick=TRUE;
+            T.intersect			(S,D,dist);
+            if (dist<=0.f)		dist = distance;
 		}break;
 		case cfBox:{
         	Fbox box;
@@ -220,18 +221,19 @@ bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& d
 		    FITransform.transform_dir	(D,direction);
 		    B.transform_tiny			(S1,S);
 		    B.transform_dir				(D1,D);
-            if (box.Pick2		(S1,D1,P)){
-	            P.sub			(S);
-    	        float dist		= P.magnitude();
-                if (dist<distance){
-                	distance	= dist;
-                    bPick		= true;
-                }
+            Fbox::ERP_Result	rp_res 	= box.Pick2(S1,D1,P);
+            if (rp_res==Fbox::rpOriginOutside){
+                P.sub			(S);
+                dist			= P.magnitude();
             }
 		}break;
 		}
     }
-	return bPick;
+    if (dist<distance){
+        distance	= dist;
+        return 		true;
+    }
+	return false;
 }
 
 bool CEditShape::FrustumPick(const CFrustum& frustum)

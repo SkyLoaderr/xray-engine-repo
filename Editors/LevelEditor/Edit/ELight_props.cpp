@@ -200,19 +200,21 @@ void CLight::FillSpotR1Prop(LPCSTR pref, PropItemVec& items)
 
 	FillAttProp				(pref,items);
 	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R1\\Texture"),		&m_SpotAttTex, 	smTexture);
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R1\\Texture"),		&m_FalloffTex, 	smTexture);
 }
 //----------------------------------------------------
 
 void CLight::FillPointR2Prop(LPCSTR pref, PropItemVec& items)
 {
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_FalloffTex, 	smTexture);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
 }
 //----------------------------------------------------
 
 void CLight::FillSpotR2Prop(LPCSTR pref, PropItemVec& items)
 {
 	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R2\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_SpotAttTex, 	smTexture);
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_FalloffTex, 	smTexture);
     PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
 }
 //----------------------------------------------------

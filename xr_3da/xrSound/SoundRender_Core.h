@@ -21,6 +21,8 @@ private:
 		float			fRolloffFactor;
 		float			fDopplerFactor;
 	};
+    BOOL								bListenerMoved;
+
 	CSoundRender_Environment			e_current;
 	CSoundRender_Environment			e_target;
 public:

@@ -18,7 +18,7 @@ enum{
     LIGHT_CHUNK_USE_IN_D3D		= 0xB436,
     LIGHT_CHUNK_ROTATE			= 0xB437,
     LIGHT_CHUNK_ANIMREF			= 0xB438,
-    LIGHT_CHUNK_SPOT_TEXTURE	= 0xB439,
+    LIGHT_CHUNK_FALLOFF_TEXTURE	= 0xB439,
     LIGHT_CHUNK_FUZZY_DATA		= 0xB440,
     LIGHT_CHUNK_LCONTROL		= 0xB441,
     LIGHT_CHUNK_PARAMS     		= 0xB442,
@@ -87,8 +87,8 @@ bool CLight::Load(IReader& F)
         if (!m_pAnimRef) ELog.Msg(mtError, "Can't find light animation: %s",buf);
     }
 
-    if (F.find_chunk(LIGHT_CHUNK_SPOT_TEXTURE)){
-    	F.r_stringZ(buf);	m_SpotAttTex = buf;
+    if (F.find_chunk(LIGHT_CHUNK_FALLOFF_TEXTURE)){
+    	F.r_stringZ(buf);	m_FalloffTex = buf;
     }
 
     if (F.find_chunk(LIGHT_CHUNK_FUZZY_DATA)){
@@ -135,9 +135,9 @@ void CLight::Save(IWriter& F)
 		F.close_chunk();
     }
 
-    if (!m_SpotAttTex.IsEmpty()){
-	    F.open_chunk(LIGHT_CHUNK_SPOT_TEXTURE);
-    	F.w_stringZ	(m_SpotAttTex.c_str());
+    if (!m_FalloffTex.IsEmpty()){
+	    F.open_chunk(LIGHT_CHUNK_FALLOFF_TEXTURE);
+    	F.w_stringZ	(m_FalloffTex.c_str());
 	    F.close_chunk();
     }
 

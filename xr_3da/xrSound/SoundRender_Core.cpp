@@ -40,6 +40,7 @@ CSoundRender_Core::CSoundRender_Core	()
 	s_emitters_u				= 0;
     e_current.set_identity		();
     e_target.set_identity		();
+    bListenerMoved				= FALSE;
 }
 
 CSoundRender_Core::~CSoundRender_Core()
@@ -280,8 +281,8 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	for (u32 it=0; it<H.facecount; it++)
 	{
 		CDB::TRI*	T		= tris+it;
-		u16		id_front	= (u16)(T->dummy&0x0000ffff)>>0;		//	front face
-		u16		id_back		= (u16)(T->dummy&0xffff0000)>>16;	//	back face
+		u16		id_front	= (u16)((T->dummy&0x0000ffff)>>0);		//	front face
+		u16		id_back		= (u16)((T->dummy&0xffff0000)>>16);		//	back face
 		R_ASSERT			(id_front<ids.size());
 		R_ASSERT			(id_back<ids.size());
 		T->dummy			= u32(ids[id_back]<<16) | u32(ids[id_front]);
@@ -388,10 +389,10 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 				float	dot				= dir.dotproduct(tri_norm);
 				if (dot<0)
 				{
-					u16		id_front	= (u16)(T->dummy&0x0000ffff)>>0;		//	front face
+					u16		id_front	= (u16)((T->dummy&0x0000ffff)>>0);		//	front face
 					return	s_environment->Get(id_front);
 				} else {
-					u16		id_back		= (u16)(T->dummy&0xffff0000)>>16;	//	back face
+					u16		id_back		= (u16)((T->dummy&0xffff0000)>>16);	//	back face
 					return	s_environment->Get(id_back);
 				}
 			} else
@@ -409,6 +410,7 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 
 void						CSoundRender_Core::env_apply		()
 {
+/*
 	// Force all sounds to change their environment
 	// (set their positions to signal changes in environment)
 	for (u32 it=0; it<s_emitters.size(); it++)
@@ -417,6 +419,8 @@ void						CSoundRender_Core::env_apply		()
 		const CSound_params*	pParams		= pEmitter->get_params	();
 		pEmitter->set_position	(pParams->position);
 	}
+*/
+    bListenerMoved			= TRUE;
 }
 
 #ifdef _EDITOR
