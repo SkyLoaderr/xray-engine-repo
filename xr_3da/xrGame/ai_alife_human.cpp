@@ -585,6 +585,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 
 	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
+#pragma todo("Dima to Dima : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result")
 	u64				l_qwInventoryBitMask = 0;
 	ITEM_P_IT		I = m_tpTempItemBuffer.begin();
 	ITEM_P_IT		E = m_tpTempItemBuffer.end();
