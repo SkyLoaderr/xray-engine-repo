@@ -23,7 +23,7 @@ CUICursor::CUICursor()
 	vDelta.set		(0,0);
 
 	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	hShader.create	("hud\\cursor","ui\\ui_cursor");
+	hShader.create	("hud\\cursor","ui\\ui_ani_cursor");
 
 }
 //--------------------------------------------------------------------
@@ -52,7 +52,7 @@ void CUICursor::Render	()
 	// actual rendering
 	u32			vOffset;
 	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,hGeom.stride(),vOffset);
-	float			size= 2 * Device.dwWidth * 0.015f;
+	float			size= 64.0f;//2 * Device.dwWidth * 0.015f;
 	
 	// Convert to screen coords
 	float cx					= (vPos.x+1)*(Device.dwWidth/2);
