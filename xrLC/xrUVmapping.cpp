@@ -65,7 +65,7 @@ void CBuild::BuildUVmap()
 				}
 			}
 			if (msF) {
-				g_deflectors.push_back(new CDeflector);
+				g_deflectors.push_back(xr_new<CDeflector>());
 				
 				// Start recursion from this face
 				Deflector->OA_SetNormal(msF->N);

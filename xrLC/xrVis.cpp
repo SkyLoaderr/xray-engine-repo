@@ -37,7 +37,7 @@ DWORD PlaceData(vector<vecW> &C, vecW &P)
 		goto exit;
 	}
 
-	// If we get here - need to register new set of data
+	// If we get here - need to register _new set of data
 	C.push_back(P);
 
 exit:
@@ -150,7 +150,7 @@ void CBuild::BuildRelevance(CFS_Base &fs)
 	CVirtualFileStream*			pvs_map_stream=0;
 	if (g_params.m_bTestOcclusion)
 	{
-		pvs_map_stream  = new CVirtualFileStream("pvs.temp");
+		pvs_map_stream  = xr_new<CVirtualFileStream> ("pvs.temp");
 		g_pvs_map_vm	= (int *)pvs_map_stream->Pointer();
 	}
  

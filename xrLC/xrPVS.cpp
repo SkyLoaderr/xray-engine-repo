@@ -50,7 +50,7 @@ int	CompressSelected()
 		return entry;
 	}
 
-	// If we get here - need to register new set of data
+	// If we get here - need to register _new set of data
 	DWORD entry = g_pvs.size();
 	g_pvs.push_back(g_selected);
 	g_compress_tree.insert(make_pair(sz,entry));

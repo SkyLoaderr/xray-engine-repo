@@ -60,7 +60,7 @@ void CBuild::Light()
 	CThreadManager	threads;
 	const	DWORD	thNUM	= 3;
 	DWORD	dwTimeStart		= timeGetTime();
-	for (int L=0; L<thNUM; L++)	threads.start(new CLMThread(L));
+	for (int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 	threads.wait	(500);
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 }
@@ -167,8 +167,8 @@ public:
 #define NUM_THREADS	12
 void CBuild::LightVertex()
 {
-	VL_faces				= new vecFace();
-	g_trans					= new mapVert();
+	VL_faces				= xr_new<vecFace>	();
+	g_trans					= xr_new<mapVert>	();
 
 	// Select faces
 	Status					("Selecting...");
@@ -191,7 +191,7 @@ void CBuild::LightVertex()
 	DWORD	stride			= VL_faces->size()/NUM_THREADS;
 	DWORD	last			= VL_faces->size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		Threads.start(new CVertexLightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 

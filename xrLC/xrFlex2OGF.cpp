@@ -20,7 +20,7 @@ void CBuild::Flex2OGF()
 		
 		DWORD MODEL_ID		= it-g_XSplit.begin();
 		
-		OGF*		pOGF	= new OGF;
+		OGF*		pOGF	= xr_new<OGF> ();
 		Face*		F		= *((*it)->begin());			// first face
 		b_material*	M		= &(materials[F->dwMaterial]);	// and it's material
 		R_ASSERT	(F && M);

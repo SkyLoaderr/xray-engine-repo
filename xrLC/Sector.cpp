@@ -59,7 +59,7 @@ void CSector::BuildHierrarhy()
 			if (g_tree[I]->bConnected)		 continue;
 			if (g_tree[I]->Sector != SelfID) continue;
 
-			OGF_Node* pNode					= new OGF_Node(iLevel,WORD(SelfID));
+			OGF_Node* pNode					= xr_new<OGF_Node>(iLevel,WORD(SelfID));
 			pNode->AddChield				(I);
 
 			// Find best object to connect with

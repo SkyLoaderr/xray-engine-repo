@@ -32,7 +32,7 @@
 #define IDC_PHASE_TIME                  1014
 #define IDC_PROGRESS1                   1015
 
-// Next default values for new objects
+// Next default values for _new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS

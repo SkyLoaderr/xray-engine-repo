@@ -144,7 +144,7 @@ void CBuild::xrPhase_MergeLM()
 			// Startup
 			Status		("Selection 5...");
 			_InitSurface			();
-			CLightmap*	lmap		= new CLightmap;
+			CLightmap*	lmap		= xr_new<CLightmap> ();
 			g_lightmaps.push_back	(lmap);
 
 			// Process 

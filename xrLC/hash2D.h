@@ -28,8 +28,8 @@ public:
 		for (DWORD y=0; y<s_Y; y++)
 			for (DWORD x=0; x<s_Y; x++)
 			{
-				table[y][x] = new vector<T> ();
-				table[y][x]->reserve		(apx);
+				table[y][x] = xr_new<vector<T> >	();
+				table[y][x]->reserve				(apx);
 			}
 	};
 	void		add			(Fbox2& R, T& value)

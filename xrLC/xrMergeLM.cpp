@@ -214,7 +214,7 @@ void CBuild::MergeLM()
 			if (SEL.empty()) 
 			{
 				// No deflectors found to merge
-				// Simply transfer base deflector to new list
+				// Simply transfer base deflector to _new list
 				deflNew.push_back(Deflector);
 				g_deflectors.erase(g_deflectors.begin());
 			} else {
@@ -257,7 +257,7 @@ void CBuild::MergeLM()
 				
 				//  Analyze resuls
 				Msg("%3d / %3d - [%d,%d]",best.size(),selected.size(),brect.SizeX(),brect.SizeY());
-				CDeflector*	pDEFL = new CDeflector;
+				CDeflector*	pDEFL = xr_new<CDeflector>();
 				pDEFL->lm.bHasAlpha = FALSE;
 				pDEFL->lm.dwWidth   = lmap_size;
 				pDEFL->lm.dwHeight  = lmap_size;

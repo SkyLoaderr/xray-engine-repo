@@ -458,7 +458,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			Msg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-pBuild->L_layers.begin());
 		}
 
-		// Register new layer
+		// Register _new layer
 		layers.push_back	(Layer());
 		Layer&	layer_data	= layers.back();
 		layer_data.base_id	= layer - pBuild->L_layers.begin();
