@@ -16,6 +16,7 @@ void CAI_Biting::vfSaveEnemy()
 	m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
 	m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
 	m_dwLostEnemyTime		= Level().timeServer();
+	m_dwSeenEnemyLastTime	= m_dwLostEnemyTime;
 	m_tMySavedPosition		= vPosition;
 	m_dwMyNodeID			= AI_NodeID;
 	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
@@ -96,7 +97,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 
-/*
+
 	// Play hit-sound
 	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
 	
@@ -109,13 +110,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	}
 	
 	if (g_Health() - amount <= 0) {
-		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
-			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 	}
-*/
-
-
 }
 
 int	 CAI_Biting::ifFindHurtIndex(CEntity *tpEntity)
@@ -194,3 +189,4 @@ void CAI_Biting::SelectCorp(SEnemySelected& S)
 		}
 	}
 }
+

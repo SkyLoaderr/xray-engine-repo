@@ -32,9 +32,14 @@ namespace AI_Biting {
 		"run_ls_",
 		"run_rs_",
 		"attack_",
+		"attack2_",
+		"attack_ls_",
 		"eat_",
 		"damage_",
 		"scared_",
+		"die_",		
+		"lie_down_",
+		"stand_up_",
 		0
 	};
 };
@@ -42,22 +47,25 @@ namespace AI_Biting {
 static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
+	
 	tpBiting->m_tpCurrentGlobalAnimation = 0;
-//	tpBiting->AnimEx.ChangeAnimation();
+	if (tpBiting->_CA.Playing)tpBiting->_CA.Finished = true;
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	vfSetAnimation(true);
-	
-	if (!m_tpCurrentGlobalAnimation) {
-		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI((int)m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
+	if (bShowDeath)	{
+		m_tpCurrentGlobalAnimation = m_tAnims.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnims.A[ePostureStand].A[eActionDie].A.size())];
 		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-//		m_tpCurrentGlobalAnimation = m_tAnims.A[AnimEx.CurState.m_tPostureAnim].
-//											  A[AnimEx.CurState.m_tActionAnim].
-//											  A[::Random.randI((s32) m_tAnims.A[AnimEx.CurState.m_tPostureAnim].A[AnimEx.CurState.m_tActionAnim].A.size())];
-//		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		bShowDeath  = false;
+		return;
 	}
+	
+	if (g_Alive())
+		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
+			m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI((int)m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
+			PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		}
 
 }
 
@@ -92,9 +100,16 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 	else if ( m_tMovementType == eMovementTypeStand &&  
 		m_tStateType == eStateTypeNormal &&  
 		m_tMovementDir == eMovementDirectionLeft &&
-		m_tActionType == eActionTypeTurn)
+		m_tActionType == eActionTypeTurn) 
 
 		m_tActionAnim = eActionIdleTurnLeft;		// поворот влево на месте
+
+	else if ( m_tMovementType == eMovementTypeStand &&  
+		m_tStateType == eStateTypeDanger &&  
+		m_tMovementDir == eMovementDirectionLeft &&
+		m_tActionType == eActionTypeTurn) 
+
+		m_tActionAnim = eActionAttackTurnLeft;		// поворот влево на месте во время аттаки
 
 	else if (m_tMovementType == eMovementTypeWalk && 
 	//	m_tStateType == eStateTypeNormal &&  
@@ -126,11 +141,18 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 
 		m_tActionAnim = eActionAttack;				// аттаковать
 
+	else if (m_tMovementType == eMovementTypeStand && 
+		m_tActionType == eActionTypeAttack &&
+		m_tStateType == eStateTypeNormal) 
+
+		m_tActionAnim = eActionAttack2;				// аттаковать крысу
+
 	else if (m_tMovementType == eMovementTypeRun &&   
 		m_tMovementDir == eMovementDirectionLeft &&
 		m_tActionType == eActionTypeTurn ) 
 
 		m_tActionAnim = eActionRunTurnLeft;			// поворот на бегу влево
+
 
 	else if (m_tMovementType == eMovementTypeRun &&   
 		m_tMovementDir == eMovementDirectionRight &&
@@ -158,13 +180,40 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionType == eActionTypeEat ) 
 
 		m_tActionAnim = eActionEat;			// обед
+	else if (m_tMovementType == eMovementTypeStand &&   
+		m_tMovementDir == eMovementDirectionNone &&
+		m_tStateType == eStateTypeNormal &&
+		m_tActionType == eActionTypeLieDown ) 
 
-	
-	if (m_tPostureAnim == ePostureLie && m_tActionAnim != eActionEat) {
-		m_tPostureAnim = ePostureStand;
-	}
+		m_tActionAnim = eActionLieDown;			// лечь
+	else if (m_tMovementType == eMovementTypeStand &&   
+		m_tMovementDir == eMovementDirectionNone &&
+		m_tStateType == eStateTypeNormal &&
+		m_tActionType == eActionTypeLie ) 
 
-	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange)
+		m_tActionAnim = eActionIdle;			// лежать
+
+
+	if (_CA.Started) {
+		m_tPostureAnim = _CA.Posture;
+		m_tActionAnim = _CA.Action;
+		_CA.Playing = true;
+		_CA.Started = false;
+		_CA.Finished = false;	
 		FORCE_ANIMATION_SELECT();
+	}
+	if (_CA.Finished) {
+		_CA.Playing = false;
+	}
+	if (_CA.Playing) {
+		return;
+	}
+	
+	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange) {
+//		if (m_dwAnimLastSetTime + m_dwAnimFrameDelay <= m_dwCurrentUpdate) {
+//			m_dwAnimLastSetTime = m_dwCurrentUpdate; 
+	
+		FORCE_ANIMATION_SELECT();
+	}
 }
 

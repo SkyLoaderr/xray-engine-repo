@@ -15,11 +15,37 @@
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
-public:
 	typedef struct tagSHurt {
 		CEntity *tpEntity;
 		u32	dwTime;
 	} SHurt;
+
+	enum ESoundCcount {
+		SND_HIT_COUNT=1,
+		SND_DIE_COUNT=1,
+		SND_ATTACK_COUNT=1,
+		SND_VOICE_COUNT=2,
+	};
+
+	typedef struct tagCriticalAnimation {
+		bool Playing;
+		bool Started;
+		bool Finished;
+		AI_Biting::EActionAnim		Action;
+		AI_Biting::EPostureAnim		Posture;
+
+		void Init() {
+			Playing = Started = Finished = false;
+		}
+		void Set(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a) {
+			Posture = p; Action = a;
+			Started = true;
+		}
+
+		bool Active() {return (Playing || Started);}
+	}_TCA;
+
+public:
 
 	typedef	CCustomMonster inherited;
 
@@ -54,13 +80,16 @@ private:
 			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
 			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode);
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 			void			vfChooseNextGraphPoint			();
 			void			vfSaveEnemy						();
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			void			vfUpdateParameters				();
 			void			SelectEnemy						(SEnemySelected& S);
 			float			EnemyHeuristics					(CEntity* E);
+			// построение пути и установка параметров скорости
+			// tpPoint - куда смотреть при движении
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false, bool bSelectorPath = false);
 			void			vfSetMotionActionParams			(AI_Biting::EBodyState, AI_Biting::EMovementType, AI_Biting::EMovementDir, AI_Biting::EStateType, AI_Biting::EActionType);
 			void			vfSetAnimation					(bool bForceChange = false);
 
@@ -92,11 +121,18 @@ private:
 public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
+	virtual	void			feel_touch_new					(CObject* O);
+
 	virtual objQualifier*	GetQualifier					();
 
 
 
 	CAnim					AnimEx;
+	bool					m_bActionFinished;
+	bool					bPlayDeath;
+	bool					bStartPlayDeath;
+	
+	_TCA					_CA;
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
@@ -162,16 +198,9 @@ private:
 	u32							m_dwPathTypeRandomFactor;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
-
-	
-	// построение пути и установка параметров скорости
-	// tpPoint - куда смотреть при движении
-	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false);
-	
-	
-	// Animation Parameters
-	AI_Biting::EActionAnim		m_tActionAnim;
-	AI_Biting::EPostureAnim		m_tPostureAnim;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
+	u32							m_dwAnimFrameDelay;
+	u32							m_dwAnimLastSetTime;
 
 	//////////////////////////////////////////////////////////////////////////
 	// FSM
@@ -221,6 +250,36 @@ private:
 	void					SetText();
 	virtual void			UpdateCL();
 
-	bool IsLeftSide(const Fvector &Position);
-	bool IsLeftSide(float current_yaw,float target_yaw);
+	bool					IsLeftSide(const Fvector &Position);
+	bool					IsLeftSide(float current_yaw,float target_yaw);
+	bool					bTurning;
+
+	
+	// SOUNDS
+	sound					m_tpaSoundHit[SND_HIT_COUNT];
+	sound					m_tpaSoundDie[SND_DIE_COUNT];
+	sound					m_tpaSoundAttack[SND_ATTACK_COUNT];
+	sound					m_tpaSoundVoice[SND_VOICE_COUNT];
+	sound*					m_tpSoundBeingPlayed;
+	u32						m_dwLastSoundRefresh;
+	float					m_fMinVoiceIinterval;
+	float					m_fMaxVoiceIinterval;
+	float					m_fVoiceRefreshRate;
+	u32						m_dwLastVoiceTalk;
+
+	void					vfLoadSounds();
+	bool					bShowDeath;
+
+
+	u32						m_dwLastTimeEat;
+	u32						m_dwEatInterval;
+
+	// Animation Parameters
+	AI_Biting::EActionAnim		m_tActionAnim;
+	AI_Biting::EPostureAnim		m_tPostureAnim;
+	
+	u32						m_dwLieIndex;
+	
+	u32						m_dwPointCheckLastTime;
+	u32						m_dwPointCheckInterval;
 };

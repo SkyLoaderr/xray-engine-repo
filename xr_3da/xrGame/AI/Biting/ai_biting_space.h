@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_biting_space.h
 //	Created 	: 26.05.2003
 //  Modified 	: 26.05.2003
@@ -41,6 +41,7 @@ namespace AI_Biting {
 		eStateTypeDanger = 0,
 		eStateTypeNormal,
 		eStateTypePanic,
+		eStateTypeDamaged,
 	};
 
 	enum EMovementDir {
@@ -57,7 +58,11 @@ namespace AI_Biting {
 		eActionTypeTurn,
 		eActionTypeWalk,
 		eActionTypeAttack,
+		eActionTypeAttackTurning,
 		eActionTypeEat,
+		eActionTypeLieDown,
+		eActionTypeStandUp,
+		eActionTypeLie,
 	};
 
 	// Paths
@@ -92,9 +97,14 @@ namespace AI_Biting {
 		eActionRunTurnLeft,
 		eActionRunTurnRight,
 		eActionAttack,
+		eActionAttack2,
+		eActionAttackTurnLeft,
 		eActionEat,
 		eActionDamage,
-		eActionScared
+		eActionScared,
+		eActionDie,
+		eActionLieDown,
+		eActionStandUp,
 	};
 
 	// Sound
@@ -113,6 +123,7 @@ namespace AI_Biting {
 		eActionStateWatch,
 		eActionStateWatchGo,
 		eActionStateWatchLook,
+		eActionStateLie,
 	};
 
 };

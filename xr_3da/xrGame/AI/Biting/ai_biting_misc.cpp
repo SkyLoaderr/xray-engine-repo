@@ -21,7 +21,8 @@ const float tempRunFactor = 5.0f;
 const float tempRunFreeFactor = 5.0f;
 const float tempPanicFactor = 5.0f;
 
-const float min_angle = PI_DIV_6;
+const float min_angle = PI_DIV_4;
+const float min_turning_angle = PI_DIV_6;
 
 // исправление несоответствия позиции узлу 
 void CAI_Biting::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
@@ -42,21 +43,31 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 }
 
 // построение пути и установка параметров скорости 
-void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback)
+void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
 {
-	bool bPathBuilt;
-	bool bNeedToTurnInRun;
-	bool bNeedToTurnInAttack;
-	
-	m_fCurSpeed				= 1.0f;	
-	
-	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
 
+	//bool bMoveLeft = false;
+	bool bPathBuilt = false;
+	
+	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode, bSelectorPath);
 	bPathBuilt = AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart);
 	
+	bool caActive = _CA.Active();
+	if (caActive) {
+		r_torso_speed			= 0;		// угловая скорость
+		m_fCurSpeed				= 0.0f;			// скорость движения
 
-	// скорость поворота тела
-	r_torso_speed	= PI_MUL_2;
+		return;
+	}
+	if (!caActive && (m_tActionAnim == eActionIdle) && (m_tPostureAnim == ePostureLie) && (m_tActionType!=eActionTypeLie)) {
+		_CA.Set(ePostureLie,eActionStandUp);
+	}
+
+
+	// инициализация скоростей
+	r_torso_speed			= PI_DIV_2;		// угловая скорость
+	m_fCurSpeed				= 1.0f;			// скорость движения
+
 
 	// если путь выбран
 	if (bPathBuilt) {
@@ -113,57 +124,60 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 			default : m_fCurSpeed = 0.f;
 		} // switch movement
 	
-		(moveback) ? SetReversedDirectionLook() : SetDirectionLook();
+		if (!tpPoint) {
+			(moveback) ? SetReversedDirectionLook() : SetDirectionLook();
+		}
 	
 	} // if
 	else {		// если пути нет
-		m_tMovementType = eMovementTypeStand;
 		m_fCurSpeed		= 0.f;
-	}
 
-	
-
-/*	
-	
-	// стоять, если путь не выбран
-	if (!bPathBuilt) {
-		
-		if (m_tActionType != eActionTypeAttack)
+		if (m_tActionType != eActionTypeAttack && m_tActionType != eActionTypeLie) 
 			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
-				eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
-
-*/
-
-	// смотреть в точку 
-	if (tpPoint) {
-		Fvector tTemp;
-		Fvector tTemp2;
-
-		clCenter(tTemp2);
-		//tTemp2.y += 2.f;
-			
-		tTemp.sub	(*tpPoint,tTemp2);
-		tTemp.getHP	(r_torso_target.yaw,r_torso_target.pitch);
-		r_torso_target.yaw *= -1;
+									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 	}
 
-	bNeedToTurnInRun = !getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, min_angle / 6);
-	bNeedToTurnInAttack = !getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, min_angle / 10);
+	// смотреть в точку tpPoint
+	if (tpPoint) {
+		if (m_dwPointCheckLastTime + m_dwPointCheckInterval < m_dwCurrentUpdate) {
+			m_dwPointCheckLastTime = m_dwCurrentUpdate;
 
-	bool bMoveLeft = true;
-	//if (getAI().bfTooSmallAngle(r_torso_target.yaw,angle_normalize_signed(r_torso_current.yaw + PI_DIV_2),PI_DIV_4)) bMoveLeft = false;
+			Fvector tTemp;
+			Fvector tTemp2;
 
-	bMoveLeft = IsLeftSide(r_torso_current.yaw,r_torso_target.yaw);
+			clCenter(tTemp2);
+
+			tTemp.sub	(*tpPoint,tTemp2);
+			tTemp.getHP	(r_torso_target.yaw,r_torso_target.pitch);
+			r_torso_target.yaw *= -1;
+
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+
+		}
+	}
+
+	bool bMoveLeft, bMoveRight;
+	bMoveLeft = bMoveRight = false;
+	if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle)) {
+		// we need to turn
+		if (angle_normalize_signed(angle_normalize_signed(r_torso_current.yaw) - angle_normalize_signed(r_torso_target.yaw)) > 0)
+			// turn left
+			bMoveLeft = true;
+		else
+			// turn right
+			bMoveRight = true;
+	}
 
 	// необходим поворот?
-	if (bNeedToTurnInRun) {
+	if (bMoveLeft || bMoveRight) {
 		if (m_tMovementType == eMovementTypeRun) { 	// поворот на бегу
 
 			r_torso_speed	= PI;
 			m_fCurSpeed		= PI;
 
-			if (bMoveLeft) vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
-			else vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+			if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle * 2))
+				if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
+				else vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionRight, eStateTypeNormal, eActionTypeTurn);
 			
 		} else if (m_tMovementType == eMovementTypeWalk) {				// поворот в ходьбе
 
@@ -175,44 +189,26 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 				m_fCurSpeed		= PI_DIV_4;
 				r_torso_speed	= PI_DIV_2;
 
-				if (bMoveLeft) vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
-				else vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
-
-//				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
-//					// right
-//					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
-//				else 
-//					// left
-//					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+				if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle * 2))
+					if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
+					else vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionRight, eStateTypeNormal, eActionTypeTurn);
 			}
-
 		} else {				// поворот на месте
 				m_fCurSpeed		= 0;
 				r_torso_speed	= PI_DIV_4;
-				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle)) {
-					// right
-					vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
-					
-					AnimEx.Set(ePostureStand, eActionEat,false,false);
+				
+				if (m_tActionType == eActionTypeAttack) {
+					r_torso_speed	= PI;
+					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeDanger, eActionTypeTurn);
+
+				} else {
+					if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_turning_angle))
+						if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
+						else vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);		
 				}
-				else 
-					// left
-					vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
 		}  
 	}
 
-/*	if (bNeedToTurnInAttack) {
-		m_fCurSpeed		= 0;
-		r_torso_speed	= PI_DIV_4;
-		if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
-			// right
-			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
-		else 
-			// left
-			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
-	}
-
-	*/
 	r_target = r_torso_target;
 }
 
@@ -258,9 +254,11 @@ void CAI_Biting::vfUpdateParameters()
 		}
 	}
 	K					= C | D | E | F;
+	
 	// temp!!!!
 	if (K) {
-		F = true; C = D = E = false;
+		C = true;
+		F = D = E = false;
 	}
 
 	// does enemy see me?
@@ -319,97 +317,27 @@ void CAI_Biting::vfUpdateParameters()
 				H = true;
 	}
 	// temp!!!
-	H = true;
+	H = true; I = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Temp!!!
 void CAI_Biting::SetText()
 {
-	HUD().pFontSmall->SetColor	(0xffffffff);
-	HUD().pFontSmall->OutSet	(320,400);
-	HUD().pFontSmall->OutNext	("Curren = [%f]  Target = [%f] ",rad2deg(r_torso_current.yaw), rad2deg(r_torso_target.yaw));
-	HUD().pFontSmall->OutSet	(320,430);
-	HUD().pFontSmall->OutNext	("Norm Current = [%f] Norm Target = [%f]",rad2deg(angle_normalize(r_torso_current.yaw)),rad2deg(angle_normalize(r_torso_target.yaw)));
-	HUD().pFontSmall->OutSet	(320,450);
-	
-	
-	string128 s;
-	strconcat(s,AI_Biting::caStateNames[AnimEx.CurState.m_tPostureAnim],
-				AI_Biting::caStateNames[AnimEx.CurState.m_tActionAnim]);
 
-	HUD().pFontSmall->OutSet	(100,300);
-	HUD().pFontSmall->OutNext	("Current Animation = [%s]        Stack Size: [%i]",s,AnimEx.Anim.size());
+
+	HUD().pFontSmall->OutSet	(300,380);	
+	HUD().pFontSmall->OutNext	("Health = [%f]", g_Health());
 	
 	
-	
-	std::list<TAnimCell>::iterator It;
-	It = AnimEx.Anim.begin();
-
-	for (int i=0; (i<(int)AnimEx.Anim.size()) && (i<8); i++) {
-		strconcat(s,AI_Biting::caStateNames[It->m_tPostureAnim],
-				AI_Biting::caStateNames[It->m_tActionAnim]);
-		
-		HUD().pFontSmall->OutSet	((float)100+i*50,350);
-		HUD().pFontSmall->OutNext ("SA[%i]=[%s]",i,s);
-		It++;
-	}
-	// Where is enemy
-
-	
-	
-	if (m_tSavedEnemy){
-		HUD().pFontSmall->OutSet	(300,380);	
-		if (IsLeftSide(m_tSavedEnemy->Position())) {
-			HUD().pFontSmall->OutNext	("LEFT");
-		} else  HUD().pFontSmall->OutNext	("RIGHT");
-
-		HUD().pFontSmall->OutSet	(400,380);
-
-/*		
-		Fvector v1,v2;
-		v1 = mRotate.k;
-		v2 = m_tSavedEnemy->Direction();
-
-		float f1,f2,f3;
-		f1 = v1.magnitude();
-		f2 = v2.magnitude();
-		f3 = v1.dotproduct(v2);
-
-		float a = f3 / (f1 * f2);
-		a = acosf(a);
-*/		
-	
-		float yaw1=0.f;
-		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(m_tSavedEnemy);
-		if (tpCustomMonster) yaw1		= -tpCustomMonster->r_current.yaw;
-		else {
-			CActor		*tpActor = dynamic_cast<CActor *>(m_tSavedEnemy);
-			if (tpActor) yaw1	= tpActor->Orientation().yaw;
+	if (m_tCorpse.Enemy) 
+		if (m_tCorpse.Enemy->m_fFood >= 0) {	
+			HUD().pFontSmall->OutSet	(300,400);	
+			HUD().pFontSmall->OutNext	("Food = [%f]", m_tCorpse.Enemy->m_fFood);
 		}
-		
 
-		HUD().pFontSmall->OutNext	("Monster Angle = [%f] Actor Angle = [%f]",R2D(-r_torso_current.yaw),R2D(yaw1));
-		HUD().pFontSmall->OutSet	(400,280);
-		HUD().pFontSmall->OutNext	("Normalized = [%f] Actor Angle = [%f]",R2D(angle_normalize(-r_torso_current.yaw)),R2D(angle_normalize(yaw1)));
-		//float a = angle_normalize(_abs(r_torso_current.yaw - yaw1));
-
-	//	HUD().pFontSmall->OutNext	("Current Angle between = [%f]",rad2deg(a));
-
-		//Msg("ANGLE = [%f]",rad2deg(a));
-	}
-
-	
-//	Fvector temp;
-//	SRotation
-//	if ()
-
-//	if (bNeedToTurnInRun) {
-//		if (bMoveLeft) HUD().pFontSmall->OutNext	("LEFT");
-//		else HUD().pFontSmall->OutNext	("RIGHT");
-//	} else HUD().pFontSmall->OutNext	("NONE");
-
-	//	Msg("%Turn Angles: Current = [%f]  Target = [%f]; TurnToLeft = [%d]",r_torso_current.yaw,r_torso_target.yaw,bMoveLeft);
+		HUD().pFontSmall->OutSet	(300,420);	
+		HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
 }
 
 

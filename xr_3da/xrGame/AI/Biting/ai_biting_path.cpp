@@ -103,9 +103,9 @@ void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEval
 		return;
 	}
 
-//	if (tpNodeEvaluator)
-//		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
-//	else
+	if (tpNodeEvaluator)
+		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
+	else
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 
 	if (AI_Path.Nodes.empty()) {
@@ -226,7 +226,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Выбор точки, построение пути, построение TravelLine
-void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
+void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
 {
 	INIT_SQUAD_AND_LEADER;
 
@@ -260,7 +260,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 										}
 			case ePathStateBuildNodePath : {
 				if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
-					vfBuildPathToDestinationPoint(tpNodeEvaluator);
+					vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
 				else
 					if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
 						AI_Path.Nodes.clear();
@@ -293,7 +293,7 @@ void CAI_Biting::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID						tGraphID		= m_tNextGP;
 	u16								wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
-	CSE_ALifeGraph::SGraphEdge			*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
+	CSE_ALifeGraph::SGraphEdge		*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
 
 	int								iPointCount		= (int)m_tpaTerrain.size();
 	int								iBranches		= 0;	// количество различных вариантов

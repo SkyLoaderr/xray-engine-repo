@@ -56,12 +56,18 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
 			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 
-			m_tLastSound.eSoundType		= ESoundTypes(eType);
-			m_tLastSound.dwTime			= Level().timeServer();
-			m_tLastSound.fPower			= power;
-			m_tLastSound.tSavedPosition = Position;
 			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
-			m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;
+			if (m_tLastSound.tpEntity) {
+				m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;
+				m_tLastSound.eSoundType		= ESoundTypes(eType);
+				m_tLastSound.dwTime			= Level().timeServer();
+				m_tLastSound.fPower			= power;
+				m_tLastSound.tSavedPosition = Position;
+			}
+
+			
+			
+				
 
 			//float fDistance = (Position.distance_to(vPosition) < 1.f ? 1.f : Position.distance_to(vPosition));
 			//			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
@@ -79,6 +85,28 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 		}
 	}
 }
+
+void CAI_Biting::feel_touch_new	(CObject* O)
+{
+	if (!g_Alive()) return;
+
+	CEntity *pEntity = dynamic_cast<CEntity *>(O);
+
+ 	if (m_tSavedEnemy && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY) && (pEntity == m_tSavedEnemy)) {
+		Fvector tDirection;
+		Fvector position_in_bone_space;
+		position_in_bone_space.set(0.f,0.f,0.f);
+		tDirection.sub(m_tSavedEnemy->Position(),this->Position());
+		tDirection.normalize();
+
+		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
+
+		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
+		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+
+	}
+}
+
 
 static BOOL __fastcall BitingQualifier(CObject* O, void* P)
 {

@@ -63,8 +63,6 @@ void CAI_Biting::Init()
 	m_dwLostEnemyTime				= 0;
 
 	m_dwInertion					= 100000;
-	
-	ZeroMemory						(&m_tLastSound, sizeof(SSimpleSound));
 
 	m_bStateChanged					= true;
 	
@@ -77,11 +75,52 @@ void CAI_Biting::Init()
 	ZeroMemory						(&m_tCorpse, sizeof(SEnemySelected));
 
 	AnimEx.Init						(ePostureStand,eActionIdle);
+	
+	m_dwAnimFrameDelay				= 100;
+	m_dwAnimLastSetTime				= 0;
+	m_bActionFinished				= true;
+
+	bPlayDeath						= false;
+	bStartPlayDeath					= false;
+	bTurning						= false;
+	m_tpSoundBeingPlayed			= 0;
+	
+	
+	m_tLastSound.tpEntity			= 0;
+	m_tLastSound.dwTime				= 0;
+	m_tLastSound.eSoundType			= SOUND_TYPE_NO_SOUND;
+	bShowDeath						= false;
+	
+	m_dwEatInterval					= 500;
+	m_dwLastTimeEat					= 0;
+
+	m_dwLieIndex					= 0;
+	
+	_CA.Init();
+
+	m_dwPointCheckLastTime			= 0;
+	m_dwPointCheckInterval			= 1500;
+
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
+
+	Fvector	dir;
+	AI_Path.Direction(dir);
+	
+	bShowDeath = true;
+	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+
+	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
+	
+	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
+	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_ATTACK_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_VOICE_COUNT, m_tpaSoundVoice);
+
+
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -109,6 +148,7 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	m_tSelectorRetreat.Load			(section,"selector_retreat");
+	m_tSelectorCover.Load			(section,"selector_cover");
 
 	// loading frustum parameters
 	eye_fov							= pSettings->r_float(section,"EyeFov");
@@ -120,6 +160,16 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
+	m_fHitPower						= pSettings->r_float (section,"HitPower");
+	fHealth							= (float)m_dwHealth;
+
+
+	vfLoadSounds();
+
+	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
+	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
+
 	// loading sounds
 //	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
 //	g_vfLoadSounds		(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
@@ -262,4 +312,14 @@ void CAI_Biting::UpdateCL()
 	SetText();
 	inherited::UpdateCL();
 
+}
+
+// sounds
+void CAI_Biting::vfLoadSounds()
+{
+	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\flesh\\test_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\flesh\\test_0",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\flesh\\test_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
