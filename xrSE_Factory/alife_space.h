@@ -206,6 +206,7 @@ namespace ALife {
 		eRelationTypeFriend = u32(0),
 		eRelationTypeNeutral,
 		eRelationTypeEnemy,
+		eRelationTypeWorstEnemy,
 		eRelationTypeDummy = u32(-1),
 	};
 

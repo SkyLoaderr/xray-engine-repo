@@ -63,7 +63,8 @@ EActorSleep CActor::CanSleepHere()
 	{
 		CEntityAlive* entity = smart_cast<CEntityAlive*>(*it);
 		if(entity && entity->g_Alive() &&
-			entity->tfGetRelationType(this) == ALife::eRelationTypeEnemy)
+			((entity->tfGetRelationType(this) == ALife::eRelationTypeEnemy) ||  
+			(entity->tfGetRelationType(this) == ALife::eRelationTypeWorstEnemy)) )
 			return easEnemies;
 	}
 
