@@ -5,6 +5,14 @@
 struct Shader_xrLC
 {
 public:
+	enum {
+		bCollision			= 1<<0,
+		bRendering			= 1<<1,
+		bOptimizeUV			= 1<<2,
+		bLIGHT_Vertex		= 1<<3,
+		bLIGHT_CastShadow	= 1<<4,
+		bLIGHT_Sharp		= 1<<5
+	};
 	struct Flags {
 		DWORD bCollision			: 1;
 		DWORD bRendering			: 1;
