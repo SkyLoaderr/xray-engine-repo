@@ -29,6 +29,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCameraPlane;
 	TExtBtn *ebCameraArcBall;
 	TExtBtn *ebCameraFly;
+	TPanel *paTBAction;
+	TExtBtn *ebActionMove;
+	TExtBtn *ebActionRotate;
+	TExtBtn *ebActionScale;
+	TExtBtn *ebActionSelect;
+	TExtBtn *ebActionAdd;
     void __fastcall ebViewClick(TObject *Sender);
 	void __fastcall ebZoomExtentsClick(TObject *Sender);
 	void __fastcall ebCameraClick(TObject *Sender);
