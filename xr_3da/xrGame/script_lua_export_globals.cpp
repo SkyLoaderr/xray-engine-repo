@@ -8,29 +8,13 @@
 
 #include "stdafx.h"
 #include "script_space.h"
-#include "ai_script_classes.h"
-#include "ai_script_actions.h"
-#include "ai_script_sound.h"
-#include "ai_script_hit.h"
-#include "ai_script_snd_info.h"
-#include "ai_script_monster_hit_info.h"
-#include "luabind/return_reference_to_policy.hpp"
-#include "luabind/out_value_policy.hpp"
-#include "luabind/adopt_policy.hpp"
 #include "script_engine.h"
 
 using namespace luabind;
 
-extern CLuaGameObject	*tpfGetActor();
-
 void LuaLog(LPCSTR caMessage)
 {
 	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeMessage,"%s",caMessage);
-}
-
-double get_time()
-{
-	return((double)Level().GetGameTime());
 }
 
 void LoadScriptModule(LPCSTR script_name)
