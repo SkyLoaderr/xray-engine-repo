@@ -270,7 +270,7 @@ void CGraviZone::StopTeleParticles(CGameObject* pObject)
 float CGraviZone::RelativePower(float dist)
 {
 	float radius = Radius();
-	if(dist>radius*m_fBlowoutRadiusPercent) return 0.f;
+//	if(dist>radius*m_fBlowoutRadiusPercent) return 0.f;
 
 	radius = Radius()*m_fThrowInAtten;
 	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
