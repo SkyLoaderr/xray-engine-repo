@@ -97,7 +97,7 @@ public:
 	IC	void						set_xform_view		(const Fmatrix& M)					{ set_xform(D3DTS_VIEW,M);			}
 	IC	void						set_xform_project	(const Fmatrix& M)					{ set_xform(D3DTS_PROJECTION,M);	}
 
-	IC	void						set_RT				(u32 ID, IDirect3DSurface9* RT);
+	IC	void						set_RT				(IDirect3DSurface9* RT, u32 ID=0);
 	IC	void						set_ZB				(IDirect3DSurface9* ZB);
 	IC	void						set_Textures		(STextureList* T);
 	IC	void						set_Matrices		(SMatrixList* M);

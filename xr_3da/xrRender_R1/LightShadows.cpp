@@ -178,7 +178,8 @@ void CLightShadows::calculate	()
 			// setup rt+state(s) for first use
 			if (!bRTS)	{
 				bRTS						= TRUE;
-				RCache.set_RT		(RT_temp->pRT,HW.pTempZB);
+				RCache.set_RT				(0,RT_temp->pRT);
+				RCache.set_ZB				(HW.pTempZB);
 				RCache.set_Shader			(sh_Texture);
 				HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 			}
