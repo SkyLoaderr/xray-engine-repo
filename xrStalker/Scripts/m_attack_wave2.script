@@ -120,10 +120,11 @@ function Defender:initialize ()
      
     if self.way == nil then
 	   action (self.npc, move (move.crouch, move.stand, move.line, self.npc:position ()), anim (anim.danger), 
-	   		   cond (cond.time_end, time_infinite))	
+	   		   object (self.npc:best_weapon (), object.activate), cond (cond.time_end, time_infinite))	
 	   self.state = on_ready		   
 	else
-	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
+	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), 
+	           object (self.npc:best_weapon (), object.activate), cond (cond.move_end))
 	   self.state = on_move		   		   
 	end	   		   
 	
@@ -246,11 +247,11 @@ function main ()
 					 m_attack_wave2.Defender (get_level_object ("defender1"), scrname, patrol ("way_defender1"), monsters, true),
 					 m_attack_wave2.Defender (get_level_object ("defender2"), scrname, patrol ("way_defender2"),monsters, true),
 					 m_attack_wave2.Defender (get_level_object ("defender3"), scrname, patrol ("way_defender2"), monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender4"), scrname, nil, monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender5"), scrname, nil, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender4"), scrname, nil, monsters, false),
+					 m_attack_wave2.Defender (get_level_object ("defender5"), scrname, nil, monsters, false),
 					 m_attack_wave2.Defender (get_level_object ("tower1"), scrname, nil, monsters, false),
 					 m_attack_wave2.Defender (get_level_object ("tower2"), scrname, nil, monsters, false),
-					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, true)
+					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, false)
 					 }
 					 
     local enter_zone = get_level_object ("barricade_zone")
