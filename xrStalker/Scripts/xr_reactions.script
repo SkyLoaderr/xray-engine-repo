@@ -968,9 +968,6 @@ function add_rule(obj, rule)
 		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
 	end
 end
-function reset_rules(obj, rules)
-	xr_motivator.storage[obj:id()].reactions.rules = rules
-end
 function remove_rule(obj, rule)
 	local tt = {}
 	for k,v in xr_motivator.storage[obj:id()].reactions.rules do
