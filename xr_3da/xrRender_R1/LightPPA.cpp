@@ -280,6 +280,7 @@ void CLightR_Manager::render		()
 void CLightR_Manager::add			(light* L)
 {
 	if (L->range<0.1f)				return;
+	if (0==L->spatial.sector)		return;
 	if (IRender_Light::POINT==L->flags.type)
 	{
 		// PPA
