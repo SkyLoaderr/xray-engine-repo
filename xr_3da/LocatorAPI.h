@@ -113,11 +113,14 @@ public:
     DEFINE_VECTOR(archive,archives_vec,archives_it);
 
     TShellChangeThread*			FThread;
-    
-    BOOL						bNeedRescan;
+	enum{
+    	flNeedRescan	= (1<<0),
+        flLockRescan	= (1<<1)
+    };    
+    Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
     void						rescan_pathes	();
-    IC void						check_pathes	(){if (bNeedRescan) rescan_pathes();}
+    void						check_pathes	();
 private:
 	files_set					files;
     archives_vec				archives;
@@ -170,6 +173,8 @@ public:
 	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR ext_mask=0);
 	const AnsiString&			update_path		(LPCSTR initial, AnsiString& dest);
     const AnsiString&			update_path		(AnsiString& dest, LPCSTR initial, LPCSTR src);
+	void						lock_rescan		();
+	void						unlock_rescan	();
 #endif    
 };
 

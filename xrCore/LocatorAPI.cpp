@@ -56,7 +56,7 @@ const AnsiString& FS_Path::_update(AnsiString& dest, LPCSTR src)const
 void __fastcall FS_Path::rescan_path_cb()
 {
 	m_Flags.set(flNeedRescan,TRUE);
-    FS.bNeedRescan	= TRUE;
+    FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
 #endif
 
@@ -66,7 +66,7 @@ void __fastcall FS_Path::rescan_path_cb()
 CLocatorAPI::CLocatorAPI()
 {
 	FThread				= 0;
-    bNeedRescan			= 0;
+    m_Flags.zero		();
 }
 
 CLocatorAPI::~CLocatorAPI()
@@ -592,7 +592,7 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
 
 void  CLocatorAPI::rescan_pathes()
 {
-    bNeedRescan 	= FALSE;
+	m_Flags.set(flNeedRescan,FALSE);
 	for (PathPairIt p_it=pathes.begin(); p_it!=pathes.end(); p_it++)
     {
     	FS_Path* P	= p_it->second;
@@ -601,5 +601,11 @@ void  CLocatorAPI::rescan_pathes()
 			P->m_Flags.set(FS_Path::flNeedRescan,FALSE);
         }
     }
+}
+
+void CLocatorAPI::check_pathes()
+{
+	if (m_Flags.is(flNeedRescan)&&(!m_Flags.is(flLockRescan))) 
+    	rescan_pathes();
 }
 
