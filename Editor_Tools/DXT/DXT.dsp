@@ -113,6 +113,10 @@ SOURCE=.\nvdxt_options.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\ETextureParams.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ETextureParams.h
 # End Source File
 # Begin Source File

@@ -18,6 +18,8 @@ struct STextureParams{
         tf565,
         tfRGB,
         tfRGBA,
+		tfNVHS,
+		tfNVHU,
 		ForceDWORD	= DWORD(-1)
 	};
 	enum{
