@@ -1,38 +1,41 @@
-// The following ifdef block is the standard way of creating macros which make exporting 
-// from a DLL simpler. All files within this DLL are compiled with the XRCORE_EXPORTS
-// symbol defined on the command line. this symbol should not be defined on any project
-// that uses this DLL. This way any other project whose source files include this file see 
-// XRCORE_API functions as being imported from a DLL, whereas this DLL sees symbols
-// defined with this macro as being exported.
-
 #ifndef xrCoreH
 #define xrCoreH
 #pragma once
 
-#ifdef DEBUG
-	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
+#if defined(_DEBUG) || defined(MIXED) || defined(DEBUG)
+	// "debug" or "mixed"
+	#if !defined(_CPPUNWIND)
+		#error Please enable exceptions...
+	#endif
+	#define _HAS_EXCEPTIONS		1	// STL
+	#define XRAY_EXCEPTIONS		1	// XRAY
+#else
+	// "release"
+	#if defined(_CPPUNWIND)
+		#error Please disable exceptions...
+	#endif
+	#define _HAS_EXCEPTIONS		0	// STL
+	#define XRAY_EXCEPTIONS		0	// XRAY
 #endif
 
-//#ifdef _EDITOR
 #	include "xrCore_platform.h"
-//#endif
 
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
 // #define _STLP_NO_EXCEPTIONS	1
-#ifdef DEBUG
- 	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
+#if XRAY_EXCEPTIONS
+ 	#define _HAS_EXCEPTIONS		1	// force STL again
 #endif
 
 // *** try to minimize code bloat of STLport
 #ifdef __BORLANDC__
 #else
-#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
-#define _STLP_DESIGNATED_DLL	1
-#define _STLP_USE_DECLSPEC		1
-#else
-#define _STLP_USE_DECLSPEC		1	// no exceptions, import allocator and common stuff
-#endif
+	#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
+	#define _STLP_DESIGNATED_DLL	1
+	#define _STLP_USE_DECLSPEC		1
+	#else
+	#define _STLP_USE_DECLSPEC		1	// no exceptions, import allocator and common stuff
+	#endif
 #endif
 
 #include <stdio.h>
