@@ -41,7 +41,7 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 {
 	float			h			=	ps_r2_df_parallax_h;
 	float			scale		=	g_fSCREEN / (1024.f*768.f);
-	float			r			=	ps_r2_df_parallax_range * scale;
+	float			range		=	ps_r2_df_parallax_range * scale;
 	RCache.set_c	(C,h,-h/2.f,1.f/range,1.f/range);
 }}	binder_parallax;
 
