@@ -1,12 +1,12 @@
 #pragma once
 
 #include "..\modelpool.h"
-#include "..\hom.h"
 
 #include "r2_types.h"
 #include "r2_scenegraph.h"
 #include "r2_rendertarget.h"
 
+#include "hom.h"
 #include "portal.h"
 #include "detailmanager.h"
 
