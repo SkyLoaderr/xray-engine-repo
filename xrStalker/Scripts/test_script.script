@@ -8,6 +8,7 @@ end
 
 
 function main()
+	local aabb = 453+768
 	
 	local dt = game.get_game_time()
 	dump_time(dt)
