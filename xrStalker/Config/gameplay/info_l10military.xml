@@ -40,4 +40,8 @@
 	<info_portion id="mil_max_flash_get"></info_portion>
 	<info_portion id="mil_max_job_complete"></info_portion>
 	
+	<!-- Диалог с Лукашем-->
+	<info_poriton id="mil_lukash_first_talk"></info_poriton>
+		
+	
 </game_information_portions>

@@ -111,14 +111,56 @@
     <string id="mil_dolg_dialog_7001">
         <text>Могло быть и хуже.</text>
     </string>
-    <string id="mil_lukash_dialog_0">
-        <text>Привет, кабан !</text>
-    </string>
     <string id="mil_lukash_dialog_1">
-        <text>А не пошел бы ты на х.. ?</text>
+        <text>test 1</text>
     </string>
     <string id="mil_lukash_dialog_2">
-        <text>Пошел :(</text>
+        <text>Что надо, сталкер ?</text>
+    </string>
+    <string id="mil_lukash_dialog_21">
+        <text>Мне нужнен РГ6, а я слышал, что он есть у тебя. Мы можем договориться ?</text>
+    </string>
+    <string id="mil_lukash_dialog_211">
+        <text>Возможно. Что ты мне можешь предложить ?</text>
+    </string>
+    <string id="mil_lukash_dialog_2111">
+        <text>Могу предложить некоторое количество денег.</text>
+    </string>
+    <string id="mil_lukash_dialog_2112">
+        <text>Деньги меня волнуют мало.</text>
+    </string>
+    <string id="mil_lukash_dialog_2211">
+        <text>Могу дать полезную информацию о том, что у вас назревают проблемы.</text>
+    </string>
+    <string id="mil_lukash_dialog_2212">
+        <text>Что же это за проблемы такие, что я должен за них отдавать свою любимую пушку ?</text>
+    </string>
+    <string id="mil_lukash_dialog_22121">
+        <text>У вас под базой, на хуторе засели несколько человек из группировки "Долг". И они сюда не на шашлык пришли. Это является проблемой ?</text>
+    </string>
+    <string id="mil_lukash_dialog_221211">
+        <text>Является, блин. Хм... Ладно. Я сейчас свистну ребятам и ты с ними сходишь к этому хутору. Если поможежь с ними разобраться, то так и быть - дам тебе свой РГ6. Итак ?</text>
+    </string>
+    <string id="mil_lukash_dialog_221212">
+        <text>Ок. Сходим.</text>
+    </string>
+    <string id="mil_lukash_dialog_221213">
+        <text>Не, я видел эти ваши разборки в гробу. Достаточно того, что я сообщил.</text>
+    </string>
+    <string id="mil_lukash_dialog_221214">
+        <text>Как закончите, подходи.</text>
+    </string>
+    <string id="mil_lukash_dialog_221215">
+        <text>Ну, тогда вали отсюда, пока не стал кормом для мутантов. Чистоплюй, мля.</text>
+    </string>
+    <string id="mil_lukash_dialog_22122">
+        <text>На хуторе, возле вашей базы сидят несколько человек из группировки "Долг". Пришли мстить за кого-то из своих. Весьма неплохо экипированы, но снайперка у них загнулась и они попросили, ссылаясь на мой статус нейтрала, убрать вашего снайпера с вышки. Как только я выполню задачу, они пойдут в атаку. Это является проблемой ?</text>
+    </string>
+    <string id="mil_lukash_dialog_3">
+        <text>test 2</text>
+    </string>
+    <string id="mil_lukash_dialog_31">
+        <text>Итак ?</text>
     </string>
     <string id="mil_max_dialog_1">
         <text>Привет.</text>
