@@ -10,7 +10,7 @@
 #include "b_globals.h"
 #include "fs.h"
 #include "xrLevel.h"
-#include "textureparams.h"
+#include "Etextureparams.h"
 #include "shader_xrlc.h"
 
 #pragma comment(lib,"x:\\dxt.lib")

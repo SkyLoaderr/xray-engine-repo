@@ -120,7 +120,7 @@ CBuild::CBuild(b_transfer * L)
 		LPSTR N			= BT.name;
 		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 		char th_name[256]; strconcat(th_name,"x:\\textures\\thumbnail\\",N,".thm");
-		CCompressedStream THM(th_name,"THM");
+		CCompressedStream THM(th_name,THM_SIGN);
 		
 		// analyze thumbnail information
 		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
