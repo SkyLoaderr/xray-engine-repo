@@ -208,6 +208,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
 
+	if (!g_Alive())
+		CSoundPlayer::set_sound_mask(u32(eStalkerSoundMaskDie));
+
 	return							(TRUE);
 }
 
@@ -563,6 +566,7 @@ void CAI_Stalker::Think			()
 	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 	CSSetupManager::update			();
+//	Msg								("Active sounds %d, playing %d, stopped %d",CSoundPlayer::playing_sounds().size(),CSoundPlayer::active_sound_count(true),CSoundPlayer::active_sound_count() - CSoundPlayer::active_sound_count(true));
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)
@@ -570,6 +574,7 @@ void CAI_Stalker::save (NET_Packet &output_packet)
 	inherited::save(output_packet);
 	CInventoryOwner::save(output_packet);
 }
+
 void CAI_Stalker::load (IReader &input_packet)		
 {
 	inherited::load(input_packet);
