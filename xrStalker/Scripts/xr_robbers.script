@@ -1,4 +1,15 @@
 
+plr_is_near = false
+plr_stop_pos = nil
+plr_num_bullets = nil
+plr_hunt = false
+approach_player_now = false
+looking_at_actor = false
+
+bandit1_ready = false
+bandit2_ready = false
+bandit3_ready = false
+
 function action2(obj,...)
     local act = entity_action()
     local i = 1
@@ -43,14 +54,25 @@ function action_robber_activity:__init (npc_name,action_name,storage) super (nil
 
 	self.state_none = 0
 	self.state_waiting_for_plr_to_come = 1 -- ждет игрока
-	self.state_shout_stop = 2 -- кричит "не двигаться!"
-	self.state_shout_drop_your_weapon = 3 -- кричит "если хочешь жить, брось оружие!"
-	self.state_go_to_plr = 4 -- идет к игроку
-	self.state_look_at_plr = 5 -- смотрит на игрока
-	self.state_anim_hit = 6 -- бьет игрока
+	self.state_waiting_for_plr_to_stop = 2
+	self.state_leader_shouting_stop = 3 -- кричит "не двигаться!"
+	self.state_helper_shouting_stop = 4 -- помощник кричит то же самое
+	self.state_leader_shouting_drop_your_weapon = 5 -- кричит "если хочешь жить, брось оружие!"
+	self.state_wait_before_approach = 6
+	self.state_approaching = 7 -- идет к игроку
+	self.state_approached = 8
+	self.state_anim_hit = 9 -- бьет игрока
+	self.state_grab_money = 10 -- бьет игрока
+	self.state_end = 11
 
 	self.state = self.state_none
 
+	self.leader = self.a.leader
+	self.helper = self.a.helper
+	printf("_bp: leader = %s", if_then_else(self.leader, "true", "false"))
+	printf("_bp: helper = %s", if_then_else(self.leader, "true", "false"))
+	self.teammate1 = self.a.teammate1
+	self.teammate2 = self.a.teammate2
 	self.path_rob = self.a.path_rob
 end
 
@@ -85,11 +107,64 @@ function action_robber_activity:execute()
 
 	if not self.actor then
 		self.actor = level.actor()
+		if not self.actor then
+			return
+		end
 	end
 
-	local distance = self.actor:position():distance_to(self.patrol_rob:point(0))
-	printf("distance to corpse = %d", distance)
-		
+	if not self.actor:alive() then
+		return
+	end
+	
+	if this.looking_at_actor then
+		local pos = self.actor:position()
+		pos.y = pos.y + 0.8
+		self.object:set_sight(look.fire_point, pos, 0)
+	end
+	
+	if self.object.health < 1 then
+		printf("AGRESSION")
+		this.plr_hunt = true
+	end
+
+	local active_item = self.actor:active_item()
+	if active_item and isWeapon(active_item:clsid()) then
+		if this.plr_num_bullets and this.plr_num_bullets ~= active_item:get_ammo_in_magazine() then
+			printf("AGRESSION2")
+			this.plr_hunt = true
+		end
+	end
+	
+	if this.plr_hunt then
+		if self.object:relation(self.actor) ~= game_object.enemy then
+			self.object:set_relation(game_object.enemy, self.actor)
+		end
+		return
+	end
+
+	local pos = self.actor:position()
+	local distance = pos:distance_to(self.patrol_rob:point(0))
+	--printf("distance to corpse = %d", distance)
+	
+	if this.plr_is_near then
+		if distance > 2 then
+			if self.leader then
+				self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+						xr_sounds_id.zmey_robber_will_shoot)
+				this.plr_hunt = true
+				return
+			end
+		elseif this.plr_stop_pos then
+			if self.helper then
+				if pos:distance_to(this.plr_stop_pos) >= 0.5 then
+					self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+							xr_sounds_id.zmey_robber_will_kill)
+					this.plr_stop_pos = nil
+				end
+			end
+		end
+	end	
+
 	if self.state == self.state_waiting_for_plr_to_come then
 		--printf("_debug_robber [%s]: adding animations", self.object:name())
 		while self.object:animation_count() <= 1 do
@@ -117,28 +192,117 @@ function action_robber_activity:execute()
 			end
 		end
 
-		if self.actor then
-			if distance <= 1 then
-				self.expiration_time = device():time_global() + 5000
-				printf("STOI !!!")
+		if distance <= 2 and self.leader then
+			self.object:clear_animations()
+			this.looking_at_actor = true
+			self.expiration_time = device():time_global() + 2000
+			printf("_bp: leader stay")
+			self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+					xr_sounds_id.zmey_robber_stop)
+				self.state = self.state_waiting_for_plr_to_stop
+		elseif self.helper and this.plr_is_near then
+			self.object:clear_animations()
+			this.looking_at_actor = true
+			printf("_bp: helper waits")
+			self.expiration_time = device():time_global() + 1000
+			self.state = self.state_leader_shouting_stop
+		elseif not self.leader and not self.helper then
+			self.object:clear_animations()
+			this.looking_at_actor = true
+			self.state = self.state_wait_before_approach
+		end
+
+	elseif self.state == self.state_waiting_for_plr_to_stop then
+		if device():time_global() >= self.expiration_time then
+			this.plr_is_near = true
+			this.plr_stop_pos = self.actor:position()
+			this.plr_num_bullets = active_item:get_ammo_in_magazine()
+			self.expiration_time = device():time_global() + 2000
+			self.state = self.state_leader_shouting_stop
+		end
+		
+	elseif self.state == self.state_leader_shouting_stop then
+		if device():time_global() >= self.expiration_time then
+			if self.leader then
+				printf("_bp: leader drop_weap")
+				if not active_item or not isWeapon(active_item:clsid()) then
+					self.expiration_time = device():time_global() + 0
+				else
+					self.expiration_time = device():time_global() + 2000
+					self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+							xr_sounds_id.zmey_robber_drop_weap)
+				end
+				self.state = self.state_leader_shouting_drop_your_weapon
+			elseif self.helper then
+				printf("_bp: helper stay")
 				self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
 						xr_sounds_id.zmey_robber_do_not_move)
-				self.state = self.state_shout_stop
+				self.state = self.state_wait_before_approach
 			end
 		end
 
-	elseif self.state == self.state_shout_stop then
-		if device():time_global() >= self.expiration_time then
-			self.expiration_time = device():time_global() + 5000
-			self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
-					xr_sounds_id.zmey_robber_drop_weapon)
-			printf("BROS ORUJIE !!!")
-			self.state = self.state_shout_drop_your_weapon
+	elseif self.state == self.state_leader_shouting_drop_your_weapon then
+		if self.leader and device():time_global() >= self.expiration_time then
+			if not active_item or not isWeapon(active_item:clsid()) then
+				--self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+				--		xr_sounds_id.zmey_robber_good)
+				self.state = self.state_wait_before_approach
+				this.approach_player_now = true
+				this.looking_at_actor = false
+			end
 		end
 
-	elseif self.state == self.state_shout_drop_your_weapon then
-		if self.actor then
-			
+
+	elseif self.state == self.state_wait_before_approach then
+		if this.approach_player_now then
+			if self.leader and self.object:best_weapon() then
+				self.object:set_item(object.deactivate, self.object:best_weapon())
+			end
+			self.object:set_path_type(game_object.level_path)
+			self.object:set_desired_direction(self.actor:direction())
+			self.object:set_dest_level_vertex_id(self.actor:level_vertex_id())
+			self.object:set_movement_type(move.run)
+			self.state = self.state_approaching
+		end
+
+	elseif self.state == self.state_approaching then
+		if self.object:position():distance_to(self.actor:position()) < 2 then
+			this.looking_at_actor = true
+			self.object:set_movement_type(move.stand)
+			if self.leader then
+				this.bandit1_ready = true
+				
+				self.state = self.state_anim_hit
+			else
+				if self.helper then
+					this.bandit2_ready = true
+				else
+					this.bandit3_ready = true
+				end
+				self.state = self.state_approached
+			end
+		end
+
+	elseif self.state == self.state_anim_hit then
+		if self.leader and this.bandit1_ready and this.bandit2_ready and this.bandit3_ready then
+			self.object:add_animation("udar_0", true)
+			self.expiration_time = device():time_global() + 700
+			self.state = self.state_grab_money
+		end
+	
+	elseif self.state == self.state_grab_money then
+		if self.leader and
+			(device():time_global() >= self.expiration_time or self.object:animation_count() <= 0) then
+			local h = hit()
+			h.power = 1000
+			h.direction:set(1, 0, 0)
+			h.bone = "bip01_head"
+			h.draftsman = self.object
+			h.impulse = 10
+			h.type = hit.wound
+			self.actor:hit(h)
+
+			self.state = self.state_end
 		end
 	end
 end
@@ -146,6 +310,11 @@ end
 function action_robber_activity:finalize()
 	--printf("_bp: FINALIZE")
 	self.object:clear_animations()
+
+	if self.object.health < 1 then
+		printf("AGRESSION")
+		this.plr_hunt = true
+	end
 
 	action_base.finalize(self)
 end
@@ -159,7 +328,8 @@ function add_to_binder(npc)
 	local properties  = {}
 
 	-- FIXME: тут будет robber
-	npc:add_sound("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, xr_sounds_id.zmey_robber_base)
+	npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
+			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_robber_base)
 
 	local manager = npc:motivation_action_manager()
 

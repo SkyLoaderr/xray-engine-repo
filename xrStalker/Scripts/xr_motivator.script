@@ -227,7 +227,7 @@ xr_motivator.storage[self.object:id()].robber = {
             printf("_bp: leader = true")
         end
         if char_ini:line_exist("robber", "helper") == true then
-                xr_motivator.storage[self.object:id()].robber.leader = char_ini:r_bool("robber", "helper")
+                xr_motivator.storage[self.object:id()].robber.helper = char_ini:r_bool("robber", "helper")
             printf("_bp: helper = true")
         end
         if char_ini:line_exist("robber", "teammate1") == true then
