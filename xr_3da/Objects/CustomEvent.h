@@ -13,22 +13,18 @@ private:
 protected:
 	// t-defs
 	struct DEF_EVENT	{
+		u8			type;
+		u16			count;
+		CLASS_ID	CLS;
 		EVENT		E;
 		LPSTR		P1;
-		u8			bOnce;
-		u8			bEnabled;
 	};
-	struct DEF_ACTION	{
-		DEF_EVENT	OnEnter;
-		DEF_EVENT	OnLeave;
-		CLASS_ID	CLS;
-	};
-	typedef svector<DEF_ACTION,16>	tActions;
+	typedef vector<DEF_EVENT>	tActions;
 
 	tActions				Actions;
 	vector<CObject*>		Contacted;
 protected:
-	DEF_EVENT				Parse				(LPCSTR DEF);
+	void					Parse				( DEF_EVENT& D, LPCSTR DEF);
 public:
 	CCustomEvent();
 	virtual ~CCustomEvent();
