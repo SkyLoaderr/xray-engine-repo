@@ -20,4 +20,7 @@ void xrServer::PerformMigration(xrServerEntity* E, xrClientData* from, xrClientD
 		E->UPDATE_Write		(P);
 		SendTo				(to->ID,P,net_flags(TRUE,TRUE));
 	}
+
+	// Change parent-client
+	E->owner				= to;
 }
