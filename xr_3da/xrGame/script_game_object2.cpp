@@ -323,9 +323,12 @@ void CScriptGameObject::RestoreDefaultStartDialog()
 void CScriptGameObject::SetActorPosition			(Fvector pos)
 {
 	CActor* actor = smart_cast<CActor*>(&object());
-	if(actor)
-		actor->XFORM().c = pos;
-	else
+	if(actor){
+		Fmatrix F = actor->XFORM();
+		F.c = pos;
+		actor->ForceTransform(F);
+//		actor->XFORM().c = pos;
+	}else
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorPosition method for non-actor object");
 
 }
