@@ -10,7 +10,7 @@
 #include "PHCapture.h"
 #include "ai_space.h"
 #include "detail_path_manager.h"
-
+//#include "Level.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -120,6 +120,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
+	//if(ph_world->disable_count==0)Msg("avel %f", fActualVelocity);
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
 
