@@ -187,7 +187,7 @@ public:
 			Fvector			get_foot_position				(ELegType leg_type);
 			void			LoadFootBones					();
 
-	virtual u8				get_legs_number					() = 0;
+			u8				get_legs_number					() {return get_sd()->m_legs_number;}
 	
 	virtual void			event_on_step					() {}
 

@@ -7,8 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "console_commands.h"
-
 #include "object_factory.h"
 #include "ui/xrXMLParser.h"
 #include "xr_level_controller.h"
@@ -32,6 +30,7 @@ extern "C" {
 	}
 };
 
+extern void CCC_RegisterCommands();
 extern void clean_memory_global();
 
 BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)

@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "console_commands.h"
-
 #include "../xr_ioconsole.h"
 #include "../xr_ioc_cmd.h"
 #include "../customhud.h"

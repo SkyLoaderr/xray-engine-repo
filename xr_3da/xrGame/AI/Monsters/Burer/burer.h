@@ -96,8 +96,6 @@ public:
 
 	virtual bool	UpdateStateManager	();
 
-	virtual u8		get_legs_number		() {return BIPEDAL;}
-
 	virtual void	CheckSpecParams		(u32 spec_params);
 
 			void	UpdateGraviObject	();

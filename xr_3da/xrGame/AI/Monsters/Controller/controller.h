@@ -26,8 +26,6 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 	virtual void	reload				(LPCSTR section);
-	virtual u8		get_legs_number		() {return BIPEDAL;}
-	
 	virtual void	UpdateCL			();
 
 	virtual	void	CheckSpecParams		(u32 spec_params);

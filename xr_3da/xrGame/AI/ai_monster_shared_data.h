@@ -50,10 +50,8 @@ public:
 	float					m_fEatSlice;
 	float					m_fEatSliceWeight;
 
-	u8						m_bUsedSquadAttackAlg;
-
+	u8						m_legs_number;
 	SAttackEffector			m_attack_effector;
-
 
 };
 

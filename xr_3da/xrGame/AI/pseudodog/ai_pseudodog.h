@@ -44,7 +44,6 @@ public:
 
 
 	virtual void	CheckSpecParams		(u32 spec_params);
-	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 	virtual void	play_effect_sound	();
 
 };

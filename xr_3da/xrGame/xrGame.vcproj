@@ -6584,9 +6584,6 @@
 					<File
 						RelativePath=".\console_commands.cpp">
 					</File>
-					<File
-						RelativePath=".\console_commands.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="Dll Process Detach"

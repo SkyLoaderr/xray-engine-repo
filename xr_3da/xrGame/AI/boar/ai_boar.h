@@ -28,8 +28,6 @@ public:
 			float	_cur_delta, _target_delta;
 			bool	look_at_enemy;
 	
-	
-	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 	virtual bool	ability_can_drag	() {return true;}
 
 };
