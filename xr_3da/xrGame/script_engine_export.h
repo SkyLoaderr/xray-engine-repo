@@ -62,7 +62,6 @@
 #	include "script_monster_action.h"
 #	include "script_entity_action.h"
 #	include "helicopter.h"
-
 #	include "game_sv_mp_script.h"
 #	include "game_cl_mp_script.h"
 #	include "UIGame_custom_script.h"
@@ -75,12 +74,10 @@
 #	include "UI/UIPropertiesBox.h"
 #	include "UI/UITabControl.h"
 #	include "UI/UIListWnd.h"
-
-
 #	include "script_ui_registrator.h"
 #	include "key_binding_registrator.h"
 #	include	"PhysicsShell.h"
 #	include "script_task.h"
 #	include "script_string_table.h"
-
+#	include "script_reader.h"
 #endif
