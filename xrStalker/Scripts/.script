@@ -110,7 +110,7 @@ function get_actor()
 end
 
 function distance_between(obj1, obj2)
-	return obj1:position():distance_to(obj2)
+	return obj1:position():distance_to(obj2:position())
 end
 
 
