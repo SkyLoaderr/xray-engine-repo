@@ -181,6 +181,7 @@ public:
     // utils
     bool				GenerateMap				();
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf){return false;}
+    virtual void		GetBBox 				(Fbox& bb, bool bSelOnly);
 
 	// properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);

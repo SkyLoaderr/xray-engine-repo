@@ -131,6 +131,7 @@ public:
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);
 
     // utils
+    virtual void		GetBBox 				(Fbox& bb, bool bSelOnly);
 	BOOL 				AddWallmark				(const Fvector& start, const Fvector& dir);
 	BOOL 				MoveSelectedWallmarkTo	(const Fvector& start, const Fvector& dir);
 };

@@ -134,6 +134,7 @@ public:
 
     // utils
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf);
+    virtual void		GetBBox 				(Fbox& bb, bool bSelOnly){}
     
     // other
     bool				UpdateHeader			();

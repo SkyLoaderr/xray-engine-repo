@@ -285,4 +285,13 @@ bool ESceneCustomOTools::GetSummaryInfo(SSceneSummary* inf)
     return true;
 }
 
+void ESceneCustomOTools::GetBBox(Fbox& BB, bool bSelOnly)
+{
+	Fbox bb;
+    ObjectList lst;
+    if (GetQueryObjects(lst, bSelOnly, true, -1)){
+        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+            if ((*_F)->GetBox(bb)) BB.merge(bb);
+    }
+}
 

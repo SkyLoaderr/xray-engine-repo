@@ -56,7 +56,8 @@ public:
             m_ShapeType			= fstSphere;
             m_SphereRadius		= 0.1f;
             m_BoxDimension.set	(0.1f,0.1f,0.1f);
-            m_PointCount		= 0;
+            m_PointCount		= 1;
+            m_Positions.resize	(m_PointCount,Fvector().set(0,0,0));
         }
         void		Generate(Fvector& p)
         {

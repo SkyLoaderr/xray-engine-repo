@@ -789,4 +789,22 @@ void ESceneWallmarkTools::RemoveControls()
 }
 //----------------------------------------------------
 
+void ESceneWallmarkTools::GetBBox(Fbox& bb, bool bSelOnly)
+{
+    if (bSelOnly){
+        for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+            wm_slot* slot		= *slot_it;	
+            for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                wallmark* W		= *w_it;
+                if (W->flags.is(wallmark::flSelected)) bb.merge	(W->bbox);
+            }
+        }
+    }else{
+        for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+            wm_slot* slot		= *slot_it;	
+            for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++)
+                bb.merge	((*w_it)->bbox);
+        }
+    }
+}
 

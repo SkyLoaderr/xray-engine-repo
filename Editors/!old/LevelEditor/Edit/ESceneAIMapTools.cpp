@@ -445,6 +445,23 @@ void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
     PHelper().CreateFloat 	(items, PrepareKey(pref,"Common\\Visible Radius"),	&m_VisRadius, 	10, 250);
     PHelper().CreateU32	 	(items, PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);
     PHelper().CreateFloat 	(items, PrepareKey(pref,"Params\\Can Up"),			&m_Params.fCanUP, 	0.f, 10.f);
-    PHelper().CreateFloat 	(items, PrepareKey(pref,"Params\\Can Down"),			&m_Params.fCanDOWN, 0.f, 10.f);
+    PHelper().CreateFloat 	(items, PrepareKey(pref,"Params\\Can Down"),		&m_Params.fCanDOWN, 0.f, 10.f);
+}
+
+void ESceneAIMapTools::GetBBox(Fbox& bb, bool bSelOnly)
+{
+    switch (LTools->GetSubTarget()){
+    case estAIMapNode:{
+    	if (bSelOnly){
+            for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+                if ((*it)->flags.is(SAINode::flSelected)){
+                	bb.modify(Fvector().add((*it)->Pos,-m_Params.fPatchSize*0.5f));
+                	bb.modify(Fvector().add((*it)->Pos,m_Params.fPatchSize*0.5f));
+                }
+        }else{
+        	bb.merge		(m_AIBBox);
+        }
+    }break;
+    }
 }
 

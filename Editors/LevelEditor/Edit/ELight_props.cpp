@@ -172,7 +172,7 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
     P->OnChangeEvent.bind	(this,&CLight::OnFuzzyFlagChange);
 	if (m_Flags.is(ELight::flPointFuzzy)){
         VERIFY				(m_FuzzyData);
-        P=PHelper().CreateS16		(items,	PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
+        P=PHelper().CreateS16		(items,	PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,1,100);
         P->OnChangeEvent.bind		(this,&CLight::OnFuzzyDataChange);
 	    B=PHelper().CreateButton	(items,	PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
     	B->OnBtnClickEvent.bind		(this,&CLight::OnFuzzyGenerateClick);

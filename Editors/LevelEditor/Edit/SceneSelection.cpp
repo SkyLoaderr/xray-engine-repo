@@ -161,11 +161,19 @@ void EScene::SynchronizeObjects()
 void EScene::ZoomExtents( EObjClass cls, BOOL bSel )
 {
 	Fbox BB;	BB.invalidate();
-	Fbox bb;
-    ObjectList lst;
-    if (GetQueryObjects(lst, cls, bSel, true, -1))
-        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if ((*_F)->GetBox(bb)) BB.merge(bb);
+    if (cls==OBJCLASS_DUMMY){
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++)
+            if (_I->second){
+            	Fbox bb; 			bb.invalidate();
+            	_I->second->GetBBox	(bb,bSel);
+                if (bb.is_valid()) 	BB.merge(bb);
+            }
+    }else{
+        ESceneCustomMTools* mt = GetMTools(cls);
+        if (mt) 			mt->GetBBox(BB,bSel);
+    }
     if (BB.is_valid()) Device.m_Camera.ZoomExtents(BB);
     else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
 }
