@@ -37,8 +37,7 @@ class	R_constant_table
 {
 private:
 	vector<R_constant*>		table;
-
-	R_constant*				allocate	()
 public:
-	void					Create		(D3DXSHADER_CONSTANTTABLE* desc);
+	void					create		(D3DXSHADER_CONSTANTTABLE* desc);
+	R_constant*				get			(LPCSTR name);
 };
