@@ -189,7 +189,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	SRotation						o_torso;				// torso in world coords
 	bool							m_bDeathIsProcessed;
 
-	xr_vector<ALife::_OBJECT_ID>	m_dynamic_restrictions;
+	xr_vector<ALife::_OBJECT_ID>	m_dynamic_out_restrictions;
+	xr_vector<ALife::_OBJECT_ID>	m_dynamic_in_restrictions;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureAbstract();
