@@ -59,7 +59,7 @@
 <!---------------------------MONOLIT MASTER----------------------->
 	<specific_character id="monolit_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="27" y="8"></icon>
+		<icon x="0" y="4"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 

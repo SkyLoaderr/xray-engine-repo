@@ -4,7 +4,7 @@
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default" team_default = "1">
 		<name>Неизвестный новичок</name>
-		<icon x="0" y="0"></icon>
+		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Ничем себя проявить еще не успел.</bio>
 
@@ -26,8 +26,8 @@
 <!---------------------------STALKER GENERAL---------------------->
 	<specific_character id="stalker_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Stalker_general</team>
@@ -48,8 +48,8 @@
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="stalker_veteran_default" team_default = "1">
 		<name>Неизвестный ветеран</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
 		<bio>Этот сталкер явно не первый день в Зоне.</bio>
 
 		<team>Stalker_veteran</team>
@@ -71,8 +71,8 @@
 <!---------------------------STALKER MASTER----------------------->
 	<specific_character id="stalker_master_default" team_default = "1">
 		<name>Неизвестный мастер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="10" y="0"></icon>
+		<map_icon x="1" y="0"></map_icon>
 		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
 
 		<team>Stalker_master</team>
