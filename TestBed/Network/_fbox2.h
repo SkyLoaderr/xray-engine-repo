@@ -84,7 +84,7 @@ public:
 
 	// Does the vector3 intersects box
 	IC BOOL Pick( const Tvector& start, const Tvector& dir ){
-		T	alpha,xt,yt;
+		T		alpha,xt,yt;
 		Tvector rvmin,rvmax;
 
 		rvmin.sub( min, start );
@@ -110,6 +110,31 @@ public:
 			xt = alpha * dir.x;
 			if( xt >= rvmin.x && xt <= rvmax.x )
 				return true;
+		}
+		return false;
+	};
+	IC BOOL pick_exact	( const Tvector& start, const Tvector& dir ){
+		T		alpha,xt,yt;
+		Tvector rvmin,rvmax;
+
+		rvmin.sub	( min, start );
+		rvmax.sub	( max, start );
+
+		if( _abs(dir.x)!=0 ){
+			alpha	= rvmin.x / dir.x;
+			yt		= alpha * dir.y;
+			if( yt >= rvmin.y && yt < rvmax.y )		return true;
+			alpha	= rvmax.x / dir.x;
+			yt		= alpha * dir.y;
+			if( yt >= rvmin.y && yt < rvmax.y )		return true;
+		}
+		if( _abs(dir.y)!=0 ){
+			alpha	= rvmin.y / dir.y;
+			xt		= alpha * dir.x;
+			if( xt >= rvmin.x && xt < rvmax.x )		return true;
+			alpha	= rvmax.y / dir.y;
+			xt		= alpha * dir.x;
+			if( xt >= rvmin.x && xt < rvmax.x )		return true;
 		}
 		return false;
 	};
