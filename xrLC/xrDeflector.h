@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hash2D.h"
+#include "cl_defs.h"
 
 struct UVtri : public _TCF 
 {
@@ -45,7 +46,8 @@ public:
 	float			Radius;
 	int				iArea;
 
-	vector<R_Light>	LightsSelected;
+	vector<R_Light>		LightsSelected;
+	RAPID::XRCollide	DB;
 
 	typedef hash2D<UVtri*,128,128>	HASH;
 public:
@@ -61,11 +63,12 @@ public:
 
 	DWORD	GetFaceCount() { return tris.size();	};
 
-	VOID	Prepare		();
-	VOID	Light		();
-	VOID	L_Direct	(HASH& H);
-	VOID	L_Radiosity	(HASH& H);
-	VOID	Save		();
+	VOID	Prepare			();
+	VOID	Light			();
+	VOID	L_Direct		(HASH& H);
+	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Radiosity		(HASH& H);
+	VOID	Save			();
 
 	WORD	GetBaseMaterial() { return tris.front().owner->dwMaterial;	}
 

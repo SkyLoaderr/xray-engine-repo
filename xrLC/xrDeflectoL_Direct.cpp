@@ -1,16 +1,51 @@
 #include "stdafx.h"
 #include "build.h"
-#include "cl_defs.h"
 #include "std_classes.h"
 #include "xrThread.h"
 
 extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
+void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
+{
+	Fvector		vdir;
+	vdir.sub	(v2,v1);
+
+	UVpoint		size; 
+	size.u		= p2.u-p1.u;
+	size.v		= p2.v-p1.v;
+	int	du		= iCeil(_abs(size.u)/texel_size);
+	int	dv		= iCeil(_abs(size.v)/texel_size);
+	int steps	= _max(du,dv);
+	for (int I=0; I<=steps; I++)
+	{
+		float	time = float(I)/float(steps);
+		UVpoint	uv;
+		uv.u	= size.u*time+p1.u;
+		uv.v	= size.v*time+p1.v;
+		int	_x  = iFloor(uv.u*float(lm.dwWidth)); 
+		int _y	= iFloor(uv.v*float(lm.dwHeight));
+
+		if ((_x<0)||(_x>=(int)T->dwWidth))	continue;
+		if ((_y<0)||(_y>=(int)T->dwHeight))	continue;
+		
+		DWORD& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
+		if (RGBA_GETALPHA(Lumel))			continue;
+
+		// ok - perform lighting
+		Fcolor	C; C.set(0,0,0,0);
+		Fvector	P; P.direct(v1,vdir,time);
+		LightPoint	(&DB, C, P, N, LightsSelected.begin(), LightsSelected.end());
+
+		Fcolor	R;
+		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+		R.a		= 1.f;
+		Lumel   = R.get();
+	}
+}
+
 void CDeflector::L_Direct	(HASH& H)
 {
-	RAPID::XRCollide		DB;
-	
 	// Setup variables
 	UVpoint		dim,half;
 	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
@@ -87,7 +122,17 @@ void CDeflector::L_Direct	(HASH& H)
 				lm.pSurface	[V*lm.dwWidth+U] = 0;
 			}
 		}
-		
-		// thProgress	= float(V) / float(lm.dwWidth);
+	}
+
+	// *** Render Edges
+	for (DWORD t=0; t<tris.size(); t++)
+	{
+		UVtri&		T	= tris[t];
+		UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(lm.dwWidth)); int y1=iFloor(p1.v*float(lm.dwHeight));
+		UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(lm.dwWidth)); int y2=iFloor(p2.v*float(lm.dwHeight));
+		UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(lm.dwWidth)); int y3=iFloor(p3.v*float(lm.dwHeight));
+		light_edge	(x1,y1,x2,y2,&lm,T);
+		light_edge	(x2,y2,x3,y3,&lm,T);
+		light_edge	(x3,y3,x1,y1,&lm,T);
 	}
 }
