@@ -41,8 +41,8 @@ BOOL	CSoundRender_TargetA::_initialize		()
 void	CSoundRender_TargetA::_destroy		()
 {
 	// clean up target
-	alDeleteSources	(1, &pSource);
-	alDeleteBuffers	(sdef_target_count, pBuffers);
+	if (alIsSource(pSource))	alDeleteSources	(1, &pSource);
+	A_CHK(alDeleteBuffers		(sdef_target_count, pBuffers));
 }
 
 void	CSoundRender_TargetA::start			(CSoundRender_Emitter* E)
