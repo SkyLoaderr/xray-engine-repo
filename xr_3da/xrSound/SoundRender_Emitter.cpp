@@ -38,9 +38,25 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 
 CSoundRender_Emitter::~CSoundRender_Emitter(void)
 {
+	// try to release dependencies, events, for example
+	Event_ReleaseOwner	();
 }
+
 //////////////////////////////////////////////////////////////////////
-void CSoundRender_Emitter::PropagadeEvent()
+void CSoundRender_Emitter::Event_ReleaseOwner()
+{
+	if	(0==owner)		return;
+
+	for (u32 it=0; it<SoundRender->s_events.size(); it++)
+	{
+		if (owner == SoundRender->s_events[it].first)	
+		{
+			SoundRender->s_events.erase(SoundRender->s_events.begin()+it);
+			it	--;
+		}
+	}
+}
+void CSoundRender_Emitter::Event_Propagade	()
 {
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
 	if (0==owner)					return;

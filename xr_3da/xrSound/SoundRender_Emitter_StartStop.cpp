@@ -28,6 +28,7 @@ void CSoundRender_Emitter::stop	()
 	if (target)	SoundRender->i_stop		(this);
 	if (owner)	
 	{
+		Event_ReleaseOwner		();
 		owner->feedback			= NULL;
 		owner					= NULL;
 	}

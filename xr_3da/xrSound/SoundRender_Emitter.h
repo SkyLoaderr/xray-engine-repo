@@ -56,7 +56,8 @@ public:
 
 	u32							marker;
 public:
-	void						PropagadeEvent			();
+	void						Event_Propagade			();
+	void						Event_ReleaseOwner		();
 	BOOL						isPlaying				(void)					{ return state!=stStopped; }
 
 	virtual void				switch_to_2D			()						{ b2D = TRUE;											}
