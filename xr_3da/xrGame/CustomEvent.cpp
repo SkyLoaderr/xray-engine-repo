@@ -27,7 +27,8 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 {
 	// Name
 	R_ASSERT					(section);
-	cNameSET					(section);
+	cName_set					(section);
+	cNameSect_set				(section);
 	
 	// Geometry and transform
 	/*
