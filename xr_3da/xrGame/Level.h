@@ -171,7 +171,9 @@ public:
 	virtual ~CLevel();
 };
 
-IC CLevel& Level()				{ return *((CLevel*) pCreator); }
+IC CLevel&	Level()				{ return *((CLevel*) pCreator); }
+IC DWORD	Game()				{ return Level().Game.type;		}
+
 class  CPHWorld;
 extern CPHWorld*				ph_world;
 
