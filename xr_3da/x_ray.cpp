@@ -67,7 +67,7 @@ void Startup				( )
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
-	Sound->_initialize			(Device.m_hWnd);
+	Sound->_initialize			(u64(Device.m_hWnd));
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
