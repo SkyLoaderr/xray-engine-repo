@@ -200,7 +200,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (g_Alive() && (m_tStateType == eStateTypePanic))
+	if (g_Alive() && (m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
 		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
 }
 

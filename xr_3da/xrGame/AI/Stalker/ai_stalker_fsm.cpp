@@ -218,7 +218,7 @@ void CAI_Stalker::Detour()
 			WRITE_TO_LOG			("WatchLook : Detour");
 			vfUpdateSearchPosition	();
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();

@@ -334,7 +334,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				H = true;
 	}
 	//H = true;
-	
+	if (E) {
+		E = false;
+		C = true;
+	}
 	// is there any items to pick up?
 	L = false;
 	if (m_dwParticularState != 7)
