@@ -48,6 +48,23 @@ void CObjectActionShow::initialize		()
 	VERIFY							(result);
 }
 
+void CObjectActionShow::execute		()
+{
+	inherited::execute				();
+	VERIFY							(m_item);
+	if (!m_object->inventory().ActiveItem() || (m_object->inventory().ActiveItem()->ID() != m_item->ID())) {
+		CHudItem					*hud_item = dynamic_cast<CHudItem*>(m_object->inventory().ActiveItem());
+		if (!hud_item)
+			return;
+		if (!hud_item->IsPending()) {
+			if (m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem)
+				m_object->inventory().Ruck	(m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem);
+			m_object->inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+			m_object->inventory().Slot		(m_item);
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionHide
 //////////////////////////////////////////////////////////////////////////
@@ -83,7 +100,10 @@ void CObjectActionReload::initialize		()
 void CObjectActionReload::execute			()
 {
 	inherited::execute();
-	m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+	CWeapon			*weapon = dynamic_cast<CWeapon*>(m_object->inventory().ActiveItem());
+	VERIFY			(weapon);
+	if (!weapon->IsPending() && !weapon->GetAmmoElapsed())
+		m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
 }
 
 //////////////////////////////////////////////////////////////////////////
