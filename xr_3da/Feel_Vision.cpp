@@ -7,7 +7,7 @@
 #include "cl_intersect.h"
 
 namespace Feel {
-	struct SFeelParam{
+	struct SFeelParam	{
 		Vision*						parent;
 		Vision::feel_visible_Item*	item;
 		float						vis;
