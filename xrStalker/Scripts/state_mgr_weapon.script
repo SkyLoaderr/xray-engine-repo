@@ -14,7 +14,13 @@ function eva_state_mgr_weapon:evaluate()
 		return true
 	end
 ]]
+--	printf("	-- best weapon %s", utils.to_str(self.object:best_weapon():name()))
+--	printf("	-- weapon strapped %s", utils.to_str(self.object:weapon_strapped()))
+--	printf("	-- weapon unstrapped %s", utils.to_str(self.object:weapon_unstrapped()))
+--	printf("	-- weapon strappable %s", utils.to_str(strappable_weapon(self.object:best_weapon())))
+	
 	if not isWeapon(self.object:best_weapon()) then
+--		printf("isWeapon = false")
 		return true
 	end
 
@@ -34,10 +40,10 @@ function eva_state_mgr_weapon:evaluate()
 	   (state_lib.states[self.st.target_state].weapon == "none" and
 	    self.object:active_item() == nil)
 	then
-		--printf("eva_state_mgr_weapon:evaluate() TRUE")
+--		printf("eva_state_mgr_weapon:evaluate() TRUE")
 		return true
 	end
-	--printf("eva_state_mgr_weapon:evaluate() FALSE")
+--	printf("eva_state_mgr_weapon:evaluate() FALSE")
 	return false
 end
 --' Лочим ли мы все это для оружия или нет?
@@ -171,6 +177,7 @@ function strappable_weapon(obj)
     elseif id == clsid.wpn_ak74 then return true
     elseif id == clsid.wpn_lr300 then return true
     elseif id == clsid.wpn_shotgun then return true
+    elseif id == clsid.wpn_bm16 then return true    
     elseif id == clsid.wpn_svd then return true
     elseif id == clsid.wpn_svu then return true
     elseif id == clsid.wpn_rpg7 then return true

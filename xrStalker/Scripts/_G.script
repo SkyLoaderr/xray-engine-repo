@@ -720,6 +720,7 @@ function isWeapon(object)
     elseif id == clsid.wpn_pm then return true
     elseif id == clsid.wpn_fort then return true
     elseif id == clsid.wpn_shotgun then return true
+    elseif id == clsid.wpn_bm16 then return true
     elseif id == clsid.wpn_svd then return true
     elseif id == clsid.wpn_svu then return true
     elseif id == clsid.wpn_rpg7 then return true

@@ -47,10 +47,10 @@ function eva_state_mgr_animation_reset:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_reset:evaluate()
-	printf("reset state [%s]", utils.to_str(self.st.reset_state))
-	printf("state [%s]", utils.to_str(state_lib.states[target_state]))
+--	printf("reset state [%s]", utils.to_str(self.st.reset_state))
+--	printf("state [%s]", utils.to_str(state_lib.states[target_state]))
 	if state_lib.states[target_state] ~= nil then
-		printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
+--		printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
 	end
 	
 	return self.st.reset_state == true and

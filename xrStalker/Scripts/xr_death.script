@@ -33,14 +33,14 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage) 	
 	local action = this.action_process_death(npc, storage)
-	storage.action = action
+	storage.death_action = action
 end
 
 function set_death_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)	
 
-	npc:set_callback(callback.death, st.action.death_callback, st.action)
+	npc:set_callback(callback.death, st.death_action.death_callback, st.death_action)
 end
 
 function disable_scheme(npc, scheme)
