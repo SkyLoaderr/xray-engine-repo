@@ -131,7 +131,7 @@ void CSheduler::ProcessStep			()
 	u32	dwTime					= Device.dwTimeGlobal;
 
 	// Normal priority
-	CTimer						eTimer;
+//	CTimer						eTimer(true);
 	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
 	{
 		// Update
@@ -163,7 +163,7 @@ void CSheduler::ProcessStep			()
 
 		// Real update call
 		// Msg							("------- %d:",Device.dwFrame);
-		eTimer.Start				();
+//		eTimer.Start				();
 #ifdef DEBUG
 		T.Object->dbg_startframe	= Device.dwFrame;
 #endif
@@ -176,14 +176,15 @@ void CSheduler::ProcessStep			()
 		//void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
 		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
 		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
-		u32	execTime				= eTimer.GetElapsed_ms		();
+/*		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{
 			//.LPCSTR	_class			= typeid(T.Object).name	();
 			//CObject*	O				= dynamic_cast<CObject*> (T.Object);
 			//if (O)					Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
 			//else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
-		}	
+		}
+*/
 #endif
 
 		Slice						();
