@@ -89,8 +89,8 @@ const shared_str GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, 
 void UpdateWeight(CUIStatic &wnd, bool withPrefix = false);
 
 // Функции получения строки-идентификатора ранга и отношения по их числовому идентификатору
-LPCSTR	GetRankAsText				(CHARACTER_RANK rankID);
-LPCSTR	GetReputationAsText			(CHARACTER_REPUTATION rankID);
+LPCSTR	GetRankAsText				(CHARACTER_RANK_VALUE		rankID);
+LPCSTR	GetReputationAsText			(CHARACTER_REPUTATION_VALUE rankID);
 
 void	ClearCharacterInfoStrings	();
 };

@@ -235,12 +235,12 @@ LPCSTR CSpecificCharacter::SndConfigSect () const
 #endif
 
 
-CHARACTER_RANK CSpecificCharacter::Rank() const 
+CHARACTER_RANK_VALUE CSpecificCharacter::Rank() const 
 {
 	return	data()->m_Rank;
 }
 
-CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const 
+CHARACTER_REPUTATION_VALUE CSpecificCharacter::Reputation	() const 
 {
 	return data()->m_Reputation;
 }

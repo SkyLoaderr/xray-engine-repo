@@ -13,9 +13,6 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "character_info_defs.h"
 
-#ifdef XRGAME_EXPORTS
-#	include "relation_registry.h"
-#endif
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -43,9 +40,16 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 #endif
 
 	CHARACTER_COMMUNITY_INDEX		m_community_index;
-
+	CHARACTER_REPUTATION_VALUE		m_reputation;
+	CHARACTER_RANK_VALUE			m_rank;
+		
 #ifdef XRGAME_EXPORTS
-	ALife::ERelationType			get_relation			(u16 person_id, CHARACTER_COMMUNITY_INDEX);
+	//для работы с relation system
+	u16								object_id	() const;
+	CHARACTER_COMMUNITY_INDEX		Community	() const;
+	CHARACTER_RANK_VALUE			Rank		() const;
+	CHARACTER_REPUTATION_VALUE		Reputation	() const;
+
 private:
 	bool							m_character_profile_init;
 #endif
@@ -56,11 +60,6 @@ private:
 	//буферный вектор проверенных персонажей
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_DefaultCharacters;
-
-#ifdef XRGAME_EXPORTS
-	//реестр  отношений с другими персонажами
-	RELATION_REGISTRY				relation_registry;
-#endif
 
 public:	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);

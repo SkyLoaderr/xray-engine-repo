@@ -17,8 +17,9 @@ class NET_Packet;
 
 #ifdef XRGAME_EXPORTS
 	#include "PhraseDialogDefs.h"
-	#include "relation_registry.h"
 	#include "character_community.h"
+	#include "character_rank.h"
+	#include "character_reputation.h"
 #endif
 
 
@@ -102,15 +103,19 @@ public:
 #ifdef XRGAME_EXPORTS
 	LPCSTR						Name()				const;
 	LPCSTR						Bio()				const;
+
+
 	const CHARACTER_COMMUNITY&	Community()			const;
-	CHARACTER_RANK				Rank()				const;
-	CHARACTER_REPUTATION		Reputation()		const;
+	const CHARACTER_RANK&		Rank()				const;
+	const CHARACTER_REPUTATION&	Reputation()		const;
 
-	void	SetRank			(CHARACTER_RANK				rank);
-	void	SetReputation	(CHARACTER_REPUTATION		reputation);
-	void	SetCommunity	(const CHARACTER_COMMUNITY&	community);
+	//доступут только у InventoryOwner
+protected:
+	void	SetRank			(CHARACTER_RANK_VALUE			rank);
+	void	SetReputation	(CHARACTER_REPUTATION_VALUE		reputation);
+	void	SetCommunity	(const CHARACTER_COMMUNITY&		community);
 
-
+public:
 	int		TradeIconX	()	const;
 	int		TradeIconY	()	const;
 	int		MapIconX	()	const;
@@ -118,17 +123,12 @@ public:
 
 	PHRASE_DIALOG_INDEX			StartDialog	()	const;
 	const DIALOG_INDEX_VECTOR&	ActorDialogs()	const;
-
-	RELATION_REGISTRY&			Relations ();
 #endif
 
 protected:
 
 
 #ifdef XRGAME_EXPORTS
-	//наши отношения с другими персонажами
-	RELATION_REGISTRY relation_registry;
-
 	CHARACTER_RANK					m_CurrentRank;
 	CHARACTER_REPUTATION			m_CurrentReputation;
 	CHARACTER_COMMUNITY				m_CurrentCommunity;

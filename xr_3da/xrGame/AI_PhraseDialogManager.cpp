@@ -11,6 +11,7 @@
 #include "inventoryowner.h"
 #include "character_info.h"
 #include "gameobject.h"
+#include "relation_registry.h"
 
 CAI_PhraseDialogManager::CAI_PhraseDialogManager	(void)
 {
@@ -44,7 +45,7 @@ void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 
 	if(!phrase_dialog->IsFinished())
 	{
-		CHARACTER_GOODWILL attitude = pInvOwner->CharacterInfo().Relations().GetAttitude(pOthersGO->ID(), pOthersIO->CharacterInfo().Community().index());
+		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetAttitude(pOthersIO, pInvOwner);
 
 		//если не найдем более подходяещей выводим фразу
 		//последнюю из списка (самую грубую)

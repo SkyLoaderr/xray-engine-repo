@@ -26,6 +26,7 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_registry_wrappers.h"
 
+#include "relation_registry.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,16 +103,17 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 		R_ASSERT(NO_PROFILE != pTrader->character_profile());
 
-		//синхронизируем группировку с серверным объектом
-		if(pTrader->m_community_index != NO_COMMUNITY_INDEX)
-			SetCommunity(pTrader->m_community_index);
+		//синхронизируем параметры персонажа с серверным объектом
+		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
+		CharacterInfo().m_CurrentRank.set(pTrader->m_rank);
+		CharacterInfo().m_CurrentReputation.set(pTrader->m_reputation);
+
 
 		CharacterInfo().Load(pTrader->character_profile());
 		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
 
 		//-------------------------------------
 		m_known_info_registry->registry().init(pThis->ID());
-		CharacterInfo().Relations().Init(pThis->ID(), pTrader->m_community_index);
 		//-------------------------------------
 
 
@@ -285,7 +287,7 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
-	ALife::ERelationType relation = talk_partner->CharacterInfo().Relations().GetRelationType(pOurEntityAlive->ID(), CharacterInfo().Community().index());
+	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(talk_partner, this);
 	if(relation == ALife::eRelationTypeEnemy) return false;
 
 	if(!pOurEntityAlive->g_Alive() || !pPartnerEntityAlive->g_Alive()) return false;
@@ -393,15 +395,62 @@ void CInventoryOwner::LostPdaContact	(CInventoryOwner* pInvOwner)
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
+//для работы с relation system
+u16 CInventoryOwner::object_id	()  const
+{
+	return smart_cast<const CGameObject*>(this)->ID();
+}
+
+
+//////////////////////////////////////////////////////////////////////////
 //установка группировки на клиентском и серверном объкте
+
 void CInventoryOwner::SetCommunity	(CHARACTER_COMMUNITY_INDEX new_community)
 {
 	CEntityAlive* EA					= smart_cast<CEntityAlive*>(this); VERIFY(EA);
-    CSE_Abstract* e_entity				= Level().Server->game->get_entity_from_eid	(EA->ID()); VERIFY(e_entity);
+	CSE_Abstract* e_entity				= Level().Server->game->get_entity_from_eid	(EA->ID()); VERIFY(e_entity);
 	CSE_ALifeTraderAbstract* trader		= smart_cast<CSE_ALifeTraderAbstract*>(e_entity);
 	if(!trader) return;
 
 	CharacterInfo().m_CurrentCommunity.set(new_community);
 	EA->id_Team = CharacterInfo().m_CurrentCommunity.team();
 	trader->m_community_index  = new_community;
+}
+
+void CInventoryOwner::SetRank			(CHARACTER_RANK_VALUE rank)
+{
+	CEntityAlive* EA					= smart_cast<CEntityAlive*>(this); VERIFY(EA);
+	CSE_Abstract* e_entity				= Level().Server->game->get_entity_from_eid	(EA->ID()); VERIFY(e_entity);
+	CSE_ALifeTraderAbstract* trader		= smart_cast<CSE_ALifeTraderAbstract*>(e_entity);
+	if(!trader) return;
+
+	CharacterInfo().m_CurrentRank.set(rank);
+	trader->m_rank  = rank;
+}
+void CInventoryOwner::SetReputation		(CHARACTER_REPUTATION_VALUE reputation)
+{
+	CEntityAlive* EA					= smart_cast<CEntityAlive*>(this); VERIFY(EA);
+	CSE_Abstract* e_entity				= Level().Server->game->get_entity_from_eid	(EA->ID()); VERIFY(e_entity);
+	CSE_ALifeTraderAbstract* trader		= smart_cast<CSE_ALifeTraderAbstract*>(e_entity);
+	if(!trader) return;
+
+	CharacterInfo().m_CurrentReputation.set(reputation);
+	trader->m_reputation  = reputation;
+}
+
+
+CHARACTER_COMMUNITY_INDEX  CInventoryOwner::Community	() const
+{
+	return CharacterInfo().Community().index();
+}
+
+CHARACTER_REPUTATION_VALUE	CInventoryOwner::Rank		() const
+{
+	return CharacterInfo().Rank().value();
+}
+
+CHARACTER_REPUTATION_VALUE	CInventoryOwner::Reputation	() const
+{
+	return CharacterInfo().Reputation().value();
 }

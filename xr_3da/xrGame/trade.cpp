@@ -8,6 +8,7 @@
 #include "xrmessages.h"
 
 #include "character_info.h"
+#include "relation_registry.h"
 
 class CInventoryOwner;
 
@@ -386,7 +387,7 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_GOODWILL attitude = pPartner.inv_owner->CharacterInfo().Relations().GetAttitude(pThis.base->ID(), pThis.inv_owner->CharacterInfo().Community().index());
+		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetRelationType(pPartner.inv_owner, pThis.inv_owner);
 		float goodwill_factor;
 		
 		if(NO_GOODWILL == attitude)
@@ -407,7 +408,7 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_GOODWILL attitude = pThis.inv_owner->CharacterInfo().Relations().GetAttitude(pPartner.base->ID(), pThis.inv_owner->CharacterInfo().Community().index());
+		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetRelationType(pPartner.inv_owner, pThis.inv_owner);
 		float goodwill_factor;
 
 		if(NO_GOODWILL == attitude)

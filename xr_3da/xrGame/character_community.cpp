@@ -6,11 +6,9 @@
 #include "stdafx.h"
 #include "character_community.h"
 
-
 #define GAME_RELATIONS_SECT "game_relations"
 #define GAME_COMMUNITIES	"communities"
-
-CHARACTER_COMMUNITY::GOODWILL_TABLE*  CHARACTER_COMMUNITY::m_pCommunityRelationTable = NULL;
+#define COMMUNITIES_TABLE	"communities_relations"
 
 //////////////////////////////////////////////////////////////////////////
 COMMUNITY_DATA::COMMUNITY_DATA (CHARACTER_COMMUNITY_INDEX idx, CHARACTER_COMMUNITY_ID idn, LPCSTR team_str)
@@ -59,43 +57,10 @@ void CHARACTER_COMMUNITY::InitIdToIndex	()
 {
 	section_name = GAME_RELATIONS_SECT;
 	line_name = GAME_COMMUNITIES;
+
+	m_relation_table.set_table_sect(COMMUNITIES_TABLE);
 }
 
-
-CHARACTER_COMMUNITY::GOODWILL_TABLE& CHARACTER_COMMUNITY::relation_table	()
-{
-
-	if(m_pCommunityRelationTable)
-		return *m_pCommunityRelationTable;
-
-	m_pCommunityRelationTable = xr_new<GOODWILL_TABLE>();
-
-	LPCSTR table_sect = "communities_relations";
-	std::size_t table_size = GetMaxIndex()+1;
-
-	m_pCommunityRelationTable->resize(table_size);
-
-	string64 buffer;
-	CInifile::Sect&	relations = pSettings->r_section(table_sect);
-
-	R_ASSERT3(relations.size() == table_size, "wrong size for table in section", table_sect);
-
-	for (CInifile::SectIt i = relations.begin(); relations.end() != i; ++i)
-	{
-		CHARACTER_COMMUNITY_INDEX cur_index = IdToIndex((*i).first);
-		
-		if(NO_COMMUNITY_INDEX == cur_index)
-			Debug.fatal("wrong community %s in section [%s],  (*i).first, table_sect");
-		
-		(*m_pCommunityRelationTable)[cur_index].resize(table_size);
-		for(std::size_t j=0; j<table_size; j++)
-		{
-			(*m_pCommunityRelationTable)[cur_index][j] = (CHARACTER_GOODWILL)atoi(_GetItem(*(*i).second,(int)j,buffer));
-		}
-	}
-
-	return *m_pCommunityRelationTable;
-}
 
 CHARACTER_GOODWILL CHARACTER_COMMUNITY::relation		(CHARACTER_COMMUNITY_INDEX to)
 {
@@ -104,13 +69,14 @@ CHARACTER_GOODWILL CHARACTER_COMMUNITY::relation		(CHARACTER_COMMUNITY_INDEX to)
 
 CHARACTER_GOODWILL  CHARACTER_COMMUNITY::relation		(CHARACTER_COMMUNITY_INDEX from, CHARACTER_COMMUNITY_INDEX to)
 {
-	VERIFY(from	<(int)relation_table().size());
-	VERIFY(to	<(int)relation_table().size());
-	return relation_table()[from][to];
+	VERIFY(from >= 0 && from <(int)m_relation_table.table().size());
+	VERIFY(to >= 0 && to <(int)m_relation_table.table().size());
+	
+	return m_relation_table.table()[from][to];
 }
 
 void CHARACTER_COMMUNITY::DeleteIdToIndexData	()
 {
-	xr_delete(m_pCommunityRelationTable);
+	m_relation_table.clear();
 	inherited::DeleteIdToIndexData();
 }

@@ -24,9 +24,9 @@
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
 {
-	m_iCharacterIndex	= NO_SPECIFIC_CHARACTER;
-	m_Rank				= NO_RANK;
-	m_Reputation		= NO_REPUTATION;
+	m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
+	m_Rank.set(NO_RANK);
+	m_Reputation.set(NO_REPUTATION);
 }
 
 SCharacterProfile::~SCharacterProfile()
@@ -43,8 +43,8 @@ CCharacterInfo::CCharacterInfo()
 	m_iSpecificCharacterIndex = NO_SPECIFIC_CHARACTER;
 
 #ifdef XRGAME_EXPORTS
-	m_CurrentRank = NO_RANK;
-	m_CurrentReputation = NO_REPUTATION;
+	m_CurrentRank.set(NO_RANK);
+	m_CurrentReputation.set(NO_REPUTATION);
 #endif
 }
 
@@ -73,9 +73,9 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 	m_iSpecificCharacterIndex = new_index;
 
 	m_SpecificCharacter.Load(m_iSpecificCharacterIndex);
-	if(Rank() == NO_RANK)
+	if(Rank().value() == NO_RANK)
 		SetRank(m_SpecificCharacter.Rank());
-	if(Reputation() == NO_REPUTATION)
+	if(Reputation().value() == NO_REPUTATION)
 		SetReputation(m_SpecificCharacter.Reputation());
 	if(Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community());
@@ -120,8 +120,8 @@ void CCharacterInfo::load_shared	(LPCSTR)
 		else
 			data()->m_Class				= NO_CHARACTER_CLASS;
 			
-		data()->m_Rank				= uiXml.ReadInt	("rank",		0,	NO_RANK);
-		data()->m_Reputation		= uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
+		data()->m_Rank.set(uiXml.ReadInt	("rank",		0,	NO_RANK));
+		data()->m_Reputation.set(uiXml.ReadInt	("reputation",	0,	NO_REPUTATION));
 	}
 	else
 		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
@@ -142,7 +142,7 @@ LPCSTR CCharacterInfo::Bio() const
 }
 
 
-CHARACTER_RANK CCharacterInfo::Rank() const
+const CHARACTER_RANK& CCharacterInfo::Rank() const
 {
 	return	m_CurrentRank;
 }
@@ -152,18 +152,18 @@ const CHARACTER_COMMUNITY& CCharacterInfo::Community() const
 	return	m_CurrentCommunity;
 }
 
-CHARACTER_REPUTATION CCharacterInfo::Reputation() const
+const CHARACTER_REPUTATION& CCharacterInfo::Reputation() const
 {
 	return m_CurrentReputation;
 }
 
-void CCharacterInfo::SetRank (CHARACTER_RANK rank)
+void CCharacterInfo::SetRank (CHARACTER_RANK_VALUE rank)
 {
-	m_CurrentRank = rank;
+	m_CurrentRank.set(rank);
 }
-void CCharacterInfo::SetReputation (CHARACTER_REPUTATION reputation)
+void CCharacterInfo::SetReputation (CHARACTER_REPUTATION_VALUE reputation)
 {
-	m_CurrentReputation = reputation;
+	m_CurrentReputation.set(reputation);
 }
 
 void CCharacterInfo::SetCommunity	(const CHARACTER_COMMUNITY& community)
@@ -172,10 +172,6 @@ void CCharacterInfo::SetCommunity	(const CHARACTER_COMMUNITY& community)
 }
 
 
-RELATION_REGISTRY& CCharacterInfo::Relations ()
-{
-	return relation_registry;
-}
 
 
 int	 CCharacterInfo::TradeIconX() const

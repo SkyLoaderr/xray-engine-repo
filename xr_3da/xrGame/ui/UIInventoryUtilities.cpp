@@ -32,8 +32,8 @@ static ref_shader	g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic				();
 const int			hugeValue				= 0x0ddddddd;
 
-typedef				std::pair<CHARACTER_RANK, shared_str>	CharInfoStringID;
-DEF_MAP				(CharInfoStrings, CHARACTER_RANK, shared_str);
+typedef				std::pair<CHARACTER_RANK_VALUE, shared_str>	CharInfoStringID;
+DEF_MAP				(CharInfoStrings, CHARACTER_RANK_VALUE, shared_str);
 
 CharInfoStrings		*charInfoReputationStrings	= NULL;
 CharInfoStrings		*charInfoRankStrings		= NULL;
@@ -446,7 +446,7 @@ void InventoryUtilities::ClearCharacterInfoStrings()
 
 //////////////////////////////////////////////////////////////////////////
 
-LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
+LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK_VALUE rankID)
 {
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoRankStrings);
@@ -458,7 +458,7 @@ LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
 
 //////////////////////////////////////////////////////////////////////////
 
-LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION rankID)
+LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION_VALUE rankID)
 {
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoReputationStrings);

@@ -59,6 +59,8 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 #ifdef XRGAME_EXPORTS
 	m_character_profile_init	= false;
 	m_community_index			= NO_COMMUNITY_INDEX;
+	m_rank						= NO_RANK;
+	m_reputation				= NO_REPUTATION;
 #endif
 
 	m_trader_flags.zero			();
@@ -98,8 +100,12 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 
 #ifdef XRGAME_EXPORTS
 	tNetPacket.w_s32			(m_community_index);
+	tNetPacket.w_s32			(m_rank);
+	tNetPacket.w_s32			(m_reputation);
 #else
 	tNetPacket.w_s32			(NO_COMMUNITY_INDEX);
+	tNetPacket.w_s32			(NO_RANK);
+	tNetPacket.w_s32			(NO_REPUTATION);
 #endif
 }
 
@@ -121,11 +127,12 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iCharacterProfile);
 		if (m_wVersion > 85)
 			tNetPacket.r_s32	(m_community_index);
+		if (m_wVersion > 86)
+		{
+			tNetPacket.r_s32	(m_rank);
+			tNetPacket.r_s32	(m_reputation);
+		}
 	}
-
-#ifdef XRGAME_EXPORTS
-	relation_registry.Init(base()->ID, m_community_index);
-#endif
 }
 
 
@@ -193,9 +200,9 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 				if(spec_char.data()->m_bDefaultForCommunity)
 					m_DefaultCharacters.push_back(i);
 
-				if(char_info.data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank)<RANK_DELTA)
+				if(char_info.data()->m_Rank.value() == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank.value())<RANK_DELTA)
 				{
-					if(char_info.data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - char_info.data()->m_Reputation)<REPUTATION_DELTA)
+					if(char_info.data()->m_Reputation.value() == NO_REPUTATION || _abs(spec_char.Reputation() - char_info.data()->m_Reputation.value())<REPUTATION_DELTA)
 					{
 #ifdef XRGAME_EXPORTS
 						int* count = NULL;
@@ -260,10 +267,21 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 	}
 
 #ifdef XRGAME_EXPORTS
-	m_community_index = selected_char.Community().index();
-	CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base());
-	if (creature)
-		creature->s_team = selected_char.Community().team();
+
+	if(NO_COMMUNITY_INDEX == m_community_index)
+	{
+		m_community_index = selected_char.Community().index();
+		CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base());
+		if (creature)
+			creature->s_team = selected_char.Community().team();
+	}
+
+	if(NO_RANK == m_rank)
+		m_rank = selected_char.Rank();
+
+	if(NO_REPUTATION == m_reputation)
+		m_rank = selected_char.Reputation();
+
 #else
 	//в редакторе специфический профиль оставляем не заполненым
 	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
@@ -299,9 +317,23 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 
 #ifdef XRGAME_EXPORTS
 
-ALife::ERelationType CSE_ALifeTraderAbstract::get_relation (u16 person_id, CHARACTER_COMMUNITY_INDEX comm_index)
+//для работы с relation system
+u16								CSE_ALifeTraderAbstract::object_id		() const
 {
-	return relation_registry.GetRelationType(person_id, comm_index);
+	return base()->ID;
+}
+
+CHARACTER_COMMUNITY_INDEX		CSE_ALifeTraderAbstract::Community	() const
+{
+	return m_community_index;
+}
+CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		() const
+{
+	return m_rank;
+}
+CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation () const
+{
+	return m_reputation;
 }
 
 #endif

@@ -103,8 +103,9 @@
 // 84 - CSE_SpawnGroup					appended with a property
 // 85 - CSE_SpawnGroup					all the properties moved to CSE_Abstract
 // 86 - CSE_AlifeTraderAbstract			appended with m_community_index
+// 87 - CSE_AlifeTraderAbstract			appended with m_rank, m_reputation
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(86)
+#define SPAWN_VERSION	u16(87)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

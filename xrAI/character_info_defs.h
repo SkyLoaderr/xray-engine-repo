@@ -17,17 +17,6 @@ typedef int						SPECIFIC_CHARACTER_INDEX;
 typedef shared_str				SPECIFIC_CHARACTER_ID;
 #define NO_SPECIFIC_CHARACTER	SPECIFIC_CHARACTER_INDEX(-1)
 
-//репутация персонажа - величина от -100 (очень плохой, беспредельщик) 
-//до 100 (очень хороший, благородный)
-typedef int					CHARACTER_REPUTATION;
-#define NO_REPUTATION		-type_max(CHARACTER_REPUTATION)
-#define NEUTRAL_REPUTATION	CHARACTER_REPUTATION(0)
-
-//ранг персонажа - величина от 0 (совсем неопытный) 
-//до >100 (очень опытный)
-typedef int			CHARACTER_RANK;
-#define NO_RANK		CHARACTER_RANK(-1)
-
 //личное отношение (благосклонность) одного персонажа к другому - 
 //величина от -100< (крайне враждебное) до >100 (очень дрюжелюбное)
 typedef int					CHARACTER_GOODWILL;
@@ -36,6 +25,17 @@ typedef int					CHARACTER_GOODWILL;
 
 typedef shared_str				CHARACTER_CLASS;
 #define NO_CHARACTER_CLASS		NULL
+
+//репутация персонажа - величина от -100 (очень плохой, беспредельщик) 
+//до 100 (очень хороший, благородный)
+typedef int					CHARACTER_REPUTATION_VALUE;
+#define NO_REPUTATION		-type_max(CHARACTER_REPUTATION_VALUE)
+#define NEUTAL_REPUTATION	0
+
+//ранг персонажа - величина от 0 (совсем неопытный) 
+//до >100 (очень опытный)
+typedef int			CHARACTER_RANK_VALUE;
+#define NO_RANK		-type_max(CHARACTER_RANK_VALUE)
 
 
 typedef shared_str				CHARACTER_COMMUNITY_ID;

@@ -15,6 +15,7 @@
 #include "alife_graph_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_time_manager.h"
+#include "relation_registry.h"
 
 using namespace ALife;
 
@@ -442,15 +443,8 @@ ALife::ERelationType	CALifeCombatManager::relation_type	(CSE_ALifeMonsterAbstrac
 
 	if(human1 && human2)
 	{
-		ALife::ERelationType rel12 = human1->get_relation(human2->base()->ID, human2->m_community_index);
-		ALife::ERelationType rel21 = human2->get_relation(human1->base()->ID, human1->m_community_index);
-
-		if(ALife::eRelationTypeEnemy == rel12 || ALife::eRelationTypeEnemy == rel21)
-			return ALife::eRelationTypeEnemy;
-		else if(ALife::eRelationTypeNeutral == rel12 || ALife::eRelationTypeNeutral == rel21)
-			return ALife::eRelationTypeNeutral;
-		else
-			return ALife::eRelationTypeFriend;
+		ALife::ERelationType rel = RELATION_REGISTRY().GetRelationBetween(human1, human2);
+		return rel;
 	}
 
 	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team())

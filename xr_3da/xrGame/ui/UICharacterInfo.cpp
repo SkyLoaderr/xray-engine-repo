@@ -12,6 +12,7 @@ using namespace InventoryUtilities;
 #include "../level.h"
 #include "../character_info.h"
 #include "../string_table.h"
+#include "../relation_registry.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -193,7 +194,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 
 	int offset;
 
-	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank())));
+	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank().value())));
 	if (m_bInfoAutoAdjust)
 	{
 		if (UIRankCaption.IsEnabled() && UIRankCaption.GetFont())
@@ -204,7 +205,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 	UIRank.SetText(str);
 
-	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation())));
+	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation().value())));
 	if (m_bInfoAutoAdjust)
 	{
 		if (UIReputationCaption.IsEnabled() && UIReputationCaption.GetFont())
@@ -263,7 +264,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(pActor)
-			SetRelation(pInvOwner->CharacterInfo().Relations().GetRelationType(pActor->ID(), pActor->CharacterInfo().Community().index()));
+			SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
 	}
 }
 

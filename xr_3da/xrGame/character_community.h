@@ -5,8 +5,9 @@
 
 #pragma once
 
-
 #include "ini_id_loader.h"
+#include "ini_table_loader.h"
+
 #include "character_info_defs.h"
 
 
@@ -45,18 +46,14 @@ private:
 
 	static	void				InitIdToIndex	();
 
-
 public:
-	typedef						xr_vector<CHARACTER_GOODWILL>			GOODWILL_VECTOR;
-	typedef						xr_vector<GOODWILL_VECTOR>				GOODWILL_TABLE;
-
 	//отношение между группировками
-	static GOODWILL_TABLE&		relation_table		();
 	static CHARACTER_GOODWILL	relation			(CHARACTER_COMMUNITY_INDEX from, CHARACTER_COMMUNITY_INDEX to);
 	CHARACTER_GOODWILL			relation			(CHARACTER_COMMUNITY_INDEX to);
 	
 	static void					DeleteIdToIndexData	();
-
 private:
-	static GOODWILL_TABLE*		m_pCommunityRelationTable;
+	typedef CIni_Table<CHARACTER_GOODWILL, CHARACTER_COMMUNITY> GOODWILL_TABLE;
+	friend GOODWILL_TABLE;
+	static GOODWILL_TABLE m_relation_table;
 };

@@ -5581,8 +5581,33 @@
 									RelativePath=".\character_info_defs.h">
 								</File>
 								<File
+									RelativePath=".\character_rank.cpp">
+								</File>
+								<File
+									RelativePath=".\character_rank.h">
+								</File>
+								<File
+									RelativePath=".\character_reputation.cpp">
+								</File>
+								<File
+									RelativePath=".\character_reputation.h">
+								</File>
+								<File
 									RelativePath=".\ini_id_loader.h">
 								</File>
+								<File
+									RelativePath=".\ini_table_loader.h">
+								</File>
+								<File
+									RelativePath=".\specific_character.cpp">
+								</File>
+								<File
+									RelativePath=".\specific_character.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="relation registry"
+								Filter="">
 								<File
 									RelativePath=".\relation_registry.cpp">
 								</File>
@@ -5593,10 +5618,7 @@
 									RelativePath=".\relation_registry_defs.h">
 								</File>
 								<File
-									RelativePath=".\specific_character.cpp">
-								</File>
-								<File
-									RelativePath=".\specific_character.h">
+									RelativePath=".\relation_registry_inline.h">
 								</File>
 							</Filter>
 						</Filter>

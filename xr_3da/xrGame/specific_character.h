@@ -64,9 +64,9 @@ struct SSpecificCharacterData : CSharedResource
 #endif
 	
 	//ранг
-	CHARACTER_RANK				m_Rank;
+	CHARACTER_RANK_VALUE		m_Rank;
 	//репутация
-	CHARACTER_REPUTATION		m_Reputation;
+	CHARACTER_REPUTATION_VALUE	m_Reputation;
 
 	//классы персонажа (военные-ветераны, ученые и т.д.)
 	//к которым он принадлежит
@@ -124,8 +124,8 @@ public:
 	const CHARACTER_COMMUNITY&	Community	() const ;
 #endif
 
-	CHARACTER_RANK				Rank		() const ;
-	CHARACTER_REPUTATION		Reputation	() const ;
+	CHARACTER_RANK_VALUE		Rank		() const ;
+	CHARACTER_REPUTATION_VALUE	Reputation	() const ;
 	LPCSTR						Visual		() const ;
 
 #ifdef  XRGAME_EXPORTS

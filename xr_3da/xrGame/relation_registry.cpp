@@ -1,14 +1,18 @@
 //////////////////////////////////////////////////////////////////////////
-// relation_registry->registry().cpp:	реестр для хранения данных об отношении персонажа к 
+// relation_registry.cpp:	реестр для хранения данных об отношении персонажа к 
 //							другим персонажам
 //////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "relation_registry.h"
-#include "character_community.h"
 #include "alife_registry_wrappers.h"
 
-#define GAME_RELATIONS_SECT "game_relations"
+#include "character_community.h"
+#include "character_reputation.h"
+#include "character_rank.h"
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,83 +59,52 @@ void SRelation::SetGoodwill(CHARACTER_GOODWILL new_goodwill)
 
 //////////////////////////////////////////////////////////////////////////
 
+CRelationRegistryWrapper* RELATION_REGISTRY::m_relation_registry = NULL;
+
+
 RELATION_REGISTRY::RELATION_REGISTRY  ()
 {
-	relation_registry	= xr_new<CRelationRegistryWrapper>();
-	m_iOurCommunity		= NO_COMMUNITY_INDEX;
 }
 
 RELATION_REGISTRY::~RELATION_REGISTRY ()
 {
-	xr_delete			(relation_registry);
-}
-
-void RELATION_REGISTRY::Init			(u16 id, CHARACTER_COMMUNITY_INDEX comm_index)
-{
-	relation_registry->registry().init(id);
-	m_iOurCommunity = comm_index;
-}
-
-
-CHARACTER_GOODWILL	 RELATION_REGISTRY::GetAttitude	(u16 person_id, CHARACTER_COMMUNITY_INDEX comm_index) const 
-{
-	CHARACTER_GOODWILL presonal_goodwill		= GetGoodwill(person_id); VERIFY(presonal_goodwill != NO_GOODWILL);
-	CHARACTER_GOODWILL community_goodwill		= GetCommunityGoodwill(comm_index); VERIFY(community_goodwill != NO_GOODWILL);
-	CHARACTER_GOODWILL community_to_community	= CHARACTER_COMMUNITY::relation(m_iOurCommunity, comm_index);
-	CHARACTER_GOODWILL attitude = presonal_goodwill + community_goodwill + community_to_community;
-
-	return attitude;
-}
-
-void				 RELATION_REGISTRY::SetRelationType		(u16 person_id, CHARACTER_COMMUNITY_INDEX comm_index, ALife::ERelationType new_relation)
-{
-	static int goodwill_enemy	= pSettings->r_s16(GAME_RELATIONS_SECT, "goodwill_enemy");
-	static int goodwill_neutral = pSettings->r_s16(GAME_RELATIONS_SECT, "goodwill_neutal");
-	static int goodwill_friend	= pSettings->r_s16(GAME_RELATIONS_SECT, "goodwill_friend");
-
-	switch(new_relation)
-	{
-	case ALife::eRelationTypeEnemy:
-        SetGoodwill(person_id, goodwill_enemy);
-		break;
-	case ALife::eRelationTypeNeutral:
-		SetGoodwill(person_id, goodwill_neutral);
-		break;
-	case ALife::eRelationTypeFriend:
-		SetGoodwill(person_id, goodwill_friend);
-		break;
-	default:
-		NODEFAULT;
-	}
-}
-
-ALife::ERelationType RELATION_REGISTRY::GetRelationType		(u16 person_id, CHARACTER_COMMUNITY_INDEX comm_index) const 
-{
-	static int attitude_neutral = pSettings->r_s16(GAME_RELATIONS_SECT, "attitude_neutal_threshold");
-	static int attitude_friend = pSettings->r_s16(GAME_RELATIONS_SECT, "attitude_friend_threshold");
-
-	CHARACTER_GOODWILL attitude = GetAttitude(person_id, comm_index);
-
-	if(attitude == NO_GOODWILL)
-		return ALife::eRelationTypeNeutral;
-
-	if(attitude<attitude_neutral)
-		return ALife::eRelationTypeEnemy;
-	else if(attitude<attitude_friend)
-		return ALife::eRelationTypeNeutral;
-	else
-		return ALife::eRelationTypeFriend;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 person_id) const 
+CRelationRegistryWrapper& RELATION_REGISTRY::relation_registry()
 {
-	const RELATION_DATA* relation_data = relation_registry->registry().objects_ptr();
+	if(!m_relation_registry)
+		m_relation_registry = xr_new<CRelationRegistryWrapper>();
+
+	return *m_relation_registry;
+}
+
+void RELATION_REGISTRY::clear_relation_registry()
+{
+	xr_delete(m_relation_registry);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+void RELATION_REGISTRY::ClearRelations	(u16 person_id)
+{
+	const RELATION_DATA* relation_data = relation_registry().registry().objects_ptr(person_id);
+	if(relation_data)
+	{
+		relation_registry().registry().objects(person_id).clear();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 from, u16 to) const 
+{
+	const RELATION_DATA* relation_data = relation_registry().registry().objects_ptr(from);
 
 	if(relation_data)
 	{
-		PERSONAL_RELATION_MAP::const_iterator it = relation_data->personal.find(person_id);
+		PERSONAL_RELATION_MAP::const_iterator it = relation_data->personal.find(to);
 		if(relation_data->personal.end() != it)
 		{
 			const SRelation& relation = (*it).second;
@@ -142,27 +115,27 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 person_id) const
 	return NEUTRAL_GOODWILL;
 }
 
-void RELATION_REGISTRY::SetGoodwill 	(u16 person_id, CHARACTER_GOODWILL goodwill)
+void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry->registry().objects();
-	relation_data.personal[person_id].SetGoodwill(goodwill);
+	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
+	relation_data.personal[to].SetGoodwill(goodwill);
 }
 
-void RELATION_REGISTRY::ChangeGoodwill 	(u16 person_id, CHARACTER_GOODWILL delta_goodwill)
+
+void RELATION_REGISTRY::ChangeGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL delta_goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry->registry().objects();
-	relation_data.personal[person_id].SetGoodwill(relation_data.personal[person_id].Goodwill() + delta_goodwill);
+	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
+	relation_data.personal[to].SetGoodwill(relation_data.personal[to].Goodwill() + delta_goodwill);
 }
 
 //////////////////////////////////////////////////////////////////////////
-
-CHARACTER_GOODWILL	 RELATION_REGISTRY::GetCommunityGoodwill (CHARACTER_COMMUNITY_INDEX comm_index) const 
+CHARACTER_GOODWILL	 RELATION_REGISTRY::GetCommunityGoodwill (CHARACTER_COMMUNITY_INDEX from_community, u16 to_character) const 
 {
-	const RELATION_DATA* relation_data = relation_registry->registry().objects_ptr();
+	const RELATION_DATA* relation_data = relation_registry().registry().objects_ptr(to_character);
 
 	if(relation_data)
 	{
-		COMMUNITY_RELATION_MAP::const_iterator it = relation_data->communities.find(comm_index);
+		COMMUNITY_RELATION_MAP::const_iterator it = relation_data->communities.find(from_community);
 		if(relation_data->communities.end() != it)
 		{
 			const SRelation& relation = (*it).second;
@@ -173,27 +146,38 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetCommunityGoodwill (CHARACTER_COMMUNITY
 	return NEUTRAL_GOODWILL;
 }
 
-void RELATION_REGISTRY::SetCommunityGoodwill 	(CHARACTER_COMMUNITY_INDEX comm_index, CHARACTER_GOODWILL goodwill)
+void RELATION_REGISTRY::SetCommunityGoodwill 	(CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry->registry().objects();
-	relation_data.communities[comm_index].SetGoodwill(goodwill);
+	RELATION_DATA& relation_data = relation_registry().registry().objects(to_character);
+	relation_data.communities[from_community].SetGoodwill(goodwill);
 }
 
-void RELATION_REGISTRY::ChangeCommunityGoodwill 	(CHARACTER_COMMUNITY_INDEX comm_index, CHARACTER_GOODWILL delta_goodwill)
+void RELATION_REGISTRY::ChangeCommunityGoodwill (CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL delta_goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry->registry().objects();
-	relation_data.communities[comm_index].SetGoodwill(relation_data.communities[comm_index].Goodwill() + delta_goodwill);
+	RELATION_DATA& relation_data = relation_registry().registry().objects(to_character);
+	relation_data.communities[from_community].SetGoodwill(relation_data.communities[from_community].Goodwill() + delta_goodwill);
 }
-
-
-
 //////////////////////////////////////////////////////////////////////////
 
-void RELATION_REGISTRY::ClearRelations	()
+CHARACTER_GOODWILL	 RELATION_REGISTRY::GetCommunityRelation		(CHARACTER_COMMUNITY_INDEX index1, CHARACTER_COMMUNITY_INDEX index2) const
 {
-	const RELATION_DATA* relation_data = relation_registry->registry().objects_ptr();
-	if(relation_data)
-	{
-		relation_registry->registry().objects().clear();
-	}
+	return CHARACTER_COMMUNITY::relation(index1, index2);
 }
+
+CHARACTER_GOODWILL	 RELATION_REGISTRY::GetRankRelation				(CHARACTER_RANK_VALUE rank1, CHARACTER_RANK_VALUE rank2) const
+{
+	CHARACTER_RANK rank_from, rank_to;
+	rank_from.set(rank1);
+	rank_to.set(rank2);
+	return CHARACTER_RANK::relation(rank_from.index(), rank_to.index());
+}
+
+CHARACTER_GOODWILL	 RELATION_REGISTRY::GetReputationRelation		(CHARACTER_REPUTATION_VALUE rep1, CHARACTER_REPUTATION_VALUE rep2) const
+{
+	CHARACTER_REPUTATION rep_from, rep_to;
+	rep_from.set(rep1);
+	rep_to.set(rep2);
+	return CHARACTER_REPUTATION::relation(rep_from.index(), rep_to.index());
+}
+
+//////////////////////////////////////////////////////////////////////////

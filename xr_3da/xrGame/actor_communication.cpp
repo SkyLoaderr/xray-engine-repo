@@ -12,6 +12,8 @@
 #include "string_table.h"
 #include "PhraseDialog.h"
 #include "character_info.h"
+#include "relation_registry.h"
+
 
 #include "ai_space.h"
 #include "alife_simulator.h"
@@ -314,7 +316,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	map_location.attached_to_object = true;
 	map_location.object_id = GO->ID();
 
-	ALife::ERelationType relation =  pInvOwner->CharacterInfo().Relations().GetRelationType(ID(), CharacterInfo().Community().index());
+	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
 	LPCSTR anim_name = NULL;
 
 	switch(relation)
