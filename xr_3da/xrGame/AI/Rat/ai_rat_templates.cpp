@@ -443,12 +443,17 @@ int CAI_Rat::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPo
 
 void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition) 
 {
+	Device.Statistic.AI_Path.Begin();
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
+	bool bInsideNode = false;
+	int iMySubNode = -1;
 	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
-		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
-		VERIFY(iMySubNode >= 0);
+		iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		bInsideNode = iMySubNode >= 0;
+	}
+	if (bInsideNode) {
 		// filling the subnodes with the moving objects
 		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest;
@@ -487,9 +492,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 
 		/**/
 		if (!(tpNearestList.empty())) {
-			/**
-			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) 
-			{
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator);
 				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
 					continue;
@@ -534,57 +537,57 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 						//}
 					}
 			}
-			/**/
-		}
-		/**/
-		// checking the nearest nodes
-		AI_Path.TravelPath.clear();
-		AI_Path.TravelStart = 0;
+			AI_Path.TravelPath.clear();
+			AI_Path.TravelStart = 0;
 
-		//Fvector tLeaderPosition = Leader->Position();
-		DWORD dwTime = Level().timeServer();
-		int iBestI = -1;
-		float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
-		bool bMobility = false;
-		for ( i=0; i<(int)tpSubNodes.size(); i++)
-			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
-				bMobility = true;
-				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
-				if (fCurCost < fBestCost) {
-					iBestI = i;
-					fBestCost = fCurCost;
+			//Fvector tLeaderPosition = Leader->Position();
+			DWORD dwTime = Level().timeServer();
+			int iBestI = -1;
+			float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
+			bool bMobility = false;
+			for ( i=0; i<(int)tpSubNodes.size(); i++)
+				if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
+					bMobility = true;
+					float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
+					if (fCurCost < fBestCost) {
+						iBestI = i;
+						fBestCost = fCurCost;
+					}
+				}
+			// checking the nearest nodes
+			if (bMobility) {
+				m_bMobility = true;
+				/**
+				if (iBestI < 0)
+					if (dwTime - m_dwLastUpdate > 3000) {
+						m_dwLastUpdate = dwTime;
+						iBestI = ::Random.randI(0,tpSubNodes.size());
+					}
+					//else
+					//	m_bMobility
+				/**/
+				if (iBestI >= 0) {
+					m_dwLastRangeSearch = dwTime;
+					Fvector tFinishPosition;
+					tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
+					tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
+					tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
+					VERIFY(tFinishPosition.x < 1000000.f);
+					CTravelNode	tCurrentPoint,tFinishPoint;
+					tCurrentPoint.P.set(tCurrentPosition);
+					tCurrentPoint.floating = FALSE;
+					AI_Path.TravelPath.push_back(tCurrentPoint);
+					tFinishPoint.P.set(tFinishPosition);
+					tFinishPoint.floating = FALSE;
+					AI_Path.TravelPath.push_back(tFinishPoint);
 				}
 			}
-
-		if (bMobility) {
-			m_bMobility = true;
-			/**
-			if (iBestI < 0)
-				if (dwTime - m_dwLastUpdate > 3000) {
-					m_dwLastUpdate = dwTime;
-					iBestI = dwfRandom(tpSubNodes.size());
-				}
-				//else
-				//	m_bMobility
-			/**/
-			if (iBestI >= 0) {
-				m_dwLastRangeSearch = dwTime;
-				Fvector tFinishPosition;
-				tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
-				tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
-				tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
-				VERIFY(tFinishPosition.x < 1000000.f);
-				CTravelNode	tCurrentPoint,tFinishPoint;
-				tCurrentPoint.P.set(tCurrentPosition);
-				tCurrentPoint.floating = FALSE;
-				AI_Path.TravelPath.push_back(tCurrentPoint);
-				tFinishPoint.P.set(tFinishPosition);
-				tFinishPoint.floating = FALSE;
-				AI_Path.TravelPath.push_back(tFinishPoint);
+			else {
+				m_bMobility = false;
 			}
 		}
 		else {
-			m_bMobility = false;
+			vfGoToPointViaNodes(AI_Path.TravelPath,AI_NodeID,vPosition,tLeaderPosition);
 		}
 	}
 	else {
@@ -592,20 +595,20 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		VERIFY(iMySubNode >= 0);
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest;
-//		if (!tpNearestList.empty()) {
-//			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-//				CObject* tpCurrentObject = *tppObjectIterator;
-//				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
-//					continue;
-//				float fRadius = tpCurrentObject->Radius();
-//				Fvector tCenter;
-//				tpCurrentObject->clCenter(tCenter);
-//				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
-//					tpSubNodes[iMySubNode].bEmpty = false;
-//					break;
-//				}
-//			}
-//		}
+		if (!tpNearestList.empty()) {
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+				CObject* tpCurrentObject = (*tppObjectIterator);
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
+					continue;
+				float fRadius = tpCurrentObject->Radius();
+				Fvector tCenter;
+				tpCurrentObject->clCenter(tCenter);
+				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+					tpSubNodes[iMySubNode].bEmpty = false;
+					break;
+				}
+			}
+		}
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 		if (tpSubNodes[iMySubNode].bEmpty) {
@@ -626,4 +629,5 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		else
 			m_bMobility = false;
 	}
+	Device.Statistic.AI_Path.End();
 }

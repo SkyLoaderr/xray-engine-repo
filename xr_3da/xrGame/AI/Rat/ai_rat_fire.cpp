@@ -35,7 +35,8 @@ void CAI_Rat::Exec_Action(float dt)
 				tDirection.sub(tSavedEnemy->Position(),this->Position());
 				tDirection.normalize();
 				
-				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
+//				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
+				if ((tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
 					if (tSavedEnemy->g_Health() > 0)
 						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
 					else
