@@ -11,33 +11,51 @@
 
 struct SPPInfo {
 	struct SColor {
-		f32 r, g, b, a;
-		IC operator u32() {
-			return color_rgba(u32(r*255), u32(g*255), u32(b*255), u32(a*255));
+		f32 r, g, b;
+		IC operator u32()										{
+			int		_r	= clamp	(iFloor(r*255.f+.5f),0,255);
+			int		_g	= clamp	(iFloor(g*255.f+.5f),0,255);
+			int		_b	= clamp	(iFloor(b*255.f+.5f),0,255);
+			return color_rgba	(_r,_g,_b,0);
+		}
+		IC SColor& operator += (const SColor &ppi)				{
+			r += ppi.r; g += ppi.g; b += ppi.b; 
+		}
+		IC void set		(float _r, float _g, float _b)			{
+			r=_r;g=_g;b=_b;
 		}
 	};
-	f32 blur, gray;
+	f32			blur, gray;
 	struct SDuality { f32 h, v; } duality;
 	struct SNoise	{
 		f32		intensity, grain;
-		SColor	color;
 		f32		fps;
 	} noise;
-	SColor		blend_color;
+
+	SColor		color_base;
+	SColor		color_gray;
+	SColor		color_add;
 
 	IC SPPInfo& operator += (const SPPInfo &ppi) {
-		blur += ppi.blur;
-		gray += ppi.gray;
-		duality.h += ppi.duality.h; duality.v += ppi.duality.v;
+		blur		+= ppi.blur;
+		gray		+= ppi.gray;
+		duality.h	+= ppi.duality.h; duality.v += ppi.duality.v;
 		noise.intensity += ppi.noise.intensity; noise.grain += ppi.noise.grain;
-		noise.color.r += ppi.noise.color.r; noise.color.g += ppi.noise.color.g;
-		noise.color.b += ppi.noise.color.b; noise.color.a += ppi.noise.color.a;
-		noise.fps += ppi.noise.fps;
-		blend_color.r += ppi.blend_color.r; blend_color.g += ppi.blend_color.g;
-		blend_color.b += ppi.blend_color.b; blend_color.a += ppi.blend_color.a;
+		noise.fps	+= ppi.noise.fps;
+		color_base	+= ppi.color_base;
+		color_gray	+= ppi.color_gray;
+		color_add	+= ppi.color_add;
 		return *this;
 	}
-	void normalize();
+	void normalize		();
+	SPPInfo				()
+	{
+		blur = gray = duality.h = duality.v = 0;
+		noise.intensity=0; noise.grain = 1; noise.fps = 10;
+		color_base.set	(.5f,	.5f,	.5f);
+		color_gray.set	(.333f, .333f,	.333f);
+		color_add.set	(0.f,	0.f,	0.f);
+	}
 };
 
 DEFINE_VECTOR				(CEffector*,EffectorVec,EffectorIt);

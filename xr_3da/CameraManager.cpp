@@ -18,11 +18,11 @@
 
 float	psCamInert		= 0.7f;
 float	psCamSlideInert	= 0.25f;
-SPPInfo g_gefPP			= { 0, 0, { 0, 0 }, { 0, 0, { 0, 0, 0, 0 } } };
 
 void SPPInfo::normalize() 
 {
 	noise.intensity = _max(_min(noise.intensity, 1.f), 0.f);
+	/*
 	noise.color.r = _max(_min(noise.color.r, 1.f), 0.f);
 	noise.color.g = _max(_min(noise.color.g, 1.f), 0.f);
 	noise.color.b = _max(_min(noise.color.b, 1.f), 0.f);
@@ -31,6 +31,7 @@ void SPPInfo::normalize()
 	blend_color.g = _max(_min(blend_color.g, 1.f), 0.f);
 	blend_color.b = _max(_min(blend_color.b, 1.f), 0.f);
 	blend_color.a = _max(_min(blend_color.a, 1.f), 0.f);
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -46,8 +47,6 @@ CCameraManager::CCameraManager()
 	fFov			= 90;
 	fFar			= 100;
 	fAspect			= 1.f;
-
-	unaffected_PP = affected_PP = g_gefPP;
 }
 
 CCameraManager::~CCameraManager()
@@ -217,9 +216,10 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	T->set_gray				(affected_PP.gray);
 	T->set_noise			(affected_PP.noise.intensity);
 	T->set_noise_scale		(affected_PP.noise.grain);
-	T->set_noise_color		(affected_PP.noise.color);
 	T->set_noise_fps		(affected_PP.noise.fps);
-	T->set_blend_color		(affected_PP.blend_color);
+	T->set_color_base		(affected_PP.color_base);
+	T->set_color_gray		(affected_PP.color_gray);
+	T->set_color_add		(affected_PP.color_add);
 }
 
 void CCameraManager::Dump()

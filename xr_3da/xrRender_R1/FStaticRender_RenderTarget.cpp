@@ -12,15 +12,18 @@ CRenderTarget::CRenderTarget()
 	param_blur			= 0.f;
 	param_gray			= 0.f;
 	param_noise			= 0.f;
-	param_noise_color	= color_rgba(255,255,255,0);
 	param_duality_h		= 0.f;
 	param_duality_v		= 0.f;
 	param_noise_fps		= 25.f;
-	param_blend_color	= color_rgba(127,127,127,0);
+	param_noise_scale	= 1.f;
 
 	im_noise_time		= 1/100;
 	im_noise_shift_w	= 0;
 	im_noise_shift_h	= 0;
+
+	param_color_base	= color_rgba(127,127,127,	0);
+	param_color_gray	= color_rgba(85,85,85,		0);
+	param_color_add		= color_rgba(0,0,0,			0);
 
 	bAvailable			= Create	();
 	Msg					("* SSample: %s",bAvailable?"enabled":"disabled");
