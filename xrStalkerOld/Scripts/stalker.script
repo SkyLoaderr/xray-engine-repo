@@ -166,7 +166,9 @@ function process_task_changing(actor, info)
 	   info == "agr_krot_band" or
 	   info == "agr_krot_band_done" or
 
-	   info == "agroprom_find_gunslinger_hide"
+	   info == "agr_find_gunslinger_hide" or
+	   info == "agr_find_gunslinger_hide_done"
+	   
 	then
 		news_manager.send_task(actor, info)
 	end
