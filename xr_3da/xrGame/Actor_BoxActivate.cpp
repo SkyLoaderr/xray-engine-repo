@@ -374,6 +374,7 @@ bool CActor:: ActivateBox(DWORD id)
 	{	
 		if(!character_exist)m_PhysicMovementControl->DestroyCharacter();
 		m_PhysicMovementControl->ActivateBox(old_id);
+		m_PhysicMovementControl->SetVelocity(vel);
 		m_PhysicMovementControl->SetPosition(pos);
 		//Msg("can not activate!");
 	}
