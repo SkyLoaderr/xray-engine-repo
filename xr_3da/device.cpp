@@ -238,8 +238,7 @@ void CRenderDevice::FrameMove()
 		fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;			// smooth random system activity - worst case ~7% error
 		if (fTimeDelta>.1f) fTimeDelta=.1f;									// limit to 15fps minimum
 
-		if(Pause())
-			fTimeDelta = 0.0f;
+		if(Pause())		fTimeDelta = 0.0f;
 
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
 		fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
