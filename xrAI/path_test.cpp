@@ -43,8 +43,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -92,8 +92,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -235,80 +235,19 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
-//	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 
 	xr_delete				(graph);
 }
 
 #define TEST_COUNT 1000
 
-template <
-	typename _set_type
->
-void test_strcmp(CInifile *Inifile)
-{
-	_set_type				l_set;
-	u64						start, finish;
-
-	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-	Sleep					(1);
-
-	start					= CPU::GetCycleCount();
-
-	CInifile::RootIt		I = Inifile->sections().begin();
-	CInifile::RootIt		E = Inifile->sections().end();
-	for ( ; I != E; ++I) {
-		l_set.insert		(*(*I).Name);
-		CInifile::SectIt	i = (*I).Data.begin();
-		CInifile::SectIt	e = (*I).Data.end();
-		for ( ; i != e; ++i)
-			l_set.insert	(*(*i).first);
-	}
-
-	finish					= CPU::GetCycleCount();
-
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-
-	Msg						("%14.6f",float(s64(finish - start))*CPU::cycles2milisec);
-}
-
-int xr_strcmp			(LPCSTR a, LPCSTR b)
-{
-	if (a[0]<b[0])		return -1;
-	if (a[0]>b[0])		return 1;
-	return strcmp		(a,b);
-}
-
-struct xr_pred_str		: public std::binary_function<char*, char*, bool>	{	
-	IC bool operator()(const char* x, const char* y) const				{
-		return			(xr_strcmp(x,y)<0);
-	}
-};
-
-struct xr_pred_str1		: public std::binary_function<char*, char*, bool>	{	
-	IC bool operator()(const char* x, const char* y) const				{
-		if (x[0] < y[0])
-			return		(true);
-		return			(strcmp(x,y)<0);
-	}
-};
-
 void path_test				(LPCSTR caLevelName)
 {
-//	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
-//	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
-//	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
-
-	test_strcmp<xr_set<LPCSTR,xr_pred_str1> >	(pSettings);
-	test_strcmp<xr_set<LPCSTR,xr_pred_str> >	(pSettings);
-	test_strcmp<xr_set<LPCSTR,pred_str> >		(pSettings);
-
-	test_strcmp<xr_set<LPCSTR,xr_pred_str1> >	(pSettings);
-	test_strcmp<xr_set<LPCSTR,xr_pred_str> >	(pSettings);
-	test_strcmp<xr_set<LPCSTR,pred_str> >		(pSettings);
+	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
+	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
 }
