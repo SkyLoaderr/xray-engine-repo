@@ -34,8 +34,10 @@ function main()
 			if not bs then
 				--printf("_bp2")
 				bs = level.object(bs_name)
-				bs:set_manual_invisibility(true)
-				bs:set_invisible(true)
+				if bs then
+					bs:set_manual_invisibility(true)
+					bs:set_invisible(true)
+				end
 			end
 			if not bs_stor then
 				--printf("_bp3")
