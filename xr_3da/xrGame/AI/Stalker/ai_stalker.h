@@ -33,12 +33,6 @@ class CCoverEvaluatorBest;
 class CCoverEvaluatorAngle;
 class CAgentManager;
 
-//#define LOG_PARAMETERS
-
-#ifdef LOG_PARAMETERS
-extern FILE	*ST_VF;
-#endif
-
 class CAI_Stalker : 
 	public CCustomMonster, 
 	public CObjectHandler,
@@ -74,10 +68,22 @@ private:
 	float						m_disp_stand_stand;
 	float						m_disp_stand_crouch;
 //////////////////////////////////////////////////////////////////////////
-
 public:
+	u32							m_last_best_item_frame;
+	bool						m_item_actuality;
+	CInventoryItem				*m_best_item_to_kill;
+	CInventoryItem				*m_best_ammo;
+	const CInventoryItem		*m_best_found_item_to_kill;
+	const CInventoryItem		*m_best_found_ammo;
+
+	CCoverEvaluatorCloseToEnemy	*m_ce_close;
+	CCoverEvaluatorFarFromEnemy	*m_ce_far;
+	CCoverEvaluatorBest			*m_ce_best;
+	CCoverEvaluatorAngle		*m_ce_angle;
+
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 
+public:
 	// heritage
 								CAI_Stalker						();
 	virtual						~CAI_Stalker					();
@@ -148,49 +154,6 @@ public:
 			bool				bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
 	virtual	ALife::ERelationType tfGetRelationType				(const CEntityAlive *tpEntityAlive) const;
 
-	// states
-			void				Death							();
-			void				BackStraight					();
-			void				BackCover						(bool bFire = true);
-			void				ForwardCover					();
-			void				ForwardStraight					();
-			void				Camp							(bool bWeapon = true);
-			void				Panic							();
-			void				Hide							();
-			void				Detour							();
-			void				SearchEnemy						();
-			void				ExploreDE						();
-			void				ExploreDNE						();
-			void				ExploreNDE						();
-			void				ExploreNDNE						();
-			void				TakeItems						();
-	// ALife states			
-			void				ALifeUpdate						();
-			void				vfChooseTask					();
-			void				vfHealthCare					();
-			void				vfBuySupplies					();
-			void				vfGoToCustomer					();
-			void				vfBringToCustomer				();
-			void				vfGoToSOS						();
-			void				vfSendSOS						();
-			void				vfAccomplishTask				();
-			void				vfContinueWithALifeGoals		(CAbstractVertexEvaluator *tpNodeEvaluator = 0);
-			void				vfSearchObject					();
-			bool				bfHealthIsGood					();
-			bool				bfItemCanTreat					(CInventoryItem *tpInventoryItem);
-			void				vfUseItem						(CInventoryItem *tpInventoryItem);
-			bool				bfCanTreat						();
-			bool				bfEnoughMoneyToTreat			();
-			bool				bfEnoughTimeToTreat				();
-			bool				bfEnoughEquipmentToGo			();
-			bool				bfDistanceToTraderIsDanger		();
-			bool				bfEnoughMoneyToEquip			();
-			void				vfChooseHumanTask				();
-			bool				bfCheckIfTaskCompleted			();
-			bool				bfCheckIfTaskCompleted			(ALife::OBJECT_IT	&I);
-			void				vfSetCurrentTask				(ALife::_TASK_ID	&tTaskID);
-			bool				bfAssignDestinationNode			();
-			void				vfFinishTask					();
 	virtual const SRotation		Orientation						() const
 	{
 		return					(m_head.current);
@@ -220,20 +183,7 @@ public:
 		return					(true);
 	}
 
-public:
-	u32							m_last_best_item_frame;
-	bool						m_item_actuality;
-	CInventoryItem				*m_best_item_to_kill;
-	CInventoryItem				*m_best_ammo;
-	const CInventoryItem		*m_best_found_item_to_kill;
-	const CInventoryItem		*m_best_found_ammo;
-
-	CCoverEvaluatorCloseToEnemy	*m_ce_close;
-	CCoverEvaluatorFarFromEnemy	*m_ce_far;
-	CCoverEvaluatorBest			*m_ce_best;
-	CCoverEvaluatorAngle		*m_ce_angle;
-
-	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
+	virtual	Feel::Sound*		dcast_FeelSound			()		{ return this;	}
 			bool				can_kill_member			();
 			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;
 			void				dbg_animation			(LPCSTR caption, CMotionDef *animation);

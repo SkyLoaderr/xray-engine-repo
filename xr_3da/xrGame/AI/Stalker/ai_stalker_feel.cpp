@@ -8,11 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../ai_monsters_misc.h"
-#include "../../hudmanager.h"
-#include "../../actor.h"
-
-//#undef SILENCE
 
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
@@ -42,7 +37,7 @@ void CAI_Stalker::Exec_Look			(float dt)
 	XFORM().set						(mXFORM);
 }
 
-bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool /**bIfRayPick/**/)
+bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
 }

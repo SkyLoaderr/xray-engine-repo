@@ -8,11 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../ai_monsters_misc.h"
-#include "../../actor.h"
 #include "../../bolt.h"
-#include "../../script_entity_action.h"
-#include "../../ef_storage.h"
 #include "../../inventory.h"
 #include "../../character_info.h"
 
@@ -43,8 +39,6 @@ float CAI_Stalker::evaluate		(const CGameObject *object) const
 	distance			= !fis_zero(distance) ? distance : EPS_L;
 	return				(distance);
 }
-
-
 
 ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 {

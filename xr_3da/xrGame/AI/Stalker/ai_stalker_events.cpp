@@ -8,20 +8,11 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../../weapon.h"
-#include "../../targetcs.h"
-#include "../../customdetector.h"
-#include "../../bolt.h"
 #include "../../pda.h"
 #include "../../inventory.h"
 #include "../../xrmessages.h"
 
-IC BOOL BE	(BOOL A, BOOL B)
-{
-	bool a = !!A;
-	bool b = !!B;
-	return a==b;
-}
+#define SILENCE
 
 void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 {

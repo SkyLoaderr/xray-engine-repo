@@ -1719,11 +1719,6 @@
 						Filter="">
 						<File
 							RelativePath=".\alife_registry_container.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\alife_registry_container.h">
@@ -2736,15 +2731,6 @@
 							RelativePath=".\Ai\Stalker\ai_stalker.h">
 						</File>
 						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_alife.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_alife_fsm.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_alife_misc.cpp">
-						</File>
-						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
 						</File>
 						<File
@@ -2754,16 +2740,10 @@
 							RelativePath=".\Ai\Stalker\ai_stalker_fire.cpp">
 						</File>
 						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_fsm.cpp">
-						</File>
-						<File
 							RelativePath=".\ai\stalker\ai_stalker_inline.h">
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_path.cpp">
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">

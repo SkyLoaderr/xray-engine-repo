@@ -9,34 +9,10 @@
 #pragma once
 
 #define	MAX_HEAD_TURN_ANGLE				(1.f*PI_DIV_4)
-#define R2D(x)							(angle_normalize(x)*180.f/PI)
 
 DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
 
-#define SILENCE
-
-#ifndef SILENCE
-	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
-#else
-	#define OUT_TEXT(S)						;
-//	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
-#endif
-
 namespace StalkerSpace {
-	enum EActionState {
-		eActionStateRun = 0,
-		eActionStateStand,
-		eActionStateDontWatch,
-		eActionStateWatch,
-		eActionStateWatchGo,
-		eActionStateWatchLook,
-	};
-
-	enum ESearchState {
-		eSearchStateMarkVisibleNodes = 0,
-		eSearchStateFindSuspiciousNodes,
-	};
-	
 	enum EStalkerSounds {
 		eStalkerSoundDie = u32(0),
 		eStalkerSoundInjuring,
@@ -61,10 +37,5 @@ namespace StalkerSpace {
 		eStalkerSoundMaskBackup		= u32(1 << 30) | 4,
 		eStalkerSoundMaskAttack		= u32(1 << 30) | 8,
 		eStalkerSoundMaskDummy		= u32(-1),
-	};
-
-	enum EStalkerStates {
-		eStateFreeNoAlife	= u32(0),
-		eStateDummy			= u32(-1),
 	};
 };

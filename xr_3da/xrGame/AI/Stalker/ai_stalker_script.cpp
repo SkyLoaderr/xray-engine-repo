@@ -9,8 +9,6 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "../../script_entity_action.h"
-#include "../../weapon.h"
-#include "../../WeaponMagazined.h"
 #include "../../torch.h"
 #include "../../inventory.h"
 

@@ -349,6 +349,7 @@ void CAI_Stalker ::PHHit				(Fvector &dir,s16 element,Fvector p_in_object_space,
 {
 	m_pPhysics_support->in_Hit(dir,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
+
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
 	// Queue shrink
@@ -495,6 +496,7 @@ void CAI_Stalker::spawn_supplies	()
 	inherited::spawn_supplies			();
 	CObjectHandler::spawn_supplies	();
 }
+
 #ifdef DEBUG
 void CAI_Stalker::OnRender			()
 {
@@ -534,3 +536,10 @@ void CAI_Stalker::OnRender			()
 	HUD().pFontMedium->OutNext	(out_text);
 }
 #endif
+
+void CAI_Stalker::Think			()
+{
+	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
+	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
+	CSSetupManager::update			(Level().timeServer() - m_dwLastUpdateTime);
+}
