@@ -8,11 +8,6 @@
 
 #pragma warning(disable:4505)
 
-// Dima to All : We can remove these includes, but, I don't know why, 
-// without them xrGame cannot be linked properly
-#include "net_utils.h"
-#include "../xrLevel.h"
-
 // this include MUST be here, since smart_cast is used >1800 times in the project
 #include "smart_cast.h"
 

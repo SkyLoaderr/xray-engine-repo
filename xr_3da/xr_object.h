@@ -8,12 +8,11 @@
 #include "icollidable.h"
 
 // refs
-class	ENGINE_API IRender_Visual;
-class	ENGINE_API IRender_Sector;
-class	ENGINE_API IRender_ObjectSpecific;
-class	ENGINE_API CCustomHUD;
-class	ENGINE_API NET_Packet;
-struct	ENGINE_API NodeCompressed;
+class	ENGINE_API	IRender_Visual;
+class	ENGINE_API	IRender_Sector;
+class	ENGINE_API	IRender_ObjectSpecific;
+class	ENGINE_API	CCustomHUD;
+class	NET_Packet	;
 
 //-----------------------------------------------------------------------------------------------------------
 //	CObject
