@@ -74,7 +74,7 @@ void Startup(LPSTR     lpCmdLine)
 					sscanf	(strstr(cmd,"-t")+2,"%s",name);
 
 	if (xr_strlen(name))
-		strcat			(name,"/");
+		strcat			(name,"\\");
 	char				prjName[256];
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);
