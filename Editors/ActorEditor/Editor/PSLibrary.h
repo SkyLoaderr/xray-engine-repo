@@ -7,11 +7,8 @@
 #include "ParticleSystem.h"
 #include "ParticleGroup.h"
 
-#include				"PSRuntime.h"
-DEFINE_VECTOR			(PS::SDef_RT, PSList, PSIt);
-
 class CPSLibrary{
-    PSList				m_PSs;
+    PS::PSVec			m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
     string256			m_CurrentPS;

@@ -141,13 +141,13 @@ struct ENGINE_API 	SParams
 
 struct ENGINE_API SDef: public SParams
 {
-    string64			m_Reserved;
+	Shader*				m_CachedShader;
+    u8					m_Reserved[60];
 	string64			m_Computer;
     string64			m_ShaderName;
     string64			m_TextureName;
 	u32  				m_dwCreationTime;
     SEmitterDef			m_DefaultEmitter;
-	Shader*				m_CachedShader;
 
     void 				Reset()
 	{

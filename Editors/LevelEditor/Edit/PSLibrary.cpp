@@ -32,12 +32,12 @@ void CPSLibrary::OnDestroy()
 //----------------------------------------------------
 void CPSLibrary::OnDeviceCreate	()
 {
-	for (PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
+	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
 		it->m_CachedShader	= Device.Shader.Create(it->m_ShaderName,it->m_TextureName);
 }
 void CPSLibrary::OnDeviceDestroy()
 {
-	for (PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
+	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
 		Device.Shader.Delete(it->m_CachedShader);
 }
 

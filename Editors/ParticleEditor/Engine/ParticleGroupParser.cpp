@@ -2,8 +2,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_tokens.h"
-#include "xr_trims.h"
 #include "ParticleGroup.h"
 #include "particles/papi.h"
 #include "particles/general.h"

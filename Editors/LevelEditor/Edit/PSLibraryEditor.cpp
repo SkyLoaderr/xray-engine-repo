@@ -9,8 +9,8 @@
 PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent)
 {
 	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPS,T,1,m_CurrentPS.c_str())){
-    	if (bSetCurrent) m_CurrentPS = T;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPS,T,1,m_CurrentPS)){
+    	if (bSetCurrent) strcpy(m_CurrentPS,T);
         return FindPS(T);
     }else return 0;
 }
