@@ -122,6 +122,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	HRESULT hr=-1;
 // convert to Options
     CompressionOptions nvOpt;
+	ZeroMemory(&nvOpt,sizeof(nvOpt));
     nvOpt.bMipMapsInImage	= false;
 
 	bool a = fmt->flag.bGenerateMipMaps;
