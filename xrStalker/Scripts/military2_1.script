@@ -53,7 +53,7 @@ function main ()
     action (stalker2, anim ("stalker_1_1"), cond (cond.time_end, 100000000))
     action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
     
-    action (stalker3, object (weapon, object.deactivate), cond (cond.object_end))
+    action (stalker3, object (weapon, object.deactivate), cond (cond.time_end,3000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
     
     sound2_1:play_at_pos (stalker2, stalker2:position (), 0)
