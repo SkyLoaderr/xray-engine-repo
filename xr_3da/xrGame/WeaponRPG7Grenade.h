@@ -40,8 +40,7 @@ protected:
 	
 	xr_vector<ref_str>			m_effects;
 	xr_vector<ref_str>			m_trailEffects;
-	xr_list<CPart
-iclesObject*>	m_trailEffectsPSs;
+	xr_list<CParticlesObject*>	m_trailEffectsPSs;
 
 	//подсветка во время работы двигателя
 	IRender_Light*	m_pTrailLight;
