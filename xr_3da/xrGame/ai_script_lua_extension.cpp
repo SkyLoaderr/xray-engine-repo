@@ -16,16 +16,16 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCS
 	string256		S,S1;
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
-//	R_ASSERT		(l_tpIniFile);
+	R_ASSERT		(l_tpIniFile);
 	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
 
 	u32				N = _GetItemCount(caScriptString);
 	string16		I;
 	for (u32 i=0; i<N; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-//		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
+		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
 		IReader		*F = FS.r_open(S);
-//		R_ASSERT	(F);
+		R_ASSERT	(F);
 		strconcat	(S1,"@",S);		
 		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S1);
 		Msg			("* Loading common script %s",S);
