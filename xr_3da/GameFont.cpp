@@ -257,3 +257,4 @@ float CGameFont::SizeOf(char *s,float size)
 	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
 	return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
 }
+
