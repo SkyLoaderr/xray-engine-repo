@@ -87,6 +87,7 @@ bool TUI::OnCreate(){
 
 void TUI::OnDestroy()
 {
+	R_ASSERT(g_bEditorValid);
 	UI.iRelease			();
     _DELETE(pInput);
     EndEState();
