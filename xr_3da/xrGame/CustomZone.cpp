@@ -350,9 +350,10 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 void CCustomZone::net_Destroy() 
 {
-	inherited::net_Destroy();
-	
 	StopIdleParticles();
+
+	inherited::net_Destroy();
+
 	StopWind();
 
 	if(m_pLight)
