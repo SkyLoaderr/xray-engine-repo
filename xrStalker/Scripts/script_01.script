@@ -93,7 +93,6 @@ function main()
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 			)
-		wait(2000)
 			action(
 				stalker2,
 				cond	(cond.time_end, 5000)
