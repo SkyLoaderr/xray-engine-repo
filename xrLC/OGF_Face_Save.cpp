@@ -9,6 +9,7 @@ extern int	RegisterString	(string &T);
 
 void OGF::Save(CFS_Base &fs)
 {
+	Msg					("%3d: %d faces")
 	// Create header
 	ogf_header H;
 	H.format_version	= xrOGF_FormatVersion;
