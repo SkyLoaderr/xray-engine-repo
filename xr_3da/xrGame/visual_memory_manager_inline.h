@@ -30,6 +30,8 @@ IC	const u32						CVisualMemoryManager::visible_object_time_last_seen(const CObj
 IC	void CVisualMemoryManager::set_squad_objects(xr_vector<CVisibleObject> *squad_objects)
 {
 	m_objects						= squad_objects;
+	if (!m_objects)
+		m_not_yet_visible_objects.clear	();
 }
 
 IC	bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
