@@ -29,7 +29,7 @@ CCustomObject *NewObjectFromClassID( int _ClassID ){
 		case OBJCLASS_SOUND:    return new CSound();
 		case OBJCLASS_GLOW:     return new CGlow();
         case OBJCLASS_RPOINT:   return new CRPoint();
-        case OBJCLASS_WAYPOINT:	return new CWayPoint();
+        case OBJCLASS_WAY:		return new CWayObject();
         case OBJCLASS_SECTOR:	return new CSector();
         case OBJCLASS_PORTAL:	return new CPortal();
         case OBJCLASS_EVENT:	return new CEvent();
@@ -46,7 +46,7 @@ LPSTR GetNameByClassID(EObjClass cls_id){
     case OBJCLASS_SOUND:    return "sound";
     case OBJCLASS_GLOW:     return "glow";
     case OBJCLASS_RPOINT:   return "rpoint";
-    case OBJCLASS_WAYPOINT:	return "wpoint";
+    case OBJCLASS_WAY:		return "way";
     case OBJCLASS_SECTOR: 	return "sector";
     case OBJCLASS_PORTAL: 	return "portal";
     case OBJCLASS_EVENT: 	return "event";
@@ -63,7 +63,7 @@ bool IsClassID(EObjClass cls_id){
     case OBJCLASS_SOUND:    return true;
     case OBJCLASS_GLOW:     return true;
     case OBJCLASS_RPOINT:   return true;
-    case OBJCLASS_WAYPOINT:	return true;
+    case OBJCLASS_WAY:		return true;
     case OBJCLASS_SECTOR: 	return true;
     case OBJCLASS_PORTAL: 	return true;
     case OBJCLASS_EVENT: 	return true;
@@ -80,7 +80,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
 	case etLight:   return OBJCLASS_LIGHT;
 	case etGlow:    return OBJCLASS_GLOW;
 	case etRPoint:  return OBJCLASS_RPOINT;
-	case etWayPoint:return OBJCLASS_WAYPOINT;
+	case etWay:		return OBJCLASS_WAY;
     case etSector:	return OBJCLASS_SECTOR;
     case etPortal:	return OBJCLASS_PORTAL;
     case etEvent:	return OBJCLASS_EVENT;
@@ -97,7 +97,7 @@ bool IsObjectListClassID(EObjClass cls_id){
     case OBJCLASS_SOUND:    return true;
     case OBJCLASS_GLOW:     return true;
     case OBJCLASS_RPOINT:   return true;
-    case OBJCLASS_WAYPOINT:	return true;
+    case OBJCLASS_WAY:		return true;
     case OBJCLASS_SECTOR:	return true;
     case OBJCLASS_PORTAL:	return true;
     case OBJCLASS_EVENT:	return true;
@@ -114,7 +114,6 @@ bool IsGroupClassID(EObjClass cls_id)
     case OBJCLASS_SOUND:    return true;
     case OBJCLASS_GLOW:     return true;
     case OBJCLASS_RPOINT:   return true;
-    case OBJCLASS_WAYPOINT:	return true;
     case OBJCLASS_EVENT:	return true;
     case OBJCLASS_PS:		return true;
     default: return false;

@@ -14,12 +14,31 @@ object fraWayPoint: TfraWayPoint
     Left = 0
     Top = 0
     Width = 123
-    Height = 121
+    Height = 122
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
+    object ebInvertLink: TExtBtn
+      Left = 2
+      Top = 89
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Invert Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ebInvertLinkClick
+    end
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
@@ -73,7 +92,7 @@ object fraWayPoint: TfraWayPoint
     end
     object ebAdd1Link: TExtBtn
       Left = 2
-      Top = 40
+      Top = 59
       Width = 120
       Height = 15
       Align = alNone
@@ -88,7 +107,6 @@ object fraWayPoint: TfraWayPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebAdd1LinksClick
     end
     object Bevel1: TBevel
@@ -99,7 +117,7 @@ object fraWayPoint: TfraWayPoint
     end
     object ebRemoveLinks: TExtBtn
       Left = 2
-      Top = 71
+      Top = 104
       Width = 120
       Height = 15
       Align = alNone
@@ -114,12 +132,11 @@ object fraWayPoint: TfraWayPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebRemoveLinksClick
     end
     object ebAdd2Link: TExtBtn
       Left = 2
-      Top = 55
+      Top = 74
       Width = 120
       Height = 15
       Align = alNone
@@ -134,13 +151,38 @@ object fraWayPoint: TfraWayPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebAdd2LinkClick
+    end
+    object ebRemoveSelected: TExtBtn
+      Left = 2
+      Top = 39
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Remove Point'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ebRemoveSelectedClick
+    end
+    object Bevel2: TBevel
+      Left = 2
+      Top = 55
+      Width = 120
+      Height = 2
     end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameAITPoint'
     Options = []
+    Version = 2
     StoredProps.Strings = (
       'ebAutoLink.Down'
       'paCommands.Height'

@@ -24,6 +24,284 @@
 
 #define WP_FROM 0
 #define WP_TO	1
+
+//------------------------------------------------------------------------------
+// Way Point
+//------------------------------------------------------------------------------
+CWayPoint::CWayPoint()
+{
+	m_vPosition.set(0,0,0);
+	m_dwFlag	= 0;
+    m_bSelected	= false;
+}
+void CWayPoint::Render()
+{
+	Fvector pos;
+    pos.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
+    DU::DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,m_bSelected?0x00ffffff:0x0000ff00);
+	// draw links
+	Fvector p1,p2;
+    p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
+    for (WPIt it=m_Links.begin(); it!=m_Links.end(); it++){
+    	CWayPoint* O = (CWayPoint*)(*it);
+	    p2.set	(O->m_vPosition.x,O->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->m_vPosition.z);
+    	DU::DrawLink(p1,p2,0.25f,0xffffff00);
+    }
+	if (m_bSelected){
+	}
+}
+bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D)
+{
+	Fvector ray2;
+	ray2.sub( m_vPosition, S ); ray2.y+=WAYPOINT_RADIUS;
+
+    float d = ray2.dotproduct(D);
+    if( d > 0  ){
+        float d2 = ray2.magnitude();
+        if( ((d2*d2-d*d) < (WAYPOINT_RADIUS*WAYPOINT_RADIUS)) && (d>WAYPOINT_RADIUS) ){
+        	if (d<distance){
+	            distance = d;
+    	        return true;
+            }
+        }
+    }
+	return false;
+}
+bool CWayPoint::FrustumPick(const CFrustum& frustum)
+{
+	Fvector P=m_vPosition; P.y+=WAYPOINT_RADIUS;
+    return (frustum.testSphere(P,WAYPOINT_RADIUS))?true:false;
+}
+bool CWayPoint::FrustumSelect(int flag, const CFrustum& frustum)
+{
+	if (FrustumPick(frustum)){
+    	Select(flag);
+    	return true;
+    }
+	return false;
+}
+void CWayPoint::Select( int flag )
+{
+	m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
+}
+WPIt CWayPoint::HasLink(CWayPoint* P)
+{
+	find(m_Links.begin(),m_Links.end(),P);
+}
+void CWayPoint::InvertLink(CWayPoint* P)
+{
+	WPIt it=HasLink(P);
+	if (it!=m_Links.end()){
+    	m_Links.erase(it);
+        P->AppendLink(this);
+    }else{
+		WPIt it=P->HasLink(this);
+    	if (it!=P->m_Links.end()){
+	    	P->m_Links.erase(it);
+    	    AppendLink(P);
+        }
+    }
+} 
+void CWayPoint::AppendLink(CWayPoint* P)
+{
+	m_Links.push_back(P);
+}
+bool CWayPoint::DeleteLink(CWayPoint* P)
+{
+	WPIt it = find(m_Links.begin(),m_Links.end(),P);
+	if (it!=m_Links.end()){
+		m_Links.erase(it);
+        UI.RedrawScene();
+    	return true;
+    }
+    return false;
+}
+bool CWayPoint::AddSingleLink(CWayPoint* P)
+{
+	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
+    	AppendLink(P);
+        UI.RedrawScene();
+    	return true;
+    }
+	return false;
+}
+bool CWayPoint::AddDoubleLink(CWayPoint* P)
+{
+	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
+    	AppendLink(P);
+        P->AppendLink(this);
+        UI.RedrawScene();
+    	return true;
+    }
+	return false;
+}
+bool CWayPoint::RemoveLink(CWayPoint* P)
+{
+	if (DeleteLink(P)){
+    	P->DeleteLink(this);
+        return true;
+    }
+	return false;
+}
+//------------------------------------------------------------------------------
+// Way Object
+//------------------------------------------------------------------------------
+CWayObject::CWayObject(char *name):CCustomObject()
+{
+	Construct();
+	Name		= name;
+}
+
+CWayObject::CWayObject():CCustomObject()
+{
+	Construct();
+}
+
+void CWayObject::Construct()
+{
+	ClassID   	= OBJCLASS_WAY;
+    AppendWayPoint();
+}
+
+CWayObject::~CWayObject()
+{
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	_DELETE(*it);
+}
+
+void CWayObject::RemoveSelectedPoints()
+{
+	for (WPIt f_it=m_WayPoints.begin(); f_it!=m_WayPoints.end(); f_it++){
+    	if ((*f_it)->m_bSelected){
+			for (WPIt l_it=m_WayPoints.begin(); l_it!=m_WayPoints.end(); l_it++){
+            	if (l_it==f_it) continue;
+    			(*l_it)->DeleteLink(*f_it);
+            }
+        }
+    }
+	for (int i=0; i<(int)m_WayPoints.size(); i++)
+    	if (m_WayPoints[i]->m_bSelected){
+			m_WayPoints.erase(m_WayPoints.begin()+i);
+            i--;
+        }
+    // remove object from scene if empty?
+    if (m_WayPoints.empty()){
+    	Scene.RemoveObject(this,true);
+    	delete this;
+    }
+}
+
+int CWayObject::GetSelectedPoints(WPVec& lst)
+{
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	if ((*it)->m_bSelected) lst.push_back(*it);
+    return lst.size();
+}
+
+CWayPoint* CWayObject::GetFirstSelected()
+{
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	if ((*it)->m_bSelected) return *it;
+    return 0;
+}
+
+CWayPoint* CWayObject::AppendWayPoint()
+{
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	(*it)->Select(0);
+    m_WayPoints.push_back(new CWayPoint());
+    m_WayPoints.back()->m_bSelected=true;
+    return m_WayPoints.back();
+}
+
+void CWayObject::Select(int flag)
+{
+	inherited::Select(flag);
+    if (flag==0) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(0);
+}
+
+bool CWayObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
+{
+    if (UI.GetShiftState().Contains(ssAlt)){
+    	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
+        CWayPoint* nearest=0;
+        float dist = UI.ZFar();
+		for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+			if ((*it)->RayPick(dist,start,dir)) nearest=*it;
+        if (nearest!=0){
+        	nearest->Select(flag);
+            return true;
+        }
+    }else 	return inherited::RaySelect(flag,start,dir,bRayTest);
+    return false;
+}
+
+bool CWayObject::FrustumSelect(int flag, const CFrustum& frustum)
+{
+    if (UI.GetShiftState().Contains(ssAlt)){
+    	Select(1);
+		for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+        	(*it)->FrustumSelect(flag,frustum);
+        return true;
+    }else 	return inherited::FrustumSelect(flag,frustum);
+}
+
+bool CWayObject::GetBox( Fbox& box )
+{
+	box.invalidate();
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	box.modify((*it)->m_vPosition);
+    box.max.x+=WAYPOINT_RADIUS;
+    box.max.z+=WAYPOINT_RADIUS;
+    box.max.y+=WAYPOINT_SIZE;
+    box.min.x-=WAYPOINT_RADIUS;
+    box.min.z-=WAYPOINT_RADIUS;
+	return true;
+}
+
+void CWayObject::MoveTo(const Fvector& pos, const Fvector& up)
+{
+	Fvector P=PPosition;
+	inherited::MoveTo(pos,up);
+    P.add(PPosition);
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	(*it)->m_vPosition.add(P);
+}
+
+void CWayObject::Render(int priority, bool strictB2F)
+{
+//	inherited::Render(priority, strictB2F);
+    if ((1==priority)&&(false==strictB2F)){
+		Fbox bb; GetBox(bb);
+        Fvector C; float S; bb.getsphere(C,S);
+        if (Device.m_Frustum.testSphere(C,S)){
+			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render();
+            if( Selected() ){
+                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                DU::DrawSelectionBox(bb,&clr);
+            }
+        }
+    }
+}
+
+bool CWayObject::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf)
+{
+    bool bPick=false;
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	if ((*it)->RayPick(distance,S,D)) bPick=true;
+    return bPick;
+}
+
+bool CWayObject::FrustumPick(const CFrustum& frustum)
+{
+	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+    	if ((*it)->FrustumPick(frustum)) return true;
+    return false;
+}
+//----------------------------------------------------
+
+
+/*
 //------------------------------------------------------------------------------
 // AI Traffic points
 //------------------------------------------------------------------------------
@@ -284,4 +562,4 @@ void CWayPoint::SetPathName(LPCSTR name, bool bOnlyThis)
     }
 }
 //----------------------------------------------------
-
+*/

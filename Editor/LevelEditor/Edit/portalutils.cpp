@@ -248,7 +248,7 @@ void CPortalUtils::CreateDebugCollection(){
         O->GetBox(obj_box);
         offs.sub(obj_box.getradius());
     }
-    O->Move(offs);
+    O->Move(offs); O->UpdateTransform(true);
     Scene.AddObject(O,false);
 	UI.ProgressInc();
     // create debug sector

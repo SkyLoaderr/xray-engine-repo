@@ -1,7 +1,7 @@
 object fraEvent: TfraEvent
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,8 +19,8 @@ object fraEvent: TfraEvent
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 70
+    Width = 123
+    Height = 49
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -29,7 +29,7 @@ object fraEvent: TfraEvent
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -80,6 +80,25 @@ object fraEvent: TfraEvent
       Font.Style = []
       ParentFont = False
       OnClick = ebAppendFormClick
+    end
+    object ebRemoveForm: TExtBtn
+      Left = 2
+      Top = 32
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Remove Form'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ebRemoveFormClick
     end
   end
 end

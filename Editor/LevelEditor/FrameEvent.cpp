@@ -42,3 +42,16 @@ void __fastcall TfraEvent::ebAppendFormClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TfraEvent::ebRemoveFormClick(TObject *Sender)
+{
+    ObjectList lst;
+	if (Scene.GetQueryObjects(lst,OBJCLASS_EVENT,1,1,0)!=1)
+    	ELog.DlgMsg(mtInformation,"Select one Event.");
+    else{
+    	CEvent* E=(CEvent*)lst.back();
+        E->RemoveSelectedForm();
+    }
+    UI.RedrawScene();
+}
+//---------------------------------------------------------------------------
+

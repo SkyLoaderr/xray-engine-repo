@@ -154,7 +154,7 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add ai-traffic --
-	if (Scene.ObjCount(OBJCLASS_WAYPOINT)) {
+	if (Scene.ObjCount(OBJCLASS_WAY)) {
 //S
 /*
 		i = Scene.FirstObj(OBJCLASS_WAYPOINT);

@@ -22,9 +22,11 @@ __published:	// IDE-managed Components
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebAppendForm;
+	TExtBtn *ebRemoveForm;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebAppendFormClick(TObject *Sender);
+	void __fastcall ebRemoveFormClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraEvent(TComponent* Owner);

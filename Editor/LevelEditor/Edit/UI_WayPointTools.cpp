@@ -9,7 +9,7 @@
 #include "scene.h"
 //---------------------------------------------------------------------------
 
-TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAYPOINT){
+TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY){
     AddControlCB(new TUI_ControlWayPointAdd	(estSelf,eaAdd,		this));
 }
 
@@ -28,15 +28,22 @@ __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_C
 }
 
 bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
-    ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAYPOINT,1,1,-1);
-	CWayPoint* last_obj = (lst.size()==1)?(CWayPoint*)lst.front():0;
-
-	CWayPoint* obj = (CWayPoint*)DefaultAddObject(Shift);
-
-	if (obj&&Shift.Contains(ssAlt))
-		if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
-        	if (last_obj) last_obj->AddSingleLink(obj);
-		}
+	ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
+	if ((1==lst.size())&&Shift.Contains(ssAlt)){
+		ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
+        Fvector p;
+	    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1)){
+        	CWayObject* obj = (CWayObject*)lst.front(); R_ASSERT(obj);
+	        CWayPoint* last_wp=obj->GetFirstSelected();
+	        CWayPoint* wp=obj->AppendWayPoint();
+    	    wp->MoveTo(p);
+			if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
+	        	if (last_wp) last_wp->AddSingleLink(wp);
+            }
+        }
+    }else{
+		DefaultAddObject(Shift);
+    }
     return false;
 }
 

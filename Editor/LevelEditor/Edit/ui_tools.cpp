@@ -67,7 +67,7 @@ void TUI_Tools::OnCreate(){
     AddTool			(etSector, 	new TUI_SectorTools	());
     AddTool			(etPortal, 	new TUI_PortalTools	());
     AddTool			(etEvent, 	new TUI_EventTools	());
-    AddTool			(etWayPoint,new TUI_WayPointTools());
+    AddTool			(etWay,		new TUI_WayPointTools());
     AddTool			(etPS, 		new TUI_PSTools		());
     AddTool			(etDO,		new TUI_DOTools		());
 // check tools

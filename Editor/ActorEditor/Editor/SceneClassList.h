@@ -46,7 +46,7 @@ enum EObjClass{
     OBJCLASS_F_R_E_E  	= 4,
     OBJCLASS_SOUND	   	= 5,
     OBJCLASS_RPOINT	   	= 6,
-    OBJCLASS_WAYPOINT  	= 7,
+    OBJCLASS_WAY	  	= 7,
     OBJCLASS_SECTOR    	= 8,
     OBJCLASS_PORTAL    	= 9,
     OBJCLASS_EVENT	   	= 10,

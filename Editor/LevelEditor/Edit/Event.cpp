@@ -6,13 +6,14 @@
 #pragma hdrstop
 
 #include "Event.h"
-#include "SceneClassList.h"                         
+#include "SceneClassList.h"
 #include "UI_Main.h"
 #include "frustum.h"
 #include "cl_intersect.h"
 #include "texture.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
+#include "scene.h"
 
 #define EVENT_VERSION		   				0x0011
 //----------------------------------------------------
@@ -201,13 +202,14 @@ void CEvent::Construct(){
 
 void CEvent::AppendForm(EFormType type)
 {
+    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Select(0);
 	m_Forms.push_back(SForm());
     SForm& F 	= m_Forms.back();
     F.m_eType   = type;
     F.vSize.set	(1.f,1.f,1.f);
     F.vRotate.set(0.f,0.f,0.f);
 	F.vPosition.set(0.f,0.f,0.f);
-    F.m_Selected= false;
+    F.m_Selected= true;
 }
 
 void CEvent::RemoveSelectedForm()
@@ -218,7 +220,10 @@ void CEvent::RemoveSelectedForm()
             i--;
         }
     // remove object from scene if empty?
-    //S
+    if (m_Forms.empty()){
+    	Scene.RemoveObject(this,true);
+    	delete this;
+    }
 }
 
 //------------------------------------------------------------------------------------------------
