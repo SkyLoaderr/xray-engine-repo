@@ -25,7 +25,7 @@ void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 	}
 
 	// VS
-	hGeom.create		(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_SPECULAR |D3DFVF_TEX2, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeom.create		(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 void FLOD::Copy			(IRender_Visual *pFrom	)
 {

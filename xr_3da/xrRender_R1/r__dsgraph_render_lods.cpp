@@ -10,19 +10,20 @@
 #endif
 
 extern float r_ssaLOD_A;
-extern float	r_ssaLOD_B;
-enIC Fvector3		color			(const Fvector& N, u32 rgbh, u8 sun)
+extern float r_ssaLOD_B;
+
+IC u32	color					(Fvector& N, u32 rgbh, u8 sun, u32 Alpha)
 {
 	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector						c_sun,c_ambient,c_lmap,c_hemi,c_sun_dir;
-	c_sun_dir.set				(desc.sun_dir);		// N - inverted, so no invert
+	c_sun_dir.set				(desc.sun_dir);
 	c_sun.set					(desc.sun_color.x,	desc.sun_color.y,	desc.sun_color.z);
 	c_lmap.set					(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
 	c_ambient.set				(desc.ambient.x,	desc.ambient.y,		desc.ambient.z);
 	c_hemi.set					(desc.hemi_color.x, desc.hemi_color.y,	desc.hemi_color.z);
 	float	sun_factor			= .333f * clampr	(c_sun_dir.dotproduct(N),0.f,1.f);	//. hack to immitate sun
-C,	Fvector		C,rgb; 
-			(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
+C,rgb; 
+	rgb.set						(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
 	rgb.div						(127.f);
 	float h						= float(color_get_A(rgbh))/127.f;
 	float s						= float(sun)/127.f;
@@ -31,25 +32,10 @@ C,	Fvector		C,rgb;
 	C.mad						(c_hemi,h);
 	C.mad						(c_sun,	s + sun_factor);
 
-	return sub	return		C;
-_dsgrstruct LOD	{
-	Fvector		p;
-	u32			color0;
-	u32			color1;
-	Fvector2	t	[2];
-	IC void		set	(const Fvector& p_shift, const Fvector& _n, FLOD::_face& F0, FLOD::_face& F1, u32 id, u32 alpha, float factor, u32 factor_u)
-	{ 
-		Fvector3	pf;	pf.lerp	(F0.v[id].v,F1.v[id].v,factor).add(p_shift);
-		p				= pf; 
-		Fvector3	c0	= color	(_n,F0.v[id].c_rgb_hemi,F0.v[id].c_sun);
-		Fvector3	c1	= color	(_n,F1.v[id].c_rgb_hemi,F1.v[id].c_sun);
-		Fvector3	cf;	cf.lerp	(c0,c1,factor);
-		color0			= subst_alpha	(color_rgba_f(cf.x,cf.y,cf.z,0),alpha);
-		color1			= factor_u;		
-		t[0].set		(F0.v[id].t.x,F0.v[id].t.y);
-		t[1].set		(F1.v[id].t.x,F1.v[id].t.y);
-grou};
-graph_structure::r_dsgraph_render_lods	()
+	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
+}
+
+void R_dsgraph_structure::r_dsgraph_render_lods	()
 {
 	mapLOD.getRL				(lstLODs);
 	if (lstLODs.empty())		return;
@@ -59,8 +45,8 @@ graph_structure::r_dsgraph_render_lods	()
 	ref_shader					cur_S		= &*firstV->hShader;
 	int							cur_count	= 0;
 	u32							vOffset;
-	FVF::LIT*		LOD*						V			= (LOD*)	RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
-ange						= r_ssaLOD_A - r_ssaLOD_B;
+	FVF::LIT*					V			= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
+	float	ssaRange						= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
@@ -77,7 +63,9 @@ ange						= r_ssaLOD_A - r_ssaLOD_B;
 		float	scale					= ssaDiff/ssaRange;
 		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
 		u32		uA						= u32(iA);
-		// float	ulate direction and shift
+		// float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
+
+		// calculate direction and shift
 		FLOD*							lodV		= (FLOD*)P.pVisual;
 		Fvector							Ldir,shift,_P;
 		Ldir.sub						(lodV->vis.sphere.P,Device.vCameraPosition);
@@ -88,9 +76,9 @@ ange						= r_ssaLOD_A - r_ssaLOD_B;
 		FLOD::_face*					facets		= lodV->facets;
 		int								id_best		= 0;
 		int								id_next		= 0;
-		float						float							dot_best	= Ldir.dotproduct(facets[0].N);	// N-inverted
-		float							dot_next	= Ldir.dotproduct(facets[0].N);	// N-inverted
-			dot;
+		float							dot_best	= Ldir.dotproduct(facets[0].N);
+		float							dot_next	= Ldir.dotproduct(facets[0].N);
+		float							dot;
 
 		dot	= Ldir.dotproduct			(facets[1].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=1; dot_best=dot; }
 		dot	= Ldir.dotproduct			(facets[2].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=2; dot_best=dot; }
@@ -101,28 +89,24 @@ ange						= r_ssaLOD_A - r_ssaLOD_B;
 		dot	= Ldir.dotproduct			(facets[7].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=7; dot_best=dot; }
 
 		// Now we have two "best" planes, calculate factor, and approx normal
-		float	f0			float	dt	=	0.5f;
-		float	f0	=	dot_best-dt,f1 = dot_next-dt;
-=	f0+f1;		f0 /= ft; f1 /= ft;
+		float	f0	=	dot_best,	f1 = dot_next;
+		float	ft	=	f0+f1;		f0 /= ft; f1 /= ft;
 		Fvector	N	=	{0,0,0};	N.mad(facets[id_best].N,f0).mad(facets[id_next].N,f1).normalize();
 				N.y	+=	1;			N.normalize	();
 
-		// Fill		float	factor	= f0;
-		u32		ff		= clampr(iFloor	(factor*255.f),0,255);	
-		u32		factor_u= color_rgba	(ff,ff,ff,ff); 
- VB
-		FLOD::_fa		FLOD::_face&	F0				= facets[id_best];
-		FLOD::_face&	F1				= facets[id_next];
-		V->set	(shift,N,F0,F1,3,uA,factor,factor_u); V++;	// 3
-		V->set	(shift,N,F0,F1,0,uA,factor,factor_u); V++;	// 0
-		V->set	(shift,N,F0,F1,2,uA,factor,factor_u); V++;	// 2
-		V->set	(shift,N,F0,F1,1,uA,factor,factor_u); V++;	// 1
-groups.push_back				(cur_count);
+		// Fill VB
+		FLOD::_face&	F				= facets[id_best];
+		_P.add(F.v[3].v,shift);	V->set	(_P,color(N,F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.add(F.v[0].v,shift);	V->set	(_P,color(N,F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.add(F.v[2].v,shift);	V->set	(_P,color(N,F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.add(F.v[1].v,shift);	V->set	(_P,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
+	}
+	lstLODgroups.push_back				(cur_count);
 	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->hGeom->vb_stride);
 
 	// *** Render
-	int curren	int							current=0;
-_xform_world		(Fidentity);
+	int current=0;
+	RCache.set_xform_world		(Fidentity);
 	for (u32 g=0; g<lstLODgroups.size(); g++)	{
 		int p_count				= lstLODgroups[g];
 		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
