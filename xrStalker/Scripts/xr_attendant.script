@@ -117,7 +117,9 @@ end
 function action_follow:execute ()
     action_base.execute (self)
     -- проверим, а жив ли еще старшќй.
-    if db.obj_by_id[self.st.leader_id] == nil or db.obj_by_id[self.st.leader_id]:alive () == false then
+    if db.obj_by_id[self.st.leader_id] == nil or 
+       db.obj_by_id[self.st.leader_id]:alive () == false or
+       db.storage[self.st.leader_id].active_scheme ~= "walker" then
        self:free ()
        self.st.signals["leader_dead"] = true
        return 
