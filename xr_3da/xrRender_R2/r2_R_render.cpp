@@ -138,9 +138,8 @@ void CRender::Render		()
 		Target.phase_scene						();
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
+		r_dsgraph_render_lods					();
 		Details.Render							();
-		// mapSorted.traverseRL					(sorted_L1);
-		mapSorted.clear							();		// unsupported
 	}
 
 	//******* Occlusion testing of volume-limited light-sources
@@ -361,6 +360,13 @@ void CRender::Render		()
 	// Target.phase_bloom					();
 	Target.phase_combine					();
 	
+	//******* Main render - second order geometry (the one, that doesn't support deffering)
+	{
+		// level
+		r_dsgraph_render_graph					(1);			// normal level, secondary priority
+		r_dsgraph_render_sorted					();				// strict-sorted geoms
+	}
+
 	// PortalTraverser.dbg_draw				();
 
 	// HUD
