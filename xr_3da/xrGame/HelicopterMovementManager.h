@@ -168,3 +168,14 @@ public:
 };
 
 #include "HelicopterMovementManager_inl.h"
+/*
+class CHelicopterMovManager :public COMotion
+{
+
+public:
+	void	onFrame(Fmatrix& xform, float fTimeDelta);
+	void	createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
+	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& xyz);
+	void	buildHuntPath(Fvector& enemyPos);
+
+};*/
