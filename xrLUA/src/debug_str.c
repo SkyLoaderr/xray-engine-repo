@@ -13,12 +13,10 @@ int xr_print(FILE *tpStream, const char *caFormat,...)
 {
 	va_list marker;
 
-	va_start(marker,caFormat);
-
-	if (!g_caOutBuffer || !g_caErrorBuffer) {
-		va_end(marker);
+	if (!g_caOutBuffer || !g_caErrorBuffer)
 		return(0);
-	}
+
+	va_start(marker,caFormat);
 
 	g_iReturn = 0;
 
