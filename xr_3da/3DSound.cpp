@@ -153,7 +153,7 @@ void CSound::OnMove		()
 	case stStopped:
 		if (bMustPlay) {
 			bMustPlay			= false;
-			ps.dwMode			= DS3DMODE_NORMAL;
+			ps.dwMode			= _3D?DS3DMODE_NORMAL:DS3DMODE_DISABLE;
 			bNeedUpdate			= true;
 			Update_Params		();
 			dwTimeStarted		= dwTime;
@@ -198,7 +198,7 @@ void CSound::OnMove		()
 				// switch to: PLAY
 				pBuffer->SetCurrentPosition	(((dwTime-dwTimeStarted)%dwTimeTotal)*dwBytesPerMS);
 				pBuffer->Play				(0, 0, 0);				// start buffer
-				ps.dwMode					=	DS3DMODE_NORMAL;	// enable 3D processing
+				ps.dwMode					=	_3D?DS3DMODE_NORMAL:DS3DMODE_DISABLE;	// enable 3D processing
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stPlaying;			// switch state
 			}
@@ -232,7 +232,7 @@ void CSound::OnMove		()
 				// switch to: PLAY
 				pBuffer->SetCurrentPosition	(((dwTime-dwTimeStarted)%dwTimeTotal)*dwBytesPerMS);
 				pBuffer->Play				(0, 0, DSBPLAY_LOOPING);// start buffer
-				ps.dwMode					=	DS3DMODE_NORMAL;	// enable 3D processing
+				ps.dwMode					=	_3D?DS3DMODE_NORMAL:DS3DMODE_DISABLE;	// enable 3D processing
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stPlayingLooped;	// switch state
 			}
@@ -289,7 +289,7 @@ void CSound::Stop			()
 	bNeedUpdate					= true;
 }
 
-void CSound::Rewind		()
+void CSound::Rewind			()
 {
 	pBuffer->SetCurrentPosition	(0);
 	DWORD dwTime				= Device.TimerAsync();
