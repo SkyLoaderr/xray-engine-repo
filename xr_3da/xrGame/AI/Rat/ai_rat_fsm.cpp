@@ -35,7 +35,8 @@
 /**/
 
 #ifndef DEBUG
-	#define WRITE_TO_LOG(s)
+	#undef	WRITE_TO_LOG
+	#define WRITE_TO_LOG(s) bStopThinking = true;
 #endif
 
 void CAI_Rat::Think()

@@ -72,10 +72,6 @@ public:
 	// update data
 	Fvector					o_Position;
 	Fvector					o_Angle;
-	// for ALife
-	ALife::_GRAPH_ID		m_tGraphID;
-	float					m_fDistance;
-
 
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
@@ -111,11 +107,21 @@ public:
 		ZeroMemory			(s_name_replace,sizeof(string64));
         o_Angle.set			(0.f,0.f,0.f);
         o_Position.set		(0.f,0.f,0.f);
-//		m_tGraphID			= ALife::_GRAPH_ID(-1);
 	}
 	virtual ~xrServerEntity	()
 	{
 	}
+};
+
+class xrALifeEntity : public xrServerEntity {
+public:
+	ALife::_GRAPH_ID		m_tGraphID;
+	float					m_fDistance;
+
+	virtual void			UPDATE_Read		(NET_Packet& P);
+	virtual void			UPDATE_Write	(NET_Packet& P);
+	virtual void			STATE_Read		(NET_Packet& P, u16 size);
+	virtual void			STATE_Write		(NET_Packet& P);
 };
 
 // Some preprocessor help

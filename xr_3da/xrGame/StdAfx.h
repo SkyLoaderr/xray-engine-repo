@@ -14,14 +14,16 @@
 // Insert your headers here
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
+#pragma warning(disable:4995)
 #include "..\stdafx.h"
+#pragma warning(default:4995)
 
 #pragma warning( 4 : 4018 )
 #pragma warning( 4 : 4244 )
-#pragma warning(disable:4201)
 
 #include "clsid_game.h"
 
+#pragma warning(disable:4201)
 #include "..\xr_object.h"
 #include "..\xr_creator.h"
 #include "..\sound.h"

@@ -411,8 +411,8 @@ public:
 		SERVER_ENTITY_P_IT			E = m_tpServerEntitites.end();
 		NET_Packet					P;
 		CStream						*S = 0;
-		for (int id=0; I != E; I++) {
-			R_ASSERT(0!=(S = tFileStream.OpenChunk(id)));
+		for (int id=0; I != E; I++, id++) {
+			R_ASSERT			(0!=(S = tFileStream.OpenChunk(id)));
 			P.B.count			= S->Length();
 			S->Read				(P.B.data,P.B.count);
 			S->Close			();
@@ -422,11 +422,10 @@ public:
 			string64			s_name;
 			P.r_string			(s_name);
 			xrServerEntity		*E = F_entity_Create(s_name);
-			R_ASSERT2(E,"Can't create entity.");
+			R_ASSERT2			(E,"Can't create entity.");
 			E->Spawn_Read		(P);
-			R_ASSERT(E->s_gameid == GAME_SINGLE);
+			R_ASSERT			(E->s_gameid == GAME_SINGLE);
 			*I					= E;
-			id++;
 		}
 	};
 };
