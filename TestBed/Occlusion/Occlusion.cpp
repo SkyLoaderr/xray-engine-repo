@@ -92,8 +92,11 @@ int __cdecl main	(int argc, char* argv[])
 		float		a2	= rad(test*5.f + 100.f);
 		float		a3	= rad(test*5.f + 30.f);
 		
-		// setup tri
+		// setup tri(s)
 		occTri	T1,T2;
+		T1.adjacent[0]	= &T2;
+		T1.adjacent[1]	= 0;
+		T1.adjacent[2]	= 0;
 		T1.raster[0].x	= p_c + p_r*cosf(a0);
 		T1.raster[0].y	= p_c + p_r*sinf(a0);
 		T1.raster[0].z	= 0.01f;
@@ -107,6 +110,9 @@ int __cdecl main	(int argc, char* argv[])
 		T1.raster[2].z	= 0.99f;
 
 		T2 = T1;
+		T2.adjacent[0]	= &T1;
+		T2.adjacent[1]	= 0;
+		T2.adjacent[2]	= 0;
 		T2.raster[2].x	= p_c + p_r2*cosf(a3);
 		T2.raster[2].y	= p_c + p_r2*sinf(a3);
 		T2.raster[2].z	= 0.99f;
