@@ -5,6 +5,7 @@
 
 #define FAKE_DEATH_TYPES_COUNT	3
 
+
 class CZombie :	public CBaseMonster {
 	
 	typedef		CBaseMonster		inherited;
