@@ -90,7 +90,7 @@ _ParticleState::_ParticleState()
 
 void _ParticleState::ResetState()
 {
-	vertexB_tracks	= TRUE;
+	flags.set		(PASource::flVertexB_tracks,TRUE);
 	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
 	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	VertexB			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
@@ -413,7 +413,7 @@ PARTICLEDLL_API void pVertexBTracks(BOOL trackVertex)
 {
 	_ParticleState &_ps = _GetPState();
 
-	_ps.vertexB_tracks = trackVertex;
+	_ps.flags.set(PASource::flVertexB_tracks,trackVertex);
 }
 
 PARTICLEDLL_API void pParentMotion(float scale)
@@ -669,6 +669,32 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 			break;
 		case PAVortexID:
 			((PAVortex *)pa)->Transform(m);
+			break;
+		}
+	}
+}
+
+
+PARTICLEDLL_API void pStopPlaying(int action_list_num)
+{
+	_ParticleState &_ps = _GetPState();
+
+	if(_ps.in_new_list)
+		return; // ERROR
+
+	// Execute the specified action list.
+	PAHeader *pa	= _ps.GetListPtr(action_list_num);
+
+	if(pa == NULL)
+		return; // ERROR
+
+	int num_act = pa->count-1; pa++;
+
+	// Step through all the actions in the action list.
+	for(int act = 0; act < num_act; act++, pa++){
+		switch(pa->type){
+		case PASourceID:
+			((PASource *)pa)->flags.set(PASource::flStopPlaying,TRUE);
 			break;
 		}
 	}

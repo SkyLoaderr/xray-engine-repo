@@ -326,7 +326,7 @@ PARTICLEDLL_API void pSource(float particle_rate, PDomainEnum dtype,
 	S.alpha			= _ps.Alpha;
 	S.age			= _ps.Age;
 	S.age_sigma		= _ps.AgeSigma;
-	S.vertexB_tracks= _ps.vertexB_tracks;
+	S.flags			= _ps.flags;
 	S.parent_vel	= pVector(0,0,0);
 	S.parent_motion	= _ps.parent_motion;
 	S.flags.zero	();
@@ -446,7 +446,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 	
 	pVector pos(x, y, z);
 	pVector siz, rot, vel, col, posB;
-	if(_ps.vertexB_tracks)
+	if(_ps.flags.is(PASource::flVertexB_tracks))
 		posB = pos;
 	else
 		_ps.VertexB.Generate(posB);

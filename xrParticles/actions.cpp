@@ -1365,7 +1365,7 @@ void PASource::Execute(ParticleGroup *group)
 	
 	pVector pos, posB, vel, col, siz, rt;
 	
-	if(vertexB_tracks)
+	if(flags.is(flVertexB_tracks))
 	{
 		for(int i = 0; i < rate; i++)
 		{
@@ -1734,7 +1734,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			
 			// Find a vector orthogonal to n.
 			pVector basis(1.0f, 0.0f, 0.0f);
-			if(fabs(basis * n) > 0.999)
+			if(_abs(basis * n) > 0.999)
 				basis = pVector(0.0f, 1.0f, 0.0f);
 			
 			// Project away N component, normalize and cross to get
@@ -1770,7 +1770,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			
 			// Find a vector orthogonal to n.
 			pVector basis(1.0f, 0.0f, 0.0f);
-			if(fabs(basis * p2) > 0.999)
+			if(_abs(basis * p2) > 0.999)
 				basis = pVector(0.0f, 1.0f, 0.0f);
 			
 			// Project away N component, normalize and cross to get
