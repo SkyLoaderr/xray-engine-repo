@@ -94,8 +94,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCompress", "..\xrCompress
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 15
+		SccNumberOfProjects = 16
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -155,6 +158,11 @@ Global
 		SccProjectName14 = \u0022$/xrCompress\u0022,\u0020CIFAAAAA
 		SccLocalPath14 = ..\\xrCompress
 		CanCheckoutShared = true
+		SccProjectUniqueName15 = ..\\xrODE\\contrib\\msvc7\\ode_default\\default.vcproj
+		SccProjectName15 = \u0022$/xrODE\u0022,\u0020AJPAAAAA
+		SccLocalPath15 = ..\\xrODE
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection15 = contrib\\msvc7\\ode_default\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -258,8 +266,5 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityAddIns) = postSolution
-	EndGlobalSection
-	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
-		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal
