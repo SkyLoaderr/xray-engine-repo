@@ -39,5 +39,6 @@ CScriptEngine::~CScriptEngine	()
 
 void CScriptEngine::init		()
 {
-	ui().log	("Scripting engine is initialized\n");
+	ui().log	("Scripting engine is initializing...");
+	ui().log	("completed\n");
 }
