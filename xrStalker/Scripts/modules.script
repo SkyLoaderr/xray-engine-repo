@@ -22,6 +22,7 @@ module ("xr_state")
 module ("debug_info")
 module ("utils")
 module ("move_mgr")
+module ("mob_alife_mgr")
 
 module ("gramofon")
 

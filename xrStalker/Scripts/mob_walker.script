@@ -78,31 +78,14 @@ function mob_walker:update(delta)
 		return
 	end
 
-	local enemy = self.object:get_enemy()
-	if enemy then
-		if not self.st.friendly and
-		   (not self.st.actor_friendly or enemy:id () ~= actor:id ()) and
-		   (not self.st.npc_friendly or enemy:id() == actor:id()) then
-			xr_logic.mob_release(self.object)
-			return
-		end
-	end
-	
-	local h = self.object:get_monster_hit_info()
-	if h.who and h.time ~= 0 then
-		if h.who:id() == actor:id() and self.st.actor_friendly then
-			-- Если хотя бы раз был атакован actor-ом, то больше не дружественен к нему
-			self.st.actor_friendly = false
-		end
-		--printf("_bp [%s]: h.who:name() = %s", self.object:name(), h.who:name())
-		xr_logic.mob_release(self.object)
+	local suggested_action = mob_alife_mgr.script_interrupted(self.object, actor, self.st.alife_mode)
+	if suggested_action == mob_alife_mgr.disable_scheme then
+		return
+	elseif suggested_action == mob_alife_mgr.reset_scheme then
+		self:reset_scheme()
 		return
 	end
 
-	if not xr_logic.mob_captured(self.object) then
-		self:reset_scheme()
-	end
-	
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end
@@ -272,9 +255,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
 	st.no_reset        = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
-	st.actor_friendly  = utils.cfg_get_bool(ini, section, "actor_friendly", npc, false)
-	st.npc_friendly    = utils.cfg_get_bool(ini, section, "npc_friendly", npc, false)
-	st.friendly        = utils.cfg_get_bool(ini, section, "friendly", npc, false)
+	st.alife_mode      = mob_alife_mgr.cfg_get_mode(ini, section, npc)
 	st.path_walk       = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look       = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
 
