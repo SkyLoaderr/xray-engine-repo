@@ -115,8 +115,7 @@ public:
 
 	// Fire control
 	virtual void			g_fireParams		(Fvector& P, Fvector& D)			= 0;
-	virtual void			g_cl_fireStart		( )					{;}
-	virtual void			g_sv_fireStart		(NET_Packet* P)		{;}
+	virtual void			g_fireStart			( )					{;}
 	virtual void			g_fireEnd			( )					{;}
 
 	// Events
