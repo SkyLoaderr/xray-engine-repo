@@ -89,6 +89,28 @@ function level_agroprom(first_speaker, second_speaker)
 end
 
 -----------------------------------------------------------------------------------
+-- Relation functions
+-----------------------------------------------------------------------------------
+function is_friend(first_speaker, second_speaker)
+	return first_speaker:relation(second_speaker) == game_object.friend
+end
+
+function is_not_friend(first_speaker, second_speaker)
+	return not is_friend(first_speaker, second_speaker)
+end
+
+function become_friend(first_speaker, second_speaker)
+	first_speaker:set_relation(game_object.friend, second_speaker)
+end
+
+-----------------------------------------------------------------------------------
+-- Money functions
+-----------------------------------------------------------------------------------
+function has_2000_money(first_speaker, second_speaker)
+	return first_speaker:money() >= 2000
+end
+
+-----------------------------------------------------------------------------------
 -- TRADE
 -----------------------------------------------------------------------------------
 --' Инициализация торговли
@@ -292,14 +314,19 @@ function have_a_vodka (player, stalker)
     return player:object ("vodka") ~= nil
 end
 
-function first_meet (player, stalker)
-    return not player:has_info ("go_to_vodka")
-end
-
-function second_meet (player, stalker)
-    return player:has_info ("go_to_vodka")
-end
-
 function transfer_vodka (stalker, player)
    player:transfer_item (player:object ("vodka"), stalker) 
+end
+
+------------------------------------------------------------------------------------
+-- Agroprom Krot
+------------------------------------------------------------------------------------
+function sell_krot_flash(first_speaker, second_speaker)
+	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
+    second_speaker:transfer_money(2000, first_speaker)
+end
+
+function sell_krot_flash_to_friend(first_speaker, second_speaker)
+	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
+    second_speaker:transfer_money(1000, first_speaker)
 end
