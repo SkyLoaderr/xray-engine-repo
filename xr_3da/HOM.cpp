@@ -336,7 +336,7 @@ BOOL CHOM::visible		(vis_data& vis)
 
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	BOOL result			= _visible			(vis.box);
-	u32  delay;
+	u32  delay			= 1;
 	if (vis.frame<frame_prev)
 	{
 		// either [0] or [2]
@@ -350,14 +350,11 @@ BOOL CHOM::visible		(vis_data& vis)
 				delay			= ::Random.randI	(2,5);
 			} else {
 				// hidden	- shedule to next frame
-				delay			= 1;
 			}
 		} else {
 			// [0]
 			// (a) - visible, but last time it was hidden	- shedule to next frame
 			// (b) - invisible								- shedule to next frame
-
-			delay			= 1;
 		}
 	} else {
 		// [1]
@@ -367,7 +364,6 @@ BOOL CHOM::visible		(vis_data& vis)
 			delay			= ::Random.randI	(5,10);
 		} else {
 			// hidden	- shedule to next frame
-			delay			= 1;
 		}
 	}
 	vis.hom_frame	= frame_current + delay;
