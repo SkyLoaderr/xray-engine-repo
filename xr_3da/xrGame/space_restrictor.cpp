@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "space_restrictor.h"
 #include "xrServer_Object_Base.h"
+#include "level.h"
+#include "space_restrictor_manager.h"
 
 CSpaceRestrictor::~CSpaceRestrictor	()
 {
