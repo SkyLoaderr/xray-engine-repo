@@ -48,8 +48,8 @@ function main()
 		if 	is_actor_entered then
 			printf("alarm!")
 			flush()
-			stalker1:script	(false, stalker_01.script_name())
-			stalker1:script	(true,  stalker_01.script_name())
+			stalker1:script	(false, script_01.script_name())
+			stalker1:script	(true,  script_01.script_name())
 			action(
 				stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
