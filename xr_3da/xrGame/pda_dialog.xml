@@ -71,9 +71,9 @@
 	<!-- CHARACTER FIELD HEADERS -->
 	<charinfo_mt_static	x="122" y="0" width="252" height="120">
 		<!-- Community caption -->
-		<phrase x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">Community:</phrase>
+		<phrase x="0" y="45" font="letterica16" r="128" g="128" b="128" a="255">Community:</phrase>
 		<!-- Rank caption -->
-		<phrase x="0" y="45" font="letterica16" r="150" g="128" b="128" a="255">Rank:</phrase>
+		<phrase x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">Rank:</phrase>
 		<!-- Relation caption -->
 		<phrase x="0" y="90" font="letterica16" r="128" g="128" b="128" a="255">Rank:</phrase>
 	</charinfo_mt_static>
