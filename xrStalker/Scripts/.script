@@ -111,6 +111,66 @@ function pp_effector:finished()
 	return			self.stop_time < device():time_global()
 end
 
+--
+-- postprocess for rainbow
+-- 
+class "pp_linear_lerp" (effector)
+
+function pp_linear_lerp:__init(effector_type,start_time,start_power,dest_power,life_time) super(effector_type,start_time)
+	self.start_time = start_time
+	self.stop_time	= start_time + life_time
+	self.min_power	= start_power
+	self.max_power	= dest_power
+end
+
+function pp_linear_lerp:process(pp)
+	effector.process(self,pp)
+
+	local curr_time	= device():time_global()
+	local d			= 0.0
+
+	if curr_time < self.start_time then
+		d			= 0.0
+	else
+	    if curr_time < self.stop_time then
+	    	d 			= (curr_time - self.start_time) / (self.stop_time - self.start_time)
+	    else
+	    	self.info	= self.max_power
+	    	return      true
+		end
+	end
+	
+	local dual		= duality()
+	local noise		= noise()
+	local color		= color()
+
+	dual.h			= (self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
+	dual.v			= (self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
+	noise.grain		= (self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
+	noise.intensity = (self.max_power.noise.intensity 	- self.min_power.noise.intensity) 	* d
+	color.r			= (self.max_power.noise.color.r 	- self.min_power.noise.color.r 	)	* d
+	color.g			= (self.max_power.noise.color.g 	- self.min_power.noise.color.g 	)	* d
+	color.b			= (self.max_power.noise.color.b 	- self.min_power.noise.color.b 	)	* d 
+	color.a			= (self.max_power.noise.color.a 	- self.min_power.noise.color.a 	)	* d 
+	pp.gray			= (self.max_power.gray 				- self.min_power.gray 			)	* d
+	pp.blur			= (self.max_power.blur 				- self.min_power.blur 			)	* d
+
+	noise.color		= color
+	pp.dual			= dual
+	pp.noise		= noise
+	
+	self.info		= pp
+	
+	return          true
+end
+
+function pp_linear_lerp:finished()
+	return			self.stop_time < device():time_global()
+end
+--
+-- end of postprocess for rainbow
+--
+
 function get_level_object(obj_name)
 	local res		= level.object(obj_name)
 	while res == nil do
