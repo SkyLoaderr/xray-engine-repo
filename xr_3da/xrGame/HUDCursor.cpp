@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "hudcursor.h"
 #include "hudmanager.h"
+#include "GameMtlLib.h"
 
 #include "../Environment.h"
 #include "../CustomHUD.h"
@@ -45,7 +46,7 @@ float	g_fMaxReconSpeed	= 10.f;
 CHUDCursor::CHUDCursor	()
 {    
 	fuzzyShowInfo		= 0.f;
-	pick_dist			= 0.f;
+	RQ.range			= 0.f;
 	hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hShader.create		("hud\\cursor","ui\\cursor");
 
@@ -67,21 +68,53 @@ void CHUDCursor::Load		()
 
 IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
 
+
+
+ICF BOOL pick_trace_callback(collide::rq_result& result, LPVOID params)
+{
+	collide::rq_result* RQ = (collide::rq_result*)params;
+	//динамический объект
+	if(result.O){	
+		*RQ				= result;
+		return FALSE;
+	}else{
+		//получить треугольник и узнать его материал
+		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
+		if (GMLib.GetMaterialByIdx(T->material)->Flags.is(SGameMtl::flPassable)) 
+			return TRUE;
+	}
+	*RQ					= result;
+	return FALSE;
+}
+
+
 void CHUDCursor::CursorOnFrame ()
 {
-	Fvector				p1,p2,dir;
+	Fvector				p1,dir;
 
 	p1					= Device.vCameraPosition;
 	dir					= Device.vCameraDirection;
 	
 	// Render cursor
-	pick_dist			= g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
+/*
 	if(Level().CurrentEntity()){
 		Level().CurrentEntity()->setEnabled(false);
-		if (Level().ObjectSpace.RayPick( p1, dir, pick_dist, collide::rqtBoth, RQ ))
-			pick_dist	= RQ.range<NEAR_LIM?NEAR_LIM:RQ.range;
+		if (Level().ObjectSpace.RayPick( p1, dir, RQ.range, collide::rqtBoth, RQ ))
+			RQ.range	= RQ.range<NEAR_LIM?NEAR_LIM:RQ.range;
 		Level().CurrentEntity()->setEnabled(true);
 	}
+*/
+	if(Level().CurrentEntity()){
+		RQ.O			= 0; 
+		RQ.range		= g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
+		RQ.element		= -1;
+		Level().CurrentEntity()->setEnabled(false);
+		collide::ray_defs RD(p1, dir, RQ.range, 0, collide::rqtBoth);
+		if(Level().ObjectSpace.RayQuery(RD, pick_trace_callback, &RQ))
+			clamp		(RQ.range,NEAR_LIM,RQ.range);
+		Level().CurrentEntity()->setEnabled(true);
+	}
+
 }
 
 void CHUDCursor::Render()
@@ -100,7 +133,7 @@ void CHUDCursor::Render()
 	u32 C				= C_DEFAULT;
 	
 	FVF::TL				PT;
-	p2.mad				(p1,dir,pick_dist);
+	p2.mad				(p1,dir,RQ.range);
 	PT.transform		(p2,Device.mFullTransform);
 	float				di_size = C_SIZE/powf(PT.p.w,.2f);
 
@@ -111,7 +144,7 @@ void CHUDCursor::Render()
 #ifdef DEBUG
 	if (psHUD_Flags.test(HUD_CROSSHAIR_DIST)){
 		F->SetColor		(C);
-		F->OutNext		("%3.1f",pick_dist);
+		F->OutNext		("%3.1f",RQ.range);
 	}
 #endif
 
@@ -160,12 +193,12 @@ void CHUDCursor::Render()
 							if (E->g_Team() != pCurEnt->g_Team())	C = C_ON_ENEMY;
 							else									C = C_ON_FRIEND;
 						};
-						if (pick_dist >= g_fMinReconDist && pick_dist <= g_fMaxReconDist){
-							float ddist = (pick_dist - g_fMinReconDist)/(g_fMaxReconDist - g_fMinReconDist);
+						if (RQ.range >= g_fMinReconDist && RQ.range <= g_fMaxReconDist){
+							float ddist = (RQ.range - g_fMinReconDist)/(g_fMaxReconDist - g_fMinReconDist);
 							float dspeed = g_fMinReconSpeed + (g_fMaxReconSpeed - g_fMinReconSpeed)*ddist;
 							fuzzyShowInfo += Device.fTimeDelta/dspeed;
 						}else{
-							if (pick_dist < g_fMinReconDist) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
+							if (RQ.range < g_fMinReconDist) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
 							else fuzzyShowInfo = 0;
 						};
 
