@@ -97,8 +97,8 @@ struct	FTreeVisual_setup
 		dwFrame					= Device.dwFrame;
 
 		// Calc wind-vector, scale
-		float	tm_rot			= PI_MUL_2*Device.fTimeGlobal/psTree_w_rot;
-		wind.set				(sinf(tm_rot),0,cosf(tm_rot),0);	wind.normalize	();	wind.mul(psTree_w_amp);	// dir1*amplitude
+		float	tm_rot			= PI_MUL_2*Device.fTimeGlobal/ps_r__Tree_w_rot;
+		wind.set				(sinf(tm_rot),0,cosf(tm_rot),0);	wind.normalize	();	wind.mul(ps_r__Tree_w_amp);	// dir1*amplitude
 		scale					= 1.f/float(FTreeVisual_quant);
 
 		// Fog
@@ -118,7 +118,7 @@ struct	FTreeVisual_setup
 		CSun&	sun				= *(pCreator->Environment.Suns.front());
 
 		// setup constants
-		wave.set				(psTree_Wave.x,	psTree_Wave.y,	psTree_Wave.z,	Device.fTimeGlobal*psTree_w_speed);			// wave
+		wave.set				(ps_r__Tree_Wave.x,	ps_r__Tree_Wave.y,	ps_r__Tree_Wave.z,	Device.fTimeGlobal*ps_r__Tree_w_speed);			// wave
 		fog_plane.set			(plane.x*denom,	plane.y*denom,	plane.z*denom,	plane.w*denom);								// view-plane
 		fog_params.set			(f_near,	f_far,	0,		0);																// fog-params
 		l_dir.set				(-sun.Direction().x,	-sun.Direction().y,	-sun.Direction().z,	0);							// L-dir
