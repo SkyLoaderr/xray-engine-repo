@@ -99,7 +99,7 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 //***** WeaponAmmo
 xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeObject(caSection)
 {
-	m_boxSize = pSettings->r_s32(caSection, "box_size");
+	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
 }
 
 void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size)

@@ -174,9 +174,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	if ((A || !_A) && (B || !_B))
 		m_iSoundIndex = iIndex;
 	else {
-		m_iSoundIndex = iIndex;
-		//A = _A;
-		//B = _B;
+		A = _A;
+		B = _B;
 	}
 	J					= A || B;
 	
