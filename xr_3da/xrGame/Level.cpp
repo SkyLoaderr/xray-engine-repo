@@ -13,7 +13,6 @@
 #include "xrServer.h"
 #include "net_queue.h"
 #include "game_cl_base.h"
-#include "ai/ai_monster_group.h"
 
 #include "entity_alive.h"
 #include "hudmanager.h"
@@ -52,7 +51,6 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	game						= xr_new<game_cl_GameState>();
 	game_events					= xr_new<NET_Queue_Event>();
-	SquadMan					= xr_new<CSquadManager>();
 
 	game_configured				= FALSE;
 
@@ -137,8 +135,6 @@ CLevel::~CLevel()
 
 	xr_delete					(game);
 	xr_delete					(game_events);
-	xr_delete					(SquadMan);
-
 
 	CInfoPortion::DeleteStrToID();
 }

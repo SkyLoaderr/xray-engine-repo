@@ -225,9 +225,6 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	if (S.Leader==0)		S.Leader			=this;
 	++G.m_dwAliveCount;
 	
-	CActor	*pA = dynamic_cast<CActor*>(this);
-	if (!pA) { Level().SquadMan->RegisterMember((u8)id_Squad, this);}
-
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
 
@@ -243,12 +240,6 @@ void CEntity::net_Destroy	()
 	{
 		S.Leader		= 0;
 		if (!G.Members.empty())	S.Leader	= G.Members.back();
-	}
-
-	CActor	*pA = dynamic_cast<CActor*>(this);
-	if (!pA) {
-		Level().SquadMan->RemoveMember((u8)g_Squad(), this);
-		//Level().SquadMan.Dump();
 	}
 
 	inherited::net_Destroy	();

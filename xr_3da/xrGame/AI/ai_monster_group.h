@@ -60,24 +60,23 @@ struct GTask {
 /////////////////////////////////////////////////////////////////////////////////////////
 // MonsterSquad Class
 class CMonsterSquad {
-	DEFINE_MAP		(CEntity*, GTask,	SQUAD_MAP,	SQUAD_MAP_IT);
-	DEFINE_VECTOR	(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
-	DEFINE_MAP		(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
+	DEFINE_VECTOR		(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
+	DEFINE_MAP			(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
 
-	DEFINE_VECTOR	(SMemberEnemy, MEMBER_ENEMY_VEC, MEMBER_ENEMY_VEC_IT);
+	DEFINE_VECTOR		(SMemberEnemy, MEMBER_ENEMY_VEC, MEMBER_ENEMY_VEC_IT);
 
 	CEntity				*leader;
 	ELeaderState		leader_state;
 	
-	SQUAD_MAP			squad;
 	
-	u8					id;
-
+// decentralized members	
 	ENTITY_STATE_MAP	states;
 
+
+// internal members
 	MEMBER_ENEMY_VEC	vect_copy;
 	MEMBER_ENEMY_VEC	general_enemy;		
-
+	ENTITY_VEC			members;
 
 	struct _elem {
 		CEntity *pE;
@@ -87,14 +86,17 @@ class CMonsterSquad {
 
 	xr_vector<_elem>	lines;
 
+
 public:
-				CMonsterSquad(u8 i) : id(i), leader(0) {}
+				CMonsterSquad() : leader(0) {}
 				~CMonsterSquad() {}
 	
 	// -----------------------------------------------------------------
 
 	void		RegisterMember		(CEntity *pE);
 	void		RemoveMember		(CEntity *pE);
+
+	bool		SquadActive			();
 
 	// -----------------------------------------------------------------
 
@@ -104,50 +106,15 @@ public:
 
 	// -----------------------------------------------------------------
 
-	// Централизованное принятие решений
-	void		ProcessGroupIntel	();
-	void		ProcessGroupIntel	(const GTask &task);
-
-	// -----------------------------------------------------------------
-	
 	// Децентрализованное управление
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
 	void		UpdateDecentralized	();
 	Fvector		GetTargetPoint		(CEntity *pE, u32 &time);
 
-
-	// Проверить, стоит активность группы
-	bool			SquadActive		();
-
-	// -----------------------------------------------------------------
-
-	// Получить задачу для NPC
-	GTask		&GetTask			(CEntity *pE);
-
-	// Получить id своего squad
-	u8			GetID				() {return id;}
-
-	// DEBUG
-	void		Dump				();
+private:
+	
 
 private:
-	ENTITY_VEC	enemies;
-	ENTITY_VEC	members;
-	u32			dest_node;
-
-	void		AskMember			(CEntity *pE, const GTask &new_task);
-
-private:
-	void		TaskIdle			();
-	void		Explore				(xr_vector<u32> &nodes, const Fvector &centroid, const Fvector &dir, CEntity *pE, GTask *pTask);
-	bool		IsPriorityHigher	(ESquadCommand com_new, ESquadCommand com_old);
-	
-	void		InitTask			(GTask *task);
-	bool		ActiveTask			(GTask *task);
-
-
-	CEntity		*GetNearestEnemy	(CEntity *t, ENTITY_VEC *ev);
-	
 	// decentralized
 	void		SetupMemeberPositions_Deviation (MEMBER_ENEMY_VEC &members, CEntity *enemy);
 	void		SetupMemeberPositions_TargetDir (MEMBER_ENEMY_VEC &members, CEntity *enemy);
@@ -155,29 +122,25 @@ private:
 };
 
 
-class CSquadManager {
-	DEFINE_MAP(u8, CMonsterSquad*, SQUADS_MAP, SQUADS_MAP_IT);
-	SQUADS_MAP squads;
+class CMonsterSquadManager {
+	DEFINE_VECTOR(CMonsterSquad*, MONSTER_SQUAD_VEC, MONSTER_SQUAD_VEC_IT);
+	DEFINE_VECTOR(MONSTER_SQUAD_VEC, MONSTER_TEAM_VEC,MONSTER_TEAM_VEC_IT);
+
+	MONSTER_TEAM_VEC team;
 
 public:
-					CSquadManager	();
-					~CSquadManager	();
-		
-	void			RegisterMember	(u8 squad_id, CEntity *e);
-	void			RemoveMember	(u8 squad_id, CEntity *e);
+					CMonsterSquadManager	();
+					~CMonsterSquadManager	();
 
-	//-------------------------------------------------------------------
+	void			register_member			(u8 team_id, u8 squad_id, CEntity *e);
+	void			remove_member			(u8 team_id, u8 squad_id, CEntity *e);
 
-	CMonsterSquad	*GetSquad		(u8 squad_id);
-	
-	//-------------------------------------------------------------------
-	// Utilities
-	
-	u8				TransformPriority(ESquadCommand com);
-	
-	//-------------------------------------------------------------------
+	CMonsterSquad	*get_squad				(u8 team_id, u8 squad_id);
+	CMonsterSquad	*get_squad				(const CEntity *entity);
 
-	void			Dump			();
 };
 
 
+IC CMonsterSquadManager &monster_squad();
+
+#include "ai_monster_group_inline.h"

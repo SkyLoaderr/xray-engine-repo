@@ -1766,6 +1766,9 @@
 								<File
 									RelativePath=".\Ai\ai_monster_group.h">
 								</File>
+								<File
+									RelativePath=".\ai\ai_monster_group_inline.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Motion Stats"

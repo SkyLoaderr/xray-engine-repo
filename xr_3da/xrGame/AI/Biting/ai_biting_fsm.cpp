@@ -32,7 +32,8 @@ void CAI_Biting::Think()
 	CMonsterMovement::Frame_Init();
 
 	// Squad calculations
-	CMonsterSquad	*pSquad = Level().SquadMan->GetSquad((u8)g_Squad());
+
+	CMonsterSquad	*pSquad = monster_squad().get_squad(this);
 	if (pSquad && pSquad->SquadActive()) {
 		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
 		if ((pSquad->GetLeader() == this)) {
@@ -68,27 +69,13 @@ void CAI_Biting::Think()
 	//if (next_bridge < m_current_update) {
 	//	next_bridge = m_current_update + 5000;
 	//	
-	//	// remove from prev team
-	//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	//	Group.Member_Remove(this);
-
-	//	// set new team
-	//	if (g_Team() == 0){
-	//		id_Team		= 1;
-	//		id_Squad	= 1;
-	//		id_Group	= 0;
-	//	} else {
-	//		id_Team		= 0;
-	//		id_Squad	= 0;
-	//		id_Group	= 0;
-	//	}
-	//	
-	//	// add to new team
-	//	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	//	Group.Member_Add(this);
+	//	if (g_Team() == 0)
+	//		ChangeTeam(1,1,0);
+	//	else 
+	//		ChangeTeam(0,0,0);
 	//} 
 
-	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[u%]", m_current_update, g_Team(),g_Squad(),g_Group());
+	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

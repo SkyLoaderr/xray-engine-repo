@@ -12,7 +12,6 @@
 class	CHUDManager;
 class	CParticlesObject;
 class	xrServer;
-class	CSquadManager;
 struct	SMapLocation;
 class	CEntity;
 class	game_cl_GameState;
@@ -80,7 +79,6 @@ public:
 
 public:
 	svector<CTeam,maxTeams>		Teams;
-	CSquadManager				*SquadMan;
 
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;

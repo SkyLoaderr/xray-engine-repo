@@ -239,6 +239,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular)));
 
+	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
+
 	return(TRUE);
 }
 
@@ -249,6 +251,8 @@ void CAI_Biting::net_Destroy()
 
 	inherited::net_Destroy();
 	m_pPhysics_support->in_NetDestroy();
+
+	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 
 void CAI_Biting::net_Export(NET_Packet& P) 
@@ -393,7 +397,7 @@ void CAI_Biting::Die()
 	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
 	MotionMan.ForceAnimSelect();
 
-	Level().SquadMan->RemoveMember((u8)g_Squad(), this);
+	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 
 
@@ -595,3 +599,23 @@ void CAI_Biting::LoadFootBones()
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void CAI_Biting::ChangeTeam(int team, int squad, int group)
+{
+	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
+		
+	// remove from current team
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	Group.Member_Remove(this);
+	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
+
+	id_Team		= team;
+	id_Squad	= squad;
+	id_Group	= group;
+		
+	// add to new team
+	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	Group.Member_Add(this);
+	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
+}
+

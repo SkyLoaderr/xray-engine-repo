@@ -21,6 +21,7 @@
 #include "../monster_enemy_manager.h"
 #include "../monster_corpse_manager.h"
 
+#include "../ai_monster_group.h"
 
 #include "ai_biting_state.h"
 
@@ -218,6 +219,10 @@ public:
 	// Cover
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
+
+	// Team	
+			void			ChangeTeam						(int team, int squad, int group);
+
 
 // members
 public:
