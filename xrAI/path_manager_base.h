@@ -71,10 +71,10 @@ public:
 		return					(graph->get_edge_weight(node_index1,node_index2));
 	}
 
-	IC		_dist_type	estimate		(const _index_type node_index) const
+	IC		_dist_type	estimate		(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
-		return					(graph->get_edge_weight(node_index,goal_node_index));
+		return					(graph->get_edge_weight(vertex_id,goal_node_index));
 	}
 
 	IC		void		create_path		()
@@ -88,9 +88,9 @@ public:
 		return					(start_node_index);
 	}
 
-	IC		bool		is_goal_reached	(const _index_type node_index) const
+	IC		bool		is_goal_reached	(const _index_type vertex_id) const
 	{
-		return					(node_index == goal_node_index);
+		return					(vertex_id == goal_node_index);
 	}
 
 	IC		bool		is_limit_reached(const _iteration_type	iteration_count) const
@@ -103,10 +103,10 @@ public:
 		);
 	}
 
-	IC		bool		is_accessible	(const _index_type node_index) const
+	IC		bool		is_accessible	(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
-		return					(graph->is_accessible(node_index));
+		return					(graph->is_accessible(vertex_id));
 	}
 
 	IC		bool		is_metric_euclidian() const
@@ -115,15 +115,15 @@ public:
 		return					(true);
 	}
 
-	IC		void		begin			(const _index_type node_index, const_iterator &begin, const_iterator &end)
+	IC		void		begin			(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
 	{
-		best_node_index			= node_index;
-		graph->begin			(node_index,begin,end);
+		best_node_index			= vertex_id;
+		graph->begin			(vertex_id,begin,end);
 	}
 
 	IC		u32			get_value		(const_iterator &i) const
 	{
-		return					(graph->get_value(best_node_index,i));
+		return					(graph->value(best_node_index,i));
 	}
 };
 
