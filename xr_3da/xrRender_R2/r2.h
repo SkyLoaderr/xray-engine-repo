@@ -36,6 +36,7 @@ public:
 public:
 	struct		_options	{
 		u32		smapsize	: 16;
+		u32		depth16		: 1;
 		u32		mrt			: 1;
 		u32		mrtmixdepth	: 1;
 		u32		fp16_filter	: 1;
@@ -43,6 +44,7 @@ public:
 		u32		HW_smap		: 1;
 		u32		nvstencil	: 1;
 
+		u32		sjitter		: 1;
 		u32		noshadows	: 1;
 		u32		Tshadows	: 1;						// transluent shadows
 		u32		distortion	: 1;
