@@ -12,7 +12,8 @@ on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
 
 [follower1]
 leader = 401
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
 on_signal = leader_dead | walker@leave
 on_info = {+val_sacrifice_near_pit} camper@near_pit
 on_info2 = {+val_sacrifice_plr_detected} walker@leave
@@ -21,7 +22,8 @@ on_info2 = {+val_sacrifice_plr_detected} walker@leave
 radius = 0
 path_walk = val_sacrifice_guard1_walk
 path_look = val_sacrifice_guard1_look
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
 def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
@@ -32,4 +34,5 @@ on_info2 = {+val_sacrifice_plr_detected} walker@leave
 [walker@leave]
 path_walk = val_sacrifice_guard1_leave_walk 
 path_look = val_sacrifice_guard1_leave_look
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}

@@ -40,10 +40,19 @@ function set_death_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)	
 
-	npc:set_callback(callback.death, st.death_action.death_callback, st.death_action)
+	-- НЕ СТАВИТЬ death callback напрямую - получаем его из motivator-а через
+	-- event в подписанном на него action-е:
+	--npc:set_callback(callback.death, st.death_action.death_callback, st.death_action)
+	xr_logic.subscribe_action_for_events(npc, st, st.death_action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.death, nil)
+	-- При отключении схемы, нужно снять подписку, чтобы hit callback перестал
+	-- передаваться:
+	--npc:set_callback(callback.death, nil)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		xr_logic.unsubscribe_action_from_events(npc, st, st.death_action)
+	end
 end
 

@@ -133,11 +133,39 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 	end
 end
 
+function motivator_binder:death_callback(victim, who)
+	if self.st.death then
+		xr_logic.issue_event(self.object, self.st.death, "death_callback", victim, who)
+	end
+	self:stalker_death_impulse(victim, who)
+end
+
 function motivator_binder:use_callback(obj, who)
 	xr_use.notify_on_use(obj, who)
 	if self.st.active_section then
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
 	end
+end
+
+function motivator_binder:stalker_death_impulse(victim, who)
+	local actor_pos = utils.vector_copy_by_val(who:position())
+	local npc_pos = victim:position()
+
+	if actor_pos.y >= npc_pos.y - 3.0 then
+		-- ≈сли игрок несущественно ниже, или выше - не давать толчек
+		return
+	end
+
+	printf("_bp: stalker_death_impulse[victim='%s' who='%s']", victim:name(), who:name())
+	local h = hit()
+	h.power = 100
+	actor_pos.y = npc_pos.y + 1.0
+	h.direction = actor_pos:sub(npc_pos)
+	h.bone = "bip01_spine1"
+	h.draftsman = who
+	h.impulse = 2000
+	h.type = hit.wound
+	victim:hit(h)
 end
 
 function motivator_binder:update(delta)
@@ -150,6 +178,7 @@ function motivator_binder:update(delta)
 		-- ¬се CALLBACK-и ставить здесь:
 		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
 		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
+		self.object:set_callback(callback.death, motivator_binder.death_callback, self)
 		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
 		
 		
