@@ -11,7 +11,7 @@ void CBuild::BuildRapid()
 
 	Status("Converting faces...");
 
-	RAPID::CollectorPacked	CL(scene_bb);
+	RAPID::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
 	{
 		Face*	F = (*it);
