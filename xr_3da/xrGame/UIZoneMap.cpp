@@ -305,6 +305,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
 	entity.Out		(map_center.x,P.y,COLOR_SELF);
+	
 
 	/////////////////////
 	// calc coord for the part of the landscape texture to show
