@@ -89,7 +89,7 @@ void CSnorkJump::try_to_jump(u32 velocity_mask)
 		return;
 	}
 
-	try_jump_specific();
+	//try_jump_specific();
 }
 
 void CSnorkJump::try_jump_normal()
