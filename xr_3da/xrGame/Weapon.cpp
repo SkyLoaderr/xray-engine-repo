@@ -289,18 +289,24 @@ void CWeapon::Load		(LPCSTR section)
 	m_pHUD->Load		(hud_sect);
 
 	//m_ammoSect	= pSettings->r_string		(section,"ammo_class");
-	strcpy(m_ammoSect, pSettings->r_string(section,"ammo_class"));
-	char* l_ammoSect = m_ammoSect; R_ASSERT(l_ammoSect);
-	m_ammoTypes.clear(); m_ammoTypes.push_back(l_ammoSect);
-	while(*l_ammoSect) {
-		if(*l_ammoSect == ',') {
-			*l_ammoSect = 0; l_ammoSect++;
-			while(*l_ammoSect == ' ' || *l_ammoSect == '\t') l_ammoSect++;
-			m_ammoTypes.push_back(l_ammoSect);
+	m_ammoTypes.clear	(); 
+	LPCSTR				S = pSettings->r_string(section,"ammo_class");
+	if (S) {
+		strcpy(m_ammoSect, S);
+		char* l_ammoSect = m_ammoSect; R_ASSERT(l_ammoSect);
+		m_ammoTypes.push_back(l_ammoSect);
+		while(*l_ammoSect) {
+			if(*l_ammoSect == ',') {
+				*l_ammoSect = 0; l_ammoSect++;
+				while(*l_ammoSect == ' ' || *l_ammoSect == '\t') l_ammoSect++;
+				m_ammoTypes.push_back(l_ammoSect);
+			}
+			l_ammoSect++;
 		}
-		l_ammoSect++;
+		m_ammoName = pSettings->r_string(m_ammoTypes[0],"inv_name_short");
 	}
-	m_ammoName = pSettings->r_string(m_ammoTypes[0],"inv_name_short");
+	else
+		m_ammoName = 0;
 
 	m_resource = m_abrasion = pSettings->r_float(section,"resource");
 
