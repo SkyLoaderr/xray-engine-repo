@@ -1,3 +1,81 @@
+new:
+*	O(1) AI node search
+* 	SW - VIPM (прогр. меши)
+* 	LUA threads
+*	Self-reference in _vector2<T>, _vector3<T>, _vector4<T>, _matrix<T>, etc.
+
+*	Animation compression 				- 32bit quats / 48bit pos (???)		- или T на ключ, или T на скелет/motion
+*	Animation sharing				(? how ?)
+
+*	wallmark на персонажах
+*	wallmarks shouldn't use connectivity		( - 12 bytes per CFORM triangle)
+*	кровь, следы от машин
+
+*	conditional shading 				(#define :)
+*	PS for everything even for R1			(?)
+*	xrLC - optimize cform 				( )
+*	xrLC - hemisphere (R1)
+*	xrRenderR1/R2 - statistical flow analysis (yarigra :()
+*	hierrarchical profiler
+*	R2 - shaders (ATI rm/ nvCG FX)
+*	R2 - light materials (3D tex)
+*	one pass detail textures
+
+*	пригибание травы + ветер
+*	дальность для травы
+*	одна текстура на все детальные обьекты
+
+*	'fast' strings
+*	.OGG vorbis + params
+	подумать насчет декомпрессии (кеш?непрерывная?при загрузке?)
+
+*	progressive+hierrarchical volume shrink for ISpatial
+
+*	учесть материалы при рей-пике (12 бит + флаги для Кости и всех остальных :)
+
+*	d-lighting
+		hemisphere
+			- xrLC tesselation
+			- EQ-ps: 		base * (diffuse.rgb + lmap*diffuse.a)
+			- EQ-vs-light: 		diffuse.rgb = (lights(pos,norm) + fonarik(s) + hemi_color*diffuse.a), diffuse.a = lmap_scale
+			- EQ-vs-fog:		???
+			- VS for everything
+			- PS for everything
+			- 32bit normals for everything
+			- 16bit lmap-TC for level	
+			- LMAP geom: 	3*4(pos) + 4(norm) + 2*4(tc0) + 2*2(tc1) + 4(diffuse.rgb + hemi) 	= 32bytes = ideal
+			- VLIGHT geom:	3*4(pos) + 4(norm) + 2*4(tc0) + 4(diffuse.rgb + hemi)			= 28bytes = ~ideal
+		
+		
+
+
+bugs/features:
+* 	трава и лоды в Zoom-е
+*	освещение монстров вдали (загасить проекцию)
+*	models/model_trans 		- черный
+*	dynamic_cast<ISpatial>(this) в конструкторе
+
+to think:
+*	разрушаемые обьекты
+*	солнце (lmaps) / дождь / туман (возможно scattering) / небо (тучи) / ветер+порывы (трава, деревья) / flare+sun effs
+* 	фонарик
+*	освещение партиклов
+*	PVS ???
+*	вариации оккл. кулинга ???
+*	коллижен для партиклов
+*	обьемный туман
+
+очень большой кусок:
+*	сеть
+
+
+
+
+
+
+
+
+
 Sanya : 250-03-70; 488-81-66
 Oles:   oles@astral.ntu-kpi.kiev.ua, ICQ#: 36842658, 417-49-05
 Zaya:	-250-62-66, +562-05-28
