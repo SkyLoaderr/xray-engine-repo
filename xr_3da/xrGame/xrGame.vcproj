@@ -2342,6 +2342,9 @@
 						Name="XML"
 						Filter="">
 						<File
+							RelativePath=".\ui\CkSettings.h">
+						</File>
+						<File
 							RelativePath=".\ui\CkString.h">
 						</File>
 						<File
