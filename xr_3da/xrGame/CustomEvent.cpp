@@ -102,9 +102,12 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	dwMaxUpdate					= 1000;
 }
 
-void CCustomEvent::Parse		(LPCSTR DEF)
+DEF_EVENT CCustomEvent::Parse		(LPCSTR DEF)
 {
-	string512	Event[1280],Param[1280];
+	DEF_EVENT	D;
+	D.E			= 0;
+	D.P1		= 0;
+	string512	Event,Param;
 	Event[0]=0; Param[0]=0;
 	sscanf	(DEF,"%[^,],%s",Event,Param);
 	if (Event[0]) {
@@ -120,13 +123,11 @@ void CCustomEvent::Parse		(LPCSTR DEF)
 		}
 		
 		// Create
-		EV_DEF	D;
 		D.E  = Engine.Event.Create(Event); 
 		D.P1 = strdup	(Parsed); 
-		List.push_back	(D);
 	}
+	return D;
 }
-
 
 BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
@@ -165,12 +166,13 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	{
 		u8 count;	P.r_u8			(count);
 		while (count)	{
-			DEF_ACTION		A;
-			string256		str;
-			P.r_u8			(A.bOnce);
-			P.r_u64			(A.CLS);
-			P.r_string		(str);		A.OnEnter	= Parse(str);
-			P.r_string		(str);		A.OnLeave	= Parse(str);
+			DEF_ACTION			A;
+			string256			str;
+			P.r_u8				(A.bOnce);
+			P.r_u64				(A.CLS);
+			P.r_string			(str);		A.OnEnter	= Parse(str);
+			P.r_string			(str);		A.OnLeave	= Parse(str);
+			Actions.push_back	(A);
 			count--;
 		}
 	}
