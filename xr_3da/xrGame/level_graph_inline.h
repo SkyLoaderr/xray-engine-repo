@@ -150,6 +150,8 @@ IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const CLevel
 
 IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const Fvector &position) const
 {
+	if (!valid_vertex_position(position))
+		return			(false);
 	return				(inside(vertex,vertex_position(position)));
 }
 
@@ -183,6 +185,8 @@ IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const CLevel
 
 IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const Fvector &position, const float epsilon) const
 {
+	if (!valid_vertex_position(position))
+		return			(false);
 	return				(inside(vertex,vertex_position(position),epsilon));
 }
 
