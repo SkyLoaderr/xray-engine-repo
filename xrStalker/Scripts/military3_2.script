@@ -12,15 +12,15 @@ function main ()
 	stalker2:script (true, military3_2.script_name ())
 	stalker3:script (true, military3_2.script_name ())
 
-	action (stalker1, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("sidya_kurit_2"), cond (cond.anim_end))
+	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
 
-	action (stalker2, --move (move.standing, move.stand, move.line, patrol ("way_sh")),	anim ("sidya_boltaet_ 0"), 
-			cond (cond.time_end, 10000000),
-            sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true))
+	printf ("Set bazar start")
+	action (stalker2, anim ("sidya_boltaet_ 0"), 
+            sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true),
+            cond (cond.time_end, 10000000))
+	printf ("Set bazar end")
 
-	action (stalker3, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("spit_ 0"), cond (cond.time_end, 10000000))
+	action (stalker3, anim ("spit_ 0"), cond (cond.time_end, 10000000))
 
 	while true do
 		  if stalker1:action () == nil then
