@@ -19,7 +19,6 @@ public:
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
 	
-	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
 	
 	virtual void OnEvent(NET_Packet& P, u16 type);
@@ -39,6 +38,7 @@ public:
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
 	virtual void renderable_Render() {inherited::renderable_Render();}
+	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
 	virtual bool IsHidden() {return inherited::IsHidden();}
@@ -49,9 +49,13 @@ public:
 					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 
 protected:
-	//объект фейковой гранаты
-	CGrenade *m_pFake;
-
 	ref_sound sndCheckout;
 	ESoundTypes	m_eSoundCheckout;
+
+public:
+	virtual void			make_Interpolation	();
+	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+	virtual void			reinit				();
 };

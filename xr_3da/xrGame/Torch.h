@@ -34,11 +34,6 @@ public:
 
 			void	Switch				();
 			void	Switch				(bool light_on);
-#pragma todo("Dima to Oles : make H_Parent variation to return const CObject in the CObject class")
-	IC		const CObject *H_Parent		() const
-	{
-		return				(Parent);
-	}
 	
 	virtual bool			use_parent_ai_locations	() const
 	{

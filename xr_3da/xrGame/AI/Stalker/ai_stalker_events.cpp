@@ -28,9 +28,8 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 	u16 id;
 	switch (type)
 	{
-	case GE_TRADE_BUY:
-	case GE_OWNERSHIP_TAKE:
-		{
+		case GE_TRADE_BUY :
+		case GE_OWNERSHIP_TAKE : {
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
@@ -49,8 +48,19 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", O->cName(),O->ID());
 #endif
 			}
+			break;
 		}
-		break;
+		case GE_OWNERSHIP_REJECT : {
+			// Log			("CActor::OnEvent - REJECT - : ", cName());
+			P.r_u16		(id);
+			CObject		*O = Level().Objects.net_Find(id);
+			
+			if (m_inventory.Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) {
+				O->H_SetParent	(0);
+				feel_touch_deny	(O,2000);
+			}
+			break;
+		}
 	}
 }
 

@@ -135,7 +135,7 @@ BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, L
 		}
 		else
 		{
-			hit_material_id = GAMEMTL_NONE;
+			hit_material_id = 0*GAMEMTL_NONE;
 			pThisWeapon->DynamicObjectHit(result, hit_material_id);
 		}
 	}

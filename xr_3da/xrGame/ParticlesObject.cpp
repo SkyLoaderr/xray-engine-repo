@@ -9,7 +9,7 @@
 #include "../render.h"
 
 
-static const Fvector zero_vel		= {0.f,0.f,0.f};
+const Fvector zero_vel		= {0.f,0.f,0.f};
 
 
 CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
@@ -179,5 +179,5 @@ bool CParticlesObject::IsPlaying()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); 
 	VERIFY(V);
-	return V->IsPlaying();
+	return !!V->IsPlaying();
 }

@@ -208,9 +208,9 @@ void	CCar::net_Export			(NET_Packet& P)
 
 void	CCar::net_Import			(NET_Packet& P)
 {
-	u32 TimeStamp;
+	u32 TimeStamp = 0;
 	P.w_u32 (TimeStamp);
-	u16 NumItems;
+	u16 NumItems = 0;
 	P.w_u32 (NumItems);
 }
 

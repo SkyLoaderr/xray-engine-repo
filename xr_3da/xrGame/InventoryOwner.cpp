@@ -76,42 +76,73 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		VERIFY			(pThis->Visual());
 		PKinematics		(pThis->Visual())->Callback(VisualCallback,this);
 	}
-	//////////////////////////////////////////////
-	//проспавнить PDA каждому inventory owner
-	//////////////////////////////////////////////
+	
 	if(ai().get_alife())
 		return			TRUE;
 
-	CSE_Abstract *E	= (CSE_Abstract*)(DC);
+	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
+	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
+	VERIFY					(dynamic_object);
 
-	// Create
-	CSE_Abstract* D = F_entity_Create("device_pda");
-	//CSE_Abstract* D = F_entity_Create("detector_simple");
-	R_ASSERT(D);
-	CSE_ALifeDynamicObject *l_tpALifeDynamicObject = 
-							dynamic_cast<CSE_ALifeDynamicObject*>(D);
-	R_ASSERT(l_tpALifeDynamicObject);
+	//////////////////////////////////////////////
+	//проспавнить PDA каждому inventory owner
+	//////////////////////////////////////////////
+	if (true) {
+		// Create
+		CSE_Abstract			*D = F_entity_Create("device_pda");
+		//CSE_Abstract			*D = F_entity_Create("detector_simple");
+		R_ASSERT				(D);
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT				(l_tpALifeDynamicObject);
+
+		// Fill
+		strcpy					(D->s_name,"device_pda");
+		strcpy					(D->s_name_replace,"");
+		D->s_gameid				=	u8(GameID());
+		D->s_RP					=	0xff;
+		D->ID					=	0xffff;
+		D->ID_Parent			=	E->ID;
+		D->ID_Phantom			=	0xffff;
+		D->o_Position			=	pThis->Position();
+		D->s_flags.set			(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime			=	0;
+		// Send
+		NET_Packet				P;
+		D->Spawn_Write			(P,TRUE);
+		Level().Send			(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy		(D);
+	}
+
+	//спавним каждому актеру в инвентарь болты
+	if (true && use_bolts()) {
+		CSE_Abstract						*D	= F_entity_Create("bolt");
+		R_ASSERT							(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= dynamic_object->m_tNodeID;
+
+		// Fill
+		strcpy								(D->s_name,"bolt");
+		strcpy								(D->s_name_replace,"");
+		D->s_gameid							=	u8(GameID());
+		D->s_RP								=	0xff;
+		D->ID								=	0xffff;
+		D->ID_Parent						=	E->ID;
+		D->ID_Phantom						=	0xffff;
+		D->o_Position						=	pThis->Position();
+		D->s_flags.set						(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime						=	0;
+
+		// Send
+		NET_Packet							P;
+		D->Spawn_Write						(P,TRUE);
+		Level().Send						(P,net_flags(TRUE));
+
+		// Destroy
+		F_entity_Destroy					(D);
+	}
 	
-		
-	// Fill
-	strcpy				(D->s_name,"device_pda");
-	strcpy				(D->s_name_replace,"");
-	D->s_gameid			=	u8(GameID());
-	D->s_RP				=	0xff;
-	D->ID				=	0xffff;
-	D->ID_Parent		=	E->ID;
-	D->ID_Phantom		=	0xffff;
-	D->o_Position		=	pThis->Position();
-	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-	D->RespawnTime		=	0;
-	// Send
-	NET_Packet			P;
-	D->Spawn_Write		(P,TRUE);
-	Level().Send		(P,net_flags(TRUE));
-	// Destroy
-	F_entity_Destroy	(D);
-
-
 	return TRUE;
 }
 

@@ -1136,6 +1136,27 @@ CUIStaticItem* CWeapon::ZoomTexture()
 		return NULL;
 }
 
-void CWeapon::OnMagazineEmpty()
+void CWeapon::OnMagazineEmpty	()
 {
 }
+
+void CWeapon::make_Interpolation ()
+{
+	inherited::make_Interpolation();
+}
+
+void CWeapon::PH_B_CrPr			()
+{
+	inherited::PH_B_CrPr		();
+}
+
+void CWeapon::PH_I_CrPr			()
+{
+	inherited::PH_I_CrPr		();
+}
+
+void CWeapon::PH_A_CrPr			()
+{
+	inherited::PH_A_CrPr		();
+}
+

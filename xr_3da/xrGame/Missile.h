@@ -33,6 +33,7 @@ public:
 	virtual void renderable_Render();
 
 	virtual void OnH_B_Chield();
+	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
 	virtual void OnAnimationEnd();
 
@@ -62,4 +63,14 @@ public:
 private:
 	u32						dwXF_Frame;
 	Fmatrix					m_offset;
+
+protected:
+	Fvector					m_throw_direction;
+	CMissile				*m_fake_missile;
+
+			void spawn_fake_missile	();
+
+public:
+	virtual void OnEvent			(NET_Packet& P, u16 type);
+	virtual void reinit				();
 };

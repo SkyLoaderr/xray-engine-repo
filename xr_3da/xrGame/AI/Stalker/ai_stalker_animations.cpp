@@ -258,6 +258,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				break;
 			}
 			case CLSID_GRENADE_F1		:
+			case CLSID_IITEM_BOLT		:
 			case CLSID_GRENADE_RGD5		: {
 				dwCurrentAniSlot = 6;
 				break;
@@ -307,28 +308,28 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		if (missile) {
 			switch (missile->State()) {
 				case MS_SHOWING	 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
 					break;
 				}
 				case MS_HIDING	 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Hiding");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Hiding");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
 					break;
 				}
 				case MS_THREATEN : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire start");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire start");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				case MS_READY	 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire idle");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire idle");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[1];
 					break;
 				}
 				case MS_THROW	 :
 				case MS_END		 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire end");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire end");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[2];
 					break;
 				}
@@ -341,7 +342,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case MS_HIDDEN	 :
 				case MS_EMPTY	 :
 				default			 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
 					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
 					break;
 				}
@@ -354,12 +355,12 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case eObjectActionFire1 :
 				case eObjectActionFire2 :
 				{
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
 					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
 					break;
 				}
 				default : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Idle");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Idle");
 					if (eMentalStateFree == stalker->mental_state()) {
 						tpTorsoAnimation = 0;
 						R_ASSERT2(eBodyStateStand == stalker->body_state(),"Cannot run !free! animation when body state is not stand!");

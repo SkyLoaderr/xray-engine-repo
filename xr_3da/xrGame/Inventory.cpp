@@ -1080,9 +1080,11 @@ void CInventory::Update(u32 /**deltaT/**/)
 		m_pOwner->OnItemDropUpdate	();
 }
 //ищем на поясе гранату такоже типа
-PIItem CInventory::Same(const PIItem pIItem) 
+PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck)
 {
-	for(PPIItem it = m_belt.begin(); m_belt.end() != it; ++it) 
+	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+
+	for(PPIItem it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem l_pIItem = *it;
 		
@@ -1095,11 +1097,13 @@ PIItem CInventory::Same(const PIItem pIItem)
 }
 
 //ищем на поясе вещь для слота 
-PIItem CInventory::SameSlot(u32 slot) 
+PIItem CInventory::SameSlot(u32 slot, bool bSearchRuck)
 {
 	if(slot == NO_ACTIVE_SLOT) 	return NULL;
+
+	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
 	
-	for(PPIItem it = m_belt.begin(); m_belt.end() != it; ++it) 
+	for(PPIItem it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->GetSlot() == slot) return pIItem;

@@ -31,7 +31,7 @@ void CGameObject::Init		()
 {
 	m_dwNetSpawnFrame			= u32(-1);
 	m_pPhysicsShell				= NULL;
-
+	m_initialized				= false;
 	//добавить одну косточку для партиклов по дефаулту
 	SBoneInfo bone_info;
 	m_ParticlesBonesList.clear();
@@ -67,6 +67,7 @@ void CGameObject::reinit	()
 	CAI_ObjectLocation::reinit	();
 //	CPrefetchManager::reinit	();
 	m_tpALife					= 0;
+	m_initialized				= true;
 }
 
 void CGameObject::reload	(LPCSTR section)
@@ -81,6 +82,8 @@ void CGameObject::net_Destroy	()
 		return;
 
 	m_dwNetSpawnFrame				= Device.dwFrame;
+
+	m_initialized					= false;
 
 	inherited::net_Destroy						();
 	setReady									(FALSE);
@@ -370,7 +373,7 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	PHSetPushOut();
-	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+	if (m_initialized && UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec(level_vertex_id());
 }
 

@@ -416,9 +416,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
-	// Dima : 24.02.2003
-	cNameVisual_set			(E->get_visual());
-
 	E->o_model = E->o_Angle.y;
 	E->o_torso.yaw = E->o_Angle.y;
 	E->o_torso.pitch = -E->o_Angle.x;
@@ -457,41 +454,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
 	
-
-	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
-
-	//спавним каждому актеру в инвентарь болты
-	if(Local() && GameID() == 1) for(u32 i = 0; i < 1; ++i) {
-		// Create
-		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
-		//CSE_Abstract*		D	= F_entity_Create("grenade_f1");
-		CSE_Abstract*		D	= F_entity_Create("bolt");
-		R_ASSERT			(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= E->m_tNodeID;
-		
-		
-		// Fill
-		strcpy				(D->s_name,"bolt");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	E->ID;
-		D->ID_Phantom		=	0xffff;
-		D->o_Position		=	Position();
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-	}
-	// @@@: WT
-
 	// take index spine bone
 	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
 	R_ASSERT			(V);

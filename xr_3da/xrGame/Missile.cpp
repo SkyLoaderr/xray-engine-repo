@@ -5,11 +5,22 @@
 #include "effectorshot.h"
 #include "actor.h"
 #include "../CameraBase.h"
+#include "bolt.h"
 
 CMissile::CMissile(void) 
 {
-	m_state = MS_HIDDEN;
 	m_pHUD = xr_new<CWeaponHUD>();
+	m_offset.identity();
+}
+
+CMissile::~CMissile(void) 
+{
+	xr_delete(m_pHUD);
+}
+
+void CMissile::reinit		()
+{
+	m_state = MS_HIDDEN;
 	m_throw = false;
 	m_force = 0;
 	m_minForce = 20.f;
@@ -18,15 +29,8 @@ CMissile::CMissile(void)
 	m_destroyTime = 0xffffffff;
 	m_stateTime = 0;
 	m_pInventory = 0;
-
 	m_bPending = false;
-
-	m_offset.identity();
-}
-
-CMissile::~CMissile(void) 
-{
-	xr_delete(m_pHUD);
+	m_fake_missile		= NULL;
 }
 
 void CMissile::Load(LPCSTR section) 
@@ -147,6 +151,40 @@ void CMissile::OnH_B_Chield()
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
+void CMissile::spawn_fake_missile()
+{
+	Msg					("Spawning fake missile for object %s",cName());
+	CSE_Abstract		*D	= F_entity_Create(cNameSect());
+	R_ASSERT			(D);
+	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+	R_ASSERT							(l_tpALifeDynamicObject);
+	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
+	// Fill
+	strcpy				(D->s_name,cNameSect());
+	strcpy				(D->s_name_replace,"");
+	D->s_gameid			=	u8(GameID());
+	D->s_RP				=	0xff;
+	D->ID				=	0xffff;
+	D->ID_Parent		=	(u16)ID();
+	D->ID_Phantom		=	0xffff;
+	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->RespawnTime		=	0;
+	// Send
+	NET_Packet			P;
+	D->Spawn_Write		(P,TRUE);
+	Level().Send		(P,net_flags(TRUE));
+	// Destroy
+	F_entity_Destroy	(D);
+}
+
+void CMissile::OnH_A_Chield() 
+{
+	inherited::OnH_A_Chield();
+
+	if(!m_fake_missile && !dynamic_cast<CMissile*>(H_Parent())) 
+		spawn_fake_missile	();
+}
+
 void CMissile::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
@@ -168,51 +206,43 @@ void CMissile::OnH_B_Independent()
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
 	
-	if(m_pPhysicsShell) 
-	{
-		Fmatrix trans;
-		
-		Fvector l_fw; 
-		Fvector l_up; 
+	if(m_pPhysicsShell) {
+		Fvector		D;
+		D			= m_throw_direction;
+		D.normalize	();
 
-		CActor* ParentA = dynamic_cast<CActor*>	(Parent);
-		if (NULL == ParentA && Parent->H_Parent()) ParentA = dynamic_cast<CActor*>	(Parent->H_Parent());
-		if (ParentA)
-		{
-			Fvector P, D, N;
-			ParentA->cam_Active()->Get(P, D, N);
-			l_fw.set(D);
-		}
-		else
-		{
-			Level().Cameras.unaffected_Matrix(trans);
-			l_fw.set(trans.k);// l_fw.mul(2.f);
-		};
+		Fvector		l_fw; 
+		Fvector		l_up; 
+
+		l_fw.set	(D);
+
+		l_up.set	(XFORM().j); l_up.mul(2.f);
 		
-		l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
-		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
-		//Log("aaa",l_p1.c);
-		//Log("bbb",l_p2.c);
-		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		Fvector l_vel,a_vel;
-		float fi,teta,r;
-		l_vel.add(l_up,l_fw);
-		fi=  ::Random.randF(0.f,2.f*M_PI);
-		teta=::Random.randF(0.f,M_PI);
-		r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
-		float rxy=r*_sin(teta);
-		a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
-		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
+		Fmatrix		l_p1, l_p2;
+		l_p1.set	(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f);
+		l_p2.set	(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
+		
+		Fvector		l_vel,a_vel;
+		float		fi,teta,r;
+		l_vel.add	(l_up,l_fw);
+		fi			= ::Random.randF(0.f,2.f*M_PI);
+		teta		= ::Random.randF(0.f,M_PI);
+		r			= ::Random.randF(2.f*M_PI,3.f*M_PI);
+		float		rxy = r*_sin(teta);
+		a_vel.set	(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
-		//dMass m;
-		//dMassSetBox(&m,1.f,1.f,1.f,1.f);
-		//dMassAdjust(&m,3.f);
-	
-		//dBodySetMass(m_pPhysicsShell->get_ElementByStoreOrder(0)->get_body(),&m);
-		XFORM().set(l_p1);
+		
+		XFORM().set	(l_p1);
+//		}
+//		else {
+//			Fvector						linear_velocity = m_throw_direction;
+//			VERIFY						(linear_velocity.square_magnitude() > EPS_L);
+//			linear_velocity.normalize	();
+//			linear_velocity.mul			(m_force);
+//			m_pPhysicsShell->Activate	(H_Parent()->XFORM(), linear_velocity, zero_vel);
+//			XFORM().set					(m_pPhysicsShell->mXFORM);
+//		}
 	}
 }
 
@@ -413,13 +443,48 @@ void CMissile::Hide()
 
 void CMissile::Throw() 
 {
-	//// Camera
-	//if (m_showHUD) {
-	//	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-	//	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot>(1.f,5.5f));
-	//	R_ASSERT				(S);
-	//	S->Shot					(.1f);
-	//}
+	CEntity								*entity = dynamic_cast<CEntity*>(H_Parent());
+	VERIFY								(entity);
+	
+	Fvector								throw_point, throw_direction;
+	entity->g_fireParams				(throw_point,throw_direction);
+	m_fake_missile->m_throw_direction	= throw_direction;
+	
+	m_fake_missile->m_force				= m_force; 
+	m_force								= 0;
+	
+	if (Local()) {
+		NET_Packet						P;
+		u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16							(u16(m_fake_missile->ID()));
+		u_EventSend						(P);
+	}
+}
+
+void CMissile::OnEvent(NET_Packet& P, u16 type) 
+{
+	inherited::OnEvent		(P,type);
+	u16						id;
+	switch (type) {
+		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));			
+			m_fake_missile	= missile;
+			missile->H_SetParent(this);
+			break;
+		} 
+		case GE_OWNERSHIP_REJECT : {
+			P.r_u16			(id);
+			CBolt			*bolt = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
+			if (m_fake_missile && (!bolt || (id == m_fake_missile->ID())))
+				m_fake_missile	= NULL;
+			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));			
+			if (!missile)
+				break;
+			missile->H_SetParent(0);
+			break;
+		} 
+	}
 }
 
 void CMissile::Destroy() 

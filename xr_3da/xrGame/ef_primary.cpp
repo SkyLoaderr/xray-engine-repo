@@ -189,6 +189,8 @@ u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 		case CLSID_OBJECT_W_WALTHER:	
 		case CLSID_OBJECT_W_USP45:
 			return(5);
+		case CLSID_IITEM_BOLT:
+			return(1);
 		default	:
 			return(0);
 	}

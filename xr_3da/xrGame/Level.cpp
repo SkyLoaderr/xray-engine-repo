@@ -317,7 +317,7 @@ void CLevel::make_NetCorrectionPrediction	()
 			P->PH_I_CrPr();
 		}
 		//////////////////////////////////////////////////////////////////////////////////
-		for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
+		for (u32 i =0; i<(u32)lvInterpSteps; i++)	//second prediction "real current" to "future" position
 			ph_world->Step();
 		//////////////////////////////////////////////////////////////////////////////////
 		for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 

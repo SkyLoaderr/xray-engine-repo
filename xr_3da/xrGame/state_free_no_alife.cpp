@@ -61,7 +61,7 @@ void CStateFreeNoAlife::execute			()
 //		eMentalStateDanger
 //	);
 //	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle,m_object->best_weapon());
+	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
 
 	m_object->CStalkerMovementManager::update	(0,0,0,
 		CMovementManager::ePathTypeGamePath,

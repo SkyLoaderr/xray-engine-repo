@@ -248,8 +248,8 @@ public:
 	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
 	void Update(u32 deltaT);								// Обновление
-	PIItem Same(const PIItem pIItem);						// Ищет на поясе аналогичный IItem
-	PIItem SameSlot(u32 slot);								// Ищет на поясе IItem для указанного слота
+	PIItem Same(const PIItem pIItem, bool bSearchRuck);		// Ищет на поясе аналогичный IItem
+	PIItem SameSlot(u32 slot,	 bool bSearchRuck);			// Ищет на поясе IItem для указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
 	PIItem Get(const u32  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
 	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID

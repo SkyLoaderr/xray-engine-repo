@@ -14,6 +14,7 @@
 #include "object_state_fire_primary.h"
 #include "object_state_reload.h"
 #include "object_state_empty.h"
+#include "object_state_switch.h"
 
 #include "entity_alive.h"
 #include "inventoryowner.h"
@@ -77,7 +78,10 @@ LPCSTR to_string(const u32 id)
 {
 	static	string4096 S;
 	if ((id & 0xffff) != 0xffff)
-		strcpy	(S,Level().Objects.net_Find(id & 0xffff)->cName());
+		if (Level().Objects.net_Find(id & 0xffff))
+			strcpy	(S,Level().Objects.net_Find(id & 0xffff)->cName());
+		else
+			strcpy	(S,"no_items");
 	else
 		strcpy	(S,"no_items");
 	strcat		(S,":");
@@ -414,13 +418,13 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-	if (!path().empty()) {
-		Msg				("Path : ");
-		xr_vector<u32>::const_iterator	I = path().begin();
-		xr_vector<u32>::const_iterator	E = path().end();
-		for ( ; I != E; ++I)
-			Msg			("%s",to_string(*I));
-	}
+//	if (!path().empty()) {
+//		Msg				("Path : ");
+//		xr_vector<u32>::const_iterator	I = path().begin();
+//		xr_vector<u32>::const_iterator	E = path().end();
+//		for ( ; I != E; ++I)
+//			Msg			("%s",to_string(*I));
+//	}
 #endif
 }
 
@@ -455,7 +459,7 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 
 u32 CObjectHandler::object_state() const
 {
-	if (!inventory().ActiveItem())
+	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent())
 		return			(eObjectActionNoItems);
 
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
@@ -670,9 +674,9 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_IDLE,true),		uid(eObjectActionIdle,id),		0);
 		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_SHOWING),		uid(eObjectActionShow,id),		0);
 		add_state		(xr_new<CObjectStateHide>(inventory_item,MS_HIDING),		uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_THREATEN),		uid(eObjectActionFire1,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_READY,true),	uid(eObjectActionSwitch1,id),	0);
-		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,MS_END),	uid(eObjectActionFire2,id),		0);
+		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,MS_THREATEN),uid(eObjectActionFire2,id),		0);
+		add_state		(xr_new<CObjectStateSwitch>(inventory_item,MS_READY,true),	uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_END),	uid(eObjectActionFire1,id),		0);
 
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1);
@@ -682,7 +686,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionFire1,id),		1);
 		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
 
-		state(uid(eObjectActionSwitch1,id)).set_inertia_time(1000);
+		state(uid(eObjectActionSwitch1,id)).set_inertia_time(500);
 		state(uid(eObjectActionFire1,id)).set_inertia_time(1000);
 	}
 
@@ -718,7 +722,6 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 {
 	u32				id = inventory_item->ID();
-	remove_state	(uid(eObjectActionTake,			id));
 	remove_state	(uid(eObjectActionDrop,			id));
 
 	CWeapon			*weapon = dynamic_cast<CWeapon*>(inventory_item);
@@ -754,21 +757,21 @@ void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 #ifdef DEBUG
 void CObjectHandler::show_graph()
 {
-	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
-	state_iterator			I = graph().vertices().begin(), B = I;
-	state_iterator			E = graph().vertices().end();
-	for ( ;I != E; ++I) {
-		string4096			S;
-		char				*S1 = S;
-		if ((*I).edges().empty())
-			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
-		else
-			for (u32 i=0; i<(*I).edges().size(); ++i) {
-				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
-				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
-			}
-			Msg					("%s",S);
-	}
+//	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
+//	state_iterator			I = graph().vertices().begin(), B = I;
+//	state_iterator			E = graph().vertices().end();
+//	for ( ;I != E; ++I) {
+//		string4096			S;
+//		char				*S1 = S;
+//		if ((*I).edges().empty())
+//			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
+//		else
+//			for (u32 i=0; i<(*I).edges().size(); ++i) {
+//				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
+//				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
+//			}
+//			Msg					("%s",S);
+//	}
 }
 #endif
 

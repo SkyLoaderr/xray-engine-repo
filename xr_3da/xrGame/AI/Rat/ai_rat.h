@@ -317,6 +317,11 @@ public:
 		{
 			return					(inherited::Orientation());
 		};
+public:
+		virtual void				make_Interpolation	();
+		virtual void				PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
+		virtual void				PH_I_CrPr			(); // actions & operations after correction before prediction steps
+		virtual void				PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
 };
 
 #include "ai_rat_inline.h"

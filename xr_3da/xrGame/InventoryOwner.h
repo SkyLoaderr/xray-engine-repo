@@ -96,7 +96,8 @@ public:
 	virtual	bool		use_torch				() const;
 	virtual void		OnItemTake				(CInventoryItem *inventory_item) {};
 	virtual void		OnItemDrop				(CInventoryItem *inventory_item) {};
-	virtual void		OnItemDropUpdate		() {};
+	virtual void		OnItemDropUpdate		() {}
+	virtual bool		use_bolts				() const {return(true);}
 };
 
 #include "inventory_owner_inline.h"

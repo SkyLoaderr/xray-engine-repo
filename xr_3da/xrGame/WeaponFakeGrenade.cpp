@@ -316,3 +316,27 @@ void CWeaponFakeGrenade::UpdateCL()
 		break;
 	}
 }
+
+void CWeaponFakeGrenade::net_Import			(NET_Packet& P)
+{
+}
+
+void CWeaponFakeGrenade::net_Export			(NET_Packet& P)
+{
+}
+void CWeaponFakeGrenade::make_Interpolation ()
+{
+}
+
+void CWeaponFakeGrenade::PH_B_CrPr			()
+{
+}
+
+void CWeaponFakeGrenade::PH_I_CrPr			()
+{
+}
+
+void CWeaponFakeGrenade::PH_A_CrPr			()
+{
+}
+

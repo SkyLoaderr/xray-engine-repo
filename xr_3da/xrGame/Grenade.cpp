@@ -5,10 +5,10 @@
 #include "entity.h"
 #include "PSObject.h"
 #include "ParticlesObject.h"
+#include "actor.h"
 
 CGrenade::CGrenade(void) 
 {
-	m_pFake = NULL;
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 }
 
@@ -34,36 +34,6 @@ BOOL CGrenade::net_Spawn(LPVOID DC)
 void CGrenade::net_Destroy() 
 {
 	inherited::net_Destroy	();
-}
-
-void CGrenade::OnH_A_Chield() 
-{
-	inherited::OnH_A_Chield();
-
-	if(!m_pFake && !dynamic_cast<CGrenade*>(H_Parent())) 
-	{
-		CSE_Abstract		*D	= F_entity_Create(cNameSect());
-		R_ASSERT			(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
-		// Fill
-		strcpy				(D->s_name,cNameSect());
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-	}
 }
 
 void CGrenade::OnH_B_Independent() 
@@ -93,27 +63,19 @@ void CGrenade::Deactivate()
 
 void CGrenade::Throw() 
 {
-	if(!m_pFake) return;
+	if (!m_fake_missile)
+		return;
+
+	CGrenade					*pGrenade = dynamic_cast<CGrenade*>(m_fake_missile);
+	VERIFY						(pGrenade);
 	
-	inherited::Throw();
-	
-	CGrenade *pGrenade = m_pFake;
-	if(pGrenade) 
-	{
+	if (pGrenade) {
 		pGrenade->m_destroyTime = 3500;
-		pGrenade->m_force = m_force; 
 		//установить ID того кто кинул гранату
 		pGrenade->m_iCurrentParentID = H_Parent()->ID();
-
-		m_force = 0;
-		if (Local())
-		{
-			NET_Packet P;
-			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-			P.w_u16(u16(pGrenade->ID()));
-			u_EventSend(P);
-		}
 	}
+
+	inherited::Throw			();
 }
 
 void CGrenade::Destroy() 
@@ -138,31 +100,13 @@ bool CGrenade::Useful()
 void CGrenade::OnEvent(NET_Packet& P, u16 type) 
 {
 	inherited::OnEvent(P,type);
-	u16 id;
-	switch (type)
-	{
-	case GE_OWNERSHIP_TAKE: 
-		{
-			P.r_u16(id);
-			CGrenade *pGrenade = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
-			m_pFake = pGrenade;
-			pGrenade->H_SetParent(this);
-		} 
-		break;
-	case GE_OWNERSHIP_REJECT: 
-		{
-			P.r_u16(id);
-			m_pFake = NULL;
-			CGrenade *pGrenade = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));			
-			if (NULL == pGrenade) break;
-			pGrenade->H_SetParent(0);
-		} 
-		break;
-	case GE_GRENADE_EXPLODE:
-		{
+
+	switch (type) {
+		case GE_GRENADE_EXPLODE : {
 			Explode();
 			m_expoldeTime = EXPLODE_TIME_MAX;
-		}break;
+			break;
+		}
 	}
 }
 
@@ -170,6 +114,7 @@ void CGrenade::OnAnimationEnd()
 {
 	switch(inherited::State()) 
 	{
+
 	case MS_END:
 		{
 			if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
@@ -181,25 +126,26 @@ void CGrenade::OnAnimationEnd()
 			
 			if (Local())
 			{
-				NET_Packet P;
-//				u_EventGen(P, GE_OWNERSHIP_REJECT, H_Parent()->ID());
-//				P.w_u16(u16(ID()));
-//				u_EventSend(P);
+				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
 				u_EventSend			(P);
 			};
 
-			//найти такую же гранату и положить в рюкзак
-			CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this));
-			//или найти любую другую гранату на поясе
-			if(!pNext) pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot));
-						
-			if(pNext) 
-			{ 
-				m_pInventory->Slot(pNext); 
-				m_pInventory->Activate(pNext->m_slot); 
+			
+			if(dynamic_cast<CActor*>(H_Parent()))
+			{
+				//найти такую же гранату и положить в рюкзак
+				CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this,false));
+				//или найти любую другую гранату на поясе
+				if(!pNext) pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot,false));
+
+				if(pNext) 
+				{ 
+					m_pInventory->Slot(pNext); 
+					m_pInventory->Activate(pNext->m_slot); 
+				}
 			}
-		} 
+		}
 		break;
 		default : inherited::OnAnimationEnd();
 	}
@@ -291,3 +237,28 @@ void CGrenade::net_Export			(NET_Packet& P)
 	inherited::net_Export (P);
 };
 
+void CGrenade::make_Interpolation ()
+{
+	inherited::make_Interpolation();
+}
+
+void CGrenade::PH_B_CrPr			()
+{
+	inherited::PH_B_CrPr		();
+}
+
+void CGrenade::PH_I_CrPr			()
+{
+	inherited::PH_I_CrPr		();
+}
+
+void CGrenade::PH_A_CrPr			()
+{
+	inherited::PH_A_CrPr		();
+}
+
+void CGrenade::reinit				()
+{
+	CMissile::reinit			();
+	CExplosive::reinit			();
+}

@@ -89,4 +89,5 @@ public:
 			void			OnTradeAction			(CGameObject *O, bool bSell);
 public:	
 	virtual	bool			use_torch				() const;
+	virtual bool			use_bolts				() const;
 };

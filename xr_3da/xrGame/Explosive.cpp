@@ -269,3 +269,28 @@ void CExplosive::UpdateCL()
 	} 
 	else m_pLight->set_active(false);
 }
+
+void CExplosive::net_Import			(NET_Packet& P)
+{
+}
+
+void CExplosive::net_Export			(NET_Packet& P)
+{
+}
+
+void CExplosive::make_Interpolation ()
+{
+}
+
+void CExplosive::PH_B_CrPr			()
+{
+}
+
+void CExplosive::PH_I_CrPr			()
+{
+}
+
+void CExplosive::PH_A_CrPr			()
+{
+}
+

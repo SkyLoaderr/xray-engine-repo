@@ -372,3 +372,8 @@ bool CAI_Trader::use_torch				() const
 {
 	return				(false);
 }
+
+bool CAI_Trader::use_bolts				() const
+{
+	return				(false);
+}
