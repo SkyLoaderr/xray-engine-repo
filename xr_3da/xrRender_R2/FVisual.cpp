@@ -136,7 +136,7 @@ void Fvisual::Render_Fast	(float LOD)
 #define PCOPY(a)	a = pFrom->a
 void	Fvisual::Copy			(IRender_Visual *pSrc)
 {
-	IRender_Visual::Copy				(pSrc);
+	IRender_Visual::Copy		(pSrc);
 
 	Fvisual	*pFrom				= dynamic_cast<Fvisual*> (pSrc);
 
