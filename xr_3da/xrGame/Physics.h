@@ -98,7 +98,7 @@ public:
 	xr_list <CPHObject*> ::iterator AddObject(CPHObject* object){
 		m_objects.push_back(object);
 		//xr_list <CPHObject*> ::iterator i= m_objects.end();
-		return --(m_objects.end());
+		return (--m_objects.end());
 	};
 	void RemoveObject(xr_list<CPHObject*> :: iterator i){
 		m_objects.erase((i));
