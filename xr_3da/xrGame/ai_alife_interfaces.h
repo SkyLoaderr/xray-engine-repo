@@ -35,6 +35,6 @@ public:
 
 interface IPureSchedulableObject {
 public:
-	virtual void					Update(CSE_ALifeSimulator *tpALifeSimulator)		= 0;
+	virtual void					Update		(CSE_ALifeSimulator *tpALifeSimulator)	= 0;
 };
 #endif
