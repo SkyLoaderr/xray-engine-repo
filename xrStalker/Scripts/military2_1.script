@@ -98,21 +98,17 @@ function main ()
     action (stalker3, move (pos, 0.38), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.1), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
     action (stalker3, anim ("prisluh"), cond (cond.anim_end))
+	action (stalker3, anim ("prisluh_v_torso_idle_2"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+			cond (cond.sound_end))
 
-    while stalker3:action () do wait () end
+	while stalker3:action () do wait () end
 
 	--last
 	reset_action (stalker3, military2_1.script_name ())
-	pos = testway:point (1)
-	pos.y = pos.y + 1.5
-	action (stalker3, anim (anim.free), look (look.point, pos), cond (cond.look_end))
-	action (stalker3, anim (anim.free), object (weapon, object.deactivate), cond (cond.time_end, 100000))
-    sound3_2:play_at_pos (stalker3, stalker3:position (), 0)
-	while sound3_2:playing () do wait () end
-
-    --go
-    reset_action (stalker3, military2_1.script_name ())
+	action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
+	action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 100))
     action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.path_dir), cond (cond.move_end))
+
     reset_action (stalker1, military2_1.script_name ())
     reset_action (stalker2, military2_1.script_name ())
 
@@ -123,11 +119,19 @@ function main ()
     action (stalker2, move (move.standing, move.walk, move.line, patrol ("way_test")),
             anim (anim.danger), look (look.search), cond (cond.move_end))
 
-    while stalker1:action () and stalker2:action () do wait () end
+	while true do 
+	      if distance_between (stalker3, stalker1) <= 5 and distance_between (stalker3, stalker2) then
+			 break;
+		  end
+		  wait ()
+	end
+	
 
     reset_action (stalker1, military2_1.script_name ())
     reset_action (stalker2, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
+
+	wait (10000)
 
     action (stalker1, move (move.standing, move.run, move.line, patrol ("way_base")),
             anim (anim.danger), look (look.search), cond (cond.move_end))
