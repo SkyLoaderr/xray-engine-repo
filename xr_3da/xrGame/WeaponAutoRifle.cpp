@@ -111,6 +111,14 @@ void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
 	m_pHUD->animPlay			(mhud_reload,TRUE,this);
 }
+void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
+{
+	m_pHUD->animPlay			(mhud_hide);
+}
+void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
+{
+	m_pHUD->animPlay			(mhud_show);
+}
 void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 {
 	if (bHUDView)	{
