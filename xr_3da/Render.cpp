@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "render.h"
 
-CRender_interface::CRender_interface()		{};
-CRender_interface::~CRender_interface()		{};
+IRender_interface::IRender_interface()		{};
+IRender_interface::~IRender_interface()		{};
 
-ENGINE_API	CRender_interface*	Render		= NULL;
+ENGINE_API	IRender_interface*	Render		= NULL;

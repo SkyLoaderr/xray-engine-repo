@@ -1,8 +1,8 @@
 #pragma once
 
 #include "xr_collide_defs.h"
-#include "portal.h"
 
+class ENGINE_API IRender_Sector;
 class ENGINE_API CObject;
 
 namespace Feel

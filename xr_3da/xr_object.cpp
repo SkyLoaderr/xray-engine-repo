@@ -3,7 +3,6 @@
 #include "xr_creator.h"
 #include "xr_area.h"
 #include "render.h"
-#include "portal.h"
 #include "xrLevel.h"
 #include "fbasicvisual.h"
 #include "lighttrack.h"
