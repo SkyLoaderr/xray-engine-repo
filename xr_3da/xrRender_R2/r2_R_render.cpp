@@ -221,7 +221,7 @@ void CRender::Render		()
 						RCache.set_xform_world				(Fidentity);			// ???
 						RCache.set_xform_view				(LR.L_view);
 						RCache.set_xform_project			(LR.L_project);
-						r_dsgraph_render_graph					();
+						r_dsgraph_render_graph				();
 					}
 				}
 
