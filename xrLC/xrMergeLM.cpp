@@ -236,22 +236,43 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 #pragma optimize( "g", off )
 void CBuild::MergeLM()
 {
+	vecDefl		Layer;
 	vecDefl		deflNew;
 	vecDefl		SEL;
 
 	Status("Processing...");
-	DWORD dwOldCount = g_deflectors.size();
-	while (g_deflectors.size()) {
-		Deflector = g_deflectors[0];
-		if (g_deflectors.size()>1) {
-			std::sort(g_deflectors.begin()+1,g_deflectors.end(),cmp_defl);
+	for (DWORD light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
+	{
+		// Select all deflectors, which contain this light-layer
+		Layer.clear	();
+		b_light*	L_base	= pBuild->lights[light_layer].original;
+		for (int it=0; it<(int)g_deflectors.size(); it++)
+		{
+			if (g_deflectors[it].bMerged)				continue;
+			if (0==g_deflectors[it].GetLayer(L_base))	continue;	
+			Layer.push_back	(g_deflectors[it]);
+		}
+		if (Layer.empty())	continue;
+		
+		// Resort layer
+
+
+		// Merge this layer
+		while (Layer.size()) 
+		{
+			// Sort layer (by material and distance from "base" deflector)
+			Deflector	= Layer[0];
+			std::sort	(Layer.begin()+1,Layer.end(),cmp_defl);
+
+			// Select first deflectors which can fit
 			int maxarea = 512*512*6;	// Max up to 6 lm selected
 			int curarea = 0;
-			for (int i=1; i<(int)g_deflectors.size(); i++)
+			for (it=1; it<(int)Layer.size(); it++)
 			{
-				if (curarea+g_deflectors[i]->iArea > maxarea) break;
-				curarea += g_deflectors[i]->iArea;
-				SEL.push_back(g_deflectors[i]);
+				int		defl_area	= Layer[it]->GetLayer(L_base)->Area();
+				if (curarea + defl_area > maxarea) break;
+				curarea		+=	defl_area;
+				SEL.push_back(Layer[it]);
 			}
 			if (SEL.empty()) 
 			{
@@ -268,10 +289,10 @@ void CBuild::MergeLM()
 					T.a.set	(0,0);
 					T.b.set	(SEL[K]->lm.dwWidth+2*BORDER-1, SEL[K]->lm.dwHeight+2*BORDER-1);
 					T.iArea = SEL[K]->iArea;
-					selected.push_back(T);
-					perturb.push_back(K);
+					selected.push_back	(T);
+					perturb.push_back	(K);
 				}
-
+				
 				// Sort by size decreasing and startup
 				std::sort			(perturb.begin(),perturb.end(),cmp_rect);
 				InitSurface			();
@@ -281,7 +302,7 @@ void CBuild::MergeLM()
 				best.push_back		(First);
 				best_seq.push_back	(id);
 				brect.set			(First);
-
+				
 				// Process 
 				collected.reserve	(SEL.size());
 				for (int R=1; R<(int)selected.size(); R++) 
@@ -296,7 +317,7 @@ void CBuild::MergeLM()
 					Progress(float(R)/float(selected.size()));
 				}
 				R_ASSERT	(brect.a.x==0 && brect.a.y==0);
-				 
+				
 				//  Analyze resuls
 				Msg("%3d / %3d - [%d,%d]",best.size(),selected.size(),brect.SizeX(),brect.SizeY());
 				CDeflector*	pDEFL = new CDeflector;
@@ -320,10 +341,10 @@ void CBuild::MergeLM()
 						R_ASSERT(Place.SizeY() == T_W);
 						bRotated = TRUE;
 					}
-
+					
 					// Merge
 					pDEFL->Capture		(SEL[iRealIndex],Offset.x,Offset.y,Place.SizeX(),Place.SizeY(),bRotated);
-
+					
 					// Destroy old deflector
 					vecDeflIt		OLD = find(g_deflectors.begin(),g_deflectors.end(),SEL[iRealIndex]);
 					VERIFY			(OLD!=g_deflectors.end());
@@ -342,12 +363,10 @@ void CBuild::MergeLM()
 				best_seq.clear		();
 				brect.iArea			= INT_MAX;
 			}
-		} else {
-			deflNew.push_back(Deflector);
-			g_deflectors.clear();
+			Progress(1.f-float(g_deflectors.size())/float(dwOldCount));
 		}
-		Progress(1.f-float(g_deflectors.size())/float(dwOldCount));
 	}
+	
 	R_ASSERT(g_deflectors.empty());
 	g_deflectors = deflNew;
 	Msg	("%d lightmaps builded",g_deflectors.size());

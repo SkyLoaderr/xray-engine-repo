@@ -60,6 +60,7 @@ public:
 
 	DWORD				dwWidth;
 	DWORD				dwHeight;
+	BOOL				bMerged;
 
 	vector<R_Light>		LightsSelected;
 	RAPID::XRCollide	DB;

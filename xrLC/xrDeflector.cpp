@@ -45,6 +45,12 @@ IC BOOL UVpointInside(UVpoint &P, UVtri &T)
 CDeflector::CDeflector()
 {
 	Deflector	= this;
+	N.set		(0,1,0);
+	Sphere.P.set(flt_max,flt_max,flt_max);
+	Sphere.R	= 0;
+	dwWidth		= 0;
+	dwHeight	= 0;
+	bMerged		= FALSE;
 }
 CDeflector::~CDeflector()
 {
