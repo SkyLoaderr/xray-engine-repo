@@ -39,16 +39,8 @@ CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 
 	u32				N = _GetItemCount(caScriptString);
 	string256		I;
-	string256		S,S1;
-	for (u32 i=0; i<N; ++i) {
-		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
-		CScript		*l_tpScript = xr_new<CScript>(m_tpLuaVirtualMachine,S);
-		if (l_tpScript->m_bActive)
-			m_tpScripts.push_back(l_tpScript);
-		else
-			xr_delete(l_tpScript);
-	}
+	for (u32 i=0; i<N; ++i)
+		AddScript	(_GetItem(caScriptString,i,I));
 }
 
 CScriptProcessor::~CScriptProcessor()
@@ -60,8 +52,28 @@ CScriptProcessor::~CScriptProcessor()
 	lua_close		(m_tpLuaVirtualMachine);
 }
 
+void CScriptProcessor::RunScripts()
+{
+	string256		S,S1 = "";
+	xr_set<LPSTR,pred_str>::iterator	I = m_scripts_to_run.begin();
+	xr_set<LPSTR,pred_str>::iterator	E = m_scripts_to_run.end();
+	for ( ; I != E; ++I) {
+		FS.update_path(S,"$game_scripts$",strconcat(S1,*I,".script"));
+		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
+		CScript		*l_tpScript = xr_new<CScript>(m_tpLuaVirtualMachine,S);
+		if (l_tpScript->m_bActive)
+			m_tpScripts.push_back(l_tpScript);
+		else
+			xr_delete(l_tpScript);
+		LPSTR		string = *I;
+		xr_free		(string);
+	}
+	m_scripts_to_run.clear	();
+}
+
 void CScriptProcessor::Update()
 {
+	RunScripts		();
 	LPSTR	S = g_ca_stdout;
 	for (int i=0, n=(int)m_tpScripts.size(); i<n; ++i) {
 		strcpy	(m_caOutput,"");
@@ -76,17 +88,10 @@ void CScriptProcessor::Update()
 		if (xr_strlen(m_caOutput))
 			LuaOut(Lua::eLuaMessageTypeInfo,"%s",m_caOutput);
 	}
-	g_ca_stdout = S;
+	g_ca_stdout		= S;
 }
 
 void CScriptProcessor::AddScript(LPCSTR	script_name)
 {
-	string256		S,S1;
-	FS.update_path(S,"$game_scripts$",strconcat(S1,script_name,".script"));
-	R_ASSERT3		(FS.exist(S),"Script file not found!",S);
-	CScript			*l_tpScript = xr_new<CScript>(m_tpLuaVirtualMachine,S);
-	if (l_tpScript->m_bActive)
-		m_tpScripts.push_back(l_tpScript);
-	else
-		xr_delete	(l_tpScript);
+	m_scripts_to_run.insert(xr_strdup(script_name));
 }
