@@ -47,7 +47,7 @@
       Intermediate\Blender_Screen_GRAY.obj Intermediate\Blender_Screen_SET.obj 
       Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
       Intermediate\Blender.obj Intermediate\SHEngineTools.obj 
-      Intermediate\SHCompilerTools.obj"/>
+      Intermediate\SHCompilerTools.obj Intermediate\blender_light.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

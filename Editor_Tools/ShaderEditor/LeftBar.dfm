@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 380
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 145
-    Height = 380
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -150,7 +150,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 143
-      Height = 310
+      Height = 207
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,7 +171,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 141
-        Height = 295
+        Height = 192
         BorderWidth = 0
         DrawFocus = False
         Flat = True
@@ -181,14 +181,14 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 1
+        TabIndex = 0
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = clBlue
         HotTrackFont.Height = -11
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
-        ActivePage = tsCompiler
+        ActivePage = tsEngine
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -198,7 +198,6 @@ object fraLeftBar: TfraLeftBar
           ImageIndex = -1
           TabVisible = True
           Caption = 'Engine'
-          Visible = False
           object Bevel1: TBevel
             Left = 0
             Top = 50
@@ -208,7 +207,7 @@ object fraLeftBar: TfraLeftBar
           end
           object Bevel2: TBevel
             Left = 0
-            Top = 252
+            Top = 149
             Width = 137
             Height = 2
             Align = alBottom
@@ -330,7 +329,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 137
-            Height = 200
+            Height = 97
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -341,7 +340,9 @@ object fraLeftBar: TfraLeftBar
             BorderStyle = bsNone
             BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
+            DragAllowed = True
             DrawFocusRect = False
+            DragTrgDrawMode = dtdDownColorLine
             ExplorerEditMode = False
             FocusedSelectColor = 10526880
             FocusedSelectTextColor = clBlack
@@ -394,6 +395,7 @@ object fraLeftBar: TfraLeftBar
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
             ScrollbarOpposite = False
+            ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
             StoragePath = '\Tree'
@@ -408,13 +410,16 @@ object fraLeftBar: TfraLeftBar
             VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvEngineItemFocused
+            OnDragDrop = tvEngineDragDrop
+            OnDragOver = tvEngineDragOver
+            OnStartDrag = tvEngineStartDrag
             OnMouseDown = tvEngineMouseDown
             OnDblClick = tvViewDblClick
             OnKeyDown = tvEngineKeyDown
           end
           object paAction: TPanel
             Left = 0
-            Top = 254
+            Top = 151
             Width = 137
             Height = 16
             Align = alBottom
@@ -465,9 +470,10 @@ object fraLeftBar: TfraLeftBar
           ImageIndex = -1
           TabVisible = True
           Caption = 'Compiler'
+          Visible = False
           object Bevel4: TBevel
             Left = 0
-            Top = 252
+            Top = 149
             Width = 137
             Height = 2
             Align = alBottom
@@ -585,7 +591,7 @@ object fraLeftBar: TfraLeftBar
           end
           object Panel5: TPanel
             Left = 0
-            Top = 254
+            Top = 151
             Width = 137
             Height = 16
             Align = alBottom
@@ -634,7 +640,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 137
-            Height = 200
+            Height = 97
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -698,6 +704,7 @@ object fraLeftBar: TfraLeftBar
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
             ScrollbarOpposite = False
+            ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
             StoragePath = '\Tree'
@@ -712,6 +719,9 @@ object fraLeftBar: TfraLeftBar
             VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvEngineItemFocused
+            OnDragDrop = tvEngineDragDrop
+            OnDragOver = tvEngineDragOver
+            OnStartDrag = tvEngineStartDrag
             OnMouseDown = tvEngineMouseDown
             OnDblClick = tvViewDblClick
             OnKeyDown = tvEngineKeyDown

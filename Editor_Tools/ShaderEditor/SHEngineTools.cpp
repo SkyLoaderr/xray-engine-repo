@@ -169,20 +169,34 @@ void CSHEngineTools::Load(){
             fs->Close();
         }
 
-        // load blenders
+        // Load blenders
         {
             CStream*	fs		= FS.OpenChunk(2);
-            while (fs&&!fs->Eof())	{
+            CStream*	chunk	= NULL;
+            int			chunk_id= 0;
+
+            while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
+            {
                 CBlender_DESC	desc;
-                fs->Read		(&desc,sizeof(desc));
-                CBlender*		B = CBlender::Create(desc.CLS); R_ASSERT(B);
-                fs->Seek		(fs->Tell()-sizeof(desc));
-                B->Load			(*fs);
-                m_Blenders.insert(make_pair(strdup(desc.cName),B));
+                chunk->Read		(&desc,sizeof(desc));
+                CBlender*		B = CBlender::Create(desc.CLS);
+				if (B->getDescription().version!=desc.version){
+                	_DELETE		(B);
+                    ELog.DlgMsg	(mtError,"Can't load blender '%s'. Unsupported version.",desc.cName);
+                    chunk->Close	();
+                    chunk_id++;
+                	continue;
+                }
+                chunk->Seek		(0);
+                B->Load			(*chunk);
+                m_Blenders.insert	(make_pair(strdup(desc.cName),B));
                 fraLeftBar->AddBlender(desc.cName,true);
+                chunk->Close	();
+                chunk_id++;
             }
             fs->Close();
         }
+
         UpdateRefCounters		();
         ResetCurrentBlender		();
     }else{
@@ -227,8 +241,12 @@ void CSHEngineTools::Save(){
     // Save blenders
     {
     	F.open_chunk(2);
-		for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
+        int chunk_id=0;
+		for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++){
+			F.open_chunk(chunk_id++);
         	b->second->Save(F);
+	        F.close_chunk();
+        }
         F.close_chunk();
     }
     // copy exist file
@@ -359,20 +377,24 @@ CBlender* CSHEngineTools::CloneBlender(LPCSTR name){
 	return AppendBlender(B->getDescription().CLS,0,B);
 }
 
-void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
+void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
     LPSTR N = LPSTR(old_full_name);
 	BlenderPairIt I = m_Blenders.find	(N);
     R_ASSERT(I!=m_Blenders.end());
-    VERIFY(level<_GetItemCount(old_full_name,'\\'));
-    char new_name[255];
-    _ReplaceItem(old_full_name,level,ren_part,new_name,'\\');
     free(I->first);
     CBlender* B = I->second;
 	m_Blenders.erase(I);
 	// rename
-    B->getDescription().Setup(new_name);
-	m_Blenders.insert(make_pair(strdup(new_name),B));
+    B->getDescription().Setup(new_full_name);
+	m_Blenders.insert(make_pair(strdup(new_full_name),B));
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
+}
+
+void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
+    VERIFY(level<_GetItemCount(old_full_name,'\\'));
+    char new_full_name[255];
+    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
+	RenameBlender(old_full_name,new_full_name);
 }
 
 void CSHEngineTools::AddMatrixRef(LPSTR name){

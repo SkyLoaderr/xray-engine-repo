@@ -153,8 +153,8 @@ void CRenderDevice::Destroy(){
 void CRenderDevice::OnDeviceCreate(){
 	// Shaders part
 	Shader.OnDeviceCreate();
-    m_WireShader 		= Shader.Create("$ed_wire");
-    m_SelectionShader 	= Shader.Create("$ed_selection");
+    m_WireShader 		= Shader.Create("editor\\wire");
+    m_SelectionShader 	= Shader.Create("editor\\selection");
 
 	// General Render States
 	HW.Caps.Update();
@@ -361,7 +361,7 @@ void CRenderDevice::UpdateTimer(){
 }
 
 void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
-	R_ASSERT(m_CurrentShader);
+	if (!m_CurrentShader) return;
     DWORD dwRequired	= m_CurrentShader->Passes.size();
 	Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
@@ -372,7 +372,7 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWOR
 }
 
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
-	R_ASSERT(m_CurrentShader);
+	if (!m_CurrentShader) return;
     DWORD dwRequired	= m_CurrentShader->Passes.size();
     Primitive.setIndicesUC(vBase, is->getBuffer());
     Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());

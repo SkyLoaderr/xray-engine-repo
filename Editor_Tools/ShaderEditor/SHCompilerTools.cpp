@@ -168,9 +168,15 @@ Shader_xrLC* CSHCompilerTools::CloneShader(LPCSTR name){
 }
 
 void CSHCompilerTools::RenameShader(LPCSTR old_full_name, LPCSTR ren_part, int level){
-	Shader_xrLC* S = m_Library.Get(old_full_name); R_ASSERT(S);
     VERIFY(level<_GetItemCount(old_full_name,'\\'));
-    _ReplaceItem(old_full_name,level,ren_part,S->Name,'\\');
+    char new_full_name[255];
+    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
+    RenameShader(old_full_name, new_full_name);
+}
+
+void CSHCompilerTools::RenameShader(LPCSTR old_full_name, LPCSTR new_full_name){
+	Shader_xrLC* S = m_Library.Get(old_full_name); R_ASSERT(S);
+    strcpy(S->Name,new_full_name);
 	if (S==m_LibShader){
     	m_EditShader = *S;
     	TfrmShaderProperties::InitProperties();

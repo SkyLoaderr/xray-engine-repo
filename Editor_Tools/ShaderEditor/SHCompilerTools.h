@@ -22,6 +22,7 @@ public:
     Shader_xrLC*		CloneShader			(LPCSTR name);
     void				RemoveShader		(LPCSTR name);
 	void				RenameShader		(LPCSTR old_full_name, LPCSTR ren_part, int level);
+	void				RenameShader		(LPCSTR old_full_name, LPCSTR new_full_name);
 
     void 				ClearData			();
 public:

@@ -61,6 +61,7 @@ public:
     CBlender* 			CloneBlender		(LPCSTR name);
     void				RemoveBlender		(LPCSTR name);
 	void				RenameBlender		(LPCSTR old_full_name, LPCSTR ren_part, int level);
+	void				RenameBlender		(LPCSTR old_full_name, LPCSTR new_full_name);
 
     void				ResetCurrentBlender();
     void				UpdateStreamFromObject();

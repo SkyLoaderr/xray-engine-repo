@@ -116,7 +116,7 @@ public:
                                		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
 							   			 	}
 	// draw
-	void			   		SetShader		(Shader* sh){R_ASSERT(sh); m_CurrentShader = sh;}
+	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
 	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
 	void 					DIP				(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc);
 
