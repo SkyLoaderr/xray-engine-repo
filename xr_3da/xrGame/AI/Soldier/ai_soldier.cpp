@@ -174,7 +174,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 }
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
-	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
+	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
 			return(false);

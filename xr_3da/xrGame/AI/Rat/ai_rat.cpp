@@ -176,7 +176,7 @@ IC bool CAI_Rat::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 }
 
 bool CAI_Rat::bfCheckPath(AI::Path &Path) {
-	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
+	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
 			return(false);
@@ -566,11 +566,6 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		}
 		tpSubNodes.clear();
 	}
-}
-
-float ffGetDistance(Fvector P1, Fvector P2)
-{
-	return(float(sqrt(float(SQR(P2.x - P1.x) + SQR(P2.z - P1.z) + SQR(P2.y - P1.y)))));
 }
 
 void CAI_Rat::Attack()
@@ -1526,7 +1521,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			float	dot  = view.dotproduct(move);
 			
 			SAnimState* AState = &m_walk;
-			AState = &m_walk;
 			
 			if (speed>2.f)
 				AState = &m_run;
