@@ -13,31 +13,38 @@ CBitingPanic::CBitingPanic(CAI_Biting *p)
 
 void CBitingPanic::Init()
 {
-	LOG_EX("PANIC:: Init");
 	inherited::Init();
 
-	VERIFY(pMonster->EnemyMan.get_enemy());
-	position = pMonster->EnemyMan.get_enemy_position();
+	position					= pMonster->EnemyMan.get_enemy_position();
 		
-	m_tAction		= ACTION_RUN;
+	m_tAction					= ACTION_RUN;
+	m_tPrevAction				= m_tAction;
 
 	target_vertex_id			= u32(-1);
 	last_time_cover_selected	= 0;
+	m_dwFaceEnemyLastTime		= 0;
 }
 
 void CBitingPanic::Run()
 {
-	VERIFY(pMonster->EnemyMan.get_enemy());
-	
-	if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime) {
-		position = pMonster->EnemyMan.get_enemy_position();
-		target_vertex_id = u32(-1);
-	} 
+	// если враг очень близко - атаковать
+	float m_fDistMin, m_fDistMax, dist;
+	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	if (dist < m_fDistMax) m_tAction = ACTION_ATTACK_MELEE;
+	else {
+		
+		if (m_tPrevAction == ACTION_ATTACK_MELEE) m_tAction = ACTION_RUN;
 
-	if (target_vertex_id == u32(-1) && (last_time_cover_selected + 5000 < m_dwCurrentTime)) {
-		if (!pMonster->GetCoverFromEnemy(position, target_pos, target_vertex_id)) {
-			target_vertex_id			= u32(-1);
-			last_time_cover_selected	= m_dwCurrentTime;
+		if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime) {
+			position = pMonster->EnemyMan.get_enemy_position();
+			target_vertex_id = u32(-1);
+		} 
+
+		if (target_vertex_id == u32(-1) && (last_time_cover_selected + 5000 < m_dwCurrentTime)) {
+			if (!pMonster->GetCoverFromEnemy(position, target_pos, target_vertex_id)) {
+				target_vertex_id			= u32(-1);
+				last_time_cover_selected	= m_dwCurrentTime;
+			}
 		}
 	}
 
@@ -47,7 +54,6 @@ void CBitingPanic::Run()
 		case ACTION_RUN:
 		/**************/
 		
-			LOG_EX("PANIC:: Run away");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
 			if (target_vertex_id != u32(-1)) {
@@ -58,9 +64,7 @@ void CBitingPanic::Run()
 			
 			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking	(false);
-			//pMonster->CMonsterMovement::set_try_min_time(false);
-
-			//if (!pMonster->MotionStats->is_good_motion(3)) m_tAction = ACTION_FACE_BACK_SCARED;
+			
 			if (pMonster->EnemyMan.get_enemy_time_last_seen() + 10000 < m_dwCurrentTime) m_tAction = ACTION_FACE_BACK_SCARED;
 			if (pMonster->IsPathEnd(2.5f)) target_vertex_id = u32(-1);
 			
@@ -69,7 +73,6 @@ void CBitingPanic::Run()
 		case ACTION_FACE_BACK_SCARED:
 		/***************************/
 
-			LOG_EX("PANIC:: Face Back scared!");
 			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 
@@ -80,9 +83,24 @@ void CBitingPanic::Run()
 			}
 
 			break;
+		
+		/*************************/
+		case ACTION_ATTACK_MELEE:
+		/*************************/
+			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
+
+			// Смотреть на врага 
+			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
+				pMonster->FaceTarget(pMonster->EnemyMan.get_enemy());
+			DO_IN_TIME_INTERVAL_END();
+
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			break;
 	}
 	
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+
+	m_tPrevAction = m_tAction;
 }
 
 bool CBitingPanic::CheckCompletion()

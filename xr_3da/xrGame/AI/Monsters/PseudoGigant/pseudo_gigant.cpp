@@ -115,11 +115,14 @@ void CPseudoGigant::StateSelector()
 	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
 
 	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
+		if (!EnemyMan.get_enemy()->getVisible()) state = statePanic;
+		else {
+			switch (EnemyMan.get_danger_type()) {
 			case eVeryStrong:				state = statePanic; break;
 			case eStrong:		
 			case eNormal:
 			case eWeak:						state = stateAttack; break;
+			}
 		}
 	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) state = stateExploreDNE;
 	else if (hear_dangerous_sound || hear_interesting_sound) {

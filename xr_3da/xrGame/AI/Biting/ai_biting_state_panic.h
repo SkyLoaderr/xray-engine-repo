@@ -8,7 +8,8 @@ class CBitingPanic : public IState {
 	enum {
 		ACTION_RUN, 
 		ACTION_FACE_BACK_SCARED,
-	} m_tAction;
+		ACTION_ATTACK_MELEE
+	} m_tAction, m_tPrevAction;
 
 	Fvector			position;
 	
@@ -16,14 +17,16 @@ class CBitingPanic : public IState {
 	u32				target_vertex_id;
 
 	TTime			last_time_cover_selected;
+	TTime			m_dwFaceEnemyLastTime;
 
 public:
-					CBitingPanic	(CAI_Biting *p);
+					CBitingPanic			(CAI_Biting *p);
 	
-	virtual bool	CheckCompletion	();
+	virtual bool	CheckCompletion			();
 	virtual bool	GetStateAggressiveness	(){return true;}
 
 private:
-	virtual void	Init			();
-	virtual void	Run				();
+
+	virtual void	Init					();
+	virtual void	Run						();
 };

@@ -68,14 +68,15 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, float impulse,
 
 BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 {
-	if (CLSID_ENTITY!=O->CLS_ID)	
-		return FALSE;
-	else  {
-		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
-		if (!E) return FALSE;
-		if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
-		return TRUE;
-	}
+	if (CLSID_ENTITY!=O->CLS_ID) return FALSE;
+	
+	if (!O->getVisible()) return FALSE;
+	
+	CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
+	if (!E) return FALSE;
+	if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
+
+	return TRUE;
 }
 
 void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
