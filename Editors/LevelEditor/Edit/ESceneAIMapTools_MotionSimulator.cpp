@@ -498,11 +498,11 @@ void ESceneAIMapTools::MotionSimulate(Fvector& result, Fvector& start, Fvector& 
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			Fvector** V			= (PQ.r_begin()+i_t)->verts;
+			Fvector* V			= (PQ.r_begin()+i_t)->verts;
 
-			T.p[0].mul			(*V[0],xf);
-			T.p[1].mul			(*V[1],xf);
-			T.p[2].mul			(*V[2],xf);                 
+			T.p[0].mul			(V[0],xf);
+			T.p[1].mul			(V[1],xf);
+			T.p[2].mul			(V[2],xf);                 
 			T.N.mknormal		(T.p[0],T.p[1],T.p[2]);
 			
 			T.d = -T.N.dotproduct(T.p[0]);

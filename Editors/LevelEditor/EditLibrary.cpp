@@ -247,17 +247,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
 
 void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 {
-    TElTreeItem *node = m_Items->GetSelected();
-    bool mt=false;
-    if (cbPreview->Checked&&node&&FHelper.IsObject(node)){
-	    AnsiString name;
-    	FHelper.MakeName(node,0,name,false);
-		ChangeReference(name.c_str());
-        mt = true;
-    }
-	ebMakeThm->Enabled = mt;
-    ebMakeLOD->Enabled = cbPreview->Checked;
-    UI.RedrawScene();
+	RefreshSelected();
 }
 //---------------------------------------------------------------------------
 
@@ -307,7 +297,7 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 	ebSave->Enabled = false;
     ChangeReference(0);
     Lib.Save();
-//.	form->tvItemsItemFocused(0);
+    RefreshSelected();
 }
 //---------------------------------------------------------------------------
 
@@ -443,6 +433,17 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
 //    	form->m_pEditObject->SetReference(0);
 //		Lib.RemoveEditObject(form->m_SelectedObject);
 //.		form->tvItemsItemFocused(0);
+        TElTreeItem *node = m_Items->GetSelected();
+        bool mt=false;
+        if (cbPreview->Checked&&node&&FHelper.IsObject(node)){
+            AnsiString name;
+            FHelper.MakeName(node,0,name,false);
+            ChangeReference(name.c_str());
+            mt = true;
+        }
+        ebMakeThm->Enabled = mt;
+        ebMakeLOD->Enabled = cbPreview->Checked;
+        UI.RedrawScene();
     }
 }
 //---------------------------------------------------------------------------

@@ -171,12 +171,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG 
-      -IC:\Rad\Borland\CBuilder6\Projects -IR:\sdk\DirectX9.0\include 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IR:\sdk\DirectX9.0\include 
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\xrCore -Iedit -Iengine 
       -IEngine\Game -IEngine\Animations -IEngine\Blenders 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
-      -IR:\Borland\Components6\ElPack\Code\Source -boa"/>
+      -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
+      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
@@ -469,7 +469,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=100
+Build=101
 Debug=1
 PreRelease=0
 Special=0
@@ -481,7 +481,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.100
+FileVersion=1.0.2.101
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -583,18 +583,20 @@ Item0=intermediate
 Item1=ed_debug
 
 [HistoryLists\hlFinalOutputDir]
-Count=5
+Count=7
 Item0=x:\
-Item1=s:\
-Item2=x:
-Item3=!run\
-Item4=P:\Editor\!run
+Item1=s:\build_script\
+Item2=s:\build_script
+Item3=s:\
+Item4=x:
+Item5=!run\
+Item6=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
 
 [Parameters]
-RunParams=-build
+RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=

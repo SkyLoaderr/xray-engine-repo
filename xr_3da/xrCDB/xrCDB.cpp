@@ -167,5 +167,10 @@ RESULT& COLLIDER::r_add	()
 
 void COLLIDER::r_free	()
 {
+#ifdef _EDITOR
+	rd.clear			();
+    rd.resize			(0);
+#else
 	rd.clear_and_free	();
+#endif
 }

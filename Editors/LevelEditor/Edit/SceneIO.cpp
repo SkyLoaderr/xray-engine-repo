@@ -228,8 +228,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
 	VERIFY(map_name);
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
-	ELog.Msg( mtInformation, "EScene: loading %s...", map_name);
-
+	ELog.Msg( mtInformation, "EScene: loading '%s'", map_name);
     if (FS.exist(full_name.c_str())){
         IReader* F = FS.r_open(full_name.c_str());
         // Version
@@ -318,7 +317,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         
 		return true;
     }else{
-    	ELog.Msg(mtError,"Can't find file: ",map_name);
+    	ELog.Msg(mtError,"Can't find file: '%s'",map_name);
     }
 	return false;
 }

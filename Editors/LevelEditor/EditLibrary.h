@@ -95,6 +95,8 @@ private:	// User declarations
     bool 					bFormLocked;
     void 					LockForm		()	{ bFormLocked = true;	paCommands->Enabled = false; 	paItems->Enabled = false; 	}
     void 					UnlockForm		()	{ bFormLocked = false;	paCommands->Enabled = true; 	paItems->Enabled = true;	}
+    void __fastcall 		ResetSelected	();
+    void __fastcall 		RefreshSelected	();
 public:		// User declarations
     void __fastcall 		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);
@@ -103,8 +105,6 @@ public:		// User declarations
     static void __fastcall 	ZoomObject		();
 	static CSceneObject* __fastcall RayPick	(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
     static void __fastcall 	ShowEditor		();
-    static void __fastcall 	ResetSelected	();
-    static void __fastcall 	RefreshSelected	();
 };
 //---------------------------------------------------------------------------
 #endif

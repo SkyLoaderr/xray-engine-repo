@@ -54,11 +54,11 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	for (DWORD i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		Fvector**	V = (PQ.r_begin()+i)->verts;   
+		Fvector*	V = (PQ.r_begin()+i)->verts;   
 
-		D.v[0]		= V[0];
-		D.v[1]		= V[1];
-		D.v[2]		= V[2];
+		D.v[0]		= &V[0];
+		D.v[1]		= &V[1];
+		D.v[2]		= &V[2];
 		D.N.mknormal(*D.v[0],*D.v[1],*D.v[2]);
 		if (D.N.y<=0)	continue;
 

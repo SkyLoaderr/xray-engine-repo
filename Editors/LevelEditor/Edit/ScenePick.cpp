@@ -74,7 +74,7 @@ int EScene::RayQuery(SPickQuery& PQ, const Fvector& start, const Fvector& dir, f
 	XRC.ray_options	(flags);
     XRC.ray_query	(model,start,dir,dist);
     for (int r=0; r<XRC.r_count(); r++)
-        PQ.append	(model,XRC.r_begin()+r);
+        PQ.append	(XRC.r_begin()+r);
 	return PQ.r_count();
 }
 //------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, CDB::MODEL* mode
     bb.getradius	(d);
     XRC.box_query	(model,c,d);
     for (int r=0; r<XRC.r_count(); r++)
-        PQ.append	(model,XRC.r_begin()+r);
+        PQ.append	(XRC.r_begin()+r);
 	return PQ.r_count();
 }
 //------------------------------------------------------------------------------
