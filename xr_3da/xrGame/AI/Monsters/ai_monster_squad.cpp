@@ -101,6 +101,6 @@ void CMonsterSquad::UpdateSquadCommands()
 		it->second.type = SC_NONE;
 	}
 
-	ProcessAttack	();
-	ProcessIdle		();
+	//ProcessAttack	();
+	//ProcessIdle		();
 }
