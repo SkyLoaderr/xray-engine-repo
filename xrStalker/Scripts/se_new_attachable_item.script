@@ -1,10 +1,10 @@
 class "CSE_NewAttachableItem" (cse_alife_item)
 
 function CSE_NewAttachableItem:__init(section) super(section)
-	printf		("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
+	log		("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 end
 
 function CSE_NewAttachableItem:__finalize()
-	printf		("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
+	log		("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
 end
 
