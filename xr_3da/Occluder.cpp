@@ -46,12 +46,12 @@ void COccluderSystem::Load(CStream *fs)
 
 		// register
 		SOccluderDef	def;
-		for (int j=0; j<L.vertices.size(); j++)
-			def.verts.push_back	(L.vertices[j]);
+		for (u32 j=0; j<L.vertices.size(); j++)		def.verts.push_back	(L.vertices[j]);
 		def.sphere.compute		(def.verts.begin(),def.verts.size());
 		occluders.push_back	(def);
 	}
 }
+
 
 float psOSSR = 0.003f;
 

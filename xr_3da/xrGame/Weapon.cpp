@@ -236,27 +236,24 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 {
 	if (0==hWallmark)	return;
 	Fvector D;			D.invert(vDir);
-	CSector* S			= R.O->Sector();
+	CSector* S			= 0;
 	
-	if (R.O && (R.O->CLS_ID==CLSID_ENTITY)){
-		// particles
-		// stones or sparks
-		LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
-		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->PlayAtPos		(vEnd);
-	}else{
-		// stones
-		CPSObject* PS		= new CPSObject("stones",S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->PlayAtPos		(vEnd);
-		
+	if (R.O) {
+		S = R.O->Sector();
+		if (R.O->CLS_ID==CLSID_ENTITY)
+		{
+			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
+			CPSObject* PS		= new CPSObject(ps_gibs,S,true);
+			PS->m_Emitter.m_ConeDirection.set(D);
+			PS->PlayAtPos		(vEnd);
+		}
+	} else {
 		::Render.Wallmarks.AddWallmark(
 			pCreator->ObjectSpace.GetStaticTris()+R.element,
 			vEnd,
 			hWallmark,
 			fWallmarkSize
-		);
+			);
 	}
 }
 

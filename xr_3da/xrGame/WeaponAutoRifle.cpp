@@ -183,18 +183,26 @@ void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 {
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 	
-	// particles
-	Fvector N,D;
-	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
-	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
-	D.reflect			(vDir,N);
-	
-	CSector* S			= ::Render.getSector(pTri->sector);
-	
-	// smoke
-	CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
-	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	if (!R.O) 
+	{
+		// particles
+		Fvector N,D;
+		RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
+		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
+		D.reflect			(vDir,N);
+		
+		CSector* S			= ::Render.getSector(pTri->sector);
+		
+		// smoke
+		CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+		
+		// stones
+		CPSObject* PS		= new CPSObject("stones",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+	}
 }
 
 void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
