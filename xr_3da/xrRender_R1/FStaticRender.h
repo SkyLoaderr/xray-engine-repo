@@ -16,9 +16,6 @@
 #include "lightPPA.h"
 #include "light_DB.h"
 
-//
-struct FSlideWindow;
-
 // definition
 class CRender													:	public R_dsgraph_structure
 {

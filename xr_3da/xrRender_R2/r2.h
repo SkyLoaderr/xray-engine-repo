@@ -19,6 +19,7 @@
 #include "light_render_direct.h"
 
 #include "common_binders.h"
+#include "../fmesh.h"
 
 // definition
 class CRender													:	public R_dsgraph_structure
@@ -69,6 +70,7 @@ public:
 	R_occlusion													HWOCC;
 
 	// Global vertex-buffer container
+	xr_vector<FSlideWindowItem>									SWIs;
 	xr_vector<ref_shader>										Shaders;
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
 	xr_vector<VertexDeclarator>									DCL;
@@ -103,7 +105,7 @@ private:
 	void							LoadLights					(IReader	*fs);
 	void							LoadPortals					(IReader	*fs);
 	void							LoadSectors					(IReader	*fs);
-	void							LoadTrees					(IReader	*fs);
+	void							LoadSWIs					(IReader	*fs);
 
 	BOOL							add_Dynamic					(IRender_Visual	*pVisual, u32 planes);		// normal processing
 	void							add_Static					(IRender_Visual	*pVisual, u32 planes);
@@ -179,6 +181,7 @@ public:
 	virtual D3DVERTEXELEMENT9*		getVB_Format				(int id);
 	virtual IDirect3DVertexBuffer9*	getVB						(int id);
 	virtual IDirect3DIndexBuffer9*	getIB						(int id);
+	virtual FSlideWindowItem*		getSWI						(int id);
 	virtual IRender_Sector*			detectSector				(const Fvector& P);
 	virtual IRender_Target*			getTarget					();
 
