@@ -34,7 +34,7 @@ ETOOLS_API void			VIPM_AppendFace		(u16 v0, u16 v1, u16 v2)
 	xr_new<MeshTri>(g_ppTempPts[v0],g_ppTempPts[v1],g_ppTempPts[v2], &g_pObject->CurTriRoot, &g_pObject->CurEdgeRoot );
 }
 
-void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorTolerance=1.f)
+void CalculateAllCollapses(Object* m_pObject, u32 max_sliding_window=u32(-1), float m_fSlidingWindowErrorTolerance=1.f)
 {
 	m_pObject->BinEdgeCollapse();
 	while (true){
@@ -116,13 +116,16 @@ void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorToleran
 		}else{
 			break;
 		}
+
+		// max sliding window
+		if (m_pObject->iCurSlidingWindowLevel>max_sliding_window) break;
 	}
 }
 
 ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_tolerance, u32 optimize_vertex_order)
 {
 	g_pObject->Initialize	();
-	CalculateAllCollapses	(g_pObject,error_tolerance);
+	CalculateAllCollapses	(g_pObject,max_sliding_window,error_tolerance);
 	CalculateSW				(g_pObject,g_pResult,optimize_vertex_order);
 	return g_pResult		;
 }
