@@ -52,9 +52,6 @@ void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
 #define Z_SIZE_2 0.35f
 CCustomMonster::CCustomMonster()
 {
-	Movement.SetParent		(this);
-	Movement.SetCrashSpeeds	(12,25);
-	Movement.SetMass		(10);
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
 	Weapons					= 0;
@@ -103,11 +100,8 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_current				= 0;
 	m_idle					= V->ID_Cycle("norm_idle");
 	m_death					= V->ID_Cycle("norm_death");
-//	m_crouch				= V->ID_Cycle("crouch_idle");
 	m_walk.Create			(V,"norm_walk");
 	m_run.Create			(V,"norm_run");
-//	m_crouch_walk.Create	(V,"crouch_walk");
-//	m_crouch_run.Create		(V,"crouch_run");
 	PKinematics(pVisual)->PlayCycle(m_idle);
 
 	// weapons
