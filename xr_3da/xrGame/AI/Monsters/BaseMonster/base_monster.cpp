@@ -52,9 +52,6 @@ CBaseMonster::CBaseMonster()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
-	// Attack-stops init
-	AS_Init							();
-
 	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>	(this);
 	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>	(this);
 	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(this);
@@ -66,6 +63,7 @@ CBaseMonster::CBaseMonster()
 	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
 
 	DirMan.init_external			(this);
+	MeleeChecker.init_external		(this);
 }
 
 CBaseMonster::~CBaseMonster()
@@ -194,34 +192,6 @@ void CBaseMonster::OnRender()
 }
 #endif
 
-// Получить расстояние от fire_bone до врага
-// Выполнить RayQuery от fire_bone в enemy.center
-float CBaseMonster::GetRealDistToEnemy(const CEntity *pE)
-{
-	Fvector enemy_center;
-	pE->Center(enemy_center);
-	
-	Fmatrix global_transform;
-	global_transform.set(XFORM());
-	
-	global_transform.mulB(smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head")).mTransform);
-	
-	Fvector dir; 
-	dir.sub(enemy_center, global_transform.c);
-	Collide::ray_defs	r_query(global_transform.c, dir, 10.f, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, Collide::rqtObject);
-	Collide::rq_results	r_res;
-
-	float ret_val = -1.f;
-
-	setEnabled(false);
-	if (pE->CFORM()->_RayQuery(r_query, r_res)) 
-		if (r_res.r_begin()->O) ret_val = r_res.r_begin()->range;
-	setEnabled(true);		
-			
-	return ret_val;
-}
-
-
 bool CBaseMonster::useful(const CGameObject *object) const
 {
 	const CEntityAlive *pCorpse = smart_cast<const CEntityAlive *>(object); 
@@ -244,22 +214,6 @@ float CBaseMonster::get_custom_pitch_speed(float def_speed)
 	return cur_speed;
 }
 
-#define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
-
-float CBaseMonster::GetEnemyDistances(float &min_dist, float &max_dist, const CEntity *enemy)
-{
-	// обновить минимальную и максимальную дистанции до врага
-	min_dist = m_fCurMinAttackDist;
-	max_dist = get_sd()->m_fMaxAttackDist - (get_sd()->m_fMinAttackDist - m_fCurMinAttackDist);
-
-	const CEntity *t_enemy = (enemy) ? enemy : EnemyMan.get_enemy();
-	// определить расстояние до противника
-	float cur_dist = t_enemy->Position().distance_to(Position()); 
-	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(t_enemy); 
-
-	return cur_dist;
-}
-
 float CBaseMonster::get_current_animation_time()
 {
 	return MotionMan.GetCurAnimTime();
@@ -269,8 +223,6 @@ void CBaseMonster::on_animation_start(shared_str anim)
 {
 	CStepManager::on_animation_start(anim);
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 

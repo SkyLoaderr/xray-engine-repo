@@ -261,7 +261,7 @@ void CMotionManager::Seq_Finish()
 // Attack Animation
 
 #define TIME_OFFSET 10
-#define TIME_DELTA	1000
+#define TIME_DELTA	200
 
 // Сравнивает тек. время с временами хитов в стеке
 bool CMotionManager::AA_TimeTest(SAAParam &params)

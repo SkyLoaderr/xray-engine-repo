@@ -82,6 +82,7 @@ public:
 		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
 		void		SetSelectorPathParams	();
 
+		bool		GetNodeInRadius			(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
 
 //////////////////////////////////////////////////////////////////////////
 public:
@@ -148,9 +149,7 @@ public:
 	// service methods
 	
 		float		get_path_angle			();
-
 		bool		is_path_built			();
-
 		void		set_velocity_from_path	();
 };
 

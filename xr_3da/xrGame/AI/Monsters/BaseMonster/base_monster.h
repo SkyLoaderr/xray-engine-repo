@@ -25,6 +25,7 @@
 #include "../../../step_manager.h"
 #include "../monster_event_manager.h"
 #include "../direction_manager.h"
+#include "../melee_checker.h"
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
@@ -45,18 +46,6 @@ class CBaseMonster : public CCustomMonster,
 	typedef CSharedClass<_base_monster_shared,CLASS_ID>	_sd_base;
 	typedef CMovementManager							MoveMan;
 	
-
-
-	// -------------------------------------------------------
-	// attack stops
-	struct SAttackStop {
-		float	min_dist;		// load from ltx
-		float	step;			// load from ltx
-		bool	active;
-		bool	prev_prev_hit;
-		bool	prev_hit;
-	} _as;
-
 protected:
 	enum EMovementParameters {
 		eVelocityParameterStand			= u32(1) <<  4,
@@ -207,8 +196,6 @@ public:
 	virtual float			get_current_animation_time		();
 	virtual	void			on_animation_start				(shared_str anim);
 	// ---------------------------------------------------------------------------------
-
-	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist,const CEntity *enemy = 0);
 	
 	// Other
 			void			vfUpdateParameters				();
@@ -220,14 +207,6 @@ public:
 		
 			CBoneInstance *GetEatBone						();
 
-			// attack-stop
-	IC		void			AS_Init							();
-	IC		void			AS_Load							(LPCSTR section);
-	IC		void			AS_Start						();
-	IC		void			AS_Stop							();
-	IC		void			AS_Check						(bool hit_success);
-	IC		bool			AS_Active						();
-	
 	// Morale
 			void			MoraleBroadcast					(float fValue);
 			void			LoadShared						(LPCSTR section);
@@ -241,9 +220,7 @@ public:
 
 	// Team	
 	virtual void			ChangeTeam						(int team, int squad, int group);
-
 			bool			IsVisibleObject					(const CGameObject *object);
-
 			bool			can_eat_now						();
 
 // members
@@ -251,7 +228,6 @@ public:
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	
-//	float						m_fGoingSpeed;			// speed over the path
 	u32							m_dwHealth;				
 
 	// State flags
@@ -259,11 +235,9 @@ public:
 	bool						m_bAngry;
 	bool						m_bGrowling;
 	bool						m_bAggressive;
+	bool						m_bSleep;
 
 	bool						flagEatNow;				// true - сейчас монстр ест
-
-	float						m_fCurMinAttackDist;		// according to attack stops
-
 
 	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
@@ -290,13 +264,11 @@ public:
 	CDirectionManager		DirMan;
 	// -----------------------------------------------------------------------------
 
-	bool					RayPickEnemy			(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
+	CMeleeChecker			MeleeChecker;
 
+	// -----------------------------------------------------------------------------
 
-	float					GetRealDistToEnemy		(const CEntity *pE);
 	u32						get_attack_rebuild_time	();
-
-	bool					b_script_state_must_execute;
 
 	IC	virtual	EAction		CustomVelocityIndex2Action	(u32 velocity_index) {return ACT_STAND_IDLE;}
 		virtual	void		TranslateActionToPathParams ();
@@ -316,17 +288,18 @@ public:
 	u32						m_dwFrameDestroy;
 	u32						m_dwFrameClient;
 
-	u16						bone_part;
+	u16						m_default_bone_part;
 	
 	bool					b_velocity_reset;
 	bool					force_real_speed;
-	
-	bool					script_processing_active;
 
-	bool					GetNodeInRadius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
+	bool					script_processing_active;
+	bool					b_script_state_must_execute;
 
 IC	void					set_action			(EAction action);
 	void					set_state_sound		(u32 type, bool once = false);
+IC	void					fall_asleep			(){m_bSleep = true;}
+IC	void					wake_up				(){m_bSleep = false;}
 
 
 	CCriticalActionInfo		*CriticalActionInfo;
@@ -339,8 +312,4 @@ IC	void					set_action			(EAction action);
 };
 
 #include "base_monster_inline.h"
-
-
-
-
 

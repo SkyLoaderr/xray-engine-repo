@@ -15,9 +15,6 @@ public:
 	SVelocityParam 			m_fsVelocitySteal;
 
 	float					m_fDistToCorpse;
-	float					m_fMinAttackDist;
-	float					m_fMaxAttackDist;
-
 	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged
 
 	// -------------------------------------------------------

@@ -12,7 +12,7 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 
-	CBaseMonster				*pMonster;
+	CBaseMonster			*pMonster;
 	CJumping				*pJumping;
 
 	// работа с последовательностями
@@ -132,11 +132,6 @@ public:
 	bool		AA_TimeTest				(SAAParam &params);
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
 	void		AA_GetParams			(SAAParam &params, LPCSTR anim_name);
-
-	// Steps
-	//void		STEPS_Load				(LPCSTR section, u8 legs_num);
-	//void		STEPS_Initialize		();
-	//void		STEPS_Update			(u8 legs_num);
 
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);

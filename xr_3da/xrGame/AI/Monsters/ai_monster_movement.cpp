@@ -262,5 +262,24 @@ void CMonsterMovement::set_velocity_from_path()
 	if (fis_zero(m_velocity_linear.target)) stop_linear();
 }
 
+// Get Point From Node in Radius
+bool CMonsterMovement::GetNodeInRadius(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node)
+{
+	Fvector vertex_position = ai().level_graph().vertex_position(src_node);
+
+	for (u32 i=0; i<attempts; i++) {
+
+		Fvector dir;
+		dir.random_dir	();
+		dir.normalize	();
+
+		Fvector new_pos;
+		new_pos.mad(vertex_position, dir, Random.randF(min_radius, max_radius));
+
+		dest_node = ai().level_graph().check_position_in_direction(src_node, vertex_position, new_pos);
+		if (dest_node != u32(-1) && accessible(dest_node)) return (true);
+	}
+	return false;
+}
 
 
