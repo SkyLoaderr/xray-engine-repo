@@ -29,7 +29,7 @@ public:
 	//инициализация
 	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
 	virtual void SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle);
-			void SetStyle_script(u32 messageBoxStyle);
+			void SetStyle_script(u32 messageBoxStyle){SetStyle((E_MESSAGEBOX_STYLE)messageBoxStyle);};
 	virtual void SetText(LPCSTR str);
 
 	virtual void Show();
