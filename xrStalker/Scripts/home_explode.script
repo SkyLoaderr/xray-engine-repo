@@ -13,6 +13,7 @@ function main ()
 	local snd = patrol ("soundw"):point (0)
 	local part = patrol ("particlew"):point (0)
 	local snd_explode = sound_object ("weapons\\rgd5_explode")
+    local ps = particles ("hit_fx\\hit_stucco_statik", false)
 
 	zone:clear_callback (true)
 	zone:set_callback (home_explode.on_enter, true) 
@@ -28,6 +29,8 @@ function main ()
     h.impulse = 5000
     h.type = hit.strike
     barrel:hit (h)
+
+    ps:play_at_pos  (part)
 
 	wait (5000)
 end
