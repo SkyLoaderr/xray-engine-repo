@@ -22,14 +22,14 @@ CExplosiveRocket::~CExplosiveRocket()
 void CExplosiveRocket::Load(LPCSTR section) 
 {
 	inherited::Load(section);
+	CInventoryItem::Load(section);
 	CExplosive::Load(section);
 }
 
 BOOL CExplosiveRocket::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL result = inherited::net_Spawn(DC);
-	result |= CExplosive::net_Spawn(DC);
-
+	result=result&&CInventoryItem::net_Spawn(DC);
 	return result;
 }
 
@@ -43,6 +43,7 @@ void CExplosiveRocket::Contact(const Fvector &pos, const Fvector &normal)
 
 void CExplosiveRocket::net_Destroy() 
 {
+	CInventoryItem::net_Destroy();
 	CExplosive::net_Destroy();
 	inherited::net_Destroy();
 }
@@ -50,13 +51,13 @@ void CExplosiveRocket::net_Destroy()
 void CExplosiveRocket::OnH_A_Independent() 
 {
 	inherited::OnH_A_Independent();
-	CExplosive::OnH_A_Independent();
+	CInventoryItem::OnH_A_Independent();
 }
 
 void CExplosiveRocket::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
-	CExplosive::OnH_B_Independent();
+	CInventoryItem::OnH_B_Independent();
 }
 
 void CExplosiveRocket::UpdateCL() 
@@ -113,13 +114,13 @@ void CExplosiveRocket::OnRender				()
 void CExplosiveRocket::reinit				()
 {
 	inherited::reinit			();
-	CExplosive::reinit			();
+	CInventoryItem::reinit			();
 }
 
 void CExplosiveRocket::reload					(LPCSTR section)
 {
-	inherited::reload			(section);
-	CExplosive::reload			(section);
+	inherited::reload				(section);
+	CInventoryItem::reload			(section);
 }
 
 void CExplosiveRocket::activate_physic_shell	()

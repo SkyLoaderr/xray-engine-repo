@@ -59,7 +59,7 @@ CExplosive::~CExplosive(void)
 
 void CExplosive::Load(LPCSTR section) 
 {
-	inherited::Load		(section);
+
 	m_fBlastHit			= pSettings->r_float(section,"blast");
 	m_fBlastRadius		= pSettings->r_float(section,"blast_r");
 	m_fBlastHitImpulse	= pSettings->r_float(section,"blast_impulse");
@@ -98,14 +98,11 @@ void CExplosive::Load(LPCSTR section)
 	effector.period_number	= pSettings->r_float("explode_effector","period_number");
 }
 
-BOOL CExplosive::net_Spawn		(CSE_Abstract* DC)
-{
-	return				(inherited::net_Spawn(DC));
-}
+
 
 void CExplosive::net_Destroy	()
 {
-	inherited::net_Destroy();
+
 	StopLight();
 }
 
@@ -149,23 +146,23 @@ void CExplosive::Explode()
 	VERIFY(m_bReadyToExplode);
 
 	m_bExploding = true;
-	processing_activate();
+	cast_game_object()->processing_activate();
 
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
 
-	setVisible(false);
-	setEnabled(false);
+	cast_game_object()->setVisible(false);
+	cast_game_object()->setEnabled(false);
 
 	//играем звук взрыва
 	Sound->play_at_pos(sndExplode, 0, pos, false);
 	
 	//показываем эффекты
 	CParticlesObject* pStaticPG; 
-	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,Sector()); 
+	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,cast_game_object()->Sector()); 
 	
 	Fvector vel;
-	PHGetLinearVell(vel);
+	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(vel);
 
 	Fmatrix explode_matrix;
 	explode_matrix.identity();
@@ -214,10 +211,10 @@ void CExplosive::Explode()
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,
-											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
+											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
 	}	
 
-	if (Remote()) return;
+	if (cast_game_object()->Remote()) return;
 	
 	/////////////////////////////////
 	//взрывная волна
@@ -286,16 +283,16 @@ void CExplosive::Explode()
 				s16 l_element = *l_elements.begin();
 				Fvector l_bs_pos = *l_bs_positions.begin();
 				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,l_pGO->ID());
+				cast_game_object()->u_EventGen		(P,GE_HIT,l_pGO->ID());
 				P.w_u16			(m_iCurrentParentID);
-				P.w_u16			(ID());
+				P.w_u16			(cast_game_object()->ID());
 				P.w_dir			(l_dir);
 				P.w_float		(l_hit);
 				P.w_s16			(l_element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_impuls);
 				P.w_u16			(u16(m_eHitTypeBlast));
-				u_EventSend		(P);
+				cast_game_object()->u_EventSend		(P);
 				l_elements.pop_front();
 				l_bs_positions.pop_front();
 			}
@@ -321,7 +318,7 @@ void CExplosive::Explode()
 void CExplosive::feel_touch_new(CObject* O) 
 {
 	CGameObject *pGameObject = static_cast<CGameObject*>(O);
-	if(pGameObject && this != pGameObject) m_blasted.push_back(pGameObject);
+	if(pGameObject && cast_game_object() != pGameObject) m_blasted.push_back(pGameObject);
 }
 
 void CExplosive::UpdateCL() 
@@ -334,15 +331,15 @@ void CExplosive::UpdateCL()
 	if(m_fExplodeDuration < 0.f) 
 	{
 		m_bExploding = false;
-		processing_deactivate();
+		cast_game_object()->processing_deactivate();
 
 		StopLight();
 		
 		//ликвидировать сам объект 
 		NET_Packet			P;
-		u_EventGen			(P,GE_DESTROY,ID());
+		cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
 //		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-		if (Local()) u_EventSend			(P);
+		if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
 	} 
 	else
 	{
@@ -392,22 +389,17 @@ void CExplosive::ExplodeParams(const Fvector& pos,
 
 void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 {
-	if (OnClient() || Remote()) return;
+	if (OnClient() || cast_game_object()->Remote()) return;
 
 	VERIFY(0xffff != m_iCurrentParentID);
 
 	NET_Packet		P;
-	u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+	cast_game_object()->u_EventGen		(P,GE_GRENADE_EXPLODE,cast_game_object()->ID());	
 	P.w_u16			(m_iCurrentParentID);
 	P.w_vec3		(const_cast<Fvector&>(pos));
 	P.w_vec3		(const_cast<Fvector&>(normal));
-	u_EventSend		(P);
+	cast_game_object()->u_EventSend		(P);
 
-}
-
-void CExplosive::renderable_Render		()
-{
-	inherited::renderable_Render	();
 }
 
 void CExplosive::FindNormal(Fvector& normal)
@@ -416,9 +408,9 @@ void CExplosive::FindNormal(Fvector& normal)
 
 	Fvector pos, dir;
 	dir.set(0,-1.f,0);
-	Center(pos);
+	cast_game_object()->Center(pos);
 
-	BOOL result = Level().ObjectSpace.RayPick(pos, dir, Radius(), 
+	BOOL result = Level().ObjectSpace.RayPick(pos, dir, cast_game_object()->Radius(), 
 											 collide::rqtBoth, RQ);
 	if(!result || RQ.O)
 		normal.set(0,1,0);

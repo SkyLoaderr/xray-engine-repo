@@ -11,7 +11,8 @@
 
 
 class CExplosiveRocket : public CCustomRocket,
-							public CExplosive
+						virtual public CInventoryItem,
+								public CExplosive
 {
 private:
 	typedef CCustomRocket inherited;
@@ -22,6 +23,7 @@ public:
 public:
 	virtual CInventoryItem*				cast_inventory_item		()						{return this;}
 	virtual CWeapon*					cast_weapon				()						{return NULL;}
+	virtual CGameObject					*cast_game_object		()						{return this;}
 public:
 
 	virtual void Load(LPCSTR section);

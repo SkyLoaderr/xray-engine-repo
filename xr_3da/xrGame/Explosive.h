@@ -11,42 +11,34 @@
 #include "ai_sounds.h"
 
 class CExplosive:
-	virtual public CInventoryItem,
-    public Feel::Touch
+		public Feel::Touch
 {
-private:
-	typedef CInventoryItem inherited;
+
 public:
-	CExplosive(void);
-	virtual ~CExplosive(void);
+								CExplosive(void);
+	virtual						~CExplosive(void);
 
-	virtual void Load(LPCSTR section);
+	virtual void 				Load(LPCSTR section);
 	
-	virtual BOOL net_Spawn			(CSE_Abstract* DC);
-	virtual void net_Destroy		();
 
-	virtual void UpdateCL();
+	virtual void 				net_Destroy		();
 
-	virtual void feel_touch_new(CObject* O);
+	virtual void 				UpdateCL();
 
-	virtual void Explode();
-	virtual void ExplodeParams(const Fvector& pos, const Fvector& dir);
+	virtual void 				feel_touch_new(CObject* O);
 
-	static float ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
+	virtual void 				Explode();
+	virtual void 				ExplodeParams(const Fvector& pos, const Fvector& dir);
 
-	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
-	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}
-	virtual void OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
-	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
-						 Fvector position_in_object_space, float impulse, 
-						 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
-	
-	virtual void renderable_Render	();
+	static float 				ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
 
-	virtual void SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
-	virtual void GenExplodeEvent (const Fvector& pos, const Fvector& normal);
-	virtual void FindNormal(Fvector& normal);
 
+	virtual void 				OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
+
+	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
+	virtual void 				GenExplodeEvent (const Fvector& pos, const Fvector& normal);
+	virtual void 				FindNormal(Fvector& normal);
+	virtual CGameObject			*cast_game_object()=0;
 protected:
 	//ID персонажа который иницировал действие
 	u16 m_iCurrentParentID;

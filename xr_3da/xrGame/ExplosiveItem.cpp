@@ -19,12 +19,13 @@ CExplosiveItem::~CExplosiveItem(void)
 void CExplosiveItem::Load(LPCSTR section)
 {
 	inherited::Load							(section);
-
+	CExplosive::Load						(section);
 	m_bUsingCondition						= true;
 }
 
 void CExplosiveItem::net_Destroy()
 {
+	inherited::net_Destroy();
 	CExplosive::net_Destroy();
 }
 
@@ -49,15 +50,15 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 void  CExplosiveItem::OnEvent (NET_Packet& P, u16 type)
 {
 	CExplosive::OnEvent (P, type);
-	CInventoryItem::OnEvent (P, type);
+	inherited::OnEvent (P, type);
 
 }
 void CExplosiveItem::UpdateCL()
 {
 	CExplosive::UpdateCL();
-	CInventoryItem::UpdateCL();
+	inherited::UpdateCL();
 }
 void CExplosiveItem::renderable_Render()
 {
-	CExplosive::renderable_Render();
+	inherited::renderable_Render();
 }

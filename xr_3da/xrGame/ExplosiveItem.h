@@ -8,10 +8,12 @@
 
 #include "Explosive.h"
 
-class CExplosiveItem: public CExplosive
+class CExplosiveItem: 
+	virtual public CInventoryItem,
+			public CExplosive
 {
 private:
-	typedef CExplosive inherited;
+	typedef CInventoryItem inherited;
 public:
 	CExplosiveItem(void);
 	virtual ~CExplosiveItem(void);
@@ -21,7 +23,7 @@ public:
 	virtual void				net_Destroy			();
 	virtual void				net_Export			(NET_Packet& P)		{CInventoryItem::net_Export(P);}
 	virtual void				net_Import			(NET_Packet& P)		{CInventoryItem::net_Import(P);}
-
+	virtual CGameObject			*cast_game_object	()					{return this;}
 
 	virtual void OnEvent		(NET_Packet& P, u16 type);
 	virtual	void Hit			(float P, Fvector &dir,	CObject* who, s16 element,
