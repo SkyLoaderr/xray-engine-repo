@@ -11,6 +11,7 @@
 #include "../skeletoncustom.h"
 
 #include "relation_registry.h"
+#include "monster_community.h"
 
 
 
@@ -48,11 +49,13 @@ STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 CEntityAlive::CEntityAlive()
 {
 	init				();
+	monster_community	= xr_new<MONSTER_COMMUNITY>();
 }
 
 CEntityAlive::~CEntityAlive()
 {
 	xr_delete				(m_PhysicMovementControl);
+	xr_delete				(monster_community);
 }
 
 void CEntityAlive::init			()
@@ -74,6 +77,9 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	if(0==m_pFireParticlesVector)
 		LoadFireParticles	("entity_fire_particles");
+
+	//биолог. вид к торому принадлежит монстр или персонаж
+	monster_community->set	(pSettings->r_string(section, "species"));
 }
 
 void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
@@ -209,6 +215,10 @@ void CEntityAlive::shedule_Update(u32 dt)
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
+	//установить команду в соответствии с community
+/*	if(monster_community->team() != 255)
+		id_Team = monster_community->team();*/
+
 	inherited::net_Spawn	(DC);
 
 	m_BloodWounds.clear();
@@ -221,6 +231,8 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 		StartFireParticles(pWound);
 		StartBloodDrops(pWound);
 	}
+
+
 	return					TRUE;
 }
 
@@ -438,10 +450,20 @@ void CEntityAlive::UpdateFireParticles()
 
 ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 {
-	if (tpEntityAlive->g_Team() != g_Team())
+	int relation = MONSTER_COMMUNITY::relation(this->monster_community->index(), tpEntityAlive->monster_community->index());
+
+	switch(relation)
+	{
+	case 0:
 		return(ALife::eRelationTypeEnemy);
-	else
+		break;
+	case 1:
 		return(ALife::eRelationTypeNeutral);
+		break;
+	default:
+		return(ALife::eRelationTypeDummy);
+		break;
+	}
 };
 
 

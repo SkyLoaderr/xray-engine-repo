@@ -5389,6 +5389,12 @@
 									RelativePath=".\ini_table_loader.h">
 								</File>
 								<File
+									RelativePath=".\monster_community.cpp">
+								</File>
+								<File
+									RelativePath=".\monster_community.h">
+								</File>
+								<File
 									RelativePath=".\specific_character.cpp">
 								</File>
 								<File

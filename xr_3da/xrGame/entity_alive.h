@@ -6,6 +6,9 @@
 DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
 DEFINE_VECTOR(shared_str, STR_VECTOR, STR_VECTOR_IT);
 
+
+class MONSTER_COMMUNITY;
+
 class CEntityAlive			: public CEntity, 
 							  virtual public CEntityCondition
 {
@@ -61,7 +64,6 @@ public:
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	
 	virtual	float			ffGetRange				()	const			= 0;	
-	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
 	
 //	virtual void			BuyItem					(LPCSTR buf);
 	virtual bool			human_being				() const
@@ -137,4 +139,10 @@ protected:
 	virtual void			StartBloodDrops			(CWound* pWound);
 	virtual void			UpdateBloodDrops		();
 
+
+	//отношения между существами и персонажами в зоне
+public:
+	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
+protected:	
+	MONSTER_COMMUNITY*		monster_community;
 };

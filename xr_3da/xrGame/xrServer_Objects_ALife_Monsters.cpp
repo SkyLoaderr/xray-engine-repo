@@ -25,6 +25,7 @@
 #	include "game_graph.h"
 #	include "alife_simulator.h"
 #	include "alife_registry_container.h"
+#	include "monster_community.h"
 #endif
 
 
@@ -900,6 +901,13 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_dynamic_out_restrictions,tNetPacket);
 		load_data				(m_dynamic_in_restrictions,tNetPacket);
 	}
+#ifdef XRGAME_EXPORTS
+	MONSTER_COMMUNITY monster_community;
+	monster_community.set	(pSettings->r_string(s_name, "species"));
+	if(monster_community.team() != 255)
+		s_team = monster_community.team();
+#endif
+
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
