@@ -109,9 +109,6 @@ public:
 	//все вопросы доступные в этот момент
 	INFO_QUESTIONS_LIST m_ActiveQuestionsList;
 	void UpdateQuestions();
-
-	DIALo
-
 protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
