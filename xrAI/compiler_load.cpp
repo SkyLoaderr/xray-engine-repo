@@ -98,7 +98,6 @@ void xrLoad(LPCSTR name)
 		for (DWORD l=0; l<Header.light_count; l++) 
 		{
 			b_light R = Header.lights[l];
-			R.direction.normalize_safe();
 			if (R.flags & XRLIGHT_LMAPS) 
 			{
 				R_Light	RL;
@@ -109,7 +108,7 @@ void xrLoad(LPCSTR name)
 				}
 				RL.amount				=	R.diffuse.magnitude_rgb();
 				RL.position.set				(R.position);
-				RL.direction.set			(R.direction);
+				RL.direction.normalize_safe	(R.direction);
 				RL.range				=	R.range*1.2f;
 				RL.range2				=	RL.range*RL.range;
 				RL.attenuation0			=	R.attenuation0;
@@ -118,22 +117,19 @@ void xrLoad(LPCSTR name)
 				RL.tri[0].set			(0,0,0);
 				RL.tri[1].set			(0,0,0);
 				RL.tri[2].set			(0,0,0);
+				g_lights.push_back		(RL);
 
 				if (RL.type==LT_DIRECT)	
 				{
-					R_Light	T			= RL;
-					T.energy			= (Header.params.area_energy_summary)/float(h_count);
+					R_Light	T			=	RL;
+					T.amount			=	Header.params.areaDark.magnitude_rgb()*(Header.params.area_energy_summary)/float(h_count);
 					for (int i=0; i<h_count; i++)
 					{
 						T.direction.set			(float(hemi[i][0]),float(hemi[i][1]),float(hemi[i][2]));
 						T.direction.invert		();
 						T.direction.normalize	();
-						
-						T.diffuse.set			(Header.params.areaDark);
 						g_lights.push_back		(T);
 					}
-				} else {
-					g_lights.push_back		(RL);
 				}
 			}
 		}
