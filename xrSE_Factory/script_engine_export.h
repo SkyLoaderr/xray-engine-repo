@@ -97,7 +97,6 @@
 #	include "client_spawn_manager.h"
 #	include "script_zone.h"
 #	include "ef_storage.h"
-#	include "trigger.h"
 #	include "ai/stalker/ai_stalker.h"
 #	include "ai/monsters/bloodsucker/bloodsucker.h"
 #	include "ai/monsters/boar/boar.h"
