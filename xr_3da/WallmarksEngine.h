@@ -11,7 +11,7 @@ const float W_DIST_FADE		= 15.f;
 const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
 const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
 
-struct ENGINE_API	CWallmark 
+struct CWallmark 
 {
 	struct Vertex 
 	{
@@ -60,15 +60,11 @@ struct ENGINE_API	CWallmark
 class ENGINE_API	CWallmarksEngine
 {
 	deque<CWallmark>		marks;
-	vector<CObject*>		shadow_casters;
-
 	CVertexStream*			VS;
 
 	void	BuildMatrix		(Fmatrix &dest, float invsz, const Fvector& from);
 public:
 	void	AddWallmark		(CDB::TRI* pPickedTri, const Fvector &contact_point, Shader* hTexture, float sz);
-	void	AddShadow		(CObject* E);
-
 	void	Render			();
 
 	CWallmarksEngine		();

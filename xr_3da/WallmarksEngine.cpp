@@ -171,7 +171,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 extern float g_fSCREEN;
 void CWallmarksEngine::Render()
 {
-	if (shadow_casters.empty() && marks.empty())	return;
+	if (marks.empty())	return;
 
 	// Projection and xform
 	float _43 = Device.mProject._43;
@@ -179,65 +179,55 @@ void CWallmarksEngine::Render()
 	Device.set_xform_world	(Fidentity);
 	Device.set_xform_project(Device.mProject);
 
-	if (!marks.empty()) 
+	Device.Statistic.RenderDUMP_WM.Begin	();
+
+	DWORD				w_offset;
+	CWallmark::Vertex*	w_verts = (CWallmark::Vertex*)VS->Lock	(MAX_TRIS*3,w_offset);
+	CWallmark::Vertex*	w_start = w_verts;
+
+	Shader*	w_S			= marks.front().hShader;
+	for (DWORD i=0; i<marks.size(); i++)
 	{
-		Device.Statistic.RenderDUMP_WM.Begin	();
-
-		DWORD				w_offset;
-		CWallmark::Vertex*	w_verts = (CWallmark::Vertex*)VS->Lock	(MAX_TRIS*3,w_offset);
-		CWallmark::Vertex*	w_start = w_verts;
-
-		Shader*	w_S			= marks.front().hShader;
-		for (DWORD i=0; i<marks.size(); i++)
+		CWallmark& W = marks[i];
+		if (::Render->ViewBase.testSphere_dirty(W.S.P,W.S.R)) 
 		{
-			CWallmark& W = marks[i];
-			if (::Render->ViewBase.testSphere_dirty(W.S.P,W.S.R)) 
-			{
-				float dst = Device.vCameraPosition.distance_to_sqr(W.S.P);
-				float ssa = g_fSCREEN * W.S.R * W.S.R / dst;
-				if (ssa>=1)	{
-					DWORD w_count	= w_verts-w_start;
-					if (((w_count+W.verts.size())>=MAX_TRIS*3)||(w_S!=W.hShader))
-					{
-						// Flush stream
-						VS->Unlock				(w_count);
-						Device.Shader.set_Shader(w_S);
-						Device.Primitive.Draw	(VS,w_count/3,w_offset);
+			float dst = Device.vCameraPosition.distance_to_sqr(W.S.P);
+			float ssa = g_fSCREEN * W.S.R * W.S.R / dst;
+			if (ssa>=1)	{
+				DWORD w_count	= w_verts-w_start;
+				if (((w_count+W.verts.size())>=MAX_TRIS*3)||(w_S!=W.hShader))
+				{
+					// Flush stream
+					VS->Unlock				(w_count);
+					Device.Shader.set_Shader(w_S);
+					Device.Primitive.Draw	(VS,w_count/3,w_offset);
 
-						// Restart (re-lock/re-calc)
-						w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
-						w_start		= w_verts;
-						w_S			= W.hShader;
-					}
-
-					W.Draw	(w_verts);
+					// Restart (re-lock/re-calc)
+					w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
+					w_start		= w_verts;
+					w_S			= W.hShader;
 				}
+
+				W.Draw	(w_verts);
 			}
-			W.ttl -= Device.fTimeDelta;
 		}
-
-		// Flush stream
-		DWORD w_count			= w_verts-w_start;
-		VS->Unlock				(w_count);
-		if (w_count)			{
-			Device.Shader.set_Shader(w_S);
-			Device.Primitive.Draw	(VS,w_count/3,w_offset);
-		}
-
-		// Remove last used wallmarks
-		while (!marks.empty() && (marks.front().ttl<=EPS_S)) marks.pop_front();
-
-		Device.Statistic.RenderDUMP_WM.End		();
+		W.ttl -= Device.fTimeDelta;
 	}
+
+	// Flush stream
+	DWORD w_count			= w_verts-w_start;
+	VS->Unlock				(w_count);
+	if (w_count)			{
+		Device.Shader.set_Shader(w_S);
+		Device.Primitive.Draw	(VS,w_count/3,w_offset);
+	}
+
+	// Remove last used wallmarks
+	while (!marks.empty() && (marks.front().ttl<=EPS_S)) marks.pop_front();
+
+	Device.Statistic.RenderDUMP_WM.End		();
 
 	// Projection
 	Device.mProject._43 = _43;
 	Device.set_xform_project	(Device.mProject);
 }
-
-void CWallmarksEngine::AddShadow(CObject* E)
-{ 
-	if (pCreator->Environment.Suns.empty()) return;
-	if (E->Position().distance_to(Device.vCameraPosition)+E->Radius() < W_DIST_FADE)
-		shadow_casters.push_back(E);
-};

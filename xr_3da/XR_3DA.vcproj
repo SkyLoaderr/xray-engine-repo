@@ -1552,14 +1552,6 @@
 					RelativePath=".\xr_collide_form.cpp"/>
 				<File
 					RelativePath=".\xr_collide_form.h"/>
-				<Filter
-					Name="Physics"
-					Filter="">
-					<File
-						RelativePath=".\Physics\PhysicsObject.cpp"/>
-					<File
-						RelativePath=".\Physics\PhysicsObject.h"/>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Animator"

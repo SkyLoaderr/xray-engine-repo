@@ -2,7 +2,7 @@
 #define STATS_TIMER_H
 #pragma once
 
-class ENGINE_API CStatTimer
+class CStatTimer
 {
 	friend class CStats;
 	friend class CRenderDevice;

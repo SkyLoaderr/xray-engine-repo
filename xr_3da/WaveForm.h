@@ -3,7 +3,7 @@
 #pragma once
 
 #pragma pack(push,4)
-struct ENGINE_API WaveForm
+struct WaveForm
 {
 	enum EFunction
 	{

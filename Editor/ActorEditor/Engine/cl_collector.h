@@ -9,7 +9,7 @@
 namespace CDB {
 	const DWORD edge_open = 0xffffffff;
 
-	class Collector  
+	class ENGINE_API Collector  
 	{
 		vector<Fvector>	verts;
 		vector<TRI>		faces;
@@ -74,7 +74,7 @@ namespace CDB {
 
 	const int clpMX = 28, clpMY=16, clpMZ=28;
 
-	class CollectorPacked
+	class ENGINE_API CollectorPacked
 	{
 		typedef vector<DWORD>		DWORDList;
 		typedef DWORDList::iterator	DWORDIt;

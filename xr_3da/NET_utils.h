@@ -5,13 +5,13 @@
 
 const	u32		NET_PacketSizeLimit	= 8192;
 
-struct	ENGINE_API	NET_Buffer	
+struct	NET_Buffer	
 {
 	BYTE	data	[NET_PacketSizeLimit];
 	u32		count;
 };
 
-class	ENGINE_API	NET_Packet
+class	NET_Packet
 {
 public:
 	NET_Buffer		B;

@@ -4,7 +4,8 @@
 #include "WaveForm.h"
 #include "Particle.h"
 
-namespace PS{
+namespace PS
+{
 DEFINE_VECTOR(SParticle,Particles,ParticleIt);
 
 #define PS_COLLIDE	 				0x00000001
@@ -19,8 +20,7 @@ DEFINE_VECTOR(SParticle,Particles,ParticleIt);
 #define PS_EM_BURST					0x00000002
 #define PS_EM_PLAY_ONCE				0x00000004
 
-typedef char		sh_name[64];
-#define PARTICLESYSTEM_VERSION 0x0011
+#define PARTICLESYSTEM_VERSION	0x0011
 
 #pragma pack( push,1 )
 struct ENGINE_API SEmitterDef
@@ -49,8 +49,9 @@ struct ENGINE_API SEmitterDef
     float			m_ParticleLimit;
 
 	DWORD			m_dwFlag;
-    void			Reset(){ ZeroMemory(this, sizeof(SEmitterDef));}
-    void			InitDefault(){
+    void			Reset()			{ ZeroMemory(this, sizeof(SEmitterDef));}
+    void			InitDefault()	
+	{
     	Reset		();
         m_fBirthRate 	= 100;
         m_ParticleLimit = 1000;
@@ -59,7 +60,8 @@ struct ENGINE_API SEmitterDef
         m_SphereRadius 	= 1.f;
         UpdateConeOrientation();
     }
-    void			UpdateConeOrientation(){
+    void			UpdateConeOrientation()
+	{
     	m_ConeDirection.set(0.f,0.f,1.f);
         Fmatrix M;
         M.setHPB(m_ConeHPB.x,m_ConeHPB.y,m_ConeHPB.z);
@@ -100,7 +102,7 @@ struct ENGINE_API SAnimation
 
 struct ENGINE_API 	SParams
 {
-	sh_name			m_Name;
+	string64			m_Name;
 	// params
 	float			m_fLife;
     Pair<float>		m_Size;
@@ -127,10 +129,10 @@ struct ENGINE_API 	SParams
 
 struct ENGINE_API SDef: public SParams
 {
-    sh_name			m_Reserved;
-	sh_name			m_Computer;
-    sh_name			m_ShaderName;
-    sh_name			m_TextureName;
+    string64			m_Reserved;
+	string64			m_Computer;
+    string64			m_ShaderName;
+    string64			m_TextureName;
 	DWORD  			m_dwCreationTime;
     SEmitterDef		m_DefaultEmitter;
 
@@ -181,7 +183,7 @@ struct ENGINE_API SDef: public SParams
 		// Name
 		VERIFY(strlen(N)<64);
 
-		sh_name new_name;
+		string64 new_name;
 		strcpy(new_name,N);
 		strlwr(new_name);
 		if (strcmp(m_Name,new_name)!=0){

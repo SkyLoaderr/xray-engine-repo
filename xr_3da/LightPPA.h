@@ -8,7 +8,7 @@
 
 #include "xr_list.h"
 
-struct ENGINE_API	CLightPPA_Vertex
+struct CLightPPA_Vertex
 {
 	Fvector			P;
 	Fvector			N;

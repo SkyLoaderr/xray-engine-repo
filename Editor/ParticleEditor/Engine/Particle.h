@@ -8,7 +8,7 @@ template <class T> struct Pair{
     T start;
     T end;
 };
-struct ENGINE_API SParticle
+struct SParticle
 {
 public:
 	Pair<float>		m_Time;     

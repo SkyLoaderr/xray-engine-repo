@@ -58,7 +58,7 @@
 
 #define DO_NO_WAVING	0x0001
 
-struct ENGINE_API DetailHeader
+struct DetailHeader
 {
 	DWORD		version;
 	DWORD		object_count;
@@ -66,19 +66,19 @@ struct ENGINE_API DetailHeader
 	DWORD		size_x,	size_z;
 };
 
-struct ENGINE_API DetailPalette
+struct DetailPalette
 {
 	u16		a0:4;
 	u16		a1:4;
 	u16		a2:4;
 	u16		a3:4;
 };
-struct ENGINE_API DetailItem
+struct DetailItem
 {
 	u8				id;		// 0xff - empty
 	DetailPalette	palette;
 };
-struct ENGINE_API DetailSlot// 4+4+3*4+2 = 22b
+struct DetailSlot			// 4+4+3*4+2 = 22b
 {
 	float			y_min,y_max;
 	DetailItem		items[4];
