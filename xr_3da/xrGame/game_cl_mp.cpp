@@ -456,7 +456,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(pWeapon);
 				if (pIItem)
 				{
-					KMS.m_initiator.m_shader = &GetEquipmentIconsShader();
+					KMS.m_initiator.m_shader = GetEquipmentIconsShader();
 					KMS.m_initiator.m_rect.x1 = pIItem->GetXPos()*INV_GRID_WIDTH;
 					KMS.m_initiator.m_rect.y1 = pIItem->GetYPos()*INV_GRID_HEIGHT;
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1+pIItem->GetGridWidth()*INV_GRID_WIDTH;
