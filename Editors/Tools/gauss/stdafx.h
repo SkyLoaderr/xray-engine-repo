@@ -164,6 +164,14 @@ struct st_Version{
 
 #ifdef _LW_SHADER
 	#define _EDITOR_FILE_NAME_ "lw_shader"
+#else
+	#ifdef _LW_EXPORT
+		#define _EDITOR_FILE_NAME_ "lw_export"
+    #else
+		#ifdef _LW_IMPORT
+			#define _EDITOR_FILE_NAME_ "lw_import"
+		#endif
+	#endif
 #endif
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
