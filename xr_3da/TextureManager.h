@@ -28,7 +28,7 @@ public:
 class ENGINE_API CShaderManager
 {
 private:
-	vector<CXRShader *>	shaders;
+	vector<CShader *>	shaders;
 	vector<CTexture *>	textures;
 
 	vector<Shader *>	sh_list;
