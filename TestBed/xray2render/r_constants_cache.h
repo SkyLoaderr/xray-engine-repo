@@ -109,6 +109,8 @@ class	R_constants
 private:
 	R_constant_array		a_pixel;
 	R_constant_array		a_vertex;
+	
+	void					flush_cache	();
 public:
 	// fp, non-array versions
 	void					set		(R_constant* C, Fmatrix& A)		{
