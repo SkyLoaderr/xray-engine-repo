@@ -169,6 +169,9 @@ IC		void			gm_SetNearer		(BOOL bNearer)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender	()
 {
+	Device->Resources->RegisterConstantSetup("L_dynamic_pos",	&r1_dlight_binder_PR)
+	Device->Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
+	Device->Resources->RegisterConstantSetup("L_dynamic_xform",	&r1_dlight_binder_xform);
 }
 
 CRender::~CRender	()
