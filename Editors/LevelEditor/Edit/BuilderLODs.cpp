@@ -44,7 +44,7 @@ BOOL GetPointColor(SPickQuery::SResult* R, float& alpha)
     U %= surf->m_ImageData->w;	if (U<0) U+=surf->m_ImageData->w;
     V %= surf->m_ImageData->h;	if (V<0) V+=surf->m_ImageData->h;
 
-    alpha = color_get_A(surf->m_ImageData->layers.back()[V*surf->m_ImageData->w+U])*255.f;
+    alpha = color_get_A(surf->m_ImageData->layers.back()[V*surf->m_ImageData->w+U])/255.f;
     return TRUE;
 }
 
@@ -129,10 +129,9 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
 	        	float X			= (iW-LOD_IMAGE_SIZE/2)*dW;
 
                 u32 pixel		= (LOD_IMAGE_SIZE-iH-1)*LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE+LOD_IMAGE_SIZE*sample_idx+iW;
-                u32& src_c		= b.data[pixel];
                 u32& tgt_n		= b.ndata[pixel];
                 u8& tgt_h		= hemi_temp[pixel];
-                u8 src_a		= color_get_A	(src_c);
+                u8 src_a		= color_get_A	(b.data[pixel]);
 
 				if (0==src_a)	continue;
                 
@@ -164,7 +163,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
 								float a;
                             	if (!GetPointColor(R,a)) continue;
 								if (!fis_zero(a)){
-									if ((iiH>-2)&&(iiH<2)&&(iiW>-2)&&(iiW<2))
+//									if ((iiH>-2)&&(iiH<2)&&(iiW>-2)&&(iiW<2))
                                     {
                                         Fvector pt; 	pt.mad(PQ.m_Start,PQ.m_Direction,R->range-EPS_L);
                                         sample_pt_vec[sample_pt_idx].push_back(Fvector4().set(pt.x,pt.y,pt.z,a));
@@ -225,7 +224,6 @@ tR+=TT1.Stop();
                 tH		+=				TT.Stop();
 
 				tgt_h				= iFloor	(res_transp*255.f);
-                src_c				= subst_alpha(src_c,tgt_h);
 
                 Fvector N={0,0,0};
                 if (!n_vec.empty()){
