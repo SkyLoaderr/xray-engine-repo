@@ -263,7 +263,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamFMax, 500.f);
-		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.02);
+		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.02f);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 800);

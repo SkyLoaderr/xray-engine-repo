@@ -147,7 +147,7 @@ void	CCar::UpdateCL				( )
 	// Sound
 	Fvector		C,V;
 	clCenter	(C);
-	V.set		(10,10,10);
+	V.set		(ph_world->Jeep.GetVelocity	());
 	float		velocity						= V.magnitude();
 	snd_engine.feedback->SetPosition			(C);
 	snd_engine.feedback->SetFrequencyScale		(velocity/10.f);
