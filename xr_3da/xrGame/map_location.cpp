@@ -24,6 +24,7 @@ SMapLocation::SMapLocation():animation(&icon_color)
 	dynamic_manifestation		= false;
 	type_flags.zero				();
 	animation.Cyclic			(false);
+	m_iconsShader				= NULL;
 }
 
 SMapLocation::SMapLocation(const SMapLocation& map_location)
@@ -73,4 +74,16 @@ void SMapLocation::SetColorAnimation(const shared_str &animationName)
 {
 	animation.SetColorAnimation(animationName);
 	animation.Reset();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+ref_shader&	SMapLocation::GetShader(){
+	if (xr_strlen(shader_name) > 0)
+        if(!m_iconsShader)
+		{
+			m_iconsShader.create("hud\\default", *shader_name);
+		}
+
+	return m_iconsShader;
 }

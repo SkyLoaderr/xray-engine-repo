@@ -181,6 +181,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 				map_location.marker_show = !!uiXml.ReadAttribInt(icon_node, "marker", 1);
 				map_location.big_icon = !!uiXml.ReadAttribInt(icon_node, "big_icon", 0);
 				map_location.global_map_text = !!uiXml.ReadAttribInt(icon_node, "global_map_text", 0);
+				map_location.shader_name = uiXml.Read(pMapNode,"icon",0);
 			}
 			else
 				map_location.icon_color = 0xffffffff;

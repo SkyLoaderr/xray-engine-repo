@@ -253,7 +253,11 @@ void CUIMapWnd::InitLocalMapObjectives()
 
 		UILocalMapBackground.ConvertToLocal(src,P);
 
-		map_spot->SetShader(GetMapIconsShader());
+		if (map_location.GetShader())
+			map_spot->SetShader(map_location.GetShader());
+		else
+        	map_spot->SetShader(GetMapIconsShader());
+
 		map_spot->MoveWindow(P.x + left, P.y + top);
 		map_spot->SetWidth(MAP_ICON_WIDTH*map_location.icon_width);
 		map_spot->SetHeight(MAP_ICON_HEIGHT*map_location.icon_height);
