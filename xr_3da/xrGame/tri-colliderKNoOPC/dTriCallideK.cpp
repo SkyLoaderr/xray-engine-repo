@@ -6,7 +6,8 @@
 #define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 #define NUMC_MASK (0xffff)
 
-
+#define M_SIN_PI_3		REAL(0.8660254037844386467637231707529362)
+#define M_COS_PI_3		REAL(0.5000000000000000000000000000000000)
 
 extern "C" int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
@@ -1165,30 +1166,41 @@ if(code==0){
 	norm[2]=triAx[2]*signum;
 
 
-  dReal Q1 = -signum*dDOT14(triAx,R+0);
-  dReal Q2 = -signum*dDOT14(triAx,R+1);
-  dReal Q3 = -signum*dDOT14(triAx,R+2);
+  dReal Q1 = signum*dDOT14(triAx,R+0);
+  dReal Q2 = signum*dDOT14(triAx,R+1);
+  dReal Q3 = signum*dDOT14(triAx,R+2);
   dReal factor =_sqrt(Q1*Q1+Q3*Q3);
-  factor= factor ? factor :1.f;
-  dReal A1 = radius *		Q1/factor;
+  dReal	C1,C3;
+  dReal centerDepth;//depth in the cirle centre
+  if(factor>0.f)
+  {
+  		C1=Q1/factor;
+		C3=Q3/factor;
+		
+  }
+  else
+  {
+		C1=1.f;
+		C3=0.f;
+	
+  }
+  
+  dReal A1 = radius *		C1;//cosinus
   dReal A2 = hlz*Q2;
-  dReal A3 = radius *		Q3/factor;
+  dReal A3 = radius *		C3;//sinus 
+	
+  if(factor>0.f) centerDepth=outDepth-A1*Q1-A3*Q3; else centerDepth=outDepth;
 
   pos[0]=p[0];
   pos[1]=p[1];
   pos[2]=p[2];
+ 
+  pos[0]+= A2>0 ? hlz*R[1]:-hlz*R[1];
+  pos[1]+= A2>0 ? hlz*R[5]:-hlz*R[5];
+  pos[2]+= A2>0 ? hlz*R[9]:-hlz*R[9];
 
-  pos[0]-= A1*R[0];
-  pos[1]-= A1*R[4];
-  pos[2]-= A1*R[8];
-
-  pos[0]-= A3*R[2];
-  pos[1]-= A3*R[6];
-  pos[2]-= A3*R[10];
-
-  pos[0]-= A2>0 ? hlz*R[1]:-hlz*R[1];
-  pos[1]-= A2>0 ? hlz*R[5]:-hlz*R[5];
-  pos[2]-= A2>0 ? hlz*R[9]:-hlz*R[9];
+  
+  
   
   ret=0;
   dVector3 cross0, cross1, cross2;
@@ -1203,32 +1215,37 @@ if(code==0){
   dCROSS(cross2,=,triAx,triSideAx2);
   ds2=dDOT(cross2,v2);
 
-  if(dDOT(cross0,pos)-ds0>0.f && 
-	 dDOT(cross1,pos)-ds1>0.f && 
-	 dDOT(cross2,pos)-ds2>0.f){
-	  						   contact->pos[0] = pos[0];
-							   contact->pos[1] = pos[1];
-							   contact->pos[2] = pos[2];
+  contact->pos[0] = pos[0]+A1*R[0]+A3*R[2];
+  contact->pos[1] = pos[1]+A1*R[4]+A3*R[6];
+  contact->pos[2] = pos[2]+A1*R[8]+A3*R[10];
+
+  if(dDOT(cross0,contact->pos)-ds0>0.f && 
+	 dDOT(cross1,contact->pos)-ds1>0.f && 
+	 dDOT(cross2,contact->pos)-ds2>0.f){
 							   contact->depth = outDepth;
 							   ret=1;
   }
+
 if(dFabs(Q2)>M_SQRT1_2){
 
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+2.f*A1*R[0];
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+2.f*A1*R[4];
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+2.f*A1*R[8];
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q1*2.f*A1);
+  A1=(-C1*M_COS_PI_3-C3*M_SIN_PI_3)*radius;
+  A3=(-C3*M_COS_PI_3+C1*M_SIN_PI_3)*radius;
+  CONTACT(contact,ret*skip)->pos[0]=pos[0]+A1*R[0]+A3*R[2];
+  CONTACT(contact,ret*skip)->pos[1]=pos[1]+A1*R[4]+A3*R[6];
+  CONTACT(contact,ret*skip)->pos[2]=pos[2]+A1*R[8]+A3*R[10];
+  CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
 
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
 	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
 	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
   
-  
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+2.f*A3*R[2];
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+2.f*A3*R[6];
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+2.f*A3*R[10];
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q3*2.f*A3);
+  A1=(-C1*M_COS_PI_3+C3*M_SIN_PI_3)*radius;
+  A3=(-C3*M_COS_PI_3-C1*M_SIN_PI_3)*radius;
+  CONTACT(contact,ret*skip)->pos[0]=pos[0]+A1*R[0]+A3*R[2];
+  CONTACT(contact,ret*skip)->pos[1]=pos[1]+A1*R[4]+A3*R[6];
+  CONTACT(contact,ret*skip)->pos[2]=pos[2]+A1*R[8]+A3*R[10];
+  CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
 
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
@@ -1236,10 +1253,10 @@ if(dFabs(Q2)>M_SQRT1_2){
 	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
 } else {
 
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+2.f*(A2>0 ? hlz*R[1]:-hlz*R[1]);
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+2.f*(A2>0 ? hlz*R[5]:-hlz*R[5]);
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+2.f*(A2>0 ? hlz*R[9]:-hlz*R[9]);
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q2*2.f*A2);
+  CONTACT(contact,ret*skip)->pos[0]=contact->pos[0]-2.f*(A2>0 ? hlz*R[1]:-hlz*R[1]);
+  CONTACT(contact,ret*skip)->pos[1]=contact->pos[1]-2.f*(A2>0 ? hlz*R[5]:-hlz*R[5]);
+  CONTACT(contact,ret*skip)->pos[2]=contact->pos[2]-2.f*(A2>0 ? hlz*R[9]:-hlz*R[9]);
+  CONTACT(contact,ret*skip)->depth=outDepth-Q2*2.f*A2;
 
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
