@@ -184,4 +184,6 @@ void CPHShell::Deactivate(){
 	}
 	bActive=false;
 	bActivating=false;
+
+	ZeroCallbacks();
 }
