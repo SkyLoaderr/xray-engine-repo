@@ -123,13 +123,13 @@ public:
 	{	R_ASSERT(0=="Invalid face"); }
 
 	// Does the face contains this vertex?
-	IC bool	VContains(Vertex* pV)
+	IC bool	VContains	(Vertex* pV)
 	{
 		return VIndex(pV)>=0;
 	};
 
 	// Replace ONE vertex by ANOTHER
-	IC void	VReplace(Vertex* what, Vertex* to)
+	IC void	VReplace	(Vertex* what, Vertex* to)
 	{
 		if (v[0]==what) { v[0]=to; what->prep_remove(this); to->prep_add(this); }
 		if (v[1]==what) { v[1]=to; what->prep_remove(this); to->prep_add(this); }
@@ -148,7 +148,7 @@ public:
 		if (v[2]==pV) return 2;
 		return -1;
 	};
-	IC void CalcNormal2()
+	IC void CalcNormal2	()
 	{
 		Dvector			v0,v1,v2,t1,t2,dN;
 		v0.set			(v[0]->P);
@@ -200,17 +200,17 @@ public:
 	{
 		v[idx]=V; V->prep_add(this);
 	};
-	IC void	SetVertices(Vertex *V1, Vertex *V2, Vertex *V3)
+	IC void		SetVertices(Vertex *V1, Vertex *V2, Vertex *V3)
 	{
 		SetVertex(0,V1);
 		SetVertex(1,V2);
 		SetVertex(2,V3);
 	};
-	IC BOOL	isDegenerated()
+	IC BOOL		isDegenerated()
 	{
 		return (v[0]==v[1] || v[0]==v[2] || v[1]==v[2]);
 	};
-	IC float	EdgeLen(int edge)
+	IC float	EdgeLen	(int edge)
 	{
 		Vertex* V1 = v[edge2idx[edge][0]];
 		Vertex* V2 = v[edge2idx[edge][1]];
