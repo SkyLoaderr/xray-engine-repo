@@ -111,7 +111,7 @@ void execUserScript				( )
 		strcpy					(Console->ConfigFile,"user.ltx");
 	Console->ExecuteScript		(Console->ConfigFile);
 }
-
+/*
 void __cdecl	slowdownthread	( void* )
 {
 	Sleep	(30*1000);
@@ -123,7 +123,7 @@ void __cdecl	slowdownthread	( void* )
 		if (0==pApp)				return;
 	}
 }
-
+*/
 void CheckPrivilegySlowdown		( )
 {
 	/*
