@@ -39,6 +39,7 @@ protected:
 	u8								teamInPossession;//ah,ZoneMap
 
 	bool							bNoLostMessage;
+	bool							m_bArtefactWasBringedToBase;
 
 	void							Artefact_PrepareForSpawn	();
 	void							Artefact_PrepareForRemove	();

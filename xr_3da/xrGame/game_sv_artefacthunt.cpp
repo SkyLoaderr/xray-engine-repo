@@ -72,6 +72,7 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	m_dwArtefactID = 0;
 
 	bNoLostMessage = false;
+	m_bArtefactWasBringedToBase = true;
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
@@ -496,8 +497,11 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	signal_Syncronize();
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
+	//-----------------------------------------------
+	m_bArtefactWasBringedToBase = true;
 };
 
+BOOL	g_bAfReturnPlayersToBases = FALSE;
 void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
 //	if (OnClient()) return;
@@ -527,10 +531,17 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	signal_Syncronize();
 	//-------------------------------------------------
-	if (m_iReinforcementTime == -1) 
+	if (m_bArtefactWasBringedToBase)
 	{
-		MoveAllAlivePlayers();
-		RespawnAllNotAlivePlayers();
+		if (m_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
+		{
+			MoveAllAlivePlayers();
+		};
+		if (m_iReinforcementTime == -1)
+		{
+			RespawnAllNotAlivePlayers();
+		};
+		m_bArtefactWasBringedToBase = false;
 	};
 	//-------------------------------------------------
 	if (m_bAnomaliesEnabled)	StartAnomalies();
@@ -856,6 +867,7 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_ONBASE)) continue;
 		CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(l_pC->owner);
 		if (!pA) continue;
 
