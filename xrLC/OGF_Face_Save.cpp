@@ -249,6 +249,7 @@ void	OGF::PreSave		(u32 tree_id)
 
 	// X-vertices/faces
 	{
+		clMsg			("%4d: v(%3d)/f(%3d)",tree_id,x_vertices.size(),x_faces.size());
 		VDeclarator		x_D;
 		x_D.set			(x_decl_vert);
 		x_VB.Begin		(x_D);

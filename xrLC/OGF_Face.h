@@ -34,7 +34,7 @@ struct x_vertex						// "fast" geometry, 16b/vertex
 {
 	Fvector				P;
 	Fvector2			UV;
-	x_vertex			(const OGF_Vertex& c)	{ P	= c.P; UV	= c.UV[0];	}
+	x_vertex			(const OGF_Vertex& c, bool _tc_)	{ P	= c.P; if (_tc_) UV	= c.UV[0]; else UV.set(0,0);	}
 	BOOL				similar		(OGF* p, x_vertex&	other);
 };
 typedef xr_vector<x_vertex>			vec_XV;
@@ -111,6 +111,7 @@ struct OGF : public OGF_Base
 
 	// Progressive
 	FSlideWindowItem	m_SWI		;		// The records of the collapses.
+	FSlideWindowItem	x_SWI		;		// The records of the collapses / fast-path
 
 	// for build only
 	u32					dwRelevantUV	;
@@ -141,9 +142,9 @@ struct OGF : public OGF_Base
 	BOOL				dbg_SphereContainsVertex	(Fvector& c, float R);
 
 	u16					x_BuildVertex		(x_vertex&	V);
-	void				x_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
+	void				x_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_);
 	u16					_BuildVertex		(OGF_Vertex& V1);
-	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _log_ =false);
+	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_ = true);
 
 	void				Optimize			();
 	void				CalculateTB			();

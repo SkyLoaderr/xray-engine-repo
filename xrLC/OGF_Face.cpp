@@ -69,13 +69,13 @@ u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 	vertices.push_back	(V1);
 	return (u32)vertices.size()-1;
 }
-void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
+void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_)
 {
 	x_face	F;
 	u32		VertCount	= (u32)x_vertices.size();
-	F.v[0]	= x_BuildVertex(x_vertex(V1));
-	F.v[1]	= x_BuildVertex(x_vertex(V2));
-	F.v[2]	= x_BuildVertex(x_vertex(V3));
+	F.v[0]	= x_BuildVertex(x_vertex(V1,_tc_));
+	F.v[1]	= x_BuildVertex(x_vertex(V2,_tc_));
+	F.v[2]	= x_BuildVertex(x_vertex(V3,_tc_));
 	if (!F.Degenerate()) {
 		x_faces.push_back(F);
 	} else {
@@ -83,25 +83,17 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 			x_vertices.erase(x_vertices.begin()+VertCount,x_vertices.end());
 	}
 }
-void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _log_)
+void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_)
 {
 	OGF_Face			F;
 	u32		VertCount	= (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);
 	F.v[2]	= _BuildVertex(V3);
-	/*
-	if (_log_)	{
-		clMsg	("face[%d]: %d,%d,%d",faces.size(),u32(F.v[0]),u32(F.v[1]),u32(F.v[2]));
-		if		(34==faces.size())	{
-
-		}
-	}
-	*/
 	if (!F.Degenerate()) {
 		for (itOGF_F I=faces.begin(); I!=faces.end(); I++)		if (I->Equal(F)) return;
 		faces.push_back	(F);
-		x_BuildFace		(V1,V2,V3);
+		x_BuildFace		(V1,V2,V3,_tc_);
 	} else {
 		if (vertices.size()>VertCount) 
 			vertices.erase(vertices.begin()+VertCount,vertices.end());
@@ -114,7 +106,6 @@ BOOL OGF::dbg_SphereContainsVertex(Fvector& c, float R)
 		if (S.contains(vertices[it].P))	return	TRUE;
 	return FALSE	;
 }
-
 void OGF::Optimize	()
 {
 	VERIFY	(x_vertices.size()	<= vertices.size()	);
@@ -303,64 +294,120 @@ void OGF::MakeProgressive	(float metric_limit)
 	// for batch size 50,100,200 - we are CPU-limited anyway even on nv30
 	// for nv40 and up the better guess will probably be around 500
 	if (faces.size()<c_PM_FaceLimit)		return		;	
-	// return											;
 
-	// prepare progressive geom
 	progressive_cs.Enter	();
-	VIPM_Init				();
-	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
-	for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
 
-	// Convert
-	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
-	while (VR->swr_records.size()>0)	{
+	//////////////////////////////////////////////////////////////////////////
+	// NORMAL
+	{
+		// prepare progressive geom
+		VIPM_Init				();
+		for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
+		for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
+
+		// Convert
+		VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
+		while (VR->swr_records.size()>0)	{
+			// test metric
+			u32		_full	=	vertices.size	()		;
+			u32		_remove	=	VR->swr_records.size()	;
+			u32		_simple	=	_full - _remove			;
+			float	_metric	=	float(_remove)/float(_full);
+			if		(_metric<metric_limit)		{
+				progressive_clear				()		;
+				clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-discarded",_full,_simple,VR->indices.size()/3,metric_limit);
+				break									;
+			} else {
+				clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-accepted", _full,_simple,VR->indices.size()/3,metric_limit);
+			}
+
+			// OK
+			vecOGF_V				vertices_saved;
+			vecOGF_F				faces_saved;
+
+			// Permute vertices
+			vertices_saved			= vertices;
+			for(u32 i=0; i<vertices.size(); i++)
+				vertices[VR->permute_verts[i]]=vertices_saved[i];
+
+			// Fill indices
+			faces_saved				= faces;
+			faces.resize			(VR->indices.size()/3);
+			for (u32 f_idx=0; f_idx<faces.size(); f_idx++){
+				faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
+				faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
+				faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
+			}
+			// Fill SWR
+			m_SWI.count				= VR->swr_records.size();
+			m_SWI.sw				= xr_alloc<FSlideWindow>(m_SWI.count);
+			for (u32 swr_idx=0; swr_idx!=m_SWI.count; swr_idx++){
+				FSlideWindow& dst	= m_SWI.sw[swr_idx];
+				VIPM_SWR& src		= VR->swr_records[swr_idx];
+				dst.num_tris		= src.num_tris;
+				dst.num_verts		= src.num_verts;
+				dst.offset			= src.offset;
+			}
+
+			break	;
+		}
+		// cleanup
+		VIPM_Destroy			();
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// FAST-PATH
+	if (progressive_test())
+	{
+		// prepare progressive geom
+		VIPM_Init				();
+		for (u32 v_idx=0;  v_idx<x_vertices.size(); v_idx++)	VIPM_AppendVertex	(x_vertices[v_idx].P,	x_vertices[v_idx].UV						);
+		for (u32 f_idx=0;  f_idx<x_faces.size();    f_idx++)	VIPM_AppendFace		(x_faces[f_idx].v[0],	x_faces[f_idx].v[1],	x_faces[f_idx].v[2]	);
+
+		// Convert
+		VIPM_Result*	VR		= VIPM_Convert(u32(-1),1.f,1);
+		VERIFY			(VR->swr_records.size()>0);
 		// test metric
 		u32		_full	=	vertices.size	()		;
 		u32		_remove	=	VR->swr_records.size()	;
 		u32		_simple	=	_full - _remove			;
 		float	_metric	=	float(_remove)/float(_full);
-		if		(_metric<metric_limit)		{
-			progressive_clear				()		;
-			clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-discarded",_full,_simple,VR->indices.size()/3,metric_limit);
-			break									;
-		} else {
-			clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-accepted", _full,_simple,VR->indices.size()/3,metric_limit);
-		}
+		clMsg	("X mesh simplified from [%4dv] to [%4dv], nf[%4d]",_full,_simple,VR->indices.size()/3);
 
 		// OK
-		vecOGF_V				vertices_saved;
+		vec_XV					vertices_saved;
 		vecOGF_F				faces_saved;
 
 		// Permute vertices
-		vertices_saved			= vertices;
-		for(u32 i=0; i<vertices.size(); i++)
-			vertices[VR->permute_verts[i]]=vertices_saved[i];
+		vertices_saved			= x_vertices;
+		for(u32 i=0; i<x_vertices.size(); i++)
+			x_vertices[VR->permute_verts[i]]=vertices_saved[i];
 
 		// Fill indices
-		faces_saved				= faces;
-		faces.resize			(VR->indices.size()/3);
-		for (u32 f_idx=0; f_idx<faces.size(); f_idx++){
-			faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
-			faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
-			faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
+		faces_saved				= x_faces;
+		x_faces.resize			(VR->indices.size()/3);
+		for (u32 f_idx=0; f_idx<x_faces.size(); f_idx++){
+			x_faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
+			x_faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
+			x_faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
 		}
+
 		// Fill SWR
-		m_SWI.count				= VR->swr_records.size();
-		m_SWI.sw				= xr_alloc<FSlideWindow>(m_SWI.count);
-		for (u32 swr_idx=0; swr_idx!=m_SWI.count; swr_idx++){
-			FSlideWindow& dst	= m_SWI.sw[swr_idx];
+		x_SWI.count				= VR->swr_records.size();
+		x_SWI.sw				= xr_alloc<FSlideWindow>(x_SWI.count);
+		for (u32 swr_idx=0; swr_idx!=x_SWI.count; swr_idx++){
+			FSlideWindow& dst	= x_SWI.sw[swr_idx];
 			VIPM_SWR& src		= VR->swr_records[swr_idx];
 			dst.num_tris		= src.num_tris;
 			dst.num_verts		= src.num_verts;
 			dst.offset			= src.offset;
 		}
 
-		break	;
+		// cleanup
+		VIPM_Destroy			();
 	}
 
-	// cleanup
-	VIPM_Destroy		();
-	progressive_cs.Leave();
+	progressive_cs.Leave	();
 }
 
 void OGF_Base::Save	(IWriter &fs)

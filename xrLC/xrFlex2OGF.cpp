@@ -68,7 +68,8 @@ void CBuild::Flex2OGF()
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
 			// Collect faces & vertices
-			bool	_log_	= (18==MODEL_ID)||(21==MODEL_ID);
+			F->CacheOpacity	();
+			bool	_tc_	= !(F->flags.bOpaque);
 			try {
 				for (vecFaceIt Fit=(*it)->begin(); Fit!=(*it)->end(); Fit++)
 				{
@@ -97,7 +98,7 @@ void CBuild::Flex2OGF()
 					}
 					
 					// build face
-					TRY				(pOGF->_BuildFace(V[0],V[1],V[2],_log_));
+					TRY				(pOGF->_BuildFace(V[0],V[1],V[2],_tc_));
 					V[0].UV.clear();V[1].UV.clear();V[2].UV.clear();
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
