@@ -129,7 +129,7 @@ void CScriptEngine::export_motivation_management()
 			.def("reload",						&CScriptMotivation::reload,		&CScriptMotivationWrapper::reload_static)
 			.def("evaluate",					&CScriptMotivation::evaluate,	&CScriptMotivationWrapper::evaluate_static),
 
-		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,bases<CScriptMotivation> >("motivation_action")
+		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,CScriptMotivation>("motivation_action")
 			.def(								constructor<const CScriptWorldState &>())
 			.def("goal",						&CScriptMotivationAction::goal),
 
