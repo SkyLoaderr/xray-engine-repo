@@ -27,8 +27,6 @@ public:
 	R_dsgraph::mapLOD_T											mapLOD;
 
 #if RENDER==R_R2
-	R_dsgraph::mapNormal_T										mapNormal_EM;		// elevation maps
-	R_dsgraph::mapMatrix_T										mapMatrix_EM;
 	R_dsgraph::mapEmissive_T									mapEmissive;
 #endif
 
@@ -74,7 +72,7 @@ public:
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
 
-	void		r_dsgraph_render_graph							(u32	_priority);
+	void		r_dsgraph_render_graph							(u32	_priority,	bool _clear);
 	void		r_dsgraph_render_hud							();
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();

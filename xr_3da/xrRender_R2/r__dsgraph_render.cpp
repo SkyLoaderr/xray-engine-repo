@@ -232,7 +232,7 @@ void		sort_tlist_mat
 	}
 }
 
-void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority)
+void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 {
 	Device.Statistic.RenderDUMP.Begin		();
 
@@ -293,23 +293,23 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority)
 								mapNormal_Render					(items);
 							}
 							nrmVB.clear				();
-							vb.clear				();
+							if(_clear) vb.clear		();
 						}
 						nrmTextures.clear		();
 						nrmTexturesTemp.clear	();
-						tex.clear				();
+						if(_clear) tex.clear	();
 					}
 					nrmStates.clear			();
-					states.clear			();
+					if(_clear) states.clear	();
 				}
 				nrmCS.clear				();
-				cs.clear				();
+				if(_clear) cs.clear		();
 			}
 			nrmPS.clear				();
-			ps.clear				();
+			if(_clear) ps.clear		();
 		}
 		nrmVS.clear				();
-		vs.clear				();
+		if(_clear) vs.clear		();
 	}
 
 	// **************************************************** MATRIX
@@ -367,23 +367,23 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority)
 								mapMatrix_Render					(items);
 							}
 							matVB.clear				();
-							vb.clear				();
+							if(_clear) vb.clear		();
 						}
 						matTextures.clear		();
 						matTexturesTemp.clear	();
-						tex.clear				();
+						if(_clear) tex.clear	();
 					}
 					matStates.clear			();
-					states.clear			();
+					if(_clear) states.clear	();
 				}
 				matCS.clear				();
-				cs.clear				();
+				if(_clear) cs.clear		();
 			}
 			matPS.clear				();
-			ps.clear				();
+			if(_clear) ps.clear		();
 		}
 		matVS.clear				();
-		vs.clear				();
+		if(_clear) vs.clear		();
 	}
 
 	Device.Statistic.RenderDUMP.End	();
