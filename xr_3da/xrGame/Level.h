@@ -60,6 +60,7 @@ protected:
 public:
 	// scripts
 	CScriptProcessor			*m_tpScriptProcessor;
+	CScriptProcessor*			GetScriptProcessor() {return m_tpScriptProcessor;}
 	// static particles
 	DEFINE_VECTOR(CParticlesObject*,POVec,POIt);
 	POVec						m_StaticParticles;
@@ -201,14 +202,29 @@ public:
 	//by Dandy
 	//gets the time from the game simulation
 	//receive game time
-	IC	_TIME_ID CLevel::GetGameTime()
+	IC	_TIME_ID GetGameTime()
 	{
-		return(this->Server->game->GetGameTime());
+		return			(Server->game->GetGameTime());
 	}
 
-	IC	_TIME_ID CLevel::GetGameTimeFactor()
+	IC	float	GetGameTimeFactor()
 	{
-		return(this->Server->game->GetGameTimeFactor());
+		return			(Server->game->GetGameTimeFactor());
+	}
+
+	IC	void	SetGameTimeFactor(const float fTimeFactor)
+	{
+		Server->game->SetGameTimeFactor(fTimeFactor);
+	}
+
+	IC	_TIME_ID GetGameTimeSec()
+	{
+		return			(float(s64(GetGameTime()))/1000.f);
+	}
+
+	IC	_TIME_ID GetGameDayTimeSec()
+	{
+		return			(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
 	}
 
 	CFogOfWar* m_pFogOfWar;

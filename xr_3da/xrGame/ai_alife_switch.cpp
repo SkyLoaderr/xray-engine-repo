@@ -75,7 +75,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			}
 #endif
 
-			R_ASSERT3				(u32(l_tpALifeDynamicObject->m_tNodeID) < getAI().Header().count,"Invalid node for object ",l_tpALifeInventoryItem->s_name_replace);
+//			R_ASSERT3				(u32(l_tpALifeDynamicObject->m_tNodeID) < getAI().Header().count,"Invalid node for object ",l_tpALifeInventoryItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
 			l_tpALifeDynamicObject->o_Position		= tpALifeDynamicObject->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;

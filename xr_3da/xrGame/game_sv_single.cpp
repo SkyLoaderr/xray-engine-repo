@@ -118,5 +118,13 @@ float game_sv_Single::GetGameTimeFactor		()
 	if (m_tpALife && m_tpALife->m_bLoaded)
 		return(m_tpALife->m_fTimeFactor);
 	else
-		return(1.f);
+		return(inherited::GetGameTimeFactor());
+}
+
+void game_sv_Single::SetGameTimeFactor		(const float fTimeFactor)
+{
+	if (m_tpALife && m_tpALife->m_bLoaded)
+		return(m_tpALife->vfSetTimeFactor(fTimeFactor));
+	else
+		return(inherited::SetGameTimeFactor(fTimeFactor));
 }

@@ -363,22 +363,33 @@ void game_sv_GameState::Update		()
 		m_tpScriptProcessor->Update();
 }
 
-_TIME_ID game_sv_GameState::GetGameTime()
-{
-	return			(u64(Device.TimerAsync()));
-}
-
-float game_sv_GameState::GetGameTimeFactor()
-{
-	return			(1.f);
-}
-
 game_sv_GameState::game_sv_GameState()
 {
 	m_tpScriptProcessor			= 0;
+	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_qwStartGameTime			= 12*60*60*1000;
+	m_fTimeFactor				= 12.f;
 }
 
 game_sv_GameState::~game_sv_GameState()
 {
 	xr_delete					(m_tpScriptProcessor);
 }
+
+_TIME_ID game_sv_GameState::GetGameTime()
+{
+	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
+}
+
+float game_sv_GameState::GetGameTimeFactor()
+{
+	return			(m_fTimeFactor);
+}
+
+void game_sv_GameState::SetGameTimeFactor(const float fTimeFactor)
+{
+	m_qwStartGameTime			= GetGameTime();
+	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_fTimeFactor				= fTimeFactor;
+}
+

@@ -44,14 +44,14 @@ public:
 		m_dwStartTime				= Device.TimerAsync();
 	};
 	
-#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+//#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 	IC void							vfSetTimeFactor(float fTimeFactor)
 	{
 		m_tGameTime					= tfGetGameTime();
 		m_dwStartTime				= Device.TimerAsync();
 		m_fTimeFactor				= fTimeFactor;
 	};
-#endif
+//#endif
 
 	IC _TIME_ID						tfGetGameTime()
 	{

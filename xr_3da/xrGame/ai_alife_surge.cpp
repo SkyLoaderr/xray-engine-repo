@@ -100,10 +100,11 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			strcpy						(l_tpAbstract->s_name,"device_pda");
 			l_tpAbstract->s_gameid		=	u8(GameID());
 			l_tpAbstract->s_RP			=	0xff;
-			l_tpAbstract->ID			=	0xffff;
+			l_tpAbstract->ID			=	m_tpServer->PerformIDgen(0xffff);
 			l_tpAbstract->ID_Parent		=	l_tpALifeTraderAbstract->ID;
 			l_tpAbstract->ID_Phantom	=	0xffff;
 			l_tpAbstract->o_Position	=	l_tpALifeTraderAbstract->o_Position;
+			
 			strcpy						(l_tpAbstract->s_name_replace,l_tpAbstract->s_name);
 			if (l_tpAbstract->ID < 1000)
 				strcat					(l_tpAbstract->s_name_replace,"0");
@@ -113,6 +114,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 				strcat					(l_tpAbstract->s_name_replace,"0");
 			string16					S1;
 			strcat						(l_tpAbstract->s_name_replace,itoa(l_tpAbstract->ID,S1,10));
+
+			l_tpALifeDynamicObject->m_tGraphID	= i->m_tGraphID;
+			l_tpALifeDynamicObject->m_tNodeID	= i->m_tNodeID;
 			CSE_ALifeObjectRegistry::Add(l_tpALifeDynamicObject);
 			vfUpdateDynamicData			(l_tpALifeDynamicObject);
 		}

@@ -22,6 +22,9 @@ public:
 	xr_vector<RPoint>				rpoints	[4];
 	// scripts
 	CScriptProcessor				*m_tpScriptProcessor;
+	u64								m_qwStartProcessorTime;
+	u64								m_qwStartGameTime;
+	float							m_fTimeFactor;
 public:
 									game_sv_GameState		();
 	virtual							~game_sv_GameState		();
@@ -73,4 +76,5 @@ public:
 	virtual		void				net_Export_Update		(NET_Packet& P, u32 id_to, u32 id);		// just incremental update for specific client
 	virtual		_TIME_ID			GetGameTime				();
 	virtual		float				GetGameTimeFactor		();
+	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 };
