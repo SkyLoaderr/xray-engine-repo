@@ -53,8 +53,8 @@ struct CBaseClass {
 			void				update			()
 	{
 		printf					("CBaseClass::update() is called!\n");
-		g_custom					= factory_method();
-		g_custom->foo				(this);
+		g_custom				= factory_method();
+		g_custom->foo			(this);
 	}
 
 	virtual CCustomClass*	factory_method	() = 0;

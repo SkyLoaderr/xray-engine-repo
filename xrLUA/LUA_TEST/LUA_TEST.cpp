@@ -2295,8 +2295,11 @@ struct A5 : public A3 {
 };
 #endif
 
+void bug_test0();
+
 void bug_test	()
 {
+	bug_test0();
 #if 0
 	{
 		{A a;}
@@ -2478,6 +2481,115 @@ void bug_test	()
 	xr_delete				(g_callback);
 	xr_delete				(g_object);
 #endif
+	lua_close				(L);
+}
+
+using namespace luabind;
+
+struct base_class {
+				 base_class()
+	{
+		printf("base_class::base_class() called\n");
+	}
+
+	virtual 	 ~base_class()
+	{
+		printf("base_class::~base_class() called\n");
+	}
+
+	virtual void foo()
+	{
+		printf("base_class::foo() called\n");
+	}
+};
+
+struct base_class_wrapper : public base_class, public luabind::wrap_base {
+	virtual void foo()
+	{
+		call_member<void>(this,"foo");
+		// the same
+		//call<void>("foo");
+	}
+
+	static void foo_static(base_class *self)
+	{
+		self->base_class::foo();
+	}
+};
+
+class foo_manager {
+public:
+	typedef std::vector<base_class*> STORAGE;
+
+private:
+	STORAGE		m_storage;
+	
+public:
+	void add	(base_class *obj)
+	{
+		m_storage.push_back	(obj);
+	}
+
+	void update	()
+	{
+		STORAGE::iterator	I = m_storage.begin();
+		STORAGE::iterator	E = m_storage.end();
+		for ( ; I != E; ++I)
+			(*I)->foo();
+	}
+
+	virtual ~foo_manager()
+	{
+		STORAGE::iterator	I = m_storage.begin();
+		STORAGE::iterator	E = m_storage.end();
+		for ( ; I != E; ++I)
+			delete *I;
+	}
+};
+
+foo_manager		*g_foo_manager = 0;
+
+foo_manager	*foo_manager_singleton()
+{
+	if (!g_foo_manager)
+		g_foo_manager		= new foo_manager();
+	return					(g_foo_manager);
+}
+
+void bug_test0()
+{
+	lua_State				*L = lua_open();
+
+	if (!L) {
+		lua_error			(L);
+		return;
+	}
+
+	luaopen_base			(L);
+	luaopen_string			(L);
+	luaopen_math			(L);
+	luaopen_table			(L);
+	luaopen_debug			(L);
+	
+	luabind::open			(L);
+
+	module(L)
+	[
+		class_<base_class,base_class_wrapper>("base_class")
+			.def(constructor<>())
+			.def("foo",&base_class::foo,&base_class_wrapper::foo_static),
+
+		class_<foo_manager>("foo_manager")
+			.def("add",&foo_manager::add,adopt(_2)),
+
+		def("foo_manager_singleton",	&foo_manager_singleton)
+	];
+
+	lua_dofile				(L,"x:/test_virtual_function_call.script");
+
+	foo_manager_singleton()->update	();
+
+	delete					g_foo_manager;
 
 	lua_close				(L);
 }
