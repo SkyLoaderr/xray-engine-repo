@@ -29,12 +29,14 @@ private:
 	// Collider
 	CDB::COLLIDER						geom_DB;
 	CDB::MODEL*							geom_MODEL;
+	CDB::MODEL*							geom_ENV;
 
 	// Containers
 	vector<CSoundRender_Source*>		s_sources;
 	vector<CSoundRender_Emitter*>		s_emitters;
 	vector<CSoundRender_Target*>		s_targets;
 	vector<CSoundRender_Target*>		s_targets_defer;
+	SoundEnvironment_LIB*				s_environment;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();

@@ -26,6 +26,8 @@ CSoundRender_Core::CSoundRender_Core	()
 	pListener					= NULL;
 	pExtensions					= NULL;
 	geom_MODEL					= NULL;
+	geom_ENV					= NULL;
+	s_environment				= NULL;
 }
 
 CSoundRender_Core::~CSoundRender_Core()
@@ -95,6 +97,15 @@ void CSoundRender_Core::_initialize	(u32 window)
 	Listener.fDistanceFactor	= 1.0f;
 	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
+
+	// Load environment
+	string256	fn;
+	strconcat					(fn,Path.GameData,"sEnvironment.xr");
+	if (FS.exist(fn))
+	{
+		s_environment				= xr_new<SoundEnvironment_LIB>();
+		s_environment->Load			(fn);
+	}
 }
 
 void CSoundRender_Core::_destroy	()
@@ -173,4 +184,12 @@ void	CSoundRender_Core::destroy(sound& S )
 		E->stop					();
 	}
 	i_destroy_source	((CSoundRender_Source*)S.handle);
+}
+
+CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
+{
+	static CSoundRender_Environment	identity;
+
+	identity.set_identity	();
+	return &identity;
 }

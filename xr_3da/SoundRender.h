@@ -8,6 +8,7 @@ class CSoundRender_Emitter;
 class CSoundRender_EmitterParams;
 class CSoundRender_Target;
 class CSoundRender_Environment;
+class SoundEnvironment_LIB;
 
 const	u32		sdef_target_block		= 100;					// ms
 const	u32		sdef_target_size		= 3*sdef_target_block;	// ms
