@@ -18,5 +18,4 @@ public:
 
 	virtual float						shedule_Scale		()			= 0;
 	virtual void						shedule_Update		(u32 dt)	= 0;
-	virtual BOOL						shedule_Ready		()			= 0; 
 };

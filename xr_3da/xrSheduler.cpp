@@ -130,11 +130,9 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
-		if (T.Object->shedule_Ready())		{
-			T.Object->shedule.b_locked	= TRUE;
-			T.Object->shedule_Update	(Elapsed);
-			T.Object->shedule.b_locked	= FALSE;
-		}
+		T.Object->shedule.b_locked	= TRUE;
+		T.Object->shedule_Update	(Elapsed);
+		T.Object->shedule.b_locked	= FALSE;
 
 		Slice						();
 	}
@@ -159,7 +157,7 @@ void CSheduler::Update				()
 	{
 		Item&	T						= ItemsRT[it];
 		u32	Elapsed						= dwTime-T.dwTimeOfLastExecute;
-		if (T.Object->shedule_Ready())	T.Object->shedule_Update(Elapsed);
+		T.Object->shedule_Update		(Elapsed);
 		T.dwTimeOfLastExecute			= dwTime;
 	}
 

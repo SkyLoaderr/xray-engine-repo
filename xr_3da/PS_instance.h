@@ -22,7 +22,6 @@ public:
 	IC void				PSI_SetLifeTime	(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
 
 	virtual void		shedule_Update	(u32 dt);
-	virtual BOOL		shedule_Ready	()						{ return TRUE; }
 };
 
 #endif
