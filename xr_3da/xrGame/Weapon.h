@@ -22,11 +22,21 @@ protected:
 	LPSTR			m_WpnName;
 
 	Fmatrix			m_Offset;
-	
+
 	void			signal_HideComplete		();
 
 	Fvector			vFirePoint;
 	Fvector			vShellPoint;
+
+	// Media :: flames
+	svector<Shader*,8>hFlames;
+	int				iFlameDiv;
+	float			fFlameLength;
+	float			fFlameSize;
+	float			fFlameTime;
+
+public:
+	float			GetPrecision();
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
@@ -49,13 +59,19 @@ protected:
 	Fvector			vLastFP, vLastFD, vLastSP;
 	
 	float			fireDistance;
+	float			fireDispersionBase;
 	float			fireDispersion;
 	float			fireDispersion_Inc;
 	float			fireDispersion_Dec;
 	float			fireDispersion_Current;
 
-	float			camRelax;
+	float			camMaxAngle;
+	float			camRelaxSpeed;
 	float			camDispersion;
+
+	float			dispVelFactor;
+	float			dispJumpFactor;
+	float			dispCrouchFactor;
 	
 	float			tracerHeadSpeed;
 	float			tracerTrailCoeff;
@@ -118,6 +134,8 @@ public:
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);
+	virtual void	OnDrawFlame		(BOOL bHUDView);
+
 
 	IC LPCSTR		GetName			()				{return m_WpnName;		}
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}

@@ -186,7 +186,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 		if (bHUDView) {
 			if (m_pHUD)	{
 				Fmatrix			trans;
-				Level().Cameras.unaffected_Matrix(trans);
+				Level().Cameras.affected_Matrix(trans);
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {
@@ -274,7 +274,6 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos	(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
-			if (bHUDView)	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 			break;
 		}
 		st_current=st_target;
@@ -323,8 +322,9 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 				fTime			+=fTimeToFire;
 				
 				if (bHUDView)	{
-					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector(cefShot);
-					if (S)			S->Shot();
+					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector(cefShot); 
+					R_ASSERT(S);
+					S->Shot			(camDispersion); 
 				}
 
 				UpdateFP		(bHUDView);
@@ -372,19 +372,7 @@ void CWeaponM134::Render	(BOOL bHUDView)
 	if (st_current==eM134Fire) 
 	{
 		UpdateFP	(bHUDView);
-
-		// fire flash
-		Fvector P = vLastFP;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++)
-		{
-			f*=0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
-			P.add(D);
-		}
+		OnDrawFlame	(bHUDView);
 	}
 }
 

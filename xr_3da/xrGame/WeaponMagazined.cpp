@@ -23,6 +23,18 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name) : CWeapon(name)
 
 CWeaponMagazined::~CWeaponMagazined()
 {
+	// sounds
+	SoundDestroy		(sndShow		);
+	SoundDestroy		(sndHide		);
+	SoundDestroy		(sndShot		);
+	SoundDestroy		(sndEmptyClick	);
+	SoundDestroy		(sndReload		);
+	SoundDestroy		(sndRicochet[0]	);
+	SoundDestroy		(sndRicochet[1]	);
+	SoundDestroy		(sndRicochet[2]	);
+	SoundDestroy		(sndRicochet[3]	);
+	SoundDestroy		(sndRicochet[4]	);
+	
 	MediaUNLOAD		();
 }
 
@@ -30,6 +42,30 @@ void CWeaponMagazined::Load(CInifile* ini, const char* section)
 {
 	inherited::Load	(ini, section);
 	bFlame			= FALSE;
+	// Sounds
+	SoundCreate			(sndShow,		"draw");
+	SoundCreate			(sndHide,		"holster");
+	SoundCreate			(sndShot,		"shoot");
+	SoundCreate			(sndEmptyClick,	"empty");
+	SoundCreate			(sndReload,		"reload");
+	SoundCreate			(sndRicochet[0],"ric1");
+	SoundCreate			(sndRicochet[1],"ric2");
+	SoundCreate			(sndRicochet[2],"ric3");
+	SoundCreate			(sndRicochet[3],"ric4");
+	SoundCreate			(sndRicochet[4],"ric5");
+	// HUD :: Anims
+	R_ASSERT			(m_pHUD);
+	mhud_idle			= m_pHUD->animGet("idle"	);
+	mhud_reload			= m_pHUD->animGet("reload"	);
+	mhud_show			= m_pHUD->animGet("draw"	);
+	mhud_hide			= m_pHUD->animGet("holster"	);
+	for (int i=0; i<32; i++)
+	{
+		string128		sh_anim;
+		sprintf			(sh_anim,"shoot%d",i);
+		CMotionDef* M	= m_pHUD->animGet(sh_anim);
+		if (M)			mhud_shots.push_back(M);
+	}
 }
 
 void CWeaponMagazined::OnDeviceCreate()
@@ -56,7 +92,7 @@ void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 			if (m_pHUD)	
 			{
 				Fmatrix			trans;
-				Level().Cameras.unaffected_Matrix(trans);
+				Level().Cameras.affected_Matrix(trans);
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {
@@ -211,20 +247,6 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		}
 		st_current = st_target;
 	}
-
-	/*
-	LPCSTR st_name = 0;
-	switch(st_current)
-	{
-	case eIdle:			st_name = "idle";	break;
-	case eFire:			st_name = "Fire";	break;
-	case eMagEmpty:		st_name = "empty";	break;
-	case eReload:		st_name = "reload";	break;
-	case eShowing:		st_name = "showing";break;
-	case eHiding:		st_name = "hiding";	break;
-	}
-	if (!bHUDView)		pApp->pFont->Out(0,0,"state: %s",st_name);
-	*/
 	
 	// cycle update
 	switch (st_current)
@@ -241,6 +263,14 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	}
 	bVisible			= TRUE;
 	bPending			= FALSE;
+	
+	// sound fire loop
+	UpdateFP					(bHUDView);
+	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
+	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
+	if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
+	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
+	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
 }
 
 void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
@@ -296,10 +326,8 @@ void CWeaponMagazined::Render(BOOL bHUDView)
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
 	}
-	if ((st_current==eFire) && bFlame) 
+	if (((eFire==st_current) || (eReload==st_current))&& bFlame) 
 	{
-		if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
-
 		UpdateFP	(bHUDView);
 		OnDrawFlame	(bHUDView);
 	}
@@ -314,12 +342,10 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	inherited::Hide				();
-//	Log							("Hide: ",GetName());
 }
 void CWeaponMagazined::Show		()
 {
 	inherited::Show				();
-//	Log							("Show: ",GetName());
 }
 void CWeaponMagazined::OnShow	()
 {
@@ -335,6 +361,29 @@ void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Co
 	OnShotmark					(vDir, vEnd, R);
 }
 
+void CWeaponMagazined::MediaLOAD		()
+{
+	if (hFlames.size())		return;
+
+	// flame textures
+	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
+	DWORD scnt		= _GetItemCount(S);
+	string256 name;
+	for (DWORD i=0; i<scnt; i++)
+	{
+		Shader* SH			= 0;
+		ShaderCreate		(SH,"effects\\flame",_GetItem(S,i,name));
+		hFlames.push_back	(SH);
+	}
+}
+
+void CWeaponMagazined::MediaUNLOAD	()
+{
+	for (DWORD i=0; i<hFlames.size(); i++)
+		ShaderDestroy(hFlames[i]);
+	hFlames.clear();
+}
+
 void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 {
 	// shells
@@ -345,3 +394,93 @@ void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 	PS->m_Emitter.m_ConeDirection.set(V);
 	PS->PlayAtPos				(vLastSP);
 }
+
+void CWeaponMagazined::OnShot(BOOL bHUD)
+{
+	// Sound
+	pSounds->Play3DAtPos		(sndShot,vLastFP);
+	// Camera
+	if (bHUD)	{
+		CEffectorShot* S		= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot)); 
+		R_ASSERT(S);
+		S->Shot					(camDispersion);
+	}
+	// Animation
+	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	// Flames
+	fFlameTime					= .1f;
+	// Shell Drop
+	OnShellDrop					(bHUD);
+}
+
+void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
+{
+	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+	
+	if (!R.O) 
+	{
+		// particles
+		Fvector N,D;
+		RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
+		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
+		D.reflect			(vDir,N);
+		
+		CSector* S			= ::Render.getSector(pTri->sector);
+		
+		// smoke
+		CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+		
+		// stones
+		PS					= new CPSObject("stones",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+	}
+}
+
+void CWeaponMagazined::OnEmptyClick	(BOOL bHUDView)
+{
+	pSounds->Play3DAtPos	(sndEmptyClick,vLastFP);
+}
+
+void CWeaponMagazined::OnAnimationEnd()
+{
+	switch (st_current)
+	{
+	case eReload:	ReloadMagazine();		break;	// End of reload animation
+	case eHiding:	signal_HideComplete();	break;	// End of Hide
+	case eShowing:	st_target = eIdle;		break;	// End of Show
+	}
+}
+
+
+void CWeaponMagazined::switch2_Idle	(BOOL bHUDView)
+{
+	m_pHUD->animPlay(mhud_idle);
+}
+void CWeaponMagazined::switch2_Fire	(BOOL bHUDView)
+{
+}
+void CWeaponMagazined::switch2_Empty(BOOL bHUDView)
+{
+}
+void CWeaponMagazined::switch2_Reload(BOOL bHUDView)
+{
+	pSounds->Play3DAtPos		(sndReload,vLastFP);
+	m_pHUD->animPlay			(mhud_reload,TRUE,this);
+}
+
+void CWeaponMagazined::switch2_Hiding(BOOL bHUDView)
+{
+	switch2_Idle				(bHUDView);
+	pSounds->Play3DAtPos		(sndHide,vLastFP);
+	m_pHUD->animPlay			(mhud_hide,TRUE,this);
+}
+
+void CWeaponMagazined::switch2_Showing(BOOL bHUDView)
+{
+	pSounds->Play3DAtPos		(sndShow,vLastFP);
+	m_pHUD->animPlay			(mhud_show,FALSE,this);
+}
+

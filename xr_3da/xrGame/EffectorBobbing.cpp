@@ -20,12 +20,12 @@ void CEffectorBobbing::SetState(DWORD mstate){
 	dwMState		= mstate;
 }
 
-#define AMPLITUDE_RUN	0.01f
-#define AMPLITUDE_WALK	0.0075f
+#define AMPLITUDE_RUN	0.0075f
+#define AMPLITUDE_WALK	0.005f
 #define SPEED_RUN		10.f
 #define SPEED_WALK		7.f
 #define CROUCH_FACTOR	0.75f
-#define SPEED_REMINDER	5.f
+#define SPEED_REMINDER	5.f 
 
 void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 {

@@ -4,10 +4,10 @@
 
 #include "WeaponAutoRifle.h"
 
-class CWeaponLR300: public CWeaponAutoRifle
+class CWeaponLR300: public CWeaponMagazined
 {
 private:
-	typedef CWeaponAutoRifle inherited;
+	typedef CWeaponMagazined inherited;
 public:
 					CWeaponLR300	();
 	virtual			~CWeaponLR300	();

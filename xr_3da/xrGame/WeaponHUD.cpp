@@ -59,22 +59,6 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 
 	// play default animation
 	PKinematics					(pVisual)->PlayCycle("idle");
-
-	/*
-	// init anims
-	mIdle						= PKinematics(Visual())->ID_Cycle		("idle");
-	mFireCycled					= PKinematics(Visual())->ID_Cycle_Safe	("fire");
-	mFireSpinup					= PKinematics(Visual())->ID_Cycle_Safe	("spinup");
-	string128	name;
-	for (int i=0; i<32; i++)
-	{
-		sprintf(name,"shoot%d",i);
-		CMotionDef* M			= PKinematics(Visual())->ID_Cycle_Safe(name);
-		if (!M)					continue;
-		mShoots.push_back		(M);
-	}
-	R_ASSERT					(mShoots.size());
-	*/
 }
 
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
@@ -82,30 +66,6 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 	mTransform.mul	(trans,m_Offset);
 }
 
-/*
-void CWeaponHUD::Shoot()
-{ 
-	VERIFY			(mShoots.size());
-	new_mstate		= hsShoot; 
-	int sh_id		= Random.randI(0,mShoots.size());
-	PKinematics(pVisual)->PlayCycle(mShoots[sh_id],FALSE);
-}
-
-void CWeaponHUD::UpdateAnimation()
-{
-	// update animation
-	if (cur_mstate!=new_mstate)
-	{
-		switch(new_mstate){
-		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle);							break;
-		case hsFireSpinup:	if (mFireSpinup) PKinematics(pVisual)->PlayCycle(mFireSpinup);	break;
-		case hsFireCycle:	if (mFireCycled) PKinematics(pVisual)->PlayCycle(mFireCycled);	break;
-		case hs
-		}
-		cur_mstate = new_mstate;
-	}
-}
-*/
 void CWeaponHUD::OnDeviceDestroy	()
 {
 	::Render.Models.Delete		(pVisual);

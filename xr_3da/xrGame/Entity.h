@@ -28,6 +28,7 @@ protected:
 	// health & shield
 	int					iHealth,	iMAX_Health;
 	int					iArmor,		iMAX_Armor;
+	float				fAccuracy;
 protected:	
 	// EVENT: health lost 
 	EVENT				eHealthLost_Begin;
@@ -84,6 +85,12 @@ public:
 		
 		return			A + diff*f;
 	}
+
+	struct SEntityState{
+		DWORD	bJump:1;
+		DWORD	bCrouch:1;
+		float	fVelocity;
+	};
 public:
 	// General
 	CEntity					();
@@ -98,6 +105,8 @@ public:
 
 	int						g_Armor				()	{ return iArmor;  }
 	int						g_Health			()	{ return iHealth; }
+	float					g_Accuracy			()	{ return fAccuracy;}
+	virtual BOOL			g_State				(SEntityState& state){return FALSE;}
 
 	int						g_Team				()	{ return id_Team;  }
 	int						g_Squad				()	{ return id_Squad; }

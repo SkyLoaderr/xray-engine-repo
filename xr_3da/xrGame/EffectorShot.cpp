@@ -9,12 +9,11 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float relax_time, float angle) : CEffector(cefShot,10000.f)
+CEffectorShot::CEffectorShot	(float max_angle, float relax_speed) : CEffector(cefShot,100000.f)
 {
-	fTimeCurrent	= -1;
-	fTimeTotal		= relax_time;
-	fAngleCurrent	= 0;
-	fAngleTotal		= angle;
+	fRelaxSpeed		= relax_speed;
+	fAngleCurrent	= -EPS_S;
+	fMaxAngle		= max_angle;
 }
 
 CEffectorShot::~CEffectorShot	()
@@ -22,21 +21,18 @@ CEffectorShot::~CEffectorShot	()
 
 }
 
-void CEffectorShot::Shot		()
+void CEffectorShot::Shot		(float angle)
 {
-	Fvector	axis; axis.set		(0,0,1);
-	vDirectionDiff.random_dir	();
-	fTimeCurrent				= fTimeTotal;
-	fAngleCurrent				= ::Random.randF(fAngleTotal/2,fAngleTotal);
+	fAngleCurrent	+= (angle*.75f+::Random.randF(-1,1)*angle*.25f);
+	clamp(fAngleCurrent,0.f,fMaxAngle);
+	float r = (::Random.randF()>0.75f)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
+	vDispersionDir.set(r,1.f,r); 
+	vDispersionDir.normalize_safe();
 }
 
 void CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
 {
-	fTimeCurrent	-= Device.fTimeDelta;
-	if (fTimeCurrent<0)		return;
-
-	float	angle	= fAngleCurrent*(fTimeCurrent/fTimeTotal);
-	d.mad			(vDirectionDiff,tanf(angle));
-
-	fLifeTime-=Device.fTimeDelta;
+	if (fAngleCurrent<0) return;
+	d.mad			(vDispersionDir,tanf(fAngleCurrent));
+	fAngleCurrent	-= fRelaxSpeed*Device.fTimeDelta;
 }

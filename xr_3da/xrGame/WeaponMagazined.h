@@ -6,18 +6,32 @@
 
 class ENGINE_API CMotionDef;
 
+#define SND_RIC_COUNT 5
+ 
 class CWeaponMagazined: public CWeapon
 {
 private:
 	typedef CWeapon inherited;
 protected:
+	// Media :: sounds
+	sound3D			sndShow;
+	sound3D			sndHide;
+	sound3D			sndShot;
+	sound3D			sndEmptyClick;
+	sound3D			sndReload;
+	sound3D			sndRicochet		[SND_RIC_COUNT];
+	// HUD :: Animations
+	CMotionDef*		mhud_idle;
+	CMotionDef*		mhud_reload;
+	CMotionDef*		mhud_hide;
+	CMotionDef*		mhud_show;
+	svector<CMotionDef*,8>	mhud_shots;
 	// General
 	float			fTime;
 	BOOL			bFlame;
 
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
-
 protected:
 	enum EState
 	{
@@ -34,21 +48,21 @@ protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnMagazineEmpty	();
 
-	virtual void	MediaLOAD		()				{};
-	virtual void	MediaUNLOAD		()				{};
-	virtual void	switch2_Idle	(BOOL bHUD)	{};
-	virtual void	switch2_Fire	(BOOL bHUD)	{};
-	virtual void	switch2_Empty	(BOOL bHUD)	{};
-	virtual void	switch2_Reload	(BOOL bHUD)	{};
-	virtual void	switch2_Hiding	(BOOL bHUD)	{};
-	virtual void	switch2_Showing	(BOOL bHUD)	{};
-	virtual void	OnShot			(BOOL bHUD) {};
+	virtual void	MediaLOAD		();
+	virtual void	MediaUNLOAD		();
+	virtual void	switch2_Idle	(BOOL bHUD);
+	virtual void	switch2_Fire	(BOOL bHUD);
+	virtual void	switch2_Empty	(BOOL bHUD);
+	virtual void	switch2_Reload	(BOOL bHUD);
+	virtual void	switch2_Hiding	(BOOL bHUD);
+	virtual void	switch2_Showing	(BOOL bHUD);
+	virtual void	OnShot			(BOOL bHUD);
 	virtual void	OnShellDrop		(BOOL bHUD);
-	virtual void	OnEmptyClick	(BOOL bHUD)	{};
-	virtual void	OnDrawFlame		(BOOL bHUD)	{};
-	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};
+	virtual void	OnEmptyClick	(BOOL bHUD);
+	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnShow			();
 	virtual void	OnHide			();
+	virtual void	OnAnimationEnd	();
 	void			TryReload		();
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);

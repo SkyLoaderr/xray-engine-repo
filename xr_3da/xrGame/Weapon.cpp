@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "effectorshot.h"
 #include "..\bodyinstance.h"
 #include "..\fstaticrender.h"
 #include "..\PSObject.h"
@@ -11,6 +12,8 @@
 
 #include "entity.h"
 
+
+#define FLAME_TIME 0.05f
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -34,6 +37,15 @@ CWeapon::CWeapon(LPCSTR name)
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 	vLastSP.set		(0,0,0);
+
+	iFlameDiv		= 0;
+	fFlameLength	= 0;
+	fFlameSize		= 0;
+	fFlameTime		= -1;
+
+	dispVelFactor	= 0.2f;
+	dispJumpFactor	= 4.f;
+	dispCrouchFactor= 0.75f;
 }
 
 CWeapon::~CWeapon()
@@ -109,6 +121,21 @@ void CWeapon::ShaderDestroy	(Shader* &dest)
 	Device.Shader.Delete	(dest);
 }
 
+float CWeapon::GetPrecision()
+{
+	VERIFY(m_pParent);
+	float prec=m_pParent->g_Accuracy();
+	CEntity::SEntityState state;
+	if (m_pParent->g_State(state))
+	{
+		prec *= (1.f+state.fVelocity*dispVelFactor);
+		if (state.bJump)		prec*=dispJumpFactor;
+		else if (state.bCrouch)	prec*=dispCrouchFactor;
+	}
+
+	return prec;
+}
+
 void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 {
 	R_ASSERT(parent);		m_pParent		= parent;
@@ -158,13 +185,19 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	iMagazineSize		= ini->ReadINT		(section,"ammo_mag_size"	);
 	
 	fireDistance		= ini->ReadFLOAT	(section,"fire_distance"	);
-	fireDispersion		= ini->ReadFLOAT	(section,"fire_dispersion"	); fireDispersion = deg2rad(fireDispersion);
+	fireDispersionBase	= ini->ReadFLOAT	(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
+	fireDispersion		= ini->ReadFLOAT	(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
 	fireDispersion_Inc	= ini->ReadFLOAT	(section,"fire_dispersion_add"); 
 	fireDispersion_Dec	= ini->ReadFLOAT	(section,"fire_dispersion_relax"); 
 	fireDispersion_Current	= 0;
 
-	camRelax			= ini->ReadFLOAT	(section,"cam_relax"		);
+	camMaxAngle			= ini->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= ini->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
 	camDispersion		= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+
+	dispVelFactor		= ini->ReadFLOAT	(section,"disp_vel_factor"	);
+	dispJumpFactor		= ini->ReadFLOAT	(section,"disp_jump_factor"	);
+	dispCrouchFactor	= ini->ReadFLOAT	(section,"disp_crouch_factor");
 
 	// tracer
 	tracerHeadSpeed		= ini->ReadFLOAT	(section,"tracer_head_speed"	);
@@ -184,6 +217,11 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 
 	vFirePoint			= ini->ReadVECTOR	(section,"fire_point"		);
 	vShellPoint			= ini->ReadVECTOR	(section,"shell_point"		);
+
+	// flames
+	iFlameDiv			= ini->ReadINT		(section,"flame_div"		);
+	fFlameLength		= ini->ReadFLOAT	(section,"flame_length"		);
+	fFlameSize			= ini->ReadFLOAT	(section,"flame_size"		);
 
 	bVisible			= FALSE;
 }
@@ -210,6 +248,8 @@ void CWeapon::Hide		()
 	FireEnd				();
 	OnHide				();
 	bPending			= TRUE;
+	// add shot effector
+	Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeapon::signal_HideComplete()
 {
@@ -219,6 +259,8 @@ void CWeapon::Show		()
 {
 	OnShow				();
 	bVisible		= TRUE;
+	// add shot effector
+	Level().Cameras.AddEffector	(new CEffectorShot(camMaxAngle,camRelaxSpeed));
 }
 
 void CWeapon::SetDefaults()
@@ -269,10 +311,11 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	Collide::ray_query	RQ;
 
 	// direct it by dispersion factor
+	Fvector				dir;
+	dir.random_dir		(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
+	// increase dispersion
 	fireDispersion_Current	+= fireDispersion_Inc;
 	clamp				(fireDispersion_Current,0.f,1.f);
-	Fvector				dir;
-	dir.random_dir		(D,fireDispersion*fireDispersion_Current,Random);
 
 	// ...and trace line
 	m_pParent->bEnabled = false;
@@ -341,3 +384,25 @@ void CWeapon::Render(BOOL bHUDView)
 	}
 	if (m_pHUD)	PKinematics(m_pHUD->Visual())->Update	();
 }
+
+void CWeapon::OnDrawFlame(BOOL bHUDView)
+{
+	if (fFlameTime>0)	
+	{
+		// fire flash
+		Fvector P = vLastFP;
+		float k=fFlameTime/FLAME_TIME;
+		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
+		float f = fFlameSize;
+		for (int i=0; i<iFlameDiv; i++)
+		{
+			f		*= 0.9f;
+			float	S = f+f*::Random.randF	();
+			float	A = ::Random.randF		(PI_MUL_2);
+			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
+			P.add(D);
+		}
+		fFlameTime -= Device.fTimeDelta;
+	}
+}
+

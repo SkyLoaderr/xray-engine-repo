@@ -18,6 +18,8 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
 class CEffectorBobbing;
 
+#define DEFAULT_FOV 90.f
+
 class CActor: public CEntity, public pureRender
 {
 	enum ESoundCcount {
@@ -182,6 +184,13 @@ public:
 	virtual void			g_cl_fireStart		( );
 	virtual void			g_sv_fireStart		(NET_Packet* P);
 	virtual void			g_fireEnd			( );
+	virtual BOOL			g_State				(SEntityState& state)
+	{
+		state.bJump			= !!(mstate_real&mcJump);
+		state.bCrouch		= !!(mstate_real&mcCrouch);
+		state.fVelocity		= Movement.GetVelocityActual();
+		return TRUE;
+	}
 
 	// Network
 	virtual void			net_Export			(NET_Packet* P);				// export to server

@@ -13,6 +13,7 @@ class CWeaponHUD :
 	public pureDeviceDestroy
 {
 	Fmatrix				m_Offset;
+	Fmatrix				m_CamAssist;
 	Fmatrix				mTransform;
 	LPSTR				pVisualName;
 	FBasicVisual*		pVisual;

@@ -17,6 +17,7 @@
 
 CEntity::CEntity()
 {
+	fAccuracy			= 1.f;
 	iMAX_Health			= MAX_HEALTH;
 	iMAX_Armor			= MAX_ARMOR;
 	eHealthLost_Enabled = FALSE;
