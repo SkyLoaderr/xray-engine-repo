@@ -89,20 +89,8 @@ const shared_str GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, 
 void UpdateWeight(CUIStatic &wnd, bool withPrefix = false);
 
 // Функции получения строки-идентификатора ранга и отношения по их числовому идентификатору
-LPCSTR GetRankAsText		(CHARACTER_RANK rankID);
-LPCSTR GetReputationAsText	(CHARACTER_REPUTATION rankID);
+LPCSTR	GetRankAsText				(CHARACTER_RANK rankID);
+LPCSTR	GetReputationAsText			(CHARACTER_REPUTATION rankID);
 
-// Internal namespace for some necessary helper functions
-namespace Private
-{
-	typedef					std::pair<CHARACTER_RANK, shared_str>	CharInfoStringID;
-	DEF_MAP					(CharInfoStrings, CHARACTER_RANK, shared_str);
-	extern CharInfoStrings	*charInfoReputationStrings;
-	extern CharInfoStrings	*charInfoRankStrings;
-
-	void					InitCharacterInfoStrings	();
-	void					ClearCharacterInfoStrings	();
-	void					LoadStrings					(CharInfoStrings *container, LPCSTR section, LPCSTR field);
-}
-
+void	ClearCharacterInfoStrings	();
 };

@@ -32,8 +32,11 @@ static ref_shader	g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic();
 const int			hugeValue				= 0xdddddddd;
 
-InventoryUtilities::Private::CharInfoStrings	*charInfoReputationStrings	= NULL;
-InventoryUtilities::Private::CharInfoStrings	*charInfoRankStrings		= NULL;
+typedef				std::pair<CHARACTER_RANK, shared_str>	CharInfoStringID;
+DEF_MAP				(CharInfoStrings, CHARACTER_RANK, shared_str);
+
+CharInfoStrings		*charInfoReputationStrings	= NULL;
+CharInfoStrings		*charInfoRankStrings		= NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -375,31 +378,40 @@ void InventoryUtilities::UpdateWeight(CUIStatic &wnd, bool withPrefix)
 
 //////////////////////////////////////////////////////////////////////////
 
-LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
+void LoadStrings(CharInfoStrings *container, LPCSTR section, LPCSTR field)
 {
-	Private::InitCharacterInfoStrings();
-	R_ASSERT(Private::charInfoRankStrings);
+	R_ASSERT(container);
 
-	Private::CharInfoStrings::const_iterator cit = Private::charInfoRankStrings->upper_bound(rankID);
-	R_ASSERT(Private::charInfoRankStrings->end() != cit);
-	return *cit->second;
+	LPCSTR				cfgRecord	= pSettings->r_string(section, field);
+	u32					count		= _GetItemCount(cfgRecord);
+	string32			singleThreshold;
+	ZeroMemory			(singleThreshold, sizeof(singleThreshold));
+	int					upBoundThreshold	= 0;
+	CharInfoStringID	id;
+
+	for (u32 k = 0; k < count; k += 2)
+	{
+		_GetItem(cfgRecord, k, singleThreshold);
+		id.second = singleThreshold;
+
+		if (count == k + 1)
+		{
+			// Indicate greatest value
+			id.first = hugeValue;
+		}
+		else
+		{
+			_GetItem(cfgRecord, k + 1, singleThreshold);
+			sscanf(singleThreshold, "%i", &upBoundThreshold);
+			id.first = upBoundThreshold;
+		}
+		container->insert(id);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION rankID)
-{
-	Private::InitCharacterInfoStrings();
-	R_ASSERT(Private::charInfoReputationStrings);
-
-	Private::CharInfoStrings::const_iterator cit = Private::charInfoReputationStrings->upper_bound(rankID);
-	R_ASSERT(Private::charInfoReputationStrings->end() != cit);
-	return *cit->second;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void InventoryUtilities::Private::InitCharacterInfoStrings()
+void InitCharacterInfoStrings()
 {
 	if (charInfoReputationStrings && charInfoRankStrings) return;
 
@@ -426,7 +438,7 @@ void InventoryUtilities::Private::InitCharacterInfoStrings()
 
 //////////////////////////////////////////////////////////////////////////
 
-void InventoryUtilities::Private::ClearCharacterInfoStrings()
+void InventoryUtilities::ClearCharacterInfoStrings()
 {
 	xr_delete(charInfoReputationStrings);
 	xr_delete(charInfoRankStrings);
@@ -434,33 +446,24 @@ void InventoryUtilities::Private::ClearCharacterInfoStrings()
 
 //////////////////////////////////////////////////////////////////////////
 
-void InventoryUtilities::Private::LoadStrings(CharInfoStrings *container, LPCSTR section, LPCSTR field)
+LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
 {
-	R_ASSERT(container);
+	InitCharacterInfoStrings();
+	R_ASSERT(charInfoRankStrings);
 
-	LPCSTR				cfgRecord	= pSettings->r_string(section, field);
-	u32					count		= _GetItemCount(cfgRecord);
-	string32			singleThreshold;
-	ZeroMemory			(singleThreshold, sizeof(singleThreshold));
-	int					upBoundThreshold	= 0;
-	CharInfoStringID	id;
+	CharInfoStrings::const_iterator cit = charInfoRankStrings->upper_bound(rankID);
+	R_ASSERT(charInfoRankStrings->end() != cit);
+	return *cit->second;
+}
 
-	for (u32 k = 0; k < count; k += 2)
-	{
-		_GetItem(cfgRecord, k, singleThreshold);
-		id.second = singleThreshold;
+//////////////////////////////////////////////////////////////////////////
 
-		if (count == k + 1)
-		{
-			// Indicate greatest value
-			id.first = hugeValue;
-		}
-		else
-		{
-			_GetItem(cfgRecord, k + 1, singleThreshold);
-			sscanf(singleThreshold, "%i", upBoundThreshold);
-			id.first = upBoundThreshold;
-		}
-		container->insert(id);
-	}
+LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION rankID)
+{
+	InitCharacterInfoStrings();
+	R_ASSERT(charInfoReputationStrings);
+
+	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID);
+	R_ASSERT(charInfoReputationStrings->end() != cit);
+	return *cit->second;
 }

@@ -15,46 +15,46 @@
 #include "character_info.h"
 #include "specific_character.h"
 
-extern void show_smart_cast_stats							();
-extern void clear_smart_cast_stats							();
-extern void release_smart_cast_stats						();
+extern void show_smart_cast_stats					();
+extern void clear_smart_cast_stats					();
+extern void release_smart_cast_stats				();
 
 void clean_game_globals()
 {
 	// xml parser options
-	XML_CleanUpMemory										();
+	XML_CleanUpMemory								();
 	
 	// destroy ai space
-	xr_delete												(g_ai_space);
+	xr_delete										(g_ai_space);
 	// destroy object factory
-	xr_delete												(g_object_factory);
+	xr_delete										(g_object_factory);
 	// destroy monster squad global var
-	xr_delete												(g_monster_squad);
+	xr_delete										(g_monster_squad);
 
 
-	InventoryUtilities::DestroyShaders						();
+	InventoryUtilities::DestroyShaders				();
 
 	//XML indexes
-	CInfoPortion::DeleteIdToIndexData						();
-	CEncyclopediaArticle::DeleteIdToIndexData				();
-	CCharacterInfo::DeleteIdToIndexData						();
-	CSpecificCharacter::DeleteIdToIndexData					();
-	CPhraseDialog::DeleteIdToIndexData						();
-	CGameTask::DeleteIdToIndexData							();
+	CInfoPortion::DeleteIdToIndexData				();
+	CEncyclopediaArticle::DeleteIdToIndexData		();
+	CCharacterInfo::DeleteIdToIndexData				();
+	CSpecificCharacter::DeleteIdToIndexData			();
+	CPhraseDialog::DeleteIdToIndexData				();
+	CGameTask::DeleteIdToIndexData					();
 
 	//static shader for blood
-	CEntityAlive::UnloadBloodyWallmarks						();
-	CEntityAlive::UnloadFireParticles						();
+	CEntityAlive::UnloadBloodyWallmarks				();
+	CEntityAlive::UnloadFireParticles				();
 	//очищение памяти таблицы строк
-	CStringTable::Destroy									();
+	CStringTable::Destroy							();
 	// Очищение таблицы цветов
-	CUIXmlInit::DeleteColorDefs								();
+	CUIXmlInit::DeleteColorDefs						();
 	// Очищение таблицы идентификаторов рангов и отношений сталкеров
-	InventoryUtilities::Private::ClearCharacterInfoStrings	();
+	InventoryUtilities::ClearCharacterInfoStrings	();
 
-	xr_delete												(g_profiler);
+	xr_delete										(g_profiler);
 
 #ifdef DEBUG
-	release_smart_cast_stats								();
+	release_smart_cast_stats						();
 #endif
 }
