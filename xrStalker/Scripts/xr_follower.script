@@ -26,7 +26,22 @@ local anim_raid = {
                   {anim = "spetsnaz_6", flag = false},
                   {anim = "spetsnaz_7", flag = false}
                   }
-                                     
+                  
+local anim_find_stop = {
+                  {anim = "poisk_idle_0", flag = true},                  
+                  {anim = "poisk_idle_1", flag = true},                  
+                  {anim = "poisk_idle_2", flag = true},
+                  {anim = "poisk_idle_3", flag = true},
+                  {anim = "poisk_idle_4", flag = true},
+                  {anim = "poisk_idle_5", flag = true}
+                  }
+
+local anim_find_move = {
+                  {anim = "poisk_walk_0", flag = true},
+                  {anim = "poisk_walk_1", flag = true},
+                  {anim = "poisk_walk_2", flag = true},
+                  {anim = "poisk_walk_3", flag = true}
+                  }                                      
 
 local commander_snd                     = xr_sounds_id.sound_patrol_base
 local soldiers_idle_snd                 = commander_snd + 1
@@ -400,6 +415,7 @@ function action_raid:__init (name, storage) super (nil, name)
     self.body_state = move.standing
     self.mental_state = anim.free
     self.stage = 0
+    self.in_find = false
 end
 --------------
 function action_raid:initialize ()
@@ -419,17 +435,29 @@ function action_raid:initialize ()
     self.object:set_patrol_path           (self.a.raid_path, patrol.nearest, patrol.continue, true)
     self.object:set_mental_state          (self.mental_state)
     self.object:set_sight                 (look.path_dir, nil, 0)
+    self.stage = 0
+    self.in_find = false
 end
 --------------
 function action_raid:execute ()
     action_base.execute                 (self)
-    if self.stage == 1 then
-       if self.object:animation_count () == 0 then
-          self.object:set_body_state            (self.body_state)
-          self.object:set_movement_type         (self.move_type)
-          self.object:set_mental_state          (self.mental_state)
-          self.stage = 0
-       end
+    if self.stage == 0 then
+       return  
+    elseif self.stage == 1 then
+           if self.object:animation_count () == 0 then
+              self.object:set_body_state            (self.body_state)
+              self.object:set_movement_type         (self.move_type)
+              self.object:set_mental_state          (self.mental_state)
+              if self.in_find == true then
+                 local num = math.random (1, 4)
+                 self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+                 self.stage = 2
+              else
+                 self.stage = 0   
+              end   
+           end
+    elseif self.stage == 2 then
+           self:update_stage2 ()
     end      
            
 end
@@ -449,7 +477,13 @@ function action_raid:set_animation ()
 
     self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
 end
-----------------------------------------------------------------------------------------------------------------------
+--------------
+function action_raid:update_stage2 ()
+    if self.object:animation_count () >= 2 then return end
+    local num = math.random (1, 4)
+    self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+end
+--------------
 function action_raid:move_callback (obj, action_type, index)
     if index == -1 then return end
     
@@ -496,14 +530,48 @@ function action_raid:move_callback (obj, action_type, index)
        self.object:set_movement_type (move.stand)
        self.object:set_mental_state (anim.free)
        local num
-       if self.body_state == move.crouch then     
-          num = math.random (1, 4)  
+       if self.in_find == false then
+          if self.body_state == move.crouch then     
+             num = math.random (1, 4)  
+          else
+             num = math.random (5, 8)
+          end
+          self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
        else
-          num = math.random (5, 8)
-       end
-       self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
+          num = math.random (1, 6)
+          self.object:clear_animations ()
+          self.object:add_animation (anim_find_stop[num].anim,  anim_find_stop[num].flag)
+       end    
        self.stage = 1
-    end          
+       return
+    end
+    
+    if ptr:flag (index, 12) == true then
+       self.in_find = true
+       self.move_type = move.run
+       self.body_state = move.crouch
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.crouch)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       self.stage = 2
+       local num = math.random (1, 4)
+       self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+       return 
+    end   
+    
+    if ptr:flag (index, 13) == true then
+       self.move_type = move.walk
+       self.body_state = move.standing
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.walk)
+       self.object:set_mental_state          (anim.danger)
+       self.object:clear_animations ()
+       self.in_find = false
+       self.stage = 0
+    end   
+        
 end
 
 ----------------------------------------------------------------------------------------------------------------------
