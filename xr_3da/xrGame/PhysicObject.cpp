@@ -241,7 +241,7 @@ void CPhysicObject::net_Export(NET_Packet& P)
 {
 	inherited::net_Export			(P);
 	R_ASSERT						(Local());
-	P.w_u8							(m_flags.get());
+//	P.w_u8							(m_flags.get());
 	//m_pPhysicsShell->net_Export(P);
 }
 
@@ -250,7 +250,7 @@ void CPhysicObject::net_Import(NET_Packet& P)
 	inherited::net_Import(P);
 	//m_pPhysicsShell->net_Import(P);
 	R_ASSERT						(Remote());
-	m_flags.set						(P.r_u8());
+//	m_flags.set						(P.r_u8());
 }
 
 

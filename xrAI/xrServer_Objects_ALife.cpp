@@ -809,13 +809,13 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	flags.set					(tNetPacket.r_u8());
+//	flags.set					(tNetPacket.r_u8());
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_u8				(flags.get());
+//	tNetPacket.w_u8				(flags.get());
 }
 
 #ifdef _EDITOR
