@@ -19,7 +19,6 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
 	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
 	//----------------------------------------------------------------------------
-
 	m_delayedRoundEnd = false;
 	m_eAState = NONE;
 	//---------------------------------------------------
@@ -702,6 +701,7 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 	OnDelayedRoundEnd("Team Final Score");
 };
 
+BOOL	g_bBearerCantSprint = TRUE;
 void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
@@ -709,6 +709,7 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 	P.w_u16			(artefactBearerID);
 	P.w_u8			(teamInPossession);
 	P.w_u16			(m_dwArtefactID);
+	P.w_u8			((u8)g_bBearerCantSprint);
 
 	if (m_iReinforcementTime > 0)
 	{

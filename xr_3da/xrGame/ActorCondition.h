@@ -41,6 +41,7 @@ public:
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping			() const;
 	virtual bool		IsCantWalk			() const;
+	virtual bool		IsCantSprint		() const;
 
 			void		ConditionJump		(float weight);
 			void		ConditionWalk		(float weight, bool accel, bool sprint);
@@ -71,12 +72,16 @@ protected:
 protected:
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;
+	mutable bool m_bCantSprint;
 
 	//порог силы и здоровья меньше которого актер начинает хромать
 	float m_fLimpingPowerBegin;
 	float m_fLimpingPowerEnd;
 	float m_fCantWalkPowerBegin;
 	float m_fCantWalkPowerEnd;
+
+	float m_fCantSprintPowerBegin;
+	float m_fCantSprintPowerEnd;
 
 	float m_fLimpingHealthBegin;
 	float m_fLimpingHealthEnd;

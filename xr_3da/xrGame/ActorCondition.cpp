@@ -62,6 +62,11 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fCantWalkPowerBegin	= pSettings->r_float(section,	"cant_walk_power_begin");
 	m_fCantWalkPowerEnd		= pSettings->r_float(section,	"cant_walk_power_end");
 	R_ASSERT(m_fCantWalkPowerBegin<m_fCantWalkPowerEnd);
+
+	m_fCantSprintPowerBegin	= pSettings->r_float(section,	"cant_sprint_power_begin");
+	m_fCantSprintPowerEnd		= pSettings->r_float(section,	"cant_sprint_power_end");
+	R_ASSERT(m_fCantSprintPowerBegin<m_fCantSprintPowerEnd);
+
 }
 
 
@@ -122,6 +127,15 @@ bool CActorCondition::IsCantWalk() const
 	else if(m_fPower > m_fCantWalkPowerEnd)
 		m_bCantWalk = false;
 	return m_bCantWalk;
+}
+
+bool CActorCondition::IsCantSprint() const
+{
+	if(m_fPower< m_fCantSprintPowerBegin)
+		m_bCantSprint = true;
+	else if(m_fPower > m_fCantSprintPowerEnd)
+		m_bCantSprint = false;
+	return m_bCantSprint;
 }
 
 bool CActorCondition::IsLimping() const

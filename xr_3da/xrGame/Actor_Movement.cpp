@@ -15,6 +15,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "string_table.h"
 #include "actorcondition.h"
+#include "game_cl_base.h"
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
@@ -243,7 +244,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 		}
 
-		if (!CanAccelerate())
+		if (!CanSprint())
 		{
 			mstate_wf				&= ~mcSprint;
 		}
@@ -498,6 +499,14 @@ bool CActor::CanAccelerate			()
 		!m_bZoomAimingMode;
 
 	return can_accel;
+}
+
+bool CActor::CanSprint			()
+{
+	bool can_Sprint = CanAccelerate() && !conditions().IsCantSprint() &&
+						Game().PlayerCanSprint(this);
+
+	return can_Sprint;
 }
 
 bool	CActor::CanJump				()

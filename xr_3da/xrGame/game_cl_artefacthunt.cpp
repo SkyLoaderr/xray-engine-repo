@@ -48,6 +48,7 @@ game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 }
 
 
+BOOL	bBearerCantSprint = TRUE;
 void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 {
 	inherited::net_import_state	(P);
@@ -56,6 +57,7 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 	P.r_u16	(artefactBearerID);
 	P.r_u8	(teamInPossession);
 	P.r_u16	(artefactID);
+	bBearerCantSprint = !!P.r_u8();
 
 	if (P.r_u8() != 0)
 	{
@@ -468,4 +470,11 @@ char*	game_cl_ArtefactHunt::getTeamSection(int Team)
 		NODEFAULT;
 	};
 	return NULL;
+};
+
+bool	game_cl_ArtefactHunt::PlayerCanSprint			(CActor* pActor)
+{
+	if (artefactBearerID == 0) return true;
+	if (bBearerCantSprint && pActor->ID() == artefactBearerID) return false;
+	return true;
 };

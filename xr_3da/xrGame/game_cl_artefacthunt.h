@@ -35,4 +35,5 @@ public :
 					void				net_import_state		(NET_Packet& P);
 	virtual			void				GetMapEntities(xr_vector<SZoneMapEntityData>& dst);
 	virtual			char*				getTeamSection			(int Team);
+	virtual			bool				PlayerCanSprint			(CActor* pActor);
 };

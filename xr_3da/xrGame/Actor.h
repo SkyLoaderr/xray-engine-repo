@@ -398,6 +398,7 @@ public:
 	bool					CanJump					();
 	bool					CanMove					();
 	float					CameraHeight			();
+	bool					CanSprint				();
 protected:
 	u32						mstate_wishful;
 	u32						mstate_old;

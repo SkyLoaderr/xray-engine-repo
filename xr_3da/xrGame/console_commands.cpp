@@ -50,12 +50,13 @@ extern	float	g_fMaxReconSpeed;
 extern	u32		g_dwMaxCorpses;
 extern	int		x_m_x;
 extern	int		x_m_z;
-extern	BOOL	net_cl_inputguaranteed		;
-extern	BOOL	net_sv_control_hit	;
-extern	int		g_dwInputUpdateDelta		;
+extern	BOOL	net_cl_inputguaranteed	;
+extern	BOOL	net_sv_control_hit		;
+extern	int		g_dwInputUpdateDelta	;
 extern	BOOL	g_ShowAnimationInfo		;
-extern	BOOL	g_bDynamicCrosshair ;
-extern	BOOL	g_bCalculatePing;
+extern	BOOL	g_bDynamicCrosshair		;
+extern	BOOL	g_bCalculatePing		;
+extern	BOOL	g_bBearerCantSprint		;
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
@@ -1859,4 +1860,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_StartTimeEnvironment,	"sv_setenvtime");
 
 	CMD1(CCC_SetWeather,	"sv_setweather"			);
+
+	CMD4(CCC_Integer,		"sv_bearercantsprint",	&g_bBearerCantSprint,	0, 1)	;
 }
