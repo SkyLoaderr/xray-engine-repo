@@ -91,7 +91,7 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point)
 	direction.sub			(m_enemy_position,cover_point->position());
 	direction.getHP			(y,p);
 	float					cover_value = ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
-	float					value = 1*_sqr(cover_value) + 1*_sqr(my_distance/100.f);
+	float					value = 1*_sqr(cover_value) + 1*_sqr(my_distance/300.f);
 	if (value >= m_best_value)
 		return;
 
