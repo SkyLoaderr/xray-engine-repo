@@ -598,7 +598,7 @@ void CActor::Update	(DWORD DT)
 	Weapons->Update			(dt,HUDview());
 
 	// sound step
-	if (mstate_real&mcAnyMove){
+	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
 			pSounds->PlayAtPos	(sndStep[bStep],this,Position());
 			bStep = !bStep;
