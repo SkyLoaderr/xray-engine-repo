@@ -394,24 +394,64 @@ bool CPHFracture::Update(CPHElement* element)
 			second_part_torque.add(torque);
 		}
 	}
-	Fmatrix invIfirst,invIsecond;
-	invIfirst.set(*(const Fmatrix*)m_firstM.I);
-	invIsecond.set(*(const Fmatrix*)m_secondM.I);
-	invIfirst.invert();
-	invIsecond.invert();
-	
-	 dReal tmp[12];
-	// compute inverse inertia tensor in global frame
-	dMULTIPLY2_333 (tmp,(float*)&invIfirst,body->R);
-	dMULTIPLY0_333 ((float*)&invIfirst,body->R,tmp);
 
-	dMULTIPLY2_333 (tmp,(float*)&invIsecond,body->R);
-	dMULTIPLY0_333 ((float*)&invIsecond,body->R,tmp);
+	dMatrix3 glI1,glI2,glInvI,tmp;	
+	 
+	// compute inertia tensors in global frame
+	dMULTIPLY2_333 (tmp,body->invI,body->R);
+	dMULTIPLY0_333 (glInvI,body->R,tmp);
 
+	dMULTIPLY2_333 (tmp,m_firstM.I,body->R);
+	dMULTIPLY0_333 (glI1,body->R,tmp);
+
+	dMULTIPLY2_333 (tmp,m_secondM.I,body->R);
+	dMULTIPLY0_333 (glI2,body->R,tmp);
 	//both parts have eqiual start angular vel same as have body so we ignore it
 
+	//compute breaking torque
+	///break_torque=glI2*glInvI*first_part_torque-glI1*glInvI*second_part_torque+crossproduct(second_in_bone,second_part_force)-crossproduct(first_in_bone,first_part_force)
+	Fvector break_torque,vtemp;
+
+	dMULTIPLY0_331 ((float*)&break_torque,glInvI,(float*)&first_part_torque);
+	dMULTIPLY0_331 ((float*)&break_torque,glI2,(float*)&break_torque);
+	
+	dMULTIPLY0_331 ((float*)&vtemp,glInvI,(float*)&second_part_torque);
+	dMULTIPLY0_331 ((float*)&vtemp,glI1,(float*)&vtemp);
+	break_torque.sub(vtemp);
+
+	Fvector first_in_bone,second_in_bone;
+	first_in_bone.sub(*((const Fvector*)m_firstM.c),pos_in_element);
+	second_in_bone.sub(*((const Fvector*)m_secondM.c),pos_in_element);
+
+	vtemp.crossproduct(second_in_bone,second_part_force);
+	break_torque.add(vtemp);
+	vtemp.crossproduct(first_in_bone,first_part_force);
+	break_torque.sub(vtemp);
+
+	if(break_torque.magnitude()>m_break_torque)
+	{
 		m_breaked=true;
 		return m_breaked;
+	}
+
+	Fvector break_force;//=1/(m1+m2)*(F1*m2-F2*m1)+r2xT2/(r2^2)-r1xT1/(r1^2)
+	break_force.set(first_part_force);
+	break_force.mul(m_secondM.mass);
+	vtemp.set(second_part_force);
+	vtemp.mul(m_firstM.mass);
+	break_force.sub(vtemp);
+	break_force.mul(1.f/body->mass.mass);
+	
+	vtemp.crossproduct(second_in_bone,second_part_torque);
+	break_force.add(vtemp);
+	vtemp.crossproduct(first_in_bone,first_part_torque);
+	break_force.sub(vtemp);
+	if(m_break_force<break_force.magnitude())
+	{
+		m_breaked=true;
+		return m_breaked;
+	}
+	return false;
 }
 
 void CPHFracture::SetMassParts(const dMass& first,const dMass& second)

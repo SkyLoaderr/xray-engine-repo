@@ -469,7 +469,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				fracture.m_start_el_num				=u16(elements.size());
 				fracture.m_start_jt_num				=u16(joints.size());	 
 				fracture.MassSetFirst				(*(E->getMassTensor()));
+				fracture.pos_in_element				.set(vs_root_position.c);
 				VERIFY(fracture.m_start_geom_num	!=u16(-1));
+				fracture.m_break_force				=joint_data.break_force;
+				fracture.m_break_torque				=joint_data.break_torque;
 				root_e->add_Shape(bone_data.shape,vs_root_position);
 				root_e->add_Mass(bone_data.shape,vs_root_position,bone_data.center_of_mass,bone_data.mass,&fracture);
 				setElementSplitter(element_number);

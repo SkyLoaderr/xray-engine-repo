@@ -78,6 +78,7 @@ dMass			m_firstM;
 dMass			m_secondM;
 float			m_break_force;
 float			m_break_torque;
+Fvector			pos_in_element;
 				CPHFracture();
 public:
 bool			Update(CPHElement* element);
