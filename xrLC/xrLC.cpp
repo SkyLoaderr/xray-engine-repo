@@ -58,7 +58,10 @@ void Startup(LPSTR     lpCmdLine)
 	InitMath				();
 	DWORD					dwStartupTime	= timeGetTime();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
-	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),1900*(1024*1024),1900*(1024*1024)))
+
+	DWORD	dwMin			= 1800*(1024*1024);
+	DWORD	dwMax			= 1900*(1024*1024);
+	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),dwMin,dwMax))
 	{
 		Msg("*** Failed to expand working set");
 	};
