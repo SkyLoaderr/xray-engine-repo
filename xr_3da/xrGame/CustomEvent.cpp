@@ -109,13 +109,13 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	{
 		u8 count;	P.r_u8			(count);
 		while (count)	{
-			DEF_ACTION			A;
+			DEF_EVENT			E;
 			string256			str;
-			P.r_u8				(A.bOnce);
-			P.r_u64				(A.CLS);
-			P.r_string			(str);		A.OnEnter	= Parse(str);
-			P.r_string			(str);		A.OnLeave	= Parse(str);
-			A.bEnabled			= TRUE;
+			P.r_u8				(E.type	);
+			P.r_u16				(E.count);
+			P.r_u64				(E.CLS	);
+			P.r_string			(str	);
+			Parse				(E,str	);
 			Actions.push_back	(A);
 			count--;
 		}

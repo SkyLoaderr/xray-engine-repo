@@ -70,8 +70,8 @@ M_SPAWN
 
 			action {
 				u8			type;			// 0=Enter, 1=Leave
-				u64			clsid;
 				u16			count;			// number of times to play
+				u64			clsid;
 				stringZ		event;
 			}
 			...
