@@ -106,7 +106,7 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 
 IC void CBackend::set_Constants			(R_constant_table* C)
 {
-	ctable			= C;
+	if (ctable==C)	return;
 	if (C)			xforms.set_mapping	(&C->mapping);
 }
 
