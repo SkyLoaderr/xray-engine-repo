@@ -433,10 +433,13 @@ void CUIInventoryWnd::StopArtefactMerger()
 //для работы с сочетателем артефактом извне
 void CUIInventoryWnd::AddArtefactToMerger(CArtefact* pArtefact)
 {
-	m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
-	CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
-	//CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
-	//++m_iUsedItems; R_ASSERT(m_iUsedItems<MAX_ITEMS);
+	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
+
+	
+	CUIDragDropItem& UIDragDropItem = *(*it);
+
+//	m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+//	CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 
 	UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
@@ -449,15 +452,16 @@ void CUIInventoryWnd::AddArtefactToMerger(CArtefact* pArtefact)
 										pArtefact->GetGridHeight()*INV_GRID_HEIGHT);
 	UIDragDropItem.SetData(pArtefact);
 	UIArtefactMergerWnd.UIArtefactList.AttachChild(&UIDragDropItem);
+
 }
 
 void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 {
+	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
+	if (it != m_vDragDropItems.end()) return;
+
 	m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
 	CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
-
-//	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
-//	m_iUsedItems++; R_ASSERT(m_iUsedItems<MAX_ITEMS);
 
 	UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
