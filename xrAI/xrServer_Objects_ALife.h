@@ -126,7 +126,8 @@ public:
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
-	flags32							m_flags;							
+	flags32							m_flags;
+	ALife::_STORY_ID				m_story_id;
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	CALifeSimulator					*m_alife_simulator;

@@ -20,6 +20,7 @@
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
+#include "alife_story_registry.h"
 #include "level.h"
 #include "xrserver.h"
 #include "level_graph.h"
@@ -42,6 +43,7 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_anomalies					= 0;
 	m_organizations				= 0;
 	m_news						= 0;
+	m_story_objects				= 0;
 }
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()
@@ -75,6 +77,7 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_anomalies);
 	xr_delete					(m_organizations);
 	xr_delete					(m_news);
+	xr_delete					(m_story_objects);
 }
 
 void CALifeSimulatorBase::reload			(LPCSTR section)
@@ -91,6 +94,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_graph_objects				= xr_new<CALifeGraphRegistry>		(server_command_line());
 	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
+	m_story_objects			= xr_new<CALifeStoryRegistry>		();
 	m_initialized				= true;
 }
 
@@ -123,7 +127,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	dynamic_object->m_tNodeID	= level_vertex_id;
 	dynamic_object->m_tGraphID	= game_vertex_id;
 	dynamic_object->m_tSpawnID	= u16(-1);
-	update						(dynamic_object,true);
+	register_object				(dynamic_object,true);
 
 	return						(dynamic_object);
 }
@@ -158,7 +162,7 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 		strcat					(k->s_name_replace,"0");
 	string16					S1;
 	strcat						(k->s_name_replace,itoa(k->ID,S1,10));
-	update						(k,true);
+	register_object				(k,true);
 	k->spawn_supplies			();
 	return						(k);
 }
@@ -187,7 +191,7 @@ void CALifeSimulatorBase::create(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObj
 	else
 		i->ID					= server().PerformIDgen(0xffff);
 
-	update						(i,true);
+	register_object				(i,true);
 	i->m_bALifeControl			= true;
 
 	CSE_ALifeMonsterAbstract	*monster	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
@@ -222,30 +226,31 @@ void CALifeSimulatorBase::create	(CSE_ALifeObject *object)
 		dynamic_object->o_Position	= parent->o_Position;
 		dynamic_object->m_tNodeID	= parent->m_tNodeID;
 		dynamic_object->ID_Parent	= 0xffff;
-		update						(dynamic_object,true);
+		register_object				(dynamic_object,true);
 		graph().remove				(dynamic_object,parent->m_tGraphID,false);
 		dynamic_object->ID_Parent	= id;
 	}
 	else
-		update						(dynamic_object,true);
+		register_object				(dynamic_object,true);
 	
 	dynamic_object->m_bOnline		= true;
 }
 
-void CALifeSimulatorBase::remove	(CSE_ALifeDynamicObject *object, bool alife_query)
+void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, bool alife_query)
 {
 	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
 	if (item && item->attached())
 		graph().detach				(*objects().object(item->ID_Parent),item,objects().object(item->ID_Parent)->m_tGraphID,alife_query);
 
 	objects().remove				(object->ID);
+	story_objects().remove			(object->m_story_id);
 
 	if (!object->m_bOnline) {
 		graph().remove				(object,object->m_tGraphID);
 		scheduled().remove			(object);
 	}
 	else
-		graph().level().remove	(object);
+		graph().level().remove		(object);
 }
 
 void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
@@ -258,7 +263,7 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 	CSE_ALifeDynamicObject			*object = objects().object(abstract->ID);
 	VERIFY							(object);
 	
-	remove							(object,alife_query);
+	unregister_object				(object,alife_query);
 	
 	object->m_bALifeControl			= false;
 
@@ -266,7 +271,7 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 		server().entity_Destroy		(abstract);
 }
 
-void CALifeSimulatorBase::update		(CSE_ALifeDynamicObject *object, bool add_object)
+void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool add_object)
 {
 	if (add_object)
 		objects().add					(object);
@@ -274,6 +279,7 @@ void CALifeSimulatorBase::update		(CSE_ALifeDynamicObject *object, bool add_obje
 	graph().update						(object);
 	traders().add						(object);
 	scheduled().add						(object);
+	story_objects().add					(object->m_story_id,object);
 
 	setup_simulator						(object);
 	

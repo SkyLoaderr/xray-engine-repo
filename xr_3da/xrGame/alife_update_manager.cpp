@@ -275,26 +275,26 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 void CALifeUpdateManager::set_switch_online		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	remove							(object,object->m_bOnline);
+	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->can_switch_online		(value);
-	CALifeSimulatorBase::update		(object,true);
+	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_switch_offline	(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	remove							(object,object->m_bOnline);
+	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->can_switch_offline		(value);
-	CALifeSimulatorBase::update		(object,true);
+	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	remove							(object,object->m_bOnline);
+	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->interactive				(value);
-	CALifeSimulatorBase::update		(object,true);
+	register_object					(object,true);
 }

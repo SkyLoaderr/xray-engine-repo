@@ -1430,6 +1430,19 @@
 							</Filter>
 						</Filter>
 						<Filter
+							Name="story_registry"
+							Filter="">
+							<File
+								RelativePath=".\alife_story_registry.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_story_registry.h">
+							</File>
+							<File
+								RelativePath=".\alife_story_registry_inline.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="task_registry"
 							Filter="">
 							<File

@@ -23,8 +23,9 @@
 
 #ifdef _EDITOR
 	#include "SkeletonAnimated.h"
-	static TokenValue3Custom::ItemVec locations[4];
-	static AStringVec	level_ids;
+	static TokenValue3Custom::ItemVec	locations[4];
+	static AStringVec					level_ids;
+	static TokenValue3Custom::ItemVec	story_names;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
@@ -343,6 +344,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_tNodeID					= u32(-1);
 	m_caGroupControl			= "";
 	m_flags.one					();
+	m_story_id					= INVALID_STORY_ID;
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	m_alife_simulator			= 0;
@@ -376,6 +378,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_string			(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
 	tNetPacket.w_string			(m_ini_string);
+	tNetPacket.w				(&m_story_id,sizeof(m_story_id));
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -415,6 +418,9 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	
 	if (m_wVersion > 57)
 		tNetPacket.r_string		(m_ini_string);
+
+	if (m_wVersion > 61)
+		tNetPacket.r			(&m_story_id,sizeof(m_story_id));
 
 	if (xr_strlen(m_ini_string)) {
 #pragma warning(push)
@@ -467,6 +473,20 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}
 	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
+
+	if (story_names.empty()){
+		string256					gm_name;
+		FS.update_path				(gm_name,_game_data_,"game.ltx");
+		R_ASSERT2					(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
+		CInifile					*Ini = xr_new<CInifile>(gm_name);
+		LPCSTR						section = "story_ids";
+		R_ASSERT					(Ini->section_exist(section));
+		LPCSTR						N,V;
+		for (u32 k = 0; Ini->r_line(section,k,&N,&V); ++k)
+			story_names.push_back	(TokenValue3Custom::Item(atoi(N),V));
+	}
+
+	PHelper.CreateToken3<ALife::_STORY_ID>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Story ID"),	&m_story_id,		&story_names);
 }
 #endif
 

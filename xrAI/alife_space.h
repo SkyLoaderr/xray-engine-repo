@@ -31,6 +31,7 @@
 #define RUCK_HEIGHT					8
 #define RUCK_WIDTH					7
 #define MAX_ITEM_VOLUME				100
+#define INVALID_STORY_ID			ALife::_STORY_ID(-1)
 
 class CSE_ALifeEventGroup;
 class CSE_ALifeDynamicObject;
@@ -63,6 +64,7 @@ namespace ALife {
 	typedef u32 _LEVEL_ID;									// Level ID
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
 	typedef u32	_NEWS_ID;									// News ID
+	typedef u32 _STORY_ID;								// Subject ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
@@ -376,6 +378,7 @@ namespace ALife {
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
+	DEFINE_MAP		(_STORY_ID,					CSE_ALifeDynamicObject*,		STORY_P_MAP,				STORY_P_PAIR_IT);
 
 	DEFINE_MAP_PRED	(LPCSTR,					CALifeDiscovery*,				DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,			pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT,			pred_str);

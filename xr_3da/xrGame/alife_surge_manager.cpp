@@ -172,7 +172,7 @@ void CALifeSurgeManager::generate_anomalies()
 					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
 				string16				S1;
 				strcat					(l_tpALifeItemArtefact->s_name_replace,itoa(l_tpALifeItemArtefact->ID,S1,10));
-				update					(i,true);
+				register_object			(i,true);
 			}
 		}
 		++I;
@@ -286,7 +286,7 @@ void CALifeSurgeManager::kill_creatures()
 					if (randF(100) > ai().ef_storage().m_pfSurgeDeathProbability->ffGetValue()) {
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
 						l_tpALifeGroupAbstract->m_tpMembers.erase	(l_tpALifeGroupAbstract->m_tpMembers.begin() + i);
-						update					(l_tpALifeCreatureAbstract);
+						register_object			(l_tpALifeCreatureAbstract);
 						assign_death_position	(l_tpALifeCreatureAbstract,l_tGraphID);
 						--i;
 						--N;
@@ -461,7 +461,7 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 				l_tpALifeItem->m_tNodeID	= tTrader.m_tNodeID;
 				l_tpALifeItem->m_fDistance	= tTrader.m_fDistance;
 				l_tpALifeItem->m_bALifeControl = true;
-				update						(i,true);
+				register_object				(i,true);
 			}
 		}
 	}

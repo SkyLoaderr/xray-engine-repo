@@ -12,6 +12,7 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
+#include "alife_story_registry.h"
 
 using namespace luabind;
 
@@ -50,6 +51,11 @@ CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, LPCSTR name)
 	return			(0);
 }
 
+CSE_ALifeDynamicObject *alife_story_object	(const CALifeSimulator *self, ALife::_STORY_ID id)
+{
+	return			(self->story_objects().object(id,true));
+}
+
 void CScriptEngine::export_alife()
 {
 	module(lua())
@@ -73,9 +79,10 @@ void CScriptEngine::export_alife()
 		class_<CALifeSimulator>("alife_simulator")
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_object))
+			.def("story_object",			(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_story_object))
 			.def("set_switch_online",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_switch_online))
-			.def("set_switch_offline",		&CALifeSimulator::set_switch_offline)
-			.def("set_interactive",			&CALifeSimulator::set_interactive),
+			.def("set_switch_offline",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_switch_offline))
+			.def("set_interactive",			(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_interactive)),
 
 		def("alife",						&alife)
 	];

@@ -24,25 +24,25 @@ using namespace ALife;
 
 class CALifeUpdatePredicate {
 private:
-	CALifeStorageManager		*m_manager;
+	CALifeStorageManager			*m_manager;
 
 public:
-	IC							CALifeUpdatePredicate	(CALifeStorageManager *manager)
+	IC								CALifeUpdatePredicate	(CALifeStorageManager *manager)
 	{
-		m_manager				= manager;
+		m_manager					= manager;
 	}
 
-	IC		void				operator()				(CSE_ALifeDynamicObject *object) const
+	IC		void					operator()				(CSE_ALifeDynamicObject *object) const
 	{
-		ALife::_OBJECT_ID		id = object->ID;
-		object->ID				= m_manager->server().PerformIDgen(id);
-		VERIFY					(id == object->ID);
-		m_manager->update		(object);
+		ALife::_OBJECT_ID			id = object->ID;
+		object->ID					= m_manager->server().PerformIDgen(id);
+		VERIFY						(id == object->ID);
+		m_manager->register_object	(object);
 	}
 	
-	IC		void				operator()				(CSE_ALifeEvent *event) const
+	IC		void					operator()				(CSE_ALifeEvent *event) const
 	{
-		m_manager->graph().add	(event,event->m_tGraphID);
+		m_manager->graph().add		(event,event->m_tGraphID);
 	}
 };
 

@@ -338,4 +338,5 @@ void CObjectActionIdle::initialize	()
 {
 	inherited::initialize();
 	m_storage->set_property	(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
+	m_object->CObjectHandler::set_goal(MonsterSpace::eObjectActionActivate);
 }

@@ -240,7 +240,7 @@ void CALifeSwitchManager::furl_object	(CSE_ALifeDynamicObject *I)
 						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 						l_tpALifeMonsterAbstract->m_bOnline			= false;
 						tpALifeGroupAbstract->m_tpMembers.erase(tpALifeGroupAbstract->m_tpMembers.begin() + i);
-						update	(l_tpALifeMonsterAbstract);
+						register_object	(l_tpALifeMonsterAbstract);
 						--i;
 						--N;
 						continue;
@@ -358,7 +358,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 							tpALifeGroupAbstract->m_tpMembers.erase(tpALifeGroupAbstract->m_tpMembers.begin() + i);
 							tpGroupMember->m_bOnline		= false;
 							// store the __new separate object into the registries
-							update							(tpGroupMember);
+							register_object					(tpGroupMember);
 							// and remove it from the graph point but do not remove it from the current level map
 							CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpGroupMember);
 							if (!l_tpALifeInventoryItem || !l_tpALifeInventoryItem->attached())

@@ -356,7 +356,7 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 					assign_death_position						(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 					l_tpALifeMonsterAbstract->vfDetachAll		();
 					R_ASSERT									(l_tpALifeMonsterAbstract->children.empty());
-					update										(l_tpALifeMonsterAbstract);
+					register_object								(l_tpALifeMonsterAbstract);
 					CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
 					if (l_tpALifeInventoryItem)
 						m_temp_item_vector.push_back				(l_tpALifeInventoryItem);

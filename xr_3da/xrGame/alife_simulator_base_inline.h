@@ -97,6 +97,13 @@ IC	const CALifeNewsRegistry			&CALifeSimulatorBase::news					() const
 	return						(*m_news);
 }
 
+IC	const CALifeStoryRegistry			&CALifeSimulatorBase::story_objects			() const
+{
+	VERIFY						(initialized());
+	VERIFY						(m_story_objects);
+	return						(*m_story_objects);
+}
+
 IC	CALifeSimulatorHeader				&CALifeSimulatorBase::header				()
 {
 	VERIFY						(initialized());
@@ -179,6 +186,13 @@ IC	CALifeNewsRegistry					&CALifeSimulatorBase::news					()
 	VERIFY						(initialized());
 	VERIFY						(m_news);
 	return						(*m_news);
+}
+
+IC	CALifeStoryRegistry					&CALifeSimulatorBase::story_objects			()
+{
+	VERIFY						(initialized());
+	VERIFY						(m_story_objects);
+	return						(*m_story_objects);
 }
 
 IC	CRandom32							&CALifeSimulatorBase::random				()
