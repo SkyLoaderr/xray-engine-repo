@@ -5,7 +5,7 @@
 
 //#pragma comment (lib,"x:/xrQSlim.lib")
 
-#define MAX_DECIMATE_ERROR 0.05f
+#define MAX_DECIMATE_ERROR 0.01f
 #define COMPACTNESS_RATIO  0.5f
 
 void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
@@ -68,7 +68,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	slim->boundary_weight	= 1000.f;
 	slim->compactness_ratio	= COMPACTNESS_RATIO;
 	slim->meshing_penalty	= 1000.f;
-	slim->placement_policy	= MX_PLACE_OPTIMAL;
+	slim->placement_policy	= MX_PLACE_ENDORMID;//MX_PLACE_OPTIMAL;
 	slim->weighting_policy	= MX_WEIGHT_AREA_AVG;
 	slim->initialize		();
 
