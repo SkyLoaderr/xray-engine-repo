@@ -37,10 +37,10 @@
 	</quick_info>
 	
 	<!-- PDA Message List-->
-	<list x="15" y="325" width="525" height="420" item_height = "70"></list>
+	<list x="15" y="250" width="525" height="420" item_height = "70"></list>
 
 	<!-- PDA Message List-->
-	<info_list x="512" y="250" width="525" height="120" item_height = "20" fade="2000">
+	<info_list x="512" y="615" width="525" height="120" item_height = "20" fade="2000">
 		<font font="letterica25" r="255" g="0" b="0"/>
 	</info_list>
 
@@ -140,5 +140,5 @@
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
 	
 	<!-- artefact panel -->
-	<artefact_panel x="200" y="0" width="400" height="100" scale="0.5"></artefact_panel>
+	<artefact_panel x="120" y="685" width="400" height="100" scale="0.75"></artefact_panel>
 </window>
