@@ -25,10 +25,10 @@ void CStateMonsterPanicRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicRunAbstract::execute()
 {
-	Msg("Chim State Panic Executed!!! time = [%u] obj = [%u] K = [%u]", Level().timeServer(), m_object->m_tEnemy.obj,m_object->K);
+	//Msg("Chim State Panic Executed!!! time = [%u] obj = [%u] K = [%u]", Level().timeServer(), m_object->m_tEnemy.obj,m_object->K);
 
 	const CEntity *enemy = m_object->m_tEnemy.obj;
-	float dist = enemy->Position().distance_to(m_object->Position());
+	//float dist = enemy->Position().distance_to(m_object->Position());
 
 	m_object->MotionMan.m_tAction			= ACT_RUN;
 

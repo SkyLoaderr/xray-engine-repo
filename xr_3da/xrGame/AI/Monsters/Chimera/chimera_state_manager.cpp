@@ -91,11 +91,11 @@ void CStateManagerChimera::execute			()
 //										set_dest_state(eStateEat);
 //	else								set_dest_state(eStateRest);
 	
-	Msg("Chim State Manager Executed!!! time = [%u] obj = [%u] K = [%u]", Level().timeServer(), m_object->m_tEnemy.obj,m_object->K);
-
-	if (!m_object->K) {
-		int a = 10;
-	}
+//	Msg("Chim State Manager Executed!!! time = [%u] obj = [%u] K = [%u]", Level().timeServer(), m_object->m_tEnemy.obj,m_object->K);
+//
+//	if (!m_object->K) {
+//		int a = 10;
+//	}
 	if (m_object->K) set_dest_state(eStatePanic);
 	else			 set_dest_state(eStateRest);
 	
