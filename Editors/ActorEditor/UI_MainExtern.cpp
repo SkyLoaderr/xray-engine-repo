@@ -11,6 +11,7 @@
 #include "bottombar.h"
 #include "main.h"
 #include "xr_input.h"
+#include "ChoseForm.h"
 
 bool TUI::CommandExt(int _Command, int p1, int p2)
 {
@@ -98,40 +99,40 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	}break;
     case COMMAND_LOAD:{
         AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
-        if( p1 || EFS.GetOpenName( _objects_, temp_fn ) ){
-            if (p1||(1==temp_fn.Pos(FS.get_path(_objects_)->m_Path))){
-                if (!p1) temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path)).LowerCase();
-                if (!Tools.IfModified()){
-                    bRes=false;
-                    break;
-                }
-                if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
-                    bRes=false;
-                    break;
-                }
-                if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
-                    EFS.UnlockFile(_objects_,temp_fn.c_str());
-                }
-                Command( COMMAND_CLEAR );
-                CTimer T;
-                T.Start();                
-                if (!Tools.Load(_objects_,temp_fn.c_str())){
-                    bRes=false;
-                    break;
-                }
-                m_LastFileName = temp_fn;
-                ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
-                AppendRecentFile(m_LastFileName.c_str());
-    //.		    fraLeftBar->UpdateMotionList();
-                Command	(COMMAND_UPDATE_CAPTION);
-                Command	(COMMAND_UPDATE_PROPERTIES);
-                // lock
-                EFS.LockFile(_objects_,m_LastFileName.c_str());
-                Tools.UndoClear();
-                Tools.UndoSave();
-    		}else{
-            	ELog.DlgMsg	(mtError,"Invalid file path.");
+        if(!p1){
+        	LPCSTR new_val;
+            if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,new_val)) return false;
+            temp_fn = AnsiString(new_val)+".object";
+        }
+        if( !temp_fn.IsEmpty() ){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
             }
+            if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
+                bRes=false;
+                break;
+            }
+            if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
+                EFS.UnlockFile(_objects_,temp_fn.c_str());
+            }
+            Command( COMMAND_CLEAR );
+            CTimer T;
+            T.Start();                
+            if (!Tools.Load(_objects_,temp_fn.c_str())){
+                bRes=false;
+                break;
+            }
+            m_LastFileName = temp_fn;
+            ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+            AppendRecentFile(m_LastFileName.c_str());
+//.		    fraLeftBar->UpdateMotionList();
+            Command	(COMMAND_UPDATE_CAPTION);
+            Command	(COMMAND_UPDATE_PROPERTIES);
+            // lock
+            EFS.LockFile(_objects_,m_LastFileName.c_str());
+            Tools.UndoClear();
+            Tools.UndoSave();
         }
     	}break;
 	case COMMAND_CLEAR:

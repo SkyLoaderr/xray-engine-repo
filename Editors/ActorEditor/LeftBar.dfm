@@ -556,7 +556,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 181
-    Top = 18
+    Top = 16
     object N7: TMenuItem
       Caption = '-'
     end
@@ -574,6 +574,7 @@ object fraLeftBar: TfraLeftBar
     end
     object SaevAs1: TMenuItem
       Caption = 'Save As...'
+      Enabled = False
       OnClick = SaevAs1Click
     end
     object N5: TMenuItem
