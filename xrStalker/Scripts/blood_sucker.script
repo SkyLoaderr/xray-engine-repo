@@ -1009,5 +1009,6 @@ function main1()
     npc4:finalize()
     npc5:finalize()
     hit:finalize()
+    
 end
         
