@@ -64,9 +64,14 @@ public:
     LPSTR				key;
     EPropType			type;
 	TElTreeItem*		item; 
-    bool				bEnabled;
     int 				tag;
     int					subitem;		// multiple selection for each item (SelectTexture for example)
+    enum{
+    	flDisabled		= (1<<0),
+    	flShowCB		= (1<<1),
+    	flCBChecked		= (1<<2)
+    };
+    Flags32				flags;
 public:
 	// base events
     TAfterEdit			OnAfterEdit;
@@ -74,9 +79,9 @@ public:
     TOnDrawValue		OnDrawValue;
     TOnChange			OnChange;
 public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):
-                        				item(0),key(0),tag(0),bEnabled(true),bDiff(false),subitem(1),OnAfterEdit(after),
-                                        OnBeforeEdit(before),OnDrawValue(draw),OnChange(change){};
+						PropValue		(u32 _flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):
+                        				item(0),key(0),tag(0),bDiff(false),subitem(1),OnAfterEdit(after),
+                                        OnBeforeEdit(before),OnDrawValue(draw),OnChange(change){flags.set(_flags);};
 	virtual 			~PropValue		(){_FREE(key);};
     virtual LPCSTR		GetText			()=0;
     virtual void		InitFirst		(LPVOID value)=0;
@@ -93,7 +98,7 @@ class MarkerItem: public PropValue{
 	AStringVec			values;
     void				AppendValue		(LPCSTR value){values.push_back(value);init_values.push_back(value);}
 public:
-						MarkerItem		():PropValue(TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0),TOnChange(0)){};
+						MarkerItem		():PropValue(0,TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0),TOnChange(0)){};
     virtual LPCSTR		GetText			(){return values.front().c_str();}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPCSTR)value);}
     virtual void		InitNext		(LPVOID value){};
@@ -106,7 +111,7 @@ class TextValue: public PropValue{
     void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	int					lim;
-						TextValue		(int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim(_lim),PropValue(after,before,draw,change){};
+						TextValue		(u32 flags, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim(_lim),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPSTR)value);}
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
@@ -134,7 +139,7 @@ class ATextValue: public PropValue{
 	LPAStringVec		values;
     void				AppendValue		(AnsiString* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						ATextValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){};
+						ATextValue		(u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((AnsiString*)value);}
     virtual void		InitNext		(LPVOID value){if (*(AnsiString*)value!=*values.front()) bDiff=true; AppendValue((AnsiString*)value);}
@@ -160,7 +165,7 @@ class BOOLValue: public PropValue{
 	LPBOOLVec			values;
     void				AppendValue		(LPBOOL value){values.push_back(value);init_values.push_back(*value);}
 public:
-						BOOLValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){};
+						BOOLValue		(u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((BOOL*)value);}
     virtual void		InitNext		(LPVOID value){if (*(BOOL*)value!=*values.front()) bDiff=true; AppendValue((BOOL*)value);}
@@ -189,7 +194,7 @@ class WaveValue: public PropValue{
 	LPWaveFormVec		values;
     void				AppendValue		(WaveForm* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						WaveValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){};
+						WaveValue		(u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			(){return "[Wave]";}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((WaveForm*)value);}
     virtual void		InitNext		(LPVOID value){if (!((WaveForm*)value)->Similar(*values.front())) bDiff=true; AppendValue((WaveForm*)value);}
@@ -272,7 +277,7 @@ public:
 
 class U8Value: public PropValue, public IntegerValue<u8> {
 public:
-						U8Value			(u8 mn, u8 mx, u8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u8>(mn,mx,increm),PropValue(after,before,draw,change){};
+						U8Value			(u8 mn, u8 mx, u8 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u8>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u8*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((u8*)value,bDiff); }
@@ -283,7 +288,7 @@ public:
 //------------------------------------------------------------------------------
 class U16Value: public PropValue, public IntegerValue<u16> {
 public:
-						U16Value	 	(u16 mn, u16 mx, u16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u16>(mn,mx,increm),PropValue(after,before,draw,change){};
+						U16Value	 	(u16 mn, u16 mx, u16 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u16>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u16*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((u16*)value,bDiff); }
@@ -294,7 +299,7 @@ public:
 //------------------------------------------------------------------------------
 class U32Value: public PropValue, public IntegerValue<u32> {
 public:
-						U32Value  		(u32 mn, u32 mx, u32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u32>(mn,mx,increm),PropValue(after,before,draw,change){};
+						U32Value  		(u32 mn, u32 mx, u32 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u32>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u32*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((u32*)value,bDiff); }
@@ -305,7 +310,7 @@ public:
 //------------------------------------------------------------------------------
 class S8Value: public PropValue, public IntegerValue<s8> {
 public:
-						S8Value			(s8 mn, s8 mx, s8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s8>(mn,mx,increm),PropValue(after,before,draw,change){};
+						S8Value			(s8 mn, s8 mx, s8 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s8>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s8*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((s8*)value,bDiff); }
@@ -316,7 +321,7 @@ public:
 //------------------------------------------------------------------------------
 class S16Value: public PropValue, public IntegerValue<s16> {
 public:
-						S16Value	 	(s16 mn, s16 mx, s16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s16>(mn,mx,increm),PropValue(after,before,draw,change){};
+						S16Value	 	(s16 mn, s16 mx, s16 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s16>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s16*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((s16*)value,bDiff); }
@@ -327,7 +332,7 @@ public:
 //------------------------------------------------------------------------------
 class S32Value: public PropValue, public IntegerValue<s32> {
 public:
-						S32Value  		(s32 mn, s32 mx, s32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s32>(mn,mx,increm),PropValue(after,before,draw,change){};
+						S32Value  		(s32 mn, s32 mx, s32 increm, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s32>(mn,mx,increm),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
     virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s32*)value); }
     virtual void		InitNext		(LPVOID value)	{ _InitNext((s32*)value,bDiff); }
@@ -346,7 +351,7 @@ public:
     float				lim_mx;
     float 				inc;
     int 				dec;
-    					FloatValue		(float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw,change){};
+    					FloatValue		(float mn, float mx, float increment, int decimal, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()
     {
     	float draw_val 	= GetValue();
@@ -381,7 +386,7 @@ class ColorValue: public PropValue{
 	LPFcolorVec			values;
     void				AppendValue		(Fcolor* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						ColorValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){};
+						ColorValue		(u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((Fcolor*)value);}
     virtual void		InitNext		(LPVOID value){if (!((Fcolor*)value)->similar_rgba(*values.front())) bDiff=true; AppendValue((Fcolor*)value);}
@@ -419,7 +424,7 @@ public:
     float				lim_mx;
     float 				inc;
     int 				dec;
-						VectorValue		(float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw,change){};
+						VectorValue		(float mn, float mx, float increment, int decimal, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			()
     {
 		Fvector draw_val 	= GetValue();
@@ -458,7 +463,7 @@ class FlagValue: public PropValue{
     void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	u32					mask;
-						FlagValue		(u32 _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):mask(_mask),PropValue(after,before,draw,change){};
+						FlagValue		(u32 _mask, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):mask(_mask),PropValue(flags, after,before,draw,change){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
     virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(u32*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((u32*)value);}
@@ -486,7 +491,7 @@ class TokenValue: public PropValue{
     void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	xr_token* 			token;
-						TokenValue		(xr_token* _token, int p_sz, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),p_size(p_sz),PropValue(after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
+						TokenValue		(xr_token* _token, int p_sz, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),p_size(p_sz),PropValue(flags, after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
     virtual void		InitNext		(LPVOID value)
@@ -523,7 +528,7 @@ class TokenValue2: public PropValue{
     void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	AStringVec 			items;
-						TokenValue2		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(after,before,draw,change){};
+						TokenValue2		(AStringVec* _items, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(flags, after,before,draw,change){};
 	virtual LPCSTR 		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
     virtual void		InitNext		(LPVOID value)	{if (*(u32*)value!=*values.front()) bDiff=true; AppendValue((u32*)value);}
@@ -555,7 +560,7 @@ public:
 	};
 	u32				cnt;
     const Item*			items;
-						TokenValue3		(u32 _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):cnt(_cnt),items(_items),PropValue(after,before,draw,change){};
+						TokenValue3		(u32 _cnt, const Item* _items, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):cnt(_cnt),items(_items),PropValue(flags, after,before,draw,change){};
 	virtual LPCSTR 		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
     virtual void		InitNext		(LPVOID value)	{if (*(u32*)value!=*values.front()) bDiff=true; AppendValue((u32*)value);}
@@ -582,8 +587,8 @@ class ListValue: public PropValue{
     void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	AStringVec 			items;
-						ListValue		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(after,before,draw,change){};
-						ListValue		(u32 cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(AStringVec* _items, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(flags, after,before,draw,change){};
+						ListValue		(u32 cnt, LPCSTR* _items, u32 flags, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(flags, after,before,draw,change){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPSTR)value);}
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
@@ -614,225 +619,225 @@ public:
         V->type			= PROP_MARKER;
         return V;
     }
-    S8Value* 			CreateS8		(s8 mn=0, s8 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S8Value* 			CreateS8		(s8 mn=0, s8 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        S8Value* V		= new S8Value(mn,mx,inc,after,before,draw,change);
+        S8Value* V		= new S8Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_S8;
         return V;
     }
-    S16Value* 			CreateS16		(s16 mn=0, s16 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S16Value* 			CreateS16		(s16 mn=0, s16 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        S16Value* V		= new S16Value(mn,mx,inc,after,before,draw,change);
+        S16Value* V		= new S16Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_S16;
         return V;
     }
-    S32Value* 			CreateS32		(s32 mn=0, s32 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S32Value* 			CreateS32		(s32 mn=0, s32 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        S32Value* V		= new S32Value(mn,mx,inc,after,before,draw,change);
+        S32Value* V		= new S32Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_S32;
         return V;
     }
-    U8Value* 			CreateU8		(u8 mn=0, u8 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    U8Value* 			CreateU8		(u8 mn=0, u8 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        U8Value* V		= new U8Value(mn,mx,inc,after,before,draw,change);
+        U8Value* V		= new U8Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_U8;
         return V;
     }
-    U16Value* 			CreateU16		(u16 mn=0, u16 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    U16Value* 			CreateU16		(u16 mn=0, u16 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        U16Value* V		= new U16Value(mn,mx,inc,after,before,draw,change);
+        U16Value* V		= new U16Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_U16;
         return V;
     }
-    U32Value* 			CreateU32		(u32 mn=0, u32 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    U32Value* 			CreateU32		(u32 mn=0, u32 mx=100, int inc=1, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        U32Value* V		= new U32Value(mn,mx,inc,after,before,draw,change);
+        U32Value* V		= new U32Value(mn,mx,inc,flags,after,before,draw,change);
         V->type			= PROP_U32;
         return V;
     }
-    FloatValue* 		CreateFloat		(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    FloatValue* 		CreateFloat		(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        FloatValue* V	= new FloatValue(mn,mx,inc,decim,after,before,draw,change);
+        FloatValue* V	= new FloatValue(mn,mx,inc,decim,flags,after,before,draw,change);
         V->type			= PROP_FLOAT;
         return V;
     }           	
-    BOOLValue* 			CreateBOOL		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    BOOLValue* 			CreateBOOL		(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        BOOLValue* V	=new BOOLValue(after,before,draw,change);
+        BOOLValue* V	=new BOOLValue(flags,after,before,draw,change);
         V->type			= PROP_BOOLEAN;
         return V;
     }
-    FlagValue* 			CreateFlag		(u32 mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    FlagValue* 			CreateFlag		(u32 mask, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        FlagValue* V	= new FlagValue(mask,after,before,draw,change);
+        FlagValue* V	= new FlagValue(mask,flags,after,before,draw,change);
         V->type			= PROP_FLAG;
         return V;
     }
-    VectorValue* 		CreateVector	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    VectorValue* 		CreateVector	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        VectorValue* V	= new VectorValue(mn,mx,inc,decim,after,before,draw,change);
+        VectorValue* V	= new VectorValue(mn,mx,inc,decim,flags,after,before,draw,change);
         V->type			= PROP_VECTOR;
         return V;
     }
-	TokenValue* 		CreateToken	(xr_token* token, int p_size, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue* 		CreateToken	(xr_token* token, int p_size, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TokenValue* V	= new TokenValue(token,p_size,after,before,draw,change);
+        TokenValue* V	= new TokenValue(token,p_size,flags,after,before,draw,change);
         V->type			= PROP_TOKEN;
         return V;
     }
-	TokenValue2* 		CreateToken2	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue2* 		CreateToken2	(AStringVec* lst, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TokenValue2* V	= new TokenValue2(lst,after,before,draw,change);
+        TokenValue2* V	= new TokenValue2(lst,flags,after,before,draw,change);
         V->type			= PROP_TOKEN2;
         return V;
     }
-	TokenValue3* 		CreateToken3	(u32 cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue3* 		CreateToken3	(u32 cnt, const TokenValue3::Item* lst, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw,change);
+        TokenValue3* V	= new TokenValue3(cnt,lst,flags,after,before,draw,change);
         V->type			= PROP_TOKEN3;
         return V;
     }
-	ListValue* 			CreateList		(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ListValue* 			CreateList		(AStringVec* lst, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ListValue* V	= new ListValue(lst,after,before,draw,change);
+        ListValue* V	= new ListValue(lst,flags,after,before,draw,change);
         V->type			= PROP_LIST;
         return V;
     }
-	ListValue* 			CreateListA	(u32 cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ListValue* 			CreateListA	(u32 cnt, LPCSTR* lst, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ListValue* V	= new ListValue(cnt,lst,after,before,draw,change);
+        ListValue* V	= new ListValue(cnt,lst,flags,after,before,draw,change);
         V->type			= PROP_LIST;
         return V;
     }
-    U32Value* 			CreateColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    U32Value* 			CreateColor	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        U32Value* V		= new U32Value(0x00000000,0xffffffff,0,after,before,draw,change);
+        U32Value* V		= new U32Value(0x00000000,0xffffffff,0,flags,after,before,draw,change);
         V->type			= PROP_COLOR;
         return V;
     }
-    ColorValue*			CreateFColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    ColorValue*			CreateFColor	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ColorValue* V	= new ColorValue(after,before,draw,change);
+        ColorValue* V	= new ColorValue(flags,after,before,draw,change);
         V->type			= PROP_FCOLOR;
         return V;
     }
-	TextValue* 			CreateText		(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateText		(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_TEXT;
         return V;
     }
-	ATextValue* 		CreateAText	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateAText		(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
         V->type			= PROP_A_TEXT;
         return V;
     }
-	TextValue* 			CreateEShader	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateEShader	(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_ESHADER;
         return V;
     }
-	TextValue* 			CreateCShader	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateCShader	(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_CSHADER;
         return V;
     }
-	TextValue* 			CreateTexture	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateTexture	(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_TEXTURE;
         return V;
     }
-	TextValue* 			CreateTexture2	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateTexture2	(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_TEXTURE2;
         return V;
     }
-	ATextValue* 		CreateAEShader	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateAEShader	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
         V->type			= PROP_A_ESHADER;
         return V;
     }
-	ATextValue* 		CreateACShader	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateACShader	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
         V->type			= PROP_A_CSHADER;
         return V;
     }
-	ATextValue* 		CreateATexture	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateATexture	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
         V->type			= PROP_A_TEXTURE;
         return V;
     }
-	TextValue*			CreateLightAnim(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue*			CreateLightAnim(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_LIGHTANIM;
         return V;
     }
-	TextValue* 			CreateLibObject(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateLibObject(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_LIBOBJECT;
         return V;
     }
-	TextValue* 			CreateGameObject(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateGameObject(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_GAMEOBJECT;
         return V;
     }
-    TextValue*			CreateLibSound(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    TextValue*			CreateLibSound(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
 		V->type			= PROP_LIBSOUND;
         return V;
     }
-    ATextValue*			CreateALibSound(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    ATextValue*			CreateALibSound(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
 		V->type			= PROP_A_LIBSOUND;
         return V;
     }
-    TextValue*			CreateLibPS(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    TextValue*			CreateLibPS(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
 		V->type			= PROP_LIBPS;
         return V;
     }
-    ATextValue*			CreateALibPS(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    ATextValue*			CreateALibPS(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
 		V->type			= PROP_A_LIBPS;
         return V;
     }
-	TextValue* 			CreateEntity	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateEntity	(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
         V->type			= PROP_ENTITY;
         return V;
     }
-	WaveValue* 			CreateWave		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	WaveValue* 			CreateWave		(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        WaveValue* V	= new WaveValue(after,before,draw,change);
+        WaveValue* V	= new WaveValue(flags,after,before,draw,change);
         V->type			= PROP_WAVE;
         return V;
     }     
-    TextValue*			CreateGameMtl(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    TextValue*			CreateGameMtl(int lim, u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
 		V->type			= PROP_GAMEMTL;
         return V;
     }
-    ATextValue*			CreateAGameMtl(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    ATextValue*			CreateAGameMtl(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        ATextValue* V	= new ATextValue(after,before,draw,change);
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
 		V->type			= PROP_A_GAMEMTL;
         return V;
     }

@@ -199,49 +199,6 @@ TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, LP
     prop->item->ColumnText->Add(prop->GetText());
     return prop->item;
 }
-
-//CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
-/*
-void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
-{
-	// parse data
-    DWORD type;
-    char key[255];
-	TElTreeItem* marker_parent=parent;
-
-    while (!data.Eof()){
-        int sz=0;
-        type = data.Rdword();
-        data.RstringZ(key);
-        switch(type){
-        case xrPID_MARKER:			marker_parent=AddMarker(marker_parent,key,0); break;
-        case xrPID_INTEGER:{	
-        	sz=sizeof(xrP_Integer);	
-            xrP_Integer* V = (xrP_Integer*)data.Pointer();
-            AddIntItem(marker_parent,PROP_INTEGER,key,MakeIntValue(&V->value,V->min,V->max,1)); 
-        }break;
-        case xrPID_FLOAT:{ 
-        	sz=sizeof(xrP_Float); 	
-            xrP_Float* V = (xrP_Float*)data.Pointer();
-            AddItem(marker_parent,PROP_FLOAT,key,MakeFloatValue(&V->value,V->min,V->max,0.01f,2)); 
-        }break;
-        case xrPID_BOOL:{ 	
-        	sz=sizeof(xrP_BOOL); 	
-            xrP_BOOL* V = (xrP_BOOL*)data.Pointer();
-            AddItem(marker_parent,PROP_BOOLEAN,key,MakeBOOLValue(&V->value)); 
-        }break;
-        case xrPID_TOKEN:{ 	
-        	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);
-            xrP_TOKEN* V = (xrP_TOKEN*)data.Pointer();
-            AddItem(marker_parent,PROP_TOKEN3,key,MakeTokenValue3(&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.Pointer()) + sizeof(xrP_TOKEN))));
-        }break;
-        default: THROW2("xrPID_????");
-        }
-        data.Advance(sz);
-    }
-    data.Seek(0);
-}
-*/
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand, const AnsiString& title)
@@ -261,6 +218,9 @@ void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand
         prop->item			= FHelper.AppendObject(tvProperties,(*it)->key);
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
+        prop->item->CheckBoxEnabled = prop->flags.is(PropValue::flShowCB);
+        prop->item->ShowCheckBox 	= prop->flags.is(PropValue::flShowCB);
+        prop->item->CheckBoxState 	= prop->flags.is(PropValue::flCBChecked);
         TElCellStyle* CS    = prop->item->AddStyle();
         CS->OwnerProps 		= true;
         CS->CellType 		= sftUndef;
@@ -304,7 +264,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	PropValue* prop 			= (PropValue*)Item->Tag;
         DWORD type 					= prop->type;
-        if (prop->bEnabled){
+        if (!prop->flags.is(PropValue::flDisabled)){
             Surface->Font->Color 	= clBlack;
             Surface->Font->Style 	= TFontStyles();
         }else{
@@ -436,7 +396,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	        };
         }
         // show LW edit
-        if (prop->bEnabled){
+        if (!prop->flags.is(PropValue::flDisabled)){
             switch(type){
             case PROP_TEXT:
                 if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
@@ -466,7 +426,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
   	if (item&&(HC==1)&&(Button==mbLeft)){
     	if (!item->Enabled) return;
 		PropValue* prop = (PropValue*)item->Tag;
-        if (!prop) return;
+        if (!prop||prop->flags.is(PropValue::flDisabled)) return;
 		pmEnum->Tag = (int)item;
         switch(prop->type){
 		case PROP_FLAG:{
@@ -1190,6 +1150,21 @@ void __fastcall TProperties::FormShow(TObject *Sender)
 {
 	// check window position
 	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::tvPropertiesItemChange(TObject *Sender,
+      TElTreeItem *Item, TItemChangeMode ItemChangeMode)
+{
+	if (Item&&(icmCheckState==ItemChangeMode)){
+		PropValue* prop = (PropValue*)Item->Tag;
+	    if (prop){
+        	prop->flags.set(PropValue::flCBChecked,Item->Checked);
+        	if (prop->OnChange) prop->OnChange(prop);
+			Modified();
+    	}
+	    tvProperties->Refresh();
+    }
 }
 //---------------------------------------------------------------------------
 

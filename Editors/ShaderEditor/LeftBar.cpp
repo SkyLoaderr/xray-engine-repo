@@ -157,7 +157,15 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	FHelper.ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
+	switch (Tools.ActiveEditor()){
+    case aeEngine:
+    case aeCompiler:
+    case aeMaterial:
+		if (Button==mbRight)	FHelper.ShowPPMenu(pmListCommand,dynamic_cast<TExtBtn*>(Sender));
+    break;
+    case aeMaterialPair: break;
+    default: THROW;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -209,6 +217,11 @@ void TfraLeftBar::ClearCShaderList(){
 
 void TfraLeftBar::ClearMaterialList(){
     tvMaterial->Items->Clear();
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::ClearMaterialPairList(){
+    tvMaterialPair->Items->Clear();
 }
 //---------------------------------------------------------------------------
 
@@ -496,8 +509,11 @@ void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject* Sender)
 {
+//	bFocusedAffected = false;
 	TElTree* tv = CurrentView(); VERIFY(tv);
 	FHelper.RemoveItem(tv,tv->Selected,RemoveItem);
+//	bFocusedAffected = true;
+	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 

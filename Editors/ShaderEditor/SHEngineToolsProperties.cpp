@@ -62,7 +62,7 @@ void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
     CMatrix* M = FindMatrix(name,true);
     R_ASSERT(M);
 	Tools.m_Props->BeginEditMode();
-    TElTreeItem* node = Tools.m_Props->AddItem(item,"Mode",&M->dwMode,PHelper.CreateToken(mode_token,sizeof(M->dwMode),&ModeOnAfterEdit));
+    TElTreeItem* node = Tools.m_Props->AddItem(item,"Mode",&M->dwMode,PHelper.CreateToken(mode_token,sizeof(M->dwMode),0,&ModeOnAfterEdit));
     UpdateMatrixModeProps(node,M,M->dwMode);
 	Tools.m_Props->EndEditMode(item);
 }
@@ -183,7 +183,7 @@ void CSHEngineTools::UpdateProperties()
         TElTreeItem* node;
 
         P->AddItem		(0,"Type",(void*)m_CurrentBlender->getComment(),PHelper.CreateMarker());
-        PropValue* V	= PHelper.CreateText(sizeof(desc->cName),NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw);
+        PropValue* V	= PHelper.CreateText(sizeof(desc->cName),0,NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw);
         V->tag			= (int)P->AddItem(0,"Name",desc->cName,V); VERIFY(V->tag);
 
         while (!data.Eof()){
@@ -201,13 +201,13 @@ void CSHEngineTools::UpdateProperties()
             }break;
             case xrPID_MATRIX:{
             	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,MatrixOnAfterEdit,0,MCOnDraw));
+                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,0,MatrixOnAfterEdit,0,MCOnDraw));
                 LPSTR V=(LPSTR)data.Pointer();
 				if (V&&V[0]&&(*V!='$')) AddMatrixProps(node,V);
             }break;
             case xrPID_CONSTANT:{
             	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,ConstOnAfterEdit,0,MCOnDraw));
+                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,0,ConstOnAfterEdit,0,MCOnDraw));
                 LPSTR V=(LPSTR)data.Pointer();
 				if (V&&V[0]&&(*V!='$')) AddConstProps(node,V);
             }break;

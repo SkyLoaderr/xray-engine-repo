@@ -142,6 +142,7 @@ struct _color;		// floating point based color definition
 #include "_random.h"
 #include "_compressed_normal.h"
 #include "_plane.h"
+#include "_flags.h"
 
 #include "_stl_extensions.h"
 #include "_d3d_extensions.h"

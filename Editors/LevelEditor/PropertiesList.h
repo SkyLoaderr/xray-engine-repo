@@ -47,6 +47,8 @@ __published:	// IDE-managed Components
           int SectionIndex);
 	void __fastcall FormDeactivate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall tvPropertiesItemChange(TObject *Sender, TElTreeItem *Item,
+          TItemChangeMode ItemChangeMode);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);

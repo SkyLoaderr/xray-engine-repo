@@ -2,14 +2,14 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 495
+  Height = 647
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
   VertScrollBar.Style = ssHotTrack
   VertScrollBar.Tracking = True
   Align = alClient
-  Color = clBtnFace
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 495
+    Height = 647
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 280
+      Top = 432
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -173,7 +173,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 258
-      Height = 211
+      Height = 363
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -195,7 +195,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 196
+        Height = 348
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -354,7 +354,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 119
+            Height = 271
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -566,7 +566,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 119
+            Height = 271
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -778,7 +778,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 119
+            Height = 271
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -883,7 +883,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 119
+            Height = 271
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1009,7 +1009,7 @@ object fraLeftBar: TfraLeftBar
               HotTrack = True
               HotColor = 15790320
               CloseButton = False
-              Caption = 'Clone'
+              Caption = 'Inherit'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -1080,7 +1080,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 282
+      Top = 434
       Width = 258
       Height = 212
       Align = alBottom
@@ -1239,7 +1239,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = PreviewClick
     end
   end
-  object pmShaderList: TMxPopupMenu
+  object pmListCommand: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
     MarginStartColor = 13158600

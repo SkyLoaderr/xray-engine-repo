@@ -43,7 +43,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Teapot1;
 	TMenuItem *Custom1;
 	TMenuItem *N3;
-	TMxPopupMenu *pmShaderList;
+	TMxPopupMenu *pmListCommand;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;

@@ -90,7 +90,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    	if (!Tools.SCompiler.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
                 Tools.SCompiler.Reload();
-        }else if (Tools.ActiveEditor()==aeMaterial){
+        }else if ((Tools.ActiveEditor()==aeMaterial)||(Tools.ActiveEditor()==aeMaterialPair)){
 	    	if (!Tools.SMaterial.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload materials?")==mrYes)
                 Tools.SMaterial.Reload();
