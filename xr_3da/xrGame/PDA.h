@@ -70,6 +70,7 @@ public:
 
 	virtual u32 GetOriginalOwnerID() {return m_idOriginalOwner;}
 	virtual CInventoryOwner* GetOriginalOwner();
+	virtual CObject*		 GetOwnerObject();
 
 
 	virtual void TurnOn() {m_bTurnedOff = false;}

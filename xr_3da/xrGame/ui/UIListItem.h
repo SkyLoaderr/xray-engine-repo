@@ -9,14 +9,17 @@
 #pragma once
 #include "UIbutton.h"
 
-class CUIListItem :
-	public CUIButton
+class CUIListItem :	public CUIButton
 {
+private:
+	typedef CUIButton inherited;
 public:
 	CUIListItem(void);
 	virtual ~CUIListItem(void);
 
-	virtual void Init(char* str, int x, int y, int width, int height);
+	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(const char* str, int x, int y, int width, int height);
+	
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 	virtual void Draw();
 

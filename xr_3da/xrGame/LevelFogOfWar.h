@@ -11,18 +11,25 @@
 //для "тумана войны" над картой
 typedef struct tagSFogOfWarCell 
 {
-	//если 1- то ячейка уже "увиденна" актером
-    char opened:1;
+	bool IsOpened() {return 0xFF == shape;}
+	void Open()	{shape = 0xFF;}
+
 	//вид клеточки - зависит от количества открытых
 	//соседей и их расположения
-	char shape:7;
+	//0		- полностью закрыта
+	//0xFF	- полность открыта
+	unsigned char shape;
 } SFogOfWarCell;
 
 //флаги, опряделяющие форму клеточки тумна
-const static unsigned char FOG_OPEN_UP = 0x01;
-const static unsigned char FOG_OPEN_DOWN = 0x02;
-const static unsigned char FOG_OPEN_LEFT = 0x04;
-const static unsigned char FOG_OPEN_RIGHT = 0x08;
+const static unsigned char FOG_OPEN_UP			= 0x01;
+const static unsigned char FOG_OPEN_DOWN		= 0x02;
+const static unsigned char FOG_OPEN_LEFT		= 0x04;
+const static unsigned char FOG_OPEN_RIGHT		= 0x08;
+const static unsigned char FOG_OPEN_UP_LEFT		= 0x10;
+const static unsigned char FOG_OPEN_DOWN_LEFT	= 0x20;
+const static unsigned char FOG_OPEN_DOWN_RIGHT	= 0x40;
+const static unsigned char FOG_OPEN_UP_RIGHT	= 0x80;
 
 //размеры одной клеточки тумана в метрах
 const static float FOG_CELL_WIDTH = 20.f;
@@ -66,6 +73,7 @@ public:
 
 protected:
 	void OpenCell(float x, float y);
+	void OpenCell(int x, int y);
 
 	//положение и размеры всей карты уровня
 	float m_fMapWidth;

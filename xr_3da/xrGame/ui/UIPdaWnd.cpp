@@ -45,10 +45,21 @@ CUIPdaWnd::~CUIPdaWnd()
 
 void CUIPdaWnd::Init()
 {
+	CUIXml uiXml;
+	uiXml.Init("$game_data$","pda.xml");
+	CUIXmlInit xml_init;
+
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
+	AttachChild(&UIStaticTop);
+	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
+	AttachChild(&UIStaticBottom);
+	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
+
+
 	AttachChild(&UIMainPdaFrame);
-	UIMainPdaFrame.Init("ui\\ui_frame", 100,100, 600, 400);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);
+	//UIMainPdaFrame.Init("ui\\ui_frame", 100,100, 600, 400);
 
 	UIMainPdaFrame.AttachChild(&UIPdaDialogWnd);
 	UIPdaDialogWnd.Init(10,10,550,350);
@@ -62,7 +73,6 @@ void CUIPdaWnd::Init()
 
 void CUIPdaWnd::InitPDA()
 {
-	//CActor *pInvOwner = dynamic_cast<CActor*>(Level().CurrentEntity());
 	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
 	if(!m_pInvOwner) 
 	{
@@ -189,17 +199,14 @@ void CUIPdaWnd::Show()
 ////////////////////////////////////////
 void CUIPdaWnd::InitPdaContacts()
 {
-	UIPdaContactsWnd.UIListWnd.RemoveAll();
+	UIPdaContactsWnd.RemoveAll();
 
 	PDA_LIST_it it;
 	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
 	{
-		CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
-		UIPdaContactsWnd.UIListWnd.AddItem((char*)pObject->cName(), pObject);
+		UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
 	}
 }
-
-
 
 //обновление списка активных контактов PDA
 void CUIPdaWnd::UpdatePdaContacts()
@@ -209,9 +216,7 @@ void CUIPdaWnd::UpdatePdaContacts()
 	//удалить из списка все PDA ушедшие из зоны досягаемости
 	for(it = m_pPda->m_DeletedPDAList.begin(); m_pPda->m_DeletedPDAList.end() != it; ++it)
 	{	
-		//CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
-		//UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem(pObject));
-		UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem((*it)->H_Parent()));
+		UIPdaContactsWnd.RemoveContact((*it)->GetOwnerObject());
 		
 		//текущий контак вышел из зоны досягаемости!
 		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
@@ -223,10 +228,9 @@ void CUIPdaWnd::UpdatePdaContacts()
 	//добавить новые
 	for(it = m_pPda->m_NewPDAList.begin(); m_pPda->m_NewPDAList.end() != it; ++it)
 	{	
-		CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
 		//только если объекта еще нет в списке
-		if(UIPdaContactsWnd.UIListWnd.FindItem(pObject)==-1)
-			UIPdaContactsWnd.UIListWnd.AddItem((char*)pObject->cName(), pObject);
+		if(UIPdaContactsWnd.IsInList((*it)->GetOwnerObject())==false)
+			UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
 
 		//текущий контак снова вошел в зону досягаемости
 		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
@@ -344,4 +348,3 @@ void CUIPdaWnd::UpdateMsgButtons()
 		UIPdaDialogWnd.UIMsgButton3.SetText(GETOUT_MSG);
 	}
 }
-

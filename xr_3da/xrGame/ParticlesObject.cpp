@@ -20,6 +20,7 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 
 void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 {
+	m_bLooped = false;
 	m_bAutoRemove			= bAutoRemove;
 
 	// create visual
@@ -27,13 +28,26 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	VERIFY					(renderable.visual);
 	IParticleCustom* V		= dynamic_cast<IParticleCustom*>(renderable.visual);  VERIFY(V);
 	float time_limit		= V->GetTimeLimit();
-	if (bAutoRemove && (time_limit >= 0.f)) {
+	
+	if(time_limit > 0.f)
+	{
 		m_iLifeTime			= iFloor(time_limit*1000.f);
 	}
-	else {
-		R_ASSERT3			(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",p_name);
+	else
+	{
+		if(bAutoRemove)
+		{
+			R_ASSERT3			(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",p_name);
+		}
+		else
+		{
+			m_iLifeTime = 0;
+			m_bLooped = true;
+		}
 	}
-	
+
+
+
 	// spatial
 	spatial.type			= 0;
 	spatial.sector			= S;
@@ -136,4 +150,14 @@ void CParticlesObject::renderable_Render	()
 	}
 	::Render->set_Transform			(&Fidentity);
 	::Render->add_Visual			(renderable.visual);
+}
+
+bool CParticlesObject::IsAutoRemove()
+{
+	if(m_bAutoRemove) return true;
+	else return false;
+}
+void CParticlesObject::SetAutoRemove(bool auto_remove)
+{
+	m_bAutoRemove = auto_remove;
 }

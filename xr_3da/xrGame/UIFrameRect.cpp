@@ -36,18 +36,10 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD alig
 
 void CUIFrameRect::UpdateSize()
 {
-	RCache.set_Shader(back.GetShader());
 	// texture size
-	CTexture* T		= RCache.get_ActiveTexture(0);
-	Ivector2		ts;
-	ts.set			((int)T->get_Width(),(int)T->get_Height());
-	// tile
-	int	rem_x		= iSize.x%ts.x;
-	int rem_y		= iSize.y%ts.y;
-	int tile_x		= iFloor(float(iSize.x)/ts.x); tile_x-=2; R_ASSERT(tile_x>=0);
-	//if(tile_x<0) tile_x=0;
-	int tile_y		= iFloor(float(iSize.y)/ts.y); tile_y-=2; R_ASSERT(tile_y>=0);
-	//if(tile_y<0) tile_y=0;
+	CTexture* T;
+	Ivector2  ts;
+	int rem_x, rem_y, tile_x, tile_y;
 
 	float fScale	= HUD().GetScale();
 	// center align
@@ -57,15 +49,86 @@ void CUIFrameRect::UpdateSize()
 	list_rect.set	(iPos.x,iPos.y,iFloor(iPos.x+fScale*iSize.x),iFloor(iPos.y+fScale*iSize.y));
 	list_rect.shrink(32,32);
 
-	back.SetPos			(iPos.x+ts.x,			iPos.y+ts.y			);	back.SetTile		(tile_x,tile_y,rem_x,rem_y);
-	frame[fmL].SetPos	(iPos.x,				iPos.y+ts.y			);	frame[fmL].SetTile	(1,tile_y,0,rem_y);
-	frame[fmR].SetPos	(iPos.x+iSize.x-ts.x,	iPos.y+ts.y			);	frame[fmR].SetTile	(1,tile_y,0,rem_y);
-	frame[fmT].SetPos	(iPos.x+ts.x,			iPos.y				);	frame[fmT].SetTile	(tile_x,1,rem_x,0);
-	frame[fmB].SetPos	(iPos.x+ts.x,			iPos.y+iSize.y-ts.y	);	frame[fmB].SetTile	(tile_x,1,rem_x,0);
-	frame[fmLT].SetPos	(iPos.x,				iPos.y				);	
-	frame[fmRT].SetPos	(iPos.x+iSize.x-ts.x,	iPos.y				);	
-	frame[fmRB].SetPos	(iPos.x+iSize.x-ts.x,	iPos.y+iSize.y-ts.y	);	
-	frame[fmLB].SetPos	(iPos.x,				iPos.y+iSize.y-ts.y	);	
+
+	RCache.set_Shader(frame[fmLT].GetShader());
+	T = RCache.get_ActiveTexture(0);
+	int lt_width = (int)T->get_Width();
+	int lt_height = (int)T->get_Height();
+	frame[fmLT].SetPos	(iPos.x, iPos.y);	
+
+	RCache.set_Shader(frame[fmRT].GetShader());
+	T = RCache.get_ActiveTexture(0);
+	int rt_width = (int)T->get_Width();
+	int rt_height = (int)T->get_Height();
+	frame[fmRT].SetPos	(iPos.x+iSize.x-rt_width,iPos.y);	
+
+	RCache.set_Shader(frame[fmLB].GetShader());
+	T = RCache.get_ActiveTexture(0);
+	int lb_width = (int)T->get_Width();
+	int lb_height = (int)T->get_Height();
+	frame[fmLB].SetPos	(iPos.x, iPos.y+iSize.y-lb_height);
+
+	RCache.set_Shader(frame[fmRB].GetShader());
+	T = RCache.get_ActiveTexture(0);
+	int rb_width = (int)T->get_Width();
+	int rb_height = (int)T->get_Height();
+	frame[fmRB].SetPos	(iPos.x+iSize.x-rb_width, iPos.y+iSize.y-rb_height);	
+
+
+	int size_top	= iSize.x - lt_width - rt_width;
+	int size_bottom = iSize.x - lb_width - rb_width;
+	int size_left	= iSize.y - lt_height - lb_height;
+	int size_right  = iSize.y - rt_height - rb_height;
+
+
+	//Фон
+	RCache.set_Shader(back.GetShader());
+	T = RCache.get_ActiveTexture(0);
+	ts.set ((int)T->get_Width(),(int)T->get_Height());
+	rem_x  = size_top%ts.x;
+	rem_y  = size_left%ts.y;
+	tile_x = iFloor(float(size_top)/ts.x); R_ASSERT(tile_x>=0);
+	tile_y = iFloor(float(size_left)/ts.y);  R_ASSERT(tile_y>=0);
+
+	back.SetPos(iPos.x+lt_width,iPos.y+lt_height);
+	back.SetTile(tile_x,tile_y,rem_x,rem_y);
+
+
+	//Обрамление
+	RCache.set_Shader(frame[fmT].GetShader());
+	T = RCache.get_ActiveTexture(0);
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	rem_x		= size_top%ts.x;
+	tile_x		= iFloor(float(size_top)/ts.x); R_ASSERT(tile_x>=0);
+	frame[fmT].SetPos	(iPos.x+lt_width,iPos.y);	
+	frame[fmT].SetTile	(tile_x,1,rem_x,0);
+
+	RCache.set_Shader(frame[fmB].GetShader());
+	T		= RCache.get_ActiveTexture(0);
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	rem_x		= size_bottom%ts.x;
+	tile_x		= iFloor(float(size_bottom)/ts.x); R_ASSERT(tile_x>=0);
+	frame[fmB].SetPos	(iPos.x+lb_width,iPos.y+iSize.y-ts.y);	
+	frame[fmB].SetTile	(tile_x,1,rem_x,0);
+
+
+	RCache.set_Shader(frame[fmL].GetShader());
+	T		= RCache.get_ActiveTexture(0);
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	rem_y		= size_left%ts.y;
+	tile_y		= iFloor(float(size_left)/ts.y); R_ASSERT(tile_y>=0);
+	frame[fmL].SetPos	(iPos.x, iPos.y+lt_height);	
+	frame[fmL].SetTile	(1,tile_y,0,rem_y);
+
+
+	RCache.set_Shader(frame[fmR].GetShader());
+	T		= RCache.get_ActiveTexture(0);
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	rem_y		= size_right%ts.y;
+	tile_y		= iFloor(float(size_right)/ts.y); R_ASSERT(tile_y>=0);
+	frame[fmR].SetPos	(iPos.x+iSize.x-ts.x,iPos.y+rt_height);	
+	frame[fmR].SetTile	(1,tile_y,0,rem_y);
+
 
 	uFlags			|= flValidSize;
 }

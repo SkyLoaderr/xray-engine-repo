@@ -1054,8 +1054,12 @@ void CActor::shedule_Update	(u32 DT)
 	// generic stuff
 	inherited::shedule_Update	(DT);
 
-	if (IsMyCamera())		{
-		if (!pCamBobbing){ 
+	
+	//обновить положение камеры
+	if (IsMyCamera())		
+	{
+		if (!pCamBobbing)
+		{
 			pCamBobbing = xr_new<CEffectorBobbing>	();
 			Level().Cameras.AddEffector			(pCamBobbing);
 		}
@@ -1064,8 +1068,10 @@ void CActor::shedule_Update	(u32 DT)
 		CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.GetActiveSlot() < 0xffffff ? 
 					m_inventory.m_slots[m_inventory.GetActiveSlot()].m_pIItem : NULL);
 		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
-	} else {
-		if (pCamBobbing)						{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+	}
+	else 
+	{
+		if (pCamBobbing)	{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
@@ -1082,6 +1088,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	R_ASSERT(GAMEMTL_NONE!=last_gmtl_id);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
+
 	//R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
 	// ref_sound step
 	if (mtl_pair&&(mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
@@ -1142,14 +1149,8 @@ void CActor::shedule_Update	(u32 DT)
 	}
 	setEnabled(true);
 
-
 	//обновление инвентаря и торговли
-	//m_inventory.Update(DT);
-	//GetTrade()->UpdateTrade();
 	UpdateInventoryOwner(DT);
-
-	//update actor health condition
-	//m_actorCondition.Update();
 }
 
 void CActor::renderable_Render	()

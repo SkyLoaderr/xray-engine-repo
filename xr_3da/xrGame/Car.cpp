@@ -1077,7 +1077,9 @@ void CCar::SExhaust::Init()
 	element_transform.invert();
 	transform.mulA(element_transform);
 	p_pgobject=xr_new<CParticlesObject>(*pcar->m_exhaust_particles,pcar->Sector(),false);
-	p_pgobject->SetTransform(pcar->XFORM());
+	
+	Fvector zero_vel = {0.f,0.f,0.f};
+	p_pgobject->UpdateParent(pcar->XFORM(), zero_vel);
 }
 
 void CCar::SExhaust::Update()

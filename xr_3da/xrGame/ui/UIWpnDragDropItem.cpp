@@ -14,7 +14,6 @@
 CUIWpnDragDropItem:: CUIWpnDragDropItem()
 {
 	m_pWeapon = NULL;
-	
 }
 
 CUIWpnDragDropItem::~ CUIWpnDragDropItem()
@@ -152,11 +151,11 @@ void CUIWpnDragDropItem::ClipperOn()
 
 void CUIWpnDragDropItem::SetTextureScale(float new_scale)
 {
+	inherited::SetTextureScale(new_scale);
+
 	if(!m_pWeapon) return;
 
 	m_UIStaticGrenadeLauncher.SetScale(new_scale);
 	m_UIStaticScope.SetScale(new_scale);
 	m_UIStaticSilencer.SetScale(new_scale);
-
-	inherited::SetTextureScale(new_scale);
 }

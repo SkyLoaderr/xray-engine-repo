@@ -274,6 +274,12 @@ CInventoryOwner* CPda::GetOriginalOwner()
 	return pInvOwner;
 }
 
+CObject* CPda::GetOwnerObject()
+{
+	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
+	return pObject;
+}
+
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
 void CPda::SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger)

@@ -224,6 +224,8 @@ void  CUIButton::Draw()
 	}
 
 	m_UIStaticItem.Render();
+
+	CUIWindow::Draw();
 }
 
 
@@ -284,9 +286,14 @@ void  CUIButton::Update()
 	GetFont()->SetColor(0xFFEEEEEE);
 
 	
-	GetFont()->Out((float)rect.left + right_offset  +  m_iTextOffsetX, 
-				   (float)rect.top + down_offset  + m_iTextOffsetY,
-				    m_str);
+	if(m_str && xr_strlen(m_str)>0)
+		GetFont()->Out((float)rect.left + right_offset  +  m_iTextOffsetX, 
+					   (float)rect.top + down_offset  + m_iTextOffsetY,
+					    m_str);
+
+
+	
+	CUIWindow::Update();
 }
 
 void CUIButton::UpdateTextAlign()

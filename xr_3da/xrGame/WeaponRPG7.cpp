@@ -320,10 +320,11 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	l_m.c.set(pos);l_m.j.set(normal); 
 	GetBasis(normal, l_m.k, l_m.i);
 	
+	Fvector zero_vel = {0.f,0.f,0.f};
 	for(s32 i = 0; i < l_c; ++i) 
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
-		pStaticPG->SetTransform(l_m);
+		pStaticPG->UpdateParent(l_m,zero_vel);
 		pStaticPG->Play();
 	}
 	m_curColor.set(m_lightColor);
@@ -523,10 +524,11 @@ void CWeaponRPG7Grenade::OnH_B_Independent()
 
 		CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
+		Fvector zero_vel = {0.f,0.f,0.f};
 		for(s32 i = 0; i < l_c; ++i) 
 		{
 			pStaticPG = xr_new<CParticlesObject>(*m_trailEffects[i],Sector(),false);
-			pStaticPG->SetTransform(l_m);
+			pStaticPG->UpdateParent(l_m,zero_vel);
 			pStaticPG->Play();
 			m_trailEffectsPSs.push_back(pStaticPG);
 		}
@@ -638,6 +640,9 @@ void CWeaponRPG7Grenade::SoundDestroy(ref_sound& dest)
 {
 	dest.destroy();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////
 CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") 
 {
@@ -661,11 +666,14 @@ void CWeaponRPG7::Load	(LPCSTR section)
 BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
 {
 	m_pGrenadePoint = &vLastFP;
+
 	BOOL l_res = inherited::net_Spawn(DC);
+
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
 	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
 	V = PKinematics(Visual()); R_ASSERT(V);
 	V->LL_GetBoneInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
+
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) 
 	{
@@ -709,6 +717,7 @@ void CWeaponRPG7::OnStateSwitch(u32 S)
 void CWeaponRPG7::ReloadMagazine() 
 {
 	inherited::ReloadMagazine();
+
 	if(iAmmoElapsed && !m_pGrenade) 
 	{
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
@@ -793,12 +802,13 @@ void CWeaponRPG7::switch2_Fire	()
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
 
-		CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+		CParticlesObject* pStaticPG;
 		pStaticPG = xr_new<CParticlesObject>("weapons\\rpg_shoot_01",Sector());
-		Fmatrix l_pos; l_pos.set(XFORM()); //l_pos.c.set(p1);
-		pStaticPG->SetTransform(l_pos); pStaticPG->Play();
-	//for(s32 i = 0; i < l_c; ++i) {
-	//}
+		Fmatrix l_pos; 
+		Fvector zero_vel = {0.f,0.f,0.f};
+		l_pos.set(XFORM()); //l_pos.c.set(p1);
+		pStaticPG->UpdateParent(l_pos, zero_vel); 
+		pStaticPG->Play();
 
 		// Patch for "previous frame position" :)))
 		dwFP_Frame					= 0xffffffff;
@@ -852,8 +862,11 @@ void CWeaponRPG7::Fire2End ()
 bool CWeaponRPG7::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
-		case kWPN_ZOOM : {
+	
+	switch(cmd) 
+	{
+	case kWPN_ZOOM:
+		{
 			if(flags&CMD_START) Fire2Start();
 			else Fire2End();
 		} return true;

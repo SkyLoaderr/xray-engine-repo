@@ -60,26 +60,26 @@ public:
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
 };
 
-class CWeaponRPG7 :
-	public CWeaponCustomPistol
+class CWeaponRPG7 :	public CWeaponCustomPistol
 {
+private:
 	typedef CWeaponCustomPistol inherited;
 	float			fMaxZoomFactor;
 public:
 	CWeaponRPG7(void);
 	virtual ~CWeaponRPG7(void);
 
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void OnStateSwitch(u32 S);
-	virtual void OnEvent(NET_Packet& P, u16 type);
-	virtual void ReloadMagazine();
-	virtual void	Load			(LPCSTR section);
-	virtual void	switch2_Fire	();
-	virtual void			Fire2Start			();
-	virtual void			Fire2End			();
-	virtual bool Action(s32 cmd, u32 flags);
-	virtual void	FireStart	();
-	virtual void			SwitchState			(u32 S);
+	virtual BOOL net_Spawn		(LPVOID DC);
+	virtual void OnStateSwitch	(u32 S);
+	virtual void OnEvent		(NET_Packet& P, u16 type);
+	virtual void ReloadMagazine	();
+	virtual void Load			(LPCSTR section);
+	virtual void switch2_Fire	();
+	virtual void Fire2Start		();
+	virtual void Fire2End		();
+	virtual bool Action			(s32 cmd, u32 flags);
+	virtual void FireStart		();
+	virtual void SwitchState	(u32 S);
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 

@@ -37,12 +37,11 @@ void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int heigh
 	inherited::Init(base_name, x,y, width, height);
 
 	AttachChild(&m_UIListWnd);
+	
 	m_UIListWnd.Init(OFFSET_X, OFFSET_Y, 
 					 width - OFFSET_X*2, 
-					 height - OFFSET_Y*2);
-
-	
-	m_UIListWnd.SetItemHeight(ITEM_HEIGHT);
+					 height - OFFSET_Y*2, ITEM_HEIGHT);
+	m_UIListWnd.EnableActiveBackground(true);
 
 
 	m_iClickedElement = -1;
@@ -136,12 +135,6 @@ void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(mouse_action == LBUTTON_DOWN && !cursor_on_box)
 	{
 		Hide();
-		
-		//отправить сообщение родительскому
-		/*RECT rect = GetAbsoluteRect();
-		GetTop()->OnMouse(x + rect.left,
-			                 y + rect.top,
-							 LBUTTON_DOWN);*/
 	}
 
 	inherited::OnMouse(x, y, mouse_action);

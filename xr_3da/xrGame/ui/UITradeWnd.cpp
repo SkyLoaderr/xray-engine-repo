@@ -618,13 +618,12 @@ void CUITradeWnd::UpdateLists()
 			if((*it)) 
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
 
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 				UIDragDropItem.SetShader(GetEquipmentIconsShader());
-
-				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+
 
 				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 										(*it)->GetXPos()*INV_GRID_WIDTH,

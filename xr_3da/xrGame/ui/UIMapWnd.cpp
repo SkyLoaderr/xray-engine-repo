@@ -71,9 +71,13 @@ void CUIMapWnd::Init()
 
 	inherited::Init(0, 0, Device.dwWidth, Device.dwHeight);
 
-
 	AttachChild(&UIMainMapFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
+
+	AttachChild(&UIStaticTop);
+	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
+	AttachChild(&UIStaticBottom);
+	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
 	UIMainMapFrame.AttachChild(&UICheckButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UICheckButton1);
@@ -197,8 +201,8 @@ void CUIMapWnd::Draw()
 //с началом координат в левом верхнем углу
 void CUIMapWnd::ConvertToLocal(const Fvector& src, Ivector2& dest)
 {
-	dest.x = int(m_iMapWidth*(src.x - m_fWorldMapLeft)/m_fWorldMapWidth);
-	dest.y = m_iMapHeight - int(m_iMapHeight*(src.z - m_fWorldMapTop)/m_fWorldMapHeight);
+	dest.x = iFloor(0.5f +m_iMapWidth*(src.x - m_fWorldMapLeft)/m_fWorldMapWidth);
+	dest.y = m_iMapHeight - iFloor(0.5f +m_iMapHeight*(src.z - m_fWorldMapTop)/m_fWorldMapHeight);
 }
 
 //прорисовка карты и объектов на ней

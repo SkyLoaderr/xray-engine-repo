@@ -196,6 +196,9 @@ void CWeaponMagazined::OnMagazineEmpty()
 {
 	bPending = true;
 	SwitchState(eMagEmpty); 
+
+	//!!! just for testing reasons !!!
+	inherited::OnMagazineEmpty();
 }
 
 void CWeaponMagazined::UnloadMagazine() 
@@ -339,7 +342,7 @@ void CWeaponMagazined::UpdateCL			()
 {
 	inherited::UpdateCL	();
 	float dt = Device.fTimeDelta;
-	
+
 	// cycle update
 	switch (NEXT_STATE)
 	{
@@ -356,8 +359,8 @@ void CWeaponMagazined::UpdateCL			()
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	case eHidden:		break;
 	}
+
 	UpdateSounds		();
-	//bPending			= false;
 }
 
 void CWeaponMagazined::UpdateSounds	()
@@ -366,6 +369,7 @@ void CWeaponMagazined::UpdateSounds	()
 	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
 	{
 		UpdateFP					();
+
 		if (sndShow.feedback)		sndShow.set_position		(vLastFP);
 		if (sndHide.feedback)		sndHide.set_position		(vLastFP);
 		if (sndShot.feedback)		sndShot.set_position		(vLastFP);
@@ -377,6 +381,7 @@ void CWeaponMagazined::UpdateSounds	()
 void CWeaponMagazined::state_Fire	(float dt)
 {
 	UpdateFP				();
+
 	fTime					-=dt;
 	Fvector					p1, d; 
 	p1.set(vLastFP);
@@ -396,8 +401,9 @@ void CWeaponMagazined::state_Fire	(float dt)
 		OnShot			();
 		FireTrace		(p1,vLastFP,d);
 	}
+
 	UpdateSounds			();
-	
+
 	//для стрельбы сталкеров, к которым апдейты приходят редко, очередями
 	if(m_shotNum == m_queueSize) FireEnd();
 }
@@ -470,7 +476,7 @@ void CWeaponMagazined::Show		()
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
-	OnShotmark					(vDir, vEnd, R);
+//	OnShotmark					(vDir, vEnd, R);
 }
 
 void CWeaponMagazined::MediaLOAD		()
@@ -511,7 +517,7 @@ void CWeaponMagazined::OnShellDrop	()
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
+	//Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -549,7 +555,9 @@ void CWeaponMagazined::OnShot		()
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)
 {
+//	Device.Statistic.TEST3.Begin();
 	Sound->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
+//	Device.Statistic.TEST3.End();
 	
 	if (!R.O) 
 	{

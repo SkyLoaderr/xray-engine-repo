@@ -57,6 +57,7 @@ protected:
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponSignName;
 	CUIStatic			UIWeaponIcon;
+	//CUIDragDropItem	UIWeaponIcon;
 
 	//для текущего активного актера и оружия
 	CActor*		m_pActor;	

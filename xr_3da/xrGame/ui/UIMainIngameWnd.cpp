@@ -18,6 +18,9 @@ using namespace InventoryUtilities;
 
 
 
+//static CUIDragDropItem	UIWeaponIcon;
+//static CUIButton	UIWeaponIcon;
+
 
 #define RADIATION_ABSENT 0.25f
 #define RADIATION_SMALL 0.5f
@@ -86,6 +89,8 @@ void CUIMainIngameWnd::Init()
 	m_iWeaponIconHeight = UIWeaponIcon.GetHeight();
 	m_iWeaponIconX = UIWeaponIcon.GetWndRect().left;
 	m_iWeaponIconY = UIWeaponIcon.GetWndRect().top;
+//	UIWeaponIcon.EnableDragDrop(false);
+	UIWeaponIcon.Enable(false);
 
 	//
 	AttachChild(&UIPdaOnline);
@@ -146,8 +151,7 @@ void CUIMainIngameWnd::Draw()
 
 void CUIMainIngameWnd::Update()
 {
-	static string256 wound_string;
-	static string256 pda_string;
+	static string256 text_str;
 
 	m_pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
@@ -157,17 +161,15 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-#pragma todo("JIM: I temporary commented it")
-//	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
-//	{
-//		string256 text;
-//		sprintf(&text[0], "%d", m_pActor->GetPDA()->ActiveContactsNum());
-//		UIPdaOnline.SetText(&text[0]);
-//	}
-//	else
-//	{
-//		UIPdaOnline.SetText("");
-//	}
+	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+	{
+		sprintf(text_str, "%d", m_pActor->GetPDA()->ActiveContactsNum());
+		UIPdaOnline.SetText(text_str);
+	}
+	else
+	{
+		UIPdaOnline.SetText("");
+	}
 
 
 	if(m_pActor->m_inventory.GetActiveSlot() < m_pActor->m_inventory.m_slots.size()) 
@@ -212,10 +214,9 @@ void CUIMainIngameWnd::Update()
 			if((AE>=0)&&(AC>=0))
 			{
 				//сторока для вывода патронов к оружию
-				string256 m_sAmmoText;
-				sprintf(&m_sAmmoText[0], "%d/%d %s",AE,AC, 
+				sprintf(text_str, "%d/%d %s",AE,AC, 
 										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
-				UIWeaponSignAmmo.SetText(&m_sAmmoText[0]);
+				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}
 	} 
@@ -280,8 +281,8 @@ void CUIMainIngameWnd::Update()
 	//Wounds bleeding speed
 	if(m_pActor->BleedingSpeed()>0)
 	{
-		sprintf(wound_string, "%3.3f",m_pActor->BleedingSpeed());
-		UITextWound.SetText(wound_string);
+		sprintf(text_str, "%3.3f",m_pActor->BleedingSpeed());
+		UITextWound.SetText(text_str);
 		UITextWound.Show(true);
 		UIStaticWound.Show(true);
 	}

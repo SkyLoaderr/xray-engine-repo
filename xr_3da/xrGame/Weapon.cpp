@@ -7,22 +7,16 @@
 #include "Weapon.h"
 #include "WeaponHUD.h"
 
-//#include "PSObject.h"
 #include "ParticlesObject.h"
 
 #include "HUDManager.h"
-
 #include "entity.h"
 #include "actor.h"
-
-
-#define FLAME_TIME 0.05f
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-/*
 //нормальное распределение с дисперсией
 //m - мат.ожидание, s - среднеквадратичное отклонение
 static float RandNormal(float m, float s)
@@ -36,8 +30,10 @@ static float RandNormal(float m, float s)
 	float norm_num = (-2 * log(r1<epsilon?epsilon:r1) * _cos (2 * PI * r2));
 
 	norm_num = m + norm_num*s;
+
+	return norm_num;
 };
-*/
+
 
 CWeapon::CWeapon(LPCSTR name)
 {
@@ -85,13 +81,6 @@ CWeapon::CWeapon(LPCSTR name)
 	light_render				= ::Render->light_create();
 	light_render->set_shadow	(true);
 	m_shotLight = true;
-
-	m_bUsingCondition = true;
-	bMisfire = false;
-
-	m_flagsAddOnState = 0;
-
-	m_bZoomMode = false;
 }
 
 CWeapon::~CWeapon		()
@@ -351,6 +340,7 @@ void CWeapon::Load		(LPCSTR section)
 	else
 		m_ammoName = 0;
 
+#pragma todo("Dandy: remove m_resource m_abrasion")
 	m_resource = m_abrasion = pSettings->r_float(section,"resource");
 
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
@@ -519,6 +509,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	}
 
 	UpdateAddonsVisibility();
+	StopFlameParticles();
 
 	return bResult;
 }
@@ -601,7 +592,11 @@ void CWeapon::OnH_B_Independent	()
 	setVisible					(true);
 	setEnabled					(true);
 
-	CWeapon::FireEnd();
+	//завершить принудительно все процессы что шли
+	FireEnd();
+	bPending = false;
+	SwitchState(eIdle);
+
 	hud_mode					= FALSE;
 	UpdateXForm					();
 //	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
@@ -705,6 +700,10 @@ void CWeapon::UpdateCL		()
 		Position().set			(XFORM().c);
 	}
 
+	//нарисовать партиклы
+	UpdateFP();
+	if(m_pFlameParticles) UpdateFlameParticles();
+
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
@@ -792,203 +791,21 @@ void CWeapon::signal_HideComplete()
 
 void CWeapon::SetDefaults()
 {
-	bWorking		= false;
-	bWorking2		= false;
-	bPending		= false;
+	bWorking			= false;
+	bWorking2			= false;
+	bPending			= false;
+	m_pFlameParticles	= NULL;
+
+	m_bUsingCondition = true;
+	bMisfire = false;
+	m_flagsAddOnState = 0;
+	m_bZoomMode = false;
 }
 
 void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
 	Position().set	(trans.c);
 	XFORM().mul	(trans,m_Offset);
-}
-
-void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
-{
-	if (!hWallmark)	return;
-	
-	if (R.O) {
-		if (R.O->CLS_ID==CLSID_ENTITY)
-		{
-#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-			/*
-			IRender_Sector* S	= R.O->Sector();
-			Fvector D;	D.invert(vDir);
-
-			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
-			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
-			PS->m_Emitter.m_ConeDirection.set(D);
-			PS->play_at_pos		(vEnd);
-			*/
-		}
-	} else {
-		::Render->add_Wallmark	(
-			hWallmark,
-			vEnd,
-			fWallmarkSize,
-			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
-			g_pGameLevel->ObjectSpace.GetStaticVerts()
-			);
-	}
-}
-
-BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
-{
-	result.O;		// 0-static else CObject*
-	result.range;	// range from start to element 
-	result.element;	// if (O) "num tri" else "num bone"
-	params;			// user defined abstract data
-	return TRUE;	// TRUE-продолжить трассировку / FALSE-закончить трассировку
-}
-/*
-def:
-	u32				self_gmtl_id;
-	u32				last_gmtl_id;
-init:
-	self_gmtl_id	= GAMEMTL_NONE;
-	last_gmtl_id	= GAMEMTL_NONE;
-load:
-	self_gmtl_id	= GMLib.GetMaterialIdx("actor");
-	last_gmtl_id	= GMLib.GetMaterialIdx("default");
-use:
-	SGameMtl* mtl0	= GMLib.GetMaterial(self_gmtl_id);
-	SGameMtl* mtl1	= GMLib.GetMaterial(last_gmtl_id);
-	SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
-
-	if (result.O){
-		// dynamic
-		CKinematics* V = 0;
-		if (0!=(V=PKinematics(result.O->Visual()))){
-			CBoneData* B = V->LL_GetData(result.element);
-			B->game_mtl_idx;
-		}
-	}else{
-		// static 
-		CDB::TRI& T		= g_pGameLevel->ObjectSpace.Static->get_tris()+result.element;
-		T.material;
-	}
-query:
-	if(0){
-	Collide::ray_defs RD(P,dir,fireDistance*l_cartridge.m_kDist,0,Collide::rqtBoth);
-	if (g_pGameLevel->ObjectSpace.RayQuery( RD, firetrace_callback, this ))
-	{ 
-	for (int k=0; k<g_pGameLevel->ObjectSpace.r_results.r_count(); k++){
-	Collide::rq_result* R = g_pGameLevel->ObjectSpace.r_results.r_begin()+k;
-	}
-	}
-	}
-
-*/
-
-BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
-{
-	Collide::rq_result RQ;
-
-	R_ASSERT(m_magazine.size());
-
-	CCartridge &l_cartridge = m_magazine.top();
-
-	// direct it by dispersion factor
-	Fvector dir, dir1;
-	//dir.random_dir			(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
-	dir.random_dir(D,(fireDispersion*fireDispersion_Current)*
-					  GetPrecision()*
-					  GetConditionDispersionFactor(),Random);
-
-	// increase dispersion
-	fireDispersion_Current += fireDispersion_Inc;
-	clamp(fireDispersion_Current,0.f,1.f);
-
-	//повысить изношенность оружия
-	ChangeCondition(-conditionDecreasePerShot);
-	
-
-	BOOL bResult = false;
-
-	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
-	{
-		dir1.random_dir(dir, fireDispersionBase * l_cartridge.m_kDisp, Random);
-
-		// ...and trace line
-		H_Parent()->setEnabled(false);
-		bResult |= Level().ObjectSpace.RayPick(P, dir, fireDistance*l_cartridge.m_kDist, Collide::rqtBoth, RQ);
-		H_Parent()->setEnabled(true);
-		D = dir1;
-
-		// ...analyze
-		Fvector end_point; 
-		end_point.mad(P,D,RQ.range);
-		if(bResult) 
-		{
-			if(Local() && RQ.O) 
-			{
-				float power = float(iHitPower) * l_cartridge.m_kHit;
-				float scale = 1-(RQ.range/(fireDistance*l_cartridge.m_kDist)); clamp(scale,0.f,1.f); scale = _sqrt(scale);
-				power *= scale;
-				float impulse = fHitImpulse * l_cartridge.m_kImpulse * scale;
-				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
-				//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
-				if(E) power *= E->HitScale(RQ.element);
-
-				// object-space
-				Fvector p_in_object_space,position_in_bone_space;
-				Fmatrix m_inv;
-				m_inv.invert(RQ.O->XFORM());
-				m_inv.transform_tiny(p_in_object_space, end_point);
-
-				// bone-space
-				CKinematics* V = PKinematics(RQ.O->Visual());
-				
-				if(V)
-				{
-					Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(RQ.element))).mTransform;
-					Fmatrix  m_inv_bone;
-					m_inv_bone.invert(m_bone);
-					m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
-				}
-				else
-				{
-					position_in_bone_space.set(p_in_object_space);
-				}
-
-				//  
-				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(u16(H_Parent()->ID()));
-				P.w_dir			(D);
-				P.w_float		(power);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(position_in_bone_space);
-				P.w_float		(impulse);
-				P.w_u16			(eHitTypeWound);
-				u_EventSend		(P);
-			}
-			FireShotmark(D, end_point, RQ);
-		}
-
-		// tracer
-		if(l_cartridge.m_tracer && tracerFrame != Device.dwFrame) 
-		{
-			tracerFrame = Device.dwFrame;
-			Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
-		}
-	}
-
-	// light
-	if(m_shotLight) Light_Start();
-	
-	// Ammo
-	if(Local()) 
-	{
-		m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
-		m_magazine.pop	();
-		if(!(--iAmmoElapsed)) OnMagazineEmpty();
-
-		//проверить не произошла ли осечка
-		CheckForMisfire();
-	}
-	
-	return				bResult;
 }
 
 void CWeapon::Light_Start	()
@@ -1013,44 +830,6 @@ void CWeapon::Light_Render	(Fvector& P)
 	light_render->set_range		(light_build_range*light_scale);
 }
 
-//нарисовать вспышку пламени из оружия
-void CWeapon::OnDrawFlame	()
-{
-	if (fFlameTime>0)	
-	{
-#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
-		/*
-		// fire flash
-		Fvector P = vLastFP;
-		float k=fFlameTime/FLAME_TIME;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; ++i)
-		{
-			f		*= 0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
-			P.add(D);
-		}
-		*/
-
-		
-		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>(m_sFlameParitcles,Sector());
-		Fmatrix pos; 
-		pos.set(XFORM()); 
-		pos.c.set(vLastFP);
-		Fvector vel; 
-		vel.sub(Position(),ps_Element(0).vPosition); 
-		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-		pStaticPG->UpdateParent(pos, vel); 
-		pStaticPG->Play();
-
-
-		fFlameTime -= Device.fTimeDelta;
-	}
-}
 
 void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 {
@@ -1377,4 +1156,9 @@ CUIStaticItem* CWeapon::ZoomTexture()
 		return &m_UIScope;
 	else 
 		return NULL;
+}
+
+void CWeapon::OnMagazineEmpty()
+{
+	StopFlameParticles	();
 }

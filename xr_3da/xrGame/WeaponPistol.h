@@ -10,13 +10,16 @@ public:
 	virtual ~CWeaponPistol(void);
 
 	virtual void	Load			(LPCSTR section);
-	virtual void	switch2_Idle	();
+	
 	virtual void	switch2_Reload	();
-	virtual void	switch2_Hiding	();
+
 	virtual void	OnShot			();
 	virtual void	OnAnimationEnd	();
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
+
+	virtual void	PlayAnimIdle	();
+	virtual void	PlayAnimHide	();
 
 	ref_sound		sndClose;
 	ESoundTypes		m_eSoundClose;

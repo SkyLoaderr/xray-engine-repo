@@ -58,7 +58,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
 	
-	//координаты на экране
+	//координаты на экране в пикселях
 	float sc		= HUD().GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
@@ -74,12 +74,12 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
 					 fScale*float(y2)/float(ts.y)+hp.y);*/
 	
-	LTt.set			( float(iOriginalRect.x1+x1)/float(iTextureRect.width())+hp.x,
-					  float(iOriginalRect.y1+y1)/float(iTextureRect.height())+hp.y);
-	RBt.set			((float(iOriginalRect.x1+x1)+
+	LTt.set			( float(iOriginalRect.x1+fScale*x1)/float(iTextureRect.width())+hp.x,
+					  float(iOriginalRect.y1+fScale*y1)/float(iTextureRect.height())+hp.y);
+	RBt.set			((float(iOriginalRect.x1+fScale*x1)+
 					  fScale*float(x2-x1))/
 					  float(iTextureRect.width())+hp.x,
-					 (float(iOriginalRect.y1+y1)+
+					 (float(iOriginalRect.y1+fScale*y1)+
 					  fScale*float(y2-y1))/
 					  float(iTextureRect.height())+hp.y);
 /*	RBt.set			((float(iOriginalRect.x1+x1)+
@@ -96,7 +96,6 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	Pointer->set	(RBp.x,	LTp.y,	color, RBt.x, LTt.y); ++Pointer;
 }
 //--------------------------------------------------------------------
-
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 {
 	Render(Pointer,pos,color,iVisRect.x1,iVisRect.y1,iVisRect.x2,iVisRect.y2);
@@ -179,8 +178,8 @@ Irect CUICustomItem::GetOriginalRectScaled()
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;
 	rect.y1 = iOriginalRect.y1;
-	rect.x2 = int(rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1)*GetScale());
-	rect.y2 = int(rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1)*GetScale());
+	rect.x2 = iFloor(0.5f + rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1)*GetScale());
+	rect.y2 = iFloor(0.5f + rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1)*GetScale());
 
 	return rect;
 }
@@ -190,8 +189,8 @@ Irect CUICustomItem::GetOriginalRect()
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;
 	rect.y1 = iOriginalRect.y1;
-	rect.x2 = int(rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1));
-	rect.y2 = int(rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1));
+	rect.x2 = iFloor(0.5f +rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1));
+	rect.y2 = iFloor(0.5f +rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1));
 
 	return rect;
 }

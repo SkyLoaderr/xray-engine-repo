@@ -29,7 +29,7 @@ public:
 	void ConvertToTexture(const Fvector& src, Fvector2& dest);
 	void ConvertToTexture(float x, float y, Fvector2& dest);
 
-	//ширина и высота участка карты в метрах
+	//ширина и высота отображаемого участка карты в метрах
 	float m_fMapViewWidthMeters;
 	float m_fMapViewHeightMeters;
 
@@ -63,7 +63,6 @@ protected:
 	void UpdateActorPos();
 	//подложка для карты
 	CUIStaticItem landscape;
-	CUIStaticItem fog_of_war;
 
 	CUIMapSpot m_fogOfWarCell;
 

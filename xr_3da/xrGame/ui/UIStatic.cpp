@@ -84,7 +84,7 @@ void CUIStatic::Update()
 
 	if(m_str == NULL) return;
 	
-	if(GetFont()->SizeOf((char*)m_str) == 0) return;	
+	if(!GetFont() || GetFont()->SizeOf((char*)m_str) == 0) return;	
 	
 
 	//RECT rect = GetAbsoluteRect();
@@ -347,6 +347,8 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
 }
 
+//offset_x и offset_y - для смещения самой текстуры 
+//относительно окна CUIStatic (используется для центрирования текстур)
 void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 							   CUIStaticItem& UIStaticItem)
 {
@@ -380,6 +382,9 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	out_x = rect.left;
 	out_y = rect.top;
 
+	// out_rect - прямоугольная область в которую будет выводиться
+	// изображение, вычисляется с учетом положения относительно родительского
+	// окна, а также размеров прямоугольника на текстуре с изображением.
 	out_rect.top =   0;
 	out_rect.bottom = GetHeight();
 	out_rect.left =  0;
@@ -404,8 +409,6 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	{
 		out_rect.bottom = GetHeight() - (rect.bottom-parent_rect.bottom) - offset_y;
 	}
-
-	
 	
 	Irect r;
 	r.x1 = out_rect.left;
@@ -415,10 +418,9 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	r.y1 = out_rect.top;
 	r.y2 = out_rect.bottom<UIStaticItem.GetOriginalRectScaled().height()?
 		   out_rect.bottom:UIStaticItem.GetOriginalRectScaled().height();
-	UIStaticItem.SetRect(r);
 
-	UIStaticItem.SetPos(out_x + offset_x , out_y + offset_y);
-	
+	UIStaticItem.SetRect(r);
+	UIStaticItem.SetPos(out_x + offset_x , out_y  + offset_y);
 }
 
 

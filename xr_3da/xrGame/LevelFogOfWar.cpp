@@ -46,7 +46,6 @@ void CFogOfWar::Init()
 	for(int i=0; i<m_iFogWidth*m_iFogHeight; ++i)
 	{
 		SFogOfWarCell fog_cell;
-		fog_cell.opened = 0;
 		fog_cell.shape = 0;
 
 		m_vFogCells.push_back(fog_cell);
@@ -116,22 +115,59 @@ void CFogOfWar::UpdateFog(const Fvector& world_pos, float view_radius)
 
 }
 
+
 void CFogOfWar::OpenCell(float x, float y)
 {
 	Fvector2 pos;
 	Ivector2 grid_pos;
 	pos.x = x;
 	pos.y = y;
-	
-	if(GetFogCell(pos, grid_pos).opened) return;
-	
-	GetFogCell(grid_pos.x, grid_pos.y).opened = 1;
 
+	GetFogCell(pos, grid_pos);
+	OpenCell(grid_pos.x, grid_pos.y);
+}
+void CFogOfWar::OpenCell(int x, int y)
+{
+	Ivector2 grid_pos;
+	grid_pos.x = x;
+	grid_pos.y = y;
+	
+	if(GetFogCell(grid_pos.x, grid_pos.y).IsOpened()) return;
+	
+	GetFogCell(grid_pos.x, grid_pos.y).Open();
+
+	
 	//изменить вид клеточки тумана для соседей с открывшейся (чтоб было плавно)
-	if(grid_pos.x>0) GetFogCell(grid_pos.x-1, grid_pos.y).shape |= FOG_OPEN_RIGHT;
-	if(grid_pos.y>0) GetFogCell(grid_pos.x, grid_pos.y-1).shape |= FOG_OPEN_UP;
-	if(grid_pos.x<m_iFogWidth-1) GetFogCell(grid_pos.x+1, grid_pos.y).shape |= FOG_OPEN_LEFT;
-	if(grid_pos.y<m_iFogHeight-1)GetFogCell(grid_pos.x, grid_pos.y+1).shape |= FOG_OPEN_DOWN;
+	if(grid_pos.x>0) 
+	{
+		SFogOfWarCell& fog_cell = GetFogCell(grid_pos.x-1, grid_pos.y);
+		fog_cell.shape |= FOG_OPEN_RIGHT;
+		if(fog_cell.shape & FOG_OPEN_LEFT) OpenCell(grid_pos.x-1, grid_pos.y);
+	}
+	if(grid_pos.y>0)
+	{
+		SFogOfWarCell& fog_cell = GetFogCell(grid_pos.x, grid_pos.y-1);
+		fog_cell.shape |= FOG_OPEN_UP;
+		if(fog_cell.shape & FOG_OPEN_DOWN) OpenCell(grid_pos.x, grid_pos.y-1);
+	}
+	if(grid_pos.x<m_iFogWidth-1)
+	{
+		SFogOfWarCell& fog_cell = GetFogCell(grid_pos.x+1, grid_pos.y);
+		fog_cell.shape |= FOG_OPEN_LEFT;
+		if(fog_cell.shape & FOG_OPEN_RIGHT) OpenCell(grid_pos.x+1, grid_pos.y);
+	}
+	if(grid_pos.y<m_iFogHeight-1)
+	{
+		SFogOfWarCell& fog_cell = GetFogCell(grid_pos.x, grid_pos.y+1);
+		fog_cell.shape |= FOG_OPEN_DOWN;
+		if(fog_cell.shape & FOG_OPEN_UP) OpenCell(grid_pos.x, grid_pos.y+1);
+	}
+
+	if(grid_pos.x>0 && grid_pos.y>0) GetFogCell(grid_pos.x-1, grid_pos.y-1).shape |= FOG_OPEN_DOWN_RIGHT;
+	if(grid_pos.x>0 && grid_pos.y<m_iFogHeight-1) GetFogCell(grid_pos.x-1, grid_pos.y+1).shape |= FOG_OPEN_UP_RIGHT;
+	if(grid_pos.x<m_iFogWidth-1 && grid_pos.y>0) GetFogCell(grid_pos.x+1, grid_pos.y-1).shape |= FOG_OPEN_DOWN_LEFT;
+	if(grid_pos.x<m_iFogWidth-1 && grid_pos.y<m_iFogHeight-1) GetFogCell(grid_pos.x+1, grid_pos.y+1).shape |= FOG_OPEN_UP_LEFT;
+
 }
 
 void CFogOfWar::GetFogCellWorldPos(int x, int y, Fvector& world_pos)

@@ -53,11 +53,12 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 		CParticlesObject* pStaticPG; s32 l_c = (int)m_effects.size();
 		Fmatrix l_m; l_m.set(renderable.xform);
+		Fvector zero_vel = {0.f,0.f,0.f};
 		for(s32 i = 0; i < l_c; ++i) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
 			pStaticPG = xr_new<CParticlesObject>(*m_effects[i],l_pRS,false);
-			pStaticPG->SetTransform(l_m);
+			pStaticPG->UpdateParent(l_m,zero_vel);
 			pStaticPG->Play();
 			m_effectsPSs.push_back(pStaticPG);
 		}

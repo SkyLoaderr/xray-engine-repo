@@ -9,6 +9,8 @@ CUIMapSpot::CUIMapSpot()
 {
 	m_pObject = NULL;
 	m_vWorldPos.set(0,0,0);
+
+	ClipperOn();
 }
 CUIMapSpot::~CUIMapSpot()
 {
@@ -17,7 +19,7 @@ CUIMapSpot::~CUIMapSpot()
 
 void CUIMapSpot::Draw()
 {
-	//выполнить проверку на отсечение  элемента, на выход за пределы
+/*	//выполнить проверку на отсечение  элемента, на выход за пределы
 	//родительского окна
 	if(!m_bAvailableTexture) return;
 	
@@ -74,6 +76,8 @@ void CUIMapSpot::Draw()
 	m_UIStaticItem.SetRect(r);
 
 	m_UIStaticItem.Render();
+*/
+	inherited::Draw();
 }
 
 void CUIMapSpot::Update()

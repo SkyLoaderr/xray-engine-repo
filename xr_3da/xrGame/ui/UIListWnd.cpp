@@ -11,13 +11,14 @@
 #define ACTIVE_BACKGROUND_WIDTH 16
 #define ACTIVE_BACKGROUND_HEIGHT 16
 
-
 CUIListWnd::CUIListWnd(void)
 {
 	m_bScrollBarEnabled = false;
 	m_bActiveBackgroundEnable = false;
 
 	m_iFocusedItem = -1;
+
+	SetItemHeight(DEFAULT_ITEM_HEIGHT);
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -32,19 +33,18 @@ CUIListWnd::~CUIListWnd(void)
 	m_ItemList.clear();
 }
 
-void CUIListWnd::Init(int x, int y, int width, int height)
+void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
 {
 	CUIWindow::Init(x, y, width, height);
 
 	SetItemWidth(width - CUIScrollBar::SCROLLBAR_WIDTH);
-	SetItemHeight(30);
-
+	
 	m_iFirstShownIndex = 0;
+
+	SetItemHeight(item_height);
 	m_iRowNum = height/m_iItemHeight;
 
-
 	UpdateList();
-
 
 	//добавить полосу прокрутки
 	AttachChild(&m_ScrollBar);
@@ -60,33 +60,29 @@ void CUIListWnd::Init(int x, int y, int width, int height)
 
 
 	m_StaticActiveBackground.Init(ACTIVE_BACKGROUND,"hud\\default", 0,0,alNone);
-	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 1,
-									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 0);
-
+	m_StaticActiveBackground.SetTile(m_iItemWidth/ACTIVE_BACKGROUND_WIDTH, 
+									 m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT,
+									 m_iItemWidth%ACTIVE_BACKGROUND_WIDTH, 
+									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
 }
 
 void CUIListWnd::SetWidth(int width)
 {
 	inherited::SetWidth(width);
-	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 1,
-									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 0);
+	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 
+									 m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT,
+									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 
+									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
+;
 }
 
-bool CUIListWnd::AddItem(char*  str, void* pData, int value)
-{
-	//создать новый элемент и добавить его в список
-	CUIListItem* pItem = NULL;
-	pItem = xr_new<CUIListItem>();
-		
-    if(!pItem) return false;
 
-	pItem->Init(str, 0, GetSize()* m_iItemHeight, 
-					m_iItemWidth, m_iItemHeight);
-
+//добавляет элемент созданный извне
+bool CUIListWnd::AddItem(CUIListItem* pItem)
+{	
 	AttachChild(pItem);
-
-	pItem->SetData(pData);
-	pItem->SetValue(value);
+	pItem->Init(0, GetSize()* m_iItemHeight, 
+				m_iItemWidth, m_iItemHeight);
 
 	m_ItemList.push_back(pItem);
 	pItem->SetIndex(m_ItemList.size()-1);
@@ -101,6 +97,23 @@ bool CUIListWnd::AddItem(char*  str, void* pData, int value)
 
 
 	return true;
+}
+
+bool CUIListWnd::AddItem(const char*  str, void* pData, int value)
+{
+	//создать новый элемент и добавить его в список
+	CUIListItem* pItem = NULL;
+	pItem = xr_new<CUIListItem>();
+
+    if(!pItem) return false;
+
+	pItem->Init(str, 0, GetSize()* m_iItemHeight, 
+					m_iItemWidth, m_iItemHeight);
+
+	pItem->SetData(pData);
+	pItem->SetValue(value);
+
+	return AddItem(pItem);
 }
 
 void CUIListWnd::RemoveItem(int index)
@@ -257,13 +270,11 @@ void CUIListWnd::Draw()
 {
 	CUIWindow::Draw();
 
-	if(m_iFocusedItem != -1 /*&& m_bActiveBackgroundEnable*/)
+	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
 	{
-		int offset_y = GetItemHeight()>ACTIVE_BACKGROUND_HEIGHT?
-										(GetItemHeight()-ACTIVE_BACKGROUND_HEIGHT)/2:0;
 		RECT rect = GetAbsoluteRect();
 		m_StaticActiveBackground.SetPos(rect.left, rect.top + 
-									m_iFocusedItem*GetItemHeight()+ offset_y);
+									(m_iFocusedItem-m_iFirstShownIndex)*GetItemHeight());
 		m_StaticActiveBackground.Render();
 	}
 }

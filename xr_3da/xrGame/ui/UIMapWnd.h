@@ -42,6 +42,9 @@ protected:
 
 	//элементы интерфейса
 	CUIFrameWindow	UIMainMapFrame;
+
+	CUIStatic UIStaticTop;
+	CUIStatic UIStaticBottom;
 	
 	CUICheckButton UICheckButton1;
 	CUICheckButton UICheckButton2;

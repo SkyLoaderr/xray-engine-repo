@@ -14,14 +14,20 @@
 class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
+class CParticlesObject;
 
 #include "xrServer_Objects_ALife_Items.h"
+
+
+//функция обработки хитов объектов
+extern BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
 
 
 class CWeapon : public CInventoryItem//CGameObject
 {
 private:
 	typedef CInventoryItem		inherited;
+	friend BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
 	typedef					svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
@@ -79,6 +85,15 @@ protected:
 	float					fHitImpulse;
 
 	Fvector					vLastFP, vLastFD, vLastSP;
+
+	//текущие значения хита и импульса для выстрела 
+	//используются для пробиваемости стен при RayPick
+	float		m_fCurrentHitPower;
+	float		m_fCurrentHitImpulse;
+	CCartridge*	m_pCurrentCartridge;
+	Fvector		m_vCurrentShootDir;
+	Fvector		m_vCurrentShootPos;
+	Fvector		m_vEndPoint;
 		
 	//рассеивание во время стрельбы
 	float					fireDistance;
@@ -170,6 +185,9 @@ protected:
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R);
 	virtual void			UpdatePosition		(const Fmatrix& transform);
+	//попадание по динамическому объекту
+	virtual void			DynamicObjectHit	(Collide::rq_result& R);
+	virtual void			StaticObjectHit		(Collide::rq_result& R);
 
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
@@ -203,7 +221,7 @@ public:
 
 	virtual void			SwitchState			(u32 S);
 
-	virtual void			OnMagazineEmpty		()			{};
+	virtual void			OnMagazineEmpty		();
 	virtual void			OnAnimationEnd		()			{};
 	
 	virtual void			OnZoomIn			();
@@ -212,6 +230,11 @@ public:
 	CUIStaticItem*			ZoomTexture			();
 
 	virtual void			OnDrawFlame			();
+	
+	virtual void			StartFlameParticles	();
+	virtual void			StopFlameParticles	();
+	virtual void			UpdateFlameParticles();
+
 	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 
 public:
@@ -240,10 +263,10 @@ public:
 	virtual void			SetDefaults			();
 	virtual void			Ammo_add			(int iValue);
 	virtual int				Ammo_eject			();
-	virtual void			FireStart			()				{ bWorking=true;	}
-	virtual void			FireEnd				()				{ bWorking=false;	}
-	virtual void			Fire2Start			()				{ bWorking2=true;	}
-	virtual void			Fire2End			()				{ bWorking2=false;	}
+	virtual void			FireStart			();
+	virtual void			FireEnd				();
+	virtual void			Fire2Start			();
+	virtual void			Fire2End			();
 	virtual void			Reload				();
 	
 	virtual void			Hide				()				= 0;
@@ -325,10 +348,11 @@ public:
 
 	//имя пратиклов для огня
 	LPCSTR				m_sFlameParitcles;
+	//объект партиклов огня
+	CParticlesObject*	m_pFlameParticles;
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
-	//
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

@@ -13,8 +13,15 @@
 
 //размер просматриваемого в текущей момент
 //окна карты в метрах
-#define MAP_VIEW_WIDTH_METERS 100.f
-#define MAP_VIEW_HEIGHT_METERS 100.f
+//#define MAP_VIEW_WIDTH_METERS 100.f
+//#define MAP_VIEW_HEIGHT_METERS 100.f
+
+//сколько пиксилей соответствует одному метру
+#define MAP_PIXEL_TO_METERS ((float)300.f/Device.dwWidth)
+#define FOG_OF_WAR_TEXTURE "ui\\ui_fog_of_war"
+#define FOG_TEX_WIDTH		64
+#define FOG_TEX_HEIGHT		64
+#define FOG_TEX_SIZE		FOG_TEX_WIDTH
 
 
 //////////////////////////////////////////////////////////////////////
@@ -41,20 +48,33 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 	landscape.Init("ui\\ui_minimap_level3",	"hud\\default",	rect.left, rect.top, alNone);
 	landscape.SetRect(0, 0, width, height);
 
-	fog_of_war.Init("ui\\ui_button_02",	"hud\\default",	0, 0, alNone);
 
-	AttachChild(&m_fogOfWarCell);
-	m_fogOfWarCell.Init("ui\\ui_button_02", 0, 0, 150,40);
-	m_fogOfWarCell.Show(false);
-	m_fogOfWarCell.Enable(false);
-
-
-	m_fMapViewWidthMeters =  MAP_VIEW_WIDTH_METERS;
-	m_fMapViewHeightMeters = MAP_VIEW_HEIGHT_METERS;
+	m_fMapViewWidthMeters =  width*MAP_PIXEL_TO_METERS;
+	m_fMapViewHeightMeters = height*MAP_PIXEL_TO_METERS;
 
 	m_iMapViewWidthPixels = width;
 	m_iMapViewHeightPixels = height;
 
+
+
+	
+	//вычислить ширину одной клеточки тумана в пикселях
+	Fvector cell_world_pos;
+	Ivector2 screen_pos, screen_pos1;
+	Level().m_pFogOfWar->GetFogCellWorldPos(0,0,cell_world_pos);
+	ConvertToLocal(cell_world_pos, screen_pos);
+	Level().m_pFogOfWar->GetFogCellWorldPos(1,1,cell_world_pos);
+	ConvertToLocal(cell_world_pos, screen_pos1);
+	
+	int fog_cell_size = _max(_abs(screen_pos1.x - screen_pos.x),
+							 _abs(screen_pos1.y - screen_pos.y));
+
+	AttachChild(&m_fogOfWarCell);
+	m_fogOfWarCell.Init(FOG_OF_WAR_TEXTURE, 0, 0, fog_cell_size, fog_cell_size);
+	m_fogOfWarCell.Show(false);
+	m_fogOfWarCell.Enable(false);
+	
+	m_fogOfWarCell.SetTextureScale((float)fog_cell_size/(FOG_TEX_SIZE-2));
 }
 
 //вызывается каждый раз перед вызовом карты
@@ -77,24 +97,14 @@ void CUIMapBackground::InitMapBackground()
 	UpdateMapSpots();
 }
 
-/*
-void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
-{
-	inherited::SendMessage(pWnd, msg, pData);
-}*/
-
-
-
 //перевод из мировой системы координат в координаты карты на экране
 //с началом координат в левом верхнем углу
 void CUIMapBackground::ConvertToLocal(const Fvector& src, Ivector2& dest)
 {
-	dest.x = int(m_iMapViewWidthPixels*
-				(src.x - m_fMapLeftMeters - m_fMapX)/m_fMapViewWidthMeters);
+	dest.x = iFloor(0.5f + ((src.x - m_fMapLeftMeters - m_fMapX)/m_fMapViewWidthMeters)*(float)m_iMapViewWidthPixels);
 
-	dest.y = int(m_iMapViewHeightPixels*
-				(m_fMapHeightMeters - (src.z - m_fMapBottomMeters)
-			     - m_fMapY)/m_fMapViewHeightMeters);
+	dest.y = iFloor(0.5f + ((m_fMapHeightMeters - (src.z - m_fMapBottomMeters)
+			     - m_fMapY)/m_fMapViewHeightMeters)*(float)m_iMapViewHeightPixels);
 }
 
 //сопоставление экранным координатам мировых
@@ -163,8 +173,8 @@ void CUIMapBackground::DrawFogOfWar()
 	right_bottom_pos.y = left_top_pos.y + m_fMapViewHeightMeters;
 
 
-	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(l_pA) Level().m_pFogOfWar->GetFogCell(l_pA->Position(), cell_left_top_pos);
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor) Level().m_pFogOfWar->GetFogCell(pActor->Position(), cell_left_top_pos);
 
 	//получить индексы квадрата тумана
 	//в левой верхней видимой части карты
@@ -185,73 +195,104 @@ void CUIMapBackground::DrawFogOfWar()
 
 void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 {
-	if(Level().m_pFogOfWar->GetFogCell(x,y).opened) return;
+	if(Level().m_pFogOfWar->GetFogCell(x,y).IsOpened()) return;
+
+	unsigned char fog_shape = Level().m_pFogOfWar->GetFogCell(x,y).shape;
+
+
+	if(fog_shape == 0)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										1*FOG_TEX_WIDTH + 1, 0*FOG_TEX_HEIGHT + 1,
+										2*FOG_TEX_WIDTH - 1, 1*FOG_TEX_HEIGHT - 1);
+	}
+	else if((fog_shape & FOG_OPEN_LEFT) && (fog_shape & FOG_OPEN_UP))
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										3*FOG_TEX_WIDTH + 1, 2*FOG_TEX_HEIGHT + 1,
+										4*FOG_TEX_WIDTH - 1, 3*FOG_TEX_HEIGHT - 1);
+	}
+	else if((fog_shape & FOG_OPEN_RIGHT) && (fog_shape & FOG_OPEN_UP))
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										2*FOG_TEX_WIDTH + 1, 2*FOG_TEX_HEIGHT + 1,
+										3*FOG_TEX_WIDTH - 1, 3*FOG_TEX_HEIGHT - 1);
+	}
+	else if((fog_shape & FOG_OPEN_LEFT) && (fog_shape & FOG_OPEN_DOWN))
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										3*FOG_TEX_WIDTH + 1, 1*FOG_TEX_HEIGHT + 1,
+										4*FOG_TEX_WIDTH - 1, 2*FOG_TEX_HEIGHT - 1);
+
+	}
+	else if((fog_shape & FOG_OPEN_RIGHT) && (fog_shape & FOG_OPEN_DOWN))
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										2*FOG_TEX_WIDTH + 1, 1*FOG_TEX_HEIGHT + 1,
+										3*FOG_TEX_WIDTH - 1, 2*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_LEFT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										0*FOG_TEX_WIDTH + 1, 1*FOG_TEX_HEIGHT + 1,
+										1*FOG_TEX_WIDTH - 1, 2*FOG_TEX_HEIGHT - 1);
+	}	
+	else if(fog_shape & FOG_OPEN_RIGHT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										1*FOG_TEX_WIDTH + 1, 1*FOG_TEX_HEIGHT + 1,
+										2*FOG_TEX_WIDTH - 1, 2*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_UP)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										0*FOG_TEX_WIDTH + 1, 2*FOG_TEX_HEIGHT + 1,
+										1*FOG_TEX_WIDTH - 1, 3*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_DOWN)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										1*FOG_TEX_WIDTH + 0, 2*FOG_TEX_HEIGHT + 0,
+										2*FOG_TEX_WIDTH - 1, 3*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_UP_LEFT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										2*FOG_TEX_WIDTH + 1, 3*FOG_TEX_HEIGHT + 1,
+										3*FOG_TEX_WIDTH - 1, 4*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_UP_RIGHT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										3*FOG_TEX_WIDTH + 1, 3*FOG_TEX_HEIGHT + 1,
+										4*FOG_TEX_WIDTH - 1, 4*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_DOWN_LEFT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										0*FOG_TEX_WIDTH + 1, 3*FOG_TEX_HEIGHT + 1,
+										1*FOG_TEX_WIDTH - 1, 4*FOG_TEX_HEIGHT - 1);
+	}
+	else if(fog_shape & FOG_OPEN_DOWN_RIGHT)
+	{
+		m_fogOfWarCell.GetUIStaticItem().SetOriginalRect(
+										1*FOG_TEX_WIDTH + 1, 3*FOG_TEX_HEIGHT + 1,
+										2*FOG_TEX_WIDTH - 1, 4*FOG_TEX_HEIGHT - 1);
+	}
+	else
+	{
+		m_fogOfWarCell.SetText("?");
+	}
 
 	Fvector cell_world_pos;
 	Ivector2 screen_pos;
-				
+
+	
 	Level().m_pFogOfWar->GetFogCellWorldPos(x,y,cell_world_pos);
 	ConvertToLocal(cell_world_pos, screen_pos);
-
-	switch(Level().m_pFogOfWar->GetFogCell(x,y).shape)
-	{
-	case 0:
-		m_fogOfWarCell.SetText("");
-		break;
-	case FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("L");
-		break;
-	case FOG_OPEN_RIGHT:
-		m_fogOfWarCell.SetText("R");
-		break;
-	case FOG_OPEN_UP:
-		m_fogOfWarCell.SetText("U");
-		break;
-	case FOG_OPEN_DOWN:
-		m_fogOfWarCell.SetText("D");
-		break;
-	case FOG_OPEN_LEFT | FOG_OPEN_UP:
-		m_fogOfWarCell.SetText("LU");
-		break;
-	case FOG_OPEN_RIGHT | FOG_OPEN_UP:
-		m_fogOfWarCell.SetText("RU");
-		break;
-	case FOG_OPEN_LEFT | FOG_OPEN_DOWN:
-		m_fogOfWarCell.SetText("LD");
-		break;
-	case FOG_OPEN_RIGHT | FOG_OPEN_DOWN:
-		m_fogOfWarCell.SetText("RD");
-		break;
-	case FOG_OPEN_RIGHT | FOG_OPEN_DOWN | FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("RDL");
-		break;
-	case FOG_OPEN_RIGHT | FOG_OPEN_UP | FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("RUL");
-		break;
-	case FOG_OPEN_UP | FOG_OPEN_DOWN | FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("UDL");
-		break;
-	case FOG_OPEN_UP | FOG_OPEN_DOWN | FOG_OPEN_RIGHT:
-		m_fogOfWarCell.SetText("UDR");
-		break;
-	case FOG_OPEN_UP | FOG_OPEN_DOWN | FOG_OPEN_RIGHT | FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("UDLR");
-		break;
-	case FOG_OPEN_UP | FOG_OPEN_DOWN:
-		m_fogOfWarCell.SetText("UD");
-		break;
-	case FOG_OPEN_RIGHT | FOG_OPEN_LEFT:
-		m_fogOfWarCell.SetText("LR");
-		break;
-	default:
-		m_fogOfWarCell.SetText("?");
-		break;
-	};
-
 	m_fogOfWarCell.MoveWindow(screen_pos.x, screen_pos.y);
 	m_fogOfWarCell.Update();
 	m_fogOfWarCell.Draw();
-
 }
 
 void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)

@@ -12,7 +12,8 @@
 #include "uiscrollbar.h"
 
 
-//DEFINE_LIST (CListItem*, LIST_ITEM_LIST, LIST_ITEM_LIST_IT)
+#define DEFAULT_ITEM_HEIGHT 30
+
 
 DEF_LIST (LIST_ITEM_LIST, CUIListItem*);
 
@@ -25,7 +26,8 @@ public:
 	CUIListWnd(void);
 	virtual ~CUIListWnd(void);
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(int x, int y, int width, int height,
+		              int item_height = DEFAULT_ITEM_HEIGHT);
 
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
@@ -35,7 +37,9 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	
-	bool AddItem(char*  str, void* pData = NULL, int value = 0);
+	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
+	bool AddItem(CUIListItem* pItem);
+	
 	void RemoveItem(int index);
 	void RemoveAll();
 	//находит первый элемент с заданной pData, иначе -1

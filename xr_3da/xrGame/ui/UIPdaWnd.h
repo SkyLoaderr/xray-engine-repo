@@ -51,7 +51,6 @@ protected:
 	virtual void UpdateMessageLog();
 	virtual void UpdateMsgButtons();
 
-
 	CUIFrameWindow		UIMainPdaFrame;
 	CUIPdaContactsWnd	UIPdaContactsWnd;
 	CUIPdaDialogWnd		UIPdaDialogWnd;
@@ -67,4 +66,7 @@ protected:
 	//потеря контакта во время диалога
 	bool m_bContactLoss;
 
+	//элементы декоративного интерфейса
+	CUIStatic			UIStaticTop;
+	CUIStatic			UIStaticBottom;
 };

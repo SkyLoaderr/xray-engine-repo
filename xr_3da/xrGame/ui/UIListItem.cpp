@@ -25,16 +25,21 @@ CUIListItem::~CUIListItem(void)
 {
 }
 
-void CUIListItem::Init(char* str, int x, int y, int width, int height)
+void CUIListItem::Init(int x, int y, int width, int height)
 {
-	CUIButton::Init(NULL, x,y, width, height);
-	SetText(str);
+	inherited::Init(NULL, x,y, width, height);
 
 	m_pData = NULL;
-
 	SetPressMode(CUIButton::DOWN_PRESS);
 	SetPushOffsetX(0);
 	SetPushOffsetY(0);
+}
+
+
+void CUIListItem::Init(const char* str, int x, int y, int width, int height)
+{
+	SetText(str);
+	Init(x,y,width, height);
 }
 
 void CUIListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)

@@ -3,9 +3,14 @@
 ///////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "UIPdaWnd.h"
+#include "UIPdaListItem.h"
 
 #include "../Pda.h"
 #include "../HUDManager.h"
+
+
+
+#define PDA_CONTACT_HEIGHT 70
 
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
@@ -34,8 +39,10 @@ void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 	inherited::Init(x, y, width, height);
 
 	AttachChild(&UIListWnd);
-	UIListWnd.Init(10,10, width-10,height-10);
 
+	UIListWnd.Init(10,10, width-10,height-10, PDA_CONTACT_HEIGHT);
+	UIListWnd.EnableActiveBackground(true);
+	UIListWnd.EnableScrollBar(true);
 }
 
 
@@ -55,6 +62,7 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 			{
 				CObject* pObject = (CObject*)((CUIListItem*)pData)->GetData();
+				R_ASSERT(pObject);
 				m_idContact = pObject->ID();
 
 				GetTop()->SendMessage(this, CONTACT_SELECTED);
@@ -62,4 +70,30 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	inherited::SendMessage(pWnd, msg, pData);
 }
-	
+
+void CUIPdaContactsWnd::AddContact(CObject* pOwnerObject)
+{
+	CUIPdaListItem* pItem = NULL;
+	pItem = xr_new<CUIPdaListItem>();
+	UIListWnd.AddItem(pItem); 
+	pItem->SetText(pOwnerObject->cName());
+	pItem->SetData(pOwnerObject);
+}
+
+void CUIPdaContactsWnd::RemoveContact(CObject* pOwnerObject)
+{
+	UIListWnd.RemoveItem(UIListWnd.FindItem(pOwnerObject));
+}
+//удалить все контакты из списка
+void CUIPdaContactsWnd::RemoveAll()
+{
+	UIListWnd.RemoveAll();
+}
+
+bool CUIPdaContactsWnd::IsInList(CObject* pOwnerObject)
+{
+	if(UIListWnd.FindItem(pOwnerObject)==-1) 
+		return false;
+	else
+		return true;
+}

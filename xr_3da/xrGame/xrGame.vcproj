@@ -1628,96 +1628,6 @@
 							<Filter
 								Name="Custom Weapon"
 								Filter="">
-								<File
-									RelativePath=".\Explosive.cpp">
-									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Mixed|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath=".\Explosive.h">
-									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCustomBuildTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Mixed|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCustomBuildTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath="Grenade.cpp">
-								</File>
-								<File
-									RelativePath="Grenade.h">
-								</File>
-								<File
-									RelativePath="Missile.cpp">
-								</File>
-								<File
-									RelativePath="Missile.h">
-								</File>
-								<File
-									RelativePath=".\Weapon.cpp">
-								</File>
-								<File
-									RelativePath=".\Weapon.h">
-								</File>
-								<File
-									RelativePath="WeaponAmmo.cpp">
-								</File>
-								<File
-									RelativePath="WeaponAmmo.h">
-								</File>
-								<File
-									RelativePath=".\WeaponAutoRifle.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponAutoRifle.h">
-								</File>
-								<File
-									RelativePath="WeaponCustomPistol.cpp">
-								</File>
-								<File
-									RelativePath="WeaponCustomPistol.h">
-								</File>
-								<File
-									RelativePath=".\WeaponHUD.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponHUD.h">
-								</File>
-								<File
-									RelativePath=".\WeaponMagazined.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponMagazined.h">
-								</File>
-								<File
-									RelativePath="WeaponMagazinedWGrenade.cpp">
-								</File>
-								<File
-									RelativePath="WeaponMagazinedWGrenade.h">
-								</File>
-								<File
-									RelativePath="WeaponPistol.cpp">
-								</File>
-								<File
-									RelativePath="WeaponPistol.h">
-								</File>
 								<Filter
 									Name="GrenadeLauncher"
 									Filter="">
@@ -1746,6 +1656,117 @@
 									</File>
 									<File
 										RelativePath=".\Silencer.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon Generic"
+									Filter="">
+									<File
+										RelativePath=".\Weapon.cpp">
+									</File>
+									<File
+										RelativePath=".\Weapon.h">
+									</File>
+									<File
+										RelativePath=".\WeaponFire.cpp">
+									</File>
+								</Filter>
+								<Filter
+									Name="Ammo"
+									Filter="">
+									<File
+										RelativePath="WeaponAmmo.cpp">
+									</File>
+									<File
+										RelativePath="WeaponAmmo.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="HUD"
+									Filter="">
+									<File
+										RelativePath=".\WeaponHUD.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponHUD.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Pistol"
+									Filter="">
+									<File
+										RelativePath="WeaponCustomPistol.cpp">
+									</File>
+									<File
+										RelativePath="WeaponCustomPistol.h">
+									</File>
+									<File
+										RelativePath="WeaponPistol.cpp">
+									</File>
+									<File
+										RelativePath="WeaponPistol.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Grenades"
+									Filter="">
+									<File
+										RelativePath=".\Explosive.cpp">
+										<FileConfiguration
+											Name="Debug|Win32"
+											ExcludedFromBuild="TRUE">
+											<Tool
+												Name="VCCLCompilerTool"/>
+										</FileConfiguration>
+										<FileConfiguration
+											Name="Mixed|Win32"
+											ExcludedFromBuild="TRUE">
+											<Tool
+												Name="VCCLCompilerTool"/>
+										</FileConfiguration>
+									</File>
+									<File
+										RelativePath=".\Explosive.h">
+										<FileConfiguration
+											Name="Debug|Win32"
+											ExcludedFromBuild="TRUE">
+											<Tool
+												Name="VCCustomBuildTool"/>
+										</FileConfiguration>
+										<FileConfiguration
+											Name="Mixed|Win32"
+											ExcludedFromBuild="TRUE">
+											<Tool
+												Name="VCCustomBuildTool"/>
+										</FileConfiguration>
+									</File>
+									<File
+										RelativePath="Grenade.cpp">
+									</File>
+									<File
+										RelativePath="Grenade.h">
+									</File>
+									<File
+										RelativePath="Missile.cpp">
+									</File>
+									<File
+										RelativePath="Missile.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Automatic"
+									Filter="">
+									<File
+										RelativePath=".\WeaponMagazined.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponMagazined.h">
+									</File>
+									<File
+										RelativePath="WeaponMagazinedWGrenade.cpp">
+									</File>
+									<File
+										RelativePath="WeaponMagazinedWGrenade.h">
 									</File>
 								</Filter>
 							</Filter>
@@ -3153,12 +3174,6 @@
 					RelativePath="UIFrameRect.h">
 				</File>
 				<File
-					RelativePath="UIGameCustom.cpp">
-				</File>
-				<File
-					RelativePath="UIGameCustom.h">
-				</File>
-				<File
 					RelativePath="UIIcon.cpp">
 				</File>
 				<File
@@ -3175,50 +3190,6 @@
 				</File>
 				<File
 					RelativePath=".\UIStaticItem.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="Deathmatch"
-				Filter="">
-				<File
-					RelativePath="UIDMFragList.cpp">
-				</File>
-				<File
-					RelativePath="UIDMFragList.h">
-				</File>
-				<File
-					RelativePath="UIDMPlayerList.cpp">
-				</File>
-				<File
-					RelativePath="UIDMPlayerList.h">
-				</File>
-				<File
-					RelativePath="UIGameDM.cpp">
-				</File>
-				<File
-					RelativePath="UIGameDM.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="CS"
-				Filter="">
-				<File
-					RelativePath="UICSFragList.cpp">
-				</File>
-				<File
-					RelativePath="UICSFragList.h">
-				</File>
-				<File
-					RelativePath="UICSPlayerList.cpp">
-				</File>
-				<File
-					RelativePath="UICSPlayerList.h">
-				</File>
-				<File
-					RelativePath="UIGameCS.cpp">
-				</File>
-				<File
-					RelativePath="UIGameCS.h">
 				</File>
 			</Filter>
 			<Filter
@@ -3302,38 +3273,16 @@
 						RelativePath=".\ui\UIPdaDialogWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIPdaListItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIPdaListItem.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIPdaWnd.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIPdaWnd.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="MainIngame"
-					Filter="">
-					<File
-						RelativePath=".\UIHealth.cpp">
-					</File>
-					<File
-						RelativePath=".\UIHealth.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIMainIngameWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIMainIngameWnd.h">
-					</File>
-					<File
-						RelativePath=".\UIWeapon.cpp">
-					</File>
-					<File
-						RelativePath=".\UIWeapon.h">
-					</File>
-					<File
-						RelativePath=".\UIZoneMap.cpp">
-					</File>
-					<File
-						RelativePath=".\UIZoneMap.h">
 					</File>
 				</Filter>
 				<Filter
@@ -3357,6 +3306,34 @@
 					<File
 						RelativePath=".\ui\UIMapWnd.h">
 					</File>
+					<Filter
+						Name="MainIngame"
+						Filter="">
+						<File
+							RelativePath=".\UIHealth.cpp">
+						</File>
+						<File
+							RelativePath=".\UIHealth.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.h">
+						</File>
+						<File
+							RelativePath=".\UIWeapon.cpp">
+						</File>
+						<File
+							RelativePath=".\UIWeapon.h">
+						</File>
+						<File
+							RelativePath=".\UIZoneMap.cpp">
+						</File>
+						<File
+							RelativePath=".\UIZoneMap.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="TalkWnd"
@@ -3394,16 +3371,6 @@
 						RelativePath=".\ui\UIDiaryWnd.h">
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="Single"
-				Filter="">
-				<File
-					RelativePath="UIGameSP.cpp">
-				</File>
-				<File
-					RelativePath="UIGameSP.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="UIWindows"
@@ -3616,6 +3583,74 @@
 				<File
 					RelativePath=".\HUDManager.h">
 				</File>
+			</Filter>
+			<Filter
+				Name="GameTypes"
+				Filter="">
+				<Filter
+					Name="GameCustom"
+					Filter="">
+					<File
+						RelativePath="UIGameCustom.cpp">
+					</File>
+					<File
+						RelativePath="UIGameCustom.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Deathmatch"
+					Filter="">
+					<File
+						RelativePath="UIDMFragList.cpp">
+					</File>
+					<File
+						RelativePath="UIDMFragList.h">
+					</File>
+					<File
+						RelativePath="UIDMPlayerList.cpp">
+					</File>
+					<File
+						RelativePath="UIDMPlayerList.h">
+					</File>
+					<File
+						RelativePath="UIGameDM.cpp">
+					</File>
+					<File
+						RelativePath="UIGameDM.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="CS"
+					Filter="">
+					<File
+						RelativePath="UICSFragList.cpp">
+					</File>
+					<File
+						RelativePath="UICSFragList.h">
+					</File>
+					<File
+						RelativePath="UICSPlayerList.cpp">
+					</File>
+					<File
+						RelativePath="UICSPlayerList.h">
+					</File>
+					<File
+						RelativePath="UIGameCS.cpp">
+					</File>
+					<File
+						RelativePath="UIGameCS.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Single"
+					Filter="">
+					<File
+						RelativePath="UIGameSP.cpp">
+					</File>
+					<File
+						RelativePath="UIGameSP.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

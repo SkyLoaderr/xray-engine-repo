@@ -35,6 +35,11 @@ public:
 	void Show();
 	void Hide();
 
+	void AddContact(CObject* pOwnerObject);
+	void RemoveContact(CObject* pOwnerObject);
+	void RemoveAll();
+
+	bool IsInList(CObject* pOwnerObject);
 
 	CUIListWnd UIListWnd;
 

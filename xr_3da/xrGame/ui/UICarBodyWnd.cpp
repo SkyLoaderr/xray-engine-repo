@@ -45,7 +45,7 @@ CUICarBodyWnd::~CUICarBodyWnd()
 void CUICarBodyWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","trade.xml");
+	uiXml.Init("$game_data$","carbody.xml");
 	
 	CUIXmlInit xml_init;
 
@@ -70,8 +70,6 @@ void CUICarBodyWnd::Init()
 	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
 
-
-
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
@@ -81,17 +79,9 @@ void CUICarBodyWnd::Init()
 	UIMessageBox.AutoCenter();
 	UIMessageBox.Hide();
 	
-	
 	//////
 	UIOurBagList.SetCheckProc(OurBagProc);
 	UIOthersBagList.SetCheckProc(OthersBagProc);
-
-	//Кнопки
-//	AttachChild(&UIPerformTradeButton);
-//	xml_init.InitButton(uiXml, "button", 0, &UIPerformTradeButton);
-
-//	AttachChild(&UIToTalkButton);
-//	xml_init.InitButton(uiXml, "button", 1, &UIToTalkButton);
 
 	m_pCurrentItem = NULL;
 	m_pCurrentDragDropItem = NULL;
@@ -108,10 +98,8 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	m_pInv = pOurInv;
 	m_pOthersInv = pOthersInv;
 	
-
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
-
 	UIMessageBox.Hide();
 	EnableAll();
 
@@ -120,9 +108,11 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 
 void CUICarBodyWnd::UpdateLists()
 {
+
 	//очистить после предыдущего запуска
 	UIOurBagList.DropAll();
 	UIOthersBagList.DropAll();
+
 
 	for(u32 i = 0; i <MAX_ITEMS; ++i) 
 	{
@@ -131,7 +121,7 @@ void CUICarBodyWnd::UpdateLists()
 		m_vDragDropItems[i].SetCustomUpdate(NULL);
 	}
 
-	
+
 	m_iUsedItems = 0;
 
 	ruck_list = m_pInv->m_ruck;
@@ -141,93 +131,80 @@ void CUICarBodyWnd::UpdateLists()
 	PPIItem it;
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-			if((*it)) 
-			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
-				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->GetXPos()*INV_GRID_WIDTH,
-										(*it)->GetYPos()*INV_GRID_HEIGHT,
-										(*it)->GetGridWidth()*INV_GRID_WIDTH,
-										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+			UIDragDropItem.SetData((*it));
 
-				UIDragDropItem.SetData((*it));
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 
-				//установить коэффициент масштабирования
-				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			//установить коэффициент масштабирования
+			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
-				UIOurBagList.AttachChild(&UIDragDropItem);
-				++m_iUsedItems;
-			}
+			UIOurBagList.AttachChild(&UIDragDropItem);
+			++m_iUsedItems;
+		}
 	}
 
 
-	//ruck_list = m_pOthersInv->m_ruck;
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
-					m_pOthersInv->m_all.begin(),
-					 m_pOthersInv->m_all.end());
-/*	ruck_list.insert(ruck_list.begin(),
-					 m_pOthersInv->m_ruck.begin(),
-					 m_pOthersInv->m_ruck.end());
-	ruck_list.insert(ruck_list.end(),
-					 m_pOthersInv->m_belt.begin(),
-					 m_pOthersInv->m_belt.end());*/
-
-					 /*m_pOthersInv->m_ruck.begin(),
-					 m_pOthersInv->m_ruck.end());*/
+				m_pOthersInv->m_all.begin(),
+				m_pOthersInv->m_all.end());
 
 	ruck_list.sort(GreaterRoomInRuck);
-
 
 
 	//Чужой рюкзак
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-			if((*it)) 
-			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 				
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
-				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->GetXPos()*INV_GRID_WIDTH,
-										(*it)->GetYPos()*INV_GRID_HEIGHT,
-										(*it)->GetGridWidth()*INV_GRID_WIDTH,
-										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
-				UIDragDropItem.SetData((*it));
+			UIDragDropItem.SetData((*it));
 
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
-				//установить коэффициент масштабирования
-				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
-				UIOthersBagList.AttachChild(&UIDragDropItem);
-				++m_iUsedItems;
-			}
+			//установить коэффициент масштабирования
+			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			UIOthersBagList.AttachChild(&UIDragDropItem);
+			++m_iUsedItems;
+		}
 	}
 }
 
@@ -239,21 +216,7 @@ void CUICarBodyWnd::UpdateLists()
 void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 
-/*	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
-	{
-		GetParent()->SendMessage(this, TRADE_WND_CLOSED);
-	}
-	else if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
-	{
-		GetTop()->SetCapture(&UIMessageBox, false);
-		UIMessageBox.Hide();
-		EnableAll();
-	}
-	else if(pWnd == &UIPerformTradeButton && msg == CUIButton::BUTTON_CLICKED)
-	{
-		PerformTrade();
-	}
-	else*/ if(msg == CUIDragDropItem::ITEM_DRAG)
+	if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;

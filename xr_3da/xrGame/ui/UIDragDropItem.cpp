@@ -15,7 +15,7 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 
-	m_str = " ";
+	m_str = "";
 
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
@@ -222,7 +222,8 @@ void CUIDragDropItem::Update()
 	GetFont()->SetColor(0xFFEEEEEE);
 	GetFont()->SetAligment(CGameFont::alLeft);
 	
-	GetFont()->Out((float)rect.left,(float)rect.top, m_str);
+	if(m_str && xr_strlen(m_str)>0)
+		GetFont()->Out((float)rect.left,(float)rect.top, m_str);
 
 	//вызвать дополнительную функцию обновления
 	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
