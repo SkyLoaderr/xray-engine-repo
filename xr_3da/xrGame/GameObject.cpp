@@ -318,12 +318,14 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	PHSetPushOut();
+	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+		ai().level_graph().ref_dec(level_vertex_id());
 }
 
 void CGameObject::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
-	validate_ai_locations		();
+	validate_ai_locations		(false);
 }
 
 void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
