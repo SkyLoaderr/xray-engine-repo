@@ -62,6 +62,7 @@ void __fastcall sorted_L1		(mapSorted_Node *N)
 	IRender_Visual *V			= N->val.pVisual;
 	RCache.set_Shader			(V->hShader);
 	RCache.set_xform_world		(N->val.Matrix);
+	RImplementation.ApplyObject	(N->val.pObject);
 	V->Render					(calcLOD(N->key,V->vis.sphere.R));
 }
 
