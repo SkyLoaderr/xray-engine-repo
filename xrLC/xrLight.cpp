@@ -147,25 +147,51 @@ void	g_trans_register	(Vertex* V)
 	g_trans_CS.Leave			();
 }
 
+//////////////////////////////////////////////////////////////////////////
+const u32				VLT_END		= u32(-1);
+class CVertexLightTasker
+{
+	xrCriticalSection	cs;
+	volatile u32		index;	
+public:
+	CVertexLightTasker	() : index(0)	{};
+	
+	void	init		()
+	{
+		index			= 0;
+	}
+
+	u32		get			()
+	{
+		cs.Enter		();
+		u32 _res		=	index;
+		if (_res>=g_vertices.size())	_res	=	VLT_END;
+		else							index	+=	1;
+		cs.Leave		();
+		return			_res;
+	}
+};
+CVertexLightTasker		VLT;
+
 class CVertexLightThread : public CThread
 {
 public:
-	u32	vertStart, vertEnd;
-	
-	CVertexLightThread(u32 ID, u32 _start, u32 _end) : CThread(ID)
+	CVertexLightThread(u32 ID) : CThread(ID)
 	{
 		thMessages	= FALSE;
-		vertStart	= _start;
-		vertEnd		= _end;
 	}
 	virtual void		Execute	()
 	{
 		CDB::COLLIDER	DB;
 		DB.ray_options	(0);
 		
-		for (u32 I = vertStart; I<vertEnd; I++)
+		u32	counter		= 0;
+		for (;; counter++)
 		{
-			Vertex* V		= g_vertices[I];
+			u32 id				= VLT.get();
+			if (id==VLT_END)	break;
+
+			Vertex* V		= g_vertices[id];
 			R_ASSERT		(V);
 			
 			// Get transluency factor
@@ -188,24 +214,22 @@ public:
 			V->C.mul			(.5f);
 			if (bVertexLight)	g_trans_register	(V);
 
-			thProgress			= float(I - vertStart) / float(vertEnd-vertStart);
+			thProgress			= float(counter) / float(g_vertices.size());
 		}
 	}
 };
 
-#define NUM_THREADS			12
+#define NUM_THREADS			4
 void CBuild::LightVertex	()
 {
-	g_trans					= xr_new<mapVert>	();
+	g_trans				= xr_new<mapVert>	();
 
 	// Start threads, wait, continue --- perform all the work
 	Status				("Calculating...");
-	u32	start_time		= timeGetTime();
 	CThreadManager		Threads;
-	u32	stride			= g_vertices.size()/NUM_THREADS;
-	u32	last			= g_vertices.size()-stride*(NUM_THREADS-1);
-	for (u32 thID=0; thID<NUM_THREADS; thID++)
-		Threads.start	(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	VLT.init			();
+	u32	start_time		= timeGetTime();
+	for (u32 thID=0; thID<NUM_THREADS; thID++)	Threads.start(xr_new<CVertexLightThread>(thID));
 	Threads.wait		();
 	clMsg				("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
@@ -236,6 +260,5 @@ void CBuild::LightVertex	()
 			VL[v]->C			= R;
 		}
 	}
-
 	xr_delete	(g_trans);
 }
