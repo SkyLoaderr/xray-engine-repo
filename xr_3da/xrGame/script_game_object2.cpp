@@ -344,3 +344,11 @@ void CScriptGameObject::SetActorDirection		(float dir)
 	}else
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorDirection method for non-actor object");
 }
+
+CHolderCustom* CScriptGameObject::get_current_holder()
+{
+	CActor* actor = smart_cast<CActor*>(&object());
+
+	if(actor)
+		return actor->Holder();
+}
