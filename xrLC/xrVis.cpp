@@ -95,7 +95,7 @@ void CalculateRelSet(Fvector &pos, vecW &rel_set)
 			for (int y=minY; y<=maxY; y++)
 			{
 				DWORD	cell	= z*g_pvs_X*g_pvs_Y + x*g_pvs_Y + y;
-//				Msg("* Sample #%d",cell);
+//				clMsg("* Sample #%d",cell);
 				int		ptr		= g_pvs_map_vm[cell];
 				if (ptr>=0)
 				{
@@ -120,11 +120,11 @@ void CBuild::BuildRelevance(CFS_Base &fs)
 	Status("Preparing...");
 	R_ASSERT(g_TREE_ROOT);
 	g_TREE_ROOT->bbox.getsize(size);
-	Msg("Level dimensions: [%3.1f,%3.1f,%3.1f]",size.x,size.y,size.z);
+	clMsg("Level dimensions: [%3.1f,%3.1f,%3.1f]",size.x,size.y,size.z);
 	nx = iROUND(ceilf(size.x/g_params.m_relevance));
 	ny = iROUND(ceilf(size.y/g_params.m_relevance));
 	nz = iROUND(ceilf(size.z/g_params.m_relevance));
-	Msg("Ceiling dimensions: [%3d,%3d,%3d]",nx, ny, nz);
+	clMsg("Ceiling dimensions: [%3d,%3d,%3d]",nx, ny, nz);
 
 	fs.open_chunk(fsL_VISIBILITY);
  

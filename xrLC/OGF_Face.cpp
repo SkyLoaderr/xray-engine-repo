@@ -10,9 +10,9 @@ void set_status(char* N, int id, int f, int v)
 {
 	string1024 status_str;
 
-	sprintf(status_str,"Model #%4d [F:%5d, V:%5d]: %s...",id,f,v,N);
+	sprintf	(status_str,"Model #%4d [F:%5d, V:%5d]: %s...",id,f,v,N);
 	Status	(status_str);
-	Log		(status_str);
+	clMsg	(status_str);
 }
 
 BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)

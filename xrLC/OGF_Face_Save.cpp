@@ -63,7 +63,7 @@ void OGF::Save(CFS_Base &fs)
 
 void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-//	Log				("- saving: cached");
+//	clMsg			("- saving: cached");
 	fs.open_chunk	(OGF_VERTICES);
 	fs.Wdword		(FVF);
 	fs.Wdword		(vertices.size());
@@ -86,7 +86,7 @@ void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BO
 
 void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-//	Log				("- saving: normal or clod");
+//	clMsg			("- saving: normal or clod");
 
 	// Vertices
 	DWORD ID,Start;
@@ -144,7 +144,7 @@ extern	void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, i
 
 void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-//	Log				("- saving: progressive");
+//	clMsg				("- saving: progressive");
 
 	// Determining the number of samples
 	R_ASSERT				(I_Current>=0);
@@ -160,7 +160,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 	}
 	if (samples<=1)			{
 		// Degrading to normal visual
-//		Log					("- saving: *degrading*");
+//		clMsg					("- saving: *degrading*");
 		H.type				= MT_NORMAL;
 		I_Current			= -1;
 		vertices			= vertices_saved;
@@ -244,7 +244,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 				for(DWORD i=0; i<strip_verts.size(); i++)
 					strip_verts[i]=vertices[strip_permute[i]];
 			} catch (...) {
-				Log			("ERROR: Stripifying failed.");
+				clMsg			("ERROR: Stripifying failed.");
 			}
 
 			// ***** SAVE
@@ -279,7 +279,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 				}
 				fs.close_chunk		();
 			} catch (...) {
-				Log			("ERROR: Saving failed.");
+				clMsg			("ERROR: Saving failed.");
 			}
 
 			// ***** Close chunk
