@@ -1436,7 +1436,8 @@ void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
 #ifdef _EDITOR
 xr_token po_types[]={
 	{ "Box",			epotBox			},
-	{ "Fixed chain",	epotFixedChain	}
+	{ "Fixed chain",	epotFixedChain	},
+	{ 0,				0				}
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp(pref,values);
