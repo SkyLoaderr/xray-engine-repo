@@ -43,6 +43,7 @@
 
 #include <windows.h>
 #include <windowsx.h>
+#include <winbase.h>
 #include <mmsystem.h>
 #include <mmreg.h>
 #include <winnls.h>
