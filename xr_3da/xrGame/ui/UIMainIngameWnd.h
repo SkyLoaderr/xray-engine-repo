@@ -17,6 +17,8 @@
 #include "../UIZoneMap.h"
 #include "../UIWeapon.h"
 
+#include "../actor.h"
+#include "../weapon.h"
 
 
 class CUIMainIngameWnd: public CUIWindow  
@@ -54,7 +56,7 @@ protected:
 	CUIStatic	UIWeapon1;
 	CUIStatic	UIWeapon2;
 
-	//a test	
-//	CUIStaticItem g_UIStaticItem;
-	
+	//для текущего активного актера и оружия
+	CActor*		m_pActor;	
+	CWeapon*	m_pWeapon;
 };

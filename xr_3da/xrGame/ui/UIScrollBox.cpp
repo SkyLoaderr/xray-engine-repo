@@ -7,6 +7,11 @@
 
 
 
+#define SCROLLBOX_HORZ	"ui\\ui_scb_scroll_box"
+#define SCROLLBOX_VERT	"ui\\ui_scb_scroll_box_v"
+
+
+
 
 CUIScrollBox::CUIScrollBox(void)
 {
@@ -24,12 +29,12 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 
 	if(m_bIsHorizontal)
 	{
-		m_UIStaticItem.Init("ui\\ui_scb_scroll_box", "hud\\default",x,y, alNone);
+		m_UIStaticItem.Init(SCROLLBOX_HORZ, "hud\\default",x,y, alNone);
 		CUIWindow::Init(x,y, length, broad);
 	}
 	else
 	{
-		m_UIStaticItem.Init("ui\\ui_scb_scroll_box_v", "hud\\default",x,y, alNone);
+		m_UIStaticItem.Init(SCROLLBOX_VERT, "hud\\default",x,y, alNone);
 		CUIWindow::Init(x,y, broad, length);
 	}
 }

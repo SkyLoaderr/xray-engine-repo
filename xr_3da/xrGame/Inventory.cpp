@@ -311,6 +311,7 @@ bool CInventoryItem::Detach(const char* item_section_name)
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
 							 dynamic_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
+	
 	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
 		
 	// Fill
@@ -622,6 +623,7 @@ bool CInventory::Slot(PIItem pIItem)
 			 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
 			 if(m_belt.end() != it) m_belt.erase(it);
 			
+			if(m_activeSlot == NO_ACTIVE_SLOT) Activate(pIItem->GetSlot());
 			return true;
 		} 
 		else 
@@ -1057,6 +1059,14 @@ bool CInventory::CanPutInBelt(PIItem pIItem)
 	//запомнить предыдущее место (слот или рюкзак)
 	bool bInSlot = InSlot(pIItem);
 
+	u32 active_slot = NO_ACTIVE_SLOT;
+	if(bInSlot && pIItem->GetSlot() == GetActiveSlot()) 
+	{
+		active_slot = GetActiveSlot();
+		m_activeSlot = NO_ACTIVE_SLOT;
+	}
+
+
 	if(!Belt(pIItem)) return false;
 
 	bool result = true;
@@ -1064,7 +1074,10 @@ bool CInventory::CanPutInBelt(PIItem pIItem)
 
 	//поместить элемент обратно на место
 	if(bInSlot)
+	{
+		if(active_slot != NO_ACTIVE_SLOT) m_activeSlot = active_slot;
 		Slot(pIItem);
+	}
 	else
 		Ruck(pIItem);
 
@@ -1079,6 +1092,13 @@ bool CInventory::CanPutInRuck(PIItem pIItem)
 	//запомнить предыдущее место (слот или пояс)
 	bool bInSlot = InSlot(pIItem);
 
+	u32 active_slot = NO_ACTIVE_SLOT;
+	if(bInSlot && pIItem->GetSlot() == GetActiveSlot()) 
+	{
+		active_slot = GetActiveSlot();
+		m_activeSlot = NO_ACTIVE_SLOT;
+	}	
+
 	if(!Ruck(pIItem))return false;
 
 	bool result = true;
@@ -1087,7 +1107,10 @@ bool CInventory::CanPutInRuck(PIItem pIItem)
 
 	//поместить элемент обратно на место
 	if(bInSlot)
+	{
+		if(active_slot != NO_ACTIVE_SLOT) m_activeSlot = active_slot;
 		Slot(pIItem);
+	}
 	else
 		Belt(pIItem);
 	 

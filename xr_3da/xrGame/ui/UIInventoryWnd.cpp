@@ -39,8 +39,6 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-#define MAX_ITEMS	70
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -203,7 +201,7 @@ void CUIInventoryWnd::Init()
 
 	//pop-up menu
 	AttachChild(&UIPropertiesBox);
-	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
+	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
 	//для работы с артефактами
@@ -796,7 +794,8 @@ void CUIInventoryWnd::Hide()
 {
 	//достать вещь в активный слот
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT)
+	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
+		pActor->m_inventory.m_slots[m_iCurrentActiveSlot].m_pIItem)
 	{
 		pActor->m_inventory.Activate(m_iCurrentActiveSlot);
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
@@ -816,14 +815,14 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	UIPropertiesBox.RemoveAll();
 	
 	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(m_pCurrentItem);
-//	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
+	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
 	CArtifactMerger* pArtifactMerger = dynamic_cast<CArtifactMerger*>(m_pCurrentItem);
 	
 	CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pCurrentItem);
 	CScope* pScope = dynamic_cast<CScope*>(m_pCurrentItem);
 	CSilencer* pSilencer = dynamic_cast<CSilencer*>(m_pCurrentItem);
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(m_pCurrentItem);
-	/*
+	
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
@@ -843,7 +842,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	if(pOutfit && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
-	}*/
+	}
 	
 	//отсоединение аддонов от вещи
 	if(pWeapon)

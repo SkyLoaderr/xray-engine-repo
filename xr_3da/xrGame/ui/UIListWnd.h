@@ -53,10 +53,13 @@ public:
 	//подготовить все элементы заново
 	void Reset();
 
+	void EnableScrollBar(bool enable);
+	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
 protected:
 
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
+	bool m_bScrollBarEnabled;
 
 	//обновления елементов списка, вызвается
 	//если произошли изменения

@@ -28,6 +28,8 @@ public:
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
+	virtual void Draw();
+
 	virtual void SetWidth(int width);
 	virtual void SetHeight(int height);
 
@@ -44,7 +46,7 @@ public:
 	s16 GetScrollPos() {return m_iScrollPos;}
 
 	//базовые размеры для кнопок
-	enum {SCROLLBAR_WIDTH = 32, SCROLLBAR_HEIGHT = 32};
+	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};
 
 protected:
 	//обновить полосу
@@ -63,6 +65,9 @@ protected:
 
 	//каретка скролинга
 	CUIScrollBox m_ScrollBox;
+
+	//подложка для скролинга
+	CUIStaticItem m_StaticBackground;
 
 	//текущая позиция
 	s16 m_iScrollPos;

@@ -5,6 +5,15 @@
 #include "stdafx.h"
 #include ".\uiscrollbar.h"
 
+#define SCROLLBAR_LEFT_ARROW		"ui\\ui_scb_left_arrow"
+#define SCROLLBAR_RIGHT_ARROW		"ui\\ui_scb_right_arrow"
+#define SCROLLBAR_UP_ARROW			"ui\\ui_scb_up_arrow"
+#define SCROLLBAR_DOWN_ARROW		"ui\\ui_scb_down_arrow"
+#define SCROLLBAR_BACKGROUND_HORZ	"ui\\ui_scb_back"
+#define SCROLLBAR_BACKGROUND_VERT	"ui\\ui_scb_back_v"
+
+
+
 CUIScrollBar::CUIScrollBar(void)
 {
 	m_iMinPos = 1;
@@ -25,21 +34,25 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 	if(m_bIsHorizontal)
 	{
 		CUIWindow::Init(x,y, length, SCROLLBAR_HEIGHT);
-		m_DecButton.Init("ui\\ui_scb_left_arrow", 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init("ui\\ui_scb_rigth_arrow",length-SCROLLBAR_WIDTH, 0,
+		m_DecButton.Init(SCROLLBAR_LEFT_ARROW, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_IncButton.Init(SCROLLBAR_RIGHT_ARROW,length-SCROLLBAR_WIDTH, 0,
 													SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 
 		m_ScrollBox.Init(SCROLLBAR_WIDTH, 0, length/2, SCROLLBAR_HEIGHT, m_bIsHorizontal);
+
+		m_StaticBackground.Init(SCROLLBAR_BACKGROUND_HORZ ,"hud\\default", 0,0,alNone);
 	}
 	else
 	{
 		CUIWindow::Init(x,y, SCROLLBAR_WIDTH, length);
-		m_DecButton.Init("ui\\ui_scb_rigth_arrow",0, 0,	SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init("ui\\ui_scb_left_arrow", 0, length-SCROLLBAR_HEIGHT, 
+		m_DecButton.Init(SCROLLBAR_UP_ARROW,0, 0,SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_IncButton.Init(SCROLLBAR_DOWN_ARROW, 0, length-SCROLLBAR_HEIGHT, 
 						  SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 		
 
 		m_ScrollBox.Init(0, SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, length/2, m_bIsHorizontal);
+
+		m_StaticBackground.Init(SCROLLBAR_BACKGROUND_VERT ,"hud\\default", 0,0,alNone);
 	}
 
 	
@@ -263,4 +276,26 @@ void CUIScrollBar::Reset()
 	ResetAll();
 
 	inherited::Reset();
+}
+
+
+void CUIScrollBar::Draw()
+{
+
+	//нарисовать фоновую подложку
+	if(m_bIsHorizontal)
+	{
+		m_StaticBackground.SetTile(GetWidth()/4>0?GetWidth()/4:1, 1,
+								   GetWidth()%2, 0);
+	}
+	else
+	{
+		m_StaticBackground.SetTile(1, GetHeight()/4>0?GetHeight()/4:1,
+							   0, GetHeight()%2);
+	}
+	RECT rect = GetAbsoluteRect();
+	m_StaticBackground.SetPos(rect.left,rect.top);
+	m_StaticBackground.Render();
+
+	inherited::Draw();
 }

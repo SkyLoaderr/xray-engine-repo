@@ -23,8 +23,6 @@ public:
 
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
-	//void SetWndRect(int x, int y,  int length, int broad);
-
 	virtual void Draw();
 						
 

@@ -146,3 +146,12 @@ void CUIStaticItem::Render(float x1, float y1, float x2, float y2,
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 
 }
+//вывод изображения из OriginalRect на текстуре в заданную область экрана 
+//при этом меняется VisRect
+void CUIStaticItem::Render(int x1, int y1, int x2, int y2, 
+							const ref_shader& sh)
+{
+	SetRect(x1, y1, x2, y2); 
+	Render(0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f, sh);
+}
+

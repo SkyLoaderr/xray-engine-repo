@@ -9,6 +9,7 @@
 
 CUIListWnd::CUIListWnd(void)
 {
+	m_bScrollBarEnabled = false;
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -45,6 +46,9 @@ void CUIListWnd::Init(int x, int y, int width, int height)
 	m_ScrollBar.SetRange(0,0);
 	m_ScrollBar.SetPageSize(s16(0));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+
+	m_ScrollBar.Show(false);
+	m_ScrollBar.Enable(false);
 }
 
 
@@ -271,4 +275,20 @@ void CUIListWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	inherited::OnMouse(x, y, mouse_action);
 }
 
+void CUIListWnd::EnableScrollBar(bool enable)
+{
+	m_bScrollBarEnabled = enable;
+
+	if(m_bScrollBarEnabled)
+	{
+		m_ScrollBar.Enable(true);
+		m_ScrollBar.Show(true);
+	}
+	else
+	{
+		m_ScrollBar.Enable(false);
+		m_ScrollBar.Show(false);
+	}
+
+}
 //|| mouse_action == LBUTTON_DB_CLICK

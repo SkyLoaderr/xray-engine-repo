@@ -9,8 +9,6 @@
 #include "UIXmlInit.h"
 
 #include "../Entity.h"
-#include "../actor.h"
-#include "../weapon.h"
 #include "../HUDManager.h"
 /*
 #include "../Group.h"
@@ -35,6 +33,8 @@
 
 CUIMainIngameWnd::CUIMainIngameWnd()
 {
+	m_pActor = NULL;
+	m_pWeapon = NULL;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -140,117 +140,115 @@ void CUIMainIngameWnd::Draw()
 	UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
 	UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
 	
-	CUIWindow::Draw();
-	UIWeapon.Render();
-	UIZoneMap.Render();
-
-	//a test
-/*	g_UIStaticItem.SetPos(0,0);
-	g_UIStaticItem.SetRect(0,0,1024, 768);
-	g_UIStaticItem.Render(0,0,256,128);*/
-	
-
+	//отрендерить текстуру объектива снайперского прицела или бинокля
+	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture())
+	{
+		m_pWeapon->ZoomTexture()->SetPos(0,0);
+		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+	}
+	else
+	{
+		//отрисовать остальные иконки
+		CUIWindow::Draw();
+		UIWeapon.Render();
+		UIZoneMap.Render();
+	}
 }
 
 void CUIMainIngameWnd::Update()
-{	
+{
 	static string256 wound_string;
 
-
-
-	CActor* m_Actor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if (m_Actor)
+	m_pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (!m_pActor) 
 	{
-		// radar
-		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
-		// viewport
-		float h,p;
-		Device.vCameraDirection.getHP	(h,p);
-		UIZoneMap.SetHeading			(-h);
+		m_pWeapon = NULL;
+		CUIWindow::Update();
+		return;
+	}
+
+
+	if(m_pActor->m_inventory.GetActiveSlot() < m_pActor->m_inventory.m_slots.size()) 
+	{
+		m_pWeapon = dynamic_cast<CWeapon*>(m_pActor->m_inventory.m_slots[
+										m_pActor->m_inventory.GetActiveSlot()].m_pIItem); 
+		if(m_pWeapon)
+			UITextWeaponName.SetText((char*)m_pWeapon->NameShort());
+		else
+			UITextWeaponName.SetText(NULL);
+	} 
+	else
+		m_pWeapon = NULL;
+    
+
+	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
+
+	UIWeapon.Out(m_pWeapon);
+
+
+    // radar
+	UIZoneMap.UpdateRadar(m_pActor,Level().Teams[m_pActor->id_Team]);
+	// viewport
+	float h,p;
+	Device.vCameraDirection.getHP	(h,p);
+	UIZoneMap.SetHeading			(-h);
 		
-		// health&armor
+	// health&armor
 	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
-		UIHealthBar.SetProgressPos((s16)m_Actor->g_Health());
+	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
 		
+	//radiation
+	float radiation = m_pActor->GetRadiation();
 
-		//radiation
-		float radiation = m_Actor->GetRadiation();
+	if(radiation<RADIATION_ABSENT)	
+	{
+		UIStaticRadiationLow.Show(false);
+		UIStaticRadiationMedium.Show(false);
+		UIStaticRadiationHigh.Show(false);
+	}
+	else if(radiation<RADIATION_SMALL)	
+	{
+		UIStaticRadiationLow.Show(true);
+		UIStaticRadiationMedium.Show(false);
+		UIStaticRadiationHigh.Show(false);
+	}
+	else if(radiation<RADIATION_MEDIUM)	
+	{
+		UIStaticRadiationLow.Show(false);
+		UIStaticRadiationMedium.Show(true);
+		UIStaticRadiationHigh.Show(false);
+	}
+	else 
+	{
+		UIStaticRadiationLow.Show(false);
+		UIStaticRadiationMedium.Show(false);
+		UIStaticRadiationHigh.Show(true);
+	}
 
+	// weapon
+	//CWeaponList* wpns = m_Actor->GetItemList();
+	//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		
-#define RADIATION_ABSENT 0.25f
-#define RADIATION_SMALL 0.5f
-#define RADIATION_MEDIUM 0.75f
-#define RADIATION_HIGH 1.0f
-
-		if(radiation<RADIATION_ABSENT)	
-		{
-			UIStaticRadiationLow.Show(false);
-			UIStaticRadiationMedium.Show(false);
-			UIStaticRadiationHigh.Show(false);
-		}
-		else if(radiation<RADIATION_SMALL)	
-		{
-			UIStaticRadiationLow.Show(true);
-			UIStaticRadiationMedium.Show(false);
-			UIStaticRadiationHigh.Show(false);
-		}
-		else if(radiation<RADIATION_MEDIUM)	
-		{
-			UIStaticRadiationLow.Show(false);
-			UIStaticRadiationMedium.Show(true);
-			UIStaticRadiationHigh.Show(false);
-		}
-		else 
-		{
-			UIStaticRadiationLow.Show(false);
-			UIStaticRadiationMedium.Show(false);
-			UIStaticRadiationHigh.Show(true);
-		}
+	//Wounds bleeding speed
+	if(m_pActor->BleedingSpeed()>0)
+	{
+		sprintf(wound_string, "%3.3f",m_pActor->BleedingSpeed());
+		UITextWound.SetText(wound_string);
+		UITextWound.Show(true);
+		UIStaticWound.Show(true);
+	}
+	else
+	{
+		UITextWound.Show(false);
+		UIStaticWound.Show(false);
+	}
 
 
-		// weapon
-		//CWeaponList* wpns = m_Actor->GetItemList();
-		//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
-		CActor *l_pA = dynamic_cast<CActor*>(m_Actor);
-		
-		if(l_pA)
-		{
-			//Wounds bleeding speed
-			
-			if(l_pA->BleedingSpeed()>0)
-			{
-				sprintf(wound_string, "%3.3f",l_pA->BleedingSpeed());
-				UITextWound.SetText(wound_string);
-				UITextWound.Show(true);
-				UIStaticWound.Show(true);
-			}
-			else
-			{
-				UITextWound.Show(false);
-				UIStaticWound.Show(false);
-			}
-
-		
-				
-			if(l_pA->m_inventory.GetActiveSlot() < l_pA->m_inventory.m_slots.size()) 
-			{
-				CWeapon* pWeapon = dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[
-												l_pA->m_inventory.GetActiveSlot()].m_pIItem); 
-				UIWeapon.Out(pWeapon);
-				if(pWeapon)
-					UITextWeaponName.SetText((char*)pWeapon->NameShort());
-				else
-					UITextWeaponName.SetText(NULL);
-			} 
-			else UIWeapon.Out(NULL);
-		}
-}
-		
-	
-	//обновить окошки
 	CUIWindow::Update();
 }
-///	Device.TimerAsync();
+
+	
+
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
