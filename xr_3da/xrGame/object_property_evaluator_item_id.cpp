@@ -18,5 +18,5 @@ CObjectPropertyEvaluatorItemID::CObjectPropertyEvaluatorItemID(CAI_Stalker *owne
 
 CObjectPropertyEvaluatorItemID::_value_type CObjectPropertyEvaluatorItemID::evaluate	()
 {
-	return			(m_object->inventory().ActiveItem() ? m_object->inventory().ActiveItem()->ID() : 0xffff);
+	return			(!m_object->inventory().ActiveItem());
 }
