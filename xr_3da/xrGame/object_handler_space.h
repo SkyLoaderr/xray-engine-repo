@@ -71,6 +71,8 @@ namespace ObjectHandlerSpace {
 		eWorldOperatorQueueWait2,
 		eWorldOperatorAimingReady1,
 		eWorldOperatorAimingReady2,
+		eWorldOperatorGetAmmo1,
+		eWorldOperatorGetAmmo2,
 
 		eWorldOperatorThrowStart,
 		eWorldOperatorThrowIdle,

@@ -72,7 +72,7 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 	set_goal						(eObjectActionIdle);
 
 #ifdef LOG_ACTION
-//	m_use_log						= true;
+	m_use_log						= true;
 #endif
 }
 
@@ -260,6 +260,8 @@ LPCSTR CObjectHandler::action2string(const _action_id_type &id)
 		case ObjectHandlerSpace::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
 		case ObjectHandlerSpace::eWorldOperatorPrepare		: {strcat(S,"Preparing");	break;}
 		case ObjectHandlerSpace::eWorldOperatorUse			: {strcat(S,"Using");		break;}
+		case ObjectHandlerSpace::eWorldOperatorGetAmmo1		: {strcat(S,"GetAmmo1");	break;}
+		case ObjectHandlerSpace::eWorldOperatorGetAmmo2		: {strcat(S,"GetAmmo2");	break;}
 		default												: NODEFAULT;
 	}
 	return		(S);
@@ -531,6 +533,19 @@ void CObjectHandler::add_operators		(CWeapon *weapon)
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_operator		(uid(id,eWorldOperatorAimingReady2),action);
 
+	// fake action get ammo
+	action				= xr_new<CSObjectActionBase>(weapon,m_object,&m_storage,"fake_get_ammo1");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyAmmo1,		false);
+	add_effect			(action,id,eWorldPropertyAmmo1,		true);
+	add_operator		(uid(id,eWorldOperatorGetAmmo1),	action);
+
+	action				= xr_new<CSObjectActionBase>(weapon,m_object,&m_storage,"fake_get_ammo2");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyAmmo2,		false);
+	add_effect			(action,id,eWorldPropertyAmmo2,		true);
+	add_operator		(uid(id,eWorldOperatorGetAmmo2),	action);
+
 	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
 	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
 	this->action(uid(id,eWorldOperatorAimingReady1)).set_inertia_time(1000);
@@ -708,12 +723,5 @@ void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameO
 
 void CObjectHandler::update(u32 time_delta)
 {
-#pragma todo("Oles to Dima: remove this, as fast as possible - serious performance slowdown")
-	if (initialized()) {
-		CInventoryItem			*item = m_object->inventory().get_object_by_id((ALife::_OBJECT_ID)current_action_object_id());
-		u32						action_id = current_action_state_id();
-		if (item && ((action_id == eWorldOperatorFire1) || (action_id == eWorldOperatorFire2)) && !item->can_kill())
-			set_goal			(eObjectActionDeactivate);
-	}
 	inherited::update		(time_delta);
 }
