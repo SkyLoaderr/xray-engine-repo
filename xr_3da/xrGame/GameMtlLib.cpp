@@ -119,15 +119,15 @@ void SGameMtlPair::Load(IReader& fs)
 	OwnProps.set		(fs.r_u32());
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
-	fs.r_stringZ			(buf); 	BreakingSounds	= *buf;
+	fs.r_stringZ		(buf); 	BreakingSounds	= buf.size()?*buf:"";
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
-	fs.r_stringZ			(buf);	StepSounds		= *buf;
+	fs.r_stringZ		(buf);	StepSounds		= buf.size()?*buf:"";
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-	fs.r_stringZ			(buf);	CollideSounds	= *buf;
-	fs.r_stringZ			(buf);	CollideParticles= *buf;
-	fs.r_stringZ			(buf);	CollideMarks	= *buf;
+	fs.r_stringZ		(buf);	CollideSounds	= buf.size()?*buf:"";
+	fs.r_stringZ		(buf);	CollideParticles= buf.size()?*buf:"";
+	fs.r_stringZ		(buf);	CollideMarks	= buf.size()?*buf:"";
 }
 #endif
 
