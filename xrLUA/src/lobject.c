@@ -88,6 +88,7 @@ int luaO_rawequalObj (const TObject *t1, const TObject *t2) {
   }
 }
 
+#pragma warning(disable:4244)
 
 int luaO_str2d (const char *s, lua_Number *result) {
   char *endptr;
@@ -99,6 +100,7 @@ int luaO_str2d (const char *s, lua_Number *result) {
   return 1;
 }
 
+#pragma warning(default:4244)
 
 
 static void pushstr (lua_State *L, const char *str) {

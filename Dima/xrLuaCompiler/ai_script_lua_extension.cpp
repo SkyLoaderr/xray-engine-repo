@@ -16,6 +16,9 @@ using namespace Script;
 
 int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
+	if (!psAI_Flags.test(aiLua))
+		return(0);
+
 	LPCSTR		S = "", SS = "";
 	LPSTR		S1;
 	string4096	S2;

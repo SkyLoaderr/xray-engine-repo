@@ -15,6 +15,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#pragma warning(disable:4244)
+#pragma warning(disable:4305)
 
 #undef PI
 #define PI (3.14159265358979323846)
@@ -244,3 +246,5 @@ LUALIB_API int luaopen_math (lua_State *L) {
   return 1;
 }
 
+#pragma warning(default:4244)
+#pragma warning(default:4305)

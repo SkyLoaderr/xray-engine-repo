@@ -69,6 +69,7 @@
 #define IO_INPUT		"_input"
 #define IO_OUTPUT		"_output"
 
+#pragma warning(disable:4244)
 
 static int pushresult (lua_State *L, int i, const char *filename) {
   if (i) {
@@ -748,4 +749,6 @@ LUALIB_API int luaopen_io (lua_State *L) {
   registerfile(L, stderr, "stderr", NULL);
   return 1;
 }
+
+#pragma warning(default:4244)
 
