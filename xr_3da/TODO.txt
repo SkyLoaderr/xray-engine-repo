@@ -20,6 +20,7 @@
 		*	точное освещение level.details
 		*	более точное освещение моделей
 		*	string-docking / sharing
+		*	C++ LUA + xr_malloc, etc.
 
 	bugs/features:
 		*	models/model_trans 			- черный
