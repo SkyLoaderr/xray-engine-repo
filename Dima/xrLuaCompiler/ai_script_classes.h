@@ -427,16 +427,16 @@ public:
 
 	CLuaGameObject	*GetBestEnemy()
 	{
-		const CEnemyManager	*enemy_manager = dynamic_cast<const CEnemyManager*>(m_tpGameObject);
-		if (!enemy_manager)
+		const CEnemyManager		*enemy_manager = dynamic_cast<const CEnemyManager*>(m_tpGameObject);
+		if (!enemy_manager || !enemy_manager->selected())
 			return				(0);
 		return					(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(enemy_manager->selected()))->lua_game_object());
 	}
 
 	CLuaGameObject	*GetBestItem()
 	{
-		const CItemManager	*item_manager = dynamic_cast<const CItemManager*>(m_tpGameObject);
-		if (!item_manager)
+		const CItemManager		*item_manager = dynamic_cast<const CItemManager*>(m_tpGameObject);
+		if (!item_manager || !item_manager->selected())
 			return				(0);
 		return					(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(item_manager->selected()))->lua_game_object());
 	}
