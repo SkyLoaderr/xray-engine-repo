@@ -95,6 +95,7 @@ end
 --------
 function action_wait:finalize ()
     action_base.finalize (self)
+    state_mgr.set_state (self.object, "idle")
 end
 -----------------------------------------------------------------------------------
 
@@ -169,6 +170,7 @@ function action_follow:finalize ()
        table.remove (db.storage[self.st.leader_id].followers, self.index)
        self.index = nil
     end   
+    state_mgr.set_state (self.object, "idle")
 end
 --------
 function action_follow:calculate_position ()
