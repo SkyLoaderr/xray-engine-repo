@@ -23,7 +23,7 @@ CAI_Stalker::CAI_Stalker			()
 	r_head_speed					= PI_DIV_6;
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse			= 0.f;
-	m_dwTimeToChange		= 30000;
+	m_dwTimeToChange		= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()

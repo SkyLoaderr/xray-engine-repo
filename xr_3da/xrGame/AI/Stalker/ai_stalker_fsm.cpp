@@ -22,6 +22,31 @@
 	#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #endif
 
+void CAI_Stalker::vfUpdateSearchPosition()
+{
+	if (!g_Alive())
+		return;
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
+		if (tpLeader) {
+			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
+				m_eCurrentState = eStalkerStateSearching;
+			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+		}
+	}
+	else {
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			//Msg("Next graph point %d",m_tNextGP);
+		}
+
+	}
+}
+
 void CAI_Stalker::Think()
 {
 	vfUpdateSearchPosition();
@@ -141,28 +166,4 @@ void CAI_Stalker::Searching()
 	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw = r_target.yaw;
-}
-
-void CAI_Stalker::vfUpdateSearchPosition()
-{
-	if (!g_Alive())
-		return;
-	INIT_SQUAD_AND_LEADER;
-	if (this != Leader)	{
-		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
-		if (tpLeader) {
-			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
-				m_eCurrentState = eStalkerStateSearching;
-			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
-		}
-	}
-	else {
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			Msg("Next graph point %d",m_tNextGP);
-		}
-
-	}
 }

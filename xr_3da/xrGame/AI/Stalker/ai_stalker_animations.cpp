@@ -201,12 +201,14 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	//if (g_Health() <= 0)
-	//	tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
+	if (g_Health() <= 0)
+		tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
+	if (g_Health() <= 0)
+		return;
 	if (Weapons->ActiveWeapon())
 		if (m_eCurrentState == eStalkerStateRecharge) {
 			switch (Weapons->ActiveWeaponID()) {
@@ -246,6 +248,8 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 
 void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
+	if (g_Health() <= 0)
+		return;
 	if (m_fCurSpeed < EPS_L) {
 		// standing
 		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
@@ -327,24 +331,24 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 	}
 	
-	Msg("----%d\n[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
-	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
+	//Msg("----%d\n[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+	//Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[m_tMovementDirection]->A[0];
 	float					x1 = r_torso_current.yaw;
 	float					x2 = angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	float					x3 = angle_normalize_signed(r_current.yaw);
-	Msg("%f %f %f",x1,x2,x3);
+	//Msg("%f %f %f",x1,x2,x3);
 	x2						= angle_normalize_signed(x2 - x1);
 	x3						= angle_normalize_signed(x3 - x1);
-	Msg("%f %f %f",x1,x2,x3);
+	//Msg("%f %f %f",x1,x2,x3);
 	if ((x2*x3 <= 0) && (_abs(x2) + _abs(x3) > PI - EPS_L)) {
-		Msg("Long way");
+		//Msg("Long way");
 		x2					= angle_normalize(x2);
 		x3					= angle_normalize(x3);
 		r_torso_target.yaw	= angle_normalize_signed((x2 + x3)/2);
 	}
 	else {
-		Msg("Short way");
+		//Msg("Short way");
 		r_torso_target.yaw	= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	}
 //	Msg("[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);

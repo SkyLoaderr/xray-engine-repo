@@ -166,4 +166,16 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 			if ((*J).second->m_bOnline)
 				vfSwitchObjectOnline(I);
 		}
+	
+	CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(I);
+	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0)) {
+		ALIFE_MONSTER_P_IT	i = m_tpScheduledObjects.begin();
+		ALIFE_MONSTER_P_IT	e = m_tpScheduledObjects.end();
+		_OBJECT_ID			tObjectID = tpALifeMonsterAbstract->m_tObjectID;
+		for ( ; i != e; i++)
+			if ((*i)->m_tObjectID == tObjectID) {
+				m_tpScheduledObjects.erase(i);
+				break;
+			}
+	}
 }

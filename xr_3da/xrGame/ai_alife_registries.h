@@ -374,7 +374,7 @@ public:
 		if (!tpALifeDynamicObject->m_bDirectControl)
 			return;
 		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
-		if (tpALifeMonsterAbstract)
+		if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth > 0))
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
 };
