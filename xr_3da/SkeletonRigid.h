@@ -4,7 +4,7 @@
 
 #include "SkeletonCustom.h"
 
-class CBoneDataRigid: public CBoneData
+class ENGINE_API	CBoneDataRigid		: public CBoneData
 {
 public:
 						CBoneDataRigid	(u16 ID):CBoneData(ID){}
@@ -12,13 +12,13 @@ public:
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 };
 
-class CBoneInstanceRigid: public CBoneInstance
+class ENGINE_API	CBoneInstanceRigid	: public CBoneInstance
 {
 public:
 	void				construct		();
 };
 
-class ENGINE_API	CSkeletonRigid	: public CKinematics
+class ENGINE_API	CSkeletonRigid		: public CKinematics
 {
 protected:
     virtual CBoneData*			CreateBoneData	(u16 ID){return xr_new<CBoneDataRigid>(ID);}
