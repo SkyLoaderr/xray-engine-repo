@@ -90,12 +90,18 @@ class CNodeRenumberer {
 	};
 
 	xr_vector<NodeCompressed>	&m_nodes;
-	xr_vector<u32>				m_sorted;
-	xr_vector<u32>				m_renumbering;
+	xr_vector<u32>				&m_sorted;
+	xr_vector<u32>				&m_renumbering;
 
 public:
-					CNodeRenumberer(xr_vector<NodeCompressed> &nodes) :
-						m_nodes(nodes)
+					CNodeRenumberer(
+						xr_vector<NodeCompressed>	&nodes, 
+						xr_vector<u32>				&sorted,
+						xr_vector<u32>				&renumbering
+					) :
+						m_nodes(nodes),
+						m_sorted(sorted),
+						m_renumbering(renumbering)
 	{
 		u32					N = (u32)m_nodes.size();
 		m_sorted.resize		(N);
@@ -155,7 +161,9 @@ void xrSaveNodes(LPCSTR N)
 		compressed_nodes.push_back(NC);
 	}
 
-	CNodeRenumberer	A(compressed_nodes);
+	xr_vector<u32>	sorted;
+	xr_vector<u32>	renumbering;
+	CNodeRenumberer	A(compressed_nodes,sorted,renumbering);
 
 	for (u32 i=0; i<g_nodes.size(); ++i) {
 		fs->w			(&compressed_nodes[i],sizeof(NodeCompressed));
@@ -166,4 +174,179 @@ void xrSaveNodes(LPCSTR N)
 	Msg				("%dK saved",SizeTotal/1024);
 
 	FS.w_close		(fs);
+}
+
+#include "game_graph.h"
+#include "game_level_cross_table.h"
+#define VERSION_OFFSET 1
+
+class CRenumbererConverter {
+public:
+
+			bool	save_file	(LPCSTR origin, LPCSTR s1, LPCSTR s2)
+	{
+		string256				original,backup;
+		strcpy					(backup,origin);
+		strcpy					(original,origin);
+		strcat					(backup,s2);
+		strcat					(original,s1);
+		if (!FS.exist(original))
+			return				(false);
+		IReader					*fs0 = FS.r_open(original);
+		IWriter					*fs1 = FS.w_open(backup);
+		fs1->w					(fs0->pointer(),fs0->elapsed());
+		FS.r_close				(fs0);
+		FS.w_close				(fs1);
+		return					(true);
+	}
+					CRenumbererConverter(LPCSTR folder)
+	{
+		// gathering existing information
+		string256				original,origin;
+		FS.update_path			(origin,"$game_levels$",folder);
+		
+		// creating backup copy
+		if (!save_file(origin,"level.ai","level.ai.backup"))
+			return;
+		if (!save_file(origin,"level.graph","level.graph.backup"))
+			return;
+		if (!save_file(origin,"level.gct.raw","level.gct.raw.backup"))
+			return;
+
+		// loading level graph
+		CLevelGraph				*level_graph = xr_new<CLevelGraph>(origin,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (level_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(level_graph);
+			return;
+		}
+		hdrNODES				level_header = level_graph->header();
+		u32						N = level_header.count;
+		compressed_nodes.resize	(N);
+		for (u32 i=0; i<N; ++i)
+			compressed_nodes[i] = *level_graph->vertex(i);
+		xr_delete				(level_graph);
+
+		// renumbering level nodes
+		xr_vector<u32>			sorted;
+		xr_vector<u32>			renumbering;
+		CNodeRenumberer			A(compressed_nodes,sorted,renumbering);
+
+		// changing level
+		level_header.version	= XRAI_CURRENT_VERSION;
+		// writing level copy
+		{
+			strcpy					(original,origin);
+			strcat					(original,"level.ai");
+			IWriter					*fs = FS.w_open(original);
+			fs->w					(&level_header,sizeof(level_header));
+			for (u32 i=0; i<level_header.count; ++i)
+				fs->w				(&compressed_nodes[i],sizeof(NodeCompressed));
+			FS.w_close				(fs);
+		}
+
+		// loading game graph
+		strcpy					(original,origin);
+		strcat					(original,"level.graph");
+		CGameGraph				*game_graph = xr_new<CGameGraph>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (game_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET)
+			return;
+		CGameGraph::CHeader		game_header = game_graph->header();
+		xr_vector<CGameGraph::CVertex>	game_nodes;
+		xr_vector<CGameGraph::CEdge>	game_edges;
+//		game_nodes.insert		(game_nodes.begin(),game_graph->m_nodes,game_graph->m_nodes + game_graph->header().vertex_count());
+//		game_edges.insert		(game_edges.begin(),(CGameGraph::CEdge*)(game_graph->m_nodes + game_graph->header().vertex_count()),(CGameGraph::CEdge*)(game_graph->m_nodes + game_graph->header().vertex_count()) + game_graph->header().edge_count());
+		u32						edge_count = 0;
+		game_nodes.resize		(game_header.vertex_count());
+		for (u32 i=0; i<game_header.vertex_count(); ++i) {
+			game_nodes[i]		= *game_graph->vertex(i);
+			edge_count			+= game_graph->vertex(i)->edge_count();
+		}
+		game_edges.resize		(edge_count);
+		for (u32 i=0; i<edge_count; ++i)
+			game_edges[i]		= ((CGameGraph::CEdge*)(game_graph->m_nodes + game_nodes.size()))[i];
+		xr_delete				(game_graph);
+
+		// changing game graph
+		game_header.dwVersion	= XRAI_CURRENT_VERSION;
+		for (u32 i=0; i<game_header.vertex_count(); ++i)
+			game_nodes[i].tNodeID = renumbering[sorted[game_nodes[i].tNodeID]];
+
+		// writing graph copy
+		{
+			strcpy					(original,origin);
+			strcat					(original,"level.graph");
+			IWriter					*fs = FS.w_open(original);
+
+			fs->w_u32				(game_header.dwVersion);
+			fs->w_u32				(game_header.dwLevelCount);
+			fs->w_u32				(game_header.dwVertexCount);
+			fs->w_u32				(game_header.dwEdgeCount);
+			fs->w_u32				(game_header.dwDeathPointCount);
+			CGameGraph::LEVEL_PAIR_IT	I = game_header.tpLevels.begin();
+			CGameGraph::LEVEL_PAIR_IT	E = game_header.tpLevels.end();
+			for ( ; I != E; I++) {
+				fs->w_stringZ		((*I).second.name());
+				fs->w_fvector3		((*I).second.offset());
+				fs->w_u32			((*I).second.id());
+			}
+			for (u32 i=0; i<game_header.vertex_count(); ++i)
+				fs->w				(&game_nodes[i],sizeof(CGameGraph::CVertex));
+			for (u32 i=0; i<edge_count; ++i)
+				fs->w				(&game_edges[i],sizeof(CGameGraph::CEdge));
+			FS.w_close				(fs);
+		}
+
+		// loading cross table
+		strcpy					(original,origin);
+		strcat					(original,"level.gct.raw");
+		CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (cross_table->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET)
+			return;
+		CGameLevelCrossTable::CHeader			cross_header = cross_table->header();
+		xr_vector<CGameLevelCrossTable::CCell>	cross_nodes;
+		cross_nodes.resize		(cross_header.level_vertex_count());
+		for (u32 i=0; i<cross_header.level_vertex_count(); ++i)
+			cross_nodes[i]		= cross_table->m_tpaCrossTable[renumbering[sorted[i]]];
+		xr_delete				(cross_table);
+
+		// changing cross header
+		cross_header.dwVersion	= XRAI_CURRENT_VERSION;;
+		
+		// writing cross copy
+		{
+			strcpy					(original,origin);
+			strcat					(original,"level.gct.raw");
+			IWriter					*fs = FS.w_open(original);
+			
+			fs->open_chunk			(CROSS_TABLE_CHUNK_VERSION);
+			fs->w					(&cross_header,sizeof(cross_header));
+			fs->close_chunk			();
+
+			fs->open_chunk			(CROSS_TABLE_CHUNK_DATA);
+			for (u32 i=0; i<N; ++i)
+				fs->w				(&cross_nodes[i],sizeof(CGameLevelCrossTable::CCell));
+			fs->close_chunk			();
+			FS.w_close				(fs);
+		}
+	}
+};
+
+void xrConvertMaps	()
+{
+	VERIFY				(XRAI_CURRENT_VERSION == 6);
+	string256			path,drive,folder,file,extension;
+	FS.update_path		(path,"$game_levels$","");
+	xr_vector<char*>	*file_list = FS.file_list_open(path);
+	if (!file_list)
+		return;
+	xr_vector<char*>::const_iterator	I = file_list->begin();
+	xr_vector<char*>::const_iterator	E = file_list->end();
+	for ( ; I != E; ++I) {
+		_splitpath		(*I,drive,folder,file,extension);
+		if (xr_strcmp(".ai",extension))
+			continue;
+		Msg				("%s",*I);
+		CRenumbererConverter	A(folder);
+	}
+	xr_delete			(file_list);
 }

@@ -27,6 +27,7 @@ extern void __cdecl logThread	(void *dummy);
 extern volatile BOOL bClose;
 extern void test_smooth_path	(LPCSTR name);
 extern void test_hierarchy		(LPCSTR name);
+extern void	xrConvertMaps		();
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -53,7 +54,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0) && (strstr(cmd,"-t")==0))	{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0) && (strstr(cmd,"-t")==0) && (strstr(cmd,"-c")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
@@ -111,6 +112,10 @@ void Startup(LPSTR     lpCmdLine)
 						//test_smooth_path	(prjName);
 						test_hierarchy		(prjName);
 					}
+					else
+						if (strstr(cmd,"-c")) {
+							xrConvertMaps	();
+						}
 		}
 	// Show statistic
 	char	stats[256];

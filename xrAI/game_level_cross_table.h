@@ -35,6 +35,7 @@ public:
 #ifdef AI_COMPILER		
 		friend class CLevelGameGraph;
 		friend class CCrossTableBuilder;
+		friend class CRenumbererConverter;
 #endif
 	};
 	
@@ -47,6 +48,7 @@ public:
 #ifdef AI_COMPILER		
 		friend class CLevelGameGraph;
 		friend class CCrossTableBuilder;
+		friend class CRenumbererConverter;
 #endif
 	};
 	#pragma pack(pop)
@@ -58,7 +60,7 @@ protected:
 
 public:
 #ifdef AI_COMPILER
-	IC						CGameLevelCrossTable	(LPCSTR fName);
+	IC						CGameLevelCrossTable	(LPCSTR fName, u32 current_version = XRAI_CURRENT_VERSION);
 #else
 	IC						CGameLevelCrossTable	();
 #endif
@@ -68,6 +70,7 @@ public:
 #ifdef AI_COMPILER		
 	friend class CLevelGameGraph;
 	friend class CCrossTableBuilder;
+	friend class CRenumbererConverter;
 #endif
 };
 

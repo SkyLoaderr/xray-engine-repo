@@ -17,7 +17,7 @@
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
 #else
-CLevelGraph::CLevelGraph					(LPCSTR filename)
+CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 #endif
 {
 #ifndef AI_COMPILER
@@ -34,7 +34,14 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 
 	// m_header & data
 	m_header					= (CHeader*)m_reader->pointer();
+#ifndef AI_COMPILER
 	R_ASSERT					(header().version() == XRAI_CURRENT_VERSION);
+#else
+	if (XRAI_CURRENT_VERSION != current_version)
+		if (header().version() != current_version)
+			return;
+	R_ASSERT					(header().version() == current_version);
+#endif
 	m_reader->advance			(sizeof(CHeader));
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);

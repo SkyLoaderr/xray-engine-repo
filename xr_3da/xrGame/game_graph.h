@@ -19,6 +19,7 @@
 #define GRAPH_NAME							"game.graph"
 
 class CGameGraph {
+	friend class CRenumbererConverter;
 public:
 
 	class SLevel {
@@ -44,6 +45,7 @@ public:
 		friend class CGraphMerger;
 		friend class CSpawn;
 		friend class CLevelAssigner;
+		friend class CRenumbererConverter;
 #endif
 	};
 
@@ -60,6 +62,7 @@ public:
 		friend class CLevelGameGraph;
 		friend class CGraphThread;
 		friend class CGraphMerger;
+		friend class CRenumbererConverter;
 #endif
 	};
 
@@ -87,6 +90,7 @@ public:
 #ifdef AI_COMPILER
 		friend class CLevelGameGraph;
 		friend class CGraphSaver;
+		friend class CRenumbererConverter;
 #endif
 	};
 
@@ -109,6 +113,7 @@ public:
 #ifdef AI_COMPILER
 		friend class CGraphSaver;
 		friend class CGraphMerger;
+		friend class CRenumbererConverter;
 #endif
 	};
 #pragma pack(pop)
@@ -136,6 +141,7 @@ public:
 #ifdef AI_COMPILER
 		friend class CLevelGameGraph;
 		friend class CSpawn;
+		friend class CRenumbererConverter;
 #endif
 	};
 
@@ -153,7 +159,7 @@ public:
 #ifndef AI_COMPILER
 	IC 								CGameGraph		();
 #else
-	IC 								CGameGraph		(LPCSTR file_name);
+	IC 								CGameGraph		(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
 	IC virtual						~CGameGraph		();
 	IC const CHeader				&header			() const;

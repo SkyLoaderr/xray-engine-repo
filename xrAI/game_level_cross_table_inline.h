@@ -9,7 +9,7 @@
 #pragma once
 
 #ifdef AI_COMPILER
-IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName)
+IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName, u32 current_version)
 #else
 IC CGameLevelCrossTable::CGameLevelCrossTable()
 #endif
@@ -23,7 +23,13 @@ IC CGameLevelCrossTable::CGameLevelCrossTable()
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");
 	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);
 	m_tpCrossTableVFS->r				(&m_tCrossTableHeader,sizeof(m_tCrossTableHeader));
+#ifdef AI_COMPILER
+	if (XRAI_CURRENT_VERSION != current_version)
+		if (header().version() != current_version)
+			return;
+#else
 	R_ASSERT2							(m_tCrossTableHeader.version() == XRAI_CURRENT_VERSION,"Cross table version mismatch!");
+#endif
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA),"Can't find chunk CROSS_TABLE_CHUNK_DATA!");
 	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
 	m_tpaCrossTable						= (CCell*)m_tpCrossTableVFS->pointer();

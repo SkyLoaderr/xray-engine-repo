@@ -16,8 +16,10 @@
 
 
 class CLevelGraph {
+	friend class CRenumbererConverter;
 public:
 	class CHeader : private hdrNODES {
+		friend class CRenumbererConverter;
 	public:
 		IC	u32				version					() const;
 		IC	u32				vertex_count			() const;
@@ -29,6 +31,7 @@ public:
 	typedef NodePosition CPosition;
 
 	class CVertex : private NodeCompressed {
+		friend class CRenumbererConverter;
 	public:
 		IC	u32				link					(int i) const;
 		IC	u8				light					() const;
@@ -80,7 +83,7 @@ public:
 #ifndef AI_COMPILER
 					CLevelGraph					();
 #else
-					CLevelGraph					(LPCSTR file_name);
+					CLevelGraph					(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
 	virtual			~CLevelGraph				();
 	IC		u8		ref_add						(u32 vertex_id);

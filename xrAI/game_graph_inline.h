@@ -11,7 +11,7 @@
 #ifndef AI_COMPILER
 IC CGameGraph::CGameGraph		()
 #else
-IC CGameGraph::CGameGraph		(LPCSTR file_name)
+IC CGameGraph::CGameGraph		(LPCSTR file_name, u32 current_version)
 #endif
 {
 #ifndef AI_COMPILER
@@ -32,7 +32,13 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 		m_reader->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
 		m_header.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
 	}
+#ifndef AI_COMPILER
 	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
+#else
+	if (XRAI_CURRENT_VERSION != current_version)
+		if (header().version() != current_version)
+			return;
+#endif
 	m_nodes						= (CVertex*)m_reader->pointer();
 }
 
