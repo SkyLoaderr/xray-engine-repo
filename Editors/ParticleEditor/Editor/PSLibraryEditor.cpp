@@ -6,12 +6,12 @@
 #include "ParticleGroup.h"
 //------------------------------------------------------------------------------
 
-PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent)
+LPCSTR CPSLibrary::ChoosePG()
 {
 	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPS,T,1,m_CurrentPS)){
-    	if (bSetCurrent) strcpy(m_CurrentPS,T);
-        return FindPS(T);
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPG,T,1,m_CurrentPG)){
+    	strcpy(m_CurrentPG,T);
+        return m_CurrentPG;
     }else return 0;
 }
 //------------------------------------------------------------------------------

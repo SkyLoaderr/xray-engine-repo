@@ -11,7 +11,7 @@ class ENGINE_API CPSLibrary{
     PS::PSVec			m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
-    string256			m_CurrentPS;
+    string256			m_CurrentPG;
 
     PS::PGVec			m_PGs;
 public:
@@ -39,8 +39,8 @@ public:
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
     void				RenamePG		(PS::CPGDef* src, LPCSTR new_name);
 
-	PS::SDef*			GetCurrentPS	(){return m_CurrentPS[0]?0:FindPS(m_CurrentPS);}
-    PS::SDef*			ChoosePS		(bool bSetCurrent=true);
+	LPCSTR				GetCurrentPG	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPG[0])?ChoosePG():(m_CurrentPG[0]?m_CurrentPG:0);}
+    LPCSTR				ChoosePG		();
 
     void				Reload			();
     void				Save			();

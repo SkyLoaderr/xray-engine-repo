@@ -245,7 +245,6 @@ bool TUI_Tools::Pick()
 }
 //---------------------------------------------------------------------------
 
-#include "PropertiesPS.h"
 #include "PropertiesWayPoint.h"
 
 void TUI_Tools::RefreshProperties()
@@ -261,7 +260,6 @@ void TUI_Tools::ShowProperties()
         bool bChange				= false;
         switch(cls_id){
         case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
-        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
         default:
             m_Props->ShowProperties	();
             UpdateProperties		();

@@ -17,11 +17,6 @@ void CParticleGroup::Copy(IVisual*)
 }
 void CParticleGroup::Render(float)
 {
-	THROW;
-}
-
-void CParticleGroup::RenderEditor()
-{
 	if (m_Def){
         // Get a pointer to the particles in gp memory
         ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
@@ -47,6 +42,7 @@ void CParticleGroup::RenderEditor()
         }
     }
 }
+
 /*
 //------------------------------------------------------------------------------
 // I/O part

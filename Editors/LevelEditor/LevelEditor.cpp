@@ -17,7 +17,6 @@ USEFORM("main.cpp", frmMain);
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("OneEnvironment.cpp", frmOneEnvironment);
-USEFORM("PropertiesPS.cpp", frmPropertiesPS);
 USEFORM("ChoseForm.cpp", frmChoseItem);
 USEFORM("ImageEditor.cpp", frmTextureLib);
 USEFORM("FramePS.cpp", fraPS); /* TFrame: File Type */

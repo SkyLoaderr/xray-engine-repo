@@ -38,8 +38,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
 private:	// User declarations
-    void __fastcall SelByRef (bool flag);
-    void __fastcall PlayPS (bool flag);
+    void __fastcall SelByRef(bool flag);
     void __fastcall OutCurrentName();
 public:		// User declarations
         __fastcall TfraPS(TComponent* Owner);

@@ -9,6 +9,7 @@ struct SSceneSummary{
 	AStringSet	lod_objects;
 	AStringSet	mu_objects;
 	AStringSet	waves;
+	AStringSet	pg_static;
     int			face_cnt;
     int			vert_cnt;
     int			hom_face_cnt;
@@ -26,6 +27,7 @@ struct SSceneSummary{
     int			sector_cnt;
     int			portal_cnt;
     int 		sound_source_cnt;
+    int 		pg_static_cnt;
 
     			SSceneSummary()
                 {
@@ -46,6 +48,7 @@ struct SSceneSummary{
                     sector_cnt			= 0;
                     portal_cnt			= 0;
                     sound_source_cnt	= 0;
+                    pg_static_cnt		= 0;
                 }
     void		FillProp	(PropItemVec& items);
 };

@@ -29,6 +29,7 @@ struct SExportStreams{
 	SExportStreamItem	aipoint;
 	SExportStreamItem	sound_static;
 	SExportStreamItem	sound_env_geom;
+	SExportStreamItem	pg_static;
 };
 
 class CCustomObject {

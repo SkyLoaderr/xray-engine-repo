@@ -5,7 +5,7 @@
 #include "FramePS.h"
 #include "PSLibrary.h"
 #include "Scene.h"
-#include "PSObject.h"
+#include "EParticlesObject.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -43,15 +43,16 @@ void __fastcall TfraPS::ebDeselectByRefsClick(TObject *Sender)
 	SelByRef( false );
 }
 
-void __fastcall TfraPS::SelByRef( bool flag ){
-	PS::SDef *PS = (PS::SDef*)PSLib.ChoosePS(false);
-	if(PS){
+void __fastcall TfraPS::SelByRef( bool flag )
+{
+	LPCSTR PG = PSLib.ChoosePG();
+	if(PG){
 		ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
         ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
 		for(;_F!=_E;_F++){
 			if( (*_F)->Visible() ){
-				CPSObject *_O = (CPSObject *)(*_F);
-				if(_O->RefCompare(PS)) _O->Select( flag );
+				EParticlesObject *_O = (EParticlesObject *)(*_F);
+				if(_O->RefCompare(PG)) _O->Select( flag );
 			}
 		}
 	}
@@ -59,9 +60,10 @@ void __fastcall TfraPS::SelByRef( bool flag ){
 //---------------------------------------------------------------------------
 
 //----------------------------------------------------
-void __fastcall TfraPS::OutCurrentName(){
-	PS::SDef* PS = PSLib.GetCurrentPS();
-	ebCurObj->Caption = (PS)?PS->m_Name:"<none>";
+void __fastcall TfraPS::OutCurrentName()
+{
+	LPCSTR PG = PSLib.GetCurrentPG(false);
+	ebCurObj->Caption = (PG)?PG:NONE_CAPTION;
 }
 
 //---------------------------------------------------------------------------
@@ -69,32 +71,30 @@ void __fastcall TfraPS::OutCurrentName(){
 //---------------------------------------------------------------------------
 void __fastcall TfraPS::ebCurObjClick(TObject *Sender)
 {
-	PSLib.ChoosePS();
+	PSLib.ChoosePG();
     OutCurrentName();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraPS::PlayPS (bool flag)
+void __fastcall TfraPS::ebCurrentPSPlayClick(TObject *Sender)
 {
     ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
     ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
     for(;_F!=_E;_F++){
-        if( (*_F)->Visible() && (*_F)->Selected()){
-            CPSObject *_O = (CPSObject *)(*_F);
-            if (flag) _O->Play(); else _O->Stop();
-        }
+        if( (*_F)->Visible() && (*_F)->Selected())
+            ((EParticlesObject *)(*_F))->Play();
     }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraPS::ebCurrentPSPlayClick(TObject *Sender)
-{
-	PlayPS(true);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraPS::ebCurrentPSStopClick(TObject *Sender)
 {
-	PlayPS(false);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
+    for(;_F!=_E;_F++){
+        if( (*_F)->Visible() && (*_F)->Selected())
+            ((EParticlesObject *)(*_F))->Stop();
+    }
 }
 //---------------------------------------------------------------------------
 

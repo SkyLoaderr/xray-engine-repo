@@ -246,8 +246,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         // end append action
         pEndActionList();
     }
-	hShader 		= def->m_CachedShader;
-	RefreshShader	();
+	hShader 		= def?def->m_CachedShader:0;
 	return TRUE;
 }
 

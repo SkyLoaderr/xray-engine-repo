@@ -93,6 +93,7 @@ private:	// User declarations
     void __fastcall FillShader		();
     void __fastcall FillShaderXRLC	();
     void __fastcall FillPS			();
+    void __fastcall FillPG			();
     void __fastcall FillTexture		();
     void __fastcall FillEntity		();
     void __fastcall FillGameObject	();
@@ -109,6 +110,7 @@ public:		// User declarations
     	smShader,
         smShaderXRLC,
         smPS,
+        smPG,
         smTexture,
         smEntity,
         smLAnim,

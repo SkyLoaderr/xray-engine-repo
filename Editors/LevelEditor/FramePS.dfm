@@ -1,8 +1,8 @@
 object fraPS: TfraPS
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 123
+  Height = 403
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 123
@@ -19,7 +19,7 @@ object fraPS: TfraPS
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 123
     Height = 50
     Align = alTop
     ParentColor = True
@@ -70,7 +70,7 @@ object fraPS: TfraPS
     object Label: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -179,7 +179,7 @@ object fraPS: TfraPS
   object Panel1: TPanel
     Left = 0
     Top = 50
-    Width = 443
+    Width = 123
     Height = 32
     Align = alTop
     ParentColor = True
@@ -206,7 +206,7 @@ object fraPS: TfraPS
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter

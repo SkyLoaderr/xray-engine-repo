@@ -48,6 +48,11 @@ BOOL SceneBuilder::BuildGame()
 	if (SndLib.MakeEnvGeometry(F.sound_env_geom.stream,false))
     	F.sound_env_geom.stream.save_to(lev_sound_env.c_str());
 
+    // save static PG
+    AnsiString lev_pg_static = m_LevelPath+"level.ps_static";
+    EFS.MarkFile	(lev_pg_static,true);
+    if (F.pg_static.chunk)    	
+	    F.pg_static.stream.save_to(lev_pg_static.c_str());
     return TRUE;
 }
 

@@ -457,6 +457,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             break;
             case PROP_WAVE:
             case PROP_LIBPS:
+            case PROP_LIBPG:
             case PROP_SOUNDSRC:
             case PROP_SOUNDENV:
             case PROP_LIGHTANIM:
@@ -467,6 +468,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
+            case PROP_A_LIBPG:
             case PROP_A_SOUNDSRC:
             case PROP_A_SOUNDENV:
             case PROP_A_ESHADER:
@@ -500,6 +502,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (seNumber->Tag!=(int)Item)
 	                OutText(prop->GetText(),Surface,R);
             break;
+            default:
+				THROW2("Unknown prop type");
 	        };
         }
         // show LW edit
@@ -542,6 +546,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
             pmEnum->Tag = (int)item;
             switch(prop->type){
+            case PROP_CAPTION: break;
             case PROP_BUTTON:{
                 ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
                 int btn_num					= iFloor((X-FV->draw_rect.left)*(float(FV->value.size())/float(FV->draw_rect.Width())));
@@ -669,6 +674,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             case PROP_COLOR: 			ColorClick(item); 			break;
             case PROP_GAMEMTL:
             case PROP_LIBPS:
+            case PROP_LIBPG:
             case PROP_SOUNDSRC:
             case PROP_SOUNDENV:
             case PROP_LIGHTANIM:
@@ -681,6 +687,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
+            case PROP_A_LIBPG:
             case PROP_A_SOUNDSRC:
             case PROP_A_SOUNDENV:
             case PROP_A_TEXTURE:
@@ -712,6 +719,8 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     pmEnum->Items->Add(mi);
                 }
             }break;
+            default:
+				THROW2("Unknown prop type");
             };
             switch(prop->type){
             case PROP_TOKEN:
@@ -724,7 +733,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 P=tvProperties->ClientToScreen(P);
                 pmEnum->Popup(P.x,P.y-10);
                 break;
-            }
+	        };
     	}
         if (prop) prop->OnClick();
     };
@@ -922,6 +931,7 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_SOUNDSRC:		mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true; 	break;
     case PROP_SOUNDENV:		mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+    case PROP_LIBPG:		mode = TfrmChoseItem::smPG;			                    break;
     case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
     default: THROW2("Unknown prop");
     }
@@ -953,8 +963,9 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     case PROP_A_SOUNDSRC:  	mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true;  break;
     case PROP_A_SOUNDENV:	mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+    case PROP_A_LIBPG:		mode = TfrmChoseItem::smPG;			                    break;
     case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; 					break;
-    default: THROW2("Unknown prop");
+    default: THROW2("Unknown prop type");
     }
     if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt)){
         edit_val				= new_val;

@@ -4,20 +4,23 @@
 #include "UI_PSTools.h"
 #include "ui_tools.h"
 #include "PSLibrary.h"
-#include "PSObject.h"
+#include "EParticlesObject.h"
 #include "scene.h"
 #include "FramePS.h"
 #include "ui_main.h"
 
 //----------------------------------------------------------------------
-TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS){
+TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS)
+{
     AddControlCB(xr_new<TUI_ControlPSAdd>(estSelf,eaAdd,		this));
 }
-void TUI_PSTools::OnActivate  (){
+void TUI_PSTools::OnActivate  ()
+{
     pFrame = xr_new<TfraPS>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
 }
-void TUI_PSTools::OnDeactivate(){
+void TUI_PSTools::OnDeactivate()
+{
 	TUI_CustomTools::OnDeactivate();
     xr_delete(pFrame);
 }
@@ -27,30 +30,21 @@ void TUI_PSTools::OnDeactivate(){
 __fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
 }
 
-bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
-    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PS); return false;}
-	Fvector p,up;
-	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&up)) return false;
-
-    TfraPS* fraPS = (TfraPS*)parent_tool->pFrame; VERIFY(fraPS);
-    PS::SDef* PS = PSLib.GetCurrentPS();
-    if(!PS){
-    	fraPS->ebCurObjClick(0);
-        PS = PSLib.GetCurrentPS();
+bool __fastcall TUI_ControlPSAdd::AfterAppendCallback(TShiftState Shift, CCustomObject* obj)
+{
+	EParticlesObject* pg= dynamic_cast<EParticlesObject*>(obj); R_ASSERT(pg);
+    LPCSTR ref_name		= PSLib.GetCurrentPG();
+    if (!ref_name)		return false;
+	if (!pg->Compile(ref_name)){
+    	ELog.DlgMsg(mtInformation,"Can't compile particle system '%s'.",ref_name);
+        return false;
     }
-    if(!PS) return false;
+    return true;
+}
 
-    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
-        string256 namebuffer;
-        Scene.GenObjectName( OBJCLASS_PS, namebuffer, PS->m_Name );
-        CPSObject *obj = new CPSObject( 0, namebuffer );
-        obj->Compile(PS);
-        obj->MoveTo(p,up);
-        Scene.SelectObjects(false,OBJCLASS_PS);
-        Scene.AddObject( obj );
-        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
-        if (!Shift.Contains(ssAlt)) ResetActionToSelect();
-    }
+bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift)
+{
+	DefaultAddObject	(Shift,0,AfterAppendCallback);
     return false;
 }
 

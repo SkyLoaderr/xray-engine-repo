@@ -1,44 +1,44 @@
 //----------------------------------------------------
-// file: PSObject.cpp
+// file: EParticlesObject.cpp
 //----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "EParticlesObject.h"
+#include "d3dutils.h"
+#include "PSLibrary.h"
+#include "PropertiesListHelper.h"
+#include "ui_main.h"
+
 #define CPSOBJECT_VERSION  				0x0011
 //----------------------------------------------------
 #define CPSOBJECT_CHUNK_VERSION			0x0001
-#define CPSOBJECT_CHUNK_EMITTER			0x0002
-#define CPSOBJECT_CHUNK_REFERENCE		0x0003
+#define CPSOBJECT_CHUNK_REFERENCE		0x0002
+#define CPSOBJECT_CHUNK_PARAMS			0x0003
 //----------------------------------------------------
 
 //using namespace PS;
 
-CPSObject::CPSObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
+EParticlesObject::EParticlesObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
 	Construct(data);
 }
 //----------------------------------------------------
 
-void CPSObject::Construct(LPVOID data)
+void EParticlesObject::Construct(LPVOID data)
 {
 	ClassID   	= OBJCLASS_PS;
-	m_Emitter.Reset();
-    m_Emitter.m_ConeDirection.set(0.f,1.f,0.f);
-    m_Emitter.m_ConeAngle = 1.f;
-    m_Shader	= 0;
-    m_Particles.clear();
-    m_fEmissionResidue = 0;
-	m_Definition= 0;
 }
 //----------------------------------------------------
 
-CPSObject::~CPSObject(){
-	if (m_Shader) Device.Shader.Delete(m_Shader);
+EParticlesObject::~EParticlesObject()
+{
 }
 //----------------------------------------------------
 
-bool CPSObject::GetBox( Fbox& box ){
-	box.set( m_Emitter.m_Position, m_Emitter.m_Position );
+bool EParticlesObject::GetBox( Fbox& box )
+{
+	box.set( PPosition, PPosition );
 	box.min.x -= PSOBJECT_SIZE;
 	box.min.y -= PSOBJECT_SIZE;
 	box.min.z -= PSOBJECT_SIZE;
@@ -49,154 +49,64 @@ bool CPSObject::GetBox( Fbox& box ){
 }
 //----------------------------------------------------
 
-//////////////////////////////////////////////////
-// - доделать рождение/умирание без удаления и добавления в массив
-//
-void CPSObject::OnFrame(){
+void EParticlesObject::OnUpdateTransform()
+{
+	inherited::OnUpdateTransform	();
+	Fvector v={0.f,0.f,0.f};
+	PS::CParticleGroup::UpdateParent(_Transform(),v);
+}
+//----------------------------------------------------
+
+void EParticlesObject::OnFrame()
+{
 	inherited::OnFrame();
-	float fTime = Device.fTimeGlobal;
-
-	// update all particles that we own
-    for (int i=0; i<int(m_Particles.size()); i++){
-    	SParticle& P = m_Particles[i];
- 		if (fTime>P.m_Time.end){
-        	m_Particles.erase(m_Particles.begin()+i);
-            i--;
-        }
-    }
-
-	// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
-	int iParticlesCreated = m_Emitter.CalculateBirth(m_Particles.size(),fTime,Device.fTimeDelta);
-
-    if (iParticlesCreated){
-        float TM	 	= fTime-Device.fTimeDelta;
-        float dT_delta 	= Device.fTimeDelta/iParticlesCreated;
-        // see if actually have any to create
-        for (i=0; i<iParticlesCreated; i++, TM+=dT_delta){
-            m_Particles.push_back(SParticle());
-            SParticle& P = m_Particles.back();
-
-            m_Emitter.GenerateParticle(P,m_Definition,TM);
-        }
-    }
-}
-
-//this draws the particle system in the ogl window
-void CPSObject::DrawPS(){
-	float fTime = Device.fTimeGlobal;
-    if (m_Shader) 	Device.SetShader(m_Shader);
-    else			Device.SetShader(Device.m_WireShader);
-
-    CTLSprite m_Sprite;
-    int 	mb_samples 	= 1;
-    float 	mb_step 	= 0;
-
-	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++){
-		u32 	C;
-		float 	sz, angl;
-		float 	angle, ang_vel;
-        if (m_Definition->m_Flags.is(PS_MOTIONBLUR)){
-            float T 	= fTime-P->m_Time.start;
-            float k 	= T/(P->m_Time.end-P->m_Time.start);
-            float k_inv = 1-k;
-            mb_samples 	= iFloor(m_Definition->m_BlurSubdiv.start*k_inv+m_Definition->m_BlurSubdiv.end*k+0.5f);
-            mb_step 	= m_Definition->m_BlurTime.start*k_inv+m_Definition->m_BlurTime.end*k;
-            mb_step /= mb_samples;
-        }
-        // update
-		for (int sample=mb_samples-1; sample>=0; sample--){
-            float T 	= fTime-P->m_Time.start-(sample*mb_step);
-            if (T<0) continue;
-            float mb_v	= 1-float(sample)/float(mb_samples);
-            float k 	= T/(P->m_Time.end-P->m_Time.start);
-			if (m_Emitter.m_Flags.is(PS_EM_PLAY_ONCE) && (k>1)) continue;
-            float k_inv = 1-k;
-
-            Fvector Pos;
-            // this moves the particle using the last known velocity and the time that has passed
-            PS::SimulatePosition(Pos,P,T,k);
-            // adjust current Color from calculated Deltas and time elapsed.
-            PS::SimulateColor(C,P,k,k_inv,mb_v);
-            // adjust current Size & Angle
-            PS::SimulateSize(sz,P,k,k_inv);
-
-            Fvector D;
-			if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)){
-				Fvector p;
-                float PT = T-0.1f;
-	            float kk = PT/(P->m_Time.end-P->m_Time.start);
-                PS::SimulatePosition(p,P,PT,kk);
-				D.sub(Pos,p);
-                D.normalize_safe();
-	        }else{
-            	PS::SimulateAngle(angle,P,T,k,k_inv);
-            }
-
-			// Animation
-            Fvector2 lt,rb;
-            lt.set(0.f,0.f);
-            rb.set(1.f,1.f);
-	        if (m_Definition->m_Flags.is(PS_FRAME_ENABLED)){
-				int frame;
-				if (m_Definition->m_Flags.is(PS_FRAME_ANIMATE))PS::SimulateAnimation(frame,m_Definition,P,T);
-				else										frame = P->m_iAnimStartFrame;
-                m_Definition->m_Animation.CalculateTC(frame,lt,rb);
-            }
-			if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)) 	m_Sprite.Render(Pos,C,sz*0.5f,D,lt,rb);
-            else                                     		m_Sprite.Render(Pos,C,sz*0.5f,angle,lt,rb);
-        }
+    Fbox bb; GetBox(bb);
+    if (::Render->occ_visible(bb)){
+	    PS::CParticleGroup::OnFrame(Device.dwTimeDelta);
     }
 }
 //----------------------------------------------------
 
-void CPSObject::Render(int priority, bool strictB2F){
+void EParticlesObject::Render(int priority, bool strictB2F)
+{
+	inherited::Render(priority,strictB2F);
     if (1==priority){
-    	if (false==strictB2F){
-            // draw emitter
-            u32 C = 0xFFFFEBAA;
-            switch (m_Emitter.m_EmitterType){
-            case PS::SEmitter::emPoint:
-                DU::DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
-                break;
-            case PS::SEmitter::emCone:
-                DU::DrawFaceNormal(m_Emitter.m_Position, m_Emitter.m_ConeDirection, 1, C);
-                break;
-            case PS::SEmitter::emSphere:
-                DU::DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
-                break;
-            case PS::SEmitter::emBox:
-                DU::DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
-                break;
-            default: THROW;
+        Fbox bb; GetBox(bb);
+        if (::Render->occ_visible(bb)){
+            if (false==strictB2F){
+                // draw emitter
+                u32 C = 0xFFFFEBAA;
+                DU::DrawLineSphere(PPosition, PSOBJECT_SIZE/10, C, true);
+                if( Selected() ){
+                    Fbox bb; GetBox(bb);
+                    u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                    DU::DrawSelectionBox(bb,&clr);
+                }
+            }else{
+            	PS::CParticleGroup::Render(1.f);
             }
-            if( Selected() ){
-                Fbox bb; GetBox(bb);
-                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU::DrawSelectionBox(bb,&clr);
-            }
-        }else{
-            Fbox bb; GetBox(bb);
-            if (::Render->occ_visible(bb))
-                DrawPS();
         }
     }
 }
 //----------------------------------------------------
 
-void CPSObject::RenderSingle(){
+void EParticlesObject::RenderSingle()
+{
 	Render(1,false);
 	Render(1,true);
 }
 //----------------------------------------------------
 
-bool CPSObject::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere_dirty(m_Emitter.m_Position,PSOBJECT_SIZE))?true:false;
+bool EParticlesObject::FrustumPick(const CFrustum& frustum)
+{
+    return (frustum.testSphere_dirty(PPosition,PSOBJECT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
-bool CPSObject::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+bool EParticlesObject::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
+{
 	Fvector pos,ray2;
-    pos.set(m_Emitter.m_Position);
+    pos.set(PPosition);
 	ray2.sub( pos, start );
 
     float d = ray2.dotproduct(direction);
@@ -213,91 +123,20 @@ bool CPSObject::RayPick(float& distance, const Fvector& start, const Fvector& di
 }
 //----------------------------------------------------
 
-void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, (axis.y)?-angle:angle);
-	m_Emitter.m_Position.sub(center);
-	m.transform_tiny	(m_Emitter.m_Position);
-	m_Emitter.m_Position.add(center);
-	m.transform_dir		(m_Emitter.m_ConeDirection);
-    UI.UpdateScene		();
+void EParticlesObject::Play()
+{
+	PS::CParticleGroup::Play();
 }
 //----------------------------------------------------
 
-void CPSObject::ParentRotate(Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, (axis.y)?-angle:angle);
-	m.transform_tiny	(m_Emitter.m_ConeDirection);
-    UI.UpdateScene		();
-}
-//----------------------------------------------------
-void CPSObject::Scale( Fvector& center, Fvector& amount ){
-	R_ASSERT(!Locked());
-    if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
-		m_Emitter.m_BoxSize.add(amount);
-	    if (m_Emitter.m_BoxSize.x<EPS) m_Emitter.m_BoxSize.x=EPS;
-	    if (m_Emitter.m_BoxSize.y<EPS) m_Emitter.m_BoxSize.y=EPS;
-    	if (m_Emitter.m_BoxSize.z<EPS) m_Emitter.m_BoxSize.z=EPS;
-    }
-    if (m_Emitter.m_EmitterType==PS::SEmitter::emSphere){
-		m_Emitter.m_SphereRadius += amount.magnitude();
-    	if (m_Emitter.m_SphereRadius<EPS) m_Emitter.m_SphereRadius=EPS;
-    }
-    UI.UpdateScene();
-}
-
-void CPSObject::Scale( Fvector& amount ){
-	R_ASSERT(!Locked());
-    if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
-		m_Emitter.m_BoxSize.add(amount);
-	    if (m_Emitter.m_BoxSize.x<EPS) m_Emitter.m_BoxSize.x=EPS;
-	    if (m_Emitter.m_BoxSize.y<EPS) m_Emitter.m_BoxSize.y=EPS;
-    	if (m_Emitter.m_BoxSize.z<EPS) m_Emitter.m_BoxSize.z=EPS;
-    }
-    if (m_Emitter.m_EmitterType==PS::SEmitter::emSphere){
-		m_Emitter.m_SphereRadius += amount.magnitude();
-    	if (m_Emitter.m_SphereRadius<EPS) m_Emitter.m_SphereRadius=EPS;
-    }
-    UI.UpdateScene();
+void EParticlesObject::Stop()
+{
+	PS::CParticleGroup::Stop();
 }
 //----------------------------------------------------
 
-bool CPSObject::Compile(PS::SDef* source){
-	if (!source) return false;
-	VERIFY(!m_Shader&&!m_Definition);
-	m_Definition= source;
-    if (source->m_ShaderName[0]&&source->m_TextureName[0]) 	m_Shader = Device.Shader.Create(source->m_ShaderName,source->m_TextureName);
-    else    												m_Shader = 0;
-    m_Emitter.Compile(&source->m_DefaultEmitter);
-    return true;
-}
-//----------------------------------------------------
-
-bool CPSObject::Compile(LPCSTR name){
-	PS::SDef* source = PSLib.FindPS(name);
-    return Compile(source);
-}
-//----------------------------------------------------
-
-void CPSObject::UpdateEmitter(PS::SEmitterDef* E){
-    m_Emitter.Compile(E);
-}
-//----------------------------------------------------
-
-void CPSObject::Play(){
-	m_Emitter.Play();
-}
-//----------------------------------------------------
-
-void CPSObject::Stop(){
-	m_Emitter.Stop();
-    m_Particles.clear();
-}
-//----------------------------------------------------
-
-bool CPSObject::Load(IReader& F){
+bool EParticlesObject::Load(IReader& F)
+{
 	u32 version = 0;
 
     R_ASSERT(F.r_chunk(CPSOBJECT_CHUNK_VERSION,&version));
@@ -306,81 +145,98 @@ bool CPSObject::Load(IReader& F){
         return false;
     }
 
-	CCustomObject::Load(F);
+	inherited::Load(F);
 
-	char buf[1024];
     R_ASSERT(F.find_chunk(CPSOBJECT_CHUNK_REFERENCE));
-    F.r_stringZ(buf);
-	Compile(buf);
-    if (!m_Definition){
-        ELog.DlgMsg( mtError, "CPSObject: '%s' not found in library", buf );
+    F.r_stringZ(m_RefName);
+    if (!Compile(m_RefName.c_str())){
+        ELog.DlgMsg( mtError, "EParticlesObject: '%s' not found in library", m_RefName.c_str() );
         return false;
     }
 
-    // читать обязательно после компиляции
-    R_ASSERT(F.r_chunk(CPSOBJECT_CHUNK_EMITTER,&m_Emitter));
+    if (F.find_chunk(CPSOBJECT_CHUNK_PARAMS)){
+    	m_bPlaying	= F.r_u32();
+    }
 
     return true;
 }
 //----------------------------------------------------
 
-void CPSObject::Save(IWriter& F){
+void EParticlesObject::Save(IWriter& F)
+{
 	CCustomObject::Save(F);
 
 	F.open_chunk	(CPSOBJECT_CHUNK_VERSION);
 	F.w_u16			(CPSOBJECT_VERSION);
 	F.close_chunk	();
 
-    VERIFY(m_Definition);
+    VERIFY(m_Def);
 	F.open_chunk	(CPSOBJECT_CHUNK_REFERENCE);
-    F.w_stringZ		(m_Definition->m_Name);
+    F.w_stringZ		(m_Def->m_Name);
 	F.close_chunk	();
 
-    F.w_chunk		(CPSOBJECT_CHUNK_EMITTER,&m_Emitter,sizeof(m_Emitter));
+	F.open_chunk	(CPSOBJECT_CHUNK_PARAMS);
+	F.w_u32			(m_bPlaying);
+	F.close_chunk	();
 }
 //----------------------------------------------------
 
-void CPSObject::OnDeviceCreate(){
-	// создать заново shaders
-    if (m_Definition&&m_Definition->m_ShaderName[0]&&m_Definition->m_TextureName[0])
-    	m_Shader = Device.Shader.Create(m_Definition->m_ShaderName,m_Definition->m_TextureName);
-}
-
-void CPSObject::OnDeviceDestroy(){
-	// удалить shaders
-    Device.Shader.Delete(m_Shader);
-}
-
-bool CPSObject::ExportGame(SExportStreams& F)
+void EParticlesObject::OnDeviceCreate()
 {
-    NET_Packet Packet;
-    Packet.w_begin		(M_SPAWN);
-    Packet.w_string		("M_DUMMY");
-    Packet.w_string		(Name);
-    Packet.w_u8 		(0xFE);
-    Packet.w_vec3		(PPosition);
-    Fvector a; a.set	(0,0,0);
-    Packet.w_vec3		(a);
-    Packet.w_u16		(0xffff);
-    Packet.w_u16		(0xffff);
-    WORD fl 			= M_SPAWN_OBJECT_ACTIVE;//(m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
-    Packet.w_u16		(fl);
+}
 
-    u32	position		= Packet.w_tell	();
-    Packet.w_u16		(0);
-    // spawn info
-    {
-    	Packet.w_u8		(1<<2);
-        Packet.w_string	(m_Definition->m_Name);
-    }
-    // data size
-    u16 size			= u16(Packet.w_tell()-position);
-    Packet.w_seek		(position,&size,sizeof(u16));
+void EParticlesObject::OnDeviceDestroy()
+{
+}
 
-    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-    F.spawn.stream.close_chunk	();
+bool EParticlesObject::ExportGame(SExportStreams& F)
+{
+	SExportStreamItem& I	= F.pg_static;
+	I.stream.open_chunk		(I.chunk++);
+    I.stream.w_stringZ		(m_RefName.c_str());
+    I.stream.close_chunk	();
     return true;
+}
+//----------------------------------------------------
+
+bool EParticlesObject::Compile(LPCSTR ref_name)
+{
+    PS::CPGDef* def = PSLib.FindPG(ref_name);
+    if (PS::CParticleGroup::Compile(def)){
+		m_RefName	= ref_name;
+		UpdateTransform();
+        return true;
+    }
+    return false;
+}
+
+void __fastcall EParticlesObject::OnRefChange(PropValue* V)
+{
+	if (!Compile(m_RefName.c_str())){
+        ELog.Msg( mtError, "Can't compile particle system '%s'", m_RefName.c_str() );
+    }else{
+		m_RefName	= m_Def?m_Def->m_Name:"";
+        UI.Command(COMMAND_REFRESH_PROPERTIES);
+    }
+}
+
+void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp(pref, items);
+    PropValue* V;
+    V=PHelper.CreateALibPG(items,PHelper.PrepareKey(pref, "Reference"),&m_RefName);
+    V->SetEvents(0,0,OnRefChange);
+}
+//----------------------------------------------------
+
+bool EParticlesObject::GetSummaryInfo(SSceneSummary* inf)
+{
+	if (!m_RefName.IsEmpty()&&m_Def){ 
+    	inf->pg_static.insert(m_Def->m_Name);
+		if (m_Def->m_TextureName&&m_Def->m_TextureName[0]) inf->textures.insert(ChangeFileExt(m_Def->m_TextureName,"").LowerCase());
+    }
+	inf->pg_static_cnt++;
+	return true;
 }
 //----------------------------------------------------
 

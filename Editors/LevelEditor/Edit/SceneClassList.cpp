@@ -16,7 +16,7 @@
 #include "WayPoint.h"
 #include "sector.h"
 #include "portal.h"
-#include "PSObject.h"
+#include "EParticlesObject.h"
 #include "DetailObjects.h"
 #include "GroupObject.h"
 
@@ -68,7 +68,7 @@ CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data, LPCSTR name ){
         case OBJCLASS_WAY:			return xr_new<CWayObject>(data,name);
         case OBJCLASS_SECTOR:		return xr_new<CSector>(data,name);
         case OBJCLASS_PORTAL:		return xr_new<CPortal>(data,name);
-        case OBJCLASS_PS:			return xr_new<CPSObject>(data,name);
+        case OBJCLASS_PS:			return xr_new<EParticlesObject>(data,name);
         default: throw -1;
 	}
 }

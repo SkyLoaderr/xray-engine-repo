@@ -106,6 +106,7 @@ public:
 class ENGINE_API CParticleGroup: public IVisual
 {
 	friend class PFunction;
+protected:
 	CPGDef*				m_Def;
 
     BOOL				m_bPlaying;
@@ -121,8 +122,6 @@ public:
 						CParticleGroup		();
 	virtual 			~CParticleGroup		();
 	void	 			OnFrame				(u32 dt);
-
-	void 				RenderEditor		();
 
 	u32					RenderTO			(FVF::TL* V);
 	virtual void		Render				(float LOD);
