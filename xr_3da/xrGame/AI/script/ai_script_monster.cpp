@@ -108,7 +108,7 @@ void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
 	LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
-	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
+	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
