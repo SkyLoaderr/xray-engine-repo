@@ -55,19 +55,11 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 			if (bPS)
 			{
 				svector<Fcolor,8>	data;
-				for (DWORD it=0; it<C.size(); it++)	data.push_back((*C)[it]->const_float);
+				for (DWORD it=0; it<C->size(); it++)	data.push_back((*C)[it]->const_float);
 				CHK_DX(HW.pDevice->SetPixelShaderConstant(0,data.begin(),data.size()));
 			} else {
 				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,(*C)[0]->const_dword))
 			}
 		}
 	}
-}
-IC void set_Shader		(Shader& S, DWORD pass=0)
-{
-	CPass&	P = S.Passes[pass];
-	set_Code		(P.dwStateBlock);
-	set_Textures	(P.T);
-	set_Matrices	(P.M);
-	set_Constants	(P.C,S.Flags.bPixelShader);
 }

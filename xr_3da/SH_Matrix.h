@@ -44,18 +44,18 @@ public:
 				float		sU=1,sV=1,t=Device.fTimeGlobal;
 				tc_trans	(xform,.5f,.5f);
 				if (tcm&tcmScale) {
-					sU				= tcm.scaleU.Calculate(t);
-					sV				= tcm.scaleV.Calculate(t);
+					sU				= scaleU.Calculate(t);
+					sV				= scaleV.Calculate(t);
 					T.scale			(sU,sV,1);
 					xform.mul2_43	(T);
 				}
 				if (tcm&tcmRotate) {
-					T.rotateZ		(tcm.rotate.Calculate(t)*t);
+					T.rotateZ		(rotate.Calculate(t)*t);
 					xform.mul2_43	(T);
 				}
 				if (tcm&tcmScroll) {
-					float u = tcm.scrollU.Calculate(t)*t; 
-					float v = tcm.scrollV.Calculate(t)*t; 
+					float u = scrollU.Calculate(t)*t; 
+					float v = scrollV.Calculate(t)*t; 
 					u-=floorf(u)/sU;
 					v-=floorf(v)/sV;
 					tc_trans	(T, u, v );

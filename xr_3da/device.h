@@ -128,4 +128,6 @@ public:
 
 extern ENGINE_API CRenderDevice Device;
 
+#include "TextureManager_Runtime.h"
+
 #endif
