@@ -1,7 +1,5 @@
 is_creature_entered = false
 is_actor_entered = false
-is_creature_entered_2 = false
-is_actor_entered_2 = false
 trader_already_saw_actor = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
@@ -43,8 +41,6 @@ function main()
 	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
 	local sound_vikladivay = sound_object("scripts\\trader\\vikladivay")
 
-
-
 	event:clear_callback(true)
 	event:clear_callback(false)
 
@@ -52,7 +48,7 @@ function main()
 	event:set_callback(this.on_exit,false)
 
 	while true do
-		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor == false then 
 			printf("entered")
 			flush()
 			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
@@ -63,7 +59,7 @@ function main()
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor == false then 
 			printf("entered")
 			flush()
 			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
@@ -74,7 +70,7 @@ function main()
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor == false then 
 			printf("entered")
 			flush()
 			sound_baran:play_at_pos		(trader,trader:position(),0);
