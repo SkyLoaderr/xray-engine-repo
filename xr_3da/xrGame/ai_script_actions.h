@@ -358,37 +358,37 @@ public:
 		return				(tAbstractAction.m_bCompleted);
 	}
 
-	IC		bool			CheckIfMovementCompleted()
+	IC		bool			CheckIfMovementCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tMovementAction));
 	}
 
-	IC		bool			CheckIfWatchCompleted()
+	IC		bool			CheckIfWatchCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tWatchAction));
 	}
 
-	IC		bool			CheckIfAnimationCompleted()
+	IC		bool			CheckIfAnimationCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tAnimationAction));
 	}
 
-	IC		bool			CheckIfSoundCompleted()
+	IC		bool			CheckIfSoundCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tSoundAction));
 	}
 
-	IC		bool			CheckIfObjectCompleted()
+	IC		bool			CheckIfObjectCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tObjectAction));
 	}
 
-	IC		bool			CheckIfTimeOver()
+	IC		bool			CheckIfTimeOver() const
 	{
 		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Level().GetGameTime()));
 	}
 
-	IC		bool			CheckIfActionCompleted()
+	IC		bool			CheckIfActionCompleted() const
 	{
 		if ((CActionCondition::MOVEMENT_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfMovementCompleted	())
 			return			(true);

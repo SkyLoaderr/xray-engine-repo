@@ -77,6 +77,7 @@ void CAI_Stalker::ProcessScripts()
 //		R_ASSERT	(l_tpEntityAction);
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
+		xr_delete	(m_tpActionQueue.back());
 		m_tpActionQueue.erase(m_tpActionQueue.begin());
 	}
 	if (m_tpActionQueue.empty()) {

@@ -11,9 +11,19 @@
 #include "ai_script_space.h"
 
 namespace Script {
-	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptFileName);
-	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportGame				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportLevel				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportParticles			(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportSound				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportHit					(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportActions				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportObject				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
+	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
 #ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);

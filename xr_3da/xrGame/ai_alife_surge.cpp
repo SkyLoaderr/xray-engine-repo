@@ -150,6 +150,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
+#pragma todo("Dima to Dima : Correct anomalous zones power")
 		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(50,150);
 
 		// proceed random artefacts generation for the active zone
