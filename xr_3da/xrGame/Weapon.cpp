@@ -319,9 +319,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	clamp				(fireDispersion_Current,0.f,1.f);
 
 	// ...and trace line
-	m_pParent->bEnabled = false;
+	m_pParent->setEnabled(false);
 	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
-	m_pParent->bEnabled = true;
+	m_pParent->setEnabled(true);
 	D					= dir;
 
 	// ...analyze

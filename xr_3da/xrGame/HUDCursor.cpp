@@ -62,7 +62,7 @@ void CHUDCursor::Render()
 	// Render cursor
 	float		dist=400.f;
 	
-	pCreator->CurrentEntity()->bEnabled = false;
+	pCreator->CurrentEntity()->setEnabled(false);
 	DWORD C			= C_DEFAULT;
 	Collide::ray_query	RQ;
 
@@ -70,7 +70,7 @@ void CHUDCursor::Render()
 		if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
 		dist = RQ.range;
 	}
-	pCreator->CurrentEntity()->bEnabled = true;
+	pCreator->CurrentEntity()->setEnabled(true);
 	
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	

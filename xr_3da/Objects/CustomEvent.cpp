@@ -44,7 +44,7 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	// General stuff
 	pVisualName					= NULL;
 	pVisual						= NULL;
-	rbVisible					= FALSE;
+	bVisible					= FALSE;
 	
 	// Sheduler
 	dwMinUpdate					= 300;

@@ -115,7 +115,7 @@ void	CEffect_Rain::RayTest	(Item& dest, float height)
 {
 	Collide::ray_query	RQ;
 	CObject* E = Level().CurrentViewEntity();
-	E->bEnabled = FALSE;
+	E->setEnabled(FALSE);
 	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
 	{
 		dest.fTime_Life	= RQ.range/dest.fSpeed;
@@ -126,7 +126,7 @@ void	CEffect_Rain::RayTest	(Item& dest, float height)
 		dest.fTime_Hit	= (height*3)/dest.fSpeed;
 		dest.Phit.set	(dest.P);
 	}
-	E->bEnabled = TRUE;
+	E->setEnabled(TRUE);
 }
 
 // initialize particles pool
