@@ -45,7 +45,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		{
 			record&	rec = vecJunctions[i];
 			if (rec.T==vTEST)						return;
-			if (rec.T->P.similar(vTEST->P,.001f))	bWeld = TRUE;
+			if (rec.T->P.similar(vTEST->P,.005f))	bWeld = TRUE;
 		}
 
 		// register

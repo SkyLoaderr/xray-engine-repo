@@ -169,7 +169,7 @@ float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float 
 	
 	// 1. Check cached polygon
 	float _u,_v,range;
-	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,true);
+	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,false);
 	if (res) {
 		if (range>0 && range<R) return 0;
 	}
