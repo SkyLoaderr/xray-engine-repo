@@ -354,6 +354,13 @@ void CWeaponMagazined::UpdateCL			()
 				fTime = 0;
 			break;
 		case eFire:			
+			if(OnClient() && !iAmmoElapsed)
+			{
+				fTime			-=	dt;
+				if (fTime<0)	
+					fTime = 0;
+				break;
+			}
 			VERIFY(iAmmoElapsed);
 			state_Fire		(dt);	
 			
