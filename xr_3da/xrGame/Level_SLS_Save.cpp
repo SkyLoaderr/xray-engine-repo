@@ -18,7 +18,7 @@ void	CLevel::SLS_Save				(LPCSTR name)		// Game Save
 
 	// 3. Server state
 	fs.open_chunk		(fsSLS_ServerState);
-	Server->Save		(fs);
+	Server->SLS_Save	(fs);
 	fs.close_chunk		();
 
 	// 4. Units Specific
