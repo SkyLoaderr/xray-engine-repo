@@ -291,10 +291,13 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
+	Particle*	P		= particle_active;
+	if (0==P)			return;
+
 	Device.Statistic.TEST.Begin		();
-	Particle*	P	= particle_active;
-	DWORD	dwTime	= Device.dwTimeGlobal;
-	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
+	DWORD	dwTime		= Device.dwTimeGlobal;
+	CVertexStream* VSP	= P->visual->m_Stream;
+	Device.Shader.set_Shader		(P->visual->hShader);
 	while (P)	{
 		Particle*	next	= P->next;
 
