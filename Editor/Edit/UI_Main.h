@@ -34,6 +34,8 @@ class TUI: public CController{
     TD3DWindow* m_D3DWindow;
 
     TShiftState m_ShiftState;
+
+    bool m_bAppActive;
 protected:
     EStateList m_EditorState;
     bool bNeedAbort;
@@ -86,11 +88,10 @@ protected:
 	bool m_MouseMultiClickCaptured;
 	bool bMouseInUse;
 
-    float fHintPause;
-    float fHintPauseTime;
-    float fHintHide;
-    float fHintHideTime;
-    bool  bHintShowing;
+	THintWindow* m_pHintWindow;
+	AnsiString m_LastHint;
+    bool  m_bHintShowing;
+    POINT m_HintPoint;
 public:
     void ShowObjectHint();
     bool ShowHint(const AStringVec& SS);

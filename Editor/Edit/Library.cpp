@@ -13,10 +13,6 @@
 //----------------------------------------------------
 ELibrary Lib;
 //----------------------------------------------------
-static bool sort_pred(AnsiString& A, AnsiString& B)
-{	return A<B; }
-//----------------------------------------------------
-
 ELibrary::ELibrary(){
 	m_Current = "";
     m_bReady  = false;
@@ -53,10 +49,12 @@ void ELibrary::OnDestroy(){
 }
 //----------------------------------------------------
 
-void ELibrary::SetCurrentObject(LPCSTR T){
+void ELibrary::SetCurrentObject(LPCSTR nm){
 	VERIFY(m_bReady);
-    FilePairIt it = m_Objects.find(T);
-    if (it!=m_Objects.end()) m_Current = T;
+	R_ASSERT(nm&&nm[0]);
+    sh_name name; strcpy(name,nm); strlwr(name);
+    FilePairIt it = m_Objects.find(name);
+    if (it!=m_Objects.end()) m_Current = name;
 }
 int ELibrary::ObjectCount(){
 	VERIFY(m_bReady);
@@ -120,10 +118,11 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 }
 //---------------------------------------------------------------------------
 
-CEditableObject* ELibrary::GetEditObject(LPCSTR name,int* age)
+CEditableObject* ELibrary::GetEditObject(LPCSTR nm,int* age)
 {
 	VERIFY(m_bReady);
-    R_ASSERT(name&&name[0]);
+    R_ASSERT(nm&&nm[0]);
+    sh_name name; strcpy(name,nm); strlwr(name);
     CEditableObject* m_EditObject = 0;
     FilePairIt p_it = m_Objects.find(name);
     if (p_it==m_Objects.end()) return 0;
@@ -136,11 +135,12 @@ CEditableObject* ELibrary::GetEditObject(LPCSTR name,int* age)
 }
 //---------------------------------------------------------------------------
 
-void ELibrary::UnloadObject(LPCSTR N)
+void ELibrary::UnloadObject(LPCSTR nm)
 {
 	VERIFY(m_bReady);
-	R_ASSERT(N&&N[0]);
-	EditObjPairIt it = m_EditObjects.find(N);
+	R_ASSERT(nm&&nm[0]);
+    sh_name name; strcpy(name,nm); strlwr(name);
+	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end()){
     	delete it->second;
 		m_EditObjects.erase(it);

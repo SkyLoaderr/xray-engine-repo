@@ -231,7 +231,8 @@ object fraBottomBar: TfraBottomBar
       'miRenderLinearFilter.Checked'
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
-      'miRenderWithTextures.Checked')
+      'miRenderWithTextures.Checked'
+      'miShowHint.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -391,6 +392,15 @@ object fraBottomBar: TfraBottomBar
       OnClick = ClickOptionsMenuItem
     end
     object N3: TMenuItem
+      Caption = '-'
+      GroupIndex = 4
+    end
+    object miShowHint: TMenuItem
+      Caption = 'Show Hint'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
+    object N1: TMenuItem
       Caption = '-'
       GroupIndex = 4
     end

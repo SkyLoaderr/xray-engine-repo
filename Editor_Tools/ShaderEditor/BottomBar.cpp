@@ -169,3 +169,4 @@ void __fastcall TfraBottomBar::ebOptionsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+

@@ -10,6 +10,8 @@
 #include "xr_input.h"
 #include "cl_rapid.h"
 #include "UI_Tools.h"
+#include "xr_trims.h"
+#include "bottombar.h"
 #ifdef _LEVEL_EDITOR
  	#include "cursor3d.h"
 #endif
@@ -18,6 +20,7 @@ TUI UI;
 
 TUI::TUI()
 {
+    m_bAppActive = false;
 	m_bReady = false;
     m_D3DWindow = 0;
     bNeedAbort   = false;
@@ -48,14 +51,15 @@ TUI::TUI()
 
 	m_LastFileName[0]= 0;
 
-    fHintPause      = 0.5f;
-    fHintPauseTime  = fHintPause;
-    fHintHide       = 15.f;
-    fHintHideTime   = 0.f;
-    bHintShowing    = false;
+    m_bHintShowing	= false;
+	m_pHintWindow	= 0;
+	m_LastHint		= "";
 
 // create base class
-    ELog.Create		("ed.log");
+	string64 fn;
+    strcpy(fn,_EDITOR_FILE_NAME_);
+    strcat(fn,".log");
+    ELog.Create(fn);
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
@@ -247,6 +251,7 @@ void TUI::OnAppActivate()
         m_ShiftState.Clear();
      	pInput->OnAppActivate();
     }
+    m_bAppActive = true;
 }
 //---------------------------------------------------------------------------
 
@@ -257,7 +262,54 @@ void TUI::OnAppDeactivate()
 		pInput->OnAppDeactivate();
         m_ShiftState.Clear();
     }
+    HideHint();
+    m_bAppActive = false;
 }
 //---------------------------------------------------------------------------
 
+
+bool TUI::ShowHint(const AStringVec& SS){
+	VERIFY(m_bReady);
+    if (SS.size()){
+        AnsiString S=ListToSequence2(SS);
+        if (m_bHintShowing&&(S==m_LastHint)) return true;
+        m_LastHint = S;
+        m_bHintShowing = true;
+        if (!m_pHintWindow){
+            m_pHintWindow = new THintWindow(frmMain);
+            m_pHintWindow->Brush->Color = 0x0d9F2FF;
+        }
+        TRect rect = m_pHintWindow->CalcHintRect(320,S,0);
+        rect.Left+=m_HintPoint.x;    rect.Top+=m_HintPoint.y;
+        rect.Right+=m_HintPoint.x;   rect.Bottom+=m_HintPoint.y;
+        m_pHintWindow->ActivateHint(rect,S);
+    }else{
+    	m_bHintShowing = false;
+        m_LastHint = "";
+    }
+    return m_bHintShowing;
+}
+//---------------------------------------------------------------------------
+
+void TUI::HideHint(){
+	VERIFY(m_bReady);
+    m_bHintShowing = false;
+    _DELETE(m_pHintWindow);
+}
+//---------------------------------------------------------------------------
+
+void TUI::ShowObjectHint(){
+	VERIFY(m_bReady);
+    if (!fraBottomBar->miShowHint->Checked) return;
+    if (!m_bAppActive) return; 
+
+    GetCursorPos(&m_HintPoint);
+    TWinControl* ctr = FindVCLWindow(m_HintPoint);
+    if (ctr!=frmMain->D3DWindow) return;
+
+	AStringVec SS;
+	Tools.OnShowHint(SS);
+    if (!ShowHint(SS)) HideHint();
+}
+//---------------------------------------------------------------------------
 

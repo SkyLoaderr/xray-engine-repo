@@ -223,21 +223,21 @@ struct st_Version{
 typedef	char FILE_NAME	[ _MAX_PATH	];
 
 #ifdef _LEVEL_EDITOR
-	#define _EDITOR_INI_NAME_ "ed.ini"
+	#define _EDITOR_FILE_NAME_ "ed"
 #else
 	#ifdef _SHADER_EDITOR
-		#define _EDITOR_INI_NAME_ "shader_ed.ini"
+		#define _EDITOR_FILE_NAME_ "shader_ed"
     #else
 		#ifdef _PARTICLE_EDITOR
-			#define _EDITOR_INI_NAME_ "particle_ed.ini"
+			#define _EDITOR_FILE_NAME_ "particle_ed"
         #else
 			#ifdef _PARTICLE_EDITOR
-				#define _EDITOR_INI_NAME_ "particle_ed.ini"
+				#define _EDITOR_FILE_NAME_ "particle_ed"
     		#endif
 		#endif
     #endif
 #endif
-#define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_INI_NAME_); FS.m_ExeRoot.Update(buf); fs->IniFileName = buf;
+#define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); FS.m_ExeRoot.Update(buf); fs->IniFileName = buf;
 
 
 #endif /*_INCDEF_STDAFX_H_*/

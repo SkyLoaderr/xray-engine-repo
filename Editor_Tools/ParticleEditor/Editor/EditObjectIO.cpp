@@ -115,7 +115,8 @@ bool CEditableObject::Load(CStream& F){
             (*s_it)->Set2Sided	(F.Rbyte());
             (*s_it)->SetFVF		(F.Rdword());
             cnt 				= F.Rdword();
-            R_ASSERT(1==cnt);
+            if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+            R_ASSERT(1<=cnt);
 			F.RstringZ			(buf); (*s_it)->SetTexture(buf);
 			F.RstringZ			(buf); (*s_it)->SetVMap(buf);
             (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,(*s_it)->_Texture()));

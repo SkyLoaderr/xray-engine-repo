@@ -10,14 +10,15 @@
 #include "LeftBar.h"
 #include "PropertiesShader.h"
 #include "xr_trims.h"
+#include "EditObject.h"
 
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	Tools.Engine.CollapseMatrix		((LPSTR)data); break;
-        case BPID_CONSTANT: Tools.Engine.CollapseConstant		((LPSTR)data); break;
+        case xrPID_MATRIX: 	Tools.Engine.CollapseMatrix		((LPSTR)data); break;
+        case xrPID_CONSTANT: Tools.Engine.CollapseConstant	((LPSTR)data); break;
         };
     }
 };
@@ -26,8 +27,8 @@ class CRefsBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	Tools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
-        case BPID_CONSTANT: Tools.Engine.UpdateConstantRefs	((LPSTR)data); break;
+        case xrPID_MATRIX: 	Tools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
+        case xrPID_CONSTANT: Tools.Engine.UpdateConstantRefs	((LPSTR)data); break;
         };
     }
 };
@@ -36,8 +37,8 @@ class CRemoveBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	Tools.Engine.RemoveMatrix((LPSTR)data); break;
-        case BPID_CONSTANT: Tools.Engine.RemoveConstant((LPSTR)data); break;
+        case xrPID_MATRIX: 	Tools.Engine.RemoveMatrix((LPSTR)data); break;
+        case xrPID_CONSTANT: Tools.Engine.RemoveConstant((LPSTR)data); break;
         };
     }
 };
@@ -124,6 +125,9 @@ void CSHEngineTools::ApplyChanges(){
     if (m_CurrentBlender){
         CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         m_CurrentBlender->Load(data);
+        // update visual
+//		Device.Shader.ED_UpdateBlender(m_CurrentBlender->getName(),m_CurrentBlender);
+        // set modified flag
 		Modified();
     }
 }
@@ -341,27 +345,27 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
         type = data.Rdword();
         data.RstringZ(key);
         switch(type){
-        case BPID_MARKER:	break;
-        case BPID_MATRIX:
+        case xrPID_MARKER:	break;
+        case xrPID_MATRIX:
         	sz=sizeof(string64);
             if (strcmp((LPSTR)data.Pointer(),"$null")!=0){
 	        	if (!parent) strcpy((LPSTR)data.Pointer(),AppendMatrix());
     	        else AddMatrixRef((LPSTR)data.Pointer());
             }
         break;
-        case BPID_CONSTANT:
+        case xrPID_CONSTANT:
         	sz=sizeof(string64);
             if (strcmp((LPSTR)data.Pointer(),"$null")!=0){
 	            if (!parent) strcpy((LPSTR)data.Pointer(),AppendConstant());
     	        else AddConstantRef((LPSTR)data.Pointer());
             }
         break;
-        case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
-        case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
-        case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
-        case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
-        case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count);	break;
-        default: THROW2("BPID_????");
+        case xrPID_TEXTURE: 	sz=sizeof(string64); 	break;
+        case xrPID_INTEGER: 	sz=sizeof(xrP_Integer);	break;
+        case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
+        case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
+        case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);	break;
+        default: THROW2("xrPID_????");
         }
         data.Advance(sz);
     }
@@ -492,6 +496,8 @@ void CSHEngineTools::SetCurrentBlender(CBlender* B){
 	if (m_CurrentBlender!=B){
         m_CurrentBlender = B;
         UpdateStreamFromObject();
+        // apply this shader to non custom object
+        Tools.UpdateObjectShader();
     }
 }
 
@@ -567,15 +573,15 @@ void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
         type = data.Rdword();
         data.RstringZ(key);
         switch(type){
-        case BPID_MARKER:							break;
-        case BPID_MATRIX:	sz=sizeof(string64); 	break;
-        case BPID_CONSTANT:	sz=sizeof(string64); 	break;
-        case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
-        case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
-        case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
-        case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
-		case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count); break;
-        default: THROW2("BPID_????");
+        case xrPID_MARKER:							break;
+        case xrPID_MATRIX:	sz=sizeof(string64); 	break;
+        case xrPID_CONSTANT:	sz=sizeof(string64); 	break;
+        case xrPID_TEXTURE: 	sz=sizeof(string64); 	break;
+        case xrPID_INTEGER: 	sz=sizeof(xrP_Integer);	break;
+        case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
+        case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
+		case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count); break;
+        default: THROW2("xrPID_????");
         }
         P.Parse(type, key, data.Pointer());
         data.Advance(sz);

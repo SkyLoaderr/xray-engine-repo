@@ -76,14 +76,16 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditImages)){
-    	if (bRedraw){
-            Tools.Update();
-        	Redraw();
-        }
+    if (bRedraw){
+        Tools.Update();
+        Redraw();
     }
+
+	// show hint
+    ShowObjectHint();
 
 	ResetBreak();
 }
 //---------------------------------------------------------------------------
+
 

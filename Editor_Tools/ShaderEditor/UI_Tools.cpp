@@ -5,10 +5,12 @@
 
 #include "UI_Tools.h"
 #include "EditObject.h"
+#include "EditMesh.h"
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
 #include "PropertiesShader.h"
+#include "Blender.h"
 
 //------------------------------------------------------------------------------
 CShaderTools Tools;
@@ -17,6 +19,7 @@ CShaderTools Tools;
 CShaderTools::CShaderTools()
 {
 	m_EditObject 		= 0;
+    m_bCustomEditObject	= false;
 }
 //---------------------------------------------------------------------------
 
@@ -118,12 +121,13 @@ void CShaderTools::OnDeviceDestroy(){
 
 void CShaderTools::SelectPreviewObject(int p){
     LPCSTR fn;
+    m_bCustomEditObject	= false;
     switch(p){
         case 0: fn="editor\\ShaderTest_Plane"; 	break;
         case 1: fn="editor\\ShaderTest_Box"; 	break;
         case 2: fn="editor\\ShaderTest_Sphere"; break;
         case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,0,fn); if (!fn) return; break;
+        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,0,fn); if (!fn) return; m_bCustomEditObject = true; break;
         default: THROW2("Failed select test object.");
     }
     m_EditObject = Lib.GetEditObject(fn);
@@ -138,4 +142,32 @@ void CShaderTools::ResetPreviewObject(){
     UI.RedrawScene();
 }
 
+void CShaderTools::OnShowHint(AStringVec& ss){
+	if (m_EditObject){
+	    Fvector p;
+        float dist=UI.ZFar();
+        SRayPickInfo pinf;
+    	if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,precalc_identity,&pinf)){
+        	R_ASSERT(pinf.e_mesh);
+            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+            ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
+            ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
+            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->_2Sided()?"on":"off"));
+            ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
+            ss.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
+        }
+    }
+}
+
+void CShaderTools::UpdateObjectShader(){
+    // apply this shader to non custom object
+	if (Engine.m_CurrentBlender&&m_EditObject&&!m_bCustomEditObject){
+    	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
+	    if (0!=strcmp(surf->_ShaderName(),Engine.m_CurrentBlender->getName())){
+    	    Device.Shader.Delete(surf->_Shader());
+	        surf->SetShader(Engine.m_CurrentBlender->getName(),Device.Shader.Create(Engine.m_CurrentBlender->getName(),surf->_Texture()));
+            UI.RedrawScene();
+    	}
+    }
+}
 

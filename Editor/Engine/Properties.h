@@ -106,10 +106,10 @@ IC void		xrPWRITE_MARKER	(CFS_Base& FS, LPCSTR name)
 {
 	xrPWRITE	(FS,xrPID_MARKER,name,0,0);
 }
-template <class T>
-IC void		xrPWRITE_PROP	(CFS_Base& FS, LPCSTR name, DWORD ID, T& data)
-{
-	xrPWRITE	(FS,ID,name,&data,sizeof(data));
+
+#define xrPWRITE_PROP(FS,name,ID,data)\
+{\
+	xrPWRITE	(FS,ID,name,&data,sizeof(data));\
 }
 
 // Readers
@@ -124,19 +124,6 @@ IC void		xrPREAD_MARKER	(CStream& FS)
 	R_ASSERT(xrPID_MARKER==xrPREAD(FS));
 }
 
-/*
-template <class T>
-IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
-{
-	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data));
-	switch (ID)
-	{
-	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break;
-	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break;
-	};
-}
-*/
-
 #define xrPREAD_PROP(FS,ID,data) \
 { \
 	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data)); \
@@ -147,5 +134,21 @@ IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
 	}; \
 }
 
+//template <class T>
+//IC void		xrPWRITE_PROP	(CFS_Base& FS, LPCSTR name, DWORD ID, T& data)
+//{
+//	xrPWRITE	(FS,ID,name,&data,sizeof(data));
+//}
+
+//template <class T>
+//IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
+//{
+//	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data));
+//	switch (ID)
+//	{
+//	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break;
+//	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break;
+//	};
+//}
 #pragma pack(pop)
 #endif // xrPROPERTIES_H

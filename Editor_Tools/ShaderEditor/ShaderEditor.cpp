@@ -37,7 +37,6 @@ USEUNIT("engine\Envelope.cpp");
 USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USEUNIT("engine\clsid.cpp");
-USELIB("lib\CreateDX.lib");
 USEUNIT("engine\cl_raypick.cpp");
 USEUNIT("engine\cl_build.cpp");
 USEUNIT("engine\cl_collector.cpp");
@@ -109,6 +108,9 @@ USEUNIT("UI_Tools.cpp");
 USEUNIT("UI_MainExtern.cpp");
 USEUNIT("Editor\ImageThumbnail.cpp");
 USEUNIT("Editor\ImageManager.cpp");
+USELIB("Lib\ETools.lib");
+USEUNIT("UI_MainShader.cpp");
+USEUNIT("Editor\EditMeshPick.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -18,6 +18,7 @@ enum EActiveEditor{
 class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
+    bool				m_bCustomEditObject;
 public:
     CSHEngineTools		Engine;
     CSHCompilerTools	Compiler;
@@ -45,6 +46,10 @@ public:
 
     EActiveEditor		ActiveEditor		();
     void				OnChangeEditor		();
+
+    void				UpdateObjectShader	();
+
+    void				OnShowHint			(AStringVec& ss);
 
     bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
     bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}

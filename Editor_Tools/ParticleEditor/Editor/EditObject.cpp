@@ -243,13 +243,6 @@ void CEditableObject::RenderSelection(Fmatrix& parent){
     Device.ResetNearer();
 }
 
-#ifdef _LEVEL_EDITOR
-bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-		if((*m)->FrustumPick(frustum, parent))	return true;
-	return false;
-}
-
 bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
 	bool picked = false;
 
@@ -258,6 +251,13 @@ bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& pare
             picked = true;
 
 	return picked;
+}
+
+#ifdef _LEVEL_EDITOR
+bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+		if((*m)->FrustumPick(frustum, parent))	return true;
+	return false;
 }
 
 void CEditableObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){

@@ -11,18 +11,6 @@
 #include "EditorPref.h"
 #include "bottombar.h"
 
-bool CEditableMesh::CHullPickMesh(PlaneVec& pl, Fmatrix& parent){
-	DWORD i=0;
-	Fvector p;
-    vector<bool> inside(m_Points.size(),true);
-    for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
-        parent.transform_tiny(p,*v_it);
-        for(PlaneIt p_it=pl.begin(); p_it!=pl.end(); p_it++)
-        	if (p_it->classify(p)>EPS_L) { inside[v_it-m_Points.begin()]=false; break; }
-    }
-    for(FaceIt f_it=m_Faces.begin();f_it!=m_Faces.end();f_it++,i++)
-    	if (inside[f_it->pv[0].pindex]&&inside[f_it->pv[1].pindex]&&inside[f_it->pv[2].pindex]) return true;
-}
 /*
 void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
 	DWORD i=0;
@@ -42,6 +30,47 @@ void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
 static INTVec		sml_processed;
 static Fvector		sml_normal;
 static float		m_fSoftAngle;
+//----------------------------------------------------
+
+bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+	if (!m_Visible) return false;
+
+    if (!m_CFModel) GenerateCFModel();
+    float m_r = pinf?pinf->rp_inf.range:UI.ZFar();
+
+    XRC.RayPick	(&parent, m_CFModel, start, direction, m_r);
+    float new_dist;
+    if (XRC.GetMinRayPickDistance(new_dist)){
+    	if (new_dist<distance){
+	        if (pinf){
+	            pinf->rp_inf= *XRC.GetMinRayPickInfo();
+    	        pinf->e_obj 	= m_Parent;
+        	    pinf->e_mesh	= this;
+	            pinf->pt.mul(direction,pinf->rp_inf.range);
+    	        pinf->pt.add(start);
+            }
+            distance = new_dist;
+            return true;
+        }
+    }
+	return false;
+}
+//----------------------------------------------------
+#ifdef _LEVEL_EDITOR
+
+bool CEditableMesh::CHullPickMesh(PlaneVec& pl, Fmatrix& parent){
+	DWORD i=0;
+	Fvector p;
+    vector<bool> inside(m_Points.size(),true);
+    for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
+        parent.transform_tiny(p,*v_it);
+        for(PlaneIt p_it=pl.begin(); p_it!=pl.end(); p_it++)
+        	if (p_it->classify(p)>EPS_L) { inside[v_it-m_Points.begin()]=false; break; }
+    }
+    for(FaceIt f_it=m_Faces.begin();f_it!=m_Faces.end();f_it++,i++)
+    	if (inside[f_it->pv[0].pindex]&&inside[f_it->pv[1].pindex]&&inside[f_it->pv[2].pindex]) return true;
+}
+//----------------------------------------------------
 
 void CEditableMesh::RecurseTri(int id)
 {
@@ -80,31 +109,6 @@ void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, b
         sort(fl.begin(),fl.end());
         unique(fl.begin(),fl.end());
     }
-}
-//----------------------------------------------------
-
-bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
-	if (!m_Visible) return false;
-
-    if (!m_CFModel) GenerateCFModel();
-    float m_r = pinf?pinf->rp_inf.range:UI.ZFar();
-
-    XRC.RayPick	(&parent, m_CFModel, start, direction, m_r);
-    float new_dist;
-    if (XRC.GetMinRayPickDistance(new_dist)){
-    	if (new_dist<distance){
-	        if (pinf){
-	            pinf->rp_inf= *XRC.GetMinRayPickInfo();
-    	        pinf->e_obj 	= m_Parent;
-        	    pinf->e_mesh	= this;
-	            pinf->pt.mul(direction,pinf->rp_inf.range);
-    	        pinf->pt.add(start);
-            }
-            distance = new_dist;
-            return true;
-        }
-    }
-	return false;
 }
 //----------------------------------------------------
 
@@ -154,6 +158,7 @@ void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, D
             fl.push_back(i);
     }
 }
+#endif //_LEVEL_EDITOR
 
 
 
