@@ -56,12 +56,18 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 		CPU::Detect			();
 		if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
 		else								Memory._initialize		(FALSE);
+Memory.dbg_check();
 		InitMath			();
+Memory.dbg_check();
 		Debug._initialize	();
+Memory.dbg_check();
 
 		rtc_initialize		();
+Memory.dbg_check();
 		xr_FS				= xr_new<CLocatorAPI>	();
+Memory.dbg_check();
 		xr_EFS				= xr_new<EFS_Utils>		();
+Memory.dbg_check();
 	}
 	if (init_fs){
 		u32 flags			= 0;

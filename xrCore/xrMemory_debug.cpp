@@ -13,6 +13,16 @@ void	xrMemory::dbg_check			()							{ }
 bool	pred_mdbg	(const xrMemory::mdbg& A)	{
 	return (0==A._p && 0==A._size);
 }
+extern	u32		get_header		(void*	P);
+extern	u32		get_pool		(size_t size);
+
+void	dbg_header			(xrMemory::mdbg& dbg, bool _debug)
+{
+	//. check header
+	u32 t1 = get_header	(dbg._p);
+	u32 t2 = get_pool	(dbg._size+(_debug?4:0));
+	R_ASSERT2			(t1==t2,"CorePanic: Memory block header corrupted");
+}
 
 void	xrMemory::dbg_register		(void* _p, size_t _size)
 {
@@ -22,10 +32,12 @@ void	xrMemory::dbg_register		(void* _p, size_t _size)
 
 	// register + mark
 	mdbg	dbg				=  { _p,_size };
+	dbg_header				(dbg,true);
 	debug_info.push_back	(dbg);
 	u8*			_ptr		= (u8*)	_p;
 	u32*		_shred		= (u32*)(_ptr + _size);
 	*_shred					= u32	(-1);
+	dbg_header				(dbg,true);
 
 	debug_mode				= TRUE;
 	debug_cs.Leave			();
@@ -47,11 +59,16 @@ void	xrMemory::dbg_unregister	(void* _p)
 
 	// unregister entry
 	if (u32(-1)==_found)	{ 
-		Debug.fatal			("Memory allocation error"); 
+		Debug.fatal			("Memory allocation error: double free() ?"); 
 	} else	{
 		u8*			_ptr	= (u8*)	debug_info[_found]._p;
 		u32*		_shred	= (u32*)(_ptr + debug_info[_found]._size);
 		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
+
+		// fill free memory with random data
+		memset				(debug_info[_found]._p,'CD',debug_info[_found]._size);
+
+		// clear record
 		debug_info[_found]._p		= NULL; 
 		debug_info[_found]._size	= 0;
 		debug_info_update			++;
@@ -68,15 +85,12 @@ void	xrMemory::dbg_unregister	(void* _p)
 	debug_cs.Leave			();
 }
 
-extern	u32		get_header		(void*	P);
-extern	u32		get_pool		(size_t size);
-
 void	xrMemory::dbg_check		()
 {
 	if (!debug_mode)		return;
 
 	// Check RO strings
-	g_pStringContainer->verify	();
+	if (g_pStringContainer) g_pStringContainer->verify	();
 
 	// Check overrun
 	debug_cs.Enter			();
@@ -87,7 +101,7 @@ void	xrMemory::dbg_check		()
 			continue;
 
 		// check header
-		R_ASSERT2			(get_header(debug_info[it]._p)==get_pool(debug_info[it]._size),"CorePanic: Memory block header corrupted");
+		dbg_header			(debug_info[it],true);
 
 		// check footer
 		u8*			_ptr	= (u8*)	debug_info[it]._p;

@@ -58,9 +58,11 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	}
 #endif    
 
+	mem_initialized				= TRUE;
 	g_pStringContainer			= xr_new<str_container>		();
 	g_pSharedMemoryContainer	= xr_new<smem_container>	();
-	mem_initialized				= TRUE;
+	Memory.dbg_check();
+Memory.dbg_check();
 }
 
 void	xrMemory::_destroy()

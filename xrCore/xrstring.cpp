@@ -84,7 +84,7 @@ void		str_container::verify	()
 	cs.Enter	();
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
-	for (; it!=end; )	{
+	for (; it!=end; ++it)	{
 		str_value*	sv		= *it;
 		u32			crc		= crc32	(sv->value,sv->dwLength);
 		R_ASSERT3	(crc==sv->dwCRC, "CorePanic: read-only memory corruption (shared_strings)", sv->value);
