@@ -9,6 +9,9 @@ class CUIDMPlayerList:public CUIDMFragList
 {
 	typedef CUIDMFragList inherited;
 public:
+	CUIDMPlayerList					();
+	~CUIDMPlayerList				();
+
 //	void			Init			();
 //	virtual void	OnFrame			();
 //	virtual void Update				();

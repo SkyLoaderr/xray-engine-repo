@@ -5,6 +5,18 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+CUIDMPlayerList::CUIDMPlayerList()
+{
+	SetHeaderColumnText(0, "Name");
+	SetHeaderColumnText(1, "Frags");
+	SetHeaderColumnText(2, "Status");
+	SetHeaderColumnText(3, "");
+}
+
+CUIDMPlayerList::~CUIDMPlayerList()
+{
+}
+
 bool	CUIDMPlayerList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 {
 	if (ItemID>= items.size()) return false;
