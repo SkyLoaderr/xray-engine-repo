@@ -69,7 +69,7 @@ void CDetailManager::hw_Load	()
 			CDetail& D		=	*objects[o];
 			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
-				u32 mid	=	batch*c_size+c_base;
+				u32 mid	=	batch*c_size;
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
@@ -142,24 +142,26 @@ void CDetailManager::hw_Render()
 	RCache.set_c			(hwc_wave,		1.f/5.f,	1.f/7.f,	1.f/3.f,			Device.fTimeGlobal*psDetail_w_speed);	// wave
 	RCache.set_c			(hwc_wind,		dir1);																				// wind-dir
 	RCache.set_c			(hwc_xform,		Device.mFullTransform);																// xform
-	hw_Render_dump			(hwc_array,		visible[1], c_hdr );
+	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1
 	RCache.set_c			(hwc_wave,		1.f/3.f,	1.f/7.f,	1.f/5.f,			Device.fTimeGlobal*psDetail_w_speed);	// wave
 	RCache.set_c			(hwc_wind,		dir2);																				// wind-dir
-	hw_Render_dump			(hwc_array,		visible[2], c_hdr );
+	hw_Render_dump			(hwc_array,		2, 0, c_hdr );
 
 	// Still
 	RCache.set_c			(hwc_s_consts,	scale,		scale,		scale,				1.f);
 	RCache.set_c			(hwc_s_xform,	Device.mFullTransform);
-	hw_Render_dump			(hwc_s_array,	visible[0], c_hdr );
+	hw_Render_dump			(hwc_s_array,	0, 1, c_hdr );
 }
 
-void	CDetailManager::hw_Render_dump	(R_constant* x_array, vis_list& list, u32 c_offset)
+void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id, u32 c_offset)
 {
 	// Matrices and offsets
 	u32		vOffset	=	0;
 	u32		iOffset	=	0;
+
+	vis_list& list	=	visible	[var_id];
 
 	// Iterate
 	for (u32 O=0; O<objects.size(); O++)
@@ -170,7 +172,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, vis_list& list, u32 c_
 		if (!vis.empty())
 		{
 			// Setup matrices + colors (and flush it as nesessary)
-			RCache.set_Shader			(Object.shader);
+			RCache.set_Element			(Object.shader->E[lod_id]);
 
 			u32 dwBatch	= 0;
 			for (u32 item = 0; item<vis.size(); item++)

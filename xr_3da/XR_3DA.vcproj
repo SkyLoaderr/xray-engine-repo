@@ -603,6 +603,12 @@
 								RelativePath=".\Blenders\Blender_default_aref.h">
 							</File>
 							<File
+								RelativePath="Blenders\Blender_detail_still.cpp">
+							</File>
+							<File
+								RelativePath="Blenders\Blender_detail_still.h">
+							</File>
+							<File
 								RelativePath=".\Blenders\blender_light.cpp">
 							</File>
 							<File

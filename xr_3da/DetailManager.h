@@ -112,7 +112,7 @@ public:
 	void							hw_Load			();
 	void							hw_Unload		();
 	void							hw_Render		();
-	void							hw_Render_dump	(R_constant* array, vis_list& vis, u32 c_base);
+	void							hw_Render_dump	(R_constant* array, u32 var_id, u32 lod_id, u32 c_base);
 
 public:
 	DetailSlot&						QueryDB			(int sx, int sz);

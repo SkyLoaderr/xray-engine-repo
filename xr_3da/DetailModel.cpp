@@ -8,7 +8,7 @@ void CDetail::Load		(CStream* S)
 	FILE_NAME		fnT,fnS;
 	S->RstringZ		(fnS);
 	S->RstringZ		(fnT);
-	shader			= Device.Shader.Create(fnS,fnT);
+	shader			= Device.Shader.Create(fnS,	fnT);
 
 	// Params
 	flags			= S->Rdword	();
@@ -101,4 +101,3 @@ void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest
 			iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
 	}
 }
-

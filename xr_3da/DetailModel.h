@@ -17,15 +17,15 @@ public:
 public:
 	Fsphere		bv_sphere;
 	Fbox		bv_bb;
-	u32		flags;	
+	u32			flags;	
 	float		s_min;
 	float		s_max;
 	
-	Shader*		shader;	
+	Shader*		shader;		// 0=wave, 1=still
 	fvfVertexIn	*vertices;
-	u32		number_vertices;
+	u32			number_vertices;
 	WORD		*indices;
-	u32		number_indices;
+	u32			number_indices;
 	
 	void		Load		(CStream* S);
 	void		Optimize	();

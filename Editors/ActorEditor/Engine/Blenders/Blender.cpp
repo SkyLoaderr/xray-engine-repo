@@ -100,6 +100,7 @@ void	CBlender::Compile(CBlender_Compile& C)
 #include "blender_blur.h"
 #include "blender_model.h"
 #include "blender_model_ebb.h"
+#include "blender_detail_still.h"
 
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
@@ -124,6 +125,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_BLUR:			return xr_new<CBlender_Blur>();			
 	case B_MODEL:			return xr_new<CBlender_Model>();		
 	case B_MODEL_EbB:		return xr_new<CBlender_Model_EbB>();	
+	case B_DETAIL_STILL:	return xr_new<CBlender_Detail_Still>();	
 	}
     return 0;
 }
@@ -155,6 +157,7 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_BLUR));
 	palette.push_back(Create(B_MODEL));
 	palette.push_back(Create(B_MODEL_EbB));
+	palette.push_back(Create(B_DETAIL_STILL));
 
 	std::sort		(palette.begin(),palette.end(),p_sort);
 }
