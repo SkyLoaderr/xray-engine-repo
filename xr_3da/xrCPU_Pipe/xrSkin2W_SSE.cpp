@@ -99,15 +99,15 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // calculating transformation matrix 1 addresses
 // ------------------------------------------------------------------
 	mov			eax,TYPE CBoneInstance			;
-	mul			DWORD PTR [esi]S.matrix1		;
-	add			eax,Bones.mTransform			;
+	mul			WORD PTR [esi]S.matrix1			;
+	add			eax,Bones						;
 	mov			ebx,eax							;
 // ------------------------------------------------------------------
 // calculating transformation matrix 0 addresses
 // ------------------------------------------------------------------
 	mov			eax,TYPE CBoneInstance			;
-	mul			DWORD PTR [esi]S.matrix0		;
-	add			eax,Bones.mTransform			;
+	mul			WORD PTR [esi]S.matrix0			;
+	add			eax,Bones						;
 // ------------------------------------------------------------------
 // preparing data for lerps
 // ------------------------------------------------------------------
@@ -124,7 +124,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	shufps		xmm1,xmm1,00000000b				; xmm1 = v.x | v.x | v.x | v.x
 	shufps		xmm2,xmm2,01010101b				; xmm2 = v.y | v.y | v.y | v.y
 	
-	mulps		xmm1,LINE1(eax)					; xmm1 = v.x*_14 | v.x*_13 | v.x*_12 | v.x*_11
+	mulps		xmm1,XMMWORD PTR [eax]			; xmm1 = v.x*_14 | v.x*_13 | v.x*_12 | v.x*_11
 	mulps		xmm2,LINE2(eax)					; xmm2 = v.y*_24 | v.y*_23 | v.y*_22 | v.y*_21
 	
 	addps		xmm1,xmm2						; xmm1 = v.x*_14+v.y*_24 | v.x*_13+v.y*_23 |
@@ -236,13 +236,10 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 //	static data
 // ------------------------------------------------------------------
-	mov			eax,DWORD PTR [esi]S.u			;	eax = u
-	mov			ebx,DWORD PTR [esi]S.v			;	ebx = v
-// ------------------------------------------------------------------
-	mov			DWORD PTR [esi]D.u,eax			;	
-	mov			DWORD PTR [esi]D.v,ebx			;	
+	movlps		xmm0,MMWORD PTR [esi]S.u		;	xmm0 = ?.? | ?.? | u | v
+	movlps		MMWORD PTR [edi]S.u,xmm0		;	
 // ------------------------------------------------------------------	
-// forwarding	
+// advancing	
 // ------------------------------------------------------------------	
 	add			esi,TYPE vertBoned2W	;
 	add			edi,TYPE vertRender		;
