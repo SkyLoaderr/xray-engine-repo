@@ -312,8 +312,11 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 
 	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
 	if(!pOutfit) return hit_power;
-	hit_power *= pOutfit->GetHitTypeK(hit_type);
-	return hit_power;
+	float new_hit_power = hit_power*pOutfit->GetHitTypeProtection(hit_type);
+	//увеличить изношенность костюма
+	pOutfit->Hit(hit_power, hit_type);
+
+	return new_hit_power;
 }
 
 

@@ -32,10 +32,13 @@ public:
 					  float impulse, 
 					  ALife::EHitType hit_type = ALife::eHitTypeWound);
 
+	//уменьшенная версия хита, для вызова, когда костюм надет на персонажа
+	virtual void Hit (float P, ALife::EHitType hit_type);
+
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
 	//если на персонаже надет костюм
-	float GetHitTypeK(ALife::EHitType hit_type);
+	float GetHitTypeProtection(ALife::EHitType hit_type);
 
 	int GetIconX() {return m_iOutfitIconX;}
 	int GetIconY() {return m_iOutfitIconY;}
@@ -44,5 +47,5 @@ protected:
 	int m_iOutfitIconX;
 	int m_iOutfitIconY;
 
-	HitTypeSVec m_HitTypeK;
+	HitTypeSVec m_HitTypeProtection;
 };

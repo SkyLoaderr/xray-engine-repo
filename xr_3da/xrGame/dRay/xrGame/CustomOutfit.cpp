@@ -36,15 +36,15 @@ void CCustomOutfit::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_protection");
-	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_protection");
-	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_protection");
-	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_protection");
-	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_protection");
-	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_protection");
-	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_protection");
-	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_protection");
-	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_protection");
+	m_HitTypeProtection[ALife::eHitTypeBurn]		= pSettings->r_float(section,"burn_protection");
+	m_HitTypeProtection[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_protection");
+	m_HitTypeProtection[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_protection");
+	m_HitTypeProtection[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_protection");
+	m_HitTypeProtection[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_protection");
+	m_HitTypeProtection[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_protection");
+	m_HitTypeProtection[ALife::eHitTypeChemicalBurn]= pSettings->r_float(section,"chemical_burn_protection");
+	m_HitTypeProtection[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_protection");
+	m_HitTypeProtection[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_protection");
 
 	m_iOutfitIconX = pSettings->r_u32(section, "full_scale_icon_x");
 	m_iOutfitIconY = pSettings->r_u32(section, "full_scale_icon_y");
@@ -90,8 +90,15 @@ void CCustomOutfit::Hit(float P, Fvector &dir,
 	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
 }
 
-
-float CCustomOutfit::GetHitTypeK(ALife::EHitType hit_type)
+void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
 {
-	return m_HitTypeK[hit_type];
+	if(!m_bUsingCondition) return;
+	hit_power *= m_HitTypeK[hit_type];
+	ChangeCondition(-hit_power);
+}
+
+
+float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type)
+{
+	return m_HitTypeProtection[hit_type];
 }
