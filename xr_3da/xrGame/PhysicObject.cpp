@@ -39,7 +39,8 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	CPHSkeleton::Spawn(e);
 	setVisible(true);
 	setEnabled(true);
-	if(!PPhysicsShell()->isBreakable())shedule_unregister();
+	if(!PPhysicsShell()->isBreakable()&&!CScriptBinder::object())shedule_unregister();
+	
 	return TRUE;
 }
 
