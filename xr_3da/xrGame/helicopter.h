@@ -68,6 +68,10 @@ protected:
 	u16								m_last_launched_rocket;
 	float							m_min_rocket_dist;
 	float							m_max_rocket_dist;
+
+	float							m_min_mgun_dist;
+	float							m_max_mgun_dist;
+
 	u32								m_time_between_rocket_attack;
 	u32								m_last_rocket_attack;
 	BOOL							m_syncronize_rocket;

@@ -170,6 +170,10 @@ void CHelicopter::Load(LPCSTR section)
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
 
+	m_min_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
+	m_max_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
+
+
 }
 
 void CHelicopter::reload(LPCSTR section)
@@ -366,9 +370,15 @@ void CHelicopter::shedule_Update(u32 time_delta)
 		updateMGunDir();
 
 		if(m_allow_fire){
-			MGunFireStart();
 			
 			float d = XFORM().c.distance_to_xz(m_destEnemyPos);
+			
+			if( (d > m_min_mgun_dist) && 
+				(d < m_max_mgun_dist) ){
+					MGunFireStart();
+				}
+
+
 			
 			if( (d > m_min_rocket_dist) && 
 				(d < m_max_rocket_dist) &&
