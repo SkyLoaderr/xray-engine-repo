@@ -150,6 +150,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 		switch(st_target)
 		{
 		case eIdle:
+			bFlame	= FALSE;
 			break;
 		case eFire:
 			pSounds->Play3DAtPos(sndFire,vLastFP,true);
@@ -173,6 +174,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			m_pParent->g_fireParams(p1,d);
 			while (fTime<0)
 			{
+				bFlame	= TRUE;
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
 				
@@ -228,7 +230,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
 	}
-	if (st_current==eFire) 
+	if ((st_current==eFire) && bFlame) 
 	{
 		UpdateFP	(bHUDView);
 
