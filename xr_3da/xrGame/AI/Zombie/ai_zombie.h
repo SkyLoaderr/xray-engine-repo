@@ -20,6 +20,7 @@ class CAI_Zombie : public CCustomMonster
 		SND_HIT_COUNT=8,
 		SND_DIE_COUNT=4,
 		SND_STEP_COUNT=2,
+		SND_VOICE_COUNT=2,
 	};
 
 	enum EZombieStates 	{
@@ -94,6 +95,13 @@ class CAI_Zombie : public CCustomMonster
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
 		sound			sndSteps[SND_STEP_COUNT];
+		sound			sndVoices[SND_VOICE_COUNT];
+		sound*			m_tpSoundBeingPlayed;
+		DWORD			m_dwLastSoundRefresh;
+		float			m_fMinVoiceIinterval;
+		float			m_fMaxVoiceIinterval;
+		float			m_fVoiceRefreshRate;
+		DWORD			m_dwLastVoiceTalk;
 		float			m_fDistanceWent;
 		char			m_cStep;
 		

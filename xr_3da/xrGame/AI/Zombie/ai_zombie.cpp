@@ -49,6 +49,10 @@ CAI_Zombie::CAI_Zombie()
 	m_iSoundIndex = -1;
 	tpaDynamicSounds.clear();
 	m_dwLastUpdate = 0;
+	m_dwLastVoiceTalk = 0;
+	m_tpSoundBeingPlayed = 0;
+	m_dwLastSoundRefresh = 0;
+
 }
 
 CAI_Zombie::~CAI_Zombie()
@@ -107,6 +111,10 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	
 	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
+
+	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");
+	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
+	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	//fire
 	m_fHitPower       = pSettings->ReadINT(section,"HitPower");
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");

@@ -56,6 +56,8 @@ void CAI_Zombie::vfLoadSounds()
 	pSounds->Create(sndDie[3],TRUE,"actor\\die3",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create(sndSteps[0],TRUE,"Actor\\StepL",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 	pSounds->Create(sndSteps[1],TRUE,"Actor\\StepR",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	pSounds->Create(sndVoices[0],TRUE,"monsters\\zombie\\zombie_1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	pSounds->Create(sndVoices[1],TRUE,"monsters\\zombie\\zombie_2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 }
 
 // animations

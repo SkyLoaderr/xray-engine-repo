@@ -132,6 +132,23 @@ void CAI_Zombie::FreeHunting()
 
 	vfSetFire(false,Group);
 
+	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+			m_tpSoundBeingPlayed = 0;
+			m_dwLastVoiceTalk = dwCurTime;
+		}
+		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
+			m_dwLastSoundRefresh = dwCurTime;
+			// Play hit-sound
+			m_tpSoundBeingPlayed = &(sndVoices[Random.randI(SND_VOICE_COUNT)]);
+			
+			if (m_tpSoundBeingPlayed->feedback)			
+				return;
+
+			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+		}
+	}
+
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
