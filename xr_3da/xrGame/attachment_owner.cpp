@@ -10,14 +10,7 @@
 #include "attachment_owner.h"
 #include "attachable_item.h"
 
-struct CStringSortPredicate {
-	bool		operator()	(const ref_str &s1, const ref_str &s2) const
-	{
-		return			(s1 < s2);
-	}
-};
-
-struct CStringFindPredicate {
+struct CStringPredicate {
 	bool		operator()	(const ref_str &s1, const ref_str &s2) const
 	{
 		return			(s1 < s2);
@@ -42,7 +35,7 @@ void CAttachmentOwner::reload				(LPCSTR section)
 	for (u32 i=0; i<item_count; ++i)
 		m_attach_item_sections[i] = _GetItem(attached_sections,i,current_item_section);
 
-	std::sort					(m_attach_item_sections.begin(),m_attach_item_sections.end(),CStringSortPredicate());
+	std::sort					(m_attach_item_sections.begin(),m_attach_item_sections.end(),CStringPredicate());
 }
 
 void CAttachmentOwner::reinit	()
@@ -60,20 +53,18 @@ void CAttachmentOwner::renderable_Render		()
 
 void __stdcall AttachmentCallback(CKinematics *tpKinematics)
 {
-	CAttachmentOwner		*inventory_owner = dynamic_cast<CAttachmentOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
-	VERIFY				(inventory_owner);
+	CAttachmentOwner		*attachment_owner = dynamic_cast<CAttachmentOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	VERIFY					(attachment_owner);
 
-	CGameObject			*game_object = dynamic_cast<CGameObject*>(inventory_owner);
-	VERIFY				(game_object);
+	CGameObject				*game_object = dynamic_cast<CGameObject*>(attachment_owner);
+	VERIFY					(game_object);
+	CKinematics				*kinematics = PKinematics(game_object->Visual());
 
-	xr_vector<CAttachableItem*>::const_iterator	I = inventory_owner->attached_objects().begin();
-	xr_vector<CAttachableItem*>::const_iterator	E = inventory_owner->attached_objects().end();
+	xr_vector<CAttachableItem*>::const_iterator	I = attachment_owner->attached_objects().begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = attachment_owner->attached_objects().end();
 	for ( ; I != E; ++I) {
-		Fmatrix			matrix = (*I)->offset();
-		CBoneInstance	&l_tBoneInstance = PKinematics(game_object->Visual())->LL_GetBoneInstance(PKinematics(game_object->Visual())->LL_BoneID((*I)->bone_name()));
-		matrix.mulA		(l_tBoneInstance.mTransform);
-		matrix.mulA		(game_object->XFORM());
-		(*I)->XFORM()	= matrix;
+		(*I)->XFORM().mul	(kinematics->LL_GetBoneInstance((*I)->bone_id()).mTransform,(*I)->offset());
+		(*I)->XFORM().mulA	(game_object->XFORM());
 	}
 }
 
@@ -86,12 +77,13 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 	}
 
 	if (can_attach(inventory_item)) {
-		VERIFY								(dynamic_cast<CAttachableItem*>(inventory_item));
-		if (m_attached_objects.empty()) {
-			CGameObject						*game_object = dynamic_cast<CGameObject*>(this);
-			VERIFY							(game_object && game_object->Visual());
+		CAttachableItem						*attachable_item = dynamic_cast<CAttachableItem*>(inventory_item);
+		VERIFY								(attachable_item);
+		CGameObject							*game_object = dynamic_cast<CGameObject*>(this);
+		VERIFY								(game_object && game_object->Visual());
+		if (m_attached_objects.empty())
 			game_object->add_visual_callback(AttachmentCallback);
-		}
+		attachable_item->set_bone_id		(PKinematics(game_object->Visual())->LL_BoneID(attachable_item->bone_name()));
 		m_attached_objects.push_back		(dynamic_cast<CAttachableItem*>(inventory_item));
 	}
 }
@@ -128,5 +120,5 @@ bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
 	if (!dynamic_cast<const CAttachableItem*>(inventory_item))
 		return			(false);
 
-	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringFindPredicate()));
+	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringPredicate()));
 }

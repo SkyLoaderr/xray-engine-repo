@@ -16,6 +16,7 @@ class CAttachableItem : public CInventoryItem
 protected:
 	LPCSTR					m_bone_name;
 	Fmatrix					m_offset;
+	u16						m_bone_id;
 public:
 	IC						CAttachableItem		();
 	virtual					~CAttachableItem	();
@@ -26,6 +27,8 @@ public:
 	virtual void			OnH_A_Chield		();
 	virtual void			renderable_Render	();
 	IC		LPCSTR			bone_name			() const;
+	IC		u16				bone_id				() const;
+	IC		void			set_bone_id			(u16 bone_id);
 	IC		const Fmatrix	&offset				() const;
 };
 
