@@ -10,7 +10,7 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
-#define OLD_BEHAVIOUR
+//#define OLD_BEHAVIOUR
 
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
@@ -803,20 +803,26 @@ void CDetailPathManager::build_path_via_key_points2(
 	for (B != E ? ++I : I; I != E; ++I) {
 		VERIFY							(ai().level_graph().inside((*I).vertex_id,(*I).position));
 
-		if ((I + 1) != E) {
+		bool							last_point = (I + 1) == E;
+		if (!last_point) {
 			(STravelPoint&)d			= *I;
 			d.direction.sub				((I+1)->position,d.position);
 			VERIFY						(!fis_zero(d.direction.magnitude()));
 			d.direction.normalize		();
 		}
-		else
+		else {
 			d							= dest;
+			m_dest_params				= finish_params;
+		}
 
 		bool							succeed = compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
 		if (!succeed) {
 			m_path.clear();
 			return;
 		}
+		
+		if (last_point)
+			break;
 
 		s								= d;
 		VERIFY							(m_path.size() > 1);
