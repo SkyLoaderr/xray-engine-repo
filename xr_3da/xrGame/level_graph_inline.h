@@ -356,8 +356,9 @@ IC	u32	CLevelGraph::value(const u32 vertex_id, const_iterator &i) const
 
 IC	bool CLevelGraph::is_accessible		(const u32 vertex_id) const
 {
-	VERIFY				(valid_vertex_id(vertex_id));
-	return				(!m_ref_counts[vertex_id]);
+//	VERIFY				(valid_vertex_id(vertex_id));
+//	return				(!m_ref_counts[vertex_id]);
+	return				(valid_vertex_id(vertex_id) && m_access_mask[vertex_id]);
 }
 
 IC	void CLevelGraph::set_invalid_vertex(u32 &vertex_id, CVertex **vertex) const
@@ -542,4 +543,24 @@ IC	bool CLevelGraph::valid_vertex_position	(const Fvector &position) const
 		return			(false);
 
 	return				((vertex_position(position).xz() < (1 << MAX_NODE_BIT_COUNT) - 1));
+}
+
+IC	void CLevelGraph::set_mask				(const xr_vector<u32> &mask)
+{
+	xr_vector<u32>::const_iterator	I = mask.begin();
+	xr_vector<u32>::const_iterator	E = mask.end();
+	for ( ; I != E; ++I) {
+		VERIFY			(m_access_mask[*I]);
+		m_access_mask[*I] = false;
+	}
+}
+
+IC	void CLevelGraph::clear_mask			(const xr_vector<u32> &mask)
+{
+	xr_vector<u32>::const_iterator	I = mask.begin();
+	xr_vector<u32>::const_iterator	E = mask.end();
+	for ( ; I != E; ++I) {
+		VERIFY			(!m_access_mask[*I]);
+		m_access_mask[*I] = true;
+	}
 }

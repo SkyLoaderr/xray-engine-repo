@@ -11,6 +11,7 @@
 #include "alife_space.h"
 
 class CSpaceRestriction;
+class CSpaceRestrictor;
 
 class CSpaceRestrictorManager {
 public:
@@ -34,7 +35,9 @@ public:
 			void					associate					(ALife::_OBJECT_ID id, ref_str space_restrictors);
 			bool					accessible					(ALife::_OBJECT_ID id, const Fvector &position);
 			CSpaceRestriction		*restriction				(ref_str space_restrictors);
-	IC		const CSpaceRestriction *restriction				(ALife::_OBJECT_ID id);
+	IC		CSpaceRestriction		*restriction				(ALife::_OBJECT_ID id);
+			void					add_restrictor				(CSpaceRestrictor *space_restrictor);
+	IC		const SPACE_REGISTRY	&restrictions				() const;
 };
 
 #include "space_restrictor_manager_inline.h"

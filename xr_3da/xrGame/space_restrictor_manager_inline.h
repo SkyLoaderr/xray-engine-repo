@@ -8,13 +8,18 @@
 
 #pragma once
 
-IC	CSpaceRestrictorManager::CSpaceRestrictorManager	()
+IC	CSpaceRestrictorManager::CSpaceRestrictorManager		()
 {
 }
 
-IC	const CSpaceRestriction *CSpaceRestrictorManager::restriction	(ALife::_OBJECT_ID id)
+IC	CSpaceRestriction *CSpaceRestrictorManager::restriction	(ALife::_OBJECT_ID id)
 {
-	CLIENT_REGISTRY::const_iterator	I = m_clients.find(id);
-	VERIFY							(m_clients.end() != I);
-	return							((*I).second);
+	CLIENT_REGISTRY::iterator	I = m_clients.find(id);
+	VERIFY						(m_clients.end() != I);
+	return						((*I).second);
+}
+
+IC	const CSpaceRestrictorManager::SPACE_REGISTRY &CSpaceRestrictorManager::restrictions	() const
+{
+	return						(m_space_registry);
 }

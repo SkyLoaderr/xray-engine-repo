@@ -68,6 +68,7 @@ private:
 	CHeader				*m_header;		// level graph header
 	CVertex				*m_nodes;		// nodes array
 	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
+	xr_vector<bool>		m_access_mask;
 	u32					m_level_id;		// unique level identifier
 	u32					m_row_length;
 	u32					m_column_length;
@@ -101,6 +102,9 @@ public:
 					CLevelGraph					(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
 	virtual			~CLevelGraph				();
+	IC		void	set_mask					(const xr_vector<u32> &mask);
+	IC		void	clear_mask					(const xr_vector<u32> &mask);
+	IC		bool	is_accessible				(const u32 vertex_id) const;
 	IC		u8		ref_add						(u32 vertex_id);
 	IC		u8		ref_dec						(u32 vertex_id);
 	IC		void	set_level_id				(u32 level_id);
@@ -110,7 +114,6 @@ public:
 	IC		u32		value						(const CVertex &vertex, const_iterator &i) const;
 	IC		u32		value						(const CVertex *vertex, const_iterator &i) const;
 	IC		u32		value						(const u32 vertex_id,	const_iterator &i) const;
-	IC		bool	is_accessible				(const u32 vertex_id) const;
 	IC		const CHeader &header				() const;
 	IC		bool	valid_vertex_id				(u32 vertex_id) const;
 	IC		u32		level_id					() const;

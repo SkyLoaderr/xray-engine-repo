@@ -121,7 +121,8 @@ TEMPLATE_SPECIALIZATION
 IC	bool CLevelPathManager::is_accessible	(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
-	return					(graph->valid_vertex_id(vertex_id));
+//	return					(graph->valid_vertex_id(vertex_id));
+	return					(graph->is_accessible(vertex_id));
 }
 
 TEMPLATE_SPECIALIZATION

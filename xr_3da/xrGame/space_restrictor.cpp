@@ -29,6 +29,7 @@ float CSpaceRestrictor::Radius		() const
 BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
+	Position()						= abstract->o_Position;
 	cName_set						(abstract->s_name);
 	cNameSect_set					(abstract->s_name);
 	if (abstract->s_name_replace[0])
@@ -66,7 +67,7 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	setEnabled						(false);
 	setVisible						(false);
 
-	Level().space_restrictor_manager().restriction(cName());
+	Level().space_restrictor_manager().add_restrictor(this);
 
 	return							(result);
 }

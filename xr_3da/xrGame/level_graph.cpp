@@ -43,6 +43,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
 	m_column_length				= iFloor((header().box().max.x - header().box().min.x)/header().cell_size() + EPS_L + 1.5f);
 	m_ref_counts.assign			(header().vertex_count(),0);
+	m_access_mask.assign		(header().vertex_count(),true);
 }
 
 CLevelGraph::~CLevelGraph		()

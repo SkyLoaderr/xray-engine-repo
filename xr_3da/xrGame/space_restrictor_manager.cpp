@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "space_restrictor_manager.h"
 #include "space_restriction.h"
+#include "space_restrictor.h"
 #include "object_broker.h"
 
 CSpaceRestrictorManager::~CSpaceRestrictorManager		()
@@ -34,8 +35,9 @@ CSpaceRestriction *CSpaceRestrictorManager::restriction	(ref_str space_restricto
 
 void CSpaceRestrictorManager::associate					(ALife::_OBJECT_ID id, ref_str space_restrictors)
 {
-	VERIFY					(m_clients.end() == m_clients.find(id));
-	m_clients.insert		(std::make_pair(id,restriction(space_restrictors)));
+//	VERIFY					(m_clients.end() == m_clients.find(id));
+//	m_clients.insert		(std::make_pair(id,restriction(space_restrictors)));
+	m_clients[id]			= restriction(space_restrictors);
 }
 
 ref_str CSpaceRestrictorManager::normalize				(ref_str space_restrictors)
@@ -64,6 +66,31 @@ ref_str CSpaceRestrictorManager::normalize				(ref_str space_restrictors)
 
 bool CSpaceRestrictorManager::accessible			(ALife::_OBJECT_ID id, const Fvector &position)
 {
-	const CSpaceRestriction *_restriction = restriction(id);
+	CSpaceRestriction		*_restriction = restriction(id);
 	return					(_restriction ? _restriction->inside(position) : true);
+}
+
+void CSpaceRestrictorManager::add_restrictor		(CSpaceRestrictor *space_restrictor)
+{
+	ref_str					space_restrictors = space_restrictor->cName();
+	CSpaceRestriction		*temp = xr_new<CSpaceRestriction>(space_restrictor);
+
+	SPACE_REGISTRY::iterator	I = m_space_registry.find(space_restrictors);
+	if (I == m_space_registry.end()) {
+		m_space_registry.insert	(std::make_pair(space_restrictors,temp));
+		return;
+	}
+
+	CSpaceRestriction		*old = (*I).second;
+
+	CLIENT_REGISTRY::iterator	i = m_clients.begin();
+	CLIENT_REGISTRY::iterator	e = m_clients.end();
+	for ( ; i != e; ++i)
+		if ((*i).second == old)
+			(*i).second		= temp;
+
+	xr_delete				(old);
+
+	m_space_registry.erase	(I);
+	m_space_registry.insert	(std::make_pair(space_restrictors,temp));
 }

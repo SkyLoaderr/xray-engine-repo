@@ -28,6 +28,9 @@
 #include "alife_graph_registry.h"
 #include "alife_object_registry.h"
 #include "game_cl_base.h"
+#include "space_restrictor_manager.h"
+#include "space_restriction.h"
+#include "space_restrictor.h"
 
 u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance);
 
@@ -203,6 +206,22 @@ void CLevelGraph::render()
 					F->SetColor	(0xffffffff);
 					F->Out		(S.x,-S.y,"~%d",Nid);
 				}
+			}
+		}
+	}
+
+	{
+		CSpaceRestrictorManager::SPACE_REGISTRY::const_iterator	I = Level().space_restrictor_manager().restrictions().begin();
+		CSpaceRestrictorManager::SPACE_REGISTRY::const_iterator	E = Level().space_restrictor_manager().restrictions().end();
+		for ( ; I != E; ++I) {
+//			if (_GetItemCount(*(*I).second->space_restrictors()) < 2)
+//				continue;
+			xr_vector<u32>::const_iterator	i = (*I).second->border().begin();
+			xr_vector<u32>::const_iterator	e = (*I).second->border().end();
+			for ( ; i != e; ++i) {
+				Fvector temp = ai().level_graph().vertex_position(*i);
+				temp.y += .1f;
+				RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 			}
 		}
 	}

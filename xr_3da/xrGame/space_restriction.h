@@ -8,15 +8,37 @@
 
 #pragma once
 
+class CSpaceRestrictor;
+
 class CSpaceRestriction {
+public:
+	typedef xr_vector<CSpaceRestriction*> RESTRICTIONS;
+
 protected:
-	CCF_Shape		*m_shape;
-	bool			m_complex_shape;
+	RESTRICTIONS					m_restrictions;
+	xr_vector<u32>					m_border;
+	ref_str							m_space_restrictors;
+	CSpaceRestrictor				*m_restrictor;
+	bool							m_initialized;
+	bool							m_applied;
+
+protected:
+	IC		Fvector					position			(const CCF_Shape::shape_def &data) const;
+	IC		float					radius				(const CCF_Shape::shape_def &data) const;
+			void					build_border		();
+			void					process_borders		();
+			void					merge				(CSpaceRestriction *restriction);
 
 public:
-					CSpaceRestriction	(ref_str space_restrictors);
-	virtual			~CSpaceRestriction	();
-			bool	inside				(const Fvector &position, float radius = EPS_L) const;
+									CSpaceRestriction	(ref_str space_restrictors);
+									CSpaceRestriction	(CSpaceRestrictor *space_restrictor);
+	virtual							~CSpaceRestriction	();
+			bool					inside				(const Fvector &position, float radius = EPS_L);
+			void					initialize			();
+			void					add_border			();
+			void					remove_border		();
+	IC		const xr_vector<u32>	&border				();
+	IC		ref_str					space_restrictors	() const;
 };
 
 #include "space_restriction_inline.h"
