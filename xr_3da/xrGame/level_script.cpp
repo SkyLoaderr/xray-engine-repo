@@ -31,6 +31,16 @@
 using namespace luabind;
 
 #ifdef DEBUG
+void check_object(CScriptGameObject *object)
+{
+	try {
+		Msg	("check_object %s",object->Name());
+	}
+	catch(...) {
+		object = object;
+	}
+}
+
 CScriptGameObject *tpfGetActor()
 {
 	static bool first_time = true;
@@ -300,6 +310,7 @@ void CLevel::script_register(lua_State *L)
 #ifdef DEBUG
 		def("debug_object",						get_object_by_name),
 		def("debug_actor",						tpfGetActor),
+		def("check_object",						check_object),
 #endif
 		
 		def("get_weather",						get_weather),
@@ -330,7 +341,6 @@ void CLevel::script_register(lua_State *L)
 		def("map_add_object_spot",				map_add_object_spot),
 		def("map_remove_object_spot",			map_remove_object_spot),
 		def("map_has_object_spot",				map_has_object_spot),
-		
 
 		def("start_stop_menu",					start_stop_menu),
 		def("add_dialog_to_render",				add_dialog_to_render),
