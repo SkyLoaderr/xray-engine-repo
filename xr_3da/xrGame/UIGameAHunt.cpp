@@ -125,7 +125,7 @@ void			CUIGameAHunt::OnFrame()
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			HUD().GetUI()->ShowIndicators();
+			///HUD().GetUI()->ShowIndicators();
 
 			if (m_bBuyEnabled)
 			{
