@@ -66,7 +66,7 @@ end
 function main()
 	log	("script don't want to work!")
 
-	a = lua_testclass('example')
+	a = fsm.lua_testclass('example')
 	a:print()
 
 	local stalker1	= get_level_object("m_stalker_e0001")
