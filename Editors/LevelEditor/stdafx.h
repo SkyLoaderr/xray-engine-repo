@@ -154,6 +154,9 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
             	#ifdef _LEVEL_OPTIONS
 					#define _EDITOR_FILE_NAME_ 	"options"
 					#define _EDITOR_NAME_ 		"Level Options"
+                #else
+					#define _EDITOR_FILE_NAME_ 	"undef"
+					#define _EDITOR_NAME_ 		"undef"
                 #endif
     		#endif
 		#endif
@@ -171,15 +174,15 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"xrCDBB.lib")
 #pragma comment(lib,"ParticleDLLB.lib")
 
-#pragma comment(lib,"dinput.lib")
-#pragma comment(lib,"freeimage.lib")
-#pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"dxt.lib")
-#pragma comment(lib,"xrProgressive.lib")
+#pragma comment(lib,"dinputB.lib")
+#pragma comment(lib,"freeimageB.lib")
+#pragma comment(lib,"d3d9B.lib")
+#pragma comment(lib,"dxtB.lib")
+#pragma comment(lib,"xrProgressiveB.lib")
 #pragma comment(lib,"MagicFMDLLB.lib")
-#pragma comment(lib,"ETools.lib")
-#pragma comment(lib,"LWO.lib")
-#pragma comment(lib,"xrHemisphere.lib")
+#pragma comment(lib,"EToolsB.lib")
+#pragma comment(lib,"LWOB.lib")
+#pragma comment(lib,"xrHemisphereB.lib")
 #pragma comment(lib,"oggencB.lib")
 
 // path definition
