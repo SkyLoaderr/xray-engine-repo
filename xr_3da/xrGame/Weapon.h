@@ -85,7 +85,7 @@ protected:			// Utilities
 	void			ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T);
 	void			ShaderDestroy	(Shader* &dest);
 public:
-	virtual void	OnMagazineEmpty	()			= 0;
+	virtual void	OnMagazineEmpty	()			{};
 	virtual void	OnAnimationEnd	()			{};
 	virtual void	OnHide			()			{};
 	virtual void	OnShow			()			{};
