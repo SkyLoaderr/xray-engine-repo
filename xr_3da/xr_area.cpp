@@ -33,10 +33,14 @@ void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 		// Energy and signal
 		float dist			= p->position.distance_to((*it)->spatial.center);
 		if (dist>p->max_ai_distance) continue;
-		float Power			= (dist/p->max_ai_distance)*p->volume;
+		float Power			= (1.f-dist/p->max_ai_distance)*p->volume;
 		if (Power>EPS_S)	{
-			_esound_delegate	D	=	{ L, S, Power };
-			snd_Events.push_back	(D)	;
+			float occ		= Sound->get_occlusion_to((*it)->spatial.center,p->position);
+			Power			*= occ;
+			if (Power>EPS_S)	{
+				_esound_delegate	D	=	{ L, S, Power };
+				snd_Events.push_back	(D)	;
+			}
 		}
 	}
 }
