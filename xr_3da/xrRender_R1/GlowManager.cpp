@@ -42,7 +42,7 @@ void CGlowManager::Load		(IReader* fs)
 		fs->r				(&G->spatial.radius,1*sizeof(float));
 
 		u16 S				= fs->r_u16();
-		G->hShader			= ::Render->getShader(S);
+		G->hShader			= ::RImplementation.getShader(S);
 
 		G->fade				= 255.f;
 		G->dwFrame			= 0x0;
