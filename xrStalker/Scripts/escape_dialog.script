@@ -61,7 +61,7 @@ function have_fox_info(first_speaker, second_speaker)
   	return first_speaker:object("fox_flash") ~= nil
 end
 function trader_need_fox_info(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_artefact_done") and
 	   actor:dont_has_info("escape_stalker_meet") and
@@ -91,7 +91,7 @@ function have_blockpost_case(first_speaker, second_speaker)
   	return first_speaker:object("quest_case_01") ~= nil
 end
 function trader_need_blockpost_box(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_stalker_done") and
 	   actor:dont_has_info("escape_blockpost_case") and
@@ -112,7 +112,7 @@ end
 
 --' Escape trader artefact
 function have_artefact_from_fleshes(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
 	if actor ~= nil and
 	   (actor:object("af_vyvert") ~= nil or
 	   actor:object("af_gravi") ~= nil or
@@ -136,7 +136,7 @@ function give_artefact_from_fleshes(first_speaker, second_speaker)
 	first_speaker:set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
 function trader_need_artefact(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
 	   actor:dont_has_info("escape_artefact_start") and
@@ -150,13 +150,13 @@ end
 
 --' tutorial wounded in vagon
 function wounded_need_help(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
 	return actor ~= nil and actor:dont_has_info( "tutorial_wounded_help" )
 end
 
 --' trader needs military documents
 function trader_need_military_document(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_blockpost_case_done") and
 	   actor:dont_has_info("agroprom_military_case") and
@@ -177,7 +177,7 @@ function wolf_dont_has_job(first_speaker, second_speaker)
 	return false
 end
 function wolf_need_dynamite(first_speaker, second_speaker)
-	local actor = level.actor()
+	local actor = db.actor
     if actor ~= nil and
 	   actor:dont_has_info("escape_dynamite_start") and
 	   actor:dont_has_info("escape_dynamite_have") and
