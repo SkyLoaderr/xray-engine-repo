@@ -147,7 +147,7 @@ void __cdecl logThread(void *dummy)
 	unsigned long		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);
-	if ((0==xr_strcmp(u_name,"oles"))||(0==xr_strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
+	if ((0==xr_strcmpcmp(u_name,"oles"))||(0==xr_strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
 
 	// Main cycle
 	u32	LogSize = 0;

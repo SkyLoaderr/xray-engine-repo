@@ -41,7 +41,7 @@ bool	remap_order		(u32 id0, u32 id1)
 {
 	OGF*	o0			= (OGF*)g_tree[id0];
 	OGF*	o1			= (OGF*)g_tree[id1];
-	return	strcmp(*o0->textures.front().name,*o1->textures.front().name)<0;
+	return	xr_strcmp(*o0->textures.front().name,*o1->textures.front().name)<0;
 }
 
 void CBuild::SaveTREE	(IWriter &fs)
