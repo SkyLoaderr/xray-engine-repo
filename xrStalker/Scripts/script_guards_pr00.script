@@ -4,8 +4,6 @@ function main()
 
 	actor   	= get_actor()
 
-	hit				= hit()
-
 	guard01	= get_level_object("guard01")
 	guard02	= get_level_object("guard02")
 	guard03	= get_level_object("guard03")
@@ -113,18 +111,7 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	while true do
-		if guard01:hit(draftsman) == actor then
-			printf("hit = true!")
-			flush()
-		else
-			printf("hit = false!")
-			flush()
-		end
-		wait()
-	end
-
-	while guard01:action() and guard02:action() do
+	while guard01:action() and guard02:action() and guard01.health >= 100 and guard02.health >= 100 do
 		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 30 then
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
@@ -136,7 +123,7 @@ function main()
 	    wait	()
 	end
 
-	while guard01:action() and guard02:action() do
+	while guard01:action() and guard02:action() and guard01.health >= 100 and guard02.health >= 100 do
 		if guard01:see(actor) == false or guard02:see(actor) == false and guard_see_actor ~= 0 then
 			printf("see = true2!")
 			flush()
@@ -148,7 +135,7 @@ function main()
 	    wait	()
 	end
 
-	while guard01:action() and guard02:action() do
+	while guard01:action() and guard02:action() and guard01.health >= 100 and guard02.health >= 100 do
 		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 then
 			printf("see = true2!")
 			flush()
@@ -161,11 +148,22 @@ function main()
 	    wait	()
 	end
 
-	while guard01:action() and guard02:action() do
+	while guard01:action() and guard02:action() and guard01.health >= 100 and guard02.health >= 100 do
 		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 15 then
 			wait(1000)			
 			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
 			wait(3000)			
+		break
+		end
+	    wait	()
+	end
+
+	while guard01:action() and guard02:action() do
+		if guard01.health < 100 or guard02.health < 100 then
+			wait(1000)			
+			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
+			guard01:script	(false,script_guards_pr00.script_name())
+			guard02:script	(false,script_guards_pr00.script_name())
 		break
 		end
 	    wait	()
