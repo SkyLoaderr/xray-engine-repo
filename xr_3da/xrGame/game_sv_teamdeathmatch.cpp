@@ -13,6 +13,7 @@ void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 	int iFF = get_option_i(*options,"ffire",100);
 	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
 	else m_fFriendlyFireModifier = 0.000001f;
+	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
 	
 	switch_Phase(GAME_PHASE_PENDING);
 ///	switch_Phase(GAME_PHASE_INPROGRESS);
@@ -36,6 +37,70 @@ u8 game_sv_TeamDeathmatch::AutoTeam()
 	}
 	return (l_teams[0]>l_teams[1])?2:1;
 }
+
+void	game_sv_TeamDeathmatch::AutoBalanceTeams()
+{
+	if (!m_bAutoTeamBalance) return;
+	//calc team count
+	s16 MinTeam, MaxTeam;
+	u32 NumToMove;
+	u32	cnt = get_players_count(), l_teams[2] = {0,0};
+	for(u32 it=0; it<cnt; it++)	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
+		if (ps->Skip) continue;
+		if(ps->team>=1) ++(l_teams[ps->team-1]);
+	};
+
+	if (l_teams[0] == l_teams[1]) return;
+
+	if (l_teams[0] > l_teams[1]) 
+	{
+		MinTeam = 1;
+		MaxTeam = 0;
+	}
+	else
+	{
+		MinTeam = 0;
+		MaxTeam = 1;
+	};
+
+	NumToMove = (l_teams[MaxTeam] - l_teams[MinTeam]) / 2;
+	if (!NumToMove) return;
+	///////////////////////////////////////////////////////////////////////
+	while (NumToMove)
+	{
+		///////// get lowest score player from MaxTeam
+		u32 LowestPlayer = 0;
+		s16 LowestScore = 32767;
+		for(it=0; it<cnt; it++)	{
+			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+			game_PlayerState* ps	= l_pC->ps;
+			if (!l_pC->net_Ready) continue;
+			if (ps->Skip) continue;
+			if (ps->team-1 != MaxTeam) continue;
+
+			if (ps->kills < LowestScore)
+			{
+				LowestScore = ps->kills;
+				LowestPlayer = it;
+			};
+		};
+		///////// move player to opposite team
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(LowestPlayer);
+		game_PlayerState* ps	= l_pC->ps;
+		ps->team = MinTeam+1;
+		NumToMove--;
+	}
+};
+
+void	game_sv_TeamDeathmatch::OnRoundStart			()
+{
+	AutoBalanceTeams();
+
+	inherited::OnRoundStart	();
+};
 
 void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 {

@@ -183,6 +183,7 @@ bool CUIListWnd::AddItem(Element* pItem, int insertBeforeIdx)
 	m_ScrollBar.SetPageSize(s16(
 		(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+	m_ScrollBar.Refresh();
 
 	UpdateScrollBar();
 

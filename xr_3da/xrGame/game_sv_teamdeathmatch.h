@@ -9,6 +9,8 @@ private:
 
 protected:
 	float		m_fFriendlyFireModifier;
+	bool		m_bAutoTeamBalance;
+
 	virtual		bool				checkForFragLimit		();
 public:	
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
@@ -25,6 +27,9 @@ public:
 	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
+
+	virtual		void				OnRoundStart			();												// старт раунда
+	virtual		void				AutoBalanceTeams		();
 
 	virtual		u8					AutoTeam				( );
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);

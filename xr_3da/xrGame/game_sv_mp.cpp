@@ -64,6 +64,8 @@ void game_sv_mp::OnRoundStart			()
 	GenerateGameMessage (P);
 	P.w_u32				(GAME_EVENT_ROUND_STARTED);
 	u_EventSend(P);
+
+	signal_Syncronize();
 }
 
 void game_sv_mp::OnRoundEnd				(LPCSTR reason)

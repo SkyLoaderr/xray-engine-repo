@@ -22,9 +22,8 @@ IC bool	pred_player		(LPVOID v1, LPVOID v2)
 
 void	CUITDMFragList::UpdateItemsList ()
 {
-	game_cl_GameState* g = &Game();
-	game_cl_GameState::PLAYERS_MAP_IT I=g->players.begin();
-	game_cl_GameState::PLAYERS_MAP_IT E=g->players.end();
+	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
+	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
 	// create temporary map (sort by kills)
 	items.clear			();
@@ -33,7 +32,7 @@ void	CUITDMFragList::UpdateItemsList ()
 		game_PlayerState* P = I->second;
 		if (!P || P->team != m_CurTeam) continue;
 
-		items.push_back(P);
+		items.push_back(I->second);
 	};
 	std::sort			(items.begin(),items.end(),pred_player);
 };
