@@ -61,6 +61,7 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 
 	// Clip and triangulate polygons
 	Fvector	cam = Device.vCameraPosition;
+	float	r2	= sphere.R*2;
 	for (DWORD t=0; t<triCount; t++)
 	{
 		RAPID::tri&	T	= tris[XRC.BBoxContact[t].id];
@@ -77,9 +78,9 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
 		Fvector			uv;
-		vert1.N.set		(Poly.n);	mk_vertex(vert1,V1,sphere.P,sphere.R*2);	vlist.push_back	(vert1);
-		vert2.N.set		(Poly.n);	mk_vertex(vert2,V2,sphere.P,sphere.R*2);	vlist.push_back	(vert2);
-		vert3.N.set		(Poly.n);	mk_vertex(vert3,V3,sphere.P,sphere.R*2);	vlist.push_back	(vert3);
+		vert1.N.set		(Poly.n);	mk_vertex(vert1,V1,sphere.P,r2);	vlist.push_back	(vert1);
+		vert2.N.set		(Poly.n);	mk_vertex(vert2,V2,sphere.P,r2);	vlist.push_back	(vert2);
+		vert3.N.set		(Poly.n);	mk_vertex(vert3,V3,sphere.P,r2);	vlist.push_back	(vert3);
 	}
 }
 
