@@ -62,6 +62,14 @@ void CAI_Zombie::vfLoadAnimations()
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[1]  = tpVisualObject->ID_Cycle("norm_death_1");
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]  = tpVisualObject->ID_Cycle("norm_death_2");
 	
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[0] = tpVisualObject->ID_Cycle("norm_death_idle_0");
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[1] = tpVisualObject->ID_Cycle("norm_death_idle_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[2] = tpVisualObject->ID_Cycle("norm_death_idle_2");
+
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
+
 	m_tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle("norm_attack_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("norm_attack_1");
 	m_tZombieAnimations.tNormal.tGlobal.tpaAttack[2] = tpVisualObject->ID_Cycle("norm_attack_2");
@@ -78,14 +86,6 @@ void CAI_Zombie::vfLoadAnimations()
 
 	m_tZombieAnimations.tNormal.tGlobal.tpRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
 	
-	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[0] = tpVisualObject->ID_Cycle("norm_death_idle_0");
-	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[1] = tpVisualObject->ID_Cycle("norm_death_idle_1");
-	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[2] = tpVisualObject->ID_Cycle("norm_death_idle_2");
-
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
-
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft	 = tpVisualObject->ID_Cycle("norm_turn_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnRight  = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
@@ -114,7 +114,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 					if (!m_tpCurrentGlobalBlend->playing) {
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i];
-						Msg("Death idle");
+						Msg("Started to play Death idle");
 					}
 					else
 						Msg("Death");
@@ -122,7 +122,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 				}
 			if (!tpGlobalAnimation) {
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
-				Msg("Death");
+				Msg("Started to play Death");
 			}
 		}
 	}

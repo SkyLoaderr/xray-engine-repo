@@ -134,7 +134,7 @@ void CAI_Zombie::Death()
 		}
 	}
 
-	SelectAnimation(clTransform.k,mRotate.k,0);
+	//SelectAnimation(clTransform.k,mRotate.k,0);
 }
 
 void CAI_Zombie::Turn()

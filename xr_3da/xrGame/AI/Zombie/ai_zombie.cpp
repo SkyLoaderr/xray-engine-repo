@@ -60,9 +60,10 @@ void CAI_Zombie::Die()
 	inherited::Death( );
 	eCurrentState = aiZombieDie;
 	
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	///Fvector	dir;
+	//AI_Path.Direction(dir);
+	//SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+
 	
 	::Sound->PlayAtPos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,vPosition);
 
