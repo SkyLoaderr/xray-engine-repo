@@ -20,7 +20,7 @@ void CBuild::xrPhase_Subdivide()
 		Progress			(float(X)/float(g_XSplit.size()));
 		
 		// skip if subdivision is too small already
-		if (int(g_XSplit[X]->size())<(g_params.m_SS_Low*2))	continue;
+		if (int(g_XSplit[X]->size())<(c_SS_LowVertLimit*2))	continue;
 		
 		// calc bounding box
 		Fbox	bb;
@@ -41,11 +41,11 @@ void CBuild::xrPhase_Subdivide()
 		if  	(size.x>c_SS_maxsize)					bSplit	= TRUE;
 		if		(size.y>c_SS_maxsize)					bSplit	= TRUE;
 		if		(size.z>c_SS_maxsize)					bSplit	= TRUE;
-		if		(int(g_XSplit[X]->size()) > g_params.m_SS_High)	bSplit	= TRUE;
+		if		(int(g_XSplit[X]->size()) > c_SS_HighVertLimit)	bSplit	= TRUE;
 		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X]->front()->pDeflector;
 		if		(!bSplit && defl_base)	{
-			if (defl_base->layer.width  >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
-			if (defl_base->layer.height >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
+			if (defl_base->layer.width  >=	(c_LMAP_size-2*BORDER))	bSplit	= TRUE;
+			if (defl_base->layer.height >=	(c_LMAP_size-2*BORDER))	bSplit	= TRUE;
 		}
 
 		// perform subdivide if needed
@@ -80,7 +80,7 @@ void CBuild::xrPhase_Subdivide()
 			else				{ s2.push_back(XF); }
 		}
 		
-		if ((int(s1.size())<g_params.m_SS_Low) || (int(s2.size())<g_params.m_SS_Low))
+		if ((int(s1.size())<c_SS_LowVertLimit) || (int(s2.size())<c_SS_LowVertLimit))
 		{
 			// splitting failed
 		} else {

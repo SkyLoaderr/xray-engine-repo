@@ -164,7 +164,7 @@ void CBuild::ResolveMaterials()
 //		clMsg("curent: %d, total: %d",X,g_XSplit.size());
 
 		// skip if subdivision is too small already
-		if (int(g_XSplit[X].size())<(g_params.m_SS_Low*2))	continue;
+		if (int(g_XSplit[X].size())<(c_SS_LowVertLimit*2))	continue;
 
 		// calc bounding box
 		Fbox	bb;
@@ -184,7 +184,7 @@ void CBuild::ResolveMaterials()
 		if  (	(size.y>g_params.c_SS_maxsize) 
 			||	(size.x>g_params.c_SS_maxsize)
 			||	(size.z>g_params.c_SS_maxsize)
-			||	(int(g_XSplit[X].size()) > g_params.m_SS_High)
+			||	(int(g_XSplit[X].size()) > c_SS_HighVertLimit)
 			) 
 		{
 			// perform split
@@ -214,7 +214,7 @@ void CBuild::ResolveMaterials()
 				else				{ s2.push_back(XF); }
 			}
 
-			if ((int(s1.size())<g_params.m_SS_Low) || (int(s2.size())<g_params.m_SS_Low))
+			if ((int(s1.size())<c_SS_LowVertLimit) || (int(s2.size())<c_SS_LowVertLimit))
 			{
 				// splitting failed
 			} else {

@@ -1,11 +1,13 @@
 #pragma once
 
-const	u32								c_LMAP_size			= 1024;
-const	u32								c_VB_maxSize		= 4096*1024;
-const	u32								c_VB_maxVertices	= 65535;
-const	u32								c_vCacheSize		= 24;
-const	u32								c_SS_maxsize		= 48;
-const	u32								c_PM_LowVertLimit	= 128;
+const	u32								c_LMAP_size			= 1024;			// pixels
+const	u32								c_VB_maxSize		= 4096*1024;	// bytes
+const	u32								c_VB_maxVertices	= 65535;		// count
+const	u32								c_vCacheSize		= 24;			// entries
+const	u32								c_SS_LowVertLimit	= 128;			// polys
+const	u32								c_SS_HighVertLimit	= 3*1024;		// polys
+const	u32								c_SS_maxsize		= 48;			// meters
+const	u32								c_PM_LowVertLimit	= 128;			// vertices
 
 #include "xrPool.h"
 #include "xrFace.h"

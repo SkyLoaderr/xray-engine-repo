@@ -23,7 +23,7 @@ IC BOOL	FaceEqual(Face* F1, Face* F2)
 BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 {
 	// 1. Amount of polygons
-	if (subdiv.size()>=u32(3*g_params.m_SS_High/4))	return FALSE;
+	if (subdiv.size()>=u32(3*c_SS_HighVertLimit/4))	return FALSE;
 	
 	// 2. Bounding box
 	bb_base.invalidate	();
@@ -70,7 +70,7 @@ IC void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
 IC BOOL	ValidateMerge	(u32 f1, Fbox& bb_base, u32 f2, Fbox& bb, float& volume)
 {
 	// Polygons
-	if ((f1+f2) > u32(4*g_params.m_SS_High/3))		return FALSE;	// Don't exceed limits (4/3 max POLY)	
+	if ((f1+f2) > u32(4*c_SS_HighVertLimit/3))		return FALSE;	// Don't exceed limits (4/3 max POLY)	
 
 	// Size
 	Fbox	merge;	merge.merge		(bb_base,bb);
