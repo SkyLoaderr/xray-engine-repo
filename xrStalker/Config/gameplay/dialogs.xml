@@ -144,7 +144,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="companion_management_dialog">
+    <dialog id="companion_management_dialog" priority="10">
         <phrase_list>
             <phrase id="11">
                 <text>companion_management_dialog_11</text>
