@@ -93,6 +93,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("change_team",					(void (CScriptGameObject::*)(u8,u8,u8))(CScriptGameObject::ChangeTeam))
 		.def("kill",						&CScriptGameObject::Kill)
 		.def("hit",							&CScriptGameObject::Hit)
+		.def("play_cycle",					&CScriptGameObject::play_cycle)
 		.def("fov",							&CScriptGameObject::GetFOV)
 		.def("range",						&CScriptGameObject::GetRange)
 		.def("relation",					&CScriptGameObject::GetRelationType)

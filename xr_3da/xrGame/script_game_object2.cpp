@@ -31,7 +31,7 @@
 #include "item_manager.h"
 #include "memory_space.h"
 #include "actor.h"
-
+#include "../skeletonanimated.h"
 void CScriptGameObject::explode	(u32 level_time)
 {
 	CExplosive			*explosive = smart_cast<CExplosive*>(&object());
@@ -110,6 +110,22 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size, queue_interval);
 }
 
+void CScriptGameObject::play_cycle(LPCSTR anim)
+{
+	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(&object());
+	if(sa){
+		CMotionDef* m= sa->ID_Cycle(anim);
+		if(m) sa->PlayCycle(m);
+		else 
+		{
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError ,"CGameObject : has not cycle %s",anim);
+		}
+	}
+	else
+	{
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : is not animated object");
+	}
+}
 void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
 {
 	CScriptHit		&tLuaHit = *tpLuaHit;
@@ -131,6 +147,7 @@ void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
 	P.w_u16			(u16(tLuaHit.m_tHitType));
 	object().u_EventSend(P);
 }
+
 
 #pragma todo("Dima to Dima : find out why user defined conversion operators work incorrect")
 

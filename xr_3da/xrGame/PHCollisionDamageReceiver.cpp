@@ -60,17 +60,17 @@ void _stdcall CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,dCon
 			Fvector dir;dir.set(*(Fvector*)c.geom.normal);
 			Fvector pos;
 			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b1));//it is not true pos in bone space
-			if(dr1) dr1->Hit(id2,ud1->bone_id,E*material_1->fBounceDamageFactor/dfs,dir,pos);
+			if(dr1) dr1->Hit(id2,ud1->bone_id,E*material_2->fBounceDamageFactor/dfs,dir,pos);
 			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b2));
 			dir.invert();
-			if(dr2) dr2->Hit(id1,ud2->bone_id,E*material_2->fBounceDamageFactor/dfs,dir,pos);
+			if(dr2) dr2->Hit(id1,ud2->bone_id,E*material_1->fBounceDamageFactor/dfs,dir,pos);
 		}
 		else
 		{
 			Fvector pos;
 			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b1));//it is not true pos in bone space
 			Fvector dir;dir.set(*(Fvector*)c.geom.normal);
-			if(dr1) dr1->Hit(id2,ud1->bone_id,E_NlS(b1,c.geom.normal,1.f)*material_1->fBounceDamageFactor/dfs,dir,pos);
+			if(dr1) dr1->Hit(id2,ud1->bone_id,E_NlS(b1,c.geom.normal,1.f)*material_2->fBounceDamageFactor/dfs,dir,pos);
 		}
 	}
 	else
@@ -79,7 +79,7 @@ void _stdcall CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,dCon
 		pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b2));//it is not true pos in bone space
 		Fvector dir;dir.set(*(Fvector*)c.geom.normal);
 		dir.invert();
-		if(dr2)dr2->Hit(id1,ud2->bone_id,E_NlS(b2,c.geom.normal,-1.f)*material_2->fBounceDamageFactor/dfs,dir,pos);
+		if(dr2)dr2->Hit(id1,ud2->bone_id,E_NlS(b2,c.geom.normal,-1.f)*material_1->fBounceDamageFactor/dfs,dir,pos);
 	}
 	
 }

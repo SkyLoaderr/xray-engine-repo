@@ -89,7 +89,7 @@ public:
 			CScriptGameObject	*Parent				() const;
 			void				Hit					(CScriptHit *tLuaHit);
 			int					clsid				() const;
-	
+			void				play_cycle			(LPCSTR anim);
 	_DECLARE_FUNCTION10	(Position	,	Fvector		);
 	_DECLARE_FUNCTION10	(Direction	,	Fvector		);
 	_DECLARE_FUNCTION10	(Mass		,	float		);
