@@ -20,12 +20,23 @@ CHOM::CHOM()
 CHOM::~CHOM()
 {
 }
-/*
-void CHOM::Load(CStream* S)
+
+#pragma pack(push,4)
+struct HOM_poly			
+{
+	Fvector	v1,v2,v3;
+	DWORD	flags;
+};
+#pragma pack(pop)
+
+void CHOM::Load			(CStream* S)
 {
 	// Load tris and merge them
-	CDB::Collector	collector;
-	struct poly			{ Fvector	v1,v2,v3; } POLY;
-	
+	CDB::Collector		CL;
+	while (!S->Eof())
+	{
+		HOM_poly			P;
+		S->Read				(&P);
+		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,0,EPS_L);
+	}
 }
-*/
