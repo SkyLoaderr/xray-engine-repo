@@ -905,7 +905,11 @@ void CAI_Soldier::OnLookingOver()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		SWITCH_TO_NEW_STATE(aiSoldierPatrolHurt)
+	}
 	
 	if (m_tpaPatrolPoints.size() > 1)
 		CHECK_IF_SWITCH_TO_NEW_STATE(this == Leader,aiSoldierPatrolRoute)
@@ -967,13 +971,17 @@ void CAI_Soldier::OnPatrolReturn()
 
 	DWORD dwCurTime = Level().timeServer();
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 	
 	INIT_SQUAD_AND_LEADER;
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		SWITCH_TO_NEW_STATE(aiSoldierPatrolHurt)
+	}
 	
 	if (AI_Path.bNeedRebuild) {
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
@@ -1049,13 +1057,17 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 	DWORD dwCurTime = Level().timeServer();
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 	
 	INIT_SQUAD_AND_LEADER;
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		SWITCH_TO_NEW_STATE(aiSoldierPatrolHurt)
+	}
 	
 	CHECK_IF_GO_TO_NEW_STATE(Leader == this,aiSoldierPatrolRoute)
 
@@ -1244,7 +1256,13 @@ void CAI_Soldier::OnPatrol()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->Stop();
+		SWITCH_TO_NEW_STATE(aiSoldierPatrolHurt)
+	}
 	
 	/**/
 	SelectSound(m_iSoundIndex);
@@ -1349,8 +1367,6 @@ void CAI_Soldier::OnAttackFireAlone()
 	SelectEnemy(Enemy);
 	
 	DWORD dwCurTime = Level().timeServer();
-	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged && (m_ePreviousState != eCurrentState),aiSoldierPointAtSmth);	
 	

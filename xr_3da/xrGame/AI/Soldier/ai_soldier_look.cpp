@@ -258,7 +258,7 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 	
 	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 		if (this != who) {
-			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+			//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			//if (!tpEntity) 
