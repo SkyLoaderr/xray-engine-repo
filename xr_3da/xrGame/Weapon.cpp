@@ -31,6 +31,8 @@ CWeapon::~CWeapon()
 	_FREE		(m_WpnName);
 	_DELETE		(pVisual);
 	_DELETE		(m_pHUD);
+	Device.Shader.Delete(hUIIcon);
+	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
 void CWeapon::SetParent(CEntity* parent, CWeaponList* container)
@@ -54,6 +56,9 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	fTimeToFire		= ini->ReadFLOAT	(section,"rpm");
 	fTimeToFire		= 60 / fTimeToFire;
 
+	LPCSTR	tex		= ini->ReadSTRING	(section,"ui_icon");
+	hUIIcon			= Device.Shader.Create("font",tex);
+	
 	LPCSTR	name	= ini->ReadSTRING	(section,"wm_name");
 	if (name=="")	hWallmark = 0; 
 	else			hWallmark = Device.Shader.Create("wallmark",name);

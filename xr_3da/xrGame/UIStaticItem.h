@@ -16,13 +16,14 @@ public:
 					CUIStaticItem	();
 	virtual			~CUIStaticItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align);
+	void			Init			(float left, float top, float tx_width, float tx_height, DWORD align);
 	void			SetPos			(float left, float top){vPos.set(left,top);}
 	void			SetPosX			(float left){vPos.x = left;}
 	void			SetPosY			(float top)	{vPos.y = top;}
 	void			SetColor		(DWORD clr){dwColor=clr;}
 	void			SetColor		(Fcolor clr){dwColor=clr.get();}
-	void			Render			();
-	void			Render			(float angle);
+	void			Render			(Shader* sh=0);
+	void			Render			(float angle, Shader* sh=0);
 };
 
 #endif //__XR_UISTATICITEM_H__

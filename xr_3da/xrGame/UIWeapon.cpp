@@ -1,57 +1,48 @@
 #include "stdafx.h"
 #include "uiweapon.h"
 #include "hudmanager.h"
+#include "weapon.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CUIWeaponItem::CUIWeaponItem(LPCSTR tex_name){
-	Init		(tex_name,"font",697,540,128,32,alRight|alBottom);
-	SetRect		(0,0,90,32);
-}
-
-CUIWeaponItem::~CUIWeaponItem(){
-}
-
 //--------------------------------------------------------------------
 CUIWeapon::CUIWeapon()
 {
+	cur_shader	= 0;
 }
 //--------------------------------------------------------------------
 
 void CUIWeapon::Init(){
 	Level().HUD()->ClientToScreen(694.f, 525.f, position, alRight|alBottom);
-	back.Init	("ui\\hud_weapon_back","font",694.f,525.f,128,64,alRight|alBottom);
-	back.SetRect(0,0,90,61);
-	weapons["M134"]		= new CUIWeaponItem("ui\\hud_wpn_m134");
-	weapons["GROZA"]	= new CUIWeaponItem("ui\\hud_wpn_groza");
-	weapons["PROPTECTA"]= new CUIWeaponItem("ui\\hud_wpn_protecta");
-	current		= weapons["M134"];
+	// back frame with tex
+	back.Init		("ui\\hud_weapon_back","font",694.f,525.f,128,64,alRight|alBottom);
+	back.SetRect	(0,0,90,61);
+	// weapon frame
+	weapon.Init		(697,540,128,32,alRight|alBottom);
+	weapon.SetRect	(0,0,90,32);
 }
 //--------------------------------------------------------------------
 
 CUIWeapon::~CUIWeapon()
 {
-	for (WItmIt it=weapons.begin(); it!=weapons.end(); it++)
-		_DELETE(it->second);
 }
 //--------------------------------------------------------------------
 
 void CUIWeapon::Render()
 {
-	back.Render	();
-	current->Render	();
+	back.Render		();
+	if (cur_shader) 
+		weapon.Render(cur_shader);
 }
 //--------------------------------------------------------------------
 
-void CUIWeapon::Out(LPCSTR wpn_name, int ammo1, int ammo1_total, int ammo2, int ammo2_total){
-	WItmIt it	= weapons.find(wpn_name);
-	R_ASSERT	(it!=weapons.end()); // не найдена иконка оружия
-	current		= it->second;
+void CUIWeapon::Out(CWeapon* W){
 	float sc	= Level().HUD()->GetScale();
 	CFontHUD* H	= Level().HUD()->pHUDFont;
 	H->Color	(0xffffffff);
-	H->Out		(position.x+6,	position.y+15,"%s",wpn_name);
-	H->Out		(position.x+3,	position.y+2,"%d/%d",ammo1,ammo1_total);
-	H->Out		(position.x+34,	position.y+50,"%d/%d",ammo2,ammo2_total);
+	H->Out		(position.x+6,	position.y+15,"%s",W->GetName());
+	H->Out		(position.x+3,	position.y+2,"%d/%d",W->GetAmmoElapsed(),W->GetAmmoLimit());
+	H->Out		(position.x+34,	position.y+50,"%d/%d",0,0);
+	cur_shader	= W->GetUIIcon();
 }

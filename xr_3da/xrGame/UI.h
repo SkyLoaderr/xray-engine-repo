@@ -13,6 +13,7 @@
 
 // refs
 class CHUDManager;
+class CWeapon;
 #define MAX_GROUPS		10
 #define MAX_UIMESSAGES	5
 #define LIFE_TIME		7.f		// sec
@@ -72,7 +73,7 @@ public:
 	bool				OnMouseMove			(int dx, int dy);
 
 	void				OutHealth			(int health, int armor);
-	void				OutWeapon			(LPCSTR wpn_name, int ammo1, int ammo1_total, int ammo2, int ammo2_total);
+	void				OutWeapon			(CWeapon* wpn);
 	void				SetHeading			(float heading);
 	void				SetHeading			(const Fvector& direction);
 	void				AddMessage			(LPCSTR S, LPCSTR M, DWORD C=0xffffffff, float life_time=LIFE_TIME);

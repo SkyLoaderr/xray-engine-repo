@@ -226,23 +226,3 @@ void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir){
 	fire_pos.set	(W->Position());
 	fire_dir.set	(Device.vCameraDirection);
 }
-
-const char* CWeaponList::ActiveWeaponName()
-{
-	if (m_iActiveWeapon==-1) return 0;
-	return m_Weapons[m_iActiveWeapon]->GetName();
-}
-int	CWeaponList::ActiveWeaponAmmoElapsed()
-{
-	if (m_iActiveWeapon==-1) return 0;
-	return m_Weapons[m_iActiveWeapon]->GetAmmoElapsed();
-}
-int	CWeaponList::ActiveWeaponAmmoLimit	()
-{
-	if (m_iActiveWeapon==-1) return 0;
-	return m_Weapons[m_iActiveWeapon]->GetAmmoLimit();
-}
-int CWeaponList::ActiveWeaponID			()
-{
-	return m_iActiveWeapon;
-}

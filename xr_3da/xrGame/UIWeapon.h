@@ -4,33 +4,21 @@
 
 #include "uistaticitem.h"
 
-class CUIWeaponItem: public CUIStaticItem{
-public:
-					CUIWeaponItem	(LPCSTR tex_name);
-	virtual			~CUIWeaponItem	();
-};
-
-struct str_pred : public binary_function<char*, char*, bool> 
-{	
-	IC bool operator()(const char* x, const char* y) const
-	{	return strcmp(x,y)<0;	}
-};
-
-DEFINE_MAP_PRED(LPCSTR,CUIWeaponItem*,WItmMap,WItmIt,str_pred);
+// refs
+class CWeapon;
 
 class CUIWeapon
 {
 	Fvector2		position;
 
-	WItmMap			weapons;
 	CUIStaticItem	back;
-
-	CUIWeaponItem*	current;
+	CUIStaticItem	weapon;
+	Shader*			cur_shader;
 public:
 					CUIWeapon		();
 					~CUIWeapon		();
 	void			Render			();
-	void			Out				(LPCSTR wpn_name, int ammo1, int ammo1_total, int ammo2, int ammo2_total);
+	void			Out				(CWeapon* wpn);
 	void			Init			();
 };
 

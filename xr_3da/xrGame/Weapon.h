@@ -25,6 +25,7 @@ protected:
 	CWeaponHUD*		m_pHUD;
 
 	Shader*			hWallmark;
+	Shader*			hUIIcon;
 	float			fWallmarkSize;
 
 	int				iAmmoLimit;
@@ -68,6 +69,6 @@ public:
 	IC const char*	GetName			(){return m_WpnName;}
 	IC int			GetAmmoElapsed	(){return iAmmoElapsed;}
 	IC int			GetAmmoLimit	(){return iAmmoLimit;}
-};
+	IC Shader*		GetUIIcon		(){return hUIIcon;};
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

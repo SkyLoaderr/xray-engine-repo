@@ -233,8 +233,8 @@ void CUI::OutHealth(int health, int armor){
 }
 //--------------------------------------------------------------------
 
-void CUI::OutWeapon(LPCSTR wpn_name, int ammo1, int ammo1_total, int ammo2, int ammo2_total){
-	UIWeapon.Out(wpn_name, ammo1, ammo1_total, ammo2, ammo2_total);
+void CUI::OutWeapon(CWeapon* wpn){
+	UIWeapon.Out(wpn);
 }
 //--------------------------------------------------------------------
 
