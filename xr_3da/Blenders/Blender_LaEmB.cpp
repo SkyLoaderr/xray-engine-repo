@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "blender_LmBmmD.h"
+#include "blender_LaEmB.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -93,7 +93,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 				RS.StageBegin		();
 				{
 					RS.StageSET_Address	(D3DTADDRESS_WRAP);
-					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE		D3DTA_TFACTOR);
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
 					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
 					RS.Stage_Texture	(oT2_Name,		L_textures		);
 					RS.Stage_Matrix		(oT2_xform,		L_matrices,		0);
