@@ -226,12 +226,12 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	l_pUD1 = retriveGeomUserData(c.geom.g1);
-	l_pUD2 = retriveGeomUserData(c.geom.g2);
+	l_pUD1 = retrieveGeomUserData(c.geom.g1);
+	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
 	if(! l_pUD1) return;
 
-	l_pUD2 = retriveGeomUserData(c.geom.g2);
+	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
 	if(!l_pUD2) return;
 

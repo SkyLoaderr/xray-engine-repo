@@ -60,8 +60,8 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	l_pUD1 = retriveGeomUserData(c.geom.g1);
-	l_pUD2 = retriveGeomUserData(c.geom.g2);
+	l_pUD1 = retrieveGeomUserData(c.geom.g1);
+	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 	CWeaponRPG7Grenade *l_this = l_pUD1 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD2->ph_ref_object) : NULL;
 	

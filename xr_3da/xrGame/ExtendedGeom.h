@@ -49,7 +49,7 @@ IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
 	return (dxGeomUserData*) dGeomGetData(geom);
 }
 
-IC dxGeomUserData* retriveGeomUserData(dGeomID geom)
+IC dxGeomUserData* retrieveGeomUserData(dGeomID geom)
 {
 			if(dGeomGetClass(geom)==dGeomTransformClass)
 				return dGeomGetUserData(dGeomTransformGetGeom(geom));

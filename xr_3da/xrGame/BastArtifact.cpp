@@ -35,8 +35,8 @@ void __stdcall CBastArtifact::ObjectContactCallback(bool& /**do_colide/**/,dCont
 {
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	l_pUD1 = retriveGeomUserData(c.geom.g1);
-	l_pUD2 = retriveGeomUserData(c.geom.g2);
+	l_pUD1 = retrieveGeomUserData(c.geom.g1);
+	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
 	if(!l_pUD1 || !l_pUD2) return;
 

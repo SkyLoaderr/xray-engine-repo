@@ -351,8 +351,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
 			surface.bounce = 0.01f;//0.1f;
 			surface.bounce_vel =1.5f;//0.005f;
-			usr_data_1 = retriveGeomUserData(g1);
-			usr_data_2 = retriveGeomUserData(g2);
+			usr_data_1 = retrieveGeomUserData(g1);
+			usr_data_2 = retrieveGeomUserData(g2);
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_2)	material_id_2=usr_data_2->material;
 			if(usr_data_1)	material_id_1=usr_data_1->material;
@@ -500,8 +500,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
 			surface.bounce = 0.01f;//0.1f;
 			surface.bounce_vel =1.5f;//0.005f;
-			usr_data_1 = retriveGeomUserData(g1);
-			usr_data_2 = retriveGeomUserData(g2);
+			usr_data_1 = retrieveGeomUserData(g1);
+			usr_data_2 = retrieveGeomUserData(g2);
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_2)	material_id_2=usr_data_2->material;
@@ -886,8 +886,8 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 		/*
 		dxGeomUserData* usr_data_1=NULL;
 		dxGeomUserData* usr_data_2=NULL;
-		usr_data_1 = retriveGeomUserData(c.geom.g1);
-		usr_data_2 = retriveGeomUserData(c.geom.g2);
+		usr_data_1 = retrieveGeomUserData(c.geom.g1);
+		usr_data_2 = retrieveGeomUserData(c.geom.g2);
 
 		c.surface.soft_erp=2500.f;
 		c.surface.soft_cfm=0.000002f;
@@ -944,8 +944,8 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 
 	dxGeomUserData* usr_data_1=NULL;
 	dxGeomUserData* usr_data_2=NULL;
-	usr_data_1 = retriveGeomUserData(c.geom.g1);
-	usr_data_2 = retriveGeomUserData(c.geom.g2);
+	usr_data_1 = retrieveGeomUserData(c.geom.g1);
+	usr_data_2 = retrieveGeomUserData(c.geom.g2);
 
 	CGameObject* obj1=dynamic_cast<CGameObject*>(usr_data_1->ph_ref_object);
 	CGameObject* obj2=dynamic_cast<CGameObject*>(usr_data_2->ph_ref_object);
