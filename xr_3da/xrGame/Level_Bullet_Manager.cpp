@@ -65,6 +65,7 @@ void SBullet::Init(const Fvector& position,
 	tracer_max_length = tracer_length;
 
 	bullet_material_idx = cartridge.bullet_material_idx;
+	VERIFY			(u16(-1)!=bullet_material_idx);
 
 	flags.set(TRACER_FLAG, cartridge.m_tracer);
 	flags.set(RICOCHET_ENABLED_FLAG, cartridge.m_ricochet);
