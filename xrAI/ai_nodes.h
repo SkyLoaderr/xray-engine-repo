@@ -137,11 +137,12 @@ public:
 	{
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
 		float fDistance;
-		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2, MM = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2;
+		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
+		u32 a = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2, b = M*m_dwEnd - m_dwEnd*(m_dwEnd + 1)/2, c = b - a;
 		thProgress = 0.0f;
 		for (int i=(int)m_dwStart; i<(int)m_dwEnd; i++) {
 			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-			for (int j = i + 1; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - MM)/K) {
+			for (int j = i + 1; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					vfFindTheShortestPath(m_tpHeap, m_tpIndexes, m_dwAStarStaticCounter, tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,m_fMaxDistance);
