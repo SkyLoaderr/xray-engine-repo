@@ -470,7 +470,7 @@ function animation:set_state(id, reset)
 	end
 	--' вход в новое состояние	
 	if self.animations[id] ~= nil then
-		if self.animations[id].into ~= nil then
+		if self.animations[id].into ~= nil and self.animations[id].into[self:weapon_slot()] ~= nil then
 			if type(self.animations[id].into[self:weapon_slot()]) == "table" then
 				for k,v in self.animations[id].into[self:weapon_slot()] do
 					self.npc:add_animation(v, true)
