@@ -9,7 +9,6 @@
 #include "xrServer.h"
 #include "group.h"
 #include "tracer.h"
-#include "dynamicheightmap.h"
 #include "rain.h"
 #include "ai_space.h"
 #include "..\fixedset.h"

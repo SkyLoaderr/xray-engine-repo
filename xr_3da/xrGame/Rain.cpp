@@ -17,6 +17,7 @@ const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
 const int	max_particles	= 1000;
 const int	particles_update= 50;
+const int	particles_cache	= 500;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -280,7 +281,7 @@ void	CEffect_Rain::Render	()
 	}
 	DWORD vCount			= verts-start;
 	VS->Unlock				(vCount);
-
+	
 	// Render if needed
 	if (vCount)	{
 		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
@@ -293,36 +294,56 @@ void	CEffect_Rain::Render	()
 	// Particles
 	Particle*	P		= particle_active;
 	if (0==P)			return;
-
+	
 	Device.Statistic.TEST.Begin		();
-	DWORD	dwTime		= Device.dwTimeGlobal;
-	CVertexStream* VSP	= P->visual->m_Stream;
-	Device.Shader.set_Shader		(P->visual->hShader);
-	while (P)	{
-		Particle*	next	= P->next;
-
-		// Update
-		if (dwTime>=P->dwNextUpdate)
-		{
-			P->visual->Update	(dwTime - P->dwNextUpdate + particles_update);
-			P->dwNextUpdate		= dwTime+particles_update;
-		}
+	{
+		DWORD	dwTime		= Device.dwTimeGlobal;
+		CVertexStream* VSP	= P->visual->GetStream();
+		Device.Shader.set_Shader		(P->visual->hShader);
 		
-		// Render
-		if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
-			P->visual->Render	(1.f);
-
-		// Stop if needed
-		if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
-		{
-			if ((0==P->visual->ParticleCount()) && !P->emitter.IsPlaying()) 
+		DWORD		offset;
+		FVF::TL*	verts	= VSP->Lock	(particles_cache*4,offset);
+		int			pcount  = 0;
+		while (P)	{
+			Particle*	next	= P->next;
+			
+			// Update
+			if (dwTime>=P->dwNextUpdate)
 			{
-				P->visual->Stop	();
-				p_free			(P);
+				P->visual->Update	(dwTime - P->dwNextUpdate + particles_update);
+				P->dwNextUpdate		= dwTime+particles_update;
 			}
+			
+			// Render
+			if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
+			{
+				int		count_estimated		= P->visual->ParticleCount();
+				if ((pcount+count_estimated) >= particles_cache) {
+					// flush
+					VSP->Unlock	(pcount*4);
+					Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
+					verts	= VSP->Lock	(particles_cache*4,offset);
+					pcount	= 0;
+				}
+				int		count_real_verts	= P->visual->RenderTO(verts);
+				verts	+= count_real_verts;
+				pcount	+= count_real_verts/4;
+			}
+			
+			// Stop if needed
+			if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
+			{
+				if ((0==P->visual->ParticleCount()) && !P->emitter.IsPlaying()) 
+				{
+					P->visual->Stop	();
+					p_free			(P);
+				}
+			}
+			
+			P = next;
 		}
-		
-		P = next;
+		VSP->Unlock	(pcount*4);
+		if (pcount) Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
 	}
 	Device.Statistic.TEST.End		();
 }
