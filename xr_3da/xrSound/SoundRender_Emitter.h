@@ -55,6 +55,7 @@ public:
 
 	void						fill_block				(void* ptr, u32 size);
 
+	float						priority				()						{ return smooth_volume;	}
 	void						start					(sound* _owner, BOOL _loop);
 	void						update					(float dt);
 	BOOL						update_culling			(float dt);

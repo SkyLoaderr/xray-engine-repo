@@ -51,9 +51,12 @@ void	CSoundRender_Core::i_rewind		(CSoundRender_Emitter* E)
 BOOL	CSoundRender_Core::i_allow_play	(CSoundRender_Emitter* E)
 {
 	// Search available target
+	float	Ptest	= E->priority	();
 	for (u32 it=0; it<s_targets.size(); it++)
 	{
-		if (0==s_targets[it]->get_emitter())	return TRUE;
+		CSoundRender_Emitter* Etest	= s_targets[it]->get_emitter	();
+		if (0==Etest)					return TRUE;
+		if (Etest->priority()<Ptest)	return TRUE;
 	}
 	return FALSE;
 }
