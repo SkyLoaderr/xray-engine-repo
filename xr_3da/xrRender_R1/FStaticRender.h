@@ -1,5 +1,7 @@
 #pragma once
 
+#include "r__dsgraph_structure.h"
+
 #include "PSLibrary.h"
 
 #include "portal.h"
