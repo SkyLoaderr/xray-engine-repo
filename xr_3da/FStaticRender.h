@@ -107,7 +107,8 @@ public:
 	virtual void					add_Geometry			(CVisual*	V	);			// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);
-	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);
+	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
+	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 	
 	// Lighting
 	virtual void					L_add					(CLightPPA* L	);

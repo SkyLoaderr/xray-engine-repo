@@ -45,7 +45,7 @@ void		CRender::add_Visual			(CVisual*		V )	{ add_leafs_Dynamic(V);								}
 void		CRender::add_Geometry		(CVisual*		V )	{ add_Static(V,View->getMask());					}
 void		CRender::add_Lights			(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
 void		CRender::add_Glows			(vector<WORD> &	V )	{ Glows.add(V);										}
-void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)
+void		CRender::add_Patch			(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
@@ -54,6 +54,10 @@ void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 	P.size	= s;
 	P.angle = a;
 	P.nearer= bNearer;
+}
+void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
+{
+	Wallmarks.AddWallmark	(T,P,S,s);
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
