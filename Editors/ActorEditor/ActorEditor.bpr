@@ -15,9 +15,8 @@
       Intermediate\bone.obj Intermediate\ColorPicker.obj 
       Intermediate\UI_Camera.obj Intermediate\HWCaps.obj 
       Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\pure.obj 
-      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
-      Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
+      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_Texture.obj Intermediate\Shader.obj 
@@ -73,7 +72,8 @@
       Intermediate\EditObjectProps.obj Intermediate\UI_ToolsProps.obj 
       Intermediate\du_cylinder.obj Intermediate\BoneEditor.obj 
       Intermediate\ItemListTypes.obj Intermediate\ItemList.obj 
-      Intermediate\ItemListHelper.obj Intermediate\UI_ToolsUndo.obj"/>
+      Intermediate\ItemListHelper.obj Intermediate\UI_ToolsUndo.obj 
+      Intermediate\IInputReceiver.obj Intermediate\ParticleEffect.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -153,7 +153,6 @@
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
@@ -271,6 +270,8 @@
       <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_ToolsUndo.cpp" FORMNAME="" UNITNAME="UI_ToolsUndo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleEffect.cpp" FORMNAME="" UNITNAME="ParticleEffect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

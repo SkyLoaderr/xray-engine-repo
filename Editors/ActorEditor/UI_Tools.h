@@ -87,7 +87,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     	bool			UpdateMotionDefsStream	(CEditableObject* source);
     public:
     	float			m_fLOD;
-	    IVisual*		m_pVisual;
+	    IRender_Visual*	m_pVisual;
         CBlend*			m_pBlend;
         AnsiString		m_BPPlayCache[MAX_PARTS];
     public:

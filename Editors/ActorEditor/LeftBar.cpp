@@ -277,6 +277,7 @@ void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
 {
 	frmBonePart->Run(Tools.CurrentObject());
+    UI.Command(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 

@@ -77,7 +77,7 @@ private:	// User declarations
     const char* StartFolder;
 
     EImageThumbnail* 	m_Thm;
-	sound				m_Snd;
+	ref_sound			m_Snd;
 
     void 	InitItemsList(const char* nm=0);
 
