@@ -1,0 +1,139 @@
+[wpn_fn2000]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\fn-2000"					; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_FN2000
+min_radius               = 50
+max_radius               = 150
+
+cost					 = 1500	;3500
+
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 30
+
+ammo_mag_size		     = 30
+
+hand_dependence		     = 2
+ammo_class		         = ammo_5.56x45_ss190, ammo_5.56x45_ap
+
+resource		         = 6000
+
+slot 			         = 2		; // secondary
+inv_name		         = FN2000
+inv_name_short		     = FN2000
+inv_weight		         = 2
+
+inv_grid_width		= 4
+inv_grid_height		= 2
+inv_grid_x			= 5
+inv_grid_y			= 9
+
+
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+fire_dispersion_base	 = 0.5
+
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.0
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+
+fire_point               = 0.0, 0.15, 0.4
+
+flame_particles			 = weapons\generic_weapon05
+smoke_particles			 = weapons\generic_shoot_00
+
+shell_point		 = 0.05, 0.0, 0.05
+shell_dir		 = 0.0, 1.0, 0.0
+shell_particles	 = weapons\generic_shells
+
+
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 37.5 		;//WAS "60"!!!
+hit_impulse		         = 75
+hit_type = wound
+
+fire_distance            = 400
+bullet_speed			 = 750		;начальная скорость пули
+rpm                      = 750
+; end ttc
+
+hud                      = wpn_fn2000_hud
+normal                   = 0, 1, 0
+position                 = -0.03, -0.09, 0.11
+orientation              = -0.0, -6.7, -5
+startup_ammo             = 1000
+visual                   = weapon\fn2000\wpn_fn2000.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			         = ui\hud_wpn_fn2000
+
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+
+light_color		         = 0.6,0.5,0.3
+light_range		         = 4
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+
+
+ph_mass			         = 4
+;cost			         = 5000
+
+;addons
+scope_status				= 1
+silencer_status				= 0
+grenade_launcher_status		= 0
+zoom_enabled				= true
+
+scope_texture		= wpn\wpn_crosshair
+
+zoom_enabled			= true
+scope_zoom_factor	    = 15
+
+;звуки
+snd_draw			= weapons\generic_draw
+snd_holster			= weapons\generic_holster
+snd_shoot			= weapons\fn2000_shoot	;weapons\generic_shoot
+snd_empty			= weapons\gen_empty, 0.5
+snd_reload			= weapons\fn2000_reload, 0.8, 0.3
+snd_shoot_grenade	= weapons\gen_grenshoot
+snd_reload_grenade	= weapons\gen_grenload
+
+
+[wpn_fn2000_hud]
+shell_point          = 00.00, -0.03, 0.05
+shell_dir		 = 0.0, 1.0, 0.0
+
+fire_point               = -0.04, -0.05, 0.14
+fire_bone                = rifle
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
+
+anim_idle = idle
+anim_idle_aim = idle
+anim_reload = reload
+anim_draw = draw
+anim_holster = holster
+anim_shoot = shoot
+
+;смещения HUD для режима приближения
+zoom_offset				= 0,0,0
+zoom_rotate_x			= 0.0
+zoom_rotate_y			= 0.0
+
+
+
