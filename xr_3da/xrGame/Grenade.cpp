@@ -185,6 +185,7 @@ void CGrenade::Throw()
 		pGrenade->m_destroyTime = 3500;
 		pGrenade->m_force = m_force; 
 		m_force = 0;
+		if (Local())
 		{
 			NET_Packet P;
 			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
@@ -196,14 +197,17 @@ void CGrenade::Throw()
 
 void CGrenade::Destroy() 
 {
-	Explode();
-	m_expoldeTime = 5000;
+//	Explode();
+//	m_expoldeTime = 5000;
 	//inherited::Destroy();
 
 	//Generate Expode event
-	NET_Packet		P;
-	u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-	u_EventSend		(P);
+	if (Local()) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+		u_EventSend		(P);
+	};
 }
 
 void CGrenade::Explode() 
@@ -427,14 +431,16 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 	case GE_OWNERSHIP_REJECT: 
 		{
 			P.r_u16(id);
-			CGrenade *pGrenade = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
 			m_pFake = NULL;
+			CGrenade *pGrenade = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));			
+			if (NULL == pGrenade) break;
 			pGrenade->H_SetParent(0);
 		} 
 		break;
 	case GE_GRENADE_EXPLODE:
 		{
 			Explode();
+			m_expoldeTime = 5000;
 		}break;
 	}
 }
@@ -452,10 +458,13 @@ void CGrenade::OnAnimationEnd()
 			m_pInventory->Ruck(this); 
 			m_destroyTime = 0;
 			
-			NET_Packet P;
-			u_EventGen(P, GE_OWNERSHIP_REJECT, H_Parent()->ID());
-			P.w_u16(u16(ID()));
-			u_EventSend(P);
+			if (Local())
+			{
+				NET_Packet P;
+				u_EventGen(P, GE_OWNERSHIP_REJECT, H_Parent()->ID());
+				P.w_u16(u16(ID()));
+				u_EventSend(P);
+			};
 
 			//найти такую же гранату и положить в рюкзак
 			CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this));
