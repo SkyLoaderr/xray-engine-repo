@@ -216,6 +216,7 @@ public:
 	virtual void			shedule_Update		(u32 dt);
 	
 	virtual void			renderable_Render	();
+	virtual BOOL			renderable_ShadowGenerate	() {return inherited::renderable_ShadowGenerate();  }
 	
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
