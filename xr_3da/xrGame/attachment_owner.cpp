@@ -63,8 +63,8 @@ void __stdcall AttachmentCallback(CKinematics *tpKinematics)
 	xr_vector<CAttachableItem*>::const_iterator	I = attachment_owner->attached_objects().begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = attachment_owner->attached_objects().end();
 	for ( ; I != E; ++I) {
-		(*I)->XFORM().mul	(kinematics->LL_GetBoneInstance((*I)->bone_id()).mTransform,(*I)->offset());
-		(*I)->XFORM().mulA	(game_object->XFORM());
+		(*I)->XFORM().mul_43	(kinematics->LL_GetBoneInstance((*I)->bone_id()).mTransform,(*I)->offset());
+		(*I)->XFORM().mulA_43	(game_object->XFORM());
 	}
 }
 
