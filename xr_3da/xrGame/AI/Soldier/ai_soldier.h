@@ -533,7 +533,7 @@ class CAI_Soldier : public CCustomMonster
 			vfSetMovementType(c,d);
 		}
 	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
-	IC	bool bfAmIHurt()		{return(dwHitTime > 0);}
+	IC	bool bfAmIHurt()		{return(Level().timeServer() > dwHitTime);}
 	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
 	IC  bool bfFireEnemy(CEntity *tpEntity)		

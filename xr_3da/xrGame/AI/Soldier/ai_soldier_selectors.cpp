@@ -348,14 +348,14 @@ float CSoldierSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, 
 	CHECK_RESULT;
 	vfAddLightCost();
 	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
+	//vfAddTotalCoverCost();
+	//CHECK_RESULT;
 	vfAddDistanceToEnemyCost();
 	CHECK_RESULT;
-	vfAddCoverFromEnemyCost();
-	CHECK_RESULT;
+	//vfAddCoverFromEnemyCost();
+	//CHECK_RESULT;
 	// checking for epsilon
-	vfCheckForEpsilon(bStop);
+	//vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
 }

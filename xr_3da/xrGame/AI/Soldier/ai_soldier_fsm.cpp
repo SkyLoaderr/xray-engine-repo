@@ -52,16 +52,13 @@ void CAI_Soldier::OnFightAlone()
 
 	SelectEnemy(Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfDoesEnemyExist(),aiSoldierFindAlone);
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfIsEnemyVisible(),aiSoldierPursuitAlone);
-	/**
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfDoesEnemyExist() && !bfIsEnemyVisible(),aiSoldierPursuitAlone);
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfDoesEnemyExist(),aiSoldierFindAlone);
 	switch (tfGetAloneFightType()) {
 		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAlone);
 		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAlone);
 		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
 	}
-	/**/
-	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
 }
 
 void CAI_Soldier::OnFightGroup()
@@ -149,10 +146,10 @@ void CAI_Soldier::OnRetreatAlone()
 	
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || bfDoesEnemyExist());
-
 	SelectEnemy(Enemy);
 	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || bfDoesEnemyExist());
+
 	if (bfFireEnemy(Enemy.Enemy))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneFire)
 	else
@@ -166,6 +163,9 @@ void CAI_Soldier::OnHurtAlone()
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
+
+	m_dwLastRangeSearch = dwHitTime;
+	dwHitTime = DWORD(-1);
 
 	AI_Path.TravelPath.clear();
 
@@ -779,8 +779,6 @@ void CAI_Soldier::OnWaitForAnimation()
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 
 	vfSetMovementType(WALK_NO);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
 

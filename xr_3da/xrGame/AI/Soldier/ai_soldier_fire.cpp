@@ -671,6 +671,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 		}
 	}
 
+	/**
 	if (fFightCoefficient > 400)
 		return(FIGHT_TYPE_RETREAT);
 	else
@@ -678,6 +679,8 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 			return(FIGHT_TYPE_DEFEND);
 		else
 			return(FIGHT_TYPE_ATTACK);
+	/**/
+	return(FIGHT_TYPE_RETREAT);
 }
 
 bool CAI_Soldier::bfSaveFromEnemy(CEntity *tpEntity)
