@@ -164,7 +164,7 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
 	Fvector motion,vAccel;
-	Fvector vOldVelocity	= vVelocity;
+//	Fvector vOldVelocity	= vVelocity;
 	float	fOldFriction	= fFriction;
 	float	fOldActVelocity	= fActualVelocity;
 
@@ -259,7 +259,10 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// если определили приземление или резко уиеньшилась скорость (порядок fMinCrashSpeed)
 	// определим возможное повреждение
 	gcontact_Was		= FALSE;
-	if ((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround))
+	if (
+		((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround))||
+		((fabsf(jump)>EPS) && (eOldEnvironment==peOnGround) && (eEnvironment==peOnGround))
+		)
 	{
 		gcontact_Was		= TRUE;
 		gcontact_Power		= 0;
