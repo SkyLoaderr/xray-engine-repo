@@ -111,7 +111,7 @@ function PsyAntenna:update_psy_hit		(dt)
 	end;
 end
 function PsyAntenna:spawn_phantom 		()
-
+	level.spawn_phantom(position)
 end
 function PsyAntenna:update_phantoms 	()
 	
@@ -140,6 +140,21 @@ function main()
 		end
 	end
 end
+
+class "Phantom"		(object_binder)
+
+function Phantom:__init(obj) super(obj)
+	g_PsyAntenna:add_generator(self);
+end
+
+function Phantom:net_destroy()
+	g_PsyAntenna:remove_generator(self);
+end
+
+function bind(obj)
+	obj:bind_object		(Phantom(obj))
+end
+
 
 --[[
 function PsyAntenna:add_generator(generator)

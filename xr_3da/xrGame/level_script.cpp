@@ -304,6 +304,14 @@ void enable_input()
 {
 	g_bDisableAllInput = false;
 }
+
+void spawn_phantom(const Fvector &position)
+{
+	Level().spawn_item("m_phantom", position, u32(-1), u16(-1), false);
+}
+
+
+
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -367,6 +375,7 @@ void CLevel::script_register(lua_State *L)
 		def("remove_calls_for_object",			remove_calls_for_object),
 		def("present",							is_level_present),
 		def("disable_input",					disable_input),
-		def("enable_input",						enable_input)
+		def("enable_input",						enable_input),
+		def("spawn_phantom",					spawn_phantom)
 	];
 }

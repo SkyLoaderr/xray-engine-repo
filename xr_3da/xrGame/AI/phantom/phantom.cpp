@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "phantom.h"
 #include "../../NET_utils.h"
-
+#include "../level.h"
 
 CPhantom::CPhantom()
 {
@@ -131,27 +131,9 @@ void CPhantom::net_Import	(NET_Packet& P)
 //---------------------------------------------------------------------
 void CPhantom::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
-	//bool				first_time = !!g_Alive();
-
-	//fEntityHealth		= 0;
-	//set_death_time		();
-	//if (eDeathDead!=st_current) 
-	//{	
-	//	if (first_time)
-	//		Die			(who);
-	//	st_target		= eDeathFall;
-	//}
-	//else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
+	setVisible	(FALSE);
+	setEnabled	(FALSE);
 }
 //---------------------------------------------------------------------
 
-void CPhantom::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
-{
-}
-
-
-void CPhantom::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
-{
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
-}
 
