@@ -15,6 +15,10 @@ namespace R_dsgraph
 		IRender_Visual*		pVisual;
 		Fmatrix				Matrix;				// matrix (copy)
 	};
+	struct _MatrixItemS	: public _MatrixItem
+	{
+		ref_selement		se;
+	};
 	struct _LodItem		{
 		float				ssa;
 		IRender_Visual*		pVisual;

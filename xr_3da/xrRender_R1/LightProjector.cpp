@@ -68,7 +68,7 @@ void CLightProjector::set_object	(IRenderable* O)
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else  
 	{
-		if (!O->renderable_ShadowReceive() || RImplementation.val_bInvisible )	
+		if (!O->renderable_ShadowReceive() || RImplementation.val_bInvisible || ((CLightTrack*)O->renderable.ROS)->Shadowed_dwFrame==Device.dwFrame)	
 		{
 			current		= 0;
 			return;

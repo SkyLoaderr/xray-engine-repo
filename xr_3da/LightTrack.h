@@ -50,6 +50,7 @@ public:
 	u32						dwFrame;
 public:
 	u32						Shadowed_dwFrame;
+	u32						Shadowgen_dwFrame;
 	int						Shadowed_Slot;
 	//CShadowGeomCache		ShadowGeomCache;			
 

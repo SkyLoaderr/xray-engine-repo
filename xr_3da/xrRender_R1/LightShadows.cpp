@@ -81,7 +81,7 @@ void CLightShadows::set_object	(IRenderable* O)
 	if (0==O)	current		= 0;
 	else 
 	{
-		if (!O->renderable_ShadowGenerate()	|| RImplementation.val_bHUD )
+		if (!O->renderable_ShadowGenerate()	|| RImplementation.val_bHUD || ((CLightTrack*)O->renderable.ROS)->Shadowgen_dwFrame==Device.dwFrame)
 		{
 			current		= 0;
 			return;
@@ -95,6 +95,8 @@ void CLightShadows::set_object	(IRenderable* O)
 		
 		if (current)
 		{
+			((CLightTrack*)O->renderable.ROS)->Shadowgen_dwFrame	=	Device.dwFrame;
+
 			// alloc
 			caster*	cs		= NULL;
 			if (casters_pool.empty())	cs	= xr_new<caster> ();

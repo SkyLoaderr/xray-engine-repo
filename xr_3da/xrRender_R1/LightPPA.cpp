@@ -251,12 +251,17 @@ void CLightR_Manager::render_spot	()
 		CFrustum			F;
 		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
 		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
+		// if (bHUD)		Msg	("HUD");
 
 		//		4. Dump sorting tree
 		//	RCache.set_ClipPlanes					(true,	&L_combine);
-		if (bHUD)	g_pGameLevel->pHUD->Render_Last		();	
+		if (bHUD)	{
+			g_pGameLevel->pHUD->Render_Last		();	
+		}
 		RImplementation.r_dsgraph_render_graph			(0);
-		if (bHUD)	RImplementation.r_dsgraph_render_hud();	
+		if (bHUD)	{
+			RImplementation.r_dsgraph_render_hud();	
+		}
 		//	RCache.set_ClipPlanes					(false,	&L_combine);
 	}
 	//		??? grass ???
