@@ -34,6 +34,7 @@ void xrMU_Reference::export_ogf()
 			pOGF->c_scale		= c_scale;
 			pOGF->c_bias		= c_bias;
 
+			pOGF->CalcBounds	();
 			generated_ids.push_back	(g_tree.size());
 			g_tree.push_back		(pOGF);
 		}
