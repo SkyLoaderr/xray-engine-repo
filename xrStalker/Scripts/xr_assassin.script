@@ -76,12 +76,12 @@ function action_assassin_activity:execute()
 	if not self.target then
 		self.target = self:get_target()
 		if not self.target then
-			printf("_bp: ???")
+			--printf("_bp: ???")
 			return
 		end
 	end
 	if not self.target:alive() then
-		printf("_bp: DEAD")
+		--printf("_bp: DEAD")
 		self.st.enabled = false
 		return
 	end
@@ -97,17 +97,17 @@ function action_assassin_activity:execute()
 	end
 	
 	if self.shall_shoot == 0 then 
-		printf("NO SHOOT")
+		--printf("NO SHOOT")
 		self.object:set_item(object.idle, self.object:best_weapon())
 	else
-		printf("SHOOT")
+		--printf("SHOOT")
 		self.object:set_item(object.fire1, self.object:best_weapon())
 	end
 
 	if self.state == state_standing or device():time_global() >= self.move_expiration_time then
 		local see_target = self.object:see(self.target)
 		if distance_between(self.target, self.object) > 7 or not see_target then
-			printf("MOVING")
+			--printf("MOVING")
 			self.object:set_path_type(game_object.level_path)
 			self.object:set_detail_path_type(move.line)
 			self.object:set_desired_direction(self.target:direction())
@@ -120,7 +120,7 @@ function action_assassin_activity:execute()
 		
 	if self.state == state_moving and distance_between(self.target, self.object) <= 5 and
 			self.object:see(self.target) then
-		printf("STANDING")
+		--printf("STANDING")
 		self.object:set_movement_type(move.stand)
 		self.state = state_standing
 	end

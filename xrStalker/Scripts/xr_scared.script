@@ -22,7 +22,7 @@ function evaluator_need_scared:evaluate()
 			monster_info[self.st.monster] = {}
 		end
 		if not monster_info[self.st.monster].stalker then
-			printf("evaluator_need_scared: self.st.monster=%s, stalker set", self.st.monster)
+			--printf("evaluator_need_scared: self.st.monster=%s, stalker set", self.st.monster)
 			monster_info[self.st.monster].stalker = self.object
 		end
 	end
@@ -94,7 +94,7 @@ function action_scared_activity:execute()
 	if actor then
 		local pos = self.object:position()
 		local actor_pos = actor:position()
-		printf("_bp: self.state==%d, dead=%s", self.state, utils.to_str(monster_info[self.st.monster].dead))
+		--printf("_bp: self.state==%d, dead=%s", self.state, utils.to_str(monster_info[self.st.monster].dead))
 		if self.state ~= state_hideout and monster_info[self.st.monster].dead then
 			self.state = state_hideout
 			self.move_mgr:reset(self.st.path_hideout_walk, self.st.path_hideout_walk_info,
@@ -162,7 +162,7 @@ function set_scared(object, enabled,
 		path_hideout_walk, path_hideout_look,
 		path_roof_walk, path_roof_look,
 		monster)
-	printf("set_scared")
+	--printf("set_scared")
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].scared
 
@@ -176,7 +176,7 @@ function set_scared(object, enabled,
 	st.monster = utils.conf_get_string(char_ini, "scared", "monster", monster, object, true)
 
 	if not monster_info[st.monster] then
-		printf("set_scared: st.monster = %s", st.monster)
+		--printf("set_scared: st.monster = %s", st.monster)
 		monster_info[st.monster] = { }
 	end
 

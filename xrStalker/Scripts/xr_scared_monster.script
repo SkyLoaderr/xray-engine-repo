@@ -32,13 +32,13 @@ function main()
 		-- Process bloodsucker:
 		if not bs_script_finished then
 			if not bs then
-				printf("_bp2")
+				--printf("_bp2")
 				bs = level.object(bs_name)
 				bs:set_manual_invisibility(true)
 				bs:set_invisible(true)
 			end
 			if not bs_stor then
-				printf("_bp3")
+				--printf("_bp3")
 				bs_stor = xr_scared.monster_info[bs_name]
 			end
 			if bs and bs_stor then
@@ -47,7 +47,7 @@ function main()
 					if bs:get_script() then
 						bs:script(false, "xr_scared_monster")
 					end
-					printf("krovosos dead")
+					--printf("krovosos dead")
 					bs_stor.dead = true
 					bs:set_manual_invisibility(false)
 				end
@@ -66,18 +66,18 @@ local bs_last_action = act_none
 
 -- Return true when script is finished
 function process_bloodsucker(bs, st)
-	printf("process_bloodsucker: going_to_roof=%s", utils.to_str(st.going_to_roof))
+	--printf("process_bloodsucker: going_to_roof=%s", utils.to_str(st.going_to_roof))
 	if not bs:alive() then
 		return true
 	end
 	if not bs:get_script() then
 		bs:script(true, "xr_scared_monster")
 	end
-	printf("bp5")
+	--printf("bp5")
 	if not st.stalker then
 		return false -- keep waiting for stalker to appear
 	end
-	printf("bp6")
+	--printf("bp6")
 
 	if not st.stalker:alive() then
 		return true
@@ -89,7 +89,7 @@ function process_bloodsucker(bs, st)
 	
 	if bs:position():distance_to(st.stalker:position()) < hit_distance and
 	   (last_action ~= act_look or not bs:action()) then
-		printf("___bp_look")
+		--printf("___bp_look")
 		reset_action(bs, "xr_scared_monster")
 		if st.finish_me_off then
 			action(bs, anim(anim.turn, 0), look(look.point,
@@ -98,7 +98,7 @@ function process_bloodsucker(bs, st)
 		last_action = act_look
 		last_state = state_looking
 	elseif not bs:action() then
-		printf("___bp_approach")
+		--printf("___bp_approach")
 		--action(bs, act(act.attack, st.stalker),
 		--	cond(cond.time_end, time_infinite))
 		action(bs, move(move.run_fwd, st.stalker, 1, move.force), sound(sound.attack), cond(cond.move_end))

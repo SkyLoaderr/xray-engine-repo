@@ -358,9 +358,8 @@ function move_mgr:update(no_dialog_mgr_update)
 		end
 	end
 
-	if (self.state == state_anim_playing and self.expiration_time and device():time_global() >= self.expiration_time and
-	    (self.is_shooting or true --[[xr_state.anim_safe_to_break(self.object)]]
-	    )
+	if (self.state == state_anim_playing and self.expiration_time and device():time_global() >= self.expiration_time
+		--[[and (self.is_shooting or xr_state.anim_safe_to_break(self.object))]]
 	   ) then
 		-- Идти дальше, а перед этим почистить состояния:
 		if self.is_shooting then
@@ -435,7 +434,7 @@ function move_mgr:update_standing_state()
 end
 
 function move_mgr:waypoint_callback(obj, action_type, index)
-	printf("move_mgr:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
+	--printf("move_mgr:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
 	if index == -1 or index == nil then
 		printf("ERROR: move_mgr: waypoint_callback: index is -1 or nil")
 		return
@@ -535,11 +534,6 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
 		local retv_num = tonumber(retv)
-		if not self.move_cb_func then
-			utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
-				"callback function wasn't registered in move_mgr:reset()",
-				self.object:name(), self.path_walk)
-		end
 		
 		local set_bad_rel = self.path_walk_info[index]["rel"]
 		if set_bad_rel then
@@ -554,17 +548,24 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			end
 
 			local vict
-			for name in string.gfind(set_bad_rel, "([%w_\\]+)%p*" ) do
+			for name in string.gfind(set_bad_rel, "([%w_\\]+)%p*" ) do -- "aaa,bbb,ccc"  "aaa"
+				printf("_bpa: %s", name)
 				vict = level.object(name)
 				if vict then
-					vict:set_relation(game_object.enemy, self.object)
+					vict:set_relation(if_then_else(retv_num == 0,
+						game_object.enemy, game_object.friend), self.object)
 				end
 			end
-			
-		end
-		
-		if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, retv_num) then
-			return
+		else
+			if not self.move_cb_func then
+				utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
+					"callback function wasn't registered in move_mgr:reset()",
+					self.object:name(), self.path_walk)
+			end
+
+			if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, retv_num) then
+				return
+			end
 		end
 	end
 
