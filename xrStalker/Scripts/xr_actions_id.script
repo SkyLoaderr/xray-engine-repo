@@ -18,7 +18,7 @@ stohe_reactions_base        = stohe_actions + 40
 stohe_state_base        = stohe_actions + 50
 stohe_position          = stohe_actions + 60
 stohe_gulag_base        = stohe_actions + 70
-stohe_bobik_base	= stohe_actions + 80
+stohe_bobik_base    = stohe_actions + 80
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024
@@ -45,7 +45,7 @@ ambush_toilet          = chugai_actions + 5
 
 chugai_act_tutor       = chugai_actions + 10
 
-commander_commander    = chugai_actions + 20
+chugai_commander_base  = chugai_actions + 20
 chugai_scout_base      = chugai_actions + 30
 chugai_military_commander_base     = chugai_actions + 40
 chugai_escape_factory_bandits_base = chugai_actions + 50
