@@ -15,47 +15,56 @@ CUIStaticItem::CUIStaticItem()
 
 CUIStaticItem::~CUIStaticItem()
 {
+	Device.Shader._DeleteVS (hVS);
 	Device.Shader.Delete	(hShader);
 }
 //--------------------------------------------------------------------
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align)
 {
-	Init		(left,top,tx_width,tx_height,align);
-	if (0==hShader)	hShader	= Device.Shader.Create	(sh,tex,FALSE);
+	Init			(left,top,tx_width,tx_height,align);
+	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex);
+	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
-void CUIStaticItem::Init(float left, float top, float tx_width, float tx_height, DWORD align){
-	inherited::Init(tx_width,tx_height);
-	Level().HUD()->ClientToScreenScaled(left,top,vPos,align);
-	Stream		= Device.Streams.Create	(FVF::F_TL,4);
+void CUIStaticItem::Init(float left, float top, float tx_width, float tx_height, DWORD align)
+{
+	inherited::Init						(tx_width,tx_height);
+	Level().HUD()->ClientToScreenScaled	(left,top,vPos,align);
 }
 
 void CUIStaticItem::Render(Shader* sh)
 {
 	// actual rendering
 	DWORD			vOffset;
-	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,vOffset);
+	FVF::TL*		pv				= (FVF::TL*)Device.Streams.Vertex.Lock	(4,hVS->dwStride,vOffset);
 	
-	inherited::Render(pv,vPos,dwColor);	
+	inherited::Render				(pv,vPos,dwColor);	
 
 	// unlock VB and Render it as triangle list
-	Stream->Unlock			(4);
-	Device.Shader.set_Shader(sh?sh:hShader);
-	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
+	Device.Streams.Vertex.Unlock	(4,hVS->dwStride);
+	Device.Shader.set_Shader		(sh?sh:hShader);
+	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	UPDATEC							(4,2,1);
 }
 //--------------------------------------------------------------------
 
-void CUIStaticItem::Render(float angle, Shader* sh){
+void CUIStaticItem::Render(float angle, Shader* sh)
+{
 	// actual rendering
 	DWORD			vOffset;
-	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,vOffset);
+	FVF::TL*		pv				= (FVF::TL*)Device.Streams.Vertex.Lock	(4,hVS->dwStride,vOffset);
 	
 	inherited::Render(pv,vPos,dwColor,angle);	
 
 	// unlock VB and Render it as triangle list
-	Stream->Unlock			(4);
-	Device.Shader.set_Shader(sh?sh:hShader);
-	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
+	Device.Streams.Vertex.Unlock	(4,hVS->dwStride);
+	Device.Shader.set_Shader		(sh?sh:hShader);
+	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	UPDATEC							(4,2,1);
 }
 //--------------------------------------------------------------------

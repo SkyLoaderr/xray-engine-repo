@@ -27,6 +27,7 @@
     + TODO: Merge shadows from weapon and entity
 	. TODO: NET: Actor camera
 	+ TODO: HUD rendering
+	. TODO: Usage list
 	
 	. TODO: Detail texturing
 
