@@ -170,7 +170,7 @@ void xrLoad(LPCSTR name)
 }
 
 //-----------------------------------------------------------------------------------------------------------------
-const int	LIGHT_Count			=3;
+const int	LIGHT_Count			=5;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
 typedef	svector<R_Light*,128>	LSelection;
@@ -297,9 +297,9 @@ public:
 				}
 				
 				// lighting itself
-				float amount	= 0;
+				float amount[4]	= {0,0,0,0};
+				DWORD count[4]	= {0,0,0,0};
 				float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
-				DWORD count		= 0;
 				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
 				{
 					Fvector		P;
@@ -331,22 +331,30 @@ public:
 						}
 						if (y<BB.min.y)	continue;
 						P.y		= y;
-						count	++;
 						
+						// select part of slot
+						int pid = 0;
+						if (z>0)
+						{
+							if (x>0)	pid = 1;
+							else		pid = 0;
+						} else {
+							if (x>0)	pid = 3;
+							else		pid = 2;
+						}
+
 						// light point
-						amount	+= LightPoint(DB,P,t_n,Selected);
+						amount[pid]	+= LightPoint(DB,P,t_n,Selected);
+						count[pid]	++;
 					}
 				}
 				
 				// calculation of luminocity
-				int LightLevel	= iFloor(15.f*amount/float(LIGHT_Total)+.5f);
-				clamp(LightLevel,0,15);
-				
-				DetailPalette* dc = (DetailPalette*)&DS.color;
-				dc->a0			= LightLevel;
-				dc->a1			= LightLevel;
-				dc->a2			= LightLevel;
-				dc->a3			= LightLevel;
+				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL;
+				LL				= iFloor(15.f*amount[0]/float(count[0])+.5f);	clamp(LL,0,15); dc->a0	= LL;
+				LL				= iFloor(15.f*amount[1]/float(count[1])+.5f);	clamp(LL,0,15); dc->a1	= LL;
+				LL				= iFloor(15.f*amount[2]/float(count[2])+.5f);	clamp(LL,0,15); dc->a2	= LL;
+				LL				= iFloor(15.f*amount[3]/float(count[3])+.5f);	clamp(LL,0,15); dc->a3	= LL;
 
 				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
 			}
