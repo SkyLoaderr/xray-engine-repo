@@ -128,8 +128,8 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	{
 	case CLSID_OBJECT_ACTOR:	return new	xrSE_Actor;
 	//case CLSID_AI_HUMAN:		return new	xrSE_Enemy;
-	//case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	case CLSID_AI_HEN:			return new	xrSE_Enemy;
+	case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	}
 	return 0;
 }

@@ -13,18 +13,7 @@
 #include "..\\..\\group.h"
 
 #include "ai_hen_selectors.h"
-
-const DWORD _FB_hit_RelevantTime	= 10;
-const DWORD _FB_sense_RelevantTime	= 10;
-const float _FB_look_speed			= PI;
-const float _FB_invisible_hscale	= 2.f;
-
-struct SEnemySelected
-{
-	CEntity*	Enemy;
-	bool		bVisible;
-	float		fCost;
-};
+#include "..\\ai_monsters.h"
 
 class CAI_Hen : public CCustomMonster  
 {

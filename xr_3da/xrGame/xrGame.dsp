@@ -542,6 +542,10 @@ SOURCE=.\AI\Rat\ai_rat_selectors.cpp
 SOURCE=.\AI\Rat\ai_rat_selectors.h
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\AI\ai_monsters.h
+# End Source File
 # End Group
 # Begin Group "Test"
 

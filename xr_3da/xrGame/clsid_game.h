@@ -2,7 +2,7 @@
 
 //#define CLSID_AI_HUMAN			MK_CLSID('A','I','_','H','U','M','A','N')
 #define CLSID_AI_HEN			MK_CLSID('A','I','_','H','E','N',' ',' ')
-//#define CLSID_AI_RAT			MK_CLSID('A','I','_','R','A','T',' ',' ')
+#define CLSID_AI_RAT			MK_CLSID('A','I','_','R','A','T',' ',' ')
 #define CLSID_OBJECT_DACTOR		MK_CLSID('O','_','D','E','M','O',' ',' ')
 
 #define CLSID_EVENT				MK_CLSID('E','V','E','N','T',' ',' ',' ')
