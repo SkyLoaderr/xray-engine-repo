@@ -64,7 +64,7 @@ function multiplayer_create_dialog:InitControls()
 	local frame = CUIFrameWindow()
 	frame:SetAutoDelete(true)
 	frame:SetWindowName("tab_frame")
-	frame:Init("ui\\ui_frame_very_small", tab_rect.x, tab_rect.y, 450, tab_rect.height)
+	frame:Init("ui\\ui_frame_very_small", tab_rect.x, tab_rect.y, 490, tab_rect.height)
 	self.main_frame:AttachChild(frame)
 	
 end
