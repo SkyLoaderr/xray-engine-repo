@@ -13,28 +13,44 @@ function register(object_factory)
 end
 
 function get_game_clsid(game_type_option,is_server)
-	local res_sv;
-	if(game_type_option == "single") then 
-		  res_sv = "SV_SINGL"	end
 
-	if(game_type_option == "deathmatch") then 
-		res_sv = "SV_DM" end
+	if(is_server==true) then
+		if(game_type_option == "single") then 
+			  return "SV_SINGL"	end
 
-	if(game_type_option == "teamdeathmatch") then 
-		res_sv = "SV_TDM" end
+		if(game_type_option == "deathmatch") then 
+			return "SV_DM" end
 
-	if(game_type_option == "artefacthunt") then 
-		res_sv = "SV_AHUNT" end
+		if(game_type_option == "teamdeathmatch") then 
+			return "SV_TDM" end
 
---	if(game_type_option == "cs") then 
---		res_sv = "SV_CS" end
+		if(game_type_option == "artefacthunt") then 
+			return "SV_AHUNT" end
 
-	if(game_type_option == "new_dm") then 
-		res_sv = "SV_NEWDM" end
+--		if(game_type_option == "cs") then 
+--			return "SV_CS" end
 
-if(is_server==false) then
-		local res_cl = string.gsub(res_sv,"SV_", "CL_")
-		return res_cl else
-		return res_sv
-	end
+		if(game_type_option == "new_dm") then 
+			return "SV_NEWDM" end
+
+
+	if(is_server==false) then
+		if(game_type_option == "single") then 
+			  return "CL_SINGL"	end
+
+		if(game_type_option == "deathmatch") then 
+			return "CL_DM" end
+
+		if(game_type_option == "teamdeathmatch") then 
+			return "CL_TDM" end
+
+		if(game_type_option == "artefacthunt") then 
+			return "CL_AHUNT" end
+
+--		if(game_type_option == "cs") then 
+--			return "CL_CS" end
+
+		if(game_type_option == "new_dm") then 
+			return "CL_DM" end
+
 end
