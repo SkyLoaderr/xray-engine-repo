@@ -2816,7 +2816,7 @@ time			= 0.5
 amplitude		= 3.5
 period_number	= 11.0
 
-[sleep_effector]??[sleep_effector]
+[sleep_effector]
 duality_h		= 0.01
 duality_v		= 0.01
 blur			= 0.01
@@ -2830,6 +2830,14 @@ color_add		= 0,0,0
 time			= 3.3
 time_attack		= 0.4		; fade in
 time_release	= 0.5		; fade out
+
+
+[zoom_inertion_effector]
+camera_move_epsilon	= 0.03		;разница между двумя векторами направления камера, когда считается что камера двинулась
+disp_min			= 0.02		
+speed_min			= 0.00001
+zoom_aim_disp_k		= 1.0		;коэффициенты соотношения полной дисперсии стрельбы
+zoom_aim_speed_k	= 0.0025	;и покачивания прицела
 
 [breakable_object]
 class						= O_BRKBL
