@@ -34,23 +34,17 @@ inv_grid_height		= 1
 inv_grid_x			= 19
 inv_grid_y			= 5
 
-cam_relax_speed          = 25;5.5
-cam_dispersion           = 2
+cam_relax_speed          = 18
+cam_dispersion           = 1.9
 cam_max_angle		 = 2
 
-fire_dispersion          = 0.12 ;не менять
-fire_dispersion_add      = 1
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.6
-disp_jump_factor	 = 2
+
+fire_dispersion_base	 = 0.12
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
 
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.15, 0.12
@@ -70,8 +64,8 @@ hit_impulse		 		 = 50.25
 hit_type = wound
 
 fire_distance            = 50
-bullet_speed			 = 360			;начальная скорость пули
-rpm                      = 400
+bullet_speed		 = 280		
+rpm                      = 300
 ; end ttc
 
 hud                      = wpn_walther_hud
@@ -115,7 +109,7 @@ snd_close			= weapons\generic_close
  
 [wpn_walther_hud]
 shell_point		         = -0.35, -0.06, 0.07
-fire_point               = 0.00, 0.07, 0.05
+fire_point               = -0.080000,0.000000,0.070000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
