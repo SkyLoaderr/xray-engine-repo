@@ -65,7 +65,7 @@ function fract:checkNpc(npc)
 	end
 
 	if self.type == "dolg_kamp" and
-		type == "stalker"		
+		type == "fraction"		
 	then
 		return true
 	end
