@@ -22,7 +22,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 {
 #ifndef AI_COMPILER
 #ifdef DEBUG
-	sh_debug.create				("debug\\ai_nodes","$null");
+	sh_debug.create				("debug/ai_nodes","$null");
 #endif
 	string256					file_name;
 	FS.update_path				(file_name,"$level$","level.ai");
