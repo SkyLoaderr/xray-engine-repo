@@ -19,6 +19,23 @@
 
 
 
+void CActor::AddMapLocationsFromInfo(const CInfoPortion& info_portion)
+{
+	//добавить отметки на карте
+	for(u32 i=0; i<info_portion.MapLocations().size(); i++)
+	{
+		const SMapLocation& map_location = info_portion.MapLocations()[i];
+		if(xr_strlen(*map_location.level_name) > 0)
+		{
+			if(map_location.level_name == Level().Name())
+				Level().AddMapLocation(map_location);
+		}
+		else
+			Level().AddMapLocation(map_location);
+
+	}
+}
+
 //information receive
 void CActor::OnReceiveInfo(INFO_ID info_index)
 {
@@ -29,11 +46,8 @@ void CActor::OnReceiveInfo(INFO_ID info_index)
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
 
-	//добавить отметки на карте
-	for(u32 i=0; i<info_portion.MapLocations().size(); i++)
-		Level().AddMapLocation(info_portion.MapLocations()[i]);
-
-
+	AddMapLocationsFromInfo(info_portion);
+	
 	if(pGameSP->TalkMenu.IsShown())
 	{
 		if(pGameSP->TalkMenu.IsShown())
@@ -113,8 +127,8 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 {
 	m_AvailableDialogs.clear();
 
-	for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::KnownInfo().begin();
-								CInventoryOwner::KnownInfo().end() != it; ++it)
+	for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::known_info_registry.objects_ptr()->begin();
+								CInventoryOwner::known_info_registry.objects_ptr()->end() != it; ++it)
 	{
 		//подгрузить кусочек информации с которым мы работаем
 		CInfoPortion info_portion;
@@ -156,7 +170,7 @@ void CActor::UpdateContact		(u16 contact_id)
 {
 	if(ID() == contact_id) return;
 
-	TALK_CONTACT_VECTOR& contacts = Contacts();
+	TALK_CONTACT_VECTOR& contacts = contacts_registry.objects();
 	for(TALK_CONTACT_VECTOR_IT it = contacts.begin(); contacts.end() != it; ++it)
 		if((*it).id == contact_id) break;
 
@@ -169,36 +183,4 @@ void CActor::UpdateContact		(u16 contact_id)
 	{
 		(*it).time = Level().GetGameTime();
 	}
-}
-
-//возвращает существующий вектор из реестра, или добавляет новый
-TALK_CONTACT_VECTOR& CActor::Contacts		()
-{
-#ifdef _DEBUG
-	if(NULL == ai().get_alife()) 
-		return m_ContactsWithoutAlife;
-#endif	
-
-	TALK_CONTACT_VECTOR* talk_contact_vector = ai().alife().registry(known_contacts).object(ID(), true);
-
-	if(!talk_contact_vector)	
-	{
-		TALK_CONTACT_VECTOR new_contact_vector;
-		ai().alife().registry(known_contacts).add(ID(), new_contact_vector, false);
-		talk_contact_vector = ai().alife().registry(known_contacts).object(ID(), true);
-		VERIFY(talk_contact_vector);
-	}
-	return *talk_contact_vector;
-}
-
-//возвращает NULL, если вектора с контактами не добавлено
-const TALK_CONTACT_VECTOR*	CActor::ContactsPtr		() const
-{
-#ifdef _DEBUG
-	if(NULL == ai().get_alife()) 
-		return &m_ContactsWithoutAlife;
-#endif	
-
-	TALK_CONTACT_VECTOR* talk_contact_vector = ai().alife().registry(known_contacts).object(ID(), true);
-	return talk_contact_vector;
 }

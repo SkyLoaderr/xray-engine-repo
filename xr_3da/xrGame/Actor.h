@@ -93,10 +93,10 @@ public:
 
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 
-	//возвращает существующий вектор из реестра, или добавляет новый
-	TALK_CONTACT_VECTOR&		Contacts		();
-	//возвращает NULL, если вектора с контактами не добавлено
-	const TALK_CONTACT_VECTOR*	ContactsPtr		() const;
+	//реестр контактов общения с другими персонажами
+	typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
+	KNOWN_CONTACTS_REGISTRY contacts_registry;
+
 
 	virtual	void				UpdateContact	(u16 contact_id);
 protected:
@@ -104,6 +104,8 @@ protected:
 	//для отладки без alife simulator
 	TALK_CONTACT_VECTOR m_ContactsWithoutAlife;
 #endif	
+
+	virtual void AddMapLocationsFromInfo (const CInfoPortion& info_portion);
 
 public:
 	//PhraseDialogManager
