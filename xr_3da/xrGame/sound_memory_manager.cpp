@@ -54,6 +54,13 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 	m_self_sound_factor		= READ_IF_EXISTS(pSettings,r_float,section,"self_sound_factor",0.f);
 	m_sound_decrease_quant	= READ_IF_EXISTS(pSettings,r_u32,section,"self_decrease_quant",250);
 	m_decrease_factor		= READ_IF_EXISTS(pSettings,r_float,section,"self_decrease_factor",.95f);
+
+	LPCSTR					sound_perceive_section = READ_IF_EXISTS(pSettings,r_string,section,"sound_perceive_section",section);
+	m_weapon_factor			= READ_IF_EXISTS(pSettings,r_float,sound_perceive_section,"weapon",10.f);
+	m_item_factor			= READ_IF_EXISTS(pSettings,r_float,sound_perceive_section,"item",1.f);
+	m_npc_factor			= READ_IF_EXISTS(pSettings,r_float,sound_perceive_section,"npc",1.f);
+	m_anomaly_factor		= READ_IF_EXISTS(pSettings,r_float,sound_perceive_section,"anomaly",1.f);
+	m_world_factor			= READ_IF_EXISTS(pSettings,r_float,sound_perceive_section,"world",1.f);
 }
 
 IC	void CSoundMemoryManager::update_sound_threshold			()
@@ -92,6 +99,11 @@ void CSoundMemoryManager::enable		(const CObject *object, bool enable)
 	(*J).m_enabled		= enable;
 }
 
+IC	bool is_sound_type(int s, const ESoundTypes &t)
+{
+	return	((s & t) == t);
+}
+
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSoundUserDataPtr user_data, const Fvector &position, float sound_power)
 {
 	if (!m_sounds)
@@ -114,13 +126,27 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (!entity_alive->g_Alive())
 		return;
 	
-	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+	if (is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING)) {
 		// this is fake!
-		sound_power			= 1.f;
 		CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
 		if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
 			m_object->memory().hit().add(_entity_alive);
 	}
+
+	if (is_sound_type(sound_type,SOUND_TYPE_WEAPON))
+		sound_power			*= m_weapon_factor;
+	
+	if (is_sound_type(sound_type,SOUND_TYPE_ITEM))
+		sound_power			*= m_item_factor;
+
+	if (is_sound_type(sound_type,SOUND_TYPE_MONSTER))
+		sound_power			*= m_npc_factor;
+
+	if (is_sound_type(sound_type,SOUND_TYPE_ANOMALY))
+		sound_power			*= m_anomaly_factor;
+	
+	if (is_sound_type(sound_type,SOUND_TYPE_WORLD))
+		sound_power			*= m_world_factor;
 	
 	if (sound_power >= m_sound_threshold)
 		add					(object,sound_type,position,sound_power);

@@ -41,6 +41,13 @@ private:
 	float						m_self_sound_factor;
 
 private:
+	float						m_weapon_factor;
+	float						m_item_factor;
+	float						m_npc_factor;
+	float						m_anomaly_factor;
+	float						m_world_factor;
+
+private:
 	const CSoundObject			*m_selected_sound;
 
 private:
