@@ -47,6 +47,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	//для работы с relation system
 	u16								object_id	() const;
 	CHARACTER_COMMUNITY_INDEX		Community	() const;
+	CHARACTER_COMMUNITY_ID			CommunityName () const;
 	CHARACTER_RANK_VALUE			Rank		() const;
 	CHARACTER_REPUTATION_VALUE		Reputation	() const;
 
