@@ -56,7 +56,7 @@ void CHM_Static::Update	()
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
 				for (int z=dhm_matrix-1; z>0; z--)	data[z][x] = data[z-1][x];
 				data[0][x]	= S;
-				S->set	(c_x-dhm_line+x,c_z-dhm_line+0)
+				S->set	(c_x-dhm_line+x,c_z-dhm_line+0);
 			}
 		} else {
 			// scroll matrix up
@@ -124,7 +124,7 @@ float CHM_Static::Query	(Fvector2& pos)
 {
 	// base slot
 	int			v_x		= iFloor(pos.x/dhm_size);
-	int			v_z		= iFloor(pos.z/dhm_size);
+	int			v_z		= iFloor(pos.y/dhm_size);
 	int			dx		= v_x - c_x;
 	int			dz		= v_z - c_z;
 	int			gx		= dx  - dhm_line;	clamp(gx,0,dhm_matrix-1);
@@ -158,5 +158,5 @@ float	CHeightMap::Query	(Fvector2& pos)
 	}
 	float q1 = hm_static.Query(pos);
 	float q2 = hm_dynamic.Query(pos);
-	return _MAX(q1,q2)
+	return _MAX(q1,q2);
 }
