@@ -84,14 +84,12 @@ function main()
 
 	local fsm_stalker = fsm.FSM(stalker00)
 
-	local a = {[0]=1}
-	printf("a %d", a[0])
-	a[0] = 1
+	local a = {[0]={}}
+	a[0] = {1,2,3}
 	a[1] = 2
 	a[2] = 3
 	a[4] = 5
-	printf("a %d", a[0])
-	table.foreachi(a, print)
+	table.foreach(a[0], print)
 
 --	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
