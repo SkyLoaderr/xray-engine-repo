@@ -26,10 +26,10 @@ void CUICarPanel::Init			(int x, int y, int width, int height)
 	UISpeedometer.InitPointer(POINTER_ARROW_TEX, 0, 0, M_PI*1.f/3.f, -M_PI*1.f/3.f);
 	SetSpeed(0.3f);
 
-	//AttachChild(&UITachometer);
-	//xml_init.InitStatic(uiXml, "speedometer", 0, &UITachometer);
-	//UITachometer.InitPointer(POINTER_ARROW_TEX, 0, 0, 0, 120.f);
-	//SetSpeed(0.3f);
+	AttachChild(&UITachometer);
+	xml_init.InitStatic(uiXml, "tachometer", 0, &UITachometer);
+	UITachometer.InitPointer(POINTER_ARROW_TEX,  0, 0, M_PI*1.f/3.f, -M_PI*1.f/3.f);
+	SetSpeed(0.3f);
 
 	Show(false);
 	Enable(false);

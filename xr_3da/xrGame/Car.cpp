@@ -54,6 +54,8 @@ CCar::CCar(void)
 	inventory			= xr_new<CInventory>();
 	inventory->SetSlotsUseful(false);
 	m_doors_torque_factor = 2.f;
+	m_power_increment_factor=0.5f;
+	m_rpm_increment_factor=0.5f;
 }
 
 CCar::~CCar(void)
@@ -296,7 +298,7 @@ void	CCar::UpdateCL				( )
 		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
-		
+		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetRPM(m_current_rpm/m_max_rpm/2.f);
 	}
 
 	UpdateExhausts();
@@ -514,6 +516,13 @@ void CCar::ParseDefinitions()
 
 	m_torque_rpm		=		ini->r_float("car_definition","max_torque_rpm");
 	m_torque_rpm		*=		(1.f/60.f*2.f*M_PI);//
+
+	if(ini->line_exist("car_definition","power_increment_factor"))
+		m_power_increment_factor=	ini->r_float("car_definition","power_increment_factor");
+
+	if(ini->line_exist("car_definition","rpm_increment_factor"))
+		m_rpm_increment_factor=	ini->r_float("car_definition","rpm_increment_factor");
+
 	if(ini->line_exist("car_definition","exhaust_particles"))
 	{
 		m_exhaust_particles =ini->r_string("car_definition","exhaust_particles");
@@ -1064,7 +1073,7 @@ void CCar::InitParabola()
 
 	m_a=expf((m_power_rpm - m_torque_rpm)/(2.f*m_power_rpm))*m_max_power/m_power_rpm;
 	m_b=m_torque_rpm;
-	m_c=-(1.41421356237309504880f*_sqrt(m_power_rpm*(m_power_rpm - m_torque_rpm)));
+	m_c=_sqrt(2.f*m_power_rpm*(m_power_rpm - m_torque_rpm));
 
 
 }
@@ -1227,9 +1236,10 @@ float CCar::Parabola(float rpm)
 float CCar::EnginePower()
 {
 
+	float value;
 	if(m_current_rpm<m_min_rpm)
 	{
-		if(b_starting) return Parabola(m_min_rpm);
+		if(b_starting) value= Parabola(m_min_rpm);
 
 	}
 	else
@@ -1237,10 +1247,8 @@ float CCar::EnginePower()
 		if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) b_starting=false;
 	}
 
-	return Parabola(m_current_rpm);
-
-
-
+	value = Parabola(m_current_rpm);
+	return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
 }
 
 float CCar::EngineDriveSpeed()
@@ -1255,7 +1263,8 @@ float CCar::EngineDriveSpeed()
 		drive_speed+=i->ASpeed();
 		//if(wheel_speed<drive_speed)drive_speed=wheel_speed;
 	}
-	return (0.5f*m_current_rpm+0.5f*dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size());
+	float calc_rpm=dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size();
+	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;
 }

@@ -313,7 +313,8 @@ private:
 	/////////////////////////////////////////////////////////////
 
 	float					m_max_power;//best rpm
-
+	float					m_power_increment_factor;
+	float					m_rpm_increment_factor;
 	/////////////////////porabola
 	float m_a,m_b,m_c;
 
