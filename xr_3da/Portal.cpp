@@ -65,7 +65,7 @@ void CSector::Render(CFrustum &F)
 	// Render everything
 	{
 		Fvector	Tpos;
-		::Render.set_Occluders	(&Occluders);
+		::Render.set_Occluders	(&F);
 		::Render.add_Glows		(Glows);
 		::Render.add_Lights		(Lights);
 		::Render.add_Static		(pRoot,F.getMask());

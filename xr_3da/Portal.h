@@ -88,7 +88,6 @@ protected:
 	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты
 	vector<WORD>			Glows;
 	vector<WORD>			Lights;
-	CFrustum				Occluders;
 
 	// object query
 	void					ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM);
