@@ -47,7 +47,8 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (2==C.iElement)	
+		if (C.L_textures.size()<2)	Debug.fatal	("Not enought textures for shader");
+		if (2==C.iElement)
 		{
 			// Lighting only
 			C.r_Pass	("r1_lmap_l","r1_lmap_l",FALSE);
