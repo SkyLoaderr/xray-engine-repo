@@ -170,6 +170,7 @@ void	game_sv_CS::OnRoundStart	()
 
 void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 {
+//	__super::OnRoundEnd(reason);
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
@@ -399,15 +400,15 @@ void	game_sv_CS::Update			()
 	__super::Update	();
 	switch(phase) 	{
 		case GAME_PHASE_INPROGRESS : {
-				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+			if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
 		} break;
 		case GAME_PHASE_PENDING : {
-				if ((Device.TimerAsync()-start_time)>u32(20*1000)) OnRoundStart();
+			if ((Device.TimerAsync()-start_time)>u32(20*1000)) OnRoundStart();
 		} break;
 	}
 }
 
-void	game_sv_CS::OnPlayerReady			(u32 id)
+void	game_sv_CS::OnPlayerReady	(u32 id)
 {
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
