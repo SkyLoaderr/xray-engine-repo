@@ -827,6 +827,11 @@ public:
 		if (!xr_strlen(S))
 			Log("* Specify script name!");
 		else {
+			// rescan pathes
+			FS_Path* P = FS.get_path("$game_scripts$");
+			P->m_Flags.set	(FS_Path::flNeedRescan,TRUE);
+			FS.rescan_pathes();
+			// run script
 			if (ai().script_engine().script_processor("level")) {
 				ai().script_engine().script_processor("level")->add_script(S);
 				ai().script_engine().reload_modules(true);
