@@ -89,8 +89,6 @@ extern vector<OGF_Base *>		g_tree;
 
 struct OGF : public OGF_Base
 {
-	DWORD				treeID;
-
 	DWORD				material;
 	vecOGF_T			textures;
 	vecOGF_V			vertices, vertices_saved;
@@ -134,6 +132,32 @@ struct OGF : public OGF_Base
 			R.push_back(I->P);
 	}
 };
+
+struct OGF_Reference : public OGF_Base
+{
+	OGF*				model;
+
+	u32					vb_id;
+	u32					vb_start;
+	u32					ib_id;
+	u32					ib_start;
+
+	Fmatrix				xform;
+	Fvector4			c_scale;
+	Fvector4			c_bias;
+
+	virtual void		Save		(CFS_Base &fs);
+	virtual void		GetGeometry	(vector<Fvector> &R)
+	{
+		Fvector			P;
+		for (OGF_Vertex* I=model->vertices.begin(); I!=model->vertices.end(); I++)
+		{
+			xform.transform_tiny	(P,I->P);
+			R.push_back				(P);
+		}
+	}
+};
+
 struct OGF_Node : public OGF_Base
 {
 	vector<DWORD>		chields;
