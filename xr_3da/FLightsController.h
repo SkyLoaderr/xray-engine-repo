@@ -3,7 +3,6 @@
 #include "r1_light.h"
 
 // refs
-class ENGINE_API IReader;
 class ENGINE_API CObject;
 class CLightTrack;
 

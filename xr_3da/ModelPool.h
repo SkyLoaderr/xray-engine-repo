@@ -5,7 +5,6 @@
 // refs
 class ENGINE_API IRender_Visual;
 namespace PS	{ 
-	struct ENGINE_API SDef_RT;
 	struct ENGINE_API SEmitter; 
 };
 

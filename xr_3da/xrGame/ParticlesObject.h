@@ -2,7 +2,6 @@
 #define ParticlesObjectH
 
 #include "..\PS_instance.h"
-//#include "..\ParticleSystem.h"
 
 class CParticlesObject		:	public CPS_Instance
 {

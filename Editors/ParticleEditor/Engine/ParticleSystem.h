@@ -85,8 +85,8 @@ namespace PS
 		float			m_fSpeed;
 		float			m_fSpeedVar;
 
-		void Reset      (){ZeroMemory(this,sizeof(SAnimation));}
-		void InitDefault()
+		IC void Reset      ()	{ZeroMemory(this,sizeof(SAnimation));}
+		IC void InitDefault()
 		{
 			m_FrameSize.set(32.f,64.f);
 			m_TexSize.set(32.f/256.f,64.f/128.f);
@@ -95,13 +95,13 @@ namespace PS
 			m_fSpeed	 = 24;
 			m_fSpeedVar	 = 0;
 		}
-		void SetTextureSize(float w, float h, float fw, float fh)
+		IC void			SetTextureSize(float w, float h, float fw, float fh)
 		{
 			m_FrameSize.set(fw,fh);
 			m_TexSize.set(fw/w,fh/h);
 			m_iFrameDimX = iFloor(1.f/m_TexSize.x);
 		}
-		void            CalculateTC(int frame, Fvector2& lt, Fvector2& rb)
+		IC void         CalculateTC(int frame, Fvector2& lt, Fvector2& rb)
 		{
 			lt.x        = (frame%m_iFrameDimX)*m_TexSize.x;
 			lt.y        = (frame/m_iFrameDimX)*m_TexSize.y;

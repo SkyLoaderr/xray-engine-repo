@@ -358,8 +358,6 @@ void CLightShadows::render	()
 		tess.clear				();
 		for (CDB::RESULT* p = xrc.r_begin(); p!=xrc.r_end(); p++)
 		{
-#pragma todo ("AlexMX to Oles: p->id - invalid value")
-			//if (!((p->id>=0)&&(p->id<DB->get_tris_count()))) break;
 			VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
 			// 
 			CDB::TRI&	t		= TRIS[p->id];
