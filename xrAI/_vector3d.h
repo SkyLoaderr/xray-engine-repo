@@ -118,11 +118,6 @@ public:
 	}
 
 	// Direct vector from point P by dir D with length M
-	IC	void	direct(const Self &p, const Self &d, T m) {
-		x = p.x + d.x*m;
-		y = p.y + d.y*m;
-		z = p.z + d.z*m;
-	}
 	IC	void	mad(const Self &d, T m) {
 		x += d.x*m;
 		y += d.y*m;
@@ -142,11 +137,6 @@ public:
 		x = p.x + d.x*s.x;
 		y = p.y + d.y*s.y;
 		z = p.z + d.z*s.z;
-	}
-	IC	void	direct(const Self &d, T m) {
-		x += d.x*m;
-		y += d.y*m;
-		z += d.z*m;
 	}
 
 	// SQ magnitude
@@ -197,7 +187,7 @@ public:
 			z = v.z*magnitude;
 		}
 	}
-	IC void random_dir		(CRandom& R = ::Random)
+	IC void		random_dir		(CRandom& R = ::Random)
 	{
 		z	= R.randF(-1,1);
 		T a = R.randF(PI_MUL_2);
@@ -206,27 +196,27 @@ public:
 		x	= r * ca;
 		y	= r * sa;
 	};
-	IC void	random_dir		(const Self& ConeAxis, float ConeAngle, CRandom& R = ::Random)
+	IC void		random_dir		(const Self& ConeAxis, float ConeAngle, CRandom& R = ::Random)
 	{
 		Self				rnd;
 		rnd.random_dir		(R);
-		direct				(ConeAxis,rnd,R.randF(tanf(ConeAngle)));
+		mad					(ConeAxis,rnd,R.randF(tanf(ConeAngle)));
 		normalize			();
 	}
-	IC void	random_point	(const Self& BoxSize, CRandom& R = ::Random)
+	IC void		random_point	(const Self& BoxSize, CRandom& R = ::Random)
 	{
 		x					= R.randFs(BoxSize.x);
 		y					= R.randFs(BoxSize.y);
 		z					= R.randFs(BoxSize.z);
 	}
-	IC void	random_point	(T r, CRandom& R = ::Random)
+	IC void		random_point	(T r, CRandom& R = ::Random)
 	{	
 		random_dir			(R);
 		mul					(R.randF(r));
 	}
 
 	// DotProduct
-	IC	T	dotproduct(const Self &v) const		   // v1*v2
+	IC	T		dotproduct(const Self &v) const		   // v1*v2
 	{	return x*v.x + y*v.y + z*v.z; }
 
 	// CrossProduct
@@ -238,15 +228,15 @@ public:
 	}
 
 	// Distance calculation
-	IC	T	distance_to_xz(const Self &v) const
+	IC	T		distance_to_xz(const Self &v) const
 	{	return _sqrt( (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z) );	}
 
 	// Distance calculation
-	IC	T	distance_to_sqr(const Self &v) const
+	IC	T		distance_to_sqr(const Self &v) const
 	{	return (x-v.x)*(x-v.x) + (y-v.y)*(y-v.y) + (z-v.z)*(z-v.z);	}
 
 	// Distance calculation
-	IC	T	distance_to(const Self &v) const 
+	IC	T		distance_to(const Self &v) const 
 	{	return _sqrt(distance_to_sqr(v));	}
 
 	// Barycentric coords
@@ -266,29 +256,29 @@ public:
 		z = V1.z*u + V2.z*v + V3.z*w + V4.z*t;
 	}
 
-    IC void mknormal_non_normalized	(const Self &p0, const Self & p1, const Self &p2 )
+    IC void		mknormal_non_normalized	(const Self &p0, const Self & p1, const Self &p2 )
 	{
     	_vector v01,v12;
     	v01.sub( p1, p0 );
     	v12.sub( p2, p1 );
     	crossproduct( v01, v12 );
     };
-    IC void mknormal( const Self &p0, const Self &p1, const Self &p2 )
+    IC void		mknormal( const Self &p0, const Self &p1, const Self &p2 )
 	{
 		mknormal_non_normalized(p0,p1,p2);
     	normalize_safe();
     };
-	IC	void direct(T h, T p)
+	IC	void	setHP	(T h, T p)
 	{
-        T ch, cp, sh, sp;
-        _sincos(h,sh,ch);
-        _sincos(p,sp,cp);
+        T _ch, _cp, _sh, _sp;
+        _sincos(h,_sh,_ch);
+        _sincos(p,_sp,_cp);
 
-        x = -cp*sh;
-        y = sp;
-        z = cp*ch;
+        x = -_cp*_sh;
+        y = _sp;
+        z = _cp*_ch;
     }
-    IC void getHP(T& h, T& p)
+    IC	void	getHP	(T& h, T& p)
     {
         float hyp;
 
@@ -306,11 +296,11 @@ public:
         }
     }
 
-	IC	void reflect(const Self& dir, const Self& norm){
-		direct(dir,norm,-2*dir.dotproduct(norm));
+	IC	void	reflect(const Self& dir, const Self& norm){
+		mad(dir,norm,-2*dir.dotproduct(norm));
 	}
-	IC	void slide(const Self& dir, const Self& norm){// non normalized
-		direct(dir,norm,-dir.dotproduct(norm));
+	IC	void	slide(const Self& dir, const Self& norm){	// non normalized
+		mad(dir,norm,-dir.dotproduct(norm));
 	}
 };
 typedef _vector<float>	Fvector;

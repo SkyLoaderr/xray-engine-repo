@@ -39,7 +39,7 @@ void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 {
 	vPosition.set		(point);
 	Fmatrix mR;
-	mR.setYPR			(-yaw,-pitch,-roll);
+	mR.setHPB			(-yaw,-pitch,-roll);
 
 	vDirection.set		(mR.k);
 	vNormal.set			(mR.j);

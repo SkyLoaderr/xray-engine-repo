@@ -466,17 +466,17 @@ public:
 	}
 	IC	void	setHPB	(T h, T p, T b)
 	{
-        T ch, cp, cb, sh, sp, sb, cc, cs, sc, ss;
+        T _ch, _cp, _cb, _sh, _sp, _sb, _cc, _cs, _sc, _ss;
 
-        _sincos(h,sh,ch);
-        _sincos(p,sp,cp);
-        _sincos(b,sb,cb);
-        cc = ch*cb; cs = ch*sb; sc = sh*cb; ss = sh*sb;
+        _sincos(h,_sh,_ch);
+        _sincos(p,_sp,_cp);
+        _sincos(b,_sb,_cb);
+        _cc = _ch*_cb; _cs = _ch*_sb; _sc = _sh*_cb; _ss = _sh*_sb;
 
-        i.set(cc-sp*ss,	-cp*sb,	sp*cs+sc);	_14_=0;
-        j.set(sp*sc+cs,	cp*cb, 	ss-sp*cc);  _24_=0;
-        k.set(-cp*sh,    	sp,		cp*ch); _34_=0;
-        c.set(0,			0,		0);     _44_=1;
+        i.set(_cc-_sp*_ss,	-_cp*_sb,	_sp*_cs+_sc	);	_14_=0;
+        j.set(_sp*_sc+_cs,	_cp*_cb, 	_ss-_sp*_cc	);	_24_=0;
+        k.set(-_cp*_sh,    	_sp,		_cp*_ch		);	_34_=0;
+        c.set(0,			0,			0			);  _44_=1;
     }
 	IC	void	setXYZ	(T x, T y, T z){setHPB(y,x,z);}
 	IC	void	getHPB	(T& h, T& p, T& b){
