@@ -314,6 +314,29 @@ function load_common (obj, sounds_base)
               }
               }
 
+    themes["dolg_leader"] =
+			{
+			{
+			sounds_base,
+			obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, id ()), --snd_singing
+			0 * id (), --snd_stretch_himself
+			0 * id (), --snd_talk_path
+			0 * id (), --snd_enemy_stalker
+			0 * id (), --snd_enemy_monster
+			obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, id ()), --snd_walking
+			0 * id (), --snd_lost_box
+			0 * id (), --snd_lost_box_drunk
+			0 * id (), --snd_drunk
+			0 * id (), --snd_sleep
+
+			0 * id (), --radio_noise
+			0 * id (), --radio_voice
+			0 * id (), --radio_on
+			0 * id (), --radio_off
+			0 * id ()  --radio_commander
+			}
+			}
+
     themes["agroprom_military_commander"] =
               {
               {

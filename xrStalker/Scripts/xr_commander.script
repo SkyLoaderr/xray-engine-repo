@@ -248,10 +248,13 @@ function action_commander:execute()
            self.act == sleep           or
            self.act == stretch_himself or
            self.act == drink_vodka     or
-           self.act == walk_random then
+           self.act == walk_random
+		then
             --self.object:play_sound( random_choice( snd_drunk, snd_walking, snd_singing ), 1, 0 )
-            xr_sounds.play_sound( self.object, math.random( 500 ), self.a.snd_theme, 1,
-                                  random_choice( snd_drunk, snd_walking, snd_singing ) )
+--            xr_sounds.play_sound( self.object, math.random( 500 ), self.a.snd_theme, 1,
+--                                  random_choice( snd_drunk, snd_walking, snd_singing ) )
+			xr_sounds.play_sound( self.object, math.random( 500 ), self.a.snd_theme, 1,
+                                  random_choice( snd_walking, snd_singing ) )
         end
 --        printf( "decision: act=%d last_act=%d", self.act, self.last_act or -1 )
     end
