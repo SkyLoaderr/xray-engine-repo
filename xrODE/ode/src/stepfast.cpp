@@ -763,8 +763,8 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	dReal *	saveTacc	= (dReal *) ALLOCA (nb * 4 *	sizeof (dReal));
 	dReal *	globalI		= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
 	dReal *	globalInvI	= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
-	dReal *	cforces		= (dReal *) ALLOCA (nb * 8 *	sizeof (dReal));	dSetZero (cforces,	nb * 8);
-	int	  * ccounter	= (int	 *) ALLOCA (nb *		sizeof (int));		dSetZero ((dReal*)ccounter,	nb);	
+	dReal *	cforces		= (dReal *) ALLOCA (nb * 8 *	sizeof (dReal));
+	int	  * ccounter	= (int	 *) ALLOCA (nb *		sizeof (int));
 	for (b = 0; b < nb; b++)	{
 		for (i = 0; i < 4; i++)		{
 			saveFacc[b * 4 + i] = bodies[b]->facc[i];
@@ -816,9 +816,12 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	///////////////////////////////small steps starts/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int jdir=1,jfrom=0,jto=nj;
-	float scale	= .5f;
-	for (iter = 0; iter < maxiterations; iter++, scale*=0.7071f)
+	float scale	= 1.f / float(maxiterations);
+	for (iter = 0; iter < maxiterations; iter++)	
 	{
+		dSetZero (cforces,			nb	* 8	);
+		dSetZero ((dReal*)ccounter,	nb		);
+
 #	ifdef TIMING
 		dTimerNow ("applying inertia and gravity");
 #	endif
@@ -839,13 +842,11 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//if this joint is not connected to any enabled bodies, skip it.
 			if (!bodyPair[0] && !bodyPair[1])	continue;
 
-			if (bodyPair[0])
-			{
+			if (bodyPair[0])	{
 				GIPair[0]		= globalI + bodyPair[0]->tag * 12;
 				GinvIPair[0]	= globalInvI + bodyPair[0]->tag * 12;
 			}
-			if (bodyPair[1])
-			{
+			if (bodyPair[1])	{
 				GIPair[1]		= globalI + bodyPair[1]->tag * 12;
 				GinvIPair[1]	= globalInvI + bodyPair[1]->tag * 12;
 			}
@@ -870,13 +871,12 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		//Now we can simulate all the free floating bodies, and move them.
 		for (b = 0; b < nb; b++) {
 			body = bodies[b];
+			if (0==ccounter[b])		continue;
 			for (j = 0; j < 4; j++)	{
-				body->facc[j] += scale*cforces[j + b*8]		/dReal(ccounter[b]);
-				body->tacc[j] += scale*cforces[j + b*8 + 4]	/dReal(ccounter[b]);
+				body->facc[j] += scale*cforces[j + b*8];
+				body->tacc[j] += scale*cforces[j + b*8 + 4];
 			}
 		}
-		dSetZero (cforces,	nb	* 8	);
-		dSetZero ((dReal*)ccounter,	nb		);
 	}
 	for (b = 0; b < nb; b++)
 	{
@@ -900,7 +900,6 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		for (j = 0; j < 4; j++)	bodies[b]->facc[j]	=	bodies[b]->tacc[j] = 0;
 	}
 }
-
 
 #ifdef NO_ISLANDS
 
