@@ -22,6 +22,8 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 3.0;	// average height from actor pos +-1.5m
+	// antenna
+	self.hit_amplitude					= 1.0;	// hit_amplitude*hit_factor.a
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
@@ -99,12 +101,12 @@ end
 function PsyAntenna:update_psy_hit		(dt)
 	if self.power_factor.a>0.001 then
 		local psy_hit 					= hit();
-		psy_hit.power 					= self.power_factor.a*1;
+		psy_hit.power 					= self.power_factor.a*self.hit_amplitude;
 		psy_hit.direction 				= vector():set( 0, 0, 0 );
 		psy_hit.impulse 				= 0;
 		psy_hit.draftsman 				= db.actor; 
 		psy_hit.type 					= hit.telepatic;
-		db.actor:hit					(psy_hit);
+//		db.actor:hit					(psy_hit);
 	end;
 end
 function PsyAntenna:update_phantoms 	()
