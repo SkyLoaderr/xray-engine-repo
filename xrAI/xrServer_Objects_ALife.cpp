@@ -975,7 +975,8 @@ CSE_ALifeObjectSearchlight::CSE_ALifeObjectSearchlight(LPCSTR caSection) : CSE_A
 	spot_brightness				= 1.f;
 	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
-	guid_bone					= u32(BI_NONE);
+	guid_bone					= u16(BI_NONE);
+	rotation_bone				= u16(BI_NONE);
 }
 
 CSE_ALifeObjectSearchlight::~CSE_ALifeObjectSearchlight()
@@ -994,9 +995,8 @@ void CSE_ALifeObjectSearchlight::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float		(spot_brightness);
 	tNetPacket.r_string		(glow_texture);
 	tNetPacket.r_float		(glow_radius);
-	if (m_wVersion > 41){
-		tNetPacket.r_u16	(guid_bone);
-	}
+	tNetPacket.r_u16		(guid_bone);
+	tNetPacket.r_u16		(rotation_bone);
 }
 
 void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
@@ -1011,6 +1011,7 @@ void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
 	tNetPacket.w_u16			(guid_bone);
+	tNetPacket.w_u16			(rotation_bone);
 }
 
 void CSE_ALifeObjectSearchlight::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -1041,7 +1042,8 @@ void CSE_ALifeObjectSearchlight::FillProp			(LPCSTR pref, PropItemVec& values)
 		AStringVec				vec;
 		u16 cnt					= PKinematics(visual)->LL_Bones()->size();
 		for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
+		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,		&vec);
+		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Rotation bone"),	&rotation_bone,	&vec);
 	}
 }
 #endif

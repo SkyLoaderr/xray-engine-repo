@@ -280,6 +280,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectSearchlight,CSE_ALifeDynamicObjectVis
 	string64						glow_texture;
 	float							glow_radius;
 	u16								guid_bone;
+	u16								rotation_bone;
 
 									CSE_ALifeObjectSearchlight	(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectSearchlight	();
