@@ -44,6 +44,7 @@ protected:
 			void				export_action_management	();
 			void				export_motivation_management();
 			void				export_monster_info			();
+			void				export_alife				();
 
 public:
 								CScriptEngine				();

@@ -495,6 +495,21 @@ bool CSE_ALifeObject::interactive			() const
 	return						(!!m_flags.is(flInteractive));
 }
 
+void CSE_ALifeObject::can_switch_online		(bool value)
+{
+	m_flags.set					(flSwitchOnline,BOOL(value));
+}
+
+void CSE_ALifeObject::can_switch_offline	(bool value)
+{
+	m_flags.set					(flSwitchOffline,BOOL(value));
+}
+
+void CSE_ALifeObject::interactive			(bool value)
+{
+	m_flags.set					(flInteractive,BOOL(value));
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGroupAbstract
 ////////////////////////////////////////////////////////////////////////////

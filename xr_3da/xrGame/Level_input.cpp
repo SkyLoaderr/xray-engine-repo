@@ -116,7 +116,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 #ifdef DEBUG
-	case DIK_F9:
+	case DIK_F9:{
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
 //		if (!m_bSynchronization) {
@@ -124,8 +124,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 //			ai().level_graph().select_cover_point();
 //			m_bSynchronization	= false;
 //		}
+//		luabind::functor<void>	functor;
+//		ai().script_engine().functor("alife_test.set_switch_online",functor);
+//		functor("af_mercury_ball",true);
+	}
 		return;
-	case DIK_F10:
+	case DIK_F10:{
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
 //		if (!m_bSynchronization) {
@@ -133,6 +137,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 //			ai().level_graph().set_start_point();
 //			m_bSynchronization	= false;
 //		}
+//		luabind::functor<void>	functor;
+//		ai().script_engine().functor("alife_test.set_switch_online",functor);
+//		functor("af_mercury_ball",false);
+	}
 		return;
 	case DIK_F11:
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))

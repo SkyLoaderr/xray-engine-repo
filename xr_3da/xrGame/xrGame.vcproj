@@ -3813,6 +3813,9 @@
 						RelativePath=".\ai_script_lua_export_object.cpp">
 					</File>
 					<File
+						RelativePath=".\script_lua_export_alife.cpp">
+					</File>
+					<File
 						RelativePath=".\script_lua_export_ini.cpp">
 					</File>
 				</Filter>

@@ -14,7 +14,7 @@
 
 #include "ai_script_classes.h"
 
-#include "xrServer_Objects.h"
+#include "xrServer_Objects_ALife.h"
 
 #include "script_world_property.h"
 #include "script_world_state.h"
@@ -158,8 +158,6 @@ void CScriptEngine::export_motivation_management()
 			.def("clear_motivations",			&CScriptMotivationActionManager::clear_motivations)
 			.def("clear_actions",				&CScriptMotivationActionManager::clear_actions),
 
-		class_<CSE_Abstract>("server_object"),
-			
 		class_<NET_Packet>("net_packet")
 			.def(								constructor<>()),
 			

@@ -97,13 +97,14 @@ protected:
 	IC		LPSTR								*server_command_line		() const;
 			void								assign_death_position		(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, ALife::_GRAPH_ID tGraphID,	CSE_ALifeSchedulable *tpALifeSchedulable = 0);
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;
+			void								remove						(CSE_ALifeDynamicObject *object, bool alife_query = true);
 
 public:
-			void								release						(CSE_Abstract			*object, bool alife_query		= true);
+			void								release						(CSE_Abstract			*object, bool alife_query = true);
 			void								create						(CSE_ALifeObject		*object);
 			CSE_Abstract						*create						(CSE_ALifeGroupAbstract	*object, CSE_ALifeDynamicObject	*j);
-			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position,	u32 level_vertex_id,	ALife::_GRAPH_ID game_vertex_id,	u16 parent_id);
-			void								append_item_vector			(ALife::OBJECT_VECTOR		&tObjectVector,				ALife::ITEM_P_VECTOR	&tItemList);
+			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position, u32 level_vertex_id, ALife::_GRAPH_ID game_vertex_id, u16 parent_id);
+			void								append_item_vector			(ALife::OBJECT_VECTOR	&tObjectVector,	ALife::ITEM_P_VECTOR &tItemList);
 
 public:
 	// temp

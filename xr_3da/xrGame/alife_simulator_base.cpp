@@ -232,6 +232,22 @@ void CALifeSimulatorBase::create	(CSE_ALifeObject *object)
 	dynamic_object->m_bOnline		= true;
 }
 
+void CALifeSimulatorBase::remove	(CSE_ALifeDynamicObject *object, bool alife_query)
+{
+	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
+	if (item && item->attached())
+		graph().detach				(*objects().object(item->ID_Parent),item,objects().object(item->ID_Parent)->m_tGraphID,alife_query);
+
+	objects().remove				(object->ID);
+
+	if (!object->m_bOnline) {
+		graph().remove				(object,object->m_tGraphID);
+		scheduled().remove			(object);
+	}
+	else
+		graph().level().remove	(object);
+}
+
 void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 {
 #ifdef DEBUG
@@ -241,19 +257,9 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 #endif
 	CSE_ALifeDynamicObject			*object = objects().object(abstract->ID);
 	VERIFY							(object);
-	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
-	if (item && item->attached())
-		graph().detach				(*objects().object(item->ID_Parent),item,objects().object(item->ID_Parent)->m_tGraphID,alife_query);
-
-	objects().remove				(object->ID);
 	
-	if (!object->m_bOnline) {
-		graph().remove				(object,object->m_tGraphID);
-		scheduled().remove			(object);
-	}
-	else
-		graph().level().remove	(object);
-
+	remove							(object,alife_query);
+	
 	object->m_bALifeControl			= false;
 
 	if (alife_query)

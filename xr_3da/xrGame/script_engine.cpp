@@ -81,9 +81,11 @@ void CScriptEngine::export()
 	export_effector						();
 	export_artifact_merger				();
 	export_memory_objects				();
+	export_alife						();
 	export_action_management			();
 	export_motivation_management		();
 	export_monster_info					();
+
 	object_factory().register_script	();
 
 #ifdef DEBUG

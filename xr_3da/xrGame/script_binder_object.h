@@ -8,16 +8,16 @@
 
 #pragma once
 
-class CSE_Abstract;
+class CSE_ALifeObject;
 class CLuaGameObject;
 
 class CScriptBinderObject {
 public:
-	typedef CSE_Abstract*	SpawnType;
-	typedef NET_Packet		NetPacket;
-//	typedef int				SpawnType;
-//	typedef int				NetPacket;
-	CLuaGameObject			*m_object;
+	typedef CSE_ALifeObject*	SpawnType;
+	typedef NET_Packet			NetPacket;
+//	typedef int					SpawnType;
+//	typedef int					NetPacket;
+	CLuaGameObject				*m_object;
 
 public:
 						CScriptBinderObject	(CLuaGameObject *object);

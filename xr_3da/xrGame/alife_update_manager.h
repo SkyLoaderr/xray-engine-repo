@@ -41,6 +41,9 @@ public:
 	IC		float		update_monster_factor	() const;
 			bool		change_level			(NET_Packet	&net_packet);
 			void		set_process_time		(int microseconds);
+			void		set_switch_online		(ALife::_OBJECT_ID id, bool value);
+			void		set_switch_offline		(ALife::_OBJECT_ID id, bool value);
+			void		set_interactive			(ALife::_OBJECT_ID id, bool value);
 };
 
 #include "alife_update_manager_inline.h"

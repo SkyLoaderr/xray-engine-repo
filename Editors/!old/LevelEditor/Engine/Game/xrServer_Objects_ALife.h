@@ -139,10 +139,13 @@ public:
 									CSE_ALifeObject		(LPCSTR caSection);
 	virtual							~CSE_ALifeObject	();
 	virtual bool					used_ai_locations	() const;
+	virtual bool					can_save			() const;
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
-	virtual bool					can_save			() const;
 	virtual bool					interactive			() const;
+			void					can_switch_online	(bool value);
+			void					can_switch_offline	(bool value);
+			void					interactive			(bool value);
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual void					spawn_supplies		();
