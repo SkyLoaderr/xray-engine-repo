@@ -24,6 +24,7 @@ const LPCSTR main_function = "console_command_run_string_main_thread_function";
 
 CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string)
 {
+	m_virtual_machine		= 0;
 	m_active				= false;
 
 	try {
