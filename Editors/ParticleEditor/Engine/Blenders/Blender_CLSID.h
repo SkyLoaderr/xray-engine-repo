@@ -12,7 +12,8 @@
 #define		B_LmBmmD		MK_CLSID('L','m','B','m','m','D',' ',' ')
 #define		B_LaEmB			MK_CLSID('L','a','E','m','B',' ',' ',' ')
 #define		B_LmEbB			MK_CLSID('L','m','E','b','B',' ',' ',' ')
-#define		B_BmmD			MK_CLSID('B','m','m','D',' ',' ',' ',' ')
+#define		B_B				MK_CLSID('B','m','m','D',' ',' ',' ',' ')
+#define		B_BmmD			MK_CLSID('B','m','m','D','o','l','d',' ')
 
 // Screen space blenders
 #define		B_SCREEN_SET	MK_CLSID('S','_','S','E','T',' ',' ',' ')

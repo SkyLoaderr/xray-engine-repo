@@ -14,7 +14,7 @@ public:
 	string64	oT2_Name;		// name of secondary texture
 	string64	oT2_xform;		// xform for secondary texture
 public:
-	virtual		LPCSTR		getComment()	{ return "LEVEL: base**detail";	}
+	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit**detail";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

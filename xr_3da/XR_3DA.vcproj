@@ -887,6 +887,12 @@
 								RelativePath=".\Blenders\BlenderDefault.h">
 							</File>
 							<File
+								RelativePath="Blenders\Blender_B.cpp">
+							</File>
+							<File
+								RelativePath="Blenders\Blender_B.h">
+							</File>
+							<File
 								RelativePath=".\Blenders\Blender_Blur.cpp">
 							</File>
 							<File
