@@ -49,6 +49,7 @@ CExplosive::CExplosive(void)
 	m_bReadyToExplode = false;
 
 	m_bExploding = false;
+	m_bExplodeEventSent = false;
 }
 
 CExplosive::~CExplosive(void) 
@@ -401,6 +402,7 @@ void CExplosive::ExplodeParams(const Fvector& pos,
 void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 {
 	if (OnClient() || cast_game_object()->Remote()) return;
+	if( m_bExplodeEventSent ) return;
 
 	VERIFY(0xffff != m_iCurrentParentID);
 
@@ -411,6 +413,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 	P.w_vec3		(const_cast<Fvector&>(normal));
 	cast_game_object()->u_EventSend		(P);
 
+	m_bExplodeEventSent = true;
 }
 
 void CExplosive::FindNormal(Fvector& normal)

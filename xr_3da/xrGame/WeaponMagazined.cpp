@@ -32,6 +32,7 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_bFireSingleShot = false;
 	m_iShotNum = 0;
 	m_iQueueSize = WEAPON_ININITE_QUEUE;
+	m_bLockType = false;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -264,8 +265,8 @@ void CWeaponMagazined::ReloadMagazine()
 	
 	//переменная блокирует использование
 	//только разных типов патронов
-	static bool l_lockType = false;
-	if (!l_lockType) {
+//	static bool l_lockType = false;
+	if (!m_bLockType) {
 		m_ammoName	= NULL;
 		m_pAmmo		= NULL;
 	}
@@ -276,7 +277,7 @@ void CWeaponMagazined::ReloadMagazine()
 		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
 														   !smart_cast<CActor*>(H_Parent())));
 		
-		if(!m_pAmmo && !l_lockType) 
+		if(!m_pAmmo && !m_bLockType) 
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
@@ -298,7 +299,7 @@ void CWeaponMagazined::ReloadMagazine()
 	if(!m_pAmmo || !m_pInventory) return;
 
 	//разрядить магазин, если загружаем патронами другого типа
-	if(!l_lockType && !m_magazine.empty() && 
+	if(!m_bLockType && !m_magazine.empty() && 
 		(!m_pAmmo || xr_strcmp(m_pAmmo->cNameSect(), 
 					 *m_magazine.top().m_ammoSect)))
 		UnloadMagazine();
@@ -321,9 +322,9 @@ void CWeaponMagazined::ReloadMagazine()
 
 	if(iMagazineSize > iAmmoElapsed) 
 	{ 
-		l_lockType = true; 
+		m_bLockType = true; 
 		ReloadMagazine(); 
-		l_lockType = false; 
+		m_bLockType = false; 
 	}
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());

@@ -78,6 +78,7 @@ protected:
 	float m_fExplodeDurationMax;
 	//флаг состояния взрыва
 	bool  m_bExploding;
+	bool m_bExplodeEventSent;
 
 	//////////////////////////////////////////////
 	//для разлета осколков
