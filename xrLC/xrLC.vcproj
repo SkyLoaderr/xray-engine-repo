@@ -266,9 +266,6 @@
 				RelativePath=".\defines.h">
 			</File>
 			<File
-				RelativePath=".\FTimer.h">
-			</File>
-			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

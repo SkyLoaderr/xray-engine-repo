@@ -6,7 +6,6 @@
 #include "detailformat.h"
 #include "xrhemisphere.h"
 #include "cl_intersect.h"
-#include "ftimer.h"
 #include "Etextureparams.h"
 
 #define NUM_THREADS		3
