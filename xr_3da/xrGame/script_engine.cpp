@@ -34,7 +34,7 @@ void CScriptEngine::unload				()
 
 void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 {
-	Debug.fatal("LUA error: %s",lua_tostring(L,-1));
+	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
 void CScriptEngine::export()
