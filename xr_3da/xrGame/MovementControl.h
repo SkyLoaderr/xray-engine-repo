@@ -45,7 +45,6 @@ private:
 
 	float				fActualVelocity;
 	float				fContactSpeed;
-	float				vLastMotionY;
 public:
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;

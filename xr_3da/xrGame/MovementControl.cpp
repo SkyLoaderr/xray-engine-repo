@@ -36,6 +36,20 @@ void CMovementControl::dbg_Draw()
 	Fmatrix fm;
 	fm.translate(fct);
 	Device.Primitive.dbg_DrawOBB (fm,vFootExt,D3DCOLOR_RGBA(255,0,255,255));
+
+	Fmatrix	A;	A.set(pObject->Rotation());
+	Fmatrix		xform	=	pObject->svXFORM();
+	Fvector		foot_ext, foot_center;
+	aabb.getsize(foot_ext);
+	foot_ext.set(foot_ext.x*.5f,vFootExt.y,foot_ext.z*.5f);
+	xform.transform_tiny(foot_center,vFootCenter);
+	A.c.set		(foot_center);
+	Device.Primitive.dbg_DrawOBB (A,foot_ext,D3DCOLOR_RGBA(255,255,255,255));
+/*	
+	Fvector		foot_ext;
+	foot_ext.set	(2.f*vFootExt.x,vFootExt.y,2.f*vFootExt.z);
+	Device.Primitive.dbg_DrawAABB (fct,foot_ext.x,foot_ext.y,foot_ext.z,D3DCOLOR_RGBA(255,255,255,255));
+*/
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -66,7 +80,6 @@ CMovementControl::CMovementControl()
 	m_fGroundDelayFactor= 1.f;
 	gcontact_HealthLost = 0;
 	fContactSpeed		= 0.f;
-	vLastMotionY		= 0.f;
 }
 
 CMovementControl::~CMovementControl()
@@ -227,16 +240,18 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// Calculate gravity
 	float gravity;
 	gravity = psGravity;
+	if (eEnvironment==peOnGround && !bJump) gravity *= 0.75f;
 	vAccel.y -= bIsAffectedByGravity?gravity:0;
 
 	// Physics integration
 	vExternalImpulse.set(0,0,0);
 	motion.set			(0,0,0);
-	if (bJump)			{
+	if (bJump){
+//		vPosition.y	+= vFootExt.y;
 		vVelocity.x	*= 0.9f;
 		vVelocity.z	*= 0.9f;
 		vVelocity.y = 0; 
-		vAccel.y	= vAccel.y+psGravity+jump/dt;
+		vAccel.y	+= psGravity+jump/dt;
 		fFriction	= fAirFriction;
 	}
 
@@ -246,7 +261,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		clamp(m_fGroundDelayFactor,1.f,s_fMaxGroundDelayFactor);
 	}else m_fGroundDelayFactor = 1.f;
  
-	Integrate	(vVelocity,motion,vAccel,dt,fFriction*m_fGroundDelayFactor,((vLastMotionY+EPS_L)<0)?0.5f:2.f);
+	Integrate	(vVelocity,motion,vAccel,dt,fFriction*m_fGroundDelayFactor);
 
 	// Calculate collisions
 	Fvector	final_pos,final_vel;
@@ -260,9 +275,8 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	
 	// Velocity stuff
 	float s_calc	= motion.magnitude();	// length of motion - dS - requested
+	if (bJump)		final_pos.y	+= vFootExt.y;
 	motion.sub		(final_pos,vPosition);	// motion - resulting
-
-	vLastMotionY	= final_pos.y-vPosition.y;
 
 	if (peAtWall==eEnvironment)
 	{
@@ -384,15 +398,17 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 	if (cp_cnt)
 	{
 		Fmatrix33	A; A.set(pObject->Rotation());
-		Fvector		C; 
 		Fmatrix		xform	=	pObject->svXFORM();
 		xform.c				=	newpos;
-		xform.transform_tiny(C,vFootCenter);
+		Fvector		foot_ext, foot_center;
+		aabb.getsize(foot_ext);
+		foot_ext.set(foot_ext.x*.5f,vFootExt.y,foot_ext.z*.5f);
+		xform.transform_tiny(foot_center,vFootCenter);
 		for(int i=0; i<cp_cnt; i++)
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];
 			// тестируем положение ног
-			if (CDB::TestBBoxTri(A,C,vFootExt,&T.p[0],false))
+			if (CDB::TestBBoxTri(A,foot_center,foot_ext,&T.p[0],false))
 			{
 				Fvector N; 
 				N.mknormal(T.p[0],T.p[1],T.p[2]);
@@ -403,6 +419,7 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 				} else  {
 					if((N.y>=0)&&(N.y<=0.7f))
 					{
+//						eEnvironment=peOnGround;
 						eEnvironment=peInAir;//AtWall;
 					}
 				}

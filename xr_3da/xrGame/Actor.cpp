@@ -131,10 +131,17 @@ CActor::CActor() : CEntityAlive()
 	m_fCrouchFactor			= 0.2f;
 
 	m_fFallTime				= s_fFallTime;
+	
+#ifdef DEBUG
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+#endif
 }
 
 CActor::~CActor()
 {
+#ifdef DEBUG
+	Device.seqRender.Remove	(this);
+#endif
 	_DELETE(Weapons);
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
@@ -336,7 +343,10 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	{
 		pSounds->PlayAtPos					(sndLanding,this,Position());
 
-		Movement.SetVelocity				(0.f,0.f,0.f);
+		Fvector correctV					= Movement.GetVelocity	();
+		correctV.x							*= 0.1f;
+		correctV.z							*= 0.1f;
+		Movement.SetVelocity				(correctV);
 
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
@@ -655,7 +665,7 @@ void CActor::g_cl_ValidateMState(float dt, DWORD mstate_wf)
 	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed	=	FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
-	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&mcFall))) || Movement.bSleep) 
+	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&(mcFall|mcJump)))) || Movement.bSleep) 
 	{
 		mstate_real				&=~ mcAnyMove;
 	}
@@ -968,3 +978,9 @@ void CActor::OnDeviceCreate()
 	//
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 }
+#ifdef DEBUG
+void CActor::OnRender()
+{
+	Movement.dbg_Draw();
+}
+#endif

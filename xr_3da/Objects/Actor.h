@@ -20,6 +20,9 @@ class CWeaponList;
 class CEffectorBobbing;
 
 class CActor: 
+#ifdef DEBUG
+	public pureRender,
+#endif
 	public CEntityAlive, 
 	public Feel::Touch
 {
@@ -260,6 +263,10 @@ public:
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
 	CWeaponList				*tpfGetWeapons		(){return Weapons;}
+
+#ifdef DEBUG
+	virtual void			OnRender			();
+#endif
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
