@@ -4,13 +4,13 @@
 #include "xr_List.h"
 
 class ENGINE_API FCached;
-class ENGINE_API FBasicVisual;
+class ENGINE_API CVisual;
 
 namespace SceneGraph
 {
 	// Low level
 	struct _MatrixItem	{
-		FBasicVisual*	pVisual;
+		CVisual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
 		int				iLighting;
@@ -26,8 +26,8 @@ namespace SceneGraph
 	// Higher level	- NORMAL
 	struct mapNormalDirect
 	{
-		FixedMAP<float,FBasicVisual*>		sorted;
-		CList<FBasicVisual*>				unsorted;
+		FixedMAP<float,CVisual*>			sorted;
+		CList<CVisual*>						unsorted;
 	};
 	struct mapNormalCached
 	{

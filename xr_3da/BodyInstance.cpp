@@ -496,7 +496,7 @@ void	CKinematics::IBoneInstances_Destroy()
 }
 
 #define PCOPY(a)	a = pFrom->a
-void CKinematics::Copy(FBasicVisual *P) 
+void CKinematics::Copy(CVisual *P) 
 {
 	inherited::Copy	(P);
 
@@ -514,7 +514,7 @@ void CKinematics::Copy(FBasicVisual *P)
 
 	for (DWORD i=0; i<chields.size(); i++) 
 	{
-		FBasicVisual*	V = chields[i];
+		CVisual*	V = chields[i];
 		CSkeletonX*		B = NULL;
 		switch (V->Type)
 		{

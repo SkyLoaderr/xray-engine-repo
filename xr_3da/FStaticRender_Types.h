@@ -15,6 +15,6 @@ struct _FpsController {
 
 extern	_FpsController		QualityControl;
 
-typedef vector<FBasicVisual*>	vecGEO;
-typedef vecGEO::iterator		vecGEOIT;
+typedef vector<CVisual*>	vecGEO;
+typedef vecGEO::iterator	vecGEOIT;
 

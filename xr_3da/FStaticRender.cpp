@@ -155,9 +155,9 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
-void __fastcall normal_L2(FixedMAP<float,FBasicVisual*>::TNode *N)
+void __fastcall normal_L2(FixedMAP<float,CVisual*>::TNode *N)
 {
-	FBasicVisual *V = N->val;
+	CVisual *V = N->val;
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
@@ -171,11 +171,11 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		N.direct.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		CList<FBasicVisual*>&	L		= N.direct.unsorted;
-		FBasicVisual **I=L.begin(), **E = L.end();
+		CList<CVisual*>&	L			= N.direct.unsorted;
+		CVisual **I=L.begin(), **E = L.end();
 		for (; I!=E; I++)
 		{
-			FBasicVisual *V = *I;
+			CVisual *V = *I;
 			V->Render	(0);	// zero lod 'cause it is too small onscreen
 		}
 		L.clear	();
@@ -204,7 +204,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 // MATRIX
 void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 {
-	FBasicVisual *V = N->val.pVisual;
+	CVisual *V = N->val.pVisual;
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
 	::Render.Lights.Select(N->val.vCenter,V->bv_Radius);
 	gm_SetAmbientLevel(N->val.iLighting);
@@ -221,7 +221,7 @@ void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
 // ALPHA
 void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 {
-	FBasicVisual *V = N->val.pVisual;
+	CVisual *V = N->val.pVisual;
 	Device.Shader.set_Shader		(V->hShader);
 	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
 	::Render.Lights.Select			(N->val.vCenter,V->bv_Radius);

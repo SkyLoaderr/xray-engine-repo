@@ -15,7 +15,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-FHierrarhyVisual::FHierrarhyVisual()  : FBasicVisual()
+FHierrarhyVisual::FHierrarhyVisual()  : CVisual()
 {
 }
 
@@ -29,7 +29,7 @@ FHierrarhyVisual::~FHierrarhyVisual()
 
 void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 {
-	FBasicVisual::Load(N,data,dwFlags);
+	CVisual::Load(N,data,dwFlags);
 	if (data->FindChunk(OGF_CHIELDS_L)) {
 		DWORD cnt = data->Rdword();
 		chields.resize(cnt);
@@ -84,9 +84,9 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	}
 }
 
-void	FHierrarhyVisual::Copy(FBasicVisual *pSrc)
+void	FHierrarhyVisual::Copy(CVisual *pSrc)
 {
-	FBasicVisual::Copy	(pSrc);
+	CVisual::Copy	(pSrc);
 
 	FHierrarhyVisual	*pFrom = (FHierrarhyVisual *)pSrc;
 
@@ -94,9 +94,9 @@ void	FHierrarhyVisual::Copy(FBasicVisual *pSrc)
 	chields.reserve	(pFrom->chields.size());
 	for (DWORD i=0; i<pFrom->chields.size(); i++) {
 #ifdef _EDITOR
-		FBasicVisual *p = ::Device.Models.Instance_Duplicate(pFrom->chields[i]);
+		CVisual *p = ::Device.Models.Instance_Duplicate(pFrom->chields[i]);
 #else
-		FBasicVisual *p = ::Render.Models.Instance_Duplicate(pFrom->chields[i]);
+		CVisual *p = ::Render.Models.Instance_Duplicate(pFrom->chields[i]);
 #endif
 		chields.push_back(p);
 	}

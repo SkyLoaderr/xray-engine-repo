@@ -6,7 +6,7 @@
 #define AFX_FSHADOWFORM_H__DEB2957E_816E_4DA4_9D5E_D959286000C6__INCLUDED_
 #pragma once
 
-#include "FBasicVisual.h"
+#include "fBasicVisual.h"
 
 // These are the shadow volumes
 struct SHADOW_V
@@ -26,7 +26,7 @@ struct COLORVERTEX {
 };
 #pragma pack(pop)
 
-class FShadowForm : public FBasicVisual
+class FShadowForm : public CVisual
 {
 	// Data
 	LPDIRECT3DVERTEXBUFFER7	pVB;
@@ -45,7 +45,7 @@ public:
 	void					RenderShadow		(LPDIRECT3DVERTEXBUFFER7 pv);
 	void					MakeShadowVolume	(_vector &L, _matrix &mWorld );
 
-	virtual FBasicVisual*	CreateInstance(void);
+	virtual CVisual*	CreateInstance(void);
 	virtual	void			Load(CStream *data, DWORD dwFlags);
 	virtual void			Render(float LOD);
 

@@ -8,7 +8,7 @@
 
 #include "fbasicvisual.h"
 
-class ENGINE_API FCached  : public FBasicVisual
+class ENGINE_API FCached  : public CVisual
 {
 public:
 	CVertexStream*	VS;
@@ -19,7 +19,7 @@ public:
 
 	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);
 	virtual void	Release	();						// Shared memory release
-	virtual void	Copy	(FBasicVisual* from);
+	virtual void	Copy	(CVisual* from);
 
 	FCached();
 	virtual ~FCached();

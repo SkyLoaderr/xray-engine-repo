@@ -6,7 +6,7 @@
 #define AFX_FASTSPRITE_H__ECCE8A89_05B6_4966_AE66_7C8649B3BDF9__INCLUDED_
 #pragma once
 
-#include "FBasicVisual.h"
+#include "fBasicVisual.h"
 
 #define MAX_SPRITES		256
 
@@ -20,7 +20,7 @@ struct ENGINE_API FSprite
 
 typedef vector<FSprite>	VSprites;
 
-class ENGINE_API CFastSprite : public FBasicVisual
+class ENGINE_API CFastSprite : public CVisual
 {
 protected:
 	CVertexStream*			Stream;
@@ -31,7 +31,7 @@ protected:
 public:
 	// Visual
 	virtual void			Render			(float LOD);
-	virtual void			Copy			(FBasicVisual* pFrom);
+	virtual void			Copy			(CVisual* pFrom);
 
 	// Functionality
 	BOOL					isReadyForDestroy()	{ return fTTL<=0; }

@@ -6,7 +6,7 @@
 #include "ffileops.h"
 #include "FShadowForm.h"
 
-FBasicVisual*	FShadowForm::CreateInstance(void)
+CVisual*	FShadowForm::CreateInstance(void)
 {	return new FShadowForm;	}
 
 //////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ FShadowForm::~FShadowForm()
 
 void FShadowForm::Load(CStream *data)
 {
-	FBasicVisual::Load(data);
+	CVisual::Load(data);
 
 	// read vertices
 	if (data->FindChunk(OGF_VERTICES)) {

@@ -11,14 +11,14 @@
 	#include "render.h"
 #endif
 
-FBasicVisual*	Fvisual::CreateInstance(void)
+CVisual*	Fvisual::CreateInstance(void)
 {	return new Fvisual;	}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-Fvisual::Fvisual()  : FBasicVisual()
+Fvisual::Fvisual()  : CVisual()
 {
 }
 
@@ -28,12 +28,12 @@ Fvisual::~Fvisual()
 
 void Fvisual::Release()
 {
-	FBasicVisual::Release();
+	CVisual::Release();
 	P.Release();
 }
 void Fvisual::Load(const char* N, CStream *data, DWORD dwFlags)
 {
-	FBasicVisual::Load(N,data,dwFlags);
+	CVisual::Load(N,data,dwFlags);
 
 	// read vertices
 	DWORD dwVertStart=0;
@@ -84,9 +84,9 @@ void Fvisual::Render(float LOD)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	Fvisual::Copy(FBasicVisual *pSrc)
+void	Fvisual::Copy(CVisual *pSrc)
 {
-	FBasicVisual::Copy(pSrc);
+	CVisual::Copy(pSrc);
 
 	Fvisual	*pFrom = (Fvisual *)pSrc;
 	PCOPY(P);

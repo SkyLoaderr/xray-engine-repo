@@ -123,9 +123,9 @@ void FProgressiveFixedVisual::Render(float LOD)
 
 #define PCOPY(a)	a = pFrom->a
 
-void	FProgressiveFixedVisual::pm_copy(FBasicVisual *pSrc)
+void	FProgressiveFixedVisual::pm_copy(CVisual *pSrc)
 {
-	FProgressiveFixedVisual	*pFrom = (FProgressiveFixedVisual *)pSrc;
+	FProgressiveFixedVisual	*pFrom = dynamic_cast<FProgressiveFixedVisual*>(pSrc);
 	PCOPY(V_Minimal);
 	PCOPY(V_Current);
 	PCOPY(I_Current);
@@ -135,7 +135,7 @@ void	FProgressiveFixedVisual::pm_copy(FBasicVisual *pSrc)
 	PCOPY(vsplit);
 
 }
-void	FProgressiveFixedVisual::Copy(FBasicVisual *pSrc)
+void	FProgressiveFixedVisual::Copy(CVisual *pSrc)
 {
 	Fvisual::Copy	(pSrc);
 

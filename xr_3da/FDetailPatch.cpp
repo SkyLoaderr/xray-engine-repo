@@ -22,7 +22,7 @@ FDetailPatch::~FDetailPatch()
 
 void FDetailPatch::Load(const char* N, CStream* fs, DWORD dwFlags)
 {
-	FBasicVisual::Load(N,fs,dwFlags);
+	CVisual::Load(N,fs,dwFlags);
 
 	DWORD size	= fs->FindChunk(OGF_DPATCH);	
 	R_ASSERT(size && (size%sizeof(DPatch) == 0));

@@ -146,7 +146,7 @@ void CRender::LoadVisuals(CStream *fs)
 {
 	CStream*		chunk	= 0;
 	DWORD			index	= 0;
-	FBasicVisual*	V		= 0;
+	CVisual*		V		= 0;
 	ogf_header		H;
 
 	while ((chunk=fs->OpenChunk(index))!=0)

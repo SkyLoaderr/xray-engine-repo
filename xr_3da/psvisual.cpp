@@ -11,7 +11,7 @@
 
 static int dwPCNT=0;
 
-CPSVisual::CPSVisual():FBasicVisual()
+CPSVisual::CPSVisual():CVisual()
 {
 	m_Stream	= Device.Streams.Create(FVF::F_TL,MAX_PARTICLES*4);
 	
@@ -29,7 +29,7 @@ CPSVisual::~CPSVisual()
 	m_Stream	= 0;
 }
 //----------------------------------------------------
-void CPSVisual::Copy(FBasicVisual* pFrom)
+void CPSVisual::Copy(CVisual* pFrom)
 {
 	Device.Fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }

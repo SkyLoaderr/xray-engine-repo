@@ -11,7 +11,7 @@ ENGINE_API extern DWORD psHUD_Flags;
 #define HUD_INFO				(1<<3)
 #define HUD_DRAW				(1<<4)
 
-class ENGINE_API FBasicVisual;
+class ENGINE_API CVisual;
 class CUI;
 
 class ENGINE_API CCustomHUD:
@@ -29,7 +29,7 @@ public:
 	virtual	void	OnMove					(){;}
 	virtual	void	OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
 	
-	virtual void	RenderModel				(FBasicVisual* V, Fmatrix& M, int L) = 0;
+	virtual void	RenderModel				(CVisual* V, Fmatrix& M, int L) = 0;
 
 	virtual	void	Hit						(int idx){;}
 

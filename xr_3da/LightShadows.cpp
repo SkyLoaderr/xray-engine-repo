@@ -137,7 +137,7 @@ void CLightShadows::calculate	()
 			for (int n_it=0; n_it<C.nodes.size(); n_it++)
 			{
 				NODE* N			=	C.nodes[n_it];
-				FBasicVisual *V =	N->val.pVisual;
+				CVisual *V		=	N->val.pVisual;
 				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N->val.Matrix.d3d()));
 				V->Render			(.5f);
 			}

@@ -10,7 +10,7 @@
 
 class ENGINE_API CPortal;
 class ENGINE_API CSector;
-class ENGINE_API FBasicVisual;
+class ENGINE_API CVisual;
 class ENGINE_API CObject;
 class ENGINE_API CTempObject;
 
@@ -82,7 +82,7 @@ public:
 		void*			Param;
 	};
 protected:
-	FBasicVisual*			pRoot;		// whole geometry of that sector
+	CVisual*			pRoot;		// whole geometry of that sector
 	vector<CPortal*>		Portals;
 	vector<CObject*>		Objects;
 	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты

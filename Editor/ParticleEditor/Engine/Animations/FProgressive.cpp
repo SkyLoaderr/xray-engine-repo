@@ -12,14 +12,14 @@
 	#include "render.h"
 #endif
 
-FBasicVisual*	FProgressive::CreateInstance(void)
+CVisual*	FProgressive::CreateInstance(void)
 {	return new FProgressive;	}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-FProgressive::FProgressive	() : FBasicVisual()
+FProgressive::FProgressive	() : CVisual()
 {
 
 }
@@ -31,7 +31,7 @@ FProgressive::~FProgressive	()
 
 void FProgressive::Release	()
 {
-	FBasicVisual::Release	();
+	CVisual::Release	();
 
 	for (DWORD I=0; I<LODs.size(); I++)
 		LODs[I].P.Release();
@@ -39,7 +39,7 @@ void FProgressive::Release	()
 
 void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
 {
-	FBasicVisual::Load(N,data,dwFlags);
+	CVisual::Load(N,data,dwFlags);
 	
 	LODs.reserve(8);
 	CStream*	lods = data->OpenChunk	(OGF_P_LODS);
@@ -105,9 +105,9 @@ void FProgressive::Render		(float LOD)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	FProgressive::Copy		(FBasicVisual *pSrc)
+void	FProgressive::Copy		(CVisual *pSrc)
 {
-	FBasicVisual::Copy(pSrc);
+	CVisual::Copy(pSrc);
 
 	FProgressive	*pFrom = (FProgressive *)pSrc;
 	PCOPY(LODs);

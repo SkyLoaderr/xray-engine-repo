@@ -2,7 +2,7 @@
 #define __XR_WEAPON_HUD_H__
 
 // refs
-class ENGINE_API FBasicVisual;
+class ENGINE_API CVisual;
 class ENGINE_API CInifile;
 class ENGINE_API CMotionDef;
 class CEntity;
@@ -16,7 +16,7 @@ class CWeaponHUD :
 	Fmatrix				m_CamAssist;
 	Fmatrix				mTransform;
 	LPSTR				pVisualName;
-	FBasicVisual*		pVisual;
+	CVisual*			pVisual;
 public:	
 	int					iFireBone;
 	Fvector				vFirePoint;
@@ -28,7 +28,7 @@ public:
 	// misc
 	virtual void		Load			(CInifile* ini, const char* section);
 
-	IC FBasicVisual*	Visual			()	{ return pVisual; }
+	IC CVisual*	Visual			()	{ return pVisual; }
 	IC Fmatrix&			Transform		()	{ return mTransform; }
 
 	// Animations

@@ -33,11 +33,11 @@ protected:
 	WORD*			faces_affected;	// shared
 	Vsplit*			vsplit;			// shared
 
-	void			pm_copy			(FBasicVisual *pFrom);
+	void			pm_copy			(CVisual *pFrom);
 public:
 	virtual void Render	(float LOD);	// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Used
 	virtual void Load	(const char* N, CStream *data,DWORD dwFlags);
-	virtual void Copy	(FBasicVisual *pFrom);
+	virtual void Copy	(CVisual *pFrom);
 	virtual void Release();
 
 	// functionality

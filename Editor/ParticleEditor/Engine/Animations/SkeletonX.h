@@ -70,7 +70,7 @@ private:
 public:
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, CStream *data, DWORD dwFlags);
-	virtual void			Copy			(FBasicVisual *pFrom);
+	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };
 
@@ -84,7 +84,7 @@ public:
 	
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, CStream *data, DWORD dwFlags);
-	virtual void			Copy			(FBasicVisual *pFrom);
+	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };
 

@@ -50,7 +50,7 @@ protected:
 	
 	// Model
 	LPSTR								pVisualName;
-	FBasicVisual*						pVisual;
+	CVisual*							pVisual;
 
 	// Visibility detection
 	CSector*							pSector;
@@ -91,7 +91,7 @@ public:
 	virtual Fvector&					Position		() 					{ return vPosition; }
 	IC Fvector&							Direction		() 					{ return mRotate.k; }
 	IC Fmatrix&							Rotation		()					{ return mRotate;	}
-	IC FBasicVisual*					Visual			()					{ return pVisual;   }
+	IC CVisual*					Visual			()					{ return pVisual;   }
 	IC CCFModel*						CFORM			() const			{ return cfModel;	}
 	IC void								ForcePosition	(Fvector& P)		{ vPosition.set(P); UpdateTransform(); }
 	IC Shader*							shadowShader	()					{ return sh_Shader;	}

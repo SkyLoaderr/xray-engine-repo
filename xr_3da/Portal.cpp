@@ -65,7 +65,7 @@ void CSector::Render(CFrustum &F)
 	// Render everything
 	{
 		Fvector	Tpos;
-		::Render.set_Occluders	(&F);
+		::Render.set_Frustum	(&F);
 		::Render.add_Glows		(Glows);
 		::Render.add_Lights		(Lights);
 		::Render.add_Static		(pRoot,F.getMask());
@@ -76,7 +76,7 @@ void CSector::Render(CFrustum &F)
 			CObject* O = *I;
 			if (O->bVisible) 
 			{
-				FBasicVisual*	pV = O->Visual();
+				CVisual*	pV = O->Visual();
 				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
 				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
 				{
@@ -94,7 +94,7 @@ void CSector::Render(CFrustum &F)
 				if (pV->Alive())
 				{
 					DWORD planes	=	F.getMask();
-					FBasicVisual* V	=	pV->Visual();
+					CVisual* V	=	pV->Visual();
 					if (F.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
 						::Render.add_leafs_Static(pV->Visual());
 				}

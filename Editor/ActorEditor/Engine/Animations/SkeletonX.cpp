@@ -23,7 +23,7 @@ void CSkeletonX::_Copy(CSkeletonX *B)
 	Stream			= B->Stream;
 	Vertices		= B->Vertices;
 }
-void CSkeletonX_PM::Copy(FBasicVisual *V) 
+void CSkeletonX_PM::Copy(CVisual *V) 
 {
 	Fvisual::Copy	(V);
 	pm_copy			(V);
@@ -33,7 +33,7 @@ void CSkeletonX_PM::Copy(FBasicVisual *V)
 	indices			= X->indices;
 	P.IB_Create		(0,dwPrimsCount*3,D3DUSAGE_WRITEONLY,indices);
 }
-void CSkeletonX_ST::Copy(FBasicVisual *P) 
+void CSkeletonX_ST::Copy(CVisual *P) 
 {
 	inherited::Copy	(P);
 	CSkeletonX_ST *X = (CSkeletonX_ST*)P;

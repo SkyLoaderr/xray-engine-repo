@@ -3,12 +3,12 @@
 
 #include "xrSheduler.h"
 
-class ENGINE_API FBasicVisual;
+class ENGINE_API CVisual;
 
 class ENGINE_API CTempObject : public CSheduled
 {
 protected:
-	FBasicVisual*		m_pVisual;
+	CVisual*		m_pVisual;
 	int					m_iLifeTime;
 	BOOL				m_bAutoRemove;
 public:
@@ -17,7 +17,7 @@ public:
 
 	IC BOOL				Alive			(){return m_iLifeTime>0;}
 	IC BOOL				IsAutomatic		(){return m_bAutoRemove;}
-	IC FBasicVisual*	Visual			(){return m_pVisual;}
+	IC CVisual*	Visual			(){return m_pVisual;}
 	IC void				SetLifeTime		(float life_time){m_iLifeTime=iFloor(life_time*1000);}
 	
 	virtual void		Update			(DWORD dt);

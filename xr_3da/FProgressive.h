@@ -8,7 +8,7 @@
 
 #include "fbasicvisual.h"
 
-class ENGINE_API FProgressive : public FBasicVisual
+class ENGINE_API FProgressive : public CVisual
 {
 protected:
 	struct primLOD {
@@ -18,11 +18,11 @@ protected:
 	};
 	vector<primLOD>			LODs;
 public:
-	virtual FBasicVisual*	CreateInstance(void);
+	virtual CVisual*		CreateInstance(void);
 
 	virtual void Render		(float LOD);		// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
 	virtual void Load		(const char* N, CStream *data,DWORD dwFlags);
-	virtual void Copy		(FBasicVisual *pFrom);
+	virtual void Copy		(CVisual *pFrom);
 	virtual void Release	();
 
 	FProgressive();

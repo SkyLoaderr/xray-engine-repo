@@ -28,7 +28,7 @@ private:
 	CHUDCursor				HUDCursor;
 	// Models
 	struct Model {
-		FBasicVisual*		V;
+		CVisual*			V;
 		Fmatrix				M;
 		int					iLightLevel;
 	};
@@ -57,7 +57,7 @@ public:
 	virtual		BOOL		IsUIActive			(){return pUI->IsActive();}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
-	virtual		void		RenderModel			(FBasicVisual* V, Fmatrix& M, int iLightLevel)
+	virtual		void		RenderModel			(CVisual* V, Fmatrix& M, int iLightLevel)
 	{
 		if (Models.size()<8) {
 			Models.last().V = V;

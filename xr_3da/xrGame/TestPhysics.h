@@ -16,7 +16,7 @@ class CTestPhysics :
 	public pureFrame,
 	public CEventBase
 {
-	FBasicVisual*			V;
+	CVisual*				V;
 	bkRBController*			C;
 	Fmatrix					mXForm;
 	EVENT					E;

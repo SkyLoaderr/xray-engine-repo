@@ -7,16 +7,16 @@
 
 #pragma once
 
-#include "FBasicVisual.h"
+#include "fbasicvisual.h"
 
-class ENGINE_API FHierrarhyVisual : public FBasicVisual
+class ENGINE_API FHierrarhyVisual : public CVisual
 {
 public:
-	vector<FBasicVisual*>	chields;
+	vector<CVisual*>	chields;
 	BOOL					bDontDelete;
 
 	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);
-	virtual void	Copy	(FBasicVisual *pFrom);
+	virtual void	Copy	(CVisual *pFrom);
 
 	FHierrarhyVisual();
 	virtual ~FHierrarhyVisual();

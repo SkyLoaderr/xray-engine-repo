@@ -224,7 +224,7 @@ void CCF_Skeleton::BuildState()
 void CCF_Skeleton::BuildTopLevel()
 {
 	dwFrameTL			=Device.dwFrame;
-	FBasicVisual* K		= owner->Visual();
+	CVisual* K			= owner->Visual();
 	Fbox& B				= K->bv_BBox;
 	s_box.min.average	(B.min);
 	s_box.max.average	(B.max);
@@ -316,7 +316,7 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 
 BOOL CCF_EventBox::Contact(CObject* O)
 {
-	FBasicVisual*	V = O->Visual();
+	CVisual*	V = O->Visual();
 	Fvector&		P = V->bv_Position;
 	float			R = V->bv_Radius;
 	
@@ -403,7 +403,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 {
 	// Build object-sphere
 	Fsphere			S;
-	FBasicVisual* V = O->Visual();
+	CVisual* V = O->Visual();
 	if (0==V)		return FALSE;
 	Fvector& P		= V->bv_Position;
 	S.R				= V->bv_Radius;
