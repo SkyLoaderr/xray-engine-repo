@@ -155,6 +155,18 @@ public:
     bool	equal		(LPCSTR _nm)		{return (0==xr_strcmp(*name,_nm));}
 };
 
+struct XRCORE_API xr_shortcut{
+    enum{
+        flAlt	= (1<<0),
+        flCtrl	= (1<<1),
+        flShift	= (1<<2)
+    };
+    Flags8		ext;
+    u16	 		key;
+                xr_shortcut		(u16 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
+                xr_shortcut		(){}
+};
+
 DEFINE_VECTOR	(shared_str,RStringVec,RStringVecIt);
 DEFINE_SET		(shared_str,RStringSet,RStringSetIt);
 DEFINE_VECTOR	(xr_rtoken,RTokenVec,RTokenVecIt);

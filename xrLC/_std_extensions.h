@@ -41,19 +41,6 @@ struct XRCORE_API xr_token2
 	int 	id;
 };
 
-struct XRCORE_API xr_shortcut{
-    enum{
-        flAlt	= (1<<0),
-        flCtrl	= (1<<1),
-        flShift	= (1<<2)
-    };
-    Flags8		ext;
-    u16	 		key;
-                xr_shortcut		(u16 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
-                xr_shortcut		(){}
-};
-
-
 // generic
 template <class T>	IC T		_min	(T a, T b)	{ return a<b?a:b;	}
 template <class T>	IC T		_max	(T a, T b)	{ return a>b?a:b;	}
