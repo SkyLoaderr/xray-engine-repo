@@ -309,6 +309,11 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
+	if (g_Health() <= 0) {
+		tpaDynamicSounds.clear();
+		return;
+	}
+	
 	if (Level().timeServer() < 15000)
 		return;
 

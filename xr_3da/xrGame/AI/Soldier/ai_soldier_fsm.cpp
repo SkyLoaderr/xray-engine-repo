@@ -22,6 +22,8 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define TORSO_START_SPEED				PI_DIV_4
 #define DISTANCE_TO_REACT				2.14f
+#define RECHARGE_MEDIAN					(2.f/3.f)
+#define RECHARGE_EPSILON				(0.f/6.f)
 
 /**
 void CAI_Soldier::OnAttackFire()
@@ -1202,8 +1204,10 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	vfSaveEnemy();
 
-	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f)
+	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f) {
 		vfSetFire(true,Group);
+		CHECK_IF_GO_TO_NEW_STATE((dwCurTime - m_dwNoFireTime > 1000) && !m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
+	}
 	else
 		vfSetFire(false,Group);
 	
@@ -1411,7 +1415,7 @@ void CAI_Soldier::OnSenseSomethingAlone()
 		}
 		else {
 			m_bStateChanged = false;
-			GO_TO_PREV_STATE;
+			GO_TO_NEW_STATE(aiSoldierPatrolDanger);
 		}
 	}
 	else {
@@ -1502,6 +1506,8 @@ void CAI_Soldier::OnHurtAloneDefend()
 	tSavedEnemyPosition = tHitPosition;
 	
 	vfSetFire(false,Group);
+
+	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
 
 	switch (m_cBodyState) {
 		case BODY_STATE_STAND : {
@@ -1624,6 +1630,8 @@ void CAI_Soldier::OnDangerAlone()
 	
 	vfSetFire(false,Group);
 
+	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
+
 	vfInitSelector(SelectorPatrol,Squad,Leader);
 
 	SelectorPatrol.m_tEnemyPosition = tHitPosition;
@@ -1668,6 +1676,8 @@ void CAI_Soldier::OnPursuitAlone()
 	m_dwLastRangeSearch = dwCurTime;
 	
 	vfSetFire(false,Group);
+
+	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
 
 	vfInitSelector(SelectorPatrol,Squad,Leader);
 

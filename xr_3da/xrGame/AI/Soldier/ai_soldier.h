@@ -242,7 +242,7 @@ class CAI_Soldier : public CCustomMonster
 		CBlend*				m_tpCurrentTorsoBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		char				m_cGestureState;
-		float				m_fAddAngle;
+		//float				m_fAddAngle;
 		DWORD				m_dwTimeBeingWaited;
 		char				m_cMovementType;
 		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];

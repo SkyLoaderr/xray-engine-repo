@@ -15,39 +15,42 @@
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
 	Fvector tMemberDirection;
-	tMemberDirection.sub(tMyPoint,tMemberPoint);
+	tMemberDirection.sub(tMemberPoint,tMyPoint);
 	vfNormalizeSafe(tMemberDirection);
-	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	//return(false);
+	float fAlpha = tFireVector.dotproduct(tMemberDirection);
+	clamp(fAlpha,-.99999f,+.99999f);
+	fAlpha = acosf(fAlpha);
 	return(fAlpha < FIRE_SAFETY_ANGLE);
 }
 
 bool CAI_Soldier::bfCheckIfCanKillEnemy() 
 {
 	Fvector tMyLook;
-	tMyLook.setHP	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
+	tMyLook.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
 	if (Enemy.Enemy) {
 		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
-		tFireVector.sub(tMyPosition,tEnemyPosition);
+		tFireVector.sub(tEnemyPosition,tMyPosition);
 		vfNormalizeSafe(tFireVector);
-		float fAlpha = acosf(tFireVector.dotproduct(tMyLook));
-		return(true);
-		//return(fAlpha < FIRE_ANGLE);
+		float fAlpha = tFireVector.dotproduct(tMyLook);
+		clamp(fAlpha,-.99999f,+.99999f);
+		fAlpha = acosf(fAlpha);
+		return(fAlpha < FIRE_SAFETY_ANGLE);
 	}
 	else
-		return(true);
+		return(false);
 }
 
 bool CAI_Soldier::bfCheckIfCanKillMember()
 {
 	Fvector tFireVector, tMyPosition = Position();
-	tFireVector.setHP	(r_torso_current.yaw,r_torso_current.pitch);
+	tFireVector.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
 	
 	bool bCanKillMember = false;
 	
 	for (int i=0, iTeam = g_Team(), iSquad = g_Squad(), iGroup = g_Group(); i<tpaVisibleObjects.size(); i++) {
 		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
-		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
+		//if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
 			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
 				bCanKillMember = true;
 				break;
