@@ -61,12 +61,18 @@ void CDetail::Load		(CStream* S)
 	// Params
 	flags			= S->Rdword	();
 	number_vertices	= S->Rdword	();
+	number_indices	= S->Rdword	();
 	R_ASSERT		(0==(number_vertices%3));
 
 	// Vertices
 	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)_aligned_malloc	(size_vertices,64);
+	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
+	
+	// Indices
+	DWORD			size_indices		= number_indices*sizeof(WORD);
+	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
+	S->Read			(indices,size_indices);
 
 	// Calc BB & SphereRadius
 	Fbox bb;
