@@ -142,7 +142,7 @@ bool bfCheckForGraphConnectivity(CLevelGraph *tpAI_Map)
 
 u32 dwfErasePoints()
 {
-	u32 dwPointsWONodes = 0, dwTemp = 0;
+	u32 dwPointsWONodes = 0;
 	Progress(0.0f);
 	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
 		if (int(tpaGraph[i].tNodeID) <= 0) {
@@ -192,7 +192,6 @@ void vfOptimizeGraph(u32 dwEdgeCount, CLevelGraph *tpAI_Map)
 	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
 		if (tpAI_Map->q_mark_bit[dwaSortOrder[i]])
 			continue;
-		float fDistance = tpaEdges[dwaSortOrder[i]].distance();
 		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
 		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].vertex_id();
 		SDynamicGraphVertex &tVertex0 = tpaGraph[dwVertex0];

@@ -417,7 +417,7 @@ public:
 LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 {
 	CSE_ALifeCreatureActor	*l_tpActor = 0;
-	u32						level_id;
+	u32						level_id = u32(-1);
 	for (u32 i=0; i<tpLevels.size(); i++) {
 		ALIFE_OBJECT_P_IT	I = tpLevels[i]->m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT	E = tpLevels[i]->m_tpSpawnPoints.end();
