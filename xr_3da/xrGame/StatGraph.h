@@ -3,6 +3,15 @@
 #define StatGraphH
 //---------------------------------------------------------------------------
 class CStatGraph:public pureRender, public pureDeviceCreate, public pureDeviceDestroy{
+public:
+	enum EStyle{
+    	stBar,
+        stCurve,
+		stBarLine,
+		stPoint,
+    };
+
+protected:
 	struct SElement{
     	u32 		color;
         float		data;
@@ -13,7 +22,22 @@ class CStatGraph:public pureRender, public pureDeviceCreate, public pureDeviceDe
         }
     };
 	DEFINE_DEQUE	(SElement,ElementsDeq,ElementsDeqIt);
-	ElementsDeq		elements;
+	struct SSubGraph
+	{
+		EStyle			style;
+		ElementsDeq		elements;
+					SSubGraph(EStyle s)
+		{
+			style = s;
+		};
+					void SetStyle (EStyle s)
+		{
+			style = s;
+		};
+	};
+	DEFINE_VECTOR	(SSubGraph,SubGraphVec,SubGraphVecIt);
+	SubGraphVec		subgraphs;
+	
 	float			mn, mx;
 	u32				max_item_count;
 	Ivector2 		lt,rb;
@@ -21,24 +45,29 @@ class CStatGraph:public pureRender, public pureDeviceCreate, public pureDeviceDe
 	u32				grid_color;
 	u32				rect_color;
 	u32				back_color;
-	ref_geom 		hGeom; 
-public:
-	enum EStyle{
-    	stBar,
-        stCurve
-    };
+	ref_geom 		hGeomTri;
+	ref_geom 		hGeomLine;
 protected:
-    EStyle			style;
+	virtual void	RenderBack		();
+
+	virtual void	RenderBars		( FVF::TL0uv** ppv, ElementsDeq* pelements );
+	virtual void	RenderLines		( FVF::TL0uv** ppv, ElementsDeq* pelements );
+	virtual void	RenderBarLines	( FVF::TL0uv** ppv, ElementsDeq* pelements );
+//	virtual void	RenderPoints	( FVF::TL0uv** ppv, ElementsDeq* pelements );
 public:
   					CStatGraph	();
 					~CStatGraph	();
     virtual void 	OnRender	();
     virtual void 	OnDeviceCreate	();
     virtual void 	OnDeviceDestroy	();	
-    IC 	void		SetStyle	(EStyle s)
+
+    IC 	void		SetStyle	(EStyle s, u32 SubGraphID = 0)
     {
-    	style		= s;
+		if (SubGraphID >= subgraphs.size()) return;
+		SubGraphVecIt it = subgraphs.begin() + SubGraphID;
+		it->SetStyle(s);
     }
+	
     IC	void		SetRect		(int l, int t, int w, int h, u32 rect_clr, u32 back_clr)
     {
         lt.set		(l,t);
@@ -56,13 +85,25 @@ public:
         mn			= _mn;
         mx			= _mx;
         max_item_count = item_count;
-        while(elements.size()>max_item_count) elements.pop_front();
+		for (SubGraphVecIt it=subgraphs.begin(); it!=subgraphs.end(); it++)
+		{
+			while(it->elements.size()>max_item_count) it->elements.pop_front();
+		};
     }
-    IC	void		AppendItem	(float d, u32 clr)
+    IC	void		AppendItem	(float d, u32 clr, u32 SubGraphID = 0)
     {
+		if (SubGraphID>=subgraphs.size()) return;
+
     	clamp		(d,mn,mx);
-        elements.push_back(SElement(d,clr));
-        while(elements.size()>max_item_count) elements.pop_front();
+		
+		SubGraphVecIt it = subgraphs.begin() + SubGraphID;
+        it->elements.push_back(SElement(d,clr));
+        while(it->elements.size()>max_item_count) it->elements.pop_front();
     };
+	IC	u32			AppendSubGraph	(EStyle S)
+	{
+		subgraphs.push_back(SSubGraph(S));
+		return subgraphs.size()-1;
+	};
 };
 #endif
