@@ -383,6 +383,12 @@
 				RelativePath="blender_decompress.h">
 			</File>
 			<File
+				RelativePath="blender_deffer_aref.cpp">
+			</File>
+			<File
+				RelativePath="blender_deffer_aref.h">
+			</File>
+			<File
 				RelativePath="blender_deffer_flat.cpp">
 			</File>
 			<File
