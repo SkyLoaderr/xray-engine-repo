@@ -310,7 +310,8 @@ bool CMotionManager::PrepareAnimation()
 
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
-	
+	//Msg("** Animation set = [%s]", *anim_it->second.target_name);
+
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
 
@@ -408,23 +409,36 @@ void CMotionManager::ProcessAction()
 	
 	if (seq_playing) cur_anim = *seq_it;
 
-	ApplyParams();
+	spec_params = 0;	
+}
+
+//////////////////////////////////////////////////////////////////////////
+// FinalizeProcessing
+// описание:	на данном этапе выбрана желаемая анимация (cur_anim), построен путь. 
+//				необходимо настроить анимацию: её скорость и скорость движения по путь
+//				если анимация отличается, то установить новую
+//////////////////////////////////////////////////////////////////////////
+void CMotionManager::FinalizeProcessing()
+{
+	// получить скорость при движении по пути
+	if (!pMonster->UpdateVelocityWithPath()) ApplyParams();
 
 	EMotionAnim new_anim;
 	float		a_speed;
+	// получить реальную скорость (физическую)
+	float  real_speed = pMonster->m_fCurSpeed;
 	
-	if (VelocityChain_GetAnim(pMonster->m_fCurSpeed, cur_anim,new_anim, a_speed)) {
+	if (VelocityChain_GetAnim(real_speed, cur_anim,new_anim, a_speed)) {
 		cur_anim = new_anim;
 		pMonster->SetAnimSpeed(a_speed);
 	} else pMonster->SetAnimSpeed(-1.f);
 
+	
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
 	if (cur_anim != prev_anim) ForceAnimSelect();		
-
+	
 	prev_anim	= cur_anim;
-	spec_params = 0;
 }
-
 
 // Установка линейной и угловой скоростей для cur_anim
 void CMotionManager::ApplyParams()
@@ -435,6 +449,7 @@ void CMotionManager::ApplyParams()
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
 	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
 	if (!b_forced_velocity) pMonster->m_velocity_angular.target = item_it->second.velocity->velocity.angular;
+
 }
 
 // Callback на завершение анимации
