@@ -15,7 +15,7 @@
 // This bit is set when cpuid is called with
 // register set to 80000001h (only applicable to AMD)
 #define _3DNOW_FEATURE_BIT			0x80000000
-
+ 
 int IsCPUID()
 {
     __try {
