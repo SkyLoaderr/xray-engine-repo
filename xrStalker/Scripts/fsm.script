@@ -51,13 +51,14 @@ function FSM:run()
 	log	("you better run")
 
 	while true do
+		local transition_vector = self.transition_matrix[self.current_state]
 		table.foreach(transition_vector, 
 					  function(k,cond_func) 
 							printf("check_condition %d", to_state_num1)
-							--if cond_func(self.npc) == true then
-							--	self.current_state = k
-							--	return true
-							--end
+							if cond_func(self.npc) == true then
+								self.current_state = k
+								return true
+							end
 							return nil
 					  end)
 		wait()
