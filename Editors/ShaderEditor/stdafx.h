@@ -130,7 +130,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "xrXRC.h"
 
 	#include "CustomObject.h"
-	#include "EditorPreference.h"
+	#include "EditorPreferences.h"
 #endif
 
 #ifdef _LEVEL_EDITOR
