@@ -2,19 +2,22 @@
 		+ TODO: Blender compiling for editor
 		. TODO: Blender compiling for different number of layers
 
+	/ SOUND
+		+ TODO: Rolloff
+		+ TODO: Apply effects volume
+		+ TODO: Culling			(by volume and attenuation)
+		. TODO: Wave-tracing	(identity sphere, with probability)
+
 	/ OPTIMIZATION
 		. TODO: Batch culling
 		. TODO: collision database simplification
 
 	/ EFFECTS
-		+ TODO: Sound-rolloff
 		+ TODO: Blurred output, gray output
 		+ TODO: Static HeightMap
 		. TODO: Dynamic HeightMap
 		+ TODO: Rain with collisions
 			+ TODO: Particles
-		. TODO: Sound-wave-tracing
-		. TODO: Sound-manager-volume
 		. TODO: Ground Fog
 		. TODO: Lighting model
 			. TODO: Flash-lighting (ala Kreed :)
