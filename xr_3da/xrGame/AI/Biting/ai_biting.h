@@ -283,8 +283,9 @@ public:
 	virtual void				renderable_Render		()							{return inherited::renderable_Render();} 
 };
 
-//#pragma warning( default : 4250 )
-
 #include "ai_biting_inline.h"
+
+
+
 
 

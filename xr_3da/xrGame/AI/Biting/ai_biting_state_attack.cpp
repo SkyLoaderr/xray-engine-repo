@@ -141,7 +141,7 @@ void CBitingAttack::Run()
 				
 			LOG_EX("ATTACK: RUN");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
-			pMonster->b_try_min_time		= false;
+			pMonster->CMonsterMovement::set_try_min_time(false);
 
 			DO_IN_TIME_INTERVAL_BEGIN(LastTimeRebuild,100 + 50.f * dist);
 				bNeedRebuild = true; 

@@ -103,6 +103,7 @@ IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_i
 		perform_search		(start_vertex_id);
 		if (!failed() && dest_vertex_id) 
 			*dest_vertex_id	= m_selected_vertex_id;
+		//Msg("Select Location inside...");
 	}
 	else m_failed			= false;
 }

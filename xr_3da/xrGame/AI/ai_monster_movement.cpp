@@ -27,11 +27,14 @@ void CMonsterMovement::Init()
 	VERIFY(pMonster);
 	
 	MotionStats		= xr_new<CMotionStats> (pMonster);
+
+	reinit();
 }
 
 void CMonsterMovement::reinit()
 {
-	b_try_min_time	= false;
+	b_try_min_time		= false;
+	time_last_approach	= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -96,10 +99,8 @@ void CMonsterMovement::Path_ApproachPoint(Fvector position)
 	bool new_params = false;
 
 	// перестраивать если дошёл до конца пути
-	if (NeedRebuildPath(2,0.5f)) {
-		new_params = true;
-		Msg("* New Params true!!!");
-	}
+	if (NeedRebuildPath(2,0.5f)) new_params = true;
+
 	// перестраивать если вышел временной квант
 	if (m_tSelectorApproach->m_dwCurTime  + 2000 < pMonster->m_dwCurrentTime) new_params = true;
 
@@ -117,21 +118,55 @@ void CMonsterMovement::Path_ApproachPoint(Fvector position)
 		CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 		InitSelector(*m_tSelectorApproach, position);
 
-		Msg("Selectoring... My pos [%.3f,%.3f,%.3f] Target = [%f,%f,%f]", VPUSH(Position()), VPUSH(position));
 		CLevelLocationSelector::set_query_interval(3000);	
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Move To Target
 void CMonsterMovement::MoveToTarget(const CEntity *entity) 
 {
 	SetPathParams(entity->level_vertex_id(), get_valid_position(entity, entity->Position()));
-
 }
 
 void CMonsterMovement::MoveToTarget(const Fvector &pos, u32 node_id) 
 {
 	SetPathParams(node_id,pos);
 }
+
+
+void CMonsterMovement::MoveToTarget(const Fvector &pos)
+{
+	bool need_rebuild = false;
+	// перестраивать если дошёл до конца пути
+	if (NeedRebuildPath(2,0.5f)) {
+		need_rebuild = true;
+	}
+	
+	// перестраивать если вышел временной квант
+	if (time_last_approach + 2000 < pMonster->m_dwCurrentTime) need_rebuild = true;
+
+	if (!need_rebuild) return;
+
+	// если нода в прямой видимости - не использовать селектор
+	u32 node_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),pos);
+	if (node_id != u32(-1)) {
+		SetPathParams(node_id, pos);
+		LOG_EX("SetPathParams");
+	} else {
+		CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
+		InitSelector(*m_tSelectorApproach, pos);
+		CLevelLocationSelector::set_query_interval(3000);	
+		LOG_EX("SetSelectorPathParams");
+		SetSelectorPathParams();
+	}
+	
+	// сохранить время последнего перестраивания пути
+	time_last_approach = pMonster->m_dwCurrentTime;
+}
+//////////////////////////////////////////////////////////////////////////
+
+
 
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
@@ -194,6 +229,10 @@ void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos
 void CMonsterMovement::SetSelectorPathParams()
 {
 	set_path_type (CMovementManager::ePathTypeLevelPath);
+	
+	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
+	use_selector_path(true);
+
 	pMonster->SetupVelocityMasks(false);
 }
 

@@ -20,13 +20,11 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
-
-	LOG_EX("---------------------------------------------------------");
-	LOG_EX2("-- Next Frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
-	LOG_EX2("-- Current Node [%u], Current Pos = [%f,%f,%f]", *"*/ level_vertex_id(), VPUSH(Position()) /*"*);
-	LOG_EX2("-- Target Node [%u] Target Pos = [%f,%f,%f]", *"*/ dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id(), VPUSH(Level().CurrentEntity()->Position()) /*"*);
-	LOG_EX("---------------------------------------------------------");
-
+//	LOG_EX("---------------------------------------------------------");
+//	LOG_EX2("-- Next Frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
+//	LOG_EX2("-- Current Node [%u], Current Pos = [%f,%f,%f]", *"*/ level_vertex_id(), VPUSH(Position()) /*"*);
+//	LOG_EX2("-- Target Node [%u] Target Pos = [%f,%f,%f]", *"*/ dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id(), VPUSH(Level().CurrentEntity()->Position()) /*"*);
+//	LOG_EX("---------------------------------------------------------");
 
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
 
@@ -49,32 +47,11 @@ void CAI_Biting::Think()
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
-
+	
 // Test /////
-	
-	MotionMan.m_tAction						= ACT_RUN;
-	Fvector position = Level().CurrentEntity()->Position();
-	//position.y += 10.f;
 
-	Fvector new_pos;
-	Fvector dir;
-	dir.sub(Position(),position);
-	new_pos.mad(position, dir,20.f);
-	position = new_pos;
-
-	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
-	InitSelector(*m_tSelectorApproach, position);
-	CLevelLocationSelector::set_query_interval(3000);	
-	
-	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
-	CMovementManager::use_selector_path(true);
-	
-	SetSelectorPathParams					();
-	
-	HDebug->L_Clear();
-	HDebug->L_AddPoint(position, 0.35f, D3DCOLOR_XRGB(0,255,255)); 
-
-
+//	MotionMan.m_tAction						= ACT_RUN;
+//	CMonsterMovement::MoveToTarget(Level().CurrentEntity()->Position());
 
 /////////////
 

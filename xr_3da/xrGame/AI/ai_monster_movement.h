@@ -10,55 +10,64 @@ class CAI_Biting;
 
 class CMonsterMovement : virtual public CMovementManager {
 	typedef CMovementManager inherited;
-public:
 
 	CAI_Biting			*pMonster;
-
 	bool				b_try_min_time;
+
+	TTime				time_last_approach;
+
+public:
+
 
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
 
 	CMotionStats		*MotionStats;
-	
-	
-	void MoveToTarget			(const CEntity *entity); 
-	void MoveToTarget			(const Fvector &pos, u32 node_id);
-	bool IsMoveAlongPathFinished();
-	bool IsMovingOnPath			();
-	bool ObjectNotReachable		(const CEntity *entity);
+
+	// -------------------------------------------------------------------
+	void	MoveToTarget			(const CEntity *entity); 
+	void	MoveToTarget			(const Fvector &pos, u32 node_id);
+	void	MoveToTarget			(const Fvector &pos);
+	// -------------------------------------------------------------------
+
+	bool	IsMoveAlongPathFinished();
+	bool	IsMovingOnPath			();
+	bool	ObjectNotReachable		(const CEntity *entity);
+
+	// -------------------------------------------------------------------
 
 	bool	NeedRebuildPath		(u32 n_points);
 	bool	NeedRebuildPath		(float dist_to_end);
 	bool	NeedRebuildPath		(u32 n_points, float dist_to_end);
 
+	// -------------------------------------------------------------------
 
+	IC	void	set_try_min_time	(bool new_val) {b_try_min_time = new_val;}
 
+	// -------------------------------------------------------------------
 
 public:
-			CMonsterMovement		();
-			~CMonsterMovement		();
+				CMonsterMovement		();
+				~CMonsterMovement		();
 
 			void	Init			();
 	virtual void	Load			(LPCSTR section);
 	virtual void	reinit			();
 			
-	void	Frame_Init				();
-	void	Frame_Update			();
-	void	Frame_Finalize			();
+	void		Frame_Init				();
+	void		Frame_Update			();
+	void		Frame_Finalize			();
 	
 
 public:	
 	
-	void			InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
-	void			Path_GetAwayFromPoint			(Fvector position, float dist);
-	void			Path_ApproachPoint				(Fvector position);
+	void		InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
+	void		Path_GetAwayFromPoint			(Fvector position, float dist);
+	void		Path_ApproachPoint				(Fvector position);
 
-	
-	
-	void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
-	void			SetSelectorPathParams			();
+	void		SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
+	void		SetSelectorPathParams			();
 
-	void			WalkNextGraphPoint();
+	void		WalkNextGraphPoint();
 
 };

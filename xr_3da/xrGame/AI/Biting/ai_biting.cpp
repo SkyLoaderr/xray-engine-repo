@@ -62,6 +62,7 @@ void CAI_Biting::Init()
 	bSpeedDiffer					= false;
 	time_start_speed_differ			= 0;
 
+	CMonsterMovement::Init();
 }
 
 void CAI_Biting::reinit()
