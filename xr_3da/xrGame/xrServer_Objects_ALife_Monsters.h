@@ -213,6 +213,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_switch_online		() const;
 	virtual bool					can_switch_offline		() const;
+#ifdef XRGAME_EXPORTS
+	virtual void					on_spawn				();
+#endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureAbstract)
 #define script_type_list save_type_list(CSE_ALifeCreatureAbstract)

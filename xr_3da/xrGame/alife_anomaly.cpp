@@ -13,6 +13,7 @@
 #include "alife_graph_registry.h"
 #include "alife_spawn_registry.h"
 #include "ai_space.h"
+#include "monster_community.h"
 
 using namespace ALife;
 
@@ -78,6 +79,17 @@ CSE_ALifeDynamicObject *CSE_ALifeSmartZone::tpfGetBestDetector	()
 
 void CSE_ALifeDynamicObject::on_spawn		()
 {
+}
+
+void CSE_ALifeCreatureAbstract::on_spawn		()
+{
+	if (smart_cast<CSE_ALifeGroupAbstract*>(this))
+		return;
+
+	MONSTER_COMMUNITY monster_community;
+	monster_community.set	(pSettings->r_string(s_name, "species"));
+	if(monster_community.team() != 255)
+		s_team = monster_community.team();
 }
 
 void CSE_ALifeAnomalousZone::on_spawn						()
