@@ -10,6 +10,28 @@
 #include "ai_alife.h"
 
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+void vfPrintLargeString(const char *S1, const char *S, const int i, const int j, const u32 u)
+{
+	string128	S2;
+	for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+		memcpy(S2,S + k*u,u*sizeof(char));
+		if (k == m - 1)
+			S2[l - k*u]=0;
+		else
+			S2[u] = 0;
+		if (!k)
+			if (m > 1)
+				Msg("* %s %d : %d[\n* %s",S1,i,j,S2);
+			else
+				Msg("* %s %d : %d[%s]",S1,i,j,S2);
+		else
+			if (k == m - 1)
+				Msg("* %s]",S2);
+			else
+				Msg("* %s",S2);
+	}
+}
+
 void CAI_ALife::vfListObjects()
 {
 	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
@@ -61,28 +83,8 @@ void CAI_ALife::vfListLocations()
 			strcat(S,itoa(*it1,S1,10));
 		}
 
-		if (j) {
-			const u32 u = 105;
-			string128	S2;
-			for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-				memcpy(S2,S + k*u,u*sizeof(char));
-				if (k == m - 1)
-					S2[l - k*u]=0;
-				else
-					S2[u] = 0;
-				if (!k)
-					if (m > 1) {
-						Msg("* Graph vertex ID %d : %d[\n* %s",i,j,S2);
-					}
-					else
-						Msg("* Graph vertex ID %d : %d[%s]",i,j,S2);
-				else
-					if (k == m - 1)
-						Msg("* %s]",S2);
-					else
-						Msg("* %s",S2);
-			}
-		}
+		if (j)
+			vfPrintLargeString("Graph vertex ID",S,i,j,105);
 	}
 	Msg("Total %d graph vertexes",i);
 }
@@ -104,27 +106,8 @@ void CAI_ALife::vfListTerrain()
 			strcat(S,itoa(*it1,S1,10));
 		}
 
-		if (j) {
-			const u32 u = 105;
-			string128	S2;
-			for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-				memcpy(S2,S + k*u,u*sizeof(char));
-				if (k == m - 1)
-					S2[l - k*u]=0;
-				else
-					S2[u] = 0;
-				if (!k)
-					if (m > 1)
-						Msg("* Terrain location ID %d : %d[\n* %s",i,j,S2);
-					else
-						Msg("* Terrain location ID %d : %d[%s]",i,j,S2);
-				else
-					if (k == m - 1)
-						Msg("* %s]",S2);
-					else
-						Msg("* %s",S2);
-			}
-		}
+		if (j)
+			vfPrintLargeString("Terrain location ID",S,i,j,105);
 	}
 	_FREE(S);
 	Msg("Total %d terrain locations",i);
@@ -132,11 +115,11 @@ void CAI_ALife::vfListTerrain()
 
 void CAI_ALife::vfListSpawnPoints()
 {
-	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
-	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
+	SPAWN_IT	it = m_tpSpawnPoints.begin();
+	SPAWN_IT	E  = m_tpSpawnPoints.end();
 	Msg("%s->Listing spawn points :",cName());
 	for (int i=0; it != E; it++, i++)
-		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
+		Msg("* %4d : [MDL=%10s][GID=%d]",i,(*it).caModel,(*it).wGroupID);
 	Msg("Total %d spawn points",i);
 }
 
@@ -211,5 +194,10 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 
 void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 {
+}
+
+void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
+{
+	SSpawnPoint &tSpawnPoint = m_tpSpawnPoints[tSpawnID];
 }
 #endif

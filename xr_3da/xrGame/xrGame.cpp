@@ -360,6 +360,28 @@ public:
 			Log("!Not a single player game!");
 	}
 };
+
+class CCC_ALifeSpawnInfo : public CConsoleCommand {
+public:
+	CCC_ALifeSpawnInfo(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				ALife::_SPAWN_ID id1 = ALife::_SPAWN_ID(-1);
+				sscanf(args ,"%d",&id1);
+				if (id1 >= tpGame->m_tALife.m_tpSpawnPoints.size())
+					Msg("Invalid spawn-point ID! (%d)",id1);
+				else
+					tpGame->m_tALife.vfSpawnPointInfo(id1);
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
 #endif
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public CConsoleCommand
@@ -416,6 +438,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);		// object info
 		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);		// event info
 		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);		// task info
+		CMD1(CCC_ALifeSpawnInfo,	"alife_is"				);		// spawn-point info
 #endif
 
 		// hud

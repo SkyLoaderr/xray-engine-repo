@@ -119,5 +119,6 @@ public:
 			void					vfObjectInfo			(_OBJECT_ID	&tObjectID);
 			void					vfEventInfo				(_EVENT_ID &tEventID);
 			void					vfTaskInfo				(_TASK_ID &tTaskID);
+			void					vfSpawnPointInfo		(_SPAWN_ID &tSpawnID);
 #endif
 };
