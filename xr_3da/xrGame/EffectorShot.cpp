@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot()
+CEffectorShot::CEffectorShot() : CEffector(10000.f)
 {
 
 }
