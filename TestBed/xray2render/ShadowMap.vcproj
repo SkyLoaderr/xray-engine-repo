@@ -363,6 +363,9 @@
 				RelativePath="NVMeshMender.h">
 			</File>
 			<File
+				RelativePath="NVMeshMenderD3DX.cpp">
+			</File>
+			<File
 				RelativePath="nv_algebra.h">
 			</File>
 			<File

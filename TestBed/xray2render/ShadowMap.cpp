@@ -360,7 +360,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Fill in input list
 		std::vector<NVMeshMender::VertexAttribute> inputAtts;
 		inputAtts.push_back(positionAtt);
-		// inputAtts.push_back(normalAtt);
+		inputAtts.push_back(normalAtt);
 		inputAtts.push_back(indexAtt);
 		inputAtts.push_back(texCoordAtt);
 
@@ -383,13 +383,13 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 		// Mender!!!!
 		NVMeshMender mender;
-		if (!mender.Munge(
+		if (!mender.MungeD3DX(
 			inputAtts,								// input attributes
 			outputAtts,								// outputs attributes
 			3.141592654f / 3.0f,					// tangent space smooth angle
 			0,										// no texture matrix applied to my texture coordinates
 			NVMeshMender::FixTangents,				// fix degenerate bases & texture mirroring
-			NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+			NVMeshMender::FixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
 			NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
@@ -562,7 +562,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,
 		0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,256,256,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_LUMINANCE,4.f);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_LUMINANCE,8.f);
 
 	{
 		const DWORD	size				= 256;
