@@ -848,7 +848,6 @@ void CAI_Soldier::UnderFire()
 
 void CAI_Soldier::Think()
 {
-	
 	bStopThinking = false;
 	do {
 		switch(eCurrentState) {
