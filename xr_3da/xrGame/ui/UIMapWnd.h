@@ -16,6 +16,8 @@
 #include "UIMapSpot.h"
 #include "UIMapBackground.h"
 
+#include "UICharacterInfo.h"
+
 class CUIMapWnd: public CUIDialogWnd
 {
 private:
@@ -45,16 +47,21 @@ protected:
 
 	CUIStatic UIStaticTop;
 	CUIStatic UIStaticBottom;
+
+	//верхушка PDA для кнопочек переключения режима
+	CUIStatic			UIPDAHeader;
 	
 	CUICheckButton UICheckButton1;
 	CUICheckButton UICheckButton2;
 	CUICheckButton UICheckButton3;
 	CUICheckButton UICheckButton4;
 		
+	//окошко с информацией
 	CUIStatic UIStaticInfo;
+	//информация о пресонаже
+	CUICharacterInfo UICharacterInfo;
 
 	CUIMapBackground UIMapBackground;
-
 
 	//подложка для карты
 	CUIStaticItem	landscape;

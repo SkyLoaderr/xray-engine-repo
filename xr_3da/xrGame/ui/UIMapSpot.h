@@ -8,11 +8,15 @@
 #include "UIButton.h"
 
 
+#define MAP_ICON_WIDTH  64
+#define MAP_ICON_HEIGHT 64
 
-class CUIMapSpot: public CUIStatic
+
+
+class CUIMapSpot: public CUIButton
 {
 private:
-	typedef CUIStatic inherited;
+	typedef CUIButton inherited;
 public:
 	CUIMapSpot();
 	virtual ~CUIMapSpot();
@@ -27,4 +31,7 @@ public:
 	//позиция точки в мировой системе координат,
 	//нужно если m_pObject NULL
 	Fvector m_vWorldPos;
+	
+	//центрирование иконки (вкл/выкл)
+	bool m_bCenter;
 };

@@ -21,7 +21,9 @@ public:
 	virtual void InitMapBackground();
 	virtual void Draw();
 	virtual void Update();
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
+	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST} E_MESSAGE;
 
 
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);
@@ -53,9 +55,12 @@ public:
 	Fbox m_LevelBox;
 	ref_str m_MapTextureName;
 
+
+
 	//вектор обозначений на карте
 	DEFINE_VECTOR	(CUIMapSpot*, MAP_SPOT_VECTOR, MAP_SPOT_VECTOR_IT);
 	MAP_SPOT_VECTOR m_vMapSpots;
+	CUIMapSpot* m_pActiveMapSpot;
 
 protected:
 	void DrawFogOfWar();
@@ -71,7 +76,7 @@ protected:
 
 
 	//для перетаскивания карты при помощи мыши
-	void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 	int m_iOldMouseX;
 	int m_iOldMouseY;
 	POINT m_previousPos;

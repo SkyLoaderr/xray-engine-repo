@@ -17,7 +17,7 @@
 //#define MAP_VIEW_HEIGHT_METERS 100.f
 
 //сколько пиксилей соответствует одному метру
-#define MAP_PIXEL_TO_METERS ((float)300.f/Device.dwWidth)
+//#define MAP_PIXEL_TO_METERS ((float)600.f/Device.dwWidth)
 #define FOG_OF_WAR_TEXTURE "ui\\ui_fog_of_war"
 #define FOG_TEX_WIDTH		64
 #define FOG_TEX_HEIGHT		64
@@ -43,17 +43,13 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 {
 	CUIWindow::Init(x, y, width, height);
 
-	RECT rect = GetAbsoluteRect();
-
-
-	m_fMapViewWidthMeters =  width*MAP_PIXEL_TO_METERS;
-	m_fMapViewHeightMeters = height*MAP_PIXEL_TO_METERS;
+	m_fMapViewWidthMeters = pSettings->r_float("game_map","local_map_width_meters");
+	//m_fMapViewWidthMeters =  width*MAP_PIXEL_TO_METERS;
+	//m_fMapViewHeightMeters = height*MAP_PIXEL_TO_METERS;
+	m_fMapViewHeightMeters = height*(m_fMapViewWidthMeters/width);
 
 	m_iMapViewWidthPixels = width;
 	m_iMapViewHeightPixels = height;
-
-
-
 	
 	//вычислить ширину одной клеточки тумана в пикселях
 	Fvector cell_world_pos;
@@ -94,6 +90,28 @@ void CUIMapBackground::InitMapBackground()
 
 	UpdateActorPos();
 	UpdateMapSpots();
+
+	m_pActiveMapSpot = NULL;
+}
+
+
+void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	//проверить сообщение от иконок на карте
+	if(m_vMapSpots.end() != std::find(m_vMapSpots.begin(), m_vMapSpots.end(), pWnd))
+	{
+		if(CUIButton::BUTTON_FOCUS_RECEIVED == msg)
+		{
+			m_pActiveMapSpot = dynamic_cast<CUIMapSpot*>(pWnd);
+			GetTop()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED);
+		}
+		else if(CUIButton::BUTTON_FOCUS_LOST == msg)
+		{
+			GetTop()->SendMessage(this, MAPSPOT_FOCUS_LOST);
+			m_pActiveMapSpot = NULL;
+		}
+	}
+	inherited::SendMessage(pWnd, msg, pData);
 }
 
 //перевод из мировой системы координат в координаты карты на экране
@@ -296,6 +314,7 @@ void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 
 void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
+	CUIWindow::OnMouse( x, y, mouse_action);
 	
 	int deltaX = 0;
 	int deltaY = 0;
@@ -416,7 +435,10 @@ void CUIMapBackground::UpdateMapSpots()
 			ConvertToLocal(m_vMapSpots[i]->m_vWorldPos, pos);
 		}
 
-		m_vMapSpots[i]->MoveWindow(pos.x, pos.y);
+		if(m_vMapSpots[i]->m_bCenter)
+			m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT);
+		else
+			m_vMapSpots[i]->MoveWindow(pos.x, pos.y);
 	}
 }
 
