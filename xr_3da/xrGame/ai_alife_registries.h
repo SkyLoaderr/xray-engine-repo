@@ -416,7 +416,6 @@ public:
 	{
 		m_tpSpawnPoints.clear		();
 		m_tpArtefactSpawnPositions.clear();
-		m_tpMonsterDeathPositions.clear();
 	}
 	
 	virtual							~CSE_ALifeSpawnRegistry()
@@ -468,27 +467,7 @@ public:
 		}
 		{
 			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
-			u16						n = S->r_u16();
-			m_tpArtefactSpawnPositions.resize(n);
-			FVECTOR_IT				I = m_tpArtefactSpawnPositions.begin();
-			FVECTOR_IT				E = m_tpArtefactSpawnPositions.end();
-			for ( ; I != E; I++) {
-				(*I).x				= S->r_float();
-				(*I).y				= S->r_float();
-				(*I).z				= S->r_float();
-			}
-		}
-		{
-			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find monster death points chunk in the 'game.spawn'");
-			u16						n = S->r_u16();
-			m_tpMonsterDeathPositions.resize(n);
-			FVECTOR_IT				I = m_tpMonsterDeathPositions.begin();
-			FVECTOR_IT				E = m_tpMonsterDeathPositions.end();
-			for ( ; I != E; I++) {
-				(*I).x				= S->r_float();
-				(*I).y				= S->r_float();
-				(*I).z				= S->r_float();
-			}
+			load_base_vector		(m_tpArtefactSpawnPositions,tFileStream);
 		}
 	};
 };
