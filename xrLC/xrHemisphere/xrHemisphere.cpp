@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "xrHemisphere.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -367,6 +370,57 @@ extern "C"
 		LPVOID					param
 		)
 	{
+		// SELECT table
+		int		h_count, h_table[3];
+		const double (*hemi)[3] = 0;
+		switch (quality)
+		{
+		case 1:	// LOW quality
+			if (ground)	
+			{
+				h_count		= HEMI1_LIGHTS_F;
+				h_table[0]	= 0;
+				h_table[1]	= 2;
+				h_table[2]	= 1;
+				hemi		= hemi_1F;
+			} else {
+				h_count		= HEMI1_LIGHTS;
+				h_table[0]	= 0;
+				h_table[1]	= 1;
+				h_table[2]	= 2;
+				hemi		= hemi_1;
+			}
+			break;
+		case 2:	// HIGH quality
+			if (ground)
+			{
+				h_count		= HEMI2_LIGHTS_F;
+				h_table[0]	= 0;
+				h_table[1]	= 2;
+				h_table[2]	= 1;
+				hemi		= hemi_2F;
+			} else {
+				h_count		= HEMI2_LIGHTS;
+				h_table[0]	= 0;
+				h_table[1]	= 2;
+				h_table[2]	= 1;
+				hemi		= hemi_2;
+			}
+			break;
+		default:// NO 	
+			return;
+		}
+
+		// ITERATE
+		for (int i=0; i<h_count; i++)
+		{
+			float x		= -float(hemi[i][h_table[0]]);
+			float y		= -float(hemi[i][h_table[1]]);
+			float z		= -float(hemi[i][h_table[2]]);
+			float mag	= sqrtf(x*x + y*y + z*z);
+			x /= mag; y /= mag; z /= mag;
+		}
+		
 	}
 	
 };
