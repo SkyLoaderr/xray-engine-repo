@@ -51,7 +51,7 @@ void CPoltergeist::Load(LPCSTR section)
 	
 	if (MotionMan.start_load_shared(CLS_ID)) {
 
-		SVelocityParam velocity_none;
+		SVelocityParam &velocity_none		= movement().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 		SVelocityParam &velocity_turn		= movement().get_velocity(MonsterMovement::eVelocityParameterStand);
 		SVelocityParam &velocity_walk		= movement().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
 		SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);

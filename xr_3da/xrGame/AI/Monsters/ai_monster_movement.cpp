@@ -48,14 +48,19 @@ void CMonsterMovement::Load(LPCSTR section)
 
 	m_selector_approach->Load(section,"selector_approach");
 	
-	load_velocity(section, "Velocity_Stand",			eVelocityParameterStand);
-	load_velocity(section, "Velocity_WalkFwdNormal",	eVelocityParameterWalkNormal);
-	load_velocity(section, "Velocity_RunFwdNormal",		eVelocityParameterRunNormal);
-	load_velocity(section, "Velocity_WalkFwdDamaged",	eVelocityParameterWalkDamaged);
-	load_velocity(section, "Velocity_RunFwdDamaged",	eVelocityParameterRunDamaged);
-	load_velocity(section, "Velocity_Steal",			eVelocityParameterSteal);
-	load_velocity(section, "Velocity_Drag",				eVelocityParameterDrag);
-	load_velocity(section, "Velocity_RunAttack",		eVelocityParameterRunAttack);
+	load_velocity	(section, "Velocity_Stand",			eVelocityParameterStand);
+	load_velocity	(section, "Velocity_WalkFwdNormal",	eVelocityParameterWalkNormal);
+	load_velocity	(section, "Velocity_RunFwdNormal",	eVelocityParameterRunNormal);
+	load_velocity	(section, "Velocity_WalkFwdDamaged",eVelocityParameterWalkDamaged);
+	load_velocity	(section, "Velocity_RunFwdDamaged",	eVelocityParameterRunDamaged);
+	load_velocity	(section, "Velocity_Steal",			eVelocityParameterSteal);
+	load_velocity	(section, "Velocity_Drag",			eVelocityParameterDrag);
+	load_velocity	(section, "Velocity_RunAttack",		eVelocityParameterRunAttack);
+
+	// add idle velocity
+	SVelocityParam velocity_param;
+	m_velocities.insert(mk_pair(eVelocityParameterIdle, velocity_param));
+	detail().add_velocity(eVelocityParameterIdle, CDetailPathManager::STravelParams(velocity_param.velocity.linear,velocity_param.velocity.angular_path,velocity_param.velocity.angular_real));	
 }
 
 void CMonsterMovement::reinit()

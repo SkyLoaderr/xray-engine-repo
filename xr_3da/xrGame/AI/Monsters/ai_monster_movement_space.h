@@ -3,6 +3,7 @@
 namespace MonsterMovement {
 
 	enum EMovementParameters {
+		eVelocityParameterIdle			= u32(1) <<	 1,
 		eVelocityParameterStand			= u32(1) <<  4,
 		eVelocityParameterWalkNormal	= u32(1) <<  3,
 		eVelocityParameterRunNormal		= u32(1) <<  2,
