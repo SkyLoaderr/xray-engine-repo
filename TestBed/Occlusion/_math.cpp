@@ -98,7 +98,7 @@ void InitMath(void)
 {
 	char features[128]="RDTSC";
 
-	Msg("Initializing geometry pipeline and mathematic routines...");
+	// Msg("Initializing geometry pipeline and mathematic routines...");
 	CPU::Detect();
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d clk overhead",
 		CPU::ID.v_name,CPU::ID.model_name,
