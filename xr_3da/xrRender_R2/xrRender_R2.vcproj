@@ -292,6 +292,9 @@
 				RelativePath=".\r2_R_sun.cpp">
 			</File>
 			<File
+				RelativePath=".\r2_R_sun_near.cpp">
+			</File>
+			<File
 				RelativePath="r2_screenshot.cpp">
 			</File>
 			<File
