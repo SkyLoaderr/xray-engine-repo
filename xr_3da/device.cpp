@@ -274,11 +274,11 @@ void CRenderDevice::Destroy	(void) {
 
 	// before destroy
 	bReady = FALSE;
-	Shader.OnDeviceDestroy		();
 	Primitive.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Streams.OnDeviceDestroy		();
-
+	Shader.OnDeviceDestroy		();
+	
 	// real destroy
 	_RELEASE					(Streams_QuadIB);
 	HW.DestroyDevice			();
