@@ -189,8 +189,11 @@ protected:
 	CBlend*						IBlend_Create			();
 
 public:
+#ifdef DEBUG
 	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
 	LPCSTR						LL_MotionDefName_dbg	(LPVOID ptr);
+#endif
+
 	// Low level interface
 	u16							LL_MotionID		(LPCSTR B);
 	u16							LL_PartID		(LPCSTR B);

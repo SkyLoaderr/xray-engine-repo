@@ -99,6 +99,7 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle)
 	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
 }
 
+#ifdef DEBUG
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(u16	ID)
 {
 	CKinematics::accel_map::iterator _I, _E=motion_map->end();
@@ -118,6 +119,8 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
 	return 0;
 }
+#endif
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -748,7 +751,6 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 {
                     int count = BLEND_INST.Blend.size();
 					for (int i=0; i<count; i++){
-						LPCSTR m_nm = K->LL_MotionDefName_dbg(BI[i]->motionID);
 						S[i].set(R+i,BI[i]->blendAmount);
 					}
                     std::sort	(S,S+count);
