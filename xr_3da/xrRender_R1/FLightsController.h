@@ -1,11 +1,13 @@
 #pragma once
 
-#include "light.h"
+#include "..\light.h"
 
+// refs
 class ENGINE_API IReader;
 class ENGINE_API CObject;
-class ENGINE_API CLightTrack;
+class CLightTrack;
 
+// t-defs
 class CLightDB_Static 
 {
 	DEF_VECTOR(vecI,int);

@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "render.h"
 #include "flightscontroller.h"
-#include "xrLevel.h"
+#include "..\xrLevel.h"
 
 // Disables all lights
 void CLightDB_Static::UnselectAll	(void) 

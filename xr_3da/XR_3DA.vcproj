@@ -1489,47 +1489,9 @@
 			<Filter
 				Name="Lighting"
 				Filter="">
-				<Filter
-					Name="Lights manager"
-					Filter="">
-					<File
-						RelativePath=".\FLightsController.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed (for debug only)|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\FLightsController.h">
-					</File>
-					<File
-						RelativePath=".\light.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="LightTrack"
-					Filter="">
-					<File
-						RelativePath=".\LightTrack.cpp">
-					</File>
-					<File
-						RelativePath=".\LightTrack.h">
-					</File>
-				</Filter>
+				<File
+					RelativePath=".\light.h">
+				</File>
 				<Filter
 					Name="research : ShadowMaps"
 					Filter="">
