@@ -27,7 +27,12 @@ IC	CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::~CAbstrac
 {
 }
 
-void CEnemyLocationPredictor::Init						()
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::Init					()
 {
 	m_selector_failed		= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
