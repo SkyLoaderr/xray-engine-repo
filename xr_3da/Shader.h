@@ -10,6 +10,7 @@ class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
 
+#pragma warning(disable : 4275)
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
 {
 	DWORD	dwReference;
@@ -22,6 +23,7 @@ struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
 {
 	DWORD	dwReference;
 };
+#pragma warning(default : 4275)
 
 struct	ENGINE_API		CPass 
 {
