@@ -450,7 +450,9 @@ void CLevel::OnFrame	()
 	inherited::OnFrame	();
 
 	// Physics
+	Device.Statistic.Physics.Begin		();
 	ph_world->Step		(Device.fTimeDelta);
+	Device.Statistic.Physics.End		();
 
 	// Merge visibility data from all units in the team
 	for (DWORD T=0; T<Teams.size(); T++)
