@@ -11,10 +11,18 @@
 
 CSpawn_Event::CSpawn_Event()
 {
-
+	Commands.push_back	(Pair());
 }
 
 CSpawn_Event::~CSpawn_Event()
 {
 
+}
+
+void CSpawn_Event::Save	(CFS_Base& FS)
+{
+	for (int cmd=0; cmd<Commands.size(); cmd++)
+	{
+
+	}
 }

@@ -25,6 +25,11 @@ public:
 		xrP_TOKEN	type;
 		string64	target;	// object name
 		string64	custom;	// custom event
+		Action() {
+			type	= typeNone;
+			target	= "";
+			custom	= "";
+		}
 	};
 	struct	Pair
 	{
@@ -32,14 +37,21 @@ public:
 		xrP_CLSID	Target;
 		Action		OnEnter;
 		Action		OnExit;
+		Pair() {
+			bOnce	= true;
+			Target	= CLSID_OBJECT_ACTOR;
+		}
 	};
 public:
-	
-
 	vector<Pair>	Commands;
-
-
 public:
+	virtual		LPCSTR		getComment		()				{ return "Event generator"; };
+	
+	virtual		void		Save			(CFS_Base&  FS);
+	virtual		void		Load			(CStream&	FS);
+	
+	virtual		void		Execute			();
+
 	CSpawn_Event();
 	virtual ~CSpawn_Event();
 };
