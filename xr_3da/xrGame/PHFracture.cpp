@@ -61,7 +61,7 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	FRACTURE_I i=m_fractures.begin(),i_from=m_fractures.begin()+from,e=m_fractures.end();
 	u16 end_geom=i_from->m_end_geom_num;
 	u16 begin_geom_num=i_from->m_start_geom_num;
-	u16 leaved_geoms=begin_geom_num+1;
+	u16 leaved_geoms=begin_geom_num;
 	u16 passed_geoms=end_geom-begin_geom_num;
 	if(i_from==e) return;
 
@@ -77,7 +77,7 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	{
 		u16 &cur_end_geom	=i->m_end_geom_num;
 		u16 &cur_geom		=i->m_start_geom_num;
-		if(cur_geom>end_geom) break;
+		if(cur_geom>=end_geom) break;
 		cur_end_geom=cur_end_geom-leaved_geoms;
 		cur_geom=cur_geom-leaved_geoms;
 	}
@@ -98,7 +98,8 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	//pass fractures not including end fracture
 	dest_fract_holder->m_fractures.insert(dest_fract_holder->m_fractures.end(),i_from+1,i_to);
 	//erase passed fracture allong whith used fracture
-
+	u16 deb=u16(i_to-i_from-1);
+	deb++;deb--;
 	}
 	m_fractures.erase(i_from,i_to);//erase along whith used fracture
 }

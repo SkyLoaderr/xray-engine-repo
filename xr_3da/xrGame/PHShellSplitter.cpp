@@ -227,7 +227,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	//InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
 
 	m_pShell->PassEndJoints(split_elem.second.m_end_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
-	new_shell_last_desc->AfterSetActive();
+
 	//m_splitters.erase(m_splitters.begin()+aspl);
 	//now aspl points to the next splitter
 	if((split_elem.first)->FracturesHolder())//if this element can be splitted add a splitter for it
@@ -236,6 +236,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	//pass splitters taking into account that one element was olready added
 	PassEndSplitters(split_elem.second,new_shell_last_desc,1,0);
 
+	new_shell_last_desc->AfterSetActive();
 
 	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
 
