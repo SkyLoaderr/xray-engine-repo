@@ -34,13 +34,13 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 	Device.Shader.DeferredLoad	(TRUE);
 	pHUD->Load		();
 
-	if (net_Connect(name_of_server)) 
+	if (Connect(name_of_server)) 
 	{
 		// Determine internal level-ID
 		LPCSTR	level_name	= net_SessionName	();
 		int		level_id	= pApp->Level_ID(level_name);
 		if	(level_id<0)	{
-			net_Disconnect	();
+			Disconnect		();
 			pApp->LoadEnd	();
 			return FALSE;
 		}
