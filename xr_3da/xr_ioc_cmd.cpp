@@ -276,7 +276,6 @@ public:
 ENGINE_API float	psHUD_FOV=0.5f;
 
 extern int			psSkeletonUpdate;
-extern int			psPhysicsFPS;
 extern int			rsDVB_Size;
 extern int			rsDIB_Size;
 extern int			psNET_ClientUpdate;

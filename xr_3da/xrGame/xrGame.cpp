@@ -29,7 +29,6 @@
     
 ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
-extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
 
 // console commands
@@ -627,10 +626,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,				"ai_dbg_brain",			&psAI_Flags,	aiBrain);
 		CMD3(CCC_Mask,				"ai_dbg_motion",		&psAI_Flags,	aiMotion);
 		CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
-
-		// physics
-		CMD4(CCC_Integer,			"ph_fps",				&psPhysicsFPS,	10,1000);
-		CMD4(CCC_Float,				"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
 
 		// keyboard binding
 		CCC_RegisterInput			();
