@@ -188,7 +188,7 @@ void CSceneObject::Scale( Fvector& center, Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    if (m_pRefs->IsDynamic()){
+    if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }
@@ -212,7 +212,7 @@ void CSceneObject::LocalScale( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    if (m_pRefs->IsDynamic()){
+    if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }

@@ -130,7 +130,7 @@ bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
 		p[1].set(*it);
 		p[2].set(((it+1)==src.end())?src.front():*(it+1));
         range=UI.ZFar();
-		if (RAPID::TestRayTri2(start,direction,p,range)){
+		if (CDB::TestRayTri2(start,direction,p,range)){
         	if ((range>=0)&&(range<distance)){
             	distance=range;
 	            bPick=true;

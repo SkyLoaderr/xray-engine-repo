@@ -41,7 +41,7 @@ public:
     IC LPCSTR		GetRefName				() {VERIFY(m_pRefs); return m_pRefs->GetName();}
 
     // statistics methods
-	IC bool 		IsDynamic     			()	{return (m_pRefs->IsDynamic()); }
+	IC bool 		IsDynamic     			()	{return (m_pRefs->IsFlag(CEditableObject::eoDynamic)); }
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(const char* surf_name);

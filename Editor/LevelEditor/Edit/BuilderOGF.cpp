@@ -21,7 +21,7 @@ bool SceneBuilder::SaveObjectOGF(const char* name, CEditableObject* obj){
     m_iDefaultSectorNum = 0;
     UI.ProgressStart(3,"Building OGF...");
 	UI.ProgressUpdate(1);
-    bool bRes = BuildObjectOGF(F, obj, name, FS.m_GameMeshes);
+    bool bRes = BuildObjectOGF(F, obj, name, Engine.FS.m_GameMeshes);
 	UI.ProgressUpdate(2);
     F.SaveTo(name,0);
     UI.ProgressEnd();

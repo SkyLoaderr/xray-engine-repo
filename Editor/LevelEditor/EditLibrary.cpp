@@ -184,12 +184,12 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 
         obj_fn					= ChangeFileExt(nm,".object");
         thm_fn					= ChangeFileExt(nm,".thm");
-        FS.m_Objects.Update(obj_fn);
-        FS.m_Objects.Update(thm_fn);
-        if (FS.Exist(thm_fn.c_str())){
+        Engine.FS.m_Objects.Update(obj_fn);
+        Engine.FS.m_Objects.Update(thm_fn);
+        if (Engine.FS.Exist(thm_fn.c_str())){
         	// если версии совпадают
-            int obj_age 		= FS.GetFileAge(obj_fn);
-            int thm_age 		= FS.GetFileAge(thm_fn);
+            int obj_age 		= Engine.FS.GetFileAge(obj_fn);
+            int thm_age 		= Engine.FS.GetFileAge(thm_fn);
             if (obj_age&&(obj_age==thm_age)){
 	            m_Thm 			= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
             }else{
@@ -302,7 +302,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
             AnsiString obj_name, tex_name;
             obj_name = ChangeFileExt(obj->GetName(),".object");
             tex_name = ChangeFileExt(obj_name,".thm");
-            FS.m_Objects.Update(obj_name);
+            Engine.FS.m_Objects.Update(obj_name);
             src_age = age;
             if (Device.MakeScreenshot(pixels,w,h)){
 	            EImageThumbnail tex(tex_name.c_str(),EImageThumbnail::EITObject,false);
@@ -360,7 +360,7 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
     TElTreeItem* node = tvObjects->Selected;
     if (node&&FOLDER::IsObject(node)){
     	AnsiString fn;
-		if (FS.GetSaveName(FS.m_GameDO,fn)){
+		if (Engine.FS.GetSaveName(Engine.FS.m_GameDO,fn)){
 		    AnsiString name;
     		FOLDER::MakeName(node,0,name,false);
 			// make detail
@@ -386,7 +386,7 @@ void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj){
 		    AnsiString save_nm;
-        	if (FS.GetSaveName(FS.m_GameDO,save_nm)){
+        	if (Engine.FS.GetSaveName(Engine.FS.m_GameDO,save_nm)){
 //------------------------------------------------------------------------------
 				CFS_Memory FS;
                 FS.open_chunk(0);
@@ -436,13 +436,13 @@ void __fastcall TfrmEditLibrary::ebExportSkelClick(TObject *Sender)
         int age;
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj){
-            if (!obj->IsDynamic()){
+            if (!obj->IsFlag(CEditableObject::eoDynamic)){
                 ELog.DlgMsg(mtInformation, "Export only dynamic object!");
 				Lib.RemoveEditObject(obj);
                 return;
             }
 		    AnsiString save_nm;
-        	if (FS.GetSaveName(FS.m_GameMeshes,save_nm)){
+        	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,save_nm)){
                 if (!Builder.SaveObjectSkeletonOGF(save_nm.c_str(),obj)){
                     ELog.DlgMsg(mtInformation, "Can't save object '%s'.", obj->GetName());
                 }else{
@@ -466,7 +466,7 @@ void __fastcall TfrmEditLibrary::ebExportSkelClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
     AnsiString open_nm, save_nm, nm;
-    if (FS.GetOpenName(FS.m_Import,open_nm,true)){
+    if (Engine.FS.GetOpenName(Engine.FS.m_Import,open_nm,true)){
     	// remove selected object
         ResetSelected();
 		// load
@@ -477,15 +477,15 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 		AnsiString path;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             nm = *it;
-            nm = nm.Delete(1,strlen(FS.m_Import.m_Path));
+            nm = nm.Delete(1,strlen(Engine.FS.m_Import.m_Path));
             CEditableObject* O = new CEditableObject(nm.c_str());
             if (O->Load(it->c_str())){
-                O->m_ObjVer.f_age = FS.GetFileAge(*it);
+                O->m_ObjVer.f_age = Engine.FS.GetFileAge(*it);
                 save_nm = ChangeFileExt(nm,".object");
-                if (FS.GetSaveName(FS.m_Objects,save_nm,path.c_str())){
+                if (Engine.FS.GetSaveName(Engine.FS.m_Objects,save_nm,path.c_str())){
                 	path = ExtractFilePath(save_nm);
                     O->SaveObject(save_nm.c_str());
-                    FS.MarkFile(*it);
+                    Engine.FS.MarkFile(*it);
                     bNeedUpdate=true;
                 }else bNeedBreak=true;
             }else{

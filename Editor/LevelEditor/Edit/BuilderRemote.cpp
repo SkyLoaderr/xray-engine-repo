@@ -148,7 +148,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
     	parent.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
 
-    if (object->IsDynamic()){
+    if (object->IsFlag(CEditableObject::eoDynamic)){
 	    // update mesh
 	    if (!(mesh->m_LoadState&EMESH_LS_FNORMALS)) mesh->GenerateFNormals();
 		Fvector N;
@@ -184,7 +184,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     int offs = 0;
                     for (DWORD t=0; t<dwTexCnt; t++){
                         st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
-                        st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
+                        st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
                             t--;
@@ -208,7 +208,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     int offs = 0;
                     for (DWORD t=0; t<dwTexCnt; t++){
                         st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
-                        st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
+                        st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
                             t--;

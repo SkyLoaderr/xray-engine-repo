@@ -51,8 +51,8 @@ bool SceneBuilder::BuildLTX(){
 	strcpy( ltx_filename, "level.ltx" );
 	m_LevelPath.Update( ltx_filename );
 
-    if (FS.Exist(ltx_filename, false))
-    	FS.MarkFile(ltx_filename);
+    if (Engine.FS.Exist(ltx_filename, false))
+    	Engine.FS.MarkFile(ltx_filename);
 
 	// -- defaults --
     CFS_Memory F;

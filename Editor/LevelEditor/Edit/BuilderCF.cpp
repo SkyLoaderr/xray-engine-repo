@@ -29,6 +29,8 @@ struct st_VCFFace{
 DEFINE_VECTOR(st_VCFFace,VCFFaceVec,VCFFaceIt);
 
 bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditableObject* obj){
+	ELog.DlgMsg(mtError,"Error BuildObjectVCF");
+/*
     FvectorVec		V;
     VCFFaceVec		F;
 
@@ -76,7 +78,7 @@ bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditableObject* obj){
 	// Data
 	FM.write		(CLP.getV(),CLP.getVS()*sizeof(Fvector));
 	FM.write		(CLP.getT(),CLP.getTS()*sizeof(RAPID::tri));
-
+*/
     return true;
 }
 //----------------------------------------------------

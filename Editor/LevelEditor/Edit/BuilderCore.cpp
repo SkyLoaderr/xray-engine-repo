@@ -17,7 +17,7 @@
 bool SceneBuilder::PreparePath(){
     char temp[1024];
     strcpy(temp, Scene.m_LevelOp.m_FNLevelPath.c_str());
-    if(!ExtractFileDrive(Scene.m_LevelOp.m_FNLevelPath).Length())FS.m_GameLevels.Update(temp);
+    if(!ExtractFileDrive(Scene.m_LevelOp.m_FNLevelPath).Length())Engine.FS.m_GameLevels.Update(temp);
    	m_LevelPath.Init( temp, "\\", "", "");
     return true;
 }
