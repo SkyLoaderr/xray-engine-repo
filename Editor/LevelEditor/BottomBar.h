@@ -71,7 +71,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N3;
 	TExtBtn *ebStat;
 	TPanel *paSel;
-	TMenuItem *miDrawSectorEdgedSFaces;
+	TMenuItem *miDrawSectorSolid;
     TPanel *paUICursor;
     TMenuItem *N1;
     TMenuItem *miShowHint;

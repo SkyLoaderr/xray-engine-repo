@@ -86,26 +86,6 @@ bool SceneBuilder::BuildLTX(){
         }
 	}
 
-	// -- add event --
-	i   = Scene.FirstObj(OBJCLASS_EVENT);
-    _E  = Scene.LastObj(OBJCLASS_EVENT);
-    for(;i!=_E;i++){
-        CEvent *obj = (CEvent*)(*i);
-        if( obj->eEventType==CEvent::eetBox ){
-    		pIni->WriteString ("mobileobjects", obj->GetName(), obj->GetName() );
-            pIni->WriteString(obj->GetName(),"class","EVENT");
-            pIni->WriteString(obj->GetName(),"target_class",obj->sTargetClass.c_str());
-            pIni->WriteString(obj->GetName(),"OnEnter",obj->sOnEnter.c_str());
-            pIni->WriteString(obj->GetName(),"OnExit",obj->sOnExit.c_str());
-            pIni->WriteVector(obj->GetName(),"position",obj->GetPosition());
-			Fmatrix mRotate; mRotate.setHPB(obj->GetRotate().y, obj->GetRotate().x, obj->GetRotate().z);
-            pIni->WriteVector(obj->GetName(),"direction",mRotate.k);
-            pIni->WriteVector(obj->GetName(),"normal",mRotate.j);
-            pIni->WriteVector(obj->GetName(),"scale",obj->GetScale());
-            pIni->WriteString(obj->GetName(),"execute_once",obj->bExecuteOnce?"on":"off");
-        }
-	}
-
 	// -- add static sounds --
 	if (Scene.ObjCount(OBJCLASS_SOUND)) {
 		i = Scene.FirstObj(OBJCLASS_SOUND);

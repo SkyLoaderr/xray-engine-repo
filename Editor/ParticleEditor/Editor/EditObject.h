@@ -190,12 +190,12 @@ public:
 
     // render methods
 	void 			Render					(Fmatrix& parent, int priority, bool strictB2F);
-	void 			RenderSelection			(Fmatrix& parent);
+	void 			RenderSelection			(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(Fmatrix& parent);
-
+                                                                             
     // update methods
 	void 			RTL_Update				(float dT);
 	void 			UpdateBox				();

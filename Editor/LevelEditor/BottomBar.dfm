@@ -276,7 +276,7 @@ object fraBottomBar: TfraBottomBar
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
-      'miDrawSectorEdgedSFaces.Checked'
+      'miDrawSectorSolid.Checked'
       'miShowHint.Checked'
       'miDrawDOSlotBoxes.Checked'
       'miDrawDOBaseTexture.Checked'
@@ -437,7 +437,7 @@ object fraBottomBar: TfraBottomBar
     object miDrawSectors: TMenuItem
       Caption = 'Sectors'
       GroupIndex = 4
-      object miDrawSectorEdgedSFaces: TMenuItem
+      object miDrawSectorSolid: TMenuItem
         Caption = 'Draw Solid'
         Checked = True
         GroupIndex = 1

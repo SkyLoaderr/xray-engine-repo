@@ -58,6 +58,40 @@ bool SceneBuilder::BuildGame()
     	m_LevelPath.Update(lev_spawn);
 	    F.SaveTo(lev_spawn.c_str(),0);
     }
+/*
+    сохранить пакетами Event'ы
+	SForm - колижен форма (пока токо бокс)
+    массив m_Forms (пока юзается одна)
+    SAction - акшин
+    массив m_Actions - 65535 :-)
+    форматы похожи на пакетные
+
+    компилится на X: скопировать на S
+    Эта функция запускается по команде MakeLTX
+
+    465-73-54
+
+
+	// -- add event --
+	i   = Scene.FirstObj(OBJCLASS_EVENT);
+    _E  = Scene.LastObj(OBJCLASS_EVENT);
+    for(;i!=_E;i++){
+        CEvent *obj = (CEvent*)(*i);
+        if( obj->eEventType==CEvent::eetBox ){
+    		pIni->WriteString ("mobileobjects", obj->GetName(), obj->GetName() );
+            pIni->WriteString(obj->GetName(),"class","EVENT");
+            pIni->WriteString(obj->GetName(),"target_class",obj->sTargetClass.c_str());
+            pIni->WriteString(obj->GetName(),"OnEnter",obj->sOnEnter.c_str());
+            pIni->WriteString(obj->GetName(),"OnExit",obj->sOnExit.c_str());
+            pIni->WriteVector(obj->GetName(),"position",obj->GetPosition());
+			Fmatrix mRotate; mRotate.setHPB(obj->GetRotate().y, obj->GetRotate().x, obj->GetRotate().z);
+            pIni->WriteVector(obj->GetName(),"direction",mRotate.k);
+            pIni->WriteVector(obj->GetName(),"normal",mRotate.j);
+            pIni->WriteVector(obj->GetName(),"scale",obj->GetScale());
+            pIni->WriteString(obj->GetName(),"execute_once",obj->bExecuteOnce?"on":"off");
+        }
+	}
+*/
 }
 
  

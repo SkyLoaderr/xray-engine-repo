@@ -5,6 +5,7 @@
 #include "SceneClassList.h"
 #include "Event.h"
 #include "PropertiesList.h"
+#include "EventOneAction.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -26,50 +27,35 @@ int frmPropertiesEventRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesEvent::TfrmPropertiesEvent(TComponent* Owner)
     : TForm(Owner)
 {
-    m_Props = TfrmProperties::CreateProperties(paProps,alClient);
 }
 //---------------------------------------------------------------------------
-
-
-void __fastcall TfrmPropertiesEvent::FormClose(TObject *Sender,
-      TCloseAction &Action)
-{
-	TfrmProperties::DestroyProperties(m_Props);
-}
-//---------------------------------------------------------------------------
-
+      
 void TfrmPropertiesEvent::GetObjectsInfo(){
 	VERIFY(!m_Objects->empty());
 
 	ObjectIt _F = m_Objects->begin();
 	CEvent * E = (CEvent*)(*_F);
 
-    m_Props->Enabled = true;
-    m_Props->BeginFillMode();
-    TElTreeItem* M=0;
-    TElTreeItem* N=0;
-    M = m_Props->AddItem(0,PROP_MARKER,	"Actions");
-        m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
-    for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
-        AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-    N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());
-        m_Props->AddItem(N,PROP_TEXTURE,"Texture",	&it->texture);
-        m_Props->AddItem(N,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&it->fRadius,0.f,10.f));
-        m_Props->AddItem(N,PROP_FLOAT,	"Opacity", 	m_Props->MakeFloatValue(&it->fOpacity,0.f,1.f));
-        m_Props->AddItem(N,PROP_FLOAT,	"Position",	m_Props->MakeFloatValue(&it->fPosition,-10.f,10.f));
+    CEvent::ActionVec& lst=E->m_Actions;
+    for (CEvent::ActionIt it=lst.begin(); it!=lst.end(); it++){
+		m_ActionForms.push_back(new TfrmOneEventAction(0));
+		m_ActionForms.back()->Parent = sbActions;
+	    m_ActionForms.back()->ShowIndex(this,it);
     }
-	m_Props->EndFillMode();
 }
 
 bool TfrmPropertiesEvent::ApplyObjectsInfo(){
     VERIFY( !m_Objects->empty() );
 
     if (m_Objects->size()==1){
-	    CEvent *_E 			= (CEvent*)(*m_Objects->begin());
-        _E->sTargetClass    = cbTargetClass->Text;
-        _E->sOnEnter	    = edOnEnter->Text;
-        _E->sOnExit		    = edOnExit->Text;
-        _E->bExecuteOnce	= cbExecuteOnce->Checked;
+	    CEvent *E 			= (CEvent*)(*m_Objects->begin());
+        CEvent::ActionVec& lst=E->m_Actions;
+        lst.clear			();
+		for (ActionFormIt it=m_ActionForms.begin(); it!=m_ActionForms.end(); it++){
+        	lst.push_back	(CEvent::SAction());
+			CEvent::SAction& A=lst.back();
+        	(*it)->ApplyAction(&A);
+        }
     }
     return true;
 }
@@ -133,6 +119,38 @@ void __fastcall TfrmPropertiesEvent::cbTargetClassChange(TObject *Sender)
 void __fastcall TfrmPropertiesEvent::edOnEnterChange(TObject *Sender)
 {
 	OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEvent::RemoveAction(TfrmOneEventAction* action)
+{
+	m_ActionForms.erase(find(m_ActionForms.begin(),m_ActionForms.end(),action));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEvent::ebAppendActionClick(TObject *Sender)
+{
+	m_ActionForms.push_back(new TfrmOneEventAction(0));
+	m_ActionForms.back()->Parent = sbActions;
+    m_ActionForms.back()->ShowIndex(this);
+    OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEvent::ebMultiClearClick(TObject *Sender)
+{
+	for (ActionFormIt it=m_ActionForms.begin(); it!=m_ActionForms.end(); it++)
+    	_DELETE(*it);
+    m_ActionForms.clear();
+    OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEvent::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+	for (ActionFormIt it=m_ActionForms.begin(); it!=m_ActionForms.end(); it++)
+    	_DELETE(*it);
 }
 //---------------------------------------------------------------------------
 

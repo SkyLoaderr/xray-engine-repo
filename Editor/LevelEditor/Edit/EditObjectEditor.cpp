@@ -129,6 +129,8 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
+    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+
     Device.SetShader(Device.m_WireShader);
     DWORD c=D3DCOLOR_RGBA(192,192,192,255);
     if(mesh) mesh->RenderEdge(parent, c);
@@ -136,13 +138,16 @@ void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
             (*_M)->RenderEdge(parent, c);
 }
 
-void CEditableObject::RenderSelection(Fmatrix& parent){
+void CEditableObject::RenderSelection(Fmatrix& parent, CEditableMesh* mesh){
+    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+
     DWORD c=D3DCOLOR_RGBA(230,70,70,64);
     Device.SetTransform(D3DTS_WORLD,parent);
     Device.SetShader(Device.m_SelectionShader);
     Device.RenderNearer(0.0005);
-    for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-        (*_M)->RenderSelection(parent, c);
+    if(mesh) mesh->RenderSelection(parent, c);
+    else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
+         	(*_M)->RenderSelection(parent, c);
     Device.ResetNearer();
 }
 

@@ -94,7 +94,8 @@
       intermediate\PropertiesSceneObject.obj intermediate\EditObjectEditor.obj 
       intermediate\Blender_LaEmB.obj intermediate\Blender_Lm(EbB).obj 
       intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj 
-      intermediate\Blender_BmmD.obj intermediate\BuilderGame.obj"/>
+      intermediate\Blender_BmmD.obj intermediate\BuilderGame.obj 
+      intermediate\EventOneAction.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -109,7 +110,8 @@
       FramePS.dfm previewimage.dfm FrameEmitter.dfm PropertiesRPoint.dfm 
       FrameRPoint.dfm FrameAITPoint.dfm FrameDetObj.dfm FrameOccluder.dfm 
       PropertiesOccluder.dfm DOShuffle.dfm DOOneColor.dfm 
-      PropertiesDetailObject.dfm PropertiesList.dfm PropertiesSceneObject.dfm"/>
+      PropertiesDetailObject.dfm PropertiesList.dfm PropertiesSceneObject.dfm 
+      EventOneAction.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib"/>

@@ -19,10 +19,142 @@
 #define EVENT_CHUNK_FORMS					0x0311
 #define EVENT_CHUNK_ACTIONS					0x0312
 //----------------------------------------------------
+typedef BYTE T_IDX[3];
+static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
+							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
 
-void CEvent::SForm::Render()
-{
+void GetBoxTri(int index, Fvector* v){
+	box_identity.getpoint(idx[index][0],v[0]);
+	box_identity.getpoint(idx[index][1],v[1]);
+	box_identity.getpoint(idx[index][2],v[2]);
 }
+//----------------------------------------------------
+void CEvent::SForm::GetTransform(Fmatrix& M){
+    // update transform matrix
+	Fmatrix	mScale,mTranslate,mRotate;
+	mRotate.setHPB	(vRotate.y, vRotate.x, vRotate.z);
+	mScale.scale	(vSize);
+	mTranslate.translate(vPosition);
+	M.mul			(mTranslate,mRotate);
+	M.mul			(mScale);
+}
+
+void CEvent::SForm::RenderBox(bool bAlpha){
+	Fmatrix T; GetTransform(T);
+	// render
+	FVF::L v;
+	FLvertexVec V;
+	DWORD C;
+	if (bAlpha){
+        C=D3DCOLOR_RGBA( 0, 255, 0, m_Selected?48:24 );
+		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+        Device.SetTransform(D3DTS_WORLD,T);
+	    Device.SetShader(Device.m_SelectionShader);
+        DU::DrawIdentBox(true,false,&C);
+		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+    }else{
+        C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
+        Device.RenderNearer(0.0003);
+        Device.SetTransform(D3DTS_WORLD,T);
+	    Device.SetShader(Device.m_SelectionShader);
+        Device.ResetNearer();
+        DU::DrawIdentBox(false,true,&C);
+    }
+}
+
+void CEvent::SForm::Render(bool bAlpha)
+{
+	switch(m_eType){
+    case efBox: RenderBox(bAlpha); break;
+    };
+}
+
+void CEvent::SForm::GetBox(Fbox& bb)
+{
+	Fmatrix T; 		GetTransform(T);
+	bb.min.set		(-0.5f,-0.5f,-0.5f);
+	bb.max.set		( 0.5f, 0.5f, 0.5f);
+    bb.transform	(T);
+}
+
+bool CEvent::SForm::Pick(float& distance, Fvector& start, Fvector& direction)
+{
+	bool bPick=false;
+    float range;
+	if (m_eType==efBox){
+		Fmatrix T; 	GetTransform(T);
+        Fvector v[3];
+        for (int i=0; i<12; i++){
+            GetBoxTri(i,v);
+            T.transform_tiny(v[0]);
+            T.transform_tiny(v[1]);
+            T.transform_tiny(v[2]);
+            range=UI.ZFar();
+            if (RAPID::TestRayTri2(start,direction,v,range)){
+                if ((range>=0)&&(range<distance)){
+                    distance=range;
+                    bPick=true;
+                }
+            }
+        }
+    }
+    return bPick;
+}
+
+bool CEvent::SForm::FrustumPick( const CFrustum& frustum )
+{
+	if (m_eType==efBox){
+		Fmatrix T; 	GetTransform(T);
+        Fvector v[3];
+        for (int i=0; i<12; i++){
+            GetBoxTri(i,v);
+            T.transform_tiny(v[0]);
+            T.transform_tiny(v[1]);
+            T.transform_tiny(v[2]);
+            sPoly s(v,3);
+            if (frustum.testPoly(s)) return true;
+        }
+    }
+}
+
+void CEvent::SForm::Move( Fvector& amount )
+{
+	vPosition.add(amount);
+}
+
+void CEvent::SForm::Rotate( Fvector& center, Fvector& axis, float angle )
+{
+	Fmatrix m;
+	m.rotation( axis, angle );
+
+	vPosition.sub( center );
+    m.transform_tiny(vPosition);
+	vPosition.add( center );
+
+    vRotate.direct(vRotate,axis,angle);
+}
+
+void CEvent::SForm::Scale( Fvector& center, Fvector& amount )
+{
+	vSize.add(amount);
+    if (vSize.x<EPS) vSize.x=EPS;
+    if (vSize.y<EPS) vSize.y=EPS;
+    if (vSize.z<EPS) vSize.z=EPS;
+}
+
+void CEvent::SForm::LocalRotate( Fvector& axis, float angle )
+{
+    vRotate.direct(vRotate,axis,angle);
+}
+
+void CEvent::SForm::LocalScale( Fvector& amount )
+{
+	vSize.add(amount);
+    if (vSize.x<EPS) vSize.x=EPS;
+    if (vSize.y<EPS) vSize.y=EPS;
+    if (vSize.z<EPS) vSize.z=EPS;
+}
+//------------------------------------------------------------------------------
 
 CEvent::CEvent( char *name ):CCustomObject(){
 	Construct();
@@ -40,6 +172,8 @@ void CEvent::Construct(){
 	m_ClassID 		= OBJCLASS_EVENT;
     m_Actions.clear	();
     m_Forms.clear	();
+    // create one box
+    AppendForm		(efBox);
 }
 
 void CEvent::AppendForm(EFormType type)
@@ -60,6 +194,8 @@ void CEvent::RemoveSelectedForm()
 			m_Forms.erase(m_Forms.begin()+i);
             i--;
         }
+    // remove object from scene if empty?
+    //S
 }
 
 //------------------------------------------------------------------------------------------------
@@ -79,95 +215,38 @@ void CEvent::UpdateTransform(){
 
 bool CEvent::GetBox( Fbox& box ){
 	// calc for all forms
-/*
-	box.min.set		(-0.5f,-0.5f,-0.5f);
-	box.max.set		( 0.5f, 0.5f, 0.5f);
-    box.transform	(mTransform);
-*/
+    box.invalidate();
+    Fbox bb;
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++){
+    	it->GetBox(bb);
+        box.merge(bb);
+    }
 	return true;
 }
 
-/*
-void CEvent::RenderBox(bool bAlpha ){
-	FVF::L v;
-	FLvertexVec V;
-	DWORD C;
-	if (bAlpha){
-        C=D3DCOLOR_RGBA( 0, 255, 0, Selected()?48:24 );
-		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-        Device.SetTransform(D3DTS_WORLD,mTransform);
-	    Device.SetShader(Device.m_SelectionShader);
-        DU::DrawIdentBox(true,false,&C);
-		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
-    }else{
-        C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
-        Device.RenderNearer(0.0003);
-        Device.SetTransform(D3DTS_WORLD,mTransform);
-	    Device.SetShader(Device.m_SelectionShader);
-        Device.ResetNearer();
-        DU::DrawIdentBox(false,true,&C);
-        if(Selected()){
+void CEvent::Render( int priority, bool strictB2F ){
+	if (priority==1){
+        for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render(strictB2F);
+        if(Selected()&&(false==strictB2F)){
             Fbox bb;
-			bb.min.set(-0.5f,-0.5f,-0.5f);
-			bb.max.set( 0.5f, 0.5f, 0.5f);
+            GetBox(bb);
 			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+			Device.SetTransform(D3DTS_WORLD,precalc_identity);
 			DU::DrawSelectionBox(bb,&clr);
         }
     }
 }
-*/
-void CEvent::Render( int priority, bool strictB2F ){
-	if ((priority==1)&&(true==strictB2F))
-        for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render();
-}
 
-typedef BYTE T_IDX[3];
-static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
-							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
-
-void GetBoxTri(int index, Fvector* v){
-	box_identity.getpoint(idx[index][0],v[0]);
-	box_identity.getpoint(idx[index][1],v[1]);
-	box_identity.getpoint(idx[index][2],v[2]);
-}
 bool CEvent::FrustumPick(const CFrustum& frustum){
-/*
-	if (m_eForm==efBox){
-        Fvector v[3];
-        for (int i=0; i<12; i++){
-            GetBoxTri(i,v);
-            mTransform.transform_tiny(v[0]);
-            mTransform.transform_tiny(v[1]);
-            mTransform.transform_tiny(v[2]);
-            sPoly s(v,3);
-            if (frustum.testPoly(s)) return true;
-        }
-    }
-*/
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
+    	if (it->FrustumPick(frustum)) return true;
     return false;
 }
 
 bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
-    float range;
     bool bPick=false;
-/*
-	if (m_eForm==efBox){
-        Fvector v[3];
-        for (int i=0; i<12; i++){
-            GetBoxTri(i,v);
-            mTransform.transform_tiny(v[0]);
-            mTransform.transform_tiny(v[1]);
-            mTransform.transform_tiny(v[2]);
-            range=UI.ZFar();
-            if (RAPID::TestRayTri2(start,direction,v,range)){
-                if ((range>=0)&&(range<distance)){
-                    distance=range;
-                    bPick=true;
-                }
-            }
-        }
-    }
-*/
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
+    	if (it->Pick(distance,start,direction)) bPick=true;
     return bPick;
 }
 
@@ -176,8 +255,9 @@ void CEvent::Move(Fvector& amount){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
+    //S
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Move(amount);
     UI.UpdateScene();
-//S
 }
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
@@ -185,17 +265,9 @@ void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
+    //S
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Rotate(center, axis, angle);
     UI.UpdateScene();
-/*
-	Fmatrix m;
-	m.rotation( axis, angle );
-
-	vPosition.sub( center );
-    m.transform_tiny(vPosition);
-	vPosition.add( center );
-
-    vRotate.direct(vRotate,axis,angle);
-*/
 }
 
 void CEvent::LocalRotate(Fvector& axis, float angle){
@@ -203,11 +275,8 @@ void CEvent::LocalRotate(Fvector& axis, float angle){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalRotate(axis, angle);
     UI.UpdateScene();
-/*
-    vRotate.direct(vRotate,axis,angle);
-    UpdateTransform();
-*/
 }
 
 void CEvent::Scale( Fvector& center, Fvector& amount ){
@@ -215,12 +284,8 @@ void CEvent::Scale( Fvector& center, Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Scale(center, amount);
     UI.UpdateScene();
-/*	vScale.add(amount);
-    if (vScale.x<EPS) vScale.x=EPS;
-    if (vScale.y<EPS) vScale.y=EPS;
-    if (vScale.z<EPS) vScale.z=EPS;
-*/
 }
 
 void CEvent::LocalScale( Fvector& amount ){
@@ -228,13 +293,8 @@ void CEvent::LocalScale( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
+	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalScale(amount);
     UI.UpdateScene();
-/*
-	vScale.add(amount);
-    if (vScale.x<EPS) vScale.x=EPS;
-    if (vScale.y<EPS) vScale.y=EPS;
-    if (vScale.z<EPS) vScale.z=EPS;
-*/
 }
 //----------------------------------------------------
 

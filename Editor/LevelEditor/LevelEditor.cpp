@@ -202,6 +202,7 @@ USEUNIT("Engine\fmesh.cpp");
 USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 USELIB("lib\FreeImage.lib");
 USEUNIT("edit\BuilderGame.cpp");
+USEFORM("EventOneAction.cpp", frmOneEventAction);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

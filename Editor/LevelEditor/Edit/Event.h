@@ -27,7 +27,17 @@ public:
         Fvector 	vRotate;
         Fvector 	vPosition;
         DWORD		m_Selected;
-        void		Render();
+        void		RenderBox		(bool bAlpha);
+        void		Render			(bool bAlpha);
+        void 		GetBox			(Fbox& bb);
+        void		GetTransform	(Fmatrix& M);
+	    bool 		FrustumPick		( const CFrustum& frustum );
+        bool		Pick			( float& distance, Fvector& start, Fvector& direction );
+		void 		Move			( Fvector& amount );
+		void 		Rotate			( Fvector& center, Fvector& axis, float angle );
+		void 		Scale			( Fvector& center, Fvector& amount );
+		void 		LocalRotate		( Fvector& axis, float angle );
+		void 		LocalScale		( Fvector& amount );
     };
     DEFINE_VECTOR	(SForm,FormVec,FormIt);
 	FormVec			m_Forms;

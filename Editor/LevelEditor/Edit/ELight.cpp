@@ -330,8 +330,6 @@ CEditFlare::CEditFlare()
     m_Source.fRadius = 0.15f;
     // gradient
     m_fGradientDensity = 0.6f;
-
-    CreateShaders();
 }
 
 void CEditFlare::Load(CStream& F){

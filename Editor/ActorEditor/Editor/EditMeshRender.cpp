@@ -166,7 +166,7 @@ static RB_cnt=0;
 
 void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl)
 {
-	if (!m_Visible) return;
+//	if (!m_Visible) return;
 
 	if (fl.size()==0) return;
 	Device.SetTransform(D3DTS_WORLD,parent);
@@ -193,7 +193,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 //----------------------------------------------------
 
 void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
-	if (!m_Visible) return;
+//	if (!m_Visible) return;
 	Device.SetTransform(D3DTS_WORLD,parent);
 	Device.SetShader(Device.m_WireShader);
 	Device.RenderNearer(0.001);
@@ -218,7 +218,7 @@ void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 //----------------------------------------------------
 
 void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
-	if (!m_Visible) return;
+//	if (!m_Visible) return;
 	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
     bb.transform(parent);

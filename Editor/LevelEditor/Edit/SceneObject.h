@@ -11,7 +11,7 @@
 class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
-protected:
+protected:                             
     // orientation
     Fvector 		vScale;
     Fvector 		vRotate;

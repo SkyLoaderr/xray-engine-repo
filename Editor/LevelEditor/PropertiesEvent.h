@@ -17,15 +17,19 @@
 #include "multi_check.hpp"
 #include "MXCtrls.hpp"
 
-class TfrmProperties;
+class TfrmOneEventAction;
 
 class TfrmPropertiesEvent : public TForm
 {
 __published:	// IDE-managed Components
-	TPanel *paProps;
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
+	TPanel *Panel3;
+	TExtBtn *ebAppendAction;
+	TExtBtn *ebMultiClear;
+	TScrollBox *sbActions;
+	TBevel *Bevel1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -34,15 +38,19 @@ __published:	// IDE-managed Components
     void __fastcall OnModified(TObject *Sender);
 	void __fastcall cbTargetClassChange(TObject *Sender);
 	void __fastcall edOnEnterChange(TObject *Sender);
+	void __fastcall ebAppendActionClick(TObject *Sender);
+	void __fastcall ebMultiClearClick(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
     ObjectList* m_Objects;
-	TfrmProperties* m_Props;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
+    DEFINE_VECTOR(TfrmOneEventAction*,ActionFormVec,ActionFormIt);
+    ActionFormVec m_ActionForms;
 public:		// User declarations
     __fastcall TfrmPropertiesEvent(TComponent* Owner);
     int __fastcall Run(ObjectList* pObjects, bool& bChange);
+    void RemoveAction(TfrmOneEventAction* action);
 };
 //---------------------------------------------------------------------------
 extern int frmPropertiesEventRun(ObjectList* pObjects, bool& bChange);
