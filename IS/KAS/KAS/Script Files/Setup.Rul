@@ -14,25 +14,54 @@
 #include "ifx.h"
 //#include "featureevents.rul"
 
+//---------------------------------------------------------------------------
+// Global variables
+//---------------------------------------------------------------------------
 string g_sSerial;
+//---------------------------------------------------------------------------
             
+//---------------------------------------------------------------------------
+// Definition
+//---------------------------------------------------------------------------
 #define DEF_FOLDER 				"KAC"
 #define MSDE_INSTANCE_NAME	 	"kas_sql_srv"
 #define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\Mssql$"+MSDE_INSTANCE_NAME+"\\"
 
+#define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"    
+#define SQL_USER_NAME_ 			"sa"
+#define SQL_USER_PASS_ 			"KAStorka40"
+#define SQL_SERVER_HOST_ 		"localhost\\kas_sql_srv"
+#define SQL_STORED_PROC_DLL_   	"xp_indexing.dll"
+
+#define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
+#define INI_MAIN_SECTION_ID  	"main"
+#define INI_UPDATE_DATE_ID    	"updateDate"
+#define INI_VERSION_ID			"version"
+#define INI_BUILD_ID			"build"  
+#define INI_SERVER_ID			"server"
+
 //---------------------------------------------------------------------------
 // User defined function prototype
 //---------------------------------------------------------------------------
-prototype 			ClearFolder					(byval string);
-prototype BOOL 		CheckAdminRights			();
+prototype 				ClearFolder					(byval string);
+prototype BOOL 			CheckAdminRights			();
 // SQL server management function
-prototype 			StartServer					();
-prototype 			StopServer					();
-prototype 			ParseSerialNumber			(byval string, byref string, byref string);
+prototype 				StartServer					();
+prototype 				StopServer					();
+prototype 				ParseSerialNumber			(byval string, byref string, byref string);
+prototype BOOL 			CheckMSDEStatus				();
+// external SQL server management function
+prototype CDECL BOOL 	SQL_CONFIG.initLibrary		();
+prototype CDECL BOOL 	SQL_CONFIG.deInitLibrary	();
+prototype CDECL BOOL 	SQL_CONFIG.testConnection	(byval string, byval string, byval string);
+prototype CDECL BOOL 	SQL_CONFIG.tuneServer		(byval string, byval string, byval string);
+prototype CDECL BOOL 	SQL_CONFIG.attachDatabase	(byval string, byval string, byval string, byval string, byval string);
+prototype CDECL BOOL 	SQL_CONFIG.runSQLString		(byval string, byval string, byval string, byval string, byval string);
+prototype CDECL BOOL 	SQL_CONFIG.detachDatabase	(byval string, byval string, byval string, byval string);
 // export events for IS
-export prototype 	MSDE_2000_Installed			();
-export prototype 	MSDE_2000_UnInstalling		();
-export prototype 	MSDE_2000_UnInstalled		();
+export prototype 		MSDE_2000_Installed			();
+export prototype 		MSDE_2000_UnInstalling		();
+export prototype 		MSDE_2000_UnInstalled		();
 
 //---------------------------------------------------------------------------
 // User defined function
@@ -41,6 +70,7 @@ function ClearFolder(folder)
 begin
 	DeleteDir(folder,ALLCONTENTS);
 end;                           
+//---------------------------------------------------------------------------
 function BOOL CheckAdminRights()
 begin
 	if (FALSE=SYSINFO.WIN9X.bWin9X) then
@@ -51,12 +81,11 @@ begin
 	endif;
 	return TRUE;
 end;                    
-
+//---------------------------------------------------------------------------
 function ParseSerialNumber(src, tgt0, tgt1)
     LIST   listID;
 begin
     listID 		= ListCreate (STRINGLIST);
-
     // Get each path from the search path into the list.
     if (StrGetTokens (listID, src, "-") = 0) then
     	if (ListCount(listID)==2) then
@@ -64,19 +93,52 @@ begin
     		ListGetNextString (listID,tgt1);
     	endif;
     endif;
-
     // Remove the list from memory.
     ListDestroy (listID);
 end;
+//---------------------------------------------------------------------------
 function StartServer()
 begin
 	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
 end;
+//---------------------------------------------------------------------------
 function StopServer()
 begin
 	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
 end;
-
+//---------------------------------------------------------------------------
+function BOOL CheckMSDEStatus()
+    object oObject, oStatus;
+    string szStatus;
+    BOOL res;
+begin        
+	res = FALSE;
+    try
+        set oObject = GetObject("MSDE_2000_Object");
+        if (!IsObject(oObject)) then
+            MessageBoxEx( "Ошибка при установке MSDE.", "", INFORMATION );
+        endif;
+        set oStatus = oObject.Status;
+        if (!(oStatus.Number = OBJ_STATUS_SUCCESS ||
+              oStatus.Number = MSI_ERROR_SUCCESS_REBOOT_REQUIRED)) then
+            Sprintf( szStatus, "MSDE 2000 Object\n\nNumber:\t\t%d\n" +
+                "Description:\t%s\nFile:\t\t%s\nLine:\t\t%d\nScript Error:\t%d", 
+                oStatus.Number, oStatus.Description, oStatus.szScriptFile, 
+                oStatus.nScriptLine, oStatus.nScriptError );
+            MessageBoxEx( szStatus, "", SEVERE );
+		else            
+	        res = TRUE;
+        endif; 
+    catch    
+        Sprintf( szStatus, "Unexpected Exception\n\nNumber: 0X%X\nDescription:" +
+            "%s\nSource: %s\nHelp File: %s\nHelp Context: %d", Err.Number, 
+            Err.Description, Err.Source, Err.HelpFile, Err.HelpContext);
+        MessageBoxEx( szStatus, "", SEVERE );
+    endcatch;
+    return res;
+end;
+//---------------------------------------------------------------------------
+            
 //---------------------------------------------------------------------------                                                                        
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
@@ -336,62 +398,6 @@ Dlg_ObjDialogs:
 
     endswitch;
 end;
-
-prototype CDECL BOOL SQL_CONFIG.initLibrary		();
-prototype CDECL BOOL SQL_CONFIG.deInitLibrary	();
-prototype CDECL BOOL SQL_CONFIG.testConnection	(byval string, byval string, byval string);
-prototype CDECL BOOL SQL_CONFIG.tuneServer		(byval string, byval string, byval string);
-prototype CDECL BOOL SQL_CONFIG.attachDatabase	(byval string, byval string, byval string, byval string, byval string);
-prototype CDECL BOOL SQL_CONFIG.runSQLString	(byval string, byval string, byval string, byval string, byval string);
-prototype CDECL BOOL SQL_CONFIG.detachDatabase	(byval string, byval string, byval string, byval string);
-
-#define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"    
-#define SQL_USER_NAME_ 			"sa"
-#define SQL_USER_PASS_ 			"KAStorka40"
-#define SQL_SERVER_HOST_ 		"localhost\\kas_sql_srv"
-#define SQL_STORED_PROC_DLL_   	"xp_indexing.dll"
-
-#define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
-#define INI_MAIN_SECTION_ID  	"main"
-#define INI_UPDATE_DATE_ID    	"updateDate"
-#define INI_VERSION_ID			"version"
-#define INI_BUILD_ID			"build"  
-#define INI_SERVER_ID			"server"
-
-/* Function declaration - place this before the event handler function that calls CheckObjectStatus: */
-prototype BOOL CheckMSDEStatus();
-                                
-function BOOL CheckMSDEStatus()
-    object oObject, oStatus;
-    string szStatus;
-    BOOL res;
-begin        
-	res = FALSE;
-    try
-        set oObject = GetObject("MSDE_2000_Object");
-        if (!IsObject(oObject)) then
-            MessageBoxEx( "Ошибка при установке MSDE.", "", INFORMATION );
-        endif;
-        set oStatus = oObject.Status;
-        if (!(oStatus.Number = OBJ_STATUS_SUCCESS ||
-              oStatus.Number = MSI_ERROR_SUCCESS_REBOOT_REQUIRED)) then
-            Sprintf( szStatus, "MSDE 2000 Object\n\nNumber:\t\t%d\n" +
-                "Description:\t%s\nFile:\t\t%s\nLine:\t\t%d\nScript Error:\t%d", 
-                oStatus.Number, oStatus.Description, oStatus.szScriptFile, 
-                oStatus.nScriptLine, oStatus.nScriptError );
-            MessageBoxEx( szStatus, "", SEVERE );
-		else            
-	        res = TRUE;
-        endif; 
-    catch    
-        Sprintf( szStatus, "Unexpected Exception\n\nNumber: 0X%X\nDescription:" +
-            "%s\nSource: %s\nHelp File: %s\nHelp Context: %d", Err.Number, 
-            Err.Description, Err.Source, Err.HelpFile, Err.HelpContext);
-        MessageBoxEx( szStatus, "", SEVERE );
-    endcatch;
-    return res;
-end;
-            
 function MSDE_2000_Installed()
 	number 	nResult,nRootKey;
 	BOOL 	bRes;
@@ -563,7 +569,6 @@ label_end:
 	    if (bRes=FALSE) then abort; endif;
 	endif;
 end;
-
 function MSDE_2000_UnInstalling()
 BOOL 	bRes; 
 NUMBER	nResult; 
@@ -638,7 +643,6 @@ begin
 	    UnUseDLL 	(DLL_FILE);
 	endif;
 end;
-
 function MSDE_2000_UnInstalled()
 begin
     StopServer	();
