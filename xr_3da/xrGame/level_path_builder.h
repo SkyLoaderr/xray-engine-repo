@@ -42,4 +42,14 @@ public:
 		else
 			m_object->m_path_state	= CMovementManager::ePathStateContinueLevelPath;
 	}
+
+	IC		void			remove			()
+	{
+		Device.remove_from_seq_parallel	(
+			fastdelegate::FastDelegate0(
+				this,
+				&CLevelPathBuilder::process
+			)
+		);
+	}
 };

@@ -816,6 +816,14 @@ void CCustomMonster::net_Destroy()
 	inherited::net_Destroy		();
 	CScriptEntity::net_Destroy	();
 	sound().unload				();
+	movement().net_Destroy		();
+	
+	Device.remove_from_seq_parallel	(
+		fastdelegate::FastDelegate0(
+			this,
+			&CCustomMonster::update_sound_player
+		)
+	);
 }
 
 BOOL CCustomMonster::UsedAI_Locations()

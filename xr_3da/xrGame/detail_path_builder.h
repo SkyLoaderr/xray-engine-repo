@@ -45,4 +45,14 @@ public:
 		else
 			m_object->m_path_state	= CMovementManager::ePathStatePathVerification;
 	}
+
+	IC		void			remove			()
+	{
+		Device.remove_from_seq_parallel	(
+			fastdelegate::FastDelegate0(
+				this,
+				&CDetailPathBuilder::process
+			)
+		);
+	}
 };

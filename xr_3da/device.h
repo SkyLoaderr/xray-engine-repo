@@ -146,6 +146,17 @@ public:
 	CRITICAL_SECTION	mt_csEnter;
 	CRITICAL_SECTION	mt_csLeave;
 	volatile BOOL		mt_bMustExit;
+
+	ICF		void			remove_from_seq_parallel	(const fastdelegate::FastDelegate0 &delegate)
+	{
+		xr_vector<fastdelegate::FastDelegate0>::iterator I = std::find(
+			seqParallel.begin(),
+			seqParallel.end(),
+			delegate
+		);
+		if (I != seqParallel.end())
+			seqParallel.erase	(I);
+	}
 };
 
 extern		ENGINE_API		CRenderDevice		Device;

@@ -116,6 +116,12 @@ BOOL CMovementManager::net_Spawn	(CSE_Abstract* data)
 	return							(restrictions().net_Spawn(data));
 }
 
+void CMovementManager::net_Destroy	()
+{
+	level_path_builder().remove		();
+	detail_path_builder().remove	();
+}
+
 CMovementManager::EPathType CMovementManager::path_type() const
 {
 	VERIFY					(m_path_type != MovementManager::ePathTypeDummy);

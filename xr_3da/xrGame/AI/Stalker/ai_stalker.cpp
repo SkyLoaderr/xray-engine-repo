@@ -293,6 +293,13 @@ void CAI_Stalker::net_Destroy()
 	CInventoryOwner::net_Destroy		();
 	m_pPhysics_support->in_NetDestroy	();
 
+	Device.remove_from_seq_parallel	(
+		fastdelegate::FastDelegate0(
+			this,
+			&CAI_Stalker::update_object_handler
+		)
+	);
+
 	xr_delete							(m_ce_close);
 	xr_delete							(m_ce_far);
 	xr_delete							(m_ce_best);
