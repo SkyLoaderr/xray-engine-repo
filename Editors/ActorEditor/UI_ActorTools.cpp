@@ -431,7 +431,8 @@ bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
     else			full_name 		= obj_name;
 	VERIFY(m_bReady);
     if (m_pEditObject){
-    	m_pEditObject->SaveObject(full_name.c_str());
+    	EFS.MarkFile				(full_name.c_str(),true);
+    	m_pEditObject->SaveObject	(full_name.c_str());
 		if (!bInternal) m_bObjectModified = false;
         return true;
     }

@@ -295,13 +295,13 @@ void CActorTools::MakePreview()
 {
 	if (m_pEditObject){
         CMemoryWriter F;
+		m_Flags.set		(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     	if (m_RenderObject.UpdateVisual(m_pEditObject,true,true,true)){
             PlayMotion();
         }else{
         	m_RenderObject.DeleteVisual();
 	        fraLeftBar->SetRenderStyle(false);
         }
-		m_Flags.set		(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     }else{
     	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
     }
