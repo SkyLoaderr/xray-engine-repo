@@ -53,6 +53,7 @@ public:
 	};
 protected:
 	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC int					GetCharRM		(u8 c)		{return CharMap[c];}
 	IC const Fvector&		GetCharTC		(u8 c)		{return TCMap[c];}
 
