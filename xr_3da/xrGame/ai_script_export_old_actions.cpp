@@ -30,6 +30,7 @@ void CScriptEngine::export_actions()
 				value("stop",					int(CPatrolPathManager::ePatrolStartTypeLast)),
 				value("nearest",				int(CPatrolPathManager::ePatrolStartTypeNearest)),
 				value("custom",					int(CPatrolPathManager::ePatrolStartTypePoint)),
+				value("next",					int(CPatrolPathManager::ePatrolStartTypeNext)),
 				value("dummy",					int(CPatrolPathManager::ePatrolStartTypeDummy))
 			]
 			.enum_("stop")
@@ -42,6 +43,7 @@ void CScriptEngine::export_actions()
 			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType>())
 			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType>())
 			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool>())
+			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool, u32>())
 			.def("count",						&CPatrolPathParams::count)
 			.def("level_vertex_id",				&CPatrolPathParams::level_vertex_id)
 			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))

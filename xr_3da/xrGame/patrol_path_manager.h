@@ -24,6 +24,7 @@ public:
 		ePatrolStartTypeLast,
 		ePatrolStartTypeNearest,
 		ePatrolStartTypePoint,
+		ePatrolStartTypeNext,
 		ePatrolStartTypeDummy = u32(-1),
 	};
 	enum EPatrolRouteType {

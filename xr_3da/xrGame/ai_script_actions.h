@@ -40,14 +40,16 @@ public:
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	bool									m_bRandom;
+	u32										m_previous_index;
 
-							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
+							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true, u32 index = u32(-1))
 	{
 		m_path_name			= caPatrolPathToGo;
 		m_path				= Level().patrol_paths().path(ref_str(caPatrolPathToGo));
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
 		m_bRandom			= bRandom;
+		m_previous_index	= index;
 	}
 
 	virtual					~CPatrolPathParams	()
@@ -140,7 +142,8 @@ public:
 	
 	MonsterSpace::EScriptMonsterMoveAction		m_tMoveAction;
 	MonsterSpace::EScriptMonsterSpeedParam		m_tSpeedParam;
-	
+	u32											m_previous_patrol_point;
+
 
 							CScriptMovementAction		()
 	{
@@ -216,12 +219,13 @@ public:
 	}																																			
 							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
-		m_tMoveAction		= tAct;
-		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
-		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);																				
-		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);																				
-		SetPatrolRandom		(tPatrolPathParams.m_bRandom);																						
-		m_tSpeedParam		= speed_param;
+		m_tMoveAction			= tAct;
+		SetPatrolPath			(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
+		SetPatrolStart			(tPatrolPathParams.m_tPatrolPathStart);																				
+		SetPatrolStop			(tPatrolPathParams.m_tPatrolPathStop);																				
+		SetPatrolRandom			(tPatrolPathParams.m_bRandom);																						
+		m_tSpeedParam			= speed_param;
+		m_previous_patrol_point = tPatrolPathParams.m_previous_index;
 	}																																			
 							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CLuaGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{

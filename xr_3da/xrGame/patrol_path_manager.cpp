@@ -33,9 +33,18 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 				vertex		= m_path->vertex(m_start_point_index);
 				break;
 			}
+			case ePatrolStartTypeNext : {
+				if (m_prev_point_index != u32(-1))
+					vertex		= m_path->vertex(m_prev_point_index+1);
+				if (!vertex)
+					vertex		= m_path->point(position);
+
+				break;
+			}
 			default			: NODEFAULT;
 		}
 		VERIFY				(vertex);
+
 		if (!m_path->vertex(m_prev_point_index))
 			m_prev_point_index	= vertex->vertex_id();
 

@@ -443,6 +443,9 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
 			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
 			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);
+			if (l_tMovementAction.m_previous_patrol_point != u32(-1)) {
+				l_tpMovementManager->set_previous_point(l_tMovementAction.m_previous_patrol_point);
+			}
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePathPosition : {
