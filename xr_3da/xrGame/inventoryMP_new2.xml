@@ -26,37 +26,37 @@
 	
 	<!-- BELT LIST -->
 	<dragdrop_list x="22" y="174" width="1024" height="60"
-			cell_width = "53" cell_height="50"
+			cell_width = "54" cell_height="54"
 			rows_num="1" cols_num="18"></dragdrop_list>
 	<!-- BAG LIST -->
 	<dragdrop_list x="20" y="40" width="400" height="350"
-			cell_width = "40" cell_height="40"
+			cell_width = "41" cell_height="41"
 			rows_num="24" cols_num="6" rows_num_view="7"></dragdrop_list>
 
 	<!-- SLOTS LISTS -->
 	<dragdrop_list x="23" y="14" width="120" height="120"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="168" y="14" width="120" height="120"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="313" y="14" width="320" height="120"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="2" cols_num="6"></dragdrop_list>
 
 	<dragdrop_list x="670" y="14" width="100" height="120"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="818" y="14" width="150" height="120"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="2" cols_num="3"></dragdrop_list>
 
 	<!-- OUTFIT SLOT -->
 	<dragdrop_list x="828" y="314" width="150" height="220"
-			cell_width = "53" cell_height="53"
+			cell_width = "54" cell_height="54"
 			rows_num="4" cols_num="4" show_grid="0"></dragdrop_list>
 
 	<!-- STATIC BCAKGROUND FOR MP TABCONTROL -->
