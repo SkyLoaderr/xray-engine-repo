@@ -27,10 +27,10 @@ namespace RAPID {
 	
 	Model::~Model()
 	{
-		cl_free<void*>	(b);
-		cl_free<void*>	(tris);
-		cl_free<void*>	(tri_index);
-		cl_free<void*>	(verts);
+		cl_free<void>	(b);
+		cl_free<void>	(tris);
+		cl_free<void>	(tri_index);
+		cl_free<void>	(verts);
 	}
 	
 	void Model::SetOption(RAPID_option opt, int val)
