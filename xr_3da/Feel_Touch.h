@@ -1,7 +1,6 @@
 #pragma once
 
 class ENGINE_API CObject;
-
 namespace Feel
 {
 	class ENGINE_API Touch

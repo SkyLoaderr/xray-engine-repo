@@ -168,6 +168,7 @@
 #include <list>
 #include <set>
 #include <map>
+#pragma warning (disable : 4100 )		// unreferenced formal parameter
 
 // Our headers
 #ifdef XRCORE_EXPORTS
