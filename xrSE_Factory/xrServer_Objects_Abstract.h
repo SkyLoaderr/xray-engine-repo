@@ -106,10 +106,6 @@ public:
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
 
-#ifdef _EDITOR
-	class CObjectAnimator;
-#endif
-
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
 public:
 	ref_str							motion_name;
