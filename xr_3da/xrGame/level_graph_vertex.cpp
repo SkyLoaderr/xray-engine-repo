@@ -78,7 +78,7 @@ void CLevelGraph::choose_point(const Fvector &start_point, const Fvector &finish
 	u32							dwIntersect = intersect(start_point.x,start_point.z,finish_point.x,finish_point.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
 	if (!dwIntersect)
 		return;
-	for (int i=0; i<4; i++) {
+	for (int i=0; i<4; ++i) {
 		switch (i) {
 			case 0 : {
 				tCheckPoint1	= tNextContour.v1;

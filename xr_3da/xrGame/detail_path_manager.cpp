@@ -105,7 +105,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	CLevelGraph::SContour	Ccur,Cnext;
 	ai().level_graph().contour(Ccur,level_path[0]);
 	m_segments.clear			();
-	for (u32 I=1; I<level_path.size(); I++) {
+	for (u32 I=1; I<level_path.size(); ++I) {
 		CLevelGraph::SSegment		S;
 		ai().level_graph().contour	(Cnext,level_path[I]);
 		ai().level_graph().intersect(S,Ccur,Cnext);
@@ -114,7 +114,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	}
 
 	// path building
-	for (I=0; I<m_segments.size(); I++)
+	for (I=0; I<m_segments.size(); ++I)
 	{
 		// build probe point
 		CLevelGraph::SSegment		&S = m_segments[I];

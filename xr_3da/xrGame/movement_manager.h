@@ -67,6 +67,8 @@ private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
 	bool									m_path_actuality;
+	u64										m_start_time;
+	u64										m_time_work;
 
 	void			process_game_path		();
 	void			process_level_path		();
@@ -91,7 +93,8 @@ public:
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_node		(const u32 level_vertex_id);
-			bool	time_over				() const;
+	IC		void	time_start				();
+	IC		bool	time_over				() const;
 };
 
 #include "movement_manager_inline.h"

@@ -43,7 +43,7 @@ void CLevelGraph::render()
 
 			Fvector tCameraPosition = Level().CurrentEntity()->Position();
 			CGameFont* F		= HUD().pFontDI;
-			for (int i=0; i<(int)ai().game_graph().header().vertex_count(); i++) {
+			for (int i=0; i<(int)ai().game_graph().header().vertex_count(); ++i) {
 				Fvector t1 = ai().game_graph().vertex(i).game_point();
 				t1.y += .6f;
 				NORMALIZE_VECTOR(t1);
@@ -71,7 +71,7 @@ void CLevelGraph::render()
 //				t1.y += .6f;
 //				NORMALIZE_VECTOR(t1);
 //				RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-//				for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
+//				for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); ++i) {
 //					Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tGlobalPoint;
 //					t2.y += .6f;
 //					NORMALIZE_VECTOR(t2);
@@ -80,7 +80,7 @@ void CLevelGraph::render()
 //					t1 = t2;
 //				}
 //				//			i=1;
-//				//			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; i++) {
+//				//			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; ++i) {
 //				//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tGlobalPoint;
 //				//				t2.y += .6f;
 //				//				NORMALIZE_VECTOR(t2);
@@ -92,7 +92,7 @@ void CLevelGraph::render()
 				if ((tpGame) && (tpGame->m_tpALife)) {
 					{
 						_LEVEL_ID	J = ai().game_graph().vertex(tpGame->m_tpALife->m_tpActor->m_tGraphID).level_id();
-						for (int i=0, n=(int)ai().game_graph().header().vertex_count(); i<n; i++) {
+						for (int i=0, n=(int)ai().game_graph().header().vertex_count(); i<n; ++i) {
 							if (ai().game_graph().vertex(i).level_id() != J)
 								continue;
 							Fvector t1 = ai().game_graph().vertex(i).level_point(), t2 = ai().game_graph().vertex(i).game_point();
@@ -115,7 +115,7 @@ void CLevelGraph::render()
 
 					D_OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 					D_OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
-					for ( ; I != E; I++) {
+					for ( ; I != E; ++I) {
 						{
 							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
@@ -125,7 +125,7 @@ void CLevelGraph::render()
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-									for (int i=1; i<(int)tpALifeHuman->m_tpPath.size(); i++) {
+									for (int i=1; i<(int)tpALifeHuman->m_tpPath.size(); ++i) {
 										Fvector t2 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[i]).game_point();
 										t2.y += .6f;
 										NORMALIZE_VECTOR(t2);
@@ -188,11 +188,11 @@ void CLevelGraph::render()
 	{
 		CLevel::SPathPairIt I = Level().m_PatrolPaths.begin();
 		CLevel::SPathPairIt E = Level().m_PatrolPaths.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			u32	N = (u32)(*I).second.tpaVectors[0].size();
 			if (N)
 				RCache.dbg_DrawAABB((*I).second.tpaVectors[0][0],.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-			for (u32 i=1; i<N; i++) {
+			for (u32 i=1; i<N; ++i) {
 				RCache.dbg_DrawLINE(Fidentity,(*I).second.tpaVectors[0][i-1],(*I).second.tpaVectors[0][i],D3DCOLOR_XRGB(0,255,0));
 				RCache.dbg_DrawAABB((*I).second.tpaVectors[0][i],.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 			}
@@ -203,7 +203,7 @@ void CLevelGraph::render()
 	if (psAI_Flags.test(aiMotion)) {
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
 			if (tpCustomMonster) {
 				tpCustomMonster->OnRender();
@@ -256,7 +256,7 @@ void CLevelGraph::render()
 	RCache.set_Shader(sh_debug);
 	F->SetColor		(color_rgba(255,255,255,255));
 
-	for (u32 Nid=0; Nid<header().vertex_count(); Nid++)
+	for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
 	{
 		CLevelGraph::CVertex&	N	= *vertex(Nid);
 		Fvector			PC,P0;//,P1;
@@ -274,7 +274,7 @@ void CLevelGraph::render()
 			BOOL	bHL		= FALSE;
 			if (Nid==u32(ID))	{ bHL = TRUE; CT = D3DCOLOR_XRGB(0,255,0); }
 			else {
-				for (u32 t=0; t<linked.size(); t++) {
+				for (u32 t=0; t<linked.size(); ++t) {
 					if (linked[t]==Nid) { bHL = TRUE; CT = CH; break; }
 				}
 			}
@@ -314,7 +314,7 @@ void CLevelGraph::render()
 #ifdef DEBUG
 	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
@@ -347,7 +347,7 @@ void CLevelGraph::draw_oriented_bounding_box(Fmatrix &T,	Fvector &half_dim, u32 
 	//	u16             aabb_id[12*2] = {
 	//		0,1,  1,2,  2,3,  3,0,  4,5,  5,6,  6,7,  7,4,  1,5,  2,6,  3,7,  0,4
 	//	};
-	for (int i=0; i<8; i++) {
+	for (int i=0; i<8; ++i) {
 		Fmatrix						V = Fidentity;
 		mL2W_Transform.transform_tiny(V.c,aabb[i]);
 		V.i.x						= .05f;
@@ -365,7 +365,7 @@ void CLevelGraph::draw_travel_line() const
 		P.y								+= .1f;
 		RCache.dbg_DrawAABB				(P,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	}
-	for (u32 I=1; I<m_tpTravelLine.size(); I++) {
+	for (u32 I=1; I<m_tpTravelLine.size(); ++I) {
 		Fvector	P1, P2; 
 		P1.set							(m_tpTravelLine[I - 1]);
 		P2.set							(m_tpTravelLine[I]);
@@ -415,7 +415,7 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 //	m_tpaPoints.push_back		(tStartPosition);
 //	m_tpaPointNodes.push_back	(dwCurNode);
 //
-//	for (u32 i=1; i<=N; i++)
+//	for (u32 i=1; i<=N; ++i)
 //		if (i<N) {
 //			if (!ai().level_graph().check_vertex_in_direction(dwCurNode,tStartPosition,m_level_path[i])) {
 //				if (dwCurNode != m_level_path[i - 1])
@@ -449,13 +449,13 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 //
 //				Fvector			T;
 //				T.set			(0,0,0);
-//				for (i=1; i<N; i++) {
+//				for (i=1; i<N; ++i) {
 //					m_tpaLine.clear();
 //					m_tpaLine.push_back(m_tpaPoints[i-1]);
 //					m_tpaLine.push_back(m_tpaPoints[i]);
 //					bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
 //					u32 n = (u32)m_tpaTravelPath.size();
-//					for (u32 j= 0; j<n; j++) {
+//					for (u32 j= 0; j<n; ++j) {
 //						T = m_tpaTravelPath[j];
 //						m_tpTravelLine.push_back(T);
 //						m_level_path.push_back(m_tpaNodes[j]);
@@ -464,7 +464,7 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 //				if (N > 1) {
 //					m_level_path[m_level_path.size() - 1] = dwFinishNodeID;
 //					if (tpDestinationPosition && m_tpTravelLine.size() && m_tpTravelLine[m_tpTravelLine.size() - 1].distance_to(*tpDestinationPosition) > EPS_L) {
-//						if (inside(vertex(dwFinishNodeID),*tpDestinationPosition) && level_graph().check_position_in_direction(dwFinishNodeID,T,*tpDestinationPosition) != -1) {
+//						if (inside(vertex(dwFinishNodeID),*tpDestinationPosition) && valid_vertex_id(check_position_in_direction(dwFinishNodeID,T,*tpDestinationPosition))) {
 //							T = *tpDestinationPosition;
 //							m_tpTravelLine.push_back(T);
 //						}
@@ -472,7 +472,7 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 //				}
 //				else
 //					if (tpDestinationPosition && m_tpTravelLine.size() && m_tpTravelLine[m_tpTravelLine.size() - 1].distance_to(*tpDestinationPosition) > EPS_L)
-//						if (inside(vertex(dwFinishNodeID),*tpDestinationPosition) && level_graph().check_position_in_direction(dwFinishNodeID,T,*tpDestinationPosition) != -1)
+//						if (inside(vertex(dwFinishNodeID),*tpDestinationPosition) && valid_vertex_id(check_position_in_direction(dwFinishNodeID,T,*tpDestinationPosition)))
 //							m_tpTravelLine.push_back(*tpDestinationPosition);
 }
 

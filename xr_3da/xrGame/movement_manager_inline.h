@@ -22,3 +22,14 @@ IC	void CMovementManager::set_level_dest_node	(const u32 level_vertex_id)
 	m_path_actuality		= m_path_actuality && (m_level_dest_vertex_id == level_vertex_id);
 	m_level_dest_vertex_id	= level_vertex_id;
 }
+
+IC	void CMovementManager::time_start()
+{
+	m_start_time			= CPU::GetCycleCount();
+}
+
+IC	bool CMovementManager::time_over() const
+{
+	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
+}
+

@@ -22,6 +22,7 @@ CMovementManager::~CMovementManager	()
 
 void CMovementManager::Init			()
 {
+	m_time_work						= 300*CPU::cycles_per_microsec;
 	CGameLocationSelector::Init		();
 	CGamePathManager::Init			();
 	CLevelLocationSelector::Init	();
@@ -77,7 +78,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 			break;
 		else {
 			dist			-= mdist;
-			m_detail_cur_point_index++;
+			++m_detail_cur_point_index;
 			if ((m_detail_cur_point_index+1) >= m_detail_path.size())
 				break;
 			target.set	(m_detail_path[m_detail_cur_point_index+1].m_position);
@@ -131,6 +132,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 
 void CMovementManager::build_path()
 {
+	time_start				();
 	if (!path_actual()) {
 		switch (m_path_type) {
 			case ePathTypeGamePath : {
@@ -164,11 +166,6 @@ void CMovementManager::build_path()
 		}
 		default :				NODEFAULT;
 	}
-}
-
-bool CMovementManager::time_over() const
-{
-	return					(true);
 }
 
 void CMovementManager::process_game_path()

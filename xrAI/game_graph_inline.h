@@ -25,7 +25,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 	m_tGraphHeader.dwEdgeCount		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwDeathPointCount= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.tpLevels.clear	();
-	for (u32 i=0; i<header().level_count(); i++) {
+	for (u32 i=0; i<header().level_count(); ++i) {
 		ALife::SLevel			l_tLevel;
 		m_tpGraphVFS->r_stringZ	(l_tLevel.caLevelName);
 		m_tpGraphVFS->r_fvector3(l_tLevel.tOffset);
@@ -49,7 +49,7 @@ IC const CGameGraph::CHeader &CGameGraph::header() const
 IC	bool CGameGraph::mask		(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
 {
 	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
-		if ((M[i] != E[i]) && (M[i] != 255))
+		if ((M[i] != E[i]) && (255 != M[i]))
 			return(false);
 	return(true);
 }
@@ -57,7 +57,7 @@ IC	bool CGameGraph::mask		(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, 
 IC	bool CGameGraph::mask		(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
 {
 	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
-		if ((M[i] != E[i]) && (M[i] != 255))
+		if ((M[i] != E[i]) && (255 != M[i]))
 			return(false);
 	return(true);
 }
