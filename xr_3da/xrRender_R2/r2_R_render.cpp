@@ -210,7 +210,6 @@ void CRender::Render		()
 
 	// $$$
 	Target.phase_accumulator			();
-
 	HOM.Disable							();
 	render_lights						(LP_normal);
 	render_lights						(LP_pending);
