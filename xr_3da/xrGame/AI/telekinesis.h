@@ -16,18 +16,19 @@ public:
 	Fvector				start_pos;
 	u32					time_state_started;
 
-	void set(CEntityAlive *new_obj, ETelekineticState	new_state) {
+	CTelekineticObject set(CEntityAlive *new_obj, ETelekineticState	new_state) {
 		state				= new_state;
 		pE					= new_obj;
 		start_pos			= pE->Position();
 		time_state_started	= Level().timeServer();
+		return	*this;
 	}
 };
 
 
 template <typename CMonster>
 class CTelekinesis {
-	xr_vector<CTelekineticObject*>	objects;
+	xr_vector<CTelekineticObject>	objects;
 	bool							active;
 
 	CMonster						*monster;

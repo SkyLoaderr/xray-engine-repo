@@ -32,7 +32,7 @@ void CTelekinesis<CMonster>::Activate()
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(tpNearest[i]);
 		if (!pE || !pE->m_pPhysicsShell) continue;
 
-		objects.push_back(CTelekineticObject().set(TS_Raise, pE));
+		objects.push_back(CTelekineticObject().set(pE,TS_Raise));
 		pE->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 	}
 
@@ -44,7 +44,7 @@ void CTelekinesis<CMonster>::Deactivate()
 	active			= false;
 
 	for (u32 i = 0; i < objects.size(); i++) {
-		Release(objects[i]->pE);
+		Release(objects[i].pE);
 	}
 
 	objects.clear	();
@@ -58,7 +58,7 @@ void CTelekinesis<CMonster>::Update(float dt)
 	u32 cur_time = Level().timeServer();
 
 	for (u32 i = 0; i < objects.size(); i++) {
-		CTelekineticObject *cur_obj = objects[i]; 
+		CTelekineticObject *cur_obj = &objects[i]; 
 
 		if (cur_obj->state == TS_None) continue;
 
@@ -125,7 +125,7 @@ void CTelekinesis<CMonster>::Throw(const Fvector &target)
 	if (!active) return;
 	
 	for (u32 i = 0; i < objects.size(); i++) {
-		Throw(objects[i]->pE, target);
+		Throw(objects[i].pE, target);
 	}
 }
 
