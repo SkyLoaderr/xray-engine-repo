@@ -111,7 +111,7 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 	if (element==light_bone_idx)	fHealth = 0.f;
 	else							fHealth -= P*0.5f;
 	if (!Alive())
-		light_render->set_active(false);
+	 	light_render->set_active(false);
 }
 
 void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
