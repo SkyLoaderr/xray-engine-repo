@@ -28,7 +28,8 @@ ENGINE_API void _parse(LPSTR dest, LPCSTR src)
 			} else if (*src=='"') {
 				bInsideSTR = !bInsideSTR;
 			}
-			*dest++ = *src++;
+			if (*src!='"')	*dest++ = *src++;
+			else			src++;
 		}
 	}
 	*dest = 0;
@@ -46,7 +47,8 @@ ENGINE_API void _decorate(LPSTR dest, LPCSTR src)
 			} else if (*src=='"') {
 				bInsideSTR = !bInsideSTR;
 			}
-			*dest++ = *src++;
+			if (*src!='"')	*dest++ = *src++;
+			else			src++;
 		}
 	}
 	*dest = 0;
@@ -64,7 +66,7 @@ BOOL	CInifile::Sect::LineExists( LPCSTR L, LPCSTR* val )
 }
 //------------------------------------------------------------------------------
 
-CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd, BOOL ConvertToLower )
+CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
 {
 	fName		= szFileName?xr_strdup(szFileName):0;
     bReadOnly	= ReadOnly;
@@ -113,7 +115,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
                     Current.clear	();
                 }
                 int L = strlen(str); str[L-1] = 0;
-				Current.Name = ConvertToLower?strlwr(xr_strdup(str+1)):xr_strdup(str+1);
+				Current.Name = strlwr(xr_strdup(str+1));
             } else {
                 if (0==Current.Name)	{
                     _FREE(comment);
