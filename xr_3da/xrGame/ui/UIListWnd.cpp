@@ -140,7 +140,7 @@ void CUIListWnd::RemoveItem(int index)
 
 	R_ASSERT(m_ItemList.end() != it);
 	
-	VERIFY( (*it)->IsAutoDelete() );
+	VERIFY( !(*it)->IsAutoDelete() );
 	
 	DetachChild(*it);
 //	if (!(*it)->IsManualDelete())
