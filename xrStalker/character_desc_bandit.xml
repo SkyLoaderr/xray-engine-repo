@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------BANDIT NOVICE----------------------->
+	<specific_character id="stalker_novice_default" team_default = "1">
+		<name>Неизвестный бандит</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Ничем себя проявить еще не успел.</bio>
+
+		<team>Bandit_novice</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+	</specific_character>
+
+<!---------------------------BANDIT GENERAL---------------------->
+	<specific_character id="stalker__general_default" team_default = "1">
+		<name>Неизвестный бандит</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Bandit_general</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+	</specific_character>
+
+<!---------------------------BANDIT VETERAN---------------------->
+	<specific_character id="stalker_veteran_default" team_default = "1">
+		<name>Неизвестный бандит</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер явно не первый день в Зоне.</bio>
+
+		<team>Bandit_veteran</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+	</specific_character>
+
+<!---------------------------BANDIT MASTER----------------------->
+	<specific_character id="stalker_master_default" team_default = "1">
+		<name>Неизвестный бандит</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
+
+		<team>Bandit_master</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+	</specific_character>
+</xml>
