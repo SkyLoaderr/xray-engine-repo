@@ -362,6 +362,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create shaders
 	s_Scene2fat.compile	(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	{
+	}
 
 	/*
 	// Create shadow map texture and retrieve surface

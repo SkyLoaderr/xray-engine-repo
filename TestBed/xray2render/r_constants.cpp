@@ -86,18 +86,23 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 		if (bSkip)			continue;
 
 		// We have determined all valuable info, search if constant already created
-		R_constant*	C		=	get(name);
+		R_constant*	C		=	get	(name);
 		if (0==C)	{
 			C					=	g_constant_allocator.create();
 			strcpy				(C->name,name);
+			C->destination		|=	destination;
+			C->type				=	type;
+			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
+			L.index				=	r_index;
+			L.cls				=	r_type;
+		} else {
+			C->destination		|=	destination;
+			VERIFY	(C->type	=	type);
+			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
+			L.index				=	r_index;
+			L.cls				=	r_type;
 		}
 
-		// fill
-		C->destination		|=	destination;
-		C->type				=	type;
-		R_constant_load& L	=	(destination&1)?C->ps:C->vs;
-		L.index				=	r_index;
-		L.cls				=	r_type;
 	}
 	std::sort	(table.begin(),table.end(),p_sort);
 	return		TRUE;
