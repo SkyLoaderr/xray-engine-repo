@@ -12,8 +12,8 @@ function C_new_game_sv_Deathmatch:__finalize()
 end
 
 
-function C_new_game_sv_Deathmatch:section_name()
-	printf		("C_new_game_sv_Deathmatch::section_name called!")
+function C_new_game_sv_Deathmatch:type_name()
+	printf		("C_new_game_sv_Deathmatch::type_name called!")
 	return "new_deathmatch"
 end
 
