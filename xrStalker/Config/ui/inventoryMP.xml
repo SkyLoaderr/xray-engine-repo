@@ -4,25 +4,25 @@
 	<!-- BAG WINDOW -->
 	<bag_background_static x="10" y="245" width="350" height="440">
 		<texture>ui\ui_dg_inventory_multiplayer</texture>
-		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">Items List</text>
+		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_items_list</text>
 	</bag_background_static>
 
 	<!-- DESCRIPTION WINDOW -->
 	<desc_static x="340" y="245" width="420" height="400">
 		<texture>ui\ui_dg_info_multiplayer</texture>
-		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">Description</text>
+		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_description</text>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->
 	<personal_static x="790" y="245" width="200" height="400">
 		<texture>ui\ui_dg_personal_multiplayer</texture>
-		<text x="60" y="7" font="graffiti22" r="255" g="255" b="255" a="130">Personal</text>
+		<text x="60" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_personal</text>
 	</personal_static>
 
 	<!-- BELT STATIC BACKGROUND-->
 	<static x="15" y="137" width="1024" height="128">
 		<texture>ui\ui_inv_belt</texture>
-		<text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130">Belt</text>
+		<text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_belt</text>
 	</static>
 
 	<!-- SLOTS BACKGROUND -->
@@ -105,7 +105,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Pistols</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_pistols</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 		</button>
@@ -115,7 +115,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Primary Weapons</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_primary_weapons</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 		</button>
@@ -125,7 +125,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Grenades</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_granades</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 		</button>
@@ -135,7 +135,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Outfits</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_outfits</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 		</button>
@@ -145,7 +145,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Etc</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_equipment</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 		</button>
