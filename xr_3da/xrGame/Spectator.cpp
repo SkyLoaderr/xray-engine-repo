@@ -91,6 +91,7 @@ void CSpectator::OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 	case kCAM_4:	cam_Set			(eacFreeFly);				break;
+	case kWPN_NEXT:	look_idx++;									break;
 	}
 }
 
@@ -102,10 +103,6 @@ void CSpectator::OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
 
-	switch(cmd)
-	{
-	case kWPN_NEXT:		look_idx++; break;
-	}
 	if (cam_active==eacFreeFly){
 		CCameraBase* C	= cameras	[cam_active];
 		Fvector vmove={0,0,0};
