@@ -3,12 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\cameramanager.h"
-#include "..\effectorrecoil.h"
-#include "..\environment.h"
-#include "..\xr_area.h"
-#include "..\collide\cl_defs.h"
-#include "..\fastspriterail.h"
+#include "../cameramanager.h"
+#include "../effectorrecoil.h"
+#include "../environment.h"
+#include "../xr_area.h"
+#include "../collide\cl_defs.h"
+#include "../fastspriterail.h"
 
 #include "entity.h"
 #include "WeaponRail.h"
@@ -62,7 +62,7 @@ void CWeaponRail::OnMove()
 			bCanFire = false;
 
 			// real fire
-			iAmmoElapsed--;
+			--iAmmoElapsed;
 			if (iAmmoElapsed==0) m_pParent->g_fireEnd();
 
 //			BOOL bLocal = pParent->SUB_CLS_ID==CLSID_OBJECT_ACTOR;
