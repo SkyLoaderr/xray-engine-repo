@@ -9,12 +9,12 @@
 #pragma warning(default:4530)
 
 // Lua
-extern "C"
-{
+//extern "C"
+//{
 	#include "lua.h"
 	#include "lualib.h"
 	#include "lauxlib.h"
-}
+//}
 #pragma comment(lib,"x:\\xrLUA.lib")
 
 // Lua-bind

@@ -1,6 +1,6 @@
 // Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
-// Permission is hereby granted, free of charge, to any person obtaining a
+// Permission is hereby granted, _free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,12 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+#pragma warning(disable:4244)
+#pragma warning(disable:4995)
+#pragma warning(disable:4530)
+#pragma warning(disable:4267)
+#pragma warning(disable:4505)
+//extern "C"
+//{
+	#include "lua.h"
+	#include "lauxlib.h"
+	#include "lualib.h"
+//}
 
 #define LUABIND_NO_HEADERS_ONLY
 
@@ -122,3 +127,8 @@ int luabind::detail::create_class::stage1(lua_State* L)
 	return 1;
 }
 
+#pragma warning(default:4244)
+#pragma warning(default:4995)
+#pragma warning(default:4530)
+#pragma warning(default:4267)
+#pragma warning(default:4505)
