@@ -39,6 +39,7 @@
 		*	NEW:		sub-rendering
 		*	NEW:		projective texturing in ps1_1
 		*	BUG:		projector - 
+		*	NEW:		R1/R2 shared scene-graph
 
 ***[OLES]*** In progress:
 -------------------------
