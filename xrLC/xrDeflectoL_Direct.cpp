@@ -68,10 +68,8 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	// Lighting itself
 	DB->ray_options	(0);
 	
-	for (u32 V=0; V<lm.height; V++)
-	{
-		for (u32 U=0; U<lm.width; U++)
-		{
+	for (u32 V=0; V<lm.height; V++)	{
+		for (u32 U=0; U<lm.width; U++)	{
 			u32			Fcount	= 0;
 			base_color	C;
 			

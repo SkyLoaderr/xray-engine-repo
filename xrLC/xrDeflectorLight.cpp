@@ -466,8 +466,7 @@ void CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, H
 		Fbox2			bounds;
 		Bounds_Summary	(bounds);
 		H.initialize	(bounds,(u32)UVpolys.size());
-		for (u32 fid=0; fid<UVpolys.size(); fid++)
-		{
+		for (u32 fid=0; fid<UVpolys.size(); fid++)	{
 			UVtri* T	= &(UVpolys[fid]);
 			Bounds		(fid,bounds);
 			H.add		(bounds,T);
