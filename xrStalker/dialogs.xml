@@ -212,7 +212,7 @@
         </phrase_list>
     </dialog>
     
-    <dialog id="pda_trade">
+    <dialog id="pda_trade" pda="1">
         <phrase_list>
             <phrase id="0">
                 <text>Trade?</text>
