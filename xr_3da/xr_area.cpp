@@ -13,30 +13,31 @@ IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
 
 void __stdcall _sound_event	(sound* S, float range)
 {
-	VERIFY					(S->feedback);
-	const CSound_params*	p	= S->feedback->get_params();
-	VERIFY					(p);
+	if (S->feedback){
+		const CSound_params*	p	= S->feedback->get_params();
+		VERIFY					(p);
 
-	// Query objects
-	pCreator->ObjectSpace.GetNearest	(p->position,range);
+		// Query objects
+		pCreator->ObjectSpace.GetNearest	(p->position,range);
 
-	// Iterate
-	CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
-	CObjectSpace::NL_IT		end	= pCreator->ObjectSpace.q_nearest.end	();
-	for (; it!=end; it++)
-	{
-		CObject*	O		= *it;
-		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(O);
-		if (0==L)			continue;
+		// Iterate
+		CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
+		CObjectSpace::NL_IT		end	= pCreator->ObjectSpace.q_nearest.end	();
+		for (; it!=end; it++)
+		{
+			CObject*	O		= *it;
+			Feel::Sound* L		= dynamic_cast<Feel::Sound*>(O);
+			if (0==L)			continue;
 
-		// Energy and signal
-		Fvector				Oc;
-		O->clCenter			(Oc);
-		float D				= p->position.distance_to(Oc);
-		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
-		clamp				(A,0.f,1.f);
-		float Power			= A*p->volume;
-		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
+			// Energy and signal
+			Fvector				Oc;
+			O->clCenter			(Oc);
+			float D				= p->position.distance_to(Oc);
+			float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
+			clamp				(A,0.f,1.f);
+			float Power			= A*p->volume;
+			if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
+		}
 	}
 }
 
