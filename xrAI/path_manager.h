@@ -335,7 +335,6 @@ public:
 			return				(true);
 		
 		best_node				= graph->vertex(node_index);
-
 		y1						= (float)(best_node->position().y());
 
 		return					(false);
@@ -802,11 +801,10 @@ public:
 			_data_storage,
 			_path,
 			_start_node_index,
-			_goal_node_index,
+			_start_node_index,
 			parameters
 		);
 		m_params		= &parameters;
-		goal_node_index	= _index_type(-1);
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
@@ -817,12 +815,14 @@ public:
 				m_params->m_distance	= distance;
 				m_params->m_vertex_id	= node_index;
 			}
-			inherited::is_goal_reached	(node_index);
+			best_node					= graph->vertex(node_index);
+			y1							= (float)(best_node->position().y());
 			return						(false);
 		}
 
 		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon)) {
-			inherited::is_goal_reached	(node_index);
+			best_node					= graph->vertex(node_index);
+			y1							= (float)(best_node->position().y());
 			return						(false);
 		}
 		else {
