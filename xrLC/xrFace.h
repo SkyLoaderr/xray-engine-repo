@@ -16,10 +16,10 @@ public:
 	WORD					dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
 	union			{
 		bool				bSplitted;		//
-		bool				bOpaque;		// For ray-tracing speedup
 		bool				bProcessed;
 	};
 	bool					bDisableShadowCast;
+	bool					bOpaque;		// For ray-tracing speedup
 
 	virtual	Shader_xrLC&	Shader				( );
 	virtual void			CacheOpacity		( );
