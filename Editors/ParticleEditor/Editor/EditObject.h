@@ -367,14 +367,15 @@ public:
 
     // export routine
     // skeleton
-	bool			ExportSkeletonOGF		(LPCSTR fname);
     bool			PrepareSVGeometry		(IWriter& F);
     bool			PrepareSVKeys			(IWriter& F);
     bool			PrepareSVDefs			(IWriter& F);
-    bool			PrepareSV				(IWriter& F);
-    // ogf
-    bool			ExportObjectOGF			(LPCSTR fname);
+    bool			PrepareSkeletonOGF		(IWriter& F);
+    // rigid
+    bool			PrepareRigidOGF			(IWriter& F);
+	// ogf
     bool			PrepareOGF				(IWriter& F);
+	bool			ExportOGF				(LPCSTR fname);
     // HOM
     bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
     bool			ExportHOM				(LPCSTR fname);

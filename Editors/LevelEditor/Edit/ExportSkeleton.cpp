@@ -268,16 +268,16 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
         // generate normals
         if (!MESH->m_LoadState.is(CEditableMesh::LS_FNORMALS)) MESH->GenerateFNormals();
-        vnormals.clear();
-        Fvector N;
-        for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++){
+        vnormals.resize(MESH->m_Points.size());
+        for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++)
+        {
+        	Fvector& N = vnormals[pt-MESH->m_Points.begin()];
             N.set(0,0,0);
             IntVec& a_lst = MESH->m_Adjs[pt-MESH->m_Points.begin()];
             VERIFY(a_lst.size());
             for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
                 N.add(MESH->m_FNormals[*i_it]);
             N.normalize_safe();
-            vnormals.push_back(N);
         }
 	    UI.ProgressInc();
         // fill faces

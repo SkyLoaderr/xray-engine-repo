@@ -90,8 +90,10 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
-//. 	Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
-//*
+/*		//.
+
+		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
+/*/
 		RCache.set_xform_world	(parent);
 	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
@@ -316,8 +318,13 @@ void CEditableObject::EvictObject(){
 
 bool CEditableObject::PrepareOGF(IWriter& F)
 {
+	return IsSkeleton()?PrepareSkeletonOGF(F):PrepareRigidOGF(F);
+}
+
+bool CEditableObject::PrepareRigidOGF(IWriter& F)
+{
     CExportObjectOGF E(this);
-    return E.ExportGeometry(F);
+    return E.Export(F);
 }
 
 bool CEditableObject::PrepareSVGeometry(IWriter& F)
@@ -338,7 +345,7 @@ bool CEditableObject::PrepareSVDefs(IWriter& F)
     return E.ExportMotionDefs(F);
 }
 
-bool CEditableObject::PrepareSV(IWriter& F)
+bool CEditableObject::PrepareSkeletonOGF(IWriter& F)
 {
     CExportSkeleton E(this);
     return E.Export(F);

@@ -41,6 +41,9 @@ public:
 
 		void    	Render	(const Fmatrix& parent,int priority, bool strictB2F);
 		void    	OnFrame	();
+
+    	void		OnDeviceCreate	();
+		void		OnDeviceDestroy	();
 	};
 
 	SSpawnData    	m_SpawnData;

@@ -165,8 +165,8 @@ protected:
     SVertVec	    m_SVertices;// |
     AdjVec		    m_Adjs;     // + some array size!!!
     SurfFaces	    m_SurfFaces;
-    FvectorVec	    m_PNormals;	// |*3
     FvectorVec	    m_FNormals;	// |
+    FvectorVec	    m_PNormals;	// |
     FaceVec		    m_Faces;    // + some array size!!!
     VMapVec		    m_VMaps;
     VMRefsVec	    m_VMRefs;

@@ -191,7 +191,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
         dummy.s_Model 		= xr_strdup(mdl_name);
         strconcat			(mdl_name,Builder.m_LevelPath.c_str(),Name,".ogf");
 		VerifyPath			(mdl_name);
-        if (m_pReference->IsSkeleton()) m_pReference->ExportSkeletonOGF(mdl_name); else m_pReference->ExportObjectOGF(mdl_name);
+        m_pReference->ExportOGF(mdl_name);
 		// esSound
         if (IsSoundable()){
 	        string256 snd_name;	strconcat(snd_name,Name,".wav");

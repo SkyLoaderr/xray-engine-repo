@@ -137,7 +137,7 @@ class CExportObjectOGF
 public:
 			CExportObjectOGF	(CEditableObject* object);
 			~CExportObjectOGF	();
-    bool    ExportGeometry		(IWriter& F);
+    bool    Export				(IWriter& F);
 };
 
 #endif

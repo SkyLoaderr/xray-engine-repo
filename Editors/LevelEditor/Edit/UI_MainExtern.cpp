@@ -526,6 +526,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
         }else{
             if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, etObject)      
             else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, etLight)       
+            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundSrc)    
             else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundEnv)    
             else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, etGlow)        
             else if (Key=='6')			COMMAND1(COMMAND_CHANGE_TARGET, etShape)       

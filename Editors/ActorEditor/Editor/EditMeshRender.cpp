@@ -46,7 +46,7 @@ void CEditableMesh::CreateRenderBuffers()
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
 			u8*	bytes			= 0;
 			IDirect3DVertexBuffer9*	pVB=0;
-			IDirect3DIndexBuffer9*	pIB=0;
+//			IDirect3DIndexBuffer9*	pIB=0;
 			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &pVB, 0));
 //            R_CHK(HW.pDevice->CreateIndexBuffer(i_cnt*sizeof(u16),D3DUSAGE_WRITEONLY,D3DFMT_INDEX16,D3DPOOL_MANAGED,&pIB,NULL));
 			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),pVB,0);
@@ -92,7 +92,7 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
     	st_Face& face = m_Faces[f_index];
         for (int k=0; k<3; k++){
             st_FaceVert& fv = face.pv[k];
-            u32 norm_id = f_index*3+k;
+            u32 norm_id = f_index*3+k;//fv.pindex;
 	        VERIFY2(norm_id<m_PNormals.size(),"Normal index out of range.");
             VERIFY2(fv.pindex<(int)m_Points.size(),"Point index out of range.");
             Fvector& PN = m_PNormals[norm_id];

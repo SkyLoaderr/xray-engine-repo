@@ -140,6 +140,21 @@ void CSpawnPoint::SSpawnData::OnFrame()
     xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
 	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->Calculate();
 }
+void CSpawnPoint::SSpawnData::OnDeviceCreate()
+{
+    // if visualed
+    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+	if (V)						V->OnChangeVisual(0);
+}
+//----------------------------------------------------
+
+void CSpawnPoint::SSpawnData::OnDeviceDestroy()
+{
+    // if visualed
+    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+	if (V&&V->visual)			Device.Models.Delete(V->visual);
+}
+//----------------------------------------------------
 //------------------------------------------------------------------------------
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
@@ -465,11 +480,13 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 
 void CSpawnPoint::OnDeviceCreate()
 {
+	m_SpawnData.OnDeviceCreate	();
 }
 //----------------------------------------------------
 
 void CSpawnPoint::OnDeviceDestroy()
 {
+	m_SpawnData.OnDeviceDestroy	();
 	if (m_Icons.empty()) return;
 	for (ShaderPairIt it=m_Icons.begin(); it!=m_Icons.end(); it++)
     	Device.Shader.Delete(it->second);

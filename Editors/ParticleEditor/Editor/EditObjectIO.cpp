@@ -318,20 +318,10 @@ CSMotion* CEditableObject::LoadSMotion(const char* fname){
 }
 //------------------------------------------------------------------------------
 #ifdef _EDITOR
-bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
-	CMemoryWriter F;
-    if (PrepareSV(F)){
-    	F.save_to(fn);
-        return true;
-    }
-    return false;
-}
-//------------------------------------------------------------------------------
-bool CEditableObject::ExportObjectOGF(LPCSTR fname)
-{
+bool CEditableObject::ExportOGF(LPCSTR fn){
 	CMemoryWriter F;
     if (PrepareOGF(F)){
-    	F.save_to(fname);
+    	F.save_to(fn);
         return true;
     }
     return false;

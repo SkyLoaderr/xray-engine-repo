@@ -280,7 +280,7 @@ CExportObjectOGF::SSplit* CExportObjectOGF::FindSplit(CSurface* surf)
 }
 //----------------------------------------------------
 
-bool CExportObjectOGF::ExportGeometry(IWriter& F)
+bool CExportObjectOGF::Export(IWriter& F)
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
@@ -292,48 +292,53 @@ bool CExportObjectOGF::ExportGeometry(IWriter& F)
     tm.Start();
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
-        // generate normals
+//        // generate normals
         if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) MESH->GeneratePNormals();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst= sp_it->second;
         	U8Vec mark;		mark.resize(face_lst.size(),0);
-            CSurface* surf = sp_it->first;
+            CSurface* surf 	= sp_it->first;
             u32 dwTexCnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);	R_ASSERT(dwTexCnt==1);
             SSplit* split	= FindSplit(surf);
             if (0==split){
             	m_Splits.push_back(new SSplit(surf,m_Source->GetBox()));
                 split		= m_Splits.back();
             }
-            int elapsed_faces = face_lst.size();
+            int 	elapsed_faces 	= surf->m_Flags.is(CSurface::sf2Sided)?face_lst.size()*2:face_lst.size();
+            const 	u8 	mark_mask	= surf->m_Flags.is(CSurface::sf2Sided)?0x03:0x01;
             
             do{
                 if (elapsed_faces>0) split->AppendPart(elapsed_faces>0xffff?0xffff:elapsed_faces,elapsed_faces>0xffff?0xffff:elapsed_faces);
                 for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
-                    st_Face& face = MESH->m_Faces[*f_it];
+                    st_Face& face 	= MESH->m_Faces[*f_it];
                     {
-                        SOGFVert v[3];
-                        for (int k=0; k<3; k++){
-                            st_FaceVert& 	fv = face.pv[k];
-                            int offs = 0;
-                            Fvector2* 		uv = 0;
-                            for (u32 t=0; t<dwTexCnt; t++){
-                                st_VMapPt& vm_pt 	= MESH->m_VMRefs[fv.vmref][t+offs];
-                                st_VMap& vmap		= *MESH->m_VMaps[vm_pt.vmap_index];
-                                if (vmap.type!=vmtUV){ offs++; t--; continue; }
-                                uv					= &vmap.getUV(vm_pt.index);
-                            }
-                            R_ASSERT2(uv,"uv empty");
-                            v[k].set(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],*uv);
-                        }                     
-                        int idx = f_it-face_lst.begin();
-                        if (!mark[idx]){
-                            if (split->m_CurrentPart->add_face(v[0], v[1], v[2])){
-                            	mark[idx]			= 1; 
+                        int mark_idx= f_it-face_lst.begin();
+                        if (mark_mask!=mark[mark_idx]){
+                            SOGFVert v[3];
+                            for (int k=0; k<3; k++){
+                                st_FaceVert& 	fv = face.pv[k];
+                                int offs 		= 0;
+                                Fvector2* 		uv = 0;
+                                for (u32 t=0; t<dwTexCnt; t++){
+                                    st_VMapPt& vm_pt 	= MESH->m_VMRefs[fv.vmref][t+offs];
+                                    st_VMap& vmap		= *MESH->m_VMaps[vm_pt.vmap_index];
+                                    if (vmap.type!=vmtUV){ offs++; t--; continue; }
+                                    uv					= &vmap.getUV(vm_pt.index);
+                                }
+                                R_ASSERT2		(uv,"uv empty");
+                                u32 norm_id 	= (*f_it)*3+k;	R_ASSERT2(norm_id<MESH->m_PNormals.size(),"Normal index out of range.");
+								v[k].set(MESH->m_Points[fv.pindex],MESH->m_PNormals[norm_id],*uv);
+                            }                     
+                            if (!(mark[mark_idx]&0x01)&&split->m_CurrentPart->add_face(v[0], v[1], v[2])){
+                                mark[mark_idx]	|= 0x01; 
                                 elapsed_faces--;
-                                if (surf->m_Flags.is(CSurface::sf2Sided)){
-                                    v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
-                                    split->m_CurrentPart->add_face(v[0], v[2], v[1]);
+                            }
+                            if ((mark_mask==0x03)&&!(mark[mark_idx]&0x02)){
+								v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
+                            	if (split->m_CurrentPart->add_face(v[2], v[1], v[0])){
+	                                mark[mark_idx]	|= 0x02; 
+    	                            elapsed_faces--;
                                 }
                             }
                         }

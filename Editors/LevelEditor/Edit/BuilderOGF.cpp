@@ -18,7 +18,7 @@ bool SceneBuilder::BuildSkyModel(){
     if (Scene.m_SkyDome){
 	    AnsiString ogf_name = m_LevelPath+Scene.m_SkyDome->Name+".ogf";
         CEditableObject* O = Scene.m_SkyDome->GetReference(); R_ASSERT(O);
-        return O->ExportObjectOGF(ogf_name.c_str());
+        return O->ExportOGF(ogf_name.c_str());
     }
 	return false;
 }

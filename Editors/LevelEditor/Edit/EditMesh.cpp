@@ -113,21 +113,32 @@ void CEditableMesh::GenerateFNormals()
 void CEditableMesh::GeneratePNormals()
 {
 	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
+/*
+    m_VNormals.resize(m_Points.size());
+    FvectorIt n_it	= m_VNormals.begin();
+    AdjIt	  a_it	= m_Adjs.begin();
+    for(FvectorIt pt=m_Points.begin();pt!=m_Points.end();pt++,n_it++,a_it++){
+        n_it->set	(0,0,0); VERIFY(a_it->size());
+        for (IntIt i_it=a_it->begin(); i_it!=a_it->end(); i_it++)
+            n_it->add(m_FNormals[*i_it]);
+        n_it->normalize_safe();
+    }
+*/
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
-    float m_fSoftAngle = cosf(deg2rad(60.f));
+    float m_fSoftAngle = cosf(deg2rad(89.f));
     for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
-		Fvector& FN = m_FNormals[f_i];
+		Fvector& FN 	= m_FNormals[f_i];
         for (int k=0; k<3; k++){
-            Fvector& N = m_PNormals[f_i*3+k];
-            N.set(0,0,0);
+            Fvector& N 	= m_PNormals[f_i*3+k];
+            N.set		(0,0,0);
             IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
             VERIFY(a_lst.size());
             for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
             	Fvector& TN = m_FNormals[*i_it];
-	            float cosa = TN.dotproduct(FN);
+	            float cosa 	= TN.dotproduct(FN);
     	        if (cosa<m_fSoftAngle) continue;
-                N.add(TN);
+                N.add	(TN);
             }
             N.normalize_safe();
         }
