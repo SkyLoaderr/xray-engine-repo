@@ -44,11 +44,34 @@ TElTreeItem* FOLDER::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* star
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindItem(DWORD type, TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* FOLDER::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
 	int cnt = _GetItemCount(full_name,'\\');
-    if (type==TYPE_OBJECT){ cnt--; if (cnt<0) return 0; }
-    else if ((type==TYPE_FOLDER)&&(cnt<=0)) return 0;
+    if (cnt<=0) return 0;
+
+    // find folder item
+    int itm = 0;
+	char fld[64];
+	TElTreeItem* node = 0;
+    TElTreeItem* last_node = 0;
+    do{
+    	_GetItem(full_name,itm++,fld,'\\');
+        last_node = node;
+        node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
+    }while (node&&(itm<cnt));
+
+    if(!node){
+		if (last_valid_node) *last_valid_node=last_node;
+        if (last_valid_idx) *last_valid_idx=--itm;
+    }
+    return node;
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* FOLDER::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+{
+	int cnt = _GetItemCount(full_name,'\\'); cnt--;
+    if (cnt<0) return 0;
 
     // find folder item
     int itm = 0;
@@ -66,15 +89,13 @@ TElTreeItem* FOLDER::FindItem(DWORD type, TElTree* tv, LPCSTR full_name, TElTree
         if (last_valid_idx) *last_valid_idx=--itm;
     }else{
     	// find object item if needed
-        if (type==TYPE_OBJECT){
-			char obj[64];
-	    	_GetItem(full_name,cnt,obj,'\\');
-            last_node = node;
-	        node = FindItemInFolder(TYPE_OBJECT,tv,node,obj);
-            if (!node){
-                if (last_valid_node) *last_valid_node=last_node;
-                if (last_valid_idx) *last_valid_idx=itm;
-            }
+        char obj[64];
+        _GetItem(full_name,cnt,obj,'\\');
+        last_node = node;
+        node = FindItemInFolder(TYPE_OBJECT,tv,node,obj);
+        if (!node){
+            if (last_valid_node) *last_valid_node=last_node;
+            if (last_valid_idx) *last_valid_idx=itm;
         }
     }
 
@@ -86,7 +107,7 @@ TElTreeItem* FOLDER::AppendFolder(TElTree* tv, LPCSTR full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
-    TElTreeItem* node = FindItem(TYPE_FOLDER,tv,full_name,&last_node,&idx);
+    TElTreeItem* node = FindFolder(tv,full_name,&last_node,&idx);
 
     if (node) return node;
 
@@ -107,7 +128,7 @@ TElTreeItem* FOLDER::AppendObject(TElTree* tv, LPCSTR full_name)
 	char fld[128];
 	int fld_cnt = _GetItemCount(full_name,'\\')-1;
     _GetItems(full_name,0,fld_cnt,fld,'\\');
-    TElTreeItem* fld_node = fld[0]?FindItem(TYPE_FOLDER,tv,fld,&last_node,&idx):0;
+    TElTreeItem* fld_node = fld[0]?FindFolder(tv,fld,&last_node,&idx):0;
 
     if (!fld_node){
 	    fld_node = last_node;
