@@ -78,6 +78,7 @@ public:
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
 	void Update(u32 deltaT);								// Обновление
 	PIItem Same(const PIItem pIItem);						// Ищет на поясе аналогичный IItem
+	PIItem SameSlot(u32 slot);								// Ищет на поясе IItem для указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
 
 	TIItemSet m_all;										// Наборы объектов. m_all - все

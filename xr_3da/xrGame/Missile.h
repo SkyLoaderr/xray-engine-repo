@@ -22,6 +22,9 @@ public:
 	CMissile(void);
 	virtual ~CMissile(void);
 
+	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(sound& dest);
+
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
@@ -39,6 +42,7 @@ public:
 	virtual void Show();
 	virtual void Hide();
 	virtual void Throw();
+	virtual void Destroy();
 
 	virtual bool Action(s32 cmd, u32 flags);
 

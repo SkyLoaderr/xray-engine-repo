@@ -310,7 +310,7 @@ bool CInventory::Action(s32 cmd, u32 flags) {
 			}
 		} break;
 		case kUSE : {
-			if(flags&CMD_START && m_pTarget) {
+			if(flags&CMD_START && m_pTarget && m_pTarget->Useful()) {
 				// Generate event
 				CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
 				if(l_pA) {
@@ -365,6 +365,15 @@ PIItem CInventory::Same(const PIItem pIItem) {
 		PIItem l_pIItem = *l_it;
 		//if((l_pIItem != pIItem) && (l_pIItem->SUB_CLS_ID == pIItem->SUB_CLS_ID)) return l_pIItem;
 		if((l_pIItem != pIItem) && !strcmp(l_pIItem->cNameSect(), pIItem->cNameSect())) return l_pIItem;
+	}
+	return NULL;
+}
+
+PIItem CInventory::SameSlot(u32 slot) {
+	if(slot == 0xffffffff) return NULL;
+	for(PPIItem l_it = m_belt.begin(); l_it != m_belt.end(); l_it++) {
+		PIItem l_pIItem = *l_it;
+		if(l_pIItem->m_slot == slot) return l_pIItem;
 	}
 	return NULL;
 }

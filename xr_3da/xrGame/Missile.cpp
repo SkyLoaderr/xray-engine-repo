@@ -38,9 +38,13 @@ void CMissile::Load(LPCSTR section) {
 		else{inst_z;}
 
 BOOL CMissile::net_Spawn(LPVOID DC) {
+	BOOL l_res = inherited::net_Spawn(DC);
+
 	R_ASSERT(!m_pInventory);
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle");
+	setVisible					(true);
+	setEnabled					(true);
 
 	if (0==m_pPhysicsShell)
 	{
@@ -80,7 +84,7 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
-	return inherited::net_Spawn(DC);
+	return l_res;
 }
 
 void CMissile::net_Destroy() {
@@ -164,12 +168,10 @@ void CMissile::UpdateCL() {
 		if(m_destroyTime < Device.dwTimeDelta) {
 			m_destroyTime = 0xffffffff;
 			R_ASSERT(!m_pInventory);
-			NET_Packet			P;
-			u_EventGen			(P,GE_DESTROY,ID());
-			u_EventSend			(P);
+			Destroy();
 			return;
 		}
-		m_destroyTime -= Device.dwTimeDelta;
+		if(m_destroyTime < 0xffffffff) m_destroyTime -= Device.dwTimeDelta;
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
@@ -257,6 +259,12 @@ void CMissile::Throw() {
 	//}
 }
 
+void CMissile::Destroy() {
+	NET_Packet			P;
+	u_EventGen			(P,GE_DESTROY,ID());
+	u_EventSend			(P);
+}
+
 void CMissile::OnAnimationEnd() {
 	switch(State()) {
 		case MS_HIDING : {
@@ -294,4 +302,25 @@ bool CMissile::Action(s32 cmd, u32 flags) {
 		} return true;
 	}
 	return false;
+}
+
+void CMissile::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+	string256	name,temp;
+	strconcat	(name,"weapons\\",Name(),"_",s_name,".wav");
+	if (FS.exist(temp,"$game_sounds$",name)) 
+	{
+		dest.create		(TRUE,name,iType);
+		return;
+	}
+	strconcat	(name,"weapons\\","generic_",s_name,".wav");
+	if (FS.exist(temp,"$game_sounds$",name))	
+	{
+		dest.create		(TRUE,name,iType);
+		return;
+	}
+	Debug.fatal	("Can't find sound '%s' for weapon '%s'", name, Name());
+}
+
+void CMissile::SoundDestroy(sound& dest) {
+	dest.destroy();
 }

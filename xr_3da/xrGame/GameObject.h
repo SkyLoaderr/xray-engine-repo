@@ -49,6 +49,8 @@ public:
 	CGameObject();
 	virtual ~CGameObject();
 
+	virtual f32 ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, list<s16> &elements, list<Fvector> &bs_positions);
+
 #ifdef DEBUG
 	virtual void			OnRender			();
 #endif
