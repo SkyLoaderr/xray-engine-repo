@@ -18,23 +18,23 @@ namespace AI {
 
 	#pragma pack(push,4)
 	typedef struct tagSGraphVertex {
-		Fvector				tPoint;
-		u32					dwNodeID:24;
-		u32					ucVertexType:8;
-		u32					dwNeighbourCount;
-		u32					dwEdgeOffset;
+		Fvector	tPoint;
+		u32		dwNodeID:24;
+		u32		ucVertexType:8;
+		u32		dwNeighbourCount;
+		u32		dwEdgeOffset;
 	} SGraphVertex;
-	#pragma pack(pop)
 
 	typedef struct tagSGraphHeader {
-		u32					dwVersion;
-		u32					dwVertexCount;
+		u32		dwVersion;
+		u32		dwVertexCount;
 	} SGraphHeader;
+	#pragma pack(pop)
 
 	class	NodeEstimator
 	{
 	public:
-		u32	BestNode;
+		u32		BestNode;
 		float	BestCost;
 	public:
 		MemberPlacement taMemberPositions;
@@ -196,22 +196,22 @@ class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	// Initial data
-	CStream*						vfs;			// virtual file
-	hdrNODES						m_header;		// m_header
-	BYTE*							m_nodes;		// virtual nodes DATA array
-	NodeCompressed**				m_nodes_ptr;	// pointers to node's data
+	CStream*			vfs;			// virtual file
+	hdrNODES			m_header;		// m_header
+	BYTE*				m_nodes;		// virtual nodes DATA array
+	NodeCompressed**	m_nodes_ptr;	// pointers to node's data
 
 	// Debug
-	Shader*							sh_debug;
+	Shader*				sh_debug;
 
-	CStream*						m_tpGraphVFS;			// virtual file
-	AI::SGraphHeader				m_tGraphHeader;			// graph header
+	CStream*			m_tpGraphVFS;			// virtual file
+	AI::SGraphHeader	m_tGraphHeader;			// graph header
 public:
 	// Query
-	vector<bool>					q_mark_bit;		// temporal usage mark for queries
-	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
-	vector<BYTE>					q_mark;			// temporal usage mark for queries
-	vector<u32>						q_stack;
+	vector<bool>		q_mark_bit;		// temporal usage mark for queries
+	vector<bool>		q_mark_bit_x;		// temporal usage mark for queries
+	vector<BYTE>		q_mark;			// temporal usage mark for queries
+	vector<u32>			q_stack;
 	
 	CAI_Space		();
 	~CAI_Space		();
@@ -226,11 +226,11 @@ public:
 	void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 
-	AI::SGraphVertex						*m_tpaGraph;			// graph
-	SNode									*m_tpHeap;
-	SIndexNode								*m_tpIndexes;
-	u32										m_dwAStarStaticCounter;
-	float									m_fSize2,m_fYSize2;
+	AI::SGraphVertex	*m_tpaGraph;			// graph
+	SNode				*m_tpHeap;
+	SIndexNode			*m_tpIndexes;
+	u32					m_dwAStarStaticCounter;
+	float				m_fSize2,m_fYSize2;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData>
 		m_tpMapPath;
 	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>
