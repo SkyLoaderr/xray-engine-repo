@@ -679,40 +679,6 @@ IC	bool build_circle_trajectory(
 	bool								start_point
 )
 {
-//	Fvector				direction, curr_pos;
-//	u32					curr_vertex_id;
-//	if (start_point) {
-//		direction.sub	(position.position,position.center);
-//		curr_pos		= position.position;
-//		curr_vertex_id	= position.vertex_id;
-//	}
-//	else {
-//		direction.sub	(position.point,position.center);
-//		curr_pos		= position.point;
-//		curr_vertex_id	= ai().level_graph().check_position_in_direction(position.vertex_id,position.position,curr_pos);
-//		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
-//			return		(false);
-//		curr_pos.y		= ai().level_graph().vertex_plane_y(curr_vertex_id,curr_pos.x,curr_pos.z);
-//	}
-//
-//	float				yaw,pitch;
-//	direction.getHP		(yaw,pitch);
-//	yaw					= angle_normalize(yaw);
-//	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
-//	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
-//		Fvector			t;
-//		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,t);
-//		if (!ai().level_graph().inside(curr_vertex_id,t))
-//			curr_vertex_id = ai().level_graph().check_position_in_direction(curr_vertex_id,curr_pos,t);
-//		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
-//			return		(false);
-//		if (path) {
-//			t.y			= ai().level_graph().vertex_plane_y(curr_vertex_id,t.x,t.z);
-//			path->push_back(t);
-//		}
-//		curr_pos		= t;
-//	}
-//	return				(true);
 	Fvector				direction, curr_pos;
 	u32					curr_vertex_id;
 	direction.sub		(position.position,position.center);
