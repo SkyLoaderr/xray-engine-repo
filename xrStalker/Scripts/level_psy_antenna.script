@@ -1,26 +1,35 @@
 class "PsyAntennaPP" (effector)
-
 function PsyAntennaPP:__init() super(1001,10000000)
 	self.params							= effector_params();
 end
-
 function PsyAntennaPP:process(pp)
 	pp:assign		(self.params);
     effector.process(self,pp);
     return          true;
 end
 
-class "PsyAntenna"
+class "Phantom"		(object_binder)
+function Phantom:__init(obj) super(obj)
+	g_PsyAntenna:add_phantom();
+end
+function Phantom:net_destroy()
+	g_PsyAntenna:remove_phantom();
+end
+function bind(obj)
+	obj:bind_object		(Phantom(obj))
+end
 
+class "PsyAntenna"
 pa_phase={
 	phIdle 								= 0,
 	phStarting 							= 1,
 	phWorking 							= 2,
 	phStopping							= 3
 }
-
 function PsyAntenna:__init				()
 	self.phase 							= pa_phase.phIdle;
+	self.phantom_max 					= 30;
+	self.phantom_count 					= 0;
 	self.power_factor					= fcolor();
 	self.eff_time						= 0;
 	self.starting_anim					= color_animator			("levels\\psy_antenna\\starting");
@@ -111,10 +120,21 @@ function PsyAntenna:update_psy_hit		(dt)
 	end;
 end
 function PsyAntenna:spawn_phantom 		()
-	level.spawn_phantom(position)
+	local pos 							= vector():set(0,0,0);
+	level.spawn_phantom					(pos);
+end
+function PsyAntenna:add_phantom 		()
+	self.phantom_count					= self.phantom_count + 1;
+end
+function PsyAntenna:remove_phantom 		()
+	self.phantom_count					= self.phantom_count - 1;
 end
 function PsyAntenna:update_phantoms 	()
-	
+	if self.power_factor.a>0.1 then
+		if self.phantom_count<self.phantom_max then
+			self:spawn_phantom 			();
+		end;
+	end;
 end
 function PsyAntenna:update				(dt)
 	self.eff_time						= self.eff_time + dt;
@@ -140,21 +160,6 @@ function main()
 		end
 	end
 end
-
-class "Phantom"		(object_binder)
-
-function Phantom:__init(obj) super(obj)
-	g_PsyAntenna:add_generator(self);
-end
-
-function Phantom:net_destroy()
-	g_PsyAntenna:remove_generator(self);
-end
-
-function bind(obj)
-	obj:bind_object		(Phantom(obj))
-end
-
 
 --[[
 function PsyAntenna:add_generator(generator)

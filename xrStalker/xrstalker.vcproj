@@ -1486,6 +1486,9 @@
 				<File
 					RelativePath=".\Scripts\level_weathers.script">
 				</File>
+				<File
+					RelativePath=".\Scripts\phantom_manager.script">
+				</File>
 				<Filter
 					Name="Binders"
 					Filter="">
