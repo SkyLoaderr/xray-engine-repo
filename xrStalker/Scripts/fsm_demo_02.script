@@ -12,10 +12,6 @@
 -- глобальная переменная, указываюшая на то что сталкер уже
 -- не первый раз видит актера
 stalker_already_saw_actor = false
-if_actor_is_dead = false
-
-local sound_baran = sound_object("scripts\\idle\\say_baran")
-
 
 -- функция перехода в первое состояние из нулевого
 function if_see_actor_tell_warning(npc, fsm)
@@ -68,9 +64,6 @@ function if_actor_is_dead(npc, fsm)
 
 		sound_baran:play_at_pos		(npc,npc:position(),0);
 
-		-- мы уже видели актера, больше предупреждать не нужно	
-		if_actor_is_dead = true
-
 		return true
 	end
 	-- нет, условие не сработало, все оталось как есть
@@ -94,6 +87,7 @@ function main()
 
 	stalker00	= get_level_object("m_stalker_e0000")
 	actor = get_actor()
+	sound_baran = sound_object("scripts\\idle\\say_baran")
 
 	-- инициализация FSM сталкера
 	local fsm_stalker = FSM(this.script_name(), stalker00)
@@ -102,6 +96,7 @@ function main()
 	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
 	fsm_stalker:set_transition(1, 0, this.finished_talking)
 	fsm_stalker:set_transition(0, 2, this.if_actor_is_dead)
+	fsm_stalker:set_transition(2, 0, this.finished_talking)
 
 	-- запуск бесконечного цикла для одного FSM
 	fsm_stalker:run_loop()
