@@ -64,19 +64,6 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 			}
 		}
 	}
-	
-	if (selected == u32(-1)) {
-		for (u32 i=1, selected = u32(-1); i<header().vertex_count(); ++i) {
-			CVertex				*_vertex = vertex(i);
-			if (inside			(_vertex,_node_position)) {
-				float			dist = _abs(vertex_plane_y(_vertex) - position.y);
-				if (dist < min_dist) {
-					min_dist	= dist;
-					selected	= i;
-				}
-			}
-		}
-	}
 	return					(selected);
 }
 

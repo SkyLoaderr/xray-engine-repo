@@ -806,6 +806,8 @@ public:
 			parameters
 		);
 		m_params		= &parameters;
+		m_params->m_vertex_id = _index_type(-1);
+		m_params->m_distance = m_params->max_range;
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
