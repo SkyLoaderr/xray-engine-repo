@@ -1154,6 +1154,9 @@
 					RelativePath=".\clsid.h">
 				</File>
 				<File
+					RelativePath="mailSlot.cpp">
+				</File>
+				<File
 					RelativePath=".\xrCPU_Pipe.h">
 				</File>
 				<File

@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "eventapi.h"
 
+extern	void msRead			();
+extern	void msCreate		(LPCSTR name);
+
 //---------------------------------------------------------------------
 class ENGINE_API CEvent
 {
@@ -61,6 +64,8 @@ void CEventAPI::Dump()
 
 EVENT	CEventAPI::Create(const char* N)
 {
+	msCreate	("game");
+
 	CS.Enter	();
 	CEvent	E	(N);
 	for (vector<CEvent*>::iterator I=Events.begin(); I!=Events.end(); I++)
@@ -74,8 +79,8 @@ EVENT	CEventAPI::Create(const char* N)
 	}
 
 	EVENT X = new CEvent(N);
-	Events.push_back(X);
-	CS.Leave	();
+	Events.push_back	(X);
+	CS.Leave			( );
 	return X;
 }
 void	CEventAPI::Destroy(EVENT& E)
@@ -91,6 +96,7 @@ void	CEventAPI::Destroy(EVENT& E)
 	}
 	CS.Leave	();
 }
+
 EVENT	CEventAPI::Handler_Attach(const char* N, CEventBase* H)
 {
 	CS.Enter	();
@@ -99,6 +105,7 @@ EVENT	CEventAPI::Handler_Attach(const char* N, CEventBase* H)
 	CS.Leave	();
 	return E;
 }
+
 void	CEventAPI::Handler_Detach(EVENT& E, CEventBase* H)
 {
 	CS.Enter	();
@@ -139,6 +146,15 @@ void	CEventAPI::Defer(LPCSTR N, DWORD P1, DWORD P2)
 	CS.Leave	();
 }
 
+
+void msParse			(LPCSTR c)
+{
+	if (0==strcmp(c,"quit") || 0==strcmp(c,"exit")) 
+	{
+		Engine.Event.Defer	("KERNEL::QUIT");
+	}
+}
+
 void	CEventAPI::OnFrame	()
 {
 	CS.Enter	();
@@ -151,4 +167,6 @@ void	CEventAPI::OnFrame	()
 	}
 	Events_Deferred.clear();
 	CS.Leave	();
+
+
 }
