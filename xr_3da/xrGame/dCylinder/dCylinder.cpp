@@ -1354,6 +1354,118 @@ if(dFabs(Q2)>M_SQRT1_2){
   return ret;  
 }
 
+int dCollideCylRay(dxGeom *o1, dxGeom *o2, int flags,
+				   dContactGeom *contact, int skip) {
+					   dIASSERT (skip >= (int)sizeof(dContactGeom));
+					   dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
+					   dIASSERT (dGeomGetClass(o2) == dRayClass);
+					   contact->g1 = const_cast<dxGeom*> (o1);
+					   contact->g2 = const_cast<dxGeom*> (o2);
+					   dReal radius;
+					   dReal lz;
+					   dGeomCylinderGetParams(o1,&radius,&lz);
+					   dReal lz2=lz*REAL(0.5);
+					   const dReal *R = dGeomGetRotation(o1); // rotation of the cylinder
+					   const dReal *p = dGeomGetPosition(o1); // position of the cylinder
+					   dVector3 start,dir;
+					   dGeomRayGet(o2,start,dir); // position and orientation of the ray
+					   dReal length = dGeomRayGetLength(o2);
+
+					   // compute some useful info
+					   dVector3 cs,q,r;
+					   dReal C,k;
+					   cs[0] = start[0] - p[0];
+					   cs[1] = start[1] - p[1];
+					   cs[2] = start[2] - p[2];
+					   k = dDOT41(R+1,cs);	// position of ray start along cyl axis (Y)
+					   q[0] = k*R[0*4+1] - cs[0];
+					   q[1] = k*R[1*4+1] - cs[1];
+					   q[2] = k*R[2*4+1] - cs[2];
+					   C = dDOT(q,q) - radius*radius;
+					   // if C < 0 then ray start position within infinite extension of cylinder
+					   // if ray start position is inside the cylinder
+					   int inside_cyl=0;
+					   if (C<0 && !(k<-lz2 || k>lz2)) inside_cyl=1;
+					   // compute ray collision with infinite cylinder, except for the case where
+					   // the ray is outside the cylinder but within the infinite cylinder
+					   // (it that case the ray can only hit endcaps)
+					   if (!inside_cyl && C < 0) {
+						   // set k to cap position to check
+						   if (k < 0) k = -lz2; else k = lz2;
+					   }
+					   else {
+						   dReal uv = dDOT41(R+1,dir);
+						   r[0] = uv*R[0*4+1] - dir[0];
+						   r[1] = uv*R[1*4+1] - dir[1];
+						   r[2] = uv*R[2*4+1] - dir[2];
+						   dReal A = dDOT(r,r);
+						   dReal B = 2*dDOT(q,r);
+						   k = B*B-4*A*C;
+						   if (k < 0) {
+							   // the ray does not intersect the infinite cylinder, but if the ray is
+							   // inside and parallel to the cylinder axis it may intersect the end
+							   // caps. set k to cap position to check.
+							   if (!inside_cyl) return 0;
+							   if (uv < 0) k = -lz2; else k = lz2;
+						   }
+						   else {
+							   k = dSqrt(k);
+							   A = dRecip (2*A);
+							   dReal alpha = (-B-k)*A;
+							   if (alpha < 0) {
+								   alpha = (-B+k)*A;
+								   if (alpha<0) return 0;
+							   }
+							   if (alpha>length) return 0;
+							   // the ray intersects the infinite cylinder. check to see if the
+							   // intersection point is between the caps
+							   contact->pos[0] = start[0] + alpha*dir[0];
+							   contact->pos[1] = start[1] + alpha*dir[1];
+							   contact->pos[2] = start[2] + alpha*dir[2];
+							   q[0] = contact->pos[0] - p[0];
+							   q[1] = contact->pos[1] - p[1];
+							   q[2] = contact->pos[2] - p[2];
+							   k = dDOT14(q,R+1);
+							   dReal nsign = inside_cyl ? -REAL(1.) :REAL(1.);
+							   if (k >= -lz2 && k <= lz2) {
+								   contact->normal[0] = nsign * (contact->pos[0] -
+									   (p[0] + k*R[0*4+1]));
+								   contact->normal[1] = nsign * (contact->pos[1] -
+									   (p[1] + k*R[1*4+1]));
+								   contact->normal[2] = nsign * (contact->pos[2] -
+									   (p[2] + k*R[2*4+1]));
+								   dNormalize3 (contact->normal);
+								   contact->depth = alpha;
+								   return 1;
+							   }
+							   // the infinite cylinder intersection point is not between the caps.
+							   // set k to cap position to check.
+							   if (k < 0) k = -lz2; else k = lz2;
+						   }
+					   }
+					   // check for ray intersection with the caps. k must indicate the cap
+					   // position to check
+					   // perform a ray plan interesection
+					   // R+1 is the plan normal
+					   q[0] = start[0] - (p[0] + k*R[0*4+1]);
+					   q[1] = start[1] - (p[1] + k*R[1*4+1]);
+					   q[2] = start[2] - (p[2] + k*R[2*4+1]);
+					   dReal alpha = -dDOT14(q,R+1);
+					   dReal k2 = dDOT14(dir,R+1);
+					   if (k2==0) return 0; // ray parallel to the plane
+					   alpha/=k2;
+					   if (alpha<0 || alpha>length) return 0; // too short
+					   contact->pos[0]=start[0]+alpha*dir[0];
+					   contact->pos[1]=start[1]+alpha*dir[1];
+					   contact->pos[2]=start[2]+alpha*dir[2];
+					   dReal nsign = (k<0)?-REAL(1.):REAL(1.);
+					   contact->normal[0]=nsign*R[0*4+1];
+					   contact->normal[1]=nsign*R[1*4+1];
+					   contact->normal[2]=nsign*R[2*4+1];
+					   contact->depth=alpha;
+					   return 1;
+				   }
+
 static  dColliderFn * dCylinderColliderFn (int num)
 {
   if (num == dBoxClass) return (dColliderFn *) &dCollideCylB;
