@@ -35,13 +35,10 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	
 	m_iAnyPlayType					= 0;//tpIdol->m_dwAniPlayType;
 	m_tpaAnims.clear				();
-//	u32								N = _GetItemCount(tpIdol->m_caAnimations);
-	LPCSTR							S = pSettings->r_string(cNameSect(),"animations");
-	u32								N = _GetItemCount(S);
+	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string16						I;
 	for (u32 i=0; i<N; i++)
-//		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
-		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(S,i,I)));
+		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }
