@@ -56,29 +56,10 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.bLighting)	
+		switch (C.iElement)
 		{
-			C.PassBegin		();
-			{
-				C.PassSET_ZB		(TRUE,TRUE	);
-				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
-				else				C.PassSET_Blend_SET		(TRUE, 200);
-				C.PassSET_LightFog	(FALSE,FALSE);
-				switch (C.iLOD)
-				{
-				case 0:	C.PassSET_VS("r1_detail_wave");		break;
-				case 1:	C.PassSET_VS("r1_detail_still");	break;
-				}
-				
-				// Stage1 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name,"$null","$null",0);
-				C.StageEnd			();
-			}
-			C.PassEnd			();
-		} else {
+		case 0:
+		case 1:
 			C.PassBegin		();
 			{
 				C.PassSET_ZB		(TRUE,TRUE);
@@ -86,12 +67,11 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,FALSE);
 
-				switch (C.iLOD)
-				{
+				switch (C.iElement)	{
 				case 0:	C.PassSET_VS("r1_detail_wave");		break;
 				case 1:	C.PassSET_VS("r1_detail_still");	break;
 				}
-				
+
 				// Stage1 - Base texture
 				C.StageBegin		();
 				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
@@ -100,6 +80,25 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				C.StageEnd			();
 			}
 			C.PassEnd			();
+			break;
+		case 2:
+			C.PassBegin		();
+			{
+				C.PassSET_ZB		(TRUE,TRUE	);
+				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
+				else				C.PassSET_Blend_SET		(TRUE, 200);
+				C.PassSET_LightFog	(FALSE,FALSE);
+				C.PassSET_VS		("r1_detail_still");
+
+				// Stage1 - Base texture
+				C.StageBegin		();
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_TMC		(oT_Name,"$null","$null",0);
+				C.StageEnd			();
+			}
+			C.PassEnd			();
+			break;
 		}
 	}
 }
