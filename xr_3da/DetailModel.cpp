@@ -20,12 +20,12 @@ void CDetail::Load		(CStream* S)
 	
 	// Vertices
 	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices,64);
+	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices);
 	S->Read			(vertices,size_vertices);
 	
 	// Indices
 	u32				size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					xr_malloc	(size_indices,64);
+	indices			= (WORD*)					xr_malloc	(size_indices);
 	S->Read			(indices,size_indices);
 	
 	// Validate indices
