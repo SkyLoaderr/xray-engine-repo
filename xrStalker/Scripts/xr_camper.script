@@ -25,7 +25,7 @@ function evaluator_place:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_place:evaluate()
-	if self.a.retreat == false then 
+	if self.a.no_retreat == true then 
 		return true
 	end
 	
@@ -179,7 +179,7 @@ function action_kill:execute ()
 			self.enemy_position = self.enemy:position()
 		else
 
-			if self.a.retreat == false then 
+			if self.a.no_retreat == true then 
 				state_mgr.set_state(self.object, "sneak")
 			else		
 				if self.a.suggested_state.campering then
@@ -330,7 +330,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
-	st.retreat = utils.cfg_get_bool(ini, section, "retreat", npc, false)
+	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
