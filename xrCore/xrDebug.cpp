@@ -67,7 +67,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 
 	// Log
 #pragma todo("must add logging-line in xrDebug::backend")
-	// Msg					("***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
+	Msg					("***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
 
 	// Call the dialog
 	dlgExpr		= reason;	
