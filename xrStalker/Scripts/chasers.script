@@ -58,6 +58,7 @@ function main ()
                  end   
              end
              if scr_monster ~= nil then
+                printf ("Attacker %s", scr_monster:name ())
                 scr_monster:script (true, chasers.script_name ())
                 action (scr_monster, move (move.act_run, move.force_type, actor), cond (cond.move_end))
                 old_monster = 0
