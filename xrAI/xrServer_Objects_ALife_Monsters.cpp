@@ -1369,7 +1369,7 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	save_data					(m_tpPath,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
-	tNetPacket.w_stringZ			(*m_caKnownCustomers?*m_caKnownCustomers:"");
+	tNetPacket.w_stringZ		(*m_caKnownCustomers?*m_caKnownCustomers:"");
 	save_data					(m_tpKnownCustomers,tNetPacket);
 	save_data					(m_cpEquipmentPreferences,tNetPacket);
 	save_data					(m_cpMainWeaponPreferences,tNetPacket);
