@@ -2483,6 +2483,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="id_generator"
+				>
+				<File
+					RelativePath=".\gtl\id_generator.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
