@@ -64,177 +64,60 @@ void CAI_Rat::vfLoadAnimations()
 	// loading normal animations
 	tRatAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle_Safe("norm_death");
 	tRatAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
-	tRatAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
 	
-	tRatAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack");
-	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_1");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack_1");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_2");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_3");
+	
+	tRatAnimations.tNormal.tGlobal.tpaIdle[0] = tpVisualObject->ID_Cycle_Safe("norm_idle_1");
+	tRatAnimations.tNormal.tGlobal.tpaIdle[1] = tpVisualObject->ID_Cycle_Safe("norm_idle_2");
+	
+	tRatAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle_Safe("norm_turn_ls");
+	tRatAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle_Safe("norm_turn_rs");
 	
 	tRatAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
-	tRatAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
 	
-	tRatAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("norm_turn");
+	tRatAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_run");
 	
-	tRatAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_left");
-	tRatAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_right");
-	
-	tpVisualObject->PlayCycle(tRatAnimations.tNormal.tGlobal.tpIdle);
+	tpVisualObject->PlayCycle(tRatAnimations.tNormal.tGlobal.tpaIdle[0]);
 }
 
 void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
-	
-	CMotionDef*	tpLegsAnimation=0;
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (iHealth <= 0) {
-		switch (m_cBodyState) {
-			case BODY_STATE_STAND : {
-				for (int i=0 ;i<2; i++)
-					if (tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
-						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-						break;
-					}
-				if (!tpGlobalAnimation)
-					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+		for (int i=0 ;i<2; i++)
+			if (tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
-			case BODY_STATE_CROUCH : {
-				break;
-			}
-			case BODY_STATE_LIE : {
-				break;
-			}
-		}
+		if (!tpGlobalAnimation)
+			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
 	}
 	else
-		if (speed<0.2f) {
-			switch (m_cBodyState) {
-				case BODY_STATE_STAND : {
-					if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
-						tpLegsAnimation = tRatAnimations.tNormal.tLegs.tpTurn;
+		if (m_bFiring) {
+			for (int i=0 ;i<2; i++)
+				if (tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 					break;
 				}
-				case BODY_STATE_CROUCH : {
-					break;
-				}
-				case BODY_STATE_LIE : {
-					break;
-				}
-			}
-			switch (eCurrentState) {
-				case aiRatAttackFire : {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							for (int i=0 ;i<2; i++)
-								if (tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-									break;
-								}
-							
-							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-								tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
-					break;
-				}
-				default : {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpIdle;
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
-					break;
-				}
-			}
+			
+			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 		}
-		else {
-			//Msg("moving...");
-			Fvector view = _view; view.y=0; view.normalize_safe();
-			Fvector move = _move; move.y=0; move.normalize_safe();
-			float	dot  = view.dotproduct(move);
-			
-			SAnimState* AState = 0;
-			switch (m_cBodyState) {
-				case BODY_STATE_STAND : {
-					AState = &tRatAnimations.tNormal.tGlobal.tWalk;
-					break;
-				}
-				case BODY_STATE_CROUCH : {
-					break;
-				}
-				case BODY_STATE_LIE : {
-					break;
-				}
-			}
-			
-			if (dot>0.7f)
-				tpGlobalAnimation = AState->fwd;
-			else 
-				if ((dot<=0.7f)&&(dot>=-0.7f)) {
-					Fvector cross; 
-					cross.crossproduct(view,move);
-					if (cross.y > 0)
-						tpGlobalAnimation = AState->rs;
-					else
-						tpGlobalAnimation = AState->ls;
-				}
+		else
+			if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
+			else
+				if (speed < 0.2f)
+					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 				else
-					tpGlobalAnimation = AState->back;
-
-			switch (eCurrentState) {
-				case aiRatAttackFire : {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							for (int i=0 ;i<2; i++)
-								if (tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-									break;
-								}
-							
-							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-								tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
-					break;
-				}
-				default : {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
-					break;
-				}
-			}
-		}
+					if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
+					else
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

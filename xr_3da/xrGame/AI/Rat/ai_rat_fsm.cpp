@@ -32,11 +32,16 @@ void CAI_Rat::Die()
 	
 	if (m_bFiring) {
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
-		Fvector tAcceleration;
-		tAcceleration.set(0,m_fJumpSpeed,0);
-		Movement.SetPosition(vPosition);
-		Movement.Calculate	(tAcceleration,0,0,.1f,false);
-		Movement.GetPosition(vPosition);
+		float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+		if (vPosition.y - fY > 0.01f) {
+			Fvector tAcceleration;
+			tAcceleration.set(0,m_fJumpSpeed,0);
+			Movement.SetPosition(vPosition);
+			Movement.Calculate	(tAcceleration,0,0,.1f,false);
+			Movement.GetPosition(vPosition);
+		}
+		else
+			vPosition.set(vPosition.x,fY,vPosition.z);
 		UpdateTransform();
 	}
 }

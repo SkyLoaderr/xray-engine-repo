@@ -41,28 +41,18 @@ class CAI_Rat : public CCustomMonster
 
 		// global animations
 		typedef struct tagSNormalGlobalAnimations{
-			CMotionDef* tpaDeath[3];
-			CMotionDef* tpaAttack[2];
-			CMotionDef* tpIdle;
+			CMotionDef* tpaDeath[2];
+			CMotionDef* tpaAttack[3];
+			CMotionDef* tpaIdle[2];
 			SAnimState  tWalk;
-			CMotionDef* tpDamageLeft;
-			CMotionDef* tpDamageRight;
+			SAnimState  tRun;
+			CMotionDef *tpTurnLeft;
+			CMotionDef *tpTurnRight;
 		}SNormalGlobalAnimations;
-
-		typedef struct tagSNormalLegsAnimations{
-			CMotionDef *tpTurn;
-		}SNormalLegsAnimations;
-
-		typedef struct tagSNormalTorsoAnimations{
-			CMotionDef *tpDamageLeft;
-			CMotionDef *tpDamageRight;
-		}SNormalTorsoAnimations;
 
 		// normal animations
 		typedef struct tagSNormalAnimations{
 			SNormalGlobalAnimations tGlobal;
-			SNormalTorsoAnimations tTorso;
-			SNormalLegsAnimations tLegs;
 		}SNormalAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
@@ -73,13 +63,9 @@ class CAI_Rat : public CCustomMonster
 			SNormalAnimations	tNormal;
 		}SRatAnimations;
 
-		SRatAnimations	tRatAnimations;
+		SRatAnimations		tRatAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
-		CMotionDef*			m_tpCurrentTorsoAnimation;
-		CMotionDef*			m_tpCurrentLegsAnimation;
 		CBlend*				m_tpCurrentGlobalBlend;
-		CBlend*				m_tpCurrentTorsoBlend;
-		CBlend*				m_tpCurrentLegsBlend;
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);

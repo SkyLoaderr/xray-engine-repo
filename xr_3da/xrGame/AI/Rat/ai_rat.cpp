@@ -181,11 +181,16 @@ void CAI_Rat::Exec_Movement	( float dt )
 			}
 		}
 		else {
-			Fvector tAcceleration;
-			tAcceleration.set(0,m_fJumpSpeed,0);
-			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-			Movement.GetPosition(vPosition);
+			float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+			if (vPosition.y - fY > 0.01f) {
+				Fvector tAcceleration;
+				tAcceleration.set(0,m_fJumpSpeed,0);
+				Movement.SetPosition(vPosition);
+				Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
+				Movement.GetPosition(vPosition);
+			}
+			else
+				vPosition.set(vPosition.x,fY,vPosition.z);
 		}
 		UpdateTransform();
 	}

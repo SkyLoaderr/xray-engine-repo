@@ -436,7 +436,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	Device.Statistic.Physics.Begin	();
 	Me->UpdateTransform	();
 	if (m_bCollision) {
-		Me->Movement.Move	(final,motion,TRUE);
+		Me->Movement.Move	(final,motion,FALSE);
 		motion.sub			(final,p_dest);
 		p_dest.set			(final);
 	}
