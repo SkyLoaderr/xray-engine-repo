@@ -133,11 +133,14 @@ BOOL IPureServer::Connect(LPCSTR options)
 #else
 	CHK_DX(NET->Initialize	(this, Handler, DPNINITIALIZE_DISABLEPARAMVAL));
 #endif
+
+	BOOL	bSimulator		= FALSE;
+	if (strstr(Core.Params,"-netsim"))		bSimulator = TRUE;
 	
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device = NULL;
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
-    CHK_DX(net_Address_device->SetSP		(&CLSID_DP8SP_TCPIP ));
+	CHK_DX(net_Address_device->SetSP		(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
 	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
 	
 	// dump_URL		("! sv ",	net_Address_device);
