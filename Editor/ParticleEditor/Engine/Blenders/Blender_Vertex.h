@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_Vertex : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "diffuse*base";	}
+	virtual		LPCSTR		getComment()	{ return "LEVEL: diffuse*base";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

@@ -13,7 +13,7 @@ class ENGINE_API CBlender_Vertex_aref : public CBlender
 public:
 	xrP_Integer	oAREF;
 public:
-	virtual		LPCSTR		getComment()	{ return "diffuse*base.aref";	}
+	virtual		LPCSTR		getComment()	{ return "LEVEL: diffuse*base.aref";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

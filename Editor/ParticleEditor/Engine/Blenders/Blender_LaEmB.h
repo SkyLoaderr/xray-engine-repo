@@ -20,7 +20,7 @@ public:
 	void		compile_3	(CBlender_Compile& C);
 	void		compile_3c	(CBlender_Compile& C);
 public:
-	virtual		LPCSTR		getComment()	{ return "(lmap+env*const)*base";	}
+	virtual		LPCSTR		getComment()	{ return "LEVEL: (lmap+env*const)*base";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
