@@ -34,3 +34,13 @@ function give_rg6(first_speaker, second_speaker)
 	first_speaker:transfer_item(rg6, second_speaker)
 end
 
+--Фамильное ружье охотника
+function have_hunters_toz(first_speaker, second_speaker)
+  	return first_speaker:object("hunters_toz") ~= nil
+end
+function give_hunters_toz(first_speaker, second_speaker)
+	local hunters_toz = first_speaker:object("hunters_toz")
+	first_speaker:transfer_item(hunters_toz, second_speaker)
+end
+
+

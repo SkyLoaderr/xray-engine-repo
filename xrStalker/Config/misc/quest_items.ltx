@@ -322,3 +322,147 @@ inv_grid_x			= 7
 inv_grid_y			= 18
 cost				= 0
 
+[hunters_toz]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "devices\quest_items\hunters_toz"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SHOTGN
+min_radius               = 0
+max_radius               = 50
+description				 = enc_weapons1_wpn-toz34
+
+ef_main_weapon_type			= 1
+ef_weapon_type				= 7
+
+cost					 = 300	;1000
+weapon_class			 = shotgun
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 2
+ammo_class		 = ammo_12x70_buck, ammo_12x76_dart, ammo_12x76_zhekan
+
+;-----------------------------------------------------------------------------------
+;базовая дисперсия
+fire_dispersion_base		= 0.36 ;0.12  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+
+;отдача
+cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_dispersion          	= 5.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle				= 10		;максимальный угол отдачи
+cam_max_angle_horz	= 9.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz	= 1.5	;(degree) size of step camera moved in horizontal position while shooting
+
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
+
+hand_dependence 	 = 1
+single_handed				= 0
+
+slot 				 = 2		; // secondary
+animation_slot		 = 2 ;3		; type of the animation that will be used
+
+inv_name		= HUNTER'S TOZ
+inv_name_short	= HUNTER'S TOZ
+inv_weight		= 5	;.5
+
+inv_grid_width		= 6
+inv_grid_height		= 1
+inv_grid_x			= 12
+inv_grid_y			= 2
+
+immunities_sect		= weapon
+
+direction                = 0, 0, 1
+shell_point				 = 0.0, 0.183, 0.07
+fire_point               = 0.0, 0.183, 0.730
+fire_point2              = 0.0, 0.160, 0.730
+
+flame_particles		   = weapons\generic_weapon05
+smoke_particles		   = weapons\generic_shoot_00
+rpm_empty_click 	   = 200
+; ttc
+
+hit_power        			= 85
+hit_impulse      			= 210
+hit_type 					= fire_wound
+
+fire_distance            	= 100
+bullet_speed			 	= 300			;начальная скорость пули
+rpm                      	= 150
+; end ttc
+
+hud                      = wpn_shotgun_hud
+normal                   = 0, 1, 0
+position                 = -0.026, -0.117, 0.0
+orientation              = 0, 0, 0
+
+;--STRAP PARAMETERS-----------------------------------------------------------------
+strap_position         		= -0.1,-0.45,0.2			; position (offset) and orientation of the weapon when it is strapped
+strap_orientation      		= 1.57,0,0						; (3rd person view)
+strap_bone0					= bip01_spine2
+strap_bone1					= bip01_spine1
+
+startup_ammo             = 10
+visual                   = weapons\toz34\wpn_toz34_ext.ogf
+
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.6,0.5,0.3
+light_range		 = 6.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+;cost			 = 900
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+zoom_enabled				= true
+scope_zoom_factor	    	= 55
+
+;звуки
+snd_draw			= weapons\generic_draw
+snd_holster			= weapons\generic_holster
+snd_shoot			= weapons\t_toz34_shot     ;toz34_shoot
+snd_empty			= weapons\generic_empty
+snd_reload			= weapons\toz34_reload
+snd_shoot_duplet	= weapons\toz34_shoot_both
+ 
+[wpn_shotgun_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_point2              = 0.0, 0.0, 0.06
+fire_bone                = wpn_barrel_0
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapons\toz34\wpn_toz34_hud.ogf
+
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+anim_shoot_both = shoot_both
+anim_idle_aim	= idle_aim
+
+;смещения HUD для режима приближения
+zoom_offset			= -0.127000,0.001000,0.000000
+zoom_rotate_x		= 0.004000
+zoom_rotate_y		= 0.017000
+;время поворота HUD (сек)
+;zoom_rotate_time	= 0.7
