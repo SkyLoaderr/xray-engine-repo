@@ -6,21 +6,22 @@
 #define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
 #pragma once
 
+
 class CEffect_Rain	: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
 	struct	Item
 	{
-		Fvector	P;
-		Fvector D;
-		float	fSpeed;
-		float	fLifetime;
-		float	fHeight;
+		Fvector			P;
+		Fvector			D;
+		float			fSpeed;
+		float			fLifetime;
+		float			fHeight;
 	};
 	struct	Particle
 	{
 		Particle		*next,*prev;
-		Fvector			pos;
+		Fmatrix			mXForm;
 		float			time;
 	};
 	enum	States
@@ -40,7 +41,7 @@ private:
 	CVertexStream*		VS_Rain;
 
 	// Visualization	(drops)
-	Shader*				SH_Drops;
+	CDetail				DM_Drop;
 	CVertexStream*		VS_Drops;
 	
 	// Data and logic

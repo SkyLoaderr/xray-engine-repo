@@ -15,9 +15,10 @@ const float drop_width		= 0.025f;
 const float drop_angle		= 3.f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
+
 const int	max_particles	= 1000;
-const int	particles_update= 100;
-const int	particles_cache	= 500;
+const int	particles_cache	= 200;
+const float particles_time	= 0.2f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -192,9 +193,9 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
-	P->dwNextUpdate				= Device.dwTimeGlobal;
-	P->emitter.m_Position.set	(pos);
-	P->emitter.Play				();
+	P->time						= particles_time;
+	P->mXForm.rotateY			(::Random.randF(PI_MUL_2));
+	P->mXForm.translate_over	(pos);
 }
 
 void	CEffect_Rain::Render	()
@@ -238,7 +239,7 @@ void	CEffect_Rain::Render	()
 	
 	// Perform update
 	DWORD		vOffset;
-	FVF::LIT	*verts		= (FVF::LIT	*) VS->Lock(desired_items*4,vOffset);
+	FVF::LIT	*verts		= (FVF::LIT	*) VS_Rain->Lock(desired_items*4,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
 	Fvector		vCenter		= Device.vCameraPosition;
@@ -279,14 +280,14 @@ void	CEffect_Rain::Render	()
 		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
 	}
 	DWORD vCount			= verts-start;
-	VS->Unlock				(vCount);
+	VS_Rain->Unlock			(vCount);
 	
 	// Render if needed
 	if (vCount)	{
 		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
-		Device.Shader.set_Shader	(SH);
-		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		Device.Shader.set_Shader	(SH_Rain);
+		Device.Primitive.Draw		(VS_Rain,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
 	
@@ -296,53 +297,75 @@ void	CEffect_Rain::Render	()
 	
 	Device.Statistic.TEST.Begin		();
 	{
-		DWORD	dwTime		= Device.dwTimeGlobal;
-		CVertexStream* VSP	= P->visual->GetStream();
-		Device.Shader.set_Shader		(P->visual->hShader);
+		float	dt					= Device.fTimeDelta;
+		CIndexStream* IS			= Device.Streams.Get_IB();
+		Device.Shader.set_Shader	(DM_Drop->shader);
 		
-		DWORD		offset;
-		FVF::TL*	verts	= (FVF::TL*) VSP->Lock	(particles_cache*4,offset);
-		int			pcount  = 0;
+		Fmatrix		mXform;
+		Fvector		Center;
+		
+		int						pcount  = 0;
+		DWORD					v_offset,i_offset;
+		DWORD					vCount_Lock		= particles_cache*DM_Drop.number_vertices;
+		DWORD					iCount_Lock		= particles_cache*DM_Drop.number_indices;
+		CDetail::fvfVertexOut*	v_ptr	= (CDetail::fvfVertexOut*) VS_Drops->Lock	(vCount_Lock, v_offset);
+		WORD*					i_ptr	= IS->Lock									(iCount_Lock, i_offset);
 		while (P)	{
-			Particle*	next	= P->next;
+			Particle*	next	=	P->next;
 			
 			// Update
-			if (dwTime>=P->dwNextUpdate)
-			{
-				P->visual->Update	(dwTime - P->dwNextUpdate + particles_update);
-				P->dwNextUpdate		= dwTime+particles_update;
+			P->time				-=	dt;
+			if (P->time<0)	{
+				p_free			(P);
+				P				=	next;
+				continue;
 			}
+			float scale			=	dt / particles_time;
+			Fmatrix& M			=	P->mXForm;
+			mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
+			mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
+			mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
+			mXform._41=M._41;		mXform._42=M._42;		mXform._43=M._43;		mXform._44=1;
+			mXform.transform_tiny	(Center,DM_Drop.bounds.P);
 			
 			// Render
-			if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
+			if (::Render.ViewBase.testSphereDirty(Center, DM_Drop.bounds.R))
 			{
-				int		count_estimated		= P->visual->ParticleCount();
-				if ((pcount+count_estimated) >= particles_cache) {
+				DM_Drop.Transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop.number_vertices);
+				v_ptr			+=	DM_Drop.number_vertices;
+				i_ptr			+=	DM_Drop.number_indices;
+				pcount			++;
+
+				if (pcount >= particles_cache) {
 					// flush
-					VSP->Unlock	(pcount*4);
-					Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
-					verts	= (FVF::TL*) VSP->Lock	(particles_cache*4,offset);
+					DWORD	dwNumPrimitives			= iCount_Lock/3;
+					VS_Drops->Unlock				(vCount_Lock);
+					IS->Unlock						(iCount_Lock);
+					Device.Primitive.setIndicesUC	(v_offset, IS->getBuffer());
+					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
+					UPDATEC							(vCount_Lock,dwNumPrimitives,2);
+					
+					v_ptr							= (CDetail::fvfVertexOut*) VS_Drops->Lock	(vCount_Lock, v_offset);
+					i_ptr							= IS->Lock									(iCount_Lock, i_offset);
+					
 					pcount	= 0;
-				}
-				int		count_real_verts	= P->visual->RenderTO(verts);
-				verts	+= count_real_verts;
-				pcount	+= count_real_verts/4;
-			}
-			
-			// Stop if needed
-			if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
-			{
-				if ((0==P->visual->ParticleCount()) && !P->emitter.IsPlaying()) 
-				{
-					P->visual->Stop	();
-					p_free			(P);
 				}
 			}
 			
 			P = next;
 		}
-		VSP->Unlock	(pcount*4);
-		if (pcount) Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
+
+		// Flush if needed
+		vCount_Lock						= pcount*DM_Drop.number_vertices;
+		iCount_Lock						= pcount*DM_Drop.number_indices;
+		DWORD	dwNumPrimitives			= iCount_Lock/3;
+		VS_Drops->Unlock				(vCount_Lock);
+		IS->Unlock						(iCount_Lock);
+		if (pcount)	{
+			Device.Primitive.setIndicesUC	(v_offset, IS->getBuffer());
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
+			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
+		}
 	}
 	Device.Statistic.TEST.End		();
 }

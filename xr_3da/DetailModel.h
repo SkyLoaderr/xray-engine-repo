@@ -15,12 +15,12 @@ public:
 		float	u,v;
 	};
 public:
-	Shader*		shader;	
+	Fsphere		bounds;
 	DWORD		flags;	
 	float		s_min;
 	float		s_max;
-	float		radius;
 	
+	Shader*		shader;	
 	fvfVertexIn	*vertices;
 	DWORD		number_vertices;
 	WORD		*indices;

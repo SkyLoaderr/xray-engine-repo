@@ -32,7 +32,7 @@ void CDetail::Load		(CStream* S)
 	bb.invalidate	();
 	for (DWORD i=0; i<number_vertices; i++)
 		bb.modify	(vertices[i].P);
-	radius			= bb.getradius()*2;
+	bb.getsphere	(bounds.P,bounds.R);
 }
 
 void CDetail::Unload	()
