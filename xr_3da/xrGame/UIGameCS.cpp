@@ -64,11 +64,11 @@ LPCSTR make_time(string16 buf, DWORD sec)
 void CUIGameCS::OnFrame()
 {
 	switch (Game().phase){
-	case GAME_PHASE_PENDING: 
+	case GAME_PHASE_PENDING: {
 		PlayerList.OnFrame();
 		if (CTMenu.Visible())		CTMenu.OnFrame	();
-	break;
-	case GAME_PHASE_INPROGRESS:
+	} break;
+	case GAME_PHASE_INPROGRESS: {
 		if(!CanBuy()) BuyMenu.Hide	();
 		if (BuyMenu.Visible())		BuyMenu.OnFrame	();
 		if (CTMenu.Visible())		CTMenu.OnFrame	();
@@ -83,7 +83,25 @@ void CUIGameCS::OnFrame()
 			m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
 			m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
 		}
-	break;
+	} break;
+	case GAME_PHASE_TEAM1_SCORES: {
+		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
+		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
+		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
+		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 1 SCORES");
+	} break;
+	case GAME_PHASE_TEAM2_SCORES: {
+		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
+		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
+		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
+		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 2 SCORES");
+	} break;
+	case GAME_PHASE_TEAMS_IN_A_DRAW: {
+		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
+		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
+		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
+		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAMS IN A DRAW");
+	} break;
 /*	case ÒÐÅÒÜÅ_ÑÎÑÒÎßÍÈÅ:
 		// åñëè èãðà çàêîí÷åíà
 		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);

@@ -351,6 +351,8 @@ void	game_sv_CS::OnDelayedRoundEnd		(LPCSTR reason)
 
 void	game_sv_CS::OnTeamScore		(u32 team)
 {
+	if(GAME_PHASE_INPROGRESS != phase) return;
+
 	// Increment/decrement money
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
@@ -358,10 +360,13 @@ void	game_sv_CS::OnTeamScore		(u32 team)
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->money_for_round		+=	(s32(team)==ps->team)?+2000:+500;
 	}
+	phase = u16(team?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 }
 
 void	game_sv_CS::OnTeamsInDraw	()
 {
+	if(GAME_PHASE_INPROGRESS != phase) return;
+
 	// Give $1000 to everybody
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
@@ -369,6 +374,7 @@ void	game_sv_CS::OnTeamsInDraw	()
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->money_for_round		+=	+1000;
 	}
+	phase = GAME_PHASE_TEAMS_IN_A_DRAW;
 }
 
 void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
@@ -592,6 +598,9 @@ void	game_sv_CS::Update			()
 {
 	__super::Update	();
 	switch(phase) 	{
+		case GAME_PHASE_TEAM1_SCORES :
+		case GAME_PHASE_TEAM2_SCORES :
+		case GAME_PHASE_TEAMS_IN_A_DRAW :
 		case GAME_PHASE_INPROGRESS : {
 			if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
 			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
