@@ -253,8 +253,9 @@ function update()
 			heli_mgr.not_die = false
 
 			fly_away_time = game.CTime()
-			fly_away_time:set( 0, 0, 0, 0, 6, 0, 0 )
+			fly_away_time:setHMS( 0, 10, 0)
 			fly_away_time:add( game.get_game_time() )
+
 
 			state_init = false
 		end
