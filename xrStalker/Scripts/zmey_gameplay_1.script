@@ -1,49 +1,81 @@
+-- Originally written by Lestat
+-- Rewritten using classes by Zmey
+-- 
 -- Используются:
--- m_stalker_pes
--- wpn_pes
+-- m_stalker_wounded
+-- wpn_wounded
 
 -- Имена звуковых файлов
-local snd_davay_davay =     [[scripts\Rolik\stalker_hound\davay-davay]]
-local snd_ey_spryatalsa =   [[scripts\Rolik\stalker_hound\ey-spryatalsa]]
-local snd_gav_gav =         [[scripts\Rolik\stalker_hound\gav-gav1]]
-local snd_ispugalsa =       [[scripts\Rolik\stalker_hound\ispugalsa]]
-local snd_kashel =          [[scripts\Rolik\stalker_hound\kashel1]]
-local snd_kishki =          [[scripts\Rolik\stalker_hound\kishki1]]
-local snd_napali_v_volnu =  [[scripts\Rolik\stalker_hound\napali-v-volnu1]]
-local snd_nashi_podberut =  [[scripts\Rolik\stalker_hound\nashi-podberut]]
-local snd_padli =           [[scripts\Rolik\stalker_hound\padli]]
-local snd_po_sklonam =      [[scripts\Rolik\stalker_hound\po-sklonam]]
-local snd_skoti_truslivie = [[scripts\Rolik\stalker_hound\skoti-truslivie1]]
-local snd_vihodi_str =      [[scripts\Rolik\stalker_hound\vihodi-str]]
-
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
--- MAIN
-----------------------------------------------------------------------------------------------------
+local snd_blood_kashel =              [[scripts\Rolik\stalker_wounded\wounded_blood_kashel]]
+local snd_da_podoidige_blige =        [[scripts\Rolik\stalker_wounded\wounded_da_podoidige_blige]]
+local snd_i_otnesi_torgovcy =         [[scripts\Rolik\stalker_wounded\wounded_i_otnesi_torgovcy]]
+local snd_kashel =                    [[scripts\Rolik\stalker_wounded\wounded_kashel]]
+local snd_kashel1 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel1]]
+local snd_kashel2 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel2]]
+local snd_kashel3 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel3]]
+local snd_kashel4 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel4]]
+local snd_kashel5 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel5]]
+local snd_kashel_long =               [[scripts\Rolik\stalker_wounded\wounded_kashel_long]]
+local snd_long_kashel =               [[scripts\Rolik\stalker_wounded\wounded_long_kashel]]
+local snd_mne_yge_ne_pomogesh =       [[scripts\Rolik\stalker_wounded\wounded_mne_yge_ne_pomogesh]]
+local snd_ne_ostavlyai_menya =        [[scripts\Rolik\stalker_wounded\wounded_ne_ostavlyai_menya]]
+local snd_on_svalilsya_s_mosta =      [[scripts\Rolik\stalker_wounded\wounded_on_svalilsya_s_mosta]]
+local snd_ostanovis =                 [[scripts\Rolik\stalker_wounded\wounded_ostanovis]]
+local snd_pain =                      [[scripts\Rolik\stalker_wounded\wounded_pain]]
+local snd_pain1 =                     [[scripts\Rolik\stalker_wounded\wounded_pain1]]
+local snd_pain2 =                     [[scripts\Rolik\stalker_wounded\wounded_pain2]]
+local snd_pain3 =                     [[scripts\Rolik\stalker_wounded\wounded_pain3]]
+local snd_podoidi =                   [[scripts\Rolik\stalker_wounded\wounded_podoidi]]
+local snd_podoidi_blige =             [[scripts\Rolik\stalker_wounded\wounded_podoidi_blige]]
+local snd_postoi =                    [[scripts\Rolik\stalker_wounded\wounded_postoi]]
+local snd_psa_dobei =                 [[scripts\Rolik\stalker_wounded\wounded_psa_dobei]]
+local snd_ston1 =                     [[scripts\Rolik\stalker_wounded\wounded_ston1]]
+local snd_ston2 =                     [[scripts\Rolik\stalker_wounded\wounded_ston2]]
+local snd_ston4 =                     [[scripts\Rolik\stalker_wounded\wounded_ston4]]
+local snd_ti_dolgen_dobit_psa =       [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_dobit_psa]]
+local snd_ti_dolgen_menya_vislyshat = [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_menya_vislyshat]]
+local snd_ti_dolgen_vislyshat_menya = [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_vislyshat_menya]]
+local snd_vo_vremya_ataki_mutantov =  [[scripts\Rolik\stalker_wounded\wounded_vo_vremya_ataki_mutantov]]
+local snd_zaberi_artefakt =           [[scripts\Rolik\stalker_wounded\wounded_zaberi_artefakt]]
+local snd_zaberi_artrefakt =          [[scripts\Rolik\stalker_wounded\wounded_zaberi_artrefakt]]
+local snd_zabirai_patroni_i_yhodi =   [[scripts\Rolik\stalker_wounded\wounded_zabirai_patroni_i_yhodi]]
 
 function main ()
 	debug_script_name = zmey_gameplay_1.script_name()
 	debug_log(zmey_gameplay_1.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_1")
 
-	local stalker_wounded = get_level_object("m_stalker_wounded")
+	-- 1) Подойди 2) Подойди ближе 3) Кашляет 4) Да подойди же ближе! 5) Ты должен выслушать меня 6) Стонет и кашляет
+	dlg_podoidi = classes.DialogueFSM()
+	dlg_podoidi:set(false, 0, 1, snd_podoidi, {15000})
+	dlg_podoidi:set(false, 1, 2, snd_podoidi_blige, {5000})
+	dlg_podoidi:set(false, 2, 3, snd_kashel_long, {3000})
+	dlg_podoidi:set(false, 3, 4, snd_da_podoidige_blige, {4000})
+	dlg_podoidi:set(false, 4, 5, snd_ti_dolgen_menya_vislyshat, {5000})
+	dlg_podoidi:set(false, 5, 5, snd_blood_kashel, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel1, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel2, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel3, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel4, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel5, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_kashel_long, {3000, 15000})
+	dlg_podoidi:set(false, 5, 5, snd_long_kashel, {3000, 15000})
 
-	stalker_wounded:script(true, zmey_gameplay_1.script_name())
+----------------------------------------------------------------------------------------------------
 
-	action(stalker_wounded,
+	local c_stalker_wounded = classes.NPC(get_level_object("m_stalker_wounded"))
+
+	c_stalker_wounded.npc:script(true, zmey_gameplay_1.script_name())
+
+	action(c_stalker_wounded.npc,
 	       cond(cond.time_end, time_infinite)
 	)
 	
 	while true do
-		printf("ZZZZZZZ")
 		wait()
 	end
 
-	--stalker_wounded:script(false, zmey_gameplay_1.script_name())
+	--c_stalker_wounded.npc:script(false, zmey_gameplay_1.script_name())
 	
 	debug_log(zmey_gameplay_1.script_name(), "SCRIPT STOPPED: zmey_gameplay_1")
 end

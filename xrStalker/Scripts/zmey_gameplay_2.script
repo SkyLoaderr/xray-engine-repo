@@ -171,6 +171,7 @@ function NPC:talk_dialogue(to_whom)
 		       move(move.standing, move.stand, move.line, to_whom),
 		       cond(cond.time_end, math.random(delay[1], delay[2]))
 		)
+		printf("_bp: talk_dialogue: delay[1]=%d delay[2]=%d", delay[1], delay[2])
 	end
 end
 
@@ -276,7 +277,7 @@ function Camper:nothing_happened_yet()
 		return
 	end
 
-	printf("Camper: nothing_happened_yet: %d", game.time())
+	--printf("Camper: nothing_happened_yet: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
 		printf("Campler: nothing_happened_yet: npc sees enemy")
 		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
@@ -300,7 +301,7 @@ function Camper:see_enemy()
 		return
 	end
 
-	printf("Camper: see_enemy: %d", game.time())
+	--printf("Camper: see_enemy: %d", game.time())
 	if not self.c_npc.npc:see(self.c_enemy.npc) then
 		-- ≈сли стрел€ет - хватит, он уже потер€л его из виду:
 		if self.c_npc:is_shooting() then
@@ -332,7 +333,7 @@ function Camper:not_see_enemy()
 		return
 	end
 
-	printf("Camper: not_see_enemy: %d", game.time())
+	--printf("Camper: not_see_enemy: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
 		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
 		self.dlg_see_enemy:reset()

@@ -242,3 +242,390 @@ function Guardian:finish ()
 	self.npc:script (false, self.script_name)
 end
 
+----------------------------------------------------------------------------------------------------
+class "NPC"
+-- Обертка над NPC для отслеживания типа выполняемого им в данный момент действия.
+-- Maintained by: Zmey
+
+function NPC:__init(npc, wpn)
+	self.npc = npc
+	self.wpn = wpn
+	
+	self.action_none = 0
+	self.action_talking = 1
+	self.action_looking = 2
+	self.action_shooting = 3
+	self.last_action = self.action_none
+
+	self.dlg_fsm = nil
+end
+
+function NPC:look(whom)
+	debug_log(zmey_gameplay_2.script_name(), 'NPC:look_at')
+	if not self.npc:get_script() then
+		self.npc:script(true, zmey_gameplay_2.script_name())
+	end
+
+	action(self.npc,
+	       look(look.fire_point, whom),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
+	       cond(cond.time_end, time_infinite)
+	)
+	self.last_action = self.action_looking
+end
+
+function NPC:is_looking()
+	return self.last_action == self.action_looking and self.npc:get_script() and self.npc:action()
+end
+
+function NPC:shoot_then_reload_actions(whom)
+	pos = self.npc:position()
+	action(self.npc,
+	       look(look.fire_point, pos),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
+	       cond(cond.time_end, 500)
+	)
+	action(self.npc,
+	       look(look.fire_point, pos),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
+	       object(self.wpn, object.fire1),
+	       cond(cond.time_end, 100)
+	)
+
+	if true then return end
+
+	for i = 1, 30 do
+		--[[
+		action(self.npc,
+		       move(move.act_run, move.line, patrol("way_attack_point")),
+                       anim(anim.danger),
+		       cond(cond.move_end, time_infinite)
+		)
+		--]]
+		action(self.npc,
+		       look(look.fire_point, whom),
+                       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, whom),
+		       object(self.wpn, object.fire1),
+		       cond(cond.time_end, 100)
+		)
+		--[[
+		action(self.npc,
+		       move(move.act_walk_bkwd, move.line, patrol("way_reload_point")),
+                       anim(anim.danger),
+		       cond(cond.move_end, time_infinite)
+		)
+		--]]
+		
+		--[[
+		action(self.npc,
+		       --look(look.fire_point, whom),
+		       --anim(anim.danger),
+		       --move(move.standing, move.stand, move.line, whom),
+		       object(self.wpn, object.reload),
+		       cond(cond.time_end, 2000)
+		)
+		--]]
+		
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, whom),
+		       cond(cond.time_end, 2000)
+		)
+	end
+end
+
+function NPC:shoot(whom)
+	debug_log(zmey_gameplay_2.script_name(), 'NPC:shoot')
+	-- Всегда отключать looking и talking при начале shooting
+	if self:is_looking() or self:is_talking() then
+		interrupt_action(self.npc, zmey_gameplay_2.script_name())
+	end
+
+	if not self.npc:get_script() then
+		self.npc:script(true, zmey_gameplay_2.script_name())
+	end
+
+	self:shoot_then_reload_actions(whom)
+	--[[
+	action(self.npc,
+	       look(look.fire_point, whom),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
+	       object(self.wpn, object.fire1),
+	       cond(cond.time_end, time_infinite)
+	)
+	--]]
+	self.last_action = self.action_shooting
+end
+
+function NPC:is_shooting()
+	return self.last_action == self.action_shooting and self.npc:get_script() and self.npc:action()
+end
+
+function NPC:talk(to_whom, snd, bone)
+	debug_log(zmey_gameplay_2.script_name(), 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
+	-- Всегда отключать looking при начале talking
+	if self:is_looking() then
+		interrupt_action(self.npc, zmey_gameplay_2.script_name())
+	end
+
+	if not self.npc:get_script() then
+		self.npc:script(true, zmey_gameplay_2.script_name())
+	end
+
+	if snd ~= nil then
+		action(self.npc,
+		       look(look.fire_point, to_whom),
+		       anim(anim.danger),
+		       sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"), vector():set(0,0,0), vector():set(0,0,0), false),
+		       move(move.standing, move.stand, move.line, to_whom),
+		       cond(cond.sound_end)
+		       --cond  (cond.time_end, 5000)
+		)
+	else
+		printf("NPC:talk:snd is nil!")
+		action(self.npc,
+		       look(look.fire_point, to_whom),
+		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, to_whom),
+		       cond(cond.time_end, time_infinite)
+		)
+	end
+	self.last_action = self.action_talking
+end
+
+function NPC:set_dialogue(dlg_fsm)
+	self.dlg_fsm = dlg_fsm
+end
+
+function NPC:talk_dialogue(to_whom)
+	printf("NPC:talk_dialogue")
+	if self.dlg_fsm ~= nil then
+		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
+		local snd, len, delay = self.dlg_fsm:next_phrase()
+		self:talk(to_whom, snd, nil)
+		-- Сделать паузу перед следующей фразой:
+		action(self.npc,
+		       look(look.fire_point, to_whom),
+		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, to_whom),
+		       cond(cond.time_end, delay)
+		)
+		printf("_bp: talk_dialogue: delay=%d", delay)
+	end
+end
+
+function NPC:is_talking()
+	return self.last_action == self.action_talking and self.npc:get_script() and self.npc:action()
+end
+
+----------------------------------------------------------------------------------------------------
+
+class "DialogueFSM"
+-- FSM для звука. Получает набор имен звуковых файлов. Регистрируются возможные переходы.
+-- Maintained by: Zmey
+
+function DialogueFSM:__init ()
+	self.cur_state = 0
+	self.trans_tbl = {}     -- Время длительности звуков
+	self.last_pos_chosen = -1
+end
+
+function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd)
+	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
+	local snd_obj = sound_object(snd)
+	if snd_obj ~= nil then
+		printf("DialogueFSM:set: snd_obj is NOT nil")
+	end
+	local len = snd_obj:length() -- длительность звука
+	printf("DialogueFSM:set: snd=\"%s\" len=\"%d\"", snd, if_then_else(len, len, 0)) -- nil crashes %d
+	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, len=len, delay_after_snd=delay_after_snd})
+end
+
+function DialogueFSM:clear()
+	self.cur_state = 0
+	self.trans_tbl = {}     -- Время длительности звуков
+	self.last_pos_chosen = -1
+end
+
+function DialogueFSM:reset()
+	self.cur_state = 0
+	self.last_pos_chosen = -1
+end
+
+-- Возвращает следующую в очереди анимацию, движение, звук, вероятность проигрывания звука
+function DialogueFSM:next_phrase()
+	local pos_chosen = -1
+	local worst_case_pos = -1
+	local counter = 1
+	for pos = 1, table.getn(self.trans_tbl) do
+		if self.trans_tbl[pos].from == self.cur_state then
+			if last_pos_chosen ~= pos or self.trans_tbl[pos].repeatable then
+				if math.random(1, counter) == 1 then
+					pos_chosen = pos
+				end
+				counter = counter + 1
+			else
+				worst_case_pos = pos
+			end
+		end
+	end
+	if pos_chosen == -1 then
+		-- не удалось найти неповторяющейся позиции
+		pos_chosen = worst_case_pos -- возьмем хотя бы повторно позицию
+	end
+	if pos_chosen == -1 then
+		-- вообще ничего не удалось выбрать
+		return nil
+	end
+
+	self.last_pos_chosen = pos_chosen
+	self.cur_state = self.trans_tbl[pos_chosen].to
+	
+	-- Обработка задержек вида X, X-Y, XdY+Z
+	local delay_num_members = table.getn(self.trans_tbl[pos_chosen].delay_after_snd)
+	local delay = 0
+	if delay_num_members == 1 then
+		delay = self.trans_tbl[pos_chosen].delay_after_snd[1]
+	else
+		if delay_num_members >= 2  and delay_num_members <= 3 then
+			delay = math.random(self.trans_tbl[pos_chosen].delay_after_snd[1], self.trans_tbl[pos_chosen].delay_after_snd[2])
+			if delay_num_members == 3 then
+				delay = self.trans_tbl[pos_chosen].delay_after_snd[3]
+			end
+		else
+			printf("ERROR: DialogueFSM: next_phrase: wrong delay format (1 to 3 arguments expected, got %d)",
+				delay_num_members)
+		end
+	end
+	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].len, delay
+end
+
+----------------------------------------------------------------------------------------------------
+class "Camper"
+-- Тип монстра с поведением "кемпер".
+-- Maintained by: Zmey
+
+function Camper:__init(c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+	self.c_npc = c_npc
+	self.c_enemy = c_enemy
+	
+	self.dlg_nothing_happened_yet = dlg_nothing_happened_yet
+	self.dlg_see_enemy = dlg_see_enemy
+	self.dlg_not_see_enemy = dlg_not_see_enemy
+	
+	self.dlg_nothing_happened_yet:reset()
+	self.c_npc:set_dialogue(self.dlg_nothing_happened_yet)
+	
+	-- FINITE STATE MACHINE:
+	self.state = self.nothing_happened_yet 
+
+	-- Сразу взять монстра под скрипт:
+	if not self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(true, zmey_gameplay_2.script_name())
+	end
+end
+
+function Camper:nothing_happened_yet()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("Camper: nothing_happened_yet: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) then
+		printf("Campler: nothing_happened_yet: npc sees enemy")
+		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		return
+	end
+
+	if distance_between(self.c_npc.npc, self.c_enemy.npc) <= 15 then
+		if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+			printf("_bp: nothing_happened_yet: Distance OK, not talking, not shooting: %d", game.time())
+			self.c_npc:talk_dialogue(self.c_enemy.npc)
+		end
+	end
+end
+
+function Camper:see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("Camper: see_enemy: %d", game.time())
+	if not self.c_npc.npc:see(self.c_enemy.npc) then
+		-- Если стреляет - хватит, он уже потерял его из виду:
+		if self.c_npc:is_shooting() then
+			interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		end
+		self.dlg_not_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_not_see_enemy)
+		self.state = self.not_see_enemy
+		return
+	end
+
+	if not self.c_npc:is_shooting() and
+	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 10 or self.c_npc.npc.health < 0.99) then
+		if self.c_npc:is_talking() or self.c_npc:is_looking() then
+			interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		end
+		self.c_npc:shoot(self.c_enemy.npc)
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		self.c_npc:talk_dialogue(self.c_enemy.npc)
+	end
+end
+
+function Camper:not_see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("Camper: not_see_enemy: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) then
+		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		self.c_npc:talk_dialogue(self.c_enemy.npc)
+	end
+end
+
+function Camper:set_nothing_happened_yet_handler(new_handler)
+	if self.state == self.nothing_happened_yet then
+		self.state = new_handler
+	end
+	self.nothing_happened_yet = new_handler
+end
+
+-- "Мотор" всего класса, должна вызываться периодически
+-- Возвращает:
+-- 	true, если сценарий все еще выполняется
+-- 	false, в случае завершения
+function Camper:heartbeat()
+	if self.state ~= nil then
+		self:state()
+		return true
+	end
+
+	if self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(false, zmey_gameplay_2.script_name())
+	end
+	return false
+end
