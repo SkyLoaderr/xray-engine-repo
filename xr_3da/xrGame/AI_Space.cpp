@@ -274,6 +274,20 @@ void CAI_Space::Load(LPCSTR name)
 
 void CAI_Space::Render()
 {
+	// temporary
+	for (int i=0; i<3; i++) {
+		vector<Fvector> &tpaVector = Level().m_PatrolPaths["path01"].tpaVectors[i];
+		for (int j=0; j<tpaVector.size(); j++) {
+			Fvector tP1 = tpaVector[j];
+			tP1.y += .1f;
+			Device.Primitive.dbg_DrawAABB(tP1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+			if (j) {
+				Fvector tP2 = tpaVector[j - 1];
+				Device.Primitive.dbg_DrawLINE(Fidentity,tP1,tP2,D3DCOLOR_XRGB(0,255,0));
+			}
+		}
+
+	}
 	if (0==vfs)						return;
 	if (0==sh_debug)				return;
 	if (0==(psAI_Flags&aiDebug))	return;
