@@ -32,7 +32,7 @@ DEF_VECTOR(vecDW,DWORD);
 vector<vecDW>	BestQuad;
 DWORD			BestQuad_Count;
 
-void ProcessOne(DWORD Base, DWORD limit=8)
+void ProcessOne		(DWORD Base, DWORD limit=8)
 {
 	BestQuad.clear	();
 	BestQuad_Count	= 0;
@@ -282,15 +282,14 @@ void xrMerge()
 	{
 		if (!used[i]) {
 			// analyze
-			ProcessOne(i,8);
-			CreatePN(group_id);
+			ProcessOne	(i,8);
+			CreatePN	(group_id);
 		}
 		Progress(float(i)/float(g_nodes.size()));
 	}
 
-	Msg("Optimization ratio: %2.1f%%\n",100.f*float(group_id)/float(g_nodes.size()));
+	Msg("Optimization ratio: %2.1f%%\n",	100.f*float(group_id)/float(g_nodes.size())	);
 	Msg("%d / %d\n%d seconds elapsed.",
 		group_id,g_nodes.size(),
 		(timeGetTime()-start_time)/1000);
 }
-

@@ -8,7 +8,7 @@ IC void ProcessID(DWORD ID, NodeMerged& N, DWORD OurID, Marks& m_used)
 	if (group==OurID)		return;
 	if (m_used[group])		return;
 
-	m_used[group] = true;
+	m_used[group]			= true;
 	N.neighbours.push_back	(group);
 }
 
