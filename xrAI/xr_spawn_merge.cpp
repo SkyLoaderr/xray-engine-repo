@@ -313,7 +313,7 @@ public:
 						break;
 					}
 
-					VERIFY		(ok);
+					R_ASSERT3		(ok,"Cannot find a correspndance between graph and graph points from level editor! Rebuild graph for the level ",*(*m_level_changers)[i]->m_caLevelToChange);
 
 					m_level_changers->erase	(m_level_changers->begin() + i);
 					--i;
