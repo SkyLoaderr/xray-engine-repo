@@ -60,7 +60,7 @@ public:
 	virtual void		set_duality_h		(float	f)		{ param_duality_h=_abs(f);									}
 	virtual void		set_duality_v		(float	f)		{ param_duality_v=_abs(f);									}
 	virtual void		set_noise			(float	f)		{ param_noise=f;											}
-	virtual void		set_noise_scale		(float	f)		{ VERIFY(f>EPS_S);	param_noise_scale=f;					}
+	virtual void		set_noise_scale		(float	f)		{ param_noise_scale=f;										}
 	virtual void		set_noise_fps		(float	f)		{ param_noise_fps=_abs(f)+EPS_S;							}
 
 	virtual void		set_color_base		(u32	f)		{ param_color_base=f;										}
