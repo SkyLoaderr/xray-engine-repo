@@ -412,7 +412,8 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	if(b_lose_control || (!b_climb&&is_contact)||
 		(!b_pure_climb)//b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2//&&b_good_graund
-		) b_at_wall=false;
+		) 
+		b_at_wall=false;
 
 	b_depart=was_contact&&(!is_contact);
 	b_stop_control=was_control&&(!is_control);
