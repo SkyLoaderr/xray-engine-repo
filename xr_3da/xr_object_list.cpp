@@ -119,6 +119,10 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 			Packet.w_u16			(u16(P->ID())	);
 			Packet.w_chunk_open8	(position);
 			P->net_Export			(Packet);
+#ifdef DEBUG
+			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
+			R_ASSERT3				(size<256,	"Object exceed network-data limit", *P->cName());
+#endif
 			Packet.w_chunk_close8	(position);
 		}
 	}
