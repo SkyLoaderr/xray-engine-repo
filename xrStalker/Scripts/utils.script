@@ -14,7 +14,14 @@ string conf_get_string(char_ini, section, field, override, object)
 
 -- Крешнуть игру (после вывода сообщения об ошибке в лог)
 function abort(reason)
+	printf("ERROR: %s", reason)
 	patrol(".." .. reason .. "..")
+end
+
+function trace(script_name, fmt, ...)
+	if debug.trace_script == script_name then
+		log(string.format(fmt, unpack(arg)))
+	end
 end
 
 -- Настройка параметра типа bool у игрового объекта.
