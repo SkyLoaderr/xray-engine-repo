@@ -71,7 +71,7 @@ object frmPropertiesWayPoint: TfrmPropertiesWayPoint
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 15
-    TabIndex = 0
+    TabIndex = 1
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -79,7 +79,7 @@ object frmPropertiesWayPoint: TfrmPropertiesWayPoint
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsBasic
+    ActivePage = tsWayPoint
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -91,6 +91,7 @@ object frmPropertiesWayPoint: TfrmPropertiesWayPoint
       TabVisible = True
       Caption = 'Basic'
       Color = 10528425
+      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
@@ -150,7 +151,6 @@ object frmPropertiesWayPoint: TfrmPropertiesWayPoint
       TabVisible = True
       Caption = 'Way Point'
       Color = 10528425
-      Visible = False
       object paSurfaces: TPanel
         Left = 0
         Top = 0
