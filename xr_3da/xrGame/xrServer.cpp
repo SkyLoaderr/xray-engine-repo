@@ -104,7 +104,6 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 	case M_FIRE_BEGIN:
 	case M_FIRE_END:
 	case M_FIRE_HIT:	// Simply broadcast this message to everyone except sender
-	case M_WPN_SET:
 		return net_flags(TRUE);
 	case M_CL_SPAWN:
 		{

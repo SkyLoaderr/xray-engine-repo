@@ -129,6 +129,7 @@ private:
 		Fvector			f_pos;
 		Fvector			f_dir;
 		DWORD			mstate;
+		int				weapon;
 
 		net_update()	{
 			dwTimeStamp		= 0;
@@ -175,8 +176,6 @@ public:
 	virtual void		g_sv_fireStart			(NET_Packet* P);
 	virtual void		g_fireEnd				( );
 	virtual void		g_wpn_Set				(DWORD id);
-	virtual void		g_wpn_Next				();
-	virtual void		g_wpn_Prev				();
 
 	// Network
 	virtual void		net_Export				(NET_Packet* P);				// export to server

@@ -15,6 +15,7 @@ public:
 	Fvector					velocity;
 	Fvector					f_pos;
 	Fvector					f_dir;
+	u8						weapon;
 
 	xrSE_Actor() {};
 
@@ -29,6 +30,7 @@ public:
 		torso.pitch			= P.r_angle8	();
 		accel				= P.r_sdir		();
 		velocity			= P.r_sdir		();
+		weapon				= P.r_u8		();
 		if (flags&MF_FIREPARAMS)
 		{
 			f_pos			= P.r_vec3		();
@@ -46,12 +48,13 @@ public:
 		P.w_angle8			(torso.pitch);
 		P.w_sdir			(accel);
 		P.w_sdir			(velocity);
+		P.w_u8				(weapon);
 		if (flags&MF_FIREPARAMS)
 		{
 			P.w_vec3		(f_pos);
 			P.w_dir			(f_dir);
 		}
-	}
+	};
 	virtual BOOL			RelevantTo		(xrServerEntity* E)
 	{
 		return TRUE;

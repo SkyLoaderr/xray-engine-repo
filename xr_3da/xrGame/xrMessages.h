@@ -70,6 +70,8 @@ M_UPDATE
 		direction	accel;
 		float		accel_magnitude;
 
+		u8			weapon;
+
 		if (flags&MF_FIREPARAMS) {
 			vec3		f_pos;
 			direction	f_dir;

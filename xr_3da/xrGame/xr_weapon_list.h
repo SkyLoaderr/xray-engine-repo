@@ -37,6 +37,7 @@ public:
 	bool			ActivateWeaponPrev	(bool ignore_empty_weapon=true);
 	bool			ActivateWeaponNext	(bool ignore_empty_weapon=true);
 	bool			ActivateWeapon		(CLASS_ID cls);
+	bool			ActivateWeaponID	(int id);
 
 	bool			TakeItem			(CLASS_ID cls, int iAmmoCount);
 	void			LeaveWeapon			(CLASS_ID cls);
@@ -54,6 +55,7 @@ public:
 	const char*		ActiveWeaponName		();
 	int				ActiveWeaponAmmoElapsed	();
 	int				ActiveWeaponAmmoLimit	();
+	int				ActiveWeaponID			();
 };
 
 #endif //__XR_OBJECT_LIST_H__

@@ -73,6 +73,10 @@ void CActor::net_Export(NET_Packet* P)					// export to server
 	P->w_sdir			(NET_SavedAccel);
 	P->w_sdir			(Movement.GetVelocity());
 
+	int w_id = Weapons->ActiveWeaponID();
+	if (w_id<0)			P->w_u8(0xff);
+	else				P->w_u8(u8(w_id));
+
 	if (flags&MF_FIREPARAMS)
 	{
 		Fvector			pos,dir;
@@ -97,6 +101,10 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	N.o_torso.pitch	= P->r_angle8	();
 	N.p_accel		= P->r_sdir		();
 	N.p_velocity	= P->r_sdir		();
+
+	u8 wpn			= P->r_u8		();
+	if (0xff==wpn)	N.weapon		= -1;
+	else			N.weapon		= int(wpn);
 
 	if (flags&MF_FIREPARAMS)
 	{
@@ -365,14 +373,15 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 	f_pos.lerp		(A.f_pos,B.f_pos,f);
 	f_dir.lerp		(A.f_dir,B.f_dir,f);	f_dir.normalize_safe();
 	mstate			= (f<0.5f)?A.mstate:B.mstate;
+	weapon			= (f<0.5f)?A.weapon:B.weapon;
 }
 
 void CActor::Update	(DWORD DT)
 {
-	if (pInput && pInput->iGetAsyncKeyState(DIK_RSHIFT)){ 
-		Die();
+//	if (pInput && pInput->iGetAsyncKeyState(DIK_RSHIFT)){ 
+//		Die();
 //		__asm	int 3;
-	}
+//	}
 
 	if (!bEnabled)	return;
 
@@ -444,6 +453,10 @@ void CActor::Update	(DWORD DT)
 				vPosition.set	(NET_Last.p_pos);		// physics :)
 				g_SetAnimation	(NET_Last.mstate);
 				
+				// Change weapon if needed
+				if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
+					Weapons->ActivateWeaponID(NET_Last.weapon);
+
 				// Signal, that last time we used interpolation
 				NET_WasInterpolating	= TRUE;
 				NET_Time				= dwTime;
@@ -744,10 +757,4 @@ void CActor::g_wpn_Set(DWORD id)
 		P.w_u8		(u8(id));
 		Level().Send(P,net_flags(TRUE));
 	}
-}
-void CActor::g_wpn_Next	()
-{
-}
-void CActor::g_wpn_Prev	()
-{
 }
