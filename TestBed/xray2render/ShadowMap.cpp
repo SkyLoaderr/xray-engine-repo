@@ -262,7 +262,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
-		RenderCombine				(CM_DBG_ACCUMULATOR);
+		RenderCombine				(CM_DBG_NORMALS);
 		// RenderOverlay				();
 
 		// Output statistics
