@@ -261,8 +261,8 @@ void CApplication::LoadBegin()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
-		ll_pStream	= Device.Streams.Create	(FVF::F_TL,4);
-		ll_hLogo	= Device.Shader.Create	("font","ui\\logo",false);
+		ll_hVS		= Device.Streams._CreateVS	(FVF::F_TL);
+		ll_hLogo	= Device.Shader.Create		("font","ui\\logo",false);
 	}
 }
 
@@ -270,8 +270,8 @@ void CApplication::LoadEnd()
 {
 	ll_dwReference--;
 	if (0==ll_dwReference) {
-		Device.Shader.Delete(ll_hLogo);
-		ll_pStream = 0;
+		Device.Shader.Delete	(ll_hLogo);
+		Device.Shader._DeleteVS	(ll_hVS);
 	}
 }
 

@@ -20,7 +20,6 @@ struct DPatch {
 
 class FDetailPatch : public CVisual  
 {
-	CVertexStream*	Stream;
 	vector<DPatch>	patches;
 public:
 	virtual void	Render		(float LOD);

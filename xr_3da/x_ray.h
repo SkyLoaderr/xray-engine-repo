@@ -18,7 +18,7 @@ class ENGINE_API CApplication	:
 	
 private:
 	Shader*					ll_hLogo;
-	CVertexStream*			ll_pStream;
+	CVS*					ll_hVS;
 	DWORD					ll_dwReference;
 private:
 	EVENT					eQuit;

@@ -9,7 +9,6 @@
 #include "fprogressivefixedvisual.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
-#include "fdetailpatch.h"
 #include "PSVisual.h"
 #include "fcached.h"
 #include "flod.h"
@@ -31,9 +30,6 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
 		V	= new FProgressiveFixedVisual;
 		break;
-//	case MT_SHOTMARK:
-//		V	= new FShotMarkVisual;
-//		break;
 	case MT_SKELETON:
 		V	= new CKinematics;
 		break;
@@ -43,25 +39,19 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	case MT_SKELETON_PART_STRIPPED:
 		V	= new CSkeletonX_ST;
 		break;
-	case MT_DETAIL_PATCH:
-		V	= new FDetailPatch;
-		break;
 	case MT_PARTICLE_SYSTEM:
 		V	= new CPSVisual;
 		break;
 	case MT_CACHED:
 		V	= new FCached;
 		break;
-	// case MT_PROGRESSIVE_STRIPS:
-	//	V	= new FProgressive;
-	//	break;
 	default:
 		R_ASSERT2(0,"Unknown visual type");
 		break;
 	}
-	R_ASSERT(V);
-	V->Type = type;
-	return V;
+	R_ASSERT	(V);
+	V->Type		= type;
+	return		V;
 }
 
 CVisual*	CModelPool::Instance_Duplicate	(CVisual* V)

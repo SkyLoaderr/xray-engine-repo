@@ -11,7 +11,6 @@
 class ENGINE_API FCached  : public CVisual
 {
 public:
-	CVertexStream*	VS;
 	LPVOID			pVertices;
 	DWORD			vCount;
 	LPWORD			pIndices;

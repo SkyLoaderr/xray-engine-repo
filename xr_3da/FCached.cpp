@@ -81,7 +81,6 @@ void TransferGeometry	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
 
 FCached::FCached()
 {
-	VS			= 0;
 	pVertices	= NULL;
 	vCount		= 0;
 	pIndices	= NULL;
@@ -96,8 +95,8 @@ FCached::~FCached()
 void FCached::Release()
 {
 	CVisual::Release();
-	if (pVertices)	{ _aligned_free(pVertices); pVertices= 0; }
-	if (pIndices)	{ _aligned_free(pIndices);  pIndices = 0; }
+	_FREE			(pVertices);
+	_FREE			(pIndices);
 }
 
 void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
@@ -112,10 +111,10 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 		
 		dwVertType	= data->Rdword();
 		vCount		= data->Rdword();
-		VS			= Device.Streams.Create		(dwVertType,vCount);
+		hVS			= Device.Shader._CreateVS	(dwVertType);
 		
-		DWORD		mem_size = vCount*VS->Stride();
-		pVertices	= _aligned_malloc			(mem_size,64);
+		DWORD		mem_size = vCount*hVS->dwStride;
+		pVertices	= xr_malloc		(mem_size);
 		data->Read	(pVertices,mem_size);
 	}
 
@@ -126,7 +125,7 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 		R_ASSERT(iCount%3 == 0);
 
 		DWORD		mem_size = iCount*2;
-		pIndices	= (WORD*)_aligned_malloc(mem_size,64);
+		pIndices	= (WORD*)xr_malloc(mem_size);
 		data->Read	(pIndices,mem_size);
 	}
 	
@@ -140,7 +139,6 @@ void FCached::Copy	(CVisual *pSrc)
 	CVisual::Copy(pSrc);
 
 	FCached	*pFrom = (FCached *)pSrc;
-	PCOPY	(VS);
 	PCOPY	(vCount);
 	PCOPY	(pIndices);
 	PCOPY	(iCount);

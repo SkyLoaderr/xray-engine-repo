@@ -27,7 +27,6 @@ public:
 	void				Compile			(PS::SDef_RT* source, PS::SEmitter* E);
 	IC int				ParticleCount	()	{ return m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }
-	IC CVertexStream*	GetStream		()	{ return m_Stream;			}
 };
 #endif /*_INCDEF_PSVisual_H_*/
 
