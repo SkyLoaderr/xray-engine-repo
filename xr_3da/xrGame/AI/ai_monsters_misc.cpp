@@ -423,13 +423,17 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 									break;
 								}
 							}
-							VERIFY(i<iCount);
-							//tpaPath.clear();
-							//return;
+							//VERIFY(i<iCount);
+							if (i >= iCount) {
+								tpaPath.clear();
+								return;
+							}
 						}
 					}
 				}
 				else {
+					if (bfInsideNode(AI,AI.Node(dwCurNode),tFinishPoint, fHalfSubNodeSize))
+						tTravelNode.P.y = ffGetY(*(AI.Node(dwCurNode)),tTravelNode.P.x,tTravelNode.P.z);
 					tTravelNode.P = tFinalPosition;
 					tpaPath.push_back(tTravelNode);
 					tPrevPoint = tTravelNode.P;

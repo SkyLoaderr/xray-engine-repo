@@ -476,7 +476,7 @@ void CCustomMonster::OnRender()
 		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 		
-		/**
+		/**/
 		Fvector         T;
         Fvector4        S;
         
