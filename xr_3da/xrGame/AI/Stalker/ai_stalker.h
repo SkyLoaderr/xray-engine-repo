@@ -20,6 +20,8 @@
 #include "../../sight_manager.h"
 #include "../../state_manager_stalker.h"
 #include "../../state_internal.h"
+#include "../../motivation_manager.h"
+#include "../../motivation.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
@@ -43,14 +45,17 @@ class CAI_Stalker :
 	public CStateManagerStalker,
 	public CStateInternal<CAI_Stalker>,
 #ifdef OLD_OBJECT_HANDLER
-	public CObjectHandler
+	public CObjectHandler,
 #else
-	public CObjectHandlerGOAP
+	public CObjectHandlerGOAP,
 #endif
+	public CMotivationManager<CMotivation,CAI_Stalker>
 {
 private:
 	typedef CCustomMonster inherited;
 	typedef CStateInternal<CAI_Stalker> CSStateInternal;
+	typedef CMotivationManager<CMotivation,CAI_Stalker>	CSMotivationManager;
+	typedef CMotivation<CAI_Stalker>					CSMotivation;
 	
 	EActionState				m_tActionState;
 	u32							m_dwActionStartTime;

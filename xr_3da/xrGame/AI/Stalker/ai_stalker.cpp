@@ -53,6 +53,7 @@ void CAI_Stalker::reinit			()
 	CStalkerMovementManager::reinit	();
 	CStateManagerStalker::reinit	(this);
 	CSStateInternal::reinit			(this);
+	CSMotivationManager::reinit		(this,false);
 
 	m_pPhysics_support->in_Init		();
 	m_dwRandomFactor				= 100;
@@ -81,6 +82,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CStalkerMovementManager::reload	(section);
 	CStateManagerStalker::reload	(section);
 	CSStateInternal::reload			(section);
+	CSMotivationManager::reload		(section);
 }
 
 void CAI_Stalker::Die				()
@@ -109,6 +111,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CStalkerMovementManager::Load	(section);
 	CStateManagerStalker::Load		(section);
 	CSStateInternal::Load			(section);
+	CSMotivationManager::Load		(section);
 
 	CSelectorManager::add<
 		CVertexEvaluator<

@@ -10,10 +10,10 @@
 
 #define TEMPLATE_SPECIALIZATION \
 	template<\
-		template <typename _object_type> _motivation_type,\
+		template <typename _object_type> class _motivation_type,\
 		typename _object_type\
 	>
-#define CSMotivationManager		CMotivationManager<_motivation_type<_object_type>,_object_type>
+#define CSMotivationManager		CMotivationManager<_motivation_type,_object_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationManager::CMotivationManager		()
@@ -24,7 +24,7 @@ IC	CSMotivationManager::CMotivationManager		()
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationManager::~CMotivationManager	()
 {
-	xr_delete				(m_graph)
+	xr_delete				(m_graph);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -45,7 +45,7 @@ void CSMotivationManager::reinit				(_object_type *object, bool clear_all)
 	m_object				= object;
 	
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i].data().reinit(object,clear_all);
+		graph().vertices()[i].data().reinit(object);
 
 	m_selected_id			= u32(-1);
 	m_actuality				= false;
@@ -68,17 +68,17 @@ void CSMotivationManager::reload				(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 IC	typename CSMotivationManager::CSGraphAbstract &CSMotivationManager::graph	()
 {
-	return					(m_graph);
+	return					(*m_graph);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CSMotivationManager::CSGraphAbstract &CSMotivationManager::graph	() const
 {
-	return					(m_graph);
+	return					(*m_graph);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CMotivation *motivation);
+IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *motivation)
 {
 	VERIFY					(!graph().vertex(motivation_id));
 	graph().add_vertex		(motivation,motivation_id);
@@ -87,7 +87,7 @@ IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CMotivation *mot
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMotivationManager::remove_motivation	(u32 motivation_id);
+IC	void CSMotivationManager::remove_motivation	(u32 motivation_id)
 {
 	VERIFY					(graph().vertex(motivation_id));
 	graph().vertex(motivation_id)->data().destroy();
@@ -98,27 +98,27 @@ IC	void CSMotivationManager::remove_motivation	(u32 motivation_id);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMotivationManager::add_connection	(u32 motivation_id, u32 sub_motivation_id);
+IC	void CSMotivationManager::add_connection	(u32 motivation_id, u32 sub_motivation_id)
 {
 	graph().add_edge		(motivation_id,sub_motivation_id,0.f);
 	m_actuality				= false;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMotivationManager::remove_connection	(u32 motivation_id, u32 sub_motivation_id);
+IC	void CSMotivationManager::remove_connection	(u32 motivation_id, u32 sub_motivation_id)
 {
 	graph().remove_edge		(motivation_id,sub_motivation_id);
 	m_actuality				= false;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const CMotivation *CSMotivationManager::motivation	(u32 motivation_id) const;
+IC	const typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(u32 motivation_id) const
 {
 	return				(&m_graph->vertex(m_selected_id)->data());
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const CMotivation *CSMotivationManager::selected	() const;
+IC	const typename CSMotivationManager::CSMotivation *CSMotivationManager::selected	() const
 {
 	xr_map<u32,float>::const_iterator	I = m_actions.find(m_selected_id);
 	VERIFY				(m_actions.end() != I);
@@ -126,7 +126,7 @@ IC	const CMotivation *CSMotivationManager::selected	() const;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u32						selected_id			() const;
+IC	u32	CSMotivationManager::selected_id		() const
 {
 	return				(m_selected_id);
 }
@@ -206,9 +206,9 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	xr_vector<CSGraphAbstract::CEdge>::const_iterator	E = vertex->edges().end();
 
 	if (I == E) {
-		xr_vector<u32,float>::iterator	i = m_actions.find((*I).vertex_id());
+		xr_map<u32,float>::iterator	i = m_actions.find(motivation_id);
 		if (m_actions.end() == i)
-			m_actions.insert(std::make_pair((*I).vertex_id(),weight));
+			m_actions.insert(std::make_pair(motivation_id,weight));
 		else
 			(*i).second			+= weight;
 		return;
@@ -216,12 +216,13 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 
 	float				total_value	= 0.f;
 	for ( ; I != E; ++I) {
-		float			value = vertex->data()->evaluate((*I).vertex_id());
+		u32				vertex_id = graph().vertex((*I).vertex_index())->vertex_id();
+		float			value = vertex->data().evaluate(vertex_id);
 		total_value		+= value;
 		VERIFY			(total_value <= (1.f + EPS_L));
 		value			*= weight;
 		if (!fis_zero(value))
-			propagate	((*I).vertex_id(),value);
+			propagate	(vertex_id,value);
 	}
 }
 

@@ -11,14 +11,14 @@
 #include "graph_abstract.h"
 
 template <
-	template <typename _object_type> _motivation_type,
+	template <typename _object_type> class _motivation_type,
 	typename _object_type
 >
 class CMotivationManager {
 public:
-	typedef _motivation_type<_object_type>	CMotivation;
+	typedef _motivation_type<_object_type>	CSMotivation;
 	typedef CGraphAbstract<
-		CMotivation,
+		CSMotivation,
 		float,
 		u32,
 		u16
@@ -49,12 +49,12 @@ public:
 	virtual void					update				(u32 time_delta);
 
 public:
-	IC		void					add_motivation		(u32 motivation_id, CMotivation *motivation);
+	IC		void					add_motivation		(u32 motivation_id, CSMotivation *motivation);
 	IC		void					remove_motivation	(u32 motivation_id);
 	IC		void					add_connection		(u32 motivation_id, u32 sub_motivation_id);
 	IC		void					remove_connection	(u32 motivation_id, u32 sub_motivation_id);
-	IC		const CMotivation		*motivation			(u32 motivation_id) const;
-	IC		const CMotivation		*selected			() const;
+	IC		const CSMotivation		*motivation			(u32 motivation_id) const;
+	IC		const CSMotivation		*selected			() const;
 	IC		u32						selected_id			() const;
 	IC		const CSGraphAbstract	&graph				() const;
 	IC		bool					actual				() const;
