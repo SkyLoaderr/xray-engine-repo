@@ -122,8 +122,6 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_wind,	tvs.wind);					// wind
 	RCache.set_c			(c_c_scale,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,1);	// scale
 	RCache.set_c			(c_c_bias,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,1);		// bias
-	RCache.set_c			(c_l_dir,	tvs.l_dir);					// L-dir
-	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
 	// render
 #if RENDER==R_R1
@@ -158,7 +156,4 @@ void	FTreeVisual::Copy			(IRender_Visual *pSrc)
 	PCOPY(xform);
 	PCOPY(c_scale);
 	PCOPY(c_bias);
-
-	PCOPY(c_l_dir);
-	PCOPY(c_l_color);
 }
