@@ -97,14 +97,13 @@ void CSector::BuildHierrarhy	()
 				pNode->AddChield	(best_id);
 			}
 
-			if (pNode->chields.size()>1) 
-			{
+			if (pNode->chields.size()>1)	{
 				pNode->CalcBounds		();
 				g_tree.push_back		(pNode);
 				bAnyNode				= TRUE;
 			} else {
-				g_tree[I]->bConnected = false;
-				xr_delete(pNode);
+				g_tree[I]->bConnected	= false;
+				xr_delete				(pNode);
 			}
 		}
 		
@@ -117,8 +116,8 @@ void CSector::BuildHierrarhy	()
 		{
 			if (g_tree[I]->bConnected)		 continue;
 			if (g_tree[I]->Sector != SelfID) continue;
-			R_ASSERT(0==TreeRoot);
-			TreeRoot = g_tree[I];
+			R_ASSERT	(0==TreeRoot);
+			TreeRoot	= g_tree[I];
 		}
 	}
 	if (0==TreeRoot) {
