@@ -132,6 +132,11 @@ function custom_planner:set_first_meet	(meet)
 end
 
 function custom_planner:first_meet		()
+	if self.meet == true then
+		printf				("first_meet = true")
+	else
+		printf				("first_meet = false")
+	end
 	return					self.meet
 end
 
