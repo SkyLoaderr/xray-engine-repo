@@ -82,7 +82,7 @@ void	CRenderTarget::phase_accumulator()
 	if (L_brightness<EPS_S)		A_clip	= 254;
 	else						
 	{
-		float		L_clip			= 3.f / L_brightness;
+		float		L_clip			= ps_r2_ls_dclip / L_brightness;
 		A_clip						= _max(4,iFloor(L_clip));
 	}
 
