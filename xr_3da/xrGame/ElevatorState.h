@@ -28,6 +28,7 @@ public:
 			void		SetElevator						(CClimableObject* climable);
 			void		EvaluateState					();
 			void		GetControlDir					(Fvector& dir);
+			void		GetJumpDir						(const Fvector& accel,Fvector& dir);
 			void		GetLeaderNormal					(Fvector& dir);
 			bool		Active							(){return m_ladder && m_state!=clbNone;}
 			bool		NearState						(){return m_state==clbNearUp || m_state == clbNearDown;}

@@ -233,8 +233,8 @@ void CElevatorState::GetControlDir(Fvector& dir)
 									break;				
 	}
 }
-static const float depart_dist=1.f;
-static const u32   depart_time=1000;
+static const float depart_dist=2.f;
+static const u32   depart_time=3000;
 void CElevatorState::UpdateDepart()
 {
 	Fvector temp;
@@ -275,4 +275,20 @@ void CElevatorState::GetLeaderNormal(Fvector& dir)
 	//Fvector d;
 	//m_ladder->DToAxis(m_character,d);
 	//if(dir.dotproduct(d)>0.f) dir.invert();
+}
+
+void CElevatorState::GetJumpDir(const Fvector& accel,Fvector& dir)
+{
+	Fvector norm,side;
+	m_ladder->DDNorm(norm);
+	m_ladder->DDSide(side);
+	Fvector ac;ac.set(accel);ac.normalize_safe();
+	float side_component=ac.dotproduct(side);
+	dir.set(norm);
+	if(_abs(side_component)>M_SQRT1_2)
+	{
+		if(side_component<0.f)side.invert();
+		dir.add(side);
+		dir.normalize_safe();
+	}
 }
