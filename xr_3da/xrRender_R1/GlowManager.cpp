@@ -120,7 +120,7 @@ void CGlowManager::Load		(IReader* fs)
 	}
 	dwTestID		= 0;
 
-	hGeom.create	(FVF::F_TL,RCache.Vertex.Buffer(),RCache.QuadIB);
+	hGeom.create	(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 }
 
 void CGlowManager::Unload	()
@@ -172,15 +172,32 @@ void CGlowManager::add	(CGlow *G)
 	Device.Statistic.RenderDUMP_Glows.End();
 }
 
+IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, float r, u32 clr)
+{
+	const Fvector& T 	= Device.vCameraTop;
+	const Fvector& R 	= Device.vCameraRight;
+	Fvector		Vr, Vt;
+	Vr.mul 		(R,r);
+	Vt.mul		(T,r);
+
+	Fvector 	a,b,c,d;
+	a.sub		(Vt,Vr);
+	b.add		(Vt,Vr);
+	c.invert	(a);
+	d.invert	(b);
+	pv->set		(d.x+pos.x,d.y+pos.y,d.z+pos.z, clr, 0.f,1.f);	pv++;
+	pv->set		(a.x+pos.x,a.y+pos.y,a.z+pos.z, clr, 0.f,0.f);	pv++;
+	pv->set		(c.x+pos.x,c.y+pos.y,c.z+pos.z, clr, 1.f,1.f);	pv++;
+	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, 1.f,0.f);	pv++;
+}
+
 void CGlowManager::Render()
 {
 	if (Selected.empty()) return;
 
+	RCache.set_xform_world(Fidentity);
+
 	Device.Statistic.RenderDUMP_Glows.Begin();
-	float	_width		= float(RImplementation.getTarget()->get_width());
-	float	_width_2	= _width / 2.f;
-	float	_height_2	= float(RImplementation.getTarget()->get_height())/2.f;
-	float	fov_scale	= _width / (Device.fFOV/90.f);
 	{
 		// 0. save main view and disable
 		CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
@@ -211,11 +228,13 @@ void CGlowManager::Render()
 		// 2. Sort by shader
 		std::sort		(Selected.begin(),Selected.end(),glow_compare);
 		
-		FVF::TL		*	pv;
-		FVF::TL			TL;
+		FVF::LIT		*pv;
 		
 		u32				pos = 0, count;
 		ref_shader		T;
+
+		Fplane			NP;
+		NP.build		(Device.vCameraPosition,Device.vCameraDirection);
 
 		float		dlim2	= MAX_GlowsDist2;
 		for (;pos<Selected.size();) 
@@ -226,7 +245,7 @@ void CGlowManager::Render()
 			
 			u32		vOffset;
 			u32		end		= pos+count;
-			FVF::TL	*	pvs		= pv = (FVF::TL*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
+			FVF::LIT* pvs	= pv = (FVF::LIT*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
 			for (; pos<end; pos++)
 			{
 				// Cull invisible 
@@ -244,24 +263,15 @@ void CGlowManager::Render()
 				}
 				if (G.fade*scale<=1.f)		continue;
 
-				// Now fade glows directly in front of us
-				TL.transform	(G.spatial.center,Device.mFullTransform);
-				if (TL.p.z<0 || TL.p.w<0)	continue;
-				float size		=	fov_scale * G.spatial.radius / TL.p.w;
-				float snear		=	TL.p.z;	clamp	(snear,0.f,.5f);
-				scale			*=	snear*2.f;
+				// near fade
+				float dist_np	= NP.distance(G.position)-VIEWPORT_NEAR;
+				float snear		= dist_np/0.15f;	clamp	(snear,0.f,1.f);
+				scale			*=	snear;
 				if (G.fade*scale<=1.f)		continue;
-				
-				// Convert to screen coords
-				float cx        = (1+TL.p.x)*_width_2;
-				float cy        = (1+TL.p.y)*_height_2;
+
 				u32 C			= iFloor(G.fade*scale*(1-(dist_sq/dlim2)));
 				u32 clr			= color_rgba(C,C,C,C);
-				
-				pv->set(cx - size, cy + size, TL.p.z, TL.p.w, clr, 0, 1); pv++;
-				pv->set(cx - size, cy - size, TL.p.z, TL.p.w, clr, 0, 0); pv++;
-				pv->set(cx + size, cy + size, TL.p.z, TL.p.w, clr, 1, 1); pv++;
-				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
+				FillSprite		(pv,G.position,G.radius,clr);
 			}
 			int vCount				= int(pv-pvs);
 			RCache.Vertex.Unlock	(vCount,hGeom->vb_stride);
