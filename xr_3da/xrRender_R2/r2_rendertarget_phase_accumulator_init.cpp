@@ -3,7 +3,7 @@
 void CRenderTarget::phase_accumulator_init()
 {
 	dwLightMarkerID						= 5;		// start from 5, increment in 2 units
-	u32		clr4clear					= color_rgba(127,127,127,127);	// 0x00
+	u32		clr4clear					= color_rgba(64,64,64,64);	// 0x00
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
 
 	// Common
