@@ -97,7 +97,8 @@ function select_position(npc, st)
 	local node_2_distance = nil
 
 	--' проверяем точку слева от актера
-	desired_direction = vector_rotate_y(st.actor:direction(), math.random(50,60) )
+	--desired_direction = vector_rotate_y(st.actor:direction(), math.random(50,60) )
+	desired_direction = vector_rotate_y(st.actor:direction(), 50)
 	node_1_vertex_id = level.vertex_in_direction (  st.actor:level_vertex_id(),
 													desired_direction,
 													st.desired_distance )
@@ -105,7 +106,8 @@ function select_position(npc, st)
 		node_1_vertex_id = nil
 	end
 	--' проверяем точку справа от актера
-	desired_direction = vector_rotate_y(st.actor:direction(), -math.random(50,60) )
+	--desired_direction = vector_rotate_y(st.actor:direction(), -math.random(50,60) )
+	desired_direction = vector_rotate_y(st.actor:direction(), -50)
 	node_2_vertex_id = level.vertex_in_direction (  st.actor:level_vertex_id(),
 													desired_direction,
 													st.desired_distance )
@@ -225,41 +227,4 @@ function vector_rotate_y (v, angle)
     local c = math.cos (angle)
     local s = math.sin (angle)
     return vector ():set (v.x * c - v.z * s, v.y, v.x * s + v.z * c)
-end
-
-function time_to_update( time, first_answer )
-	if time.rnd == nil then
-		if time.begin == nil then
-			time.begin = game.time()
-			if first_answer == nil then
-				return true
-			else
-				return first_answer
-			end				
-		elseif time.idle < game.time() - time.begin then
-			time.begin = game.time()
-			return true
-		else 
-			return false
-		end
-	else  -- NEXT CODE NOT TESTED
-		if time.maxidle == nil then time.maxidle = 5 end
-		if time.sumidle == nil then time.sumidle = 5 end
-
-		if time.begin == nil then
-			time.begin = game.time()
-			time.idle = math.random(time.maxidle) + time.sumidle
-			if first_answer == nil then
-				return true
-			else
-				return first_answer
-			end				
-		elseif time.idle < game.time() - time.begin then
-			time.begin = game.time()
-			time.idle = math.random(time.maxidle) + time.sumidle
-			return true
-		else 
-			return false
-		end
-	end
 end
