@@ -15,8 +15,8 @@ function test_callback:callback(obj,action_type,index)
 end
 
 function main ()
-    object			= script_object("script_object0000",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
-    object1			= script_object("script_object0001",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
+--  object			= script_object("script_object0000",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
+--	object1			= script_object("script_object0001",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
     
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -76,8 +76,8 @@ function main ()
 --	)
 	
 	while stalker:action() do
-		object:update()
-		object1:update()
+--		object:update()
+--		object1:update()
 		wait		()
 		if (stalker:see(actor)) then
 			printf("[%6d] I see actor!",device().time_global)
