@@ -579,24 +579,24 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 			Members.push_back(Group.Members[k]);
 	}
 
-	Msg("\nNew query");
+	WRITE_QUERY_TO_LOG("\nNew query");
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
 		Group.m_dwLastActionTime = Level().timeServer();
 		Group.m_dwLastAction = 0;
-		Msg("Attack");
+		WRITE_QUERY_TO_LOG("Attack");
 		return(a1);
 	}
 	else
 		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfDefendSuccessProbability)) {
 			Group.m_dwLastActionTime = Level().timeServer();
 			Group.m_dwLastAction = 1;
-			Msg("Defend");
+			WRITE_QUERY_TO_LOG("Defend");
 			return(Group.m_dwLastAction = a2);
 		}
 		else {
 			Group.m_dwLastActionTime = Level().timeServer();
 			Group.m_dwLastAction = 2;
-			Msg("Retreat");
+			WRITE_QUERY_TO_LOG("Retreat");
 			return(Group.m_dwLastAction = a3);
 		}
 }

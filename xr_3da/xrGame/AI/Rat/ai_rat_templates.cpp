@@ -105,6 +105,24 @@ void CAI_Rat::vfAdjustSpeed()
 				m_fSpeed = 0;
 				m_fASpeed = fNullASpeed;
 			}
+	
+	tTemp2 = mRotate.k;
+	tTemp2.normalize_safe();
+	tTemp1 = vPosition;
+	tTemp1.mad(tTemp2,1*m_fSpeed*m_fTimeUpdateDelta);
+	
+	u32 dwNewNode = AI_NodeID;
+	NodeCompressed *tpNewNode = AI_Node;
+	NodePosition	QueryPos;
+	Level().AI.PackPosition	(QueryPos,tTemp1);
+	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
+		dwNewNode = Level().AI.q_Node(AI_NodeID,tTemp1);
+		tpNewNode = Level().AI.Node(dwNewNode);
+	}
+	if (!dwNewNode || !Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
+		m_fSpeed = m_fMinSpeed;
+		m_fASpeed = fMinASpeed;
+	}
 }
 
 bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)

@@ -32,9 +32,11 @@ class CBaseFunction;
 			vfUpdateDynamicObjects();\
 			bStopThinking = true;\
 		}
-		//	Msg("%d",Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].m_tpaSuspiciousNodes.size());\
+		#define WRITE_QUERY_TO_LOG(S) ;//Msg(S);
+			//	Msg("%d",Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].m_tpaSuspiciousNodes.size());\
 
 	#else
+		#define WRITE_QUERY_TO_LOG(S)
 		#define WRITE_TO_LOG(S) {\
 			vfUpdateDynamicObjects();\
 			bStopThinking = true;\

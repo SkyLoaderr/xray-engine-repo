@@ -28,7 +28,8 @@ void CAI_Rat::SetDirectionLook()
 void CAI_Rat::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
-	m_Enemy.Enemy->svCenter(pos1);
+	//m_Enemy.Enemy->svCenter(pos1);
+	pos1 = m_Enemy.Enemy->Position();
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);

@@ -115,6 +115,7 @@ void CAI_Rat::Think()
 //		AI_Path.TravelStart = 0;
 //	}
 }
+
 void CAI_Rat::Death()
 {
 	//WRITE_TO_LOG("Dying...");
@@ -336,9 +337,9 @@ void CAI_Rat::AttackFire()
 
 	SelectEnemy(m_Enemy);
 	
-	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
-	if (eState != eCurrentState)
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+	//ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
+	//if (eState != eCurrentState)
+	//	GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
@@ -444,9 +445,16 @@ void CAI_Rat::Retreat()
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();
 		
-		INIT_SQUAD_AND_LEADER;
-		
 		Fvector tTemp;
+		tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+		vfNormalizeSafe(tTemp);
+		SRotation sTemp;
+		mk_rotation(tTemp,sTemp);
+
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatTurn);
+
+		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
+
 		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
 		tTemp.normalize_safe();
 		tTemp.mul(m_fRetreatDistance);
@@ -571,6 +579,18 @@ void CAI_Rat::ReturnHome()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
  
+	if (m_Enemy.Enemy) {
+		Fvector tTemp;
+		tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+		vfNormalizeSafe(tTemp);
+		SRotation sTemp;
+		mk_rotation(tTemp,sTemp);
+
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatTurn);
+
+		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
+	}
+
 	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive() || vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
