@@ -81,6 +81,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
 
 			int i1, i2, i3;
+			i1 = i2 = i3 = 0;
 			MotionToAnim(m_tAnim,i1,i2,i3);
 			if (i3 == -1) {
 				i3 = ::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size());
