@@ -50,7 +50,6 @@ CCustomMonster::CCustomMonster()
 	q_look.o_look_speed = PI;
 	m_fSoundPower		= m_fStartPower = 0;
 	m_dwSoundUpdate		= 0;
-	m_fBananPadlaCorrection = 0;
 	eye_pp_stage		= 0;
 	m_tpPath			= 0;
 	vfResetPatrolData	();
@@ -410,7 +409,7 @@ void CCustomMonster::eye_pp_s0			( )
 	V->Calculate							();
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;							X.mul_43	(svTransform,mEye);
-	eye_matrix.setHPB						(-r_current.yaw + 0*m_fBananPadlaCorrection,-r_current.pitch,0);
+	eye_matrix.setHPB						(-r_current.yaw,-r_current.pitch,0);
 	eye_matrix.c.set						(X.c);
 	Device.Statistic.TEST0.End				();
 }

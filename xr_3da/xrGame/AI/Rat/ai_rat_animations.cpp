@@ -71,7 +71,7 @@ void CAI_Rat::vfLoadAnimations()
 	
 	tRatAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle("attack_1");
 	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("attack_2");
-	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("attack_3");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[2] = tpVisualObject->ID_Cycle("attack_3");
 	
 	tRatAnimations.tNormal.tGlobal.tpaIdle[0] = tpVisualObject->ID_Cycle("norm_idle_1");
 	tRatAnimations.tNormal.tGlobal.tpaIdle[1] = tpVisualObject->ID_Cycle("norm_idle_2");
@@ -110,8 +110,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			
 			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
-			
-			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[0];
+			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else
 			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
@@ -130,7 +129,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 //						
 //						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 //							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[dwfRandom(2)];
-						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
+						if ((this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader) && (ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 5000))
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
@@ -156,7 +155,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 //						
 //						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 //							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[dwfRandom(2)];
-						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
+						if ((this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader) && (ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 5000))
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];

@@ -30,8 +30,6 @@ class CCustomMonster :
 private:
 	typedef	CEntityAlive	inherited;
 protected:
-	float				m_fBananPadlaCorrection;
-
 	// weapons
 	CWeaponList*		Weapons;
 	

@@ -45,9 +45,6 @@ CAI_Rat::CAI_Rat()
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
-	// start of Banan - padla!!!
-	m_fBananPadlaCorrection = PI_DIV_2;
-	// end of Banan - padla!!!
 	m_tpPath = 0;
 }
 
@@ -190,6 +187,7 @@ void CAI_Rat::Exec_Movement	( float dt )
 		if (m_bActionStarted) {
 			m_bActionStarted = false;
 			if (tSavedEnemy) {
+				m_fJumpSpeed = 7.f;
 				Fvector tAcceleration, tVelocity;
 				tVelocity.sub(tSavedEnemy->Position(),vPosition);
 				tVelocity.normalize_safe();
