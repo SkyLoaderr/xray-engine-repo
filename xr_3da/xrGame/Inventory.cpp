@@ -621,10 +621,9 @@ bool CInventory::Eat(PIItem pIItem)
 		pIItem->Drop();
 	
 		NET_Packet P;
-		CGameObject* pObject = dynamic_cast<CGameObject*>(m_pOwner);
-		pObject->u_EventGen(P,GE_DESTROY,pIItem->ID());
+		CGameObject::u_EventGen(P,GE_DESTROY,pIItem->ID());
 		P.w_u16(u16(pIItem->ID()));
-		pObject->u_EventSend(P);
+		CGameObject::u_EventSend(P);
 
 		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
 
