@@ -39,6 +39,7 @@ void CSheduler::Initialize		()
 {
 	fiber_main			= ConvertThreadToFiber	(0);
 	fiber_thread		= CreateFiber			(0,t_process,0);
+	fibered				= FALSE;
 }
 
 void CSheduler::Destroy			()
@@ -142,17 +143,23 @@ void CSheduler::ProcessStep			()
 
 void CSheduler::Switch				()
 {
-	SwitchToFiber					(fiber_main);
+	if (fibered)	
+	{
+		fibered						= FALSE;
+		SwitchToFiber				(fiber_main);
+	}
 }
 
 void CSheduler::Update				(DWORD mcs)
 {
+	DWORD	dwTime					= Device.dwTimeGlobal;
+
 	// Realtime priority
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T					= ItemsRT[it];
 		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
-		T.Object->Update			(Elapsed);
+		if (T.Object->Ready())		T.Object->Update(Elapsed);
 		T.dwTimeOfLastExecute		= dwTime;
 	}
 
@@ -160,6 +167,7 @@ void CSheduler::Update				(DWORD mcs)
 	Device.Statistic.Sheduler.Begin	();
 	cycles_limit					= CPU::cycles_per_microsec * u64(mcs);
 	cycles_start					= CPU::GetCycleCount();
+	fibered							= TRUE;
 	SwitchToFiber					(fiber_thread);
 	Device.Statistic.Sheduler.End	();
 }

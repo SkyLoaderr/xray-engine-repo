@@ -46,6 +46,7 @@ private:
 public:
 	u64				cycles_start;
 	u64				cycles_limit;
+	BOOL			fibered;
 public:
 	void			ProcessStep	();
 	void			Process		();

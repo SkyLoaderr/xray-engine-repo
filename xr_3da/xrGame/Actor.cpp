@@ -264,6 +264,9 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	patch_frame			= 0;
 	patch_position.set	(vPosition);
 
+	Engine.Sheduler.Unregister	(this);
+	Engine.Sheduler.RegisterRT	(this);
+
 	return				TRUE;
 }
 
