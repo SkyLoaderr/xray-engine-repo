@@ -58,6 +58,7 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	Fvector fwd_vec;	fwd_vec.set		(0.f,0.f,1.f);
 	Fvector back_vec;	back_vec.set	(0.f,0.f,-1.f);
 
+	clipper._clear		();
 	P.build	(BB.min,left_vec);			clipper._add(P);
 	P.build	(BB.min,back_vec);			clipper._add(P);
 	P.build	(BB.max,right_vec);			clipper._add(P);
@@ -129,6 +130,16 @@ void CLightPPA_Manager::Destroy		()
 
 void CLightPPA_Manager::Render()
 {
+	// Projection
+	float _43 = Device.mProject._43;
+	Device.mProject._43 -= 0.001f; 
+	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
+
+	// Create D3D unattenuated light
+	// D3D.diffuse.set		(color);
+	// D3D.position.set		(sphere.P);
+	// D3D.range			= sphere.R;
+
 	for (DWORD L=0; L<container.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];
@@ -154,8 +165,7 @@ void CLightPPA_Manager::Render()
 	}
 	container.clear	();
 
-	// Create D3D unattenuated light
-	// D3D.diffuse.set		(color);
-	// D3D.position.set		(sphere.P);
-	// D3D.range			= sphere.R;
+	// Projection
+	Device.mProject._43 = _43;
+	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,Device.mProject.d3d() ));
 }
