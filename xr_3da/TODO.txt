@@ -25,6 +25,7 @@
 		*	models/model_trans 			- черный
 		*	vert_aref					- черный
 		*	засветка кончиков моделей 
+		*	5-color-lods
 
 ***[OLES]*** In progress:
 -------------------------
