@@ -859,30 +859,26 @@ public:
 
 	IC	void		init			()
 	{
-		const _Graph::CVertex	&tNode1	= *graph->vertex(start_node_index);
-		graph->unpack_xz		(tNode1,x2,z2);
-
+		inherited::init			();
 		graph->unpack_xz		(graph->vertex_position(m_params->m_position),x3,z3);
-
-		x1						= x2;
-		z1						= z2;
 	}
+
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
 		best_node				= graph->vertex(node_index);
 		graph->unpack_xz		(best_node,x1,z1);
 		if ((x1 != x3) || (z1 != z3))
-			return					(false);
+			return				(false);
 		
-		m_params->m_distance		= graph->distance(node_index,m_params->m_position);
-		m_params->m_vertex_id		= node_index;
-		return						(true);
+		m_params->m_distance	= graph->distance(node_index,m_params->m_position);
+		m_params->m_vertex_id	= node_index;
+		return					(true);
 	}
 	
 	IC		void		create_path		()
 	{
 		if (path)
-			inherited::create_path	();
+			inherited::create_path();
 	}
 };
 
