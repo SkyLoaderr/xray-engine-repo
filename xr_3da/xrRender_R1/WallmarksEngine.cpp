@@ -146,7 +146,7 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::stati
 			Fvector test_normal;
 			test_normal.mknormal	(v_data[v_ids[0]],v_data[v_ids[1]],v_data[v_ids[2]]);
 			float cosa				= test_normal.dotproduct(sml_normal);
-			if (cosa<EPS)			continue;
+			if (cosa<0.034899f)		continue;	// cos(88)
 			RecurseTri				(adj,mView,W);
 		}
 	}
