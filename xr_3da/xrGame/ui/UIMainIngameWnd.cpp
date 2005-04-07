@@ -411,7 +411,7 @@ void CUIMainIngameWnd::Draw()
 
 	UIPdaMsgListWnd.Draw();
 
-
+#ifdef DEBUG
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
 	{
 		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -460,6 +460,7 @@ void CUIMainIngameWnd::Draw()
 			RCache.dbg_DrawAABB(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
 		}
 	}
+#endif
 }
 
 void CUIMainIngameWnd::DrawPdaMessages(){
