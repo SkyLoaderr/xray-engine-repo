@@ -280,6 +280,23 @@ states = {
 				animation = "punch",
 				reset = true
 			},
+	hide_s_left = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "hide_s_left",
+				reset = true
+			},
+	hide_s_right = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "hide_s_right",
+				reset = true
+			},
+				
 
 	-- Раненый
 	wounded = {	weapon = "strapped",
