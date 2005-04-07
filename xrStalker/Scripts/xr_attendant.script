@@ -200,10 +200,10 @@ function action_follow:execute ()
           self.state = 0
        else
           if xr_meet.is_meet (leader) == true then
-             printf ("LEADER IN MEET STATE")
+             --printf ("LEADER IN MEET STATE")
              state_mgr.set_state (self.object, self.st.state_if_leader_in_meet, nil, nil, db.actor)
           else   
-             printf ("LEADER NOT IN MEET STATE")
+             --printf ("LEADER NOT IN MEET STATE")
              state_mgr.set_state (self.object, "idle")
           end  
        end   
