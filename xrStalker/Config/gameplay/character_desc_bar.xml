@@ -419,7 +419,7 @@
 		</supplies>
 			
 		<start_dialog>bar_svoboda_volkodav_start</start_dialog>
-		<start_dialog>bar_svoboda_volkodav_kiil_research</start_dialog>
+		<start_dialog>bar_svoboda_volkodav_kill_research</start_dialog>
 		<actor_dialog>bar_svoboda_volkodav_request_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_give_quest_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_info_dp</actor_dialog>
