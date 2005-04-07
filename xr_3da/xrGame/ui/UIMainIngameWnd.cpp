@@ -410,6 +410,56 @@ void CUIMainIngameWnd::Draw()
 	}
 
 	UIPdaMsgListWnd.Draw();
+
+
+	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
+	{
+		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor)
+			return;
+		if(pActor->cam_Active()==pActor->cam_FirstEye())
+		{
+//------------
+			CWeaponHUD *pWpnHud = NULL;
+			pWpnHud = m_pWeapon->GetHUD();
+
+//			Fvector FP = pWpnHud->FirePoint();
+//			Fvector SP = pWpnHud->ShellPoint();
+//------------
+			Fvector FP,SP;//,FP2;
+
+			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
+			V->CalculateBones		();
+
+			// fire point&direction
+			Fmatrix& fire_mat		= V->LL_GetTransform(u16(pWpnHud->FireBone()));
+			Fmatrix& parent			= pWpnHud->Transform	();
+
+			Fvector& fp				= pWpnHud->FirePoint();
+//			Fvector& fp2			= pWpnHud->FirePoint2();
+			Fvector& sp				= pWpnHud->ShellPoint();
+
+			fire_mat.transform_tiny	(FP,fp);
+			parent.transform_tiny	(FP);
+
+//			fire_mat.transform_tiny	(FP2,fp2);
+//			parent.transform_tiny	(FP2);
+		
+			fire_mat.transform_tiny	(SP,sp);
+			parent.transform_tiny	(SP);
+
+
+			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+//			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
+		
+		}else{
+			Fvector FP = m_pWeapon->get_CurrentFirePoint();
+			Fvector SP = m_pWeapon->get_LastSP();
+			RCache.dbg_DrawAABB(FP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
+		}
+	}
 }
 
 void CUIMainIngameWnd::DrawPdaMessages(){
