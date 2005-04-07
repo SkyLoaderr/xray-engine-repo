@@ -138,5 +138,45 @@
 		<text>Как вам будет угодно.</text>
     </string>
     
+
+
+    <string id="bar_arena_fight_boar">
+		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
+		В левом углу арены, уроженец радиоактивных болот, свирепый и клыкастый - КАБАН!
+		В правом углу арены, пришедший из ниоткуда, идущий в никуда. Все называют его Меченным!
+		</text>
+    </string>
+
+    <string id="bar_arena_fight_begin">
+		<text>Бой начался!</text>
+    </string>
+    <string id="bar_arena_fight_10">
+		<text>Прошло 10 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_20">
+		<text>Прошло 20 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_30">
+		<text>Прошло 30 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_40">
+		<text>Прошло 40 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_50">
+		<text>Прошло 50 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_60">
+		<text>Прошла минута!</text>
+    </string>
+    <string id="bar_arena_fight_victory">
+		<text>Итак! Претендент успел уложить противника в отведенное время и выиграл!</text>
+    </string>
+    <string id="bar_arena_fight_lose">
+		<text>Итак! Претендент уложил противника, но не успел в отведенное время, и проиграл!</text>
+    </string>
+    <string id="bar_arena_fight_dead">
+		<text>Итак! Противник уложил претендента. Вот так номер!</text>
+    </string>
+
     
 </string_table>

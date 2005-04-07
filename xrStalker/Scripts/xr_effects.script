@@ -334,11 +334,10 @@ function search_gulag_job(actor, npc)
 	end
 end
 
-function notify_back_off(actor, npc)
-	if npc:active_sound_count() == 0 then
-		xr_sound.set_sound_play(npc, "threat_back")		
-	end	
-end
+
+--------------------------------------------------------- 
+-- BAR-ROSTOK
+--------------------------------------------------------- 
 
 function bar_freedom_spam(actor, npc)
 	local t = math.random(1,4)
@@ -356,6 +355,66 @@ function bar_freedom_angry_actor(actor,npc)
 		npc:set_relation(game_object.enemy, actor)
 	end
 end
+
+function bar_arena_introduce(actor, npc)
+	if db.actor:has_info("bar_arena_boar_choosen") then
+		news_manager.send_tip(actor, "bar_arena_fight_boar", nil, "arena", 7000)
+	end
+end
+
+function bar_arena_fight_begin(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_begin", nil, "arena")
+end
+function bar_arena_fight_10(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_10", nil, "arena")
+end
+function bar_arena_fight_20(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_20", nil, "arena")
+end
+function bar_arena_fight_30(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_30", nil, "arena")
+end
+function bar_arena_fight_40(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_40", nil, "arena")
+end
+function bar_arena_fight_50(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_50", nil, "arena")
+end
+function bar_arena_fight_60(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_fight_60", nil, "arena")
+end
+
+function bar_arena_after_fight(actor, npc)
+	if db.actor:has_info("bar_arena_20_p") then
+		if db.actor:dont_has_info("bar_arena_fight_60") then
+			db.actor:give_info_portion("bar_arena_actor_victory")
+			news_manager.send_tip(actor, "bar_arena_fight_victory", nil, "arena")
+		else
+			db.actor:give_info_portion("bar_arena_actor_lose")
+			news_manager.send_tip(actor, "bar_arena_fight_lose", nil, "arena")
+		end
+	elseif db.actor:has_info("bar_arena_50_p") then
+		if db.actor:dont_has_info("bar_arena_fight_30") then
+			db.actor:give_info_portion("bar_arena_actor_victory")
+			news_manager.send_tip(actor, "bar_arena_fight_victory", nil, "arena")
+		else
+			db.actor:give_info_portion("bar_arena_actor_lose")
+			news_manager.send_tip(actor, "bar_arena_fight_lose", nil, "arena")
+		end
+	elseif db.actor:has_info("bar_arena_100_p") then
+		if db.actor:dont_has_info("bar_arena_fight_10") then
+			db.actor:give_info_portion("bar_arena_actor_victory")
+			news_manager.send_tip(actor, "bar_arena_fight_victory", nil, "arena")
+		else
+			db.actor:give_info_portion("bar_arena_actor_lose")
+			news_manager.send_tip(actor, "bar_arena_fight_lose", nil, "arena")
+		end
+	end
+end
+
+
+
+
 
 
 function military_max_dead (actor, npc)

@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="bar_arena_manager_game_0">
+        <text>Я хочу сразиться. Кто у тебя на этот раз?</text>
+    </string>
+    <string id="bar_arena_manager_game_1">
+        <text>Сейчас не с кем сражаться. Ищи приключения в другом месте.</text>
+    </string>
+    <string id="bar_arena_manager_game_100">
+        <text>Теперь выбирай ставку. Минимальная - 1000 рублей. Да, деньги вперед.</text>
+    </string>
+    <string id="bar_arena_manager_game_101">
+        <text>1000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_102">
+        <text>2000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_103">
+        <text>3000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_104">
+        <text>5000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_105">
+        <text>Нет у меня денег.</text>
+    </string>
+    <string id="bar_arena_manager_game_1051">
+        <text>Тьфу ты, опять нищий какой то.</text>
+    </string>
+    <string id="bar_arena_manager_game_2">
+        <text>Есть кабан. Образец крупный, но изрядно побитый. Зато злющий, как моя теща. Хорошо, что я ее никогда не видел.</text>
+    </string>
+    <string id="bar_arena_manager_game_200">
+        <text>Добро. Еще один момент. Сделай ставку на время, за которое ты убьешь монстра. Если успеешь - выиграешь, если нет - проиграешь. Чем меньше выбранное тобой время - тем больше сумма выигрыша.</text>
+    </string>
+    <string id="bar_arena_manager_game_201">
+        <text>10 секунд, двойной выигрышь.</text>
+    </string>
+    <string id="bar_arena_manager_game_202">
+        <text>30 секунд, выигрываешь половину ставки.</text>
+    </string>
+    <string id="bar_arena_manager_game_203">
+        <text>1 минута. Выигрываешь пятую часть ставки.</text>
+    </string>
+    <string id="bar_arena_manager_game_204">
+        <text>Я передумал.</text>
+    </string>
+    <string id="bar_arena_manager_game_2041">
+        <text>Тьфу ты, тряпка. Деньги я все равно тебе не верну.</text>
+    </string>
+    <string id="bar_arena_manager_game_21">
+        <text>Согласен на кабана.</text>
+    </string>
+    <string id="bar_arena_manager_game_22">
+        <text>Не, с кабаном я сражаться не буду.</text>
+    </string>
+    <string id="bar_arena_manager_game_221">
+        <text>Наша девочка испугалась кабанчика. Ну да ладно, не расстраивайся.</text>
+    </string>
+    <string id="bar_arena_manager_game_300">
+        <text>Официальная часть окончена. Прошу в комнату ожидания.</text>
+    </string>
     <string id="bar_arena_manager_info_0">
         <text>Есть пару вопросов.</text>
     </string>
@@ -41,6 +101,12 @@
     </string>
     <string id="bar_arena_manager_start_31">
         <text>Извини, пока сражаться не с кем. Подожди денек-другой, пока нового мутанта не поймаем.</text>
+    </string>
+    <string id="bar_arena_manager_start_41">
+        <text>Ну! Молодец! Держи свой выигрышь. Захочешь еще посражаться на деньги - приходи.</text>
+    </string>
+    <string id="bar_arena_manager_start_51">
+        <text>Извини, брат, но ты проиграл. Приходи в следующий раз, если захочешь.</text>
     </string>
     <string id="bar_bar_barman_ecolog_flash_done_0">
         <text>Вот флешка с информацией, которую передал профессор Круглов.</text>
@@ -403,7 +469,7 @@
         <text>Это не так просто, надеюсь, ты это понимаешь?</text>
     </string>
     <string id="bar_bar_hunter_quest_start_1">
-        <text>Все отдам, дружище, только верни ружье, молю тебя. Потерял я его возле кладбища машин на дикой территории, сейчас скину тебе координаты этого места. И поосторожней там, твари эти очень злобные.</text>
+        <text>Все отдам, дружище, только верни ружье, молю тебя. Потерял я его возле жилища кровососов, сейчас скину тебе координаты этого места. И поосторожней там, твари эти очень злобные.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_11">
         <text>Из уважения к фамильности этой пушки я, пожалуй, ее тебе верну, когда найду. Но ты уж подумай, чем ты меня отблагодаришь.</text>
@@ -1053,24 +1119,6 @@
     <string id="bar_svoboda_volkodav_info_dp_14">
         <text>Я передумал.</text>
     </string>
-    <string id="bar_svoboda_volkodav_kill_research_0">
-        <text>Я себя тоже люблю.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_1">
-        <text>Итак, где информация?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_11">
-        <text>Вот она. Держи, как договаривались.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_111">
-        <text>Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_12">
-        <text>Я трупы не шмонаю. Сам этим занимайся.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_121">
-        <text>Какие мы гордые. Ладно, будем считать, что ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
     <string id="bar_svoboda_volkodav_noquest_0">
         <text>Флешка?</text>
     </string>
@@ -1081,16 +1129,13 @@
         <text>Да есть такая штука.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_111">
-        <text>Давай обмен. Ты мне даешь флешку и спокойно отсюда топаешь на своих двоих. А второй вариант тебе не понравится.</text>
+        <text>Давай обмен. Ты мне флешку а я с тобой деньгами поделюсь и снаряжением. Идет?</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1111">
         <text>Договорились.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_11111">
-        <text>Какой умный сталкер, однако. Считай что сегодня ты заново родился.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_111111">
-        <text>Какой ты добрый. Я это запомню.</text>
+        <text>Значится так, я с собой вещей дорогих в поле не таскаю. В баре есть мой человек, осведомитель, он информацией торгует. Скажи, что ты от меня, он тебе насыпет барахлишка, может и информацией поделится.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1112">
         <text>Нет, мужик, эта информация мне тоже нужна. Не пойдет.</text>
@@ -1117,7 +1162,7 @@
         <text>Все почти так, как ты предсказывал. Вот информация, которая тебя интересует.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_111">
-        <text>Вот и ладненько. Меньше трупов - крепче и здоровее сон. Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
+        <text>Вот и ладненько. Меньше трупов - крепче и здоровее сон. Ты свою часть выполнил, держи награду. Свобода помнить тех, кто ей помогает.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_1111">
         <text>По рукам.</text>
