@@ -87,13 +87,12 @@ public:
 	void					Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, u16 ID, NET_Packet* pEPack);
 	
 	xrClientData*			SelectBestClientToMigrateTo		(CSE_Abstract* E, BOOL bForceAnother=FALSE);
+	void					SendConnectResult		(IClient* CL, u8 res, char* ResultStr);
 
-	
 	void					AttachNewClient			(IClient* CL);
 protected:
-	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal);
-	virtual bool			NeedToCheckClient	(IClient* CL)	{ return false; };
-	void					SendConnectResult		(IClient* CL, u8 res, char* ResultStr);
+	virtual void			new_client				(ClientID clientID, LPCSTR name, bool bLocal);
+	virtual bool			NeedToCheckClient		(IClient* CL)	{ return false; };
 	void					SendConnectionData		(IClient* CL);
 	void					OnChatMessage			(NET_Packet* P, xrClientData* CL);
 
