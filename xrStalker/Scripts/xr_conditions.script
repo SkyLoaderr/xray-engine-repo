@@ -198,6 +198,25 @@ function must_stay_online(actor,npc)
 	return true
 end
 ------------------------------------------------------------------------------------
-
+function bar_arena_actor_inside(actor,npc)
+	local t = db.zone_by_name["bar_arena_waiter"]
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return true
+		else
+			return false
+		end
+	end
+end
+function bar_arena_actor_outside(actor,npc)
+	local t = db.zone_by_name["bar_arena_waiter_out"]
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return true
+		else
+			return false
+		end
+	end
+end
 
 
