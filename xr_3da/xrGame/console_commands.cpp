@@ -1810,11 +1810,9 @@ void CCC_RegisterCommands()
 
 	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
 	CMD1(CCC_DebugFonts,		"debug_fonts");
+	CMD1(CCC_PostprocessTest,	"pp_test");
 #endif // DEBUG
 	
-
-	CMD1(CCC_PostprocessTest,	"pp_test");
-
 	// Physics
 	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
 	CMD1(CCC_PHIterations,		"ph_iterations"																					);
