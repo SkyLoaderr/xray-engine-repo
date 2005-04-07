@@ -67,7 +67,7 @@ DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
 class XRCORE_API CLocatorAPI  
 {
 	friend class FS_Path;
-private:
+public:
 	struct	file
 	{
 		LPCSTR					name;			// low-case name
@@ -77,6 +77,7 @@ private:
 		u32						size_compressed;// if (size_real==size_compressed) - uncompressed
         u32						modif;			// for editor
 	};
+private:
 	struct	file_pred: public 	std::binary_function<file&, file&, bool> 
 	{	
 		IC bool operator()	(const file& x, const file& y) const
@@ -182,10 +183,9 @@ public:
 	u64							auth_get			();
 	void						auth_runtime		(void*);
 
-    void						rescan_pathes	();
+	void						rescan_pathes		();
 
 	// editor functions
-	void						rescan_pathes		();
 	void						lock_rescan			();
 	void						unlock_rescan		();
 };
