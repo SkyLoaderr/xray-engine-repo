@@ -111,6 +111,7 @@ void CLevel::ClientSave	()
 	}
 }
 
+extern		 float		phTimefactor;
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
