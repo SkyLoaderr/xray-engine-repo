@@ -71,7 +71,6 @@ struct SHeliMovementState{
 	float							curLinearAcc;
 
 	Fvector							currP;
-	Fvector							currR;
 	float							currPathH;
 	float							currPathP;
 
@@ -85,6 +84,7 @@ struct SHeliMovementState{
 	void	Update						();
 	void	UpdateMovToPoint			();
 	void	UpdatePatrolPath			();
+	bool	AlreadyOnPoint				();
 	void	goByRoundPath				(Fvector center, float radius, bool clockwise);
 	float	GetDistanceToDestPosition	();
 	void	getPathAltitude				(Fvector& point, float base_altitude);

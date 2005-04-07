@@ -32,9 +32,9 @@ float SHeliMovementState::GetDistanceToDestPosition()
 
 void SHeliMovementState::UpdatePatrolPath()
 {
-	float dist = GetDistanceToDestPosition();
-	if( dist < onPointRangeDist ){
+	if( AlreadyOnPoint() ){
 
+		float dist = GetDistanceToDestPosition();
 		parent->callback(GameObject::eHelicopterOnPoint)(dist,currP, currPatrolVertex ? currPatrolVertex->vertex_id() : -1);
 		CPatrolPath::const_iterator b,e;
 		currPatrolPath->begin(currPatrolVertex,b,e);
@@ -47,17 +47,37 @@ void SHeliMovementState::UpdatePatrolPath()
 
 		}else{
 			type = eMovNone;
+			curLinearSpeed	= 0.0f;
+			curLinearAcc	= 0.0f;
 		}
 	}
 }
 
 void SHeliMovementState::UpdateMovToPoint()
 {
-	float dist = GetDistanceToDestPosition();
-	if(	dist < onPointRangeDist ){
+	if(	AlreadyOnPoint() ){
+		float dist = GetDistanceToDestPosition();
 		parent->callback(GameObject::eHelicopterOnPoint)(dist,currP, -1);
 		type = eMovNone;
+		curLinearSpeed	= 0.0f;
+		curLinearAcc	= 0.0f;
 	}
+}
+extern float STEP;
+bool SHeliMovementState::AlreadyOnPoint()
+{
+	float dist = GetDistanceToDestPosition();
+	if(dist<=0.1f)return true;
+
+	if(	dist < onPointRangeDist ){
+		Fvector P1 = currP;
+		Fvector dir;
+		dir.setHP(currPathH,0.0f);
+		P1.mad(dir, curLinearSpeed*STEP);
+		float new_dist = desiredPoint.distance_to(P1);
+		return (new_dist>dist);
+	}
+	return false;
 }
 
 void SHeliMovementState::getPathAltitude (Fvector& point, float base_altitude)

@@ -13,7 +13,7 @@
 #include "MainUI.h"
 #include "HudManager.h"
 //50fps fixed
-#define STEP 0.02f
+float STEP=0.02f;
 
 
 
@@ -257,7 +257,6 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 
 
 	m_movement.desiredPoint						= XFORM().c;
-	XFORM().getXYZ						(m_movement.currR);
 	float bbb;
 	XFORM().getHPB						(m_movement.currPathH, m_movement.currPathP, bbb);
 
@@ -316,39 +315,40 @@ float GetCurrAcc(float V0, float V1, float dist, float a0, float a1);
 
 void CHelicopter::MoveStep()
 {
-	if(m_movement.type == eMovNone) return;
-
-	float dist = m_movement.currP.distance_to(m_movement.desiredPoint);
-
 	Fvector dir, pathDir;
-	dir.sub(m_movement.desiredPoint,m_movement.currP);
-	dir.normalize_safe();
-	pathDir = dir;
-	float desired_H, desired_P;
-	dir.getHP(desired_H, desired_P);
-	
+	float desired_H = m_movement.currPathH;
+	float desired_P;
+	if(m_movement.type != eMovNone){
 
-	angle_lerp	(m_movement.currPathH, desired_H, m_movement.angularSpeedHeading, STEP);
-	angle_lerp	(m_movement.currPathP, desired_P, m_movement.angularSpeedPitch, STEP);
-	
-	dir.setHP(m_movement.currPathH, m_movement.currPathP);
+		float dist = m_movement.currP.distance_to(m_movement.desiredPoint);
 
-	if(angle_difference(m_movement.currPathH,desired_H)>PI_DIV_3)
-		m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
-	else
-		m_movement.curLinearAcc = GetCurrAcc(	m_movement.curLinearSpeed,
-												m_movement.speedInDestPoint,
-												dist,
-												m_movement.LinearAcc_fw,
-												-m_movement.LinearAcc_bk);
+		dir.sub(m_movement.desiredPoint,m_movement.currP);
+		dir.normalize_safe();
+		pathDir = dir;
+		dir.getHP(desired_H, desired_P);
+		
+
+		angle_lerp	(m_movement.currPathH, desired_H, m_movement.angularSpeedHeading, STEP);
+		angle_lerp	(m_movement.currPathP, desired_P, m_movement.angularSpeedPitch, STEP);
+		
+		dir.setHP(m_movement.currPathH, m_movement.currPathP);
+
+		if(angle_difference(m_movement.currPathH,desired_H)>PI_DIV_3)
+			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
+		else
+			m_movement.curLinearAcc = GetCurrAcc(	m_movement.curLinearSpeed,
+													m_movement.speedInDestPoint,
+													dist,
+													m_movement.LinearAcc_fw,
+													-m_movement.LinearAcc_bk);
 
 
-	float vp = m_movement.curLinearSpeed*STEP+(m_movement.curLinearAcc*STEP*STEP)/2.0f;
-	m_movement.currP.mad	(dir, vp);
-	m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
-	
-	clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
-
+		float vp = m_movement.curLinearSpeed*STEP+(m_movement.curLinearAcc*STEP*STEP)/2.0f;
+		m_movement.currP.mad	(dir, vp);
+		m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
+		
+		clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
+	}//if(m_movement.type != eMovNone)
 
 	if(	m_body.b_looking_at_point){
 		Fvector desired_dir;
@@ -405,7 +405,7 @@ void CHelicopter::UpdateCL()
 		MoveStep();
 		m_stepRemains-=STEP;
 	}
-/*
+
 	CGameFont* F		= UI()->Font()->pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
 	F->SetSizeI			(0.02f);
@@ -413,7 +413,7 @@ void CHelicopter::UpdateCL()
 	F->SetColor			(0xffffffff);
 	F->OutNext			("Heli: speed=%4.4f acc=%4.4f",m_movement.curLinearSpeed, m_movement.curLinearAcc);
 
-*/
+
 
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
