@@ -67,9 +67,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	dBodyID box_body=dGeomGetBody(Box);
 	if(box_body)	{
 		const dReal*velocity=dBodyGetLinearVel(box_body);
-		AABB.x+=dFabs(velocity[0])*0.02f;
-		AABB.y+=dFabs(velocity[1])*0.02f;
-		AABB.z+=dFabs(velocity[2])*0.02f;
+		AABB.x+=dFabs(velocity[0])*0.04f;
+		AABB.y+=dFabs(velocity[1])*0.04f;
+		AABB.z+=dFabs(velocity[2])*0.04f;
 	}
 
 	//
@@ -119,9 +119,9 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 	AABB.z =  REAL(0.5) * dFabs (R[9] * CylinderLength) + (_sqrt(R[8]*R[8]+R[10]*R[10]) * CylinderRadius);
 
 	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Cylinder));
-	AABB.x+=dFabs(velocity[0])*0.01f;
-	AABB.y+=dFabs(velocity[1])*0.01f;
-	AABB.z+=dFabs(velocity[2])*0.01f;
+	AABB.x+=dFabs(velocity[0])*0.04f;
+	AABB.y+=dFabs(velocity[1])*0.04f;
+	AABB.z+=dFabs(velocity[2])*0.04f;
 
 
 	//
@@ -192,9 +192,9 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 						 AABB.z=SphereRadius;
 
 						 const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Sphere));
-						 AABB.x+=dFabs(velocity[0])*0.02f;
-						 AABB.y+=dFabs(velocity[1])*0.02f;
-						 AABB.z+=dFabs(velocity[2])*0.02f;
+						 AABB.x+=dFabs(velocity[0])*0.04f;
+						 AABB.y+=dFabs(velocity[1])*0.04f;
+						 AABB.z+=dFabs(velocity[2])*0.04f;
 
 						 // Retrieve data 
 

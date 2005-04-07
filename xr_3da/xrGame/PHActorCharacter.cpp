@@ -143,7 +143,13 @@ void SPHCharacterRestrictor::SetMaterial(u16 material)
 }
 void CPHActorCharacter::SetAcceleration(Fvector accel)
 {
-	inherited::SetAcceleration(accel);
+	Fvector cur_a,input_a;float cur_mug,input_mug;
+	cur_a.set(m_acceleration);cur_mug=m_acceleration.magnitude();
+	if(!fis_zero(cur_mug))cur_a.mul(1.f/cur_mug);
+	input_a.set(accel);input_mug=accel.magnitude();
+	if(!fis_zero(input_mug))input_a.mul(1.f/input_mug);
+	if(!cur_a.similar(input_a,0.05f)||!fis_zero(input_mug-cur_mug,0.5f))
+						inherited::SetAcceleration(accel);
 }
 
 void CPHActorCharacter::Jump(const Fvector& accel)

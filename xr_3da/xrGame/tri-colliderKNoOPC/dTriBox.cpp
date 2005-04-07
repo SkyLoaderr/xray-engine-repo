@@ -667,7 +667,7 @@ case 2:
 */
 }
 
-
+if(dDOT(norm,triAx)>0.f)	return 0;
 
 
 //if(0!=code){

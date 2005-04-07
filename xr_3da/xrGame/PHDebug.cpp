@@ -15,6 +15,161 @@ CONTACT_VECTOR Contacts1;
 
 PHOBJ_DBG_V	dbg_draw_objects0;
 PHOBJ_DBG_V	dbg_draw_objects1;
+
+PHABS_DBG_V	dbg_draw_abstruct0;
+PHABS_DBG_V	dbg_draw_abstruct1;
+
+
+struct SPHDBGDrawTri :public SPHDBGDrawAbsract
+{
+	Fvector v[3];
+	u32		c;
+	SPHDBGDrawTri(CDB::RESULT* T,u32 ac)
+	{
+		v[0].set(T->verts[0]);
+		v[1].set(T->verts[1]);
+		v[2].set(T->verts[2]);
+		c=ac;
+	}
+	SPHDBGDrawTri(CDB::TRI* T,const Fvector*	V_array,u32 ac)
+	{
+		
+		v[0].set(V_array[T->verts[0]]);
+		v[1].set(V_array[T->verts[1]]);
+		v[2].set(V_array[T->verts[2]]);
+		c=ac;
+	}
+	virtual void render()
+	{
+		RCache.dbg_DrawLINE(Fidentity,v[0],v[1],c);
+		RCache.dbg_DrawLINE(Fidentity,v[1],v[2],c);
+		RCache.dbg_DrawLINE(Fidentity,v[2],v[0],c);
+	}
+};
+
+void DBG_DrawTri(CDB::RESULT* T,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawTri>(T,c));
+}
+void DBG_DrawTri(CDB::TRI* T,const Fvector* V_verts,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawTri>(T,V_verts,c));
+}
+
+
+struct SPHDBGDrawLine : public SPHDBGDrawAbsract
+{
+	Fvector p[2];u32 c;
+	SPHDBGDrawLine(const Fvector& p0,const Fvector& p1,u32 ca)
+	{
+		p[0].set(p0);p[1].set(p1);c=ca;
+	}
+	virtual void render()
+	{
+		RCache.dbg_DrawLINE(Fidentity,p[0],p[1],c);
+	}
+};
+
+void DBG_DrawLine (const Fvector& p0,const Fvector& p1,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawLine>(p0,p1,c));
+}
+struct SPHDBGDrawAABB :public SPHDBGDrawAbsract
+{
+	Fvector p[2];u32 c;	
+	SPHDBGDrawAABB(const Fvector& center,const Fvector& AABB,u32 ac)
+	{
+		p[0].set(center);p[1].set(AABB);
+		c=ac;
+	}
+	virtual void render()
+	{
+		RCache.dbg_DrawAABB			(p[0],p[1].x,p[1].y,p[1].z,c);
+	}
+};
+
+void DBG_DrawAABB(const Fvector& center,const Fvector& AABB,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawAABB>(center,AABB,c));
+}
+
+struct SPHDBGDrawPoint :public SPHDBGDrawAbsract
+{
+	Fvector p;float size;u32 c;
+	SPHDBGDrawPoint(const Fvector ap,float s,u32 ac)
+	{
+		p.set(ap),size=s;c=ac;
+	}
+	virtual void render()
+	{
+		RCache.dbg_DrawAABB(p,size,size,size,c);
+	}
+};
+void DBG_DrawPoint(const Fvector& p,float size,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawPoint>(p,size,c));
+}
+void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a)
+{
+
+	if(draw_frame)
+	{
+		dbg_draw_abstruct0.push_back(a);
+	}else
+	{
+		dbg_draw_abstruct1.push_back(a);
+	}
+}
+
+void DBG_PHAbstruactStartFrame(bool dr_frame)
+{
+	PHABS_DBG_I i,e;
+	if(dr_frame)
+	{
+		i=dbg_draw_abstruct0.begin();
+		e=dbg_draw_abstruct0.end();
+	}else
+	{
+		i=dbg_draw_abstruct1.begin();
+		e=dbg_draw_abstruct1.end();
+	}
+	for(;e!=i;++i)
+	{
+		xr_delete(*i);
+	}
+	if(dr_frame)
+	{
+		dbg_draw_abstruct0.clear();
+	}
+	else
+	{
+		dbg_draw_abstruct1.clear();
+	}
+}
+void DBG_PHAbstructRender()
+{
+	PHABS_DBG_I i,e;
+	if(!draw_frame)
+	{
+		i=dbg_draw_abstruct0.begin();
+		e=dbg_draw_abstruct0.end();
+	}else
+	{
+		i=dbg_draw_abstruct1.begin();
+		e=dbg_draw_abstruct1.end();
+	}
+	for(;e!=i;++i)
+	{
+		(*i)->render();
+	}
+}
+
+void DBG_PHAbstructClear()
+{
+	DBG_PHAbstruactStartFrame(true);
+	DBG_PHAbstruactStartFrame(false);
+}
+
 void DBG_DrawPHObject(CPHObject* obj)
 {
 	if(ph_dbg_draw_mask.test(phDbgDrawEnabledAABBS))
@@ -57,19 +212,36 @@ void DBG_DrawContact(dContact& c)
 void DBG_DrawFrameStart()
 {
 	
-#ifdef DRAW_CONTACTS
-	if(!draw_frame)
+	if(draw_frame)
 	{
+#ifdef DRAW_CONTACTS
 		Contacts0.clear();
+#endif
 		dbg_draw_objects0.clear();
+		dbg_draw_abstruct0.clear();
 	}
 	else
 	{
+#ifdef DRAW_CONTACTS
 		Contacts1.clear();
-		dbg_draw_objects1.clear();
-	}
 #endif
-	 draw_frame=!draw_frame;
+		dbg_draw_objects1.clear();
+		dbg_draw_abstruct1.clear();
+	}
+	DBG_PHAbstruactStartFrame(draw_frame);
+
+}
+
+
+void PH_DBG_Clear()
+{
+	DBG_PHAbstructClear();
+	dbg_draw_objects0.clear();
+	dbg_draw_objects1.clear();
+#ifdef DRAW_CONTACTS
+	Contacts0.clear();
+	Contacts1.clear();
+#endif
 }
 
 void PH_DBG_Render()
@@ -92,6 +264,9 @@ void PH_DBG_Render()
 			RCache.dbg_DrawAABB(ds.AABB_center,ds.AABB.x,ds.AABB.y,ds.AABB.z,D3DCOLOR_XRGB(255,0,0));
 		}
 	}
+
+	DBG_PHAbstructRender();
+
 #ifdef DRAW_CONTACTS
 
 	if(ph_dbg_draw_mask.test(phDbgDrawContacts))
@@ -121,9 +296,7 @@ void PH_DBG_Render()
 			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
-
-	DBG_DrawFrameStart();
-
 #endif
+		 draw_frame=!draw_frame;
 }
 #endif

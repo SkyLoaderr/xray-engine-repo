@@ -25,6 +25,7 @@ void CPHMesh ::Create(dSpaceID space, dWorldID world){
 void CPHMesh ::Destroy(){
 	dGeomDestroy(Geom);
 	dTriListClass=-1;
+
 }
 
 
@@ -109,9 +110,8 @@ void CPHWorld::Destroy(){
 #ifdef PH_PLAIN
 	dGeomDestroy(plane);
 #endif
-#ifdef DRAW_CONTACTS
-	Contacts0.clear();
-	Contacts1.clear();
+#ifdef DEBUG
+	PH_DBG_Clear();
 #endif
 	dGeomDestroy(m_motion_ray);
 	dJointGroupEmpty(ContactGroup);
@@ -145,6 +145,10 @@ void CPHWorld::OnFrame()
 static u32 start_time=0;
 void CPHWorld::Step()
 {
+
+#ifdef DEBUG 
+	DBG_DrawFrameStart();
+#endif
 
 	PH_OBJECT_I			i_object;
 	PH_UPDATE_OBJECT_I	i_update_object;
