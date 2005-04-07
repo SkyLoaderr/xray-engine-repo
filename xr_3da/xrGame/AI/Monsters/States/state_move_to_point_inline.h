@@ -21,6 +21,7 @@ void CStateMonsterMoveToPointAbstract::execute()
 
 	object->movement().set_target_point			(data.point,data.vertex);
 	object->movement().set_generic_parameters	();
+	object->movement().set_distance_to_end		(data.completion_dist);
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -65,7 +66,7 @@ void CStateMonsterMoveToPointExAbstract::execute()
 
 	object->movement().set_target_point			(data.point,data.vertex);
 	object->movement().set_rebuild_time			(data.time_to_rebuild);
-	object->movement().set_distance_to_end		(2.5f);
+	object->movement().set_distance_to_end		(data.completion_dist);
 	object->movement().set_use_covers			();
 	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 

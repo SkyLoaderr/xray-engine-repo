@@ -22,6 +22,7 @@ enum EMonsterState {
 	eStateEat_Eat					= eStateEat | 4,
 	eStateEat_WalkAway				= eStateEat | 5,
 	eStateEat_Rest					= eStateEat | 6,
+	eStateEat_Drag					= eStateEat | 7,
 
 	// -------------------------------------------------------------
 

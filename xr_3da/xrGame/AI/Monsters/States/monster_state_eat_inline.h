@@ -5,6 +5,7 @@
 #include "state_hide_from_point.h"
 #include "state_custom_action.h"
 #include "monster_state_eat_eat.h"
+#include "monster_state_eat_drag.h"
 #include "../../../PhysicsShell.h"
 #include "../../../PHMovementControl.h"
 
@@ -23,6 +24,7 @@ CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj) : inherited(obj)
 	add_state	(eStateEat_Eat,					xr_new<CStateMonsterEating<_Object> >(obj));
 	add_state	(eStateEat_WalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
 	add_state	(eStateEat_Rest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_Drag,				xr_new<CStateMonsterDrag<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -34,6 +36,7 @@ CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj, state_ptr state_eat) : 
 	add_state	(eStateEat_Eat,					state_eat);
 	add_state	(eStateEat_WalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
 	add_state	(eStateEat_Rest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_Drag,				xr_new<CStateMonsterDrag<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -51,12 +54,19 @@ void CStateMonsterEatAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::reselect_state()
 {
-	if (prev_substate == u32(-1)) {
-		select_state(eStateEat_CorpseApproachRun);
-		return;
+	if (prev_substate == u32(-1)) {select_state(eStateEat_CorpseApproachRun);return;}
+	if (prev_substate == eStateEat_CorpseApproachRun) { select_state(eStateEat_CorpseApproachWalk); return; }
+	if (prev_substate == eStateEat_CorpseApproachWalk) { select_state(eStateEat_CheckCorpse); return; }
+	if (prev_substate == eStateEat_CheckCorpse) { 
+		if (object->ability_can_drag()) select_state(eStateEat_Drag);
+		else							select_state(eStateEat_Eat);
+		return; 
 	}
 	
-	(prev_substate != eStateEat_Rest) ?  select_state(prev_substate+1) : select_state(eStateEat_Rest);
+	if (prev_substate == eStateEat_Drag)		{ select_state(eStateEat_Eat);		return; }
+	if (prev_substate == eStateEat_Eat)			{ select_state(eStateEat_WalkAway); return; }
+	if (prev_substate == eStateEat_WalkAway)	{ select_state(eStateEat_Rest);		return; }
+	if (prev_substate == eStateEat_Rest)		{ select_state(eStateEat_Rest);		return; }
 }
 
 TEMPLATE_SPECIALIZATION

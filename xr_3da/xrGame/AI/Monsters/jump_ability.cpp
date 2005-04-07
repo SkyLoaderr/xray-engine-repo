@@ -92,7 +92,7 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_enable_bounce		= true;
 
 	// lock control blocks
-	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath);
+	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
 }
 
 
@@ -166,10 +166,11 @@ void CJumpingAbility::stop()
 {
 	m_active = false;
 	if (m_object->MotionMan.TA_IsActive())	m_object->MotionMan.TA_Deactivate();
-	m_object->movement().stop_now();
+	m_object->movement().stop_now			();
+	m_object->movement().initialize_movement();
 
 	// unlock control blocks
-	m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath);
+	m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
 }
 
 void CJumpingAbility::pointbreak()
@@ -285,13 +286,8 @@ bool CJumpingAbility::can_jump(CObject *target)
 	if ((dist < m_min_distance) || (dist > m_max_distance)) return false;
 	
 	// получить вектор направления и его мир угол
-	Fvector		dir;
-	float		dir_yaw, dir_pitch;
-
-	dir.sub		(target_position, source_position);
-	dir.getHP	(dir_yaw, dir_pitch);
-	dir_yaw		*= -1;
-	dir_yaw		= angle_normalize(dir_yaw);
+	float		dir_yaw = Fvector().sub(target_position, source_position).getH();
+	dir_yaw		= angle_normalize(-dir_yaw);
 
 	// проверка на angle и на dist
 	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
@@ -302,13 +298,8 @@ bool CJumpingAbility::can_jump(CObject *target)
 
 Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 {
-	if (obj->ps_Size() < 2) return pos;
-
-	CObject::SavedPosition	pos0 = obj->ps_Element	(obj->ps_Size() - 2);
-	CObject::SavedPosition	pos1 = obj->ps_Element	(obj->ps_Size() - 1);
-
-	float velocity = pos1.vPosition.distance_to(pos0.vPosition) / (float(pos1.dwTime)/1000.f - float(pos0.dwTime)/1000.f);
-	float jump_time = m_object->m_PhysicMovementControl->JumpMinVelTime(pos);
+	float velocity = m_object->movement_control()->GetVelocityActual();
+	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
 	float prediction_dist = jump_time * velocity;
 
 	Fvector prediction_pos;

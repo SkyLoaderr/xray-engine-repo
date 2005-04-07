@@ -204,12 +204,6 @@ void CMotionManager::CheckReplacedAnim()
 		}
 }
 
-bool CMotionManager::IsMoving()
-{
-	return ((ACT_WALK_FWD == m_tAction) || (ACT_WALK_BKWD == m_tAction) || (ACT_RUN == m_tAction) || 
-		(ACT_DRAG == m_tAction) || (ACT_STEAL == m_tAction));
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Работа с последовательностями
 void CMotionManager::Seq_Init()

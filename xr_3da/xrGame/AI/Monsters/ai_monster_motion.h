@@ -148,8 +148,6 @@ private:
 	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);
 
-	bool		IsMoving				();
-
 	void		CheckReplacedAnim		();
 
 	CMotionDef	*get_motion_def			(ANIM_ITEM_MAP_IT &it, u32 index);

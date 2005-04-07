@@ -142,6 +142,7 @@ void CBaseMonster::debug_fsm()
 		case eStateEat_Eat:								sprintf(st,"Eat :: Eating");				break;
 		case eStateEat_WalkAway:						sprintf(st,"Eat :: Walk Away");				break;
 		case eStateEat_Rest:							sprintf(st,"Eat :: Rest After Meal");		break;
+		case eStateEat_Drag:							sprintf(st,"Eat :: Drag");					break;
 		case eStateAttack_Run:							sprintf(st,"Attack :: Run");				break;
 		case eStateAttack_Melee:						sprintf(st,"Attack :: Melee");				break;
 		case eStateAttack_RunAttack:					sprintf(st,"Attack :: Run Attack");			break;
