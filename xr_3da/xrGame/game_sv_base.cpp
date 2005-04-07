@@ -583,8 +583,8 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 		}break	;
 	case GAME_EVENT_CREATE_CLIENT:
 		{
-			IClient* P = m_server->client_Create();
-			VERIFY(P);
+			IClient* P					= m_server->client_Create();
+			VERIFY						(P);
 			P->ID						= sender;
 			//tNetPacket.r_clientID(P->ID);
 			tNetPacket.r_stringZ		(P->Name);
@@ -592,6 +592,14 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			P->flags.bConnected			= TRUE;
 			m_server->AttachNewClient	(P);
 		}break	;
+	case GAME_EVENT_PLAYER_AUTH:
+		{
+			xrClientData*	CL			=	ID_to_client	(sender);
+			u64 _our		= FS.auth_get	();
+			u64 _him		= P.r_u64		();
+			if (_our != _him)				SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
+			else							SendConnectResult	(CL, 1, "Everything OK");
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 	};

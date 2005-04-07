@@ -322,16 +322,7 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 		}break;
 	case M_CL_AUTH:
 		{
-			xrClientData*	CL	= 0;
-			while (0==CL)	{
-				// block this thread until we update clients in another thread
-				Sleep					(1);
-				CL	= ID_to_client		(sender);
-			};
-			u64 _our		= FS.auth_get	();
-			u64 _him		= P.r_u64		();
-			if (_our != _him)				SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
-			else							SendConnectResult	(CL, 1, "Everything OK");
+			game->AddDelayedEvent		(P,GAME_EVENT_PLAYER_AUTH, 0, sender);
 		}break;
 	}
 
