@@ -76,7 +76,13 @@ snd_files = {
 	val_ambush_come_here           = [[characters_voice\human_01\scenario\val\ambush\ambush_]],
 	val_prisoner_captive_help_me   = [[characters_voice\human_01\scenario\val\prisoner\help_]],
 	val_prisoner_captive_come_here = [[characters_voice\human_01\scenario\val\prisoner\come_here_]],
-	val_suicide_before_death       = [[characters_voice\human_01\scenario\val\suicide\die_1]],
+	val_suicide_before_death       = [[characters_voice\human_01\scenario\val\suicide\die_]],
+	val_sacrifice_help_1           = [[characters_voice\human_01\scenario\val\sacrifice\help_1]],
+	val_sacrifice_help_2           = [[characters_voice\human_01\scenario\val\sacrifice\help_2]],
+	val_sacrifice_help_3           = [[characters_voice\human_01\scenario\val\sacrifice\help_3]],
+	val_sacrifice_threat_1         = [[characters_voice\human_01\scenario\val\sacrifice\threat_1]],
+	val_sacrifice_threat_2         = [[characters_voice\human_01\scenario\val\sacrifice\threat_2]],
+	val_sacrifice_bs_eat_1         = [[characters_voice\human_01\scenario\val\sacrifice\bs_eat_1]],
 	
 	bar_dolg_base_guard_backoff	   = [[characters_voice\human_01\scenario\guard_novice_camp\guard_novice_camp_stop_tutorial_1]],
 	bar_dolg_base_guard_no_talk	   = [[characters_voice\human_01\talk\rejection\stalker\rejection_2]]
@@ -297,6 +303,18 @@ function load_sound(obj)
 	theme["val_prisoner_captive_come_here"].types["stalker"] = load_theme("val_prisoner_captive_come_here")
 	theme["val_suicide_before_death"] = { exec = npc_class, types = {}}
 	theme["val_suicide_before_death"].types["stalker"] = load_theme("val_suicide_before_death")
+	theme["val_sacrifice_help_1"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_help_1"].types["stalker"] = load_theme(nil, "val_sacrifice_help_1")
+	theme["val_sacrifice_help_2"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_help_2"].types["stalker"] = load_theme(nil, "val_sacrifice_help_2")
+	theme["val_sacrifice_help_3"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_help_3"].types["stalker"] = load_theme(nil, "val_sacrifice_help_3")
+	theme["val_sacrifice_threat_1"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_threat_1"].types["stalker"] = load_theme(nil, "val_sacrifice_threat_1")
+	theme["val_sacrifice_threat_2"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_threat_2"].types["stalker"] = load_theme(nil, "val_sacrifice_threat_2")
+	theme["val_sacrifice_bs_eat"] = { exec = npc_class, types = {}}
+	theme["val_sacrifice_bs_eat"].types["stalker"] = load_theme(nil, "val_sacrifice_bs_eat")
 
 	-- Bar Rostok Duty Guards
 	theme["bar_dolg_base_guard_backoff"] = { exec = npc_class, types = {}}

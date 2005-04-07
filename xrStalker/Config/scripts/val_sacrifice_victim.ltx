@@ -10,7 +10,8 @@ on_info = {+val_sacrifice_near_pit} %+val_sacrifice_victim_killed =val_sacrifice
 path_walk = val_sacrifice_victim_walk
 path_look = val_sacrifice_victim_look
 on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
-on_signal = pit | remark@near_pit %+val_sacrifice_near_pit =val_sacrifice_force_guards_kill_victim%
+on_signal = pit | remark@near_pit %+val_sacrifice_near_pit%
+; %=val_sacrifice_force_guards_kill_victim%
 combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
 
@@ -18,10 +19,33 @@ combat_ignore_keep_when_attacked = true
 no_move = true
 no_rotate = true
 anim = caution
-;snd = help zzzzzzzzzzzzzzzzz FIXME
+snd = val_sacrifice_help_1
 combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
 on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
+on_info2 = {+val_sacrifice_phrase_threat_1_done} remark@near_pit2
+on_signal = sound_end | %+val_sacrifice_phrase_help_1_done%
+
+[remark@near_pit2]
+no_move = true
+no_rotate = true
+anim = caution
+snd = val_sacrifice_help_2
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
+on_info2 = {+val_sacrifice_phrase_threat_2_done} remark@near_pit3
+on_signal = sound_end | %+val_sacrifice_phrase_help_2_done%
+
+[remark@near_pit3]
+no_move = true
+no_rotate = true
+anim = caution
+snd = val_sacrifice_help_3
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
+on_signal = sound_end | %+val_sacrifice_phrase_help_3_done%
 
 [walker@flee]
 path_walk = val_sacrifice_victim_flee_walk
