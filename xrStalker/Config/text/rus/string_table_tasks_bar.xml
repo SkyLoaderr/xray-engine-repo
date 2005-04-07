@@ -51,13 +51,7 @@
 		<text>Проверка для вступления в Долг</text>
 	</string>
 	<string id="bar_dolg_bring_document">
-		<text>Принести архивные документы капитану Иванцову</text>
-	</string>
-	<string id="bar_dolg_find_document">
-		<text>Взять в ангаре архивные документы</text>
-	</string>
-	<string id="bar_dolg_return_document">
-		<text>Принести документы капитану Иванцову</text>
+		<text>Найти в ангаре архивные документы и принести их капитану Иванцову</text>
 	</string>
 
 	<string id="bar_dolg_bring_rg6">
