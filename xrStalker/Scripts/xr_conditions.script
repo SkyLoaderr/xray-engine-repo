@@ -139,7 +139,7 @@ function val_actor_in_cage(actor, npc)
 end
 
 function val_actor_has_key_to_underground(actor, npc)
-	if xr_conditions_impl.actor_has_object(actor, "bandit_outfit") then
+	if xr_conditions_impl.actor_has_object(actor, "val_key_to_underground") then
 		printf("_bp: xr_conditions: val_actor_has_key_to_underground: true")
 		return true
 	end
