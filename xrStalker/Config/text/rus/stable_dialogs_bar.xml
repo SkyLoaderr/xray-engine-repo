@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+	<string id="bar_svoboda_volkodav_kill_research_0">
+        <text>Я себя тоже люблю.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_1">
+        <text>Итак, где информация?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_11">
+        <text>Вот она. Держи, как договаривались.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_111">
+        <text>Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_12">
+        <text>Я трупы не шмонаю. Сам этим занимайся.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_121">
+        <text>Какие мы гордые. Ладно, будем считать, что ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
+    </string>
+
     <string id="bar_arena_manager_game_0">
         <text>Я хочу сразиться. Кто у тебя на этот раз?</text>
     </string>
@@ -1032,7 +1051,8 @@
     <string id="bar_svoboda_dialog_0">
         <text>Подойди к Волкодаву, нашему старшему, у него к тебе дело есть.</text>
     </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_0">
+    
+<string id="bar_svoboda_volkodav_give_quest_dp_0">
         <text>Почему я должен вам помогать?</text>
     </string>
     <string id="bar_svoboda_volkodav_give_quest_dp_1">
@@ -1062,7 +1082,8 @@
     <string id="bar_svoboda_volkodav_give_quest_dp_1111121">
         <text>Тогда не путайся под ногами, скоро здесь будет жарко.</text>
     </string>
-    <string id="bar_svoboda_volkodav_info_dp_0">
+    
+<string id="bar_svoboda_volkodav_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1">
@@ -1119,7 +1140,9 @@
     <string id="bar_svoboda_volkodav_info_dp_14">
         <text>Я передумал.</text>
     </string>
-    <string id="bar_svoboda_volkodav_noquest_0">
+
+    
+<string id="bar_svoboda_volkodav_noquest_0">
         <text>Флешка?</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1">
@@ -1129,13 +1152,16 @@
         <text>Да есть такая штука.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_111">
-        <text>Давай обмен. Ты мне флешку а я с тобой деньгами поделюсь и снаряжением. Идет?</text>
+        <text>Давай обмен. Ты мне даешь флешку и спокойно отсюда топаешь на своих двоих. А второй вариант тебе не понравится.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1111">
         <text>Договорились.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_11111">
-        <text>Значится так, я с собой вещей дорогих в поле не таскаю. В баре есть мой человек, осведомитель, он информацией торгует. Скажи, что ты от меня, он тебе насыпет барахлишка, может и информацией поделится.</text>
+        <text>Какой умный сталкер, однако. Считай что сегодня ты заново родился.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_111111">
+        <text>Какой ты добрый. Я это запомню.</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1112">
         <text>Нет, мужик, эта информация мне тоже нужна. Не пойдет.</text>
@@ -1152,7 +1178,8 @@
     <string id="bar_svoboda_volkodav_noquest_121">
         <text>Информация, которая интересует только нас. Тебя она не касается. В общем, не смею тебя задерживать. Счастливо.</text>
     </string>
-    <string id="bar_svoboda_volkodav_request_dp_0">
+
+<string id="bar_svoboda_volkodav_request_dp_0">
         <text>По поводу задания.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_1">
@@ -1162,7 +1189,7 @@
         <text>Все почти так, как ты предсказывал. Вот информация, которая тебя интересует.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_111">
-        <text>Вот и ладненько. Меньше трупов - крепче и здоровее сон. Ты свою часть выполнил, держи награду. Свобода помнить тех, кто ей помогает.</text>
+        <text>Вот и ладненько. Меньше трупов - крепче и здоровее сон. Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_1111">
         <text>По рукам.</text>
@@ -1179,7 +1206,8 @@
     <string id="bar_svoboda_volkodav_request_dp_131">
         <text>Ну ладно. Мы разгребем эту ситуацию, но ты упустил свой шанс, добиться благосклонности Свободы</text>
     </string>
-    <string id="bar_svoboda_volkodav_start_11">
+
+<string id="bar_svoboda_volkodav_start_11">
         <text>Здоров, одиночка. Я - Волкодав, вожак этих псов. И мне кажется, ты можешь нам помочь.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_21">
@@ -1194,6 +1222,7 @@
     <string id="bar_svoboda_volkodav_start_51">
         <text>Здорово, мужик. Нам тут одна штука нужна, небольшая такая флешка. Ты случайно ее не находил?</text>
     </string>
+
     <string id="barman_dialog_0">
         <text>default text</text>
     </string>
