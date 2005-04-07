@@ -9,7 +9,7 @@ news = {
 }
 
 
-function send_news(actor, news_id, timeout)
+function send_news(actor, news_id, timeout, showtime)
 	if db.actor == nil or news_id == nil then return false end
 	
 	if timeout == nil then timeout = 0 end
@@ -27,10 +27,11 @@ function send_news(actor, news_id, timeout)
 		snd_obj:play(db.actor, timeout, sound_object.s2d)
 	end
 	db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
-	db.actor:set_news_show_time(news_id, 5000)
+	if showtime == nil then showtime = 5000 end
+	db.actor:set_news_show_time(news_id, showtime)
 end
 
-function send_tip(actor, news_id, timeout, sender)
+function send_tip(actor, news_id, timeout, sender, showtime)
 	if db.actor == nil or news_id == nil then return false end
 	
 	if timeout == nil then timeout = 0 end
@@ -67,8 +68,9 @@ function send_tip(actor, news_id, timeout, sender)
 			y = 150
 		end	
 	end
-	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)	
-	db.actor:set_news_show_time(news_id, 5000)	
+	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)
+	if showtime == nil then showtime = 5000 end
+	db.actor:set_news_show_time(news_id, showtime)	
 end
 
 function send_help(actor)
