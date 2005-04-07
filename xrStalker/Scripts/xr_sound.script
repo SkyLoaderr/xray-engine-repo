@@ -38,7 +38,7 @@ function set_sound(npc, sound, now)
 	then
 		printf("*SND* change SND to [%s]", utils.to_str(sound))
 		-- Туточки надобно распарсить имена тем в их id
-		if sound == nil then sound = "weather, state" end
+		if sound == nil then sound = "" end
 		db.sound[npc:id()].theme = sound
 		db.sound[npc:id()].snd = parse_names(sound)
 		if db.sound[npc:id()].last_snd == nil then
