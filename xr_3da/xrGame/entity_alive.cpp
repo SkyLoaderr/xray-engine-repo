@@ -303,6 +303,10 @@ void CEntityAlive::Die	(CObject* who)
 	u_EventGen		(P,GE_ASSIGN_KILLER,ID());
 	P.w_u16			(u16(who->ID()));
 	u_EventSend		(P);
+
+	// disable react to sound
+	ISpatial* self	= smart_cast<ISpatial*> (this);
+	if (self)		self->spatial.type &=~STYPE_REACTTOSOUND;
 }
 
 //вывзывает при подсчете хита
