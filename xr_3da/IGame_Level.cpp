@@ -19,6 +19,7 @@ IGame_Level::IGame_Level	()
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	pCurrentViewEntity			= NULL;
+	pHUD						= NULL;
 }
 
 IGame_Level::~IGame_Level	()
