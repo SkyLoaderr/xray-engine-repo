@@ -23,12 +23,12 @@
 struct CHitObjectPredicate {
 	const CObject *m_object;
 
-				CHitObjectPredicate	(const CObject *object) :
-					m_object		(object)
+				CHitObjectPredicate			(const CObject *object) :
+					m_object				(object)
 	{
 	}
 
-	bool		operator()			(const MemorySpace::CHitObject &hit_object) const
+	bool		operator()					(const MemorySpace::CHitObject &hit_object) const
 	{
 		if (!m_object)
 			return			(!hit_object.m_object);
@@ -42,14 +42,16 @@ CHitMemoryManager::~CHitMemoryManager		()
 {
 }
 
-bool CHitMemoryManager::hit				(const CEntityAlive *object) const
+const CHitObject *CHitMemoryManager::hit					(const CEntityAlive *object) const
 {
 	VERIFY					(m_hits);
 	HITS::const_iterator	I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
-	return					(m_hits->end() != I);
+	if (m_hits->end() != I)
+		return				(&*I);
+	return					(0);
 }
 
-void CHitMemoryManager::add	(const CEntityAlive *entity_alive)
+void CHitMemoryManager::add					(const CEntityAlive *entity_alive)
 {
 	add						(0,Fvector().set(0,0,1),entity_alive,0);
 }
@@ -69,7 +71,7 @@ void CHitMemoryManager::reload				(LPCSTR section)
 	m_max_hit_count			= READ_IF_EXISTS(pSettings,r_s32,section,"DynamicHitCount",1);
 }
 
-void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
+void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
 	VERIFY						(m_hits);
 	if (!object().g_Alive()) {
@@ -88,18 +90,18 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 		element
 	);
 
-	Fvector							direction;
+	Fvector						direction;
 	m_object->XFORM().transform_dir	(direction,vLocalDir);
 
 	const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>(who);
 	if (!entity_alive || (m_object->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
 
-	HITS::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(who));
+	HITS::iterator				J = std::find(m_hits->begin(),m_hits->end(),object_id(who));
 	if (m_hits->end() == J) {
-		CHitObject				hit_object;
+		CHitObject						hit_object;
 
-		hit_object.fill			(entity_alive,m_object,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
+		hit_object.fill					(entity_alive,m_object,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		hit_object.m_first_level_time	= Device.dwTimeGlobal;
 		hit_object.m_first_game_time	= Level().GetGameTime();
 		hit_object.m_amount				= amount;
@@ -118,7 +120,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 	}
 }
 
-void CHitMemoryManager::add(const CHitObject &hit_object)
+void CHitMemoryManager::add					(const CHitObject &hit_object)
 {
 	VERIFY						(m_hits);
 	if (!object().g_Alive()) {

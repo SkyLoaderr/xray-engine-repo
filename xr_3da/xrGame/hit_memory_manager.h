@@ -44,10 +44,10 @@ public:
 public:
 	IC		const HITS		&objects			() const;
 	IC		const CHitObject*hit				() const;
+			const CHitObject*hit				(const CEntityAlive *object) const;
 	IC		void			set_squad_objects	(HITS *squad_objects);
 
 public:
-			bool			hit					(const CEntityAlive *object) const;
 			void			enable				(const CObject *object, bool enable);
 			CCustomMonster	&object				() const;
 };
