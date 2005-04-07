@@ -31,9 +31,14 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (!object().is_relation_enemy(data->object().memory().enemy().selected()))
 		return;
 
+	if (!object().g_Alive())
+		return;
+
 //	Msg			("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());
 
 	const MemorySpace::CHitObject	*m = data->object().memory().hit().hit(data->object().memory().enemy().selected());
+	if (!m)
+		return;
 	MemorySpace::CHitObject			hit_object = *m;
 	hit_object.m_squad_mask.assign	(m_object->agent_manager().member().mask(m_object));
 
