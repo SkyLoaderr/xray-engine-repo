@@ -183,9 +183,8 @@ public:
 	u64							auth_get			();
 	void						auth_runtime		(void*);
 
-	void						rescan_pathes		();
-
 	// editor functions
+	void						rescan_pathes		();
 	void						lock_rescan			();
 	void						unlock_rescan		();
 };
