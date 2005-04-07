@@ -594,9 +594,9 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 		}break	;
 	case GAME_EVENT_PLAYER_AUTH:
 		{
-			xrClientData*	CL			=	ID_to_client	(sender);
-			u64 _our		= FS.auth_get	();
-			u64 _him		= P.r_u64		();
+			IClient*	CL	=	m_server->ID_to_client	(sender);
+			u64 _our		=	FS.auth_get	();
+			u64 _him		=	P.r_u64		();
 			if (_our != _him)				SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
 			else							SendConnectResult	(CL, 1, "Everything OK");
 		}break;
