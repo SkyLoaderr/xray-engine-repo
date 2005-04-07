@@ -207,12 +207,43 @@
 	
 	<!-- ARENA -->
 	<info_portion id="bar_arena_door_1_open"></info_portion>
-	
 	<info_portion id="bar_arena_door_2_open"></info_portion>
-
 	<info_portion id="bar_arena_door_3_open"></info_portion>
 	
 	
+	<info_portion id="bar_arena_start"></info_portion>	
+	<info_portion id="bar_arena_spawn_monstr"></info_portion>
+	<info_portion id="bar_arena_monstr_ready"></info_portion>
+	<info_portion id="bar_arena_monstr_dead"></info_portion>
+	
+	<info_portion id="bar_arena_reset">
+		<disable>bar_arena_1000_r</disable>
+		<disable>bar_arena_2000_r</disable>
+		<disable>bar_arena_3000_r</disable>
+		<disable>bar_arena_5000_r</disable>
+		
+		<disable>bar_arena_20_p</disable>
+		<disable>bar_arena_50_p</disable>
+		<disable>bar_arena_100_p</disable>
+		
+		<disable>bar_arena_spawn_monstr</disable>
+		<disable>bar_arena_monstr_ready</disable>
+		
+		<disable>bar_arena_boar_choosen</disable>
+	</info_portion>	
+	
+	<info_portion id="bar_arena_1000_r"></info_portion>
+	<info_portion id="bar_arena_2000_r"></info_portion>
+	<info_portion id="bar_arena_3000_r"></info_portion>
+	<info_portion id="bar_arena_5000_r"></info_portion>
+	
+	<info_portion id="bar_arena_20_p"></info_portion>
+	<info_portion id="bar_arena_50_p"></info_portion>
+	<info_portion id="bar_arena_100_p"></info_portion>
+	
+	
+	<info_portion id="bar_arena_boar_choosen"></info_portion>
+	<info_portion id="bar_arena_boar_defeated"></info_portion>	
 	
     
 </game_information_portions>

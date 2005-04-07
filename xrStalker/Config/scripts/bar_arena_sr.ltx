@@ -1,2 +1,23 @@
 [logic]
-active = nil
+active = sr_idle@idle
+
+[sr_idle@idle]
+on_info = {+bar_arena_start} sr_idle@start %+bar_arena_door_1_open%
+
+[sr_idle@start]
+on_info = {=bar_arena_actor_inside} sr_idle@inside %-bar_arena_door_1_open +bar_arena_door_2_open +bar_arena_spawn_monstr%
+
+[sr_idle@inside]
+on_info = {+bar_arena_monstr_ready} sr_idle@wait_actor %-bar_arena_door_2_open +bar_arena_door_3_open%
+
+[sr_idle@wait_actor]
+on_actor_inside = sr_idle@fight %-bar_arena_door_3_open%
+
+[sr_idle@fight]
+on_info = {+bar_arena_monstr_dead} sr_idle@outer %+bar_arena_door_3_open%
+
+[sr_idle@outer]
+on_info = {=bar_arena_actor_inside} sr_idle@outside %-bar_arena_door_3_open +bar_arena_door_1_open%
+
+[sr_idle@outside]
+on_info = {=bar_arena_actor_outside} sr_idle@idle %-bar_arena_door_1_open -bar_arena_start%

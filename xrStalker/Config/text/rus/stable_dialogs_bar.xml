@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="bar_arena_manager_game_0">
+        <text>Я хочу сразиться. Кто у тебя на этот раз?</text>
+    </string>
+    <string id="bar_arena_manager_game_1">
+        <text>Сейчас не с кем сражаться. Ищи приключения в другом месте.</text>
+    </string>
+    <string id="bar_arena_manager_game_100">
+        <text>Теперь выбирай ставку. Минимальная - 1000 рублей. Да, деньги вперед.</text>
+    </string>
+    <string id="bar_arena_manager_game_101">
+        <text>1000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_102">
+        <text>2000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_103">
+        <text>3000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_104">
+        <text>5000 рублей</text>
+    </string>
+    <string id="bar_arena_manager_game_105">
+        <text>Нет у меня денег.</text>
+    </string>
+    <string id="bar_arena_manager_game_1051">
+        <text>Тьфу ты, опять нищий какой то.</text>
+    </string>
+    <string id="bar_arena_manager_game_2">
+        <text>Есть кабан. Образец крупный, но изрядно побитый. Зато злющий, как моя теща. Хорошо, что я ее никогда не видел.</text>
+    </string>
+    <string id="bar_arena_manager_game_200">
+        <text>Добро. Еще один момент. Сделай ставку на время, за которое ты убьешь монстра. Если успеешь - выиграешь, если нет - проиграешь. Чем меньше выбранное тобой время - тем больше сумма выигрыша.</text>
+    </string>
+    <string id="bar_arena_manager_game_201">
+        <text>10 секунд, двойной выигрышь.</text>
+    </string>
+    <string id="bar_arena_manager_game_202">
+        <text>30 секунд, выигрываешь половину ставки.</text>
+    </string>
+    <string id="bar_arena_manager_game_203">
+        <text>1 минута. Выигрываешь пятую часть ставки.</text>
+    </string>
+    <string id="bar_arena_manager_game_204">
+        <text>Я передумал.</text>
+    </string>
+    <string id="bar_arena_manager_game_2041">
+        <text>Тьфу ты, тряпка. Деньги я все равно тебе не верну.</text>
+    </string>
+    <string id="bar_arena_manager_game_21">
+        <text>Согласен на кабана.</text>
+    </string>
+    <string id="bar_arena_manager_game_22">
+        <text>Не, с кабаном я сражаться не буду.</text>
+    </string>
+    <string id="bar_arena_manager_game_221">
+        <text>Наша девочка испугалась кабанчика. Ну да ладно, не расстраивайся.</text>
+    </string>
+    <string id="bar_arena_manager_game_300">
+        <text>Официальная часть окончена. Прошу в комнату ожидания.</text>
+    </string>
     <string id="bar_arena_manager_info_0">
         <text>Есть пару вопросов.</text>
     </string>
@@ -19,7 +79,7 @@
         <text>Откуда здесь живые мутанты?</text>
     </string>
     <string id="bar_arena_manager_info_121">
-        <text>С Долгом договорились. Раньше они на зачистках добивали всех, а потом я предложил им деньги в обмен на  раненых ослабленых мутантов. Договорились быстро. С тех пор у меня практически неиссякаемый источник живых мутантов. А из тел я потом чучела делаю, и за пределами зоны продаю. Пользуются большой популярностью.</text>
+        <text>С Долгом договорились. Раньше они на зачистках добивали всех, а потом я предложил им деньги в обмен на раненых ослабленых мутантов. Договорились быстро. С тех пор у меня практически неиссякаемый источник живых мутантов. А из тел я потом чучела делаю, и за пределами зоны продаю. Пользуются большой популярностью.</text>
     </string>
     <string id="bar_arena_manager_info_13">
         <text>Откуда ты?</text>

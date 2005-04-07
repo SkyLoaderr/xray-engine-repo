@@ -552,6 +552,7 @@
 		<start_dialog>bar_arena_manager_start</start_dialog>
 		<actor_dialog>bar_arena_manager_rules</actor_dialog>
 		<actor_dialog>bar_arena_manager_info</actor_dialog>
+		<actor_dialog>bar_arena_manager_game</actor_dialog>
 	</specific_character>
 
 </xml>

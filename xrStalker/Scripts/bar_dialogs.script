@@ -305,3 +305,51 @@ end
 function give_money_for_informer_3(actor, npc)	
 	dialogs.relocate_money(npc, 4000, "out")
 end
+
+
+-- ********************************************************
+--			ARENA
+-- ********************************************************
+function arena_empty(actor,npc)
+	return arena_has_no_monsters(npc, actor)
+end
+function arena_not_empty(actor,npc)
+	return not arena_empty(actor,npc)
+end
+
+function arena_has_no_monsters(npc, actor)
+	if not arena_has_boar(npc, actor)
+	then
+		return true
+	end
+	return false
+end
+
+function arena_has_boar(npc, actor)
+	return db.actor:dont_has_info("bar_arena_boar_defeated")
+end
+
+function actor_has_1000(actor,npc)
+	return actor:money() > 1000
+end
+function give_money_1000(actor, npc)	
+	dialogs.relocate_money(npc, 1000, "out")
+end
+function actor_has_2000(actor,npc)
+	return actor:money() > 2000
+end
+function give_money_2000(actor, npc)	
+	dialogs.relocate_money(npc, 2000, "out")
+end
+function actor_has_3000(actor,npc)
+	return actor:money() > 3000
+end
+function give_money_3000(actor, npc)	
+	dialogs.relocate_money(npc, 3000, "out")
+end
+function actor_has_5000(actor,npc)
+	return actor:money() > 5000
+end
+function give_money_5000(actor, npc)	
+	dialogs.relocate_money(npc, 5000, "out")
+end
