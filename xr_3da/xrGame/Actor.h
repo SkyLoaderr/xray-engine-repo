@@ -657,7 +657,7 @@ public:
 	virtual DLL_Pure			*_construct					();
 	virtual bool				natural_weapon				() const {return false;}
 	virtual bool				natural_detector			() const {return false;}
-	virtual bool				use_center_to_aim			() const {return true;}
+	virtual bool				use_center_to_aim			() const;
 
 protected:
 	CObject*					m_pLastHitter;

@@ -368,7 +368,7 @@ private:
 	IC		bool						frame_check						(u32 &frame);
 	virtual bool						natural_weapon					() const {return false;}
 	virtual bool						natural_detector				() const {return false;}
-	virtual bool						use_center_to_aim				() const {return true;}
+	virtual bool						use_center_to_aim				() const;
 
 private:
 	bool								m_group_behaviour;

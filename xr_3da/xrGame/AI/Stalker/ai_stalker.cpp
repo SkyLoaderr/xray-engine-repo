@@ -776,3 +776,8 @@ DLL_Pure *CAI_Stalker::_construct			()
 	m_setup_manager						= xr_new<CSSetupManager>(this);
 	return								(this);
 }
+
+bool CAI_Stalker::use_center_to_aim		() const
+{
+	return								(movement().body_state() != eBodyStateCrouch);
+}

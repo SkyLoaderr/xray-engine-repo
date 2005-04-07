@@ -1481,10 +1481,15 @@ CEntityCondition *CActor::create_entity_condition	()
 	return		(m_entity_condition = xr_new<CActorCondition>(this));
 }
 
-DLL_Pure *CActor::_construct		()
+DLL_Pure *CActor::_construct			()
 {
 	m_material_manager				= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
 	CEntityAlive::_construct		();
 	CInventoryOwner::_construct		();
 	return							(this);
+}
+
+bool CActor::use_center_to_aim			() const
+{
+	return							(!(mstate_real&mcCrouch));
 }
