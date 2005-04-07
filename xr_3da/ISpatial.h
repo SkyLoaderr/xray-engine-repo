@@ -84,6 +84,7 @@ public:
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
 	ICF			void			spatial_updatesector()	{
 		if (0== (spatial.type&STYPEFLAG_INVALIDSECTOR))	return;
+		spatial_updatesector_internal				()	;
 	};
 
 	virtual		CObject*		dcast_CObject		()	{ return 0;	}
