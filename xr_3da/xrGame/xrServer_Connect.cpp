@@ -45,7 +45,7 @@ BOOL xrServer::Connect(shared_str &session_name)
 }
 
 
-void xrServer::new_client			(ClientID clientID, LPCSTR name, bool bLocal)
+void xrServer::new_client				(ClientID clientID, LPCSTR name, bool bLocal)
 {
 	NET_Packet P;
 	P.B.count = 0;
@@ -53,9 +53,9 @@ void xrServer::new_client			(ClientID clientID, LPCSTR name, bool bLocal)
 	P.w_u8(bLocal);
 	P.r_pos = 0;
 
-	game->AddDelayedEvent	(P,GAME_EVENT_CREATE_CLIENT,0,clientID);
-	if(client_Count()==0)
-		Update();
+	game->AddDelayedEvent				(P,GAME_EVENT_CREATE_CLIENT,0,clientID);
+	if (client_Count()==0)				
+		Update			();
 }
 
 void xrServer::AttachNewClient			(IClient* CL)
@@ -66,12 +66,10 @@ void xrServer::AttachNewClient			(IClient* CL)
 	
 	// config client
 	SendTo_LL				(CL->ID,&msgConfig,sizeof(msgConfig));
-
 	Server_Client_Check		(CL); 
 
 	// gen message
-	if (!NeedToCheckClient(CL))
-	{
-		SendConnectResult(CL, 1, "All Ok");
+	if (!NeedToCheckClient(CL))			{
+		// SendConnectResult(CL, 1, "Everything OK");
 	};
 }

@@ -570,7 +570,7 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 
 	case GAME_EVENT_PLAYER_KILLED:
 		{
-		}break;
+		}break	;
 	case GAME_EVENT_ON_HIT:
 		{
 			u16		id_dest = tNetPacket.r_u16();
@@ -580,7 +580,7 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			OnHit(id_src, id_dest, tNetPacket);
 			ClientID clientID;clientID.setBroadcast();
 			m_server->SendBroadcast		(clientID,tNetPacket,net_flags(TRUE,TRUE));
-		}break;
+		}break	;
 	case GAME_EVENT_CREATE_CLIENT:
 		{
 			IClient* P = m_server->client_Create();
@@ -591,7 +591,7 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			P->flags.bLocal				= !!tNetPacket.r_u8();
 			P->flags.bConnected			= TRUE;
 			m_server->AttachNewClient	(P);
-		}break;
+		}break	;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 	};
