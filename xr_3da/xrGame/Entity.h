@@ -47,8 +47,8 @@ protected:
 	int m_iTradeIconX;
 	int m_iTradeIconY;
 	//иконки для карты
-	int m_iMapIconX;
-	int m_iMapIconY;
+//	int m_iMapIconX;
+//	int m_iMapIconY;
 
 	//время через которое мертвое тело убирется с уровня
 	ALife::_TIME_ID			m_dwBodyRemoveTime;	
@@ -131,8 +131,8 @@ public:
 	//icon
 	virtual int GetTradeIconX() const {return m_iTradeIconX;}
 	virtual int GetTradeIconY() const {return m_iTradeIconY;}
-	virtual int GetMapIconX()   const {return m_iMapIconX;}
-	virtual int GetMapIconY()	const {return m_iMapIconY;}
+//	virtual int GetMapIconX()   const {return m_iMapIconX;}
+//	virtual int GetMapIconY()	const {return m_iMapIconY;}
 
 	//time of entity death
 	u32						m_level_death_time;

@@ -120,8 +120,8 @@ protected:
 public:
 	int		TradeIconX	()	const;
 	int		TradeIconY	()	const;
-	int		MapIconX	()	const;
-	int		MapIconY	()	const;
+//	int		MapIconX	()	const;
+//	int		MapIconY	()	const;
 
 	PHRASE_DIALOG_ID			StartDialog	()	const;
 	const DIALOG_ID_VECTOR&		ActorDialogs()	const;

@@ -15,74 +15,102 @@
 
 CFontManager::CFontManager()
 {
-	pFontConsole			= xr_new<CGameFont> ("console_font", CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontStartup			= xr_new<CGameFont> ("startup_font", CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontSmall				= xr_new<CGameFont> ("hud_font_small");
-	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");//,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontDI					= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontBigDigit			= xr_new<CGameFont> ("hud_font_big_digit");
+	m_all_fonts.push_back(&pFontConsole				);
+	m_all_fonts.push_back(&pFontStartup				);
+	m_all_fonts.push_back(&pFontSmall				);
+	m_all_fonts.push_back(&pFontMedium				);
+	m_all_fonts.push_back(&pFontDI					);
+	m_all_fonts.push_back(&pFontBigDigit			);
+	m_all_fonts.push_back(&pFontHeaderEurope		);
+	m_all_fonts.push_back(&pFontHeaderRussian		);
+	m_all_fonts.push_back(&pArialN21Russian			);
+	m_all_fonts.push_back(&pFontGraffiti19Russian	);
+	m_all_fonts.push_back(&pFontGraffiti22Russian	);
+	m_all_fonts.push_back(&pFontLetterica16Russian	);
+	m_all_fonts.push_back(&pFontLetterica18Russian	);
+	m_all_fonts.push_back(&pFontGraffiti32Russian	);
+	m_all_fonts.push_back(&pFontGraffiti50Russian	);
+	m_all_fonts.push_back(&pFontLetterica25			);
+	m_all_fonts.push_back(&pFontStat				);
 
-	pFontHeaderEurope		= xr_new<CGameFont> ("ui_font_header_europe");
-	pFontHeaderRussian		= xr_new<CGameFont> ("ui_font_header_russian");
+	FONTS_VEC_IT it		= m_all_fonts.begin();
+	FONTS_VEC_IT it_e	= m_all_fonts.end();
+	for(;it!=it_e;++it)
+		(**it) = NULL;
 
-	pArialN21Russian		= xr_new<CGameFont> ("ui_font_arial_n_21_russian");
-	pFontGraffiti19Russian	= xr_new<CGameFont> ("ui_font_graffiti19_russian");
-	pFontGraffiti22Russian	= xr_new<CGameFont> ("ui_font_graffiti22_russian");
-	pFontLetterica16Russian = xr_new<CGameFont> ("ui_font_letterica16_russian");
-	pFontLetterica18Russian = xr_new<CGameFont> ("ui_font_letterica18_russian");
-	pFontGraffiti32Russian	= xr_new<CGameFont> ("ui_font_graff_32");
-	pFontGraffiti50Russian	= xr_new<CGameFont> ("ui_font_graff_50");
-	pFontLetterica25		= xr_new<CGameFont> ("ui_font_letter_25");
-	
-	pFontStat				= xr_new<CGameFont> ("stat_font");
+	InitializeFonts();
+
+}
+
+void CFontManager::InitializeFonts()
+{
+	InitializeFont(pFontConsole				,"console_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	InitializeFont(pFontStartup				,"startup_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	InitializeFont(pFontSmall				,"hud_font_small"				);
+	InitializeFont(pFontMedium				,"hud_font_medium"				);
+	InitializeFont(pFontDI					,"hud_font_di",					CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	InitializeFont(pFontBigDigit			,"hud_font_big_digit"			);
+	InitializeFont(pFontHeaderEurope		,"ui_font_header_europe"		);
+	InitializeFont(pFontHeaderRussian		,"ui_font_header_russian"		);
+	InitializeFont(pArialN21Russian			,"ui_font_arial_n_21_russian"	);
+	InitializeFont(pFontGraffiti19Russian	,"ui_font_graffiti19_russian"	);
+	InitializeFont(pFontGraffiti22Russian	,"ui_font_graffiti22_russian"	);
+	InitializeFont(pFontLetterica16Russian	,"ui_font_letterica16_russian"	);
+	InitializeFont(pFontLetterica18Russian	,"ui_font_letterica18_russian"	);
+	InitializeFont(pFontGraffiti32Russian	,"ui_font_graff_32"				);
+	InitializeFont(pFontGraffiti50Russian	,"ui_font_graff_50"				);
+	InitializeFont(pFontLetterica25			,"ui_font_letter_25"			);
+	InitializeFont(pFontStat				,"stat_font"					);
+
+	m_curW = Device.dwWidth;
+	m_curH = Device.dwHeight;
+
+}
+LPCSTR CFontManager::GetFontTexName (LPCSTR section)
+{
+	u32 w = Device.dwWidth;
+
+	static char* tex_names[]={"texture800","texture","texture1600"};
+	int def_idx		= 1;//default 1024x768
+	int idx			= def_idx;
+
+	if(w<=800)		idx = 0;
+	else if(w<=1024)idx = 1;
+	else 			idx = 2;
+
+	while(idx>=0){
+		if( pSettings->line_exist(section,tex_names[idx]) )
+			return pSettings->r_string(section,tex_names[idx]);
+		--idx;
+	}
+	return pSettings->r_string(section,tex_names[def_idx]);
+}
+
+void CFontManager::InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
+{
+	LPCSTR font_tex_name = GetFontTexName(section);
+	R_ASSERT(font_tex_name);
+
+	if(!F)
+		F = xr_new<CGameFont> ("font", font_tex_name, flags);
+	else
+		F->Initialize("font",font_tex_name);
 }
 
 CFontManager::~CFontManager()
 {
-	xr_delete			(pFontConsole);
-	xr_delete			(pFontStartup);
-	xr_delete			(pFontBigDigit);
-	xr_delete			(pFontSmall);
-	xr_delete			(pFontMedium);
-	xr_delete			(pFontDI);
-
-	xr_delete			(pFontHeaderEurope);
-	xr_delete			(pFontHeaderRussian);
-
-	xr_delete			(pArialN21Russian);
-	xr_delete			(pFontGraffiti19Russian);
-	xr_delete			(pFontGraffiti22Russian);
-	xr_delete			(pFontLetterica16Russian);
-	xr_delete			(pFontLetterica18Russian);
-	xr_delete			(pFontGraffiti32Russian);
-	xr_delete			(pFontGraffiti50Russian);
-	xr_delete			(pFontLetterica25);
-
-	xr_delete			(pFontStat);
+	FONTS_VEC_IT it		= m_all_fonts.begin();
+	FONTS_VEC_IT it_e	= m_all_fonts.end();
+	for(;it!=it_e;++it)
+		xr_delete(**it);
 }
 
 void CFontManager::Render()
 {
-	pFontConsole->OnRender		();
-	pFontStartup->OnRender		();
-	pFontDI->OnRender			();
-	pFontSmall->OnRender		();
-	pFontMedium->OnRender		();
-	pFontBigDigit->OnRender		();
-
-	pFontHeaderEurope->OnRender	();
-	pFontHeaderRussian->OnRender();
-
-	pArialN21Russian->OnRender();
-	pFontGraffiti19Russian->OnRender();
-	pFontGraffiti22Russian->OnRender(); 
-	pFontGraffiti32Russian->OnRender(); 
-	pFontGraffiti50Russian->OnRender(); 
-	pFontLetterica16Russian->OnRender();
-	pFontLetterica18Russian->OnRender();
-	pFontLetterica25->OnRender();
-
-	pFontStat->OnRender			();
+	FONTS_VEC_IT it		= m_all_fonts.begin();
+	FONTS_VEC_IT it_e	= m_all_fonts.end();
+	for(;it!=it_e;++it)
+		(**it)->OnRender			();
 }
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
@@ -113,6 +141,9 @@ void CHUDManager::Load()
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()
 {
+	if(	Font().m_curW != Device.dwWidth ||	Font().m_curH != Device.dwHeight )
+		Font().InitializeFonts();
+
 	if (pUI) pUI->UIOnFrame();
 	m_pHUDCursor->CursorOnFrame();
 }

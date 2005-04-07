@@ -57,7 +57,7 @@ struct SSpecificCharacterData : CSharedResource
 	//положение большой икноки (для торговли и общения) в файле с иконками 
 	int	m_iIconX, m_iIconY;
 	//положение мальнькой иконки (для карты)
-	int	m_iMapIconX, m_iMapIconY;
+//	int	m_iMapIconX, m_iMapIconY;
 
 	//команда 
 	CHARACTER_COMMUNITY			m_Community;
@@ -136,8 +136,8 @@ public:
 
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
-	int		MapIconX	() const 	 {return data()->m_iMapIconX;}
-	int		MapIconY	() const	 {return data()->m_iMapIconY;}
+//	int		MapIconX	() const 	 {return data()->m_iMapIconX;}
+//	int		MapIconY	() const	 {return data()->m_iMapIconY;}
 #endif
 };
 

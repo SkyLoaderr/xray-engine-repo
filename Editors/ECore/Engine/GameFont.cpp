@@ -10,7 +10,8 @@ extern ENGINE_API BOOL g_bRendering;
 #define MAX_CHARS	1024
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
-	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"),flags);
+	uFlags						= flags;
+	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"));
 	if (pSettings->line_exist(section,"size")){
 		float sz = pSettings->r_float(section,"size");
 		if (uFlags&fsDeviceIndependent)	SetSizeI(sz);
@@ -21,12 +22,14 @@ CGameFont::CGameFont(LPCSTR section, u32 flags)
 }
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
-	Initialize	(shader,texture,flags);
-}
-void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
-{
-	eCurrentAlignment			= alLeft;
 	uFlags						= flags;
+	Initialize	(shader,texture);
+}
+void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture)
+{
+	uFlags						&=~fsValid;
+
+	eCurrentAlignment			= alLeft;
 	vInterval.set				(1.f,1.f);
 
 	for (int i=0; i<256; i++)	CharMap[i] = i;
@@ -62,8 +65,8 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 				TCMap[i].set		((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
 	}
-//	if (!(uFlags&fsDeviceIndependent))
-		SetSize					(fHeight);
+	SetSize						(fHeight);
+
 	CInifile::Destroy			(ini);
 
 	// Shading

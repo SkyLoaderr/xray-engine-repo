@@ -16,6 +16,12 @@ class CHUDCursor;
 struct CFontManager{
 							CFontManager			();
 							~CFontManager			();
+
+	typedef xr_vector<CGameFont**>					FONTS_VEC;
+	typedef FONTS_VEC::iterator						FONTS_VEC_IT;
+	FONTS_VEC				m_all_fonts;
+	u32						m_curW;
+	u32						m_curH;
 	void					Render					();
 	// console font
 	CGameFont*				pFontConsole;
@@ -37,8 +43,11 @@ struct CFontManager{
 	CGameFont*				pFontGraffiti32Russian;
 	CGameFont*				pFontGraffiti50Russian;
 	CGameFont*				pFontLetterica25;
-
 	CGameFont*				pFontStat;
+
+	void					InitializeFonts();
+	void					InitializeFont(CGameFont*& F, LPCSTR section, u32 flags = 0);
+	LPCSTR					GetFontTexName (LPCSTR section);				
 };
 
 class CHUDManager :

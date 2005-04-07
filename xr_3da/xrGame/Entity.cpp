@@ -33,7 +33,7 @@ CEntity::CEntity()
 	fMAX_Armor			= MAX_ARMOR;
 
 	m_iTradeIconX		= m_iTradeIconY = 0;
-	m_iMapIconX			= m_iMapIconY = 0;
+//	m_iMapIconX			= m_iMapIconY = 0;
 }
 
 CEntity::~CEntity()
@@ -250,14 +250,14 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 			m_iTradeIconX = ini->r_u32("icon","icon_x");
 			m_iTradeIconY = ini->r_u32("icon","icon_y");
 
-			m_iMapIconX = ini->r_u32("icon","map_icon_x");
-			m_iMapIconY = ini->r_u32("icon","map_icon_y");
+//			m_iMapIconX = ini->r_u32("icon","map_icon_x");
+//			m_iMapIconY = ini->r_u32("icon","map_icon_y");
 		}
 		else
 		{
 			m_iTradeIconX = m_iTradeIconY = 0;
-			m_iMapIconX = 1;
-			m_iMapIconY = 4;
+//			m_iMapIconX = 1;
+//			m_iMapIconY = 4;
 		}
 
 		CParticlesPlayer::LoadParticles(pKinematics);

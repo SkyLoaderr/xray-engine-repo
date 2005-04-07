@@ -128,8 +128,8 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
 
-		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconX = pEntity->GetMapIconX();
-		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconY = pEntity->GetMapIconY();
+//		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconX = pEntity->GetMapIconX();
+//		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconY = pEntity->GetMapIconY();
 	}
 	
 	if(!pThis->Local())  return TRUE;
