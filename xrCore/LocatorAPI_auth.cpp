@@ -45,7 +45,7 @@ void	CLocatorAPI::auth_runtime		(void*	params)
 		if (bSkip)		continue	;
 
 		// test for important
-		for (u32 s=0; s<_o->important.size(); s++)	{
+		for (s=0; s<_o->important.size(); s++)	{
 			if (strstr(f.name,_o->important[s].c_str()))	{
 				// crc for file
 				IReader*	r	= FS.r_open	(f.name);

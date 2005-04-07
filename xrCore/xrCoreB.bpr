@@ -19,7 +19,7 @@
       Intermediate\FTimer.obj Intermediate\xrstring.obj 
       Intermediate\xrsharedmem.obj Intermediate\_std_extensions.obj 
       Intermediate\crc32.obj Intermediate\LocatorAPI_Notifications.obj 
-      Intermediate\xrSyncronize.obj"/>
+      Intermediate\xrSyncronize.obj Intermediate\LocatorAPI_auth.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -45,12 +45,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG 
+      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
       -I$(BCB)\include -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -I..\Tools\Etools -src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS 
-      -D_DEBUG -boa"/>
+      -I..\Tools\Etools -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -161,6 +161,7 @@
       <FILE FILENAME="LocatorAPI_Notifications.cpp" FORMNAME="" UNITNAME="LocatorAPI_Notifications" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrSyncronize.cpp" FORMNAME="" UNITNAME="xrSyncronize" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="D3DX_Wrapper.h" FORMNAME="" UNITNAME="D3DX_Wrapper.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LocatorAPI_auth.cpp" FORMNAME="" UNITNAME="LocatorAPI_auth" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
