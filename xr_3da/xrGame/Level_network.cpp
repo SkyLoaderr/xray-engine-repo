@@ -148,22 +148,23 @@ pureFrame*	g_pNetProcessor	= &NET_processor;
 BOOL			CLevel::Connect2Server				(LPCSTR options)
 {
 	NET_Packet					P;
-	m_bConnectResultReceived	= false;
-	m_bConnectResult			= 0;
-
-	if (!Connect(options)) return FALSE;
+	m_bConnectResultReceived	= false	;
+	m_bConnectResult			= true	;
+	if (!Connect(options))		return	FALSE;
 
 	//---------------------------------------------------------------------------
 	// data-auth
-	P.w_begin	(M_CL_AUTH);
-	P.w_u64		(FS.auth_get());
-	Send		(P);
+	P.w_begin				(M_CL_AUTH);
+	P.w_u64					(FS.auth_get());
+	Send					(P);
+
 	//---------------------------------------------------------------------------
 	while	(!m_bConnectResultReceived)		{ 
 		ClientReceive	()	;
 		Sleep			(5)	; 
 		Server->Update	()	;
 	}
+	Msg							("client : connection %s - <%s>", m_bConnectResult ? "accepted" : "rejected", m_sConnectResult.c_str());
 	if		(!m_bConnectResult) 
 	{
 		Disconnect		()	;
@@ -177,14 +178,15 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	return TRUE;
 };
 
-void			CLevel::OnConnectResult				(NET_Packet* P)
+void			CLevel::OnConnectResult				(NET_Packet*	P)
 {
+	// multiple results can be sent during connection they should be "AND-ed"
 	m_bConnectResultReceived	= true;
-	m_bConnectResult			= P->r_u8();
-	string128 ResultStr;
-	P->r_stringZ(ResultStr);
-
-	Msg("Client : Connect %s - <%s>", m_bConnectResult ? "accepted" : "rejected", ResultStr);
+	u8	result					= P->r_u8();
+	if (!result)				m_bConnectResult	= false			;	// and
+	string128 ResultStr			;
+	P->r_stringZ(ResultStr)		;
+	m_sConnectResult			= ResultStr;
 };
 
 void			CLevel::SendPingMessage				()
