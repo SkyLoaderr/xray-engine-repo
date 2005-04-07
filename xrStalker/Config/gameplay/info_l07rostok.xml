@@ -211,7 +211,9 @@
 	<info_portion id="bar_arena_door_3_open"></info_portion>
 	
 	
-	<info_portion id="bar_arena_start"></info_portion>	
+	<info_portion id="bar_arena_start">
+		<disable>bar_arena_reset</disable>
+	</info_portion>	
 	<info_portion id="bar_arena_spawn_monstr"></info_portion>
 	<info_portion id="bar_arena_monstr_ready"></info_portion>
 	<info_portion id="bar_arena_monstr_dead"></info_portion>
@@ -219,6 +221,8 @@
 	<info_portion id="bar_arena_actor_lose"></info_portion>
 	
 	<info_portion id="bar_arena_reset">
+		<disable>bar_arena_start</disable>
+		
 		<disable>bar_arena_1000_r</disable>
 		<disable>bar_arena_2000_r</disable>
 		<disable>bar_arena_3000_r</disable>
@@ -240,7 +244,7 @@
 		<disable>bar_arena_actor_victory</disable>
 		<disable>bar_arena_actor_lose</disable>
 		
-		<disable>bar_arena_boar_choosen</disable>
+		<disable>bar_arena_boar_choosen</disable>				
 	</info_portion>	
 	
 	<info_portion id="bar_arena_1000_r"></info_portion>
