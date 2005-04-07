@@ -83,9 +83,9 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 void	xrServer::SendConnectResult(IClient* CL, u8 res, char* ResultStr)
 {
-	NET_Packet P;
-	P.w_begin(M_CLIENT_CONNECT_RESULT);
-	P.w_u8(res);
-	P.w_stringZ(ResultStr);
-	SendTo(CL->ID, P);
+	NET_Packet	P;
+	P.w_begin	(M_CLIENT_CONNECT_RESULT);
+	P.w_u8		(res);
+	P.w_stringZ	(ResultStr);
+	SendTo		(CL->ID, P);
 };

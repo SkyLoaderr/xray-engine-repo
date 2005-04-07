@@ -147,35 +147,40 @@ pureFrame*	g_pNetProcessor	= &NET_processor;
 
 BOOL			CLevel::Connect2Server				(LPCSTR options)
 {
-	m_bConnectResultReceived = false;
-	m_bConnectResult = 0;
+	NET_Packet					P;
+	m_bConnectResultReceived	= false;
+	m_bConnectResult			= 0;
 
 	if (!Connect(options)) return FALSE;
 
-	while (!m_bConnectResultReceived)		
-	{ 
-		ClientReceive(); 
-		Sleep(5); 
-		Server->Update();
+	//---------------------------------------------------------------------------
+	// data-auth
+	P.w_begin	(M_CL_AUTH);
+	P.w_u64		(FS.auth_get());
+	Send		(P);
+	//---------------------------------------------------------------------------
+	while	(!m_bConnectResultReceived)		{ 
+		ClientReceive	()	;
+		Sleep			(5)	; 
+		Server->Update	()	;
 	}
-	if (!m_bConnectResult) 
+	if		(!m_bConnectResult) 
 	{
-		Disconnect		();
-		return FALSE;
+		Disconnect		()	;
+		return FALSE		;
 	};
 
 	//---------------------------------------------------------------------------
-	NET_Packet P;
-	P.w_begin(M_CLIENT_REQUEST_CONNECTION_DATA);
-	Send(P);
+	P.w_begin	(M_CLIENT_REQUEST_CONNECTION_DATA);
+	Send		(P);
 	//---------------------------------------------------------------------------
 	return TRUE;
 };
 
 void			CLevel::OnConnectResult				(NET_Packet* P)
 {
-	m_bConnectResultReceived = true;
-	m_bConnectResult = P->r_u8();
+	m_bConnectResultReceived	= true;
+	m_bConnectResult			= P->r_u8();
 	string128 ResultStr;
 	P->r_stringZ(ResultStr);
 

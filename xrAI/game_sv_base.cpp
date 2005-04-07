@@ -585,13 +585,12 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 		{
 			IClient* P = m_server->client_Create();
 			VERIFY(P);
-			P->ID = sender;
+			P->ID						= sender;
 			//tNetPacket.r_clientID(P->ID);
-			tNetPacket.r_stringZ(P->Name);
-			P->flags.bLocal = !!tNetPacket.r_u8();
-			P->flags.bConnected = TRUE;
-			m_server->AttachNewClient(P);
-
+			tNetPacket.r_stringZ		(P->Name);
+			P->flags.bLocal				= !!tNetPacket.r_u8();
+			P->flags.bConnected			= TRUE;
+			m_server->AttachNewClient	(P);
 		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");

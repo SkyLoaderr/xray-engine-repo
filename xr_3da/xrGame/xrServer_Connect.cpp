@@ -53,7 +53,7 @@ void xrServer::new_client			(ClientID clientID, LPCSTR name, bool bLocal)
 	P.w_u8(bLocal);
 	P.r_pos = 0;
 
-	game->AddDelayedEvent(P,GAME_EVENT_CREATE_CLIENT,0,clientID);
+	game->AddDelayedEvent	(P,GAME_EVENT_CREATE_CLIENT,0,clientID);
 	if(client_Count()==0)
 		Update();
 }

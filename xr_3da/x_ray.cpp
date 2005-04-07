@@ -327,6 +327,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		xr_vector<xr_string>	ignore, test	;
 		ignore.push_back		(xr_string("user"));
 		test.push_back			(xr_string(".ltx"));
+		test.push_back			(xr_string(".script"));
 		//test.push_back		(xr_string(".exe"));
 		//test.push_back		(xr_string(".dll"));
 		FS.auth_generate		(ignore,test)	;

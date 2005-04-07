@@ -231,9 +231,9 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		WCHAR	SessionPasswordUNICODE[4096];
 		if (xr_strlen(password_str))
 		{
-			CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
-			dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
-			dpAppDesc.pwszPassword = SessionPasswordUNICODE;
+			CHK_DX(MultiByteToWideChar	(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
+			dpAppDesc.dwFlags		|=	DPNSESSION_REQUIREPASSWORD;
+			dpAppDesc.pwszPassword	=	SessionPasswordUNICODE;
 		};
 
 		HRESULT res = NET->Connect(

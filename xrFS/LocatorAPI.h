@@ -95,7 +95,6 @@ private:
     DEFINE_VECTOR				(archive,archives_vec,archives_it);
 
     CFS_PathNotificator*		FThread;
-    Flags32						m_Flags			;
     int							m_iLockRescan	;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
     void						check_pathes	();
@@ -127,6 +126,7 @@ public:
 		flCacheFiles			= (1<<6),
 		flScanAppRoot			= (1<<7),
 	};    
+	Flags32						m_Flags			;
 	u32							dwAllocGranularity;
 public:
 								CLocatorAPI		();
@@ -185,11 +185,12 @@ public:
     void						rescan_pathes	();
 
 	// editor functions
+	void						rescan_pathes		();
 	void						lock_rescan			();
 	void						unlock_rescan		();
 };
 
-extern XRCORE_API	CLocatorAPI*			xr_FS;
+extern XRCORE_API	CLocatorAPI*					xr_FS;
 #define FS (*xr_FS)
 
 #endif // LocatorAPIH

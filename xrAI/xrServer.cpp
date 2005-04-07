@@ -173,16 +173,15 @@ void xrServer::Update	()
 	csPlayers.Leave	();
 }
 
-u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
+u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
 	u16			type;
 	P.r_begin	(type);
 
 	csPlayers.Enter			();
 
-	VERIFY						(verify_entities());
-
-	xrClientData* CL		= ID_to_client(sender);
+	VERIFY							(verify_entities());
+	xrClientData* CL				= ID_to_client(sender);
 
 	switch (type)
 	{

@@ -289,13 +289,12 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			if (_hr==DPNERR_INVALIDPLAYER)	break;	// server player
 			CHK_DX					(_hr);
 			
-			
 			string256				cname;
 			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
 			
-			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
+			bool bLocal				= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
-			new_client(clientID, cname, bLocal);
+			new_client				(clientID, cname, bLocal);
 
 /*			
 			// register player

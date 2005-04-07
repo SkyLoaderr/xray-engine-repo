@@ -39,11 +39,11 @@ private:
 
 	void							CheckAvailableServices			();
 protected:
-	virtual bool					NeedToCheckClient	(IClient* CL);
+	virtual bool					NeedToCheckClient				(IClient* CL);
 public:
-	shared_str							HostName;
-	shared_str							MapName;
-	shared_str							Password;
+	shared_str						HostName;
+	shared_str						MapName;
+	shared_str						Password;
 	int								m_iMaxPlayers;
 	bool							m_bCheckCDKey;
 
