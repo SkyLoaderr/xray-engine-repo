@@ -105,6 +105,8 @@ public:
 	virtual void			rmFar					();
 	virtual void			rmNormal				();
 
+	void 					apply_lmaterial			(){}
+    
     virtual LPCSTR			getShaderPath			(){return "R1\\";}
 
 	virtual HRESULT			CompileShader			(
