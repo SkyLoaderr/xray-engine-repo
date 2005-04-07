@@ -151,6 +151,12 @@ function actor_have_research(actor,npc)
 	end
 	return false
 end
+function actor_have_not_research(actor,npc)
+	if db.actor:object("bar_ecolog_flash") then
+		return false
+	end
+	return true
+end
 function actor_transfer_research(actor,npc)
 	local obj = actor:object("bar_ecolog_flash")
 	if obj then
