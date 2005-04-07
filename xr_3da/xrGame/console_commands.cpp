@@ -95,6 +95,13 @@ public:
 	virtual void Execute(LPCSTR args) {
 		R_ASSERT(g_pGameLevel);
 
+#ifndef	DEBUG
+		if (GameID() != GAME_SINGLE) 
+		{
+			Msg("For this game type entity-spawning is disabled.");
+			return;
+		};
+#endif
 		char	Name[128];	Name[0]=0;
 		sscanf	(args,"%s", Name);
 		Level().g_cl_Spawn	(Name,0xff,M_SPAWN_OBJECT_LOCAL);
@@ -1446,7 +1453,6 @@ public:
 		HUD().GetUI()->StartStopMenu( xr_new<CUIDebugFonts>(), true);		
 	}
 };
-#endif // DEBUG
 
 class CCC_PostprocessTest : public IConsole_Command {
 public:
@@ -1490,7 +1496,6 @@ public:
 	}
 };
 
-#ifdef DEBUG
 class CCC_DebugNode : public IConsole_Command {
 public:
 	CCC_DebugNode(LPCSTR N) : IConsole_Command(N)  { };

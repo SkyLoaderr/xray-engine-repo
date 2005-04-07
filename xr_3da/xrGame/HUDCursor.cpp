@@ -34,13 +34,30 @@
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
 
-#define SHOW_INFO_SPEED	0.5f
-#define HIDE_INFO_SPEED	10.f
+#define SHOW_INFO_SPEED		0.5f
+#define HIDE_INFO_SPEED		10.f
 
 float	g_fMinReconDist		= 2.0f;
 float	g_fMaxReconDist		= 50.0f;
 float	g_fMinReconSpeed	= 0.5f;
 float	g_fMaxReconSpeed	= 10.f;
+
+IC	float	recon_mindist	()		{
+	if (GameID() == GAME_SINGLE)	return g_fMinReconDist;
+	else							return 2.f;
+}
+IC	float	recon_maxdist	()		{
+	if (GameID() == GAME_SINGLE)	return g_fMaxReconDist;
+	else							return 50.f;
+}
+IC	float	recon_minspeed	()		{
+	if (GameID() == GAME_SINGLE)	return g_fMinReconSpeed;
+	else							return 0.5f;
+}
+IC	float	recon_maxspeed	()		{
+	if (GameID() == GAME_SINGLE)	return g_fMaxReconSpeed;
+	else							return 10.f;
+}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -206,12 +223,12 @@ void CHUDCursor::Render()
 							if (E->g_Team() != pCurEnt->g_Team())	C = C_ON_ENEMY;
 							else									C = C_ON_FRIEND;
 						};
-						if (RQ.range >= g_fMinReconDist && RQ.range <= g_fMaxReconDist){
-							float ddist = (RQ.range - g_fMinReconDist)/(g_fMaxReconDist - g_fMinReconDist);
-							float dspeed = g_fMinReconSpeed + (g_fMaxReconSpeed - g_fMinReconSpeed)*ddist;
+						if (RQ.range >= recon_mindist() && RQ.range <= recon_maxdist()){
+							float ddist = (RQ.range - recon_mindist())/(recon_maxdist() - recon_mindist());
+							float dspeed = recon_minspeed() + (recon_maxspeed() - recon_minspeed())*ddist;
 							fuzzyShowInfo += Device.fTimeDelta/dspeed;
 						}else{
-							if (RQ.range < g_fMinReconDist) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
+							if (RQ.range < recon_mindist()) fuzzyShowInfo += recon_minspeed()*Device.fTimeDelta;
 							else fuzzyShowInfo = 0;
 						};
 

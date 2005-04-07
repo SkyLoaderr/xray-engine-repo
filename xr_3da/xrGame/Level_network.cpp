@@ -115,9 +115,9 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
 	if (Server && game_configured && OnServer()){
-		
 		Server->OnMessage	(P,Game().local_svdpnid	);
 	}else											IPureClient::Send	(P,dwFlags,dwTimeout	);
+	if (GameID() != GAME_SINGLE)	psDeviceFlags &= ~rsConstantFPS		;	// anti-cheat
 }
 
 void CLevel::net_Update	()
