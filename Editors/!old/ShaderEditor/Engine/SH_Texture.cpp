@@ -74,7 +74,7 @@ void CTexture::Apply	(u32 dwStage)
 		R_CHK	(T2D->UnlockRect(0));
 	} else if (!seqDATA.empty()) {
 		// SEQ
-		u32	frame		= Device.dwTimeGlobal/seqMSPF;
+		u32	frame		= Device.TimerAsyncMM()/seqMSPF; //Device.dwTimeGlobal
 		u32	frame_data	= seqDATA.size();
 		if (flags.seqCycles)		{
 			u32	frame_id	= frame%(frame_data*2);
