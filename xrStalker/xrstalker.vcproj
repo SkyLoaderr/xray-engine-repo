@@ -89,6 +89,9 @@
 				RelativePath=".\Config\external.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\fonts.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\game.ltx">
 			</File>
 			<File
