@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 struct	auth_options	{
 	xr_vector<xr_string>				ignore;
