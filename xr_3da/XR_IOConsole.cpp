@@ -118,6 +118,7 @@ void CConsole::OnRender	()
 	if (bCursor) strcat(buf,"|");
 
 	pFont->SetColor( color_rgba(128  ,128  ,255, 255) );
+	pFont->SetSizeI(0.02f);
 	pFont->OutI	( -1.f, fMaxY-LDIST, "%s", buf );
 
 	float ypos=fMaxY-LDIST-LDIST;
