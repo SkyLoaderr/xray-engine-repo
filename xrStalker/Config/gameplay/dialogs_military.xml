@@ -1352,35 +1352,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_bodyguard_dialog">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_bodyguard_dialog_1</text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_bodyguard_dialog_5</text>
-            </phrase>
-            <phrase id="4">
-                <text>mil_bodyguard_dialog_4</text>
-            </phrase>
-            <phrase id="2">
-                <text>mil_bodyguard_dialog_2</text>
-                <precondition>dialogs_military.actor_has_weapon</precondition>
-                <next>5</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_bodyguard_dialog_3</text>
-                <precondition>dialogs_military.actor_dont_has_weapon</precondition>
-                <next>4</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_zoneguard_dialog">
         <phrase_list>
             <phrase id="100">
@@ -1616,12 +1587,12 @@
                 <next>51</next>
             </phrase>
             <phrase id="7">
-                <text></text>
+                <text />
                 <dont_has_info>mil_zoneguard_talk</dont_has_info>
                 <next>6</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>3</next>
                 <next>4</next>
                 <next>5</next>
@@ -1675,6 +1646,119 @@
             </phrase>
             <phrase id="7">
                 <text>mil_dolg_soldier_dialog_7</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_bodyguard_dialog_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+            </phrase>
+            <phrase id="4">
+                <text>mil_bodyguard_dialog_4</text>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <precondition>dialogs_military.actor_has_weapon</precondition>
+                <next>5</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_bodyguard_dialog_3</text>
+                <precondition>dialogs_military.actor_dont_has_weapon</precondition>
+                <next>4</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_dolg_relax_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_dolg_relax_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_dolg_relax_dialog_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_dolg_relax_dialog_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_dolg_relax_dialog_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_dolg_relax_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_dolg_relax_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="7">
+                <text>mil_dolg_relax_dialog_7</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="8">
+                <text>mil_dolg_relax_dialog_8</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="9">
+                <text>mil_dolg_relax_dialog_9</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>mil_dolg_relax_dialog_10</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>mil_dolg_relax_dialog_11</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="12">
+                <text>mil_dolg_relax_dialog_12</text>
+                <next>13</next>
+            </phrase>
+            <phrase id="13">
+                <text>mil_dolg_relax_dialog_13</text>
+                <next>14</next>
+            </phrase>
+            <phrase id="14">
+                <text>mil_dolg_relax_dialog_14</text>
+                <next>15</next>
+            </phrase>
+            <phrase id="15">
+                <text>mil_dolg_relax_dialog_15</text>
+                <next>16</next>
+            </phrase>
+            <phrase id="16">
+                <text>mil_dolg_relax_dialog_16</text>
+                <next>17</next>
+            </phrase>
+            <phrase id="17">
+                <text>mil_dolg_relax_dialog_17</text>
+                <next>18</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_dolg_relax_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="18">
+                <text>mil_dolg_relax_dialog_18</text>
+                <next>19</next>
+            </phrase>
+            <phrase id="19">
+                <text>mil_dolg_relax_dialog_19</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
