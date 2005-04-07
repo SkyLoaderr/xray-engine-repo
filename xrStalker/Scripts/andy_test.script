@@ -71,7 +71,7 @@ end
 
 
 
-function main ()
+function main___ ()
 
 --	local object 	= level.debug_object ("vagon")
 	level.map_add_object_spot(db.actor:id(), "rad_antenna_location", "hit" )
