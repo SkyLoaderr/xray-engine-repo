@@ -372,6 +372,7 @@
 			ammo_12x76_zhekan \n
 			borov_flash \n
 			device_torch \n
+			val_key_to_underground \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
