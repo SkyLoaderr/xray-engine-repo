@@ -116,7 +116,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_ID info_id = uiXml.Read(pNode, "disable", NULL);
+		INFO_ID info_id = uiXml.Read(pNode, "disable", i);
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 
