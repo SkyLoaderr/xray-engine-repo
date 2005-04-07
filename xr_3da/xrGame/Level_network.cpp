@@ -117,7 +117,11 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	if (Server && game_configured && OnServer()){
 		Server->OnMessage	(P,Game().local_svdpnid	);
 	}else											IPureClient::Send	(P,dwFlags,dwTimeout	);
-	if (GameID() != GAME_SINGLE)	psDeviceFlags.set(rsConstantFPS,FALSE);	// anti-cheat
+	if (g_pGameLevel && Level().game && GameID() != GAME_SINGLE)		{
+		// anti-cheat
+		phTimefactor		= 1.f					;
+		psDeviceFlags.set	(rsConstantFPS,FALSE)	;	
+	}
 }
 
 void CLevel::net_Update	()
