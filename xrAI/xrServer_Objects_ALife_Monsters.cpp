@@ -898,6 +898,8 @@ CSE_ALifeZoneVisual::CSE_ALifeZoneVisual	(LPCSTR caSection)
 {
 	if (pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
+//	if(pSettings->line_exist(caSection,"blast_animation"))
+//		attack_animation=pSettings->r_string(caSection,"blast_animation");
 }
 
 CSE_ALifeZoneVisual::~CSE_ALifeZoneVisual	()
