@@ -343,6 +343,7 @@ function add_to_binder(object, char_ini)
 
 	action = action_state_talk (object:name(),"meet_state_talk", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
+	action:add_precondition		(world_property(properties["wound"],		false))
 	action:add_precondition		(world_property(properties["need_exit"],	false))
 	action:add_precondition		(world_property(properties["state_talk"], 	true))
 	action:add_effect 		(world_property(properties["state_talk"], 		false))
