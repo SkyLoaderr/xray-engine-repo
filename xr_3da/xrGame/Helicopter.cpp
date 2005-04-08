@@ -405,15 +405,16 @@ void CHelicopter::UpdateCL()
 		MoveStep();
 		m_stepRemains-=STEP;
 	}
-
-	CGameFont* F		= UI()->Font()->pFontDI;
-	F->SetAligment		(CGameFont::alCenter);
-	F->SetSizeI			(0.02f);
-	F->OutSetI			(0.f,-0.8f);
-	F->SetColor			(0xffffffff);
-	F->OutNext			("Heli: speed=%4.4f acc=%4.4f",m_movement.curLinearSpeed, m_movement.curLinearAcc);
-
-
+#ifdef DEBUG
+	if(bDebug){
+		CGameFont* F		= UI()->Font()->pFontDI;
+		F->SetAligment		(CGameFont::alCenter);
+		F->SetSizeI			(0.02f);
+		F->OutSetI			(0.f,-0.8f);
+		F->SetColor			(0xffffffff);
+		F->OutNext			("Heli: speed=%4.4f acc=%4.4f",m_movement.curLinearSpeed, m_movement.curLinearAcc);
+	}
+#endif
 
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
