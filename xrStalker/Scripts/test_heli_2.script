@@ -28,7 +28,7 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
 --      return --already on attack trajectory
 --   end
 
-	self.m_heliObject:SetEnemy(nil)
+	self.m_heliObject:ClearEnemy(nil)
 	
    local enemy = level.object_by_id( hitter_id )
    if enemy == nil then 
