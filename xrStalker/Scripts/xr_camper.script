@@ -102,7 +102,7 @@ function action_patrol:execute()
     end
     
 	--' Находимся ли мы недалеко от своей позиции
-    self:on_place ()
+    --self:on_place ()
     
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
@@ -160,7 +160,7 @@ function action_patrol:execute()
 			self.enemy_position = self.enemy:position()
 		else
 			-- если норетрит или мы на месте - ныкаться, иначе идти на точку
-			if on_place() then 
+			if self:on_place() then 
 				if self.a.suggested_state.campering then
 					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
 				else
@@ -170,7 +170,7 @@ function action_patrol:execute()
 				state_mgr.set_state(self.object, "sneak", nil, nil)
 			end		
 
-//			if on_place() then 
+//			if self:on_place() then 
 //				if self.a.suggested_state.campering then
 //					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 //				else
