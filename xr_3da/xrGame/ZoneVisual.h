@@ -4,8 +4,8 @@ class CVisualZone :
 	public CCustomZone
 {
 	typedef				CCustomZone		inherited	;
-	shared_str			m_idle_animation			;
-	shared_str			m_attack_animation			;
+	MotionID			m_idle_animation			;
+	MotionID			m_attack_animation			;
 	u32					m_dwAttackAnimaionStart		;
 	u32					m_dwAttackAnimaionEnd		;
 public:

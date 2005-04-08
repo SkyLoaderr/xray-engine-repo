@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CustomZone.h"
+#include "../SkeletonAnimated.h"
 #include "ZoneVisual.h"
 #include "HairsZone.h"
 #include "hudmanager.h"
