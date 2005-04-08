@@ -1574,6 +1574,9 @@
 					Name="Binders"
 					Filter="">
 					<File
+						RelativePath=".\Scripts\bind_heli.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\bind_monster.script">
 					</File>
 					<File
@@ -1710,6 +1713,13 @@
 						Filter="">
 						<File
 							RelativePath=".\scripts\fx_sound.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Helicopter"
+						Filter="">
+						<File
+							RelativePath=".\Scripts\heli_move.script">
 						</File>
 					</Filter>
 				</Filter>
