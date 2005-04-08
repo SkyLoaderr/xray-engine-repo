@@ -102,7 +102,7 @@ function action_patrol:execute()
     end
     
 	--' Ќаходимс€ ли мы недалеко от своей позиции
-    if self:on_place () == false then return end
+    self:on_place ()
     
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
