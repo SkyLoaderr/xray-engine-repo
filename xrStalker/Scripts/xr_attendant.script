@@ -147,8 +147,8 @@ function action_follow:execute ()
     -- проверим, а жив ли еще старшќй.
     local leader = level.object_by_id(self.st.leader_id)
     if leader == nil or leader:alive () == false then
-       self:free ()
        self.st.signals["leader_dead"] = true
+       self:free ()
        return 
     end 
     -- проверим нахождение нас в списке
