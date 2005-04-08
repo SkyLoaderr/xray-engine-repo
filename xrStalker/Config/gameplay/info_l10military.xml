@@ -2,6 +2,10 @@
 
 <game_information_portions>
 	
+	<!-- Избиение патруля Свободы -->
+	<info_portion id="mil_actor_nearest"></info_portion>
+	<info_portion id="mil_patrol_kill_continue"></info_portion>
+	
 	<!-- Атака Долга -->
 	<info_portion id="mil_sniper1_dead"></info_portion>
 	<info_portion id="mil_sniper2_dead"></info_portion>
