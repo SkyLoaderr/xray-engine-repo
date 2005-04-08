@@ -2,7 +2,7 @@ local t
 
 function loadJob(sj, gname, type, squad, groups)
 	if type == "test" then
-		t = { section = "logic@walker1",
+--[[		t = { section = "logic@walker1",
 			idle = 0,
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""
@@ -19,7 +19,23 @@ function loadJob(sj, gname, type, squad, groups)
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""
 		}
-		table.insert(sj, t)
+		table.insert(sj, t)]]
+		t = { section = "logic@esc_blockpost_patrol1",
+			idle = 4 * 1000 * 60 * 60,
+			prior = 8, state = {0,1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			predicate = function(obj) 
+			            	return obj:profile_name() == "soldier_military"
+			            end
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@esc_blockpost_follower1",
+			idle = 4 * 1000 * 60 * 60,
+			prior = 7, state = {0,1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader = "logic@esc_blockpost_patrol1"
+		}
+		table.insert(sj, t)		
 	end
 
 	if type == "test1" then
@@ -478,7 +494,7 @@ function loadStates(gname, type)
 				if enemy ~= nil then
 --					level.check_object(enemy)
 --					printf("%s",enemy:name())
-					printf	("stalker %s asked for the enemy clsid",v:name())
+--					printf	("stalker %s asked for the enemy clsid",v:name())
 					enemy_type = get_clsid(enemy)
 					if enemy_type == clsid.actor or
 	  	   			   enemy_type == clsid.soldier or
