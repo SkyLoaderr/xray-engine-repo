@@ -44,3 +44,9 @@ function actor_has_object(actor, obj_name)
 	return actor:object(obj_name) ~= nil
 end
 
+function esc_vagon_all_dead()
+	local o1 = level_object_by_sid( 12 ) --"esc_vagon_newbie1"
+	local o2 = level_object_by_sid( 13 ) --"esc_vagon_newbie2"
+
+	return ( o1 ~= nil and not o1:alive() ) and ( o2 ~= nil and not o2:alive() )
+end
