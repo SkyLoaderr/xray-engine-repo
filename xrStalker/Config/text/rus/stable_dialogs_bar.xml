@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="bar_svoboda_volkodav_kill_research_0">
-        <text>Я себя тоже люблю.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_1">
-        <text>Итак, где информация?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_11">
-        <text>Вот она. Держи, как договаривались.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_111">
-        <text>Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_12">
-        <text>Я трупы не шмонаю. Сам этим занимайся.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_121">
-        <text>Какие мы гордые. Ладно, будем считать, что ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-
     <string id="bar_arena_manager_game_0">
         <text>Я хочу сразиться. Кто у тебя на этот раз?</text>
     </string>
@@ -860,7 +841,7 @@
         <text>Я выполнил свою миссию - лидер Свободы убит, вот его личные вещи.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_finish_1">
-        <text>Невероятно, Меченый. Ты уничтожил лидера анархистов Свободы. Это приведет к скорому распаду группировки. Война еще не закончена, но исход ее уже предрешен. Твоя заслуга очень велика, мы этого не забудем. За твои заслуги перед Долгам, я повышаю тебя в звании до мастера Долга. Иди к Петренко, он выдаст тебе награду.</text>
+        <text>Невероятно, Меченый. Ты уничтожил лидера анархистов Свободы. Это приведет к скорому распаду группировки. Война еще не закончена, но исход ее уже предрешен. Твоя заслуга очень велика, мы этого не забудем. За твои заслуги перед Долгом, я повышаю тебя в звании до мастера Долга. Иди к Петренко, он выдаст тебе награду.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_start_0">
         <text>Какие мои текущие задачи?</text>
@@ -964,6 +945,39 @@
     <string id="bar_dolg_zastava_21">
         <text>О, привет старик! Рад, что тебя еще мутанты не сожрали.</text>
     </string>
+    <string id="bar_dolg_zavskald_reward_0">
+        <text>Ну уж точно не альтруизм.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_1">
+        <text>Я догадываюсь, явно чего-то хочешь.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_11">
+        <text>А что, Воронин тебе еще ничего не рассказал?</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_111">
+        <text>Наслышан, ты завалил Борова. Ну что же, тебе полагается премия и хороший ствол. Не опозорь честное оружие.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_1111">
+        <text>Не беспокойся за меня.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_12">
+        <text>А что, Воронин тебе еще ничего не рассказал?</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_121">
+        <text>Да, Тиран был бельмом у нас на глазу долгое время. Рад, что ты его пристрелил. Вот премиальные и вот "Гроза" - наше фирменное оружие.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_1211">
+        <text>Да уж, неплохо. Ну я пошел на дальнейшие подвиги, счастливо оставаться.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_13">
+        <text>А что, Воронин тебе еще ничего не рассказал?</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_131">
+        <text>Поздравляю, завалить лидера Свободы - это круто. Ты честно заслужил свою награду. Хотел бы я быть таким крутым как ты.</text>
+    </string>
+    <string id="bar_dolg_zavskald_reward_1311">
+        <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
+    </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
     </string>
@@ -1051,8 +1065,7 @@
     <string id="bar_svoboda_dialog_0">
         <text>Подойди к Волкодаву, нашему старшему, у него к тебе дело есть.</text>
     </string>
-    
-<string id="bar_svoboda_volkodav_give_quest_dp_0">
+    <string id="bar_svoboda_volkodav_give_quest_dp_0">
         <text>Почему я должен вам помогать?</text>
     </string>
     <string id="bar_svoboda_volkodav_give_quest_dp_1">
@@ -1082,8 +1095,7 @@
     <string id="bar_svoboda_volkodav_give_quest_dp_1111121">
         <text>Тогда не путайся под ногами, скоро здесь будет жарко.</text>
     </string>
-    
-<string id="bar_svoboda_volkodav_info_dp_0">
+    <string id="bar_svoboda_volkodav_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1">
@@ -1140,9 +1152,25 @@
     <string id="bar_svoboda_volkodav_info_dp_14">
         <text>Я передумал.</text>
     </string>
-
-    
-<string id="bar_svoboda_volkodav_noquest_0">
+    <string id="bar_svoboda_volkodav_kill_research_0">
+        <text>Я себя тоже люблю.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_1">
+        <text>Итак, где информация?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_11">
+        <text>Вот она. Держи, как договаривались.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_111">
+        <text>Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_12">
+        <text>Я трупы не шмонаю. Сам этим занимайся.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_kill_research_121">
+        <text>Какие мы гордые. Ладно, будем считать, что ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_0">
         <text>Флешка?</text>
     </string>
     <string id="bar_svoboda_volkodav_noquest_1">
@@ -1178,8 +1206,7 @@
     <string id="bar_svoboda_volkodav_noquest_121">
         <text>Информация, которая интересует только нас. Тебя она не касается. В общем, не смею тебя задерживать. Счастливо.</text>
     </string>
-
-<string id="bar_svoboda_volkodav_request_dp_0">
+    <string id="bar_svoboda_volkodav_request_dp_0">
         <text>По поводу задания.</text>
     </string>
     <string id="bar_svoboda_volkodav_request_dp_1">
@@ -1206,8 +1233,7 @@
     <string id="bar_svoboda_volkodav_request_dp_131">
         <text>Ну ладно. Мы разгребем эту ситуацию, но ты упустил свой шанс, добиться благосклонности Свободы</text>
     </string>
-
-<string id="bar_svoboda_volkodav_start_11">
+    <string id="bar_svoboda_volkodav_start_11">
         <text>Здоров, одиночка. Я - Волкодав, вожак этих псов. И мне кажется, ты можешь нам помочь.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_21">
@@ -1222,7 +1248,6 @@
     <string id="bar_svoboda_volkodav_start_51">
         <text>Здорово, мужик. Нам тут одна штука нужна, небольшая такая флешка. Ты случайно ее не находил?</text>
     </string>
-
     <string id="barman_dialog_0">
         <text>default text</text>
     </string>
