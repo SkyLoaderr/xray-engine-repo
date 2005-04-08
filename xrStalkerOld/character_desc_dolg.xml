@@ -400,11 +400,13 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck \n
+			scientific_outfit \n
 		</supplies>
 		
 		<start_dialog>bar_dolg_petrenko_start</start_dialog>
 		<actor_dialog>bar_dolg_petrenko_join</actor_dialog>
 		<actor_dialog>bar_dolg_petrenko_talk</actor_dialog>
+		<actor_dialog>bar_dolg_zavskald_reward</actor_dialog>
 	</specific_character>	
 
 <!---------------------------DOLG IVANCOV---------------------->
