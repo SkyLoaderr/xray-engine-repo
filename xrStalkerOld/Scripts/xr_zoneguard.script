@@ -146,15 +146,21 @@ end
 
 function action_zoneguard_activity:stand_still(actor)
 	local sug_body_state = self:get_sug_body_state(actor)
+	local snd
+	if self.st.snd_anim_sync and self.st.snd_greet then
+		snd = self.st.snd_greet
+	else
+		snd = nil
+	end
 	if self.st.anim then
 		state_mgr.set_state(self.object, self.st.anim, nil, nil,
-			{ look_object = actor }, {animation = true})
+			{ look_object = actor }, {animation = true}, snd)
 	else
 		state_mgr.set_state(self.object,
 			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
 			nil,
 			nil,
-			{ look_object = actor }, {animation = true})
+			{ look_object = actor }, {animation = true}, snd)
 	end
 end
 	
@@ -235,6 +241,8 @@ function action_zoneguard_activity:fsm_step()
 	if self.sound_activated and distance_between(self.object, actor) <= 5 then
 		--printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
 		xr_sound.set_sound(self.object, self.snd.themes)
+	else
+		xr_sound.set_sound(self.object, nil)
 	end
 	
 	local see_actor = self.object:see(actor)
@@ -400,6 +408,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.ignore_cond = xr_logic.cfg_get_condlist (ini, section, "ignore_cond",    npc)
 	st.no_danger = utils.cfg_get_bool          (ini, section, "no_danger",      npc, false)
 	st.anim = utils.cfg_get_string             (ini, section, "anim",           npc, false, "")
+	st.snd_anim_sync = utils.cfg_get_bool      (ini, section, "snd_anim_sync",  npc, false)
 	--printf("_bp: st.anim == %s", st.anim)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
