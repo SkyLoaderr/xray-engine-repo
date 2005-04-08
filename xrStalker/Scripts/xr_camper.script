@@ -102,20 +102,8 @@ function action_patrol:execute()
     end
     
 	--' Ќаходимс€ ли мы недалеко от своей позиции
-	function on_place()
-		if self.a.no_retreat == true then return false end
-	
-		local path = patrol(self.a.path_walk)
-		if path ~= nil then
-			for k = 0, path:count() - 1 do
-				if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
-					return true
-				end
-			end
-			return false
-		end
-	end
-
+    if self:on_place () == false then return end
+    
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
 		if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
@@ -201,6 +189,19 @@ end
 function action_patrol:finalize()
 	self.move_mgr:finalize()
 	action_base.finalize (self)
+end
+function action_patrol:on_place()
+    if self.a.no_retreat == true then return false end
+	
+	local path = patrol(self.a.path_walk)
+	if path ~= nil then
+		for k = 0, path:count() - 1 do
+			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
+				return true
+			end
+		end
+		return false
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
