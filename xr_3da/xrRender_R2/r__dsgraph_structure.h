@@ -59,16 +59,17 @@ public:
 	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTextures;
 	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTexturesTemp;
 
-	xr_vector<R_dsgraph::_LodItem>								lstLODs;
+	xr_vector<R_dsgraph::_LodItem>								lstLODs		;
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
-	xr_vector<ISpatial*>										lstSpatial;
-	xr_vector<IRender_Visual*>									lstVisuals;
+	xr_vector<ISpatial*>										lstSpatial	;
+	xr_vector<IRender_Visual*>									lstVisuals	;
 
-	xr_vector<IRender_Visual*>									lstRecorded;
+	xr_vector<IRender_Visual*>									lstRecorded	;
 
-	u32															counter_S;
-	u32															counter_D;
+	u32															counter_S	;
+	u32															counter_D	;
+	BOOL														b_loaded	;
 public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
@@ -81,16 +82,17 @@ public:
 public:
 	R_dsgraph_structure	()
 	{
-		val_pObject			= NULL;
-		val_pTransform		= NULL;
-		val_bHUD			= FALSE;
-		val_bInvisible		= FALSE;
-		val_bRecordMP		= FALSE;
+		val_pObject			= NULL	;
+		val_pTransform		= NULL	;
+		val_bHUD			= FALSE	;
+		val_bInvisible		= FALSE	;
+		val_bRecordMP		= FALSE	;
 		val_feedback		= 0;
 		val_feedback_breakp	= 0;
 		val_recorder		= 0;
 		marker				= 0;
 		r_pmask				(true,true);
+		b_loaded			= FALSE	;
 	};
 
 	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}

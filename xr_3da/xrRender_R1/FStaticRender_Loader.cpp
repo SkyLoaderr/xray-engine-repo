@@ -8,6 +8,7 @@
 void CRender::level_Load(IReader* fs)
 {
 	R_ASSERT			(0!=g_pGameLevel);
+	R_ASSERT			(!b_loaded);
 
 	// Begin
 	pApp->LoadBegin					();
@@ -82,13 +83,15 @@ void CRender::level_Load(IReader* fs)
 
 	// End
 	pApp->LoadEnd				();
+	b_loaded					= TRUE	;
 }
 
 void CRender::level_Unload		()
 {
 	if (0==g_pGameLevel)		return;
+	if (!b_loaded)				return;
 
-	u32 I;
+	u32							I;
 
 	// HOM
 	HOM.Unload					();
@@ -140,6 +143,8 @@ void CRender::level_Unload		()
 
 	//*** Shaders
 	Shaders.clear_and_free		();
+
+	b_loaded					= FALSE;
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)
