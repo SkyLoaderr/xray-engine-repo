@@ -1052,4 +1052,18 @@ function IsStalker (object)
        return true 
     end
     return false
-end    
+end
+
+function level_object_by_sid( sid )
+	local sim = alife()
+
+	if sim then
+		local se_obj = sim:story_object( sid )
+		if se_obj then
+			return level.object_by_id( se_obj.id )
+		end
+	end
+
+	return nil
+end
+   
