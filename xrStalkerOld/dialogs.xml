@@ -72,7 +72,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="actor_help_wounded">
+    <dialog id="actor_help_wounded" priority="10">
         <precondition>dialogs.dialog_not_disable</precondition>
         <precondition>dialogs.is_opp_wounded</precondition>
         <phrase_list>
@@ -126,7 +126,8 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="companion_release_dialog">
+    <dialog id="companion_release_dialog" priority="7">
+		<precondition>dialogs.is_companion</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>companion_release_dialog_0</text>
@@ -138,7 +139,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="companion_hire_dialog">
+    <dialog id="companion_hire_dialog" priority="8">
         <precondition>dialogs.not_is_companion</precondition>
         <phrase_list>
             <phrase id="2">
@@ -157,7 +158,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="companion_management_dialog" priority="10">
+    <dialog id="companion_management_dialog" priority="8">
         <precondition>dialogs.is_companion</precondition>
         <phrase_list>
             <phrase id="17">
