@@ -6,6 +6,7 @@
 #include "../xr_IOConsole.h"
 #include "../IGame_Level.h"
 #include "xr_Level_controller.h"
+#include <dinput.h>
 
 
 extern CUICursor*	GetUICursor(){return UI()->GetUICursor();};
@@ -188,6 +189,7 @@ static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
 void	CMainUI::IR_OnMousePress				(int btn)	
 {	
 	if(!IsActive()) return;
+
 	IR_OnKeyboardPress(mouse_button_2_key[btn]);
 };
 
@@ -216,6 +218,17 @@ void	CMainUI::IR_OnMouseStop					(int x, int y)
 void	CMainUI::IR_OnKeyboardPress				(int dik)
 {
 	if(!IsActive()) return;
+
+	if(key_binding[dik]== kCONSOLE){
+		Console->Show();
+		return;
+	}
+	if (DIK_F12 == dik){
+		Render->Screenshot();
+		return;
+	}
+
+
 	MainInputReceiver()->IR_OnKeyboardPress( dik);
 };
 
