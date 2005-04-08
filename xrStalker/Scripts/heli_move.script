@@ -29,6 +29,8 @@ end
 function heli_move:reset_scheme()
 	printf("heli_move: reset_scheme: %s", self.object:name())
 
+	self.heliObject:TurnEngineSound( self.a.engine_sound )
+
 	self.patrol_move = patrol(self.a.path_move)
 	if not self.patrol_move then
 		utils.abort("object '%s': unable to find path_move '%s' on the map",
@@ -278,22 +280,23 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 
-function add_to_binder(npc, ini, scheme, section, storage)
-	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+function add_to_binder( npc, ini, scheme, section, storage )
+	printf( "DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section )
 
-	local new_action = heli_move(npc, storage)
+	local new_action = heli_move( npc, storage )
 
 	-- «арегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
-	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+	xr_logic.subscribe_action_for_events( npc, storage, new_action )
 end
 
 function set_scheme( npc, ini, scheme, section )
-	local a = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 
-	a.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	a.logic = xr_logic.cfg_get_switch_conditions( ini, section, npc )
 
-	a.path_move       = utils.cfg_get_string(ini, section, "path_move", npc, true,  "" )
-	a.path_look       = utils.cfg_get_string(ini, section, "path_look", npc, false, "" )
+	a.path_move       = utils.cfg_get_string( ini, section, "path_move",    npc, true,  ""   )
+	a.path_look       = utils.cfg_get_string( ini, section, "path_look",    npc, false, ""   )
+	a.engine_sound    = utils.cfg_get_bool  ( ini, section, "engine_sound", npc, false, true )
 
 	a.path_move_info = nil -- Ѕудут инициализированы в reset(), сейчас пути могут быть еще
 	a.path_look_info = nil -- не загружены.
