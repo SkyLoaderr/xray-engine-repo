@@ -417,15 +417,30 @@ void CUIMainIngameWnd::Draw()
 		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor)
 			return;
-		if(pActor->cam_Active()==pActor->cam_FirstEye())
+
+		bool bCamFirstEye = pActor->cam_Active()==pActor->cam_FirstEye();
+//		string32 hud_view="HUD view";
+//		string32 _3rd_person_view="3-rd person view";
+		CGameFont* F		= UI()->Font()->pFontDI;
+		F->SetAligment		(CGameFont::alCenter);
+		F->SetSizeI			(0.02f);
+		F->OutSetI			(0.f,-0.8f);
+		F->SetColor			(0xffffffff);
+		F->OutNext			("Hud_adjust_mode=%d",g_bHudAdjustMode);
+		if(g_bHudAdjustMode==1)
+			F->OutNext			("adjusting zoom offset");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode==2)
+			F->OutNext			("adjusting fire point");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode==3)
+			F->OutNext			("adjusting missile offset");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode==4)
+			F->OutNext			("adjusting shell point");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+
+		if(bCamFirstEye)
 		{
-//------------
 			CWeaponHUD *pWpnHud = NULL;
 			pWpnHud = m_pWeapon->GetHUD();
 
-//			Fvector FP = pWpnHud->FirePoint();
-//			Fvector SP = pWpnHud->ShellPoint();
-//------------
 			Fvector FP,SP;//,FP2;
 
 			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
@@ -436,15 +451,11 @@ void CUIMainIngameWnd::Draw()
 			Fmatrix& parent			= pWpnHud->Transform	();
 
 			Fvector& fp				= pWpnHud->FirePoint();
-//			Fvector& fp2			= pWpnHud->FirePoint2();
 			Fvector& sp				= pWpnHud->ShellPoint();
 
 			fire_mat.transform_tiny	(FP,fp);
 			parent.transform_tiny	(FP);
 
-//			fire_mat.transform_tiny	(FP2,fp2);
-//			parent.transform_tiny	(FP2);
-		
 			fire_mat.transform_tiny	(SP,sp);
 			parent.transform_tiny	(SP);
 
@@ -725,6 +736,8 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 	// поддержка режима adjust hud mode
 	if (g_bHudAdjustMode)
 	{
+//		bool bCamFirstEye = pActor->cam_Active()==pActor->cam_FirstEye();
+
 		CWeaponHUD *pWpnHud = NULL;
 		if (m_pWeapon)
 		{
@@ -737,7 +750,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		Fvector tmpV;
 		bool flag = false;
 
-		if (1 == g_bHudAdjustMode)
+		if (1 == g_bHudAdjustMode) //zoom offset
 		{
 			tmpV = pWpnHud->ZoomOffset();
 
@@ -799,10 +812,11 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				sprintf(tmpStr, "%s",
 					*m_pWeapon->cNameSect());
 				Log(tmpStr);
-				sprintf(tmpStr, "zoom_offset\t\t\t= %f,%f,%f",
-					pWpnHud->ZoomOffset().x,
-					pWpnHud->ZoomOffset().y,
-					pWpnHud->ZoomOffset().z);
+
+					sprintf(tmpStr, "zoom_offset\t\t\t= %f,%f,%f",
+						pWpnHud->ZoomOffset().x,
+						pWpnHud->ZoomOffset().y,
+						pWpnHud->ZoomOffset().z);
 				Log(tmpStr);
 				sprintf(tmpStr, "zoom_rotate_x\t\t= %f",
 					pWpnHud->ZoomRotateX());
@@ -817,10 +831,10 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			if (tmpV.x || tmpV.y || tmpV.z)
 				pWpnHud->SetZoomOffset(tmpV);
 		}
-		else if (2 == g_bHudAdjustMode)
+		else if (2 == g_bHudAdjustMode) //firePoint
 		{
 			tmpV = pWpnHud->FirePoint();
-
+		
 			switch (dik)
 			{
 				// Shift +x
@@ -867,7 +881,6 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 					pWpnHud->FirePoint().x,
 					pWpnHud->FirePoint().y,
 					pWpnHud->FirePoint().z);
-
 				Log(tmpStr);
 				flag = true;
 				break;
@@ -875,7 +888,64 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		
 			pWpnHud->SetFirePoint(tmpV);
 		}
-		else
+		else if (4 == g_bHudAdjustMode) //ShellPoint
+		{
+			tmpV = pWpnHud->ShellPoint();
+
+			switch (dik)
+			{
+				// Shift +x
+			case DIK_A:
+				tmpV.y += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -x
+			case DIK_D:
+				tmpV.y -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +z
+			case DIK_Q:
+				tmpV.x += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -z
+			case DIK_E:
+				tmpV.x -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +y
+			case DIK_S:
+				tmpV.z += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -y
+			case DIK_W:
+				tmpV.z -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// output coordinate info to the console
+			case DIK_P:
+				string256 tmpStr;
+				if (m_pWeapon)
+				{
+					sprintf(tmpStr, "%s",
+						*m_pWeapon->cNameSect());
+					Log(tmpStr);
+				}
+
+				sprintf(tmpStr, "shell_point\t\t\t= %f,%f,%f",
+					pWpnHud->ShellPoint().x,
+					pWpnHud->ShellPoint().y,
+					pWpnHud->ShellPoint().z);
+				Log(tmpStr);
+				flag = true;
+				break;
+			}
+		
+			pWpnHud->SetShellPoint(tmpV);
+		}
+		else if (3 == g_bHudAdjustMode) //MissileOffset
 		{
 			CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 

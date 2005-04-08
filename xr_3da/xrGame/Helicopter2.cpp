@@ -137,14 +137,15 @@ float CHelicopter::GetDistanceToDestPosition()
 	return m_movement.GetDistanceToDestPosition();
 }
 
+void CHelicopter::UnSetEnemy()
+{
+	m_enemy.type		= eEnemyNone;
+}
+
 void CHelicopter::SetEnemy(CScriptGameObject* e)
 {
-	if(NULL==e)
-		m_enemy.type		= eEnemyNone;
-	else{
-		m_enemy.type		= eEnemyEntity;
-		m_enemy.destEnemyID = e->ID();
-	}
+	m_enemy.type		= eEnemyEntity;
+	m_enemy.destEnemyID = e->ID();
 }
 
 void CHelicopter::SetEnemy(Fvector* pos)

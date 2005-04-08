@@ -272,6 +272,7 @@ public:
 
 	void					SetEnemy						(CScriptGameObject* e);
 	void					SetEnemy						(Fvector* pos);
+	void					UnSetEnemy						();
 
 	float					GetRealAltitude					();
 

@@ -69,6 +69,7 @@ void CHelicopter::script_register(lua_State *L)
 				
 				.def("GetDistanceToDestPosition",			&CHelicopter::GetDistanceToDestPosition)
 
+				.def("ClearEnemy",							&CHelicopter::UnSetEnemy)
 				.def("SetEnemy",							(void (CHelicopter::*)(CScriptGameObject*)) CHelicopter::SetEnemy)
 				.def("SetEnemy",							(void (CHelicopter::*)(Fvector*)) CHelicopter::SetEnemy)
 				.def("GoPatrolByPatrolPath",				&CHelicopter::goPatrolByPatrolPath)
