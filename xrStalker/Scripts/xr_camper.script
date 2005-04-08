@@ -86,7 +86,7 @@ function action_patrol:reset_scheme()
 		utils.path_parse_waypoints(self.a.path_walk),
 		self.a.path_look,
 		utils.path_parse_waypoints(self.a.path_look),
-		nil,nil,{obj=self,func=self.process_point})
+		nil,self.a.suggested_state,{obj=self,func=self.process_point})
 	self.was_reset = true
 	printf("reset for %s", self.object:name())
 end
@@ -246,7 +246,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
 	st.suggested_state = {}
-	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
+	st.suggested_state.moving1 = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
