@@ -451,6 +451,7 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck \n
+			dolg_outfit \n
 		</supplies>
 		
 		<start_dialog>bar_dolg_leader_start</start_dialog>
