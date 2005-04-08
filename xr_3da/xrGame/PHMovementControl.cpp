@@ -536,26 +536,56 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 	return;
 }
 
-void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelPathPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
+void		CPHMovementControl::CorrectPathDir			(const Fvector &real_path_dir,const xr_vector<DetailPathManager::STravelPathPoint> & path,int index,Fvector &corrected_path_dir)
+{
+	const float epsilon=0.1f;
+	float plane_motion=dXZMag(real_path_dir);
+	if(fis_zero(plane_motion,epsilon))
+	{
+		if(!fis_zero(plane_motion,EPS))
+		{
+			corrected_path_dir.set(real_path_dir);
+			corrected_path_dir.y=0.f;
+			corrected_path_dir.mul(1.f/plane_motion);
+		}
+		else if(index!=m_path_size-1)
+		{
+			corrected_path_dir.sub(path[index+1].position,path[index].position);
+			corrected_path_dir.normalize_safe();
+			CorrectPathDir(corrected_path_dir,path,index+1,corrected_path_dir);
+		}
+		else 
+		{
+			corrected_path_dir.set(real_path_dir);
+		}
+	}
+	else
+	{
+		corrected_path_dir.set(real_path_dir);
+	}
+}
+void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 
 	Fvector to_path_point;
+	Fvector corrected_path_dir;CorrectPathDir(vPathDir,path,index,corrected_path_dir);
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 	if(mag<EPS)
 	{
-	dir.set(vPathDir);
+	dir.set(corrected_path_dir);
 	return;
 	}
 	to_path_point.mul(1.f/mag);
 	to_path_point.mul(distance*precesition);
-	dir.add(vPathDir,to_path_point);
+	dir.add(corrected_path_dir,to_path_point);
 	dir.normalize_safe();
 }
 
 void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point,tangent;
+	Fvector corrected_path_dir;CorrectPathDir(vPathDir,path,index,corrected_path_dir);
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 
@@ -563,12 +593,12 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	{  
 		if(0==index||m_path_size-1==index) //on path eidge
 		{
-			dir.set(vPathDir);//??
+			dir.set(corrected_path_dir);//??
 			return;
 		}
 		dir.sub(path[index].position,path[index-1].position);
 		dir.normalize_safe();
-		dir.add(vPathDir);
+		dir.add(corrected_path_dir);
 		dir.normalize_safe();
 	}
 	to_path_point.mul(1.f/mag);
@@ -579,7 +609,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	return;
 	}
 
-	tangent.crossproduct(to_path_point,vPathDir);//for basis
+	tangent.crossproduct(to_path_point,corrected_path_dir);//for basis
 	Fmatrix basis,inv_basis;
 	basis.i.set(tangent);
 	Fvector::generate_orthonormal_basis(basis.i,basis.j,basis.k);
@@ -587,7 +617,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	inv_basis.set(basis);
 	inv_basis.transpose();
 	Fvector dir_in_b,tpathp_in_b,tangent_in_b;
-	inv_basis.transform_dir(dir_in_b,vPathDir);
+	inv_basis.transform_dir(dir_in_b,corrected_path_dir);
 	inv_basis.transform_dir(tpathp_in_b,to_path_point);
 
 
@@ -595,11 +625,11 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	if(0 != index) {
 		dir.sub(path[index].position,path[index-1].position);
 		dir.normalize_safe();
-		dir.add(vPathDir);
+		dir.add(corrected_path_dir);
 		dir.normalize_safe();
 	}
 	else {
-		dir.set(vPathDir);
+		dir.set(corrected_path_dir);
 	}
 
 	//build perpendicular in j - k plane

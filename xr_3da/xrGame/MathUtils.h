@@ -19,7 +19,14 @@ IC const Fvector &cast_fv(const float* fp)
 {
 	return *((const Fvector*)fp);
 }
-
+IC  float	dXZMag(const float* v)
+{
+	return _sqrt(v[0]*v[0]+v[2]*v[2]);
+}
+IC float	dXZMag(const Fvector &v)
+{
+	return dXZMag(cast_fp(v));
+}
 IC	float	dXZDot(const float* v0,const float* v1)
 {
 	return v0[0]*v1[0]+v0[2]*v1[2];
