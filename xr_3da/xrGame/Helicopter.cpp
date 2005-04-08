@@ -279,6 +279,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	m_light_render->set_color			(m_light_color);
 
 	if(g_Alive())processing_activate	();
+	TurnEngineSound(false);
 	return								(TRUE);
 }
 
