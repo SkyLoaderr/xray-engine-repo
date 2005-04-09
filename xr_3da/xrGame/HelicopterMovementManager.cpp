@@ -25,6 +25,19 @@ void SHeliMovementState::Update()
 			NODEFAULT;
 	};
 }
+
+void SHeliMovementState::reinit()
+{
+	type						= eMovNone;
+	currPatrolPath				= NULL;
+	currPatrolVertex			= NULL;
+	patrol_begin_idx			= 0;
+	patrol_path_name			= "";
+	need_to_del_path			= false;
+	currP.set					(0.0f,0.0f,0.0f);
+	currPathH					= 0.0f;
+	currPathP					= 0.0f;
+}
 float SHeliMovementState::GetDistanceToDestPosition()
 {
 	return desiredPoint.distance_to(currP);

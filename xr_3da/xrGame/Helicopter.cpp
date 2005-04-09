@@ -179,6 +179,10 @@ void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGa
 
 BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 {
+	m_movement.reinit	();
+	m_body.reinit		(); 
+	m_enemy.reinit		();
+
 	SetfHealth(100.0f);
 	setState(CHelicopter::eAlive);
 	m_flame_started					=false;
@@ -296,6 +300,11 @@ void CHelicopter::net_Destroy()
 	if(m_pParticle)m_pParticle->PSI_destroy			();
 	m_pParticle							= NULL;
 	m_light_render.destroy				();
+	if(m_movement.need_to_del_path&&m_movement.currPatrolPath){
+		CPatrolPath* tmp = const_cast<CPatrolPath*>(m_movement.currPatrolPath);
+		xr_delete( tmp );
+	}
+
 }
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	

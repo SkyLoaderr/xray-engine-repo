@@ -23,6 +23,7 @@ struct SHeliEnemy{
 	EHeliHuntState					type;
 	Fvector							destEnemyPos;
 	u32								destEnemyID;
+	void reinit						();
 	void Update						();
 };
 
@@ -42,6 +43,7 @@ struct SHeliBodyState{
 
 	bool							b_looking_at_point;
 	Fvector							looking_point;
+	void		reinit				();
 	void		LookAtPoint			(Fvector point, bool do_it);
 };
 
@@ -56,7 +58,6 @@ struct SHeliMovementState{
 	int								patrol_begin_idx;
 	shared_str						patrol_path_name;
 	bool							need_to_del_path;
-	bool							need_to_call_callback;
 
 	float							maxLinearSpeed;
 	float							LinearAcc_fw;
@@ -81,6 +82,7 @@ struct SHeliMovementState{
 
 	float							onPointRangeDist;
 
+	void	reinit						();
 	void	Update						();
 	void	UpdateMovToPoint			();
 	void	UpdatePatrolPath			();

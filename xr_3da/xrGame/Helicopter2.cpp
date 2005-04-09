@@ -298,7 +298,13 @@ void CHelicopter::DieHelicopter()
 	processing_deactivate();
 	m_dead = true;
 }
+void SHeliEnemy::reinit()
+{
+	type			=eEnemyNone;
+	destEnemyPos.set(0.0f,0.0f,0.0f);
+	destEnemyID		=u32(-1);
 
+}
 void SHeliEnemy::Update()
 {
 	switch(type){
@@ -313,6 +319,14 @@ void SHeliEnemy::Update()
 		default:
 			NODEFAULT;
 	};
+}
+
+void SHeliBodyState::reinit()
+{
+	type = eBodyByPath;
+	currBodyH=currBodyP=currBodyB= 0.0f;
+	b_looking_at_point = false;
+	looking_point.set(0.0f,0.0f,0.0f);
 }
 
 void SHeliBodyState::LookAtPoint			(Fvector point, bool do_it)
