@@ -802,6 +802,9 @@
 					Name="ALifeStuff"
 					Filter="">
 					<File
+						RelativePath=".\alife_space.cpp">
+					</File>
+					<File
 						RelativePath=".\alife_space.h">
 					</File>
 					<File
