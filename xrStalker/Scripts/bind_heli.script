@@ -43,6 +43,10 @@ function heli_binder:reinit()
 	self.object:set_callback( callback.helicopter_on_hit,   self.on_hit,   self )
 
 	self.st.heli_ltx = heli_ltx
+
+	-- на случай загрузки
+	self.last_alt       = self.heliObject:GetRealAltitude()
+	self.alt_check_time = device():time_global() + 1000
 end
 
 function heli_binder:update( delta )
@@ -59,37 +63,33 @@ function heli_binder:update( delta )
 		xr_logic.issue_event( self.object, self.st[self.st.active_scheme], "update", delta )
 	end
 
---	self:check_health()
+	self:check_health()
 end
 
 function heli_binder:check_health()
-	local health = self.heliObject:GetfHealth()
+	local heli = self.heliObject
 
-	
--------------------------------------------------------------------------------------
-	local health = self.heliObject:GetfHealth()
+	printf( "heli health: %d", heli:GetfHealth() )
 
-	if self.b_prepared_to_die == false and state ~= CHelicopter.eDead and health < 30.0 then
-		self.b_prepared_to_die = true
-		self.heliObject:PrepareDie()
-		printf( "[heli] prepare to die" )
-	end
+	if not heli.m_dead then
+		local health = heli:GetfHealth()
 
-	if state ~= CHelicopter.eDead and health <= 0.5 and not self.not_die then
-		printf( "[heli] DIE" )
-		self.heliObject:Die()
+		if health < 30 and not heli.m_flame_started then
+			heli:StartFlame()
+		end
 
-		self.last_alt       = self.heliObject:GetRealAltitude()
-		self.alt_check_time = device():time_global() + 1000
-	end
+		if health <= 0.5 then
+			heli:Die()
 
-	if state == CHelicopter.eDead then
+			self.last_alt       = self.heliObject:GetRealAltitude()
+			self.alt_check_time = device():time_global() + 1000
+		end
+	elseif not heli.m_exploded then
 		-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
-		altitude = self.heliObject:GetRealAltitude()
+		local altitude = heli:GetRealAltitude()
 
 		if altitude < 3.0 then
-			self.b_exploded = true
-			printf("[heli] EXPLODE")
+			printf( "heli: explode" )
 			self.heliObject:Explode()
 		end
 
@@ -97,9 +97,8 @@ function heli_binder:check_health()
 			self.alt_check_time = device():time_global() + 500
 
 			if self.last_alt - altitude < 1 then
-				self.b_exploded = true
-				printf("[heli] EXPLODE (hanged)")
-				self.heliObject:Explode()
+				printf( "heli: explode (hanged)" )
+				heli:Explode()
 			end
 
 			self.last_alt = altitude
