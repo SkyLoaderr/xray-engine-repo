@@ -312,6 +312,10 @@ function give_hunters_toz(first_speaker, second_speaker)
 	dialogs.relocate_item(second_speaker, hunters_toz, "out")
 	level_tasks.set_task_state(task.completed, "bar_hunter_rifle", 0)
 end
+function have_hunter_reward(first_speaker, second_speaker)
+	dialogs.relocate_money(second_speaker, 500, "in")
+end
+
 
 --PDA ночного снайпера
 function have_sniper_pda(first_speaker, second_speaker)
