@@ -166,9 +166,9 @@ void CHUDCursor::Render()
 
 	if (psHUD_Flags.test(HUD_INFO)){ 
 		if (RQ.O){
-			CEntityAlive*	E = smart_cast<CEntityAlive*>(RQ.O);
-			CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>(Level().CurrentEntity());
-			PIItem	l_pI = smart_cast<PIItem>(RQ.O);
+			CEntityAlive*	E		= smart_cast<CEntityAlive*>	(RQ.O);
+			CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>	(Level().CurrentEntity());
+			PIItem			l_pI	= smart_cast<PIItem>		(RQ.O);
 
 			string256 name_buf;
 			LPCSTR object_name = *RQ.O->cName();
@@ -181,10 +181,10 @@ void CHUDCursor::Render()
 					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
 
 					if(our_inv_owner && others_inv_owner){
-						CStringTable strtbl;
-						sprintf(name_buf, "%s, %s", *strtbl(others_inv_owner->CharacterInfo().Community().id()),
+						CStringTable	strtbl		;
+						sprintf			(name_buf, "%s, %s", *strtbl(others_inv_owner->CharacterInfo().Community().id()), 
 							*strtbl(others_inv_owner->Name()));
-						object_name = name_buf;
+						object_name		= name_buf	;
 
 						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
 						{
@@ -235,7 +235,7 @@ void CHUDCursor::Render()
 						if (fuzzyShowInfo>0.5f){
 							clamp(fuzzyShowInfo,0.f,1.f);
 							int alpha_C = iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f);
-							u8 alpha_b = u8(alpha_C & 0x00ff);
+							u8 alpha_b	= u8(alpha_C & 0x00ff);
 							F->SetColor	(subst_alpha(C,alpha_b));
 							F->OutNext	("%s",*RQ.O->cName());
 						}

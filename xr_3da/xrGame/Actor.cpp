@@ -343,8 +343,8 @@ void CActor::Load	(LPCSTR section )
 		int cnt = _GetItemCount(hit_snds);
 		string128 tmp;
 		for(int i=0; i<cnt;++i){
-			sndHit[hit_type].push_back(ref_sound());
-			sndHit[hit_type].back().create(TRUE,_GetItem(hit_snds,i,tmp));
+			sndHit[hit_type].push_back		(ref_sound());
+			sndHit[hit_type].back().create	(TRUE,_GetItem(hit_snds,i,tmp));
 		}
 	}
 
@@ -767,23 +767,31 @@ void CActor::UpdateCL	()
 	VERIFY2								(_valid(renderable.xform),*cName());
 
 	//. *** dbgmp
-	BOOL				_show_mpl		= FALSE;
-	if (g_bEnableMPL && g_Alive() && Level().CurrentEntity())	_show_mpl = TRUE	;
-	if (_show_mpl && this->ID()==Level().CurrentEntity()->ID())	_show_mpl = FALSE	;
-	dbgmp_light->set_active		(!!_show_mpl);
-	if (_show_mpl)		{
+	u32					_C				= 0;
+	if (g_Alive() && Level().CurrentEntity() && (this->ID()!=Level().CurrentEntity()->ID()))	{
+		if (g_bEnableMPL)	{
+			// red for enemy
+			if (GameID() == GAME_DEATHMATCH)							_C = color_xrgb(127,127,255);
+			else	{
+				if (E->g_Team() != Level().CurrentEntity()->g_Team())	_C = color_xrgb(127,127,255);
+			};
+		}
+		string256		name;	strcpy		(name,Level().CurrentEntity()->cName().c_str());
+		strlwr			(name)	;
+		if (strstr(name,"anton"))			{
+			// blue
+			_C								= color_xrgb(127,127,255);
+		}
+	}
+	if (_C)	{
 		Fvector			C;
 		Center			(C);
-		dbgmp_light->set_rotation(XFORM().k,XFORM().i);
-		dbgmp_light->set_position(C);
-		
-		string256		name;	strcpy	(name,Level().CurrentEntity()->cName().c_str());
-		strlwr					(name);
-		BOOL					bRed	= FALSE;
-		if (strstr(name,"prof"))		bRed	= TRUE;
-		if (strstr(name,"rainbow"))		bRed	= TRUE;
-		if (bRed)						dbgmp_light->set_color	(2* 1.f, 2*0.5f,2*.5f);
-		else 							dbgmp_light->set_color	(2* .5f, 2*1.f, 2*.5f);
+		dbgmp_light->set_rotation	(XFORM().k,XFORM().i);
+		dbgmp_light->set_position	(C);
+		dbgmp_light->set_active		(true);
+		dbgmp_light->set_color		(2.f* color_get_R(_C)/255.f, 2.f* color_get_G(_C)/255.f, 2.f* color_get_B(_C)/255.f);
+	} else {
+		dbgmp_light->set_active		(false);
 	}
 	//. *** dbgmp end
 
