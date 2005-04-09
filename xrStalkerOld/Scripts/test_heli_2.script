@@ -28,7 +28,7 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
 --      return --already on attack trajectory
 --   end
 
-	self.m_heliObject:ClearEnemy(nil)
+--	self.m_heliObject:ClearEnemy(nil)
 	
    local enemy = level.object_by_id( hitter_id )
    if enemy == nil then 
@@ -37,11 +37,11 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
 --	self.m_heliObject:SetEnemy(enemy)
 --	self.m_heliObject:LookAtPoint(enemy:position(),true)
 
-    self.m_heliObject:SetDestPosition(enemy:position())
+--    self.m_heliObject:SetDestPosition(enemy:position())
 
 	self.m_heliObject:SetMaxVelocity(30.0) -- m/sec (max)
-	self.m_heliObject:SetSpeedInDestPoint(0.0); --m/sec (in dest point)
---	self.m_heliObject:GoPatrolByPatrolPath("heli_way_2",0)
+	self.m_heliObject:SetSpeedInDestPoint(5.0); --m/sec (in dest point)
+	self.m_heliObject:GoPatrolByPatrolPath("heli_way_2",0)
 --	self.m_heliObject:LookAtPoint(enemy:position(),true)
 --	self.m_heliObject:SetCurrVelocity(30.0) -- m/sec (max)
 end
