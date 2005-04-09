@@ -127,7 +127,7 @@ function heli_move:search_look_waypoint( index )
 	end
 end
 
-function heli_move:waypoint_param( path_info, idx, field, default )
+function heli_move:waypoint_param_num( path_info, idx, field, default )
 	local v
 	local wpnt = path_info[idx]
 
@@ -136,6 +136,17 @@ function heli_move:waypoint_param( path_info, idx, field, default )
 	end
 
 	return ( v and tonumber( v ) ) or default
+end
+
+function heli_move:waypoint_param( path_info, idx, field, default )
+	local v
+	local wpnt = path_info[idx]
+
+	if wpnt then
+		v = wpnt[field]
+	end
+
+	return v or default
 end
 
 -- просмотреть флажки следующующей точки пути и продолжить движение соответствующим образом
@@ -168,8 +179,8 @@ function heli_move:prepare_move()
 --		self.object:info_clear()
 --		self.object:info_add( tostring( "next point: " .. self.next_index ) )
 
-		self.heliObject:SetMaxVelocity     ( self:waypoint_param( self.path_move_info, self.last_index, "v",  self.default_velocity ) )
-		self.heliObject:SetSpeedInDestPoint( self:waypoint_param( self.path_move_info, self.next_index, "dv", self.default_velocity ) )
+		self.heliObject:SetMaxVelocity     ( self:waypoint_param_num( self.path_move_info, self.last_index, "v",  self.default_velocity ) )
+		self.heliObject:SetSpeedInDestPoint( self:waypoint_param_num( self.path_move_info, self.next_index, "dv", self.default_velocity ) )
 
 		self.heliObject:GoPatrolByPatrolPath( self.a.path_move, self.next_index )
 	end
@@ -182,7 +193,7 @@ end
 function heli_move:prepare_look()
 	printf( "heli_move: going to look in the next point %d", self.next_index )
 
-	self.look_duration = self:waypoint_param( self.path_look_info, self.look_index, "t" )
+	self.look_duration = self:waypoint_param_num( self.path_look_info, self.look_index, "t" )
 
 	-- если нужно задержаться в следующей точке, то отправить в точку (destspeed=0), иначе отправить по пути (destspeed="dv")
 	if self.look_duration then
@@ -193,53 +204,17 @@ function heli_move:prepare_look()
 	else
 		printf( "heli_move: sent to patrol path" )
 
-		self.heliObject:SetSpeedInDestPoint( self:waypoint_param( self.path_move_info, self.next_index, "dv", self.default_velocity ) )
+		self.heliObject:SetSpeedInDestPoint( self:waypoint_param_num( self.path_move_info, self.next_index, "dv", self.default_velocity ) )
 		self.heliObject:GoPatrolByPatrolPath( self.a.path_move, self.next_index )
 	end
 
 	self.heliObject:LookAtPoint( self.patrol_look:point( self.look_index ), true )
 
-	-- атаковать выбранную точку уже на подлёте, если задано "att" в следующей точке path_move
-	self:process_attack_param( self.path_move_info, self.next_index )
+	-- атаковать выбранную точку уже на подлёте, если задано "e" в следующей точке path_move
+	self:process_attack_params( self.path_move_info, self.next_index )
 
 	printf( "heli_move: dest speed = %d", self.heliObject:GetSpeedInDestPoint( 0 ) )
 end
-
---[[function heli_move:prepare_look()
-	printf( "heli_move: going to look in the next point %d", self.next_index )
-
-	self.look_duration = nil
-
-	-- если не задан облёт вокруг следующей точки, то будем поворачиваться заранее
---	self.round_look_direction = self:waypoint_param( self.path_look_info, self.look_index, "c" )
-
---	if self.round_look_direction == nil then
-		self.look_duration = self:waypoint_param( self.path_look_info, self.look_index, "t" )
-
-		-- если хотим задержаться, то подлететь к следующей точке с 0 скоростью, иначе с заданной (или по-умолчанию)
-		if self.look_duration then
-			printf( "0" )
-			self.heliObject:SetSpeedInDestPoint( 0 )
-		else
-			self.heliObject:SetSpeedInDestPoint( self:waypoint_param( self.path_move_info, self.next_index, "dv", self.default_velocity ) )
-		end
-
-		self.heliObject:LookAtPoint( self.patrol_look:point( self.look_index ), true )
-
-		printf( "heli_move: dest speed = %d", self.heliObject:GetSpeedInDestPoint( 0 ) )
---	else
---		self.round_look_direction = self.round_look_direction ~= "ccw"
---	end
-
-	-- если нужно задержаться в следующей точке, то отправить в точку, иначе по пути
-	if self.look_duration then
-		printf( "heli_move: sent to position" )
-		self.heliObject:SetDestPosition( self.patrol_move:point( self.next_index ) )
-	else
-		printf( "heli_move: sent to patrol path" )
-		self.heliObject:GoPatrolByPatrolPath( self.a.path_move, self.next_index )
-	end
-end]]
 
 -- мы на точке, в которой прописано смотрение в другую точку
 function heli_move:update_look_state()
@@ -251,30 +226,41 @@ function heli_move:update_look_state()
 	if self.look_duration then
 		self.look_finish_time = self.look_duration + device():time_global()
 
-		self:process_attack_param( self.path_look_info, self.look_index )
+		self:process_attack_params( self.path_look_info, self.look_index )
 	else
 		self.look_finish_time = 0
 	end
-
---	self.heliObject:SetMaxVelocity( 0 )
---	self.heliObject:SetEnemy( db.actor )
-
---[[	if self.round_look_direction == nil then
-		self.heliObject:SetCurrVelocity( 0 )
-	else
-		self.heliObject:GoByRoundPath( self.patrol_look:point( self.look_index ), 50, self.round_look_direction )
-		printf( "round look" )
-	end]]
 end
 
-function heli_move:process_attack_param( path_info, index )
-	local attack_type = self:waypoint_param( path_info, index, "att" )
+function heli_move:process_attack_params( path_info, index )
+	local target = self:waypoint_param( path_info, index, "e" )
 
-	if attack_type then
-		printf( "heli_move: attack!" )
+	if target == nil then
+		printf( "heli_move: not attacking" )
+		self.heliObject:ClearEnemy()
+
+	elseif target == "true" then
+		printf( "heli_move: attacking point!" )
 		self.heliObject:SetEnemy( self.patrol_look:point( self.look_index ) )
+
+	elseif target == "actor" then
+		printf( "heli_move: attacking the actor!" )
+
+		if db.actor then
+			self.heliObject:SetEnemy( db.actor )
+		else
+			self.heliObject:ClearEnemy()
+		end
 	else
---		self.heliObject:SetEnemy( nil )
+		printf( "heli_move: attacking object sid=%s", target )
+
+		local obj = level_object_by_sid( tonumber( target ) )
+
+		if obj then
+			self.heliObject:SetEnemy( obj )
+		else
+			self.heliObject:ClearEnemy()
+		end
 	end
 end
 
