@@ -628,7 +628,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				end
 				
 				if snd_prob == 100 or snd_prob >= math.random(1, 100) then
-					xr_sound.set_sound(self.object, nil)
+					--xr_sound.set_sound(self.object, nil, true)
 					self.sound_after_anim_start = suggested_snd
 				else
 					self.sound_after_anim_start = nil
