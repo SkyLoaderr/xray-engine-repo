@@ -352,6 +352,7 @@ CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 
 void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 {
+//	Msg							("xrServer::entity_Destroy : [%d][%s][%s]",P->ID,P->name(),P->name_replace());
 	R_ASSERT					(P);
 	P->owner = NULL;
 	entities.erase				(P->ID);
