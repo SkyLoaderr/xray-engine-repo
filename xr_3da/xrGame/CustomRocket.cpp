@@ -13,6 +13,10 @@
 #include "gamemtllib.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "../fbasicvisual.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
+
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
 	if(x>z){inst_x;}\
@@ -191,6 +195,9 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 		if(l_this->m_pOwner) 
 		{
 			Fvector l_pos; l_pos.set(l_this->Position());
+#ifdef DEBUG
+			bool corrected_pos=false;
+#endif
 			if(!l_pUD1||!l_pUD2) 
 			{
 				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
@@ -203,13 +210,21 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 						velocity.normalize();
 						float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
 						float dist=l_pUD->neg_tri.dist/cosinus;
-						velocity.mul(dist);
+						velocity.mul(dist*1.1f);
 						l_pos.sub(velocity);
+#ifdef DEBUG
+						corrected_pos=true;
+#endif
 					}
 				}
 			}
+#ifdef DEBUG
+			if(ph_dbg_draw_mask.test(phDbgDrawExplosionPos))
+				DBG_DrawPoint(l_pos,0.05f,D3DCOLOR_XRGB(255,255,(!corrected_pos)*255));
+#endif
 			l_this->m_pPhysicsShell->set_ObjectContactCallback(NULL);
 			l_this->Contact(l_pos, vUp);
+
 
 		}
 	} else {}

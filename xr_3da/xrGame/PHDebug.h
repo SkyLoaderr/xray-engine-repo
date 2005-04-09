@@ -30,7 +30,8 @@ enum
 	phDBgDrawPositiveTries		=		1<<6,
 	phDbgDrawTriTestAABB		=		1<<7,
 	phDBgDrawTriesChangesSign	=		1<<8,
-	phDbgDrawTriPoint			=		1<<9
+	phDbgDrawTriPoint			=		1<<9,
+	phDbgDrawExplosionPos		=		1<<10
 };
 struct SPHObjDBGDraw
 {

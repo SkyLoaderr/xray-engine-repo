@@ -102,7 +102,9 @@ struct SPHDBGDrawPoint :public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		RCache.dbg_DrawAABB(p,size,size,size,c);
+		//RCache.dbg_DrawAABB(p,size,size,size,c);
+		Fmatrix m;m.identity();m.scale(size,size,size);m.c.set(p);
+		RCache.dbg_DrawEllipse(m,c);
 	}
 };
 void DBG_DrawPoint(const Fvector& p,float size,u32 c)
