@@ -638,7 +638,6 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),q_c,q_d);
 	CDB::RESULT*    R_begin        = XRC.r_begin();
 	CDB::RESULT*    R_end          = XRC.r_end();
-	CDB::TRI*       T_array        = Level().ObjectSpace.GetStaticTris();
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
