@@ -69,6 +69,11 @@ function main005 ()
 --	a:inventory_for_each(fe)
 end
 
+function main()
+	level.disable_input()
+	wait(10000)
+	level.enable_input()
+end
 
 
 function main___ ()
