@@ -86,12 +86,25 @@ function act_state_mgr_direction_turn:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_turn:initialize()
 	action_base.initialize(self)
-	self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)	
+	
+	if self.st.look_object ~= nil and
+	   level.object_by_id(self.st.look_object) ~= nil 
+	then
+		self.object:set_sight(level.object_by_id(self.st.look_object),true)	
+	else
+		self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)		
+	end
 	self.st.current_direction = self.st.target_position	
 end
 function act_state_mgr_direction_turn:execute()
 	action_base.execute(self)
-	self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)
+	if self.st.look_object ~= nil and
+	   level.object_by_id(self.st.look_object) ~= nil 
+	then
+		self.object:set_sight(level.object_by_id(self.st.look_object),true)	
+	else
+		self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)		
+	end
 end
 function act_state_mgr_direction_turn:finalize()
 	action_base.finalize(self)
@@ -120,7 +133,14 @@ end
 
 function update_movement_direction(npc, st)
 	if st and st.target_position ~= nil then
-		npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)	
+	
+		if st.look_object ~= nil and
+		   level.object_by_id(st.look_object) ~= nil 
+		then
+			npc:set_sight(level.object_by_id(st.look_object),true)	
+		else
+			npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)
+		end
 	else
 		npc:set_sight(look.path_dir, nil, 0)
 	end	
