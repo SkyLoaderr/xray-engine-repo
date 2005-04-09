@@ -91,9 +91,10 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+				
 		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
+	
 	<specific_character id="stalker_bar_white_novice_2" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="16" y="4"></icon>
@@ -286,6 +287,7 @@
 		<supplies>
 			[spawn] \n
 			ammo_5.56x45_ss190 \n
+			wpn_addon_grenade_launcher \n
 		</supplies>
 		
 		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
@@ -335,6 +337,7 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck \n
+			detector_advances \n
 		</supplies>
 		
 		<start_dialog>bar_bar_drunk_dolg_start</start_dialog>
