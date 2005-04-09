@@ -377,7 +377,7 @@ function give_money_for_informer_3(actor, npc)
 end
 
 function have_volkodav_reward(actor, npc)	
-	dialogs.relocate_item(npc, wpn_addon_grenade_launcher, "in")
+	dialogs.relocate_item(npc, "wpn_addon_grenade_launcher", "in")
 	dialogs.relocate_money(npc, 1000, "in")
 end
 
