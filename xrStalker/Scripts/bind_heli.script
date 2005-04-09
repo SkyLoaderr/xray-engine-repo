@@ -69,7 +69,7 @@ end
 function heli_binder:check_health()
 	local heli = self.heliObject
 
-	printf( "heli health: %d", heli:GetfHealth() )
+--	printf( "heli health: %d", heli:GetfHealth() )
 
 	if not heli.m_dead then
 		local health = heli:GetfHealth()
@@ -89,7 +89,7 @@ function heli_binder:check_health()
 		local altitude = heli:GetRealAltitude()
 
 		if altitude < 3.0 then
-			printf( "heli: explode" )
+--			printf( "heli: explode" )
 			self.heliObject:Explode()
 		end
 
@@ -97,7 +97,7 @@ function heli_binder:check_health()
 			self.alt_check_time = device():time_global() + 500
 
 			if self.last_alt - altitude < 1 then
-				printf( "heli: explode (hanged)" )
+--				printf( "heli: explode (hanged)" )
 				heli:Explode()
 			end
 
