@@ -776,7 +776,7 @@ void CActor::UpdateCL	()
 				if (E->g_Team() != Level().CurrentEntity()->g_Team())	_C = color_xrgb(127,127,255);
 			};
 		}
-		string256		name;	strcpy		(name,Level().CurrentEntity()->cName().c_str());
+		string256		name;	strcpy		(name,cName().c_str());
 		strlwr			(name)	;
 		if (strstr(name,"anton"))			{
 			// blue
