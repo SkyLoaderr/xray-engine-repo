@@ -17,7 +17,7 @@ CPHActorCharacter::CPHActorCharacter()
 	//std::fill(m_restrictors_index,m_restrictors_index+CPHCharacter::rtNone,end(m_restrictors));
 	//m_restrictors_index[CPHCharacter::rtStalker]		=begin(m_restrictors)+0;
 	//m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
-	if(GameID()==GAME_SINGLE)
+	
 	{
 		m_restrictors.resize(2);
 		m_restrictors[0]=(xr_new<stalker_restrictor>());
@@ -27,13 +27,17 @@ CPHActorCharacter::CPHActorCharacter()
 
 CPHActorCharacter::~CPHActorCharacter(void)
 {
+	ClearRestrictors();
 }
 
 void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
 	inherited::Create(sizes);
-
+	if(GameID()!=GAME_SINGLE)
+	{
+		ClearRestrictors();
+	}
 	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
 	for(;e!=i;++i)
 	{
@@ -102,7 +106,16 @@ void CPHActorCharacter::Destroy()
 	}
 	inherited::Destroy();
 }
-
+void CPHActorCharacter::ClearRestrictors()
+{
+	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
+	for(;e!=i;++i)
+	{
+		(*i)->Destroy();
+		xr_delete(*i);
+	}
+	m_restrictors.clear();
+}
 void SPHCharacterRestrictor::Destroy()
 {
 	if(m_restrictor) {

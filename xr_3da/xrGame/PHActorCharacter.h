@@ -12,7 +12,10 @@ struct SPHCharacterRestrictor
 								m_restrictor_transform=NULL;
 								m_restrictor_radius=0.1f;
 							}
-										~SPHCharacterRestrictor				();
+							~SPHCharacterRestrictor				()
+							{
+								Destroy();
+							};
 				CPHCharacter*			m_character;
 				CPHCharacter::ERestrictionType m_type;
 
@@ -103,5 +106,6 @@ public:
 						CPHActorCharacter					();
 	virtual				~CPHActorCharacter					(void);
 private:
+		void			ClearRestrictors					();
 		RESTRICTOR_I	Restrictor							(CPHCharacter::ERestrictionType rtype);
 };
