@@ -40,7 +40,7 @@ function evaluator_state_mgr_idle_alife:evaluate()
 	self.t = nil
 	if mgr:initialized() then
 		self.t = mgr:current_action_id()
-		printf("ACTION %s", utils.to_str(self.t))
+		--printf("ACTION %s", utils.to_str(self.t))
 		if self.t ~= xr_actions_id.alife then
 			self.st.alife = false
 		end
@@ -48,8 +48,7 @@ function evaluator_state_mgr_idle_alife:evaluate()
 
 	if db.storage[self.st.npc:id()].active_section == nil and
 	   xr_meet.is_meet(self.object) == false
-	then
-		printf("try to go alife")
+	then		
 		local t = self.st.target_state == "idle" and 
 			not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
 			self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
