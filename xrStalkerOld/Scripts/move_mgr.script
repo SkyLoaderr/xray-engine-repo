@@ -206,8 +206,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.syn_signal_set_tm = device():time_global() + 1000
 	self.syn_signal = nil
 
-	self.sound = nil
-	self.play_sound_after_anim_start = false
+	self.sound_after_anim_start = nil
 
 	self.move_cb_info = move_cb_info
 	 
@@ -265,15 +264,6 @@ function move_mgr:arrived_to_first_waypoint()
 	return self.last_index ~= nil
 end
 
-function move_mgr:update_sound()
-	if self.sound then
-		local prob = self.sound.prob
-		if prob == 100 or prob >= math.random(1, 100) then
-			xr_sound.set_sound(self.object, self.sound.themes)
-		end
-		self.sound = nil
-	end
-end
 
 -- ѕроверка синхронизации с остальными солдатами на пути.
 -- ¬озвращает true, если дальнейшее движение разрешено.
@@ -330,13 +320,6 @@ function move_mgr:update()
 		end
 		return
 	end
-	
-
-	-- ≈сли это не тот тип звука, который нужно проиграть всего один раз, то играть его:
-	if not self.play_sound_after_anim_start then
-		self:update_sound()
-	end
-
 end
 
 function move_mgr:finalize(npc)
@@ -367,12 +350,14 @@ function move_mgr:update_movement_state()
 	self.moving = true
 end
 
-function move_mgr:update_standing_state(look_pos)
-	printf("_bp [%s]: pt_wait_time = %s", self.object:name(), utils.to_str(self.pt_wait_time))
+function move_mgr:update_standing_state(look_pos, snd)
+	printf("_bp [%s]: update_standing_state: snd='%s', pt_wait_time = %s", self.object:name(), utils.to_str(snd), utils.to_str(self.pt_wait_time))
 	state_mgr.set_state(self.object, self.cur_state_standing,
 		{ obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback },
 		self.pt_wait_time,
-		{ look_position = look_pos } )
+		{ look_position = look_pos },
+		nil,
+		snd )
 	self.moving = false
 	
 	-- ѕрожектор:
@@ -466,9 +451,11 @@ function move_mgr:turn_end_callback()
 		end
 	end
 
-	if self.play_sound_after_anim_start then
+	local anim_synced_snd = nil
+	if self.sound_after_anim_start then
 		-- ѕроиграть звук сразу после окончани€ поворота:
-		self:update_sound()
+		anim_synced_snd = self.sound_after_anim_start
+		self.sound_after_anim_start = nil
 	end
 
 	if self.retval_after_rotation then
@@ -498,7 +485,7 @@ function move_mgr:turn_end_callback()
 		end
 		-- Callback не перехватил управление, нужно восстановить таймер:
 		local look_pos = self.patrol_look:point(self.last_look_index)
-		self:update_standing_state(look_pos)
+		self:update_standing_state(look_pos, anim_synced_snd)
 	end
 end
 
@@ -543,19 +530,14 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 
 		local snd_wait_anim = self.path_walk_info[index]["sa"]
-		if snd_wait_anim == "true" then
-			self.play_sound_after_anim_start = true
-		else
-			self.play_sound_after_anim_start = false
+		if snd_wait_anim then
+			utils.abort("move_mgr: object '%s': 'sa' field is deprecated",
+				self.object:name())
 		end
-
-		self.sound = { prob = snd_prob, themes = suggested_snd }
-		-- Ётот звук играть пр€мо сейчас, а не когда начнетс€ анимаци€ на позиции (после поворота и т.д.):
-		if not self.play_sound_after_anim_start then
-			self:update_sound()
+		
+		if snd_prob == 100 or snd_prob >= math.random(1, 100) then
+			xr_sound.set_sound(self.object, suggested_snd)
 		end
-	else
-		self.sound = nil
 	end
 	-- </«¬” >
 
@@ -644,9 +626,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				else
 					snd_prob = 100
 				end
-				self.sound = { prob = snd_prob, themes = suggested_snd }
-				-- Ётот звук играть не пр€мо сейчас, а когда начнетс€ анимаци€ на позиции (после поворота и т.д.):
-				self.play_sound_after_anim_start = true
+				
+				if snd_prob == 100 or snd_prob >= math.random(1, 100) then
+					xr_sound.set_sound(self.object, nil)
+					self.sound_after_anim_start = suggested_snd
+				else
+					self.sound_after_anim_start = nil
+				end
 			end
 		end
 
@@ -657,7 +643,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		--end
 		local look_pos = self.patrol_look:point(pt_chosen_idx)
 		self.last_look_index = pt_chosen_idx
-		self:update_standing_state(look_pos)
+		self:update_standing_state(look_pos, self.sound_after_anim_start)
 
 		self.state = state_standing
 
