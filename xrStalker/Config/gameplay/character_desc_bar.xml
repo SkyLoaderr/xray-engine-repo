@@ -292,6 +292,7 @@
 		
 		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
 		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
+		<actor_dialog>bar_bar_osvedomitel_reward</actor_dialog>
 	</specific_character>	
 
 
@@ -336,7 +337,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
-			ammo_12x70_buck \n
+			ammo_12x70_buck = 1 \n
 			detector_advances \n
 		</supplies>
 		

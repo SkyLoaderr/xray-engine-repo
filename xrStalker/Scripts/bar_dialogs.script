@@ -240,6 +240,7 @@ function enter_to_dolg(first_speaker, second_speaker)
 	dialogs.relocate_item(second_speaker, dolg_outfit, "in")
 end
 
+
 -- флэшка Борова
 function have_borov_flash(first_speaker, second_speaker)
   	return first_speaker:object("borov_flash") ~= nil
@@ -346,6 +347,7 @@ end
 function give_lucky_pda(first_speaker, second_speaker)
 	local lucky_pda = first_speaker:object("bar_lucky_pda")
 	dialogs.relocate_item(second_speaker, lucky_pda, "out")
+	dialogs.relocate_money(second_speaker, 2500, "in")
 	level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 0)
 end
 
