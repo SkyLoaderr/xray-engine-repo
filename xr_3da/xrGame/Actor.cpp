@@ -336,13 +336,29 @@ void CActor::Load	(LPCSTR section )
 
 	//Weapons				= xr_new<CWeaponList> (this);
 
+	LPCSTR hit_snd_sect = pSettings->r_string(section,"hit_sounds");
+	for(int hit_type=0;hit_type<(int)ALife::eHitTypeMax;++hit_type){
+		LPCSTR hit_name = ALife::g_cafHitType2String((ALife::EHitType)hit_type);
+		LPCSTR hit_snds = pSettings->r_string(hit_snd_sect, hit_name);
+		int cnt = _GetItemCount(hit_snds);
+		string128 tmp;
+		for(int i=0; i<cnt;++i){
+			sndHit[hit_type].push_back(ref_sound());
+			sndHit[hit_type].back().create(TRUE,_GetItem(hit_snds,i,tmp));
+		}
+	}
+
+
+
+
 	// sounds
 	char buf[256];
 
-	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,*cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
+/*	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,*cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,*cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,*cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,*cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
+*/	
 	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,*cName(),"\\die0"), SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,*cName(),"\\die1"), SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"), SOUND_TYPE_MONSTER_DYING);
@@ -403,7 +419,13 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_pShootingEffector->ce_time,	m_pShootingEffector->ce_amplitude,m_pShootingEffector->ce_period_number,m_pShootingEffector->ce_power));
 	}
 #endif
-	
+
+	if( !sndHit[hit_type].empty() ){
+		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
+		S.play_at_pos(this, Position());
+	}
+
+
 	if (GameID() != GAME_SINGLE)
 	{
 		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
@@ -510,12 +532,11 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 {
 	if (g_Alive()) 
 	{
-		ref_sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
-		if (S.feedback) return;
-
-		// Play hit-ref_sound
-		::Sound->play_at_pos	(S,this,Position());
-
+//		ref_sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
+//			if (S.feedback) return;
+//
+//			Play hit-ref_sound
+//			S.play_at_pos(this, Position());
 		// hit marker
 		if (Local() && (this!=who) && Level().CurrentEntity() == this)	
 		{

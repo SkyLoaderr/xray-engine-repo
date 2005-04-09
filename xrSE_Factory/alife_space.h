@@ -279,9 +279,12 @@ namespace ALife {
 		return(eHitTypeMax);
 #endif
 	}
+xr_token							hit_types_token							[ ];
 
 	IC LPCSTR g_cafHitType2String(EHitType tHitType)
 	{
+		return get_token_name(hit_types_token, tHitType);
+/*
 		switch (tHitType) {
 			case eHitTypeBurn			: return("burn");
 			case eHitTypeShock			: return("shock");
@@ -297,7 +300,7 @@ namespace ALife {
 		}
 #ifdef DEBUG
 		return(0);
-#endif
+#endif*/
 	}
 
 	DEFINE_MAP		(_NEWS_ID,					CALifeNews*,					NEWS_REGISTRY,				NEWS_REGISTRY_IT);

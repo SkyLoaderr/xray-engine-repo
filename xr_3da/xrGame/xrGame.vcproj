@@ -1638,6 +1638,9 @@
 					RelativePath=".\alife_simulator_script.cpp">
 				</File>
 				<File
+					RelativePath=".\alife_space.cpp">
+				</File>
+				<File
 					RelativePath=".\alife_space.h">
 				</File>
 				<Filter
