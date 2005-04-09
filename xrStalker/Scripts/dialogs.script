@@ -127,11 +127,6 @@ function level_agroprom(first_speaker, second_speaker)
 	return level.name() == "l03_agroprom"
 end
 
-function level_bar(first_speaker, second_speaker)
-	return level.name() == "l05_bar_ai"
-end
-
-
 -----------------------------------------------------------------------------------
 -- Relation functions
 -----------------------------------------------------------------------------------
