@@ -53,7 +53,10 @@
 	<string id="bar_dolg_bring_document">
 		<text>Найти в ангаре архивные документы и принести их капитану Иванцову</text>
 	</string>
-
+	
+	<string id="bar_dolg_rg6_quest">
+		<text>Задание для вступления в Долг</text>
+	</string>
 	<string id="bar_dolg_bring_rg6">
 		<text>Добыть РГ-6 для генерала Воронина</text>
 	</string>
