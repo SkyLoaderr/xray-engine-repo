@@ -63,17 +63,19 @@ static	void __stdcall	RestrictorCallBack	(bool& do_colide,dContact& c,SGameMtl* 
 			}
 		}
 	};
-//DEFINE_VECTOR(SPHCharacterRestrictor*,RESRICTORS_V,RESTRICTOR_I);
-typedef SPHCharacterRestrictor*		RESRICTORS_V[2];
-typedef SPHCharacterRestrictor**	RESTRICTOR_I;
+DEFINE_VECTOR(SPHCharacterRestrictor*,RESRICTORS_V,RESTRICTOR_I);
+//typedef SPHCharacterRestrictor*		RESRICTORS_V[2];
+//typedef SPHCharacterRestrictor**	RESTRICTOR_I;
 IC RESTRICTOR_I begin(RESRICTORS_V& v)
 {
-	return v;
+	//return v;
+	return v.begin();
 }
 
-IC RESTRICTOR_I end(RESRICTORS_V v)
+IC RESTRICTOR_I end(RESRICTORS_V& v)
 {
-	return v+sizeof(RESRICTORS_V)/sizeof(SPHCharacterRestrictor*);
+	//return v+sizeof(RESRICTORS_V)/sizeof(SPHCharacterRestrictor*);
+	return v.end();
 }
 
 class CPHActorCharacter :
@@ -82,7 +84,7 @@ class CPHActorCharacter :
 	typedef CPHSimpleCharacter	inherited;
 
 	RESRICTORS_V		m_restrictors;
-	RESTRICTOR_I		m_restrictors_index[CPHCharacter::rtNone];
+
 public:
 	typedef TPHCharacterRestrictor<CPHCharacter::rtStalker>		  stalker_restrictor;
 	typedef TPHCharacterRestrictor<CPHCharacter::rtMonsterMedium> medium_monster_restrictor;
@@ -97,7 +99,9 @@ public:
 	virtual	void		Jump								(const Fvector& jump_velocity);
 	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
 			void		SetRestrictorRadius					(CPHCharacter::ERestrictionType rtype,float r);
-		RESTRICTOR_I	Restrictor							(CPHCharacter::ERestrictionType rtype);
+
 						CPHActorCharacter					();
 	virtual				~CPHActorCharacter					(void);
+private:
+		RESTRICTOR_I	Restrictor							(CPHCharacter::ERestrictionType rtype);
 };

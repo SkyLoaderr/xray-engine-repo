@@ -14,12 +14,15 @@ CPHActorCharacter::CPHActorCharacter()
 {
 	SetRestrictionType(CPHCharacter::rtActor);
 
-	std::fill(m_restrictors_index,m_restrictors_index+CPHCharacter::rtNone,end(m_restrictors));
-	m_restrictors_index[CPHCharacter::rtStalker]		=begin(m_restrictors)+0;
-	m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
-	
-	m_restrictors[0]=(xr_new<stalker_restrictor>());
-	m_restrictors[1]=(xr_new<medium_monster_restrictor>());
+	//std::fill(m_restrictors_index,m_restrictors_index+CPHCharacter::rtNone,end(m_restrictors));
+	//m_restrictors_index[CPHCharacter::rtStalker]		=begin(m_restrictors)+0;
+	//m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
+	if(GameID()==GAME_SINGLE)
+	{
+		m_restrictors.resize(2);
+		m_restrictors[0]=(xr_new<stalker_restrictor>());
+		m_restrictors[1]=(xr_new<medium_monster_restrictor>());
+	}
 }
 
 CPHActorCharacter::~CPHActorCharacter(void)
@@ -71,11 +74,12 @@ void SPHCharacterRestrictor::Create(CPHCharacter* ch,dVector3 sizes)
 
 RESTRICTOR_I CPHActorCharacter::Restrictor(CPHCharacter::ERestrictionType rtype)
 {
-	return m_restrictors_index[rtype];
+	R_ASSERT2(rtype<rtActor,"not valide restrictor");
+	return begin(m_restrictors)+rtype;
 }
 void CPHActorCharacter::SetRestrictorRadius(CPHCharacter::ERestrictionType rtype,float r)
 {
-	(*Restrictor(rtype))->SetRadius(r);
+	if(m_restrictors.size()>0)(*Restrictor(rtype))->SetRadius(r);
 }
 
 void SPHCharacterRestrictor::SetRadius(float r)

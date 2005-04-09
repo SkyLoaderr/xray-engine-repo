@@ -174,6 +174,8 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 		return;
 	}
 
+	THROW3						(weapon->can_be_strapped(),"Cannot strap weapon",*weapon->cName());
+
 	if (weapon->ID() != m_strap_object_id) {
 		CKinematics				*kinematics = smart_cast<CKinematics*>(planner().m_object->Visual());
 		m_strap_bone0			= kinematics->LL_BoneID(weapon->strap_bone0());
@@ -181,7 +183,6 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 		m_strap_object_id		= weapon->ID();
 	}
 
-	THROW3						(weapon->can_be_strapped(),"Cannot strap weapon",*weapon->cName());
 	weapon->strapped_mode		(true);
 	b0							= m_strap_bone0;
 	b1							= m_strap_bone1;

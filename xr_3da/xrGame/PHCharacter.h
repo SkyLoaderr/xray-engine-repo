@@ -51,10 +51,10 @@ public:
 enum ERestrictionType
 {
 
-	rtActor,
-	rtStalker,
-	rtMonsterMedium,
-	rtNone
+	rtStalker					=0	,
+	rtMonsterMedium					,
+	rtNone							,
+	rtActor
 };
 
 private:
