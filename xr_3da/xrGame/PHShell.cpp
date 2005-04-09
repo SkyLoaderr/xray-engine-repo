@@ -183,7 +183,7 @@ void CPHShell::PhDataUpdate(dReal step){
 	if(disable) DisableObject();
 	else		ReanableObject();
 
-	if(PhOutOfBoundaries(mXFORM.c))
+	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition((*elements.begin())->get_body()))))
 								Disable();
 }
 
