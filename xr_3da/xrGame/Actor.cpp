@@ -771,9 +771,11 @@ void CActor::UpdateCL	()
 	if (g_Alive() && Level().CurrentEntity() && (this->ID()!=Level().CurrentEntity()->ID()))	{
 		if (g_bEnableMPL)	{
 			// red for enemy
-			if (GameID() == GAME_DEATHMATCH)							_C = color_xrgb(127,127,255);
+			if (GameID() == GAME_DEATHMATCH)								_C = color_xrgb(255,127,127);	// red
 			else	{
-				if (E->g_Team() != Level().CurrentEntity()->g_Team())	_C = color_xrgb(127,127,255);
+				CEntity*	_me			= smart_cast<CEntity*> (this);
+				CEntity*	_viewer		= smart_cast<CEntity*> (Level().CurrentEntity());
+				if (_me && _viewer && _me->g_Team()!=_viewer->g_Team())		_C = color_xrgb(255,127,127);	// red
 			};
 		}
 		string256		name;	strcpy		(name,cName().c_str());
