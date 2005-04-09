@@ -94,6 +94,11 @@ void CHelicopter::script_register(lua_State *L)
 				.def_readwrite("m_max_mgun_dist",			&CHelicopter::m_max_mgun_dist)
 				.def_readwrite("m_time_between_rocket_attack", &CHelicopter::m_time_between_rocket_attack)
 				.def_readwrite("m_syncronize_rocket",		&CHelicopter::m_syncronize_rocket)
+				.def_readonly ("m_flame_started",			&CHelicopter::m_flame_started)
+				.def_readonly ("m_light_started",			&CHelicopter::m_light_started)
+				.def_readonly ("m_exploded",				&CHelicopter::m_exploded)
+				.def_readonly ("m_dead",					&CHelicopter::m_dead)
+
 //				.def_readwrite("", &CHelicopter::)
 
 		];

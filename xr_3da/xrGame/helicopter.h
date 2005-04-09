@@ -159,6 +159,11 @@ public:
 	void							UpdateMGunDir		();
 	void							UpdateWeapons		();
 
+	bool							m_flame_started;
+	bool							m_light_started;
+	bool							m_exploded;
+	bool							m_dead;
+
 protected:
 	SHeliEnemy						m_enemy;
 	SHeliBodyState					m_body;
@@ -189,7 +194,6 @@ protected:
 	void							DieHelicopter				();
 	void							TurnLighting				(bool bOn);
 	void							TurnEngineSound				(bool bOn);
-
 
 //general
 	EHeliState						m_curState;

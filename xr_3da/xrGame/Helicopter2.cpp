@@ -48,6 +48,7 @@ float CHelicopter::SetfHealth(float value) {
 void CHelicopter::TurnLighting(bool bOn)
 {
 	m_light_render->set_active						(bOn);
+	m_light_started = bOn;
 
 }
 void  CHelicopter::TurnEngineSound(bool bOn)
@@ -68,6 +69,7 @@ void CHelicopter::StartFlame ()
 	zero_vector.set(0.f,0.f,0.f);
 	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
 	m_pParticle->Play();
+	m_flame_started = true;
 }
 
 void CHelicopter::UpdateHeliParticles	()
@@ -125,6 +127,7 @@ void CHelicopter::Explode ()
 	m_explodeSound.set_position(XFORM().c);
 
 	m_pParticle->Play();
+	m_exploded = true;
 }
 
 void CHelicopter::SetDestPosition (Fvector* pos)
@@ -293,6 +296,7 @@ void CHelicopter::DieHelicopter()
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
 	processing_deactivate();
+	m_dead = true;
 }
 
 void SHeliEnemy::Update()

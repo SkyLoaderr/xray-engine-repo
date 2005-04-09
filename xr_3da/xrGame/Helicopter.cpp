@@ -181,6 +181,10 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 {
 	SetfHealth(100.0f);
 	setState(CHelicopter::eAlive);
+	m_flame_started					=false;
+	m_light_started					=false;
+	m_exploded						=false;
+	m_dead							=false;
 	
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
