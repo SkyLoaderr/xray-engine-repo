@@ -78,6 +78,8 @@ void CProject::AddFiles()
 		{
 			CString strPathName = fd.GetNextPathName(pos);
 			AddFile(strPathName);
+			CProjectFile* pF = GetProjectFile(strPathName);
+			theApp.OpenProjectFilesView(pF);
 		}
 	}
 
