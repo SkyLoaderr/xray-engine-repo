@@ -45,14 +45,14 @@ void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abst
 	//Log						("C");
 }
 
-void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from)
+void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from, int delta)
 {
-	R_ASSERT	(what && from);
-	R_ASSERT	(what->ID_Parent == from->ID);
+	R_ASSERT				(what && from);
+	R_ASSERT				(what->ID_Parent == from->ID);
 
-	NET_Packet	P;
-	u32			time		= Device.dwTimeGlobal;
-	u16			dummy;
+	NET_Packet				P;
+	u32						time = Device.dwTimeGlobal - delta;
+	u16						dummy;
 
 	P.w_begin				(M_EVENT);
 	P.w_u32					(time);
@@ -64,6 +64,7 @@ void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from)
 	P.r_u32					(time);
 	P.r_u16					(dummy);
 	P.r_u16					(dummy);
-	ClientID clientID;clientID.setBroadcast();
+	ClientID				clientID;
+	clientID.setBroadcast	();
 	Process_event_reject	(P,clientID,time,from->ID,what->ID);
 }

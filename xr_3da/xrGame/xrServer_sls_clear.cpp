@@ -19,7 +19,7 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 		CSE_Abstract		*child = game->get_entity_from_eid(object->children.back());
 		R_ASSERT			(child);
 //		Msg					("SLS-CLEAR : REJECT  [%s][%s] FROM [%s][%s]",child->name(),child->name_replace(),object->name(),object->name_replace());
-		Perform_reject		(child,object);
+		Perform_reject		(child,object,2*NET_Latency);
 #ifdef DEBUG
 //		verify_entities			();
 #endif
@@ -36,7 +36,7 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 
 	NET_Packet				P;
 	P.w_begin				(M_EVENT);
-	P.w_u32					(Device.dwTimeGlobal-NET_Latency*2*0);
+	P.w_u32					(Device.dwTimeGlobal - 2*NET_Latency);
 	P.w_u16					(GE_DESTROY);
 	P.w_u16					(object_id);
 	ClientID				clientID;
@@ -46,6 +46,14 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 
 void xrServer::SLS_Clear		()
 {
+#if 0
+	Msg									("SLS-CLEAR : %d objects");
+	xrS_entities::const_iterator		I = entities.begin();
+	xrS_entities::const_iterator		E = entities.end();
+	for ( ; I != E; ++I)
+		Msg								("entity to destroy : [%d][%s][%s]",(*I).second->ID,(*I).second->name(),(*I).second->name_replace());
+#endif
+
 	u32									mode = net_flags(TRUE,TRUE);
 	while (!entities.empty()) {
 		bool							found = false;
