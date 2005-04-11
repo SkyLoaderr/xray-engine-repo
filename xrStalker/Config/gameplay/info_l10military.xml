@@ -33,6 +33,7 @@
 	<!-- Диалог с охранником у ворот-->
 	<info_portion id="mil_zoneguard_first"></info_portion>
 	<info_portion id="mil_zoneguard_talk"></info_portion>
+	<info_portion id="mil_zoneguard_dont_talk"></info_portion>
 
 	<!-- Диалог с патрулями-->
 	<info_portion id="mil_freedom_speak_patrol1"></info_portion>
