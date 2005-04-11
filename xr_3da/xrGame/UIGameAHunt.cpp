@@ -15,6 +15,11 @@
 #define SCORE_MSG_COLOR		0xffffffff
 #define REINFORCEMENT_MSG_COLOR		0xff8080ff
 #define TODO_MSG_COLOR		0xff00ff00
+
+#define DI2PX(x) float(iFloor((x+1)*float(UI_BASE_WIDTH)*0.5f))
+#define DI2PY(y) float(iFloor((y+1)*float(UI_BASE_HEIGHT)*0.5f))
+#define SZ(x) x*UI_BASE_WIDTH
+
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt()
 {
@@ -77,17 +82,17 @@ void CUIGameAHunt::Init	()
 	m_pPlayerLists->AttachChild(pPlayerListT2);
 	//-----------------------------------------------------------
 	m_reinforcement_caption			=	"ah_reinforcement";		
-	m_gameCaptions.addCustomMessage(m_reinforcement_caption, 0.0f, -0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_reinforcement_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
 
 	m_score_caption					=	"ah_score";		
-	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.85f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_score_caption, DI2PX(0.0f), DI2PY(-0.85f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
 
 	m_todo_caption					=	"ah_todo";
 	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, TODO_MSG_COLOR, "");
 	m_gameCaptions.customizeMessage(m_todo_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 
 	m_buy_msg_caption				=	"ah_buy";
-	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, BUY_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_buy_msg_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, BUY_MSG_COLOR, "");
 
 };
 //--------------------------------------------------------------------
