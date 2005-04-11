@@ -14,62 +14,65 @@ public:
 	CArtefact(void);
 	virtual ~CArtefact(void);
 
-	virtual void Load				(LPCSTR section);
+	virtual void					Load							(LPCSTR section);
 	
-	virtual BOOL net_Spawn			(CSE_Abstract* DC);
-	virtual void net_Destroy		();
+	virtual BOOL					net_Spawn						(CSE_Abstract* DC);
+	virtual void					net_Destroy						();
 
-	virtual void OnH_A_Chield		();
-	virtual void OnH_B_Independent	();
+	virtual void					OnH_A_Chield					();
+	virtual void					OnH_B_Independent				();
 	
-	virtual void UpdateCL			();
-	virtual void shedule_Update		(u32 dt);	
+	virtual void					UpdateCL						();
+	virtual void					shedule_Update					(u32 dt);	
 	
-	virtual bool CanTake			() const;
+	virtual bool					CanTake							() const;
 
-	virtual void			renderable_Render				();
-	virtual BOOL			renderable_ShadowGenerate		()		{ return FALSE;	}
-	virtual BOOL			renderable_ShadowReceive		()		{ return TRUE;	}
-	virtual void create_physic_shell();
+	virtual void					renderable_Render				();
+	virtual BOOL					renderable_ShadowGenerate		()		{ return FALSE;	}
+	virtual BOOL					renderable_ShadowReceive		()		{ return TRUE;	}
+	virtual void					create_physic_shell();
 
 	//for smart_cast
-	virtual CArtefact*		cast_artefact		()		{return this;}
+	virtual CArtefact*				cast_artefact						()		{return this;}
 
 protected:
-	virtual void	UpdateCLChild	(){};
+	virtual void					UpdateCLChild						()		{};
 
-	u16				m_CarringBoneID;
-	
-	shared_str		m_sParticlesName;
+	u16								m_CarringBoneID;
+	shared_str						m_sParticlesName;
+protected:
+	SArtefactActivation*			m_activationObj;
 	//////////////////////////////////////////////////////////////////////////
 	//	Lights
 	//////////////////////////////////////////////////////////////////////////
-protected:
 	//флаг, что подсветка может быть включена
-	bool			m_bLightsEnabled;
+	bool							m_bLightsEnabled;
 	//подсветка во время полета и работы двигателя
-	ref_light		m_pTrailLight;
-	Fcolor			m_TrailLightColor;
-	float			m_fTrailLightRange;
+	ref_light						m_pTrailLight;
+	Fcolor							m_TrailLightColor;
+	float							m_fTrailLightRange;
 protected:
-	virtual void	UpdateLights();
+	virtual void					UpdateLights();
 	
 public:
-	virtual void				StartLights();
-	virtual void				StopLights();
-	void						ActivateArtefact	();
-	bool						CanBeActivated		()	{return m_bCanSpawnZone;};// does artefact can spawn anomaly zone
+	virtual void					StartLights();
+	virtual void					StopLights();
+	void							ActivateArtefact					();
+	bool							CanBeActivated						()				{return m_bCanSpawnZone;};// does artefact can spawn anomaly zone
 
+	virtual void					PhDataUpdate						(dReal step);
+	virtual void					PhTune								(dReal step)	{};
 	//////////////////////////////////////////////////////////////////////////
 	// свойства артефакта, когда он висит на поясе у актера
 	//////////////////////////////////////////////////////////////////////////
-	bool 						 m_bActorPropertiesEnabled;
-	float						 m_fHealthRestoreSpeed;
-	float 						m_fRadiationRestoreSpeed;
-	float 						m_fSatietyRestoreSpeed;
-	float						 m_fPowerRestoreSpeed;
-	float						 m_fBleedingRestoreSpeed;
-	CHitImmunity 				m_ArtefactHitImmunities;
+	bool							m_bCanSpawnZone;
+	bool 							m_bActorPropertiesEnabled;
+	float							m_fHealthRestoreSpeed;
+	float 							m_fRadiationRestoreSpeed;
+	float 							m_fSatietyRestoreSpeed;
+	float							m_fPowerRestoreSpeed;
+	float							m_fBleedingRestoreSpeed;
+	CHitImmunity 					m_ArtefactHitImmunities;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

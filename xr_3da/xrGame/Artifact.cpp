@@ -196,7 +196,7 @@ void CArtefact::UpdateCL()
 	UpdateLights();
 	if(m_activationObj){
 		CPHUpdateObject::Activate();
-		UpdateActivation();
+		m_activationObj->UpdateActivation();
 		return;
 	}
 	UpdateCLChild();
@@ -255,12 +255,6 @@ void CArtefact::ActivateArtefact	()
 	m_activationObj = xr_new<SArtefactActivation>(this);
 	m_activationObj->Start();
 
-}
-
-void CArtefact::UpdateActivation	()
-{
-	if(!m_activationObj) return;
-		m_activationObj->UpdateActivation		();
 }
 
 void CArtefact::PhDataUpdate	(dReal step)
