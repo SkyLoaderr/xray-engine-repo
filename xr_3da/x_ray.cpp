@@ -143,14 +143,14 @@ void CheckPrivilegySlowdown		( )
 	BOOL	bDandy	=	(shared_str(Core.CompName)._get()->dwCRC == 0x09de56e5) && (shared_str(Core.UserName)._get()->dwCRC==0x430b37e7) ;
 	if	(bDima || bJim || bDandy)	{
 		Log			("! slowdown enabled for your pleasure :)");
-//.		thread_spawn(slowdownthread,"slowdown",0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown"))	{
-//.		thread_spawn(slowdownthread,"slowdown",0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown2x"))	{
-//.		thread_spawn(slowdownthread,"slowdown",0,0);
-//.		thread_spawn(slowdownthread,"slowdown",0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 #endif
 }
