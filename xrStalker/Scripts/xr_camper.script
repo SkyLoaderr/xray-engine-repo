@@ -169,16 +169,6 @@ function action_patrol:execute()
 			else
 				state_mgr.set_state(self.object, "sneak", nil, nil)
 			end		
-
-//			if self:on_place() then 
-//				if self.a.suggested_state.campering then
-//					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-//				else
-//					state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-//				end		
-//			else
-//				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
-//			end		
 		end
 	end
 
@@ -247,7 +237,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
 	st.suggested_state = {}
-	st.suggested_state.moving1 = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
+	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")

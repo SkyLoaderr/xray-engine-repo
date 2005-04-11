@@ -394,16 +394,46 @@ function arena_not_empty(actor,npc)
 end
 
 function arena_has_no_monsters(npc, actor)
-	if not arena_has_boar(npc, actor)
+	if arena_has_pseudodog(npc, actor) or
+	   arena_has_snork(npc, actor)
 	then
-		return true
+		return false
 	end
-	return false
+	return true
 end
 
-function arena_has_boar(npc, actor)
-	return db.actor:dont_has_info("bar_arena_boar_defeated")
+function arena_has_pseudodog(npc, actor)
+	return db.actor:dont_has_info("bar_arena_pseudodog_defeated")
 end
+function arena_has_snork(npc, actor)
+	return db.actor:has_info("bar_arena_pseudodog_defeated") and
+			db.actor:dont_has_info("bar_arena_snork_defeated")
+end
+
+function arena_give_reward(actor, npc)
+	local m = 0
+	if db.actor:has_info("bar_arena_1000_r") then
+		m = 1000
+	elseif db.actor:has_info("bar_arena_2000_r") then
+		m = 2000
+	elseif db.actor:has_info("bar_arena_3000_r") then
+		m = 3000
+	elseif db.actor:has_info("bar_arena_5000_r") then
+		m = 5000
+	end
+	local p = 0
+	if db.actor:has_info("bar_arena_20_p") then
+		p = 1.2
+	elseif db.actor:has_info("bar_arena_50_p") then
+		p = 1.5
+	elseif db.actor:has_info("bar_arena_100_p") then
+		p = 2
+	end
+
+	dialogs.relocate_money(npc, m*p, "in")
+	db.actor:give_info_portion("bar_arena_reset")	
+end
+
 
 function actor_has_1000(actor,npc)
 	return actor:money() > 1000

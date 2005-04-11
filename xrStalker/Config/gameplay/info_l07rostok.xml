@@ -248,7 +248,7 @@
 		<disable>bar_arena_actor_victory</disable>
 		<disable>bar_arena_actor_lose</disable>
 		
-		<disable>bar_arena_boar_choosen</disable>				
+		<disable>bar_arena_pseudodog_choosen</disable>				
 	</info_portion>	
 	
 	<info_portion id="bar_arena_1000_r"></info_portion>
@@ -268,8 +268,10 @@
 	<info_portion id="bar_arena_fight_60"></info_portion>
 	
 	
-	<info_portion id="bar_arena_boar_choosen"></info_portion>
-	<info_portion id="bar_arena_boar_defeated"></info_portion>	
+	<info_portion id="bar_arena_pseudodog_choosen"></info_portion>
+	<info_portion id="bar_arena_pseudodog_defeated"></info_portion>	
 	
+	<info_portion id="bar_arena_snork_choosen"></info_portion>
+	<info_portion id="bar_arena_snork_defeated"></info_portion>	
     
 </game_information_portions>
