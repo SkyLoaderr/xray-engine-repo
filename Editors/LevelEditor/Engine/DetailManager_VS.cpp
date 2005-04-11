@@ -164,99 +164,6 @@ void CDetailManager::hw_Render()
 	RCache.set_c			(hwc_s_xform,	Device.mFullTransform);
 	hw_Render_dump			(hwc_s_array,	0, 1, c_hdr );
 }
-/*
-void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_id, u32 c_offset)
-{
-	Device.Statistic.RenderDUMP_DT_Count	= 0;
-
-	// Matrices and offsets
-	u32		vOffset	=	0;
-	u32		iOffset	=	0;
-
-	vis_list& list	=	visible	[var_id];
-
-	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
-	Fvector					c_sun,c_ambient,c_lmap,c_hemi;
-	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);	c_sun.mul(.5f);
-	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
-	c_ambient.set			(desc.ambient.x, desc.ambient.y, desc.ambient.z);
-	c_hemi.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z);
-
-	// Iterate
-	for (u32 O=0; O<objects.size(); O++)
-	{
-		xr_vector<SlotItem*>&	vis = list		[O];
-		CDetail&	Object			= *objects	[O];
-
-		if (!vis.empty())
-		{
-			// Setup matrices + colors (and flush it as nesessary)
-			RCache.set_Element				(Object.shader->E[lod_id]);
-			RImplementation.apply_lmaterial	();
-			u32			c_base			= x_array->vs.index;
-			Fvector4*	c_storage		= RCache.get_ConstantCache_Vertex().get_array_f().access(c_base);
-
-			u32 dwBatch	= 0;
-			for (u32 item = 0; item<vis.size(); item++)
-			{
-				SlotItem&	Instance	= *(vis[item]);
-
-				u32			base		= dwBatch*4;
-
-				// Build matrix ( 3x4 matrix, last row - color )
-				float		scale		= Instance.scale_calculated;
-				Fmatrix&	M			= Instance.mRotY;
-				c_storage[base+0].set	(M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
-				c_storage[base+1].set	(M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
-				c_storage[base+2].set	(M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
-
-				// Build color
-#if RENDER==R_R1
-				Fvector C;
-				C.set					(c_ambient);
-				C.mad					(c_lmap,Instance.c_rgb);
-				C.mad					(c_hemi,Instance.c_hemi);
-				C.mad					(c_sun,	Instance.c_sun);
-				c_storage[base+3].set	(C.x,			C.y,			C.z,			1.f		);
-#else
-				// R2 only needs hemisphere
-				float		h			= Instance.c_hemi;
-				c_storage[base+3].set	(h,				h,				h,				h		);
-#endif
-				dwBatch	++;
-				if (dwBatch == hw_BatchSize)	{
-					// flush
-					Device.Statistic.RenderDUMP_DT_Count					+=	dwBatch;
-					u32 dwCNT_verts			= dwBatch * Object.number_vertices;
-					u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
-					RCache.get_ConstantCache_Vertex().b_dirty				=	TRUE;
-					RCache.get_ConstantCache_Vertex().get_array_f().dirty	(c_base,c_base+dwBatch*4);
-					RCache.Render			(D3DPT_TRIANGLELIST,vOffset, 0, dwCNT_verts,iOffset,dwCNT_prims);
-
-					// restart
-					dwBatch					= 0;
-				}
-			}
-
-			// flush if nessecary
-			if (dwBatch)
-			{
-				Device.Statistic.RenderDUMP_DT_Count	+= dwBatch;
-				u32 dwCNT_verts			= dwBatch * Object.number_vertices;
-				u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
-				RCache.get_ConstantCache_Vertex().b_dirty				=	TRUE;
-				RCache.get_ConstantCache_Vertex().get_array_f().dirty	(c_base,c_base+dwBatch*4);
-				RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCNT_verts,iOffset,dwCNT_prims);
-			}
-
-			// Clean up
-			vis.clear	();
-		}
-		vOffset		+=	hw_BatchSize * Object.number_vertices;
-		iOffset		+=	hw_BatchSize * Object.number_indices;
-	}
-}
-/*/
 void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_id, u32 c_offset)
 {
 	Device.Statistic.RenderDUMP_DT_Count	= 0;
@@ -349,4 +256,3 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 		vis.clear_not_free			();
 	}
 }
-//*/

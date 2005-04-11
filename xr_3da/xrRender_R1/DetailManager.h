@@ -24,7 +24,6 @@ const int		dm_cache_line		= dm_size+1+dm_size;
 const int		dm_cache_size		= dm_cache_line*dm_cache_line;
 const float		dm_fade				= float(2*dm_size)-.5f;
 const float		dm_slot_size		= DETAIL_SLOT_SIZE;
-//const float		dm_slot_radius		= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*_sqrt(2)
 
 class CDetailManager
 {
@@ -70,7 +69,6 @@ public:
     };
 
 	typedef	xr_vector<xr_vector <SlotItemVec* > >	vis_list;
-//	typedef	xr_vector <xr_vector<SlotItem*> >		vis_list;
 	typedef	svector<CDetail*,dm_max_objects>	DetailVec;
 	typedef	DetailVec::iterator					DetailIt;
 	typedef	poolSS<SlotItem,4096>				PSS;
