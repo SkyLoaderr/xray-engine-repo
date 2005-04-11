@@ -9,11 +9,13 @@
 af_medusa = zone_gravi_zone
 
 [af_activation_common]
-;format:	time(sec),sound_name,light_R,light_G,light_B,light_range,particle_name,af_animation_name
-starting					= 2.0,actor\hurt1,1.0,1.0,0.5,3.0,,,
-flying						= 5.0,actor\hurt2,1.0,1.0,0.5,3.0,,,
-idle_before_spawning		= 2.0,actor\hurt3,1.0,1.0,0.5,3.0,,,
-spawning					= 0.5,actor\hurt1,1.0,1.0,0.5,3.0,,,
+;-------------------------------------------------------------------------------------------------------------------------------------
+;format:						time(sec),	sound_name,		light_R,G,B,	light_range,	particle_name,			af_animation_name
+;-------------------------------------------------------------------------------------------------------------------------------------
+starting					=	2.0,		actor\hurt1,	1.0, 1.0, 0.5,	3.0,			,						idle
+flying						=	5.0,		actor\hurt2,	1.0, 1.0, 0.5,	3.0,			anomaly2\body_tear_01,	idle
+idle_before_spawning		=	2.0,		actor\hurt3,	1.0, 1.0, 0.5,	3.0,			,				
+spawning					=	0.5,		actor\hurt1,	1.0, 1.0, 0.5,	3.0,			,				
 
 
 ; Артефакты для аномалии "Комариная плешь"
