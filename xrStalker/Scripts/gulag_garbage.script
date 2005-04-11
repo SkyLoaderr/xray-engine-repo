@@ -206,14 +206,14 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 2 * 1000 * 60 * 60,
 			prior = 4, state = {0},
 			in_rest = "", out_rest = "",
-			leader = "logic@gar_dolg_patrol1",
+			dependent = "logic@gar_dolg_patrol1",
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_dolg_follower1",
 			idle = 2 * 1000 * 60 * 60,
 			prior = 4, state = {0},
 			in_rest = "", out_rest = "",
-			leader = "logic@gar_dolg_patrol1",
+			dependent = "logic@gar_dolg_patrol1",
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_dolg_zoneguard1",

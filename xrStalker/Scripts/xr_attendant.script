@@ -44,8 +44,8 @@ function evaluator_leader:evaluate ()
     if gulag == nil then return false end
     
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
-    if t ~= nil and t.leader ~= nil then 
-       self.st.leader_id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
+    if t ~= nil and t.dependent ~= nil then 
+       self.st.leader_id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.dependent)
        if self.st.leader_id ~= nil then 
           self.time = 0  
           return true
@@ -56,8 +56,8 @@ function evaluator_leader:evaluate ()
        self.time = device ():time_global () 
     else
        if device ():time_global () - self.time > 10000 then
-          if t ~= nil and t.leader ~= nil then 
-             printf ("!!! ERROR !!! FOLLOWER %s NOT FOUND LEADER WITH JOB %s", self.object:name (), t.leader)
+          if t ~= nil and t.dependent ~= nil then 
+             printf ("!!! ERROR !!! FOLLOWER %s NOT FOUND LEADER WITH JOB %s", self.object:name (), t.dependent)
           else
              printf ("!!! ERROR !!! FOLLOWER %s NOT FOUND LEADER BECAUSE LEADER NOT DEFINED", self.object:name ())
           end    
@@ -310,7 +310,9 @@ end
 --------
 function action_follow:free ()
     -- если мы под гулагом, то запросим другую работу, иначе прямая дорога в logic
-    if xr_gulag.isUnderFraction (self.object) ~= nil then
+    local gulag = xr_gulag.isUnderFraction (self.object)
+
+    if gulag ~= nil then
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
        xr_gulag.resetJob (gulag, self.object)
     else

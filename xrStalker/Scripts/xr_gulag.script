@@ -8,6 +8,7 @@ local gulag_tasks_file_name = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx       = ini_file( gulag_tasks_file_name )
 
 class "fract"
+
 function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.smrttrn_id = smrttrn_id
 	self.name   = name
@@ -30,9 +31,11 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self.calculateStates = gulag_tasks.loadStates(name, type)
 end
+
 function fract:addObject(npc)
 	self.Object[npc:id()] = npc
 end
+
 function fract:loadObject( obj_id, jobN )
 	-- пометить, что объект ожидается
 	self.Object[obj_id] = true
@@ -43,6 +46,7 @@ function fract:loadObject( obj_id, jobN )
 	-- подписаться на объект
 	level.client_spawn_manager():add( obj_id, self.smrttrn_id, fract.spawn_callback, self )
 end
+
 function fract:spawn_callback( id, obj )
 	if obj then
 		self.Object[id] = obj
@@ -57,12 +61,14 @@ function fract:spawn_callback( id, obj )
 		end
 	end
 end
+
 function fract:removeObject( npc_id, npc )
 	self:clearAllJob( npc_id )
 	self:set_restrictions( npc, "", "" )
 	self.Object[npc_id]      = nil
 	self.restrictors[npc_id] = nil
 end
+
 function fract:all_spawned()
 	for k,v in self.Object do
 		-- если есть ещё хоть один не породившийся
@@ -73,6 +79,7 @@ function fract:all_spawned()
 
 	return true
 end
+
 function fract:calculate() 
 	if not self:all_spawned() then
 		return
@@ -100,17 +107,40 @@ function fract:calculate()
 	self:updateJob()
 	self:print()
 end
+
 function fract:changeState(state)
 	self.state = state
 end
-function fract:updateJob()
-	function availState(st, state)
-		for k,v in st do
-			if v == state then return true end
+
+function fract:availState(st, state)
+	for k,v in st do
+		if v == state then return true end
+	end
+	return false
+end
+
+-- доступна ли работа?
+-- работа доступна, когда время idle истекло (или не задано)
+-- и занята работа, от которой зависит данная работа
+function fract:availJob(job)
+	if job.begin == nil or game.time() - job.begin > job.idle then
+		local jd = job.dependent
+
+		if jd then
+	   		for i, v in self.Job do
+	   			if v.section == jd then
+	   				return v.object ~= nil
+	   			end
+	   		end
 		end
+
+		return true
+	else
 		return false
 	end
+end
 
+function fract:updateJob()
 	-- если актёра нету, то никакие работы не могут быть назначены
 	if not db.actor then
 		return
@@ -118,13 +148,11 @@ function fract:updateJob()
 
 	for k,v in self.Job do
 		-- проверка на доступность работы при текущем стейте
-		if availState(v.state, self.state) ~= true then
+		if self:availState(v.state, self.state) ~= true then
 			v.object = nil
 		else
-			if v.object == nil and
-        	   (v.begin == nil or
-			   game.time() - v.begin > v.idle)	
-			then
+			-- если работа свободна и доступна
+			if v.object == nil and self:availJob(v) then
 				-- назначить на работу свободного человека
 				local f = false
 				for kk,vv in self.Object do
@@ -151,6 +179,7 @@ function fract:updateJob()
        	end
 	end
 end
+
 function fract:print()
 	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self:get_capacity(), self:get_population())
 	printf("Resources:")
@@ -170,6 +199,7 @@ function fract:print()
 		end
 	end
 end
+
 function fract:get_capacity()
 	i = {}
 	for k,v in self.Job do
@@ -188,6 +218,7 @@ function fract:get_capacity()
 	end
 	return t
 end
+
 function fract:get_population()
 	i = 0
 	for k,v in self.Object do
@@ -309,12 +340,14 @@ function fract:clearAllJob(npc_id)
 		xr_logic.initialize_obj( t, nil, false, db.actor, self:get_stype( t ) )
 	end
 end
+
 function fract:stalkerExist(npc)
 	if self.Object[npc:id()] ~= nil then
 		return true
 	end
 	return false
 end
+
 function fract:idStalkerOnJob(job_name)
 	for k,v in self.Job do
 		if v.section == job_name then
@@ -325,9 +358,11 @@ function fract:idStalkerOnJob(job_name)
 	end
 	return nil
 end
+
 function fract:getCasualities()
 	return self.casualities
 end
+
 function fract:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
@@ -343,6 +378,7 @@ function fract:set_goodwill (goodwill, object)
 		v:set_community_goodwill (goodwill, object)
 	end
 end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
@@ -352,6 +388,7 @@ function createGulag(smrttrn_id, name, type, squad, groups)
 	end
 	return xr_gulag.fraction[name]
 end
+
 function destroyGulag(name)
 	xr_gulag.fraction[name] = nil
 end

@@ -33,7 +33,12 @@ function loadJob(sj, gname, type, squad, groups)
 			idle = 4 * 1000 * 60 * 60,
 			prior = 7, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
-			leader = "logic@esc_blockpost_patrol1"
+			dependent = "logic@esc_blockpost_patrol1"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@esc_blockpost_sleeper1",
+			prior = 0, state = {0,1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 	end
@@ -117,14 +122,14 @@ function loadJob(sj, gname, type, squad, groups)
 			idle = 4 * 1000 * 60 * 60,
 			prior = 7, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor",
-			leader = "logic@esc_blockpost_patrol1"
+			dependent = "logic@esc_blockpost_patrol1"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@esc_blockpost_follower2",
 			idle = 4 * 1000 * 60 * 60,
 			prior = 7, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor",
-			leader = "logic@esc_blockpost_patrol1"
+			dependent = "logic@esc_blockpost_patrol1"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_blockpost_camper1",

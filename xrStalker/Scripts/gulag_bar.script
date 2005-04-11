@@ -425,7 +425,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-			leader = "logic@bar_arena_leader",
+			dependent = "logic@bar_arena_leader",
 			predicate = function(obj)
 				         	return obj:character_community() == "dolg"
 			            end
@@ -435,7 +435,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-			leader = "logic@bar_arena_leader",
+			dependent = "logic@bar_arena_leader",
 			predicate = function(obj)
 				         	return obj:character_community() == "dolg"
 			            end
