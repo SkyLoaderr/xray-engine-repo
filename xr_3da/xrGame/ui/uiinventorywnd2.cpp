@@ -36,14 +36,14 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		
 	UIPropertiesBox.RemoveAll();
 	
-	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(m_pCurrentItem);
-	CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(m_pCurrentItem);
-//	CArtefactMerger* pArtefactMerger = smart_cast<CArtefactMerger*>(m_pCurrentItem);
-	
-	CWeapon* pWeapon = smart_cast<CWeapon*>(m_pCurrentItem);
-	CScope* pScope = smart_cast<CScope*>(m_pCurrentItem);
-	CSilencer* pSilencer = smart_cast<CSilencer*>(m_pCurrentItem);
-	CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(m_pCurrentItem);
+	CEatableItem* pEatableItem			= smart_cast<CEatableItem*>(m_pCurrentItem);
+	CCustomOutfit* pOutfit				= smart_cast<CCustomOutfit*>(m_pCurrentItem);
+//	CArtefactMerger* pArtefactMerger	= smart_cast<CArtefactMerger*>(m_pCurrentItem);
+	CArtefact* pArtefact				= smart_cast<CArtefact*>(m_pCurrentItem);
+	CWeapon* pWeapon					= smart_cast<CWeapon*>(m_pCurrentItem);
+	CScope* pScope						= smart_cast<CScope*>(m_pCurrentItem);
+	CSilencer* pSilencer				= smart_cast<CSilencer*>(m_pCurrentItem);
+	CGrenadeLauncher* pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>(m_pCurrentItem);
 	
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
@@ -137,24 +137,10 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
-/*	if(pArtefactMerger)
-	{
-		if(!UIArtefactMergerWnd.IsShown())
-		{
-			UIPropertiesBox.AddItem("Activate Merger", NULL, 
-									INVENTORY_ARTEFACT_MERGER_ACTIVATE);
-			UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
-		}
-		else
-		{
-			UIPropertiesBox.AddItem("Deactivate Merger", NULL, 
-									INVENTORY_ARTEFACT_MERGER_DEACTIVATE);
-		}
-	}
-	else*/
-	{
-		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
-	}
+	if(pArtefact&&pArtefact->CanBeActivated())
+		UIPropertiesBox.AddItem("Activate artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
+
+	UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
@@ -306,6 +292,8 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
 				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
 				break;
+			case INVENTORY_ACTIVATE_ARTEFACT_ACTION:
+				(smart_cast<CArtefact*>(m_pCurrentItem))->ActivateArtefact();
 			}
 		}
 	}
