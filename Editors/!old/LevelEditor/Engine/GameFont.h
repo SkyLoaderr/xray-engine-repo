@@ -66,8 +66,15 @@ public:
 //	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
 //	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC void					SetColor		(u32 C)		{dwCurrentColor=C;};
+
+//#ifdef DEBUG
+//	void					SetSizeI		(float S);
+//	void					SetSize			(float S);
+//#else
 	IC void					SetSizeI		(float S)	{fCurrentSize=S*Device.dwWidth;};
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
+//#endif
+
 	IC float				GetSize			()			{return fCurrentSize;};
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};

@@ -10,6 +10,7 @@ extern ENGINE_API BOOL g_bRendering;
 #define MAX_CHARS	1024
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
+	fCurrentSize				= 0.0f;
 	uFlags						= flags;
 	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"));
 	if (pSettings->line_exist(section,"size")){
@@ -22,6 +23,7 @@ CGameFont::CGameFont(LPCSTR section, u32 flags)
 }
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
+	fCurrentSize				= 0.0f;
 	uFlags						= flags;
 	Initialize	(shader,texture);
 }
@@ -314,4 +316,23 @@ float CGameFont::SizeOf(LPCSTR s,float size)
 	}
 	return 0;
 }
+/*
+#ifdef DEBUG
+void CGameFont::SetSizeI		(float S)
+{
+	VERIFY(uFlags&fsDeviceIndependent);
+	fCurrentSize=S*Device.dwWidth;
+}
+void CGameFont::SetSize			(float S)
+{
+	int font_size1 = iFloor(fCurrentSize);
+	int font_size2 = iFloor(S);
+	if(font_size2>font_size1)std::swap(font_size1,font_size2);
 
+	if(font_size1&&font_size2){
+		VERIFY( (font_size1%font_size2)==0 );
+	};
+	fCurrentSize=S;
+}
+#endif
+*/
