@@ -738,10 +738,14 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 		if (movement().restrictions().accessible(ai_location().level_vertex_id()))
 			movement().set_level_dest_vertex	(ai_location().level_vertex_id());
 		else {
-			Fvector					dest_position;
-			u32						level_vertex_id = movement().restrictions().accessible_nearest(Position(),dest_position);
-			movement().set_level_dest_vertex	(level_vertex_id);
-			movement().detail().set_dest_position		(dest_position);
+			Fvector									dest_position;
+			u32										level_vertex_id;
+			if (ai().level_graph().inside(ai_location().level_vertex_id(),Position()))
+				level_vertex_id						= movement().restrictions().accessible_nearest(Position(),dest_position);
+			else
+				level_vertex_id						= movement().restrictions().accessible_nearest(ai().level_graph().vertex_position(ai_location().level_vertex_id()),dest_position);
+			movement().set_level_dest_vertex		(level_vertex_id);
+			movement().detail().set_dest_position	(dest_position);
 		}
 	}
 
