@@ -272,6 +272,8 @@ void PH_DBG_Clear()
 
 void PH_DBG_Render()
 {
+	HUD().Font().pFontSmall->OutSet	(550,250);
+
 	if(ph_dbg_draw_mask.test(phDbgDrawEnabledAABBS))
 	{
 		PHOBJ_DBG_I i,e;
@@ -323,6 +325,7 @@ void PH_DBG_Render()
 		}
 	}
 #endif
+		 HUD().Font().pFontSmall->OutNext("---------------------");
 		 draw_frame=!draw_frame;
 }
 #endif

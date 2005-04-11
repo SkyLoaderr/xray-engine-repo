@@ -13,6 +13,13 @@
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
+#ifdef DEBUG
+u32 dbg_bodies_num=0;
+u32 dbg_joints_num=0;
+u32 dbg_islands_num=0;
+u32 dbg_contacts_num=0;
+u32 dbg_tries_num=0;
+#endif
 
 void CPHMesh ::Create(dSpaceID space, dWorldID world){
 	Geom = dCreateTriList(space, 0, 0);
@@ -139,13 +146,38 @@ void CPHWorld::OnFrame()
 
 	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
 	{
-		DBG_OutText("Active Phys Objects %d",m_objects.count());
-		DBG_OutText("Active Phys Update Objects %d",m_update_objects.count());
+		static float obj_count=0.f;
+		static float update_obj_count=0.f;
+		obj_count=obj_count*0.9f + float(m_objects.count())*0.1f;
+		update_obj_count=update_obj_count*0.9f + float(m_update_objects.count())*0.1f;
+		DBG_OutText("Active Phys Objects %3.0f",obj_count);
+		DBG_OutText("Active Phys Update Objects %3.0f",update_obj_count);
 	}
+	dbg_tries_num=0;
 #endif
 	Device.Statistic.Physics.Begin		();
 	FrameStep							(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+	{
+		static float  fdbg_bodies_num=0.f;
+		static float  fdbg_joints_num=0.f;
+		static float  fdbg_islands_num=0.f;
+		static float  fdbg_contacts_num=0.f;
+		static float  fdbg_tries_num=0.f;
+		fdbg_islands_num=0.9f*fdbg_islands_num+0.1f*float(dbg_islands_num);
+		fdbg_bodies_num=0.9f*fdbg_bodies_num+0.1f*float(dbg_bodies_num);
+		fdbg_joints_num=0.9f*fdbg_joints_num+0.1f*float(dbg_joints_num);
+		fdbg_contacts_num=0.9f*fdbg_contacts_num+0.1f*float(dbg_contacts_num);
+		fdbg_tries_num=0.9f*fdbg_tries_num+0.1f*float(dbg_tries_num);
+		DBG_OutText("Ph Number of active islands %3.0f",fdbg_islands_num);
+		DBG_OutText("Ph Number of active bodies %3.0f",fdbg_bodies_num);
+		DBG_OutText("Ph Number of active joints %4.0f",fdbg_joints_num);
+		DBG_OutText("Ph Number of contacts %4.0f",fdbg_contacts_num);
+		DBG_OutText("Ph Number of tries %5.0f",fdbg_tries_num);
+	}
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -197,12 +229,28 @@ void CPHWorld::Step()
 	}
 
 	Device.Statistic.ph_core.Begin		();
-
+#ifdef DEBUG
+	dbg_bodies_num=0;
+	dbg_joints_num=0;
+	dbg_islands_num=0;
+#endif
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{	
 		CPHObject* obj=(*i_object);
 		++i_object;
+#ifdef DEBUG
+		if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+		{
+			if(obj->Island().IsActive())
+			{
+				dbg_islands_num++;
+				dbg_joints_num+=obj->Island().nj;
+				dbg_bodies_num+=obj->Island().nb;
+			}
+		}
+#endif
+
 		obj->IslandStep(fixed_step);
 	}
 
@@ -223,7 +271,9 @@ void CPHWorld::Step()
 	++i_update_object;
 	obj->PhDataUpdate(fixed_step);
 	}
-
+#ifdef DEBUG
+	dbg_contacts_num=ContactGroup->num;
+#endif
 	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 	ContactFeedBacks.empty();
 	ContactEffectors.empty();
@@ -264,7 +314,14 @@ void CPHWorld::FrameStep(dReal step)
 	float frame_time=m_frame_time;
 	frame_time+=step;
 	//m_frame_sum+=step;
-
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+	{
+		static float dbg_iterations=0.f;
+		dbg_iterations=dbg_iterations*0.9f+step/fixed_step*0.1f;
+		DBG_OutText("phys steps per frame %2.1f",dbg_iterations);
+	}
+#endif
 	if(!(frame_time<fixed_step))
 	{
 		it_number	=	iFloor	(frame_time/fixed_step);

@@ -8,6 +8,7 @@
 #include "../MathUtils.h"
 #ifdef DEBUG
 #include "../PHDebug.h"
+extern u32 dbg_tries_num;
 #endif
 static 	xr_vector<Triangle> pos_tries;
 static 	xr_vector<Triangle> neg_tries;
@@ -87,8 +88,9 @@ int dSortTriPrimitiveCollide (
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDBgDrawIntersectedTries))
 										DBG_DrawTri(Res,D3DCOLOR_XRGB(0,255,0));
+		dbg_tries_num++;
 #endif
-		
+
 		CDB::TRI* T = T_array + Res->id;
 
 		tri.side0[0]=Res->verts[1].x-Res->verts[0].x;
