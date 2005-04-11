@@ -25,7 +25,6 @@ public:
 	virtual ~CBastArtefact(void);
 
 	virtual void Load				(LPCSTR section);
-	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);
 	
 	virtual BOOL net_Spawn			(CSE_Abstract* DC);
@@ -47,6 +46,8 @@ public:
 	bool IsAttacking() {return NULL!=m_AttakingEntity;}
 
 protected:
+	virtual void	UpdateCLChild	();
+
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 	//столкновение мочалки с сущностью
 	void BastCollision(CEntityAlive* pEntityAlive);

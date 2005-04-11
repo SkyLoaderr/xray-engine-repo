@@ -22,7 +22,6 @@ public:
 	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 
 	virtual void Load				(LPCSTR section);
-	virtual void UpdateCL			();
 
 	virtual	void Hit				(float P, Fvector &dir,	
 									CObject* who, s16 element,
@@ -35,10 +34,13 @@ public:
 	virtual BOOL feel_touch_contact	(CObject* O);
 
 protected:
-	GAME_OBJECT_LIST m_GameObjectList;
+	virtual void	UpdateCLChild	();
 
 	//гравитационный удар по всем объектам в зоне дос€гаемости
 	void GraviStrike();
+
+	GAME_OBJECT_LIST m_GameObjectList;
+
 
 	//которого артефакт активизируетс€
 	float m_fImpulseThreshold;

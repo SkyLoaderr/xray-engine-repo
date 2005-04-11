@@ -65,9 +65,9 @@ BOOL CBlackGraviArtefact::net_Spawn(CSE_Abstract* DC)
 	return TRUE;
 }
 
-void CBlackGraviArtefact::UpdateCL() 
+void CBlackGraviArtefact::UpdateCLChild() 
 {
-	inherited::UpdateCL();
+	inherited::UpdateCLChild();
 
 	if (getVisible() && m_pPhysicsShell) {
 		if (m_bStrike) {
@@ -90,7 +90,7 @@ void CBlackGraviArtefact::UpdateCL()
 
 			m_bStrike = false;
 		}
-	}
+	}else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
 
 void CBlackGraviArtefact::Hit(float P, Fvector &dir,

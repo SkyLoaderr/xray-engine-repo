@@ -38,10 +38,8 @@ void CMercuryBall::Load(LPCSTR section)
 
 
 
-void CMercuryBall::UpdateCL() 
+void CMercuryBall::UpdateCLChild() 
 {
-	inherited::UpdateCL();
-
 	if (getVisible() && m_pPhysicsShell) {
 		if(Device.TimerAsync() - m_timeLastUpdate> m_timeToUpdate)
 		{

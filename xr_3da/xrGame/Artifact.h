@@ -2,9 +2,12 @@
 
 #include "inventory_item_object.h"
 #include "hit_immunity.h"
+#include "PHObject.h"
 #include "script_export_space.h"
 
-class CArtefact : public CInventoryItemObject {
+struct SArtefactActivation;
+
+class CArtefact : public CInventoryItemObject, public CPHUpdateObject {
 private:
 	typedef	CInventoryItemObject	inherited;
 public:
@@ -22,29 +25,21 @@ public:
 	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);	
 	
+	virtual bool CanTake			() const;
+
 	virtual void			renderable_Render				();
 	virtual BOOL			renderable_ShadowGenerate		()		{ return FALSE;	}
 	virtual BOOL			renderable_ShadowReceive		()		{ return TRUE;	}
-
-	float GetDetectionDist() {return m_fDetectionDist;}
-
 	virtual void create_physic_shell();
 
 	//for smart_cast
 	virtual CArtefact*		cast_artefact		()		{return this;}
 
 protected:
-	//расстояние обнаружения артифакта детектором
-	float			m_fDetectionDist;
-	
-	//звуки
-	shared_str		m_detectorSoundName;
-	ref_sound		m_detectorSound;
+	virtual void	UpdateCLChild	(){};
 
 	u16				m_CarringBoneID;
 	
-	static xr_set<CArtefact*> m_all;
-
 	shared_str		m_sParticlesName;
 	//////////////////////////////////////////////////////////////////////////
 	//	Lights
@@ -57,24 +52,28 @@ protected:
 	Fcolor			m_TrailLightColor;
 	float			m_fTrailLightRange;
 protected:
-	virtual void	StartLights();
-	virtual void	StopLights();
 	virtual void	UpdateLights();
 	
 public:
+	virtual void				StartLights();
+	virtual void				StopLights();
+	void						ActivateArtefact	();
+	bool						CanBeActivated		()	{return m_bCanSpawnZone;};// does artefact can spawn anomaly zone
+
 	//////////////////////////////////////////////////////////////////////////
 	// свойства артефакта, когда он висит на поясе у актера
 	//////////////////////////////////////////////////////////////////////////
-	bool  m_bActorPropertiesEnabled;
-	float m_fHealthRestoreSpeed;
-	float m_fRadiationRestoreSpeed;
-	float m_fSatietyRestoreSpeed;
-	float m_fPowerRestoreSpeed;
-	float m_fBleedingRestoreSpeed;
-	CHitImmunity m_ArtefactHitImmunities;
+	bool 						 m_bActorPropertiesEnabled;
+	float						 m_fHealthRestoreSpeed;
+	float 						m_fRadiationRestoreSpeed;
+	float 						m_fSatietyRestoreSpeed;
+	float						 m_fPowerRestoreSpeed;
+	float						 m_fBleedingRestoreSpeed;
+	CHitImmunity 				m_ArtefactHitImmunities;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CArtefact)
 #undef script_type_list
 #define script_type_list save_type_list(CArtefact)
+

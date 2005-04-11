@@ -16,9 +16,9 @@ public:
 	virtual ~CMercuryBall(void);
 
 	virtual void Load				(LPCSTR section);
-	virtual void UpdateCL			();
-
 protected:
+	virtual void	UpdateCLChild	();
+
 	//время последнего обновления поведения шара
 	ALife::_TIME_ID m_timeLastUpdate;
 	//время между апдейтами

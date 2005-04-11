@@ -49,9 +49,8 @@ void CGraviArtefact::Load(LPCSTR section)
 
 
 
-void CGraviArtefact::UpdateCL() 
+void CGraviArtefact::UpdateCLChild() 
 {
-	inherited::UpdateCL();
 
 	if (getVisible() && m_pPhysicsShell) {
 		if (m_fJumpHeight) {

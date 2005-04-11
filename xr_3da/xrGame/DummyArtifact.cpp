@@ -21,7 +21,3 @@ void CDummyArtefact::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
-void CDummyArtefact::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

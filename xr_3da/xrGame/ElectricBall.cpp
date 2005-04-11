@@ -21,7 +21,3 @@ void CElectricBall::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
-void CElectricBall::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

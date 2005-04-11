@@ -15,7 +15,6 @@ public:
 	virtual ~CZudaArtefact(void);
 
 	virtual void Load				(LPCSTR section);
-	virtual void UpdateCL			();
 
 protected:
 };

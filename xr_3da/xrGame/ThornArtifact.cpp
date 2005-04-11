@@ -20,8 +20,3 @@ void CThornArtefact::Load(LPCSTR section)
 {
 	inherited::Load(section);
 }
-
-void CThornArtefact::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

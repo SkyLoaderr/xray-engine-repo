@@ -31,7 +31,3 @@ void CNeedles::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
-void CNeedles::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

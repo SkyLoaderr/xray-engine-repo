@@ -16,9 +16,9 @@ public:
 	virtual ~CGraviArtefact(void);
 
 	virtual void Load				(LPCSTR section);
-	virtual void UpdateCL			();
 
 protected:
+	virtual void	UpdateCLChild	();
 	//параметры артефакта
 	float m_fJumpHeight;
 	float m_fEnergy;

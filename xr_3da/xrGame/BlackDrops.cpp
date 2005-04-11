@@ -20,8 +20,3 @@ void CBlackDrops::Load(LPCSTR section)
 {
 	inherited::Load(section);
 }
-
-void CBlackDrops::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

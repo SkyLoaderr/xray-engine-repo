@@ -20,8 +20,3 @@ void CZudaArtefact::Load(LPCSTR section)
 {
 	inherited::Load(section);
 }
-
-void CZudaArtefact::UpdateCL() 
-{
-	inherited::UpdateCL();
-}

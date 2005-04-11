@@ -21,7 +21,3 @@ void CFadedBall::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
-void CFadedBall::UpdateCL() 
-{
-	inherited::UpdateCL();
-}
