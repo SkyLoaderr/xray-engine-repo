@@ -38,7 +38,7 @@ function se_artefact:can_switch_online ()
        if utils.is_day () == false then 
           return true
        end   
-       if level.vertex_position (self.level_vertex_id):distance_to (db.actor:position ()) < 15 then
+       if level.vertex_position (self.level_vertex_id):distance_to (db.actor:position ()) < 50 then
           return true  --если актер слишком близко, то оставляем все как есть
        end
        return false -- актер далеко - в оффлайн.
@@ -47,7 +47,7 @@ function se_artefact:can_switch_online ()
           return false
        end 
        
-       if level.vertex_position (self.level_vertex_id):distance_to (db.actor:position ()) < 15 then
+       if level.vertex_position (self.level_vertex_id):distance_to (db.actor:position ()) < 50 then
           return false  --если актер слишком близко, то оставляем все как есть
        end
        return true -- актер далеко - в онлайн.
