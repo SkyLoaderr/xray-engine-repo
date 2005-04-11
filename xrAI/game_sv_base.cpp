@@ -597,8 +597,12 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			IClient*	CL	=	m_server->ID_to_client		(sender);
 			u64 _our		=	FS.auth_get			();
 			u64 _him		=	tNetPacket.r_u64	();
+#ifdef DEBUG
+			m_server->SendConnectResult	(CL, 1, "Everything OK");
+#else
 			if (_our != _him)	m_server->SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
 			else				m_server->SendConnectResult	(CL, 1, "Everything OK");
+#endif
 		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");

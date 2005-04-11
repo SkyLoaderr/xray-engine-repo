@@ -159,7 +159,7 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_
 	if(ps_killed){
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
-		ps_killed->DeathTime			= Device.dwTimeGlobal;
+		ps_killed->DeathTime			= Device.dwTimeGlobal;		
 
 		SetPlayersDefItems		(ps_killed);
 	};
@@ -698,7 +698,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->Skip) return;	
 	
-	P.r_s32(ps->LastBuyAcount);
+	P.r_s32(ps->LastBuyAcount);	
 
 	xr_vector<s16>		ItemsDesired;
 
@@ -829,6 +829,8 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	};
 	
 	Player_AddMoney(ps, ps->LastBuyAcount);
+	//---------------------------------------
+	Check_ForClearRun(ps);
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
@@ -1714,4 +1716,13 @@ void	game_sv_Deathmatch::Send_Anomaly_States		(ClientID id_who)
 void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)
 {
 	Send_Anomaly_States(id_who);
+};
+
+void	game_sv_Deathmatch::Check_ForClearRun		(game_PlayerState* ps)
+{
+	if (!ps) return;
+	if (ps->LastBuyAcount == 0)
+	{
+		Player_AddMoney(ps, 100);
+	}
 };
