@@ -214,6 +214,7 @@ void game_cl_Deathmatch::ClearBuyMenu			()
 
 bool game_cl_Deathmatch::CanBeReady				()
 {
+	if (!local_player) return false;
 
 	SetCurrentSkinMenu();
 

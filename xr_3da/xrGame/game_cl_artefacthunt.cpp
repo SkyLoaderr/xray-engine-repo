@@ -493,6 +493,7 @@ BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 
 bool game_cl_ArtefactHunt::CanBeReady				()
 {
+	if (!local_player) return false;
 	SetCurrentSkinMenu();
 	SetCurrentBuyMenu();
 

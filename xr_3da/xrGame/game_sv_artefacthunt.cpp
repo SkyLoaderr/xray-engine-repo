@@ -445,8 +445,15 @@ void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 zone_team)
 	};
 };
 
+BOOL	g_bAfReturnPlayersToBases = FALSE;
+
 void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 {
+	if (m_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
+	{
+		MoveAllAlivePlayers();
+	};
+	//-----------------------------------------------------------
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps) return;
 	//-----------------------------------------------
@@ -507,7 +514,6 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	m_bArtefactWasBringedToBase = true;
 };
 
-BOOL	g_bAfReturnPlayersToBases = FALSE;
 void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
 //	if (OnClient()) return;
@@ -539,10 +545,6 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	//-------------------------------------------------
 	if (m_bArtefactWasBringedToBase)
 	{
-		if (m_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
-		{
-			MoveAllAlivePlayers();
-		};
 		if (m_iReinforcementTime == -1)
 		{
 			RespawnAllNotAlivePlayers();

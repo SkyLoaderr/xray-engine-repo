@@ -200,6 +200,7 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 {
 	CUISkinSelectorWnd* pNewSkinMenu;
+	if (!local_player) return;
 	if (local_player->team == 1) pNewSkinMenu = pSkinMenuTeam1;
 	else pNewSkinMenu = pSkinMenuTeam2;
 
@@ -212,6 +213,7 @@ void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 
 bool game_cl_TeamDeathmatch::CanBeReady				()
 {
+	if (!local_player) return false;
 	if (!m_bTeamSelected)
 	{
 		if (CanCallTeamSelectMenu())
