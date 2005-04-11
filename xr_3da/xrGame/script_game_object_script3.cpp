@@ -212,6 +212,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		//CustomZone
 		.def("enable_anomaly",              &CScriptGameObject::EnableAnomaly)
 		.def("disable_anomaly",             &CScriptGameObject::DisableAnomaly)
+		.def("get_anomaly_power",			&CScriptGameObject::GetAnomalyPower)
+		.def("set_anomaly_power",			&CScriptGameObject::SetAnomalyPower)
 
 		//HELICOPTER
 		.def("get_helicopter",              &CScriptGameObject::get_helicopter)

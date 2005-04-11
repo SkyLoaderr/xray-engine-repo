@@ -433,6 +433,8 @@ public:
 			// CustomZone
 			void				EnableAnomaly			();
 			void				DisableAnomaly			();
+			float				GetAnomalyPower			();
+			void				SetAnomalyPower			(float p);
 			
 	
 			// HELICOPTER

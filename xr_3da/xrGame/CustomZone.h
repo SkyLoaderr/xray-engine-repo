@@ -73,6 +73,7 @@ public:
 	virtual		void	OnOwnershipTake					(u16 id);
 
 				float	GetMaxPower						()							{return m_fMaxPower;}
+				void	SetMaxPower						(float p)					{m_fMaxPower = p;}
 
 	//вычисление силы хита в зависимости от расстояния до центра зоны
 	//относительный размер силы (от 0 до 1)

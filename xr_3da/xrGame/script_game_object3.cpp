@@ -628,6 +628,17 @@ void CScriptGameObject::DisableAnomaly()
 	zone->ZoneDisable();
 }
 
+float CScriptGameObject::GetAnomalyPower()
+{
+	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); THROW(zone);
+	return zone->GetMaxPower();
+}
+void CScriptGameObject::SetAnomalyPower(float p)
+{
+	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); THROW(zone);
+	zone->SetMaxPower(p);
+}
+
 bool CScriptGameObject::weapon_strapped	() const
 {
 	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
