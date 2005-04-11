@@ -232,6 +232,15 @@ states = {
 				animation = "hello",
 				reset = true
 			},
+	hello_wpn = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "hello",
+				reset = true
+			},
+			
 	refuse = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
