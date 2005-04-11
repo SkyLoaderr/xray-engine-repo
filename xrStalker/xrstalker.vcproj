@@ -2111,6 +2111,13 @@
 						RelativePath=".\Scripts\se_car.script">
 					</File>
 				</Filter>
+				<Filter
+					Name="artefact"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\se_artefact.script">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="common"
