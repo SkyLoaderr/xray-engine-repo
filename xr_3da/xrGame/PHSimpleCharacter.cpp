@@ -219,7 +219,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
-	//if(ph_world)
+	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics character shell during physics processing!!!");//if(ph_world)
 	CPHObject::deactivate();
 	spatial_unregister();
 

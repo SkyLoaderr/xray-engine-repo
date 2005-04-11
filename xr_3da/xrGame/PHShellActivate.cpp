@@ -6,6 +6,7 @@
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
 #include "PHCollideValidator.h"
+#include "Level.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "../ode/src/collision_kernel.h"
@@ -218,6 +219,7 @@ void CPHShell::PresetActive()
 
 void CPHShell::Deactivate(){
 	if(!bActive)return;
+	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics shell during physics processing!!!");
 	vis_update_activate();
 	DisableObject();
 	spatial_unregister();

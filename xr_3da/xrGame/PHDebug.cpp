@@ -5,6 +5,8 @@
 #include "PHDebug.h"
 #include "PHObject.h"
 #include "ExtendedGeom.h"
+#include "Level.h"
+#include "Hudmanager.h"
 Flags32		ph_dbg_draw_mask;
 bool		draw_frame=0;
 
@@ -110,6 +112,28 @@ struct SPHDBGDrawPoint :public SPHDBGDrawAbsract
 void DBG_DrawPoint(const Fvector& p,float size,u32 c)
 {
 	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawPoint>(p,size,c));
+}
+
+struct SPHDBGOutText : public SPHDBGDrawAbsract
+{
+string64 s;
+	SPHDBGOutText(LPCSTR t)
+	{
+		strcpy(s,t);
+	}
+	virtual void render()
+	{
+		HUD().Font().pFontSmall->OutNext(s);
+	}
+};
+void _cdecl DBG_OutText(LPCSTR s,...)
+{
+	string64 t;
+	va_list   marker;
+	va_start  (marker,s);
+	vsprintf(t,s,marker);
+	va_end    (marker);
+	DBG_DrawPHAbstruct(xr_new<SPHDBGOutText>(t));
 }
 void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a)
 {

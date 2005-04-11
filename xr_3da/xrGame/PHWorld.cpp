@@ -134,7 +134,15 @@ void CPHWorld::OnFrame()
 	Level().BulletManager().Update		();
 	Device.Statistic.TEST0.End			();
 	*/
+#ifdef DEBUG 
+	DBG_DrawFrameStart();
 
+	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+	{
+		DBG_OutText("Active Phys Objects %d",m_objects.count());
+		DBG_OutText("Active Phys Update Objects %d",m_update_objects.count());
+	}
+#endif
 	Device.Statistic.Physics.Begin		();
 	FrameStep							(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
@@ -146,9 +154,7 @@ static u32 start_time=0;
 void CPHWorld::Step()
 {
 
-#ifdef DEBUG 
-	DBG_DrawFrameStart();
-#endif
+
 
 	PH_OBJECT_I			i_object;
 	PH_UPDATE_OBJECT_I	i_update_object;
@@ -286,6 +292,7 @@ void CPHWorld::FrameStep(dReal step)
 	*/
 	//for(UINT i=0;i<(m_reduce_delay+1);++i)
 	b_processing=true;
+
 	start_time = Device.dwTimeGlobal;// - u32(m_frame_time*1000);
 	for(UINT i=0; i<it_number;++i)	Step();
 	b_processing=false;

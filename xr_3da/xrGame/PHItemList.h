@@ -44,6 +44,7 @@ template<class T>
 					bool		operator !=	 (iterator right){return my_ptr!=right.my_ptr;}
 			};
 							CPHItemList		()		{  empty();}
+			u16				count			()		{return size;}
 			void			push_back		(T* item)	
 			{
 				*(last_tome)=item;
