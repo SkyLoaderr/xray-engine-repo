@@ -6704,6 +6704,9 @@
 							Name="Artifacts"
 							Filter="">
 							<File
+								RelativePath=".\artefact_script.cpp">
+							</File>
+							<File
 								RelativePath="Artifact.cpp">
 							</File>
 							<File

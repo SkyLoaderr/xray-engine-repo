@@ -116,4 +116,5 @@
 #	include "ai/monsters/tushkano/tushkano.h"
 #	include "car.h"
 #	include "script_lanim.h"
+#	include "artifact.h"
 #endif

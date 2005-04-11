@@ -1,6 +1,8 @@
 #pragma once
+
 #include "inventory_item_object.h"
 #include "hit_immunity.h"
+#include "script_export_space.h"
 
 class CArtefact : public CInventoryItemObject {
 private:
@@ -70,4 +72,9 @@ public:
 	float m_fPowerRestoreSpeed;
 	float m_fBleedingRestoreSpeed;
 	CHitImmunity m_ArtefactHitImmunities;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CArtefact)
+#undef script_type_list
+#define script_type_list save_type_list(CArtefact)
