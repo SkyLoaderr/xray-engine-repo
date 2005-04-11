@@ -8,14 +8,22 @@ void CDetailManager::cache_Initialize	()
 	cache_cz			= 0;
 
 	// Initialize cache-grid
-	Slot*	slt = cache_pool;
+	Slot*	slt 		= cache_pool;
 	for (u32 i=0; i<dm_cache_line; i++)
-		for (u32 j=0; j<dm_cache_line; j++, slt++)
-		{
+		for (u32 j=0; j<dm_cache_line; j++, slt++){
 			cache			[i][j]	= slt;
 			cache_Task		(j,i,slt);
 		}
 	VERIFY	(cache_Validate());
+
+    for (int _mz1=0; _mz1<dm_cache1_line; _mz1++){
+    	for (int _mx1=0; _mx1<dm_cache1_line; _mx1++){
+		    CacheSlot1& MS 	= cache_level1[_mz1][_mx1];
+			for (int _z=0; _z<dm_cache1_count; _z++)
+				for (int _x=0; _x<dm_cache1_count; _x++)
+					MS.slots[_z*dm_cache1_count+_x] = &cache[_mz1*dm_cache1_count+_z][_mx1*dm_cache1_count+_x];
+        }
+    }
 }
 
 CDetailManager::Slot*	CDetailManager::cache_Query	(int r_x, int r_z)
@@ -30,6 +38,11 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	int sx					= cg2w_X	(gx);
 	int sz					= cg2w_Z	(gz);
 	DetailSlot&	DS			= QueryDB	(sx,sz);
+
+	D->empty				=	(DS.id0==DetailSlot::ID_Empty)&&
+								(DS.id1==DetailSlot::ID_Empty)&&
+								(DS.id2==DetailSlot::ID_Empty)&&
+								(DS.id3==DetailSlot::ID_Empty);
 
 	// Unpacking
 	u32 old_type			= D->type;
@@ -50,6 +63,7 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 
 	if (old_type != stPending)
 	{
+		VERIFY		(stPending == D->type);
 		cache_task.push_back(D);
 	}
 }
@@ -74,6 +88,7 @@ BOOL	CDetailManager::cache_Validate	()
 
 void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 {
+	bool bNeedMegaUpdate	= (cache_cx!=v_x)||(cache_cz!=v_z);
 	// *****	Cache shift
 	while (cache_cx!=v_x)
 	{
@@ -132,17 +147,14 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 	BOOL	bFullUnpack		= FALSE;
 	if (cache_task.size() == dm_cache_size)	{ limit = dm_cache_size; bFullUnpack=TRUE; }
 
-	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++)
-	{
+	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++){
 		u32		best_id		= 0;
 		float	best_dist	= flt_max;
 
-		if (bFullUnpack)
-		{
+		if (bFullUnpack){
 			best_id			= cache_task.size()-1;
 		} else {
-			for (u32 entry=0; entry<cache_task.size(); entry++)
-			{
+			for (u32 entry=0; entry<cache_task.size(); entry++){
 				// Gain access to data
 				Slot*		S	= cache_task[entry];
 				VERIFY		(stPending == S->type);
@@ -165,6 +177,23 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 		cache_Decompress	(cache_task[best_id]);
 		cache_task.erase	(best_id);
 	}
+
+    if (bNeedMegaUpdate){
+        for (int _mz1=0; _mz1<dm_cache1_line; _mz1++){
+            for (int _mx1=0; _mx1<dm_cache1_line; _mx1++){
+                CacheSlot1& MS 	= cache_level1[_mz1][_mx1];
+				MS.empty		= TRUE;
+                MS.vis.clear	();
+                for (int _i=0; _i<dm_cache1_count*dm_cache1_count; _i++){
+                    Slot*	PS		= *MS.slots[_i];
+                    Slot& 	S 		= *PS;
+                    MS.vis.box.merge(S.vis.box);
+					if (!S.empty)	MS.empty = FALSE;
+                }
+                MS.vis.box.getsphere(MS.vis.sphere.P,MS.vis.sphere.R);
+            }
+        }
+    }
 }
 
 DetailSlot&	CDetailManager::QueryDB(int sx, int sz)

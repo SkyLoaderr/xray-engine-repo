@@ -136,9 +136,7 @@ void CDetailManager::Load		()
 	m_slots->close		();
 
 	// Initialize 'vis' and 'cache'
-	visible[0].resize	(objects.size());	// dump(visible[0]);
-	visible[1].resize	(objects.size());	// dump(visible[1]);
-	visible[2].resize	(objects.size());	// dump(visible[2]);
+	for (u32 i=0; i<3; ++i)	visible[i].resize(objects.size());
 	cache_Initialize	();
 
 	// Make dither matrix
@@ -181,6 +179,90 @@ void CDetailManager::Unload		()
 
 extern ECORE_API float r_ssaDISCARD;
 
+void CDetailManager::UpdateVisibleM()
+{
+	Fvector		EYE				= Device.vCameraPosition;
+	CFrustum	View			= RImplementation.ViewBase;
+	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
+	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
+	float fade_range			= fade_limit-fade_start;
+	float		r_ssaCHEAP		= 16*r_ssaDISCARD;
+
+	// Initialize 'vis' and 'cache'
+	// Collect objects for rendering
+	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
+	for (int _mz=0; _mz<dm_cache1_line; _mz++){
+		for (int _mx=0; _mx<dm_cache1_line; _mx++){
+			CacheSlot1& MS		= cache_level1[_mz][_mx];
+			if (MS.empty)		continue;
+			u32 mask			= 0xff;
+			u32 res				= View.testSAABB		(MS.vis.sphere.P,MS.vis.sphere.R,MS.vis.box.data(),mask);
+			if (fcvNone==res)						 	continue;	// invisible-view frustum
+			// test slots
+			for (int _i=0; _i<dm_cache1_count*dm_cache1_count; _i++){
+				Slot*	PS		= *MS.slots[_i];
+				Slot& 	S 		= *PS;
+
+				// if slot empty - continue
+				if (S.empty)	continue;
+
+				// if upper test = fcvPartial - test inner slots
+				if (fcvPartial==res){
+					u32 _mask	= mask;
+					u32 _res	= View.testSAABB			(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.data(),_mask);
+					if (fcvNone==_res)						continue;	// invisible-view frustum
+				}
+#ifndef _EDITOR
+				if (!RImplementation.HOM.visible(S.vis))	continue;	// invisible-occlusion
+#endif
+				// Add to visibility structures
+				if (Device.dwFrame>S.frame){
+					// Calc fade factor	(per slot)
+					float	dist_sq		= EYE.distance_to_sqr	(S.vis.sphere.P);
+					if		(dist_sq>fade_limit)				continue;
+					float	alpha		= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
+					float	alpha_i		= 1.f - alpha;
+					float	dist_sq_rcp	= 1.f / dist_sq;
+
+					S.frame			= Device.dwFrame+Random.randI(15,30);
+					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++){
+						SlotPart&			sp	= S.G		[sp_id];
+						if (sp.id==DetailSlot::ID_Empty)	continue;
+
+						sp.r_items[0].clear_not_free();
+						sp.r_items[1].clear_not_free();
+						sp.r_items[2].clear_not_free();
+
+						float				R		= objects	[sp.id]->bv_sphere.R;
+						float				Rq_drcp	= R*R*dist_sq_rcp;	// reordered expression for 'ssa' calc
+
+						SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
+						for (; siIT!=siEND; siIT++){
+							SlotItem& Item			= *(*siIT);
+							float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
+							float	ssa				= scale*scale*Rq_drcp;
+							if (ssa < r_ssaDISCARD) continue;
+							u32		vis_id			= 0;
+							if (ssa > r_ssaCHEAP)	vis_id = Item.vis_ID;
+							
+							sp.r_items[vis_id].push_back	(*siIT);
+
+//2							visible[vis_id][sp.id].push_back(&Item);
+						}
+					}
+				}
+				for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++){
+					SlotPart&			sp	= S.G		[sp_id];
+					if (sp.id==DetailSlot::ID_Empty)	continue;
+					if (!sp.r_items[0].empty()) visible[0][sp.id].push_back(&sp.r_items[0]);
+					if (!sp.r_items[1].empty()) visible[1][sp.id].push_back(&sp.r_items[1]);
+					if (!sp.r_items[2].empty()) visible[2][sp.id].push_back(&sp.r_items[2]);
+				}
+			}
+		}
+	}
+	Device.Statistic.RenderDUMP_DT_VIS.End	();
+}
 
 void CDetailManager::Render		()
 {
@@ -191,11 +273,7 @@ void CDetailManager::Render		()
 	float factor				= g_pGamePersistent->Environment.wind_strength;
 	swing_current.lerp			(swing_desc[0],swing_desc[1],factor);
 
-	float		r_ssaCHEAP		= 16*r_ssaDISCARD;
-
 	Fvector		EYE				= Device.vCameraPosition;
-	CFrustum	View			= RImplementation.ViewBase;
-
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
@@ -203,61 +281,7 @@ void CDetailManager::Render		()
 	cache_Update				(s_x,s_z,EYE,dm_max_decompress);
 	Device.Statistic.RenderDUMP_DT_Cache.End	();
 
-	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
-	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
-	float fade_range			= fade_limit-fade_start;
-
-	// Collect objects for rendering
-	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
-	for (int _z=-dm_size; _z<=dm_size; _z++)
-	{
-		for (int _x=-dm_size; _x<=dm_size; _x++)
-		{
-			// Query for slot
-			Slot*	CS			= cache_Query(_x,_z);
-			Slot&	S			= *CS;
-
-			// Transfer visibile and partially visible slot contents
-			u32 mask			= 0xff;
-			u32 res				= View.testSAABB		(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.data(),mask);
-			if (fcvNone==res)							continue;	// invisible-view frustum
-#ifdef _EDITOR
-			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
-#else
-			if (!RImplementation.HOM.visible(S.vis))	continue;	// invisible-occlusion
-#endif
-
-			// Calc fade factor	(per slot)
-			float	dist_sq		= EYE.distance_to_sqr	(S.vis.sphere.P);
-			if		(dist_sq>fade_limit)				continue;
-			float	alpha		= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
-			float	alpha_i		= 1.f - alpha;
-			float	dist_sq_rcp	= 1.f / dist_sq;
-
-			// Add to visibility structures
-			for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
-			{
-				SlotPart&			sp	= S.G		[sp_id];
-				if (sp.id==DetailSlot::ID_Empty)	continue;
-				float				R		= objects	[sp.id]->bv_sphere.R;
-				float				Rq_drcp	= R*R*dist_sq_rcp;	// reordered expression for 'ssa' calc
-
-				SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
-				for (; siIT!=siEND; siIT++)
-				{
-					SlotItem& Item			= *(*siIT);
-
-					float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
-					float	ssa				= scale*scale*Rq_drcp;
-					if (ssa < r_ssaDISCARD) continue;
-					u32		vis_id			= 0;
-					if (ssa > r_ssaCHEAP)	vis_id = Item.vis_ID;
-					visible[vis_id][sp.id].push_back	(*siIT);
-				}
-			}
-		}
-	}
-	Device.Statistic.RenderDUMP_DT_VIS.End	();
+	UpdateVisibleM				();
 
 	Device.Statistic.RenderDUMP_DT_Render.Begin	();
 	RCache.set_CullMode		(CULL_NONE);

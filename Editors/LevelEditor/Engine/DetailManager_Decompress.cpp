@@ -42,8 +42,10 @@ void		CDetailManager::cache_Decompress(Slot* S)
 {
 	VERIFY				(S);
 	Slot&	D			= *S;
-	DetailSlot&	DS		= QueryDB(D.sx,D.sz);
 	D.type				= stReady;
+	if (D.empty)		return;
+
+	DetailSlot&	DS		= QueryDB(D.sx,D.sz);
 
 	// Select polygons
 	Fvector		bC,bD;
