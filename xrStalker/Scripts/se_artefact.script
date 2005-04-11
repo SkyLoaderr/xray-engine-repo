@@ -35,7 +35,7 @@ function se_artefact:can_switch_online ()
     
     if self.online == true then --обработаем ситуацию, когда артефакт в онлайне
        --если ночь (или актера нет или он дал дуба, то мы в онлайне и остаемся 
-       if utils.is_day () == false then 
+       if utils.electro_art_enabled () == true then 
           return true
        end   
        if level.vertex_position (self.level_vertex_id):distance_to (db.actor:position ()) < 50 then
@@ -43,7 +43,7 @@ function se_artefact:can_switch_online ()
        end
        return false -- актер далеко - в оффлайн.
     else --обработаем ситуацию, когда арефакт в оффлайне
-       if utils.is_day () == true then --если день, то ничего не делаем
+       if utils.electro_art_enabled () == false then --если день, то ничего не делаем
           return false
        end 
        
