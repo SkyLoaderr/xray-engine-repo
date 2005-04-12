@@ -246,6 +246,7 @@
 		
 		<disable>bar_arena_spawn_monstr</disable>
 		<disable>bar_arena_monstr_ready</disable>
+		<disable>bar_arena_monstr_dead</disable>
 		<disable>bar_arena_actor_victory</disable>
 		<disable>bar_arena_actor_lose</disable>
 		

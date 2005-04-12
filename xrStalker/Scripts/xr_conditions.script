@@ -210,20 +210,30 @@ function bar_arena_actor_inside(actor,npc)
 	if t and db.actor then
 		if t:inside(db.actor:position()) then
 			return true
-		else
-			return false
 		end
 	end
+	return false
+end
+function bar_arena_actor_fight(actor,npc)
+	local t = db.zone_by_name["bar_arena_sr"]
+	local tt = db.zone_by_name["bar_arena_waiter"]
+	if t and tt and db.actor then
+		if t:inside(db.actor:position()) and
+		   not tt:inside(db.actor:position())
+		then
+			return true
+		end
+	end
+	return false
 end
 function bar_arena_actor_outside(actor,npc)
 	local t = db.zone_by_name["bar_arena_waiter_out"]
 	if t and db.actor then
 		if t:inside(db.actor:position()) then
 			return true
-		else
-			return false
 		end
 	end
+	return false
 end
 
 
