@@ -95,7 +95,7 @@ void CSHGameMtlTools::Load()
 	m_bLockUpdate		= FALSE;
 }
 
-void CSHGameMtlTools::Save()
+bool CSHGameMtlTools::Save()
 {
 	ResetCurrentItem	();
     m_bLockUpdate		= TRUE;
@@ -103,12 +103,13 @@ void CSHGameMtlTools::Save()
     // save
     EFS.UnlockFile		(_game_data_,GAMEMTL_FILENAME,false);
     EFS.BackupFile		(_game_data_,GAMEMTL_FILENAME);
-    GMLib.Save			();
+    bool bRes			= GMLib.Save();
     EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
     
 	m_bLockUpdate		= FALSE;
 
-    m_bModified	= FALSE;
+    if (bRes) 			m_bModified	= FALSE;
+    return bRes;
 }
 
 SGameMtl* CSHGameMtlTools::FindItem(LPCSTR name)

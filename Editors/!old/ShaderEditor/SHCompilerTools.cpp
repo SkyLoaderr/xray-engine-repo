@@ -75,7 +75,7 @@ void CSHCompilerTools::Load()
     }
 }
 
-void CSHCompilerTools::Save()
+bool CSHCompilerTools::Save()
 {
     ApplyChanges			();
 
@@ -85,10 +85,11 @@ void CSHCompilerTools::Save()
 
     EFS.UnlockFile			(0,fn.c_str(),false);
     EFS.BackupFile			(_game_data_,"shaders_xrlc.xr");
-    m_Library.Save			(fn.c_str());
+    bool bRes				= m_Library.Save(fn.c_str());
     EFS.LockFile			(0,fn.c_str(),false);
 
-    m_bModified	= FALSE;
+    if (bRes)				m_bModified	= FALSE;
+    return bRes;
 }
 
 Shader_xrLC* CSHCompilerTools::FindItem(LPCSTR name)

@@ -24,7 +24,7 @@ public:
 
 	virtual void			Reload				();
 	virtual void			Load				();
-	virtual void			Save				();
+	virtual bool			Save				();
     virtual void			ApplyChanges		(bool bForced=false);
 
     virtual bool			OnCreate			();

@@ -336,15 +336,16 @@ bool CParticleTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
         return false;
     }
 
-	m_bModified 	= false;
-    
 	// backup
     EFS.BackupFile	(_game_data_,PSLIB_FILENAME);
 	// save   
     EFS.UnlockFile	(_game_data_,PSLIB_FILENAME,false);
-	::Render->PSLibrary.Save();
+	bool bRes 		= ::Render->PSLibrary.Save();
     EFS.LockFile	(_game_data_,PSLIB_FILENAME,false);
-    return true;
+    
+    if (bRes)		m_bModified = false;
+    	
+    return bRes;
 }
 
 void CParticleTools::Reload()

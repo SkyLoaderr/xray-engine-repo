@@ -71,7 +71,7 @@ public:
     
 	virtual void			Reload				()=0;
 	virtual void			Load				()=0;
-	virtual void			Save				()=0;
+	virtual bool			Save				()=0;
 
     bool					IsModified			(){return m_bModified;}
     virtual bool			IfModified			();

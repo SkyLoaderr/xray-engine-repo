@@ -224,9 +224,10 @@ bool CShaderTools::Load(LPCSTR path, LPCSTR name)
 
 bool CShaderTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
 {
+	bool bRes = true;
     for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-        it->second->Save();
-	return true;
+        if (!it->second->Save()) bRes=false;
+	return bRes;
 }
 
 void CShaderTools::Reload()

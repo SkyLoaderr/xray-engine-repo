@@ -384,7 +384,7 @@ void CSHEngineTools::Save(CMemoryWriter& F)
     }
 }
 
-void CSHEngineTools::Save()
+bool CSHEngineTools::Save()
 {
     // set name
 	xr_string fn;
@@ -403,13 +403,16 @@ void CSHEngineTools::Save()
 
     // save new file
     EFS.UnlockFile				(0,fn.c_str(),false);
-    F.save_to					(fn.c_str());
+    bool bRes					= F.save_to(fn.c_str());
     EFS.LockFile				(0,fn.c_str(),false);
 
-    m_bModified	= FALSE;
-	Ext.m_ItemProps->ResetModified();
-    // restore shader
-    ResetShaders ();
+    if (bRes){	
+    	m_bModified	= FALSE;
+		Ext.m_ItemProps->ResetModified();
+	    // restore shader
+    	ResetShaders ();
+    }
+    return bRes;
 }
 
 void CSHEngineTools::PrepareRender()

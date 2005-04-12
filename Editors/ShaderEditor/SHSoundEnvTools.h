@@ -38,7 +38,7 @@ public:
 
 	virtual void				Reload				();
 	virtual void				Load				();
-	virtual void				Save				();
+	virtual bool				Save				();
 
     virtual bool				OnCreate			();
     virtual void				OnDestroy			();

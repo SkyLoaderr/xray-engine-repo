@@ -156,7 +156,7 @@ void CSHSoundEnvTools::Load()
 	m_bLockUpdate		= FALSE;
 }
 
-void CSHSoundEnvTools::Save()
+bool CSHSoundEnvTools::Save()
 {
     ApplyChanges();
 	m_bLockUpdate				= TRUE;
@@ -169,11 +169,12 @@ void CSHSoundEnvTools::Save()
 
     // save new file
     EFS.UnlockFile				(0,fn.c_str(),false);
-    m_Library.Save				(fn.c_str());
+    bool bRes					= m_Library.Save(fn.c_str());
     EFS.LockFile				(0,fn.c_str(),false);
 	m_bLockUpdate				= FALSE;
 
-    m_bModified					= FALSE;
+    if (bRes) 					m_bModified	= FALSE;
+    return bRes;
 }
 
 CSoundRender_Environment* CSHSoundEnvTools::FindItem(LPCSTR name)

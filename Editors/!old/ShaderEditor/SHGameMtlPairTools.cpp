@@ -85,19 +85,18 @@ void CSHGameMtlPairTools::Load()
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMtlPairTools::Save()
+bool CSHGameMtlPairTools::Save()
 {
     m_bLockUpdate		= TRUE;
 
     // save
     EFS.UnlockFile		(_game_data_,GAMEMTL_FILENAME,false);
     EFS.BackupFile		(_game_data_,GAMEMTL_FILENAME);
-    GMLib.Save			();
+    bool bRes			= GMLib.Save();
     EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
-    
     m_bLockUpdate		= FALSE;
-
-    m_bModified	= FALSE;
+    if (bRes)			m_bModified	= FALSE;
+    return bRes;
 }
 //---------------------------------------------------------------------------
 

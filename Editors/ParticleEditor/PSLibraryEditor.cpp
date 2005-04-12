@@ -27,15 +27,15 @@ PS::CPGDef* CPSLibrary::AppendPGD(PS::CPGDef* src)
 }
 //------------------------------------------------------------------------------
 
-void CPSLibrary::Save()
+bool CPSLibrary::Save()
 {
 	xr_string	 	fn;
     FS.update_path	(fn,_game_data_,PSLIB_FILENAME);
-    Save			(fn.c_str());
+    return Save		(fn.c_str());
 }
 //------------------------------------------------------------------------------
 
-void CPSLibrary::Save(const char* nm)
+bool CPSLibrary::Save(const char* nm)
 {
 	CMemoryWriter F;
 
@@ -59,7 +59,7 @@ void CPSLibrary::Save(const char* nm)
     }
 	F.close_chunk	();
 
-    F.save_to		(nm);
+    return F.save_to(nm);
 }
 //------------------------------------------------------------------------------
 
