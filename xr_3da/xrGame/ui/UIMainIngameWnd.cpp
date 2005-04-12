@@ -549,11 +549,17 @@ void CUIMainIngameWnd::Update()
 		CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pWeapon);
 		
 		bool active_item_changed = false;
-		if(item && m_pItem != item)
+		// Remember last used ammo types, and if this type doesn't changed 
+		// then no need to update info
+		static u32			prevAmmoID		= static_cast<u32>(-1);
+		static u32			prevState		= static_cast<u32>(-1);
+		if((item && m_pItem != item) || 
+			(pWeapon && (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) ))
 		{
 			m_pItem = item;
+			prevState = 
 			active_item_changed = true;
-		}
+		};		
 
 		if(pMissile && active_item_changed)
 		{
@@ -568,13 +574,11 @@ void CUIMainIngameWnd::Update()
 		}
 		else if(pWeapon)
 		{
-			// Remember last used ammo types, and if this type doesn't changed 
-			// then no need to update info
-			static u32			prevAmmoID		= static_cast<u32>(-1);
 
 			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
 			{
 				m_pWeapon = pWeapon;
+				prevState = pWeapon->State();
 
 				if(m_pWeapon->ShowAmmo())
 				{
