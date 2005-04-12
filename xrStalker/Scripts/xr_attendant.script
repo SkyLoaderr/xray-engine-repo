@@ -151,6 +151,7 @@ function action_follow:execute ()
        self:free ()
        return 
     end 
+    
     -- проверим нахождение нас в списке
     self:check_list ()
     
