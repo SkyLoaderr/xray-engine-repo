@@ -590,13 +590,14 @@
 		<name>Гордон</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Бывший ученый, эксперт по аномальным явлениям. Работал в Америке над секретными проектами. По неизвестным причинам ушел с работы, начал пить, опустился. Узнав о событиях чернобыльской Зоны решил тряхнуть стариной, но видно не рассчитал сил.</bio>
+		<bio>Ученый, эксперт по аномальным явлениям. Работал в Америке над секретными проектами. 
+		С недавнего времени считается пропавшим без вести.</bio>
 
 		<class>bar_stalker_freeman</class>
 		<community>stranger</community>
 		
 		<rank>20</rank>
-		<reputation>0</reputation>
+		<reputation>90</reputation>
 
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
