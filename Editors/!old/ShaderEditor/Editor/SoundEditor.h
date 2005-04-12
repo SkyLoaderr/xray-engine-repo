@@ -54,7 +54,8 @@ private:
 	void __stdcall  	RenameSound			(LPCSTR p0, LPCSTR p1, EItemType type);
 
 	enum{
-    	flUpdateProperties = (1<<0),
+    	flUpdateProperties 	= (1<<0),
+        flReadOnly			= (1<<1),
     };    
     static Flags32		m_Flags;
 private:	// User declarations

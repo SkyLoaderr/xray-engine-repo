@@ -66,6 +66,8 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title)
         	Log				("#!You don't have permisions to modify sounds.");
 	        form->ebOk->Enabled 				= false;
             form->m_ItemProps->SetReadOnly		(TRUE);
+            m_Flags.set		(flReadOnly,TRUE);
+            form->bAutoPlay	= TRUE;
         }
     }
 
@@ -238,7 +240,9 @@ void __fastcall TfrmSoundLib::fsStorageRestorePlacement(TObject *Sender)
 {
 	m_ItemProps->RestoreParams(fsStorage);
     m_ItemList->LoadParams(fsStorage);
-    bAutoPlay = fsStorage->ReadInteger("auto_play",FALSE);
+    if (!m_Flags.is(flReadOnly)){
+	    bAutoPlay = fsStorage->ReadInteger("auto_play",FALSE);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -246,7 +250,9 @@ void __fastcall TfrmSoundLib::fsStorageSavePlacement(TObject *Sender)
 {
 	m_ItemProps->SaveParams(fsStorage);
     m_ItemList->SaveParams(fsStorage);
-    fsStorage->WriteInteger("auto_play",bAutoPlay);
+    if (!m_Flags.is(flReadOnly)){
+	    fsStorage->WriteInteger("auto_play",bAutoPlay);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -389,11 +395,15 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         
         PHelper().CreateCaption		(props,"File Length",	shared_str().sprintf("%.2f Kb",float(size)/1024.f));
         PHelper().CreateCaption		(props,"Total Time", 	shared_str().sprintf("%.2f sec",float(time)/1000.f));
-        B=PHelper().CreateButton	(props,"Control",		"Play,Stop",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent.bind		(this,&TfrmSoundLib::OnControlClick);
+        if (!m_Flags.is(flReadOnly)){
+	        B=PHelper().CreateButton(props,"Control",		"Play,Stop",ButtonValue::flFirstOnly);
+    	    B->OnBtnClickEvent.bind	(this,&TfrmSoundLib::OnControlClick);
+        }
     }
-    B=PHelper().CreateButton		(props,"Auto Play",		bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent.bind			(this,&TfrmSoundLib::OnControl2Click);
+    if (!m_Flags.is(flReadOnly)){
+	    B=PHelper().CreateButton	(props,"Auto Play",		bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+    	B->OnBtnClickEvent.bind		(this,&TfrmSoundLib::OnControl2Click);
+    }
     
 	m_ItemProps->AssignItems		(props);
 }
