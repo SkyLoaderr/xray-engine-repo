@@ -500,7 +500,7 @@ void TClipMaker::RealUpdateProperties()
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
             shared_str tmp;
-            if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
+            if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength()/MD->Speed(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
         if (sel_clip->fx.valid())PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx.name), &sel_clip->fx_power, 0.f, 1000.f);
@@ -584,20 +584,23 @@ void TClipMaker::SaveClips()
 		xr_string fn;
         if (EFS.GetSaveName("$clips$",fn)){
             IWriter* F	= FS.w_open(fn.c_str()); VERIFY(F);
-
-            F->open_chunk(CHUNK_ZOOM);
-            F->w_float	(m_Zoom);
-            F->close_chunk();
-
-            F->open_chunk	(CHUNK_CLIPS);
-            int count = 0;
-            for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
-                F->open_chunk(count); count++;
-                (*c_it)->Save(*F);
+            if (F){
+                F->open_chunk(CHUNK_ZOOM);
+                F->w_float	(m_Zoom);
                 F->close_chunk();
+
+                F->open_chunk	(CHUNK_CLIPS);
+                int count = 0;
+                for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
+                    F->open_chunk(count); count++;
+                    (*c_it)->Save(*F);
+                    F->close_chunk();
+                }
+                F->close_chunk	();
+                FS.w_close(F);
+            }else{
+		        Log			("!Can't save clip:",fn.c_str());
             }
-            F->close_chunk	();
-            FS.w_close(F);
         }
     }else{
     	ELog.DlgMsg(mtError,"Clip list empty.");
@@ -887,7 +890,8 @@ void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
                 AnsiString mname	= (*c_it)->CycleName(k);	
                 u16 slot			= (*c_it)->CycleSlot(k);	
 				CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
-				if (MI&&(len<MI->GetLength())) len = MI->GetLength();
+				CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
+				if (MI&&(len<MI->GetLength()/MD->Speed())) len = MI->GetLength()/MD->Speed();
             }            
             (*c_it)->length = fis_zero(len)?2.f:len;
         }

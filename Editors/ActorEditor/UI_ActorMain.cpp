@@ -46,14 +46,29 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
             res	= FALSE;
             return;
         }
-        if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
+        BOOL bReadOnly = !FS.can_modify_file(_objects_,temp_fn.c_str());
+        
+        if ((false==bReadOnly) && (0!=temp_fn.AnsiCompareIC(m_LastFileName)) && EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
             res	= FALSE;
             return;
         }
-        if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
-            EFS.UnlockFile(_objects_,temp_fn.c_str());
+        if ((false==bReadOnly) && (0==temp_fn.AnsiCompareIC(m_LastFileName))&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
+            EFS.UnlockFile		(_objects_,temp_fn.c_str());
         }
-        ExecCommand	(COMMAND_CLEAR);
+        ExecCommand				(COMMAND_CLEAR);
+
+        m_Flags.set				(flReadOnlyMode,bReadOnly);
+        if (bReadOnly){
+        	if (EFS.GetLockOwner(_objects_,temp_fn.c_str()).size()){
+				Log				("#!Object opened in readonly mode. Locked by user:",EFS.GetLockOwner(_objects_,temp_fn.c_str()).c_str());
+            }else{
+				Log				("#!You don't have permisions to modify object:",temp_fn.c_str());
+            }
+        }
+        // set enable ...
+		m_Props->SetReadOnly	(bReadOnly);
+        fraLeftBar->SetReadOnly	(bReadOnly);
+        
         CTimer T;
         T.Start();     
         if (!Load(_objects_,temp_fn.c_str())){
@@ -66,7 +81,7 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
         ExecCommand	(COMMAND_UPDATE_CAPTION);
         ExecCommand	(COMMAND_UPDATE_PROPERTIES);
         // lock
-        EFS.LockFile(_objects_,m_LastFileName.c_str());
+        if (!bReadOnly)			EFS.LockFile(_objects_,m_LastFileName.c_str());
         UndoClear();
         UndoSave();
     }

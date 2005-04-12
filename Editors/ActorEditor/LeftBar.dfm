@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 467
+  Height = 589
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 467
+    Height = 589
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 225
+      Top = 347
       Width = 298
       Height = 2
       Cursor = crVSplit
@@ -454,7 +454,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 147
       Width = 298
-      Height = 78
+      Height = 200
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -484,7 +484,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 296
-        Height = 62
+        Height = 184
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -493,7 +493,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentMotion: TPanel
       Left = 1
-      Top = 227
+      Top = 349
       Width = 298
       Height = 239
       Align = alBottom
@@ -611,20 +611,20 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Load...'
       OnClick = Load1Click
     end
-    object Save2: TMenuItem
+    object ebSave: TMenuItem
       Caption = 'Save'
       OnClick = Save2Click
     end
-    object SaevAs1: TMenuItem
+    object ebSaveAs: TMenuItem
       Caption = 'Save As...'
-      OnClick = SaevAs1Click
+      OnClick = ebSaveAsClick
     end
     object N10: TMenuItem
       Caption = '-'
     end
-    object MakeThumbnail1: TMenuItem
+    object ebMakeThumbnail: TMenuItem
       Caption = 'Make Thumbnail'
-      OnClick = MakeThumbnail1Click
+      OnClick = ebMakeThumbnailClick
     end
     object N5: TMenuItem
       Caption = '-'
@@ -643,35 +643,38 @@ object fraLeftBar: TfraLeftBar
     object N11: TMenuItem
       Caption = '-'
     end
-    object OptimizeMotions1: TMenuItem
+    object ebOptimizeMotions: TMenuItem
       Caption = 'Optimize Motions'
-      OnClick = OptimizeMotions1Click
+      OnClick = ebOptimizeMotionsClick
     end
     object N4: TMenuItem
       Caption = '-'
     end
-    object ExportBatch1: TMenuItem
+    object ebExportBatch: TMenuItem
       Caption = 'Batch Convert...'
-      OnClick = ExportBatch1Click
+      OnClick = ebExportBatchClick
     end
     object N1: TMenuItem
       Caption = '-'
     end
-    object miExportOGF: TMenuItem
-      Caption = 'Export OGF...'
-      OnClick = miExportOGFClick
-    end
-    object miExportOMF: TMenuItem
-      Caption = 'Export OMF...'
-      OnClick = miExportOMFClick
-    end
-    object ExportDM1: TMenuItem
-      Caption = 'Export DM...'
-      OnClick = ExportDM1Click
-    end
-    object ExportWaveFrontOBJ1: TMenuItem
-      Caption = 'Export OBJ...'
-      OnClick = ExportWaveFrontOBJ1Click
+    object ebExport: TMenuItem
+      Caption = 'Export'
+      object miExportOGF: TMenuItem
+        Caption = 'Export OGF...'
+        OnClick = miExportOGFClick
+      end
+      object miExportOMF: TMenuItem
+        Caption = 'Export OMF...'
+        OnClick = miExportOMFClick
+      end
+      object ExportWaveFrontOBJ1: TMenuItem
+        Caption = 'Export OBJ...'
+        OnClick = ExportWaveFrontOBJ1Click
+      end
+      object ExportDM1: TMenuItem
+        Caption = 'Export DM...'
+        OnClick = ExportDM1Click
+      end
     end
   end
   object pmPreviewObject: TMxPopupMenu

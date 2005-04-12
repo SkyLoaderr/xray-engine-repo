@@ -122,7 +122,7 @@ private:
     float			m_fMinDist;
     float			m_fMaxDist;
     float			m_fMaxAIDist;
-    float			m_fVolume;
+    float			m_fBaseVolume;
     u32				m_uGameType;
 	void 			OnMaxAIDistAfterEdit(PropValue* sender, float& edit_val, bool& accepted);
 	void 			OnMaxDistChange		(PropValue* sender);
@@ -138,7 +138,7 @@ public:
 	virtual void	FillInfo		(PropItemVec& values);
     float			MinDist			(){return m_fMinDist;}
     float			MaxDist			(){return m_fMaxDist;};
-    float			Volume			(){return m_fVolume;};
+    float			BaseVolume		(){return m_fBaseVolume;};
    	void			SetMinDist		(float d){m_fMinDist=d;}
     void			SetMaxDist		(float d){m_fMaxDist=d;};
 };

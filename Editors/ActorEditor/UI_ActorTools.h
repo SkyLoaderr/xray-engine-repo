@@ -150,6 +150,7 @@ protected:
     	flUpdateGeometry 	= (1<<3),
     	flUpdateMotionKeys 	= (1<<4),
     	flUpdateMotionDefs	= (1<<5),
+        flReadOnlyMode 		= (1<<6),
     };
     Flags32				m_Flags;
     
@@ -195,6 +196,8 @@ public:
     virtual bool		OnCreate			();
     virtual void		OnDestroy			();
 
+    ICF bool			ReadOnly			(){return m_Flags.is(flReadOnlyMode);}
+    
     virtual bool		IfModified			();
     virtual bool		IsModified			(){return m_bObjectModified;}
     virtual void		Modified			(); 

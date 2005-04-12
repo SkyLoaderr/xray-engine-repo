@@ -29,9 +29,9 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TMxPopupMenu *pmSceneFile;
 	TMenuItem *Load1;
-	TMenuItem *Save2;
+	TMenuItem *ebSave;
 	TMenuItem *miExportOGF;
-	TMenuItem *SaevAs1;
+	TMenuItem *ebSaveAs;
 	TMenuItem *N5;
 	TMenuItem *Import1;
 	TMenuItem *N2;
@@ -86,12 +86,13 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem4;
 	TMenuItem *miExportOMF;
 	TMenuItem *N1;
-	TMenuItem *OptimizeMotions1;
+	TMenuItem *ebOptimizeMotions;
 	TMenuItem *ExportWaveFrontOBJ1;
 	TMenuItem *N10;
-	TMenuItem *MakeThumbnail1;
+	TMenuItem *ebMakeThumbnail;
 	TMenuItem *N11;
-	TMenuItem *ExportBatch1;
+	TMenuItem *ebExportBatch;
+	TMenuItem *ebExport;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -107,7 +108,7 @@ __published:	// IDE-managed Components
 	void __fastcall Import1Click(TObject *Sender);
 	void __fastcall Load1Click(TObject *Sender);
 	void __fastcall Save2Click(TObject *Sender);
-	void __fastcall SaevAs1Click(TObject *Sender);
+	void __fastcall ebSaveAsClick(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall miRecentFilesClick(TObject *Sender);
@@ -133,10 +134,10 @@ __published:	// IDE-managed Components
 	void __fastcall MenuItem2Click(TObject *Sender);
 	void __fastcall MenuItem4Click(TObject *Sender);
 	void __fastcall miExportOMFClick(TObject *Sender);
-	void __fastcall OptimizeMotions1Click(TObject *Sender);
+	void __fastcall ebOptimizeMotionsClick(TObject *Sender);
 	void __fastcall ExportWaveFrontOBJ1Click(TObject *Sender);
-	void __fastcall MakeThumbnail1Click(TObject *Sender);
-	void __fastcall ExportBatch1Click(TObject *Sender);
+	void __fastcall ebMakeThumbnailClick(TObject *Sender);
+	void __fastcall ebExportBatchClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void 			RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);
@@ -148,6 +149,7 @@ public:		// User declarations
     void 			MinimizeAllFrames();
     void 			MaximizeAllFrames();
     void 			RefreshBar		();
+    void			SetReadOnly		(BOOL val);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

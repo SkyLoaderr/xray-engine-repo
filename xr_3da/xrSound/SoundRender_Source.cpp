@@ -9,7 +9,7 @@ CSoundRender_Source::CSoundRender_Source	()
 	m_fMinDist		= 1.f;
 	m_fMaxDist		= 300.f;
 	m_fMaxAIDist	= 300.f;
-	m_fVolume		= 1.f;
+	m_fBaseVolume	= 1.f;
 	m_uGameType		= 0;
 	fname			= 0;
 	wave			= 0;

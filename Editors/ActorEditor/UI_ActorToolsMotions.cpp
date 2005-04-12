@@ -314,8 +314,7 @@ bool CActorTools::SaveMotions(LPCSTR name, bool bSelOnly)
             F.w_u32			(items.size());
             for (ListItemsIt it=items.begin(); it!=items.end(); it++)
                 ((CSMotion*)(*it)->m_Object)->Save(F);
-            F.save_to		(name);
-            return true;
+            return F.save_to(name);
         }
     }else{
     	return m_pEditObject->SaveSMotions(name);

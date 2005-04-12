@@ -236,19 +236,19 @@ void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
+void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
 {
 	ExecCommand( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ExportBatch1Click(TObject *Sender)
+void __fastcall TfraLeftBar::ebExportBatchClick(TObject *Sender)
 {
 	ExecCommand( COMMAND_BATCH_CONVERT );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::MakeThumbnail1Click(TObject *Sender)
+void __fastcall TfraLeftBar::ebMakeThumbnailClick(TObject *Sender)
 {
 	ExecCommand(COMMAND_MAKE_THUMBNAIL);
 }
@@ -357,9 +357,20 @@ void TfraLeftBar::RefreshBar()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::OptimizeMotions1Click(TObject *Sender)
+void __fastcall TfraLeftBar::ebOptimizeMotionsClick(TObject *Sender)
 {
 	ExecCommand( COMMAND_OPTIMIZE_MOTIONS );
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::SetReadOnly(BOOL val)
+{	
+    ebSave->Enabled				= !val;
+    ebSaveAs->Enabled			= !val;
+    ebMakeThumbnail->Enabled	= !val;
+    ebOptimizeMotions->Enabled	= !val;
+    ebExportBatch->Enabled		= !val;
+	ebExport->Enabled			= !val;
 }
 //---------------------------------------------------------------------------
 

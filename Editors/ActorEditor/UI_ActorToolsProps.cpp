@@ -351,8 +351,12 @@ void  CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
     	xr_string fn;
     	if (EFS.GetSaveName("$sbones$",fn)){
         	IWriter* W = FS.w_open(fn.c_str());
-	    	m_pEditObject->SaveBoneData(*W);
-            FS.w_close(W);
+            if (W){
+		    	m_pEditObject->SaveBoneData(*W);
+    	        FS.w_close	(W);
+            }else{
+                Log			("!Can't save skeleton bones:",fn.c_str());
+            }
             bModif = false;
         }
     }break;

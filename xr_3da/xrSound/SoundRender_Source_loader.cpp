@@ -69,19 +69,19 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
         if (vers==0x0001){
 			m_fMinDist		= F.r_float	();
 			m_fMaxDist		= F.r_float	();
-	        m_fVolume		= 1.f;
+	        m_fBaseVolume	= 1.f;
 			m_uGameType		= F.r_u32	();
 			m_fMaxAIDist	= m_fMaxDist;
 		}else if (vers==0x0002){
 			m_fMinDist		= F.r_float	();
 			m_fMaxDist		= F.r_float	();
-			m_fVolume		= F.r_float	();
+			m_fBaseVolume	= F.r_float	();
 			m_uGameType		= F.r_u32	();
 			m_fMaxAIDist	= m_fMaxDist;
 		}else if (vers==OGG_COMMENT_VERSION){
 			m_fMinDist		= F.r_float	();
 			m_fMaxDist		= F.r_float	();
-            m_fVolume		= F.r_float	();
+            m_fBaseVolume	= F.r_float	();
 			m_uGameType		= F.r_u32	();
 			m_fMaxAIDist	= F.r_float	();
 		}else{

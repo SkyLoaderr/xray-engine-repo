@@ -372,7 +372,7 @@ void CActorTools::Clear()
     m_ClipMaker->HideEditor();
 
 	m_bObjectModified 	= false;
-	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
+	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys|flReadOnlyMode,FALSE);
     m_EditMode			= emObject;
     
     UI->RedrawScene		();
@@ -438,9 +438,10 @@ bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
 	VERIFY(m_bReady);
     if (m_pEditObject){
     	EFS.MarkFile				(full_name.c_str(),true);
-    	m_pEditObject->SaveObject	(full_name.c_str());
-		if (!bInternal) m_bObjectModified = false;
-        return true;
+    	if (m_pEditObject->SaveObject(full_name.c_str())){
+			if (!bInternal) m_bObjectModified = false;
+    	    return true;
+        }
     }
 	return false;
 }

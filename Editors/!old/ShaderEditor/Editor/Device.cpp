@@ -212,6 +212,7 @@ void CRenderDevice::_Create(IReader* F)
 //.	seqDevCreate.Process		(rp_DeviceCreate);
 
 	pSystemFont					= xr_new<CGameFont>("hud_font_small");
+//	pSystemFont					= xr_new<CGameFont>("hud_font_medium");
 }
 
 void CRenderDevice::_Destroy(BOOL	bKeepTextures)

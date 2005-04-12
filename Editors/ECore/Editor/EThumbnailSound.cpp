@@ -18,7 +18,7 @@ ESoundThumbnail::ESoundThumbnail(LPCSTR src_name, bool bLoad):ECustomThumbnail(s
     m_fMinDist 		= 1.f;
     m_fMaxDist		= 300.f;
     m_fMaxAIDist	= 300.f;
-    m_fVolume  		= 1.f;
+    m_fBaseVolume  	= 1.f;
     m_uGameType		= 0;
     if (bLoad) 		Load();
 }
@@ -56,7 +56,7 @@ bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
     m_uGameType		= F->r_u32();
 
     if (F->find_chunk(THM_CHUNK_SOUNDPARAM2))
-		m_fVolume	= F->r_float();
+		m_fBaseVolume	= F->r_float();
 
     if (F->find_chunk(THM_CHUNK_SOUND_AI_DIST))
     	m_fMaxAIDist= F->r_float();
@@ -92,7 +92,7 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
     F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_SOUNDPARAM2);
-    F.w_float		(m_fVolume);
+    F.w_float		(m_fBaseVolume);
     F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_SOUND_AI_DIST);
@@ -154,7 +154,7 @@ void ESoundThumbnail::FillProp(PropItemVec& items)
     V->OnChangeEvent.bind		(this,&ESoundThumbnail::OnMaxDistChange);
     V = PHelper().CreateFloat	(items, "Max AI Dist",	&m_fMaxAIDist, 	0.f,1000.f);
     V->OnAfterEditEvent.bind	(this,&ESoundThumbnail::OnMaxAIDistAfterEdit);
-    PHelper().CreateFloat		(items, "Volume",		&m_fVolume, 	0.f,2.f);
+    PHelper().CreateFloat		(items, "Base Volume",	&m_fBaseVolume, 0.f,2.f);
     PHelper().CreateToken32		(items, "Game Type",	&m_uGameType, 	anomaly_type_token);
 }
 //------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ void ESoundThumbnail::FillInfo(PropItemVec& items)
     PHelper().CreateCaption		(items, "Min Dist", 	AnsiString().sprintf("%3.2f",m_fMinDist).c_str());
     PHelper().CreateCaption		(items, "Max Dist",		AnsiString().sprintf("%3.2f",m_fMaxDist).c_str());
     PHelper().CreateCaption		(items, "Max AI Dist",	AnsiString().sprintf("%3.2f",m_fMaxAIDist).c_str());
-    PHelper().CreateCaption		(items, "Volume",		AnsiString().sprintf("%3.2f",m_fVolume).c_str());
+    PHelper().CreateCaption		(items, "Base Volume",	AnsiString().sprintf("%3.2f",m_fBaseVolume).c_str());
     PHelper().CreateCaption		(items, "Game Type",	get_token_name(anomaly_type_token,m_uGameType));
 }
 //------------------------------------------------------------------------------
