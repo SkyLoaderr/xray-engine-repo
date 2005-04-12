@@ -131,25 +131,24 @@ void	CInifile::Load(IReader* F, LPCSTR path)
                 strconcat	(fn,path,inc_name);
 				_splitpath	(fn,inc_path,folder, 0, 0 );
 				strcat		(inc_path,folder);
-            	IReader* I 	= FS.r_open(fn); R_ASSERT3(I,"Can't find include file:",inc_name);
+            	IReader* I 	= FS.r_open(fn); R_ASSERT3(I,"Can't find include file:", inc_name);
             	Load		(I,inc_path);
                 FS.r_close	(I);
             }
         }else if (str[0] && (str[0]=='[')){
-			if (*Current.Name && Current.Name[0])
-			{
+			// insert previous filled section
+			if (Current.Name.size()){
 				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current.Name,sect_pred);
 				if ((I!=DATA.end())&&(I->Name==Current.Name)) Debug.fatal("Duplicate section '%s' found.",*Current.Name);
 				DATA.insert		(I,Current);
 				Current.clear	();
 			}
-//#pragma todo("find real section-name-end ']'")
-//			size_t L = xr_strlen(str); str[L-1] = 0;
+			// start new section
 			R_ASSERT3(strchr(str,']'),"Bad ini section found: ",str);
 			*strchr(str,']') 	= 0;
 			Current.Name 		= strlwr(str+1);
 		} else {
-			if (*Current.Name)	{
+			if (Current.Name.size()){
 				char*		name	= str;
 				char*		t		= strchr(name,'=');
 				if (t)		{
@@ -179,9 +178,10 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			}
 		}
 	}
-	if (*Current.Name && Current.Name[0])
+	if (Current.Name.size())
 	{
 		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current.Name,sect_pred);
+		if ((I!=DATA.end())&&(I->Name==Current.Name)) Debug.fatal("Duplicate section '%s' found.",*Current.Name);
 		DATA.insert		(I,Current);
 		Current.clear	();
 	}
