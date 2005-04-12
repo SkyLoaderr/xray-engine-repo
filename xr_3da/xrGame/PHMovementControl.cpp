@@ -945,6 +945,7 @@ void CPHMovementControl::CreateCharacter()
 	m_character->SetMaterial(m_material);
 	m_character->SetAirControlFactor(fAirControlParam);
 	m_character->SetPosition(vPosition);
+	trying_times[0]=trying_times[1]=trying_times[2]=trying_times[3]=u32(-1);
 }
 CPHSynchronize*	CPHMovementControl::GetSyncItem()
 {

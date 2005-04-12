@@ -79,6 +79,8 @@ private:
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
 	Fbox				boxes	[4];
+
+	u32					trying_times[4];
 	DWORD				m_dwCurBox;
 	//Fvector				vFootCenter;			// задаются относительно Position()
 	//Fvector				vFootExt;				//
@@ -101,8 +103,6 @@ private:
 	int					m_path_size;
 	int					m_start_index;
 
-	u32					m_try_dynamic_box_activate;
-	u16					m_trying_id;
 
 	float				m_path_distance;
 	u16					m_material;

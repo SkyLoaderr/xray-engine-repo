@@ -277,9 +277,15 @@ private:
 
 bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 {
+	if(trying_times[id]!=u32(-1))
+	{
+		if(Device.dwTimeGlobal-trying_times[id]<2000)
+															return false;
+	}
 	if(!m_character||m_character->PhysicsRefObject()->PPhysicsShell())return false;
 	DWORD old_id=BoxID();
 	bool  character_exist=CharacterExist();
+	bool  character_disabled=character_exist && !m_character->IsEnabled();
 	if(character_exist&&id==old_id)return true;
 
 	if(!character_exist)
@@ -379,6 +385,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 	if(!ret)
 	{	
 		if(!character_exist)DestroyCharacter();
+		else if(character_disabled)m_character->Disable();
 		ActivateBox(old_id);
 		SetVelocity(vel);
 		dBodyID b=GetBody();
@@ -390,6 +397,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 			dBodySetRotation(b,R);
 		}
 		SetPosition(pos);
+		
 		//Msg("can not activate!");
 	}
 	else
@@ -401,5 +409,13 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 	SetOjectContactCallback(saved_callback);
 	SetVelocity(vel);
 	saved_callback=0;
+	if(!ret)
+	{
+		trying_times[id]=Device.dwTimeGlobal;
+	}
+	else
+	{
+		trying_times[id]=u32(-1);
+	}
 	return ret;
 }
