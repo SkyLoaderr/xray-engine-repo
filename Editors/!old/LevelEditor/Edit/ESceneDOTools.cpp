@@ -82,6 +82,7 @@ void EDetailManager::Clear(bool bSpecific)
 	ClearColorIndices	();
     ClearSlots			();
     m_Flags.zero		();
+    m_RTFlags.zero		();
 }
 //------------------------------------------------------------------------------
 
@@ -171,7 +172,25 @@ void EDetailManager::OnDeviceDestroy()
 
 void EDetailManager::OnObjectRemove(CCustomObject* O)
 {
-	m_SnapObjects.remove(O);
+	ObjectIt it=std::find(m_SnapObjects.begin(),m_SnapObjects.end(),O);
+	if (it!=m_SnapObjects.end()){
+    	m_RTFlags.set		(flRTGenerateBaseMesh,TRUE);
+		m_SnapObjects.remove(O);
+    }
+}
+void EDetailManager::OnSynchronize()
+{
+}
+void EDetailManager::OnSceneUpdate()       
+{
+}
+
+void EDetailManager::OnFrame()
+{
+    if (m_RTFlags.is(flRTGenerateBaseMesh)&&m_Base.Valid()){
+    	m_RTFlags.set		(flRTGenerateBaseMesh,FALSE);
+	    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
+    }
 }
 
 void EDetailManager::ExportColorIndices(LPCSTR fname)
@@ -316,7 +335,7 @@ bool EDetailManager::Load(IReader& F)
 	    F.r_stringZ		(buf,sizeof(buf));
     	if (m_Base.LoadImage(buf)){
 		    m_Base.CreateShader();
-		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
+            m_RTFlags.set(flRTGenerateBaseMesh,TRUE);
         }else{
         	ELog.Msg(mtError,"EDetailManager: Can't find base texture '%s'.",buf);
             ClearSlots();
@@ -397,24 +416,27 @@ bool EDetailManager::Export(LPCSTR path)
     RStringSet 			textures_set;
     RStringVec 			textures;
     U32Vec				remap;
+    U8Vec remap_object	(objects.size(),u8(-1));
 
     int slot_cnt		= dtH.size_x*dtH.size_z;
 	for (int slot_idx=0; slot_idx<slot_cnt; slot_idx++){
     	DetailSlot* it = &dtSlots[slot_idx];
         for (int part=0; part<4; part++){
         	u8 id		= it->r_id(part);
-        	if (id!=DetailSlot::ID_Empty) textures_set.insert(((EDetail*)(objects[id]))->GetTextureName());
+        	if (id!=DetailSlot::ID_Empty) {
+            	textures_set.insert(((EDetail*)(objects[id]))->GetTextureName());
+                remap_object[id] = 1;
+            }
         }
     }
     textures.assign		(textures_set.begin(),textures_set.end());
 
-    U8Vec remap_object	(objects.size(),DetailSlot::ID_Empty);
     U8It remap_object_it= remap_object.begin();
 
-    int new_idx			= 0;
+    u32 new_idx			= 0;
     for (DetailIt d_it=objects.begin(); d_it!=objects.end(); d_it++,remap_object_it++)
-    	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?DetailSlot::ID_Empty:new_idx++;
-//    	textures_set.insert(((EDetail*)(*d_it))->GetTextureName());
+    	if ((*remap_object_it==1)&&(textures_set.find(((EDetail*)(*d_it))->GetTextureName())!=textures_set.end()))
+	    	*remap_object_it	= new_idx++;
 
     AnsiString 			do_tex_name = ChangeFileExt(fn,"_details");
     int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated,remap);
@@ -427,7 +449,7 @@ bool EDetailManager::Export(LPCSTR path)
 	    do_tex_name 	= ExtractFileName(do_tex_name);
         F.open_chunk	(DETMGR_CHUNK_OBJECTS);
         for (DetailIt it=objects.begin(); it!=objects.end(); it++){
-        	if (remap_object[it-objects.begin()]!=DetailSlot::ID_Empty){
+        	if (remap_object[it-objects.begin()]!=u8(-1)){
                 F.open_chunk	(object_idx++);
                 if (!((EDetail*)(*it))->m_pRefs){
                     ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", ((EDetail*)(*it))->m_sRefs.c_str());

@@ -45,6 +45,11 @@ class EDetailManager:
     };
     Flags32				m_Flags;
 
+    enum{
+    	flRTGenerateBaseMesh	= (1<<0)
+    };
+    Flags32				m_RTFlags;
+
     ObjectList			m_SnapObjects;
 
     Fbox				m_BBox;
@@ -116,9 +121,10 @@ public:
     // events
 	virtual void		OnDeviceCreate			();
 	virtual void		OnDeviceDestroy			();
-	virtual void		OnSynchronize			(){};
+	virtual void		OnSynchronize			();
     virtual void		OnObjectRemove			(CCustomObject* O);
-	virtual void		OnFrame					(){};
+	virtual void		OnSceneUpdate			();
+	virtual void		OnFrame					();
     virtual void		OnRender				(int priority, bool strictB2F);
 
     // IO

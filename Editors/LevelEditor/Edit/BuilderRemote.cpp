@@ -948,8 +948,15 @@ BOOL SceneBuilder::CompileStatic()
         xr_string fn_normal	= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_NRM_NAME).c_str(),".dds").c_str();
         if (1==ImageLib.CreateMergedTexture	(2,images,merged_image,512,2048,64,1024,offsets,scales,rotated,remap)){
             // all right, make texture
-            ImageLib.MakeGameTexture		(fn_color.c_str(),merged_image.layers[0].begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
-            ImageLib.MakeGameTexture		(fn_normal.c_str(),merged_image.layers[1].begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+            STextureParams 		tp;
+            tp.width			= merged_image.w;
+            tp.height			= merged_image.h;
+            tp.fmt				= STextureParams::tfDXT5;
+            tp.type				= STextureParams::ttImage;
+            tp.mip_filter		= STextureParams::kMIPFilterAdvanced;
+            tp.flags.assign		(STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+            ImageLib.MakeGameTexture		(fn_color.c_str(),merged_image.layers[0].begin(), tp);
+            ImageLib.MakeGameTexture		(fn_normal.c_str(),merged_image.layers[1].begin(),tp);
 	        for (k=0; k<(int)l_lods.size(); k++){        
 	            e_b_lod& l	= l_lods[k];         
                 for (u32 f=0; f<8; f++){
