@@ -561,6 +561,29 @@
 		<actor_dialog>bar_arena_manager_info</actor_dialog>
 		<actor_dialog>bar_arena_manager_game</actor_dialog>
 	</specific_character>
+
+	<specific_character id="bar_arena_savage" team_default = "1">
+		<name>Зверь</name>
+		<icon x="30" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Биография отсутствует.</bio>
+
+		<class>bar_arena_savage</class>
+		<community>killer</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
 	
 <!-- ************************ Гордон Фримен *********************** -->	
 	<specific_character id="bar_stalker_freeman" team_default = "1">
@@ -569,7 +592,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Бывший ученый, эксперт по аномальным явлениям. Работал в Америке над секретными проектами. По неизвестным причинам ушел с работы, начал пить, опустился. Узнав о событиях чернобыльской Зоны решил тряхнуть стариной, но видно не рассчитал сил.</bio>
 
-		<class>Stalker_novice</class>
+		<class>bar_stalker_freeman</class>
 		<community>stranger</community>
 		
 		<rank>20</rank>
@@ -578,8 +601,8 @@
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_fmj \n
 			device_torch \n
 		</supplies>
 			

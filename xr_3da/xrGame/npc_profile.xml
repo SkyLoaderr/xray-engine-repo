@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8"?>
+﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<character id="default">
@@ -324,9 +324,12 @@
 	<character id="bar_arena_manager">
 		<class>bar_arena_manager</class>
 	</character>
+	<character id="bar_arena_savage">
+		<class>bar_arena_savage</class>
+	</character>
 	
 	<character id="bar_stalker_freeman">
-		<class>bar_arena_manager</class>
+		<class>bar_stalker_freeman</class>
 	</character>
 	
 
