@@ -18,7 +18,6 @@ void CDetailManager::soft_Unload	()
 
 void CDetailManager::soft_Render	()
 {
-/*
 	// Render itself
 	// float	fPhaseRange	= PI/16;
 	// float	fPhaseX		= _sin(Device.fTimeGlobal*0.1f)	*fPhaseRange;
@@ -128,5 +127,5 @@ void CDetailManager::soft_Render	()
 		}
 		// Clean up
 		_vis.clear_not_free	();
-	}*/
+	}
 }
