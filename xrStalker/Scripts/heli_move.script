@@ -232,7 +232,16 @@ function heli_move:update_look_state()
 	end
 end
 
+-- установка врага (цели) или сброс.
+-- вызывается на каждой вершине пути
 function heli_move:process_attack_params( path_info, index )
+	local wpns = self:waypoint_param( path_info, index, "w" )
+
+	self.heliObject.m_use_mgun_on_attack   = wpns == nil or wpns == "1"
+	self.heliObject.m_use_rocket_on_attack = wpns == nil or wpns == "2"
+
+	--printf( "mgun=%s rockets=%s", tostring(self.heliObject.m_use_mgun_on_attack), tostring(self.heliObject.m_use_rocket_on_attack ))
+
 	local target = self:waypoint_param( path_info, index, "e" )
 
 	if target == nil then
