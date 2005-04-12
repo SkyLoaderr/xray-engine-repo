@@ -1068,14 +1068,8 @@
     <string id="bar_dolg_veteran_start_2">
         <text>Чего тебе?</text>
     </string>
-    <string id="bar_dolg_zastava_1">
-        <text>*если игрок не в Долге*</text>
-    </string>
     <string id="bar_dolg_zastava_11">
         <text>Проходи, не задерживайся... Чего уставился?</text>
-    </string>
-    <string id="bar_dolg_zastava_2">
-        <text>*если игрок в Долге*</text>
     </string>
     <string id="bar_dolg_zastava_21">
         <text>О, привет старик! Рад, что тебя еще мутанты не сожрали.</text>
