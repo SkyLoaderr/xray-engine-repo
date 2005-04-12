@@ -324,8 +324,8 @@ void PH_DBG_Render()
 			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
+	// HUD().Font().pFontSmall->OutNext("---------------------");
 #endif
-		 HUD().Font().pFontSmall->OutNext("---------------------");
-		 draw_frame=!draw_frame;
+	draw_frame=!draw_frame;
 }
 #endif
