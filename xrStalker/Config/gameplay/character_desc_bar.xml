@@ -561,5 +561,30 @@
 		<actor_dialog>bar_arena_manager_info</actor_dialog>
 		<actor_dialog>bar_arena_manager_game</actor_dialog>
 	</specific_character>
+	
+<!-- ************************ Гордон Фримен *********************** -->	
+	<specific_character id="stalker_freeman" team_default = "1">
+		<name>Гордон</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Бывший ученый, эксперт по аномальным явлениям. Работал в Америке над секретными проектами. По неизвестным причинам ушел с работы, начал пить, опустился. Узнав о событиях чернобыльской Зоны решил тряхнуть стариной, но видно не рассчитал сил.</bio>
 
+		<class>Stalker_novice</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+	
+	
 </xml>
