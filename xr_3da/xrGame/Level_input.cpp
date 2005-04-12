@@ -74,7 +74,19 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}break;
 
 	case kPAUSE:
-		Device.Pause(!Device.Pause());
+		if (GameID() == GAME_SINGLE)
+		{
+			Device.Pause(!Device.Pause());
+		}
+		else
+		if (OnServer())
+		{
+			NET_Packet					net_packet;
+			net_packet.w_begin			(M_PAUSE_GAME);
+			net_packet.w_u8				(u8(!Device.Pause()));
+			Send						(net_packet,net_flags(TRUE));
+		}
+		
 		return;
 		break;
 	};

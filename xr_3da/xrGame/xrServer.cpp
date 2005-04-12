@@ -324,6 +324,11 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 		{
 			game->AddDelayedEvent		(P,GAME_EVENT_PLAYER_AUTH, 0, sender);
 		}break;
+	case M_PAUSE_GAME:
+		{
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
+		}break;
 	}
 
 	VERIFY							(verify_entities());
