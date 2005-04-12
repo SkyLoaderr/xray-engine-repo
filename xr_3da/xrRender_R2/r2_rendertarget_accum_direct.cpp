@@ -82,10 +82,12 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		};
 
 		// compute xforms
+		FPU::m64r			();
+		Fmatrix				xf_invview;		xf_invview.invert	(Device.mView)	;
+
+		// shadow xform
 		Fmatrix				m_shadow;
 		{
-			FPU::m64r		();
-			Fmatrix			xf_invview;		xf_invview.invert	(Device.mView)	;
 			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
 			m_shadow.mul	(xf_project,	xf_invview);
 
@@ -97,6 +99,20 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 				m_shadow.mulB		(bias_t);
 			}
 			FPU::m24r		();
+		}
+
+		// clouds xform
+		Fmatrix				m_clouds_shadow;
+		{
+			// static	float	w_offset	= 0;
+			Fmatrix			m_xform;
+			Fvector			direction	= fuckingsun->direction	;
+			float	w_dir				= g_pGamePersistent->Environment.CurrentEnv->wind_direction	;
+			float	w_speed				= g_pGamePersistent->Environment.CurrentEnv->wind_speed		;
+			Fvector			normal	;	normal.setHP(w_dir,0);
+			Fvector			position;	position.set(0,0,0);
+			m_xform.build_camera_dir	(position,direction,normal);
+			m_clouds_shadow.mul			(m_xform,xf_invview);
 		}
 
 		// Make jitter texture
@@ -121,7 +137,8 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0		);
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 		RCache.set_c				("m_shadow",			m_shadow						);
-
+		RCache.set_c				("m_sunmask",			m_clouds_shadow					);
+		
 		// setup stencil
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
