@@ -24,6 +24,9 @@ struct ECORE_API STextureParams{
         tfRGBA,
 		tfNVHS,
 		tfNVHU,
+		tfA8,
+		tfL8,
+		tfA8L8,
 		tfForceU32	= u32(-1)
 	};
     enum ETBumpMode{

@@ -164,6 +164,9 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
     case STextureParams::tf565				: 	nvOpt.TextureFormat = k565	; 	break;
     case STextureParams::tfRGB				: 	nvOpt.TextureFormat = k888	; 	break;
     case STextureParams::tfRGBA				: 	nvOpt.TextureFormat = k8888	; 	break;
+	case STextureParams::tfA8				: 	nvOpt.TextureFormat = kA8	; 	break;
+	case STextureParams::tfL8				: 	nvOpt.TextureFormat = kL8	; 	break;
+	case STextureParams::tfA8L8				: 	nvOpt.TextureFormat = kA8L8	; 	break;
     }
 	
 	switch(fmt->mip_filter){
