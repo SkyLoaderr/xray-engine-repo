@@ -146,11 +146,18 @@ function action_follow:execute ()
     --printf ("FOLLWER %s POSITION x = %f, y = %f, z = %f", self.object:name (), pos.x, pos.y, pos.z)
     -- проверим, а жив ли еще старшќй.
     local leader = level.object_by_id(self.st.leader_id)
-    if leader == nil or leader:alive () == false then
-       self.st.signals["leader_dead"] = true
+    if leader == nil then
        self:free ()
        return 
-    end 
+    end
+       
+    if self.st.stub_for_corpse == false then
+       if leader == nil or leader:alive () == false then
+          self.st.signals["leader_dead"] = true
+          self:free ()
+          return 
+       end 
+    end   
     
     -- проверим нахождение нас в списке
     self:check_list ()
@@ -200,6 +207,15 @@ function action_follow:execute ()
        if vdist > 3 then 
           self.state = 0
        else
+          -- FIXME (remove stub for corpse)
+          if self.st.stub_for_corpse == true then
+             if leader == nil or leader:alive () == false then
+                self.st.signals["leader_dead"] = true
+                self:free ()
+                return 
+             end 
+          end   
+       
           if xr_meet.is_meet (leader) == true then
              --printf ("LEADER IN MEET STATE")
              state_mgr.set_state (self.object, self.st.state_if_leader_in_meet, nil, nil, db.actor)
@@ -404,4 +420,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	end   
 	st.sound_theme = utils.cfg_get_string (ini, section, "snd",  npc, false, "", "state")
     st.state_if_leader_in_meet = utils.cfg_get_string (ini, section, "state_if_leader_in_meet", npc, false, "", "idle")
+    st.stub_for_corpse = utils.cfg_get_bool (ini, section, "stub_for_corpse", npc, false, false)
 end
