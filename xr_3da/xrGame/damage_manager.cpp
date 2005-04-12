@@ -68,6 +68,11 @@ void CDamageManager::load_section(LPCSTR section,CInifile* ini)
 			bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
 			bone_instance.set_param	(1,(float)atoi(_GetItem(*(*i).second,1,buffer)));
 			bone_instance.set_param	(2,(float)atof(_GetItem(*(*i).second,2,buffer)));
+			if(0==bone && (fis_zero(bone_instance.get_param(0)) || fis_zero(bone_instance.get_param(2)) ) ){
+				string256 error_str;
+				sprintf(error_str,"hit_scale and wound_scale for root bone cannot be zero. see section [%s]",section);
+				R_ASSERT2(0,error_str);
+			}
 		}
 	}
 }

@@ -442,18 +442,24 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	hit_power = hit_power/100.f;
 	hit_power = HitOutfitEffect(hit_power, hit_type, element);
 
-
+	bool bAddWound = true;
 	switch(hit_type)
 	{
 	case ALife::eHitTypeTelepatic:
 		hit_power *= m_HitTypeK[hit_type];
 		ChangePsyHealth(-hit_power);
-		return NULL;
+		bAddWound =false;
 		break;
 	case ALife::eHitTypeBurn:
 	case ALife::eHitTypeChemicalBurn:
-	case ALife::eHitTypeShock:
 		hit_power *= m_HitTypeK[hit_type];
+		break;
+	case ALife::eHitTypeShock:
+		hit_power		*= m_HitTypeK[hit_type];
+		m_fHealthLost	=  hit_power*m_fHealthHitPart;
+		m_fDeltaHealth	-= m_fHealthLost;
+		m_fDeltaPower	-= hit_power*m_fPowerHitPart;
+		bAddWound		=  false;
 		break;
 	case ALife::eHitTypeRadiation:
 		/*hit_power *= m_HitTypeK[hit_type];*/
@@ -477,7 +483,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	}
 
 	//раны добавляются только живому
-	if(GetHealth()>0)
+	if(bAddWound && GetHealth()>0)
 		return AddWound(hit_power*m_fWoundBoneScale, hit_type, element);
 	else
 		return NULL;
