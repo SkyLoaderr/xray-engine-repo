@@ -985,7 +985,7 @@ function save_logic(obj, packet)
  	packet:w_s32(activation_time - cur_tm)
 
 	-- GAMETIME added by Stohe.
-	smart_terrain.W_CTime(packet, db.storage[npc_id].activation_game_time)
+	smart_terrain.w_CTime(packet, db.storage[npc_id].activation_game_time)
 end
 
 function load_logic(obj, reader)
@@ -995,7 +995,7 @@ function load_logic(obj, reader)
 	db.storage[npc_id].activation_time = reader:r_s32() + cur_tm
 
 	-- GAMETIME added by Stohe.
-	db.storage[npc_id].activation_game_time = smart_terrain.R_CTime(packet)
+	db.storage[npc_id].activation_game_time = smart_terrain.r_CTime(packet)
 end
 
 local pstor_number = 0
