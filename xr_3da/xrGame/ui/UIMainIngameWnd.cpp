@@ -409,7 +409,7 @@ void CUIMainIngameWnd::Draw()
 		m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
 	}
 
-	UIPdaMsgListWnd.Draw();
+	DrawPdaMessages();
 
 #ifdef DEBUG
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
@@ -474,16 +474,31 @@ void CUIMainIngameWnd::Draw()
 #endif
 }
 
+void CUIMainIngameWnd::SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog){
+	m_pMPChatWnd = pChat;
+	m_pMPLogWnd  = pLog;
+}
+
 void CUIMainIngameWnd::DrawPdaMessages(){
 	FadeUpdate(&UIPdaMsgListWnd);	
 	FadeUpdate(&UIPdaMsgListWnd2);	
 	UIPdaMsgListWnd2.Draw();
+
+	if (m_pMPChatWnd)
+		m_pMPChatWnd->Draw();
+	if (m_pMPLogWnd)
+		m_pMPLogWnd->Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::Update()
 {
+	if (m_pMPChatWnd)
+		m_pMPChatWnd->Update();
+	if (m_pMPLogWnd)
+		m_pMPLogWnd->Update();
+
 	if(!m_bShowHudInfo) return;
 
 	static string256 text_str;

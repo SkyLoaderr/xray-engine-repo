@@ -161,7 +161,8 @@ protected:
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
 	CUIStatic			UIInvincibleIcon;
-
+	CUIWindow*			m_pMPChatWnd;
+	CUIWindow*			m_pMPLogWnd;
 public:	
 	CUIArtefactPanel*    m_artefactPanel;
 	
@@ -178,6 +179,8 @@ public:
 		ewiFatigue,
 		ewiInvincible,
 	};
+
+	void SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog);
 
 	// Задаем цвет соответствующей иконке
 	void SetWarningIconColor(EWarningIcons icon, const u32 cl);
