@@ -38,7 +38,7 @@ public:
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
 //	void		ChangeFileAgeTo		(FS_QueryMap* source_map, int age);
 	// make/update routines
-    bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType, u32 flags=0);
+    bool		MakeGameTexture		(LPCSTR game_name, u32* data, const STextureParams& tp);
     void		CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);
     void		CreateLODTexture	(CEditableObject* object, U32Vec& lod_pixels, U32Vec& nm_pixels, u32 tgt_w, u32 tgt_h, int samples);

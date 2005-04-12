@@ -132,20 +132,13 @@ void CImageManager::CreateGameTexture(LPCSTR src_name, ETextureThumbnail* thumb)
 //------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
-bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType type, u32 flags)
+bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, const STextureParams& tp)
 {
 	VerifyPath(game_name);
     // fill texture params
-    STextureParams TP;
-    TP.fmt 			= fmt;
-    TP.mip_filter   = STextureParams::kMIPFilterBox;
-    TP.type			= type; //STextureParams::ttImage
-    TP.width		= w;
-    TP.height		= h;
-    TP.flags.assign	(flags);
 	// compress
-    u32 w4= w*4;
-    int res			= DXTCompress(game_name, (u8*)data, 0, w, h, w4, &TP, 4);
+    u32 w4= tp.width*4;
+    int res			= DXTCompress(game_name, (u8*)data, 0, tp.width, tp.height, w4, (STextureParams*)&tp, 4);
     if (1!=res){
     	FS.file_delete(game_name);
         switch(res){
@@ -740,7 +733,13 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
         xr_string out_name;
         FS.update_path	(out_name,_game_textures_,dst_name);
         out_name		+= ".dds";
-		if (!MakeGameTexture(out_name.c_str(),&*sm_data.begin(),sm_wf,sm_h,STextureParams::tfRGBA,STextureParams::ttCubeMap,false))
+        STextureParams 	tp;
+        tp.width		= sm_wf;
+        tp.height		= sm_h;
+        tp.fmt			= STextureParams::tfRGBA;
+        tp.type			= STextureParams::ttCubeMap;
+        tp.flags.zero	();
+		if (!MakeGameTexture(out_name.c_str(),&*sm_data.begin(),tp))
         	return FALSE;
         ELog.DlgMsg(mtInformation,"Smaller cubemap successfylly created [%3.2f sec].",T.Get());
         return TRUE;

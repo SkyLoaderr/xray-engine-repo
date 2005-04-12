@@ -238,7 +238,14 @@ int CImageManager::CreateMergedTexture(const RStringVec& _names, LPCSTR dest_nam
 
     // all right. make texture.
     AnsiString fn		= ChangeFileExt	(dest_name,".dds");
-    MakeGameTexture		(fn.c_str(),dest_pixels.begin(),dest_width,dest_height,fmt,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+    STextureParams 		tp;
+    tp.width			= dest_width;
+    tp.height			= dest_height;
+    tp.fmt				= fmt;
+    tp.type				= STextureParams::ttImage;
+    tp.mip_filter		= STextureParams::kMIPFilterAdvanced;
+    tp.flags.assign		(STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+    MakeGameTexture		(fn.c_str(),dest_pixels.begin(),tp);
 
     return 1;
 }
