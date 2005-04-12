@@ -143,6 +143,16 @@ function become_friend(first_speaker, second_speaker)
 end
 
 -----------------------------------------------------------------------------------
+-- Community
+-----------------------------------------------------------------------------------
+function actor_in_dolg(actor, npc)
+	return true
+end
+function actor_not_in_dolg(actor, npc)
+	return not actor_in_dolg(actor, npc)
+end
+
+-----------------------------------------------------------------------------------
 -- Money functions
 -----------------------------------------------------------------------------------
 function has_2000_money(first_speaker, second_speaker)
