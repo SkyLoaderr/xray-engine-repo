@@ -71,4 +71,7 @@ protected:
 #ifdef DEBUG
 	virtual void	OnRender				();
 #endif
+
+public:
+	virtual u32		ef_weapon_type			() const;
 };
