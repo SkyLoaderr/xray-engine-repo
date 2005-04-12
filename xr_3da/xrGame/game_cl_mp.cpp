@@ -13,6 +13,7 @@
 #include <dinput.h>
 #include "UIGameCustom.h"
 #include "ui/UIInventoryUtilities.h"
+#include "ui/UIMainIngameWnd.h"
 #include "CustomZone.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
@@ -73,6 +74,9 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
 	pChatWnd->Init();
 	pChatWnd->SetOwner(this);
+
+	HUD().GetUI()->UIMainIngameWnd->SetMPChatLog(pChatWnd, pGameLog);
+
 	return NULL;
 };
 
@@ -307,16 +311,16 @@ void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 void game_cl_mp::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	static offFlag = false;
-	if (!offFlag)
-	{
-		if (HUD().GetUI()->UIGame())
-		{
-			HUD().GetUI()->UIGame()->AddDialogToRender(pChatLog);
-			HUD().GetUI()->UIGame()->AddDialogToRender(pGameLog);
-			offFlag = true;
-		}
-	};
+	//static offFlag = false;
+	//if (!offFlag)
+	//{
+	//	if (HUD().GetUI()->UIGame())
+	//	{
+	//		HUD().GetUI()->UIGame()->AddDialogToRender(pChatLog);
+	//		HUD().GetUI()->UIGame()->AddDialogToRender(pGameLog);
+	//		offFlag = true;
+	//	}
+	//};
 	//-----------------------------------------
 	UpdateMapLocations();
 }
