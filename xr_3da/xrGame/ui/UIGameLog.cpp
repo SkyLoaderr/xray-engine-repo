@@ -122,10 +122,7 @@ void CUIGameLog::Update()
 
 		// Remove at animation end
 		if (anm->Done())
-		{
-			xr_delete(anm);
 			toDelIndexes.insert(i);
-		}
 
 		if (!pItem->IsShown())
 			invisible_items++;		
