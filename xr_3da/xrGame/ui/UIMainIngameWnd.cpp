@@ -95,6 +95,8 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	UIZoneMap					= xr_new<CUIZoneMap>();
 	m_pPickUpItem				= NULL;
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
+	m_pMPChatWnd = NULL;
+	m_pMPLogWnd = NULL;	
 }
 
 //////////////////////////////////////////////////////////////////////////
