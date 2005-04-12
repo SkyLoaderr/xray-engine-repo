@@ -1113,6 +1113,21 @@
     <string id="bar_dolg_zavskald_reward_1311">
         <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
     </string>
+    <string id="bar_ecolog_crush_professor_corrupted_flash_0">
+        <text>Мужик, ты о чем?</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_corrupted_flash_1">
+        <text>Моя фамилия Круглов. Я профессор биологии, изучаю Зону. Я вез результаты своего исследования на Янтарь, когда мой вертолет был обстрелян боевиками Свободы. Они требовали, чтобы я им отдал свои исследования, но я, чтобы эта воистину бесценная информация не попала в их руки, испортил ее. Это стоило трех лет моей работы, и если бы ты пришел чуть раньше, информация была бы сохранена. Но несмотря на это я благодарен тебе за то, что я и мои коллеги живы.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_corrupted_flash_11">
+        <text>Ну в целом не за что.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_corrupted_flash_111">
+        <text>Я надеюсь, мы еще увидимся и я смогу угостить тебя кружкой-другой пива.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_corrupted_flash_1111">
+        <text>Надеюсь, доживу до этого момента, док.</text>
+    </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
     </string>
@@ -1193,6 +1208,9 @@
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
         <text>Я не знаю твоего имени, сталкер, но сегодня ты заслужил благодарность всей мировой науки.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_51">
+        <text>Спасибо тебе сталкер, ты спас наши жизни, но если бы ты успел чуть раньше, бесценная информация была бы сохранена.</text>
     </string>
     <string id="bar_ecolog_dialog_0">
         <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>

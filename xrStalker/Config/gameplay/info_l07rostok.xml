@@ -143,11 +143,9 @@
 	<info_portion id="bar_kill_svoboda_leader_done"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_reward"></info_portion>
 
-    <info_portion id="rostok_heli_start">
-    </info_portion>
+    <info_portion id="rostok_heli_start"></info_portion>
 
-    <info_portion id="rostok_heli_down">
-    </info_portion>
+    <info_portion id="rostok_heli_down"></info_portion>
     
     
 	<!-- ECOLOG FLASH QUEST -->
@@ -201,12 +199,8 @@
     </info_portion>
 	<info_portion id="bar_deactivate_radar_done"></info_portion>
 
-		<!-- BLOODSUCKER SPAWNERS -->
+		<!-- BLOODSUCKER SPAWNER -->
 	<info_portion id="bar_spawn_bloodsucker1"></info_portion>
-	<info_portion id="bar_spawn_bloodsucker2"></info_portion>	
-	
-	
-	
 	
 	
 	<!-- ARENA -->
