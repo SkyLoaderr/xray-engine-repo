@@ -112,7 +112,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	// изменилось состояние
 	if (mstate_wf != mstate_real){
 		if ((mstate_real&mcCrouch)&&((0==(mstate_wf&mcCrouch)) || mstate_real&mcClimb)){
-			if (ActivateBox(0)){
+			if (m_PhysicMovementControl->ActivateBoxDynamic(0)){
 				mstate_real &= ~mcCrouch;
 			}
 		}
@@ -231,9 +231,9 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			m_PhysicMovementControl->EnableCharacter();
 			bool Crouched = false;
 			if (isActorAccelerated(mstate_wf, IsZoomAimingMode()))
-				Crouched = ActivateBox(1);
+				Crouched = m_PhysicMovementControl->ActivateBoxDynamic(1);
 			else
-				Crouched = ActivateBox(2);
+				Crouched = m_PhysicMovementControl->ActivateBoxDynamic(2);
 			if (Crouched) mstate_real			|=	mcCrouch;
 		}
 
@@ -245,13 +245,13 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			if (!isActorAccelerated(mstate_real, IsZoomAimingMode()) && isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 			{
 				m_PhysicMovementControl->EnableCharacter();
-				if(!ActivateBox(1))move	&=~mcAccel;
+				if(!m_PhysicMovementControl->ActivateBoxDynamic(1))move	&=~mcAccel;
 			}
 
 			if (isActorAccelerated(mstate_real, IsZoomAimingMode()) && !isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 			{
 				m_PhysicMovementControl->EnableCharacter();
-				if(ActivateBox(2))mstate_real	&=~mcAccel;
+				if(m_PhysicMovementControl->ActivateBoxDynamic(2))mstate_real	&=~mcAccel;
 			}
 		}
 

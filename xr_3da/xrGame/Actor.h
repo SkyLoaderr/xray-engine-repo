@@ -166,7 +166,7 @@ public:
 	virtual	void						Hit				(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual	void						PHHit			(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */);
 	virtual void						HitSignal		(float P, Fvector &vLocalDir,	CObject* who, s16 element);
-			bool						ActivateBox		(DWORD id);
+
 	/////////////////////////////////////////////////////////////////
 	// misc properties
 	virtual float						GetMass				() { return g_Alive()?m_PhysicMovementControl->GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
@@ -628,7 +628,6 @@ protected:
 		LPCSTR					invincibility_fire_shield_3rd;
 		LPCSTR					invincibility_fire_shield_1st;
 		u32						last_hit_frame;
-
 		LPCSTR					m_spawn_effect;
 #ifdef DEBUG
 		friend class CLevelGraph;

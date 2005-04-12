@@ -3,7 +3,7 @@
 #include "dTriCollideK.h"
 #include "dxTriList.h"
 #include "dcTriListCollider.h"
-
+#include "../ExtendedGeom.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
 #include "../gameobject.h"
 
@@ -22,7 +22,7 @@ dcTriListCollider* GetData(dxGeom* TriList){
 
 
 inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
-	return true;
+	return dGeomGetUserData(o1)->b_static_colide;
 	/*
 	dxBody* b1 = dGeomGetBody(o1);
 

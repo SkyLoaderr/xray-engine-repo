@@ -61,7 +61,7 @@ void SPHCharacterRestrictor::Create(CPHCharacter* ch,dVector3 sizes)
 	dGeomTransformSetInfo(m_restrictor_transform,1);
 	dGeomTransformSetGeom(m_restrictor_transform,m_restrictor);
 	dGeomCreateUserData(m_restrictor);
-
+	dGeomGetUserData(m_restrictor)->b_static_colide=false;
 	
 	dGeomSetBody(m_restrictor_transform,m_character->get_body());
 	dSpaceAdd(m_character->dSpace(),m_restrictor_transform);

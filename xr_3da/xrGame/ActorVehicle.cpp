@@ -52,7 +52,7 @@ void CActor::detach_Vehicle()
 	if(!car)return;
 	CPHShellSplitterHolder*sh= car->PPhysicsShell()->SplitterHolder();
 	if(sh)sh->Deactivate();
-	if(!ActivateBox(0))
+	if(!m_PhysicMovementControl->ActivateBoxDynamic(0))
 	{
 		if(sh)sh->Activate();
 		return;

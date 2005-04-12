@@ -100,6 +100,10 @@ private:
 	Fvector				vPathDir;
 	int					m_path_size;
 	int					m_start_index;
+
+	u32					m_try_dynamic_box_activate;
+	u16					m_trying_id;
+
 	float				m_path_distance;
 	u16					m_material;
 
@@ -157,6 +161,7 @@ public:
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 	void				ActivateBox		(DWORD id, BOOL Check = false);
+	bool				ActivateBoxDynamic(DWORD id);
 	void				InterpolateBox	(DWORD id,float k);
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }

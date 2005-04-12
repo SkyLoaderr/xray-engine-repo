@@ -25,7 +25,7 @@ class CGameObject;
 struct dxGeomUserData
 {
 	dVector3	last_pos;
-	bool		pushing_neg,pushing_b_neg;
+	bool		pushing_neg,pushing_b_neg,b_static_colide;
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
 	CPhysicsShellHolder* ph_ref_object;
@@ -79,6 +79,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	dGeomSetData(geom,xr_new<dxGeomUserData>());
 	(dGeomGetUserData(geom))->pushing_neg=false;
 	(dGeomGetUserData(geom))->pushing_b_neg=false;
+	(dGeomGetUserData(geom))->b_static_colide=true;
 	(dGeomGetUserData(geom))->last_pos[0]=-dInfinity;
 	(dGeomGetUserData(geom))->last_pos[1]=-dInfinity;
 	(dGeomGetUserData(geom))->last_pos[2]=-dInfinity;

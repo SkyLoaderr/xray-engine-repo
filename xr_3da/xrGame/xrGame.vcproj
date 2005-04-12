@@ -5946,9 +5946,6 @@
 							RelativePath=".\actor_anim_defs.h">
 						</File>
 						<File
-							RelativePath=".\Actor_BoxActivate.cpp">
-						</File>
-						<File
 							RelativePath=".\actor_communication.cpp">
 						</File>
 						<File
@@ -8983,6 +8980,9 @@
 							</File>
 							<File
 								RelativePath="PHMovementControl.h">
+							</File>
+							<File
+								RelativePath=".\PHMovementDynamicActivate.cpp">
 							</File>
 						</Filter>
 						<Filter

@@ -197,7 +197,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomTransformSetInfo(m_cap_transform,1);
 	dGeomTransformSetGeom(m_cap_transform,m_cap);
 	dGeomCreateUserData(m_cap);
-
+	dGeomGetUserData(m_cap)->b_static_colide=false;
 
 	dGeomUserDataSetPhObject(m_cap,(CPHObject*)this);
 	dSpaceAdd(m_space,m_cap_transform);
