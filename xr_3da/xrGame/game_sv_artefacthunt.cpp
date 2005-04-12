@@ -949,3 +949,17 @@ void	game_sv_ArtefactHunt::check_Player_for_Invincibility	(game_PlayerState* ps)
 	if (g_bShildedBases && ps->testFlag(GAME_PLAYER_FLAG_ONBASE))
 		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
 };
+
+void	game_sv_ArtefactHunt::Check_ForClearRun		(game_PlayerState* ps)
+{
+	if (!ps) return;
+	if (!ps->m_bClearRun)
+	{
+		ps->m_bClearRun = true;
+		return;
+	};
+	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
+	if (!pTeam) return;	
+
+	Player_AddMoney(ps, pTeam->m_iM_ClearRunBonus);	
+};

@@ -50,6 +50,8 @@
 		s32					m_iM_RoundLoose_Minor	;
 		s32					m_iM_RivalsWipedOut		;
 		//---------------------------------------------
+		s32					m_iM_ClearRunBonus		;
+		//---------------------------------------------
 		float				m_fInvinsibleKillModifier;
 
 	};

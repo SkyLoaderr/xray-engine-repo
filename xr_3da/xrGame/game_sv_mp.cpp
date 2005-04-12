@@ -678,6 +678,7 @@ void	game_sv_mp::ClearPlayerItems		(game_PlayerState* ps)
 {
 	ps->pItemList.clear();
 	ps->LastBuyAcount = 0;
+//	ps->m_bClearRun = false;
 };
 
 void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)

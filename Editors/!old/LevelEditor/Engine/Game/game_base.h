@@ -82,6 +82,7 @@ public:
 	s16					m_s16LastSRoint;
 
 	s32					LastBuyAcount;
+	bool				m_bClearRun;
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
 

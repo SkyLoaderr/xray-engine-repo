@@ -699,6 +699,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	if (!ps || ps->Skip) return;	
 	
 	P.r_s32(ps->LastBuyAcount);	
+	if (ps->LastBuyAcount != 0) ps->m_bClearRun = false;
 
 	xr_vector<s16>		ItemsDesired;
 
@@ -1090,6 +1091,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 
 		NewTeam.m_iM_RivalsWipedOut		= GetMoneyAmount(caSection, "rivals_wiped_out");
 
+		NewTeam.m_iM_ClearRunBonus		= GetMoneyAmount(caSection, "clear_run_bonus");
 		//---------------------------------------------------------------------------
 		if (pSettings->line_exist(caSection, "kill_while_invincible"))
 			NewTeam.m_fInvinsibleKillModifier = pSettings->r_float(caSection, "kill_while_invincible");
@@ -1721,8 +1723,9 @@ void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)
 void	game_sv_Deathmatch::Check_ForClearRun		(game_PlayerState* ps)
 {
 	if (!ps) return;
-	if (ps->LastBuyAcount == 0)
-	{
-		Player_AddMoney(ps, 100);
-	}
+	if (ps->LastBuyAcount != 0) return;
+	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
+	if (!pTeam) return;	
+	
+	Player_AddMoney(ps, pTeam->m_iM_ClearRunBonus);	
 };

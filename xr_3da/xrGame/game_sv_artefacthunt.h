@@ -51,7 +51,7 @@ protected:
 	void							CheckForAnyAlivePlayer	();
 
 	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);    	
-	virtual		void				Check_ForClearRun		(game_PlayerState* ps)	{};
+	virtual		void				Check_ForClearRun		(game_PlayerState* ps);
 public:
 
 									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
