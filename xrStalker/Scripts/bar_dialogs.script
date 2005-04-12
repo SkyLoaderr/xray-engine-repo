@@ -411,7 +411,10 @@ end
 
 function arena_has_no_monsters(npc, actor)
 	if arena_has_pseudodog(npc, actor) or
-	   arena_has_snork(npc, actor)
+	   arena_has_snork(npc, actor) or
+	   arena_has_bloodsucker(npc, actor) or
+	   arena_has_burer(npc, actor) or
+	   arena_has_savage(npc, actor)	   
 	then
 		return false
 	end
@@ -419,11 +422,28 @@ function arena_has_no_monsters(npc, actor)
 end
 
 function arena_has_pseudodog(npc, actor)
-	return db.actor:dont_has_info("bar_arena_pseudodog_defeated")
+	return db.actor:dont_has_info("bar_arena_pseudodog_defeated") and
+			db.actor:dont_has_info("bar_arena_pause")
 end
 function arena_has_snork(npc, actor)
 	return db.actor:has_info("bar_arena_pseudodog_defeated") and
-			db.actor:dont_has_info("bar_arena_snork_defeated")
+			db.actor:dont_has_info("bar_arena_snork_defeated") and
+			db.actor:dont_has_info("bar_arena_pause")
+end
+function arena_has_bloodsucker(npc, actor)
+	return db.actor:has_info("bar_arena_snork_defeated") and
+			db.actor:dont_has_info("bar_arena_bloodsucker_defeated") and
+			db.actor:dont_has_info("bar_arena_pause")
+end
+function arena_has_burer(npc, actor)
+	return db.actor:has_info("bar_arena_bloodsucker_defeated") and
+			db.actor:dont_has_info("bar_arena_burer_defeated") and
+			db.actor:dont_has_info("bar_arena_pause")
+end
+function arena_has_savage(npc, actor)
+	return db.actor:has_info("bar_arena_burer_defeated") and
+			db.actor:dont_has_info("bar_arena_savage_defeated") and
+			db.actor:dont_has_info("bar_arena_pause")
 end
 
 function arena_give_reward(actor, npc)

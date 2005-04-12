@@ -223,6 +223,7 @@
 	<info_portion id="bar_arena_monstr_dead"></info_portion>
 	<info_portion id="bar_arena_actor_victory"></info_portion>
 	<info_portion id="bar_arena_actor_lose"></info_portion>
+	<info_portion id="bar_arena_pause"></info_portion>
 	
 	<info_portion id="bar_arena_reset">
 		<disable>bar_arena_start</disable>
@@ -248,7 +249,11 @@
 		<disable>bar_arena_actor_victory</disable>
 		<disable>bar_arena_actor_lose</disable>
 		
-		<disable>bar_arena_pseudodog_choosen</disable>				
+		<disable>bar_arena_pseudodog_choosen</disable>
+		<disable>bar_arena_snork_choosen</disable>				
+		<disable>bar_arena_bloodsucker_choosen</disable>
+		<disable>bar_arena_burer_choosen</disable>
+		<disable>bar_arena_savage_choosen</disable>
 	</info_portion>	
 	
 	<info_portion id="bar_arena_1000_r"></info_portion>
@@ -273,5 +278,14 @@
 	
 	<info_portion id="bar_arena_snork_choosen"></info_portion>
 	<info_portion id="bar_arena_snork_defeated"></info_portion>	
+
+	<info_portion id="bar_arena_bloodsucker_choosen"></info_portion>
+	<info_portion id="bar_arena_bloodsucker_defeated"></info_portion>	
+    
+	<info_portion id="bar_arena_burer_choosen"></info_portion>
+	<info_portion id="bar_arena_burer_defeated"></info_portion>	
+
+	<info_portion id="bar_arena_savage_choosen"></info_portion>
+	<info_portion id="bar_arena_savage_defeated"></info_portion>	
     
 </game_information_portions>

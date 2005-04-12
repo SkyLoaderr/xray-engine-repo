@@ -361,6 +361,12 @@ function bar_arena_introduce(actor, npc)
 		news_manager.send_tip(actor, "bar_arena_fight_pseudodog", nil, "arena", 7000)
 	elseif db.actor:has_info("bar_arena_snork_choosen") then
 		news_manager.send_tip(actor, "bar_arena_fight_snork", nil, "arena", 7000)
+	elseif db.actor:has_info("bar_arena_bloodsucker_choosen") then
+		news_manager.send_tip(actor, "bar_arena_fight_bloodsucker", nil, "arena", 7000)
+	elseif db.actor:has_info("bar_arena_burer_choosen") then
+		news_manager.send_tip(actor, "bar_arena_fight_burer", nil, "arena", 7000)
+	elseif db.actor:has_info("bar_arena_savage_choosen") then
+		news_manager.send_tip(actor, "bar_arena_fight_savage", nil, "arena", 7000)
 	end
 end
 
@@ -412,6 +418,10 @@ function bar_arena_after_fight(actor, npc)
 			news_manager.send_tip(actor, "bar_arena_fight_lose", nil, "arena")
 		end
 	end
+end
+function bar_arena_actor_afraid(actor, npc)
+	news_manager.send_tip(actor, "bar_arena_actor_afraid", nil, "arena")
+	db.actor:give_info_portion("bar_arena_reset")
 end
 
 

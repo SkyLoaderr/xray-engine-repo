@@ -7,25 +7,64 @@
         <text>Сейчас не с кем сражаться. Ищи приключения в другом месте.</text>
     </string>
     <string id="bar_arena_manager_game_100">
-        <text>Теперь выбирай ставку. Минимальная - 1000 рублей. Да, деньги вперед.</text>
+        <text>Теперь давай деньги за участие.1000 рублей.</text>
     </string>
     <string id="bar_arena_manager_game_101">
-        <text>1000 рублей</text>
-    </string>
-    <string id="bar_arena_manager_game_102">
-        <text>2000 рублей</text>
-    </string>
-    <string id="bar_arena_manager_game_103">
-        <text>3000 рублей</text>
-    </string>
-    <string id="bar_arena_manager_game_104">
-        <text>5000 рублей</text>
+        <text>Держи 1000 рублей</text>
     </string>
     <string id="bar_arena_manager_game_105">
         <text>Нет у меня денег.</text>
     </string>
     <string id="bar_arena_manager_game_1051">
         <text>Тьфу ты, опять нищий какой то.</text>
+    </string>
+    <string id="bar_arena_manager_game_110">
+        <text>С тебя 2000 рублей за участие.</text>
+    </string>
+    <string id="bar_arena_manager_game_111">
+        <text>Вот 2000 рублей.</text>
+    </string>
+    <string id="bar_arena_manager_game_115">
+        <text>Нет у меня денег.</text>
+    </string>
+    <string id="bar_arena_manager_game_1151">
+        <text>И откуда в Зоне нищие?</text>
+    </string>
+    <string id="bar_arena_manager_game_120">
+        <text>С тебя 3000 рублей за участие и кровосос готов.</text>
+    </string>
+    <string id="bar_arena_manager_game_121">
+        <text>Вот твои деньги.</text>
+    </string>
+    <string id="bar_arena_manager_game_125">
+        <text>Нет у меня такой суммы.</text>
+    </string>
+    <string id="bar_arena_manager_game_1251">
+        <text>Вот блин, даже у моего сынишки такие деньги есть.</text>
+    </string>
+    <string id="bar_arena_manager_game_130">
+        <text>Не так быстро. Сперва заплати 5000 рублей за участие.</text>
+    </string>
+    <string id="bar_arena_manager_game_131">
+        <text>Держи деньги.</text>
+    </string>
+    <string id="bar_arena_manager_game_135">
+        <text>Нет у меня денег.</text>
+    </string>
+    <string id="bar_arena_manager_game_1351">
+        <text>Тоже мне, нищий нашелся.</text>
+    </string>
+    <string id="bar_arena_manager_game_140">
+        <text>Раз согласен, то заплати 5000 монет за участие.</text>
+    </string>
+    <string id="bar_arena_manager_game_141">
+        <text>Вот 5000 рублей.</text>
+    </string>
+    <string id="bar_arena_manager_game_145">
+        <text>Нет у меня денег.</text>
+    </string>
+    <string id="bar_arena_manager_game_1451">
+        <text>Даже сталкеры, и те нищенствуют. Дожили.</text>
     </string>
     <string id="bar_arena_manager_game_2">
         <text>Есть псевдособака. Образец крупный, но изрядно побитый. Зато злющая, как моя теща. Хорошо, что я ее никогда не видел.</text>
@@ -52,10 +91,10 @@
         <text>Согласен на собаку.</text>
     </string>
     <string id="bar_arena_manager_game_22">
-        <text>Не, с кабаном я сражаться не буду.</text>
+        <text>Не, с собакой я сражаться не буду.</text>
     </string>
     <string id="bar_arena_manager_game_221">
-        <text>Наша девочка испугалась кабанчика. Ну да ладно, не расстраивайся.</text>
+        <text>Наша девочка испугалась собачки. Ну да ладно, не расстраивайся.</text>
     </string>
     <string id="bar_arena_manager_game_3">
         <text>Есть один уродец в противогазе. Снорком зовут. Внешне тощий и слабый, но проворный, как тот актер Джеки Чан. Я в детстве видел пару его фильмов.</text>
@@ -71,6 +110,42 @@
     </string>
     <string id="bar_arena_manager_game_321">
         <text>Испугался, что тебя обесчестит наполовину сгнивший уродец в противогазе? Трусишка.</text>
+    </string>
+    <string id="bar_arena_manager_game_4">
+        <text>На этот раз настоящая удача для тебя. Поймали молодого кровососа. Глупенький еще, но зато со всеми положенными дурными привычками.</text>
+    </string>
+    <string id="bar_arena_manager_game_41">
+        <text>Давай, готовь кровососа.</text>
+    </string>
+    <string id="bar_arena_manager_game_42">
+        <text>Я не хочу с кровососом.</text>
+    </string>
+    <string id="bar_arena_manager_game_421">
+        <text>Ага! Испугался. Так я и думал.</text>
+    </string>
+    <string id="bar_arena_manager_game_5">
+        <text>На этот раз у нас маленький коротышка в черном плаще - бюрер.</text>
+    </string>
+    <string id="bar_arena_manager_game_51">
+        <text>Выводи этого уродца.</text>
+    </string>
+    <string id="bar_arena_manager_game_52">
+        <text>Не хочу с бюрером.</text>
+    </string>
+    <string id="bar_arena_manager_game_521">
+        <text>Он же тебе едва до пояса достает. И ты испугался?</text>
+    </string>
+    <string id="bar_arena_manager_game_6">
+        <text>О, это особый случай. Не знаю где его отловили, но он просто зверь. Его так все и называют - Зверь.</text>
+    </string>
+    <string id="bar_arena_manager_game_61">
+        <text>Согласен на Зверя.</text>
+    </string>
+    <string id="bar_arena_manager_game_62">
+        <text>Я против Зверя.</text>
+    </string>
+    <string id="bar_arena_manager_game_621">
+        <text>Ну этого зверя даже я побаиваюсь. Но ты все равно трус.</text>
     </string>
     <string id="bar_arena_manager_info_0">
         <text>Есть пару вопросов.</text>
@@ -103,7 +178,7 @@
         <text>Какие правила?</text>
     </string>
     <string id="bar_arena_manager_rules_1">
-        <text>О, правила очень простые. Я их сам придумал. Есть клетка, в нее запускается мутант. Ты выбираешь сумму ставки, а так же время, за которое ты убьешь монстра. Если успеваешь - получаешь выигрышь. Если не успеваешь - деньги я оставляю себе. Если ты умрешь - обещаю похоронить со всеми почестями. Чем меньше время, которое ты выберешь - тем больше выигрыш.</text>
+        <text>О, правила очень простые. Я их сам придумал. Есть клетка, в нее запускается мутант. Ты платишь деньги, а так же выбираешь время, за которое ты убьешь монстра. Если успеваешь - получаешь выигрышь. Если не успеваешь - деньги я оставляю себе. Если ты умрешь - обещаю похоронить со всеми почестями. Чем меньше время, которое ты выберешь - тем больше выигрыш.</text>
     </string>
     <string id="bar_arena_manager_start_11">
         <text>Здорова! У меня есть новая зверюшка. Не желаешь померяться силой с ней?</text>
