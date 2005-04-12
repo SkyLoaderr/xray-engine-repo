@@ -33,6 +33,7 @@
 #define		r2_ds2_fade			"$user$ds2_fade"		// ---
 
 #define		r2_jitter			"$user$jitter_"			// --- dither
+#define		r2_sunmask			"sunmask"
 
 #define		JITTER(a) r2_jitter #a
 
