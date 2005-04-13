@@ -45,15 +45,12 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 			
 			if (V && xr_strlen(V)) {
 				string64			buf;
-//				int					items_count = _GetItemCount(V);
 				j					= atoi(_GetItem(V, 0, buf));
 				if (!j)		j		= 1;
 
-//				int				addons_flags_num = ((items_count - 1) > 3) ? 3 : (items_count - 1);
-//				for (int item_i = 0; item_i<addons_flags_num; ++item_i)
-//					A[item_i]	= !!atoi(_GetItem(V, item_i + 1, buf));
-			}
-
+				bool bScope		=	(NULL!=strstr(V,"scope"));
+				bool bSilencer	=	(NULL!=strstr(V,"silencer"));
+				bool bLauncher	=	(NULL!=strstr(V,"launcher"));
 			//probability
 			if(NULL!=strstr(V,"prob=")){
 				string16						c_prob;
@@ -70,7 +67,7 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
 				f_cond							= (float)atof(c_cond);
 			}
-
+			}
 			for (u32 i=0; i<j; ++i) {
 				if (randF(1.f) < p) {
 					CSE_Abstract* E = alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
@@ -78,11 +75,11 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 					CSE_ALifeItemWeapon* W =  smart_cast<CSE_ALifeItemWeapon*>(E);
 					if (W) {
 						if (W->m_scope_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, NULL!=strstr(V,"scope"));
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, bScope);
 						if (W->m_silencer_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, NULL!=strstr(V,"silencer"));
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, bSilencer);
 						if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, NULL!=strstr(V,"launcher"));
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, bLauncher);
 					}
 					CSE_ALifeInventoryItem* IItem = smart_cast<CSE_ALifeInventoryItem*>(E);
 					if(IItem)

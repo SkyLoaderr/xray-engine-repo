@@ -378,15 +378,19 @@ void CGameObject::spawn_supplies()
 			if (fis_zero(p))	p			= 1.f;
 			if (!j)				j			= 1;
 
-		}
-
-		float f_cond						= 1.0f;
-		if(NULL!=strstr(V,"cond=")){
-			string16						c_cond;
-			sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
-			f_cond							= (float)atof(c_cond);
-		}
 		
+
+			float f_cond						= 1.0f;
+			if(NULL!=strstr(V,"cond=")){
+				string16						c_cond;
+				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
+				f_cond							= (float)atof(c_cond);
+			}
+			bool bScope		=	(NULL!=strstr(V,"scope"));
+			bool bSilencer	=	(NULL!=strstr(V,"silencer"));
+			bool bLauncher	=	(NULL!=strstr(V,"launcher"));
+
+		}
 		for (u32 i=0; i<j; ++i)
 			if (::Random.randF(1.f) < p){
 				CSE_Abstract* A=Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID(),true);
@@ -398,11 +402,11 @@ void CGameObject::spawn_supplies()
 				CSE_ALifeItemWeapon* W =  smart_cast<CSE_ALifeItemWeapon*>(A);
 				if (W) {
 					if (W->m_scope_status			== CSE_ALifeItemWeapon::eAddonAttachable)
-						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, NULL!=strstr(V,"scope"));
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, bScope);
 					if (W->m_silencer_status		== CSE_ALifeItemWeapon::eAddonAttachable)
-						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, NULL!=strstr(V,"silencer"));
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, bSilencer);
 					if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
-						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, NULL!=strstr(V,"launcher"));
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, bLauncher);
 				}
 
 				NET_Packet					P;
