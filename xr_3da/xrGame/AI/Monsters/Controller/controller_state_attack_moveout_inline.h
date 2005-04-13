@@ -16,7 +16,7 @@ void CStateControlMoveOutAbstract::execute()
 	object->MotionMan.m_tAction			= ACT_STEAL;
 	object->MotionMan.accel_deactivate	();
 	object->MotionMan.accel_set_braking (false);
-	object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+	object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 
 }
 

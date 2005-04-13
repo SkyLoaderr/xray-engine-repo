@@ -77,7 +77,7 @@ void CStateControllerAttackAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
 	
-		object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+		object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 		return;
 	}
 }

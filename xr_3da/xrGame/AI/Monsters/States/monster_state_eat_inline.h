@@ -90,9 +90,9 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.accelerated	= true;
 		data.braking		= true;
 		data.accel_type 	= eAT_Calm;
-		data.completion_dist= ((current_substate == eStateEat_CorpseApproachRun) ? 4.5f : object->get_sd()->m_fDistToCorpse);
+		data.completion_dist= ((current_substate == eStateEat_CorpseApproachRun) ? 4.5f : object->db().m_fDistToCorpse);
 		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
-		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
 		return;
@@ -104,7 +104,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.spec_params	= ASP_CHECK_CORPSE;
 		data.time_out		= 1500;
 		data.sound_type	= MonsterSpace::eMonsterSoundEat;
-		data.sound_delay = object->get_sd()->m_dwEatSndDelay;
+		data.sound_delay = object->db().m_dwEatSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
@@ -124,7 +124,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.cover_max_dist			= 30.f;
 		data.cover_search_radius	= 25.f;
 		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
-		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
@@ -137,7 +137,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.spec_params	= 0;
 		data.time_out		= 8500;
 		data.sound_type	= MonsterSpace::eMonsterSoundIdle;
-		data.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+		data.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 		return;
@@ -155,7 +155,7 @@ bool CStateMonsterEatAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_start_conditions()
 {
-	return (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety);
+	return (object->conditions().GetSatiety() < object->db().m_fMinSatiety);
 }
 
 #undef TEMPLATE_SPECIALIZATION

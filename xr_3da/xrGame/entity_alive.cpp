@@ -17,6 +17,7 @@
 #include "CharacterPhysicsSupport.h"
 #include "script_callback_ex.h"
 #include "game_object_space.h"
+#include "material_manager.h"
 
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
@@ -55,6 +56,8 @@ CEntityAlive::CEntityAlive()
 
 	m_ef_weapon_type		= u32(-1);
 	m_ef_detector_type		= u32(-1);
+
+	m_material_manager		= 0;
 }
 
 CEntityAlive::~CEntityAlive()
@@ -62,6 +65,7 @@ CEntityAlive::~CEntityAlive()
 	xr_delete				(m_PhysicMovementControl);
 	xr_delete				(monster_community);
 	xr_delete				(m_entity_condition);
+	xr_delete				(m_material_manager);
 }
 
 void CEntityAlive::Load		(LPCSTR section)
@@ -607,6 +611,7 @@ float CEntityAlive::g_MaxHealth	() const
 DLL_Pure *CEntityAlive::_construct	()
 {
 	inherited::_construct	();
+	m_material_manager		= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
 	m_entity_condition		= create_entity_condition();
 	return					(this);
 }

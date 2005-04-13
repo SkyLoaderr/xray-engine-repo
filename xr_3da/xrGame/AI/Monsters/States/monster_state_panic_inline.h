@@ -53,7 +53,7 @@ void CStateMonsterPanicAbstract::setup_substates()
 		data.spec_params	= ASP_STAND_SCARED;
 		data.time_out		= 3000;		
 		data.sound_type		= MonsterSpace::eMonsterSoundPanic;
-		data.sound_delay	= object->get_sd()->m_dwAttackSndDelay;
+		data.sound_delay	= object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 

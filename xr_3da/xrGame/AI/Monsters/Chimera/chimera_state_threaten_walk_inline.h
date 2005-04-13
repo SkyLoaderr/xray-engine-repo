@@ -23,7 +23,7 @@ void CStateChimeraThreatenWalkAbstract::initialize()
 
 	data.completion_dist	= 2.f;
 	data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
-	data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+	data.action.sound_delay = object->db().m_dwIdleSndDelay;
 	data.time_to_rebuild	= 1500;
 }
 

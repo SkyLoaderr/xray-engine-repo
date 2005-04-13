@@ -102,88 +102,32 @@ void CBaseMonster::Load(LPCSTR section)
 
 	fEntityHealth					= (float)pSettings->r_u32		(section,"Health");
 
-	inherited_shared::load_shared	(CLS_ID, section);
-
 	if (ability_can_jump())
 		m_jumping					= smart_cast<CJumping *>(this);
 
 	m_controlled					= smart_cast<CControlledEntityBase*>(this);
 
-}
 
-void CBaseMonster::load_shared(LPCSTR section)
-{
-	// Загрузка параметров из LTX
-	get_sd()->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
-
-	if (ability_run_attack()) {
-		get_sd()->m_run_attack_path_dist	= pSettings->r_float(section, "RunAttack_PathDistance");
-		get_sd()->m_run_attack_start_dist	= pSettings->r_float(section, "RunAttack_StartDistance");
-	}
-
-	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
-	get_sd()->m_dwDayTimeEnd				= pSettings->r_u32	(section,"DayTime_End");		
-	get_sd()->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
-	get_sd()->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
-
-	get_sd()->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
-	get_sd()->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
-
-	get_sd()->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
-	get_sd()->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
-	get_sd()->m_dwAttackSndDelay			= pSettings->r_u32	(section,"attack_sound_delay");
-
-	get_sd()->m_fEatFreq					= pSettings->r_float(section,"eat_freq");
-	get_sd()->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
-	get_sd()->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
-
-	get_sd()->m_legs_number					= pSettings->r_u8(section, "LegsCount");
-	get_sd()->m_max_hear_dist				= pSettings->r_float(section, "max_hear_dist");
-
-	// Load attack postprocess --------------------------------------------------------
-	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
-	get_sd()->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
-	get_sd()->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
-	get_sd()->m_attack_effector.ppi.gray			= pSettings->r_float(ppi_section,"gray");
-	get_sd()->m_attack_effector.ppi.blur			= pSettings->r_float(ppi_section,"blur");
-	get_sd()->m_attack_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-	get_sd()->m_attack_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-	get_sd()->m_attack_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
-	VERIFY(!fis_zero(get_sd()->m_attack_effector.ppi.noise.fps));
-	
-
-	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_base.r, &get_sd()->m_attack_effector.ppi.color_base.g, &get_sd()->m_attack_effector.ppi.color_base.b);
-	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_gray.r, &get_sd()->m_attack_effector.ppi.color_gray.g, &get_sd()->m_attack_effector.ppi.color_gray.b);
-	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_add.r,	&get_sd()->m_attack_effector.ppi.color_add.g,&get_sd()->m_attack_effector.ppi.color_add.b);
-
-	get_sd()->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
-	get_sd()->m_attack_effector.time_attack		= pSettings->r_float(ppi_section,"time_attack");
-	get_sd()->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
-
-	get_sd()->m_attack_effector.ce_time				= pSettings->r_float(ppi_section,"ce_time");
-	get_sd()->m_attack_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-	get_sd()->m_attack_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-	get_sd()->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
-
-	// --------------------------------------------------------------------------------
+	settings_load					(section);
 
 }
-
 
 BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	CSE_Abstract						*e	= (CSE_Abstract*)(DC);
-	m_pPhysics_support->in_NetSpawn		(e);
+	CSE_Abstract							*e	= (CSE_Abstract*)(DC);
+	m_pPhysics_support->in_NetSpawn			(e);
 
-	R_ASSERT2							(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
+	R_ASSERT2								(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
-	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
+	monster_squad().register_member			((u8)g_Team(),(u8)g_Squad(), this);
+
+	settings_overrides						();
 
 	return(TRUE);
 }
@@ -204,3 +148,96 @@ void CBaseMonster::net_Destroy()
 #endif 
 
 }
+
+#define READ_SETTINGS(var,name,method,ltx,section) {\
+	if (ltx == pSettings) var = ltx->method(section,name); \
+	else if (ltx->line_exist(section,name)) var = ltx->method(section,name);\
+}
+
+void CBaseMonster::settings_read(CInifile *ini, LPCSTR section, SMonsterSettings &data)
+{
+	READ_SETTINGS(data.m_fSoundThreshold, "SoundThreshold", r_float, ini, section);
+
+	if (ability_run_attack()) {
+		READ_SETTINGS(data.m_run_attack_path_dist,	"RunAttack_PathDistance",	r_float, ini, section);
+		READ_SETTINGS(data.m_run_attack_start_dist, "RunAttack_StartDistance",	r_float, ini, section);
+	}
+
+	READ_SETTINGS(data.m_dwDayTimeBegin,	"DayTime_Begin",		r_u32, ini, section);
+	READ_SETTINGS(data.m_dwDayTimeEnd,		"DayTime_End",			r_u32, ini, section);
+
+	READ_SETTINGS(data.m_fMinSatiety,		"Min_Satiety",			r_float, ini, section);
+	READ_SETTINGS(data.m_fMaxSatiety,		"Max_Satiety",			r_float, ini, section);
+	READ_SETTINGS(data.m_fDistToCorpse,		"distance_to_corpse",	r_float, ini, section);
+	READ_SETTINGS(data.m_fDamagedThreshold, "DamagedThreshold",		r_float, ini, section);
+
+	READ_SETTINGS(data.m_dwIdleSndDelay,	"idle_sound_delay",		r_u32, ini, section);
+	READ_SETTINGS(data.m_dwEatSndDelay,		"eat_sound_delay",		r_u32, ini, section);
+	READ_SETTINGS(data.m_dwAttackSndDelay,	"attack_sound_delay",	r_u32, ini, section);
+
+	READ_SETTINGS(data.m_fEatFreq,			"eat_freq",				r_float, ini, section);
+	READ_SETTINGS(data.m_fEatSlice,			"eat_slice",			r_float, ini, section);
+	READ_SETTINGS(data.m_fEatSliceWeight,	"eat_slice_weight",		r_float, ini, section);
+
+	READ_SETTINGS(data.m_legs_number,		"LegsCount",			r_u8,	 ini, section);
+	READ_SETTINGS(data.m_max_hear_dist,		"max_hear_dist",		r_float, ini, section);
+
+
+	// Load attack postprocess 
+	if (ini->line_exist(section,"attack_effector")) {
+
+		LPCSTR ppi_section = ini->r_string(section, "attack_effector");
+
+		READ_SETTINGS(data.m_attack_effector.ppi.duality.h,			"duality_h",		r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.duality.v,			"duality_v",		r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.gray,				"gray",				r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.blur,				"blur",				r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.noise.intensity,	"noise_intensity",	r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.noise.grain,		"noise_grain",		r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ppi.noise.fps,			"noise_fps",		r_float, ini, ppi_section);
+
+		VERIFY(!fis_zero(data.m_attack_effector.ppi.noise.fps));
+
+		if (ini->line_exist(ppi_section,"color_base")) 
+			sscanf(ini->r_string(ppi_section,"color_base"),	"%f,%f,%f", &data.m_attack_effector.ppi.color_base.r, &data.m_attack_effector.ppi.color_base.g, &data.m_attack_effector.ppi.color_base.b);		
+		if (ini->line_exist(ppi_section,"color_base")) 
+			sscanf(ini->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &data.m_attack_effector.ppi.color_gray.r, &data.m_attack_effector.ppi.color_gray.g, &data.m_attack_effector.ppi.color_gray.b);
+		if (ini->line_exist(ppi_section,"color_base")) 
+			sscanf(ini->r_string(ppi_section,"color_add"),	"%f,%f,%f", &data.m_attack_effector.ppi.color_add.r,  &data.m_attack_effector.ppi.color_add.g,	&data.m_attack_effector.ppi.color_add.b);
+
+		READ_SETTINGS(data.m_attack_effector.time,					"time",				r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.time_attack,			"time_attack",		r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.time_release,			"time_release",		r_float, ini, ppi_section);
+
+		READ_SETTINGS(data.m_attack_effector.ce_time,				"ce_time",			r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ce_amplitude,			"ce_amplitude",		r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ce_period_number,		"ce_period_number",	r_float, ini, ppi_section);
+		READ_SETTINGS(data.m_attack_effector.ce_power,				"ce_power",			r_float, ini, ppi_section);
+	}
+}
+
+void CBaseMonster::settings_load(LPCSTR section)
+{
+	SMonsterSettings		data;
+
+	settings_read			(pSettings, section, data);
+
+	u32 crc					= crc32(&data,sizeof(SMonsterSettings));
+	m_base_settings.create	(crc,1,&data);
+}
+
+
+void CBaseMonster::settings_overrides()
+{
+	SMonsterSettings			*data;
+	data						= *m_base_settings;
+
+	if (spawn_ini() && spawn_ini()->section_exist("settings_overrides")) {
+		settings_read			(spawn_ini(),"settings_overrides", (*data));
+	}
+
+	u32 crc						= crc32(data,sizeof(SMonsterSettings));
+	m_current_settings.create	(crc,1,data);
+}
+
+

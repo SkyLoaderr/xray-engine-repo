@@ -2,8 +2,8 @@
 #include "../../shared_data.h"
 #include "ai_monster_defs.h"
 
-class _base_monster_shared : public CSharedResource {
-public:
+struct SMonsterSettings {
+	
 	// float speed factors
 
 	float					m_fDistToCorpse;
@@ -11,9 +11,9 @@ public:
 
 	// -------------------------------------------------------
 
-	TTime					m_dwIdleSndDelay;
-	TTime					m_dwEatSndDelay;
-	TTime					m_dwAttackSndDelay;
+	u32						m_dwIdleSndDelay;
+	u32						m_dwEatSndDelay;
+	u32						m_dwAttackSndDelay;
 
 	// -------------------------------------------------------
 
@@ -21,10 +21,10 @@ public:
 	u32						m_dwDayTimeEnd;
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
+	
 	// ----------------------------------------------------------- 
 
 	float					m_fSoundThreshold;
-	float					m_fHitPower;
 
 	float					m_fEatFreq;
 	float					m_fEatSlice;
@@ -52,7 +52,6 @@ public:
 	bool					map_converted;
 	
 	AA_MAP					aa_map;
-	//STEPS_MAP				steps_map;
 };
 
 

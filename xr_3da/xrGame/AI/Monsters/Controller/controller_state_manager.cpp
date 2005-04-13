@@ -136,7 +136,7 @@ void CStateManagerController::execute()
 				if (!get_state_current()->check_completion()) can_eat = true;
 			}
 			
-			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->db().m_fMinSatiety)) 
 				can_eat = true;		
 		}
 		

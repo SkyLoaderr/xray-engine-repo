@@ -39,7 +39,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	if (eType == 0xffffffff) return;
 
 	// ignore distant sounds
-	if (this->Position().distance_to(Position) > get_sd()->m_max_hear_dist)	return;
+	if (this->Position().distance_to(Position) > db().m_max_hear_dist)	return;
 	
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
 
@@ -47,7 +47,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	sound_callback	(who,eType,Position,power);
 	
 	// register in sound memory
-	if (power >= get_sd()->m_fSoundThreshold) {
+	if (power >= db().m_fSoundThreshold) {
 		SoundMemory.HearSound(who,eType,Position,power,m_current_update);
  	}
 }
@@ -153,8 +153,8 @@ void CBaseMonster::SetAttackEffector()
 {
 	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 	if (pA) {
-		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(get_sd()->m_attack_effector.ce_time,get_sd()->m_attack_effector.ce_amplitude,get_sd()->m_attack_effector.ce_period_number,get_sd()->m_attack_effector.ce_power));
-		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(get_sd()->m_attack_effector.ppi, get_sd()->m_attack_effector.time, get_sd()->m_attack_effector.time_attack, get_sd()->m_attack_effector.time_release));
+		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(db().m_attack_effector.ce_time,db().m_attack_effector.ce_amplitude,db().m_attack_effector.ce_period_number,db().m_attack_effector.ce_power));
+		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(db().m_attack_effector.ppi, db().m_attack_effector.time, db().m_attack_effector.time_attack, db().m_attack_effector.time_release));
 	}
 }
 

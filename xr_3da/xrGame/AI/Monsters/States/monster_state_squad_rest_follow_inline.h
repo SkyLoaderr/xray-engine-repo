@@ -61,7 +61,7 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
-		data.sound_delay	= object->get_sd()->m_dwIdleSndDelay;
+		data.sound_delay	= object->db().m_dwIdleSndDelay;
 		data.time_out		= Random.randI(MIN_TIME_OUT, MAX_TIME_OUT);
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
@@ -86,7 +86,7 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 		data.accel_type 		= eAT_Calm;
 		data.completion_dist	= STOP_DISTANCE;
 		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
-		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.time_to_rebuild	= u32(-1);
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));

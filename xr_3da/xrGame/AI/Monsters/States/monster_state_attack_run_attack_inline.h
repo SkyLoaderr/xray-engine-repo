@@ -45,7 +45,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 {
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 	
-	if (dist > object->get_sd()->m_run_attack_start_dist)	return false;
+	if (dist > object->db().m_run_attack_start_dist)	return false;
 	if (dist < object->MeleeChecker.get_min_distance())		return false;
 	
 	// check angle
@@ -53,7 +53,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	
 	// try to build path
 	Fvector target_position;
-	target_position.mad(object->Position(), object->Direction(), object->get_sd()->m_run_attack_path_dist);
+	target_position.mad(object->Position(), object->Direction(), object->db().m_run_attack_path_dist);
 	
 	if (!object->movement().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
 	else object->movement().enable_path();

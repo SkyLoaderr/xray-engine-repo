@@ -15,12 +15,13 @@
 #include "../../../level_debug.h"
 #include "../ai_monster_movement_space.h"
 
-
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	StateMan			= xr_new<CStateManagerBloodsucker>	(this);
 
 	invisible_vel.set	(0.1f, 0.1f);
+
+	m_alien_control.init_external							(this);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -145,6 +146,9 @@ void CAI_Bloodsucker::reinit()
 	MotionMan.AddAnimTranslation	(def1,"vampire_0");
 	MotionMan.AddAnimTranslation	(def2,"vampire_1");
 	MotionMan.AddAnimTranslation	(def3,"vampire_2");
+
+
+	m_alien_control.reinit();
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -291,6 +295,7 @@ void CAI_Bloodsucker::UpdateCL()
 	inherited::UpdateCL				();
 	CInvisibility::frame_update		();
 	CControlledActor::frame_update	();
+	
 }
 
 
@@ -324,6 +329,8 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		Level().ps_needtoplay.push_back(ps);
 	}
+
+	//UpdateCamera();
 }
 
 void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
@@ -381,6 +388,11 @@ void CAI_Bloodsucker::post_fsm_update()
 	CEnergyHolder::set_aggressive(aggressive);
 }
 
+void CAI_Bloodsucker::UpdateCamera()
+{
+	m_alien_control.update_camera();
+}
+
 
 
 
@@ -391,10 +403,14 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf(text, "Invisibility Value = [%f]", CInvisibility::get_value());
+	sprintf(text, "Invisibility Value = [%f] Invisible = [%u]", CInvisibility::get_value(), CInvisibility::is_active());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	return CBaseMonster::SDebugInfo();
 }
 #endif
+
+
+
+

@@ -38,7 +38,7 @@ void CStateMonsterEatingAbstract::execute()
 	} else nearest_bone_pos = object->m_PhysicMovementControl->PHCaptureGetNearestElemPos(corpse);
 	
 	float dist = nearest_bone_pos.distance_to(object->Position());
-	float dist_to_corpse = (object->get_sd()->m_fDistToCorpse); 
+	float dist_to_corpse = (object->db().m_fDistToCorpse); 
 	
 	float m_fDistMin = dist_to_corpse - 0.5f;
 	float m_fDistMax = dist_to_corpse + 0.5f;
@@ -53,9 +53,9 @@ void CStateMonsterEatingAbstract::execute()
 		object->set_state_sound			(MonsterSpace::eMonsterSoundEat);
 
 		// סתוסעü קאסעü
-		if (time_last_eat + u32(1000/object->get_sd()->m_fEatFreq) < object->m_current_update) {
-			object->conditions().ChangeSatiety(object->get_sd()->m_fEatSlice);
-			corpse->m_fFood -= object->get_sd()->m_fEatSliceWeight;
+		if (time_last_eat + u32(1000/object->db().m_fEatFreq) < object->m_current_update) {
+			object->conditions().ChangeSatiety(object->db().m_fEatSlice);
+			corpse->m_fFood -= object->db().m_fEatSliceWeight;
 			time_last_eat = object->m_current_update;
 		}
 
@@ -72,7 +72,7 @@ void CStateMonsterEatingAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
-	if (object->conditions().GetSatiety() > object->get_sd()->m_fMaxSatiety) return true;
+	if (object->conditions().GetSatiety() > object->db().m_fMaxSatiety) return true;
 	return false;
 }
 

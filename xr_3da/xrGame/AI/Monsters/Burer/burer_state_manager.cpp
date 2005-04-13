@@ -65,7 +65,7 @@ void CStateManagerBurer::setup_substates()
 		
 		data.action			= ACT_LOOK_AROUND;
 		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
-		data.sound_delay	= object->get_sd()->m_dwIdleSndDelay;
+		data.sound_delay	= object->db().m_dwIdleSndDelay;
 		
 		get_state_current()->fill_data_with(&data, sizeof(SStateDataAction));
 		return;

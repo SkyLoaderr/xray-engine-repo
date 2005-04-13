@@ -146,7 +146,7 @@ void CStateBloodsuckerVampireAbstract::setup_substates()
 		data.distance			= RUN_AWAY_DISTANCE;
 		data.action.action		= ACT_RUN;
 		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
-		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+		data.action.sound_delay = object->db().m_dwAttackSndDelay;
 		data.action.time_out	= 15000;
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));

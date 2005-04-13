@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "step_manager.h"
-#include "custommonster.h"
+#include "entity_alive.h"
 #include "../skeletonanimated.h"
 #include "level.h"
 #include "material_manager.h"
@@ -18,7 +18,7 @@ CStepManager::~CStepManager()
 
 DLL_Pure *CStepManager::_construct	()
 {
-	m_object			= smart_cast<CCustomMonster*>(this);
+	m_object			= smart_cast<CEntityAlive*>(this);
 	VERIFY				(m_object);
 	return				(m_object);
 }

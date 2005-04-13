@@ -50,7 +50,7 @@ void CStateMonsterRestFunAbstract::execute()
 	
 	object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
 	
-	if ((dist < object->get_sd()->m_fDistToCorpse + 0.5f) && (time_last_hit + MIN_DELAY < Device.dwTimeGlobal)) {
+	if ((dist < object->db().m_fDistToCorpse + 0.5f) && (time_last_hit + MIN_DELAY < Device.dwTimeGlobal)) {
 		CEntityAlive		*corpse = const_cast<CEntityAlive *>		(object->CorpseMan.get_corpse());
 		CPhysicsShellHolder	*target = smart_cast<CPhysicsShellHolder *>	(corpse);
 

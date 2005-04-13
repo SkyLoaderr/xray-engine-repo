@@ -11,6 +11,7 @@ class MONSTER_COMMUNITY;
 class CEntityCondition;
 class CWound;
 class CCharacterPhysicsSupport;
+class CMaterialManager;
 
 class CEntityAlive : public CEntity {
 private:
@@ -25,6 +26,7 @@ public:
 	float					m_fIntelligence;
 	//m_PhysicMovementControl
 	CPHMovementControl		*m_PhysicMovementControl;
+
 public:
 	// General
 							CEntityAlive			();
@@ -155,12 +157,18 @@ protected:
 
 private:
 	CEntityCondition			*m_entity_condition;
+	CMaterialManager			*m_material_manager;
 
 protected:
 	virtual	CEntityCondition	*create_entity_condition	();
 
 public:
 	IC		CEntityCondition	&conditions					() const;
+	IC		CMaterialManager	&material					() const {
+		VERIFY			(m_material_manager);
+		return			(*m_material_manager);
+	}
+
 
 protected:
 	u32							m_ef_creature_type;

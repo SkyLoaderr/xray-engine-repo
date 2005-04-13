@@ -67,7 +67,7 @@ void CStateZombieAttackRunAbstract::execute()
 	if (action == ACT_RUN) 
 		object->movement().set_try_min_time	(true);
 	
-	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 	object->MotionMan.accel_activate			(eAT_Aggressive);
 	object->MotionMan.accel_set_braking			(false);
 }

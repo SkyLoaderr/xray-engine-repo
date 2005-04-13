@@ -2279,9 +2279,6 @@
 							RelativePath=".\ai\Monsters\BaseMonster\base_monster_script.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\BaseMonster\base_monster_shared.h">
-						</File>
-						<File
 							RelativePath=".\ai\Monsters\BaseMonster\base_monster_startup.cpp">
 						</File>
 						<File
@@ -3022,6 +3019,16 @@
 							Filter="">
 							<File
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="Alien Feature"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_alien.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_alien.h">
 							</File>
 						</Filter>
 					</Filter>

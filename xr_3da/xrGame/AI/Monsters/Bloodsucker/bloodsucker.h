@@ -6,6 +6,7 @@
 #include "../controlled_actor.h"
 #include "../anim_triple.h"
 #include "../../../script_export_space.h"
+#include "bloodsucker_alien.h"
 
 class CAI_Bloodsucker : public CBaseMonster, 
 						public CInvisibility,
@@ -30,6 +31,8 @@ class CAI_Bloodsucker : public CBaseMonster,
 public:
 
 	CAnimTriple				anim_triple_vampire;
+
+	CBloodsuckerAlien		m_alien_control;
 	
 public:
 							CAI_Bloodsucker	();
@@ -69,6 +72,9 @@ public:
 	virtual	void			on_deactivate			();
 	virtual	void			on_change_visibility	(bool b_visibility);
 	virtual bool			use_center_to_aim		() const {return true;}
+
+	virtual void			UpdateCamera			();
+
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

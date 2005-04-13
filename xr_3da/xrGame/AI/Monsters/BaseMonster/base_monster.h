@@ -10,7 +10,6 @@
 
 #include "../../../CustomMonster.h"
 #include "../ai_monster_motion.h"
-#include "../ai_monster_shared_data.h"
 
 #include "../monster_enemy_memory.h"
 #include "../monster_corpse_memory.h"
@@ -40,20 +39,14 @@ class CMonsterMovement;
 class IStateManagerBase;
 
 
-class CBaseMonster : 
-	public CCustomMonster, 
-	public CSharedClass<_base_monster_shared, CLASS_ID>, 
-	public CStepManager
+class CBaseMonster : public CCustomMonster, public CStepManager
 {
 	typedef	CCustomMonster								inherited;
-	typedef CSharedClass<_base_monster_shared,CLASS_ID>	inherited_shared;
-	typedef CSharedClass<_base_monster_shared,CLASS_ID>	_sd_base;
 	typedef CMovementManager							MoveMan;
 	
 public:
 	// friend definitions
 	friend	class			CMotionManager;
-	friend	class			CBaseMonsterAttack;
 
 							CBaseMonster						();
 	virtual					~CBaseMonster						();
@@ -124,7 +117,6 @@ public:
 
 	virtual	void			SetAttackEffector				();
 	
-	virtual void			load_shared						(LPCSTR section);
 	virtual void			update_fsm						();
 			
 	virtual	void			post_fsm_update					();
@@ -213,6 +205,18 @@ public:
 
 // members
 public:
+	// --------------------------------------------------------------------------------------
+	// Monster Settings 
+	ref_smem<SMonsterSettings>	m_base_settings;
+	ref_smem<SMonsterSettings>	m_current_settings;
+	
+	void						settings_read			(CInifile *ini, LPCSTR section, SMonsterSettings &data);
+	void						settings_load			(LPCSTR section);
+	void						settings_overrides		();
+
+	SMonsterSettings			&db						() {return *(*m_current_settings);}
+	
+	// --------------------------------------------------------------------------------------
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	

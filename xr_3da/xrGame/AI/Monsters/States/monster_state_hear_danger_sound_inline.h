@@ -55,7 +55,7 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.distance			= 40.f;
 		data.action.action		= ACT_RUN;
 		data.action.sound_type	= MonsterSpace::eMonsterSoundPanic;
-		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+		data.action.sound_delay = object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
@@ -68,7 +68,7 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.spec_params	= ASP_STAND_SCARED;
 		data.time_out		= 2000;
 		data.sound_type	= MonsterSpace::eMonsterSoundPanic;
-		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+		data.sound_delay = object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 		
@@ -80,7 +80,7 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
 		data.sound_type	= MonsterSpace::eMonsterSoundPanic;
-		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+		data.sound_delay = object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 

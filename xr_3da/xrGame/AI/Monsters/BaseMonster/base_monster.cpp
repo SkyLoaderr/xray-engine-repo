@@ -215,14 +215,14 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 		switch (type) {
 		case MonsterSpace::eMonsterSoundIdle : 
 		
-			delay = get_sd()->m_dwIdleSndDelay;
+			delay = db().m_dwIdleSndDelay;
 			break;
 		case MonsterSpace::eMonsterSoundEat:
-			delay = get_sd()->m_dwEatSndDelay;
+			delay = db().m_dwEatSndDelay;
 			break;
 		case MonsterSpace::eMonsterSoundAttack:
 		case MonsterSpace::eMonsterSoundPanic:
-			delay = get_sd()->m_dwAttackSndDelay;
+			delay = db().m_dwAttackSndDelay;
 			break;
 		}
 
@@ -339,4 +339,3 @@ DLL_Pure *CBaseMonster::_construct	()
 	CStepManager::_construct	();
 	return						(this);
 }
-
