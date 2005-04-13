@@ -163,6 +163,7 @@ void					CRender::add_Visual				(IRender_Visual* V ){ add_leafs_Dynamic(V);					
 void					CRender::add_Geometry			(IRender_Visual* V ){ add_Static(V,View->getMask());						}
 void					CRender::add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)
 {
+	if (T->suppress_wm)	return;
 	VERIFY2							(_valid(P) && _valid(s) && T && verts && (s>EPS_L), "Invalid static wallmark params");
 	Wallmarks->AddStaticWallmark	(T,verts,P,&*S,s);
 }

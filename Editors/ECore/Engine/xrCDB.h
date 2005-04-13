@@ -37,8 +37,11 @@ namespace CDB
 		union	{
 			u32			dummy;			// 4b
 			struct {
-				u16		material;		// 2b
-				u16		sector;			// 2b
+				u32		suppress_shadows:1;	// 4b
+				u32		suppress_wm:1;		// 
+				u32		reserved:2;			// 
+				u32		material:12;		// 
+				u32		sector:16;			// 
 			};
 		};
 	public:

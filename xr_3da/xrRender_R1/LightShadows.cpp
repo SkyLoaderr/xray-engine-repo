@@ -421,6 +421,7 @@ void CLightShadows::render	()
 				VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
 				// 
 				CDB::TRI&	t		= TRIS[p->id];
+				if (t.suppress_shadows) continue;
 				sPoly		A,B;
 				A.push_back			(VERTS[t.verts[0]]);
 				A.push_back			(VERTS[t.verts[1]]);

@@ -108,7 +108,9 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 
 				ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];
 
-				Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHWallMarksCall>( *((Fvector*)c->pos),T,pWallmarkShader));
+				if (!T->suppress_wm){
+					Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHWallMarksCall>( *((Fvector*)c->pos),T,pWallmarkShader));
+				}
 			}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(square_cam_dist<SQUARE_SOUND_EFFECT_DIST)
