@@ -446,6 +446,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			if (m_current_legs_blend)
 				m_current_legs_blend->timeCurrent = m_current_legs_blend->timeTotal*pos;
 			m_current_legs				= M_legs;
+
+			CStepManager::on_animation_start(M_legs, m_current_legs_blend);
 		}
 	}else{
 		if (m_current_legs||m_current_torso){

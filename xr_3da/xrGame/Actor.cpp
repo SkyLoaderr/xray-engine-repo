@@ -192,7 +192,6 @@ CActor::CActor() : CEntityAlive()
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
 	m_entity_condition		= NULL;
-	m_material_manager		= 0;
 	m_pLastHitter			= NULL;
 	m_pLastHittingWeapon	= NULL;
 }
@@ -206,7 +205,6 @@ CActor::~CActor()
 	xr_delete				(encyclopedia_registry);
 	xr_delete				(game_task_registry);
 	xr_delete				(game_news_registry);
-	xr_delete				(m_material_manager);
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
 #endif
@@ -249,6 +247,7 @@ void CActor::reload	(LPCSTR section)
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
 	material().reload		(section);
+	CStepManager::reload	(section);
 }
 
 void CActor::Load	(LPCSTR section )
@@ -807,32 +806,6 @@ void CActor::UpdateCL	()
 		//			m_PhysicMovementControl->InterpolatePosition(Position());
 		//обновить информацию о предметах лежащих рядом с актером
 		PickupModeUpdate	();	
-
-		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
-		float				tm = isActorAccelerated(mstate_real, IsZoomAimingMode())?(PI/(k*10.f)):(PI/(k*7.f));
-		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-		float				s_vol = s_k * (isActorAccelerated(mstate_real, IsZoomAimingMode()) ? 1.f : ACCELERATED_SOUND_FACTOR);
-		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),material().last_material_idx());
-		
-		if(!m_holder)
-		{
-			material().set_run_mode(isActorAccelerated(mstate_real, IsZoomAimingMode()));
-			material().update		(
-				Device.fTimeDelta,
-				s_vol,
-				tm,
-				!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall))))
-			);
-		}
-
-		// landing sounds
-		//if (mtl_pair && (mstate_real & (mcLanding | mcLanding2))){
-		//	if (!mtl_pair->CollideSounds.empty()){
-		//		Fvector	s_pos		=	Position	();
-		//		s_pos.y				+=	.15f;
-		//		::Sound->play_at_pos(mtl_pair->CollideSounds[0],this,s_pos);
-		//	}
-		//}
 	}
 	PickupModeUpdate_COD();
 	//-------------------------------------------------------------------
@@ -888,6 +861,8 @@ void CActor::UpdateCL	()
 	UpdateDefferedMessages();
 //*/
 	//-------------------------------------------------------------------
+
+	CStepManager::update();
 }
 
 void CActor::shedule_Update	(u32 DT)
@@ -1514,9 +1489,10 @@ CEntityCondition *CActor::create_entity_condition	()
 
 DLL_Pure *CActor::_construct			()
 {
-	m_material_manager				= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
 	CEntityAlive::_construct		();
 	CInventoryOwner::_construct		();
+	CStepManager::_construct		();
+
 	return							(this);
 }
 
