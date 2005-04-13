@@ -967,8 +967,9 @@ active = nil
 ;*****************************************************************
 ; ARENA MONSTR
 ;*****************************************************************
-[logic@bar_arena_none]
+[logic@bar_arena_monstr_pseudodog_none]
 active = nil
+on_death = mob_death@bar_arena_monstr_pseudodog
 
 [logic@bar_arena_monstr_pseudodog]
 active = mob_walker@bar_arena_monstr_pseudodog
@@ -984,6 +985,10 @@ on_signal = arrived | nil %+bar_arena_monstr_ready%
 on_info = %+bar_arena_pseudodog_defeated +bar_arena_monstr_dead%
 
 
+[logic@bar_arena_monstr_snork_none]
+active = nil
+on_death = mob_death@bar_arena_monstr_snork
+
 [logic@bar_arena_monstr_snork]
 active = mob_walker@bar_arena_monstr_snork
 on_death = mob_death@bar_arena_monstr_snork
@@ -997,6 +1002,10 @@ on_signal = arrived | nil %+bar_arena_monstr_ready%
 [mob_death@bar_arena_monstr_snork]
 on_info = %+bar_arena_snork_defeated +bar_arena_monstr_dead%
 
+
+[logic@bar_arena_monstr_bloodsucker_none]
+active = nil
+on_death = mob_death@bar_arena_monstr_bloodsucker
 
 [logic@bar_arena_monstr_bloodsucker]
 active = mob_walker@bar_arena_monstr_bloodsucker
@@ -1012,6 +1021,10 @@ on_signal = arrived | nil %+bar_arena_monstr_ready%
 on_info = %+bar_arena_bloodsucker_defeated +bar_arena_monstr_dead%
 
 
+[logic@bar_arena_monstr_burer_none]
+active = nil
+on_death = mob_death@bar_arena_monstr_burer
+
 [logic@bar_arena_monstr_burer]
 active = mob_walker@bar_arena_monstr_burer
 on_death = mob_death@bar_arena_monstr_burer
@@ -1024,6 +1037,11 @@ on_signal = arrived | nil %+bar_arena_monstr_ready%
 
 [mob_death@bar_arena_monstr_burer]
 on_info = %+bar_arena_burer_defeated +bar_arena_monstr_dead%
+
+
+[logic@bar_arena_monstr_savage_none]
+active = nil
+on_death = death@bar_arena_monstr_savage
 
 [logic@bar_arena_monstr_savage]
 active = camper@bar_arena_monstr_savage

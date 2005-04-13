@@ -788,7 +788,7 @@ function load_job(sj, gname, type, squad, groups)
 
 	end
 
-	--- MONSTERS GULAGS
+	-- ARENA MONSTERS
 	if type == "bar_arena_monstr" then
 		t = { section = "logic@bar_arena_monstr_pseudodog", 
 			idle = 0,
@@ -799,7 +799,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@bar_arena_none", 
+		t = { section = "logic@bar_arena_monstr_pseudodog_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
@@ -818,7 +818,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@bar_arena_none", 
+		t = { section = "logic@bar_arena_monstr_snork_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
@@ -837,7 +837,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@bar_arena_none", 
+		t = { section = "logic@bar_arena_monstr_bloodsucker_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
@@ -856,7 +856,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@bar_arena_none", 
+		t = { section = "logic@bar_arena_monstr_burer_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
@@ -876,7 +876,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@bar_arena_none", 
+		t = { section = "logic@bar_arena_monstr_savage_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
