@@ -30,18 +30,22 @@ namespace Opcode {
 namespace CDB
 {
 	// Triangle
-	class XRCDB_API TRI					//*** 16 bytes total (was 32 :)
+	class XRCDB_API TRI						//*** 16 bytes total (was 32 :)
 	{
 	public:
-		u32				verts	[3];	// 3*4 = 12b
+		u32				verts	[3];		// 3*4 = 12b
 		union	{
-			u32			dummy;			// 4b
+			u32			dummy;				// 4b
 			struct {
-				u32		material:12;		// 
+				u32		game_mtl:12;		// 
 				u32		suppress_shadows:1;	// 
 				u32		suppress_wm:1;		// 
-				u32		reserved:2;			// 
-				u32		sector:16;			// 
+				u32		game_reserved:2;	// 
+				u32		game_sector:16;		// 
+			};
+			struct {
+				u16		dummy_mtl;			// 
+				u16		dummy_sector;		// 
 			};
 		};
 	public:
