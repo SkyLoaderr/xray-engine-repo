@@ -173,6 +173,13 @@
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
     <info_portion id="bar_resque_research_corruped"></info_portion>
+    <info_portion id="bar_ecolog_research_normal">
+		<article>bar_ecolog_research_normal</article>
+    </info_portion>
+    <info_portion id="bar_ecolog_research_corrupted">
+		<article>bar_ecolog_research_corrupted</article>
+    </info_portion>
+    
     
     <!-- BAR BARMEN JOB -->
         <!-- FIND DOCUMENTS -->
