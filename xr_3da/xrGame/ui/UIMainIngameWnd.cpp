@@ -163,6 +163,10 @@ void CUIMainIngameWnd::Init()
 	//
 	AttachChild(&UIPdaOnline);
 	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
+	if (GameID() != GAME_SINGLE)
+	{
+		UIPdaOnline.Show(false);
+	}
 	
 	// У нас отдельные конфигурации листа для SP, и MP modes
 //	CUIXml uiXml2;
