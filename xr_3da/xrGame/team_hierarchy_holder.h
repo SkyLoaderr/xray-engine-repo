@@ -15,7 +15,7 @@ class CSeniorityHierarchyHolder;
 
 class CTeamHierarchyHolder {
 private:
-	enum {max_squad_count = 32};
+	enum {max_squad_count = 64};
 
 private:
 	typedef svector<CSquadHierarchyHolder*,max_squad_count> SQUAD_REGISTRY;
