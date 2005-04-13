@@ -248,7 +248,7 @@ public:
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
-	virtual bool			IsZoomed			()	const	{return m_bZoomMode;}
+				bool			IsZoomed			()	const	{return m_bZoomMode;};
 	CUIStaticItem*			ZoomTexture			();
 	virtual bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
 

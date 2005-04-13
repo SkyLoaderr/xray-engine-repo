@@ -1171,8 +1171,8 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(!pActor) return;
 
-	if((pActor->IsZoomAimingMode() && m_fZoomRotationFactor<=1.f)
-		|| (!pActor->IsZoomAimingMode() && m_fZoomRotationFactor>0.f))
+	if(		(pActor->IsZoomAimingMode() && m_fZoomRotationFactor<=1.f) ||
+			(!pActor->IsZoomAimingMode() && m_fZoomRotationFactor>0.f))
 	{
 		Fmatrix hud_rotation;
 		hud_rotation.identity();
@@ -1250,3 +1250,4 @@ void CWeapon::modify_holder_params		(float &range, float &fov) const
 	range	*= m_addon_holder_range_modifier;
 	fov		*= m_addon_holder_fov_modifier;
 }
+
