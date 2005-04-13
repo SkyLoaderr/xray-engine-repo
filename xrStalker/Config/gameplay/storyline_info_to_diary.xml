@@ -32,11 +32,11 @@
 
 <!-- Бар-Росток -->
     <article id="bar_ecolog_research_normal" name="Kruglov research" group="Diary">
-        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_normal</text>
     </article>
     <article id="bar_ecolog_research_corrupted" name="Kruglov research" group="Diary">
-        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_corrupted</text>
     </article>
 
