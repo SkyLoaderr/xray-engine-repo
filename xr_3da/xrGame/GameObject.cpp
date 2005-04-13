@@ -358,11 +358,16 @@ void CGameObject::spawn_supplies()
 
 	LPCSTR					N,V;
 	float					p;
+	bool bScope				=	false;
+	bool bSilencer			=	false;
+	bool bLauncher			=	false;
+
 	for (u32 k = 0, j; spawn_ini()->r_line("spawn",k,&N,&V); k++) {
 		VERIFY				(xr_strlen(N));
 		j					= 1;
 		p					= 1.f;
 		
+		float f_cond						= 1.0f;
 		if (V && xr_strlen(V)) {
 			int				n = _GetItemCount(V);
 			string16		temp;
@@ -380,15 +385,14 @@ void CGameObject::spawn_supplies()
 
 		
 
-			float f_cond						= 1.0f;
 			if(NULL!=strstr(V,"cond=")){
 				string16						c_cond;
 				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
 				f_cond							= (float)atof(c_cond);
 			}
-			bool bScope		=	(NULL!=strstr(V,"scope"));
-			bool bSilencer	=	(NULL!=strstr(V,"silencer"));
-			bool bLauncher	=	(NULL!=strstr(V,"launcher"));
+			bScope		=	(NULL!=strstr(V,"scope"));
+			bSilencer	=	(NULL!=strstr(V,"silencer"));
+			bLauncher	=	(NULL!=strstr(V,"launcher"));
 
 		}
 		for (u32 i=0; i<j; ++i)

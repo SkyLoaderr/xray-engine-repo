@@ -38,7 +38,11 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 		for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
 			VERIFY				(xr_strlen(N));
 	
-//			BOOL A[3]			= { FALSE, FALSE, FALSE };
+			float f_cond						= 1.0f;
+			bool bScope							= false;
+			bool bSilencer						= false;
+			bool bLauncher						= false;
+
 			
 			j					= 1;
 			p					= 1.f;
@@ -48,9 +52,9 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 				j					= atoi(_GetItem(V, 0, buf));
 				if (!j)		j		= 1;
 
-				bool bScope		=	(NULL!=strstr(V,"scope"));
-				bool bSilencer	=	(NULL!=strstr(V,"silencer"));
-				bool bLauncher	=	(NULL!=strstr(V,"launcher"));
+				bScope		=	(NULL!=strstr(V,"scope"));
+				bSilencer	=	(NULL!=strstr(V,"silencer"));
+				bLauncher	=	(NULL!=strstr(V,"launcher"));
 			//probability
 			if(NULL!=strstr(V,"prob=")){
 				string16						c_prob;
@@ -61,7 +65,6 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 			if (fis_zero(p))
 				p								= 1.0f;
 
-			float f_cond						= 1.0f;
 			if(NULL!=strstr(V,"cond=")){
 				string16						c_cond;
 				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
