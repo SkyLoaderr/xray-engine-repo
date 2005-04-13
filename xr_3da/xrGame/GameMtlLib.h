@@ -78,6 +78,8 @@ public:
         flPassable		= (1ul<<7ul),
         flDynamic		= (1ul<<8ul),
         flLiquid 		= (1ul<<9ul),
+		flSuppressShadows	= (1ul<<10ul),
+		flSuppressWallmark	= (1ul<<11ul),
 
         flInjurious		= (1ul<<28ul),// flInjurious = fInjuriousSpeed > 0.f
 		flShootable 	= (1ul<<29ul),
