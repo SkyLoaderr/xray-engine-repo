@@ -25,8 +25,8 @@ CHelicopter::CHelicopter()
 	m_lanim			= NULL;
 
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
-	if (self)		self->spatial.type &=~STYPE_VISIBLEFORAI;;	
-
+//	if (self)		self->spatial.type  &= ~STYPE_VISIBLEFORAI;
+	if (self)		self->spatial.type  |=  STYPE_VISIBLEFORAI;
 
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);

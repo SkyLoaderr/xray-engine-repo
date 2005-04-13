@@ -487,6 +487,8 @@ add_to_type_list(CSE_ALifeHumanAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract,CSE_PHSkeleton)
 	BOOL							m_demo_mode;
+	shared_str						m_start_dialog;
+
 									CSE_ALifeHumanStalker	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanStalker	();
 	virtual	void					load					(NET_Packet &tNetPacket);

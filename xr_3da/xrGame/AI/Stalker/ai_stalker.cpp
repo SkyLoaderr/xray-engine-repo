@@ -371,6 +371,8 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w								(&task_state,sizeof(task_state));
 	P.w_u32							(0);
 	P.w_u32							(0);
+
+	P.w_stringZ						(m_sStartDialog);
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
@@ -416,6 +418,8 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r								(&task_state,sizeof(task_state));
 	P.r_u32							();
 	P.r_u32							();
+
+	P.r_stringZ						(m_sStartDialog);
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);

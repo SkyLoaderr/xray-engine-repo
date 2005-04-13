@@ -149,12 +149,12 @@ void CScriptGameObject::Kill					(CScriptGameObject* who)
 
 bool CScriptGameObject::Alive					() const
 {
-	CEntityAlive		*l_tpEntityAlive = smart_cast<CEntityAlive*>(&object());
-	if (!l_tpEntityAlive) {
+	CEntity				*entity	= smart_cast<CEntity*>(&object());
+	if (!entity) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member Alive!");
 		return			(false);
 	}
-	return				(!!l_tpEntityAlive->g_Alive());
+	return				(!!entity->g_Alive());
 }
 
 ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
