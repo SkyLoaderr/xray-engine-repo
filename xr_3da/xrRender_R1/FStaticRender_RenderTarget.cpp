@@ -138,15 +138,15 @@ BOOL CRenderTarget::NeedPostProcess()
 	{
 		int		_r	= color_get_R(param_color_base)	; _r=_abs(_r-int(0x7f));
 		int		_g	= color_get_G(param_color_base)	; _g=_abs(_g-int(0x7f));
-		int		_b	= color_get_G(param_color_base)	; _b=_abs(_b-int(0x7f));
+		int		_b	= color_get_B(param_color_base)	; _b=_abs(_b-int(0x7f));
 		if (_r>2 || _g>2 || _b>2)	_cbase	= true	;
 	}
 	bool	_cadd	= false;
 	{
-		int		_r	= color_get_R(param_color_base)	;
-		int		_g	= color_get_G(param_color_base)	;
-		int		_b	= color_get_G(param_color_base)	;
-		if (_r>2 || _g>2 || _b>2)	_add	= true	;
+		int		_r	= color_get_R(param_color_add)	;
+		int		_g	= color_get_G(param_color_add)	;
+		int		_b	= color_get_B(param_color_add)	;
+		if (_r>2 || _g>2 || _b>2)	_cadd	= true	;
 	}
 	return _blur || _gray || _noise || _dual || _cbase || _cadd; 
 }
@@ -157,9 +157,11 @@ BOOL CRenderTarget::Perform		()
 }
 
 #include <dinput.h>
-#define SHOW(a)	Log(#a,a);
+#define SHOW(a)		Log(#a,a);
+#define SHOWX(a)	Msg("%s %x",#a,a);
 void CRenderTarget::Begin		()
 {
+	/*
 	if (g_pGameLevel->IR_GetKeyState(DIK_LSHIFT))	
 	{
 		Msg					("[%5d]------------------------",Device.dwFrame);
@@ -171,10 +173,11 @@ void CRenderTarget::Begin		()
 		SHOW				(param_noise_scale)
 		SHOW				(param_noise_fps)
 
-		SHOW				(param_color_base)
-		SHOW				(param_color_gray)
-		SHOW				(param_color_add)
+		SHOWX				(param_color_base)
+		SHOWX				(param_color_gray)
+		SHOWX				(param_color_add)
 	}
+	*/
 
 	if (!Perform())	
 	{
