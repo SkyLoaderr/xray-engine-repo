@@ -206,9 +206,9 @@
     </info_portion>
 	<info_portion id="bar_deactivate_radar_done"></info_portion>
 
-		<!-- BLOODSUCKER SPAWNER -->
+		<!-- BLOODSUCKER & TUSHKANO SPAWNER -->
 	<info_portion id="bar_spawn_bloodsucker1"></info_portion>
-	
+	<info_portion id="bar_spawn_tushkano"></info_portion>
 	
 	<!-- ARENA -->
 	<info_portion id="bar_arena_door_1_open"></info_portion>
