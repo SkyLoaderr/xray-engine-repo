@@ -37,15 +37,10 @@ namespace CDB
 		union	{
 			u32			dummy;				// 4b
 			struct {
-				u32		game_mtl:12;		// 
+				u32		material:14;		// 
 				u32		suppress_shadows:1;	// 
 				u32		suppress_wm:1;		// 
-				u32		game_reserved:2;	// 
-				u32		game_sector:16;		// 
-			};
-			struct {
-				u16		build_mtl;			// 
-				u16		build_sector;		// 
+				u32		sector:16;			// 
 			};
 		};
 	public:
