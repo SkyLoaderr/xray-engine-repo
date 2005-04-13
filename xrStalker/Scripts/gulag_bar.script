@@ -844,7 +844,14 @@ function load_states(gname, type)
 	
 	if type == "bar_arena" then
 		return function (gulag)
-				return 2 -- night
+			if db.actor:has_info("bar_arena_start") then
+				return 1
+			end
+			if level.get_time_hours() >= 6 and level.get_time_hours() <= 22 then
+				return 0  -- день
+			else
+				return 2  -- ночь
+			end
 		end
 	end
 	
