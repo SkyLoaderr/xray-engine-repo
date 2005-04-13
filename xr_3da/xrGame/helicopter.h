@@ -25,6 +25,8 @@ struct SHeliEnemy{
 	u32								destEnemyID;
 	void reinit						();
 	void Update						();
+	void save						(NET_Packet &output_packet);
+	void load						(IReader &input_packet);
 };
 
 enum EHeliBodyState{eBodyByPath,eBodyToPoint};
@@ -45,10 +47,15 @@ struct SHeliBodyState{
 	Fvector							looking_point;
 	void		reinit				();
 	void		LookAtPoint			(Fvector point, bool do_it);
+
+	void save						(NET_Packet &output_packet);
+	void load						(IReader &input_packet);
+
 };
 
 enum EHeilMovementState{eMovNone,eMovToPoint,eMovPatrolPath,eMovLanding,eMovTakeOff};
 struct SHeliMovementState{
+	~SHeliMovementState				();
 	CHelicopter*					parent;
 	EHeilMovementState				type;
 	//specified path
@@ -92,6 +99,9 @@ struct SHeliMovementState{
 	void	getPathAltitude				(Fvector& point, float base_altitude);
 	void	SetDestPosition				(Fvector* pos);
 	void	goPatrolByPatrolPath		(LPCSTR path_name,int start_idx);
+
+	void save						(NET_Packet &output_packet);
+	void load						(IReader &input_packet);
 };
 
 class CHelicopter : 	public CEntity,
@@ -228,6 +238,8 @@ public:
 	virtual void					net_Destroy			();
 	virtual void					net_Export			(NET_Packet &P){};
 	virtual void					net_Import			(NET_Packet &P){};
+	virtual void					save				(NET_Packet &output_packet);
+	virtual void					load				(IReader &input_packet);
 
 	virtual void					SpawnInitPhysics	(CSE_Abstract	*D);
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()						{return PhysicsShellHolder();}

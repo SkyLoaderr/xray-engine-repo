@@ -7,6 +7,16 @@
 #include "game_object_space.h"
 #include "script_callback_ex.h"
 
+
+SHeliMovementState::~SHeliMovementState()
+{
+	if(need_to_del_path&&currPatrolPath){
+		CPatrolPath* tmp = const_cast<CPatrolPath*>(currPatrolPath);
+		xr_delete( tmp );
+	}
+
+}
+
 void SHeliMovementState::Update()
 {
 	switch(type){
@@ -148,6 +158,85 @@ void SHeliMovementState::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 //	getPathAltitude(desiredPoint, wrk_altitude);
 	
 	type = eMovPatrolPath;
+}
+
+void SHeliMovementState::save(NET_Packet &output_packet)
+{
+	output_packet.w_s16		((s16)type);
+	output_packet.w_u32		(patrol_begin_idx);
+	output_packet.w_stringZ	(patrol_path_name);
+
+	output_packet.w_float	(maxLinearSpeed);
+	output_packet.w_float	(LinearAcc_fw);
+	output_packet.w_float	(LinearAcc_bk);
+
+	output_packet.w_float	(angularSpeedPitch);
+	output_packet.w_float	(angularSpeedHeading);
+	output_packet.w_float	(speedInDestPoint);
+	
+	output_packet.w_vec3	(desiredPoint);
+
+	output_packet.w_float	(curLinearSpeed);
+	output_packet.w_float	(curLinearAcc);
+
+	output_packet.w_vec3	(currP);
+
+
+	output_packet.w_float	(currPathH);
+	output_packet.w_float	(currPathP);
+	
+	output_packet.w_vec3	(round_center);
+
+	output_packet.w_float	(round_radius);
+	
+	output_packet.w_u8		(round_reverse ? 1 : 0);
+
+	output_packet.w_float	(onPointRangeDist);
+
+	if(type==eMovPatrolPath){
+		output_packet.w_s32( currPatrolVertex->vertex_id() );
+	}
+}
+
+void SHeliMovementState::load(IReader &input_packet)
+{
+	type			=		(EHeilMovementState)input_packet.r_s16();
+	patrol_begin_idx=		input_packet.r_u32();
+	input_packet.r_stringZ	(patrol_path_name);
+
+	maxLinearSpeed	=		input_packet.r_float();
+	LinearAcc_fw	=		input_packet.r_float();
+	LinearAcc_bk	=		input_packet.r_float();
+
+	angularSpeedPitch	=	input_packet.r_float();
+	angularSpeedHeading =	input_packet.r_float();
+	speedInDestPoint	=	input_packet.r_float();
+
+	input_packet.r_fvector3(desiredPoint);
+
+	curLinearSpeed		=	input_packet.r_float();
+	curLinearAcc		=	input_packet.r_float();
+
+	input_packet.r_fvector3		(currP);
+
+
+	currPathH			=	input_packet.r_float();
+	currPathP			=	input_packet.r_float();
+
+	input_packet.r_fvector3		(round_center);
+
+	round_radius		=	input_packet.r_float();
+
+	round_reverse		=	!!input_packet.r_u8();
+
+	onPointRangeDist	=	input_packet.r_float();
+
+	if(type==eMovPatrolPath){
+		currPatrolPath = Level().patrol_paths().path(patrol_path_name);
+		int idx = input_packet.r_s32();
+		currPatrolVertex =  currPatrolPath->vertex(idx);
+	}
+
 }
 
 

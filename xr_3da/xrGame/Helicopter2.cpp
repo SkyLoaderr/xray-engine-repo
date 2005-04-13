@@ -321,6 +321,21 @@ void SHeliEnemy::Update()
 	};
 }
 
+void SHeliEnemy::save(NET_Packet &output_packet)
+{
+	output_packet.w_s16		((s16)type);
+	output_packet.w_vec3	(destEnemyPos);
+	output_packet.w_u32		(destEnemyID);
+}
+
+void SHeliEnemy::load(IReader &input_packet)
+{
+	type			=	(EHeliHuntState)input_packet.r_s16();
+	input_packet.r_fvector3	(destEnemyPos);
+	destEnemyID		=	input_packet.r_u32();
+}
+
+
 void SHeliBodyState::reinit()
 {
 	type = eBodyByPath;
@@ -335,6 +350,26 @@ void SHeliBodyState::LookAtPoint			(Fvector point, bool do_it)
 	looking_point			= point;
 	type = (do_it)?eBodyToPoint:eBodyByPath;
 }
+
+void SHeliBodyState::save(NET_Packet &output_packet)
+{
+	output_packet.w_s16((s16)type);
+	output_packet.w_u8(b_looking_at_point ? 1 : 0);    
+	output_packet.w_float(currBodyH);
+	output_packet.w_float(currBodyP);
+	output_packet.w_float(currBodyB);
+}
+
+void SHeliBodyState::load(IReader &input_packet)
+{
+	type				= (EHeliBodyState)input_packet.r_s16();
+	b_looking_at_point	= !!input_packet.r_u8();
+	currBodyH			= input_packet.r_float();
+	currBodyP			= input_packet.r_float();
+	currBodyB			= input_packet.r_float();
+}
+
+
 
 float t_xx (float V0, float V1, float a0, float a1, float d, float fSign)
 {

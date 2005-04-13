@@ -39,10 +39,6 @@ CHelicopter::~CHelicopter()
 	HUD_SOUND::DestroySound		(m_sndShot);
 	HUD_SOUND::DestroySound		(m_sndShotRocket);
 
-	if(m_movement.need_to_del_path&&m_movement.currPatrolPath){
-		CPatrolPath* tmp = const_cast<CPatrolPath*>(m_movement.currPatrolPath);
-		xr_delete( tmp );
-	}
 
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
@@ -295,6 +291,7 @@ void CHelicopter::net_Destroy()
 {
 	inherited::net_Destroy				();
 	CShootingObject::Light_Destroy		();
+	CShootingObject::StopFlameParticles	();
 	CPHSkeleton::RespawnInit			();
 	m_engineSound.stop					();
 	if(m_pParticle)m_pParticle->PSI_destroy			();
@@ -472,4 +469,18 @@ void CHelicopter::goByRoundPath(Fvector center, float radius, bool clockwise)
 void CHelicopter::LookAtPoint(Fvector point, bool do_it)
 {
 	m_body.LookAtPoint(point,do_it);
+}
+
+void CHelicopter::save(NET_Packet &output_packet)
+{
+	m_movement.save	(output_packet);
+	m_body.save		(output_packet);
+	m_enemy.save	(output_packet);
+}
+
+void CHelicopter::load(IReader &input_packet)
+{
+	m_movement.load	(input_packet);
+	m_body.load		(input_packet);
+	m_enemy.load	(input_packet);
 }
