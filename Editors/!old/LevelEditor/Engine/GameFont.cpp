@@ -30,6 +30,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture)
 {
 	uFlags						&=~fsValid;
+	vTS.set						(1.f,1.f); // обязательно !!!
 
 	eCurrentAlignment			= alLeft;
 	vInterval.set				(1.f,1.f);
@@ -102,8 +103,7 @@ void CGameFont::OnRender()
 	VERIFY(g_bRendering);
 	if (pShader)		RCache.set_Shader	(pShader);
 
-	if (!(uFlags&fsValid))
-	{
+	if (!(uFlags&fsValid)){
 		CTexture* T		= RCache.get_ActiveTexture(0);
 		vTS.set			((int)T->get_Width(),(int)T->get_Height());
 		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
@@ -117,18 +117,13 @@ void CGameFont::OnRender()
 		uFlags			|= fsValid;
 	}
 
-//	float				w_2		= float	(Device.dwWidth)	/ 2;
-//	float				h_2		= float	(Device.dwHeight)	/ 2;
-
-	for (u32 i=0; i<strings.size(); )
-	{
+	for (u32 i=0; i<strings.size(); ){
 		// calculate first-fit
 		int		count	=	1;
 		int		length	=	xr_strlen(strings[i].string);
 		while	((i+count)<strings.size()) {
 			int	L	=	xr_strlen(strings[i+count].string);
-			if ((L+length)<MAX_CHARS)
-			{
+			if ((L+length)<MAX_CHARS){
 				count	++;
 				length	+=	L;
 			}
@@ -191,8 +186,7 @@ void CGameFont::OnRender()
 		// Unlock and draw
 		u32 vCount = (u32)(v-start);
 		RCache.Vertex.Unlock		(vCount,pGeom.stride());
-		if (vCount)
-		{
+		if (vCount){
 			RCache.set_Geometry		(pGeom);
 			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		}
@@ -297,20 +291,18 @@ void CGameFont::OutSkip(float val)
 
 float CGameFont::SizeOf(char s,float size)
 {
-	return		(uFlags&fsValid)?GetCharTC(s).z*size/fHeight*vInterval.x*vTS.x:0.f;
+	return		GetCharTC(s).z*size/fHeight*vInterval.x*vTS.x;
 }
 
 float CGameFont::SizeOf(LPCSTR s,float size)
 {
 	if (s&&s[0]){
-		if (uFlags&fsValid){
-			int		len			= xr_strlen(s);
-			float	X			= 0;
-			if (len) 
-				for (int j=0; j<len; j++) 
-					X			+= GetCharTC(s[j]).z;
-			return				X*size/fHeight*vInterval.x*vTS.x;
-		}
+		int		len			= xr_strlen(s);
+		float	X			= 0;
+		if (len) 
+			for (int j=0; j<len; j++) 
+				X			+= GetCharTC(s[j]).z;
+		return				X*size/fHeight*vInterval.x*vTS.x;
 	}
 	return 0;
 }
