@@ -237,3 +237,6 @@ function bar_arena_actor_outside(actor,npc)
 end
 
 
+function is_courier_time (actor, npc)
+    return level.get_time_hours() >= 22 and level.get_time_hours() < 23
+end    
