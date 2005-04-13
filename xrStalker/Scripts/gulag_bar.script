@@ -788,6 +788,105 @@ function load_job(sj, gname, type, squad, groups)
 
 	end
 
+	--- MONSTERS GULAGS
+	if type == "bar_arena_monstr" then
+		t = { section = "logic@bar_arena_monstr_pseudodog", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_start",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.pseudodog_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_none", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_fight",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.pseudodog_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@bar_arena_monstr_snork", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_start",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_none", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_fight",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@bar_arena_monstr_bloodsucker", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_start",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.bloodsucker_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_none", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_fight",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.bloodsucker_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@bar_arena_monstr_burer", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_start",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.burer_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_none", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_fight",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.burer_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@bar_arena_monstr_savage", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_start",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.stalker or
+				         	       get_clsid(obj) == clsid.script_stalker
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_none", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_arena_sr_fight",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.stalker or
+				         	       get_clsid(obj) == clsid.script_stalker
+			            end
+		}
+		table.insert(sj, t)
+	end
 
 end
 
@@ -914,6 +1013,19 @@ function load_states(gname, type)
 			end
 		end
 	end
+	
+	if type == "bar_arena_monstr" then
+		return function(gulag)
+			if db.actor ~= 0 and
+			   db.actor:has_info("bar_arena_monstr_ready")
+			then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+	
 
 end
 
@@ -942,6 +1054,10 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "bar_arena" then
 		return true
 	end
+
+	if gulag_type == "bar_arena_monstr" then
+		return true
+	end
 	
 	return false
 end
@@ -950,6 +1066,10 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "bar_roaming_dogs" then
 		return npc_community == "dog" or
 		       npc_community == "pseudodog"
+	end
+	
+	if gulag_type == "bar_arena_monstr" then
+		return true
 	end
 	
 	return false
