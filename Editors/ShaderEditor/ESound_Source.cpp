@@ -24,6 +24,7 @@
 #define SOUND_CHUNK_SOURCE_PARAMS		0x1004
 #define SOUND_CHUNK_SOURCE_FLAGS		0x1005
 #define SOUND_CHUNK_SOURCE_PARAMS2		0x1006
+#define SOUND_CHUNK_SOURCE_PARAMS3		0x1007
 //----------------------------------------------------
 
 ESoundSource::ESoundSource(LPVOID data, LPCSTR name)
@@ -112,7 +113,7 @@ bool ESoundSource::Load(IReader& F)
 
     if(F.r_chunk(SOUND_CHUNK_VERSION,&version)){
         if(version!=SOUND_SOURCE_VERSION){
-            ELog.DlgMsg( mtError, "ESoundSource: Unsupported version.");
+            ELog.Msg( mtError, "ESoundSource: Unsupported version.");
             return false;
         }
     }else return false;
@@ -126,10 +127,28 @@ bool ESoundSource::Load(IReader& F)
     F.r_stringZ		(m_WAVName);
 
     
-    if (F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2)){
-	    F.r			(&m_Params,sizeof(m_Params));
+    if (F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS3)){
+       	m_Params.base_volume	= 1.f;
+    	F.r_fvector3			(m_Params.position);
+       	m_Params.volume			= F.r_float();
+        m_Params.freq			= F.r_float();
+        m_Params.min_distance	= F.r_float();
+        m_Params.max_distance	= F.r_float();
+        m_Params.max_ai_distance= F.r_float();
+    }else if (F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2)){
+       	m_Params.base_volume	= 1.f;
+    	F.r_fvector3			(m_Params.position);
+       	m_Params.volume			= F.r_float();
+        m_Params.freq			= F.r_float();
+        m_Params.min_distance	= F.r_float();
+        m_Params.max_distance	= F.r_float();
+        m_Params.max_ai_distance= F.r_float();
     }else{
-    	R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS));
+    	if (!F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS)){
+            ELog.DlgMsg( mtError, "ESoundSource: Can't load Sound Source '%s'. Unsupported version.",*m_WAVName);
+            return false;
+        }
+       	m_Params.base_volume	= 1.f;
     	F.r_fvector3			(m_Params.position);
        	m_Params.volume			= F.r_float();
         m_Params.freq			= F.r_float();
@@ -166,7 +185,14 @@ void ESoundSource::Save(IWriter& F)
 
     F.w_chunk		(SOUND_CHUNK_SOURCE_FLAGS,&m_Flags,sizeof(m_Flags));
     
-    F.w_chunk		(SOUND_CHUNK_SOURCE_PARAMS2,&m_Params,sizeof(m_Params));
+    F.open_chunk	(SOUND_CHUNK_SOURCE_PARAMS3);
+    F.w_fvector3	(m_Params.position);
+    F.w_float		(m_Params.volume);
+    F.w_float		(m_Params.freq);
+    F.w_float		(m_Params.min_distance);
+    F.w_float		(m_Params.max_distance);
+    F.w_float		(m_Params.max_ai_distance);
+    F.close_chunk	();
 }
 
 //----------------------------------------------------
