@@ -87,7 +87,6 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 					CSE_ALifeInventoryItem* IItem = smart_cast<CSE_ALifeInventoryItem*>(E);
 					if(IItem)
 						IItem->m_fCondition				= f_cond;
-					}
 				}
 			}
 		}
