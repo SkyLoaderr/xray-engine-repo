@@ -17,4 +17,6 @@ public:
 	virtual void Load				(LPCSTR section);
 
 protected:
+	virtual void	UpdateCLChild	();
+
 };

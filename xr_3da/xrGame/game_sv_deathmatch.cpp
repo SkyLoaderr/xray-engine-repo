@@ -160,6 +160,8 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
 		ps_killed->DeathTime			= Device.dwTimeGlobal;		
+		if (!ps_killer)
+			ps_killed->kills -=1;
 
 		SetPlayersDefItems		(ps_killed);
 	};
