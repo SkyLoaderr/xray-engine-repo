@@ -97,7 +97,7 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 			{
 				string64			t_stemp;
 				string_path			buf;
-				strconcat			(buf,"ss_",Core.UserName,"_",timestamp(t_stemp),".jpg");
+				strconcat			(buf,"ss_",Core.UserName,"_",timestamp(t_stemp),".bmp");
 				ID3DXBuffer*		saved	= 0;
 				CHK_DX				(D3DXSaveSurfaceToFileInMemory (&saved,D3DXIFF_BMP,pFB,0,0));
 				IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
