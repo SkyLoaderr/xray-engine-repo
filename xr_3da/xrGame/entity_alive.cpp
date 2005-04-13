@@ -389,7 +389,7 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 	{
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+result.element;
 		if (!pTri->suppress_wm){
-			SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
+			SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->game_mtl);
 
 			if(pMaterial->Flags.is(SGameMtl::flBloodmark))
 			{

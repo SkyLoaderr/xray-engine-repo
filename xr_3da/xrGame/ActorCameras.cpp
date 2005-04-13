@@ -106,7 +106,7 @@ ICF BOOL test_point(const Fmatrix& xform, const Fmatrix33& mat, const Fvector& e
 	u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
 	for (u32 i_t=0; i_t<tri_count; i_t++){
 		clQueryTri&	O	= g_pGameLevel->ObjectSpace.q_result.tris[i_t];
-		if (GMLib.GetMaterialByIdx(O.T->material)->Flags.is(SGameMtl::flPassable)) continue;
+		if (GMLib.GetMaterialByIdx(O.T->game_mtl)->Flags.is(SGameMtl::flPassable)) continue;
 		if (CDB::TestBBoxTri(mat,pt,ext,O.p,FALSE))
 			return		TRUE;
 	}

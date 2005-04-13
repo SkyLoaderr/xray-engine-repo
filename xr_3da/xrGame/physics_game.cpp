@@ -100,23 +100,19 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 	float square_cam_dist=to_camera.square_magnitude();
 	if(data)
 	{
-		SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->material,data->material);
+		SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->game_mtl,data->material);
 		if(mtl_pair)
 		{
-			if(vel_cret>Pars.vel_cret_wallmark && !mtl_pair->CollideMarks.empty())
+			if(!T->suppress_wm && vel_cret>Pars.vel_cret_wallmark && !mtl_pair->CollideMarks.empty())
 			{
-
 				ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];
-
-				if (!T->suppress_wm){
-					Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHWallMarksCall>( *((Fvector*)c->pos),T,pWallmarkShader));
-				}
+				Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHWallMarksCall>( *((Fvector*)c->pos),T,pWallmarkShader));
 			}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(square_cam_dist<SQUARE_SOUND_EFFECT_DIST)
 			{
 			
-				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
+				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->game_mtl);
 				if(!static_mtl->Flags.test(SGameMtl::flPassable))
 				{
 					if(vel_cret>Pars.vel_cret_sound)

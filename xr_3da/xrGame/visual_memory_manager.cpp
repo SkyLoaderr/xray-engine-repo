@@ -389,7 +389,7 @@ bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fo
 float CVisualMemoryManager::feel_vision_mtl_transp(u32 element)
 {
 	CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+element;
-	return GMLib.GetMaterialByIdx(T->material)->fVisTransparencyFactor;
+	return GMLib.GetMaterialByIdx(T->game_mtl)->fVisTransparencyFactor;
 }
 
 struct CVisibleObjectPredicateEx {

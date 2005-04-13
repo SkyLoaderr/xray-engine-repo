@@ -44,8 +44,8 @@ namespace CDB
 				u32		game_sector:16;		// 
 			};
 			struct {
-				u16		dummy_mtl;			// 
-				u16		dummy_sector;		// 
+				u16		build_mtl;			// 
+				u16		build_sector;		// 
 			};
 		};
 	public:

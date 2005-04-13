@@ -44,7 +44,7 @@ void CPoltergeist::StrangeSounds(const Fvector &position)
 
 				// Получить пару материалов
 				CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + l_rq.element;
-				SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),pTri->material);
+				SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),pTri->game_mtl);
 				if (!mtl_pair) continue;
 
 				// Играть звук
