@@ -165,7 +165,7 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mode=T->game_mtl;
+	SURFACE(contact,i*skip)->mode=T->material;
   }
   if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
   return ret;
@@ -689,7 +689,7 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mode=T->T->game_mtl;
+	SURFACE(contact,i*skip)->mode=T->T->material;
  }
  if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T->T,contact);
  return ret;

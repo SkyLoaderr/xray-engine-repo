@@ -100,7 +100,7 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 	float square_cam_dist=to_camera.square_magnitude();
 	if(data)
 	{
-		SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->game_mtl,data->material);
+		SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->material,data->material);
 		if(mtl_pair)
 		{
 			if(!T->suppress_wm && vel_cret>Pars.vel_cret_wallmark && !mtl_pair->CollideMarks.empty())
@@ -112,7 +112,7 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 			if(square_cam_dist<SQUARE_SOUND_EFFECT_DIST)
 			{
 			
-				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->game_mtl);
+				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
 				if(!static_mtl->Flags.test(SGameMtl::flPassable))
 				{
 					if(vel_cret>Pars.vel_cret_sound)

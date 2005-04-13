@@ -60,7 +60,7 @@ BOOL __stdcall CBulletManager::firetrace_callback(collide::rq_result& result, LP
 	{
 		//получить треугольник и узнать его материал
 		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
-		hit_material_idx	= T->game_mtl;
+		hit_material_idx	= T->material;
 		Level().BulletManager().StaticObjectHit(bullet, end_point, result, hit_material_idx);
 	}
 

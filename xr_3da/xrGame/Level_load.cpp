@@ -241,16 +241,16 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 		CDB::TRI						*I = tris;
 		CDB::TRI						*E = tris + count;
 		for ( ; I != E; ++I) {
-			ID_INDEX_PAIRS::iterator	i = std::find(translator.begin(),translator.end(),(*I).build_mtl);
+			ID_INDEX_PAIRS::iterator	i = std::find(translator.begin(),translator.end(),(*I).material);
 			if (i != translator.end()) {
-				(*I).game_mtl			= (*i).m_index;
+				(*I).material			= (*i).m_index;
 				SGameMtl* mtl			= GMLib.GetMaterialByIdx	((*i).m_index);
 				(*I).suppress_shadows	= mtl->Flags.is(SGameMtl::flSuppressShadows);
 				(*I).suppress_wm		= mtl->Flags.is(SGameMtl::flSuppressWallmarks);
 				continue;
 			}
 
-			Debug.fatal					("Game material '%d' not found",(*I).game_mtl);
+			Debug.fatal					("Game material '%d' not found",(*I).material);
 		}
 		return;
 	}
@@ -260,16 +260,16 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 		CDB::TRI						*I = tris;
 		CDB::TRI						*E = tris + count;
 		for ( ; I != E; ++I) {
-			ID_INDEX_PAIRS::iterator	i = std::lower_bound(translator.begin(),translator.end(),(*I).build_mtl);
-			if ((i != translator.end()) && ((*i).m_id == (*I).game_mtl)) {
-				(*I).game_mtl			= (*i).m_index;
+			ID_INDEX_PAIRS::iterator	i = std::lower_bound(translator.begin(),translator.end(),(*I).material);
+			if ((i != translator.end()) && ((*i).m_id == (*I).material)) {
+				(*I).material			= (*i).m_index;
 				SGameMtl* mtl			= GMLib.GetMaterialByIdx	((*i).m_index);
 				(*I).suppress_shadows	= mtl->Flags.is(SGameMtl::flSuppressShadows);
 				(*I).suppress_wm		= mtl->Flags.is(SGameMtl::flSuppressWallmarks);
 				continue;
 			}
 
-			Debug.fatal					("Game material '%d' not found",(*I).game_mtl);
+			Debug.fatal					("Game material '%d' not found",(*I).material);
 		}
 	}
 #endif
