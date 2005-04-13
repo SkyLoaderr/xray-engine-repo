@@ -17,6 +17,7 @@
 #include "ph_shell_interface.h"
 #include "script_game_object.h"
 #include "xrserver_objects_alife.h"
+#include "xrServer_Objects_ALife_Items.h"
 #include "game_cl_base.h"
 #include "object_factory.h"
 #include "../skeletoncustom.h"
@@ -366,23 +367,49 @@ void CGameObject::spawn_supplies()
 			int				n = _GetItemCount(V);
 			string16		temp;
 			if (n > 0)
-				j			= atoi(_GetItem(V,0,temp));
+				j			= atoi(_GetItem(V,0,temp)); //count
 			
-#if 0
-			if (n > 1)
-				p			= (float)atof(_GetItem(V,1,temp));
-#endif
 			
-			if (!j)
-				j			= 1;
+			if(NULL!=strstr(V,"prob=")){
+				string16						c_prob;
+				sscanf							(strstr(V,"prob=")+5,"%[^ ] ",c_prob);
+				p								=(float)atof(c_prob);
+			}			
+			if (fis_zero(p))	p			= 1.f;
+			if (!j)				j			= 1;
 
-			if (fis_zero(p))
-				p			= 1.f;
+		}
+
+		float f_cond						= 1.0f;
+		if(NULL!=strstr(V,"cond=")){
+			string16						c_cond;
+			sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
+			f_cond							= (float)atof(c_cond);
 		}
 		
 		for (u32 i=0; i<j; ++i)
-			if (::Random.randF(1.f) < p)
-				Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID());
+			if (::Random.randF(1.f) < p){
+				CSE_Abstract* A=Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID(),true);
+
+				CSE_ALifeInventoryItem*	pSE_InventoryItem = smart_cast<CSE_ALifeInventoryItem*>(A);
+				if(pSE_InventoryItem)
+						pSE_InventoryItem->m_fCondition = f_cond;
+
+				CSE_ALifeItemWeapon* W =  smart_cast<CSE_ALifeItemWeapon*>(A);
+				if (W) {
+					if (W->m_scope_status			== CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, NULL!=strstr(V,"scope"));
+					if (W->m_silencer_status		== CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, NULL!=strstr(V,"silencer"));
+					if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, NULL!=strstr(V,"launcher"));
+				}
+
+				NET_Packet					P;
+				A->Spawn_Write				(P,TRUE);
+				Level().Send				(P,net_flags(TRUE));
+				F_entity_Destroy			(A);
+		}
 	}
 }
 

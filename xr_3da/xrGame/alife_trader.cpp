@@ -29,7 +29,7 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 		(void*)(ini_string),
 		xr_strlen(ini_string)
 		)
-		);
+	);
 #pragma warning(pop)
 
 	if (ini.section_exist("spawn")) {
@@ -38,33 +38,37 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 		for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
 			VERIFY				(xr_strlen(N));
 	
-			BOOL A[3]			= { FALSE, FALSE, FALSE };
+//			BOOL A[3]			= { FALSE, FALSE, FALSE };
 			
 			j					= 1;
 			p					= 1.f;
 			
 			if (V && xr_strlen(V)) {
 				string64			buf;
-				int					items_count = _GetItemCount(V);
+//				int					items_count = _GetItemCount(V);
 				j					= atoi(_GetItem(V, 0, buf));
-				if (!j)
-					j				= 1;
+				if (!j)		j		= 1;
 
-#if 0
-				if (items_count > 1) {
-					p				= (float)atof(_GetItem(V, 1, buf));
-					if (fis_zero(p))
-						p			= 1.f;
+//				int				addons_flags_num = ((items_count - 1) > 3) ? 3 : (items_count - 1);
+//				for (int item_i = 0; item_i<addons_flags_num; ++item_i)
+//					A[item_i]	= !!atoi(_GetItem(V, item_i + 1, buf));
+			}
 
-					int				addons_flags_num = ((items_count - 2) > 3) ? 3 : (items_count - 2);
-					for (int item_i = 0; item_i<addons_flags_num; ++item_i)
-						A[item_i]	= !!atoi(_GetItem(V, item_i + 2, buf));
-				}
-#else
-				int				addons_flags_num = ((items_count - 1) > 3) ? 3 : (items_count - 1);
-				for (int item_i = 0; item_i<addons_flags_num; ++item_i)
-					A[item_i]	= !!atoi(_GetItem(V, item_i + 1, buf));
-#endif
+			//probability
+			if(NULL!=strstr(V,"prob=")){
+				string16						c_prob;
+				sscanf							(strstr(V,"prob=")+5,"%[^ ] ",c_prob);
+				p								=(float)atof(c_prob);
+			}			
+
+			if (fis_zero(p))
+				p								= 1.0f;
+
+			float f_cond						= 1.0f;
+			if(NULL!=strstr(V,"cond=")){
+				string16						c_cond;
+				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
+				f_cond							= (float)atof(c_cond);
 			}
 
 			for (u32 i=0; i<j; ++i) {
@@ -74,11 +78,15 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 					CSE_ALifeItemWeapon* W =  smart_cast<CSE_ALifeItemWeapon*>(E);
 					if (W) {
 						if (W->m_scope_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, A[0]);
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, NULL!=strstr(V,"scope"));
 						if (W->m_silencer_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, A[1]);
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, NULL!=strstr(V,"silencer"));
 						if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
-							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, A[2]);
+							W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, NULL!=strstr(V,"launcher"));
+					}
+					CSE_ALifeInventoryItem* IItem = smart_cast<CSE_ALifeInventoryItem*>(E);
+					if(IItem)
+						IItem->m_fCondition				= f_cond;
 					}
 				}
 			}
