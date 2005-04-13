@@ -6,6 +6,8 @@
 #include "actor.h"
 #include "actoreffector.h"
 #include "Missile.h"
+#include "inventory.h"
+#include "weapon.h"
 
 
 
@@ -15,7 +17,9 @@ static const float VEL_A_MAX	= 10.f;
 //возвращает текуший разброс стрельбы (в радианах)с учетом движения
 float CActor::GetWeaponAccuracy() const
 {
-	if(m_bZoomAimingMode)
+	CWeapon* W	= smart_cast<CWeapon*>(inventory().ActiveItem());
+
+	if(m_bZoomAimingMode&&W&&!W->IsRotatingToZoom())
 		return 0.f;
 
 	float dispersion = m_fDispBase;
