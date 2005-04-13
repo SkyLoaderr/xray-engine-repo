@@ -529,6 +529,7 @@ function process_map_spot(info_id)
 
 	elseif info_id == "agroprom_military_case_have" then
 		remove_location(300, "agr_military_case_location")
+		add_location(500, "bar_barman_location")
 
 
 	-- BAR ROSTOK
