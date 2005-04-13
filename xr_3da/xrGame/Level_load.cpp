@@ -253,6 +253,9 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 			ID_INDEX_PAIRS::iterator	i = std::lower_bound(translator.begin(),translator.end(),(*I).material);
 			if ((i != translator.end()) && ((*i).m_id == (*I).material)) {
 				(*I).material			= (*i).m_index;
+				SGameMtl* mtl			= GMLib.GetMaterialByIdx	((*i).m_index);
+				(*I).suppress_shadows	= mtl->Flags.is(flSuppressShadows);
+				(*I).suppress_wm		= mtl->Flags.is(flSuppressWallmarks);
 				continue;
 			}
 
