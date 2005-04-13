@@ -353,4 +353,33 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 		
+<!---------------------------KILLER IHFORMATOR---------------------->
+	<specific_character id="killer_informator" team_default = "1">
+		<name>Ара</name>
+		<icon x="28" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Известный на всю Зону информатор и осведомитель.</bio>
+
+		<team>Killer_specnaz</team>
+		
+		<class>Killer_informator</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 </xml>
