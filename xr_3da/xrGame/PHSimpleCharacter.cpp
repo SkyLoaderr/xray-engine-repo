@@ -220,6 +220,7 @@ void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
 	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics character shell during physics processing!!!");//if(ph_world)
+	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics character when ph world is freezed!!!");
 	CPHObject::deactivate();
 	spatial_unregister();
 

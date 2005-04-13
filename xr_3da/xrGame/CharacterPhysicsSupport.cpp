@@ -7,6 +7,15 @@
 #include "Actor.h"
 #include "CustomZone.h"
 const float default_hinge_friction = 5.f;
+
+void __stdcall NodynamicsCollide(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+{
+
+	dBodyID body1=dGeomGetBody(c.geom.g1);
+	dBodyID body2=dGeomGetBody(c.geom.g2);
+	if(body1&&body2)do_colide=false; 
+}
+
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
@@ -346,7 +355,14 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	b_death_anim_on=false;
 	m_eState=esDead;
 	b_skeleton_in_shell=true;
-	m_pPhysicsShell->SetPrefereExactIntegration	();
+	if(GameID()==GAME_SINGLE)
+	{
+		m_pPhysicsShell->SetPrefereExactIntegration	();
+	}
+	else
+	{
+		m_pPhysicsShell->set_ObjectContactCallback(NodynamicsCollide);
+	}
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {
