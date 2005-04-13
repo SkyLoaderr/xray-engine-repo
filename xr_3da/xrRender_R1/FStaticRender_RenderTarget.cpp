@@ -127,6 +127,30 @@ void CRenderTarget::calc_tc_duality_ss	(Fvector2& r0, Fvector2& r1, Fvector2& l0
 	l0.set(p0.x+shift_u,p0.y+shift_v);	l1.set(p1.x,p1.y);
 }
 
+BOOL CRenderTarget::NeedPostProcess()
+{
+	bool	_blur	= (param_blur>0.001f);
+	bool	_gray	= (param_gray>0.001f);
+	bool	_noise	= (param_noise>0.001f);
+	bool	_dual	= (param_duality_h>0.001f)||(param_duality_v>0.001f);
+			
+	bool	_cbase	= false;
+	{
+		int		_r	= color_get_R(param_color_base)	; _r=_abs(_r-int(0x7f));
+		int		_g	= color_get_G(param_color_base)	; _g=_abs(_g-int(0x7f));
+		int		_b	= color_get_G(param_color_base)	; _b=_abs(_b-int(0x7f));
+		if (_r>2 || _g>2 || _b>2)	_cbase	= true	;
+	}
+	bool	_cadd	= false;
+	{
+		int		_r	= color_get_R(param_color_base)	;
+		int		_g	= color_get_G(param_color_base)	;
+		int		_b	= color_get_G(param_color_base)	;
+		if (_r>2 || _g>2 || _b>2)	_add	= true	;
+	}
+	return _blur || _gray || _noise || _dual || _cbase || _cadd; 
+}
+
 BOOL CRenderTarget::Perform		()
 {
 	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1) || (frame_distort==(Device.dwFrame-1)));
@@ -136,7 +160,6 @@ BOOL CRenderTarget::Perform		()
 #define SHOW(a)	Log(#a,a);
 void CRenderTarget::Begin		()
 {
-	/*
 	if (g_pGameLevel->IR_GetKeyState(DIK_LSHIFT))	
 	{
 		Msg					("[%5d]------------------------",Device.dwFrame);
@@ -152,7 +175,6 @@ void CRenderTarget::Begin		()
 		SHOW				(param_color_gray)
 		SHOW				(param_color_add)
 	}
-	*/
 
 	if (!Perform())	
 	{
