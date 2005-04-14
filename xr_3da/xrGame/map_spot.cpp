@@ -82,7 +82,11 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	string256 buf;
 	XML_NODE* n = NULL;
 	
-	Irect base_rect = GetUIStaticItem().GetOriginalRect();
+	Irect base_rect;
+	base_rect.x1 = 0;
+	base_rect.y1 = 0;
+	base_rect.x2 = xml->ReadAttribInt(path, 0, "width", 0);
+	base_rect.y2 = xml->ReadAttribInt(path, 0, "height", 0);
 
 	strconcat(buf, path, ":texture_above");
 	n = xml->NavigateToNode(buf,0);
