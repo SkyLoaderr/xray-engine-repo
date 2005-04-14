@@ -145,7 +145,7 @@
 	</friend_mini_spot>
 	
 	<anomaly_zone_mini_spot x="0" y="0" width="16" height="16" alignment="c" stretch = "1"> 
-		<texture x="0" y="0" width="64" height="64" r="255" g="100" b="100">ui\ui_hud_mp_icon_death</texture>
+		<texture x="1" y="202" width="31" height="30" r="255" g="100" b="100">ui\ui_mp_icon_kill</texture>
 	</anomaly_zone_mini_spot>
 	
 	<!-- multiplayer -->
@@ -169,8 +169,10 @@
 		<texture r="255" g="0" b="0" stretch = "1">ui\hud_map_point</texture>
 	</mp_af_enemy_mini_spot>
 	
-	<mp_af_neutral_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
-		<texture r="255" g="255" b="255" stretch = "1">ui\hud_map_point</texture>
+	<mp_af_neutral_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
+		<texture r="255" g="255" b="255" stretch = "1">ui\ui_mini_af_spot</texture>
+		<texture_below x="0" y="0" width="6" height="6" r="255" g="0" b="255" stretch = "1"> ui\hud_map_point</texture_below>
+		<texture_above x="0" y="0" width="6" height="6" r="255" g="255" b="0" stretch = "1"> ui\hud_map_point</texture_above>
 	</mp_af_neutral_mini_spot>
 	
 	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
