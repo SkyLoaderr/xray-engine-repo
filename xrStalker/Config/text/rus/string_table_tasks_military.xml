@@ -54,19 +54,19 @@
     </string>
 	
 	<string id="mil_courier">
-		<text>Курьер наемников</text>
+		<text>Стукач.</text>
 	</string>
 	
 	<string id="mil_courier_spy">
-		<text>Проследить, с кем встретится курьер.</text>
+		<text>Вычислить стукача и проследить, с кем он встречается.</text>
 	</string>
 	
 	<string id="mil_intersept_courier">
-		<text>Уничтожить курьера и забрать у него документы</text>
+		<text>Уничтожить стукача.</text>
 	</string>
 	
 	<string id="mil_finalize_quest2">
-		<text>Отнести документы Лукашу</text>
+		<text>Доложить Лукашу о выполнении.</text>
 	</string>
 	
 </string_table>
