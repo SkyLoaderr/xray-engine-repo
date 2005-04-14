@@ -71,6 +71,10 @@ void CProject::AddFiles()
 	CFileDialog fd(TRUE, NULL, NULL, OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT, 
 		"Script files (*.script)|*.script|All files (*.*)|*.*||", g_mainFrame);
 
+	TCHAR FileNameList[8192]= {0};
+	fd.m_ofn.lpstrFile = FileNameList;
+	fd.m_ofn.nMaxFile=8192;
+
 	if ( fd.DoModal()==IDOK )
 	{
 		POSITION pos = fd.GetStartPosition();
