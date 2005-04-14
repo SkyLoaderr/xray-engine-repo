@@ -42,5 +42,30 @@ struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 	TASK_STATE_VECTOR	states;
 };
 
+//for scripting access
+struct STaskObjective
+{
+	shared_str					m_name;
+	ETaskState					m_state;
+	LPCSTR						GetName()						{return *m_name;}
+};
+
+struct STask{
+	shared_str					m_name;
+	ETaskState					m_state;
+	xr_vector<STaskObjective>	m_objectives;
+
+	LPCSTR						GetName()						{return *m_name;}
+	int							GetObjectivesNum()				{return m_objectives.size();}
+	STaskObjective				GetObjective(int idx)			{return m_objectives[idx];}
+
+};
+struct STasks{
+	xr_vector<STask>	m_all_tasks;
+	int					Size() {return m_all_tasks.size();}
+	STask				GetAt(int idx) {return m_all_tasks[idx];}
+};
+
+
 DEFINE_VECTOR		(TASK_DATA, GAME_TASK_VECTOR, GAME_TASK_IT);
 DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);

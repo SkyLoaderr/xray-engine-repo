@@ -835,3 +835,36 @@ void  CScriptGameObject::HideWeapon			()
 	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
 	pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);
 }
+
+
+STasks CScriptGameObject::GetAllGameTasks()
+{
+	STasks	tasks;
+	CActor* pActor = smart_cast<CActor*>(&object());
+	if (!pActor) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGameTaskState available only for actor");
+		return tasks;
+	}
+	const GAME_TASK_VECTOR* tasks_ =  pActor->game_task_registry->registry().objects_ptr();
+	if(!tasks_) 
+		return tasks;
+
+	for(GAME_TASK_VECTOR::const_iterator it = tasks_->begin(); tasks_->end() != it; ++it)
+	{
+		CGameTask gt;
+		gt.Init(*it);
+		tasks.m_all_tasks.resize(tasks.Size()+1);
+		STask& t = tasks.m_all_tasks.back();
+		t.m_name	= gt.Id();
+		t.m_state	= gt.m_ObjectiveStates[0];
+		u32 sub_num = gt.ObjectivesNum();
+		for(u32 i=0; i<sub_num;++i){
+			t.m_objectives.resize(t.m_objectives.size()+1);
+			STaskObjective& to	= t.m_objectives.back();
+			to.m_name			= gt.ObjectiveDesc(i);
+			to.m_state			= gt.ObjectiveState(i);
+			int iiii=0;
+		}
+	}
+	return tasks;
+};

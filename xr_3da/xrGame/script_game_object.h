@@ -76,6 +76,7 @@ class CHelicopter;
 class CHangingLamp;
 class CHolderCustom;
 struct ScriptCallbackInfo;
+struct STasks;
 
 class CScriptGameObject {
 	mutable CGameObject		*m_game_object;
@@ -203,6 +204,7 @@ public:
 	//работа с заданиями
 			ETaskState			GetGameTaskState	(LPCSTR task_id, int objective_num);
 			void				SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num);
+			STasks				GetAllGameTasks		();
 
 			bool				SendPdaMessage		(EPdaMsg pda_msg, CScriptGameObject* pForWho);
 			
