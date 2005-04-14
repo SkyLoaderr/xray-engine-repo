@@ -133,22 +133,20 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 		Fvector N;
 		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
-		if (!pTri->suppress_wm){
-			N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-			particle_dir = N;
+		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
+		particle_dir = N;
 
-			//вернуть нормаль по которой играли партиклы и ставили валмарки
-			vNormal = particle_dir;
+		//вернуть нормаль по которой играли партиклы и ставили валмарки
+		vNormal = particle_dir;
 
-			ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
-										NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
+									NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
 
-			if (pWallmarkShader && ShowMark)
-			{
-				//добавить отметку на материале
-				::Render->add_StaticWallmark	(*pWallmarkShader, vEnd,
-					bullet->wallmark_size, pTri, pVerts);
-			}
+		if (pWallmarkShader && ShowMark)
+		{
+			//добавить отметку на материале
+			::Render->add_StaticWallmark	(*pWallmarkShader, vEnd,
+				bullet->wallmark_size, pTri, pVerts);
 		}
 	}		
 

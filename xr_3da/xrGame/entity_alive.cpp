@@ -392,28 +392,26 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 	if(reach_wall)
 	{
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+result.element;
-		if (!pTri->suppress_wm){
-			SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
+		SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
 
-			if(pMaterial->Flags.is(SGameMtl::flBloodmark))
+		if(pMaterial->Flags.is(SGameMtl::flBloodmark))
+		{
+			//вычислить нормаль к пораженной поверхности
+			Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+
+			//вычислить точку попадания
+			Fvector end_point;
+			end_point.set(0,0,0);
+			end_point.mad(start_pos, dir, result.range);
+
+			ref_shader* pWallmarkShader = wallmarks_vector.empty()?NULL:
+			&wallmarks_vector[::Random.randI(0,wallmarks_vector.size())];
+
+			if (pWallmarkShader)
 			{
-				//вычислить нормаль к пораженной поверхности
-				Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-
-				//вычислить точку попадания
-				Fvector end_point;
-				end_point.set(0,0,0);
-				end_point.mad(start_pos, dir, result.range);
-
-				ref_shader* pWallmarkShader = wallmarks_vector.empty()?NULL:
-				&wallmarks_vector[::Random.randI(0,wallmarks_vector.size())];
-
-				if (pWallmarkShader)
-				{
-					//добавить отметку на материале
-					::Render->add_StaticWallmark(*pWallmarkShader, end_point,
-						wallmark_size, pTri, pVerts);
-				}
+				//добавить отметку на материале
+				::Render->add_StaticWallmark(*pWallmarkShader, end_point,
+					wallmark_size, pTri, pVerts);
 			}
 		}
 	}
