@@ -206,7 +206,18 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			{
 				dBodyID body=dGeomGetBody(g2);
 				R_ASSERT2(body,"static - static collision !!!");
-				add_contact_body_effector(body,c,material_1);
+				if(material_1->Flags.test(SGameMtl::flLiquid))
+				{
+					add_contact_body_effector(body,c,material_1);
+				}
+				else
+				{
+					if(!usr_data_2 || !usr_data_2->ph_object || !usr_data_2->ph_object->IsRayMotion())
+					{
+						add_contact_body_effector(body,c,material_1);
+					}
+				}
+				
 			}
 			if(material_1->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;
@@ -223,7 +234,18 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 
 				dBodyID body=dGeomGetBody(g1);
 				R_ASSERT2(body,"static - static collision !!!");
-				add_contact_body_effector(body,c,material_2);
+				if(material_2->Flags.test(SGameMtl::flLiquid))
+				{
+					add_contact_body_effector(body,c,material_2);
+				}
+				else
+				{
+					if(!usr_data_1 || !usr_data_1->ph_object || !usr_data_1->ph_object->IsRayMotion())
+					{
+						add_contact_body_effector(body,c,material_2);
+					}
+				}
+
 			}
 			if(material_2->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;

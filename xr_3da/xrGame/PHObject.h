@@ -51,12 +51,15 @@ protected:
 	virtual		void		get_spatial_params				()								=0;
 	virtual		void		spatial_register				()								;
 				void		SetRayMotions					()								{m_flags.set(fl_ray_motions,TRUE);}
+				void		UnsetRayMotions					()								{m_flags.set(fl_ray_motions,FALSE);}
+
 				void		SetPrefereExactIntegration		()								{m_island.SetPrefereExactIntegration();}
 
-				void		UnsetRayMotions					()								{m_flags.set(fl_ray_motions,FALSE);}
+			
 
 				CPHObject*	SelfPointer						()								{return this;}
 public:
+	IC			BOOL		IsRayMotion						()								{return m_flags.test(fl_ray_motions);}
 				void		IslandReinit					()								{m_island.Unmerge();}
 				void		IslandStep						(dReal step)					{m_island.Step(step);}
 				void		MergeIsland						(CPHObject* obj)				{m_island.Merge(&obj->m_island);}

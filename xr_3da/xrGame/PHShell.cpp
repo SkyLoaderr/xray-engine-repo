@@ -1288,7 +1288,9 @@ void CPHShell::BonesBindCalculateRecursive(Fmatrix parent,u16 id)
 
 void CPHShell::AddTracedGeom				(u16 element/*=0*/,u16 geom/*=0*/)
 {
-	m_traced_geoms.add(elements[element]->Geom(geom));
+	CODEGeom* g=elements[element]->Geom(geom);
+	g->set_ph_object(this);
+	m_traced_geoms.add(g);
 	
 }
 void CPHShell::SetAllGeomTraced()
@@ -1301,7 +1303,9 @@ void CPHShell::SetAllGeomTraced()
 		u16 gn=(*i)->numberOfGeoms();
 		for(u16 j=0;j<gn;++j)
 		{
-			m_traced_geoms.add((*i)->Geom(j));
+			CODEGeom* g=(*i)->Geom(j);
+			g->set_ph_object(this);
+			m_traced_geoms.add(g);
 		}
 	}
 	CPHObject::SetRayMotions();
