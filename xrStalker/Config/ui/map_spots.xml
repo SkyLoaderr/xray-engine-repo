@@ -170,7 +170,7 @@
 	</mp_af_enemy_mini_spot>
 	
 	<mp_af_neutral_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
-		<texture x="0" y="0" width="8" height="8" r="255" g="255" b="255" stretch = "1">ui\ui_mini_af_spot</texture>
+		<texture r="255" g="255" b="255" stretch = "1">ui\ui_mini_af_spot</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="255" g="0" b="255" stretch = "1">ui\ui_mini_af_spot</texture_below>
 		<texture_above x="0" y="0" width="8" height="4" r="255" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</mp_af_neutral_mini_spot>
