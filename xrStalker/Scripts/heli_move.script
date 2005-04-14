@@ -172,7 +172,7 @@ end
 
 -- просмотреть флажки следующующей точки пути и продолжить движение соответствующим образом
 function heli_move:update_movement_state()
-	self.state = state_moving
+	self.state = state_move
 
 	if not self.last_index then
 		self.next_index = 0
