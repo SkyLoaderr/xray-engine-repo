@@ -225,10 +225,9 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 address,	u32	 fmin, u32 f
 		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
 		N = *lst [id];
 	}
-	passTextures.push_back	(Device.Resources->_CreateTexture(N));
+	passTextures.push_back	(mk_pair( Stage(),ref_texture( Device.Resources->_CreateTexture(N))));
 //	i_Address				(Stage(),address);
 	i_Filter				(Stage(),fmin,fmip,fmag);
-//	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
 }
 void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {

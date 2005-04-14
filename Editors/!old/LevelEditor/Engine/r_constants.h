@@ -46,7 +46,7 @@ struct	R_constant_load
 
 struct	R_constant
 {
-	shared_str					name;		// HLSL-name
+	shared_str				name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2
 	u16						destination;// pixel/vertex/(or both)/sampler
 

@@ -54,15 +54,14 @@ u32		CBlender_Compile::i_Sampler		(LPCSTR _name)
 	if (0==C)				return	u32(-1);
 	R_ASSERT				(C->type == RC_sampler);
 	u32 stage				= C->samp.index;
-	R_ASSERT				(stage<16);
 
 	// Create texture
-	while (stage>=passTextures.size())	passTextures.push_back		(NULL);
+	// while (stage>=passTextures.size())	passTextures.push_back		(NULL);
 	return					stage;
 }
 void	CBlender_Compile::i_Texture		(u32 s, LPCSTR name)
 {
-	if (name)	passTextures[s]			= Device.Resources->_CreateTexture		(name);
+	if (name)	passTextures.push_back	(mk_pair(s, ref_texture(Device.Resources->_CreateTexture(name))));
 }
 void	CBlender_Compile::i_Projective	(u32 s, bool b)
 {
@@ -130,7 +129,11 @@ void	CBlender_Compile::r_End			()
 	dest.constants			= Device.Resources->_CreateConstantTable(ctable);
 	dest.state				= Device.Resources->_CreateState		(RS.GetContainer());
 	dest.T					= Device.Resources->_CreateTextureList	(passTextures);
-	dest.M					= 0;
 	dest.C					= 0;
+#ifdef _EDITOR
+	dest.M					= 0;
 	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
+#else
+	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T, ref_matrix_list(0) ,dest.C));
+#endif
 }

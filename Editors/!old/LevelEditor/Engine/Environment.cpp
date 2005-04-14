@@ -151,44 +151,45 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 }
 void CEnvDescriptor::unload	()
 {
+	std::pair<u32,ref_texture>	zero = mk_pair(u32(0),ref_texture(0));
 	sky_r_textures.clear		();
-	sky_r_textures.push_back	(0);
-	sky_r_textures.push_back	(0);
-	sky_r_textures.push_back	(0);
+	sky_r_textures.push_back	(zero);
+	sky_r_textures.push_back	(zero);
+	sky_r_textures.push_back	(zero);
 
 	sky_r_textures_env.clear	();
-	sky_r_textures_env.push_back(0);
-	sky_r_textures_env.push_back(0);
-	sky_r_textures_env.push_back(0);
+	sky_r_textures_env.push_back(zero);
+	sky_r_textures_env.push_back(zero);
+	sky_r_textures_env.push_back(zero);
 }
 void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
 	float	_power			=	1.f/(m_power+1);	// the environment itself
 	float	fi				=	1-f;
 
-	sky_r_textures.clear	();
-	sky_r_textures.push_back(A.sky_texture);
-	sky_r_textures.push_back(B.sky_texture);
+	sky_r_textures.clear		();
+	sky_r_textures.push_back	(mk_pair(0,A.sky_texture));
+	sky_r_textures.push_back	(mk_pair(1,B.sky_texture));
 
 	sky_r_textures_env.clear	();
-	sky_r_textures_env.push_back(A.sky_texture_env);
-	sky_r_textures_env.push_back(B.sky_texture_env);
+	sky_r_textures_env.push_back(mk_pair(0,A.sky_texture_env));
+	sky_r_textures_env.push_back(mk_pair(1,B.sky_texture_env));
 
-	sky_factor				= f;
+	sky_factor				=	f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
-	sky_rotation			= (fi*A.sky_rotation + f*B.sky_rotation);
-	far_plane				= (fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
+	sky_rotation			=	(fi*A.sky_rotation + f*B.sky_rotation);
+	far_plane				=	(fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
-	fog_density				= (fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
-	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
-	fog_far					= 0.99f * far_plane;
-	rain_density			= fi*A.rain_density + f*B.rain_density;
+	fog_density				=	(fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
+	fog_near				=	(1.0f - fog_density)*0.85f * far_plane;
+	fog_far					=	0.99f * far_plane;
+	rain_density			=	fi*A.rain_density + f*B.rain_density;
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
-	bolt_period				= fi*A.bolt_period + f*B.bolt_period;
-	bolt_duration			= fi*A.bolt_duration + f*B.bolt_duration;
+	bolt_period				=	fi*A.bolt_period + f*B.bolt_period;
+	bolt_duration			=	fi*A.bolt_duration + f*B.bolt_duration;
 	// wind
-    wind_velocity			= fi*A.wind_velocity + f*B.wind_velocity;
-    wind_direction			= fi*A.wind_direction + f*B.wind_direction;
+    wind_velocity			=	fi*A.wind_velocity + f*B.wind_velocity;
+    wind_direction			=	fi*A.wind_direction + f*B.wind_direction;
 	// colors
 	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
@@ -469,12 +470,23 @@ void CEnvironment::OnFrame()
 		mpower += EM.sum(*mit,view);
 
 	// final lerp
-	CurrentEnv.lerp						(this,*CurrentA,*CurrentB,t_fact,EM,mpower);
-	CurrentEnv.sky_r_textures.push_back		(tonemap);		//. hack
-	CurrentEnv.sky_r_textures_env.push_back	(tonemap);		//. hack
-    int id								= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
+	CurrentEnv.lerp							(this,*CurrentA,*CurrentB,t_fact,EM,mpower);
+	if (::Render->get_generation()==IRender_interface::GENERATION_R2)
+	{
+		//. very very ugly hack
+		if (HW.Caps.raster_major >= 3)		{
+			// tonemapping in VS
+			CurrentEnv.sky_r_textures.push_back		(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
+			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
+		} else {
+			// tonemapping in PS
+			CurrentEnv.sky_r_textures.push_back		(mk_pair(2,tonemap));								//. hack
+			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(2,tonemap));								//. hack
+		}
+	}
+    int id								=	(t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
 	eff_LensFlare->OnFrame				(id);
-    BOOL tb_enabled						= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
+    BOOL tb_enabled						=	(t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
     eff_Thunderbolt->OnFrame			(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)

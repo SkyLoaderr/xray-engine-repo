@@ -75,8 +75,8 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 		// Setup textures
-		IDirect3DBaseTexture9*	e0	= envdesc.sky_r_textures_env[0]->surface_get();
-		IDirect3DBaseTexture9*	e1	= envdesc.sky_r_textures_env[1]->surface_get();
+		IDirect3DBaseTexture9*	e0	= envdesc.sky_r_textures_env[0].second->surface_get();
+		IDirect3DBaseTexture9*	e1	= envdesc.sky_r_textures_env[1].second->surface_get();
 		t_envmap_0->surface_set		(e0);	_RELEASE(e0);
 		t_envmap_1->surface_set		(e1);	_RELEASE(e1);
 	

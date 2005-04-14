@@ -46,10 +46,13 @@ void CBackend::Invalidate	()
 	M							= NULL;
 	C							= NULL;
 
-	textures[0]=textures[1]=textures[2]=textures[3]=textures[4]=textures[5]=textures[6]=textures[7]=NULL;
-	matrices[0]=matrices[1]=matrices[2]=matrices[3]=matrices[4]=matrices[5]=matrices[6]=matrices[7]=NULL;
-//.	cull_mode					= CULL_NONE;
 	colorwrite_mask				= u32(-1);
+
+	for (u32 _it =0; _it<16;)	textures_ps	[_it++]=0;
+	for (u32 _it =0; _it< 5;)	textures_vs	[_it++]=0;
+#ifdef _EDITOR
+	for (u32 _it =0; _it< 8;)	matrices	[_it++]=0;
+#endif
 }
 
 void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count/* =0*/)

@@ -57,7 +57,7 @@ IC void	CBackend::set_ZB				(IDirect3DSurface9* ZB)
 	}
 }
 
-IC void	CBackend::set_States			(IDirect3DStateBlock9* _state)
+ICF void	CBackend::set_States		(IDirect3DStateBlock9* _state)
 {
 	if (state!=_state)
 	{
@@ -68,34 +68,56 @@ IC void	CBackend::set_States			(IDirect3DStateBlock9* _state)
 	}
 }
 
-IC void CBackend::set_Textures			(STextureList* _T)
+IC	void CBackend::set_Textures			(STextureList* _T)
 {
-	if (T != _T)
+	if (T == _T)	return;
+	T				= _T;
+	u32 _last_ps	= 0;
+	u32 _last_vs	= 0;
+	for (u32 it=0; it<T->size(); it++)
 	{
-		T	= _T;
-		for (u32 it=0; it<T->size(); it++)
-		{
-			CTexture*	surf = &*((*T)[it]);
-			if (textures[it]!=surf)	{
+		std::pair<u32,ref_texture>&		loader	=	(*T)[it];
+		u32			load_id		= loader.first		;
+		CTexture*	load_surf	= &*loader.second	;
+		if (load_id>=256)		{
+			// d-map or vertex	
+			u32		load_id_remapped	= load_id-256;
+			if (load_id_remapped>_last_vs)	_last_vs	=	load_id_remapped;
+			if (textures_vs[load_id_remapped]!=load_surf)	{
 				stat.textures	++;
-				textures[it]	=surf;
-				if (surf)		{
-					PGO			(Msg("PGO:tex%d:%s",it,surf->cName));
-					surf->Apply	(it);
+				textures_vs[it]	= load_surf			;
+				if (load_surf)	{
+					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
+					load_surf->Apply	(it);
+				}
+			}
+		} else {
+			// ordinary pixel surface
+			if (load_id>_last_ps)		_last_ps	=	load_id;
+			if (textures_ps[load_id]!=load_surf)	{
+				stat.textures	++;
+				textures_ps[it]	= load_surf			;
+				if (load_surf)	{
+					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
+					load_surf->Apply	(it);
 				}
 			}
 		}
+	}
 
-		// clear remaining stages
-		u32 last				= T->size();
-		while (last<8 && textures[last])	{
-			textures[last]		= 0;
-			CHK_DX				(HW.pDevice->SetTexture(last,NULL));
-			last				++;
-		}
+	// clear remaining stages (PS)
+	for (; _last_ps<16 && textures_ps[_last_ps]; _last_ps++)	{
+		textures_ps[_last_ps]			= 0;
+		CHK_DX							(HW.pDevice->SetTexture(_last_ps,NULL));
+	}
+	// clear remaining stages (VS)
+	for (; _last_vs<5 && textures_vs[_last_vs]; _last_vs++)		{
+		textures_vs[_last_vs]			= 0;
+		CHK_DX							(HW.pDevice->SetTexture(_last_vs+256,NULL));
 	}
 }
 
+#ifdef _EDITOR
 IC void CBackend::set_Matrices			(SMatrixList*	_M)
 {
 	if (M != _M)
@@ -116,6 +138,7 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 		}
 	}
 }
+#endif
 
 IC void CBackend::set_Constants			(R_constant_table* C)
 {
@@ -144,10 +167,12 @@ IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
 	set_VS			(P.vs);
 	set_Constants	(P.constants);
 	set_Textures	(P.T);
+#ifdef _EDITOR
 	set_Matrices	(P.M);
+#endif
 }
 
-IC void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
+ICF void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
 {
 	if (decl!=_decl)
 	{
@@ -186,7 +211,7 @@ ICF void CBackend::set_VS				(IDirect3DVertexShader9* _vs, LPCSTR _n)
 	}
 }
 
-IC void CBackend::set_Vertices			(IDirect3DVertexBuffer9* _vb, u32 _vb_stride)
+ICF void CBackend::set_Vertices			(IDirect3DVertexBuffer9* _vb, u32 _vb_stride)
 {
 	if ((vb!=_vb) || (vb_stride!=_vb_stride))
 	{
@@ -198,7 +223,7 @@ IC void CBackend::set_Vertices			(IDirect3DVertexBuffer9* _vb, u32 _vb_stride)
 	}
 }
 
-IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
+ICF void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 {
 	if (ib!=_ib)
 	{

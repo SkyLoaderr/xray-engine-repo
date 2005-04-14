@@ -23,17 +23,15 @@ class	ENGINE_API				IBlender;
 #pragma pack(push,4)
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		STextureList	: public xr_resource, public svector<ref_texture,8>	{
+struct	ENGINE_API		STextureList	: public xr_resource, public svector<std::pair<u32,ref_texture>, 8+4>	{
 						~STextureList	();
 };
 typedef	resptr_core<STextureList,resptr_base<STextureList> >								ref_texture_list;
-
 //////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SMatrixList		: public xr_resource, public svector<ref_matrix,4>	{
 						~SMatrixList	();
 };
 typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >									ref_matrix_list;
-
 //////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SConstantList	: public xr_resource, public svector<ref_constant,4>	{
 						~SConstantList	();
@@ -65,8 +63,10 @@ struct	ENGINE_API		SPass			: public xr_resource									{
 	ref_ctable							constants;	// may be NULL
 
 	ref_texture_list					T;
-	ref_matrix_list						M;
 	ref_constant_list					C;
+#ifdef _EDITOR
+	ref_matrix_list						M;
+#endif
 
 						~SPass			();
 	BOOL				equal			(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _ctable, ref_texture_list& _T, ref_matrix_list& _M, ref_constant_list& _C);

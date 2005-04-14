@@ -48,8 +48,10 @@ BOOL	SPass::equal	(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _cta
 	if (constants	!= _ctable)		return FALSE;	// is this nessesary??? (ps+vs already combines)
 
 	if (T != _T)					return FALSE;
-	if (M != _M)					return FALSE;
 	if (C != _C)					return FALSE;
+#ifdef _EDITOR
+	if (M != _M)					return FALSE;
+#endif
 	return TRUE;
 }
 
