@@ -492,6 +492,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			if(pA)
 			{
 				SpawnWeaponsForActor(pOwner, ps);
+				//---------------------------------------
+				Check_ForClearRun(ps);
 			}
 		}break;
 	};
@@ -831,9 +833,7 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 	};
 	
-	Player_AddMoney(ps, ps->LastBuyAcount);
-	//---------------------------------------
-	Check_ForClearRun(ps);
+	Player_AddMoney(ps, ps->LastBuyAcount);	
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {

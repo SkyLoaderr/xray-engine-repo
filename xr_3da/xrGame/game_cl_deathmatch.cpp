@@ -469,7 +469,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {
 	if (kSCORES == key )
 	{
-		m_game_ui->ShowFragList(true);
+		if(m_game_ui) m_game_ui->ShowFragList(true);
 		return true;
 	};
 
@@ -527,8 +527,11 @@ bool	game_cl_Deathmatch::OnKeyboardRelease		(int key)
 {
 	if (kSCORES == key )
 	{
-		m_game_ui->ShowFragList(false);
-//		m_game_ui->ShowPlayersList(false);
+		if (m_game_ui)
+		{
+			m_game_ui->ShowFragList(false);
+			//		m_game_ui->ShowPlayersList(false);
+		};
 		return true;
 	};
 	return inherited::OnKeyboardRelease(key);

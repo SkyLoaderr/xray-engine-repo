@@ -636,7 +636,8 @@ void CActor::Die	(CObject* who)
 		{
 			if (GameID() == GAME_ARTEFACTHUNT)
 			{
-				if ((*l_it)->object().CLS_ID == CLSID_ARTEFACT)
+				CArtefact* pArtefact = smart_cast<CArtefact*> (*l_it);
+				if (pArtefact)
 				{
 					(*l_it)->Drop();
 					continue;
