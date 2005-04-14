@@ -4,6 +4,7 @@
 #include "render.h"
 #include "Thunderbolt.h"
 #include "igame_persistent.h"
+#include "LightAnimLibrary.h"
 
 #ifdef _EDITOR
     #include "ui_toolscustom.h"
@@ -18,6 +19,8 @@ static const float MAX_DIST_FACTOR = 0.95f;
 CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
 {
 	name						= sect;
+	color_anim					= LALib.FindItem (pIni->r_string ( sect,"color_anim" )); VERIFY(color_anim);
+	color_anim->fFPS			= (float)color_anim->iFrameCount;
     m_GradientTop.shader 		= pIni->r_string ( sect,"gradient_top_shader" );
     m_GradientTop.texture		= pIni->r_string ( sect,"gradient_top_texture" );
     m_GradientTop.fRadius		= pIni->r_fvector2(sect,"gradient_top_radius"  );
@@ -112,12 +115,6 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 #endif
     return bRes;
 }
-/*
-IC bool sound_pred(const CEffect_Thunderbolt::SoundDesc& x, float val)
-{
-	return x.time<val;
-};
-*/
 #define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
 #define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
 void CEffect_Thunderbolt::Bolt(float period, float lt)
@@ -158,11 +155,6 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
 	    next_lightning_time = Device.fTimeGlobal+lt+EPS_L;
     }else{
 	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.3f,period*0.3f);
-/*  
-		float val			= Device.fTimeGlobal+dist/300.f;
-	    SoundDeqIt it		= std::lower_bound(sound_times.begin(),sound_times.end(),val,sound_pred);
-    	sound_times.insert	(it,SoundDesc(val,pos));
-*/
 		current->snd.play_at_pos_unlimited(0,pos,FALSE,dist/300.f);
 		current->snd.set_range	(dist/2,dist*2.f);
     }
@@ -177,27 +169,21 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
     }else if (bEnabled&&(Device.fTimeGlobal>next_lightning_time)){ 
     	if (state==stIdle)	Bolt(period,duration);
     }
-/*
-    if (!sound_times.empty()){
-    	SoundDesc& next_tm 	= sound_times.front();
-        if (Device.fTimeGlobal>next_tm.time){
-            // play sound
-            float dist = next_tm.pos.distance_to(Device.vCameraPosition);
-			current->snd.play_at_pos_unlimited(0,next_tm.pos,FALSE);
-			current->snd.set_range	(dist/2,dist*2.f);
-            sound_times.pop_front	();
-        }
-    }
-*/
 	if (state==stWorking){
     	if (current_time>life_time) state = stIdle;
     	current_time	+= Device.fTimeDelta;
+		Fvector fClr;		
+		int frame;
+		u32 uClr		= current->color_anim->CalculateRGB(current_time/life_time,frame);
+		fClr.set		(float(color_get_R(uClr))/255.f,float(color_get_G(uClr)/255.f),float(color_get_B(uClr)/255.f));
 
         lightning_phase	= 1.5f*(current_time/life_time);
         clamp			(lightning_phase,0.f,1.f);
 
-        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
-        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
+        g_pGamePersistent->Environment.CurrentEnv.sky_color.mad(fClr,p_sky_color);
+        g_pGamePersistent->Environment.CurrentEnv.sun_color.mad(fClr,p_sun_color);
+//		g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
+//		g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
 
 		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
 			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;

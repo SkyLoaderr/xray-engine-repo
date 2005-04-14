@@ -8,6 +8,7 @@
 
 //refs
 class ENGINE_API IRender_DetailModel;
+class ENGINE_API CLAItem;
 
 struct CThunderboltDesc
 {
@@ -28,7 +29,7 @@ struct CThunderboltDesc
     SFlare						m_GradientTop;
     SFlare						m_GradientCenter;
     shared_str					name;
-
+	CLAItem*					color_anim;
 public:
 								CThunderboltDesc	(CInifile* pIni, LPCSTR sect);
 							    ~CThunderboltDesc	();
@@ -38,16 +39,8 @@ public:
 class ENGINE_API CEffect_Thunderbolt
 {
 public:
-/*
-	struct SoundDesc{
-    	float 	time;
-        Fvector	pos;
-        SoundDesc(float t, const Fvector& p){time=t;pos=p;}
-    };
-*/
 private:
 	DEFINE_VECTOR(CThunderboltDesc*,DescVec,DescIt);
-//	DEFINE_DEQUE(SoundDesc,SoundDeq,SoundDeqIt);
 	DescVec			  			palette;
     CThunderboltDesc*			current;
 
@@ -72,7 +65,6 @@ private:
     float						life_time;
     float						current_time;
     float						next_lightning_time;
-//    SoundDeq					sound_times;
 	BOOL						bEnabled;
 
     // params
@@ -81,8 +73,8 @@ private:
     float						p_min_dist;
     float						p_tilt;
     float						p_second_prop;
-    float						p_sky_color;
-    float						p_sun_color;
+	float						p_sky_color;
+	float						p_sun_color;
 private:
 	BOOL						RayPick				(const Fvector& s, const Fvector& d, float& range);
     void						Bolt				(float period, float life_time);
