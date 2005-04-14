@@ -74,10 +74,8 @@ void CHitMemoryManager::reload				(LPCSTR section)
 void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
 	VERIFY						(m_hits);
-	if (!object().g_Alive()) {
-//		m_hits->clear			();
+	if (!object().g_Alive())
 		return;
-	}
 
 	if (who && (m_object->ID() == who->ID()))
 		return;
@@ -120,13 +118,14 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 	}
 }
 
-void CHitMemoryManager::add					(const CHitObject &hit_object)
+void CHitMemoryManager::add					(const CHitObject &_hit_object)
 {
 	VERIFY						(m_hits);
-	if (!object().g_Alive()) {
-//		m_hits->clear			();
+	if (!object().g_Alive())
 		return;
-	}
+
+	CHitObject					hit_object = _hit_object;
+	hit_object.m_squad_mask.set	(m_stalker->agent_manager().member().mask(m_stalker),TRUE);
 
 	const CEntityAlive			*entity_alive = hit_object.m_object;
 	HITS::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(entity_alive));
