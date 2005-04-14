@@ -347,6 +347,10 @@
 		<class>Killer_specnaz_stukach</class>
 	</character>
 
+	<character id="svoboda_specnaz_stukach">
+		<class>Svoboda_specnaz_stukach</class>
+	</character>
+
 	<character id="killer_informator">
 		<class>Killer_informator</class>
 	</character>
