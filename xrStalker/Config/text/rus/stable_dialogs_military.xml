@@ -465,6 +465,57 @@
     <string id="mil_dolg_relax_dialog_9">
         <text>Маленький, серенький!?? Ну, чувак, ты заливаешь...</text>
     </string>
+    <string id="mil_dolg_skull_dialog_100">
+        <text>Кто это к нам пришел?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_101">
+        <text>Твои бойцы сказали, что есть возможность заработать...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_102">
+        <text>Возможность заработать для рискованного парня всегда есть. Ты я думаю, как раз из таких, я прав?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_103">
+        <text>Это зависит от того, что надо делать.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_104">
+        <text>Делать то как раз придется самое привычное. Тут за холмом главный рассадник этих подонков свободных, который я со своими ребятами собираюсь разворошить, но...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_105">
+        <text>Но?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_106">
+        <text>Есть небольшая проблема. Так как вход на базу один и хорошо охраняется, мы недолго думая собрались сделать еще один, но..</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_107">
+        <text>Но?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_108">
+        <text>Отправил я ночью бойца подорвать забор. Но, толи снайпер попался хороший, толи день не наш, в общем, завалили его. Так что теперь взрывчатка установлена на заборе, а взорвать ее мы не можем.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_109">
+        <text>Почему?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_110">
+        <text>Я не хочу посылать ребят под пули этого засранца, но ты вполне можешь его убрать. В тебя то он сразу стрелять не станет. Что скажешь?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_111">
+        <text>Сколько я за это получу?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_112">
+        <text>Вот это правильный подход. 2500 от нас, и кучу снаряжения на базе - трупов там будет много, это я тебе обещаю. И нам поможешь и сам доволен будешь. Тат как?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_120">
+        <text>Я готов. Я сообщу вам как только разберусь с ним.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_121">
+        <text>Давай.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_130">
+        <text>Вначале я должен поглядеть, а потом я скажу, лады?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_131">
+        <text>Ждем. Но не долго.</text>
+    </string>
     <string id="mil_dolg_soldier_dialog_0">
         <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а ты?</text>
     </string>
@@ -517,7 +568,7 @@
         <text>Мир посмотреть, себя показать...</text>
     </string>
     <string id="mil_leader_start_dialog_1103">
-        <text>Ну, тогда иди и показывай. </text>
+        <text>Ну, тогда иди и показывай.</text>
     </string>
     <string id="mil_leader_start_dialog_1200">
         <text>Тут по дороге на "Росток" бригада "Долга" завалила ваш патруль. И, судя по всему, собираются наведаться к вам. Ну, а мне не очень нравятся порядки "Долга" и я решил сообщить вам. Засели они на хуторе, между базой и дорогой на "Росток". Человек восемь, хорошо вооружены.</text>
@@ -526,7 +577,7 @@
         <text>Блин. Никак эти козлы не угомонятся. Ладно, придется их наказать. Ну, сталкер, поможешь нам - будем тебе благодарны. Иди к Максу, он у нас типа сержанта, он соберет братву и выкорчуйте этих баранов.</text>
     </string>
     <string id="mil_leader_start_dialog_1211">
-        <text>Ок. </text>
+        <text>Ок.</text>
     </string>
     <string id="mil_leader_start_dialog_1212">
         <text>Удачи.</text>

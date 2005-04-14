@@ -82,6 +82,8 @@
 	<info_portion id="mil_freedom_attack"></info_portion>
 	<info_portion id="mil_freedom_attack_complete"></info_portion>
 	<info_portion id="mil_freedom_arrive"></info_portion>
+	<info_portion id="mil_freedom_attack_continue1"></info_portion>
+	<info_portion id="mil_freedom_attack_continue2"></info_portion>
 	
 	
 	<info_portion id="mil_ugrum_flash_get"><article>mil_flash_ugrumy</article></info_portion>
