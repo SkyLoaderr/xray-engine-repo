@@ -251,6 +251,18 @@ BOOL CProject::Load(CArchive &ar)
 		ar >> m_command;
 		ar >> m_arguments;
 		ar >> m_working_dir;
+
+		if(version >0x04){
+		int open_doc_cnt;
+			ar >> open_doc_cnt;
+			for(int i=0; i<open_doc_cnt; ++i){
+			CString f_name;
+			ar >> f_name;
+			CProjectFile* pF = GetProjectFile(f_name);
+			theApp.OpenProjectFilesView(pF);
+			}
+		
+		}
 	}
 	catch( ... )
 	{
@@ -306,6 +318,22 @@ BOOL CProject::Save(CArchive &ar)
 	ar << m_command;
 	ar << m_arguments;
 	ar << m_working_dir;
+
+	
+	int open_doc_cnt=0;
+	POSITION pos = theApp.m_pLuaTemplate->GetFirstDocPosition();
+	while (pos != NULL){
+		theApp.m_pLuaTemplate->GetNextDoc(pos);
+		++open_doc_cnt;
+	}
+	ar << open_doc_cnt;
+
+	pos = theApp.m_pLuaTemplate->GetFirstDocPosition();
+	while (pos != NULL)
+	{
+		CLuaDoc* pDoc = (CLuaDoc*)theApp.m_pLuaTemplate->GetNextDoc(pos);
+		ar << pDoc->GetProjectFile()->GetName();
+	}
 
 	return TRUE;
 }
