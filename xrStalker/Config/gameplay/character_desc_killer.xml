@@ -368,7 +368,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<visual>actors\killer\stalker_killer_informator</visual>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
