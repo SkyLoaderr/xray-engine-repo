@@ -787,6 +787,97 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 
 	end
+	
+	-- ROSTOK FLESH ANGAR
+
+	if type == "rostok_flesh_angar" then
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_angar_flesh_tusniak"
+		}
+		table.insert(sj, t)
+		
+		
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_flesh_angar", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 
 	-- ARENA MONSTERS
 	if type == "bar_arena_monstr" then
@@ -1014,6 +1105,19 @@ function load_states(gname, type)
 		end
 	end
 	
+	if type == "rostok_flesh_angar" then        
+		return function(gulag)
+			local t = db.zone_by_name["rostok_angar_flesh_territory"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
+			end
+		end
+	end
+	
 	if type == "bar_arena_monstr" then
 		return function(gulag)
 			if db.actor ~= 0 and
@@ -1070,6 +1174,10 @@ function checkMonster(npc_community, gulag_type)
 	
 	if gulag_type == "bar_arena_monstr" then
 		return true
+	end
+	
+	if gulag_type == "rostok_flesh_angar" then
+		return npc_community == "flesh"
 	end
 	
 	return false
