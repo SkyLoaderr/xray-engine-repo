@@ -171,8 +171,8 @@
 	
 	<mp_af_neutral_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
 		<texture x="0" y="0" width="8" height="8" r="255" g="255" b="255" stretch = "1">ui\ui_mini_af_spot</texture>
-		<texture_below x="0" y="0" width="6" height="6" r="255" g="0" b="255" stretch = "1"> ui\hud_map_point</texture_below>
-		<texture_above x="0" y="0" width="6" height="6" r="255" g="255" b="0" stretch = "1"> ui\hud_map_point</texture_above>
+		<texture_below x="0" y="4" width="8" height="4" r="255" g="0" b="255" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="255" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</mp_af_neutral_mini_spot>
 	
 	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
