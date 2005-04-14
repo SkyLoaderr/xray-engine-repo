@@ -127,8 +127,8 @@ Fvector2 CMapLocation::Position()
 	pos.set(0.0f,0.0f);
 
 	if(m_flags.test( ePosToActor)){
-		Fvector p = Level().CurrentEntity()->Position();
-		pos.set(p.x, p.z);
+		m_position_global = Level().CurrentEntity()->Position();
+		pos.set(m_position_global.x, m_position_global.z);
 		return pos;
 	}
 
@@ -138,14 +138,14 @@ Fvector2 CMapLocation::Position()
 		{
 			CSE_ALifeDynamicObject* O = ai().alife().objects().object(m_objectID,true);
 			if(O){
-				const Fvector& p = O->Position();
-				pos.set(p.x, p.z);
+				m_position_global = O->Position();
+				pos.set(m_position_global.x, m_position_global.z);
 			}
 		}
 	
 	}else{
-		const Fvector& op = pObject->Position();
-		pos.set(op.x, op.z);
+		m_position_global = pObject->Position();
+		pos.set(m_position_global.x, m_position_global.z);
 	}
 
 	return pos;
@@ -236,9 +236,9 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		return;
 
 		//update spot position
-		m_position_global = Position();
+		Fvector2 position = Position();
 
-		m_position_on_map =	map->ConvertRealToLocal(m_position_global);
+		m_position_on_map =	map->ConvertRealToLocal(position);
 
 		sp->SetWndPos(m_position_on_map);
 		Irect wnd_rect = sp->GetWndRect();

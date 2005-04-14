@@ -29,7 +29,7 @@ private:
 	u16						m_objectID;
 	u16						m_refCount;
 	u32						m_actual_time;
-	Fvector2				m_position_global; //last global position, actual time only current frame 
+	Fvector					m_position_global; //last global position, actual time only current frame 
 	Ivector2 				m_position_on_map; //last position on parent map, actual time only current frame
 private:
 							CMapLocation					(const CMapLocation&){}; //disable copy ctor
@@ -57,7 +57,7 @@ public:
 	u16						AddRef							() {++m_refCount; return m_refCount;}
 	u16						Release							() {--m_refCount; return m_refCount;}
 	virtual		bool		Update							(); //returns actual
-	Fvector2				GetLastPosition					() {return m_position_global;};
+	Fvector					GetLastPosition					() {return m_position_global;};
 	bool					Serializable					() const {return !!m_flags.test(eSerailizable);}
 };
 
