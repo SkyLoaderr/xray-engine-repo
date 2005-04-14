@@ -36,7 +36,6 @@ function evaluator_leader:evaluate ()
              end
           end
        end
-       printf ("STEP 8") 
        return false 
     end         
 
