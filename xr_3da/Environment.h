@@ -12,7 +12,6 @@ class ENGINE_API	CLensFlare;
 class ENGINE_API	CEffect_Rain;
 class ENGINE_API	CEffect_Thunderbolt;
 
-class ENGINE_API	CPerlinNoise1D;
 // t-defs
 class ENGINE_API	CEnvModifier
 {
