@@ -81,15 +81,17 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 
 	string256 buf;
 	XML_NODE* n = NULL;
+	
+	Irect base_rect = GetUIStaticItem().GetOriginalRect();
 
 	strconcat(buf, path, ":texture_above");
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", 0);
-		int y				= xml->ReadAttribInt(buf, 0, "y", 0);
-		int width			= xml->ReadAttribInt(buf, 0, "width", 0);
-		int height			= xml->ReadAttribInt(buf, 0, "height", 0);
+		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
+		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
+		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
+		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
 		
 		m_icon_above.create("hud\\default",texture);
 		m_tex_rect_above.set(x,y,width,height);
@@ -99,10 +101,10 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", 0);
-		int y				= xml->ReadAttribInt(buf, 0, "y", 0);
-		int width			= xml->ReadAttribInt(buf, 0, "width", 0);
-		int height			= xml->ReadAttribInt(buf, 0, "height", 0);
+		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
+		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
+		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
+		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
 		
 		m_icon_below.create("hud\\default",texture);
 		m_tex_rect_below.set(x,y,width,height);
@@ -111,10 +113,10 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", 0);
-		int y				= xml->ReadAttribInt(buf, 0, "y", 0);
-		int width			= xml->ReadAttribInt(buf, 0, "width", 0);
-		int height			= xml->ReadAttribInt(buf, 0, "height", 0);
+		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
+		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
+		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
+		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
 		
 		m_icon_normal.create("hud\\default",texture);
 		m_tex_rect_normal.set(x,y,width,height);
