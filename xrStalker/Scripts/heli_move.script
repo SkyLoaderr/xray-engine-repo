@@ -30,6 +30,8 @@ function heli_move:reset_scheme( loading )
 
 	self.heliObject:TurnEngineSound( self.a.engine_sound )
 
+	self.heliObject:ClearEnemy()
+
 	self.patrol_move = patrol(self.a.path_move)
 	if not self.patrol_move then
 		utils.abort("object '%s': unable to find path_move '%s' on the map",
