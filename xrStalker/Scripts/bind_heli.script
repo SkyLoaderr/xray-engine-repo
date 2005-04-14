@@ -44,6 +44,9 @@ function heli_binder:reinit()
 
 	self.st.heli_ltx = heli_ltx
 
+	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
+--	self.st.combat.enemy = self.object
+
 	-- на случай загрузки
 	self.last_alt       = self.heliObject:GetRealAltitude()
 	self.alt_check_time = device():time_global() + 1000
@@ -66,6 +69,52 @@ function heli_binder:update( delta )
 	self:check_health()
 end
 
+function heli_binder:net_spawn( data )
+	if not object_binder.net_spawn( self, data ) then
+		return false
+	end
+
+	db.add_obj( self.object )
+
+	return true
+end
+
+function heli_binder:net_destroy()
+	db.del_obj( self.object )
+
+	object_binder.net_destroy( self )
+end
+
+function heli_binder:net_save_relevant()
+	return true
+end
+
+function heli_binder:save( packet )
+	object_binder.save( self, packet )
+
+	xr_logic.save_obj( self.object, packet )
+end
+
+function heli_binder:load( packet )
+	self.loaded = true
+
+	--printf("generic_object_binder:load(): self.object:name()='%s'", self.object:name())
+	object_binder.load( self, packet )
+
+	xr_logic.load_obj( self.object, packet )
+end
+
+------------------------------ callbacks ---------------------------------
+function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
+end
+
+function heli_binder:on_point( distance, position, path_idx )
+	if self.st.active_section ~= nil then
+		xr_logic.issue_event( self.object, self.st[self.st.active_scheme], "waypoint_callback", self.object, nil, path_idx )
+	end
+end
+
+--------------------------------------------------------------------------
 function heli_binder:check_health()
 	local heli = self.heliObject
 
@@ -106,50 +155,7 @@ function heli_binder:check_health()
 	end
 end
 
-function heli_binder:net_spawn( data )
-	if not object_binder.net_spawn( self, data ) then
-		return false
-	end
-
-	db.add_obj( self.object )
-
-	return true
-end
-
-function heli_binder:net_destroy()
-	db.del_obj( self.object )
-
-	object_binder.net_destroy( self )
-end
-
-function heli_binder:net_save_relevant()
-	return true
-end
-
-function heli_binder:save( packet )
-	object_binder.save( self, packet )
-
-	xr_logic.save_obj( self.object, packet )
-end
-
-function heli_binder:load( packet )
-	self.loaded = true
-
-	--printf("generic_object_binder:load(): self.object:name()='%s'", self.object:name())
-	object_binder.load( self, packet )
-
-	xr_logic.load_obj( self.object, packet )
-end
-
-function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
-end
-
-function heli_binder:on_point( distance, position, path_idx )
-	if self.st.active_section ~= nil then
-		xr_logic.issue_event( self.object, self.st[self.st.active_scheme], "waypoint_callback", self.object, nil, path_idx )
-	end
-end
-
+--------------------------------------------------------------------------
 function get_heli_ltx()
 	return heli_ltx
 end

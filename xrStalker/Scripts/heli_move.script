@@ -4,8 +4,6 @@ Helicopter movement
 
 Сделать:
 	- летать зацикленно
-	- смотреть в точку
-	- скоростные параметры в именах вершин
 --------------------------------------------------------------------------------------------------]]
 
 local default_wait_time = 5000
@@ -22,11 +20,12 @@ function heli_move:__init( obj, storage )
 	self.object     = obj
 	self.heliObject = obj:get_helicopter()
 	self.a          = storage
+	self.combat_mgr = db.storage[obj:id()].combat
 
 	self.default_velocity = utils.cfg_get_number( bind_heli.get_heli_ltx(), "helicopter", "velocity", self.object, true )
 end
 
-function heli_move:reset_scheme()
+function heli_move:reset_scheme( loading )
 	printf("heli_move: reset_scheme: %s", self.object:name())
 
 	self.heliObject:TurnEngineSound( self.a.engine_sound )
@@ -57,17 +56,39 @@ function heli_move:reset_scheme()
 		self.path_look_info = self.a.path_look_info
 	end
 
-	self.last_index       = nil
-	self.last_look_index  = nil
-	self.look_finish_time = nil
-	self.was_callback     = false
+	if loading then
+		self.state            = xr_logic.pstor_retrieve( self.object, "st"  )
+		self.last_index       = xr_logic.pstor_retrieve( self.object, "li"  )
+		self.last_look_index  = xr_logic.pstor_retrieve( self.object, "lli" )
+		self.look_finish_time = xr_logic.pstor_retrieve( self.object, "lft" )
+		self.look_duration    = xr_logic.pstor_retrieve( self.object, "ld"  )
+		self.was_callback     = xr_logic.pstor_retrieve( self.object, "wc"  )
+	else
+		self.state            = nil
+		self.last_index       = nil
+		self.last_look_index  = nil
+		self.look_finish_time = nil
+		self.look_duration    = nil
+		self.was_callback     = false
 
-	self:update_movement_state()
---	self.heliObject:GoByRoundPath( self.patrol_look:point( 0 ), 50, true )
+		self:update_movement_state()
+	end
+end
+
+function heli_move:save()
+	xr_logic.pstor_store( self.object, "st",  self.state )
+	xr_logic.pstor_store( self.object, "li",  self.last_index       or false )
+	xr_logic.pstor_store( self.object, "lli", self.last_look_index  or false )
+	xr_logic.pstor_store( self.object, "lft", self.look_finish_time or false )
+	xr_logic.pstor_store( self.object, "ld",  self.look_duration    or false )
+	xr_logic.pstor_store( self.object, "wc",  self.was_callback )
 end
 
 function heli_move:update( delta )
-	--printf("__hd: mob_walker update: %d", device():time_global())
+	if self.combat_mgr.enemy then
+		self.combat_mgr:update()
+		return
+	end
 
 	if xr_logic.try_switch_to_another_section( self.object, self.a, db.actor ) then
 		return
@@ -123,7 +144,7 @@ function heli_move:search_look_waypoint( index )
 		return pt_chosen_idx
 	else
 		utils.abort("object '%s': path_move '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
-			self.object:name(), self.path_walk, index, self.path_look)
+			self.object:name(), self.path_move, index, self.path_look)
 	end
 end
 
