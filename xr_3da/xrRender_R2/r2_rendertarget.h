@@ -108,6 +108,7 @@ private:
 
 	// Combine
 	ref_geom					g_combine;
+	ref_geom					g_combine_VP;		// xy=p,zw=tc
 	ref_geom					g_combine_2UV;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;

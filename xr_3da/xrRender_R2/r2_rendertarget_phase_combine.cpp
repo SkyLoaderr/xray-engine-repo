@@ -4,6 +4,7 @@
 
 #define STENCIL_CULL 0
 
+float	hclip(float v, float dim)		{ return 2.f*v/dim - 1.f; }
 void	CRenderTarget::phase_combine	()
 {
 	u32			Offset					= 0;
@@ -50,29 +51,27 @@ void	CRenderTarget::phase_combine	()
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
-		// float	hemi_correct	= envdesc.hemi_color.w*2;
 		const float minamb			= 0.001f;
 		Fvector4	ambclr			= { _max(envdesc.ambient.x*2,minamb),	_max(envdesc.ambient.y*2,minamb),			_max(envdesc.ambient.z*2,minamb),	0	};
 		Fvector4	envclr			= { envdesc.sky_color.x*2+EPS,	envdesc.sky_color.y*2+EPS,	envdesc.sky_color.z*2+EPS,	envdesc.sky_factor					};
 		Fvector4	fogclr			= { envdesc.fog_color.x,	envdesc.fog_color.y,	envdesc.fog_color.z,		0	};
-					envclr.x		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
-					envclr.y		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
-					envclr.z		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
+					envclr.x		*= 2*ps_r2_sun_lumscale_hemi; 
+					envclr.y		*= 2*ps_r2_sun_lumscale_hemi; 
+					envclr.z		*= 2*ps_r2_sun_lumscale_hemi; 
 
 		// Fill VB
-		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
 		// Fill vertex buffer
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-		pv->set						(EPS,			float(_h+EPS),	EPS,	1.f, C, p0.x, p1.y);	pv++;
-		pv->set						(EPS,			EPS,			EPS,	1.f, C, p0.x, p0.y);	pv++;
-		pv->set						(float(_w+EPS),	float(_h+EPS),	EPS,	1.f, C, p1.x, p1.y);	pv++;
-		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
-		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+		Fvector4* pv				= (Fvector4*)	RCache.Vertex.Lock	(4,g_combine_VP->vb_stride,Offset);
+		pv->set						(hclip(EPS,		_w),	hclip(_h+EPS,	_h),	p0.x, p1.y);	pv++;
+		pv->set						(hclip(EPS,		_w),	hclip(EPS,		_h),	p0.x, p0.y);	pv++;
+		pv->set						(hclip(_w+EPS,	_w),	hclip(_h+EPS,	_h),	p1.x, p1.y);	pv++;
+		pv->set						(hclip(_w+EPS,	_w),	hclip(EPS,		_h),	p1.x, p0.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine_VP->vb_stride);
 
 		// Setup textures
 		IDirect3DBaseTexture9*	e0	= envdesc.sky_r_textures_env[0].second->surface_get();
@@ -86,7 +85,7 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_c				("L_ambient",	ambclr	);
 		RCache.set_c				("env_color",	envclr	);
 		RCache.set_c				("fog_color",	fogclr	);
-		RCache.set_Geometry			(g_combine				);
+		RCache.set_Geometry			(g_combine_VP			);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
