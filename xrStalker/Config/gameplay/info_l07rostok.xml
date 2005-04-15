@@ -158,7 +158,7 @@
 	<info_portion id="bar_resque_research_fail"></info_portion>
 	
 	<info_portion id="bar_resque_research_dead"></info_portion>
-    
+    <info_portion id="bar_spawn_psevdodogs"></info_portion>
     <!-- FREEDOM FLASH QUEST -->
 	<info_portion id="bar_get_research_start">
 		<task>bar_get_information</task>
