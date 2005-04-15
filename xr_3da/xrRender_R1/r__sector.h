@@ -76,6 +76,7 @@ public:
 		VQ_HOM		= (1<<0),
 		VQ_SSA		= (1<<1),
 		VQ_SCISSOR	= (1<<2),
+		VQ_FADE		= (1<<3),
 	};
 public:
 	u32								i_marker;		// input
