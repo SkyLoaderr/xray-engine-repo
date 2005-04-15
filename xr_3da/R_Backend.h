@@ -118,7 +118,7 @@ public:
 	IC	void						set_Constants		(R_constant_table* C);
 	IC	void						set_Constants		(ref_ctable& C)						{ set_Constants(&*C);			}
 
-	IC	void						set_Textures		(STextureList* T);
+		void						set_Textures		(STextureList* T);
 	IC	void						set_Textures		(ref_texture_list& T)				{ set_Textures(&*T);			}
 
 #ifdef _EDITOR
