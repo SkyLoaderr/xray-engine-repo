@@ -17,7 +17,10 @@ void	CLocatorAPI::auth_generate		(xr_vector<xr_string>&	ignore, xr_vector<xr_str
 	auth_options*	_o	= xr_new<auth_options>	();
 	_o->ignore			= ignore	;
 	_o->important		= important	;
-	thread_spawn		(auth_entry,"checksum",0,_o);
+	if( strstr(Core.CompName,"RIP") ){//stupid Prescott :(
+		FS.auth_runtime		(_o);
+	}else
+		thread_spawn		(auth_entry,"checksum",0,_o);
 }
 
 u64		CLocatorAPI::auth_get			()
