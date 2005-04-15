@@ -1324,6 +1324,7 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 void CPHElement::CutVelocity(float l_limit,float a_limit)
 {
 	
+	if(!bActive)return;
 	dVector3 limitedl,limiteda,diffl,diffa;
 	dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
 	dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
