@@ -116,6 +116,7 @@ public:																																				//
 	virtual	dMass*			getMassTensor							();	//aux
 			void			ReAdjustMassPositions					(const Fmatrix &shift_pivot,float density);										//aux
 			void			ResetMass								(float density);																//aux
+			void			CutVelocity								(float l_limit,float a_limit);
 ///////////////////////////////////////////////////PushOut///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void			set_PushOut								(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere

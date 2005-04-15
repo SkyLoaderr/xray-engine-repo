@@ -132,6 +132,7 @@ virtual		void		cv2obj_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatr
 virtual		void		cv2bone_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}
 virtual	const Fvector&  ControlAccel						()const														=0;
 virtual		float		&FrictionFactor						()															=0;
+virtual		void		CutVelocity							(float l_limit,float a_limit)								;
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };

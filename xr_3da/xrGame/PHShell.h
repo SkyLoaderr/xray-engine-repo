@@ -191,6 +191,7 @@ public:
 	virtual void				AddTracedGeom				(u16 element=0,u16 geom=0);
 	virtual void				SetAllGeomTraced			();
 	virtual void				SetPrefereExactIntegration	();
+	virtual void				CutVelocity					(float l_limit,float a_limit);
 	void CreateSpace()
 	{
 		if(!m_space) 

@@ -1362,3 +1362,9 @@ void CPHShell::SetIgnoreStatic()
 {
 	CPHCollideValidator::SetStaticNotCollide(*this);
 }
+void CPHShell::CutVelocity(float l_limit,float a_limit)
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)(*i)->CutVelocity(l_limit,a_limit);
+}

@@ -409,3 +409,14 @@ bool CPHWorld::IsFreezed()
 {
 	return b_world_freezed;
 }
+
+void CPHWorld::CutVelocity(float l_limit,float a_limit)
+{
+	PH_OBJECT_I			i_object;
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		obj->CutVelocity(l_limit,a_limit);
+		++i_object;
+	}
+}

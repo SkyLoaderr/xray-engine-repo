@@ -140,6 +140,19 @@ IC	void	dMatrixSmallDeviation(const dReal* matrix33_from,const dReal* matrix33_t
 	vector_dev[2]=matrix33_from[4]-matrix33_to[4];
 }
 
+IC	void	dVectorLimit(const dReal* v,float l,dReal* lv)
+{
+	dReal mag		=	_sqrt(dDOT(v,v));
+	if(mag>l)
+	{
+		dReal f=mag/l;
+		lv[0]=v[0]/f;lv[1]=v[1]/f;lv[2]=v[2]/f;
+	}
+	else
+	{
+		dVectorSet(lv,v);
+	}
+}
 IC	void	dMatrixSmallDeviationAdd(const dReal* matrix33_from,const dReal* matrix33_to,dReal* vector_dev)
 {
 	vector_dev[0]+=matrix33_from[10]-matrix33_to[10];

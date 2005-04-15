@@ -1,5 +1,6 @@
 LIBRARY ODE
 EXPORTS
+dxStepBody
 dAreConnected
 dAreConnectedExcluding
 dBodyAddForce

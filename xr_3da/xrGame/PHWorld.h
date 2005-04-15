@@ -59,6 +59,7 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 
 	void						FrameStep						(dReal step=0.025f)			;
 	void						Step							()							;
+	void						CutVelocity						(float l_limit, float a_limit);
 	void 						Freeze							()							;
 	void 						UnFreeze						()							;
 	void						AddFreezedObject				(CPHObject* obj)			;
