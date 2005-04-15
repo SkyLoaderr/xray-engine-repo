@@ -501,6 +501,9 @@ function val_suicide_stalker_died(actor, npc)
 end
 
 
+function mil_bomb_explode (actor, npc)
+    printf ("WALL EXPLODED")
+end
 
 -- GARBAGE
 function meet_seriy_fail(actor, npc)
