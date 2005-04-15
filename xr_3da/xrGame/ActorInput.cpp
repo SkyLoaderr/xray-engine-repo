@@ -338,12 +338,28 @@ void CActor::ActorUse()
 		{
 			if (object)
 			{
-				if(smart_cast<CCar*>(object)) if(use_Vehicle(object))			return;
-				switch (object->CLS_ID)
-				{
-				//case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
-				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
-				}
+				if(smart_cast<CCar*>(object)) 
+					if(use_Vehicle(object)){
+						PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+						if (I){
+							CTorch* torch = smart_cast<CTorch*>(I);
+							if (torch) torch->Switch(false);
+						}
+						return;
+					}	
+
+
+
+				if(object->CLS_ID == CLSID_OBJECT_W_MOUNTED)
+					if(use_MountedWeapon(object)){
+						PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+						if (I){
+							CTorch* torch = smart_cast<CTorch*>(I);
+							if (torch) torch->Switch(false);
+						}
+					return;
+					}	
+				
 			}
 
 		}
