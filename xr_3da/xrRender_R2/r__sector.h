@@ -92,6 +92,6 @@ public:
 	void							dbg_draw		();
 };
 
-extern	CPortalTraverser			PortalTraverser;
+extern	CPortalTraverser			PortalTraverser	;
 
 #endif // !defined(AFX_PORTAL_H__1FC2D371_4A19_49EA_BD1E_2D0F8DEBBF15__INCLUDED_)
