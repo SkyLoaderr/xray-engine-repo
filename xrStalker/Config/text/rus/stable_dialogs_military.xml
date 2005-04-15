@@ -904,7 +904,7 @@
         <text>Вот это правильный подход. 2500 от нас, и кучу снаряжения на базе - трупов там будет много, это я тебе обещаю. И нам поможешь и сам доволен будешь. Тат как?</text>
     </string>
     <string id="mil_skull_dialog_213">
-        <text>Я готов. Я сообщу вам как только разберусь с ним. </text>
+        <text>Я готов. Я сообщу вам как только разберусь с ним.</text>
     </string>
     <string id="mil_skull_dialog_214">
         <text>Давай.</text>
@@ -920,6 +920,12 @@
     </string>
     <string id="mil_skull_dialog_401">
         <text>Хорошая работа. Получи свои деньги. Если хочешь, иди с нами.</text>
+    </string>
+    <string id="mil_skull_dialog_402">
+        <text>До встречи.</text>
+    </string>
+    <string id="mil_skull_dialog_501">
+        <text>Спасибо за работу.</text>
     </string>
     <string id="mil_trader_dialog_0">
         <text>Ну, чего приволок ?</text>
