@@ -44,10 +44,7 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (!m)
 		return;
 
-	MemorySpace::CHitObject			hit_object = *m;
-	hit_object.m_squad_mask.assign	(m_object->agent_manager().member().mask(m_object));
-
-	object().memory().hit().add		(hit_object);
+	object().memory().hit().add		(*m);
 	
 //	object().agent_manager().member().register_in_combat(m_object);
 }
