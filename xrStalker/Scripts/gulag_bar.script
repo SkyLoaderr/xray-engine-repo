@@ -342,19 +342,19 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_1", 
 			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[1],
+			prior = 6, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_2", 
 			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[1],
+			prior = 6, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_commander", 
 			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[1],
+			prior = 6, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:profile_name() == "bar_svoboda_attack_commander"
