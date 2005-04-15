@@ -179,7 +179,9 @@ function act_state_mgr_end:execute()
 			else
 				self.object:set_item(object.idle, self.object:best_weapon())
 				return
-			end						
+			end
+		else
+			self.object:set_item(object.idle, self.object:best_weapon())
 		end
 	end
 end
