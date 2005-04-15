@@ -536,20 +536,19 @@ function process_map_spot(info_id)
 
 	elseif info_id == "agroprom_military_case_done" then
 		set_task_state(task.completed, "agroprom_get_military_documents", 0)
-		remove_location(500, "bar_barman_location")
-
+			
 	elseif info_id == "bar_svoboda_rg6_done" then
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
-
+	
 	elseif info_id == "bar_kill_borov_done" then
 		set_task_state(task.completed, "bar_dolg_borov_quest", 0)
-
+	
 	elseif info_id == "bar_kill_svoboda_ambush_done" then
 		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
-
+	
 	elseif info_id == "bar_kill_svoboda_leader_done" then
 		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
-
+	
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		add_location(502, "bar_hunter_toz_location")
 
@@ -623,6 +622,7 @@ function process_map_spot(info_id)
 
 	elseif info_id == "bar_kill_svoboda_ambush_killed" then
 		remove_location(514, "bar_svoboda_ambush_tiran_location")
+		add_location(507, "bar_dolg_voronin_location")
 	
 	elseif info_id == "bar_dolg_community_leader" then
 		remove_location(505, "bar_dolg_captain_ivancov_location")
