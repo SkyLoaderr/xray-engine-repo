@@ -140,7 +140,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 		{
 			Fvector	dir2portal;
 			dir2portal.sub		(PORTAL->S.P,	PortalTraverser.i_vBase);
-			float R				=	PORTAL->S.R;
+			float R				=	PORTAL->S.R	;
 			float distSQ		=	dir2portal.square_magnitude();
 			float ssa			=	R*R/distSQ;
 			dir2portal.div		(_sqrt(distSQ));
