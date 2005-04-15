@@ -59,6 +59,7 @@ function heli_move:reset_scheme( loading )
 	if loading then
 		self.state            = xr_logic.pstor_retrieve( self.object, "st"  )
 		self.last_index       = xr_logic.pstor_retrieve( self.object, "li"  )
+		self.next_index       = xr_logic.pstor_retrieve( self.object, "ni"  )
 		self.last_look_index  = xr_logic.pstor_retrieve( self.object, "lli" )
 		self.look_finish_time = xr_logic.pstor_retrieve( self.object, "lft" )
 		self.look_duration    = xr_logic.pstor_retrieve( self.object, "ld"  )
@@ -68,6 +69,7 @@ function heli_move:reset_scheme( loading )
 
 		self.state            = nil
 		self.last_index       = nil
+		self.next_index       = nil
 		self.last_look_index  = nil
 		self.look_finish_time = nil
 		self.look_duration    = nil
@@ -80,6 +82,7 @@ end
 function heli_move:save()
 	xr_logic.pstor_store( self.object, "st",  self.state )
 	xr_logic.pstor_store( self.object, "li",  self.last_index       or false )
+	xr_logic.pstor_store( self.object, "ni",  self.next_index       or false )
 	xr_logic.pstor_store( self.object, "lli", self.last_look_index  or false )
 	xr_logic.pstor_store( self.object, "lft", self.look_finish_time or false )
 	xr_logic.pstor_store( self.object, "ld",  self.look_duration    or false )
