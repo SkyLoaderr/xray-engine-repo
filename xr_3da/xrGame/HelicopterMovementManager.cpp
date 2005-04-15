@@ -79,8 +79,8 @@ void SHeliMovementState::UpdatePatrolPath()
 
 		}else{
 			type = eMovNone;
-			curLinearSpeed	= 0.0f;
-			curLinearAcc	= 0.0f;
+//			curLinearSpeed	= 0.0f;
+//			curLinearAcc	= 0.0f;
 		}
 	}
 }
@@ -91,8 +91,8 @@ void SHeliMovementState::UpdateMovToPoint()
 		float dist = GetDistanceToDestPosition();
 		parent->callback(GameObject::eHelicopterOnPoint)(dist,currP, -1);
 		type = eMovNone;
-		curLinearSpeed	= 0.0f;
-		curLinearAcc	= 0.0f;
+//		curLinearSpeed	= 0.0f;
+//		curLinearAcc	= 0.0f;
 	}
 }
 extern float STEP;
@@ -107,7 +107,8 @@ bool SHeliMovementState::AlreadyOnPoint()
 		dir.setHP(currPathH,0.0f);
 		P1.mad(dir, curLinearSpeed*STEP);
 		float new_dist = desiredPoint.distance_to(P1);
-		return (new_dist>dist);
+		bool res = new_dist>dist;
+		return res;
 	}
 	return false;
 }

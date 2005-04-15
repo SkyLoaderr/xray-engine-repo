@@ -322,6 +322,7 @@ void CHelicopter::MoveStep()
 		pathDir = dir;
 		dir.getHP(desired_H, desired_P);
 		
+//		dist *= fabsf(desired_H)
 
 		angle_lerp	(m_movement.currPathH, desired_H, m_movement.angularSpeedHeading, STEP);
 		angle_lerp	(m_movement.currPathP, desired_P, m_movement.angularSpeedPitch, STEP);
@@ -343,7 +344,23 @@ void CHelicopter::MoveStep()
 		m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
 		
 		clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
-	}//if(m_movement.type != eMovNone)
+	}else{ //go stopping
+		if( !fis_zero(m_movement.curLinearSpeed) ){
+			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
+
+			float vp = m_movement.curLinearSpeed*STEP+(m_movement.curLinearAcc*STEP*STEP)/2.0f;
+			dir.setHP(m_movement.currPathH, m_movement.currPathP);
+			dir.normalize_safe();
+			m_movement.currP.mad	(dir, vp);
+			m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
+			clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
+
+		}else{
+			m_movement.curLinearAcc		= 0.0f;
+			m_movement.curLinearSpeed	= 0.0f;
+		}
+		
+	};
 
 	if(	m_body.b_looking_at_point){
 		Fvector desired_dir;
