@@ -810,59 +810,59 @@
     <string id="mil_max_dialog_common3_1">
         <text>В главном здании, на первом этаже, слева сидит Скряга. Он у нас занимается всей торговлей. Можешь ему также и артефакты предложить.</text>
     </string>
-    <string id="mil_patrol_dialog1_1">
+    <string id="mil_patrol_dialog1_0">
         <text>Чувак ты на базе Свободы, так шо веди себя соответствующе.</text>
     </string>
-    <string id="mil_patrol_dialog1_2">
+    <string id="mil_patrol_dialog1_1">
         <text>Что хочу то и делаю.</text>
     </string>
-    <string id="mil_patrol_dialog1_3">
+    <string id="mil_patrol_dialog1_2">
         <text>Ага, мечтатель. Шоб мы тебя не видели и не слышали, а будешь баловать - пеняй на себя. Был тут один - да я такой, да я сякой, да я таких как вы.....В общем непонятливый попался, так мы его голяком по минному полю пустили прогуляться, а Скряга орал, когда ему на голову рука этого типа свалилась - надо было слышать... Вкурил ?</text>
     </string>
-    <string id="mil_patrol_dialog1_4">
+    <string id="mil_patrol_dialog1_3">
         <text>Да понял я, не дурак. Да и сапером никогда стать не мечтал.</text>
     </string>
-    <string id="mil_patrol_dialog1_5">
+    <string id="mil_patrol_dialog1_4">
         <text>Молодец - свободен.</text>
     </string>
-    <string id="mil_patrol_dialog2_1">
+    <string id="mil_patrol_dialog2_0">
         <text>А свежее мясо.. Поди сюда.</text>
     </string>
-    <string id="mil_patrol_dialog2_10">
-        <text>Эээ....Я пожалуй пойду.</text>
+    <string id="mil_patrol_dialog2_1">
+        <text>Не понял?</text>
     </string>
-    <string id="mil_patrol_dialog2_11">
+    <string id="mil_patrol_dialog2_10">
         <text>Куда? Оставайся - не даром же аборигены съели Кука, что-то значит в этом есть.</text>
     </string>
-    <string id="mil_patrol_dialog2_12">
+    <string id="mil_patrol_dialog2_11">
         <text>Я НЕ ВКУСНЫЙ!!! Я часто в детстве болел - желтухой, рахитом, геморроем...</text>
     </string>
-    <string id="mil_patrol_dialog2_13">
+    <string id="mil_patrol_dialog2_12">
         <text>От блин, что ж ты сразу не сказал, только время зря тратили....Эх, пацаны, невкусный попался. Вали отсюда.</text>
     </string>
     <string id="mil_patrol_dialog2_2">
-        <text>Не понял?</text>
-    </string>
-    <string id="mil_patrol_dialog2_3">
         <text>Чего ты не понял? Что историю про непонятливых не слышал еще?</text>
     </string>
-    <string id="mil_patrol_dialog2_4">
+    <string id="mil_patrol_dialog2_3">
         <text>Не понял при чем здесь мясо.</text>
     </string>
-    <string id="mil_patrol_dialog2_5">
+    <string id="mil_patrol_dialog2_4">
         <text>Ну, понимаешь времена нынче голодные...</text>
     </string>
-    <string id="mil_patrol_dialog2_6">
+    <string id="mil_patrol_dialog2_5">
         <text>В смысле?</text>
     </string>
-    <string id="mil_patrol_dialog2_7">
+    <string id="mil_patrol_dialog2_6">
         <text>Да в прямом, голодный боец - плохой боец. А нас тут вон скоко...</text>
     </string>
-    <string id="mil_patrol_dialog2_8">
+    <string id="mil_patrol_dialog2_7">
         <text>И че?</text>
     </string>
-    <string id="mil_patrol_dialog2_9">
+    <string id="mil_patrol_dialog2_8">
         <text>Где стоко мяса напастись? А тут как раз ты...</text>
+    </string>
+    <string id="mil_patrol_dialog2_9">
+        <text>Эээ....Я пожалуй пойду.</text>
     </string>
     <string id="mil_skull_dialog_2">
         <text>Кто это к нам пришел ?</text>

@@ -1443,94 +1443,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_patrol_dialog1">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_patrol_dialog1_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_patrol_dialog1_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_patrol_dialog1_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_patrol_dialog1_5</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_patrol_dialog1_4</text>
-                <give_info>mil_patrol1_talk</give_info>
-                <next>5</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_patrol_dialog2">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_patrol_dialog2_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_patrol_dialog2_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_patrol_dialog2_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_patrol_dialog2_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_patrol_dialog2_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="7">
-                <text>mil_patrol_dialog2_7</text>
-                <next>8</next>
-            </phrase>
-            <phrase id="8">
-                <text>mil_patrol_dialog2_8</text>
-                <next>9</next>
-            </phrase>
-            <phrase id="9">
-                <text>mil_patrol_dialog2_9</text>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>mil_patrol_dialog2_10</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>mil_patrol_dialog2_11</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="13">
-                <text>mil_patrol_dialog2_13</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_patrol_dialog2_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="12">
-                <text>mil_patrol_dialog2_12</text>
-                <give_info>mil_patrol2_talk</give_info>
-                <next>13</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_max_dialog_common1">
         <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
@@ -1936,16 +1848,96 @@
                 <give_info>mil_sniper_get_job</give_info>
                 <next>401</next>
             </phrase>
+            <phrase id="401">
+                <text>mil_skull_dialog_401</text>
+                <action>dialogs_military.mil_dolg_sniper_complete</action>
+                <action>dialogs_military.mil_dolg_payment</action>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
                 <next>300</next>
                 <next>400</next>
             </phrase>
-            <phrase id="401">
-                <text>mil_skull_dialog_401</text>
-                <action>dialogs_military.mil_dolg_sniper_complete</action>
-                <action>dialogs_military.mil_dolg_payment</action>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_patrol_dialog1">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_patrol_dialog1_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_patrol_dialog1_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_patrol_dialog1_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_patrol_dialog1_4</text>
+            </phrase>
+            <phrase id="3">
+                <text>mil_patrol_dialog1_3</text>
+                <give_info>mil_patrol1_talk</give_info>
+                <next>4</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_patrol_dialog2">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_patrol_dialog2_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_patrol_dialog2_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_patrol_dialog2_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_patrol_dialog2_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_patrol_dialog2_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_patrol_dialog2_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="7">
+                <text>mil_patrol_dialog2_7</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="8">
+                <text>mil_patrol_dialog2_8</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="9">
+                <text>mil_patrol_dialog2_9</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>mil_patrol_dialog2_10</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_patrol_dialog2_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="12">
+                <text>mil_patrol_dialog2_12</text>
+            </phrase>
+            <phrase id="11">
+                <text>mil_patrol_dialog2_11</text>
+                <give_info>mil_patrol2_talk</give_info>
+                <next>12</next>
             </phrase>
         </phrase_list>
     </dialog>
