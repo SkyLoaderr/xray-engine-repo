@@ -34,6 +34,7 @@
     </info_portion>
 	<info_portion id="mil_sniper_job_failed"></info_portion>
 	<info_portion id="mil_sniper_job_complete"></info_portion>
+	<info_portion id="mil_sniper_final"></info_portion>
 	<info_portion id="mil_dolg_dead"></info_portion>
 	
 	<!-- Диалог с охранником у ворот-->
