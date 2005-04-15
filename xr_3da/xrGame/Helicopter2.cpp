@@ -339,9 +339,10 @@ void SHeliEnemy::load(IReader &input_packet)
 void SHeliBodyState::reinit()
 {
 	type = eBodyByPath;
-	currBodyH=currBodyP=currBodyB= 0.0f;
 	b_looking_at_point = false;
 	looking_point.set(0.0f,0.0f,0.0f);
+	parent->XFORM().getHPB(currBodyH, currBodyP, currBodyB);
+
 }
 
 void SHeliBodyState::LookAtPoint			(Fvector point, bool do_it)

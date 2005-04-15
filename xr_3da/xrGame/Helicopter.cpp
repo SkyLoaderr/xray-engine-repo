@@ -31,7 +31,8 @@ CHelicopter::CHelicopter()
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
-	m_movement.parent = this;
+	m_movement.parent	= this;
+	m_body.parent		= this;
 }
 
 CHelicopter::~CHelicopter()
@@ -64,9 +65,6 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 
 void CHelicopter::init()
 {
-	m_movement.type				= eMovNone;
-	m_enemy.type				= eEnemyNone;
-	m_body.type					= eBodyByPath;
 	m_cur_x_rot					= 0.0f;
 	m_cur_y_rot					= 0.0f;
 	m_tgt_x_rot					= 0.0f;
@@ -84,15 +82,14 @@ void CHelicopter::init()
 	m_last_rocket_attack		= Device.dwTimeGlobal;
 
 	SetfHealth					(100.0f);
-
-	m_body.b_looking_at_point			= false;
-	m_movement.currPatrolVertex			= NULL;
-	m_movement.currPatrolVertex			= NULL;
-	m_movement.currPatrolPath			= NULL;
-	m_movement.need_to_del_path			= false;
-
 }
 
+void CHelicopter::reinit(){
+	inherited::reinit	();
+	m_movement.reinit	();
+	m_body.reinit		(); 
+	m_enemy.reinit		();
+};
 
 
 void CHelicopter::Load(LPCSTR section)
@@ -175,9 +172,6 @@ void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGa
 
 BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 {
-	m_movement.reinit	();
-	m_body.reinit		(); 
-	m_enemy.reinit		();
 
 	SetfHealth(100.0f);
 	setState(CHelicopter::eAlive);
@@ -191,7 +185,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 
 	CPHSkeleton::Spawn((CSE_Abstract*)(DC));
 	for(u32 i=0; i<4; ++i)
-		CRocketLauncher::SpawnRocket(*m_sRocketSection, smart_cast<CGameObject*>(this/*H_Parent()*/));
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, smart_cast<CGameObject*>(this));
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract	=(CSE_Abstract*)(DC);
@@ -260,18 +254,6 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	setEnabled						(true);
 
 
-	m_movement.desiredPoint						= XFORM().c;
-	float bbb;
-	XFORM().getHPB						(m_movement.currPathH, m_movement.currPathP, bbb);
-
-	m_movement.currP					= m_movement.desiredPoint;
-
-	m_movement.curLinearSpeed			= 0.0f;
-	m_movement.curLinearAcc				= 0.0f;
-	m_movement.speedInDestPoint			= 0.0f;
-	XFORM().getHPB(m_body.currBodyH, m_body.currBodyP, m_body.currBodyB);
-
-	m_body.b_looking_at_point		=	false;
 
 	m_stepRemains						= 0.0f;
 
@@ -284,7 +266,9 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 
 	if(g_Alive())processing_activate	();
 	TurnEngineSound(false);
-	return								(TRUE);
+
+
+	return TRUE;
 }
 
 void CHelicopter::net_Destroy()
@@ -369,7 +353,8 @@ void CHelicopter::MoveStep()
 		desired_dir.getHP(center_desired_H, tmp_P);
 		angle_lerp			(m_body.currBodyH, center_desired_H, m_movement.angularSpeedHeading, STEP);
 	}else{
-		m_body.currBodyH = m_movement.currPathH;
+		angle_lerp			(m_body.currBodyH, m_movement.currPathH, m_movement.angularSpeedHeading, STEP);
+//		m_body.currBodyH = m_movement.currPathH;
 	}
 
 
@@ -476,6 +461,7 @@ void CHelicopter::save(NET_Packet &output_packet)
 	m_movement.save	(output_packet);
 	m_body.save		(output_packet);
 	m_enemy.save	(output_packet);
+	output_packet.w_vec3(XFORM().c);
 }
 
 void CHelicopter::load(IReader &input_packet)
@@ -483,4 +469,5 @@ void CHelicopter::load(IReader &input_packet)
 	m_movement.load	(input_packet);
 	m_body.load		(input_packet);
 	m_enemy.load	(input_packet);
+	input_packet.r_fvector3(XFORM().c);
 }

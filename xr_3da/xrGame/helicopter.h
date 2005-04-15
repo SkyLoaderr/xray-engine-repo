@@ -31,6 +31,7 @@ struct SHeliEnemy{
 
 enum EHeliBodyState{eBodyByPath,eBodyToPoint};
 struct SHeliBodyState{
+	CHelicopter*					parent;
 	EHeliBodyState					type;
 	//settings, constants
 	float							model_pitch_k;
@@ -229,7 +230,7 @@ public:
 	void							setState_script	(u32 s)					{setState((CHelicopter::EHeliState)s);};
 
 	void							init		();
-	virtual	void					reinit		()							{inherited::reinit	();};
+	virtual	void					reinit		();
 
 	virtual	void					Load				(LPCSTR		section);
 	virtual	void					reload				(LPCSTR		section);

@@ -44,9 +44,18 @@ void SHeliMovementState::reinit()
 	patrol_begin_idx			= 0;
 	patrol_path_name			= "";
 	need_to_del_path			= false;
-	currP.set					(0.0f,0.0f,0.0f);
-	currPathH					= 0.0f;
-	currPathP					= 0.0f;
+	curLinearSpeed				= 0.0f;
+	curLinearAcc				= 0.0f;
+	round_center.set			(0.0f,0.0f,0.0f);
+	round_radius				= 0.0f;
+	round_reverse				= false;
+	desiredPoint				= parent->XFORM().c;
+	currP						= desiredPoint;
+	float bbb;
+	parent->XFORM().getHPB		(currPathH, currPathP, bbb);
+
+	speedInDestPoint			= 0.0f;
+
 }
 float SHeliMovementState::GetDistanceToDestPosition()
 {
