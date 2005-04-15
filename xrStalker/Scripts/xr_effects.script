@@ -355,6 +355,34 @@ function bar_freedom_angry_actor(actor,npc)
 		npc:set_relation(game_object.enemy, actor)
 	end
 end
+function bar_check_heli_scene(actor,npc)
+	if not db.actor then return end
+	
+	local t = db.zone_by_name["bar_heli_crush_spam"]
+	if not t then
+		printf("[%s]",utils.to_str(t:position():distance_to(db.actor:position())))
+	end
+	
+	if not t or
+	   t:position():distance_to(db.actor:position()) < 100
+	then
+		return
+	end
+	
+	if db.actor:has_info("bar_get_research_done") or
+	   db.actor:has_info("bar_get_research_fail") or
+	   db.actor:has_info("bar_get_research_dead") or
+	   db.actor:has_info("bar_resque_research_done") or
+	   db.actor:has_info("bar_resque_research_fail") or
+	   db.actor:has_info("bar_resque_research_dead")
+	then
+		printf("pseudodogs")
+		db.actor:give_info_portion("bar_spawn_heli_psevdodogs")		
+	else
+		printf("crushes")
+		db.actor:give_info_portion("bar_heli_scene_stay_online")
+	end
+end
 
 function bar_arena_introduce(actor, npc)
 	if db.actor:has_info("bar_arena_pseudodog_choosen") then

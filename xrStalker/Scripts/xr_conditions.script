@@ -192,19 +192,6 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for BAR - ROSTOK
 ------------------------------------------------------------------------------------
-function must_stay_online(actor,npc)
-	if db.actor:has_info("bar_get_research_done") or
-	   db.actor:has_info("bar_get_research_fail") or
-	   db.actor:has_info("bar_get_research_dead") or
-	   db.actor:has_info("bar_resque_research_done") or
-	   db.actor:has_info("bar_resque_research_fail") or
-	   db.actor:has_info("bar_resque_research_dead")
-	then
-		return false
-	end
-	return true
-end
-------------------------------------------------------------------------------------
 function bar_arena_actor_inside(actor,npc)
 	local t = db.zone_by_name["bar_arena_waiter"]
 	if t and db.actor then

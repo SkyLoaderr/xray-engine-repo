@@ -536,7 +536,7 @@ function process_map_spot(info_id)
 
 	elseif info_id == "agroprom_military_case_done" then
 		set_task_state(task.completed, "agroprom_get_military_documents", 0)
-		
+		remove_location(500, "bar_barman_location")
 
 	elseif info_id == "bar_svoboda_rg6_done" then
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
