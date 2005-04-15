@@ -216,6 +216,22 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	spatial_register();
 	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
 }
+void CPHSimpleCharacter::SwitchOFFInitContact()
+{
+	VERIFY(b_exist);
+	dGeomUserDataSetPhObject(m_wheel,0);
+	dGeomUserDataSetPhObject(m_geom_shell,0);
+	dGeomUserDataSetPhObject(m_hat,0);
+
+}
+void CPHSimpleCharacter::SwitchInInitContact()
+{
+	VERIFY(b_exist);
+	dGeomUserDataSetPhObject(m_wheel,(CPHObject*)this);
+	dGeomUserDataSetPhObject(m_geom_shell,(CPHObject*)this);
+	dGeomUserDataSetPhObject(m_hat,(CPHObject*)this);
+
+}
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;

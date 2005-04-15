@@ -309,8 +309,8 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 
 
 	//////////////////////////////////pars///////////////////////////////////////////
-	int		num_it=2;
-	int		num_steps=10;
+	int		num_it=8;
+	int		num_steps=5;
 	float	resolve_depth=0.01f;
 	STestCallbackPars::callback_cfm_factor=1.f;//300000000.f;
 	STestFootCallbackPars::callback_erp_factor=1.f;//0.00000001f;
@@ -363,7 +363,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 		save_max(mf_othrs,gf.mf_othrs()*k);
 		save_max(mt_othrs,gf.mt_othrs()*k);
 	}
-
+	m_character->SwitchOFFInitContact();
 	bool	ret=false;
 	for(int m=0;num_steps>m;++m)
 	{
@@ -372,13 +372,14 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 		ret=false;
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
+			Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 			EnableCharacter();
 			ph_world->Step();
 			ph_world->CutVelocity(max_vel,max_a_vel);
-			if(max_depth	<	resolve_depth	&&
-				gf.mf_slf_y()<	mf_slf_y		&&
-				gf.mf_othrs()<	mf_othrs		&&
-				gf.mt_othrs()<	mt_othrs
+			if(max_depth	<	resolve_depth	//&&
+				//gf.mf_slf_y()<	mf_slf_y		&&
+				//gf.mf_othrs()<	mf_othrs		&&
+				//gf.mt_othrs()<	mt_othrs
 			 ) 
 			{
 				ret=true;
@@ -387,6 +388,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 		}
 		if(!ret) break;
 	}
+	m_character->SwitchInInitContact();
 	vl.Deactivate();
 	gf.Deactivate();
 	ph_world->UnFreeze();

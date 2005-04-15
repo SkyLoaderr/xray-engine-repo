@@ -146,6 +146,8 @@ public:
 	virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback);
 	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
 	void					SetStaticContactCallBack			(ContactCallbackFun* calback);
+	virtual		void		SwitchOFFInitContact				()					;
+	virtual		void		SwitchInInitContact					()					;
 	virtual		void		SetAcceleration						(Fvector accel)		;
 	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
 	virtual     void		SetCamDir							(const Fvector& cam_dir);

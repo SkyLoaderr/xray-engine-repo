@@ -71,6 +71,8 @@ public:
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
 	virtual	void		Enable								()															;											//!!
+	virtual	void		SwitchOFFInitContact				()															=0;
+	virtual	void		SwitchInInitContact					()															=0;
 			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
 			bool		ActorMovable						()															{return b_actor_movable;}
 			void		SetActorMovable						(bool v)													{b_actor_movable=v;}
