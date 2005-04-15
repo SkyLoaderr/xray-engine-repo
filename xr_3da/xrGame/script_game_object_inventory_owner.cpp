@@ -863,7 +863,6 @@ STasks CScriptGameObject::GetAllGameTasks()
 			STaskObjective& to	= t.m_objectives.back();
 			to.m_name			= gt.ObjectiveDesc(i);
 			to.m_state			= gt.ObjectiveState(i);
-			int iiii=0;
 		}
 	}
 	return tasks;
