@@ -15,6 +15,8 @@
 	<info_portion id="mil_sniper2_dead"></info_portion>
 	<info_portion id="mil_dolg_attack"></info_portion>
 	<info_portion id="mil_patrol_dead"></info_portion>
+	<info_portion id="mil_dolg_before_explode"></info_portion>
+	<info_portion id="mil_dolg_after_explode"></info_portion>
 		
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
