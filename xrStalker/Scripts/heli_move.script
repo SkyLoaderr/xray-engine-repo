@@ -58,12 +58,16 @@ function heli_move:reset_scheme( loading )
 
 	if loading then
 		self.state            = xr_logic.pstor_retrieve( self.object, "st"  )
-		self.last_index       = xr_logic.pstor_retrieve( self.object, "li"  )
-		self.next_index       = xr_logic.pstor_retrieve( self.object, "ni"  )
-		self.last_look_index  = xr_logic.pstor_retrieve( self.object, "lli" )
-		self.look_finish_time = xr_logic.pstor_retrieve( self.object, "lft" )
-		self.look_duration    = xr_logic.pstor_retrieve( self.object, "ld"  )
+		self.last_index       = xr_logic.pstor_retrieve( self.object, "li"  ) or nil
+		self.next_index       = xr_logic.pstor_retrieve( self.object, "ni"  ) or nil
+		self.last_look_index  = xr_logic.pstor_retrieve( self.object, "lli" ) or nil
+		self.look_finish_time = xr_logic.pstor_retrieve( self.object, "lft" ) or nil
+		self.look_duration    = xr_logic.pstor_retrieve( self.object, "ld"  ) or nil
 		self.was_callback     = xr_logic.pstor_retrieve( self.object, "wc"  )
+
+		if self.look_finish_time then
+			self.look_finish_time = self.look_finish_time + device():time_global()
+		end
 	else
 		self.heliObject:ClearEnemy()
 
@@ -80,11 +84,13 @@ function heli_move:reset_scheme( loading )
 end
 
 function heli_move:save()
+	local lft = self.look_finish_time and ( self.look_finish_time - device():time_global() )
+
 	xr_logic.pstor_store( self.object, "st",  self.state )
 	xr_logic.pstor_store( self.object, "li",  self.last_index       or false )
 	xr_logic.pstor_store( self.object, "ni",  self.next_index       or false )
 	xr_logic.pstor_store( self.object, "lli", self.last_look_index  or false )
-	xr_logic.pstor_store( self.object, "lft", self.look_finish_time or false )
+	xr_logic.pstor_store( self.object, "lft", lft                   or false )
 	xr_logic.pstor_store( self.object, "ld",  self.look_duration    or false )
 	xr_logic.pstor_store( self.object, "wc",  self.was_callback )
 end
