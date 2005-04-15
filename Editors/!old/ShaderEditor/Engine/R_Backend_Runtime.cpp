@@ -112,10 +112,10 @@ void CBackend::set_Textures			(STextureList* _T)
 			u32		load_id_remapped	= load_id-256;
 			if (load_id_remapped>_last_vs)	_last_vs	=	load_id_remapped;
 			if (textures_vs[load_id_remapped]!=load_surf)	{
+				textures_vs[load_id_remapped]	= load_surf			;
 				stat.textures	++;
-				textures_vs[it]	= load_surf			;
 				if (load_surf)	{
-					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
+					PGO					(Msg("PGO:tex%d:%s",load_id,load_surf->cName.c_str()));
 					load_surf->Apply	(load_id);
 				}
 			}
@@ -123,10 +123,10 @@ void CBackend::set_Textures			(STextureList* _T)
 			// ordinary pixel surface
 			if (load_id>_last_ps)		_last_ps	=	load_id;
 			if (textures_ps[load_id]!=load_surf)	{
-				stat.textures	++;
-				textures_ps[it]	= load_surf			;
+				textures_ps[load_id]	= load_surf			;
+				stat.textures			++;
 				if (load_surf)	{
-					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
+					PGO					(Msg("PGO:tex%d:%s",load_id,load_surf->cName.c_str()));
 					load_surf->Apply	(load_id);
 				}
 			}

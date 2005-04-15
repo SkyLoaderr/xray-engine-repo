@@ -100,7 +100,7 @@ void CGameFont::OutSetI			(float x, float y)
 
 void CGameFont::OnRender()
 {
-	VERIFY(g_bRendering);
+	VERIFY				(g_bRendering);
 	if (pShader)		RCache.set_Shader	(pShader);
 
 	if (!(uFlags&fsValid)){
