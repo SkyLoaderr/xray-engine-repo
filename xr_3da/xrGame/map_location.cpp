@@ -65,10 +65,10 @@ void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 	if(s)
 		m_flags.set( eHideInOffline, TRUE);
 
-	int ttl = g_uiSpotXml.ReadAttribInt(path_base, 0, "ttl", 0);
-	if(ttl>0){
+	m_ttl = g_uiSpotXml.ReadAttribInt(path_base, 0, "ttl", 0);
+	if(m_ttl>0){
 		m_flags.set( eTTL, TRUE);
-		m_actual_time = Device.dwTimeGlobal+ttl*1000;
+		m_actual_time = Device.dwTimeGlobal+m_ttl*1000;
 	}
 
 	s = g_uiSpotXml.ReadAttrib(path_base, 0, "pos_to_actor", NULL);
@@ -293,6 +293,16 @@ void CMapLocation::UpdateLevelMap(CUICustomMap* map)
 	UpdateSpot(map, sp);
 }
 
+u16	CMapLocation::AddRef() 
+{
+	++m_refCount; 
+	if(	m_flags.test(eTTL) ){
+		m_actual_time = Device.dwTimeGlobal+m_ttl*1000;
+	}
+
+	return m_refCount;
+};
+
 CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 {
 	R_ASSERT(sp);
@@ -329,3 +339,4 @@ bool CRelationMapLocation::Update()
 	}
 	return true;
 }
+

@@ -28,6 +28,7 @@ private:
 	CMapSpotPointer*		m_minimap_spot_pointer;
 	u16						m_objectID;
 	u16						m_refCount;
+	int						m_ttl;
 	u32						m_actual_time;
 	Fvector					m_position_global; //last global position, actual time only current frame 
 	Ivector2 				m_position_on_map; //last position on parent map, actual time only current frame
@@ -54,7 +55,7 @@ public:
 	shared_str				LevelName						();
 	u16						RefCount						() {return m_refCount;}
 	void					SetRefCount						(u16 c)		{m_refCount=c;}
-	u16						AddRef							() {++m_refCount; return m_refCount;}
+	u16						AddRef							();// {++m_refCount; return m_refCount;}
 	u16						Release							() {--m_refCount; return m_refCount;}
 	virtual		bool		Update							(); //returns actual
 	Fvector					GetLastPosition					() {return m_position_global;};
