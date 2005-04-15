@@ -106,7 +106,8 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 		};
 		if(is_spectator){
 			b_need_to_send_ready =	( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
-									( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && CanBeReady() );
+									( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
+									CanBeReady() && ps->DeathTime > 1000);
 
 		};
 		if(b_need_to_send_ready){

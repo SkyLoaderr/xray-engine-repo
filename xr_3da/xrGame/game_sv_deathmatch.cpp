@@ -482,7 +482,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			{
 				if (xrSCData->ps->DeathTime + 1000 > Device.dwTimeGlobal)
 				{
-					return;
+//					return;
 				}
 			}
 			//------------------------------------------------------------
