@@ -134,12 +134,12 @@ void CBackend::set_Textures			(STextureList* _T)
 	}
 
 	// clear remaining stages (PS)
-	for (; _last_ps<16 && textures_ps[_last_ps]; _last_ps++)	{
+	for (++_last_ps; _last_ps<16 && textures_ps[_last_ps]; _last_ps++)	{
 		textures_ps[_last_ps]			= 0;
 		CHK_DX							(HW.pDevice->SetTexture(_last_ps,NULL));
 	}
 	// clear remaining stages (VS)
-	for (; _last_vs<5 && textures_vs[_last_vs]; _last_vs++)		{
+	for (++_last_vs; _last_vs<5 && textures_vs[_last_vs]; _last_vs++)		{
 		textures_vs[_last_vs]			= 0;
 		CHK_DX							(HW.pDevice->SetTexture(_last_vs+256,NULL));
 	}
