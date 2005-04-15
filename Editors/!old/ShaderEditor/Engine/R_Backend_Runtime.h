@@ -88,7 +88,7 @@ IC	void CBackend::set_Textures			(STextureList* _T)
 				textures_vs[it]	= load_surf			;
 				if (load_surf)	{
 					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
-					load_surf->Apply	(it);
+					load_surf->Apply	(load_id);
 				}
 			}
 		} else {
@@ -99,7 +99,7 @@ IC	void CBackend::set_Textures			(STextureList* _T)
 				textures_ps[it]	= load_surf			;
 				if (load_surf)	{
 					PGO					(Msg("PGO:tex%d:%s",it,load_surf->cName.c_str()));
-					load_surf->Apply	(it);
+					load_surf->Apply	(load_id);
 				}
 			}
 		}
