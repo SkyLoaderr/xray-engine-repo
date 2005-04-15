@@ -159,8 +159,9 @@ function act_state_mgr_end:execute()
 	then
 		if state_lib.states[self.st.target_state].weapon == "fire" then
 			if self.st.look_object ~= nil then
-				if self.object:best_enemy() ~= nil and
-				   self.object:best_enemy():alive() == true
+				if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
+				   self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy and
+				   level.object_by_id(self.st.look_object):alive() == true
 				then
 					self.object:set_item(object.fire1, self.object:best_weapon())
 					return
@@ -711,6 +712,9 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		end
 	end
 end
+function state_manager:get_state()
+	return self.target_state
+end
 function state_manager:update()
 	--printf("Update called")
 	self.planner:update()
@@ -724,6 +728,11 @@ end
 function set_state(npc, state_name, callback, timeout, target, emerg, synsound)
 	if db.storage[npc:id()].state_mgr then
 		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound)
+	end
+end
+function get_state(npc)
+	if db.storage[npc:id()].state_mgr then
+		db.storage[npc:id()].state_mgr:get_state()
 	end
 end
 
