@@ -17,7 +17,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 5, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
+		            end    
 	}
 	table.insert(sj, t)		
 	------
@@ -25,15 +28,21 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 5, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-	}
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
+		            end    
+	}                         
 	table.insert(sj, t)		
 	------
 	t = { section = "logic@mil_freedom_walker3",
 		idle = 0,
 		prior = 5, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
+		            end    
 	}
 	table.insert(sj, t)		
 	------
@@ -47,7 +56,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 4, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	    }
@@ -55,7 +64,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 4, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -63,7 +72,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp3",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 4, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
