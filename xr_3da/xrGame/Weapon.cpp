@@ -1092,10 +1092,15 @@ void CWeapon::setup_physic_shell()
 	CPhysicsShellHolder::setup_physic_shell();
 }
 
+INT		g_iWeaponRemove = 1;
+
 bool CWeapon::NeedToDestroyObject()	const
 {
 	if (GameID() == GAME_SINGLE) return false;
 	if (Remote()) return false;
+	if (H_Parent()) return false;
+	if (g_iWeaponRemove == -1) return false;
+	if (g_iWeaponRemove == 0) return true;
 	if (TimePassedAfterIndependant() > m_dwWeaponRemoveTime)
 		return true;
 

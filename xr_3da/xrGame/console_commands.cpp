@@ -68,6 +68,7 @@ extern	BOOL	g_bShildedBases			;
 extern	BOOL	g_bAfReturnPlayersToBases;
 extern	BOOL	g_b_COD_PickUpMode		;
 extern	BOOL	g_bShowHitSectors		;
+extern	INT		g_iWeaponRemove			;
 
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
@@ -1941,4 +1942,6 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,		"cl_cod_pickup_mode",	&g_b_COD_PickUpMode,	0, 1)	;
 	CMD4(CCC_Integer,		"cl_show_hit_sectors",	&g_bShowHitSectors,	0, 1)	;
+
+	CMD4(CCC_Integer,		"sv_weapon_remove",		&g_iWeaponRemove, -1, 1);
 }

@@ -888,7 +888,10 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		Fvector Angle = pA->o_Angle;
 
 		assign_RP(l_pC->owner, ps);
-
+		//-----------------------------------------------
+		NET_Packet	P2;
+		P2.w_begin	(M_EVENT_PACK);
+		//-----------------------------------------------
 		NET_Packet	P;
 		u_EventGen(P, GE_MOVE_ACTOR, ps->GameID);
 		P.w_vec3(pA->o_Position);
@@ -897,7 +900,17 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		pA->o_Position	= Pos;
 		pA->o_Angle		= Angle;
 //		u_EventSend(P);
-		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));
+//		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));
+		//------------------------------------------------
+		P2.w_u8(u8(P.B.count));
+		P2.w(&P.B.data, P.B.count);
+		//------------------------------------------------
+		u_EventGen(P, GE_ACTOR_MAX_POWER, ps->GameID);
+		//------------------------------------------------
+		P2.w_u8(u8(P.B.count));
+		P2.w(&P.B.data, P.B.count);
+		//------------------------------------------------
+		m_server->SendTo(l_pC->ID,P2,net_flags(TRUE,TRUE));		
 	};
 };
 

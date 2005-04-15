@@ -12,6 +12,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "FoodItem.h"
+#include "ActorCondition.h"
 
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
@@ -197,8 +198,14 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			unaffected_r_torso.yaw	= r_torso.yaw;
 			unaffected_r_torso.pitch= r_torso.pitch;
 			unaffected_r_torso.roll	= r_torso.roll;
+
+			r_torso_tgt_roll		= 0;
 			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);
 			Level().CurrentControlEntity()->ForceTransform(M);
+		}break;
+	case GE_ACTOR_MAX_POWER:
+		{
+			conditions().MaxPower();
 		}break;
 	}
 }

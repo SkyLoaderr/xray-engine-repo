@@ -30,7 +30,7 @@ public:
 	virtual void load	(IReader &input_packet);
 
 	float GetHealth() const {return m_fHealth;}
-	float GetPower() const {return m_fPower;}
+	float GetPower() const {return m_fPower;}	
 	float GetSatiety() const {return m_fSatiety;}
 	float GetRadiation() const {return m_fRadiation;}
 	float GetPsyHealth() const {return m_fPsyHealth;}
@@ -48,6 +48,8 @@ public:
 	void ChangeSatiety(float value);
 	void ChangeRadiation(float value);
 	void ChangePsyHealth(float value);
+
+	void MaxPower()	{m_fPower = m_fPowerMax;};
 
 	void ChangeBleeding(float percent);
 
