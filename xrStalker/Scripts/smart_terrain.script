@@ -30,7 +30,7 @@ if not editor() then
 	CTime_0 = game.CTime()
 end
 
-local the_actor, n, ini, sect, g, gi, ggi, o, oT, o_id, sim, t
+local n, ini, sect, g, gi, ggi, o, oT, o_id, sim, t
 
 local monster_classes
 
@@ -540,7 +540,7 @@ function read_ini( self )
 			ggi.probability                     = r_num ( ini, sect, "p",          100 )
 			ggi.squad                           = r_num ( ini, sect, "squad" )
 			ggi.groups                          = r_str ( ini, sect, "groups" )
-			ggi.preconditions                   = r_str ( ini, sect, "preconditions" )
+			ggi.cond                            = r_str ( ini, sect, "cond" )
 
 			if ini:line_exist( sect, "offline" ) then
 				ggi.offline                     = ini:r_string( sect, "offline" )
@@ -558,8 +558,8 @@ function read_ini( self )
 			break
 		end
 
-		if ggi.preconditions then
-			ggi.preconditions = parse_names( ggi.preconditions )
+		if ggi.cond then
+			ggi.cond = xr_logic.parse_condlist( nil, sect, "cond", ggi.cond )
 		end
 
 		if ggi.groups then
@@ -647,12 +647,8 @@ end
 
 -- может ли данный гулаг создаться в данный момент?
 function is_gulag_available( gulag_params )
-	if gulag_params.preconditions then
-		for i, v in gulag_params.preconditions do
-			if the_actor:dont_has_info( v ) then
-				return false
-			end
-		end
+	if db.actor and gulag_params.cond then
+		return xr_logic.pick_section_from_condlist( db.actor, nil, gulag_params.cond ) ~= nil
 	end
 
 	return true
@@ -660,8 +656,6 @@ end
 
 -- создание нового гулага по конфигурации для данного smart_terrain
 function create_gulag( self )
-	the_actor = db.actor
-
 	-- выбор гулагов, которые могут быть созданы
 	local avail = {}
 	for i, v in self.gulags do
@@ -781,8 +775,8 @@ function update( self )
 					end
 				end
 
-				-- если мужиков в гулаге больше не осталось, убрать гулаг
-				if sn == 0 then
+				-- если мужиков в гулаге больше не осталось или условия существования гулага не выполняются, то убрать гулаг
+				if sn == 0 or not is_gulag_available( self.gparams ) then
 					remove_gulag( self )
 				else
 					self.gulag:calculate()
