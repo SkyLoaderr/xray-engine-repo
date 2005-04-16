@@ -784,7 +784,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		// установить particles
 		CParticlesObject* ps = NULL;
 
-		ps = xr_new<CParticlesObject>(m_spawn_effect);
+		ps = xr_new<CParticlesObject>(m_spawn_effect,TRUE);
 
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		Level().ps_needtoplay.push_back(ps);

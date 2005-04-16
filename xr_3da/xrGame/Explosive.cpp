@@ -188,7 +188,7 @@ void CExplosive::Explode()
 	
 	//показываем эффекты
 	CParticlesObject* pStaticPG; 
-	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,cast_game_object()->Sector()); 
+	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,TRUE); 
 	
 	Fvector vel;
 	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(vel);

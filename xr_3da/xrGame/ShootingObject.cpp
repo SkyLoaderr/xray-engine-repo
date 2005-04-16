@@ -155,7 +155,7 @@ void CShootingObject::StartParticles (CParticlesObject*& pParticles, LPCSTR part
 		return;
 	}
 
-	pParticles = xr_new<CParticlesObject>(particles_name,(IRender_Sector *)0,auto_remove_flag);
+	pParticles = xr_new<CParticlesObject>(particles_name,(BOOL)auto_remove_flag);
 	
 	UpdateParticles(pParticles, pos, vel);
 	pParticles->Play();
@@ -269,7 +269,7 @@ void CShootingObject::StartFlameParticles	()
 	}
 
 	StopFlameParticles();
-	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,(IRender_Sector *)0,false);
+	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,FALSE);
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
 

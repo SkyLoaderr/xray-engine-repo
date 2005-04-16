@@ -166,7 +166,7 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 	if(ps_name && ShowMark)
 	{
 		//отыграть партиклы попадания в материал
-		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
+		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name,TRUE);
 
 		Fmatrix pos;
 		pos.k.normalize(particle_dir);

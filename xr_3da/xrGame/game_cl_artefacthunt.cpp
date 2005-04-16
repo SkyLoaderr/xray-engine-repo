@@ -84,8 +84,7 @@ void game_cl_ArtefactHunt::Init ()
 							transform.identity();
 							transform.setXYZ(R.A);
 							transform.translate_over(R.P);
-							IRender_Sector* S							= ::Render->detectSector	(transform.c);
-							CParticlesObject* pStaticParticles			= xr_new<CParticlesObject>	(pSettings->r_string("artefacthunt_gamedata", ParticleStr),S,false);
+							CParticlesObject* pStaticParticles			= xr_new<CParticlesObject>	(pSettings->r_string("artefacthunt_gamedata", ParticleStr),FALSE);
 							pStaticParticles->UpdateParent	(transform,zero_vel);
 							pStaticParticles->Play			();
 							Level().m_StaticParticles.push_back		(pStaticParticles);

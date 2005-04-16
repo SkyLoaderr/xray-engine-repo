@@ -63,7 +63,7 @@ void  CHelicopter::TurnEngineSound(bool bOn)
 void CHelicopter::StartFlame ()
 {
 	if(m_pParticle)return;
-	m_pParticle = xr_new<CParticlesObject>(*m_smoke_particle,false);
+	m_pParticle = xr_new<CParticlesObject>(*m_smoke_particle,FALSE);
 
 	Fvector zero_vector;
 	zero_vector.set(0.f,0.f,0.f);
@@ -117,7 +117,7 @@ void CHelicopter::Explode ()
 		m_pParticle->PSI_destroy();
 		m_pParticle = NULL;
 	}
-	m_pParticle = xr_new<CParticlesObject>(*m_explode_particle,false);
+	m_pParticle = xr_new<CParticlesObject>(*m_explode_particle,FALSE);
 
 	Fvector zero_vector;
 	zero_vector.set(0.f,0.f,0.f);

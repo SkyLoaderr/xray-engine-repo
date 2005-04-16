@@ -39,7 +39,7 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 	m_flames.push_back			(element);
 
 	// Start Particles
-	CParticlesObject *ps = xr_new<CParticlesObject>(m_flame_particles);
+	CParticlesObject *ps = xr_new<CParticlesObject>(m_flame_particles,TRUE);
 	
 	// вычислить позицию и направленность партикла
 	Fvector p_center;

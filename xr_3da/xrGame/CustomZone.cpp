@@ -608,7 +608,7 @@ void CCustomZone::PlayIdleParticles()
 	{
 		if (!m_pIdleParticles)
 		{
-			m_pIdleParticles = xr_new<CParticlesObject>(*m_sIdleParticles,Sector(),false);
+			m_pIdleParticles = xr_new<CParticlesObject>(*m_sIdleParticles,FALSE);
 			m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
 		}
 		m_pIdleParticles->Play();
@@ -672,7 +672,7 @@ void CCustomZone::PlayBlowoutParticles()
 	if(!m_sBlowoutParticles) return;
 
 	CParticlesObject* pParticles;
-	pParticles	= xr_new<CParticlesObject>(*m_sBlowoutParticles,Sector());
+	pParticles	= xr_new<CParticlesObject>(*m_sBlowoutParticles,TRUE);
 	pParticles->UpdateParent(XFORM(),zero_vel);
 	pParticles->Play();
 }
@@ -736,7 +736,7 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 	if (PP){
 		u16 play_bone = PP->GetRandomBone(); 
 		if (play_bone!=BI_NONE){
-			CParticlesObject* pParticles = CParticlesObject::Create(*particle_str);
+			CParticlesObject* pParticles = CParticlesObject::Create(*particle_str,TRUE);
 			Fmatrix xform;
 
 			Fvector dir;
@@ -764,7 +764,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 	if(!m_sEntranceParticlesSmall) return;
 	
 	CParticlesObject* pParticles;
-	pParticles = xr_new<CParticlesObject>(*m_sEntranceParticlesSmall,Sector());
+	pParticles = xr_new<CParticlesObject>(*m_sEntranceParticlesSmall,TRUE);
 	
 	Fmatrix M;
 	M = XFORM();
@@ -1147,7 +1147,7 @@ void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)
 	if(*m_sArtefactSpawnParticles)
 	{
 		CParticlesObject* pParticles;
-		pParticles = xr_new<CParticlesObject>(*m_sArtefactSpawnParticles,Sector());
+		pParticles = xr_new<CParticlesObject>(*m_sArtefactSpawnParticles,TRUE);
 		pParticles->UpdateParent(pArtefact->XFORM(),zero_vel);
 		pParticles->Play();
 	}

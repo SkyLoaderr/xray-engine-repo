@@ -61,7 +61,6 @@ BOOL CLevel::Load_GameSpecific_After()
 	string256		fn_game;
 	if (FS.exist(fn_game, "$level$", "level.ps_static")) {
 		IReader *F = FS.r_open	(fn_game);
-		IRender_Sector* S;
 		CParticlesObject* pStaticParticles;
 		u32				chunk = 0;
 		string256		ref_name;
@@ -70,8 +69,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		for (IReader *OBJ = F->open_chunk_iterator(chunk); OBJ; OBJ = F->open_chunk_iterator(chunk,OBJ)) {
 			OBJ->r_stringZ				(ref_name,sizeof(ref_name));
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
-			S							= ::Render->detectSector	(transform.c);
-			pStaticParticles			= xr_new<CParticlesObject>	(ref_name,S,false);
+			pStaticParticles			= xr_new<CParticlesObject>	(ref_name,FALSE);
 			pStaticParticles->UpdateParent	(transform,zero_vel);
 			pStaticParticles->Play			();
 			m_StaticParticles.push_back		(pStaticParticles);

@@ -20,7 +20,7 @@ CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(C
 	if (pi)				return pi;
 	particles.push_back	(SParticlesInfo());
 	pi					= &particles.back();
-	pi->ps				= xr_new<CParticlesObject>(*ps_name, object->Sector(), false);
+	pi->ps				= xr_new<CParticlesObject>(*ps_name,FALSE);
 	return pi;
 }
 void CParticlesPlayer::SBoneInfo::StopParticles(const shared_str& ps_name)

@@ -33,7 +33,7 @@ public:
 	}
 	virtual void 			run								()
 	{
-		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
+		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name,TRUE);
 
 		Fmatrix pos; 
 		Fvector zero_vel = {0.f,0.f,0.f};

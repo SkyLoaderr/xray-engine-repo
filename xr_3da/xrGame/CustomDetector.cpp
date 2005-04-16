@@ -336,7 +336,7 @@ void CCustomDetector::UpdateNightVisionMode()
 			zero_vector.set(0.f,0.f,0.f);
 
 			if(!zone_info.pParticle)
-				zone_info.pParticle = xr_new<CParticlesObject>(*m_nightvision_particle,false);
+				zone_info.pParticle = xr_new<CParticlesObject>(*m_nightvision_particle,FALSE);
 			
 			zone_info.pParticle->UpdateParent(pZone->XFORM(),zero_vector);
 			if(!zone_info.pParticle->IsPlaying())

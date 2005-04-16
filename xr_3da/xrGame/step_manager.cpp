@@ -138,7 +138,7 @@ void CStepManager::update()
 				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
 				//отыграть партиклы столкновения материалов
-				CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
+				CParticlesObject* ps = xr_new<CParticlesObject>(ps_name,TRUE);
 
 				// вычислить позицию и направленность партикла
 				Fmatrix pos; 
