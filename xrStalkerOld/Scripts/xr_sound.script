@@ -113,6 +113,7 @@ function play_sound(npc, themes)
 		printf("!")
 		print_table(snd)
 		printf("!")
+		if snd.min_snd == nil then return end
 		db.sound[npc:id()].begin = device():time_global()
 		db.sound[npc:id()].idle = math.random(snd.min_snd, snd.max_snd)*1000			
 		-- необходимо ли нам играть into или rnd звуки
@@ -124,10 +125,10 @@ function play_sound(npc, themes)
 			-- играем входные
 			if db.sound[npc:id()].last_snd[snd.into_id] == nil then db.sound[npc:id()].last_snd[snd.into_id] = -1 end
 			
-			--printf("*SND* play [%s]", db.sound[npc:id()].last_snd[snd.into_id])
+			printf("*SND* play seq [%s]", db.sound[npc:id()].last_snd[snd.into_id]+1)
 			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc:id()].last_snd[snd.into_id]+1)
 			db.sound[npc:id()].last_snd[snd.into_id] = db.sound[npc:id()].last_snd[snd.into_id] + 1
-			--printf("*SND* play [%s]", db.sound[npc:id()].last_snd[snd.into_id])
+			--printf("*SND* play seq [%s]", db.sound[npc:id()].last_snd[snd.into_id])
 			return
 		end		
 		if snd.rnd_max ~= nil and
@@ -146,7 +147,7 @@ function play_sound(npc, themes)
 				end	
 			end			
 							
-			--printf("*SND* play [%s]", s)
+			printf("*SND* play rnd [%s]", s)
 			npc:play_sound(snd.rnd_id, 1, 0, 1, 0, s)
 			db.sound[npc:id()].last_snd[snd.rnd_id] = s
 		end		
