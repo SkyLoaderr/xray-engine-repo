@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\fvf.h"
 
 CPortalTraverser	PortalTraverser;
 
@@ -70,7 +71,7 @@ void CPortalTraverser::destroy		()
 	f_geom.destroy					();
 	f_shader.destroy				();
 }
-ICF		bool	sort_pred			(const std::pair<CPortal*, float>& _1, const std::pair<CPortal*, float>& _2)
+ICF		bool	psort_pred			(const std::pair<CPortal*, float>& _1, const std::pair<CPortal*, float>& _2)
 {
 	float		d1		= PortalTraverser.i_vBase.distance_to_sqr(_1.first->S.P);
 	float		d2		= PortalTraverser.i_vBase.distance_to_sqr(_2.first->S.P);
@@ -83,7 +84,7 @@ void CPortalTraverser::fade_render	()
 	if (f_portals.empty())			return;
 
 	// re-sort, back to front
-	std::sort						(f_portals.begin(),f_portals.end(),sort_pred);
+	std::sort						(f_portals.begin(),f_portals.end(),psort_pred);
 	
 	// calc poly-count
 	u32		_pcount					= 0;
@@ -91,13 +92,13 @@ void CPortalTraverser::fade_render	()
 
 	// fill buffers
 	u32			_offset				= 0;
-	FVF::F_L*	_v					= RCache.Vertex.Lock(_pcount*3,f_geom.stride(),_offset);
+	FVF::L*		_v					= (FVF::L*)RCache.Vertex.Lock(_pcount*3,f_geom.stride(),_offset);
 	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 _it = 0; _it<f_portals.size(); _it++)
 	{
 		std::pair<CPortal*, float>&	fp		= f_portals[_it];
-		CPortal*					_P		= fp->first	;
-		float						_ssa	= fp->second;
+		CPortal*					_P		= fp.first	;
+		float						_ssa	= fp.second	;
 		float		ssaDiff					= _ssa-r_ssaLOD_B;
 		float		ssaScale				= ssaDiff/ssaRange;
 		int			iA						= iFloor((1-ssaScale)*255.5f);	clamp(iA,0,255);
