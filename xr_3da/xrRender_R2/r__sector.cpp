@@ -103,7 +103,8 @@ CSector::~CSector()
 }
 
 //
-extern float r_ssaDISCARD;
+extern float r_ssaDISCARD			;
+extern float r_ssaLOD_A, r_ssaLOD_B ;
 
 void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 {
@@ -128,12 +129,15 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 
 		// Select sector (allow intersecting portals to be finely classified)
 		if (PORTAL->bDualRender) {
-			pSector = PORTAL->getSector				(this);
+			pSector = PORTAL->getSector						(this);
 		} else {
-			pSector = PORTAL->getSectorBack			(PortalTraverser.i_vBase);
-			if (pSector==this)						continue;
-			if (pSector==PortalTraverser.i_start)	continue;
+			pSector = PORTAL->getSectorBack					(PortalTraverser.i_vBase);
+			if (pSector==this)								continue;
+			if (pSector==PortalTraverser.i_start)			continue;
 		}
+
+		// Early-out sphere
+		if (!F.testSphere_dirty(PORTAL->S.P,PORTAL->S.R))	continue;
 
 		// SSA	(if required)
 		if (PortalTraverser.i_options&CPortalTraverser::VQ_SSA)
@@ -146,6 +150,11 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 			dir2portal.div		(_sqrt(distSQ));
 			ssa					*=	_abs(PORTAL->P.n.dotproduct(dir2portal));
 			if (ssa<r_ssaDISCARD)	continue;
+
+			if (PortalTraverser.i_options&CPortalTraverser::VQ_FADE)	{
+				if (ssa<r_ssaLOD_A)	PortalTraverser.fade_portal			(PORTAL,ssa);
+				if (ssa<r_ssaLOD_B)	continue							;
+			}
 		}
 
 		// Clip by frustum
@@ -155,7 +164,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 		if (0==P)			continue;
 
 		// Scissor and optimized HOM-testing
-		_scissor			scissor;
+		_scissor			scissor	;
 		if (PortalTraverser.i_options&CPortalTraverser::VQ_SCISSOR && (!PORTAL->bDualRender))
 		{
 			// Build scissor rectangle in projection-space

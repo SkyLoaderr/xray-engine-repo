@@ -4,7 +4,7 @@
 #include "xrRender_console.h"
  
 // Common
-//int			ps_r__Supersample			= 1;
+//int		ps_r__Supersample			= 1		;
 int			ps_r__LightSleepFrames		= 10	;
 
 float		ps_r__Detail_l_ambient		= 0.9f	;

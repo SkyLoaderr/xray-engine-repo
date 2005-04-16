@@ -76,20 +76,29 @@ public:
 		VQ_HOM		= (1<<0),
 		VQ_SSA		= (1<<1),
 		VQ_SCISSOR	= (1<<2),
-		VQ_FADE		= (1<<3),
+		VQ_FADE		= (1<<3),				// requires SSA to work
 	};
 public:
-	u32								i_marker;		// input
-	u32								i_options;		// input:	culling options
-	Fvector							i_vBase;		// input:	"view" point
-	Fmatrix							i_mXFORM;		// input:	4x4 xform
-	Fmatrix							i_mXFORM_01;	// 
-	CSector*						i_start;		// input:	starting point
-	xr_vector<IRender_Sector*>		r_sectors;		// result
+	u32										i_marker;		// input
+	u32										i_options;		// input:	culling options
+	Fvector									i_vBase;		// input:	"view" point
+	Fmatrix									i_mXFORM;		// input:	4x4 xform
+	Fmatrix									i_mXFORM_01;	// 
+	CSector*								i_start;		// input:	starting point
+	xr_vector<IRender_Sector*>				r_sectors;		// result
+	xr_vector<std::pair<CPortal*, float> >	f_portals;		// 
+	ref_shader								f_shader;
+	ref_geom								f_geom;
 public:
-	CPortalTraverser();
-	void							traverse		(IRender_Sector* start, CFrustum& F, Fvector& vBase, Fmatrix& mXFORM, u32 options);
+									CPortalTraverser	();
+	void							initialize			();
+	void							destroy				();
+	void							traverse			(IRender_Sector* start, CFrustum& F, Fvector& vBase, Fmatrix& mXFORM, u32 options);
+	void							fade_portal			(CPortal* _p, float ssa);
+	void							fade_render			();
+#ifdef DEBUG
 	void							dbg_draw		();
+#endif
 };
 
 extern	CPortalTraverser			PortalTraverser	;

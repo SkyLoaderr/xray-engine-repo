@@ -20,6 +20,11 @@ void CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& 
 		1.f/2.f + 0 + 0,	1.f/2.f + 0 + 0,	0.0f,		1.0f
 	};
 
+	if (options & VQ_FADE)			{
+		f_portals.clear		();
+		f_portals.reserve	(16);
+	}
+
 	VERIFY				(start);
 	i_marker			++;
 	i_options			= options;
@@ -51,8 +56,74 @@ void CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& 
 	}
 }
 
+void CPortalTraverser::fade_portal	(CPortal* _p, float ssa)
+{
+	f_portals.push_back				(mk_pair(_p,ssa));
+}
+void CPortalTraverser::initialize	()
+{
+	f_shader.create					("portal");
+	f_geom.create					(FVF::F_L, RCache.Vertex.Buffer(), 0);
+}
+void CPortalTraverser::destroy		()
+{
+	f_geom.destroy					();
+	f_shader.destroy				();
+}
+ICF		bool	sort_pred			(const std::pair<CPortal*, float>& _1, const std::pair<CPortal*, float>& _2)
+{
+	float		d1		= PortalTraverser.i_vBase.distance_to_sqr(_1->first->S.P);
+	float		d2		= PortalTraverser.i_vBase.distance_to_sqr(_1->first->S.P);
+	return		d2>d1;	// descending, back to front
+}
+extern float r_ssaDISCARD			;
+extern float r_ssaLOD_A, r_ssaLOD_B ;
+void CPortalTraverser::fade_render	()
+{
+	if (f_portals.empty())			return;
+
+	// re-sort, back to front
+	std::sort						(f_portals.begin(),f_portals.end(),sort_pred);
+	
+	// calc poly-count
+	u32		_pcount					= 0;
+	for		(u32 _it = 0; _it<f_portals.size(); _it++)	_pcount	+= f_portals[_it]->poly.size()-2;
+
+	// fill buffers
+	u32			_offset				= 0;
+	FVF::F_L*	_v					= RCache.Vertex.Lock(_pcount*3,f_geom.stride(),_offset);
+	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
+	for (u32 _it = 0; _it<f_portals.size(); _it++)
+	{
+		std::pair<CPortal*, float>&	fp		= f_portals[_it];
+		CPortal*					_P		= fp->first	;
+		float						_ssa	= fp->second;
+		float		ssaDiff					= _ssa-r_ssaLOD_B;
+		float		ssaScale				= ssaDiff/ssaRange;
+		int			iA						= iFloor((1-ssaScale)*255.5f);	clamp(iA,0,255);
+		u32							_clr	= color_rgba(0,0,0,u32(iA));
+
+		// fill polys
+		u32			_polys					= _P->poly.size()-2;
+		for			(u32 _pit=0; _pit<_polys; _pit++)	{
+			_v->set	(_P->poly[0],		_clr);	_v++;
+			_v->set (_P->poly[_pit*3+1],_clr);	_v++;
+			_v->set (_P->poly[_pit*3+2],_clr);	_v++;
+		}
+	}
+	RCache.Vertex.Unlock			(_pcount*3,f_geom.stride());
+
+	// render
+	RCache.set_Shader				(f_shader);
+	RCache.set_Geometry				(f_geom);
+	RCache.Render					(D3DPT_TRIANGLELIST,_offset,_pcount);
+
+	// cleanup
+	f_portals.clear					();
+}
+
 #ifdef DEBUG
-void CPortalTraverser::dbg_draw()
+void CPortalTraverser::dbg_draw		()
 {
 	RCache.OnFrameEnd		();
 	RCache.set_xform_world	(Fidentity);

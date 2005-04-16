@@ -242,7 +242,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
+void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 {
 	// Visual is 100% visible - simply add it
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
@@ -251,13 +251,12 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 	case MT_PARTICLE_GROUP:
 		{
 			// Add all children, doesn't perform any tests
-			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
-			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
-				#pragma todo("serious performance problem here")
-				xr_vector<IRender_Visual*>	visuals;
-				i_it->GetVisuals			(visuals);
-				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
-					add_leafs_Dynamic		(*it);
+			PS::CParticleGroup* pG	= (PS::CParticleGroup*)pVisual;
+			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++)	{
+				SItem&		I		= *i_it;
+				if (I._effect)		add_leafs_Dynamic		(I._effect);
+				for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_leafs_Dynamic(*pit);
+				for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_leafs_Dynamic(*pit);
 			}
 		}
 		return;
@@ -307,21 +306,20 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
-				#pragma todo("serious performance problem here")
-				xr_vector<IRender_Visual*>	visuals;
-				i_it->GetVisuals			(visuals);
-				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
-					add_leafs_Dynamic		(*it);
+				SItem&		I		= *i_it;
+				if (I._effect)		add_leafs_Dynamic		(I._effect);
+				for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_leafs_Dynamic(*pit);
+				for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_leafs_Dynamic(*pit);
 			}
 		}
 		return;
 	case MT_HIERRARHY:
 		{
 			// Add all children, doesn't perform any tests
-			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
+			FHierrarhyVisual* pV	= (FHierrarhyVisual*)pVisual;
 			I = pV->children.begin	();
 			E = pV->children.end	();
-			for (; I!=E; I++)	add_leafs_Static (*I);
+			for (; I!=E; I++)		add_leafs_Static (*I);
 		}
 		return;
 	case MT_SKELETON_ANIM:
@@ -337,10 +335,10 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 		return;
 	case MT_LOD:
 		{
-			FLOD		* pV	= (FLOD*) pVisual;
+			FLOD		* pV	=		(FLOD*) pVisual;
 			float		D;
-			float		ssa		= CalcSSA(D,pV->vis.sphere.P,pV);
-			ssa					*= pV->lod_factor;
+			float		ssa		=		CalcSSA(D,pV->vis.sphere.P,pV);
+			ssa					*=		pV->lod_factor;
 			if (ssa<r_ssaLOD_A)
 			{
 				if (ssa<r_ssaDISCARD)	return;
@@ -396,15 +394,15 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
-				#pragma todo("serious performance problem here")
-				xr_vector<IRender_Visual*>	visuals;
-				i_it->GetVisuals			(visuals);
-				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
-					if (fcvPartial==VIS) {
-						for (; I!=E; I++)	add_Dynamic			(*it,planes);
-					} else {
-						for (; I!=E; I++)	add_leafs_Dynamic	(*it);
-					}
+				SItem&		I		= *i_it;
+				if (fcvPartial==VIS) {
+					if (I._effect)		add_Dynamic				(I._effect,planes);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_Dynamic(*pit,planes);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_Dynamic(*pit,planes);
+				} else {
+					if (I._effect)		add_leafs_Dynamic		(I._effect);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_leafs_Dynamic(*pit);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_leafs_Dynamic(*pit);
 				}
 			}
 		}
@@ -465,15 +463,15 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
-				#pragma todo("serious performance problem here")
-				xr_vector<IRender_Visual*>	visuals;
-				i_it->GetVisuals			(visuals);
-				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
-					if (fcvPartial==VIS) {
-						for (; I!=E; I++)	add_Static			(*I,planes);
-					} else {
-						for (; I!=E; I++)	add_leafs_Static	(*I);
-					}
+				SItem&		I		= *i_it;
+				if (fcvPartial==VIS) {
+					if (I._effect)		add_Dynamic				(I._effect,planes);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_Dynamic(*pit,planes);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_Dynamic(*pit,planes);
+				} else {
+					if (I._effect)		add_leafs_Dynamic		(I._effect);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_related.begin();	pit!=I._children_related.end(); pit++)	add_leafs_Dynamic(*pit);
+					for (xr_vector<IRender_Visual*>::iterator pit = I._children_free.begin();		pit!=I._children_free.end();	pit++)	add_leafs_Dynamic(*pit);
 				}
 			}
 		}
