@@ -367,14 +367,12 @@ function bar_check_heli_scene(actor,npc)
 	   db.actor:has_info("bar_resque_research_fail") or
 	   db.actor:has_info("bar_resque_research_dead")
 	then		
-		if t and t:position():distance_to(db.actor:position()) > 150
+		if t and db.actor:has_info("bar_heli_scene_stay_online") and t:position():distance_to(db.actor:position()) > 150
 		then
---			printf("pseudodogs")
 			db.actor:disable_info_portion("bar_heli_scene_stay_online")
 			db.actor:give_info_portion("bar_spawn_heli_psevdodogs")						
 		end
 	else
---		printf("crushes")
 		db.actor:give_info_portion("bar_heli_scene_stay_online")
 	end
 end
