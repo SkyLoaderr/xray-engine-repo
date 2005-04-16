@@ -48,8 +48,6 @@ void CStateManagerBurer::execute()
 			state = eStateEat;
 	} else	state = eStateRest;
 
-	state = eStateBurerScanning;
-	
 	select_state(state); 
 	
 	// выполнить текущее состояние
