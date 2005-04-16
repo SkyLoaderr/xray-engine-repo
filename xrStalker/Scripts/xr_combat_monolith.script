@@ -104,7 +104,7 @@ end
 
 -- Внимание: вызывается во всех actions
 function action_fight_close:hit_callback( obj, amount, local_direction, who, bone_index )
-	local be = self.object:best_enemy()
+	local be = self.object and self.object:best_enemy()
 
 	-- если получили хит от текущего врага, то мы знаем, где он
 	if be and who:id() == be:id() then
