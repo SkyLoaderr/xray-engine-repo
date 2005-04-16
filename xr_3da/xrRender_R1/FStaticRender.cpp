@@ -72,14 +72,16 @@ void					CRender::create					()
 	HWOCC.occq_create			(occq_size);
 
 	xrRender_apply_tf			();
+	::PortalTraverser.initialize();
 }
 void					CRender::destroy				()
 {
-	Device.seqFrame.Remove		(this);
+	::PortalTraverser.destroy	();
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
+	Device.seqFrame.Remove		(this);
 }
 void					CRender::reset_begin			()
 {
@@ -303,7 +305,7 @@ void CRender::Calculate				()
 			ViewBase,
 			Device.vCameraPosition,
 			Device.mFullTransform,
-			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
+			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + CPortalTraverser::VQ_FADE
 			);
 
 		// Determine visibility for static geometry hierrarhy
@@ -467,6 +469,7 @@ void	CRender::Render		()
 	r_dsgraph_render_lods						();				// lods
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
+	PortalTraverser.fade_render					();				// faded-portals
 	L_Glows->Render								();				// glows
 	g_pGamePersistent->Environment.RenderFlares	();				// rain/lens-flares/thunder-bolts
 	g_pGamePersistent->Environment.RenderLast	();				// rain/lens-flares/thunder-bolts
