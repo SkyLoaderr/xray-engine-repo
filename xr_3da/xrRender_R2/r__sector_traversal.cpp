@@ -87,7 +87,7 @@ void CPortalTraverser::fade_render	()
 	
 	// calc poly-count
 	u32		_pcount					= 0;
-	for		(u32 _it = 0; _it<f_portals.size(); _it++)	_pcount	+= f_portals[_it]->poly.size()-2;
+	for		(u32 _it = 0; _it<f_portals.size(); _it++)	_pcount	+= f_portals[_it].first->poly.size()-2;
 
 	// fill buffers
 	u32			_offset				= 0;
