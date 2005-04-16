@@ -166,7 +166,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
 	pWnd->EnableHeading( (flag)?true:false);
 
-	LPCSTR str_flag = xml_doc.ReadAttrib(buf, 0, "light_anim", "");
+	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
 	if( xr_strlen(str_flag) )
 		pWnd->SetLightAnim(str_flag);
 	
