@@ -69,7 +69,7 @@ function main005 ()
 --	a:inventory_for_each(fe)
 end
 
-function main()
+function main______()
 	local gametask = db.actor:get_all_tasks()
 	local task_cnt = gametask:get_tasks_num()
 	for i=0,task_cnt-1 do
@@ -87,13 +87,13 @@ function main()
 end
 
 
-function main___ ()
+function main ()
 
 --	local object 	= level.debug_object ("vagon")
-	level.map_add_object_spot(db.actor:id(), "rad_antenna_location", "hit" )
+--	level.map_add_object_spot(db.actor:id(), "rad_antenna_location", "hit" )
 	
---	local object 	= level.debug_object ("level_prefix_m_car")
---	level.map_add_object_spot(object:id(), "enemy_location", "tractor" )
+	local object 	= level.debug_object ("level_prefix_m_car")
+	level.map_add_object_spot(object:id(), "enemy_location", "tractor" )
 	
 	
 end
