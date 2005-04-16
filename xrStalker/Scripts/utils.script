@@ -537,3 +537,43 @@ end
 function npc_in_zone(npc, zone)
 	return npc ~= nil and zone ~= nil and zone:inside(npc:position())
 end
+
+------------------------- запись/загрузка CTime ---------------------------
+local CTime_0
+
+if not editor() then
+	CTime_0 = game.CTime()
+end
+
+-- запись CTime в пакет. если t=nil, то запишет один нулевой байт
+function w_CTime( p, t )
+	if t and not (t == CTime_0) then
+		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+		Y, M, D, h, m, s, ms = t:get( Y, M, D, h, m, s, ms )
+
+		p:w_u8 ( Y - 2000 )
+		p:w_u8 ( M )
+		p:w_u8 ( D )
+		p:w_u8 ( h )
+		p:w_u8 ( m )
+		p:w_u8 ( s )
+		p:w_u16( ms )
+	else
+		p:w_u8 ( 0 )
+	end
+end
+
+-- чтение CTime из пакета
+function r_CTime( p )
+	local Y = p:r_u8()
+
+	if Y ~= 0 then
+		local t = game.CTime()
+		local M, D, h, m, s, ms = p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16()
+		t:set( Y + 2000,  M, D, h, m, s, ms)
+		return t
+	else
+		return CTime_0
+	end
+end
+---------------------------------------------------------------------------
