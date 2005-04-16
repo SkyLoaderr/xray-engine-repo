@@ -335,7 +335,24 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	Fvector velocity;
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
-	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
+	if(!m_PhysicMovementControl.CharacterExist())
+	{
+					m_PhysicMovementControl.CreateCharacter();
+					m_PhysicMovementControl.SetPosition(m_EntityAlife.Position());
+					m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+	}
+	else
+	{
+		Fvector dp;m_PhysicMovementControl.GetDeathPosition(dp);
+		m_PhysicMovementControl.SetPosition(dp);
+	}
+
+	Fbox b=m_EntityAlife.BoundingBox();b.grow(Fvector().set(0.5f,0.1f,0.5f));
+	m_PhysicMovementControl.SetBox(3,b);
+	m_PhysicMovementControl.ActivateBoxDynamic(3,20,1,0.05f);
+	m_PhysicMovementControl.GetPosition(m_EntityAlife.Position());
+	//m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
+
 	m_PhysicMovementControl.DestroyCharacter();
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 

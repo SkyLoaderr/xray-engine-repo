@@ -161,7 +161,7 @@ public:
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 	void				ActivateBox		(DWORD id, BOOL Check = false);
-	bool				ActivateBoxDynamic(DWORD id);
+	bool				ActivateBoxDynamic(DWORD id,int num_it=9,int num_steps=5,float resolve_depth=0.01f);
 	void				InterpolateBox	(DWORD id,float k);
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }

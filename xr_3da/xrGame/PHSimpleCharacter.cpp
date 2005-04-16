@@ -222,8 +222,11 @@ void CPHSimpleCharacter::SwitchOFFInitContact()
 	dGeomUserDataSetPhObject(m_wheel,0);
 	dGeomUserDataSetPhObject(m_geom_shell,0);
 	dGeomUserDataSetPhObject(m_hat,0);
-
-}
+	b_lose_control=true;
+	b_any_contacts=false;
+	is_contact=false;
+	b_on_ground=b_valide_ground_contact=false;
+}	
 void CPHSimpleCharacter::SwitchInInitContact()
 {
 	VERIFY(b_exist);

@@ -31,7 +31,7 @@ float 	STestCallbackPars::calback_friction_factor					=	0.0f	;
 float 	STestCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestCallbackPars::callback_force_factor					=	10.f	;
 float 	STestCallbackPars::depth_to_change_softness_pars			=	0.00f	;
-float 	STestCallbackPars::callback_cfm_factor						=	100.f	;
+float 	STestCallbackPars::callback_cfm_factor						=	world_cfm*0.00001f;
 float 	STestCallbackPars::callback_erp_factor						=	1.f		;
 float	STestCallbackPars::decrement_depth							=	0.f		;
 float	STestCallbackPars::max_real_depth							=	0.2f	;
@@ -48,11 +48,11 @@ struct STestFootCallbackPars
 };
 
 
-float 	STestFootCallbackPars::calback_friction_factor					=	0.0f	;
+float 	STestFootCallbackPars::calback_friction_factor					=	0.3f	;
 float 	STestFootCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestFootCallbackPars::callback_force_factor					=	10.f	;
 float 	STestFootCallbackPars::depth_to_change_softness_pars			=	0.00f	;
-float 	STestFootCallbackPars::callback_cfm_factor						=	1.f		;
+float 	STestFootCallbackPars::callback_cfm_factor						=	world_cfm*0.00001f;
 float 	STestFootCallbackPars::callback_erp_factor						=	1.f		;
 float	STestFootCallbackPars::decrement_depth							=	0.00f	;
 float	STestFootCallbackPars::max_real_depth							=	0.2f	;
@@ -279,7 +279,7 @@ private:
 };
 /////////////////////////////////////////////////////////////////////////////////////
 
-bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
+bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_steps/*5*/,float resolve_depth/*=0.01f*/)
 {
 	if(trying_times[id]!=u32(-1))
 	{
@@ -309,17 +309,15 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 
 
 	//////////////////////////////////pars///////////////////////////////////////////
-	int		num_it=8;
-	int		num_steps=5;
-	float	resolve_depth=0.01f;
-	STestCallbackPars::callback_cfm_factor=1.f;//300000000.f;
-	STestFootCallbackPars::callback_erp_factor=1.f;//0.00000001f;
+//	int		num_it=8;
+//	int		num_steps=5;
+//	float	resolve_depth=0.01f;
+
+	
 	if(!character_exist)
 	{
 		num_it=20;
 		num_steps=1;		
-		STestCallbackPars::callback_cfm_factor=1.f;		
-		STestFootCallbackPars::callback_erp_factor=1.f;
 		resolve_depth=0.1f;
 	}
 	///////////////////////////////////////////////////////////////////////
@@ -334,37 +332,14 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 	const Fbox& box =Box();
 	float pass=box.x2-box.x1;
 	float max_vel=pass/fnum_it/fnum_steps/fixed_step;
-	float max_a_vel=M_PI/2.f/fnum_it/fnum_steps/fixed_step;
+	float max_a_vel=M_PI/8.f/fnum_it/fnum_steps/fixed_step;
 	dBodySetForce(GetBody(),0.f,0.f,0.f);
 	dBodySetLinearVel(GetBody(),0.f,0.f,0.f);
 	Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 	CVelocityLimiter vl(GetBody(),max_vel);
-	CGetContactForces gf(GetBody());
-
-	gf.Activate();
-	float mf_slf_y=world_gravity*100.f;
-	float mf_othrs=world_gravity*20.f;
-	float mt_othrs=world_gravity*20.f;
-	if(character_exist)
-	{
-		STestCallbackPars::callback_cfm_factor=0.00001f*world_cfm;//(0.0000000000001f+fun_param4*3000000000.f);
-		STestCallbackPars::callback_erp_factor=1.f;//1.f/(0.7f+fun_param4*3000000000.f);
-		STestFootCallbackPars::callback_cfm_factor=0.00001f*world_cfm;//(0.0000000000001f+fun_param4*3000000000.f);
-		STestFootCallbackPars::callback_erp_factor=1.f;//1.f/(0.7f+fun_param4*3000000000.f);
-		vl.Activate();
-		for(int i=0;5>i;++i){
-			max_depth=0.f;
-			EnableCharacter();
-			ph_world->Step();
-		}
-		float k=1.05f;
-		save_max(resolve_depth,max_depth*k);
-		save_max(mf_slf_y,gf.mf_slf_y()*k);
-		save_max(mf_othrs,gf.mf_othrs()*k);
-		save_max(mt_othrs,gf.mt_othrs()*k);
-	}
-	m_character->SwitchOFFInitContact();
+	//vl.Activate();
 	bool	ret=false;
+	m_character->SwitchOFFInitContact();
 	for(int m=0;num_steps>m;++m)
 	{
 		float param =fnum_steps_r*(1+m);
@@ -374,13 +349,10 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 			max_depth=0.f;
 			Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 			EnableCharacter();
+			m_character->ApplyForce(0,world_gravity*m_character->Mass(),0);
 			ph_world->Step();
 			ph_world->CutVelocity(max_vel,max_a_vel);
-			if(max_depth	<	resolve_depth	//&&
-				//gf.mf_slf_y()<	mf_slf_y		&&
-				//gf.mf_othrs()<	mf_othrs		&&
-				//gf.mt_othrs()<	mt_othrs
-			 ) 
+			if(max_depth	<	resolve_depth) 
 			{
 				ret=true;
 				break;
@@ -389,8 +361,8 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id)
 		if(!ret) break;
 	}
 	m_character->SwitchInInitContact();
-	vl.Deactivate();
-	gf.Deactivate();
+	//vl.Deactivate();
+
 	ph_world->UnFreeze();
 	if(!ret)
 	{	
