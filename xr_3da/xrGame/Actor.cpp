@@ -863,7 +863,8 @@ void CActor::UpdateCL	()
 //*/
 	//-------------------------------------------------------------------
 
-	CStepManager::update();
+	if (g_Alive()) 
+		CStepManager::update();
 }
 
 void CActor::shedule_Update	(u32 DT)
