@@ -13,6 +13,27 @@
 #include "alife_space.h"
 #include "script_export_space.h"
 
+//#define USE_GAME_TIME
+#define USE_LEVEL_TIME
+
+#ifdef USE_GAME_TIME
+#	define USE_LAST_GAME_TIME
+#endif
+#ifdef USE_LEVEL_TIME
+#	define USE_LAST_LEVEL_TIME
+#endif
+
+#ifdef USE_GAME_TIME
+#	define USE_FIRST_GAME_TIME
+#endif
+#ifdef USE_LEVEL_TIME
+//#	define USE_FIRST_LEVEL_TIME
+#endif
+
+//#define USE_UPDATE_COUNT
+
+//#define USE_ORIENTATION
+
 class CEntityAlive;
 class CGameObject;
 
@@ -29,7 +50,9 @@ namespace MemorySpace {
 	struct SObjectParams {
 		u32							m_level_vertex_id;
 		Fvector						m_position;
+#ifdef USE_ORIENTATION
 		SRotation					m_orientation;
+#endif
 	};
 	
 	template <typename T>
@@ -39,23 +62,51 @@ namespace MemorySpace {
 	};
 
 	struct SMemoryObject {
+#ifdef USE_GAME_TIME
 		ALife::_TIME_ID				m_game_time;
+#endif
+#ifdef USE_LEVEL_TIME
 		u32							m_level_time;
+#endif
+#ifdef USE_LAST_GAME_TIME
 		ALife::_TIME_ID				m_last_game_time;
+#endif
+#ifdef USE_LAST_LEVEL_TIME
 		u32							m_last_level_time;
+#endif
+#ifdef USE_FIRST_GAME_TIME
 		ALife::_TIME_ID				m_first_game_time;
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
 		u32							m_first_level_time;
+#endif
+#ifdef USE_UPDATE_COUNT
 		u32							m_update_count;
+#endif
 		bool						m_enabled;
 
 						SMemoryObject				() : 
-							m_update_count(0),
+#ifdef USE_GAME_TIME
 							m_game_time(0),
+#endif
+#ifdef USE_LEVEL_TIME
 							m_level_time(0),
+#endif
+#ifdef USE_LAST_GAME_TIME
 							m_last_game_time(0),
+#endif
+#ifdef USE_LAST_LEVEL_TIME
 							m_last_level_time(0),
+#endif
+#ifdef USE_FIRST_GAME_TIME
 							m_first_game_time(0),
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
 							m_first_level_time(0),
+#endif
+#ifdef USE_UPDATE_COUNT
+							m_update_count(0),
+#endif
 							m_enabled(true)
 		{
 		}

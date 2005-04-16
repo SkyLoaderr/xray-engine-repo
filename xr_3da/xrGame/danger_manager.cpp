@@ -129,27 +129,27 @@ float CDangerManager::do_evaluate	(const CDangerObject &object) const
 {
 	float					result = 0.f;
 	switch (object.type()) {
-		case CDangerObject::eDangerTypeRicochet : {
+		case CDangerObject::eDangerTypeRicochet : { // I perceived bullet(knife) ricochet
 			result			+= 3000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeShot : {
+		case CDangerObject::eDangerTypeShot : { // someone is shooting
 			result			+= 2500.f;
 			break;
-												}
-		case CDangerObject::eDangerTypeHit : {
+		}
+		case CDangerObject::eDangerTypeHit : { // someone is hit
 			result			+= 2000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeDeath : {
+		case CDangerObject::eDangerTypeDeath : { // someone becomes dead
 			result			+= 1000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeAttack : {
+		case CDangerObject::eDangerTypeAttack : { // someone is attacked
 			result			+= 2000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeCorpse : {
+		case CDangerObject::eDangerTypeCorpse : { // I see a corpse
 			result			+= 2250.f;
 			break;
 		}
@@ -168,7 +168,7 @@ void CDangerManager::add			(const CVisibleObject &object)
 
 	const CEntityAlive		*obj = smart_cast<const CEntityAlive*>(object.m_object);
 	if (obj && !obj->g_Alive() && obj->killer_id() != ALife::_OBJECT_ID(-1)) {
-		add					(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeCorpse,CDangerObject::eDangerPerceiveTypeSound));
+		add					(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeCorpse,CDangerObject::eDangerPerceiveTypeVisual));
 		return;
 	}
 }

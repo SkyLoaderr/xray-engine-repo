@@ -55,10 +55,12 @@ public:
 			void		add					(const CDangerObject &object);
 
 public:
-	IC		const CDangerObject	*selected	() const;
-	IC		const OBJECTS		&objects	() const;
 	IC		u32			time_line			() const;
 	IC		void		time_line			(u32 value);
+
+public:
+	IC		const CDangerObject	*selected	() const;
+	IC		const OBJECTS		&objects	() const;
 };
 
 #include "danger_manager_inline.h"

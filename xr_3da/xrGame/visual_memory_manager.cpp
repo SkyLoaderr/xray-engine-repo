@@ -289,8 +289,12 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 		CVisibleObject			visible_object;
 
 		visible_object.fill		(game_object,self,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
-		visible_object.m_first_level_time	= Device.dwTimeGlobal;
+#ifdef USE_FIRST_GAME_TIME
 		visible_object.m_first_game_time	= Level().GetGameTime();
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
+		visible_object.m_first_level_time	= Device.dwTimeGlobal;
+#endif
 
 		if (m_max_object_count <= m_objects->size()) {
 			xr_vector<CVisibleObject>::iterator	I = std::min_element(m_objects->begin(),m_objects->end(),SLevelTimePredicate<CGameObject>());

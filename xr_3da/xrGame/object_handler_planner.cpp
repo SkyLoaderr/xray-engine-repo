@@ -20,10 +20,6 @@
 #include "fooditem.h"
 #include "ai_monster_space.h"
 
-#ifdef _DEBUG
-//#	define USE_LOG
-#endif
-
 using namespace ObjectHandlerSpace;
 
 IC	ObjectHandlerSpace::EWorldProperties CObjectHandlerPlanner::object_property(MonsterSpace::EObjectAction object_action) const
@@ -64,7 +60,7 @@ void CObjectHandlerPlanner::set_goal	(MonsterSpace::EObjectAction object_action,
 	else
 		condition_id		= u32(eWorldPropertyNoItemsIdle);
 
-#ifdef LOG_ACTION
+#ifdef DEBUG
 	if (m_use_log) {
 		Msg					("%6d : Active item %s",Device.dwTimeGlobal,object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->object().cName() : "no active items");
 		Msg					("%6d : Goal %s",Device.dwTimeGlobal,property2string(condition_id));
@@ -232,14 +228,8 @@ void CObjectHandlerPlanner::setup	(CAI_Stalker *object)
 
 	set_goal					(MonsterSpace::eObjectActionIdle);
 
-#ifdef USE_LOG
-#	ifdef LOG_ACTION
-		set_use_log				(!!psAI_Flags.test(aiGOAP));
-#	endif
-#else
-#	ifdef LOG_ACTION
-	set_use_log					(false);
-#	endif
+#ifdef LOG_ACTION
+	set_use_log					(!!psAI_Flags.test(aiGOAPObject));
 #endif
 }
 
@@ -279,11 +269,9 @@ void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)
 
 void CObjectHandlerPlanner::update			()
 {
-#ifdef USE_LOG
-#	ifdef LOG_ACTION
-		if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log))
-			set_use_log			(!!psAI_Flags.test(aiGOAP));
-#	endif
+#ifdef LOG_ACTION
+	if ((psAI_Flags.test(aiGOAPObject) && !m_use_log) || (!psAI_Flags.test(aiGOAPObject) && m_use_log))
+		set_use_log			(!!psAI_Flags.test(aiGOAPObject));
 #endif
 	inherited::update		();
 }

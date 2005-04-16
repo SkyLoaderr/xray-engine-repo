@@ -35,23 +35,42 @@ void CMemoryInfo::script_register(lua_State *L)
 {
 	module(L)
 	[
+#ifdef USE_ORIENTATION
 		class_<SRotation>("rotation")
 			.def_readonly("yaw",			&SRotation::yaw)
 			.def_readonly("pitch",			&SRotation::pitch),
+#endif
 			
 		class_<MemorySpace::SObjectParams>("object_params")
+#ifdef USE_ORIENTATION
+			.def_readonly("orientation",	&MemorySpace::SObjectParams::m_orientation)
+#endif
 			.def_readonly("level_vertex",	&MemorySpace::SObjectParams::m_level_vertex_id)
-			.def_readonly("position",		&MemorySpace::SObjectParams::m_position)
-			.def_readonly("orientation",	&MemorySpace::SObjectParams::m_orientation),
+			.def_readonly("position",		&MemorySpace::SObjectParams::m_position),
 			
 		class_<MemorySpace::SMemoryObject>("memory_object")
+#ifdef USE_GAME_TIME
 			.def_readonly("game_time",		&MemorySpace::SMemoryObject::m_game_time)
+#endif
+#ifdef USE_LEVEL_TIME
 			.def_readonly("level_time",		&MemorySpace::SMemoryObject::m_level_time)
+#endif
+#ifdef USE_LAST_GAME_TIME
 			.def_readonly("last_game_time",	&MemorySpace::SMemoryObject::m_last_game_time)
+#endif
+#ifdef USE_LAST_LEVEL_TIME
 			.def_readonly("last_level_time",&MemorySpace::SMemoryObject::m_last_level_time)
+#endif
+#ifdef USE_FIRST_GAME_TIME
 			.def_readonly("first_game_time",&MemorySpace::SMemoryObject::m_first_game_time)
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
 			.def_readonly("first_level_time",&MemorySpace::SMemoryObject::m_first_level_time)
-			.def_readonly("update_count",	&MemorySpace::SMemoryObject::m_update_count),
+#endif
+#ifdef USE_UPDATE_COUNT
+			.def_readonly("update_count",	&MemorySpace::SMemoryObject::m_update_count)
+#endif
+			,
 
 		class_<MemorySpace::CMemoryObject<CEntityAlive>,MemorySpace::SMemoryObject>("entity_memory_object")
 			.def_readonly("object_info",	&MemorySpace::CMemoryObject<CEntityAlive>::m_object_params)

@@ -151,34 +151,34 @@ CMemoryInfo CMemoryManager::memory(const CObject *object) const
 	if (!this->object().g_Alive())
 		return						(result);
 
-	ALife::_TIME_ID					game_time = 0;
+	u32								level_time = 0;
 	const CGameObject				*game_object = smart_cast<const CGameObject*>(object);
 	VERIFY							(game_object);
 
 	{
 		xr_vector<CVisibleObject>::const_iterator	I = std::find(visual().objects().begin(),visual().objects().end(),object_id(object));
 		if (visual().objects().end() != I) {
-			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
-			result.m_visible						= (*I).m_visible;
-			result.m_visual_info					= true;
-			game_time								= (*I).m_game_time;
-			VERIFY									(result.m_object);
+			(CMemoryObject<CGameObject>&)result	= (CMemoryObject<CGameObject>&)(*I);
+			result.m_visible					= (*I).m_visible;
+			result.m_visual_info				= true;
+			level_time							= (*I).m_level_time;
+			VERIFY								(result.m_object);
 		}
 	}
 
 	{
 		xr_vector<CSoundObject>::const_iterator	I = std::find(sound().objects().begin(),sound().objects().end(),object_id(object));
-		if ((sound().objects().end() != I) && (game_time < (*I).m_game_time)) {
+		if ((sound().objects().end() != I) && (level_time < (*I).m_level_time)) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_sound_info						= true;
-			game_time								= (*I).m_game_time;
+			level_time								= (*I).m_level_time;
 			VERIFY									(result.m_object);
 		}
 	}
 	
 	{
 		xr_vector<CHitObject>::const_iterator	I = std::find(hit().objects().begin(),hit().objects().end(),object_id(object));
-		if ((hit().objects().end() != I) && (game_time < (*I).m_game_time)) {
+		if ((hit().objects().end() != I) && (level_time < (*I).m_level_time)) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_object							= game_object;
 			result.m_hit_info						= true;
@@ -191,38 +191,32 @@ CMemoryInfo CMemoryManager::memory(const CObject *object) const
 
 u32 CMemoryManager::memory_time(const CObject *object) const
 {
-	u32								result = 0;
+	u32					result = 0;
 	if (!this->object().g_Alive())
-		return						(0);
+		return			(0);
 
-	ALife::_TIME_ID					game_time = 0;
-	const CGameObject				*game_object = smart_cast<const CGameObject*>(object);
-	VERIFY							(game_object);
+	const CGameObject	*game_object = smart_cast<const CGameObject*>(object);
+	VERIFY				(game_object);
 
 	{
 		xr_vector<CVisibleObject>::const_iterator	I = std::find(visual().objects().begin(),visual().objects().end(),object_id(object));
-		if (visual().objects().end() != I) {
-			result					= (*I).m_level_time;
-			game_time				= (*I).m_game_time;
-		}
+		if (visual().objects().end() != I)
+			result		= (*I).m_level_time;
 	}
 
 	{
 		xr_vector<CSoundObject>::const_iterator	I = std::find(sound().objects().begin(),sound().objects().end(),object_id(object));
-		if ((sound().objects().end() != I) && (game_time < (*I).m_game_time)) {
-			result					= (*I).m_level_time;
-			game_time				= (*I).m_game_time;
-		}
+		if ((sound().objects().end() != I) && (result < (*I).m_level_time))
+			result		= (*I).m_level_time;
 	}
 	
 	{
 		xr_vector<CHitObject>::const_iterator	I = std::find(hit().objects().begin(),hit().objects().end(),object_id(object));
-		if ((hit().objects().end() != I) && (game_time < (*I).m_game_time)) {
-			result					= (*I).m_level_time;
-		}
+		if ((hit().objects().end() != I) && (result < (*I).m_level_time))
+			result		= (*I).m_level_time;
 	}
 
-	return							(result);
+	return				(result);
 }
 
 void CMemoryManager::remove_links	(CObject *object)

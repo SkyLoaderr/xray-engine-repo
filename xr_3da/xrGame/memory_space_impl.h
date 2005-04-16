@@ -24,19 +24,22 @@ IC	SRotation CObjectParams<T>::orientation	(const T *object) const
 template <typename T>
 IC	void CObjectParams<T>::fill				(const T *game_object)
 {
+#ifdef USE_ORIENTATION
 	m_orientation			= game_object ? orientation(game_object) : SRotation(0.f,0.f,0.f);
+#endif
+	
 	m_level_vertex_id		= game_object ? game_object->ai_location().level_vertex_id() : u32(-1);
 	if (game_object && ai().get_level_graph() && ai().level_graph().valid_vertex_id(m_level_vertex_id) && !ai().level_graph().inside(m_level_vertex_id,game_object->Position())) {
 		m_position			= ai().level_graph().vertex_position(m_level_vertex_id);
 		return;
 	}
+	
 	if (game_object) {
 		game_object->Center	(m_position);
 		m_position.set		(game_object->Position().x,m_position.y,game_object->Position().z);
 	}
-	else {
+	else
 		m_position			= Fvector().set(0.f,0.f,0.f);
-	}
 }
 
 template <typename T>
@@ -55,12 +58,22 @@ IC	bool CMemoryObject<T>::operator==		(u16 id) const
 template <typename T>
 IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self, const squad_mask_type &mask)
 {
+#ifdef USE_UPDATE_COUNT
 	++m_update_count;
-	m_object				= game_object;
+#endif
+#ifdef USE_LAST_GAME_TIME
 	m_last_game_time		= m_game_time;
+#endif
+#ifdef USE_LAST_LEVEL_TIME
 	m_last_level_time		= m_level_time;
+#endif
+#ifdef USE_GAME_TIME
 	m_game_time				= Level().GetGameTime();
+#endif
+#ifdef USE_LEVEL_TIME
 	m_level_time			= Device.dwTimeGlobal;
+#endif
+	m_object				= game_object;
 	m_object_params.fill	(game_object);
 	m_self_params.fill		(self);
 	m_squad_mask.assign		(mask);

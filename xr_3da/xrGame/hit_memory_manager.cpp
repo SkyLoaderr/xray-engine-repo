@@ -100,8 +100,13 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 		CHitObject						hit_object;
 
 		hit_object.fill					(entity_alive,m_object,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
-		hit_object.m_first_level_time	= Device.dwTimeGlobal;
+		
+#ifdef USE_FIRST_GAME_TIME
 		hit_object.m_first_game_time	= Level().GetGameTime();
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
+		hit_object.m_first_level_time	= Device.dwTimeGlobal;
+#endif
 		hit_object.m_amount				= amount;
 
 		if (m_max_hit_count <= m_hits->size()) {

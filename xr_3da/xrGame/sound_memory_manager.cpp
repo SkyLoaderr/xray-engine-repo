@@ -215,8 +215,12 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		if (!game_object)
 			sound_object.m_object_params.m_position = position;
-		sound_object.m_first_level_time	= Device.dwTimeGlobal;
+#ifdef USE_FIRST_GAME_TIME
 		sound_object.m_first_game_time	= Level().GetGameTime();
+#endif
+#ifdef USE_FIRST_LEVEL_TIME
+		sound_object.m_first_level_time	= Device.dwTimeGlobal;
+#endif
 
 		VERIFY					(m_max_sound_count);
 		if (m_max_sound_count <= m_sounds->size()) {
