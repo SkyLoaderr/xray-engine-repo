@@ -17,10 +17,6 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
 	Init					(p_name,0,bAutoRemove);
 }
 
-CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
-{
-	Init					(p_name,S,bAutoRemove);
-}
 
 void CParticlesObject::Init	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 {
