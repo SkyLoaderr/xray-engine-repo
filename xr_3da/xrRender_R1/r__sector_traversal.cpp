@@ -87,7 +87,7 @@ void CPortalTraverser::fade_render	()
 	
 	// calc poly-count
 	u32		_pcount					= 0;
-	for		(u32 _it = 0; _it<f_portals.size(); _it++)	_pcount	+= f_portals[_it].first->poly.size()-2;
+	for		(u32 _it = 0; _it<f_portals.size(); _it++)	_pcount	+= f_portals[_it].first->getPoly().size()-2;
 
 	// fill buffers
 	u32			_offset				= 0;
@@ -104,11 +104,11 @@ void CPortalTraverser::fade_render	()
 		u32							_clr	= color_rgba(0,0,0,u32(iA));
 
 		// fill polys
-		u32			_polys					= _P->poly.size()-2;
+		u32			_polys					= _P->getPoly().size()-2;
 		for			(u32 _pit=0; _pit<_polys; _pit++)	{
-			_v->set	(_P->poly[0],		_clr);	_v++;
-			_v->set (_P->poly[_pit*3+1],_clr);	_v++;
-			_v->set (_P->poly[_pit*3+2],_clr);	_v++;
+			_v->set	(_P->getPoly()[0],		_clr);	_v++;
+			_v->set (_P->getPoly()[_pit*3+1],_clr);	_v++;
+			_v->set (_P->getPoly()[_pit*3+2],_clr);	_v++;
 		}
 	}
 	RCache.Vertex.Unlock			(_pcount*3,f_geom.stride());
