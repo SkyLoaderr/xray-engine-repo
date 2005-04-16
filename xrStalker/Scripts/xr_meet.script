@@ -258,10 +258,20 @@ function action_state_talk:set_meet_state(over)
 	if over ~= nil then
 		state_mgr.set_state(self.object, over, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 	else
-		if self.object:limping() then
-			state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-		else			
-			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		local state = state_mgr.get_state(self.object)
+		printf("current_state [%s]", utils.to_str(state))
+		if state == "hide" or
+		   state == "hide_fire" or
+		   state == "sneak" or
+		   state == "sneak_fire"
+		then
+			state_mgr.set_state(self.object, "hide")
+		else
+			if self.object:limping() then
+				state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			else			
+				state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			end
 		end
 	end			
 

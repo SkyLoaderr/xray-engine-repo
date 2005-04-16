@@ -734,8 +734,9 @@ function set_state(npc, state_name, callback, timeout, target, emerg, synsound)
 end
 function get_state(npc)
 	if db.storage[npc:id()].state_mgr then
-		db.storage[npc:id()].state_mgr:get_state()
+		return db.storage[npc:id()].state_mgr:get_state()
 	end
+	return nil
 end
 
 
