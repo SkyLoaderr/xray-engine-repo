@@ -130,6 +130,10 @@ void	IGame_Level::OnFrame		( )
 	// Log				("- level:on-frame: ",u32(Device.dwFrame));
 //	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
+	Device.Statistic.Particles_starting	= ps_needtoplay.size	();
+	Device.Statistic.Particles_active	= ps_active.size		();
+	Device.Statistic.Particles_destroy	= ps_destroy.size		();
+
 	// Play req particle systems
 	while (ps_needtoplay.size())
 	{

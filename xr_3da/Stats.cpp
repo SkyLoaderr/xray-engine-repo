@@ -157,6 +157,7 @@ void CStats::Show()
 		F.OutNext	("uClients:    %2.2fms, %2.1f%%, %d/%d",UpdateClient.result,PPP(UpdateClient.result),UpdateClient_active,UpdateClient_total);
 		F.OutNext	("uSheduler:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uSheduler_L: %2.2fms",fShedulerLoad);
+		F.OutNext	("uParticles:  Qstart[%d] Qactive[%d] Qdestroy[%d]",	Particles_starting,Particles_active,Particles_destroy);
 		F.OutNext	("spInsert:    o[%.2fms, %2.1f%%], p[%.2fms, %2.1f%%]",	g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result),	g_SpatialSpacePhysic->stat_insert.result, PPP(g_SpatialSpacePhysic->stat_insert.result));
 		F.OutNext	("spRemove:    o[%.2fms, %2.1f%%], p[%.2fms, %2.1f%%]",	g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result),	g_SpatialSpacePhysic->stat_remove.result, PPP(g_SpatialSpacePhysic->stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
@@ -330,6 +331,7 @@ void CStats::Show()
 		g_SpatialSpacePhysic->stat_remove.FrameStart();
 	}
 	dwSND_Played = dwSND_Allocated = 0;
+	Particles_starting = Particles_active = Particles_destroy = 0;
 }
 
 void	__stdcall _LogCallback		(LPCSTR string)

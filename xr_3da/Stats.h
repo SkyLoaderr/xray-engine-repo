@@ -26,6 +26,9 @@ public:
 	CStatTimer	UpdateClient;		// 
 	u32			UpdateClient_active;//
 	u32			UpdateClient_total;	//
+	u32			Particles_starting;	// starting
+	u32			Particles_active;	// active
+	u32			Particles_destroy;	// destroying
 	CStatTimer	Physics;			// movement+collision
 	CStatTimer	ph_collision;		// collision
 	CStatTimer	ph_core;			// collision
