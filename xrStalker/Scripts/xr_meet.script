@@ -225,11 +225,7 @@ function action_state_talk:initialize()
 		self.overrides_meet_state = nil
 	end
 
-	if self.overrides_meet_state then
-		state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-	else
-		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-	end
+	self:set_meet_state(self.overrides_meet_state)
 end
 function action_state_talk:execute()
 	action_base.execute(self)
@@ -242,33 +238,33 @@ function action_state_talk:execute()
 		end
 	end
 
-
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
 	if overrides ~= nil then 
 		if overrides.meet_state ~= self.overrides_meet_state then
 			-- новое значение не равно текущему
 			self.overrides_meet_state = overrides.meet_state
 		end
-		if self.overrides_meet_state ~= nil then
-			state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-		else
-			if self.object:limping() then
-				state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-			else			
-				state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-			end
-		end			
+		
+		self:set_meet_state(self.overrides_meet_state)
 	else	
 		if self.overrides_meet_state ~= nil then
-			if self.object:limping() then
-				state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-			else			
-				state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
-			end
 			self.overrides_meet_state = nil
+			self:set_meet_state(self.overrides_meet_state)
 		end
 	end
 	
+end
+function action_state_talk:set_meet_state(over)
+	if over ~= nil then
+		state_mgr.set_state(self.object, over, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+	else
+		if self.object:limping() then
+			state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		else			
+			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		end
+	end			
+
 end
 function action_state_talk:finalize()
 	action_base.finalize(self)

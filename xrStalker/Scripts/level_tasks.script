@@ -1,5 +1,6 @@
 	
-function proceed(actor)
+function proceed()
+	local actor = db.actor
 	--' ׁ‏זוע :)
 	if	actor:has_info("tutorial_artefact_start") and
 		actor:dont_has_info("tutorial_artefact_gain") and 

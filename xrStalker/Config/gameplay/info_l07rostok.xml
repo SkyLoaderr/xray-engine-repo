@@ -158,12 +158,8 @@
 	<info_portion id="bar_resque_research_fail"></info_portion>
 	
 	<info_portion id="bar_resque_research_dead"></info_portion>
-    <info_portion id="bar_spawn_heli_psevdodogs">
-		<disable>bar_heli_scene_stay_online</disable>
-    </info_portion>
-    <info_portion id="bar_heli_scene_stay_online">
-		<disable>bar_spawn_heli_psevdodogs</disable>
-    </info_portion>
+    <info_portion id="bar_spawn_heli_psevdodogs"></info_portion>
+    <info_portion id="bar_heli_scene_stay_online"></info_portion>
     
     
     <!-- FREEDOM FLASH QUEST -->
