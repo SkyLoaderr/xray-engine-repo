@@ -551,7 +551,9 @@ char*	game_cl_ArtefactHunt::getTeamSection(int Team)
 	default:
 		NODEFAULT;
 	};
+#ifdef DEBUG
 	return NULL;
+#endif
 };
 
 bool	game_cl_ArtefactHunt::PlayerCanSprint			(CActor* pActor)

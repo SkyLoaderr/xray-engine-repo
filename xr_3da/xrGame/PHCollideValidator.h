@@ -34,8 +34,9 @@ static	IC	bool			DoCollide					(const CPHObject& obj1,const CPHObject& obj2)
 		case 0:					return DoCollideNonMatched	(obj1,obj2)			;break;
 		default: NODEFAULT;
 	}
+#ifdef DEBUG
 	return DoCollideNone(obj1,obj2) || DoCollideGroup(obj1,obj2);
-			
+#endif
 }
 
 static	IC bool				DoCollideStatic				(const CPHObject& obj)

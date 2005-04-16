@@ -70,7 +70,7 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 
 #ifndef DEBUG
 	return		(0);
-#endif
+#else
 
 	LPCSTR		S = "", SS = "";
 	LPSTR		S1;
@@ -134,6 +134,7 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 #endif
 
 	return	(l_iResult);
+#endif
 }
 
 #ifdef DEBUG
