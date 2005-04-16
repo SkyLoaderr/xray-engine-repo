@@ -42,6 +42,7 @@ public:
 	virtual void	Die					(CObject* who);
 
 	virtual void	net_Destroy			();
+	virtual BOOL	net_Spawn			(CSE_Abstract *DC);
 
 	virtual	void	CheckSpecParams		(u32 spec_params);
 

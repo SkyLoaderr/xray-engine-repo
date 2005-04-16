@@ -137,6 +137,18 @@ void CController::Load(LPCSTR section)
 
 }
 
+BOOL CController::net_Spawn(CSE_Abstract *DC)
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	if (!g_Alive()) {
+		CPsyAuraController::deactivate();
+		CPsyAuraController::set_auto_activate(false);
+	}
+}
+
+
 void CController::UpdateControlled()
 {
 	// если есть враг, проверить может ли быть враг взят под контроль
