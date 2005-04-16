@@ -146,6 +146,8 @@ BOOL CController::net_Spawn(CSE_Abstract *DC)
 		CPsyAuraController::deactivate();
 		CPsyAuraController::set_auto_activate(false);
 	}
+
+	return (TRUE);
 }
 
 
