@@ -187,7 +187,8 @@ public:
 	virtual bool SilencerAttachable();
 
 	//обновление видимости для косточек аддонов
-	virtual void UpdateAddonsVisibility();
+			void UpdateAddonsVisibility();
+			void UpdateHUDAddonsVisibility();
 	//инициализация свойств присоединенных аддонов
 	virtual void InitAddons();
 
@@ -199,11 +200,11 @@ public:
 	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
 	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
 
-	virtual const shared_str& GetGrenadeLauncherName	()		{return m_sGrenadeLauncherName;}
-	virtual const shared_str& GetScopeName				()		{return m_sScopeName;}
-	virtual const shared_str& GetSilencerName			()		{return m_sSilencerName;}
+	const shared_str& GetGrenadeLauncherName	()		{return m_sGrenadeLauncherName;}
+	const shared_str& GetScopeName				()		{return m_sScopeName;}
+	const shared_str& GetSilencerName			()		{return m_sSilencerName;}
 
-	virtual	u8		GetAddonsState						()		const		{return m_flagsAddOnState;};
+	u8		GetAddonsState						()		const		{return m_flagsAddOnState;};
 protected:
 	//состояние подключенных аддонов
 	u8 m_flagsAddOnState;
@@ -248,13 +249,13 @@ public:
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
-				bool			IsZoomed			()	const	{return m_bZoomMode;};
+			bool			IsZoomed			()	const	{return m_bZoomMode;};
 	CUIStaticItem*			ZoomTexture			();
-	virtual bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
+			bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
 
 	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
-	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
+			bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
 
 			void			LoadZoomOffset		(LPCSTR section, LPCSTR prefix);
 
@@ -269,7 +270,7 @@ public:
 
 public:
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
-	virtual bool				IsSingleHanded		()	const		{	return m_bIsSingleHanded; }
+			bool				IsSingleHanded		()	const		{	return m_bIsSingleHanded; }
 
 public:
 	IC		LPCSTR			strap_bone0			() const {return m_strap_bone0;}
@@ -334,7 +335,7 @@ protected:
 	virtual void			SetDefaults			();
 
 	//трассирование полета пули
-	virtual void			FireTrace			(const Fvector& P, const Fvector& D);
+			void			FireTrace			(const Fvector& P, const Fvector& D);
 
 	virtual void			FireStart			() {CShootingObject::FireStart();}
 	virtual void			FireEnd				() {CShootingObject::FireEnd();}
@@ -342,7 +343,7 @@ protected:
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 	virtual void			Reload				();
-	virtual void			StopShooting		();
+			void			StopShooting		();
     
 
 	// обработка визуализации выстрела
@@ -392,9 +393,9 @@ protected:
 
 protected:	
 	//для второго ствола
-	virtual void			StartFlameParticles2();
-	virtual void			StopFlameParticles2	();
-	virtual void			UpdateFlameParticles2();
+			void			StartFlameParticles2();
+			void			StopFlameParticles2	();
+			void			UpdateFlameParticles2();
 protected:
 	shared_str					m_sFlameParticles2;
 	//объект партиклов для стрельбы из 2-го ствола
@@ -416,7 +417,7 @@ public:
 													u32 ParentID = 0xffffffff);
 
 	//показывать ли кол-во патронов на экране
-	virtual bool			ShowAmmo			() {return m_bShowAmmo;	}
+			bool			ShowAmmo			() {return m_bShowAmmo;	}
 protected:
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine

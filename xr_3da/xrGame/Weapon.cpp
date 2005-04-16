@@ -609,7 +609,7 @@ void CWeapon::OnH_B_Chield		()
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
-
+	UpdateHUDAddonsVisibility();
 	//подсветка от выстрела
 	UpdateLight				();
 
@@ -892,6 +892,43 @@ bool CWeapon::SilencerAttachable()
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus);
 }
 
+void CWeapon::UpdateHUDAddonsVisibility()
+{//actor only
+	if( H_Parent() != Level().CurrentEntity() ) return;
+	if(m_pHUD->IsHidden()) return;
+	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
+	if (!pHudVisual)return;
+	
+	if(ScopeAttachable())
+	{
+		if(IsScopeAttached())
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+		else
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+	}
+	if(SilencerAttachable())
+	{
+		if(IsSilencerAttached())
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
+		else	
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+
+	}
+/*	if(GrenadeLauncherAttachable())
+	{
+		if(IsGrenadeLauncherAttached())
+		{
+			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+		}
+		else
+		{
+			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+		}
+	}*/
+}
+
 void CWeapon::UpdateAddonsVisibility()
 {
 	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());// R_ASSERT(pHudVisual);
@@ -902,7 +939,7 @@ void CWeapon::UpdateAddonsVisibility()
 	{
 		if(IsScopeAttached())
 		{
-			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+			if (pHudVisual)	pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
 		}
 		else
