@@ -132,8 +132,8 @@
 	</heli_mini_spot>
 <!--test -->
 	
-	<enemy_mini_spot width="3" height="3" alignment="c"> 
-		<texture r="255" g="0" b="0" light_anim="ui_minimap_enemy">ui\hud_map_point</texture>
+	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy"> 
+		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
 	</enemy_mini_spot>
 	
 	<neutral_mini_spot width="3" height="3" alignment="c"> 

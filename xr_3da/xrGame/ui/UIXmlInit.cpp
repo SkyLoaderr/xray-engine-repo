@@ -162,6 +162,13 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	InitTexture	 (xml_doc, path, index, pWnd);
 	InitMultiText(xml_doc, path, index, pWnd);
+
+	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
+	pWnd->EnableHeading( (flag)?true:false);
+
+	LPCSTR str_flag = xml_doc.ReadAttrib(buf, 0, "light_anim", "");
+	if( xr_strlen(str_flag) )
+		pWnd->SetLightAnim(str_flag);
 	
 	return true;
 }
@@ -194,13 +201,14 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	CStringTable st;
 	pWnd->SetText(*st(*text));
 
-	
-	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
-	pWnd->EnableHeading( (flag)?true:false);
+//moved to InitStatic	
+//	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
+//	pWnd->EnableHeading( (flag)?true:false);
 
-	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
-	if( xr_strlen(str_flag) )
-		pWnd->SetLightAnim(str_flag);
+// moved to InitStatic
+//	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
+//	if( xr_strlen(str_flag) )
+//		pWnd->SetLightAnim(str_flag);
 
 	return true;
 }
@@ -739,6 +747,7 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 		pWnd->GetUIStaticItem().SetOriginalRect(x, y, width, height);
 		pWnd->ClipperOn();
 	}
+
 
 	return true;
 }
