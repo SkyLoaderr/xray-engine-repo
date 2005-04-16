@@ -126,29 +126,33 @@ void					CRender::create					()
 	R_CHK						(HW.pDevice->CreateQuery(D3DQUERYTYPE_EVENT,&q_sync_point));
 
 	xrRender_apply_tf			();
-} 
+	::PortalTraverser.initialize();
+}
 void					CRender::destroy				()
 {
-	Device.seqFrame.Remove		(this);
+	::PortalTraverser.destroy	();
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
 	xr_delete					(Models);
 	PSLibrary.OnDestroy			();
+	Device.seqFrame.Remove		(this);
 }
 void					CRender::reset_begin			()
 {
 	xr_delete					(Target);
 	HWOCC.occq_destroy			();
+	_RELEASE					(q_sync_point);
 }
 void					CRender::reset_end				()
 {
+	R_CHK						(HW.pDevice->CreateQuery(D3DQUERYTYPE_EVENT,&q_sync_point));
 	HWOCC.occq_create			(occq_size);
 	Target						=	xr_new<CRenderTarget>	();
 	xrRender_apply_tf			();
 }
 void					CRender::OnFrame				()
 {
-	Models->DeleteQueue	();
+	Models->DeleteQueue			();
 }
 
 // Implementation

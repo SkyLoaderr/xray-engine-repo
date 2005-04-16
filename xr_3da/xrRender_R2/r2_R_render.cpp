@@ -11,7 +11,7 @@ IC	bool	pred_sp_sort	(ISpatial*	_1, ISpatial* _2)
 	return	d1<d2;
 }
 
-void CRender::render_main	(Fmatrix&	m_ViewProjection)
+void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 {
 //	Msg						("---begin");
 	marker									++;
@@ -156,7 +156,7 @@ void CRender::Render		()
 		r_pmask										(true,false);	// enable priority "0"
 		set_Recorder								(NULL)		;
 		phase										= PHASE_SMAP;
-		render_main									(m_zfill)	;
+		render_main									(m_zfill,false)	;
 		r_pmask										(true,false);	// disable priority "1"
 		Device.Statistic.RenderCALC.End				( )			;
 
@@ -176,7 +176,7 @@ void CRender::Render		()
 	if (bSUN)									set_Recorder	(&main_coarse_structure);
 	else										set_Recorder	(NULL);
 	phase										= PHASE_NORMAL;
-	render_main									(Device.mFullTransform);
+	render_main									(Device.mFullTransform,true);
 	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
 	Device.Statistic.RenderCALC.End				( );
@@ -296,9 +296,10 @@ void CRender::render_forward				()
 		// level
 		r_pmask									(false,true);			// enable priority "1"
 		phase									= PHASE_NORMAL;
-		render_main								(Device.mFullTransform);//
+		render_main								(Device.mFullTransform,false);//
 		r_dsgraph_render_graph					(1);					// normal level, secondary priority
 		r_dsgraph_render_sorted					();						// strict-sorted geoms
+		PortalTraverser.fade_render				();						// faded-portals
 		g_pGamePersistent->Environment.RenderLast();					// rain/thunder-bolts
 	}
 
