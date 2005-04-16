@@ -72,8 +72,8 @@ void CPortalTraverser::destroy		()
 }
 ICF		bool	sort_pred			(const std::pair<CPortal*, float>& _1, const std::pair<CPortal*, float>& _2)
 {
-	float		d1		= PortalTraverser.i_vBase.distance_to_sqr(_1->first->S.P);
-	float		d2		= PortalTraverser.i_vBase.distance_to_sqr(_1->first->S.P);
+	float		d1		= PortalTraverser.i_vBase.distance_to_sqr(_1.first->S.P);
+	float		d2		= PortalTraverser.i_vBase.distance_to_sqr(_2.first->S.P);
 	return		d2>d1;	// descending, back to front
 }
 extern float r_ssaDISCARD			;
