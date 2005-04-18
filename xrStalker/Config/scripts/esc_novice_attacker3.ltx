@@ -1,0 +1,24 @@
+[logic]
+active = walker1
+actor_dialogs = actor_dialogs
+
+[walker1]
+path_walk = escape_btr_path2
+path_look = escape_btr_look2
+meet_enabled = true
+meet_dialog = escape_factory_assault_hello
+on_info = {+sniper_dead} walker
+
+[walker]
+path_walk = escape_factory_way3
+path_look = escape_factory_look_common
+team = escape_attack_team
+on_signal = b_final | walker2 | %+escape_assault_finished%
+
+[walker2]
+path_walk = escape_factory_return_path
+on_signal = b_final | nil
+
+[actor_dialogs]
+id = escape_factory_assault_talk, escape_factory_assault_attack
+
