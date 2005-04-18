@@ -33,5 +33,6 @@
 	<info_portion id="mil_info_max_mines"></info_portion>
 	<info_portion id="mil_info_freedom_radio"></info_portion>
 	<info_portion id="mil_info_to_all"></info_portion>
+	<info_portion id="mil_sniper_to_player_warning"></info_portion>
 
 </game_information_portions>
