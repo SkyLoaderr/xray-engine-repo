@@ -481,9 +481,9 @@ function military_lukash_dead (actor, npc)
 end
 
 function mil_courier_death (actor, npc)
-    if db.actor:dont_has_info ("mil_khutor_visited") then
-       level_tasks.set_task_state (task.fail, "mil_courier_job", 1)
-    end    
+    --if db.actor:dont_has_info ("mil_khutor_visited") then
+       --level_tasks.set_task_state (task.fail, "mil_courier_job", 1)
+    --end    
 end
 
 function val_suicide_stalker_died(actor, npc)
