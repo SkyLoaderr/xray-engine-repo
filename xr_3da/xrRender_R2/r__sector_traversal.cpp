@@ -108,8 +108,8 @@ void CPortalTraverser::fade_render	()
 		u32			_polys					= _P->getPoly().size()-2;
 		for			(u32 _pit=0; _pit<_polys; _pit++)	{
 			_v->set	(_P->getPoly()[0],		_clr);	_v++;
-			_v->set (_P->getPoly()[_pit*3+1],_clr);	_v++;
-			_v->set (_P->getPoly()[_pit*3+2],_clr);	_v++;
+			_v->set (_P->getPoly()[_pit+1],_clr);	_v++;
+			_v->set (_P->getPoly()[_pit+2],_clr);	_v++;
 		}
 	}
 	RCache.Vertex.Unlock			(_pcount*3,f_geom.stride());
