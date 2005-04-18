@@ -5,6 +5,8 @@
 ----------------------------------------------------------------------------------------------------------------------
 local nstl = 10
 
+local snd_ini = ini_file("misc\\script_sound.ltx")
+
 theme = {}
 
 ph_snd_themes = {}           
@@ -67,14 +69,12 @@ function load_sound(obj)
 	local sounds_base = stalker_ids.sound_script + 10000
 
 	function id()
-		sounds_base = sounds_base + 1			//local t = sounds_base
-		return sounds_base - 1					//sounds_base = sounds_base + 1
-												//return t
+		sounds_base = sounds_base + 1
+		return sounds_base - 1
 	end
 
 	-- загрузка звуков на основе данных ltx
 	function load_sound_from_ltx(obj, name, min, max, rnd, prior)
-		local snd_ini = ini_file("misc\\script_sound.ltx")
 		local t = {}		
 		if snd_ini:section_exist(name.."_rnd") then		
 			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)
@@ -88,7 +88,7 @@ function load_sound(obj)
 			end
 		end
 		if snd_ini:section_exist(name.."_seq") then
-			local s select_sound_from_ltx(obj, name.."_seq", snd_ini)
+			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
 			if s then
 				local sid = id()				
 				t.into_id = sid
