@@ -161,6 +161,7 @@ namespace Feel {
 			mS.scale			(r);
 			mE.mul_43			(mR,mS); 
 			mE.transform_tiny	(OP,I->cp_LP);
+			I->cp_LAST			= OP;
 
 			// 
 			Fvector				D;	

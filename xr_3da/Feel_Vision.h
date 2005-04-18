@@ -33,13 +33,27 @@ namespace Feel
 			Fvector				cp_LP;
 			Fvector				cp_LR_src;
 			Fvector				cp_LR_dst;
+			Fvector				cp_LAST;	// last point found to be visible
 		};
 		xr_vector<feel_visible_Item>	feel_visible;
 	public:
 		void						feel_vision_clear		();
 		void						feel_vision_query		(Fmatrix& mFull,	Fvector& P);
 		void						feel_vision_update		(CObject* parent,	Fvector& P, float dt, float vis_threshold);
-		void						feel_vision_get			(xr_vector<CObject*>& R);
+		void						feel_vision_get			(xr_vector<CObject*>& R)		{
+			R.clear					();
+			xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+			for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
+		}
+		Fvector						feel_vision_get_vispoint(CObject* _O)					{
+			xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+			for (; I!=E; I++)		if (_O == I->O) {
+				VERIFY	(positive(I->fuzzy));
+				return	I->cp_LAST;
+			}
+			VERIFY		(0, "There is no such object in the potentially visible list" );
+			return		Fvector().set(0,0,0).div(0);
+		}
 		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
 		virtual		float			feel_vision_mtl_transp	(u32 element)					= 0;	
 	};
