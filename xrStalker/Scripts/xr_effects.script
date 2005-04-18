@@ -495,7 +495,27 @@ end
 
 
 function mil_bomb_explode (actor, npc)
-    printf ("WALL EXPLODED")
+    local source = nil
+    local sim = alife ()
+    if sim then
+       local se_obj = sim:story_object (723)  
+       if se_obj then
+          source = level.object_by_id(se_obj.id)
+       end
+    end
+
+    if source == nil then
+       utils.abort ("Bomb with story id MIL_BOMB not found")
+       return
+    end
+
+    local ps = particle ("explosions\\expl_09", "bip01_head",
+                         particle_params (vector():set(0,0,0),
+                                          vector():set(0,0,0),
+                                          vector():set(1,0,0)),false)
+    local snd = sound_object ("weapons\\f1_explode")
+    action (source, ps, cond (cond.time_end, 1000))
+    snd:play_at_pos (source, source:position ())
 end
 
 -- GARBAGE
