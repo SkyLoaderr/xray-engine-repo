@@ -363,7 +363,7 @@
 		<rank>60</rank>
 		<reputation>-70</reputation>
  
-		<visual>actors\bandit\stalker_bandit_5</visual>
+		<visual>actors\bandit\stalker_bandit_borov</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
