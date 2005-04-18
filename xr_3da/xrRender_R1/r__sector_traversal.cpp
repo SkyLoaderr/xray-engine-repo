@@ -102,7 +102,7 @@ void CPortalTraverser::fade_render	()
 		float		ssaDiff					= _ssa-r_ssaLOD_B;
 		float		ssaScale				= ssaDiff/ssaRange;
 		int			iA						= iFloor((1-ssaScale)*255.5f);	clamp(iA,0,255);
-		u32							_clr	= color_rgba(0,0,0,u32(iA));
+		u32							_clr	= color_rgba(0,0,0,u32(iA));	
 
 		// fill polys
 		u32			_polys					= _P->getPoly().size()-2;
@@ -118,7 +118,9 @@ void CPortalTraverser::fade_render	()
 	RCache.set_xform_world			(Fidentity);
 	RCache.set_Shader				(f_shader);
 	RCache.set_Geometry				(f_geom);
+	RCache.set_CullMode				(CULL_NONE);
 	RCache.Render					(D3DPT_TRIANGLELIST,_offset,_pcount);
+	RCache.set_CullMode				(CULL_CCW);
 
 	// cleanup
 	f_portals.clear					();
