@@ -103,6 +103,8 @@ sPoly2D* C2DFrustum::ClipPoly(sPoly2D& S, sPoly2D& D) const
 //----------------------------------------------------------------------------------
 CMainUI::CMainUI	()
 {
+	m_curW = Device.dwWidth;
+	m_curH = Device.dwHeight;
 	m_Flags.zero				();
 	m_pFontManager				= xr_new<CFontManager>();
 	m_pUICursor					= xr_new<CUICursor>();
