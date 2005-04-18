@@ -21,7 +21,7 @@ end
 function give_extra_task(actor, npc)
 	if barman_darklab_documents_given(actor,npc) or
 	   barman_need_decoding_given(actor,npc) or
-	   db.actor:has_info("bar_bar_yantar_off_start")
+	   db.actor:has_info("bar_deactivate_radar_start")
 	then
 		return true
 	end
