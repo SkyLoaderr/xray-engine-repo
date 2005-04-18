@@ -16,3 +16,5 @@ DECLARE_RP(AppActivate);
 DECLARE_RP(AppDeactivate);
 DECLARE_RP(AppStart);
 DECLARE_RP(AppEnd);
+DECLARE_RP(DeviceReset);
+

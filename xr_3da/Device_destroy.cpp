@@ -51,4 +51,5 @@ void CRenderDevice::Reset		()
 	u32 tm_end				= TimerAsync();
 	Msg						("*** RESET [%d ms]",tm_end-tm_start);
 	ShowCursor	(FALSE);
+	seqDeviceReset.Process(rp_DeviceReset);
 }

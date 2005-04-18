@@ -74,6 +74,7 @@ public:
 	CRegistrator	<pureAppEnd			>			seqAppEnd;
 	CRegistrator	<pureFrame			>			seqFrame;
 	CRegistrator	<pureFrame			>			seqFrameMT;
+	CRegistrator	<pureDeviceReset	>			seqDeviceReset;
 	xr_vector		<fastdelegate::FastDelegate0 >	seqParallel;
 
 	// Dependent classes
