@@ -67,6 +67,9 @@ function actor_enemy(actor, npc)
 	npc:set_relation(game_object.enemy, actor)
 end
 
+function give_all_quests(actor, npc)
+	bar_dialogs.quests()
+end
 
 -- Вызов этой функции отключит обработчик [combat] боя для персонажа.
 -- Используется в случаях, когда все необходимые действия, такие как переключение на другую секцию,
