@@ -13,15 +13,13 @@
 class CContextMenu;
 class CHUDCursor;
 
-struct CFontManager{
+struct CFontManager :public CDeviceResetNotifier	{
 							CFontManager			();
 							~CFontManager			();
 
 	typedef xr_vector<CGameFont**>					FONTS_VEC;
 	typedef FONTS_VEC::iterator						FONTS_VEC_IT;
 	FONTS_VEC				m_all_fonts;
-	u32						m_curW;
-	u32						m_curH;
 	void					Render					();
 	// console font
 	CGameFont*				pFontConsole;
@@ -45,9 +43,11 @@ struct CFontManager{
 	CGameFont*				pFontLetterica25;
 	CGameFont*				pFontStat;
 
-	void					InitializeFonts();
-	void					InitializeFont(CGameFont*& F, LPCSTR section, u32 flags = 0);
-	LPCSTR					GetFontTexName (LPCSTR section);				
+	void					InitializeFonts			();
+	void					InitializeFont			(CGameFont*& F, LPCSTR section, u32 flags = 0);
+	LPCSTR					GetFontTexName			(LPCSTR section);				
+
+	virtual void			OnDeviceReset			();
 };
 
 class CHUDManager :

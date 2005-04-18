@@ -62,9 +62,6 @@ void CFontManager::InitializeFonts()
 	InitializeFont(pFontLetterica25			,"ui_font_letter_25"			);
 	InitializeFont(pFontStat				,"stat_font"					);
 
-	m_curW = Device.dwWidth;
-	m_curH = Device.dwHeight;
-
 }
 LPCSTR CFontManager::GetFontTexName (LPCSTR section)
 {
@@ -121,6 +118,11 @@ void CFontManager::Render()
 	for(;it!=it_e;++it)
 		(**it)->OnRender			();
 }
+void CFontManager::OnDeviceReset()
+{
+	InitializeFonts();
+}
+
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
 { 
@@ -150,8 +152,8 @@ void CHUDManager::Load()
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()
 {
-	if(	Font().m_curW != Device.dwWidth ||	Font().m_curH != Device.dwHeight )
-		Font().InitializeFonts();
+//	if(	Font().m_curW != Device.dwWidth ||	Font().m_curH != Device.dwHeight )
+//		Font().InitializeFonts();
 
 	if (pUI) pUI->UIOnFrame();
 	m_pHUDCursor->CursorOnFrame();

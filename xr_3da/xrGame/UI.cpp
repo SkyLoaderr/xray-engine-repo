@@ -226,3 +226,14 @@ void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 
 	CDialogHolder::StartStopMenu(pDialog,bDoHideIndicators);
 }
+
+CDeviceResetNotifier::CDeviceResetNotifier	()
+{
+	Device.seqDeviceReset.Add(this);
+}
+
+CDeviceResetNotifier::~CDeviceResetNotifier	()
+{
+	Device.seqDeviceReset.Remove(this);
+}
+

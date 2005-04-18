@@ -19,6 +19,15 @@ class CUIMainIngameWnd;
 #define LIFE_TIME		7.f		// sec
 #define HIDE_TIME		2.5f	// sec 
 
+
+class CDeviceResetNotifier :public pureDeviceReset
+{
+public:
+						CDeviceResetNotifier					();
+	virtual				~CDeviceResetNotifier					();
+	virtual void		OnDeviceReset							()	{};
+
+};
 struct SUIMessage
 {
 	LPSTR	sender;
