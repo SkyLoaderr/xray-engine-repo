@@ -508,7 +508,7 @@ function mil_bomb_explode (actor, npc)
        utils.abort ("Bomb with story id MIL_BOMB not found")
        return
     end
-    source:explode ()
+    source:explode (0)
 
     --local ps = particle ("explosions\\expl_09", "link",
                          --particle_params (vector():set(0,0,0),
