@@ -203,7 +203,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	m_demo_mode						= !!tpHuman->m_demo_mode;
 	m_group_behaviour				= !!tpHuman->m_flags.test(CSE_ALifeObject::flGroupBehaviour);
 
-	if (!inherited::net_Spawn(DC) || !CObjectHandler::net_Spawn(DC))
+	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
 		return						(FALSE);
 
 	m_pPhysics_support->in_NetSpawn	(e);
