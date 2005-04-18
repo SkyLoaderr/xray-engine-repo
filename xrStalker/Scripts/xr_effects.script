@@ -308,7 +308,6 @@ function military_dolg_dead (actor, npc)
     if db.storage[db.actor:id ()].mil_dolg_killed == 8 then
        if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_sniper_job_complete") then 
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
-          level_tasks.set_task_state (task.fail, "mil_kill_sniper", 2)
           db.actor:disable_info_portion ("mil_sniper_get_job")
        end
        --printf ("!!! DOLG IS DEAD !!!")

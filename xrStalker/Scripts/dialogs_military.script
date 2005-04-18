@@ -19,13 +19,11 @@ end
 function mil_dolg_sniper_failed (stalker, player)
     level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
     level_tasks.set_task_state (task.fail, "mil_kill_sniper", 1)
-    level_tasks.set_task_state (task.fail, "mil_kill_sniper", 2)
 end
 
 -- отмечаем выполнение задачи
 function mil_dolg_sniper_complete (stalker, player)
     level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
-    level_tasks.set_task_state (task.completed, "mil_kill_sniper", 2)
 end
 
 function transfer_flash (player, stalker)
