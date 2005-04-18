@@ -131,7 +131,7 @@ xr_vector<b_rc_face>		g_rc_faces;
 template <class T>
 void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
 {
-	IReader*	O		= F.open_chunk(chunk);
+	IReader*	O	= F.open_chunk(chunk);
 	u32		count	= O?(O->length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
