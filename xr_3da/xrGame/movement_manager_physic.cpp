@@ -51,6 +51,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	
 	// Если нет движения по пути
 	if (	!enabled() || 
+			!actual()  ||
 //			path_completed() || 
 			detail().path().empty() ||
 			detail().completed(dest_position,true) || 

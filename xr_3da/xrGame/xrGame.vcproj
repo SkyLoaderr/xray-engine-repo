@@ -2511,6 +2511,12 @@
 								<File
 									RelativePath=".\ai\Monsters\States\state_test_look_actor_inline.h">
 								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_test_state.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_test_state_inline.h">
+								</File>
 							</Filter>
 						</Filter>
 						<Filter
@@ -2601,7 +2607,7 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="Components"
+						Name="components"
 						Filter="">
 						<File
 							RelativePath=".\ai\Monsters\ai_monster_defs.h">

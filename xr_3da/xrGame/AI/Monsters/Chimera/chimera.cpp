@@ -5,6 +5,9 @@
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
 #include "../ai_monster_movement_space.h"
+#include "../../../level.h"
+#include "../../../PhysicsShell.h"
+#include "../ai_monster_utils.h"
 
 CChimera::CChimera()
 {
@@ -267,10 +270,49 @@ void CChimera::UpdateCL()
 
 void CChimera::try_to_jump()
 {
-	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
-	if (!target || !EnemyMan.see_enemy_now()) return;
+	//CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
+	//if (!target || !EnemyMan.see_enemy_now()) return;
 
-	if (CJumpingAbility::can_jump(target))
+	//if (CJumpingAbility::can_jump(target))
+	//	CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump);
+	
+	// check 
+	if (MotionMan.m_tAction != ACT_RUN) return;
+
+	Fvector target;
+	
+	// получить список объектов вокруг врага
+	Level().ObjectSpace.GetNearest	(Position(), 9.f);
+	xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
+
+	for (u32 i=0;i<tpObjects.size();i++) {
+		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->Radius() < 1.f)) continue;
+
+		// проверка на  Field-Of-View
+		
+		Fvector dir = Fvector().sub(obj->Position(), Position());
+
+		float	my_h;
+		float	h;
+
+		my_h	= Direction().getH();
+		h		= dir.getH();
+
+		float from	= angle_normalize(my_h + -deg(8));
+		float to	= angle_normalize(my_h + deg(8));
+
+		if (!is_angle_between(h, from, to)) continue;
+		
+		Fvector center;
+		obj->Center(center);
+		float height = Fvector().add(center, obj->Radius()).y;
+
+		target.mad(Position(), Direction(), dir.magnitude());
+		target.y = height;
+
 		CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump);
+		break;
+	}
 }
 

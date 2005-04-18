@@ -9,9 +9,11 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "chimera_state_threaten.h"
-#include "../states/state_test_look_actor.h"
+#include "../states/state_test_state.h"
 
 #include "../critical_action_info.h"
+
+
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
@@ -23,6 +25,7 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CChimera> >					(obj));
 	add_state(eStateThreaten,				xr_new<CStateChimeraThreaten<CChimera> >				(obj));
+	add_state(eStateCustom,					xr_new<CStateMonsterTestState<CChimera> >				(obj));
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -55,16 +58,20 @@ void CStateManagerChimera::execute()
 		if (can_eat())	state_id = eStateEat;
 		else			state_id = eStateRest;
 	}
+	
+	state_id = eStateCustom;
+
+	object->try_to_jump();
 
 	// check jumping conditions
-	if (state_id == eStateAttack) {
-		if (!object->MotionMan.IsCriticalAction()) {
-			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
-			if (object->CJumpingAbility::can_jump(target)) {
-				object->try_to_jump();
-			}
-		}
-	}
+	//if (state_id == eStateAttack) {
+	//	if (!object->MotionMan.IsCriticalAction()) {
+	//		CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
+	//		if (object->CJumpingAbility::can_jump(target)) {
+	//			object->try_to_jump();
+	//		}
+	//	}
+	//}
 
 	if (object->CriticalActionInfo->is_fsm_locked()) return;
 

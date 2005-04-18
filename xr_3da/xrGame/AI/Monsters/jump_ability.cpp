@@ -93,6 +93,9 @@ void CJumpingAbility::start_jump(const Fvector &point)
 
 	// lock control blocks
 	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
+
+	m_object->movement().stop_now			();
+	m_object->movement().initialize_movement();
 }
 
 
