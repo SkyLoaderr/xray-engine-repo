@@ -1329,7 +1329,7 @@ void GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor)
 }
 void CWeapon::ZoomInc()
 {
-	float delta,mttttttttttttin_zoom_factor;
+	float delta,min_zoom_factor;
 	GetZoomData(m_fScopeZoomFactor,delta,min_zoom_factor);
 
 	m_fZoomFactor	-=delta;
