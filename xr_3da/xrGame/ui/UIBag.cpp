@@ -20,6 +20,9 @@ using namespace InventoryUtilities;
 
 CUIBag::CUIBag(CHECK_PROC proc){
 
+	for (int i=0; i<4; i++)
+        subSection_group3[i] = -1;
+
 	m_mlCurrLevel	= mlRoot;
 	m_pCurrentDDItem = NULL;
 	m_iMoneyAmount = 10000;
@@ -756,7 +759,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 void CUIBag::PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup){
 	int iActiveSection = -1;
 	shared_str weapon_class;
-	static int subSection_group3[] = {-1, -1, -1, -1};
+
 
 	switch (iGroup)
 	{

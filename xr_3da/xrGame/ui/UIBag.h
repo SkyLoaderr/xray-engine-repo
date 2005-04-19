@@ -125,4 +125,5 @@ CUIDragDropList*	GetCurrentGroup();
 	CONFORMITY_TABLE										m_ConformityTable;
    
 	CUIDragDropList m_groups[GROUP_DEFAULT + 1];
+	int subSection_group3[4];
 };
