@@ -10,6 +10,7 @@
 #include "ui/UISpawnWnd.h"
 
 #include "ui/UIBuyWeaponWnd.h"
+#include <dinput.h>
 
 // refs 
 
@@ -32,7 +33,8 @@ public:
 	virtual 			~CUIGameTDM			();
 	virtual void		SetClGame			(game_cl_GameState* g);
 	virtual	void		Init				();
-
-	virtual bool		IR_OnKeyboardPress	(int dik);
+	
+	virtual	bool				IR_OnKeyboardPress		( int dik );
+	virtual bool				IR_OnKeyboardRelease	( int dik );
 };
 #endif // __XR_UIGAMETDM_H__

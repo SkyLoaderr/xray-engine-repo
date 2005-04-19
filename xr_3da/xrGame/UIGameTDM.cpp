@@ -79,6 +79,32 @@ CUIGameTDM::~CUIGameTDM()
 //--------------------------------------------------------------------
 bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 {
+	switch (dik) {
+		case DIK_CAPSLOCK :
+		{
+			if (m_game)
+			{
+				m_game->Set_ShowPlayerNames(true);
+				return true;
+			};
+		}break;
+	}
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
+	return false;
+}
+
+bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
+{
+	switch (dik) {
+		case DIK_CAPSLOCK :
+			{
+				if (m_game)
+				{
+					m_game->Set_ShowPlayerNames(false);
+					return true;
+				};
+			}break;
+	}
+	if(inherited::IR_OnKeyboardRelease(dik)) return true;
 	return false;
 }

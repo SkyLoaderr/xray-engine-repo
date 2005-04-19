@@ -28,7 +28,7 @@ game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 	m_bTeamSelected		= TRUE;
 	m_game_ui			= NULL;
 
-
+	m_bShowPlayersNames = false;
 }
 void game_cl_TeamDeathmatch::Init ()
 {
@@ -265,6 +265,8 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 	};
 }
 
+BOOL	g_bShowPlayerNames = FALSE;
+
 bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 {
 	if (kTEAM == key )
@@ -286,9 +288,11 @@ bool		game_cl_TeamDeathmatch::IsEnemy					(game_PlayerState* ps)
 	return local_player->team != ps->team;
 };
 
+#define PLAYER_NAME_COLOR 0xff40ff40
+
 void	game_cl_TeamDeathmatch::OnRender				()
 {
-	if (local_player && m_bFriendlyIndicators)
+	if (local_player)
 	{
 		cl_TeamStruct *pTS = &TeamList[ModifyTeam(local_player->team)]; 
 		PLAYERS_MAP_IT it = players.begin();
@@ -302,11 +306,24 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
 			if (IsEnemy(ps)) continue;
 			if (ps == local_player) continue;
-
-			VERIFY(pObject);
-			CActor* pActor = smart_cast<CActor*>(pObject);
-			VERIFY(pActor);
-			pActor->RenderIndicator(pTS->IndicatorPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->IndicatorShader);
+			
+			float dyn = 0.31f;
+			if (g_bShowPlayerNames && m_bShowPlayersNames)
+			{
+				VERIFY(pObject);
+				CActor* pActor = smart_cast<CActor*>(pObject);
+				VERIFY(pActor); 
+				Fvector IPos = {0, dyn};
+				pActor->RenderText(ps->getName(), IPos, PLAYER_NAME_COLOR);
+			}
+			if (m_bFriendlyIndicators)
+			{
+				VERIFY(pObject);
+				CActor* pActor = smart_cast<CActor*>(pObject);
+				VERIFY(pActor);
+				Fvector IPos = pTS->IndicatorPos;
+				pActor->RenderIndicator(IPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->IndicatorShader);
+			};
 		}
 	};
 	inherited::OnRender();
@@ -370,14 +387,17 @@ void game_cl_TeamDeathmatch::UpdateMapLocations		()
 			u16 id = ps->GameID;
 			if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) 
 			{
-				Level().MapManager().RemoveMapLocationByObjectID(id);
+				Level().MapManager().RemoveMapLocation(FRIEND_LOCATION, id);
 				continue;
 			};
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
-			if (IsEnemy(ps))
+			if (IsEnemy(ps)) 
 			{
-				Level().MapManager().RemoveMapLocationByObjectID(id);
+				if (Level().MapManager().HasMapLocation(FRIEND_LOCATION, id))
+				{
+					Level().MapManager().RemoveMapLocation(FRIEND_LOCATION, id);
+				};
 				continue;
 			};
 			if (!Level().MapManager().HasMapLocation(FRIEND_LOCATION, id))

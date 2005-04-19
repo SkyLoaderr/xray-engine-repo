@@ -27,6 +27,9 @@ public :
 	virtual			void				OnTeamSelect			(int Result);
 	virtual			char*				getTeamSection			(int Team);
 
+	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
+	virtual			bool				Get_ShowPlayerNames		() {return m_bShowPlayersNames;};
+
 //from UIGameTDM
 protected:
 	CUISpawnWnd*		pUITeamSelectWnd;
@@ -41,6 +44,7 @@ protected:
 	PRESET_ITEMS		PresetItemsTeam2;
 
 	BOOL				m_bTeamSelected;
+	bool				m_bShowPlayersNames;
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
 

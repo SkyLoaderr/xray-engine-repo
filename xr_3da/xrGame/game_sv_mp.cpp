@@ -738,5 +738,14 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerI
 	P.w_u16	(WeaponID);
 	P.w_u8	(SpecialKill);
 
-	u_EventSend(P);
+//	u_EventSend(P);
+
+	u32	cnt = get_players_count();	
+	for(u32 it=0; it<cnt; it++)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC || !l_pC->net_Ready || !ps) continue;
+		m_server->SendTo(l_pC->ID, P);
+	};
 };

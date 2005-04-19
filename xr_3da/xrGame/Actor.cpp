@@ -1185,6 +1185,47 @@ void CActor::RenderIndicator			(Fvector dpos, float r1, float r2, ref_shader Ind
 	RCache.Render	   			(D3DPT_TRIANGLESTRIP,dwOffset,0, dwCount, 0, 2);
 };
 
+void CActor::RenderText				(LPCSTR Text, Fvector dpos, u32 color)
+{
+	if (!g_Alive()) return;
+	
+	CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(m_head));
+	Fmatrix M;
+	smart_cast<CKinematics*>(Visual())->CalculateBones	();
+	M.mul						(XFORM(),BI.mTransform);
+	//------------------------------------------------
+	Fvector v0, v1;
+	v0.set(M.c); v1.set(M.c);
+	Fvector T        = Device.vCameraTop;
+	v1.add(T);
+
+	Fvector v0r, v1r;
+	Device.mFullTransform.transform(v0r,v0);
+	Device.mFullTransform.transform(v1r,v1);
+	float size = v1r.distance_to(v0r);
+	float OldFontSize = HUD().Font().pFontDI->GetSize		();
+	float NewFontSize = size/0.52f * OldFontSize;
+	//------------------------------------------------
+	M.c.y += dpos.y;
+
+	Fvector4 v_res;	
+	Device.mFullTransform.transform(v_res,M.c);
+
+	if (v_res.z < 0 || v_res.w < 0)	return;
+	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
+
+	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
+
+	HUD().Font().pFontDI->SetAligment	(CGameFont::alCenter);
+	HUD().Font().pFontDI->SetColor		(color);
+	HUD().Font().pFontDI->SetSize		(NewFontSize);
+	HUD().Font().pFontDI->Out			(x,y,Text);
+	//-------------------------------------------------
+	HUD().Font().pFontDI->SetSize(OldFontSize);
+
+};
+
 void CActor::SetPhPosition(const Fmatrix &transform)
 {
 	if(!m_pPhysicsShell){ 
