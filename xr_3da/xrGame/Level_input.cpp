@@ -29,8 +29,15 @@ void CLevel::IR_OnMouseWheel( int direction )
 	if( Device.Pause()		) return;
 	if(	g_bDisableAllInput	) return;
 
-	if (pHUD->GetUI()->IR_OnMouseWheel(direction)) return;
+	if (HUD().GetUI()->IR_OnMouseWheel(direction)) return;
 	if ( Game().IR_OnMouseWheel(direction) ) return;
+
+	if( HUD().GetUI()->MainInputReceiver() )return;
+	if (CurrentEntity())		{
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+			if (IR)				IR->IR_OnMouseWheel(direction);
+		}
+
 }
 
 // Обработка нажатия клавиш

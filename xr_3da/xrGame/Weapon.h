@@ -233,6 +233,7 @@ protected:
 	bool			m_bZoomEnabled;
 	//текущий фактор приближения
 	float			m_fZoomFactor;
+	float			m_fRTZoonFactor; //run-time zoom factor
 	//время приближения
 	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения
@@ -248,6 +249,8 @@ protected:
 public:
 
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
+			void			ZoomInc				();
+			void			ZoomDec				();
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
 			bool			IsZoomed			()	const	{return m_bZoomMode;};

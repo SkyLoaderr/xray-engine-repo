@@ -419,7 +419,7 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	m_dwWeaponIndependencyTime = 0;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
-
+	m_fRTZoonFactor = m_fScopeZoomFactor;
 	return bResult;
 }
 
@@ -570,6 +570,7 @@ void CWeapon::OnH_B_Independent	()
 
 void CWeapon::OnH_A_Independent	()
 {
+	m_fRTZoonFactor = m_fRTZoonFactor;
 	m_dwWeaponIndependencyTime = Level().timeServer();
 	inherited::OnH_A_Independent();
 };
@@ -706,6 +707,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				}
 			} 
             return true;
+
 		case kWPN_ZOOM:
 			if(IsZoomEnabled())
 			{
@@ -714,8 +716,17 @@ bool CWeapon::Action(s32 cmd, u32 flags)
                 else if(IsZoomed())
 					OnZoomOut();
 				return true;
-			} 
-			else 
+			}else 
+				return false;
+
+		case kWPN_ZOOM_INC:
+		case kWPN_ZOOM_DEC:
+			if(IsZoomEnabled() && IsZoomed())
+			{
+				if(cmd==kWPN_ZOOM_INC)  ZoomInc();
+				else					ZoomDec();
+				return true;
+			}else
 				return false;
 	}
 	return false;
@@ -992,14 +1003,15 @@ void CWeapon::InitAddons()
 void CWeapon::OnZoomIn()
 {
 	m_bZoomMode = true;
-	m_fZoomFactor = m_fScopeZoomFactor;
-
+//	m_fZoomFactor = m_fScopeZoomFactor;
+	m_fZoomFactor = m_fRTZoonFactor;////...
 	StopHudInertion();
 }
 
 void CWeapon::OnZoomOut()
 {
 	m_bZoomMode = false;
+	m_fRTZoonFactor = m_fZoomFactor;//store current
 	m_fZoomFactor = DEFAULT_FOV;
 
 	StartHudInertion();
@@ -1304,3 +1316,31 @@ void CWeapon::OnDrawUI()
 	}
 }
 
+void GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor)
+{
+	float def_fov = float(DEFAULT_FOV);
+	float min_zoom_k = 0.3f;
+	float zoom_step_count = 3.0f;
+	float delta_factor_total = def_fov-scope_factor;
+	VERIFY(delta_factor_total>0);
+	min_zoom_factor = def_fov-delta_factor_total*min_zoom_k;
+	delta = (delta_factor_total*(1-min_zoom_k) )/zoom_step_count;
+
+}
+void CWeapon::ZoomInc()
+{
+	float delta,mttttttttttttin_zoom_factor;
+	GetZoomData(m_fScopeZoomFactor,delta,min_zoom_factor);
+
+	m_fZoomFactor	-=delta;
+	clamp(m_fZoomFactor,m_fScopeZoomFactor,min_zoom_factor);
+}
+
+void CWeapon::ZoomDec()
+{
+	float delta,min_zoom_factor;
+	GetZoomData(m_fScopeZoomFactor,delta,min_zoom_factor);
+
+	m_fZoomFactor	+=delta;
+	clamp(m_fZoomFactor,m_fScopeZoomFactor, min_zoom_factor);
+}

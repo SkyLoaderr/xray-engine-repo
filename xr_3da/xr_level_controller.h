@@ -44,6 +44,8 @@ enum	EKeyBinding
 	kWPN_FIRE		,
 	kWPN_RELOAD		,
 	kWPN_ZOOM		,
+	kWPN_ZOOM_INC	,
+	kWPN_ZOOM_DEC	,
 	kWPN_AMMO		,
 	kWPN_FUNC		,
 
