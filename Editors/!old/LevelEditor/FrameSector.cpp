@@ -61,11 +61,9 @@ void __fastcall TfraSector::ebValidateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TfraSector::ebBoxPickClick(TObject *Sender)
 {
-	if (ebCreateNew->Down) ebBoxPick->Down = false;
+	if (ebCreateNewSingle->Down || ebCreateNewMultiple->Down) ebBoxPick->Down = false;
 }
 //---------------------------------------------------------------------------
 

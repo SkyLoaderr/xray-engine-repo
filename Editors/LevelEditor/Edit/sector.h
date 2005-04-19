@@ -87,6 +87,8 @@ public:
     bool			IsDefault	(){return m_bDefault;}
     bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
 
+    void 			SetColor 	(u32 clr){sector_color.set(subst_alpha(clr,0));}
+    
     void			CaptureInsideVolume();
     void			CaptureAllUnusedMeshes();
     void			GetCounts	(int* objects, int* meshes, int* faces);

@@ -29,13 +29,14 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn2;
 	TLabel *APHeadLabel2;
 	TExtBtn *ExtBtn1;
-	TExtBtn *ebCreateNew;
+	TExtBtn *ebCreateNewSingle;
 	TBevel *Bevel1;
 	TExtBtn *ebCaptureInside;
 	TExtBtn *ebCreateDefault;
 	TExtBtn *ebRemoveDefault;
 	TBevel *Bevel2;
 	TFormStorage *fsStorage;
+	TExtBtn *ebCreateNewMultiple;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);
 	void __fastcall ebCaptureInsideVolumeClick(TObject *Sender);

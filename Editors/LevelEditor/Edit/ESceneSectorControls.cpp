@@ -49,7 +49,8 @@ void TUI_ControlSectorAdd::DelMesh(){
 		sector->DelMesh(dynamic_cast<CSceneObject*>(pinf.s_obj),pinf.e_mesh);
 }
 
-bool TUI_ControlSectorAdd::AddSector(){
+bool TUI_ControlSectorAdd::AddSector()
+{
 	string256 namebuffer;
 	Scene->GenObjectName( OBJCLASS_SECTOR, namebuffer );
 	CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
@@ -66,12 +67,55 @@ bool TUI_ControlSectorAdd::AddSector(){
     }
 }
 
+bool valid_color(u32 clr)
+{
+	u32 _r = color_get_R(clr);
+	u32 _g = color_get_G(clr);
+	u32 _b = color_get_B(clr);
+	if ((_r==255)&&(_g==255)&&(_b==255)) return false;
+	if ((_r==127)&&(_g==127)&&(_b==127)) return false;
+	if ((_r==  0)&&(_g==  0)&&(_b==  0)) return false;
+	if ((_r==255)&&(_g==  0)&&(_b==  0)) return false;
+	if ((_r==127)&&(_g==  0)&&(_b==  0)) return false;
+	return true;
+}
+
+bool TUI_ControlSectorAdd::AddSectors()
+{
+	int cnt=0;
+    SRayPickInfo pinf;
+    if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)){
+    	CSceneObject* S 	= dynamic_cast<CSceneObject*>(pinf.s_obj); VERIFY(S);
+        EditMeshVec* meshes	= S->Meshes();
+        for (EditMeshIt it=meshes->begin(); it!=meshes->end(); it++){
+            string256 namebuffer;
+            Scene->GenObjectName( OBJCLASS_SECTOR, namebuffer );
+            CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
+            if (_O->AddMesh(S,*it)){
+            	cnt++;
+                u32 clr	= 0;
+                do{}while(!valid_color(clr=color_rgba(Random.randI(0,3)*255/2,Random.randI(0,3)*255/2,Random.randI(0,3)*255/2,0)));
+                _O->SetColor		(clr);
+                Scene->SelectObjects(false,OBJCLASS_SECTOR);
+                Scene->AppendObject	(_O);
+            }else{
+            	xr_delete	(_O);
+            }
+        }
+    }
+    return cnt!=0;
+}
+
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
     if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-    if (fraSector->ebCreateNew->Down){
-    	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNew->Down=false;
+    if (fraSector->ebCreateNewSingle->Down){
+    	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNewSingle->Down=false;
+        return false;
+    }
+    if (fraSector->ebCreateNewMultiple->Down){
+    	if (AddSectors()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNewSingle->Down=false;
         return false;
     }
 	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){

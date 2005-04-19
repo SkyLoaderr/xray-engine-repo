@@ -16,6 +16,7 @@ enum ESectorAction{
 
 class TUI_ControlSectorAdd: public TUI_CustomControl{
 	ESectorAction 	m_Action;
+	bool 			AddSectors();
 	bool 			AddSector();
 	void 			AddMesh();
 	void 			DelMesh();

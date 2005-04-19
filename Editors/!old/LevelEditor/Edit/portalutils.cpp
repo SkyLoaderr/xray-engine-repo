@@ -180,17 +180,6 @@ bool CPortalUtils::Validate(bool bMsg)
 			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
             bResult = true;
         }
-/*        if (f_cnt&&ELog.DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
-        	const Fvector* PT[3];
-	        for (SItemIt it=sector_def->sector_items.begin(); it!=sector_def->sector_items.end(); it++){
-            	ELog.Msg(mtError,"Object: %s", it->object->GetName());
-                for (U32It dw_it=it->Face_IDs.begin(); dw_it!=it->Face_IDs.end(); dw_it++){
-					it->mesh->GetFacePT(*dw_it, PT);
-	            	ELog.Msg(mtError," PT: [%3.2f, %3.2f, %3.2f]", PT[0]->x, PT[0]->y, PT[0]->z);
-                }
-            }
-        }
-*/
         xr_delete(sector_def);
 
         // verify sectors
@@ -198,6 +187,7 @@ bool CPortalUtils::Validate(bool bMsg)
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++){
 	        ((CSector*)(*_F))->GetCounts(0,0,&f_cnt);
         	if (f_cnt<=4){
+				if (bMsg) ELog.Msg(mtError,"*ERROR: Sector: '%s' - face count < 4!",(*_F)->Name);
             	bResult=false;
                 break;
             }
@@ -577,7 +567,7 @@ int CPortalUtils::CalculateAllPortals()
         ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);
         iPCount = CalculateSelectedPortals(s_lst);
     }else{
-		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
+		ELog.DlgMsg(mtError,"*ERROR: Sector validation failed.");
     }
 
 	UI->ResetStatus();
