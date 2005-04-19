@@ -85,6 +85,20 @@ bool game_cl_mp::CanBeReady	()
 	return true;
 }
 
+bool	game_cl_mp::NeedToSendReady_Actor			(int key, game_PlayerState* ps)
+{
+	return ((GAME_PHASE_PENDING == Phase() ) || 
+			true == ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) ) && 
+			(kWPN_FIRE == key);
+}
+
+bool	game_cl_mp::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
+{
+	return ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
+			( (/*kWPN_FIRE == key || */kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
+			CanBeReady() && ps->DeathTime > 1000);
+}
+
 bool	game_cl_mp::OnKeyboardPress			(int key)
 {
 	if ( kJUMP == key || kWPN_FIRE == key )
@@ -100,14 +114,10 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 		game_PlayerState* ps	= local_player;
 
 		if (is_actor){
-			b_need_to_send_ready = ((GAME_PHASE_PENDING == Phase() ) || 
-									true == ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) ) && 
-									(kWPN_FIRE == key);
+			b_need_to_send_ready = NeedToSendReady_Actor(key, ps);
 		};
 		if(is_spectator){
-			b_need_to_send_ready =	( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
-									( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
-									CanBeReady() && ps->DeathTime > 1000);
+			b_need_to_send_ready =	NeedToSendReady_Spectator(key, ps);
 
 		};
 		if(b_need_to_send_ready){

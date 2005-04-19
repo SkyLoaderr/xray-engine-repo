@@ -197,7 +197,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			r_torso.pitch			= -NewRot.x;
 			unaffected_r_torso.yaw	= r_torso.yaw;
 			unaffected_r_torso.pitch= r_torso.pitch;
-			unaffected_r_torso.roll	= r_torso.roll;
+			unaffected_r_torso.roll	= 0;//r_torso.roll;
 
 			r_torso_tgt_roll		= 0;
 			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);

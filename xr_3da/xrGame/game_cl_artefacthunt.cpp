@@ -9,6 +9,8 @@
 #include "LevelGameDef.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
+#include "xr_level_controller.h"
+
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -630,3 +632,10 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 		old_teamInPossession = teamInPossession;
 	};
 };
+
+bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
+{
+	return ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
+		( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
+		CanBeReady() && ps->DeathTime > 1000);
+}

@@ -53,6 +53,10 @@ protected:
 
 	virtual void			OnPlayerKilled			(NET_Packet& P);
 
+	virtual bool			NeedToSendReady_Actor			(int key, game_PlayerState* ps);
+	virtual bool			NeedToSendReady_Spectator		(int key, game_PlayerState* ps);
+	
+
 public:
 									game_cl_mp();
 	virtual							~game_cl_mp();

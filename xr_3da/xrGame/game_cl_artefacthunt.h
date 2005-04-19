@@ -21,6 +21,8 @@ protected:
 //	virtual			void				OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id);
 	virtual			void				UpdateMapLocations		();
 
+	virtual			bool				NeedToSendReady_Spectator		(int key, game_PlayerState* ps);
+
 public:
 	u8									artefactsNum;//ah
 	u16									artefactBearerID;//ah,ZoneMap
