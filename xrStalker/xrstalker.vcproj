@@ -356,6 +356,9 @@
 						RelativePath=".\Config\gameplay\info_l07rostok.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\info_l08deadcity.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_l08rostok_bar.xml">
 					</File>
 					<File
@@ -1217,6 +1220,25 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="Deadcity"
+					Filter="">
+					<File
+						RelativePath=".\Config\scripts\cit\cit_hunt_killer1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_hunt_killer2.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_hunt_killer3.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_hunt_killer4.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_hunt_victim.ltx">
 					</File>
 				</Filter>
 			</Filter>

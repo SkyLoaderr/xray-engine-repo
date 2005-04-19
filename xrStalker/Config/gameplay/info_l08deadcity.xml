@@ -1,1 +1,8 @@
 <?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+
+<!-- Охота на сталкера около входа на уровень -->
+<info_portion id="cit_hunt_start"></info_portion>
+
+</game_information_portions>

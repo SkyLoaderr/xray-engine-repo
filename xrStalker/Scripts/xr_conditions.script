@@ -227,3 +227,21 @@ end
 function is_courier_time (actor, npc)
     return level.get_time_hours() >= 22 and level.get_time_hours() < 23
 end    
+
+------------------------------------------------------------------------------------
+-- Special functions for Deadcity
+------------------------------------------------------------------------------------
+
+function cit_fighting_hunt_victim(actor, npc)
+	-- FIXME: use SID!!!
+	return db.storage[npc:id()].enemy:name() == "cit_hunt_victim"
+end    
+
+function cit_fighting_hunt_killer(actor, npc)
+	-- FIXME: use SID!!!
+	local nam = db.storage[npc:id()].enemy:name()
+	return nam == "cit_hunt_killer1" or
+		nam == "cit_hunt_killer2" or
+		nam == "cit_hunt_killer3" or
+		nam == "cit_hunt_killer4"
+end    
