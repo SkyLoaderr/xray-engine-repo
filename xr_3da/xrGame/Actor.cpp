@@ -407,9 +407,6 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
 
-#define ENEMY_HIT_SPOT	"mp_hit_sector_location"
-BOOL	g_bShowHitSectors	= TRUE;
-
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
 #ifndef _DEBUG
@@ -462,16 +459,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
 	if (Level().CurrentViewEntity() == this){
-		if (g_bShowHitSectors){
-//			if (who && Level().MapManager().HasMapLocation(ENEMY_HIT_SPOT, who->ID())){
-//				Level().MapManager().RemoveMapLocation(ENEMY_HIT_SPOT, who->ID());
-//			}
-			if (who && who != this){
-				CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(who);
-				if (pEntityAlive)
-					Level().MapManager().AddMapLocation(ENEMY_HIT_SPOT, who->ID());
-			}
-		};
+		HitSector(m_pLastHitter, m_pLastHittingWeapon);
 	};
 
 	if (mstate_real & mcSprint && Level().CurrentControlEntity() == this)
