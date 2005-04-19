@@ -51,7 +51,7 @@ namespace Feel
 				VERIFY	(positive(I->fuzzy));
 				return	I->cp_LAST;
 			}
-			VERIFY		(0, "There is no such object in the potentially visible list" );
+			VERIFY2		(0, "There is no such object in the potentially visible list" );
 			return		Fvector().set(0,0,0).div(0);
 		}
 		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
