@@ -1293,3 +1293,14 @@ void CWeapon::modify_holder_params		(float &range, float &fov) const
 	fov		*= m_addon_holder_fov_modifier;
 }
 
+void CWeapon::OnDrawUI()
+{
+	if(IsZoomed() && ZoomHideCrosshair()){
+		if(ZoomTexture() && !IsRotatingToZoom()){
+			ZoomTexture()->SetPos	(0,0);
+			ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
+			ZoomTexture()->Render	();
+		}
+	}
+}
+

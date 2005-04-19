@@ -58,6 +58,7 @@ public:
 	virtual void			shedule_Update		(u32 dt);
 
 	virtual void			renderable_Render	();
+	virtual void			OnDrawUI			();
 
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_A_Chield		();

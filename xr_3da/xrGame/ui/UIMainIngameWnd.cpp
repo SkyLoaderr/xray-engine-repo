@@ -348,11 +348,11 @@ void CUIMainIngameWnd::Init()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::Draw()
 {
 	bool zoom_mode = false;
 	bool scope_mode = false;
+
 
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
 	{
@@ -366,14 +366,17 @@ void CUIMainIngameWnd::Draw()
 	m_CustomTextures.clear();
 
 	//отрендерить текстуру объектива снайперского прицела или бинокля
+	if(m_pActor->HUDview() && m_pWeapon){
+		m_pWeapon->OnDrawUI();
+	}
+
+
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair()){
 		zoom_mode = true;
 		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom()){
-			m_pWeapon->ZoomTexture()->SetPos	(0,0);
-			m_pWeapon->ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
-			m_pWeapon->ZoomTexture()->Render	();
-#pragma todo("ALEXMX -> ANDY")
-//.			m_pWeapon->ZoomTexture()->Render(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+//			m_pWeapon->ZoomTexture()->SetPos	(0,0);
+//			m_pWeapon->ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
+//			m_pWeapon->ZoomTexture()->Render	();
 			scope_mode = true;
 		}
 

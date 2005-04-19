@@ -3,7 +3,10 @@
 #pragma once
 
 #include "WeaponCustomPistol.h"
- 
+class CUIFrameWindow;
+class CUIStatic;
+class CBinocularsVision;
+
 class CWeaponBinoculars: public CWeaponCustomPistol
 {
 private:
@@ -12,20 +15,26 @@ protected:
 	// Media :: sounds
 	HUD_SOUND		sndZoomIn;
 	HUD_SOUND		sndZoomOut;
+//	CUIFrameWindow*	UIEntityBorder;
 public:
-					CWeaponBinoculars(); 
-	virtual			~CWeaponBinoculars();
+					CWeaponBinoculars	(); 
+	virtual			~CWeaponBinoculars	();
 
-	void			Load			(LPCSTR section);
+	void			Load				(LPCSTR section);
 
-	virtual void	Hide			();
-	virtual void	Show			();
+	virtual void	Hide				();
+	virtual void	Show				();
 
-	virtual void	OnZoomIn		();
-	virtual void	OnZoomOut		();
+	virtual void	OnZoomIn			();
+	virtual void	OnZoomOut			();
+	virtual void	net_Destroy			();
 
 
-	virtual bool	Action			(s32 cmd, u32 flags);
+	virtual bool	Action				(s32 cmd, u32 flags);
+	virtual void	UpdateCL			();
+	virtual void	OnDrawUI			();
+protected:
+	CBinocularsVision*					m_binoc_vision;
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__

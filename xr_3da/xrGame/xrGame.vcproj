@@ -6647,6 +6647,12 @@
 									<File
 										RelativePath="WeaponBinoculars.h">
 									</File>
+									<File
+										RelativePath=".\WeaponBinocularsVision.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponBinocularsVision.h">
+									</File>
 								</Filter>
 								<Filter
 									Name="Weapon Shotgun"
