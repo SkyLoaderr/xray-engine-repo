@@ -84,8 +84,10 @@ public:
 	IC float				SizeOf			(char c){return SizeOf(c,fCurrentSize);}
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
+	IC float				SizeOfRel		(LPCSTR s){return SizeOf(s)*1024.0f/Device.dwWidth;}
 //	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y;}
+	IC float				CurrentHeightRel(){return CurrentHeight()*768.0f/Device.dwHeight;}
 	void					OutSetI			(float x, float y);
 	void					OutSet			(float x, float y);
 	void __cdecl            OutNext			(LPCSTR fmt, ...);
