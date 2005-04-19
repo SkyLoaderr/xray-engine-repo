@@ -751,7 +751,8 @@ function process_map_spot(info_id)
            add_location (704, "mil_sniper_location")
     elseif info_id == "mil_sniper_dead" and db.actor:has_info ("mil_sniper_get_job") then
            remove_location (704, "mil_sniper_location")
-           add_location (708, "mil_dolg_location")
+           level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
+           --add_location (708, "mil_dolg_location")
     elseif info_id == "mil_sniper_job_complete" then
 		   remove_location (708, "mil_dolg_location")
 	elseif info_id == "mil_sniper_job_failed" then

@@ -68,7 +68,7 @@ function set_courier_task_complete (stalker, player)
     if db.actor:has_info ("mil_leader_quest2_start") then
        level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
        level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
-       dialogs.relocate_item(stalker, player:object("mil_courier_doc"), "out")
+       --dialogs.relocate_item(stalker, player:object("mil_courier_doc"), "out")
        level_tasks.remove_location (707, "mil_lukash_location")
     end   
 end    
