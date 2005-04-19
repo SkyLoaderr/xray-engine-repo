@@ -275,7 +275,7 @@
 		<name>Осведомитель</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Таинственный сталкер, который слишком много знает. Торгует информацией в баре.</bio>
+		<bio>Таинственный сталкер, который очень много знает. Торгует информацией в баре.</bio>
 
 		<class>stalker_bar_osvedomitel</class>
 		<community>stalker</community>
