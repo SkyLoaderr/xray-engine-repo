@@ -58,7 +58,7 @@ void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg, u32 backup_l
         // удалить лишние бэкап файлы
         FS_QueryMap lst;
         xr_string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
-		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=backup_level){
+		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=int(backup_level)){
         	do{
             	FS_QueryPairIt  min_it  = lst.begin();
                 FS_QueryPairIt  it		= lst.begin();
