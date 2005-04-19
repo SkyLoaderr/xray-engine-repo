@@ -542,6 +542,12 @@
 				RelativePath=".\compiler_smooth.cpp">
 			</File>
 			<File
+				RelativePath=".\ETextureParams.h">
+			</File>
+			<File
+				RelativePath=".\FreeImage.h">
+			</File>
+			<File
 				RelativePath="LevelGameDef.h">
 			</File>
 			<File
@@ -551,7 +557,13 @@
 				RelativePath=".\motion_simulator.h">
 			</File>
 			<File
+				RelativePath=".\Shader_xrLC.h">
+			</File>
+			<File
 				RelativePath=".\xrLevel.h">
+			</File>
+			<File
+				RelativePath=".\xrLoadSurface.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -571,6 +583,12 @@
 					</File>
 					<File
 						RelativePath=".\path_test.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
 							ExcludedFromBuild="TRUE">

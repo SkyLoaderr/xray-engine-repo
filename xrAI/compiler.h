@@ -1,8 +1,13 @@
 #pragma once
 
+#pragma comment(lib,"FreeImage.lib")
+
 #include "xrCDB.h"
 #include "xrLevel.h"
 #include "AIMapExport.h"
+#include "Shader_xrLC.h"
+#include "communicate.h"
+#include "Etextureparams.h"
 
 // base patch used all the time up to merging
 const u32 InvalidNode		= (1<<24)-1;
@@ -90,15 +95,44 @@ DEF_VECTOR(Lights,R_Light		);
 
 // data
 extern	Nodes				g_nodes;
-//extern	Merged				g_merged;
 extern	xr_vector<SCover>	g_covers_palette;
 extern	Lights				g_lights;
 extern	SAIParams			g_params;
 extern	CDB::MODEL			Level;
-extern	CDB::MODEL			LevelLight;
 extern	CDB::COLLIDER		XRC;
 extern	Fbox				LevelBB;
 extern	Vectors				Emitters;
+
+struct b_BuildTexture : public b_texture
+{
+	STextureParams	THM;
+
+	u32&	Texel	(u32 x, u32 y)
+	{
+		return pSurface[y*dwWidth+x];
+	}
+	void	Vflip		()
+	{
+		R_ASSERT(pSurface);
+		for (u32 y=0; y<dwHeight/2; y++)
+		{
+			u32 y2 = dwHeight-y-1;
+			for (u32 x=0; x<dwWidth; x++) 
+			{
+				u32		t	= Texel(x,y);
+				Texel	(x,y)	= Texel(x,y2);
+				Texel	(x,y2)	= t;
+			}
+		}
+	}
+};
+
+extern Shader_xrLC_LIB*				g_shaders_xrlc	;
+extern xr_vector<b_material>		g_materials		;
+extern xr_vector<b_shader>			g_shader_render	;
+extern xr_vector<b_shader>			g_shader_compile;
+extern xr_vector<b_BuildTexture>	g_textures		;
+extern xr_vector<b_rc_face>			g_rc_faces		;
 
 // phases
 void	xrLoad			(LPCSTR name, bool draft_mode);
@@ -118,7 +152,7 @@ const int	RCAST_Count		= 6;
 const int	RCAST_Total		= (2*RCAST_Count+1)*(2*RCAST_Count+1);
 const float	RCAST_Depth		= 1.f;
 
-const float	cover_distance	= 17.f;
+const float	cover_distance	= 30.f;
 const float cover_height	= 1.f;
 const float cover_sqr_dist	= cover_distance*cover_distance;
 

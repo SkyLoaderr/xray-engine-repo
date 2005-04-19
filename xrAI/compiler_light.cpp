@@ -19,14 +19,14 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	try { DB.ray_query(&LevelLight,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
+	try { DB.ray_query(&Level,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
 	if (0==DB.r_count()) {
 		return false;
 	} else {
 		// cache polygon
 		CDB::RESULT&	rpinf	= *DB.r_begin();
 //		CDB::TRI&		T		= 
-			LevelLight.get_tris()[rpinf.id];
+			Level.get_tris()[rpinf.id];
 		L.tri[0].set	(rpinf.verts[0]);
 		L.tri[1].set	(rpinf.verts[1]);
 		L.tri[2].set	(rpinf.verts[2]);
@@ -144,6 +144,7 @@ public:
 void	xrLight			()
 {
 	// Start threads, wait, continue --- perform all the work
+	/*
 	u32	start_time		= timeGetTime();
 	CThreadManager			Threads;
 	u32	stride			= g_nodes.size()/NUM_THREADS;
@@ -152,6 +153,7 @@ void	xrLight			()
 		Threads.start(xr_new<LightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	*/
 
 	// Smooth
 	Status("Smoothing lighting...");
@@ -171,7 +173,7 @@ void	xrLight			()
 					cnt		+=	1.f;
 				}
 			}
-			Dest.LightLevel		=  val/cnt;
+			Dest.LightLevel		= 0;	// val/cnt;		//.disable lighting
 			clamp(Dest.LightLevel,0.f,1.f);
 		}
 	}

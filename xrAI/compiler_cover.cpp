@@ -4,9 +4,17 @@
 #include "xrThread.h"
 #include <mmsystem.h>
 
+Shader_xrLC_LIB*			g_shaders_xrlc	;
+xr_vector<b_material>		g_materials		;
+xr_vector<b_shader>			g_shader_render	;
+xr_vector<b_shader>			g_shader_compile;
+xr_vector<b_BuildTexture>	g_textures		;
+xr_vector<b_rc_face>		g_rc_faces		;
+
 // -------------------------------- Ray pick
 typedef Fvector	RayCache[3];
 
+/*
 IC bool RayPick(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float r, RayCache& C)
 {
 	// 1. Check cached polygon
@@ -31,7 +39,92 @@ IC bool RayPick(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float r, RayCache& C)
 		return true;
 	}
 }
- 
+*/
+
+IC float getLastRP_Scale(CDB::COLLIDER* DB, RayCache& C)
+{
+	u32	tris_count		= DB->r_count();
+	float	scale		= 1.f;
+	Fvector B;
+
+	//	X_TRY 
+	{
+		for (u32 I=0; I<tris_count; I++)
+		{
+			CDB::RESULT& rpinf = DB->r_begin()[I];
+			// Access to texture
+			CDB::TRI& clT								= Level.get_tris()	[rpinf.id];
+			b_rc_face& F								= g_rc_faces		[rpinf.id];
+
+			b_material& M	= g_materials				[F.dwMaterial];
+			b_texture&	T	= g_textures				[M.surfidx];
+			Shader_xrLCVec&	LIB = 		g_shaders_xrlc->Library	();
+			if (M.shader_xrlc>=LIB.size()) return		0;		//. hack
+			Shader_xrLC& SH	= LIB						[M.shader_xrlc];
+			if (!SH.flags.bLIGHT_CastShadow)			continue;
+
+			if (0==T.pSurface)	T.bHasAlpha = FALSE;
+			if (!T.bHasAlpha)	{
+				// Opaque poly - cache it
+				C[0].set	(rpinf.verts[0]);
+				C[1].set	(rpinf.verts[1]);
+				C[2].set	(rpinf.verts[2]);
+				return		0;
+			}
+
+			// barycentric coords
+			// note: W,U,V order
+			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
+
+			// calc UV
+			Fvector2*	cuv = F.t;
+			Fvector2	uv;
+			uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
+			uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
+
+			int U = iFloor(uv.x*float(T.dwWidth) + .5f);
+			int V = iFloor(uv.y*float(T.dwHeight)+ .5f);
+			U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
+			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
+
+			u32 pixel		= T.pSurface[V*T.dwWidth+U];
+			u32 pixel_a		= color_get_A(pixel);
+			float opac		= 1.f - float(pixel_a)/255.f;
+			scale			*= opac;
+		}
+	} 
+	//	X_CATCH
+	//	{
+	//		clMsg("* ERROR: getLastRP_Scale");
+	//	}
+
+	return scale;
+}
+
+// IC bool RayPick(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float r, RayCache& C)	//, Face* skip)
+IC float rayTrace	(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float R, RayCache& C)
+{
+	R_ASSERT	(DB);
+
+	// 1. Check cached polygon
+	float _u,_v,range;
+	bool res = CDB::TestRayTri(P,D,C,_u,_v,range,false);
+	if (res) {
+		if (range>0 && range<R) return 0;
+	}
+
+	// 2. Polygon doesn't pick - real database query
+	DB->ray_query	(&Level,P,D,R);
+
+	// 3. Analyze polygons and cache nearest if possible
+	if (0==DB->r_count()) {
+		return 1;
+	} else {
+		return getLastRP_Scale(DB,C);
+	}
+	return 0;
+}
+
 IC int	calcSphereSector(Fvector& dir)
 {
 	Fvector2			flat;
@@ -66,77 +159,6 @@ IC int	calcSphereSector(Fvector& dir)
 	}
 }
 
-/*
-class Marker {
-private:
-	u32	size;	// in dwords
-	u32*	data;	// dword*
-public:
-	void	m_Create	(u32 dim)
-	{
-		size	= dim/32+1;
-		data	= (u32*) _aligned_malloc(size*4,64);
-	}
-	void	m_Destroy	()
-	{
-		_aligned_free(data);
-		size	= 0;
-		data	= 0;
-	}
-	void	clear	()
-	{
-		u32	cache	= size/16;				// in 64b cache lines
-		u32	leaf	= (size-cache*16)*4;	// in bytes
-		void	*dest	= LPVOID(data);
-		__asm {
-			femms
-			mov			ecx,cache;
-			mov			eax,dest;
-			pxor		mm0,mm0
-c_line:
-			prefetchw	[eax+64*3];
-			movq		[eax+0 ],mm0
-			movq		[eax+8 ],mm0
-			movq		[eax+16],mm0
-			movq		[eax+24],mm0
-			movq		[eax+32],mm0
-			movq		[eax+40],mm0
-			movq		[eax+48],mm0
-			movq		[eax+56],mm0
-			dec			ecx
-			cmp			ecx,0
-			jnz			c_line
-			femms
-		}
-		ZeroMemory(LPBYTE(data)+size*4-leaf,leaf);
-	}
-	void	clear_x	()
-	{
-		ZeroMemory(data,size*4);
-	}
-	IC	void	set1	(u32 id)
-	{
-		u32	word	= id/32;
-		u32	bit		= id%32;
-		u32	mask	= 1ul<<bit;
-		data	[word]	|= mask;
-	}
-	IC	void	set0	(u32 id)
-	{
-		u32	word	= id/32;
-		u32	bit		= id%32;
-		u32	mask	= 1ul<<bit;
-		data	[word]	&= ~mask;
-	}
-	IC	BOOL	get	(u32 id)
-	{
-		u32	word	= id/32;
-		u32	bit		= id%32;
-		u32	mask	= 1ul<<bit;
-		return	data[word]&mask;
-	}
-};
-*/
 
 // volumetric query
 DEF_VECTOR		(Nearest,u32);
@@ -203,8 +225,8 @@ public:
 	}
 	virtual void		Execute()
 	{
-		CDB::COLLIDER DB;
-		DB.ray_options	(CDB::OPT_ONLYFIRST);
+		CDB::COLLIDER		DB;
+		DB.ray_options		(CDB::OPT_CULL);
 		
 		xr_vector<RC>		cache;
 		{
@@ -227,8 +249,8 @@ public:
 			Fvector&	BasePos	= BaseNode.Pos;
 			Fvector		TestPos = BasePos; TestPos.y+=cover_height;
 			
-			u32	c_total	[8]	= {0,0,0,0,0,0,0,0};
-			u32	c_passed[8]	= {0,0,0,0,0,0,0,0};
+			float	c_total	[8]	= {0,0,0,0,0,0,0,0};
+			float	c_passed[8]	= {0,0,0,0,0,0,0,0};
 			
 			// perform volumetric query
 			Q.Init			(BasePos);
@@ -238,7 +260,7 @@ public:
 			for (Nearest_it it=Q.q_List.begin(); it!=Q.q_List.end();  it++)
 			{
 				// calc dir & range
-				u32		ID			= *it;
+				u32		ID	= *it;
 				R_ASSERT	(ID<g_nodes.size());
 				if			(N==ID)		continue;
 				vertex&		N			= g_nodes[ID];
@@ -250,15 +272,14 @@ public:
 				
 				// raytrace
 				int			sector		=	calcSphereSector(Dir);
-				c_total		[sector]	+=	1;
-				c_passed	[sector]	+=	(RayPick(&DB, TestPos, Dir, range, cache[ID].C)?0:1);
+				c_total		[sector]	+=	1.f;
+				c_passed	[sector]	+=	rayTrace (&DB, TestPos, Dir, range, cache[ID].C); //
 			}
 			Q.Clear			();
 			
 			// analyze probabilities
 			float	value	[8];
-			for (int dirs=0; dirs<8; dirs++) 
-			{
+			for (int dirs=0; dirs<8; dirs++)	{
 				R_ASSERT(c_passed[dirs]<=c_total[dirs]);
 				if (c_total[dirs]==0)	value[dirs] = 0;
 				else					value[dirs]	= float(c_passed[dirs])/float(c_total[dirs]);

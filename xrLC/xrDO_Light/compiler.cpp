@@ -697,10 +697,10 @@ void	xrLight			()
 
 void xrCompiler(LPCSTR name)
 {
-	Phase("Loading level...");
+	Phase		("Loading level...");
 	xrLoad		(name);
 
-	Phase("Lighting nodes...");
+	Phase		("Lighting nodes...");
 	xrLight		();
 
 	if (dtFS)	xr_delete(dtFS);

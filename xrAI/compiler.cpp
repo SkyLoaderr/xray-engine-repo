@@ -3,15 +3,14 @@
 
 #include "cl_intersect.h"
 
+CDB::MODEL			Level;
+CDB::COLLIDER		XRC;
+
 Nodes				g_nodes;
-//Merged				g_merged;
 xr_vector<SCover>	g_covers_palette;
 
 Lights				g_lights;
 SAIParams			g_params;
-CDB::MODEL			Level;
-CDB::MODEL			LevelLight;
-CDB::COLLIDER		XRC;
 Fbox				LevelBB;
 Vectors				Emitters;
 
@@ -61,9 +60,9 @@ void	mem_Optimize	()
 	Msg("* Memory usage: %d M",Memory.mem_usage()/(1024*1024));
 }
 
-void xrCompiler(LPCSTR name, bool draft_mode)
+void xrCompiler	(LPCSTR name, bool draft_mode)
 {
-	Phase("Loading level...");
+	Phase		("Loading level...");
 	xrLoad		(name,draft_mode);
 	mem_Optimize();
 
