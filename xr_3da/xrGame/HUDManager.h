@@ -13,7 +13,7 @@
 class CContextMenu;
 class CHUDCursor;
 
-struct CFontManager :public CDeviceResetNotifier	{
+struct CFontManager :public pureDeviceReset			{
 							CFontManager			();
 							~CFontManager			();
 

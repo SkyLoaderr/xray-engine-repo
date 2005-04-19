@@ -93,7 +93,7 @@ void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 
 void CUIStatic::Init(int x, int y, int width, int height)
 {	
-	CUIWindow::Init(x, y, width, height);
+	CUIWindow::Init(x, y, width, height);	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,6 +128,7 @@ void CUIStatic::DrawText(){
 		Irect r = GetAbsoluteRect();
 		DrawString(r);
 	}
+	m_lines.Draw();
 }
 
 void CUIStatic::DrawTexture(){

@@ -15,6 +15,8 @@
 
 CFontManager::CFontManager()
 {
+	Device.seqDeviceReset.Add(this,REG_PRIORITY_HIGH);
+
 	m_all_fonts.push_back(&pFontConsole				);
 	m_all_fonts.push_back(&pFontStartup				);
 	m_all_fonts.push_back(&pFontSmall				);
@@ -44,6 +46,7 @@ CFontManager::CFontManager()
 
 void CFontManager::InitializeFonts()
 {
+
 	InitializeFont(pFontConsole				,"console_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	InitializeFont(pFontStartup				,"startup_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	InitializeFont(pFontSmall				,"hud_font_small"				);
@@ -105,6 +108,7 @@ void CFontManager::InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
 
 CFontManager::~CFontManager()
 {
+	Device.seqDeviceReset.Remove(this);
 	FONTS_VEC_IT it		= m_all_fonts.begin();
 	FONTS_VEC_IT it_e	= m_all_fonts.end();
 	for(;it!=it_e;++it)

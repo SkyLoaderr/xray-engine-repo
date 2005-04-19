@@ -10,106 +10,221 @@
 
 #include "UILines.h"
 #include "../HUDmanager.h"
+#include "UIXmlInit.h"
+#include "uilinestd.h"
 
 CUILines::CUILines()
 	:m_interval(5)
 {
+	m_pFont = UI()->Font()->pFontLetterica18Russian;
+	m_eTextAlign = CGameFont::alCenter;
+	m_dwTextColor = 0xff000000;
 
+	m_bShowMe = true;
+	m_wndPos.x = 0;
+	m_wndPos.y = 0;
+	
 }
 
 CUILines::~CUILines(){
 
 }
 
-void CUILines::Clear(){
+void CUILines::SetWndRect(const Irect& rect){
+	m_wndPos.x = rect.x1;
+	m_wndPos.y = rect.y1;
+	m_wndSize.x = rect.x2 - rect.x1;
+	m_wndSize.y = rect.y2 - rect.y1;
+}
+
+Irect CUILines::GetWndRect() const {
+	Irect r;
+
+	r.x1 = m_wndPos.x;
+	r.y1 = m_wndPos.y;
+	r.x2 = m_wndPos.x + m_wndSize.x;
+	r.y2 = m_wndPos.y + m_wndSize.y;
+
+	return r;
+}
+
+void CUILines::SetText(const char* text){
+	m_text = text;
+	ParseText();
+}
+
+const char* CUILines::GetText() const{
+	return m_text.c_str();
+}
+
+void CUILines::Reset(){
 	m_lines.clear();
 }
 
-void CUILines::AddLine(char* line){
-	m_lines.push_back(line);
+void CUILines::ParseText(){
+	Reset();
+	CUILine* line = ParseTextToColoredLine(m_text.c_str());
+
+	while (line->GetLength(m_pFont) > 0)
+		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x));
+
+	xr_delete(line);
 }
 
-void CUILines::ParseToWidth(char* line, int width){
-	Clear();
+int CUILines::GetVisibleHeight() const{
+	return ((int)m_pFont->CurrentHeight() + m_interval)*m_lines.size() - m_interval;
 }
 
-int CUILines::Get_words_Count(char* line, int length){
-    xr_string str;
+void CUILines::Draw() const{
+#ifdef DEBUG
+	R_ASSERT(m_pFont);
+#endif //DEBUG
 
-	int real_length = xr_strlen(line);
-
-	char after_last = 0;
-
-	if (real_length < length)
-		length = real_length;  
-	else
-		after_last = line[length]; 
-
-	// copy line to xr_string str
-	Copy(line, length, str);
-
-    // if there are no spaces, then the word is only one :)
-	int pos = (int)str.find(' ');
-	if (npos == pos)
-		return 1;
-
-	while (' ' == str[pos])	
-		pos++;
-
-	return NULL;
-}
-
-void CUILines::Copy(char* line, int length, xr_string& str){
-	for ( int i = 0; i < length; ++i)
-        str.push_back(line[i]);
-}
-
-//void CUILines::NormilizeSpaces(xr_string& str){
-//	static const int npos = -1;
-//
-//	int pos = (int)str.find(' ');
-//
-//	if (npos == pos)
-//		return;	
-//}
-
-int CUILines::Get_wholeWords_Count(char* line, int length){
-    
-	return NULL;
-}
-
-int CUILines::GetHeight(){
-	return ((int)GetFont()->CurrentHeight())*(m_lines.size() + m_interval) - m_interval;
-}
-
-void CUILines::Draw(){
-	CGameFont* pFont = GetFont();
-	LinesVector_it it;
+	m_pFont->SetColor(m_dwTextColor);
+	m_pFont->SetAligment(m_eTextAlign);
 
 	Ivector2 pos;
-	Irect rect = GetAbsoluteRect();
-	pos.x = rect.x1;
-	pos.y = rect.y1;
-	int height = (int)pFont->CurrentHeight();
+	pos.y= m_wndPos.y + (m_wndSize.y - GetVisibleHeight())/2;
+	int height = (int)m_pFont->CurrentHeight();
+	int size = m_lines.size();
 
+	for (int i=0; i<size; i++)
+	{
+		pos.x = m_wndPos.x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
+		m_lines[i].Draw(m_pFont, pos.x, pos.y);
+		pos.y+= height + m_interval;
+	}	
+}
+
+void CUILines::Update(){
+
+}
+
+void CUILines::OnDeviceReset(){
+	ParseText();
+}
+
+u32 CUILines::GetIndentByAlign(u32 length)const{
 	switch (m_eTextAlign)
 	{
 	case CGameFont::alCenter:
-			pos.x = rect.x1 + rect.width()/2;	break;
+		return (m_wndSize.x - length)/2;
 	case CGameFont::alLeft:
-			pos.x = rect.x1;					break;
+		return 0;
 	case CGameFont::alRight:
-			pos.x = rect.x2;					break;
-		default:
-            NODEFAULT;
+		return (m_wndSize.x - length);
+	default:
+			NODEFAULT;
 	}
+	return 0;
+}
 
-	pFont->SetAligment(m_eTextAlign);
+// %c<255,255,255,255>
+u32 CUILines::GetColorFromText(const xr_string& str)const{
+//	typedef xr_string::size_type size;
 
-	for ( it = m_lines.begin(); it != m_lines.end(); ++it)
+	StrSize begin, end, comma1_pos, comma2_pos, comma3_pos;
+
+	begin = str.find(BEGIN);
+	end = str.find(END, begin);
+	R_ASSERT2(npos != begin, "CUISubLine::GetColorFromText -- can't find beginning tag %c<");
+	R_ASSERT2(npos != end, "CUISubLine::GetColorFromText -- can't find ending tag >");
+	
+	// try default color
+	if (npos != str.find("%c<default>", begin, end - begin))
+		return m_dwTextColor;
+
+	// Try predefined in XML colors
+	CUIXmlInit xml;
+	for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
 	{
-		UI()->OutText(pFont, rect, (float)pos.x, (float)pos.y, (*it).c_str());
-		pos.y += m_interval + height;
+		int cmp = str.compare(begin+3, end-begin-3, *it->first);			
+		if (cmp == 0)
+			return it->second;
 	}
-//	
+
+	// try parse values separated by commas
+	comma1_pos = str.find(",", begin);
+	comma2_pos = str.find(",", comma1_pos + 1);
+	comma3_pos = str.find(",", comma2_pos + 1);
+
+    R_ASSERT2(npos != comma1_pos, "CUISubLine::GetColorFromText -- can't find first comma");        
+	R_ASSERT2(npos != comma2_pos, "CUISubLine::GetColorFromText -- can't find second comma");
+	R_ASSERT2(npos != comma3_pos, "CUISubLine::GetColorFromText -- can't find third comma");
+	
+
+	u32 a, r, g, b;
+	xr_string single_color;
+
+	begin+=3;
+
+	single_color = str.substr(begin, comma1_pos - 1);
+	a = atoi(single_color.c_str());
+	single_color = str.substr(comma1_pos + 1, comma2_pos - 1);
+	r = atoi(single_color.c_str());
+	single_color = str.substr(comma2_pos + 1, comma3_pos - 1);
+	g = atoi(single_color.c_str());
+	single_color = str.substr(comma3_pos + 1, end - 1);
+	b = atoi(single_color.c_str());
+
+    return color_argb(a,r,g,b);
+}
+
+CUILine* CUILines::ParseTextToColoredLine(const xr_string& str) const{
+	CUILine* line = xr_new<CUILine>();
+	xr_string tmp = str;
+	xr_string entry;
+	u32 color;
+
+	do 
+	{
+		CutFirstColoredTextEntry(entry, color, tmp);
+		line->AddSubLine(entry, color);
+	} 
+	while (tmp.size()>0);
+
+	return line;
+}
+
+void CUILines::CutFirstColoredTextEntry(xr_string& entry, u32& color, xr_string& text) const {
+	entry.clear();
+	
+	StrSize begin	= text.find(BEGIN);
+	StrSize end	= text.find(END, begin);
+	if (xr_string::npos == end)
+		begin = end;
+	StrSize begin2	= text.find(BEGIN, end);
+	StrSize end2	= text.find(END,begin2);
+	if (xr_string::npos == end2)
+		begin2 = end2;
+
+	// if we do not have any color entry or it is single with 0 position
+	if (xr_string::npos == begin)
+	{
+		entry = text;
+		color = m_dwTextColor;
+		text.clear();
+	}
+	else if (0 == begin && xr_string::npos == begin2)
+	{
+		entry = text;
+		color = GetColorFromText(entry);
+		entry.replace(begin, end - begin + 1, "");
+		text.clear();
+	}
+	// if we have color entry not at begin
+	else if (0 != begin)
+	{
+		entry = text.substr(0, begin );
+		color = m_dwTextColor;
+		text.replace(0, begin, "");
+	}
+	// if we have two color entries. and first has 0 position
+	else if (0 == begin && xr_string::npos != begin2)
+	{
+		entry = text.substr(0, begin2);
+		color = GetColorFromText(entry);
+		entry.replace(begin, end - begin + 1, "");
+		text.replace(0, begin2, "");
+	}
 }

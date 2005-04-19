@@ -9819,10 +9819,25 @@
 					Name="Lines"
 					Filter="">
 					<File
+						RelativePath=".\ui\UILine.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILine.h">
+					</File>
+					<File
 						RelativePath=".\ui\UILines.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UILines.h">
+					</File>
+					<File
+						RelativePath=".\ui\uilinestd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UISubLine.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISubLine.h">
 					</File>
 				</Filter>
 				<Filter
@@ -9841,6 +9856,9 @@
 				Filter="">
 				<File
 					RelativePath=".\callback_info.h">
+				</File>
+				<File
+					RelativePath=".\ui\uiabstract.h">
 				</File>
 				<File
 					RelativePath=".\ui\UIMessages.h">

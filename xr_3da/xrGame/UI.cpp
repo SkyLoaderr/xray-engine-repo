@@ -229,7 +229,7 @@ void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 
 CDeviceResetNotifier::CDeviceResetNotifier	()
 {
-	Device.seqDeviceReset.Add(this);
+	Device.seqDeviceReset.Add(this,REG_PRIORITY_NORMAL);
 }
 
 CDeviceResetNotifier::~CDeviceResetNotifier	()

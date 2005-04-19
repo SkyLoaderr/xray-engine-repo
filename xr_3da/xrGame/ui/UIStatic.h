@@ -7,7 +7,7 @@
 
 #pragma once
 
-
+#include "uilines.h"
 #include "uiwindow.h"
 #include "uistring.h"
 #include "../uistaticitem.h"
@@ -154,6 +154,7 @@ public:
 	} E4States;
 
 	void SetTextColor(u32 color, E4States state);
+	CUILines	m_lines;
 protected:
 	//цвет текста
 	u32 m_dwFontColor;
