@@ -506,7 +506,10 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	CActor* pActor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
 	if (pActor)
 	{
-		pActor->SetfHealth(100.0f);
+		pActor->SetfHealth(pActor->g_MaxHealth());
+		//-------------------------------------------
+		u_EventGen(P, GE_ACTOR_MAX_POWER, ps->GameID);
+		m_server->SendTo(id_who,P,net_flags(TRUE,TRUE));	
 	};
 	//-----------------------------------------------
 	signal_Syncronize();
@@ -882,7 +885,8 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		if (!l_pC->net_Ready || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
 		if (ps->testFlag(GAME_PLAYER_FLAG_ONBASE)) continue;
 		CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(l_pC->owner);
-		if (!pA) continue;
+		CActor* pActor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
+		if (!pA || !pActor) continue;
 
 		Fvector Pos = pA->o_Position;
 		Fvector Angle = pA->o_Angle;
@@ -899,8 +903,8 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 
 		pA->o_Position	= Pos;
 		pA->o_Angle		= Angle;
-//		u_EventSend(P);
-//		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));
+		//------------------------------------------------
+		pActor->SetfHealth(pActor->g_MaxHealth());
 		//------------------------------------------------
 		P2.w_u8(u8(P.B.count));
 		P2.w(&P.B.data, P.B.count);
