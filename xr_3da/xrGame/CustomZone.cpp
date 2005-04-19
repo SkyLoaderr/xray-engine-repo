@@ -462,6 +462,7 @@ void CCustomZone::shedule_Update(u32 dt)
 			m_ObjectInfoMap.end() != it; ++it) 
 		{
 			CObject* pObject = (*it).object;
+			if (!pObject) continue;
 			CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(pObject);
 			SZoneObjectInfo& info = (*it);
 
@@ -1064,6 +1065,7 @@ bool CCustomZone::Enable()
 		m_ObjectInfoMap.end() != it; ++it) 
 	{
 		CGameObject* pObject = (*it).object;
+		if (!pObject) continue;
 		PlayEntranceParticles(pObject);
 		PlayObjectIdleParticles(pObject);
 	}
@@ -1080,6 +1082,7 @@ bool CCustomZone::Disable()
 		m_ObjectInfoMap.end() != it; ++it) 
 	{
 		CGameObject* pObject = (*it).object;
+		if (!pObject) continue;
 		StopObjectIdleParticles(pObject);
 	}
 	return false;
