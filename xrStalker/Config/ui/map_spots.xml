@@ -81,7 +81,7 @@
 		<mini_map  spot="mp_af_friend_mini_spot" pointer="mp_af_friend_mini_pointer"></mini_map>
 	</mp_af_friend_location>
 	
-	<mp_hit_sector_location hint="hit_sector" ttl="5" pos_to_actor="1">
+	<mp_hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
 		<mini_map  spot="mp_hit_sector_mini_spot"></mini_map>
 	</mp_hit_sector_location>
 	
