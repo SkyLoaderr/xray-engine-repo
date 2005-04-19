@@ -1852,3 +1852,36 @@ bool				CActor::Check_for_BackStab_Bone			(u16 element)
 				if (element == m_spine) return true;
 	return false;
 }
+
+#define ENEMY_HIT_SPOT	"mp_hit_sector_location"
+BOOL	g_bShowHitSectors	= TRUE;
+
+void				CActor::HitSector(CObject* who, CObject* weapon)
+{
+	if (!g_bShowHitSectors) return;
+	if (!g_Alive()) return;
+
+	bool bShowHitSector = true;
+	
+	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(who);
+
+	if (!pEntityAlive || this == who) bShowHitSector = false;
+
+	if (weapon)
+	{
+		CWeapon* pWeapon = smart_cast<CWeapon*> (weapon);
+		if (pWeapon)
+		{
+			if (pWeapon->IsSilencerAttached())
+			{
+				bShowHitSector = false;
+				if (pWeapon->IsGrenadeLauncherAttached())
+				{
+				}
+			}
+		}
+	}
+
+	if (!bShowHitSector) return;	
+		Level().MapManager().AddMapLocation(ENEMY_HIT_SPOT, who->ID());
+}

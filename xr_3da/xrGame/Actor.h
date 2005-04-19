@@ -168,6 +168,7 @@ public:
 	virtual	void						Hit				(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual	void						PHHit			(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */);
 	virtual void						HitSignal		(float P, Fvector &vLocalDir,	CObject* who, s16 element);
+	virtual void						HitSector		(CObject* who, CObject* weapon);
 
 	/////////////////////////////////////////////////////////////////
 	// misc properties
