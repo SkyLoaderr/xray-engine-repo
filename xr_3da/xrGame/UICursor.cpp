@@ -47,8 +47,8 @@ void CUICursor::Render	()
 	};
 #endif
 	// Convert to screen coords
-	int cx	= int(vPos.x+1)/2*UI_BASE_WIDTH;
-	int cy	= int(vPos.y+1)/2*UI_BASE_HEIGHT;
+	int cx	= int((vPos.x+1)/2*UI_BASE_WIDTH);
+	int cy	= int((vPos.y+1)/2*UI_BASE_HEIGHT);
 
 	m_si.SetPos(cx, cy);
 	m_si.Render();
