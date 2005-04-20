@@ -121,7 +121,7 @@ function action_look_around:hit_callback( obj, amount, local_direction, who, bon
 
 	-- если получили хит от текущего врага, то мы знаем, где он; поворачивамся к нему
 	if be and who:id() == be:id() then
-		printf( "HIT CALLBACK!!!!!!!!!" )
+--		printf( "HIT CALLBACK!!!!!!!!!" )
 
 		self.st.last_seen_pos = be:position()
 		self:reset()
