@@ -2,6 +2,7 @@
 #include "ParticlesObject.h"
 #include "gamemtllib.h"
 #include "level.h"
+#include "gamepersistent.h"
 #include "Extendedgeom.h"
 #include "PhysicsGamePars.h"
 #include "PhysicsCommon.h"
@@ -42,7 +43,7 @@ public:
 		pos.c.set(*((Fvector*)c.pos));
 
 		ps->UpdateParent(pos,zero_vel);
-		Level().ps_needtoplay.push_back(ps);
+		GamePersistent().ps_needtoplay.push_back(ps);
 	};
 	virtual bool 			obsolete						()const{return false;}
 };
