@@ -277,45 +277,8 @@ function proceed()
 		set_task_state(task.fail, "bar_resque_information", 0)
 	end 
 
+    mil_tasks.process_tasks ()	
 	
-	
-	-- Military
-	if actor:dont_has_info("mil_max_flash_get") and
-	   actor:object("crazy_flash") then
-		db.actor:give_info_portion("mil_max_flash_get") 
-		if actor:has_info("mil_max_job") then
-			set_task_state(task.completed, "mil_mad_job", 1)
-		end
-	end   
-	
-	if actor:object ("bandit_flash") then 
-	   db.actor:give_info_portion("mil_bandit_flash_get")  
-	end
-
-	if actor:object ("ugrum_flash") then 
-	   db.actor:give_info_portion("mil_ugrum_flash_get")  
-	end
-
-	if actor:object ("max_flash") then 
-	   db.actor:give_info_portion("mil_max_owner_flash_get")  
-	end
-	
-	if actor:object ("wpn_rg-6") then 
-	   db.actor:give_info_portion("mil_rg6_gain")  
-	end
-	
-	if actor:object ("mil_courier_doc") and actor:has_info ("mil_leader_quest2_start") then
-	   actor:give_info_portion ("mil_leader_quest2_complete") 
-	end  
-	
-	if actor:has_info ("mil_khutor_visited") and actor:has_info ("mil_courier_start") then
-	   if actor:dont_has_info ("mil_courier_visited") then 
-	      level_tasks.set_task_state (task.completed, "mil_courier_job", 1)  
-	      actor:give_info_portion ("mil_courier_visited")
-	   end   
-	end   
-	   
-		
 	-- Laboratory X18
 	if actor:dont_has_info("dar_password_info1") and
 	   actor:object("dar_pass_flash") then
@@ -733,6 +696,7 @@ function process_map_spot(info_id)
 	       
     elseif info_id == "mil_leader_quest2_start" then
            add_location (710, "mil_courier_location")
+           remove_location (707, "mil_lukash_location")
       
     elseif info_id == "mil_leader_quest2_failed" then   
            if db.actor:has_info ("mil_leader_quest2_start") then
