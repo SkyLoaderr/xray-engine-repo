@@ -171,7 +171,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sky_texture.create		(st);
 	sky_texture_env.create	(st_env);
 	clouds_texture.create	(pSettings->r_string	(S,"clouds_texture"));
-	clouds_transp			= pSettings->r_float	(S,"clouds_transp");;
+	clouds_color			= pSettings->r_fvector4	(S,"clouds_color");		clouds_color.mul(.5f); clouds_color.w*=2.f; 
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	if (pSettings->line_exist(S,"sky_rotation"))	sky_rotation	= deg2rad(pSettings->r_float(S,"sky_rotation"));
 	else											sky_rotation	= 0;
@@ -193,6 +193,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
 	env_ambient				= pSettings->line_exist(S,"env_ambient")?parent->AppendEnvAmb	(pSettings->r_string(S,"env_ambient")):0;
 
+	C_CHECK					(clouds_color);
 	C_CHECK					(sky_color	);
 	C_CHECK					(fog_color	);
 	C_CHECK					(rain_color	);
@@ -236,9 +237,10 @@ void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescript
 	clouds_r_textures.push_back	(mk_pair(0,A.clouds_texture));
 	clouds_r_textures.push_back	(mk_pair(1,B.clouds_texture));
 
-	clouds_transp			=	(fi*A.clouds_transp + f*B.clouds_transp);
-	sky_factor				=	f;
-	sky_color.lerp			(A.sky_color,B.sky_color,f);
+	weight					=	f;
+
+	clouds_color.lerp		(A.clouds_color,B.clouds_color,f).mul(255.f);
+	sky_color.lerp			(A.sky_color,B.sky_color,f).mul(255.f);
 	sky_rotation			=	(fi*A.sky_rotation + f*B.sky_rotation);
 	far_plane				=	(fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
@@ -327,7 +329,6 @@ CEnvironment::CEnvironment	()
     fTimeFactor				= 12.f;
 
 	wind_strength			= 0.f;
-	current_weight			= 0.f;
 
 	// fill clouds hemi verts & faces 
 	const Fvector* verts;
@@ -532,6 +533,7 @@ void CEnvironment::OnFrame()
 	SelectEnvs				(fGameTime);
     VERIFY					(Current[0]&&Current[1]);
 
+	float current_weight;
     if (bTerminator){
 	    float x				= fGameTime>Current[0]->exec_time?fGameTime-Current[0]->exec_time:(day_tm-Current[0]->exec_time)+fGameTime;
 	    current_weight		= x/((day_tm-Current[0]->exec_time)+Current[1]->exec_time); 
@@ -620,8 +622,7 @@ void CEnvironment::RenderFirst	()
 			mSky.translate_over			(Device.vCameraPosition);
 
 			u32		i_offset,v_offset;
-			Fcolor	clr					= { CurrentEnv.sky_color.x, CurrentEnv.sky_color.y, CurrentEnv.sky_color.z, CurrentEnv.sky_factor };
-			u32		C					= clr.get	();
+			u32		C					= color_rgba(iFloor(CurrentEnv.sky_color.x), iFloor(CurrentEnv.sky_color.y), iFloor(CurrentEnv.sky_color.z), iFloor(CurrentEnv.weight*255.f));
 
 			// Fill index buffer
 			u16*	pib					= RCache.Index.Lock	(20*3,i_offset);
@@ -642,16 +643,19 @@ void CEnvironment::RenderFirst	()
 		}
 
 		// draw clouds
-		if (FALSE==fis_zero(CurrentEnv.clouds_transp,EPS_L)){
+		if (FALSE==fis_zero(CurrentEnv.clouds_color.w,EPS_L)){
 			Fmatrix						mXFORM, mScale;
 			mScale.scale				(10,0.4f,10);
 			mXFORM.rotateY				(CurrentEnv.sky_rotation);
 			mXFORM.mulB_43				(mScale);
 			mXFORM.translate_over		(Device.vCameraPosition);
 
+			Fvector wind_dir;
+			wind_dir.setHP				(CurrentEnv.wind_direction,0);
+			wind_dir.mul				(0.5f).add(0.5f).mul(255.f);
 			u32		i_offset,v_offset;
-			u32		C0					= color_rgba(255,255,255,iFloor(CurrentEnv.clouds_transp*255.f));
-			u32		C1					= color_rgba(255,255,255,iFloor(CurrentEnv.sky_factor*255.f));
+			u32		C0					= color_rgba(iFloor(wind_dir.x),iFloor(wind_dir.y),iFloor(wind_dir.z),iFloor(CurrentEnv.clouds_color.w));
+			u32		C1					= color_rgba(iFloor(CurrentEnv.clouds_color.x),iFloor(CurrentEnv.clouds_color.y),iFloor(CurrentEnv.clouds_color.z),iFloor(CurrentEnv.weight*255.f));
  
 			// Fill index buffer
 			u16*	pib					= RCache.Index.Lock	(CloudsIndices.size(),i_offset);

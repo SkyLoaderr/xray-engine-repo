@@ -61,13 +61,13 @@ public:
 	STextureList		sky_r_textures;		// C
 	STextureList		sky_r_textures_env;	// C
 	STextureList		clouds_r_textures;	// C
-	float				sky_factor;			// C
+	float				weight;				// C
 
 	ref_texture			sky_texture		;
 	ref_texture			sky_texture_env	;
 	ref_texture			clouds_texture	;
 
-	float				clouds_transp	;
+	Fvector4			clouds_color	;
 	Fvector3			sky_color		;
 	float				sky_rotation	;
 
@@ -146,8 +146,6 @@ public:
 	float					fGameTime;
 	float					fTimeFactor;
 	ref_texture				tonemap;
-
-	float					current_weight;
 
 	// music interface
 	struct	music
