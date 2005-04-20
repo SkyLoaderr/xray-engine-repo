@@ -468,6 +468,42 @@ bool CActorTools::ExportOBJ(LPCSTR name)
 }
 
 
+bool CActorTools::ExportCPP(LPCSTR name)
+{
+    if (m_pEditObject){
+    	EditMeshVec& meshes		= m_pEditObject->Meshes();
+        string128 tmp;
+        IWriter* W 				= FS.w_open(name);
+        for (EditMeshIt m_it=meshes.begin(); m_it!=meshes.end(); m_it++){
+	    	CEditableMesh* mesh = *m_it;
+            FaceVec& faces		= mesh->GetFaces();
+            FvectorVec& verts	= mesh->GetPoints();
+            sprintf				(tmp,"MESH %s {",mesh->GetName());
+            W->w_string			(tmp);
+            sprintf				(tmp,"\tVERTEX_COUNT %d",verts.size());
+            W->w_string			(tmp);
+            sprintf				(tmp,"\tFACE_COUNT %d",faces.size());
+            W->w_string			(tmp);
+            W->w_string			("\tconst Fvector vertices[VERTEX_COUNT] = {");
+			for (FvectorIt v_it=verts.begin(); v_it!=verts.end(); v_it++){
+    	        sprintf			(tmp,"\t\t{% 3.6f,\t% 3.6f,\t% 3.6f},",v_it->x,v_it->y,v_it->z);
+	            W->w_string		(tmp);
+            }
+            W->w_string			("\t}");
+            W->w_string			("\tconst u16 faces[FACE_COUNT*3] = {");
+			for (FaceIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
+    	        sprintf			(tmp,"\t\t%-d,\t\t%-d,\t\t%-d,",f_it->pv[0].pindex,f_it->pv[1].pindex,f_it->pv[2].pindex);
+	            W->w_string		(tmp);
+            }
+            W->w_string			("\t}");
+            W->w_string			("}");
+        }
+        FS.w_close				(W);
+        return true;
+    }
+    return false;
+}
+
 #include "EDetailModel.h"
 bool CActorTools::ExportDM(LPCSTR name)
 {
@@ -792,8 +828,7 @@ u16 CActorTools::ExtractMotionSlot(LPCSTR full_name, LPCSTR prefix)
     LPCSTR slot_nm				= strstr(full_name,"\\Slot ");
 	if (0!=slot_nm){
     	string16 tmp;
-        strcpy					(tmp,slot_nm+xr_strlen("\\Slot "));
-        tmp[1]					= 0;
+        strncpy					(tmp,slot_nm+xr_strlen("\\Slot "),1); tmp[1]=0;
         slot					= atoi(tmp)-1;
     }
     return slot;
@@ -807,7 +842,7 @@ LPCSTR CActorTools::ExtractMotionName(LPCSTR full_name, LPCSTR prefix)
 
 xr_string CActorTools::BuildMotionPref(u16 slot, LPCSTR prefix)
 {
-	VERIFY						(slot<10);
+	VERIFY						(slot<4);
 	string32 slot_nm; 			sprintf(slot_nm,"Slot %1d",slot+1);
 	return PrepareKey			(prefix,slot_nm).c_str();
 }

@@ -243,6 +243,7 @@ public:
     bool				ExportOGF			(LPCSTR name);
     bool				ExportOMF			(LPCSTR name);
     bool				ExportDM			(LPCSTR name);
+    bool 				ExportCPP			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name, bool bSelOnly);
     bool				AppendMotion		(LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
@@ -288,6 +289,7 @@ public:
     void                CommandExportOBJ	(u32 p1, u32 p2, u32& res);
     void                CommandExportOGF	(u32 p1, u32 p2, u32& res);
     void               	CommandExportOMF	(u32 p1, u32 p2, u32& res);
+    void 				CommandExportCPP	(u32 p1, u32 p2, u32& res);
 	void 				CommandUndo			(u32 p1, u32 p2, u32& res);
 	void 				CommandRedo			(u32 p1, u32 p2, u32& res);
 	void 				CommandOptimizeMotions(u32 p1, u32 p2, u32& res);
