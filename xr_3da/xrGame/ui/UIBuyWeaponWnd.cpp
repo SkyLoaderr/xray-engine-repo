@@ -622,6 +622,9 @@ void CUIBuyWeaponWnd::OnBtnAutobuyFocusLost(){
 }
 
 void CUIBuyWeaponWnd::OnBtnClearClicked(){
+	if (ClearTooExpensiveItems())
+		return;
+
 	SlotToSection(PISTOL_SLOT);
 	SlotToSection(RIFLE_SLOT);
 	SlotToSection(GRENADE_SLOT);
@@ -636,6 +639,53 @@ void CUIBuyWeaponWnd::OnBtnClearClicked(){
 
 	// put free pistol
 	GetTop()->SendMessage(UIBagWnd.GetItemByKey(DIK_1, GROUP_2), DRAG_DROP_ITEM_DB_CLICK);
+}
+
+bool CUIBuyWeaponWnd::ClearTooExpensiveItems(){
+	bool f = false;
+	bool res;
+
+    res = ClearSlot_ifTooExpensive(PISTOL_SLOT);
+	f = f ? true : res;
+	res = ClearSlot_ifTooExpensive(RIFLE_SLOT);
+	f = f ? true : res;
+	res = ClearSlot_ifTooExpensive(GRENADE_SLOT);
+	f = f ? true : res;
+	res = ClearSlot_ifTooExpensive(APPARATUS_SLOT);
+	f = f ? true : res;
+	res = ClearSlot_ifTooExpensive(OUTFIT_SLOT);
+	f = f ? true : res;
+
+	DRAG_DROP_LIST list = UITopList[BELT_SLOT].GetDragDropItemsList();
+	DRAG_DROP_LIST_it it;
+
+	for (it = list.begin(); it != list.end(); ++it)
+		if ((*it)->GetColor() == cUnableToBuy)
+		{
+			GetTop()->SendMessage(*it, DRAG_DROP_ITEM_DB_CLICK);
+			f = true;
+		}
+
+	return f;
+}
+
+bool CUIBuyWeaponWnd::ClearSlot_ifTooExpensive(int slot){
+	bool empty;
+	DRAG_DROP_LIST_it it;
+
+	empty = UITopList[slot].GetDragDropItemsList().empty();
+
+	if (!empty)
+	{
+		it = UITopList[slot].GetDragDropItemsList().begin();
+		if ((*it)->GetColor() == cUnableToBuy)
+		{
+			GetTop()->SendMessage(*it, DRAG_DROP_ITEM_DB_CLICK);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CUIBuyWeaponWnd::OnDDItemDrag(){
