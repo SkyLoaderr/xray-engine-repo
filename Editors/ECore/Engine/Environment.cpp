@@ -59,6 +59,18 @@ struct v_skybox				{
 	}
 };
 const	u32 v_skybox_fvf	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX2 | D3DFVF_TEXCOORDSIZE3(0) | D3DFVF_TEXCOORDSIZE3(1);
+struct v_clouds				{
+	Fvector3	p;
+	u32			color;
+	u32			intensity;
+	void		set			(Fvector3& _p, u32 _c, u32 _i)
+	{
+		p					= _p;
+		color				= _c;
+		intensity			= _i;
+	}
+};
+const	u32 v_clouds_fvf	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_SPECULAR;
 #pragma pack(pop)
 
 //////////////////////////////////////////////////////////////////////////
@@ -606,7 +618,6 @@ void CEnvironment::RenderFirst	()
 			Fmatrix						mSky;
 			mSky.rotateY				(CurrentEnv.sky_rotation);
 			mSky.translate_over			(Device.vCameraPosition);
-			RCache.set_xform_world		(mSky);
 
 			u32		i_offset,v_offset;
 			Fcolor	clr					= { CurrentEnv.sky_color.x, CurrentEnv.sky_color.y, CurrentEnv.sky_color.z, CurrentEnv.sky_factor };
@@ -623,6 +634,7 @@ void CEnvironment::RenderFirst	()
 			RCache.Vertex.Unlock		(12,sh_2geom.stride());
 
 			// Render
+			RCache.set_xform_world		(mSky);
 			RCache.set_Geometry			(sh_2geom);
 			RCache.set_Shader			(sh_2sky);
 			RCache.set_Textures			(&CurrentEnv.sky_r_textures);
@@ -638,7 +650,8 @@ void CEnvironment::RenderFirst	()
 			mXFORM.translate_over		(Device.vCameraPosition);
 
 			u32		i_offset,v_offset;
-			u32		C					= color_rgba(255,255,255,iFloor(CurrentEnv.clouds_transp*255.f));
+			u32		C0					= color_rgba(255,255,255,iFloor(CurrentEnv.clouds_transp*255.f));
+			u32		C1					= color_rgba(255,255,255,iFloor(CurrentEnv.sky_factor*255.f));
  
 			// Fill index buffer
 			u16*	pib					= RCache.Index.Lock	(CloudsIndices.size(),i_offset);
@@ -646,9 +659,9 @@ void CEnvironment::RenderFirst	()
 			RCache.Index.Unlock			(CloudsIndices.size());
 
 			// Fill vertex buffer
-			FVF::L* pv					= (FVF::L*)	RCache.Vertex.Lock	(CloudsVerts.size(),clouds_geom.stride(),v_offset);
+			v_clouds* pv				= (v_clouds*)	RCache.Vertex.Lock	(CloudsVerts.size(),clouds_geom.stride(),v_offset);
 			for (FvectorIt it=CloudsVerts.begin(); it!=CloudsVerts.end(); it++,pv++)
-				pv->set					(*it,C);
+				pv->set					(*it,C0,C1);
 			RCache.Vertex.Unlock		(CloudsVerts.size(),clouds_geom.stride());
 
 			// Render
@@ -682,7 +695,7 @@ void CEnvironment::OnDeviceCreate()
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
 //.	clouds_sh.create		();
-	clouds_geom.create		(FVF::F_L,RCache.Vertex.Buffer(), RCache.Index.Buffer());
+	clouds_geom.create		(v_clouds_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
 }
 void CEnvironment::OnDeviceDestroy()
