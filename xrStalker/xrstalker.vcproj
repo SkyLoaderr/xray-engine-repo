@@ -2037,6 +2037,9 @@
 						<File
 							RelativePath=".\scripts\level_tasks.script">
 						</File>
+						<File
+							RelativePath=".\Scripts\mil_tasks.script">
+						</File>
 					</Filter>
 					<Filter
 						Name="test_levels"
