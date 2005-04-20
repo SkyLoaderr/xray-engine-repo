@@ -163,6 +163,8 @@ void CElevatorState::UpdateStClimbingDown()
 		SwitchState(clbNearDown);
 	UpdateClimbingCommon(d,to_ax,ca,control_a);
 
+	if(m_ladder->AxDistToUpperP(m_character)<-m_character->FootRadius())SwitchState(clbNone);
+
 	Fvector vel;
 	m_character->GetVelocity(vel);
 	if(vel.y>EPS_S)
