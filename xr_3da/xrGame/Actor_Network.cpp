@@ -32,7 +32,7 @@
 #include "HUDManager.h"
 #include "ui/UIArtefactPanel.h"
 #include "ui/UIMainIngameWnd.h"
-
+#include "gamepersistent.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -787,7 +787,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		ps = xr_new<CParticlesObject>(m_spawn_effect,TRUE);
 
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-		Level().ps_needtoplay.push_back(ps);
+		GamePersistent().ps_needtoplay.push_back(ps);
 	};
 	//-------------------------------------------------------------
 
