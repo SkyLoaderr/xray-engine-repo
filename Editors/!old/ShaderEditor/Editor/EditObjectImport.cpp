@@ -32,7 +32,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 //	UI->SetStatus("Importing...");
 //	UI->ProgressStart(100,"Read file:");
 //	UI->ProgressUpdate(1);
-    string256 fname;
+    string512 fname;
     strcpy(fname,fn);
 #ifdef _EDITOR
 	I=LWO_ImportObject(fname,I);
@@ -91,7 +91,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     st_lwClip* Icl;
                     u32 dwNumTextures=0;
                     for (st_lwTexture* Itx=Isf->color.tex; Itx; Itx=Itx->next){
-                        char tname[1024]="";
+                        string1024 tname="";
                         dwNumTextures++;
                         cidx = -1;
                         if (Itx->type==ID_IMAP) cidx=Itx->param.imap.cindex;
@@ -152,7 +152,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     CEditableMesh* MESH=xr_new<CEditableMesh>(this);
                     m_Meshes.push_back(MESH);
 
-                    if (Ilr->name)	strcpy(MESH->m_Name,Ilr->name); else strcpy(MESH->m_Name,"");
+                    if (Ilr->name)	MESH->SetName(Ilr->name); else MESH->SetName("");
                     MESH->m_Box.set(Ilr->bbox[0],Ilr->bbox[1],Ilr->bbox[2], Ilr->bbox[3],Ilr->bbox[4],Ilr->bbox[5]);
 
                     // parse mesh(lwo-layer) data

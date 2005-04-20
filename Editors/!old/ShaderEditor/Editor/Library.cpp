@@ -64,7 +64,7 @@ void ELibrary::ReloadObject(LPCSTR nm)
 {
 	VERIFY(m_bReady);
 	R_ASSERT(nm&&nm[0]);
-    string256 name; strcpy(name,nm); strlwr(name);
+    string512 name; strcpy(name,nm); strlwr(name);
 	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end())
     	it->second->Reload();

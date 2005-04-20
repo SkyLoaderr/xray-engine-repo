@@ -167,7 +167,7 @@ class ECORE_API CEditableMesh {
     friend class TfrmEditLibrary;
 	friend class CExporter;
 
-	string128		m_Name;
+	shared_str			m_Name;
 
     CEditableObject*	m_Parent;
 
@@ -236,8 +236,8 @@ public:
 	void			Construct				();
     void			Clear					();
 
-	IC void			SetName					(LPCSTR name){strcpy(m_Name,name);}
-	IC char*		GetName					(){return m_Name;}
+	IC void			SetName					(LPCSTR name){m_Name=name;}
+	IC const char*	GetName					(){return m_Name.c_str();}
 	void            GetBox					(Fbox& box){box.set(m_Box);}
 	CSurface*		GetSurfaceByFaceID		(u32 fid);
 	void			GetFaceTC				(u32 fid, const Fvector2* tc[3]);

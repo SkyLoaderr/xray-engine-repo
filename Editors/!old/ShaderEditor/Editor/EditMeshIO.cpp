@@ -105,7 +105,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     }
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_MESHNAME));
-	F.r_stringZ		(m_Name,sizeof(m_Name));
+	F.r_stringZ		(m_Name);
 
     R_ASSERT(F.r_chunk(EMESH_CHUNK_BBOX,&m_Box));
     R_ASSERT(F.r_chunk(EMESH_CHUNK_FLAGS,&m_Flags));

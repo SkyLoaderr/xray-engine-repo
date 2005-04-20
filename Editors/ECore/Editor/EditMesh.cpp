@@ -20,7 +20,7 @@ void CEditableMesh::Construct()
 {
 	m_Box.set		(0,0,0,0,0,0);
 	m_Flags.assign	(flVisible);
-    m_Name[0]		= 0;
+    m_Name			= "";
     m_LoadState.zero();
 #ifdef _EDITOR
     m_CFModel		= 0;

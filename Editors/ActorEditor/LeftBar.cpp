@@ -324,6 +324,12 @@ void __fastcall TfraLeftBar::ExportWaveFrontOBJ1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExportC1Click(TObject *Sender)
+{
+	ExecCommand( COMMAND_EXPORT_CPP );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
 {
 	ExecCommand( COMMAND_SHOW_CLIPMAKER );
@@ -373,4 +379,5 @@ void TfraLeftBar::SetReadOnly(BOOL val)
 	ebExport->Enabled			= !val;
 }
 //---------------------------------------------------------------------------
+
 

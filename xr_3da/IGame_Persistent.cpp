@@ -72,8 +72,10 @@ void IGame_Persistent::Disconnect	()
 	// Cleanup particles, some of them can be still active
 	ps_needtoplay.clear				();
 	ps_destroy.clear				();
+#ifndef _EDITOR
 	while (!ps_active.empty())
 		(*ps_active.begin())->PSI_internal_delete();
+#endif
 }
 
 void IGame_Persistent::OnGameStart	()

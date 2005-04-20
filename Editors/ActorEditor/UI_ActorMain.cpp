@@ -201,6 +201,14 @@ void CActorTools::CommandExportOMF(u32 p1, u32 p2, u32& res)
         else        		    	ELog.DlgMsg(mtError,"Export failed.");
     }
 }
+void CActorTools::CommandExportCPP(u32 p1, u32 p2, u32& res)
+{
+    xr_string fn;
+    if (EFS.GetSaveName(_import_,fn,0,7)){
+        if (ExportCPP(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+        else        		    	ELog.DlgMsg(mtError,"Export failed.");
+    }
+}
 void CActorTools::CommandClear(u32 p1, u32 p2, u32& res)
 {
     if (!IfModified()){ 
@@ -313,6 +321,7 @@ void CActorMain::RegisterCommands()
     REGISTER_CMD_C	(COMMAND_EXPORT_OBJ,		ATools,CActorTools::CommandExportOBJ);
     REGISTER_CMD_C	(COMMAND_EXPORT_OGF,        ATools,CActorTools::CommandExportOGF);
     REGISTER_CMD_C	(COMMAND_EXPORT_OMF,        ATools,CActorTools::CommandExportOMF);
+    REGISTER_CMD_C 	(COMMAND_EXPORT_CPP,		ATools,CActorTools::CommandExportCPP);
 	REGISTER_CMD_C	(COMMAND_UNDO,              ATools,CActorTools::CommandUndo);
 	REGISTER_CMD_C	(COMMAND_REDO,              ATools,CActorTools::CommandRedo);
     REGISTER_CMD_C	(COMMAND_OPTIMIZE_MOTIONS,  ATools,CActorTools::CommandOptimizeMotions);
