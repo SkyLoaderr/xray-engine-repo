@@ -414,9 +414,10 @@ void CEnvironment::unload	()
 {
     WeatherPairIt _I=Weathers.begin();
     WeatherPairIt _E=Weathers.end();
-    for (; _I!=_E; _I++)
+    for (; _I!=_E; _I++){
     	for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
         	xr_delete	(*it);
+    }
 	Weathers.clear		();
 	for (EnvAmbVecIt it=Ambients.begin(); it!=Ambients.end(); it++)
 		xr_delete		(*it);
