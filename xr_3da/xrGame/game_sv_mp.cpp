@@ -18,7 +18,7 @@ game_sv_mp::game_sv_mp() :inherited()
 {
 	m_bVotingActive = false;
 	//------------------------------------------------------
-	g_pGamePersistent->Environment.SetWeather("mp_weather");
+//	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	
 }
 
