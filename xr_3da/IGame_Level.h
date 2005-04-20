@@ -8,7 +8,6 @@
 // refs
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
-class ENGINE_API CPS_Instance;
 class ENGINE_API ISpatial;
 namespace Feel { class ENGINE_API Sound; }
 
@@ -39,11 +38,6 @@ public:
 
 	CInifile*					pLevel;
 	CCustomHUD*					pHUD;
-
-	xr_set<CPS_Instance*>		ps_active;
-	xr_vector<CPS_Instance*>	ps_destroy;
-	xr_vector<CPS_Instance*>	ps_needtoplay;
-
 public:	// deferred sound events
 	struct	_esound_delegate	{
 		Feel::Sound*	dest	;
