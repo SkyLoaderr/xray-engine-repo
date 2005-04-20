@@ -564,10 +564,12 @@ void CEnvironment::OnFrame()
 			// tonemapping in VS
 			CurrentEnv.sky_r_textures.push_back		(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
 			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
+			CurrentEnv.clouds_r_textures.push_back	(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
 		} else {
 			// tonemapping in PS
 			CurrentEnv.sky_r_textures.push_back		(mk_pair(2,tonemap));								//. hack
 			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(2,tonemap));								//. hack
+			CurrentEnv.clouds_r_textures.push_back	(mk_pair(2,tonemap));								//. hack
 		}
 	}
     int id								=	(current_weight<0.5f)?Current[0]->lens_flare_id:Current[1]->lens_flare_id;
@@ -672,7 +674,7 @@ void CEnvironment::RenderFirst	()
 			// Render
 			RCache.set_xform_world		(mXFORM);
 			RCache.set_Geometry			(clouds_geom);
-			RCache.set_Shader			(sh_2sky);						//.
+			RCache.set_Shader			(clouds_sh);
 			RCache.set_Textures			(&CurrentEnv.clouds_r_textures);
 			RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,CloudsVerts.size(),i_offset,CloudsIndices.size()/3);
 		}
@@ -699,7 +701,7 @@ void CEnvironment::OnDeviceCreate()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
-//.	clouds_sh.create		();
+	clouds_sh.create		("clouds","null");
 	clouds_geom.create		(v_clouds_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
 }
