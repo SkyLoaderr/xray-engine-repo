@@ -113,6 +113,8 @@ protected:
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
 	CUIZoneMap*			UIZoneMap;
+	CUIProgressBar		UILuminosityBar;
+	CUIProgressBar		UISndNoiseBar;
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;

@@ -45,7 +45,9 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
 	pDialog->SetHolder(this);
 	pDialog->Show();
 
-	GetUICursor()->Show();
+	if( pDialog->NeedCursor() )
+		GetUICursor()->Show();
+
 	if(g_pGameLevel){
 		CActor* A = smart_cast<CActor*>( Level().CurrentViewEntity() );
 		if ( A && pDialog->StopAnyMove() ){
@@ -66,7 +68,7 @@ void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 	pDialog->SetHolder(NULL);
 	pDialog->Hide();
 
-	if(!MainInputReceiver() )
+	if(!MainInputReceiver() || !MainInputReceiver()->NeedCursor() )
 		GetUICursor()->Hide();
 }
 

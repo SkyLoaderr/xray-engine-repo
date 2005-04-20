@@ -335,6 +335,12 @@ void CUIMainIngameWnd::Init()
 	this->AttachChild(m_artefactPanel);	
 	xr_vector<Irect> vRects;
 
+	AttachChild(&UILuminosityBar);
+	xml_init.InitProgressBar(uiXml, "luminosity_bar", 0, &UILuminosityBar);
+
+	AttachChild(&UISndNoiseBar);
+	xml_init.InitProgressBar(uiXml, "sound_noise_bar", 0, &UISndNoiseBar);
+	
 /*	// uncoment to test ArtefactPanel
 	Irect rect;
 	rect.left = 698; rect.right = 750;
@@ -353,6 +359,24 @@ void CUIMainIngameWnd::Draw()
 	bool zoom_mode = false;
 	bool scope_mode = false;
 
+	float	luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
+	static float cur_lum = luminocity;
+	cur_lum = luminocity*0.01f + cur_lum*0.99f;
+	UILuminosityBar.SetProgressPos( (s16)iFloor(cur_lum*100.0f) );
+
+	
+	CActor* _pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(_pActor){
+		float	snd_noise = _pActor->m_snd_noise;
+		static float cur_snd_noise = snd_noise;
+//		cur_snd_noise = snd_noise*0.01f + cur_snd_noise*0.99f;
+		cur_snd_noise = snd_noise;
+		UISndNoiseBar.SetProgressPos( (s16)iFloor(cur_snd_noise*100.0f) );
+		if(!(Device.dwFrame%1000) )
+			Msg("ffff= %f",cur_snd_noise);
+	}
+
+	
 
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
 	{

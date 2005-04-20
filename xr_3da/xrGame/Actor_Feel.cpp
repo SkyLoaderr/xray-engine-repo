@@ -228,3 +228,9 @@ void CActor::PickupInfoDraw(CObject* object)
 	HUD().Font().pFontMedium->SetColor		(PICKUP_INFO_COLOR);
 	HUD().Font().pFontMedium->Out			(x,y,draw_str);
 }
+
+void CActor::feel_sound_new(CObject* who, int type, CSound_UserDataPtr user_data, const Fvector& Position, float power)
+{
+	if(who == this)
+		m_snd_noise += power;
+}

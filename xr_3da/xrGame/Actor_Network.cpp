@@ -615,6 +615,8 @@ void CActor::NetInput_Update	(u32 Time)
 
 BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
+	m_snd_noise	= 0.0f;
+
 	if (m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
@@ -803,6 +805,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	if (GameID() == GAME_SINGLE)
 		Level().MapManager().AddMapLocation("actor_location",ID());
+
+
+	spatial.type |=STYPE_REACTTOSOUND;
 	return					TRUE;
 }
 

@@ -31,6 +31,7 @@ public:
 	CDialogHolder* GetHolder					()					{return m_pHolder;};
 			void SetHolder						(CDialogHolder* h)	{m_pHolder = h;};
 	virtual bool StopAnyMove					(){return true;}
+	virtual bool NeedCursor						()const {return true;}
 };
 
 #endif // _UI_DIALOG_WND_H_

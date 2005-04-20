@@ -7,6 +7,7 @@
 #pragma once
 
 #include "../feel_touch.h"
+#include "../feel_sound.h"
 #include "../iinputreceiver.h"
 #include "../SkeletonAnimated.h"
 #include "actor_flags.h"
@@ -59,7 +60,8 @@ class	CActor:
 	public Feel::Touch,
 	public CInventoryOwner,
 	public CPhraseDialogManager,
-	public CStepManager
+	public CStepManager,
+	public Feel::Sound
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -96,7 +98,9 @@ public:
 	// Render
 	virtual void						renderable_Render			();
 	virtual BOOL						renderable_ShadowGenerate	();
-
+	virtual	void						feel_sound_new				(CObject* who, int type, CSound_UserDataPtr user_data, const Fvector& Position, float power);
+	virtual	Feel::Sound*				dcast_FeelSound				()	{ return this;	}
+			float						m_snd_noise;
 #ifdef DEBUG
 	virtual void						OnRender			();
 #endif

@@ -749,6 +749,9 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
+	m_snd_noise -= 2*Device.fTimeDelta;
+	clamp(m_snd_noise,0.0f,4.f);
+
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL();
 	VERIFY2								(_valid(renderable.xform),*cName());
@@ -854,6 +857,9 @@ void CActor::UpdateCL	()
 
 	if (g_Alive()) 
 		CStepManager::update();
+
+	spatial.type |=STYPE_REACTTOSOUND;
+
 }
 
 void CActor::shedule_Update	(u32 DT)
