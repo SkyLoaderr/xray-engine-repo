@@ -27,6 +27,8 @@ public:
 
 	virtual void	OnZoomIn			();
 	virtual void	OnZoomOut			();
+	virtual	void	ZoomInc				();
+	virtual	void	ZoomDec				();
 	virtual void	net_Destroy			();
 
 

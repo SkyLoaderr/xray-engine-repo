@@ -71,4 +71,7 @@ public:
 	virtual void			activate_physic_shell	();
 	virtual void			setup_physic_shell		();
 	virtual void			create_physic_shell		();
+
+public:
+	virtual bool			Useful				() const;
 };

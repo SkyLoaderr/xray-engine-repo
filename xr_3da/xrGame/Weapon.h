@@ -249,8 +249,8 @@ protected:
 public:
 
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
-			void			ZoomInc				();
-			void			ZoomDec				();
+	virtual	void			ZoomInc				(){};
+	virtual	void			ZoomDec				(){};
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
 			bool			IsZoomed			()	const	{return m_bZoomMode;};

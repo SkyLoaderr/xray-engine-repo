@@ -182,6 +182,7 @@ void CExplosive::Explode()
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
 
+//	Msg("---------CExplosive Explode [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 	OnBeforeExplosion();
 	//играем звук взрыва
 	Sound->play_at_pos(sndExplode, 0, pos, false);
@@ -408,6 +409,8 @@ void CExplosive::UpdateCL()
 		StopLight();
 		
 		OnAfterExplosion();
+//		Msg("---------CExplosive OnAfterExplosion [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
+
 	} 
 	else
 	{
@@ -441,6 +444,7 @@ void CExplosive::OnBeforeExplosion()
 {
 	cast_game_object()->setVisible(false);
 	cast_game_object()->setEnabled(false);
+//	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 
 }
 

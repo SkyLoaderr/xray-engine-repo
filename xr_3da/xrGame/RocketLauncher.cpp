@@ -69,6 +69,7 @@ void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_lau
 	VERIFY(pRocket->m_pOwner);
 	pRocket->H_SetParent(parent_rocket_launcher);
 	m_rockets.push_back(pRocket);
+//	Msg("---------Attached rocket [%d] frame[%d]",rocket_id, Device.dwFrame);
 
 }
 
@@ -103,7 +104,7 @@ void CRocketLauncher::DetachRocket(u16 rocket_id)
 		(*It_l)->H_SetParent(NULL);
 		m_launched_rockets.erase(It_l);
 	}
-
+//	Msg("---------Detached rocket [%d] frame [%d]",rocket_id, Device.dwFrame);
 }
 
 
@@ -118,6 +119,7 @@ void CRocketLauncher::LaunchRocket(const Fmatrix& xform,
 	m_pRocket->H_SetParent(NULL);
 */
 	getCurrentRocket()->SetLaunchParams(xform, vel, angular_vel);
+//	Msg("---------Launched rocket [%d] frame [%d]",getCurrentRocket()->ID(), Device.dwFrame);
 //	getCurrentRocket()->H_SetParent(NULL);
 	m_launched_rockets.push_back( getCurrentRocket() );
 	//m_rockets.pop_back();

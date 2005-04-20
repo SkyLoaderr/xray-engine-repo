@@ -145,3 +145,8 @@ void CExplosiveRocket::create_physic_shell		()
 {
 	inherited::create_physic_shell();
 }
+
+bool CExplosiveRocket::Useful					() const
+{
+	return			(inherited::Useful());
+}

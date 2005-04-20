@@ -70,6 +70,7 @@ BOOL CCustomRocket::net_Spawn(CSE_Abstract* DC)
 
 void CCustomRocket::net_Destroy() 
 {
+	Msg("---------net_Destroy [%d] frame[%d]",ID(), Device.dwFrame);
 	inherited::net_Destroy();
 	CPHUpdateObject::Deactivate();
 
@@ -305,6 +306,20 @@ void CCustomRocket::PlayContact()
 }
 
 
+void CCustomRocket::OnH_B_Chield		()
+{
+	VERIFY(m_eState == eInactive);
+	inherited::OnH_B_Chield		();
+//	Msg("! CCustomRocket::OnH_B_Chield called, id[%d] frame[%d]",ID(),Device.dwFrame);
+}
+void CCustomRocket::OnH_A_Chield		()
+{
+	VERIFY(m_eState == eInactive);
+	inherited::OnH_A_Chield		();
+//	Msg("! CCustomRocket::OnH_A_Chield called, id[%d] frame[%d]",ID(),Device.dwFrame);
+}
+
+
 void CCustomRocket::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
@@ -321,6 +336,8 @@ void CCustomRocket::OnH_A_Independent()
 	setVisible(true);
 	StartFlying();
 	StartEngine();
+//	Msg("! CCustomRocket::OnH_A_Independent called, id[%d] frame[%d]",ID(),Device.dwFrame);
+
 }
 
 
@@ -405,12 +422,12 @@ void CCustomRocket::UpdateEngine				()
 {
 //	VERIFY( getVisible() );
 //	VERIFY( m_pPhysicsShell);
-
 	if( !m_pPhysicsShell )
 		Msg("! CCustomRocket::UpdateEngine called, but 0==m_pPhysicsShell");
 
-	if( !getVisible() )
-		Msg("! CCustomRocket::UpdateEngine called, but false==getVisible()");
+	if( !getVisible() ){
+		Msg("! CCustomRocket::UpdateEngine called, but false==getVisible() id[%d] frame[%d]",ID(),Device.dwFrame);
+	}
 
 	if (m_dwEngineTime <= 0) 
 	{

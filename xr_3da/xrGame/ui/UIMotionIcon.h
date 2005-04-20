@@ -14,7 +14,7 @@ public:
 					};
 private:
 					EState				m_curren_state;
-					CUIStatic			m_states[states_number]							;
+//					CUIStatic			m_states[states_number]							;
 					CUIProgressBar		m_PowerBar[states_number];
 public:
 	virtual			~CUIMotionIcon				()										;
