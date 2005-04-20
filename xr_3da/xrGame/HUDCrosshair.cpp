@@ -68,7 +68,7 @@ void CHUDCrosshair::OnRender ()
 
 	// draw back
 	u32			dwOffset,dwCount;
-	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(8,hGeomLine->vb_stride,dwOffset);
+	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(10,hGeomLine->vb_stride,dwOffset);
 	FVF::TL0uv* pv						= pv_start;
 	
 	u32 color = cross_color.get			();
@@ -98,6 +98,9 @@ void CHUDCrosshair::OnRender ()
 	// 3
 	pv->set					(center.x - x_min, center.y, color); pv++;
 	pv->set					(center.x - x_max, center.y, color); pv++;
+	// 4
+	pv->set					(center.x, center.y, color); pv++;
+	pv->set					(center.x+1, center.y, color); pv++;
 
 	// render	
 	dwCount 				= u32(pv-pv_start);
