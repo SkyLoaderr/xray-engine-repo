@@ -629,6 +629,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	};
 
 	// motions
+	m_bAnimTorsoPlayed			= false;
 	m_current_legs_blend		= 0;
 	m_current_jump_blend		= 0;
 	m_current_legs.invalidate	();

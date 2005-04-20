@@ -36,14 +36,18 @@ void CWeaponRPG7::Load	(LPCSTR section)
 
 void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 {
+	bool vis_hud,vis_weap;
+	vis_hud		= (!!iAmmoElapsed || STATE == eReload);
+	vis_weap	= !!iAmmoElapsed;
+
 	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
 	VERIFY(pHudVisual);
 	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
 	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); 
 	VERIFY(pWeaponVisual);
 
-	if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*m_sHudGrenadeBoneName),visibility,TRUE);
-	pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID(*m_sGrenadeBoneName),visibility,TRUE);
+	if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*m_sHudGrenadeBoneName),vis_hud,TRUE);
+	pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID(*m_sGrenadeBoneName),vis_weap,TRUE);
 	pWeaponVisual->CalculateBones_Invalidate();
 	pWeaponVisual->CalculateBones();
 }
