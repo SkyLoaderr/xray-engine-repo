@@ -8,7 +8,6 @@
 #include "render.h"
 #include "gamefont.h"
 #include "xrLevel.h"
-#include "ps_instance.h"
 
 ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
 
@@ -24,10 +23,6 @@ IGame_Level::IGame_Level	()
 
 IGame_Level::~IGame_Level	()
 {
-	// Cleanup particles, some of them can be still active
-	while (!ps_active.empty())
-		(*ps_active.begin())->PSI_internal_delete();
-
 	// 
 	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
@@ -130,31 +125,10 @@ void	IGame_Level::OnFrame		( )
 	// Log				("- level:on-frame: ",u32(Device.dwFrame));
 //	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
-	Device.Statistic.Particles_starting	= ps_needtoplay.size	();
-	Device.Statistic.Particles_active	= ps_active.size		();
-	Device.Statistic.Particles_destroy	= ps_destroy.size		();
-
-	// Play req particle systems
-	while (ps_needtoplay.size())
-	{
-		CPS_Instance*	psi		= ps_needtoplay.back	();
-		ps_needtoplay.pop_back	();
-		psi->Play				();
-	}
-
 	// Update all objects
 	VERIFY						(bReady);
 	Objects.Update				( );
 	pHUD->OnFrame				( );
-
-	// Destroy inactive particle systems
-	while (ps_destroy.size())
-	{
-		CPS_Instance*	psi		= ps_destroy.back	();
-		if (psi->Locked())		break;
-		ps_destroy.pop_back		();
-		psi->PSI_internal_delete();
-	}
 
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_Random_dwNextTime))

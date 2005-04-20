@@ -7,6 +7,7 @@
 #	include "IGame_Level.h"
 #	include "XR_IOConsole.h"
 #	include "Render.h"
+#	include "ps_instance.h"
 #endif
 
 ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
@@ -68,8 +69,12 @@ void IGame_Persistent::Start		(LPCSTR op)
 
 void IGame_Persistent::Disconnect	()
 {
+	// Cleanup particles, some of them can be still active
+	ps_needtoplay.clear				();
+	ps_destroy.clear				();
+	while (!ps_active.empty())
+		(*ps_active.begin())->PSI_internal_delete();
 }
-
 
 void IGame_Persistent::OnGameStart	()
 {
@@ -97,6 +102,26 @@ void IGame_Persistent::OnFrame		()
 	if(Device.dwFrame ==50){
 		if(!g_pGameLevel)
 			Console->Execute("main_menu on");
+	}
+
+	Device.Statistic.Particles_starting	= ps_needtoplay.size	();
+	Device.Statistic.Particles_active	= ps_active.size		();
+	Device.Statistic.Particles_destroy	= ps_destroy.size		();
+
+	// Play req particle systems
+	while (ps_needtoplay.size())
+	{
+		CPS_Instance*	psi		= ps_needtoplay.back	();
+		ps_needtoplay.pop_back	();
+		psi->Play				();
+	}
+	// Destroy inactive particle systems
+	while (ps_destroy.size())
+	{
+		CPS_Instance*	psi		= ps_destroy.back	();
+		if (psi->Locked())		break;
+		ps_destroy.pop_back		();
+		psi->PSI_internal_delete();
 	}
 #endif
 }

@@ -8,6 +8,7 @@
 #endif
 
 class IMainUI;
+class ENGINE_API CPS_Instance;
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API IGame_Persistent	: 
 #ifndef _EDITOR
@@ -45,6 +46,10 @@ public:
 		}
 	};
 	params							m_game_params;
+public:
+	xr_set<CPS_Instance*>			ps_active;
+	xr_vector<CPS_Instance*>		ps_destroy;
+	xr_vector<CPS_Instance*>		ps_needtoplay;
 public:
 	virtual void					Start				(LPCSTR op);
 	virtual void					Disconnect			();
