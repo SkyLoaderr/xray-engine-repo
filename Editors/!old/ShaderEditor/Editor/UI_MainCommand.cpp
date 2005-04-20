@@ -177,9 +177,9 @@ void 	CommandInitialize(u32 p1, u32 p2, u32& res)
     if (UI->OnCreate((TD3DWindow*)p1,(TPanel*)p2)){
         ExecCommand		(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
         SndLib->OnCreate();
-        g_pGamePersistent= xr_new<IGame_Persistent>();
-        Lib.OnCreate	();
         LALib.OnCreate	();
+        Lib.OnCreate	();
+        g_pGamePersistent= xr_new<IGame_Persistent>();
         if (Tools->OnCreate()){
             Device.seqAppStart.Process(rp_AppStart);
             ExecCommand	(COMMAND_RESTORE_UI_BAR);
