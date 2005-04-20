@@ -3,6 +3,7 @@
 #include "entity_alive.h"
 #include "../skeletonanimated.h"
 #include "level.h"
+#include "gamepersistent.h"
 #include "material_manager.h"
 #include "profiler.h"
 
@@ -151,7 +152,7 @@ void CStepManager::update()
 				pos.c.set(get_foot_position(ELegType(i)));
 
 				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-				Level().ps_needtoplay.push_back(ps);
+				GamePersistent().ps_needtoplay.push_back(ps);
 			}
 
 			// Play Camera FXs
