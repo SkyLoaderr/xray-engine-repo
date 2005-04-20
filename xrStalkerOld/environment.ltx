@@ -1,4 +1,8 @@
-[weathers]
+#include "env_ambient.ltx"
+#include "flares.ltx"
+#include "thunderbolt.ltx"
+
+[_weathers]
 map            = sect_map
 sarkofag       = sect_sarkofag
 ;vibros         = sect_vibros
@@ -9,133 +13,8 @@ mp_weather		= sect_mp_weather
 default    		= sect_all_no_vert ; временно 
 pripyat         = sect_pripyat
 
-
-[flares_default10]
-flare_opacity            = 0.240, 0.160, 0.400, 0.320, 0.160, 0.160
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flare_shader			= effects\flare
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.75
-gradient_radius          = 0.7000
-gradient_texture         = fx\fx_gradient.tga
-gradient_shader          = effects\flare
-source                   = on
-source_radius            = 0.150
-source_texture           = fx\fx_sun.tga
-source_shader            = effects\sun
-source_ignore_color		 = false
-blend_time				= 10 ;(сек)
-blend_rise_time				= 60 ;(сек)
-blend_down_time				= 60 ;(сек)
-
-
-[flares_default_0_10]
-flare_opacity            = 0.240, 0.160, 0.400, 0.320, 0.160, 0.160
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flare_shader			= effects\flare
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.85
-gradient_radius          = 0.4000
-gradient_texture         = fx\fx_gradient.tga
-gradient_shader          = effects\flare
-source                   = on
-source_radius            = 0.15
-source_texture           = fx\fx_sun.tga
-source_shader            = effects\sun
-source_ignore_color		 = false
-blend_time				= 10 ;(сек)
-blend_rise_time				= 0 ;(сек)
-blend_down_time				= 60 ;(сек)
-
-
-
-[flares_default]
-flare_opacity           = 0.240, 0.160, 0.400, 0.320, 0.160, 0.160
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flare_shader			= effects\flare
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.75
-gradient_radius          = 0.7000
-gradient_texture         = fx\fx_gradient.tga
-gradient_shader          = effects\flare
-source                   = on
-source_radius            = 0.150
-source_texture           = fx\fx_sun.tga
-source_shader            = effects\sun
-source_ignore_color		 = false
-blend_time				= 0.1 ;(сек)
-blend_rise_time				= 60 ;(сек)
-blend_down_time				= 60 ;(сек)
-
-[flares_gradient]
-flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flare_shader          	= effects\flare
-flares                   = off
-gradient                 = on
-gradient_opacity         = 0.75
-gradient_radius          = 0.7000
-gradient_texture         = fx\fx_gradient1.tga
-gradient_shader          = effects\flare
-source                   = off
-source_radius            = 0.150
-source_texture           = fx\fx_sun.tga
-source_shader            = effects\sun
-source_ignore_color		 = false
-blend_time				=  10 ;(сек)
-blend_rise_time				= 60 ;(сек)
-blend_down_time				= 60 ;(сек)
-
-
-[flares_moon]
-flares                  = off
-gradient                 = on
-gradient_opacity         = 0.8
-gradient_radius          = 0.10
-gradient_texture         = fx\fx_gradient_02.tga
-gradient_shader          = effects\flare
-source                  = on
-source_radius           = 0.04
-source_texture          = fx\fx_moon.tga
-source_shader			= effects\moon
-source_ignore_color		= true
-blend_time				= 10
-blend_rise_time				= 1000 ;(сек)
-blend_down_time				= 1000 ;(сек)
-
-
-[flares_sun_rise]
-flare_opacity            = 0.240, 0.160, 0.400, 0.320, 0.160, 0.160
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flare_shader			= effects\flare
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.85
-gradient_radius          = 0.400
-gradient_texture         = fx\fx_gradient.tga
-gradient_shader          = effects\flare
-source                   = on
-source_radius            = 0.03
-source_texture           = fx\fx_sun_rise.tga
-source_shader            = effects\sun
-source_ignore_color		 = false
-blend_time				= 0.1 ;(сек)
-blend_rise_time				= 300 ;(сек)
-blend_down_time				= 300 ;(сек)
-
+[weathers]
+default			=	sect_map
 
 [sect_map]
 00:00:00		=	m_01
@@ -147,6 +26,8 @@ flares			=	flares_default10
 sky_texture		=	sky\sky_19_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
+clouds_texture	=	oblaka
+clouds_transp	=	0.1
 far_plane		=	4000
 fog_color		=	0.486, 0.502, 0.545
 fog_density		=	0
@@ -169,6 +50,8 @@ flares			=	flares_default10
 sky_texture		=	sky\sky_19_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
+clouds_texture	=	oblaka
+clouds_transp	=	0.2
 far_plane		=	4000
 fog_color		=	0.486, 0.502, 0.545
 fog_density		=	0.9
@@ -1488,13 +1371,13 @@ thunderbolt		= 	off
 bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
-wind_direction	=	0.0
+wind_direction	=	180.0
 ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.7,    0.7,  	0.7,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-28.0, 292
-
+env_ambient		=	ambient_env_0
 
 [ev_13]
 flares			=	flares_gradient	
@@ -1510,13 +1393,12 @@ thunderbolt		= 	off
 bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
-wind_direction	=	0.0
+wind_direction	=	90.0
 ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.55,   0.55,  	0.55,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-28.0, 292
-
 
 [ev_14]
 flares			=	flares_default10	
@@ -1539,7 +1421,6 @@ hemi_color		=   0.7,    0.7,    0.7,  1
 sun_color		=	0.992, 0.934, 0.773
 sun_dir			=	-28.0, 292
 
-
 [ev_15]
 flares			=	flares_gradient
 sky_texture		=	sky\sky_1_cube
@@ -1560,8 +1441,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=   0.7,    0.7,    0.7,  1
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292
-
-
 
 [ev_16]
 flares			=
@@ -1584,9 +1463,6 @@ hemi_color		=	0.55,   0.55,  	0.55,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292
 
-
-
-
 [ev_17]
 flares			=
 sky_texture		=	sky\sky_13_cube
@@ -1607,7 +1483,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.50,	0.50,	0.50, 1
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292
-
 
 [ev_18]
 flares			=	flares_gradient	
@@ -1630,7 +1505,6 @@ hemi_color		=	0.55,   0.55,  	0.55,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292
 
-
 [ev_19]
 flares			=	
 sky_texture		=	sky\sky_5_cube
@@ -1651,8 +1525,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.5,    0.5,  	0.5,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-27.0, 291
-
-
 
 [ev_20]
 flares			=	flares_sun_rise
@@ -1758,8 +1630,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=   0.25,	0.25,	0.25,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-31.0, 296
-
-
 ;___________________________________________________________________
 ;___________________________________________________________________
 ;___________________________________________________________________
@@ -2399,75 +2269,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=   0.25,	0.25,	0.25,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-31.0, 296
-
-
-
-[thunderbolt_common]
-altitude				= 10, 20 			;altitude in deg (min/max по вертикали)
-delta_longitude			= 17				;in deg 	(разброс по горизонту)
-min_dist_factor			= 0.94				;(<0.95) 	(расстояние от FAR_PLANE)
-tilt					= 17				;lightning tilt in deg (15-30) (отклонение молнии от оси)
-second_propability		= 0.5				;(0-1) 		(вероятность появления следующей молнии после этой)
-sky_color				= 0.1				;(0-1) 		(коэффициет сколько прибавится к цвету неба)
-sun_color				= 0.9				;(0-1) 		(коэффициет сколько прибавится к цвету солнца)
-
-[thunderbolts]
-thunderbolt_00			= sect_thunderbolt_00
-thunderbolt_01			= sect_thunderbolt_01
-thunderbolt_02			= sect_thunderbolt_02
-thunderbolt_03			= sect_thunderbolt_03
-
-[sect_thunderbolt_00]
-lightning_model			= dm\dm_lightning-01.dm
-color_anim				= weathers\thunderbolt_00	; отыгрывается вся последовательность, независимо от FPS and FrameCount 
-sound					= nature\thunder-0
-gradient_top_opacity   	= 0.6
-gradient_top_radius     = 0.500, 0.250
-gradient_top_texture    = fx\fx_gradient
-gradient_top_shader    	= effects\sun
-gradient_center_opacity = 0.6
-gradient_center_radius  = 2.000, 1.000
-gradient_center_texture = fx\fx_gradient
-gradient_center_shader 	= effects\sun
-
-[sect_thunderbolt_01]
-lightning_model			= dm\dm_lightning-02.dm
-color_anim				= weathers\thunderbolt_00
-sound					= nature\thunder-1
-gradient_top_opacity   	= 0.6
-gradient_top_radius     = 0.500, 0.250
-gradient_top_texture    = fx\fx_gradient
-gradient_top_shader    	= effects\sun
-gradient_center_opacity = 0.6
-gradient_center_radius  = 2.000, 1.000
-gradient_center_texture = fx\fx_gradient
-gradient_center_shader 	= effects\sun
-
-[sect_thunderbolt_02]
-lightning_model			= dm\dm_lightning-03.dm
-color_anim				= weathers\thunderbolt_00
-sound					= nature\thunder-2
-gradient_top_opacity   	= 0.6
-gradient_top_radius     = 0.500, 0.250
-gradient_top_texture    = fx\fx_gradient
-gradient_top_shader    	= effects\sun
-gradient_center_opacity = 0.6
-gradient_center_radius  = 2.000, 1.000
-gradient_center_texture = fx\fx_gradient
-gradient_center_shader 	= effects\sun
-
-[sect_thunderbolt_03]
-lightning_model			= dm\dm_lightning-04.dm
-color_anim				= weathers\thunderbolt_00
-sound					= nature\thunder-3
-gradient_top_opacity   	= 0.6
-gradient_top_radius     = 0.500, 0.250
-gradient_top_texture    = fx\fx_gradient
-gradient_top_shader    	= effects\sun
-gradient_center_opacity = 0.6
-gradient_center_radius  = 2.000, 1.000
-gradient_center_texture = fx\fx_gradient
-gradient_center_shader 	= effects\sun
 
 [sect_mp_weather]
 
