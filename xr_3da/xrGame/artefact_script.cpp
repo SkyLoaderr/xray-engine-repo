@@ -32,6 +32,6 @@ void CArtefact::script_register(lua_State *L)
 		class_<CElectricBall		,CGameObject>("CElectricBall").def		(constructor<>()),
 		class_<CRustyHairArtefact	,CGameObject>("CRustyHairArtefact").def	(constructor<>()),
 		class_<CGalantineArtefact	,CGameObject>("CGalantineArtefact").def	(constructor<>()),
-		class_<CGraviArtefact		,CGameObject>("CGraviArtefact").def		(constructor<>()),
+		class_<CGraviArtefact		,CGameObject>("CGraviArtefact").def		(constructor<>())
 	];
 }
