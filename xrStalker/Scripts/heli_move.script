@@ -219,6 +219,9 @@ function heli_move:prepare_move()
 
 	-- смотреть вперёд
 	self.heliObject:LookAtPoint( dummy_vector, false )
+
+	-- атаковать выбранную точку уже на подлёте, если задано "e" в следующей точке path_move
+	self:process_attack_params( self.path_move_info, self.next_index )
 end
 
 -- подготовить полёт к следующей точке с учётом того, что в ней мы будем смотреть в точку из path_look
