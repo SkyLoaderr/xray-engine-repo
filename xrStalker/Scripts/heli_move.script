@@ -288,6 +288,7 @@ function heli_move:process_attack_params( path_info, index )
 		printf( "heli_move: attacking the actor!" )
 
 		if db.actor then
+			self.heliObject:LookAtPoint( db.actor:position(), true )
 			self.heliObject:SetEnemy( db.actor )
 		else
 			self.heliObject:ClearEnemy()
