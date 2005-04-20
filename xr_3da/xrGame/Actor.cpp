@@ -51,6 +51,7 @@
 
 #include "Physics.h"
 #include "level.h"
+#include "GamePersistent.h"
 #include "game_cl_base.h"
 #include "xrmessages.h"
 
@@ -442,7 +443,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 				ps = xr_new<CParticlesObject>(invincibility_fire_shield_3rd,TRUE);
 
 			ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-			Level().ps_needtoplay.push_back(ps);
+			GamePersistent().ps_needtoplay.push_back(ps);
 		};
 
 		last_hit_frame = Device.dwFrame;
