@@ -103,6 +103,10 @@ function fighting_actor(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
 end
 
+function fighting_dist_ge_20(actor, npc)
+	return db.storage[npc:id()].enemy:position():distance_to_sqr( npc:position() ) > 400 -- 20^2
+end
+
 function esc_tutorial_flesh_died_in_anomaly(actor, npc)
 	local t = db.storage[npc:id()].death
 	if t and t.killer_name then

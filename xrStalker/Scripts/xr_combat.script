@@ -46,6 +46,9 @@ function evaluator_check_combat:evaluate ()
 end
 
 function evaluator_check_combat:set_combat_type( actor, t )
+	-- это нужно для функций в xr_conditions.script
+	db.storage[self.object:id()].enemy = self.object:best_enemy()
+
 	local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, t.combat_type.condlist )
 	db.storage[self.object:id()].script_combat_type = script_combat_type
 
