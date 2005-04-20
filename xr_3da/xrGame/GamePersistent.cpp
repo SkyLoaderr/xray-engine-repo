@@ -11,6 +11,8 @@
 #include "UICursor.h"
 #include "game_base_space.h"
 #include "level.h"
+#include "ParticlesObject.h"
+#include "actor.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -22,6 +24,10 @@ static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
 
 CGamePersistent::CGamePersistent(void)
 {
+	ambient_sound_next_time		= 0;
+	ambient_effect_next_time	= 0;
+	ambient_effect_stop_time	= 0;
+	ambient_particles			= 0;
 	// 
 	// dSetAllocHandler		(ode_alloc		);
 	// dSetReallocHandler	(ode_realloc	);
@@ -114,6 +120,10 @@ void CGamePersistent::Start		(LPCSTR op)
 
 void CGamePersistent::Disconnect()
 {
+	if (ambient_particles){	
+		ambient_particles->PSI_destroy();
+		ambient_particles		= 0;
+	}
 	__super::Disconnect			();
 }
 
@@ -127,32 +137,87 @@ void CGamePersistent::OnGameEnd	()
 	__super::OnGameEnd			();
 }
 
+void CGamePersistent::WeathersUpdate()
+{
+	if (g_pGameLevel){
+		CActor* actor				= smart_cast<CActor*>(Level().CurrentViewEntity());
+		BOOL bIndoor				= TRUE;
+		if (actor) bIndoor			= actor->renderable.ROS->get_luminocity_hemi()<0.05f;
+//.		Log("ros",actor->renderable.ROS->get_luminocity_hemi());
+
+		int data_set				= Random.randF()<1.f-Environment.current_weight?0:1; 
+		CEnvDescriptor* _env		= Environment.Current[data_set]; VERIFY(_env);
+		CEnvAmbient* env_amb		= _env->env_ambient;
+		if (env_amb){
+			// start sound
+			if (Device.dwTimeGlobal > ambient_sound_next_time){
+				ref_sound* snd			= env_amb->get_rnd_sound();
+				ambient_sound_next_time	= Device.dwTimeGlobal + env_amb->get_rnd_sound_time();
+				if (snd){
+					Fvector	pos;
+					pos.random_dir		(Fvector().set(0,1,0),PI).normalize().mul(::Random.randF(25,75)).add(Device.vCameraPosition);
+					snd->play_at_pos	(0,pos);
+				}
+			}
+			// start effect
+			if ((FALSE==bIndoor) && (0==ambient_particles) && Device.dwTimeGlobal>ambient_effect_next_time){
+				CEnvAmbient::SEffect* eff			= env_amb->get_rnd_effect(); 
+				ambient_effect_next_time			= Device.dwTimeGlobal + env_amb->get_rnd_effect_time();
+				ambient_effect_stop_time			= Device.dwTimeGlobal + eff->life_time;
+				if (eff){
+					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),0,FALSE);
+					ambient_particles->play_at_pos	(Device.vCameraPosition);
+					if (eff->sound.handle)			eff->sound.play_at_pos(0,Device.vCameraPosition);
+				}
+			}
+		}
+		// update & destroy particles
+		if (ambient_particles){
+			// stop if time exceed
+			if (bIndoor || Device.dwTimeGlobal>=ambient_effect_stop_time)
+				ambient_particles->Stop				();
+			// if particles playing update pos else - destroy
+			if (ambient_particles->IsPlaying()){
+				Fmatrix M; 
+				M.rotateY							(Environment.CurrentEnv.wind_direction);
+				M.translate_over					(Device.vCameraPosition);
+				ambient_particles->UpdateParent		(M,zero_vel);
+			}else{
+				ambient_particles->PSI_destroy		();
+				ambient_particles					= 0;
+			}
+		}
+	}
+}
+
 void CGamePersistent::OnFrame	()
 {
-	__super::OnFrame	();
+	__super::OnFrame			();
 
-	Engine.Sheduler.Update		( );
+	Engine.Sheduler.Update		();
 
-	if	(0==pDemoFile)	return;
-	
-	if	(Device.dwTimeGlobal>uTime2Change)
-	{
-		// Change level + play demo
-		if			(pDemoFile->elapsed()<3)	pDemoFile->seek(0);		// cycle
-		
-		// Read params
-		string512			params;
-		pDemoFile->r_string	(params,sizeof(params));
-		string256			o_server, o_client, o_demo;	u32 o_time;
-		sscanf				(params,"%[^,],%[^,],%[^,],%d",o_server,o_client,o_demo,&o_time);
+	// update weathers ambient
+	WeathersUpdate				();
 
-		// Start _new level + demo
-		Engine.Event.Defer	("KERNEL:disconnect");
-		Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(_Trim(o_server))),size_t(xr_strdup(_Trim(o_client))));
-		Engine.Event.Defer	("GAME:demo",	size_t(xr_strdup(_Trim(o_demo))), u64(o_time));
-		uTime2Change		= 0xffffffff;	// Block changer until Event received
+
+	if	(0!=pDemoFile){
+		if	(Device.dwTimeGlobal>uTime2Change){
+			// Change level + play demo
+			if			(pDemoFile->elapsed()<3)	pDemoFile->seek(0);		// cycle
+
+			// Read params
+			string512			params;
+			pDemoFile->r_string	(params,sizeof(params));
+			string256			o_server, o_client, o_demo;	u32 o_time;
+			sscanf				(params,"%[^,],%[^,],%[^,],%d",o_server,o_client,o_demo,&o_time);
+
+			// Start _new level + demo
+			Engine.Event.Defer	("KERNEL:disconnect");
+			Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(_Trim(o_server))),size_t(xr_strdup(_Trim(o_client))));
+			Engine.Event.Defer	("GAME:demo",	size_t(xr_strdup(_Trim(o_demo))), u64(o_time));
+			uTime2Change		= 0xffffffff;	// Block changer until Event received
+		}
 	}
-
 }
 
 void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)

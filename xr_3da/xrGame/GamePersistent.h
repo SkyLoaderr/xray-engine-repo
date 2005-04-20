@@ -5,12 +5,18 @@
 #include "../IGame_Persistent.h"
 class CMainUI;
 class CUICursor;
+class CParticlesObject;
 
 class CGamePersistent: 
 	public IGame_Persistent, 
 	public IEventReceiver
 {
+	CParticlesObject*	ambient_particles; 
+	u32					ambient_sound_next_time;
+	u32					ambient_effect_next_time;
+	u32					ambient_effect_stop_time;
 
+	void				WeathersUpdate			();
 public:
 	IReader*			pDemoFile;
 	u32					uTime2Change;
@@ -36,6 +42,8 @@ public:
 	virtual	float		MtlTransparent			(u32 mtl_idx);
 	virtual	void		Statistics				(CGameFont* F);
 };
+
+IC CGamePersistent&		GamePersistent()		{ return *((CGamePersistent*) g_pGamePersistent);			}
 
 #endif //GamePersistentH
 
