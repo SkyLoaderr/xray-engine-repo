@@ -165,7 +165,7 @@ void CGamePersistent::WeathersUpdate()
 				ambient_effect_next_time			= Device.dwTimeGlobal + env_amb->get_rnd_effect_time();
 				ambient_effect_stop_time			= Device.dwTimeGlobal + eff->life_time;
 				if (eff){
-					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),0,FALSE);
+					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),FALSE);
 					ambient_particles->play_at_pos	(Device.vCameraPosition);
 					if (eff->sound.handle)			eff->sound.play_at_pos(0,Device.vCameraPosition);
 				}
