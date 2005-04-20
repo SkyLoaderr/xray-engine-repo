@@ -14,6 +14,7 @@
 #include "../ai_monster_utils.h"
 #include "../../../level_debug.h"
 #include "../ai_monster_movement_space.h"
+#include "../../../gamepersistent.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -327,7 +328,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		pos.c.set(CStepManager::get_foot_position(eFrontLeft));
 
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-		Level().ps_needtoplay.push_back(ps);
+		GamePersistent().ps_needtoplay.push_back(ps);
 	}
 
 	//UpdateCamera();

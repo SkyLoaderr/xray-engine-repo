@@ -11,6 +11,7 @@
 #include "../../../level_debug.h"
 #include "../ai_monster_movement.h"
 #include "../ai_monster_movement_space.h"
+#include "../../../GamePersistent.h"
 
 CBurer::CBurer()
 {
@@ -327,7 +328,7 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 		CParticlesObject* ps = xr_new<CParticlesObject>(particle_fire_shield,TRUE);
 		
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-		Level().ps_needtoplay.push_back(ps);
+		GamePersistent().ps_needtoplay.push_back(ps);
 
 	} else if (!m_shield_active)
 		inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
