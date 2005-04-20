@@ -30,6 +30,29 @@ public:
 	float				sum			(CEnvModifier&	_another, Fvector3& view);
 };
 
+class ENGINE_API	CEnvAmbient{
+public:
+	struct SEffect{
+		u32 			life_time;
+		ref_sound		sound;		
+		shared_str		particles;		
+	};
+	DEFINE_VECTOR(SEffect,EffectVec,EffectVecIt);
+protected:
+	shared_str			section;
+	EffectVec			effects;
+	xr_vector<ref_sound>sounds;
+	Ivector2			sound_period;
+	Ivector2			effect_period;
+public:
+	void				load				(const shared_str& section);
+	IC SEffect*			get_rnd_effect		(){return effects.empty()?0:&effects[Random.randI(effects.size())];}
+	IC ref_sound*		get_rnd_sound		(){return sounds.empty()?0:&sounds[Random.randI(sounds.size())];}
+	IC const shared_str&name				(){return section;}
+	IC u32				get_rnd_sound_time	(){return Random.randI(sound_period.x,sound_period.y);}
+	IC u32				get_rnd_effect_time (){return Random.randI(effect_period.x,effect_period.y);}
+};
+
 class ENGINE_API	CEnvDescriptor
 {
 public:
@@ -37,10 +60,14 @@ public:
 	
 	STextureList		sky_r_textures;		// C
 	STextureList		sky_r_textures_env;	// C
+	STextureList		clouds_r_textures;	// C
 	float				sky_factor;			// C
 
 	ref_texture			sky_texture		;
 	ref_texture			sky_texture_env	;
+	ref_texture			clouds_texture	;
+
+	float				clouds_transp	;
 	Fvector3			sky_color		;
 	float				sky_rotation	;
 
@@ -69,6 +96,8 @@ public:
     int					lens_flare_id;
     BOOL				thunderbolt;
     
+	CEnvAmbient*		env_ambient;
+
 						CEnvDescriptor	();
 
 	void				load			(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
@@ -79,29 +108,36 @@ public:
 
 class ENGINE_API	CEnvironment
 {
+	FvectorVec				CloudsVerts;
+	U16Vec					CloudsIndices;
+
 	struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
 		IC bool operator()(const shared_str& x, const shared_str& y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
 public:
+	DEFINE_VECTOR			(CEnvAmbient*,EnvAmbVec,EnvAmbVecIt);
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
 	DEFINE_MAP_PRED			(shared_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
 
 	// Environments
 	CEnvDescriptor			CurrentEnv;
-	CEnvDescriptor*			CurrentA;
-	CEnvDescriptor*			CurrentB;
+	CEnvDescriptor*			Current[2];
     bool					bTerminator;
     
     EnvVec*					CurrentWeather;
     shared_str				CurrentWeatherName;
 	WeatherMap				Weathers;
 	xr_vector<CEnvModifier>	Modifiers;
+	EnvAmbVec				Ambients;
 
 	float					wind_strength;	
 
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;
+
+	ref_shader				clouds_sh;
+	ref_geom				clouds_geom;
 
 	CEffect_Rain*			eff_Rain;
 	CLensFlare*				eff_LensFlare;
@@ -110,6 +146,8 @@ public:
 	float					fGameTime;
 	float					fTimeFactor;
 	ref_texture				tonemap;
+
+	float					current_weight;
 
 	// music interface
 	struct	music
@@ -122,6 +160,9 @@ public:
 	xr_deque<music*>		playlist;
 
     void					SelectEnvs			(float gt);
+
+	void					UpdateAmbient		();
+	CEnvAmbient*			AppendEnvAmb		(const shared_str& sect);
 public:
 							CEnvironment		();
 							~CEnvironment		();
@@ -138,7 +179,7 @@ public:
 	void					RenderFirst			();
 	void					RenderLast			();
 
-    void					SetWeather			(shared_str name);
+    void					SetWeather			(shared_str name, bool forced=false);
     shared_str				GetWeather			()					{ return CurrentWeatherName;}
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 

@@ -9,6 +9,7 @@
 #include "xr_efflensflare.h"
 #include "rain.h"
 #include "thunderbolt.h"
+#include "xrHemisphere.h"
 
 #include "xr_trims.h"
 
@@ -101,6 +102,42 @@ static	u16			hbox_faces[20*3]	=
 	4,	 6,	11
 };
 
+void CEnvAmbient::load(const shared_str& sect)
+{
+	section				= sect;
+	string_path			tmp;
+	// sounds
+	if (pSettings->line_exist(sect,"sounds")){
+		Fvector2 t		= pSettings->r_fvector2	(sect,"sound_period");
+		sound_period.set(iFloor(t.x*1000.f),iFloor(t.y*1000.f));
+		LPCSTR snds		= pSettings->r_string	(sect,"sounds");
+		u32 cnt			= _GetItemCount(snds);
+		if (cnt){
+			sounds.resize(cnt);
+			for (u32 k=0; k<cnt; ++k)
+				sounds[k].create(TRUE,_GetItem(snds,k,tmp));
+		}
+	}
+	// effects
+	if (pSettings->line_exist(sect,"effects")){
+		Fvector2 t		= pSettings->r_fvector2	(sect,"effect_period");
+		effect_period.set(iFloor(t.x*1000.f),iFloor(t.y*1000.f));
+		LPCSTR effs		= pSettings->r_string	(sect,"effects");
+		u32 cnt			= _GetItemCount(effs);
+		if (cnt){
+			effects.resize(cnt);
+			for (u32 k=0; k<cnt; ++k){
+				_GetItem(effs,k,tmp);
+				effects[k].life_time	= iFloor(pSettings->r_float(tmp,"life_time")*1000.f);
+				effects[k].particles	= pSettings->r_string(tmp,"particles");		VERIFY(effects[k].particles.size());
+				if (pSettings->line_exist(tmp,"sound"))
+					effects[k].sound.create	(TRUE,pSettings->r_string(tmp,"sound"));
+			}
+		}
+	}
+	VERIFY(!sounds.empty() || !effects.empty());
+}
+
 //////////////////////////////////////////////////////////////////////////
 // environment desc
 CEnvDescriptor::CEnvDescriptor()
@@ -121,6 +158,8 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	strconcat				(st_env,st,"#small"		);
 	sky_texture.create		(st);
 	sky_texture_env.create	(st_env);
+	clouds_texture.create	(pSettings->r_string	(S,"clouds_texture"));
+	clouds_transp			= pSettings->r_float	(S,"clouds_transp");;
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	if (pSettings->line_exist(S,"sky_rotation"))	sky_rotation	= deg2rad(pSettings->r_float(S,"sky_rotation"));
 	else											sky_rotation	= 0;
@@ -140,6 +179,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
     thunderbolt				= pSettings->r_bool		(S,"thunderbolt");
 	bolt_period				= thunderbolt?pSettings->r_float	(S,"bolt_period"):0.f;
 	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
+	env_ambient				= pSettings->line_exist(S,"env_ambient")?parent->AppendEnvAmb	(pSettings->r_string(S,"env_ambient")):0;
 
 	C_CHECK					(sky_color	);
 	C_CHECK					(fog_color	);
@@ -161,6 +201,11 @@ void CEnvDescriptor::unload	()
 	sky_r_textures_env.push_back(zero);
 	sky_r_textures_env.push_back(zero);
 	sky_r_textures_env.push_back(zero);
+
+	clouds_r_textures.clear		();
+	clouds_r_textures.push_back	(zero);
+	clouds_r_textures.push_back	(zero);
+	clouds_r_textures.push_back	(zero);
 }
 void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
@@ -175,6 +220,11 @@ void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescript
 	sky_r_textures_env.push_back(mk_pair(0,A.sky_texture_env));
 	sky_r_textures_env.push_back(mk_pair(1,B.sky_texture_env));
 
+	clouds_r_textures.clear		();
+	clouds_r_textures.push_back	(mk_pair(0,A.clouds_texture));
+	clouds_r_textures.push_back	(mk_pair(1,B.clouds_texture));
+
+	clouds_transp			=	(fi*A.clouds_transp + f*B.clouds_transp);
 	sky_factor				=	f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
 	sky_rotation			=	(fi*A.sky_rotation + f*B.sky_rotation);
@@ -249,8 +299,8 @@ void	CEnvironment::mods_unload		()
 static const float day_tm	= 86400.f;
 CEnvironment::CEnvironment	()
 {
-	CurrentA				= 0;
-	CurrentB				= 0;
+	Current[0]				= 0;
+	Current[1]				= 0;
     CurrentWeather			= 0;
     CurrentWeatherName		= 0;
 	eff_Rain				= 0;
@@ -265,10 +315,28 @@ CEnvironment::CEnvironment	()
     fTimeFactor				= 12.f;
 
 	wind_strength			= 0.f;
+	current_weight			= 0.f;
+
+	// fill clouds hemi verts & faces 
+	const Fvector* verts;
+	CloudsVerts.resize		(xrHemisphereVertices(1,verts));
+	Memory.mem_copy			(&CloudsVerts.front(),verts,CloudsVerts.size()*sizeof(Fvector));
+	const u16* indices;
+	CloudsIndices.resize	(xrHemisphereIndices(1,indices));
+	Memory.mem_copy			(&CloudsIndices.front(),indices,CloudsIndices.size()*sizeof(u16));
 }
 CEnvironment::~CEnvironment	()
 {
 	OnDeviceDestroy			();
+}
+
+CEnvAmbient* CEnvironment::AppendEnvAmb		(const shared_str& sect)
+{
+	for (EnvAmbVecIt it=Ambients.begin(); it!=Ambients.end(); it++)
+		if ((*it)->name().equal(sect)) return *it;
+	Ambients.push_back		(xr_new<CEnvAmbient>());
+	Ambients.back()->load	(sect);
+	return Ambients.back();
 }
 
 IC bool sort_env_pred		(const CEnvDescriptor* x, const CEnvDescriptor* y)
@@ -305,11 +373,11 @@ void CEnvironment::load		()
         	std::sort(_I->second.begin(),_I->second.end(),sort_env_pred);
         }
         R_ASSERT2	(!Weathers.empty(),"Empty weathers.");
-        SetWeather	(first_weather);
+		SetWeather	(first_weather);
     }
 
 	// music
-	{
+	if (pSettings->section_exist("music")){
 		CInifile::Sect&		S	= pSettings->r_section	("music");
 		CInifile::SectIt	it	= S.begin(), end = S.end();
 		for (;it!=end; it++)
@@ -337,14 +405,17 @@ void CEnvironment::unload	()
     	for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
         	xr_delete	(*it);
 	Weathers.clear		();
+	for (EnvAmbVecIt it=Ambients.begin(); it!=Ambients.end(); it++)
+		xr_delete		(*it);
+	Ambients.clear		();
     xr_delete			(eff_Rain);
     xr_delete			(eff_LensFlare);
     xr_delete			(eff_Thunderbolt);
     CurrentWeather		= 0;
     CurrentWeatherName	= 0;
     CurrentEnv.unload	();
-    CurrentA			= 0;
-    CurrentB			= 0;
+    Current[0]			= 0;
+    Current[1]			= 0;
 	tonemap				= 0;
 
 	// music
@@ -358,13 +429,14 @@ void CEnvironment::unload	()
 	playlist.clear	();
 }
 
-void CEnvironment::SetWeather(shared_str name)
+void CEnvironment::SetWeather(shared_str name, bool forced)
 {
-	if (*name && xr_strlen(name))	{
+	if (name.size())	{
         WeatherPairIt it	= Weathers.find(name);
         R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",*name);
         CurrentWeather		= &it->second;
         CurrentWeatherName	= it->first;
+		if (forced)			{Current[0]=Current[1]=0;}
     }else{
 #ifndef _EDITOR
 		Debug.fatal			("Empty weather name");
@@ -380,45 +452,45 @@ IC bool lb_env_pred(const CEnvDescriptor* x, float val)
 void CEnvironment::SelectEnvs(float gt)
 {
 	VERIFY				(CurrentWeather);
-    if ((CurrentA==CurrentB)&&(CurrentA==0)){
+    if ((Current[0]==Current[1])&&(Current[0]==0)){
 	    bTerminator		= false;
         EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
         if (env==CurrentWeather->end()){
-            CurrentA	= *(CurrentWeather->end()-1);
-            CurrentB	= CurrentWeather->front();
+            Current[0]	= *(CurrentWeather->end()-1);
+            Current[1]	= CurrentWeather->front();
             bTerminator	= true;
         }else{
-            CurrentB	= *env;
+            Current[1]	= *env;
             if (env==CurrentWeather->begin()){
-		        CurrentA= *(CurrentWeather->end()-1);
+		        Current[0]= *(CurrentWeather->end()-1);
 	            bTerminator	= true;
             }else{
-		        CurrentA= *(env-1);
+		        Current[0]= *(env-1);
             }
         }
     }else{
     	if (bTerminator){
-            if ((gt>CurrentB->exec_time)&&(gt<CurrentA->exec_time)){
+            if ((gt>Current[1]->exec_time)&&(gt<Current[0]->exec_time)){
                 bTerminator		= false;
-                CurrentA		= CurrentB;
+                Current[0]		= Current[1];
                 EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
                 if (env==CurrentWeather->end()){
-                    CurrentB	= CurrentWeather->front();
+                    Current[1]	= CurrentWeather->front();
                     bTerminator	= true;
                 }else{
-                    CurrentB	= *env;
+                    Current[1]	= *env;
                 }
             }
         }else{
-            if (gt>CurrentB->exec_time){
+            if (gt>Current[1]->exec_time){
 			    bTerminator		= false;       
-                CurrentA		= CurrentB;
+                Current[0]		= Current[1];
                 EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
                 if (env==CurrentWeather->end()){
-                    CurrentB	= CurrentWeather->front();
+                    Current[1]	= CurrentWeather->front();
                     bTerminator	= true;
                 }else{
-                    CurrentB	= *env;
+                    Current[1]	= *env;
                 }
             }
         }
@@ -435,27 +507,26 @@ void CEnvironment::OnFrame()
     }else{
 	    if (fGameTime>ed_to_time){	
         	fGameTime=fGameTime-ed_to_time+ed_from_time;
-            CurrentA=CurrentB=0;
+            Current[0]=Current[1]=0;
         }
     	if (fGameTime<ed_from_time){	
         	fGameTime=ed_from_time;
-            CurrentA=CurrentB=0;
+            Current[0]=Current[1]=0;
         }
     }
 #else
 	if (!g_pGameLevel)		return;
 #endif
 	SelectEnvs				(fGameTime);
-    VERIFY					(CurrentA&&CurrentB);
+    VERIFY					(Current[0]&&Current[1]);
 
-    float t_fact;
     if (bTerminator){
-	    float x				= fGameTime>CurrentA->exec_time?fGameTime-CurrentA->exec_time:(day_tm-CurrentA->exec_time)+fGameTime;
-	    t_fact				= x/((day_tm-CurrentA->exec_time)+CurrentB->exec_time); 
+	    float x				= fGameTime>Current[0]->exec_time?fGameTime-Current[0]->exec_time:(day_tm-Current[0]->exec_time)+fGameTime;
+	    current_weight		= x/((day_tm-Current[0]->exec_time)+Current[1]->exec_time); 
     }else{
-	    t_fact				= (fGameTime-CurrentA->exec_time)/(CurrentB->exec_time-CurrentA->exec_time); 
+	    current_weight		= (fGameTime-Current[0]->exec_time)/(Current[1]->exec_time-Current[0]->exec_time); 
     }
-    clamp					(t_fact,0.f,1.f);
+    clamp					(current_weight,0.f,1.f);
 
 	// modifiers
 	CEnvModifier			EM;
@@ -470,7 +541,7 @@ void CEnvironment::OnFrame()
 		mpower += EM.sum(*mit,view);
 
 	// final lerp
-	CurrentEnv.lerp							(this,*CurrentA,*CurrentB,t_fact,EM,mpower);
+	CurrentEnv.lerp							(this,*Current[0],*Current[1],current_weight,EM,mpower);
 	if (::Render->get_generation()==IRender_interface::GENERATION_R2)
 	{
 		//. very very ugly hack
@@ -484,9 +555,9 @@ void CEnvironment::OnFrame()
 			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(2,tonemap));								//. hack
 		}
 	}
-    int id								=	(t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
+    int id								=	(current_weight<0.5f)?Current[0]->lens_flare_id:Current[1]->lens_flare_id;
 	eff_LensFlare->OnFrame				(id);
-    BOOL tb_enabled						=	(t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
+    BOOL tb_enabled						=	(current_weight<0.5f)?Current[0]->thunderbolt:Current[1]->thunderbolt;
     eff_Thunderbolt->OnFrame			(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)
@@ -495,64 +566,98 @@ void CEnvironment::OnFrame()
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&CurrentEnv.fog_far)	));
 
 	// ******************** Music
-	if (!playlist.front()->playing())	{
-		// shedule next item
-		music*	_old		= playlist.front();
-		playlist.pop_front	();
-		playlist.push_back	(_old);
-		playlist.front()->left.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->left.set_priority(1000.f);
-		playlist.front()->right.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->right.set_priority(1000.f);
+	if (!playlist.empty()){
+		if (!playlist.front()->playing())	{
+			// shedule next item
+			music*	_old		= playlist.front();
+			playlist.pop_front	();
+			playlist.push_back	(_old);
+			playlist.front()->left.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->left.set_priority(1000.f);
+			playlist.front()->right.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->right.set_priority(1000.f);
 #ifdef	DEBUG
-		Msg					("* playing music track: %s",playlist.front()->name.c_str());
+			Msg					("* playing music track: %s",playlist.front()->name.c_str());
 #endif
+		}
+
+		// update
+		CSound_params			spL,spR;
+		spL.freq				= 1.f;
+		spL.min_distance		= 10.f;
+		spL.max_distance		= 100.f;
+		spL.volume				= psSoundVMusic;
+		spR						= spL;
+		spL.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,-.5f).mad(Device.vCameraTop,.1f);
+		spR.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,+.5f).mad(Device.vCameraTop,.1f);
+
+		music*	_m				= playlist.front	();
+		_m->left.set_params		(&spL);
+		_m->right.set_params	(&spR);
 	}
-
-	// update
-	CSound_params			spL,spR;
-	spL.freq				= 1.f;
-	spL.min_distance		= 10.f;
-	spL.max_distance		= 100.f;
-	spL.volume				= psSoundVMusic;
-	spR						= spL;
-	spL.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,-.5f).mad(Device.vCameraTop,.1f);
-	spR.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,+.5f).mad(Device.vCameraTop,.1f);
-
-	music*	_m				= playlist.front	();
-	_m->left.set_params		(&spL);
-	_m->right.set_params	(&spR);
 }
 
 extern float psHUD_FOV;
 void CEnvironment::RenderFirst	()
 {
-	// Render skybox/plane
 	{
 		::Render->rmFar				();
-		Fmatrix						mSky;
-		mSky.rotateY				(CurrentEnv.sky_rotation);
-		mSky.translate_over			(Device.vCameraPosition);
-		RCache.set_xform_world		(mSky);
 
-		u32		i_offset,v_offset;
-		Fcolor	clr					= { CurrentEnv.sky_color.x, CurrentEnv.sky_color.y, CurrentEnv.sky_color.z, CurrentEnv.sky_factor };
-		u32		C					= clr.get	();
+		// draw sky box
+		{
+			Fmatrix						mSky;
+			mSky.rotateY				(CurrentEnv.sky_rotation);
+			mSky.translate_over			(Device.vCameraPosition);
+			RCache.set_xform_world		(mSky);
 
-		// Fill index buffer
-		u16*	pib					= RCache.Index.Lock	(20*3,i_offset);
-		CopyMemory					(pib,hbox_faces,20*3*2);
-		RCache.Index.Unlock			(20*3);
+			u32		i_offset,v_offset;
+			Fcolor	clr					= { CurrentEnv.sky_color.x, CurrentEnv.sky_color.y, CurrentEnv.sky_color.z, CurrentEnv.sky_factor };
+			u32		C					= clr.get	();
 
-		// Fill vertex buffer
-		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(12,sh_2geom.stride(),v_offset);
-		for (u32 v=0; v<12; v++)	pv[v].set		(hbox_verts[v*2],C,hbox_verts[v*2+1]);
-		RCache.Vertex.Unlock		(12,sh_2geom.stride());
+			// Fill index buffer
+			u16*	pib					= RCache.Index.Lock	(20*3,i_offset);
+			CopyMemory					(pib,hbox_faces,20*3*2);
+			RCache.Index.Unlock			(20*3);
 
-		// Render
-		RCache.set_Geometry			(sh_2geom);
-		RCache.set_Shader			(sh_2sky);
-		RCache.set_Textures			(&CurrentEnv.sky_r_textures);
-		RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,12,i_offset,20);
+			// Fill vertex buffer
+			v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(12,sh_2geom.stride(),v_offset);
+			for (u32 v=0; v<12; v++)	pv[v].set		(hbox_verts[v*2],C,hbox_verts[v*2+1]);
+			RCache.Vertex.Unlock		(12,sh_2geom.stride());
 
+			// Render
+			RCache.set_Geometry			(sh_2geom);
+			RCache.set_Shader			(sh_2sky);
+			RCache.set_Textures			(&CurrentEnv.sky_r_textures);
+			RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,12,i_offset,20);
+		}
+
+		// draw clouds
+		if (FALSE==fis_zero(CurrentEnv.clouds_transp,EPS_L)){
+			Fmatrix						mXFORM, mScale;
+			mScale.scale				(10,0.4f,10);
+			mXFORM.rotateY				(CurrentEnv.sky_rotation);
+			mXFORM.mulB_43				(mScale);
+			mXFORM.translate_over		(Device.vCameraPosition);
+
+			u32		i_offset,v_offset;
+			u32		C					= color_rgba(255,255,255,iFloor(CurrentEnv.clouds_transp*255.f));
+ 
+			// Fill index buffer
+			u16*	pib					= RCache.Index.Lock	(CloudsIndices.size(),i_offset);
+			Memory.mem_copy				(pib,&CloudsIndices.front(),CloudsIndices.size()*sizeof(u16));
+			RCache.Index.Unlock			(CloudsIndices.size());
+
+			// Fill vertex buffer
+			FVF::L* pv					= (FVF::L*)	RCache.Vertex.Lock	(CloudsVerts.size(),clouds_geom.stride(),v_offset);
+			for (FvectorIt it=CloudsVerts.begin(); it!=CloudsVerts.end(); it++,pv++)
+				pv->set					(*it,C);
+			RCache.Vertex.Unlock		(CloudsVerts.size(),clouds_geom.stride());
+
+			// Render
+			RCache.set_xform_world		(mXFORM);
+			RCache.set_Geometry			(clouds_geom);
+			RCache.set_Shader			(sh_2sky);						//.
+			RCache.set_Textures			(&CurrentEnv.clouds_r_textures);
+			RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,CloudsVerts.size(),i_offset,CloudsIndices.size()/3);
+		}
 		::Render->rmNormal			();
 	}
 
@@ -576,6 +681,8 @@ void CEnvironment::OnDeviceCreate()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
+//.	clouds_sh.create		();
+	clouds_geom.create		(FVF::F_L,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
 }
 void CEnvironment::OnDeviceDestroy()
@@ -583,6 +690,8 @@ void CEnvironment::OnDeviceDestroy()
 	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
+	clouds_sh.destroy		();
+	clouds_geom.destroy		();
 }
 
 #ifdef _EDITOR

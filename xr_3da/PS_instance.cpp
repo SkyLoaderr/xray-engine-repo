@@ -5,11 +5,11 @@
 #pragma hdrstop
 
 #include "ps_instance.h"
-#include "IGame_Level.h"
+#include "IGame_Persistent.h"
 
 CPS_Instance::CPS_Instance			()		: ISpatial(g_SpatialSpace)
 {
-	g_pGameLevel->ps_active.insert			(this);
+	g_pGamePersistent->ps_active.insert		(this);
 
 	m_iLifeTime								= int_max;
 	m_bAutoRemove							= TRUE;
@@ -23,9 +23,9 @@ extern ENGINE_API BOOL						g_bRendering;
 CPS_Instance::~CPS_Instance					()
 {
 	VERIFY									(!g_bRendering);
-	xr_set<CPS_Instance*>::iterator it		= g_pGameLevel->ps_active.find(this);
-	VERIFY									(it!=g_pGameLevel->ps_active.end());
-	g_pGameLevel->ps_active.erase			(it);
+	xr_set<CPS_Instance*>::iterator it		= g_pGamePersistent->ps_active.find(this);
+	VERIFY									(it!=g_pGamePersistent->ps_active.end());
+	g_pGamePersistent->ps_active.erase		(it);
 
 	spatial_unregister						();
 	shedule_unregister						();
@@ -46,7 +46,7 @@ void CPS_Instance::PSI_destroy		()
 {
 	m_bDead								= TRUE;
 	m_iLifeTime							= 0;
-	g_pGameLevel->ps_destroy.push_back	(this);
+	g_pGamePersistent->ps_destroy.push_back	(this);
 }
 //----------------------------------------------------
 void CPS_Instance::PSI_internal_delete		()

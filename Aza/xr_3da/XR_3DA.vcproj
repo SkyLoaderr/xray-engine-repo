@@ -632,6 +632,12 @@
 				<File
 					RelativePath=".\Environment.h">
 				</File>
+				<File
+					RelativePath=".\xrHemisphere.cpp">
+				</File>
+				<File
+					RelativePath=".\xrHemisphere.h">
+				</File>
 				<Filter
 					Name="Effects"
 					Filter="">
