@@ -474,7 +474,7 @@ IC	float CLevelGraph::square(float a1, float b1, float fAlpha) const
 
 IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, float b1, float b0, float b3, float b2) const
 {
-	fAngle				= angle_normalize(fAngle - PI_DIV_2);
+	fAngle				= angle_normalize(fAngle - 0*PI_DIV_2);
 
 	if (fAngle < PI_DIV_2)
 		;
@@ -551,6 +551,8 @@ IC	float CLevelGraph::cover_in_direction(float angle, const CLevelGraph::CVertex
 {
 	return				(cover_in_direction(angle, NORMALIZE_NODE_COVER(vertex,0),NORMALIZE_NODE_COVER(vertex,1),NORMALIZE_NODE_COVER(vertex,2),NORMALIZE_NODE_COVER(vertex,3)));
 }
+
+#undef NORMALIZE_NODE_COVER
 
 IC	float CLevelGraph::cover_in_direction(float angle, u32 vertex_id) const
 {

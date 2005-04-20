@@ -1240,6 +1240,7 @@ void CLevelGraph::on_render3	()
 			direction.add		(position);
 			direction.y			= position.y;
 			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+			value				= compute_square(float(10*i)/180.f*PI,PI/2.f,v);
 			if (value > best_value) {
 				best_value		= value;
 				j				= i;
