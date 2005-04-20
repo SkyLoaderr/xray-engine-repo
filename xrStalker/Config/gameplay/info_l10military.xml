@@ -80,6 +80,7 @@
 	<info_portion id="mil_courier_quest"></info_portion>
 	<info_portion id="mil_courier_quest_failed"></info_portion>
 	<info_portion id="mil_courier_quest_complete"></info_portion>
+	<info_portion id="mil_courier_dead"></info_portion>
 
 	<!-- Хутор наемников -->
 	<info_portion id="mil_killer_with_bandits_combat"></info_portion>
