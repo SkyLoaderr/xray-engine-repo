@@ -1230,8 +1230,9 @@ void CLevelGraph::on_render3	()
 
 		CVertex				*v = vertex((*I)->level_vertex_id());
 		Fvector				direction;
+		float				best_value = -1.f;
 
-		for (u32 i=0; i<36; ++i) {
+		for (u32 i=0, j = 0; i<36; ++i) {
 			float				value = cover_in_direction(float(10*i)/180.f*PI,v);
 			direction.setHP		(float(10*i)/180.f*PI,0);
 			direction.normalize	();
@@ -1239,6 +1240,10 @@ void CLevelGraph::on_render3	()
 			direction.add		(position);
 			direction.y			= position.y;
 			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+			if (value > best_value) {
+				best_value		= value;
+				j				= i;
+			}
 		}
 
 		direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
@@ -1253,9 +1258,13 @@ void CLevelGraph::on_render3	()
 		direction.set		(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
 		RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
-		//			float				y,p;
-		//			direction.sub		(v3d(dest.position),position);
-		//			direction.getHP		(y,p);
+		float				value = cover_in_direction(float(10*j)/180.f*PI,v);
+		direction.setHP		(float(10*j)/180.f*PI,0);
+		direction.normalize	();
+		direction.mul		(value*half_size);
+		direction.add		(position);
+		direction.y			= position.y;
+		RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
 	}
 
 	{
