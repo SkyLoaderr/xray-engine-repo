@@ -2,17 +2,20 @@
 #define __XR_UICURSOR_H__
 #pragma once
 
+#include "UIStaticItem.h"
+
 class CUICursor
 {
 	ref_shader		hShader;
-	ref_geom		hGeom;	
+//	ref_geom		hGeom;	
 	bool			bVisible;
 	bool			bHoldMode;
 	Fvector2		vPos;
 	Fvector2		vDelta;
 	Fvector2		vHoldPos;
-	//чувствительность передвижение курсора
-	float m_fSensitivity;
+
+	CUIStaticItem	m_si;	
+	float			m_fSensitivity;
 public:
 					CUICursor		();
 	virtual			~CUICursor		();

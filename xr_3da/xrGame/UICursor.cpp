@@ -22,9 +22,8 @@ CUICursor::CUICursor()
 	vHoldPos.set	(0,0);
 	vDelta.set		(0,0);
 
-	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hShader.create	("hud\\cursor","ui\\ui_ani_cursor");
-
+	m_si.SetShader(hShader);
 }
 //--------------------------------------------------------------------
 CUICursor::~CUICursor	()
@@ -47,35 +46,14 @@ void CUICursor::Render	()
 		return;
 	};
 #endif
-
-	_VertexStream*	Stream	= &RCache.Vertex; 
-	// actual rendering
-	u32			vOffset;
-	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,hGeom.stride(),vOffset);
-	float			size= 64.0f;//2 * Device.dwWidth * 0.015f;
-	
 	// Convert to screen coords
-	float cx					= (vPos.x+1)*(Device.dwWidth/2);
-	float cy					= (vPos.y+1)*(Device.dwHeight/2);
-	
-	u32 C						= C_DEFAULT;
+	int cx	= int(vPos.x+1)/2*UI_BASE_WIDTH;
+	int cy	= int(vPos.y+1)/2*UI_BASE_HEIGHT;
 
-	pv->set(cx, cy+size,		.0001f,.9999f, C, 0, 1); ++pv;
-	pv->set(cx, cy,				.0001f,.9999f, C, 0, 0); ++pv;
-	pv->set(cx+size, cy+size,	.0001f,.9999f, C, 1, 1); ++pv;
-	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); ++pv;
-	
-	// unlock VB and Render it as triangle LIST
-	Stream->Unlock			(4,hGeom.stride());
-	RCache.set_Shader		(hShader);
-	RCache.set_Geometry		(hGeom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
-
-
-
+	m_si.SetPos(cx, cy);
+	m_si.Render();
 }
 //--------------------------------------------------------------------
-
 
 //move cursor to screen coordinates
 void CUICursor::SetPos(int x, int y)
@@ -130,9 +108,8 @@ void CUICursor::HoldMode		(bool b)
 
 void CUICursor::MoveBy(int dx, int dy)
 {
-
-	vDelta.x = (float)m_fSensitivity*dx/(float)UI_BASE_WIDTH;
-	vDelta.y = (float)m_fSensitivity*dy/(float)UI_BASE_HEIGHT;
+	vDelta.x = (float)m_fSensitivity*dx/(float)UI_BASE_WIDTH * UI()->GetScaleX();
+	vDelta.y = (float)m_fSensitivity*dy/(float)UI_BASE_HEIGHT * UI()->GetScaleY();
 
 	if(!bHoldMode){
 		vPos.x += vDelta.x;
