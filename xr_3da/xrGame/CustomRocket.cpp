@@ -70,7 +70,7 @@ BOOL CCustomRocket::net_Spawn(CSE_Abstract* DC)
 
 void CCustomRocket::net_Destroy() 
 {
-	Msg("---------net_Destroy [%d] frame[%d]",ID(), Device.dwFrame);
+//	Msg("---------net_Destroy [%d] frame[%d]",ID(), Device.dwFrame);
 	inherited::net_Destroy();
 	CPHUpdateObject::Deactivate();
 
