@@ -124,4 +124,10 @@
 	<artefact_panel x="70" y="710" width="790" height="50" scale="0.75"></artefact_panel>
 	<!-- pickup item icon-->
 	<pick_up_item x="437" y="400" width="150" height="100"></pick_up_item>
+	
+	<luminosity_bar x="5" y="760" length="100" broad="8" horz="1" min="0" max="100" pos="50">
+		<texture tile="0" width="100" height="8" length="100" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
+		<background x="0" y="0" width="100" height="8" >ui\ui_mg_progress_efficiency_empty</background>
+	</luminosity_bar>
+	
 </window>
