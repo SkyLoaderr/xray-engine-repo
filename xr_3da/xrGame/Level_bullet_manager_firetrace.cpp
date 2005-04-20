@@ -8,6 +8,7 @@
 #include "entity.h"
 #include "gamemtllib.h"
 #include "level.h"
+#include "gamepersistent.h"
 #include "game_cl_base.h"
 #include "xrmessages.h"
 #include "clsid_game.h"
@@ -174,7 +175,7 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 		pos.c.set(vEnd);
 
 		ps->UpdateParent(pos,zero_vel);
-		Level().ps_needtoplay.push_back(ps);
+		GamePersistent().ps_needtoplay.push_back(ps);
 	}
 }
 
