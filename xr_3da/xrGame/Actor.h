@@ -607,7 +607,7 @@ public:
 	virtual void			OnChangeVisual			();
 
 	virtual void			RenderIndicator			(Fvector dpos, float r1, float r2, ref_shader IndShader);
-	virtual void			RenderText				(LPCSTR Text, Fvector dpos, u32 color);
+	virtual void			RenderText				(LPCSTR Text, Fvector dpos, float* pdup, u32 color);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Controlled Routines

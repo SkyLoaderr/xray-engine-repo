@@ -1174,7 +1174,10 @@ void CActor::RenderIndicator			(Fvector dpos, float r1, float r2, ref_shader Ind
 	RCache.Render	   			(D3DPT_TRIANGLESTRIP,dwOffset,0, dwCount, 0, 2);
 };
 
-void CActor::RenderText				(LPCSTR Text, Fvector dpos, u32 color)
+static float mid_size = 0.097f;
+static float fontsize = 15.0f;
+static float upsize	= 0.33f;
+void CActor::RenderText				(LPCSTR Text, Fvector dpos, float* pdup, u32 color)
 {
 	if (!g_Alive()) return;
 	
@@ -1192,8 +1195,13 @@ void CActor::RenderText				(LPCSTR Text, Fvector dpos, u32 color)
 	Device.mFullTransform.transform(v0r,v0);
 	Device.mFullTransform.transform(v1r,v1);
 	float size = v1r.distance_to(v0r);
-	float OldFontSize = HUD().Font().pFontDI->GetSize		();
-	float NewFontSize = size/0.52f * OldFontSize;
+	float OldFontSize = HUD().Font().pFontDI->GetSize		();	
+	float delta_up = 0.0f;
+	if (size < mid_size) delta_up = upsize;
+	else delta_up = upsize*(mid_size/size);
+	dpos.y += delta_up;
+	if (size > mid_size) size = mid_size;
+	float NewFontSize = size/mid_size * fontsize;
 	//------------------------------------------------
 	M.c.y += dpos.y;
 
@@ -1212,7 +1220,7 @@ void CActor::RenderText				(LPCSTR Text, Fvector dpos, u32 color)
 	HUD().Font().pFontDI->Out			(x,y,Text);
 	//-------------------------------------------------
 	HUD().Font().pFontDI->SetSize(OldFontSize);
-
+	*pdup = delta_up;
 };
 
 void CActor::SetPhPosition(const Fmatrix &transform)

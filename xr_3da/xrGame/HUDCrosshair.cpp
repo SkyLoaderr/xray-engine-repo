@@ -87,14 +87,14 @@ void CHUDCrosshair::OnRender ()
 
 
 	// 0
-	pv->set					(center.x,center.y + y_min, color); pv++;
-	pv->set					(center.x,center.y + y_max, color); pv++;
+	pv->set					(center.x+1,center.y + y_min, color); pv++;
+	pv->set					(center.x+1,center.y + y_max, color); pv++;
 	// 1
-	pv->set					(center.x,center.y - y_min , color); pv++;
-	pv->set					(center.x,center.y - y_max, color); pv++;
+	pv->set					(center.x+1,center.y - y_min , color); pv++;
+	pv->set					(center.x+1,center.y - y_max, color); pv++;
 	// 2
-	pv->set					(center.x + x_min, center.y, color); pv++;
-	pv->set					(center.x + x_max, center.y, color); pv++;
+	pv->set					(center.x + x_min+1, center.y, color); pv++;
+	pv->set					(center.x + x_max+1, center.y, color); pv++;
 	// 3
 	pv->set					(center.x - x_min, center.y, color); pv++;
 	pv->set					(center.x - x_max, center.y, color); pv++;

@@ -306,15 +306,16 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
 			if (IsEnemy(ps)) continue;
 			if (ps == local_player) continue;
-			
-			float dyn = 0.31f;
+
+			float dup = 0.0f;
 			if (g_bShowPlayerNames && m_bShowPlayersNames)
 			{
 				VERIFY(pObject);
 				CActor* pActor = smart_cast<CActor*>(pObject);
 				VERIFY(pActor); 
-				Fvector IPos = {0, dyn};
-				pActor->RenderText(ps->getName(), IPos, PLAYER_NAME_COLOR);
+				Fvector IPos = pTS->IndicatorPos;
+				IPos.y -= pTS->Indicator_r2;
+				pActor->RenderText(ps->getName(), IPos, &dup, PLAYER_NAME_COLOR);
 			}
 			if (m_bFriendlyIndicators)
 			{
@@ -322,6 +323,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 				CActor* pActor = smart_cast<CActor*>(pObject);
 				VERIFY(pActor);
 				Fvector IPos = pTS->IndicatorPos;
+				IPos.y += dup;
 				pActor->RenderIndicator(IPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->IndicatorShader);
 			};
 		}
