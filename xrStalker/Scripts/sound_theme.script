@@ -206,7 +206,8 @@ function load_sound(obj)
 	theme["bar_dolg_base_guard_backoff"] = load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
 	theme["bar_dolg_base_guard_no_talk"] = load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
 
-
+    -- Military sounds
+    theme["mil_dolg_kill_patrol_silent"] = load_sound_from_ltx(obj, "mil_patrol_kill_silent")
 
 	-- релш, йнрнпше мсфмн опхбеярх й бюпхюмрс нямнбмни релш
 	theme["esc_volk_greet1"]			= load_sound_from_ltx(obj, "volk_greet1")
