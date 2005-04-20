@@ -997,7 +997,16 @@
 				Name="weathers"
 				Filter="">
 				<File
+					RelativePath=".\config\weathers\env_ambient.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weathers\environment.ltx">
+				</File>
+				<File
+					RelativePath=".\config\weathers\flares.ltx">
+				</File>
+				<File
+					RelativePath=".\config\weathers\thunderbolt.ltx">
 				</File>
 			</Filter>
 			<Filter
