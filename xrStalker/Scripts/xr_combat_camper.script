@@ -84,7 +84,12 @@ function action_look_around:initialize()
 	action_base.initialize( self )
 
 	self.forget_time     = device():time_global() + 30000
-	self.change_dir_time = device():time_global() + 6000
+	self.change_dir_time = device():time_global() + 15000
+
+	-- если врага мы ещё не видели вообще, то всё равно повернуться к нему
+	if not self.st.last_seen_pos then
+		self.st.last_seen_pos = self.object:best_enemy():position()
+	end
 
 	state_mgr.set_state( self.object, "hide", nil, nil, { look_position = self.st.last_seen_pos } )
 end
@@ -101,9 +106,9 @@ function action_look_around:execute()
 	end
 
 	if self.change_dir_time < device():time_global() then
-		self.change_dir_time = device():time_global() + math.random( 1000, 2000 )
+		self.change_dir_time = device():time_global() + math.random( 2000, 4000 )
 
-		local ang = math.rad( math.random( 0, 30 ) - 15 )
+		local ang = math.random( 0, 120 ) - 60
 		local dir = vector():set( self.st.last_seen_pos ):sub( self.object:position() )
 		dir = vector_rotate_y( dir, ang )
 
@@ -113,6 +118,8 @@ end
 
 function action_look_around:finalize()
 	action_base.finalize( self )
+
+	self.st.last_seen_pos = nil
 end
 
 --------------------------------------------------------------------------------------------------------------

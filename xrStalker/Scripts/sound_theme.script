@@ -46,6 +46,7 @@ function select_sound_from_ltx(obj, section, ltx)
 --	end
 
 --	2. проверка по npc_profile
+--	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
 --	if ltx:line_exist(section, obj:profile_name()) then
 --		return ltx:r_string(section, obj:profile_name())
 --	end

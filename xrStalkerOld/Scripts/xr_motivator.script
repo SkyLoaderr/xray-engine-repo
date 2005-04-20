@@ -36,7 +36,7 @@ function motivator_binder:reinit()
     -- КОЛЛБЕКИ ЗДЕСЬ СТАВИТЬ НЕЛЬЗЯ! Здесь еще неизвестна активная схема.
     -- Ставьте коллбеки в методе update в отмеченном комментарием месте.
         
-    local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy")
+    local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy.ltx")
 
     --' Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
