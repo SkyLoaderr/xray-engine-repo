@@ -347,7 +347,11 @@ void __fastcall CLevelTools::RenderEnvironment()
     EEditorState est 		= UI->GetEState();
     switch(est){
     case esEditLightAnim:
-    case esEditScene:		if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderFirst	();
+    case esEditScene:		
+    	if (psDeviceFlags.is(rsEnvironment)){ 
+    		g_pGamePersistent->Environment.RenderSky	();
+    		g_pGamePersistent->Environment.RenderClouds	();
+        }
     }
 }
 
