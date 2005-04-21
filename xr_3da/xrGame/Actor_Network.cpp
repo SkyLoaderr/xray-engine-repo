@@ -615,7 +615,8 @@ void CActor::NetInput_Update	(u32 Time)
 
 BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
-	m_snd_noise	= 0.0f;
+	m_snd_noise			= 0.0f;
+	m_sndShockEffector	= NULL;
 
 	if (m_pPhysicsShell)
 	{
@@ -846,6 +847,9 @@ void CActor::net_Destroy	()
 		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);	
 
 	SetDefaultVisualOutfit(NULL);
+	
+	if(m_sndShockEffector)
+		xr_delete(m_sndShockEffector);
 }
 
 void CActor::net_Relcase	(CObject* O)

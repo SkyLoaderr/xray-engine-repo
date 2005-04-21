@@ -58,3 +58,16 @@ public:
 	void					ApplyDevice			();
 
 };
+
+class SndShockEffector{
+	int		m_snd_length;	//ms
+	int		m_cur_length;	//ms
+	float	m_stored_eff_volume;
+	float	m_stored_music_volume;
+public:
+	SndShockEffector	();
+	~SndShockEffector	();
+	bool Active			();
+	void Start			(int snd_length);
+	void Update			();
+};

@@ -161,3 +161,50 @@ void CActorEffector::ApplyDevice ()
 	Device.fASPECT				= fAspect;
 	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
 }
+#define SND_MIN_VOLUME_FACTOR (0.1f)
+
+SndShockEffector::SndShockEffector	()
+{
+	m_cur_length			= 0;
+	m_stored_eff_volume		= -1.0f;
+	m_stored_music_volume	= -1.0f;
+}
+
+SndShockEffector::~SndShockEffector	()
+{
+	psSoundVEffects		= m_stored_eff_volume;
+	psSoundVMusic		= m_stored_music_volume;
+}
+
+bool SndShockEffector::Active()
+{
+	return (m_cur_length<=m_snd_length);
+}
+
+void SndShockEffector::Start(int snd_length)
+{
+	m_snd_length = snd_length;
+
+	if( m_stored_eff_volume<0.0f )
+		m_stored_eff_volume = psSoundVEffects;
+	
+	if( m_stored_music_volume<0.0f )
+		m_stored_music_volume = psSoundVMusic;
+
+	m_cur_length		= 0;
+	psSoundVEffects		= m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
+	psSoundVMusic		= m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
+}
+
+void SndShockEffector::Update()
+{
+	m_cur_length		+= Device.dwTimeDelta;
+	float x				= float(m_cur_length)/m_snd_length;
+	float y				= 2.f*x-1;
+	if (y>0.f){
+		psSoundVEffects		= y*(m_stored_eff_volume-m_stored_eff_volume*SND_MIN_VOLUME_FACTOR)+m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
+		psSoundVMusic		= y*(m_stored_music_volume-m_stored_music_volume*SND_MIN_VOLUME_FACTOR)+m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
+	}
+//	if(!Device.dwFrame%100)
+//		Msg("--Update. Cur Volume=%f", psSoundVEffects);
+}

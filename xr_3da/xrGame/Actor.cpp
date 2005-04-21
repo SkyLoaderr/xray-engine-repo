@@ -93,7 +93,6 @@ Flags32			psActorFlags={0};
 
 
 
-
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -420,6 +419,13 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	if( !sndHit[hit_type].empty() ){
 		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
 		S.play_at_pos(this, Position());
+		if(hit_type = ALife::eHitTypeExplosion){
+			S.set_volume(10.0f);
+			if(!m_sndShockEffector)
+				m_sndShockEffector = xr_new<SndShockEffector>();
+
+			m_sndShockEffector->Start( S.handle->length_ms() );
+		}
 	}
 
 
@@ -860,6 +866,12 @@ void CActor::UpdateCL	()
 
 	spatial.type |=STYPE_REACTTOSOUND;
 
+	if(m_sndShockEffector){
+		m_sndShockEffector->Update();
+		
+		if(!m_sndShockEffector->Active())
+			xr_delete(m_sndShockEffector);
+	}
 }
 
 void CActor::shedule_Update	(u32 DT)
