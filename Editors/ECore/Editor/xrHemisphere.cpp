@@ -599,7 +599,7 @@ int	ECORE_API xrHemisphereIndices	(int quality, const u16*& indices)
 //	case 3:	// SUPER HIGH quality
 //		h_count		= HEMI3_FACES*3;
 //		indices		= hemi_3v;
-		break;
+//		break;
 	default:// NO 	
 		NODEFAULT;
 	}
