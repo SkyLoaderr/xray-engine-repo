@@ -188,8 +188,8 @@ public:
 	// editor-related
 #ifdef _EDITOR
 public:
-	float					ed_from_time;
-	float					ed_to_time;
+	float					ed_from_time		;
+	float					ed_to_time			;
 public:
     void					ED_Reload			();
 #endif
