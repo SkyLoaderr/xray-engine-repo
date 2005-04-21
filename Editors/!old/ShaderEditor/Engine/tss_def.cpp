@@ -8,7 +8,7 @@ IDirect3DStateBlock9* SimulatorStates::record	()
 	CHK_DX(HW.pDevice->BeginStateBlock());
 	for (u32 it=0; it<States.size(); it++)
 	{
-		State& S = States[it];
+		State& S	= States[it];
 		switch (S.type)
 		{
 		case 0:	CHK_DX(HW.pDevice->SetRenderState		((D3DRENDERSTATETYPE)S.v1,S.v2));				break;

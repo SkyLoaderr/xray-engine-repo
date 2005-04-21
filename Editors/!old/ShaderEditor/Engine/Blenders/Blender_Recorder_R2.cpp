@@ -106,7 +106,7 @@ u32		CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_Pro
 		// Sampler states
 		i_Address				(dwStage,address);
 		i_Filter				(dwStage,fmin,fmip,fmag);
-		i_Projective			(dwStage,b_ps1x_ProjectiveDivide);
+		if (dwStage<4)			i_Projective		(dwStage,b_ps1x_ProjectiveDivide);
 	}
 	return	dwStage;
 }
