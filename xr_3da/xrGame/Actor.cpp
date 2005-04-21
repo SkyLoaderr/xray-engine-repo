@@ -749,8 +749,8 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
-	m_snd_noise -= 2*Device.fTimeDelta;
-	clamp(m_snd_noise,0.0f,4.f);
+	m_snd_noise -= 0.3f*Device.fTimeDelta;
+	//clamp(m_snd_noise,0.0f,4.f);
 
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL();
