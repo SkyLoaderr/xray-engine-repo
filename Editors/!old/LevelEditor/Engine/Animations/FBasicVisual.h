@@ -59,6 +59,7 @@ public:
 	virtual void				Release					();						// Shared memory release
 	virtual void				Copy					(IRender_Visual* from);
 	virtual void				Spawn					()				{};
+	virtual void				Depart					()				{};
 
 	virtual	CKinematics*		dcast_PKinematics		()				{ return 0;	}
 	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return 0;	}

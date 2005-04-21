@@ -61,6 +61,7 @@ void IGame_Persistent::Start		(LPCSTR op)
 	string256						prev_type;
 	strcpy							(prev_type,m_game_params.m_game_type);
 	m_game_params.parse_cmd_line	(op);
+	// change game type
 	if (0!=xr_strcmp(prev_type,m_game_params.m_game_type)){
 		OnGameEnd					();
 		OnGameStart					();

@@ -31,7 +31,7 @@ void CObject::cNameVisual_set	(shared_str N)
 		NameVisual				= N;
 		renderable.visual		= Render->model_Create	(*N);
 	} else {
-		::Render->model_Delete	(renderable.visual,TRUE);
+		::Render->model_Delete	(renderable.visual);
 		NameVisual				= 0;
 	}
 	OnChangeVisual				();

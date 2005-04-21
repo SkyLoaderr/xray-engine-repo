@@ -118,6 +118,8 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();
+	// wallmarks
+	ClearWallmarks	();
 }
 
 void	CKinematics::IBoneInstances_Create()
@@ -320,6 +322,12 @@ void CKinematics::Spawn	()
 		bone_instances[i].construct();
 	Update_Callback				= NULL;
 	CalculateBones_Invalidate	();
+	// wallmarks
+	ClearWallmarks	();
+}
+void CKinematics::Depart()
+{
+	inherited::Depart();
 	// wallmarks
 	ClearWallmarks	();
 }

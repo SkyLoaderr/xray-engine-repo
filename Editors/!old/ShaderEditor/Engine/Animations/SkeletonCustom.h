@@ -217,6 +217,7 @@ public:
     virtual void				Copy				(IRender_Visual *pFrom);
 	virtual void				Load				(const char* N, IReader *data, u32 dwFlags);
 	virtual void 				Spawn				();
+	virtual void				Depart				();
     virtual void 				Release				();
 
 	virtual	CKinematics*		dcast_PKinematics	()				{ return this;	}
