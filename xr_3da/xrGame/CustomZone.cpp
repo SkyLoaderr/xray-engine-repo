@@ -346,6 +346,8 @@ void CCustomZone::net_Destroy()
 	}
 
 	m_effector.Stop		();
+	//---------------------------------------------
+	m_ObjectInfoMap.clear();	
 }
 
 bool CCustomZone::IdleState()
