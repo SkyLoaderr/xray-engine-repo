@@ -96,7 +96,7 @@ void	CRenderTarget::phase_combine	()
 			u_stencil_optimize				(FALSE);
 			RCache.set_ColorWriteEnable		();
 		}
-		g_pGamePersistent->Environment.RenderFirst	();
+		g_pGamePersistent->Environment.RenderSky	();
 	}
 
 	// Forward rendering
@@ -105,9 +105,9 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_CullMode				(CULL_CCW);
 		RCache.set_Stencil				(FALSE);
 		RCache.set_ColorWriteEnable		();
+		g_pGamePersistent->Environment.RenderClouds	();
 		RImplementation.render_forward	();
 	}
-
 
 	// Perform blooming filter and distortion if needed
 	RCache.set_Stencil	(FALSE);

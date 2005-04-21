@@ -627,8 +627,8 @@ void	IPureClient::Sync_Thread	()
 		else {
 			DWORD			dwPending=0;
 			do {
-				Sleep			(1);
 				R_CHK			(NET->GetSendQueueInfo(&dwPending,0,0));
+				Sleep			(1);
 			} while (dwPending);
 		}
 

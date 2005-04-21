@@ -208,9 +208,9 @@ void CRender::Render		()
 		stats.l_total		= stats.l_shadowed + stats.l_unshadowed;
 
 		// perform tests
-		count				= _max(count,LP.v_point.size());
-		count				= _max(count,LP.v_spot.size());
-		count				= _max(count,LP.v_shadowed.size());
+		count				= _max	(count,LP.v_point.size());
+		count				= _max	(count,LP.v_spot.size());
+		count				= _max	(count,LP.v_shadowed.size());
 		for (u32 it=0; it<count; it++)	{
 			if (it<LP.v_point.size())		{
 				light*	L			= LP.v_point	[it];
@@ -232,8 +232,8 @@ void CRender::Render		()
 			}
 		}
 	}
-	LP_normal.sort			();
-	LP_pending.sort			();
+	LP_normal.sort							();
+	LP_pending.sort							();
 
 	// Wall marks
 	Target->phase_wallmarks					();
@@ -297,10 +297,10 @@ void CRender::render_forward				()
 		r_pmask									(false,true);			// enable priority "1"
 		phase									= PHASE_NORMAL;
 		render_main								(Device.mFullTransform,false);//
-		r_dsgraph_render_graph					(1);					// normal level, secondary priority
-		r_dsgraph_render_sorted					();						// strict-sorted geoms
-		PortalTraverser.fade_render				();						// faded-portals
-		g_pGamePersistent->Environment.RenderLast();					// rain/thunder-bolts
+		r_dsgraph_render_graph					(1)	;					// normal level, secondary priority
+		PortalTraverser.fade_render				()	;					// faded-portals
+		r_dsgraph_render_sorted					()	;					// strict-sorted geoms
+		g_pGamePersistent->Environment.RenderLast()	;					// rain/thunder-bolts
 	}
 
 	RImplementation.o.distortion				= FALSE;				// disable distorion
