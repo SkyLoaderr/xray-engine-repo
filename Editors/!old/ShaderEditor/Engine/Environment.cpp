@@ -676,7 +676,7 @@ void CEnvironment::RenderFirst	()
 			RCache.set_xform_world		(mXFORM);
 			RCache.set_Geometry			(clouds_geom);
 			RCache.set_Shader			(clouds_sh);
-			//RCache.set_Textures			(&CurrentEnv.clouds_r_textures);
+			RCache.set_Textures			(&CurrentEnv.clouds_r_textures);
 			RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,CloudsVerts.size(),i_offset,CloudsIndices.size()/3);
 		}
 		::Render->rmNormal			();
