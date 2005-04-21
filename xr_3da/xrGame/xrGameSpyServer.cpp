@@ -126,7 +126,7 @@ void			xrGameSpyServer::OnCL_Connected		(IClient* _CL)
 };
 */
 
-bool			xrGameSpyServer::NeedToCheckClient	(IClient* CL)
+bool			xrGameSpyServer::NeedToCheckClient_GameSpy_CDKey	(IClient* CL)
 {
 	if (!m_bCDKey_Initialized)// || CL == GetServer_client())
 	{

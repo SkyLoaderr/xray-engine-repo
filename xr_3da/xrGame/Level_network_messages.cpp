@@ -175,6 +175,10 @@ void CLevel::ClientReceive()
 			{
 				OnGameSpyChallenge(P);
 			}break;
+		case M_AUTH_CHALLENGE:
+			{
+				OnBuildVersionChallenge();
+			}break;
 		case M_CLIENT_CONNECT_RESULT:
 			{
 				OnConnectResult(P);

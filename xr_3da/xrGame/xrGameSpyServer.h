@@ -39,7 +39,7 @@ private:
 
 	void							CheckAvailableServices			();
 protected:
-	virtual bool					NeedToCheckClient				(IClient* CL);
+	virtual bool					NeedToCheckClient_GameSpy_CDKey	(IClient* CL);
 public:
 	shared_str						HostName;
 	shared_str						MapName;

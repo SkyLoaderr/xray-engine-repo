@@ -90,9 +90,16 @@ public:
 	void					SendConnectResult		(IClient* CL, u8 res, char* ResultStr);
 
 	void					AttachNewClient			(IClient* CL);
+	virtual void			OnBuildVersionRespond				(IClient* CL, NET_Packet& P);
 protected:
 	virtual void			new_client				(ClientID clientID, LPCSTR name, bool bLocal);
-	virtual bool			NeedToCheckClient		(IClient* CL)	{ return false; };
+	
+	virtual bool			NeedToCheckClient_GameSpy_CDKey		(IClient* CL)	{ return false; };
+	virtual void			Check_GameSpy_CDKey_Success			(IClient* CL);
+	
+	virtual bool			NeedToCheckClient_BuildVersion		(IClient* CL);
+	virtual void			Check_BuildVersion_Success			(IClient* CL);
+
 	void					SendConnectionData		(IClient* CL);
 	void					OnChatMessage			(NET_Packet* P, xrClientData* CL);
 

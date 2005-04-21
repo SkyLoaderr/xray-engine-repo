@@ -150,14 +150,4 @@ void ClientAuthorizeCallback(int productid, int localid, int authenticated, char
 	xrGameSpyServer* pServer = (xrGameSpyServer*) instance;
 	ClientID ID; ID.set(u32(localid));
 	if (pServer) pServer->OnCDKey_Validation(ID, authenticated, errmsg);
-	/*
-	if (authenticated)
-	{
-		Msg("GameSpy::CDKey::Server : Client accepted - <%s>", errmsg);
-	}
-	else
-	{
-		Msg("GameSpy::CDKey::Server : Client rejected - <%s>", errmsg);
-	}
-	*/
 };

@@ -156,13 +156,6 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	m_bConnectResultReceived	= false	;
 	m_bConnectResult			= true	;
 	if (!Connect(options))		return	FALSE;
-
-	//---------------------------------------------------------------------------
-	// data-auth
-	P.w_begin				(M_CL_AUTH);
-	P.w_u64					(FS.auth_get());
-	Send					(P);
-
 	//---------------------------------------------------------------------------
 	while	(!m_bConnectResultReceived)		{ 
 		ClientReceive	()	;
@@ -181,6 +174,14 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	Send		(P);
 	//---------------------------------------------------------------------------
 	return TRUE;
+};
+
+void			CLevel::OnBuildVersionChallenge		()
+{
+	NET_Packet P;
+	P.w_begin				(M_CL_AUTH);
+	P.w_u64					(FS.auth_get());
+	Send					(P);
 };
 
 void			CLevel::OnConnectResult				(NET_Packet*	P)

@@ -121,6 +121,7 @@ private:
 	xr_string					m_sConnectResult;
 public:	
 	void						OnGameSpyChallenge				(NET_Packet* P);
+	void						OnBuildVersionChallenge			();
 	void						OnConnectResult					(NET_Packet* P);
 public:
 	//////////////////////////////////////////////	

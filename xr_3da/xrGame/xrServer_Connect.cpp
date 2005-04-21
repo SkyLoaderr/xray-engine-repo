@@ -69,7 +69,9 @@ void xrServer::AttachNewClient			(IClient* CL)
 	Server_Client_Check		(CL); 
 
 	// gen message
-	if (!NeedToCheckClient(CL))			{
-		// SendConnectResult(CL, 1, "Everything OK");
-	};
+	if (NeedToCheckClient_GameSpy_CDKey(CL))			return;
+	//-------------------------------------------------------------
+	Check_GameSpy_CDKey_Success(CL);
 }
+
+

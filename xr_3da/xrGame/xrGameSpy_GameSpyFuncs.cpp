@@ -112,6 +112,7 @@ void			xrGameSpyServer::OnCDKey_Validation				(ClientID ID, int res, char* error
 	if (0 != res)
 	{
 		Msg("GameSpy::CDKey: Validation successful - <%s>", errormsg);
+		Check_GameSpy_CDKey_Success(CL);
 	}
 	else
 	{
