@@ -239,8 +239,8 @@ void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescript
 
 	weight					=	f;
 
-	clouds_color.lerp		(A.clouds_color,B.clouds_color,f).mul(255.f);
-	sky_color.lerp			(A.sky_color,B.sky_color,f).mul(255.f);
+	clouds_color.lerp		(A.clouds_color,B.clouds_color,f);
+	sky_color.lerp			(A.sky_color,B.sky_color,f);
 	sky_rotation			=	(fi*A.sky_rotation + f*B.sky_rotation);
 	far_plane				=	(fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
@@ -623,7 +623,7 @@ void CEnvironment::RenderSky		()
 	mSky.translate_over			(Device.vCameraPosition);
 
 	u32		i_offset,v_offset;
-	u32		C					= color_rgba(iFloor(CurrentEnv.sky_color.x), iFloor(CurrentEnv.sky_color.y), iFloor(CurrentEnv.sky_color.z), iFloor(CurrentEnv.weight*255.f));
+	u32		C					= color_rgba(iFloor(CurrentEnv.sky_color.x*255.f), iFloor(CurrentEnv.sky_color.y*255.f), iFloor(CurrentEnv.sky_color.z*255.f), iFloor(CurrentEnv.weight*255.f));
 
 	// Fill index buffer
 	u16*	pib					= RCache.Index.Lock	(20*3,i_offset);
