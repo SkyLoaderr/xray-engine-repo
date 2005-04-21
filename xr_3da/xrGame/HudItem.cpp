@@ -295,6 +295,7 @@ void CHudItem::OnH_B_Independent	()
 		m_pHUD->SetCurrentEntityHud(false);
 	
 	StopHUDSounds();
+	UpdateXForm();
 }
 
 void CHudItem::OnH_A_Independent	()

@@ -226,6 +226,7 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 
 void CInventoryItem::OnH_B_Independent	()
 {
+	UpdateXForm();
 	m_eItemPlace = eItemPlaceUndefined ;
 	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
 	{
