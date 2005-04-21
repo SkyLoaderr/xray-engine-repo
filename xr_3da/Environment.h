@@ -173,8 +173,9 @@ public:
 
 	void					OnFrame				();
 
+	void					RenderSky			();
+	void					RenderClouds		();
 	void					RenderFlares		();
-	void					RenderFirst			();
 	void					RenderLast			();
 
     void					SetWeather			(shared_str name, bool forced=false);
