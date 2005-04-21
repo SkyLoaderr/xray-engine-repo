@@ -332,10 +332,10 @@ CEnvironment::CEnvironment	()
 
 	// fill clouds hemi verts & faces 
 	const Fvector* verts;
-	CloudsVerts.resize		(xrHemisphereVertices(1,verts));
+	CloudsVerts.resize		(xrHemisphereVertices(2,verts));
 	Memory.mem_copy			(&CloudsVerts.front(),verts,CloudsVerts.size()*sizeof(Fvector));
 	const u16* indices;
-	CloudsIndices.resize	(xrHemisphereIndices(1,indices));
+	CloudsIndices.resize	(xrHemisphereIndices(2,indices));
 	Memory.mem_copy			(&CloudsIndices.front(),indices,CloudsIndices.size()*sizeof(u16));
 }
 CEnvironment::~CEnvironment	()
