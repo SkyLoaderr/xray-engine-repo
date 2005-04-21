@@ -59,7 +59,9 @@ public:
 
 };
 
+
 class SndShockEffector{
+public:
 	int		m_snd_length;	//ms
 	int		m_cur_length;	//ms
 	float	m_stored_eff_volume;

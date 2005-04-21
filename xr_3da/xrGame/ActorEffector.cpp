@@ -161,6 +161,31 @@ void CActorEffector::ApplyDevice ()
 	Device.fASPECT				= fAspect;
 	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
 }
+#include "../effectorPP.h"
+#include "level.h"
+
+class CShockPPEffector : public CEffectorPP {
+	typedef CEffectorPP inherited;	
+	SndShockEffector * m_shockEff;
+public:
+	CShockPPEffector		(float life_time, SndShockEffector * eff):CEffectorPP(cefppHit,life_time),m_shockEff(eff){};
+	virtual	BOOL	Process					(SPPInfo& pp){
+		inherited::Process(pp);
+		pp.blur					= 0;
+		pp.gray					= 0;
+		pp.noise.intensity		= 0;	
+		pp.noise.grain			= 1.0f;	
+		pp.noise.fps			= 30;
+		pp.color_base.set		(.5f,	.5f,	.5f);
+		pp.color_gray.set		(.333f,	.333f,	.333f);
+		pp.color_add.set		(0,		0,		0);
+		float dk				= (float(m_shockEff->m_snd_length-m_shockEff->m_cur_length)/float(m_shockEff->m_snd_length));
+		pp.duality.h			= 0.1f*_sin(Device.fTimeGlobal)*dk;
+		pp.duality.v			= 0.1f*_cos(Device.fTimeGlobal)*dk;
+		return TRUE;
+	}
+};
+
 #define SND_MIN_VOLUME_FACTOR (0.1f)
 
 SndShockEffector::SndShockEffector	()
@@ -194,6 +219,7 @@ void SndShockEffector::Start(int snd_length)
 	m_cur_length		= 0;
 	psSoundVEffects		= m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
 	psSoundVMusic		= m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
+	Level().Cameras.AddEffector(xr_new<CShockPPEffector>(float(snd_length)/1000.0f,this));
 }
 
 void SndShockEffector::Update()
