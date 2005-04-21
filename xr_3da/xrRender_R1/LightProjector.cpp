@@ -59,10 +59,18 @@ void CLightProjector::set_object	(IRenderable* O)
 
 		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		float		R	= O->renderable.visual->vis.sphere.R;
-		float		D	= C.distance_to(Device.vCameraPosition)+R;
+		float		D	= C.distance_to	(Device.vCameraPosition)+R;
 		if (D < P_distance)		current	= O;
 		else					current = 0;
 		
+		if (current)				{
+			ISpatial*	spatial		= dynamic_cast<ISpatial*>	(O);
+			if	(0==spatial) current= 0;
+			else					{
+				spatial->spatial_updatesector	();
+				if (0==spatial->spatial.sector)	current = 0;
+			}
+		}
 		if (current)				{
 			CROS_impl*	LT			= (CROS_impl*)current->renderable.ROS;
 			LT->shadow_recv_frame	= Device.dwFrame;
