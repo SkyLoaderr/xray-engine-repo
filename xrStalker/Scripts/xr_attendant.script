@@ -140,8 +140,8 @@ function action_follow:execute ()
     if not self.was_reset then
        self:reset_scheme()
     end
-    
-    xr_sound.set_sound(self.object, self.st.sound_theme)
+    -- FIXME !!! 
+    --xr_sound.set_sound(self.object, self.st.sound_theme)
     --local pos = self.object:position ()
     --printf ("FOLLWER %s POSITION x = %f, y = %f, z = %f", self.object:name (), pos.x, pos.y, pos.z)
     -- проверим, а жив ли еще старшќй.
