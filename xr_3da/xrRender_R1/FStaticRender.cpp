@@ -456,7 +456,8 @@ void	CRender::Render		()
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details
-	g_pGamePersistent->Environment.RenderFirst	();				// sky / sun
+	g_pGamePersistent->Environment.RenderSky	();				// sky / sun
+	g_pGamePersistent->Environment.RenderClouds	();				// clouds
 	r_pmask										(true,false);	// disable priority "1"
 	o.vis_intersect								= TRUE			;
 	HOM.Disable									();
@@ -469,11 +470,11 @@ void	CRender::Render		()
 	L_Shadows->render							();				// ... and shadows
 	r_dsgraph_render_lods						();				// lods
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
-	r_dsgraph_render_sorted						();				// strict-sorted geoms
 	PortalTraverser.fade_render					();				// faded-portals
+	r_dsgraph_render_sorted						();				// strict-sorted geoms
 	L_Glows->Render								();				// glows
-	g_pGamePersistent->Environment.RenderFlares	();				// rain/lens-flares/thunder-bolts
-	g_pGamePersistent->Environment.RenderLast	();				// rain/lens-flares/thunder-bolts
+	g_pGamePersistent->Environment.RenderFlares	();				// lens-flares
+	g_pGamePersistent->Environment.RenderLast	();				// rain/thunder-bolts
 
 	// Postprocess, if necessary
 	Target->End						();
