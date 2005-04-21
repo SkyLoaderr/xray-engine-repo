@@ -32,7 +32,7 @@ public:
 	{
 		string256				pname;
 		IReader*		R		= FS.r_open	("$game_shaders$",strconcat(pname,::Render->getShaderPath(),pFileName));
-		if (0==R)				return			{
+		if (0==R)				{
 			// possibly in shared directory
 			R					= FS.r_open	("$game_shaders$",strconcat(pname,"shared\\",pFileName));
 			if (0==R)			return			E_FAIL;
