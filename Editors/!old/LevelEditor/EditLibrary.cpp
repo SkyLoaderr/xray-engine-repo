@@ -217,7 +217,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
         	ELog.Msg			(mtError,"You don't have permisions to modify object: '%s'",nm.c_str());
         ebRenameObject->Enabled = !bReadOnly;
         ebRemoveObject->Enabled = !bReadOnly;
-        ebExportLWO->Enabled 	= !bReadOnly;
+//		ebExportLWO->Enabled 	= !bReadOnly;
 
         FS.update_path			(thm_fn,_objects_,ChangeFileExt(nm,".thm").c_str());
         if (FS.exist(thm_fn.c_str())){
@@ -360,7 +360,7 @@ bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
             O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
             xr_string tex_name;
             tex_name 	= EFS.ChangeFileExt(nm,"");
-            string256 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
+            string512 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
             tex_name 	= xr_string("lod_")+tmp;
             tex_name 	= ImageLib.UpdateFileName(tex_name);
             ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
