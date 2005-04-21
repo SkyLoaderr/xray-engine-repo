@@ -209,7 +209,7 @@ public:
 	//-------------------------------------------------------------------------------
 	// Triple Animation
 	
-		void	TA_Activate				(CAnimTriple *p_triple);
+		void	TA_Activate				(CAnimTriple *p_triple, bool skip_prepare = false);
 		void	TA_Deactivate			();
 		void	TA_PointBreak			();
 		bool	TA_IsActive				();

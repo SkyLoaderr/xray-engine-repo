@@ -142,6 +142,8 @@ void CBaseMonster::Die(CObject* who)
 
 void CBaseMonster::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
 {
+	if (ignore_collision_hit && (hit_type == ALife::eHitTypeStrike)) return;
+	
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 

@@ -122,6 +122,8 @@ public:
 	virtual	void			post_fsm_update					();
 			void			squad_notify					();
 
+			void			check_jump_over_physics			();
+	virtual void			jump_over_physics				(const Fvector &target) {}
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	// ---------------------------------------------------------------------------------
@@ -171,6 +173,7 @@ public:
 	virtual bool			ability_distant_feel			() {return false;}
 	virtual bool			ability_run_attack				() {return false;}
 	virtual bool			ability_rotation_jump			() {return false;}
+	virtual bool			ability_jump_over_physics		() {return false;}
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			event_on_step					() {}
@@ -293,6 +296,8 @@ IC	void					wake_up				(){m_bSleep = false;}
 	// Temp
 	u32						m_time_last_attack_success;
 
+IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
+
 private:
 	bool					m_first_update_initialized;
 
@@ -300,6 +305,9 @@ private:
 	// -----------------------------------------------------------------------------
 				void		check_rotation_jump	();
 	// -----------------------------------------------------------------------------
+	bool					ignore_collision_hit;	
+	
+
 
 
 // DEBUG stuff

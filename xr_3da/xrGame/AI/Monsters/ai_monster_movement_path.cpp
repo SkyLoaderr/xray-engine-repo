@@ -151,6 +151,7 @@ void CMonsterMovement::find_target()
 	// определить расстояние до выбранной точки
 	float dist = object().Position().distance_to(m_target_found.position);		
 
+
 	// лимитировать по расстоянию
 	if (dist > MAX_PATH_DISTANCE) {
 		m_target_found.position.mad	(object().Position(), dir, MAX_PATH_DISTANCE);
@@ -171,9 +172,10 @@ void CMonsterMovement::find_target()
 		// всё получили - выход
 		return;
 	}
-	
+
+
 	// TODO: find out reason
-	// VERIFY	(m_target_found.node == u32(-1));
+	VERIFY(m_target_found.node == u32(-1));
 	
 	// II. Выбрана позиция, ищем ноду
 	

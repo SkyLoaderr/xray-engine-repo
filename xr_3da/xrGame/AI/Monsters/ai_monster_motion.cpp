@@ -428,12 +428,12 @@ LPCSTR CMotionManager::GetActionName(EAction action)
 //////////////////////////////////////////////////////////////////////////
 
 
-void CMotionManager::TA_Activate(CAnimTriple *p_triple)
+void CMotionManager::TA_Activate(CAnimTriple *p_triple, bool skip_prepare)
 {
 	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->deactivate();
 	
 	pCurAnimTriple				= p_triple;
-	pCurAnimTriple->activate	();
+	pCurAnimTriple->activate	(skip_prepare);
 
 	ForceAnimSelect				();
 }

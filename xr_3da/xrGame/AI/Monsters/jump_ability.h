@@ -54,8 +54,8 @@ public:
 	virtual void	reinit				(const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3);
 	
 	// process jump
-	virtual void	jump				(CObject *obj, u32 vel_mask = u32(-1));
-	virtual void	jump				(const Fvector &point, u32 vel_mask = u32(-1));
+	virtual void	jump				(CObject *obj, u32 vel_mask = u32(-1), bool skip_prepare = false);
+	virtual void	jump				(const Fvector &point, u32 vel_mask = u32(-1), bool skip_prepare = false);
 	virtual void	update_frame		();
 
 	// check for distance and angle difference
@@ -92,5 +92,5 @@ private:
 	// position prediction
 			Fvector	predict_position	(CObject *obj, const Fvector &pos);
 
-			void	start_jump			(const Fvector &point);
+			void	start_jump			(const Fvector &point, bool skip_prepare);
 };

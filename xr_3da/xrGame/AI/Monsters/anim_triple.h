@@ -28,7 +28,7 @@ public:
 
 	virtual void		reinit_external		(CMonsterEventManager *man, const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3, bool b_execute_once = true);
 	
-	virtual void		activate			();
+	virtual void		activate			(bool skip_prepare = false);
 	virtual void		deactivate			();
 
 	virtual bool		is_active			() {return m_active;}

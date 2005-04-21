@@ -240,6 +240,8 @@ public:
 
 	IC		bool	wait_for_distributed_computation			() const;
 	IC		bool	can_use_distributed_compuations				(u32 option) const;
+			
+			void	clear_path				();
 
 public:
 	IC		CBaseParameters			*base_game_params			() const;

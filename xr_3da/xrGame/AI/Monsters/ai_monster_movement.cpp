@@ -205,6 +205,8 @@ void CMonsterMovement::stop_now()
 	enable_movement						(false);
 	disable_path						();
 	set_linear_velocity					(0.f, true);
+	
+	clear_path							();
 }
 
 //////////////////////////////////////////////////////////////////////////

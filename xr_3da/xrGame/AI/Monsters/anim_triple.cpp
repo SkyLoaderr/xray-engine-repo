@@ -32,12 +32,10 @@ void CAnimTriple::reinit_external(CMonsterEventManager *man, const MotionID &m_d
 	m_execute_once	= b_execute_once;
 }
 
-void CAnimTriple::activate()
+void CAnimTriple::activate(bool skip_prepare)
 {
-	if (is_active()) deactivate();
-
-	m_current_state		= eStatePrepare;
-	m_previous_state	= eStateNone;
+	m_current_state		= skip_prepare ? eStateExecute : eStatePrepare;
+	m_previous_state	= skip_prepare ? eStatePrepare : eStateNone;
 	m_active			= true;
 }
 

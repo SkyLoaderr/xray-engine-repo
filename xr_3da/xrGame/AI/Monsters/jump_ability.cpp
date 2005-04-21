@@ -53,30 +53,28 @@ void CJumpingAbility::reinit(const MotionID &m_def1, const MotionID &m_def2, con
 	m_animation_holder->reinit_external	(&m_object->EventMan, m_def1, m_def2, m_def3);
 }
 
-void CJumpingAbility::jump(CObject *obj, u32 vel_mask)
+void CJumpingAbility::jump(CObject *obj, u32 vel_mask, bool skip_prepare)
 {
 	if (m_active) return;
 	
 	m_velocity_mask		= vel_mask;
 	m_target_object		= obj;
 
-	start_jump			(get_target(obj));
+	start_jump			(get_target(obj), skip_prepare);
 }
 
-void CJumpingAbility::jump(const Fvector &point, u32 vel_mask)
+void CJumpingAbility::jump(const Fvector &point, u32 vel_mask, bool skip_prepare)
 {
 	if (m_active) return;
 
 	m_velocity_mask		= vel_mask;
 	m_target_object		= 0;
 
-	start_jump			(point);
+	start_jump			(point, skip_prepare);
 }
 
-void CJumpingAbility::start_jump(const Fvector &point)
+void CJumpingAbility::start_jump(const Fvector &point, bool skip_prepare)
 {
-	m_object->MotionMan.TA_Activate	(m_animation_holder);
-	
 	m_blend_speed					= -1.f;
 	m_target_position				= point;
 
@@ -88,6 +86,7 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_object_hitted		= false;
 
 	m_time_started		= 0;
+	m_jump_time			= 0;
 
 	m_enable_bounce		= true;
 
@@ -95,7 +94,11 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
 
 	m_object->movement().stop_now			();
-	m_object->movement().initialize_movement();
+
+	m_object->set_ignore_collision_hit		(true);
+
+	// must be the last in jump initialization
+	m_object->MotionMan.TA_Activate	(m_animation_holder, skip_prepare);
 }
 
 
@@ -171,6 +174,7 @@ void CJumpingAbility::stop()
 	if (m_object->MotionMan.TA_IsActive())	m_object->MotionMan.TA_Deactivate();
 	m_object->movement().stop_now			();
 	m_object->movement().initialize_movement();
+	m_object->set_ignore_collision_hit		(false);
 
 	// unlock control blocks
 	m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
@@ -216,7 +220,7 @@ void CJumpingAbility::on_velocity_bounce(IEventData *p_data)
 	if (!m_active) return;
 
 	CEventVelocityBounce *data = (CEventVelocityBounce *)p_data;
-	if ((data->m_ratio < 0) && !m_velocity_bounced) {
+	if ((data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
 		if (is_on_the_ground()) {
 			m_velocity_bounced	= true;
 			build_line			();
