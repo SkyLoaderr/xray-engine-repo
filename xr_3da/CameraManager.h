@@ -119,8 +119,6 @@ class ENGINE_API CCameraManager
 	Fvector					affected_vNormal;
 	Fvector					affected_vRight;
 
-	SPPInfo					pp_identity;
-	SPPInfo					pp_zero;
 	SPPInfo					pp_affected;
 public:
 	void					Dump				(void);
@@ -161,6 +159,8 @@ public:
 	CCameraManager();
 	~CCameraManager();
 };
+ENGINE_API extern SPPInfo					pp_identity;
+ENGINE_API extern SPPInfo					pp_zero;
 
 ENGINE_API extern float psCamInert;
 ENGINE_API extern float psCamSlideInert;
