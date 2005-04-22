@@ -666,7 +666,7 @@ void CEnvironment::RenderClouds			()
 	wd1.setHP					(CurrentEnv.wind_direction+PI_DIV_8,0);
 	wind_dir.set				(wd0.x,wd0.z,wd1.x,wd1.z).mul(0.5f).add(0.5f).mul(255.f);
 	u32		i_offset,v_offset;
-	u32		C0					= color_rgba(iFloor(wind_dir.x),iFloor(wind_dir.y),iFloor(wind_dir.z), iFloor(wind_dir.w));
+	u32		C0					= color_rgba(iFloor(wind_dir.x),iFloor(wind_dir.y),iFloor(wind_dir.w),iFloor(wind_dir.z));
 	u32		C1					= color_rgba(iFloor(CurrentEnv.clouds_color.x*255.f),iFloor(CurrentEnv.clouds_color.y*255.f),iFloor(CurrentEnv.clouds_color.z*255.f),iFloor(CurrentEnv.clouds_color.w*255.f));
 
 	// Fill index buffer
