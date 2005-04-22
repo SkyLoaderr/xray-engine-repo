@@ -112,14 +112,14 @@ IC			const _flags<CLClassBits>&	collide_class_bits 	()const 								{return m_co
 class CPHUpdateObject 
 {
 	DECLARE_PHLIST_ITEM(CPHUpdateObject)
-	bool				b_activated												;
+	bool				b_activated																	;
 
 public:
-					CPHUpdateObject	()											;
-	void			Activate		()											;
-	void			Deactivate		()											;
-	virtual void	PhDataUpdate	(dReal step)								=0;
-	virtual void	PhTune			(dReal step)								=0;
+					CPHUpdateObject	()																;
+	void			Activate		()																;
+	void			Deactivate		()																;
+	virtual void	PhDataUpdate	(dReal step)													=0;
+	virtual void	PhTune			(dReal step)													=0;
 };
 
 DEFINE_PHITEM_LIST(CPHObject,PH_OBJECT_STORAGE,PH_OBJECT_I)

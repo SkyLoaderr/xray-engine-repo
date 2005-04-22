@@ -284,7 +284,7 @@ void CElevatorState::GetJumpDir(const Fvector& accel,Fvector& dir)
 	Fvector norm,side;
 	m_ladder->DDNorm(norm);
 	m_ladder->DDSide(side);
-	Fvector ac;ac.set(accel);ac.normalize_safe();
+	Fvector ac;ac.set(accel).normalize_safe();
 	float side_component=ac.dotproduct(side);
 	dir.set(norm);
 	if(_abs(side_component)>M_SQRT1_2)

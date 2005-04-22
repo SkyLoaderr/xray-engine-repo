@@ -8,7 +8,9 @@
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
 #include <../ode/src/util.h>
-
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
@@ -375,9 +377,16 @@ void CPHElement::PhTune(dReal step)
 void CPHElement::PhDataUpdate(dReal step){
 
 	if(! bActive)return;
-
+	
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	//b_enabled_onstep=!!dBodyIsEnabled(m_body);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawMassCenters))
+	{
+		DBG_DrawPoint(cast_fv(dBodyGetPosition(m_body)),0.03f,D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
+	
 	m_flags.set(flEnabledOnStep,!!dBodyIsEnabled(m_body));
 	if(!m_flags.test(flEnabledOnStep)/*!b_enabled_onstep*/) return;
 	

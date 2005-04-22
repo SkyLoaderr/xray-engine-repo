@@ -8894,6 +8894,9 @@
 							RelativePath=".\PHItemList.h">
 						</File>
 						<File
+							RelativePath=".\PHValideValues.h">
+						</File>
+						<File
 							RelativePath=".\SpaceUtils.h">
 						</File>
 					</Filter>
@@ -9345,6 +9348,16 @@
 				</File>
 				<File
 					RelativePath=".\PHSoundPlayer.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="ActivationBox"
+				Filter="">
+				<File
+					RelativePath=".\PHActivationShape.cpp">
+				</File>
+				<File
+					RelativePath=".\PHActivationShape.h">
 				</File>
 			</Filter>
 		</Filter>

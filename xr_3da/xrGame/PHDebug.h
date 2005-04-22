@@ -32,7 +32,9 @@ enum
 	phDBgDrawTriesChangesSign	=		1<<8,
 	phDbgDrawTriPoint			=		1<<9,
 	phDbgDrawExplosionPos		=		1<<10,
-	phDbgDrawObjectStatistics	=		1<<11
+	phDbgDrawObjectStatistics	=		1<<11,
+	phDbgDrawMassCenters		=		1<<12,
+	phDbgDrawDeathActivationBox =		1<<14
 };
 struct SPHObjDBGDraw
 {
@@ -55,7 +57,8 @@ DEFINE_VECTOR(SPHDBGDrawAbsract*,PHABS_DBG_V,PHABS_DBG_I)					;
 extern PHABS_DBG_V	dbg_draw_abstruct0;
 extern PHABS_DBG_V	dbg_draw_abstruct1;
 
-
+void DBG_OpenCashedDraw();
+void DBG_ClosedCashedDraw(u32 remove_time);
 void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a);
 void DBG_DrawPHObject(CPHObject* obj);
 void DBG_DrawContact (dContact& c);
@@ -63,6 +66,7 @@ void DBG_DrawTri(CDB::RESULT* T,u32 c);
 void DBG_DrawTri(CDB::TRI* T,const Fvector* V_verts,u32 c);
 void DBG_DrawLine(const Fvector& p0,const Fvector& p1,u32 c);
 void DBG_DrawAABB(const Fvector& center,const Fvector& AABB,u32 c);
+void DBG_DrawOBB(const Fmatrix& m,const Fvector h,u32 c);
 void DBG_DrawPoint(const Fvector& p,float size,u32 c);
 void _cdecl DBG_OutText(LPCSTR s,...);
 void DBG_DrawFrameStart();

@@ -157,7 +157,7 @@ public:
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
 	void				SetPhysicsRefObject(CPhysicsShellHolder* ref_object){m_character->SetPhysicsRefObject(ref_object);};
-
+	
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 	void				ActivateBox		(DWORD id, BOOL Check = false);

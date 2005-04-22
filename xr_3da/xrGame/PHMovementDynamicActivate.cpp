@@ -54,7 +54,7 @@ float 	STestFootCallbackPars::callback_force_factor					=	10.f	;
 float 	STestFootCallbackPars::depth_to_change_softness_pars			=	0.00f	;
 float 	STestFootCallbackPars::callback_cfm_factor						=	world_cfm*0.00001f;
 float 	STestFootCallbackPars::callback_erp_factor						=	1.f		;
-float	STestFootCallbackPars::decrement_depth							=	0.00f	;
+float	STestFootCallbackPars::decrement_depth							=	0.05f	;
 float	STestFootCallbackPars::max_real_depth							=	0.2f	;
 template<class Pars>
 void __stdcall TTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
@@ -110,16 +110,18 @@ class CVelocityLimiter :
 {
 	dBodyID m_body;
 	float l_limit;
+	float y_limit;
 	dVector3 m_safe_velocity;
 	dVector3 m_safe_position;
 public:
-	CVelocityLimiter(dBodyID b,float l)
+	CVelocityLimiter(dBodyID b,float l,float yl)
 	{
 		R_ASSERT(b);
 		m_body=b;
 		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 		dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 		l_limit=l;
+		y_limit=yl;
 	}
 	virtual ~CVelocityLimiter()
 	{
@@ -132,18 +134,27 @@ public:
 	{
 		const float		*linear_velocity		=dBodyGetLinearVel(m_body);
 		//limit velocity
-
+		bool ret=false;
 		if(dV_valid(linear_velocity))
 		{
 			dReal mag;
-			mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
+			Fvector vlinear_velocity;vlinear_velocity.set(cast_fv(linear_velocity));
+			mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[2]*linear_velocity[2]);//
 			if(mag>l_limit)
 			{
 				dReal f=mag/l_limit;
-				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
-				return true;
+				//dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
+				vlinear_velocity.x/=f;vlinear_velocity.z/=f;
+				ret=true;
 			}
-			else return false;
+			mag=_abs(linear_velocity[1]);
+			if(mag>y_limit)
+			{
+				vlinear_velocity.y=linear_velocity[1]/mag*y_limit;
+				ret=true;
+			}
+			dBodySetLinearVel(m_body,vlinear_velocity.x,vlinear_velocity.y,vlinear_velocity.z);
+			return ret;
 		}
 		else
 		{
@@ -329,15 +340,16 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	Fvector pos;
 	GetCharacterVelocity(vel);
 	GetCharacterPosition(pos);
-	const Fbox& box =Box();
-	float pass=box.x2-box.x1;
-	float max_vel=pass/fnum_it/fnum_steps/fixed_step;
+	//const Fbox& box =Box();
+	float pass=_abs(Box().getradius()-boxes[id].getradius());
+	float max_vel=pass/2.f/fnum_it/fnum_steps/fixed_step;
 	float max_a_vel=M_PI/8.f/fnum_it/fnum_steps/fixed_step;
 	dBodySetForce(GetBody(),0.f,0.f,0.f);
 	dBodySetLinearVel(GetBody(),0.f,0.f,0.f);
 	Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
-	CVelocityLimiter vl(GetBody(),max_vel);
-	//vl.Activate();
+	CVelocityLimiter vl(GetBody(),max_vel,max_vel);
+	max_vel=1.f/fnum_it/fnum_steps/fixed_step;
+	vl.Activate();
 	bool	ret=false;
 	m_character->SwitchOFFInitContact();
 	for(int m=0;num_steps>m;++m)
@@ -361,7 +373,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 		if(!ret) break;
 	}
 	m_character->SwitchInInitContact();
-	//vl.Deactivate();
+	vl.Deactivate();
 
 	ph_world->UnFreeze();
 	if(!ret)

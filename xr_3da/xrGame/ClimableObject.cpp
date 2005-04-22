@@ -77,11 +77,16 @@ BOOL CClimableObject::	net_Spawn			( CSE_Abstract* DC)
 	Fmatrix& b=CLB->shapes[0].data.box;
 	m_box.m_halfsize.set(b._11,b._22,b._33);
 	//m_box.m_halfsize.set(1.f,1.f,1.f);
-	if(m_box.m_halfsize.x<5.f*EPS_L)m_box.m_halfsize.x=5.f*EPS_L;
-	if(m_box.m_halfsize.y<5.f*EPS_L)m_box.m_halfsize.y=5.f*EPS_L;
-	if(m_box.m_halfsize.z<5.f*EPS_L)m_box.m_halfsize.z=5.f*EPS_L;
+	const float f_min_width=0.2f;
+	Fvector shift;shift.set(0.f,0.f,0.f);
+	if(m_box.m_halfsize.x<f_min_width){m_box.m_halfsize.x=f_min_width;shift.set(1.f,0.f,0.f);}
+	if(m_box.m_halfsize.y<f_min_width){m_box.m_halfsize.y=f_min_width;shift.set(0.f,1.f,0.f);}
+	if(m_box.m_halfsize.z<f_min_width){m_box.m_halfsize.z=f_min_width;shift.set(0.f,0.f,1.f);}
+	shift.mul(f_min_width);
 	m_radius=_max(_max(m_box.m_halfsize.x,m_box.m_halfsize.y),m_box.m_halfsize.z);
 	BOOL ret	= inherited::net_Spawn(DC);
+	XFORM().transform_dir(shift);
+	CObject::Position().sub(shift);
 	m_box.xform_set(Fidentity);
 	m_pStaticShell=xr_new<CPHLeaderGeomShell>(this);
 	P_BuildStaticGeomShell(smart_cast<CPHStaticGeomShell*>(m_pStaticShell),smart_cast<CGameObject*>(this),0,m_box);

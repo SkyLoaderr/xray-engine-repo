@@ -21,6 +21,9 @@ PHOBJ_DBG_V	dbg_draw_objects1;
 PHABS_DBG_V	dbg_draw_abstruct0;
 PHABS_DBG_V	dbg_draw_abstruct1;
 
+PHABS_DBG_V	dbg_draw_cashed;
+bool		b_cash_draw=false;
+u32			cash_draw_remove_time=u32(-1);
 
 struct SPHDBGDrawTri :public SPHDBGDrawAbsract
 {
@@ -48,6 +51,16 @@ struct SPHDBGDrawTri :public SPHDBGDrawAbsract
 		RCache.dbg_DrawLINE(Fidentity,v[2],v[0],c);
 	}
 };
+
+static void clear_vector(PHABS_DBG_V& v)
+{
+	PHABS_DBG_I i,e;i=v.begin();e=v.end();
+	for(;e!=i;++i)
+	{
+		xr_delete(*i);
+	}
+	v.clear();
+}
 
 void DBG_DrawTri(CDB::RESULT* T,u32 c)
 {
@@ -95,6 +108,22 @@ void DBG_DrawAABB(const Fvector& center,const Fvector& AABB,u32 c)
 	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawAABB>(center,AABB,c));
 }
 
+struct SPHDBGDrawOBB: public SPHDBGDrawAbsract
+{
+	Fmatrix m;Fvector h;u32 c;
+	SPHDBGDrawOBB(const Fmatrix am,const Fvector ah, u32 ac)
+	{
+		m.set(am);h.set(ah);c=ac;
+	}
+	virtual void render()
+	{
+		RCache.dbg_DrawOBB(m,h,c);
+	}
+};
+void DBG_DrawOBB(const Fmatrix& m,const Fvector h,u32 c)
+{
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawOBB>(m,h,c));
+};
 struct SPHDBGDrawPoint :public SPHDBGDrawAbsract
 {
 	Fvector p;float size;u32 c;
@@ -135,10 +164,24 @@ void _cdecl DBG_OutText(LPCSTR s,...)
 	va_end    (marker);
 	DBG_DrawPHAbstruct(xr_new<SPHDBGOutText>(t));
 }
+
+void DBG_OpenCashedDraw()
+{
+	b_cash_draw=true;
+}
+void DBG_ClosedCashedDraw(u32 remove_time)
+{
+	b_cash_draw				=false			;
+	cash_draw_remove_time	=remove_time+Device.dwTimeGlobal;
+}
 void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a)
 {
 
-	if(draw_frame)
+	if(b_cash_draw)
+	{
+		dbg_draw_cashed.push_back(a);
+	}
+	else if(draw_frame)
 	{
 		dbg_draw_abstruct0.push_back(a);
 	}else
@@ -188,12 +231,26 @@ void DBG_PHAbstructRender()
 	{
 		(*i)->render();
 	}
+	if(!b_cash_draw)
+	{
+		PHABS_DBG_I i,e;
+		i=dbg_draw_cashed.begin();e=dbg_draw_cashed.end();
+		for(;e!=i;++i)
+		{
+				(*i)->render();
+		}
+		if(cash_draw_remove_time<Device.dwTimeGlobal)
+		{
+			clear_vector(dbg_draw_cashed);
+		}
+	}
 }
 
 void DBG_PHAbstructClear()
 {
 	DBG_PHAbstruactStartFrame(true);
 	DBG_PHAbstruactStartFrame(false);
+	clear_vector(dbg_draw_cashed);
 }
 
 void DBG_DrawPHObject(CPHObject* obj)

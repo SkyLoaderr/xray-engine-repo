@@ -7,6 +7,10 @@
 #include "Actor.h"
 #include "CustomZone.h"
 #include "Extendedgeom.h"
+#include "Physics.h"
+#include "MathUtils.h"
+#include "phvalidevalues.h"
+#include "PHActivationShape.h"
 const float default_hinge_friction = 5.f;
 
 void __stdcall NodynamicsCollide(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
@@ -335,25 +339,37 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	Fvector velocity;
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
-	if(!m_PhysicMovementControl.CharacterExist())
-	{
-					m_PhysicMovementControl.CreateCharacter();
-					m_PhysicMovementControl.SetPosition(m_EntityAlife.Position());
-					m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
-	}
-	else
-	{
-		Fvector dp;m_PhysicMovementControl.GetDeathPosition(dp);
-		m_PhysicMovementControl.SetPosition(dp);
-	}
-
-	Fbox b=m_EntityAlife.BoundingBox();b.grow(Fvector().set(0.5f,0.1f,0.5f));
-	m_PhysicMovementControl.SetBox(3,b);
-	m_PhysicMovementControl.ActivateBoxDynamic(3,20,1,0.05f);
-	m_PhysicMovementControl.GetPosition(m_EntityAlife.Position());
+	//if(!m_PhysicMovementControl.CharacterExist())
+	//{
+	//				m_PhysicMovementControl.CreateCharacter();
+	//				m_PhysicMovementControl.SetPosition(m_EntityAlife.Position());
+	//				m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+	//}
+	//else
+	//{
+	
+	Fvector dp;m_PhysicMovementControl.GetDeathPosition(dp);
+	Fvector shift;shift.sub(dp,m_EntityAlife.Position());
+	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
+	Fvector center_shift;center_shift.sub(m_EntityAlife.Position(),activation_pos);
+	activation_pos.add(shift);
+	//m_PhysicMovementControl.SetPosition(dp);
+	//}
+	CPHActivationShape activation_shape;Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
+	activation_shape.Create(activation_pos,start_box,&m_EntityAlife);
+	//Fbox b=m_EntityAlife.BoundingBox();b.grow(Fvector().set(0.5f,0.1f,0.5f));
+	//m_PhysicMovementControl.SetBox(3,b);
+	//m_PhysicMovementControl.ActivateBoxDynamic(3,20,1,0.05f);
+	//m_PhysicMovementControl.GetPosition(m_EntityAlife.Position());
 	//m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
-
 	m_PhysicMovementControl.DestroyCharacter();
+	Fbox box;box.set(m_EntityAlife.BoundingBox());//box.grow(0.5f);
+	Fvector vbox;
+	box.getsize(vbox);
+	activation_shape.Activate(vbox,5,1.f,M_PI/4.f);
+	m_EntityAlife.Position().set(activation_shape.Position());
+	m_EntityAlife.Position().add(center_shift);
+	activation_shape.Destroy();
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 
 	m_pPhysicsShell=m_physics_skeleton;
