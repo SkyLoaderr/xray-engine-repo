@@ -419,7 +419,6 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	m_dwWeaponIndependencyTime = 0;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
-	m_fRTZoonFactor = m_fScopeZoomFactor;
 	return bResult;
 }
 
@@ -570,7 +569,6 @@ void CWeapon::OnH_B_Independent	()
 
 void CWeapon::OnH_A_Independent	()
 {
-	m_fRTZoonFactor = m_fRTZoonFactor;
 	m_dwWeaponIndependencyTime = Level().timeServer();
 	inherited::OnH_A_Independent();
 };
@@ -1003,15 +1001,13 @@ void CWeapon::InitAddons()
 void CWeapon::OnZoomIn()
 {
 	m_bZoomMode = true;
-//	m_fZoomFactor = m_fScopeZoomFactor;
-	m_fZoomFactor = m_fRTZoonFactor;////...
+	m_fZoomFactor = m_fScopeZoomFactor;
 	StopHudInertion();
 }
 
 void CWeapon::OnZoomOut()
 {
 	m_bZoomMode = false;
-	m_fRTZoonFactor = m_fZoomFactor;//store current
 	m_fZoomFactor = DEFAULT_FOV;
 
 	StartHudInertion();

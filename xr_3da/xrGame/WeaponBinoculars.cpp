@@ -60,6 +60,7 @@ void CWeaponBinoculars::OnZoomIn		()
 		m_binoc_vision = xr_new<CBinocularsVision>(this);
 	}
 
+	m_fZoomFactor = m_fRTZoomFactor;
 	inherited::OnZoomIn();
 }
 void CWeaponBinoculars::OnZoomOut		()
@@ -72,8 +73,17 @@ void CWeaponBinoculars::OnZoomOut		()
 		xr_delete(m_binoc_vision);
 	}
 
+	m_fRTZoomFactor = m_fZoomFactor;//store current
 	inherited::OnZoomOut();
 }
+
+BOOL	CWeaponBinoculars::net_Spawn			(CSE_Abstract* DC)
+{
+	inherited::net_Spawn(DC);
+	m_fRTZoomFactor = m_fScopeZoomFactor;
+	return TRUE;
+}
+
 void	CWeaponBinoculars::net_Destroy()
 {
 	inherited::net_Destroy();

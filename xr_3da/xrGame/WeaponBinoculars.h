@@ -15,6 +15,8 @@ protected:
 	// Media :: sounds
 	HUD_SOUND		sndZoomIn;
 	HUD_SOUND		sndZoomOut;
+	float			m_fRTZoomFactor; //run-time zoom factor
+
 //	CUIFrameWindow*	UIEntityBorder;
 public:
 					CWeaponBinoculars	(); 
@@ -30,6 +32,7 @@ public:
 	virtual	void	ZoomInc				();
 	virtual	void	ZoomDec				();
 	virtual void	net_Destroy			();
+	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 
 
 	virtual bool	Action				(s32 cmd, u32 flags);

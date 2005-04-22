@@ -233,7 +233,6 @@ protected:
 	bool			m_bZoomEnabled;
 	//текущий фактор приближения
 	float			m_fZoomFactor;
-	float			m_fRTZoonFactor; //run-time zoom factor
 	//время приближения
 	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения

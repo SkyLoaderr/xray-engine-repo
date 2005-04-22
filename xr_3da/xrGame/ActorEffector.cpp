@@ -171,14 +171,7 @@ public:
 	CShockPPEffector		(float life_time, SndShockEffector * eff):CEffectorPP(cefppHit,life_time),m_shockEff(eff){};
 	virtual	BOOL	Process					(SPPInfo& pp){
 		inherited::Process(pp);
-		pp.blur					= 0;
-		pp.gray					= 0;
-		pp.noise.intensity		= 0;	
-		pp.noise.grain			= 1.0f;	
-		pp.noise.fps			= 30;
-		pp.color_base.set		(.5f,	.5f,	.5f);
-		pp.color_gray.set		(.333f,	.333f,	.333f);
-		pp.color_add.set		(0,		0,		0);
+		pp = pp_identity;
 		float dk				= (float(m_shockEff->m_snd_length-m_shockEff->m_cur_length)/float(m_shockEff->m_snd_length));
 		pp.duality.h			= 0.1f*_sin(Device.fTimeGlobal)*dk;
 		pp.duality.v			= 0.1f*_cos(Device.fTimeGlobal)*dk;
