@@ -366,16 +366,8 @@ void CUIMainIngameWnd::Draw()
 
 	
 	CActor* _pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(_pActor){
-		float	snd_noise = _pActor->m_snd_noise;
-		static float cur_snd_noise = snd_noise;
-//		cur_snd_noise = snd_noise*0.01f + cur_snd_noise*0.99f;
-		cur_snd_noise = snd_noise;
-		UISndNoiseBar.SetProgressPos( (s16)iFloor(cur_snd_noise*100.0f) );
-		if(!(Device.dwFrame%1000) )
-			Msg("ffff= %f",cur_snd_noise);
-	}
-
+	if(_pActor)
+		UISndNoiseBar.SetProgressPos( (s16)iFloor(_pActor->m_snd_noise*100.0f) );
 	
 
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
