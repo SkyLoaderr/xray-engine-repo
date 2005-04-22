@@ -77,6 +77,7 @@ void CBaseMonster::reinit()
 
 	if (m_controlled)				m_controlled->on_reinit();
 
+	ignore_collision_hit			= false;
 
 #ifdef DEBUG
 	m_show_debug_info				= 0;
