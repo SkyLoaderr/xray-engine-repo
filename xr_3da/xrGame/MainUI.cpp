@@ -117,6 +117,13 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
+
+	ShaderMap_it it;
+	for (it = m_shaders.begin(); it != m_shaders.end(); it++)
+	{
+		Msg("-- UI shader holder: freeing of shader %s", it->first.c_str());
+		it->second.destroy();
+	}
 }
 void CMainUI::Activate	(bool bActivate)
 {
@@ -416,3 +423,30 @@ void CMainUI::PopScissor()
 		RCache.set_Scissor(&result);
 	}
 }
+
+ref_shader& CMainUI::GetShader(const char* file_name){
+	ShaderMap_it it;
+	xr_string fname = file_name;
+	it = m_shaders.find(fname);
+
+	if (it != m_shaders.end()) 
+	{
+		return it->second;
+	} 
+	else 
+	{
+		ref_shader new_sh;
+		new_sh.create("hud\\default", file_name);
+		return m_shaders.insert(mk_pair(file_name, new_sh)).first->second;
+	}
+}
+
+void CMainUI::FreeShader(const char* file_name){
+   	ShaderMap_it it;
+	xr_string fname = file_name;
+	it = m_shaders.find(fname);
+
+	if (it != m_shaders.end())
+        m_shaders.erase(it);
+}
+

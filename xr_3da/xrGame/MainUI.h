@@ -110,6 +110,12 @@ public:
 	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
 	void			PushScissor						(const Irect& r, bool overlapped=false);
 	void			PopScissor						();
+
+	ref_shader&		GetShader(const char* file_name);
+	void			FreeShader(const char* file_name);
+protected:
+	DEFINE_MAP(xr_string, ref_shader, ShaderMap, ShaderMap_it);
+	ShaderMap				m_shaders;
 };
 
 
