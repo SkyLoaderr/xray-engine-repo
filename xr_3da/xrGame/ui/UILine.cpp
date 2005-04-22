@@ -175,6 +175,10 @@ bool CUILine::InitPos(Position& pos) const{
 	else if (m_subLines.size() > 1 && GetWord(w, m_subLines[1].m_text, 0))
 		pos.word_2 = w;
 
+	// find "\n"
+
+
+
 	return true;
 }
 
@@ -264,7 +268,8 @@ int  CUILine::GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont) const{
 	xr_string str;
 	str.assign(m_subLines[pos.curr_subline].m_text, 0, pos.word_1.pos + pos.word_1.len);
 
-	len += int(pFont->SizeOf(str.c_str()));
+	
+	len += int(pFont->SizeOfRel(str.c_str()));
 
 	return len;
 }
@@ -285,7 +290,7 @@ int  CUILine::GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont) const{
 	xr_string str;
 	str.assign(m_subLines[last + 1].m_text, 0, pos.word_2.pos + pos.word_2.len);
 
-	len += (int)pFont->SizeOf(str.c_str());
+	len += (int)pFont->SizeOfRel(str.c_str());
 
 	return len;
 }

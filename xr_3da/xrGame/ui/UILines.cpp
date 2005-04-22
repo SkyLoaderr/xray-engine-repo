@@ -14,10 +14,10 @@
 #include "uilinestd.h"
 
 CUILines::CUILines()
-	:m_interval(5)
 {
 	m_pFont = UI()->Font()->pFontLetterica18Russian;
-	m_eTextAlign = CGameFont::alCenter;
+	m_interval = 0.3f;
+	m_eTextAlign = CGameFont::alRight;
 	m_dwTextColor = 0xff000000;
 
 	m_bShowMe = true;
@@ -72,7 +72,8 @@ void CUILines::ParseText(){
 }
 
 int CUILines::GetVisibleHeight() const{
-	return ((int)m_pFont->CurrentHeight() + m_interval)*m_lines.size() - m_interval;
+	int interval = int(m_interval*m_pFont->CurrentHeightRel());
+	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
 
 void CUILines::Draw() const{
@@ -85,19 +86,20 @@ void CUILines::Draw() const{
 
 	Ivector2 pos;
 	pos.y= m_wndPos.y + (m_wndSize.y - GetVisibleHeight())/2;
-	int height = (int)m_pFont->CurrentHeight();
+	int height = (int)m_pFont->CurrentHeightRel();
 	int size = m_lines.size();
+
+	int interval = int(m_interval*m_pFont->CurrentHeightRel());
 
 	for (int i=0; i<size; i++)
 	{
 		pos.x = m_wndPos.x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
 		m_lines[i].Draw(m_pFont, pos.x, pos.y);
-		pos.y+= height + m_interval;
+		pos.y+= height + interval;
 	}	
 }
 
 void CUILines::Update(){
-
 }
 
 void CUILines::OnDeviceReset(){

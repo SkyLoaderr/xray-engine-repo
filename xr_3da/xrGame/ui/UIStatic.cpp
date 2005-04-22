@@ -5,18 +5,13 @@
 
 #include "stdafx.h"
 #include "uistatic.h"
-#include "uixmlinit.h"
+#include "xrXMLParser.h"
+#include "UIXmlInit.h"
 #include "uiframewindow.h"
 #include "../HUDManager.h"
 #include "../../LightAnimLibrary.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 const char * const	clDefault	= "default";
-
-//////////////////////////////////////////////////////////////////////////
 
 CUIStatic:: CUIStatic()
 {
@@ -48,16 +43,15 @@ CUIStatic:: CUIStatic()
 	m_bCursorOverWindow		= false;
 	m_bHeading				= false;
 	m_fHeading				= 0.0f;
-	m_lanim					= NULL;
+	m_lanim					= NULL;	
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 CUIStatic::~ CUIStatic()
 {
+	if (m_shader2destroy.size())
+		UI()->FreeShader(m_shader2destroy.c_str());
 }
 
-//////////////////////////////////////////////////////////////////////////
 void CUIStatic::SetLightAnim(LPCSTR lanim)
 {
 	if(lanim&&xr_strlen(lanim))
@@ -77,11 +71,12 @@ void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width,
 	Init(x, y, width, height);
 	InitTextureEx(tex_name, sh_name);
 }
-//////////////////////////////////////////////////////////////////////////
+
 
 void CUIStatic::InitTexture(LPCSTR texture){
 	InitTextureEx(texture);
 }
+
 void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 {
 	m_UIStaticItem.Init(tex_name,sh_name, GetAbsoluteRect().left,
@@ -89,16 +84,16 @@ void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 	m_bAvailableTexture = true;
 }
 
-//////////////////////////////////////////////////////////////////////////
+void CUIStatic::InitSharedTexture(LPCSTR xml_file, LPCSTR texture, bool owner){
+	CUIXml xml;
+	if(xml.Init(CONFIG_PATH, UI_PATH, xml_file))
+        CUIXmlInit::InitSharedTexture(xml, texture, owner, this);
+}
 
 void CUIStatic::Init(int x, int y, int width, int height)
 {	
 	CUIWindow::Init(x, y, width, height);	
 }
-
-//////////////////////////////////////////////////////////////////////////
-//прорисовка
-//////////////////////////////////////////////////////////////////////////
 
 void  CUIStatic::Draw()
 {

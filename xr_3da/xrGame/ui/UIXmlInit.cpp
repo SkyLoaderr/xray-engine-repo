@@ -748,8 +748,43 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 		pWnd->ClipperOn();
 	}
 
-
 	return true;
+}
+
+bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, bool owner, CUIStatic* pWnd){
+	xr_string fname = xml_doc.Read("file_name", 0);
+
+	if (fname.empty())
+		return false;
+
+	int nodes = xml_doc.GetNodesNum("",0,"texture");
+
+	xr_string id;
+
+	for (int i = 0; i<nodes; i++)
+	{
+        id = xml_doc.ReadAttrib("texture", i, "id");
+		if (0 == xr_strcmp(id.c_str(), t_id))
+		{
+			int x		= xml_doc.ReadAttribInt("texture", i, "x");
+			int y		= xml_doc.ReadAttribInt("texture", i, "y");
+			int width	= xml_doc.ReadAttribInt("texture", i, "width", -1);
+			int height	= xml_doc.ReadAttribInt("texture", i, "height", -1);
+
+			if (-1 == width || -1 == height)
+                return false;
+
+
+			if (owner)
+                pWnd->m_shader2destroy = fname;
+
+			pWnd->SetShader(UI()->GetShader(fname.c_str()));
+			pWnd->SetOriginalRect(x, y, width, height);
+
+			return true;
+		}
+	}
+	return false;
 }
 
 bool CUIXmlInit::InitTextureOffset(CUIXml &xml_doc, LPCSTR path, int index, CUIStatic* pWnd){

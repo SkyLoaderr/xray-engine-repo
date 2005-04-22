@@ -47,19 +47,20 @@ static bool Init3tButton			(CUIXml& xml_doc, const char* path, int index, CUI3tB
 static bool InitDragDropList		(CUIXml& xml_doc, const char* path, int index, CUIDragDropList* pWnd);
 static bool InitListWnd				(CUIXml& xml_doc, const char* path, int index, CUIListWnd* pWnd);
 static bool InitProgressBar			(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
-static bool InitFont				(CUIXml &xml_doc, const char *path, int index, u32 &color, CGameFont *&pFnt);
-static bool InitColor				(CUIXml &xml_doc, XML_NODE* node, u32 &color);
-static bool InitTabControl			(CUIXml &xml_doc, const char *path,	int index, CUITabControl *pWnd);
-static bool InitTextBanner			(CUIXml &xml_doc, const char *path,	int index, CUITextBanner *pBnr);
-static bool InitMultiTextStatic		(CUIXml &xml_doc, const char *path,	int index, CUIMultiTextStatic *pWnd);
-static bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,	int index, CUIAnimatedStatic *pWnd);
-static bool InitTextureOffset		(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
-static bool InitSound				(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
-static bool InitMultiTexture		(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
-static bool InitMultiText			(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
-static bool InitTexture				(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
-static bool InitArtefactPanel		(CUIXml &xml_doc, const char *path, int index, CUIArtefactPanel* pWnd);
-static u32	GetARGB					(CUIXml &xml_doc, const char *path, int index);
+static bool InitFont				(CUIXml& xml_doc, const char* path, int index, u32 &color, CGameFont *&pFnt);
+static bool InitColor				(CUIXml& xml_doc, XML_NODE* node, u32 &color);
+static bool InitTabControl			(CUIXml& xml_doc, const char* path,	int index, CUITabControl *pWnd);
+static bool InitTextBanner			(CUIXml& xml_doc, const char* path,	int index, CUITextBanner *pBnr);
+static bool InitMultiTextStatic		(CUIXml& xml_doc, const char* path,	int index, CUIMultiTextStatic *pWnd);
+static bool InitAnimatedStatic		(CUIXml& xml_doc, const char* path,	int index, CUIAnimatedStatic *pWnd);
+static bool InitTextureOffset		(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
+static bool InitSound				(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd);
+static bool InitMultiTexture		(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd);
+static bool InitMultiText			(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
+static bool InitTexture				(CUIXml& xml_doc, const char* path,	int index, CUIStatic *pWnd);
+static bool InitSharedTexture		(CUIXml& xml_doc, const char* path, bool owner, CUIStatic *pWnd);
+static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
+static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 
 	// Функция чтения алайна из xml файла и применения его к координатам.
 	// Return true если для данного окна есть выравнивание

@@ -52,8 +52,8 @@ public:
 			void			Reset();
 			void			ParseText();
 			int				GetVisibleHeight()					const;
-			void			SetLinesInterval(int i)						{ m_interval = i; }
-			int				GetLinesInterval()					const	{ return m_interval; }
+			void			SetLinesInterval(float f)					{ m_interval = f; }
+			float			GetLinesInterval()					const	{ return m_interval; }
 
 
 protected:
@@ -68,7 +68,7 @@ protected:
 	typedef xr_vector<CUILine>				LinesVector;
 	typedef xr_vector<CUILine>::iterator	LinesVector_it;
 	LinesVector		m_lines;	// parsed text
-	u32				m_interval; // interval
+	float			m_interval; // interval
 
 	xr_string		m_text;
 

@@ -18,6 +18,7 @@
 
 class CUIFrameWindow;
 class CLAItem;
+class CUIXml;
 
 class CUIStatic : public CUIWindow  
 {
@@ -60,6 +61,7 @@ public:
 	u32&		GetColorRef					()								{ return m_UIStaticItem.GetColorRef();	}
     
 	virtual void	InitTexture(LPCSTR tex_name);
+	virtual void	InitSharedTexture(LPCSTR xml_file, LPCSTR texture, bool owner = false);
 	virtual void	InitTextureEx(LPCSTR tex_name, LPCSTR sh_name="hud\\default");
 	void			SetOriginalRect (int x, int y, int width, int height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);};
 	void			SetOriginalRect (const Irect& r)						{m_UIStaticItem.SetOriginalRect(r.x1, r.y1, r.x2 - r.x1, r.y2 - r.y1);}
@@ -164,8 +166,8 @@ protected:
 	bool m_bUseTextColor[4]; // note: 0 index will be ignored
 
 	bool m_bClipper;
-	//раст€гивание текстуры в видимую область
 	bool m_bStretchTexture;
+	xr_string m_shader2destroy;	// only for shared shaders
 	
 	///////////////////////////////////////	
 	//√рафический интрефейс дл€ рисовани€
