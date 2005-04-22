@@ -283,7 +283,7 @@ typedef	SNodePositionOld NodePosition;
 #endif
 
 const u32 XRCL_CURRENT_VERSION		=	17;	// input
-const u32 XRCL_PRODUCTION_VERSION	=	13;	// output 
+const u32 XRCL_PRODUCTION_VERSION	=	14;	// output 
 const u32 CFORM_CURRENT_VERSION		=	4;
 const u32 XRAI_CURRENT_VERSION		=	8;
 const u32 MAX_NODE_BIT_COUNT		=	23;

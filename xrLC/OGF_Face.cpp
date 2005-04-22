@@ -42,13 +42,7 @@ void OGF_Vertex::dump	(u32 id)
 }
 BOOL x_vertex::similar	(OGF* ogf, x_vertex& V)
 {
-	if (!P.similar(V.P)) 			return FALSE;
-	OGF_Texture *T = &*ogf->textures.begin();
-	b_texture	*B = T->pSurface;
-	float		eu = 2.f/float	(B->dwWidth );
-	float		ev = 2.f/float	(B->dwHeight);
-	if (!UV.similar(V.UV,eu,ev))	return FALSE;
-	return TRUE;
+	return P.similar(V.P);
 }
 u16 OGF::x_BuildVertex	(x_vertex& V1)
 {
@@ -74,9 +68,9 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_
 	if (_tc_)	return	;	// make empty-list for stuff that has relevant TCs
 	x_face	F;
 	u32		VertCount	= (u32)x_vertices.size();
-	F.v[0]	= x_BuildVertex(x_vertex(V1,_tc_));
-	F.v[1]	= x_BuildVertex(x_vertex(V2,_tc_));
-	F.v[2]	= x_BuildVertex(x_vertex(V3,_tc_));
+	F.v[0]	= x_BuildVertex(x_vertex(V1));
+	F.v[1]	= x_BuildVertex(x_vertex(V2));
+	F.v[2]	= x_BuildVertex(x_vertex(V3));
 	if (!F.Degenerate()) {
 		x_faces.push_back(F);
 	} else {
@@ -123,6 +117,7 @@ void OGF::Optimize	()
 			}
 
 			// Optimize texture coordinates
+			/*
 			Fvector2 Tdelta;
 			try {
 				// 1. Calc bounds
@@ -131,8 +126,8 @@ void OGF::Optimize	()
 				Tmax.set(flt_min,flt_min);
 				for (u32 j=0; j<x_vertices.size(); j++)			{
 					x_vertex& V = x_vertices[j];
-					Tmin.min	(V.UV);
-					Tmax.max	(V.UV);
+					//Tmin.min	(V.UV);
+					//Tmax.max	(V.UV);
 				}
 				Tdelta.x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
 				Tdelta.y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
@@ -147,6 +142,7 @@ void OGF::Optimize	()
 			} catch(...) {
 				Msg	("* ERROR: optimize: x-geom : recalc : failed");
 			}
+			*/
 		}
 	} catch(...) {
 		Msg	("* ERROR: optimize: x-geom : failed");
@@ -400,7 +396,8 @@ void OGF::MakeProgressive	(float metric_limit)
 	{
 		// prepare progressive geom
 		VIPM_Init				();
-		for (u32 v_idx=0;  v_idx<x_vertices.size(); v_idx++)	VIPM_AppendVertex	(x_vertices[v_idx].P,	x_vertices[v_idx].UV						);
+		Fvector2				zero; zero.set		(0,0);
+		for (u32 v_idx=0;  v_idx<x_vertices.size(); v_idx++)	VIPM_AppendVertex	(x_vertices[v_idx].P,	zero						);
 		for (u32 f_idx=0;  f_idx<x_faces.size();    f_idx++)	VIPM_AppendFace		(x_faces[f_idx].v[0],	x_faces[f_idx].v[1],	x_faces[f_idx].v[2]	);
 
 		VIPM_Result*	VR		= 0;

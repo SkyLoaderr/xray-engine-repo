@@ -33,8 +33,7 @@ typedef vecOGF_V::iterator			itOGF_V;
 struct x_vertex						// "fast" geometry, 16b/vertex
 {
 	Fvector				P;
-	Fvector2			UV;
-	x_vertex			(const OGF_Vertex& c, bool _tc_)	{ P	= c.P; if (_tc_) UV	= c.UV[0]; else UV.set(0,0);	}
+	x_vertex			(const OGF_Vertex& c)	{ P	= c.P; }
 	BOOL				similar		(OGF* p, x_vertex&	other);
 };
 typedef xr_vector<x_vertex>			vec_XV;
