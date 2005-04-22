@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "..\igame_persistent.h"
+#include "..\environment.h"
 #include "..\fvf.h"
 
 CPortalTraverser	PortalTraverser;
@@ -93,16 +95,18 @@ void CPortalTraverser::fade_render	()
 	// fill buffers
 	u32			_offset				= 0;
 	FVF::L*		_v					= (FVF::L*)RCache.Vertex.Lock(_pcount*3,f_geom.stride(),_offset);
-	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
+	float		ssaRange			= r_ssaLOD_A - r_ssaLOD_B;
+	Fvector		_ambient_f			= g_pGamePersistent->Environment.CurrentEnv.ambient;
+	u32			_ambient			= color_rgba_f	(_ambient_f.x,_ambient_f.y,_ambient_f.z,0);
 	for (u32 _it = 0; _it<f_portals.size(); _it++)
 	{
-		std::pair<CPortal*, float>&	fp		= f_portals[_it];
+		std::pair<CPortal*, float>&	fp		= f_portals	[_it]	;
 		CPortal*					_P		= fp.first	;
 		float						_ssa	= fp.second	;
-		float		ssaDiff					= _ssa-r_ssaLOD_B;
-		float		ssaScale				= ssaDiff/ssaRange;
+		float		ssaDiff					= _ssa-r_ssaLOD_B	;
+		float		ssaScale				= ssaDiff/ssaRange	;
 		int			iA						= iFloor((1-ssaScale)*255.5f);	clamp(iA,0,255);
-		u32							_clr	= color_rgba(0,0,0,u32(iA));	
+		u32							_clr	= subst_alpha(_ambient,u32(iA));	
 
 		// fill polys
 		u32			_polys					= _P->getPoly().size()-2;
