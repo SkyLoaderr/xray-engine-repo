@@ -419,7 +419,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	if( !sndHit[hit_type].empty() ){
 		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
 		S.play_at_pos(this, Position());
-		if(hit_type = ALife::eHitTypeExplosion){
+		if(ALife::eHitTypeExplosion == hit_type){
 			S.set_volume(10.0f);
 			if(!m_sndShockEffector)
 				m_sndShockEffector = xr_new<SndShockEffector>();
