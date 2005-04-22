@@ -649,7 +649,7 @@ void CMissile::activate_physic_shell()
 		MSG1("go active inherited");
 		return;
 	}
-	
+
 	Fvector l_vel;
 	l_vel.set(m_throw_direction);
 	l_vel.normalize_safe();
@@ -664,6 +664,14 @@ void CMissile::activate_physic_shell()
 	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 
 	XFORM().set(m_throw_matrix);
+
+	CEntityAlive* EA=smart_cast<CEntityAlive*>(H_Root());
+	Fvector parent_vel;
+	if(EA){
+		EA->PMovement()->GetCharacterVelocity(parent_vel);
+		l_vel.add(parent_vel);
+	}
+
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	//m_pPhysicsShell->AddTracedGeom();
 	m_pPhysicsShell->SetAllGeomTraced();
