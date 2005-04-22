@@ -512,7 +512,7 @@ void SceneBuilder::BuildHemiLights(u8 quality, LPCSTR lcontrol)
         SHemiData		h_data;
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
-        xrHemisphereBuild(quality,2.f,hemi_callback,&h_data);
+        xrHemisphereBuild(3/*quality*/,2.f,hemi_callback,&h_data);   //. hack
         int control_ID	= BuildLightControl(lcontrol);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
