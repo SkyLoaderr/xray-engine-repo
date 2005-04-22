@@ -173,22 +173,34 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 
 }
 
+bool g_bConsoleCommandsCreated = false;
+
 void game_sv_mp::Create (shared_str &options)
 {
 	SetVotingActive(false);
 	inherited::Create(options);
-	//-------------------------------------------------------------------
+	//-------------------------------------------------------------------	
+	if (!g_bConsoleCommandsCreated)
+	{
+		g_bConsoleCommandsCreated = true;
+	}
+};
+
+void game_sv_mp::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
 	string64	StartTime, TimeFactor;
 	strcpy(StartTime,get_option_s		(*options,"estime","12:00:00"));
 	strcpy(TimeFactor,get_option_s		(*options,"etimef","1"));
-	
+
 	u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
 	sscanf				(StartTime,"%d:%d:%d.%d",&hours,&mins,&secs,&milisecs);
 	u64 StartEnvGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
 	float EnvTimeFactor = float(atof(TimeFactor))*GetEnvironmentGameTimeFactor();
 
 	SetEnvironmentGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
-//	SetGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
+	//------------------------------------------------------------------
 };
 
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)

@@ -49,6 +49,7 @@ void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 			if (pServer->game && pServer->game->CanHaveFriendlyFire())
 			{			
 				qr2_buffer_add_int(outbuf, pServer->game->isFriendlyFireEnabled());
+				break;
 			}
 			qr2_buffer_add_int(outbuf, 0);
 		}break;

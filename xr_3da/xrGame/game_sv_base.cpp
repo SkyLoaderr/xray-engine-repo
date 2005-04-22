@@ -154,9 +154,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	P.w_s32			(round);
 	P.w_u32			(start_time);
 	P.w_u8			(u8(m_bVotingEnabled));
-	P.w_u8			(u8(m_bFriendlyIndicators));
-	P.w_u8			(u8(net_sv_control_hit));
-	P.w_u32			(m_u32ForceRespawn);
+	P.w_u8			(u8(net_sv_control_hit));	
 
 	// Players
 //	u32	p_count			= get_players_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);
@@ -323,23 +321,21 @@ void game_sv_GameState::Create					(shared_str &options)
 	xr_delete					(l_tpIniFile);
 
 	//---------------------------------------------------------------------
-	int iFF = get_option_i(*options,"ffire",0);
-	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
-	else m_fFriendlyFireModifier = 0.000001f;
+	ReadOptions(options);
+}
 
+void	game_sv_GameState::ReadOptions				(shared_str &options)
+{
 	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 0) * 1000;
-	
+
 	strcpy( MAPROT_LIST, get_option_s(*options, "maprot"));
 	if (MAPROT_LIST[0])
 	{
 		Console->ExecuteScript(MAPROT_LIST);
 	};
 
-	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;
-	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
-
-	m_u32ForceRespawn = get_option_i(*options, "frcrspwn", 0) * 1000;
-}
+	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;	
+};
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 {

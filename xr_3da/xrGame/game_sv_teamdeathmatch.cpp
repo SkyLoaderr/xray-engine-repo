@@ -7,18 +7,32 @@
 void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 {
 	inherited::Create					(options);
-//	fraglimit	= get_option_i		(*options,"fraglimit",0);
-//	timelimit	= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
-	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
 	
 	switch_Phase(GAME_PHASE_PENDING);
-///	switch_Phase(GAME_PHASE_INPROGRESS);
 	
 	game_TeamState td;
 	td.score		= 0;
 	td.num_targets	= 0;
 	teams.push_back(td);
 	teams.push_back(td);
+}
+
+void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
+	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
+
+	int iFF = get_option_i(*options,"ffire",0);
+	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
+	else m_fFriendlyFireModifier = 0.000001f;
+}
+
+void game_sv_TeamDeathmatch::net_Export_State						(NET_Packet& P, ClientID to)
+{
+	inherited::net_Export_State(P, to);
+	P.w_u8			(u8(m_bFriendlyIndicators));
 }
 
 u8 game_sv_TeamDeathmatch::AutoTeam() 

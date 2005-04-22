@@ -11,15 +11,6 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {
 	inherited::Create					(options);
 
-	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
-	artefactsNum						= u8(get_option_i(*options,"anum",1));
-	m_dwArtefactStayTime				= get_option_i(*options,"astime",3)*60000;
-	fraglimit = 0;	
-	//----------------------------------------------------------------------------
-	m_iReinforcementTime = 0;
-	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
-	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
-	//----------------------------------------------------------------------------
 	m_delayedRoundEnd = false;
 	m_eAState = NONE;
 	//---------------------------------------------------
@@ -75,6 +66,22 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	bNoLostMessage = false;
 	m_bArtefactWasBringedToBase = true;
 }
+
+void game_sv_ArtefactHunt::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
+	artefactsNum						= u8(get_option_i(*options,"anum",1));
+	m_dwArtefactStayTime				= get_option_i(*options,"astime",3)*60000;
+	fraglimit = 0;	
+	//----------------------------------------------------------------------------
+	m_iReinforcementTime = 0;
+	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
+	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
+	//----------------------------------------------------------------------------
+}
+
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
 {

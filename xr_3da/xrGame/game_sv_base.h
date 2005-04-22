@@ -17,16 +17,15 @@ class	game_sv_GameState	: public game_GameState
 {
 	typedef game_GameState inherited;
 protected:
-	float							m_fFriendlyFireModifier;
 	u32								m_RPointFreezeTime;
 	xrServer*						m_server;
 	GameEventQueue*					m_event_queue;
 	bool							m_bVotingEnabled;
-	bool							m_bFriendlyIndicators;
-	u32								m_u32ForceRespawn;
-	
+		
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
+
+	virtual		void				ReadOptions				(shared_str &options);
 
 public:
 #define		TEAM_COUNT 4
@@ -140,7 +139,7 @@ public:
 
 				void				AddDelayedEvent			(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 				void				ProcessDelayedEvent		();
-	virtual		BOOL				isFriendlyFireEnabled	()	{return (m_fFriendlyFireModifier > 0.1f);};
+	virtual		BOOL				isFriendlyFireEnabled	()	{return FALSE;};
 	virtual		BOOL				CanHaveFriendlyFire		()	= 0;
 	virtual		void				teleport_object			(NET_Packet &packet, u16 id);
 	virtual		void				add_restriction			(NET_Packet &packet, u16 id);

@@ -44,6 +44,31 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
 void	game_sv_Deathmatch::Create					(shared_str& options)
 {
 	inherited::Create						(options);
+	//-----------------------------------------------------------------------
+	/////////////////////////////////////////////////////////////////////////
+	LoadTeams();
+	/////////////////////////////////////////////////////////////////////////
+	switch_Phase(GAME_PHASE_PENDING);
+//	switch_Phase(GAME_PHASE_INPROGRESS);
+
+	::Random.seed(GetTickCount());
+	/////////////////////////////////////////////////////////////////////////
+	m_CorpseList.clear();
+
+	m_AnomalySetsList.clear();
+	m_AnomalySetID.clear();
+	m_dwLastAnomalySetID	= 1001;
+	m_dwLastAnomalyStartTime = 0;
+
+	m_delayedRoundEnd = false;
+	m_dwLastAnomalyStartTime = 0;
+}
+
+void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_u32ForceRespawn	= get_option_i(*options, "frcrspwn", 0) * 1000;
 	fraglimit			= get_option_i		(*options,"fraglimit",0);
 	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
 	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
@@ -76,25 +101,7 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 		if (m_dwSM_SwitchDelta<20) m_dwSM_SwitchDelta = 20;
 		m_dwSM_LastSwitchTime = 0;
 	}
-	//-----------------------------------------------------------------------
-	/////////////////////////////////////////////////////////////////////////
-	LoadTeams();
-	/////////////////////////////////////////////////////////////////////////
-	switch_Phase(GAME_PHASE_PENDING);
-//	switch_Phase(GAME_PHASE_INPROGRESS);
-
-	::Random.seed(GetTickCount());
-	/////////////////////////////////////////////////////////////////////////
-	m_CorpseList.clear();
-
-	m_AnomalySetsList.clear();
-	m_AnomalySetID.clear();
-	m_dwLastAnomalySetID	= 1001;
-	m_dwLastAnomalyStartTime = 0;
-
-	m_delayedRoundEnd = false;
-	m_dwLastAnomalyStartTime = 0;
-}
+};
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
@@ -1242,6 +1249,7 @@ void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, ClientID id_to)
 	P.w_s32			(fraglimit);
 	P.w_s32			(timelimit);
 //	P.w_u32			(damageblocklimit);
+	P.w_u32			(m_u32ForceRespawn);
 	P.w_u8			(u8(g_bDamageBlockIndicators));
 	// Teams
 	P.w_u16			(u16(teams.size()));

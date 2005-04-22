@@ -9,12 +9,15 @@ class game_cl_TeamDeathmatch :public game_cl_Deathmatch
 typedef game_cl_Deathmatch inherited;
 	CUIGameTDM*							m_game_ui;
 protected:
+	bool								m_bFriendlyIndicators;
+
 	virtual			void				shedule_Update			(u32 dt);
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 public :
 										game_cl_TeamDeathmatch	();
 	virtual								~game_cl_TeamDeathmatch	();
 	virtual			void				Init					();
+	virtual			void				net_import_state		(NET_Packet& P);
 	virtual			CUIGameCustom*		createGameUI			();
 	virtual			void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst);
 	

@@ -23,6 +23,7 @@ public :
 	u32								damageblocklimit;//dm,tdm
 	bool							g_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+	u32								m_u32ForceRespawn;
 	string64						WinnerName;
 
 	virtual		CUIGameCustom*		createGameUI			();

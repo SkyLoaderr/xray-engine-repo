@@ -29,6 +29,7 @@ game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 	m_game_ui			= NULL;
 
 	m_bShowPlayersNames = false;
+	m_bFriendlyIndicators = false;
 }
 void game_cl_TeamDeathmatch::Init ()
 {
@@ -54,6 +55,11 @@ game_cl_TeamDeathmatch::~game_cl_TeamDeathmatch()
 	xr_delete(pSkinMenuTeam2);
 }
 
+void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
+{
+	inherited::net_import_state	(P);
+	m_bFriendlyIndicators = !!P.r_u8();
+}
 void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
