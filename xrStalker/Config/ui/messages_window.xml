@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<window>
+    <!-- PREFIX -->
+	<chat_prefix x="20" y="385" width="50" height="30">
+		<text font="letterica18" r="225" g="225" b="250"></text>
+	</chat_prefix>
+
+	<!-- EDIT BOX -->
+	<chat_edit_box x="70" y="385" width="620" height="30">
+		<text font="letterica18" r="225" g="225" b="250"></text>
+	</chat_edit_box>
+
+	<!-- CHAT LOG -->
+	<chat_log_list x="20" y="220" width="324" height="160" item_height = "16" fade="1000">
+		<font font="letterica16" r="255" g="255" b="255"/>
+	</chat_log_list>
+	
+	<!-- GAME LOG -->
+	<mp_log_list x="20" y="410" width="344" height="270" item_height = "30" fade="1000">
+		<font font="medium" r="255" g="255" b="255"/>
+	</mp_log_list>
+	
+	<sp_log_list x="15" y="465" width="525" height="220" item_height="70"/>
+	<sp_log_list2 x="100" y="650" width="824" height="100" item_height="70"/>
+</window>
