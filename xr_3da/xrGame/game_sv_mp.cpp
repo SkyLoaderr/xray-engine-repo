@@ -184,12 +184,6 @@ void game_sv_mp::Create (shared_str &options)
 	{
 		g_bConsoleCommandsCreated = true;
 	}
-};
-
-void game_sv_mp::ReadOptions				(shared_str &options)
-{
-	inherited::ReadOptions(options);
-	//-------------------------------
 	string64	StartTime, TimeFactor;
 	strcpy(StartTime,get_option_s		(*options,"estime","12:00:00"));
 	strcpy(TimeFactor,get_option_s		(*options,"etimef","1"));

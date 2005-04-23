@@ -20,12 +20,14 @@ protected:
 	u32								m_RPointFreezeTime;
 	xrServer*						m_server;
 	GameEventQueue*					m_event_queue;
-	bool							m_bVotingEnabled;
+	BOOL							m_bVotingEnabled;
 		
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 
 	virtual		void				ReadOptions				(shared_str &options);
+	virtual		void				ConsoleCommands_Create	();
+	virtual		void				ConsoleCommands_Clear	();
 
 public:
 #define		TEAM_COUNT 4
@@ -65,7 +67,7 @@ public:
 	virtual		void				OnPrevMap				()									{}
 	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
 	
-	virtual		bool				IsVoteEnabled			()	{return m_bVotingEnabled;};
+	virtual		BOOL				IsVoteEnabled			()	{return m_bVotingEnabled;};
 	virtual		bool				IsVotingActive			()	{ return false; };
 	virtual		void				SetVotingActive			( bool Active )	{ };
 	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender)			{};
@@ -150,6 +152,54 @@ public:
 	virtual		shared_str			level_name				(const shared_str &server_options) const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+//---------------------------------------------------------------------------
+#include "../xr_ioconsole.h"
+#include "../xr_ioc_cmd.h"
+
+#define CMD_ADD(cls,p1,p2,p3,p4,ctrl,p0)		{ if (!ctrl) {CMD4(cls,p1,(int*)p2,p3,p4); } \
+												else {sprintf(p0,p1 " #set_%p", p2); Console->Execute(p0);}}
+#define CMD_CLEAR(p1)							{Console->Execute(p1 " #set_0");}
+
+class CCC_SV_Int;
+class CCC_SV_Int : public CCC_Integer {
+protected:
+	int StoredValue;
+public:
+	CCC_SV_Int(LPCSTR N, int *pValue,int _min=0, int _max=999) :
+	  CCC_Integer(N,pValue,_min,_max),
+		  StoredValue(*pValue)
+	  {};
+
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  if (strstr(args, "#set_"))
+		  {			  
+			  int* pNewValue = NULL;
+			  sscanf(args+5, "%x", &pNewValue);
+			  if (NULL == pNewValue)
+			  {
+				  value = &StoredValue;
+			  }
+			  else
+			  {
+				  *pNewValue = StoredValue;
+				  value = pNewValue;
+			  };			  
+			  return;
+		  };
+
+		  CCC_Integer::Execute(args);
+		  StoredValue = *value;
+	  }
+
+	  virtual void	Save	(IWriter *F)	{};
+	  virtual void	Status	(TStatus& S)
+	  {
+		  CCC_Integer::Status(S);
+	  }
+};
+//---------------------------------------------------------------
 add_to_type_list(game_sv_GameState)
 #undef script_type_list
 #define script_type_list save_type_list(game_sv_GameState)

@@ -16,6 +16,19 @@
 game_sv_Deathmatch::game_sv_Deathmatch()
 {
 	type = GAME_DEATHMATCH;
+	
+	m_dwLastAnomalySetID	= 1001;
+	m_dwLastAnomalyStartTime = 0;
+
+	m_delayedRoundEnd = false;
+	m_dwLastAnomalyStartTime = 0;
+
+	m_bSpectatorMode = false;
+	m_dwSM_CurViewEntity = 0;
+	m_pSM_CurViewEntity = NULL;
+	m_dwSM_LastSwitchTime = 0;
+
+	m_bDamageBlockIndicators = false;
 };
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
@@ -39,6 +52,8 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
 	};
 	
 	m_AnomalySetID.clear();
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_CLEAR("sv_dmgblockindicator");
 };
 
 void	game_sv_Deathmatch::Create					(shared_str& options)
@@ -56,52 +71,8 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	m_CorpseList.clear();
 
 	m_AnomalySetsList.clear();
-	m_AnomalySetID.clear();
-	m_dwLastAnomalySetID	= 1001;
-	m_dwLastAnomalyStartTime = 0;
-
-	m_delayedRoundEnd = false;
-	m_dwLastAnomalyStartTime = 0;
+	m_AnomalySetID.clear();	
 }
-
-void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
-{
-	inherited::ReadOptions(options);
-	//-------------------------------
-	m_u32ForceRespawn	= get_option_i(*options, "frcrspwn", 0) * 1000;
-	fraglimit			= get_option_i		(*options,"fraglimit",0);
-	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
-	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
-
-	if (get_option_i(*options,"dmbi",0) != 0)
-		g_bDamageBlockIndicators	= true;
-	else 
-		g_bDamageBlockIndicators	= false;
-
-	if (get_option_i(*options,"ans",1) != 0)
-		m_bAnomaliesEnabled	= true;
-	else 
-		m_bAnomaliesEnabled	= false;
-	m_dwAnomalySetLengthTime = get_option_i(*options, "anslen", 60)*60000; //in (ms)
-	//-----------------------------------------------------------------------
-	int		SpectatorMode = -1;
-	m_dwSM_CurViewEntity = 0;
-	m_pSM_CurViewEntity = NULL;
-	if (!g_pGamePersistent->bDedicatedServer)
-	{
-		SpectatorMode = get_option_i		(*options,"spectr",-1);	// in (ms)
-		if (SpectatorMode > 0) SpectatorMode *= 1000;
-	};
-	if (SpectatorMode<0)
-		m_bSpectatorMode = false;
-	else
-	{
-		m_bSpectatorMode = true;
-		m_dwSM_SwitchDelta = SpectatorMode;
-		if (m_dwSM_SwitchDelta<20) m_dwSM_SwitchDelta = 20;
-		m_dwSM_LastSwitchTime = 0;
-	}
-};
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
@@ -1250,7 +1221,7 @@ void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, ClientID id_to)
 	P.w_s32			(timelimit);
 //	P.w_u32			(damageblocklimit);
 	P.w_u32			(m_u32ForceRespawn);
-	P.w_u8			(u8(g_bDamageBlockIndicators));
+	P.w_u8			(u8(m_bDamageBlockIndicators));
 	// Teams
 	P.w_u16			(u16(teams.size()));
 	for (u32 t_it=0; t_it<teams.size(); ++t_it)
@@ -1739,3 +1710,64 @@ void	game_sv_Deathmatch::Check_ForClearRun		(game_PlayerState* ps)
 	
 	Player_AddMoney(ps, pTeam->m_iM_ClearRunBonus);	
 };
+
+//---------------------------------------------------------------------
+void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_u32ForceRespawn	= get_option_i		(*options, "frcrspwn", 0) * 1000;
+	fraglimit			= get_option_i		(*options,"fraglimit",0);
+	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
+	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	m_bDamageBlockIndicators = (get_option_i(*options,"dmbi",0) != 0);
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	m_bAnomaliesEnabled = (get_option_i(*options,"ans",1) != 0);
+	m_dwAnomalySetLengthTime = get_option_i(*options, "anslen", 60)*60000; //in (ms)
+	//-----------------------------------------------------------------------
+	m_bSpectatorMode = false;
+	if (!g_pGamePersistent->bDedicatedServer && (get_option_i(*options,"spectr",-1) != -1))
+	{
+		m_bSpectatorMode = true;
+		m_dwSM_SwitchDelta =  get_option_i(*options,"spectr",0)*1000;
+		if (m_dwSM_SwitchDelta<1000) m_dwSM_SwitchDelta = 1000;
+	};
+};
+
+static bool g_bConsoleCommandsCreated_DM = false;
+void game_sv_Deathmatch::ConsoleCommands_Create	()
+{
+	inherited::ConsoleCommands_Create();
+	//-------------------------------------
+	string1024 Cmnd;
+	//-------------------------------------	
+	CMD_ADD(CCC_SV_Int,"sv_forcerespawn", &m_u32ForceRespawn,0,60000,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_fraglimit", &fraglimit, 0,100,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_timelimit", &timelimit, 0,3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_ADD(CCC_SV_Int,"sv_dmgblockindicator", &m_bDamageBlockIndicators, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_dmgblocktime", &damageblocklimit, 0, 300000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_ADD(CCC_SV_Int,"sv_anomalies_enabled", &m_bAnomaliesEnabled, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_anomalies_length", &m_dwAnomalySetLengthTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//-------------------------------------
+	g_bConsoleCommandsCreated_DM = true;
+};
+
+void game_sv_Deathmatch::ConsoleCommands_Clear	()
+{
+	inherited::ConsoleCommands_Create();
+	//-----------------------------------
+	CMD_CLEAR("sv_forcerespawn");
+	CMD_CLEAR("sv_fraglimit");
+	CMD_CLEAR("sv_timelimit");
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_CLEAR("sv_dmgblockindicator");
+	CMD_CLEAR("sv_dmgblocktime");
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_CLEAR("sv_anomalies_enabled");
+	CMD_CLEAR("sv_anomalies_length");
+
+};
+//-----------------------------------------------------------------------------

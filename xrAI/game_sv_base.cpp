@@ -322,6 +322,7 @@ void game_sv_GameState::Create					(shared_str &options)
 
 	//---------------------------------------------------------------------
 	ReadOptions(options);
+	ConsoleCommands_Create();
 }
 
 void	game_sv_GameState::ReadOptions				(shared_str &options)
@@ -335,6 +336,23 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 	};
 
 	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;	
+};
+//-----------------------------------------------------------
+static bool g_bConsoleCommandsCreated_SV_Base = false;
+void	game_sv_GameState::ConsoleCommands_Create	()
+{
+	string1024 Cmnd;
+	//---------------------------------------------------------
+	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", &m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+	CMD_ADD(CCC_SV_Int, "sv_voting_enabled", &m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+	//---------------------------------------------------------
+	g_bConsoleCommandsCreated_SV_Base = true;
+};
+
+void	game_sv_GameState::ConsoleCommands_Clear	()
+{
+	CMD_CLEAR("sv_rpoint_freeze_time");
+	CMD_CLEAR("sv_voting_enabled");
 };
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
@@ -481,6 +499,8 @@ game_sv_GameState::~game_sv_GameState()
 	SaveMapList();
 
 	m_pMapRotation_List.clear();
+	//-------------------------------------------------------
+	ConsoleCommands_Clear();
 }
 /*
 ALife::_TIME_ID game_sv_GameState::GetGameTime()
@@ -696,3 +716,4 @@ shared_str game_sv_GameState::level_name		(const shared_str &server_options) con
 	VERIFY				(_GetItemCount(*server_options,'/'));
 	return				(_GetItem(*server_options,0,l_name,'/'));
 }
+

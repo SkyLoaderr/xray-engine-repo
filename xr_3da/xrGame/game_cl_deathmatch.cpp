@@ -80,7 +80,7 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	P.r_s32			(timelimit);
 //	P.r_u32			(damageblocklimit);
 	m_u32ForceRespawn = P.r_u32();
-	g_bDamageBlockIndicators = !!P.r_u8();
+	m_bDamageBlockIndicators = !!P.r_u8();
 	// Teams
 	// Teams
 	u16				t_count;
@@ -609,7 +609,7 @@ bool		game_cl_Deathmatch::IsEnemy					(game_PlayerState* ps)
 
 void		game_cl_Deathmatch::OnRender				()
 {
-	if (g_bDamageBlockIndicators && local_player)
+	if (m_bDamageBlockIndicators && local_player)
 	{
 		PLAYERS_MAP_IT it = players.begin();
 		for(;it!=players.end();++it)
@@ -621,7 +621,7 @@ void		game_cl_Deathmatch::OnRender				()
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
-			if (ps == local_player) continue;
+//			if (ps == local_player) continue;
 			if (!IsEnemy(ps)) continue;
 			cl_TeamStruct *pTS = &TeamList[ModifyTeam(ps->team)]; 
 

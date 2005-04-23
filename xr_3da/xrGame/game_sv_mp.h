@@ -2,6 +2,7 @@
 #include "game_sv_base.h"
 #include "game_sv_mp_team.h"
 
+
 class game_sv_mp :public game_sv_GameState
 {
 	typedef game_sv_GameState inherited;
@@ -18,8 +19,7 @@ protected:
 	bool			m_bVotingActive;
 	u32				m_uVoteEndTime;
 	shared_str		m_pVoteCommand;
-
-	virtual		void				ReadOptions				(shared_str &options);
+	
 protected:
 
 	virtual		void				SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill);

@@ -33,13 +33,15 @@ protected:
 	s32								fraglimit; //dm,tdm,ah
 	s32								timelimit; //dm
 	u32								damageblocklimit;//dm,tdm
-	bool							g_bDamageBlockIndicators;
+	BOOL							m_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
 	u32								m_u32ForceRespawn;
 
 	LPCSTR							pWinnigPlayerName;
 
 	virtual		void				ReadOptions				(shared_str &options);
+	virtual		void				ConsoleCommands_Create	();
+	virtual		void				ConsoleCommands_Clear	();
 	/////////////////////////////////////////////////////////////
 	DEF_VECTOR(ANOMALIES, xr_string);
 	DEF_VECTOR(ANOMALY_SETS, ANOMALIES);
@@ -49,7 +51,7 @@ protected:
 	u32								m_dwAnomalySetLengthTime;
 	u32								m_dwLastAnomalySetID;
 	u32								m_dwLastAnomalyStartTime;	
-	bool							m_bAnomaliesEnabled;
+	BOOL							m_bAnomaliesEnabled;
 
 	DEF_VECTOR(ANOMALIES_ID, u16);
 	DEF_VECTOR(ANOMALY_SETS_ID, ANOMALIES_ID);
@@ -162,10 +164,6 @@ public:
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 	virtual		void				check_InvinciblePlayers	();	
 	virtual		void				check_ForceRespawn		();
-
-	virtual		void				SetDmgBlock				(u32 DmgBlock) {damageblocklimit = DmgBlock*1000;};
-	virtual		u32					GetDmgBlock				() {return damageblocklimit/1000;};
-				
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

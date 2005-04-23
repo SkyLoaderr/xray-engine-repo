@@ -1056,39 +1056,6 @@ public:
 	}
 };
 
-class CCC_SV_DmgBlock : public CCC_Integer {
-protected:
-	int DmgBlock;
-public:
-	CCC_SV_DmgBlock(LPCSTR N, int _min=0, int _max=999) :
-	  CCC_Integer(N,&DmgBlock,_min,_max)
-	  {};
-
-	  virtual void	Execute	(LPCSTR args)
-	  {
-		  if (!OnServer())	return;
-		  if (GameID() == GAME_SINGLE) return;
-		  game_sv_Deathmatch* gameDM = smart_cast<game_sv_Deathmatch *>(Level().Server->game);
-		  if (!gameDM) return;
-		 
-	
-		  CCC_Integer::Execute(args);
-		  gameDM->SetDmgBlock(u32(DmgBlock));
-	  }
-
-	  virtual void	Save	(IWriter *F)	{};
-	  virtual void	Status	(TStatus& S)	
-	  { 
-		  S[0]=0; 
-		  if (!OnServer())	return;
-		  if (GameID() == GAME_SINGLE) return;
-		  game_sv_Deathmatch* gameDM = smart_cast<game_sv_Deathmatch *>(Level().Server->game);
-		  if (!gameDM) return;
-		  DmgBlock = gameDM->GetDmgBlock();
-		  CCC_Integer::Status(S);
-	  }
-};
-
 class CCC_SetWeather : public IConsole_Command {
 public:
 	CCC_SetWeather(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
@@ -1983,6 +1950,4 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,		"sv_weapon_remove",		&g_iWeaponRemove, -1, 1);
 	CMD4(CCC_Integer,		"cl_show_names",		&g_bShowPlayerNames, 0, 1);
-
-	CMD3(CCC_SV_DmgBlock,	"sv_dmgblock", 0, 60);
 }
