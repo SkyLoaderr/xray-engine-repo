@@ -62,6 +62,7 @@ void					CRender::create					()
 	m_skinning					= -1;
 
 	// disasm
+	o.newtc						= (strstr(Core.Params,"-newtc"))?		TRUE	:FALSE	;
 	o.disasm					= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
 	c_ldynamic_props			= "L_dynamic_props";
 
@@ -540,6 +541,11 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 	// options
+	if (o.newtc)		{
+		defines[def_it].Name		=	"USE_NEWTC";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
 	if (m_skinning<0)		{
 		defines[def_it].Name		=	"SKIN_NONE";
 		defines[def_it].Definition	=	"1";
