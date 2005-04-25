@@ -17,18 +17,6 @@ void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 	teams.push_back(td);
 }
 
-void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
-{
-	inherited::ReadOptions(options);
-	//-------------------------------
-	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
-	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
-
-	int iFF = get_option_i(*options,"ffire",0);
-	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
-	else m_fFriendlyFireModifier = 0.000001f;
-}
-
 void game_sv_TeamDeathmatch::net_Export_State						(NET_Packet& P, ClientID to)
 {
 	inherited::net_Export_State(P, to);
@@ -362,3 +350,38 @@ void	game_sv_TeamDeathmatch::OnFraglimitExceed		()
 	switch_Phase		(phase);
 	OnDelayedRoundEnd	("FRAG_limit");
 }
+//-----------------------------------------------
+void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
+	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
+
+	int iFF = get_option_i(*options,"ffire",0);
+	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
+	else m_fFriendlyFireModifier = 0.000001f;
+}
+
+static bool g_bConsoleCommandsCreated_TDM = false;
+void game_sv_TeamDeathmatch::ConsoleCommands_Create	()
+{
+	inherited::ConsoleCommands_Create();
+	//-------------------------------------
+	string1024 Cmnd;
+	//-------------------------------------	
+	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&m_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&m_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.000001f,200.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
+	//-------------------------------------
+	g_bConsoleCommandsCreated_TDM = true;
+};
+
+void game_sv_TeamDeathmatch::ConsoleCommands_Clear	()
+{
+	inherited::ConsoleCommands_Clear();
+	//-----------------------------------
+	CMD_CLEAR("sv_auto_team_balance");
+	CMD_CLEAR("sv_auto_team_balance");
+	CMD_CLEAR("sv_friendlyfire");
+};

@@ -67,22 +67,6 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	m_bArtefactWasBringedToBase = true;
 }
 
-void game_sv_ArtefactHunt::ReadOptions				(shared_str &options)
-{
-	inherited::ReadOptions(options);
-	//-------------------------------
-	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
-	artefactsNum						= u8(get_option_i(*options,"anum",1));
-	m_dwArtefactStayTime				= get_option_i(*options,"astime",3)*60000;
-	fraglimit = 0;	
-	//----------------------------------------------------------------------------
-	m_iReinforcementTime = 0;
-	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
-	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
-	//----------------------------------------------------------------------------
-}
-
-
 void	game_sv_ArtefactHunt::OnRoundStart			()
 {
 	inherited::OnRoundStart	();
@@ -741,7 +725,7 @@ BOOL	g_bBearerCantSprint = TRUE;
 void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
-	P.w_u8			(artefactsNum);
+	P.w_u8			(u8(m_dwArtefactsNum));
 	P.w_u16			(artefactBearerID);
 	P.w_u8			(teamInPossession);
 	P.w_u16			(m_dwArtefactID);
@@ -958,8 +942,8 @@ void	game_sv_ArtefactHunt::CheckForTeamElimination()
 void	game_sv_ArtefactHunt::CheckForTeamWin()
 {
 	u8 WinTeam = 0;
-	if (GetTeamScore(0) >= artefactsNum) WinTeam = 1;
-	else if (GetTeamScore(1) >= artefactsNum) WinTeam = 2;
+	if (GetTeamScore(0) >= m_dwArtefactsNum) WinTeam = 1;
+	else if (GetTeamScore(1) >= m_dwArtefactsNum) WinTeam = 2;
 	if (!WinTeam) return;
 	
 	OnTeamScore(WinTeam, false);
@@ -989,4 +973,44 @@ void	game_sv_ArtefactHunt::Check_ForClearRun		(game_PlayerState* ps)
 	if (!pTeam) return;	
 
 	Player_AddMoney(ps, pTeam->m_iM_ClearRunBonus);	
+};
+
+void game_sv_ArtefactHunt::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);
+	//-------------------------------
+	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
+	m_dwArtefactsNum					= get_option_i(*options,"anum",1);
+	m_dwArtefactStayTime				= get_option_i(*options,"astime",3)*60000;
+	fraglimit = 0;	
+	//----------------------------------------------------------------------------
+	m_iReinforcementTime = 0;
+	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
+	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
+	//----------------------------------------------------------------------------
+}
+
+static bool g_bConsoleCommandsCreated_AHUNT = false;
+void game_sv_ArtefactHunt::ConsoleCommands_Create	()
+{
+	inherited::ConsoleCommands_Create();
+	//-------------------------------------
+	string1024 Cmnd;
+	//-------------------------------------	
+	CMD_ADD(CCC_SV_Int,"sv_artefact_respawn_delta", (int*)&m_dwArtefactRespawnDelta,0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_artefacts_count", (int*)&m_dwArtefactsNum, 1,100,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_artefact_stay_time", (int*)&m_dwArtefactStayTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_reinforcement_time", (int*)&m_iReinforcementTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+	//-------------------------------------
+	g_bConsoleCommandsCreated_AHUNT = true;
+};
+
+void game_sv_ArtefactHunt::ConsoleCommands_Clear	()
+{
+	inherited::ConsoleCommands_Clear();
+	//-----------------------------------
+	CMD_CLEAR("sv_artefact_respawn_delta");
+	CMD_CLEAR("sv_artefacts_count");
+	CMD_CLEAR("sv_artefact_stay_time");
+	CMD_CLEAR("sv_reinforcement_time");
 };

@@ -1742,22 +1742,22 @@ void game_sv_Deathmatch::ConsoleCommands_Create	()
 	//-------------------------------------
 	string1024 Cmnd;
 	//-------------------------------------	
-	CMD_ADD(CCC_SV_Int,"sv_forcerespawn", &m_u32ForceRespawn,0,60000,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_forcerespawn", (int*)&m_u32ForceRespawn,0,60000,g_bConsoleCommandsCreated_DM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_fraglimit", &fraglimit, 0,100,g_bConsoleCommandsCreated_DM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_timelimit", &timelimit, 0,3600000,g_bConsoleCommandsCreated_DM,Cmnd);
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	CMD_ADD(CCC_SV_Int,"sv_dmgblockindicator", &m_bDamageBlockIndicators, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_dmgblocktime", &damageblocklimit, 0, 300000,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_dmgblockindicator", (int*)&m_bDamageBlockIndicators, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_dmgblocktime", (int*)&damageblocklimit, 0, 300000,g_bConsoleCommandsCreated_DM,Cmnd);
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	CMD_ADD(CCC_SV_Int,"sv_anomalies_enabled", &m_bAnomaliesEnabled, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_anomalies_length", &m_dwAnomalySetLengthTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_anomalies_enabled", (int*)&m_bAnomaliesEnabled, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_anomalies_length", (int*)&m_dwAnomalySetLengthTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_DM = true;
 };
 
 void game_sv_Deathmatch::ConsoleCommands_Clear	()
 {
-	inherited::ConsoleCommands_Create();
+	inherited::ConsoleCommands_Clear();
 	//-----------------------------------
 	CMD_CLEAR("sv_forcerespawn");
 	CMD_CLEAR("sv_fraglimit");

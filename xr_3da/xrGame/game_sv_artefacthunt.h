@@ -34,7 +34,7 @@ protected:
 	xr_vector<u8>					ArtefactsRPoints_ID;
 	u8								m_LastRespawnPointID;
 
-	u8								artefactsNum;//ah
+	int								m_dwArtefactsNum;//ah
 	u16								artefactBearerID;//ah,ZoneMap
 	u8								teamInPossession;//ah,ZoneMap
 
@@ -54,6 +54,8 @@ protected:
 	virtual		void				Check_ForClearRun		(game_PlayerState* ps);
 
 	virtual		void				ReadOptions				(shared_str &options);
+	virtual		void				ConsoleCommands_Create	();
+	virtual		void				ConsoleCommands_Clear	();
 
 public:
 

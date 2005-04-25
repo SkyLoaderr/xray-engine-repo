@@ -343,8 +343,8 @@ void	game_sv_GameState::ConsoleCommands_Create	()
 {
 	string1024 Cmnd;
 	//---------------------------------------------------------
-	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", &m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
-	CMD_ADD(CCC_SV_Int, "sv_voting_enabled", &m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", (int*)&m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+	CMD_ADD(CCC_SV_Int, "sv_voting_enabled", (int*)&m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
 	//---------------------------------------------------------
 	g_bConsoleCommandsCreated_SV_Base = true;
 };

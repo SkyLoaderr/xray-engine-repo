@@ -8,8 +8,8 @@ private:
 	typedef game_sv_Deathmatch inherited;
 
 protected:
-	bool		m_bAutoTeamBalance;
-	bool		m_bFriendlyIndicators;
+	BOOL		m_bAutoTeamBalance;
+	BOOL		m_bFriendlyIndicators;
 	float		m_fFriendlyFireModifier;
 
 
@@ -17,6 +17,9 @@ protected:
 	virtual		bool				HasChampion				();
 		
 	virtual		void				ReadOptions				(shared_str &options);
+	virtual		void				ConsoleCommands_Create	();
+	virtual		void				ConsoleCommands_Clear	();
+
 public:	
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
 	virtual		void				Create					(shared_str& options);
