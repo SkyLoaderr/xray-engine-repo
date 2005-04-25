@@ -517,13 +517,6 @@ function mil_bomb_explode (actor, npc)
     end
     source:explode (0)
 
-    --local ps = particle ("explosions\\expl_09", "link",
-                         --particle_params (vector():set(0,0,0),
-                                          --vector():set(0,0,0),
-                                          --vector():set(1,0,0)),false)
-    --local snd = sound_object ("weapons\\f1_explode")
-    --action (source, ps, cond (cond.time_end, 1000))
-    --snd:play_at_pos (source, source:position ())
 end
 
 -- GARBAGE
