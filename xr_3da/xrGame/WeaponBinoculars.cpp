@@ -60,9 +60,10 @@ void CWeaponBinoculars::OnZoomIn		()
 		m_binoc_vision = xr_new<CBinocularsVision>(this);
 	}
 
-	m_fZoomFactor = m_fRTZoomFactor;
 	inherited::OnZoomIn();
+	m_fZoomFactor = m_fRTZoomFactor;
 }
+
 void CWeaponBinoculars::OnZoomOut		()
 {
 	if(H_Parent() && IsZoomed() && !IsRotatingToZoom())
@@ -71,9 +72,9 @@ void CWeaponBinoculars::OnZoomOut		()
 		bool hud_mode = (Level().CurrentEntity() == H_Parent());	
 		HUD_SOUND::PlaySound(sndZoomOut, H_Parent()->Position(), H_Parent(), hud_mode);
 		xr_delete(m_binoc_vision);
+	
+		m_fRTZoomFactor = m_fZoomFactor;//store current
 	}
-
-	m_fRTZoomFactor = m_fZoomFactor;//store current
 	inherited::OnZoomOut();
 }
 
