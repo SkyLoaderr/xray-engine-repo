@@ -8186,6 +8186,9 @@
 							RelativePath="game_sv_base.h">
 						</File>
 						<File
+							RelativePath=".\game_sv_base_console_vars.cpp">
+						</File>
+						<File
 							RelativePath=".\game_sv_base_console_vars.h">
 						</File>
 						<File

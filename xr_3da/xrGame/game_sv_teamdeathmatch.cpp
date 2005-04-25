@@ -372,7 +372,7 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Create	()
 	//-------------------------------------	
 	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&m_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&m_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
-	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.000001f,200.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
+	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.000001f,2.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_TDM = true;
 };
