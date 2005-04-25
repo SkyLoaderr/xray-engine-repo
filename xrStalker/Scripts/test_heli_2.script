@@ -43,7 +43,7 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
 	self.m_heliObject:GoPatrolByRoundPath(enemy:position(), 50, true)
 --	self.m_heliObject:SetSpeedInDestPoint(5.0); --m/sec (in dest point)
 --	self.m_heliObject:GoPatrolByPatrolPath("heli_way_2",0)
---	self.m_heliObject:LookAtPoint(enemy:position(),true)
+	self.m_heliObject:LookAtPoint(enemy:position(),true)
 --	self.m_heliObject:SetCurrVelocity(30.0) -- m/sec (max)
 end
 
