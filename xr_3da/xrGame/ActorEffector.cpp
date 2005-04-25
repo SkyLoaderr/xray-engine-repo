@@ -192,6 +192,7 @@ SndShockEffector::~SndShockEffector	()
 {
 	psSoundVEffects		= m_stored_eff_volume;
 	psSoundVMusic		= m_stored_music_volume;
+	Level().Cameras.RemoveEffector(cefppHit);
 }
 
 bool SndShockEffector::Active()
