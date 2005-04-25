@@ -13,6 +13,7 @@ class CHUDManager;
 class CWeapon;
 class CUIGameCustom;
 class CUIMainIngameWnd;
+class CUIMessagesWindow;
 
 #define MAX_GROUPS		10
 #define MAX_UIMESSAGES	7
@@ -71,6 +72,7 @@ class CUI			: public CDialogHolder //ISheduled
 public:
 	CHUDManager*			m_Parent;
 	CUIMainIngameWnd*		UIMainIngameWnd;
+	CUIMessagesWindow*		m_pMessagesWnd;
 public:
 							CUI						(CHUDManager* p);
 	virtual					~CUI					();

@@ -9784,6 +9784,12 @@
 						RelativePath=".\ui\UIMainIngameWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIMessagesWindow.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMessagesWindow.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMotionIcon.cpp">
 					</File>
 					<File

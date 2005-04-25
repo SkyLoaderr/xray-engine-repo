@@ -11,6 +11,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIMessagesWindow.h"
 
 #define MSGS_OFFS 510
 
@@ -19,6 +20,7 @@ CUI::CUI(CHUDManager* p)
 {
 	UIMainIngameWnd	= xr_new<CUIMainIngameWnd>	();
 	UIMainIngameWnd->Init						();
+	m_pMessagesWnd = xr_new<CUIMessagesWindow>();
 
 	m_Parent		= p;
 	pUIGame			= 0;
@@ -75,6 +77,8 @@ void CUI::UIOnFrame()
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
 
+	m_pMessagesWnd->Update();
+
 #ifdef DEBUG
 	if (!messages.empty()){
 		m_Parent->Font().pFontSmall->OutSet(0,msgs_offs);
@@ -100,13 +104,6 @@ void CUI::UIOnFrame()
 
 bool CUI::Render()
 {
-	DoRenderDialogs();
-	// out GAME-style depend information
-/*	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
-	for(; it!=m_dialogsToRender.end();++it)
-		if((*it)->IsShown())
-			(*it)->Draw();
-*/
 	if (pUIGame) pUIGame->Render	();
 
 	//----------
@@ -115,13 +112,25 @@ bool CUI::Render()
 	{
 		//Draw main window and its children
 		if(m_bShowIndicators)
-			UIMainIngameWnd->Draw			();
+		{
+			UIMainIngameWnd->Draw();
+			m_pMessagesWnd->Draw();
+		}
 		else
-			UIMainIngameWnd->DrawPdaMessages();
+		{
+			m_pMessagesWnd->DrawPdaMessages();			
+//			UIMainIngameWnd->DrawPdaMessages();
+		}
 		//render cursor only when it visible
 		if(GetUICursor()->IsVisible())
             GetUICursor()->Render();
-	}	
+	}
+	else
+		m_pMessagesWnd->Draw();
+
+	
+
+	DoRenderDialogs();
 
 	return false;
 }

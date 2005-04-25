@@ -28,9 +28,9 @@ protected:
 
 	CL_TEAM_DATA_LIST				TeamList;
 
-	CUIChatWnd*						pChatWnd;
-	CUIChatLog*						pChatLog;
-	CUIGameLog*						pGameLog;
+//	CUIChatWnd*						pChatWnd;
+//	CUIChatLog*						pChatLog;
+//	CUIGameLog*						pGameLog;
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);

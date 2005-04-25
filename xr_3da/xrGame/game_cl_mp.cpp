@@ -13,7 +13,7 @@
 #include <dinput.h>
 #include "UIGameCustom.h"
 #include "ui/UIInventoryUtilities.h"
-#include "ui/UIMainIngameWnd.h"
+#include "ui/UIMessagesWindow.h"
 #include "CustomZone.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
@@ -26,19 +26,11 @@
 
 game_cl_mp::game_cl_mp()
 {
-	pChatWnd		= NULL;
-	pChatLog		= NULL;
-	pGameLog		= NULL;
-
 	m_bVotingActive = false;
 };
 
 game_cl_mp::~game_cl_mp()
 {
-	xr_delete(pChatWnd);
-	xr_delete(pChatLog);
-	xr_delete(pGameLog);
-
 	CL_TEAM_DATA_LIST_it it = TeamList.begin();
 	for(;it!=TeamList.end();++it)
 	{
@@ -64,18 +56,19 @@ game_cl_mp::~game_cl_mp()
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
 {
-	pChatLog = xr_new<CUIChatLog>();
-	pChatLog->Init();
+	//pChatLog = xr_new<CUIChatLog>();
+	//pChatLog->Init();
 
-	pGameLog = xr_new<CUIGameLog>();
-	pGameLog->Init();
+	//pGameLog = xr_new<CUIGameLog>();
+	//pGameLog->Init();
 
 
-	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
-	pChatWnd->Init();
-	pChatWnd->SetOwner(this);
+	//pChatWnd = xr_new<CUIChatWnd>(pChatLog);
+	//pChatWnd->Init();
+	//pChatWnd->SetOwner(this);
 
-	HUD().GetUI()->UIMainIngameWnd->SetMPChatLog(pChatWnd, pGameLog);
+	//HUD().GetUI()->UIMainIngameWnd->SetMPChatLog(pChatWnd, pGameLog);
+	HUD().GetUI()->m_pMessagesWnd->SetChatOwner(this);
 
 	return NULL;
 };
@@ -173,9 +166,11 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 
 	if (Phase() == GAME_PHASE_INPROGRESS)
 	{
-		if ((kCHAT == key || kCHAT_TEAM == key) && pChatWnd)
+		if ((kCHAT == key || kCHAT_TEAM == key) /*&& pChatWnd*/)
 		{
 			shared_str prefix;
+
+			CUIChatWnd* pChatWnd = HUD().GetUI()->m_pMessagesWnd->GetChatWnd();
 
 			if (kCHAT_TEAM == key)
 			{
@@ -310,13 +305,18 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(ChatMsg);
 	
 	Msg("%s : %s", PlayerName, ChatMsg);
-	if (pChatLog) pChatLog->AddLogMessage(ChatMsg, PlayerName);
+	HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, PlayerName);
+//	if (pChatLog) pChatLog->AddLogMessage(ChatMsg, PlayerName);
 };
 
 void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 {
+
 //	if (pChatLog) pChatLog->AddLogMessage(msg, "");
-	if (pGameLog) pGameLog->AddLogMessage(msg);
+//	if (pGameLog) pGameLog->AddLogMessage(msg);
+#pragma todo("SATAN -> SATAN very very bad solution");
+	if (HUD().GetUI())
+        HUD().GetUI()->m_pMessagesWnd->AddLogMessage(msg);
 };
 //////////////////////////////////////////////////////////////////////////
 void game_cl_mp::shedule_Update(u32 dt)
@@ -661,6 +661,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	std::strcat(PlayerText, Text);
 //	CommonMessageOut(PlayerText);
 
-	if (pGameLog) pGameLog->AddLogMessage(KMS);
+	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
+//	if (pGameLog) pGameLog->AddLogMessage(KMS);
 //---------------------------------------------------------------	
 };

@@ -76,6 +76,19 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	pWnd->Init(x, y, width, height);
+
+   	string256 buf;
+	CGameFont *LocalFont = NULL;
+	u32 cl;
+
+	shared_str text_path = strconcat(buf,path,":font");
+	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+	if (LocalFont)
+	{
+		pWnd->SetFont(LocalFont);
+//		pWnd->SetTextColor(cl);
+	}
+
 	return true;
 }
 

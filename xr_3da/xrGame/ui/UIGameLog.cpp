@@ -32,14 +32,14 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	
 	pItem = xr_new<CUIPdaMsgListItem>(-1);	
 
-	UILogList.AddItem(pItem, -1); 
-	CUIListItem	*item = UILogList.GetItem(UILogList.GetSize() - 1);
+	/*UILogList.*/AddItem(pItem, -1); 
+	CUIListItem	*item = /*UILogList.*/GetItem(/*UILogList.*/GetSize() - 1);
 	VERIFY(item);
 
 	pItem->UIMsgText.SetText(msg.c_str());	
 	pItem->SetFont(GetFont());
 	int h = pItem->GetHeight();
-	int h2 = (int)pItem->UIMsgText.GetFont()->CurrentHeight();
+	int h2 = (int)pItem->UIMsgText.GetFont()->CurrentHeightRel();
 	int y = (h - h2)/2;	
 	pItem->UIMsgText.SetTextPos(0, y);
 	pItem->UIMsgText.SetWndPos(0, 0);	
@@ -58,7 +58,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	pItem = xr_new<CUIPdaKillMessage>(-1);
 
 	pItem->SetFont(GetFont());
-	UILogList.AddItem(pItem, -1); 
+	/*UILogList.*/AddItem(pItem, -1); 
 	
 	pItem->Init(msg);	
 	pItem->SetData(animation);
@@ -71,25 +71,32 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIGameLog::Init()
+void CUIGameLog::Init(int x, int y, int width, int height)
 {
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, CHAT_MP_WND_XML);
-	R_ASSERT2(xml_result, "xml file not found");
-
-	//	uiXml.Init("$game_data$", CHAT_MP_WND_XML);
-
-	CUIXmlInit xml_init;
+	CUIListWnd::Init(x, y, width, height);
 
 	// Chat log
-	AttachChild(&UILogList);
-	xml_init.InitListWnd(uiXml, "game_log_list", 0, &UILogList);
-	UILogList.EnableScrollBar(false);
+//	AttachChild(&UILogList);
+//	UILogList.Init(0, 0, width, height);
+
+	//xml_init.InitListWnd(xml_doc, "game_log_list", 0, &UILogList);
+	EnableScrollBar(false);
+
+	CUIStatic* ps = xr_new<CUIStatic>();
+	AttachChild(ps);
+	ps->Init(x, y, width, height);
+	ps->InitSharedTexture("ui_texture.xml","debug");
+	ps->SetStretchTexture(true);
 }
 
-void CUIGameLog::Draw(){
-	CUIDialogWnd::Draw();
-}
+//void CUIGameLog::SetFont(CGameFont* pFont){
+//	CUIWindow::SetFont(pFont);
+//	UILogList.SetFont(pFont);
+//}
+
+//void CUIGameLog::Draw(){
+//	CUIDialogWnd::Draw();
+//}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -101,9 +108,9 @@ void CUIGameLog::Update()
 
 	int invisible_items = 0;
 
-	for (int i = 0; i < UILogList.GetSize(); ++i)
+	for (int i = 0; i < /*UILogList.*/GetSize(); ++i)
 	{
-		pItem = UILogList.GetItem(i);
+		pItem = /*UILogList.*/GetItem(i);
 		CUIPdaMsgListItem	*pPItem = smart_cast<CUIPdaMsgListItem*>(pItem);
 
 		VERIFY(pItem);
@@ -130,7 +137,7 @@ void CUIGameLog::Update()
 
 	for (int i = 0; i < invisible_items; i++)
 	{
-		pItem = UILogList.GetItem(i);
+		pItem = /*UILogList.*/GetItem(i);
 		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
 		
 		xr_delete(anm);
@@ -141,6 +148,6 @@ void CUIGameLog::Update()
 	// Delete elements
 	for (ToDelIndexes_it it = toDelIndexes.begin(); it != toDelIndexes.end(); ++it)
 	{
-		UILogList.RemoveItem(*it);
+		/*UILogList.*/RemoveItem(*it);
 	}
 }

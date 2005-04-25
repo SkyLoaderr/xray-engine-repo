@@ -17,9 +17,11 @@
 #include "UIListWnd.h"
 #include "KillMessageStruct.h"
 
+class CUIXml;
+
 //////////////////////////////////////////////////////////////////////////
 
-class CUIGameLog: public CUIDialogWnd
+class CUIGameLog: public CUIListWnd
 {
 	typedef CUIDialogWnd inherited;
 
@@ -28,14 +30,16 @@ public:
 	virtual ~CUIGameLog();
 	void					AddLogMessage	(const shared_str& msg);
 	void					AddLogMessage	(KillMessageStruct& msg);
-	CUIListWnd &			GetLogList		()	{ return UILogList; }
-	void					Init			();
+//	CUIListWnd &			GetLogList		()	{ return UILogList; }
+	virtual void			Init			(int x, int y, int width, int height);
+//	virtual void			SetFont			(CGameFont* pFont);
 	virtual void			Update			();
-	virtual void			Draw			();
+//	virtual void			Draw			();
+//	CUIListWnd*				operator*() {return &UILogList;};
 
 private:
 	// Log list
-	CUIListWnd				UILogList;
+//	CUIListWnd				UILogList;
 	// Indexes to delete
 	typedef xr_set<int, std::greater<int> > ToDelIndexes;
 	typedef ToDelIndexes::iterator			ToDelIndexes_it;

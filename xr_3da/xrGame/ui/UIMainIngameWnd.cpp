@@ -5,6 +5,7 @@
 #include "stdafx.h"
 
 #include "UIMainIngameWnd.h"
+#include "UIMessagesWindow.h"
 #include "../UIZoneMap.h"
 
 
@@ -124,6 +125,14 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIStaticHealth);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
+//	UIStaticHealth.SetWndPos(500, 500);
+//	UIStaticHealth.InitTexture("ui\\ui_debug_red_n_black");
+		//.InitSharedTexture("ui_texture.xml", "riffle", true);
+		//SetShader(UI()->GetShader("ui\\ui_debug_red_n_black"));		
+//	UIStaticHealth.SetStretchTexture(true);
+//	UIStaticHealth.m_lines.SetWndRect(UIStaticHealth.GetAbsoluteRect());
+//	UIStaticHealth.m_lines.SetTextColor(color_argb(255,0,255,0));
+//	UIStaticHealth.m_lines.SetText("%c<255,255,255,255>white %c<default>green1 green2 green3 green4 green5 %c<red>red text %c<default>green6 green7 green8888 last_green");
 
 	AttachChild(&UIStaticArmor);
 	xml_init.InitStatic(uiXml, "static", 5, &UIStaticArmor);
@@ -167,34 +176,10 @@ void CUIMainIngameWnd::Init()
 	{
 		UIPdaOnline.Show(false);
 	}
-	
-	// У нас отдельные конфигурации листа для SP, и MP modes
-//	CUIXml uiXml2;
-//	if (GameID() != GAME_SINGLE)
-//		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_MULTIPLAYER_CFG);
-//	else
-//		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_SINGLEPLAYER_CFG);
-
-	AttachChild(&UIPdaMsgListWnd);
-
-	if (GameID() == GAME_SINGLE)
-        xml_init.InitListWnd(uiXml, "pda_msg_list_sp", 0, &UIPdaMsgListWnd);
-	else
-		xml_init.InitListWnd(uiXml, "pda_msg_list_mp", 0, &UIPdaMsgListWnd);
-
-	AttachChild(&UIPdaMsgListWnd2);
-	xml_init.InitListWnd(uiXml, "pda_msg_list_sp2", 0, &UIPdaMsgListWnd2);
-//	m_iPdaMessagesFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
-
-	UIPdaMsgListWnd.SetVertFlip(true);
-	UIPdaMsgListWnd.EnableScrollBar(false);
-	UIPdaMsgListWnd2.SetVertFlip(true);
-	UIPdaMsgListWnd2.EnableScrollBar(false);
 
 	// Для информационных сообщений
 	AttachChild(&UIInfoMessages);
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoMessages);
-//	m_iInfoMessagesFade_mSec = uiXml.ReadAttribInt("info_list", 0, "fade", 0);
 	UIInfoMessages.SetVertFlip(true);
 
 		
@@ -214,15 +199,6 @@ void CUIMainIngameWnd::Init()
 	//индикаторы 
 	UIZoneMap->Init();
 	UIZoneMap->SetScale(DEFAULT_MAP_SCALE);
-
-	//для отображения входящих сообщений PDA
-	UIPdaMsgListWnd.Show(true);
-	UIPdaMsgListWnd.Enable(false);
-	UIPdaMsgListWnd2.Show(true);
-	UIPdaMsgListWnd2.Enable(false);
-
-//	m_dwMaxShowTime		= pSettings->r_s32("maingame_ui", "pda_msgs_max_show_time");
-//	m_iInfosShowTime	= pSettings->r_s32("maingame_ui", "info_msgs_max_show_time");
 
 	// Подсказки, которые возникают при наведении прицела на объект
 	AttachChild(&UIStaticQuickHelp);
@@ -256,7 +232,6 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
-//	UIInvincibleIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	shared_str warningStrings[6] = 
 	{	
@@ -294,7 +269,6 @@ void CUIMainIngameWnd::Init()
 	{
 		AttachChild(&UIMoneyIndicator);
 		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
-//		ChangeTotalMoneyIndicator("100$");
 	}
 
 	// Flashing icons initialize
@@ -329,7 +303,6 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIMotionIcon);
 	xml_init.InitWindow(uiXml, "motion_icon", 0, &UIMotionIcon);
-//	UICarPanel.Show(true);
 
 	xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);
 	this->AttachChild(m_artefactPanel);	
@@ -404,15 +377,11 @@ void CUIMainIngameWnd::Draw()
 		zoom_mode = true;
 	}
 	
-	if(!scope_mode)
-	{
+//	if(!scope_mode)
+//	{
 		if(m_bShowHudInfo)
 		{
-			//отрисовать остальные иконки
-			UIPdaMsgListWnd2.Show(false);
 			CUIWindow::Draw();
-			UIPdaMsgListWnd2.Show(true);
-
 			UIZoneMap->Render();			
 		}
 		if (m_bShowHudCrosshair && !zoom_mode)
@@ -421,7 +390,7 @@ void CUIMainIngameWnd::Draw()
 			psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 		}
 		RenderQuickInfos();
-	}
+//	}
 
 	// Render claws
 	if (!m_ClawsAnimation.Done() && m_ClawsTexture.GetShader())
@@ -434,7 +403,7 @@ void CUIMainIngameWnd::Draw()
 		m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
 	}
 
-	DrawPdaMessages();
+//	DrawPdaMessages();
 
 #ifdef DEBUG
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
@@ -503,19 +472,6 @@ void CUIMainIngameWnd::SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog){
 	m_pMPChatWnd = pChat;
 	m_pMPLogWnd  = pLog;
 }
-
-void CUIMainIngameWnd::DrawPdaMessages(){
-	FadeUpdate(&UIPdaMsgListWnd);	
-	FadeUpdate(&UIPdaMsgListWnd2);	
-	UIPdaMsgListWnd2.Draw();
-
-	if (m_pMPChatWnd)
-		m_pMPChatWnd->Draw();
-	if (m_pMPLogWnd)
-		m_pMPLogWnd->Draw();
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::Update()
 {
@@ -684,7 +640,7 @@ void CUIMainIngameWnd::Update()
 	}
     
 
-	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
+	//if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
 
 
     // radar
@@ -760,9 +716,6 @@ void CUIMainIngameWnd::Update()
 		i = static_cast<EWarningIcons>(i + 1);
 	}
 
-	// Fade animations
-	FadeUpdate(&UIPdaMsgListWnd);//, m_iPdaMessagesFade_mSec);
-	FadeUpdate(&UIPdaMsgListWnd2);//, m_iPdaMessagesFade_mSec);
 	FadeUpdate(&UIInfoMessages);//, m_iInfoMessagesFade_mSec);
 
 	UpdateFlashingIcons();
@@ -1100,137 +1053,32 @@ void CUIMainIngameWnd::ShowAll()
 
 void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id)
 {
-	R_ASSERT(pSender);
-
-	CUIPdaMsgListItem* pItem = NULL;
-	CUIPdaMsgListItem* pItem2 = NULL;
-
-	pItem = xr_new<CUIPdaMsgListItem>();
-	pItem2 = xr_new<CUIPdaMsgListItem>();
-
-	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0);	/*---*/ UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem2, 0); 
-	UIPdaMsgListWnd.ScrollToBegin();				/*---*/ UIPdaMsgListWnd2.ScrollToBegin();
-
-	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
-	pItem2->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
-
-	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	CUIColorAnimatorWrapper *p2 = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-
-	R_ASSERT(p);
-	R_ASSERT(p2);
-
-	p->Cyclic(false);
-	p2->Cyclic(false);
-
-//	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
-	pItem->SetData(p);
-	pItem2->SetData(p2);
-
-
-	UIPdaMsgListWnd.Show(true);	/*---*/ UIPdaMsgListWnd2.Show(true);
-
-	if(msg == ePdaMsgInfo)
-	{
-		CInfoPortion info_portion;
-		info_portion.Load(info_id);
-		pItem->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
-		pItem2->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
-	}
-	else
-	{
-	//	pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
-	}
+	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(pSender, msg, info_id);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
-	int index = UIPdaMsgListWnd.FindItemWithValue(iValue);
-
-	if (index >= 0)
-	{
-        CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(index));
-        item->SetDelay(iDelay);
-
-		index = UIPdaMsgListWnd2.FindItemWithValue(iValue);
-
-#ifdef DEBUG
-		R_ASSERT2(index >= 0, "Item exist only in first list");
-#endif
-		item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd2.GetItem(index));
-        item->SetDelay(iDelay);
-
-		return true;
-	}
-
-	return false;
+	return HUD().GetUI()->m_pMessagesWnd->SetDelayForPdaMessage(iValue, iDelay);
 }
-
-//////////////////////////////////////////////////////////////////////////
-
-CUIPdaMsgListItem* CUIMainIngameWnd::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay){
-	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
-	pListWnd->AddItem<CUIListItem>(pItem, 0); 
-	pListWnd->ScrollToBegin();
-	// create animation
-	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	R_ASSERT(p);
-	// no loop animation
-	p->Cyclic(false);
-	// set animation wrapper as Item Data
-	pItem->SetData(p);
-	// set id to item. With this we can find item in list and for some manipulation
-	pItem->SetValue(iId);
-	pItem->UIMsgText.SetWndPos(0, 0);	
-	pItem->UIMsgText.SetText(message);	
-
-	return pItem;
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
 {
-	AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
-	AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
+	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(message, iId, iDelay);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR message, int iId, int iDelay)
 {
-	CUIPdaMsgListItem *pItem = AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
-	if (pItem)	
-		pItem->InitCharacter(pSender);
-
-	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
-	if (pItem)	
-		pItem->InitCharacter(pSender);	
+	HUD().GetUI()->m_pMessagesWnd->AddPersonalPdaMessage(pSender, message, iId, iDelay);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Irect originalRect, LPCSTR message, int iId, int iDelay)
 {
-	CUIPdaMsgListItem* pItem = AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
-
-	if (pItem)
-	{
-		pItem->UIIcon.InitTexture(textureName);
-		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.SetWndPos(originalRect.right, 0/*originalRect.bottom*/);
-	}
-
-	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
-
-	if (pItem)
-	{
-		pItem->UIIcon.InitTexture(textureName);
-		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.SetWndPos(originalRect.right, 0/*originalRect.bottom*/);
-	}
+	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(textureName, originalRect, message, iId, iDelay);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1529,20 +1377,6 @@ void CUIMainIngameWnd::AnimateContacts()
 	UIContactsAnimation.Reset();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-//void CUIMainIngameWnd::UpdateContactsAnimation()
-//{
-//	if (UIContactsFlicker.GetState() == CUIAnimationBase::easPlayed)
-//	{
-//		UIPdaOnline.Show(!!UIContactsFlicker.GetCurrentPhase());
-//	}
-//	else
-//		UIPdaOnline.Show(true);
-//}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName)
 {
 	if (m_ClawsTextures.find(monsterName) != m_ClawsTextures.end()) return;
@@ -1558,8 +1392,6 @@ void CUIMainIngameWnd::AddMonsterClawsEffect(const shared_str &monsterName, cons
 	m_ClawsTextures[monsterName] = sh;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::PlayClawsAnimation(const shared_str &monsterName)
 {
 	MonsterClawsTextures_it it = m_ClawsTextures.find(monsterName);
@@ -1567,19 +1399,12 @@ void CUIMainIngameWnd::PlayClawsAnimation(const shared_str &monsterName)
 	
 	m_ClawsTexture.SetShader	(*it->second);
 	m_ClawsAnimation.Reset		();
-
-//	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
-//	m_ClawsAnimation.Play();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::ShowBattery(bool on)
 {
 	UIStaticBattery.Show(on);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::SetBatteryCharge(float value)
 {
@@ -1587,8 +1412,6 @@ void CUIMainIngameWnd::SetBatteryCharge(float value)
 	clamp<s16>(pos, 0, 100);
 	UIBatteryBar.SetProgressPos(pos);
 }
-////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::SetPickUpItem	(CInventoryItem* PickUpItem)
 {
@@ -1631,7 +1454,6 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 		m_iGridWidth * INV_GRID_WIDTH,
 		m_iGridHeight * INV_GRID_HEIGHT);
 
-//	UIPickUpItemIcon.SetTextureScaleXY(scale, scale);
 	UIPickUpItemIcon.SetStretchTexture(true);
 
 	UIPickUpItemIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));

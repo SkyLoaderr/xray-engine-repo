@@ -18,19 +18,21 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIChatLog: public CUIDialogWnd
+class CUIChatLog: public CUIListWnd
 {
 	typedef CUIDialogWnd inherited;
 
 public:
 	void					AddLogMessage	(const shared_str &msg, const shared_str &author);
-	CUIListWnd &			GetLogList		()	{ return UILogList; }
-	void					Init			();
+//	CUIListWnd &			GetLogList		()	{ return UILogList; }
+	virtual void			Init			(int x, int y, int width, int height);
+//	virtual void			SetFont			(CGameFont* pFont);
 	virtual void			Update			();
+//	CUIListWnd*				operator*		() {return &UILogList;}
 
 private:
 	// Log list
-	CUIListWnd				UILogList;
+//	CUIListWnd				UILogList;
 	// Indexes to delete
 	typedef xr_set<int, std::greater<int> > ToDelIndexes;
 	typedef ToDelIndexes::iterator			ToDelIndexes_it;

@@ -15,6 +15,7 @@
 
 #include "UIDialogWnd.h"
 #include "UIEditBox.h"
+#include "xrXmlParser.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@ public:
 	virtual void		Show				();
 	virtual void		Hide				();
 	virtual void		SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
-	void				Init				();
+	void				Init				(CUIXml& uiXml);
 	void				Say					(const shared_str &phrase);
 	void				SetEditBoxPrefix	(const shared_str &prefix);
 	void				TeamChat			() { sendNextMessageToTeam = true; }

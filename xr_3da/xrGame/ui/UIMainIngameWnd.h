@@ -69,7 +69,7 @@ public:
 
 	virtual void Init();
 	virtual void Draw();
-	virtual void DrawPdaMessages();
+//	virtual void DrawPdaMessages();
 	virtual void Update();
 
 	bool OnKeyboardPress(int dik);
@@ -119,8 +119,8 @@ protected:
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
 	//список входящих сообщений PDA
-	CUIListWnd			UIPdaMsgListWnd;	
-	CUIListWnd			UIPdaMsgListWnd2; // We will draw this list if MainInGameWnd is hided
+//	CUIListWnd			UIPdaMsgListWnd2;	
+//	CUIListWnd			UIPdaMsgListWnd2; // We will draw this list if MainInGameWnd is hided
 	// Список входящих информационных сообщений
 	CUIListWnd			UIInfoMessages;
 	
