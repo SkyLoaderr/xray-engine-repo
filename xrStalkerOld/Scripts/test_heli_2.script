@@ -39,13 +39,13 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
 
 --    self.m_heliObject:SetDestPosition(enemy:position())
 	
---	self.m_heliObject:SetSpeedInDestPoint(25.0); --m/sec (in dest point)
---	self.m_heliObject:SetMaxVelocity(25.0) -- m/sec (max)
---	self.m_heliObject:GoPatrolByRoundPath(enemy:position(), 50, true)
-	
+	self.m_heliObject:SetSpeedInDestPoint(25.0); --m/sec (in dest point)
 	self.m_heliObject:SetMaxVelocity(25.0) -- m/sec (max)
-	self.m_heliObject:SetSpeedInDestPoint(20.0); --m/sec (in dest point)
-	self.m_heliObject:GoPatrolByPatrolPath("heli_way_2",0)
+	self.m_heliObject:GoPatrolByRoundPath(enemy:position(), 50, true)
+	
+--	self.m_heliObject:SetMaxVelocity(25.0) -- m/sec (max)
+--	self.m_heliObject:SetSpeedInDestPoint(20.0); --m/sec (in dest point)
+--	self.m_heliObject:GoPatrolByPatrolPath("heli_way_2",0)
 --	self.m_heliObject:LookAtPoint(enemy:position(),true)
 end
 
