@@ -9,13 +9,14 @@ CStatGraph::CStatGraph()
 	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);
 	OnDeviceCreate();
 	mn					= 0;
-	mx					= 0;
-	max_item_count		= 0;
+	mx					= 1;
+	max_item_count		= 1;
 	lt.set				(0,0);
-	rb.set				(0,0);
-	grid.set			(0,0);
+	rb.set				(200,200);
+	grid.set			(1,1);
 	grid_color			= 0xFF000000;
 	rect_color			= 0xFF000000;
+	grid_step.set		(1, 1);
 
 	AppendSubGraph(stCurve);
 }

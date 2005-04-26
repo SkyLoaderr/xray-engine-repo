@@ -7,7 +7,8 @@
 class CUIFrameRect: public CUICustomItem
 {
 	enum{
-		fmL=0,
+		fmBK=0,
+		fmL,
 		fmR,
 		fmT,
 		fmB,
@@ -17,19 +18,18 @@ class CUIFrameRect: public CUICustomItem
 		fmLB,
 		fmMax
 	};
-	CUIStaticItem	back;
 	CUIStaticItem	frame[fmMax];
 
 	enum {
-		flValidSize	=0x0001
+		flValidSize	= (1<<0),
+		flSingleTex	= (1<<1),
 	};
 protected:
-	u32				uFlags;
+	Flags32			uFlags;
 	void			UpdateSize		();
 public:
 	Ivector2		iPos;
 	Ivector2		iSize;
-	Irect			list_rect;
 public:
 	friend class CUIFrameWindow;
 
@@ -37,8 +37,8 @@ public:
 	void			Init			(LPCSTR base_name, int x, int y, int w, int h, DWORD align);
 	void			Render			();
 	void			SetColor		(u32 cl);
-	IC void			SetPos			(int left, int top)		{iPos.set(left,top);		uFlags &=~ flValidSize; }
-	IC void			SetSize			(int width, int height)	{iSize.set(width,height);	uFlags &=~ flValidSize; }
+	IC void			SetPos			(int left, int top)		{iPos.set(left,top);		uFlags.set(flValidSize,FALSE); }
+	IC void			SetSize			(int width, int height)	{iSize.set(width,height);	uFlags.set(flValidSize,FALSE); }
 };
 
 #endif //__XR_UIFRAMERECT_H__

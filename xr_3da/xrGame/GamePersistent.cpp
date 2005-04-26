@@ -13,6 +13,7 @@
 #include "level.h"
 #include "ParticlesObject.h"
 #include "actor.h"
+#include "StatGraph.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -22,8 +23,15 @@ static	void *	ode_alloc	(size_t size)								{ return xr_malloc(size);			}
 static	void *	ode_realloc	(void *ptr, size_t oldsize, size_t newsize)	{ return xr_realloc(ptr,newsize);	}
 static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
 
+CStatGraph* stat_graph = 0;
+
 CGamePersistent::CGamePersistent(void)
 {
+//	stat_graph					= xr_new<CStatGraph>();
+//	stat_graph->SetStyle		(CStatGraph::stCurve);
+//	stat_graph->SetRect			(40,200,600,100,0xFFFF0000,0x80000000);
+//	stat_graph->SetMinMax		(-0.f,1.f,300);
+
 	ambient_sound_next_time		= 0;
 	ambient_effect_next_time	= 0;
 	ambient_effect_stop_time	= 0;
@@ -190,6 +198,8 @@ void CGamePersistent::WeathersUpdate()
 	}
 }
 
+#include "../perlin.h"
+
 void CGamePersistent::OnFrame	()
 {
 	__super::OnFrame			();
@@ -199,6 +209,7 @@ void CGamePersistent::OnFrame	()
 	// update weathers ambient
 	WeathersUpdate				();
 
+//	if (Environment.PerlinNoise1D) stat_graph->AppendItem		(Environment.PerlinNoise1D->Get(Device.fTimeGlobal)+0.5f,0xFF00FF00);
 
 	if	(0!=pDemoFile){
 		if	(Device.dwTimeGlobal>uTime2Change){
