@@ -79,8 +79,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	if (R&&R->size()){
 		for (u32 k=0; k<R->size()-2; k++){
 			Pointer->set	((*R)[0+0].pt.x, (*R)[0+0].pt.y,	color, (*R)[0+0].uv.x, (*R)[0+0].uv.y); Pointer++;
-			Pointer->set	((*R)[k+2].pt.x, (*R)[k+2].pt.y,	color, (*R)[k+2].uv.x, (*R)[k+2].uv.y); Pointer++;
 			Pointer->set	((*R)[k+1].pt.x, (*R)[k+1].pt.y,	color, (*R)[k+1].uv.x, (*R)[k+1].uv.y); Pointer++;
+			Pointer->set	((*R)[k+2].pt.x, (*R)[k+2].pt.y,	color, (*R)[k+2].uv.x, (*R)[k+2].uv.y); Pointer++;
 		}
 	}
 }
