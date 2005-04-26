@@ -34,7 +34,8 @@ enum
 	phDbgDrawExplosionPos		=		1<<10,
 	phDbgDrawObjectStatistics	=		1<<11,
 	phDbgDrawMassCenters		=		1<<12,
-	phDbgDrawDeathActivationBox =		1<<14
+	phDbgDrawDeathActivationBox =		1<<14,
+	phHitApplicationPoints		=		1<<15
 };
 struct SPHObjDBGDraw
 {

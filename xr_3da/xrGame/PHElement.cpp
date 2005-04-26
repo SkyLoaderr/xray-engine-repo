@@ -593,7 +593,20 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
 	Fvector body_pos;
-	body_pos.sub(pos,m_inverse_local_transform.c);
+	body_pos.add(pos,m_inverse_local_transform.c);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phHitApplicationPoints))
+	{
+		DBG_OpenCashedDraw();
+		Fvector dbg_position;dbg_position.set(body_pos);
+		dMULTIPLY0_331 (cast_fp(dbg_position),dBodyGetRotation(m_body),cast_fp(body_pos));
+		dbg_position.add(cast_fv(dBodyGetPosition(m_body)));
+		DBG_DrawPoint(dbg_position,0.01f,D3DCOLOR_XRGB(255,255,255));
+		DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),dbg_position,D3DCOLOR_XRGB(255,255,255));
+		DBG_DrawLine(dbg_position,Fvector().add(dbg_position,Fvector().mul(dir,0.4f)),D3DCOLOR_XRGB(255,0,255));
+		DBG_ClosedCashedDraw(10000);
+	}
+#endif	
 
 	Fvector impulse;
 	impulse.set(dir);

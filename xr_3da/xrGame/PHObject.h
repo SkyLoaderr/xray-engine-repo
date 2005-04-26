@@ -80,6 +80,7 @@ public:
 
 				void 		Freeze							()								;
 				void 		UnFreeze						()								;
+	IC			bool		IsFreezed			()											{return !!(m_flags.test(st_freezed));}
 				void		NetInterpolationON				()								{m_flags.set(st_net_interpolation,TRUE);}
 				void		NetInterpolationOFF				()								{m_flags.set(st_net_interpolation,TRUE);}
 				bool		NetInterpolation				()								{return !!(m_flags.test(st_net_interpolation));}

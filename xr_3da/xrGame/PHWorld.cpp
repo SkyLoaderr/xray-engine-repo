@@ -186,7 +186,7 @@ static u32 start_time=0;
 void CPHWorld::Step()
 {
 
-
+	VERIFY(b_processing||IsFreezed());
 
 	PH_OBJECT_I			i_object;
 	PH_UPDATE_OBJECT_I	i_update_object;
