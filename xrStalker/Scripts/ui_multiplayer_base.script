@@ -137,7 +137,7 @@ function multiplayer_base:InitControls()
 end
 
 function multiplayer_base:InitCallbacks()
-	self:AddCallback("btn_cd_key",    ui_events.BUTTON_CLICKED,	self, "OnButton_cd_key")
+	self:AddCallback("btn_cd_key",    ui_events.BUTTON_CLICKED,	self.OnButton_cd_key,	self)
 end
 
 function multiplayer_base:OnButton_cd_key()
