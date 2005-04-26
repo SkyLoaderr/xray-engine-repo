@@ -902,9 +902,9 @@ void CActor::shedule_Update	(u32 DT)
 	//------------------------------------------------
 	{
 		//-----------------------------------
-		NetInput_Save			( );
+//		NetInput_Save			( );
 
-		NetInput_Send			( );
+//		NetInput_Send			( );
 		//-----------------------------------
 		
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
