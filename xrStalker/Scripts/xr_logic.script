@@ -222,6 +222,7 @@ end
 -- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б disable_generic_schemes
 ------------------------------------------------------------------------------------------------------------
 function enable_generic_schemes(ini, npc, stype, section)
+	printf("enable_generic_schemes [%s] for [%s]", utils.to_str(stype), npc:name())
 	if stype == modules.stype_stalker then
 		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")
 		if combat_section then
