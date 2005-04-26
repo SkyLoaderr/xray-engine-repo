@@ -76,24 +76,25 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	int tile_x					= (iRemX==0)?iTileX:iTileX+1;
 	int tile_y					= (iRemY==0)?iTileY:iTileY+1;
 	int							x,y;
+	if (!(tile_x&&tile_y))		return;
 	// set scissor
 	Irect clip_rect				= {iPos.x,iPos.y,iPos.x+iVisRect.x2*iTileX+iRemX,iPos.y+iVisRect.y2*iTileY+iRemY};
 	UI()->PushScissor			(clip_rect);
 	// set geom
 	RCache.set_Geometry			(hGeom_fan);
 	// render
-	for (x=0; x<tile_x; ++x){
+	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(8*tile_x*tile_y,hGeom_fan.stride(),vOffset);
+	FVF::TL* pv					= start_pv;
+	for (x=0; x<tile_x; ++x)
 		for (y=0; y<tile_y; ++y){
 			pos.set				(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
-			FVF::TL* start_pv	= (FVF::TL*)RCache.Vertex.Lock	(32,hGeom_fan.stride(),vOffset);
-			FVF::TL* pv			= start_pv;
 			inherited::Render	(pv,pos,dwColor);
-			std::ptrdiff_t p_cnt			= pv-start_pv;
-			RCache.Vertex.Unlock(u32(p_cnt),hGeom_fan.stride());
-			if (p_cnt>2) RCache.Render	(D3DPT_TRIANGLEFAN,vOffset,u32(p_cnt-2));
 		}
-	}
-	UI()->PopScissor();
+	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;
+	RCache.Vertex.Unlock		(u32(pv-start_pv),hGeom_fan.stride());
+	RCache.set_CullMode			(CULL_NONE);
+	if (p_cnt!=0)RCache.Render	(D3DPT_TRIANGLELIST,vOffset,u32(p_cnt));
+	UI()->PopScissor			();
 }
 //--------------------------------------------------------------------
 

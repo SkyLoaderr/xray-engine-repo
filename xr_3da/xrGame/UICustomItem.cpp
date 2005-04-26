@@ -77,8 +77,11 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	sPoly2D D;
 	sPoly2D* R		= UI()->ScreenFrustum().ClipPoly(S,D);
 	if (R&&R->size()){
-		for (u32 k=0; k<R->size(); k++,Pointer++)
-			Pointer->set	((*R)[k].pt.x, (*R)[k].pt.y,	color, (*R)[k].uv.x, (*R)[k].uv.y); 
+		for (u32 k=0; k<R->size()-2; k++){
+			Pointer->set	((*R)[0+0].pt.x, (*R)[0+0].pt.y,	color, (*R)[0+0].uv.x, (*R)[0+0].uv.y); Pointer++;
+			Pointer->set	((*R)[k+2].pt.x, (*R)[k+2].pt.y,	color, (*R)[k+2].uv.x, (*R)[k+2].uv.y); Pointer++;
+			Pointer->set	((*R)[k+1].pt.x, (*R)[k+1].pt.y,	color, (*R)[k+1].uv.x, (*R)[k+1].uv.y); Pointer++;
+		}
 	}
 }
 //--------------------------------------------------------------------
