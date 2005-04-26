@@ -112,7 +112,7 @@ function main_main_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)
 	
-	btn:Enable(false)
+	btn:Enable(not level.present())
 	
 	--------->> OPTIONS
 	btn = CUI3tButton()
