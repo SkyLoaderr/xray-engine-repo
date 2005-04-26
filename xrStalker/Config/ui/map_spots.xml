@@ -19,14 +19,17 @@
 
 	<enemy_location hint="enemy" no_offline="1">
 		<mini_map  spot="enemy_mini_spot"></mini_map>
+		<level_map  spot="enemy_mini_spot"></level_map>
 	</enemy_location>
 
 	<neutral_location hint="neutral">
 		<mini_map  spot="neutral_mini_spot"></mini_map>
+		<level_map  spot="neutral_mini_spot"></level_map>
 	</neutral_location>
 
 	<friend_location hint="friend">
 		<mini_map  spot="friend_mini_spot"></mini_map>
+		<level_map  spot="friend_mini_spot"></level_map>
 	</friend_location>
 	
 	<anomaly_zone_location hint="anomaly_zone">
