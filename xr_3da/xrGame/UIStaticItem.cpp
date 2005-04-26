@@ -92,7 +92,6 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 		}
 	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;
 	RCache.Vertex.Unlock		(u32(pv-start_pv),hGeom_fan.stride());
-	RCache.set_CullMode			(CULL_NONE);
 	if (p_cnt!=0)RCache.Render	(D3DPT_TRIANGLELIST,vOffset,u32(p_cnt));
 	UI()->PopScissor			();
 }
