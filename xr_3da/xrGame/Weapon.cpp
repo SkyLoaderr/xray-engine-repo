@@ -617,6 +617,8 @@ void CWeapon::UpdateCL		()
 	UpdateFlameParticles2	();
 
 	make_Interpolation		();
+	
+	VERIFY(smart_cast<CKinematics*>(Visual()));
 }
 
 

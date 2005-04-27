@@ -1249,3 +1249,14 @@ void CCustomZone::CreateHit	(	u16 id_to,
 		u_EventSend	(l_P);
 	};
 }
+
+void CCustomZone::net_Relcase(CObject* O)
+{
+	CGameObject* GO = smart_cast<CGameObject*>(O);
+	OBJECT_INFO_VEC_IT it = std::find(m_ObjectInfoMap.begin(),m_ObjectInfoMap.end(), GO);
+	if(it!=m_ObjectInfoMap.end()){
+		StopObjectIdleParticles(GO);
+		m_ObjectInfoMap.erase(it);
+	}
+	inherited::net_Relcase(O);
+}
