@@ -212,9 +212,10 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 		SetObjectContactCallback(m_object_contact_callback);
 	}
 	SetStaticContactCallBack(CharacterContactShotMark);
+	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
 	CPHObject::activate();
 	spatial_register();
-	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
+	
 }
 void CPHSimpleCharacter::SwitchOFFInitContact()
 {
@@ -241,6 +242,7 @@ void CPHSimpleCharacter::Destroy(){
 	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics character shell during physics processing!!!");//if(ph_world)
 	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics character when ph world is freezed!!!");
 	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
+	m_elevator_state.Deactivate();
 	CPHObject::deactivate();
 	spatial_unregister();
 

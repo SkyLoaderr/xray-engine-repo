@@ -36,6 +36,7 @@ public:
 			bool		ClimbingState					(){return m_state==clbClimbingUp || m_state == clbClimbingDown;}
 			void		Depart							();
 			float		ClimbDirection					();
+			void		Deactivate						();
 private:
 			void		InitDepart						();
 
@@ -49,6 +50,7 @@ private:
 			void		UpdateStClimbingDown			();
 			void		UpdateClimbingCommon			(const Fvector	&d_to_ax,float to_ax,const Fvector& control_accel,float ca);
 			void		UpdateDepart					();
+
 			
 
 };

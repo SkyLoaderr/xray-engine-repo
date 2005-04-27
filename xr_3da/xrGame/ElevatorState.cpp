@@ -29,6 +29,7 @@ float CElevatorState::ClimbDirection()
 
 void CElevatorState::PhTune(float step)
 {
+	VERIFY(m_character&&m_character->b_exist&&m_character->is_active());
 	if(!m_ladder)			return;
 	switch(m_state)
 	{
@@ -293,4 +294,12 @@ void CElevatorState::GetJumpDir(const Fvector& accel,Fvector& dir)
 		dir.add(side);
 		dir.normalize_safe();
 	}
+}
+
+void CElevatorState::Deactivate()
+{
+	SwitchState(clbNone);
+	m_state=clbNone;
+	m_ladder=NULL;
+	m_character=NULL;
 }
