@@ -60,7 +60,12 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
 		if (str[0] && (str[0]=='#') && strstr(str,"#include") ){
 			string256	inc_name;	
 			if (_GetItem	(str,1,inc_name,'"')){
-				IReader* I 	= FS.r_open(path, inc_name); R_ASSERT3(I,"Can't find include file:",inc_name);
+				IReader* I 	= FS.r_open(path, inc_name);
+				if(!I){
+					string1024 str;
+					sprintf(str,"XML file[%s] parsing failed. Can't find include file:[%s]",m_xml_file_name,inc_name);
+					R_ASSERT2(false,str);"Can't find include file:",inc_name);
+				}
 				ParseFile(path, W, I);
 				FS.r_close	(I);
 			}
@@ -73,6 +78,8 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
 //инициализация и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {
+	ZeroMemory(m_xml_file_name,sizeof(m_xml_file_name) );
+	strcpy(m_xml_file_name, xml_filename);
 	// Load and parse xml file
 
 	IReader *F = FS.r_open(path, xml_filename);
@@ -87,7 +94,7 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	m_Doc.Parse((LPCSTR )W.pointer());
 	if (m_Doc.Error()){
 		string1024 str;
-		sprintf(str, "XML file:%s value:%s errDescr:%s",xml_filename,m_Doc.Value(), m_Doc.ErrorDesc());
+		sprintf(str, "XML file:%s value:%s errDescr:%s",m_xml_file_name,m_Doc.Value(), m_Doc.ErrorDesc());
 		R_ASSERT2(false, str);
 	} 
 
@@ -100,7 +107,7 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 								 LPCSTR  path, 
 								 int node_index)
 {
-	R_ASSERT	(start_node && path);
+	R_ASSERT3	(start_node && path, "NavigateToNode failed in XML file ",m_xml_file_name);
 	XML_NODE*	node			= NULL;
 	XML_NODE*	node_parent		= NULL;
 
@@ -473,10 +480,10 @@ LPCSTR CUIXml::CheckUniqueAttrib (XML_NODE* start_node,
 
 XML_ATTRIBUTE * CUIXml::QueryForAttrib(XML_NODE *node, int attribIdx)
 {
-	R_ASSERT(node);
+	R_ASSERT3(node,"QueryForAttrib failed in XML file ",m_xml_file_name);
 
 	XML_ELEM * elem = node->ToElement();
-	R_ASSERT(elem);
+	R_ASSERT3(elem,"ToElement failed in XML file ",m_xml_file_name);
 
 	XML_ATTRIBUTE * attrib = elem->FirstAttribute();
 	int idx = 0;
@@ -493,7 +500,7 @@ XML_ATTRIBUTE * CUIXml::QueryForAttrib(XML_NODE *node, int attribIdx)
 
 CUIXml::AttribPair CUIXml::QueryAttribData(XML_ATTRIBUTE *attrib)
 {
-	R_ASSERT(attrib);
+	R_ASSERT3	(attrib, "QueryAttribData failed in XML file ",m_xml_file_name);
 	return std::make_pair(attrib->Name(), attrib->Value());
 }
 
