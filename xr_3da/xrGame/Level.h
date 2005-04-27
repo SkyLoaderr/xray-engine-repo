@@ -10,7 +10,7 @@
 #include "net_client.h"
 #include "infoportiondefs.h"
 #include "script_export_space.h"
-#include "StatGraph.h"
+#include "../StatGraph.h"
 #include "xrMessages.h"
 
 class	CHUDManager;
