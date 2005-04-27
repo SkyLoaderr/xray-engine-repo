@@ -16,7 +16,7 @@
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
-#include "StatGraph.h"
+#include "../StatGraph.h"
 #include "PhraseDialogManager.h"
 #include "CharacterPhysicsSupport.h"
 #include "step_manager.h"
