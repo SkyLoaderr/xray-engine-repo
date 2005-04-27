@@ -74,7 +74,11 @@ void CUIBuyWeaponWnd::PerformAutoBuy()
 	for (int i = 0; i < (int)buy_list.size(); i++)
 	{
 		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*buy_list[i]);
-		SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		if(pDDItem)
+			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		else{
+			Msg("ERROR CUIBuyWeaponWnd::PerformAutoBuy cannot find item with section name=%s",*buy_list[i]);
+		}
 	}
 }
 
