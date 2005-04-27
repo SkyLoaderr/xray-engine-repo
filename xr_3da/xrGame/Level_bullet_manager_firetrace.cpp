@@ -353,7 +353,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 
 		//ввести коэффициент случайности при простреливании
 		Fvector rand_normal;
-		rand_normal.random_dir(bullet->dir, PI_DIV_6*energy_lost, Random);
+		rand_normal.random_dir(bullet->dir, deg2rad(5)*energy_lost, Random);
 		bullet->dir.set(rand_normal);
 		#ifdef DEBUG
 		bullet_state = 2;
