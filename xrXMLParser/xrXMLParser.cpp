@@ -85,7 +85,11 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	FS.r_close(F);
 
 	m_Doc.Parse((LPCSTR )W.pointer());
-	if (m_Doc.Error()) R_ASSERT3(false, m_Doc.Value(), m_Doc.ErrorDesc());
+	if (m_Doc.Error()){
+		string1024 str;
+		sprintf(str, "XML file:%s value:%s errDescr:%s",xml_filename,m_Doc.Value(), m_Doc.ErrorDesc());
+		R_ASSERT2(false, str);
+	} 
 
 	m_root = m_Doc.FirstChildElement();
 
