@@ -214,10 +214,11 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type)
 {
-	if(GetfHealth()<0.5f)
-		return;
+
 
 inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
+if(GetfHealth()<0.5f)
+					return;
 if(state() == CHelicopter::eDead ) return;
 
 if(who==this)
