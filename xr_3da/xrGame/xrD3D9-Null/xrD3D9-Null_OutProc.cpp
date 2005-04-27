@@ -47,7 +47,7 @@ void LogOut( const char *format, ... )
 	va_end (argptr);
 
 	//rr  printf(text);
-	OutputDebugString( text );
+//	OutputDebugString( text );
 }
 
 void LogOut_File(const char *pszFormat, ...)
