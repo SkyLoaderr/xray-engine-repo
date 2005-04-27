@@ -17,8 +17,8 @@ CUILines::CUILines()
 {
 	m_pFont = UI()->Font()->pFontLetterica18Russian;
 	m_interval = 0.3f;
-	m_eTextAlign = CGameFont::alRight;
-	m_dwTextColor = 0xff000000;
+	m_eTextAlign = CGameFont::alLeft;
+	m_dwTextColor = 0xffffffff;
 
 	m_bShowMe = true;
 	m_wndPos.x = 0;
