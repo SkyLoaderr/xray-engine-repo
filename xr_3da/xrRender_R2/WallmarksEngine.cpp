@@ -286,7 +286,7 @@ ICF void BeginStream(ref_geom hGeom, u32& w_offset, FVF::LIT*& w_verts, FVF::LIT
 	w_start					= w_verts;
 }
 
-ICF void FlushStream(ref_geom hGeom, ref_shader shader, u32& w_offset, FVF::LIT*& w_verts, FVF::LIT*& w_start)
+ICF void FlushStream(ref_geom hGeom, ref_shader shader, u32& w_offset, FVF::LIT*& w_verts, FVF::LIT*& w_start, BOOL bSuppressCull)
 {
 	u32 w_count					= u32(w_verts-w_start);
 	RCache.Vertex.Unlock		(w_count,hGeom->vb_stride);
@@ -294,7 +294,9 @@ ICF void FlushStream(ref_geom hGeom, ref_shader shader, u32& w_offset, FVF::LIT*
 	{
 		RCache.set_Shader		(shader);
 		RCache.set_Geometry		(hGeom);
+		if (bSuppressCull)		RCache.set_CullMode (CULL_NONE);
 		RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+		if (bSuppressCull)		RCache.set_CullMode	(CULL_CCW);
 		Device.Statistic.RenderDUMP_WMT_Count += w_count/3;
 	}
 }
@@ -332,7 +334,7 @@ void CWallmarksEngine::Render()
 				if (ssa>=ssaCLIP)	{
 					u32 w_count		= u32(w_verts-w_start);
 					if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
-						FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start);
+						FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start,FALSE);
 						BeginStream	(hGeom,w_offset,w_verts,w_start);
 					}
 					static_wm_render	(W,w_verts);
@@ -347,6 +349,8 @@ void CWallmarksEngine::Render()
 				w_it++;
 			}
 		}
+		// Flush stream
+		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,FALSE);	//. remove line if !(suppress cull needed)
 		// dynamic wallmarks
 		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			CSkeletonWallmark* W	= *w_it;
@@ -356,7 +360,7 @@ void CWallmarksEngine::Render()
 				Device.Statistic.RenderDUMP_WMD_Count++;
 				u32 w_count		= u32(w_verts-w_start);
 				if ((w_count+W->VCount())>=(MAX_TRIS*3)){
-					FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start);
+					FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start,TRUE);
 					BeginStream	(hGeom,w_offset,w_verts,w_start);
 				}
 				W->Parent()->RenderWallmark	(W,w_verts);
@@ -364,7 +368,7 @@ void CWallmarksEngine::Render()
 		}
 		slot->skeleton_items.clear();
 		// Flush stream
-		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start);
+		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,TRUE);
 	}
 
 	Device.Statistic.RenderDUMP_WM.End		();
