@@ -593,7 +593,32 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
 	Fvector body_pos;
-	body_pos.add(pos,m_inverse_local_transform.c);
+	if(id!=BI_NONE)
+	{
+		if(id==m_SelfID)
+		{
+			body_pos.add(pos,m_inverse_local_transform.c);
+		}
+		else
+		{ 
+			CKinematics* K=m_shell->PKinematics();
+			if(K)
+			{
+				Fmatrix m;m.set(K->LL_GetTransform(m_SelfID));
+				m.invert();m.mulB(K->LL_GetTransform(id));
+				m.transform(body_pos,pos);
+				body_pos.add(m_inverse_local_transform.c);
+			}
+			else
+			{
+				body_pos.set(0.f,0.f,0.f);
+			}
+		}
+	}
+	else
+	{
+		body_pos.set(0.f,0.f,0.f);
+	}
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phHitApplicationPoints))
 	{
