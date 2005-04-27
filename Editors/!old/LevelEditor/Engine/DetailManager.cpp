@@ -270,7 +270,7 @@ void CDetailManager::Render		()
 	if (0==dtFS)						return;
 	if (!psDeviceFlags.is(rsDetails))	return;
 #endif
-	float factor				= g_pGamePersistent->Environment.wind_strength;
+	float factor				= g_pGamePersistent->Environment.wind_strength_factor;
 	swing_current.lerp			(swing_desc[0],swing_desc[1],factor);
 
 	Fvector		EYE				= Device.vCameraPosition;

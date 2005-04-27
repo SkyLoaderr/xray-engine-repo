@@ -7748,16 +7748,6 @@
 						RelativePath="Spectator.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="StatGraph"
-					Filter="">
-					<File
-						RelativePath=".\StatGraph.cpp">
-					</File>
-					<File
-						RelativePath=".\StatGraph.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Common"
