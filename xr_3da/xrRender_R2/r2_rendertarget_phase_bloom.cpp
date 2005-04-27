@@ -3,8 +3,6 @@
 #include "..\igame_persistent.h"
 #include "..\environment.h"
 
-#define BLOOM_SCALE 1.1f
-
 #pragma pack(push,4)
 struct v_build	{
 	Fvector4	p;
@@ -222,7 +220,8 @@ void CRenderTarget::phase_bloom	()
 
 			// Perform filtering
 			Fvector4	w0,w1;
-			CalcGauss_wave				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_g/3.f,ps_r2_ls_bloom_kernel_scale);
+			float		kernel			= ps_r2_ls_bloom_kernel_g;
+			CalcGauss_wave				(w0,w1,kernel,kernel/3.f,ps_r2_ls_bloom_kernel_scale);
 			u_setrt						(rt_Bloom_2,NULL,NULL,NULL);		// No need for ZBuffer at all
 			RCache.set_Element			(s_bloom->E[1]);
 			RCache.set_ca				("weight", 0,			w0);
@@ -301,7 +300,8 @@ void CRenderTarget::phase_bloom	()
 
 			// Perform filtering
 			Fvector4	w0,w1;
-			CalcGauss_wave				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_g/3.f,ps_r2_ls_bloom_kernel_scale);
+			float		kernel			= ps_r2_ls_bloom_kernel_g	* float(Device.dwHeight)/float(Device.dwWidth);
+			CalcGauss_wave				(w0,w1,kernel,kernel/3.f,ps_r2_ls_bloom_kernel_scale);
 			u_setrt						(rt_Bloom_1,NULL,NULL,NULL);				// No need for ZBuffer at all
 			RCache.set_Element			(s_bloom->E[2]);
 			RCache.set_ca				("weight", 0,			w0);
