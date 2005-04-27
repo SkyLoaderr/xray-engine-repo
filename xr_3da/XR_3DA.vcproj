@@ -975,6 +975,12 @@
 					RelativePath="Device_wndproc.cpp">
 				</File>
 				<File
+					RelativePath=".\StatGraph.cpp">
+				</File>
+				<File
+					RelativePath=".\StatGraph.h">
+				</File>
+				<File
 					RelativePath=".\Stats.cpp">
 				</File>
 				<File
@@ -1337,6 +1343,16 @@
 				</File>
 				<File
 					RelativePath="R_DStreams.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Noise"
+				Filter="">
+				<File
+					RelativePath=".\perlin.cpp">
+				</File>
+				<File
+					RelativePath=".\perlin.h">
 				</File>
 			</Filter>
 		</Filter>

@@ -1,7 +1,7 @@
 #ifndef perlinH
 #define perlinH
 
-#define SAMPLE_SIZE 1024
+#define SAMPLE_SIZE 256
 
 class ENGINE_API CPerlinNoiseCustom
 {

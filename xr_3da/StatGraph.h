@@ -2,7 +2,7 @@
 #ifndef StatGraphH
 #define StatGraphH
 //---------------------------------------------------------------------------
-class CStatGraph	: public pureRender
+class ENGINE_API CStatGraph	: public pureRender
 {
 public:
 	enum EStyle{

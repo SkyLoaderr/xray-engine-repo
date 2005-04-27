@@ -14,16 +14,18 @@
 	#include "xr_object.h"
 #endif
 
-const int	max_desired_items	= 2500;
-const float	source_radius		= 10.f;
-const float	source_height		= 40.f;
-const float	drop_length			= 3.f;
-const float drop_width			= 0.04f;
-const float drop_angle			= 3.01f;
-const float drop_max_angle		= PI_DIV_8*0.5f;
-const float drop_max_wind_vel	= 20.0f;
-const float drop_speed_min		= 40.f;
-const float drop_speed_max		= 80.f;
+static const int	max_desired_items	= 2500;
+static const float	source_radius		= 12.5f;
+static const float	source_offset		= 40.f;
+static const float	max_distance		= source_offset*1.25f;
+static const float	sink_offset			= -(max_distance-source_offset);
+static const float	drop_length			= 3.f;
+static const float	drop_width			= 0.28f;
+static const float	drop_angle			= 3.0f;
+static const float	drop_max_angle		= deg2rad(10.f);
+static const float	drop_max_wind_vel	= 20.0f;
+static const float	drop_speed_min		= 40.f;
+static const float	drop_speed_max		= 80.f;
 
 const int	max_particles		= 1000;
 const int	particles_cache		= 400;
@@ -43,7 +45,7 @@ CEffect_Rain::CEffect_Rain()
 	DM_Drop							= ::Render->model_CreateDM		(&F());
 
 	//
-	SH_Rain.create					("effects\\rain","fx\\rain");
+	SH_Rain.create					("effects\\rain","fx\\fx_rain");
 	hGeom_Rain.create				(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hGeom_Drops.create				(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 	p_create						();
@@ -59,29 +61,30 @@ CEffect_Rain::~CEffect_Rain()
 }
 
 // Born
-void	CEffect_Rain::Born		(Item& dest, float radius, float height)
+void	CEffect_Rain::Born		(Item& dest, float radius)
 {
 	Fvector		axis;	
     axis.set			(0,-1,0);
-	float	factor		= drop_max_angle*drop_max_angle*(g_pGamePersistent->Environment.CurrentEnv.wind_velocity/drop_max_wind_vel);
-    clamp				(factor,0.f,1.f);
-    factor				+= -PI_DIV_2;
-    axis.setHP			(g_pGamePersistent->Environment.CurrentEnv.wind_direction,factor);
+	float k				= g_pGamePersistent->Environment.CurrentEnv.wind_velocity/drop_max_wind_vel;
+	clamp				(k,0.f,1.f);
+	float	pitch		= drop_max_angle*k-PI_DIV_2;
+    axis.setHP			(g_pGamePersistent->Environment.CurrentEnv.wind_direction,pitch);
     
 	Fvector&	view	= Device.vCameraPosition;
 	float		angle	= ::Random.randF	(0,PI_MUL_2);
-	float		dist	= ::Random.randF	(0,radius);
-	float		x		= dist*_cos			(angle);
-	float		z		= dist*_sin			(angle);
-	dest.P.set			(x+view.x,height+view.y,z+view.z);
+	float		dist	= ::Random.randF	(); dist = _sqrt(dist)*radius; 
+	float		x		= dist*_cos		(angle);
+	float		z		= dist*_sin		(angle);
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
+	dest.P.set			(x+view.x-dest.D.x*source_offset,source_offset+view.y,z+view.z-dest.D.z*source_offset);
+//	dest.P.set			(x+view.x,height+view.y,z+view.z);
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
 
-	height				*= 2.f;
-	UpdateItem			(dest,height,RayPick(dest.P,dest.D,height));
+	float height		= max_distance;
+	RenewItem			(dest,height,RayPick(dest.P,dest.D,height,collide::rqtBoth));
 }
 
-BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
+BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range, collide::rq_target tgt)
 {
 	BOOL bRes 			= TRUE;
 #ifdef _EDITOR
@@ -90,22 +93,23 @@ BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 	collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();
 	if (E)				E->setEnabled		(FALSE);
-	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,range,collide::rqtBoth,RQ);	
+	bRes 				= g_pGameLevel->ObjectSpace.RayPick( s,d,range,tgt,RQ);	
 	if (E)				E->setEnabled		(TRUE);
     if (bRes) range 	= RQ.range;
 #endif
     return bRes;
 }
 
-void CEffect_Rain::UpdateItem(Item& dest, float height, BOOL bHit)
+void CEffect_Rain::RenewItem(Item& dest, float height, BOOL bHit)
 {
+	dest.uv_set			= Random.randI(2);
     if (bHit){
 		dest.fTime_Life	= height/dest.fSpeed;
 		dest.fTime_Hit	= height/dest.fSpeed;
 		dest.Phit.mad	(dest.P,dest.D,height);
 	}else{
-		dest.fTime_Life	= (height*2)/dest.fSpeed;
-		dest.fTime_Hit	= (height*3)/dest.fSpeed;
+		dest.fTime_Life	= (height*1)/dest.fSpeed;
+		dest.fTime_Hit	= (height*2)/dest.fSpeed;
 		dest.Phit.set	(dest.P);
 	}
 }
@@ -117,14 +121,18 @@ void	CEffect_Rain::Render	()
 #endif
 	// Parse states
 	float	factor				= g_pGamePersistent->Environment.CurrentEnv.rain_density;
+	float	hemi_factor			= 1.f;
+	CObject* E 					= g_pGameLevel->CurrentViewEntity();
+	if (E&&E->renderable.ROS)
+		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable.ROS->get_luminocity_hemi()),0.2f));
 
 	switch (state)
 	{
 	case stIdle:		
 		if (factor<EPS_L)		return;
 		state					= stWorking;
-		snd_Ambient.play		(0,TRUE);
-		snd_Ambient.set_range	(15.f,20.f);
+		snd_Ambient.play		(0,sm_2D|sm_Looped);
+		snd_Ambient.set_range	(source_offset,source_offset*2.f);
 		break;
 	case stWorking:
 		if (factor<EPS_L)
@@ -139,9 +147,9 @@ void	CEffect_Rain::Render	()
 
 	// ambient sound
 	Fvector						sndP;
-	sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
+	sndP.mad					(Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
 	snd_Ambient.set_position	(sndP);
-	snd_Ambient.set_volume		(factor);
+	snd_Ambient.set_volume		(1.5f*factor*hemi_factor);
 
 	// visual
 	float		factor_visual	= factor/2.f+.5f;
@@ -149,14 +157,12 @@ void	CEffect_Rain::Render	()
 	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,factor_visual);
 
 	// born _new_ if needed
-	float	b_radius			= source_radius;
-	float	b_radius_wrap		= b_radius+.5f;
-	float	b_height			= source_height;
+	float	b_radius_wrap_sqr	= _sqr((source_radius+.5f));
 	if (items.size()<desired_items)	{
 		// items.reserve		(desired_items);
 		while (items.size()<desired_items)	{
 			Item				one;
-			Born				(one,b_radius,b_height);
+			Born				(one,source_radius);
 			items.push_back		(one);
 		}
 	}
@@ -164,56 +170,62 @@ void	CEffect_Rain::Render	()
 	// build source plane
     Fplane src_plane;
     Fvector norm	={0.f,-1.f,0.f};
-    Fvector pos; 	pos.set(Device.vCameraPosition.x,Device.vCameraPosition.y+b_height,Device.vCameraPosition.z);
-    src_plane.build(pos,norm);
+    Fvector upper; 	upper.set(Device.vCameraPosition.x,Device.vCameraPosition.y+source_offset,Device.vCameraPosition.z);
+    src_plane.build(upper,norm);
 	
 	// perform update
 	u32			vOffset;
 	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain->vb_stride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
-	const Fvector&	vCenter	= Device.vCameraPosition;
-	for (u32 I=0; I<items.size(); I++)
-	{
+	const Fvector&	vEye	= Device.vCameraPosition;
+	for (u32 I=0; I<items.size(); I++){
 		// physics and time control
 		Item&	one		=	items[I];
 
 		one.fTime_Hit	-=  dt;	if (one.fTime_Hit<0)	Hit (one.Phit);
-		one.fTime_Life	-=	dt; if (one.fTime_Life<0)	Born(one,b_radius,b_height);
+		one.fTime_Life	-=	dt; if (one.fTime_Life<0)	Born(one,source_radius);
 
 		one.P.mad		(one.D,one.fSpeed*dt);
-		
-		// cylindrical wrap
-		Fvector	wdir;	wdir.set(one.P.x-vCenter.x,0,one.P.z-vCenter.z);
-		float	wlen	=	wdir.magnitude();
-		if (wlen>b_radius_wrap)	{
-//			Device.Statistic.TEST0.Begin();
-			if ((vCenter.y-one.P.y)>b_height){
+
+		Device.Statistic.TEST1.Begin();
+		Fvector	wdir;	wdir.set(one.P.x-vEye.x,0,one.P.z-vEye.z);
+		float	wlen	= wdir.square_magnitude();
+		if (wlen>b_radius_wrap_sqr)	{
+			wlen		= _sqrt(wlen);
+			Device.Statistic.TEST3.Begin();
+			if ((one.P.y-vEye.y)<sink_offset){
 				// need born
 				one.invalidate();
 			}else{
-				// perform wrapping
-                Fvector 	inv_dir, src_p;
+				Fvector		inv_dir, src_p;
+				inv_dir.invert(one.D);
 				wdir.div	(wlen);
-				one.P.mad	(one.P, wdir, -(wlen+b_radius));
-                inv_dir.invert(one.D);
-				float height= 2.f*b_height;
+				one.P.mad	(one.P, wdir, -(wlen+source_radius));
 				if (src_plane.intersectRayPoint(one.P,inv_dir,src_p)){
-					if (RayPick(src_p,one.D,height)){	
-						float dist			= one.P.distance_to(src_p);
-						if (height<=dist)	one.invalidate();				// need born
-						else{	
-							UpdateItem		(one,height-dist,TRUE);			// fly to point
+					float dist_sqr	= one.P.distance_to_sqr(src_p);
+					float height	= max_distance;
+					if (RayPick(src_p,one.D,height,collide::rqtBoth)){	
+						if (_sqr(height)<=dist_sqr){ 
+							one.invalidate	();								// need born
+//							Log("1");
+						}else{	
+							RenewItem	(one,height-_sqrt(dist_sqr),TRUE);		// fly to point
+//							Log("2",height-dist);
 						}
 					}else{
-						UpdateItem			(one,height,FALSE);				// fly ...
+						RenewItem		(one,max_distance-_sqrt(dist_sqr),FALSE);		// fly ...
+//						Log("3",1.5f*b_height-dist);
 					}
 				}else{
-					UpdateItem				(one,height,FALSE);				// fly ...
+					// need born
+					one.invalidate();
+//					Log("4");
 				}
-            }
-//			Device.Statistic.TEST0.End();
+			}
+			Device.Statistic.TEST3.End();
 		}
+		Device.Statistic.TEST1.End();
 
 		// Build line
 		Fvector&	pos_head	= one.P;
@@ -228,16 +240,22 @@ void	CEffect_Rain::Render	()
 		sC.add			(pos_trail);
 		if (!::Render->ViewBase.testSphere_dirty(sC,sR))	continue;
 		
+		static Fvector2 UV[2][4]={
+			{{0,1},{0,0},{1,1},{1,0}},
+			{{1,0},{1,1},{0,0},{0,1}}
+		};
+
 		// Everything OK - build vertices
 		Fvector	P,lineTop,camDir;
-		camDir.sub			(sC,vCenter);
+		camDir.sub			(sC,vEye);
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
-		float	w = drop_width;
-		P.mad(pos_trail,lineTop,-w);	verts->set(P,u_rain_color,0,1);	verts++;
-		P.mad(pos_trail,lineTop,w);		verts->set(P,u_rain_color,0,0);	verts++;
-		P.mad(pos_head, lineTop,-w);	verts->set(P,u_rain_color,1,1);	verts++;
-		P.mad(pos_head, lineTop,w);		verts->set(P,u_rain_color,1,0);	verts++;
+		float w = drop_width;
+		u32 s	= one.uv_set;
+		P.mad(pos_trail,lineTop,-w);	verts->set(P,u_rain_color,UV[s][0].x,UV[s][0].y);	verts++;
+		P.mad(pos_trail,lineTop,w);		verts->set(P,u_rain_color,UV[s][1].x,UV[s][1].y);	verts++;
+		P.mad(pos_head, lineTop,-w);	verts->set(P,u_rain_color,UV[s][2].x,UV[s][2].y);	verts++;
+		P.mad(pos_head, lineTop,w);		verts->set(P,u_rain_color,UV[s][3].x,UV[s][3].y);	verts++;
 	}
 	u32 vCount					= (u32)(verts-start);
 	RCache.Vertex.Unlock		(vCount,hGeom_Rain->vb_stride);

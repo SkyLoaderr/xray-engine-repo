@@ -6,6 +6,8 @@
 #define RainH
 #pragma once
 
+#include "xr_collide_defs.h"
+
 //refs
 class ENGINE_API IRender_DetailModel;
 
@@ -22,6 +24,7 @@ private:
 		float			fSpeed;
 		float			fTime_Life;
 		float			fTime_Hit;
+		u32				uv_set;
 		void			invalidate	()
 		{
 			fTime_Life	= 0.f;
@@ -71,11 +74,11 @@ private:
 	void							p_free			(Particle* P);
 
 	// Some methods
-	void							Born			(Item& dest, float radius, float height);
+	void							Born			(Item& dest, float radius);
 //	BOOL							RayTest			(Item& dest, float height, Collide::rq_target tgt);
 	void							Hit				(Fvector& pos);
-	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range);
-	void							UpdateItem		(Item& dest, float height, BOOL bHit);
+	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range, collide::rq_target tgt);
+	void							RenewItem		(Item& dest, float height, BOOL bHit);
 public:
 	void							Render			();
 

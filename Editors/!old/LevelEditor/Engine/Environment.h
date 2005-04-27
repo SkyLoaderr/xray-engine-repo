@@ -12,6 +12,8 @@ class ENGINE_API	CLensFlare;
 class ENGINE_API	CEffect_Rain;
 class ENGINE_API	CEffect_Thunderbolt;
 
+class ENGINE_API	CPerlinNoise1D;
+
 // t-defs
 class ENGINE_API	CEnvModifier
 {
@@ -85,7 +87,8 @@ public:
 	float				bolt_duration;
 
     float				wind_velocity;
-    float				wind_direction;      
+    float				wind_direction;  
+	float				gust_factor;
     
 	Fvector3			ambient		;
 	Fvector3			lmap_color	;
@@ -116,6 +119,8 @@ class ENGINE_API	CEnvironment
 		{	return xr_strcmp(x,y)<0;	}
 	};
 public:
+	CPerlinNoise1D*			PerlinNoise1D;
+
 	DEFINE_VECTOR			(CEnvAmbient*,EnvAmbVec,EnvAmbVecIt);
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
 	DEFINE_MAP_PRED			(shared_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
@@ -131,7 +136,7 @@ public:
 	xr_vector<CEnvModifier>	Modifiers;
 	EnvAmbVec				Ambients;
 
-	float					wind_strength;	
+	float					wind_strength_factor;	
 
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;
