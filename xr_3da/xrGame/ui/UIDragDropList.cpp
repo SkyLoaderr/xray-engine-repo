@@ -131,6 +131,8 @@ void CUIDragDropList::DropAll()
 	{
 		for(m=0; m<GetCols(); ++m)
 		{
+			if(k>=m_iRowsNum || m>=m_iColsNum)
+				Msg("CUIDragDropList::DropAll failed. row=[%d] col=[%d] row_num=[%d] col_num=[%d]",k,m,m_iRowsNum,m_iColsNum);
 			GetCell(k, m) = CELL_EMPTY;
 		}
 	}
@@ -530,6 +532,8 @@ void CUIDragDropList::PlaceItemAtPos(int place_row, int place_col, CUIDragDropIt
 	{
 		for(m=0; m<pItem->GetGridWidth(); ++m)
 		{
+			if(place_row+k>=m_iRowsNum || place_col+m>=m_iColsNum)
+				Msg("CUIDragDropList::PlaceItemAtPos failed. row=[%d] col=[%d] row_num=[%d] col_num=[%d]",place_row+k,place_col+m,m_iRowsNum,m_iColsNum);
 			GetCell(place_row+k, place_col+m) = CELL_FULL;
 		}
 	}
@@ -589,6 +593,8 @@ void CUIDragDropList::RemoveItemFromGrid(CUIDragDropItem* pItem)
 	{
 		for(m=0; m<pItem->GetGridWidth(); ++m)
 		{
+			if(place_row+k>=m_iRowsNum || place_col+m>=m_iColsNum)
+				Msg("CUIDragDropList::RemoveItemFromGrid failed. row=[%d] col=[%d] row_num=[%d] col_num=[%d]",place_row+k,place_col+m,m_iRowsNum,m_iColsNum);
 			GetCell(place_row+k, place_col+m) = CELL_EMPTY;
 		}
 	}
