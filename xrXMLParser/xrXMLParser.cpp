@@ -78,7 +78,6 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
 //инициализация и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {
-	ZeroMemory(m_xml_file_name,sizeof(m_xml_file_name) );
 	strcpy(m_xml_file_name, xml_filename);
 	// Load and parse xml file
 
