@@ -822,6 +822,8 @@ int CWeapon::GetAmmoCurrent() const
 
 float CWeapon::GetConditionMisfireProbability() const
 {
+	if( GetCondition()>0.95f ) return 0.0f;
+
 	float mis = misfireProbability+powf(1.f-GetCondition(), 3.f);
 	clamp(mis,0.0f,0.99f);
 	return mis;
@@ -829,8 +831,8 @@ float CWeapon::GetConditionMisfireProbability() const
 
 BOOL CWeapon::CheckForMisfire	()
 {
-	#pragma fixme("following line invalid and should be removed (misfire in MP)")
-	if (GameID()!=GAME_SINGLE)	return	FALSE;		//.
+//	#pragma fixme("following line invalid and should be removed (misfire in MP)")
+//	if (GameID()!=GAME_SINGLE)	return	FALSE;		//.
 	float rnd = ::Random.randF(0.f,1.f);
 	if(rnd<GetConditionMisfireProbability())
 	{
