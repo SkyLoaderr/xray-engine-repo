@@ -305,6 +305,13 @@ states = {
 				animation = "hide_s_right",
 				reset = true
 			},
+	dynamite = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "dynamite"
+			},
 				
 
 	-- Раненый
