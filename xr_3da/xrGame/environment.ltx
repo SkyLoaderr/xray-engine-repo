@@ -2,69 +2,19 @@
 #include "flares.ltx"
 #include "thunderbolt.ltx"
 
+#include "weather_test.ltx"
+#include "weather_map.ltx"
+
 [weathers]
 map				= sect_map
-default    		= sect_map			; временно 
+default    		= sect_test			; временно ( sect_all_no_vert )
 ;sarkofag       = sect_sarkofag
 ;vibros         = sect_vibros
 ;aaa		    = sect_aaa
 ;!tuman			= sect_tuman
 ;mp_weather		= sect_mp_weather
 ;!dx            = sect_dx
-;default    	= sect_all_no_vert	; временно 
 ;pripyat		= sect_pripyat
-
-[sect_map]
-00:00:00		=	m_01
-12:00:00		=	m_02
-
-[m_01]
-flares			=	flares_default10	
-sky_texture		=	sky\sky_19_cube
-sky_rotation	=	0
-sky_color		=	1.0,    1.0,  	1.0
-clouds_texture	=	oblaka
-clouds_color	=	1.0,	1.0,	1.0,	1.0
-far_plane		=	400
-fog_color		=	0.486, 0.502, 0.545
-fog_density		=	0
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-thunderbolt		= 	off
-bolt_period		=	3.f
-bolt_duration	=	0.25f
-wind_velocity	=	0.0 
-wind_direction	=	0.0
-ambient			=	0.17,   0.17,  	0.17
-lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=   0.7,    0.7,    0.7,  1
-sun_color		=	0.902, 0.847, 0.702
-sun_dir			=	-28.0, 292
-
-
-[m_02]
-flares			=	flares_default10	
-sky_texture		=	sky\sky_19_cube
-sky_rotation	=	0
-sky_color		=	1.0,    1.0,  	1.0
-clouds_texture	=	oblaka
-clouds_color	=	1.0,	1.0,	1.0,	1.0
-far_plane		=	400
-fog_color		=	0.486, 0.502, 0.545
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-thunderbolt		= 	off
-bolt_period		=	3.f
-bolt_duration	=	0.25f
-wind_velocity	=	0.0 
-wind_direction	=	0.0
-ambient			=	0.17,   0.17,  	0.17
-lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=   0.7,    0.7,    0.7,  1
-sun_color		=	0.902, 0.847, 0.702
-sun_dir			=	-28.0, 292
-
 
 [sect_tuman]
 00:00:00		=	tt01
