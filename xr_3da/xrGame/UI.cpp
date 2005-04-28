@@ -121,9 +121,9 @@ bool CUI::Render()
 			m_pMessagesWnd->DrawPdaMessages();			
 //			UIMainIngameWnd->DrawPdaMessages();
 		}
-		//render cursor only when it visible
-		if(GetUICursor()->IsVisible())
-            GetUICursor()->Render();
+//render cursor only when it visible
+//		if(GetUICursor()->IsVisible())
+//            GetUICursor()->Render();
 	}
 	else
 		m_pMessagesWnd->Draw();
@@ -131,6 +131,9 @@ bool CUI::Render()
 	
 
 	DoRenderDialogs();
+	//render cursor only when it visible
+	if(GetUICursor()->IsVisible())
+        GetUICursor()->Render();
 
 	return false;
 }

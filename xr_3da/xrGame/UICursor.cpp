@@ -30,9 +30,14 @@ CUICursor::~CUICursor	()
 {
 }
 //--------------------------------------------------------------------
+u32 last_render_frame = 0;
 void CUICursor::Render	()
 {
 #ifdef DEBUG
+	VERIFY(last_render_frame != Device.dwFrame);
+	last_render_frame = Device.dwFrame;
+
+	if(bDebug){
 	CGameFont* F		= UI()->Font()->pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
 	F->SetSizeI			(0.02f);
@@ -41,11 +46,11 @@ void CUICursor::Render	()
 	Ivector2			pt = GetPos();
 	F->OutNext			("%d-%d",pt.x, pt.y);
 
-	if(bHoldMode){
+	if(bHoldMode)
 		F->OutNext		("Hold Mode");
-		return;
 	};
 #endif
+	if(bHoldMode) return;
 	// Convert to screen coords
 	int cx	= int((vPos.x+1)/2*UI_BASE_WIDTH);
 	int cy	= int((vPos.y+1)/2*UI_BASE_HEIGHT);

@@ -22,6 +22,7 @@
 
 class CUIMapWnd;
 class CUIGlobalMapSpot;
+class CLevelFogOfWar;
 
 class CUICustomMap : public CUIStatic, public CUIWndCallback
 {
@@ -141,6 +142,11 @@ public:
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return m_globalMapSpot;}
 protected:
 	virtual void				UpdateSpots			();
+
+
+//Fog of War...
+protected:
+	CLevelFogOfWar*				m_fogOfWar;
 
 };
 

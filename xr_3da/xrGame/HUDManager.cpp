@@ -223,8 +223,8 @@ void  CHUDManager::RenderUI()
 		Font().Render();
 
 		//render UI cursor
-		if(pUI && GetUICursor() && GetUICursor()->IsVisible())
-			GetUICursor()->Render();
+//		if(pUI && GetUICursor() && GetUICursor()->IsVisible())
+//			GetUICursor()->Render();
 	}
 	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT) && !bAlready)	
 		m_pHUDCursor->Render();

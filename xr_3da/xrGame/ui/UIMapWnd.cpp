@@ -414,6 +414,7 @@ Ivector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels 
 
 CUILevelMap::CUILevelMap()
 {
+	m_fogOfWar			= NULL;
 	m_globalMapSpot		= xr_new<CUIGlobalMapSpot>(this);
 	Show				(false);
 }
