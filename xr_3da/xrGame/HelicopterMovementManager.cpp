@@ -10,11 +10,45 @@
 
 SHeliMovementState::~SHeliMovementState()
 {
+
+}
+
+void SHeliMovementState::net_Destroy()
+{
 	if(need_to_del_path&&currPatrolPath){
 		CPatrolPath* tmp = const_cast<CPatrolPath*>(currPatrolPath);
 		xr_delete( tmp );
 	}
+}
 
+void SHeliMovementState::Load(LPCSTR section)
+{
+	float angularSpeedPitch		= pSettings->r_float(section,"path_angular_sp_pitch");
+	float angularSpeedHeading	= pSettings->r_float(section,"path_angular_sp_heading");
+	LinearAcc_fw			= pSettings->r_float(section,"path_linear_acc_fw");
+	LinearAcc_bk			= pSettings->r_float(section,"path_linear_acc_bk");
+	onPointRangeDist		= pSettings->r_float(section,"on_point_range_dist");
+	maxLinearSpeed			= pSettings->r_float(section,"velocity");
+	min_altitude			= pSettings->r_float(section,"min_altitude");
+
+
+	float y0				= pSettings->r_float(section,"path_angular_sp_pitch_0");
+	PitchSpB				= y0;
+	PitchSpK				= (angularSpeedPitch - PitchSpB)/maxLinearSpeed;
+
+	y0						= pSettings->r_float(section,"path_angular_sp_heading_0");
+	HeadingSpB				= y0;
+	HeadingSpK				= (angularSpeedHeading - HeadingSpB)/maxLinearSpeed;
+}
+
+float SHeliMovementState::GetAngSpeedPitch(float speed)
+{
+	return PitchSpK*speed+PitchSpB;// angularSpeedPitch; // linear
+}
+
+float SHeliMovementState::GetAngSpeedHeading(float speed)
+{
+	return HeadingSpK*speed+HeadingSpB;
 }
 
 void SHeliMovementState::Update()
@@ -26,6 +60,7 @@ void SHeliMovementState::Update()
 			UpdateMovToPoint();
 			break;
 		case eMovPatrolPath:
+		case eMovRoundPath:
 			UpdatePatrolPath();
 			break;
 		case eMovLanding:
@@ -71,12 +106,14 @@ void SHeliMovementState::UpdatePatrolPath()
 		CPatrolPath::const_iterator b,e;
 		currPatrolPath->begin(currPatrolVertex,b,e);
 		if(b!=e){
+
+			if(need_to_del_path &&	currPatrolVertex->data().flags())//fake flags that signals entrypoint for round path
+				SetPointFlags(currPatrolVertex->vertex_id(), 0);
+
 			currPatrolVertex =  currPatrolPath->vertex((*b).vertex_id());
 			
 			Fvector p = currPatrolVertex->data().position();
-			SetDestPosition(&p);
-			type = eMovPatrolPath;
-
+			desiredPoint = p;
 		}else{
 			type = eMovNone;
 //			curLinearSpeed	= 0.0f;
@@ -91,15 +128,14 @@ void SHeliMovementState::UpdateMovToPoint()
 		float dist = GetDistanceToDestPosition();
 		parent->callback(GameObject::eHelicopterOnPoint)(dist,currP, -1);
 		type = eMovNone;
-//		curLinearSpeed	= 0.0f;
-//		curLinearAcc	= 0.0f;
 	}
 }
 extern float STEP;
 bool SHeliMovementState::AlreadyOnPoint()
 {
 	float dist = GetDistanceToDestPosition();
-	if(dist<=0.1f)return true;
+	bool res = false;
+	if(dist<=0.1f) res = true;
 
 	if(	dist < onPointRangeDist ){
 		Fvector P1 = currP;
@@ -107,10 +143,12 @@ bool SHeliMovementState::AlreadyOnPoint()
 		dir.setHP(currPathH,0.0f);
 		P1.mad(dir, curLinearSpeed*STEP);
 		float new_dist = desiredPoint.distance_to(P1);
-		bool res = new_dist>dist;
-		return res;
+		res = new_dist>dist;
 	}
-	return false;
+	if(res)
+		Msg("--------OnPoint id=[%d] dist=[%f]", currPatrolVertex->vertex_id(), dist);
+
+	return res;
 }
 
 void SHeliMovementState::getPathAltitude (Fvector& point, float base_altitude)
@@ -146,9 +184,9 @@ void SHeliMovementState::getPathAltitude (Fvector& point, float base_altitude)
 void SHeliMovementState::SetDestPosition(Fvector* pos)
 {
 	desiredPoint = *pos;
-//	getPathAltitude(desiredPoint, wrk_altitude);
 	type = eMovToPoint;
 }
+
 
 void SHeliMovementState::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 {
@@ -165,7 +203,6 @@ void SHeliMovementState::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 	currPatrolVertex =  currPatrolPath->vertex(patrol_begin_idx);
 
 	desiredPoint = currPatrolVertex->data().position();
-//	getPathAltitude(desiredPoint, wrk_altitude);
 	
 	type = eMovPatrolPath;
 }
@@ -180,8 +217,6 @@ void SHeliMovementState::save(NET_Packet &output_packet)
 	output_packet.w_float	(LinearAcc_fw);
 	output_packet.w_float	(LinearAcc_bk);
 
-	output_packet.w_float	(angularSpeedPitch);
-	output_packet.w_float	(angularSpeedHeading);
 	output_packet.w_float	(speedInDestPoint);
 	
 	output_packet.w_vec3	(desiredPoint);
@@ -210,49 +245,85 @@ void SHeliMovementState::save(NET_Packet &output_packet)
 
 void SHeliMovementState::load(IReader &input_packet)
 {
-	type			=		(EHeilMovementState)input_packet.r_s16();
-	patrol_begin_idx=		input_packet.r_u32();
-	input_packet.r_stringZ	(patrol_path_name);
+	type				=		(EHeilMovementState)input_packet.r_s16();
+	patrol_begin_idx	=		input_packet.r_u32();
+	input_packet.r_stringZ		(patrol_path_name);
 
-	maxLinearSpeed	=		input_packet.r_float();
-	LinearAcc_fw	=		input_packet.r_float();
-	LinearAcc_bk	=		input_packet.r_float();
+	maxLinearSpeed		=		input_packet.r_float();
+	LinearAcc_fw		=		input_packet.r_float();
+	LinearAcc_bk		=		input_packet.r_float();
 
-	angularSpeedPitch	=	input_packet.r_float();
-	angularSpeedHeading =	input_packet.r_float();
-	speedInDestPoint	=	input_packet.r_float();
+	speedInDestPoint	=		input_packet.r_float();
 
-	input_packet.r_fvector3(desiredPoint);
+	input_packet.r_fvector3		(desiredPoint);
 
-	curLinearSpeed		=	input_packet.r_float();
-	curLinearAcc		=	input_packet.r_float();
+	curLinearSpeed		=		input_packet.r_float();
+	curLinearAcc		=		input_packet.r_float();
 
 	input_packet.r_fvector3		(currP);
 
 
-	currPathH			=	input_packet.r_float();
-	currPathP			=	input_packet.r_float();
+	currPathH			=		input_packet.r_float();
+	currPathP			=		input_packet.r_float();
 
 	input_packet.r_fvector3		(round_center);
 
-	round_radius		=	input_packet.r_float();
+	round_radius		=		input_packet.r_float();
 
-	round_reverse		=	!!input_packet.r_u8();
+	round_reverse		=		!!input_packet.r_u8();
 
-	onPointRangeDist	=	input_packet.r_float();
+	onPointRangeDist	=		input_packet.r_float();
 
 	if(type==eMovPatrolPath){
 		currPatrolPath = Level().patrol_paths().path(patrol_path_name);
 		int idx = input_packet.r_s32();
 		currPatrolVertex =  currPatrolPath->vertex(idx);
 	}
+	if(type==eMovRoundPath){
+		goByRoundPath(round_center, round_radius, !round_reverse);
+	}
 
 }
 
+float SHeliMovementState::GetSafeAltitude()
+{
+	Fbox	boundingVolume = Level().ObjectSpace.GetBoundingVolume();
+	return	boundingVolume.max.y;
+}
+
+void SHeliMovementState::CreateRoundPoints(Fvector center, float radius, float start_h, float end_h, xr_vector<STmpPt>& round_points)
+{
+	float	height = GetSafeAltitude();
+
+	float				round_len	= 2*PI*radius;
+	static float		dist		= 30.0f;//dist between points
+	float				td			= 2*PI*dist/round_len;
+	float				dir_h		= 0.0f;
+
+	dir_h = start_h;
+	while( dir_h+td < end_h ){
+		Fvector dir, new_pt;
+		dir.setHP(dir_h,0.0f);
+		new_pt.mad(center,dir,radius);
+		new_pt.y = height;
+		round_points.push_back( STmpPt(new_pt,dir_h) );
+		dir_h	+= td;
+	}
+
+}
 
 void SHeliMovementState::goByRoundPath(Fvector center_, float radius_, bool clockwise_)
 {
-/*	round_center	= center_;
+	if(type == eMovRoundPath)
+		clockwise_ = !clockwise_;
+
+	float r_verify = maxLinearSpeed*GetAngSpeedHeading(maxLinearSpeed);
+	if(r_verify>radius_){
+		Msg("! Helicopter: cannot build round path R=%f. Min R=%f",radius_,r_verify);
+		return;
+	} 
+
+	round_center	= center_;
 	round_radius	= radius_;
 	round_reverse	= !clockwise_;
 
@@ -260,123 +331,173 @@ void SHeliMovementState::goByRoundPath(Fvector center_, float radius_, bool cloc
 		CPatrolPath* tmp = const_cast<CPatrolPath*>(currPatrolPath);
 		xr_delete( tmp );
 	}
+	need_to_del_path	= true;
+	u32 pt_idx			= 0;
+	CPatrolPath* pp = xr_new<CPatrolPath>("heli_round_path");
 
-	CPatrolPath* pp = xr_new<CPatrolPath>();
-	need_to_del_path = true;
-	xr_vector<Fvector> pts;
-	//fill new path points
-	Fvector p,center,dir,dir_norm;
-	Fvector cur_pos = currP;
-	center = round_center;
-	float radius = round_radius;
+/*
+	float end_h;
 
-	dir.sub(cur_pos,center).normalize_safe();
-	dir_norm.set(-dir.z, 0.0f, dir.x);
-	p.mad(center,dir,radius);
-	getPathAltitude(p, wrk_altitude);
-	pts.push_back(p);
+	need_to_del_path	= true;
+	u32 pt_idx			= 0;
+	CPatrolPath* pp = xr_new<CPatrolPath>("heli_round_path");
+	
+	Fvector c1,tmp_dir;
+	float r1 = curLinearSpeed*GetAngSpeedHeading(curLinearSpeed);
+	tmp_dir.setHP						(currPathH, currPathP);
+	tmp_dir.normalize_safe				();
+	tmp_dir.set							(-tmp_dir.z, tmp_dir.y, tmp_dir.x);
+
+	if(r1>EPS_L){
+
+		c1.mad								(currP,tmp_dir, r1);
+		tmp_dir.sub							(currP, c1);
+
+		float dist_centers	= c1.distance_to(center_);
+		float r_diff		= r1-radius_;
+		float x				= _sqrt(dist_centers*dist_centers-r_diff*r_diff);
+		float ang			= asinf(x/dist_centers);
+		angle_normalize_signed(ang);
+
+		tmp_dir.sub					(center_,c1);
+		float ang1 = tmp_dir.getH	();
+		angle_normalize_signed		(ang1);
+		end_h = ang1+ang;
+		angle_normalize_signed		(end_h);
 
 
-	p.mad(center,dir_norm,radius);
-	getPathAltitude(p, wrk_altitude);
-	pts.push_back(p);
+		Fvector dir_, new_pt;
+		dir_.setHP					(end_h,0.0f);
+		new_pt.mad					(c1,dir_,r1);
+		new_pt.y = GetSafeAltitude	();
 
-	p.mad(center,dir,-radius);
-	getPathAltitude(p, wrk_altitude);
-	pts.push_back(p);
 
-	p.mad(center,dir_norm,-radius);
-	getPathAltitude(p, wrk_altitude);
-	pts.push_back(p);
+		string128 pt_name;
+		sprintf						(pt_name,"heli_path_pt_%d",pt_idx);
+		CPatrolPoint pt = CPatrolPoint(pp, new_pt, 0, 0, pt_name);
+		pp->add_vertex				(pt,pt_idx);
+		pt_idx++;
+	}else
+		end_h = tmp_dir.getH();
+*/
 
-	if(!round_reverse){//clockwise
-		xr_vector<Fvector>::iterator i = pts.begin();
-		++i;
-		std::reverse(i ,pts.end() );
+	float start_h	= 0.0f;
+	float end_h		= PI_MUL_2-EPS;
+
+	xr_vector<STmpPt> round_points;
+	xr_vector<STmpPt>::iterator it,it_e;
+	CreateRoundPoints(center_, radius_, start_h, end_h, round_points);
+	if(clockwise_)
+		std::reverse(round_points.begin()+1, round_points.end());
+
+
+	it = round_points.begin();
+	it_e = round_points.end();
+	for(;it!=it_e;++it,++pt_idx){
+		string128 pt_name;
+		sprintf(pt_name,"heli_round_path_pt_%d",pt_idx);
+		CPatrolPoint pt = CPatrolPoint(pp,(*it).point,0,0,pt_name);
+		pp->add_vertex(pt,pt_idx);
+		if (pt_idx)
+			pp->add_edge(pt_idx-1,pt_idx,1.f);
 	}
+	pp->add_edge(pt_idx-1, 0, 1.f);
 
-
-	xr_vector<Fvector>::iterator it = pts.begin();
-	for(u32 idx=0;it!=pts.end();++it,++idx){//create patrol path
-		CPatrolPoint pt = CPatrolPoint(*it,0,0,"");
-		pp->add_vertex(pt,idx);
-		if (idx)
-			pp->add_edge(idx-1,idx,1.f);
-	}
-	pp->add_edge(idx-1,0,1.f);
 
 	currPatrolPath = pp;
-	currPatrolVertex =  currPatrolPath->vertex(0);
 
-	desiredPoint = currPatrolVertex->data().position();
-	getPathAltitude(desiredPoint, wrk_altitude);
+//find nearest point to start from...
+	u32 start_vertex_id		= 0;
+	float min_dist			= flt_max;
 
-	type = eMovPatrolPath;*/
+	CPatrolPath::const_vertex_iterator b = currPatrolPath->vertices().begin();
+	CPatrolPath::const_vertex_iterator e = currPatrolPath->vertices().end();
+	for ( ; b != e; ++b) {
+		float d = (*b).second->data().position().distance_to(currP);
+		if ( d < min_dist  ){
+			min_dist		= d;
+			start_vertex_id = (*b).first;
+		}
+	}
+
+
+	SetPointFlags(start_vertex_id, 1);
+	currPatrolVertex	=  currPatrolPath->vertex(start_vertex_id);
+	desiredPoint		=  currPatrolVertex->data().position();
+
+	type				= eMovRoundPath;
+}
+
+void SHeliMovementState::SetPointFlags(u32 idx, u32 new_flags)
+{
+	CPatrolPath				*p = const_cast<CPatrolPath*>(currPatrolPath);
+	CPatrolPoint* pt_curr	= &p->vertex(idx)->data();
+	CPatrolPoint* pt_new	= xr_new<CPatrolPoint>(	currPatrolPath,
+													pt_curr->position(),
+													pt_curr->level_vertex_id(),
+													new_flags,
+													pt_curr->name());
+
+	p->vertex(idx)->data	(*pt_new);
+	xr_delete(pt_curr);
+
+}
+
+float SHeliMovementState::GetSpeedInDestPoint			()
+{
+	if(need_to_del_path && currPatrolVertex && currPatrolVertex->data().flags()) return 0.0f;
+	else 
+		return speedInDestPoint;
+}
+void SHeliMovementState::SetSpeedInDestPoint			(float val)
+{
+	speedInDestPoint = val;
 }
 
 #ifdef DEBUG
 void CHelicopter::OnRender()
 {
+	if(!bDebug) return;
+	
+	if(!m_movement.currPatrolPath) return;
+
+	CPatrolPath::const_vertex_iterator b = m_movement.currPatrolPath->vertices().begin();
+	CPatrolPath::const_vertex_iterator e = m_movement.currPatrolPath->vertices().end();
+	for ( ; b != e; ++b) {
+		Fvector p = (*b).second->data().position();
+		RCache.dbg_DrawAABB  (p,0.1f,0.1f,0.1f,D3DCOLOR_XRGB(0,255,0));
+	}
+
+/*
+	Fvector pos			= Level().CurrentEntity()->Position();
+	static float	radius		= 50.0f;//meters
+	float	round_len	= 2*PI*radius;
+	static float	dist		= 10.0f;//dist between points
+	float	td			= 2*PI*dist/round_len;
+	float	dir_h		= 0.0f;
+	xr_vector<Fvector>	round_points;
+	
+	while(dir_h+td<2*PI){
+		Fvector dir, new_pt;
+		dir.setHP(dir_h,0.0f);
+		new_pt.mad(pos,dir,radius);
+		new_pt.y += 1.0f;
+		round_points.push_back(new_pt);
+		dir_h	+= td;
+	}
+
+	xr_vector<Fvector>::iterator it = round_points.begin();
+	xr_vector<Fvector>::iterator it_e = round_points.end();
+	for(;it!=it_e;++it){
+		RCache.dbg_DrawAABB  ((*it),0.1f,0.1f,0.1f,D3DCOLOR_XRGB(0,255,0));
+	}
+*/
 /*	RCache.dbg_DrawLINE(Fidentity,m_heli->m_right_rocket_bone_xform.c, m_heli->m_data.m_destEnemyPos,D3DCOLOR_XRGB(0,255,0));
 
 	RCache.dbg_DrawLINE(Fidentity,m_heli->XFORM().c,m_heli->m_data.m_destEnemyPos,D3DCOLOR_XRGB(255,0,0));
 	return;
 */
-//	float t = Level().timeServer()/1000.0f;
-//	Fvector P,R;
-//	_Evaluate(t,P,R);
-//	RCache.dbg_DrawAABB  (P,0.1f,0.1f,0.1f,D3DCOLOR_XRGB(255,0,0));
-///*	Fvector P_,R_;
-//	_Evaluate(t+1.0f,P_,R_);
-//	float s = P_.distance_to(P);
-//
-//	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
-//	HUD().pFontSmall->OutSet	(320,630);
-//	HUD().pFontSmall->OutNext("Motion Speed:			[%3.2f]",s);
-//*/
-//	if(bDrawInterpolated){
-//	
-//	FvectorVec path_points;
-//	FvectorVec path_rot;
-//
-//	float min_t				= m_startTime;
-//	float max_t				= m_endTime;
-//
-//	Fvector 				T,r;
-//	path_points.clear		();
-//	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=dTime){
-//		_Evaluate(t,T,r);
-//		path_points.push_back(T);
-//		path_rot.push_back(r);
-//	}
-//
-//	float path_box_size = .05f;
-//	for(u32 i = 0; i<path_points.size (); ++i) {
-//		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
-//	}	
-///*		r.setHP(path_rot[i].y, path_rot[i].x );
-//		r.mul (3.0f);
-//		T.add (path_points[i],r);
-//		RCache.dbg_DrawLINE (Fidentity, path_points[i], T, D3DCOLOR_XRGB(255,0,0));
-//*/
-//	}
-//
-//	if(bDrawKeys){
-//		float key_box_size = .25f;
-//		u32 cnt = KeyCount();
-//		for(u32 ii=0;ii<cnt;++ii) {
-//			Fvector _t;
-//			Fvector _r;
-//			GetKey (ii,_t,_r);
-//			RCache.dbg_DrawAABB  (_t,key_box_size,key_box_size,key_box_size,D3DCOLOR_XRGB(0,255,255));
-//
-////			_r.setHP(_r.y, _r.x );
-////			_r.mul (6.0f);
-////			TT.add (_t,_r);
-////			RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
-//		}
-//	}
-//
+
 
 }
 #endif

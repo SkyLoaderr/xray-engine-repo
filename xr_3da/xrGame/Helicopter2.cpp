@@ -176,12 +176,12 @@ float CHelicopter::GetMaxVelocity()
 void CHelicopter::SetSpeedInDestPoint(float sp)
 {
 	if(sp>=0.0f)
-		m_movement.speedInDestPoint = sp;
+		m_movement.SetSpeedInDestPoint(sp);
 }
 
 float CHelicopter::GetSpeedInDestPoint(float sp)
 {
-	return m_movement.speedInDestPoint;
+	return m_movement.GetSpeedInDestPoint();
 }
 void CHelicopter::SetOnPointRangeDist(float d)
 {
@@ -336,6 +336,14 @@ void SHeliEnemy::load(IReader &input_packet)
 	destEnemyID		=	input_packet.r_u32();
 }
 
+
+void SHeliBodyState::Load(LPCSTR section)
+{
+	model_angSpeedBank			= pSettings->r_float(section,"model_angular_sp_bank");
+	model_angSpeedPitch			= pSettings->r_float(section,"model_angular_sp_pitch");
+	model_pitch_k				= pSettings->r_float(section,"model_pitch_koef");
+	model_bank_k				= pSettings->r_float(section,"model_bank_koef");
+}
 
 void SHeliBodyState::reinit()
 {

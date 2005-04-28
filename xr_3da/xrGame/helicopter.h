@@ -51,11 +51,17 @@ struct SHeliBodyState{
 
 	void save						(NET_Packet &output_packet);
 	void load						(IReader &input_packet);
+	void Load						(LPCSTR section);
 
 };
 
-enum EHeilMovementState{eMovNone,eMovToPoint,eMovPatrolPath,eMovLanding,eMovTakeOff};
+enum EHeilMovementState{eMovNone,eMovToPoint,eMovPatrolPath,eMovRoundPath,eMovLanding,eMovTakeOff};
 struct SHeliMovementState{
+	struct STmpPt{
+		Fvector		point;
+		float		dir_h;
+		STmpPt		(const Fvector& p, const float h):point(p),dir_h(h){};
+	};
 	~SHeliMovementState				();
 	CHelicopter*					parent;
 	EHeilMovementState				type;
@@ -70,9 +76,13 @@ struct SHeliMovementState{
 	float							maxLinearSpeed;
 	float							LinearAcc_fw;
 	float							LinearAcc_bk;
-	float							angularSpeedPitch;
-	float							angularSpeedHeading;
+protected:
+	float							HeadingSpK,	HeadingSpB;
+	float							PitchSpK,	PitchSpB;
 	float							speedInDestPoint;
+	void							SetPointFlags(u32 idx, u32 new_flags);
+public:
+	float							min_altitude;
 //runtime values
 	Fvector							desiredPoint;
 
@@ -89,7 +99,12 @@ struct SHeliMovementState{
 	bool							round_reverse;
 
 	float							onPointRangeDist;
+	float	GetSpeedInDestPoint			();
+	void	SetSpeedInDestPoint			(float);
+	float	GetAngSpeedPitch			(float speed);
+	float	GetAngSpeedHeading			(float speed);
 
+	float	GetSafeAltitude				();
 	void	reinit						();
 	void	Update						();
 	void	UpdateMovToPoint			();
@@ -100,9 +115,11 @@ struct SHeliMovementState{
 	void	getPathAltitude				(Fvector& point, float base_altitude);
 	void	SetDestPosition				(Fvector* pos);
 	void	goPatrolByPatrolPath		(LPCSTR path_name,int start_idx);
-
-	void save						(NET_Packet &output_packet);
-	void load						(IReader &input_packet);
+	void	CreateRoundPoints			(Fvector center, float radius, float start_h, float end_h, xr_vector<STmpPt>& round_points);
+	void	save						(NET_Packet &output_packet);
+	void	load						(IReader &input_packet);
+	void	Load						(LPCSTR section);
+	void	net_Destroy					();
 };
 
 class CHelicopter : 	public CEntity,

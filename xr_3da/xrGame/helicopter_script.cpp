@@ -34,6 +34,7 @@ void CHelicopter::script_register(lua_State *L)
 					value("eMovNone",								int(eMovNone)),
 					value("eMovToPoint",							int(eMovToPoint)),
 					value("eMovPatrolPath",							int(eMovPatrolPath)),
+					value("eMovRoundPath",							int(eMovRoundPath)),
 					value("eMovLanding",							int(eMovLanding)),
 					value("eMovTakeOff",							int(eMovTakeOff))
 				]
@@ -73,6 +74,7 @@ void CHelicopter::script_register(lua_State *L)
 				.def("SetEnemy",							(void (CHelicopter::*)(CScriptGameObject*)) CHelicopter::SetEnemy)
 				.def("SetEnemy",							(void (CHelicopter::*)(Fvector*)) CHelicopter::SetEnemy)
 				.def("GoPatrolByPatrolPath",				&CHelicopter::goPatrolByPatrolPath)
+				.def("GoPatrolByRoundPath",					&CHelicopter::goByRoundPath)
 				.def("SetDestPosition",						&CHelicopter::SetDestPosition)
 				.def("LookAtPoint",							&CHelicopter::LookAtPoint)
 
