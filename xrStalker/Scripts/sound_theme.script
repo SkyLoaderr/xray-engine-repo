@@ -40,22 +40,22 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                      }
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
---	printf("%f",obj:story_id())
---	if ltx:line_exist(section, utils.to_str(obj:story_id())) then
---		return ltx:r_string(section, utils.to_str(obj:story_id()))
---	end
+	printf("%f",obj:story_id())
+	if ltx:line_exist(section, utils.to_str(obj:story_id())) then
+		return ltx:r_string(section, utils.to_str(obj:story_id()))
+	end
 
 --	2. проверка по npc_profile
---	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
---	if ltx:line_exist(section, obj:profile_name()) then
---		return ltx:r_string(section, obj:profile_name())
---	end
+	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
+	if ltx:line_exist(section, obj:profile_name()) then
+		return ltx:r_string(section, obj:profile_name())
+	end
 
 --	3. проверка по character_community
---	local c = obj:character_community()
---	if ltx:line_exist(section, c) then
---		return ltx:r_string(section, c)
---	end
+	local c = obj:character_community()
+	if ltx:line_exist(section, c) then
+		return ltx:r_string(section, c)
+	end
 	
 --	4. загрузка дефолта
 	if ltx:line_exist(section, "stalker") then
