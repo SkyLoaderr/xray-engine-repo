@@ -351,6 +351,7 @@ void CWallmarksEngine::Render()
 		}
 		// Flush stream
 		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,FALSE);	//. remove line if !(suppress cull needed)
+		BeginStream				(hGeom,w_offset,w_verts,w_start);
 		// dynamic wallmarks
 		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			CSkeletonWallmark* W	= *w_it;
