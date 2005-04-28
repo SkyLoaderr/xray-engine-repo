@@ -6,6 +6,10 @@
 #include "IDirect3DIndexBuffer9.h"
 #include "IDirect3DVertexBuffer9.h"
 #include "IDirect3DTexture9.h"
+#include "IDirect3DVertexDeclaration9.h"
+#include "IDirect3DVertexShader9.h"
+#include "IDirect3DPixelShader9.h"
+#include "IDirect3DStateBlock9.h"
 
 #include "xrD3D9-Null_OutProc.h"
 
@@ -66,6 +70,7 @@ ULONG	xrIDirect3DDevice9::Release(void)
 	if (m_refCount < 0)
 	{
 		delete this;
+		return ULONG_Proc(0);
 	}
 	return ULONG_Proc(m_refCount);
 }
@@ -264,7 +269,13 @@ HRESULT		xrIDirect3DDevice9::SetRenderState( D3DRENDERSTATETYPE State,DWORD Valu
 HRESULT		xrIDirect3DDevice9::GetRenderState( D3DRENDERSTATETYPE State,DWORD* pValue) 
 { APIDEBUG("xrIDirect3DDevice9::GetRenderState");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateStateBlock( D3DSTATEBLOCKTYPE Type,IDirect3DStateBlock9** ppSB) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateStateBlock");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreateStateBlock");
+	*ppSB = NULL;
+	xrIDirect3DStateBlock9* I = new xrIDirect3DStateBlock9(this);
+	*ppSB = I;
+	return HRESULT_Proc(S_OK); 
+};
 HRESULT		xrIDirect3DDevice9::BeginStateBlock() 
 { APIDEBUG("xrIDirect3DDevice9::BeginStateBlock");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::EndStateBlock( IDirect3DStateBlock9** ppSB) 
@@ -318,17 +329,29 @@ HRESULT		xrIDirect3DDevice9::DrawIndexedPrimitiveUP( D3DPRIMITIVETYPE PrimitiveT
 HRESULT		xrIDirect3DDevice9::ProcessVertices( UINT SrcStartIndex,UINT DestIndex,UINT VertexCount,IDirect3DVertexBuffer9* pDestBuffer,IDirect3DVertexDeclaration9* pVertexDecl,DWORD Flags) 
 { APIDEBUG("xrIDirect3DDevice9::ProcessVertices");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateVertexDeclaration( CONST D3DVERTEXELEMENT9* pVertexElements,IDirect3DVertexDeclaration9** ppDecl) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateVertexDeclaration");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreateVertexDeclaration");  	
+	*ppDecl = NULL;
+	xrIDirect3DVertexDeclaration9* I = new xrIDirect3DVertexDeclaration9(this);
+	*ppDecl = I;
+	return HRESULT_Proc(S_OK);
+};
 HRESULT		xrIDirect3DDevice9::SetVertexDeclaration( IDirect3DVertexDeclaration9* pDecl) 
 { APIDEBUG("xrIDirect3DDevice9::SetVertexDeclaration");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::GetVertexDeclaration( IDirect3DVertexDeclaration9** ppDecl) 
-{ APIDEBUG("xrIDirect3DDevice9::GetVertexDeclaration");  return HRESULT_Proc(S_OK); };
+{ APIDEBUG("xrIDirect3DDevice9::GetVertexDeclaration"); return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::SetFVF( DWORD FVF) 
 { APIDEBUG("xrIDirect3DDevice9::SetFVF");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::GetFVF( DWORD* pFVF) 
 { APIDEBUG("xrIDirect3DDevice9::GetFVF");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateVertexShader( CONST DWORD* pFunction,IDirect3DVertexShader9** ppShader) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateVertexShader");  return HRESULT_Proc(S_OK); };
+{
+	APIDEBUG("xrIDirect3DDevice9::CreateVertexShader");  
+	*ppShader = NULL;
+	xrIDirect3DVertexShader9* I = new xrIDirect3DVertexShader9(this);
+	*ppShader = I;
+	return HRESULT_Proc(S_OK); 
+};
 HRESULT		xrIDirect3DDevice9::SetVertexShader( IDirect3DVertexShader9* pShader) 
 { APIDEBUG("xrIDirect3DDevice9::SetVertexShader");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::GetVertexShader( IDirect3DVertexShader9** ppShader) 
@@ -358,7 +381,13 @@ HRESULT		xrIDirect3DDevice9::SetIndices( IDirect3DIndexBuffer9* pIndexData)
 HRESULT		xrIDirect3DDevice9::GetIndices( IDirect3DIndexBuffer9** ppIndexData) 
 { APIDEBUG("xrIDirect3DDevice9::GetIndices");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreatePixelShader( CONST DWORD* pFunction,IDirect3DPixelShader9** ppShader) 
-{ APIDEBUG("xrIDirect3DDevice9::CreatePixelShader");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreatePixelShader");
+	*ppShader = NULL;
+	xrIDirect3DPixelShader9* I = new xrIDirect3DPixelShader9(this);
+	*ppShader = I;
+	return HRESULT_Proc(S_OK); 
+};
 HRESULT		xrIDirect3DDevice9::SetPixelShader( IDirect3DPixelShader9* pShader) 
 { APIDEBUG("xrIDirect3DDevice9::SetPixelShader");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::GetPixelShader( IDirect3DPixelShader9** ppShader) 

@@ -244,6 +244,46 @@
 				RelativePath=".\IDirect3DTexture9.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="IDirect3DVertexDeclaration9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DVertexDeclaration9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DVertexDeclaration9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DVertexShader9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DVertexShader9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DVertexShader9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DPixelShader9 "
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DPixelShader9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DPixelShader9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DStateBlock9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DStateBlock9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DStateBlock9.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
