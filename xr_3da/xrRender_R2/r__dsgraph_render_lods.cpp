@@ -78,8 +78,8 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 		FLOD::_face*					facets		= lodV->facets;
 		int								id_best		= 0;
 		int								id_next		= 0;
-		float							dot_best	= Ldir.dotproduct(facets[0].N);
-		float							dot_next	= Ldir.dotproduct(facets[0].N);
+		float							dot_best	= Ldir.dotproduct	(facets[0].N);
+		float							dot_next	= Ldir.dotproduct	(facets[0].N);
 		float							dot;
 
 		dot	= Ldir.dotproduct			(facets[1].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=1; dot_best=dot; }
@@ -91,17 +91,22 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 		dot	= Ldir.dotproduct			(facets[7].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=7; dot_best=dot; }
 
 		// Now we have two "best" planes, calculate factor, and approx normal
-		float	f0	=	dot_best,	f1 = dot_next;
-		float	ft	=	f0+f1;		f0 /= ft; f1 /= ft;
-		Fvector	N	=	{0,0,0};	N.mad(facets[id_best].N,f0).mad(facets[id_next].N,f1).normalize();
-				N.y	+=	1;			N.normalize	();
+		float	fA		=	dot_best,	fB = dot_next,	fP = (dot_best+dot_next)/2.f;
+		float	low		=	1.f- fP;
+		float	alpha	=	0.5f + 0.5f*(fA - low)/(1.f-low);
+		float	alpha_b =	1.f- alpha;
+
+		Fvector	N;		N.lerp		(facets[id_next].N, facets[id_best].N, alpha).normalize();
+				N.y	+=	1;			N.normalize		();
 
 		// Fill VB
-		FLOD::_face&	F				= facets[id_best];
-		_P.add(F.v[3].v,shift);	V->set	(_P,N,color(N,F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
-		_P.add(F.v[0].v,shift);	V->set	(_P,N,color(N,F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
-		_P.add(F.v[2].v,shift);	V->set	(_P,N,color(N,F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
-		_P.add(F.v[1].v,shift);	V->set	(_P,N,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
+		FLOD::_face&	FA				= facets[id_best]	;
+		FLOD::_face&	FB				= facets[id_next]	;
+		FLOD::_face&	F				= FA				;
+		_P.lerp(FB.v[3].v,FA.v[3].v,alpha).add	(shift);	V->set	(_P,N,color(N,F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.lerp(FB.v[0].v,FA.v[0].v,alpha).add	(shift);	V->set	(_P,N,color(N,F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.lerp(FB.v[2].v,FA.v[2].v,alpha).add	(shift);	V->set	(_P,N,color(N,F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.lerp(FB.v[1].v,FA.v[1].v,alpha).add	(shift);	V->set	(_P,N,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	lstLODgroups.push_back				(cur_count);
 	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->geom->vb_stride);
