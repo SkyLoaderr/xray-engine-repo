@@ -6,4 +6,169 @@
 --
 -- copyright 2005 GSC Game World
 
+function main()
+	local dlg = ui_mp_main.mp_main()
+	level.start_stop_menu(dlg,true)
+	while true do
+		wait(3000)
+	end
+end
 
+
+class "mp_main" (CUIScriptWnd)
+
+function mp_main:__init() super()
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+   
+   self:InitControls()
+   self:InitCallBacks()
+end
+
+function mp_main:__finalize()
+
+end
+
+function mp_main:InitControls()	
+	local l_top = 143
+	local l_left = 122
+	
+	local l_cap_col = {};
+	l_cap_col.a = 255
+	l_cap_col.r = 138
+	l_cap_col.g = 133
+	l_cap_col.b = 136
+	
+	-- player name
+	local l_st_pname = {}
+	l_st_pname.x = l_left + 13
+	l_st_pname.y = l_top
+	l_st_pname.width = 100
+	l_st_pname.height = 24 
+	local l_ed_pname = {}
+	l_ed_pname.x = l_st_pname.x + l_st_pname.width
+	l_ed_pname.y = l_st_pname.y
+	l_ed_pname.height = l_st_pname.height
+	l_ed_pname.width = 236
+	-- cd key
+	local l_st_cdkey = {}
+	l_st_cdkey.x = l_ed_pname.x + l_ed_pname.width + 30
+	l_st_cdkey.y = l_st_pname.y
+	l_st_cdkey.height = l_st_pname.height
+	l_st_cdkey.width = 70
+	-- tab buttons
+	local l_tab_col = {}	
+	l_tab_col.a = 255
+	l_tab_col.r = 215
+	l_tab_col.g = 195
+	l_tab_col.b = 170
+	local l_tabbtn_texture_offset = -7
+	local l_btn_client = {}
+	l_btn_client.x = l_left + 8
+	l_btn_client.y = l_top + 45 - l_tabbtn_texture_offset 
+	l_btn_client.height = 26
+	l_btn_client.width = 116
+	local l_btn_server = {}
+	l_btn_server.x = l_btn_client.x + l_btn_client.width
+	l_btn_server.y = l_btn_client.y
+	l_btn_server.height = l_btn_client.height
+	l_btn_server.width = l_btn_client.width	
+	local l_btn_options = {}
+	l_btn_options.x = l_btn_server.x + l_btn_server.width
+	l_btn_options.y = l_btn_client.y
+	l_btn_options.height = l_btn_client.height
+	l_btn_options.width = l_btn_client.width	
+	
+	-- tab buttons
+	self.font_cap = GetFontLetterica16Russian()
+	self.font_edit = GetFontLetterica18Russian()
+	self.font_tab_btn = GetFontGraffiti22Russian()
+	
+	self:Init(0,0,1024,768)
+	
+	-- background
+	self.bk = CUIStatic()
+	self.bk:InitSharedTexture("ui_mp_main.xml", "background")
+	self.bk:Init(0,0,1024,768)
+	self:AttachChild(self.bk)
+	
+	self:Enable(true)
+	
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_mm_mp.xml")
+	
+	-- Player Name	
+	local st = CUIStatic()
+	xml:InitStatic("static_player_name",0,st)
+--	st:Init(l_st_pname.x, l_st_pname.y, l_st_pname.width, l_st_pname.height)
+--	st:SetFont(self.font_cap)
+--	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
+	st:SetLines("Player Name:")
+	st:InitTexture("ui\\ui_debug_red_n_black")
+	st:SetStretchTexture(true)
+	self.bk:AttachChild(st)
+	
+	st = CUIEditBox()
+	st:Init(l_ed_pname.x, l_ed_pname.y, l_ed_pname.width, l_ed_pname.height)
+	st:SetText("Fantomas")
+	st:SetFont(self.font_edit)
+--	st:InitTexture("ui\\ui_debug_red_n_black")
+	st:SetStretchTexture(true)	
+	self.bk:AttachChild(st)	
+	
+	-- CD Key
+	st = CUIStatic()
+	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
+	st:SetFont(self.font_cap)
+	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
+	st:SetLines("CD Key")	
+--	st:InitTexture("ui\\ui_debug_red_n_black")
+	st:SetStretchTexture(true)	
+	self.bk:AttachChild(st)
+	
+	-- bnt client
+	local btn = CUI3tButton()
+	btn:Init(l_btn_client.x, l_btn_client.y, l_btn_client.width, l_btn_client.height)
+	btn:SetFont(self.font_tab_btn)
+--	btn:SetTextColor(l_tab_col.a, l_tab_col.r, l_tab_col.g, l_tab_col.b)
+	btn:SetTextColor(255, 255, 0, 0)
+	btn:SetLines("Client")
+	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
+	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
+	self.bk:AttachChild(btn)
+	-- btn server
+	btn = CUI3tButton()
+	btn:Init(l_btn_server.x, l_btn_server.y, l_btn_server.width, l_btn_server.height)
+	btn:SetFont(self.font_tab_btn)
+	btn:SetLines("Server")
+	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
+	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
+	self.bk:AttachChild(btn)
+	-- btn server
+	btn = CUI3tButton()
+	btn:Init(l_btn_options.x, l_btn_options.y, l_btn_options.width, l_btn_options.height)
+	btn:SetFont(self.font_tab_btn)
+	btn:SetLines("Options")
+	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
+	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
+	self.bk:AttachChild(btn)
+end
+
+function mp_main:InitCallBacks()
+
+end
+
+function mp_main:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	
+	local bind = dik_to_bind(dik)
+	local console = get_console()
+	
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
+			self:GetHolder():start_stop_menu(self,true)
+		end	
+	
+	end
+   
+	return true
+end

@@ -155,7 +155,8 @@ end
 function main_menu:OnButton_new_hard_game()
 	local console = get_console()
 --	console:execute("start server(all/single/alife/new) client(localhost)")
-	console:execute("start server(andy_test/single) client(localhost)")
+--	console:execute("start server(andy_test/single) client(localhost)")
+	console:execure("start server(fog_net/dethmatch) client(localhost")
 	get_console():execute("main_menu off")
 
 end
@@ -171,7 +172,7 @@ function main_menu:OnButton_save_clicked()
 end
 
 function main_menu:OnButton_findsrv()
-	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
+	local dlg = ui_mp_main.mp_main() --ui_multiplayer_find.multiplayer_find_dialog()
 	self:GetHolder():start_stop_menu(dlg, true)
 end
 

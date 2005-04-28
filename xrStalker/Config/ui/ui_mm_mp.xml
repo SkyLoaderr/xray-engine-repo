@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<window>
+	<static_player_name x="137" y="143" width="100" height="24">
+		<text font="letterica16" r="215" g="195" b="170">mm_mp_player_name</text>
+	</static_player_name>
+	<edit_player_name x="237" y="143" width="" height=""/>
+
+</window>

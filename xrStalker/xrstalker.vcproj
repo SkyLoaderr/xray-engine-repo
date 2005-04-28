@@ -603,6 +603,9 @@
 					<File
 						RelativePath=".\Config\text\rus\ui_st_inventory.xml">
 					</File>
+					<File
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+					</File>
 				</Filter>
 				<Filter
 					Name="eng"
@@ -678,6 +681,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -854,6 +860,15 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\trade_new.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_common.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_mm_mp.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_mp_main.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\zone_map.xml">
@@ -1331,6 +1346,9 @@
 				<Filter
 					Name="multiplayer"
 					Filter="">
+					<File
+						RelativePath=".\Scripts\ui_mp_main.script">
+					</File>
 					<File
 						RelativePath=".\Scripts\ui_multiplayer_base.script">
 					</File>
