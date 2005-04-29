@@ -314,7 +314,7 @@ void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 
 //	if (pChatLog) pChatLog->AddLogMessage(msg, "");
 //	if (pGameLog) pGameLog->AddLogMessage(msg);
-#pragma todo("SATAN -> SATAN very very bad solution");
+#pragma todo("SATAN -> SATAN very very bad solution")
 	if (HUD().GetUI())
         HUD().GetUI()->m_pMessagesWnd->AddLogMessage(msg);
 };

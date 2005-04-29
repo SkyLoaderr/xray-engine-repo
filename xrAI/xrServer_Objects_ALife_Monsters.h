@@ -76,6 +76,9 @@ public:
 #ifdef XRGAME_EXPORTS
 			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
+#ifdef DEBUG
+			bool					check_inventory_consistency	();
+#endif
 			void					vfInitInventory			();
 	virtual void					spawn_supplies			();
 #endif

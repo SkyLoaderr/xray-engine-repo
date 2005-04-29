@@ -11,7 +11,13 @@
 #include "alife_communication_space.h"
 #include "xrServer_objects_ALife_All.h"
 #include "alife_object_registry.h"
+#include "alife_graph_registry.h"
 #include "ai_debug.h"
+
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
 
 using namespace ALife;
 using namespace ALifeCommunication;
@@ -156,12 +162,15 @@ void CALifeCommunicationManager::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tp
 
 void CALifeCommunicationManager::vfAssignItemParents(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, int iItemCount)
 {
-	OBJECT_IT			I = tpALifeHumanAbstract->children.end() - iItemCount;
-	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
+	ALife::_OBJECT_ID		*temp_children = (ALife::_OBJECT_ID*)alloca(sizeof(ALife::_OBJECT_ID)*iItemCount);
+	std::copy				(tpALifeHumanAbstract->children.begin() + tpALifeHumanAbstract->children.size() - iItemCount,tpALifeHumanAbstract->children.end(),temp_children);
+	tpALifeHumanAbstract->children.resize(tpALifeHumanAbstract->children.size() - iItemCount);
+	ALife::_OBJECT_ID		*I = temp_children;
+	ALife::_OBJECT_ID		*E = temp_children + iItemCount;
 	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*I));
-		tpALifeHumanAbstract->attach(l_tpALifeInventoryItem,true,false);
-		R_ASSERT		(tpALifeHumanAbstract->m_dwTotalMoney >= l_tpALifeInventoryItem->m_dwCost);
+		tpALifeHumanAbstract->attach(l_tpALifeInventoryItem,true,true);
+		R_ASSERT			(tpALifeHumanAbstract->m_dwTotalMoney >= l_tpALifeInventoryItem->m_dwCost);
 		tpALifeHumanAbstract->m_dwTotalMoney			-= l_tpALifeInventoryItem->m_dwCost;
 	}
 }
@@ -201,8 +210,8 @@ void CALifeCommunicationManager::vfRestoreItems(CSE_ALifeHumanAbstract *tpALifeH
 #endif
 		for ( ; I != E; ++I) {
 #ifndef FAST_OWNERSHIP
-			(*I)->ID_Parent = 0xffff;
-			attach(*tpALifeHumanAbstract,*I,smart_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+			(*I)->base()->ID_Parent = 0xffff;
+			graph().attach(*tpALifeHumanAbstract,*I,smart_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 #else
 			*i = (*I)->base()->ID;
 			++i;
@@ -227,7 +236,7 @@ void CALifeCommunicationManager::vfAttachGatheredItems(CSE_ALifeTraderAbstract *
 #ifndef FAST_OWNERSHIP
 		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = objects().object(*I);
 		l_tpALifeDynamicObject->ID_Parent = 0xffff;
-		attach	(*tpALifeTraderAbstract1,smart_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
+		graph().attach	(*tpALifeTraderAbstract1->base(),smart_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
 #else
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*I));
 		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->base()->ID) {
@@ -601,6 +610,9 @@ void CALifeCommunicationManager::vfAppendBlockedItems(CSE_ALifeHumanAbstract *tp
 
 void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
+	VERIFY					(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY					(tpALifeHumanAbstract2->check_inventory_consistency());
+
 	m_tpItems1.clear	();
 	m_tpItems2.clear	();
 
@@ -752,6 +764,8 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 		vfAttachGatheredItems(tpALifeHumanAbstract2,m_tpBlockedItems2);
 	}
 #endif
+	VERIFY					(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY					(tpALifeHumanAbstract2->check_inventory_consistency());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -858,8 +872,13 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 		Msg									("Assigning correct parents");
 	}
 #endif
+#ifdef FAST_OWNERSHIP
 	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
 	vfAttachGatheredItems					(tpALifeTrader,tpALifeHumanAbstract,m_tpBlockedItems2);
+#else
+	vfAttachGatheredItems					(tpALifeHumanAbstract,m_tpBlockedItems1);
+	vfAttachGatheredItems					(tpALifeTrader,m_tpBlockedItems2);
+#endif
 
 	{
 		OBJECT_IT							I = std::find(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),original_pda->ID);

@@ -481,7 +481,7 @@ void CSE_ALifeHumanAbstract::vfDetachAll(bool bFictitious)
 			detach					(l_tpALifeInventoryItem,&I);
 		}
 	}
-	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
+	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && !m_iCumulativeItemVolume,"Invalid cumulative item mass or volume value");
 }
 
 EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)

@@ -182,8 +182,8 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 				--n;
 				continue;
 			}
-			inventory_owner->attach	(inventory_item,true,true);
-			graph().attach			(*object,inventory_item,child->m_tGraphID,false);
+			graph().add				(child,child->m_tGraphID,false);
+			graph().attach			(*object,inventory_item,child->m_tGraphID,true);//false);
 		}
 	}
 	else {

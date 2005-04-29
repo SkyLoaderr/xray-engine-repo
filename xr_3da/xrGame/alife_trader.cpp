@@ -26,8 +26,8 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 #pragma warning(disable:4238)
 	CInifile					ini(
 		&IReader				(
-		(void*)(ini_string),
-		xr_strlen(ini_string)
+			(void*)(ini_string),
+			xr_strlen(ini_string)
 		)
 	);
 #pragma warning(pop)
@@ -149,8 +149,42 @@ void CSE_ALifeTraderAbstract::vfInitInventory()
 	m_iCumulativeItemVolume		= 0;
 }
 
+#ifdef DEBUG
+bool CSE_ALifeTraderAbstract::check_inventory_consistency	()
+{
+	int							volume = 0;
+	float						mass = 0.f;
+	xr_vector<ALife::_OBJECT_ID>::const_iterator	I = base()->children.begin();
+	xr_vector<ALife::_OBJECT_ID>::const_iterator	E = base()->children.end();
+	for ( ; I != E; ++I) {
+		CSE_ALifeDynamicObject	*object = ai().alife().objects().object(*I,true);
+		if (!object)
+			continue;
+
+		CSE_ALifeInventoryItem	*item = smart_cast<CSE_ALifeInventoryItem*>(object);
+		if (!item)
+			continue;
+
+		volume					+= item->m_iVolume;
+		mass					+= item->m_fMass;
+	}
+
+	VERIFY						(fis_zero(m_fCumulativeItemMass - mass,EPS_L));
+	if (!fis_zero(m_fCumulativeItemMass - mass,EPS_L))
+		return					(false);
+
+	VERIFY						(m_iCumulativeItemVolume == volume);
+	if (m_iCumulativeItemVolume != volume)
+		return					(false);
+
+	return						(true);
+}
+#endif
+
 void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryItem, bool bALifeRequest, bool bAddChildren)
 {
+	VERIFY						(!bAddChildren || check_inventory_consistency());
+
 	if (bALifeRequest) {
 		if (bAddChildren) {
 #ifdef DEBUG
@@ -176,10 +210,13 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
+
+	VERIFY								(!bALifeRequest || check_inventory_consistency());
 }
 
 void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryItem, OBJECT_IT *I, bool bALifeRequest, bool bRemoveChildren)
 {
+	VERIFY								(!bRemoveChildren || check_inventory_consistency());
 	if (bALifeRequest) {
 		if (!I) {
 			if (bRemoveChildren) {
@@ -225,6 +262,8 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;
+
+	VERIFY									(!bALifeRequest || check_inventory_consistency());
 }
 
 u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem)
