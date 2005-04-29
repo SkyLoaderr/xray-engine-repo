@@ -24,13 +24,13 @@ float		ps_r__GLOD_ssa_start		= 256.f	;
 float		ps_r__GLOD_ssa_end			=  64.f	;
 float		ps_r__LOD					=  1.f	;
 float		ps_r__LOD_Power				=  1.5f	;
+float		ps_r__ssaDISCARD			=  2.0f	;					//RO
+float		ps_r__ssaDONTSORT			=  32.f	;					//RO
+float		ps_r__ssaHZBvsTEX			=  96.f	;					//RO
 
 // R1
-float		ps_r1_ssaDISCARD			= 4.f	;
-float		ps_r1_ssaDONTSORT			= 32.f	;
 float		ps_r1_ssaLOD_A				= 64.f	;
 float		ps_r1_ssaLOD_B				= 48.f	;
-float		ps_r1_ssaHZBvsTEX			= 256.f	;
 int			ps_r1_tf_Anisotropic		= 0		;
 float		ps_r1_tf_Mipbias			= -0.5f	;
 Flags32		ps_r1_flags					= { R1FLAG_DLIGHTS };		// r1-only
@@ -43,11 +43,8 @@ float		ps_r1_pps_v					= 0.f	;
 int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
 
 // R2
-float		ps_r2_ssaDISCARD			= 4.f	;
-float		ps_r2_ssaDONTSORT			= 32.f	;
 float		ps_r2_ssaLOD_A				= 48.f	;
 float		ps_r2_ssaLOD_B				= 32.f	;
-float		ps_r2_ssaHZBvsTEX			= 256.f	;
 int			ps_r2_tf_Anisotropic		= 4		;
 float		ps_r2_tf_Mipbias			= 0.0f	;
 
@@ -218,8 +215,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r1_ssa_lod_a",			&ps_r1_ssaLOD_A,			16,		96		);
 	CMD4(CCC_Float,		"r1_ssa_lod_b",			&ps_r1_ssaLOD_B,			16,		64		);
 	CMD4(CCC_Float,		"r1_ssa_discard",		&ps_r1_ssaDISCARD,			1,		16		);
-	CMD4(CCC_Float,		"r1_ssa_dontsort",		&ps_r1_ssaDONTSORT,			16,		128		);
-	CMD4(CCC_Float,		"r1_ssa_hzb_vs_tex",	&ps_r1_ssaHZBvsTEX,			16,		512		);
 	CMD4(CCC_Float,		"r1_lmodel_lerp",		&ps_r1_lmodel_lerp,			0,		0.333	);
 	CMD2(CCC_tf_Aniso,	"r1_tf_aniso",			&ps_r1_tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);
@@ -236,8 +231,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ssa_lod_a",			&ps_r2_ssaLOD_A,			16,		96		);
 	CMD4(CCC_Float,		"r2_ssa_lod_b",			&ps_r2_ssaLOD_B,			32,		64		);
 	CMD4(CCC_Float,		"r2_ssa_discard",		&ps_r2_ssaDISCARD,			1,		16		);
-	CMD4(CCC_Float,		"r2_ssa_dontsort",		&ps_r2_ssaDONTSORT,			16,		128		);
-	CMD4(CCC_Float,		"r2_ssa_hzb_vs_tex",	&ps_r2_ssaHZBvsTEX,			16,		512		);
 	CMD2(CCC_tf_Aniso,	"r2_tf_aniso",			&ps_r2_tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r2_tf_mipbias",		&ps_r2_tf_Mipbias			);
 
