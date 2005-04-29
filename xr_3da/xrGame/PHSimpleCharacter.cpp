@@ -243,8 +243,10 @@ void CPHSimpleCharacter::Destroy(){
 	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics character when ph world is freezed!!!");
 	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
 	m_elevator_state.Deactivate();
-	CPHObject::deactivate();
+
 	spatial_unregister();
+	CPHObject::deactivate();
+	
 
 	if(m_cap) {
 		dGeomDestroyUserData(m_cap);
