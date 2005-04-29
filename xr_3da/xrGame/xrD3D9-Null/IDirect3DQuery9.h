@@ -1,10 +1,5 @@
 //---------------------------------
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
-//---------------------------------
-#define D3D_DEBUG_INFO
-#include "d3d9.h"
+#include "stdafx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,11 +26,11 @@ extern "C" {
 		HRESULT			__stdcall	Issue( DWORD dwIssueFlags) ;
 		HRESULT			__stdcall	GetData( void* pData,DWORD dwSize,DWORD dwGetDataFlags) ;
 
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 		D3DQUERYTYPE Type;
 		DWORD DataSize;
 		LPCWSTR CreationCallStack;
-#endif
+//#endif
 	};
 
 

@@ -13,9 +13,9 @@ const GUID DECLSPEC_SELECTANY IID_IDirect3D9;
 xrIDirect3D9::xrIDirect3D9() : m_refCount(0)
 {
 	APIDEBUG("xrIDirect3D9::xrIDirect3D9");
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 	Version = NULL;
-#endif
+//#endif
 };
 
 ULONG	xrIDirect3D9::AddRef(void)

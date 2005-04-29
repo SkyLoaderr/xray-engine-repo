@@ -11,6 +11,8 @@ xrIDirect3DIndexBuffer9::xrIDirect3DIndexBuffer9(IDirect3DDevice9*	pIDirect3DDev
 {
 	APIDEBUG("xrIDirect3DIndexBuffer9::xrIDirect3DIndexBuffer9");
 	m_pIDirect3DDevice9 = pIDirect3DDevice9;
+	
+//#ifdef D3D_DEBUG_INFO
 	//-----------------------------------------------
 	Name = NULL;
 	Length = iLength;
@@ -21,6 +23,8 @@ xrIDirect3DIndexBuffer9::xrIDirect3DIndexBuffer9(IDirect3DDevice9*	pIDirect3DDev
 	LockCount = 0;
 	CreationCallStack = NULL;
 	//-----------------------------------------------
+//#endif
+	
 	switch(Format)
 	{
 	case D3DFMT_INDEX16:

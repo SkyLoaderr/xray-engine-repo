@@ -1,10 +1,4 @@
-//---------------------------------
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
-//---------------------------------
-#define D3D_DEBUG_INFO
-#include "d3d9.h"
+#include "stdafx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,7 +38,7 @@ extern "C" {
 		HRESULT			__stdcall	UnlockRect( UINT Level) ;
 		HRESULT			__stdcall	AddDirtyRect( CONST RECT* pDirtyRect) ;
 
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 		LPCWSTR Name;
 		UINT Width;
 		UINT Height;
@@ -57,7 +51,7 @@ extern "C" {
 		D3DTEXTUREFILTERTYPE FilterType;
 		UINT LockCount;
 		LPCWSTR CreationCallStack;
-#endif
+//#endif
 	};
 
 #ifdef __cplusplus

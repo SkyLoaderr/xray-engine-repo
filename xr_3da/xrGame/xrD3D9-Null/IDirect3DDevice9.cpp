@@ -21,7 +21,7 @@ xrIDirect3DDevice9::xrIDirect3DDevice9(IDirect3D9* pDirect3D9, D3DPRESENT_PARAME
 	APIDEBUG("xrIDirect3DDevice9::xrIDirect3DDevice9");
 	
 	m_pIDirect3D9 = pDirect3D9;
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 	//-------------------------------------------------------
 	memset(&CreationParameters, 0, sizeof(CreationParameters));
 	memcpy(&PresentParameters, pPresentationParameters, sizeof(PresentParameters));
@@ -55,7 +55,7 @@ xrIDirect3DDevice9::xrIDirect3DDevice9(IDirect3D9* pDirect3D9, D3DPRESENT_PARAME
 	memset(&GammaRamp, 0, sizeof(GammaRamp));
 	memset(&ScissorRect, 0, sizeof(ScissorRect));
 	DialogBoxMode = FALSE;
-#endif
+//#endif
 };
 
 ULONG	xrIDirect3DDevice9::AddRef(void)

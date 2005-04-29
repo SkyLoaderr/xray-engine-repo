@@ -1,10 +1,4 @@
-//---------------------------------
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
-//---------------------------------
-#define D3D_DEBUG_INFO
-#include "d3d9.h"
+#include "stdafx.h"
 
 #ifdef __cplusplus
 extern "C" {

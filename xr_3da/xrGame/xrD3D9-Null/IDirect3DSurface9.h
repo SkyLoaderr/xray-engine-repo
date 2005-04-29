@@ -1,10 +1,5 @@
 //---------------------------------
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
-//---------------------------------
-#define D3D_DEBUG_INFO
-#include "d3d9.h"
+#include "stdafx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,7 +35,7 @@ extern "C" {
 		HRESULT			__stdcall	GetDC( HDC *phdc) ;
 		HRESULT			__stdcall	ReleaseDC( HDC hdc) ;
 
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 		LPCWSTR Name;
 		UINT Width;
 		UINT Height;
@@ -53,7 +48,7 @@ extern "C" {
 		UINT LockCount;
 		UINT DCCount;
 		LPCWSTR CreationCallStack;
-#endif
+//#endif
 	};
 
 #ifdef __cplusplus

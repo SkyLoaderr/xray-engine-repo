@@ -56,9 +56,9 @@ extern "C" {
 		HMONITOR	__stdcall	GetAdapterMonitor( UINT Adapter);
 		HRESULT		__stdcall	CreateDevice( UINT Adapter,D3DDEVTYPE DeviceType,HWND hFocusWindow,DWORD BehaviorFlags,D3DPRESENT_PARAMETERS* pPresentationParameters,IDirect3DDevice9** ppReturnedDeviceInterface);
 
-#ifdef D3D_DEBUG_INFO
+///#ifdef D3D_DEBUG_INFO
 		LPCWSTR Version;
-#endif
+//#endif
 	};
 
 

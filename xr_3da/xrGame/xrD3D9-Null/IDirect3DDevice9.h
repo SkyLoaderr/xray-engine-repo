@@ -141,7 +141,7 @@ extern "C" {
 		HRESULT		__stdcall	DeletePatch( UINT Handle) ;
 		HRESULT		__stdcall	CreateQuery( D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery) ;
 		
-#ifdef D3D_DEBUG_INFO
+//#ifdef D3D_DEBUG_INFO
 		D3DDEVICE_CREATION_PARAMETERS CreationParameters;
 		D3DPRESENT_PARAMETERS PresentParameters;
 		D3DDISPLAYMODE DisplayMode;
@@ -175,7 +175,7 @@ extern "C" {
 		D3DGAMMARAMP GammaRamp;
 		RECT ScissorRect;
 		BOOL DialogBoxMode;
-#endif
+//#endif
 	};
 
 #ifdef __cplusplus

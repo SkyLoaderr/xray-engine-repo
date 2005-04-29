@@ -8,7 +8,10 @@
 const GUID DECLSPEC_SELECTANY IID_IDirect3DTexture9;
 
 xrIDirect3DTexture9::xrIDirect3DTexture9(IDirect3DDevice9*	pIDirect3DDevice9, UINT iWidth,UINT iHeight,UINT iLevels,DWORD iUsage,D3DFORMAT iFormat,D3DPOOL iPool)
-: m_refCount(0), Width(iWidth), Height(iHeight), Levels(iLevels), Format(iFormat), Pool(iPool), Priority(0)
+: m_refCount(0), Width(iWidth), Height(iHeight), Levels(iLevels), Format(iFormat)
+//#ifdef D3D_DEBUG_INFO
+, Pool(iPool), Priority(0)
+//#endif
 {
 	APIDEBUG("xrIDirect3DTexture9::xrIDirect3DTexture9");
 	m_pIDirect3DDevice9 = pIDirect3DDevice9;
