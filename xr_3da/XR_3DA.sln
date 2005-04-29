@@ -144,9 +144,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stalker_net", "Stalker_net\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrD3D9-Null", "xrGame\xrD3D9-Null\xrD3D9-Null.vcproj", "{0899B131-F1D4-4876-9BA1-67AC821DB9E1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 24
+		SccNumberOfProjects = 25
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -242,6 +246,10 @@ Global
 		SccProjectUniqueName23 = Stalker_net\\Stalker_net\\Stalker_net.vcproj
 		SccProjectName23 = \u0022$/xr_3da/xrGame/Stalker_net/Stalker_net\u0022,\u0020SXBBAAAA
 		SccLocalPath23 = Stalker_net\\Stalker_net
+		CanCheckoutShared = true
+		SccProjectUniqueName24 = xrGame\\xrD3D9-Null\\xrD3D9-Null.vcproj
+		SccProjectName24 = \u0022$/xr_3da/xrGame/xrD3D9-Null\u0022,\u0020LWBBAAAA
+		SccLocalPath24 = xrGame\\xrD3D9-Null
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -421,6 +429,14 @@ Global
 		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Mixed.Build.0 = Release|Win32
 		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Release.ActiveCfg = Release|Win32
 		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Release.Build.0 = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Debug.ActiveCfg = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Debug.Build.0 = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.DebugNoExceptions.Build.0 = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Mixed.ActiveCfg = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Mixed.Build.0 = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.ActiveCfg = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
