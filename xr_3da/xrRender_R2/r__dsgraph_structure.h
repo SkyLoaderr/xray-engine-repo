@@ -102,7 +102,7 @@ public:
 
 	void		r_dsgraph_render_graph							(u32	_priority,	bool _clear=true);
 	void		r_dsgraph_render_hud							();
-	void		r_dsgraph_render_lods							();
+	void		r_dsgraph_render_lods							(bool	_setup_zb,	bool _clear);
 	void		r_dsgraph_render_sorted							();
 	void		r_dsgraph_render_emissive						();
 	void		r_dsgraph_render_distort						();

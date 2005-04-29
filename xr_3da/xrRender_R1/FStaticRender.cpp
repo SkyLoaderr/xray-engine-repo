@@ -457,6 +457,7 @@ void	CRender::Render		()
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details
+	r_dsgraph_render_lods						(true,false);	// lods - FB
 	g_pGamePersistent->Environment.RenderSky	();				// sky / sun
 	g_pGamePersistent->Environment.RenderClouds	();				// clouds
 	r_pmask										(true,false);	// disable priority "1"
@@ -469,7 +470,7 @@ void	CRender::Render		()
 	phase										= PHASE_NORMAL	;
 	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
-	r_dsgraph_render_lods						();				// lods
+	r_dsgraph_render_lods						(false,true);	// lods - FB
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	PortalTraverser.fade_render					();				// faded-portals
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
