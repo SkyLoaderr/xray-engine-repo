@@ -18,6 +18,7 @@ CPHObject::CPHObject	()	: ISpatial(g_SpatialSpacePhysic)
 
 void CPHObject::activate()
 {
+	R_ASSERT2(dSpacedGeom(),"trying to activate destroyed or not created object!");
 	if(m_flags.test(st_activated))return;
 	if(m_flags.test(st_freezed))	{UnFreeze();return;}
 	ph_world->AddObject(this);
