@@ -48,6 +48,7 @@ void FLOD::Copy			(IRender_Visual *pFrom	)
 }
 void FLOD::Render		(float LOD)
 {
+	/*
 	Fvector				Ldir;
 	Ldir.sub			(vis.sphere.P,Device.vCameraPosition);
 	Ldir.normalize		();
@@ -80,4 +81,5 @@ void FLOD::Render		(float LOD)
 	// Draw IT
 	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
+	*/
 }
