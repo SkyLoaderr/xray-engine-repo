@@ -16,7 +16,7 @@ class CSE_ALifeTrader;
 class CSE_ALifeTraderAbstract;
 
 // #pragma todo("Dima to Dima : Be attentive with this speed optimization - it doesn't suit to the OOP paradigm!")
-// #define FAST_OWNERSHIP
+#define FAST_OWNERSHIP
 
 class CALifeCommunicationManager : public virtual CALifeSimulatorBase {
 protected:

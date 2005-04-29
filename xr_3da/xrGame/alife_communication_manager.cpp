@@ -241,7 +241,7 @@ void CALifeCommunicationManager::vfAttachGatheredItems(CSE_ALifeTraderAbstract *
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*I));
 		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->base()->ID) {
 			R_ASSERT							(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeTraderAbstract2->base()->ID);
-			tpALifeTraderAbstract2->detach		(l_tpALifeInventoryItem,0,false);
+//			tpALifeTraderAbstract2->detach		(l_tpALifeInventoryItem,0,false);
 		}
 		tpALifeTraderAbstract1->attach			(l_tpALifeInventoryItem,true);
 #endif
@@ -745,6 +745,9 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 		}
 	}
 
+	VERIFY				(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY				(tpALifeHumanAbstract2->check_inventory_consistency());
+
 	int					l_iItemCount1 = tpALifeHumanAbstract1->children.size();
 	int					l_iItemCount2 = tpALifeHumanAbstract2->children.size();
 
@@ -755,9 +758,18 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 		vfRestoreItems	(tpALifeHumanAbstract1,m_tpItems1);
 		vfRestoreItems	(tpALifeHumanAbstract2,m_tpItems2);
 	}
+
+	VERIFY				(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY				(tpALifeHumanAbstract2->check_inventory_consistency());
+
 #ifdef FAST_OWNERSHIP
 	vfAttachGatheredItems(tpALifeHumanAbstract1,tpALifeHumanAbstract2,m_tpBlockedItems1);
+	VERIFY					(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY					(tpALifeHumanAbstract2->check_inventory_consistency());
+
 	vfAttachGatheredItems(tpALifeHumanAbstract2,tpALifeHumanAbstract1,m_tpBlockedItems2);
+	VERIFY					(tpALifeHumanAbstract1->check_inventory_consistency());
+	VERIFY					(tpALifeHumanAbstract2->check_inventory_consistency());
 #else
 	else {
 		vfAttachGatheredItems(tpALifeHumanAbstract1,m_tpBlockedItems1);

@@ -695,9 +695,9 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 
 int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector)
 {
-	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
-	float							l_fItemBestValue	= -1.f;
-	ai().ef_storage().alife_evaluation(true);
+	CSE_ALifeInventoryItem	*l_tpALifeItemBest	= 0;
+	float					l_fItemBestValue	= -1.f;
+	ai().ef_storage().alife_evaluation	(true);
 	ai().ef_storage().alife().member()	= this;
 
 	u32						l_dwSafeMoney = m_dwTotalMoney;
@@ -705,11 +705,9 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	ITEM_P_IT				E = alife().m_temp_item_vector.end();
 	for ( ; I != E; ++I) {
 		// checking if it is a hand weapon
-		m_dwTotalMoney			= l_dwSafeMoney;
 		ai().ef_storage().alife().member_item() = smart_cast<CSE_ALifeObject*>(*I);
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
-		m_dwTotalMoney			-= (*I)->m_dwCost;
 		int						j = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					l_fCurrentValue = -1.f;
 		switch (tWeaponPriorityType) {
@@ -745,7 +743,6 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 			l_tpALifeItemBest = *I;
 		}
 	}
-	m_dwTotalMoney				= l_dwSafeMoney;
 	if (l_tpALifeItemBest) {
 		u32						l_dwCount = children.size();
 		
@@ -793,14 +790,14 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 				break;
 		}
 	}
-	m_dwTotalMoney = l_dwSafeMoney;
+	m_dwTotalMoney				= l_dwSafeMoney;
 	if (l_dwCount) {
 		if (!tpObjectVector) {
 			ITEM_P_IT			I = remove_if(alife().m_temp_item_vector.begin(),alife().m_temp_item_vector.end(),CRemoveAttachedItemsPredicate());
 			alife().m_temp_item_vector.erase(I,alife().m_temp_item_vector.end());
 		}
 	}
-	return					(l_dwCount);
+	return						(l_dwCount);
 }
 
 int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
