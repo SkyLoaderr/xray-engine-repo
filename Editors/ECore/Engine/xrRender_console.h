@@ -21,13 +21,13 @@ extern ECORE_API	float		ps_r__GLOD_ssa_start;
 extern ECORE_API	float		ps_r__GLOD_ssa_end	;
 extern ECORE_API	float		ps_r__LOD			;
 extern ECORE_API	float		ps_r__LOD_Power		;
+extern ECORE_API	float		ps_r__ssaDISCARD	;
+extern ECORE_API	float		ps_r__ssaDONTSORT	;
+extern ECORE_API	float		ps_r__ssaHZBvsTEX	;
 
 // R1
-extern ECORE_API	float		ps_r1_ssaDISCARD;
-extern ECORE_API	float		ps_r1_ssaDONTSORT;
 extern ECORE_API	float		ps_r1_ssaLOD_A;
 extern ECORE_API	float		ps_r1_ssaLOD_B;
-extern ECORE_API	float		ps_r1_ssaHZBvsTEX;
 extern ECORE_API	float		ps_r1_tf_Mipbias;
 extern ECORE_API	int			ps_r1_tf_Anisotropic;
 extern ECORE_API	float		ps_r1_lmodel_lerp;
@@ -44,11 +44,8 @@ enum
 };
 
 // R2
-extern ECORE_API	float		ps_r2_ssaDISCARD;
-extern ECORE_API	float		ps_r2_ssaDONTSORT;
 extern ECORE_API	float		ps_r2_ssaLOD_A;
 extern ECORE_API	float		ps_r2_ssaLOD_B;
-extern ECORE_API	float		ps_r2_ssaHZBvsTEX;
 extern ECORE_API	float		ps_r2_tf_Mipbias;
 extern ECORE_API	int			ps_r2_tf_Anisotropic;
 
