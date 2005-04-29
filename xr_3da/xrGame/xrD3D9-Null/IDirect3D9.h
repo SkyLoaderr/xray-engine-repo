@@ -3,7 +3,7 @@
 #include <objbase.h>
 #include <windows.h>
 
-#define D3D_DEBUG_INFO
+#include "stdafx.h"
 #include "d3d9.h"
 
 /*

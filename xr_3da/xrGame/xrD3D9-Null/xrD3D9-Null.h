@@ -17,26 +17,6 @@
 #include "d3d9types.h"
 #include "d3d9caps.h"
 //---------------------------------
-/*
-#ifndef DIRECT3D_VERSION
-#define DIRECT3D_VERSION         0x0900
-#endif  //DIRECT3D_VERSION
-
-#define D3D_SDK_VERSION   (32 | 0x80000000)
-
-
-
-// This class is exported from the xrD3D9-Null.dll
-class XRD3D9NULL_API CxrD3D9Null {
-public:
-	CxrD3D9Null(void);
-	// TODO: add your methods here.
-};
-
-extern XRD3D9NULL_API int nxrD3D9Null;
-
-XRD3D9NULL_API int fnxrD3D9Null(void);
-*/
 
 #include "IDirect3D9.h"
 
