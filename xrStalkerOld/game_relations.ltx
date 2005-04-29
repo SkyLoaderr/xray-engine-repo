@@ -19,7 +19,7 @@ goodwill_neutal = 0
 goodwill_friend = 1000
 
 ;названия группировок
-communities		= stalker, 29, monolith, 20, military, 21, killer, 22, ecolog, 23, dolg, 24, freedom, 25, bandit, 26, trader, 27, zombied, 11, stranger, 28
+communities		= actor, 0, actor_dolg, 1, actor_freedom, 2, stalker, 5, monolith, 6, military, 7, killer, 8, ecolog, 9, dolg, 10, freedom, 11, bandit, 12, trader, 13, zombied, 14, stranger, 15
 
 
 ;	отношение персонажа к актеру (или другому NPC) вычисляется по формуле
@@ -30,19 +30,23 @@ communities		= stalker, 29, monolith, 20, military, 21, killer, 22, ecolog, 23, 
 ;			   rank_goodwill					//отношение ранга персонажа к рангу актера из [rank_relations]
 
 [communities_relations]
-;				stalker monolith military killer  ecolog   dolg  freedom  bandit trader zombied	stranger
-;=========================================================================================================
-stalker		=		  0,  -5000,  -5000,  -5000,      0,	  0,	  0,  -5000,    0,	-5000,		0
-monolith	=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000,    0,	 5000,	-5000
-military	=	  -5000,  -5000,   5000,  -5000,      0,  -5000,  -5000,  -5000,	0,	-5000,		0
-killer		=	  -5000,  -5000,  -5000,   5000,	  0,	  0,      0,  -5000,	0,	-5000,	-5000
-ecolog		=	    500,  -5000,   1000,	  0,   5000,    500,  -5000,   -500,	0,	-5000,		0
-dolg		=		  0,  -5000,   -500,	  0,   5000,    600,  -5000,  -5000,    0,	-5000,		0
-freedom		=		  0,  -5000,  -5000,	  0,  -1500,  -5000,    600,	  0,	0,	-5000,		0
-bandit		=	  -5000,   5000,   -500,  -5000,  -5000,  -5000,	  0,	  0,	0,	-5000,	-5000
-trader		=		  0,	  0,	  0,	  0,	  0,	  0,	  0,	  0,	0,	    0,		0
-zombied		=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,    0,	 5000,	-5000
-stranger	=		  0,  -5000,  -500,   -5000,      0,	  0,	  0,   -500,    0,	-5000,		0
+;				|actor  |act_dol|act_fre|stalker|monolit|militar|killer |ecolog |dolg   |freedom|bandit |zombied|strange|trader |
+;=================================================================================================================================
+actor		=		   0,	   0,	   0,	   0,  -5000,  -5000,  -5000,      0,	   0,	   0,  -5000,  -5000,	   0,	  0
+actor_dolg	=		   0,	   0,	   0,      0,  -5000,   -500,	   0,   5000,    600,  -5000,  -5000,  -5000,	   0,	  0
+actor_freedom =		   0,	   0,	   0,	   0,  -5000,  -5000,	   0,  -1500,  -5000,   5000,	   0,  -5000,	   0,	  0
+
+stalker		=		   0,	   0,	   0,	   0,  -5000,  -5000,  -5000,      0,	   0,	   0,  -5000,  -5000,	   0,	  0
+monolith	=	   -5000,  -5000,  -5000,  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000,   5000,  -5000,	  0
+military	=	   -5000,  -5000,  -5000,  -5000,  -5000,   5000,  -5000,      0,  -5000,  -5000,  -5000,  -5000, 	   0,	  0
+killer		=	   -5000,	   0,      0,  -5000,  -5000,  -5000,   5000,	   0,	   0,      0,  -5000,  -5000,  -5000,	  0
+ecolog		=		   0,    600,  -5000,      0,  -5000,   1000,	   0,   5000,    500,  -5000,   -500,  -5000,	   0,	  0
+dolg		=		   0,    600,  -5000,      0,  -5000,   -500,	   0,   5000,   5000,  -5000,  -5000,  -5000,	   0,	  0
+freedom		=		   0,  -5000,	 600,	   0,  -5000,  -5000,	   0,  -1500,  -5000,   5000,	   0,  -5000,	   0,	  0
+bandit		=	   -5000,  -5000,	   0,  -5000,   5000,   -500,  -5000,  -5000,  -5000,	   0,	   0,  -5000,  -5000,	  0
+zombied		=	   -5000,  -5000,  -5000,  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000,  -5000,	  0
+stranger	=		   0,	   0,	   0,      0,  -5000,  -5000,  -5000,      0,	   0,	   0,   -500,  -5000,	   0,	  0
+trader		=		   0,	   0,	   0,	   0,	   0, 	   0,	   0,	   0,	   0,	   0,	   0,	   0,      0,	  0
 
 [rank_relations]
 ;			  	novice, experienced, veteran, master
@@ -75,6 +79,9 @@ excellent		= -1000,  -600,  -300,	  300,	  500,	  800,	 1000
 ;goodwill его распространится на остальных членов группировки
 ;с определенным коэффициентом
 [communities_sympathy]
+actor		=		0.0
+actor_dolg	=		0.0
+actor_freedom =		0.0
 stalker		=		0.0
 monolith	=		0.0
 military	=		0.0
@@ -168,7 +175,7 @@ dispersion_experienced_k	= 1
 [monster_communities]
 ;номера team которые присваиваются соответствующим видам
 ;255 - команда не задается   
-communities = human, 255, boar, 1, bloodsucker, 2, flesh, 3,  dog, 4, pseudodog, 5, cat, 6, chimera, 7, giant, 8, zombie, 9,  burer, 10, controller, 11, poltergeist, 12, snork, 13, fracture, 14, bird, 15, rat, 16, tushkano, 17
+communities = human, 255, boar, 40, bloodsucker, 41, flesh, 42,  dog, 43, pseudodog, 44, cat, 45, chimera, 46, giant, 47, zombie, 48,  burer, 49, controller, 50, poltergeist, 51, snork, 52, fracture, 53, bird, 54, rat, 55, tushkano, 56
 
 [monster_relations]
 ; [1] друг, [0] нейтрал, [-1] враг, [-2] злейший враг
