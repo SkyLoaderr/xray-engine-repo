@@ -211,7 +211,7 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
 
-	VERIFY								(!bALifeRequest || check_inventory_consistency());
+	VERIFY								(!bALifeRequest || !bAddChildren || check_inventory_consistency());
 }
 
 void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryItem, OBJECT_IT *I, bool bALifeRequest, bool bRemoveChildren)
