@@ -19,15 +19,16 @@ public:
 	};
 	struct _hw 
 	{
-		Fvector		p		;
-		Fvector		n		;
-		u32			color	;
-		u32			factor	;
+		Fvector		p0		;
+		Fvector		p1		;
+		Fvector		n0		;
+		Fvector		n1		;
+		u32			sun_af	;
 		Fvector2	t0		;
 		Fvector2	t1		;
-		IC void		set		(const Fvector& _p, const Fvector& _n, u32 C, u32 F, float u1, float v1, float u2, float v2) { p.set(_p); n.set(_n); color=C; factor=F; t0.set(u1,v1); t1.set(u2,v2); }
+		u32			rgbh0	;
+		u32			rgbh1	;
 	};
-	static const u32	F_HW	= D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_SPECULAR | D3DFVF_TEX2;
 
 	ref_geom		geom		;
 	_face			facets		[8];

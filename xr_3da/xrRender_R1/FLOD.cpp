@@ -2,6 +2,32 @@
 #include "../fmesh.h"
 #include "flod.h"
 
+struct _hw 
+{
+	Fvector		p0		;
+	Fvector		p1		;
+	Fvector		n0		;
+	Fvector		n1		;
+	u32			sun_af	;
+	Fvector2	t0		;
+	Fvector2	t1		;
+	u32			rgbh0	;
+	u32			rgbh1	;
+};
+static D3DVERTEXELEMENT9 dwDecl[]	=
+{
+	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },	// pos-0
+	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	1 },	// pos-1
+	{ 0, 24, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },	// nrm-0
+	{ 0, 36, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	1 },	// nrm-1
+	{ 0, 48, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },	// factors
+	{ 0, 52, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },	// uv
+	{ 0, 60, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	1 },	// uv
+	{ 0, 68, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	2 },	// rgbh-0
+	{ 0, 72, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	3 },	// rgbh-1
+	D3DDECL_END()
+};
+
 void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 {
 	inherited::Load		(N,data,dwFlags);
@@ -25,7 +51,7 @@ void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 	}
 
 	// VS
-	geom.create			(F_HW, RCache.Vertex.Buffer(), RCache.QuadIB);
+	geom.create			(dwDecl, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// lod correction
 	Fvector3			S;

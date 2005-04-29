@@ -11,7 +11,7 @@
 
 extern float r_ssaLOD_A;
 extern float r_ssaLOD_B;
-
+/*
 IC u32	color					(Fvector& N, u32 rgbh_1, u32 rgbh_2, u8 sun_1, u8 sun_2, float lerpf, u32 Alpha)
 {
 	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
@@ -41,6 +41,7 @@ IC u32	color					(Fvector& N, u32 rgbh_1, u32 rgbh_2, u8 sun_1, u8 sun_2, float 
 
 	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
 }
+*/
 
 ICF		bool	pred_dot		(std::pair<float,u32>& _1, std::pair<float,u32>& _2)	{ return _1.first < _2.first; }
 void R_dsgraph_structure::r_dsgraph_render_lods	()
@@ -70,15 +71,13 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 		// calculate alpha
 		float	ssaDiff					= P.ssa-r_ssaLOD_B;
 		float	scale					= ssaDiff/ssaRange;
-		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
-		u32		uA						= u32(iA);
-		// float	shift_scale			= scale;					clamp(shift_scale,0.f,1.f);
+		int		iA						= iFloor((1-scale)*255.f);	
+		u32		uA						= u32	(clampr(iA,0,255));
 
 		// calculate direction and shift
-		FLOD*							lodV		= (FLOD*)P.pVisual;
-		Fvector							Ldir,shift,_P;
-		Ldir.sub						(lodV->vis.sphere.P,Device.vCameraPosition);
-		Ldir.normalize					();
+		FLOD*							lodV		=	(FLOD*)P.pVisual;
+		Fvector							Ldir,shift,_P	;
+		Ldir.sub						(lodV->vis.sphere.P,Device.vCameraPosition).normalize();
 		shift.mul						(Ldir,-.5f * lodV->vis.sphere.R);
 
 		// gen geometry
@@ -96,18 +95,26 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 		// Now we have two "best" planes, calculate factor, and approx normal
 		float	fA = dot_best, fB = dot_next, fC = dot_next_2;
 		float	alpha	=	0.5f + 0.5f*(1-(fB-fC)/(fA-fC))	;
-		u32		factor	=	iFloor		(alpha*255.5f)		;	clamp	(factor,u32(0),u32(255));
-				factor	=	color_rgba	(factor,factor,factor,factor);
+		int		iF		=	iFloor		(alpha*255.5f)		;
+		u32		uF 		=	u32			(clampr	(iF,0,255))	;
 
 		// Fill VB
 		FLOD::_face&	FA				= facets[id_best]	;
 		FLOD::_face&	FB				= facets[id_next]	;
-		Fvector	N;		N.lerp			(FB.N, FA.N, alpha).normalize();
-		N.y	+=	1;		N.normalize		();
-		_P.lerp(FB.v[3].v,FA.v[3].v,alpha).add(shift);	V->set	(_P,N,color(N,FB.v[3].c_rgb_hemi,FA.v[3].c_rgb_hemi,FB.v[3].c_sun,FA.v[3].c_sun,alpha,uA),factor,FB.v[3].t.x,FB.v[3].t.y,FA.v[3].t.x,FA.v[3].t.y); V++;	// 3
-		_P.lerp(FB.v[0].v,FA.v[0].v,alpha).add(shift);	V->set	(_P,N,color(N,FB.v[0].c_rgb_hemi,FA.v[0].c_rgb_hemi,FB.v[0].c_sun,FA.v[0].c_sun,alpha,uA),factor,FB.v[0].t.x,FB.v[0].t.y,FA.v[0].t.x,FA.v[0].t.y); V++;	// 0
-		_P.lerp(FB.v[2].v,FA.v[2].v,alpha).add(shift);	V->set	(_P,N,color(N,FB.v[2].c_rgb_hemi,FA.v[2].c_rgb_hemi,FB.v[2].c_sun,FA.v[2].c_sun,alpha,uA),factor,FB.v[2].t.x,FB.v[2].t.y,FA.v[2].t.x,FA.v[2].t.y); V++;	// 2
-		_P.lerp(FB.v[1].v,FA.v[1].v,alpha).add(shift);	V->set	(_P,N,color(N,FB.v[1].c_rgb_hemi,FA.v[1].c_rgb_hemi,FB.v[1].c_sun,FA.v[1].c_sun,alpha,uA),factor,FB.v[1].t.x,FB.v[1].t.y,FA.v[1].t.x,FA.v[1].t.y); V++;	// 1
+		static int		vid [4]			= {3,0,2,1}			;
+		for (u32 vit=0; vit<4; vit++)	{
+			int			id	= vid[vit]			;
+			V->p0.add	(FB.v[id].v,shift)		;
+			V->p1.add	(FA.v[id].v,shift)		;
+			V->n0		= FB.N					;
+			V->n1		= FA.N					;
+			V->sun_af	= color_rgba			(FB.v[id].c_sun,FA.v[id].c_sun,uA,uF);
+			V->t0		= FB.v[id].t			;
+			V->t1		= FA.v[id].t			;
+			V->rgbh0	= FB.v[id].c_rgb_hemi	;
+			V->rgbh1	= FA.v[id].c_rgb_hemi	;
+			V++			;
+		}
 	}
 	lstLODgroups.push_back				(cur_count);
 	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->geom->vb_stride);

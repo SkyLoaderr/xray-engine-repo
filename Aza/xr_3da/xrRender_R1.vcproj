@@ -360,6 +360,12 @@
 			</File>
 			<File
 				RelativePath=".\r__dsgraph_render_lods.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\r__dsgraph_structure.h">
