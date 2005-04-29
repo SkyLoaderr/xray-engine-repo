@@ -542,7 +542,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 					R_ASSERT					(K != tpGraphs.end());
 					M							= (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName);
 					if (M == (*K).second->m_tVertexMap.end()) {
-						Msg						("Level %s with id %d has an INVALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
+						Msg						("Level %s with id %d has an INVALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",*(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,*(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
 						R_ASSERT				(M != (*K).second->m_tVertexMap.end());
 					}
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
