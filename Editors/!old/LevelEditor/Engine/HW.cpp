@@ -25,7 +25,7 @@ void CHW::Reset		(HWND hwnd)
 	_RELEASE			(pBaseRT);
 
 #ifndef _EDITOR
-	BOOL	bWindowed		= !psDeviceFlags.is	(rsFullscreen);
+	BOOL	bWindowed		= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
 	selectResolution		(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
 	// Windoze
 	DevPP.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
@@ -54,7 +54,7 @@ void CHW::Reset		(HWND hwnd)
 
 void CHW::CreateD3D	()
 {
-	LPCSTR		_name			= strstr(Core.Params,"-dedicated")?"d3d9-null.dll":"d3d9.dll";
+	LPCSTR		_name			= (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))?"d3d9-null.dll":"d3d9.dll";
 	hD3D9            			= LoadLibrary(_name);
 	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'\nPlease install latest version of DirectX before running this program");
     typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
@@ -163,6 +163,15 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Select width/height
 	selectResolution	(dwWidth,dwHeight);
 #endif
+	//-------------------------------------------
+	if (strstr(Core.Params,"-dedicated"))
+	{
+		dwWidth = 640;
+		dwHeight = 480;
+		bWindowed = true;
+	}
+	//-------------------------------------------
+
 	// Display the name of video board
 	D3DADAPTER_IDENTIFIER9	adapterID;
 	R_CHK	(pD3D->GetAdapterIdentifier(DevAdapter,0,&adapterID));
@@ -342,11 +351,11 @@ BOOL	CHW::support	(D3DFORMAT fmt, DWORD type, DWORD usage)
 
 void	CHW::updateWindowProps	(HWND m_hWnd)
 {
-	BOOL	bWindowed				= !psDeviceFlags.is	(rsFullscreen);
+	BOOL	bWindowed				= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
 	u32		dwWindowStyle			= 0;
 	// Set window properties depending on what mode were in.
 	if (bWindowed)		{
-		SetWindowLong	( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
+		SetWindowLong	( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE|WS_SYSMENU|WS_MINIMIZEBOX ) );
 		// When moving from fullscreen to windowed mode, it is important to
 		// adjust the window size after recreating the device rather than
 		// beforehand to ensure that you get the window size you want.  For
@@ -355,7 +364,13 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 		// the window size to 1000x600 until after the display mode has
 		// changed to 1024x768, because windows cannot be larger than the
 		// desktop.
-		RECT			m_rcWindowBounds = {0, 0, DevPP.BackBufferWidth, DevPP.BackBufferHeight };
+		RECT DesktopRect;
+		GetClientRect(GetDesktopWindow(), &DesktopRect);
+		RECT			m_rcWindowBounds = {(DesktopRect.right-DevPP.BackBufferWidth)/2, 
+											(DesktopRect.bottom-DevPP.BackBufferHeight)/2, 
+											(DesktopRect.right+DevPP.BackBufferWidth)/2, 
+											(DesktopRect.bottom+DevPP.BackBufferHeight)/2};
+
 		AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
 		SetWindowPos	( m_hWnd, HWND_TOP,	m_rcWindowBounds.left, m_rcWindowBounds.top,
 									( m_rcWindowBounds.right - m_rcWindowBounds.left ),
@@ -367,5 +382,6 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 	}
 
 	// Hide the cursor if necessary
-	ShowCursor	(FALSE);
+	if (!strstr(Core.Params, "-dedicated")) 
+		ShowCursor	(FALSE);
 }

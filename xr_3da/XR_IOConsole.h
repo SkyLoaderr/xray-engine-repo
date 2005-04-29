@@ -31,15 +31,19 @@ private:
 	float			cur_time;
 	float			rep_time;
 	float			fAccel;
-	int				scroll_delta;
+	
 	int				cmd_delta;
 	int				old_cmd_delta;
-	char			editor[MAX_LEN];
+	
 	char			*editor_last;
 	BOOL			bShift;
-	BOOL			bCursor;
+	
 	BOOL			bRepeat;
 	BOOL			RecordCommands;
+protected:
+	int				scroll_delta;
+	char			editor[MAX_LEN];
+	BOOL			bCursor;
 
 	CGameFont		*pFont;
 public:
@@ -81,8 +85,8 @@ public:
 	virtual void	OnRender			(void);
 	virtual void	OnFrame				(void);
 
-	void	Initialize	();
-	void	Destroy		();
+	virtual	void	Initialize	();
+	virtual void	Destroy		();
 };
 
 ENGINE_API extern CConsole* Console;

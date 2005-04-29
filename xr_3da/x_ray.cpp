@@ -19,6 +19,7 @@
 #include "LightAnimLibrary.h"
 #include "ispatial.h"
 #include "CopyProtection.h"
+#include "Text_Console.h"
 
 //---------------------------------------------------------------------
 BOOL	g_bIntroFinished			= FALSE;
@@ -67,9 +68,15 @@ void InitSettings	()
 }
 void InitConsole	()
 {
-	Console						= xr_new<CConsole>	();
+	if (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))
+	{
+		Console						= xr_new<CTextConsole>	();		
+	}
+	else
+	{
+		Console						= xr_new<CConsole>	();
+	}
 	Console->Initialize			( );
-//	Engine.External.Initialize	( );
 }
 
 void InitInput		()
@@ -321,6 +328,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	// Core
 	Core._initialize		("xray",NULL);
+	
 	FPU::m24r				();
 
 	// auth

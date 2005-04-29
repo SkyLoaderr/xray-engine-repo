@@ -1171,6 +1171,19 @@
 						</Filter>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="TextConsole"
+					Filter="">
+					<File
+						RelativePath=".\Text_Console.cpp">
+					</File>
+					<File
+						RelativePath=".\Text_Console.h">
+					</File>
+					<File
+						RelativePath=".\Text_Console_WndProc.cpp">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
