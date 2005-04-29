@@ -1210,6 +1210,7 @@ void CPHShell::set_ApplyByGravity(bool flag)
 
 void CPHShell::applyGravityAccel(const Fvector& accel)
 {
+	if(!bActive)return;
 	ELEMENT_I i,e;
 	Fvector a;
 	a.set(accel);
