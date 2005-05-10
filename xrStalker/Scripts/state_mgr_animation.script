@@ -512,6 +512,7 @@ function animation:set_state(id, reset)
 			else
 				self.npc:add_animation(self.animations[self.states.current_state].out[self:weapon_slot()], true)
 			end
+			self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 			nn = nn +1
 		end
 	end
@@ -527,6 +528,7 @@ function animation:set_state(id, reset)
 				self.npc:add_animation(self.animations[id].into[self:weapon_slot()], true)
 				nn = nn +1
 			end
+			self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 		end
 		if reset == true then
 			if self.mgr.callback ~= nil then
@@ -674,7 +676,6 @@ function animation:play_rnd(state, rnd)
 		printf("rnd animations added for [%s]", utils.to_str(state))
 		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
 		    self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
-		   	self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 			-- добавить рандомный звук
 			if self.mgr.synsound then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
@@ -732,7 +733,7 @@ function animation:callback_process()
 end
 --' в каком состоянии мы находимся
 function animation:anim_callback()
-	printf("callback_called")
+	--printf("callback_called")
 	return true
 end
 --' в каком состоянии мы находимся
