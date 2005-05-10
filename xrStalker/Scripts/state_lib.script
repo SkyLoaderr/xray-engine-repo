@@ -169,7 +169,7 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = "prisluh"
+				animation = "caution"
 			},
 	choose	 = {weapon = "strapped",
 				movement = move.stand,

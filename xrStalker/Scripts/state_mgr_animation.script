@@ -169,7 +169,7 @@ function animation:__init(npc, mgr)
 											"idle_4_idle_2",
 											"idle_4_idle_3",
 											"idle_4_idle_4" }}},
-		prisluh	= {		prop	= { maxidle = 5,
+		caution	= {		prop	= { maxidle = 5,
 									sumidle = 3,
 									rnd = 80 },	
 						into	= { [0]	= "prisluh_0_idle_0",
@@ -550,6 +550,7 @@ function animation:set_state(id, reset)
 
 	self.states.current_state = "new"
 	self.states.target_state = id
+	self.states.begin = nil
 end
 --' апдейт
 function animation:update()
@@ -621,19 +622,20 @@ function animation:update()
 	
 		--' Определяем нужно ли добавлять анимацию или ждать
 		if	self.animations[self.states.current_state] ~= nil and
-			self.animations[self.states.current_state].rnd ~= nil and
-			(self.states.begin == nil or
-			device():time_global() - self.states.begin > self.states.idle)
-		then
-			self:play_rnd(self.states.current_state, self.animations[self.states.current_state].prop.rnd)		
-
+			self.animations[self.states.current_state].rnd ~= nil
+		then			
+			if self.states.begin == nil then
+				self:play_rnd(self.states.current_state, 100)
+			elseif device():time_global() - self.states.begin > self.states.idle then
+				self:play_rnd(self.states.current_state, self.animations[self.states.current_state].prop.rnd)
+			end
 		end		
 	
 	end
 end
 -- Отыгрыш рандомной анимации
 function animation:play_rnd(state, rnd)
-	--printf("try to add rnd animation")
+	--printf("try to add rnd animation [%s] for [%s]", utils.to_str(state), utils.to_str(rnd))
 	-- нельзя добавлять рандом во время лока схемы.
 	if not (self.mgr.planner:evaluator(self.mgr.properties["animation"]):evaluate() and
 	        self.mgr.planner:evaluator(self.mgr.properties["weapon"]):evaluate())
