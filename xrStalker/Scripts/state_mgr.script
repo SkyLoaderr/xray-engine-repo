@@ -8,6 +8,7 @@
 class "evaluator_state_mgr_idle" (property_evaluator)
 function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
 	self.st = state_manager
+	self.mgr = nil
 end
 function evaluator_state_mgr_idle:evaluate()
 	local t = self.st.target_state == "idle" and 
@@ -17,12 +18,18 @@ function evaluator_state_mgr_idle:evaluate()
 		   self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
 
 	if t == true then 
-		self.st.combat = true 
+
+		if self.mgr == nil then
+			self.mgr = self.object:motivation_action_manager()
+		end
+		if self.mgr:initialized() and self.mgr:current_action_id() == xr_actions_id.state_mgr + 1 then
+			self.st.combat = true
+		end
 	end
 	
 	if self.st.combat == true then return true end
 
-	return t	
+	return false
 end
 --' Мы уже в безраличном состоянии idle или нет ()учет с проверкой alife
 class "evaluator_state_mgr_idle_alife" (property_evaluator)
@@ -128,7 +135,9 @@ function eva_state_mgr_locked:evaluate()
 	--printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
 	--printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
 
-	if self.st.combat or self.st.alife then return true end
+	if self.st.combat or self.st.alife then 
+		return true 
+	end
 
 	return self.st.planner:initialized() and (
 		   self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate() or
