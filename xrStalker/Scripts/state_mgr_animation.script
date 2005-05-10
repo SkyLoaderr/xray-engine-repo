@@ -560,6 +560,14 @@ function animation:update()
 --	printf("		target state %s", utils.to_str(self.states.target_state))
 --	printf("		anims %s", self.npc:animation_count())
 	self.is_called = false
+	
+	-- !!! проверка что закончился играться наш звук
+	if self.sound_played then
+		if self.npc:active_sound_count() == 0 then
+			self.sound_played = false
+		end
+	end	
+	
 	if self.states.current_state == nil then
 		self:callback_process()
 		return
