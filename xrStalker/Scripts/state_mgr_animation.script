@@ -674,7 +674,7 @@ function animation:play_rnd(state, rnd)
 		printf("rnd animations added for [%s]", utils.to_str(state))
 		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
 		    self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
-		   	self.npc:set_callback(callback.action_animation , self.anim_callback, self)
+		   	self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 			-- добавить рандомный звук
 			if self.mgr.synsound then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
