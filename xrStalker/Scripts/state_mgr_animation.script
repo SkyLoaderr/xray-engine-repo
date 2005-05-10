@@ -498,7 +498,6 @@ end
 --' установка нового состояния
 function animation:set_state(id, reset)
 	printf("set new animation %s", utils.to_str(id))
-	--self.npc:set_callback(callback.action_animation , self.anim_callback, self)
 	local nn = 0	
 	--' выход из старого состояния
 	self.npc:clear_animations()	
@@ -674,7 +673,8 @@ function animation:play_rnd(state, rnd)
 		self.npc:clear_animations()
 		printf("rnd animations added for [%s]", utils.to_str(state))
 		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
-		   self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
+		    self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
+		   	self.npc:set_callback(callback.action_animation , self.anim_callback, self)
 			-- добавить рандомный звук
 			if self.mgr.synsound then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
