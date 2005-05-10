@@ -255,7 +255,7 @@ function motivator_binder:update(delta)
 	--]]
 
 	--' Проверка врагов
-	--[[
+	
 	local be = self.object:best_enemy()
 	if be ~= nil then
 		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
@@ -269,7 +269,7 @@ function motivator_binder:update(delta)
 			be:group()
 		)
 	end
-	--]]
+	
 end
 
 function motivator_binder:reload(section)
