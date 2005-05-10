@@ -27,6 +27,7 @@ struct dxGeomUserData
 	dVector3	last_pos;
 	bool		pushing_neg,pushing_b_neg,b_static_colide;
 	Triangle	neg_tri,b_neg_tri;
+
 	CPHObject*	ph_object;
 	CPhysicsShellHolder* ph_ref_object;
 	u16			material;
@@ -35,6 +36,9 @@ struct dxGeomUserData
 	ObjectContactCallbackFun* object_callback;
 	u16			element_position;
 	u16			bone_id;
+	xr_vector<int>	cashed_tries;
+	Fvector			last_aabb_size;
+	Fvector			last_aabb_pos;
 //	struct ContactsParameters
 //	{
 //	dReal damping;

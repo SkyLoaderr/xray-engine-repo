@@ -17,18 +17,51 @@ template<class T>
 int dSortTriPrimitiveCollide (	
 							  dxGeom		*o1,		dxGeom			*o2,
 							  int			flags,		dContactGeom	*contact,	int skip,
-							  CDB::RESULT*	R_begin,	CDB::RESULT*	R_end ,
-							  CDB::TRI*		T_array,	const Fvector*	V_array,
+						//	  CDB::RESULT*	R_begin,	CDB::RESULT*	R_end ,
+						//	  CDB::TRI*		T_array,	const Fvector*	V_array,
 							  const Fvector&	AABB
 							  )
 {
 
+	
+
+	dxGeomUserData* data=dGeomGetUserData(o1);
+	dReal* last_pos=data->last_pos;
+	bool	no_last_pos	=last_pos[0]==-dInfinity;
+	const dReal* p=dGeomGetPosition(o1);
+
+	Fbox last_box;last_box.setb(data->last_aabb_pos,data->last_aabb_size);
+	Fbox box;box.setb(cast_fv(p),AABB);
+	
+
+	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
+	const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
+	if(no_last_pos||!last_box.contains(box))
+	{
+
+		Fvector aabb;aabb.set(AABB);
+		aabb.mul(1.3f);
+	///////////////////////////////////////////////////////////////////////////////////////////////
+		XRC.box_options                (0);
+		XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),cast_fv(p),aabb);
+
+		CDB::RESULT*    R_begin                         = XRC.r_begin()	;
+		CDB::RESULT*    R_end                           = XRC.r_end()	;
+		data->cashed_tries								.clear()		;
+		for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
+		{
+			data->cashed_tries.push_back(Res->id);
+		}
+		data->last_aabb_pos.set(cast_fv(p));
+		data->last_aabb_size.set(aabb);
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////	
 	int			ret	=	0;
 	Triangle	tri;
-	dxGeomUserData* data=dGeomGetUserData(o1);
+
 	Triangle* neg_tri=&(data->neg_tri);
 	Triangle* b_neg_tri=&(data->b_neg_tri);
-	dReal* last_pos=data->last_pos;
+
 
 	bool* pushing_neg=&data->pushing_neg;
 	bool* pushing_b_neg=&data->pushing_b_neg;
@@ -36,10 +69,10 @@ int dSortTriPrimitiveCollide (
 	bool spushing_b_neg=*pushing_b_neg;
 	pos_tries.clear	();
 	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
-	const dReal* p=dGeomGetPosition(o1);
+	
 	UINT	b_count		=0			;
 	bool	intersect	=	false	;
-	bool	no_last_pos	=last_pos[0]==-dInfinity;
+
 
 
 #ifdef DEBUG
@@ -82,45 +115,40 @@ int dSortTriPrimitiveCollide (
 
 	bool b_pushing=*pushing_neg||*pushing_b_neg;
 
-
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
+	xr_vector<int>::iterator I=data->cashed_tries.begin(),E=data->cashed_tries.end();
+	for (; I!=E; ++I)
 	{
+		CDB::TRI* T = T_array + *I;
+		const Point vertices[3]={Point((dReal*)&V_array[T->verts[0]]),Point((dReal*)&V_array[T->verts[1]]),Point((dReal*)&V_array[T->verts[2]])};
+		if(!__aabb_tri(Point(p),Point((float*)&AABB),vertices))continue;
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDBgDrawIntersectedTries))
-										DBG_DrawTri(Res,D3DCOLOR_XRGB(0,255,0));
+										DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,255,0));
 		dbg_tries_num++;
 #endif
-
-		CDB::TRI* T = T_array + Res->id;
-
-		tri.side0[0]=Res->verts[1].x-Res->verts[0].x;
-		tri.side0[1]=Res->verts[1].y-Res->verts[0].y;
-		tri.side0[2]=Res->verts[1].z-Res->verts[0].z;
-
-		tri.side1[0]=Res->verts[2].x-Res->verts[1].x;
-		tri.side1[1]=Res->verts[2].y-Res->verts[1].y;
-		tri.side1[2]=Res->verts[2].z-Res->verts[1].z;
-
+		
+		dVectorSub(tri.side0,vertices[1],vertices[0]);
+		dVectorSub(tri.side1,vertices[2],vertices[1]);
 		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
 		
-		tri.pos=dDOT((dReal*)&Res->verts[0],tri.norm);
+		tri.pos=dDOT(vertices[0],tri.norm);//
+		tri.pos=dDOT(vertices[0],tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		
-		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
+		
 		if(tri.dist<0.f){
 #ifdef DEBUG
 			if(ph_dbg_draw_mask.test(phDBgDrawNegativeTries))
-				DBG_DrawTri(Res,D3DCOLOR_XRGB(0,0,255));
+				DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,0,255));
 #endif
 			float last_pos_dist=dDOT(last_pos,tri.norm)-tri.pos;
 			if((!(last_pos_dist<0.f))||b_pushing)
-				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 #ifdef DEBUG
 					if(ph_dbg_draw_mask.test(phDBgDrawTriesChangesSign))
-						DBG_DrawTri(Res,D3DCOLOR_XRGB(0,255,0));
+						DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,255,0));
 #endif
 					if(!b_pushing)
 					{
@@ -136,9 +164,10 @@ int dSortTriPrimitiveCollide (
 							if(ph_dbg_draw_mask.test(phDbgDrawTriPoint))
 								DBG_DrawPoint(cast_fv(tri_point),0.01f,D3DCOLOR_XRGB(255,0,255));
 #endif
-							intersect=intersect||TriContainPoint(	(dReal*)&Res->verts[0],
-								(dReal*)&Res->verts[1],
-								(dReal*)&Res->verts[2],
+							intersect=intersect||TriContainPoint(	
+								vertices[0],
+								vertices[1],
+								vertices[2],
 								tri.norm,tri.side0,
 								tri.side1,tri_point);
 						}
@@ -152,7 +181,10 @@ int dSortTriPrimitiveCollide (
 						intersect=true;
 					}
 
-					if(TriContainPoint((dReal*)&Res->verts[0],(dReal*)&Res->verts[1],(dReal*)&Res->verts[2],
+					if(TriContainPoint(
+						vertices[0],
+						vertices[1],
+						vertices[2],
 						tri.norm,tri.side0,
 						tri.side1,p)
 
@@ -185,14 +217,14 @@ int dSortTriPrimitiveCollide (
 		else{
 #ifdef DEBUG
 			if(ph_dbg_draw_mask.test(phDBgDrawPositiveTries))
-				DBG_DrawTri(Res,D3DCOLOR_XRGB(255,0,0));
+				DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(255,0,0));
 #endif	
 			if(ret>10) continue;
 				if(!b_pushing&&(!intersect||no_last_pos))
 					ret+=T::Collide(
-					(const dReal*)&V_array[T->verts[0]],
-					(const dReal*)&V_array[T->verts[1]],
-					(const dReal*)&V_array[T->verts[2]],
+					vertices[0],
+					vertices[1],
+					vertices[2],
 					&tri,
 					o1,
 					o2,
