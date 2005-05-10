@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include "StdAfx.h"
 #include "UIListItemEx.h"
 
 class CUIListItemPair : public CUIListItemEx {
