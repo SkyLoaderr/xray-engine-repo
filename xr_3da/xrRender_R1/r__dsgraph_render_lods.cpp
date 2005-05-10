@@ -20,11 +20,11 @@ void R_dsgraph_structure::r_dsgraph_render_lods	(bool _setup_zb, bool _clear)
 	if (lstLODs.empty())			return		;
  
 	// *** Fill VB and generate groups
-	u32		shid							= _setup_zb?0:1;
+	u32		shid							= _setup_zb?SE_R1_LMODELS:SE_R1_NORMAL_LQ;
 	FLOD*						firstV		= (FLOD*)lstLODs[0].pVisual;
 	ref_selement				cur_S		= firstV->shader->E[shid];
 	int							cur_count	= 0;
-	u32							vOffset;
+	u32							vOffset		;
 	FLOD::_hw*					V			= (FLOD::_hw*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->geom->vb_stride, vOffset);
 	float	ssaRange						= r_ssaLOD_A - r_ssaLOD_B;
 	if		(ssaRange<EPS_S)	ssaRange	= EPS_S;
@@ -87,15 +87,15 @@ void R_dsgraph_structure::r_dsgraph_render_lods	(bool _setup_zb, bool _clear)
 			V++			;
 		}
 	}
-	lstLODgroups.push_back				(cur_count);
-	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->geom->vb_stride);
+	lstLODgroups.push_back		(cur_count);
+	RCache.Vertex.Unlock		(lstLODs.size()*4,firstV->geom->vb_stride);
 
 	// *** Render
 	int current=0;
 	RCache.set_xform_world		(Fidentity);
 	for (u32 g=0; g<lstLODgroups.size(); g++)	{
 		int p_count				= lstLODgroups[g];
-		RCache.set_Shader		(lstLODs[current].pVisual->shader);
+		RCache.set_Element		(lstLODs[current].pVisual->shader->E[shid]);
 		RCache.set_Geometry		(firstV->geom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
 		current	+=	p_count		;
