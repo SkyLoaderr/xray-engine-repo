@@ -355,18 +355,21 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	activation_pos.add(shift);
 	//m_PhysicMovementControl.SetPosition(dp);
 	//}
-	CPHActivationShape activation_shape;Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
-	activation_shape.Create(activation_pos,start_box,&m_EntityAlife);
+	CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
+
+	Fbox box;box.set(m_EntityAlife.BoundingBox());//box.grow(0.5f);
+	Fvector vbox;
+	box.getsize(vbox);
+
+	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
 	//Fbox b=m_EntityAlife.BoundingBox();b.grow(Fvector().set(0.5f,0.1f,0.5f));
 	//m_PhysicMovementControl.SetBox(3,b);
 	//m_PhysicMovementControl.ActivateBoxDynamic(3,20,1,0.05f);
 	//m_PhysicMovementControl.GetPosition(m_EntityAlife.Position());
 	//m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
-	Fbox box;box.set(m_EntityAlife.BoundingBox());//box.grow(0.5f);
-	Fvector vbox;
-	box.getsize(vbox);
-	activation_shape.Activate(vbox,5,1.f,M_PI/4.f);
+
+	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
 	m_EntityAlife.Position().set(activation_shape.Position());
 	m_EntityAlife.Position().add(center_shift);
 	activation_shape.Destroy();

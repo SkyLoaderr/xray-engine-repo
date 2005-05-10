@@ -180,11 +180,12 @@ void __stdcall CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 void CPHCharacter::CutVelocity(float l_limit,float /*a_limit*/)
 {
 	dVector3 limitedl,diffl;
-	dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
-	dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
-	dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
-	dBodySetAngularVel(m_body,0.f,0.f,0.f);
-	dxStepBody(m_body,fixed_step);
-	dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
-
+	if(dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl))
+	{
+		dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
+		dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
+		dBodySetAngularVel(m_body,0.f,0.f,0.f);
+		dxStepBody(m_body,fixed_step);
+		dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
+	}
 }

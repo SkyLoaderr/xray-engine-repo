@@ -60,7 +60,10 @@ CPHActivationShape::~CPHActivationShape()
 void	CPHActivationShape::	Create								(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType type/*=etBox*/)
 {
 	m_body			=	dBodyCreate	(0)												;
-
+	dMass m;
+	dMassSetSphere(&m,1.f,100000.f);
+	dMassAdjust(&m,1.f);
+	dBodySetMass(m_body,&m);
 	m_geom			=	dCreateBox	(0,start_size.x,start_size.y,start_size.z)		;
 
 	dGeomCreateUserData				(m_geom)										;
@@ -105,7 +108,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	dGeomUserDataSetObjectContactCallback(m_geom,GetMaxDepthCallback)			;
 	ph_world->Step();
 	
-	u16		num_it =5;
+	u16		num_it =15;
 	float	fnum_it=float(num_it);
 	float	fnum_steps=float(steps);
 	float	fnum_steps_r=1.f/fnum_steps;
@@ -114,7 +117,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	
 
 	float	max_a_vel=max_rotation/fnum_it*fnum_steps_r/fixed_step;
-	ph_world->CutVelocity(max_vel,max_a_vel);
+	ph_world->CutVelocity(0.f,0.f);
 	
 	dGeomUserDataSetObjectContactCallback(m_geom,ActivateTestDepthCallback)			;
 	max_depth=0.f;
@@ -136,14 +139,13 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
 			ph_world->Step();
-			ph_world->CutVelocity(max_vel,max_a_vel);
 			if(max_depth	<	resolve_depth) 
 			{
 				ret=true;
 				break;
 			}	
 		}
-		if(!ret) break;
+		ph_world->CutVelocity(max_vel,max_a_vel);
 	}
 	ph_world->UnFreeze();
 	return ret;
@@ -182,11 +184,12 @@ void	CPHActivationShape::	InitContact							(dContact* c,bool& do_collide,SGameM
 void CPHActivationShape::CutVelocity(float l_limit,float /*a_limit*/)
 {
 	dVector3 limitedl,diffl;
-	dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
-	dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
-	dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
-	dBodySetAngularVel(m_body,0.f,0.f,0.f);
-	dxStepBody(m_body,fixed_step);
-	dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
-
+	if(dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl))
+	{
+		dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
+		dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
+		dBodySetAngularVel(m_body,0.f,0.f,0.f);
+		dxStepBody(m_body,fixed_step);
+		dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
+	}
 }

@@ -1003,6 +1003,7 @@ void CPHSimpleCharacter::Disable()
 }
 void CPHSimpleCharacter::Enable()
 {
+	if(!b_exist)return;
 	dGeomGetUserData(m_wheel)->pushing_neg			=false;
 	dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
 	dGeomGetUserData(m_geom_shell)->pushing_neg		=false;

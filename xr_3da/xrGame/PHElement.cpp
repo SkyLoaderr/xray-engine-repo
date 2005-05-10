@@ -1373,17 +1373,16 @@ void CPHElement::CutVelocity(float l_limit,float a_limit)
 	
 	if(!bActive)return;
 	dVector3 limitedl,limiteda,diffl,diffa;
-	dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
-	dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
-	dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
-
-	dVectorLimit(dBodyGetAngularVel(m_body),a_limit,limiteda);
-	dVectorSub(diffa,limiteda,dBodyGetAngularVel(m_body));
-	dBodySetAngularVel(m_body,diffa[0],diffa[1],diffa[2]);
-
-	dxStepBody(m_body,fixed_step);
-
-	dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
-	dBodySetAngularVel(m_body,limiteda[0],limiteda[1],limiteda[2]);
-
+	bool blimitl=dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
+	bool blimita=dVectorLimit(dBodyGetAngularVel(m_body),a_limit,limiteda);
+	if(blimitl||blimita)
+	{
+			dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));
+			dVectorSub(diffa,limiteda,dBodyGetAngularVel(m_body));
+			dBodySetLinearVel(m_body,diffl[0],diffl[1],diffl[2]);
+			dBodySetAngularVel(m_body,diffa[0],diffa[1],diffa[2]);
+			dxStepBody(m_body,fixed_step);
+			dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
+			dBodySetAngularVel(m_body,limiteda[0],limiteda[1],limiteda[2]);
+	}
 }
