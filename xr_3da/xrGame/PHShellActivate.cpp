@@ -222,9 +222,10 @@ void CPHShell::Deactivate(){
 	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics shell during physics processing!!!");
 	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics shell when ph world is freezed!!!");
 	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
+	spatial_unregister();
 	vis_update_activate();
 	DisableObject();
-	spatial_unregister();
+
 	ZeroCallbacks();
 
 	ELEMENT_I i;
