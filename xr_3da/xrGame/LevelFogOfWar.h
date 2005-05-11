@@ -38,8 +38,9 @@ const static u8 FOG_CLOSED		= 0x00;
 class CUICustomMap;
 class CFogOfWarWrapper;
 
-struct CLevelFogOfWar: public IPureSerializeObject<IReader,IWriter> 
+class CLevelFogOfWar: public IPureSerializeObject<IReader,IWriter> 
 {
+public:
 	ref_shader			hShader;
 	ref_geom			hGeom;	
 
