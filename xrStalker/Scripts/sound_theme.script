@@ -40,13 +40,13 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                      }
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
-	printf("%f",obj:story_id())
+--	printf("%f",obj:story_id())
 	if ltx:line_exist(section, utils.to_str(obj:story_id())) then
 		return ltx:r_string(section, utils.to_str(obj:story_id()))
 	end
 
 --	2. проверка по npc_profile
-	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
+--	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
 	if ltx:line_exist(section, obj:profile_name()) then
 		return ltx:r_string(section, obj:profile_name())
 	end
@@ -257,7 +257,7 @@ function load_sound(obj)
 	db.sound[obj:id()] = {}
 	
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
-	print_table(theme)
+--	print_table(theme)
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------
