@@ -541,33 +541,41 @@ void CApplication::OnFrame	( )
 	if (g_pGameLevel)				g_pGameLevel->SoundEvent_Dispatch	( );
 }
 
+void CApplication::Level_Append		(LPCSTR folder)
+{
+	string256	N1,N2,N3,N4;
+	strconcat	(N1,folder,"level");
+	strconcat	(N2,folder,"level.ltx");
+	strconcat	(N3,folder,"level.game");
+	strconcat	(N4,folder,"level.cform");
+	if	(
+		FS.exist("$game_levels$",N1)		&&
+		FS.exist("$game_levels$",N2)		&&
+		FS.exist("$game_levels$",N3)		&&
+		FS.exist("$game_levels$",N4)	
+		)
+	{
+		sLevelInfo			LI;
+		LI.folder			= xr_strdup(folder);
+		LI.name				= 0;
+		Levels.push_back	(LI);
+	}
+}
+
 void CApplication::Level_Scan()
 {
-	xr_vector<char*>*	folder	= FS.file_list_open	("$game_levels$",FS_ListFolders|FS_RootOnly);
-	R_ASSERT			(folder&&folder->size());
-	for (u32 i=0; i<folder->size(); i++)
-	{
-		string256	N1,N2,N3,N4;
-		strconcat	(N1,(*folder)[i],"level");
-		strconcat	(N2,(*folder)[i],"level.ltx");
-		strconcat	(N3,(*folder)[i],"level.game");
-		strconcat	(N4,(*folder)[i],"level.cform");
-		if	(
-			FS.exist("$game_levels$",N1)		&&
-			FS.exist("$game_levels$",N2)		&&
-			FS.exist("$game_levels$",N3)		&&
-			FS.exist("$game_levels$",N4)	
-			)
-		{
-			sLevelInfo			LI;
-			LI.folder			= xr_strdup((*folder)[i]);
-			LI.name				= 0;
-			Levels.push_back	(LI);
-		} else {
-			// Msg		("! Level not compiled: %s",(*folder)[i]);
-		}
+	xr_vector<char*>*		folder			= FS.file_list_open		("$game_levels$",FS_ListFolders|FS_RootOnly);
+	R_ASSERT				(folder&&folder->size());
+	for (u32 i=0; i<folder->size(); i++)	Level_Append((*folder)[i]);
+	FS.file_list_close		(folder);
+#ifdef DEBUG
+	folder									= FS.file_list_open		("$game_levels$","$debug$\\",FS_ListFolders|FS_RootOnly);
+	if (folder){
+		string_path	tmp_path;
+		for (u32 i=0; i<folder->size(); i++)Level_Append(strconcat(tmp_path,"$debug$\\",(*folder)[i]));
+		FS.file_list_close	(folder);
 	}
-	FS.file_list_close	(folder);
+#endif
 }
 
 void CApplication::Level_Set(u32 L)

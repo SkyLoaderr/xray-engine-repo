@@ -27,6 +27,8 @@ private:
 	EVENT					eStart;
 	EVENT					eStartLoad;
 	EVENT					eDisconnect;
+
+	void					Level_Append		(LPCSTR lname);
 public:
 	CGameFont*				pFontSystem;
 
