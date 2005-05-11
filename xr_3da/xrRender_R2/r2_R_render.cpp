@@ -187,7 +187,7 @@ void CRender::Render		()
 		Target->phase_scene_begin				();
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
-		r_dsgraph_render_lods					();
+		r_dsgraph_render_lods					(true,true);
 		Details->Render							();
 		Target->phase_scene_end					();
 	}
