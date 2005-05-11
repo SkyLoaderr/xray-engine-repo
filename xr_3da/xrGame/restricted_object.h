@@ -56,6 +56,8 @@ public:
 			void		remove_all_restrictions			();
 			shared_str	in_restrictions					() const;
 			shared_str	out_restrictions				() const;
+			shared_str	base_in_restrictions			() const;
+			shared_str	base_out_restrictions			() const;
 	IC		bool		applied							() const;
 	IC		CGameObject	&object							() const;
 	IC		bool		actual							() const;

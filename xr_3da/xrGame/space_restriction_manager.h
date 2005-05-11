@@ -63,6 +63,9 @@ public:
 			shared_str			in_restrictions					(ALife::_OBJECT_ID id);
 			shared_str			out_restrictions				(ALife::_OBJECT_ID id);
 
+			shared_str			base_in_restrictions			(ALife::_OBJECT_ID id);
+			shared_str			base_out_restrictions			(ALife::_OBJECT_ID id);
+
 			bool				accessible						(ALife::_OBJECT_ID id, const Fvector &position, float radius);
 			bool				accessible						(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius);
 			u32					accessible_nearest				(ALife::_OBJECT_ID id, const Fvector &position, Fvector &result);
