@@ -609,6 +609,27 @@ inv_grid_x			= 3
 inv_grid_y			= 19
 cost				= 0
 
+[mil_dynamite_dolg]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\mil_dynamite_dolg"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= physics\box\expl_dinamit
+radius				= 1
+;script_binding		= stalker.object_init
+
+inv_name			= Dynamite
+inv_name_short		= "Dynamite"
+inv_weight			= 3
+
+inv_grid_width		= 3
+inv_grid_height		= 2
+inv_grid_x			= 4
+inv_grid_y			= 18
+cost				= 1000
+
 [ugrum_flash]
 GroupControlSection	= spawn_group
 discovery_dependency = 
