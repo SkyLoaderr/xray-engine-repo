@@ -163,7 +163,7 @@ void CMonsterMovement::find_target()
 			// если корректые нода и позиция, то выходим
 			if (valid_destination(m_target_found.position, m_target_found.node)) return;
 			else m_target_found.node = u32(-1);
-		}
+		} else m_target_found.node = u32(-1);
 	}
 
 	// проверить позицию на accessible
