@@ -434,7 +434,7 @@ void SHeliMovementState::SetPointFlags(u32 idx, u32 new_flags)
 	CPatrolPoint* pt_curr	= &p->vertex(idx)->data();
 	CPatrolPoint* pt_new	= xr_new<CPatrolPoint>(	currPatrolPath,
 													pt_curr->position(),
-													pt_curr->level_vertex_id(),
+													u32(-1),
 													new_flags,
 													pt_curr->name());
 
