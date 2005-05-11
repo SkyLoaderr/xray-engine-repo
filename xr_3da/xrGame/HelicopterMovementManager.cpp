@@ -396,7 +396,7 @@ void SHeliMovementState::goByRoundPath(Fvector center_, float radius_, bool cloc
 	for(;it!=it_e;++it,++pt_idx){
 		string128 pt_name;
 		sprintf(pt_name,"heli_round_path_pt_%d",pt_idx);
-		CPatrolPoint pt = CPatrolPoint(pp,(*it).point,0,0,pt_name);
+		CPatrolPoint pt = CPatrolPoint(pp,(*it).point,u32(-1),0,pt_name);
 		pp->add_vertex(pt,pt_idx);
 		if (pt_idx)
 			pp->add_edge(pt_idx-1,pt_idx,1.f);
@@ -439,7 +439,7 @@ void SHeliMovementState::SetPointFlags(u32 idx, u32 new_flags)
 													pt_curr->name());
 
 	p->vertex(idx)->data	(*pt_new);
-	xr_delete(pt_curr);
+//	xr_delete(pt_curr);
 
 }
 
