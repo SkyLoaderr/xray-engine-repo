@@ -27,6 +27,7 @@ class CUIStatic : public CUIWindow
 private:
 	typedef CUIWindow inherited;
 	CLAItem*				m_lanim;
+	float					m_lainm_start_time;
 public:
 
 					CUIStatic				();

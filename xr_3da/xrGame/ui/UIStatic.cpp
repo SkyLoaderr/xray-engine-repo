@@ -44,6 +44,7 @@ CUIStatic:: CUIStatic()
 	m_bHeading				= false;
 	m_fHeading				= 0.0f;
 	m_lanim					= NULL;	
+	m_lainm_start_time		= -1.0f;
 }
 
 CUIStatic::~ CUIStatic()
@@ -156,8 +157,9 @@ void CUIStatic::Update()
 	//update light animation if defined
 	if (m_lanim)
 	{
+		if(m_lainm_start_time<0.0f) m_lainm_start_time = Device.fTimeGlobal; 
 		int frame;
-		u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal,frame);
+		u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal-m_lainm_start_time,frame);
 		SetColor(clr);
 	}
 }
