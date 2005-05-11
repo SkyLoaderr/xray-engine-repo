@@ -364,12 +364,20 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 		// the window size to 1000x600 until after the display mode has
 		// changed to 1024x768, because windows cannot be larger than the
 		// desktop.
-		RECT DesktopRect;
-		GetClientRect(GetDesktopWindow(), &DesktopRect);
-		RECT			m_rcWindowBounds = {(DesktopRect.right-DevPP.BackBufferWidth)/2, 
-											(DesktopRect.bottom-DevPP.BackBufferHeight)/2, 
-											(DesktopRect.right+DevPP.BackBufferWidth)/2, 
-											(DesktopRect.bottom+DevPP.BackBufferHeight)/2};
+
+		RECT			m_rcWindowBounds;
+		if (strstr(Core.Params, "-dedicated"))	{
+			RECT DesktopRect;
+			GetClientRect(GetDesktopWindow(), &DesktopRect);
+			RECT	R	= {(DesktopRect.right-DevPP.BackBufferWidth)/2, 
+				(DesktopRect.bottom-DevPP.BackBufferHeight)/2, 
+				(DesktopRect.right+DevPP.BackBufferWidth)/2, 
+				(DesktopRect.bottom+DevPP.BackBufferHeight)/2};
+			m_rcWindowBounds	= R;
+		} else {
+			RECT	R	= {0, 0, DevPP.BackBufferWidth, DevPP.BackBufferHeight };
+			m_rcWindowBounds	= R;
+		}
 
 		AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
 		SetWindowPos	( m_hWnd, HWND_TOP,	m_rcWindowBounds.left, m_rcWindowBounds.top,
