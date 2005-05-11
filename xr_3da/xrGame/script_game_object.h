@@ -407,6 +407,8 @@ public:
 			void				remove_all_restrictions	();
 			LPCSTR				in_restrictions			();
 			LPCSTR				out_restrictions		();
+			LPCSTR				base_in_restrictions	();
+			LPCSTR				base_out_restrictions	();
 			bool				accessible_position		(const Fvector &position);
 			bool				accessible_vertex_id	(u32 level_vertex_id);
 			u32					accessible_nearest		(const Fvector &position, Fvector &result);

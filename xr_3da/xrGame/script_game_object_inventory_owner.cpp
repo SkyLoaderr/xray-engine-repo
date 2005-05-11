@@ -762,6 +762,26 @@ LPCSTR CScriptGameObject::out_restrictions	()
 	return									(*monster->movement().restrictions().out_restrictions());
 }
 
+LPCSTR CScriptGameObject::base_in_restrictions	()
+{
+	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member base_in_restrictions!");
+		return								("");
+	}
+	return									(*monster->movement().restrictions().base_in_restrictions());
+}
+
+LPCSTR CScriptGameObject::base_out_restrictions	()
+{
+	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member base_out_restrictions!");
+		return								("");
+	}
+	return									(*monster->movement().restrictions().base_out_restrictions());
+}
+
 bool CScriptGameObject::accessible_position	(const Fvector &position)
 {
 	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());

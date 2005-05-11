@@ -97,6 +97,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("remove_all_restrictions",		&CScriptGameObject::remove_all_restrictions)
 		.def("in_restrictions",				&CScriptGameObject::in_restrictions)
 		.def("out_restrictions",			&CScriptGameObject::out_restrictions)
+		.def("base_in_restrictions",		&CScriptGameObject::base_in_restrictions)
+		.def("base_out_restrictions",		&CScriptGameObject::base_out_restrictions)
 		.def("accessible",					&CScriptGameObject::accessible_position)
 		.def("accessible",					&CScriptGameObject::accessible_vertex_id)
 		.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
