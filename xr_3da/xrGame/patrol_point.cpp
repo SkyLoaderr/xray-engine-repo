@@ -26,6 +26,9 @@ CPatrolPoint::CPatrolPoint				(const CPatrolPath *path)
 #ifdef DEBUG
 void CPatrolPoint::verify_vertex_id		() const
 {
+	if (!ai().get_level_graph())
+		return;
+
 	if (ai().level_graph().valid_vertex_id(m_level_vertex_id))
 		return;
 
