@@ -46,6 +46,8 @@ FOG_STORAGE_T& CFogOfWarMngr::GetFogStorage()
 CLevelFogOfWar::CLevelFogOfWar():m_rowNum(0), m_colNum(0)
 {
 	m_levelRect.set	(0.0f,0.0f,0.0f,0.0f);
+	hShader.create	("hud\\default","ui\\ui_fog_of_war");
+	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 };
 
 void CLevelFogOfWar::Init	(const shared_str& level)
