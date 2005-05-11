@@ -1,0 +1,63 @@
+--[[------------------------------------------------------------------------------------------------
+Helicopter universal combat
+Чугай Саша
+--------------------------------------------------------------------------------------------------]]
+
+class "heli_combat"
+
+function heli_combat:__init( object, heliObject )
+	self.object      = object
+	self.heliObject  = heliObject
+	self.initialized = false
+
+	local ltx        = bind_heli.get_heli_ltx()
+
+	self.min_attack_dist = utils.cfg_get_number( ltx, "helicopter", "min_attack_dist", self.object, true )
+	self.max_attack_dist = utils.cfg_get_number( ltx, "helicopter", "max_attack_dist", self.object, true )
+
+	self.attack_dist     = nil
+	self.last_seen_pos   = nil
+	self.change_dir_time = nil
+end
+
+function heli_combat:initialize()
+	self.attack_dist     = self:choose_attack_dist()
+
+	self.change_dir_time = 0
+
+	self.initialized     = true
+end
+
+function heli_combat:choose_attack_dist()
+	local dist = self.object:position():distance_to( self.enemy:position() )
+
+	if dist < self.min_attack_dist then
+		return self.min_attack_dist
+	elseif dist > self.max_attack_dist then
+		return self.max_attack_dist
+	else
+		return dist
+	end
+end
+
+function heli_combat:update()
+	if not self.initialized then
+		self:initialize()
+	end
+
+	local see_enemy = self.heliObject:isVisible( self.enemy )
+	if self.change_dir_time < device():time_global() then
+		local t
+
+		if see_enemy then
+			t = math.random( 3000, 6000 )
+		else
+			t = math.random( 10000, 16000 )
+		end
+
+		self.change_dir_time = device():time_global() + t
+
+		printf( "going by round path" )
+		self.heliObject:GoPatrolByRoundPath( db.actor:position(), self.attack_dist, random_choice( true, false ) )
+	end
+end
