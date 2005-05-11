@@ -233,8 +233,7 @@ function animation:__init(npc, mgr)
 											"poisk_4_idle_2",
 											"poisk_4_idle_3",
 											"poisk_4_idle_4" }}},
-		hide		= {	state_id = xr_state.stand,
-						prop	= { maxidle = 5,
+		hide		= {	prop	= { maxidle = 5,
 									sumidle = 3,
 									rnd = 80 },
 						into	= nil,
@@ -254,6 +253,48 @@ function animation:__init(npc, mgr)
 											"d_3_idle_2" },
 									[4] = { "d_4_idle_0",
 											"d_4_idle_2" }}},
+		sit			= {	prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= { [0] = { "sit_0_idle_1",
+											"sit_0_idle_2",
+											"sit_0_idle_3" },
+									[1] = nil,
+									[2] = nil,
+									[3] = nil,
+									[4] = nil}},
+		sit_knee	= {	prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= { [0] = { "sit_1_idle_1",
+											"sit_1_idle_2",
+											"sit_1_idle_3" },
+									[1] = nil,
+									[2] = nil,
+									[3] = nil,
+									[4] = nil}},
+		sit_ass		= {	prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= { [0] = { "sit_2_idle_1",
+											"sit_2_idle_2",
+											"sit_2_idle_3" },
+									[1] = nil,
+									[2] = nil,
+									[3] = nil,
+									[4] = nil}},
+
+
+											
 		hello		= {	prop	= { maxidle = 5,
 									sumidle = 5,
 									rnd = 100 },
@@ -336,11 +377,11 @@ function animation:__init(npc, mgr)
 		dynamite	 = {prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into 	= {	[0]	= {	"dynamite_0" },
-									[1]	= {	"dynamite_0" },
-									[2]	= {	"dynamite_0" },
-									[3]	= {	"dynamite_0" },
-									[4]	= {	"dynamite_0" }
+						into 	= {	[0]	= {	"dinamit_0" },
+									[1]	= {	"dinamit_0" },
+									[2]	= {	"dinamit_0" },
+									[3]	= {	"dinamit_0" },
+									[4]	= {	"dinamit_0" }
 							    	},
 						out		= nil,
 						rnd		= nil,
@@ -742,9 +783,9 @@ function animation:callback_process()
 		return ret
 end
 --' в каком состоянии мы находимся
-function animation:anim_callback()
-	--printf("callback_called")
-	return true
+function animation:anim_callback(a)
+	printf("callback_called [%s]", utils.to_str(a))
+	return true 
 end
 --' в каком состоянии мы находимся
 function animation:state()
