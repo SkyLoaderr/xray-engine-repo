@@ -44,8 +44,8 @@ function heli_binder:reinit()
 
 	self.st.heli_ltx = heli_ltx
 
---	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
---	self.st.combat.enemy = self.object
+	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
+	self.st.combat.enemy = self.object
 
 	-- на случай загрузки
 	self.last_alt       = self.heliObject:GetRealAltitude()

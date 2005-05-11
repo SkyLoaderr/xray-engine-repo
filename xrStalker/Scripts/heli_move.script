@@ -96,10 +96,10 @@ function heli_move:save()
 end
 
 function heli_move:update( delta )
---	if self.combat_mgr.enemy then
---		self.combat_mgr:update()
---		return
---	end
+	if self.combat_mgr.enemy then
+		self.combat_mgr:update()
+		return
+	end
 
 	if xr_logic.try_switch_to_another_section( self.object, self.a, db.actor ) then
 		return
