@@ -33,7 +33,8 @@ class	CLevelDebug;
 const int maxRP					= 64;
 const int maxTeams				= 32;
 
-class CFogOfWar;
+//class CFogOfWar;
+class CFogOfWarMngr;
 class CBulletManager;
 class CMapManager;
 
@@ -227,6 +228,7 @@ public:
 
 protected:
 //	CFogOfWar*			m_pFogOfWar;
+	CFogOfWarMngr*		m_pFogOfWarMngr;
 public:
 //	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
 
@@ -235,7 +237,8 @@ protected:
 	CMapManager *			m_map_manager;
 //	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
 public:
-	CMapManager&			MapManager					() {return *m_map_manager;}
+	CMapManager&			MapManager					()	{return *m_map_manager;}
+	CFogOfWarMngr&			FogOfWarMngr				()	{return *m_pFogOfWarMngr;}
 
 /*
 	void					AddEntityMapLocation		(const CGameObject* object, EMapLocationFlags location_type);

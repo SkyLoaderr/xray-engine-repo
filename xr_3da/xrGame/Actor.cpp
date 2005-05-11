@@ -45,7 +45,7 @@
 #include "ai_space.h"
 
 #include "trade.h"
-//#include "LevelFogOfWar.h"
+#include "LevelFogOfWar.h"
 
 #include "inventory.h"
 
@@ -1076,6 +1076,11 @@ void CActor::shedule_Update	(u32 DT)
 	m_pPhysics_support->in_shedule_Update(DT);
 	///////////////////////////////////////////////
 	Check_for_AutoPickUp();
+	Fvector2 pos2d;
+	pos2d.set(Position().x, Position().z);
+	CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(Level().name());
+	if(F)
+		F->Open(pos2d);
 }
 
 void CActor::renderable_Render	()

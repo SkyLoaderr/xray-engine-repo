@@ -59,8 +59,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	//координаты на экране в пикселях
 	float scX		= UI()->GetScaleX();
 	float scY		= UI()->GetScaleY();
-	LTp.set			(pos.x+x1*scX,pos.y+y1*scY);
-	RBp.set			(pos.x+x2*scX,pos.y+y2*scY);
+	LTp.set			((pos.x+float(x1)*scX), (pos.y+float(y1)*scY) );
+	RBp.set			((pos.x+float(x2)*scX), (pos.y+float(y2)*scY) );
 	//текстурные координаты
 	LTt.set			( fScaleX*float(iOriginalRect.x1)/float(ts.x)+hp.x,fScaleY*float(iOriginalRect.y1)/float(ts.y)+hp.y);
 	RBt.set			( fScaleX*float(iOriginalRect.x2)/float(ts.x)+hp.x,fScaleY*float(iOriginalRect.y2)/float(ts.y)+hp.y);

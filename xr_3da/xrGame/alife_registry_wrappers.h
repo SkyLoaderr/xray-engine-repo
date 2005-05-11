@@ -25,6 +25,7 @@ typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
 //реестр новостей, полученных актером
 typedef CALifeRegistryWrapper<CGameNewsRegistry> GAME_NEWS_REGISTRY;
 
+
 template <typename T>
 class CALifeRegistryWrapperObject {
 	T				*m_registry;
@@ -54,3 +55,4 @@ class CGameNewsRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_NEWS_R
 class CInfoPortionWrapper :				public CALifeRegistryWrapperObject<KNOWN_INFO_REGISTRY> {};
 class CRelationRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CRelationRegistry> > {};
 class CMapLocationWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CMapLocationRegistry> > {};
+class CFogOfWarWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CFogOfWarRegistry> > {};

@@ -20,6 +20,7 @@
 #include "../map_manager.h"
 #include "../map_spot.h"
 #include "UIInventoryUtilities.h"
+#include "../LevelFogOfWar.h"
 
 const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
@@ -91,13 +92,22 @@ void rotation_(int x, int y, const float angle, int& x_, int& y_)
 	y_= iFloor(float(y)*_sc-float(x)*_sn);
 }
 
+Fvector2 CUICustomMap::ConvertLocalToReal(const Ivector2& src)
+{
+	Fvector2 res; 
+	res.x = m_BoundRect.lt.x + float(src.x)/m_zoom_factor;
+	res.y = m_BoundRect.height() + m_BoundRect.lt.y - float(src.y)/m_zoom_factor;
+
+//	res.x = iFloor( (src.x-m_BoundRect.lt.x) * m_zoom_factor);
+//	res.y = iFloor( (m_BoundRect.height()-(src.y-m_BoundRect.lt.y)) * m_zoom_factor);
+	return res;
+}
+
 Ivector2 CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
 {
 	Ivector2 res;
 	if( !Heading() ){
-		res.x = iFloor( (src.x-m_BoundRect.lt.x) * m_zoom_factor);
-		res.y = iFloor( (m_BoundRect.height()-(src.y-m_BoundRect.lt.y)) * m_zoom_factor);
-		return res;
+		return ConvertRealToLocalNoTransform(src);
 	}else
 	{
 		Ivector2 heading_pivot = GetStaticItem()->GetHeadingPivot();
@@ -239,6 +249,22 @@ LPCSTR	CUICustomMap::GetHint()
 void CUICustomMap::Draw()
 {
 	CUIStatic::Draw();
+#ifdef DEBUG
+	if(0){ //bDebud
+
+		CGameFont* F		= UI()->Font()->pFontDI;
+		F->SetAligment		(CGameFont::alCenter);
+		F->SetSizeI			(0.02f);
+		F->OutSetI			(0.f,-0.8f);
+		F->SetColor			(0xffffffff);
+
+		Ivector2 cursor_pos = GetUICursor()->GetPos();
+
+		Fvector2 pt = ConvertLocalToReal(cursor_pos);
+		F->OutNext			("pos on map = %3.2f-%3.2f",pt.x, pt.y);
+	}
+
+#endif
 }
 
 bool CUICustomMap::IsRectVisible(Irect r)
@@ -414,7 +440,6 @@ Ivector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels 
 
 CUILevelMap::CUILevelMap()
 {
-	m_fogOfWar			= NULL;
 	m_globalMapSpot		= xr_new<CUIGlobalMapSpot>(this);
 	Show				(false);
 }
@@ -422,6 +447,13 @@ CUILevelMap::CUILevelMap()
 CUILevelMap::~CUILevelMap()
 {
 	xr_delete			(m_globalMapSpot);
+}
+
+void CUILevelMap::Draw()
+{
+	inherited::Draw();
+	CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(MapName());
+	F->Draw(this);//vis_rect, tgt);
 }
 
 void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)

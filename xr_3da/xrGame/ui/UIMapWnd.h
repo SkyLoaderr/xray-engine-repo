@@ -22,7 +22,7 @@
 
 class CUIMapWnd;
 class CUIGlobalMapSpot;
-class CLevelFogOfWar;
+struct CLevelFogOfWar;
 
 class CUICustomMap : public CUIStatic, public CUIWndCallback
 {
@@ -38,6 +38,7 @@ public:
 
 	virtual void	Init							(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual Ivector2 ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
+	Fvector2		ConvertLocalToReal				(const Ivector2& src);
 	Ivector2		ConvertRealToLocalNoTransform	(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 
 	bool			GetPointerTo					(const Ivector2& src, int item_radius, Ivector2& pos, float& heading);//position and heading for drawing pointer to src pos
@@ -140,13 +141,10 @@ public:
 	virtual void				Init				(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return m_globalMapSpot;}
+	virtual void				Draw				();
 protected:
 	virtual void				UpdateSpots			();
 
-
-//Fog of War...
-protected:
-	CLevelFogOfWar*				m_fogOfWar;
 
 };
 

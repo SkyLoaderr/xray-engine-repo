@@ -48,19 +48,19 @@ public:
 	shared_str			m_level_name;
 	Frect				m_levelRect;
 	u32					m_rowNum, m_colNum;
-	xr_vector<Flags8>	m_cells;
+	xr_vector<bool>		m_cells;
 
-	void				Open			(Fvector2 pos);
-	void				Open			(u32 row, u32 col, u8 mask);
-	void				Init			(const shared_str& level);
-	void				Draw			(CUICustomMap* m);
-	void				GetTexFrame		(Ivector2& frame, u32 part, u32 col, u32 row);
+	void				Open					(Fvector2 pos);
+	void				Open					(u32 row, u32 col, bool mask);
+	void				Init					(const shared_str& level);
+	void				Draw					(CUICustomMap* m);
+	void				GetTexUVLT				(Fvector2& frame, u32 col, u32 row);
 	Ivector2			ConvertRealToLocal		(const Fvector2& src);
 	Irect				ConvertRealToLocal		(const Frect& src);
 	Fvector2			ConvertLocalToReal		(const Ivector2& src);
 
-	virtual void save	(IWriter &stream);
-	virtual void load	(IReader &stream);
+	virtual void		save					(IWriter &stream);
+	virtual void		load					(IReader &stream);
 
 };
 
@@ -68,10 +68,7 @@ public:
 DEFINE_VECTOR(CLevelFogOfWar,FOG_STORAGE_T,FOG_STORAGE_IT);
 //DEFINE_VECTOR(int,FOG_STORAGE_T,FOG_STORAGE_IT);
 
-struct CFogOfWarRegistry : public CALifeAbstractRegistry<u16, FOG_STORAGE_T> {
-	virtual void save(IWriter &stream);
-};
-
+typedef CALifeAbstractRegistry<u16, FOG_STORAGE_T> CFogOfWarRegistry;
 
 
 class CFogOfWarMngr

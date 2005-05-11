@@ -21,6 +21,8 @@
 #include "game_news.h"
 #include "map_location_defs.h"
 
+#include "levelFogOfWar.h"
+
 #pragma warning(push)
 #pragma warning(disable:4005)
 
@@ -77,5 +79,11 @@ add_to_registry_type_list(CSpecificCharacterRegistry);
 add_to_registry_type_list(CMapLocationRegistry);
 #define map_locations define_constant(CMapLocationRegistry) 
 #define registry_type_list save_registry_type_list(CMapLocationRegistry)
+
+
+//fogOfWar
+add_to_registry_type_list(CFogOfWarRegistry);
+#define map_locations define_constant(CFogOfWarRegistry) 
+#define registry_type_list save_registry_type_list(CFogOfWarRegistry)
 
 #pragma warning(pop)

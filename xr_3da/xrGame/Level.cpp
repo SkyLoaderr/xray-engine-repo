@@ -26,7 +26,7 @@
 
 #include "ShootingObject.h"
 
-//#include "LevelFogOfWar.h"
+#include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
 
 #include "script_process.h"
@@ -92,7 +92,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	m_pBulletManager			= xr_new<CBulletManager>();
 	m_map_manager				= xr_new<CMapManager>();
-
+	m_pFogOfWarMngr				= xr_new<CFogOfWarMngr>();
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
 	m_bIn_CrPr						= false;
@@ -214,6 +214,7 @@ CLevel::~CLevel()
 #endif
 	//-----------------------------------------------------------
 	xr_delete					(m_map_manager);
+	xr_delete					(m_pFogOfWarMngr);
 }
 
 // Game interface ////////////////////////////////////////////////////

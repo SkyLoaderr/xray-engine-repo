@@ -9,7 +9,7 @@
 #include "ui/UIMapWnd.h"
 
 
-#define FOG_CELL_SZ	(100.0f)
+#define FOG_CELL_SZ	(50.0f)
 
 struct FindFogByLevelName{
 	shared_str			level_name;
@@ -37,11 +37,6 @@ CLevelFogOfWar* CFogOfWarMngr::GetFogOfWar	(const shared_str& level_name)
 	};
 }
 
-void CFogOfWarRegistry::save(IWriter &stream)
-{
-
-}
-
 FOG_STORAGE_T& CFogOfWarMngr::GetFogStorage()
 {
 	VERIFY(m_fogOfWarRegistry);
@@ -51,9 +46,6 @@ FOG_STORAGE_T& CFogOfWarMngr::GetFogStorage()
 CLevelFogOfWar::CLevelFogOfWar():m_rowNum(0), m_colNum(0)
 {
 	m_levelRect.set	(0.0f,0.0f,0.0f,0.0f);
-	hShader.create	("hud\\default","ui\\ui_fog_of_war");
-	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
-
 };
 
 void CLevelFogOfWar::Init	(const shared_str& level)
@@ -77,8 +69,10 @@ void CLevelFogOfWar::Init	(const shared_str& level)
 	m_rowNum = iFloor((m_levelRect.height()+	FOG_CELL_SZ*0.5f)/FOG_CELL_SZ);
 	m_colNum = iFloor((m_levelRect.width()+		FOG_CELL_SZ*0.5f)/FOG_CELL_SZ);
 				
-	m_cells.resize(m_rowNum*m_colNum, Flags8().assign(FOG_CLOSED));
+	m_cells.resize(m_rowNum*m_colNum, false);
 
+	hShader.create	("hud\\default","ui\\ui_fog_of_war");
+	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 }
 
 void CLevelFogOfWar::Open	(Fvector2 pos)
@@ -90,23 +84,15 @@ void CLevelFogOfWar::Open	(Fvector2 pos)
 	u32 row = iFloor(  (m_levelRect.height() - (pos.y - m_levelRect.lt.y))/FOG_CELL_SZ);
 
 
-	if (m_cells.at(row*m_colNum+col).flags==FOG_OPEN_TOTAL) return;
-	Open(row+0,col+0,FOG_OPEN_TOTAL);
-/*	Open(row-1,col-1,FOG_OPEN_RB);
-	Open(row-1,col+0,FOG_OPEN_B);
-	Open(row-1,col+1,FOG_OPEN_LB);
-	Open(row+0,col+1,FOG_OPEN_L);
-	Open(row+1,col+1,FOG_OPEN_LT);
-	Open(row+1,col+0,FOG_OPEN_T);
-	Open(row+1,col-1,FOG_OPEN_RT);
-	Open(row+0,col-1,FOG_OPEN_R);*/
+	if (m_cells.at(row*m_colNum+col)==true) return;
+	Open(row+0,col+0,true);
 }
 
-void CLevelFogOfWar::Open	(u32 row, u32 col, u8 mask)
+void CLevelFogOfWar::Open	(u32 row, u32 col, bool b)
 {
 	if(row>=m_rowNum || col>=m_colNum) return;
 
-	m_cells.at(row*m_colNum+col).set(mask,TRUE);
+	m_cells.at(row*m_colNum+col)=b;
 }
 
 Ivector2 CLevelFogOfWar::ConvertRealToLocal(const Fvector2& src)
@@ -136,45 +122,13 @@ enum {
 	tfRB
 };
 
-void CLevelFogOfWar::GetTexFrame(Ivector2& frame, u32 part, u32 col, u32 row)
+void CLevelFogOfWar::GetTexUVLT(Fvector2& uv, u32 col, u32 row)
 {
-	if (row>=m_rowNum || col>=m_colNum)				frame.set(1,0);
+	if (row>=m_rowNum || col>=m_colNum)				uv.set(0.5f,0.0f);
 	else{
-		Flags8 cell_mask							= m_cells[row*m_colNum+col];
-		if (cell_mask.flags==FOG_OPEN_TOTAL)		frame.set(0,0);
-		else if (cell_mask.flags==FOG_CLOSED)		frame.set(1,0);
-		else{
-			switch (part){
-			case tfLT: 
-				if (cell_mask.is(FOG_OPEN_L|FOG_OPEN_T))frame.set(3,2);
-				else if (cell_mask.is(FOG_OPEN_L))		frame.set(0,1);
-				else if (cell_mask.is(FOG_OPEN_T))		frame.set(0,2);
-				else if (cell_mask.is(FOG_OPEN_LT))		frame.set(0,3);
-				else									frame.set(1,0); // closed TOTAL
-				break;
-			case tfRT: 
-				if (cell_mask.is(FOG_OPEN_R|FOG_OPEN_T))frame.set(2,2);
-				else if (cell_mask.is(FOG_OPEN_R))		frame.set(1,1);
-				else if (cell_mask.is(FOG_OPEN_T))		frame.set(0,2);
-				else if (cell_mask.is(FOG_OPEN_RT))		frame.set(1,3);
-				else									frame.set(1,0); // closed TOTAL
-				break;
-			case tfLB: 
-				if (cell_mask.is(FOG_OPEN_L|FOG_OPEN_B))frame.set(3,1);
-				else if (cell_mask.is(FOG_OPEN_L))		frame.set(0,1);
-				else if (cell_mask.is(FOG_OPEN_B))		frame.set(1,2);
-				else if (cell_mask.is(FOG_OPEN_LB))		frame.set(2,3);
-				else									frame.set(1,0); // closed TOTAL
-				break;
-			case tfRB: 
-				if (cell_mask.is(FOG_OPEN_R|FOG_OPEN_B))frame.set(2,1);
-				else if (cell_mask.is(FOG_OPEN_R))		frame.set(1,1);
-				else if (cell_mask.is(FOG_OPEN_B))		frame.set(1,2);
-				else if (cell_mask.is(FOG_OPEN_RB))		frame.set(3,3);
-				else									frame.set(1,0); // closed TOTAL
-				break;
-			}
-		}
+		bool cell_mask								= m_cells[row*m_colNum+col];
+		if (cell_mask==true)						uv.set(0.0f,0.0f);
+		else 										uv.set(0.5f,0.0f);
 	}
 }
 
@@ -203,46 +157,35 @@ void CLevelFogOfWar::Draw	(CUICustomMap* m)
 	realCellsPosLT.sub			(m_levelRect.lt).mul(m->GetCurrentZoom());
 	
 	Ivector2	drawLT;
-	drawLT.set					(realCellsPosLT.x + map_abs_pos.x, realCellsPosLT.y + map_abs_pos.y);
+	drawLT.set					((realCellsPosLT.x + map_abs_pos.x)*UI()->GetScaleX(), (realCellsPosLT.y + map_abs_pos.y)*UI()->GetScaleY());
+	
 
-	float		fw				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleX();
-	float		fh				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleY();
-	float		ft				= 1.f/4.f;
+	const Fvector2 pts[6] =		{{0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},
+								 {0.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f}};
 
-	const Fvector2	pts[9]=	{	{0.0f,0.0f},{0.5f,0.0f},{1.0f,0.0f},
-								{0.0f,0.5f},{0.5f,0.5f},{1.0f,0.5f},
-								{0.0f,1.0f},{0.5f,1.0f},{1.0f,1.0f}		};
-	const u32 idx[4][2][3]	={	{{0,4,3},{0,1,4}}, {{1,5,4},{1,2,5}},
-								{{3,7,6},{3,4,7}}, {{4,8,7},{4,5,8}}	};
-//	const Fvector2	ts[16]=	{	{0.0f,0.0f},{0.5f,0.0f},{1.0f,0.0f},
-	const float eps = .01f;
-	const Fvector2 uvs[2][3]={	{{0.0f,0.0f},{1.0f-eps,1.0f-eps},{0.0f,1.0f-eps}},
-								{{0.0f,0.0f},{1.0f-eps,0.0f},{1.0f-eps,1.0f-eps}}};
 	RCache.set_Shader			(hShader);
 	CTexture* T					= RCache.get_ActiveTexture(0);
 	Fvector2					hp;
 	hp.set						(0.5f/float(T->get_Width()),0.5f/float(T->get_Height()));
-//	hp.set(.0f,.0f);
 
-	CRandom Random1(0);
+	Fvector2 uvs[6] =			{{0.0f+hp.x,0.0f+hp.y},{0.5f+hp.x,0.0f+hp.y},{0.5f+hp.x,1.0f+hp.y},
+								 {0.0f+hp.x,0.0f+hp.y},{0.5f+hp.x,1.0f+hp.y},{0.0f+hp.x,1.0f+hp.y}};
+
+
+	float		fw				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleX();
+	float		fh				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleY();
 
 	u32 vOffset					= 0;
-	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(cells.width()*cells.height()*24,hGeom.stride(),vOffset);
+	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(cells.width()*cells.height()*6,hGeom.stride(),vOffset);
 	FVF::TL* pv					= start_pv;
 	for (u32 x=0; x<cells.width(); ++x){
 		for (u32 y=0; y<cells.height(); ++y){
-			for(u32 c=0; c<4; ++c){
-				Ivector2 frame;
-				GetTexFrame		(frame,c,cells.x1+x,cells.y1+y);
-				Fvector2 tp;
-				tp.set			(frame.x*ft,frame.y*ft);
-				for(u32 f=0; f<2; ++f){
-					for(u32 v=0; v<3;++v,pv++){
-						const Fvector2& p = pts[idx[c][f][v]];
-						const Fvector2& uv= uvs[f][v];
-						pv->set(drawLT.x + p.x*fw +fw*x, drawLT.y + p.y*fh +fh*y, 0xFFFFFFFF,tp.x+uv.x*ft+hp.x,tp.y+uv.y*ft+hp.y);
-					}
-				}
+			Fvector2			tp;
+			GetTexUVLT(tp,cells.x1+x,cells.y1+y);
+			for (u32 k=0; k<6; ++k,++pv){
+				const Fvector2& p	= pts[k];
+				const Fvector2& uv	= uvs[k];
+				pv->set			(iFloor(drawLT.x + p.x*fw +fw*x), iFloor(drawLT.y + p.y*fh +fh*y), 0xFFFFFFFF,tp.x+uv.x,tp.y+uv.y);
 			}
 		}
 	}
@@ -254,39 +197,33 @@ void CLevelFogOfWar::Draw	(CUICustomMap* m)
 	// set geom
 	if (p_cnt!=0){
 		RCache.set_Geometry		(hGeom);
-//		RCache.set_CullMode		(CULL_NONE);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,u32(p_cnt));
 	}
 	UI()->PopScissor			();
-
-
-
-
-/*
-	if(0&&!(Device.dwFrame%300) ){
-		Msg("clip_rect=[%d][%d]-[%d][%d]",clip_rect.lt.x, clip_rect.lt.y, clip_rect.rb.x, clip_rect.rb.y);
-		Msg("vis_rect =[%d][%d]-[%d][%d]",vis_rect.lt.x, vis_rect.lt.y, vis_rect.rb.x, vis_rect.rb.y);
-		Msg("rect_real(tgt) =[%f][%f]-[%f][%f]",tgt.lt.x, tgt.lt.y, tgt.rb.x, tgt.rb.y);
-
-		Msg("cell_pos       =[%f][%f]-[%f][%f]",realCellsPosLT.x, realCellsPosLT.y, realCellsPosRB.x, realCellsPosRB.y);
-		Msg("rect_draw      =[%d][%d]-[%d][%d]",drawLT.x, drawLT.y, drawRB.x, drawRB.y);
-
-
-		Msg("cells=[%d][%d]-[%d][%d]",cells.lt.x, cells.lt.y, cells.rb.x, cells.rb.y);
-		Msg("------------------------");
-
-		CUIStatic	tmp;
-		tmp.Init	("test",drawLT.x,drawLT.y,  
-									drawRB.x - drawLT.x,
-									drawRB.y - drawLT.y);
-		tmp.SetStretchTexture(true);
-		tmp.Draw();
-	}*/
 }
+
 void CLevelFogOfWar::save	(IWriter &stream)
 {
+	save_data			(m_level_name,stream);
+	save_data			(m_levelRect,stream);
+	save_data			(m_rowNum,stream);
+	save_data			(m_colNum,stream);
+	save_data			(m_cells,stream);
 }
 
 void CLevelFogOfWar::load	(IReader &stream)
 {
+	load_data			(m_level_name,stream);
+	Init				(m_level_name);
+
+	Frect				levelRect;
+	load_data			(levelRect,stream);
+	VERIFY				(m_levelRect.cmp(levelRect));
+
+	u32					rowNum, colNum;
+	load_data			(rowNum,stream);
+	load_data			(colNum,stream);
+	VERIFY				(rowNum == m_rowNum);
+	VERIFY				(colNum == m_colNum);
+	load_data			(m_cells,stream);
 }
