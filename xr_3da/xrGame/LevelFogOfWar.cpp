@@ -180,8 +180,8 @@ void CLevelFogOfWar::Draw	(CUICustomMap* m)
 	u32 vOffset					= 0;
 	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(cells.width()*cells.height()*6,hGeom.stride(),vOffset);
 	FVF::TL* pv					= start_pv;
-	for (u32 x=0; x<cells.width(); ++x){
-		for (u32 y=0; y<cells.height(); ++y){
+	for (int x=0; x<cells.width(); ++x){
+		for (int y=0; y<cells.height(); ++y){
 			Fvector2			tp;
 			GetTexUVLT(tp,cells.x1+x,cells.y1+y);
 			for (u32 k=0; k<6; ++k,++pv){
