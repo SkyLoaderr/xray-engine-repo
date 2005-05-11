@@ -60,10 +60,10 @@ void CLevelFogOfWar::Init	(const shared_str& level)
 
 
 	Fvector4 tmp;
-	if( gameLtx.section_exist(m_level_name) )
-		tmp		= gameLtx.r_fvector4(m_level_name,"bound_rect");
+	if( gameLtx.line_exist(m_level_name,"bound_rect") )
+		tmp				= gameLtx.r_fvector4(m_level_name,"bound_rect");
 	else
-		tmp.set(0.0f,0.0f,0.0f,0.0f);
+		tmp.set			(-10000.0f,-10000.0f,10000.0f,10000.0f); //. hack
 
 	m_levelRect.set		(tmp.x, tmp.y, tmp.z, tmp.w);
 
