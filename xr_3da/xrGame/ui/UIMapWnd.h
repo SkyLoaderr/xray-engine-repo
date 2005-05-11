@@ -22,7 +22,7 @@
 
 class CUIMapWnd;
 class CUIGlobalMapSpot;
-struct CLevelFogOfWar;
+class CLevelFogOfWar;
 
 class CUICustomMap : public CUIStatic, public CUIWndCallback
 {
