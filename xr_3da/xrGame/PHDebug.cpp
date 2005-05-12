@@ -10,6 +10,17 @@
 Flags32		ph_dbg_draw_mask;
 bool		draw_frame=0;
 
+
+u32 dbg_bodies_num							=0;
+u32 dbg_joints_num							=0;
+u32 dbg_islands_num							=0;
+u32 dbg_contacts_num						=0;
+u32 dbg_tries_num							=0;
+u32 dbg_saved_tries_for_active_objects		=0;
+u32 dbg_total_saved_tries					=0;
+u32 dbg_reused_queries_per_step				=0;
+u32 dbg_new_queries_per_step				=0;
+
 #ifdef DRAW_CONTACTS
 CONTACT_VECTOR Contacts0;
 CONTACT_VECTOR Contacts1;
@@ -313,6 +324,8 @@ void DBG_DrawFrameStart()
 	}
 	DBG_PHAbstruactStartFrame(draw_frame);
 
+	dbg_tries_num								=0;
+	dbg_saved_tries_for_active_objects			=0;
 }
 
 
@@ -384,5 +397,58 @@ void PH_DBG_Render()
 	// HUD().Font().pFontSmall->OutNext("---------------------");
 #endif
 	draw_frame=!draw_frame;
+}
+
+void DBG_DrawStatBeforeFrameStep()
+{
+	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+	{
+		static float obj_count=0.f;
+		static float update_obj_count=0.f;
+		obj_count=obj_count*0.9f + float(ph_world->ObjectsNumber())*0.1f;
+		update_obj_count=update_obj_count*0.9f + float(ph_world->UpdateObjectsNumber())*0.1f;
+		DBG_OutText("Active Phys Objects %3.0f",obj_count);
+		DBG_OutText("Active Phys Update Objects %3.0f",update_obj_count);
+	}
+}
+
+void DBG_DrawStatAfterFrameStep()
+{
+	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
+	{
+		static float  fdbg_bodies_num=0.f;
+		static float  fdbg_joints_num=0.f;
+		static float  fdbg_islands_num=0.f;
+		static float  fdbg_contacts_num=0.f;
+		static float  fdbg_tries_num=0.f;
+		fdbg_islands_num=0.9f*fdbg_islands_num+0.1f*float(dbg_islands_num);
+		fdbg_bodies_num=0.9f*fdbg_bodies_num+0.1f*float(dbg_bodies_num);
+		fdbg_joints_num=0.9f*fdbg_joints_num+0.1f*float(dbg_joints_num);
+		fdbg_contacts_num=0.9f*fdbg_contacts_num+0.1f*float(dbg_contacts_num);
+		fdbg_tries_num=0.9f*fdbg_tries_num+0.1f*float(dbg_tries_num);
+		DBG_OutText("Ph Number of active islands %3.0f",fdbg_islands_num);
+		DBG_OutText("Ph Number of active bodies %3.0f",fdbg_bodies_num);
+		DBG_OutText("Ph Number of active joints %4.0f",fdbg_joints_num);
+		DBG_OutText("Ph Number of contacts %4.0f",fdbg_contacts_num);
+		DBG_OutText("Ph Number of tries %5.0f",fdbg_tries_num);
+	}
+	if(ph_dbg_draw_mask.test(phDbgDrawCashedTriesStat))
+	{
+		static float fdbg_saved_tries_for_active_objects		=0;
+		static float fdbg_total_saved_tries						=0;
+
+		fdbg_saved_tries_for_active_objects=0.9f*fdbg_saved_tries_for_active_objects+0.1f*float(dbg_saved_tries_for_active_objects);
+		fdbg_total_saved_tries				=0.9f*fdbg_total_saved_tries+0.1f*float(dbg_total_saved_tries);
+		DBG_OutText("Ph Number of cashed tries in active objects %5.0f",fdbg_saved_tries_for_active_objects);
+		DBG_OutText("Ph Total number cashed %5.0f",fdbg_total_saved_tries);
+
+		static SInertVal fdbg_reused_queries_per_step(0.9f);
+		static SInertVal fdbg_new_queries_per_step(0.9f);
+		fdbg_reused_queries_per_step.new_val(float(dbg_reused_queries_per_step));
+		fdbg_new_queries_per_step.new_val(float(dbg_new_queries_per_step));
+		DBG_OutText("Ph tri_queries_per_step %5.2f",fdbg_new_queries_per_step.val);
+		DBG_OutText("Ph reused_tri_queries_per_step %5.2f",fdbg_reused_queries_per_step.val);
+
+	}
 }
 #endif

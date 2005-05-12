@@ -225,7 +225,7 @@ void CPHShell::Deactivate(){
 	spatial_unregister();
 	vis_update_activate();
 	DisableObject();
-
+	CPHObject::remove_from_recently_deactivated();
 	ZeroCallbacks();
 
 	ELEMENT_I i;

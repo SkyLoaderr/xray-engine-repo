@@ -3,8 +3,17 @@
 #ifdef DEBUG
 #define DRAW_CONTACTS
 
-extern Flags32 ph_dbg_draw_mask;
-extern	bool		  draw_frame;
+extern	Flags32			ph_dbg_draw_mask						;
+extern	bool			draw_frame								;
+extern	u32				dbg_tries_num							;
+extern	u32				dbg_saved_tries_for_active_objects		;
+extern	u32				dbg_total_saved_tries					;
+extern	u32 			dbg_reused_queries_per_step				;
+extern	u32 			dbg_new_queries_per_step				;
+extern	u32 			dbg_bodies_num							;
+extern	u32 			dbg_joints_num							;
+extern	u32 			dbg_islands_num							;
+extern	u32 			dbg_contacts_num						;
 #ifdef DRAW_CONTACTS
 
 struct SPHContactDBGDraw
@@ -35,7 +44,8 @@ enum
 	phDbgDrawObjectStatistics	=		1<<11,
 	phDbgDrawMassCenters		=		1<<12,
 	phDbgDrawDeathActivationBox =		1<<14,
-	phHitApplicationPoints		=		1<<15
+	phHitApplicationPoints		=		1<<15,
+	phDbgDrawCashedTriesStat	=		1<<16
 };
 struct SPHObjDBGDraw
 {
@@ -57,7 +67,8 @@ struct SPHDBGDrawAbsract
 DEFINE_VECTOR(SPHDBGDrawAbsract*,PHABS_DBG_V,PHABS_DBG_I)					;
 extern PHABS_DBG_V	dbg_draw_abstruct0;
 extern PHABS_DBG_V	dbg_draw_abstruct1;
-
+void DBG_DrawStatBeforeFrameStep();
+void DBG_DrawStatAfterFrameStep();
 void DBG_OpenCashedDraw();
 void DBG_ClosedCashedDraw(u32 remove_time);
 void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a);

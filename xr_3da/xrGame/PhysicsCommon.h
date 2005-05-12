@@ -4,26 +4,28 @@
 #include "DisablingParams.h"
 #include "ode_include.h"
 
-extern const dReal	default_l_limit;
-extern const dReal	default_w_limit;
-extern const dReal	default_k_l;
-extern const dReal	default_k_w;
-extern const dReal	default_l_scale;
-extern const dReal	default_w_scale;
+extern const dReal	default_l_limit									;
+extern const dReal	default_w_limit									;
+extern const dReal	default_k_l										;
+extern const dReal	default_k_w										;
+extern const dReal	default_l_scale									;
+extern const dReal	default_w_scale									;
 
-extern const dReal	fixed_step;
-extern const dReal	world_gravity;
-extern const dReal  world_cfm;
-extern const dReal  world_erp;
-extern const dReal  world_spring;
-extern const dReal  world_damping;
-extern const dReal	mass_limit;
-extern const u16	max_joint_allowed_for_exeact_integration;
-extern		 float	phTimefactor;
-extern	int			phFPS;
-extern	int			phIterations;
-extern	float		phBreakCommonFactor;
-extern	float		phRigidBreakWeaponFactor;
+extern const dReal	fixed_step										;
+extern const dReal	world_gravity									;
+extern const dReal  world_cfm										;
+extern const dReal  world_erp										;
+extern const dReal  world_spring									;
+extern const dReal  world_damping									;
+extern const dReal	mass_limit										;
+extern const u16	max_joint_allowed_for_exeact_integration		;
+extern		 float	phTimefactor									;
+extern	int			phFPS											;
+extern	int			phIterations									;
+extern	float		phBreakCommonFactor								;
+extern	float		phRigidBreakWeaponFactor						;
+extern	float		ph_tri_query_ex_aabb_rate						;
+extern	int			ph_tri_clear_disable_count						;
 
 struct SGameMtl;
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))

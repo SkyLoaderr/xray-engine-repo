@@ -31,6 +31,7 @@ class CPHWorld	: public pureFrame
 	CPHMesh						Mesh														;
 	PH_OBJECT_STORAGE			m_objects													;
 	PH_OBJECT_STORAGE			m_freezed_objects											;
+	PH_OBJECT_STORAGE			m_recently_disabled_objects									;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
 	dGeomID						m_motion_ray;
 public:
@@ -50,7 +51,8 @@ public:
 	void						Create							()							;
 	void						AddObject						(CPHObject* object)			;
 	void						AddUpdateObject					(CPHUpdateObject* object)	;
-
+	void						AddRecentlyDisabled				(CPHObject* object)			;
+	void						RemoveFromRecentlyDisabled		(PH_OBJECT_I i)				;
 	void						RemoveObject					(PH_OBJECT_I i)				;
 	void						RemoveUpdateObject				(PH_UPDATE_OBJECT_I i)		;
 	dGeomID						GetMeshGeom						()							{return Mesh.GetGeom();}
@@ -67,7 +69,8 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 	bool 						IsFreezed						()							;
 IC	bool						Processing						()							{return b_processing;}
 	u32							CalcNumSteps					(u32 dTime)					;
-
+	u16							ObjectsNumber					()							;
+	u16							UpdateObjectsNumber				()							;
 #ifdef DEBUG
 	virtual void 				OnRender						()							;
 #endif

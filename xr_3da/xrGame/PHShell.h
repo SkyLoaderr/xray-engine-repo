@@ -210,6 +210,8 @@ protected:
 	virtual		void		get_spatial_params			()																				;
 	virtual		dGeomID		dSpacedGeom					()																	{return (dGeomID)m_space;}
 	virtual		void		DisableObject				()																	;
+	virtual		void		ClearRecentlyDeactivated	()																	;
+				void		ClearCashedTries			()																	;
 private:
 	//breakable
 	void setEndElementSplitter	  			()																				;

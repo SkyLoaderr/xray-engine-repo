@@ -3,6 +3,9 @@
 #include "PHObject.h"
 #include "ode_include.h"
 #include "physicscommon.h"
+#ifdef DEBUG
+extern	u32				dbg_total_saved_tries					;
+#endif
 class CPhysicsShellHolder;
 
 struct Triangle 
@@ -108,6 +111,13 @@ IC void dGeomDestroyUserData(dxGeom* geom)
 {
 	if(!geom)			return;
 	dxGeomUserData*	P	= dGeomGetUserData(geom);
+	if(P)
+	{
+#ifdef DEBUG
+	dbg_total_saved_tries-=P->cashed_tries.size();
+#endif
+	P->cashed_tries		.clear();
+	}
 	xr_delete			(P);
 	dGeomSetData		(geom,0);
 }
@@ -145,5 +155,15 @@ IC void dGeomUserDataResetLastPos(dxGeom* geom)
 	(dGeomGetUserData(geom))->last_pos[0]=-dInfinity;
 	(dGeomGetUserData(geom))->last_pos[1]=-dInfinity;
 	(dGeomGetUserData(geom))->last_pos[2]=-dInfinity;
+}
+IC void dGeomUserDataClearCashedTries(dxGeom* geom)
+{
+	dxGeomUserData*	P	= dGeomGetUserData(geom);
+
+#ifdef DEBUG
+	dbg_total_saved_tries-=P->cashed_tries.size();
+#endif
+	P->cashed_tries.clear();
+	P->last_aabb_size.set(0.f,0.f,0.f);
 }
 #endif

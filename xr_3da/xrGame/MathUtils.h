@@ -289,5 +289,21 @@ IC void limit_below(float& val,float limit)
 	if	(y<z)	{if(x>z){ on_x1;on_z2;on_y3;}else{on_z1;on_x2;on_y3;}}\
 			else		{on_x1;on_y2;on_z3;}\
 }
+//////////////////////////////////////////////////////////////////////////////////////
 
+struct SInertVal
+{
+		float val;
+const	float inertion;
+		SInertVal(float inert): inertion	(inert){R_ASSERT(inert>0.f&&inert<1.f);}
+IC		void	new_val						(float new_val)
+		{
+			val=inertion*val+(1-inertion)*new_val;
+		}
+private:
+		SInertVal& operator = (SInertVal& v)
+		{
+			R_ASSERT(false);
+		}
+};
 #endif

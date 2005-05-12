@@ -38,7 +38,7 @@ CPHShell::~CPHShell				()
 {
 	m_pKinematics	= 0;
 	if(bActive)		Deactivate();
-
+	
 	xr_vector<CPHElement*>::iterator i;
 	for(i=elements.begin();elements.end()!=i;++i)
 		xr_delete(*i);
@@ -70,6 +70,7 @@ void CPHShell::DisableObject()
 	InterpolateGlobalTransform(&mXFORM);
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
+
 }
 void CPHShell::Disable()
 {
@@ -80,6 +81,7 @@ void CPHShell::Disable()
 	{
 		(*i)->Disable();
 	}
+	ClearCashedTries();
 }
 void CPHShell::DisableCollision()
 {
@@ -180,7 +182,11 @@ void CPHShell::PhDataUpdate(dReal step){
 		dBodyID body=(*i)->get_body();
 		if(body&&disable&&dBodyIsEnabled(body))disable=false;
 	}
-	if(disable) DisableObject();
+	if(disable) 
+	{
+				DisableObject();
+				CPHObject::put_in_recently_deactivated();
+	}
 	else		ReanableObject();
 
 	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition((*elements.begin())->get_body()))))
@@ -1369,4 +1375,16 @@ void CPHShell::CutVelocity(float l_limit,float a_limit)
 	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;++i)(*i)->CutVelocity(l_limit,a_limit);
+}
+
+void CPHShell::ClearRecentlyDeactivated()
+{
+	ClearCashedTries();
+}
+
+void CPHShell::ClearCashedTries()
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)(*i)->clear_cashed_tries();
 }

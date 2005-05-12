@@ -13,13 +13,7 @@
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-#ifdef DEBUG
-u32 dbg_bodies_num=0;
-u32 dbg_joints_num=0;
-u32 dbg_islands_num=0;
-u32 dbg_contacts_num=0;
-u32 dbg_tries_num=0;
-#endif
+
 
 void CPHMesh ::Create(dSpaceID space, dWorldID world){
 	Geom = dCreateTriList(space, 0, 0);
@@ -143,40 +137,14 @@ void CPHWorld::OnFrame()
 	*/
 #ifdef DEBUG 
 	DBG_DrawFrameStart();
-
-	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
-	{
-		static float obj_count=0.f;
-		static float update_obj_count=0.f;
-		obj_count=obj_count*0.9f + float(m_objects.count())*0.1f;
-		update_obj_count=update_obj_count*0.9f + float(m_update_objects.count())*0.1f;
-		DBG_OutText("Active Phys Objects %3.0f",obj_count);
-		DBG_OutText("Active Phys Update Objects %3.0f",update_obj_count);
-	}
-	dbg_tries_num=0;
+	DBG_DrawStatBeforeFrameStep();
 #endif
 	Device.Statistic.Physics.Begin		();
 	FrameStep							(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
 #ifdef DEBUG
-	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
-	{
-		static float  fdbg_bodies_num=0.f;
-		static float  fdbg_joints_num=0.f;
-		static float  fdbg_islands_num=0.f;
-		static float  fdbg_contacts_num=0.f;
-		static float  fdbg_tries_num=0.f;
-		fdbg_islands_num=0.9f*fdbg_islands_num+0.1f*float(dbg_islands_num);
-		fdbg_bodies_num=0.9f*fdbg_bodies_num+0.1f*float(dbg_bodies_num);
-		fdbg_joints_num=0.9f*fdbg_joints_num+0.1f*float(dbg_joints_num);
-		fdbg_contacts_num=0.9f*fdbg_contacts_num+0.1f*float(dbg_contacts_num);
-		fdbg_tries_num=0.9f*fdbg_tries_num+0.1f*float(dbg_tries_num);
-		DBG_OutText("Ph Number of active islands %3.0f",fdbg_islands_num);
-		DBG_OutText("Ph Number of active bodies %3.0f",fdbg_bodies_num);
-		DBG_OutText("Ph Number of active joints %4.0f",fdbg_joints_num);
-		DBG_OutText("Ph Number of contacts %4.0f",fdbg_contacts_num);
-		DBG_OutText("Ph Number of tries %5.0f",fdbg_tries_num);
-	}
+	DBG_DrawStatAfterFrameStep();
+
 #endif
 }
 
@@ -185,13 +153,26 @@ void CPHWorld::OnFrame()
 static u32 start_time=0;
 void CPHWorld::Step()
 {
-
+#ifdef DEBUG
+	dbg_reused_queries_per_step	=0			;
+	dbg_new_queries_per_step	=0			;
+#endif
+	
 	VERIFY(b_processing||IsFreezed());
 
 	PH_OBJECT_I			i_object;
 	PH_UPDATE_OBJECT_I	i_update_object;
 
-	if(disable_count==0) disable_count=worldDisablingParams.objects_params.L2frames;
+	if(disable_count==0)
+	{
+		disable_count=worldDisablingParams.objects_params.L2frames;
+		for(i_object=m_recently_disabled_objects.begin();m_recently_disabled_objects.end() != i_object;)
+		{
+			CPHObject* obj=(*i_object);
+			obj->check_recently_deactivated();
+			++i_object;
+		}
+	}
 	--disable_count;
 
 	++m_steps_num;
@@ -360,7 +341,14 @@ void CPHWorld::AddObject(CPHObject* object){
 	//xr_list <CPHObject*> ::iterator i= m_objects.end();
 	//return (--m_objects.end());
 };
-
+void CPHWorld::AddRecentlyDisabled(CPHObject* object)
+{
+	m_recently_disabled_objects.push_back(object);
+}
+void CPHWorld::RemoveFromRecentlyDisabled(PH_OBJECT_I i)
+{
+	m_recently_disabled_objects.erase(i);
+}
 void CPHWorld::AddUpdateObject(CPHUpdateObject* object)
 {
 	m_update_objects.push_back(object);
@@ -419,4 +407,13 @@ void CPHWorld::CutVelocity(float l_limit,float a_limit)
 		obj->CutVelocity(l_limit,a_limit);
 		++i_object;
 	}
+}
+
+u16 CPHWorld::ObjectsNumber()
+{
+	return m_objects.count();
+}
+u16 CPHWorld::UpdateObjectsNumber()
+{
+	return m_update_objects.count();
 }

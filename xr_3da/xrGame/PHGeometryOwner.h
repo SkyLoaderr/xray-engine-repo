@@ -53,6 +53,7 @@ const	Fvector&				local_mass_Center						()		{return m_mass_center;}												
 		float					getRadius								();	
 		void					setStaticForm							(const Fmatrix& form);
 		void					setPosition								(const Fvector& pos);
+		void					clear_cashed_tries						();
 protected:
 		void					get_mc_vs_transform						(Fvector& mc,const Fmatrix& m);
 		void					build									();

@@ -13,6 +13,7 @@ CPHObject::CPHObject	()	: ISpatial(g_SpatialSpacePhysic)
 	m_flags.flags	=	0;
 	spatial.type	|=	STYPE_PHYSIC;
 	m_island.Init	();
+	m_check_count	=0;
 	CPHCollideValidator::InitObject	(*this);
 }
 
@@ -21,6 +22,7 @@ void CPHObject::activate()
 	R_ASSERT2(dSpacedGeom(),"trying to activate destroyed or not created object!");
 	if(m_flags.test(st_activated))return;
 	if(m_flags.test(st_freezed))	{UnFreeze();return;}
+	if(m_flags.test(st_recently_deactivated))remove_from_recently_deactivated();
 	ph_world->AddObject(this);
 	vis_update_activate();
 	m_flags.set(st_activated,TRUE);
@@ -40,7 +42,29 @@ void CPHObject::deactivate()
 	m_flags.set(st_activated,FALSE);
 }
 
-
+void CPHObject::put_in_recently_deactivated()
+{
+	VERIFY(!m_flags.test(st_activated)&&!m_flags.test(st_freezed));
+	if(m_flags.test(st_recently_deactivated))return;
+	m_check_count=u8(ph_tri_clear_disable_count);
+	m_flags.set(st_recently_deactivated,TRUE);
+	ph_world->AddRecentlyDisabled(this);
+}
+void CPHObject::remove_from_recently_deactivated()
+{
+	if(!m_flags.test(st_recently_deactivated))return;
+	m_check_count=0;
+	m_flags.set(st_recently_deactivated,FALSE);
+	ph_world->RemoveFromRecentlyDisabled(PH_OBJECT_I(this));
+}
+void CPHObject::check_recently_deactivated()
+{
+	if(m_check_count==0){
+		ClearRecentlyDeactivated();
+		remove_from_recently_deactivated();
+	}
+	 else m_check_count--;
+}
 void CPHObject::spatial_move()
 {
 	get_spatial_params();

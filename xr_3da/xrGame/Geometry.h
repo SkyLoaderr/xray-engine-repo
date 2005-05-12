@@ -45,7 +45,7 @@ public:
 	virtual		void		get_max_area_dir_bt	(Fvector& dir)														=0;
 	virtual		float		radius				()																	=0;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) =0;
-
+				void		clear_cashed_tries	()																	  ;
 	IC			dGeomID		geom()
 	{
 								return dGeomTransformGetGeom(m_geom_transform);

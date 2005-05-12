@@ -189,6 +189,21 @@ void CODEGeom::remove_from_space(dSpaceID space)
 {
 	if(m_geom_transform) dSpaceRemove(space,m_geom_transform);
 }
+void CODEGeom::clear_cashed_tries()
+{
+	if(!m_geom_transform)return;
+	dGeomID g=geom();
+	if(g)
+	{
+		VERIFY(dGeomGetUserData(g));
+		dGeomUserDataClearCashedTries(g);
+	}
+	else
+	{
+		VERIFY(dGeomGetUserData(m_geom_transform));
+		dGeomUserDataClearCashedTries(m_geom_transform);
+	}
+}
 void CODEGeom::set_material(u16 ul_material)
 {
 	if(!m_geom_transform) return;

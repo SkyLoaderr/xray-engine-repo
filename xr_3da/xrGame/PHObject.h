@@ -27,12 +27,13 @@ class CPHObject :
 					st_freezed						=(1<<1),
 					st_dirty						=(1<<2),
 					st_net_interpolation			=(1<<3),
-					fl_ray_motions					=(1<<4)
+					fl_ray_motions					=(1<<4),
+					st_recently_deactivated			=(1<<5)
 				};
 
 			CPHIsland			m_island;
 			CLBits				m_collide_bits;
-		
+			u8					m_check_count;
 			_flags<CLClassBits>	m_collide_class_bits;
 
 public:
@@ -92,9 +93,12 @@ public:
 			void			activate						()										;
 		IC	bool			is_active						()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void			deactivate						()										;
+			void			put_in_recently_deactivated		()										;
+			void			remove_from_recently_deactivated()										;
+			void			check_recently_deactivated		()										;
 			void			collision_disable				()										;
 			void			collision_enable				()										;
-			
+virtual		void			ClearRecentlyDeactivated		()										{;}		
 virtual		void			Collide							()										;
 virtual		void			near_callback					(CPHObject* obj)						{;}
 virtual		void			RMotionsQuery					(qResultVec	&res)						{;}

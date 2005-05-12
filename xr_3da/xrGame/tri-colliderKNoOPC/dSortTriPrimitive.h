@@ -8,7 +8,7 @@
 #include "../MathUtils.h"
 #ifdef DEBUG
 #include "../PHDebug.h"
-extern u32 dbg_tries_num;
+
 #endif
 static 	xr_vector<Triangle> pos_tries;
 static 	xr_vector<Triangle> neg_tries;
@@ -38,23 +38,35 @@ int dSortTriPrimitiveCollide (
 	const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
 	if(no_last_pos||!last_box.contains(box))
 	{
-
+		
 		Fvector aabb;aabb.set(AABB);
-		aabb.mul(1.3f);
+		aabb.mul(ph_tri_query_ex_aabb_rate);
 	///////////////////////////////////////////////////////////////////////////////////////////////
 		XRC.box_options                (0);
 		XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),cast_fv(p),aabb);
 
 		CDB::RESULT*    R_begin                         = XRC.r_begin()	;
 		CDB::RESULT*    R_end                           = XRC.r_end()	;
+#ifdef DEBUG
+		
+		dbg_total_saved_tries-=data->cashed_tries.size();
+		dbg_new_queries_per_step++;
+#endif
 		data->cashed_tries								.clear()		;
 		for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 		{
 			data->cashed_tries.push_back(Res->id);
 		}
+#ifdef DEBUG
+		dbg_total_saved_tries+=data->cashed_tries.size();
+#endif
 		data->last_aabb_pos.set(cast_fv(p));
 		data->last_aabb_size.set(aabb);
 	}
+#ifdef DEBUG
+	else
+		dbg_reused_queries_per_step++;
+#endif
 ///////////////////////////////////////////////////////////////////////////////////////////////	
 	int			ret	=	0;
 	Triangle	tri;
@@ -118,9 +130,12 @@ int dSortTriPrimitiveCollide (
 	xr_vector<int>::iterator I=data->cashed_tries.begin(),E=data->cashed_tries.end();
 	for (; I!=E; ++I)
 	{
+#ifdef DEBUG
+		dbg_saved_tries_for_active_objects++;
+#endif
 		CDB::TRI* T = T_array + *I;
 		const Point vertices[3]={Point((dReal*)&V_array[T->verts[0]]),Point((dReal*)&V_array[T->verts[1]]),Point((dReal*)&V_array[T->verts[2]])};
-		if(!__aabb_tri(Point(p),Point((float*)&AABB),vertices))continue;
+		if(!aabb_tri_aabb(Point(p),Point((float*)&AABB),vertices))continue;
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDBgDrawIntersectedTries))
 										DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,255,0));
@@ -145,6 +160,7 @@ int dSortTriPrimitiveCollide (
 #endif
 			float last_pos_dist=dDOT(last_pos,tri.norm)-tri.pos;
 			if((!(last_pos_dist<0.f))||b_pushing)
+				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 #ifdef DEBUG
 					if(ph_dbg_draw_mask.test(phDBgDrawTriesChangesSign))

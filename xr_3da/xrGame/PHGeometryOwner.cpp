@@ -350,3 +350,12 @@ CODEGeom* CPHGeometryOwner::GeomByBoneID(u16 bone_id)
 		return NULL;
 	}
 }
+
+void CPHGeometryOwner::clear_cashed_tries()
+{
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;++i)
+	{
+		(*i)->clear_cashed_tries();
+	}
+}
