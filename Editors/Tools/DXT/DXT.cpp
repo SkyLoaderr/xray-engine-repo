@@ -238,8 +238,17 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		hr					= nvDXTcompress(pImage,&nvOpt,0,0);
 	}
     _close					(gFileOut);
-	if (hr!=DD_OK)			return 0;
-	else					return 1;
+	if (hr!=DD_OK){
+		switch (hr){
+		case DXTERR_INPUT_POINTER_ZERO:			MessageBox(0,"Input pointer zero.","DXT compress error",MB_ICONERROR|MB_OK);			break;
+		case DXTERR_DEPTH_IS_NOT_3_OR_4:		MessageBox(0,"Source depth is not 3 or 4.","DXT compress error",MB_ICONERROR|MB_OK);			break;
+		case DXTERR_NON_POWER_2:				MessageBox(0,"Source non power 2.","DXT compress error",MB_ICONERROR|MB_OK);					break;
+		case DXTERR_INCORRECT_NUMBER_OF_PLANES:	MessageBox(0,"Source incorrect number of planes.","DXT compress error",MB_ICONERROR|MB_OK);	break;
+		case DXTERR_NON_MUL4:					MessageBox(0,"Source non mul 4.","DXT compress error",MB_ICONERROR|MB_OK);						break;
+		}
+
+		return 0;
+	}else					return 1;
 }
 
 extern int DXTCompressBump(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
