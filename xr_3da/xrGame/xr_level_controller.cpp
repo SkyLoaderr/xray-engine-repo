@@ -28,6 +28,7 @@ _keybind  keybind[]		= {
 	{ "rlookout",		kR_LOOKOUT		},
 
 	{ "repair",			kREPAIR			},
+	{ "turn_engine",	kENGINE			},
 
 	{ "cam_1",			kCAM_1			},	
 	{ "cam_2",			kCAM_2			},

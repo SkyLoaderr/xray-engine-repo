@@ -453,6 +453,8 @@ IC	size_t CurrentTransmission(){return m_current_transmission_num;}
 			bool WheelHit						(float P,s16 element,ALife::EHitType hit_type);
 			bool DoorHit						(float P,s16 element,ALife::EHitType hit_type);
 public:
+	virtual bool			allowWeapon			() const		{return true;};
+	virtual bool			HUDView				() const;
 	virtual Fvector			ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update			(float dt);
@@ -474,6 +476,8 @@ public:
 	virtual BOOL			net_Spawn			( CSE_Abstract* DC );
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			( ); 
+	virtual	void			UpdateEx			(); //called by owner
+
 	virtual void			shedule_Update		(u32 dt);
 	virtual void			renderable_Render	( ); 
 	virtual	bool			bfAssignMovement	(CScriptEntityAction *tpEntityAction);

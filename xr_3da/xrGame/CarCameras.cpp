@@ -7,6 +7,11 @@
 #include "camerafirsteye.h"
 #include "level.h"
 
+bool CCar::HUDView() const		
+{
+	return active_camera->tag==ectFirst;
+}
+
 void	CCar::cam_Update			(float /**dt/**/)
 {
 	Fvector							P,Da;

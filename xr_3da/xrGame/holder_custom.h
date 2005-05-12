@@ -18,6 +18,7 @@ protected:
 public:
 							CHolderCustom		()				{m_owner=0;}
 	virtual					~CHolderCustom		()				{;}
+	virtual	void			UpdateEx			(){}; //called by owner
 	virtual CHolderCustom	*cast_holder_custom	()				{return this;}
 			bool			Engaged				()				{return m_owner!=NULL;}
 	virtual void			OnMouseMove			(int x, int y)	= 0;
@@ -32,7 +33,8 @@ public:
 	virtual bool			Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)=0;
 	virtual bool			attach_Actor		(CActor* actor)	= 0;
 	virtual void			detach_Actor		()				= 0;
-
+	virtual bool			allowWeapon			()	const		= 0;
+	virtual bool			HUDView				() const		= 0;
 	virtual Fvector			ExitPosition		()				= 0;
 
 	virtual CCameraBase*	Camera				()				= 0;

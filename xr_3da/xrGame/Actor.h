@@ -317,10 +317,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 public:
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
-	IC		BOOL			HUDview				( )const 
-	{ 
-		return IsFocused()&&(cam_active==eacFirstEye)&&(!m_holder); 
-	}
+			BOOL			HUDview				( )const ;
 
 	//visiblity 
 	virtual	float			ffGetFov			()	const	{ return 90.f;		}	

@@ -6,6 +6,7 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 #include "Actor.h"
+#include "ActorEffector.h"
 #define   _USE_MATH_DEFINES
 #include "math.h"
 #include "script_entity_action.h"
@@ -286,10 +287,8 @@ void CCar::shedule_Update(u32 dt)
 										setEnabled(TRUE);
 }
 
-void	CCar::UpdateCL				( )
+void CCar::UpdateEx			() //called by owner
 {
-	inherited::UpdateCL();
-	CExplosive::UpdateCL();
 	#ifdef DEBUG
 	if(m_pPhysicsShell&&Owner() && bDebug)
 	{
@@ -317,6 +316,41 @@ void	CCar::UpdateCL				( )
 	VisualUpdate();
 }
 
+void CCar::UpdateCL				( )
+{
+	inherited::UpdateCL();
+	CExplosive::UpdateCL();
+	if(Owner()) return;
+	UpdateEx			();
+
+/*	#ifdef DEBUG
+	if(m_pPhysicsShell&&Owner() && bDebug)
+	{
+		Fvector v;
+		m_pPhysicsShell->get_LinearVel(v);
+		string32 s;
+		sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
+		HUD().Font().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
+		HUD().Font().pFontSmall->OutSet	(120,530);
+		HUD().Font().pFontSmall->OutNext(s);
+		HUD().Font().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
+		HUD().Font().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
+		HUD().Font().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
+		HUD().Font().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
+		HUD().Font().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
+		HUD().Font().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
+		HUD().Font().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
+		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
+		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
+	}
+	#endif
+
+	//	Log("UpdateCL",Device.dwFrame);
+	//XFORM().set(m_pPhysicsShell->mXFORM);
+	VisualUpdate();
+*/
+}
+
  void CCar::VisualUpdate()
 {
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
@@ -337,8 +371,14 @@ void	CCar::UpdateCL				( )
 			Owner()->XFORM().set(XFORM());
 			Owner()->XFORM().mulB	(m_sits_transforms[0]);
 		}
+
 		if(Owner()->IsMyCamera()) 
-			cam_Update	(Device.fTimeDelta);
+		{
+			cam_Update(Device.fTimeDelta);
+			Owner()->EffectorManager().Update(Camera());
+			Owner()->EffectorManager().ApplyDevice();
+		}
+
 		if(HUD().GetUI())//
 		{
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
@@ -436,6 +476,7 @@ void CCar::detach_Actor()
 	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(false);
 	///Break();
 	//H_SetParent(NULL);
+	processing_deactivate();
 }
 
 bool CCar::attach_Actor(CActor* actor)
@@ -458,7 +499,7 @@ bool CCar::attach_Actor(CActor* actor)
 	OnCameraChange(ectFirst);
 	PPhysicsShell()->Enable();
 	VisualUpdate();
-	
+	processing_activate();
 
 //	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
 //	HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);

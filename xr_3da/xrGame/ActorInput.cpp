@@ -27,11 +27,11 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if(m_holder && kUSE != cmd)
 	{
-		m_holder->OnKeyboardPress(cmd);
+		m_holder->OnKeyboardPress			(cmd);
+		if(m_holder->allowWeapon() && inventory().Action(cmd, CMD_START))		return;
 		return;
-	}
-
-	if(inventory().Action(cmd, CMD_START))						return;
+	}else
+		if(inventory().Action(cmd, CMD_START))					return;
 
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
@@ -69,29 +69,17 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	case kNIGHT_VISION: {
 		PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-		if (I){
-			CTorch* torch = smart_cast<CTorch*>(I);
-			if (torch) torch->SwitchNightVision();
-		}
-/*
-		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
-		if (I){
-			CTorch* torch = smart_cast<CTorch*>(I);
-			if (torch) torch->SwitchNightVision();
-		}*/
+			if (I){
+				CTorch* torch = smart_cast<CTorch*>(I);
+				if (torch) torch->SwitchNightVision();
+			}
 		}break;
 	case kTORCH:{ 
-		PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-		if (I){
-			CTorch* torch = smart_cast<CTorch*>(I);
-			if (torch) torch->Switch();
-		}
-/*
-		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
-		if (I){
-			CTorch* torch = smart_cast<CTorch*>(I);
-			if (torch) torch->Switch();
-		}*/
+			PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+			if (I){
+				CTorch* torch = smart_cast<CTorch*>(I);
+				if (torch) torch->Switch();
+			}
 		}break;
 	case kWPN_1:	
 	case kWPN_2:	
@@ -164,10 +152,11 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		if(m_holder)
 		{
 			m_holder->OnKeyboardRelease(cmd);
+			
+			if(m_holder->allowWeapon() && inventory().Action(cmd, CMD_STOP))		return;
 			return;
-		}
-
-		if(inventory().Action(cmd, CMD_STOP)) return;
+		}else
+			if(inventory().Action(cmd, CMD_STOP))		return;
 
 
 
@@ -371,4 +360,10 @@ void CActor::ActorUse()
 
 
 }
+BOOL CActor::HUDview				( )const 
+{ 
+	return IsFocused()&&(cam_active==eacFirstEye)&&
+		((!m_holder) || (m_holder && m_holder->allowWeapon() && m_holder->HUDView() ) ); 
+}
+
 //void CActor::IR_OnMousePress(int btn)

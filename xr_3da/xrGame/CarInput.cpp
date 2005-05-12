@@ -126,7 +126,7 @@ void CCar::OnKeyboardPress(int cmd)
 	case kR_STRAFE:	PressRight();				if (Owner()) Owner()->steer_Vehicle(1);	break;
 	case kL_STRAFE:	PressLeft();				if (Owner()) Owner()->steer_Vehicle(-1);break;
 	case kJUMP:		PressBreaks();				break;
-	case kWPN_FIRE: SwitchEngine();				break;
+	case kENGINE:	SwitchEngine();				break;
 	case kTORCH:	m_lights.SwitchHeadLights();break;
 	case kUSE:									break;
 	};

@@ -755,6 +755,9 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
+	if(m_holder)
+		m_holder->UpdateEx();
+
 	m_snd_noise -= 0.3f*Device.fTimeDelta;
 	//clamp(m_snd_noise,0.0f,4.f);
 
@@ -1124,7 +1127,7 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 	//if (W)				W->renderable_Render		();
 	//CWeapon *W = smart_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
 
-	if(inventory().ActiveItem()&&!m_holder) {
+	if(inventory().ActiveItem()  ) {
 		inventory().ActiveItem()->renderable_Render();
 	}
 
