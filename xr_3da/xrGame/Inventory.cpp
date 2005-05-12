@@ -357,6 +357,8 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 #ifdef _DEBUG
 		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
 #endif
+		if(m_slots[pIItem->GetSlot()].m_pIItem == pIItem && !bNotActivate )
+			Activate(pIItem->GetSlot());
 
 		return false;
 	}
@@ -445,7 +447,7 @@ bool CInventory::Activate(u32 slot)
 {	
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot number");
 
-
+//	Msg("CInventory::Activate slot [%d] frame =[%d]", slot, Device.dwFrame);
 #ifdef _DEBUG
 	//Msg("slot: %d active slot: %d next_active: %d", slot, m_iActiveSlot, m_iNextActiveSlot);
 //	if(slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem)
@@ -608,7 +610,8 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
 					m_slots[m_iActiveSlot].m_pIItem)
-					m_slots[m_iActiveSlot].m_pIItem->Action(kWPN_NEXT, CMD_START);
+					Activate(NO_ACTIVE_SLOT);
+//					m_slots[m_iActiveSlot].m_pIItem->Action(kWPN_NEXT, CMD_START);
 				else 
 					Activate(cmd - kWPN_1);
 
@@ -926,7 +929,7 @@ bool CInventory::CanPutInSlot(PIItem pIItem) const
 	if( !GetOwner()->CanPutInSlot(pIItem, pIItem->GetSlot() ) ) return false;
 
 	if(pIItem->GetSlot() < m_slots.size() && 
-		m_slots[pIItem->GetSlot()].m_pIItem == NULL)
+		m_slots[pIItem->GetSlot()].m_pIItem == NULL )
 		return true;
 	
 	return false;
