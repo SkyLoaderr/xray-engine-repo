@@ -87,7 +87,7 @@ public:
 
 	virtual CInventory*		GetInventory		(){return 0;}
 
-	virtual void			cam_Update			(float dt);
+	virtual void			cam_Update			(float dt, float fov=90.0f);
 
 	virtual bool			Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	virtual bool			attach_Actor		(CActor* actor);

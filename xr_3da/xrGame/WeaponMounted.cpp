@@ -205,7 +205,7 @@ void	CWeaponMounted::OnKeyboardHold		(int dik)
 //	}
 }
 
-void	CWeaponMounted::cam_Update			(float dt)
+void	CWeaponMounted::cam_Update			(float dt, float fov)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);

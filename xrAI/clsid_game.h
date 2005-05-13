@@ -95,7 +95,7 @@
 #define CLSID_OBJECT_W_RG6			MK_CLSID('W','_','R','G','6',' ',' ',' ')
 
 #define CLSID_OBJECT_W_MOUNTED		MK_CLSID('W','_','M','O','U','N','T','D')
-
+#define	CLSID_OBJECT_W_STATMGUN		MK_CLSID('W','_','S','T','M','G','U','N')
 // Weapons Ammo
 #define CLSID_OBJECT_A_FN2000		MK_CLSID('A','_','F','N','2','0','0','0')
 #define CLSID_OBJECT_A_AK74			MK_CLSID('A','_','A','K','7','4',' ',' ')

@@ -338,6 +338,7 @@ protected:
 	void					camUpdateLeader			(float dt);
 	void					cam_SetLadder			();
 	void					cam_UnsetLadder			();
+	float					currentFOV				();
 
 	// Cameras
 	CCameraBase*			cameras[eacMaxCam];

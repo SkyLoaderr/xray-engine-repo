@@ -12,7 +12,7 @@ bool CCar::HUDView() const
 	return active_camera->tag==ectFirst;
 }
 
-void	CCar::cam_Update			(float /**dt/**/)
+void	CCar::cam_Update			(float dt, float fov)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
@@ -28,7 +28,7 @@ void	CCar::cam_Update			(float /**dt/**/)
 	case ectChase:					break;
 	case ectFree:					break;
 	}
-
+	active_camera->f_fov			= fov;
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
 

@@ -752,11 +752,23 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	}	
 }
 
+float CActor::currentFOV()
+{
+	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	
+
+	if (eacFirstEye == cam_active && pWeapon &&
+		pWeapon->IsZoomed() && (!pWeapon->ZoomTexture() ||
+		(!pWeapon->IsRotatingToZoom() && pWeapon->ZoomTexture())))
+		return pWeapon->GetZoomFactor();
+	else
+		return DEFAULT_FOV;
+}
+
 BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
 	if(m_holder)
-		m_holder->UpdateEx();
+		m_holder->UpdateEx( currentFOV() );
 
 	m_snd_noise -= 0.3f*Device.fTimeDelta;
 	//clamp(m_snd_noise,0.0f,4.f);
@@ -812,9 +824,9 @@ void CActor::UpdateCL	()
 	PickupModeUpdate_COD();
 	//-------------------------------------------------------------------
 //*
-	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	
 	m_bZoomAimingMode = false;
-
+	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	
+/*
 	//обновить положение камеры и FOV 
 	float dt = float(Device.dwTimeDelta)/1000.0f;
 
@@ -825,6 +837,8 @@ void CActor::UpdateCL	()
 	
 	else 
 		cam_Update(dt, DEFAULT_FOV);
+*/
+	cam_Update(float(Device.dwTimeDelta)/1000.0f, currentFOV());
 
 	if(pWeapon)
 	{
@@ -886,6 +900,14 @@ void CActor::UpdateCL	()
 void CActor::shedule_Update	(u32 DT)
 {
 	setSVU(OnServer());
+
+	//установить режим показа HUD для текущего активного слота
+	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
+	if(pHudItem && !pHudItem->object().getDestroy()) 
+		pHudItem->SetHUDmode(HUDview());
+
+	//обновление инвентаря
+	UpdateInventoryOwner(DT);
 
 	if(m_holder || !getEnabled() || !Ready())
 	{
@@ -1009,12 +1031,12 @@ void CActor::shedule_Update	(u32 DT)
 	//если в режиме HUD, то сама модель актера не рисуется
 	if(!character_physics_support()->IsRemoved())
 										setVisible				(!HUDview	());
-
+/*
 	//установить режим показа HUD для текущего активного слота
 	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
 	if(pHudItem && !pHudItem->object().getDestroy()) 
 		pHudItem->SetHUDmode(HUDview());
-
+*/
 
 
 	//что актер видит перед собой
@@ -1067,10 +1089,10 @@ void CActor::shedule_Update	(u32 DT)
 		m_pUsableObject			= NULL;
 	}
 
-
+/*
 	//обновление инвентаря и торговли
 	UpdateInventoryOwner(DT);
-
+*/
 	//для режима сна
 	UpdateSleep();
 

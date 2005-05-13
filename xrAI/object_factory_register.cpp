@@ -84,6 +84,8 @@
 #	include "weaponknife.h"
 #	include "weaponBM16.h"
 #	include "weaponRG6.h"
+#	include "WeaponMounted.h"
+#	include "WeaponStatMgun.h"
 
 #	include "scope.h"
 #	include "silencer.h"
@@ -130,7 +132,6 @@
 #	include "artifactmerger.h"
 
 #	include "searchlight.h"
-#	include "WeaponMounted.h"
 
 #	include "HangingLamp.h"
 #	include "physicobject.h"
@@ -329,6 +330,7 @@ void CObjectFactory::register_classes	()
 	// objects
 	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR			,"projector");
 	ADD(CWeaponMounted			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_MOUNTED			,"wpn_mounted");
+	ADD(CWeaponStatMgun			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_STATMGUN		,"wpn_stat_mgun");
 //	ADD(CTrigger				,CSE_Trigger					,CLSID_OBJECT_TRIGGER			,"trigger");
 
 	// entity

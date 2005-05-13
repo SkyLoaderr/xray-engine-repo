@@ -457,7 +457,7 @@ public:
 	virtual bool			HUDView				() const;
 	virtual Fvector			ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
-	void					cam_Update			(float dt);
+	void					cam_Update			(float dt, float fov);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
 	bool					is_Door				(u16 id,xr_map<u16,SDoor>::iterator& i);
@@ -476,7 +476,7 @@ public:
 	virtual BOOL			net_Spawn			( CSE_Abstract* DC );
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			( ); 
-	virtual	void			UpdateEx			(); //called by owner
+	virtual	void			UpdateEx			(float fov); //called by owner
 
 	virtual void			shedule_Update		(u32 dt);
 	virtual void			renderable_Render	( ); 
@@ -512,7 +512,7 @@ public:
 
 	// Inventory for the car	
 	CInventory*						GetInventory						(){return inventory;}
-		  void						VisualUpdate						();
+		  void						VisualUpdate						(float fov=90.0f);
 protected:
 	virtual void					SpawnInitPhysics					(CSE_Abstract	*D)																;
 	virtual void					net_Save							(NET_Packet& P)																	;
