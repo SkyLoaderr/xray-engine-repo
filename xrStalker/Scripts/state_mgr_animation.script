@@ -524,6 +524,29 @@ function animation:__init(npc, mgr)
 						into	= {	[0]	= "idle_1_to_idle_0" },
 						out		= nil,
 						idle	= nil,
+						rnd		= nil },
+		psy_pain	= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 90 },
+						into	= {	[0]	= "idle_0_to_psy_0_idle_0" },
+						out		= {	[0]	= "psy_0_idle_0_to_idle_0" },
+						idle	= {	[0]	= "psy_0_idle_0" },
+						rnd		= { [0]	= {	"psy_0_idle_1",
+											"psy_0_idle_2" } } },
+		psy_armed	= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 90 },
+						into	= {	[1]	= "idle_0_to_psy_1_idle_0" },
+						out		= {	[1]	= "psy_1_idle_0_to_idle_0" },
+						idle	= {	[1]	= "psy_1_idle_0" },
+						rnd		= { [1]	= {	"psy_1_idle_1",
+											"psy_1_idle_2" } } },
+		psy_shoot	= {	prop	= { maxidle = 1,
+									sumidle = 1,
+									rnd = 100 },
+						into	= {	[1]	= "psy_1_shot_0" },
+						out		= nil,
+						idle	= {	[1]	= "psy_1_death_0" },
 						rnd		= nil }
 
 	}
@@ -534,7 +557,7 @@ function animation:__init(npc, mgr)
 		target_state = nil,
 		begin = nil,
 		idle = nil
-	}		
+	}			
 end
 --' установка нового состояния
 function animation:set_state(id, reset)
@@ -542,7 +565,9 @@ function animation:set_state(id, reset)
 	local nn = 0	
 	--' выход из старого состояния
 	self.npc:clear_animations()	
-	if self.animations[self.states.current_state] ~= nil then
+	if self.animations[self.states.current_state] ~= nil and
+	   self.mgr.emerg.animation_nout ~= true
+	then
 		if self.animations[self.states.current_state].out ~= nil and
 		   self.animations[self.states.current_state].out[self:weapon_slot()] ~= nil		
 		then
@@ -553,7 +578,6 @@ function animation:set_state(id, reset)
 			else
 				self.npc:add_animation(self.animations[self.states.current_state].out[self:weapon_slot()], true)
 			end
-			self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 			nn = nn +1
 		end
 	end
@@ -569,7 +593,6 @@ function animation:set_state(id, reset)
 				self.npc:add_animation(self.animations[id].into[self:weapon_slot()], true)
 				nn = nn +1
 			end
-			self.npc:set_callback(callback.script_animation , self.anim_callback, self)
 		end
 		if reset == true then
 			if self.mgr.callback ~= nil then
@@ -784,7 +807,7 @@ function animation:callback_process()
 end
 --' в каком состоянии мы находимся
 function animation:anim_callback(a)
-	printf("callback_called [%s]", utils.to_str(a))
+	--printf("callback_called [%s]", utils.to_str(a))
 	return true 
 end
 --' в каком состоянии мы находимся
@@ -808,29 +831,31 @@ function animation:weapon_slot()
 			return 0
 		end
 		if id == clsid.wpn_pm or
-		id == clsid.wpn_walther or
-		id == clsid.wpn_hpsa or
-		id == clsid.wpn_fort or
-		id == clsid.wpn_usp45 then
+		   id == clsid.wpn_walther or
+		   id == clsid.wpn_hpsa or
+		   id == clsid.wpn_fort or
+		   id == clsid.wpn_usp45 then
 			return 1
 		end
 		if id == clsid.wpn_vintorez or
-		id == clsid.wpn_val or
-		id == clsid.wpn_groza or
-		id == clsid.wpn_fn2000 or   
-		id == clsid.wpn_ak74 or	
-		id == clsid.wpn_lr300 or
-		id == clsid.wpn_svd or
-   		id == clsid.wpn_svu then
+		   id == clsid.wpn_val or
+		   id == clsid.wpn_groza or
+		   id == clsid.wpn_fn2000 or   
+		   id == clsid.wpn_ak74 or	
+		   id == clsid.wpn_lr300 or
+		   id == clsid.wpn_svd or
+   		   id == clsid.wpn_svu then
 			return 2
 		end
 		if id == clsid.wpn_shotgun or
-		id == clsid.wpn_bm16 then
+		   id == clsid.wpn_bm16 then
 			return 3
 		end
 		if id == clsid.wpn_rpg7 then
 			return 4
 		end
+		
+		
 --	end
 	return 0
 end

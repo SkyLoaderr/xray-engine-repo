@@ -53,6 +53,40 @@ function eva_state_mgr_animstate_sit_now:evaluate()
 	return self.st.animstate:state() == "sit"
 end
 
+--' Нужно ли нам сидеть на колене
+class "eva_state_mgr_animstate_sit_knee" (property_evaluator)
+function eva_state_mgr_animstate_sit_knee:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sit_knee:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "sit_knee"
+end
+--' Сидим ли мы на колене
+class "eva_state_mgr_animstate_sit_knee_now" (property_evaluator)
+function eva_state_mgr_animstate_sit_knee_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sit_knee_now:evaluate()
+	return self.st.animstate:state() == "sit_knee"
+end
+
+--' Нужно ли нам сидеть на попе
+class "eva_state_mgr_animstate_sit_ass" (property_evaluator)
+function eva_state_mgr_animstate_sit_ass:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sit_ass:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "sit_ass"
+end
+--' Сидим ли мы на попе
+class "eva_state_mgr_animstate_sit_ass_now" (property_evaluator)
+function eva_state_mgr_animstate_sit_ass_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sit_ass_now:evaluate()
+	return self.st.animstate:state() == "sit_ass"
+end
+
 --' Нужно ли нам спать
 class "eva_state_mgr_animstate_sleep" (property_evaluator)
 function eva_state_mgr_animstate_sleep:__init(name, st) super (nil, name)
@@ -101,6 +135,36 @@ function act_state_mgr_animstate_2sit:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_animstate_2sit:finalize()
+	action_base.finalize(self)
+end
+--' Садимся на колено
+class "act_state_mgr_animstate_2sit_knee" (action_base)
+function act_state_mgr_animstate_2sit_knee:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2sit_knee:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("sit_knee")
+end
+function act_state_mgr_animstate_2sit_knee:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2sit_knee:finalize()
+	action_base.finalize(self)
+end
+--' Садимся на попу
+class "act_state_mgr_animstate_2sit_ass" (action_base)
+function act_state_mgr_animstate_2sit_ass:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2sit_ass:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("sit_ass")
+end
+function act_state_mgr_animstate_2sit_ass:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2sit_ass:finalize()
 	action_base.finalize(self)
 end
 --' Встаем в айдл
@@ -160,22 +224,47 @@ function body_state:__init(npc)
 	self.current_state = "stand"
 
 	self.transfer_anim = {
-		stand		= { sit			= {"idle_to_sit_0"},
-						sleep		= {"idle_to_sit_0","sit_to_sleep_0"}, 
+		stand		= { sit			= {"idle_0_to_sit_0"},
+						sit_knee	= {"idle_0_to_sit_1"},
+						sit_ass		= {"idle_0_to_sit_2"},
+						sleep		= {"idle_0_to_sit_0","sit_to_sleep_0"}, 
 						wounded		= {"idle_to_wounded_0"} },
-		sit			= { stand		= {"sit_to_idle_0"},
+
+		sit			= { sit_knee	= {"sit_idle_0_to_sit_idle_1"},
+						sit_ass		= {"sit_idle_0_to_sit_idle_2"},
+						stand		= {"sit_to_idle_0"},
 						sleep		= {"sit_to_sleep_0"},
 						wounded		= {"sit_to_idle_0","idle_to_wounded_0"} },
+
+		sit_knee	= { sit			= {"sit_idle_1_to_sit_idle_0"},
+						sit_ass		= {"sit_idle_1_to_sit_idle_2"},
+						stand		= {"sit_1_to_idle_0"},
+						sleep		= {"sit_idle_1_to_sleep_0"},
+						wounded		= {"sit_1_to_idle_0","idle_to_wounded_0"} },
+
+		sit_ass		= { sit			= {"sit_idle_2_to_sit_idle_0"},
+						sit_knee	= {"sit_idle_2_to_sit_idle_1"},
+						stand		= {"sit_2_to_idle_0"},
+						sleep		= {"sit_2_to_sleep_0"},
+						wounded		= {"sit_2_to_idle_0","idle_to_wounded_0"} },
+						
 		sleep		= {	stand		= {"sleep_to_sit_0","sit_to_idle_0"},
-						sit			= {"sleep_to_sit_0"},
+						sit			= {"sleep_0_to_sit_0"},
+						sit_knee	= {"sleep_0_to_sit_idle_1"},
+						sit_ass		= {"sleep_0_to_sit_2"},
 						wounded		= {"sleep_to_sit_0","sit_to_idle_0","idle_to_wounded_0"} },			
+
 		wounded		= {	stand		= {"wounded_to_idle_0"},
-						sit			= {"wounded_to_idle_0","idle_to_sit_0"},
-						sleep		= {"wounded_to_idle_0","idle_to_sit_0","sit_to_sleep_0"} } 
+						sit			= {"wounded_to_idle_0","idle_0_to_sit_0"},
+						sit_knee	= {"wounded_to_idle_0","idle_0_to_sit_1"},
+						sit_ass		= {"wounded_to_idle_0","idle_0_to_sit_2"},
+						sleep		= {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"} } 
 	}
 
 	self.idle_anim = {
-		sit			= "item_0_idle_0",
+		sit			= "sit_0_idle_0",
+		sit_knee	= "sit_1_idle_0",
+		sit_ass		= "sit_2_idle_0",
 		sleep		= "sleep_idle_0",
 		wounded		= "wounded_idle_0"
 	}

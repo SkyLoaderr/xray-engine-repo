@@ -53,26 +53,29 @@ function evaluator_state_mgr_idle_alife:evaluate()
 		end
 	end
 
-	if db.storage[self.st.npc:id()].active_section == nil and
-	   xr_meet.is_meet(self.object) == false
-	then		
-		local t = self.st.target_state == "idle" and 
-			not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
-			self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
-			self.st.planner:evaluator(self.st.properties["animstate"]):evaluate() and
-			self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
+	if db.storage[self.st.npc:id()].active_section == nil then		
+		if xr_meet.is_meet(self.object) == false then
+			local t = self.st.target_state == "idle" and 
+				not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
+				self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
+				self.st.planner:evaluator(self.st.properties["animstate"]):evaluate() and
+				self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
+				
+	--		printf("%s", utils.to_str(self.st.target_state))
+	--		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["locked"]):evaluate()))
+	--		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["movement"]):evaluate()))
+	--		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate"]):evaluate()))
+	--		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation"]):evaluate()))
 			
---		printf("%s", utils.to_str(self.st.target_state))
---		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["locked"]):evaluate()))
---		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["movement"]):evaluate()))
---		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate"]):evaluate()))
---		printf("%s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation"]):evaluate()))
-		
-		if t == true then self.st.alife = true end
-		if self.st.alife == true then return true end		
-		return t
+			if t == true then self.st.alife = true end
+			if self.st.alife == true then 
+				return true 
+			end		
+			return t
+		else
+			return false
+		end
 	end
-	
 	return true
 end
 
@@ -266,18 +269,22 @@ function state_manager:__init(npc)
 	self.properties["animstate_idle_now"]	= 64
 	self.properties["animstate_sit"]		= 65
 	self.properties["animstate_sit_now"]	= 66
-	self.properties["animstate_sleep"]		= 67
-	self.properties["animstate_sleep_now"]	= 68
-	self.properties["animstate_wounded"]	= 69
-	self.properties["animstate_wounded_now"]= 70
+	self.properties["animstate_sit_knee"]	= 67
+	self.properties["animstate_sit_knee_now"]= 68
+	self.properties["animstate_sit_ass"]	= 69
+	self.properties["animstate_sit_ass_now"]= 70
+	self.properties["animstate_sleep"]		= 71
+	self.properties["animstate_sleep_now"]	= 72
+	self.properties["animstate_wounded"]	= 73
+	self.properties["animstate_wounded_now"]= 74
 
-	self.properties["animation"]			= 71	
-	self.properties["animation_locked"]		= 72
-	self.properties["animation_play"]		= 73
-	self.properties["animation_play_now"]	= 74	
-	self.properties["animation_none"]		= 75	
-	self.properties["animation_none_now"]	= 76
-	self.properties["animation_reset"]		= 77
+	self.properties["animation"]			= 81	
+	self.properties["animation_locked"]		= 82
+	self.properties["animation_play"]		= 83
+	self.properties["animation_play_now"]	= 84	
+	self.properties["animation_none"]		= 85	
+	self.properties["animation_none_now"]	= 86
+	self.properties["animation_reset"]		= 87
 	
 	self.planner:add_evaluator(self.properties["end"],						this.eva_state_mgr_end("state_mgr_end", self))
 	self.planner:add_evaluator(self.properties["locked"],					this.eva_state_mgr_locked("state_mgr_locked", self))
@@ -322,12 +329,17 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["animstate_idle_now"],		state_mgr_animstate.eva_state_mgr_animstate_idle_now("state_mgr_animstate_idle_now", self))
 	self.planner:add_evaluator(self.properties["animstate_sit"],			state_mgr_animstate.eva_state_mgr_animstate_sit("state_mgr_animstate_sit", self, self))
 	self.planner:add_evaluator(self.properties["animstate_sit_now"],		state_mgr_animstate.eva_state_mgr_animstate_sit_now("state_mgr_animstate_sit_now", self))
+	self.planner:add_evaluator(self.properties["animstate_sit_knee"],		state_mgr_animstate.eva_state_mgr_animstate_sit_knee("state_mgr_animstate_sit_knee", self, self))
+	self.planner:add_evaluator(self.properties["animstate_sit_knee_now"],	state_mgr_animstate.eva_state_mgr_animstate_sit_knee_now("state_mgr_animstate_sit_knee_now", self))
+	self.planner:add_evaluator(self.properties["animstate_sit_ass"],		state_mgr_animstate.eva_state_mgr_animstate_sit_ass("state_mgr_animstate_sit_ass", self, self))
+	self.planner:add_evaluator(self.properties["animstate_sit_ass_now"],	state_mgr_animstate.eva_state_mgr_animstate_sit_ass_now("state_mgr_animstate_sit_ass_now", self))
 	self.planner:add_evaluator(self.properties["animstate_sleep"],			state_mgr_animstate.eva_state_mgr_animstate_sleep("state_mgr_animstate_sleep", self, self))
 	self.planner:add_evaluator(self.properties["animstate_sleep_now"],		state_mgr_animstate.eva_state_mgr_animstate_sleep_now("state_mgr_animstate_sleep_now", self))
 	self.planner:add_evaluator(self.properties["animstate_wounded"],		state_mgr_animstate.eva_state_mgr_animstate_wounded("state_mgr_animstate_wounded", self))
 	self.planner:add_evaluator(self.properties["animstate_wounded_now"],	state_mgr_animstate.eva_state_mgr_animstate_wounded_now("state_mgr_animstate_wounded_now", self))
 
 	self.animation = state_mgr_animation.animation(npc, self)
+	self.npc:set_callback(callback.script_animation , self.animation.anim_callback, self.animation)
 	self.planner:add_evaluator(self.properties["animation"],				state_mgr_animation.eva_state_mgr_animation("state_mgr_animation", self))
 	self.planner:add_evaluator(self.properties["animation_locked"],			state_mgr_animation.eva_state_mgr_animation_locked("state_mgr_animation_locked", self))
 	self.planner:add_evaluator(self.properties["animation_play"],			state_mgr_animation.eva_state_mgr_animation_play("state_mgr_animation_play", self))
@@ -363,9 +375,11 @@ function state_manager:__init(npc)
 
 	self.operators["animstate_wait"]		= 61
 	self.operators["animstate_2sit"]		= 62
-	self.operators["animstate_2wounded"]	= 63
-	self.operators["animstate_2idle"]		= 64
-	self.operators["animstate_2sleep"]		= 65
+	self.operators["animstate_2sit_knee"]	= 63
+	self.operators["animstate_2sit_ass"]	= 64
+	self.operators["animstate_2wounded"]	= 65
+	self.operators["animstate_2idle"]		= 66
+	self.operators["animstate_2sleep"]		= 67
 	
 	self.operators["animation_start"]		= 71
 	self.operators["animation_stop"]		= 72
@@ -538,6 +552,32 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["animstate_sit_now"],	true))
 	self.planner:add_action(self.operators["animstate_2sit"], action)
 
+	action = state_mgr_animstate.act_state_mgr_animstate_2sit_knee("state_mgr_animstate_2sit_knee", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["animstate"],			false))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_precondition		(world_property(self.properties["direction"],			true))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
+	action:add_precondition		(world_property(self.properties["animstate_sit_knee"],	true))
+	action:add_effect 			(world_property(self.properties["animstate"],			true))
+	action:add_effect 			(world_property(self.properties["animstate_sit_knee_now"],true))
+	self.planner:add_action(self.operators["animstate_2sit_knee"], action)
+
+	action = state_mgr_animstate.act_state_mgr_animstate_2sit_ass("state_mgr_animstate_2sit_ass", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["animstate"],			false))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_precondition		(world_property(self.properties["direction"],			true))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
+	action:add_precondition		(world_property(self.properties["animstate_sit_ass"],	true))
+	action:add_effect 			(world_property(self.properties["animstate"],			true))
+	action:add_effect 			(world_property(self.properties["animstate_sit_ass_now"],true))
+	self.planner:add_action(self.operators["animstate_2sit_ass"], action)
+
 	action = state_mgr_animstate.act_state_mgr_animstate_2wounded("state_mgr_animstate_2wounded", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["animstate"],			false))
@@ -689,6 +729,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		if  self.animation:target_state() ~= state_lib.states[state_name].animation 
 		then
 			self.emerg.animation = emerg.animation
+			self.emerg.animation_nout = emerg.animation_nout
 		end
 	end
 

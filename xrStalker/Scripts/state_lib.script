@@ -207,7 +207,21 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "sit",
-				animation = nil
+				animation = "sit"
+			},
+	sit_knee = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_knee",
+				animation = "sit_knee"
+			},
+	sit_ass = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "sit_ass"
 			},
 	sleep = {	weapon = "strapped",
 				movement = move.stand,
@@ -330,7 +344,29 @@ states = {
 				animation = "help_me"
 			},
 
-
+	-- ѕси раненый
+	psy_pain = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "psy_pain"
+			},
+	psy_armed = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "psy_armed"
+			},
+	psy_shoot = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "psy_shoot"
+			},
+			
 	-- Ѕармен
 	bar_fas = {	weapon = "strapped",
 				movement = move.stand,
