@@ -84,6 +84,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		// object handler
 		.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction ))(CScriptGameObject::set_item))
 		.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction, CScriptGameObject *))(CScriptGameObject::set_item))
+		.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction, CScriptGameObject *, u32))(CScriptGameObject::set_item))
+		.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction, CScriptGameObject *, u32, u32))(CScriptGameObject::set_item))
 
 		.def("bone_position",				&CScriptGameObject::bone_position)
 
