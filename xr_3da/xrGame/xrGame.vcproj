@@ -6715,6 +6715,16 @@
 									RelativePath=".\WeaponMounted.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="StationaryMgun"
+								Filter="">
+								<File
+									RelativePath=".\WeaponStatMgun.cpp">
+								</File>
+								<File
+									RelativePath=".\WeaponStatMgun.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Artifacts"
