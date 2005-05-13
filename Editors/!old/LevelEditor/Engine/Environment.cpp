@@ -353,6 +353,13 @@ CEnvironment::~CEnvironment	()
 	OnDeviceDestroy			();
 }
 
+void CEnvironment::Invalidate()
+{
+	Current[0]				= 0;
+	Current[1]				= 0;
+	if (eff_LensFlare)		eff_LensFlare->Invalidate();
+}
+
 CEnvAmbient* CEnvironment::AppendEnvAmb		(const shared_str& sect)
 {
 	for (EnvAmbVecIt it=Ambients.begin(); it!=Ambients.end(); it++)
@@ -438,8 +445,7 @@ void CEnvironment::unload	()
     CurrentWeather		= 0;
     CurrentWeatherName	= 0;
     CurrentEnv.unload	();
-    Current[0]			= 0;
-    Current[1]			= 0;
+	Invalidate			();
 	tonemap				= 0;
 
 	// music
@@ -460,7 +466,7 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
         R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",*name);
         CurrentWeather		= &it->second;
         CurrentWeatherName	= it->first;
-		if (forced)			{Current[0]=Current[1]=0;}
+		if (forced)			{Invalidate();}
     }else{
 #ifndef _EDITOR
 		Debug.fatal			("Empty weather name");

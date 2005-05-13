@@ -101,6 +101,8 @@ public:
 	void 				OnDeviceDestroy	();
 
     int					AppendDef		(CInifile* pIni, LPCSTR sect);
+
+	void				Invalidate		(){m_State=lfsNone;}
 };
 
 #endif // xr_efflensflareH
