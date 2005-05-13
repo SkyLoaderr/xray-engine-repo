@@ -184,7 +184,7 @@ void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
 {
 	float	_x2	= angle_normalize_signed(x2 - x1);
 	float	_x3	= angle_normalize_signed(x3 - x1);
-	if ((_x2*_x3 <= 0) && (_abs(_x2) + _abs(_x3) > PI - EPS_L))
+	if ((_x2*_x3 <= 0.f) && (_abs(_x2) + _abs(_x3) > PI - EPS_L))
 		x2  = x3;
 }
 
@@ -227,8 +227,8 @@ void CSightManager::Exec_Look		(float dt)
 #endif
 
 	vfValidateAngleDependency		(body.current.yaw,body.target.yaw,head.current.yaw);
-	if (fis_zero(object().movement().speed()))
-		vfValidateAngleDependency	(head.current.yaw,head.target.yaw,body.target.yaw);
+//	if (fis_zero(object().movement().speed()))
+//		vfValidateAngleDependency	(head.current.yaw,head.target.yaw,body.target.yaw);
 
 	m_object->angle_lerp_bounds		(body.current.yaw,body.target.yaw,fSpeedFactor*body.speed,dt);
 	m_object->angle_lerp_bounds		(body.current.pitch,body.target.pitch,body.speed,dt);
@@ -342,5 +342,13 @@ bool CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
 	VERIFY					(_valid(pitch));
 
 	return					(true);
+}
+
+void CSightManager::remove_links					(CObject *object)
+{
+	setup_actions::iterator	I = actions().begin();
+	setup_actions::iterator	E = actions().end();
+	for ( ; I != E; ++I)
+		(*I).second->remove_links	(object);
 }
 

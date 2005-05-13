@@ -90,3 +90,19 @@ void CSightAction::execute		()
 		default	: NODEFAULT;
 	}
 }
+
+void CSightAction::remove_links			(CObject *object)
+{
+	if (!m_object_to_look)
+		return;
+
+	if (m_object_to_look->ID() != object->ID())
+		return;
+	
+	m_object_to_look	= 0;
+
+	execute				();
+	
+	m_sight_type		= SightManager::eSightTypeDirection;
+	m_vector3d.setHP	(-this->object().movement().m_head.target.yaw,this->object().movement().m_head.target.pitch);
+}

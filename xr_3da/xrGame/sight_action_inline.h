@@ -120,4 +120,3 @@ IC	void CSightAction::set_memory_object	(const CMemoryInfo *memory_object)
 {
 	m_memory_object		= memory_object;
 }
-

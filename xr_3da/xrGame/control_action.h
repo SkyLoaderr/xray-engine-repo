@@ -23,6 +23,7 @@ public:
 	IC		void		execute			();
 	IC		void		finalize		();
 	IC		CAI_Stalker &object			() const;
+	IC		void		remove_links	(CObject *object);
 };
 
 #include "control_action_inline.h"

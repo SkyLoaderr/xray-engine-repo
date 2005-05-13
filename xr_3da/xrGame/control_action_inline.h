@@ -8,35 +8,35 @@
 
 #pragma once
 
-IC	CControlAction::CControlAction	()
+IC	CControlAction::CControlAction		()
 {
 }
 
-IC	void CControlAction::set_object	(CAI_Stalker *object)
+IC	void CControlAction::set_object		(CAI_Stalker *object)
 {
 	VERIFY				(object);
 	m_object			= object;
 }
 
-IC	bool CControlAction::applicable	() const
+IC	bool CControlAction::applicable		() const
 {
 	return				(true);
 }
 
-IC	bool CControlAction::completed	() const
+IC	bool CControlAction::completed		() const
 {
 	return				(true);
 }
 
-IC	void CControlAction::initialize	()
+IC	void CControlAction::initialize		()
 {
 }
 
-IC	void CControlAction::execute	()
+IC	void CControlAction::execute		()
 {
 }
 
-IC	void CControlAction::finalize	()
+IC	void CControlAction::finalize		()
 {
 }
 
@@ -44,4 +44,8 @@ IC	CAI_Stalker &CControlAction::object	() const
 {
 	VERIFY				(m_object);
 	return				(*m_object);
+}
+
+IC	void CControlAction::remove_links	(CObject *object)
+{
 }

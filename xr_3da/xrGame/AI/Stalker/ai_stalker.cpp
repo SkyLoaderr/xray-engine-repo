@@ -748,8 +748,13 @@ const MonsterSpace::SBoneRotation &CAI_Stalker::head_orientation	() const
 void CAI_Stalker::net_Relcase				(CObject*	 O)
 {
 	inherited::net_Relcase				(O);
-	if (g_Alive())
-		agent_manager().remove_links	(O);
+
+	sight().remove_links				(O);
+
+	if (!g_Alive())
+		return;
+
+	agent_manager().remove_links		(O);
 }
 
 CMovementManager *CAI_Stalker::create_movement_manager	()

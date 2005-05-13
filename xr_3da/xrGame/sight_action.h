@@ -45,6 +45,7 @@ public:
 	IC		void		set_object_to_look	(const CGameObject *object_to_look);
 	IC		void		set_memory_object	(const CMemoryInfo *object_to_look);
 	IC		bool		operator==			(const CSightAction &sight_action) const;
+			void		remove_links		(CObject *object);
 };
 
 #include "sight_action_inline.h"

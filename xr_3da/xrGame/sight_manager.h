@@ -33,6 +33,7 @@ public:
 	virtual	void	Load								(LPCSTR section);
 	virtual	void	reinit								();
 	virtual	void	reload								(LPCSTR section);
+			void	remove_links						(CObject *object);
 			void	Exec_Look							(float dt);
 			bool	bfIf_I_SeePosition					(Fvector tPosition) const;
 			void	SetPointLookAngles					(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object = 0);

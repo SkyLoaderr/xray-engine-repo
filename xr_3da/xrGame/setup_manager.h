@@ -53,6 +53,8 @@ public:
 	IC		void					select_action		();
 	IC		void					clear				();
 	IC		_object_type			&object				() const;
+	IC		const setup_actions		&actions			() const;
+	IC		setup_actions			&actions			();
 };
 
 #include "setup_manager_inline.h"
