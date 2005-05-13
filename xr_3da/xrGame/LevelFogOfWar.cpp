@@ -25,6 +25,10 @@ CFogOfWarMngr::CFogOfWarMngr()
 	m_fogOfWarRegistry->registry().init(0);
 }
 
+CFogOfWarMngr::~CFogOfWarMngr()
+{
+	xr_delete(m_fogOfWarRegistry);
+}
 CLevelFogOfWar* CFogOfWarMngr::GetFogOfWar	(const shared_str& level_name)
 {
 	FOG_STORAGE_IT it = std::find_if(GetFogStorage().begin(),GetFogStorage().end(),FindFogByLevelName(level_name));
@@ -45,13 +49,19 @@ FOG_STORAGE_T& CFogOfWarMngr::GetFogStorage()
 
 CLevelFogOfWar::CLevelFogOfWar():m_rowNum(0), m_colNum(0)
 {
-	m_levelRect.set	(0.0f,0.0f,0.0f,0.0f);
-	hShader.create	("hud\\default","ui\\ui_fog_of_war");
-	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
+//	m_levelRect.set	(0.0f,0.0f,0.0f,0.0f);
+//	hShader.create	("hud\\default","ui\\ui_fog_of_war");
+//	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 };
+
 
 void CLevelFogOfWar::Init	(const shared_str& level)
 {
+	VERIFY(!hShader);
+	hShader.create	("hud\\default","ui\\ui_fog_of_war");
+	VERIFY(!hGeom);
+	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
+
 	m_level_name		= level;
 
 	string256			gameLtxPath;

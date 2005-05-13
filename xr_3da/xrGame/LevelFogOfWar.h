@@ -40,16 +40,16 @@ public:
 
 
 DEFINE_VECTOR(CLevelFogOfWar,FOG_STORAGE_T,FOG_STORAGE_IT);
-//DEFINE_VECTOR(int,FOG_STORAGE_T,FOG_STORAGE_IT);
 
 typedef CALifeAbstractRegistry<u16, FOG_STORAGE_T> CFogOfWarRegistry;
 
 
 class CFogOfWarMngr
 {
-	CFogOfWarWrapper*				m_fogOfWarRegistry;
-	FOG_STORAGE_T&					GetFogStorage();
+	CFogOfWarWrapper*						m_fogOfWarRegistry;
+	FOG_STORAGE_T&							GetFogStorage();
 public:
-	CFogOfWarMngr					();
-	CLevelFogOfWar*			GetFogOfWar	(const shared_str& level_name);
+	CFogOfWarMngr							();
+	virtual					~CFogOfWarMngr	();
+	CLevelFogOfWar*			GetFogOfWar		(const shared_str& level_name);
 };
