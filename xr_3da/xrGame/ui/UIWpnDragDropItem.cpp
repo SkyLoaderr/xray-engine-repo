@@ -195,7 +195,8 @@ void CUIWpnDragDropItem::ClipperOn()
 	if(m_pWeapon->IsGrenadeLauncherAttached())  this->TextureClipper(0,0,NULL, m_UIStaticGrenadeLauncher);
 
 }
-
+/*
+///.
 void CUIWpnDragDropItem::SetTextureScaleXY(float x, float y)
 {
 	inherited::SetTextureScaleXY(x,y);
@@ -206,7 +207,7 @@ void CUIWpnDragDropItem::SetTextureScaleXY(float x, float y)
 	m_UIStaticScope.SetScaleXY(x, y);
 	m_UIStaticSilencer.SetScaleXY(x, y);
 }
-
+*/
 void CUIWpnDragDropItem::UpdateGridWidth(bool b)
 {
 	if(m_pWeapon){

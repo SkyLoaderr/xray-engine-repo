@@ -25,7 +25,7 @@ CUI::CUI(CHUDManager* p)
 	m_Parent		= p;
 	pUIGame			= 0;
 
-	msgs_offs		= (float)(UI()->ClientToScreenY(MSGS_OFFS,alLeft|alBottom));
+	msgs_offs		= (float)(UI()->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom));
 
 	m_bShowIndicators = true;
 

@@ -64,12 +64,12 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
-	Ivector2		bp;
-	UI()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	Fvector2		bp;
+	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y),uAlign);
 
 	// actual rendering
 	u32							vOffset;
-	Ivector2					pos;
+	Fvector2					pos;
 	float fw					= iVisRect.x2*UI()->GetScaleX();
 	float fh					= iVisRect.y2*UI()->GetScaleY();
 
@@ -82,11 +82,12 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL* pv					= start_pv;
 	for (x=0; x<tile_x; ++x){
 		for (y=0; y<tile_y; ++y){
-			pos.set				(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
+//			pos.set				(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
+			pos.set				(bp.x+fw*x,bp.y+fh*y);
 			inherited::Render	(pv,pos,dwColor);
 		}
 	}
-	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;
+	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;						VERIFY((pv-start_pv)<=8*tile_x*tile_y);
 	RCache.Vertex.Unlock		(u32(pv-start_pv),hGeom_fan.stride());
 	// set scissor
 	Irect clip_rect				= {iPos.x,iPos.y,iPos.x+iVisRect.x2*iTileX+iRemX,iPos.y+iVisRect.y2*iTileY+iRemY};
@@ -105,15 +106,15 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
-	Ivector2 bp;
-	UI()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	Fvector2 bp;
+	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y),uAlign);
 	// actual rendering
 	u32		vOffset;
 	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(32,hGeom_fan.stride(),vOffset);
 	FVF::TL* pv					= start_pv;
 	inherited::Render			(pv,bp,dwColor,angle);
 	// unlock VB and Render it as triangle LIST
-	std::ptrdiff_t p_cnt					= pv-start_pv;
+	std::ptrdiff_t p_cnt		= pv-start_pv;
 	RCache.Vertex.Unlock		(u32(p_cnt),hGeom_fan.stride());
 	RCache.set_Geometry	 		(hGeom_fan);
 	if (p_cnt>2) RCache.Render	(D3DPT_TRIANGLEFAN,vOffset,u32(p_cnt-2));

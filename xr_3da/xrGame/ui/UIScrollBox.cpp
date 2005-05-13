@@ -129,16 +129,18 @@ void CUIScrollBox::OnMouse(int x, int y, EUIMessages mouse_action)
 
 void CUIScrollBox::Draw()
 {
-	if(m_bIsHorizontal)
-	{
-		m_UIStaticItem.SetTile(GetWidth()/4>0?GetWidth()/4:1, 1,
-							  GetWidth()%2, 0);
+	if(m_bIsHorizontal){
+		if (m_UIStaticItem.GetOriginalRect().width()){
+			int tile		= iFloor(GetWidth()/m_UIStaticItem.GetOriginalRect().width());
+			int rem			= GetWidth()-tile*m_UIStaticItem.GetOriginalRect().width();
+			m_UIStaticItem.SetTile(tile,1,rem,0);
+		}
+	}else{
+		if (m_UIStaticItem.GetOriginalRect().height()){
+			int tile		= iFloor(GetHeight()/m_UIStaticItem.GetOriginalRect().height());
+			int rem			= GetHeight()-tile*m_UIStaticItem.GetOriginalRect().height();
+			m_UIStaticItem.SetTile(1,tile,0,rem);
+		}
 	}
-	else
-	{
-		m_UIStaticItem.SetTile(1, GetHeight()/4>0?GetHeight()/4:1,
-							   0, GetHeight()%2);
-	}
-
 	 CUIButton::Draw();
 }

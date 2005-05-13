@@ -35,9 +35,6 @@ protected:
 	// точка, относительно которой применяем поворот
 	Ivector2		iHeadingPivot;
 
-	float			fScaleX;
-	float			fScaleY;
-
 	u32				uFlags;
 	u32				uAlign;
 	EUIMirroring	eMirrorMode;
@@ -57,21 +54,16 @@ public:
 	   Ivector2		GetHeadingPivot			()						{return iHeadingPivot;}
 	   
 
-	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
+	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color, 
 														int x1, int y1, 
 														int x2, int y2);
 	
-	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
-	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
+	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color);
+	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color, float angle);
 
 	IC void			SetAlign				(u32 align)					{uAlign=align;};
 	IC u32			GetAlign				()							{return uAlign;}
 
 	IC void			SetMirrorMode			(EUIMirroring m)			{ eMirrorMode = m; }
 	IC EUIMirroring GetMirrorMode			()							{ return eMirrorMode; }
-
-	//для пропорционального масштабирования выводимой текстуры
-	void			SetScaleXY				(float x, float y);
-	float			GetScaleX				();
-	float			GetScaleY				();
 };

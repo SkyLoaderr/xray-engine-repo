@@ -84,9 +84,9 @@ public:
 						Irect* pClipRect, 
 						CUIStaticItem& UIStaticItem);
 
-	virtual void	SetTextureScaleXY		(float new_scale_x, float new_scale_y);
-	virtual float	GetTextureScaleX		();
-	virtual float	GetTextureScaleY		();
+//	virtual void	SetTextureScaleXY		(float new_scale_x, float new_scale_y);
+//	virtual float	GetTextureScaleX		();
+//	virtual float	GetTextureScaleY		();
 	
 	void			SetShader				(const ref_shader& sh);
 	CUIStaticItem&	GetUIStaticItem			()						{return m_UIStaticItem;}
@@ -168,7 +168,6 @@ protected:
 
 	bool m_bClipper;
 	bool m_bStretchTexture;
-	xr_string m_shader2destroy;	// only for shared shaders
 	
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования

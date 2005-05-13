@@ -290,76 +290,20 @@ void CMainUI::OnDeviceCreate()
 	else								SetScaleXY(1.f,1.f);
 */
 }
-/*
-void CMainUI::SetScaleXY(float x, float y){
-	m_fDevScaleX			= x;
-	m_fDevScaleY			= y;
-}*/
 
-void CMainUI::ClientToScreenScaled(Irect& r, u32 align)
-{
-	r.x1 = ClientToScreenScaledX(r.x1,align); 
-	r.y1 = ClientToScreenScaledY(r.y1,align); 
-	r.x2 = ClientToScreenScaledX(r.x2,align); 
-	r.y2 = ClientToScreenScaledY(r.y2,align); 
-}
-
-void CMainUI::ClientToScreenScaled(Ivector2& p, u32 align)
-{
-	p.x = ClientToScreenScaledX(p.x,align); 
-	p.y = ClientToScreenScaledY(p.y,align); 
-}
-
-void CMainUI::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
+void CMainUI::ClientToScreenScaled(Fvector2& dest, float left, float top, u32 align)
 {
 	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
 }
 
-int CMainUI::ClientToScreenScaledX(int left, u32 align)
+float CMainUI::ClientToScreenScaledX(float left, u32 align)
 {
-	return iFloor( left * GetScaleX() );
-
-/*	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScaleX + left*m_fDevScaleX);
-	else				return iFloor(left*m_fDevScaleX);
-*/
+	return left * GetScaleX();
 }
 
-int CMainUI::ClientToScreenScaledY(int top, u32 align)
+float CMainUI::ClientToScreenScaledY(float top, u32 align)
 {
-	return iFloor( top * GetScaleY() );
-/*
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScaleY + top*m_fDevScaleY);
-	else				return iFloor(top*m_fDevScaleY);
-*/
-}
-
-void CMainUI::ClientToScreen(Ivector2& dest, int left, int top, u32 align)
-{
-	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
-}
-
-void CMainUI::ClientToScreen(Irect& r, u32 align)
-{
-	r.x1 = ClientToScreenX(r.x1,align); 
-	r.y1 = ClientToScreenY(r.y1,align); 
-	r.x2 = ClientToScreenX(r.x2,align); 
-	r.y2 = ClientToScreenY(r.y2,align); 
-}
-
-int CMainUI::ClientToScreenX(int left, u32 align)
-{
-	return left;
-/*
-	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScaleX + left);
-	else				return left;*/
-}
-
-int CMainUI::ClientToScreenY(int top, u32 align)
-{
-	return top;
-/*
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScaleY + top);
-	else				return top;*/
+	return top * GetScaleY();
 }
 
 void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...)
@@ -406,7 +350,11 @@ void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
 	VERIFY(result.x1>=0&&result.y1>=0&&result.x2<=UI_BASE_WIDTH&&result.y2<=UI_BASE_HEIGHT);
 	m_Scissors.push		(result);
 
-	ClientToScreenScaled(result,0);
+	result.lt.x 		= iFloor(ClientToScreenScaledX(float(result.lt.x),0));
+	result.lt.y 		= iFloor(ClientToScreenScaledY(float(result.lt.y),0));
+	result.rb.x 		= iFloor(ClientToScreenScaledX(float(result.rb.x),0));
+	result.rb.y 		= iFloor(ClientToScreenScaledY(float(result.rb.y),0));
+
 	VERIFY(result.x1>=0&&result.y1>=0&&(result.x2<=UI_BASE_WIDTH*GetScaleX())&&(result.y2<=UI_BASE_HEIGHT*GetScaleY()));
 	RCache.set_Scissor	(&result);
 }
@@ -418,35 +366,12 @@ void CMainUI::PopScissor()
 	if(m_Scissors.empty())
 		RCache.set_Scissor(NULL);
 	else{
-		Irect result = 	m_Scissors.top();
-		ClientToScreenScaled(result,0);
-		RCache.set_Scissor(&result);
+		const Irect& top= m_Scissors.top();
+		Irect tgt;
+		tgt.lt.x 		= iFloor(ClientToScreenScaledX(float(top.lt.x),0));
+		tgt.lt.y 		= iFloor(ClientToScreenScaledY(float(top.lt.y),0));
+		tgt.rb.x 		= iFloor(ClientToScreenScaledX(float(top.rb.x),0));
+		tgt.rb.y 		= iFloor(ClientToScreenScaledY(float(top.rb.y),0));
+		RCache.set_Scissor(&tgt);
 	}
 }
-
-ref_shader& CMainUI::GetShader(const char* file_name){
-	ShaderMap_it it;
-	xr_string fname = file_name;
-	it = m_shaders.find(fname);
-
-	if (it != m_shaders.end()) 
-	{
-		return it->second;
-	} 
-	else 
-	{
-		ref_shader new_sh;
-		new_sh.create("hud\\default", file_name);
-		return m_shaders.insert(mk_pair(file_name, new_sh)).first->second;
-	}
-}
-
-void CMainUI::FreeShader(const char* file_name){
-   	ShaderMap_it it;
-	xr_string fname = file_name;
-	it = m_shaders.find(fname);
-
-	if (it != m_shaders.end())
-        m_shaders.erase(it);
-}
-

@@ -26,7 +26,7 @@ public:
 	virtual void Draw();
 	virtual void Update();
 	virtual void Rescale(float, float);
-	virtual void SetTextureScaleXY(float x, float y);
+///.	virtual void SetTextureScaleXY(float x, float y);
 
 
 protected:

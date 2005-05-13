@@ -160,11 +160,13 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
+/*
+///.
 	shared_str scale_str = xml_doc.ReadAttrib(path, index, "scale", NULL);
 	float scale = 1.f;
 	if(*scale_str) scale = (float)atof(*scale_str);
 	pWnd->SetTextureScaleXY(scale,scale);
-
+*/
 	int stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch");
 	if(stretch_flag) 
 		pWnd->SetStretchTexture(true);
@@ -764,7 +766,8 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 	return true;
 }
 
-bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, bool owner, CUIStatic* pWnd){
+bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, bool owner, CUIStatic* pWnd)
+{
 	xr_string fname = xml_doc.Read("file_name", 0);
 
 	if (fname.empty())
@@ -788,10 +791,7 @@ bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, bool owner
                 return false;
 
 
-			if (owner)
-                pWnd->m_shader2destroy = fname;
-
-			pWnd->SetShader(UI()->GetShader(fname.c_str()));
+//.			pWnd->SetShader(UI()->GetShader(fname.c_str()));
 			pWnd->SetOriginalRect(x, y, width, height);
 
 			return true;

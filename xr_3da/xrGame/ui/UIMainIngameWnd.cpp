@@ -211,24 +211,24 @@ void CUIMainIngameWnd::Init()
 	// Загружаем иконки 
 	AttachChild(&UIWeaponJammedIcon);
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
-	UIWeaponJammedIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+///.UIWeaponJammedIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 	UIWeaponJammedIcon.ClipperOn();
 
 	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
-	UIRadiaitionIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+///.UIRadiaitionIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
-	UIWoundIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+///.UIWoundIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-	UIStarvationIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+///.UIStarvationIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIFatigueIcon);
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
-	UIFatigueIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+///.UIFatigueIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
@@ -400,7 +400,7 @@ void CUIMainIngameWnd::Draw()
 		//m_ClawsTexture.SetRect	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 		m_ClawsTexture.Render	(PI_DIV_3);
-		m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
+///.m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
 	}
 
 //	DrawPdaMessages();
@@ -1339,7 +1339,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		switch (type)
 		{
 		case efiPdaTask:
-			pIcon->GetUIStaticItem().SetScaleXY(0.5f, 0.5f);
+///.			pIcon->GetUIStaticItem().SetScaleXY(0.5f, 0.5f);
 			break;
 		default:
 			NODEFAULT;

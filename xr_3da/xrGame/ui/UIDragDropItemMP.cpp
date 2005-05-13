@@ -125,9 +125,9 @@ void CUIDragDropItemMP::Draw()
 
 			pDDItemMP	= m_pAddon[i];
 			nfo			= m_AddonInfo[i];
-
-			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
-				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScaleY()));
+///.
+			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x),
+				rect.top + down_offset + iFloor(0.5f+(float)nfo.y));
 
 //			pDDItemMP->Rescale(GetTextureScaleX(), GetTextureScaleY());
 			pDDItemMP->GetUIStaticItem().Render();

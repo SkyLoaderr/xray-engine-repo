@@ -9,7 +9,7 @@
 #include "ui/UIMapWnd.h"
 
 
-#define FOG_CELL_SZ	(50.0f)
+#define FOG_CELL_SZ	(10.0f)
 
 struct FindFogByLevelName{
 	shared_str			level_name;
@@ -58,7 +58,6 @@ void CLevelFogOfWar::Init	(const shared_str& level)
 	FS.update_path		(gameLtxPath, "$game_config$", "game.ltx");
 	CInifile gameLtx	(gameLtxPath);
 
-
 	Fvector4 tmp;
 	if( gameLtx.line_exist(m_level_name,"bound_rect") )
 		tmp				= gameLtx.r_fvector4(m_level_name,"bound_rect");
@@ -73,21 +72,39 @@ void CLevelFogOfWar::Init	(const shared_str& level)
 				
 	m_cells.resize(m_rowNum*m_colNum, false);
 
-	hShader.create	("hud\\default","ui\\ui_fog_of_war");
+	hShader.create	("hud\\fog_of_war","ui\\ui_fog_of_war");
 	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 }
+
+#define FOG_OPEN_RADIUS		(FOG_CELL_SZ/4)
 
 void CLevelFogOfWar::Open	(Fvector2 pos)
 {
 	if(!m_rowNum ||!m_rowNum) return; //invalid map
 	VERIFY2((pos.x>=m_levelRect.lt.x && pos.y>=m_levelRect.lt.y && pos.x<=m_levelRect.rb.x && pos.y<=m_levelRect.rb.y),"invalid position for opening FogOfWar map cell" );
 	
-	u32 col = iFloor( (pos.x - m_levelRect.lt.x)/FOG_CELL_SZ);
-	u32 row = iFloor(  (m_levelRect.height() - (pos.y - m_levelRect.lt.y))/FOG_CELL_SZ);
+	int col			= iFloor( (pos.x - m_levelRect.lt.x)/FOG_CELL_SZ);
+	int row			= iFloor(  (m_levelRect.height() - (pos.y - m_levelRect.lt.y))/FOG_CELL_SZ);
 
+	int cell_sz		= iCeil	(FOG_OPEN_RADIUS/FOG_CELL_SZ);
+	
+	Frect tgt,cell;
+	tgt.lt.x		= pos.x-FOG_OPEN_RADIUS;
+	tgt.lt.y		= pos.y-FOG_OPEN_RADIUS;
+	tgt.rb.x		= pos.x+FOG_OPEN_RADIUS;
+	tgt.rb.y		= pos.y+FOG_OPEN_RADIUS;
 
-	if (m_cells.at(row*m_colNum+col)==true) return;
-	Open(row+0,col+0,true);
+	for (int rr=row-cell_sz; rr<=row+cell_sz; ++rr){
+		if (rr<0)	continue;
+		for (int cc=col-cell_sz; cc<=col+cell_sz; ++cc){
+			if (cc<0)continue;
+			cell.lt.x	= m_levelRect.lt.x+cc*FOG_CELL_SZ;
+			cell.rb.y	= m_levelRect.lt.y+m_levelRect.height()-rr*FOG_CELL_SZ;
+			cell.rb.x	= m_levelRect.lt.x+cc*FOG_CELL_SZ+FOG_CELL_SZ;
+			cell.lt.y	= m_levelRect.lt.y+m_levelRect.height()-rr*FOG_CELL_SZ-FOG_CELL_SZ;
+			if (tgt.intersected(cell))	Open(rr,cc,true);
+		}
+	}
 }
 
 void CLevelFogOfWar::Open	(u32 row, u32 col, bool b)
@@ -134,20 +151,20 @@ void CLevelFogOfWar::GetTexUVLT(Fvector2& uv, u32 col, u32 row)
 	}
 }
 
-void CLevelFogOfWar::Draw	(CUICustomMap* m)
+void CLevelFogOfWar::Draw	()
 {
+	CUICustomMap* m					= ((CUICustomMap*)(GetParent()));
 
 	Frect	tgt;
 	Irect	clip_rect				= m->GetClipperRect();
-
 	Ivector2	map_abs_pos			= m->GetAbsolutePos();
+
 	Irect	vis_rect;
 	vis_rect.set(	clip_rect.lt.x-map_abs_pos.x,
 					clip_rect.lt.y-map_abs_pos.y,
 					clip_rect.rb.x-map_abs_pos.x,
 					clip_rect.rb.y-map_abs_pos.y);// vis_rect now in pixels
 
-	
 	tgt.set(float(vis_rect.x1), float(vis_rect.y1), float(vis_rect.x2), float(vis_rect.y2) ); 
 	tgt.div(m->GetCurrentZoom(), m->GetCurrentZoom());
 	tgt.add(m_levelRect.lt.x, m_levelRect.lt.y);
@@ -159,49 +176,49 @@ void CLevelFogOfWar::Draw	(CUICustomMap* m)
 	realCellsPosLT.sub			(m_levelRect.lt).mul(m->GetCurrentZoom());
 	
 	Ivector2	drawLT;
-	drawLT.set					((realCellsPosLT.x + map_abs_pos.x)*UI()->GetScaleX(), (realCellsPosLT.y + map_abs_pos.y)*UI()->GetScaleY());
+	drawLT.set					((realCellsPosLT.x + map_abs_pos.x)*UI()->GetScaleX(), 
+								 (realCellsPosLT.y + map_abs_pos.y)*UI()->GetScaleY());
 	
 
 	const Fvector2 pts[6] =		{{0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},
 								 {0.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f}};
 
-	RCache.set_Shader			(hShader);
-	CTexture* T					= RCache.get_ActiveTexture(0);
-	Fvector2					hp;
-	hp.set						(0.5f/float(T->get_Width()),0.5f/float(T->get_Height()));
+	const Fvector2 uvs[6] =		{{0.0f,0.0f},{0.5f,0.0f},{0.5f,1.0f},
+								 {0.0f,0.0f},{0.5f,1.0f},{0.0f,1.0f}};
 
-	Fvector2 uvs[6] =			{{0.0f+hp.x,0.0f+hp.y},{0.5f+hp.x,0.0f+hp.y},{0.5f+hp.x,1.0f+hp.y},
-								 {0.0f+hp.x,0.0f+hp.y},{0.5f+hp.x,1.0f+hp.y},{0.0f+hp.x,1.0f+hp.y}};
-
-
+	// calculate cell size in screen pixels
 	float		fw				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleX();
 	float		fh				= FOG_CELL_SZ*m->GetCurrentZoom()*UI()->GetScaleY();
 
+	// fill cell buffer
 	u32 vOffset					= 0;
 	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(cells.width()*cells.height()*6,hGeom.stride(),vOffset);
 	FVF::TL* pv					= start_pv;
 	for (int x=0; x<cells.width(); ++x){
 		for (int y=0; y<cells.height(); ++y){
 			Fvector2			tp;
-			GetTexUVLT(tp,cells.x1+x,cells.y1+y);
+			GetTexUVLT			(tp,cells.x1+x,cells.y1+y);
 			for (u32 k=0; k<6; ++k,++pv){
 				const Fvector2& p	= pts[k];
 				const Fvector2& uv	= uvs[k];
-				pv->set			(iFloor(drawLT.x + p.x*fw +fw*x), iFloor(drawLT.y + p.y*fh +fh*y), 0xFFFFFFFF,tp.x+uv.x,tp.y+uv.y);
+				pv->set			(iFloor(drawLT.x + p.x*(fw) +fw*x)-0.5f, 
+								 iFloor(drawLT.y + p.y*(fh) +fh*y)-0.5f, 
+								 0xFFFFFFFF,tp.x+uv.x,tp.y+uv.y);
 			}
 		}
 	}
-
 	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;
 	RCache.Vertex.Unlock		(u32(pv-start_pv),hGeom.stride());
+
 	// set scissor
 	UI()->PushScissor			(clip_rect);
-	// set geom
 	if (p_cnt!=0){
+		// draw
+		RCache.set_Shader		(hShader);
 		RCache.set_Geometry		(hGeom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,u32(p_cnt));
 	}
-	UI()->PopScissor			();
+	UI()->PopScissor		 	();
 }
 
 void CLevelFogOfWar::save	(IWriter &stream)

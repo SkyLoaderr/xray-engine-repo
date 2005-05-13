@@ -452,8 +452,6 @@ CUILevelMap::~CUILevelMap()
 void CUILevelMap::Draw()
 {
 	inherited::Draw();
-	CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(MapName());
-	F->Draw(this);//vis_rect, tgt);
 }
 
 void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
@@ -469,7 +467,9 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 
 void CUILevelMap::UpdateSpots		()
 {
-	DetachAll();
+	DetachAll		();
+	CLevelFogOfWar* F	= Level().FogOfWarMngr().GetFogOfWar(MapName());
+	AttachChild		(F);
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
 		if ((*it).location->Update())

@@ -49,8 +49,6 @@ CUIStatic:: CUIStatic()
 
 CUIStatic::~ CUIStatic()
 {
-	if (m_shader2destroy.size())
-		UI()->FreeShader(m_shader2destroy.c_str());
 }
 
 void CUIStatic::SetLightAnim(LPCSTR lanim)
@@ -139,7 +137,7 @@ void CUIStatic::DrawTexture(){
 			Irect r={0,0,
 				m_UIStaticItem.GetOriginalRectScaled().width(),
 				m_UIStaticItem.GetOriginalRectScaled().height()};
-			m_UIStaticItem.SetRect(r);
+			if (r.width()&&r.height())	m_UIStaticItem.SetRect(r);
 		}
 
 		if( Heading() ){
@@ -405,7 +403,7 @@ void CUIStatic::ClipperOff()
 {
 	ClipperOff(m_UIStaticItem);
 }
-
+/*
 void CUIStatic::SetTextureScaleXY(float x, float y)
 {
 	m_UIStaticItem.SetScaleXY(x, y);
@@ -420,7 +418,7 @@ float CUIStatic::GetTextureScaleY()
 {
 	return m_UIStaticItem.GetScaleY();
 }
-
+*/
 void  CUIStatic::SetShader(const ref_shader& sh)
 {
 	m_UIStaticItem.SetShader(sh);

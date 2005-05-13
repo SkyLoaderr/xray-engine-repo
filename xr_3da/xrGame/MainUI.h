@@ -94,28 +94,18 @@ public:
 
 	IC float		GetScaleX						()							{return float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
 	IC float		GetScaleY						()							{return float(Device.dwHeight)/float(UI_BASE_HEIGHT); }
-//	void			SetScaleXY						(float f_x, float f_y);
 
-	void			ClientToScreenScaled			(Irect& r, u32 align);
-	void			ClientToScreenScaled			(Ivector2& p, u32 align);
-	void			ClientToScreenScaled			(Ivector2& dest, int left, int top, u32 align);
-	int				ClientToScreenScaledX			(int left, u32 align);
-	int				ClientToScreenScaledY			(int top, u32 align);
-	void			ClientToScreen					(Irect& r, u32 align);
-	void			ClientToScreen					(Ivector2& dest, int left, int top, u32 align);
-	int				ClientToScreenX					(int left, u32 align);
-	int				ClientToScreenY					(int top, u32 align);
+	void			ClientToScreenScaled			(Fvector2& dest, float left, float top, u32 align);
+	float			ClientToScreenScaledX			(float left, u32 align);
+	float			ClientToScreenScaledY			(float top, u32 align);
 
 	Irect			ScreenRect						();
 	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
 	void			PushScissor						(const Irect& r, bool overlapped=false);
 	void			PopScissor						();
-
-	ref_shader&		GetShader(const char* file_name);
-	void			FreeShader(const char* file_name);
 protected:
 	DEFINE_MAP(xr_string, ref_shader, ShaderMap, ShaderMap_it);
-	ShaderMap				m_shaders;
+	ShaderMap		m_shaders;
 };
 
 
