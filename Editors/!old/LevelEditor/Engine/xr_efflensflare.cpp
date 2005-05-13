@@ -355,8 +355,6 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 
 	float 	fDistance		= FAR_DIST*0.75f;
 
-	static ref_shader sh;
-
 	if (bSun){
     	if (m_Current->m_Flags.is(CLensFlareDescriptor::flSource)){
             vecSx.mul			(vecX, m_Current->m_Source.fRadius*fDistance);
@@ -369,9 +367,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
             pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
             pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
             pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-			sh.create(*m_Current->m_Source.shader,*m_Current->m_Source.texture);
-			Msg("%s - %s",*m_Current->m_Source.shader,*m_Current->m_Source.texture);
-            _2render.push_back	(sh);//m_Current->m_Source.hShader);
+            _2render.push_back	(m_Current->m_Source.hShader);
         }
 	}
 /*
