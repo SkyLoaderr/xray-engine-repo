@@ -344,8 +344,8 @@
 		</supplies>
 		
 		<start_dialog>bar_bar_drunk_dolg_start</start_dialog>
-		<actor_dialog>bar_bar_drunk_dolg_quest_start</actor_dialog>
-		<actor_dialog>bar_bar_drunk_dolg_quest_finish</actor_dialog>
+--		<actor_dialog>bar_bar_drunk_dolg_quest_start</actor_dialog>
+--		<actor_dialog>bar_bar_drunk_dolg_quest_finish</actor_dialog>
 	</specific_character>	
 
 <!---------------------------BAR NIGHT SNIPER---------------------->
