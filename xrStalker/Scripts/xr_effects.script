@@ -515,7 +515,16 @@ function mil_bomb_explode (actor, npc)
        utils.abort ("Bomb with story id MIL_BOMB not found")
        return
     end
-    source:explode (0)
+
+    local h = hit ();
+    h.power = 1000;
+    h.direction = vector():set( 1, 0, 0 );
+    h.impulse = 1;
+    h.draftsman = db.actor;
+    h.type = hit.chemical_burn;
+    source:hit (h);
+    
+--    source:explode (0)
 
 end
 
