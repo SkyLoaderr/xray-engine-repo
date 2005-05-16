@@ -157,13 +157,17 @@ void DBG_DrawPoint(const Fvector& p,float size,u32 c)
 struct SPHDBGOutText : public SPHDBGDrawAbsract
 {
 string64 s;
+bool	 rendered;
 	SPHDBGOutText(LPCSTR t)
 	{
 		strcpy(s,t);
+		rendered=false;
 	}
 	virtual void render()
 	{
+		//if(rendered) return;
 		HUD().Font().pFontSmall->OutNext(s);
+		rendered=true;
 	}
 };
 void _cdecl DBG_OutText(LPCSTR s,...)
@@ -238,6 +242,7 @@ void DBG_PHAbstructRender()
 		i=dbg_draw_abstruct1.begin();
 		e=dbg_draw_abstruct1.end();
 	}
+	
 	for(;e!=i;++i)
 	{
 		(*i)->render();
@@ -342,6 +347,7 @@ void PH_DBG_Clear()
 
 void PH_DBG_Render()
 {
+	
 	HUD().Font().pFontSmall->OutSet	(550,250);
 
 	if(ph_dbg_draw_mask.test(phDbgDrawEnabledAABBS))
@@ -394,9 +400,9 @@ void PH_DBG_Render()
 			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
-	// HUD().Font().pFontSmall->OutNext("---------------------");
+//	HUD().Font().pFontSmall->OutNext("---------------------");
 #endif
-	draw_frame=!draw_frame;
+
 }
 
 void DBG_DrawStatBeforeFrameStep()
@@ -416,6 +422,7 @@ void DBG_DrawStatAfterFrameStep()
 {
 	if(ph_dbg_draw_mask.test(phDbgDrawObjectStatistics))
 	{
+		DBG_OutText("------------------------------");
 		static float  fdbg_bodies_num=0.f;
 		static float  fdbg_joints_num=0.f;
 		static float  fdbg_islands_num=0.f;
@@ -431,9 +438,11 @@ void DBG_DrawStatAfterFrameStep()
 		DBG_OutText("Ph Number of active joints %4.0f",fdbg_joints_num);
 		DBG_OutText("Ph Number of contacts %4.0f",fdbg_contacts_num);
 		DBG_OutText("Ph Number of tries %5.0f",fdbg_tries_num);
+		DBG_OutText("------------------------------");
 	}
 	if(ph_dbg_draw_mask.test(phDbgDrawCashedTriesStat))
 	{
+		DBG_OutText("------------------------------");
 		static float fdbg_saved_tries_for_active_objects		=0;
 		static float fdbg_total_saved_tries						=0;
 
@@ -448,7 +457,11 @@ void DBG_DrawStatAfterFrameStep()
 		fdbg_new_queries_per_step.new_val(float(dbg_new_queries_per_step));
 		DBG_OutText("Ph tri_queries_per_step %5.2f",fdbg_new_queries_per_step.val);
 		DBG_OutText("Ph reused_tri_queries_per_step %5.2f",fdbg_reused_queries_per_step.val);
+		DBG_OutText("------------------------------");
 
 	}
+	draw_frame=!draw_frame;
+
+
 }
 #endif
