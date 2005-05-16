@@ -80,10 +80,10 @@ namespace implement{
 	template <class T>	ICF T	deg2rad		( T val )						{ return (val*T(M_PI)/T(180));	};
 	template <class T>	ICF T	rad2deg		( T val )						{ return (val*T(180)/T(M_PI));	};
 };
-float	deg2rad 		(float val)											{return implement::deg2rad(val);}
-double	deg2rad 		(double val)										{return implement::deg2rad(val);}
-float	rad2deg 		(float val)											{return implement::rad2deg(val);}
-double	rad2deg 		(double val)										{return implement::rad2deg(val);}
+ICF float	deg2rad 	(float val)											{return implement::deg2rad(val);}
+ICF double	deg2rad 	(double val)										{return implement::deg2rad(val);}
+ICF float	rad2deg 	(float val)											{return implement::rad2deg(val);}
+ICF double	rad2deg 	(double val)										{return implement::rad2deg(val);}
 
 // clamping/snapping
 template <class T>
