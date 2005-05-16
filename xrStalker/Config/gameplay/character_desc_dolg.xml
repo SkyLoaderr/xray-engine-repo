@@ -371,10 +371,11 @@
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<supplies>
 			[spawn] \n
-			wpn_colt1911 \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_spas12 \n
-			ammo_12x76_dart	= 1 \n
+			wpn_usp \n
+			ammo_11.43x23_hydro	= 1 \n
+			wpn_groza \n
+			ammo_9x39_sp5 = 2 \n
+			ammo_vog-25p = 2 \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
