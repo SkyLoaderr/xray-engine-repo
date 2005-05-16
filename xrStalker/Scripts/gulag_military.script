@@ -28,7 +28,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 2, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz_stukach"
+		            end         
 		}
 	table.insert(sj, t)		
 
