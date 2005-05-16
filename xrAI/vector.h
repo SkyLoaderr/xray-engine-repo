@@ -76,10 +76,14 @@ IC BOOL  fis_zero		( float		val, float	cmp=EPS_S )					{ return _abs(val)<cmp;	}
 IC BOOL  dis_zero		( double	val, double	cmp=EPS_S )					{ return _abs(val)<cmp;		}
 
 // degree 2 radians and vice-versa
-template <class T>		
-IC T	deg2rad			( T val )	{ return (val*T(M_PI)/T(180)); };
-template <class T>		
-IC T	rad2deg			( T val )	{ return (val*T(180)/T(M_PI)); };
+namespace implement{
+	template <class T>	ICF T	deg2rad		( T val )						{ return (val*T(M_PI)/T(180));	};
+	template <class T>	ICF T	rad2deg		( T val )						{ return (val*T(180)/T(M_PI));	};
+};
+float	deg2rad 		(float val)											{return implement::deg2rad(val);}
+double	deg2rad 		(double val)										{return implement::deg2rad(val);}
+float	rad2deg 		(float val)											{return implement::rad2deg(val);}
+double	rad2deg 		(double val)										{return implement::rad2deg(val);}
 
 // clamping/snapping
 template <class T>
