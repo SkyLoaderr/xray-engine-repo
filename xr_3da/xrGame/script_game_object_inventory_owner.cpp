@@ -887,3 +887,13 @@ STasks CScriptGameObject::GetAllGameTasks()
 	}
 	return tasks;
 };
+
+int	CScriptGameObject::animation_slot			() const
+{
+	CHudItem		*hud_item = smart_cast<CHudItem*>(&object());
+	if (!hud_item) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CHudItem : cannot access class member animation_slot!");
+		return		(u32(-1));
+	}
+	return			(hud_item->animation_slot());
+}

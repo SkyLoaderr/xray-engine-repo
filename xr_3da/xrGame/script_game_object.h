@@ -385,6 +385,7 @@ public:
 			void				add_animation			(LPCSTR animation, bool hand_usage = true);
 			void				clear_animations		();
 			int					animation_count			() const;
+			int					animation_slot			() const;
 			CScriptBinderObject	*binded_object			();
 			void				set_previous_point		(int point_index);
 			void				set_start_point			(int point_index);
