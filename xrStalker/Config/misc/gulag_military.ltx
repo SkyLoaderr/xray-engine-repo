@@ -521,6 +521,134 @@ path_walk = attack_way6_4
 path_look = attack_look4
 on_signal = return | follower@mil_freedom_stalker7
 
+;----------------------------------- Охранник на входе -----------------------
+
+[logic@mil_freedom_stalker8]
+active = zoneguard@mil_freedom_stalker8
+
+[zoneguard@mil_freedom_stalker8]
+path_walk = path_walk12
+path_look = path_look12
+zone_warn  = zone6
+zone_guard = kill_enter_zone
+snd_greet = zoneguard
+team = freedom_guards
+no_move = true
+meet_talk_enabled = true
+meet_dialog = mil_zoneguard_dialog
+on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
+on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker8
+
+[camper2@mil_freedom_stalker8]
+path_walk = camp_walk12_10
+path_look = camp_look12_10
+radius = 5
+no_retreat = true
+on_timer = 60000 | zoneguard@mil_freedom_stalker8 %-mil_freedom_under_attack%
+
+
+[zoneguard2@mil_freedom_stalker8]
+path_walk = path_walk12
+path_look = path_look12
+zone_warn  = mil_freedom_zone6
+snd_greet = talk_hello
+team = freedom_guards
+no_move = true
+meet_talk_enabled = true
+meet_dialog = mil_zoneguard_dialog
+
+;----------------------------------- Мужик на входе 1 -----------------------
+[logic@mil_freedom_stalker9]
+active = camper1@mil_freedom_stalker9
+combat_ignore = combat_ignore@mil_freedom_stalker8
+
+[combat_ignore@mil_freedom_stalker9]
+
+[camper1@mil_freedom_stalker9]
+path_walk = camp_walk3
+path_look = camp_look3
+wounded_enabled = false
+on_info = {+mil_freedom_attack} walker11@mil_freedom_stalker9
+on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker9
+
+[camper2@mil_freedom_stalker9]
+path_walk = camp_walk3_10
+path_look = camp_look3_10
+radius = 5
+no_retreat = true
+on_timer = 60000 | camper1@mil_freedom_stalker9 %-mil_freedom_under_attack%
+
+[walker11@mil_freedom_stalker9]
+path_walk = attack_way3_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker9
+team = freedom
+
+[follower1@mil_freedom_stalker9]
+leader = 713
+distanse = 0.5
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker9]
+path_walk = attack_way3_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker9 %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker9
+
+[walker14@mil_freedom_stalker9]
+path_walk = attack_way3_4
+path_look = attack_look4
+on_signal = return | camper1@mil_freedom_stalker9
+
+;----------------------------------- Мужик на входе 2 -----------------------
+[logic@mil_freedom_stalker10]
+active = camper1@mil_freedom_stalker10
+combat_ignore = combat_ignore@mil_freedom_stalker10
+
+[combat_ignore@mil_freedom_stalker10]
+
+[camper1@mil_freedom_stalker10]
+path_walk = camp_walk5
+path_look = camp_look5
+wounded_enabled = false
+on_info = {+mil_freedom_attack} walker11@mil_freedom_stalker10
+on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker10
+
+[camper2@mil_freedom_stalker10]
+path_walk = camp_walk5_10
+path_look = camp_look5_10
+radius = 5
+no_retreat = true
+on_timer = 60000 | camper1@mil_freedom_stalker10 %-mil_freedom_under_attack%
+
+;Aoaea Aieaa
+[walker11@mil_freedom_stalker10]
+path_walk = attack_way5_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker10
+team = freedom
+
+[follower1@mil_freedom_stalker10]
+leader = 701
+distanse = 0.5
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker10]
+path_walk = attack_way5_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker10 %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker10
+
+[walker14@mil_freedom_stalker10]
+path_walk = attack_way5_4
+path_look = attack_look4
+on_signal = return | camper1@mil_freedom_stalker10
 
 
 ;------------------------------------- sniper 1 -----------------------------
