@@ -136,7 +136,7 @@ struct SVelocityParam {
 
 // Activities
 enum EMotionAnim {
-	eAnimStandIdle = 0,
+	eAnimStandIdle			= u32(0),
 	eAnimStandTurnLeft,
 	eAnimStandTurnRight,
 
@@ -217,8 +217,9 @@ enum EMotionAnim {
 	eAnimTeleRaise,
 	eAnimTeleFire,
 	eAnimGraviPrepare,
-	eAnimGraviFire
+	eAnimGraviFire,
 
+	eAnimUndefined			= u32(-1)
 };
 
 // Generic actions

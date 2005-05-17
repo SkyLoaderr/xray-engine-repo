@@ -107,7 +107,7 @@ bool CMonsterMovement::target_point_need_update()
 		if (m_wait_path_end) return false;
 		
 		// если время движения по пути не вышло, не перестраивать
-		return (m_last_time_target_set + m_time < m_object->m_current_update);
+		return (m_last_time_target_set + m_time < Device.dwTimeGlobal);
 	}
 	
 	// конец пути
