@@ -97,7 +97,7 @@ function load_job (sj, gname, type, squad, groups)
     
 	t = { section = "logic@mil_freedom_walker1",
 		idle = 0,
-		prior = 5, state = {0},
+		prior = 1, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -108,7 +108,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker2",
 		idle = 0,
-		prior = 5, state = {0},
+		prior = 1, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -119,7 +119,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker3",
 		idle = 0,
-		prior = 5, state = {0},
+		prior = 1, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -138,7 +138,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
-		prior = 4, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	    }
@@ -146,7 +146,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
-		prior = 4, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -154,7 +154,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp3",
 		idle = 0,
-		prior = 4, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -162,7 +162,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep1",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -170,7 +170,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep2",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -178,7 +178,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep3",
 		idle = 0,
-		prior = 3, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -186,7 +186,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker7",
 		idle = 0,
-		prior = 4, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -194,7 +194,7 @@ function load_job (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker5",
 		idle = 0,
-		prior = 4, state = {0},
+		prior = 0, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
