@@ -35,6 +35,7 @@ function load_job (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 
+
     t = {section = "logic@mil_freedom_stalker2",
 		idle = 0,
 		prior = 2, state = {0},
@@ -50,6 +51,49 @@ function load_job (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
+
+    t = {section = "logic@mil_freedom_stalker4",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end         
+		}
+	table.insert(sj, t)		
+
+
+    t = {section = "logic@mil_freedom_stalker5",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end         
+		}
+	table.insert(sj, t)		
+
+
+    t = {section = "logic@mil_freedom_stalker6",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	
+    t = {section = "logic@mil_freedom_stalker7",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+
+
+
     
 	t = { section = "logic@mil_freedom_walker1",
 		idle = 0,
