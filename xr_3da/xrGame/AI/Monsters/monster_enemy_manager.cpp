@@ -78,7 +78,7 @@ void CMonsterEnemyManager::update()
 	// обновить флаги
 	flags.zero();
 
-	if ((prev_enemy == enemy) && (time_last_seen != monster->m_current_update))	flags.or(FLAG_ENEMY_LOST_SIGHT);		
+	if ((prev_enemy == enemy) && (time_last_seen != Device.dwTimeGlobal))	flags.or(FLAG_ENEMY_LOST_SIGHT);		
 	if (prev_enemy && !prev_enemy->g_Alive())									flags.or(FLAG_ENEMY_DIE);
 	if (!enemy_see_me)															flags.or(FLAG_ENEMY_DOESNT_SEE_ME);
 	
@@ -115,7 +115,7 @@ void CMonsterEnemyManager::force_enemy (const CEntityAlive *enemy)
 	this->enemy		= enemy;
 	position		= enemy->Position();
 	vertex			= enemy->ai_location().level_vertex_id();
-	time_last_seen	= monster->m_current_update;
+	time_last_seen	= Device.dwTimeGlobal;
 
 	forced			= true;
 
@@ -163,7 +163,7 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == monster->m_current_update)); 
+	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == Device.dwTimeGlobal)); 
 }
 
 bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAlive *object1)
