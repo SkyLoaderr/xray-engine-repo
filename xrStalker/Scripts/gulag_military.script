@@ -21,11 +21,30 @@ function load_job (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
 		                     return obj:profile_name () == "svoboda_master_max"
-		            end         
+		            end
 		}
 	table.insert(sj, t)		
-	-- Павлик Морозов у костра
+	-- мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_max"
+		}
+	table.insert(sj, t)		
+
+    -- мужик у костра 2
+    t = {section = "logic@mil_freedom_stalker2",
+		idle = 0,
+		prior = 2, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker1"
+		}
+	table.insert(sj, t)		
+    -- Павлик Морозов
+    t = {section = "logic@mil_freedom_stalker3",
 		idle = 0,
 		prior = 2, state = {0},
 		squad = squad, group = groups[0],
@@ -35,29 +54,13 @@ function load_job (sj, gname, type, squad, groups)
 		            end         
 		}
 	table.insert(sj, t)		
-
-    -- мужик у костра 1
-    t = {section = "logic@mil_freedom_stalker2",
-		idle = 0,
-		prior = 2, state = {0},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    -- мужик у костра 2
-    t = {section = "logic@mil_freedom_stalker3",
-		idle = 0,
-		prior = 2, state = {0},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
     -- одиночный патрульный на базе
     t = {section = "logic@mil_freedom_stalker4",
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker2",
 		predicate = function (obj)
 		                     return obj:profile_name () == "svoboda_specnaz"
 		            end         
@@ -70,6 +73,7 @@ function load_job (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker4",
 		predicate = function (obj)
 		                     return obj:profile_name () == "svoboda_specnaz"
 		            end         
@@ -81,7 +85,8 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker5"
 		}
 	table.insert(sj, t)		
 	-- фолловер на базе
@@ -89,7 +94,8 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker5",
 		}
 	table.insert(sj, t)		
     --охранник у входа 
@@ -108,7 +114,8 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker7",
 		}
 	table.insert(sj, t)		
 	-- просто мужик на входе
@@ -116,7 +123,8 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+        dependent = "logic@mil_freedom_stalker9",
 		}
 	table.insert(sj, t)		
 
