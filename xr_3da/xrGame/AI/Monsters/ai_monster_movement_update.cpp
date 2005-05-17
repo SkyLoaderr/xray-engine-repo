@@ -68,7 +68,7 @@ void CMonsterMovement::update_target_point()
 	set_found_target	();
 
 	// сохранить текущее время 
-	m_last_time_target_set	= m_object->m_current_update;
+	m_last_time_target_set	= Device.dwTimeGlobal;
 }
 
 // обновить информацию о построенном пути (m_failed)
