@@ -72,7 +72,7 @@ void CSheduler::internal_Register	(ISheduled* O, BOOL RT)
 	{
 		// Fill item structure
 		Item						TNext;
-		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule.t_min;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal;
 		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
 		TNext.Object				= O;
 		O->shedule.b_RT				= TRUE;
@@ -81,7 +81,7 @@ void CSheduler::internal_Register	(ISheduled* O, BOOL RT)
 	} else {
 		// Fill item structure
 		Item						TNext;
-		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule.t_min;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal;
 		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
 		TNext.Object				= O;
 		O->shedule.b_RT				= FALSE;
