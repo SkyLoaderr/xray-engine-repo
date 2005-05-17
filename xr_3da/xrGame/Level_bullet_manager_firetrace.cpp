@@ -350,7 +350,8 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		bullet->speed *= shoot_factor;
 		energy_lost = 1.f - bullet->speed/old_speed;
 		impulse = bullet->hit_impulse*bullet->impulse_k*speed_factor*energy_lost;
-
+		
+		bullet->pos.mad(bullet->pos,bullet->dir,EPS);//fake
 		//ввести коэффициент случайности при простреливании
 		Fvector rand_normal;
 		rand_normal.random_dir(bullet->dir, deg2rad(5.f)*energy_lost, Random);
