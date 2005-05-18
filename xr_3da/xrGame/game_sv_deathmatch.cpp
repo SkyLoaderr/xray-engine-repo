@@ -10,6 +10,7 @@
 #include "../igame_persistent.h"
 #include "clsid_game.h"
 #include "Actor.h"
+#include "game_cl_base.h"
 
 #define DELAYED_ROUND_TIME	7000
 
@@ -142,6 +143,8 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_
 			ps_killed->kills -=1;
 
 		SetPlayersDefItems		(ps_killed);
+		//---------------------------------------
+		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
 	};
 
 	signal_Syncronize();
@@ -484,12 +487,6 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 G
 	inherited::OnPlayerDisconnect	(id_who, Name, GameID);
 };
 
-/*
-void	game_sv_Deathmatch::OnPlayerWantsDie		(ClientID id_who)
-{
-	KillPlayer(id_who);
-};*/
-
 u32		game_sv_Deathmatch::RP_2_Use				(CSE_Abstract* E)
 {
 	return 0;
@@ -809,9 +806,11 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		if (pWpnI == WpnList.end() || !((*pWpnI) == (ItemID & 0xFF1f))) continue;
 
 		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
+		//-------------------------------------------------------------------------------
+		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
 	};
 	
-	Player_AddMoney(ps, ps->LastBuyAcount);	
+	Player_AddMoney(ps, ps->LastBuyAcount);
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
@@ -1516,6 +1515,8 @@ void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmoun
 		TotalMoney = 32767;
 
 	ps->money_for_round = s32(TotalMoney);
+	//---------------------------------------
+	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
 };
 
 void	game_sv_Deathmatch::check_Player_for_Invincibility	(game_PlayerState* ps)

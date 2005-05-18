@@ -223,6 +223,21 @@ void CLevel::ClientReceive()
 				u8 Pause = P->r_u8();
 				Device.Pause(!(Pause == 0));
 			}break;
+		case M_BULLET_CHECK_RESPOND:
+			{
+				if (GameID() != GAME_SINGLE)
+					Game().m_WeaponUsageStatistic.On_Check_Respond(P);
+			}break;
+		case M_STATISTIC_UPDATE:
+			{
+				if (GameID() != GAME_SINGLE)
+					Game().m_WeaponUsageStatistic.OnUpdateRequest(P);
+			}break;
+		case M_STATISTIC_UPDATE_RESPOND:
+			{
+				if (GameID() != GAME_SINGLE)
+					Game().m_WeaponUsageStatistic.OnUpdateRespond(P);
+			}break;
 		}
 
 		net_msg_Release();

@@ -13,6 +13,7 @@
 #include "../skeletonanimated.h"
 #include "clsid_game.h"
 #include "ai_object_location.h"
+#include "game_cl_base.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;
@@ -508,6 +509,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (m_iCurWeaponHideState & (1<<2)) strcat(buf, "DEACTIVATE_CURRENT_SLOT ");
 		if (m_iCurWeaponHideState & (1<<3)) strcat(buf, "SPRINT ");
 		HUD().Font().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
+
+		//-------------------------------------------------------
+		Game().m_WeaponUsageStatistic.Draw();
 	};
 #endif
 }

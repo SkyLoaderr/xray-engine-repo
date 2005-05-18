@@ -3,6 +3,8 @@
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
+#include "Level.h"
+#include "game_cl_base.h"
 
 void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 {
@@ -163,6 +165,8 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, g
 			ps_killed->kills -=1;
 
 		SetPlayersDefItems		(ps_killed);
+		//---------------------------------------
+		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
 	};
 
 	signal_Syncronize();

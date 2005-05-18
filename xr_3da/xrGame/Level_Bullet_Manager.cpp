@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Level.h"
 #include "Level_Bullet_Manager.h"
-
+#include "game_cl_base.h"
 
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
@@ -134,6 +134,8 @@ void CBulletManager::AddBullet(const Fvector& position,
 	SBullet& bullet	= m_Bullets.back();
 	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit, tracer_length);
 	bullet.frame_num = Device.dwFrame;
+	if (SendHit && GameID() != GAME_SINGLE)
+		Game().m_WeaponUsageStatistic.OnBullet_Fire(&bullet, cartridge);
 }
 
 
@@ -161,6 +163,8 @@ void CBulletManager::Update()
 		// calculate bullet
 		for(u32 i=0; i<cur_step_num; i++){
 			if(!CalcBullet(&bullet, m_dwStepTime)){
+				if (bullet.m_bSendHit && GameID() != GAME_SINGLE)
+					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
 				m_Bullets[k] = m_Bullets.back();
 				m_Bullets.pop_back();
 				break;

@@ -1403,21 +1403,27 @@ void	CActor::OnRender_Network()
 	{
 		if (dbg_net_Draw_Flags.test(1<<8))
 		{
-			/*
-			Fvector         bc,bd;
-			Fbox            xf;
-			Fmatrix M = XFORM();
-			
-			M.translate_add(m_AutoPickUp_AABB_Offset);
-
-			xf.xform        (m_AutoPickUp_AABB,Fidentity);
-			xf.get_CD       (bc,bd);
-			*/
-
 			Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
 			Fvector bd = m_AutoPickUp_AABB;
 
 			RCache.dbg_DrawAABB			(bc, bd.x, bd.y, bd.z, color_rgba(0, 255, 0, 255));
+		};
+		
+		CKinematics* V		= smart_cast<CKinematics*>(Visual());
+		if (dbg_net_Draw_Flags.test(1<<0) && V)
+		{
+			if (this != Level().CurrentViewEntity() || cam_active != eacFirstEye)
+			{
+				u16 BoneCount = V->LL_BoneCount();
+				for (u16 i=0; i<BoneCount; i++)
+				{
+					Fobb BoneOBB = V->LL_GetBox(i);
+					Fmatrix BoneMatrix; BoneOBB.xform_get(BoneMatrix);
+					Fmatrix BoneMatrixRes; BoneMatrixRes.mul(V->LL_GetTransform(i), BoneMatrix);
+					BoneMatrix.mul(XFORM(), BoneMatrixRes);
+					RCache.dbg_DrawOBB(BoneMatrix, BoneOBB.m_halfsize, color_rgba(0, 255, 0, 255));
+				};
+			};
 		};
 
 		if (!(dbg_net_Draw_Flags.is_any((1<<2)))) return;
@@ -1512,6 +1518,21 @@ void	CActor::OnRender_Network()
 	else
 	{
 		if (!(dbg_net_Draw_Flags.is_any((1<<1)))) return;
+
+		CKinematics* V		= smart_cast<CKinematics*>(Visual());
+		if (dbg_net_Draw_Flags.test(1<<0) && V)
+		{
+			u16 BoneCount = V->LL_BoneCount();
+			for (u16 i=0; i<BoneCount; i++)
+			{
+				Fobb BoneOBB = V->LL_GetBox(i);
+				Fmatrix BoneMatrix; BoneOBB.xform_get(BoneMatrix);
+				Fmatrix BoneMatrixRes; BoneMatrixRes.mul(V->LL_GetTransform(i), BoneMatrix);
+				BoneMatrix.mul(XFORM(), BoneMatrixRes);
+				RCache.dbg_DrawOBB(BoneMatrix, BoneOBB.m_halfsize, color_rgba(0, 255, 0, 255));
+			};
+		};
+
 		if (!m_States.empty())
 		{
 			u32 NumBones = m_States.size();
@@ -1748,6 +1769,9 @@ void				CActor::OnCriticalHitHealthLoss			()
 	P.w_u16 ((m_pLastHittingWeapon && m_pLastHitter != m_pLastHittingWeapon) ? u16(m_pLastHittingWeapon->ID()&0xffff) : 0);
 	P.w_u8	(SpecialHit);
 	u_EventSend(P);
+	//-------------------------------------------
+	if (GameID() != GAME_SINGLE)
+		Game().m_WeaponUsageStatistic.OnBullet_Check_Result(true);
 };
 
 void				CActor::OnCriticalWoundHealthLoss		() 

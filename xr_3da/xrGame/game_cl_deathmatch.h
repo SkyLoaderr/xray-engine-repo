@@ -1,11 +1,13 @@
 #pragma once
 #include "game_cl_mp.h"
 #include "ui/UIInventoryWnd.h"
+#include "ui/UIPdaWnd.h"
 
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
 class CUIDialogWnd;
 class CUIGameDM;
+class CUIPdaWnd;
 
 class game_cl_Deathmatch :public game_cl_mp
 {
@@ -46,8 +48,9 @@ protected:
 	CUISkinSelectorWnd*				pSkinMenuTeam0;
 	CUISkinSelectorWnd*				pCurSkinMenu;
 	CUIInventoryWnd*				pInventoryMenu;
-	
-
+	//-------------------------------------------------
+	CUIPdaWnd*						pPdaMenu;
+	//-------------------------------------------------
 	BOOL							m_bSkinSelected;
 	BOOL							m_bBuyEnabled;
 	s32								m_iCurrentPlayersMoney;

@@ -14,6 +14,7 @@
 //#define		MAPROT_LIST				"maprot_list.ltx"
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= TRUE		;
+BOOL	g_bCollectStatisticData = FALSE;
 
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
@@ -154,7 +155,8 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	P.w_s32			(round);
 	P.w_u32			(start_time);
 	P.w_u8			(u8(m_bVotingEnabled));
-	P.w_u8			(u8(net_sv_control_hit));	
+	P.w_u8			(u8(net_sv_control_hit));
+	P.w_u8			(u8(g_bCollectStatisticData));
 
 	// Players
 //	u32	p_count			= get_players_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);

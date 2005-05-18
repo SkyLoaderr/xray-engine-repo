@@ -329,6 +329,18 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 			ClientID clientID;clientID.setBroadcast();
 			SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
 		}break;
+	case M_STATISTIC_UPDATE:
+		{
+			ClientID clientID;clientID.setBroadcast();
+			if (SV_Client)
+				SendBroadcast			(SV_Client->ID,P,net_flags(TRUE,TRUE));
+			else
+				SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
+		}break;
+	case M_STATISTIC_UPDATE_RESPOND:
+		{
+			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
 	}
 
 	VERIFY							(verify_entities());

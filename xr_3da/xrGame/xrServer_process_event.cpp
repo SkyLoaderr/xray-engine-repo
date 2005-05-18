@@ -17,19 +17,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	u16			destination;
 	u32			MODE			= net_flags(TRUE,TRUE);
 
-//	xrClientData *l_pC = ID_to_client(sender);
-
 	// correct timestamp with server-unique-time (note: direct message correction)
 	P.r_u32		(timestamp	);
-	/*
-	xrClientData*	c_sender	= ID_to_client	(sender);
-	if (c_sender)
-	{
-		u32			sv_timestamp	= Device.TimerAsync	() - (c_sender->stats.getPing()/2);		// approximate time this message travels
-		timestamp					= (timestamp+sv_timestamp)/2;								// approximate timestamp with both client and server time
-		CopyMemory	(&P.B.data[P.r_pos-4], &timestamp, 4);
-	}
-	*/
 
 	// read generic info
 	P.r_u16		(type		);
@@ -45,58 +34,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			u16		game_event_type;
 			P.r_u16(game_event_type);
-//			game->OnEvent(P,game_event_type,timestamp,sender);
 			game->AddDelayedEvent(P,game_event_type,timestamp,sender);
 		}
-/* // moved to game_sv_teamdeathmatch
-	case GEG_PLAYER_CHANGE_TEAM: //cs & TDM
-		{
-			xrClientData *l_pC = ID_to_client(sender);
-			s16 l_team; P.r_s16(l_team);
-			game->OnPlayerChangeTeam(l_pC->ID, l_team);
-//			VERIFY					(verify_entities());
-		}break;
-*/
-
-/* // moved to game_sv_deathmatch
-	case GEG_PLAYER_CHANGE_SKIN: //dm only
-		{
-			xrClientData *l_pC = ID_to_client(sender);
-			u8 l_skin; P.r_u8(l_skin);
-			game->OnPlayerChangeSkin(l_pC->ID, l_skin);
-//			VERIFY					(verify_entities());
-		}break;
-	case GEG_PLAYER_KILL: //dm only
-		{
-			xrClientData *l_pC = ID_to_client(sender);
-			game->OnPlayerWantsDie(l_pC->ID);
-//			VERIFY					(verify_entities());
-		}break;
-*/
-
-/* // moved to game_sv_deathmatch
-	case GEG_PLAYER_READY:// cs & dm
-		{
-			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
-			if (E) {
-				xrClientData*	C			= E->owner;
-				if (C && (C->owner == E))
-				{
-					game->OnPlayerReady		(C->ID);
-				}
-			}
-//			VERIFY					(verify_entities());
-		}break;
-*/
-
-/*	// moved to game_sv_deathmatch
-	case GEG_PLAYER_BUY_FINISHED: // dm only
-		{
-			xrClientData *l_pC = ID_to_client(sender);
-			game->OnPlayerBuyFinished(l_pC->ID, P);
-//			VERIFY					(verify_entities());
-		}break;
-*/
 	case GE_INFO_TRANSFER:{
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast			(clientID,P,MODE);
@@ -114,21 +53,6 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 //			VERIFY					(verify_entities());
 		}break;
-/*	case GE_BUY: //cs & dm
-		{
-			string64			i_name;
-			P.r_stringZ			(i_name);
-			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
-			if (E) {
-				xrClientData*		C			= E->owner;
-				if (C && (C->owner == E))
-				{
-					game->OnPlayerBuy		(C->ID,destination,i_name);
-				}
-			}
-//			VERIFY					(verify_entities());
-		}
-		break;*/
 	case GE_RESPAWN:
 		{
 			CSE_Abstract*		E	= game->get_entity_from_eid	(destination);
@@ -190,30 +114,12 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		}
 		break;
 	case GE_HIT:
+	case GE_HIT_STATISTIC:
 		{
-			// Parse message
-//last	u16					id_dest		=	destination, id_src;
-//last	P.r_u16				(id_src);
-			/*CSE_Abstract*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
-			
-//last		CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
-
-//			xrClientData*		c_src		= e_src->owner;
-//			xrClientData*		c_from		= ID_to_client	(sender);
-//			R_ASSERT			(c_src == c_from);							// assure client ownership of event
-
-//			CSE_Abstract*		e_hitter = e_src;
-//			CSE_Abstract*		e_hitted = receiver;
-
-//last	game->OnHit(id_src, id_dest, P);*/
 			P.r_pos -=2;
+			if (type == GE_HIT_STATISTIC) P.w_u32(sender.value());
 			game->AddDelayedEvent(P,GAME_EVENT_ON_HIT, 0, ClientID() );
-			
-			// Signal just to destination (тому, кто повредился)
-//last	ClientID clientID;clientID.setBroadcast();
-//last	SendBroadcast		(clientID,P,MODE);
-		}
-		break;
+		} break;
 	case GE_ASSIGN_KILLER: {
 		u16							id_dest	= destination, id_src;
 		P.r_u16						(id_src);

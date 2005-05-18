@@ -128,7 +128,9 @@ CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 	pSkinMenuTeam2 = InitSkinMenu(2);
 
 	pInventoryMenu = xr_new<CUIInventoryWnd>();
-
+	//-----------------------------------------------------------	
+	pPdaMenu = xr_new<CUIPdaWnd>();
+	//-----------------------------------------------------------
 	return m_game_ui;
 }
 

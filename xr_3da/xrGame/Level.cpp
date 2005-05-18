@@ -295,6 +295,8 @@ void CLevel::ProcessGameEvents		()
 			}
 		}
 	}
+	if (OnServer() && GameID()!= GAME_SINGLE)
+		Game().m_WeaponUsageStatistic.Send_Check_Respond();
 }
 
 void CLevel::OnFrame	()

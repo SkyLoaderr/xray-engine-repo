@@ -9,6 +9,7 @@
 #include "clsid_game.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIPdaWnd.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
@@ -34,6 +35,8 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	
 	m_iCurrentPlayersMoney = 0;
 //	pChatWnd		= NULL;
+	//----------------------------------------------------------------
+	pPdaMenu = NULL;
 }
 
 void game_cl_Deathmatch::Init ()
@@ -47,6 +50,8 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
+	//---------------------------------------	
+	xr_delete(pPdaMenu);
 }
 
 
@@ -68,6 +73,8 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pCurSkinMenu	= pSkinMenuTeam0;
 
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
+	//-----------------------------------------------------------	
+	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
 	return m_game_ui;
 }
@@ -520,6 +527,19 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 		}
 		return true;
 	};
+	//---------------------------------------------
+	if( kMAP == key)
+	{
+		if (pPdaMenu && pPdaMenu->IsShown())
+			StartStopMenu(pPdaMenu,true);
+		else
+		{
+			pPdaMenu->SetActiveSubdialog(epsMap);
+			StartStopMenu(pPdaMenu,true);
+		};		
+		return true;
+	};
+	//---------------------------------------------
 
 	return inherited::OnKeyboardPress(key);
 }

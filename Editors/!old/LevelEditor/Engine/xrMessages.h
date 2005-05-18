@@ -52,6 +52,11 @@ enum {
 	//-----------------------------------------------------
 	M_AUTH_CHALLENGE,
 	M_CL_AUTH,
+	M_BULLET_CHECK_RESPOND,
+	//-----------------------------------------------------
+	M_STATISTIC_UPDATE,
+	M_STATISTIC_UPDATE_RESPOND,
+	//-----------------------------------------------------
 
 	MSG_FORCEDWORD				= u32(-1)
 };
@@ -123,6 +128,10 @@ enum {
 	GEG_PLAYER_RESTORE_CURRENT_SLOT,
 	GEG_PLAYER_SPRINT_START,
 	GEG_PLAYER_SPRINT_END,
+
+	//-------------------------------------
+	GE_HIT_STATISTIC,
+	//-------------------------------------
 
 	GE_FORCEDWORD				= u32(-1)
 };

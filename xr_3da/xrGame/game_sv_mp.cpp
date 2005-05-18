@@ -11,6 +11,7 @@
 #include "../XR_IOConsole.h"
 #include "../igame_persistent.h"
 #include "date_time.h"
+#include "game_cl_base.h"
 
 u32		g_dwMaxCorpses = 10;
 
@@ -102,6 +103,8 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		xrCData->ps->deaths				+=	1;
 		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
+		//-------------------------------------------------------
+		Game().m_WeaponUsageStatistic.OnPlayerKilled(xrCData->ps);
 	};
 	//-------------------------------------------------------
 	CActor* pActor = smart_cast <CActor*>(pObject);
@@ -282,6 +285,8 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 			OnPlayerEnteredGame(id);
 		};
 		ps_who->RespawnTime = Device.dwTimeGlobal;
+		//---------------------------------------------
+		Game().m_WeaponUsageStatistic.OnPlayerSpawned(ps_who);
 	}
 	else
 		if (pS)

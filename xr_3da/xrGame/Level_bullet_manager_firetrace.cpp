@@ -246,8 +246,17 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 //	if(!OnServer())
 	if (bullet->m_bSendHit)
 	{
+		//-------------------------------------------------
 		NET_Packet		P;
-		CGameObject::u_EventGen	(P,GE_HIT,R.O->ID());
+		bool AddStatistic = false;
+		if (GameID() != GAME_SINGLE && bullet->m_bSendHit && R.O->CLS_ID == CLSID_OBJECT_ACTOR
+			&& Game().m_WeaponUsageStatistic.CollectData())
+		{
+			Game().m_WeaponUsageStatistic.OnBullet_Hit(bullet, R.O->ID(), (s16)R.element, end_point);
+			AddStatistic = true;			
+		}
+		
+		CGameObject::u_EventGen	(P,(AddStatistic)? GE_HIT_STATISTIC : GE_HIT,R.O->ID());
 		P.w_u16			(bullet->parent_id);
 		P.w_u16			(bullet->weapon_id);
 		P.w_dir			(original_dir);
@@ -256,8 +265,13 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
 		P.w_u16			(u16(bullet->hit_type));
+		//-------------------------------------------------
+		if (AddStatistic)
+		{
+			P.w_u32(bullet->m_dwID);
+		};
 		CGameObject::u_EventSend (P);
-//		Msg("GE_HIT Sended");
+		//-------------------------------------------------
 	}
 }
 

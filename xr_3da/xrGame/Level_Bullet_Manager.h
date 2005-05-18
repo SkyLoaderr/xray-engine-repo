@@ -85,7 +85,9 @@ struct SBullet
 
 	//тип наносимого хита
 	ALife::EHitType hit_type;
-
+	//---------------------------------
+	u32				m_dwID;
+	bool			operator	==		(u32 ID){return	ID == m_dwID;}
 };
 
 

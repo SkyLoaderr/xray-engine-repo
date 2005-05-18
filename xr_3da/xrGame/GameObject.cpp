@@ -130,6 +130,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 	switch (type)
 	{
 	case GE_HIT:
+	case GE_HIT_STATISTIC:
 		{
 			u16				id,weapon_id;
 			Fvector			dir;
@@ -149,11 +150,28 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 			CObject*	Hitter = Level().Objects.net_Find(id);
 			CObject*	Weapon = Level().Objects.net_Find(weapon_id);
+			//-------------------------------------------------------
+			switch (type)
+			{
+			case GE_HIT_STATISTIC:
+				{
+					if (GameID() != GAME_SINGLE)
+						Game().m_WeaponUsageStatistic.OnBullet_Check_Request(element, &P);
+				}break;
+			default:
+				{
+				}break;
+			}
+			//-------------------------------------------------------
 
 			if (power>0)
 				SetHitInfo(Hitter, Weapon, element);
 			Hit				(power,dir,Hitter,element,
 							position_in_bone_space, impulse, (ALife::EHitType)hit_type);
+			//---------------------------------------------------------------------------
+			if (GameID() != GAME_SINGLE)
+				Game().m_WeaponUsageStatistic.OnBullet_Check_Result(false);
+			//---------------------------------------------------------------------------
 		}
 		break;
 	case GE_DESTROY:

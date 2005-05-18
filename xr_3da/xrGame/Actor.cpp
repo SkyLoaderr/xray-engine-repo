@@ -418,14 +418,22 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if( !sndHit[hit_type].empty() ){
 		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
-		S.play_at_pos(this, Position());
-		if(ALife::eHitTypeExplosion == hit_type && this == Level().CurrentControlEntity()){
-			S.set_volume(10.0f);
-			if(!m_sndShockEffector)
-				m_sndShockEffector = xr_new<SndShockEffector>();
+		bool bPlaySound = true;
+		
+		if(ALife::eHitTypeExplosion == hit_type)
+		{
+			if (this == Level().CurrentControlEntity())
+			{
+				S.set_volume(10.0f);
+				if(!m_sndShockEffector)
+					m_sndShockEffector = xr_new<SndShockEffector>();
 
-			m_sndShockEffector->Start( S.handle->length_ms() );
+				m_sndShockEffector->Start( S.handle->length_ms() );
+			}
+			else
+				bPlaySound = false;
 		}
+		if (bPlaySound) S.play_at_pos(this, Position());
 	}
 
 
@@ -1101,12 +1109,15 @@ void CActor::shedule_Update	(u32 DT)
 	m_pPhysics_support->in_shedule_Update(DT);
 	///////////////////////////////////////////////
 	Check_for_AutoPickUp();
-	Fvector2 pos2d;
-	pos2d.set(Position().x, Position().z);
-	CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(Level().name());
-	if(F)
-		F->Open(pos2d);
-}
+	if (GameID() == GAME_SINGLE)
+	{
+		Fvector2 pos2d;
+		pos2d.set(Position().x, Position().z);
+		CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(Level().name());
+		if(F)
+			F->Open(pos2d);
+	};
+};
 
 void CActor::renderable_Render	()
 {
@@ -1309,14 +1320,18 @@ bool		CActor::use_bolts				() const
 	return CInventoryOwner::use_bolts();
 };
 
+INT		g_iCorpseRemove = 1;
+
 bool  CActor::NeedToDestroyObject() const
 {
 	if(GameID() == GAME_SINGLE)
 	{
 		return false;
 	}
-	else //if(this != Level().CurrentEntity())
+	else 
 	{
+		if (g_iCorpseRemove == -1) return false;
+		if (g_iCorpseRemove == 0) return true;
 		if(TimePassedAfterDeath()>m_dwBodyRemoveTime && m_bAllowDeathRemove)
 			return true;
 		else

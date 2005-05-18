@@ -61,6 +61,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u32			(start_time);
 	m_bVotingEnabled = !!P.r_u8();
 	m_bServerControlHits = !!P.r_u8();	
+	Game().m_WeaponUsageStatistic.SetCollectData(!!P.r_u8());
 
 	// Players
 	u16	p_count;
@@ -253,7 +254,19 @@ void game_cl_GameState::shedule_Update		(u32 dt)
 		if( HUD().GetUI() )
 			m_game_ui_custom = HUD().GetUI()->UIGame();
 	} 
-}
+	//---------------------------------------
+	switch (Phase())
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (GameID() != GAME_SINGLE)
+				m_WeaponUsageStatistic.Update();
+		}break;
+	default:
+		{
+		}break;
+	};
+};
 
 void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
@@ -303,4 +316,18 @@ void game_cl_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 void game_cl_GameState::u_EventSend(NET_Packet& P)
 {
 	Level().Send(P,net_flags(TRUE,TRUE));
+}
+
+void				game_cl_GameState::OnSwitchPhase			(u32 old_phase, u32 new_phase)
+{
+	switch (new_phase)
+	{
+		case GAME_PHASE_INPROGRESS:
+			{
+				m_WeaponUsageStatistic.Clear();
+			}break;
+		default:
+			{
+			}break;
+	}
 }

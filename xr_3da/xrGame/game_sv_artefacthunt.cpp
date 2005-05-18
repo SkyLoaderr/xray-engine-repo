@@ -6,6 +6,7 @@
 #include "Level.h"
 #include "LevelGameDef.h"
 #include "Actor.h"
+#include "game_cl_base.h"
 
 void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {
@@ -90,6 +91,8 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(game_PlayerState* ps_killer, gam
 			ps_killed->kills -=1;
 
 		SetPlayersDefItems		(ps_killed);
+		//---------------------------------------
+		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
 	};
 
 	signal_Syncronize();

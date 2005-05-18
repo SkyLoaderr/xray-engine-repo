@@ -207,6 +207,7 @@ bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
 	case kBUY:
 	case kSKIN:
 	case kTEAM:
+		case kMAP:
 		{
 			return Game().OnKeyboardPress(key_binding[dik]);
 		}break;
