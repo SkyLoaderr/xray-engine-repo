@@ -67,7 +67,6 @@ function action_patrol:__init (npc_name,action_name,storage) super (nil,action_n
 	self.a = storage
 	self.move_mgr = move_mgr.move_mgr(self.a.npc)
 	self.was_reset  = false
-	self.a.scan_table = {}
 end
 function action_patrol:initialize()
 	action_base.initialize(self)
@@ -78,44 +77,23 @@ function action_patrol:initialize()
 	
 	self:reset_scheme()
 	self.enemy_position = nil
+	
+	self.last_state = nil
 end
 function action_patrol:reset_scheme()
 	state_mgr.set_state(self.object, "patrol")	
 	self.a.signals = {}
 	self.move_mgr:initialize()
-	if self.a.sniper == true then
-		self.move_mgr:reset(self.a.path_walk, 
-			utils.path_parse_waypoints(self.a.path_walk),
-			nil,
-			nil,
-			nil,self.a.suggested_state,{obj=self,func=self.process_point})
-			
-		-- тут вставить парсинг углов для скана
-		local path = patrol(self.a.path_look)
-		if path ~= nil then
-			for k = 0, path:count() - 1 do
-				for i = 0, 31 do
-					if path:flag(k, i) then
-						if self.a.scan_table[i] == nil then
-							self.a.scan_table[i] = {}
-						end
-						self.a.scan_table[i][k] = level.vertex_position(path:level_vertex_id(k))
-					end
-				end
-			end
-		end		
-	else
-		self.move_mgr:reset(self.a.path_walk, 
-			utils.path_parse_waypoints(self.a.path_walk),
-			self.a.path_look,
-			utils.path_parse_waypoints(self.a.path_look),
-			nil,self.a.suggested_state,{obj=self,func=self.process_point})
-	end
+	self.move_mgr:reset(self.a.path_walk, 
+		utils.path_parse_waypoints(self.a.path_walk),
+		self.a.path_look,
+		utils.path_parse_waypoints(self.a.path_look),
+		nil,self.a.suggested_state,{obj=self,func=self.process_point})
 	self.was_reset = true
-	self.a.last_look_point = nil
-	self.a.cur_look_point = nil
+	printf("reset for %s", self.object:name())
 end
 function action_patrol:activate_scheme()
+	printf("activate for %s", self.object:name())
     self.was_reset = false
 end
 function action_patrol:execute()
@@ -124,6 +102,18 @@ function action_patrol:execute()
 	if not self.was_reset then
 		self:reset_scheme()
     end
+    
+	--' Находимся ли мы недалеко от своей позиции
+    --self:on_place ()
+    
+	self.move_mgr:update()
+	if self.move_mgr:arrived_to_first_waypoint() then
+		if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+			return
+		end
+	else
+		return
+	end
 
 	self.enemy = nil
 	if self.a.enemy_id == nil or
@@ -148,27 +138,23 @@ function action_patrol:execute()
 		self.enemy = nil
 	end
 	
-	--забывание врага по времени.	
+		
 	if self.a.mem_enemy ~= nil then
-		printf("ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
 		if device():time_global()- self.a.mem_enemy > self.a.idle then
-			if self.enemy ~= nil then
+			if self.enemy then
 				self.object:enable_memory_object(self.enemy, false)
 			end
 			self.a.enemy_id = nil
 			self.enemy = nil
-			self.a.mem_enemy = nil
-			self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
 		end
 	end
 
-
-	-- Три типа действия:
-	-- Есть враг
 	if self.enemy ~= nil then
+		self.last_state = state_mgr.get_state(self.object)
+		-- отстрел
 		if self.object:see(self.enemy) == true then
-			-- отстрел врага
-			--printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
+			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.suggested_state.campering_fire then
 				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
 			else
@@ -176,96 +162,23 @@ function action_patrol:execute()
 			end
 			self.enemy_position = self.enemy:position()
 		else
-			if self.a.sniper == true then
-				-- поиск врага (сканирование врага)
-				printf("scaning for enemy")
-			else				
-				-- если норетрит или мы на месте - ныкаться, иначе идти на точку
-				if self:on_place() then 
-					if self.a.suggested_state.campering then
-						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
-					else
-						state_mgr.set_state(self.object, "hide", nil, nil)
-					end		
+			-- если норетрит или мы на месте - ныкаться, иначе идти на точку
+			if self:on_place() then 
+				if self.a.suggested_state.campering then
+					state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
 				else
-					state_mgr.set_state(self.object, "sneak", nil, nil)
-					self.move_mgr:update()
-				end
-			end
-		end
-	else
-		if self.a.sniper == true then
-			-- Сканирование местности в узловых точках
-			-- если мы на точке - запустить счетчик сканирования и посканировать определенное время.
-			if self:on_place() then
-				if self.scantime == nil then
-					self.scantime = device():time_global()
-				end
-				printf("SCAN [%s] of [%s]", utils.to_str(device():time_global() - self.scantime), utils.to_str(self.a.scantime_free))
-				-- сканируем
-				self:scan(self.a.wp_flag)
-				-- проверка на завершение сканирования.
-				if self.scantime ~= nil and device():time_global() - self.scantime >= self.a.scantime_free then	
-					self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
-				end
+					state_mgr.set_state(self.object, "hide", nil, nil)
+				end		
 			else
-				self.scantime = nil
-				self.move_mgr:update()
-			end
-		else
-			-- Перемещение по move_mgr
-			self.move_mgr:update()
+				state_mgr.set_state(self.object, "sneak", nil, nil)
+			end		
 		end
-		
-
-
-	end	
-end
-function action_patrol:scan(flag)
-	if self.a.scan_table[flag] == nil then
-		utils.abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
-	end
-	
-	self.next_point = self:get_next_point(flag)
-	printf("%s", utils.to_str(self.next_point))
-
-	if self.a.cur_look_point == nil then
-		self.a.cur_look_point = 1
-	end	
-
-	if self.a.last_look_point == nil then
-		self.a.last_look_point = self.next_point
-	end
-	
-	printf("last_look_point %s", utils.to_str(self.a.last_look_point))
-	self.look_position = level.vertex_position(patrol(self.a.path_walk):level_vertex_id(self.a.last_look_point))
-	self.dest_position = level.vertex_position(patrol(self.a.path_walk):level_vertex_id(self.next_point))
-	self.look_position.x = self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/20
-	self.look_position.z = self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/20		
-	state_mgr.set_state(self.object, "hide", nil, nil, {look_position = self.look_position})
-
-	if self.a.cur_look_point == 20 then
-		self.a.cur_look_point = nil
-		self.a.last_look_point = self.next_point
 	else
-		self.a.cur_look_point = self.a.cur_look_point + 1
-	end	
-end
-function action_patrol:get_next_point(flag)
-	local next = false
-	for k,v in self.a.scan_table[flag] do		
-		printf("trying %s", k)
-		if self.a.last_look_point == nil then
-			return k
-		end
-		if next == true then
-			return k
-		end
-		if self.a.last_look_point == k then
-			next = true
+		if self.last_state ~= nil then
+			state_mgr.set_state(self.object, self.last_state)
+			self.last_state = nil
 		end
 	end
-	return self.a.last_look_point
 end
 function action_patrol:process_point(mode, number)
 	return false
@@ -280,18 +193,10 @@ function action_patrol:on_place()
 	local path = patrol(self.a.path_walk)
 	if path ~= nil then
 		for k = 0, path:count() - 1 do
-			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), k) then
-				for i = 0, 31 do
-					if path:flag(k, i) then
-						self.a.wp_flag = i
-						return true
-					end
-				end
-				self.a.wp_flag = nil
-				return false
+			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
+				return true
 			end
 		end
-		self.a.wp_flag = nil
 		return false
 	end
 end
@@ -337,21 +242,16 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
-	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
-	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false)
-	st.idle = 20*1000
+	st.idle = 2*60*1000
 
 	
 	if st.radius == nil then
 		st.radius = 20
 	end
-	if st.scantime_free == nil then
-		st.scantime_free = 10000
-	end	
 end
