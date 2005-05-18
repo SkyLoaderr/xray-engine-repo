@@ -39,6 +39,7 @@ void SHeliMovementState::Load(LPCSTR section)
 	y0						= pSettings->r_float(section,"path_angular_sp_heading_0");
 	HeadingSpB				= y0;
 	HeadingSpK				= (angularSpeedHeading - HeadingSpB)/maxLinearSpeed;
+	safe_altitude_add		= pSettings->r_float(section,"safe_altitude");
 }
 
 float SHeliMovementState::GetAngSpeedPitch(float speed)
@@ -288,7 +289,7 @@ void SHeliMovementState::load(IReader &input_packet)
 float SHeliMovementState::GetSafeAltitude()
 {
 	Fbox	boundingVolume = Level().ObjectSpace.GetBoundingVolume();
-	return	boundingVolume.max.y;
+	return	boundingVolume.max.y+safe_altitude_add;
 }
 
 void SHeliMovementState::CreateRoundPoints(Fvector center, float radius, float start_h, float end_h, xr_vector<STmpPt>& round_points)

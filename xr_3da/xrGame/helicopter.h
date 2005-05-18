@@ -72,7 +72,7 @@ struct SHeliMovementState{
 	int								patrol_begin_idx;
 	shared_str						patrol_path_name;
 	bool							need_to_del_path;
-
+	float							safe_altitude_add;
 	float							maxLinearSpeed;
 	float							LinearAcc_fw;
 	float							LinearAcc_bk;
