@@ -31,7 +31,8 @@ function eva_state_mgr_weapon:evaluate()
 		(not strappable_weapon(self.object:best_weapon()) and self.object:active_item() == nil))) or
 		
 	   ((state_lib.states[self.st.target_state].weapon == "unstrapped" or
-	     state_lib.states[self.st.target_state].weapon == "fire") and
+	     state_lib.states[self.st.target_state].weapon == "fire" or
+	     state_lib.states[self.st.target_state].weapon == "sniper_fire") and
 		self.object:weapon_unstrapped() and	
 		self.object:active_item() ~= nil and		
 		self.object:best_weapon() ~= nil and
@@ -82,7 +83,8 @@ function eva_state_mgr_weapon_unstrapped:__init(name, st) super (nil, name)
 end
 function eva_state_mgr_weapon_unstrapped:evaluate()
 	return state_lib.states[self.st.target_state].weapon == "unstrapped" or
-		   state_lib.states[self.st.target_state].weapon == "fire"
+		   state_lib.states[self.st.target_state].weapon == "fire" or
+		   state_lib.states[self.st.target_state].weapon == "sniper_fire"
 end
 --' Держит ли уже он оружие в руках
 class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)

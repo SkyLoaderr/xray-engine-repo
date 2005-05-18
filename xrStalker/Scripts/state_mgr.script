@@ -169,13 +169,19 @@ function act_state_mgr_end:execute()
 	   state_lib.states[self.st.target_state].weapon ~= "strapped" and
 	   state_lib.states[self.st.target_state].weapon ~= "none"
 	then
-		if state_lib.states[self.st.target_state].weapon == "fire" then
+		if state_lib.states[self.st.target_state].weapon == "fire" or
+		   state_lib.states[self.st.target_state].weapon == "sniper_fire"
+		then
 			if self.st.look_object ~= nil then
 				if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
 				   self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy and
 				   level.object_by_id(self.st.look_object):alive() == true
 				then
-					self.object:set_item(object.fire1, self.object:best_weapon())
+					if state_lib.states[self.st.target_state].weapon == "sniper_fire" then
+						self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
+					else
+						self.object:set_item(object.fire1, self.object:best_weapon())
+					end
 					return
 				else
 					self.object:set_item(object.idle, self.object:best_weapon())
@@ -691,8 +697,9 @@ function state_manager:__init(npc)
 	self.alife = true
 	self.emerg = {}
 	self.synsound = nil
+	self.yaw_delta = nil
 end
-function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound)
+function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
 	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
@@ -763,6 +770,12 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 			self.callback.func = nil
 		end
 	end
+	
+	if yaw_delta ~= nil then
+		self.yaw_delta = yaw_delta
+	else
+		self.yaw_delta = 5
+	end
 end
 function state_manager:get_state()
 	return self.target_state
@@ -777,9 +790,9 @@ end
 
 
 
-function set_state(npc, state_name, callback, timeout, target, emerg, synsound)
+function set_state(npc, state_name, callback, timeout, target, emerg, synsound, yaw_delta)
 	if db.storage[npc:id()].state_mgr then
-		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound)
+		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
 	end
 end
 function get_state(npc)

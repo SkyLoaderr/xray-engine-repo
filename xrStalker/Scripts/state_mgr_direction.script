@@ -39,7 +39,7 @@ function eva_state_mgr_direction:evaluate()
 		--printf("head: %f", yaw_degree(dir, self.object:head_orientation()))
 		--printf("body: %f", yaw_degree(dir, self.object:direction()))
 
-		if yaw_degree(dir, self.object:head_orientation()) > 5 then
+		if yaw_degree(dir, self.object:head_orientation()) > self.st.yaw_delta then
 			return false
 		else
 			self:callback()

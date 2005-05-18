@@ -150,6 +150,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	threat_sniper_fire = {	weapon = "sniper_fire",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	hide = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,
@@ -157,7 +164,21 @@ states = {
 				animstate = "stand",
 				animation = "hide"
 			},
+	hide_na = {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = nil
+			},
 	hide_fire = {	weapon = "fire",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = nil
+			},
+	hide_sniper_fire = {	weapon = "sniper_fire",
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.crouch,
