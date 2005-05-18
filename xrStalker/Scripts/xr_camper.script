@@ -130,18 +130,6 @@ function action_patrol:execute()
 		self:reset_scheme()
     end
 
-
-
-
-
-
-
-
-
-
-
-
-
 	self.enemy = nil
 	if self.a.enemy_id == nil or
 	  self.a.enemy_id ~= id(self.object:best_enemy()) 
@@ -244,8 +232,6 @@ function action_patrol:execute()
 			self.move_mgr:update()
 		end
 		
-
-
 	end	
 end
 function action_patrol:scan(flag)
@@ -284,20 +270,6 @@ function action_patrol:scan(flag)
 		end	
 		self.a.scan_begin = device():time_global()
 	end
-	
-	printf("last_look_point %s", utils.to_str(self.a.last_look_point))
-	self.look_position = level.vertex_position(patrol(self.a.path_walk):level_vertex_id(self.a.last_look_point))
-	self.dest_position = level.vertex_position(patrol(self.a.path_walk):level_vertex_id(self.next_point))
-	self.look_position.x = self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/20
-	self.look_position.z = self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/20		
-	state_mgr.set_state(self.object, "hide", nil, nil, {look_position = self.look_position})
-
-	if self.a.cur_look_point == 20 then
-		self.a.cur_look_point = nil
-		self.a.last_look_point = self.next_point
-	else
-		self.a.cur_look_point = self.a.cur_look_point + 1
-	end	
 end
 function action_patrol:get_next_point(flag)
 	local next = false
