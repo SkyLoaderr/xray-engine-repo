@@ -133,6 +133,7 @@ float	CClimableObject::Radius				() const
 
 float		CClimableObject::	DDLowerP		(CPHCharacter	*actor,Fvector	&out_dir)const
 {
+	VERIFY(actor);
 	Fvector pos;
 	LowerPoint(out_dir);
 	actor->GetFootCenter(pos);
@@ -141,6 +142,7 @@ float		CClimableObject::	DDLowerP		(CPHCharacter	*actor,Fvector	&out_dir)const
 }
 float		CClimableObject::	DDUpperP		(CPHCharacter	*actor,Fvector	&out_dir)const
 {
+	VERIFY(actor);
 	Fvector pos;
 	UpperPoint(out_dir);
 	actor->GetFootCenter(pos);
@@ -172,12 +174,14 @@ float	CClimableObject::DDNorm(Fvector &dir)const
 }
 float		CClimableObject::	DDToAxis			(CPHCharacter	*actor,Fvector &out_dir)const
 {
+	VERIFY(actor);
 	DToAxis(actor,out_dir);
 	return to_mag_and_dir(out_dir);
 }
 
 void	CClimableObject::	POnAxis	(CPHCharacter	*actor,Fvector	&P)const
 {
+	VERIFY(actor);
 	actor->GetFootCenter(P);
 	prg_pos_on_axis(Position(),m_axis,P);
 }
@@ -193,12 +197,14 @@ void		CClimableObject::	UpperPoint			(Fvector &P)const
 
 void		CClimableObject::DToAxis(CPHCharacter *actor,Fvector &dir)const
 {
+	VERIFY(actor);
 	POnAxis(actor,dir);
 	Fvector pos;actor->GetFootCenter(pos);
 	dir.sub(pos);
 }
 void CClimableObject::DSideToAxis		(CPHCharacter	*actor,Fvector	&dir)const
 {
+VERIFY(actor);
 DToAxis(actor,dir);
 Fvector side;side.set(m_side);
 to_mag_and_dir(side);
@@ -208,6 +214,7 @@ dir.set(side);
 
 float CClimableObject::DDSideToAxis(CPHCharacter *actor,Fvector &dir)const
 {
+	VERIFY(actor);
 	DToAxis(actor,dir);
 	Fvector side;side.set(m_side);to_mag_and_dir(side);
 	float dot=side.dotproduct(dir);
@@ -227,6 +234,7 @@ float CClimableObject::DDSideToAxis(CPHCharacter *actor,Fvector &dir)const
 
 void CClimableObject::DToPlain(CPHCharacter *actor,Fvector &dist)const
 {
+ VERIFY(actor);
  DToAxis(actor,dist);
  Fvector norm;norm.set(m_norm);
  to_mag_and_dir(norm);
@@ -237,12 +245,14 @@ void CClimableObject::DToPlain(CPHCharacter *actor,Fvector &dist)const
 
 float CClimableObject::DDToPlain(CPHCharacter *actor,Fvector &dir)const
 {
+	VERIFY(actor);
 	DToPlain(actor,dir);
 	return to_mag_and_dir(dir);
 }
 
 bool CClimableObject::InTouch(CPHCharacter *actor)const
 {
+	VERIFY(actor);
 	Fvector dir;
 	const float normal_tolerance=0.05f;
 	float foot_radius=actor->FootRadius();
@@ -253,16 +263,18 @@ bool CClimableObject::InTouch(CPHCharacter *actor)const
 
 float CClimableObject::AxDistToUpperP(CPHCharacter *actor)const
 {
-Fvector v1,v2;
-actor->GetFootCenter(v1);
-UpperPoint(v2);
-v2.sub(v1);
-v1.set(m_axis);to_mag_and_dir(v1);
-return v1.dotproduct(v2);
+	VERIFY(actor);
+	Fvector v1,v2;
+	actor->GetFootCenter(v1);
+	UpperPoint(v2);
+	v2.sub(v1);
+	v1.set(m_axis);to_mag_and_dir(v1);
+	return v1.dotproduct(v2);
 }
 
 float CClimableObject::AxDistToLowerP(CPHCharacter *actor)const
 {
+	VERIFY(actor);
 	Fvector v1,v2;
 	actor->GetFootCenter(v1);
 	LowerPoint(v2);
@@ -272,12 +284,14 @@ float CClimableObject::AxDistToLowerP(CPHCharacter *actor)const
 }
 bool CClimableObject::InRange(CPHCharacter *actor)const
 {
+	VERIFY(actor);
 	return AxDistToLowerP(actor)>-down_leader_extension_tolerance && AxDistToUpperP(actor)+actor->FootRadius()>-up_leader_extension_tolerance;
 }
 
 
 bool CClimableObject::BeforeLadder(CPHCharacter *actor)const
 {
+	VERIFY(actor);
 	Fvector d;
 	DToAxis(actor,d);
 	Fvector n;n.set(Norm());
