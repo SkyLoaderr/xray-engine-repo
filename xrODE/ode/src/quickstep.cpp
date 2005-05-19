@@ -66,7 +66,7 @@ typedef dReal *dRealMutablePtr;
 // help for motor-driven joints. unfortunately it appears to hurt
 // with high-friction contacts using the SOR method. use with care
 
-#define WARM_STARTING 1
+#define WARM_STARTING 0
 
 
 // for the SOR method:
@@ -438,7 +438,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 		qsort (order,m,sizeof(IndexError),&compare_index_error);
 #endif
 #ifdef RANDOMLY_REORDER_CONSTRAINTS
-		if ((iteration & 7) == 0) {
+		if ((iteration & 3) == 0) {
 			for (i=1; i<m; ++i) {
 				IndexError tmp = order[i];
 				int swapi = dRandInt(i+1);

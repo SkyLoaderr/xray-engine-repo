@@ -28,6 +28,13 @@ CStalkerActionSquad::CStalkerActionSquad	(CAI_Stalker *object, LPCSTR action_nam
 void CStalkerActionSquad::initialize		()
 {
 	inherited::initialize	();
+	
+	Msg						("AgentManager::eOrderTypeNoOrder = %d",AgentManager::eOrderTypeNoOrder);
+	Msg						("AgentManager::eOrderTypeAction  = %d",AgentManager::eOrderTypeAction);
+	Msg						("AgentManager::eOrderTypeGoal    = %d",AgentManager::eOrderTypeGoal);
+	Msg						("AgentManager::eOrderTypeDummy   = %d",AgentManager::eOrderTypeDummy);
+	Msg						("unknown                         = %d",object().agent_manager().member().member(m_object).order_type());
+	
 	VERIFY					(object().agent_manager().member().member(m_object).order_type() == AgentManager::eOrderTypeAction);
 	object().setup().clear();
 	object().setup().add_action(0,xr_new<CSetupAction>(object().agent_manager().member().member(m_object).action()));
