@@ -67,7 +67,7 @@ cam_relax_speed         	= 3.0		;скорость возврата в исходное положение
 cam_max_angle				= 8	    	;максимальный угол отдачи
 snd_shoot					= weapons\pkm_shot
 
-ammo_class		 = ammo_7.62x54_7h1
+ammo_class					= ammo_7.62x54_7h1
 fire_dispersion_base		= 1 		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 rpm            		        = 500
 hit_power					= 60
@@ -75,8 +75,16 @@ hit_impulse					= 220
 fire_distance  		        = 500
 bullet_speed				= 500			;начальная скорость пули
 
-light_color		 = 0.9,0.9,0.5
-light_range		 = 6
-light_var_color  = 0.05
-light_var_range  = 0.5
-light_time 		 = 0.3
+light_color					= 0.9,0.9,0.5
+light_range					= 6
+light_var_color				= 0.05
+light_var_range				= 0.5
+light_time 					= 0.3
+
+flame_particles				= weapons\generic_weapon08
+smoke_particles				= weapons\generic_shoot_01
+shell_particles				= weapons\generic_shells00
+
+tracer_trail_scale	 = 0.15
+tracer_start_length	 = 2
+tracer_width		 = 0.07
