@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 
 <game_information_portions>
+
+	<!-- Нападение на базу Свободы -->
+	<info_portion id="mil_enemy_nearest"></info_portion>
 	
 	<!-- Избиение патруля Свободы -->
 	<info_portion id="mil_actor_nearest"></info_portion>
