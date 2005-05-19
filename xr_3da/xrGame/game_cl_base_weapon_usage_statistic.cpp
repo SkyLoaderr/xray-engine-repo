@@ -5,7 +5,7 @@
 #include "Actor.h"
 #include "xrServer.h"
 #include "hudmanager.h"
-#include "GameFont.h"
+//#include "GameFont.h"
 
 BulletData::BulletData(shared_str FName, shared_str WName, SBullet* pBullet) 
 {
