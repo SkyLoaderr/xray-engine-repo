@@ -17,6 +17,7 @@
 // refs 
 class CUIDMFragList;
 class CUIDMPlayerList;
+class CUIDMStatisticWnd;
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
 class game_cl_Deathmatch;
@@ -37,7 +38,9 @@ protected:
 
 	CUIWindow*				m_pFragLists;
 	CUIWindow*				m_pPlayerLists;
-
+	//-----------------------------------------
+	CUIWindow*				m_pStatisticWnds;
+	//-----------------------------------------
 	shared_str					m_time_caption;		
 	shared_str					m_spectrmode_caption;		
 	
@@ -82,6 +85,7 @@ public:
 
 			void					ShowFragList			(bool bShow);
 			void					ShowPlayersList			(bool bShow);
+			void					ShowStatistic			(bool bShow);
 	virtual void					ReInitInventoryWnd		(); 
 };
 #endif // __XR_UIGAMEDM_H__

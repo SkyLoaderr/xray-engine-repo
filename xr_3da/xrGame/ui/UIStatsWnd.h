@@ -36,11 +36,13 @@ class CUIStatsWnd: public CUIDialogWnd
 {
 private:
 	typedef CUIDialogWnd inherited;
+
+	string1024	XML_NAME;
 public:
-	CUIStatsWnd();
+	CUIStatsWnd(LPCSTR XML = NULL);
 	virtual ~CUIStatsWnd();
 
-	virtual void Init();
+	virtual void Init(LPCSTR XML = NULL);
 //	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
 
 	// Добавить 1 элемент. Заполнить поля необходимо самостоятельно. Возвращает указатель 
@@ -63,6 +65,8 @@ public:
 	
 	Irect GetFrameRect () { return UIFrameWnd.GetWndRect();};
 	void RemoveItem (const u32 Index) {UIStatsList.RemoveItem(Index);};
+
+	CUIFrameWindow*		GetFrameWindow	()	{return &UIFrameWnd;};
 protected:
 //	CUIButton			UIBtn;
 	// Фрейм - оболочка

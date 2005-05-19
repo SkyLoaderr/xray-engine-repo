@@ -12,10 +12,10 @@ const char * const STATS_XML = "stats.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIStatsWnd::CUIStatsWnd()
+CUIStatsWnd::CUIStatsWnd(LPCSTR XML)
 	: m_uHighlightedItem(0xffffffff)
 {
-	Init();
+	Init(XML);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,12 +27,12 @@ CUIStatsWnd::~CUIStatsWnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatsWnd::Init()
+void CUIStatsWnd::Init(LPCSTR XML)
 {
 	CUIXml uiXml;
-//	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
-//	R_ASSERT3(xml_result, "xml file not found", STATS_XML);
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, STATS_XML);
+	if (XML) strcpy(XML_NAME, XML);
+	else strcpy(XML_NAME, STATS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, XML_NAME);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;
@@ -52,11 +52,6 @@ void CUIStatsWnd::Init()
 
 	xml_init.InitMultiTextStatic(uiXml, "headers_mt_static", 0, &UIHeader);
 	UIFrameWnd.AttachChild(&UIHeader);
-
-	SetHeaderColumnText(0, "Name");
-	SetHeaderColumnText(1, "Frags");
-	SetHeaderColumnText(2, "Deaths");
-	SetHeaderColumnText(3, "ping");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,9 +63,7 @@ CUIStatsListItem * CUIStatsWnd::AddItem()
 	UIStatsList.ScrollToBegin();
 
 	CUIXml uiXml;
-//	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
-//	R_ASSERT(xml_result);
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, STATS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, XML_NAME);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	pNewItem->XmlInit("list", uiXml);

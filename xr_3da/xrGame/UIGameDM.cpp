@@ -3,6 +3,7 @@
 
 #include "UIDMPlayerList.h"
 #include "UIDMFragList.h"
+#include "UIDMStatisticWnd.h"
 #include "ui\UIBuyWeaponWnd.h"
 #include "ui\UISkinSelector.h"
 #include "HUDManager.h"
@@ -35,6 +36,7 @@ CUIGameDM::CUIGameDM()
 	m_game			= NULL; 
 	m_pFragLists					= xr_new<CUIWindow>();
 	m_pPlayerLists					= xr_new<CUIWindow>();
+	m_pStatisticWnds					= xr_new<CUIWindow>();
 
 	m_time_caption = "timelimit";
 	m_gameCaptions.addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.95f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
@@ -73,8 +75,10 @@ void	CUIGameDM::Init				()
 
 	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
+	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>();
 	pFragList->SetAutoDelete(true);
 	pPlayerList->SetAutoDelete(true);
+	pStatisticWnd->SetAutoDelete(true);
 
 
 	int ScreenW = UI_BASE_WIDTH;
@@ -95,6 +99,13 @@ void	CUIGameDM::Init				()
 	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 
 	m_pPlayerLists->AttachChild(pPlayerList);
+	//-----------------------------------------------------------
+	FrameRect = pStatisticWnd->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+
+	m_pStatisticWnds->AttachChild(pStatisticWnd);
 };
 //--------------------------------------------------------------------
 
@@ -102,6 +113,7 @@ void	CUIGameDM::ClearLists ()
 {
 	m_pFragLists->DetachAll();
 	m_pPlayerLists->DetachAll();
+	m_pStatisticWnds->DetachAll();
 }
 //--------------------------------------------------------------------
 CUIGameDM::~CUIGameDM()
@@ -109,6 +121,7 @@ CUIGameDM::~CUIGameDM()
 	ClearLists();
 	xr_delete(m_pFragLists);
 	xr_delete(m_pPlayerLists);
+	xr_delete(m_pStatisticWnds);
 }
 
 void	CUIGameDM::ReInitInventoryWnd		() 
@@ -140,6 +153,13 @@ void CUIGameDM::ShowPlayersList			(bool bShow)
 		AddDialogToRender(m_pPlayerLists);
 	else
 		RemoveDialogToRender(m_pPlayerLists);
+}
+void CUIGameDM::ShowStatistic			(bool bShow)
+{
+	if(bShow)
+		AddDialogToRender(m_pStatisticWnds);
+	else
+		RemoveDialogToRender(m_pStatisticWnds);
 }
 
 void CUIGameDM::SetSpectrModeMsgCaption		(LPCSTR str)

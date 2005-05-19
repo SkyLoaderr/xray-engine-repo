@@ -166,10 +166,26 @@ WeaponUsageStatistic::~WeaponUsageStatistic()
 	m_dwLastRequestSenderID = 0;
 };
 
+bool					WeaponUsageStatistic::GetPlayer			(LPCSTR PlayerName, PLAYERS_STATS_it& pPlayerI)
+{
+	pPlayerI	= std::find(aPlayersStatistic.begin(), aPlayersStatistic.end(), PlayerName);
+	if (pPlayerI == aPlayersStatistic.end() || !((*pPlayerI) == PlayerName))
+		return false;
+	return true;
+}
 PLAYERS_STATS_it					WeaponUsageStatistic::FindPlayer			(LPCSTR PlayerName)
 {
+	/*
 	PLAYERS_STATS_it pPlayerI	= std::find(aPlayersStatistic.begin(), aPlayersStatistic.end(), PlayerName);
 	if (pPlayerI == aPlayersStatistic.end() || !((*pPlayerI) == PlayerName))
+	{
+		aPlayersStatistic.push_back(Player_Statistic(PlayerName));
+		pPlayerI = aPlayersStatistic.end()-1;
+	};
+	return pPlayerI;
+	*/
+	PLAYERS_STATS_it pPlayerI;
+	if (!GetPlayer(PlayerName, pPlayerI))
 	{
 		aPlayersStatistic.push_back(Player_Statistic(PlayerName));
 		pPlayerI = aPlayersStatistic.end()-1;
@@ -460,6 +476,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 //---------------------------------------------------------------
 void				WeaponUsageStatistic::Draw						()
 {
+	return;
 	CGameFont* pFont = HUD().Font().pFontMedium;
 	pFont->SetColor(color_rgba(255, 255, 255, 255));
 	float X = 0;

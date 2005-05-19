@@ -10365,6 +10365,12 @@
 						RelativePath="UIDMPlayerList.h">
 					</File>
 					<File
+						RelativePath=".\UIDMStatisticWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\UIDMStatisticWnd.h">
+					</File>
+					<File
 						RelativePath="UIGameDM.cpp">
 					</File>
 					<File

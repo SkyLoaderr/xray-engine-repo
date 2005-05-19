@@ -3,6 +3,7 @@
 
 #include "UITDMPlayerList.h"
 #include "UITDMFragList.h"
+#include "UIDMStatisticWnd.h"
 
 #include "hudmanager.h"
 #include "game_cl_base.h"
@@ -29,6 +30,7 @@ void CUIGameTDM::Init ()
 	//-----------------------------------------------------------
 	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();pFragListT1->SetAutoDelete(true);
 	CUITDMFragList* pFragListT2	= xr_new<CUITDMFragList>	();pFragListT2->SetAutoDelete(true);
+	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>(); pStatisticWnd->SetAutoDelete(true);
 
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
@@ -71,6 +73,13 @@ void CUIGameTDM::Init ()
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
 	m_pPlayerLists->AttachChild(pPlayerListT2);
+	//-----------------------------------------------------------
+	FrameRect = pStatisticWnd->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+
+	m_pStatisticWnds->AttachChild(pStatisticWnd);
 }
 //--------------------------------------------------------------------
 CUIGameTDM::~CUIGameTDM()

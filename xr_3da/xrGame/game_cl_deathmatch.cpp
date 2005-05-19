@@ -10,6 +10,7 @@
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UIPdaWnd.h"
+#include "dinput.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
@@ -477,7 +478,11 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {
 	if (kSCORES == key )
 	{
-		if(m_game_ui) m_game_ui->ShowFragList(true);
+		if(m_game_ui)
+			if (Level().IR_GetKeyState(DIK_LCONTROL))
+				m_game_ui->ShowStatistic(true);
+			else
+				m_game_ui->ShowFragList(true);
 		return true;
 	};
 
@@ -551,7 +556,8 @@ bool	game_cl_Deathmatch::OnKeyboardRelease		(int key)
 		if (m_game_ui)
 		{
 			m_game_ui->ShowFragList(false);
-			//		m_game_ui->ShowPlayersList(false);
+			m_game_ui->ShowStatistic(false);
+			
 		};
 		return true;
 	};

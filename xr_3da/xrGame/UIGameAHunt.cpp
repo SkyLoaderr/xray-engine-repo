@@ -3,6 +3,7 @@
 
 #include "UIAHuntPlayerList.h"
 #include "UIAHuntFragList.h"
+#include "UIDMStatisticWnd.h"
 
 #include "hudmanager.h"
 #include "team_base_zone.h"
@@ -37,6 +38,7 @@ void CUIGameAHunt::Init	()
 	//-----------------------------------------------------------
 	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();pFragListT1->SetAutoDelete(true);
 	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();pFragListT2->SetAutoDelete(true);
+	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>(); pStatisticWnd->SetAutoDelete(true);
 
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
@@ -93,6 +95,13 @@ void CUIGameAHunt::Init	()
 
 	m_buy_msg_caption				=	"ah_buy";
 	m_gameCaptions.addCustomMessage(m_buy_msg_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, BUY_MSG_COLOR, "");
+	//-----------------------------------------------------------
+	FrameRect = pStatisticWnd->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+
+	m_pStatisticWnds->AttachChild(pStatisticWnd);
 
 };
 //--------------------------------------------------------------------

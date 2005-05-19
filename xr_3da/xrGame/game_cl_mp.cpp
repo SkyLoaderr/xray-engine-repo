@@ -406,6 +406,7 @@ void game_cl_mp::LoadTeamData			(char* TeamName)
 
 void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
+	inherited::OnSwitchPhase(old_phase, new_phase);
 	switch (new_phase)
 	{
 	case GAME_PHASE_INPROGRESS:

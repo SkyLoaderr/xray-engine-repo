@@ -139,7 +139,8 @@ struct WeaponUsageStatistic {
 
 	void				Clear			();
 
-	PLAYERS_STATS_it					FindPlayer			(LPCSTR PlayerName);	
+	PLAYERS_STATS_it					FindPlayer			(LPCSTR PlayerName);
+	bool								GetPlayer			(LPCSTR PlayerName, PLAYERS_STATS_it& pPlayerI);	
 	bool								FindBullet			(u32 BulletID, ABULLETS_it& Bullet_it);
 	void								RemoveBullet		(ABULLETS_it& Bullet_it);
 	//-----------------------------------------------
