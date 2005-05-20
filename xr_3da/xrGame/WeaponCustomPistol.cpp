@@ -15,8 +15,10 @@ CWeaponCustomPistol::~CWeaponCustomPistol()
 }
 void CWeaponCustomPistol::switch2_Fire	()
 {
-	m_bFireSingleShot = true;
-	bWorking = false;
+	m_bFireSingleShot			= true;
+	bWorking					= false;
+	m_iShotNum					= 0;
+	m_bStopedAfterQueueFired	= false;
 }
 
 
