@@ -75,30 +75,12 @@ void CUIGameLog::Init(int x, int y, int width, int height)
 {
 	CUIListWnd::Init(x, y, width, height);
 
-	// Chat log
-//	AttachChild(&UILogList);
-//	UILogList.Init(0, 0, width, height);
-
-	//xml_init.InitListWnd(xml_doc, "game_log_list", 0, &UILogList);
 	EnableScrollBar(false);
 
 	CUIStatic* ps = xr_new<CUIStatic>();
 	AttachChild(ps);
 	ps->Init(x, y, width, height);
-	ps->InitSharedTexture("ui_texture.xml","debug");
-	ps->SetStretchTexture(true);
 }
-
-//void CUIGameLog::SetFont(CGameFont* pFont){
-//	CUIWindow::SetFont(pFont);
-//	UILogList.SetFont(pFont);
-//}
-
-//void CUIGameLog::Draw(){
-//	CUIDialogWnd::Draw();
-//}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIGameLog::Update()
 {
