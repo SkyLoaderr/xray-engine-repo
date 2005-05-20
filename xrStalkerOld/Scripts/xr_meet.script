@@ -98,13 +98,26 @@ function action_meet_wait:initialize()
 	if self.object:limping() then
 		state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor})
 	else			
-		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
-		--state_mgr.set_state(self.object, "sit", nil, nil, {look_object = db.actor})
+		--state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
+		state_mgr.set_state(self.object, "psy_shoot", {obj = self, func = self.time_callback}, 0, nil, {animation_nout = true})
 	end
 	xr_sound.set_sound(self.object, "weather, state, wait")	
 end
 function action_meet_wait:time_callback()
-	state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
+	--state_mgr.set_state(self.object, "hello", {obj = self, func = self.time_callback}, 5000, {look_object = db.actor})
+	local snd_obj = sound_object([[Weapons\hpsa_shoot]])
+	if snd_obj ~= nil then
+		snd_obj:play_at_pos(db.actor, self.object:position(), sound_object.s3d)
+	end
+		
+	local h = hit()
+	h.power = 1000
+	h.direction = vector_rotate_y(self.object:direction(), 90)
+	h.bone = "bip01_head"
+	h.draftsman = self.object 
+	h.impulse = 200 --350
+	h.type = hit.wound
+	self.object:hit(h)
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
@@ -139,8 +152,8 @@ function action_weapon:initialize()
 	stop_play_sound(self.object)
 
 	xr_sound.set_sound(self.object, "")
-	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true}, "threat_weap")	
-	--state_mgr.set_state(self.object, "sleep")	
+	--state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true}, "threat_weap")
+	state_mgr.set_state(self.object, "psy_armed")
 end
 function action_weapon:execute()
 	action_base.execute (self)

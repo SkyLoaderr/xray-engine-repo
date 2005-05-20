@@ -102,7 +102,7 @@ function action_patrol:reset_scheme()
 						if self.a.scan_table[i] == nil then
 							self.a.scan_table[i] = {}
 						end
-						table.insert(self.a.scan_table[i], k)
+						table.insert(self.a.scan_table[i], {key = k, pos =level.vertex_position(path:level_vertex_id(k))})
 					end
 				end
 			end
@@ -190,10 +190,38 @@ function action_patrol:execute()
 				end
 			end
 			self.enemy_position = self.enemy:position()
+			-- Занести место поиска врага в scan_table
+			if self.a.sniper == true then
+				self.position = self.object:position()
+
+				self.direction = vector():set(self.enemy_position.x - self.position.x,
+											  0,
+											  self.enemy_position.z - self.position.z)
+				self.direction:normalize()				
+				self.point_0 = vector():set(self.enemy_position.x + self.a.enemy_disp*self.direction.z,
+											self.enemy_position.y,
+											self.enemy_position.z - self.a.enemy_disp*self.direction.x)
+				--self.point_0:normalize()
+				self.point_2 = vector():set(self.enemy_position.x - self.a.enemy_disp*self.direction.z,
+											self.enemy_position.y,
+											self.enemy_position.z + self.a.enemy_disp*self.direction.x)
+				--self.point_1:normalize()
+				printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
+				printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
+				printf("POINT 2 [%s] [%s] [%s]", self.point_2.x, self.point_2.y, self.point_2.z)
+				self.a.scan_table[-1] = {}
+				table.insert(self.a.scan_table[-1], {key = 0, pos =self.point_0})
+				table.insert(self.a.scan_table[-1], {key = 1, pos =self.enemy_position})
+				table.insert(self.a.scan_table[-1], {key = 2, pos =self.point_2})					
+			end
+
 		else
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
-				printf("scaning for enemy")
+
+				printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+				-- сканируем
+				self:scan(-1)
 			else				
 				-- если норетрит или мы на месте - ныкаться, иначе идти на точку
 				if self:on_place() then 
@@ -238,6 +266,13 @@ function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then
 		utils.abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
 	end
+	
+	if self.flag ~= flag then
+		self.flag = flag
+		self.a.scan_begin = nil
+		self.a.cur_look_point = nil
+		self.a.last_look_point = nil
+	end
 
 	if self.a.scan_begin == nil or
 	   device():time_global() - self.a.scan_begin > self.a.time_scan_delta then
@@ -250,13 +285,13 @@ function action_patrol:scan(flag)
 			self.a.last_look_point = self.next_point
 		end
 			
-		printf("Look at [%s][%s]", utils.to_str(self.a.last_look_point), utils.to_str(self.a.cur_look_point))
-		self.look_position = level.vertex_position(patrol(self.a.path_look):level_vertex_id(self.a.last_look_point))
-		self.dest_position = level.vertex_position(patrol(self.a.path_look):level_vertex_id(self.next_point))
-		self.look_position.x = self.look_position.x + self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/self.a.scandelta
-		self.look_position.y = self.look_position.y + self.a.cur_look_point * (self.dest_position.y - self.look_position.y)/self.a.scandelta
-		self.look_position.z = self.look_position.z + self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/self.a.scandelta
-		state_mgr.set_state(self.object, "hide_na", nil, nil, {look_position = self.look_position}, nil, nil, 0.2)
+		printf("Look at [%s][%s]", utils.to_str(self.a.last_look_point.key), utils.to_str(self.a.cur_look_point))
+		self.look_position = self.a.last_look_point.pos
+		self.dest_position = self.next_point.pos
+		self.look_point = vector():set(self.look_position.x + self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/self.a.scandelta,
+									   self.look_position.y + self.a.cur_look_point * (self.dest_position.y - self.look_position.y)/self.a.scandelta,
+									   self.look_position.z + self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/self.a.scandelta)
+		state_mgr.set_state(self.object, "hide_na", nil, nil, {look_position = self.look_point}, nil, nil, 0.2)
 
 		if self.a.cur_look_point >= self.a.scandelta then
 			self.a.cur_look_point = nil
@@ -275,26 +310,25 @@ function action_patrol:get_next_point(flag)
 	local next = false
 
 	if self.a.last_look_point == nil then
-		table.sort(self.a.scan_table[flag], function(a,b) return a < b end)
+		table.sort(self.a.scan_table[flag], function(a,b) return a.key < b.key end)
 	end
 	print_table(self.a.scan_table[flag])
 	for k,v in self.a.scan_table[flag] do		
-		printf("trying %s", k)
 		if self.a.last_look_point == nil then
 			return v
 		end
 		if next == true then
 			return v
 		end
-		if self.a.last_look_point == v then
+		if self.a.last_look_point.key == v.key then
 			next = true
 		end
 	end
 	if next == true then
-		if self.a.last_look_point == 0 then
-			table.sort(self.a.scan_table[flag], function(a,b) return a < b end)
+		if self.a.last_look_point.key == 0 then
+			table.sort(self.a.scan_table[flag], function(a,b) return a.key < b.key end)
 		else
-			table.sort(self.a.scan_table[flag], function(a,b) return a > b end)
+			table.sort(self.a.scan_table[flag], function(a,b) return a.key > b.key end)
 		end
 	end
 	return self.a.last_look_point
@@ -377,8 +411,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
 	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false)
+	
 	st.idle = 20*1000
-
+	st.enemy_disp = 20
 	
 	if st.radius == nil then
 		st.radius = 20
