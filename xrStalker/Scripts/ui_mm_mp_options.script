@@ -1,0 +1,24 @@
+-- file:		UI_MM_MP_CREATE.SCRIPT
+--
+
+
+class "mp_create" (CUIWindow)
+
+function mp_create:__init() super()
+end
+
+function mp_create:__finalize()
+
+end
+
+function mp_create:InitControls(x, y, xml, handler)
+	self:Init(x,y, 738, 416)
+	
+	self.bk = CUIFrameWindow()
+	xml:InitFrame("frame",0, self.bk)
+	self:AttachChild(self.bk)
+
+
+end
+
+
