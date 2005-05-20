@@ -124,6 +124,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrD3D9-Null", "xrD3D9-Null\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ren_translit", "..\test\ren_translit\ren_translit.vcproj", "{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 23
@@ -396,6 +400,14 @@ Global
 		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Mixed.Build.0 = Release|Win32
 		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.ActiveCfg = Release|Win32
 		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.Build.0 = Release|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Debug.ActiveCfg = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Debug.Build.0 = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.DebugNoExceptions.Build.0 = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Mixed.ActiveCfg = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Mixed.Build.0 = Debug|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Release.ActiveCfg = Release|Win32
+		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		..\..\XR_3DA.vsd = ..\..\XR_3DA.vsd

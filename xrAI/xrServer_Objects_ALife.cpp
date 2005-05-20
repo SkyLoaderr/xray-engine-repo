@@ -1564,6 +1564,43 @@ void CSE_ALifeMountedWeapon::FillProps			(LPCSTR pref, PropItemVec& values)
 	inherited::FillProps			(pref,values);
 }
 
+
+CSE_ALifeStationaryMgun::CSE_ALifeStationaryMgun	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+{}
+
+CSE_ALifeStationaryMgun::~CSE_ALifeStationaryMgun	()
+{}
+
+void CSE_ALifeStationaryMgun::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read			(tNetPacket);
+	m_bWorking = !!tNetPacket.r_u8	();
+	load_data						(m_destEnemyDir, tNetPacket);
+}
+
+void CSE_ALifeStationaryMgun::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write			(tNetPacket);
+	tNetPacket.w_u8					(m_bWorking? 1:0);
+	save_data						(m_destEnemyDir, tNetPacket);
+}
+
+
+void CSE_ALifeStationaryMgun::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeStationaryMgun::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeStationaryMgun::FillProps			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps			(pref,values);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTeamBaseZone
 ////////////////////////////////////////////////////////////////////////////

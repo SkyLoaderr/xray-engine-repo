@@ -330,7 +330,7 @@ void CObjectFactory::register_classes	()
 	// objects
 	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR			,"projector");
 	ADD(CWeaponMounted			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_MOUNTED			,"wpn_mounted");
-	ADD(CWeaponStatMgun			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_STATMGUN		,"wpn_stat_mgun");
+	ADD(CWeaponStatMgun			,CSE_ALifeStationaryMgun		,CLSID_OBJECT_W_STATMGUN		,"wpn_stat_mgun");
 //	ADD(CTrigger				,CSE_Trigger					,CLSID_OBJECT_TRIGGER			,"trigger");
 
 	// entity

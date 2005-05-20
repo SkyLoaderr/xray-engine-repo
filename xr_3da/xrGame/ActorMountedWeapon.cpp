@@ -8,7 +8,7 @@
 
 bool CActor::use_MountedWeapon(CPhysicsShellHolder* object)
 {
-	CWeaponMounted* wpn	=smart_cast<CWeaponMounted*>(object);
+	CHolderCustom* wpn	=smart_cast<CHolderCustom*>(object);
 	if(m_holder){
 		if(!wpn||(m_holder==wpn)){
 			m_holder->detach_Actor();

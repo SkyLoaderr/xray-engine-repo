@@ -267,7 +267,9 @@ void CActor::ActorUse()
 		switch (holder->CLS_ID)
 		{
 		//case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
-		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+		case CLSID_OBJECT_W_MOUNTED:
+		case CLSID_OBJECT_W_STATMGUN:
+			if(use_MountedWeapon(0))	return;	break;
 		}
 	}
 				
@@ -343,7 +345,8 @@ void CActor::ActorUse()
 
 
 
-				if(object->CLS_ID == CLSID_OBJECT_W_MOUNTED)
+				if(	object->CLS_ID == CLSID_OBJECT_W_MOUNTED ||
+					object->CLS_ID == CLSID_OBJECT_W_STATMGUN)
 					if(use_MountedWeapon(object)){
 						PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 						if (I){

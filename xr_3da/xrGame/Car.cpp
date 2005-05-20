@@ -345,12 +345,11 @@ void CCar::UpdateCL				( )
 			Owner()->XFORM().set(XFORM());
 			Owner()->XFORM().mulB	(m_sits_transforms[0]);
 		}
-
-		if(Owner()->IsMyCamera()) 
+		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{
 			cam_Update(Device.fTimeDelta, fov);
-			Owner()->EffectorManager().Update(Camera());
-			Owner()->EffectorManager().ApplyDevice();
+			OwnerActor()->EffectorManager().Update(Camera());
+			OwnerActor()->EffectorManager().ApplyDevice();
 		}
 
 		if(HUD().GetUI())//
@@ -453,7 +452,7 @@ void CCar::detach_Actor()
 	processing_deactivate();
 }
 
-bool CCar::attach_Actor(CActor* actor)
+bool CCar::attach_Actor(CGameObject* actor)
 {
 	if(Owner()) return false;
 	CHolderCustom::attach_Actor(actor);

@@ -46,8 +46,8 @@ protected:
 	virtual	void			FireEnd		();
 	virtual	void			UpdateFire	();
 	virtual	void			OnShot		();
-	virtual void			AddShotEffector		();
-	virtual void			RemoveShotEffector	();
+			void			AddShotEffector		();
+			void			RemoveShotEffector	();
 protected:
 	shared_str					m_sAmmoType;
 	CCartridge				m_CurrentAmmo;
@@ -90,9 +90,8 @@ public:
 	virtual void			cam_Update			(float dt, float fov=90.0f);
 
 	virtual bool			Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
-	virtual bool			attach_Actor		(CActor* actor);
+	virtual bool			attach_Actor		(CGameObject* actor);
 	virtual void			detach_Actor		();
-
 	virtual Fvector			ExitPosition		();
 	virtual bool			allowWeapon			()	const		{return false;};
 	virtual bool			HUDView				()  const		{return true;};

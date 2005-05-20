@@ -47,6 +47,7 @@ CWeaponMounted::CWeaponMounted()
 
 CWeaponMounted::~CWeaponMounted()
 {
+	xr_delete(camera);
 }
 
 void	CWeaponMounted::Load(LPCSTR section)
@@ -143,6 +144,13 @@ void	CWeaponMounted::UpdateCL()
 		fire_bone_xform.transform_dir	(fire_dir);
 
 		UpdateFire			();
+
+		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
+		{
+			cam_Update(Device.fTimeDelta, DEFAULT_FOV);
+			OwnerActor()->EffectorManager().Update(Camera());
+			OwnerActor()->EffectorManager().ApplyDevice();
+		}
 	}
 }
 
@@ -217,12 +225,13 @@ void	CWeaponMounted::cam_Update			(float dt, float fov)
 	const Fmatrix& C				= K->LL_GetTransform(camera_bone);
 	XFORM().transform_tiny			(P,C.c);
 
-	// rotate head
-	Owner()->Orientation().yaw		= -camera->yaw;
-	Owner()->Orientation().pitch	= -camera->pitch;
-
-	camera->Update					(P,Da);
-	Level().Cameras.Update			(camera);
+	if(OwnerActor()){
+		// rotate head
+		OwnerActor()->Orientation().yaw			= -Camera()->yaw;
+		OwnerActor()->Orientation().pitch		= -Camera()->pitch;
+	}
+	Camera()->Update					(P,Da);
+	Level().Cameras.Update				(Camera());
 
 	if(Owner())	Owner()->setEnabled	(true);
 }
@@ -231,7 +240,7 @@ bool	CWeaponMounted::Use					(const Fvector& pos,const Fvector& dir,const Fvecto
 {
 	return !Owner();
 }
-bool	CWeaponMounted::attach_Actor		(CActor* actor)
+bool	CWeaponMounted::attach_Actor		(CGameObject* actor)
 {
 	m_dAngle.set(0.0f,0.0f);
 	CHolderCustom::attach_Actor(actor);
@@ -249,7 +258,7 @@ bool	CWeaponMounted::attach_Actor		(CActor* actor)
 	Fvector ap;
 	XFORM().transform_tiny	(ap,A.c);
 	Fmatrix AP; AP.translate(ap);
-	Owner()->SetPhPosition	(AP);
+	if(OwnerActor()) OwnerActor()->SetPhPosition	(AP);
 	processing_activate		();
 	return true;
 }
@@ -348,10 +357,10 @@ const Fmatrix&	 CWeaponMounted::get_ParticlesXFORM	()
 
 void CWeaponMounted::AddShotEffector				()
 {
-	if(Owner())
+	if(OwnerActor())
 	{
-		CEffectorShot* S		= smart_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f));
+		CEffectorShot* S		= smart_cast<CEffectorShot*>	(OwnerActor()->EffectorManager().GetEffector(eCEShot)); 
+		if (!S)	S				= (CEffectorShot*)OwnerActor()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f));
 		R_ASSERT				(S);
 		S->Shot					(0.01f);
 	}
@@ -359,6 +368,6 @@ void CWeaponMounted::AddShotEffector				()
 
 void  CWeaponMounted::RemoveShotEffector	()
 {
-	if(Owner())
-		Owner()->EffectorManager().RemoveEffector	(eCEShot);
+	if(OwnerActor())
+		OwnerActor()->EffectorManager().RemoveEffector	(eCEShot);
 }

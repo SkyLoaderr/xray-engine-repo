@@ -459,7 +459,7 @@ public:
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update			(float dt, float fov);
 	void					detach_Actor		();
-	bool					attach_Actor		(CActor* actor);
+	bool					attach_Actor		(CGameObject* actor);
 	bool					is_Door				(u16 id,xr_map<u16,SDoor>::iterator& i);
 	bool					is_Door				(u16 id);
 	bool					DoorOpen			(u16 id);

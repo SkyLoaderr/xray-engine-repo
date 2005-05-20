@@ -22,8 +22,8 @@ void	CCar::cam_Update			(float dt, float fov)
 	switch(active_camera->tag) {
 	case ectFirst:
 		// rotate head
-		Owner()->Orientation().yaw	= -active_camera->yaw;
-		Owner()->Orientation().pitch= -active_camera->pitch;
+		if(OwnerActor()) OwnerActor()->Orientation().yaw	= -active_camera->yaw;
+		if(OwnerActor()) OwnerActor()->Orientation().pitch= -active_camera->pitch;
 		break;
 	case ectChase:					break;
 	case ectFree:					break;

@@ -438,6 +438,17 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMountedWeapon)
 #define script_type_list save_type_list(CSE_ALifeMountedWeapon)
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeStationaryMgun,CSE_ALifeDynamicObjectVisual)
+	bool							m_bWorking;
+	Fvector							m_destEnemyDir;
+
+									CSE_ALifeStationaryMgun	(LPCSTR caSection);
+	virtual							~CSE_ALifeStationaryMgun	();
+	
+SERVER_ENTITY_DECLARE_END
+//add_to_type_list(CSE_ALifeStationaryMgun)
+//#define script_type_list save_type_list(CSE_ALifeStationaryMgun)
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeSpaceRestrictor)
 									CSE_ALifeTeamBaseZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeTeamBaseZone	();
