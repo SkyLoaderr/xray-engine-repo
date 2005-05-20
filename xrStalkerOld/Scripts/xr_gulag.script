@@ -381,7 +381,7 @@ end
 
 function fract:get_member ()
 	for k,v in self.Object do
-	    if v:alife () == true then
+	    if v:alive () == true then
 	       return v
 	    end
 	end        
