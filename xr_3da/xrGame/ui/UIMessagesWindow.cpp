@@ -107,9 +107,6 @@ void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INF
 
 	m_pGameLog->AddItem<CUIListItem>(pItem, 0); /*---*/ m_pGameLog2->AddItem<CUIListItem>(pItem, 0);
 
-//	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0);	/*---*/ UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem2, 0); 
-//	UIPdaMsgListWnd.ScrollToBegin();				/*---*/ UIPdaMsgListWnd2.ScrollToBegin();
-
 	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
 	pItem2->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
 
@@ -122,12 +119,8 @@ void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INF
 	p->Cyclic(false);
 	p2->Cyclic(false);
 
-//	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
 	pItem->SetData(p);
 	pItem2->SetData(p2);
-
-
-//	UIPdaMsgListWnd.Show(true);	/*---*/ UIPdaMsgListWnd2.Show(true);
 
 	if(msg == ePdaMsgInfo)
 	{
