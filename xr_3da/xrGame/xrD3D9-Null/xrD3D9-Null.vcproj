@@ -87,6 +87,7 @@
 				LinkIncremental="1"
 				ModuleDefinitionFile="xrD3D9-Null.def"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/D3D9-Null.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
