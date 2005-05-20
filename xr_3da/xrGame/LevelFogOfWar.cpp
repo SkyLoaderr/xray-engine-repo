@@ -9,7 +9,7 @@
 #include "ui/UIMapWnd.h"
 
 
-#define FOG_CELL_SZ	(10.0f)
+#define FOG_CELL_SZ	(50.0f)
 
 struct FindFogByLevelName{
 	shared_str			level_name;
