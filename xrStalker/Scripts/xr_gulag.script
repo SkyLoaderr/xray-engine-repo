@@ -379,6 +379,15 @@ function fract:set_goodwill (goodwill, object)
 	end
 end
 
+function fract:get_member ()
+	for k,v in self.Object do
+	    if v:alife () == true then
+	       return v
+	    end
+	end        
+    return nil	
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
