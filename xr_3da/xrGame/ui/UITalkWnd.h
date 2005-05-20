@@ -28,6 +28,7 @@ class CUITalkWnd: public CUIDialogWnd
 {
 private:
 	typedef CUIDialogWnd inherited;
+	ref_sound			m_sound;
 public:
 	CUITalkWnd();
 	virtual ~CUITalkWnd();

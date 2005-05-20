@@ -91,6 +91,7 @@ void CLevelFogOfWar::Init	(const shared_str& level)
 void CLevelFogOfWar::Open	(Fvector2 pos)
 {
 	if(!m_rowNum ||!m_rowNum) return; //invalid map
+	if(!(pos.x>=m_levelRect.lt.x && pos.y>=m_levelRect.lt.y && pos.x<=m_levelRect.rb.x && pos.y<=m_levelRect.rb.y)) return; //invalid position
 	VERIFY2((pos.x>=m_levelRect.lt.x && pos.y>=m_levelRect.lt.y && pos.x<=m_levelRect.rb.x && pos.y<=m_levelRect.rb.y),"invalid position for opening FogOfWar map cell" );
 	
 	int col			= iFloor( (pos.x - m_levelRect.lt.x)/FOG_CELL_SZ);
