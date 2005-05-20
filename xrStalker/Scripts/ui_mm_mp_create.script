@@ -1,0 +1,16 @@
+-- file:		UI_MM_MP_CREATE.SCRIPT
+--
+
+
+class mp_create (CUIWindow)
+
+function mp_create:__init()
+end
+
+function mp_create:__finalize()
+
+end
+
+
+
+
