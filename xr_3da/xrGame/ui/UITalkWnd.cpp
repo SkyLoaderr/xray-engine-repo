@@ -30,18 +30,18 @@ const int MessageShift	= 30;
 
 CUITalkWnd::CUITalkWnd()
 {
-	m_pActor = NULL;
+	m_pActor				= NULL;
 
-	m_pOurInvOwner = NULL;
-	m_pOthersInvOwner = NULL;
+	m_pOurInvOwner			= NULL;
+	m_pOthersInvOwner		= NULL;
 
-	m_pOurDialogManager = NULL;
-	m_pOthersDialogManager = NULL;
+	m_pOurDialogManager		= NULL;
+	m_pOthersDialogManager	= NULL;
 
-	ToTopicMode();
+	ToTopicMode				();
 
-	Init();
-	Hide();
+	Init					();
+	Hide					();
 	SetFont(HUD().Font().pFontHeaderRussian);
 
 	m_bNeedToUpdateQuestions = false;
@@ -97,11 +97,11 @@ void CUITalkWnd::InitTalkDialog()
 	//очистить лог сообщений
 	UITalkDialogWnd.UIAnswersList.RemoveAll();
 
-	InitOthersStartDialog();
-	UpdateQuestions();
+	InitOthersStartDialog					();
+	UpdateQuestions							();
 
-	UITalkDialogWnd.Show();
-	UITradeWnd.Hide();
+	UITalkDialogWnd.Show					();
+	UITradeWnd.Hide							();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -232,26 +232,28 @@ void CUITalkWnd::Update()
 
 void CUITalkWnd::Draw()
 {
-	inherited::Draw();
+	inherited::Draw				();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Show()
 {
-	InitTalkDialog();
-	inherited::Show();
+	InitTalkDialog				();
+	inherited::Show				();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Hide()
 {
-	inherited::Hide();
-	UITradeWnd.Hide();
-	if(!m_pActor) return;
+	StopSnd						();
+
+	inherited::Hide				();
+	UITradeWnd.Hide				();
+	if(!m_pActor)				return;
 	
-	ToTopicMode();
+	ToTopicMode					();
 
 	if (m_pActor->IsTalking()) m_pActor->StopTalk();
 	m_pActor = NULL;
@@ -345,7 +347,7 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
 {
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen(text) == 0) return;
-
+	PlaySnd			(text);
 	CUIString str(*CStringTable()(text));
 
 	// Делаем препроцессинг строки
@@ -370,17 +372,19 @@ void CUITalkWnd::SwitchToTrade()
 {
 	if(m_pOurInvOwner->IsTradeEnabled() && m_pOthersInvOwner->IsTradeEnabled() ){
 
-		UITalkDialogWnd.Hide();
+		UITalkDialogWnd.Hide		();
 
-		UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
-		UITradeWnd.Show();
-		UITradeWnd.StartTrade();
-		UITradeWnd.BringAllToTop();
+		UITradeWnd.InitTrade		(m_pOurInvOwner, m_pOthersInvOwner);
+		UITradeWnd.Show				();
+		UITradeWnd.StartTrade		();
+		UITradeWnd.BringAllToTop	();
+		StopSnd						();
 	}
 }
 
 bool CUITalkWnd::IR_OnKeyboardPress(int dik)
 {
+	StopSnd						();
 	int cmd = key_binding[dik];
 	if(cmd==kUSE)
 	{
@@ -388,4 +392,23 @@ bool CUITalkWnd::IR_OnKeyboardPress(int dik)
 		return true;
 	}
 	return inherited::IR_OnKeyboardPress(dik);
+}
+
+void CUITalkWnd::PlaySnd(LPCSTR text)
+{
+	if(xr_strlen(text) == 0) return;
+	StopSnd						();
+	
+	string_path	fn;
+	strconcat(fn, "dialogs\\", text, ".ogg");
+	if(FS.exist("$game_sounds$",fn)){
+		m_sound.create(TRUE,fn);
+		m_sound.play(0,sm_2D);
+	}
+}
+
+void CUITalkWnd::StopSnd()
+{
+	if(m_sound.feedback)
+		m_sound.stop();
 }

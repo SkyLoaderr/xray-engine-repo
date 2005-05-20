@@ -29,6 +29,8 @@ class CUITalkWnd: public CUIDialogWnd
 private:
 	typedef CUIDialogWnd inherited;
 	ref_sound			m_sound;
+	void				PlaySnd					(LPCSTR text);
+	void				StopSnd					();
 public:
 	CUITalkWnd();
 	virtual ~CUITalkWnd();
