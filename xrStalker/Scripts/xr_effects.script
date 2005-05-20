@@ -524,8 +524,23 @@ function mil_bomb_explode (actor, npc)
     h.type = hit.chemical_burn;
     source:hit (h);
     
+    db.actor:give_info_portion ("mil_freedom_under_attack")
+    
 --    source:explode (0)
 
+end
+
+function mil_emeny_nearest (actor, npc)
+    if actor == nil or actor:alive () == false then
+       return
+    end    
+    local gulag = xr_gulag.fraction["mil_freedom"]
+    if gulag == nil then return end
+    local member = gulag:get_member ()
+    if member == nil then return end
+    if member:relation (actor) == game_object.enemy then
+       actor:give_info_portion ("mil_enemy_nearest")
+    end    
 end
 
 -- GARBAGE
