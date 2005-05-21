@@ -57,7 +57,8 @@ private:
 													const DIDATAFORMAT* pdidDataFormat, u32 dwFlags,
 													u32 buf_size );
 
-	xr_stack<IInputReceiver*>	cbStack;
+//	xr_stack<IInputReceiver*>	cbStack;
+	xr_vector<IInputReceiver*>	cbStack;
 
 	void						MouseUpdate					( );
 	void						KeyUpdate					( );

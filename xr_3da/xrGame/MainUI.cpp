@@ -155,8 +155,8 @@ void CMainUI::Activate	(bool bActivate)
 		};
 		Device.seqRender.Add		(this);
 	}else{
-		m_Flags.set					(flActive,FALSE);
-		m_Flags.set					(flNeedChangeCapture,TRUE);
+		m_Flags.set					(flActive,				FALSE);
+		m_Flags.set					(flNeedChangeCapture,	TRUE);
 
 		Device.seqRender.Remove		(this);
 		
@@ -259,6 +259,9 @@ void CMainUI::IR_OnMouseWheel(int direction)
 //pureRender
 void	CMainUI::OnRender		(void)
 {
+	if(m_Flags.is(flGameSaveScreenshot)){
+		return;
+	};
 	DoRenderDialogs();
 
 	m_pFontManager->Render();
@@ -271,9 +274,6 @@ void	CMainUI::OnFrame		(void)
 {
 	m_2DFrustum.CreateFromRect	(Irect().set(0,0,Device.dwWidth,Device.dwHeight));
 	if(!IsActive() && m_startDialog){
-//		Device.seqFrame.Remove		(this);
-//		Device.seqRender.Remove		(this);
-//		IR_Release					();
 		xr_delete					(m_startDialog);
 	}
 	if (m_Flags.is(flNeedChangeCapture)){
@@ -282,13 +282,26 @@ void	CMainUI::OnFrame		(void)
 		else						IR_Release();
 	}
 	CDialogHolder::OnFrame		();
+
+
+	//screenshot stuff
+	if(m_Flags.is(flGameSaveScreenshot) && Device.dwFrame > m_screenshotFrame  ){
+		m_Flags.set					(flGameSaveScreenshot,FALSE);
+		::Render->Screenshot		(IRender_interface::SM_FOR_GAMESAVE, m_screenshot_name);
+		
+		if(g_pGameLevel && m_Flags.is(flActive)){
+			Device.seqFrame.Remove	(g_pGameLevel);
+			Device.seqRender.Remove	(g_pGameLevel);
+		};
+
+		if(m_Flags.is(flRestoreConsole))
+			Console->Show			();
+	}
+
 }
 
 void CMainUI::OnDeviceCreate()
 {
-/*	if (Device.dwWidth!=UI_BASE_WIDTH)	SetScaleXY(float(Device.dwWidth)/float(UI_BASE_WIDTH), float(Device.dwHeight)/float(UI_BASE_HEIGHT));
-	else								SetScaleXY(1.f,1.f);
-*/
 }
 
 void CMainUI::ClientToScreenScaled(Fvector2& dest, float left, float top, u32 align)
@@ -358,6 +371,7 @@ void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
 	VERIFY(result.x1>=0&&result.y1>=0&&(result.x2<=UI_BASE_WIDTH*GetScaleX())&&(result.y2<=UI_BASE_HEIGHT*GetScaleY()));
 	RCache.set_Scissor	(&result);
 }
+
 void CMainUI::PopScissor()
 {
 	VERIFY(!m_Scissors.empty());
@@ -373,5 +387,22 @@ void CMainUI::PopScissor()
 		tgt.rb.x 		= iFloor(ClientToScreenScaledX(float(top.rb.x),0));
 		tgt.rb.y 		= iFloor(ClientToScreenScaledY(float(top.rb.y),0));
 		RCache.set_Scissor(&tgt);
+	}
+}
+
+void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR name)
+{
+	if(mode != IRender_interface::SM_FOR_GAMESAVE){
+		::Render->Screenshot		(mode,name);
+	}else{
+		m_Flags.set					(flGameSaveScreenshot, TRUE);
+		strcpy(m_screenshot_name,name);
+		if(g_pGameLevel && m_Flags.is(flActive)){
+			Device.seqFrame.Add		(g_pGameLevel);
+			Device.seqRender.Add	(g_pGameLevel);
+		};
+		m_screenshotFrame			= Device.dwFrame+1;
+		m_Flags.set					(flRestoreConsole,		Console->bVisible);
+		Console->Hide				();
 	}
 }

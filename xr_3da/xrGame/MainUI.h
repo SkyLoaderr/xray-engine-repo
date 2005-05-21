@@ -46,19 +46,19 @@ class CMainUI :
 
 	CUIDialogWnd*	m_startDialog;
 
-//	float			m_fDevScaleX;
-//	float			m_fDevScaleY;
-
 	enum{
 		flRestoreConsole	= (1<<0),
 		flRestorePause		= (1<<1),
 		flActive			= (1<<2),
 		flNeedChangeCapture	= (1<<3),
 		flRestoreCursor		= (1<<4),
+		flGameSaveScreenshot= (1<<5),
 	};
 	Flags8			m_Flags;
 	xr_stack<Irect> m_Scissors;
 	C2DFrustum		m_2DFrustum;
+	string_path		m_screenshot_name;
+	u32				m_screenshotFrame;
 public:
 					CMainUI							();
 	virtual			~CMainUI						();
@@ -103,6 +103,7 @@ public:
 	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
 	void			PushScissor						(const Irect& r, bool overlapped=false);
 	void			PopScissor						();
+	void			Screenshot						(IRender_interface::ScreenshotMode mode=IRender_interface::SM_NORMAL, LPCSTR name = 0);
 protected:
 	DEFINE_MAP(xr_string, ref_shader, ShaderMap, ShaderMap_it);
 	ShaderMap		m_shaders;

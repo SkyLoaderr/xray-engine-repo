@@ -725,7 +725,8 @@ public:
 #ifdef DEBUG
 		start					= CPU::GetCycleCount();
 #endif
-		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
+		UI()->Screenshot		(IRender_interface::SM_FOR_GAMESAVE,S1);
+//		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
 #ifdef DEBUG
 		finish					= CPU::GetCycleCount();
 #endif

@@ -152,11 +152,11 @@ void CInput::KeyUpdate	( )
 	for (u32 i = 0; i < dwElements; i++){
 		key					= od[i].dwOfs;
 		KBState[key]		= od[i].dwData & 0x80;
-		if ( KBState[key])	cbStack.top()->IR_OnKeyboardPress	( key );
-		if (!KBState[key])	cbStack.top()->IR_OnKeyboardRelease	( key );
+		if ( KBState[key])	cbStack.back()->IR_OnKeyboardPress	( key );
+		if (!KBState[key])	cbStack.back()->IR_OnKeyboardRelease	( key );
 	}
 	for ( i = 0; i < COUNT_KB_BUTTONS; i++ )
-		if (KBState[i]) cbStack.top()->IR_OnKeyboardHold( i );
+		if (KBState[i]) cbStack.back()->IR_OnKeyboardHold( i );
 }
 
 BOOL CInput::iGetAsyncKeyState( int dik )
@@ -192,25 +192,25 @@ void CInput::MouseUpdate( )
 		case DIMOFS_Y:	offs[1]	+= od[i].dwData; timeStamp[1] = od[i].dwTimeStamp;	break;
 		case DIMOFS_Z:	offs[2]	+= od[i].dwData; timeStamp[2] = od[i].dwTimeStamp;	break;
 		case DIMOFS_BUTTON0:
-			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.top()->IR_OnMousePress(0);		}
-			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->IR_OnMouseRelease(0);	}
+			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.back()->IR_OnMousePress(0);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.back()->IR_OnMouseRelease(0);	}
 			break;
 		case DIMOFS_BUTTON1:
-			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.top()->IR_OnMousePress(1);		}
-			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.top()->IR_OnMouseRelease(1);	}
+			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.back()->IR_OnMousePress(1);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.back()->IR_OnMouseRelease(1);	}
 			break;
 		}
 	}
 
-	if (mouseState[0]) 		cbStack.top()->IR_OnMouseHold(0);
-	if (mouseState[1])		cbStack.top()->IR_OnMouseHold(1);
+	if (mouseState[0]) 		cbStack.back()->IR_OnMouseHold(0);
+	if (mouseState[1])		cbStack.back()->IR_OnMouseHold(1);
 
 	if ( dwElements ){
-		if (offs[0] || offs[1]) cbStack.top()->IR_OnMouseMove	( offs[0], offs[1] );
-		if (offs[2])			cbStack.top()->IR_OnMouseWheel	( offs[2] );
+		if (offs[0] || offs[1]) cbStack.back()->IR_OnMouseMove	( offs[0], offs[1] );
+		if (offs[2])			cbStack.back()->IR_OnMouseWheel	( offs[2] );
 	} else {
-		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
-		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
+		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.back()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
+		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.back()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
 	}
 }
 
@@ -223,9 +223,9 @@ void CInput::iCapture(IInputReceiver *p)
 
     // change focus
 	if (!cbStack.empty())
-		cbStack.top()->IR_OnDeactivate();
-	cbStack.push(p);
-	cbStack.top()->IR_OnActivate();
+		cbStack.back()->IR_OnDeactivate();
+	cbStack.push_back(p);
+	cbStack.back()->IR_OnActivate();
 
 	// prepare for _new_ controller
 	ZeroMemory			( timeStamp,	sizeof(timeStamp) );
@@ -235,11 +235,21 @@ void CInput::iCapture(IInputReceiver *p)
 
 void CInput::iRelease(IInputReceiver *p)
 {
-	if (p == cbStack.top())
+	if (p == cbStack.back())
 	{
-		cbStack.top()->IR_OnDeactivate();
-		cbStack.pop();
-		cbStack.top()->IR_OnActivate();
+		cbStack.back()->IR_OnDeactivate();
+		cbStack.pop_back();
+		IInputReceiver * ir = cbStack.back();
+		ir->IR_OnActivate();
+	}else{// we are not topmost receiver, so remove the nearest one
+		u32 cnt = cbStack.size();
+		for(;cnt>0;--cnt)
+			if( cbStack[cnt-1] == p ){
+				xr_vector<IInputReceiver*>::iterator it = cbStack.begin();
+				std::advance	(it,cnt-1);
+				cbStack.erase	(it);
+				break;
+			}
 	}
 }
 
