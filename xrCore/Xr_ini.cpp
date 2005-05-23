@@ -145,6 +145,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			}
 			// start new section
 			R_ASSERT3(strchr(str,']'),"Bad ini section found: ",str);
+			LPCSTR inherited_name = strstr(str,"]:");
+			if (0!=inherited_name){
+				inherited_name	+= 2;
+				const Sect& inherited_section = r_section(inherited_name);
+				Current.Data	= inherited_section.Data;
+			}
 			*strchr(str,']') 	= 0;
 			Current.Name 		= strlwr(str+1);
 		} else {
