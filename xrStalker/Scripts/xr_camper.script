@@ -126,6 +126,10 @@ end
 function action_patrol:execute()
 	action_base.execute (self)
 
+	if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+		return
+	end
+
 	if not self.was_reset then
 		self:reset_scheme()
     end
