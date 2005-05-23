@@ -145,6 +145,8 @@
 	<info_portion id="mil_village_monsters_spawn"></info_portion>
 	<info_portion id="mil_arsenal_inside"></info_portion>
 	
+	<!-- Гулаг мутантов около труб -->
+	<info_portion id="mil_actor_in_tubes_zone"></info_portion>
 	
 	
 </game_information_portions>
