@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include "StdAfx.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 
