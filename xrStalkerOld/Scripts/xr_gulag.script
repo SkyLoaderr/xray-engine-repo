@@ -515,6 +515,10 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_bar.checkMonster(npc_community, gulag_type) then
 		return true
 	end
+	
+	if gulag_military.checkMonster (npc_community, gulag_type) then
+	   return true
+    end	    
 
 	return false
 end

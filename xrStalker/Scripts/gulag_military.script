@@ -281,3 +281,15 @@ function check_state (gulag)
     return 0   
 end
 
+-----------------------------------------------------------------------
+-- Гулаг монстров около труб
+--    0 - нормальное состояние
+--    1 - изгнание игрока
+-----------------------------------------------------------------------
+
+function checkMonster (npc_community, gulag_type)
+	if gulag_type == "mil_tubes" then
+		return npc_community == "dog" 
+    end
+	return false
+end
