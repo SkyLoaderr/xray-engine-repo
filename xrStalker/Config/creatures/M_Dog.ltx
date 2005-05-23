@@ -270,3 +270,18 @@ bip01_head 			= 10.0, -1, 1.00
 	255,012,255,255 ;на всех уровнях, по каналам
 	255,013,255,255 ;на всех уровнях, по дорогам
 	255,014,255,255 ;на всех уровнях, по железнодорожным насыпям
+
+[dog_default]:m_dog_e
+$spawn     = "monsters\dogs\dog_default"
+
+[dog_angry]:m_dog_e
+$spawn				= "monsters\dogs\dog_angry"
+health_hit_part 	= 0.001
+
+[dog_easy]:m_dog_e
+$spawn				= "monsters\dogs\dog_easy"
+Morale_Hit_Quant	= 0.9
+
+[dog_deaf]:m_dog_e
+$spawn				= "monsters\dogs\dog_deaf"
+SoundThreshold		 = 1.0 
