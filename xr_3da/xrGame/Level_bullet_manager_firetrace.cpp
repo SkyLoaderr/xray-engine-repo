@@ -13,6 +13,7 @@
 #include "xrmessages.h"
 #include "clsid_game.h"
 #include "../skeletoncustom.h"
+#include "Actor.h"
 
 //константы shoot_factor, определ€ющие 
 //поведение пули при столкновении с объектом
@@ -252,9 +253,13 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		if (GameID() != GAME_SINGLE && bullet->m_bSendHit && R.O->CLS_ID == CLSID_OBJECT_ACTOR
 			&& Game().m_WeaponUsageStatistic.CollectData())
 		{
-			Game().m_WeaponUsageStatistic.OnBullet_Hit(bullet, R.O->ID(), (s16)R.element, end_point);
-			AddStatistic = true;			
-		}
+			CActor* pActor = smart_cast<CActor*>(R.O);
+			if (pActor && pActor->g_Alive())
+			{
+				Game().m_WeaponUsageStatistic.OnBullet_Hit(bullet, R.O->ID(), (s16)R.element, end_point);
+				AddStatistic = true;
+			};
+		};
 		
 		CGameObject::u_EventGen	(P,(AddStatistic)? GE_HIT_STATISTIC : GE_HIT,R.O->ID());
 		P.w_u16			(bullet->parent_id);
