@@ -273,6 +273,14 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			game->remove_all_restrictions(P,destination);
 		}break;
+
+	case GEG_PLAYER_ATTACH_HOLDER:
+	case GEG_PLAYER_DETACH_HOLDER:
+		{
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast		(clientID,P,MODE);
+//			VERIFY				(verify_entities());
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

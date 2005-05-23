@@ -16,6 +16,7 @@
 
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
+#include "holder_custom.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -206,6 +207,27 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_ACTOR_MAX_POWER:
 		{
 			conditions().MaxPower();
+		}break;
+	case GEG_PLAYER_ATTACH_HOLDER:
+		{
+			u32 id = P.r_u32();
+			CObject* O	= Level().Objects.net_Find	(id);
+			if (!O){
+				Msg("! Error: No object to attach holder [%d]", id);
+				break;
+			}
+			VERIFY(m_holder==NULL);
+			CHolderCustom*	holder = smart_cast<CHolderCustom*>(O);
+			if(!holder->Engaged())	use_Holder		(holder);
+
+		}break;
+	case GEG_PLAYER_DETACH_HOLDER:
+		{
+			VERIFY			(m_holder);
+			u32 id			= P.r_u32();
+			CGameObject*	GO	= smart_cast<CGameObject*>(m_holder);
+			VERIFY			(id==GO->ID());
+			use_Holder		(NULL);
 		}break;
 	}
 }

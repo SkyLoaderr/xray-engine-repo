@@ -73,10 +73,11 @@ void CActor::detach_Vehicle()
 	m_holderID=u16(-1);
 }
 
-bool CActor::use_Vehicle(CPhysicsShellHolder* object)
+bool CActor::use_Vehicle(CHolderCustom* object)
 {
 	
-	CHolderCustom* vehicle=smart_cast<CHolderCustom*>(object);
+//	CHolderCustom* vehicle=smart_cast<CHolderCustom*>(object);
+	CHolderCustom* vehicle=object;
 	Fvector center;
 	Center(center);
 	if(m_holder){

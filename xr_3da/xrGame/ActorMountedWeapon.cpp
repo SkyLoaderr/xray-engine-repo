@@ -6,9 +6,10 @@
 #include "../CameraBase.h"
 #include "ActorEffector.h"
 
-bool CActor::use_MountedWeapon(CPhysicsShellHolder* object)
+bool CActor::use_MountedWeapon(CHolderCustom* object)
 {
-	CHolderCustom* wpn	=smart_cast<CHolderCustom*>(object);
+//	CHolderCustom* wpn	=smart_cast<CHolderCustom*>(object);
+	CHolderCustom* wpn	=object;
 	if(m_holder){
 		if(!wpn||(m_holder==wpn)){
 			m_holder->detach_Actor();

@@ -254,6 +254,41 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 	}
 }
 
+bool CActor::use_Holder				(CHolderCustom* holder)
+{
+
+	if(m_holder){
+		CGameObject* holderGO			= smart_cast<CGameObject*>(m_holder);
+		
+		if(smart_cast<CCar*>(holderGO))
+			return use_Vehicle(0);
+
+		if (holderGO->CLS_ID==CLSID_OBJECT_W_MOUNTED ||
+			holderGO->CLS_ID==CLSID_OBJECT_W_STATMGUN)
+			return use_MountedWeapon(0);
+
+	}else{
+		bool b = false;
+		CGameObject* holderGO			= smart_cast<CGameObject*>(holder);
+		if(smart_cast<CCar*>(holder))
+			b = use_Vehicle(holder);
+
+		if (holderGO->CLS_ID==CLSID_OBJECT_W_MOUNTED ||
+			holderGO->CLS_ID==CLSID_OBJECT_W_STATMGUN)
+			b = use_MountedWeapon(holder);
+		
+		if(b){//used succesfully
+			// switch off torch...
+			PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+			if (I){
+				CTorch* torch = smart_cast<CTorch*>(I);
+				if (torch) torch->Switch(false);
+			}
+		}
+		return b;
+	}
+}
+
 void CActor::ActorUse()
 {
 	mstate_real = 0;
@@ -262,6 +297,13 @@ void CActor::ActorUse()
 		
 	if (m_holder)
 	{
+		CGameObject*	GO			= smart_cast<CGameObject*>(m_holder);
+		NET_Packet		P;
+		CGameObject::u_EventGen		(P, GEG_PLAYER_DETACH_HOLDER, ID());
+		P.w_u32						(GO->ID());
+		CGameObject::u_EventSend	(P);
+//		if(use_Holder(0))return;
+/*
 		CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
 		if(smart_cast<CCar*>(holder)) if(use_Vehicle(0))return;
 		switch (holder->CLS_ID)
@@ -270,7 +312,7 @@ void CActor::ActorUse()
 		case CLSID_OBJECT_W_MOUNTED:
 		case CLSID_OBJECT_W_STATMGUN:
 			if(use_MountedWeapon(0))	return;	break;
-		}
+		}*/
 	}
 				
 	if(m_PhysicMovementControl->PHCapture())
@@ -331,31 +373,13 @@ void CActor::ActorUse()
 		}
 		else
 		{
-			if (object)
+			if (object && smart_cast<CHolderCustom*>(object))
 			{
-				if(smart_cast<CCar*>(object)) 
-					if(use_Vehicle(object)){
-						PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-						if (I){
-							CTorch* torch = smart_cast<CTorch*>(I);
-							if (torch) torch->Switch(false);
-						}
-						return;
-					}	
-
-
-
-				if(	object->CLS_ID == CLSID_OBJECT_W_MOUNTED ||
-					object->CLS_ID == CLSID_OBJECT_W_STATMGUN)
-					if(use_MountedWeapon(object)){
-						PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-						if (I){
-							CTorch* torch = smart_cast<CTorch*>(I);
-							if (torch) torch->Switch(false);
-						}
+					NET_Packet		P;
+					CGameObject::u_EventGen		(P, GEG_PLAYER_ATTACH_HOLDER, ID());
+					P.w_u32						(object->ID());
+					CGameObject::u_EventSend	(P);
 					return;
-					}	
-				
 			}
 
 		}

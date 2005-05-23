@@ -263,8 +263,10 @@ public:
 protected:
 	CHolderCustom*			m_holder;
 	u16						m_holderID;
-	bool					use_Vehicle				(CPhysicsShellHolder* object);
-	bool					use_MountedWeapon		(CPhysicsShellHolder* object);
+	bool					use_Holder				(CHolderCustom* holder);
+
+	bool					use_Vehicle				(CHolderCustom* object);
+	bool					use_MountedWeapon		(CHolderCustom* object);
 	void					ActorUse				();
 
 
