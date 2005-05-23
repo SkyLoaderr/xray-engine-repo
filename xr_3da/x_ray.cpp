@@ -335,6 +335,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	{
 		xr_vector<xr_string>	ignore, test	;
 		ignore.push_back		(xr_string("user"));
+		ignore.push_back		(xr_string("Stalker_net.exe"));
+		ignore.push_back		(xr_string("map_list.ltx"));
+		ignore.push_back		(xr_string("banned.ltx"));
+		ignore.push_back		(xr_string("maprot_list.ltx"));
+
+
 		test.push_back			(xr_string(".ltx"));
 		test.push_back			(xr_string(".script"));
 		test.push_back			(xr_string(".exe"));
