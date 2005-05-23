@@ -290,7 +290,7 @@ end
 
 function checkMonster (npc_community, gulag_type)
 	if gulag_type == "mil_tubes" then
-		return npc_community == "pseudo_gigant" 
+		return npc_community == "dog" or npc_community == "pseudodog"
     end
 	return false
 end
