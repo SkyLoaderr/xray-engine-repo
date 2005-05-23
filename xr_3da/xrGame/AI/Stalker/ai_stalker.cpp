@@ -300,7 +300,7 @@ void CAI_Stalker::net_Destroy()
 	m_pPhysics_support->in_NetDestroy	();
 
 	Device.remove_from_seq_parallel	(
-		fastdelegate::FastDelegate0(
+		fastdelegate::FastDelegate0<>(
 			this,
 			&CAI_Stalker::update_object_handler
 		)
@@ -458,7 +458,7 @@ void CAI_Stalker::UpdateCL()
 {
 	if (g_Alive()) {
 		if (g_mt_config.test(mtObjectHandler) && CObjectHandler::planner().initialized())
-			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_object_handler));
+			Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CAI_Stalker::update_object_handler));
 		else
 			update_object_handler			();
 	}

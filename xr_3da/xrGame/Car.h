@@ -36,6 +36,12 @@ class CCar :
 	public CHitImmunity,
 	public CExplosive
 {
+#ifdef DEBUG
+	CFunctionGraph m_dbg_power_rpm;
+#endif
+	
+	
+	
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void						PhDataUpdate				(dReal step)			;
 	virtual void						PhTune						(dReal step)			;

@@ -47,6 +47,10 @@
 #	include "ai/trader/ai_trader.h"
 
 #	include "ai/crow/ai_crow.h"
+#	ifdef DEBUG
+#	include "../StatGraph.h"
+#	include "PHDebug.h"
+#	endif
 #	include "car.h"
 
 #	include "helicopter.h"

@@ -6,6 +6,9 @@
 
 #include "ActorEffector.h"
 #include "holder_custom.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 #include "../skeletonanimated.h"
 #include "PHShellSplitter.h"

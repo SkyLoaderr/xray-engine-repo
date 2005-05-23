@@ -7238,6 +7238,9 @@
 							<File
 								RelativePath=".\CarWheels.cpp">
 							</File>
+							<File
+								RelativePath=".\DBG_Car.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="heli"

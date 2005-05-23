@@ -7,6 +7,7 @@
 #include "__aabb_tri.h"
 #include "../MathUtils.h"
 #ifdef DEBUG
+#include "../StatGraph.h"
 #include "../PHDebug.h"
 
 #endif

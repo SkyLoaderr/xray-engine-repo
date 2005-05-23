@@ -350,7 +350,7 @@ void CCustomMonster::UpdateCL	()
 	*/
 
 	if (g_mt_config.test(mtSoundPlayer))
-		Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CCustomMonster::update_sound_player));
+		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::update_sound_player));
 	else
 		update_sound_player	();
 
@@ -837,7 +837,7 @@ void CCustomMonster::net_Destroy()
 	movement().net_Destroy		();
 	
 	Device.remove_from_seq_parallel	(
-		fastdelegate::FastDelegate0(
+		fastdelegate::FastDelegate0<>(
 			this,
 			&CCustomMonster::update_sound_player
 		)

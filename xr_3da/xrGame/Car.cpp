@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "ParticlesObject.h"
 #include "Physics.h"
+#ifdef DEBUG
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 #include "car.h"
 #include "hudmanager.h"
 #include "cameralook.h"
@@ -1384,10 +1388,12 @@ float CCar::EngineDriveSpeed()
 {
 	//float wheel_speed,drive_speed=dInfinity;
 	float calc_rpm=dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);
+
 	if(!b_clutch&&calc_rpm<m_min_rpm)
 	{
 		calc_rpm=m_min_rpm;
 	}
+	limit_above(calc_rpm,m_max_rpm);
 	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;

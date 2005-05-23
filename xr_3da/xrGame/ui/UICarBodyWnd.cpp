@@ -12,6 +12,11 @@
 #include "../HUDManager.h"
 #include "../WeaponAmmo.h"
 #include "../Actor.h"
+#ifdef DEBUG
+#include "../ode_include.h"
+#include "../../StatGraph.h"
+#include "../PHDebug.h"
+#endif
 #include "../Car.h"
 #include "../Trade.h"
 #include "../UIGameSP.h"

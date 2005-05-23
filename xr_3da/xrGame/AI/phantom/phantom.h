@@ -27,7 +27,7 @@ private:
 
 	void				UpdateFlyMedia				();
 
-	fastdelegate::FastDelegate0						UpdateEvent;
+	fastdelegate::FastDelegate0<>					UpdateEvent;
 private:
 	struct SStateData{
 		shared_str		particles;

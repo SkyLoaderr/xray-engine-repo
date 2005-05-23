@@ -13,6 +13,24 @@
 #include "game_graph.h"
 #include "PHCollideValidator.h"
 #include "PHShell.h"
+
+/*
+[impulse_transition]
+random_min              =1       ; х массу объекта = величина случайно направленного импульса 
+; с случайно выбранной точкой приложения в пределах нового обекта
+random_hit_imp         =0.1     ; х величена хит - импульса =............
+common_hit_factor      =0.1     ; фактор с которым прикладывается хит по исходному объекту ко всем частям кроме взрывов
+lv_transition_factor   =1       ; коэффициент передачи линейной скорости
+av_transition_factor   =1       ; коэффициент передачи угловой скорости
+;ref_bone                       ; кость из по которой определяется скорость для частей у который связь не задана по умолчанию рут
+
+[physics\box\prt\box_wood_01_prt1]
+source_bone            =-1      ;-1- ref_bone
+imp_transition_factor  =1       ; коэффициент передачи импульса     
+lv_transition_factor   =1       ; коэффициент передачи линейной скорости 
+av_transition_factor   =1       ; коэффициент передачи угловой скорости
+
+*/
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -182,6 +200,7 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	CPhysicsShell* own_shell=PPhysicsShellHolder()->PPhysicsShell();
 	CPhysicsShell* new_shell=dn->PPhysicsShellHolder()->PPhysicsShell();
 	
+//////////////////////////////////////////////////////////////////////////////////	
 	dBodyID own_body=own_shell->get_ElementByStoreOrder(0)->get_body();
 
 	u16 new_el_number = new_shell->get_ElementsNumber();
@@ -194,8 +213,14 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 		dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
 		e->set_LinearVel(*(Fvector*)&res_vell);
 	}
+
+
+
+
 	new_shell->Enable();
 	if(own_shell->IsGroupObject())
 							new_shell->RegisterToCLGroup(own_shell->CollideBits());
-			
+
+	
+
 }

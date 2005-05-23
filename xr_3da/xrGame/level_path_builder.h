@@ -29,7 +29,7 @@ public:
 		m_start_vertex_id	= start_vertex_id;
 		m_dest_vertex_id	= dest_vertex_id;
 		m_object->m_wait_for_distributed_computation	= true;
-		Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CLevelPathBuilder::process));
+		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CLevelPathBuilder::process));
 	}
 
 			void __stdcall	process				()
@@ -46,7 +46,7 @@ public:
 	IC		void			remove			()
 	{
 		Device.remove_from_seq_parallel	(
-			fastdelegate::FastDelegate0(
+			fastdelegate::FastDelegate0<>(
 				this,
 				&CLevelPathBuilder::process
 			)

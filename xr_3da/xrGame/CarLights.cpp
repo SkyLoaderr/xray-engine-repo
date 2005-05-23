@@ -1,5 +1,10 @@
 #include "stdafx.h"
 #include "CarLights.h"
+#ifdef DEBUG
+#include "ode_include.h"
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 #include "../skeletoncustom.h"
 

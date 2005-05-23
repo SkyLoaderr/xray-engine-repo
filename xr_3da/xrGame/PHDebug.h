@@ -15,7 +15,19 @@ extern	u32 			dbg_joints_num							;
 extern	u32 			dbg_islands_num							;
 extern	u32 			dbg_contacts_num						;
 #ifdef DRAW_CONTACTS
-
+typedef float function_float(float x);
+struct CFunctionGraph
+{
+	CStatGraph			m_stat_graph;
+	function_float*		m_function	;
+	//float x_min,x_max;
+	//float y_min,y_max;
+	//Fvector2 left_bottom;
+	//Fvector2 range;
+public:
+	CFunctionGraph();
+	void Init(function_float* fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/);
+};
 struct SPHContactDBGDraw
 {
 	int geomClass;

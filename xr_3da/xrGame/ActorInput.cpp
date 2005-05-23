@@ -4,6 +4,9 @@
 #include "Torch.h"
 #include "trade.h"
 #include "../CameraBase.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 #include "HudManager.h"
 #include "UIGameSP.h"

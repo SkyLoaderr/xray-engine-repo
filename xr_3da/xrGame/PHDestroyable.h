@@ -10,7 +10,19 @@ class CPHDestroyableNotificator
 public:
 	virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)=0;
 };
-
+struct SDestroyInfo
+{
+	shared_str visual_name				;
+	u16		   source_bone				;
+	float	   lv_transition_factor		;
+	float      av_transition_factor		;
+///////////////////////////////////////////
+	Fvector	   predef_hit_impulse		;
+	Fvector	   predef_hit_pos			;
+///////////////////////////////////////////
+	Fvector	   hit_impulse				;
+	Fvector	   hit_pos					;
+};
 class	CPHDestroyable :
 public  CPHDestroyableNotificator
 

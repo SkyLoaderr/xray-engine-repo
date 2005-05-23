@@ -1,4 +1,9 @@
 #include "stdafx.h"
+#ifdef DEBUG
+#include "ode_include.h"
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 #include "car.h"
 #include "net_utils.h"
 #include "../skeletoncustom.h"

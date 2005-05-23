@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
-
+#ifdef DEBUG
+#include "ode_include.h"
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 #include "car.h"
 #include "actor.h"
 #include "cameralook.h"
