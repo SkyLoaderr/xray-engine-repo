@@ -907,6 +907,9 @@
 				Name="weapons"
 				Filter="">
 				<File
+					RelativePath=".\Config\weapons\w_abakan.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weapons\w_ak74.ltx">
 				</File>
 				<File
