@@ -124,12 +124,18 @@ on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker1
 snd = mil_collect_laugh1
 no_rotate = true
 no_move = true
-on_signal = action_end | follower1@mil_freedom_stalker1
+;on_signal = action_end | follower1@mil_freedom_stalker1
+on_signal = action_end | walker15@mil_freedom_stalker1
 
-[follower1@mil_freedom_stalker1]
+[walker15@mil_freedom_stalker1]
+path_walk = attack_way9_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker1
+combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker1]
 ;leader = 702
-distanse = 1
-on_signal = leader_section_changed | camper13@mil_freedom_stalker1
+;distanse = 1
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker1
 ;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker1
 combat_ignore_cond = always
 
@@ -185,14 +191,20 @@ snd = mil_kolyan
 no_rotate = true
 no_move = true
 on_signal = action_end | %+mil_freedom_attack_continue2%
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker2
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker2
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker2
 
-[follower1@mil_freedom_stalker2]
-;leader = 711
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2
-on_signal = leader_section_changed | camper13@mil_freedom_stalker2
+[walker15@mil_freedom_stalker2]
+path_walk = attack_way8_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker2]
+;leader = 711
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker2
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker2]
 path_walk = attack_way8_3
@@ -304,14 +316,20 @@ team = freedom
 snd = mil_collect_laugh2
 no_rotate = true
 no_move = true
-on_signal = action_end | %+mil_freedom_attack_continue3% follower1@mil_freedom_stalker4
+;on_signal = action_end | %+mil_freedom_attack_continue3% follower1@mil_freedom_stalker4
+on_signal = action_end | %+mil_freedom_attack_continue3% walker15@mil_freedom_stalker4
 
-[follower1@mil_freedom_stalker4]
-;leader = 712
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4
-on_signal = leader_section_changed | camper13@mil_freedom_stalker4
+[walker15@mil_freedom_stalker4]
+path_walk = attack_way2_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker4]
+;leader = 712
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker4
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker4]
 path_walk = attack_way2_3
@@ -373,14 +391,20 @@ snd = mil_collect_laugh3
 no_rotate = true
 no_move = true
 ;on_signal = action_end | follower1@mil_freedom_stalker5
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker5
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker5
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker5
 
-[follower1@mil_freedom_stalker5]
-;leader = 714
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5
-on_signal = leader_section_changed | camper13@mil_freedom_stalker5
+[walker15@mil_freedom_stalker5]
+path_walk = attack_way1_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker5]
+;leader = 714
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker5
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker5]
 path_walk = attack_way1_3
@@ -439,15 +463,21 @@ team = freedom
 snd = mil_collect_laugh4
 no_rotate = true
 no_move = true
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker6
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker6
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker6
 ;on_signal = action_end | follower1@mil_freedom_stalker6
 
-[follower1@mil_freedom_stalker6]
-;leader = 700
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6
-on_signal = leader_section_changed | camper13@mil_freedom_stalker6
+[walker15@mil_freedom_stalker6]
+path_walk = attack_way4_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker6]
+;leader = 700
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker6
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker6]
 path_walk = attack_way4_3
@@ -505,14 +535,20 @@ snd = mil_collect_laugh5
 no_rotate = true
 no_move = true
 ;on_signal = action_end | follower1@mil_freedom_stalker7
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker7
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker7
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker7
 
-[follower1@mil_freedom_stalker7]
-;leader = 715
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7
-on_signal = leader_section_changed | camper13@mil_freedom_stalker7
+[walker15@mil_freedom_stalker7]
+path_walk = attack_way6_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker7]
+;leader = 715
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker7
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker7]
 path_walk = attack_way6_3
@@ -587,15 +623,22 @@ on_timer = 60000 | camper1@mil_freedom_stalker9 %-mil_freedom_under_attack%
 [walker11@mil_freedom_stalker9]
 path_walk = attack_way3_1
 path_look = attack_look1
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker9
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker9
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker9
 team = freedom
 
-[follower1@mil_freedom_stalker9]
-;leader = 713
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
-on_signal = leader_section_changed | camper13@mil_freedom_stalker9
+[walker15@mil_freedom_stalker9]
+path_walk = attack_way3_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
 combat_ignore_cond = always
+
+
+;[follower1@mil_freedom_stalker9]
+;leader = 713
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker9
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker9]
 path_walk = attack_way3_3
@@ -635,15 +678,21 @@ on_timer = 60000 | camper1@mil_freedom_stalker10 %-mil_freedom_under_attack%
 [walker11@mil_freedom_stalker10]
 path_walk = attack_way5_1
 path_look = attack_look1
-on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker10
+;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker10
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker10
 team = freedom
 
-[follower1@mil_freedom_stalker10]
-;leader = 701
-distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
-on_signal = leader_section_changed | camper13@mil_freedom_stalker10
+[walker15@mil_freedom_stalker10]
+path_walk = attack_way5_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
 combat_ignore_cond = always
+
+;[follower1@mil_freedom_stalker10]
+;leader = 701
+;distanse = 0.5
+;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
+;on_signal = leader_section_changed | camper13@mil_freedom_stalker10
+;combat_ignore_cond = always
 
 [camper13@mil_freedom_stalker10]
 path_walk = attack_way5_3
