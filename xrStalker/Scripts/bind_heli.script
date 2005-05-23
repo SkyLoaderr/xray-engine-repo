@@ -14,6 +14,10 @@ function bind( obj )
 	end
 end
 
+function get_heli_ltx()
+	return heli_ltx
+end
+
 ---------------------------------------------------------------------------------------------
 -- Биндер вертолётов
 ---------------------------------------------------------------------------------------------
@@ -45,7 +49,6 @@ function heli_binder:reinit()
 	self.st.heli_ltx = heli_ltx
 
 	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
-	self.st.combat.enemy = self.object
 
 	-- на случай загрузки
 	self.last_alt       = self.heliObject:GetRealAltitude()
@@ -106,6 +109,8 @@ end
 
 ------------------------------ callbacks ---------------------------------
 function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
+	printf( "heli_binder: hit callback" )
+	self.st.combat.enemy_id = enemy_id
 end
 
 function heli_binder:on_point( distance, position, path_idx )
@@ -153,9 +158,4 @@ function heli_binder:check_health()
 			self.last_alt = altitude
 		end
 	end
-end
-
---------------------------------------------------------------------------
-function get_heli_ltx()
-	return heli_ltx
 end

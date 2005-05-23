@@ -96,7 +96,12 @@ function heli_move:save()
 end
 
 function heli_move:update( delta )
-	if self.combat_mgr.enemy then
+--	if self.object:name() == "heli_" and not self.combat_mgr:is_there_enemy() then
+--		local o = level_object_by_sid( 302 )
+--		self.combat_mgr.enemy_id = o and o:id()
+--	end
+
+	if self.combat_mgr:is_there_enemy() then
 		self.combat_mgr:update()
 		return
 	end
@@ -331,4 +336,6 @@ function set_scheme( npc, ini, scheme, section )
 
 	a.path_move_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	a.path_look_info = nil -- не загружены.
+
+	db.storage[npc:id()].combat:read_custom_data( ini, section )
 end
