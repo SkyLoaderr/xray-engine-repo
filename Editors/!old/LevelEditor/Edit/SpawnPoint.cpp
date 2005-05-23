@@ -14,6 +14,7 @@
 #include "xrMessages.h"
 #include "scene.h"
 #include "d3dutils.h"
+#include "ChoseForm.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
@@ -204,7 +205,6 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	m_Data->FillProp			(pref,items);
-    shared_str pref1				= PrepareKey(pref,m_Data->name());
 }
 void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
@@ -713,18 +713,67 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
+void CSpawnPoint::OnFillChooseItems		(ChooseValue* val)
+{
+    ESceneSpawnTools* st 		= dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
+    CLASS_ID cls_id				= m_SpawnData.m_ClassID;
+    ESceneSpawnTools::ClassSpawnMapIt cls_it = st->m_Classes.find(cls_id); VERIFY(cls_it!=st->m_Classes.end());
+    *val->m_Items				= cls_it->second;
+}
+
+shared_str CSpawnPoint::SectionToEditor(shared_str nm)
+{
+    ESceneSpawnTools* st 		= dynamic_cast<ESceneSpawnTools*>(ParentTools); 			VERIFY(st);
+    ESceneSpawnTools::ClassSpawnMapIt cls_it = st->m_Classes.find(m_SpawnData.m_ClassID);	VERIFY(cls_it!=st->m_Classes.end());
+    for (ESceneSpawnTools::SSVecIt ss_it=cls_it->second.begin(); ss_it!=cls_it->second.end(); ++ss_it)
+        if (nm.equal(ss_it->hint)) return ss_it->name;
+    return 0;
+}
+
+shared_str CSpawnPoint::EditorToSection(shared_str nm)
+{
+    ESceneSpawnTools* st  	= dynamic_cast<ESceneSpawnTools*>(ParentTools); 			VERIFY(st);
+    ESceneSpawnTools::ClassSpawnMapIt cls_it = st->m_Classes.find(m_SpawnData.m_ClassID);	VERIFY(cls_it!=st->m_Classes.end());
+    for (ESceneSpawnTools::SSVecIt ss_it=cls_it->second.begin(); ss_it!=cls_it->second.end(); ++ss_it)
+        if (nm.equal(ss_it->name)) return ss_it->hint;
+    return 0;
+}
+
+void CSpawnPoint::OnProfileChange(PropValue* prop)
+{
+	if (m_SpawnData.m_Profile.size()!=0){
+        shared_str s_name		= EditorToSection(m_SpawnData.m_Profile);
+        VERIFY					(s_name.size());
+        if (0!=strcmp(m_SpawnData.m_Data->name(),*s_name)){
+            ISE_Abstract* tmp	= create_entity	(*s_name); VERIFY(tmp);
+            NET_Packet 			Packet;
+            tmp->Spawn_Write	(Packet,TRUE);
+            R_ASSERT			(m_SpawnData.m_Data->Spawn_Read(Packet));
+            m_SpawnData.m_Data->set_editor_flag(ISE_Abstract::flVisualChange|ISE_Abstract::flVisualAnimationChange);
+            destroy_entity		(tmp);
+        }
+    }else{
+		m_SpawnData.m_Profile	= SectionToEditor(m_SpawnData.m_Data->name());
+    }
+}
+
 void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);
 
     if (m_SpawnData.Valid()){
-    	m_SpawnData.FillProp(pref,items);
+	    shared_str pref1			= PrepareKey(pref,m_SpawnData.m_Data->name());
+        m_SpawnData.m_Profile 		= SectionToEditor(m_SpawnData.m_Data->name());
+        ChooseValue* C				= PHelper().CreateChoose(items,PrepareKey(pref1.c_str(),"Profile"),&m_SpawnData.m_Profile,smCustom);
+        C->OnChooseFillEvent.bind	(this,&CSpawnPoint::OnFillChooseItems);
+        C->OnChangeEvent.bind		(this,&CSpawnPoint::OnProfileChange);
+    	m_SpawnData.FillProp		(pref,items);
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper().CreateU8	(items, PrepareKey(pref,"Respawn Point\\Team"), 		&m_RP_TeamID, 	0,7);
-			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Spawn Type"),	&m_RP_Type, 	rpoint_type);
-			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Game Type"), 	&m_RP_GameType, rpoint_game_type);
+			PHelper().CreateU8		(items, PrepareKey(pref,"Respawn Point\\Team"), 		&m_RP_TeamID, 	0,7);
+			PHelper().CreateToken8	(items, PrepareKey(pref,"Respawn Point\\Spawn Type"),	&m_RP_Type, 	rpoint_type);
+			PHelper().CreateToken8	(items, PrepareKey(pref,"Respawn Point\\Game Type"), 	&m_RP_GameType, rpoint_game_type);
         }break;
         case ptEnvMod:{
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);

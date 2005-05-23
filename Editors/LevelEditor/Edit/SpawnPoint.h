@@ -41,6 +41,7 @@ public:
     };
 	struct SSpawnData: public ISE_AbstractLEOwner{
 		CLASS_ID		m_ClassID;
+        shared_str 		m_Profile;
 		ISE_Abstract*	m_Data;
         CLE_Visual*		m_Visual;
         CLE_Motion*		m_Motion;
@@ -92,6 +93,10 @@ public:
         };
     };
 
+    shared_str		SectionToEditor			(shared_str);
+    shared_str		EditorToSection			(shared_str);
+	void __stdcall	OnProfileChange			(PropValue* prop);
+	void __stdcall	OnFillChooseItems		(ChooseValue*);
     bool 			OnAppendObject	(CCustomObject* object);
 protected:
     virtual void 	SetPosition		(const Fvector& pos);

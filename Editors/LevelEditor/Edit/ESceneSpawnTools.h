@@ -18,6 +18,11 @@ protected:
     };
     Flags32				m_Flags;
 
+    // class 
+    DEFINE_VECTOR		(SChooseItem,SSVec,SSVecIt);
+    DEFINE_MAP			(CLASS_ID,SSVec,ClassSpawnMap,ClassSpawnMapIt);
+    ClassSpawnMap		m_Classes;
+
     // icon list
     DEFINE_MAP			(shared_str,ref_shader,ShaderMap,ShaderPairIt);
     ShaderMap 			m_Icons;

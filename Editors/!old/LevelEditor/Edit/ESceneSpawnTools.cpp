@@ -40,6 +40,18 @@ ESceneSpawnTools::ESceneSpawnTools	():ESceneCustomOTools(OBJCLASS_SPAWNPOINT)
     hXRSE_FACTORY	= LoadLibrary(xrse_factory_library);									VERIFY3(hXRSE_FACTORY,"Can't load library:",xrse_factory_library);
     create_entity 	= (Tcreate_entity)	GetProcAddress(hXRSE_FACTORY,create_entity_func);  	VERIFY3(create_entity,"Can't find func:",create_entity_func);
     destroy_entity 	= (Tdestroy_entity)	GetProcAddress(hXRSE_FACTORY,destroy_entity_func);	VERIFY3(destroy_entity,"Can't find func:",destroy_entity_func);
+
+    m_Classes.clear			();
+    CInifile::Root& data 	= pSettings->sections();
+    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
+    	LPCSTR val;
+    	if (it->line_exist	("$spawn",&val)){
+        	CLASS_ID cls_id	= pSettings->r_clsid(it->Name,"class");
+        	shared_str v	= pSettings->r_string_wb(it->Name,"$spawn");
+        	m_Classes[cls_id].push_back(SChooseItem(*v,*it->Name));
+        }
+    }
+    
 }
 
 ESceneSpawnTools::~ESceneSpawnTools()
