@@ -266,10 +266,10 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 	//-----------------------------------------------------------------------------------
 	PLAYERS_STATS_it PlayerIt = FindPlayer(*object_parent->cName());
 	pBullet->m_dwID = PlayerIt->TotalShots++;
-	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*object_weapon->cName());
+	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*object_weapon->cNameSect());
 	WeaponIt->RoundsFired = (++WeaponIt->BulletsFired)/cartridge.m_buckShot;
 	//-----------------------------------------------------------------------------------
-	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cName(), pBullet));
+	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cNameSect(), pBullet));
 }
 
 /*
