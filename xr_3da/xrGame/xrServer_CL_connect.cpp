@@ -97,25 +97,28 @@ void xrServer::Check_GameSpy_CDKey_Success			(IClient* CL)
 
 bool xrServer::NeedToCheckClient_BuildVersion		(IClient* CL)	
 { 
-#ifdef DEBUG
+//#ifdef DEBUG
 
-	return false; 
+//	return false; 
 
-#else
+//#else
 
 	NET_Packet	P;
 	P.w_begin	(M_AUTH_CHALLENGE);
 	SendTo		(CL->ID, P);
 	return true;
 
-#endif
+//#endif
 };
 
 void xrServer::OnBuildVersionRespond				(IClient* CL, NET_Packet& P)
 {
+	u16 Type;
+	P.r_begin(Type);
 	u64 _our		=	FS.auth_get			();
 	u64 _him		=	P.r_u64	();
-	Msg("_our - %d, _him - %d", _our, _him);
+	Msg("_our - %d", _our);
+	Msg("_him - %d", _him);
 	if (_our != _him)	SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
 	else				Check_BuildVersion_Success (CL);
 };

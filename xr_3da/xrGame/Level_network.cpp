@@ -180,7 +180,9 @@ void			CLevel::OnBuildVersionChallenge		()
 {
 	NET_Packet P;
 	P.w_begin				(M_CL_AUTH);
-	P.w_u64					(FS.auth_get());
+	u64 auth = FS.auth_get();
+	Msg("auth - %d", auth);
+	P.w_u64					(auth);
 	Send					(P);
 };
 
