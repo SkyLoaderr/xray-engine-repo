@@ -320,13 +320,14 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		//вычисление рикошета, делается немного фейком,
 		//т.к. пуля остается в точке столкновения
 		//и сразу выходит из RayQuery()
-		Fvector rand_normal;
-		rand_normal.random_dir(hit_normal, PI_DIV_4, Random);
-		rand_normal.add(hit_normal);
-		rand_normal.normalize();
-
-		bullet->dir.mad(rand_normal,-2*bullet->dir.dotproduct(hit_normal));
-
+		Fvector rand_dir;
+		rand_dir.random_dir(rand_dir, PI_DIV_4, Random);
+		rand_dir.mul(0.1f);
+		Fvector new_dir;
+		bullet->dir.reflect(new_dir,hit_normal);
+		new_dir.add(rand_dir);
+		new_dir.normalize();
+		bullet->dir.set(new_dir);
 		bullet->prev_pos = bullet->pos;
 		bullet->pos = end_point;
 		bullet->flags.set(SBullet::RICOCHET_FLAG, 1);
