@@ -3,9 +3,9 @@ Helicopter universal combat
 Чугай Саша
 
 Сделать:
-	- вынести настройки в ltx
-	- настройки: кого атаковать
 	- сохранение/загрузка
+	- настройки: кого атаковать
+	- вынести настройки в ltx
 --------------------------------------------------------------------------------------------------]]
 
 class "heli_combat"
@@ -19,9 +19,6 @@ function heli_combat:__init( object, heliObject )
 
 	self.min_attack_dist = utils.cfg_get_number( ltx, "helicopter", "min_attack_dist", self.object, true )
 	self.max_attack_dist = utils.cfg_get_number( ltx, "helicopter", "max_attack_dist", self.object, true )
-
-	self.last_seen_pos   = nil
-	self.change_dir_time = nil
 
 	self.retreat_already = false
 end
@@ -43,6 +40,44 @@ function heli_combat:initialize()
 
 	self.heliObject.m_use_rocket_on_attack = self.m_use_rocket_on_attack
 	self.heliObject.m_use_mgun_on_attack   = self.m_use_mgun_on_attack
+end
+
+function heli_combat:save( packet )
+	packet:w_bool( self.retreat_already )
+	packet:w_bool( self.initialized )
+
+	if self.initialized then
+		local t = device():time_global()
+
+		packet:w_s16 ( self.enemy_id )
+		packet:w_u32 ( self.change_dir_time - t )
+		packet:w_u32 ( self.change_pos_time - t )
+		packet:w_u32 ( t - self.enemy_last_seen_time )
+		packet:w_bool( self.flight_direction )
+		packet:w_bool( self.can_forget_enemy )
+		packet:w_vec3( self.enemy_last_seen_pos )
+		packet:w_vec3( self.center_pos )
+	end
+end
+
+function heli_combat:load( packet )
+	self.retreat_already = packet:r_bool()
+	self.initialized     = packet:r_bool()
+
+	if self.initialized then
+		local t = device():time_global()
+		self.enemy_last_seen_pos = vector()
+		self.center_pos          = vector()
+
+		self.enemy_id             = packet:r_s16()
+		self.change_dir_time      = packet:r_u32() + t
+		self.change_pos_time      = packet:r_u32() + t
+		self.enemy_last_seen_time = t - packet:r_u32()
+		self.flight_direction     = packet:r_bool()
+		self.can_forget_enemy     = packet:r_bool()
+		packet:r_vec3( self.enemy_last_seen_pos )
+		packet:r_vec3( self.center_pos )
+	end
 end
 
 function heli_combat:is_there_enemy()
@@ -166,7 +201,7 @@ function heli_combat:update()
 	end
 
 	local see_enemy = self:update_enemy_visibility()
-	printf( "see_enemy = %s", tostring( see_enemy ) )
+--	printf( "see_enemy = %s", tostring( see_enemy ) )
 
 	self:update_shooting( see_enemy )
 

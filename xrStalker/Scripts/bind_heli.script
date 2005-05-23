@@ -96,6 +96,8 @@ function heli_binder:save( packet )
 	object_binder.save( self, packet )
 
 	xr_logic.save_obj( self.object, packet )
+
+	self.st.combat:save( packet )
 end
 
 function heli_binder:load( packet )
@@ -105,6 +107,8 @@ function heli_binder:load( packet )
 	object_binder.load( self, packet )
 
 	xr_logic.load_obj( self.object, packet )
+
+	self.st.combat:load( packet )
 end
 
 ------------------------------ callbacks ---------------------------------
