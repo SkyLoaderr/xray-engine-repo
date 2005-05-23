@@ -115,6 +115,7 @@ void xrServer::OnBuildVersionRespond				(IClient* CL, NET_Packet& P)
 {
 	u64 _our		=	FS.auth_get			();
 	u64 _him		=	P.r_u64	();
+	Msg("_our - %d, _him - %d", _our, _him);
 	if (_our != _him)	SendConnectResult	(CL, 0, "Data verification failed. Cheater?");
 	else				Check_BuildVersion_Success (CL);
 };
