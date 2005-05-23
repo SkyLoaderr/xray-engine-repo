@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "../CameraBase.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 
 #include "Weapon.h"

@@ -6,7 +6,11 @@
 #include "Actor_Flags.h"
 
 #include "hudmanager.h"
-
+#ifdef DEBUG
+#include "ode_include.h"
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 #include "xrserver_objects_alife_monsters.h"
 

@@ -9,6 +9,9 @@
 #include "inventory.h"
 #include "missile.h"
 #include "level.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 #include "Car.h"
 #include "../skeletonanimated.h"
 #include "clsid_game.h"
