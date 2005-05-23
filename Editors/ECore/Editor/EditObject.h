@@ -36,7 +36,7 @@ struct  ogf_desc;
 
 #define LOD_SHADER_NAME 	"details\\lod"
 #define LOD_SAMPLE_COUNT 	8
-#define LOD_IMAGE_SIZE 		128
+#define LOD_IMAGE_SIZE 		64
 
 // refs
 class XRayMtl;

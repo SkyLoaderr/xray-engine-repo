@@ -86,7 +86,7 @@
       Intermediate\SkeletonMotions.obj Intermediate\tntQAVI.obj 
       Intermediate\ImageManagerLOD.obj Intermediate\xrHemisphere.obj 
       Intermediate\DeviceScreenshot.obj Intermediate\FSkinned.obj 
-      Intermediate\xrCDB_Collector.obj"/>
+      Intermediate\xrCDB_Collector.obj Intermediate\perlin.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -319,6 +319,7 @@
       <FILE FILENAME="Editor\ETools.h" FORMNAME="" UNITNAME="ETools.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropSlimTools.h" FORMNAME="" UNITNAME="PropSlimTools.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrCDB_Collector.cpp" FORMNAME="" UNITNAME="xrCDB_Collector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\perlin.cpp" FORMNAME="" UNITNAME="perlin" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -21,7 +21,15 @@ private:
         shared_str			detail_name;
         STextureParams  	info;
     	ESummaryTextureType type;
+        struct SObjInfo{
+        	int 			ref_count;
+        	float 			area;
+            SObjInfo(float a):ref_count(0),area(a){}
+        };
+        DEFINE_MAP(shared_str,SObjInfo,objinf_map,objinf_map_it);
+        objinf_map			objects;
         float				effective_area;
+		void 				OnHighlightClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
     public:
     	STextureInfo(const shared_str& fn, ESummaryTextureType t)
         {
@@ -55,7 +63,7 @@ private:
         	ref_count		= 0;
         }
         void		Prepare	();
-        void		FillProp(PropItemVec& items, LPCSTR pref);   
+        void		FillProp(PropItemVec& items, LPCSTR prvectoref);   
         void		Export	(IWriter* F);
 		bool operator < (const SObjectInfo& other)	const{return xr_strcmp(object_name,other.object_name)<0;};
 		bool operator < (const shared_str& fn)		const{return xr_strcmp(object_name,fn)<0;};
@@ -91,7 +99,7 @@ private:
     void		Prepare				();
 public:
     			SSceneSummary		(){ Clear(); }
-    void 		AppendTexture		(shared_str name, ESummaryTextureType type, float area)
+    void 		AppendTexture		(shared_str name, ESummaryTextureType type, float area, shared_str obj_name)
     {
         TISetIt it 			= std::find(textures.begin(),textures.end(),name);
         if (it==textures.end()){
@@ -99,6 +107,13 @@ public:
             it 				= res.first;
         }
         STextureInfo* info	= (STextureInfo*)(&(*it));
+        
+        STextureInfo::objinf_map_it o_it	= info->objects.find(obj_name);
+        if (o_it==info->objects.end()){
+            std::pair<STextureInfo::objinf_map_it,bool> res = info->objects.insert(std::make_pair(obj_name,STextureInfo::SObjInfo(area)));
+            o_it 			= res.first;
+        }
+        o_it->second.ref_count++;
         info->effective_area+=area;
     }
     void 		AppendObject		(shared_str name)
@@ -111,7 +126,7 @@ public:
         SObjectInfo* info	= (SObjectInfo*)(&(*it));
         info->ref_count++;
     }
-    void		ExportSummaryInfo	(LPCSTR fn);
+    bool		ExportSummaryInfo	(LPCSTR fn);
     void		FillProp			(PropItemVec& items);
     void		Clear				(){
         bbox.invalidate		();

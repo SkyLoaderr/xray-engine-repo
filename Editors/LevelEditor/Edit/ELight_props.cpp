@@ -201,7 +201,7 @@ void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 //    PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp				(pref,items);
-	PHelper().CreateAngle  	(items,	PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
+	PHelper().CreateAngle  	(items,	PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,	0.1f,deg2rad(120.f),0.01f,2);
 	PHelper().CreateChoose	(items,	PrepareKey(pref, "Spot R1\\Texture"),  	&m_FalloffTex, 	smTexture);
 }
 //----------------------------------------------------

@@ -517,13 +517,13 @@ void CDrawUtilities::dbgDrawPlacement(const Fvector& p, int sz, u32 clr, LPCSTR 
 
 void CDrawUtilities::dbgDrawVert(const Fvector& p0, u32 clr, LPCSTR caption)
 {
-	dbgDrawPlacement(p0,3,clr,caption);
+	dbgDrawPlacement(p0,1,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
 }
 
 void CDrawUtilities::dbgDrawEdge(const Fvector& p0,	const Fvector& p1, u32 clr, LPCSTR caption)
 {
-	dbgDrawPlacement(p0,3,clr,caption);
+	dbgDrawPlacement(p0,1,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
 	DrawCross		(p1,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
     DrawLine		(p0,p1,clr);
@@ -531,7 +531,7 @@ void CDrawUtilities::dbgDrawEdge(const Fvector& p0,	const Fvector& p1, u32 clr, 
 
 void CDrawUtilities::dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, u32 clr, LPCSTR caption)
 {
-	dbgDrawPlacement(p0,3,clr,caption);
+	dbgDrawPlacement(p0,1,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
 	DrawCross		(p1,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
 	DrawCross		(p2,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);

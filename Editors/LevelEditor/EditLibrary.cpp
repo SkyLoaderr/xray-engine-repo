@@ -24,6 +24,7 @@
 #include "ui_main.h"
 #include "PropertiesListHelper.h"
 #include "ItemList.h"
+#include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -348,29 +349,27 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
+bool TfrmEditLibrary::GenerateLOD(ListItem* prop)
 {
-	if (node&&FHelper.IsObject(node)){
-        ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
-        xr_string nm	= prop->Key();
-        ChangeReference	(nm.c_str());
-        CEditableObject* O = m_pEditObject->GetReference();
-        if (O&&O->IsMUStatic()){
-            BOOL bLod 	= O->m_Flags.is(CEditableObject::eoUsingLOD);
-            O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
-            xr_string tex_name;
-            tex_name 	= EFS.ChangeFileExt(nm,"");
-            string512 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
-            tex_name 	= xr_string("lod_")+tmp;
-            tex_name 	= ImageLib.UpdateFileName(tex_name);
-            ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
-            O->OnDeviceDestroy();
-            O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
-			ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());
-            return true;
-        }else{
-            ELog.Msg(mtError,"Can't create LOD texture from non 'Multiple Usage' object.");
-        }
+	VERIFY				(prop);	
+    xr_string nm	= prop->Key();
+    ChangeReference	(nm.c_str());
+    CEditableObject* O = m_pEditObject->GetReference();
+    if (O&&O->IsMUStatic()){
+        BOOL bLod 	= O->m_Flags.is(CEditableObject::eoUsingLOD);
+        O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
+        xr_string tex_name;
+        tex_name 	= EFS.ChangeFileExt(nm,"");
+        string512 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
+        tex_name 	= xr_string("lod_")+tmp;
+        tex_name 	= ImageLib.UpdateFileName(tex_name);
+        ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
+        O->OnDeviceDestroy();
+        O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
+        ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());
+        return true;
+    }else{
+        ELog.Msg(mtError,"Can't create LOD texture from non 'Multiple Usage' object.");
     }
     return false;
 }
@@ -378,28 +377,52 @@ bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
 
 void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
 {
-	TElTreeItem* node = m_Items->GetSelected();
+	TElTreeItem* node 			= m_Items->GetSelected();
 	if (node&&cbPreview->Checked){
         LockForm();
-		AnsiString m_LastSelection;
-        FHelper.MakeFullName(node,0,m_LastSelection);
-    	if (FHelper.IsObject(node)){
-        	GenerateLOD	(node);
-    	} if (FHelper.IsFolder(node)){
-	        if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
-                int iLODcnt = 0;
-                SPBItem* pb = UI->ProgressStart(node->ChildrenCount,"Making LOD");
-                for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
-                	pb->Inc();
-		        	if (GenerateLOD(item)) iLODcnt++;
-					if (UI->NeedAbort()) break;
+    	int res 				= ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo << mbCancel,"Multiple select objects?");
+        if (res!=mrCancel){
+            if (res==mrYes){
+                LPCSTR new_val		= 0;
+                if (TfrmChoseItem::SelectItem(smObject,new_val,256)){
+                    int cnt			= _GetItemCount(new_val);
+                    int iLODcnt 	= 0;
+                    SPBItem* pb 	= UI->ProgressStart(cnt,"Making LOD");
+                    for (int k=0; k<cnt; k++){
+                        xr_string 	tmp;
+                        _GetItem	(new_val,k,tmp);
+                        pb->Inc		(tmp.c_str());
+                        ListItem* I	= m_Items->FindItem(tmp.c_str()); VERIFY(I);
+                        if (GenerateLOD(I)) iLODcnt++;
+                        if (UI->NeedAbort()) break;
+                    }
+                    ELog.DlgMsg 	(mtInformation,"'%d' LOD's succesfully created.",iLODcnt);
+                    UI->ProgressEnd	(pb);
                 }
-                UI->ProgressEnd(pb);
-                Msg ("'%d' LOD's succesfully created.",iLODcnt);
+            }else{
+                AnsiString m_LastSelection;
+                FHelper.MakeFullName(node,0,m_LastSelection);
+                if (FHelper.IsObject(node)){
+                    ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
+                    GenerateLOD		(prop);
+                } if (FHelper.IsFolder(node)){
+                    if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
+                        int iLODcnt = 0;
+                        SPBItem* pb = UI->ProgressStart(node->ChildrenCount,"Making LOD");
+                        for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
+                            ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
+                            pb->Inc	(prop->Key());
+                            if (GenerateLOD(prop)) iLODcnt++;
+                            if (UI->NeedAbort()) break;
+                        }
+                        UI->ProgressEnd(pb);
+                        ELog.DlgMsg 	(mtInformation,"'%d' LOD's succesfully created.",iLODcnt);
+                    }
+                }
             }
         }
         UnlockForm();
-        m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
+//        m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
     }
 }
 //---------------------------------------------------------------------------

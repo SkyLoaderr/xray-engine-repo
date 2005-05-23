@@ -7,6 +7,7 @@
 #include "editmesh.h"
 #include "ui_main.h"
 #include "xrHemisphere.h"
+#include "xrImage_Resampler.h"
 /*
 IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
 {
@@ -173,7 +174,7 @@ ICF static void simple_hemi_callback(float x, float y, float z, float E, LPVOID 
 
 void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
 {
-	U32Vec 	pixels;
+	U32Vec 	s_pixels,d_pixels;
     Fmatrix save_projection		= Device.mProjection;
     Fmatrix save_view			= Device.mView;
 
@@ -214,10 +215,12 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
         mP.build_projection_ortho(R,bb.max.y-bb.min.y,bb.min.z,bb.max.z);
 	    RCache.set_xform_project(mP);
 	    RCache.set_xform_view	(mV);
-        Device.MakeScreenshot	(pixels,tgt_w,tgt_h);
+        Device.MakeScreenshot	(s_pixels,tgt_w*8,tgt_h*8);
+        d_pixels.resize 		(tgt_w*tgt_h);
+		imf_Process				(d_pixels.begin(),tgt_w,tgt_h,s_pixels.begin(),tgt_w*8,tgt_h*8,imf_box);
         // copy LOD to final
 		for (u32 y=0; y<tgt_h; y++)
-    		CopyMemory			(tgt_data.begin()+y*pitch+frame*tgt_w,pixels.begin()+y*tgt_w,tgt_w*sizeof(u32));
+    		CopyMemory			(tgt_data.begin()+y*pitch+frame*tgt_w,d_pixels.begin()+y*tgt_w,tgt_w*sizeof(u32));
 	}
 
     // flip data
@@ -251,7 +254,7 @@ void CImageManager::CreateLODTexture(CEditableObject* OBJECT, U32Vec& lod_pixels
     // build lod normals
     lod_pixels.resize			(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,0);
     nm_pixels.resize			(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,0);
-    U8Vec hemi_tmp				(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,0); 
+    U32Vec hemi_tmp				(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,0); 
     Fvector 					o_center, o_size;
     Fmatrix 					M, Mi;
     bb.getradius				(o_size);
@@ -293,7 +296,7 @@ void CImageManager::CreateLODTexture(CEditableObject* OBJECT, U32Vec& lod_pixels
                 u32 pixel		= (LOD_IMAGE_SIZE-iH-1)*LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE+LOD_IMAGE_SIZE*sample_idx+iW;
                 u32& tgt_c		= lod_pixels[pixel];
                 u32& tgt_n		= nm_pixels[pixel];
-                u8& tgt_h		= hemi_tmp[pixel];
+                u32& tgt_h		= hemi_tmp[pixel];
 
 ///.			tgt_c			= 0x00000000;
                 
@@ -397,7 +400,8 @@ tT+=TT1.Stop();
                     res_transp					= res_transp*(1.f-pt_it->w)+avg_transp*pt_it->w;
                 }
 tH+=TT.Stop();
-				tgt_h				= iFloor	(res_transp*255.f);
+				u8 h 				= iFloor	(res_transp*255.f);
+				tgt_h				= color_rgba(h,h,h,color_get_A(tgt_c));
             }
         }
     }
@@ -405,9 +409,10 @@ tH+=TT.Stop();
 	Msg("Normal: %3.2fsec, Hemi: %3.2f, PC: %3.2f, RP: %3.2f",tN,tH,tT,tR);
 	ImageLib.ApplyBorders			(lod_pixels,LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,LOD_IMAGE_SIZE);
 	ImageLib.ApplyBorders			(nm_pixels,	LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,LOD_IMAGE_SIZE);
-    // fill alpha to N-channel
+	ImageLib.ApplyBorders			(hemi_tmp,	LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,LOD_IMAGE_SIZE);
+    // fill alpha to N-channel (HEMI)
     for (int px_idx=0; px_idx<int(nm_pixels.size()); px_idx++)
-        nm_pixels[px_idx]			= subst_alpha(nm_pixels[px_idx],hemi_tmp[px_idx]);
+        nm_pixels[px_idx]			= subst_alpha(nm_pixels[px_idx],color_get_R(hemi_tmp[px_idx]));
     
     UI->ProgressEnd(PB);
 }
@@ -425,22 +430,26 @@ void CImageManager::CreateLODTexture(CEditableObject* OBJECT, LPCSTR tex_name, u
     CImage* I 					= xr_new<CImage>();
     // save lod
     src_name					= tex_name;
+    src_name					= EFS.ChangeFileExt(src_name,".thm");
+    FS.file_delete				(_textures_,src_name.c_str());
     src_name					= EFS.ChangeFileExt(src_name,".tga");
     FS.update_path				(out_name,_textures_,src_name.c_str());
     I->Create					(tgt_w*samples,tgt_h,lod_pixels.begin());
 //	I->Vflip					();
     I->SaveTGA					(out_name.c_str());
-    FS.set_file_age				(out_name.c_str(), age);
+    FS.set_file_age				(out_name.c_str(),age);
     SynchronizeTexture			(src_name.c_str(),age);                 
 
     // save normal map
     src_name					= xr_string(tex_name)+"_nm";
+    src_name					= EFS.ChangeFileExt(src_name,".thm");
+    FS.file_delete				(_textures_,src_name.c_str());
     src_name					= EFS.ChangeFileExt(src_name,".tga");
     FS.update_path				(out_name,_textures_,src_name.c_str());
     I->Create					(tgt_w*samples,tgt_h,nm_pixels.begin());
 //	I->Vflip					();
     I->SaveTGA					(out_name.c_str());
-    FS.set_file_age				(out_name.c_str(), age);
+    FS.set_file_age				(out_name.c_str(),age);
     SynchronizeTexture			(src_name.c_str(),age);
     
     xr_delete					(I);

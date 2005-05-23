@@ -149,7 +149,7 @@ public:
     void					UpdateView		();
 	void					FrameMove		();
 
-    bool					MakeScreenshot	(U32Vec& pixels, u32& width, u32& height);
+    bool					MakeScreenshot	(U32Vec& pixels, u32 width, u32 height);
 
 	void 					InitTimer		();
 	// Mode control

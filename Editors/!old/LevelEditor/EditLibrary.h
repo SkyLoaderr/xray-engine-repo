@@ -91,7 +91,7 @@ private:	// User declarations
     bool 					bReadOnly;
     TItemList*				m_Items;
 	void __stdcall  		OnItemFocused	(TElTreeItem* item);
-	bool 					GenerateLOD		(TElTreeItem* node);
+	bool 					GenerateLOD		(ListItem* prop);
     bool 					bFormLocked;
     void 					LockForm		()	{ bFormLocked = true;	paCommands->Enabled = false; 	paItems->Enabled = false; 	}
     void 					UnlockForm		()	{ bFormLocked = false;	paCommands->Enabled = true; 	paItems->Enabled = true;	}

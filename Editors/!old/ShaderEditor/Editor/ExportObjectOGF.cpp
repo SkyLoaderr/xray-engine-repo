@@ -531,6 +531,13 @@ bool CExportObjectOGF::Prepare()
     	return 			false;
     }
     
+    // calculate TB
+    UI->SetStatus("Calculate TB...");
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+		(*split_it)->CalculateTB();
+        pb->Inc		();
+    }
+
     // fill per bone vertices
 	if (m_Source->m_Flags.is(CEditableObject::eoProgressive)){
         UI->SetStatus("Make progressive...");
@@ -540,13 +547,6 @@ bool CExportObjectOGF::Prepare()
         }
     }
     pb->Inc				();
-
-    // calculate TB
-    UI->SetStatus("Calculate TB...");
-    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
-		(*split_it)->CalculateTB();
-        pb->Inc		();
-    }
 
 	// Compute bounding...
     ComputeBounding		();

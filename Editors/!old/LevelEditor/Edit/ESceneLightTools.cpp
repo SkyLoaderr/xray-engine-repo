@@ -28,7 +28,7 @@ void ESceneLightTools::Clear(bool bSpecific)
 
     m_HemiQuality		= 1;
     m_SunShadowQuality	= 1;
-    m_SunShadowDir.set	(deg2rad(-25),deg2rad(292));
+    m_SunShadowDir.set	(deg2rad(-25.f),deg2rad(292.f));
     
 	lcontrol_last_idx	= 0;
     lcontrols.clear		();

@@ -6,7 +6,7 @@
 #include "ui_main.h"
 #include "ResourceManager.h"
 
-bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
+bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32 width, u32 height)
 {
 	if (!bReady) return false;
 

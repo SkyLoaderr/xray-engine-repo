@@ -167,7 +167,7 @@ void ESceneObjectTools::HighlightTexture(LPCSTR tex_name)
                             IntVec& lst				= sf_it->second;
                             for (IntIt i_it=lst.begin(); i_it!=lst.end(); i_it++){
                                 e_obj->GetFaceWorld	(s_obj->_Transform(),*mesh_it,*i_it,verts);
-                                Tools->m_Errors.AppendFace(verts[0],verts[1],verts[2]);
+                                Tools->m_Errors.AppendFace(verts[0],verts[1],verts[2],0xFFFFFFFF,false);
                             }
                         }
                     }

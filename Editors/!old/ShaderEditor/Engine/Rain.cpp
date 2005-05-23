@@ -122,9 +122,11 @@ void	CEffect_Rain::Render	()
 	// Parse states
 	float	factor				= g_pGamePersistent->Environment.CurrentEnv.rain_density;
 	float	hemi_factor			= 1.f;
+#ifndef _EDITOR
 	CObject* E 					= g_pGameLevel->CurrentViewEntity();
 	if (E&&E->renderable.ROS)
 		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable.ROS->get_luminocity_hemi()),0.2f));
+#endif
 
 	switch (state)
 	{

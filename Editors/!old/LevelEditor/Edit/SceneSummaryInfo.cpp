@@ -80,7 +80,7 @@ void SSceneSummary::SObjectInfo::Export	(IWriter* F)
 void SSceneSummary::STextureInfo::Prepare	()
 {
 	if (file_name.size()){
-        ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(file_name.c_str(),ECustomThumbnail::ETTexture,true);
+        ETextureThumbnail* T= (ETextureThumbnail*)ImageLib.CreateThumbnail(file_name.c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
             Msg("!Can't get info from texture: '%s'",file_name.c_str());
         }else{
@@ -90,6 +90,11 @@ void SSceneSummary::STextureInfo::Prepare	()
     }else{
         Msg("!Empty texture name found.");
     }
+}
+
+void SSceneSummary::STextureInfo::OnHighlightClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+{
+    Scene->HighlightTexture	((LPCSTR)sender->tag);
 }
 
 void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref, u32& mem_use)
@@ -104,6 +109,11 @@ void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%3.2f m^2",effective_area));
+        AnsiString tmp;
+        for (objinf_map_it o_it=objects.begin(); o_it!=objects.end(); o_it++){
+        	tmp += AnsiString().sprintf("%s%s[%d*%3.2f]",tmp.Length()?"; ":"",o_it->first.c_str(),o_it->second.ref_count,o_it->second.area);
+        }
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Objects"), tmp.c_str());
         if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
             if (0!=info.detail_name.size()){
                 V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail Texture"),	&info.detail_name,smTexture); 	V->Owner()->Enable(FALSE);
@@ -112,24 +122,31 @@ void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref
                 ELog.Msg(mtError,"Empty details on texture: '%s'",*file_name);
             }
         }
+        ButtonValue* B 		= PHelper().CreateButton(items,PrepareKey(pref.c_str(),"Highlight Texture"), "Select", ButtonValue::flFirstOnly);
+		B->OnBtnClickEvent.bind(this,&SSceneSummary::STextureInfo::OnHighlightClick);
+        B->tag 				= (int)(*file_name);
     }
 }
 void SSceneSummary::STextureInfo::Export	(IWriter* F, u32& mem_use)
 {
 	string128		mask;
-	string1024		tmp;
-    strcpy			(mask,"%s=%s,%d,%d,%s,%d,%3.2f");
+	string4096		tmp;
+    strcpy			(mask,"%s=%s,%d,%d,%s,%d,%3.2f,%s");
     if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
         if (0!=info.detail_name.size()){
         	strcat	(mask,",%s,%3.2f");
         }
+    }
+    AnsiString 		tmp2;
+    for (objinf_map_it o_it=objects.begin(); o_it!=objects.end(); o_it++){
+        tmp2 		+= AnsiString().sprintf("%s%s[%d*%3.2f]",tmp2.Length()?"; ":"",o_it->first.c_str(),o_it->second.ref_count,o_it->second.area);
     }
     int tex_mem		= info.MemoryUsage(*file_name);
     mem_use			+=tex_mem;
     sprintf			(tmp,mask,*file_name,info.FormatString(),
     				info.width,info.height,info.HasAlpha()?"present":"absent",
                     iFloor(tex_mem/1024),
-                    effective_area,
+                    effective_area, tmp2.c_str(), 
                     *info.detail_name, info.detail_scale);
 	F->w_string		(tmp);
 }
@@ -141,50 +158,55 @@ void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
     case 0:{
     	xr_string fn = Scene->m_LevelOp.m_FNLevelPath.c_str();
     	if (EFS.GetSaveName(_import_,fn,0,2))
-	    	ExportSummaryInfo(fn.c_str());
-        ELog.DlgMsg(mtInformation,"Export completed.");
+	    	if (ExportSummaryInfo(fn.c_str())) 	ELog.DlgMsg(mtInformation,"Export completed.");
+            else								ELog.DlgMsg(mtInformation,"Export failed.");
     }break;
 	}
     bModif = false;
 }
-void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
+bool SSceneSummary::ExportSummaryInfo(LPCSTR fn)
 {
-	IWriter* F 				= FS.w_open(fn);  R_ASSERT(F);
-    string256				tmp;
-    // textures
-    u32 total_mem_usage		= 0; 
-    F->w_string				("[TEXTURES]");
-    F->w_string				("texture name=format,width,height,alpha,mem usage (Kb),area,detail name,detail scale");
-    for (u32 stt=sttFirst; stt<sttLast; stt++){
-        u32 cur_mem_usage	= 0; 
-        float cur_area		= 0; 
-    	xr_string pref	= "[";
-        pref				+= get_token_name(summary_texture_type_tokens,stt);
-        pref				+= "]";
-        F->w_string			(pref.c_str());
-		for (TISetIt it=textures.begin(); it!=textures.end(); it++){
-	        STextureInfo* info= (STextureInfo*)(&(*it));
-	    	if (info->type==stt){ 
-            	cur_area		+=info->effective_area;
-		    	info->Export	(F,cur_mem_usage);
+	IWriter* F 				= FS.w_open(fn); 
+    if (F){
+        string256				tmp;
+        // textures
+        u32 total_mem_usage		= 0; 
+        F->w_string				("[TEXTURES]");
+        F->w_string				("texture name=format,width,height,alpha,mem usage (Kb),area,objects (name[count*area]),detail name,detail scale");
+        for (u32 stt=sttFirst; stt<sttLast; stt++){
+            u32 cur_mem_usage	= 0; 
+            float cur_area		= 0; 
+            xr_string pref	= "[";
+            pref				+= get_token_name(summary_texture_type_tokens,stt);
+            pref				+= "]";
+            F->w_string			(pref.c_str());
+            for (TISetIt it=textures.begin(); it!=textures.end(); it++){
+                STextureInfo* info= (STextureInfo*)(&(*it));
+                if (info->type==stt){ 
+                    cur_area		+=info->effective_area;
+                    info->Export	(F,cur_mem_usage);
+                }
             }
+            total_mem_usage		+= cur_mem_usage;
+            sprintf				(tmp,"%s mem usage - %d Kb",pref.c_str(),cur_mem_usage);
+            F->w_string			(tmp);
+            sprintf				(tmp,"%s effective area - %3.2f m^2",pref.c_str(),cur_area);
+            F->w_string			(tmp);
         }
-        total_mem_usage		+= cur_mem_usage;
-        sprintf				(tmp,"%s mem usage - %d Kb",pref.c_str(),cur_mem_usage);
-	    F->w_string			(tmp);
-        sprintf				(tmp,"%s effective area - %3.2f m^2",pref.c_str(),cur_area);
-	    F->w_string			(tmp);
+        sprintf					(tmp,"Total mem usage - %d Kb",total_mem_usage);
+        F->w_string				(tmp);
+        // objects
+        F->w_string				("");
+        sprintf					(tmp,"[OBJECTS]");	F->w_string(tmp);
+        for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
+            SObjectInfo* info= (SObjectInfo*)(&(*o_it));
+            info->Export		(F);
+        }
+        FS.w_close				(F);
+        return 					true;
+    }else{
+        return 					false;
     }
-    sprintf					(tmp,"Total mem usage - %d Kb",total_mem_usage);
-    F->w_string				(tmp);
-    // objects
-    F->w_string				("");
-    sprintf					(tmp,"[OBJECTS]");	F->w_string(tmp);
-    for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
-    	SObjectInfo* info= (SObjectInfo*)(&(*o_it));
-        info->Export		(F);
-    }
-    FS.w_close				(F);
 }
 void SSceneSummary::FillProp(PropItemVec& items)
 {
