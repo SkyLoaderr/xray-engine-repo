@@ -7,7 +7,7 @@
 
 
 function load_job (sj, gname, type, squad, groups)
-    
+
 	if type ~= "mil_freedom" then return end
 	
     -----------------------------------------------------------------------
@@ -256,11 +256,12 @@ function load_job (sj, gname, type, squad, groups)
 end
 
 function load_states (gname, type)
-	if type ~= "mil_freedom" then return nil end
-	
-    return function (gulag)
-           return this.check_state (gulag)
-           end
+    if type == "mil_freedom" then
+       return this.check_state -- (gulag)
+    elseif type == "mil_tubes" then
+       return this.check_tubes_state -- (gulag)
+    end    
+    return nil    
 end
 
 function check_state (gulag)
@@ -289,7 +290,45 @@ end
 
 function checkMonster (npc_community, gulag_type)
 	if gulag_type == "mil_tubes" then
-		return npc_community == "dog" 
+		return npc_community == "pseudo_gigant" 
     end
 	return false
+end
+
+function check_tubes_state (gulag)
+    if db.actor:has_info ("mil_actor_in_tubes_zone") == false then 
+       printf ("gulag in state 0") 
+       return 0
+    end    
+    printf ("gulag in state 1") 
+    return 1
+end
+
+function load_tubes_job (sj, gname, type, squad, groups)
+    printf ("load_tubes_job 1")
+    
+	if type ~= "mil_tubes" then return end
+    printf ("load_tubes_job 2")
+    	
+	local t
+	for a = 1, 10, 1 do
+        t = {section = "logic@mil_tubes_mutant",
+		     idle = 0,
+	         prior = 10, state = {0},
+		     squad = squad, group = groups[0],
+		     in_rest = "", out_rest = "mil_tubes_restrictor1"
+		     }
+	    table.insert(sj, t)		
+	    
+        t = {section = "logic@mil_tubes_mutant",
+		     idle = 0,
+	         prior = 10, state = {1},
+		     squad = squad, group = groups[0],
+		     in_rest = "", out_rest = "mil_tubes_restrictor2"
+		     }
+	    table.insert(sj, t)		
+
+	end    
+	
+	
 end

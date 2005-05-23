@@ -327,15 +327,15 @@ end
 --------
 function action_follow:free ()
     -- если мы под гулагом, то запросим другую работу, иначе прямая дорога в logic
-    --local gulag = xr_gulag.isUnderFraction (self.object)
+    local gulag = xr_gulag.isUnderFraction (self.object)
 
-    --if gulag ~= nil then
-       --printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
-       --xr_gulag.resetJob (gulag, self.object)
-    --else
+    if gulag ~= nil then
+       printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
+       xr_gulag.resetJob (gulag, self.object)
+    else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
-    --end
+    end
 end
 --------
 function action_follow:reset_scheme ()
