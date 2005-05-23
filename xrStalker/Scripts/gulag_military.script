@@ -268,42 +268,16 @@ function check_state (gulag)
        for k,v in gulag.Object do
            local enemy = v:best_enemy ()
            if enemy ~= nil then 
-       printf ("GULAG IN STATE 1") 
               return 1 
            else
               db.actor:disable_info_portion ("mil_enemy_nearest")
-       printf ("GULAG IN STATE 0") 
               return 0     
            end
        end    
     end       
     if gulag.state == 0 and db.actor:has_info ("mil_enemy_nearest") == true then
-       printf ("GULAG IN STATE 1") 
        return 1
     end    
-                
---    for k,v in gulag.Object do
---        local enemy = v:best_enemy ()
-        --if enemy ~= nil then
-           --local enemy_type = get_clsid (enemy)
-           --if enemy_type == clsid.actor or enemy_type == clsid.soldier or enemy_type == clsid.script_stalker then
-              --if db.actor then
-                 --db.actor:give_info_portion ("mil_freedom_under_attack")
-              --end   
-              --if gulag.attack_time == nil then
-                 --gulag.attack_time = device ():time_global ()
-              --else
-                 --if device ():time_global () - gulag.attack_time > 300000 then
-                    --db.actor:disable_info_portion ("mil_freedom_under_attack")   
-                    --gulag.attack_time = 0
-                    --return 0
-                 --end  
-              --end    
-              --return 0
-           --end
-        --end
-    --end
-    
     return 0   
 end
 
