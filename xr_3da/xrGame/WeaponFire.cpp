@@ -33,7 +33,30 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	Fvector dir_base_disp;
 	dir_base_disp.random_dir(D, weapon_fire_disp, Random);
 
-	float cartirdge_fire_disp = GetFireDispersion(true) - weapon_fire_disp;
+	float fire_disp = GetFireDispersion(true);
+	float cartirdge_fire_disp = fire_disp - weapon_fire_disp;
+
+#ifdef DEBUG
+	if(bDebug){
+		Msg("disp_without cart=%f",weapon_fire_disp);
+		Msg("disp_with cart=%f",fire_disp);
+		
+		Fvector ddd, dd;
+		dd = dir_base_disp;
+		ddd.random_dir(dd, cartirdge_fire_disp, Random);
+
+		float diff;
+		Fvector _D = D;
+		_D.normalize_safe();
+		ddd.normalize_safe();
+		
+		diff = acos(_D.dotproduct(ddd));
+
+
+		Msg("total angle diff=%f", rad2deg(diff));
+	}
+
+#endif
 
 	bool SendHit = SendHitAllowed(H_Parent());
 	//выстерлить пулю (с учетом возможной стрельбы дробью)

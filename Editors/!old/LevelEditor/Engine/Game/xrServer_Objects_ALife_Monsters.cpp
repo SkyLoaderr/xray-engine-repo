@@ -370,7 +370,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 		m_rank = selected_char.Rank();
 
 	if(NO_REPUTATION == m_reputation)
-		m_rank = selected_char.Reputation();
+		m_reputation = selected_char.Reputation();
 
 #else
 	//в редакторе специфический профиль оставляем не заполненым

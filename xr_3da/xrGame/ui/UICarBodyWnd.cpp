@@ -383,6 +383,10 @@ bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 
 	PIItem pIItem = (PIItem)(pItem->GetData());
 
+	float otherInvWeight	= this_car_body_wnd->m_pOthersInv->CalcTotalWeight();
+	float otherMaxWeight	= this_car_body_wnd->m_pOthersInv->GetMaxWeight();
+	float itmWeight			= pIItem->Weight();
+	if	 (otherInvWeight+itmWeight >=otherMaxWeight)return false;
 	//םאל - מעהאעü גושü
 	NET_Packet P;
 	this_car_body_wnd->m_pOurObject->u_EventGen(P,GE_OWNERSHIP_REJECT,
