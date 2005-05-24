@@ -72,6 +72,7 @@ extern	INT		g_iWeaponRemove			;
 extern	INT		g_iCorpseRemove			;
 extern	BOOL	g_bShowPlayerNames		;
 extern	BOOL	g_bCollectStatisticData ;
+extern	BOOL	g_bStatisticSaveAuto	;
 
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
@@ -1973,4 +1974,5 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,		"sv_statistic_collect", &g_bCollectStatisticData, 0, 1);
 	CMD1(CCC_SaveStatistic,	"sv_statistic_save");
+	CMD4(CCC_Integer,		"sv_statistic_save_auto", &g_bStatisticSaveAuto, 0, 1);
 }
