@@ -43,13 +43,13 @@ void CUIChatWnd::Init(CUIXml& uiXml)
 {
 	AttachChild(&UIPrefix);
 	CUIXmlInit::InitStatic(uiXml, "chat_prefix", 0, &UIPrefix);
-	UIPrefix.InitSharedTexture("ui_texture.xml","debug");
-	UIPrefix.SetStretchTexture(true);
+	//UIPrefix.InitSharedTexture("ui_texture.xml","debug");
+	//UIPrefix.SetStretchTexture(true);
 
 	AttachChild(&UIEditBox);
 	CUIXmlInit::InitStatic(uiXml, "chat_edit_box", 0, &UIEditBox);
-	UIEditBox.InitSharedTexture("ui_texture.xml","debug");
-	UIEditBox.SetStretchTexture(true);
+	//UIEditBox.InitSharedTexture("ui_texture.xml","debug");
+	//UIEditBox.SetStretchTexture(true);
 
 	m_AuthorName = Level().CurrentEntity()->cName();
 }

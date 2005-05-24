@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UIListWnd.h"
 #include "UIListItemEx.h"
+#include "ServerList.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
@@ -65,7 +66,10 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("",				&CUIListWnd::)*/
 
 		class_<CUIListItem, CUIButton>("CUIListItem")
-		.def(							constructor<>())
+		.def(							constructor<>()),
+
+		class_<CServerList, CUIWindow>("CServerList")
+		.def(							constructor<>())	
 
 		];
 }

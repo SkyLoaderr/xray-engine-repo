@@ -5239,6 +5239,12 @@
 							RelativePath=".\script_ui_registrator.h">
 						</File>
 						<File
+							RelativePath=".\ScriptXMLInit.cpp">
+						</File>
+						<File
+							RelativePath=".\ScriptXMLInit.h">
+						</File>
+						<File
 							RelativePath=".\ui_export_script.cpp">
 						</File>
 					</Filter>
@@ -9942,6 +9948,22 @@
 						RelativePath=".\ui\UIDebugFonts.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="ServerList"
+					Filter="">
+					<File
+						RelativePath=".\ui\ServerList.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\ServerList.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIListItemServer.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIListItemServer.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
@@ -9969,6 +9991,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\tinyxml.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITextureMaster.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITextureMaster.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIXmlInit.cpp">
@@ -10177,6 +10205,12 @@
 						RelativePath=".\ui\UIFrameWindow.h">
 					</File>
 					<File
+						RelativePath=".\ui\UILabel.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILabel.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIWindow.cpp">
 					</File>
 					<File
@@ -10286,12 +10320,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIRadioButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.h">
 					</File>
 				</Filter>
 				<Filter

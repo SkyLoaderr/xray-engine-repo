@@ -47,8 +47,8 @@ void CUIChatLog::Init(int x, int y, int width, int height)
 	CUIStatic* ps = xr_new<CUIStatic>();
 	AttachChild(ps);
 	ps->Init(x, y, width, height);
-	ps->InitSharedTexture("ui_texture.xml","debug");
-	ps->SetStretchTexture(true);
+//	ps->InitSharedTexture("ui_texture.xml","debug");
+//	ps->SetStretchTexture(true);
 }
 
 void CUIChatLog::Update()

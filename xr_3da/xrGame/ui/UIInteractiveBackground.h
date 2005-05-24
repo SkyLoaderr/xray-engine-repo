@@ -12,6 +12,7 @@
 
 #pragma once
 
+
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 
@@ -22,7 +23,6 @@ enum UIState{
 	S_Touched
 };
 
-
 template <class T>
 class CUIInteractiveBackground : public CUIWindow
 {
@@ -32,6 +32,14 @@ public:
 
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(LPCSTR texture_e, int x, int y, int width, int height);
+			T*	 CreateE();
+			T*	 CreateD();
+			T*	 CreateT();
+			T*	 CreateH();
+			T*	 GetE();
+			T*	 GetD();
+			T*	 GetT();
+			T*	 GetH();
 	virtual void InitEnabledState(LPCSTR texture_e);
 	virtual void InitDisabledState(LPCSTR texture_d);
 	virtual void InitHighlightedState(LPCSTR texture_h);
@@ -72,8 +80,81 @@ void CUIInteractiveBackground<T>::Init(LPCSTR texture_e, int x, int y, int width
 
 	InitEnabledState(texture_e);
 
-	this->m_stateEnabled->Init(texture_e, 0, 0, width, height);
-	this->m_stateCurrent = this->m_stateEnabled;
+	m_stateEnabled->Init(texture_e, 0, 0, width, height);
+	m_stateCurrent = this->m_stateEnabled;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::CreateE(){
+	Irect r = GetWndRect();
+	if (!m_stateEnabled)
+	{
+		m_stateEnabled = xr_new<T>();
+		m_stateEnabled->SetAutoDelete(true);
+		AttachChild(m_stateEnabled);
+		m_stateEnabled->Init(0, 0, r.right - r.left, r.bottom - r.top);
+	}
+	SetState(S_Enabled);
+	return m_stateEnabled;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::CreateD(){
+	Irect r = GetWndRect();
+	if (!m_stateDisabled)
+	{
+		m_stateDisabled = xr_new<T>();
+		m_stateDisabled->SetAutoDelete(true);
+		AttachChild(m_stateDisabled);
+		m_stateDisabled->Init(0, 0, r.right - r.left, r.bottom - r.top);
+	}
+	return m_stateDisabled;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::CreateT(){
+	Irect r = GetWndRect();
+	if (!m_stateTouched)
+	{
+		m_stateTouched = xr_new<T>();
+		m_stateTouched->SetAutoDelete(true);
+		AttachChild(m_stateTouched);		
+		m_stateTouched->Init(0, 0, r.right - r.left, r.bottom - r.top);
+	}
+	return m_stateTouched;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::CreateH(){
+	Irect r = GetWndRect();
+	if (!m_stateHighlighted)
+	{
+		m_stateHighlighted = xr_new<T>();
+		m_stateHighlighted->SetAutoDelete(true);
+		AttachChild(m_stateHighlighted);
+		m_stateHighlighted->Init(0, 0, r.right - r.left, r.bottom - r.top);
+	}    
+	return m_stateHighlighted;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::GetE(){
+    return m_stateEnabled;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::GetD(){
+	return m_stateDisabled;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::GetT(){
+	return m_stateTouched;
+}
+
+template <class T>
+T*	 CUIInteractiveBackground<T>::GetH(){
+	return m_stateHighlighted;
 }
 
 template <class T>

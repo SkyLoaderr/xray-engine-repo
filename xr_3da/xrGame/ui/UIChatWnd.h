@@ -37,6 +37,7 @@ public:
 	virtual void		Show				();
 	virtual void		Hide				();
 	virtual void		SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
+	virtual bool		NeedCursor			() {return false;}
 	void				Init				(CUIXml& uiXml);
 	void				Say					(const shared_str &phrase);
 	void				SetEditBoxPrefix	(const shared_str &prefix);
@@ -49,7 +50,7 @@ public:
 protected:
 	CUIChatLog			*pUILogList;
 	CUIStatic			UIPrefix;
-	shared_str				m_AuthorName;
+	shared_str			m_AuthorName;
 	bool				sendNextMessageToTeam;
 	game_cl_GameState	*pOwner;
 };
