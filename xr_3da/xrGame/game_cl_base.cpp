@@ -321,6 +321,17 @@ void game_cl_GameState::u_EventSend(NET_Packet& P)
 
 void				game_cl_GameState::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
+	switch (old_phase)
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			m_WeaponUsageStatistic.SaveData();
+		}break;
+	default:
+		{
+		}break;
+	};
+
 	switch (new_phase)
 	{
 		case GAME_PHASE_INPROGRESS:
@@ -330,5 +341,5 @@ void				game_cl_GameState::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		default:
 			{
 			}break;
-	}
+	}	
 }

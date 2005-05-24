@@ -165,11 +165,10 @@ CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
 
 void game_GameState::switch_Phase		(u32 new_phase)
 {
+		OnSwitchPhase(phase, new_phase);
 
 		phase				= u16(new_phase);
-		start_time			= Level().timeServer();//Device.TimerAsync();
-	
-		OnSwitchPhase(phase, new_phase);
+		start_time			= Level().timeServer();//Device.TimerAsync();		
 }
 
 

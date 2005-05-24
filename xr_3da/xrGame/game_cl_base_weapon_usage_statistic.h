@@ -169,6 +169,8 @@ struct WeaponUsageStatistic {
 	void				Update						();
 	void				OnUpdateRequest				(NET_Packet* P);
 	void				OnUpdateRespond				(NET_Packet* P);
+	//-----------------------------------------------
+	void				SaveData					();
 };
 
 struct Bullet_Check_Respond_True
