@@ -4,6 +4,7 @@
 
     <!-- SKIN WINDOW TEMPLATE -->
 	<frame_window x="0" y="0" width="320" height="700">
+		<texture>ui_frame_03</texture>
 		<base_texture>ui\ui_frame_03</base_texture>
 		<title x="20" y="0" width="240" height="60">
 			<text font="header" r="255" g="255" b="255"></text>

@@ -1,8 +1,9 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
 	<!-- BAG FRAME WINDOW -->
 	<frame_window x="20" y="260" width="350" height="440">
+		<texture>ui_frame</texture>
 		<base_texture>ui\ui_frame</base_texture>
 		<left_top_texture x="15" y="20">ui\ui_inv_list_over_lt</left_top_texture>
 		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>

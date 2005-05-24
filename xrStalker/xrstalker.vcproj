@@ -869,10 +869,16 @@
 					RelativePath=".\Config\ui\ui_common.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_ingame.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_mm_mp.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_mp_main.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_old_textures.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\zone_map.xml">
@@ -1337,6 +1343,9 @@
 				</File>
 				<File
 					RelativePath=".\Scripts\ui_main_new_tab.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\ui_mm_mp_join.script">
 				</File>
 				<File
 					RelativePath=".\Scripts\ui_numpad.script">

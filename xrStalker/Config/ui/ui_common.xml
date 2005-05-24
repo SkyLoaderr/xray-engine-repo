@@ -6,14 +6,14 @@
     <texture id="ui_servinfo_t_e" x="0" y="17" width="13" height="16" />
     <texture id="ui_servinfo_t_h" x="13" y="17" width="13" height="16" />
     <texture id="ui_servinfo_t_t" x="26" y="17" width="13" height="16" />
-    <texture id="ui_listline_l" x="0" y="37" width="4" height="18" />
+    <texture id="ui_listline_b" x="0" y="37" width="4" height="18" />
     <texture id="ui_listline_back" x="4" y="37" width="28" height="18" />
-    <texture id="ui_listline_r" x="32" y="37" width="4" height="18" />
+    <texture id="ui_listline_e" x="32" y="37" width="4" height="18" />
     <texture id="ui_tablist_divider" x="0" y="55" width="36" height="31" />
     <texture id="ui_button_ordinary_d" x="0" y="86" width="117" height="29" />
     <texture id="ui_button_ordinary_e" x="0" y="115" width="117" height="29" />
     <texture id="ui_button_ordinary_h" x="0" y="144" width="117" height="29" />
-    <texture id="ui_button_ordinary_t" x="0" y="173" width="117" height="210" />
+    <texture id="ui_button_ordinary_t" x="0" y="173" width="117" height="29" />
     <texture id="ui_button_tablist_d" x="0" y="378" width="114" height="44" />
     <texture id="ui_button_tablist_e" x="0" y="334" width="114" height="44" />
     <texture id="ui_button_tablist_h" x="0" y="290" width="114" height="44" />
@@ -31,18 +31,18 @@
     <texture id="ui_button_main03_e" x="0" y="854" width="157" height="48" />
     <texture id="ui_button_main03_h" x="0" y="950" width="157" height="48" />
     <texture id="ui_button_main03_t" x="0" y="902" width="157" height="48" />
-    <texture id="ui_brokenline_l" x="46" y="0" width="9" height="21" />
+    <texture id="ui_brokenline_b" x="46" y="0" width="9" height="21" />
     <texture id="ui_brokenline_back" x="55" y="0" width="32" height="21" />
-    <texture id="ui_brokenline_r" x="87" y="0" width="9" height="21" />
-    <texture id="ui_linetext_e_l" x="41" y="21" width="9" height="24" />
+    <texture id="ui_brokenline_e" x="87" y="0" width="9" height="21" />
+    <texture id="ui_linetext_e_b" x="41" y="21" width="9" height="24" />
     <texture id="ui_linetext_e_back" x="50" y="21" width="33" height="24" />
-    <texture id="ui_linetext_e_r" x="82" y="21" width="9" height="24" />
-    <texture id="ui_linetext_d_l" x="91" y="21" width="9" height="24" />
+    <texture id="ui_linetext_e_e" x="82" y="21" width="9" height="24" />
+    <texture id="ui_linetext_d_b" x="91" y="21" width="9" height="24" />
     <texture id="ui_linetext_d_back" x="100" y="21" width="33" height="24" />
-    <texture id="ui_linetext_d_r" x="132" y="21" width="9" height="24" />
-    <texture id="ui_spiner_l" x="96" y="0" width="14" height="21" />
+    <texture id="ui_linetext_d_e" x="132" y="21" width="9" height="24" />
+    <texture id="ui_spiner_b" x="96" y="0" width="14" height="21" />
     <texture id="ui_spiner_back" x="110" y="0" width="17" height="21" />
-    <texture id="ui_spiner_r" x="127" y="0" width="14" height="21" />
+    <texture id="ui_spiner_e" x="127" y="0" width="14" height="21" />
     <texture id="ui_spiner_button_d_t" x="141" y="0" width="14" height="21" />
     <texture id="ui_spiner_button_d_b" x="155" y="0" width="14" height="21" />
     <texture id="ui_spiner_button_e_t" x="169" y="0" width="14" height="21" />
@@ -55,12 +55,12 @@
     <texture id="ui_slider_button_e" x="65" y="45" width="24" height="17" />
     <texture id="ui_slider_button_t" x="89" y="45" width="24" height="17" />
     <texture id="ui_slider_button_d" x="147" y="198" width="24" height="17" />
-    <texture id="ui_slider_e_l" x="41" y="65" width="24" height="17" />
+    <texture id="ui_slider_e_b" x="41" y="65" width="24" height="17" />
     <texture id="ui_slider_e_back" x="65" y="65" width="24" height="17" />
-    <texture id="ui_slider_e_r" x="89" y="65" width="24" height="17" />
-    <texture id="ui_slider_d_l" x="141" y="215" width="24" height="17" />
+    <texture id="ui_slider_e_e" x="89" y="65" width="24" height="17" />
+    <texture id="ui_slider_d_b" x="141" y="215" width="24" height="17" />
     <texture id="ui_slider_d_back" x="165" y="215" width="24" height="17" />
-    <texture id="ui_slider_d_r" x="189" y="215" width="24" height="17" />
+    <texture id="ui_slider_d_e" x="189" y="215" width="24" height="17" />
     <texture id="ui_tablist_textbox_lt" x="117" y="45" width="32" height="32" />
     <texture id="ui_tablist_textbox_l" x="117" y="77" width="32" height="32" />
     <texture id="ui_tablist_textbox_lb" x="117" y="109" width="32" height="32" />
@@ -89,21 +89,21 @@
     <texture id="ui_radio_d" x="114" y="308" width="32" height="23" />
     <texture id="ui_radio_e" x="114" y="331" width="32" height="23" />
     <texture id="ui_radio_t" x="114" y="354" width="32" height="23" />
-    <texture id="ui_linetextSmall_e_l" x="114" y="377" width="9" height="21" />
+    <texture id="ui_linetextSmall_e_b" x="114" y="377" width="9" height="21" />
     <texture id="ui_linetextSmall_e_back" x="123" y="377" width="33" height="21" />
-    <texture id="ui_linetextSmall_e_r" x="155" y="377" width="9" height="21" />
-    <texture id="ui_linetextSmall_d_l" x="114" y="398" width="9" height="21" />
+    <texture id="ui_linetextSmall_e_e" x="155" y="377" width="9" height="21" />
+    <texture id="ui_linetextSmall_d_b" x="114" y="398" width="9" height="21" />
     <texture id="ui_linetextSmall_d_back" x="123" y="398" width="33" height="21" />
-    <texture id="ui_linetextSmall_d_r" x="155" y="398" width="9" height="21" />
-    <texture id="ui_table_button_e_l" x="147" y="141" width="5" height="19" />
+    <texture id="ui_linetextSmall_d_e" x="155" y="398" width="9" height="21" />
+    <texture id="ui_table_button_e_b" x="147" y="141" width="5" height="19" />
     <texture id="ui_table_button_e_back" x="152" y="141" width="28" height="19" />
-    <texture id="ui_table_button_e_r" x="180" y="141" width="5" height="19" />
-    <texture id="ui_table_button_h_l" x="147" y="160" width="5" height="19" />
+    <texture id="ui_table_button_e_e" x="180" y="141" width="5" height="19" />
+    <texture id="ui_table_button_h_b" x="147" y="160" width="5" height="19" />
     <texture id="ui_table_button_h_back" x="152" y="160" width="28" height="19" />
-    <texture id="ui_table_button_h_r" x="180" y="160" width="5" height="19" />
-    <texture id="ui_table_button_t_l" x="147" y="179" width="5" height="19" />
+    <texture id="ui_table_button_h_e" x="180" y="160" width="5" height="19" />
+    <texture id="ui_table_button_t_b" x="147" y="179" width="5" height="19" />
     <texture id="ui_table_button_t_back" x="152" y="179" width="28" height="19" />
-    <texture id="ui_table_button_t_r" x="180" y="179" width="5" height="19" />
+    <texture id="ui_table_button_t_e" x="180" y="179" width="5" height="19" />
     <texture id="ui_table_divider" x="114" y="65" width="1" height="10" />
     <texture id="ui_droplist_listline_l" x="186" y="142" width="4" height="18" />
     <texture id="ui_droplist_listline_r" x="191" y="142" width="4" height="18" />
@@ -128,4 +128,7 @@
     <texture id="ui_frame_error_sign_alarm" x="723" y="0" width="77" height="77" />
     <texture id="ui_frame_error_sign_red" x="800" y="0" width="77" height="77" />
     <texture id="ui_frame_error_sign_info" x="877" y="0" width="77" height="77" />
+    <texture id="ui_checker_h" x="213" y="206" width="32" height="23" />
+    <texture id="ui_droplist_button_h_r" x="277" y="206" width="25" height="23" />
+    <texture id="ui_radio_h" x="245" y="206" width="32" height="23" />
 </ui_texture>
