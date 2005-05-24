@@ -38,8 +38,14 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 
 #ifdef DEBUG
 	if(bDebug){
-		Msg("disp_without cart=%f",weapon_fire_disp);
-		Msg("disp_with cart=%f",fire_disp);
+		const CInventoryOwner* pOwner	=	smart_cast<const CInventoryOwner*>(H_Parent());
+		VERIFY (pOwner);
+		float parent_disp = pOwner->GetWeaponAccuracy();
+
+		Msg("disp_without cart=%f",rad2deg(weapon_fire_disp-parent_disp));
+		Msg("disp_with cart=%f",rad2deg(fire_disp-parent_disp));
+		
+		Msg("disp_owner=%f",rad2deg(parent_disp));
 		
 		Fvector ddd, dd;
 		dd = dir_base_disp;

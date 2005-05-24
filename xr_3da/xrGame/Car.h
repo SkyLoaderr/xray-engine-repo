@@ -37,7 +37,7 @@ class CCar :
 	public CExplosive
 {
 #ifdef DEBUG
-	CFunctionGraph m_dbg_power_rpm;
+//	CFunctionGraph m_dbg_power_rpm;
 #endif
 	
 	
