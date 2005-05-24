@@ -30,10 +30,33 @@ void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){(N->val)->Render( 
             (*s_it)->OnRender(P,B);\
         }\
     }
-        
+
+float NRand(float sigma)
+{
+#define ONE_OVER_SIGMA_EXP (1.0f / 0.7975f)
+	
+	if(sigma == 0) return 0;
+	
+	float y;
+	do{
+		y = -logf(drand48());
+	}while(drand48() > expf(-_sqr(y - 1.0f)*0.5f));
+	if(rand() & 0x1)
+		return y * sigma * ONE_OVER_SIGMA_EXP;
+	else
+		return -y * sigma * ONE_OVER_SIGMA_EXP;
+}
+
+float NRand1(float sigma)
+{
+	return Random.randF(Random.randF(-sigma,sigma));
+}
+
+
 void EScene::RenderSky(const Fmatrix& camera)
 {
 	if( !valid() )	return;
+
 //	draw sky
 /*
 //.
@@ -60,9 +83,59 @@ struct tools_rp_pred : public std::binary_function<ESceneCustomMTools*, ESceneCu
 DEFINE_MSET_PRED(ESceneCustomMTools*,SceneMToolsSet,SceneMToolsIt,tools_rp_pred);
 DEFINE_MSET_PRED(ESceneCustomOTools*,SceneOToolsSet,SceneOToolsIt,tools_rp_pred);
 
+
 void EScene::Render( const Fmatrix& camera )
 {
 	if( !valid() )	return;
+
+    static U32Vec	cells(101); // -10, 10
+    static u32 cnt	= 0;
+    static float sigma	= 10.0f/3.1f;
+    static bool reinit 	= false;
+    if (reinit){
+    	reinit = false;
+        cells.clear();
+    }
+
+    static float mn=flt_max,mx=flt_min;
+    for (u32 n=0; n<100; n++){
+	 	cnt++;
+	   	float val 		= NRand(sigma);
+        mn				= _min(val,mn);
+        mx				= _max(val,mx);
+    }
+
+
+    Fvector D={0,0,1};
+    float alpha			= NRand	(sigma); clamp(alpha,-10.f,10.f);
+    int c 				= clampr((iFloor(alpha)+10)*5,0,100);
+    cells[c]++;
+
+    Log					("alpha",alpha);
+    alpha 				= deg2rad(alpha);
+    float theta			= Random.randF(0,PI);
+    float r 			= tan	(alpha);
+    Fvector 			U,V,T;
+    Fvector::generate_orthonormal_basis(D,U,V);
+    U.mul				(r*_sin(theta));
+    V.mul				(r*_cos(theta));
+    T.add				(U,V);
+    D.add				(T).normalize();
+
+    static FvectorVec 	m_PTS;
+    m_PTS.push_back		(T);
+    if (m_PTS.size()>200)m_PTS.clear();
+    for (FvectorIt it=m_PTS.begin(); it!=m_PTS.end(); it++)
+	    DU.DrawLineSphere	(*it,0.002f,0xFFFF0000,false);
+    DU.DrawLineSphere	(Fvector().set(-tan(deg2rad(10.f)),0,0),0.002f,0xFFFF00FF,false);
+    DU.DrawLineSphere	(Fvector().set(+tan(deg2rad(10.f)),0,0),0.002f,0xFFFF00FF,false);
+    DU.DrawLineSphere	(Fvector().set(0,-tan(deg2rad(10.f)),0),0.002f,0xFFFF00FF,false);
+    DU.DrawLineSphere	(Fvector().set(0,+tan(deg2rad(10.f)),0),0.002f,0xFFFF00FF,false);
+    
+    for (u32 k=0; k<101; k++)
+    	DU.DrawLine	(Fvector().set(float(k)/100.f-5.f,EPS_L,0),Fvector().set(float(k)/100.f-5.f,EPS_L,float(cells[k])/float(cnt)*10.f),0xFF00FF00);
+    DU.DrawLine			(Fvector().set(0,0,0),Fvector().mad(Fvector().set(0,0,0),D,10.f),0xFF00FF00);
+    
 //	if( locked() )	return;
 
     // extract and sort object tools
