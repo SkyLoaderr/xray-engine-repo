@@ -1,40 +1,48 @@
 #include "stdafx.h"
 #include "uiFrameRect.h"
 #include "hudmanager.h"
+#include "ui\uitexturemaster.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
 CUIFrameRect::CUIFrameRect()
 {
-	iPos.set		(0,0);
-	iSize.set		(0,0);
+	m_wndPos.set		(0,0);
+	m_wndSize.set		(0,0);
 	uFlags.zero		();
 }
 //--------------------------------------------------------------------
 
-void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD align)
+void CUIFrameRect::Init(LPCSTR texture, int x, int y, int w, int h)//, DWORD align)
 {
-	SetPos			(x,y);
-	SetSize			(w,h);
-	SetAlign		(align);
+	//SetPos			(x,y);
+	//SetSize			(w,h);
+	//SetAlign		(align);
+	CUISimpleWindow::Init(x,y,w,h);
+	InitTexture(texture);
+}
 
+void CUIFrameRect::InitTexture(const char* texture){
 	string_path		fn,buf;
-	strcpy			(buf,base_name); if (strext(buf)) *strext(buf)=0;
+	strcpy			(buf,texture); if (strext(buf)) *strext(buf)=0;
+
+	uFlags.set	(flSingleTex,TRUE);
+
 	if (FS.exist(fn,"$game_textures$",buf,".ini")){
 		Ivector4	v;
-		uFlags.set	(flSingleTex,TRUE);
+		//uFlags.set	(flSingleTex,TRUE);
 		CInifile* ini= CInifile::Create(fn,TRUE);
 		LPCSTR sh	= ini->r_string("frame","shader");
-		frame[fmBK].CreateShader(base_name,sh);
-		frame[fmL].CreateShader	(base_name,sh);
-		frame[fmR].CreateShader	(base_name,sh);
-		frame[fmT].CreateShader	(base_name,sh);
-		frame[fmB].CreateShader	(base_name,sh);
-		frame[fmLT].CreateShader(base_name,sh);
-		frame[fmRT].CreateShader(base_name,sh);
-		frame[fmRB].CreateShader(base_name,sh);
-		frame[fmLB].CreateShader(base_name,sh);
+		frame[fmBK].CreateShader(texture,sh);
+		frame[fmL].CreateShader	(texture,sh);
+		frame[fmR].CreateShader	(texture,sh);
+		frame[fmT].CreateShader	(texture,sh);
+		frame[fmB].CreateShader	(texture,sh);
+		frame[fmLT].CreateShader(texture,sh);
+		frame[fmRT].CreateShader(texture,sh);
+		frame[fmRB].CreateShader(texture,sh);
+		frame[fmLB].CreateShader(texture,sh);
 		v			= ini->r_ivector4("frame","back");	frame[fmBK].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmBK].SetRect	(0,0,v.z,v.w);
 		v			= ini->r_ivector4("frame","l");		frame[fmL].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmL].SetRect	(0,0,v.z,v.w);
 		v			= ini->r_ivector4("frame","r");		frame[fmR].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmR].SetRect	(0,0,v.z,v.w);
@@ -45,21 +53,20 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD alig
 		v			= ini->r_ivector4("frame","rb");	frame[fmRB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmRB].SetRect	(0,0,v.z,v.w);
 		v			= ini->r_ivector4("frame","lb");	frame[fmLB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmLB].SetRect	(0,0,v.z,v.w);
 		CInifile::Destroy(ini);
-	}else{
-		// back
-		frame[fmBK].CreateShader(strconcat(buf,base_name,"_back"),	"hud\\default");	//back.SetAlign		(align);
-		// frame
-		frame[fmL].CreateShader	(strconcat(buf,base_name,"_l"),		"hud\\default");	//frame[fmL].SetAlign	(align); 
-		frame[fmR].CreateShader	(strconcat(buf,base_name,"_r"),		"hud\\default");	//frame[fmR].SetAlign	(align);	
-		frame[fmT].CreateShader	(strconcat(buf,base_name,"_t"),		"hud\\default");	//frame[fmT].SetAlign	(align);	
-		frame[fmB].CreateShader	(strconcat(buf,base_name,"_b"),		"hud\\default");	//frame[fmB].SetAlign	(align);	
-		frame[fmLT].CreateShader(strconcat(buf,base_name,"_lt"),	"hud\\default");	//frame[fmLT].SetAlign(align);
-		frame[fmRT].CreateShader(strconcat(buf,base_name,"_rt"),	"hud\\default");	//frame[fmRT].SetAlign(align);
-		frame[fmRB].CreateShader(strconcat(buf,base_name,"_rb"),	"hud\\default");	//frame[fmRB].SetAlign(align);
-		frame[fmLB].CreateShader(strconcat(buf,base_name,"_lb"),	"hud\\default");	//frame[fmLB].SetAlign(align);
+	}
+	else
+	{
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_back"),	&frame[CUIFrameRect::fmBK]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_l"),		&frame[CUIFrameRect::fmL]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_r"),		&frame[CUIFrameRect::fmR]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_t"),		&frame[CUIFrameRect::fmT]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_b"),		&frame[CUIFrameRect::fmB]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_lt"),		&frame[CUIFrameRect::fmLT]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_rt"),		&frame[CUIFrameRect::fmRT]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_rb"),		&frame[CUIFrameRect::fmRB]);
+		CUITextureMaster::InitTexture(strconcat(buf,texture,"_lb"),		&frame[CUIFrameRect::fmLB]);		
 	}
 }
-//--------------------------------------------------------------------
 
 void CUIFrameRect::UpdateSize()
 {
@@ -67,12 +74,6 @@ void CUIFrameRect::UpdateSize()
 	// texture size
 	Ivector2  ts;
 	int rem_x, rem_y, tile_x, tile_y;
-
-	float fScaleX	= UI()->GetScaleX();
-	float fScaleY	= UI()->GetScaleY();
-	// center align
-	if (GetAlign()&alCenter)
-		iPos.set	(iFloor((Device.dwWidth-fScaleX*iSize.x)*.5f),iFloor((Device.dwHeight-fScaleY*iSize.y)*.5f));
 
 	Ivector2 _bk, _lt,_lb,_rb,_rt, _l,_r,_t,_b;
 
@@ -125,15 +126,15 @@ void CUIFrameRect::UpdateSize()
 		_r.set				((int)T->get_Width(),(int)T->get_Height());
 	}
 
-	frame[fmLT].SetPos	(iPos.x,				iPos.y);	
-	frame[fmRT].SetPos	(iPos.x+iSize.x-_rt.x,	iPos.y);	
-	frame[fmLB].SetPos	(iPos.x,				iPos.y+iSize.y-_lb.y);
-	frame[fmRB].SetPos	(iPos.x+iSize.x-_rb.x,	iPos.y+iSize.y-_rb.y);	
+	frame[fmLT].SetPos	(m_wndPos.x,				m_wndPos.y);	
+	frame[fmRT].SetPos	(m_wndPos.x+m_wndSize.x-_rt.x,	m_wndPos.y);	
+	frame[fmLB].SetPos	(m_wndPos.x,				m_wndPos.y+m_wndSize.y-_lb.y);
+	frame[fmRB].SetPos	(m_wndPos.x+m_wndSize.x-_rb.x,	m_wndPos.y+m_wndSize.y-_rb.y);	
 
-	int size_top	= iSize.x - _lt.x - _rt.x;
-	int size_bottom = iSize.x - _lb.x - _rb.x;
-	int size_left	= iSize.y - _lt.y - _lb.y;
-	int size_right  = iSize.y - _rt.y - _rb.y;
+	int size_top	= m_wndSize.x - _lt.x - _rt.x;
+	int size_bottom = m_wndSize.x - _lb.x - _rb.x;
+	int size_left	= m_wndSize.y - _lt.y - _lb.y;
+	int size_right  = m_wndSize.y - _rt.y - _rb.y;
 
 	//Фон
 	ts.set			(_bk.x,_bk.y);
@@ -142,48 +143,64 @@ void CUIFrameRect::UpdateSize()
 	tile_x 			= iFloor(float(size_top)/ts.x);		tile_x=_max(tile_x, 0);
 	tile_y 			= iFloor(float(size_left)/ts.y);	tile_y=_max(tile_y, 0);
 
-	frame[fmBK].SetPos	(iPos.x+_lt.x,iPos.y+_lt.y);
+	frame[fmBK].SetPos	(m_wndPos.x+_lt.x,m_wndPos.y+_lt.y);
 	frame[fmBK].SetTile	(tile_x,tile_y,rem_x,rem_y);
 
 	//Обрамление
 	ts.set				(_t.x,_t.y);
 	rem_x				= size_top%ts.x;
 	tile_x				= iFloor(float(size_top)/ts.x); tile_x=_max(tile_x, 0);
-	frame[fmT].SetPos	(iPos.x+_lt.x,iPos.y);	
+	frame[fmT].SetPos	(m_wndPos.x+_lt.x,m_wndPos.y);	
 	frame[fmT].SetTile	(tile_x,1,rem_x,0);
 
 	ts.set				(_b.x,_b.y);
 	rem_x				= size_bottom%ts.x;
 	tile_x				= iFloor(float(size_bottom)/ts.x); tile_x=_max(tile_x, 0);
-	frame[fmB].SetPos	(iPos.x+_lb.x,iPos.y+iSize.y-ts.y);	
+	frame[fmB].SetPos	(m_wndPos.x+_lb.x,m_wndPos.y+m_wndSize.y-ts.y);	
 	frame[fmB].SetTile	(tile_x,1,rem_x,0);
 
 
 	ts.set				(_l.x,_l.y);
 	rem_y				= size_left%ts.y;
 	tile_y				= iFloor(float(size_left)/ts.y); tile_y=_max(tile_y, 0);
-	frame[fmL].SetPos	(iPos.x, iPos.y+_lt.y);	
+	frame[fmL].SetPos	(m_wndPos.x, m_wndPos.y+_lt.y);	
 	frame[fmL].SetTile	(1,tile_y,0,rem_y);
 
 	ts.set				(_r.x,_r.y);
 	rem_y				= size_right%ts.y;
 	tile_y				= iFloor(float(size_right)/ts.y); tile_y=_max(tile_y, 0);
-	frame[fmR].SetPos	(iPos.x+iSize.x-ts.x,iPos.y+_rt.y);	
+	frame[fmR].SetPos	(m_wndPos.x+m_wndSize.x-ts.x,m_wndPos.y+_rt.y);	
 	frame[fmR].SetTile	(1,tile_y,0,rem_y);
 
 	uFlags.set			(flValidSize,TRUE);
 }
-//--------------------------------------------------------------------
 
-void CUIFrameRect::Render()
+void CUIFrameRect::Draw()
 {
-	if (!uFlags.is(flValidSize)) UpdateSize();
+	if (!uFlags.is(flValidSize)) 
+		UpdateSize();
+
 	for (int k=0; k<fmMax; ++k) 
 		frame[k].Render	();
 }
-//--------------------------------------------------------------------
 
-void CUIFrameRect::SetColor(u32 cl)
+void CUIFrameRect::Update(){
+
+}
+
+void CUIFrameRect::Draw(int x, int y){
+	int dx = m_wndPos.x - x;
+	int dy = m_wndPos.y - y;
+	if (dx != 0 || dy != 0)
+	{
+        uFlags.set(flValidSize, false);
+		m_wndPos.set(x,y);
+	}
+	
+	Draw();
+}
+
+void CUIFrameRect::SetTextureColor(u32 cl)
 {
 	for (int i = 0; i < fmMax; ++i)
 		frame[i].SetColor(cl);
