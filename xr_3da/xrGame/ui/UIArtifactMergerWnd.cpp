@@ -17,7 +17,8 @@ CUIArtefactMerger::~CUIArtefactMerger()
 void CUIArtefactMerger::Init(int x, int y, int width, int height)
 {
 
-	inherited::Init("ui\\ui_frame", x, y, width, height);
+	inherited::Init(x, y, width, height);
+	inherited::InitTexture("ui_frame");
 
 	AttachChild(&UIArtefactList);
 	UIArtefactList.Init(10,10,100,100);

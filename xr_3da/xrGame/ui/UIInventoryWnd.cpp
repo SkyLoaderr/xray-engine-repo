@@ -196,7 +196,7 @@ void CUIInventoryWnd::Init()
 
 	//pop-up menu
 	AttachChild(&UIPropertiesBox);
-	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
+	UIPropertiesBox.Init("ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
 	// Time indicator

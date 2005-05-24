@@ -1,3 +1,9 @@
+#pragma once
+
+#include "../UICustomItem.h"
+
+// Text & Font
+
 class IUIFontControl{
 public:
 	typedef CGameFont::EAligment ETextAlignment;
@@ -18,13 +24,65 @@ public:
 	virtual const char* GetText()								const	= 0;
 };
 
+
+// Texture controls
+class IUISimpleTextureControl{
+public:
+	virtual ~IUISimpleTextureControl() {}
+	virtual void		CreateShader(const char* tex, const char* sh = "hud\\default")	= 0;
+	virtual void		SetShader(const ref_shader& sh)									= 0;
+//	virtual ref_shader&	GetShader()														= 0;
+	virtual void		SetTextureColor(u32 color)										= 0;
+	virtual u32			GetTextureColor()										const	= 0;
+	virtual void		SetOriginalRect(const Irect& r)									= 0;
+	virtual void		SetOriginalRectEx(const Irect& r)								= 0;
+};
+
+class IUIMultiTextureOwner{
+public:
+	virtual ~IUIMultiTextureOwner() {}
+	virtual void		InitTexture(const char* texture)								= 0;
+	virtual bool		GetTextureAvailability()										= 0;
+	virtual void		SetTextureVisible(bool vis)										= 0;
+	virtual bool		GetTextureVisible()												= 0;
+};
+
+class CUIMultiTextureOwner : public IUIMultiTextureOwner{
+public:
+	virtual bool		GetTextureAvailability()	{return m_bTextureAvailable;}
+	virtual void		SetTextureVisible(bool vis)	{m_bTextureVisible = true;}
+	virtual bool		GetTextureVisible()			{return m_bTextureVisible;}
+protected:
+	bool m_bTextureAvailable;
+	bool m_bTextureVisible;
+};
+
+class IUISingleTextureOwner : public CUIMultiTextureOwner, public IUISimpleTextureControl{
+public:
+	virtual void		SetStretchTexture(bool stretch)									= 0;
+	virtual bool		GetStretchTexture()												= 0;	
+};
+
+class CUISingleTextureOwner : public IUISingleTextureOwner{
+public:
+	virtual void		SetStretchTexture(bool stretch)	{m_bStretchTexture = stretch;}
+	virtual bool		GetStretchTexture()				{return m_bStretchTexture;}
+protected:
+	bool m_bStretchTexture;
+};
+
+// Window
+
 class IUISimpleWindow{
 public:
 	virtual ~IUISimpleWindow()						{};
-
-	virtual void		Draw()									const	= 0;
+    
+	virtual void		Init(int x, int y, int width, int height)		= 0;
+	virtual void		Draw()											= 0;
+	virtual void		Draw(int x, int y)								= 0;
 	virtual void		Update()										= 0;
 	virtual void		SetWndPos(const Ivector2& pos)					= 0;
+	virtual void		SetWndPos(int x, int y)							= 0;
 	virtual Ivector2	GetWndPos()								const	= 0;
 	virtual void		SetWndSize(const Ivector2& size)				= 0;
 	virtual Ivector2	GetWndSize()							const	= 0;
@@ -34,6 +92,40 @@ public:
 	virtual int			GetHeight()								const	= 0;
 	virtual void		SetWidth(int width)								= 0;
 	virtual int			GetWidth()								const	= 0;
-	virtual void		Show(bool bShow)								= 0;
-	virtual bool		IsShown()								const	= 0;
+	virtual void		SetVisible(bool vis)							= 0;
+	virtual bool		GetVisible()							const	= 0;
+};
+
+class CUISimpleWindow : public IUISimpleWindow {
+public:
+	virtual void			Init(int x, int y, int width, int height)	{m_wndPos.set(x,y);m_wndSize.set(width, height);}
+	virtual void			SetWndPos(const Ivector2& pos)				{m_wndPos = pos;}
+	virtual void			SetWndPos(int x, int y)						{m_wndPos.set(x,y);}
+	virtual Ivector2		GetWndPos()							const	{return m_wndPos;}
+	virtual void			SetWndSize(const Ivector2& size)			{m_wndSize = size;}
+	virtual Ivector2		GetWndSize()						const	{return m_wndSize;}
+	virtual void			SetHeight(int height)						{m_wndSize.y = height;}
+	virtual int				GetHeight()							const	{return m_wndSize.y;}
+	virtual void			SetWidth(int width)							{m_wndSize.x = width;}
+	virtual int				GetWidth()							const	{return m_wndSize.x;}
+	virtual void			SetVisible(bool vis)						{m_bShowMe = vis;}
+	virtual bool			GetVisible()						const	{return m_bShowMe;}
+	virtual void			SetWndRect(const Irect& rect){
+		m_wndPos.x = rect.x1;
+		m_wndPos.y = rect.y1;
+		m_wndSize.x = rect.x2 - rect.x1;
+		m_wndSize.y = rect.y2 - rect.y1;
+	}
+	virtual Irect			GetWndRect()						const{
+		Irect r;
+		r.x1 = m_wndPos.x;
+		r.y1 = m_wndPos.y;
+		r.x2 = m_wndPos.x + m_wndSize.x;
+		r.y2 = m_wndPos.y + m_wndSize.y;
+		return r;
+	}
+protected:    
+	bool			m_bShowMe;
+	Ivector2		m_wndPos;
+	Ivector2		m_wndSize;
 };

@@ -780,7 +780,7 @@ void CUIGlobalMapSpot::Draw		()
 void CUIGlobalMapSpot::Init	(u32 color)
 {
 	inherited::Init(0,0,20,20);
-	UIBorder.Init("ui\\ui_frame_very_small",0,0,20,20);
+	UIBorder.Init("ui_frame_very_small",0,0,20,20);
 	UIBorder.SetColor(color);
 	AttachChild(&UIBorder);
 }

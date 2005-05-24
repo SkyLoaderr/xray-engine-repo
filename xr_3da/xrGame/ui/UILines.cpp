@@ -30,27 +30,22 @@ CUILines::~CUILines(){
 
 }
 
-void CUILines::SetWndRect(const Irect& rect){
-	m_wndPos.x = rect.x1;
-	m_wndPos.y = rect.y1;
-	m_wndSize.x = rect.x2 - rect.x1;
-	m_wndSize.y = rect.y2 - rect.y1;
-}
-
-Irect CUILines::GetWndRect() const {
-	Irect r;
-
-	r.x1 = m_wndPos.x;
-	r.y1 = m_wndPos.y;
-	r.x2 = m_wndPos.x + m_wndSize.x;
-	r.y2 = m_wndPos.y + m_wndSize.y;
-
-	return r;
-}
+//void CUILines::SetWndRect(const Irect& rect){
+//	
+//}
+//
+//Irect CUILines::GetWndRect() const {
+//
+//}
 
 void CUILines::SetText(const char* text){
-	m_text = text;
-	ParseText();
+	if (text)
+	{
+        m_text = text;
+        ParseText();
+	}
+	else
+		Reset();
 }
 
 const char* CUILines::GetText() const{
@@ -76,7 +71,9 @@ int CUILines::GetVisibleHeight() const{
 	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
 
-void CUILines::Draw() const{
+void CUILines::Draw(int x, int y){
+	if (m_text.empty())
+		return;
 #ifdef DEBUG
 	R_ASSERT(m_pFont);
 #endif //DEBUG
@@ -85,7 +82,7 @@ void CUILines::Draw() const{
 	m_pFont->SetAligment(m_eTextAlign);
 
 	Ivector2 pos;
-	pos.y= m_wndPos.y + (m_wndSize.y - GetVisibleHeight())/2;
+	pos.y= y + (m_wndSize.y - GetVisibleHeight())/2;
 	int height = (int)m_pFont->CurrentHeightRel();
 	int size = m_lines.size();
 
@@ -93,10 +90,14 @@ void CUILines::Draw() const{
 
 	for (int i=0; i<size; i++)
 	{
-		pos.x = m_wndPos.x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
+ 		pos.x = x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
 		m_lines[i].Draw(m_pFont, pos.x, pos.y);
 		pos.y+= height + interval;
-	}	
+	}
+}
+
+void CUILines::Draw(){
+	Draw(m_wndPos.x, m_wndPos.y);
 }
 
 void CUILines::Update(){

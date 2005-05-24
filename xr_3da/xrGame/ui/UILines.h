@@ -13,7 +13,7 @@
 #include "uiabstract.h"
 
 class CUILines : public IUITextControl,
-				 public IUISimpleWindow,
+				 public CUISimpleWindow,
 				 public CDeviceResetNotifier {
 public:
 	CUILines();
@@ -30,20 +30,10 @@ public:
 	virtual ETextAlignment	GetTextAlignment()					const	{return m_eTextAlign;}
 
     // IUISimpleWindow methods
-	virtual void			Draw()								const;
+	virtual void			Draw();
+	virtual void			Draw(int x, int y);
 	virtual void			Update();
-	virtual void			SetWndPos(const Ivector2& pos)				{m_wndPos = pos;}
-	virtual Ivector2		GetWndPos()							const	{return m_wndPos;}
-	virtual void			SetWndSize(const Ivector2& size)			{m_wndSize = size;}
-	virtual Ivector2		GetWndSize()						const	{return m_wndSize;}
-	virtual void			SetWndRect(const Irect& rect);
-	virtual Irect			GetWndRect()						const;
-	virtual void			SetHeight(int height)						{m_wndSize.y = height;}
-	virtual int				GetHeight()							const	{return m_wndSize.y;}
-	virtual void			SetWidth(int width)							{m_wndSize.x = width;}
-	virtual int				GetWidth()							const	{return m_wndSize.y;}
-	virtual void			Show(bool bShow)							{m_bShowMe = bShow;}
-	virtual bool			IsShown()							const	{return m_bShowMe;}
+
 
     // CDeviceResetNotifier methods
 	virtual void			OnDeviceReset();
@@ -76,10 +66,10 @@ protected:
 	u32				m_dwTextColor;
 	CGameFont*		m_pFont;
 
-    // IUISimpleWindow
-	bool			m_bShowMe;
-	Ivector2		m_wndPos;
-	Ivector2		m_wndSize;
+ //   // IUISimpleWindow
+	//bool			m_bShowMe;
+	//Ivector2		m_wndPos;
+	//Ivector2		m_wndSize;
 public:
 
 };
