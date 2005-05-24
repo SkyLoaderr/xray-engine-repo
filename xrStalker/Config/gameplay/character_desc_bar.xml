@@ -448,7 +448,7 @@
 		<rank>90</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\killer\stalker_ki_exosceleton</visual>
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
