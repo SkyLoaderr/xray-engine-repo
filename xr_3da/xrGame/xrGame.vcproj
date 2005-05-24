@@ -8170,6 +8170,9 @@
 							<File
 								RelativePath=".\game_cl_base_weapon_usage_statistic.h">
 							</File>
+							<File
+								RelativePath=".\game_cl_base_weapon_usage_statistic_save.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="mp"
