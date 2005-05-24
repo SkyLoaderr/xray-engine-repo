@@ -98,8 +98,8 @@ function action_meet_wait:initialize()
 	if self.object:limping() then
 		state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor})
 	else			
-		--state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
-		state_mgr.set_state(self.object, "psy_shoot", {obj = self, func = self.time_callback}, 0, nil, {animation_nout = true})
+		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
+		--state_mgr.set_state(self.object, "psy_shoot", {obj = self, func = self.time_callback}, 0, nil, {animation_nout = true})
 	end
 	xr_sound.set_sound(self.object, "weather, state, wait")	
 end
@@ -152,8 +152,8 @@ function action_weapon:initialize()
 	stop_play_sound(self.object)
 
 	xr_sound.set_sound(self.object, "")
-	--state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true}, "threat_weap")
-	state_mgr.set_state(self.object, "psy_armed")
+	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true}, "threat_weap")
+	--state_mgr.set_state(self.object, "psy_armed")
 end
 function action_weapon:execute()
 	action_base.execute (self)
