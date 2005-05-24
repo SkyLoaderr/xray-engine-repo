@@ -31,7 +31,7 @@
 	<image_static x="150" y="115" width="300" height="160" alignment="c"/>
 	
     <!-- CONDITION BAR -->
-    <progress_bar x="25" y="100" length="100" broad="20" horz="0" min="0" max="1000" pos="500">
+    <progress_bar x="25" y="100" length="100" broad="20" horz="0" min="0" max="100" pos="50">
         <texture tile="0" length="100" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
         <background x="0" y="0">ui\ui_inv_progress_blood_empty</background>
     </progress_bar>
