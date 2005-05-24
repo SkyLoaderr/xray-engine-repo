@@ -5,8 +5,8 @@
 
 #include "stdafx.h"
 #include "uistatic.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "UITextureMaster.h"
 #include "uiframewindow.h"
 #include "../HUDManager.h"
 #include "../../LightAnimLibrary.h"
@@ -49,6 +49,7 @@ CUIStatic:: CUIStatic()
 
 CUIStatic::~ CUIStatic()
 {
+
 }
 
 void CUIStatic::SetLightAnim(LPCSTR lanim)
@@ -71,28 +72,41 @@ void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width,
 	InitTextureEx(tex_name, sh_name);
 }
 
+void CUIStatic::Init(int x, int y, int width, int height){
+	CUIWindow::Init(x,y,width,height);
+	m_lines.Init(x,y,width,height);
+}
 
 void CUIStatic::InitTexture(LPCSTR texture){
 	InitTextureEx(texture);
 }
 
+void CUIStatic::CreateShader(const char* tex, const char* sh){
+	m_UIStaticItem.CreateShader(tex,sh);	
+}
+
+ref_shader& CUIStatic::GetShader(){
+	return m_UIStaticItem.GetShader();
+}
+
+void CUIStatic::SetTextureColor(u32 color){
+	m_UIStaticItem.SetColor(color);
+}
+
+u32 CUIStatic::GetTextureColor() const{
+	return m_UIStaticItem.GetColor();
+}
+
 void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 {
-	m_UIStaticItem.Init(tex_name,sh_name, GetAbsoluteRect().left,
-						                  GetAbsoluteRect().top,alNone);
+	CUITextureMaster::InitTexture(tex_name, &m_UIStaticItem);
+	m_UIStaticItem.SetPos(m_wndPos.x, m_wndPos.y);
 	m_bAvailableTexture = true;
 }
 
-void CUIStatic::InitSharedTexture(LPCSTR xml_file, LPCSTR texture, bool owner){
-	CUIXml xml;
-	if(xml.Init(CONFIG_PATH, UI_PATH, xml_file))
-        CUIXmlInit::InitSharedTexture(xml, texture, owner, this);
-}
 
-void CUIStatic::Init(int x, int y, int width, int height)
-{	
-	CUIWindow::Init(x, y, width, height);	
-}
+
+
 
 void  CUIStatic::Draw()
 {
@@ -115,6 +129,11 @@ void  CUIStatic::Draw()
 	if(m_bClipper)	UI()->PopScissor();
 }
 
+void CUIStatic::Draw(int x, int y){
+	m_wndPos.set(x,y);
+	Draw();
+}
+
 void CUIStatic::DrawText(){
 	if (GetFont()){
 		GetFont()->SetAligment(GetTextAlign());
@@ -122,7 +141,8 @@ void CUIStatic::DrawText(){
 		Irect r = GetAbsoluteRect();
 		DrawString(r);
 	}
-	m_lines.Draw();
+	Irect r = GetAbsoluteRect();
+	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
 }
 
 void CUIStatic::DrawTexture(){
@@ -197,6 +217,11 @@ void CUIStatic::WordOut(const Irect &rect)
 		word_length = 0;
 		new_word = false;
 	}
+}
+
+void CUIStatic::SetFont(CGameFont* pFont){
+	CUIWindow::SetFont(pFont);
+	m_lines.SetFont(pFont);
 }
 
 void CUIStatic::AddLetter(char letter)
@@ -403,22 +428,7 @@ void CUIStatic::ClipperOff()
 {
 	ClipperOff(m_UIStaticItem);
 }
-/*
-void CUIStatic::SetTextureScaleXY(float x, float y)
-{
-	m_UIStaticItem.SetScaleXY(x, y);
-}
 
-float CUIStatic::GetTextureScaleX()
-{
-	return m_UIStaticItem.GetScaleX();
-}
-
-float CUIStatic::GetTextureScaleY()
-{
-	return m_UIStaticItem.GetScaleY();
-}
-*/
 void  CUIStatic::SetShader(const ref_shader& sh)
 {
 	m_UIStaticItem.SetShader(sh);
@@ -432,6 +442,11 @@ void CUIStatic::SetText(LPCSTR str, STRING &arr)
 	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
 		arr.push_back(str[i]);
 	arr.push_back(0);
+}
+
+void CUIStatic::SetLines(LPCSTR str){
+	m_lines.SetWndRect(GetAbsoluteRect());
+	m_lines.SetText(str);	
 }
 
 void CUIStatic::SetText(LPCSTR str)
