@@ -12,7 +12,7 @@ CUIListBox::CUIListBox()
 
 void CUIListBox::Render()
 {
-	__super::Render();
+	//__super::Render();
 }
 //--------------------------------------------------------------------
 
