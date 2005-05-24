@@ -2,9 +2,10 @@
 #define __XR_UISTATICITEM_H__
 #pragma once
 
+#include "ui/uiabstract.h"
 #include "uicustomitem.h"
 
-class CUIStaticItem: public CUICustomItem
+class CUIStaticItem: public IUISimpleTextureControl, public CUICustomItem
 {
 	ref_shader		hShader;
 	ref_geom		hGeom_list;	
@@ -19,14 +20,27 @@ class CUIStaticItem: public CUICustomItem
 protected:
 	typedef CUICustomItem inherited;
 public:
+	using CUICustomItem::SetOriginalRect;
+
 #ifdef DEBUG
 	string_path		dbg_tex_name;
 #endif
 					CUIStaticItem	();
 	virtual			~CUIStaticItem	();
+
+//GetShader()		
+	//IUISimpleTextureControl
+	virtual void	CreateShader	(const char* tex, const char* sh = "hud\\default");
+	virtual void	SetShader		(const ref_shader& sh);
+	virtual void	SetTextureColor	(u32 color)											{SetColor(color);}
+	virtual u32		GetTextureColor	()											const	{return GetColor();}
+	virtual	void	SetOriginalRect	(const Irect& r)									{iOriginalRect = r; uFlags|=flValidOriginalRect;}
+	virtual void	SetOriginalRectEx(const Irect& r)									{iOriginalRect = r; uFlags|=flValidOriginalRect; SetRect(0,0,r.x2-r.x1,r.y2 - r.y1);}
+
+
 	void			Init			(LPCSTR tex, LPCSTR sh, int left, int top, u32 align);
-	void			CreateShader	(LPCSTR tex, LPCSTR sh);
-	void			SetShader		(const ref_shader& sh);
+	
+	
 	
 	void			Render			(const ref_shader& sh=ref_shader(0));
 	void			Render			(float angle, const ref_shader& sh=ref_shader(0));
