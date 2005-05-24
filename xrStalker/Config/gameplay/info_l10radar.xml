@@ -43,4 +43,15 @@
 	<info_portion id="rad_find_treasurer_done">
 	</info_portion>
 
+	<info_portion id="rad_suicide_stalker_died">
+	</info_portion>
+
+	<info_portion id="rad_suicide_artefact_given">
+	</info_portion>
+
+	<info_portion id="rad_suicide_kill_self">
+	</info_portion>
+
+
+
 </game_information_portions>
