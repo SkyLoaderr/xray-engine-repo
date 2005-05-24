@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "UIFrameLine.h"
 #include "../hudmanager.h"
+#include "UITextureMaster.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -31,12 +32,16 @@ void CUIFrameLine::Init(LPCSTR base_name, int x, int y, int size, bool horizonta
 	SetSize			(size);
 	SetAlign		(align);
 	SetOrientation	(horizontal);
-	// init graphics
+
+	InitTexture(base_name);
+}
+
+void CUIFrameLine::InitTexture(const char* texture){
 	string256		buf;
-	// frame
-	elements[flBack].CreateShader	(strconcat(buf,base_name,"_back"),	"hud\\default");
-	elements[flFirst].CreateShader	(strconcat(buf,base_name,"_b"),		"hud\\default");
-	elements[flSecond].CreateShader	(strconcat(buf,base_name,"_e"),		"hud\\default");
+
+	CUITextureMaster::InitTexture(strconcat(buf,texture,"_back"),	&elements[flBack]);
+	CUITextureMaster::InitTexture(strconcat(buf,texture,"_b"),		&elements[flFirst]);
+	CUITextureMaster::InitTexture(strconcat(buf,texture,"_e"),		&elements[flSecond]);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,22 +57,22 @@ void CUIFrameLine::SetColor(u32 cl)
 void CUIFrameLine::UpdateSize()
 {
 	VERIFY(g_bRendering);
-	CTexture	*T;
+//	CTexture	*T;
 
 //	float		fScale = HUD().GetScale();
 
 	// Left or top texture
-	RCache.set_Shader(elements[flFirst].GetShader());
-	T				= RCache.get_ActiveTexture(0);
-	int f_width		= static_cast<int>(T->get_Width());
-	int f_height	= static_cast<int>(T->get_Height());
+//	RCache.set_Shader(elements[flFirst].GetShader());
+//	T				= RCache.get_ActiveTexture(0);
+	int f_width		= elements[flFirst].GetOriginalRect().width();//static_cast<int>(T->get_Width());
+	int f_height	= elements[flFirst].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 	elements[flFirst].SetPos(iPos.x, iPos.y);
 
 	// Right or bottom texture
-	RCache.set_Shader(elements[flSecond].GetShader());
-	T				= RCache.get_ActiveTexture(0);
-	int s_width		= static_cast<int>(T->get_Width());
-	int s_height	= static_cast<int>(T->get_Height());
+//	RCache.set_Shader(elements[flSecond].GetShader());
+//	T				= RCache.get_ActiveTexture(0);
+	int s_width		= elements[flSecond].GetOriginalRect().width();// static_cast<int>(T->get_Width());
+	int s_height	= elements[flSecond].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 	bHorizontalOrientation ?
 		elements[flSecond].SetPos(iPos.x + iSize - s_width, iPos.y) :
 		elements[flSecond].SetPos(iPos.x, iPos.y + iSize - s_height);
@@ -102,10 +107,10 @@ void CUIFrameLine::UpdateSize()
 	// Now resize back texture
 	int rem, tile;
 
-	RCache.set_Shader(elements[flBack].GetShader());
-	T				= RCache.get_ActiveTexture(0);
-	int b_width		= static_cast<int>(T->get_Width());
-	int b_height	= static_cast<int>(T->get_Height());
+//	RCache.set_Shader(elements[flBack].GetShader());
+//	T				= RCache.get_ActiveTexture(0);
+	int b_width		= elements[flBack].GetOriginalRect().width();//static_cast<int>(T->get_Width());
+	int b_height	= elements[flBack].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 
 	if (bHorizontalOrientation)
 	{
