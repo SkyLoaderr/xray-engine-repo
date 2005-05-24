@@ -6,6 +6,7 @@
 #include "../xr_IOConsole.h"
 #include "../IGame_Level.h"
 #include "xr_Level_controller.h"
+#include "ui\UITextureMaster.h"
 #include <dinput.h>
 
 
@@ -109,6 +110,11 @@ CMainUI::CMainUI	()
 	m_startDialog				= NULL;
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();
+	// only temp
+
+   	CUITextureMaster::ParseShTexInfo("ui_common.xml");
+	CUITextureMaster::ParseShTexInfo("ui_old_textures.xml");
+	CUITextureMaster::ParseShTexInfo("ui_ingame.xml");
 }
 
 CMainUI::~CMainUI	()
