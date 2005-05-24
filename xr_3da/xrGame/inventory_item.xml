@@ -31,9 +31,9 @@
 	<image_static x="150" y="115" width="300" height="160" alignment="c"/>
 	
     <!-- CONDITION BAR -->
-    <condition_progress x="330" y="100" length="180" broad="30" horz="0" min="0" max="100" pos="100">
-        <texture tile="0" length="180" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
-        <background x="0" y="0">ui\ui_inv_progress_blood_empty</background>
+    <condition_progress x="10" y="200" length="100" broad="30" horz="1" min="0" max="100" pos="100">
+        <texture tile="0" length="100" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
+        <background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
     </condition_progress>
 	
 </window>
