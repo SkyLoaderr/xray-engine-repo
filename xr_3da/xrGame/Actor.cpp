@@ -378,6 +378,10 @@ void CActor::Load	(LPCSTR section )
 	// настройки дисперсии стрельбы
 	m_fDispBase					= pSettings->r_float		(section,"disp_base"		 );
 	m_fDispBase					= deg2rad(m_fDispBase);
+
+	m_fDispAim					= pSettings->r_float		(section,"disp_aim"		 );
+	m_fDispAim					= deg2rad(m_fDispAim);
+
 	m_fDispVelFactor			= pSettings->r_float		(section,"disp_vel_factor"	 );
 	m_fDispAccelFactor			= pSettings->r_float		(section,"disp_accel_factor" );
 	m_fDispCrouchFactor			= pSettings->r_float		(section,"disp_crouch_factor");

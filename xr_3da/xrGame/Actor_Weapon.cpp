@@ -21,7 +21,7 @@ float CActor::GetWeaponAccuracy() const
 	CWeapon* W	= smart_cast<CWeapon*>(inventory().ActiveItem());
 
 	if(m_bZoomAimingMode&&W&&!W->IsRotatingToZoom())
-		return 0.f;
+		return m_fDispAim;
 
 	float dispersion = m_fDispBase;
 
