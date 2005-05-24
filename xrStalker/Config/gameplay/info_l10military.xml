@@ -11,6 +11,7 @@
 	<!-- Избиение патруля Свободы -->
 	<info_portion id="mil_actor_nearest"></info_portion>
 	<info_portion id="mil_patrol_kill_continue"></info_portion>
+	<info_portion id="mil_dolg_dialog_already"></info_portion>
 	
 	<!-- Разговоры с патрулями на базе Свободы -->
 	<info_portion id="mil_patrol1_talk"></info_portion>
