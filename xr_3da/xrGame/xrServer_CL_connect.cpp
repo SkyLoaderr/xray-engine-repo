@@ -97,18 +97,18 @@ void xrServer::Check_GameSpy_CDKey_Success			(IClient* CL)
 
 bool xrServer::NeedToCheckClient_BuildVersion		(IClient* CL)	
 { 
-//#ifdef DEBUG
+#ifdef DEBUG
 
-//	return false; 
+	return false; 
 
-//#else
+#else
 
 	NET_Packet	P;
 	P.w_begin	(M_AUTH_CHALLENGE);
 	SendTo		(CL->ID, P);
 	return true;
 
-//#endif
+#endif
 };
 
 void xrServer::OnBuildVersionRespond				(IClient* CL, NET_Packet& P)
