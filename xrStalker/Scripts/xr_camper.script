@@ -89,8 +89,8 @@ function action_patrol:reset_scheme()
 	if self.a.sniper == true then
 		self.move_mgr:reset(self.a.path_walk, 
 			utils.path_parse_waypoints(self.a.path_walk),
-			nil,
-			nil,
+			self.a.path_look,
+			utils.path_parse_waypoints(self.a.path_look),
 			nil,self.a.suggested_state,{obj=self,func=self.process_point})
 			
 		-- тут вставить парсинг углов для скана
