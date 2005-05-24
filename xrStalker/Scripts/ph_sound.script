@@ -5,6 +5,7 @@ class "snd_source"
 function snd_source:__init (obj, storage)
 	self.object = obj
 	self.st	= storage
+	self.destructed = false
 end
 
 function snd_source:reset_scheme()
@@ -35,11 +36,22 @@ function snd_source:reset_scheme()
 	else   
 	   self.current_sound = 1
 	end   
-	    
+	
+	self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.destructed = false
+	
 end
 
-function snd_source:update(delta)
+function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
+	printf("_bp: snd_source:hit_callback obj='%s', amount=%d, who='%s'", obj:name(), amount,
+		if_then_else(who ~= nil, who:name(), "nil"))
+    self.sound_list[self.current_sound]:stop ()
+    self.destructed = true
+end
 
+
+function snd_source:update(delta)
+    if self.destructed == true then return end
     if self.last_update == 0 then
        self.last_update = device ():time_global ()
     else
@@ -79,3 +91,4 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.theme    =  utils.cfg_get_string(ini, section, "snd",	npc, false, "")
 end
+    
