@@ -58,8 +58,6 @@
     <texture id="ui_pda_frame2_b" x="32" y="160" width="32" height="32" />
     <texture id="ui_pda_frame2_rb" x="64" y="160" width="32" height="32" />
     <texture id="ui_pda_frame2_lb" x="0" y="160" width="32" height="32" />
-    <texture id="ui_pda_frame_sub_lt" x="97" y="96" width="32" height="32" />
-    <texture id="ui_pda_frame_sub_rt" x="96" y="96" width="32" height="32" />
     <texture id="ui_pda_frame_sub_l" x="96" y="128" width="32" height="32" />
     <texture id="ui_pda_frame_sub_lb" x="96" y="160" width="32" height="32" />
     <texture id="ui_pda_frame_sub_b" x="128" y="160" width="32" height="32" />
@@ -94,4 +92,6 @@
     <texture id="ui_frame_t" x="416" y="96" width="128" height="128" />
     <texture id="ui_frame_lt" x="288" y="96" width="128" height="128" />
     <texture id="ui_frame_rb" x="128" y="192" width="128" height="128" />
+    <texture id="ui_pda_frame_sub_rt" x="160" y="96" width="32" height="32" />
+    <texture id="ui_pda_frame_sub_lt" x="96" y="96" width="32" height="32" />
 </ui_texture>
