@@ -433,22 +433,22 @@
 		<actor_dialog>bar_svoboda_volkodav_noquest</actor_dialog>
 	</specific_character>
 
-<!-- ******************* SVOBODA AMBUSH ********************** -->
+<!-- ******************* KILLER AMBUSH ********************** -->
 
-	<specific_character id="bar_svoboda_ambush_tiran" team_default = "1">
+	<specific_character id="bar_killer_ambush_tiran" team_default = "1">
 		<name>Тиран</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Один из «героев» Свободы. Простреленный всеми калибрами ветеран. Редкий псих и садист.</bio>
+		<bio>Один из «героев» группировки Наемников. Простреленный всеми калибрами ветеран. Редкий псих и садист.</bio>
 
-		<class>bar_svoboda_ambush_tiran</class>
-		<community>freedom</community>
+		<class>bar_killer_ambush_tiran</class>
+		<community>killer</community>
 
 		
 		<rank>90</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\svoboda\stalker_sv_balon_10</visual>
+		<visual>actors\killer\stalker_ki_exosceleton</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
