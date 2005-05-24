@@ -143,6 +143,18 @@ public:
 	}
 };
 
+class CCC_SaveStatistic : public IConsole_Command {
+public:
+	CCC_SaveStatistic(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		Game().m_WeaponUsageStatistic.SaveData();
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"saving statistic data"); 
+	}
+};
+
 class CCC_Team : public IConsole_Command {
 public:
 	CCC_Team(LPCSTR N) : IConsole_Command(N)  { };
@@ -1959,5 +1971,6 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,		"sv_remove_corpse",		&g_iCorpseRemove, -1, 1);
 	CMD4(CCC_Integer,		"cl_show_names",		&g_bShowPlayerNames, 0, 1);
 
-	CMD4(CCC_Integer,		"sv_collect_statistic", &g_bCollectStatisticData, 0, 1);
+	CMD4(CCC_Integer,		"sv_statistic_collect", &g_bCollectStatisticData, 0, 1);
+	CMD1(CCC_SaveStatistic,	"sv_statistic_save");
 }

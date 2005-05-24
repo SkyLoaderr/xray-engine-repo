@@ -32,10 +32,13 @@ struct HitData
 
 	bool			operator	==		(u32 ID)	{return ID == BulletID;};
 	bool			operator	!=		(u32 ID)	{return ID != BulletID;};
+	//-----------------------------------------------------------
+	void				Write						(FILE* pFile);
 };
 
 DEF_VECTOR	(HITS_VEC, HitData);
 
+#define MAX_BASKET		34
 struct Weapon_Statistic
 {
 	shared_str		WName;
@@ -45,7 +48,7 @@ struct Weapon_Statistic
 	u32				BulletsFired;
 	u32				HitsScored;
 	u32				KillsScored;
-	u32				m_Basket[34];
+	u32				m_Basket[MAX_BASKET];
 
 	u32				m_dwNumCompleted;
 	HITS_VEC		m_Hits;
@@ -59,6 +62,8 @@ struct Weapon_Statistic
 
 	bool			FindHit				(u32 BulletID, HITS_VEC_it& Hit_it);
 	bool			operator	==		(LPCSTR name){int res = xr_strcmp(WName.c_str(), name);return	res	 == 0;}
+	//-----------------------------------------------------------
+	void				Write						(FILE* pFile);
 };
 
 DEF_VECTOR		(WEAPON_STATS, Weapon_Statistic);
@@ -66,13 +71,13 @@ DEF_VECTOR		(WEAPON_STATS, Weapon_Statistic);
 struct Player_Statistic
 {
 	shared_str		PName;
+	
 	u32				TotalShots;
-
-	WEAPON_STATS	aWeaponStats;
-
 	u32				m_dwTotalAliveTime;
 	s32				m_dwTotalMoneyRound;
 	u32				m_dwNumRespawned;
+
+	WEAPON_STATS	aWeaponStats;	
 	//-----------------------------------------------
 	u32				m_dwCurMoneyRoundDelta;
 
@@ -85,6 +90,8 @@ struct Player_Statistic
 	void			net_load			(NET_Packet* P);
 
 	bool			operator	==		(LPCSTR name){int res = xr_strcmp(PName.c_str(), name);return	res	 == 0;}
+	//-----------------------------------------------------------
+	void				Write						(FILE* pFile);
 };
 
 DEF_VECTOR	(PLAYERS_STATS, Player_Statistic);
@@ -171,6 +178,8 @@ struct WeaponUsageStatistic {
 	void				OnUpdateRespond				(NET_Packet* P);
 	//-----------------------------------------------
 	void				SaveData					();
+
+	void				Write						(FILE* pFile);
 };
 
 struct Bullet_Check_Respond_True

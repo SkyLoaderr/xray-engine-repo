@@ -88,6 +88,7 @@ void			Weapon_Statistic::net_load			(NET_Packet* P)
 		HitData NewHit;
 		NewHit.net_load(P);
 		m_Hits.push_back(NewHit);
+		m_dwNumCompleted++;
 	}
 };
 
