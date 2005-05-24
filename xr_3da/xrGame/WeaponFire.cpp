@@ -18,6 +18,34 @@
 #define FLAME_TIME 0.05f
 
 
+float _nrand(float sigma)
+{
+#define ONE_OVER_SIGMA_EXP (1.0f / 0.7975f)
+
+	if(sigma == 0) return 0;
+
+	float y;
+	do{
+		y = -logf(Random.randF());
+	}while(Random.randF() > expf(-_sqr(y - 1.0f)*0.5f));
+	if(rand() & 0x1)	return y * sigma * ONE_OVER_SIGMA_EXP;
+	else				return -y * sigma * ONE_OVER_SIGMA_EXP;
+}
+
+void random_dir(Fvector& tgt_dir, const Fvector& src_dir, float dispersion)
+{
+	float sigma			= dispersion/3.f;
+	float alpha			= clampr		(_nrand(sigma),-dispersion,dispersion);
+	float theta			= Random.randF	(0,PI);
+	float r 			= tan			(alpha);
+	Fvector 			U,V,T;
+	Fvector::generate_orthonormal_basis	(src_dir,U,V);
+	U.mul				(r*_sin(theta));
+	V.mul				(r*_cos(theta));
+	T.add				(U,V);
+	tgt_dir.add			(src_dir,T).normalize();
+}
+
 void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 {
 	VERIFY		(m_magazine.size());
@@ -29,11 +57,12 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
 	
-	float	weapon_fire_disp = GetFireDispersion(false);
+	float	weapon_fire_disp	= GetFireDispersion(false);
 	Fvector dir_base_disp;
-	dir_base_disp.random_dir(D, weapon_fire_disp, Random);
+	random_dir					(dir_base_disp,D,weapon_fire_disp);
+//.	dir_base_disp.random_dir	(D, weapon_fire_disp, Random);
 
-	float fire_disp = GetFireDispersion(true);
+	float fire_disp				= GetFireDispersion(true);
 	float cartirdge_fire_disp = fire_disp - weapon_fire_disp;
 
 #ifdef DEBUG
@@ -49,7 +78,8 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 		
 		Fvector ddd, dd;
 		dd = dir_base_disp;
-		ddd.random_dir(dd, cartirdge_fire_disp, Random);
+//.		ddd.random_dir(dd, cartirdge_fire_disp, Random);
+		random_dir(ddd,dd,cartirdge_fire_disp);
 
 		float diff;
 		Fvector _D = D;

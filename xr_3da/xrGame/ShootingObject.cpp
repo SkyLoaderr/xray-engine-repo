@@ -355,6 +355,8 @@ bool CShootingObject::SendHitAllowed		(CObject* pUser)
 	}
 };
 
+extern void random_dir(Fvector& tgt_dir, const Fvector& src_dir, float dispersion);
+
 void CShootingObject::FireBullet(const Fvector& pos, 
 								 const Fvector& shot_dir, 
 								 float fire_disp,
@@ -364,7 +366,8 @@ void CShootingObject::FireBullet(const Fvector& pos,
 								 bool send_hit)
 {
 	Fvector dir;
-	dir.random_dir(shot_dir, fire_disp, Random);
+//.	dir.random_dir(shot_dir, fire_disp, Random);
+	random_dir(dir,shot_dir,fire_disp);
 
 	//инициализипровать текущие параметры выстрела перед запуском RayPick
 	m_fCurrentHitPower	= float(iHitPower);

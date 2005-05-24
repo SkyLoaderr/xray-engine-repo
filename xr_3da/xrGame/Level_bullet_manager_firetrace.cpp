@@ -284,6 +284,8 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 FvectorVec g_hit[3];
 #endif
 
+extern void random_dir(Fvector& tgt_dir, const Fvector& src_dir, float dispersion);
+
 std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvector& end_point, 
 									collide::rq_result& R, u16 target_material, 
 									const Fvector& hit_normal)
@@ -311,57 +313,54 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 #ifdef DEBUG
 	Fvector dbg_bullet_pos;
 	dbg_bullet_pos.mad(bullet->pos,bullet->dir,R.range);
-	int bullet_state = 0;
+	int bullet_state		= 0;
 #endif
 	//рикошет
-	if(shoot_factor<RICOCHET_THRESHOLD && 
-		bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG))
-	{
-		//уменьшение скорости полета в зависимости 
-		//от угла падения пули (чем прямее угол, тем больше потеря)
-		float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
-		clamp(scale, 0.f, m_fCollisionEnergyMax);
+	Fvector			new_dir;
+	new_dir.reflect	(bullet->dir,hit_normal);
+	Fvector			tgt_dir;
+	random_dir		(tgt_dir, new_dir, deg2rad(10.f));
 
-		//вычисление рикошета, делается немного фейком,
-		//т.к. пуля остается в точке столкновения
-		//и сразу выходит из RayQuery()
-		Fvector rand_dir;
-		rand_dir.random_dir(rand_dir, PI_DIV_4, Random);
-		rand_dir.mul(0.1f);
-		Fvector new_dir;
-		bullet->dir.reflect(new_dir,hit_normal);
-		new_dir.add(rand_dir);
-		new_dir.normalize();
-		bullet->dir.set(new_dir);
-		bullet->prev_pos = bullet->pos;
-		bullet->pos = end_point;
-		bullet->flags.set(SBullet::RICOCHET_FLAG, 1);
+	float ricoshet_factor	= bullet->dir.dotproduct(tgt_dir);
 
+	float f			= Random.randF	(-1.f,1.f);
+//	if(shoot_factor<RICOCHET_THRESHOLD &&  )
+	if ((f+shoot_factor)<ricoshet_factor){
+		if (bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG)){
+			//уменьшение скорости полета в зависимости 
+			//от угла падения пули (чем прямее угол, тем больше потеря)
+			float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
+			clamp(scale, 0.f, m_fCollisionEnergyMax);
 
-		//уменьшить скорость в зависимости от простреливаемости
-		bullet->speed *= material_pierce*scale;
-		//сколько энергии в процентах потеряла пуля при столкновении
-		float energy_lost = 1.f - bullet->speed/old_speed;
-		//импульс переданный объекту равен прямопропорционален потерянной энергии
-		impulse = bullet->hit_impulse*speed_factor*bullet->impulse_k*energy_lost;
+			//вычисление рикошета, делается немного фейком,
+			//т.к. пуля остается в точке столкновения
+			//и сразу выходит из RayQuery()
+			bullet->dir.set	(tgt_dir);
+			bullet->prev_pos= bullet->pos;
+			bullet->pos		= end_point;
+			bullet->flags.set(SBullet::RICOCHET_FLAG, 1);
 
-		#ifdef DEBUG
-		bullet_state = 0;
-		#endif		
-	}
-	//застрявание пули в материале
-	else if(shoot_factor <  STUCK_THRESHOLD)
-	{
+			//уменьшить скорость в зависимости от простреливаемости
+			bullet->speed *= material_pierce*scale;
+			//сколько энергии в процентах потеряла пуля при столкновении
+			float energy_lost = 1.f - bullet->speed/old_speed;
+			//импульс переданный объекту равен прямопропорционален потерянной энергии
+			impulse = bullet->hit_impulse*speed_factor*bullet->impulse_k*energy_lost;
+
+			#ifdef DEBUG
+			bullet_state = 0;
+			#endif		
+		}
+	} else if(shoot_factor <  STUCK_THRESHOLD) {
+		//застрявание пули в материале
 		bullet->speed  = 0.f;
 		//передаем весь импульс целиком
 		impulse = bullet->hit_impulse*bullet->impulse_k*speed_factor;
 		#ifdef DEBUG
 		bullet_state = 1;
 		#endif		
-	}
-	//пробивание материала
-	else
-	{
+	} else {
+		//пробивание материала
 		//уменьшить скорость пропорцианально потраченому импульсу
 		//float speed_lost = fis_zero(bullet->hit_impulse) ?	1.f : 		1.f - impulse/bullet->hit_impulse;
 		//clamp (speed_lost, 0.f , 1.f);
