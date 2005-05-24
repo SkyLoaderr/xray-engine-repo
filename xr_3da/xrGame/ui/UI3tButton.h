@@ -12,6 +12,7 @@
 #include "UI_IB_Static.h"
 
 class CUI3tButton : public CUIButton {
+	friend class CUIXmlInit;
 	using CUIButton::SetTextColor;
 public:
 	CUI3tButton();
@@ -46,10 +47,11 @@ public:
 
 
 	CUIStatic		m_hint;
+	CUI_IB_Static	m_background;
 private:	
 			void PlaySoundH();
 			void PlaySoundT();
-	CUI_IB_Static	m_background;
+
 	ref_sound		m_sound_h;
 	ref_sound		m_sound_t;	
 

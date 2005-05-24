@@ -7,35 +7,26 @@
 
 #pragma once
 
-#include "uibutton.h"
+#include "ui3tbutton.h"
 
-class CUICheckButton :public CUIButton
+class CUICheckButton :public CUI3tButton
 {
-private:
-	typedef CUIButton inherited;
 public:
 	CUICheckButton(void);
 	virtual ~CUICheckButton(void);
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-
-	//сообщения, отправляемые родительскому окну
-//	typedef enum{BUTTON_CLICKED, CHECK_BUTTON_SET, CHECK_BUTTON_RESET} E_MESSAGE;
-
-	//прорисовка окна
-	virtual void Draw();
-	virtual void Update();
-
+	virtual void Init(int x, int y, int width, int height);
+	virtual void OnMouseDown(bool left_button = true);
+	virtual void SetTextX(int x) {/*do nothing*/}
+//	virtual void SetLines(LPCSTR str);
 
 	//состояние кнопки
-	bool GetCheck() {return m_bIsChecked;}
-	void SetCheck() {m_bIsChecked = true;}
-	void ResetCheck() {m_bIsChecked = false;}
+	bool GetCheck() {return m_eButtonState == BUTTON_PUSHED;}
+	void SetCheck(bool ch) {m_eButtonState = ch ? BUTTON_PUSHED : BUTTON_NORMAL;}
 
-
-protected:
-	//флаг присутствия галочки 
-	bool m_bIsChecked;
+private:
+	virtual void InitTexture();
 };
 
 

@@ -13,6 +13,7 @@ void CUIStatic::script_register(lua_State *L)
 
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
+		.def("SetLines",			&CUIStatic::SetLines)
 		.def("GetText",				&CUIStatic::GetText)
 
 		.def("SetTextX",				&CUIStatic::SetTextX)
@@ -22,15 +23,16 @@ void CUIStatic::script_register(lua_State *L)
 		
 		.def("SetColor",			&CUIStatic::SetColor)
 		.def("GetColor",			&CUIStatic::GetColor)
+		.def("SetTextColor",		&CUIStatic::SetTextColor_script)
 		.def("Init",				(void(CUIStatic::*)(int,int,int,int))CUIStatic::Init )
 		.def("Init",				(void(CUIStatic::*)(LPCSTR,int,int,int,int))CUIStatic::Init )
 		.def("InitTexture",			&CUIStatic::InitTexture )
+//		.def("InitSharedTexture",	&CUIStatic::InitSharedTexture)
 		.def("SetTextureOffset",	&CUIStatic::SetTextureOffset )
 
 
 		.def("SetOriginalRect",		(void(CUIStatic::*)(int,int,int,int))&CUIStatic::SetOriginalRect)
 /*
-///.
 		.def("SetTextureScaleXY",	&CUIStatic::SetTextureScaleXY)
 		.def("GetTextureScaleX",	&CUIStatic::GetTextureScaleX)
 		.def("GetTextureScaleY",	&CUIStatic::GetTextureScaleY)

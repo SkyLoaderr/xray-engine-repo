@@ -8,6 +8,7 @@
 #include <luabind\adopt_policy.hpp>
 #include "../GamePersistent.h"
 #include "../MainUI.h"
+#include "UILabel.h"
 
 CFontManager& mngr(){
 	return *(UI()->Font());
@@ -138,6 +139,13 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetColor",						&CUIFrameLineWnd::SetColor)
 		.def("GetTitleStatic",					&CUIFrameLineWnd::GetTitleStatic)
 		.def("Init",							(void(CUIFrameLineWnd::*)(LPCSTR,int,int,int,int,bool))CUIFrameLineWnd::Init),
+
+		class_<CUILabel, CUIFrameLineWnd>("CUILabel")
+		.def(					constructor<>())
+		.def("SetText",						&CUILabel::SetText),
+
+
+
 //		.def("",						&CUIFrameLineWnd::)
 //		.def("",						&CUIFrameLineWnd::)
 //		.def("",						&CUIFrameLineWnd::)

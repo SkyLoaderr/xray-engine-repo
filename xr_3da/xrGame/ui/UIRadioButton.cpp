@@ -5,52 +5,16 @@
 
 #include "stdafx.h"
 #include ".\uiradiobutton.h"
-#include "../HUDManager.h"
 
-CUIRadioButton::CUIRadioButton(void)
-{
+
+void CUIRadioButton::Init(int x, int y, int width, int height){
+    CUI3tButton::InitTexture("ui_radio");
+	Irect r = m_background.GetE()->GetStaticItem()->GetRect(); 
+	CUI3tButton::SetTextX(r.width());
+    CUI3tButton::Init(x,y, r.width(), r.height());
+	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
 }
 
-CUIRadioButton::~CUIRadioButton(void)
-{
-}
-
-//реакция на мышь
-void CUIRadioButton::OnMouse(int x, int y, EUIMessages mouse_action)
-{
-	CUIButton::OnMouse(x, y, mouse_action);
-	
-	//если кнопка была только что нажата
-	if(m_bButtonClicked)
-		if(!m_bIsChecked) 
-		{
-			GetMessageTarget()->SendMessage(this, RADIOBUTTON_SET);
-			GetParent()->SendMessage(this, RADIOBUTTON_SET);
-		}
-}
-
-#define RADIO_WIDTH 20
-
-//прорисовка окна
-void CUIRadioButton::Draw()
-{
-	CUIButton::Draw();
-
-	Irect rect = GetAbsoluteRect();
-
-	//нарисовать галочку
-	if(m_bIsChecked)
-	{
-		GetFont()->SetColor(0xFF00FF00);
-		float dy = ((float)rect.bottom-(float)rect.top)/2.0f;
-		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left, (float)rect.top+dy,	"O");
-	}
-
-	GetFont()->OnRender();
-}
-
-
-void CUIRadioButton::Update()
-{
-	CUIButton::Update();
+void CUIRadioButton::InitTexture(LPCSTR tex_name){
+	// do nothing
 }

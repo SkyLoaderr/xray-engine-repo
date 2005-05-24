@@ -7,52 +7,36 @@
 #include "../HUDManager.h"
 
 CUICheckButton::CUICheckButton(void)
-{
+{	
 }
 
 CUICheckButton::~CUICheckButton(void)
 {
 }
 
-//реакция на мышь
+void CUICheckButton::Init(int x, int y, int width, int height){
+	CUIWindow::Init(x,y,width,height);
+	InitTexture();
+	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
+}
+
+void CUICheckButton::InitTexture(){
+	CUI3tButton::InitTexture("ui_checker");
+	Irect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
+	CUI3tButton::SetTextX(r.width());	
+}
+
 void CUICheckButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x, y, mouse_action);
-	
-	//если кнопка была только что нажата
-	if(m_bButtonClicked)
-		if(m_bIsChecked) 
-		{
-			m_bIsChecked = false;
-			GetMessageTarget()->SendMessage(this, CHECK_BUTTON_RESET);
-		}
-		else
-		{
-			m_bIsChecked = true;
-			GetMessageTarget()->SendMessage(this, CHECK_BUTTON_SET);
-		}
+	CUIWindow::OnMouse(x, y, mouse_action);
 }
 
-//прорисовка окна
-void CUICheckButton::Draw()
-{
-	inherited::Draw();
-
-	Irect rect = GetAbsoluteRect();
-
-	//нарисовать галочку
-	if(m_bIsChecked)
+void CUICheckButton::OnMouseDown(bool left_button){
+	if (left_button)
 	{
-		GetFont()->SetColor(0xFF00FF00);
-		float dy = ((float)rect.bottom-(float)rect.top)/2.0f;
-		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left, (float)rect.top+dy,	"X");
+		if (m_eButtonState == BUTTON_NORMAL)
+			m_eButtonState = BUTTON_PUSHED;
+		else
+			m_eButtonState = BUTTON_NORMAL;
 	}
-
-	GetFont()->OnRender();
-}
-
-
-void CUICheckButton::Update()
-{
-	inherited::Update();
 }

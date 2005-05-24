@@ -7,6 +7,8 @@
 #include "stdafx.h"
 #include "UIFrameWindow.h"
 #include "../HUDManager.h"
+#include "UITextureMaster.h"
+#include "UIXmlInit.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -17,6 +19,7 @@ CUIFrameWindow::CUIFrameWindow()
 {
 	m_bOverLeftTop = false; 
 	m_bOverLeftBottom = false;
+	AttachChild(&UITitleText);
 }
 
 CUIFrameWindow::~CUIFrameWindow()
@@ -32,12 +35,15 @@ CUIFrameWindow::~CUIFrameWindow()
 
 void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
-	m_UIWndFrame.Init(base_name,x,y,width, height,alNone);
-	
-	AttachChild(&UITitleText);
+	Init(x,y,width,height);
+	InitTexture(base_name);	
+}
+
+void CUIFrameWindow::Init(int x, int y, int width, int height)
+{
+	CUIWindow::Init(x,y,width,height);
+	m_UIWndFrame.Init(x,y,width,height);
 	UITitleText.Init(0,0, width, 50);
-		
-	inherited::Init(x,y, width, height);
 }
 
 void CUIFrameWindow::Init(LPCSTR base_name, Irect* pRect)
@@ -45,6 +51,10 @@ void CUIFrameWindow::Init(LPCSTR base_name, Irect* pRect)
 	Init(base_name, pRect->left, pRect->top, 
 				pRect->right - pRect->left, 
 				pRect->bottom - pRect->top);
+}
+
+void CUIFrameWindow::InitTexture(const char* texture){
+	m_UIWndFrame.InitTexture(texture);
 }
 
 
@@ -74,8 +84,14 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_off
 
 	m_bOverLeftBottom = true;
 }
+//
+//void CUIFrameWindow::SetShader(const ref_shader& sh){
+//	m_UIWndFrame.SetShader(sh);
+//}
 
-
+//void CUIFrameWindow::SetRect2Item(int item, int x, int y, int width, int height){
+//	m_UIWndFrame.SetRect2Item(item, x, y, width, height);
+//}
 
 //
 // прорисовка окна
@@ -83,18 +99,18 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_off
 void CUIFrameWindow::Draw()
 {
 	Irect rect = GetAbsoluteRect();
+	Ivector2 v;
 
-
-	m_UIWndFrame.SetPos(rect.left, rect.top);
-
-
+	v.x = rect.x1;
+	v.y = rect.y1;
+	m_UIWndFrame.SetWndPos(v);
 	// Clipper all static items in frame rect
 	if (m_bClipper)
 	{
 		FrameClip(m_ClipRect);
 	}
 
-	m_UIWndFrame.Render();
+	m_UIWndFrame.Draw();
 
 	if(m_bOverLeftTop)
 	{
@@ -114,12 +130,17 @@ void CUIFrameWindow::Draw()
 	inherited::Draw();
 }
 
+void CUIFrameWindow::Update(){
+	CUIWindow::Update();
+	m_UIWndFrame.Update();
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIFrameWindow::SetWidth(int width)
 {
 	inherited::SetWidth(width);
-	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
+	m_UIWndFrame.SetWidth(width);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,14 +148,14 @@ void CUIFrameWindow::SetWidth(int width)
 void CUIFrameWindow::SetHeight(int height)
 {
 	inherited::SetHeight(height);
-	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
+	m_UIWndFrame.SetHeight(height);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIFrameWindow::SetColor(u32 cl)
 {
-	m_UIWndFrame.SetColor(cl);
+	m_UIWndFrame.SetTextureColor(cl);
 	m_UIStaticOverLeftBottom.SetColor(cl);
 	m_UIStaticOverLeftTop.SetColor(cl);
 }

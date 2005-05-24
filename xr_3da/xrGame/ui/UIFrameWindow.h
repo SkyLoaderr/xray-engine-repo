@@ -5,7 +5,6 @@
 
 #pragma once
 
-
 #include "uiwindow.h"
 #include "uistatic.h"
 
@@ -15,7 +14,8 @@
 
 
 
-class CUIFrameWindow: public CUIWindow
+class CUIFrameWindow: public CUIWindow,
+					  public CUIMultiTextureOwner
 {
 private:
 	typedef CUIWindow inherited;
@@ -28,7 +28,12 @@ public:
 	////////////////////////////////////
 	//инициализация
 	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
+	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(LPCSTR base_name, Irect* pRect);
+
+	virtual void InitTexture(const char* texture);
+			void SetTextureColor(u32 color)										{m_UIWndFrame.SetTextureColor(color);}
+//	virtual void SetRect2Item(int item, int x, int y, int width, int height);
 
 	//для статических спрайтов, перекрывающий окно
 	void InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset);
@@ -43,6 +48,7 @@ public:
 	////////////////////////////////////
 	//прорисовка окна
 	virtual void Draw();
+	virtual void Update();
 	
 	//текст заголовка
 	CUIStatic UITitleText;
@@ -85,3 +91,8 @@ private:
 
 };
 	
+//	virtual void SetShader(const ref_shader& sh);
+//	virtual void CreateShader(const char* tex, const char*sh = "hud\\default")	{m_UIWndFrame.CreateShader(tex,sh);}
+//	virtual ref_shader& GetShader();
+//	virtual u32  GetTextureColor()										const	{return m_UIWndFrame.GetTextureColor();}
+//	virtual void SetOriginalRect(Irect& r)	{}

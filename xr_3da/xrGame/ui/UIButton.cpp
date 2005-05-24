@@ -43,6 +43,8 @@ CUIButton:: CUIButton()
 
 	m_iShadowOffsetX			= 0;
 	m_iShadowOffsetY			= 0;
+
+	m_lines.SetTextAlignment(CGameFont::alCenter);
 }
 
  CUIButton::~ CUIButton()
@@ -288,6 +290,9 @@ void CUIButton::DrawText(){
 			inherited::DrawString(rect);
 		}
 	}
+
+    Irect r = GetAbsoluteRect();
+	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
 }
 
 
@@ -303,6 +308,7 @@ void  CUIButton::Update()
 
 void CUIButton::UpdateTextAlign()
 {
+#pragma todo("Need change for ::m_lines")
 	if (m_iTextOffsetY < 0)
 		m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
 
@@ -314,8 +320,8 @@ void CUIButton::UpdateTextAlign()
 	{
 		m_iTextOffsetX = GetWidth();
 	}
-//	else
-//	{
-//		m_iTextOffsetX = 0;
-//	}
+	else
+	{
+		m_iTextOffsetX = 0;
+	}
 }

@@ -11,6 +11,8 @@
 #include "UI3tButton.h"
 #include "../MainUI.h"
 #include "../../sound.h"
+#include "xrXmlParser.h"
+#include "UIXmlInit.h"
 
 CUI3tButton::CUI3tButton(){
 	m_iPushOffsetX = 0;
@@ -91,9 +93,13 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 }
 
 void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched, LPCSTR tex_highlighted){
+	//CUITextureMaster::InitTexture(tex_enabled, m_background.CreateE());
+	//CUITextureMaster::InitTexture(tex_disabled, m_background.CreateD());
+	//CUITextureMaster::InitTexture(tex_touched, m_background.CreateT());
+	//CUITextureMaster::InitTexture(tex_highlighted, m_background.CreateD());
 	m_background.InitEnabledState(tex_enabled);
 	m_background.InitDisabledState(tex_disabled);
-	m_background.InitTouchedState(tex_touched);	
+	m_background.InitTouchedState(tex_touched);
 	m_background.InitHighlightedState(tex_highlighted);
 	this->m_bTextureEnable = true;
 }
@@ -149,9 +155,9 @@ void CUI3tButton::Update(){
 		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
 			m_background.SetState(S_Touched);
 		else if (m_bCursorOverWindow)
-			m_background.SetState(S_Highlighted);		
+			m_background.SetState(S_Highlighted);
 		else
-			m_background.SetState(S_Enabled);		
+			m_background.SetState(S_Enabled);
 	}
 
 	u32 textColor;

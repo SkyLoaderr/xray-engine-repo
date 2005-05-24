@@ -8,25 +8,14 @@
 
 
 #pragma once
-#include "uicheckbutton.h"
+#include "UITabButton.h"
 
-class CUIRadioButton :
-	public CUICheckButton
+class CUIRadioButton : public CUITabButton
 {
 public:
-	CUIRadioButton(void);
-	virtual ~CUIRadioButton(void);
-
-	//сообщения, отправляемые родительскому окну
-//	typedef enum{BUTTON_CLICKED, CHECK_BUTTON_SET, CHECK_BUTTON_RESET, 
-//					RADIO_BUTTON_SET} E_MESSAGE;
-	
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-
-	//прорисовка окна
-	virtual void Draw();
-	virtual void Update();
-
+	virtual void Init(int x, int y, int width, int height);
+	virtual void InitTexture(LPCSTR tex_name);
+	virtual void SetTextX(int x)	{/*do nothing*/}
 };
 
 

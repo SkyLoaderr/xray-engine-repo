@@ -21,26 +21,20 @@ CUIFrameLineWnd::CUIFrameLineWnd()
 
 void CUIFrameLineWnd::Init(int x, int y, int width, int height){
 	inherited::Init(x,y, width, height);
-
 	UITitleText.Init(0,0, width, 50);
+	inherited::Init(x,y, width, height);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIFrameLineWnd::Init(LPCSTR base_name, int x, int y, int width, int height, bool horizontal)
 {
+	Init(x,y,width,height);
+	InitTexture(base_name, horizontal);
 	if (horizontal)
-	{
-		UIFrameLine.Init(base_name, x, y, width, horizontal, alNone);
 		UITitleText.Init(0,0, width, 50);
-	}
 	else
-	{
-		UIFrameLine.Init(base_name, x, y, height, horizontal, alNone);
-		UITitleText.Init(0,0, 50, height);
-	}	
-
-	inherited::Init(x,y, width, height);
+		UITitleText.Init(0,0, 50, height);	
 }
 
 //////////////////////////////////////////////////////////////////////////

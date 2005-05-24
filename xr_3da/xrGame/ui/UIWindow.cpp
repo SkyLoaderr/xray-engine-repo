@@ -71,11 +71,11 @@ CUIWindow::~CUIWindow()
 #endif
 }
 
-
-void CUIWindow::Init( int x, int y, int width, int height)
-{
-	SetWndRect(x, y, width, height);
-}
+//
+//void CUIWindow::Init( int x, int y, int width, int height)
+//{
+//	SetWndRect(x, y, width, height);
+//}
 
 void CUIWindow::Init(Irect* pRect)
 {
@@ -93,6 +93,11 @@ void CUIWindow::Draw()
 		if((*it)->IsShown())
 			(*it)->Draw();
 	}
+}
+
+void CUIWindow::Draw(int x, int y){
+	m_wndPos.set(x,y);
+	Draw();
 }
 
 void CUIWindow::Update()
@@ -192,7 +197,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 	// DOUBLE CLICK GENERATION
 	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
 	{
-		u32 dwCurTime = Device.TimerAsync();
+		u32 dwCurTime = Device.TimerAsyncMM();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
             mouse_action = WINDOW_LBUTTON_DB_CLICK;
 
@@ -489,37 +494,37 @@ void CUIWindow::SetParent(CUIWindow* pNewParent)
 	m_pParentWnd = pNewParent;
 }
 
-Irect CUIWindow::GetWndRect()
-{
-	switch (m_alignment){
-		case waNone:
-			return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);
-			break;
-		case waCenter:{
-				Irect res;
-				int half_w = iFloor(float(m_iWndSize.x)/2.0f);
-				int half_h = iFloor(float(m_iWndSize.y)/2.0f);
-				res.set(m_iWndPos.x - half_w,
-						m_iWndPos.y - half_h,
-						m_iWndPos.x + half_w,
-						m_iWndPos.y + half_h);
-				return res;
-			}break;
-		default:
-			NODEFAULT;
-	};
-	return Irect().null();
-}
-
-void CUIWindow::SetWndRect(int x, int y, int width, int height)
-{
-	switch (m_alignment){
-		case waNone:
-		case waCenter:{
-				m_iWndPos.set(x,y); 
-				m_iWndSize.set(width,height);
-			}break;
-		default:
-			NODEFAULT;
-	};
-}
+//Irect CUIWindow::GetWndRect()
+//{
+//	switch (m_alignment){
+//		case waNone:
+//			return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);
+//			break;
+//		case waCenter:{
+//				Irect res;
+//				int half_w = iFloor(float(m_iWndSize.x)/2.0f);
+//				int half_h = iFloor(float(m_iWndSize.y)/2.0f);
+//				res.set(m_iWndPos.x - half_w,
+//						m_iWndPos.y - half_h,
+//						m_iWndPos.x + half_w,
+//						m_iWndPos.y + half_h);
+//				return res;
+//			}break;
+//		default:
+//			NODEFAULT;
+//	};
+//	return Irect().null();
+//}
+//
+//void CUIWindow::SetWndRect(int x, int y, int width, int height)
+//{
+//	switch (m_alignment){
+//		case waNone:
+//		case waCenter:{
+//				m_iWndPos.set(x,y); 
+//				m_iWndSize.set(width,height);
+//			}break;
+//		default:
+//			NODEFAULT;
+//	};
+//}

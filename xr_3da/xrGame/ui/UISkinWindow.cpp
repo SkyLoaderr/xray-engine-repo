@@ -35,7 +35,7 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 /////// UIBackground
 	AttachChild(&UIBackground);
 
-	texture = xmlDoc.Read(strconcat(buf,PATH_XML,":base_texture"), 0, NULL);
+	texture = xmlDoc.Read(strconcat(buf,PATH_XML,":texture"), 0, NULL);
 	UIBackground.Init(*texture, 0, 0, width, height);
 
 	CUIFrameWindow* pWnd = &UIBackground;

@@ -9,6 +9,7 @@
 
 #include "UIMessages.h"
 #include "../script_export_space.h"
+#include "uiabstract.h"
 
 class CUIDragDropItem;
 
@@ -21,9 +22,10 @@ enum EWindowAlignment{
 	waCenter	=16
 };
 
-class CUIWindow  
+class CUIWindow  : public CUISimpleWindow
 {
 public:
+	using CUISimpleWindow::Init;
 	////////////////////////////////////
 	//конструктор/деструктор
 	CUIWindow();
@@ -31,7 +33,7 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void			Init				(int x, int y, int width, int height);
+//	virtual void			Init				(int x, int y, int width, int height);
 	virtual void			Init				(Irect* pRect);
 
 	virtual CUIDragDropItem*cast_drag_drop_item	()								{return NULL;}
@@ -104,37 +106,38 @@ public:
 	virtual bool			IsEnabled			()												{return m_bIsEnabled;}
 
 	//убрать/показать окно и его дочерние окна
-	virtual void			Show				(bool status)									{m_bIsShown= status; Enable(status); }
-	IC		bool			IsShown				()												{return m_bIsShown;}
+	virtual void			Show				(bool status)									{SetVisible(status); Enable(status); }
+	IC		bool			IsShown				()												{return this->GetVisible();}
 	
 	////////////////////////////////////
 	//положение и размеры окна
 
 	//относительные координаты
-	IC const Ivector2&		GetWndPos			() 									{return m_iWndPos;}
-	IC void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
-	IC void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
+//	IC const Ivector2&		GetWndPos			() 									{return m_iWndPos;}
+//	IC void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
+//	IC void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
 
-	Irect					GetWndRect			()									;//	{return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);}
-	void					SetWndRect			(int x, int y, int width, int height);//{m_iWndPos.set(x,y); m_iWndSize.set(width,height); }
+//	Irect					GetWndRect			()									;//	{return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);}
+	void					SetWndRect			(int x, int y, int width, int height) {m_wndPos.set(x,y); m_wndSize.set(width,height); }
 	IC void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
 
-	virtual void			MoveWndDelta		(int dx, int dy)					{m_iWndPos.x+=dx;m_iWndPos.y+=dy;}
+	virtual void			MoveWndDelta		(int dx, int dy)					{m_wndPos.x+=dx;m_wndPos.y+=dy;}
 	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
 
 	//абсолютные координаты
 	Irect					GetAbsoluteRect		() ;
 	Ivector2				GetAbsolutePos		() 									{Irect abs = GetAbsoluteRect(); return Ivector2().set(abs.x1,abs.y1);}
 
-	virtual void			SetWidth			(int width)			{m_iWndSize.x=width;}
-	virtual void			SetHeight			(int height)		{m_iWndSize.y=height;}
+//	virtual void			SetWidth			(int width)			{m_iWndSize.x=width;}
+//	virtual void			SetHeight			(int height)		{m_iWndSize.y=height;}
 
-	virtual int				GetWidth			()					{return m_iWndSize.x;}
-	virtual int				GetHeight			()					{return m_iWndSize.y;}
+//	virtual int				GetWidth			()					{return m_iWndSize.x;}
+//	virtual int				GetHeight			()					{return m_iWndSize.y;}
 
 	////////////////////////////////////
 	//прорисовка окна
 	virtual void			Draw				();
+	virtual void			Draw				(int x, int y);
 	//обновление окна передпрорисовкой
 	virtual void			Update				();
 
@@ -194,13 +197,13 @@ protected:
 
 	//положение и размер окна, задается 
 	//относительно родительского окна
-	Ivector2				m_iWndPos;
-	Ivector2				m_iWndSize;
+//	Ivector2				m_iWndPos;
+//	Ivector2				m_iWndSize;
 
 	//разрешен ли ввод пользователя
 	bool					m_bIsEnabled;
 	//показывать ли окно
-	bool					m_bIsShown;
+//	bool					m_bIsShown;
 
 
 	/////////////
