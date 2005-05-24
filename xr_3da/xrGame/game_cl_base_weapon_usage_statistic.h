@@ -48,7 +48,7 @@ struct Weapon_Statistic
 	u32				BulletsFired;
 	u32				HitsScored;
 	u32				KillsScored;
-	u32				m_Basket[MAX_BASKET];
+	u32				m_Basket[3][MAX_BASKET];
 
 	u32				m_dwNumCompleted;
 	HITS_VEC		m_Hits;
@@ -73,9 +73,9 @@ struct Player_Statistic
 	shared_str		PName;
 	
 	u32				TotalShots;
-	u32				m_dwTotalAliveTime;
-	s32				m_dwTotalMoneyRound;
-	u32				m_dwNumRespawned;
+	u32				m_dwTotalAliveTime[3];
+	s32				m_dwTotalMoneyRound[3];
+	u32				m_dwNumRespawned[3];
 
 	WEAPON_STATS	aWeaponStats;	
 	//-----------------------------------------------
@@ -134,9 +134,9 @@ struct WeaponUsageStatistic {
 	//-----------------------------------------------
 	PLAYERS_STATS	aPlayersStatistic;
 	//-----------------------------------------------
-	u32				m_dwTotalPlayersAliveTime;
-	s32				m_dwTotalPlayersMoneyRound;
-	u32				m_dwTotalNumRespawns;
+	u32				m_dwTotalPlayersAliveTime[3];
+	s32				m_dwTotalPlayersMoneyRound[3];
+	u32				m_dwTotalNumRespawns[3];
 	//-----------------------------------------------
 	u32				m_dwLastUpdateTime;
 	u32				m_dwUpdateTimeDelta;

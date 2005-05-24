@@ -97,9 +97,9 @@ Player_Statistic::Player_Statistic(LPCSTR Name)
 	PName = Name;
 	TotalShots = 0;
 
-	m_dwTotalAliveTime = 0;
-	m_dwTotalMoneyRound = 0;
-	m_dwNumRespawned = 0;
+	ZeroMemory(m_dwTotalAliveTime, sizeof(m_dwTotalAliveTime));
+	ZeroMemory(m_dwTotalMoneyRound, sizeof(m_dwTotalMoneyRound));
+	ZeroMemory(m_dwNumRespawned, sizeof(m_dwNumRespawned));
 };
 
 Player_Statistic::~Player_Statistic()
@@ -110,9 +110,6 @@ Player_Statistic::~Player_Statistic()
 void			Player_Statistic::net_save			(NET_Packet* P)
 {
 	P->w_u32(TotalShots);
-//	P->w_u32(m_dwTotalAliveTime);
-//	P->w_s32(m_dwTotalMoneyRound);
-//	P->w_u32(m_dwNumRespawned);
 	P->w_u32(aWeaponStats.size());
 	for (u32 i=0; i<aWeaponStats.size(); i++)
 	{
@@ -125,9 +122,6 @@ void			Player_Statistic::net_save			(NET_Packet* P)
 void			Player_Statistic::net_load			(NET_Packet* P)
 {
 	TotalShots = P->r_u32();
-//	m_dwTotalAliveTime = P->r_u32();
-//	m_dwTotalMoneyRound = P->r_s32();
-//	m_dwNumRespawned = P->r_u32();
 	u32 NumWeapons = P->r_u32();
 	for (u32 i=0; i<NumWeapons; i++)
 	{
@@ -152,9 +146,9 @@ void	WeaponUsageStatistic::Clear			()
 	m_Requests.clear();
 	m_dwLastRequestSenderID = 0;
 	
-	m_dwTotalPlayersAliveTime = 0;
-	m_dwTotalPlayersMoneyRound = 0;
-	m_dwTotalNumRespawns = 0;
+	ZeroMemory(m_dwTotalPlayersAliveTime, sizeof(m_dwTotalPlayersAliveTime));
+	ZeroMemory(m_dwTotalPlayersMoneyRound, sizeof(m_dwTotalPlayersMoneyRound));
+	ZeroMemory(m_dwTotalNumRespawns, sizeof(m_dwTotalNumRespawns));
 
 	m_dwLastUpdateTime = Level().timeServer();
 };
@@ -250,7 +244,7 @@ void				WeaponUsageStatistic::OnWeaponBought		(game_PlayerState* ps, LPCSTR Weap
 	{
 		BasketPos = (ps->money_for_round-1)/1000 + 1;
 	};
-	WeaponIt->m_Basket[BasketPos]++;
+	WeaponIt->m_Basket[ps->team][BasketPos]++;
 };
 
 void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridge& cartridge)
@@ -478,6 +472,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 void				WeaponUsageStatistic::Draw						()
 {
 	return;
+	/*
 	CGameFont* pFont = HUD().Font().pFontMedium;
 	pFont->SetColor(color_rgba(255, 255, 255, 255));
 	float X = 0;
@@ -548,6 +543,7 @@ void				WeaponUsageStatistic::Draw						()
 		}
 	};
 	pFont->Out(0, Y, "-----------------------------------");
+	*/
 }
 
 void				WeaponUsageStatistic::OnPlayerSpawned				(game_PlayerState* ps)
@@ -555,9 +551,9 @@ void				WeaponUsageStatistic::OnPlayerSpawned				(game_PlayerState* ps)
 	if (!CollectData()) return;
 	if (!ps) return;
 	Player_Statistic& PlayerStat = *(FindPlayer(ps->getName()));
-	PlayerStat.m_dwNumRespawned++;
+	PlayerStat.m_dwNumRespawned[ps->team]++;
 	PlayerStat.m_dwCurMoneyRoundDelta = 0;
-	m_dwTotalNumRespawns++;	
+	m_dwTotalNumRespawns[ps->team]++;	
 }
 
 void				WeaponUsageStatistic::OnPlayerAddMoney			(game_PlayerState* ps, s32 MoneyAmount)
@@ -574,13 +570,13 @@ void				WeaponUsageStatistic::OnPlayerKilled				(game_PlayerState* ps)
 	if (!ps) return;
 	u32 dwAliveTime = ps->DeathTime - ps->RespawnTime;
 	
-	m_dwTotalPlayersAliveTime += dwAliveTime;
+	m_dwTotalPlayersAliveTime[ps->team] += dwAliveTime;
 
 	Player_Statistic& PlayerStat = *(FindPlayer(ps->getName()));
-	PlayerStat.m_dwTotalAliveTime += dwAliveTime;
+	PlayerStat.m_dwTotalAliveTime[ps->team] += dwAliveTime;
 	
-	PlayerStat.m_dwTotalMoneyRound += PlayerStat.m_dwCurMoneyRoundDelta;
-	m_dwTotalPlayersMoneyRound += PlayerStat.m_dwCurMoneyRoundDelta;
+	PlayerStat.m_dwTotalMoneyRound[ps->team] += PlayerStat.m_dwCurMoneyRoundDelta;
+	m_dwTotalPlayersMoneyRound[ps->team] += PlayerStat.m_dwCurMoneyRoundDelta;
 };
 
 void				WeaponUsageStatistic::Update()

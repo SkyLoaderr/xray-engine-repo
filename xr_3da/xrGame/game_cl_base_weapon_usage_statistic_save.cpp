@@ -15,7 +15,7 @@ void		WeaponUsageStatistic::SaveData()
 	{
 	case GAME_DEATHMATCH: sprintf(GameType, "dm"); break;
 	case GAME_TEAMDEATHMATCH: sprintf(GameType, "tdm"); break;
-	case GAME_ARTEFACTHUNT: sprintf(GameType, "afh"); break;
+	case GAME_ARTEFACTHUNT: sprintf(GameType, "ah"); break;
 	default:
 		return;
 		break;
@@ -40,9 +40,9 @@ void				WeaponUsageStatistic::Write						(FILE* pFile)
 {
 	if (!pFile) return;	
 	//---------------------------------------------	
-	fwrite(&m_dwTotalPlayersAliveTime, 4, 1, pFile);
-	fwrite(&m_dwTotalPlayersMoneyRound, 4, 1, pFile);
-	fwrite(&m_dwTotalNumRespawns, 4, 1, pFile);	
+	fwrite(m_dwTotalPlayersAliveTime, 4, 3, pFile);
+	fwrite(m_dwTotalPlayersMoneyRound, 4, 3, pFile);
+	fwrite(m_dwTotalNumRespawns, 4, 3, pFile);	
 	//----------------------------------------------
 	u32 NumPlayers = aPlayersStatistic.size();
 	fwrite(&NumPlayers, 4, 1, pFile);
@@ -60,9 +60,9 @@ void				Player_Statistic::Write						(FILE* pFile)
 	//----------------------------------------------
 	fwrite(*PName, xr_strlen(PName)+1, 1, pFile);
 	fwrite(&TotalShots, 4, 1, pFile);	
-	fwrite(&m_dwTotalAliveTime, 4, 1, pFile);	
-	fwrite(&m_dwTotalMoneyRound, 4, 1, pFile);	
-	fwrite(&m_dwNumRespawned, 4, 1, pFile);	
+	fwrite(m_dwTotalAliveTime, 4, 3, pFile);	
+	fwrite(m_dwTotalMoneyRound, 4, 3, pFile);	
+	fwrite(m_dwNumRespawned, 4, 3, pFile);	
 	//----------------------------------------------
 	u32 NumWeapons = aWeaponStats.size();
 	fwrite(&NumWeapons, 4, 1, pFile);
@@ -86,7 +86,7 @@ void				Weapon_Statistic::Write						(FILE* pFile)
 	fwrite(&BulletsFired, 4, 1, pFile);	
 	fwrite(&HitsScored, 4, 1, pFile);	
 	fwrite(&KillsScored, 4, 1, pFile);	
-	fwrite(&m_Basket, 4, MAX_BASKET, pFile);
+	fwrite(m_Basket, 4, 3*MAX_BASKET, pFile);
 	//----------------------------------------------
 	fwrite(&m_dwNumCompleted, 4, 1, pFile);
 	for (u32 i=0; i<m_Hits.size(); i++)
