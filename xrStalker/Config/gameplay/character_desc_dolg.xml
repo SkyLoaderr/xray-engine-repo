@@ -461,10 +461,10 @@
 		<actor_dialog>bar_dolg_leader_join</actor_dialog>
 		<actor_dialog>bar_dolg_leader_job</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_rg6_finish</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_borov_start</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_borov_finish</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_svoboda_ambush_start</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_svoboda_ambush_finish</actor_dialog>
+--		<actor_dialog>bar_dolg_leader_quest_borov_start</actor_dialog>
+--		<actor_dialog>bar_dolg_leader_quest_borov_finish</actor_dialog>
+--		<actor_dialog>bar_dolg_leader_quest_svoboda_ambush_start</actor_dialog>
+--		<actor_dialog>bar_dolg_leader_quest_svoboda_ambush_finish</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_svoboda_leader_start</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_svoboda_leader_finish</actor_dialog>
 
