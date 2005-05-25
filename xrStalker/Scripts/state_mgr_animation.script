@@ -55,10 +55,10 @@ function eva_state_mgr_animation_reset:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_reset:evaluate()
---	printf("reset state [%s]", utils.to_str(self.st.reset_state))
---	printf("state [%s]", utils.to_str(state_lib.states[target_state]))
+	--printf("reset state [%s]", utils.to_str(self.st.reset_state))
+	--printf("state [%s]", utils.to_str(state_lib.states[target_state]))
 	if state_lib.states[target_state] ~= nil then
---		printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
+		--printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
 	end
 
 	if self.st.callback ~= nil and
@@ -71,6 +71,7 @@ function eva_state_mgr_animation_reset:evaluate()
 	
 	return self.st.reset_state == true and
 		   state_lib.states[self.st.target_state] ~= nil and
+		   self.st.current_state == self.st.target_state and
 		   state_lib.states[self.st.target_state].reset == true	
 end
 --' залочена ли схема
@@ -107,6 +108,7 @@ function act_state_mgr_animation_reset:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_reset:initialize()
 	action_base.initialize(self)
+	--printf("RESET")
 	self.st.animation:set_state(state_lib.states[self.st.target_state].animation, true)
 	self.st.reset_state = false
 end
