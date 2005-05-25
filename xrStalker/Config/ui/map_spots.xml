@@ -52,7 +52,7 @@
 	</heli_location>
 
 <!--	<hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1"> -->
-	<hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
+	<hit_sector_location hint="hit_sector" ttl="30" >
 		<mini_map  spot="hit_sector_mini_spot"></mini_map>
 	</hit_sector_location>
 <!-- test -->
