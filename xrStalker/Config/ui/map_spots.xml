@@ -85,7 +85,7 @@
 		<mini_map  spot="mp_hit_sector_mini_spot"></mini_map>
 	</_mp_hit_sector_location>
 
-	<mp_hit_sector_location hint="hit_sector">
+	<mp_hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
 		<mini_map  spot="mp_af_enemy_mini_spot"></mini_map>
 	</mp_hit_sector_location>
 	
