@@ -82,12 +82,22 @@
 	<info_portion id="mil_lukash_final"></info_portion>
 	<info_portion id="mil_lukash_arrive"></info_portion>
 	<info_portion id="mil_lukash_dead"></info_portion>
+	<info_portion id="mil_lukash_blockpost"></info_portion>
 	
 	<!--  вест с курьером-->
-	<info_portion id="mil_courier_quest"></info_portion>
+	<info_portion id="mil_courier_quest_part1"></info_portion>
+	<info_portion id="mil_courier_quest_part2"></info_portion>
+	<info_portion id="mil_courier_quest">
+		<task>mil_courier_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>	
 	<info_portion id="mil_courier_quest_failed"></info_portion>
 	<info_portion id="mil_courier_quest_complete"></info_portion>
 	<info_portion id="mil_courier_dead"></info_portion>
+	<info_portion id="mil_courier_in_khutor_zone"></info_portion>
+	<info_portion id="mil_actor_in_khutor_zone_inside"></info_portion>
+	<info_portion id="mil_courier_khutor_leave"></info_portion>
+	
 
 	<!-- ’утор наемников -->
 	<info_portion id="mil_killer_with_bandits_combat"></info_portion>

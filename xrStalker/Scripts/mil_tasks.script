@@ -39,18 +39,68 @@ function process_crazy ()
 end
 
 function process_khutor ()
-    -- если не стартован квест стукача или стукач не дошел до хутора, то выходим
-    if db.actor:dont_has_info ("mil_courier_start") or db.actor:dont_has_info ("mil_courier_visited") then
+    -- если квест был выполнен или провален, то выйдем    
+    if db.actor:has_info ("mil_courier_quest_failed") or db.actor:has_info ("mil_courier_quest_complete") then
        return
+    end    
+    -- если не стартован квест стукача, то выходим
+    if db.actor:dont_has_info ("mil_courier_start") then 
+       return 
     end
     
-    local courier = level_object_by_sid (710)
-    if courier == nil then return end
-    if db.actor:position ():distance_to (courier:position ()) > 20 then
-       level_tasks.set_task_state (task.fail, "mil_courier_job", 1)
-    else   
-       level_tasks.set_task_state (task.completed, "mil_courier_job", 1)
-    end    
+    -- если курьер на хуторе, то...
+    if db.actor:has_info ("mil_courier_in_khutor_zone") then
+       if db.actor:dont_has_info ("mil_courier_khutor_leave") then 
+          if db.actor:has_info ("mil_actor_in_khutor_zone") then
+             level_tasks.set_task_state (task.completed, "mil_courier_job", 1)
+             db.actor:give_info_portion ("mil_courier_quest_part1")
+          end 
+          if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
+             level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
+             db.actor:give_info_portion ("mil_courier_quest_part2")
+          end
+       else
+          if db.actor:has_info ("mil_actor_in_khutor_zone") then
+             level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
+             db.actor:give_info_portion ("mil_courier_quest_part1")
+          else
+             level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
+             db.actor:give_info_portion ("mil_courier_quest_failed")
+             return
+          end 
+          if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
+             level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
+             db.actor:give_info_portion ("mil_courier_quest_part2")
+          else   
+             level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
+             db.actor:give_info_portion ("mil_courier_quest_failed")
+             return
+          end
+       end   
+    end      
     
+    if db.actor:has_info ("mil_courier_dead") then
+       if db.actor:dont_has_info ("mil_courier_in_khutor_zone") then
+          level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
+          db.actor:give_info_portion ("mil_courier_quest_failed")
+          return
+       else
+          level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
+       end   
+    end
+    
+    if db.actor:has_info ("mil_courier_dead") and 
+       db.actor:has_info ("mil_courier_quest_part1") and
+       db.actor:has_info ("mil_courier_quest_part2") then
+       level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
+       db.actor:give_info_portion ("mil_courier_quest_complete")
+       db.actor:disable_info_portion ("mil_courier_dead")
+       db.actor:disable_info_portion ("mil_courier_quest_part1")
+       db.actor:disable_info_portion ("mil_courier_quest_part2")
+       db.actor:disable_info_portion ("mil_courier_in_khutor_zone")
+       db.actor:disable_info_portion ("mil_actor_in_khutor_zone_inside")
+       db.actor:disable_info_portion ("mil_courier_khutor_leave")
+       return
+    end   
 end
 

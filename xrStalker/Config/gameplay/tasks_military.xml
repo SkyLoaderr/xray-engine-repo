@@ -50,20 +50,20 @@
 	</game_task>
 	
 	<game_task id="mil_courier_job">
-		<title>mil_intersept_courier</title>
+		<title>mil_courier_job</title>
 		<objective>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>mil_courier_spy</text>
+			<text>mil_courier_phase1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>mil_intersept_courier</text>
+			<text>mil_courier_phase2</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>mil_finalize_quest2</text>
+			<text>mil_courier_phase3</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>

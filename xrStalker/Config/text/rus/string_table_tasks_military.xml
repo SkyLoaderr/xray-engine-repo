@@ -53,20 +53,25 @@
         <text>Группа "Долга".</text>
     </string>
 	
+	
 	<string id="mil_courier">
 		<text>Стукач.</text>
 	</string>
 	
-	<string id="mil_courier_spy">
-		<text>Вычислить стукача и проследить, с кем он встречается.</text>
+	<string id="mil_courier_job">
+		<text>Разобраться со стукачом.</text>
 	</string>
 	
-	<string id="mil_intersept_courier">
+	<string id="mil_courier_phase1">
+		<text>Проследить за стукачом.</text>
+	</string>
+	
+	<string id="mil_courier_phase2">
+		<text>Определить, с кем он встречался.</text>
+	</string>
+	
+	<string id="mil_courier_phase3">
 		<text>Уничтожить стукача.</text>
-	</string>
-	
-	<string id="mil_finalize_quest2">
-		<text>Доложить Лукашу о выполнении.</text>
 	</string>
 	
 </string_table>

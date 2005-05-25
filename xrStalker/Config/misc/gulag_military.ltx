@@ -234,7 +234,7 @@ on_info = %+mil_courier_dead%
 [kamp1@mil_freedom_stalker3]
 center_point = camp_center1
 on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker3, {+mil_freedom_attack} walker1@mil_freedom_stalker3
-on_info2 = {+mil_courier_start =is_courier_time} remark1@mil_freedom_stalker3
+on_info2 = {+mil_courier_quest =is_courier_time} remark1@mil_freedom_stalker3
 meet_enable = true
 meet_dialog = mil_dolg_relax_dialog
 
@@ -263,7 +263,7 @@ on_signal = final | walker3@mil_freedom_stalker3
 path_walk = stukach_walk4
 path_look = stukach_look4
 on_signal = arrive | walker4@mil_freedom_stalker3
-on_actor_dist_le = 50 | walker4@mil_freedom_stalker3
+on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %=mil_courier_quest_fail%
 
 [walker4@mil_freedom_stalker3]
 path_walk = stukach_walk5
