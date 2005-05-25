@@ -368,4 +368,10 @@
 		<class>stalker_rad_jaw</class>
 	</character>	
 
+	<character id="stalker_gar_hellcar">
+		<class>stalker_gar_hellcar</class>
+	</character>	
+
+
+
 </xml>
