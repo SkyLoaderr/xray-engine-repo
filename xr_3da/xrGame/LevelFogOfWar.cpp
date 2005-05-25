@@ -7,7 +7,7 @@
 #include "level.h"
 #include "alife_registry_wrappers.h"
 #include "ui/UIMapWnd.h"
-
+#include "game_base_space.h"
 
 #define FOG_CELL_SZ	(50.0f)
 
@@ -31,6 +31,7 @@ CFogOfWarMngr::~CFogOfWarMngr()
 }
 CLevelFogOfWar* CFogOfWarMngr::GetFogOfWar	(const shared_str& level_name)
 {
+	if(GameID()!=GAME_SINGLE) return NULL;
 	FOG_STORAGE_IT it = std::find_if(GetFogStorage().begin(),GetFogStorage().end(),FindFogByLevelName(level_name));
 	if(it!=GetFogStorage().end())return &(*it);
 	else { //create new or load...
