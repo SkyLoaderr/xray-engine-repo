@@ -87,7 +87,7 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 	if(!m_pInvOwner) return;
 
 	CPda * m_pPda = m_pInvOwner->GetPDA();
-
+	if(!m_pPda)return;
 	PDA_LIST_it it;	
 
 	// Добавить список рейтингов

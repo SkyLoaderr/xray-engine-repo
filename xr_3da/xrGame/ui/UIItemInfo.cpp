@@ -56,6 +56,11 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	xml_init.InitStatic(uiXml, "static", 3, &UICondition);
 	UICondition.Enable(false);
 
+	if(uiXml.NavigateToNode("condition_progress",0)){
+		AttachChild(&UICondProgresBar);
+		xml_init.InitProgressBar(uiXml, "condition_progress", 0, &UICondProgresBar);
+		UICondProgresBar.Enable(false);
+	}
 	AttachChild(&UIDesc);
 	xml_init.InitListWnd(uiXml, "descr_list", 0, &UIDesc);
 	UIDesc.EnableScrollBar(true);
@@ -88,9 +93,13 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 
 		sprintf(str, "%s%s: %%cdefault%d", fieldsCaptionColor, *stbl("base cost"), pInvItem->Cost());
 		UICost.SetText(str);
-
-		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("condition"), pInvItem->GetCondition());
-		UICondition.SetText(str);
+		
+		float cond = pInvItem->GetCondition();
+		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("condition"), cond);
+		UICondition.SetText				(str);
+		UICondProgresBar.Show			(true);
+		UICondProgresBar.SetProgressPos	( s16(iFloor(cond*100.0f)) );
+		
 
 		UIDesc.RemoveAll();
 		// Добавляем текст
@@ -124,6 +133,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		UICondition.SetText		(NULL);
 		UIDesc.RemoveAll		();
 		UIItemImage.TextureOff	();
+		UICondProgresBar.Show	(false);
 	}
 }
 

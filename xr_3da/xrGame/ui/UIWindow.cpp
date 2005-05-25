@@ -29,7 +29,6 @@ void dump_all_wnds()
 
 CUIWindow::CUIWindow()
 {
-	m_alignment				= waNone;
 	m_pFont					= NULL;
 
 	m_pParentWnd			= NULL;

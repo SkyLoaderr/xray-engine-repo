@@ -59,7 +59,8 @@ void CUILines::Reset(){
 void CUILines::ParseText(){
 	Reset();
 	CUILine* line = ParseTextToColoredLine(m_text.c_str());
-
+	
+	R_ASSERT(m_pFont);
 	while (line->GetLength(m_pFont) > 0)
 		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x));
 
@@ -74,9 +75,7 @@ int CUILines::GetVisibleHeight() const{
 void CUILines::Draw(int x, int y){
 	if (m_text.empty())
 		return;
-#ifdef DEBUG
 	R_ASSERT(m_pFont);
-#endif //DEBUG
 
 	m_pFont->SetColor(m_dwTextColor);
 	m_pFont->SetAligment(m_eTextAlign);

@@ -20,7 +20,6 @@ protected:
 
 	//текущая позиция
 	s16				m_iProgressPos;
-
 	//границы отображения
 	s16				m_iMinPos;
 	s16				m_iMaxPos;
@@ -44,6 +43,11 @@ protected:
 	void			UpdateProgressBar();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
+public:
+	bool			m_bUseColor;
+	Fcolor			m_minColor;
+	Fcolor			m_maxColor;
+
 public:
 					CUIProgressBar(void);
 	virtual			~CUIProgressBar(void);

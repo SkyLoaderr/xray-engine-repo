@@ -5,6 +5,7 @@
 #include "uiwindow.h"
 #include "uistatic.h"
 #include "UIListWnd.h"
+#include "UIProgressBar.h"
 
 #pragma once
 
@@ -34,6 +35,7 @@ public:
 	CUIStatic	UICost;
 	CUIStatic	UICondition;
 	CUIListWnd	UIDesc;
+	CUIProgressBar	UICondProgresBar;
 
 	//для изображения предмета крупным планом
 	Ivector2	UIItemImageSize; 

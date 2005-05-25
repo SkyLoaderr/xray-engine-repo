@@ -8,12 +8,13 @@
 
 CUIProgressBar::CUIProgressBar(void)
 {
-	m_iMinPos = 1;
-	m_iMaxPos = 1;
+	m_iMinPos				= 1;
+	m_iMaxPos				= 1;
 
-	Enable(false);
+	Enable					(false);
 
-	m_bBackgroundPresent = false;
+	m_bBackgroundPresent	= false;
+	m_bUseColor				= false;
 }
 
 CUIProgressBar::~CUIProgressBar(void)
@@ -83,6 +84,12 @@ void CUIProgressBar::UpdateProgressBar()
 	//утановить размер и положение каретки
 	if(m_bIsHorizontal)	m_iCurrentLength = (int)(GetWidth()*fCurrentLength); 	
 	else				m_iCurrentLength = (int)(GetHeight()*fCurrentLength); 	
+
+	if(m_bUseColor){
+		Fcolor curr;
+		curr.lerp(m_minColor,m_maxColor,fCurrentLength);
+		m_UIProgressItem.SetColor(curr);
+	}
 }
 
 bool CUIProgressBar::ProgressDec()

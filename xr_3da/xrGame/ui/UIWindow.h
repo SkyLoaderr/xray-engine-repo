@@ -13,14 +13,6 @@
 
 class CUIDragDropItem;
 
-enum EWindowAlignment{
-	waNone		=0,
-	waLeft		=1,
-	waRight		=2,
-	waTop		=4,
-	waBottom	=8,
-	waCenter	=16
-};
 
 class CUIWindow  : public CUISimpleWindow
 {
@@ -171,7 +163,7 @@ public:
 
 	IC void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
 	IC bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
-	IC void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
+//	IC void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
 protected:
 	shared_str				m_windowName;
 	//список дочерних окон
@@ -229,8 +221,8 @@ protected:
 								WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child);
 								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);
 	};
-private:
-	EWindowAlignment		m_alignment;
+//private:
+//	EWindowAlignment		m_alignment;
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
 	virtual LPCSTR			GetHint			()						{return NULL;};

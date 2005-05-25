@@ -72,6 +72,14 @@ protected:
 };
 
 // Window
+enum EWindowAlignment{
+	waNone		=0,
+	waLeft		=1,
+	waRight		=2,
+	waTop		=4,
+	waBottom	=8,
+	waCenter	=16
+};
 
 class IUISimpleWindow{
 public:
@@ -94,10 +102,12 @@ public:
 	virtual int			GetWidth()								const	= 0;
 	virtual void		SetVisible(bool vis)							= 0;
 	virtual bool		GetVisible()							const	= 0;
+	virtual void		SetAlignment(EWindowAlignment al)				= 0;
 };
 
 class CUISimpleWindow : public IUISimpleWindow {
 public:
+							CUISimpleWindow()							{m_alignment=waNone;}
 	virtual void			Init(int x, int y, int width, int height)	{m_wndPos.set(x,y);m_wndSize.set(width, height);}
 	virtual void			SetWndPos(const Ivector2& pos)				{m_wndPos = pos;}
 	virtual void			SetWndPos(int x, int y)						{m_wndPos.set(x,y);}
@@ -110,13 +120,14 @@ public:
 	virtual int				GetWidth()							const	{return m_wndSize.x;}
 	virtual void			SetVisible(bool vis)						{m_bShowMe = vis;}
 	virtual bool			GetVisible()						const	{return m_bShowMe;}
+	virtual void			SetAlignment(EWindowAlignment al)			{m_alignment = al;};
 	virtual void			SetWndRect(const Irect& rect){
 		m_wndPos.x = rect.x1;
 		m_wndPos.y = rect.y1;
 		m_wndSize.x = rect.x2 - rect.x1;
 		m_wndSize.y = rect.y2 - rect.y1;
 	}
-	virtual Irect			GetWndRect()						const{
+/*	virtual Irect			GetWndRect()						const{
 		Irect r;
 		r.x1 = m_wndPos.x;
 		r.y1 = m_wndPos.y;
@@ -124,8 +135,32 @@ public:
 		r.y2 = m_wndPos.y + m_wndSize.y;
 		return r;
 	}
+*/
+	virtual Irect GetWndRect()									const
+	{
+		switch (m_alignment){
+			case waNone:
+				return Irect().set(m_wndPos.x,m_wndPos.y,m_wndPos.x+m_wndSize.x,m_wndPos.y+m_wndSize.y);
+				break;
+			case waCenter:{
+					Irect res;
+					int half_w = iFloor(float(m_wndSize.x)/2.0f);
+					int half_h = iFloor(float(m_wndSize.y)/2.0f);
+					res.set(m_wndPos.x - half_w,
+							m_wndPos.y - half_h,
+							m_wndPos.x + half_w,
+							m_wndPos.y + half_h);
+					return res;
+				}break;
+			default:
+				NODEFAULT;
+		};
+		return Irect().null();
+	}
+
 protected:    
-	bool			m_bShowMe;
-	Ivector2		m_wndPos;
-	Ivector2		m_wndSize;
+	bool					m_bShowMe;
+	Ivector2				m_wndPos;
+	Ivector2				m_wndSize;
+	EWindowAlignment		m_alignment;
 };
