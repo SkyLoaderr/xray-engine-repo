@@ -51,9 +51,6 @@
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
 
-	<hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
-		<mini_map  spot="hit_sector_mini_spot"></mini_map>
-	</hit_sector_location>
 <!-- test -->
 	
 	
@@ -84,7 +81,11 @@
 		<mini_map  spot="mp_af_friend_mini_spot" pointer="mp_af_friend_mini_pointer"></mini_map>
 	</mp_af_friend_location>
 	
-	<mp_hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
+	<_mp_hit_sector_location hint="hit_sector" ttl="3" pos_to_actor="1">
+		<mini_map  spot="mp_hit_sector_mini_spot"></mini_map>
+	</_mp_hit_sector_location>
+
+	<mp_hit_sector_location hint="hit_sector" ttl="3">
 		<mini_map  spot="mp_hit_sector_mini_spot"></mini_map>
 	</mp_hit_sector_location>
 	
@@ -123,10 +124,6 @@
 	</lchanger_left_spot>
 
 <!--test -->
-
-	<hit_sector_mini_spot x="0" y="0" width="64" height="64" heading="1" alignment="c"> 
-		<texture x="0" y="0" width="64" height="64"> ui\ui_minimap_hit_sector</texture>
-	</hit_sector_mini_spot>
 
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
