@@ -248,15 +248,8 @@ void CLevel::ClientReceive()
 
 	while (!game_spawn_queue.empty())
 	{
-//		u32			m0	= Memory.stat_calls;
-//		CTimer		T;	T.Start		();
-
 		g_sv_Spawn					(game_spawn_queue.front());
 		F_entity_Destroy			(game_spawn_queue.front());
 		game_spawn_queue.pop_front	();
-
-//		T.Stop		();
-//		u32			m1	= Memory.stat_calls;
-		//Msg			("--spawn--TOTAL: %f ms, %d mo",1000.f*T.Get(),m1-m0);
 	}
 }
