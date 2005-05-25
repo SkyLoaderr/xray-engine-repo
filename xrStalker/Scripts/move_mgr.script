@@ -273,8 +273,10 @@ function move_mgr:sync_ok()
 		local self_id = self.object:id()
 		
 		for k, v in pairs(s) do
-			if v ~= true then
-				return false
+			if k and k:alive() then
+				if v ~= true then
+					return false
+				end
 			end
 		end
 	end
@@ -330,6 +332,10 @@ function move_mgr:finalize(npc)
 	self.at_terminal_waypoint_flag = false
 	
 	xr_sound.set_sound(self.object, nil)
+	
+	if self.team then
+		sync[self.team][self.object:id()] = nil
+	end
 end
 
 function move_mgr:reset_sl()
