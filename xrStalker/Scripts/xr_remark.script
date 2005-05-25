@@ -92,7 +92,7 @@ function action_remark_activity:activate_sound()
 	self.snd_scheduled = true				
 
 	printf("_bp1 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
-	xr_sound.set_sound(self.object, self.st.snd, true)
+	xr_sound.set_sound_play(self.object, self.st.snd)
 	printf("_bp2 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 end
 
