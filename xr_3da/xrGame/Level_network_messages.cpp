@@ -20,11 +20,11 @@ void CLevel::ClientReceive()
 		case M_SPAWN:
 			{
 				// Begin analysis
-				string64			s_name;
+				shared_str			s_name;
 				P->r_stringZ		(s_name);
 
 				// Create DC (xrSE)
-				CSE_Abstract*		E	= F_entity_Create	(s_name);
+				CSE_Abstract*		E	= F_entity_Create	(*s_name);
 				VERIFY				(E);
 				E->Spawn_Read		(*P);
 				if (E->s_flags.is(M_SPAWN_UPDATE))
