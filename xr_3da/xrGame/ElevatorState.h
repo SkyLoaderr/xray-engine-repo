@@ -8,12 +8,13 @@ class CElevatorState
 {
 	enum Estate
 	{
-		clbNone,				
-		clbNearUp,			
-		clbNearDown,		
-		clbClimbingUp,		
+		clbNone			,				
+		clbNearUp		,			
+		clbNearDown		,		
+		clbClimbingUp	,		
 		clbClimbingDown	,	
-		clbDepart
+		clbDepart		,
+		clbNoLader		
 	};
 Estate m_state;
 

@@ -25,7 +25,6 @@ BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
-
 {
 
 	m_driver_anim_type = 0;
@@ -289,30 +288,15 @@ void CCar::shedule_Update(u32 dt)
 	}
 	if(b_exploded&&!m_bExploding&&!getEnabled())
 										setEnabled(TRUE);
+#ifdef DEBUG
+	DbgSheduleUpdate();
+#endif
 }
 
 void CCar::UpdateEx			(float fov) //called by owner
 {
 	#ifdef DEBUG
-	if(m_pPhysicsShell&&Owner() && bDebug)
-	{
-		Fvector v;
-		m_pPhysicsShell->get_LinearVel(v);
-		string32 s;
-		sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
-		HUD().Font().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
-		HUD().Font().pFontSmall->OutSet	(120,530);
-		HUD().Font().pFontSmall->OutNext(s);
-		HUD().Font().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
-		HUD().Font().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
-		HUD().Font().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
-		HUD().Font().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
-		HUD().Font().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
-		HUD().Font().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
-		HUD().Font().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
-		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
-		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
-	}
+	DbgUbdateCl();
 	#endif
 
 	//	Log("UpdateCL",Device.dwFrame);
@@ -454,6 +438,9 @@ void CCar::detach_Actor()
 	///Break();
 	//H_SetParent(NULL);
 	processing_deactivate();
+#ifdef DEBUG
+	m_dbg_power_rpm.Clear();
+#endif
 }
 
 bool CCar::attach_Actor(CGameObject* actor)
@@ -487,6 +474,7 @@ bool CCar::attach_Actor(CGameObject* actor)
 	//driver_pos_tranform.c.set(bone_data.bind_translate);
 	//m_sits_transforms.push_back(driver_pos_tranform);
 	//H_SetParent(actor);
+
 	return true;
 }
 
@@ -687,6 +675,7 @@ void CCar::CreateSkeleton()
 
 void CCar::Init()
 {
+
 	//get reference wheel radius
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
@@ -795,6 +784,7 @@ void CCar::Init()
 	
 	HandBreak();
 	Transmission(1);
+
 }
 
 void CCar::Revert()

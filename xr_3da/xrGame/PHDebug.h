@@ -1,6 +1,7 @@
 #ifndef PH_DEBUG_H
 #define PH_DEBUG_H
 #ifdef DEBUG
+//#include "FastDelegate.h"
 #define DRAW_CONTACTS
 
 extern	Flags32			ph_dbg_draw_mask						;
@@ -15,19 +16,7 @@ extern	u32 			dbg_joints_num							;
 extern	u32 			dbg_islands_num							;
 extern	u32 			dbg_contacts_num						;
 #ifdef DRAW_CONTACTS
-typedef float function_float(float x);
-struct CFunctionGraph
-{
-	CStatGraph			m_stat_graph;
-	function_float*		m_function	;
-	//float x_min,x_max;
-	//float y_min,y_max;
-	//Fvector2 left_bottom;
-	//Fvector2 range;
-public:
-	CFunctionGraph();
-	void Init(function_float* fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/);
-};
+
 struct SPHContactDBGDraw
 {
 	int geomClass;
@@ -57,7 +46,9 @@ enum
 	phDbgDrawMassCenters		=		1<<12,
 	phDbgDrawDeathActivationBox =		1<<14,
 	phHitApplicationPoints		=		1<<15,
-	phDbgDrawCashedTriesStat	=		1<<16
+	phDbgDrawCashedTriesStat	=		1<<16,
+	phDbgDrawCarDynamics		=		1<<17,
+	phDbgDrawCarPlots			=		1<<18
 };
 struct SPHObjDBGDraw
 {
@@ -96,5 +87,28 @@ void _cdecl DBG_OutText(LPCSTR s,...);
 void DBG_DrawFrameStart();
 void PH_DBG_Render();
 void PH_DBG_Clear();
+
+
+
+
+struct CFunctionGraph
+{
+public:
+	typedef fastdelegate::FastDelegate1<float,float> type_function;
+private:
+	CStatGraph						*m_stat_graph						;
+	type_function					m_function							;
+	//float x_min,x_max;
+	//float y_min,y_max;
+	//Fvector2 left_bottom;
+	//Fvector2 range;
+public:
+
+	CFunctionGraph					()									;
+	~CFunctionGraph					()									;
+	void Init						(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/);
+	void Clear						()									;
+	bool IsActive					()									;
+};
 #endif
 #endif

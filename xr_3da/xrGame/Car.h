@@ -37,7 +37,9 @@ class CCar :
 	public CExplosive
 {
 #ifdef DEBUG
-//	CFunctionGraph m_dbg_power_rpm;
+	CFunctionGraph m_dbg_power_rpm	;
+	void DbgSheduleUpdate()			;
+	void DbgUbdateCl	 ()			;
 #endif
 	
 	
@@ -366,8 +368,8 @@ private:
 	CCarLights				m_lights;
 	////////////////////////////////////////////////////
 	/////////////////////////////////////////////////
-	void  InitParabola();
-	float Parabola(float rpm);
+	void		   InitParabola();
+	float _stdcall Parabola(float rpm);
 	//float GetSteerAngle();
 	void LimitWheels();
 	void Drive();

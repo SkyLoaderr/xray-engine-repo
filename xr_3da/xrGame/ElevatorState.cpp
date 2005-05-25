@@ -13,7 +13,7 @@ static const float look_angle_cosine	=0.9238795f;//22.5
 static const float lookup_angle_sine	=0.34202014f;//20
 	CElevatorState::CElevatorState()
 {
-	m_state=clbNone;
+	m_state=clbNoLader;
 	m_ladder=NULL;
 	m_character=NULL;
 }
@@ -34,12 +34,13 @@ void CElevatorState::PhTune(float step)
 	if(!m_ladder)			return;
 	switch(m_state)
 	{
-	case	clbNone			:UpdateStNone();		break;			
-	case 	clbNearUp		:UpdateStNearUp();		break;						
-	case 	clbNearDown		:UpdateStNearDown();	break;					
-	case 	clbClimbingUp	:UpdateStClimbingUp();	break;					
-	case 	clbClimbingDown	:UpdateStClimbingDown();break;	
-	case	clbDepart		:UpdateDepart();		break;
+	case	clbNone			:UpdateStNone()			;		break;			
+	case 	clbNearUp		:UpdateStNearUp()		;		break;						
+	case 	clbNearDown		:UpdateStNearDown()		;		break;					
+	case 	clbClimbingUp	:UpdateStClimbingUp()	;		break;					
+	case 	clbClimbingDown	:UpdateStClimbingDown()	;		break;	
+	case	clbDepart		:UpdateDepart()			;		break;
+	case	clbNoLader		:m_ladder = NULL		;		break;
 	}
 
 }
@@ -67,7 +68,7 @@ void CElevatorState::SetElevator(CClimableObject* climable)
 void CElevatorState::SetCharacter(CPHCharacter *character)
 {
 	m_character=character;
-	SwitchState(clbNone);
+	SwitchState(clbNoLader);
 }
 void CElevatorState::EvaluateState()
 {
@@ -87,7 +88,6 @@ void CElevatorState::SwitchState(Estate new_state)
 		(m_state==clbClimbingUp||m_state==clbClimbingDown)
 		)dBodySetGravityMode(m_character->get_body(),1);
 
-	if(new_state==clbNone && m_state != clbNone) m_ladder = NULL;
 	if(new_state==clbDepart) InitDepart();
 	m_state=new_state;
 }
@@ -136,7 +136,7 @@ void CElevatorState::UpdateStNearUp()
 		m_ladder->DDToPlain(m_character,d)>m_character->FootRadius()/3.f&&
 		m_ladder->BeforeLadder(m_character)
 		)SwitchState(clbClimbingDown);
-	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNone));
+	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNoLader));
 }
 
 void CElevatorState::UpdateStNearDown()
@@ -150,7 +150,7 @@ void CElevatorState::UpdateStNearDown()
 		ClimbDirection()>0.f&&
 		m_ladder->BeforeLadder(m_character)
 		)SwitchState(clbClimbingUp);
-	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNone));
+	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNoLader));
 }
 
 
@@ -164,12 +164,12 @@ void CElevatorState::UpdateStClimbingDown()
 	float to_ax=m_ladder->DDToAxis(m_character,d);
 	Fvector ca;ca.set(m_character->ControlAccel());
 	float  control_a=to_mag_and_dir(ca);
-	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(ca.dotproduct(d))<M_SQRT1_2)SwitchState(clbDepart);
+	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(-ca.dotproduct(Fvector(m_ladder->Norm()).normalize()))<M_SQRT1_2)SwitchState(clbDepart);
 	if(m_ladder->AxDistToLowerP(m_character)-m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearDown);
 	UpdateClimbingCommon(d,to_ax,ca,control_a);
 
-	if(m_ladder->AxDistToUpperP(m_character)<-m_character->FootRadius())SwitchState(clbNone);
+	if(m_ladder->AxDistToUpperP(m_character)<-m_character->FootRadius())SwitchState(clbNoLader);
 
 	Fvector vel;
 	m_character->GetVelocity(vel);
@@ -193,7 +193,7 @@ void CElevatorState::UpdateStClimbingUp()
 	float to_ax=m_ladder->DDToAxis(m_character,d);
 	Fvector ca;ca.set(m_character->ControlAccel());
 	float control_a=to_mag_and_dir(ca);
-	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(ca.dotproduct(d))<M_SQRT1_2)SwitchState(clbDepart);
+	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(-ca.dotproduct(Fvector(m_ladder->Norm()).normalize()))<M_SQRT1_2)SwitchState(clbDepart);
 	if(m_ladder->AxDistToUpperP(m_character)+m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearUp);
 	
@@ -209,7 +209,7 @@ void CElevatorState::UpdateClimbingCommon(const Fvector	&d_to_ax,float to_ax,con
 {
 	VERIFY(m_ladder&&m_character);
 	if(to_ax-m_character->FootRadius()>out_dist)
-		SwitchState((clbNone));
+										SwitchState((clbNoLader));
 	if(fis_zero(ca)) 
 		m_character->ApplyForce(d_to_ax,m_character->Mass()*world_gravity);//
 }
@@ -221,6 +221,7 @@ void CElevatorState::GetControlDir(Fvector& dir)
 	switch(m_state)
 	{
 	case	clbDepart		: 
+	case	clbNoLader		:
 	case	clbNone			: 		break;			
 	case 	clbNearUp		:		dist= m_ladder->DDUpperP(m_character,d);
 									if(	dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine&&
@@ -264,7 +265,7 @@ void CElevatorState::UpdateDepart()
 	p.sub(m_depart_position);
 	if(	p.magnitude()>depart_dist || 
 		Device.dwTimeGlobal-m_depart_time>depart_time)
-		SwitchState(clbNone);
+		SwitchState(clbNoLader);
 
 }
 
@@ -309,8 +310,8 @@ void CElevatorState::GetJumpDir(const Fvector& accel,Fvector& dir)
 
 void CElevatorState::Deactivate()
 {
-	SwitchState(clbNone);
-	m_state=clbNone;
+	SwitchState(clbNoLader);
+	m_state=clbNoLader;
 	m_ladder=NULL;
 	m_character=NULL;
 }

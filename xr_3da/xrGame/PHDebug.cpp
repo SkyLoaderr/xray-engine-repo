@@ -468,23 +468,51 @@ void DBG_DrawStatAfterFrameStep()
 
 CFunctionGraph::CFunctionGraph()
 {
-	m_function=0;
+	m_stat_graph=NULL;
+	m_function.clear();
 }
-void CFunctionGraph::Init(function_float* fun,float x0,float x1,int l, int t, int w, int h,int points_num=500)
+CFunctionGraph::~CFunctionGraph()
 {
-	R_ASSERT(m_function);
+	xr_delete(m_stat_graph);
+	m_function.clear();
+}
+void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num=500)
+{
+	m_stat_graph=xr_new<CStatGraph>();
+	m_function=fun;
+	R_ASSERT(!m_function.empty()&&m_stat_graph);
 	R_ASSERT(x1>x0);
 	float s=(x1-x0)/points_num;
 	R_ASSERT(s>0.f);
-	m_stat_graph.SetRect(l,t,w,h,D3DCOLOR_XRGB(255,255,255),D3DCOLOR_XRGB(255,255,255));
+	m_stat_graph->SetRect(l,t,w,h,D3DCOLOR_XRGB(255,255,255),D3DCOLOR_XRGB(255,255,255));
 	float min=dInfinity;float max=-dInfinity;
 	for(float x=x0;x<x1;x+=s)
 	{
 		float val=m_function(x);
-		m_stat_graph.AppendItem(val,D3DCOLOR_XRGB(0,255,0));
+	
 		save_min(min,val);save_max(max,val);
 	}
+
 	R_ASSERT(min<dInfinity&&max>-dInfinity && min<=max);
-	m_stat_graph.SetMinMax(min,max,points_num);
+	m_stat_graph->SetMinMax(min,max,points_num);
+
+	for(float x=x0;x<x1;x+=s)
+	{
+		float val=m_function(x);
+		m_stat_graph->AppendItem(val,D3DCOLOR_XRGB(0,255,0));
+
+	}
+
+}
+void CFunctionGraph::Clear()
+{
+	xr_delete(m_stat_graph);
+	m_function.clear();
+} 
+
+bool CFunctionGraph::IsActive()
+{
+	VERIFY((m_stat_graph==0)==m_function.empty());
+	return !!m_stat_graph;
 }
 #endif
