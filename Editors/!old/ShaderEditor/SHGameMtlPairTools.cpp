@@ -111,7 +111,7 @@ void CSHGameMtlPairTools::RealUpdateProperties()
 	PropItemVec items;
     if (m_MtlPair)	m_MtlPair->FillProp(items);
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHGameMtlPairTools::Modified));
+    Ext.m_ItemProps->SetModifiedEvent	(fastdelegate::bind<TOnModifiedEvent>(this,&CSHGameMtlPairTools::Modified));
 }
 //---------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ void CSHGameMtlPairTools::ApplyChanges(bool bForced)
 void CSHGameMtlPairTools::OnActivate()
 {
     FillItemList();
-    Ext.m_Items->SetOnModifiedEvent(TOnModifiedEvent().bind(this,&CSHGameMtlPairTools::Modified));
+    Ext.m_Items->SetOnModifiedEvent(fastdelegate::bind<TOnModifiedEvent>(this,&CSHGameMtlPairTools::Modified));
     inherited::OnActivate		();
     m_StoreFlags				= Ext.m_Items->GetFlags();
     Ext.m_Items->SetFlags		(TItemList::ilFolderStore);

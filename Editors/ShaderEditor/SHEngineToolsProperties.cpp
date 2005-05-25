@@ -195,7 +195,7 @@ void CSHEngineTools::RealUpdateProperties()
 //---------------------------
     }
     Ext.m_ItemProps->AssignItems(items);
-    Ext.m_ItemProps->SetModifiedEvent(TOnModifiedEvent().bind(this,&CSHEngineTools::Modified));
+    Ext.m_ItemProps->SetModifiedEvent(fastdelegate::bind<TOnModifiedEvent>(this,&CSHEngineTools::Modified));
 }
 //------------------------------------------------------------------------------
 

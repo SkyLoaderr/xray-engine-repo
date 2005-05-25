@@ -82,12 +82,12 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
     switch (B->btn_num){
     case 0:{
     	LPCSTR 		nm;
-	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,TOnChooseFillItems().bind(this,&PS::CPEDef::FillActionList))&&nm){
+	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,fastdelegate::bind<TOnChooseFillItems>(this,&PS::CPEDef::FillActionList))&&nm){
             for(int i=0; actions_token[i].name; i++){
                 if (0==strcmp(actions_token[i].name,nm)){
                     EParticleAction* A = pCreateEAction(actions_token[i].id);
                     AnsiString pref	= AnsiString(*A->actionName).LowerCase();
-                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&PS::CPEDef::FindActionByName),true,true).LowerCase().c_str();
+                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&PS::CPEDef::FindActionByName),true,true).LowerCase().c_str();
                     m_EActionList.push_back(A);
                     ExecCommand		(COMMAND_UPDATE_PROPERTIES);
                     bDataModified	= true;

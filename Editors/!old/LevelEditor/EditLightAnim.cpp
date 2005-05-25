@@ -41,9 +41,9 @@ void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
     m_Props = TProperties::CreateForm("LAProps",paProps,alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
     m_Items	= TItemList::CreateForm("LA Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
     m_Items->SetOnModifiedEvent		(TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
-    m_Items->SetOnItemFocusedEvent	(TOnILItemFocused().bind(this,&TfrmEditLightAnim::OnItemFocused));
-    m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(&LALib,&ELightAnimLibrary::RemoveObject));
-    m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(&LALib,&ELightAnimLibrary::RenameObject));
+    m_Items->SetOnItemFocusedEvent	(fastdelegate::bind<TOnILItemFocused>(this,&TfrmEditLightAnim::OnItemFocused));
+    m_Items->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(&LALib,&ELightAnimLibrary::RemoveObject));
+    m_Items->SetOnItemRenameEvent	(fastdelegate::bind<TOnItemRename>(&LALib,&ELightAnimLibrary::RenameObject));
 }
 //---------------------------------------------------------------------------
 
@@ -223,7 +223,7 @@ void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
     TElTreeItem* item 			= m_Items->GetSelected(); 
     if (item) 					FHelper.MakeName(item,0,pref,true);
     pref 						+= "la";
-    AnsiString name				= FHelper.GenerateName	(pref.c_str(),2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
+    AnsiString name				= FHelper.GenerateName	(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&TfrmEditLightAnim::FindItemByName),false,true);
     CLAItem* I 					= LALib.AppendItem(name.c_str(),0);
     InitItems					();
     m_Items->SelectItem			(*I->cName,true,false,true);
@@ -240,7 +240,7 @@ void __fastcall TfrmEditLightAnim::ebCloneClick(TObject *Sender)
 {
 	if (m_CurrentItem){
         // folder name
-	    AnsiString name			= FHelper.GenerateName	(m_CurrentItem->cName.c_str(),2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
+	    AnsiString name			= FHelper.GenerateName	(m_CurrentItem->cName.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&TfrmEditLightAnim::FindItemByName),false,true);
         CLAItem* I 				= LALib.AppendItem(name.c_str(),m_CurrentItem);
         InitItems				();
         m_Items->SelectItem		(*I->cName,true,false,true);

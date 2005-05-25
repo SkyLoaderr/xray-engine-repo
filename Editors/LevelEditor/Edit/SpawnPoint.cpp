@@ -764,7 +764,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     if (m_SpawnData.Valid()){
 	    shared_str pref1			= PrepareKey(pref,m_SpawnData.m_Data->name());
         m_SpawnData.m_Profile 		= SectionToEditor(m_SpawnData.m_Data->name());
-        ChooseValue* C				= PHelper().CreateChoose(items,PrepareKey(pref1.c_str(),"Profile"),&m_SpawnData.m_Profile,smCustom);
+        ChooseValue* C				= PHelper().CreateChoose(items,PrepareKey(pref1.c_str(),"Profile"),&m_SpawnData.m_Profile,smCustom,0,0,1,cfFullExpand);
         C->OnChooseFillEvent.bind	(this,&CSpawnPoint::OnFillChooseItems);
         C->OnChangeEvent.bind		(this,&CSpawnPoint::OnProfileChange);
     	m_SpawnData.FillProp		(pref,items);

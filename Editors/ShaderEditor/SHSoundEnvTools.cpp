@@ -66,9 +66,9 @@ void CSHSoundEnvTools::OnActivate()
     }
     // fill items
     FillItemList		();
-    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHSoundEnvTools::Modified));
-    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHSoundEnvTools::OnRenameItem));
-    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHSoundEnvTools::OnRemoveItem));
+    Ext.m_Items->SetOnModifiedEvent		(fastdelegate::bind<TOnModifiedEvent>(this,&CSHSoundEnvTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(fastdelegate::bind<TOnItemRename>(this,&CSHSoundEnvTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(this,&CSHSoundEnvTools::OnRemoveItem));
     inherited::OnActivate		();
 }
 //---------------------------------------------------------------------------
@@ -188,7 +188,7 @@ LPCSTR CSHSoundEnvTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	CSoundRender_Environment* parent= FindItem(parent_name);
     AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"env";
-    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHSoundEnvTools::ItemExist),false,true);
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&CSHSoundEnvTools::ItemExist),false,true);
     CSoundRender_Environment* S 	= m_Library.Append(parent);
     if (!parent)		S->set_default();
     S->name				= m_LastSelection.c_str();
@@ -304,7 +304,7 @@ void CSHSoundEnvTools::RealUpdateProperties()
         PHelper().CreateFloat	(items, "Decay\\DecayHFRatio",					&S.DecayHFRatio        ,EAXLISTENER_MINDECAYHFRATIO, 		EAXLISTENER_MAXDECAYHFRATIO				,0.01f,	3);
     }
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHSoundEnvTools::Modified));
+    Ext.m_ItemProps->SetModifiedEvent	(fastdelegate::bind<TOnModifiedEvent>(this,&CSHSoundEnvTools::Modified));
 }
 //---------------------------------------------------------------------------
 

@@ -24,9 +24,9 @@ void CSHCompilerTools::OnActivate()
 {
     // fill items
     FillItemList   				();
-    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHCompilerTools::Modified));
-    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHCompilerTools::OnRenameItem));
-    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHCompilerTools::OnRemoveItem));
+    Ext.m_Items->SetOnModifiedEvent		(fastdelegate::bind<TOnModifiedEvent>(this,&CSHCompilerTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(fastdelegate::bind<TOnItemRename>(this,&CSHCompilerTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(this,&CSHCompilerTools::OnRemoveItem));
 
     inherited::OnActivate		();
 }
@@ -103,7 +103,7 @@ LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	Shader_xrLC* parent 	= FindItem(parent_name);
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHCompilerTools::ItemExist),false,true);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&CSHCompilerTools::ItemExist),false,true);
     Shader_xrLC* S 			= m_Library.Append(parent);
     strcpy					(S->Name,m_LastSelection.c_str());
     ExecCommand				(COMMAND_UPDATE_LIST);

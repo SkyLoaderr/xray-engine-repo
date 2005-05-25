@@ -28,9 +28,9 @@ void CSHGameMtlTools::OnActivate()
 {
     // fill items
     FillItemList		();
-    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHGameMtlTools::Modified));
-    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHGameMtlTools::OnRenameItem));
-    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHGameMtlTools::OnRemoveItem));
+    Ext.m_Items->SetOnModifiedEvent		(fastdelegate::bind<TOnModifiedEvent>(this,&CSHGameMtlTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(fastdelegate::bind<TOnItemRename>(this,&CSHGameMtlTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(this,&CSHGameMtlTools::OnRemoveItem));
     inherited::OnActivate		();
 }
 
@@ -130,10 +130,10 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     LPCSTR M=0;
 	SGameMtl* parent 	= FindItem(parent_name);
     if (!parent){
-	    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,TOnChooseFillItems().bind(this,&CSHGameMtlTools::FillChooseMtlType))||!M) return 0;
+	    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,fastdelegate::bind<TOnChooseFillItems>(this,&CSHGameMtlTools::FillChooseMtlType))||!M) return 0;
     }
     AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+M;
-    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHGameMtlTools::ItemExist),false,true);
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&CSHGameMtlTools::ItemExist),false,true);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
     S->m_Name			= m_LastSelection.c_str();
     if (!parent)		S->Flags.set (SGameMtl::flDynamic,0==strcmp(M,"Dynamic"));
@@ -195,7 +195,7 @@ void CSHGameMtlTools::RealUpdateProperties()
     if (m_Mtl)
     	m_Mtl->FillProp	(items,m_CurrentItem);
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHGameMtlTools::Modified));
+    Ext.m_ItemProps->SetModifiedEvent	(fastdelegate::bind<TOnModifiedEvent>(this,&CSHGameMtlTools::Modified));
 }
 //---------------------------------------------------------------------------
 

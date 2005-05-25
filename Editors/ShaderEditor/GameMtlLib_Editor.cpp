@@ -183,7 +183,7 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, boo
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
 
-        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),TOnChooseFillItems().bind(this,&SGameMtlPair::FillChooseMtl))){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),fastdelegate::bind<TOnChooseFillItems>(this,&SGameMtlPair::FillChooseMtl))){
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);
@@ -213,7 +213,7 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bo
         LPCSTR MP=0;
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,TOnChooseFillItems().bind(this,&SGameMtlPair::FillChooseMtl))){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,fastdelegate::bind<TOnChooseFillItems>(this,&SGameMtlPair::FillChooseMtl))){
         	if (MP){
                 AStringVec lst;
                 _SequenceToList(lst,MP);

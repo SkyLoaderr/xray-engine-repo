@@ -67,7 +67,7 @@ bool CShaderTools::OnCreate()
 {
     // create props
     m_Items			= TItemList::CreateForm		("Items",				fraLeftBar->paItemList,		alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
-	m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused().bind(this,&CShaderTools::OnItemFocused));
+	m_Items->SetOnItemsFocusedEvent(fastdelegate::bind<TOnILItemsFocused>(this,&CShaderTools::OnItemFocused));
     m_ItemProps 	= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
     m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 

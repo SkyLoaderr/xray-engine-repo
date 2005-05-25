@@ -49,7 +49,7 @@ void CSHCompilerTools::RealUpdateProperties()
 //.		PHelper().CreateFlag32	(items, "Flags\\Sharp",			&L.m_Flags,   	Shader_xrLC::flLIGHT_Sharp);
     }
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHCompilerTools::Modified));
+    Ext.m_ItemProps->SetModifiedEvent	(fastdelegate::bind<TOnModifiedEvent>(this,&CSHCompilerTools::Modified));
 }
 //---------------------------------------------------------------------------
 

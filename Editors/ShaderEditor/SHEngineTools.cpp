@@ -144,9 +144,9 @@ void CSHEngineTools::OnActivate()
     Ext.m_PreviewProps->ShowProperties	();
     // fill items
     FillItemList						();
-    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHEngineTools::Modified));
-    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHEngineTools::OnRenameItem));
-    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHEngineTools::OnRemoveItem));
+    Ext.m_Items->SetOnModifiedEvent		(fastdelegate::bind<TOnModifiedEvent>(this,&CSHEngineTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(fastdelegate::bind<TOnItemRename>(this,&CSHEngineTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(this,&CSHEngineTools::OnRemoveItem));
     inherited::OnActivate				();
 }
 //---------------------------------------------------------------------------
@@ -495,7 +495,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 	CLASS_ID cls_id;
     if (!parent){
         LPCSTR M=0;
-        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,TOnChooseFillItems().bind(this,&CSHEngineTools::FillChooseTemplate))||!M) return 0;
+        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,fastdelegate::bind<TOnChooseFillItems>(this,&CSHEngineTools::FillChooseTemplate))||!M) return 0;
         for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         	if (0==strcmp((*it)->getComment(),M)){ 
             	cls_id = (*it)->getDescription().CLS;
@@ -549,7 +549,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     B->Load(data,B->getDescription().version);
 	// set name
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHEngineTools::ItemExist),false,true);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&CSHEngineTools::ItemExist),false,true);
     B->getDescription().Setup(m_LastSelection.c_str());
     // insert blender
 	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));
