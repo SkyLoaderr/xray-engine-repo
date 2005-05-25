@@ -125,8 +125,8 @@
 
 <!--test -->
 
-	<hit_sector_mini_spot x="0" y="0" width="64" height="64" heading="1" alignment="c"> 
-		<texture x="0" y="0" width="64" height="64"> ui\ui_minimap_hit_sector</texture>
+	<hit_sector_mini_spot x="0" y="0" width="32" height="32" heading="1" alignment="c"> 
+		<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
 	</hit_sector_mini_spot>
 
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
