@@ -44,7 +44,7 @@ function process_khutor ()
        return
     end    
     -- если не стартован квест стукача, то выходим
-    if db.actor:dont_has_info ("mil_courier_start") then 
+    if db.actor:dont_has_info ("mil_courier_quest") then 
        return 
     end
     
