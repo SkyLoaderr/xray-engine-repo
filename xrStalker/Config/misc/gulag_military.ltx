@@ -1,7 +1,7 @@
 ;-------------------------------------------------------------------------------------------------
 ;-- Military Freedom base
 ;-------------------------------------------------------------------------------------------------
-
+; -- logic@mil_freedom_stalker3 - стукач
 ;-------------------------------------------------------------------------------------------------
 ;normal state
 ;-------------------------------------------------------------------------------------------------
@@ -228,7 +228,8 @@ combat_ignore = combat_ignore@mil_freedom_stalker3
 on_death = death@mil_freedom_stalker3
 
 [death@mil_freedom_stalker3]
-on_info = %=mil_courier_death%
+;on_info = %=mil_courier_death%
+on_info = %+mil_courier_dead%
 
 [kamp1@mil_freedom_stalker3]
 center_point = camp_center1
