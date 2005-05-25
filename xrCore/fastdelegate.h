@@ -2104,6 +2104,12 @@ FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, FA
 	return FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, FASTDLGT_RETTYPE>(x, func);
 }
 
+#ifdef __BORLANDC__
+template <typename A,typename B>
+	A bind(B b) 	{A a; a.bind(b); 	return a;}
+template <typename A,typename B,typename C>
+	A bind(B b,C c) {A a; a.bind(b,c); 	return a;}
+#endif
 
 // clean up after ourselves...
 #undef FASTDLGT_RETTYPE

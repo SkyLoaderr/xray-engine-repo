@@ -7,7 +7,7 @@
 #include "ExtendedGeom.h"
 #include "draymotions.h"
 #ifdef    DEBUG
-#include "StatGraph.h"
+#include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
 #include "PHCollideValidator.h"

@@ -9,7 +9,7 @@
 #include "../skeletoncustom.h"
 #include <../ode/src/util.h>
 #ifdef DEBUG
-#include "StatGraph.h"
+#include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
 
