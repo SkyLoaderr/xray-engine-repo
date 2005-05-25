@@ -181,6 +181,33 @@
 		<actor_dialog>agr_factory_krot_about</actor_dialog>
 	</specific_character>
 
+	<specific_character id="stalker_gar_hellcar" team_default = "1">
+		<name>Сталкер "Адская машина"</name>
+		<icon x="18" y="12"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Бежал в Зону, прячась от правоохранительных органов. В одиночку старается поддерживать порядок в Зоне, так, как он себе его представляет. Борец с беспределом. Жесток, но справедлив.</bio>
+
+		<class>stalker_gar_hellcar</class>
+		<community>stalker</community>
+
+		<rank>50</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			medkit = 1 \n
+		</supplies>
+
+		<start_dialog>gar_hellcar_start</start_dialog>
+		<actor_dialog>gar_hellcar_dialog</actor_dialog>
+	</specific_character>
+
 	<specific_character id="rad_jaw" team_default = "1">
 		<name>Сталкер Лёха "Челюсть"</name>
 		<icon x="20" y="8"></icon>
