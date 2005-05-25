@@ -610,7 +610,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			else
 				local tm = tonumber(suggested_wait_time)
 				if tm ~= 0 and (tm < 1000 or tm > 30000) then
-					utils.abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number expected)",
+					utils.abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number in interval [1000, 30000] is expected)",
 						self.object:name(), self.path_look)
 				end
 				self.pt_wait_time = tm
