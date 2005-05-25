@@ -51,9 +51,9 @@
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
 
-	<hit_sector_location hint="hit_sector">
-		<mini_map  spot="actor_level_spot"></mini_map>
-	</hit_sector_location>
+	<hit_sector_location_ hint="hit_sector" ttl="3" pos_to_actor="1">
+		<mini_map  spot="hit_sector_mini_spot"></mini_map>
+	</hit_sector_location_>
 <!-- test -->
 	
 	
