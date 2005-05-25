@@ -92,6 +92,8 @@
 	<!-- Хутор наемников -->
 	<info_portion id="mil_killer_with_bandits_combat"></info_portion>
 	<info_portion id="mil_khutor_visited"></info_portion>
+	<info_portion id="mil_actor_in_khutor_zone"></info_portion>
+	
 	
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
