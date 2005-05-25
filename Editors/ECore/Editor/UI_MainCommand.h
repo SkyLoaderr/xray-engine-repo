@@ -108,8 +108,8 @@ ECORE_API SESubCommand* 	FindCommandByShortcut	(const xr_shortcut& val);
 ECORE_API BOOL				LoadShortcuts			(CInifile* ini);
 ECORE_API BOOL				SaveShortcuts			(CInifile* ini);
 
-#define BIND_CMD_EVENT_S(a) 						TECommandEvent().bind(a)
-#define BIND_CMD_EVENT_C(a,b)						TECommandEvent().bind(a,&b)
+#define BIND_CMD_EVENT_S(a) 						fastdelegate::bind<TECommandEvent>(a)
+#define BIND_CMD_EVENT_C(a,b)						fastdelegate::bind<TECommandEvent>(a,&b)
 
 #define REGISTER_CMD_S(id,cmd)  					RegisterCommand(id, xr_new<SECommand>(#id,"",false,false,BIND_CMD_EVENT_S(cmd)));
 #define REGISTER_CMD_C(id,owner,cmd) 				RegisterCommand(id, xr_new<SECommand>(#id,"",false,false,BIND_CMD_EVENT_C(owner,cmd)));

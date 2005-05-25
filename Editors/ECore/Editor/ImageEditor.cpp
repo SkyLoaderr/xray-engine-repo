@@ -35,8 +35,8 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
     m_ItemList					= TItemList::CreateForm		("Items",paItems,alClient);
-    m_ItemList->SetOnItemsFocusedEvent	(TOnILItemsFocused().bind(this,&TfrmImageLib::OnItemsFocused));
-    m_ItemList->SetOnItemRemoveEvent	(TOnItemRemove().bind(&ImageLib,&CImageManager::RemoveTexture));
+    m_ItemList->SetOnItemsFocusedEvent	(fastdelegate::bind<TOnILItemsFocused>(this,&TfrmImageLib::OnItemsFocused));
+    m_ItemList->SetOnItemRemoveEvent	(fastdelegate::bind<TOnItemRemove>(&ImageLib,&CImageManager::RemoveTexture));
     m_ItemList->SetImages		(ImageList);
 }
 //---------------------------------------------------------------------------
@@ -344,7 +344,7 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                     if (!thm) m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key()));
                 }
                 m_THM_Current.push_back	(thm);
-                thm->FillProp			(props,PropValue::TOnChange().bind(this,&TfrmImageLib::OnTypeChange));
+                thm->FillProp			(props,PropValue::TOnChange(this,&TfrmImageLib::OnTypeChange));
 				if (thm->_Format().type==STextureParams::ttCubeMap){
 				    ButtonValue* B		= PHelper().CreateButton (props, "CubeMap\\Edit", "Make Small", 0);
         			B->OnBtnClickEvent.bind(this,&TfrmImageLib::OnCubeMapBtnClick);

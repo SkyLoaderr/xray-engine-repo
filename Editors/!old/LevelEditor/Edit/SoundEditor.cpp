@@ -34,9 +34,9 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
-    m_ItemProps->SetModifiedEvent			(TOnModifiedEvent().bind(this,&TfrmSoundLib::OnModified));
+    m_ItemProps->SetModifiedEvent			(fastdelegate::bind<TOnModifiedEvent>(this,&TfrmSoundLib::OnModified));
     m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect);
-    m_ItemList->SetOnItemsFocusedEvent		(TOnILItemsFocused(this,&TfrmSoundLib::OnItemsFocused));
+    m_ItemList->SetOnItemsFocusedEvent		(fastdelegate::bind<TOnILItemsFocused>(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
     TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
     m_ItemList->SetOnItemRemoveEvent		(on_remove);
