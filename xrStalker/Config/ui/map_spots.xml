@@ -180,7 +180,7 @@
 		<texture x="0" y="0" width="256" height="256"> ui\ui_mp_minimap_hit_sector</texture>
 	</_mp_hit_sector_mini_spot>
 
-	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
+	<mp_hit_sector_mini_spot x="0" y="0" width="32" height="32" heading="1" alignment="c"> 
 		<texture x="0" y="0" width="256" height="256"> ui\ui_mp_minimap_hit_sector</texture>
 	</mp_hit_sector_mini_spot>
 	
