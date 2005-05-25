@@ -54,7 +54,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
 {
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
-    form->m_Flags.set				(mask,TRUE);
+    form->m_Flags.assign			(mask);
     form->m_Flags.set				(cfMultiSelect,sel_cnt>1);
     form->iMultiSelLimit 			= sel_cnt;
 
