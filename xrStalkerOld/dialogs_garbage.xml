@@ -84,42 +84,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="gar_dramm_novice_start">
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>gar_dramm_novice_start_3</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="2">
-                <text>gar_dramm_novice_start_2</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="gar_dram_novice_level">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <precondition>dialogs.level_garbage</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>gar_dram_novice_level_2</text>
-            </phrase>
-            <phrase id="1">
-                <text>gar_dram_novice_level_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="0">
-                <text>gar_dram_novice_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="gar_dolg_start">
         <phrase_list>
             <phrase id="2">
@@ -324,6 +288,39 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="gar_seriy_help">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <precondition>dialogs.is_opp_wounded</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>gar_seriy_help_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_seriy_help_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="31">
+                <text>gar_seriy_help_31</text>
+                <action>dialogs.kill_yourself</action>
+            </phrase>
+            <phrase id="3">
+                <text>gar_seriy_help_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text>gar_seriy_help_2</text>
+                <precondition>dialogs.actor_have_medkit</precondition>
+                <action>dialogs.transfer_medkit</action>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>gar_seriy_help_21</text>
+                <action>garbage_dialogs.transfer_seriy_flash</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="gar_dolg_about">
         <has_info>gar_dolg_help_kill_rush</has_info>
         <phrase_list>
@@ -356,46 +353,49 @@
                 <text>gar_dolg_about_2</text>
                 <next>21</next>
             </phrase>
-            <phrase id="0">
-                <text>gar_dolg_about_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="1">
                 <text>gar_dolg_about_1</text>
                 <next>11</next>
             </phrase>
+            <phrase id="0">
+                <text>gar_dolg_about_0</text>
+                <next>1</next>
+            </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="gar_seriy_help">
+    <dialog id="gar_dram_novice_level">
         <precondition>dialogs.dialog_allowed</precondition>
-        <precondition>dialogs.is_opp_wounded</precondition>
+        <precondition>dialogs.level_garbage</precondition>
         <phrase_list>
             <phrase id="0">
-                <text>gar_seriy_help_0</text>
+                <text>gar_dram_novice_level_0</text>
                 <next>1</next>
             </phrase>
             <phrase id="1">
-                <text>gar_seriy_help_1</text>
+                <text>gar_dram_novice_level_1</text>
                 <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="31">
-                <text>gar_seriy_help_31</text>
-                <action>dialogs.kill_yourself</action>
-            </phrase>
-            <phrase id="3">
-                <text>gar_seriy_help_3</text>
-                <next>31</next>
             </phrase>
             <phrase id="2">
-                <text>gar_seriy_help_2</text>
-                <precondition>dialogs.actor_have_medkit</precondition>
-                <action>dialogs.transfer_medkit</action>
+                <text>gar_dram_novice_level_2</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_dramm_novice_start">
+        <phrase_list>
+            <phrase id="1">
+                <text>gar_dramm_novice_start_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_dramm_novice_start_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="2">
+                <text>gar_dramm_novice_start_2</text>
                 <next>21</next>
             </phrase>
             <phrase id="21">
-                <text>gar_seriy_help_21</text>
-                <action>garbage_dialogs.transfer_seriy_flash</action>
+                <text>gar_dramm_novice_start_21</text>
             </phrase>
         </phrase_list>
     </dialog>
