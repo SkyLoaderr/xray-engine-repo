@@ -225,16 +225,19 @@ void CLevel::ClientReceive()
 			}break;
 		case M_BULLET_CHECK_RESPOND:
 			{
+				if (!game) break;
 				if (GameID() != GAME_SINGLE)
 					Game().m_WeaponUsageStatistic.On_Check_Respond(P);
 			}break;
 		case M_STATISTIC_UPDATE:
 			{
+				if (!game) break;
 				if (GameID() != GAME_SINGLE)
 					Game().m_WeaponUsageStatistic.OnUpdateRequest(P);
 			}break;
 		case M_STATISTIC_UPDATE_RESPOND:
 			{
+				if (!game) break;
 				if (GameID() != GAME_SINGLE)
 					Game().m_WeaponUsageStatistic.OnUpdateRespond(P);
 			}break;
