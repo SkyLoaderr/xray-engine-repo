@@ -282,10 +282,10 @@ u32 CPHWorld::CalcNumSteps (u32 dTime)
 
 void CPHWorld::FrameStep(dReal step)
 {
-	if(IsFreezed())return;
+	if(IsFreezed())		return;
 
-	VERIFY	(_valid(step));
-	step*=phTimefactor;
+	VERIFY		(_valid(step))	;
+	step	*=	phTimefactor	;
 	// compute contact joints and forces
 
 	//step+=astep;
@@ -308,27 +308,13 @@ void CPHWorld::FrameStep(dReal step)
 	{
 		it_number	=	iFloor	(frame_time/fixed_step);
 		frame_time	-=	it_number*fixed_step;
-		m_frame_time=frame_time;
+		m_frame_time=	frame_time;
 	}
 	else
 	{
-		m_frame_time=frame_time;
-		return;
+		m_frame_time=	frame_time;
+		return		;
 	}
-	/*
-	++m_update_delay_count;
-
-	if(m_update_delay_count==update_delay){
-	if(m_delay){
-	if(m_delay<m_previous_delay) --m_reduce_delay;
-	else 	++m_reduce_delay;
-	}
-	m_previous_delay=m_delay;
-	m_update_delay_count=0;
-	}
-
-	m_delay+=(it_number-m_reduce_delay-1);
-	*/
 	//for(UINT i=0;i<(m_reduce_delay+1);++i)
 	b_processing=true;
 
