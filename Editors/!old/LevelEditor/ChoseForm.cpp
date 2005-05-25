@@ -50,11 +50,12 @@ void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillItems item_fill, void* fill_param, TOnChooseSelectItem item_select, ChooseItemVec* items)
+int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillItems item_fill, void* fill_param, TOnChooseSelectItem item_select, ChooseItemVec* items, u32 mask)
 {
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
-    form->bMultiSel 				= sel_cnt>1;
+    form->m_Flags.set				(mask,TRUE);
+    form->m_Flags.set				(cfMultiSelect,sel_cnt>1);
     form->iMultiSelLimit 			= sel_cnt;
 
 	// init
@@ -101,20 +102,21 @@ void __fastcall TfrmChoseItem::AppendItem(SChooseItem* item)
     TElTreeItem* node				= FHelper.AppendObject(form->tvItems,item->name.c_str(),false,true);
     node->Tag						= (int)item;
     node->Hint						= item->hint.size()?item->hint.c_str():"-";
-    node->CheckBoxEnabled 			= form->bMultiSel;
-    node->ShowCheckBox 				= form->bMultiSel;
+    node->CheckBoxEnabled 			= form->m_Flags.is(cfMultiSelect);
+    node->ShowCheckBox 				= form->m_Flags.is(cfMultiSelect);
 }
 
 void __fastcall TfrmChoseItem::FillItems()
 {
 	form->tvItems->IsUpdating		= true;
     tvItems->Items->Clear			();
-    if (!bMultiSel) 				FHelper.AppendObject(tvItems,NONE_CAPTION,false,true);
+    if (m_Flags.is(cfAllowNone)&&!m_Flags.is(cfMultiSelect))	FHelper.AppendObject(tvItems,NONE_CAPTION,false,true);
     ChooseItemVecIt  it				= m_Items.begin();
     ChooseItemVecIt  _E				= m_Items.end();
     for (; it!=_E; it++)   			AppendItem(&(*it));
     form->tvItems->Sort				(true);
 	form->tvItems->IsUpdating 		= false;
+    if (m_Flags.is(cfFullExpand))	form->tvItems->FullExpand		();
 }
 
 //---------------------------------------------------------------------------
@@ -123,15 +125,15 @@ void __fastcall TfrmChoseItem::FillItems()
 __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     : TForm(Owner)
 {
-	tvItems->MultiSelect = false;
-    bMultiSel = false;
+	tvItems->MultiSelect 	= false;
+    m_Flags.assign			(cfAllowNone);
     tvItems->ShowCheckboxes = false;
-    grdFon->Caption = "";
+    grdFon->Caption 		= "";
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
 {
-	if (bMultiSel){
+	if (m_Flags.is(cfMultiSelect)){
         select_item = "";
         AnsiString nm;
 	    for ( TElTreeItem* node = tvMulti->Items->GetFirstNode(); node; node = node->GetNext()){
@@ -169,9 +171,9 @@ void __fastcall TfrmChoseItem::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 {
-    tvItems->ShowCheckboxes 	= bMultiSel;
+    tvItems->ShowCheckboxes 	= m_Flags.is(cfMultiSelect);
 	int itm_cnt = _GetItemCount(m_LastSelection.c_str());
-	if (bMultiSel){
+	if (m_Flags.is(cfMultiSelect)){
 	    string256 T;
         for (int i=0; i<itm_cnt; i++){
             TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection.LowerCase().c_str(),i,T,',',"",false),0,0);//,bIgnoreExt);
@@ -198,7 +200,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             tvItems->Selected = fld_node;
         }
     }
-    paMulti->Visible = bMultiSel;
+    paMulti->Visible = m_Flags.is(cfMultiSelect);
 	// check window position
 	CheckWindowPos	(this);
 }
@@ -216,7 +218,7 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmChoseItem::tvItemsDblClick(TObject *Sender)
 {
-	if (!bMultiSel&&FHelper.IsObject(tvItems->Selected)) sbSelectClick(Sender);
+	if (!m_Flags.is(cfMultiSelect)&&FHelper.IsObject(tvItems->Selected)) sbSelectClick(Sender);
 }
 //---------------------------------------------------------------------------
 

@@ -105,9 +105,9 @@ FloatValue* 	CPropHelper::CreateTime		(PropItemVec& items, shared_str key, float
 ShortcutValue*	CPropHelper::CreateShortcut	(PropItemVec& items, shared_str key, xr_shortcut* val)
 {	return		(ShortcutValue*)AppendValue	(items,key,xr_new<ShortcutValue>(val),PROP_SHORTCUT);								}
 //---------------------------------------------------------------------------
-ChooseValue*	CPropHelper::CreateChoose	(PropItemVec& items, shared_str key, shared_str* val, u32 mode, LPCSTR path, void* fill_param, u32 sub_item_count)
+ChooseValue*	CPropHelper::CreateChoose	(PropItemVec& items, shared_str key, shared_str* val, u32 mode, LPCSTR path, void* fill_param, u32 sub_item_count, u32 choose_flags)
 {	
-	ChooseValue* cv = (ChooseValue*)AppendValue	(items,key,xr_new<ChooseValue>(val,mode,path,fill_param,sub_item_count),PROP_CHOOSE);
+	ChooseValue* cv = (ChooseValue*)AppendValue	(items,key,xr_new<ChooseValue>(val,mode,path,fill_param,sub_item_count,choose_flags),PROP_CHOOSE);
 	SChooseEvents* E= TfrmChoseItem::GetEvents(mode); 
 	if (E&&!E->on_thm.empty()){
 	    cv->Owner()->m_Flags.set(PropItem::flDrawThumbnail,TRUE);

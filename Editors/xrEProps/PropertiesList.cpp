@@ -1157,7 +1157,7 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
     }    
     //
     LPCSTR new_val			= 0;
-    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,items.size()?&items:0)){
+    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,items.size()?&items:0,V->m_ChooseFlags)){
         edit_val			= new_val;
         if (prop->AfterEdit<ChooseValue,shared_str>(edit_val))
             if (prop->ApplyValue<ChooseValue,shared_str>(edit_val)){

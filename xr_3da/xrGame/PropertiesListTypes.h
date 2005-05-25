@@ -401,7 +401,8 @@ class ChooseValue: public RTextValue{
 public:
     int					subitem;		
 	u32					m_ChooseID;
-    shared_str				m_StartPath;
+    u32 				m_ChooseFlags;
+    shared_str	 		m_StartPath;
     ChooseItemVec*		m_Items;
 	typedef fastdelegate::FastDelegate1<ChooseValue*>	TOnChooseValueFill;
     TOnChooseValueFill	OnChooseFillEvent;
@@ -410,7 +411,7 @@ public:
 // utils
     void				AppendChooseItem	(LPCSTR name, LPCSTR hint){VERIFY(m_Items); m_Items->push_back(SChooseItem(name,hint));}
 public:
-						ChooseValue			(shared_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_count):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_count),m_Items(0),m_FillParam(param),OnChooseFillEvent(0),OnDrawThumbnailEvent(0){}
+						ChooseValue			(shared_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_count, u32 choose_flags):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_count),m_Items(0),m_FillParam(param),OnChooseFillEvent(0),OnDrawThumbnailEvent(0),m_ChooseFlags(choose_flags){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;

@@ -21,7 +21,7 @@
 // refs
 class CCustomObject;
 
-typedef fastdelegate::FastDelegate0 										TOnApplyClick;
+typedef fastdelegate::FastDelegate0<> 										TOnApplyClick;
 typedef fastdelegate::FastDelegate1<bool&> 									TOnCloseClick;
 typedef fastdelegate::FastDelegate3<const AnsiString&, AnsiString&, bool&> 	TOnCodeIndight;
 

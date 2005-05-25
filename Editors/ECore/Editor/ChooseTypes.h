@@ -23,6 +23,12 @@ enum EChooseMode{
     smGameSMotions,
 };
 
+enum EChooseFlags{
+    cfMultiSelect	= (1<<0),
+    cfAllowNone		= (1<<1),
+    cfFullExpand	= (1<<2),
+};
+
 struct SChooseItem{
 	shared_str				name;
 	shared_str				hint;
