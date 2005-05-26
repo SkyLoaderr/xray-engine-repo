@@ -205,7 +205,8 @@
 		</supplies>
 
 		<start_dialog>gar_hellcar_start</start_dialog>
-		<actor_dialog>gar_hellcar_dialog</actor_dialog>
+		<actor_dialog>gar_hellcar_dialog_quest</actor_dialog>
+		<actor_dialog>gar_hellcar_dialog_thanks</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_jaw" team_default = "1">
