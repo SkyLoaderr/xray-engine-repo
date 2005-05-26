@@ -347,6 +347,21 @@ states = {
 				animstate = "stand",
 				animation = "dynamite"
 			},
+
+	hide_rac = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "cr_raciya"
+			},
+	guard_rac = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "raciya"
+			},
 				
 
 	-- Раненый

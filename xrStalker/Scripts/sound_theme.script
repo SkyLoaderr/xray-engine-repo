@@ -40,19 +40,19 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                      }
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
---	printf("%f",obj:story_id())
-	if ltx:line_exist(section, utils.to_str(obj:story_id())) then
-		return ltx:r_string(section, utils.to_str(obj:story_id()))
+	local c = obj:story_id()
+	if ltx:line_exist(section, utils.to_str(c)) then
+		return ltx:r_string(section, utils.to_str(c))
 	end
 
 --	2. проверка по npc_profile
---	printf( "profile = %s", utils.to_str( obj:profile_name() ) )
-	if ltx:line_exist(section, obj:profile_name()) then
-		return ltx:r_string(section, obj:profile_name())
+	c = obj:profile_name()
+	if ltx:line_exist(section, c) then
+		return ltx:r_string(section, c)
 	end
 
 --	3. проверка по character_community
-	local c = obj:character_community()
+	c = obj:character_community()
 	if ltx:line_exist(section, c) then
 		return ltx:r_string(section, c)
 	end
@@ -154,6 +154,9 @@ function load_sound(obj)
 	-- ожидание
 	theme["wait"]						= load_sound_from_ltx(obj, "wait")
 
+	-- speach
+    theme["speach"]						= load_sound_from_ltx(obj, "speach")
+    
 	-- угрозы
 	theme["threat_weap"]				= load_sound_from_ltx(obj, "threat_weap")
 	theme["threat_back"]				= load_sound_from_ltx(obj, "threat_back")
@@ -207,7 +210,6 @@ function load_sound(obj)
 	theme["bar_dolg_base_guard_no_talk"] = load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
 
     -- Military sounds
-    theme["mil_dolg_kill_patrol_silent"]    = load_sound_from_ltx(obj, "mil_patrol_kill_silent")
     theme["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")
     theme["mil_max_before_collect"]         = load_sound_from_ltx(obj, "mil_max_before_collect")
     theme["mil_kolyan"]                     = load_sound_from_ltx(obj, "mil_kolyan1")
