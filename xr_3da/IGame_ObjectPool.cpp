@@ -15,6 +15,28 @@ IGame_ObjectPool::~IGame_ObjectPool(void)
 
 void IGame_ObjectPool::prefetch	()
 {
+}
+
+void IGame_ObjectPool::clear	()
+{
+}
+
+CObject*	IGame_ObjectPool::create			( LPCSTR	name	)
+{
+	CLASS_ID CLS		=	pSettings->r_clsid		(name,"class");
+	CObject* O			=	(CObject*) NEW_INSTANCE	(CLS);
+	O->Load				(name);
+	return				O;
+}
+
+void		IGame_ObjectPool::destroy			( CObject*	O		)
+{
+	xr_delete				(O);
+}
+
+/*
+void IGame_ObjectPool::prefetch	()
+{
 	R_ASSERT			(map_POOL.empty());
 
 	u32	mem_0			= Memory.mem_usage();
@@ -86,3 +108,4 @@ void		IGame_ObjectPool::destroy			( CObject*	O		)
 {
 	map_POOL.insert			(mk_pair(O->cNameSect(),O));
 }
+*/
