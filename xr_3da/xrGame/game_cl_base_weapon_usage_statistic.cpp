@@ -13,6 +13,7 @@ BulletData::BulletData(shared_str FName, shared_str WName, SBullet* pBullet)
 	WeaponName = WName;
 	Bullet = *pBullet;
 	HitRefCount = 0;
+	HitResponds = 0;
 	Removed = false;
 };
 
@@ -79,10 +80,10 @@ void			Weapon_Statistic::net_save			(NET_Packet* P)
 };
 void			Weapon_Statistic::net_load			(NET_Packet* P)
 {
-	RoundsFired = P->r_u32();
-	BulletsFired = P->r_u32();
-	HitsScored = P->r_u32();
-	KillsScored = P->r_u32();
+	RoundsFired += P->r_u32();
+	BulletsFired += P->r_u32();
+	HitsScored += P->r_u32();
+	KillsScored += P->r_u32();
 	u32 HitsSize = P->r_u32();
 	for (u32 i = 0; i<HitsSize; i++)
 	{
@@ -122,7 +123,7 @@ void			Player_Statistic::net_save			(NET_Packet* P)
 
 void			Player_Statistic::net_load			(NET_Packet* P)
 {
-	TotalShots = P->r_u32();
+	TotalShots += P->r_u32();
 	u32 NumWeapons = P->r_u32();
 	for (u32 i=0; i<NumWeapons; i++)
 	{
@@ -217,7 +218,7 @@ bool			Weapon_Statistic::FindHit				(u32 BulletID, HITS_VEC_it& Hit_it)
 
 void		WeaponUsageStatistic::RemoveBullet		(ABULLETS_it& Bullet_it)
 {
-	if (!Bullet_it->Removed || Bullet_it->HitRefCount!=0) return;
+	if (!Bullet_it->Removed || Bullet_it->HitRefCount!=Bullet_it->HitResponds) return;
 	//-------------------------------------------------------------
 	PLAYERS_STATS_it PlayerIt = FindPlayer(*(Bullet_it->FirerName));
 	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(Bullet_it->WeaponName));
@@ -266,6 +267,7 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 	WeaponIt->RoundsFired = (++WeaponIt->BulletsFired)/cartridge.m_buckShot;
 	//-----------------------------------------------------------------------------------
 	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cNameSect(), pBullet));
+	Msg("OnBullet_Fire");
 }
 
 /*
@@ -285,7 +287,7 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 	if (!FindBullet(pBullet->m_dwID, BulletIt)) return;
 	//-----------------------------------------------------
 	PLAYERS_STATS_it PlayerIt = FindPlayer(*(BulletIt->FirerName));
-	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(BulletIt->WeaponName));
+	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(BulletIt->WeaponName));	
 	if (!BulletIt->HitRefCount++) 
 	{
 		WeaponIt->HitsScored++;
@@ -306,6 +308,7 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 		//---------------------------
 		WeaponIt->m_Hits.push_back(NewHit);
 	};
+	Msg("OnBullet_Hit: BulletID - %d; RefCount - %d; HitsScored - %d", pBullet->m_dwID, BulletIt->HitRefCount, WeaponIt->HitsScored);
 //	HitChecksSended++;
 }
 void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
@@ -439,7 +442,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 			Msg("! Warning: No bullet found!");
 			continue;
 		};
-		BulletIt->HitRefCount--;
+		BulletIt->HitResponds++;
 		RemoveBullet(BulletIt);
 	}
 
@@ -453,7 +456,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 			Msg("! Warning: No bullet found!");
 			continue;
 		};
-		BulletIt->HitRefCount--;
+		BulletIt->HitResponds++;
 		//---------------------------------------------------------------
 		PLAYERS_STATS_it PlayerIt = FindPlayer(*(BulletIt->FirerName));
 		WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(BulletIt->WeaponName));

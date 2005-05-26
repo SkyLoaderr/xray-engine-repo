@@ -3,7 +3,9 @@ struct BulletData
 	shared_str		FirerName;
 	shared_str		WeaponName;
 
-	u8				HitRefCount;
+	u16				HitRefCount;
+	u16				HitResponds;
+
 	bool			Removed;
 
 	SBullet			Bullet;
