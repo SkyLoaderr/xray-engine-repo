@@ -509,6 +509,14 @@ function mil_scull_news (actor, npc)
     end       
 end
 
+function mil_actor_enemy_set (actor, npc)
+    xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)    
+end
+
+function mil_actor_enemy_reset (actor, npc)
+    xr_gulag.setGulagRelation ("mil_freedom", game_object.neutral, db.actor)    
+end
+
 function val_suicide_stalker_died(actor, npc)
 	if not db.actor:has_info_portion("val_suicide_artefact_given") then
 		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
