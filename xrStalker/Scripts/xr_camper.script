@@ -35,8 +35,8 @@ function evaluator_close_combat:evaluate()
 
 	local best_enemy = self.object:best_enemy()
 	if best_enemy == nil then return false end
---printf("%s %s %s", self.a.radius, self.a.big_radius, distance_between(self.object, self.object:best_enemy()))
---printf("%s", utils.to_str(self.close_combat))
+
+printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
 
 	if self.close_combat == false then
 		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
