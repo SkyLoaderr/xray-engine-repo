@@ -1913,6 +1913,20 @@
             <phrase id="1226">
                 <text>mil_leader_start_dialog_1226</text>
             </phrase>
+            <phrase id="6000">
+                <text></text>
+                <has_info>mil_leader_attach_community</has_info>
+                <next>6001</next>
+            </phrase>
+            <phrase id="5002">
+                <text>mil_leader_start_dialog_5002</text>
+                <next>5003</next>
+            </phrase>
+            <phrase id="5001">
+                <text>mil_leader_start_dialog_5001</text>
+                <give_info>mil_courier_report</give_info>
+                <next>5002</next>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1000</next>
@@ -1923,40 +1937,27 @@
                 <next>6000</next>
                 <next>7000</next>
             </phrase>
-            <phrase id="7000">
-                <text></text>
-                <has_info>mil_courier_quest_failed</has_info>
-                <next>7001</next>
-            </phrase>
-            <phrase id="6000">
-                <text></text>
-                <has_info>mil_leader_attach_community</has_info>
-                <next>6001</next>
-            </phrase>
-            <phrase id="5000">
-                <text></text>
-                <dont_has_info>mil_leader_attach_community</dont_has_info>
-                <give_info>mil_leader_attach_community</give_info>
-                <has_info>mil_courier_quest_complete</has_info>
-                <next>5001</next>
+            <phrase id="7001">
+                <text>mil_leader_start_dialog_7001</text>
+                <next>7002</next>
             </phrase>
             <phrase id="7002">
                 <text>mil_leader_start_dialog_7002</text>
                 <next>7003</next>
             </phrase>
-            <phrase id="7001">
-                <text>mil_leader_start_dialog_7001</text>
+            <phrase id="7000">
+                <text></text>
                 <give_info>mil_courier_report</give_info>
-                <next>7002</next>
+                <has_info>mil_courier_quest_failed</has_info>
+                <next>7001</next>
             </phrase>
-            <phrase id="5002">
-                <text>mil_leader_start_dialog_5002</text>
-                <next>5003</next>
-            </phrase>
-            <phrase id="5001">
-                <text>mil_leader_start_dialog_5001</text>
+            <phrase id="5000">
+                <text></text>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+                <give_info>mil_leader_attach_community</give_info>
                 <give_info>mil_courier_report</give_info>
-                <next>5002</next>
+                <has_info>mil_courier_quest_complete</has_info>
+                <next>5001</next>
             </phrase>
         </phrase_list>
     </dialog>

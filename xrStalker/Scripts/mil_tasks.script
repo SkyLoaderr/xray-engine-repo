@@ -3,9 +3,15 @@ function process_tasks ()
     
     process_crazy ()
     
-    if actor:has_info ("mil_leader_quest1_complete") then
+    --if actor:has_info ("mil_leader_quest1_complete") then
        --level_tasks.process_map_spot (707)
-    end                
+    --end                
+    
+    if db.actor:has_info ("mil_courier_report") then
+       if level_tasks.is_map_spot_present (707, "mil_lukash_location") == true then
+          level_tasks.remove_location (707, "mil_lukash_location")
+       end   
+    end
     	
 	if actor:object ("bandit_flash") then 
 	   db.actor:give_info_portion("mil_bandit_flash_get")  
@@ -38,6 +44,7 @@ function process_crazy ()
     end    
 end
 
+
 function process_khutor ()
     -- если квест был выполнен или провален, то выйдем    
     if db.actor:has_info ("mil_courier_quest_failed") or db.actor:has_info ("mil_courier_quest_complete") then
@@ -48,7 +55,13 @@ function process_khutor ()
        return 
     end
     
-    -- если курьер на хуторе, то...
+    if level_tasks.is_map_spot_present (710, "mil_courier_location") == false then
+--    if db.actor:has_info ("mil_courier_quest_failed") == false and db.actor:has_info ("mil_courier_quest_complete")  == false then
+       level_tasks.add_location (710, "mil_courier_location")
+       level_tasks.remove_location (707, "mil_lukash_location")
+    end   
+    
+    -- если курьер на хуторе, то...               
     if db.actor:has_info ("mil_courier_in_khutor_zone") then
        if db.actor:dont_has_info ("mil_courier_khutor_leave") then 
           if db.actor:has_info ("mil_actor_in_khutor_zone") then
@@ -66,14 +79,20 @@ function process_khutor ()
           else
              level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
              db.actor:give_info_portion ("mil_courier_quest_failed")
+             level_tasks.remove_location (710, "mil_courier_location")
+             level_tasks.add_location (707, "mil_lukash_location")
              return
           end 
           if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
              level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
              db.actor:give_info_portion ("mil_courier_quest_part2")
+             level_tasks.remove_location (710, "mil_courier_location")
+             level_tasks.add_location (707, "mil_lukash_location")
           else   
              level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
              db.actor:give_info_portion ("mil_courier_quest_failed")
+             level_tasks.remove_location (710, "mil_courier_location")
+             level_tasks.add_location (707, "mil_lukash_location")
              return
           end
        end   
@@ -83,9 +102,13 @@ function process_khutor ()
        if db.actor:dont_has_info ("mil_courier_in_khutor_zone") then
           level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
           db.actor:give_info_portion ("mil_courier_quest_failed")
+          level_tasks.remove_location (710, "mil_courier_location")
+          level_tasks.add_location (707, "mil_lukash_location")
           return
        else
           level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
+          level_tasks.remove_location (710, "mil_courier_location")
+          level_tasks.add_location (707, "mil_lukash_location")
        end   
     end
     
@@ -100,6 +123,8 @@ function process_khutor ()
        db.actor:disable_info_portion ("mil_courier_in_khutor_zone")
        db.actor:disable_info_portion ("mil_actor_in_khutor_zone_inside")
        db.actor:disable_info_portion ("mil_courier_khutor_leave")
+       level_tasks.remove_location (710, "mil_courier_location")
+       level_tasks.add_location (707, "mil_lukash_location")
        return
     end   
 end
