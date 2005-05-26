@@ -494,6 +494,12 @@ function mil_courier_death (actor, npc)
     end   
 end
 
+function mil_courier_quest_fail (actor, npc)
+    if db.action:has_info ("mil_courier_quest") == false then return end
+    level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
+    db.action:give_info_portion ("mil_courier_quest_failed")
+end
+
 function val_suicide_stalker_died(actor, npc)
 	if not db.actor:has_info_portion("val_suicide_artefact_given") then
 		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
