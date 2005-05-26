@@ -93,6 +93,9 @@
     <string id="mil_info_to_all">
         <text>Внимание всех желающих разжижить мозги - проход на Радар охраняет отряд Монолита,я думаю вы в курсе что они стреляют по всем. Удачи.</text>
     </string>
+    <string id="mil_scull_info">
+		<text>Меченый, займись снайперами !!!</text>
+    </string>
     <string id="escape_wounded_start">
         <text>empty text</text>
     </string>

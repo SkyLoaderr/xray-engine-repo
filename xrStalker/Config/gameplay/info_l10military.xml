@@ -43,6 +43,7 @@
 	<info_portion id="mil_sniper_job_complete"></info_portion>
 	<info_portion id="mil_sniper_final"></info_portion>
 	<info_portion id="mil_dolg_dead"></info_portion>
+	<info_portion id="mil_scull_sniper_info_get"></info_portion>
 	
 	<!-- Диалог с охранником у ворот-->
 	<info_portion id="mil_zoneguard_first"></info_portion>

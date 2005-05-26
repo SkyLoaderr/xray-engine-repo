@@ -500,6 +500,15 @@ function mil_courier_quest_fail (actor, npc)
     db.action:give_info_portion ("mil_courier_quest_failed")
 end
 
+function mil_scull_news (actor, npc)
+    if db.actor:has_info ("mil_scull_sniper_info_get") then return end
+    if db.actor:has_info ("mil_sniper_get_job") and 
+       db.actor:has_info ("mil_sniper_dead") then
+       news_manager.send_tip (actor, "mil_scull_info", nil, npc)
+       db.actor:give_info_portion ("mil_scull_sniper_info_get")
+    end       
+end
+
 function val_suicide_stalker_died(actor, npc)
 	if not db.actor:has_info_portion("val_suicide_artefact_given") then
 		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
