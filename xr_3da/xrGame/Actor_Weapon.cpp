@@ -100,6 +100,7 @@ BOOL CActor::g_State (SEntityState& state) const
 	state.bJump			= !!(mstate_real&mcJump);
 	state.bCrouch		= !!(mstate_real&mcCrouch);
 	state.bFall			= !!(mstate_real&mcFall);
+	state.bSprint		= !!(mstate_real&mcSprint);
 	state.fVelocity		= m_PhysicMovementControl->GetVelocityActual();
 	state.fAVelocity	= fCurAVelocity;
 	return TRUE;

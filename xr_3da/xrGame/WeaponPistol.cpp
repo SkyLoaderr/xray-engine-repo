@@ -59,8 +59,9 @@ void CWeaponPistol::PlayAnimIdle	()
 {
 	if(m_opened) 
 		m_pHUD->animPlay(mhud_empty[Random.randI(mhud_empty.size())],TRUE);
-	else 
-	{
+	else
+		inherited::PlayAnimIdle		();
+/*	{
 		if(IsZoomed())
 		{
 			m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
@@ -69,7 +70,7 @@ void CWeaponPistol::PlayAnimIdle	()
 		{
 			m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())],TRUE);
 		}
-	}
+	}*/
 }
 
 void CWeaponPistol::PlayAnimReload	()

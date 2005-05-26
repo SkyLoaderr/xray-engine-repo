@@ -88,7 +88,10 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_show,		pSettings->r_string(*hud_sect, "anim_draw"));
 	animGet				(mhud_hide,		pSettings->r_string(*hud_sect, "anim_holster"));
 	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
-	
+
+	if(pSettings->line_exist(*hud_sect,"anim_idle_sprint"))
+		animGet				(mhud_idle_sprint,	pSettings->r_string(*hud_sect, "anim_idle_sprint"));
+
 	if(IsZoomEnabled())
 		animGet				(mhud_idle_aim,		pSettings->r_string(*hud_sect, "anim_idle_aim"));
 	
@@ -832,12 +835,22 @@ void CWeaponMagazined::PlayAnimReload()
 
 void CWeaponMagazined::PlayAnimIdle()
 {
+	MotionSVec* m = NULL;
 	if(IsZoomed())
 	{
-		m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
+		m = &mhud_idle_aim;
+//		m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
 	}
-	else
-		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
+	else{
+		m = &mhud_idle;
+		CActor* pActor = smart_cast<CActor*>(H_Parent());
+		if(pActor){
+			CEntity::SEntityState st;
+			pActor->g_State(st);
+			if(st.bSprint && mhud_idle_sprint.size())	m = &mhud_idle_sprint;
+		}
+	}
+	m_pHUD->animPlay((*m)[Random.randI(m->size())], TRUE);
 }
 void CWeaponMagazined::PlayAnimShoot()
 {
@@ -901,4 +914,10 @@ void CWeaponMagazined::StartIdleAnim			()
 	}
 	else
 		m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
+}
+
+void CWeaponMagazined::onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)
+{
+	if( (cmd == ACTOR_DEFS::mcSprint)&&(STATE==eIdle)  )
+		PlayAnimIdle						();
 }

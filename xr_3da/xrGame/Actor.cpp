@@ -490,8 +490,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		mstate_real	&=~mcSprint;
 		mstate_wishful	&=~mcSprint;
 
-		psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
-		psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
+//		psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
+//		psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
 	};
 	//---------------------------------------------------------------
 

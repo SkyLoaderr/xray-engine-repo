@@ -47,6 +47,7 @@ protected:
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;
 	MotionSVec		mhud_shots;
+	MotionSVec		mhud_idle_sprint;
 
 	// General
 	//кадр момента пересчета UpdateSounds
@@ -106,6 +107,7 @@ public:
 	virtual void	InitAddons();
 
 	virtual bool	Action			(s32 cmd, u32 flags);
+	virtual void	onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd);
 	bool			IsAmmoAvailable	();
 
 

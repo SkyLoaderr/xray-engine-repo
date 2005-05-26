@@ -815,6 +815,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 
 	spatial.type |=STYPE_REACTTOSOUND;
+	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
 	return					TRUE;
 }
 
