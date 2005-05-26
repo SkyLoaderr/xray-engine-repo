@@ -109,8 +109,10 @@ class CVelocityLimiter :
 	public CPHUpdateObject
 {
 	dBodyID m_body;
+public:
 	float l_limit;
 	float y_limit;
+private:
 	dVector3 m_safe_velocity;
 	dVector3 m_safe_position;
 public:
@@ -349,9 +351,25 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 	CVelocityLimiter vl(GetBody(),max_vel,max_vel);
 	max_vel=1.f/fnum_it/fnum_steps/fixed_step;
-	vl.Activate();
+
 	bool	ret=false;
 	m_character->SwitchOFFInitContact();
+	vl.Activate();
+	vl.l_limit*=(fnum_it*fnum_steps/5.f);
+	vl.y_limit=vl.l_limit;
+////////////////////////////////////
+	for(int m=0;5>m;++m)
+	{
+		Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
+		EnableCharacter();
+		m_character->ApplyForce(0,world_gravity*m_character->Mass(),0);
+		ph_world->Step();
+		ph_world->CutVelocity(max_vel,max_a_vel);
+	}
+	vl.l_limit/=(fnum_it*fnum_steps/5.f);
+	vl.y_limit=vl.l_limit;
+/////////////////////////////////////
+
 	for(int m=0;num_steps>m;++m)
 	{
 		float param =fnum_steps_r*(1+m);
