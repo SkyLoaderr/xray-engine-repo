@@ -142,7 +142,8 @@ void CUI3tButton::SetTextureOffset(int x, int y){
 }
 
 void CUI3tButton::DrawTexture(){
-	m_background.Draw();
+	if(m_bTextureEnable)
+        m_background.Draw();
 }
 
 void CUI3tButton::Update(){

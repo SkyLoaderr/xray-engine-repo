@@ -895,6 +895,7 @@ bool CUIXmlInit::InitTextureOffset(CUIXml &xml_doc, LPCSTR path, int index, CUIS
 
 bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3tButton* pWnd){
 	string256 buff;
+	bool success = false;
 
 	strconcat(buff, path, ":shared_texture");
 	shared_str sh_tex_xml = xml_doc.Read(buff, index, NULL);
@@ -912,24 +913,39 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	strconcat(buff, path, ":texture_e");
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
+	{
 			pWnd->m_background.CreateE()->InitTexture(*texture);
+			success = true;
+	}
 
 	strconcat(buff, path, ":texture_t");
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
+	{
 			pWnd->m_background.CreateT()->InitTexture(*texture);
+			success = true;
+	}
 
 	strconcat(buff, path, ":texture_d");
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
+	{
 			pWnd->m_background.CreateD()->InitTexture(*texture);
+			success = true;
+	}
 
 	strconcat(buff, path, ":texture_h");
 	texture = xml_doc.Read(buff, index, NULL);   
 	if (texture.size())
+	{
 			pWnd->m_background.CreateH()->InitTexture(*texture);
+			success = true;
+	}
 
-	return true;
+	if (success)
+        pWnd->TextureOn();
+
+	return success;
 }
 
 bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
