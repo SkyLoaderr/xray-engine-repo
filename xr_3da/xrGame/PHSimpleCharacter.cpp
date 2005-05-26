@@ -1144,15 +1144,28 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 		c->surface.mu		=0.00f;
 	}
-	
+////////////////////////нужно сместить колижен!!
+
+//////////////
 	if(bo1)
 	{
 		if(g1==m_wheel)
 		{
 			if(normal[1]<0.f)
 			{
-				do_collide=false;
-				return;
+				//do_collide=false;
+				//return;
+				c->geom.normal[0]=c->geom.normal[2]=0.f;
+				c->geom.normal[1]=1.f;
+			}
+		}
+
+		if(g1==m_shell_transform)
+		{
+			if(c->geom.pos[1]-dBodyGetPosition(m_body)[1]<0.f)
+			{
+				c->geom.normal[0]=c->geom.normal[2]=0.f;
+				c->geom.normal[1]=1.f;
 			}
 		}
 	}
@@ -1160,10 +1173,21 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	{
 		if(g2==m_wheel)
 		{
-			if(normal[1]>0.f)
+			if(normal[1]>-0.f)
 			{
-				do_collide=false;
-				return;
+				//do_collide=false;
+				//return;
+				c->geom.normal[0]=c->geom.normal[2]=0.f;
+				c->geom.normal[1]=-1.f;
+			}
+		}
+
+		if(g2==m_shell_transform)
+		{
+			if(c->geom.pos[1]-dBodyGetPosition(m_body)[1]<0.f)
+			{
+				c->geom.normal[0]=c->geom.normal[2]=0.f;
+				c->geom.normal[1]=-1.f;
 			}
 		}
 	}
