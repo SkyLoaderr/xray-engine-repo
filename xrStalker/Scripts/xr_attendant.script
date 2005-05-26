@@ -418,6 +418,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	   end
 	end   
 	st.sound_theme = utils.cfg_get_string (ini, section, "snd",  npc, false, "", "state")
+	if st.sound_theme == "silent" then st.sound_theme = nil end
     st.state_if_leader_in_meet = utils.cfg_get_string (ini, section, "state_if_leader_in_meet", npc, false, "", "idle")
     st.stub_for_corpse = utils.cfg_get_bool (ini, section, "stub_for_corpse", npc, false, false)
 end
