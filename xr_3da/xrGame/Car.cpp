@@ -68,6 +68,9 @@ CCar::CCar(void)
 	m_death_time=u32(-1);
 	m_time_to_explode=5000;
 	b_exploded=false;
+#ifdef DEBUG
+	InitDebug();
+#endif
 }
 
 CCar::~CCar(void)
@@ -76,7 +79,7 @@ CCar::~CCar(void)
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
 	xr_delete			(m_car_sound);
-	ClearExhausts();
+	ClearExhausts		();
 	xr_delete			(inventory);
  //	xr_delete			(l_tpEntityAction);
 }
