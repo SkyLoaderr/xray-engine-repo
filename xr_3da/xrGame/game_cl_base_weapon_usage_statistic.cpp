@@ -31,6 +31,7 @@ void			HitData::net_load			(NET_Packet* P)
 	P->r_stringZ(TargetName);
 	P->r_s16(BoneID);
 	Deadly = !!P->r_u8();
+	Completed = true;
 };
 
 Weapon_Statistic::Weapon_Statistic(LPCSTR Name)
@@ -88,7 +89,7 @@ void			Weapon_Statistic::net_load			(NET_Packet* P)
 		HitData NewHit;
 		NewHit.net_load(P);
 		m_Hits.push_back(NewHit);
-		m_dwNumCompleted++;
+//		m_dwNumCompleted++;
 	}
 };
 

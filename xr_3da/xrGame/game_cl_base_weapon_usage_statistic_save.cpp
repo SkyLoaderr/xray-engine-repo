@@ -88,8 +88,14 @@ void				Weapon_Statistic::Write						(FILE* pFile)
 	fwrite(&KillsScored, 4, 1, pFile);	
 	fwrite(m_Basket, 4, 3*MAX_BASKET, pFile);
 	//----------------------------------------------
-	fwrite(&m_dwNumCompleted, 4, 1, pFile);
+	u32 NumHits = 0;
 	for (u32 i=0; i<m_Hits.size(); i++)
+	{
+		HitData& Hit = m_Hits[i];
+		if (Hit.Completed) NumHits++;
+	};
+	fwrite(&NumHits, 4, 1, pFile);
+	for (i=0; i<m_Hits.size(); i++)
 	{
 		HitData& Hit = m_Hits[i];
 		if (!Hit.Completed) continue;
