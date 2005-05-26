@@ -96,6 +96,9 @@
     <string id="mil_scull_info">
 		<text>Меченый, займись снайперами !!!</text>
     </string>
+    <string id="mil_mission_complete">
+		<text>Наша задача выполнена. Спасибо за помощь.</text>
+    </string>
     <string id="escape_wounded_start">
         <text>empty text</text>
     </string>
