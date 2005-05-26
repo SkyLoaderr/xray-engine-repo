@@ -59,7 +59,7 @@ void				Player_Statistic::Write						(FILE* pFile)
 	if (!pFile) return;
 	//----------------------------------------------
 	fwrite(*PName, xr_strlen(PName)+1, 1, pFile);
-	fwrite(&TotalShots, 4, 1, pFile);	
+	fwrite(&m_dwTotalShots, 4, 1, pFile);	
 	fwrite(m_dwTotalAliveTime, 4, 3, pFile);	
 	fwrite(m_dwTotalMoneyRound, 4, 3, pFile);	
 	fwrite(m_dwNumRespawned, 4, 3, pFile);	
@@ -82,10 +82,10 @@ void				Weapon_Statistic::Write						(FILE* pFile)
 	fwrite(*InvName, xr_strlen(InvName)+1, 1, pFile);
 	//----------------------------------------------
 	fwrite(&NumBought, 4, 1, pFile);	
-	fwrite(&RoundsFired, 4, 1, pFile);	
-	fwrite(&BulletsFired, 4, 1, pFile);	
-	fwrite(&HitsScored, 4, 1, pFile);	
-	fwrite(&KillsScored, 4, 1, pFile);	
+	fwrite(&m_dwRoundsFired, 4, 1, pFile);	
+	fwrite(&m_dwBulletsFired, 4, 1, pFile);	
+	fwrite(&m_dwHitsScored, 4, 1, pFile);	
+	fwrite(&m_dwKillsScored, 4, 1, pFile);	
 	fwrite(m_Basket, 4, 3*MAX_BASKET, pFile);
 	//----------------------------------------------
 	u32 NumHits = 0;

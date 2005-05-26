@@ -27,12 +27,12 @@ bool	CUIDMStatisticWnd::SetItemData		(Weapon_Statistic* pWS, CUIStatsListItem *p
 	
 	string1024 Text;
 	pItem->FieldsVector[0]->SetText(*pWS->InvName);
-	float Eff = float(pWS->HitsScored)/((pWS->BulletsFired != 0) ? (pWS->BulletsFired) : 1);
+	float Eff = float(pWS->m_dwHitsScored)/((pWS->m_dwBulletsFired != 0) ? (pWS->m_dwBulletsFired) : 1);
 	sprintf(Text, "%.2f", Eff); pItem->FieldsVector[1]->SetText(Text);
-	u32 Hits = u32(pWS->RoundsFired*Eff);
-	sprintf(Text, "%d / %d", Hits, pWS->RoundsFired); 
+	u32 Hits = u32(pWS->m_dwRoundsFired*Eff);
+	sprintf(Text, "%d / %d", Hits, pWS->m_dwRoundsFired); 
 	pItem->FieldsVector[2]->SetText(Text);
-	sprintf(Text, "%d", pWS->KillsScored); pItem->FieldsVector[3]->SetText(Text);
+	sprintf(Text, "%d", pWS->m_dwKillsScored); pItem->FieldsVector[3]->SetText(Text);
 
 	return true;
 };

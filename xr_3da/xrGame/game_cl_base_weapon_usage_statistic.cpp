@@ -40,10 +40,11 @@ Weapon_Statistic::Weapon_Statistic(LPCSTR Name)
 	WName = Name;
 	InvName = NULL;
 	NumBought = 0;
-	RoundsFired = 0;
-	BulletsFired = 0;
-	HitsScored = 0;
-	KillsScored = 0;
+
+	m_dwRoundsFired = m_dwRoundsFired_d = 0;
+	m_dwBulletsFired = m_dwBulletsFired_d = 0;
+	m_dwHitsScored = m_dwHitsScored_d = 0;
+	m_dwKillsScored = m_dwKillsScored_d = 0;
 
 	m_Hits.clear();
 	m_dwNumCompleted = 0;
@@ -57,10 +58,12 @@ Weapon_Statistic::~Weapon_Statistic()
 
 void			Weapon_Statistic::net_save			(NET_Packet* P)
 {
-	P->w_u32(RoundsFired);
-	P->w_u32(BulletsFired);
-	P->w_u32(HitsScored);
-	P->w_u32(KillsScored);
+	m_dwRoundsFired_d = m_dwRoundsFired - m_dwRoundsFired_d;
+	P->w_u32(m_dwRoundsFired_d);	m_dwRoundsFired_d = m_dwRoundsFired;
+	P->w_u32(m_dwBulletsFired_d);	m_dwBulletsFired_d = 0;
+	P->w_u32(m_dwHitsScored_d);		m_dwHitsScored_d = 0;
+	P->w_u32(m_dwKillsScored_d);	m_dwKillsScored_d = 0;
+
 	P->w_u32(m_dwNumCompleted);
 	u32 i = 0;
 	while (i<m_Hits.size())	
@@ -80,10 +83,10 @@ void			Weapon_Statistic::net_save			(NET_Packet* P)
 };
 void			Weapon_Statistic::net_load			(NET_Packet* P)
 {
-	RoundsFired += P->r_u32();
-	BulletsFired += P->r_u32();
-	HitsScored += P->r_u32();
-	KillsScored += P->r_u32();
+	m_dwRoundsFired += P->r_u32();
+	m_dwBulletsFired += P->r_u32();
+	m_dwHitsScored += P->r_u32();
+	m_dwKillsScored += P->r_u32();
 	u32 HitsSize = P->r_u32();
 	for (u32 i = 0; i<HitsSize; i++)
 	{
@@ -97,7 +100,8 @@ void			Weapon_Statistic::net_load			(NET_Packet* P)
 Player_Statistic::Player_Statistic(LPCSTR Name)
 {
 	PName = Name;
-	TotalShots = 0;
+	m_dwTotalShots = 0;
+	m_dwTotalShots_d = 0;
 
 	ZeroMemory(m_dwTotalAliveTime, sizeof(m_dwTotalAliveTime));
 	ZeroMemory(m_dwTotalMoneyRound, sizeof(m_dwTotalMoneyRound));
@@ -111,7 +115,7 @@ Player_Statistic::~Player_Statistic()
 
 void			Player_Statistic::net_save			(NET_Packet* P)
 {
-	P->w_u32(TotalShots);
+	P->w_u32(m_dwTotalShots_d); m_dwTotalShots_d = 0;
 	P->w_u32(aWeaponStats.size());
 	for (u32 i=0; i<aWeaponStats.size(); i++)
 	{
@@ -123,7 +127,7 @@ void			Player_Statistic::net_save			(NET_Packet* P)
 
 void			Player_Statistic::net_load			(NET_Packet* P)
 {
-	TotalShots += P->r_u32();
+	m_dwTotalShots += P->r_u32();
 	u32 NumWeapons = P->r_u32();
 	for (u32 i=0; i<NumWeapons; i++)
 	{
@@ -262,12 +266,12 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 	if (!pActor) return;
 	//-----------------------------------------------------------------------------------
 	PLAYERS_STATS_it PlayerIt = FindPlayer(*object_parent->cName());
-	pBullet->m_dwID = PlayerIt->TotalShots++;
+	pBullet->m_dwID = PlayerIt->m_dwTotalShots++;
+	PlayerIt->m_dwTotalShots_d++;
 	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*object_weapon->cNameSect());
-	WeaponIt->RoundsFired = (++WeaponIt->BulletsFired)/cartridge.m_buckShot;
+	WeaponIt->m_dwRoundsFired = (++WeaponIt->m_dwBulletsFired)/cartridge.m_buckShot;
 	//-----------------------------------------------------------------------------------
 	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cNameSect(), pBullet));
-	Msg("OnBullet_Fire");
 }
 
 /*
@@ -290,7 +294,8 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(BulletIt->WeaponName));	
 	if (!BulletIt->HitRefCount++) 
 	{
-		WeaponIt->HitsScored++;
+		WeaponIt->m_dwHitsScored++;
+		WeaponIt->m_dwHitsScored_d++;
 		//---------------------------
 		CObject					*pTarget = Level().Objects.net_Find(TargetID);
 		if (!pTarget) return;
@@ -308,7 +313,6 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 		//---------------------------
 		WeaponIt->m_Hits.push_back(NewHit);
 	};
-	Msg("OnBullet_Hit: BulletID - %d; RefCount - %d; HitsScored - %d", pBullet->m_dwID, BulletIt->HitRefCount, WeaponIt->HitsScored);
 //	HitChecksSended++;
 }
 void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
@@ -460,7 +464,8 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 		//---------------------------------------------------------------
 		PLAYERS_STATS_it PlayerIt = FindPlayer(*(BulletIt->FirerName));
 		WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*(BulletIt->WeaponName));
-		(*WeaponIt).KillsScored += 1;
+		(*WeaponIt).m_dwKillsScored++;
+		(*WeaponIt).m_dwKillsScored_d++;
 		HITS_VEC_it HitIt;
 		if (WeaponIt->FindHit(BulletID, HitIt))
 		{

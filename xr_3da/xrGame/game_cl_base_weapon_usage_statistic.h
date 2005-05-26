@@ -46,10 +46,12 @@ struct Weapon_Statistic
 	shared_str		WName;
 	shared_str		InvName;
 	u32				NumBought;
-	u32				RoundsFired;
-	u32				BulletsFired;
-	u32				HitsScored;
-	u32				KillsScored;
+	//---------------------------
+	u32				m_dwRoundsFired, m_dwRoundsFired_d;
+	u32				m_dwBulletsFired, m_dwBulletsFired_d;
+	u32				m_dwHitsScored, m_dwHitsScored_d;
+	u32				m_dwKillsScored, m_dwKillsScored_d;
+	//---------------------------
 	u32				m_Basket[3][MAX_BASKET];
 
 	u32				m_dwNumCompleted;
@@ -74,7 +76,9 @@ struct Player_Statistic
 {
 	shared_str		PName;
 	
-	u32				TotalShots;
+	u32				m_dwTotalShots;
+	u32				m_dwTotalShots_d;
+	//-----------------------------------------------
 	u32				m_dwTotalAliveTime[3];
 	s32				m_dwTotalMoneyRound[3];
 	u32				m_dwNumRespawned[3];
