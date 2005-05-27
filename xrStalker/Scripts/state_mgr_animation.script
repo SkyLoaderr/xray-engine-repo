@@ -432,7 +432,7 @@ function animation:__init(npc, mgr)
 									[2]	= {	"wounded_ruka_0" },
 									[3]	= {	"wounded_ruka_0" },
 									[4]	= {	"wounded_ruka_0" }}},
-		eating		= {	prop	= { maxidle = 3,
+		eat_bread	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
 						into	= { [0]	= {"item_2_draw_0","item_2_draw_1"} },
@@ -551,7 +551,17 @@ function animation:__init(npc, mgr)
 						into	= {	[1]	= "psy_1_shot_0" },
 						out		= nil,
 						idle	= {	[1]	= "psy_1_death_0" },
-						rnd		= nil },
+						rnd		= nil },					
+		binocular	= {	prop	= { maxidle = 1,
+									sumidle = 1,
+									rnd = 100 },
+						into	= {	[0]	= {"binoculars_draw_0", {a="binocular_a"}, "binoculars_draw_1", "binoculars_zoom_in_0"} },
+						out		= {	[0]	= {"binoculars_zoom_out_0", "binoculars_hide_0", {d="binocular_a"}, "binoculars_hide_1"} },
+						idle	= {	[0]	= "binoculars_zoom_idle_0" },
+						rnd		= {	[0]	= {"binoculars_zoom_idle_1",
+										   "binoculars_zoom_idle_2",
+										   "binoculars_zoom_idle_3",
+										   "binoculars_zoom_idle_4"} } },															
 		raciya		= {	prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
@@ -608,7 +618,10 @@ function animation:__init(npc, mgr)
 		begin = nil,
 		idle = nil,
 		
-		hand_radio = {mode = "detach", done = true}
+		hand_radio	= {mode = "detach", done = true},
+		bread_a		= {mode = "detach", done = true},
+		vodka_a		= {mode = "detach", done = true},
+		binocular_a	= {mode = "detach", done = true}
 	}
 	
 	self.clb_settings = {
@@ -716,6 +729,41 @@ function animation:update()
 			end
 		end
 		self.states.hand_radio.done = true
+	end
+	if self.states.bread_a.done == false then
+		local t = self.npc:object("bread_a")
+		if t then
+			if self.states.bread_a.mode == "attach" then
+				t:enable_attachable_item(true)
+			elseif self.states.bread_a.mode == "detach" then
+				t:enable_attachable_item(false)
+			end
+		end
+		self.states.bread_a.done = true
+	end
+	if self.states.vodka_a.done == false then
+		local t = self.npc:object("vodka_a")
+		if t then
+			if self.states.vodka_a.mode == "attach" then
+				t:enable_attachable_item(true)
+			elseif self.states.vodka_a.mode == "detach" then
+				t:enable_attachable_item(false)
+			end
+		end
+		self.states.vodka_a.done = true
+	end
+	if self.states.binocular_a.done == false then
+		local t = self.npc:object("binocular_a")
+		if t then
+			if self.states.binocular_a.mode == "attach" then
+				printf("ATTACHED")
+				t:enable_attachable_item(true)
+			elseif self.states.binocular_a.mode == "detach" then
+				printf("DETACHED")
+				t:enable_attachable_item(false)
+			end
+		end
+		self.states.binocular_a.done = true
 	end
 	
 	-- обрубить анимации и экстренно начать сразу
@@ -899,7 +947,6 @@ end
 function animation:anim_callback()
 	self.clb_settings.cnt = self.clb_settings.cnt - 1
 	if self.clb_settings.cnt == 0 then
-		printf("CALLED")
 		if self.clb_settings.a ~= nil and
 		   self.states[self.clb_settings.a] ~= nil 
 		then

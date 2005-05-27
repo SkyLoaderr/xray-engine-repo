@@ -251,12 +251,12 @@ states = {
 				animstate = "sleep",
 				animation = "sleeping"
 			},
-	eat	 = {	weapon = "strapped",
+	eat_bread	= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
-				animstate = "sit",
-				animation = "eating"
+				animstate = "sit_knee",
+				animation = "eat_bread"
 			},
 
 	hello = {	weapon = "strapped",
@@ -348,6 +348,13 @@ states = {
 				animation = "dynamite"
 			},
 
+	binocular = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "binocular"
+			},
 	hide_rac = {weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,
