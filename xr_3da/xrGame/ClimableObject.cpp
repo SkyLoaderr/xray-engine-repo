@@ -188,11 +188,13 @@ void	CClimableObject::	POnAxis	(CPHCharacter	*actor,Fvector	&P)const
 void		CClimableObject::	LowerPoint			(Fvector &P)const
 {
 	P.sub(XFORM().c,m_axis);
+	P.add(m_norm);
 }
 
 void		CClimableObject::	UpperPoint			(Fvector &P)const
 {
 	P.add(XFORM().c,m_axis);
+	P.add(m_norm);
 }
 
 void		CClimableObject::DToAxis(CPHCharacter *actor,Fvector &dir)const
