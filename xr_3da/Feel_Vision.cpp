@@ -59,6 +59,12 @@ namespace Feel {
 		feel_visible.clear	();
 	}
 
+	void	Vision::feel_net_relcase	(CObject* object)
+	{
+		xr_vector<CObject*>::iterator I = std::find (seen.begin(),seen.end(),object);
+		if (I!=seen.end())	seen.erase	(I);
+	}
+
 	void	Vision::feel_vision_query	(Fmatrix& mFull, Fvector& P)
 	{
 		CFrustum								Frustum;

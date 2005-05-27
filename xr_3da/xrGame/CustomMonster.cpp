@@ -1034,6 +1034,7 @@ void CCustomMonster::net_Relcase	(CObject *object)
 {
 	inherited::net_Relcase		(object);
 	memory().remove_links		(object);
+
 }
 
 void CCustomMonster::set_fov		(float new_fov)
