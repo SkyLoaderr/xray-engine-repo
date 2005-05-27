@@ -136,6 +136,24 @@ hud = wpn_vodka_hud
 position_offset		= -0.035,-0.08,0.065
 angle_offset		= 0,0,0
 
+[vodka_a]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "food and drugs\vodka_a"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = weapons\vodka\vodka.ogf
+cost					= 35
+inv_name				= "vodka"
+inv_name_short			= "vodka"
+inv_weight				= .5
+inv_grid_width			= 1
+inv_grid_height			= 2
+inv_grid_x				= 5
+inv_grid_y				= 2
+attach_angle_offset		= -1.5708,0.1919,3.1416    ;устанавливается в радианах Angle*PI/180
+attach_position_offset	= 0.075, 0.066, 0.023
+attach_bone_name		= bip01_r_hand
 
 [vodka]
 GroupControlSection	= spawn_group
@@ -292,6 +310,27 @@ hud = wpn_vodka_hud
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	DEVICES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[binocular_a]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "devices\binocular_a"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = weapons\binoculars\wpn_binoculars.ogf
+cost					= 35
+inv_name				= "binocular"
+inv_name_short			= "binocular"
+inv_weight				= .5
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 8
+attach_angle_offset		= -1.5708,0.1919,3.1416    ;устанавливается в радианах Angle*PI/180
+attach_position_offset	= 0.075, 0.066, 0.023
+attach_bone_name		= bip01_r_hand
+
+
+
 [device_pda]
 GroupControlSection	= spawn_group
 discovery_dependency= 
