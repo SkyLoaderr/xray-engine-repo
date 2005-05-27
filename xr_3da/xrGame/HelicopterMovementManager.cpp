@@ -455,6 +455,14 @@ void SHeliMovementState::SetSpeedInDestPoint			(float val)
 	speedInDestPoint = val;
 }
 
+Fvector CHelicopter::GetCurrVelocityVec()
+{
+	Fvector dir;
+	dir.sub				(m_movement.desiredPoint,m_movement.currP);
+	dir.normalize_safe	();
+	return				dir;
+}
+
 #ifdef DEBUG
 void CHelicopter::OnRender()
 {

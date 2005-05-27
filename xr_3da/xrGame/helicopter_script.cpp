@@ -58,7 +58,7 @@ void CHelicopter::script_register(lua_State *L)
 				.def("GetCurrVelocity",						&CHelicopter::GetCurrVelocity)
 				.def("GetMaxVelocity",						&CHelicopter::GetMaxVelocity)
 				.def("SetMaxVelocity",						&CHelicopter::SetMaxVelocity)
-
+				.def("GetCurrVelocityVec",					&CHelicopter::GetCurrVelocityVec)
 				.def("GetfHealth",							&CHelicopter::GetfHealth)
 				.def("SetfHealth",							&CHelicopter::SetfHealth)
 

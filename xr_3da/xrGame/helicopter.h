@@ -305,6 +305,7 @@ public:
 	float					GetCurrVelocity					();
 	float					GetMaxVelocity					();
 	void					SetMaxVelocity					(float v);
+	Fvector					GetCurrVelocityVec				();
 
 	void					SetEnemy						(CScriptGameObject* e);
 	void					SetEnemy						(Fvector* pos);
