@@ -23,20 +23,20 @@ public:
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual void Draw();
 
-	virtual void* GetData() {return m_pData;}
-	virtual void SetData(void* pData) { m_pData = pData;}
+			void* GetData() {return m_pData;}
+			void SetData(void* pData) { m_pData = pData;}
 
-	virtual int GetIndex() {return m_iIndex;}
-	virtual void SetIndex(int index) {m_iIndex = index; m_iGroupID = index;}
+			int GetIndex() {return m_iIndex;}
+			void SetIndex(int index) {m_iIndex = index; m_iGroupID = index;}
 
-	virtual int GetValue() {return m_iValue;}
-	virtual void SetValue(int value) {m_iValue = value;}
+			int GetValue() {return m_iValue;}
+			void SetValue(int value) {m_iValue = value;}
 
-	virtual int	GetGroupID() { return m_iGroupID; }
-	virtual void SetGroupID(int ID) { m_iGroupID = ID; }
+			int	GetGroupID() { return m_iGroupID; }
+			void SetGroupID(int ID) { m_iGroupID = ID; }
 
-	//возвращает длину в пикселях надписи
-	virtual int GetSignWidht();
+			//возвращает длину в пикселях надписи
+			int GetSignWidht();
 
 	// переопределяем критерий подсвечивания текста
 	virtual bool IsHighlightText();
