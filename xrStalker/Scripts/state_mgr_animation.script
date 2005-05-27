@@ -435,8 +435,8 @@ function animation:__init(npc, mgr)
 		eat_bread	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
-						into	= { [0]	= {"item_2_draw_0","item_2_draw_1"} },
-						out		= { [0]	= {"item_2_holster_0","item_2_holster_1"} },
+						into	= { [0]	= {"item_2_draw_0",  {a="bread_a"}, "item_2_draw_1"} },
+						out		= { [0]	= {"item_2_holster_0", {d="bread_a"}, "item_2_holster_1"} },
 						idle	= { [0]	= "item_2_aim_0" },
 						rnd		= { [0]	= {	"item_2_prepare_0",
 											"item_2_attack_0" } }},
@@ -756,10 +756,8 @@ function animation:update()
 		local t = self.npc:object("binocular_a")
 		if t then
 			if self.states.binocular_a.mode == "attach" then
-				printf("ATTACHED")
 				t:enable_attachable_item(true)
 			elseif self.states.binocular_a.mode == "detach" then
-				printf("DETACHED")
 				t:enable_attachable_item(false)
 			end
 		end
