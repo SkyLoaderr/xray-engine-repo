@@ -1,6 +1,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	FOOD
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[bread_a]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "food and drugs\bread_a"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = weapons\bred\bred.ogf
+cost					= 20
+inv_name				= "bread"
+inv_name_short			= "bread"
+inv_weight				= .3
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 11
+inv_grid_y				= 9
+attach_angle_offset		= -1.5708,0.1919,3.1416    ;устанавливается в радианах Angle*PI/180
+attach_position_offset	= 0.075, 0.066, 0.023
+attach_bone_name		= bip01_l_hand
+
 [bread]
 GroupControlSection	= spawn_group
 discovery_dependency = 
