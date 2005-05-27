@@ -168,5 +168,8 @@
 	<!-- Гулаг мутантов около труб -->
 	<info_portion id="mil_actor_in_tubes_zone"></info_portion>
 	
+	<!-- Гулаг Свободы у вахода на Радар -->
+	<info_portion id="mil_fblockpost_alarm"></info_portion>
+	
 	
 </game_information_portions>
