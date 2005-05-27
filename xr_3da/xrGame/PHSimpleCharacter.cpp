@@ -1147,50 +1147,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 ////////////////////////нужно сместить колижен!!
 
 //////////////
-	if(bo1)
-	{
-		if(g1==m_wheel)
-		{
-			if(normal[1]<0.f)
-			{
-				//do_collide=false;
-				//return;
-				c->geom.normal[0]=c->geom.normal[2]=0.f;
-				c->geom.normal[1]=1.f;
-			}
-		}
-
-		if(g1==m_shell_transform)
-		{
-			if(c->geom.pos[1]-dBodyGetPosition(m_body)[1]<0.f)
-			{
-				c->geom.normal[0]=c->geom.normal[2]=0.f;
-				c->geom.normal[1]=1.f;
-			}
-		}
-	}
-	else
-	{
-		if(g2==m_wheel)
-		{
-			if(normal[1]>-0.f)
-			{
-				//do_collide=false;
-				//return;
-				c->geom.normal[0]=c->geom.normal[2]=0.f;
-				c->geom.normal[1]=-1.f;
-			}
-		}
-
-		if(g2==m_shell_transform)
-		{
-			if(c->geom.pos[1]-dBodyGetPosition(m_body)[1]<0.f)
-			{
-				c->geom.normal[0]=c->geom.normal[2]=0.f;
-				c->geom.normal[1]=-1.f;
-			}
-		}
-	}
+	FootProcess(c,do_collide,bo1);
 
 	if(!do_collide) return;
 	
@@ -1297,6 +1254,41 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	UpdateStaticDamage(c,tri_material,bo1);
 }
 
+void CPHSimpleCharacter::FootProcess(dContact* c,bool &do_collide ,bool bo)
+{
+	if(m_elevator_state.Active()||!is_control)		return;
+
+///////////////////////////////////////////////////////////////////////////////////
+			dReal*		normal				=c->geom.normal						;
+			dReal*		pos					=c->geom.pos						;
+	const	dGeomID		g1					=c->geom.g1							;
+	const	dGeomID		g2					=c->geom.g2							;
+			float		c_pos				=pos[1]-dBodyGetPosition(m_body)[1]	;
+
+			dGeomID		g					=g1									;
+			float		sign				=1.f								;
+/////////////////////////////////////////////////////////////////////////////////////	
+	if(!bo)	{g=g2;	sign=-1.f;	}
+
+	if(dXZDot(m_acceleration,cast_fv(normal))*sign>0.f)return;
+	if(g==m_wheel)
+	{
+		if(sign*normal[1]<0.f)
+		{
+			normal[0]=normal[2]=0.f;normal[1]=sign;
+			c->geom.depth=c_pos+m_radius;
+		}
+	}
+
+	if(g==m_shell_transform)
+	{
+		if(c_pos<0.f)
+		{
+			normal[0]=normal[2]=0.f;normal[1]=sign;
+			c->geom.depth=c_pos+m_radius;
+		}
+	}
+}
 void CPHSimpleCharacter::GroundNormal(Fvector &norm)
 {
 	if(m_elevator_state.ClimbingState())

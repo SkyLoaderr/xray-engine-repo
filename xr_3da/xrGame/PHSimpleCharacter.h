@@ -197,6 +197,7 @@ private:
 	void		SafeAndLimitVelocity				()			;
 	void		UpdateStaticDamage					(dContact* c,SGameMtl* tri_material,bool bo1);
 	void		UpdateDynamicDamage					(dContact* c,SGameMtl* obj_material,dBodyID b,bool bo1);
+	void IC		FootProcess							(dContact* c,bool &do_collide ,bool bo);
 public:	
 #ifdef DEBUG
 	virtual		void		OnRender							()					;
