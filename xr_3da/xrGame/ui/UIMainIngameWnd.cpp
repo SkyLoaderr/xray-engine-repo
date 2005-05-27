@@ -1415,11 +1415,9 @@ void CUIMainIngameWnd::SetBatteryCharge(float value)
 
 void CUIMainIngameWnd::SetPickUpItem	(CInventoryItem* PickUpItem)
 {
-	if (PickUpItem)
-		m_pPickUpItem = PickUpItem;
-	else
-		m_pPickUpItem = PickUpItem;
+	m_pPickUpItem = PickUpItem;
 };
+
 void CUIMainIngameWnd::UpdatePickUpItem	()
 {
 	if (!m_pPickUpItem || !Level().CurrentViewEntity() || Level().CurrentViewEntity()->CLS_ID != CLSID_OBJECT_ACTOR) 
@@ -1428,6 +1426,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 		return;
 	};
 
+	u32 f = Device.dwFrame;
 	shared_str sect_name	= m_pPickUpItem->object().cNameSect();
 
 	//properties used by inventory menu

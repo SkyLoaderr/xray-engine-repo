@@ -175,7 +175,7 @@ void	CActor::PickupModeUpdate_COD	()
 		float len = B.distance_to_sqr(A);
 		if (len > 1) continue;
 
-		if (maxlen>len)
+		if (maxlen>len && !pIItem->object().getDestroy())
 		{
 			maxlen = len;
 			pNearestItem = pIItem;
