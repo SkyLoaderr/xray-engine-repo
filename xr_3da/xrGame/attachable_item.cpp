@@ -11,6 +11,10 @@
 #include "inventoryowner.h"
 #include "inventory.h"
 
+#ifdef DEBUG
+	CAttachableItem*	CAttachableItem::m_dbgItem = NULL;
+#endif
+
 CAttachableItem::~CAttachableItem	()
 {
 	init				();
