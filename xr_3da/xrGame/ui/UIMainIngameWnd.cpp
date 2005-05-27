@@ -1426,7 +1426,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 		return;
 	};
 
-	u32 f = Device.dwFrame;
+
 	shared_str sect_name	= m_pPickUpItem->object().cNameSect();
 
 	//properties used by inventory menu
