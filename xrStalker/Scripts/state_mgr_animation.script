@@ -151,7 +151,7 @@ function animation:__init(npc, mgr)
 									[2]	= "idle_2_idle_1",
 									[3]	= "idle_3_idle_1",
 									[4]	= "idle_4_idle_1" },
-						rnd		= {	[0]	= {	"idle_0_idle_0",
+						rnd		= {	[0]	= {	"",
 											"idle_0_idle_2",
 											"idle_0_idle_3",
 											"idle_0_idle_4" },
@@ -621,17 +621,18 @@ end
 --' установка нового состояния
 function animation:set_state(id, reset)
 	printf("set new animation %s", utils.to_str(id))
-	local nn = 0	
+	local nn = 0
+	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
 	self.npc:clear_animations()	
 	if self.animations[self.states.current_state] ~= nil and
 	   self.mgr.emerg.animation_nout ~= true
 	then
 		if self.animations[self.states.current_state].out ~= nil and
-		   self.animations[self.states.current_state].out[self:weapon_slot()] ~= nil		
+		   self.animations[self.states.current_state].out[wpn_slot] ~= nil		
 		then
-			if type(self.animations[self.states.current_state].out[self:weapon_slot()]) == "table" then
-				for k,v in self.animations[self.states.current_state].out[self:weapon_slot()] do
+			if type(self.animations[self.states.current_state].out[wpn_slot]) == "table" then
+				for k,v in self.animations[self.states.current_state].out[wpn_slot] do
 					if type(v) == "table" then
 						self:set_anim_callback(v)
 					else
@@ -639,16 +640,16 @@ function animation:set_state(id, reset)
 					end
 				end
 			else
-				self.npc:add_animation(self.animations[self.states.current_state].out[self:weapon_slot()], true)
+				self.npc:add_animation(self.animations[self.states.current_state].out[wpn_slot], true)
 			end
 			nn = nn +1
 		end
 	end
 	--' вход в новое состояние	
 	if self.animations[id] ~= nil then
-		if self.animations[id].into ~= nil and self.animations[id].into[self:weapon_slot()] ~= nil then
-			if type(self.animations[id].into[self:weapon_slot()]) == "table" then
-				for k,v in self.animations[id].into[self:weapon_slot()] do
+		if self.animations[id].into ~= nil and self.animations[id].into[wpn_slot] ~= nil then
+			if type(self.animations[id].into[wpn_slot]) == "table" then
+				for k,v in self.animations[id].into[wpn_slot] do
 					if type(v) == "table" then
 						self:set_anim_callback(v)
 					else
@@ -657,7 +658,7 @@ function animation:set_state(id, reset)
 				end
 				nn = nn +1
 			else
-				self.npc:add_animation(self.animations[id].into[self:weapon_slot()], true)
+				self.npc:add_animation(self.animations[id].into[wpn_slot], true)
 				nn = nn +1
 			end
 		end
@@ -668,7 +669,7 @@ function animation:set_state(id, reset)
 			self:play_rnd(id, 100)			
 		end
 		if self.animations[id].idle ~= nil then
-			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
+			self.npc:add_animation(self.animations[id].idle[wpn_slot], true)
 			nn = nn + 1
 		else
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
@@ -808,16 +809,17 @@ function animation:play_rnd(state, rnd)
 	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
 									self.animations[state].prop.sumidle) * 1000
 	if math.random(100) < rnd then	
-		if self.animations[state].rnd[self:weapon_slot()] == nil then			
+		local wpn_slot = self:weapon_slot()
+		if self.animations[state].rnd[wpn_slot] == nil then			
 			return
 		end
 		
 		local r
-		if table.getn(self.animations[state].rnd[self:weapon_slot()]) > 1 then			
+		if table.getn(self.animations[state].rnd[wpn_slot]) > 1 then			
 			if self.states.last_id == nil then
-				r = math.random(table.getn(self.animations[state].rnd[self:weapon_slot()]))
+				r = math.random(table.getn(self.animations[state].rnd[wpn_slot]))
 			else
-				r = math.random(table.getn(self.animations[state].rnd[self:weapon_slot()])-1)
+				r = math.random(table.getn(self.animations[state].rnd[wpn_slot])-1)
 				if r >= self.states.last_id then
 					r = r + 1
 				end
@@ -828,8 +830,8 @@ function animation:play_rnd(state, rnd)
 		end		
 		self.npc:clear_animations()
 		printf("rnd animations added for [%s]", utils.to_str(state))
-		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
-		    self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
+		if self.animations[state].rnd[wpn_slot][r] ~= nil then
+		    self.npc:add_animation(self.animations[state].rnd[wpn_slot][r], true)
 			-- добавить рандомный звук
 			if self.mgr.synsound then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
@@ -837,11 +839,11 @@ function animation:play_rnd(state, rnd)
 			end
 		else
 			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
-						table.getn(self.animations[state].rnd[self:weapon_slot()]),
-						state, self:weapon_slot() )
+						table.getn(self.animations[state].rnd[wpn_slot]),
+						state, wpn_slot )
 		end
 		if self.animations[state].idle ~= nil then
-			self.npc:add_animation (self.animations[state].idle[self:weapon_slot()], true)
+			self.npc:add_animation (self.animations[state].idle[wpn_slot], true)
 		else
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
 			self.mgr.animstate:add_idle_animation()
@@ -932,8 +934,10 @@ function animation:weapon_slot()
 	if weapon == nil or self.npc:weapon_strapped() == true then
 		return 0
 	end
---	if self.npc:weapon_unstrapped() == true then
---		printf("animslot unstrapped")
+	
+	printf("SLOT [%s]", utils.to_str(weapon:animation_slot()))
+
+--[[	
 		local id = get_clsid(weapon)
 		if id == nil then 
 			return 0
@@ -962,10 +966,9 @@ function animation:weapon_slot()
 		if id == clsid.wpn_rpg7 then
 			return 4
 		end
+]]		
 		
-		
---	end
-	return 0
+	return weapon:animation_slot()
 end
 
 
