@@ -260,6 +260,9 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 //			m_iMapIconY = 4;
 		}
 
+		if(ini->section_exist("damage_section"))	
+			CDamageManager::load_section("damage_section",ini);
+
 		CParticlesPlayer::LoadParticles(pKinematics);
 	}
 	return					TRUE;

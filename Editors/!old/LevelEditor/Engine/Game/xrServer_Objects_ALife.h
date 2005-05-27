@@ -83,6 +83,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flUsedAI_Locations	= u32(1) << 7,
 		flGroupBehaviour	= u32(1) << 8,
 		flCanSave			= u32(1) << 9,
+		flVisibleForMap		= u32(1) << 10,
 	};
 
 public:
@@ -113,6 +114,8 @@ public:
 			void					can_switch_offline	(bool value);
 			void					interactive			(bool value);
 			void					move_offline		(bool value);
+			bool					visible_for_map		() const;
+			void					visible_for_map		(bool value);
 	virtual u32						ef_equipment_type	() const;
 	virtual u32						ef_main_weapon_type	() const;
 	virtual u32						ef_weapon_type		() const;

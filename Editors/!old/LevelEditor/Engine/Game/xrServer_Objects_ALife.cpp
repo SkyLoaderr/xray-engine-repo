@@ -232,6 +232,16 @@ void CSE_ALifeObject::move_offline			(bool value)
 	m_flags.set					(flOfflineNoMove,!value ? TRUE : FALSE);
 }
 
+bool CSE_ALifeObject::visible_for_map		() const
+{
+	return						(!!m_flags.test(flVisibleForMap));
+}
+
+void CSE_ALifeObject::visible_for_map		(bool value)
+{
+	m_flags.set					(flVisibleForMap,value ? TRUE : FALSE);
+}
+
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
 	tNetPacket.w				(&m_tGraphID,	sizeof(m_tGraphID));

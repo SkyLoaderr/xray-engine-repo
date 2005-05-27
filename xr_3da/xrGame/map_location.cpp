@@ -230,10 +230,20 @@ bool CMapLocation::Update() //returns actual
 void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 {
 	if( map->MapName()==LevelName() ){
+		CSE_ALifeDynamicObject* obj = NULL;
+		
+		if(ai().get_alife()){
+			obj = ai().alife().objects().object(m_objectID);
+			VERIFY(obj);
+		}
+		
 		if(	m_flags.test(eHideInOffline) && 
 			ai().get_alife() &&
-			!ai().alife().objects().object(m_objectID)->m_bOnline )
-		return;
+			!obj->m_bOnline )
+			return;
+
+		if(ai().get_alife() && FALSE == obj->m_flags.test(CSE_ALifeObject::flVisibleForMap))
+			return;
 
 		//update spot position
 		Fvector2 position = Position();

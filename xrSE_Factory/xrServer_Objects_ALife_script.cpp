@@ -48,6 +48,8 @@ void CSE_ALifeObject::script_register(lua_State *L)
 		.def_readonly	("online",			&CSE_ALifeObject::m_bOnline)
 		.def			("move_offline",	(bool (CSE_ALifeObject::*)() const)(CSE_ALifeObject::move_offline))
 		.def			("move_offline",	(void (CSE_ALifeObject::*)(bool))(CSE_ALifeObject::move_offline))
+		.def			("visible_for_map",	(bool (CSE_ALifeObject::*)() const)(CSE_ALifeObject::visible_for_map))
+		.def			("visible_for_map",	(void (CSE_ALifeObject::*)(bool))(CSE_ALifeObject::visible_for_map))
 		.def_readwrite	("level_vertex_id",	&CSE_ALifeObject::m_tNodeID)
 	];
 }
