@@ -119,6 +119,15 @@ function esc_tutorial_flesh_died_in_anomaly(actor, npc)
 	return false
 end
 
+------------------------------------------------------------------------------------
+-- Special functions for Garbage
+------------------------------------------------------------------------------------
+function gar_boars_nest2_dead(actor, npc)
+	local g = xr_gulag.fraction["gar_boars_nest2"]
+	return (not g) or (g:get_population() == 0)
+end
+
+
 function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
 	return db.storage[npc:id()].enemy:name() == "val_escort_captive"
