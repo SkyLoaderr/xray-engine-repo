@@ -305,30 +305,28 @@ function check_tubes_state (gulag)
 end
 
 function load_tubes_job (sj, gname, type, squad, groups)
-    printf ("load_tubes_job 1")
     
 	if type ~= "mil_tubes" then return end
-    printf ("load_tubes_job 2")
     	
 	local t
 	for a = 1, 10, 1 do
         t = {section = "logic@mil_tubes_mutant",
 		     idle = 0,
-	         prior = 10, state = {0},
+	         prior = 1, state = {0},
 		     squad = squad, group = groups[0],
 		     in_rest = "", out_rest = "mil_tubes_restrictor1"
 		     }
 	    table.insert(sj, t)		
+	end
 	    
+	for a = 1, 10, 1 do
         t = {section = "logic@mil_tubes_mutant",
 		     idle = 0,
-	         prior = 10, state = {1},
+	         prior = 1, state = {1},
 		     squad = squad, group = groups[0],
 		     in_rest = "", out_rest = "mil_tubes_restrictor2"
 		     }
 	    table.insert(sj, t)		
-
-	end    
-	
+    end	
 	
 end
