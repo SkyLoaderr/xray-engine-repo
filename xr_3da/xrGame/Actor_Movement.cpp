@@ -158,7 +158,8 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		if ((mstate_real&mcSprint) != (mstate_old & mcSprint))
 		{
 				CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-				pHudItem->onMovementChanged(mcSprint);
+				if (pHudItem)
+					pHudItem->onMovementChanged(mcSprint);
 /*			if (mstate_real&mcSprint)
 			{
 				//HideCurrentWeapon(GEG_PLAYER_SPRINT_START);//, false);
