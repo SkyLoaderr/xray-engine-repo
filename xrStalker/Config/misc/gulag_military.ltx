@@ -1030,10 +1030,21 @@ center_point = kamp
 ;------- командир
 [logic@mil_fneutral_commander]
 active = walker1@mil_fneutral_commander
+;actor_dialogs = dialogs@mil_fneutral_commander
+meet = on_meet@mil_freedom_max
+
+[on_meet@mil_fneutral_commander]
+distance = 5
+
+;[dialogs@mil_fneutral_commander]
+;id = mil_neutral_commander
 
 [walker1@mil_fneutral_commander]
 path_walk = commander_walk
 path_look = commander_look
+meet_enabled = true
+meet_dialog = mil_neutral_commander
+
 
 ;-- патруль 1
 [logic@mil_fneutral_patrol1]
@@ -1117,18 +1128,3 @@ path_walk = camp_walk08
 path_look = camp_look08
 radius = 2
 ;--
-[logic@mil_fneutral_camper9]
-active = camper1@mil_fneutral_camper9
-
-[camper1@mil_fneutral_camper9]
-path_walk = camp_walk09
-path_look = camp_look09
-radius = 2
-;--
-[logic@mil_fneutral_camper10]
-active = camper1@mil_fneutral_camper10
-
-[camper1@mil_fneutral_camper10]
-path_walk = camp_walk10
-path_look = camp_look10
-radius = 2
