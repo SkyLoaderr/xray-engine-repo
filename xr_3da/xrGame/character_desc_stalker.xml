@@ -123,7 +123,10 @@
 		<visual>actors\neytral\stalker_neytral_hood_4</visual>
 		<supplies>
 			[spawn] \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
 			device_torch \n
+			medkit = 1 \n
 			garbage_seriy_flash \n
 		</supplies>
 					
