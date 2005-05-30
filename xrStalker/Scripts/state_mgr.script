@@ -692,6 +692,7 @@ function state_manager:__init(npc)
 	self.target_state = "idle"
 	self.current_direction = nil
 	self.target_position = nil
+	self.is_current_object = false
 	self.no_rotate = false
 	self.combat = false
 	self.alife = true
