@@ -60,7 +60,7 @@ function set_sound(npc, sound, now)
 		
 			local snd_table = {}
 			local t = 0		
-			for k,v in db.sound[npc:id()].snd do
+			for k,v in db.sound[key].snd do
 				snd_table[t] = {}
 				get_sound(sound_theme.theme[v], snd_table[t], npc)
 				t = t + 1
