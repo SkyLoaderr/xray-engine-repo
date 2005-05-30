@@ -23,6 +23,8 @@ struct HitData
 	Fvector Pos1;
 	
 	s16		BoneID;
+	shared_str	BoneName;
+	u16		TargetID;
 	shared_str	TargetName;
 	u32		BulletID;
 	bool	Deadly;

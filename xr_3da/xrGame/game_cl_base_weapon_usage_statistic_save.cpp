@@ -3,7 +3,10 @@
 #include "Level.h"
 
 #define WUS_IDENT	(('S'<<24)+('U'<<16)+('W'<<8)+' ')
-#define WUS_VERSION	1
+#define WUS_VERSION	2
+// 1 - initial save
+// 2 - added Bone Names
+
 void		WeaponUsageStatistic::SaveData()
 {
 	if (OnClient()) return;
@@ -119,4 +122,5 @@ void				HitData::Write						(FILE* pFile)
 	fwrite(&Deadly, 1, 1, pFile);
 
 	fwrite(*TargetName, xr_strlen(TargetName)+1, 1, pFile);
+	fwrite(*BoneName, xr_strlen(BoneName)+1, 1, pFile);
 };

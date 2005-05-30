@@ -270,6 +270,7 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 	PlayerIt->m_dwTotalShots_d++;
 	WEAPON_STATS_it WeaponIt = PlayerIt->FindPlayersWeapon(*object_weapon->cNameSect());
 	WeaponIt->m_dwRoundsFired = (++WeaponIt->m_dwBulletsFired)/cartridge.m_buckShot;
+	WeaponIt->m_dwBulletsFired_d++;
 	//-----------------------------------------------------------------------------------
 	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cNameSect(), pBullet));
 }
@@ -304,12 +305,15 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 		//---------------------------
 		BulletData& BD = *BulletIt;
 		HitData NewHit;
+		//---------------------------
 		NewHit.Completed = false;
 		NewHit.BoneID = element;
+		NewHit.TargetID = TargetID;
 		NewHit.BulletID = BD.Bullet.m_dwID;
 		NewHit.Pos0 = BD.Bullet.pos;
 		NewHit.Pos1 = HitLocation;
 		NewHit.TargetName = pTarget->cName();
+		NewHit.BoneName = smart_cast<CKinematics*>(pTarget->Visual())->LL_BoneName_dbg(element);
 		//---------------------------
 		WeaponIt->m_Hits.push_back(NewHit);
 	};
@@ -472,6 +476,9 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 			HitData& HData = *HitIt;
 			HData.Deadly = true;
 			HData.BoneID = BoneID;
+			CObject* pObj = Level().Objects.net_Find(HData.TargetID);
+			if (pObj)
+				HData.BoneName = smart_cast<CKinematics*>(pObj->Visual())->LL_BoneName_dbg(BoneID);
 		}
 		//---------------------------------------------------------------
 		RemoveBullet(BulletIt);

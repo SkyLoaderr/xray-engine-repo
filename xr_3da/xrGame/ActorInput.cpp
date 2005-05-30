@@ -290,6 +290,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 		}
 		return b;
 	}
+	return false;
 }
 
 void CActor::ActorUse()
