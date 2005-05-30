@@ -87,7 +87,7 @@ end
 
 function heli_binder:net_destroy()
 	db.del_obj( self.object )
-	db.remove_heli( self.object )
+	db.del_heli( self.object )
 	object_binder.net_destroy( self )
 end
 
