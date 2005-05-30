@@ -8,7 +8,6 @@
 local def_attack_dist = 100 * 100 -- расстояние, на котором вертолёт может быть атакован
 
 function get_nearest_heli(npc_position, attack_dist_sqr)
-	printf("TRY to search HELI")
 	print_table(db.heli)
 	local heli = nil
 	for k,v in db.heli do
@@ -16,7 +15,6 @@ function get_nearest_heli(npc_position, attack_dist_sqr)
 		   (heli == nil or
 		   v:position():distance_to_sqr(npc_position) < heli:position():distance_to_sqr(npc_position))
 		then
-			printf("find")
 			heli = v
 		end
 	end
@@ -41,7 +39,9 @@ function evaluator_shoot:evaluate()
 			self.a.heli = this.get_nearest_heli(self.object:position(), self.a.attack_dist_sqr)
 		else
 			-- проверка не потерялся ли вертолет.
-			if self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr then
+			if db.heli[self.a.heli:id()] ~= nil and
+			   self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr 
+			then
 				self.a.heli = nil
 			end
 		end
