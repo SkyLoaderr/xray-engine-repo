@@ -36,7 +36,7 @@ function evaluator_close_combat:evaluate()
 	local best_enemy = self.object:best_enemy()
 	if best_enemy == nil then return false end
 
-printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
+--printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
 
 	if self.close_combat == false then
 		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
@@ -159,7 +159,7 @@ function action_patrol:execute()
 	
 	--забывание врага по времени.	
 	if self.a.mem_enemy ~= nil then
-		printf("ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+		--printf("ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 		if device():time_global()- self.a.mem_enemy > self.a.idle then
 			if self.enemy ~= nil then
 				self.object:enable_memory_object(self.enemy, false)
@@ -210,9 +210,9 @@ function action_patrol:execute()
 											self.enemy_position.y,
 											self.enemy_position.z + self.a.enemy_disp*self.direction.x)
 				--self.point_1:normalize()
-				printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
-				printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
-				printf("POINT 2 [%s] [%s] [%s]", self.point_2.x, self.point_2.y, self.point_2.z)
+				--printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
+				--printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
+				--printf("POINT 2 [%s] [%s] [%s]", self.point_2.x, self.point_2.y, self.point_2.z)
 				self.a.scan_table[-1] = {}
 				table.insert(self.a.scan_table[-1], {key = 0, pos =self.point_0})
 				table.insert(self.a.scan_table[-1], {key = 1, pos =self.enemy_position})
@@ -223,7 +223,7 @@ function action_patrol:execute()
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
 
-				printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 				-- сканируем
 				self:scan(-1)
 			else				
@@ -248,7 +248,7 @@ function action_patrol:execute()
 				if self.scantime == nil then
 					self.scantime = device():time_global()
 				end
-				printf("SCAN [%s] of [%s]", utils.to_str(device():time_global() - self.scantime), utils.to_str(self.a.scantime_free))
+				--printf("SCAN [%s] of [%s]", utils.to_str(device():time_global() - self.scantime), utils.to_str(self.a.scantime_free))
 				-- сканируем
 				self:scan(self.a.wp_flag)
 				-- проверка на завершение сканирования.
@@ -290,7 +290,7 @@ function action_patrol:scan(flag)
 			self.a.last_look_point = self.next_point
 		end
 			
-		printf("Look at [%s][%s]", utils.to_str(self.a.last_look_point.key), utils.to_str(self.a.cur_look_point))
+		--printf("Look at [%s][%s]", utils.to_str(self.a.last_look_point.key), utils.to_str(self.a.cur_look_point))
 		self.look_position = self.a.last_look_point.pos
 		self.dest_position = self.next_point.pos
 		self.look_point = vector():set(self.look_position.x + self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/self.a.scandelta,
