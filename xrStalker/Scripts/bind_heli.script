@@ -141,7 +141,7 @@ function heli_binder:check_health()
 
 		if health <= 0.5 then
 			heli:Die()
-
+			db.del_heli(self.object)
 			self.last_alt       = self.heliObject:GetRealAltitude()
 			self.alt_check_time = device():time_global() + 1000
 		end
