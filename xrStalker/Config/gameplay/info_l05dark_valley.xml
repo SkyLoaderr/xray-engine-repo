@@ -77,4 +77,9 @@
 	<task>val_suicide_artefact_quest</task>
 </info_portion>
 
+<!-- Напарник 1 -->
+<info_portion id="val_nap1_go_rescue"></info_portion>
+<info_portion id="val_nap1_no_thanx"></info_portion>
+
+
 </game_information_portions>
