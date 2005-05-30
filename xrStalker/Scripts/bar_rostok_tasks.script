@@ -17,7 +17,7 @@ function proceed()
 		set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
 	end 
 
-
+--[[
 	if actor:has_info("bar_resque_research_start") and
 	   actor:dont_has_info("bar_resque_research_gain") and
 	   actor:object("bar_ecolog_flash") 
@@ -69,6 +69,21 @@ function proceed()
 		actor:give_info_portion("bar_get_research_fail")
 		set_task_state(task.fail, "bar_get_information", 0)
 	end 
+
+	if	actor:has_info("bar_resque_research_done") and 
+ 		actor:dont_has_info("bar_get_research_fail") and
+ 		actor:has_info("bar_get_research_start")
+	then		
+		actor:give_info_portion("bar_get_research_fail")
+		set_task_state(task.fail, "bar_get_information", 0)
+	end 
+	if	actor:has_info("bar_get_research_done") and 
+ 		actor:dont_has_info("bar_resque_research_fail")
+	then		
+		actor:give_info_portion("bar_resque_research_fail")
+		set_task_state(task.fail, "bar_resque_information", 0)
+	end 
+]]    
 
 
 
@@ -140,21 +155,6 @@ function proceed()
 		set_task_state(task.completed, "bar_decoding_documents", 1)
 	end 
 
-
-	if	actor:has_info("bar_resque_research_done") and 
- 		actor:dont_has_info("bar_get_research_fail") and
- 		actor:has_info("bar_get_research_start")
-	then		
-		actor:give_info_portion("bar_get_research_fail")
-		set_task_state(task.fail, "bar_get_information", 0)
-	end 
-	if	actor:has_info("bar_get_research_done") and 
- 		actor:dont_has_info("bar_resque_research_fail")
-	then		
-		actor:give_info_portion("bar_resque_research_fail")
-		set_task_state(task.fail, "bar_resque_information", 0)
-	end 
-    
 end
 
 function process_map_spot(info_id)
@@ -184,53 +184,53 @@ function process_map_spot(info_id)
 		level_tasks.remove_location(504, "bar_hunter_location")
 		level_tasks.remove_location (502, "bar_hunter_toz_location")
 		return true
-	elseif info_id == "bar_resque_research_start" then
-		level_tasks.add_location(503, "bar_ecolog_crush_location")
-		return true		
-	elseif info_id == "bar_resque_research_gain" then
-		level_tasks.remove_location(503, "bar_ecolog_crush_location")
-		level_tasks.add_location(500, "bar_barman_location")
-		if db.actor:dont_has_info("bar_freedom_attack_ecolog") and
-		   (db.actor:dont_has_info("bar_get_research_start") or
-			db.actor:has_info("bar_get_research_fail"))			
-		then
-			news_manager.send_tip(db.actor, "bar_freedom_attack_spy", nil, "freedom")
-			db.actor:give_info_portion("bar_freedom_attack_ecolog")
-		end
-		return true		
-	elseif info_id == "bar_resque_research_done" then
-		level_tasks.remove_location(500, "bar_barman_location")
-		return true
-	elseif info_id == "bar_resque_research_fail" then
-		level_tasks.remove_location(500, "bar_barman_location")
-		return true
 
-	elseif info_id == "bar_get_research_start" then
-		level_tasks.add_location(503, "bar_ecolog_crush_location")
-		return true		
-	elseif info_id == "bar_get_research_gain" then
-		level_tasks.remove_location(503, "bar_ecolog_crush_location")
-		level_tasks.add_location(509, "bar_freedom_volkodav_location")
-		return true
-	elseif info_id == "bar_get_research_done" then
-		level_tasks.remove_location(509, "bar_freedom_volkodav_location")
-		return true
-	elseif info_id == "bar_freedom_attack_ecolog" then
-		news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
-		news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
-		if db.actor:object("bar_ecolog_flash") == nil then
-			db.actor:give_info_portion("bar_resque_research_corruped")
-		end
-		return true		
-			
-	elseif info_id == "bar_get_research_fail" then
-		level_tasks.remove_location(509, "bar_freedom_volkodav_location")
-		level_tasks.remove_location(503, "bar_ecolog_crush_location")
-		if db.actor:has_info("bar_resque_research_gain") then
-			news_manager.send_tip(db.actor, "bar_freedom_attack_spy", nil, "freedom")
-			db.actor:give_info_portion("bar_freedom_attack_ecolog")
-		end
-		return true
+--	elseif info_id == "bar_resque_research_start" then
+--		level_tasks.add_location(503, "bar_ecolog_crush_location")
+--		return true		
+--	elseif info_id == "bar_resque_research_gain" then
+--		level_tasks.remove_location(503, "bar_ecolog_crush_location")
+--		level_tasks.add_location(500, "bar_barman_location")
+--		if db.actor:dont_has_info("bar_freedom_attack_ecolog") and
+--		   (db.actor:dont_has_info("bar_get_research_start") or
+--			db.actor:has_info("bar_get_research_fail"))			
+--		then
+--			news_manager.send_tip(db.actor, "bar_freedom_attack_spy", nil, "freedom")
+--			db.actor:give_info_portion("bar_freedom_attack_ecolog")
+--		end
+--		return true		
+--	elseif info_id == "bar_resque_research_done" then
+--		level_tasks.remove_location(500, "bar_barman_location")
+--		return true
+--	elseif info_id == "bar_resque_research_fail" then
+--		level_tasks.remove_location(500, "bar_barman_location")
+--		return true
+--	elseif info_id == "bar_get_research_start" then
+--		level_tasks.add_location(503, "bar_ecolog_crush_location")
+--		return true		
+--	elseif info_id == "bar_get_research_gain" then
+--		level_tasks.remove_location(503, "bar_ecolog_crush_location")
+--		level_tasks.add_location(509, "bar_freedom_volkodav_location")
+--		return true
+--	elseif info_id == "bar_get_research_done" then
+--		level_tasks.remove_location(509, "bar_freedom_volkodav_location")
+--		return true
+--	elseif info_id == "bar_freedom_attack_ecolog" then
+--		news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
+--		news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
+--		if db.actor:object("bar_ecolog_flash") == nil then
+--			db.actor:give_info_portion("bar_resque_research_corruped")
+--		end
+--		return true				
+--	elseif info_id == "bar_get_research_fail" then
+--		level_tasks.remove_location(509, "bar_freedom_volkodav_location")
+--		level_tasks.remove_location(503, "bar_ecolog_crush_location")
+--		if db.actor:has_info("bar_resque_research_gain") then
+--			news_manager.send_tip(db.actor, "bar_freedom_attack_spy", nil, "freedom")
+--			db.actor:give_info_portion("bar_freedom_attack_ecolog")
+--		end
+--		return true
+
 	elseif info_id == "bar_dolg_veteran_start" then
 		level_tasks.add_location(501, "bar_dolg_arhive_document_location")
 		return true
