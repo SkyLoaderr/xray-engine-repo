@@ -174,7 +174,8 @@ function act_state_mgr_end:execute()
 		then
 			if self.st.look_object ~= nil then
 				if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
-				   self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy and
+				   (not IsStalker(level.object_by_id(self.st.look_object)) or				
+				   self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy) and
 				   level.object_by_id(self.st.look_object):alive() == true
 				then
 					if state_lib.states[self.st.target_state].weapon == "sniper_fire" then

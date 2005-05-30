@@ -1796,6 +1796,9 @@
 						Name="Helicopter"
 						Filter="">
 						<File
+							RelativePath=".\scripts\heli_combat.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\heli_move.script">
 						</File>
 					</Filter>
