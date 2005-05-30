@@ -318,7 +318,7 @@ public:
 	int						GetBodyState					();
 
 //	virtual float			GetfHealth						() const;
-//	virtual float			SetfHealth						(float value);
+	virtual float			SetfHealth						(float value) {return CEntity::SetfHealth(value);};
 
 #ifdef DEBUG
 public:
