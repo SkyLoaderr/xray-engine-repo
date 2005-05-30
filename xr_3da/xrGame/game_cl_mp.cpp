@@ -296,8 +296,6 @@ void game_cl_mp::ChatSayTeam(const shared_str &phrase)
 
 void game_cl_mp::OnChatMessage			(NET_Packet* P)
 {
-//	u16 PlayerID	= P->r_u16();
-//	s16 PlayerTeam	= 
 	P->r_s16();
 	string256 PlayerName;
 	P->r_stringZ(PlayerName);
@@ -305,15 +303,13 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(ChatMsg);
 	
 	Msg("%s : %s", PlayerName, ChatMsg);
-	HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, PlayerName);
-//	if (pChatLog) pChatLog->AddLogMessage(ChatMsg, PlayerName);
+	
+	if (!Level().CurrentViewEntity())
+		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, PlayerName);
 };
 
 void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 {
-
-//	if (pChatLog) pChatLog->AddLogMessage(msg, "");
-//	if (pGameLog) pGameLog->AddLogMessage(msg);
 #pragma todo("SATAN -> SATAN very very bad solution")
 	if (HUD().GetUI())
         HUD().GetUI()->m_pMessagesWnd->AddLogMessage(msg);
@@ -322,16 +318,6 @@ void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 void game_cl_mp::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	//static offFlag = false;
-	//if (!offFlag)
-	//{
-	//	if (HUD().GetUI()->UIGame())
-	//	{
-	//		HUD().GetUI()->UIGame()->AddDialogToRender(pChatLog);
-	//		HUD().GetUI()->UIGame()->AddDialogToRender(pGameLog);
-	//		offFlag = true;
-	//	}
-	//};
 	//-----------------------------------------
 	UpdateMapLocations();
 }
@@ -476,7 +462,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	u16	WeaponID = P.r_u16();
 	u8 SpecialKill = P.r_u8();
 	//-----------------------------------------------------------
-//	CObject* pKilled = Level().Objects.net_Find(KilledID);
 	CObject* pOKiller = Level().Objects.net_Find(KillerID);
 	CObject* pWeapon = Level().Objects.net_Find(WeaponID);
 
@@ -514,10 +499,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				if (pIItem)
 				{
 					KMS.m_initiator.m_shader = GetEquipmentIconsShader();
-					KMS.m_initiator.m_rect.x1 = pIItem->GetKillMsgXPos();//GetXPos()*INV_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();//GetYPos()*INV_GRID_HEIGHT;
-					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();//GetGridWidth()*INV_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();//GetGridHeight()*INV_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x1 = pIItem->GetKillMsgXPos();
+					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();
+					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();
+					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
 				};
 			}
 			else
@@ -542,10 +527,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					if (pAnomaly)
 					{
 						KMS.m_initiator.m_shader = GetKillEventIconsShader();
-						KMS.m_initiator.m_rect.x1 = 1;//0*KILLEVENT_GRID_WIDTH;
-						KMS.m_initiator.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
-						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;//1*KILLEVENT_GRID_WIDTH;
-						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
+						KMS.m_initiator.m_rect.x1 = 1;
+						KMS.m_initiator.m_rect.y1 = 202;
+						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;
+						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
 						break;
 					}
 				};
@@ -570,10 +555,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						Color_Weapon);					
 
 					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-					KMS.m_ext_info.m_rect.x1 = 62;//2*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 26;//1*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x1 = 62;
+					KMS.m_ext_info.m_rect.y1 = 202;
+					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 26;
+					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
 				}break;
 			case 2:		// BackStab
 				{
@@ -583,10 +568,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						Color_Weapon);
 
 					KMS.m_initiator.m_shader = GetKillEventIconsShader();
-					KMS.m_initiator.m_rect.x1 = 88;//3*KILLEVENT_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 30;//1*KILLEVENT_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x1 = 88;
+					KMS.m_initiator.m_rect.y1 = 202;
+					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 30;
+					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
 					
 				}break;
 			}
@@ -599,10 +584,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 //				KMS.m_victim.m_name = " ";
 
 				KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-				KMS.m_ext_info.m_rect.x1 = 32;//1*KILLEVENT_GRID_WIDTH;
-				KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
-				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 30;//1*KILLEVENT_GRID_WIDTH;
-				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
+				KMS.m_ext_info.m_rect.x1 = 32;
+				KMS.m_ext_info.m_rect.y1 = 202;
+				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 30;
+				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
 			};
 
 		}break;
@@ -617,10 +602,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				pKiller ? pKiller->name : *(pOKiller->cName()));
 
 			KMS.m_initiator.m_shader = GetBloodLossIconsShader();
-			KMS.m_initiator.m_rect.x1 = 238;//0*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y1 = 31;//0*KILLEVENT_GRID_HEIGHT;
-			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 17;//1*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 26;//1*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x1 = 238;
+			KMS.m_initiator.m_rect.y1 = 31;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 17;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 26;
 
 			if (!pKiller)
 			{
@@ -628,10 +613,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				if (pAnomaly)
 				{
 					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-						KMS.m_ext_info.m_rect.x1 = 1;//0*KILLEVENT_GRID_WIDTH;
-						KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
-						KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 31;//1*KILLEVENT_GRID_WIDTH;
-						KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
+						KMS.m_ext_info.m_rect.x1 = 1;
+						KMS.m_ext_info.m_rect.y1 = 202;
+						KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 31;
+						KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
 					break;
 				}
 			};
@@ -650,19 +635,16 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				Color_Radiation);
 
 			KMS.m_initiator.m_shader = GetRadiationIconsShader();
-			KMS.m_initiator.m_rect.x1 = 215;//0*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y1 = 195;//0*KILLEVENT_GRID_HEIGHT;
-			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 24;//1*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 24;//1*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x1 = 215;
+			KMS.m_initiator.m_rect.y1 = 195;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 24;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 24;
 
 		}break;
 	default:
 		break;
 	}
 	std::strcat(PlayerText, Text);
-//	CommonMessageOut(PlayerText);
 
 	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
-//	if (pGameLog) pGameLog->AddLogMessage(KMS);
-//---------------------------------------------------------------	
 };
