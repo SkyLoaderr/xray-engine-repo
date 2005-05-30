@@ -209,41 +209,41 @@ public:
 
 typedef IRenderableWrapper<IRenderable,luabind::wrap_base> CIRenderableWrapper;
 
-typedef DLL_PureWrapper<CObject,luabind::wrap_base> CObjectDLL_Pure;
+//typedef DLL_PureWrapper<CObject,luabind::wrap_base> CObjectDLL_Pure;
 //typedef ISpatialWrapper<CObjectDLL_Pure>			CObjectISpatial;
-typedef ISheduledWrapper<CObjectDLL_Pure>			CObjectISheduled;
-typedef IRenderableWrapper<CObjectISheduled>		CObjectIRenderable;
+//typedef ISheduledWrapper<CObjectDLL_Pure>			CObjectISheduled;
+//typedef IRenderableWrapper<CObjectISheduled>		CObjectIRenderable;
 
-class CObjectWrapper : public CObjectIRenderable {
-public:
-	IC						CObjectWrapper		() {};
-	virtual					~CObjectWrapper		() {};
-/**
-	virtual BOOL			Ready				();
-	virtual CObject*		H_SetParent			(CObject* O);
-	virtual void			Center				(Fvector& C) const;
-	virtual float			Radius				() const;
-	virtual const Fbox&		BoundingBox			() const;
-	virtual void			Load				(LPCSTR section);
-	virtual void			UpdateCL			();
-	virtual BOOL			net_Spawn			(CSE_Abstract* data);
-	virtual void			net_Destroy			();
-	virtual void			net_Export			(NET_Packet& P);
-	virtual void			net_Import			(NET_Packet& P);
-	virtual	void			net_ImportInput		(NET_Packet& P);
-	virtual BOOL			net_Relevant		();
-	virtual void			net_MigrateInactive	(NET_Packet& P);
-	virtual void			net_MigrateActive	(NET_Packet& P);
-	virtual void			net_Relcase			(CObject* O);
-	virtual	SavedPosition	ps_Element			(u32 ID) const;
-	virtual void			ForceTransform		(const Fmatrix& m);
-	virtual void			OnHUDDraw			(CCustomHUD* hud);
-	virtual void			OnH_B_Chield		();
-	virtual void			OnH_B_Independent	();
-	virtual void			OnH_A_Chield		();
-	virtual void			OnH_A_Independent	();
-/**/
-};
+//class CObjectWrapper : public CObjectIRenderable {
+//public:
+//	IC						CObjectWrapper		() {};
+//	virtual					~CObjectWrapper		() {};
+///**
+//	virtual BOOL			Ready				();
+//	virtual CObject*		H_SetParent			(CObject* O);
+//	virtual void			Center				(Fvector& C) const;
+//	virtual float			Radius				() const;
+//	virtual const Fbox&		BoundingBox			() const;
+//	virtual void			Load				(LPCSTR section);
+//	virtual void			UpdateCL			();
+//	virtual BOOL			net_Spawn			(CSE_Abstract* data);
+//	virtual void			net_Destroy			();
+//	virtual void			net_Export			(NET_Packet& P);
+//	virtual void			net_Import			(NET_Packet& P);
+//	virtual	void			net_ImportInput		(NET_Packet& P);
+//	virtual BOOL			net_Relevant		();
+//	virtual void			net_MigrateInactive	(NET_Packet& P);
+//	virtual void			net_MigrateActive	(NET_Packet& P);
+//	virtual void			net_Relcase			(CObject* O);
+//	virtual	SavedPosition	ps_Element			(u32 ID) const;
+//	virtual void			ForceTransform		(const Fmatrix& m);
+//	virtual void			OnHUDDraw			(CCustomHUD* hud);
+//	virtual void			OnH_B_Chield		();
+//	virtual void			OnH_B_Independent	();
+//	virtual void			OnH_A_Chield		();
+//	virtual void			OnH_A_Independent	();
+///**/
+//};
 
 
 typedef DLL_PureWrapper<CGameObject,luabind::wrap_base> CGameObjectDLL_Pure;

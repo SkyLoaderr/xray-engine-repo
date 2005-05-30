@@ -83,9 +83,9 @@ void CObjectScript::script_register		(lua_State *L)
 {
 	module(L)
 	[
-		class_<CObject,bases<DLL_Pure,ISheduled,ICollidable,IRenderable>,CObjectWrapper>("CObject")
-			.def(constructor<>())
-			.def("_construct",			&CObject::_construct,&CObjectWrapper::_construct_static)
+//		class_<CObject,bases<DLL_Pure,ISheduled,ICollidable,IRenderable>,CObjectWrapper>("CObject")
+//			.def(constructor<>())
+//			.def("_construct",			&CObject::_construct,&CObjectWrapper::_construct_static)
 /*			
 			.def("spatial_register",	&CObject::spatial_register,	&CObjectWrapper::spatial_register_static)
 			.def("spatial_unregister",	&CObject::spatial_unregister,	&CObjectWrapper::spatial_unregister_static)
@@ -100,11 +100,12 @@ void CObjectScript::script_register		(lua_State *L)
 //			.def("renderable_Render"		,&CObject::renderable_Render,&CObjectWrapper::renderable_Render_static)
 //			.def("renderable_ShadowGenerate",&CObject::renderable_ShadowGenerate,&CObjectWrapper::renderable_ShadowGenerate_static)
 //			.def("renderable_ShadowReceive",&CObject::renderable_ShadowReceive,&CObjectWrapper::renderable_ShadowReceive_static)
-			.def("Visual",					&CObject::Visual)
+//			.def("Visual",					&CObject::Visual)
 
-		,class_<CGameObject,CObject,CGameObjectWrapper>("CGameObject")
+		class_<CGameObject,bases<DLL_Pure,ISheduled,ICollidable,IRenderable>,CGameObjectWrapper>("CGameObject")
 			.def(constructor<>())
 			.def("_construct",			&CGameObject::_construct,&CGameObjectWrapper::_construct_static)
+			.def("Visual",				&CGameObject::Visual)
 /*
 			.def("spatial_register",	&CGameObject::spatial_register,	&CGameObjectWrapper::spatial_register_static)
 			.def("spatial_unregister",	&CGameObject::spatial_unregister,	&CGameObjectWrapper::spatial_unregister_static)
