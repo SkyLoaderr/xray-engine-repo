@@ -97,6 +97,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	{
 		// init
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		if (!l_pC || !l_pC->net_Ready || !l_pC->ps) continue;
 		game_PlayerState* ps	= l_pC->ps;
 
 		ps->clear();

@@ -22,6 +22,7 @@ void			HitData::net_save			(NET_Packet* P)
 	P->w_vec3(Pos0);
 	P->w_vec3(Pos1);
 	P->w_stringZ(TargetName);
+	P->w_stringZ(BoneName);
 	P->w_s16(BoneID);
 	P->w_u8(Deadly ? 1 : 0);
 };
@@ -30,6 +31,7 @@ void			HitData::net_load			(NET_Packet* P)
 	P->r_vec3(Pos0);
 	P->r_vec3(Pos1);
 	P->r_stringZ(TargetName);
+	P->r_stringZ(BoneName);
 	P->r_s16(BoneID);
 	Deadly = !!P->r_u8();
 	Completed = true;
