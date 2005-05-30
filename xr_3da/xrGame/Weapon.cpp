@@ -978,12 +978,12 @@ void CWeapon::UpdateAddonsVisibility()
 	{
 		if(IsGrenadeLauncherAttached())
 		{
-			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_grenade_launcher"),TRUE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
 		}
 		else
 		{
-			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_grenade_launcher"),FALSE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 		}
 	}
