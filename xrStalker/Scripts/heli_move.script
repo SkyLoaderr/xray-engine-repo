@@ -203,7 +203,7 @@ function heli_move:check_health_flags()
 	local die   = self:waypoint_param( self.path_move_info, self.last_index, "die" )
 
 	if flame then
-		if self.heliObject:GetfHealth >= 30 then
+		if self.heliObject:GetfHealth() >= 30 then
 			self.heliObject:SefHealth( 29 )
 		end
 	end
