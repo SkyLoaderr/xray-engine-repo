@@ -1066,8 +1066,9 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				break;
 
 			case DIK_P:
-				Msg("angle_offset [%f,%f,%f]",VPUSH(CAttachableItem::get_angle_offset()));
-				Msg("position_offset [%f,%f,%f]",VPUSH(CAttachableItem::get_pos_offset()));
+				Msg("LTX section [%s]",*CAttachableItem::m_dbgItem->cNameSect());
+				Msg("attach_angle_offset [%f,%f,%f]",VPUSH(CAttachableItem::get_angle_offset()));
+				Msg("attach_position_offset [%f,%f,%f]",VPUSH(CAttachableItem::get_pos_offset()));
 				break;
 			default:
 				flag = false;
