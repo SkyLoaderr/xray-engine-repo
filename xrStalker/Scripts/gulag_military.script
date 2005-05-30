@@ -15,6 +15,10 @@ function load_job (sj, gname, type, squad, groups)
        this.load_job_fblockpost (sj, gname, type, squad, groups)
        return 
     end   
+    if type == "mil_fneutral" then
+       this.load_job_fneutral (sj, gname, type, squad, groups)
+       return
+    end   
 end
 
 function load_job_base (sj, gname, type, squad, groups)
@@ -270,6 +274,8 @@ function load_states (gname, type)
     elseif type == "mil_tubes" then
        return this.check_tubes_state -- (gulag)
     elseif type == "mil_fblockpost" then
+       return this.check_blockpost_state
+    elseif type == "mil_fneutral" then  
        return this.check_blockpost_state
     end    
     return nil    
@@ -531,4 +537,172 @@ function check_blockpost_state (gulag)
          return 0
     end          
     return 1
+end
+
+
+
+
+
+-- load neutral blockpost jobs
+function load_job_fneutral (sj, gname, type, squad, groups)
+
+    local t
+    -- состояние 0
+    --мужик у костра 1    
+    t = {section = "logic@mil_fneutral_stalker",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --мужик у костра 2
+    t = {section = "logic@mil_fneutral_stalker",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --мужик у костра 3
+    t = {section = "logic@mil_fneutral_stalker",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --мужик у костра 4
+    t = {section = "logic@mil_fneutral_stalker",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --мужик у костра 5
+    t = {section = "logic@mil_fneutral_stalker",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --командир
+    t = {section = "logic@mil_fneutral_commander",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""--,
+		--predicate = function (obj)
+		                     --return obj:profile_name () == "stalker_master"
+		            --end
+		}
+	table.insert(sj, t)		
+    --патрульный 1
+    --t = {section = "logic@mil_fneutral_patrol1",
+		--idle = 0,
+		--prior = 1, state = {0, 1},
+		--squad = squad, group = groups[0],
+		--in_rest = "", out_rest = ""
+		--}
+	--table.insert(sj, t)		
+    --патрульный 2
+    --t = {section = "logic@mil_fneutral_patrol2",
+		--idle = 0,
+		--prior = 1, state = {0, 1},
+		--squad = squad, group = groups[0],
+		--in_rest = "", out_rest = ""
+		--}
+	--table.insert(sj, t)		
+    --кэмпер 1
+    t = {section = "logic@mil_fneutral_camper3",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 2
+    t = {section = "logic@mil_fneutral_camper5",
+		idle = 0,
+		prior = 1, state = {0, 1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- состояние 1
+    --кэмпер 3
+    t = {section = "logic@mil_fneutral_camper8",
+		idle = 0,
+		prior = 1, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- состояние 2
+    --кэмпер 1
+    t = {section = "logic@mil_fneutral_camper1",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 2
+    t = {section = "logic@mil_fneutral_camper2",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 3
+    t = {section = "logic@mil_fneutral_camper3",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 4
+    t = {section = "logic@mil_fneutral_camper4",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 5
+    t = {section = "logic@mil_fneutral_camper5",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 6
+    t = {section = "logic@mil_fneutral_camper6",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 7
+    t = {section = "logic@mil_fneutral_camper7",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+    --кэмпер 8
+    t = {section = "logic@mil_fneutral_camper8",
+		idle = 0,
+		prior = 1, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
 end
