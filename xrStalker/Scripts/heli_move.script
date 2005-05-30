@@ -20,6 +20,7 @@ function heli_move:__init( obj, storage )
 	self.object     = obj
 	self.heliObject = obj:get_helicopter()
 	self.a          = storage
+	self.a.signals  = {}
 	self.combat_mgr = db.storage[obj:id()].combat
 
 	self.default_velocity = utils.cfg_get_number( bind_heli.get_heli_ltx(), "helicopter", "velocity", self.object, true )
@@ -101,12 +102,11 @@ function heli_move:update( delta )
 --		self.combat_mgr.enemy_id = o and o:id()
 --	end
 
-	if self.combat_mgr:is_there_enemy() then
-		self.combat_mgr:update()
+	if xr_logic.try_switch_to_another_section( self.object, self.a, db.actor ) then
 		return
 	end
 
-	if xr_logic.try_switch_to_another_section( self.object, self.a, db.actor ) then
+	if self.combat_mgr:update() then
 		return
 	end
 
@@ -128,6 +128,10 @@ function heli_move:update( delta )
 end
 
 function heli_move:waypoint_callback( obj, action_type, index )
+	if self.combat_mgr:waypoint_callback() then
+		return
+	end
+
 	if index == self.last_index then
 		return
 	end
@@ -186,6 +190,29 @@ function heli_move:waypoint_param( path_info, idx, field, default )
 	return v or default
 end
 
+function heli_move:check_signals()
+	local sig  = self:waypoint_param( self.path_move_info, self.last_index, "sig" )
+	if sig then
+		local stor = db.storage[self.object:id()]
+		stor[stor.active_scheme].signals[sig] = true
+	end
+end
+
+function heli_move:check_health_flags()
+	local flame = self:waypoint_param( self.path_move_info, self.last_index, "flame" )
+	local die   = self:waypoint_param( self.path_move_info, self.last_index, "die" )
+
+	if flame then
+		if self.heliObject:GetfHealth >= 30 then
+			self.heliObject:SefHealth( 29 )
+		end
+	end
+
+	if die then
+		self.heliObject:SefHealth( 0.5 )
+	end
+end
+
 -- просмотреть флажки следующующей точки пути и продолжить движение соответствующим образом
 function heli_move:update_movement_state()
 	self.state = state_move
@@ -199,6 +226,10 @@ function heli_move:update_movement_state()
 			self.next_index = 0
 		end
 	end
+
+	self:check_signals()
+
+	self:check_health_flags()
 
 	self.look_index = self:search_look_waypoint( self.next_index )
 
