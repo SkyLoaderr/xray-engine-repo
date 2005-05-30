@@ -265,19 +265,7 @@ function action_wait:execute()
 	
 		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ	
 		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
-			--' проверка говорит ли кто нибудь в лагере
-			
-//			if speeks[self.a.center_point] ~= nil then
-//				--' может быть это мы говорили? :))
-//				if speeks[self.a.center_point] == self.object:id() then
-//					--' и может быть мы закончили говорить
-//					if self.object:active_sound_count() == 0 then speeks[self.a.center_point] = nil end
-//				end
-//				xr_sound.set_sound(self.object, "")
-//			else
-//				--' Саунды
-//				xr_sound.set_sound(self.object, "weather", "state")
-//			end
+			xr_sound.set_sound(self.object, "weather, state")
 		else
 			self.a.action = 0
 		end

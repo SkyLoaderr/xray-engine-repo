@@ -2078,6 +2078,9 @@
 						Name="LevelTasks"
 						Filter="">
 						<File
+							RelativePath=".\scripts\bar_rostok_tasks.script">
+						</File>
+						<File
 							RelativePath=".\scripts\level_tasks.script">
 						</File>
 						<File
