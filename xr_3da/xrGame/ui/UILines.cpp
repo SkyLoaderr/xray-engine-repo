@@ -15,7 +15,7 @@
 
 CUILines::CUILines()
 {
-	m_pFont = UI()->Font()->pFontLetterica18Russian;
+	SetFont(UI()->Font()->pFontLetterica18Russian);
 	m_interval = 0.3f;
 	m_eTextAlign = CGameFont::alLeft;
 	m_dwTextColor = 0xffffffff;
@@ -48,6 +48,7 @@ void CUILines::SetText(const char* text){
 		Reset();
 }
 
+
 const char* CUILines::GetText() const{
 	return m_text.c_str();
 }
@@ -58,9 +59,10 @@ void CUILines::Reset(){
 
 void CUILines::ParseText(){
 	Reset();
+	if(NULL==m_pFont) return;
+#pragma fixme("Andy to Satan. m_pFont==NULL ????")
 	CUILine* line = ParseTextToColoredLine(m_text.c_str());
-	
-	R_ASSERT(m_pFont);
+
 	while (line->GetLength(m_pFont) > 0)
 		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x));
 

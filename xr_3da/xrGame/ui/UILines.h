@@ -64,6 +64,8 @@ protected:
 
 	ETextAlignment	m_eTextAlign;
 	u32				m_dwTextColor;
+
+private:
 	CGameFont*		m_pFont;
 
  //   // IUISimpleWindow
