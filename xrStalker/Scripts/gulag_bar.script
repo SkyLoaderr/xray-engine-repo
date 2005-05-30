@@ -589,12 +589,15 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	
-	-- Засада боевиков Свободы на стройке
+	-- Засада боевиков Наемников на стройке
 	if type == "bar_svoboda_ambush" then
 		t = { section = "logic@bar_svoboda_ambush_sniper_1", 
 			idle = 0,
 			prior = 4, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
+			predicate = function(obj)
+				         	return obj:profile_name() == "killer_sniper"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_svoboda_ambush_sniper_2", 
@@ -625,6 +628,9 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
+			predicate = function(obj)
+				         	return obj:profile_name() == "killer_sniper"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_svoboda_ambush_sniper_7", 
