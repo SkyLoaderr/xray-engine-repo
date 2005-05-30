@@ -81,13 +81,13 @@ function heli_binder:net_spawn( data )
 	end
 
 	db.add_obj( self.object )
-
+	db.add_heli( self.object )
 	return true
 end
 
 function heli_binder:net_destroy()
 	db.del_obj( self.object )
-
+	db.remove_heli( self.object )
 	object_binder.net_destroy( self )
 end
 
