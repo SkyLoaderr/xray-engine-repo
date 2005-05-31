@@ -982,6 +982,8 @@ void CWeapon::UpdateAddonsVisibility()
 			u16 b = pWeaponVisual->LL_BoneID("wpn_launcher");
 			if(b!=BI_NONE)
 				pWeaponVisual->LL_SetBoneVisible(b,TRUE,TRUE);
+			else
+				Msg("there is no bone <wpn_launcher> in %s",*cNameSect());
 		}
 		else
 		{
@@ -989,6 +991,8 @@ void CWeapon::UpdateAddonsVisibility()
 			u16 b = pWeaponVisual->LL_BoneID("wpn_launcher");
 			if(b!=BI_NONE)
 				pWeaponVisual->LL_SetBoneVisible(b,FALSE,TRUE);
+			else
+				Msg("there is no bone <wpn_launcher> in %s",*cNameSect());
 		}
 	}
 	pWeaponVisual->CalculateBones_Invalidate();
