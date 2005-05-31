@@ -1721,7 +1721,7 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 	m_u32ForceRespawn	= get_option_i		(*options, "frcrspwn", 0) * 1000;
 	fraglimit			= get_option_i		(*options,"fraglimit",0);
 	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
-	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
+	damageblocklimit	= get_option_i		(*options,"dmgblock",0)*1000;	// in (ms)
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	m_bDamageBlockIndicators = (get_option_i(*options,"dmbi",0) != 0);
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
