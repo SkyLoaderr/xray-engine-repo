@@ -610,11 +610,11 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
     Flags32 old_flag= 	psDeviceFlags;
     // set render params
     psDeviceFlags.set(rsStatistic|rsDrawGrid,FALSE);
-    u32 cc						= 	EPrefs.scene_clear_color;
-    EPrefs.scene_clear_color 	= 	0x00333333;
+//	u32 cc						= 	EPrefs.scene_clear_color;
+//	EPrefs.scene_clear_color 	= 	0x00333333;
 
 	U32Vec pixels;
-    u32 w=256,h=256;
+    u32 w=512,h=512;
     if (Device.MakeScreenshot(pixels,w,h)){
         EObjectThumbnail tex(tex_name,false);
         tex.CreateFromData(pixels.begin(),w,h,obj->GetFaceCount(),obj->GetVertexCount());
@@ -626,7 +626,7 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 
     // restore render params
     psDeviceFlags 				= old_flag;
-    EPrefs.scene_clear_color 	= cc;
+//	EPrefs.scene_clear_color 	= cc;
     return bResult;
 }
 

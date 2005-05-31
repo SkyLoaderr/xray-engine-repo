@@ -37,7 +37,7 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TExtBtn *ebProperties;
 	TCheckBox *cbPreview;
-	TExtBtn *ebMakeLOD;
+	TExtBtn *ebMakeLOD_high;
 	TPanel *Panel3;
 	TLabel *lbFaces;
 	TLabel *RxLabel2;
@@ -53,6 +53,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebRenameObject;
 	TExtBtn *ebRemoveObject;
 	TMxPanel *paImage;
+	TExtBtn *ebMakeLOD_low;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -66,7 +67,7 @@ __published:	// IDE-managed Components
 	void __fastcall paImagePaint(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-	void __fastcall ebMakeLODClick(TObject *Sender);
+	void __fastcall ebMakeLOD_highClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall ebExportLWOClick(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -74,6 +75,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebRenameObjectClick(TObject *Sender);
 	void __fastcall ebRemoveObjectClick(TObject *Sender);
+	void __fastcall ebMakeLOD_lowClick(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EObjectThumbnail* 		m_Thm;
@@ -91,7 +93,8 @@ private:	// User declarations
     bool 					bReadOnly;
     TItemList*				m_Items;
 	void __stdcall  		OnItemFocused	(TElTreeItem* item);
-	bool 					GenerateLOD		(ListItem* prop);
+	bool 					GenerateLOD		(ListItem* prop, bool bHighQuality);
+    void 					MakeLOD			(bool bHighQuality);
     bool 					bFormLocked;
     void 					LockForm		()	{ bFormLocked = true;	paCommands->Enabled = false; 	paItems->Enabled = false; 	}
     void 					UnlockForm		()	{ bFormLocked = false;	paCommands->Enabled = true; 	paItems->Enabled = true;	}

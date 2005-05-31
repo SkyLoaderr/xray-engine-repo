@@ -1,6 +1,6 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 329
-  Top = 233
+  Left = -950
+  Top = 285
   Width = 332
   Height = 468
   BorderIcons = [biSystemMenu, biMinimize]
@@ -63,7 +63,7 @@ object frmEditLibrary: TfrmEditLibrary
       FlatAlwaysEdge = True
       OnClick = ebPropertiesClick
     end
-    object ebMakeLOD: TExtBtn
+    object ebMakeLOD_high: TExtBtn
       Left = 2
       Top = 205
       Width = 129
@@ -72,11 +72,11 @@ object frmEditLibrary: TfrmEditLibrary
       BevelShow = False
       BtnColor = 10528425
       CloseButton = False
-      Caption = 'Make MU-Object LOD'
+      Caption = 'Make LOD (High Quality)'
       Enabled = False
       Transparent = False
       FlatAlwaysEdge = True
-      OnClick = ebMakeLODClick
+      OnClick = ebMakeLOD_highClick
     end
     object Bevel4: TBevel
       Left = 0
@@ -86,9 +86,24 @@ object frmEditLibrary: TfrmEditLibrary
       Align = alTop
       Shape = bsBottomLine
     end
+    object ebMakeLOD_low: TExtBtn
+      Left = 2
+      Top = 222
+      Width = 129
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Make LOD (Low Quality)'
+      Enabled = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebMakeLOD_lowClick
+    end
     object cbPreview: TCheckBox
       Left = 2
-      Top = 223
+      Top = 247
       Width = 128
       Height = 17
       Caption = 'Preview'

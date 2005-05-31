@@ -252,7 +252,8 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
     UpdateObjectProperties();
     UI->RedrawScene();
     ebMakeThm->Enabled	= mt;
-    ebMakeLOD->Enabled	= cbPreview->Checked;
+    ebMakeLOD_high->Enabled	= cbPreview->Checked;
+    ebMakeLOD_low->Enabled	= cbPreview->Checked;
 }
 //---------------------------------------------------------------------------
 
@@ -349,7 +350,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-bool TfrmEditLibrary::GenerateLOD(ListItem* prop)
+bool TfrmEditLibrary::GenerateLOD(ListItem* prop, bool bHighQuality)
 {
 	VERIFY				(prop);	
     xr_string nm	= prop->Key();
@@ -363,7 +364,7 @@ bool TfrmEditLibrary::GenerateLOD(ListItem* prop)
         string512 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
         tex_name 	= xr_string("lod_")+tmp;
         tex_name 	= ImageLib.UpdateFileName(tex_name);
-        ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
+        ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version,bHighQuality?7:1);
         O->OnDeviceDestroy();
         O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
         ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());
@@ -375,12 +376,12 @@ bool TfrmEditLibrary::GenerateLOD(ListItem* prop)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
+void TfrmEditLibrary::MakeLOD(bool bHighQuality)
 {
 	TElTreeItem* node 			= m_Items->GetSelected();
 	if (node&&cbPreview->Checked){
         LockForm();
-    	int res 				= ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo << mbCancel,"Multiple select objects?");
+    	int res 				= ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo << mbCancel,"Do you want to select multiple objects?");
         if (res!=mrCancel){
             if (res==mrYes){
                 LPCSTR new_val		= 0;
@@ -393,7 +394,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
                         _GetItem	(new_val,k,tmp);
                         pb->Inc		(tmp.c_str());
                         ListItem* I	= m_Items->FindItem(tmp.c_str()); VERIFY(I);
-                        if (GenerateLOD(I)) iLODcnt++;
+                        if (GenerateLOD(I,bHighQuality)) iLODcnt++;
                         if (UI->NeedAbort()) break;
                     }
                     ELog.DlgMsg 	(mtInformation,"'%d' LOD's succesfully created.",iLODcnt);
@@ -404,7 +405,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
                 FHelper.MakeFullName(node,0,m_LastSelection);
                 if (FHelper.IsObject(node)){
                     ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
-                    GenerateLOD		(prop);
+                    GenerateLOD		(prop,bHighQuality);
                 } if (FHelper.IsFolder(node)){
                     if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
                         int iLODcnt = 0;
@@ -412,7 +413,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
                         for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
                             ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
                             pb->Inc	(prop->Key());
-                            if (GenerateLOD(prop)) iLODcnt++;
+                            if (GenerateLOD(prop,bHighQuality)) iLODcnt++;
                             if (UI->NeedAbort()) break;
                         }
                         UI->ProgressEnd(pb);
@@ -424,6 +425,17 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
         UnlockForm();
 //        m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
     }
+}
+
+void __fastcall TfrmEditLibrary::ebMakeLOD_highClick(TObject *Sender)
+{
+	MakeLOD(true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebMakeLOD_lowClick(TObject *Sender)
+{
+	MakeLOD(false);
 }
 //---------------------------------------------------------------------------
 
@@ -476,7 +488,8 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
             mt = true;
         }
         ebMakeThm->Enabled 		= !bReadOnly&&mt;
-        ebMakeLOD->Enabled 		= !bReadOnly&&cbPreview->Checked;
+        ebMakeLOD_high->Enabled = !bReadOnly&&cbPreview->Checked;
+        ebMakeLOD_low->Enabled 	= !bReadOnly&&cbPreview->Checked;
         UI->RedrawScene();
     }
 }
@@ -613,4 +626,5 @@ void __fastcall TfrmEditLibrary::ebRemoveObjectClick(TObject *Sender)
 	m_Items->RemoveSelItems();	
 }
 //---------------------------------------------------------------------------
+
 

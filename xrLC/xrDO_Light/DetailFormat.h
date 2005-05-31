@@ -102,7 +102,7 @@ public:
 	u32				w_qclr		(float v, u32 range)	{	s32 _v = iFloor(v * float(range)); clamp(_v,0,s32(range)); return _v; };
 	float			r_qclr		(u32 v,   u32 range)	{	return float(v)/float(range); }
 
-	static void		verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
+//	static void		verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
     void			color_editor(){c_dir=w_qclr(0.5f,15);c_hemi=w_qclr(0.5f,15);c_r=w_qclr(0.f,15);c_g=w_qclr(0.f,15);c_b=w_qclr(0.f,15);}
     u8				r_id		(u32 idx) {	
         switch(idx)	{

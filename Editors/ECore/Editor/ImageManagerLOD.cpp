@@ -215,6 +215,7 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
         mP.build_projection_ortho(R,bb.max.y-bb.min.y,bb.min.z,bb.max.z);
 	    RCache.set_xform_project(mP);
 	    RCache.set_xform_view	(mV);
+        Device.mFullTransform.mul(mP,mV);
         Device.MakeScreenshot	(s_pixels,tgt_w*8,tgt_h*8);
         d_pixels.resize 		(tgt_w*tgt_h);
 		imf_Process				(d_pixels.begin(),tgt_w,tgt_h,s_pixels.begin(),tgt_w*8,tgt_h*8,imf_box);
@@ -241,7 +242,7 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
     RCache.set_xform_project	(save_projection);
 }
 
-void CImageManager::CreateLODTexture(CEditableObject* OBJECT, U32Vec& lod_pixels, U32Vec& nm_pixels, u32 tgt_w, u32 tgt_h, int samples)
+void CImageManager::CreateLODTexture(CEditableObject* OBJECT, U32Vec& lod_pixels, U32Vec& nm_pixels, u32 tgt_w, u32 tgt_h, int samples, int quality)
 {
 	// build hemi light
     BLVec						simple_hemi;
@@ -270,7 +271,7 @@ void CImageManager::CreateLODTexture(CEditableObject* OBJECT, U32Vec& lod_pixels
 
     float tN=0.f,tH=0.f,tT=0.f,tR=0.f;
     
-	float 	LOD_CALC_SAMPLES 	= 7;
+	float 	LOD_CALC_SAMPLES 	= quality;
 	s32		LOD_CALC_SAMPLES_LIM= LOD_CALC_SAMPLES/2;
 
     // preload textures
@@ -420,11 +421,11 @@ tH+=TT.Stop();
 //------------------------------------------------------------------------------
 // 
 //------------------------------------------------------------------------------
-void CImageManager::CreateLODTexture(CEditableObject* OBJECT, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age)
+void CImageManager::CreateLODTexture(CEditableObject* OBJECT, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age, int quality)
 {
     U32Vec 						lod_pixels, nm_pixels;
 
-	CreateLODTexture			(OBJECT,lod_pixels,nm_pixels,tgt_w,tgt_h,samples);
+	CreateLODTexture			(OBJECT,lod_pixels,nm_pixels,tgt_w,tgt_h,samples,quality);
 
     xr_string 					out_name,src_name;
     CImage* I 					= xr_new<CImage>();
