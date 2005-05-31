@@ -81,6 +81,7 @@ public:
 
 		bool			operator()				(CSoundSingle &sound)
 		{
+			VERIFY		(sound.m_sound);
 			bool		result = 
 				(sound.m_synchro_mask & m_sound_mask) || 
 				(
