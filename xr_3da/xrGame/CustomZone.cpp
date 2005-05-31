@@ -1177,15 +1177,15 @@ void CCustomZone::StartWind()
 	if(m_fDistanceToCurEntity>WIND_RADIUS) return;
 
 	m_bBlowoutWindActive = true;
-	m_fStoreWindPower = g_pGamePersistent->Environment.wind_strength;
-	clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
+	m_fStoreWindPower = g_pGamePersistent->Environment.wind_strength_factor;
+	clamp(g_pGamePersistent->Environment.wind_strength_factor, 0.f, 1.f);
 }
 
 void CCustomZone::StopWind()
 {
 	if(!m_bBlowoutWindActive) return;
 	m_bBlowoutWindActive = false;
-	g_pGamePersistent->Environment.wind_strength = m_fStoreWindPower;
+	g_pGamePersistent->Environment.wind_strength_factor = m_fStoreWindPower;
 }
 
 void CCustomZone::UpdateWind()
@@ -1200,17 +1200,17 @@ void CCustomZone::UpdateWind()
 
 	if(m_dwBlowoutWindTimePeak > (u32)m_iStateTime)
 	{
-		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + ( m_fStoreWindPower - m_fBlowoutWindPowerMax)*
+		g_pGamePersistent->Environment.wind_strength_factor = m_fBlowoutWindPowerMax + ( m_fStoreWindPower - m_fBlowoutWindPowerMax)*
 								float(m_dwBlowoutWindTimePeak - (u32)m_iStateTime)/
 								float(m_dwBlowoutWindTimePeak - m_dwBlowoutWindTimeStart);
-		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
+		clamp(g_pGamePersistent->Environment.wind_strength_factor, 0.f, 1.f);
 	}
 	else
 	{
-		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + (m_fStoreWindPower - m_fBlowoutWindPowerMax)*
+		g_pGamePersistent->Environment.wind_strength_factor = m_fBlowoutWindPowerMax + (m_fStoreWindPower - m_fBlowoutWindPowerMax)*
 			float((u32)m_iStateTime - m_dwBlowoutWindTimePeak)/
 			float(m_dwBlowoutWindTimeEnd - m_dwBlowoutWindTimePeak);
-		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
+		clamp(g_pGamePersistent->Environment.wind_strength_factor, 0.f, 1.f);
 	}
 }
 
