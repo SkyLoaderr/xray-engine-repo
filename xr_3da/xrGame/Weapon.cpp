@@ -979,12 +979,16 @@ void CWeapon::UpdateAddonsVisibility()
 		if(IsGrenadeLauncherAttached())
 		{
 			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_grenade_launcher"),TRUE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			u16 b = pWeaponVisual->LL_BoneID("wpn_launcher");
+			if(b!=BI_NONE)
+				pWeaponVisual->LL_SetBoneVisible(b,TRUE,TRUE);
 		}
 		else
 		{
 			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_grenade_launcher"),FALSE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			u16 b = pWeaponVisual->LL_BoneID("wpn_launcher");
+			if(b!=BI_NONE)
+				pWeaponVisual->LL_SetBoneVisible(b,FALSE,TRUE);
 		}
 	}
 	pWeaponVisual->CalculateBones_Invalidate();
