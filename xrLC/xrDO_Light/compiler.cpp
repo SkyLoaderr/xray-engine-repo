@@ -576,7 +576,7 @@ public:
 	}
 	virtual void		Execute()
 	{
-		DetailSlot::verify	();
+//		DetailSlot::verify	();
 		CDB::COLLIDER		DB;
 		DB.ray_options		(CDB::OPT_CULL		);
 		DB.box_options		(CDB::OPT_FULL_TEST	);
