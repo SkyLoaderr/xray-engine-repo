@@ -153,7 +153,7 @@
 		</supplies>
 					
 		<start_dialog>gar_dramm_novice_start</start_dialog>
-		<actor_dialog>gar_seriy_help</actor_dialog>
+		<actor_dialog>actor_dialog</actor_dialog>
 	</specific_character>	
 
 	<specific_character id="stalker_agr_krot" team_default = "1">
