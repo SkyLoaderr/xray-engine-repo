@@ -515,30 +515,6 @@
 						RelativePath=".\Config\text\rus\stable_dialogs.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_bar.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_darkvalley.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_escape.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
-					</File>
-					<File
-						RelativePath=".\config\text\rus\stable_dialogs_labx18.xml">
-					</File>
-					<File
-						RelativePath=".\config\text\rus\stable_dialogs_military.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\stable_dialogs_radar.xml">
-					</File>
-					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 					</File>
 					<File
@@ -572,31 +548,7 @@
 						RelativePath=".\Config\text\rus\string_table_level_tips.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\string_table_news.xml">
-					</File>
-					<File
 						RelativePath=".\Config\text\rus\string_table_outfit.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tasks_agroprom.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tasks_bar.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tasks_darkvalley.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tasks_escape.xml">
-					</File>
-					<File
-						RelativePath=".\config\text\rus\string_table_tasks_military.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tasks_radar.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\string_table_tips.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_ui.xml">
@@ -605,8 +557,101 @@
 						RelativePath=".\Config\text\rus\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_pda.xml">
 					</File>
+					<Filter
+						Name="l01_escape"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_escape.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_escape.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_escape.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l02_garbage"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_garbage.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l03_agroprom"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_agroprom.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l04_darkvalley"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_darkvalley.xml">
+						</File>
+						<File
+							RelativePath=".\config\text\rus\stable_dialogs_labx18.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_darkvalley.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_darkvalley.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l05_bar-rostok"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_bar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_bar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_bar-rostok.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l06_yantar"
+						Filter="">
+					</Filter>
+					<Filter
+						Name="l07_military"
+						Filter="">
+						<File
+							RelativePath=".\config\text\rus\stable_dialogs_military.xml">
+						</File>
+						<File
+							RelativePath=".\config\text\rus\string_table_tasks_military.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_military.xml">
+						</File>
+					</Filter>
+					<Filter
+						Name="l08_deadcity"
+						Filter="">
+					</Filter>
+					<Filter
+						Name="l09_radar"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_radar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_radar.xml">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="eng"
