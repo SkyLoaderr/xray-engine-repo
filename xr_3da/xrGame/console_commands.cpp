@@ -73,6 +73,7 @@ extern	INT		g_iCorpseRemove			;
 extern	BOOL	g_bShowPlayerNames		;
 extern	BOOL	g_bCollectStatisticData ;
 extern	BOOL	g_bStatisticSaveAuto	;
+extern	BOOL	g_SV_Disable_Auth_Check	;
 
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
@@ -1357,6 +1358,16 @@ public:
 	  }
 };
 
+class CCC_AuthCheck : public CCC_Integer {
+public:
+	CCC_AuthCheck(LPCSTR N, int* V, int _min=0, int _max=999) :
+	  CCC_Integer(N,V,_min,_max)
+	  {};
+
+	  virtual void	Save	(IWriter *F)	{};
+};
+
+
 class CCC_Net_CL_ClearStats : public IConsole_Command {
 public:
 	CCC_Net_CL_ClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -2011,4 +2022,6 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,		"sv_statistic_collect", &g_bCollectStatisticData, 0, 1);
 	CMD1(CCC_SaveStatistic,	"sv_statistic_save");
 	CMD4(CCC_Integer,		"sv_statistic_save_auto", &g_bStatisticSaveAuto, 0, 1);
+
+	CMD4(CCC_AuthCheck,		"sv_auth_check",		&g_SV_Disable_Auth_Check, 0, 1);
 }
