@@ -126,4 +126,5 @@ namespace collide
 		IC void		r_clear			()	{results.clear();}
 	};
 	typedef  BOOL __stdcall rq_callback 	(rq_result& result, LPVOID user_data);
+	typedef  BOOL __stdcall test_callback 	(CObject* object, LPVOID user_data);
 };
