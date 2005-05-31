@@ -518,9 +518,6 @@
 						RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\stable_storyline_info_to_diary.xml">
-					</File>
-					<File
 						RelativePath=".\Config\text\rus\string_table_enc_equipment.xml">
 					</File>
 					<File
@@ -566,6 +563,9 @@
 							RelativePath=".\Config\text\rus\stable_dialogs_escape.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_escape.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_escape.xml">
 						</File>
 						<File
@@ -579,6 +579,9 @@
 							RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_garbage.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tips_garbage.xml">
 						</File>
 					</Filter>
@@ -587,6 +590,9 @@
 						Filter="">
 						<File
 							RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_agroprom.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_agroprom.xml">
@@ -602,6 +608,9 @@
 							RelativePath=".\config\text\rus\stable_dialogs_labx18.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_darkvalley.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_darkvalley.xml">
 						</File>
 						<File
@@ -613,6 +622,9 @@
 						Filter="">
 						<File
 							RelativePath=".\Config\text\rus\stable_dialogs_bar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_bar-rostok.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_bar.xml">
@@ -632,6 +644,9 @@
 							RelativePath=".\config\text\rus\stable_dialogs_military.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_military.xml">
+						</File>
+						<File
 							RelativePath=".\config\text\rus\string_table_tasks_military.xml">
 						</File>
 						<File
@@ -647,6 +662,9 @@
 						Filter="">
 						<File
 							RelativePath=".\Config\text\rus\stable_dialogs_radar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_radar.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_radar.xml">
@@ -679,9 +697,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\eng\stable_storyline_info_to_diary.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_enc_equipment.xml">
