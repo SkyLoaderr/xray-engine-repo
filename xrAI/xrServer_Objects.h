@@ -118,8 +118,9 @@
 // 99 - CSE_ALifeObjectClimable			inheritance changed CSE_Abstruct -> CSE_AlifeObject
 // 100 - CSE_ALifeObjectClimable		inheritance changed CSE_AlifeObject -> CSE_AlifeDynamicObject
 // 101 - CSE_ALifeCreaturePhantom		new class based on CSE_ALifeCreatureAbstract
+// 102 = CSE_ALifeAnomalousZone			appended m_owner_id
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(101)
+#define SPAWN_VERSION	u16(102)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

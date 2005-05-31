@@ -676,6 +676,7 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeCustomZone(caSection)
 {
+	m_owner_id					= u32(-1);
 	m_fRadius					= 30.f;
 	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
 
@@ -793,6 +794,8 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(m_max_start_power);
 		tNetPacket.r_float		(m_power_artefact_factor);
 	}
+	if(m_wVersion > 101)
+		tNetPacket.r_u32		(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
@@ -811,16 +814,19 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_min_start_power);
 	tNetPacket.w_float			(m_max_start_power);
 	tNetPacket.w_float			(m_power_artefact_factor);
+	tNetPacket.w_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
+	tNetPacket.r_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
+	tNetPacket.w_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)

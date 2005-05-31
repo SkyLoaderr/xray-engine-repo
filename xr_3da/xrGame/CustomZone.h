@@ -55,6 +55,8 @@ public:
 	virtual				~CCustomZone					();
 
 	virtual		BOOL	net_Spawn						(CSE_Abstract* DC);
+	virtual		void	net_Import						(NET_Packet& P);
+	virtual		void	net_Export						(NET_Packet& P);
 	virtual		void	Load							(LPCSTR section);
 	virtual		void	net_Destroy						();
 
@@ -94,6 +96,7 @@ protected:
 		eIdleLight				=(1<<6),
 		eSpawnBlowoutArtefacts	=(1<<7),
 	};
+	u32					m_owner_id;		//if created from artefact
 	Flags32				m_zone_flags;
 	//список объетков, находящихся в зоне
 	CActor*				m_pLocalActor;

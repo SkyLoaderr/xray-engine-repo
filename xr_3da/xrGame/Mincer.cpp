@@ -147,27 +147,8 @@ void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 	position_in_bone_space.set		(0.0f, 0.0f, 0.0f);
 	throw_in_dir.set				(1.0f, 0.0f, 1.0f);
 	CreateHit(obj->ID(),ID(),throw_in_dir,0.0f,0,position_in_bone_space,impulse,ALife::eHitTypeExplosion);
-/*
-	if (OnServer())
-	{
-		NET_Packet	l_P;
-		u_EventGen	(l_P,GE_HIT, obj->ID());
-		l_P.w_u16	(ID());
-		l_P.w_u16	(ID());
-		l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
-		l_P.w_float	(0.f);
-		l_P.w_s16	(0);
-		Fvector		position_in_bone_space={0.f,0.f,0.f};
-		l_P.w_vec3	(position_in_bone_space);
-		l_P.w_float	(impulse);
-		l_P.w_u16	(ALife::eHitTypeExplosion);
-		u_EventSend	(l_P);
-		/////////////////////////////////////////////////////////
-	//	obj->H_SetParent(NULL);
-		return;
-	};
-*/
 }
+
 void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
 {
 	float power=Power(dist);
@@ -178,22 +159,6 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 		Fvector pos_in_bone_space;
 		pos_in_bone_space.set(0,0,0);
 		CreateHit(EA->ID(),ID(),throw_in_dir,power,0,pos_in_bone_space,0.0f,m_eHitTypeBlowout);
-/*		
-		if (OnServer())
-		{
-			NET_Packet	l_P;
-			u_EventGen	(l_P,GE_HIT, EA->ID());
-			l_P.w_u16	(ID());
-			l_P.w_u16	(ID());
-			l_P.w_dir	(throw_in_dir);
-			l_P.w_float	(power);
-			l_P.w_s16	(0);
-			l_P.w_vec3	(Fvector().set(0,0,0));
-			l_P.w_float	(0);
-			l_P.w_u16	((u16)m_eHitTypeBlowout);
-			u_EventSend	(l_P);
-		}
-*/
 	}
 	inherited::AffectPullAlife(EA,throw_in_dir,dist);
 

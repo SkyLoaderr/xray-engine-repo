@@ -142,6 +142,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	float							m_power_artefact_factor;
 	u32								m_ef_anomaly_type;
 	u32								m_ef_weapon_type;
+	u32								m_owner_id;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();

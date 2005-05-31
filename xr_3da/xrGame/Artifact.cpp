@@ -26,12 +26,12 @@ struct SArtefactActivation{
 		float		m_light_range;
 		shared_str	m_particle;
 		shared_str	m_animation;
-
+		
 					SStateDef	():m_time(0.0f){};
 		void		Load		(LPCSTR section, LPCSTR name);
 	};
 
-	SArtefactActivation			(CArtefact* af);
+	SArtefactActivation			(CArtefact* af, u32 owner_id);
 	~SArtefactActivation		();
 	CArtefact*					m_af;
 	svector<SStateDef,eMax>		m_activation_states;
@@ -40,6 +40,8 @@ struct SArtefactActivation{
 
 	ref_light					m_light;
 	ref_sound					m_snd;
+	
+	u32							m_owner_id;
 
 	void						UpdateActivation				();
 	void						Load							();
@@ -252,7 +254,7 @@ void CArtefact::ActivateArtefact	()
 {
 	VERIFY(m_bCanSpawnZone);
 	VERIFY( H_Parent() );
-	m_activationObj = xr_new<SArtefactActivation>(this);
+	m_activationObj = xr_new<SArtefactActivation>(this,H_Parent()->ID());
 	m_activationObj->Start();
 
 }
@@ -272,12 +274,13 @@ bool CArtefact::CanTake() const
 
 
 //---SArtefactActivation----
-SArtefactActivation::SArtefactActivation(CArtefact* af)
+SArtefactActivation::SArtefactActivation(CArtefact* af,u32 owner_id)
 {
 	m_af			= af;
 	Load			();
 	m_light			= ::Render->light_create();
 	m_light->set_shadow(true);
+	m_owner_id		= owner_id;
 }
 SArtefactActivation::~SArtefactActivation()
 {
@@ -425,6 +428,7 @@ void SArtefactActivation::SpawnAnomaly()
 		_shape.type					= CShapeData::cfSphere;
 		AlifeZone->assign_shapes	(&_shape,1);
 		AlifeZone->m_maxPower		= zone_power;
+		AlifeZone->m_owner_id		= m_owner_id;
 		NET_Packet					P;
 		object->Spawn_Write			(P,TRUE);
 		Level().Send				(P,net_flags(TRUE));

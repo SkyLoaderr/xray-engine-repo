@@ -54,22 +54,6 @@ void CHairsZone::Affect(SZoneObjectInfo* O)
 		position_in_bone_space.set(0.f,0.f,0.f);
 
 		CreateHit(pGameObject->ID(),ID(),hit_dir,power,0,position_in_bone_space,impulse,m_eHitTypeBlowout);
-/*
-		if (OnServer())
-		{
-			NET_Packet	l_P;
-			u_EventGen	(l_P,GE_HIT, pGameObject->ID());
-			l_P.w_u16	(ID());
-			l_P.w_u16	(ID());
-			l_P.w_dir	(hit_dir);
-			l_P.w_float	(power);
-			l_P.w_s16	(0);
-			l_P.w_vec3	(position_in_bone_space);
-			l_P.w_float	(impulse);
-			l_P.w_u16	((u16)m_eHitTypeBlowout);
-			u_EventSend	(l_P);
-		};
-*/
 
 		PlayHitParticles(pGameObject);
 	}

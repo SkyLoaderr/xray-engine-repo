@@ -48,6 +48,7 @@ CCustomZone::CCustomZone(void)
 	m_fBlowoutWindPowerMax = m_fStoreWindPower = 0.f;
 	m_fDistanceToCurEntity		= flt_max;
 	m_ef_weapon_type			= u32(-1);
+	m_owner_id					= u32(-1);
 }
 
 CCustomZone::~CCustomZone(void) 
@@ -280,12 +281,12 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 		return					(FALSE);
 
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
-	CSE_ALifeCustomZone			*Z = smart_cast<CSE_ALifeCustomZone*>(e);
+	CSE_ALifeAnomalousZone		*Z = smart_cast<CSE_ALifeAnomalousZone*>(e);
 	
 	m_fMaxPower					= Z->m_maxPower;
 	m_fAttenuation				= Z->m_attn;
 	m_dwPeriod					= Z->m_period;
-
+	m_owner_id					= Z->m_owner_id;
 	if (GameID() != GAME_SINGLE)
 		m_zone_flags.set(eSpawnBlowoutArtefacts,	FALSE);
 
@@ -348,6 +349,17 @@ void CCustomZone::net_Destroy()
 	m_effector.Stop		();
 	//---------------------------------------------
 	m_ObjectInfoMap.clear();	
+}
+void CCustomZone::net_Import(NET_Packet& P)
+{
+	inherited::net_Import(P);
+	P.r_u32				(m_owner_id);
+}
+
+void CCustomZone::net_Export(NET_Packet& P)
+{
+	inherited::net_Export(P);
+	P.w_u32				(m_owner_id);
 }
 
 bool CCustomZone::IdleState()
@@ -1236,6 +1248,9 @@ void CCustomZone::CreateHit	(	u16 id_to,
 {
 	if (OnServer())
 	{
+		if(m_owner_id != u32(-1) )
+			id_to = m_owner_id;
+
 		NET_Packet	l_P;
 		u_EventGen	(l_P,GE_HIT, id_to);
 		l_P.w_u16	(id_from);
@@ -1258,5 +1273,7 @@ void CCustomZone::net_Relcase(CObject* O)
 		StopObjectIdleParticles(GO);
 		m_ObjectInfoMap.erase(it);
 	}
+	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
+
 	inherited::net_Relcase(O);
 }
