@@ -29,10 +29,8 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 {
 	// Check if denied objects expire in time
 	DWORD	dwT			= Device.dwTimeGlobal;
-	for (u32 dit=0; dit<feel_touch_disable.size(); dit++)
-	{
-		if (feel_touch_disable[dit].Expire<dwT)
-		{
+	for (u32 dit=0; dit<feel_touch_disable.size(); dit++){
+		if (feel_touch_disable[dit].Expire<dwT){
 			feel_touch_disable.erase	(feel_touch_disable.begin()+dit);
 			dit--;
 		}
@@ -44,14 +42,12 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	xr_vector<CObject*>::iterator	n_end	= g_pGameLevel->ObjectSpace.q_nearest.end	();
 	if (n_end!=n_begin){
 		// Process results (NEW)
-		for (xr_vector<CObject*>::iterator it = n_begin; it!=n_end; it++)
-		{
+		for (xr_vector<CObject*>::iterator it = n_begin; it!=n_end; it++){
 			CObject* O = *it;
 			if (O->getDestroy())		continue;							// Don't touch candidates for destroy
 			if (!feel_touch_contact(O))	continue;							// Actual contact
 
-			if (std::find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end())
-			{
+			if (std::find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end()){
 				// check for deny
 				BOOL bDeny = FALSE;
 				for (dit=0; dit<feel_touch_disable.size(); dit++)
@@ -83,16 +79,10 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	//. Engine.Sheduler.Slice	();	
 }
 
-void Touch::feel_touch_relcase			(CObject* O)
+void Touch::feel_touch_relcase	(CObject* O)
 {
 	xr_vector<CObject*>::iterator I = std::find (feel_touch.begin(),feel_touch.end(),O);
-	if (I!=feel_touch.end())	feel_touch.erase	(I);
-
-	xr_vector<DenyTouch>::iterator Id=feel_touch_disable.begin();
-	xr_vector<DenyTouch>::iterator Ide=feel_touch_disable.end();
-	for(;Id!=Ide;++Id)
-		if((*Id).O==O ){
-			feel_touch_disable.erase(Id);
-			break;
-		}
+	if (I!=feel_touch.end())	feel_touch.erase(I);
+	xr_vector<DenyTouch>::iterator Id=feel_touch_disable.begin(),IdE=feel_touch_disable.end();
+	for(;Id!=IdE;++Id)			if((*Id).O==O )	{ feel_touch_disable.erase(Id); break; }
 }

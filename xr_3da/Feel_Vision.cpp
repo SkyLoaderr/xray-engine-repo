@@ -69,8 +69,15 @@ namespace Feel {
 
 	void	Vision::feel_vision_relcase	(CObject* object)
 	{
-		xr_vector<CObject*>::iterator I = std::find (seen.begin(),seen.end(),object);
-		if (I!=seen.end())	seen.erase	(I);
+		xr_vector<CObject*>::iterator Io;
+		Io = std::find		(seen.begin(),seen.end(),object);
+		if (Io!=seen.end())	seen.erase	(Io);
+		Io = std::find		(query.begin(),query.end(),object);
+		if (Io!=query.end())query.erase	(Io);
+		Io = std::find		(diff.begin(),diff.end(),object);
+		if (Io!=diff.end())	diff.erase	(Io);
+		xr_vector<feel_visible_Item>::iterator Ii=feel_visible.begin(),IiE=feel_visible.end();
+		for (; Ii!=IiE; ++Ii)if (Ii->O==object){ feel_visible.erase(Ii); break; }
 	}
 
 	void	Vision::feel_vision_query	(Fmatrix& mFull, Fvector& P)
