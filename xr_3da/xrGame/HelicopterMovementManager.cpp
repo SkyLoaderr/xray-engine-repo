@@ -458,7 +458,8 @@ void SHeliMovementState::SetSpeedInDestPoint			(float val)
 Fvector CHelicopter::GetCurrVelocityVec()
 {
 	Fvector dir;
-	dir.sub				(m_movement.desiredPoint,m_movement.currP);
+	dir.setHP			(m_movement.currPathH,m_movement.currPathP);
+//	dir.sub				(m_movement.desiredPoint,m_movement.currP);
 	dir.normalize_safe	();
 	return				dir;
 }
