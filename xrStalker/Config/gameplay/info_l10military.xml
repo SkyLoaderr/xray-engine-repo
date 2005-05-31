@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 
 <game_information_portions>
+	<!-- Тестируем Макса -->
+	<info_portion id="mil_max_talked"></info_portion>
 
 	<!-- Выключение матюгальника -->
 	<info_portion id="mil_matugalnik_off"></info_portion>

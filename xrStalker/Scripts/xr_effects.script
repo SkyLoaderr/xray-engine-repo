@@ -574,6 +574,7 @@ function mil_emeny_nearest (actor, npc)
     end    
 end
 
+
 -- GARBAGE
 function meet_seriy_fail(actor, npc)
 	if db.actor then
