@@ -1894,42 +1894,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_dolg_soldier_dialog">
-        <phrase_list>
-            <phrase id="7">
-                <text>mil_dolg_soldier_dialog_7</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="6">
-                <text>mil_dolg_soldier_dialog_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_dolg_soldier_dialog_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_dolg_soldier_dialog_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_dolg_soldier_dialog_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_dolg_soldier_dialog_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_dolg_soldier_dialog_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>mil_dolg_soldier_dialog_1</text>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_dolg_skull_dialog">
         <phrase_list>
             <phrase id="103">
@@ -2002,14 +1966,51 @@
                 <text>mil_dolg_skull_dialog_110</text>
                 <next>111</next>
             </phrase>
+            <phrase id="102">
+                <text>mil_dolg_skull_dialog_102</text>
+                <next>103</next>
+            </phrase>
             <phrase id="101">
                 <text>mil_dolg_skull_dialog_101</text>
                 <give_info>mil_dolg_dialog_already</give_info>
                 <next>102</next>
             </phrase>
-            <phrase id="102">
-                <text>mil_dolg_skull_dialog_102</text>
-                <next>103</next>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_dolg_soldier_dialog">
+        <phrase_list>
+            <phrase id="7">
+                <text>mil_dolg_soldier_dialog_7</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="6">
+                <text>mil_dolg_soldier_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_dolg_soldier_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_dolg_soldier_dialog_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_dolg_soldier_dialog_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_dolg_soldier_dialog_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_dolg_soldier_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_dolg_soldier_dialog_1</text>
+                <give_info>mil_dolg_dialog_already</give_info>
+                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
