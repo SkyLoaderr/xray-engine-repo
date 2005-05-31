@@ -110,42 +110,15 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="val_ambush_dialog">
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>val_ambush_dialog_11</text>
-                <next>111</next>
-                <next>112</next>
-            </phrase>
-            <phrase id="111">
-                <text>val_ambush_dialog_111</text>
-                <action>dialogs_darkvalley.val_punch_ambush</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="112">
-                <text>val_ambush_dialog_112</text>
-                <action>dialogs_darkvalley.val_punch_ambush</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="val_rob_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>val_rob_no_money</dont_has_info>
                 <next>11</next>
             </phrase>
             <phrase id="2">
-                <text></text>
+                <text />
                 <has_info>val_rob_no_money</has_info>
                 <next>21</next>
             </phrase>
@@ -172,7 +145,7 @@
                 <give_info>val_rob_no_money</give_info>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>2</next>
             </phrase>
@@ -181,6 +154,65 @@
                 <precondition>dialogs_darkvalley.val_rob_actor_has_money</precondition>
                 <action>dialogs.break_dialog</action>
                 <give_info>val_rob_buying</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="val_suicider_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <dont_has_info>val_suicide_artefact_given</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>val_suicider_dialog_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="11111">
+                <text>val_suicider_dialog_11111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_suicide_artefact_given</give_info>
+            </phrase>
+            <phrase id="111">
+                <text>val_suicider_dialog_111</text>
+                <action>dialogs_darkvalley.val_suicide_stalker_found</action>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>val_suicider_dialog_1111</text>
+                <action>dialogs_darkvalley.val_suicide_give_artefact</action>
+                <next>11111</next>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="val_ambush_dialog">
+        <phrase_list>
+            <phrase id="111">
+                <text>val_ambush_dialog_111</text>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="112">
+                <text>val_ambush_dialog_112</text>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>val_ambush_dialog_11</text>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -282,6 +314,16 @@
                 <has_info>val_prisoner_plr_captured</has_info>
                 <next>13</next>
             </phrase>
+            <phrase id="121">
+                <text>val_prisoner_hello_121</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_prisoner_sit</give_info>
+            </phrase>
+            <phrase id="122">
+                <text>val_prisoner_hello_122</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_prisoner_sit</give_info>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
@@ -295,48 +337,6 @@
                 <action>dialogs.break_dialog</action>
                 <give_info>val_sacrifice_start</give_info>
             </phrase>
-            <phrase id="121">
-                <text>val_prisoner_hello_121</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_sit</give_info>
-            </phrase>
-            <phrase id="122">
-                <text>val_prisoner_hello_122</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_sit</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="val_suicider_dialog">
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>val_suicide_artefact_given</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>val_suicider_dialog_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="11111">
-                <text>val_suicider_dialog_11111</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_suicide_artefact_given</give_info>
-            </phrase>
-            <phrase id="111">
-                <text>val_suicider_dialog_111</text>
-                <action>dialogs_darkvalley.val_suicide_stalker_found</action>
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>val_suicider_dialog_1111</text>
-                <action>dialogs_darkvalley.val_suicide_give_artefact</action>
-                <next>11111</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
         </phrase_list>
     </dialog>
     <dialog id="val_nap1_dialog">
@@ -345,21 +345,23 @@
                 <text></text>
                 <next>11</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
             <phrase id="11">
                 <text>val_nap1_dialog_11</text>
                 <next>111</next>
                 <next>112</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
             <phrase id="111">
                 <text>val_nap1_dialog_111</text>
+                <action>dialogs.break_dialog</action>
                 <give_info>val_nap1_go_rescue</give_info>
             </phrase>
             <phrase id="112">
                 <text>val_nap1_dialog_112</text>
+                <action>dialogs.break_dialog</action>
                 <give_info>val_nap1_no_thanx</give_info>
             </phrase>
         </phrase_list>
