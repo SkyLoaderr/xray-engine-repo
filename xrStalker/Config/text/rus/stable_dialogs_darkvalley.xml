@@ -63,6 +63,15 @@
     <string id="val_monolith_guard_password_8">
         <text>Я ошибся зданием, извини. Я уже ухожу.</text>
     </string>
+    <string id="val_nap1_dialog_11">
+        <text>Привет. Помоги мне освободить друга.</text>
+    </string>
+    <string id="val_nap1_dialog_111">
+        <text>Побежали.</text>
+    </string>
+    <string id="val_nap1_dialog_112">
+        <text>Сам выкручивайся</text>
+    </string>
     <string id="val_prisoner_hello_11">
         <text>Помоги мне! Я разведчик "Долга". По своей глупости попался бандитам. Они тут... Ш-ш-ш.. Кто-то идет. Подожди тут, я посмотрю.</text>
     </string>
