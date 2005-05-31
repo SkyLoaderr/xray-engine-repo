@@ -602,6 +602,12 @@
 					RelativePath=".\IGame_ObjectPool.h">
 				</File>
 				<File
+					RelativePath=".\pure_relcase.cpp">
+				</File>
+				<File
+					RelativePath=".\pure_relcase.h">
+				</File>
+				<File
 					RelativePath=".\xr_object.cpp">
 				</File>
 				<File

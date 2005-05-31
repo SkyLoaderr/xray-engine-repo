@@ -13,9 +13,25 @@ private:
 	xr_vector<CObject*>			destroy_queue		;
 	xr_vector<CObject*>			objects_active		;
 	xr_vector<CObject*>			objects_sleeping	;
-
+	
 	CObject**					objects_dup			;
 	u32							objects_dup_memsz	;
+
+
+public:
+	typedef fastdelegate::FastDelegate1<CObject*>	RELCASE_CALLBACK;
+	struct SRelcasePair{
+		int*					m_ID;
+		RELCASE_CALLBACK		m_Callback;
+								SRelcasePair		(int* id, RELCASE_CALLBACK cb):m_ID(id),m_Callback(cb){}
+						bool	operator==			(RELCASE_CALLBACK cb) {return m_Callback == cb;}
+	};
+	typedef xr_vector<SRelcasePair>					RELCASE_CALLBACK_VEC;
+	RELCASE_CALLBACK_VEC							m_relcase_callbacks;
+
+	void						relcase_register	(RELCASE_CALLBACK,int*);
+	void						relcase_unregister	(int*);
+
 public:
 	// methods
 								CObjectList			( );

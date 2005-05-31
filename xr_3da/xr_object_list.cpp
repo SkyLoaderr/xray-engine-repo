@@ -125,7 +125,16 @@ void CObjectList::Update		()
 			for (int it = destroy_queue.size()-1; it>=0; it--)	(*oit)->net_Relcase	(destroy_queue[it]);
 		for (xr_vector<CObject*>::iterator oit=objects_sleeping.begin(); oit!=objects_sleeping.end(); oit++)
 			for (int it = destroy_queue.size()-1; it>=0; it--)	(*oit)->net_Relcase	(destroy_queue[it]);
-
+		
+		RELCASE_CALLBACK_VEC::iterator It = m_relcase_callbacks.begin();
+		RELCASE_CALLBACK_VEC::iterator Ite = m_relcase_callbacks.end();
+		for(;It!=Ite; ++It){
+			VERIFY			(*(*It).m_ID==(It-m_relcase_callbacks.begin()));
+			xr_vector<CObject*>::iterator dIt = destroy_queue.begin();
+			xr_vector<CObject*>::iterator dIte = destroy_queue.end();
+			for (;dIt!=dIte; ++dIt)
+				(*It).m_Callback(*dIt);
+		}
 		// Destroy
 		for (int it = destroy_queue.size()-1; it>=0; it--)
 		{
@@ -244,4 +253,24 @@ void		CObjectList::Destroy			( CObject*	O		)
 		else	Debug.fatal					("! Unregistered object being destroyed");
 	}
 	g_pGamePersistent->ObjectPool.destroy	(O);
+}
+
+void CObjectList::relcase_register	(RELCASE_CALLBACK cb, int *ID)
+{
+#ifdef DEBUG
+	RELCASE_CALLBACK_VEC::iterator It = std::find(	m_relcase_callbacks.begin(),
+													m_relcase_callbacks.end(),
+													cb);
+	VERIFY(It==m_relcase_callbacks.end());
+#endif
+	*ID								= m_relcase_callbacks.size();
+	m_relcase_callbacks.push_back	(SRelcasePair(ID,cb));
+}
+
+void CObjectList::relcase_unregister	(int* ID)
+{
+	VERIFY							(m_relcase_callbacks[*ID].m_ID==ID);
+	m_relcase_callbacks[*ID]		= m_relcase_callbacks.back();
+	*m_relcase_callbacks.back().m_ID= *ID;
+	m_relcase_callbacks.pop_back	();
 }

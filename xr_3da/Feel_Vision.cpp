@@ -7,6 +7,14 @@
 #include "cl_intersect.h"
 
 namespace Feel {
+
+	Vision::Vision():pure_relcase(&Vision::feel_vision_relcase)
+	{	
+	}
+	Vision::~Vision()
+	{	
+	}
+
 	struct SFeelParam	{
 		Vision*						parent;
 		Vision::feel_visible_Item*	item;
@@ -59,7 +67,7 @@ namespace Feel {
 		feel_visible.clear	();
 	}
 
-	void	Vision::feel_net_relcase	(CObject* object)
+	void	Vision::feel_vision_relcase	(CObject* object)
 	{
 		xr_vector<CObject*>::iterator I = std::find (seen.begin(),seen.end(),object);
 		if (I!=seen.end())	seen.erase	(I);

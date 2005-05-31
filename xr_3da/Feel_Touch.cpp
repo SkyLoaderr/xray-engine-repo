@@ -4,6 +4,14 @@
 #include "xr_object.h"
 using namespace Feel;
 
+Touch::Touch():pure_relcase(&Touch::feel_touch_relcase)
+{
+}
+
+Touch::~Touch()
+{
+}
+
 BOOL Touch::feel_touch_contact	(CObject* O)
 { 
 	return TRUE; 
@@ -73,4 +81,18 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	}
 
 	//. Engine.Sheduler.Slice	();	
+}
+
+void Touch::feel_touch_relcase			(CObject* O)
+{
+	xr_vector<CObject*>::iterator I = std::find (feel_touch.begin(),feel_touch.end(),O);
+	if (I!=feel_touch.end())	feel_touch.erase	(I);
+
+	xr_vector<DenyTouch>::iterator Id=feel_touch_disable.begin();
+	xr_vector<DenyTouch>::iterator Ide=feel_touch_disable.end();
+	for(;Id!=Ide;++Id)
+		if((*Id).O==O ){
+			feel_touch_disable.erase(Id);
+			break;
+		}
 }

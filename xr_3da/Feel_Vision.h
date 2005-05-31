@@ -2,6 +2,7 @@
 
 #include "xr_collide_defs.h"
 #include "render.h"
+#include "pure_relcase.h"
 
 class ENGINE_API IRender_Sector;
 class ENGINE_API CObject;
@@ -13,7 +14,7 @@ namespace Feel
 	const float fuzzy_guaranteed	= 1.f;			// distance which is supposed 100% visible
 	const float lr_granularity		= 0.1f;			// assume similar positions
 
-	class ENGINE_API Vision
+	class ENGINE_API Vision: private pure_relcase
 	{
 	private:
 		xr_vector<CObject*>			seen;
@@ -24,6 +25,8 @@ namespace Feel
 		void						o_delete(CObject* E);
 		void						o_trace	(Fvector& P, float dt, float vis_threshold);
 	public:
+								Vision			();
+		virtual					~Vision			();
 		struct feel_visible_Item 
 		{
 			float				fuzzy;		// note range: (-1[no]..1[yes])
@@ -40,7 +43,7 @@ namespace Feel
 		void						feel_vision_clear		();
 		void						feel_vision_query		(Fmatrix& mFull,	Fvector& P);
 		void						feel_vision_update		(CObject* parent,	Fvector& P, float dt, float vis_threshold);
-		void						feel_net_relcase		(CObject* object);
+		void	__stdcall			feel_vision_relcase		(CObject* object);
 		void						feel_vision_get			(xr_vector<CObject*>& R)		{
 			R.clear					();
 			xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
