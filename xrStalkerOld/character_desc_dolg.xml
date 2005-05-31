@@ -31,8 +31,6 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_dolg_acces</actor_dialog>
-		<actor_dialog>gar_dolg_about</actor_dialog>		
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
 
@@ -62,8 +60,6 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_dolg_acces</actor_dialog>
-		<actor_dialog>gar_dolg_about</actor_dialog>	
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
 
@@ -95,8 +91,6 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_dolg_acces</actor_dialog>
-		<actor_dialog>gar_dolg_about</actor_dialog>	
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
 
