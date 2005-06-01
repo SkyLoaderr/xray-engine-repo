@@ -161,13 +161,16 @@ void Fvisual::Render		(float LOD)
 	{
 		RCache.set_Geometry		(m_fast->geom);
 		RCache.Render			(D3DPT_TRIANGLELIST,m_fast->vBase,0,m_fast->vCount,m_fast->iBase,m_fast->dwPrimitives);
+		RCache.stat.r.s_static.add	(m_fast->vCount);
 	} else {
 		RCache.set_Geometry		(geom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+		RCache.stat.r.s_static.add	(vCount);
 	}
 #else
-	RCache.set_Geometry		(geom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+	RCache.set_Geometry			(geom);
+	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+	RCache.stat.r.s_static.add	(vCount);
 #endif
 }
 

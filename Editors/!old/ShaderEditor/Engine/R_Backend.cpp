@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-ENGINE_API CBackend RCache;
+ENGINE_API CBackend			RCache;
 
 // Create Quad-IB
 void CBackend::CreateQuadIB		()

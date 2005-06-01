@@ -268,50 +268,55 @@ void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 	//.	R_CHK				(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
 	R_CHK				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
 	indices				+= iBase;
-	switch	(RenderMode){
-case RM_SKINNING_SOFT:{
-	if (*Vertices1W){
-		vertBoned1W* vertices	= *Vertices1W;
-		for (u32 idx=0; idx<iCount; idx++){
-			vertBoned1W& v	= vertices[V->vBase+indices[idx]];
-			CBoneData& BD	= Parent->LL_GetData((u16)v.matrix);
-			BD.AppendFace	(ChildIDX,(u16)idx/3);
+	switch	(RenderMode)
+	{
+	case RM_SKINNING_SOFT:
+		{
+			if (*Vertices1W){
+				vertBoned1W* vertices	= *Vertices1W;
+				for (u32 idx=0; idx<iCount; idx++){
+					vertBoned1W& v	= vertices[V->vBase+indices[idx]];
+					CBoneData& BD	= Parent->LL_GetData((u16)v.matrix);
+					BD.AppendFace	(ChildIDX,(u16)idx/3);
+				}
+			}else{
+				VERIFY			(*Vertices2W);
+				vertBoned2W* vertices	= *Vertices2W;
+				for (u32 idx=0; idx<iCount; idx++){
+					vertBoned2W& v	= vertices[V->vBase+indices[idx]];
+					CBoneData& BD0	= Parent->LL_GetData((u16)v.matrix0);
+					BD0.AppendFace	(ChildIDX,(u16)idx/3);
+					CBoneData& BD1	= Parent->LL_GetData((u16)v.matrix1);
+					BD1.AppendFace	(ChildIDX,(u16)idx/3);
+				}
+			}
 		}
-	}else{
-		VERIFY			(*Vertices2W);
-		vertBoned2W* vertices	= *Vertices2W;
+		break;
+	case RM_SINGLE:
+	case RM_SKINNING_1B:	
+		{
+			vertHW_1W* vertices	= 0;
+			R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
+			for (u32 idx=0; idx<iCount; idx++){
+				vertHW_1W& v	= vertices[indices[idx]];
+				CBoneData& BD	= Parent->LL_GetData(v.get_bone());
+				BD.AppendFace	(ChildIDX,(u16)idx/3);
+			}
+			V->pVertices->Unlock();
+		}
+		break;
+	case RM_SKINNING_2B:{
+		vertHW_2W* vertices	= 0;
+		R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
 		for (u32 idx=0; idx<iCount; idx++){
-			vertBoned2W& v	= vertices[V->vBase+indices[idx]];
-			CBoneData& BD0	= Parent->LL_GetData((u16)v.matrix0);
+			vertHW_2W& v	= vertices[indices[idx]];
+			CBoneData& BD0	= Parent->LL_GetData(v.get_bone(0));
 			BD0.AppendFace	(ChildIDX,(u16)idx/3);
-			CBoneData& BD1	= Parent->LL_GetData((u16)v.matrix1);
+			CBoneData& BD1	= Parent->LL_GetData(v.get_bone(1));
 			BD1.AppendFace	(ChildIDX,(u16)idx/3);
 		}
-	}
-					  }break;
-case RM_SINGLE:
-case RM_SKINNING_1B:{
-	vertHW_1W* vertices	= 0;
-	R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
-	for (u32 idx=0; idx<iCount; idx++){
-		vertHW_1W& v	= vertices[indices[idx]];
-		CBoneData& BD	= Parent->LL_GetData(v.get_bone());
-		BD.AppendFace	(ChildIDX,(u16)idx/3);
-	}
-	V->pVertices->Unlock();
-					}break;
-case RM_SKINNING_2B:{
-	vertHW_2W* vertices	= 0;
-	R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
-	for (u32 idx=0; idx<iCount; idx++){
-		vertHW_2W& v	= vertices[indices[idx]];
-		CBoneData& BD0	= Parent->LL_GetData(v.get_bone(0));
-		BD0.AppendFace	(ChildIDX,(u16)idx/3);
-		CBoneData& BD1	= Parent->LL_GetData(v.get_bone(1));
-		BD1.AppendFace	(ChildIDX,(u16)idx/3);
-	}
-	R_CHK				(V->pVertices->Unlock());
-					}break;
+		R_CHK				(V->pVertices->Unlock());
+						}break;
 	}
 	R_CHK					(V->pIndices->Unlock());
 }

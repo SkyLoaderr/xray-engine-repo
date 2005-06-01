@@ -66,7 +66,7 @@ u32			lvInterpSteps = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
+CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 {
 	g_bDebugEvents				= strstr(Core.Params,"-debug_ge")?TRUE:FALSE;
 
