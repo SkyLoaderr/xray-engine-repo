@@ -150,6 +150,8 @@
 		<supplies>
 			[spawn] \n
 			device_torch \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
 		</supplies>
 					
 		<start_dialog>gar_dramm_novice_start</start_dialog>
