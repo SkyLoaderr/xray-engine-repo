@@ -202,5 +202,5 @@ u32	 CEatableItemObject::ef_weapon_type		() const
 
 bool CEatableItemObject::Useful				() const
 {
-	return			(CInventoryItem::Useful());
+	return			(CEatableItem::Useful());
 }
