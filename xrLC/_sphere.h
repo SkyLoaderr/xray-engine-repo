@@ -17,7 +17,7 @@ public:
 		fcv_forcedword = u32(-1)
 	};
 	// Ray-sphere intersection
-	IC ERP_Result intersect(const _vector3<T>& S, const _vector3<T>& D, T& range)	
+	IC ERP_Result intersect(const _vector3<T>& S, const _vector3<T>& D, T& range) const	
     {
 		_vector3<T> Q;	Q.sub(P,S);
 	
@@ -36,7 +36,7 @@ public:
 		}
 		return rpNone;
 	}
-	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D)	
+	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D) const	
 	{
 		_vector3<T> Q;	Q.sub(P,S);
 	
