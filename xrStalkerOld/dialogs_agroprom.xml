@@ -1,47 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="agr_stalker_talk_level">
-        <precondition>dialogs.level_agroprom</precondition>
-        <phrase_list>
-            <phrase id="11">
-                <text />
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="1">
-                <text>agr_stalker_talk_level_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="4">
-                <text>agr_stalker_talk_level_4</text>
-            </phrase>
-            <phrase id="2">
-                <text>agr_stalker_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>agr_stalker_talk_level_21</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="3">
-                <text>agr_stalker_talk_level_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_stalker_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="31">
-                <text>agr_stalker_talk_level_31</text>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_factory_stalker_start">
         <phrase_list>
             <phrase id="0">
@@ -72,10 +30,6 @@
         <phrase_list>
             <phrase id="51">
                 <text>agr_factory_krot_about_51</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_about_0</text>
-                <next>1</next>
             </phrase>
             <phrase id="1">
                 <text>agr_factory_krot_about_1</text>
@@ -142,6 +96,92 @@
             <phrase id="21">
                 <text>agr_factory_krot_about_21</text>
                 <next>211</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_about_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_stalker_talk_level">
+        <precondition>dialogs.level_agroprom</precondition>
+        <phrase_list>
+            <phrase id="3">
+                <text>agr_stalker_talk_level_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>agr_stalker_talk_level_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="1">
+                <text>agr_stalker_talk_level_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="2">
+                <text>agr_stalker_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>agr_stalker_talk_level_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <text>agr_stalker_talk_level_4</text>
+            </phrase>
+            <phrase id="0">
+                <text>agr_stalker_talk_level_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_stalker_esc">
+        <phrase_list>
+            <phrase id="1100">
+                <text>agr_stalker_esc_1100</text>
+                <next>210</next>
+            </phrase>
+            <phrase id="210">
+                <text>agr_stalker_esc_210</text>
+                <next>1200</next>
+            </phrase>
+            <phrase id="1200">
+                <text>agr_stalker_esc_1200</text>
+                <next>220</next>
+            </phrase>
+            <phrase id="220">
+                <text>agr_stalker_esc_220</text>
+                <next>1201</next>
+            </phrase>
+            <phrase id="100">
+                <text>agr_stalker_esc_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="200">
+                <text></text>
+                <next>1100</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_stalker_esc_0</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="1201">
+                <text>agr_stalker_esc_1201</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text></text>
+                <next>200</next>
             </phrase>
         </phrase_list>
     </dialog>
