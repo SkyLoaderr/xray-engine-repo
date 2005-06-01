@@ -293,7 +293,7 @@ function check_state (gulag)
            end
        end    
     end       
-    if gulag.state == 0 and db.actor:has_info ("mil_enemy_nearest") == true then
+    if gulag.state == 0 and db.actor:has_info ("mil_enemy_nearest") then
        return 1
     end    
     return 0   
