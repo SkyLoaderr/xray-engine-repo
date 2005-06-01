@@ -26,6 +26,73 @@ function load_job_base (sj, gname, type, squad, groups)
     -----------------------------------------------------------------------
     -- Нормальное состояние базы
     -----------------------------------------------------------------------
+    -- Лукаш
+    t = {section = "logic@mil_freedom_lukash",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_leader"
+		            end
+		}
+	table.insert(sj, t)		
+    -- Скряга
+    t = {section = "logic@mil_freedom_trader",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_trader"
+		            end
+		}
+	table.insert(sj, t)		
+    -- Охранник арсенала
+    t = {section = "logic@mil_freedom_arsenal",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end
+		}
+	table.insert(sj, t)		
+    -- Охранник Лукаша
+    t = {section = "logic@mil_freedom_guard1",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end
+		}
+	table.insert(sj, t)		
+    -- Охранник Лукаша
+    t = {section = "logic@mil_freedom_bodyguard1",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_bodyguard"
+		            end
+		}
+	table.insert(sj, t)		
+    -- Охранник Лукаша
+    t = {section = "logic@mil_freedom_bodyguard2",
+		idle = 0,
+		prior = 11, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_bodyguard"
+		            end
+		}
+	table.insert(sj, t)		
+    
     -- Max
     t = {section = "logic@mil_freedom_max",
 		idle = 0,
