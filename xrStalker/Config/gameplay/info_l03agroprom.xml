@@ -45,6 +45,9 @@
 
 	<info_portion id="agr_factory_need_help">
 	</info_portion>
-	
-	
+
+	<!-- начало атаки собак -->
+	<info_portion id="agr_rush_start">
+	</info_portion>
+
 </game_information_portions>

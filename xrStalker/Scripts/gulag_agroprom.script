@@ -146,6 +146,29 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+	--' Agroprom rush
+	if type == "agr_rush" then
+		for i = 1, 9 do
+			t = { section = "logic@agr_rush_nil",
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_rush_hold"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, 9 do
+			t = { section = "logic@agr_rush_nil",
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_rush_attack_trigger"
+			}
+			table.insert(sj, t)
+		end
+	end
 end
 
 function load_states(gname, type)
@@ -171,12 +194,31 @@ function load_states(gname, type)
 		end
 	end
 
+	if type == "agr_rush" then
+		return function( gulag )
+			local actor = db.actor
+			if gulag.state == 0 and actor and actor:has_info( "agr_rush_start" ) then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+
 	return nil
 end
 
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
 		return npc_community == "military"
+	end
+
+	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+	if gulag_type == "agr_rush" then
+		return npc_community == "dog"
 	end
 
 	return false
