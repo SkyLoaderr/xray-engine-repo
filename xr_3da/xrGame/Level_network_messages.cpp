@@ -158,6 +158,7 @@ void CLevel::ClientReceive()
 			break;
 		case M_GAMEMESSAGE:
 			{
+				if (!game) break;
 				Game().OnGameMessage(*P);
 			}break;
 		case M_RELOAD_GAME:
@@ -185,6 +186,7 @@ void CLevel::ClientReceive()
 			}break;
 		case M_CHAT_MESSAGE:
 			{
+				if (!game) break;
 				Game().OnChatMessage(P);
 			}break;
 		case M_CHANGE_LEVEL_GAME:
