@@ -552,12 +552,12 @@ no_retreat = true
 
 [logic@bar_freedom_attack_commander]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_commander %=bar_freedom_angry_actor%, camper1@bar_freedom_attack_commander
-on_death = death@bar_freedom_attack_commander
 
 [camper@bar_freedom_attack_commander]
 path_walk = commandir_walk
 path_look = commandir_look
 meet_talk_enabled = true
+meet_state = ward
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_commander %=bar_freedom_angry_actor%
 
 [camper1@bar_freedom_attack_commander]
@@ -566,8 +566,6 @@ path_look = acommandir_look
 radius = 5
 no_retreat = true
 
-[death@bar_freedom_attack_commander]
-on_info = %+bar_get_research_dead%
 
 
 [logic@bar_freedom_attack_camper_1_relax]
