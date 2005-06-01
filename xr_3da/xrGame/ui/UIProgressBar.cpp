@@ -87,8 +87,9 @@ void CUIProgressBar::UpdateProgressBar()
 
 	if(m_bUseColor){
 		Fcolor curr;
-		curr.lerp(m_minColor,m_maxColor,fCurrentLength);
-		m_UIProgressItem.SetColor(curr);
+		curr.lerp							(m_minColor,m_maxColor,fCurrentLength);
+		m_UIProgressItem.SetColor			(curr);
+//		m_UIBackgroundItem.SetColor			(0x70000000);
 	}
 }
 

@@ -33,7 +33,7 @@
 	<!-- IMAGE STATIC -->
 	<image_static x="130" y="95" width="240" height="190" alignment="c"/>
     <!-- CONDITION BAR -->
-    <condition_progress x="10" y="165" length="130" broad="15" horz="1" min="0" max="100" pos="100">
+    <condition_progress x="10" y="160" length="130" broad="15" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"></min_color>
 		<max_color r="0" g="255" b="0"></max_color>
         <texture tile="0" width="120" height="30" length="130" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
