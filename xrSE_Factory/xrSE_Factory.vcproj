@@ -138,8 +138,6 @@
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="TRUE"
 				MapFileName=".\Mixed/xrSE_Factory.map"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrSE_Factory.lib"
 				TargetMachine="1"/>
 			<Tool

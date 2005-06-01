@@ -233,8 +233,6 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				MapFileName="x:\xrCPU_Pipe.map"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrCPU_Pipe.lib"
 				TargetMachine="0"/>
 			<Tool

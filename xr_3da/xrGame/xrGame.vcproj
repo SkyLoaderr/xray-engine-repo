@@ -153,8 +153,6 @@
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="TRUE"
 				MapFileName=".\Mixed/xrGame.map"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrGame.lib"
 				TargetMachine="1"/>
 			<Tool

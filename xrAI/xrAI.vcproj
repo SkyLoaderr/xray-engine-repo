@@ -236,8 +236,6 @@
 				StackCommitSize="0"
 				LargeAddressAware="2"
 				TerminalServerAware="0"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
 				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"

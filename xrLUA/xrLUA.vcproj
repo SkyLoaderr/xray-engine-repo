@@ -180,8 +180,6 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrLua.lib"
 				TargetMachine="1"/>
 			<Tool

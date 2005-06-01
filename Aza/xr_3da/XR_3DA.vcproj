@@ -155,8 +155,6 @@
 				GenerateMapFile="FALSE"
 				MapFileName=""
 				SubSystem="2"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
 				TargetMachine="0"
 				FixedBaseAddress="1"/>
 			<Tool

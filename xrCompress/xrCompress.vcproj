@@ -186,6 +186,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -197,9 +198,7 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release/xrCompress.pdb"
-				SubSystem="1"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"/>
+				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
 				TypeLibraryName=".\Release/xrCompress.tlb"/>

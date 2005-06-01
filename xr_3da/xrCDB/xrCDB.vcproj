@@ -99,7 +99,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory=".\Mixed"
+			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -124,7 +124,6 @@
 				EnableEnhancedInstructionSet="0"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 				AssemblerOutput="0"
 				AssemblerListingLocation="Mixed\"
@@ -132,21 +131,18 @@
 				ProgramDataBaseFileName="$(IntDir)/"
 				BrowseInformation="0"
 				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="2"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="x:\xrCDB.dll"
+				OutputFile="$(OutDir)/xrCDB.dll"
 				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="0"
+				SubSystem="2"
 				ImportLibrary="x:\xrCDB.lib"
 				TargetMachine="0"/>
 			<Tool
@@ -392,10 +388,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
-						AssemblerListingLocation=".\Mixed/"
-						ObjectFile=".\Mixed/"
-						ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"/>
+						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32">
