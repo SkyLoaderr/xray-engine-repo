@@ -381,7 +381,7 @@ function load_job(sj, gname, type, squad, groups)
 	
 	--' Boars nest
 
-	if type == "gar_boars_nest2" then
+	if type == "gar_boars_nest" then
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
@@ -625,6 +625,233 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 	
+	--' Dogs nest
+	if type == "gar_dogs_nest" then
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+	end	
+	
+	--' Dogs nest2
+	if type == "gar_dogs_nest2" then
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+	end
+		
+		
 	--' Bandits_attack_seryi
 	if type == "gar_seryi_bandits" then
 		t = { section = "logic@gar_seryi_bandits_camper10",
@@ -839,10 +1066,35 @@ function load_states(gname, type)
 		end
 	end
 	
+	if type == "gar_dogs_nest" then        
+		return function(gulag)
+			local t = db.zone_by_name["gar_dogs_territory"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
+			end
+		end
+	end
+	
+	if type == "gar_dogs_nest2" then        
+		return function(gulag)
+			local t = db.zone_by_name["gar_dogs_territory2"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
+			end
+		end
+	end
 	
 	if type == "gar_dolg_blokpost" then
 		return function(gulag)
-			if gulag:get_population() >= 9 and xr_gulag.getGulagPopulation("gar_nest_flesh") > 1 then
+			if gulag:get_population() >= 9 and xr_gulag.getGulagPopulation("gar_nest_flesh") > 0 then
 				return 1
 			else
 				return 0
@@ -883,6 +1135,14 @@ function checkMonster(npc_community, gulag_type)
 		
 		if gulag_type == "gar_nest_flesh" then
 			return npc_community == "flesh"
+		end
+		
+		if gulag_type == "gar_dogs_nest" then
+			return npc_community == "dog"
+		end
+		
+		if gulag_type == "gar_dogs_nest2" then
+			return npc_community == "dog"
 		end
 	return false
 end
