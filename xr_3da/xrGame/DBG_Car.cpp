@@ -36,7 +36,7 @@ void CCar::DbgCreatePlots()
 	//--------------------------------------
 	m_dbg_dynamic_plot	=xr_new<CStatGraph>();
 	m_dbg_dynamic_plot	->SetRect(100,0,300,100,D3DCOLOR_XRGB(255,255,255),D3DCOLOR_XRGB(255,255,255));
-	m_dbg_dynamic_plot	->SetMinMax(Parabola(m_min_rpm),Parabola(m_max_power),1000);
+	m_dbg_dynamic_plot	->SetMinMax(Parabola(m_min_rpm),m_max_power,1000);
 	m_dbg_dynamic_plot	->AppendSubGraph(CStatGraph::stCurve);
 	torq_pow_max_ratio  =Parabola(m_torque_rpm)/m_torque_rpm	/m_max_power;
 
