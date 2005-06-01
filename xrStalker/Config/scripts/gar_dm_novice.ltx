@@ -54,7 +54,7 @@ reactions = ignore
 no_move = true
 ;no_wpn = true
 no_danger = true
-on_actor_dist_le_nvis = 7 | remark3
+on_actor_dist_le_nvis = 7 | remark3 %=gar_dm_bandits_fight%
 on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
@@ -72,11 +72,16 @@ on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} rema
 reactions = ignore
 
 [remark@after_fight]
-no_move = false
+no_move = true
 ;no_wpn = true
+anim = hello
 no_danger = true
 snd = gar_dm_newbie_thank_you
 arrival_timeout = 20000
 snd_timeout = 20000
 reactions = ignore
-on_signal = action_end | nil %=actor_friend%
+on_signal = action_end | walker2 %=actor_friend%
+
+[walker2]
+path_walk = gar_dm_novice_walk
+meet_talk_enabled = true
