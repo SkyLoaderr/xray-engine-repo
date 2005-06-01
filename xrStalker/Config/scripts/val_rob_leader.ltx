@@ -8,5 +8,11 @@ meet_dialog = val_rob_dialog
 meet_enabled = true
 on_info = {+val_rob_buying} kamp1
 
+[walker2]
+path_walk = val_rob_leader_kamp_walk
+path_look = val_rob_leader_kamp_look
+def_state_moving = run
+on_signal = arrived | kamp1
+
 [kamp1]
 center_point = val_rob_camp
