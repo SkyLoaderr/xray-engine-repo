@@ -14,6 +14,7 @@
 	<info_portion id="gar_seryi_ceitnot"></info_portion>
 	<info_portion id="gar_seryi_open_fire"></info_portion>
 	<info_portion id="gar_seryi_counter_fire"></info_portion>
+	<info_portion id="gar_seryi_dialog_end"></info_portion>
 
 	<!-- атака сталкеров и бандитов -->
 	<info_portion id="gar_bandit_leader_dead"></info_portion>
