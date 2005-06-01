@@ -457,16 +457,16 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 	if( xml_doc.NavigateToNode(buf,index) ){
 		pWnd->m_bUseColor			= true;
-		float r = xml_doc.ReadAttribInt(buf, index, "r");
-		float g = xml_doc.ReadAttribInt(buf, index, "g");
-		float b = xml_doc.ReadAttribInt(buf, index, "b");
+		float r = xml_doc.ReadAttribFlt(buf, index, "r");
+		float g = xml_doc.ReadAttribFlt(buf, index, "g");
+		float b = xml_doc.ReadAttribFlt(buf, index, "b");
 	
 		pWnd->m_minColor.set(r,g,b,0xFF);
 
 		strconcat(buf,path,":max_color");
-		r = xml_doc.ReadAttribInt(buf, index, "r");
-		g = xml_doc.ReadAttribInt(buf, index, "g");
-		b = xml_doc.ReadAttribInt(buf, index, "b");
+		r = xml_doc.ReadAttribFlt(buf, index, "r");
+		g = xml_doc.ReadAttribFlt(buf, index, "g");
+		b = xml_doc.ReadAttribFlt(buf, index, "b");
 	
 		pWnd->m_maxColor.set(r,g,b,0xFF);
 	}

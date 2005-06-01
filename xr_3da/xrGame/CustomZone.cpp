@@ -1249,7 +1249,7 @@ void CCustomZone::CreateHit	(	u16 id_to,
 	if (OnServer())
 	{
 		if(m_owner_id != u32(-1) )
-			id_to = m_owner_id;
+			id_to	= (u16)m_owner_id;
 
 		NET_Packet	l_P;
 		u_EventGen	(l_P,GE_HIT, id_to);
