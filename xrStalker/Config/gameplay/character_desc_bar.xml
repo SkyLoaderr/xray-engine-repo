@@ -399,9 +399,7 @@
 		</supplies>
 				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
-		<actor_dialog>bar_ecolog_crush_professor_give_quest_dp</actor_dialog>
 		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>
-		<actor_dialog>bar_ecolog_crush_professor_corrupted_flash</actor_dialog>	
 	</specific_character>
 
 	<specific_character id="bar_svoboda_attack_commander" team_default = "1">

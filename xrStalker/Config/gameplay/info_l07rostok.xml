@@ -158,26 +158,28 @@
 	</info_portion> 
 	<info_portion id="bar_resque_research_gain"></info_portion>
 	<info_portion id="bar_resque_research_done"></info_portion>
-	<info_portion id="bar_resque_research_fail"></info_portion>
-	
+	<info_portion id="bar_resque_research_fail"></info_portion>	
 	<info_portion id="bar_resque_research_dead"></info_portion>
+	<info_portion id="bar_resque_research_reward"></info_portion>
+	
     <info_portion id="bar_spawn_heli_psevdodogs"></info_portion>
     <info_portion id="bar_heli_scene_stay_online"></info_portion>
     
     
     <!-- FREEDOM FLASH QUEST -->
-	<info_portion id="bar_get_research_start">
-		<task>bar_get_information</task>
+	<info_portion id="bar_kill_professor_start">
+		<task>bar_kill_professor</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
-	<info_portion id="bar_get_research_gain"></info_portion>
-	<info_portion id="bar_get_research_done"></info_portion>
-	<info_portion id="bar_get_research_fail"></info_portion>		
-    <info_portion id="bar_get_research_dead"></info_portion>
-    <info_portion id="bar_volkodav_have_reward"></info_portion>
+	<info_portion id="bar_kill_professor_gain"></info_portion>
+	<info_portion id="bar_kill_professor_done"></info_portion>
+	<info_portion id="bar_kill_professor_fail"></info_portion>		
+    <info_portion id="bar_kill_professor_reject"></info_portion>
+    <info_portion id="bar_kill_professor_reward"></info_portion>
     
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
+
     <info_portion id="bar_resque_research_corruped"></info_portion>
     <info_portion id="bar_ecolog_research_normal">
 		<article>bar_ecolog_research_normal</article>

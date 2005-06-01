@@ -1206,21 +1206,6 @@
     <string id="bar_dolg_zavskald_reward_1311">
         <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
     </string>
-    <string id="bar_ecolog_crush_professor_corrupted_flash_0">
-        <text>Ты о чем?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_corrupted_flash_1">
-        <text>Моя фамилия Круглов. Я профессор биологии, изучаю Зону. Я вез результаты своего исследования на Янтарь, когда мой вертолет был обстрелян боевиками Свободы. Они требовали, чтобы я им отдал свои исследования, но я, чтобы эта воистину бесценная информация не попала в их руки, испортил ее. Это стоило трех лет моей работы, и если бы ты пришел чуть раньше, информация была бы сохранена. Но несмотря на это я благодарен тебе за то, что я и мои коллеги живы.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_corrupted_flash_11">
-        <text>Ну в целом не за что.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_corrupted_flash_111">
-        <text>Надеюсь, мы еще увидимся.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_corrupted_flash_1111">
-        <text>Может быть, если доживу до этого момента, док.</text>
-    </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
     </string>
@@ -1272,86 +1257,35 @@
     <string id="bar_ecolog_crush_professor_give_info_dp_14">
         <text>К сожалению, мне пора. Удачи.</text>
     </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_0">
-        <text>Что ты имеешь ввиду?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_1">
-        <text>Я ученый, известный в некоторых кругах биолог, профессор Круглов. Я вез результаты исследований на Янтарь, когда наш вертолет сбили эти мародеры и отморозки. Теперь мы здесь в ловушке. Если я доверю тебе важную информацию, ты принесешь ее бармену минуя все опасности на пути? С барменом у нас уговор, и он отблагодарит тебя.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_11">
-        <text>Если бармен отблагодарит, то я пожалуй возьмусь.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_111">
-        <text>Я на тебя очень надеюсь. Помни, что эта информация не должна попасть в грязные лапы анархистов "Свободы".</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_1111">
-        <text>Это все?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_11111">
-        <text>Это все, Меченый. У меня к тебе только одна просьба, если можешь, помоги нам отстреляться от Свободы. Они сейчас атаковать будут. Мы же ученые, наше дело научные экспедиции и лаборатории. Они нас как детей перестреляют, а твоя помощь нам бы очень пригодилась.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_111111">
-        <text>Посмотрим. Мне под пули лезть не особо тянет.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_111112">
-        <text>Хорошо, попробую вам помочь.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_12">
-        <text>Мне это не интересно. Может быть в другой раз.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_quest_dp_121">
-        <text>Ты не можешь так с нами поступить, это очень важная информация. Подумай хорошенько, время еще есть.</text>
-    </string>
     <string id="bar_ecolog_crush_professor_start_11">
-        <text>Послушай, сталкер. Не знаю кто ты, но похоже ты можешь мне помочь в одном жизненно важном деле.</text>
+        <text>Сталкер, помоги! Мы возвращались с янтаря, когда нас сбили эти придурки из свободы. Говорят что им информация нужна, но я то знаю, что им лишь бы поохотиться на кого нибудь. Выведи меня из этой ловушки, а я в долгу не останусь.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_111">
+        <text>Хорошо, следуй за мной.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1111">
+        <text>Как ты скажешь, сталкер. Я в твоей власти, только выведи меня отсюда.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_112">
+        <text>Нет. Выбирайся сам.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1121">
+        <text>Нет. Я уверен, что ты это не со зла. Сам отсюда я все равно никуда не смогу уйти. Если передумаешь - я буду здесь, если не умру.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_21">
-        <text>Поторопись, дело не терпит отлагательств.</text>
+        <text>Поторопись, нужно поскорее выбраться отсюда.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_31">
-        <text>Да, не ожидал я от тебя такой прыти. Наука не забудет твоего подвига. А информацию отнеси-таки бармену, я ему ее обещал. Я себя чувствую в долгу перед тобой, поэтому внимательно меня слушай *рассказывает информацию о полтергейсте*</text>
+        <text>Фух. Неужели мы в безопасности? Наконец-то. Спасибо тебе за помощь. Я вечный твой должник, а пока возьми вот эту флешку. На ней результаты этой экспедиции. Уверен, что бармен за эту информацию достойно заплатит.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
-        <text>Я не знаю твоего имени, сталкер, но сегодня ты заслужил благодарность всей мировой науки.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_51">
-        <text>Спасибо тебе сталкер, ты спас наши жизни, но если бы ты успел чуть раньше, бесценная информация была бы сохранена.</text>
+        <text>Здравствуй, сталкер. От имени всей мировой науки выражаю тебе свое почтение.</text>
     </string>
     <string id="bar_ecolog_dialog_0">
         <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
     </string>
     <string id="bar_svoboda_dialog_0">
-        <text>Подойди к Волкодаву, нашему старшему, у него к тебе дело есть.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_0">
-        <text>Почему я должен вам помогать?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_1">
-        <text>Ты в курсе, кто является виновным в появлении Зоны? Яйцеголовые засранцы, вот кто. И сейчас там валяется сбитый моими ребятами вертолет как раз с такими засранцами. Опять везут какие-то секретные данные. Они могли бы не одному сталкеру спасти жизнь, но нет, этих скотов я знаю хорошо, была б их воля всех бы на опыты пустили. Жаль оказался у них хороший пилот, сумел посадить сбитый вертолет, да охрана выжила, неплохо вооруженная.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_11">
-        <text>И что ты будешь делать?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_111">
-        <text>Я все равно эту информацию добуду, у меня четкий приказ. Но я не хочу зря проливать кровь своих ребят. Я тебе предлагаю пойти и кое о чем договориться. Они в ловушке и хорошо это понимают, но ночью тут будет всем не сладко. Так вот, скорее всего тебе предложат отнести эту информацию кое-куда, ну а ты сделаешь вид, что все зашибись и прямиком притащишь ее мне. Может быть даже эти засранцы выживут.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_1111">
-        <text>Допустим они мне ее не отдадут, что тогда? И что ты мне предложишь если я принесу тебе эту информацию?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_11111">
-        <text>Мне на самом деле все равно как ты ее добудешь. Хоть перестреляй их всех там, мои ребята тебя даже прикроют. По поводу оплаты не беспокойся, рассчитаемся как полагается, к тому же будешь на хорошем счету у Свободы, а такие возможности просто так не попадаются.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_111111">
-        <text>Хорошо, договорились. Я попробую достать информацию.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_1111111">
-        <text>Только учти, мы долго ждать не будем. И смотри не обмани нас, иначе быстро сыграешь в ящик. Свобода шутить не любит.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_111112">
-        <text>Подожду пока, вмешиваться не буду.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_give_quest_dp_1111121">
-        <text>Тогда не путайся под ногами, скоро здесь будет жарко.</text>
+        <text>Все вопросы задавай Волкодаву, нашему старшему.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_0">
         <text>Я бы хотел кое-что узнать.</text>
@@ -1410,104 +1344,38 @@
     <string id="bar_svoboda_volkodav_info_dp_14">
         <text>Я передумал.</text>
     </string>
-    <string id="bar_svoboda_volkodav_kill_research_0">
-        <text>Я себя тоже люблю.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_1">
-        <text>Итак, где информация?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_11">
-        <text>Вот она. Держи, как договаривались.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_111">
-        <text>Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_12">
-        <text>Я трупы не шмонаю. Сам этим занимайся.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_kill_research_121">
-        <text>Какие мы гордые. Ладно, будем считать, что ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_0">
-        <text>Флешка?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_1">
-        <text>Да, именно флешка, самая обычная, информацию на ней хранят. Ты не ответил на мой вопрос.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_11">
-        <text>Да есть такая штука.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_111">
-        <text>Давай обмен. Ты мне даешь флешку и спокойно отсюда топаешь на своих двоих. А второй вариант тебе не понравится.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_1111">
-        <text>Договорились.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_11111">
-        <text>Какой умный сталкер. Считай, что сегодня ты заново родился.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_111111">
-        <text>Какой ты добрый. Я это запомню.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_1112">
-        <text>Нет, мужик, эта информация мне тоже нужна. Не пойдет.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_11121">
-        <text>Это ты поступил необдуманно. Взять его!</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_111211">
-        <text>Ах ты сволочь!</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_12">
-        <text>Не находил, а что на ней?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_noquest_121">
-        <text>Информация, которая интересует только нас. Тебя она не касается. В общем, не смею тебя задерживать. Счастливо.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_0">
-        <text>По поводу задания.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_1">
-        <text>Ну и?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_11">
-        <text>Все почти так, как ты предсказывал. Вот информация, которая тебя интересует.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_111">
-        <text>Вот и ладненько. Меньше трупов - крепче и здоровее сон. Ты свою часть выполнил, теперь слушай сюда. Ценных вещей я в поле с собой не таскаю. Зайдешь в бар и подойдешь к типу, который информацией торгует. Он тебе и насыпет причитающееся. Свобода помнит тех, кто ей помогает.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_1111">
-        <text>По рукам.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_12">
-        <text>Пока еще не достал.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_121">
-        <text>Поторопись, времени мало.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_13">
-        <text>У меня резко организовались срочные дела, так что извини, Волкодав, я тебе помочь не могу.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_request_dp_131">
-        <text>Ну ладно. Мы разгребем эту ситуацию, но ты упустил свой шанс, добиться благосклонности Свободы.</text>
-    </string>
     <string id="bar_svoboda_volkodav_start_11">
-        <text>Здоров, одиночка. Я - Волкодав, вожак этих псов. И мне кажется, ты можешь нам помочь.</text>
+        <text>Здоров. Я Волкодав, вожак этой стаи. У нас тут небольшая охота. Присоединяйся, добыча будет хорошей. Или иди своей дорогой, пока не натравил на тебя своих псов.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_111">
+        <text>Я буду участвовать в охоте, кто добыча?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_1111">
+        <text>Хорошо, Сталкер. Твоя цель - профессор Круглов. Убей его, пока он не сбежал в суматохе боя. Пошли, за дело.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_11111">
+        <text>За дело.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_112">
+        <text>Нет, я отказываюсь от участия.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_1121">
+        <text>Ну тогда посторонись. И смотри, как охотится стая Волкодава.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_21">
-        <text>Как успехи?</text>
+        <text>Иди своей дорогой, Сталкер.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_31">
-        <text>Мы помним твою помощь, Меченый. Зачем пришел?</text>
+        <text>Потом, сталкер, все потом. Сперва охота!</text>
     </string>
     <string id="bar_svoboda_volkodav_start_41">
-        <text>Да, Меченый, ты монстр. На досуге подумай о вступлении в мой отряд. Такие люди нам нужны.</text>
+        <text>Молодец, сталкер. Хорошая охота. Вот тебе за работу.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_51">
-        <text>Здорово, мужик. Нам тут одна штука нужна, небольшая такая флешка. Ты случайно ее не находил?</text>
+        <text>Да сталкер, тебе под силу разве что на крыс охотится. Мы всю работу сами сделали, так что ты ничего не получишь. Иди дальше тренируйся.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_61">
-        <text>А ты, мужик, откуда взялся? Вали отсюда, бегом!</text>
+        <text>Веселая была охота. Что тебе нужно?</text>
     </string>
     <string id="barman_dialog_0">
         <text>default text</text>
