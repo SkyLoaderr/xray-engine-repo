@@ -115,66 +115,13 @@ function proceed()
 	end
 	
 	
-	-- Dark valley
-	if actor:dont_has_info("val_player_knows_password") and
-	   actor:object("borov_flash") then
-		actor:give_info_portion("val_player_knows_password") 
-	end
+	darkvalley_tasks.proceed()
 
 	bar_rostok_tasks.proceed()	
 
     mil_tasks.process_tasks ()	
 	
-	-- Laboratory X18
-	if actor:dont_has_info("dar_password_info1") and
-	   actor:object("dar_pass_flash") then
-		actor:give_info_portion("dar_password_info1") 
-	end
-	
-	if actor:dont_has_info("dar_password_info2") and
-	   actor:object("dar_pass_document") then
-		actor:give_info_portion("dar_password_info2") 
-	end
-	
-	if actor:dont_has_info("dar_document1") and
-	   actor:object("dar_document1") then
-		actor:give_info_portion("dar_document1") 
-	end
-	
-	if actor:dont_has_info("dar_document2") and
-	   actor:object("dar_document2") then
-		actor:give_info_portion("dar_document2") 
-	end
 
-	if actor:dont_has_info("dar_document3") and
-	   actor:object("dar_document3") then
-		actor:give_info_portion("dar_document3") 
-		
-		if actor:dont_has_info("dar_actor_got_docs") then
-			actor:give_info_portion("dar_actor_got_docs") 
-		end
-		
-	end
-	
-	if actor:dont_has_info("dar_document4") and
-	   actor:object("dar_document4") then
-		actor:give_info_portion("dar_document4") 
-
-		if actor:dont_has_info("dar_actor_got_docs") then
-			actor:give_info_portion("dar_actor_got_docs") 
-		end
-
-	end
-
-	if actor:dont_has_info("dar_document5") and
-	   actor:object("dar_document5") then
-		actor:give_info_portion("dar_document5") 
-		
-		if actor:dont_has_info("dar_actor_got_docs") then
-			actor:give_info_portion("dar_actor_got_docs") 
-		end
-		
-	end
 	
 	-- Radar
 	if actor:dont_has_info("rad_code_door") and
@@ -347,6 +294,9 @@ function process_map_spot(info_id)
 		remove_location(300, "agr_military_case_location")
 		add_location(500, "bar_barman_location")
 
+	-- DARK VALLEY
+	elseif darkvalley_tasks.process_map_spot(info_id) then
+		return
 
 	-- BAR ROSTOK
 	elseif bar_rostok_tasks.process_map_spot(info_id) then
