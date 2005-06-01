@@ -222,6 +222,11 @@ public:
 		return		(m_fHealth);
 	}
 
+	IC		float	&radiation()
+	{
+		return		(m_fRadiation);
+	}
+
 	IC		float	&hit_bone_scale	()
 	{
 		return		(m_fHitBoneScale);

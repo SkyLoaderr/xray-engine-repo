@@ -595,10 +595,19 @@ float CEntityAlive::SetfHealth	(float value)
 	conditions().health() = value/100.f;
 	return value;
 }
-
+float CEntityAlive::SetfRadiation		(float value)
+{
+	conditions().radiation() = value/100.f;
+	return value;
+}
 float CEntityAlive::g_Health	() const
 {
 	return conditions().GetHealth()*100.f;
+}
+
+float CEntityAlive::g_Radiation	()	const
+{
+	return conditions().GetRadiation()*100.f;
 }
 
 float CEntityAlive::g_MaxHealth	() const

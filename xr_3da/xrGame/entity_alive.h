@@ -62,6 +62,9 @@ public:
 	virtual float			g_Health			()	const;
 	virtual float			g_MaxHealth			()	const;
 
+	virtual float			g_Radiation			()	const;
+	virtual	float			SetfRadiation		(float value);
+
 	virtual float			CalcCondition		(float hit);
 
 	// Visibility related

@@ -60,9 +60,9 @@ void	CActor::ConvState(u32 mstate_rl, string128 *buf)
 //--------------------------------------------------------------------
 void CActor::net_Export	(NET_Packet& P)					// export to server
 {
+	//CSE_ALifeCreatureAbstract
 	u8					flags = 0;
 	P.w_float_q16		(g_Health(),-500,1000);
-
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	Fvector				p = Position();
@@ -76,19 +76,20 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u8				(u8(g_Squad()));
 	P.w_u8				(u8(g_Group()));
 
-	//	unaffected_r_torso_yaw	 = r_torso.yaw;
-	//	unaffected_r_torso_pitch = r_torso.pitch;
 
+	//CSE_ALifeCreatureTrader
 	P.w_float			(inventory().TotalWeight());
-
 	P.w_u32				(m_dwMoney);
 
+	//CSE_ALifeCreatureActor
+	
 	u16 ms	= (u16)(mstate_real & 0x0000ffff);
 	P.w_u16				(u16(ms));
 	P.w_sdir			(NET_SavedAccel);
 	Fvector				v = m_PhysicMovementControl->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 	P.w_float_q16		(fArmor,-500,1000);
+	P.w_float_q16		(g_Radiation(),-500,1000);
 
 	P.w_u8				(u8(inventory().GetActiveSlot()));
 	/////////////////////////////////////////////////
@@ -360,10 +361,15 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
-	float				fRArmor;
+	float				fRArmor, fRRadiation;
 	P.r_float_q16		(fRArmor,-500,1000);
+	P.r_float_q16		(fRRadiation,-500,1000);
 	//----------- for E3 -----------------------------
-	if (OnClient())		fArmor = fRArmor;
+	if (OnClient())		
+	{
+		fArmor = fRArmor;
+		SetfRadiation(fRRadiation);
+	};
 	//------------------------------------------------
 
 	u8					ActiveSlot;
