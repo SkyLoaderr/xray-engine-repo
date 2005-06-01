@@ -444,9 +444,11 @@ radius = 5
 ;*******************************************************************
 ; Свобода, атакующая ученных
 ;*******************************************************************
+[helihunter@bar_freedom_attack]
 
 [logic@bar_freedom_attack_sniper_1]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_1 %=bar_freedom_angry_actor%, camper1@bar_freedom_attack_sniper_1
+heli_hunter = helihunter@bar_freedom_attack
 
 [camper@bar_freedom_attack_sniper_1]
 path_walk = camper_1_walk
@@ -454,6 +456,7 @@ path_look = camper_1_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_1 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
+heli_hunter = true
 
 [camper1@bar_freedom_attack_sniper_1]
 path_walk = acamper_1_walk
@@ -479,6 +482,7 @@ no_retreat = true
 
 [logic@bar_freedom_attack_sniper_3]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_3 %=bar_freedom_angry_actor%, camper1@bar_freedom_attack_sniper_3
+heli_hunter = helihunter@bar_freedom_attack
 
 [camper@bar_freedom_attack_sniper_3]
 path_walk = camper_3_walk
@@ -486,6 +490,7 @@ path_look = camper_3_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_3 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
+heli_hunter = true
 
 [camper1@bar_freedom_attack_sniper_3]
 path_walk = acamper_3_walk
@@ -528,6 +533,7 @@ no_retreat = true
 
 [logic@bar_freedom_attack_guard_2]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_guard_2 %=bar_freedom_angry_actor%, camper1@bar_freedom_attack_guard_2
+heli_hunter = helihunter@bar_freedom_attack
 
 [camper@bar_freedom_attack_guard_2]
 path_walk = guard_2_walk
@@ -535,6 +541,7 @@ path_look = guard_2_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_guard_2 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
+heli_hunter = true
 
 [camper1@bar_freedom_attack_guard_2]
 path_walk = aguard_2_walk
