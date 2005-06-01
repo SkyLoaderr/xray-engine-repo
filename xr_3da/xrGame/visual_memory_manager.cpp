@@ -147,13 +147,17 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	object_distance						= object_direction.distance_to(eye_position);
 	object_direction.sub				(eye_position);
 	object_direction.normalize_safe		();
-	float								fov = deg2rad(m_stalker->eye_fov)*.5f;
+	
+	float								object_range, object_fov;
+	m_stalker->update_range_fov			(object_range,object_fov,m_stalker->eye_range,deg2rad(m_stalker->eye_fov));
+
+	float								fov = object_fov*.5f;
 	float								cos_alpha = eye_direction.dotproduct(object_direction);
 	clamp								(cos_alpha,-.99999f,.99999f);
 	float								alpha = acosf(cos_alpha);
 	clamp								(alpha,0.f,fov);
 
-	float								max_view_distance = m_stalker->eye_range, min_view_distance = m_stalker->eye_range;
+	float								max_view_distance = object_range, min_view_distance = object_range;
 	max_view_distance					*= current_state().m_max_view_distance;
 	min_view_distance					*= current_state().m_min_view_distance;
 
