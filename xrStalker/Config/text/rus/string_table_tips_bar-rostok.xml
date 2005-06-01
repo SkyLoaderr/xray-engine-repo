@@ -3,6 +3,9 @@
 	<string id="bar_ecolog_crush_start_heli">
 		<text>Волкодав, уходи отсюда. Мы вызвали военных! Сейчас они вас, как щенков!</text>
 	</string>
+	<string id="bar_ecolog_crush_heli_down">
+		<text>Вот и все, нет вашего вертолета!</text>
+	</string>
 	<string id="bar_ecolog_crush_attract_actor">
 		<text>Сталкер! Это говорит профессор Круглов. Нам нужна твоя помощь!</text>
 	</string>
