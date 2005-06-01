@@ -98,7 +98,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("condition"), cond);
 		UICondition.SetText				(str);
 		UICondProgresBar.Show			(true);
-		UICondProgresBar.SetProgressPos	( s16(iFloor(cond*100.0f)) );
+		UICondProgresBar.SetProgressPos	( s16(iFloor(cond*100.0f+1.0f-EPS)) );
 		
 
 		UIDesc.RemoveAll();

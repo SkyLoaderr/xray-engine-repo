@@ -16,7 +16,7 @@
 #include "level.h"
 
 #include "specific_character.h"
-
+#include "alife_registry_wrappers.h"
 
 
 
@@ -31,7 +31,7 @@ CPda::CPda(void)
 
 	m_idOriginalOwner		= 0xffff;
 	m_SpecificChracterOwner = NULL;
-	m_InfoPortion			= NULL;
+//	m_InfoPortion			= NULL;
 
 
 	m_bPassiveMode = false;
@@ -49,23 +49,23 @@ CPda::~CPda(void)
 BOOL CPda::net_Spawn(CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
-		return			(FALSE);
-	CSE_Abstract		*abstract = (CSE_Abstract*)(DC);
-	CSE_ALifeItemPDA	*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
-	R_ASSERT			(pda);
+		return					(FALSE);
+	CSE_Abstract				*abstract = (CSE_Abstract*)(DC);
+	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
+	R_ASSERT					(pda);
 	m_idOriginalOwner			= pda->m_original_owner;
 	m_SpecificChracterOwner		= pda->m_specific_character;
-	m_InfoPortion				= pda->m_info_portion;
+//	m_InfoPortion				= pda->m_info_portion;
 
-	m_sFullName.clear();
+	m_sFullName.clear			();
 	
-	return				(TRUE);
+	return						(TRUE);
 }
 void CPda::net_Destroy() 
 {
-	inherited::net_Destroy	();
-	TurnOff					();
-	feel_touch.clear		();
+	inherited::net_Destroy		();
+	TurnOff						();
+	feel_touch.clear			();
 }
 
 void CPda::Load(LPCSTR section) 
@@ -93,8 +93,8 @@ void CPda::shedule_Update(u32 dt)
 			return;
 		}
 
-		m_NewPDAList.clear();
-		m_DeletedPDAList.clear();
+//		m_NewPDAList.clear();
+//		m_DeletedPDAList.clear();
 		feel_touch_update(Position(),m_fRadius);
 		//m_bNewMessage = false;
 	}
@@ -109,8 +109,10 @@ void CPda::feel_touch_new(CObject* O)
 {
 	if(IsOff()) return;
 
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(O);
-
+	CInventoryOwner* pNewContactInvOwner	= smart_cast<CInventoryOwner*>(O);
+	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
+	pOwner->NewPdaContact					(pNewContactInvOwner);
+/*	
 	if(pInvOwner && pInvOwner->IsActivePDA() && this != pInvOwner->GetPDA()) 
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
@@ -120,13 +122,16 @@ void CPda::feel_touch_new(CObject* O)
 		m_NewPDAList.push_back(pInvOwner->GetPDA());
 		GetOriginalOwner()->NewPdaContact(pInvOwner);
 	}
+*/
 }
 
 void CPda::feel_touch_delete(CObject* O) 
 {
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(O);
-
-	if(pInvOwner /*&& /*pInvOwner->IsActivePDA()*/) 
+	CInventoryOwner* pLostContactInvOwner	= smart_cast<CInventoryOwner*>(O);
+	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
+	pOwner->LostPdaContact					(pLostContactInvOwner);
+/*
+	if(pInvOwner) 
 	{
 		if(pInvOwner->GetPDA())
 		{
@@ -146,20 +151,6 @@ void CPda::feel_touch_delete(CObject* O)
 		//для случая перехода PDA в offline
 		else
 		{
-/*			if(pInvOwner->GetPDA())
-			{
-				PDA_LIST_it it = std::find(m_PDAList.begin(), m_PDAList.end(), pInvOwner->GetPDA());
-				
-				if(m_PDAList.end() != it)
-				{
-					if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"a PDA owner moved to offline");
-					m_DeletedPDAList.push_back(pInvOwner->GetPDA());
-					m_PDAList.erase(it);
-				}
-			}
-		}
-
-*/
 			for(PDA_LIST_it it = m_PDAList.begin();	m_PDAList.end() != it; 	++it)
 			{
 				CPda* pPda = (*it);
@@ -175,6 +166,7 @@ void CPda::feel_touch_delete(CObject* O)
 			}
 		}
 	}
+*/
 }
 
 BOOL CPda::feel_touch_contact(CObject* O) 
@@ -207,8 +199,28 @@ void CPda::OnH_A_Chield()
 	CActor* actor = smart_cast<CActor*>(H_Parent());
 	if(!actor) return;
 
-	//создать и отправить пакет о получении новой информации
-	if(m_InfoPortion.size())
+
+
+	//transfer all infos from original owner to new owner
+	CInfoPortionWrapper	*known_info_registry	= xr_new<CInfoPortionWrapper>();
+	known_info_registry->registry().init		(m_idOriginalOwner);
+	KNOWN_INFO_VECTOR& known_info				= known_info_registry->registry().objects();
+
+	KNOWN_INFO_VECTOR_IT it = known_info.begin();
+	for(int i=0;it!=known_info.end();++it,++i){
+		(*it).info_id;	
+		NET_Packet		P;
+		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
+		P.w_u16			(ID());						//отправитель
+		P.w_stringZ		((*it).info_id);			//сообщение
+		P.w_u8			(1);						//добавление сообщения
+		u_EventSend		(P);
+
+	}
+	known_info.clear	();
+	xr_delete			(known_info_registry);
+
+/*	if(m_InfoPortion.size())
 	{
 		NET_Packet		P;
 		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
@@ -217,7 +229,7 @@ void CPda::OnH_A_Chield()
 		P.w_u8			(1);						//добавление сообщения
 		u_EventSend		(P);
 	}
-
+*/
 
 
 	inherited::OnH_A_Chield		();
@@ -250,7 +262,7 @@ CObject* CPda::GetOwnerObject()
 	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
 	return pObject;
 }
-
+/*
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
 void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id)
@@ -267,7 +279,7 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id)
 	if(pPda->IsOff() || pPda->IsPassive()) return;
 	
 	PdaEventSend(pPda->ID(), msg, info_id);
-}
+}*/
 
 
 //отправление сообщению PDA с определенным ID
@@ -276,15 +288,14 @@ void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id)
 {
 	CObject* pObject =  Level().Objects.net_Find(pda_ID);
 	CPda* pPda = smart_cast<CPda*>(pObject);
-
-	R_ASSERT2(pPda, "Wrong PDA ID");
-	if(pPda == NULL) return;
-
+	if(!pPda) return;
+	CObject* pPdaOwner = pPda->H_Parent();
+	xr_vector<CObject*>::iterator it = std::find(feel_touch.begin(), feel_touch.end(), pPdaOwner);
 	//определить индекс PDA в списке активных контактов
-	PDA_LIST_it it =  std::find(m_PDAList.begin(), m_PDAList.end(), pPda);
+//	PDA_LIST_it it =  std::find(m_PDAList.begin(), m_PDAList.end(), pPda);
 	
 	//PDA нет в списке
-	if(it == m_PDAList.end()) return;
+	if(it == feel_touch.end()) return;
 
 	PdaEventSend(pda_ID, msg, info_id);
 }
@@ -401,6 +412,7 @@ bool CPda::WaitForReply(u32 pda_ID)
 
 }
 
+/*
 void		CPda::SetInfoPortion (INFO_ID info)
 {
 	CSE_Abstract* e_entity		= Level().Server->game->get_entity_from_eid	(ID()); VERIFY(e_entity);
@@ -412,7 +424,7 @@ void		CPda::SetInfoPortion (INFO_ID info)
 INFO_ID	CPda::GetInfoPortion ()
 {
 	return m_InfoPortion;
-}
+}*/
 
 
 LPCSTR		CPda::Name				()
@@ -435,4 +447,18 @@ LPCSTR		CPda::Name				()
 LPCSTR		CPda::NameComplex		()
 {
 	return Name();
+}
+
+CPda* CPda::GetPdaFromOwner(CObject* owner)
+{
+	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(owner);
+	return pInvOwner->GetPDA			();
+}
+
+void CPda::ActiveContacts(xr_vector<CPda*>& res)
+{
+	res.clear				();
+	xr_vector<CObject*>::iterator it= feel_touch.begin();
+	for(;it!=feel_touch.end();++it)
+		res.push_back(GetPdaFromOwner(*it));
 }

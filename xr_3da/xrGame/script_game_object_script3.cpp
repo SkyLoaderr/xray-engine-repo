@@ -197,10 +197,10 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("set_actor_relation_flags",	&CScriptGameObject::set_actor_relation_flags)
 		.def("snd_character_profile_sect",	&CScriptGameObject::snd_character_profile_sect)
 
-		.def("set_character_pda_info",		&CScriptGameObject::set_character_pda_info)
-		.def("get_character_pda_info",		&CScriptGameObject::get_character_pda_info)
-		.def("set_pda_info",				&CScriptGameObject::set_pda_info)
-		.def("get_pda_info",				&CScriptGameObject::get_pda_info)
+//		.def("set_character_pda_info",		&CScriptGameObject::set_character_pda_info)
+//		.def("get_character_pda_info",		&CScriptGameObject::get_character_pda_info)
+//		.def("set_pda_info",				&CScriptGameObject::set_pda_info)
+//		.def("get_pda_info",				&CScriptGameObject::get_pda_info)
 
 		.enum_("ACTOR_RELATIONS")
 		[

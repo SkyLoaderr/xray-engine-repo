@@ -2,7 +2,7 @@
 /// Режим диалога в PDA
 ///////////////////////////////////////////////////////////
 #include "stdafx.h"
-#include "UIPdaWnd.h"
+#include "UIPdaDialogWnd.h"
 
 #include "../Pda.h"
 #include "../InventoryOwner.h"

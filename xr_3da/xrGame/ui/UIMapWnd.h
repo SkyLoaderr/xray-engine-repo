@@ -130,7 +130,7 @@ class CUILevelMap: public CUICustomMap{
 
 	Frect						m_GlobalRect;			// virtual map size (meters)
 	CUIGlobalMapSpot			*m_globalMapSpot;		//rect on the global map
-
+	CUIStatic					*m_anomalies_map;
 private:
 								CUILevelMap			(const CUILevelMap &obj) {}
 			CUILevelMap			&operator=			(const CUILevelMap &obj) {}

@@ -6,7 +6,7 @@
 #define UI_PDA_COMMUNICATION_H_
 
 #include "UIPdaContactsWnd.h"
-#include "UIPdaDialogWnd.h"
+//#include "UIPdaDialogWnd.h"
 
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
@@ -51,20 +51,21 @@ protected:
 	virtual	void UpdatePdaContacts();
 
 	//диалог
-	virtual void InitPdaDialog();
-	virtual void UpdateMessageLog();
-	virtual void UpdateMsgButtons();
+//	virtual void InitPdaDialog();
+//	virtual void UpdateMessageLog();
+//	virtual void UpdateMsgButtons();
 public:
-	virtual void UpdateDisplay();
+//	virtual void UpdateDisplay();
 protected:
 
 //	CUIFrameWindow		UIMainPdaFrame;
 	CUIPdaContactsWnd	UIPdaContactsWnd;
-	CUIPdaDialogWnd		UIPdaDialogWnd;
-
 	//указатель на владельца инвентаря вызвавшего менюшку
 	CInventoryOwner*	m_pInvOwner;
 	CPda*				m_pPda;
+
+/*	CUIPdaDialogWnd		UIPdaDialogWnd;
+
 
 	//указатели на текущий контакт
 	u32					m_idContact;
@@ -74,39 +75,39 @@ protected:
 
 	//потеря контакта во время диалога
 	bool m_bContactLoss;
-
+*/
 
 	//указатель на владельца инвентаря вызвавшего менюшку
 	//и его собеседника
 	CActor*			 m_pActor;
 	CInventoryOwner* m_pOurInvOwner;
-	CInventoryOwner* m_pOthersInvOwner;
+//	CInventoryOwner* m_pOthersInvOwner;
 
-	CPhraseDialogManager* m_pOurDialogManager;
-	CPhraseDialogManager* m_pOthersDialogManager;
+//	CPhraseDialogManager* m_pOurDialogManager;
+//	CPhraseDialogManager* m_pOthersDialogManager;
 
 	//текущий диалог, если NULL, то переходим в режим выбора темы
-	DIALOG_SHARED_PTR m_pCurrentDialog;
-	PHRASE_ID		  m_iLastPhraseID;
+//	DIALOG_SHARED_PTR m_pCurrentDialog;
+//	PHRASE_ID		  m_iLastPhraseID;
 
-	bool TopicMode	();
-	void ToTopicMode();
+//	bool TopicMode	();
+//	void ToTopicMode();
 
 	//диалог
-	void InitTalkDialog();
-	void UpdateQuestions();
-	void AskQuestion();
+//	void InitTalkDialog();
+//	void UpdateQuestions();
+//	void AskQuestion();
 
-	void SayPhrase(PHRASE_ID phrase_id);
+//	void SayPhrase(PHRASE_ID phrase_id);
 
 	// Функции добавления строк в листы вопросов и ответов
-	void AddQuestion(CUIString str, void* pData, int value = 0);
-	void AddAnswer(CUIString str, const CUIString &SpeakerName);
-public:
-	void NeedUpdateQuestions();
+//	void AddQuestion(CUIString str, void* pData, int value = 0);
+//	void AddAnswer(CUIString str, const CUIString &SpeakerName);
+//public:
+//	void NeedUpdateQuestions();
 
-protected:
-	bool m_bNeedToUpdateQuestions;
+//protected:
+//	bool m_bNeedToUpdateQuestions;
 };
 
 #endif

@@ -158,7 +158,7 @@ CScriptGameObject::operator CObject*()
 {
 	return			(&object());
 }
-
+/*
 void		CScriptGameObject::set_character_pda_info	(LPCSTR info_id)
 {
 	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(&object()); VERIFY(pInventoryOwner);
@@ -183,7 +183,7 @@ LPCSTR		CScriptGameObject::get_pda_info				()
 {
 	CPda* pda = smart_cast<CPda*>(&object()); VERIFY(pda);
 	return *(pda->GetInfoPortion());
-}
+}*/
 
 const MemorySpace::CHitObject *CScriptGameObject::GetBestHit	() const
 {

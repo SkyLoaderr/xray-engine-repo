@@ -430,10 +430,10 @@ public:
 			bool				attachable_item_enabled	() const;
 			//////////////////////////////////////////////////////////////////////////
 			// для подключения info_portion для pda
-			void				set_character_pda_info (LPCSTR info_id);
-			LPCSTR				get_character_pda_info ();
-			void				set_pda_info		   (LPCSTR info_id);
-			LPCSTR				get_pda_info		   ();
+//			void				set_character_pda_info (LPCSTR info_id);
+//			LPCSTR				get_character_pda_info ();
+//			void				set_pda_info		   (LPCSTR info_id);
+//			LPCSTR				get_pda_info		   ();
 			//////////////////////////////////////////////////////////////////////////
 			// CustomZone
 			void				EnableAnomaly			();

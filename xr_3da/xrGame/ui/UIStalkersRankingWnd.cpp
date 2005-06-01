@@ -88,9 +88,25 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 
 	CPda * m_pPda = m_pInvOwner->GetPDA();
 	if(!m_pPda)return;
-	PDA_LIST_it it;	
+//	PDA_LIST_it it;	
 
 	// Добавить список рейтингов
+
+	xr_vector<CPda*> pda_list;
+	m_pPda->ActiveContacts(pda_list);
+	xr_vector<CPda*>::iterator it = pda_list.begin();
+
+	for(	; it!=pda_list.end(); ++it){
+		CPda* pda = (*it);
+		CUIPdaListItem* pItem = NULL;
+		pItem = xr_new<CUIPdaListItem>();
+		UIStalkersList.AddItem<CUIListItem>(pItem); 
+		pItem->InitCharacter(pda->GetOriginalOwner());
+		// To ЮРА: самое важное, что надо оставить - это дате элемента задать указатель на
+		// CCharacterInfo. Остальное можно перехерячить :)
+		pItem->SetData(pda->GetOriginalOwner());
+	}
+/*
 	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
 	{	
 		CUIPdaListItem* pItem = NULL;
@@ -101,6 +117,7 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 		// CCharacterInfo. Остальное можно перехерячить :)
 		pItem->SetData((*it)->GetOriginalOwner());
 	}
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////

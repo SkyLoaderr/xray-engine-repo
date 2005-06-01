@@ -5780,6 +5780,12 @@
 					</File>
 					<File
 						RelativePath=".\level_map_locations.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="Level_network.cpp">
@@ -9626,6 +9632,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIPdaDialogWnd.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ui\UIPdaDialogWnd.h">

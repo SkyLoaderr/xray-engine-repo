@@ -234,7 +234,7 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 	}
 	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
 	{
-		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
+//		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
 	}
 
 
@@ -267,10 +267,10 @@ void CActor::OnDisableInfo(INFO_ID info_id)  const
 	{
 		pGameSP->TalkMenu.NeedUpdateQuestions();
 	}
-	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
-	{
-		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
-	}
+//	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
+//	{
+//		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
+//	}
 }
 
 
@@ -310,10 +310,10 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 	{
 		pGameSP->TalkMenu.NeedUpdateQuestions();
 	}
-	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
-	{
-		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
-	}
+//	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
+//	{
+//		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
+//	}
 
 
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
