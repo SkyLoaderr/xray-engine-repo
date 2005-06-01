@@ -5,7 +5,9 @@ news = {
 	tutorial_flash_anomaly_alarm	= [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]],
 	escape_stalker_helped			= [[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]],
 	tutorial_trader_look_vagon		= [[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]],
-	gar_dolg_warning				= [[characters_voice\human_01\scenario\duty\duty_warning1]]
+	gar_dolg_warning				= [[characters_voice\human_01\scenario\duty\duty_warning1]],
+	bar_ecolog_crush_attract_actor  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\professor_PDA_help_1]],
+	bar_freedom_attack_attract_actor= [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_PDA_job_1]]
 }
 
 
