@@ -91,10 +91,6 @@ function move_mgr:validate_paths()
 	end
 	local patrol_walk_count = self.patrol_walk:count()
 	if patrol_walk_count == 1 then
-		if not self.patrol_look then
-			utils.abort("object '%s': path_walk '%s' has 1 waypoint, but path_look is not specified",
-				self.object:name(), self.path_walk)
-		end
 		if self.path_walk_info[0].flags:get() == 0 then
 			utils.abort("object '%s': path_walk '%s' has 1 waypoint, but has no flags",
 				self.object:name(), self.path_walk)
