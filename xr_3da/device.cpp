@@ -204,7 +204,12 @@ void CRenderDevice::Run			()
 				LeaveCriticalSection					(&mt_csLeave);
 
 				// Ensure, that second thread gets chance to execute anyway
-				if (dwFrame!=mt_Thread_marker)			seqFrameMT.Process	(rp_Frame);
+				if (dwFrame!=mt_Thread_marker)			{
+					for (u32 pit=0; pit<Device.seqParallel.size(); pit++)
+						Device.seqParallel[pit]	();
+					Device.seqParallel.clear	();
+					seqFrameMT.Process	(rp_Frame);
+				}
 			} else {
 				Sleep		(100);
 			}
