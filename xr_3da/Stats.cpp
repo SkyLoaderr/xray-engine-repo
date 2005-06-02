@@ -137,8 +137,19 @@ void CStats::Show()
 
 		CSound_stats				snd;
 		::Sound->statistic			(snd);
-		
 		F.SetColor	(0xFFFFFFFF	);
+
+		F.OutSet	(640,0);
+		F.OutNext	("static:        %3.1f/%d",	RCache.stat.r.s_static.verts/1024.f,		RCache.stat.r.s_static.dips );
+		F.OutNext	("flora:         %3.1f/%d",	RCache.stat.r.s_flora.verts/1024.f,			RCache.stat.r.s_flora.dips );
+		F.OutNext	("  flora_lods:  %3.1f/%d",	RCache.stat.r.s_flora_lods.verts/1024.f,	RCache.stat.r.s_flora_lods.dips );
+		F.OutNext	("dynamic:       %3.1f/%d",	RCache.stat.r.s_dynamic.verts/1024.f,		RCache.stat.r.s_dynamic.dips );
+		F.OutNext	("  dynamic_sw:  %3.1f/%d",	RCache.stat.r.s_dynamic_sw.verts/1024.f,	RCache.stat.r.s_dynamic_sw.dips );
+		F.OutNext	("  dynamic_inst:%3.1f/%d",	RCache.stat.r.s_dynamic_inst.verts/1024.f,	RCache.stat.r.s_dynamic_inst.dips );
+		F.OutNext	("  dynamic_1B:  %3.1f/%d",	RCache.stat.r.s_dynamic_1B.verts/1024.f,	RCache.stat.r.s_dynamic_1B.dips );
+		F.OutNext	("  dynamic_2B:  %3.1f/%d",	RCache.stat.r.s_dynamic_2B.verts/1024.f,	RCache.stat.r.s_dynamic_2B.dips );
+		F.OutNext	("details:       %3.1f/%d",	RCache.stat.r.s_details.verts/1024.f,		RCache.stat.r.s_details.dips );
+
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",	fTPS);
