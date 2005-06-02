@@ -1,9 +1,3 @@
-;[logic]
-;active = walker1
-
-;[walker1]
-;path_walk = val_nap2_escort_walk
-
 [logic]
 active = walker1
 combat_ignore = combat_ignore
@@ -11,9 +5,8 @@ combat_ignore = combat_ignore
 [walker1]
 path_walk = val_escort_captive_walk
 ;path_look = val_escort_captive_look
-;on_signal = fight | remark@wait %+val_escort_combat%
-on_info = {+val_escort_combat} remark@wait, {+val_escort_actor_helped} remark@wait
-;on_info2 = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
+on_signal = fight | %+val_escort_combat%
+on_info = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
 combat_ignore_cond = always
 
 [remark@wait]
@@ -23,14 +16,15 @@ anim = caution
 meet_dialog = val_escort_hello
 meet_state = caution
 meet_talk_enabled = true
-on_info = {-val_escort_actor_helped -val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
-on_info2 = {+val_escort_captive_can_leave} walker@leave
+;on_info = {=val_escort_combat_end} walker@leave
+on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave
+on_info2 = {-val_escort_actor_helped -val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
 combat_ignore_cond = always
 
-[walker@flee]
-reactions = ignore
-path_walk = val_escort_captive_flee_walk
-path_look = val_escort_captive_flee_look
+;[walker@flee]
+;reactions = ignore
+;path_walk = val_escort_captive_flee_walk
+;path_look = val_escort_captive_flee_look
 ;combat_ignore_cond = always
 
 [walker@leave]
