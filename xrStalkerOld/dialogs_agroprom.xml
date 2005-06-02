@@ -158,6 +158,7 @@
             </phrase>
             <phrase id="200">
                 <text>agr_stalker_esc_200</text>
+                <give_info>agr_warning_recieved</give_info>
                 <next>30</next>
             </phrase>
             <phrase id="300">
@@ -165,7 +166,6 @@
             </phrase>
             <phrase id="30">
                 <text>agr_stalker_esc_30</text>
-                <give_info>agr_warning_recieved</give_info>
                 <next>300</next>
             </phrase>
             <phrase id="10">
