@@ -144,6 +144,7 @@ function process_map_spot(info_id)
 		level_tasks.add_location(503, "bar_ecolog_crush_location")
 		return true		
 	elseif info_id == "bar_kill_professor_done" then
+		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
 		level_tasks.set_task_state(task.completed, "bar_kill_professor", 0)
 		return true
