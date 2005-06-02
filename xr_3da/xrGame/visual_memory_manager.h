@@ -42,9 +42,11 @@ private:
 	u32					m_max_object_count;
 	bool				m_enabled;
 
+public:
+			void	add_visible_object		(const CObject *object, float time_delta);
+
 protected:
 	IC		void	fill_object				(CVisibleObject &visible_object, const CGameObject *game_object);
-			void	add_visible_object		(const CObject *object, float time_delta);
 			void	add_visible_object		(const CVisibleObject visible_object);
 			float	object_visible_distance	(const CGameObject *game_object, float &object_distance) const;
 			float	object_luminocity		(const CGameObject *game_object) const;
@@ -54,7 +56,6 @@ protected:
 
 protected:
 	IC		u32		visible_object_time_last_seen			(const CObject *object) const;
-	IC		const CVisionParameters &current_state			() const;
 			void	add_not_yet_visible_object				(const CNotYetVisibleObject &not_yet_visible_object);
 			CNotYetVisibleObject *not_yet_visible_object	(const CGameObject *game_object);
 
@@ -89,6 +90,7 @@ public:
 	IC		const VISIBLES			&objects					() const;
 	IC		const RAW_VISIBLES		&raw_objects				() const;
 	IC		const NOT_YET_VISIBLES	&not_yet_visible_objects	() const;
+	IC		const CVisionParameters &current_state				() const;
 };
 
 #include "visual_memory_manager_inline.h"

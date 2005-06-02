@@ -489,7 +489,7 @@ void CCustomMonster::eye_pp_s1			()
 	++eye_pp_stage;
 
 	float									new_range, new_fov;
-	update_range_fov						(new_range, new_fov, eye_range, eye_fov);
+	update_range_fov						(new_range, new_fov, memory().visual().current_state().m_max_view_distance*eye_range, eye_fov);
 
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
@@ -531,7 +531,9 @@ void CCustomMonster::Exec_Visibility	( )
 
 void CCustomMonster::UpdateCamera()
 {
-	g_pGameLevel->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,120,1.f,eye_range);
+	float						range,fov;
+	update_range_fov			(range,fov,memory().visual().current_state().m_max_view_distance*eye_range,eye_fov);
+	g_pGameLevel->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,fov,.75f,range);
 }
 
 
@@ -591,6 +593,11 @@ void CCustomMonster::OnRender()
 	}
 	if (memory().enemy().selected()) {
 		Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
+		P1.y				+= 1.f;
+		RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+	}
+	if (memory().danger().selected()) {
+		Fvector				P1 = memory().danger().selected()->position();
 		P1.y				+= 1.f;
 		RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
 	}
@@ -686,7 +693,7 @@ void CCustomMonster::OnRender()
 
 	if (psAI_Flags.test(aiFrustum)) {
 		float			range, fov;
-		update_range_fov(range,fov,eye_range,eye_fov);
+		update_range_fov(range,fov,memory().visual().current_state().m_max_view_distance*eye_range,eye_fov);
 		dbg_draw_frustum(fov,range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	}
 
