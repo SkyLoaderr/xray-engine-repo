@@ -46,7 +46,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	switch (l_tMovementAction.m_tGoalType) {
 		
 		case CScriptMovementAction::eGoalTypeObject : {
-			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+			//CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			//movement().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
