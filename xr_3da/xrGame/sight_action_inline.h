@@ -68,6 +68,7 @@ IC	CSightAction::CSightAction		(const ESightType &sight_type, const Fvector *vec
 {
 	m_sight_type		= sight_type;
 	m_path				= false;
+	m_object_to_look	= 0;
 	if (sight_type == SightManager::eSightTypeFirePosition) {
 		m_sight_type	= SightManager::eSightTypePosition;
 		m_torso_look	= true;
