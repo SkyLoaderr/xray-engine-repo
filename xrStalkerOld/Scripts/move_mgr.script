@@ -332,6 +332,8 @@ function move_mgr:finalize(npc)
 	if self.team then
 		sync[self.team][self.object:id()] = nil
 	end
+
+	self.object:set_path_type(game_object.level_path) -- чтобы избежать дальнейшего движения по пути при установке рестрикторов
 end
 
 function move_mgr:reset_sl()
