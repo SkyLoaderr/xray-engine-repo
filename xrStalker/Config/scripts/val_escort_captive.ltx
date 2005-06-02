@@ -1,13 +1,22 @@
+[spawner]
+cond = {+val_escort_start}
+
+;[logic]
+;active = walker1
+
+;[walker1]
+;path_walk = val_nap2_escort_walk
+
 [logic]
 active = walker1
 combat_ignore = combat_ignore
 
 [walker1]
 path_walk = val_escort_captive_walk
-path_look = val_escort_captive_look
-on_signal = fight | remark@wait %+val_escort_captive_fight%
-on_info = {+val_escort_actor_helped} remark@wait
-on_info2 = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
+;path_look = val_escort_captive_look
+;on_signal = fight | remark@wait %+val_escort_combat%
+on_info = {+val_escort_combat} remark@wait, {+val_escort_actor_helped} remark@wait
+;on_info2 = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
 combat_ignore_cond = always
 
 [remark@wait]
