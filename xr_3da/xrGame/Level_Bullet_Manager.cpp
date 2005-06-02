@@ -121,7 +121,7 @@ void CBulletManager::Load		()
 void CBulletManager::PlayWhineSound(CObject* object, const Fvector& pos)
 {
 	if (!m_WhineSounds.empty()){
-		ref_sound& snd			= m_WhineSounds[Random.randI(m_WhineSounds.size())];
+		ref_sound& snd			= m_WhineSounds[Random.randI(0, m_WhineSounds.size())];
 		snd.play_at_pos_unlimited(object,pos);
 	}
 }
