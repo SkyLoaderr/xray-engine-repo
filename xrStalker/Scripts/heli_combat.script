@@ -17,6 +17,8 @@ local combat_type_search = 2   -- поиск врага, кружение вокруг точки, где послед
 local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy_pos   = 1
 
+local flyby_attack_altitude      = 15
+
 ----------------------------------------------------------------------------------------------------
 class "heli_combat"
 
@@ -316,8 +318,8 @@ end
 -- точка p должна быть внутри круга
 function heli_combat:flyby_cross_ray_circle( p, v, o, r )
 	local po = vector():set( o ):sub( p )
-	local vperp = vector():set( -v.y, 0, v.x )
-	local l = math.sqrt( r ^ 2 - ( vector():set( po ):dotproduct( vperp ) ) ^ 2 )
+	local vperp = vector():set( -v.z, 0, v.x )
+	local l = math.sqrt( ( r ^ 2 ) - ( vector():set( po ):dotproduct( vperp ) ^ 2 ) )
 	return vector():set( p ):add( vector():set( v ):mul( vector():set( po ):dotproduct( v ) + l ) )
 end
 
@@ -335,12 +337,26 @@ function heli_combat:flyby_calc_best_attack_dist_point()
 	local r = self.max_attack_dist
 
 	local ret = self:flyby_cross_ray_circle( p, v, o, r )
-	ret.y = 15
+	ret.y = flyby_attack_altitude
 
 	return ret
 end
 
 function heli_combat:flyby_update_flight( see_enemy )
+	if self.was_callback then
+		if self.state == flyby_state_to_attack_dist then
+			printf( "switch state -> ENEMY" )
+			self.state             = flyby_state_to_enemy
+			
+		elseif self.state == flyby_state_to_enemy then
+			printf( "switch state -> DIST" )
+			self.state             = flyby_state_to_attack_dist
+		end
+
+		self.was_callback      = false
+		self.state_initialized = false
+	end
+
 	if self.state == flyby_state_to_attack_dist then
 		if not self.state_initialized then
 			local p = self:flyby_calc_best_attack_dist_point()
@@ -350,28 +366,17 @@ function heli_combat:flyby_update_flight( see_enemy )
 			self.state_initialized = true
 		end
 
-		if self.was_callback then
-			self.state             = flyby_state_to_enemy
-			self.was_callback      = false
-			self.state_initialized = false
-		end
-
 	elseif self.state == flyby_state_to_enemy then
 		if not self.state_initialized then
-			local p = self.enemy_last_seen_pos
-			p:set( p.x, 15, p.z )
-			self.heliObject:SetDestPosition( p )
 
 			--self.heliObject:—трел€ть_дорожкой()
 
 			self.state_initialized = true
 		end
 
-		if self.was_callback then
-			self.state             = flyby_state_to_attack_dist
-			self.was_callback      = false
-			self.state_initialized = false
-		end
+		local p = self.enemy_last_seen_pos
+		p:set( p.x, flyby_attack_altitude, p.z )
+		self.heliObject:SetDestPosition( p )
 	end
 end
 

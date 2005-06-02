@@ -204,12 +204,12 @@ function heli_move:check_health_flags()
 
 	if flame then
 		if self.heliObject:GetfHealth() >= 30 then
-			self.heliObject:SefHealth( 29 )
+			self.heliObject:SetfHealth( 29 )
 		end
 	end
 
 	if die then
-		self.heliObject:SefHealth( 0.5 )
+		self.heliObject:SetfHealth( 0.5 )
 	end
 end
 
