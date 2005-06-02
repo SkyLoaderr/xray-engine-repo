@@ -58,10 +58,6 @@ CLevelFogOfWar::CLevelFogOfWar():m_rowNum(0), m_colNum(0)
 
 void CLevelFogOfWar::Init	(const shared_str& level)
 {
-	VERIFY(!hShader);
-	hShader.create	("hud\\default","ui\\ui_fog_of_war");
-	VERIFY(!hGeom);
-	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 
 	m_level_name		= level;
 
