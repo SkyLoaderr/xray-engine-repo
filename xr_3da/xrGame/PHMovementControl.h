@@ -81,6 +81,7 @@ private:
 	Fbox				boxes	[4];
 
 	u32					trying_times[4];
+	Fvector				trying_poses[4];
 	DWORD				m_dwCurBox;
 	//Fvector				vFootCenter;			// задаются относительно Position()
 	//Fvector				vFootExt;				//

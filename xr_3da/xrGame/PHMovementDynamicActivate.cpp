@@ -296,8 +296,9 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 {
 	if(trying_times[id]!=u32(-1))
 	{
-		if(Device.dwTimeGlobal-trying_times[id]<2000)
-															return false;
+		Fvector dif;dif.sub(trying_poses[id],cast_fv(dBodyGetPosition(m_character->get_body())));
+		if(Device.dwTimeGlobal-trying_times[id]<500&&dif.magnitude()<0.05f)
+																	return false;
 	}
 	if(!m_character||m_character->PhysicsRefObject()->PPhysicsShell())return false;
 	DWORD old_id=BoxID();
@@ -358,12 +359,17 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	vl.l_limit*=(fnum_it*fnum_steps/5.f);
 	vl.y_limit=vl.l_limit;
 ////////////////////////////////////
-	for(int m=0;5>m;++m)
+	for(int m=0;30>m;++m)
 	{
 		Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 		EnableCharacter();
 		m_character->ApplyForce(0,world_gravity*m_character->Mass(),0);
+		max_depth=0.f;
 		ph_world->Step();
+		if(max_depth	<	resolve_depth) 
+		{
+			break;
+		}	
 		ph_world->CutVelocity(max_vel,max_a_vel);
 	}
 	vl.l_limit/=(fnum_it*fnum_steps/5.f);
@@ -424,6 +430,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	if(!ret)
 	{
 		trying_times[id]=Device.dwTimeGlobal;
+		trying_poses[id].set(cast_fv(dBodyGetPosition(m_character->get_body())));
 	}
 	else
 	{

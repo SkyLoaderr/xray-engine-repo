@@ -1138,7 +1138,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 
-	if((g1==m_cap_transform||g2==m_cap_transform||g1==m_shell_transform||g2==m_shell_transform))
+	if(g1==m_hat_transform||g2==m_hat_transform)
 	{
 		b_side_contact=true;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
@@ -1256,8 +1256,8 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 void CPHSimpleCharacter::FootProcess(dContact* c,bool &do_collide ,bool bo)
 {
-	if(m_elevator_state.Active()||!is_control)		return;
-
+	if(m_elevator_state.Active()||!is_control||!b_clamb_jump||b_side_contact)		return;
+			
 ///////////////////////////////////////////////////////////////////////////////////
 			dReal*		normal				=c->geom.normal						;
 			dReal*		pos					=c->geom.pos						;
