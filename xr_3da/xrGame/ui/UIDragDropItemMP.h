@@ -43,38 +43,25 @@ class CUIDragDropItemMP: public CUIDragDropItem
 
 	bool			m_bIsInfinite;
 public:
-	CUIDragDropItemMP():	slotNum						(0),
-							sectionNum					(0),
-							bAddonsAvailable			(false),
-							cost						(0),
-							m_bAlreadyPaid				(false),
-							m_bHasRealRepresentation	(false)
-	{
-		std::strcpy(m_strAddonTypeNames[0], "Silencer");
-		std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
-		std::strcpy(m_strAddonTypeNames[2], "Scope");
-
-		for (u8 i = 0; i < NUM_OF_ADDONS; ++i)
-			m_pAddon[i] = NULL;
-	}
+		CUIDragDropItemMP						();
 	// Для слота
-	void SetSlot(int slot);
-	u32	 GetSlot()								{ return slotNum; }
+	void SetSlot								(int slot);
+	u32	 GetSlot								()								{ return slotNum; }
 	// Получаем номер группы секций (нож - 0, пистолы - 1, et cetera)
-	void SetSectionGroupID(u32 section)			{ sectionNum = section; }
-	u32	 GetSectionGroupID()					{ return sectionNum; }
+	void SetSectionGroupID						(u32 section)			{ sectionNum = section; }
+	u32	 GetSectionGroupID						()					{ return sectionNum; }
 	// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
-	void SetSectionName(const char *pData)		{ strName = pData; }
-	const char * GetSectionName() const			{ return strName.c_str(); }
+	void SetSectionName							(const char *pData)		{ strName = pData; }
+	const char * GetSectionName					() const			{ return strName.c_str(); }
 	// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
 	// вещь
-	void SetOwner(CUIDragDropList *pOwner)		{ R_ASSERT(pOwner); m_pOwner = pOwner; }
-	CUIDragDropList * GetOwner()				{ return m_pOwner; }
+	void SetOwner								(CUIDragDropList *pOwner)		{ R_ASSERT(pOwner); m_pOwner = pOwner; }
+	CUIDragDropList * GetOwner					()				{ return m_pOwner; }
 	// Номер элемента в группе секций
-	void SetPosInSectionsGroup(const u32 pos)	{ posInSection = pos; }
-	u32 GetPosInSectionsGroup() const 			{ return posInSection; }
-	void SetPosInSubSection(const u32 pos)		{ posInSubSection = pos; }
-	u32 GetPosInSubSection() const				{ return posInSubSection; }
+	void SetPosInSectionsGroup					(const u32 pos)	{ posInSection = pos; }
+	u32 GetPosInSectionsGroup					() const 			{ return posInSection; }
+	void SetPosInSubSection						(const u32 pos)		{ posInSubSection = pos; }
+	u32 GetPosInSubSection						() const				{ return posInSubSection; }
 
 	// Структура информации о аддоне
 	typedef struct tAddonInfo

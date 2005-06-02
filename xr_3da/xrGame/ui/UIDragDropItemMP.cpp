@@ -14,6 +14,22 @@
 #include "../HUDManager.h"
 
 //////////////////////////////////////////////////////////////////////////
+CUIDragDropItemMP::CUIDragDropItemMP()
+:slotNum					(0),
+sectionNum					(0),
+bAddonsAvailable			(false),
+cost						(0),
+m_bAlreadyPaid				(false),
+m_bHasRealRepresentation	(false)
+{
+	std::strcpy(m_strAddonTypeNames[0], "Silencer");
+	std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
+	std::strcpy(m_strAddonTypeNames[2], "Scope");
+
+	for (u8 i = 0; i < NUM_OF_ADDONS; ++i)
+		m_pAddon[i] = NULL;
+}
+
 
 void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bool bRealRepresentationSet)
 {
