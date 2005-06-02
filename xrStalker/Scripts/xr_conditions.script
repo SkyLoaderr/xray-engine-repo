@@ -134,7 +134,7 @@ end
 
 
 ------------------------------------------------------------------------------------
--- Special functions for Garbage
+-- Special functions for Dark Valley
 ------------------------------------------------------------------------------------
 function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
