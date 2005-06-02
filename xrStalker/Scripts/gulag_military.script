@@ -690,7 +690,7 @@ function check_state (gulag)
              return 2
            else
              printf ("GULAG SET TO STATE 1") 
-             return 1
+             return 2
           end
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
@@ -700,22 +700,21 @@ function check_state (gulag)
        end
     end            
     printf ("GULAG SET TO STATE %d", gulag.state) 
+    
     if db.actor:has_info ("mil_freedom_attack") then
-       if db.actor:has_info ("mil_dolg_dead") then
-          return 0
-       else
-          return 3
-       end
-    end              
+       return 3
+    end   
     return 0
 end
 
 function check_enemy (gulag)
     for k,v in gulag.Object do
         if v:best_enemy () ~= nil then 
+           printf ("GULAG HAS ENEMY AT %d", device ():time_global ())
            return true
         end
     end       
+    printf ("GULAG DONT HAS ENEMY AT %d", device ():time_global ())
     return false
 end
 

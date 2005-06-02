@@ -1,7 +1,6 @@
 ;-------------------------------------------------------------------------------------------------
 ;-- Military Freedom base
 ;-------------------------------------------------------------------------------------------------
-; -- logic@mil_freedom_stalker3 - стукач
 ;-------------------------------------------------------------------------------------------------
 ;normal state
 ;-------------------------------------------------------------------------------------------------
@@ -451,9 +450,9 @@ wounded_enabled = false
 
 ;------------------------------------- Скряга --------------------------------------
 [logic@mil_freedom_trader_combat1]
-active = camper1@mil_freedom_trader_combat1
+active = walker1@mil_freedom_trader_combat1
 
-[camper1@mil_freedom_trader_combat1]
+[walker1@mil_freedom_trader_combat1]
 path_walk = trader_walk2
 path_look = trader_look2
 radius = 1
@@ -739,9 +738,9 @@ no_retreat = true
 [camper13@mil_freedom_max_attack]
 path_walk = attack_way7_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_max_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_max_attack
 no_retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_max_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_max_attack
 
 [walker14@mil_freedom_max_attack]
 path_walk = attack_way7_5
@@ -751,7 +750,7 @@ on_signal = search | walker15@mil_freedom_max_attack
 [walker15@mil_freedom_max_attack]
 path_walk = attack_way7_4
 path_look = attack_look4
-on_signal = return | walker1@mil_freedom_max_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Мужик у костра 1-----------------------
 [logic@mil_freedom_stalker1_attack]
@@ -777,14 +776,14 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker1_attack]
 path_walk = attack_way9_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker1_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker1_attack
 retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker1_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker1_attack
 
 [walker14@mil_freedom_stalker1_attack]
 path_walk = attack_way9_4
 path_look = attack_look4
-on_signal = return | kamp@mil_freedom_stalker1_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Мужик у костра 2-----------------------
 [logic@mil_freedom_stalker2_attack]
@@ -811,14 +810,14 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker2_attack]
 path_walk = attack_way8_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker2_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker2_attack
 retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker2_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker2_attack
 
 [walker14@mil_freedom_stalker2_attack]
 path_walk = attack_way8_4
 path_look = attack_look4
-on_signal = return | kamp@mil_freedom_stalker2_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Мужик у костра 3-----------------------
 [logic@mil_freedom_stalker3_attack]
@@ -845,7 +844,7 @@ on_actor_dist_le = 50 | walker4@mil_freedom_stalker3_attack %=mil_courier_quest_
 
 [walker4@mil_freedom_stalker3_attack]
 path_walk = stukach_walk5
-on_signal = return | kamp1@mil_freedom_stalker3_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Патрульный мужик (одиночка)-----------------------
 [logic@mil_freedom_stalker4_attack]
@@ -871,14 +870,14 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker4_attack]
 path_walk = attack_way2_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker4_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker4_attack
 no_retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker4_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker4_attack
 
 [walker14@mil_freedom_stalker4_attack]
 path_walk = attack_way2_4
 path_look = attack_look4
-on_signal = return | walker1@mil_freedom_stalker4_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Патрульный командир -----------------------
 [logic@mil_freedom_stalker5_attack]
@@ -904,15 +903,15 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker5_attack]
 path_walk = attack_way1_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker5_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker5_attack
 no_retreat = true
 radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker5_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker5_attack
 
 [walker14@mil_freedom_stalker5_attack]
 path_walk = attack_way1_4
 path_look = attack_look4
-on_signal = return | walker1@mil_freedom_stalker5_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Патрульный мужик 1 -----------------------
 [logic@mil_freedom_stalker6_attack]
@@ -938,15 +937,15 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker6_attack]
 path_walk = attack_way4_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker6_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker6_attack
 no_retreat = true
 radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker6_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker6_attack
 
 [walker14@mil_freedom_stalker6_attack]
 path_walk = attack_way4_4
 path_look = attack_look4
-on_signal = return | follower@mil_freedom_stalker6_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Патрульный мужик 2 -----------------------
 [logic@mil_freedom_stalker7_attack]
@@ -972,15 +971,15 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker7_attack]
 path_walk = attack_way6_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker7_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker7_attack
 no_retreat = true
 radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker7_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker7_attack
 
 [walker14@mil_freedom_stalker7_attack]
 path_walk = attack_way6_4
 path_look = attack_look4
-on_signal = return | follower@mil_freedom_stalker7_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Мужик на входе 1 -----------------------
 [logic@mil_freedom_stalker8_attack]
@@ -1000,15 +999,15 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker8_attack]
 path_walk = attack_way3_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker8_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker8_attack
 no_retreat = true
 radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker8_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker8_attack
 
 [walker14@mil_freedom_stalker8_attack]
 path_walk = attack_way3_4
 path_look = attack_look4
-on_signal = return | camper1@mil_freedom_stalker8_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Мужик на входе 2 -----------------------
 [logic@mil_freedom_stalker9_attack]
@@ -1028,15 +1027,15 @@ combat_ignore_cond = always
 [camper13@mil_freedom_stalker9_attack]
 path_walk = attack_way5_3
 path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker9_attack %-mil_freedom_attack%
+on_signal = final | walker14@mil_freedom_stalker9_attack
 no_retreat = true
 radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker9_attack
+on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker9_attack
 
 [walker14@mil_freedom_stalker9_attack]
 path_walk = attack_way5_4
 path_look = attack_look4
-on_signal = return | camper1@mil_freedom_stalker9_attack
+on_signal = return | %-mil_freedom_attack% nil
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Гулаг зверей около труб
