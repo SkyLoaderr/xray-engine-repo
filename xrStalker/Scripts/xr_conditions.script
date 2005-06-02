@@ -141,7 +141,11 @@ function val_fighting_captive(actor, npc)
 	-- db.storage[npc:id()].enemy:story_id() == 400
 	-- return db.storage[npc:id()].enemy:name() == "val_escort_captive"
 	return db.storage[npc:id()].enemy:story_id() == 400
-end    
+end
+
+function val_escort_combat_end(actor, npc)
+	return false
+end
 
 function val_fighting_sacrifice_victim(actor, npc)
 	-- FIXME: use SID!!!
