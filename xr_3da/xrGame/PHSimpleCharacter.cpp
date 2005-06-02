@@ -1231,6 +1231,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 			b_valide_wall_contact=true;
 		}
 	}
+	float soft_param=dumping_rate+normal[1]*(1.f-dumping_rate);//=(1.f-normal[1])*dumping_rate +normal[1]
 	if(is_control&&!b_lose_control||b_jumping){
 		if(g1==m_wheel||g2==m_wheel&&!bClimable)
 		{
@@ -1244,11 +1245,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		else{
 				c->surface.mu = 0.00f;
 			}
-		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp ,spring_rate,soft_param);
 	}
 	else
 	{
-		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,soft_param);
  		c->surface.mu *= (1.f+b_clamb_jump*3.f)*m_friction_factor;
 	}
 	UpdateStaticDamage(c,tri_material,bo1);
