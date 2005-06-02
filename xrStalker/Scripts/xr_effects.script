@@ -604,3 +604,19 @@ function gar_send_dolg_warning()
 		end
 	end
 end
+
+-- DARK VALLEY
+function val_escort_set_fight(actor, npc)
+	local st = utils.obj_by_sid(400)
+	if not st or not st:alive() then
+		return
+	end
+
+	--local ignore_actor = distance_between(actor, st) > 10
+	
+	npc:set_relation(game_object.enemy, st)
+	st:set_relation(game_object.enemy, npc)
+
+	npc:set_relation(game_object.enemy, actor)
+	actor:set_relation(game_object.enemy, npc)
+end
