@@ -19,8 +19,8 @@ CStateMonsterRestWalkGraphAbstract::~CStateMonsterRestWalkGraph	()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestWalkGraphAbstract::execute()
 {
-	object->movement().detour_graph_points		();
-	object->set_action				(ACT_WALK_FWD);
-	object->set_state_sound			(MonsterSpace::eMonsterSoundIdle);
+	object->path().detour_graph_points	();
+	object->set_action					(ACT_WALK_FWD);
+	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
 }
 

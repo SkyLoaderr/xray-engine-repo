@@ -38,7 +38,7 @@ public:
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 
-	CAnimTriple		anim_triple_death[FAKE_DEATH_TYPES_COUNT];
+	SAnimationTripleData	anim_triple_death[FAKE_DEATH_TYPES_COUNT];
 	u8				active_triple_idx;
 	
 	u32				time_dead_start;

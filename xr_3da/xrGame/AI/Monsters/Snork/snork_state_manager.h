@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CSnork;
 
-class CStateManagerSnork : public CStateManagerSecond<CSnork> {
-	typedef CStateManagerSecond<CSnork> inherited;
+class CStateManagerSnork : public CMonsterStateManager<CSnork> {
+	typedef CMonsterStateManager<CSnork> inherited;
 
 public:
 						CStateManagerSnork		(CSnork *obj);

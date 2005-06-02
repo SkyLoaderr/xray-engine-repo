@@ -25,9 +25,9 @@ void CStateMonsterLookToPointAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterLookToPointAbstract::execute()
 {
-	object->MotionMan.m_tAction				= data.action.action;
-	object->MotionMan.SetSpecParams			(data.action.spec_params);
-	object->DirMan.face_target				(data.point, data.face_delay);
+	object->anim().m_tAction				= data.action.action;
+	object->anim().SetSpecParams			(data.action.spec_params);
+	object->dir().face_target				(data.point, data.face_delay);
 
 	if (data.action.sound_type != u32(-1)) {
 		if (data.action.sound_delay != u32(-1))
@@ -42,8 +42,8 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterLookToPointAbstract::check_completion()
 {	
 	if (data.action.time_out != 0) {
-		if (time_state_started + data.action.time_out < object->m_current_update) return true;
-	} else if (!object->DirMan.is_turning()) return true;
+		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) return true;
+	} else if (!object->control().direction().is_turning()) return true;
 	return false;
 }
 

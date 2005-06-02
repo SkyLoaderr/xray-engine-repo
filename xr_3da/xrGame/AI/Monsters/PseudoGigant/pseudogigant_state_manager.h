@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CPseudoGigant;
 
-class CStateManagerGigant : public CStateManagerSecond<CPseudoGigant> {
-	typedef CStateManagerSecond<CPseudoGigant> inherited;
+class CStateManagerGigant : public CMonsterStateManager<CPseudoGigant> {
+	typedef CMonsterStateManager<CPseudoGigant> inherited;
 public:
 
 					CStateManagerGigant	(CPseudoGigant *monster); 

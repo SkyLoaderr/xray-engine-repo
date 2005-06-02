@@ -35,6 +35,11 @@ void CStateControllerAttackAbstract::reselect_state()
 		return;
 	}
 
+	if (get_state(eStateControlAttack)->check_start_conditions()) {
+		select_state(eStateControlAttack);
+		return;
+	}
+	
 	if (prev_substate == eStateFaceEnemy) {
 		if (get_state(eStateControlAttack)->check_start_conditions()) {
 			select_state(eStateControlAttack);

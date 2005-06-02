@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../ai_monster_utils.h"
-
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -26,7 +24,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterHitObjectAbstract::execute()
 {
 	object->set_action				(ACT_STAND_IDLE);
-	object->MotionMan.SetSpecParams	(ASP_CHECK_CORPSE);
+	object->anim().SetSpecParams	(ASP_CHECK_CORPSE);
 			
 	if (!m_hitted && (time_state_started + TIME_POINTBREAK < Device.dwTimeGlobal)) {
 		m_hitted		= true;

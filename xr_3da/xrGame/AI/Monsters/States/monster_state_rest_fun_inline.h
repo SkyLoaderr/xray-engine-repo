@@ -41,12 +41,12 @@ void CStateMonsterRestFunAbstract::execute()
 	point.mad		(object->CorpseMan.get_corpse_position(), dir, 2.0f);
 
 	object->set_action									(ACT_RUN);
-	object->movement().set_target_point			(point);
-	object->movement().set_rebuild_time			(100 + u32(50.f * dist));
-	object->movement().set_use_covers			(false);
-	object->movement().set_distance_to_end		(0.5f);
-	object->MotionMan.accel_activate					(eAT_Calm);
-	object->MotionMan.accel_set_braking					(false);
+	object->path().set_target_point			(point);
+	object->path().set_rebuild_time			(100 + u32(50.f * dist));
+	object->path().set_use_covers			(false);
+	object->path().set_distance_to_end		(0.5f);
+	object->anim().accel_activate					(eAT_Calm);
+	object->anim().accel_set_braking					(false);
 	
 	object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
 	

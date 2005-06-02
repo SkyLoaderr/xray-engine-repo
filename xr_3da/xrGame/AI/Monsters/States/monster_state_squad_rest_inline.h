@@ -6,7 +6,6 @@
 #include "state_custom_action.h"
 #include "state_move_to_point.h"
 #include "../../../restricted_object.h"
-#include "../ai_monster_utils.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -61,13 +60,13 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 		SStateDataMoveToPoint data;
 		CMonsterSquad	*squad = monster_squad().get_squad(object);
 		
-		if (object->movement().GetNodeInRadius(squad->GetLeader()->ai_location().level_vertex_id(), 8.f, LEADER_RADIUS, FIND_POINT_ATTEMPTS, data.vertex)) {
+		if (object->control().path_builder().get_node_in_radius(squad->GetLeader()->ai_location().level_vertex_id(), 8.f, LEADER_RADIUS, FIND_POINT_ATTEMPTS, data.vertex)) {
 			data.point			= ai().level_graph().vertex_position(data.vertex);
 		} else {
 			
 			Fvector dest_pos = random_position(squad->GetLeader()->Position(), LEADER_RADIUS);
-			if (!object->movement().restrictions().accessible(dest_pos)) {
-				data.vertex		= object->movement().restrictions().accessible_nearest(dest_pos, data.point);
+			if (!object->control().path_builder().restrictions().accessible(dest_pos)) {
+				data.vertex		= object->control().path_builder().restrictions().accessible_nearest(dest_pos, data.point);
 			} else {
 				data.point		= dest_pos;
 				data.vertex		= u32(-1);

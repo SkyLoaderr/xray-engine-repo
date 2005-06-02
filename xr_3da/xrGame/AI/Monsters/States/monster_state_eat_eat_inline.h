@@ -22,7 +22,7 @@ void CStateMonsterEatingAbstract::initialize()
 	cur_state = prev_state = eStateWalkCloser;
 	time_last_eat = 0;
 
-	object->movement().initialize_movement();	
+	object->path().prepare_builder();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -53,17 +53,17 @@ void CStateMonsterEatingAbstract::execute()
 		object->set_state_sound			(MonsterSpace::eMonsterSoundEat);
 
 		// סתוסעü קאסעü
-		if (time_last_eat + u32(1000/object->db().m_fEatFreq) < object->m_current_update) {
+		if (time_last_eat + u32(1000/object->db().m_fEatFreq) < Device.dwTimeGlobal) {
 			object->conditions().ChangeSatiety(object->db().m_fEatSlice);
 			corpse->m_fFood -= object->db().m_fEatSliceWeight;
-			time_last_eat = object->m_current_update;
+			time_last_eat = Device.dwTimeGlobal;
 		}
 
 	} else {
 		object->set_action							(ACT_WALK_FWD);
 		object->set_state_sound						(MonsterSpace::eMonsterSoundIdle);
-		object->movement().set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
-		object->movement().set_generic_parameters	();
+		object->path().set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
+		object->path().set_generic_parameters	();
 	}
 
 	prev_state = cur_state;	

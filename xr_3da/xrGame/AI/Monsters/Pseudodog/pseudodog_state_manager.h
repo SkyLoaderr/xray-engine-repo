@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CAI_PseudoDog;
 
-class CStateManagerPseudodog : public CStateManagerSecond<CAI_PseudoDog> {
-	typedef CStateManagerSecond<CAI_PseudoDog> inherited;
+class CStateManagerPseudodog : public CMonsterStateManager<CAI_PseudoDog> {
+	typedef CMonsterStateManager<CAI_PseudoDog> inherited;
 	
 public:
 

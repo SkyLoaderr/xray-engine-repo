@@ -1,5 +1,6 @@
 #pragma once
 
+#include "control_combase.h"
 #include "../../../SkeletonAnimated.h"
 
 enum EStateAnimTriple {
@@ -9,37 +10,30 @@ enum EStateAnimTriple {
 	eStateNone
 };
 
-class CMonsterEventManager;
+struct STripleAnimEventData : public ControlCom::IEventData {
+	u32		m_current_state;
+	IC		STripleAnimEventData(u32 state) : m_current_state(state) {}
+};
 
-class CAnimTriple {
+struct SAnimationTripleData : public ControlCom::IComData {
+	MotionID	pool[3];
+	bool		skip_prepare;
+	bool		execute_once;
+};
+
+class CAnimationTriple : public CControl_ComCustom<SAnimationTripleData>{
 	EStateAnimTriple		m_current_state;
 	EStateAnimTriple		m_previous_state;
-	
-	MotionID				pool[3];
-
-	bool					m_active;
-	CMonsterEventManager	*m_event_man;
-
-	bool					m_execute_once;
-
 public:
-						CAnimTriple			();
-	virtual 			~CAnimTriple		();
+	virtual	void	on_capture				();
+	virtual void	on_release				();
+	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);
+	virtual bool	check_start_conditions	();
+	virtual void	activate				();
 
-	virtual void		reinit_external		(CMonsterEventManager *man, const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3, bool b_execute_once = true);
-	
-	virtual void		activate			(bool skip_prepare = false);
-	virtual void		deactivate			();
-
-	virtual bool		is_active			() {return m_active;}
-
-	// завершилась анимация, необходимо выбрать новую
-	virtual bool		prepare_animation	(MotionID &m);
-
-	// завершить фиксированную анимацию (вторую) и перейти к финальной
-	virtual void		pointbreak			();
-
-	EStateAnimTriple	get_state			(){return m_current_state;}
-
+			void	pointbreak				();
+private:
+			void	select_next_state		();
+			void	play_selected			();
 };
 

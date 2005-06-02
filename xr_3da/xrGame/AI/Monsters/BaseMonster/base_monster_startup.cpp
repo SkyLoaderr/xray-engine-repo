@@ -8,82 +8,12 @@
 #include "../ai_monster_jump.h"
 #include "../../../detail_path_manager.h"
 #include "../../../level_navigation_graph.h"
-#include "../ai_monster_movement.h"
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../sound_player.h"
 #include "../../../ai_space.h"
 #include "../state_manager.h"
 #include "../controlled_entity.h"
-
-
-void CBaseMonster::reload	(LPCSTR section)
-{
-	CCustomMonster::reload		(section);
-	CStepManager::reload		(section);
-	movement().reload	(section);
-
-	sound().add(pSettings->r_string(section,"sound_idle"),				16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_eat"),					16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_attack"),				16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack,		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_attack_hit"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_take_damage"),			16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_die"),					16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie,			"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_die_in_anomaly"),		16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDieInAnomaly,"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_threaten"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_landing"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_steal"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_panic"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_growling"),			16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
-}
-
-void CBaseMonster::reinit()
-{
-	inherited::reinit					();
-
-	MotionMan.reinit					();
-
-	EnemyMemory.clear					();
-	SoundMemory.clear					();
-	CorpseMemory.clear					();
-	HitMemory.clear						();
-
-	EnemyMan.reinit						();
-	CorpseMan.reinit					();
-
-	DirMan.reinit						();
-	
-	StateMan->reinit					();
-	CriticalActionInfo->reinit			();
-	
-	Morale.reinit						();
-
-	m_bDamaged						= false;
-	m_bAngry						= false;
-	m_bAggressive					= false;
-	m_bSleep						= false;
-	m_bRunTurnLeft					= false;
-	m_bRunTurnRight					= false;
-
-	state_invisible					= false;
-	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
-
-	m_force_real_speed				= false;
-	m_script_processing_active		= false;
-
-	m_first_update_initialized		= false;
-
-	m_time_last_rotation_jump		= 0;
-
-	if (m_controlled)				m_controlled->on_reinit();
-
-	ignore_collision_hit			= false;
-
-#ifdef DEBUG
-	m_show_debug_info				= 0;
-#endif 
-
-}
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -111,7 +41,77 @@ void CBaseMonster::Load(LPCSTR section)
 
 	settings_load					(section);
 
+	control().load					(section);
 }
+
+void CBaseMonster::reload	(LPCSTR section)
+{
+	CCustomMonster::reload		(section);
+	CStepManager::reload		(section);
+	movement().reload	(section);
+
+	sound().add(pSettings->r_string(section,"sound_idle"),				16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_eat"),					16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_attack"),				16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack,		"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_attack_hit"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit,	"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_take_damage"),			16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage,	"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_die"),					16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie,			"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_die_in_anomaly"),		16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDieInAnomaly,"bip01_head");	
+	sound().add(pSettings->r_string(section,"sound_threaten"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten,	"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_landing"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
+	sound().add(pSettings->r_string(section,"sound_steal"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
+	sound().add(pSettings->r_string(section,"sound_panic"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
+	sound().add(pSettings->r_string(section,"sound_growling"),			16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
+
+	control().reload					(section);
+}
+
+void CBaseMonster::reinit()
+{
+	inherited::reinit					();
+
+	EnemyMemory.clear					();
+	SoundMemory.clear					();
+	CorpseMemory.clear					();
+	HitMemory.clear						();
+
+	EnemyMan.reinit						();
+	CorpseMan.reinit					();
+
+	StateMan->reinit					();
+	CriticalActionInfo->reinit			();
+	
+	Morale.reinit						();
+
+	m_bDamaged						= false;
+	m_bAngry						= false;
+	m_bAggressive					= false;
+	m_bSleep						= false;
+	m_bRunTurnLeft					= false;
+	m_bRunTurnRight					= false;
+
+	state_invisible					= false;
+	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
+
+	m_force_real_speed				= false;
+	m_script_processing_active		= false;
+
+	m_first_update_initialized		= false;
+
+	m_time_last_rotation_jump		= 0;
+
+	if (m_controlled)				m_controlled->on_reinit();
+
+	ignore_collision_hit			= false;
+
+	control().reinit				();
+
+#ifdef DEBUG
+	m_show_debug_info				= 0;
+#endif 
+
+}
+
 
 BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC) 
 {

@@ -424,7 +424,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 #endif
 
-	if( !sndHit[hit_type].empty() ){
+	if( !sndHit[hit_type].empty() && (ALife::eHitTypeTelepatic != hit_type)){
 		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
 		bool bPlaySound = true;
 		

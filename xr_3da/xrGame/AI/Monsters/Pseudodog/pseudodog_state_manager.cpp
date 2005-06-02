@@ -41,11 +41,11 @@ void CStateManagerPseudodog::execute()
 	//if (m_object->CEntityCondition::GetSatiety() < m_object->m_anger_hunger_threshold)								m_object->m_bAngry = true;
 
 	//// если слишком долго рычит - включать универсальную схему
-	//if ((m_object->time_growling !=0) && (m_object->time_growling + MAX_GROWLING_TIME < m_object->m_current_update))			m_object->m_bAngry = true;
+	//if ((m_object->time_growling !=0) && (m_object->time_growling + MAX_GROWLING_TIME < m_object->Device.dwTimeGlobal))			m_object->m_bAngry = true;
 
 	//// если на этом кадре стал злым, сохранить время когда стал злым
-	//if ((prev_angry == false) && m_object->m_bAngry) m_object->m_time_became_angry = m_object->m_current_update;
-	//if (!m_object->m_bAngry && (m_object->m_time_became_angry + MIN_ANGRY_TIME > m_object->m_current_update))		m_object->m_bAngry = true;
+	//if ((prev_angry == false) && m_object->m_bAngry) m_object->m_time_became_angry = m_object->Device.dwTimeGlobal;
+	//if (!m_object->m_bAngry && (m_object->m_time_became_angry + MIN_ANGRY_TIME > m_object->Device.dwTimeGlobal))		m_object->m_bAngry = true;
 
 	//
 	//const CEntityAlive	*enemy		= m_object->EnemyMan.get_enemy();
@@ -67,7 +67,7 @@ void CStateManagerPseudodog::execute()
 	//			case eNormal:
 	//			case eWeak:			state = eStateAttack;  break;
 	//		}
-	//	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) state = eStateHitted;
+	//	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->Device.dwTimeGlobal)) state = eStateHitted;
 	//	else if (m_object->hear_dangerous_sound || m_object->hear_interesting_sound) {
 	//		if (m_object->hear_dangerous_sound)			state = eStateHearInterestingSound;	
 	//		if (m_object->hear_interesting_sound)		state = eStateHearInterestingSound;	
@@ -75,7 +75,7 @@ void CStateManagerPseudodog::execute()
 	//	else								state = eStateRest;
 	//}
 
-	//if ((m_object->time_growling == 0) && (state == eStateCustom)) m_object->time_growling = m_object->m_current_update;
+	//if ((m_object->time_growling == 0) && (state == eStateCustom)) m_object->time_growling = m_object->Device.dwTimeGlobal;
 	//if ((state != eStateCustom)) m_object->time_growling = 0;
 
 	//set_state(state);

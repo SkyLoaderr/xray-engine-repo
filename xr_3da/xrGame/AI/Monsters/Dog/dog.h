@@ -6,7 +6,6 @@
 #include "../controlled_entity.h"
 #include "../../../script_export_space.h"
 
-
 class CAI_Dog : public CBaseMonster, 
 				public CJumping,
 				public CControlledEntity<CAI_Dog> {

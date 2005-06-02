@@ -57,7 +57,7 @@ void CStateBurerAttackGraviAbstract::execute()
 		case ACTION_WAIT_TRIPLE_END:
 			/***************************/
 
-			if (!object->MotionMan.TA_IsActive()) {
+			if (!object->anim().TA_IsActive()) {
 				m_action = ACTION_COMPLETED; 
 			}
 
@@ -68,8 +68,8 @@ void CStateBurerAttackGraviAbstract::execute()
 			break;
 	}
 
-	object->MotionMan.m_tAction	= ACT_STAND_IDLE;	
-	object->DirMan.face_target	(object->EnemyMan.get_enemy(), 500);
+	object->anim().m_tAction	= ACT_STAND_IDLE;	
+	object->dir().face_target	(object->EnemyMan.get_enemy(), 500);
 }
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::finalize()
@@ -85,7 +85,7 @@ void CStateBurerAttackGraviAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	object->MotionMan.TA_Deactivate	();
+	object->anim().TA_Deactivate	();
 	object->DeactivateShield		();
 	object->StopGraviPrepare		();
 	object->set_script_capture		(false);
@@ -100,7 +100,7 @@ bool CStateBurerAttackGraviAbstract::check_start_conditions()
 
 	if (object->EnemyMan.get_enemy_time_last_seen() != Device.dwTimeGlobal) return false; 
 
-	if (!object->DirMan.is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
+	if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
 
 	// всё ок, можно начать грави атаку
 	return true;
@@ -117,7 +117,7 @@ bool CStateBurerAttackGraviAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::ExecuteGraviStart()
 {
-	object->MotionMan.TA_Activate(&object->anim_triple_gravi);
+	object->anim().TA_Activate(object->anim_triple_gravi);
 
 	time_gravi_started			= Device.dwTimeGlobal;
 
@@ -137,7 +137,7 @@ void CStateBurerAttackGraviAbstract::ExecuteGraviContinue()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::ExecuteGraviFire()
 {
-	object->MotionMan.TA_PointBreak();
+	object->anim().TA_PointBreak();
 
 	Fvector from_pos;
 	Fvector target_pos;

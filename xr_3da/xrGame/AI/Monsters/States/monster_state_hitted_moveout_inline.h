@@ -13,30 +13,30 @@ void CStateMonsterHittedMoveOutAbstract::initialize()
 {
 	inherited::initialize();
 	select_target();
-	object->movement().initialize_movement	();	
+	object->path().prepare_builder	();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedMoveOutAbstract::execute()
 {
 	// проверить на завершение пути
-	if (object->movement().detail().time_path_built() > time_state_started) {
-		if (object->movement().IsPathEnd(DIST_TO_PATH_END)) 
+	if (object->control().path_builder().detail().time_path_built() > time_state_started) {
+		if (object->control().path_builder().is_path_end(DIST_TO_PATH_END)) 
 			select_target		();
 	}
 	
 	if (target.node != u32(-1))
-		object->movement().set_target_point	(target.position, target.node);
+		object->path().set_target_point	(target.position, target.node);
 	else
-		object->movement().set_target_point	(object->HitMemory.get_last_hit_position());
+		object->path().set_target_point	(object->HitMemory.get_last_hit_position());
 
 	float dist = object->HitMemory.get_last_hit_position().distance_to(object->Position());
 
 	if (dist > 10.f) object->set_action	(ACT_WALK_FWD);
 	else object->set_action				(ACT_STEAL);
 	
-	object->MotionMan.accel_deactivate	();
-	object->MotionMan.accel_set_braking (false);
+	object->anim().accel_deactivate	();
+	object->anim().accel_set_braking (false);
 	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
 }
 

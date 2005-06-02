@@ -1,8 +1,5 @@
 #pragma once
-
 #include "../state.h"
-#include "../../../ai_debug.h"
-#include "../ai_monster_movement.h"
 
 template<typename _Object>
 class CStateMonsterRestWalkGraph : public CState<_Object> {

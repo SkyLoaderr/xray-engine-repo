@@ -3,9 +3,8 @@
 #include "zombie_state_manager.h"
 #include "../../../profiler.h"
 #include "../../../../skeletonanimated.h"
-#include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
-#include "../ai_monster_movement_space.h"
+#include "../monster_velocity_space.h"
 
 CZombie::CZombie()
 {
@@ -23,53 +22,53 @@ void CZombie::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
-	MotionMan.accel_load			(section);
-	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	anim().accel_load			(section);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 
 	fake_death_count		= 1 + u8(Random.randI(pSettings->r_u8(section,"FakeDeathCount")));
 	health_death_threshold	= pSettings->r_float(section,"StartFakeDeathHealthThreshold");
 
-	if (MotionMan.start_load_shared(CLS_ID)) {
+	if (anim().start_load_shared(CLS_ID)) {
 		
-		SVelocityParam &velocity_none		= movement().get_velocity(MonsterMovement::eVelocityParameterIdle);	
-		SVelocityParam &velocity_turn		= movement().get_velocity(MonsterMovement::eVelocityParameterStand);
-		SVelocityParam &velocity_walk		= movement().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
-		SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-		//SVelocityParam &velocity_walk_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
-		//SVelocityParam &velocity_run_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
-		//SVelocityParam &velocity_steal		= movement().get_velocity(MonsterMovement::eVelocityParameterSteal);
-		//SVelocityParam &velocity_drag		= movement().get_velocity(MonsterMovement::eVelocityParameterDrag);
+		SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+		SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+		SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+		SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+		//SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+		//SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+		//SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+		//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
 
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimDie,				"stand_die_",			0, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimDie,				"stand_die_",			0, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-		MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_REST,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-		MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+		anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+		anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_RUN,			eAnimRun);
+		anim().LinkAction(ACT_EAT,			eAnimStandIdle);
+		anim().LinkAction(ACT_SLEEP,			eAnimStandIdle);
+		anim().LinkAction(ACT_REST,			eAnimStandIdle);
+		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
+		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+		anim().LinkAction(ACT_STEAL,			eAnimWalkFwd);
+		anim().LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
-		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+		anim().AA_Load(pSettings->r_string(section, "attack_params"));
 
-		MotionMan.finish_load_shared();
+		anim().finish_load_shared();
 	}
 
 #ifdef DEBUG	
-	MotionMan.accel_chain_test		();
+	anim().accel_chain_test		();
 #endif
 
 }
@@ -92,25 +91,9 @@ void CZombie::reload(LPCSTR section)
 {
 	inherited::reload(section);
 
-	// Load triple death animations
-	MotionID			def1, def2, def3;
-	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
-	
-	def1				= pSkel->ID_Cycle_Safe("fake_death_0_0");	VERIFY(def1);
-	def2				= pSkel->ID_Cycle_Safe("fake_death_0_1");	VERIFY(def2);
-	def3				= pSkel->ID_Cycle_Safe("fake_death_0_2");	VERIFY(def3);
-	anim_triple_death[0].reinit_external	(&EventMan, def1, def2, def3);
-
-
-	def1				= pSkel->ID_Cycle_Safe("fake_death_1_0");	VERIFY(def1);
-	def2				= pSkel->ID_Cycle_Safe("fake_death_1_1");	VERIFY(def2);
-	def3				= pSkel->ID_Cycle_Safe("fake_death_1_2");	VERIFY(def3);
-	anim_triple_death[1].reinit_external	(&EventMan, def1, def2, def3);
-
-	def1				= pSkel->ID_Cycle_Safe("fake_death_2_0");	VERIFY(def1);
-	def2				= pSkel->ID_Cycle_Safe("fake_death_2_1");	VERIFY(def2);
-	def3				= pSkel->ID_Cycle_Safe("fake_death_2_2");	VERIFY(def3);
-	anim_triple_death[2].reinit_external	(&EventMan, def1, def2, def3);
+	anim().TA_FillData(anim_triple_death[0],	"fake_death_0_0",	"fake_death_0_1",	"fake_death_0_2",	true, false);
+	anim().TA_FillData(anim_triple_death[1],	"fake_death_1_0",	"fake_death_1_1",	"fake_death_1_2",	true, false);
+	anim().TA_FillData(anim_triple_death[2],	"fake_death_2_0",	"fake_death_2_1",	"fake_death_2_2",	true, false);
 }
 
 
@@ -161,14 +144,14 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 	if (!g_Alive()) return;
 	
 	if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
-		if (!MotionMan.TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Device.dwTimeGlobal) && (conditions().GetHealth() < health_death_threshold)) {
+		if (!anim().TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Device.dwTimeGlobal) && (conditions().GetHealth() < health_death_threshold)) {
 			if (conditions().GetHealth() < last_health_fake_death) {
 				
 				if ((last_health_fake_death - conditions().GetHealth()) > (health_death_threshold / fake_death_count)) {
 					
 					active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
-					MotionMan.TA_Activate		(&anim_triple_death[active_triple_idx]);
-					movement().stop_now	();
+					anim().TA_Activate			(anim_triple_death[active_triple_idx]);
+					move().stop					();
 					time_dead_start				= Device.dwTimeGlobal;
 
 					last_health_fake_death		= conditions().GetHealth();
@@ -189,9 +172,7 @@ void CZombie::shedule_Update(u32 dt)
 		if (time_dead_start + TIME_FAKE_DEATH < Device.dwTimeGlobal) {
 			time_dead_start  = 0;
 
-			VERIFY(anim_triple_death[active_triple_idx].is_active());
-
-			MotionMan.TA_PointBreak();	
+			anim().TA_PointBreak();	
 
 			time_resurrect = Device.dwTimeGlobal;
 		}

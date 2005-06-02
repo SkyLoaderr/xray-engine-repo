@@ -18,12 +18,12 @@ void CStateMonsterMoveAroundPointAbstract::execute()
 	//if (data.vertex != u32(-1)) object->MoveToTarget(data.point, data.vertex);
 	//else object->MoveToTarget(data.point);
 
-	//object->MotionMan.m_tAction				= data.action.action;
-	//object->MotionMan.SetSpecParams			(data.action.spec_params);
+	//object->anim().m_tAction				= data.action.action;
+	//object->anim().SetSpecParams			(data.action.spec_params);
 
 	//if (data.accelerated) {
-	//	object->MotionMan.accel_activate	(EAccelType(data.accel_type));
-	//	object->MotionMan.accel_set_braking (data.braking);
+	//	object->anim().accel_activate	(EAccelType(data.accel_type));
+	//	object->anim().accel_set_braking (data.braking);
 	//}
 
 	//if (data.action.sound_type != u32(-1)) {

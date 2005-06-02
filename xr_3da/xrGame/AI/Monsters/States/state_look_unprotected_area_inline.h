@@ -40,9 +40,9 @@ void CStateMonsterLookToUnprotectedAreaAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterLookToUnprotectedAreaAbstract::execute()
 {
-	object->MotionMan.m_tAction				= data.action;
-	object->MotionMan.SetSpecParams			(data.spec_params);
-	object->DirMan.face_target				(target_point);
+	object->anim().m_tAction				= data.action;
+	object->anim().SetSpecParams			(data.spec_params);
+	object->dir().face_target				(target_point);
 
 	if (data.sound_type != u32(-1)) {
 		if (data.sound_delay != u32(-1))
@@ -57,8 +57,8 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterLookToUnprotectedAreaAbstract::check_completion()
 {	
 	if (data.time_out !=0) {
-		if (time_state_started + data.time_out < object->m_current_update) return true;
-	} else 	if (!object->DirMan.is_turning()) return true;
+		if (time_state_started + data.time_out < Device.dwTimeGlobal) return true;
+	} else 	if (!object->control().direction().is_turning()) return true;
 
 	return false;
 }

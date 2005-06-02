@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "boar.h"
 #include "boar_state_manager.h"
-#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"

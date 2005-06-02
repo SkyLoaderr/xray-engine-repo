@@ -1,8 +1,10 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../../../script_export_space.h"
+#include "../anim_triple.h"
 
 class CSnorkJump;
+class CControlJump;
 
 class CSnork :	public CBaseMonster {
 	typedef		CBaseMonster		inherited;
@@ -11,6 +13,9 @@ class CSnork :	public CBaseMonster {
 	SVelocityParam	m_fsVelocityJumpTwo;
 
 	CSnorkJump		*Jump;
+	CControlJump	*m_jump;
+
+	SAnimationTripleData anim_triple_jump;
 
 public:
 					CSnork				();

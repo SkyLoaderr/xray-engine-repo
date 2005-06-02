@@ -75,7 +75,7 @@ public:
 public:
 	virtual bool	use_center_to_aim			() const {return true;}
 
-	CAnimTriple		anim_triple_control;
+	SAnimationTripleData anim_triple_control;
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

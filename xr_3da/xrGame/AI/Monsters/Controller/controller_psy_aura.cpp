@@ -60,8 +60,8 @@ void CPsyAuraController::schedule_update()
 
 		NET_Packet		P;
 		get_object()->u_EventGen(P,GE_HIT, m_actor->ID());
-		P.w_u16			(get_object()->ID());
-		P.w_u16			(get_object()->ID());
+		P.w_u16			(m_actor->ID());
+		P.w_u16			(m_actor->ID());
 		P.w_dir			(hit_dir);
 		P.w_float		(power_down_vel * power_percent);
 		P.w_s16			(BI_NONE);

@@ -2,7 +2,6 @@
 
 #include "../../../level.h"
 #include "state_move_to_point.h"
-#include "../ai_monster_utils.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -33,14 +32,15 @@ void CStateMonsterTestStateAbstract::setup_substates()
 		Fvector dest_pos = Level().CurrentEntity()->Position();
 		dest_pos = random_position(dest_pos, 10.f);
 
-		if (!object->movement().restrictions().accessible(dest_pos)) {
-			data.vertex		= object->movement().restrictions().accessible_nearest(dest_pos, data.point);
+		if (!object->control().path_builder().restrictions().accessible(dest_pos)) {
+			data.vertex		= object->control().path_builder().restrictions().accessible_nearest(dest_pos, data.point);
 		} else {
 			data.point		= dest_pos;
 			data.vertex		= u32(-1);
 		}
 
 		data.action.action		= ACT_RUN;
+		data.action.time_out	= 5000;
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type 		= eAT_Calm;

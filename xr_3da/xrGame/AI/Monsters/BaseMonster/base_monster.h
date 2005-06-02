@@ -9,7 +9,6 @@
 #pragma once
 
 #include "../../../CustomMonster.h"
-#include "../ai_monster_motion.h"
 
 #include "../monster_enemy_memory.h"
 #include "../monster_corpse_memory.h"
@@ -21,12 +20,15 @@
 
 #include "../../../step_manager.h"
 #include "../monster_event_manager.h"
-#include "../direction_manager.h"
 #include "../melee_checker.h"
 #include "../monster_morale.h"
 
+#include "../control_manager.h"
+#include "../control_sequencer.h"
+
+#include "../ai_monster_utils.h"
+
 class CCharacterPhysicsSupport;
-class CAnimTriple;
 class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorCloseToEnemy;
@@ -35,19 +37,18 @@ class CCriticalActionInfo;
 class CJumping;
 class CControlledEntityBase;
 class CMovementManager;
-class CMonsterMovement;
 class IStateManagerBase;
 
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
 
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
 	typedef	CCustomMonster								inherited;
-	typedef CMovementManager							MoveMan;
 	
 public:
-	// friend definitions
-	friend	class			CMotionManager;
-
 							CBaseMonster						();
 	virtual					~CBaseMonster						();
 
@@ -198,11 +199,11 @@ public:
 
 	// Movement Manager
 protected:
-	CMonsterMovement			*m_movement_manager;
+	CControlPathBuilder			*m_movement_manager;
 protected:
 	virtual CMovementManager	*create_movement_manager();
-public:
-	IC		CMonsterMovement	&movement				() const;
+//public:
+	//IC		CControlPathBuilder	&movement				() const;
 
 
 
@@ -260,8 +261,6 @@ public:
 
 	// -----------------------------------------------------------------------------
 	CMonsterEventManager	EventMan;
-	CMotionManager			MotionMan; 
-	CDirectionManager		DirMan;
 	// -----------------------------------------------------------------------------
 
 	CMeleeChecker			MeleeChecker;
@@ -308,6 +307,20 @@ private:
 	bool					ignore_collision_hit;	
 	
 
+	// -----------------------------------------------------------------------------
+public:
+	CControl_Manager		*m_control_manager;
+	CControl_Manager		&control() {return (*m_control_manager);}
+
+	CControlAnimationBase	*m_anim_base;
+	CControlMovementBase	*m_move_base;
+	CControlPathBuilderBase	*m_path_base;
+	CControlDirectionBase	*m_dir_base;
+	
+	CControlAnimationBase	&anim	(){return (*m_anim_base);}
+	CControlMovementBase	&move	(){return (*m_move_base);}
+	CControlPathBuilderBase	&path	(){return (*m_path_base);}
+	CControlDirectionBase	&dir	(){return (*m_dir_base);}
 
 
 // DEBUG stuff

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "poltergeist_state_manager.h"
-#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_attack.h"

@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CZombie;
 
-class CStateManagerZombie : public CStateManagerSecond<CZombie> {
-	typedef CStateManagerSecond<CZombie> inherited;
+class CStateManagerZombie : public CMonsterStateManager<CZombie> {
+	typedef CMonsterStateManager<CZombie> inherited;
 
 public:
 						CStateManagerZombie		(CZombie *obj);

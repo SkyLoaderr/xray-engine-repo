@@ -29,7 +29,7 @@ void CStateZombieAttackRunAbstract::initialize()
 	} else {
 		action = ACT_WALK_FWD;
 	}
-	object->movement().initialize_movement();
+	object->path().prepare_builder();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -37,13 +37,13 @@ void CStateZombieAttackRunAbstract::execute()
 {
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 	
-	object->movement().set_try_min_time	(false);
+	object->path().set_try_min_time	(false);
 	
 	// установка параметров функциональных блоков
-	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	object->movement().set_rebuild_time			(100 + u32(50.f * dist));
-	object->movement().set_distance_to_end		(2.5f);
-	object->movement().set_use_covers			(false);
+	object->path().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->path().set_rebuild_time			(100 + u32(50.f * dist));
+	object->path().set_distance_to_end		(2.5f);
+	object->path().set_use_covers			(false);
 
 	//////////////////////////////////////////////////////////////////////////
 	// обработать squad-данные
@@ -58,18 +58,18 @@ void CStateZombieAttackRunAbstract::execute()
 	//////////////////////////////////////////////////////////////////////////
 
 	if (squad_active) {
-		object->movement().set_use_dest_orient	(true);
-		object->movement().set_dest_direction	(command.direction);
+		object->path().set_use_dest_orient	(true);
+		object->path().set_dest_direction	(command.direction);
 	}
 	
 	// установка параметров функциональных блоков
-	object->MotionMan.m_tAction					= action;	
+	object->anim().m_tAction					= action;	
 	if (action == ACT_RUN) 
-		object->movement().set_try_min_time	(true);
+		object->path().set_try_min_time	(true);
 	
 	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
-	object->MotionMan.accel_activate			(eAT_Aggressive);
-	object->MotionMan.accel_set_braking			(false);
+	object->anim().accel_activate			(eAT_Aggressive);
+	object->anim().accel_set_braking			(false);
 }
 
 TEMPLATE_SPECIALIZATION

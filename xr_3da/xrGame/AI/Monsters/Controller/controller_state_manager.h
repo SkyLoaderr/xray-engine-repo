@@ -1,11 +1,11 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CController;
 
-class CStateManagerController : public CStateManagerSecond<CController> {
+class CStateManagerController : public CMonsterStateManager<CController> {
 
-	typedef CStateManagerSecond<CController> inherited;
+	typedef CMonsterStateManager<CController> inherited;
 
 public:
 						CStateManagerController		(CController *obj);

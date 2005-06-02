@@ -3,11 +3,9 @@
 #include "chimera_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../detail_path_manager.h"
-#include "../ai_monster_movement.h"
-#include "../ai_monster_movement_space.h"
+#include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../PhysicsShell.h"
-#include "../ai_monster_utils.h"
 
 CChimera::CChimera()
 {
@@ -25,92 +23,92 @@ void CChimera::Load(LPCSTR section)
 	inherited::Load			(section);
 	CJumpingAbility::load	(section);
 
-	MotionMan.accel_load			(section);
-	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
-	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+	anim().accel_load			(section);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 
 	//*****************************************************************************
 	// load shared motion data
 	//*****************************************************************************
 
-	if (MotionMan.start_load_shared(CLS_ID)) {
+	if (anim().start_load_shared(CLS_ID)) {
 
-		SVelocityParam &velocity_none		= movement().get_velocity(MonsterMovement::eVelocityParameterIdle);	
-		SVelocityParam &velocity_turn		= movement().get_velocity(MonsterMovement::eVelocityParameterStand);
-		SVelocityParam &velocity_walk		= movement().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
-		SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-		SVelocityParam &velocity_walk_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
-		SVelocityParam &velocity_run_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
-		SVelocityParam &velocity_steal		= movement().get_velocity(MonsterMovement::eVelocityParameterSteal);
-		SVelocityParam &velocity_drag		= movement().get_velocity(MonsterMovement::eVelocityParameterDrag);
+		SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+		SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+		SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+		SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+		SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+		SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+		SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+		SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
 
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
-		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
+		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
+		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimLieIdle,			"lie_sleep_",			-1, &velocity_none,				PS_LIE);
-		MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, &velocity_none,				PS_LIE);
+		anim().AddAnim(eAnimLieIdle,			"lie_sleep_",			-1, &velocity_none,				PS_LIE);
+		anim().AddAnim(eAnimSleep,			"lie_sleep_",			-1, &velocity_none,				PS_LIE);
 
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND);
-		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &velocity_walk_dmg,	PS_STAND);
-		MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
-		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND);
-		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
+		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND);
+		anim().AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &velocity_walk_dmg,	PS_STAND);
+		anim().AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
+		anim().AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND);
+		anim().AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &velocity_drag,				PS_STAND);
-		MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,			PS_STAND);
-		MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &velocity_none,				PS_STAND);
-		MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &velocity_drag,				PS_STAND);
+		anim().AddAnim(eAnimLookAround,		"stand_idle_",			 2, &velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,			PS_STAND);
+		anim().AddAnim(eAnimDie,				"stand_idle_",			-1, &velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &velocity_none,				PS_STAND);
 
-		MotionMan.AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &velocity_run,		PS_STAND);
+		anim().AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &velocity_run,		PS_STAND);
 
 		//////////////////////////////////////////////////////////////////////////
 
-		MotionMan.AddAnim(eAnimUpperStandIdle,		"stand_up_idle_",		-1, &velocity_none,			PS_STAND_UPPER);
-		MotionMan.AddAnim(eAnimUpperStandTurnLeft,	"stand_up_turn_ls_",	-1, &velocity_turn,	PS_STAND_UPPER);
-		MotionMan.AddAnim(eAnimUpperStandTurnRight,	"stand_up_turn_rs_",	-1, &velocity_turn,	PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperStandIdle,		"stand_up_idle_",		-1, &velocity_none,			PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperStandTurnLeft,	"stand_up_turn_ls_",	-1, &velocity_turn,	PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperStandTurnRight,	"stand_up_turn_rs_",	-1, &velocity_turn,	PS_STAND_UPPER);
 
-		MotionMan.AddAnim(eAnimStandToUpperStand,	"stand_upper_",			-1, &velocity_none,			PS_STAND);
-		MotionMan.AddAnim(eAnimUppperStandToStand,	"stand_up_to_down_",	-1, &velocity_none,			PS_STAND_UPPER);
+		anim().AddAnim(eAnimStandToUpperStand,	"stand_upper_",			-1, &velocity_none,			PS_STAND);
+		anim().AddAnim(eAnimUppperStandToStand,	"stand_up_to_down_",	-1, &velocity_none,			PS_STAND_UPPER);
 
-		MotionMan.AddAnim(eAnimUpperWalkFwd,		"stand_up_walk_fwd_",	-1, &m_fsVelocityWalkUpper,							PS_STAND_UPPER);
-		MotionMan.AddAnim(eAnimUpperThreaten,		"stand_up_threaten_",	-1, &velocity_none,			PS_STAND_UPPER);
-		MotionMan.AddAnim(eAnimUpperAttack,			"stand_up_attack_",		-1, &velocity_turn,	PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperWalkFwd,		"stand_up_walk_fwd_",	-1, &m_fsVelocityWalkUpper,							PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperThreaten,		"stand_up_threaten_",	-1, &velocity_none,			PS_STAND_UPPER);
+		anim().AddAnim(eAnimUpperAttack,			"stand_up_attack_",		-1, &velocity_turn,	PS_STAND_UPPER);
 
 		//////////////////////////////////////////////////////////////////////////
 		// define transitions
-		MotionMan.AddTransition(PS_STAND,			PS_STAND_UPPER,		eAnimStandToUpperStand,		false);
-		MotionMan.AddTransition(PS_STAND_UPPER,		PS_STAND,			eAnimUppperStandToStand,	false);
+		anim().AddTransition(PS_STAND,			PS_STAND_UPPER,		eAnimStandToUpperStand,		false);
+		anim().AddTransition(PS_STAND_UPPER,		PS_STAND,			eAnimUppperStandToStand,	false);
 
 		// link action
-		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
-		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
-		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
-		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
-		MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
-		MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
-		MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
-		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
-		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
+		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+		anim().LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
+		anim().LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
+		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
+		anim().LinkAction(ACT_RUN,			eAnimRun);
+		anim().LinkAction(ACT_EAT,			eAnimEat);
+		anim().LinkAction(ACT_SLEEP,			eAnimSleep);
+		anim().LinkAction(ACT_REST,			eAnimLieIdle);
+		anim().LinkAction(ACT_DRAG,			eAnimDragCorpse);
+		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+		anim().LinkAction(ACT_STEAL,			eAnimSteal);
+		anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 
-		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+		anim().AA_Load(pSettings->r_string(section, "attack_params"));
 
-		MotionMan.finish_load_shared();
+		anim().finish_load_shared();
 	}
 
 #ifdef DEBUG	
-	MotionMan.accel_chain_test		();
+	anim().accel_chain_test		();
 #endif
 
 	//*****************************************************************************
@@ -142,33 +140,33 @@ void CChimera::reinit()
 void CChimera::SetTurnAnimation(bool turn_left)
 {
 	if (b_upper_state) 
-		(turn_left) ? MotionMan.SetCurAnim(eAnimUpperStandTurnLeft) : MotionMan.SetCurAnim(eAnimUpperStandTurnRight);
+		(turn_left) ? anim().SetCurAnim(eAnimUpperStandTurnLeft) : anim().SetCurAnim(eAnimUpperStandTurnRight);
 	else 
-		(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft)		: MotionMan.SetCurAnim(eAnimStandTurnRight);
+		(turn_left) ? anim().SetCurAnim(eAnimStandTurnLeft)		: anim().SetCurAnim(eAnimStandTurnRight);
 }
 
 void CChimera::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
 		if (b_upper_state)
-			MotionMan.SetCurAnim(eAnimUpperThreaten);
+			anim().SetCurAnim(eAnimUpperThreaten);
 		else 
-			MotionMan.SetCurAnim(eAnimThreaten);
+			anim().SetCurAnim(eAnimThreaten);
 	}
 
 	if ((spec_params & ASP_ATTACK_RUN) == ASP_ATTACK_RUN) {
-		MotionMan.SetCurAnim(eAnimAttackRun);
+		anim().SetCurAnim(eAnimAttackRun);
 	}
 
 	if (b_upper_state) {
-		switch (MotionMan.GetCurAnim()) {
-			case eAnimAttack:			MotionMan.SetCurAnim(eAnimUpperAttack);			break;
+		switch (anim().GetCurAnim()) {
+			case eAnimAttack:			anim().SetCurAnim(eAnimUpperAttack);			break;
 			case eAnimRun:
-			case eAnimWalkFwd:			MotionMan.SetCurAnim(eAnimUpperWalkFwd);		break;
-			case eAnimStandTurnLeft:	MotionMan.SetCurAnim(eAnimUpperStandTurnLeft);	break;
-			case eAnimStandTurnRight:	MotionMan.SetCurAnim(eAnimUpperStandTurnRight); break;
-			case eAnimThreaten:			MotionMan.SetCurAnim(eAnimUpperThreaten);		break;
-			case eAnimStandIdle:		MotionMan.SetCurAnim(eAnimUpperStandIdle);		break;
+			case eAnimWalkFwd:			anim().SetCurAnim(eAnimUpperWalkFwd);		break;
+			case eAnimStandTurnLeft:	anim().SetCurAnim(eAnimUpperStandTurnLeft);	break;
+			case eAnimStandTurnRight:	anim().SetCurAnim(eAnimUpperStandTurnRight); break;
+			case eAnimThreaten:			anim().SetCurAnim(eAnimUpperThreaten);		break;
+			case eAnimStandIdle:		anim().SetCurAnim(eAnimUpperStandIdle);		break;
 		}
 	}
 }
@@ -184,13 +182,13 @@ EAction CChimera::CustomVelocityIndex2Action(u32 velocity_index)
 
 void CChimera::TranslateActionToPathParams()
 {
-	if (!movement().b_enable_movement) return;
+	if (!path().enabled()) return;
 
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
 
-	switch (MotionMan.m_tAction) {
+	switch (anim().m_tAction) {
 	case ACT_STAND_IDLE: 
 	case ACT_SIT_IDLE:	 
 	case ACT_LIE_IDLE:
@@ -235,7 +233,7 @@ void CChimera::TranslateActionToPathParams()
 		vel_mask = MonsterMovement::eVelocityParamsDrag;
 		des_mask = MonsterMovement::eVelocityParameterDrag;
 
-		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+		anim().SetSpecParams(ASP_MOVE_BKWD);
 
 		break;
 	case ACT_STEAL:
@@ -247,18 +245,18 @@ void CChimera::TranslateActionToPathParams()
 	if (m_force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		movement().detail().set_velocity_mask	(vel_mask);	
-		movement().detail().set_desirable_mask	(des_mask);
-		movement().enable_path	();		
+		path().set_velocity_mask	(vel_mask);
+		path().set_desirable_mask	(des_mask);
+		path().enable_path			();	
 	} else {
-		movement().disable_path	();
+		path().disable_path			();
 	}
 }
 
 void CChimera::HitEntityInJump(const CEntity *pEntity)
 {
 	SAAParam params;
-	MotionMan.AA_GetParams	(params, "jump_attack_1");
+	anim().AA_GetParams	(params, "jump_attack_1");
 	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 

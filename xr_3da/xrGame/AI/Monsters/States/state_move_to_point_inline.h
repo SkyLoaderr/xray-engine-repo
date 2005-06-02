@@ -10,22 +10,22 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::initialize()
 {
 	inherited::initialize();
-	object->movement().initialize_movement();	
+	object->path().prepare_builder();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::execute()
 {
 	object->set_action									(data.action.action);
-	object->MotionMan.SetSpecParams						(data.action.spec_params);
+	object->anim().SetSpecParams						(data.action.spec_params);
 
-	object->movement().set_target_point			(data.point,data.vertex);
-	object->movement().set_generic_parameters	();
-	object->movement().set_distance_to_end		(data.completion_dist);
+	object->path().set_target_point			(data.point,data.vertex);
+	object->path().set_generic_parameters	();
+	object->path().set_distance_to_end		(data.completion_dist);
 
 	if (data.accelerated) {
-		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
-		object->MotionMan.accel_set_braking (data.braking);
+		object->anim().accel_activate	(EAccelType(data.accel_type));
+		object->anim().accel_set_braking (data.braking);
 	}
 
 	if (data.action.sound_type != u32(-1)) {
@@ -37,7 +37,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterMoveToPointAbstract::check_completion()
 {	
 	if (data.action.time_out !=0) {
-		if (time_state_started + data.action.time_out < object->m_current_update) return true;
+		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) return true;
 	} 
 	
 	if (object->Position().distance_to_xz(data.point) < data.completion_dist) return true;
@@ -55,24 +55,24 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointExAbstract::initialize()
 {
 	inherited::initialize();
-	object->movement().initialize_movement();	
+	object->path().prepare_builder();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointExAbstract::execute()
 {
 	object->set_action									(data.action.action);
-	object->MotionMan.SetSpecParams						(data.action.spec_params);
+	object->anim().SetSpecParams						(data.action.spec_params);
 
-	object->movement().set_target_point			(data.point,data.vertex);
-	object->movement().set_rebuild_time			(data.time_to_rebuild);
-	object->movement().set_distance_to_end		(data.completion_dist);
-	object->movement().set_use_covers			();
-	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->path().set_target_point			(data.point,data.vertex);
+	object->path().set_rebuild_time			(data.time_to_rebuild);
+	object->path().set_distance_to_end		(data.completion_dist);
+	object->path().set_use_covers			();
+	object->path().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 
 	if (data.accelerated) {
-		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
-		object->MotionMan.accel_set_braking (data.braking);
+		object->anim().accel_activate	(EAccelType(data.accel_type));
+		object->anim().accel_set_braking (data.braking);
 	}
 
 	if (data.action.sound_type != u32(-1)) {
@@ -84,7 +84,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterMoveToPointExAbstract::check_completion()
 {	
 	if (data.action.time_out !=0) {
-		if (time_state_started + data.action.time_out < object->m_current_update) return true;
+		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) return true;
 	} 
 
 	if (object->Position().distance_to_xz(data.point) < data.completion_dist) return true;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../ai_monster_utils.h"
-
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -47,21 +45,21 @@ void CStateBurerAttackRunAroundAbstract::initialize()
 		dest_direction.normalize	();
 	}
 	
-	object->movement().initialize_movement();
+	object->path().prepare_builder();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackRunAroundAbstract::execute()
 {
 	if (!fis_zero(dest_direction.square_magnitude())) {
-		object->movement().set_use_dest_orient		(true);
-		object->movement().set_dest_direction		(dest_direction);
+		object->path().set_use_dest_orient		(true);
+		object->path().set_dest_direction		(dest_direction);
 	}
 
 	object->set_action							(ACT_RUN);
-	object->movement().set_target_point			(selected_point);
-	object->movement().set_generic_parameters	();
-	object->movement().set_use_covers			(false);
+	object->path().set_target_point			(selected_point);
+	object->path().set_generic_parameters	();
+	object->path().set_use_covers			(false);
 
 	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
 }
@@ -77,9 +75,9 @@ TEMPLATE_SPECIALIZATION
 bool CStateBurerAttackRunAroundAbstract::check_completion()
 {
 	if ((time_started + TIME_RUN_AWAY < Device.dwTimeGlobal) || 
-		(object->movement().IsMovingOnPath() && object->movement().IsPathEnd(2.f))) {
+		(object->control().path_builder().is_moving_on_path() && object->control().path_builder().is_path_end(2.f))) {
 
-		object->DirMan.face_target(object->EnemyMan.get_enemy());
+		object->dir().face_target(object->EnemyMan.get_enemy());
 		return true;
 	}
 

@@ -3,8 +3,6 @@
 #include "basemonster/base_monster.h"
 #include "../../phmovementcontrol.h"
 #include "../../../skeletoncustom.h"
-#include "direction_manager.h"
-#include "ai_monster_movement.h"
 
 CJumping::CJumping()
 {
@@ -154,9 +152,10 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, const CObject *pO)
 	dest_yaw = angle_normalize(dest_yaw);
 
 	// проверка на max_angle и на dist
-	const CDirectionManager::SAxis &yaw = pMonster->DirMan.heading();
+	float yaw_current, yaw_target;
+	pMonster->control().direction().get_heading(yaw_current, yaw_target);
 
-	if ((angle_difference(yaw.current, dest_yaw) > m_fJumpMaxAngle)|| !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
+	if ((angle_difference(yaw_current, dest_yaw) > m_fJumpMaxAngle)|| !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
 
 	// можно прыгать; инициализировать параметры прыжка
 	active			= true;
@@ -167,7 +166,7 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, const CObject *pO)
 	entity			= pO;
 	ph_time			= 0.f;
 
-	pMonster->DirMan.set_heading			(target_yaw);
+	pMonster->dir().set_heading			(target_yaw);
 	pMonster->movement().enable_movement	(false);
 
 	Start();

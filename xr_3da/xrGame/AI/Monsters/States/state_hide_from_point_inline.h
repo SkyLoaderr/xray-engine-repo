@@ -12,21 +12,21 @@ void CStateMonsterHideFromPointAbstract::initialize()
 {
 	inherited::initialize();
 
-	object->movement().initialize_movement();	
+	object->path().prepare_builder();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHideFromPointAbstract::execute()
 {
 	object->set_action									(data.action.action);
-	object->MotionMan.SetSpecParams						(data.action.spec_params);
+	object->anim().SetSpecParams						(data.action.spec_params);
 	
-	object->movement().set_retreat_from_point	(data.point);
-	object->movement().set_generic_parameters	();
+	object->path().set_retreat_from_point	(data.point);
+	object->path().set_generic_parameters	();
 
 	if (data.accelerated) {
-		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
-		object->MotionMan.accel_set_braking (data.braking);
+		object->anim().accel_activate	(EAccelType(data.accel_type));
+		object->anim().accel_set_braking (data.braking);
 	}
 
 	if (data.action.sound_type != u32(-1)) {
@@ -38,7 +38,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterHideFromPointAbstract::check_completion()
 {	
 	if (data.action.time_out !=0) {
-		if (time_state_started + data.action.time_out < object->m_current_update) 
+		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) 
 			return true;
 	} 
 

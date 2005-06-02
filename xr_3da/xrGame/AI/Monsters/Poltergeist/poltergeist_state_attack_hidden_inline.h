@@ -17,25 +17,25 @@ void CStatePoltergeistAttackHiddenAbstract::initialize()
 {
 	inherited::initialize();
 	select_target_point();
-	object->movement().initialize_movement();
+	object->path().prepare_builder();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStatePoltergeistAttackHiddenAbstract::execute()
 {
 	// проверить на завершение пути
-	if (object->movement().detail().time_path_built() > time_state_started) {
-		if (object->movement().IsPathEnd(DIST_TO_PATH_END)) select_target_point();
+	if (object->control().path_builder().detail().time_path_built() > time_state_started) {
+		if (object->control().path_builder().is_path_end(DIST_TO_PATH_END)) select_target_point();
 	}
 	
-	object->movement().set_target_point		(m_target.point, m_target.node);
-	object->movement().set_rebuild_time		(5000);
-	object->movement().set_distance_to_end	(3.f);
-	object->movement().set_use_covers		(false);
+	object->path().set_target_point		(m_target.point, m_target.node);
+	object->path().set_rebuild_time		(5000);
+	object->path().set_distance_to_end	(3.f);
+	object->path().set_use_covers		(false);
 
-	object->MotionMan.m_tAction			= ACT_RUN;
-	object->MotionMan.accel_activate	(eAT_Aggressive);
-	object->MotionMan.accel_set_braking (false);
+	object->anim().m_tAction			= ACT_RUN;
+	object->anim().accel_activate	(eAT_Aggressive);
+	object->anim().accel_set_braking (false);
 	object->sound().play				(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 }
 

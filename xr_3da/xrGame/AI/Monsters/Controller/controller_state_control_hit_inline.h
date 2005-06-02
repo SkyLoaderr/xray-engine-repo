@@ -47,7 +47,7 @@ void CStateControllerControlHitAbstract::execute()
 			break;
 
 		case eActionWaitTripleEnd:
-			if (!object->MotionMan.TA_IsActive()) {
+			if (!object->anim().TA_IsActive()) {
 				m_action = eActionCompleted; 
 			}
 
@@ -55,8 +55,8 @@ void CStateControllerControlHitAbstract::execute()
 			break;
 	}
 
-	object->MotionMan.m_tAction = ACT_STAND_IDLE;	
-	object->DirMan.face_target(object->EnemyMan.get_enemy(), 1200);
+	object->anim().m_tAction = ACT_STAND_IDLE;	
+	object->dir().face_target(object->EnemyMan.get_enemy(), 1200);
 
 	object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 }
@@ -90,7 +90,7 @@ void CStateControllerControlHitAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 	
-	object->MotionMan.TA_Deactivate();
+	object->anim().TA_Deactivate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,17 +101,17 @@ void CStateControllerControlHitAbstract::critical_finalize()
 TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::execute_hit_prepare()
 {
-	object->MotionMan.TA_Activate(&object->anim_triple_control);
+	object->anim().TA_Activate(object->anim_triple_control);
 	object->play_control_sound_start();
 
-	time_control_started = object->m_current_update;
+	time_control_started = Device.dwTimeGlobal;
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::execute_hit_continue()
 {
 	// проверить на грави удар
-	if (time_control_started + CONTROL_PREPARE_TIME < object->m_current_update) {
+	if (time_control_started + CONTROL_PREPARE_TIME < Device.dwTimeGlobal) {
 		m_action = eActionFire;
 	}
 }
@@ -119,7 +119,7 @@ void CStateControllerControlHitAbstract::execute_hit_continue()
 TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::execute_hit_fire()
 {
-	object->MotionMan.TA_PointBreak();
+	object->anim().TA_PointBreak();
 	
 	if (object->EnemyMan.see_enemy_now()) object->control_hit();
 }

@@ -8,7 +8,6 @@
 #include "../ai_monster_squad_manager.h"
 #include "../../../xrserver_objects_alife_monsters.h"
 #include "../ai_monster_jump.h"
-#include "../ai_monster_utils.h"
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../seniority_hierarchy_holder.h"
@@ -22,8 +21,7 @@
 #include "../../../hudmanager.h"
 #include "../../../memory_manager.h"
 #include "../../../visual_memory_manager.h"
-#include "../ai_monster_movement.h"
-#include "../ai_monster_movement_space.h"
+#include "../monster_velocity_space.h"
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
 #include "../../../level.h"
@@ -33,13 +31,14 @@
 
 CBaseMonster::CBaseMonster()
 {
-	m_movement_manager				= 0;
-
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 	
 	m_pPhysics_support				->in_Init();
 
 	// Components external init 
+	
+	m_control_manager				= xr_new<CControl_Manager>(this);
+
 
 	EnemyMemory.init_external		(this, 20000);
 	SoundMemory.init_external		(this, 20000);
@@ -50,18 +49,30 @@ CBaseMonster::CBaseMonster()
 	CorpseMan.init_external			(this);
 
 	// »нициализаци€ параметров анимации	
-	MotionMan.Init					(this);
 
 	StateMan						= 0;
 
 	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
 
-	DirMan.init_external			(this);
 	MeleeChecker.init_external		(this);
 	Morale.init_external			(this);
 
 	m_jumping						= 0;
 	m_controlled					= 0;
+
+	m_anim_base						= xr_new<CControlAnimationBase>		();
+	m_move_base						= xr_new<CControlMovementBase>		();
+	m_path_base						= xr_new<CControlPathBuilderBase>	();
+	m_dir_base						= xr_new<CControlDirectionBase>		();
+
+	control().add					(m_anim_base, ControlCom::eControlAnimationBase);
+	control().add					(m_move_base, ControlCom::eControlMovementBase);
+	control().add					(m_path_base, ControlCom::eControlPathBase);
+	control().add					(m_dir_base,  ControlCom::eControlDirBase);
+
+	control().set_base_controller	(m_anim_base, ControlCom::eControlAnimation);
+	control().set_base_controller	(m_move_base, ControlCom::eControlMovement);
+	control().set_base_controller	(m_dir_base,  ControlCom::eControlDir);
 }
 
 
@@ -73,41 +84,49 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_cover_evaluator_close_point);
 	
 	xr_delete(CriticalActionInfo);
-}
 
+	xr_delete(m_control_manager);
+
+	xr_delete(m_anim_base);
+	xr_delete(m_move_base);
+	xr_delete(m_path_base);
+	xr_delete(m_dir_base);
+}
 
 void CBaseMonster::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	
 	if (g_Alive()) {
-		// обновить анимации и установить параметры скорости
-		MotionMan.FrameUpdate				();
-
+		
 		// ѕроверка состо€ни€ анимации (атака)
 		AA_CheckHit							();
 
 		// ќбновить линейную скорости движени€
-		movement().update_velocity			();
+		//movement().update_velocity			();
 
 		// ќбновить направление объекта, его угловые скорости движени€
-		DirMan.update_frame					();
+		//dir().update_frame					();
 
 		CStepManager::update				();
 	}
+
+	control().update_frame();
 
 	m_pPhysics_support->in_UpdateCL();
 }
 
 void CBaseMonster::shedule_Update(u32 dt)
 {
+	// finalize initialization of the object on the first update
 	if (!m_first_update_initialized) {
 		on_first_update();
 		m_first_update_initialized	= true;
 	}
 
 	inherited::shedule_Update	(dt);
+	control().update_schedule	();
+
 	Morale.update_schedule		(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
@@ -187,23 +206,13 @@ void CBaseMonster::ChangeTeam(int team, int squad, int group)
 
 void CBaseMonster::SetTurnAnimation(bool turn_left)
 {
-	(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+	(turn_left) ? anim().SetCurAnim(eAnimStandTurnLeft) : anim().SetCurAnim(eAnimStandTurnRight);
 }
 
 bool CBaseMonster::IsVisibleObject(const CGameObject *object)
 {
 	return memory().visual().visible_now(object);
 }
-
-//void CBaseMonster::PitchCorrection()
-//{
-//	bool b_need_pitch_correction = true;
-//	
-//	if (ability_can_jump()) {
-//		if (m_jumping && m_jumping->IsActive()) b_need_pitch_correction = false;
-//	}
-//	if (b_need_pitch_correction) inherited::PitchCorrection();
-//}
 
 void CBaseMonster::set_state_sound(u32 type, bool once)
 {
@@ -239,13 +248,11 @@ BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 
 void CBaseMonster::TranslateActionToPathParams()
 {
-	if (!movement().b_enable_movement) return;
-
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
 
-	switch (MotionMan.m_tAction) {
+	switch (anim().m_tAction) {
 	case ACT_STAND_IDLE: 
 	case ACT_SIT_IDLE:	 
 	case ACT_LIE_IDLE:
@@ -281,7 +288,7 @@ void CBaseMonster::TranslateActionToPathParams()
 		vel_mask = MonsterMovement::eVelocityParamsDrag;
 		des_mask = MonsterMovement::eVelocityParameterDrag;
 
-		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+		anim().SetSpecParams(ASP_MOVE_BKWD);
 
 		break;
 	case ACT_STEAL:
@@ -298,11 +305,11 @@ void CBaseMonster::TranslateActionToPathParams()
 	if (m_force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		movement().detail().set_velocity_mask	(vel_mask);	
-		movement().detail().set_desirable_mask	(des_mask);
-		movement().enable_path	();		
+		path().set_velocity_mask	(vel_mask);
+		path().set_desirable_mask	(des_mask);
+		path().enable_path			();
 	} else {
-		movement().disable_path	();
+		path().disable_path			();
 	}
 }
 
@@ -332,12 +339,18 @@ void CBaseMonster::on_first_update()
 
 CMovementManager *CBaseMonster::create_movement_manager	()
 {
-	return		(m_movement_manager = xr_new<CMonsterMovement>(this));
+	m_movement_manager = xr_new<CControlPathBuilder>(this);
+
+	control().add					(m_movement_manager, ControlCom::eControlPath);
+	control().install_path_manager	(m_movement_manager);
+	control().set_base_controller	(m_path_base, ControlCom::eControlPath);
+
+	return			(m_movement_manager);
 }
 
 DLL_Pure *CBaseMonster::_construct	()
 {
-	CCustomMonster::_construct	();
+	inherited::_construct		();
 	CStepManager::_construct	();
 	return						(this);
 }

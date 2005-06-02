@@ -17,9 +17,9 @@ void CStateChimeraThreatenRoarAbstract::execute()
 {
 
 	object->set_action				(ACT_STAND_IDLE);
-	object->MotionMan.SetSpecParams	(ASP_THREATEN);
+	object->anim().SetSpecParams	(ASP_THREATEN);
 	object->set_state_sound			(MonsterSpace::eMonsterSoundThreaten);
-	object->DirMan.face_target		(object->EnemyMan.get_enemy(), 1200);
+	object->dir().face_target		(object->EnemyMan.get_enemy(), 1200);
 }
 
 #define STATE_TIME_OUT	4000

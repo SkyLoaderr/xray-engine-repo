@@ -13,23 +13,23 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::initialize()
 {
 	inherited::initialize();
-	object->movement().initialize_movement	();	
+	object->path().prepare_builder	();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
 	// установка параметров функциональных блоков
-	object->set_action							(ACT_RUN);
-	object->MotionMan.accel_activate			(eAT_Aggressive);
-	object->MotionMan.accel_set_braking			(false);
-	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	object->movement().set_rebuild_time			(object->get_attack_rebuild_time());
-	object->movement().set_use_covers			();
-	object->movement().set_cover_params			(0.1f, 30.f, 1.f, 30.f);
-	object->movement().set_try_min_time			(false);
-	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
-	object->movement().extrapolate_path			(true);
+	object->set_action						(ACT_RUN);
+	object->anim().accel_activate			(eAT_Aggressive);
+	object->anim().accel_set_braking		(false);
+	object->path().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->path().set_rebuild_time			(object->get_attack_rebuild_time());
+	object->path().set_use_covers			();
+	object->path().set_cover_params			(0.1f, 30.f, 1.f, 30.f);
+	object->path().set_try_min_time			(false);
+	object->set_state_sound					(MonsterSpace::eMonsterSoundAttack);
+	object->path().extrapolate_path			(true);
 
 	
 	// обработать squad инфо	
@@ -40,8 +40,8 @@ void CStateMonsterAttackRunAbstract::execute()
 		squad->GetCommand(object, command);
 		
 		if (command.type == SC_ATTACK) {
-			object->movement().set_use_dest_orient	(true);
-			object->movement().set_dest_direction	(command.direction);
+			object->path().set_use_dest_orient	(true);
+			object->path().set_dest_direction	(command.direction);
 		}
 	}
 }
@@ -50,14 +50,14 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::finalize()
 {
 	inherited::finalize					();
-	object->movement().extrapolate_path	(false);
+	object->path().extrapolate_path	(false);
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::critical_finalize()
 {
 	inherited::critical_finalize		();
-	object->movement().extrapolate_path	(false);
+	object->path().extrapolate_path	(false);
 }
 
 

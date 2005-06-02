@@ -20,8 +20,8 @@ CStateMonsterCustomActionAbstract::~CStateMonsterCustomAction()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterCustomActionAbstract::execute()
 {
-	object->MotionMan.m_tAction		= data.action;
-	object->MotionMan.SetSpecParams(data.spec_params);
+	object->anim().m_tAction		= data.action;
+	object->anim().SetSpecParams(data.spec_params);
 
 	if (data.sound_type != u32(-1)) {
 		if (data.sound_delay != u32(-1))
@@ -35,7 +35,7 @@ void CStateMonsterCustomActionAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterCustomActionAbstract::check_completion()
 {	
-	if (time_state_started + data.time_out > object->m_current_update) return false;
+	if (time_state_started + data.time_out > Device.dwTimeGlobal) return false;
 	return true;
 }
 

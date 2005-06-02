@@ -8,34 +8,28 @@
 
 #include "stdafx.h"
 #include "base_monster.h"
-#include "../ai_monster_utils.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
 
-static void __stdcall vfPlayEndCallBack(CBlend* B)
-{
-	CBaseMonster *pBaseMonster = (CBaseMonster*)B->CallbackParam;
-	pBaseMonster->MotionMan.OnAnimationEnd();
-}
-
 // Установка анимации
 void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
-	
-	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
-	
-	if (MotionMan.PrepareAnimation()) {
-		CSkeletonAnimated					*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
-		info.blend							= skeleton_animated->LL_PlayCycle(m_default_bone_part, MotionMan.m_tpCurAnim, TRUE, vfPlayEndCallBack, this);
+	control().animation().update_frame();
 
-		CStepManager::on_animation_start	(MotionMan.m_tpCurAnim, info.blend);
-	}
+	//SCurrentAnimationInfo &info = anim().cur_anim_info();
+	//
+	//if (anim().PrepareAnimation()) {
+	//	CSkeletonAnimated					*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+	//	info.blend							= skeleton_animated->LL_PlayCycle(m_default_bone_part, anim().m_tpCurAnim, TRUE, vfPlayEndCallBack, this);
 
-	// установить скорость текущей анимации
-	if (info.blend && (info.speed.current > 0.f)) {
-		info.blend->speed = info.speed.current;
-	}
+	//	CStepManager::on_animation_start	(anim().m_tpCurAnim, info.blend);
+	//}
+
+	//// установить скорость текущей анимации
+	//if (info.blend && (info.speed.current > 0.f)) {
+	//	info.blend->speed = info.speed.current;
+	//}
 }
 
 
@@ -45,7 +39,7 @@ void CBaseMonster::AA_CheckHit()
 	const CEntityAlive *enemy = EnemyMan.get_enemy();
 
 	SAAParam params;
-	if (!MotionMan.AA_TimeTest(params))  return;
+	if (!anim().AA_TimeTest(params))  return;
 	
 	sound().play(MonsterSpace::eMonsterSoundAttackHit);
 
@@ -75,6 +69,6 @@ void CBaseMonster::AA_CheckHit()
 	if (should_hit) HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
 	
 	MeleeChecker.on_hit_attempt		(should_hit);
-	MotionMan.AA_UpdateLastAttack	(Device.dwTimeGlobal);
+	anim().AA_UpdateLastAttack	(Device.dwTimeGlobal);
 }
 

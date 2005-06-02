@@ -12,7 +12,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterLookActorAbstract::execute()
 {
 	object->set_action			(ACT_STAND_IDLE);
-	object->DirMan.face_target	(Level().CurrentEntity()->Position(), 1200);
+	object->dir().face_target	(Level().CurrentEntity()->Position(), 1200);
 }
 
 
@@ -29,7 +29,7 @@ void CStateMonsterTurnAwayFromActorAbstract::execute()
 	point.mad		(object->Position(), dir, 2.f);
 	
 	object->set_action			(ACT_STAND_IDLE);
-	object->DirMan.face_target	(point, 1200);
+	object->dir().face_target	(point, 1200);
 }
 
 

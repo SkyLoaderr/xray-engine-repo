@@ -20,17 +20,17 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterStealAbstract::initialize()
 {
 	inherited::initialize					();
-	object->movement().initialize_movement	();	
+	object->path().prepare_builder	();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterStealAbstract::execute()
 {
 	object->set_action							(ACT_STEAL);
-	object->MotionMan.accel_activate			(eAT_Calm);
-	object->MotionMan.accel_set_braking			(false);
-	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	object->movement().set_generic_parameters	();
+	object->anim().accel_activate			(eAT_Calm);
+	object->anim().accel_set_braking			(false);
+	object->path().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->path().set_generic_parameters	();
 	object->set_state_sound						(MonsterSpace::eMonsterSoundSteal);
 }
 
@@ -74,8 +74,8 @@ bool CStateMonsterStealAbstract::check_conditions()
 	if (object->HitMemory.is_hit())								return false;
 
 	// Path with minimal deviation
-	if (object->movement().detail().time_path_built() >= time_state_started) {
-		if (object->movement().get_path_angle() > STEAL_MAX_PATH_ANGLE)	return false;
+	if (object->control().path_builder().detail().time_path_built() >= time_state_started) {
+		if (object->path().get_path_angle() > STEAL_MAX_PATH_ANGLE)	return false;
 	}
 	
 	// check distance to enemy

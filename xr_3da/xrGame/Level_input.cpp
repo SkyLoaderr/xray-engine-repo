@@ -322,14 +322,14 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		CObject *obj = Level().Objects.FindObjectByName("m1");
 		if (obj) {
 			CAI_Bloodsucker *monster = smart_cast<CAI_Bloodsucker *>(obj);
-	
-			switch (key) {
-			case DIK_1:	monster->m_alien_control.activate();	break;
-			case DIK_2:	monster->m_alien_control.deactivate();	break;
+			if (monster) {
+				switch (key) {
+				case DIK_1:	monster->m_alien_control.activate();	break;
+				case DIK_2:	monster->m_alien_control.deactivate();	break;
+				}
 			}
 		}
 	#endif
-
 }
 
 void CLevel::IR_OnKeyboardRelease(int key)

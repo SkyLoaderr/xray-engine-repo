@@ -36,7 +36,7 @@ void CStateMonsterDragAbstract::initialize()
 
 	m_corpse_start_position = object->CorpseMan.get_corpse()->Position();
 	
-	object->movement().initialize_movement();	
+	object->path().prepare_builder();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -46,16 +46,16 @@ void CStateMonsterDragAbstract::execute()
 	
 	// Установить параметры движения
 	object->set_action				(ACT_DRAG);
-	object->MotionMan.SetSpecParams	(ASP_MOVE_BKWD);
+	object->anim().SetSpecParams	(ASP_MOVE_BKWD);
 
 	if (m_cover_vertex_id != u32(-1)) {
-		object->movement().set_target_point			(m_cover_position, m_cover_vertex_id);
+		object->path().set_target_point			(m_cover_position, m_cover_vertex_id);
 	} else {
-		object->movement().set_retreat_from_point	(object->CorpseMan.get_corpse()->Position());
+		object->path().set_retreat_from_point	(object->CorpseMan.get_corpse()->Position());
 	}
 
-	object->movement().set_generic_parameters	();
-	object->MotionMan.accel_activate			(eAT_Calm);
+	object->path().set_generic_parameters	();
+	object->anim().accel_activate			(eAT_Calm);
 
 }
 

@@ -48,7 +48,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	
 	// register in sound memory
 	if (power >= db().m_fSoundThreshold) {
-		SoundMemory.HearSound(who,eType,Position,power,m_current_update);
+		SoundMemory.HearSound(who,eType,Position,power,Device.dwTimeGlobal);
  	}
 }
 
@@ -130,7 +130,7 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 	else if ((yaw >= 3 * PI_DIV_4) && (yaw <= 5*PI_DIV_4)) hit_side = eSideBack;
 	else if ((yaw >= 5 * PI_DIV_4) && (yaw <= 7*PI_DIV_4)) hit_side = eSideRight;
 
-	MotionMan.FX_Play	(hit_side, 1.0f);
+	anim().FX_Play	(hit_side, 1.0f);
 
 	HitMemory.add_hit	(who,hit_side);
 

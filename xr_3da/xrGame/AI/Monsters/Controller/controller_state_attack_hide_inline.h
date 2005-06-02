@@ -18,30 +18,30 @@ void CStateControllerHideAbstract::initialize()
 	
 	m_cover_reached		= false;
 	select_target_point();
-	object->movement().initialize_movement();
+	object->path().prepare_builder();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateControllerHideAbstract::execute()
 {
 	// проверить на завершение пути
-	if (object->movement().detail().time_path_built() > time_state_started) {
-		if (object->movement().IsPathEnd(DIST_TO_PATH_END)) {
+	if (object->control().path_builder().detail().time_path_built() > time_state_started) {
+		if (object->control().path_builder().is_path_end(DIST_TO_PATH_END)) {
 			m_cover_reached			= true;
 			select_target_point		();
 		}
 	}
 
 	if (target.node != u32(-1)) 
-		object->movement().set_target_point		(target.position, target.node);
+		object->path().set_target_point		(target.position, target.node);
 	else
-		object->movement().set_retreat_from_point(object->EnemyMan.get_enemy_position());
+		object->path().set_retreat_from_point(object->EnemyMan.get_enemy_position());
 
-	object->movement().set_generic_parameters	();
+	object->path().set_generic_parameters	();
 
-	object->MotionMan.m_tAction			= ACT_RUN;
-	object->MotionMan.accel_activate	(eAT_Aggressive);
-	object->MotionMan.accel_set_braking	(false);
+	object->anim().m_tAction			= ACT_RUN;
+	object->anim().accel_activate	(eAT_Aggressive);
+	object->anim().accel_set_braking	(false);
 	object->sound().play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 }
 
@@ -65,7 +65,7 @@ bool CStateControllerHideAbstract::check_completion()
 	// +enemy doesnt see me
 	if (!object->EnemyMan.get_flags().is(FLAG_ENEMY_DOESNT_SEE_ME)) return false;
 	// +hide more than 3 sec
-	if (time_state_started + MIN_HIDE_TIME > object->m_current_update) return false;
+	if (time_state_started + MIN_HIDE_TIME > Device.dwTimeGlobal) return false;
 	// +should reach at least one target cover point 
 	if (!m_cover_reached) return false;
 

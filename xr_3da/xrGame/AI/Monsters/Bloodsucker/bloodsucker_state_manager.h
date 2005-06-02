@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CAI_Bloodsucker;
 
-class CStateManagerBloodsucker : public CStateManagerSecond<CAI_Bloodsucker> {
-	typedef CStateManagerSecond<CAI_Bloodsucker> inherited;
+class CStateManagerBloodsucker : public CMonsterStateManager<CAI_Bloodsucker> {
+	typedef CMonsterStateManager<CAI_Bloodsucker> inherited;
 
 public:
 					CStateManagerBloodsucker	(CAI_Bloodsucker *monster); 

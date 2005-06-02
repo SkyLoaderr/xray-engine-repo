@@ -3,11 +3,10 @@
 #include "poltergeist_state_manager.h"
 #include "../../../PHMovementControl.h"
 #include "../../../PhysicsShellHolder.h"
-#include "../ai_monster_utils.h"
 #include "../../../ai_debug.h"
 #include "poltergeist_movement.h"
 #include "../../../detail_path_manager.h"
-#include "../ai_monster_movement_space.h"
+#include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../level_debug.h"
 
@@ -37,8 +36,8 @@ void CPoltergeist::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
-	MotionMan.accel_load			(section);
-	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	anim().accel_load			(section);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 
 	LoadFlame(section);
 
@@ -48,58 +47,58 @@ void CPoltergeist::Load(LPCSTR section)
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd, eAnimWalkDamaged);
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,	 eAnimRunDamaged);
+	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd, eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,	 eAnimRunDamaged);
 	
-	if (MotionMan.start_load_shared(CLS_ID)) {
+	if (anim().start_load_shared(CLS_ID)) {
 
-		SVelocityParam &velocity_none		= movement().get_velocity(MonsterMovement::eVelocityParameterIdle);	
-		SVelocityParam &velocity_turn		= movement().get_velocity(MonsterMovement::eVelocityParameterStand);
-		SVelocityParam &velocity_walk		= movement().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
-		SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-		SVelocityParam &velocity_walk_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
-		SVelocityParam &velocity_run_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
-		//SVelocityParam &velocity_steal		= movement().get_velocity(MonsterMovement::eVelocityParameterSteal);
-		//SVelocityParam &velocity_drag		= movement().get_velocity(MonsterMovement::eVelocityParameterDrag);
+		SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+		SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+		SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+		SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+		SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+		SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+		//SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+		//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
 
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimDie,				"stand_idle_",			 0, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimMiscAction_01,	"fly_",					-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1,	&velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
-		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
-		MotionMan.AddAnim(eAnimRunDamaged,		"stand_walk_dmg_",		-1, &velocity_run_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimDie,				"stand_idle_",			 0, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimMiscAction_01,	"fly_",					-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1,	&velocity_none,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+		anim().AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+		anim().AddAnim(eAnimRunDamaged,		"stand_walk_dmg_",		-1, &velocity_run_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
 
-		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
-		MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_REST,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-		MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
+		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+		anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+		anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_RUN,			eAnimRun);
+		anim().LinkAction(ACT_EAT,			eAnimEat);
+		anim().LinkAction(ACT_SLEEP,			eAnimStandIdle);
+		anim().LinkAction(ACT_REST,			eAnimStandIdle);
+		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
+		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+		anim().LinkAction(ACT_STEAL,			eAnimWalkFwd);
+		anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 
-		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+		anim().AA_Load(pSettings->r_string(section, "attack_params"));
 
-		MotionMan.finish_load_shared();
+		anim().finish_load_shared();
 
 	}
 
 #ifdef DEBUG	
-	MotionMan.accel_chain_test		();
+	anim().accel_chain_test		();
 #endif
 
 
@@ -143,8 +142,6 @@ void CPoltergeist::reinit()
 	state_invisible						= true;	
 	setVisible							(false);
 	
-	MotionMan.ForceAnimSelect			();
-	
 	m_current_position = Position		();
 	movement_control()->DestroyCharacter();
 	
@@ -160,8 +157,6 @@ void CPoltergeist::Hide()
 
 	setVisible(false);
 	
-	MotionMan.ForceAnimSelect();
-
 	m_current_position = Position		();
 	movement_control()->DestroyCharacter();
 
@@ -178,8 +173,8 @@ void CPoltergeist::Show()
 	setVisible(TRUE);
 
 	
-	MotionMan.Seq_Add		(eAnimMiscAction_00);
-	MotionMan.Seq_Switch	();
+	anim().Seq_Add		(eAnimMiscAction_00);
+	anim().Seq_Switch	();
 
 	Position() = m_current_position;
 	movement_control()->SetPosition(Position());
@@ -199,7 +194,7 @@ void CPoltergeist::UpdateCL()
 void CPoltergeist::ForceFinalAnimation()
 {
 	if (state_invisible) 
-		MotionMan.SetCurAnim(eAnimMiscAction_01);
+		anim().SetCurAnim(eAnimMiscAction_01);
 }
 
 
@@ -277,7 +272,13 @@ void CPoltergeist::on_deactivate()
 
 CMovementManager *CPoltergeist::create_movement_manager	()
 {
-	return		(m_movement_manager = xr_new<CPoltergeisMovementManager>(this));
+	m_movement_manager				= xr_new<CPoltergeisMovementManager>(this);
+
+	control().add					(m_movement_manager, ControlCom::eControlPath);
+	control().install_path_manager	(m_movement_manager);
+	control().set_base_controller	(m_path_base, ControlCom::eControlPath);
+
+	return							(m_movement_manager);
 }
 
 #ifdef DEBUG

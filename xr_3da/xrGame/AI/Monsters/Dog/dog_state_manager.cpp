@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "dog.h"
 #include "dog_state_manager.h"
-#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -10,7 +9,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../states/monster_state_controlled.h"
-
+#include "../states/state_test_state.h"
 
 CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
 {
@@ -22,7 +21,8 @@ CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Dog> >	(monster));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Dog> >				(monster));
 	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CAI_Dog> >			(monster));
-	
+
+	add_state(eStateCustom,				xr_new<CStateMonsterTestState<CAI_Dog> >			(monster));
 }
 
 void CStateManagerDog::execute()
@@ -52,6 +52,8 @@ void CStateManagerDog::execute()
 			else			state_id = eStateRest;
 		}
 	} else state_id = eStateControlled;
+
+	//state_id = eStateCustom;
 
 	select_state		(state_id); 
 

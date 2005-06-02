@@ -21,7 +21,7 @@ void CStateMonsterFindEnemyRunAbstract::initialize()
 {
 	inherited::initialize					();
 
-	object->movement().initialize_movement	();	
+	object->path().prepare_builder	();	
 	
 	
 	target_point	= object->EnemyMan.get_enemy_position();
@@ -48,13 +48,13 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyRunAbstract::execute()
 {
 	object->set_action							(ACT_RUN);
-	object->MotionMan.accel_activate			(eAT_Aggressive);
-	object->MotionMan.accel_set_braking			(false);
-	object->movement().set_target_point			(target_point, target_vertex);
-	object->movement().set_rebuild_time			(object->get_attack_rebuild_time());
-	object->movement().set_use_covers			();
-	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
-	object->movement().set_try_min_time			(false);
+	object->anim().accel_activate			(eAT_Aggressive);
+	object->anim().accel_set_braking			(false);
+	object->path().set_target_point			(target_point, target_vertex);
+	object->path().set_rebuild_time			(object->get_attack_rebuild_time());
+	object->path().set_use_covers			();
+	object->path().set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->path().set_try_min_time			(false);
 	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
 }
 

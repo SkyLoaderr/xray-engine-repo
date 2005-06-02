@@ -2,7 +2,6 @@
 
 #include "state_custom_action.h"
 #include "state_move_to_point.h"
-#include "../ai_monster_utils.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -60,8 +59,8 @@ void CStateMonsterControlledFollowAbstract::setup_substates()
 		const CEntity *target_object = entity->get_data().m_object;
 
 		Fvector dest_pos = random_position(target_object->Position(), 10.f);
-		if (!object->movement().restrictions().accessible(dest_pos)) {
-			data.vertex		= object->movement().restrictions().accessible_nearest(dest_pos, data.point);
+		if (!object->control().path_builder().restrictions().accessible(dest_pos)) {
+			data.vertex		= object->control().path_builder().restrictions().accessible_nearest(dest_pos, data.point);
 		} else {
 			data.point		= dest_pos;
 			data.vertex		= u32(-1);

@@ -7,7 +7,6 @@
 #include "../../../HudItem.h"
 #include "../../../../effector.h"
 #include "../../../../effectorPP.h"
-#include "../ai_monster_utils.h"
 
 #define EFFECTOR_ID_GEN(type) (type( u32(u64(this) & u32(-1)) ))
 

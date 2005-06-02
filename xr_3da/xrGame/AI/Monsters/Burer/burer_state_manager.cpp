@@ -38,11 +38,11 @@ void CStateManagerBurer::execute()
 			case eNormal:
 			case eWeak:						state = eStateAttack; break;
 		}
-	} else if (object->HitMemory.is_hit() && (object->HitMemory.get_last_hit_time() + 10000 > object->m_current_update)) 
+	} else if (object->HitMemory.is_hit() && (object->HitMemory.get_last_hit_time() + 10000 > Device.dwTimeGlobal)) 
 		state = eStateHitted;
 	else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
 		state = eStateHearInterestingSound;
-	} else if (object->time_last_scan + SCAN_STATE_TIME > object->m_current_update){
+	} else if (object->time_last_scan + SCAN_STATE_TIME > Device.dwTimeGlobal){
 		state = eStateBurerScanning;
 	} else if (can_eat()) {
 			state = eStateEat;

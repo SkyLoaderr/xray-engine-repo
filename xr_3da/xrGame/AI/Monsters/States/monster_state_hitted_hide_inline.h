@@ -14,7 +14,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedHideAbstract::initialize()
 {
 	inherited::initialize();
-	object->movement().initialize_movement	();	
+	object->path().prepare_builder	();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -22,10 +22,10 @@ void CStateMonsterHittedHideAbstract::execute()
 {
 	object->set_action									(ACT_RUN);
 	object->set_state_sound								(MonsterSpace::eMonsterSoundPanic);
-	object->MotionMan.accel_activate					(eAT_Aggressive);
-	object->MotionMan.accel_set_braking					(false);
-	object->movement().set_retreat_from_point	(object->HitMemory.get_last_hit_position());
-	object->movement().set_generic_parameters	();
+	object->anim().accel_activate					(eAT_Aggressive);
+	object->anim().accel_set_braking					(false);
+	object->path().set_retreat_from_point	(object->HitMemory.get_last_hit_position());
+	object->path().set_generic_parameters	();
 
 }
 
@@ -44,7 +44,7 @@ bool CStateMonsterHittedHideAbstract::check_completion()
 	// good dist  
 	if (dist < GOOD_DISTANCE_IN_COVER) return false;
 	// +hide more than 3 sec
-	if (time_state_started + MIN_HIDE_TIME > object->m_current_update) return false;
+	if (time_state_started + MIN_HIDE_TIME > Device.dwTimeGlobal) return false;
 
 	return true;
 }

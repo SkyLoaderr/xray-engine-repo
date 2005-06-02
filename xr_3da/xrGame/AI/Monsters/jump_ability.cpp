@@ -7,17 +7,16 @@
 #include "custom_events.h"
 #include "critical_action_info.h"
 #include "../../detail_path_manager.h"
-#include "ai_monster_movement.h"
 #include "../../level.h"
 
 CJumpingAbility::CJumpingAbility()
 {
-	m_animation_holder = xr_new<CAnimTriple>();
+	//m_animation_holder = xr_new<CAnimTriple>();
 }
 
 CJumpingAbility::~CJumpingAbility()
 {
-	xr_delete(m_animation_holder);
+	//xr_delete(m_animation_holder);
 }
 
 void CJumpingAbility::init_external(CBaseMonster *obj)
@@ -43,14 +42,14 @@ void CJumpingAbility::load(LPCSTR section)
 
 void CJumpingAbility::reinit(const MotionID &m_def1, const MotionID &m_def2, const MotionID &m_def3)
 {
-	m_time_started			= 0;
-	m_time_next_allowed		= 0;
-	
-	m_def_glide				= m_def2;
-	
-	m_active				= false;
+	//m_time_started			= 0;
+	//m_time_next_allowed		= 0;
+	//
+	//m_def_glide				= m_def2;
+	//
+	//m_active				= false;
 
-	m_animation_holder->reinit_external	(&m_object->EventMan, m_def1, m_def2, m_def3);
+	//m_animation_holder->reinit_external	(&m_object->EventMan, m_def1, m_def2, m_def3);
 }
 
 void CJumpingAbility::jump(CObject *obj, u32 vel_mask, bool skip_prepare)
@@ -75,46 +74,46 @@ void CJumpingAbility::jump(const Fvector &point, u32 vel_mask, bool skip_prepare
 
 void CJumpingAbility::start_jump(const Fvector &point, bool skip_prepare)
 {
-	m_blend_speed					= -1.f;
-	m_target_position				= point;
+	//m_blend_speed					= -1.f;
+	//m_target_position				= point;
 
-	m_object->DirMan.set_heading_speed(3.f);
-	m_object->DirMan.face_target	(point);
+	//m_object->dir().set_heading_speed(3.f);
+	//m_object->dir().face_target	(point);
 
-	m_active			= true;
-	m_velocity_bounced	= false;
-	m_object_hitted		= false;
+	//m_active			= true;
+	//m_velocity_bounced	= false;
+	//m_object_hitted		= false;
 
-	m_time_started		= 0;
-	m_jump_time			= 0;
+	//m_time_started		= 0;
+	//m_jump_time			= 0;
 
-	m_enable_bounce		= true;
+	//m_enable_bounce		= true;
 
-	// lock control blocks
-	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
+	//// lock control blocks
+	//m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
 
-	m_object->movement().stop_now			();
+	//m_object->movement().stop_now			();
 
-	m_object->set_ignore_collision_hit		(true);
+	//m_object->set_ignore_collision_hit		(true);
 
-	// must be the last in jump initialization
-	m_object->MotionMan.TA_Activate	(m_animation_holder, skip_prepare);
+	//// must be the last in jump initialization
+	//m_object->anim().TA_Activate	(m_animation_holder, skip_prepare);
 }
 
 
 void CJumpingAbility::update_frame()
 {
-	if (!m_active) return;
-	
-	if (!m_object->MotionMan.TA_IsActive())	stop();
-	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail().completed(m_object->Position())) stop();
+	//if (!m_active) return;
+	//
+	//if (!m_object->anim().TA_IsActive())	stop();
+	//if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail().completed(m_object->Position())) stop();
 
-	if (is_landing()) pointbreak();
-	
-	set_animation_speed	();
-	hit_test			();
+	//if (is_landing()) pointbreak();
+	//
+	//set_animation_speed	();
+	//hit_test			();
 
-	m_object->movement().set_velocity_from_path	();
+	//m_object->movement().set_velocity_from_path	();
 }
 
 bool CJumpingAbility::is_landing()
@@ -145,44 +144,44 @@ bool CJumpingAbility::is_landing()
 
 void CJumpingAbility::build_line()
 {
-	if (m_velocity_mask == u32(-1)) return;
-	
-	Fvector target_position;
-	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
+	//if (m_velocity_mask == u32(-1)) return;
+	//
+	//Fvector target_position;
+	//target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
-	if (!m_object->movement().build_special(target_position, u32(-1), m_velocity_mask)) stop();
-	else m_object->movement().enable_path();
+	//if (!m_object->movement().build_special(target_position, u32(-1), m_velocity_mask)) stop();
+	//else m_object->movement().enable_path();
 }
 
 
 void CJumpingAbility::set_animation_speed() 
 {
-	SCurrentAnimationInfo &info = m_object->MotionMan.cur_anim_info();
-	if (!info.blend) return;
-	
-	if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide)) {
-		if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
-		info.speed.current = (info.blend->timeTotal / m_jump_time);
-	} else {
-		info.speed.current = 1.f;
-	}
+	//SCurrentAnimationInfo &info = m_object->anim().cur_anim_info();
+	//if (!info.blend) return;
+	//
+	//if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide)) {
+	//	if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
+	//	info.speed.current = (info.blend->timeTotal / m_jump_time);
+	//} else {
+	//	info.speed.current = 1.f;
+	//}
 }
 
 void CJumpingAbility::stop()
 {
-	m_active = false;
-	if (m_object->MotionMan.TA_IsActive())	m_object->MotionMan.TA_Deactivate();
-	m_object->movement().stop_now			();
-	m_object->movement().initialize_movement();
-	m_object->set_ignore_collision_hit		(false);
+	//m_active = false;
+	//if (m_object->anim().TA_IsActive())	m_object->anim().TA_Deactivate();
+	//m_object->movement().stop_now			();
+	//m_object->movement().initialize_movement();
+	//m_object->set_ignore_collision_hit		(false);
 
-	// unlock control blocks
-	m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
+	//// unlock control blocks
+	//m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath | CAF_LockTurn);
 }
 
 void CJumpingAbility::pointbreak()
 {
-	m_object->MotionMan.TA_PointBreak();
+	m_object->anim().TA_PointBreak();
 	m_time_started	= 0;
 }
 
@@ -297,8 +296,9 @@ bool CJumpingAbility::can_jump(CObject *target)
 	dir_yaw		= angle_normalize(-dir_yaw);
 
 	// проверка на angle и на dist
-	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
-	if (angle_difference(yaw.current, dir_yaw) > m_max_angle) return false;
+	float yaw_current, yaw_target;
+	m_object->control().direction().get_heading(yaw_current, yaw_target);
+	if (angle_difference(yaw_current, dir_yaw) > m_max_angle) return false;
 
 	return true;
 }
@@ -324,8 +324,9 @@ Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 	dir.getHP	(dir_yaw, dir_pitch);
 
 	// проверка на angle и на dist
-	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
-	if (angle_difference(yaw.current, -dir_yaw) > m_max_angle) return pos;
+	float yaw_current, yaw_target;
+	m_object->control().direction().get_heading(yaw_current, yaw_target);
+	if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
 	
 	return prediction_pos;
 }

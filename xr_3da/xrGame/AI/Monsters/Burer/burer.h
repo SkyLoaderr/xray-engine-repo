@@ -114,8 +114,8 @@ public:
 	virtual void	on_scan_success		();
 
 public:
-	CAnimTriple		anim_triple_gravi;
-	CAnimTriple		anim_triple_tele;
+	SAnimationTripleData	anim_triple_gravi;
+	SAnimationTripleData	anim_triple_tele;
 
 
 #ifdef DEBUG

@@ -3,7 +3,6 @@
 #include "snork_jump.h"
 #include "../jump_ability.h"
 #include "../../../../skeletonanimated.h"
-#include "../ai_monster_movement.h"
 #include "../../../level.h"
 
 CSnorkJump::CSnorkJump(CSnork *monster)
@@ -27,37 +26,37 @@ void CSnorkJump::load(LPCSTR section)
 
 void CSnorkJump::update_frame()
 {
-	if (!m_jumper->active()) return;
+	//if (!m_jumper->active()) return;
 
-	if (m_specific_jump) {
-		float dist = trace_current(10.f);
-		if (dist > 10.f) {
-			m_jumper->stop();
-			return;
-		} else if (dist < 2.f) {
-			m_jumper->stop();
-			init_jump_specific();
-			
-			Fvector dir;
-			float h,p;
-			float h2,p2;
-			Fvector().sub(m_target_object->Position(), m_object->Position()).getHP(h,p);
-			m_target_object->Direction().getHP(h2,p2);
-			dir.set		(1,0,0);
-			dir.setHP	(h,p2);
-			dir.normalize();
-			
-			Fvector pos;
-			pos.mad		(m_target_object->Position(), dir, 4.f);
-			pos.y+=2.f;
+	//if (m_specific_jump) {
+	//	float dist = trace_current(10.f);
+	//	if (dist > 10.f) {
+	//		m_jumper->stop();
+	//		return;
+	//	} else if (dist < 2.f) {
+	//		m_jumper->stop();
+	//		init_jump_specific();
+	//		
+	//		Fvector dir;
+	//		float h,p;
+	//		float h2,p2;
+	//		Fvector().sub(m_target_object->Position(), m_object->Position()).getHP(h,p);
+	//		m_target_object->Direction().getHP(h2,p2);
+	//		dir.set		(1,0,0);
+	//		dir.setHP	(h,p2);
+	//		dir.normalize();
+	//		
+	//		Fvector pos;
+	//		pos.mad		(m_target_object->Position(), dir, 4.f);
+	//		pos.y+=2.f;
 
-			m_jumper->jump(pos, m_velocity_mask);
-			m_specific_jump				= false;
-			m_jumper->disable_bounce	();
-		}
-	}
-	
-	m_jumper->update_frame();
+	//		m_jumper->jump(pos, m_velocity_mask);
+	//		m_specific_jump				= false;
+	//		m_jumper->disable_bounce	();
+	//	}
+	//}
+	//
+	//m_jumper->update_frame();
 }
 
 void CSnorkJump::try_to_jump(u32 velocity_mask)
@@ -83,8 +82,9 @@ void CSnorkJump::try_to_jump(u32 velocity_mask)
 	dir.getHP	(dir_yaw, dir_pitch);
 
 	// проверка на angle и на dist
-	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
-	if (angle_difference(yaw.current, -dir_yaw) < PI_DIV_6) {
+	float yaw_current, yaw_target;
+	m_object->control().direction().get_heading(yaw_current, yaw_target);
+	if (angle_difference(yaw_current, -dir_yaw) < PI_DIV_6) {
 		try_jump_normal();
 		return;
 	}

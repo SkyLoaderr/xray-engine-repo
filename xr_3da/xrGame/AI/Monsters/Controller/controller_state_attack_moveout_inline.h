@@ -10,12 +10,12 @@
 TEMPLATE_SPECIALIZATION
 void CStateControlMoveOutAbstract::execute()
 {
-	object->movement().set_target_point		(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	object->movement().set_generic_parameters();
+	object->path().set_target_point		(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->path().set_generic_parameters();
 
-	object->MotionMan.m_tAction			= ACT_STEAL;
-	object->MotionMan.accel_deactivate	();
-	object->MotionMan.accel_set_braking (false);
+	object->anim().m_tAction			= ACT_STEAL;
+	object->anim().accel_deactivate	();
+	object->anim().accel_set_braking (false);
 	object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
 
 }
@@ -32,7 +32,7 @@ bool CStateControlMoveOutAbstract::check_completion()
 {
 	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
 	if (object->IsVisibleObject(object->EnemyMan.get_enemy())) return true;
-	if (time_state_started + MAX_STATE_TIME < object->m_current_update) return true;
+	if (time_state_started + MAX_STATE_TIME < Device.dwTimeGlobal) return true;
 
 	return false;
 }

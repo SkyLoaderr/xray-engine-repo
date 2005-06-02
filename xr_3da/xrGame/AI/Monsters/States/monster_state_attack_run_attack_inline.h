@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../critical_action_info.h"
-#include "../ai_monster_movement_space.h"
+#include "../monster_velocity_space.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -23,7 +23,7 @@ void CStateMonsterAttackRunAttackAbstract::execute()
 {
 	object->set_action				(ACT_RUN);
 	object->set_state_sound			(MonsterSpace::eMonsterSoundAttack);
-	object->MotionMan.SetSpecParams	(ASP_ATTACK_RUN);
+	object->anim().SetSpecParams	(ASP_ATTACK_RUN);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -49,14 +49,14 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	if (dist < object->MeleeChecker.get_min_distance())		return false;
 	
 	// check angle
-	if (!object->DirMan.is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
+	if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
 	
 	// try to build path
 	Fvector target_position;
 	target_position.mad(object->Position(), object->Direction(), object->db().m_run_attack_path_dist);
 	
-	if (!object->movement().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
-	else object->movement().enable_path();
+	if (!object->path().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
+	else object->path().enable_path();
 
 	return true;
 }
@@ -64,7 +64,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackRunAttackAbstract::check_completion()
 {
-	if (!object->movement().IsMovingOnPath() || (object->m_time_last_attack_success != 0)) return true;
+	if (!object->control().path_builder().is_moving_on_path() || (object->m_time_last_attack_success != 0)) return true;
 	return false;
 }
 

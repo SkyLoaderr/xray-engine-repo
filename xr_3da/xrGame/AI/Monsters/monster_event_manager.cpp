@@ -19,28 +19,17 @@ void CMonsterEventManager::add_delegate(EEventType event, typeEvent delegate)
 		it = res.first;
 	}
 	
-	it->second.push_back(typeEvent(delegate));
+	it->second.push_back(event_struc(delegate));
 }
-
-struct pred_remove {
-
-	typeEvent delegate;
-
-	pred_remove(typeEvent del) : delegate(del) {}
-
-	bool operator() (const typeEvent &del) {
-		return (del == delegate);
-	}
-};
-
 
 void CMonsterEventManager::remove_delegate(EEventType event, typeEvent delegate) 
 {
 	EVENT_MAP_IT it = m_event_storage.find(event);	
 	if (it == m_event_storage.end()) return;
 	
-	EVENT_VECTOR_IT it_del = std::remove_if(it->second.begin(),it->second.end(), pred_remove(delegate));
-	it->second.erase(it_del,it->second.end());
+	for (EVENT_VECTOR_IT it_del = it->second.begin(); it_del != it->second.end(); ++it_del) {
+		if (it_del->delegate == delegate) it_del->need_remove = true;
+	}
 }
 
 
@@ -50,8 +39,11 @@ void CMonsterEventManager::raise(EEventType event, IEventData *data)
 	if (it == m_event_storage.end()) return;
 
 	for (EVENT_VECTOR_IT I=it->second.begin(); I != it->second.end(); I++) {
-		(*I)(data);
+		if (!I->need_remove) (I->delegate)(data);
 	}
+
+	EVENT_VECTOR_IT it_del = std::remove_if(it->second.begin(),it->second.end(), pred_remove());
+	it->second.erase(it_del,it->second.end());
 }
 
 void CMonsterEventManager::clear()

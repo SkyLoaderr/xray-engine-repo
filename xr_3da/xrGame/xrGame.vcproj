@@ -2612,6 +2612,9 @@
 							RelativePath=".\ai\Monsters\ai_monster_defs.h">
 						</File>
 						<File
+							RelativePath=".\ai\Monsters\ai_monster_movement_space.h">
+						</File>
+						<File
 							RelativePath=".\ai\Monsters\ai_monster_shared_data.h">
 						</File>
 						<File
@@ -2631,6 +2634,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\monster_enemy_manager.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\monster_velocity_space.h">
 						</File>
 						<Filter
 							Name="Bones"
@@ -2674,6 +2680,12 @@
 							Name="State"
 							Filter="">
 							<File
+								RelativePath=".\ai\Monsters\monster_state_manager.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_state_manager_inline.h">
+							</File>
+							<File
 								RelativePath=".\ai\Monsters\state.h">
 							</File>
 							<File
@@ -2684,34 +2696,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\state_manager.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\state_manager_second.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\state_manager_second_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Movement"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement_path.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement_space.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_movement_update.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -2751,39 +2735,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\ai_monster_motion_stats.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Monster Motion"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_motion.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_motion.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_motion_accel.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_motion_load.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\ai_monster_motion_update.cpp">
-							</File>
-						</Filter>
-						<Filter
-							Name="Properties"
-							Filter="">
-						</Filter>
-						<Filter
-							Name="TripleAnimation"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\anim_triple.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\anim_triple.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2835,22 +2786,6 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="Jump"
-								Filter="">
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_jump.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_jump.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\jump_ability.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\jump_ability.h">
-								</File>
-							</Filter>
-							<Filter
 								Name="Scan"
 								Filter="">
 								<File
@@ -2890,6 +2825,22 @@
 									RelativePath=".\ai\Monsters\energy_holder.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Jump"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\ai_monster_jump.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\ai_monster_jump.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\jump_ability.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\jump_ability.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Event Handler"
@@ -2923,16 +2874,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\critical_action_info.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Direction Manager"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\direction_manager.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\direction_manager.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2970,6 +2911,172 @@
 							<File
 								RelativePath=".\ai\Monsters\controlled_actor.h">
 							</File>
+						</Filter>
+						<Filter
+							Name="Control Manager"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\control_com_defs.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\control_combase.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\control_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\control_manager.h">
+							</File>
+							<Filter
+								Name="Pure Coms"
+								Filter="">
+								<Filter
+									Name="Animation"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_animation.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_animation.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Direction"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_direction.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_direction.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Path Builder"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Movement"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_movement.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_movement.h">
+									</File>
+								</Filter>
+							</Filter>
+							<Filter
+								Name="Base Controllers"
+								Filter="">
+								<Filter
+									Name="Animation"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_animation_base.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_animation_base.h">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_animation_base_accel.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_animation_base_load.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_animation_base_update.cpp">
+									</File>
+								</Filter>
+								<Filter
+									Name="Direction"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_direction_base.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_direction_base.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Path Builder"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base.h">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base_inline.h">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base_path.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base_update.cpp">
+									</File>
+								</Filter>
+								<Filter
+									Name="Movement"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_movement_base.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_movement_base.h">
+									</File>
+								</Filter>
+							</Filter>
+							<Filter
+								Name="Custom"
+								Filter="">
+								<Filter
+									Name="Sequencer"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_sequencer.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_sequencer.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Rotation Jump"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_rotation_jump.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_rotation_jump.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Triple Animation"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\anim_triple.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\anim_triple.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Jump"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_jump.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_jump.h">
+									</File>
+								</Filter>
+							</Filter>
 						</Filter>
 					</Filter>
 				</Filter>

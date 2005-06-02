@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
-#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_eat.h"
@@ -32,7 +31,7 @@ CStateManagerZombie::~CStateManagerZombie()
 
 void CStateManagerZombie::execute()
 {
-	if (object->MotionMan.TA_IsActive()) return;
+	if (object->anim().TA_IsActive()) return;
 	
 	u32 state_id = u32(-1);
 	

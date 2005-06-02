@@ -30,7 +30,7 @@ class CAI_Bloodsucker : public CBaseMonster,
 
 public:
 
-	CAnimTriple				anim_triple_vampire;
+	SAnimationTripleData	anim_triple_vampire;
 
 	CBloodsuckerAlien		m_alien_control;
 	

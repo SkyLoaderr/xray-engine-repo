@@ -78,7 +78,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 			break;
 
 		case eActionWaitTripleEnd:
-			if (!object->MotionMan.TA_IsActive()) {
+			if (!object->anim().TA_IsActive()) {
 				m_action = eActionCompleted; 
 			}
 
@@ -87,7 +87,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	}
 
 	object->set_action			(ACT_STAND_IDLE);
-	object->DirMan.face_target	(object->EnemyMan.get_enemy(), 1200);
+	object->dir().face_target	(object->EnemyMan.get_enemy(), 1200);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -105,7 +105,7 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 	inherited::critical_finalize();
 
 	object->CControlledActor::free_from_control	();
-	object->MotionMan.TA_Deactivate				();
+	object->anim().TA_Deactivate				();
 	object->CInvisibility::manual_activate		();
 }
 
@@ -119,7 +119,7 @@ bool CStateBloodsuckerVampireExecuteAbstract::check_start_conditions()
 	if ((dist > VAMPIRE_MAX_DIST) || (dist < VAMPIRE_MIN_DIST))	return false;
 
 	// проверить направление на врага
-	if (!object->DirMan.is_face_target(enemy, PI_DIV_6)) return false;
+	if (!object->control().direction().is_face_target(enemy, PI_DIV_6)) return false;
 
 	return true;
 }
@@ -135,15 +135,15 @@ bool CStateBloodsuckerVampireExecuteAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
 {
-	object->MotionMan.TA_Activate	(&object->anim_triple_vampire);
-	time_vampire_started			= object->m_current_update;
+	object->anim().TA_Activate		(object->anim_triple_vampire);
+	time_vampire_started			= Device.dwTimeGlobal;
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 {
 	// проверить на грави удар
-	if (time_vampire_started + VAMPIRE_TIME_HOLD < object->m_current_update) {
+	if (time_vampire_started + VAMPIRE_TIME_HOLD < Device.dwTimeGlobal) {
 		m_action = eActionFire;
 	}
 }
@@ -151,7 +151,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
-	object->MotionMan.TA_PointBreak				();
+	object->anim().TA_PointBreak				();
 }
 
 //////////////////////////////////////////////////////////////////////////

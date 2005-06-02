@@ -20,7 +20,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyAngryAbstract::execute()
 {
 	object->set_action					(ACT_STAND_IDLE);
-	object->MotionMan.SetSpecParams		(ASP_THREATEN);
+	object->anim().SetSpecParams		(ASP_THREATEN);
 	object->set_state_sound				(MonsterSpace::eMonsterSoundAttack);
 }
 

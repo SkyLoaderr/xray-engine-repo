@@ -76,7 +76,7 @@ void CStateManagerCat::execute()
 	}
 
 	if (state_id == eStateAttack_AttackRat) {
-		if (!object->MotionMan.IsCriticalAction()) {
+		if (!object->anim().IsCriticalAction()) {
 			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
 			if (object->CJumpingAbility::can_jump(target)) {
 				object->try_to_jump();
@@ -90,10 +90,10 @@ void CStateManagerCat::execute()
 	//	// check angle
 	//	float yaw, pitch;
 	//	Fvector().sub(enemy->Position(), object->Position()).getHP(yaw,pitch);
-	//	if (angle_difference(-yaw,object->movement().m_body.current.yaw) > 2*PI_DIV_3) {
+	//	if (angle_difference(-yaw,object->control().path_builder().m_body.current.yaw) > 2*PI_DIV_3) {
 	//		
 	//		if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Device.dwTimeGlobal) {
-	//			object->MotionMan.SetSpecParams(ASP_ROTATION_JUMP);
+	//			object->anim().SetSpecParams(ASP_ROTATION_JUMP);
 	//			m_rot_jump_last_time = Device.dwTimeGlobal;
 	//			return;
 	//		}

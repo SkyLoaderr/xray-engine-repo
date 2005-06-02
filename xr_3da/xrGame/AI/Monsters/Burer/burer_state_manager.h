@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CBurer;
 
-class CStateManagerBurer : public CStateManagerSecond<CBurer> {
-	typedef CStateManagerSecond<CBurer> inherited;
+class CStateManagerBurer : public CMonsterStateManager<CBurer> {
+	typedef CMonsterStateManager<CBurer> inherited;
 public:
 					CStateManagerBurer		(CBurer *monster); 
 	virtual void	execute					();

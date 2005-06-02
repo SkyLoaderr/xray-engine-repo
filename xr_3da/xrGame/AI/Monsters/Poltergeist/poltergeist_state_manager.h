@@ -1,10 +1,10 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CPoltergeist;
 
-class CStateManagerPoltergeist : public CStateManagerSecond<CPoltergeist> {
-	typedef CStateManagerSecond<CPoltergeist> inherited;
+class CStateManagerPoltergeist : public CMonsterStateManager<CPoltergeist> {
+	typedef CMonsterStateManager<CPoltergeist> inherited;
 
 
 public:

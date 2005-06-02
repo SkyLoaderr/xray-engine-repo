@@ -1,11 +1,11 @@
 #pragma once
-#include "../state_manager_second.h"
+#include "../monster_state_manager.h"
 
 class CChimera;
 
-class CStateManagerChimera : public CStateManagerSecond<CChimera> {
+class CStateManagerChimera : public CMonsterStateManager<CChimera> {
 	
-	typedef CStateManagerSecond<CChimera> inherited;
+	typedef CMonsterStateManager<CChimera> inherited;
 
 public:
 						CStateManagerChimera	(CChimera *obj);

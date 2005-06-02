@@ -131,4 +131,4 @@ enum EMonsterState {
 	eStateUnknown					= u32(-1),
 };
 
-#define is_state(state, type) ((state & type) == type)
+#define is_state(state, type) (((state & type) == type) && (state != eStateUnknown))

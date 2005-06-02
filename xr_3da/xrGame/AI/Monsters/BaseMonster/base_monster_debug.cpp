@@ -6,7 +6,6 @@
 #include "../../../ai_debug.h"
 #include "../state_defs.h"
 #include "../state_manager.h"
-#include "../ai_monster_movement.h"
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
@@ -109,10 +108,10 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 
 	DBG().text(this).add_item("-----------   MOVEMENT   ------------", x, y+=delta_y, delimiter_color);
 
-	sprintf(text, "Actual = [%u] Enabled = [%u]", movement().actual(), movement().enabled());
+	sprintf(text, "Actual = [%u] Enabled = [%u]",			 control().path_builder().actual(), control().path_builder().enabled());
 	DBG().text(this).add_item(text,										x, y+=delta_y, color);
 	
-	sprintf(text, "Speed: Linear = [%.3f] Angular = [%.3f]", movement().linear_velocity_current(), DirMan.heading().speed.current);
+	sprintf(text, "Speed: Linear = [%.3f] Angular = [%.3f]", control().movement().velocity_current(), 0.f);
 	DBG().text(this).add_item(text,										x, y+=delta_y, color);
 	
 	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);

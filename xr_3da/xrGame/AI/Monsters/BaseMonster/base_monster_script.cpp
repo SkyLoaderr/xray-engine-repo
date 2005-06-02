@@ -5,7 +5,6 @@
 #include "../../../sight_manager.h"
 #include "../../../detail_path_manager.h"
 #include "../../../ai_object_location.h"
-#include "../ai_monster_movement.h"
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
 #include "../state_manager.h"
@@ -25,47 +24,44 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	if (l_tMovementAction.completed()) return false;
 
-	if (movement().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
-		if ((l_tMovementAction.m_fDistToEnd > 0) && movement().IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
+	if (control().path_builder().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
+		if ((l_tMovementAction.m_fDistToEnd > 0) && control().path_builder().is_path_end(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
 			return false;
 		}
 	}
 
 
-	// translate script.action into MotionMan.action
+	// translate script.action into anim().action
 	switch (l_tMovementAction.m_tMoveAction) {
-	case eMA_WalkFwd:	MotionMan.m_tAction = ACT_WALK_FWD;		break;
-	case eMA_WalkBkwd:	MotionMan.m_tAction = ACT_WALK_BKWD;	break;
-	case eMA_Run:		MotionMan.m_tAction = ACT_RUN;			break;
-	case eMA_Drag:		MotionMan.m_tAction = ACT_DRAG;			break;
-	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
+	case eMA_WalkFwd:	anim().m_tAction = ACT_WALK_FWD;		break;
+	case eMA_WalkBkwd:	anim().m_tAction = ACT_WALK_BKWD;	break;
+	case eMA_Run:		anim().m_tAction = ACT_RUN;			break;
+	case eMA_Drag:		anim().m_tAction = ACT_DRAG;			break;
+	case eMA_Steal:		anim().m_tAction = ACT_STEAL;		break;
 	}
 
-	movement().set_path_targeted();
-	
 	m_force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 
 	switch (l_tMovementAction.m_tGoalType) {
 		
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
-			movement().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
+			//movement().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
 		case CScriptMovementAction::eGoalTypePathPosition :
 		case CScriptMovementAction::eGoalTypeNoPathPosition :
-			movement().set_target_point	(l_tMovementAction.m_tDestinationPosition);
+			//movement().set_target_point	(l_tMovementAction.m_tDestinationPosition);
 			break;
 		case CScriptMovementAction::eGoalTypePathNodePosition :
-			movement().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
+			//movement().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
 			break;
 	}
 	return			(true);		
 }
 
-//////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignObject(tpEntityAction))
@@ -98,7 +94,7 @@ bool CBaseMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 		return		(false);
 	
 	// Инициализировать action
-	MotionMan.m_tAction = ACT_STAND_IDLE;
+	anim().m_tAction = ACT_STAND_IDLE;
 
 	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 	if (l_tWatchAction.completed()) return false;
@@ -115,7 +111,7 @@ bool CBaseMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 	}
 
 
-	if (!DirMan.is_turning())
+	if (!control().direction().is_turning())
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
@@ -131,16 +127,16 @@ bool CBaseMonster::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 	CScriptAnimationAction	&l_tAnimAction	= tpEntityAction->m_tAnimationAction;
 	if (l_tAnimAction.completed()) return false;
 	
-	// translate animation.action into MotionMan.action
+	// translate animation.action into anim().action
 	switch (l_tAnimAction.m_tAnimAction) {
-	case eAA_StandIdle:		MotionMan.m_tAction = ACT_STAND_IDLE;	break;
-	case eAA_SitIdle:		MotionMan.m_tAction = ACT_SIT_IDLE;		break;
-	case eAA_LieIdle:		MotionMan.m_tAction = ACT_LIE_IDLE;		break;
-	case eAA_Eat:			MotionMan.m_tAction = ACT_EAT;			break;
-	case eAA_Sleep:			MotionMan.m_tAction = ACT_SLEEP;		break;
-	case eAA_Rest:			MotionMan.m_tAction = ACT_REST;			break;
-	case eAA_Attack:		MotionMan.m_tAction = ACT_ATTACK;		break;
-	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
+	case eAA_StandIdle:		anim().m_tAction = ACT_STAND_IDLE;	break;
+	case eAA_SitIdle:		anim().m_tAction = ACT_SIT_IDLE;		break;
+	case eAA_LieIdle:		anim().m_tAction = ACT_LIE_IDLE;		break;
+	case eAA_Eat:			anim().m_tAction = ACT_EAT;			break;
+	case eAA_Sleep:			anim().m_tAction = ACT_SLEEP;		break;
+	case eAA_Rest:			anim().m_tAction = ACT_REST;			break;
+	case eAA_Attack:		anim().m_tAction = ACT_ATTACK;		break;
+	case eAA_LookAround:	anim().m_tAction = ACT_LOOK_AROUND;	break;
 	}
 
 	return				(true);
@@ -220,18 +216,18 @@ void CBaseMonster::ProcessScripts()
 	
 	m_script_processing_active = true;
 
-	movement().Update_Initialize			();
+	//movement().Update_Initialize			();
 	
 	// Выполнить скриптовые actions
 	m_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
 
-	m_current_update							= Device.dwTimeGlobal;
+	Device.dwTimeGlobal							= Device.dwTimeGlobal;
 
 	// обновить мир (память, враги, объекты)
 	UpdateMemory								();
 	
-	MotionMan.accel_deactivate					();
+	anim().accel_deactivate					();
 
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
 	if (m_script_state_must_execute) 	
@@ -240,12 +236,12 @@ void CBaseMonster::ProcessScripts()
 	TranslateActionToPathParams					();
 
 	// обновить путь
-	movement().Update_Execute			();
+	//movement().Update_Execute			();
 
-	MotionMan.Update							();
+	//anim().Update							();
 	
 	// установить текущую скорость
-	movement().Update_Finalize			();
+	//movement().Update_Finalize			();
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
@@ -316,6 +312,5 @@ int	CBaseMonster::get_enemy_strength()
 void CBaseMonster::vfFinishAction(CScriptEntityAction *tpEntityAction)
 {
 	inherited::vfFinishAction(tpEntityAction);
-	MotionMan.ForceAnimSelect();
 }
 

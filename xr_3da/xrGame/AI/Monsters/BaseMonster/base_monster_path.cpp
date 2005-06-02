@@ -8,30 +8,21 @@
 
 #include "stdafx.h"
 #include "base_monster.h"
-#include "../../../game_graph.h"
-#include "../../../game_level_cross_table.h"
 #include "../corpse_cover.h"
 #include "../../../cover_manager.h"
 #include "../../../cover_point.h"
-#include "../../../detail_path_manager.h"
-#include "../ai_monster_movement.h"
-#include "../ai_monster_movement_space.h"
 #include "../../../ai_space.h"
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 {
 	// по-умолчанию просто изменить movement().m_body.target.yaw
-	Fvector	dir;
-	dir.set(to_point);
-	dir.sub(Position());	
+	Fvector	d;
+	d.set(to_point);
+	d.sub(Position());	
 	
-	// получаем вектор направления к источнику звука и его мировые углы
-	float		yaw,p;
-	dir.getHP(yaw,p);
-
 	// установить текущий угол
-	DirMan.set_heading(angle_normalize(-yaw));
+	dir().set_heading(angle_normalize(-d.getH()));
 }
 
 //////////////////////////////////////////////////////////////////////////

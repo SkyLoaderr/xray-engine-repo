@@ -15,9 +15,9 @@ TEMPLATE_SPECIALIZATION
 void CStateCatAttackRatMeleeAbstract::execute()
 {
 	object->set_action				(ACT_ATTACK);
-	object->MotionMan.SetSpecParams	(ASP_ATTACK_RAT);
+	object->anim().SetSpecParams	(ASP_ATTACK_RAT);
 
-	object->DirMan.face_target	(object->EnemyMan.get_enemy(), 1200);
+	object->dir().face_target	(object->EnemyMan.get_enemy(), 1200);
 	object->set_state_sound		(MonsterSpace::eMonsterSoundAttack);
 }
 

@@ -65,7 +65,7 @@ void CStateManagerChimera::execute()
 
 	// check jumping conditions
 	//if (state_id == eStateAttack) {
-	//	if (!object->MotionMan.IsCriticalAction()) {
+	//	if (!object->anim().IsCriticalAction()) {
 	//		CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
 	//		if (object->CJumpingAbility::can_jump(target)) {
 	//			object->try_to_jump();
