@@ -81,13 +81,14 @@ void SBullet::Init(const Fvector& position,
 
 CBulletManager::CBulletManager()
 {
-	m_Bullets.clear();
-	m_Bullets.reserve(100);
+	m_Bullets.clear			();
+	m_Bullets.reserve		(100);
 }
 
 CBulletManager::~CBulletManager()
 {
-	m_Bullets.clear();
+	m_Bullets.clear			();
+	m_WhineSounds.clear		();
 }
 
 #define BULLET_MANAGER_SECTION "bullet_manager"
