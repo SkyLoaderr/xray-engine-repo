@@ -374,13 +374,13 @@ function barman_need_kill_veterans(actor,npc)
 	return false
 end
 function volkodav_for_kill_professor(npc, actor)
-	local object = db.actor:object("ecolog_outfit")
+	local object = npc:object("ecolog_outfit")
 	if object then
 		dialogs.relocate_item(npc, object, "in")
 	end	
 end
 function professor_for_resque(npc, actor)
-	local object = db.actor:object("bar_ecolog_flash")
+	local object = npc:object("bar_ecolog_flash")
 	if object then
 		dialogs.relocate_item(npc, object, "in")
 	end	
