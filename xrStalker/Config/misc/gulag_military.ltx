@@ -10,6 +10,7 @@
 active = walker1@mil_freedom_lukash
 actor_dialogs = dialogs@mil_freedom_lukash
 on_death = on_death@mil_freedom_lukash
+on_combat = combat@mil_freedom_max
 
 [on_death@mil_freedom_lukash]
 on_info = %+mil_lukash_dead%
@@ -27,6 +28,7 @@ id = mil_lukash_dialog_rg6, mil_lukash_dialog_after
 ;------------------------------------- Скряга --------------------------------------
 [logic@mil_freedom_trader]
 active = walker1@mil_freedom_trader
+on_combat = combat@mil_freedom_max
 
 [walker1@mil_freedom_trader]
 path_walk = trader_walk1
@@ -38,6 +40,7 @@ meet_dialog = mil_trader_dialog
 ;------------------------------------- Охранник арсенала --------------------------
 [logic@mil_freedom_arsenal]
 active = zoneguard1@mil_freedom_arsenal
+on_combat = combat@mil_freedom_max
 
 [zoneguard1@mil_freedom_arsenal]
 path_walk = armory_walk_warn
@@ -54,6 +57,7 @@ meet_state = backoff
 ;------------------------------------- Охранник у Лукаша -------------------------
 [logic@mil_freedom_guard1]
 active = zoneguard1@mil_freedom_guard1
+on_combat = combat@mil_freedom_max
 
 [zoneguard1@mil_freedom_guard1]
 path_walk = zoneguard_walk_warn
@@ -75,6 +79,7 @@ on_actor_in_zone = leader_warn_zone | {=actor_has_weapon} zoneguard1@mil_freedom
 ;------------------------------------- Телохранитель 1 --------------------------
 [logic@mil_freedom_bodyguard1]
 active = zoneguard1@mil_freedom_bodyguard1
+on_combat = combat@mil_freedom_max
 
 [zoneguard1@mil_freedom_bodyguard1]
 path_walk = zoneguard_walk_kill2
@@ -96,6 +101,7 @@ def_state_campering_fire = threat_fire
 ;------------------------------------- Телохранитель 2 --------------------------
 [logic@mil_freedom_bodyguard2]
 active = zoneguard1@mil_freedom_bodyguard2
+on_combat = combat@mil_freedom_max
 
 [zoneguard1@mil_freedom_bodyguard2]
 path_walk = zoneguard_walk_kill1
@@ -116,7 +122,7 @@ def_state_campering_fire = threat_fire
 
 ;------------------------------------- Max --------------------------------------
 [logic@mil_freedom_max]
-on_combat = combat
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_max
 actor_dialogs = dialogs@mil_freedom_max
 on_death = death@mil_freedom_max
@@ -140,258 +146,56 @@ id = mil_max_dialog_common1,mil_max_dialog_common2,mil_max_dialog_common3
 [combat_ignore@mil_freedom_max]
 
 [combat@mil_freedom_max]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_max %+mil_freedom_under_attack%
+on_info = %+mil_freedom_under_attack%
 
 [walker1@mil_freedom_max]
 path_walk = max_walk
 path_look = max_look
 meet_enabled = true
 meet_dialog = mil_max_dialog
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_max, {+mil_freedom_attack} remark1@mil_freedom_max
-
-
-[camper1@mil_freedom_max]
-path_walk = camp_walk7
-path_look = camp_look7
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | walker1@mil_freedom_max %-mil_freedom_under_attack%
-def_state_moving = run
-
-[remark1@mil_freedom_max]
-snd = mil_max_before_collect
-on_signal = action_end | walker11@mil_freedom_max
-
-[walker11@mil_freedom_max]
-path_walk = attack_way7_1
-path_look = attack_look_max1
-on_signal = arrive | remark2@mil_freedom_max
-team = freedom
-meet_enabled = false
-
-[remark2@mil_freedom_max]
-snd = mil_max_to_kolyan
-no_rotate = true
-no_move = true
-on_signal = action_end | %+mil_freedom_attack_continue1% camper12@mil_freedom_max
-
-[camper12@mil_freedom_max]
-path_walk = attack_way7_2
-path_look = attack_look2
-on_signal = arrive | %+mil_freedom_arrive% camper13@mil_freedom_max
-no_retreat = true
-
-[camper13@mil_freedom_max]
-path_walk = attack_way7_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_max %-mil_freedom_attack%
-no_retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_max
-
-[walker14@mil_freedom_max]
-path_walk = attack_way7_5
-path_look = attack_look5
-on_signal = search | walker15@mil_freedom_max
-
-[walker15@mil_freedom_max]
-path_walk = attack_way7_4
-path_look = attack_look4
-on_signal = return | walker1@mil_freedom_max
-
-
 
 ;----------------------------------- Мужик у костра 1-----------------------
 [logic@mil_freedom_stalker1]
 active = kamp@mil_freedom_stalker1
-on_combat = combat@mil_freedom_stalker1
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker1
 
 [combat_ignore@mil_freedom_stalker1]
 
-[combat@mil_freedom_stalker1]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker1 %+mil_freedom_under_attack%
-
 [kamp@mil_freedom_stalker1]
 center_point = camp_center1
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker1, {+mil_freedom_attack} walker11@mil_freedom_stalker1
-
-[camper1@mil_freedom_stalker1]
-path_walk = camp_walk9
-path_look = camp_look9
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | kamp@mil_freedom_stalker1 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker1]
-path_walk = attack_way9_1
-path_look = attack_look1
-;on_signal = arrive | follower1@mil_freedom_stalker1
-team = freedom
-on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker1
-
-[remark1@mil_freedom_stalker1]
-snd = mil_collect_laugh1
-no_rotate = true
-no_move = true
-;on_signal = action_end | follower1@mil_freedom_stalker1
-on_signal = action_end | walker15@mil_freedom_stalker1
-
-[walker15@mil_freedom_stalker1]
-path_walk = attack_way9_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker1
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker1]
-;leader = 702
-;distanse = 1
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker1
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker1
-combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker1]
-path_walk = attack_way9_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker1 %-mil_freedom_attack%
-retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker1
-
-[walker14@mil_freedom_stalker1]
-path_walk = attack_way9_4
-path_look = attack_look4
-on_signal = return | kamp@mil_freedom_stalker1
-
-
 
 ;----------------------------------- Мужик у костра 2-----------------------
-
 [logic@mil_freedom_stalker2]
 active = kamp@mil_freedom_stalker2
-on_combat = combat@mil_freedom_stalker2
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker2
 
 [combat_ignore@mil_freedom_stalker2]
 
-[combat@mil_freedom_stalker2]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker2 %+mil_freedom_under_attack%
-
-;Niieieiia ninoiyiea
 [kamp@mil_freedom_stalker2]
 center_point = camp_center1
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker2, {+mil_freedom_attack} walker11@mil_freedom_stalker2
-
-;Aiaaia ninoiyiea
-[camper1@mil_freedom_stalker2]
-path_walk = camp_walk8
-path_look = camp_look8
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | kamp@mil_freedom_stalker2 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker2]
-path_walk = attack_way8_1
-path_look = attack_look1
-on_info = {+mil_freedom_attack_continue1} remark1@mil_freedom_stalker2
-;on_signal = arrive | follower1@mil_freedom_stalker2
-team = freedom
-
-[remark1@mil_freedom_stalker2]
-snd = mil_kolyan
-no_rotate = true
-no_move = true
-on_signal = action_end | %+mil_freedom_attack_continue2%
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker2
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker2
-
-[walker15@mil_freedom_stalker2]
-path_walk = attack_way8_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker2]
-;leader = 711
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker2
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker2]
-path_walk = attack_way8_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker2 %-mil_freedom_attack%
-retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker2
-
-[walker14@mil_freedom_stalker2]
-path_walk = attack_way8_4
-path_look = attack_look4
-on_signal = return | kamp@mil_freedom_stalker2
-
-
-
 
 ;----------------------------------- Мужик у костра 3-----------------------
 [logic@mil_freedom_stalker3]
 active = kamp1@mil_freedom_stalker3
 combat_ignore = combat_ignore@mil_freedom_stalker3
 on_death = death@mil_freedom_stalker3
+on_combat = combat@mil_freedom_max
 
 [death@mil_freedom_stalker3]
-;on_info = %=mil_courier_death%
 on_info = %+mil_courier_dead%
 
 [kamp1@mil_freedom_stalker3]
 center_point = camp_center1
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker3, {+mil_freedom_attack} walker1@mil_freedom_stalker3
-on_info2 = {+mil_courier_quest =is_courier_time} remark1@mil_freedom_stalker3
+on_info = {+mil_courier_quest =is_courier_time} remark1@mil_freedom_stalker3
 meet_enable = true
 meet_dialog = mil_dolg_relax_dialog
-
-[camper1@mil_freedom_stalker3]
-path_walk = stukach_walk1
-path_look = stukach_look1
-no_retreat = true
-radius = 0
-wounded_enabled = false
-on_timer = 60000 | kamp1@mil_freedom_stalker3 %-mil_freedom_under_attack%
-def_state_moving = run
-
-[walker1@mil_freedom_stalker3]
-path_walk = stukach_walk2
-path_look = stukach_look2
-on_info = {+mil_dolg_dead} kamp1@mil_freedom_stalker3
-
-[remark1@mil_freedom_stalker3]
-snd = mil_paul_frost
-on_signal = action_end | walker2@mil_freedom_stalker3
-
-[walker2@mil_freedom_stalker3]
-path_walk = stukach_walk3
-on_signal = final | walker3@mil_freedom_stalker3
-
-[walker3@mil_freedom_stalker3]
-path_walk = stukach_walk4
-path_look = stukach_look4
-on_signal = arrive | walker4@mil_freedom_stalker3
-on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %=mil_courier_quest_fail%
-
-[walker4@mil_freedom_stalker3]
-path_walk = stukach_walk5
-on_signal = return | kamp1@mil_freedom_stalker3
-
-[spawn@mil_freedom_stalker3]
-mil_courier_doc
-conserva = 2
-medkit = 2
-
 
 ;----------------------------------- Патрульный мужик (одиночка)-----------------------
 [logic@mil_freedom_stalker4]
 active = walker1@mil_freedom_stalker4
-on_combat = combat@mil_freedom_stalker4
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker4
 meet = on_meet@mil_freedom_stalker4
 
@@ -400,71 +204,18 @@ meet = on_meet@mil_freedom_stalker4
 [on_meet@mil_freedom_stalker4]
 distance = 5
 
-[combat@mil_freedom_stalker4]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker4 %+mil_freedom_under_attack%
-
 ;Niieieiia ninoiyiea
 [walker1@mil_freedom_stalker4]
 path_walk = patrol_path2
 path_look = patrol_look2
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker4, {+mil_freedom_attack} walker11@mil_freedom_stalker4
 meet_enabled = true
 meet_dialog = mil_patrol_dialog1
 
-;Aiaaia ninoiyiea
-[camper1@mil_freedom_stalker4]
-path_walk = camp_walk2
-path_look = camp_look2
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | walker1@mil_freedom_stalker4 %-mil_freedom_under_attack%
-def_state_moving = run
-
-[walker11@mil_freedom_stalker4]
-path_walk = attack_way2_1
-path_look = attack_look1
-on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker4
-;on_signal = arrive | follower1@mil_freedom_stalker4
-team = freedom
-
-[remark1@mil_freedom_stalker4]
-snd = mil_collect_laugh2
-no_rotate = true
-no_move = true
-;on_signal = action_end | %+mil_freedom_attack_continue3% follower1@mil_freedom_stalker4
-on_signal = action_end | %+mil_freedom_attack_continue3% walker15@mil_freedom_stalker4
-
-[walker15@mil_freedom_stalker4]
-path_walk = attack_way2_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker4]
-;leader = 712
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker4
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker4]
-path_walk = attack_way2_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker4 %-mil_freedom_attack%
-no_retreat = true
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker4
-
-[walker14@mil_freedom_stalker4]
-path_walk = attack_way2_4
-path_look = attack_look4
-on_signal = return | walker1@mil_freedom_stalker4
-
-[spawn@mil_freedom_stalker4]
-medkit
 
 ;----------------------------------- Патрульный командир -----------------------
 [logic@mil_freedom_stalker5]
 active = walker1@mil_freedom_stalker5
-on_combat = combat@mil_freedom_stalker5
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker5
 meet = on_meet@mil_freedom_stalker5
 
@@ -473,218 +224,51 @@ distance = 5
 
 [combat_ignore@mil_freedom_stalker5]
 
-[combat@mil_freedom_stalker5]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker5 %+mil_freedom_under_attack%
-
-;Niieieiia ninoiyiea
 [walker1@mil_freedom_stalker5]
 path_walk = patrol_path1
 path_look = patrol_look1
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker5, {+mil_freedom_attack} walker11@mil_freedom_stalker5
 meet_enabled = true
 meet_dialog = mil_patrol_dialog2
 meet_state = ward
 
-;Aiaaia ninoiyiea
-[camper1@mil_freedom_stalker5]
-path_walk = camp_walk1
-path_look = camp_look1
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | walker1@mil_freedom_stalker5 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker5]
-path_walk = attack_way1_1
-path_look = attack_look1
-;on_signal = arrive | follower1@mil_freedom_stalker5
-on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker5
-team = freedom
-
-[remark1@mil_freedom_stalker5]
-snd = mil_collect_laugh3
-no_rotate = true
-no_move = true
-;on_signal = action_end | follower1@mil_freedom_stalker5
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker5
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker5
-
-[walker15@mil_freedom_stalker5]
-path_walk = attack_way1_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker5]
-;leader = 714
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker5
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker5]
-path_walk = attack_way1_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker5 %-mil_freedom_attack%
-no_retreat = true
-radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker5
-
-[walker14@mil_freedom_stalker5]
-path_walk = attack_way1_4
-path_look = attack_look4
-on_signal = return | walker1@mil_freedom_stalker5
-
-[spawn@mil_freedom_stalker5]
-medkit
 
 ;----------------------------------- Патрульный мужик 1 -----------------------
 [logic@mil_freedom_stalker6]
 active = follower@mil_freedom_stalker6
-on_combat = combat@mil_freedom_stalker6
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker6
 
 [combat_ignore@mil_freedom_stalker6]
 
-[combat@mil_freedom_stalker6]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker6 %+mil_freedom_under_attack%
-
 ;Niieieiia ninoiyiea
 [follower@mil_freedom_stalker6]
-;leader = 700
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker6, {+mil_freedom_attack} walker11@mil_freedom_stalker6
 state_if_leader_in_meet = threat
 on_signal = leader_dead | kamp1@mil_freedom_stalker6
 
 [kamp1@mil_freedom_stalker6]
 center_point = camp_center1
 
-;Aiaaia ninoiyiea
-[camper1@mil_freedom_stalker6]
-path_walk = camp_walk11
-path_look = camp_look11
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | follower@mil_freedom_stalker6 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker6]
-path_walk = attack_way4_1
-path_look = attack_look1
-;on_signal = arrive | follower1@mil_freedom_stalker6
-on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker6
-team = freedom
-
-[remark1@mil_freedom_stalker6]
-snd = mil_collect_laugh4
-no_rotate = true
-no_move = true
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker6
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker6
-;on_signal = action_end | follower1@mil_freedom_stalker6
-
-[walker15@mil_freedom_stalker6]
-path_walk = attack_way4_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker6]
-;leader = 700
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker6
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker6]
-path_walk = attack_way4_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker6 %-mil_freedom_attack%
-no_retreat = true
-radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker6
-
-[walker14@mil_freedom_stalker6]
-path_walk = attack_way4_4
-path_look = attack_look4
-on_signal = return | follower@mil_freedom_stalker6
-
 ;----------------------------------- Патрульный мужик 2 -----------------------
-
 [logic@mil_freedom_stalker7]
 active = follower@mil_freedom_stalker7
-on_combat = combat@mil_freedom_stalker7
+on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker7
 
 [combat_ignore@mil_freedom_stalker7]
 
-[combat@mil_freedom_stalker7]
-on_info = {-mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker7 %+mil_freedom_under_attack%
-
 ;Niieieiia ninoiyiea
 [follower@mil_freedom_stalker7]
-;leader = 700
-on_info = {+mil_freedom_under_attack -mil_freedom_attack} camper1@mil_freedom_stalker7, {+mil_freedom_attack} walker11@mil_freedom_stalker7
 state_if_leader_in_meet = threat
 on_signal = leader_dead | kamp1@mil_freedom_stalker7
 
 [kamp1@mil_freedom_stalker7]
 center_point = camp_center1
 
-;Aiaaia ninoiyiea
-[camper1@mil_freedom_stalker7]
-path_walk = camp_walk6
-path_look = camp_look6
-radius = 20
-wounded_enabled = false
-on_timer = 60000 | follower@mil_freedom_stalker7 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker7]
-path_walk = attack_way6_1
-path_look = attack_look1
-;on_signal = arrive | follower1@mil_freedom_stalker7
-on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker7
-team = freedom
-
-[remark1@mil_freedom_stalker7]
-snd = mil_collect_laugh5
-no_rotate = true
-no_move = true
-;on_signal = action_end | follower1@mil_freedom_stalker7
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker7
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker7
-
-[walker15@mil_freedom_stalker7]
-path_walk = attack_way6_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker7]
-;leader = 715
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker7
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker7]
-path_walk = attack_way6_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker7 %-mil_freedom_attack%
-no_retreat = true
-radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker7
-
-[walker14@mil_freedom_stalker7]
-path_walk = attack_way6_4
-path_look = attack_look4
-on_signal = return | follower@mil_freedom_stalker7
 
 ;----------------------------------- Охранник на входе -----------------------
-
 [logic@mil_freedom_stalker8]
 active = zoneguard@mil_freedom_stalker8
+on_combat = combat@mil_freedom_max
 
 [zoneguard@mil_freedom_stalker8]
 path_walk = path_walk12
@@ -697,16 +281,6 @@ no_move = true
 meet_talk_enabled = true
 meet_dialog = mil_zoneguard_dialog
 on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
-on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker8
-
-[camper2@mil_freedom_stalker8]
-path_walk = camp_walk12_10
-path_look = camp_look12_10
-radius = 5
-no_retreat = true
-on_timer = 60000 | zoneguard@mil_freedom_stalker8 %-mil_freedom_under_attack%
-def_state_moving = run
-
 
 [zoneguard2@mil_freedom_stalker8]
 path_walk = path_walk12
@@ -722,6 +296,7 @@ meet_dialog = mil_zoneguard_dialog
 [logic@mil_freedom_stalker9]
 active = camper1@mil_freedom_stalker9
 combat_ignore = combat_ignore@mil_freedom_stalker8
+on_combat = combat@mil_freedom_max
 
 [combat_ignore@mil_freedom_stalker9]
 
@@ -729,54 +304,12 @@ combat_ignore = combat_ignore@mil_freedom_stalker8
 path_walk = camp_walk3
 path_look = camp_look3
 wounded_enabled = false
-on_info = {+mil_freedom_attack} walker11@mil_freedom_stalker9
-on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker9
-
-[camper2@mil_freedom_stalker9]
-path_walk = camp_walk3_10
-path_look = camp_look3_10
-radius = 5
-no_retreat = true
-on_timer = 60000 | camper1@mil_freedom_stalker9 %-mil_freedom_under_attack%
-def_state_moving = run
-
-[walker11@mil_freedom_stalker9]
-path_walk = attack_way3_1
-path_look = attack_look1
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker9
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker9
-team = freedom
-
-[walker15@mil_freedom_stalker9]
-path_walk = attack_way3_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
-combat_ignore_cond = always
-
-
-;[follower1@mil_freedom_stalker9]
-;leader = 713
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker9
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker9]
-path_walk = attack_way3_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker9 %-mil_freedom_attack%
-no_retreat = true
-radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker9
-
-[walker14@mil_freedom_stalker9]
-path_walk = attack_way3_4
-path_look = attack_look4
-on_signal = return | camper1@mil_freedom_stalker9
 
 ;----------------------------------- Мужик на входе 2 -----------------------
 [logic@mil_freedom_stalker10]
 active = camper1@mil_freedom_stalker10
 combat_ignore = combat_ignore@mil_freedom_stalker10
+on_combat = combat@mil_freedom_max
 
 [combat_ignore@mil_freedom_stalker10]
 
@@ -784,221 +317,726 @@ combat_ignore = combat_ignore@mil_freedom_stalker10
 path_walk = camp_walk5
 path_look = camp_look5
 wounded_enabled = false
-on_info = {+mil_freedom_attack} walker11@mil_freedom_stalker10
-on_info2 = {+mil_freedom_under_attack -mil_freedom_attack} camper2@mil_freedom_stalker10
-
-[camper2@mil_freedom_stalker10]
-path_walk = camp_walk5_10
-path_look = camp_look5_10
-radius = 5
-no_retreat = true
-on_timer = 60000 | camper1@mil_freedom_stalker10 %-mil_freedom_under_attack%
-def_state_moving = run
-
-;Aoaea Aieaa
-[walker11@mil_freedom_stalker10]
-path_walk = attack_way5_1
-path_look = attack_look1
-;on_info = {+mil_freedom_attack_continue3} follower1@mil_freedom_stalker10
-on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker10
-team = freedom
-
-[walker15@mil_freedom_stalker10]
-path_walk = attack_way5_2
-on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
-combat_ignore_cond = always
-
-;[follower1@mil_freedom_stalker10]
-;leader = 701
-;distanse = 0.5
-;on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker10
-;on_signal = leader_section_changed | camper13@mil_freedom_stalker10
-;combat_ignore_cond = always
-
-[camper13@mil_freedom_stalker10]
-path_walk = attack_way5_3
-path_look = attack_look3
-on_signal = final | walker14@mil_freedom_stalker10 %-mil_freedom_attack%
-no_retreat = true
-radius = 0
-on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker10
-
-[walker14@mil_freedom_stalker10]
-path_walk = attack_way5_4
-path_look = attack_look4
-on_signal = return | camper1@mil_freedom_stalker10
 
 
-;------------------------------------- sniper 1 -----------------------------
+
+;------------------------------------- stalker11 -----------------------------
 [logic@mil_freedom_walker1]
 active = walker1@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker1@mil_freedom]
 path_walk = gulag_walk1
 path_look = gulag_look1
 
-;------------------------------------- sniper 2 -----------------------------
+;------------------------------------- stalker12 -----------------------------
 [logic@mil_freedom_walker2]
 active = walker2@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker2@mil_freedom]
 path_walk = gulag_walk2
 path_look = gulag_look2
 
-;------------------------------------- quard 1 -----------------------------
+;------------------------------------- stalker13 -----------------------------
 [logic@mil_freedom_walker3]
 active = walker3@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker3@mil_freedom]
 path_walk = gulag_walk3
 path_look = gulag_look3
-;------------------------------------- quard 2 -----------------------------
+;------------------------------------- stalker14 -----------------------------
 [logic@mil_freedom_walker4]
 active = walker4@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker4@mil_freedom]
 path_walk = gulag_walk4
 path_look = gulag_look4
 
-
-
-;------------------------------------- kamp 1 -----------------------------
+;------------------------------------- stalker15 -----------------------------
 [logic@mil_freedom_kamp1]
 active = kamp10@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp10@mil_freedom]
 center_point = camp_center1
 
-;------------------------------------- kamp 2 -----------------------------
+;------------------------------------- stalker16 -----------------------------
 [logic@mil_freedom_kamp2]
 active = kamp20@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp20@mil_freedom]
 center_point = camp_center1
 
-;------------------------------------- kamp 3 -----------------------------
+;------------------------------------- stalker17 -----------------------------
 [logic@mil_freedom_kamp3]
 active = kamp3@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp3@mil_freedom]
 center_point = camp_center1
 
-;------------------------------------- sleeper 1 -----------------------------
+;------------------------------------- stalker18 -----------------------------
 [logic@mil_freedom_sleep1]
 active = kamp11@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp11@mil_freedom]
 center_point = gulag_sleep1
 
-;------------------------------------- sleeper 2 -----------------------------
+;------------------------------------- stalker19 -----------------------------
 [logic@mil_freedom_sleep2]
 active = kamp200@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp200@mil_freedom]
 center_point = gulag_sleep1
 
-;------------------------------------- sleeper 3 -----------------------------
+;------------------------------------- stalker20 -----------------------------
 [logic@mil_freedom_sleep3]
 active = kamp300@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [kamp300@mil_freedom]
 center_point = gulag_sleep1
 
-;------------------------------------- walker 1 -----------------------------
+;------------------------------------- stalker21 -----------------------------
 [logic@mil_freedom_walker7]
 active = walker7@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker7@mil_freedom]
 path_walk = gulag_walk5
 path_look = gulag_look5
 
-;------------------------------------- walker 2 -----------------------------
+;------------------------------------- stalker22 -----------------------------
 [logic@mil_freedom_walker5]
 active = walker5@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [walker5@mil_freedom]
 path_walk = gulag_walk6
 path_look = gulag_look6
 
-;------------------------------------- walker 3 -----------------------------
+;------------------------------------- stalker23 -----------------------------
 [logic@mil_freedom_camper6]
 active = camper6@mil_freedom
+on_combat = combat@mil_freedom_max
 
 [camper6@mil_freedom]
 path_walk = gulag_walk7
 path_look = gulag_look7
 
 
-
-
 ;-------------------------------------------------------------------------------------------------
-;combat state
+;combat state 1
 ;-------------------------------------------------------------------------------------------------
-;----------------------------------------------------------------
-[logic@mil_freedom_camper1]
-active = camper1@mil_freedom
+;------------------------------------- Lukash --------------------------------------
+[logic@mil_freedom_lukash_combat1]
+active = camper1@mil_freedom_lukash_combat1
+on_death = on_death@mil_freedom_lukash_combat1
 
-[camper1@mil_freedom]
+[on_death@mil_freedom_lukash_combat1]
+on_info = %+mil_lukash_dead%
+
+[camper1@mil_freedom_lukash_combat1]
+path_walk = defense_walk1
+path_look = defense_look1
+radius = 1
+no_retreat = true
+wounded_enabled = false
+
+;------------------------------------- Скряга --------------------------------------
+[logic@mil_freedom_trader_combat1]
+active = camper1@mil_freedom_trader_combat1
+
+[camper1@mil_freedom_trader_combat1]
+path_walk = trader_walk2
+path_look = trader_look2
+radius = 1
+no_retreat = true
+wounded_enabled = false
+
+;------------------------------------- Охранник арсенала --------------------------
+[logic@mil_freedom_arsenal_combat1]
+active = camper1@mil_freedom_arsenal_combat1
+
+[camper1@mil_freedom_arsenal_combat1]
+path_walk = defense_walk5
+path_look = defense_look5
+radius = 1
+no_retreat = true
+
+;------------------------------------- Охранник у Лукаша -------------------------
+[logic@mil_freedom_guard_combat1]
+active = camper1@mil_freedom_guard_combat1
+
+[camper1@mil_freedom_guard_combat1]
+path_walk = defense_walk4
+path_look = defense_look4
+radius = 1
+no_retreat = true
+
+;------------------------------------- Телохранитель 1 --------------------------
+[logic@mil_freedom_bodyguard1_combat1]
+active = camper1@mil_freedom_bodyguard1
+
+[camper1@mil_freedom_bodyguard1]
+path_walk = defense_walk3
+path_look = defense_look3
+radius = 1
+no_retreat = true
+
+;------------------------------------- Телохранитель 2 --------------------------
+[logic@mil_freedom_bodyguard2_combat1]
+active = camper1@mil_freedom_bodyguard2
+
+[camper1@mil_freedom_bodyguard2]
+path_walk = defense_walk2
+path_look = defense_look2
+radius = 1
+no_retreat = true
+
+;------------------------------------- Макс --------------------------
+[logic@mil_freedom_max_combat1]
+active = camper1@mil_freedom_max_combat1
+on_death = death@mil_freedom_max_combat1
+
+[camper1@mil_freedom_max_combat1]
+path_walk = camp_walk7
+path_look = camp_look7
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+[death@mil_freedom_max_combat1]
+on_info = %=military_max_dead%
+
+;----------------------------------- Мужик у костра 1-----------------------
+[logic@mil_freedom_stalker1_combat1]
+active = camper1@mil_freedom_stalker1_combat1
+
+[camper1@mil_freedom_stalker1_combat1]
+path_walk = camp_walk9
+path_look = camp_look9
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+
+;----------------------------------- Мужик у костра 2-----------------------
+[logic@mil_freedom_stalker2_combat1]
+active = camper1@mil_freedom_stalker2_combat1
+
+[camper1@mil_freedom_stalker2_combat1]
+path_walk = camp_walk8
+path_look = camp_look8
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+;----------------------------------- Мужик у костра 3-----------------------
+[logic@mil_freedom_stalker3_combat1]
+active = camper1@mil_freedom_stalker3_combat1
+
+[camper1@mil_freedom_stalker3_combat1]
+path_walk = stukach_walk1
+path_look = stukach_look1
+no_retreat = true
+radius = 0
+wounded_enabled = false
+def_state_moving = run
+
+;----------------------------------- Патрульный мужик (одиночка)-----------------------
+[logic@mil_freedom_stalker4_combat1]
+active = camper1@mil_freedom_stalker4_combat1
+
+[camper1@mil_freedom_stalker4_combat1]
+path_walk = camp_walk2
+path_look = camp_look2
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+;----------------------------------- Патрульный командир -----------------------
+[logic@mil_freedom_stalker5_combat1]
+active = camper1@mil_freedom_stalker5_combat1
+
+[camper1@mil_freedom_stalker5_combat1]
+path_walk = camp_walk1
+path_look = camp_look1
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+
+;----------------------------------- Патрульный мужик 1 -----------------------
+[logic@mil_freedom_stalker6_combat1]
+active = camper1@mil_freedom_stalker6_combat1
+
+[camper1@mil_freedom_stalker6_combat1]
+path_walk = camp_walk11
+path_look = camp_look11
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+;----------------------------------- Патрульный мужик 2 -----------------------
+[logic@mil_freedom_stalker7_combat1]
+active = camper1@mil_freedom_stalker7_combat1
+
+[camper1@mil_freedom_stalker7_combat1]
+path_walk = camp_walk6
+path_look = camp_look6
+radius = 20
+wounded_enabled = false
+def_state_moving = run
+
+;----------------------------------- Охранник на входе -----------------------
+[logic@mil_freedom_stalker8_combat1]
+active = camper1@mil_freedom_stalker8_combat1
+
+[camper1@mil_freedom_stalker8_combat1]
+path_walk = camp_walk12_10
+path_look = camp_look12_10
+radius = 5
+no_retreat = true
+def_state_moving = run
+
+;----------------------------------- Мужик на входе 1 -----------------------
+[logic@mil_freedom_stalker9_combat1]
+active = camper1@mil_freedom_stalker9_combat1
+
+[camper1@mil_freedom_stalker9_combat1]
+path_walk = camp_walk3_10
+path_look = camp_look3_10
+radius = 5
+no_retreat = true
+def_state_moving = run
+
+;----------------------------------- Мужик на входе 2 -----------------------
+[logic@mil_freedom_stalker10_combat1]
+active = camper1@mil_freedom_stalker10_combat1
+
+[camper1@mil_freedom_stalker10_combat1]
+path_walk = camp_walk5_10
+path_look = camp_look5_10
+radius = 5
+no_retreat = true
+def_state_moving = run
+
+;----------------------------------- Просто мужик 1 -----------------------
+[logic@mil_freedom_stalker11_combat1]
+active = camper1@mil_freedom_stalker11_combat1
+
+[camper1@mil_freedom_stalker11_combat1]
 path_walk = gulag_defense_walk1
 path_look = gulag_defense_look1
 radius = 10
 wounded_enabled = false
+def_state_moving = run
 
-;----------------------------------------------------------------
-[logic@mil_freedom_camper2]
-active = camper2@mil_freedom
+;----------------------------------- Просто мужик 2 -----------------------
+[logic@mil_freedom_stalker12_combat1]
+active = camper1@mil_freedom_stalker12_combat1
 
-[camper2@mil_freedom]
+[camper1@mil_freedom_stalker12_combat1]
 path_walk = gulag_defense_walk2
 path_look = gulag_defense_look2
 radius = 10
 wounded_enabled = false
+def_state_moving = run
 
-;----------------------------------------------------------------
-[logic@mil_freedom_camper3]
-active = camper3@mil_freedom
+;----------------------------------- Просто мужик 3 -----------------------
+[logic@mil_freedom_stalker13_combat1]
+active = camper1@mil_freedom_stalker13_combat1
 
-[camper3@mil_freedom]
+[camper1@mil_freedom_stalker13_combat1]
 path_walk = gulag_defense_walk3
 path_look = gulag_defense_look3
 radius = 10
 wounded_enabled = false
+def_state_moving = run
 
-;----------------------------------------------------------------
-[logic@mil_freedom_camper4]
-active = camper4@mil_freedom
+;----------------------------------- Просто мужик 4 -----------------------
+[logic@mil_freedom_stalker14_combat1]
+active = camper1@mil_freedom_stalker14_combat1
 
-[camper4@mil_freedom]
+[camper1@mil_freedom_stalker14_combat1]
 path_walk = gulag_defense_walk4
 path_look = gulag_defense_look4
 radius = 10
 wounded_enabled = false
+def_state_moving = run
 
-;----------------------------------------------------------------
-[logic@mil_freedom_camper5]
-active = camper5@mil_freedom
+;----------------------------------- Просто мужик 5 -----------------------
+[logic@mil_freedom_stalker15_combat1]
+active = camper1@mil_freedom_stalker15_combat1
 
-[camper5@mil_freedom]
-path_walk = gulag_defense_walk5               
+[camper1@mil_freedom_stalker15_combat1]
+path_walk = gulag_defense_walk5
 path_look = gulag_defense_look5
 radius = 10
 wounded_enabled = false
+def_state_moving = run
 
-;----------------------------------------------------------------
-[logic@mil_freedom_camper61]
-active = camper61@mil_freedom
+;----------------------------------- Просто мужик 6 -----------------------
+[logic@mil_freedom_stalker16_combat1]
+active = camper1@mil_freedom_stalker16_combat1
 
-[camper61@mil_freedom]
+[camper1@mil_freedom_stalker16_combat1]
 path_walk = gulag_defense_walk6
-path_look = gulag_defense_walk6
-radius = 20
+path_look = gulag_defense_look6
+radius = 10
 wounded_enabled = false
+def_state_moving = run
 
 
+
+
+;-------------------------------------------------------------------------------------------------
+;combat state 2
+;-------------------------------------------------------------------------------------------------
 [logic@mil_freedom_defence]
 active = nil
 
 
+
+
+;-------------------------------------------------------------------------------------------------
+;Атака хутора Долга
+;-------------------------------------------------------------------------------------------------
+;----------------------------------- Макс-----------------------
+[logic@mil_freedom_max_attack]
+active = remark1@mil_freedom_max_attack
+
+[remark1@mil_freedom_max_attack]
+snd = mil_max_before_collect
+on_signal = action_end | walker11@mil_freedom_max_attack
+
+[walker11@mil_freedom_max_attack]
+path_walk = attack_way7_1
+path_look = attack_look_max1
+on_signal = arrive | remark2@mil_freedom_max_attack
+team = freedom
+meet_enabled = false
+
+[remark2@mil_freedom_max_attack]
+snd = mil_max_to_kolyan
+no_rotate = true
+no_move = true
+on_signal = action_end | %+mil_freedom_attack_continue1% camper12@mil_freedom_max_attack
+
+[camper12@mil_freedom_max_attack]
+path_walk = attack_way7_2
+path_look = attack_look2
+on_signal = arrive | %+mil_freedom_arrive% camper13@mil_freedom_max_attack
+no_retreat = true
+
+[camper13@mil_freedom_max_attack]
+path_walk = attack_way7_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_max_attack %-mil_freedom_attack%
+no_retreat = true
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_max_attack
+
+[walker14@mil_freedom_max_attack]
+path_walk = attack_way7_5
+path_look = attack_look5
+on_signal = search | walker15@mil_freedom_max_attack
+
+[walker15@mil_freedom_max_attack]
+path_walk = attack_way7_4
+path_look = attack_look4
+on_signal = return | walker1@mil_freedom_max_attack
+
+;----------------------------------- Мужик у костра 1-----------------------
+[logic@mil_freedom_stalker1_attack]
+active = walker11@mil_freedom_stalker1_attack
+
+[walker11@mil_freedom_stalker1_attack]
+path_walk = attack_way9_1
+path_look = attack_look1
+team = freedom
+on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker1_attack
+
+[remark1@mil_freedom_stalker1_attack]
+snd = mil_collect_laugh1
+no_rotate = true
+no_move = true
+on_signal = action_end | walker15@mil_freedom_stalker1_attack
+
+[walker15@mil_freedom_stalker1_attack]
+path_walk = attack_way9_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker1_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker1_attack]
+path_walk = attack_way9_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker1_attack %-mil_freedom_attack%
+retreat = true
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker1_attack
+
+[walker14@mil_freedom_stalker1_attack]
+path_walk = attack_way9_4
+path_look = attack_look4
+on_signal = return | kamp@mil_freedom_stalker1_attack
+
+;----------------------------------- Мужик у костра 2-----------------------
+[logic@mil_freedom_stalker2_attack]
+active = walker11@mil_freedom_stalker2_attack
+
+[walker11@mil_freedom_stalker2_attack]
+path_walk = attack_way8_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue1} remark1@mil_freedom_stalker2_attack
+team = freedom
+
+[remark1@mil_freedom_stalker2_attack]
+snd = mil_kolyan
+no_rotate = true
+no_move = true
+on_signal = action_end | %+mil_freedom_attack_continue2%
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker2_attack
+
+[walker15@mil_freedom_stalker2_attack]
+path_walk = attack_way8_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker2_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker2_attack]
+path_walk = attack_way8_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker2_attack %-mil_freedom_attack%
+retreat = true
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker2_attack
+
+[walker14@mil_freedom_stalker2_attack]
+path_walk = attack_way8_4
+path_look = attack_look4
+on_signal = return | kamp@mil_freedom_stalker2_attack
+
+;----------------------------------- Мужик у костра 3-----------------------
+[logic@mil_freedom_stalker3_attack]
+active = walker1@mil_freedom_stalker3_attack
+
+[walker1@mil_freedom_stalker3_attack]
+path_walk = stukach_walk2
+path_look = stukach_look2
+on_info = {+mil_dolg_dead} kamp1@mil_freedom_stalker3_attack
+
+[remark1@mil_freedom_stalker3_attack]
+snd = mil_paul_frost
+on_signal = action_end | walker2@mil_freedom_stalker3_attack
+
+[walker2@mil_freedom_stalker3_attack]
+path_walk = stukach_walk3
+on_signal = final | walker3@mil_freedom_stalker3_attack
+
+[walker3@mil_freedom_stalker3_attack]
+path_walk = stukach_walk4
+path_look = stukach_look4
+on_signal = arrive | walker4@mil_freedom_stalker3_attack
+on_actor_dist_le = 50 | walker4@mil_freedom_stalker3_attack %=mil_courier_quest_fail%
+
+[walker4@mil_freedom_stalker3_attack]
+path_walk = stukach_walk5
+on_signal = return | kamp1@mil_freedom_stalker3_attack
+
+;----------------------------------- Патрульный мужик (одиночка)-----------------------
+[logic@mil_freedom_stalker4_attack]
+active = walker11@mil_freedom_stalker4_attack
+
+[walker11@mil_freedom_stalker4_attack]
+path_walk = attack_way2_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker4_attack
+team = freedom
+
+[remark1@mil_freedom_stalker4_attack]
+snd = mil_collect_laugh2
+no_rotate = true
+no_move = true
+on_signal = action_end | %+mil_freedom_attack_continue3% walker15@mil_freedom_stalker4_attack
+
+[walker15@mil_freedom_stalker4_attack]
+path_walk = attack_way2_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker4_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker4_attack]
+path_walk = attack_way2_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker4_attack %-mil_freedom_attack%
+no_retreat = true
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker4_attack
+
+[walker14@mil_freedom_stalker4_attack]
+path_walk = attack_way2_4
+path_look = attack_look4
+on_signal = return | walker1@mil_freedom_stalker4_attack
+
+;----------------------------------- Патрульный командир -----------------------
+[logic@mil_freedom_stalker5_attack]
+active = walker11@mil_freedom_stalker5_attack
+
+[walker11@mil_freedom_stalker5_attack]
+path_walk = attack_way1_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker5_attack
+team = freedom
+
+[remark1@mil_freedom_stalker5_attack]
+snd = mil_collect_laugh3
+no_rotate = true
+no_move = true
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker5_attack
+
+[walker15@mil_freedom_stalker5_attack]
+path_walk = attack_way1_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker5_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker5_attack]
+path_walk = attack_way1_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker5_attack %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker5_attack
+
+[walker14@mil_freedom_stalker5_attack]
+path_walk = attack_way1_4
+path_look = attack_look4
+on_signal = return | walker1@mil_freedom_stalker5_attack
+
+;----------------------------------- Патрульный мужик 1 -----------------------
+[logic@mil_freedom_stalker6_attack]
+active = walker11@mil_freedom_stalker6_attack
+
+[walker11@mil_freedom_stalker6_attack]
+path_walk = attack_way4_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker6_attack
+team = freedom
+
+[remark1@mil_freedom_stalker6_attack]
+snd = mil_collect_laugh4
+no_rotate = true
+no_move = true
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker6_attack
+
+[walker15@mil_freedom_stalker6_attack]
+path_walk = attack_way4_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker6_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker6_attack]
+path_walk = attack_way4_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker6_attack %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker6_attack
+
+[walker14@mil_freedom_stalker6_attack]
+path_walk = attack_way4_4
+path_look = attack_look4
+on_signal = return | follower@mil_freedom_stalker6_attack
+
+;----------------------------------- Патрульный мужик 2 -----------------------
+[logic@mil_freedom_stalker7_attack]
+active = walker11@mil_freedom_stalker7_attack
+
+[walker11@mil_freedom_stalker7_attack]
+path_walk = attack_way6_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue2} remark1@mil_freedom_stalker7_attack
+team = freedom
+
+[remark1@mil_freedom_stalker7_attack]
+snd = mil_collect_laugh5
+no_rotate = true
+no_move = true
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker7_attack
+
+[walker15@mil_freedom_stalker7_attack]
+path_walk = attack_way6_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker7_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker7_attack]
+path_walk = attack_way6_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker7_attack %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker7_attack
+
+[walker14@mil_freedom_stalker7_attack]
+path_walk = attack_way6_4
+path_look = attack_look4
+on_signal = return | follower@mil_freedom_stalker7_attack
+
+;----------------------------------- Мужик на входе 1 -----------------------
+[logic@mil_freedom_stalker8_attack]
+active = walker11@mil_freedom_stalker8_attack
+
+[walker11@mil_freedom_stalker8_attack]
+path_walk = attack_way3_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker8_attack
+team = freedom
+
+[walker15@mil_freedom_stalker8_attack]
+path_walk = attack_way3_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker8_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker8_attack]
+path_walk = attack_way3_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker8_attack %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker8_attack
+
+[walker14@mil_freedom_stalker8_attack]
+path_walk = attack_way3_4
+path_look = attack_look4
+on_signal = return | camper1@mil_freedom_stalker8_attack
+
+;----------------------------------- Мужик на входе 2 -----------------------
+[logic@mil_freedom_stalker9_attack]
+active = walker11@mil_freedom_stalker9_attack
+
+[walker11@mil_freedom_stalker9_attack]
+path_walk = attack_way5_1
+path_look = attack_look1
+on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker9_attack
+team = freedom
+
+[walker15@mil_freedom_stalker9_attack]
+path_walk = attack_way5_2
+on_info = {+mil_freedom_arrive} camper13@mil_freedom_stalker9_attack
+combat_ignore_cond = always
+
+[camper13@mil_freedom_stalker9_attack]
+path_walk = attack_way5_3
+path_look = attack_look3
+on_signal = final | walker14@mil_freedom_stalker9_attack %-mil_freedom_attack%
+no_retreat = true
+radius = 0
+on_info = {+mil_dolg_dead} %-mil_freedom_attack% walker14@mil_freedom_stalker9_attack
+
+[walker14@mil_freedom_stalker9_attack]
+path_walk = attack_way5_4
+path_look = attack_look4
+on_signal = return | camper1@mil_freedom_stalker9_attack
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Гулаг зверей около труб
