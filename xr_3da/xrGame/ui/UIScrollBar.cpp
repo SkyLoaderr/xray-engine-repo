@@ -260,13 +260,13 @@ void CUIScrollBar::Draw()
 	//нарисовать фоновую подложку
 	if(m_bIsHorizontal){
 		if (m_StaticBackground.GetOriginalRect().width()){
-			int tile		= iFloor(GetWidth()/m_StaticBackground.GetOriginalRect().width());
+			int tile		= iFloor(GetWidth()/float(m_StaticBackground.GetOriginalRect().width()));
 			int rem			= GetWidth()-tile*m_StaticBackground.GetOriginalRect().width();
 			m_StaticBackground.SetTile(tile,1,rem,0);
 		}
 	}else{
 		if (m_StaticBackground.GetOriginalRect().height()){
-			int tile		= iFloor(GetHeight()/m_StaticBackground.GetOriginalRect().height());
+			int tile		= iFloor(GetHeight()/float(m_StaticBackground.GetOriginalRect().height()));
 			int rem			= GetHeight()-tile*m_StaticBackground.GetOriginalRect().height();
 			m_StaticBackground.SetTile(1,tile,0,rem);
 		}

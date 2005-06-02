@@ -131,13 +131,13 @@ void CUIScrollBox::Draw()
 {
 	if(m_bIsHorizontal){
 		if (m_UIStaticItem.GetOriginalRect().width()){
-			int tile		= iFloor(GetWidth()/m_UIStaticItem.GetOriginalRect().width());
+			int tile		= iFloor(GetWidth()/float(m_UIStaticItem.GetOriginalRect().width()));
 			int rem			= GetWidth()-tile*m_UIStaticItem.GetOriginalRect().width();
 			m_UIStaticItem.SetTile(tile,1,rem,0);
 		}
 	}else{
 		if (m_UIStaticItem.GetOriginalRect().height()){
-			int tile		= iFloor(GetHeight()/m_UIStaticItem.GetOriginalRect().height());
+			int tile		= iFloor(GetHeight()/float(m_UIStaticItem.GetOriginalRect().height()));
 			int rem			= GetHeight()-tile*m_UIStaticItem.GetOriginalRect().height();
 			m_UIStaticItem.SetTile(1,tile,0,rem);
 		}
