@@ -146,11 +146,19 @@ function fract:updateJob()
 		return
 	end
 
+	-- освобождение npc с работ, не существующих в данном состоянии
 	for k,v in self.Job do
-		-- проверка на доступность работы при текущем стейте
-		if self:availState(v.state, self.state) ~= true then
+		if not self:availState(v.state, self.state) then
 			v.object = nil
-		else
+		end
+	end
+
+	-- переназначение работ
+	for k,v in self.Job do
+		printf( "   %s", v.section )
+
+		-- проверка на доступность работы при текущем стейте
+		if self:availState(v.state, self.state) then
 			-- если работа свободна и доступна
 			if v.object == nil and self:availJob(v) then
 				-- назначить на работу свободного человека
@@ -163,7 +171,7 @@ function fract:updateJob()
 						--return
 					end
 				end
-				-- если свободных нету, снять кого-то с наименее выжной работы и поставить на эту работу
+				-- если свободных нету, снять кого-то с наименее важной работы и поставить на эту работу
 				if not f then
 					for i = table.getn(self.Job), k, -1 do
 						if self.Job[i].object ~= nil and self.Job[i].prior < v.prior then 
@@ -174,7 +182,13 @@ function fract:updateJob()
 							end
 						end
 					end			
-				end				
+				end
+			else
+				if v.object then
+					printf( "      job is busy" )
+				else
+					printf( "      job is unavailable" )
+				end
 			end
        	end
 	end

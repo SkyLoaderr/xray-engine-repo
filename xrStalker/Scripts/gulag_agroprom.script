@@ -150,7 +150,7 @@ function load_job(sj, gname, type, squad, groups)
 	--' Agroprom rush
 	if type == "agr_rush" then
 		for i = 1, 9 do
-			t = { section = "logic@agr_rush_nil",
+			t = { section = "logic@agr_rush_hold_nil",
 				idle = 0,
 				prior = 0, state = {0},
 				squad = squad, group = groups[1],
@@ -160,7 +160,7 @@ function load_job(sj, gname, type, squad, groups)
 		end
 
 		for i = 1, 9 do
-			t = { section = "logic@agr_rush_nil",
+			t = { section = "logic@agr_rush_attack_nil",
 				idle = 0,
 				prior = 0, state = {1},
 				squad = squad, group = groups[1],
@@ -197,10 +197,14 @@ function load_states(gname, type)
 	if type == "agr_rush" then
 		return function( gulag )
 			local actor = db.actor
-			if gulag.state == 0 and actor and actor:has_info( "agr_rush_start" ) then
-				return 1
+			if gulag.state == 0 then
+				if actor and actor:has_info( "agr_rush_start" ) then
+					return 1
+				else
+					return 0
+				end
 			else
-				return 0
+				return 1
 			end
 		end
 	end
