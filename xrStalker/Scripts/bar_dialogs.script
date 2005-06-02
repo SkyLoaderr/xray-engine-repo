@@ -200,27 +200,6 @@ end
 -- ********************************************************
 --			БАРМЕН ЗА ПРИЛАВКОМ
 -- ********************************************************
--- спасение исследований ученных
-function barman_need_kill_veterans(actor,npc)
-	if db.actor:dont_has_info("bar_kill_veteran_start") then
-		return true
-	end
-	return false
-end
-
--- Задание Волкодава
-function volkodav_not_give_quest(actor,npc)
-	return not volkodav_give_quest(actor,npc)
-end
-function volkodav_give_quest(actor,npc)
-	if db.actor:has_info("bar_kill_professor_start") or
-	   db.actor:has_info("bar_kill_professor_reject")
-	then
-		return true
-	end
-	return false
-end
-
 --Долг архивные документы
 function have_dolg_arhive_document(first_speaker, second_speaker)
   	return first_speaker:object("dolg_arhive_documents") ~= nil
@@ -384,10 +363,40 @@ function give_money_for_informer_3(actor, npc)
 	dialogs.relocate_money(npc, 4500, "out")
 end
 
-function have_volkodav_reward(actor, npc)	
-	local podstvolnik = npc:object("wpn_addon_grenade_launcher")
-	dialogs.relocate_item(npc, podstvolnik, "in")
-	dialogs.relocate_money(npc, 1000, "in")
+
+
+
+-- спасение исследований ученных
+function barman_need_kill_veterans(actor,npc)
+	if db.actor:dont_has_info("bar_kill_veteran_start") then
+		return true
+	end
+	return false
+end
+function volkodav_for_kill_professor(npc, actor)
+	local object = db.actor:object("ecolog_outfit")
+	if object then
+		dialogs.relocate_item(npc, object, "in")
+	end	
+end
+function professor_for_resque(npc, actor)
+	local object = db.actor:object("bar_ecolog_flash")
+	if object then
+		dialogs.relocate_item(npc, object, "in")
+	end	
+end
+
+-- Задание Волкодава
+function volkodav_not_give_quest(actor,npc)
+	return not volkodav_give_quest(actor,npc)
+end
+function volkodav_give_quest(actor,npc)
+	if db.actor:has_info("bar_kill_professor_start") or
+	   db.actor:has_info("bar_kill_professor_reject")
+	then
+		return true
+	end
+	return false
 end
 
 

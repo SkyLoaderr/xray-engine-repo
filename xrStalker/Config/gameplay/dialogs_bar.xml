@@ -3589,6 +3589,183 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_svoboda_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_svoboda_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_svoboda_volkodav_info_dp">
+        <has_info>bar_get_research_done</has_info>
+        <phrase_list>
+            <phrase id="14">
+                <text>bar_svoboda_volkodav_info_dp_14</text>
+            </phrase>
+            <phrase id="1311">
+                <text>bar_svoboda_volkodav_info_dp_1311</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_svoboda_volkodav_info_dp_131</text>
+                <next>1311</next>
+            </phrase>
+            <phrase id="13">
+                <text>bar_svoboda_volkodav_info_dp_13</text>
+                <next>131</next>
+            </phrase>
+            <phrase id="121111">
+                <text>bar_svoboda_volkodav_info_dp_121111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="12111">
+                <text>bar_svoboda_volkodav_info_dp_12111</text>
+                <next>121111</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_svoboda_volkodav_info_dp_1211</text>
+                <next>12111</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_svoboda_volkodav_info_dp_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="12">
+                <text>bar_svoboda_volkodav_info_dp_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="111211">
+                <text>bar_svoboda_volkodav_info_dp_111211</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11121">
+                <text>bar_svoboda_volkodav_info_dp_11121</text>
+                <next>111211</next>
+            </phrase>
+            <phrase id="1112">
+                <text>bar_svoboda_volkodav_info_dp_1112</text>
+                <next>11121</next>
+            </phrase>
+            <phrase id="111111">
+                <text>bar_svoboda_volkodav_info_dp_111111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11111">
+                <text>bar_svoboda_volkodav_info_dp_11111</text>
+                <next>111111</next>
+                <next>1112</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_svoboda_volkodav_info_dp_1111</text>
+                <next>11111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_svoboda_volkodav_info_dp_111</text>
+                <next>1111</next>
+                <next>1112</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_svoboda_volkodav_info_dp_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_svoboda_volkodav_info_dp_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_svoboda_volkodav_info_dp_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_ecolog_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_ecolog_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_ecolog_crush_professor_give_info_dp">
+        <has_info>bar_resque_research_start</has_info>
+        <phrase_list>
+            <phrase id="12">
+                <text>bar_ecolog_crush_professor_give_info_dp_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_ecolog_crush_professor_give_info_dp_1211</text>
+                <next>12111</next>
+            </phrase>
+            <phrase id="121111">
+                <text>bar_ecolog_crush_professor_give_info_dp_121111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="14">
+                <text>bar_ecolog_crush_professor_give_info_dp_14</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="13">
+                <text>bar_ecolog_crush_professor_give_info_dp_13</text>
+                <has_info>bar_get_research_gain</has_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_ecolog_crush_professor_give_info_dp_131</text>
+                <next>1311</next>
+            </phrase>
+            <phrase id="1311">
+                <text>bar_ecolog_crush_professor_give_info_dp_1311</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="121211">
+                <text>bar_ecolog_crush_professor_give_info_dp_121211</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="12121">
+                <text>bar_ecolog_crush_professor_give_info_dp_12121</text>
+                <next>121211</next>
+            </phrase>
+            <phrase id="1212">
+                <text>bar_ecolog_crush_professor_give_info_dp_1212</text>
+                <next>12121</next>
+            </phrase>
+            <phrase id="12111">
+                <text>bar_ecolog_crush_professor_give_info_dp_12111</text>
+                <next>121111</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_ecolog_crush_professor_give_info_dp_121</text>
+                <next>1211</next>
+                <next>1212</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_ecolog_crush_professor_give_info_dp_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_ecolog_crush_professor_give_info_dp_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_ecolog_crush_professor_give_info_dp_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_ecolog_crush_professor_give_info_dp_111</text>
+                <next>1112</next>
+            </phrase>
+            <phrase id="1112">
+                <text>bar_ecolog_crush_professor_give_info_dp_1112</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -3830,110 +4007,8 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_svoboda_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_svoboda_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_svoboda_volkodav_info_dp">
-        <has_info>bar_get_research_done</has_info>
-        <phrase_list>
-            <phrase id="14">
-                <text>bar_svoboda_volkodav_info_dp_14</text>
-            </phrase>
-            <phrase id="1311">
-                <text>bar_svoboda_volkodav_info_dp_1311</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_svoboda_volkodav_info_dp_131</text>
-                <next>1311</next>
-            </phrase>
-            <phrase id="13">
-                <text>bar_svoboda_volkodav_info_dp_13</text>
-                <next>131</next>
-            </phrase>
-            <phrase id="121111">
-                <text>bar_svoboda_volkodav_info_dp_121111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="12111">
-                <text>bar_svoboda_volkodav_info_dp_12111</text>
-                <next>121111</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_svoboda_volkodav_info_dp_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_svoboda_volkodav_info_dp_121</text>
-                <next>1211</next>
-            </phrase>
-            <phrase id="12">
-                <text>bar_svoboda_volkodav_info_dp_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="111211">
-                <text>bar_svoboda_volkodav_info_dp_111211</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="11121">
-                <text>bar_svoboda_volkodav_info_dp_11121</text>
-                <next>111211</next>
-            </phrase>
-            <phrase id="1112">
-                <text>bar_svoboda_volkodav_info_dp_1112</text>
-                <next>11121</next>
-            </phrase>
-            <phrase id="111111">
-                <text>bar_svoboda_volkodav_info_dp_111111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="11111">
-                <text>bar_svoboda_volkodav_info_dp_11111</text>
-                <next>111111</next>
-                <next>1112</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_svoboda_volkodav_info_dp_1111</text>
-                <next>11111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_svoboda_volkodav_info_dp_111</text>
-                <next>1111</next>
-                <next>1112</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_svoboda_volkodav_info_dp_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_svoboda_volkodav_info_dp_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_svoboda_volkodav_info_dp_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_svoboda_volkodav_start">
         <phrase_list>
-            <phrase id="4">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <dont_has_info>bar_kill_professor_reject</dont_has_info>
-                <dont_has_info>bar_kill_professor_reward</dont_has_info>
-                <give_info>bar_kill_professor_reward</give_info>
-                <has_info>bar_resque_research_dead</has_info>
-                <has_info>bar_kill_professor_done</has_info>
-                <next>41</next>
-            </phrase>
             <phrase id="5">
                 <text></text>
                 <precondition>bar_dialogs.volkodav_give_quest</precondition>
@@ -3943,34 +4018,16 @@
                 <has_info>bar_kill_professor_fail</has_info>
                 <next>51</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
             <phrase id="1">
                 <text></text>
                 <precondition>bar_dialogs.volkodav_not_give_quest</precondition>
                 <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_svoboda_volkodav_start_11</text>
-                <next>111</next>
-                <next>112</next>
             </phrase>
             <phrase id="111">
                 <text>bar_svoboda_volkodav_start_111</text>
                 <give_info>bar_kill_professor_start</give_info>
                 <give_info>bar_freedom_attack_ecolog</give_info>
                 <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_svoboda_volkodav_start_1111</text>
-                <next>11111</next>
             </phrase>
             <phrase id="11111">
                 <text>bar_svoboda_volkodav_start_11111</text>
@@ -3982,17 +4039,11 @@
                 <give_info>bar_freedom_attack_ecolog</give_info>
                 <next>1121</next>
             </phrase>
-            <phrase id="1121">
-                <text>bar_svoboda_volkodav_start_1121</text>
-            </phrase>
             <phrase id="2">
                 <text></text>
                 <precondition>bar_dialogs.volkodav_give_quest</precondition>
                 <has_info>bar_kill_professor_reject</has_info>
                 <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_svoboda_volkodav_start_21</text>
             </phrase>
             <phrase id="3">
                 <text></text>
@@ -4000,9 +4051,6 @@
                 <dont_has_info>bar_kill_professor_reject</dont_has_info>
                 <dont_has_info>bar_resque_research_dead</dont_has_info>
                 <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_svoboda_volkodav_start_31</text>
             </phrase>
             <phrase id="6">
                 <text></text>
@@ -4012,99 +4060,52 @@
                 <has_info>bar_kill_professor_reward</has_info>
                 <next>61</next>
             </phrase>
-            <phrase id="61">
-                <text>bar_svoboda_volkodav_start_61</text>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
             </phrase>
             <phrase id="51">
                 <text>bar_svoboda_volkodav_start_51</text>
             </phrase>
-            <phrase id="41">
-                <text>bar_svoboda_volkodav_start_41</text>
+            <phrase id="61">
+                <text>bar_svoboda_volkodav_start_61</text>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_ecolog_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_ecolog_dialog_0</text>
+            <phrase id="1121">
+                <text>bar_svoboda_volkodav_start_1121</text>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_ecolog_crush_professor_give_info_dp">
-        <has_info>bar_resque_research_start</has_info>
-        <phrase_list>
-            <phrase id="12">
-                <text>bar_ecolog_crush_professor_give_info_dp_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_ecolog_crush_professor_give_info_dp_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="121111">
-                <text>bar_ecolog_crush_professor_give_info_dp_121111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="14">
-                <text>bar_ecolog_crush_professor_give_info_dp_14</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="13">
-                <text>bar_ecolog_crush_professor_give_info_dp_13</text>
-                <has_info>bar_get_research_gain</has_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_ecolog_crush_professor_give_info_dp_131</text>
-                <next>1311</next>
-            </phrase>
-            <phrase id="1311">
-                <text>bar_ecolog_crush_professor_give_info_dp_1311</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="121211">
-                <text>bar_ecolog_crush_professor_give_info_dp_121211</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="12121">
-                <text>bar_ecolog_crush_professor_give_info_dp_12121</text>
-                <next>121211</next>
-            </phrase>
-            <phrase id="1212">
-                <text>bar_ecolog_crush_professor_give_info_dp_1212</text>
-                <next>12121</next>
-            </phrase>
-            <phrase id="12111">
-                <text>bar_ecolog_crush_professor_give_info_dp_12111</text>
-                <next>121111</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_ecolog_crush_professor_give_info_dp_121</text>
-                <next>1211</next>
-                <next>1212</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_ecolog_crush_professor_give_info_dp_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_ecolog_crush_professor_give_info_dp_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
+            <phrase id="1111">
+                <text>bar_svoboda_volkodav_start_1111</text>
+                <next>11111</next>
             </phrase>
             <phrase id="11">
-                <text>bar_ecolog_crush_professor_give_info_dp_11</text>
+                <text>bar_svoboda_volkodav_start_11</text>
                 <next>111</next>
+                <next>112</next>
             </phrase>
-            <phrase id="111">
-                <text>bar_ecolog_crush_professor_give_info_dp_111</text>
-                <next>1112</next>
+            <phrase id="31">
+                <text>bar_svoboda_volkodav_start_31</text>
             </phrase>
-            <phrase id="1112">
-                <text>bar_ecolog_crush_professor_give_info_dp_1112</text>
-                <next>1</next>
+            <phrase id="21">
+                <text>bar_svoboda_volkodav_start_21</text>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <precondition>bar_dialogs.volkodav_give_quest</precondition>
+                <dont_has_info>bar_kill_professor_reject</dont_has_info>
+                <dont_has_info>bar_kill_professor_reward</dont_has_info>
+                <give_info>bar_kill_professor_reward</give_info>
+                <has_info>bar_resque_research_dead</has_info>
+                <has_info>bar_kill_professor_done</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_svoboda_volkodav_start_41</text>
+                <action>bar_dialogs.volkodav_for_kill_professor</action>
             </phrase>
         </phrase_list>
     </dialog>
@@ -4119,33 +4120,12 @@
                 <has_info>bar_resque_research_start</has_info>
                 <next>21</next>
             </phrase>
-            <phrase id="41">
-                <text>bar_ecolog_crush_professor_start_41</text>
-            </phrase>
-            <phrase id="31">
-                <text>bar_ecolog_crush_professor_start_31</text>
-            </phrase>
             <phrase id="4">
                 <text></text>
                 <has_info>bar_resque_research_done</has_info>
                 <has_info>bar_resque_research_start</has_info>
                 <has_info>bar_resque_research_reward</has_info>
                 <next>41</next>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>bar_resque_research_reward</dont_has_info>
-                <give_info>bar_resque_research_reward</give_info>
-                <has_info>bar_resque_research_done</has_info>
-                <has_info>bar_resque_research_start</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
             </phrase>
             <phrase id="1">
                 <text></text>
@@ -4173,6 +4153,28 @@
             </phrase>
             <phrase id="1121">
                 <text>bar_ecolog_crush_professor_start_1121</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_ecolog_crush_professor_start_41</text>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <dont_has_info>bar_resque_research_reward</dont_has_info>
+                <give_info>bar_resque_research_reward</give_info>
+                <has_info>bar_resque_research_done</has_info>
+                <has_info>bar_resque_research_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_ecolog_crush_professor_start_31</text>
+                <action>bar_dialogs.professor_for_resque</action>
             </phrase>
         </phrase_list>
     </dialog>
