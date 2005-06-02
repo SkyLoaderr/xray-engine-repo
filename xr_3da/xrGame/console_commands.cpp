@@ -755,6 +755,7 @@ class CCC_ALifeReload : public IConsole_Command {
 public:
 	CCC_ALifeReload(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
+		if (GameID() != GAME_SINGLE) return;
 		NET_Packet			net_packet;
 		net_packet.w_begin	(M_RELOAD_GAME);
 		Level().Send		(net_packet,net_flags(TRUE));

@@ -90,24 +90,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
-/*	if (kWPN_FIRE == cmd)
-	{
-		if ((GAME_PHASE_PENDING	== Game().phase) || 
-			(GAME_PHASE_INPROGRESS	== Game().phase && HUD().GetUI()->UIGame()->CanBeReady()))
-		{
-			NET_Packet			P;
-//			u_EventGen			(P,GEG_PLAYER_READY,ID());
 
-			u_EventGen		(P,GE_GAME_EVENT,ID()	);
-			P.w_u16(GAME_EVENT_PLAYER_READY);
-
-			u_EventSend			(P);
-			return;
-		}
-		else
-			return;
-	};
-*/
 	switch(cmd) 
 	{
 	case kACCEL:
@@ -120,10 +103,19 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	case kCAM_4:	cam_Set			(eacFreeFly);				break;
 	case kWPN_FIRE:	++look_idx;									break;
 	}
+
+#ifndef NDEBUG
+	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
+#endif
 }
 
 void CSpectator::IR_OnKeyboardRelease(int cmd)
 {
+
+#ifndef NDEBUG
+	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
+#endif
+
 	switch (cmd)
 	{
 	case kACCEL:
@@ -137,6 +129,10 @@ void CSpectator::IR_OnKeyboardRelease(int cmd)
 void CSpectator::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
+
+#ifndef NDEBUG
+	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
+#endif
 
 	if ((cam_active==eacFreeFly)||(cam_active==eacFreeLook)){
 		CCameraBase* C	= cameras	[cam_active];
@@ -227,14 +223,18 @@ void CSpectator::cam_Update	(CActor* A)
 		// hud output
 		HUD().Font().pFontDI->OutI			(0.f,0.9f,"%s(%d%%)",*A->cName(),iFloor(A->g_Health()+0.5f));
 	}else{
-		Fvector point, dangle;
-		point.set					(0.f,1.6f,0.f);
+		CCameraBase* cam			= cameras[eacFreeFly];
+		Fvector point0, point, dangle;
+//		point.set					(0.f,1.6f,0.f);
+		point.set(cam->vPosition);
+		point0.set(point);
 		XFORM().transform_tiny	(point);
 
 		// apply shift
 		dangle.set					(0,0,0);
-		CCameraBase* cam			= cameras[eacFreeFly];
+		
 		cam->Update					(point,dangle);
+		cam->vPosition.set(point0);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
 	};
@@ -252,7 +252,6 @@ BOOL			CSpectator::net_Spawn				( CSE_Abstract*	DC )
 	look_idx				= 0;
 
 	cameras[cam_active]->Set		(-E->o_Angle.y,-E->o_Angle.x,0);		// set's camera orientation
-//	cameras[cam_active]->Set		(0, E->o_Angle.x,0);		// set's camera orientation
 	cameras[cam_active]->vPosition.set(E->o_Position);
 
 	if (OnServer())
