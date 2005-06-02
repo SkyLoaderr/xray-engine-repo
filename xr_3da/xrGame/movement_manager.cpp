@@ -128,7 +128,7 @@ CMovementManager::EPathType CMovementManager::path_type() const
 	return					(m_path_type);
 }
 
-void CMovementManager::set_game_dest_vertex	(const GameGraph::_GRAPH_ID &game_vertex_id)
+void CMovementManager::set_game_dest_vertex		(const GameGraph::_GRAPH_ID &game_vertex_id)
 {
 	game_path().set_dest_vertex(game_vertex_id);
 	m_path_actuality		= m_path_actuality && game_path().actual();
@@ -139,14 +139,14 @@ GameGraph::_GRAPH_ID CMovementManager::game_dest_vertex_id() const
 	return					(GameGraph::_GRAPH_ID(game_path().dest_vertex_id()));
 }
 
-void CMovementManager::set_level_dest_vertex(const u32 level_vertex_id)
+void CMovementManager::set_level_dest_vertex	(const u32 level_vertex_id)
 {
 	VERIFY2					(restrictions().accessible(level_vertex_id),*object().cName());
 	level_path().set_dest_vertex(level_vertex_id);
 	m_path_actuality		= m_path_actuality && level_path().actual();
 }
 
-u32	 CMovementManager::level_dest_vertex_id() const
+u32	 CMovementManager::level_dest_vertex_id		() const
 {
 	return					(level_path().dest_vertex_id());
 }
@@ -156,7 +156,7 @@ const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() 
 	return					(detail().path());
 }
 
-void CMovementManager::update_path	()
+void CMovementManager::update_path				()
 {
 	if	(
 			!enabled() || 
@@ -233,7 +233,7 @@ void CMovementManager::update_path	()
 	m_build_at_once				= false;
 }
 
-bool CMovementManager::actual_all() const
+bool CMovementManager::actual_all				() const
 {
 	if (!m_path_actuality)
 		return			(false);
@@ -266,7 +266,7 @@ bool CMovementManager::actual_all() const
 #endif
 }
 
-void CMovementManager::verify_detail_path	()
+void CMovementManager::verify_detail_path		()
 {
 	if (detail().path().empty() || detail().completed(detail().dest_position()))
 		return;
@@ -283,7 +283,7 @@ void CMovementManager::verify_detail_path	()
 	}
 }
 
-void CMovementManager::teleport				(u32 game_vertex_id)
+void CMovementManager::teleport					(u32 game_vertex_id)
 {
 	NET_Packet				net_packet;
 	GameGraph::_GRAPH_ID	_game_vertex_id = (GameGraph::_GRAPH_ID)game_vertex_id;
@@ -296,7 +296,25 @@ void CMovementManager::teleport				(u32 game_vertex_id)
 	Level().Send			(net_packet,net_flags(TRUE,TRUE));
 }
 
-void CMovementManager::clear_path()
+void CMovementManager::clear_path				()
 {
 	m_detail_path_manager->m_path.clear();
+}
+
+bool CMovementManager::distance_to_destination_greater	(const float &distance_to_check) const
+{
+	if (path().size() < 2)
+		return				(true);
+
+	if (path_completed())
+		return				(true);
+
+	float					accumulator = 0.f;
+	for (u32 i = detail().curr_travel_point_index(), n=detail().path().size()-1; i<n; ++i) {
+		accumulator			+= detail().path()[i].position.distance_to(detail().path()[i+1].position);
+		if (accumulator >= distance_to_check)
+			return			(true);
+	}
+
+	return					(false);
 }

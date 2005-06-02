@@ -34,7 +34,6 @@ TEMPLATE_SPECIALIZATION
 void CSSetupManager::reinit							()
 {
 	clear					();
-	m_current_action_id		= _action_id_type(-1);
 	m_actuality				= false;
 }
 
@@ -62,6 +61,8 @@ TEMPLATE_SPECIALIZATION
 IC	void CSSetupManager::clear						()
 {
 	m_actuality				= false;
+	m_current_action_id		= _action_id_type(-1);
+	m_previous_action_id	= _action_id_type(-1);
 	delete_data				(actions());
 }
 
@@ -82,7 +83,14 @@ void CSSetupManager::update							()
 {
 	if (actions().empty())
 		return;
+	
 	select_action			();
+	
+	if (m_previous_action_id != current_action_id())
+		current_action().initialize();
+
+	m_previous_action_id	= current_action_id();
+
 	current_action().execute();
 }
 

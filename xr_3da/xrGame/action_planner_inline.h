@@ -69,6 +69,8 @@ void CPlanner::update				()
 	// printing solution
 	if (m_use_log) {
 		if (m_solution_changed) {
+			show_current_world_state();
+			show_target_world_state	();
 			Msg						("%6d : Solution for object %s [%d vertices searched]",Device.dwTimeGlobal,object_name(),ai().graph_engine().solver_algorithm().data_storage().get_visited_node_count());
 			for (int i=0; i<(int)solution().size(); ++i)
 				Msg					("%s",action2string(solution()[i]));
@@ -79,37 +81,14 @@ void CPlanner::update				()
 #ifdef LOG_ACTION
 	if (m_failed) {
 		// printing current world state
-		show					();
-		{
-			Msg					("! ERROR : there is no action sequence, which can transfer current world state to the target one");
-			Msg					("Time : %6d",Device.dwTimeGlobal);
-			Msg					("Object : %s",object_name());
-			Msg					("Current world state :");
-			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-			for ( ; I != E; ++I) {
-				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
-				char			temp = '?';
-				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
-					temp		= (*J).value() ? '+' : '-';
-					Msg			("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
-				}
-			}
-		}
-		// printing target world state
-		{
-			Msg					("Target world state :");
-			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-			for ( ; I != E; ++I) {
-				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
-				char			temp = '?';
-				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
-					temp		= (*J).value() ? '+' : '-';
-					Msg			("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
-				}
-			}
-		}
+		show						();
+
+		Msg							("! ERROR : there is no action sequence, which can transfer current world state to the target one");
+		Msg							("Time : %6d",Device.dwTimeGlobal);
+		Msg							("Object : %s",object_name());
+
+		show_current_world_state	();
+		show_target_world_state		();
 //		VERIFY2						(!m_failed,"Problem solver couldn't build a valid path - verify your conditions, effects and goals!");
 	}
 #endif
@@ -221,6 +200,38 @@ IC	void CPlanner::set_use_log		(bool value)
 	OPERATOR_VECTOR::iterator			E = m_operators.end();
 	for ( ; I != E; ++I)
 		(*I).get_operator()->set_use_log(m_use_log);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::show_current_world_state	()
+{
+	Msg						("Current world state :");
+	EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+	EVALUATOR_MAP::const_iterator	E = evaluators().end();
+	for ( ; I != E; ++I) {
+		xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
+		char				temp = '?';
+		if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
+			temp			= (*J).value() ? '+' : '-';
+			Msg				("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
+		}
+	}
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::show_target_world_state	()
+{
+	Msg						("Target world state :");
+	EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+	EVALUATOR_MAP::const_iterator	E = evaluators().end();
+	for ( ; I != E; ++I) {
+		xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
+		char				temp = '?';
+		if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
+			temp			= (*J).value() ? '+' : '-';
+			Msg				("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
+		}
+	}
 }
 
 TEMPLATE_SPECIALIZATION
