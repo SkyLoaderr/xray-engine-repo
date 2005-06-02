@@ -3597,7 +3597,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_svoboda_volkodav_info_dp">
-        <has_info>bar_get_research_done</has_info>
+        <has_info>bar_kill_professor_done</has_info>
         <phrase_list>
             <phrase id="14">
                 <text>bar_svoboda_volkodav_info_dp_14</text>
@@ -3689,7 +3689,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_ecolog_crush_professor_give_info_dp">
-        <has_info>bar_resque_research_start</has_info>
+        <has_info>bar_resque_research_done</has_info>
         <phrase_list>
             <phrase id="12">
                 <text>bar_ecolog_crush_professor_give_info_dp_12</text>
