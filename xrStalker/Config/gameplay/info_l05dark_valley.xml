@@ -19,9 +19,14 @@
 <info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_start"></info_portion>
 <info_portion id="val_escort_combat"></info_portion>
+<info_portion id="val_escort_nap1_start_combat"></info_portion>
+<info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_guard1_combat"></info_portion>
 <info_portion id="val_escort_guard2_combat"></info_portion>
 <info_portion id="val_escort_guard3_combat"></info_portion>
+<info_portion id="val_escort_guard1_dead"></info_portion>
+<info_portion id="val_escort_guard2_dead"></info_portion>
+<info_portion id="val_escort_guard2_dead"></info_portion>
 <info_portion id="val_escort_captive_fight"></info_portion>
 <info_portion id="val_escort_captive_offline"></info_portion>
 <info_portion id="val_escort_captive_can_leave"></info_portion>
