@@ -218,8 +218,14 @@ void CSightManager::Exec_Look		(float dt)
 	head.target.yaw		= angle_normalize_signed	(head.target.yaw);
 	head.target.pitch	= angle_normalize_signed	(head.target.pitch);
 
-	// updating torso angles
-	float				fSpeedFactor = 1.f;
+	float				body_speed = body.speed;
+	if (current_action().change_body_speed())
+		body_speed		= current_action().body_speed();
+
+	float				head_speed = head.speed;
+	if (current_action().change_head_speed())
+		head_speed		= current_action().head_speed();
+
 
 #ifdef SIGHT_DEBUG
 //	Msg					("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
@@ -227,14 +233,12 @@ void CSightManager::Exec_Look		(float dt)
 #endif
 
 	vfValidateAngleDependency		(body.current.yaw,body.target.yaw,head.current.yaw);
-//	if (fis_zero(object().movement().speed()))
-//		vfValidateAngleDependency	(head.current.yaw,head.target.yaw,body.target.yaw);
 
-	m_object->angle_lerp_bounds		(body.current.yaw,body.target.yaw,fSpeedFactor*body.speed,dt);
-	m_object->angle_lerp_bounds		(body.current.pitch,body.target.pitch,body.speed,dt);
+	m_object->angle_lerp_bounds		(body.current.yaw,body.target.yaw,body_speed,dt);
+	m_object->angle_lerp_bounds		(body.current.pitch,body.target.pitch,body_speed,dt);
 
-	m_object->angle_lerp_bounds		(head.current.yaw,head.target.yaw,head.speed,dt);
-	m_object->angle_lerp_bounds		(head.current.pitch,head.target.pitch,head.speed,dt);
+	m_object->angle_lerp_bounds		(head.current.yaw,head.target.yaw,head_speed,dt);
+	m_object->angle_lerp_bounds		(head.current.pitch,head.target.pitch,head_speed,dt);
 
 #ifdef SIGHT_DEBUG
 	// normalizing torso angles

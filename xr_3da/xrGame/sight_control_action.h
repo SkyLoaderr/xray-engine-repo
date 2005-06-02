@@ -18,7 +18,6 @@ protected:
 
 public:
 	IC									CSightControlAction	(float weight, u32 inertia_time, const CSightAction &sight_action);
-	IC	void							initialize			();
 	IC	float							weight				() const;
 	IC	bool							completed			() const;
 	IC	bool							use_torso_look		() const;

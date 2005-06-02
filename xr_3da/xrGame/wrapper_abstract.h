@@ -58,6 +58,8 @@ public:
 	IC				CWrapperAbstract2	(T1 t1, T2 t2, T3 t3);
 	template <typename T1, typename T2, typename T3, typename T4>
 	IC				CWrapperAbstract2	(T1 t1, T2 t2, T3 t3, T4 t4);
+	template <typename T1, typename T2, typename T3, typename T4, typename T5>
+	IC				CWrapperAbstract2	(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5);
 	virtual			~CWrapperAbstract2	();
 	virtual void	setup				(_object_type *object, CPropertyStorage *storage);
 	virtual void	setup				(CScriptGameObject *object, CPropertyStorage *storage);

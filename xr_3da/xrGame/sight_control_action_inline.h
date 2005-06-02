@@ -20,11 +20,6 @@ IC	float CSightControlAction::weight			() const
 	return				(m_weight);
 }
 
-IC	void CSightControlAction::initialize		()
-{
-	m_start_time		= Device.dwTimeGlobal;
-}
-
 IC	bool CSightControlAction::completed			() const
 {
 	return				(Device.dwTimeGlobal - m_start_time >= m_inertia_time);

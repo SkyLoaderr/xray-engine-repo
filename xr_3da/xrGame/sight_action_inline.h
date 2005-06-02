@@ -99,6 +99,8 @@ IC	bool CSightAction::operator==		(const CSightAction &sight_action) const
 			return		((m_path == sight_action.m_path) && (m_torso_look == sight_action.m_torso_look));
 		case SightManager::eSightTypeSearch :
 			return		((m_path == sight_action.m_path) && (m_torso_look == sight_action.m_torso_look));
+		case SightManager::eSightTypeCoverLookOver :
+			return		(m_time == sight_action.m_time);
 		default	: NODEFAULT;
 	}
 
