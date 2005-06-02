@@ -294,19 +294,19 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_ecolog_crush_sniper_5", 
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_ecolog_crush_restrictor"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_ecolog_crush_sniper_6", 
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_ecolog_crush_restrictor"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_ecolog_professor", 
 			idle = 0,
 			prior = 10, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_ecolog_crush_restrictor",
+			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:profile_name() == "bar_ecolog_professor"
 			            end

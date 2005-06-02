@@ -1241,6 +1241,9 @@
 						RelativePath=".\Config\scripts\bar_barman.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\bar_crush_danger_zone.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bar_crush_spam.ltx">
 					</File>
 					<File

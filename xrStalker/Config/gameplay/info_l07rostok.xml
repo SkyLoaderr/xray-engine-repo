@@ -156,7 +156,6 @@
 		<task>bar_resque_information</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion> 
-	<info_portion id="bar_resque_research_gain"></info_portion>
 	<info_portion id="bar_resque_research_done"></info_portion>
 	<info_portion id="bar_resque_research_fail"></info_portion>	
 	<info_portion id="bar_resque_research_dead"></info_portion>
@@ -171,7 +170,6 @@
 		<task>bar_kill_professor</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
-	<info_portion id="bar_kill_professor_gain"></info_portion>
 	<info_portion id="bar_kill_professor_done"></info_portion>
 	<info_portion id="bar_kill_professor_fail"></info_portion>		
     <info_portion id="bar_kill_professor_reject"></info_portion>
@@ -179,7 +177,8 @@
     
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
-
+    <info_portion id="bar_ecolog_crush_actor_enemy"></info_portion>
+    
     <info_portion id="bar_resque_research_corruped"></info_portion>
     <info_portion id="bar_ecolog_research_normal">
 		<article>bar_ecolog_research_normal</article>
