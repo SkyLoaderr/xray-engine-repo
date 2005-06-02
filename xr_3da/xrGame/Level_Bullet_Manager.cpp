@@ -6,6 +6,8 @@
 #include "Level.h"
 #include "Level_Bullet_Manager.h"
 #include "game_cl_base.h"
+#include "Actor.h"
+#include "AI/Stalker/ai_stalker.h"
 
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
@@ -92,21 +94,36 @@ CBulletManager::~CBulletManager()
 
 void CBulletManager::Load		()
 {
-	m_fTracerWidth		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_width");
-	m_fTracerLength		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_max");
-	m_fTracerLengthMin	= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_min");
-	m_fLengthToWidthRatio = pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_to_width_ratio");
+	m_fTracerWidth			= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_width");
+	m_fTracerLength			= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_max");
+	m_fTracerLengthMin		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_min");
+	m_fLengthToWidthRatio	= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_to_width_ratio");
 
-	m_fMinViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "min_view_dist");
-	m_fMaxViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "max_view_dist");
+	m_fMinViewDist			= pSettings->r_float(BULLET_MANAGER_SECTION, "min_view_dist");
+	m_fMaxViewDist			= pSettings->r_float(BULLET_MANAGER_SECTION, "max_view_dist");
 
-	m_fGravityConst = pSettings->r_float(BULLET_MANAGER_SECTION, "gravity_const");
-	m_fAirResistanceK = pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
+	m_fGravityConst			= pSettings->r_float(BULLET_MANAGER_SECTION, "gravity_const");
+	m_fAirResistanceK		= pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
 
-	m_dwStepTime = pSettings->r_u32(BULLET_MANAGER_SECTION,	   "time_step");
-	m_fMinBulletSpeed = pSettings->r_float(BULLET_MANAGER_SECTION, "min_bullet_speed");
-	m_fCollisionEnergyMin  = pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_min");
-	m_fCollisionEnergyMax  = pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_max");
+	m_dwStepTime			= pSettings->r_u32	(BULLET_MANAGER_SECTION, "time_step");
+	m_fMinBulletSpeed		= pSettings->r_float(BULLET_MANAGER_SECTION, "min_bullet_speed");
+	m_fCollisionEnergyMin	= pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_min");
+	m_fCollisionEnergyMax	= pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_max");
+	LPCSTR whine_sounds		= pSettings->r_string(BULLET_MANAGER_SECTION, "whine_sounds");
+	int cnt					= _GetItemCount(whine_sounds);
+	xr_string tmp;
+	for (int k=0; k<cnt; ++k){
+		m_WhineSounds.push_back	(ref_sound());
+		m_WhineSounds.back().create(TRUE,_GetItem(whine_sounds,k,tmp));
+	}
+}
+
+void CBulletManager::PlayWhineSound(CObject* object, const Fvector& pos)
+{
+	if (!m_WhineSounds.empty()){
+		ref_sound& snd			= m_WhineSounds[Random.randI(m_WhineSounds.size())];
+		snd.play_at_pos_unlimited(object,pos);
+	}
 }
 
 void CBulletManager::Clear		()
@@ -193,10 +210,35 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	//и столкновений с объектами
 	Fvector cur_dir = bullet->dir;
 	
-	bullet->flags.set(SBullet::RICOCHET_FLAG,0);
-	collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,/*collide::rqtAll*/collide::rqtBoth);
-	BOOL result = FALSE;
-	result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
+	bullet->flags.set				(SBullet::RICOCHET_FLAG,0);
+	collide::ray_defs RD			(bullet->pos, bullet->dir, range, 0 ,/*collide::rqtAll*/collide::rqtBoth);
+	BOOL result						= FALSE;
+	result							= Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet, test_callback);
+	if (result) range				= (Level().ObjectSpace.r_results.r_begin()+Level().ObjectSpace.r_results.r_count()-1)->range;
+
+	// whine test
+	xr_vector<ISpatial*>& r_spatial = g_pGameLevel->ObjectSpace.r_spatial;
+	g_SpatialSpace->q_ray			(r_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
+	// Determine visibility for dynamic part of scene
+	for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
+		CEntity*	entity			= smart_cast<CEntity*>(r_spatial[o_it]->dcast_CObject());
+		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
+			ICollisionForm*	cform	= entity->collidable.model;
+			ECollisionFormType tp	= cform->Type();
+			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||smart_cast<CActor*>(entity))){
+				Fsphere S			= cform->getSphere();
+				entity->XFORM().transform_tiny(S.P);
+				float dist			= range;
+				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
+					Fvector			pt;
+					pt.mad			(bullet->pos, bullet->dir, dist);
+					CObject* initiator	= Level().Objects.net_Find	(bullet->parent_id);
+					Level().BulletManager().PlayWhineSound			(initiator,pt);
+				}
+			}
+		}
+	}
+
 
 	if(!bullet->flags.test(SBullet::RICOCHET_FLAG))
 	{

@@ -21,8 +21,18 @@
 #define STUCK_THRESHOLD			0.4
 
 //расстояния не пролетев которого пуля не трогает того кто ее пустил
-#define PARENT_IGNORE_DIST 3.f
+#define PARENT_IGNORE_DIST		3.f
 
+//test callback функция 
+//  object - object for testing
+//return TRUE-тестировать объект / FALSE-пропустить объект
+BOOL __stdcall CBulletManager::test_callback(CObject* object, LPVOID params)
+{
+	SBullet* bullet = (SBullet*)params;
+	if( (object->ID() == bullet->parent_id) &&  (bullet->fly_dist<PARENT_IGNORE_DIST) )	return FALSE;
+	
+	return TRUE;
+}
 //callback функция 
 //	result.O;		// 0-static else CObject*
 //	result.range;	// range from start to element 
@@ -41,25 +51,20 @@ BOOL __stdcall CBulletManager::firetrace_callback(collide::rq_result& result, LP
 	u16 hit_material_idx = GAMEMTL_NONE_IDX;
 
 	//динамический объект
-	if(result.O)
-	{
+	if(result.O){
 		//получить косточку и ее материал
 		CKinematics* V = 0;
 		//если мы попали по родителю на первых же
 		//кадре, то игнорировать это, так как это он
 		//и стрелял
-		if( !(result.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST) )
-
-			if (0!=(V=smart_cast<CKinematics*>(result.O->Visual())))
-			{
-				CBoneData& B = V->LL_GetData((u16)result.element);
-				hit_material_idx = B.game_mtl_idx;
-				Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-			}
-	}
-	//статический объект
-	else
-	{
+		VERIFY( !(result.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST) );
+		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual()))){
+			CBoneData& B = V->LL_GetData((u16)result.element);
+			hit_material_idx = B.game_mtl_idx;
+			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
+		}
+	} else {
+		//статический объект
 		//получить треугольник и узнать его материал
 		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
 		hit_material_idx	= T->material;
@@ -72,8 +77,6 @@ BOOL __stdcall CBulletManager::firetrace_callback(collide::rq_result& result, LP
 	else
 		return TRUE;
 }
-
-
 
 class CFindByIDPred
 {
@@ -193,13 +196,6 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	//только для динамических объектов
 	VERIFY(R.O);
 
-	//если мы попали по родителю на первых же
-	//кадре, то игнорировать это, так как это он
-	//и стрелял
-// moved to firetrace_callback
-//	if(R.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST)
-//		return;
-
 	bool NeedShootmark = true;
 	
 	if (R.O->CLS_ID == CLSID_OBJECT_ACTOR)
@@ -308,7 +304,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	float material_pierce = 1.f - shoot_factor;
 	clamp(material_pierce, 0.f, 1.f);
 
-	float impulse;
+	float impulse	= 0.f;
 
 #ifdef DEBUG
 	Fvector dbg_bullet_pos;
@@ -325,32 +321,30 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 
 	float f			= Random.randF	(-1.f,1.f);
 //	if(shoot_factor<RICOCHET_THRESHOLD &&  )
-	if ((f+shoot_factor)<ricoshet_factor){
-		if (bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG)){
-			//уменьшение скорости полета в зависимости 
-			//от угла падения пули (чем прямее угол, тем больше потеря)
-			float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
-			clamp(scale, 0.f, m_fCollisionEnergyMax);
+	if (((f+shoot_factor)<ricoshet_factor) && bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG)){
+		//уменьшение скорости полета в зависимости 
+		//от угла падения пули (чем прямее угол, тем больше потеря)
+		float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
+		clamp(scale, 0.f, m_fCollisionEnergyMax);
 
-			//вычисление рикошета, делается немного фейком,
-			//т.к. пуля остается в точке столкновения
-			//и сразу выходит из RayQuery()
-			bullet->dir.set	(tgt_dir);
-			bullet->prev_pos= bullet->pos;
-			bullet->pos		= end_point;
-			bullet->flags.set(SBullet::RICOCHET_FLAG, 1);
+		//вычисление рикошета, делается немного фейком,
+		//т.к. пуля остается в точке столкновения
+		//и сразу выходит из RayQuery()
+		bullet->dir.set	(tgt_dir);
+		bullet->prev_pos= bullet->pos;
+		bullet->pos		= end_point;
+		bullet->flags.set(SBullet::RICOCHET_FLAG, 1);
 
-			//уменьшить скорость в зависимости от простреливаемости
-			bullet->speed *= material_pierce*scale;
-			//сколько энергии в процентах потеряла пуля при столкновении
-			float energy_lost = 1.f - bullet->speed/old_speed;
-			//импульс переданный объекту равен прямопропорционален потерянной энергии
-			impulse = bullet->hit_impulse*speed_factor*bullet->impulse_k*energy_lost;
+		//уменьшить скорость в зависимости от простреливаемости
+		bullet->speed *= material_pierce*scale;
+		//сколько энергии в процентах потеряла пуля при столкновении
+		float energy_lost = 1.f - bullet->speed/old_speed;
+		//импульс переданный объекту равен прямопропорционален потерянной энергии
+		impulse = bullet->hit_impulse*speed_factor*bullet->impulse_k*energy_lost;
 
-			#ifdef DEBUG
-			bullet_state = 0;
-			#endif		
-		}
+		#ifdef DEBUG
+		bullet_state = 0;
+		#endif		
 	} else if(shoot_factor <  STUCK_THRESHOLD) {
 		//застрявание пули в материале
 		bullet->speed  = 0.f;

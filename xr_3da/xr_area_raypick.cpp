@@ -139,14 +139,14 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 //--------------------------------------------------------------------------------
 // RayQuery
 //--------------------------------------------------------------------------------
-BOOL CObjectSpace::RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data)
+BOOL CObjectSpace::RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
 {
 	Lock.Enter		();
-	BOOL	_res	= _RayQuery	(R,CB,user_data);
+	BOOL	_res	= _RayQuery	(R,CB,user_data,tb);
 	Lock.Leave		();
 	return	_res;
 }
-BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data)
+BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
 {
 	// initialize query
 	r_results.r_clear	();
@@ -188,8 +188,10 @@ BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* C
 				if			(0==collidable)	continue;
 				ICollisionForm*	cform		= collidable->collidable.model;
 				ECollisionFormType tp		= collidable->collidable.model->Type();
-				if (((R.tgt&rqtObject)&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape)))
+				if (((R.tgt&rqtObject)&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+					if (tb&&!tb(collidable,user_data))continue;
 					cform->_RayQuery(d_rd,r_temp);
+				}
 			}
 			if (r_temp.r_count()){
 				// set new dynamic start & range

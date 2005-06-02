@@ -11,25 +11,6 @@
 //структура, описывающая пулю и ее свойства в полете
 struct SBullet
 {
-	SBullet();
-	~SBullet();
-
-	void Init(const Fvector& position,
-		const Fvector& direction,
-		float start_speed,
-		float power,
-		float impulse,
-		u16	sender_id,
-		u16 sendersweapon_id,
-		ALife::EHitType e_hit_type,
-		float maximum_distance,
-		const CCartridge& cartridge,
-		bool SendHit, 
-		float tracer_length);
-
-	//номер кадра на котором была запущена пуля
-	u32				frame_num;
-	
 	enum EBulletFlags {
 		RICOCHET_FLAG				= u16(1 << 0),	//пуля срикошетила
 		PARTICLES_FLAG				= u16(1 << 1),
@@ -37,17 +18,17 @@ struct SBullet
 		TRACER_FLAG					= u16(1 << 3),
 		RICOCHET_ENABLED_FLAG		= u16(1 << 4)	//разрешить рикошет
 	};
-	
+
+	//номер кадра на котором была запущена пуля
+	u32				frame_num;
 	Flags16			flags;
 	//текущая позиция
 	Fvector			pos;
-	
 	//смещения рендера трассы относительно текущей позиции
 	//(в процентах от текущей длины)
 	//задается случайно на инициализации
 	//чтоб трассы разных пуль не рисовались в одном месте
 	float			render_offset;
-
 	//текущая скорость
 	Fvector			dir;
 	float			speed;
@@ -59,35 +40,42 @@ struct SBullet
 	//для отладки
 	//предыдущая позиция
 	Fvector			prev_pos;
-
-
-
 	//дистанция которую пуля пролетела
 	float			fly_dist;
-
 	//коэфициенты и параметры патрона
 	float			hit_power;
 	float			hit_impulse;
-	
 	float			max_speed;
-
 	float			max_dist;
 	float			dist_k;
 	float			hit_k;
 	float			impulse_k;
 	float			pierce_k;
 	float			wallmark_size;
-
-    //максимальная длина трассера для данной пули
+	//максимальная длина трассера для данной пули
 	float			tracer_max_length;
-
 	u16				bullet_material_idx;
-
 	//тип наносимого хита
 	ALife::EHitType hit_type;
 	//---------------------------------
 	u32				m_dwID;
 	bool			operator	==		(u32 ID){return	ID == m_dwID;}
+public:
+					SBullet				();
+					~SBullet			();
+
+	void			Init				(const Fvector& position,
+										const Fvector& direction,
+										float start_speed,
+										float power,
+										float impulse,
+										u16	sender_id,
+										u16 sendersweapon_id,
+										ALife::EHitType e_hit_type,
+										float maximum_distance,
+										const CCartridge& cartridge,
+										bool SendHit, 
+										float tracer_length);
 };
 
 
@@ -99,87 +87,81 @@ class CLevel;
 class CBulletManager
 {
 	friend CLevel;
-public:
-	CBulletManager();
-	virtual ~CBulletManager();
-
-	void Load       ();
-
-	void Clear		();
-
-	void AddBullet	(const Fvector& position, const Fvector& direction, float starting_speed,
-					float power, float impulse, u16	sender_id, u16 sendersweapon_id,
-					ALife::EHitType e_hit_type, float maximum_distance, const CCartridge& cartridge,
-					bool SendHit, float tracer_length = flt_max);
-	void Update		();
-
-	void Render		();
-
-
 protected:
+	DEFINE_VECTOR(ref_sound,SoundVec,SoundVecIt);
+	SoundVec				m_WhineSounds;
 
+	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
+
+	//список пуль находящихся в данный момент на уровне
+	xrCriticalSection		m_Lock		;
+	BulletVec				m_Bullets	;
+
+	//остаток времени, который не был учтен на предыдущем кадре
+	u32						m_dwTimeRemainder;
+
+	//отрисовка трассеров от пуль
+	CTracer					tracers;
+
+	//фиксированное время шага просчета пули
+	u32						m_dwStepTime;	
+	//минимальная скорость, на которой пуля еще считается
+	static float			m_fMinBulletSpeed;
+
+	//константа G
+	float					m_fGravityConst;
+	//сопротивление воздуха, процент, который отнимается от скорости
+	//полета пули
+	float					m_fAirResistanceK;
+	//cколько процентов энергии потеряет пуля при столкновении с материалом (при падении под прямым углом)
+	float					m_fCollisionEnergyMin;
+	//сколькол процентов энергии устанется у пули при любом столкновении
+	float					m_fCollisionEnergyMax;
+
+	//параметры отрисовки трассеров
+	float					m_fTracerWidth;
+	float 					m_fTracerLength;
+	float 					m_fTracerLengthMin;
+	float 					m_fLengthToWidthRatio;
+	//границы в которых изменяется размер трассера (как его видит актер)
+	float 					m_fMinViewDist;
+	float 					m_fMaxViewDist;
+protected:
+	void					PlayWhineSound		(CObject* object, const Fvector& pos);
 	//функция обработки хитов объектов
-	static BOOL __stdcall firetrace_callback(collide::rq_result& result, LPVOID params);
+	static BOOL __stdcall	test_callback		(CObject* object, LPVOID params);
+	static BOOL __stdcall	firetrace_callback	(collide::rq_result& result, LPVOID params);
 	//попадание по динамическому объекту
-	void DynamicObjectHit	(SBullet* bullet, const Fvector& end_point, 
-							collide::rq_result& R, 	u16 target_material);
+	void					DynamicObjectHit	(SBullet* bullet, const Fvector& end_point, 
+												collide::rq_result& R, 	u16 target_material);
 	//попадание по статическому объекту
-	void StaticObjectHit	(SBullet* bullet, const Fvector& end_point, 
-							collide::rq_result& R, u16 target_material);
+	void					StaticObjectHit		(SBullet* bullet, const Fvector& end_point, 
+												collide::rq_result& R, u16 target_material);
 	//попадание по любому объекту, на выходе - импульс и сила переданные пулей объекту
-	std::pair<float, float> ObjectHit (SBullet* bullet, const Fvector& end_point, 
-							collide::rq_result& R, u16 target_material, 
-							const Fvector& hit_normal);
-
+	std::pair<float, float> ObjectHit			(SBullet* bullet, const Fvector& end_point, 
+												collide::rq_result& R, u16 target_material, const Fvector& hit_normal);
 	//отметка на пораженном объекте
-	void FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
-							 const Fvector &vEnd, collide::rq_result& R, 
-							 u16 target_material,
-							 Fvector& vNormal,
-							 bool ShowMark = true);
-
+	void					FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
+												const Fvector &vEnd, collide::rq_result& R,  u16 target_material,
+												Fvector& vNormal, bool ShowMark = true);
 	//просчет полета пули за некоторый промежуток времени
 	//принимается что на этом участке пуля движется прямолинейно
 	//и равномерно, а после просчета также изменяется текущая
 	//скорость и положение с учетом гравитации и ветра
 	//возвращаем true если пуля продолжает полет
-	bool CalcBullet (SBullet* bullet, u32 delta_time);
+	bool					CalcBullet			(SBullet* bullet, u32 delta_time);
+public:
+							CBulletManager		();
+	virtual					~CBulletManager		();
 
-
-	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
-
-	//список пуль находящихся в данный момент на уровне
-	xrCriticalSection	m_Lock		;
-	BulletVec			m_Bullets	;
-
-	//остаток времени, который не был учтен на предыдущем кадре
-	u32	m_dwTimeRemainder;
-
-
-	//отрисовка трассеров от пуль
-	CTracer tracers;
-
-	//фиксированное время шага просчета пули
-	u32	m_dwStepTime;	
-	//минимальная скорость, на которой пуля еще считается
-	static float m_fMinBulletSpeed;
-
-	//константа G
-	float m_fGravityConst;
-	//сопротивление воздуха, процент, который отнимается от скорости
-	//полета пули
-	float m_fAirResistanceK;
-	//cколько процентов энергии потеряет пуля при столкновении с материалом (при падении под прямым углом)
-	float m_fCollisionEnergyMin;
-	//сколькол процентов энергии устанется у пули при любом столкновении
-	float m_fCollisionEnergyMax;
-
-	//параметры отрисовки трассеров
-	float m_fTracerWidth;
-	float m_fTracerLength;
-	float m_fTracerLengthMin;
-	float m_fLengthToWidthRatio;
-	//границы в которых изменяется размер трассера (как его видит актер)
-	float m_fMinViewDist;
-	float m_fMaxViewDist;
+	void 					Load				();
+	void 					Clear				();
+	void 					AddBullet			(const Fvector& position, const Fvector& direction, 
+												float starting_speed, float power, float impulse, 
+												u16	sender_id, u16 sendersweapon_id,
+												ALife::EHitType e_hit_type, float maximum_distance, 
+												const CCartridge& cartridge, bool SendHit, 
+												float tracer_length = flt_max);
+	void 					Update				();
+	void 					Render				();
 };

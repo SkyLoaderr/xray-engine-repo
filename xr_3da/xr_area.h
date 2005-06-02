@@ -37,7 +37,7 @@ public:
 private:
 	BOOL								_RayTest			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache=NULL);
 	BOOL								_RayPick			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::rq_result& R );
-	BOOL								_RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data);
+	BOOL								_RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb);
 public:
 										CObjectSpace		( );
 										~CObjectSpace		( );
@@ -51,7 +51,7 @@ public:
 	BOOL								RayPick				( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::rq_result& R );
 
 	// General collision query
-	BOOL								RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data);
+	BOOL								RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb=0);
 	BOOL								RayQuery			( ICollisionForm* target, const collide::ray_defs& rq);
 	void								BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
 
