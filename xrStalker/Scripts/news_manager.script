@@ -68,6 +68,10 @@ function send_tip(actor, news_id, timeout, sender, showtime)
 		if sender == "arena" then
 			x = 350
 			y = 150
+		end
+		if sender == "stalker" then
+			x = 100
+			y = 150
 		end	
 	end
 	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)
