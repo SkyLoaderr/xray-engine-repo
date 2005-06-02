@@ -270,7 +270,7 @@ function process_map_spot(info_id)
 	elseif info_id == "gar_kill_boars_quest" then
 		add_location(105, "gar_boars_nest_location")
 		
-	elseif info_id == "gar_kill_boars_quest_done" then
+	elseif info_id == "gar_kill_boars_done" then
 		remove_location(105, "gar_boars_nest_location")
 		
 	elseif info_id == "gar_bandits_raid" then
