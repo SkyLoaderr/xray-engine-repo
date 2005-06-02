@@ -147,14 +147,6 @@
     </dialog>
     <dialog id="agr_stalker_esc">
         <phrase_list>
-            <phrase id="10">
-                <text>agr_stalker_esc_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_stalker_esc_0</text>
-                <next>10</next>
-            </phrase>
             <phrase id="100">
                 <text>agr_stalker_esc_100</text>
                 <next>20</next>
@@ -167,12 +159,21 @@
                 <text>agr_stalker_esc_200</text>
                 <next>30</next>
             </phrase>
-            <phrase id="30">
-                <text>agr_stalker_esc_30</text>
-                <next>300</next>
-            </phrase>
             <phrase id="300">
                 <text>agr_stalker_esc_300</text>
+            </phrase>
+            <phrase id="30">
+                <text>agr_stalker_esc_30</text>
+                <give_info>agr_warning_recieved</give_info>
+                <next>300</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_stalker_esc_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_stalker_esc_0</text>
+                <next>10</next>
             </phrase>
         </phrase_list>
     </dialog>
