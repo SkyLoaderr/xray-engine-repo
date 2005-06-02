@@ -138,6 +138,7 @@ end
 
 function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
+	-- db.storage[npc:id()].enemy:story_id() == 400
 	return db.storage[npc:id()].enemy:name() == "val_escort_captive"
 end    
 
