@@ -422,7 +422,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_fn2000 \n
 			ammo_5.56x45_ap = 1 \n
-			scientific_outfit \n
+			ecolog_outfit \n
 		</supplies>
 			
 		<start_dialog>bar_svoboda_volkodav_start</start_dialog>
