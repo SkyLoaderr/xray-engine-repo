@@ -39,6 +39,7 @@ void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 		object().Hit	(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
 	}
 }
+
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	START_PROFILE("AI/Build Path/Move Along Path")
