@@ -147,7 +147,9 @@ struct WeaponUsageStatistic {
 	u32				m_dwTotalNumRespawns[3];
 	//-----------------------------------------------
 	u32				m_dwLastUpdateTime;
+	u32				m_dwLastSaveTime;
 	u32				m_dwUpdateTimeDelta;
+	u32				m_dwSaveTimeDelta;
 	//-----------------------------------------------
 	WeaponUsageStatistic();
 	~WeaponUsageStatistic();
@@ -185,6 +187,8 @@ struct WeaponUsageStatistic {
 	void				OnUpdateRequest				(NET_Packet* P);
 	void				OnUpdateRespond				(NET_Packet* P);
 	//-----------------------------------------------
+	bool				m_bFirstSave;
+	string1024			mFileName;
 	void				SaveData					();
 
 	void				Write						(FILE* pFile);

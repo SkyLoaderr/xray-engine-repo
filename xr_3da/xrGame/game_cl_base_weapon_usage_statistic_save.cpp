@@ -12,21 +12,9 @@ void		WeaponUsageStatistic::SaveData()
 	if (OnClient()) return;
 	if (!CollectData()) return;
 	if (aPlayersStatistic.empty()) return;
-	string1024 Name, GameType;
-	SYSTEMTIME Time;	
-	switch (GameID())
-	{
-	case GAME_DEATHMATCH: sprintf(GameType, "dm"); break;
-	case GAME_TEAMDEATHMATCH: sprintf(GameType, "tdm"); break;
-	case GAME_ARTEFACTHUNT: sprintf(GameType, "ah"); break;
-	default:
-		return;
-		break;
-	};
-	GetLocalTime(&Time);	
-	sprintf(Name, "logs\\(%s)_(%s)_%02d.%02d.%02d_%02d.%02d.%02d.wus", *(Level().name()), GameType, Time.wMonth, Time.wDay, Time.wYear, Time.wHour, Time.wMinute, Time.wSecond);
+	
 	//---------------------------------------------------------
-	FILE* SFile = fopen(Name, "wb");
+	FILE* SFile = fopen(mFileName, "wb");
 	if (!SFile) return;
 	//---------------------------------------------------------
 	u32 IDENT = WUS_IDENT;

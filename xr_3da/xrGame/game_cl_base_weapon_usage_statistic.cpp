@@ -144,6 +144,7 @@ WeaponUsageStatistic::WeaponUsageStatistic()
 {
 	Clear();
 	m_dwUpdateTimeDelta = 60000;
+	m_dwSaveTimeDelta = 300000;
 	m_bCollectStatistic = false;
 };
 
@@ -159,6 +160,9 @@ void	WeaponUsageStatistic::Clear			()
 	ZeroMemory(m_dwTotalNumRespawns, sizeof(m_dwTotalNumRespawns));
 
 	m_dwLastUpdateTime = Level().timeServer();
+	m_dwLastSaveTime = Level().timeServer();
+	mFileName[0] = 0;
+	m_bFirstSave = true;
 };
 
 WeaponUsageStatistic::~WeaponUsageStatistic()
@@ -597,17 +601,48 @@ void				WeaponUsageStatistic::OnPlayerKilled				(game_PlayerState* ps)
 	m_dwTotalPlayersMoneyRound[ps->team] += PlayerStat.m_dwCurMoneyRoundDelta;
 };
 
+BOOL	g_bStatisticSaveAuto = FALSE;
+
 void				WeaponUsageStatistic::Update()
 {
 	if (!CollectData()) return;
-	if (Level().timeServer() > (m_dwLastUpdateTime + m_dwUpdateTimeDelta)) return;
-	//---------------------------------------------
-	m_dwLastUpdateTime = Level().timeServer();
-	//---------------------------------------------
-	NET_Packet P;
-	P.w_begin	(M_STATISTIC_UPDATE);
-	P.w_u32		(Level().timeServer());
-	Level().Send(P);
+	bool NeedSave = false;
+	bool NeedUpdate = false;
+	if (Level().timeServer() < (m_dwLastUpdateTime + m_dwUpdateTimeDelta))
+	{
+		//---------------------------------------------
+		m_dwLastUpdateTime = Level().timeServer();
+		//---------------------------------------------
+		NET_Packet P;
+		P.w_begin	(M_STATISTIC_UPDATE);
+		P.w_u32		(Level().timeServer());
+		Level().Send(P);
+	}
+	if (Level().timeServer() < (m_dwLastSaveTime + m_dwSaveTimeDelta))
+	{
+		if (m_bFirstSave)
+		{
+			m_bFirstSave = false;
+			//-----------------------------------------------
+			string1024 GameType;
+			SYSTEMTIME Time;	
+			switch (GameID())
+			{
+			case GAME_DEATHMATCH: sprintf(GameType, "dm"); break;
+			case GAME_TEAMDEATHMATCH: sprintf(GameType, "tdm"); break;
+			case GAME_ARTEFACTHUNT: sprintf(GameType, "ah"); break;
+			default:
+				return;
+				break;
+			};
+			GetLocalTime(&Time);	
+			sprintf(mFileName, "logs\\(%s)_(%s)_%02d.%02d.%02d_%02d.%02d.%02d.wus", *(Level().name()), GameType, Time.wMonth, Time.wDay, Time.wYear, Time.wHour, Time.wMinute, Time.wSecond);
+		}
+		//---------------------------------------------
+		m_dwLastSaveTime = Level().timeServer();
+		//---------------------------------------------
+		if (g_bStatisticSaveAuto) SaveData();
+	}
 };
 
 void				WeaponUsageStatistic::OnUpdateRequest				(NET_Packet* /* P*/)

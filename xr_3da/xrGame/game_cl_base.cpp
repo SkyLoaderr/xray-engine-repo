@@ -319,15 +319,12 @@ void game_cl_GameState::u_EventSend(NET_Packet& P)
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-BOOL	g_bStatisticSaveAuto = FALSE;
 void				game_cl_GameState::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
 	switch (old_phase)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			if (g_bStatisticSaveAuto)
-				m_WeaponUsageStatistic.SaveData();
 		}break;
 	default:
 		{
