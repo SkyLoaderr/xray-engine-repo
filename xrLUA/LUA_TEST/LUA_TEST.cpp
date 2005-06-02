@@ -1911,6 +1911,24 @@ struct CClassWrapper2 : public CClass2, public luabind::wrap_base {
 	}
 };
 
+struct attribute {
+ enum e {
+   value1,
+   value2
+ };
+ e		m_attribute;
+};
+
+class __A
+{
+public:
+  enum e {
+    ZERO,
+    ONE
+  };
+  e attribute;
+};
+
 namespace callback_test {
 	extern void callback_test();
 }
@@ -1922,19 +1940,20 @@ extern void test_id_generator();
 
 int __cdecl main(int argc, char* argv[])
 {
-	test_id_generator();
+//	test_id_generator();
 //	broker_test();
 //	test1();
 //	test0();
 //	time_smart_ptr_test();
 //	lesha_test();
-	bug_test();
+//	bug_test();
 //	string_test();
 //	test_smart_container();
 //	callback_test::callback_test();
 //	slipch_test();
-	return 0;
+//	return 0;
 
+	Core._initialize				("lua-test",NULL);
 	printf	("xrLuaCompiler v0.1\n");
 //	if (argc < 2) {
 //		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
@@ -1970,8 +1989,29 @@ int __cdecl main(int argc, char* argv[])
 
 	function		(L,"setup_table",&setup_table);
 
+	typedef xr_vector<float> flt_vec;
+
 	module(L)
 	[
+		class_<__A>("A")
+//		.enum_("e")
+//		[
+//			value("ZERO", __A::ZERO),
+//			value("ONE", __A::ONE)
+//		]
+		.def_readonly("attribute", &__A::attribute)
+	];
+
+	module(L)
+	[
+		class_<attribute>("attribute")
+			.enum_("e")
+			[
+				value		("value1",attribute::value1),
+				value		("value2",attribute::value2)
+			]
+			.def_readonly	("attribute",&attribute::m_attribute),
+
 		class_<CClass1,CClassWrapper1>("class1")
 			.def_readwrite	("c1",&CClass1::c1)
 			.def			(constructor<LPCSTR>())
@@ -1982,6 +2022,12 @@ int __cdecl main(int argc, char* argv[])
 			.def(constructor<LPCSTR>())
 			.def("init", &CClass2::init, &CClassWrapper2::init_static)
 			.def("foo", &CClass2::foo),
+
+		class_<flt_vec>("flt_vec")
+			.def(constructor<>())
+			.def("push_back",(void (flt_vec::*)(float))(&flt_vec::push_back))
+			.def("clear",	&flt_vec::clear)
+			.def("size",	&flt_vec::size),
 
 //		class_<CCustomClass,CCustomClassWrapper>("CCustomClass")
 //			.def(constructor<>())
@@ -2019,7 +2065,7 @@ int __cdecl main(int argc, char* argv[])
 //			]
 	];
 
-	lua_dofile		(L,"x:\\bug9.script");
+	lua_dofile		(L,"x:\\bug10.script");
 
 	if (xr_strlen(g_ca_stdout)) {
 		printf		("\n%s\n",g_ca_stdout);
