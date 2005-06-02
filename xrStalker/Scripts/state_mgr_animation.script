@@ -808,6 +808,15 @@ function animation:update()
 		if self.npc:animation_count() <= nnum then
 			self.states.current_state = self.states.target_state
 		end
+		
+		-- инициализация коллбека при повторном вызове этого же стейта
+		if self.states.target_state == state_lib.states[self.mgr.target_state].animation and
+		   self.mgr.callback and self.mgr.callback.func and self.mgr.callback.timeout and
+		   self.mgr.callback.begin == nil
+		then
+			printf("EXTRA CALLBACK")
+			self:callback_init()
+		end
 		self:callback_process()
 		return
 	end
@@ -903,7 +912,7 @@ function animation:callback_init()
 		
 		if self.mgr.callback ~= nil and
 		   self.mgr.callback.func ~= nil and
-		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
+--		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
 		   self.mgr.callback.begin == nil
 		then
 				self.mgr.callback.begin = device():time_global()
