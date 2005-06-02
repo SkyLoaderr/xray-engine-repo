@@ -95,6 +95,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
+		SpawnPlayer(get_it_2_id(it), "spectator");
 		// init
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		if (!l_pC || !l_pC->net_Ready || !l_pC->ps) continue;
@@ -109,7 +110,6 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		//---------------------------------------
 
 		if (ps->Skip) continue;
-		SpawnPlayer(get_it_2_id(it), "spectator");
 	}
 	///////////////////////////////////////////	
 }

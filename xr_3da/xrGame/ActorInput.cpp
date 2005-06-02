@@ -24,7 +24,17 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	if (conditions().IsSleeping())	return;
 	if (IsTalking())	return;
 	if (IsControlled())	return;
-
+	
+	switch (cmd)
+	{
+	case kWPN_FIRE:
+		{
+			mstate_wishful &=~mcSprint;
+		}break;
+	default:
+		{
+		}break;
+	}
 
 	if (!g_Alive()) return;
 
