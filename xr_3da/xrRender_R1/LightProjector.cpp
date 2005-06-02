@@ -19,7 +19,7 @@ const	int			time_min		= 30*1000	;
 const	int			time_max		= 90*1000	;
 const	float		P_ideal_size	= 1.f		;
 
-float	clipD		(float R)		{ return P_distance*_sqrt(R/P_ideal_size); }
+float	clipD		(float R)		{ return P_distance*(R/P_ideal_size); }
 
 
 //////////////////////////////////////////////////////////////////////
