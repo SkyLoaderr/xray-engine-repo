@@ -155,7 +155,7 @@ function fract:updateJob()
 
 	-- переназначение работ
 	for k,v in self.Job do
-		printf( "   %s", v.section )
+--		printf( "   %s", v.section )
 
 		-- проверка на доступность работы при текущем стейте
 		if self:availState(v.state, self.state) then
@@ -183,12 +183,12 @@ function fract:updateJob()
 						end
 					end			
 				end
-			else
-				if v.object then
-					printf( "      job is busy" )
-				else
-					printf( "      job is unavailable" )
-				end
+--			else
+--				if v.object then
+--					printf( "      job is busy" )
+--				else
+--					printf( "      job is unavailable" )
+--				end
 			end
        	end
 	end
