@@ -606,8 +606,8 @@ BOOL	g_bStatisticSaveAuto = FALSE;
 void				WeaponUsageStatistic::Update()
 {
 	if (!CollectData()) return;
-	bool NeedSave = false;
-	bool NeedUpdate = false;
+	//bool NeedSave = false;
+	//bool NeedUpdate = false;
 	if (Level().timeServer() < (m_dwLastUpdateTime + m_dwUpdateTimeDelta))
 	{
 		//---------------------------------------------
