@@ -11,13 +11,16 @@
 // tir2.xrdemo		-> 61.8
 
 const	float		P_distance		= 50;					// switch distance between LOW-q light and HIGH-q light
-const	float		P_distance2		= P_distance*P_distance;
 const	float		P_cam_dist		= 200;
 const	float		P_cam_range		= 7.f;
 const	D3DFORMAT	P_rtf			= D3DFMT_A8R8G8B8;
 const	float		P_blur_kernel	= .5f;
-const	int			time_min		= 30*1000;
-const	int			time_max		= 90*1000;
+const	int			time_min		= 30*1000	;
+const	int			time_max		= 90*1000	;
+const	float		P_ideal_size	= 1.f		;
+
+float	clipD		(float R)		{ return P_distance*_sqrt(R/P_ideal_size); }
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -60,8 +63,9 @@ void CLightProjector::set_object	(IRenderable* O)
 		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		float		R	= O->renderable.visual->vis.sphere.R;
 		float		D	= C.distance_to	(Device.vCameraPosition)+R;
-		if (D < P_distance)		current	= O;
-		else					current = 0;
+
+		if (D < clipD(R))	current	= O;
+		else				current = 0;
 		
 		if (current)				{
 			ISpatial*	spatial		= dynamic_cast<ISpatial*>	(O);
@@ -91,8 +95,9 @@ void CLightProjector::setup		(int id)
 		return;
 	}
 	recv&			R			= cache[id];
-	float			dist		= R.C.distance_to	(Device.vCameraPosition)+R.O->renderable.visual->vis.sphere.R;
-	float			factor		= _sqr(dist/P_distance)*(1-ps_r1_lmodel_lerp) + ps_r1_lmodel_lerp;
+	float			Rd			= R.O->renderable.visual->vis.sphere.R;
+	float			dist		= R.C.distance_to	(Device.vCameraPosition)+Rd;
+	float			factor		= _sqr(dist/clipD(Rd))*(1-ps_r1_lmodel_lerp) + ps_r1_lmodel_lerp;
 	RCache.set_c	(c_xform,	R.UVgen);
 	Fvector&	m	= R.UVclamp_min;
 	RCache.set_ca	(c_clamp,	0,m.x,m.y,m.z,factor);
