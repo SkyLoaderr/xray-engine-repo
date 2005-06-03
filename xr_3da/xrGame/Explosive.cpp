@@ -258,11 +258,16 @@ void CExplosive::Explode()
 	xr_vector<ISpatial*>	ISpatialResult;
 	g_SpatialSpace->q_sphere(ISpatialResult,0,STYPE_COLLIDEABLE,pos,m_fBlastRadius);
 	
-	m_blasted.clear();
+	m_blasted_objects.clear();
 	for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
 	{
 		ISpatial*		spatial	= ISpatialResult[o_it];
-		feel_touch_new(spatial->dcast_CObject());
+//		feel_touch_new(spatial->dcast_CObject());
+
+		CGameObject *pGameObject = static_cast<CGameObject*>(spatial->dcast_CObject());
+		if(pGameObject && cast_game_object()->ID() != pGameObject->ID()) 
+			m_blasted_objects.push_back(pGameObject);
+
 	}
 	//---------------------------------------------------------------------
 //	m_blasted.clear();	
@@ -271,9 +276,9 @@ void CExplosive::Explode()
 	xr_list<s16>		l_elements;
 	xr_list<Fvector>	l_bs_positions;
 	
-	while(m_blasted.size()) 
+	while(m_blasted_objects.size()) 
 	{
-		CGameObject *l_pGO = *m_blasted.begin();
+		CGameObject *l_pGO = m_blasted_objects.back();
 		
 		if(l_pGO->Visual()) 
 			l_pGO->Center(l_goPos); 
@@ -341,7 +346,7 @@ void CExplosive::Explode()
 				l_bs_positions.pop_front();
 			}
 		}
-		m_blasted.pop_front();
+		m_blasted_objects.pop_back();
 	}	
 
 	//////////////////////////////////////////////////////////////////////////
@@ -386,12 +391,6 @@ void CExplosive::GetExplDirection(Fvector &d)
 void CExplosive::GetExplVelocity(Fvector &v)
 {
 	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(v);
-}
-
-void CExplosive::feel_touch_new(CObject* O) 
-{
-	CGameObject *pGameObject = static_cast<CGameObject*>(O);
-	if(pGameObject && cast_game_object() != pGameObject) m_blasted.push_back(pGameObject);
 }
 
 void CExplosive::UpdateCL() 

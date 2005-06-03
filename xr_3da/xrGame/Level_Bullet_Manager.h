@@ -16,7 +16,8 @@ struct SBullet
 		PARTICLES_FLAG				= u16(1 << 1),
 		LIFE_TIME_FLAG				= u16(1 << 2),
 		TRACER_FLAG					= u16(1 << 3),
-		RICOCHET_ENABLED_FLAG		= u16(1 << 4)	//разрешить рикошет
+		RICOCHET_ENABLED_FLAG		= u16(1 << 4),	//разрешить рикошет
+		EXPLOSIVE_FLAG				= u16(1 << 5),
 	};
 
 	//номер кадра на котором была запущена пуля
@@ -90,7 +91,7 @@ class CBulletManager
 protected:
 	DEFINE_VECTOR(ref_sound,SoundVec,SoundVecIt);
 	SoundVec				m_WhineSounds;
-
+	RStringVec				m_ExplodeParticles;
 	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
 
 	//список пуль находящихся в данный момент на уровне
@@ -128,6 +129,7 @@ protected:
 	float 					m_fMaxViewDist;
 protected:
 	void					PlayWhineSound		(CObject* object, const Fvector& pos);
+	void					PlayExplodePS		(const Fmatrix& xf);
 	//функция обработки хитов объектов
 	static BOOL __stdcall	test_callback		(CObject* object, LPVOID params);
 	static BOOL __stdcall	firetrace_callback	(collide::rq_result& result, LPVOID params);

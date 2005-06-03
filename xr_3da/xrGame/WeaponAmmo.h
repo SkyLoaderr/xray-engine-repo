@@ -8,13 +8,17 @@ public:
 	void Load(LPCSTR section);
 
 	shared_str	m_ammoSect;
+	enum{
+		cfTracer				= (1<<0),
+		cfRicochet				= (1<<1),
+		cfCanBeUnlimited		= (1<<2),
+		cfExplosive				= (1<<3),
+	};
+	Flags8	m_flags;
 	float	m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
-	bool	m_tracer;
-	bool	m_ricochet;
 	int		m_buckShot;
 	float	m_impair;
 	float	fWallmarkSize;
-	bool	m_bCanBeUnlimited;
 	
 	u16		bullet_material_idx;
 };

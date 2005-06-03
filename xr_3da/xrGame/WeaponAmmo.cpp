@@ -12,10 +12,9 @@
 
 CCartridge::CCartridge() 
 {
+	m_flags.assign			(cfTracer | cfRicochet);
 	m_ammoSect = NULL;
 	m_kDist = m_kDisp = m_kHit = m_kImpulse = m_kPierce = 1.f;
-	m_tracer = true;
-	m_ricochet = true;
 	m_buckShot = 1;
 	m_impair = 1.f;
 
@@ -30,17 +29,18 @@ void CCartridge::Load(LPCSTR section)
 	m_kHit = pSettings->r_float(section, "k_hit");
 	m_kImpulse = pSettings->r_float(section, "k_impulse");
 	m_kPierce = pSettings->r_float(section, "k_pierce");
-	m_tracer = !!pSettings->r_bool(section, "tracer");
+	m_flags.set(cfTracer, pSettings->r_bool(section, "tracer"));
 	m_buckShot = pSettings->r_s32(section, "buck_shot");
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
 
+	m_flags.set(cfCanBeUnlimited | cfRicochet, TRUE);
 	if(pSettings->line_exist(section,"can_be_unlimited"))
-		m_bCanBeUnlimited = !!pSettings->r_bool(section,"can_be_unlimited");
-	else
-		m_bCanBeUnlimited = true;
+		m_flags.set(cfCanBeUnlimited, pSettings->r_bool(section, "can_be_unlimited"));
 
-	m_ricochet = true;
+	if(pSettings->line_exist(section,"explosive"))
+		m_flags.set(cfExplosive, pSettings->r_bool(section, "explosive"));
+
 	bullet_material_idx =  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	VERIFY	(u16(-1)!=bullet_material_idx);
 	VERIFY	(fWallmarkSize>0);
@@ -168,12 +168,11 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_kHit = m_kHit;
 	cartridge.m_kImpulse = m_kImpulse;
 	cartridge.m_kPierce = m_kPierce;
-	cartridge.m_tracer = m_tracer;
+	cartridge.m_flags.set(CCartridge::cfTracer ,m_tracer);
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
 	cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
-//	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited || ai().get_alife())
 	--m_boxCurr;
 	return true;
 }

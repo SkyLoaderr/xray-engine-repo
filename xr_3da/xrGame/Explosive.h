@@ -15,7 +15,7 @@
 class IRender_Light;
 
 class CExplosive : 
-	public Feel::Touch,
+//	public Feel::Touch,
 	public IDamageSource
 {
 
@@ -30,7 +30,7 @@ public:
 
 	virtual void 				UpdateCL();
 
-	virtual void 				feel_touch_new(CObject* O);
+//	virtual void 				feel_touch_new(CObject* O);
 
 	virtual void 				Explode();
 	virtual void 				ExplodeParams(const Fvector& pos, const Fvector& dir);
@@ -85,7 +85,7 @@ protected:
 	float m_fUpThrowFactor;
 
 	//список пораженных объектов
-	xr_list<CGameObject*> m_blasted;
+	xr_vector<CGameObject*> m_blasted_objects;
 
 	//текущая продолжительность взрыва
 	float m_fExplodeDuration;

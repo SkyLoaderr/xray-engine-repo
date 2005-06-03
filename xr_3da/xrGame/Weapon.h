@@ -446,7 +446,7 @@ public:
 	CCartridge				m_DefaultCartridge;
 	float					m_fCurrentCartirdgeDisp;
 
-	IC	bool				unlimited_ammo() { return psActorFlags.test(AF_UNLIMITEDAMMO) && m_DefaultCartridge.m_bCanBeUnlimited; };
+	IC	bool				unlimited_ammo() { return psActorFlags.test(AF_UNLIMITEDAMMO) && m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); };
 	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};
 
 protected:

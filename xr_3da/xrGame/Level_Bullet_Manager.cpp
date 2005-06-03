@@ -8,6 +8,7 @@
 #include "game_cl_base.h"
 #include "Actor.h"
 #include "AI/Stalker/ai_stalker.h"
+#include "gamepersistent.h"
 
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
@@ -69,9 +70,9 @@ void SBullet::Init(const Fvector& position,
 	bullet_material_idx = cartridge.bullet_material_idx;
 	VERIFY			(u16(-1)!=bullet_material_idx);
 
-	flags.set(TRACER_FLAG, cartridge.m_tracer);
-	flags.set(RICOCHET_ENABLED_FLAG, cartridge.m_ricochet);
-
+	flags.set(TRACER_FLAG,				cartridge.m_flags.test(CCartridge::cfTracer));
+	flags.set(RICOCHET_ENABLED_FLAG,	cartridge.m_flags.test(CCartridge::cfRicochet));
+	flags.set(EXPLOSIVE_FLAG,			cartridge.m_flags.test(CCartridge::cfExplosive) );
 	render_offset = ::Random.randF(0.f,1.0f);
 }
 
@@ -116,6 +117,22 @@ void CBulletManager::Load		()
 	for (int k=0; k<cnt; ++k){
 		m_WhineSounds.push_back	(ref_sound());
 		m_WhineSounds.back().create(TRUE,_GetItem(whine_sounds,k,tmp));
+	}
+
+	LPCSTR explode_particles= pSettings->r_string(BULLET_MANAGER_SECTION, "explode_particles");
+	cnt						= _GetItemCount(explode_particles);
+	for (int k=0; k<cnt; ++k)
+		m_ExplodeParticles.push_back	(_GetItem(explode_particles,k,tmp));
+}
+
+void CBulletManager::PlayExplodePS		(const Fmatrix& xf)
+{
+	if (!m_ExplodeParticles.empty()){
+		const shared_str& ps_name		= m_ExplodeParticles[Random.randI(0, m_ExplodeParticles.size())];
+
+		CParticlesObject* ps = xr_new<CParticlesObject>(*ps_name,TRUE);
+		ps->UpdateParent(xf,zero_vel);
+		GamePersistent().ps_needtoplay.push_back(ps);
 	}
 }
 

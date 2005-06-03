@@ -125,8 +125,10 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	cartridge.m_kHit = 1;
 	cartridge.m_kImpulse = 1;
 	cartridge.m_kPierce = 1;
-	cartridge.m_tracer = false;
-	cartridge.m_ricochet = false;
+	cartridge.m_flags.set(CCartridge::cfTracer, FALSE);
+//	cartridge.m_tracer = false;
+	cartridge.m_flags.set(CCartridge::cfRicochet, FALSE);
+//	cartridge.m_ricochet = false;
 	cartridge.fWallmarkSize = fWallmarkSize;
 	cartridge.bullet_material_idx = knife_material_idx;
 

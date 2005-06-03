@@ -91,7 +91,6 @@ private:
 void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal, bool ShowMark)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
-
 	Fvector particle_dir;
 
 	if (R.O)
@@ -168,18 +167,25 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
 NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
-	if(ps_name && ShowMark)
-	{
-		//отыграть партиклы попадания в материал
-		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name,TRUE);
+	SGameMtl*	tgt_mtl = GMLib.GetMaterialByIdx(target_material);
+	BOOL bStatic = !tgt_mtl->Flags.test(SGameMtl::flDynamic);
 
+	if( (ps_name && ShowMark) || (bullet->flags.test(SBullet::EXPLOSIVE_FLAG)&&bStatic) )
+	{
 		Fmatrix pos;
 		pos.k.normalize(particle_dir);
 		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 		pos.c.set(vEnd);
+		if(ps_name && ShowMark){
+			//отыграть партиклы попадания в материал
+			CParticlesObject* ps = xr_new<CParticlesObject>(ps_name,TRUE);
 
-		ps->UpdateParent(pos,zero_vel);
-		GamePersistent().ps_needtoplay.push_back(ps);
+			ps->UpdateParent(pos,zero_vel);
+			GamePersistent().ps_needtoplay.push_back(ps);
+		}
+
+		if(bullet->flags.test(SBullet::EXPLOSIVE_FLAG)&&bStatic)
+			PlayExplodePS(pos);
 	}
 }
 
