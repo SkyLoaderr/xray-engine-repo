@@ -566,7 +566,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- Макс
     t = {section = "logic@mil_freedom_max_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -577,23 +577,29 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- Мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end
 		}
 	table.insert(sj, t)		
 	-- Мужик у костра 2
     t = {section = "logic@mil_freedom_stalker2_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "svoboda_specnaz"
+		            end
 		}
 	table.insert(sj, t)		
 	-- Мужик у костра 3
     t = {section = "logic@mil_freedom_stalker3_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 14, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -602,25 +608,9 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)
 	-- 
-    t = {section = "logic@mil_freedom_stalker2_attack",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- 
-    t = {section = "logic@mil_freedom_stalker3_attack",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- 
     t = {section = "logic@mil_freedom_stalker4_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -628,7 +618,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker5_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -636,7 +626,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker6_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -644,7 +634,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker7_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -652,7 +642,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker8_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -660,7 +650,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker9_attack",
 		idle = 0,
-		prior = 10, state = {3},
+		prior = 13, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -702,6 +692,7 @@ function check_state (gulag)
     printf ("GULAG SET TO STATE %d", gulag.state) 
     
     if db.actor:has_info ("mil_freedom_attack") then
+       printf ("GULAG SET TO STATE 3") 
        return 3
     end   
     return 0
