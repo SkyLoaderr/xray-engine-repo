@@ -203,26 +203,20 @@ void CController::InitThink()
 
 void CController::play_control_sound_start()
 {
-	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
-	if (!pA) return;
-	
-	Fvector pos = pA->Position();
+	Fvector pos = EnemyMan.get_enemy()->Position();
 	pos.y += 1.5f;
 
 	if (control_start_sound.feedback) control_start_sound.stop();
-	control_start_sound.play_at_pos(pA,pos);
+	control_start_sound.play_at_pos(const_cast<CEntityAlive*>(EnemyMan.get_enemy()),pos);
 }
 
 void CController::play_control_sound_hit()
 {
-	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
-	if (!pA) return;
-
-	Fvector pos = pA->Position();
+	Fvector pos = EnemyMan.get_enemy()->Position();
 	pos.y += 1.5f;
 	
 	if (control_hit_sound.feedback) control_hit_sound.stop();
-	control_hit_sound.play_at_pos(pA,pos);
+	control_hit_sound.play_at_pos(const_cast<CEntityAlive*>(EnemyMan.get_enemy()),pos);
 }
 
 void CController::reload(LPCSTR section)
@@ -246,21 +240,19 @@ void CController::reinit()
 
 void CController::control_hit()
 {
-	play_control_sound_hit();
+	PsyHit						(EnemyMan.get_enemy(), 30.f);
 	
 	// start postprocess
-	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
-	if (pA) {
-		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_control_effector.ce_time,m_control_effector.ce_amplitude,m_control_effector.ce_period_number,m_control_effector.ce_power));
-		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
-	}
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
+	if (!pA) return;
+	
+	pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_control_effector.ce_time,m_control_effector.ce_amplitude,m_control_effector.ce_period_number,m_control_effector.ce_power));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
+
+	play_control_sound_hit		();
 
 	active_control_fx			= true;
 	time_control_hit_started	= Device.dwTimeGlobal;
-
-	VERIFY			(EnemyMan.get_enemy());
-
-	PsyHit			(EnemyMan.get_enemy(), 30.f);
 }
 
 #define TEXTURE_SIZE_PERCENT 2.f

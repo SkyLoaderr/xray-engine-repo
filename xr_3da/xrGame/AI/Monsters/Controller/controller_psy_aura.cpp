@@ -4,6 +4,7 @@
 #include "../../../ai_sounds.h"
 #include "../../../xrmessages.h"
 #include "../../../net_utils.h"
+#include "../../../CustomMonster.h"
 
 CPsyAuraController::CPsyAuraController()
 {
@@ -48,27 +49,31 @@ void CPsyAuraController::on_deactivate()
 void CPsyAuraController::schedule_update()
 {
 	inherited::schedule_update();
-	if (m_actor && is_active() && !m_sound.feedback) m_sound.play_at_pos(m_actor,m_actor->Position(), sm_2D);
 	
-	// Падение энергии у игрока
-	if (m_actor && is_active()) {
-		float power_percent = m_actor->Position().distance_to(get_object()->Position()) / get_radius();
-		
-		Fvector hit_dir;
-		hit_dir.sub(get_object()->Position(), m_actor->Position());
-		hit_dir.normalize();
+	// Падение энергии у врагов
+	if (is_active()) {
+		if (m_actor && !m_sound.feedback) m_sound.play_at_pos(m_actor,m_actor->Position(), sm_2D);
 
-		NET_Packet		P;
-		get_object()->u_EventGen(P,GE_HIT, m_actor->ID());
-		P.w_u16			(m_actor->ID());
-		P.w_u16			(m_actor->ID());
-		P.w_dir			(hit_dir);
-		P.w_float		(power_down_vel * power_percent);
-		P.w_s16			(BI_NONE);
-		P.w_vec3		(Fvector().set(0.f,0.f,0.f));
-		P.w_float		(0.f);
-		P.w_u16			(u16(ALife::eHitTypeTelepatic));
-		get_object()->u_EventSend(P);
+		for (ENEMY_VECTOR_IT it = m_enemies.begin(); it != m_enemies.end(); it++) {
+			
+			float				power_percent = (*it)->Position().distance_to(get_object()->Position()) / get_radius();
+
+			Fvector				hit_dir;
+			hit_dir.sub			(get_object()->Position(), (*it)->Position());
+			hit_dir.normalize	();
+
+			NET_Packet					P;
+			get_object()->u_EventGen	(P,GE_HIT, (*it)->ID());
+			P.w_u16						((*it)->ID());
+			P.w_u16						((*it)->ID());
+			P.w_dir						(hit_dir);
+			P.w_float					(power_down_vel * power_percent);
+			P.w_s16						(BI_NONE);
+			P.w_vec3					(Fvector().set(0.f,0.f,0.f));
+			P.w_float					(0.f);
+			P.w_u16						(u16(ALife::eHitTypeTelepatic));
+			get_object()->u_EventSend	(P);
+		}
 	}
 }
 
@@ -106,19 +111,30 @@ void CPsyAuraController::frame_update()
 // Feel::Touch Routines
 BOOL CPsyAuraController::feel_touch_contact(CObject* O)
 {
-	// реагировать только на актера
-	if (smart_cast<CActor*>(O)) return TRUE;
-	else return FALSE;
+	// реагировать только на актера и на монстров
+	if ((O != get_object()) && (smart_cast<CActor*>(O) || smart_cast<CCustomMonster*>(O))) return TRUE;
+	
+	return FALSE;
 }
 
 void CPsyAuraController::feel_touch_new(CObject* O)
 {
 	m_actor = smart_cast<CActor*>(O);
+
+	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
+	VERIFY(element == m_enemies.end());
+	
+	m_enemies.push_back(O);
 }
 
 void CPsyAuraController::feel_touch_delete(CObject* O)
 {
 	if (smart_cast<CActor*>(O)) m_actor = 0;
+
+	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
+	VERIFY	(element != m_enemies.end());
+
+	m_enemies.erase(element);
 }
 //////////////////////////////////////////////////////////////////////////
 

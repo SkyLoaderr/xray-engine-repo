@@ -18,6 +18,8 @@ class CPsyAuraController : public CPsyAura {
 	CPPEffectorDistance	m_effector;
 
 	CActor				*m_actor;
+	DEFINE_VECTOR		(CObject*, ENEMY_VECTOR, ENEMY_VECTOR_IT);
+	ENEMY_VECTOR		m_enemies;
 
 	float				m_current_radius;
 
