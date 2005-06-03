@@ -119,6 +119,7 @@
 // 100 - CSE_ALifeObjectClimable		inheritance changed CSE_AlifeObject -> CSE_AlifeDynamicObject
 // 101 - CSE_ALifeCreaturePhantom		new class based on CSE_ALifeCreatureAbstract
 // 102 = CSE_ALifeAnomalousZone			appended m_owner_id
+// 103 = CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
 //------------------------------------------------------------------------------
 #define SPAWN_VERSION	u16(102)
 

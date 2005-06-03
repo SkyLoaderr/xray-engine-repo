@@ -603,6 +603,7 @@ void CSE_ALifeTrader::FillProps				(LPCSTR _pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
+	m_owner_id					= u32(-1);
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
 	m_period					= 1000;
@@ -629,6 +630,8 @@ void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u32		(l_dwDummy);
 		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
 	}
+	if(m_wVersion > 102)
+		tNetPacket.r_u32		(m_owner_id);
 }
 
 void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
@@ -638,16 +641,19 @@ void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_attn);
 	tNetPacket.w_u32			(m_period);
 	tNetPacket.w_u32			(m_tAnomalyType);
+	tNetPacket.w_u32			(m_owner_id);
 }
 
 void CSE_ALifeCustomZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
+	tNetPacket.r_u32			(m_owner_id);
 }
 
 void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_u32			(m_owner_id);
 }
 
 //xr_token TokenAnomalyType[]={
@@ -676,7 +682,6 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeCustomZone(caSection)
 {
-	m_owner_id					= u32(-1);
 	m_fRadius					= 30.f;
 	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
 
@@ -794,8 +799,10 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(m_max_start_power);
 		tNetPacket.r_float		(m_power_artefact_factor);
 	}
-	if(m_wVersion > 101)
-		tNetPacket.r_u32		(m_owner_id);
+	if( (m_wVersion == 102) ){ //fuck
+		u32 dummy;
+		tNetPacket.r_u32		(dummy);
+	}
 }
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
@@ -814,19 +821,16 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_min_start_power);
 	tNetPacket.w_float			(m_max_start_power);
 	tNetPacket.w_float			(m_power_artefact_factor);
-	tNetPacket.w_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
-	tNetPacket.r_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
-	tNetPacket.w_u32			(m_owner_id);
 }
 
 void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
@@ -1323,6 +1327,7 @@ void CSE_ALifeCreatureActor::load(NET_Packet &tNetPacket)
 }
 void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
+	Msg("CSE_ALifeCreatureActor::UPDATE_Read [%d] name [%s]", ID, name_replace());
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 	tNetPacket.r_u16			(mstate		);
@@ -1356,6 +1361,7 @@ void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 		return;
 	};	
 	////////////// Import dead body ////////////////////
+	Msg	("A mi ni hera tut ne chitaem (m_u16NumItems == %d)",m_u16NumItems);
 	{
 		m_BoneDataSize = tNetPacket.r_u8();
 		u32 BodyDataSize = 24 + m_BoneDataSize*m_u16NumItems;
