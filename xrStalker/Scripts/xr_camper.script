@@ -235,7 +235,11 @@ function action_patrol:execute()
 						state_mgr.set_state(self.object, "hide", nil, nil)
 					end		
 				else
-					state_mgr.set_state(self.object, "sneak", nil, nil)
+					if self.a.suggested_state.moving then
+						state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil)
+					else
+						state_mgr.set_state(self.object, "sneak", nil, nil)
+					end
 					self.move_mgr:update()
 				end
 			end
