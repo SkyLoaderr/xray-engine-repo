@@ -103,19 +103,10 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	case kCAM_4:	cam_Set			(eacFreeFly);				break;
 	case kWPN_FIRE:	++look_idx;									break;
 	}
-
-#ifndef NDEBUG
-	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
-#endif
 }
 
 void CSpectator::IR_OnKeyboardRelease(int cmd)
 {
-
-#ifndef NDEBUG
-	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
-#endif
-
 	switch (cmd)
 	{
 	case kACCEL:
@@ -129,10 +120,6 @@ void CSpectator::IR_OnKeyboardRelease(int cmd)
 void CSpectator::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
-
-#ifndef NDEBUG
-	if (Game().Phase() == GAME_PHASE_INPROGRESS)				return;
-#endif
 
 	if ((cam_active==eacFreeFly)||(cam_active==eacFreeLook)){
 		CCameraBase* C	= cameras	[cam_active];

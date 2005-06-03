@@ -378,11 +378,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				{
 					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && !(pCurSkinMenu && pCurSkinMenu->IsShown()))
 					{
-#ifdef NDEBUG
-						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-look camera");
-#else
 						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
-#endif
 						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
 						m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
 					};
