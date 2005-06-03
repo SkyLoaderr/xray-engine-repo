@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
-<string_table>
     <string id="agr_krot">
         <text>Встретиться со сталкерами</text>
     </string>
@@ -9,4 +7,3 @@
     <string id="agr_military_case">
         <text>Добыть военные документы</text>
     </string>
-</string_table>

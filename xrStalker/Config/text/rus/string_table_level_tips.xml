@@ -15,6 +15,13 @@
 #include "text\rus\stable_storyline_info_military.xml"
 #include "text\rus\stable_storyline_info_radar.xml"
 
+#include "text\rus\string_table_tasks_escape.xml"
+#include "text\rus\string_table_tasks_agroprom.xml"
+#include "text\rus\string_table_tasks_darkvalley.xml"
+#include "text\rus\string_table_tasks_bar.xml"
+#include "text\rus\string_table_tasks_military.xml"
+#include "text\rus\string_table_tasks_radar.xml"
+
     <string id="inventory_item_use">
         <text>Поднять предмет ($$ACTION_USE$$)</text>
     </string>

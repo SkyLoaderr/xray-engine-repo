@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
-<string_table>
-
     <string id="val_suicide_find_lost_stalker">
         <text>Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.</text>
     </string>
@@ -16,5 +13,3 @@
     <string id="val_suicide_artefact_quest_0">
         <text>fixme - Сталкер в Темной Долине попросил отнести артефакт бармену.</text>
     </string>
-	
-</string_table>

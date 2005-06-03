@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
-<string_table>
     <string id="storyline_escape_eliminate_gunslinger">
         <text>Убить Стрелка.</text>
     </string>
@@ -117,4 +115,3 @@
     <string id="esc_wounded_to_trader_gift_0">
         <text>Доставить пакет торговцу. Он сможет тебе помочь.</text>
     </string>
-</string_table>
