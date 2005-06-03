@@ -4140,8 +4140,8 @@
             <phrase id="111">
                 <text>bar_ecolog_crush_professor_start_111</text>
                 <give_info>bar_resque_research_start</give_info>
-                <give_info>bar_freedom_attack_ecolog</give_info>
                 <give_info>bar_ecolog_crush_actor_enemy</give_info>
+                <give_info>bar_freedom_attack_ecolog</give_info>					
                 <next>1111</next>
             </phrase>
             <phrase id="1111">
