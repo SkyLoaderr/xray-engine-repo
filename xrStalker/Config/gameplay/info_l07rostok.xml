@@ -175,6 +175,7 @@
 	<info_portion id="bar_kill_professor_fail"></info_portion>		
     <info_portion id="bar_kill_professor_reject"></info_portion>
     <info_portion id="bar_kill_professor_reward"></info_portion>
+    <info_portion id="bar_kill_professor_volkodav_dead"></info_portion>
     
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
