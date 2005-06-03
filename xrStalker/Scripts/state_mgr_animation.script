@@ -853,7 +853,6 @@ function animation:update()
 		   self.mgr.callback and self.mgr.callback.func and self.mgr.callback.timeout and
 		   self.mgr.callback.begin == nil
 		then
-			printf("EXTRA CALLBACK")
 			self:callback_init()
 		end
 		self:callback_process()
