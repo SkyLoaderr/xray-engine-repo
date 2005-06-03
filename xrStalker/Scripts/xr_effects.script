@@ -372,7 +372,10 @@ function bar_freedom_angry_actor(actor,npc)
 	end
 end
 function bar_freedom_angry_actor_notify(actor,npc)
-	news_manager.send_tip(actor, "bar_freedom_attack_spy", nil, "freedom")
+	if actor:has_info("bar_ecolog_crush_actor_enemy")
+	then
+		news_manager.send_tip(actor, "bar_freedom_attack_spy", nil, "freedom")
+	end
 end
 function bar_crush_heli_start(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_start_heli", nil, "ecolog")
