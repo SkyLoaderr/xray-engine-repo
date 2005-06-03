@@ -140,6 +140,9 @@ function process_map_spot(info_id)
 		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.set_task_state(task.fail, "bar_resque_information", 0)
 		return true
+	elseif info_id == "bar_resque_research_dead" then
+		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
+		return true
 	elseif info_id == "bar_kill_professor_start" then
 		level_tasks.add_location(503, "bar_ecolog_crush_location")
 		level_tasks.add_location(509, "bar_freedom_volkodav_location")
@@ -160,6 +163,10 @@ function process_map_spot(info_id)
 		news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
 		news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
 		return true				
+	elseif info_id == "bar_ecolog_crush_actor_enemy" then
+		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
+		return true				
+
 
 	elseif info_id == "bar_dolg_veteran_start" then
 		level_tasks.add_location(501, "bar_dolg_arhive_document_location")
