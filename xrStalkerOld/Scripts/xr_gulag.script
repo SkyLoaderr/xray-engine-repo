@@ -17,7 +17,7 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.groups = groups or {}
 
 	self.state = 0
-	self.stateBegin = nil
+	self.stateBegin = game.get_game_time()
 
 	self.casualities = 0  	
 
@@ -109,7 +109,10 @@ function fract:calculate()
 end
 
 function fract:changeState(state)
-	self.state = state
+	if self.state ~= state then
+		self.state = state
+		self.stateBegin = game.get_game_time()
+	end
 end
 
 function fract:availState(st, state)

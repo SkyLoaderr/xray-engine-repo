@@ -188,10 +188,11 @@ function se_smart_terrain:STATE_Write( packet )
 
 	if self.gulag then
 		-- параметры гулага
-		packet:w_u8(  self.state       or 0 )
-		packet:w_u32( self.stateBegin  or 0 )
 		packet:w_u8(  self.casualities or 0 )
- 
+		packet:w_u8(  self.state       or 0 )
+		--packet:w_u32( self.stateBegin  or 0 )
+		utils.w_CTime( packet, self.stateBegin or CTime_0 )
+
 		-- список работ в гулаге
 		if self.Job then
 			packet:w_u8( table.getn( self.Job ) )
@@ -271,9 +272,10 @@ function se_smart_terrain:STATE_Read( packet, size )
 	if self.script_version >= 1 then
 		if self.gulagN then
 			-- параметры гулага
-			self.state       = packet:r_u8()
-			self.stateBegin  = packet:r_u32()
 			self.casualities = packet:r_u8()
+			self.state       = packet:r_u8()
+			--self.stateBegin  = packet:r_u32()
+			self.stateBegin  = utils.r_CTime( packet )
 
 			-- список работ в гулаге
 			self.Job = {}

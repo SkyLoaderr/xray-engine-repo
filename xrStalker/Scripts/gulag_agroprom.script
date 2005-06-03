@@ -150,11 +150,21 @@ function load_job(sj, gname, type, squad, groups)
 	--' Agroprom rush
 	if type == "agr_rush" then
 		for i = 1, 9 do
-			t = { section = "logic@agr_rush_hold_nil",
+			t = { section = "logic@agr_rush_nest_inside_nil",
 				idle = 0,
 				prior = 0, state = {0},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_rush_hold"
+				in_rest = "", out_rest = "agr_rush_nest_inner"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, 9 do
+			t = { section = "logic@agr_rush_nest_outside_nil",
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_rush_nest_outer"
 			}
 			table.insert(sj, t)
 		end
@@ -162,7 +172,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 9 do
 			t = { section = "logic@agr_rush_attack_nil",
 				idle = 0,
-				prior = 0, state = {1},
+				prior = 0, state = {2},
 				squad = squad, group = groups[1],
 				in_rest = "", out_rest = "agr_rush_attack_trigger"
 			}
@@ -197,14 +207,25 @@ function load_states(gname, type)
 	if type == "agr_rush" then
 		return function( gulag )
 			local actor = db.actor
-			if gulag.state == 0 then
+
+			if gulag.state ~= 2 then
 				if actor and actor:has_info( "agr_rush_start" ) then
-					return 1
+					return 2
 				else
-					return 0
+					local z = db.zone_by_name["agr_rush_nest_outer"]
+					if utils.npc_in_zone( actor, z ) then
+						return 1
+					else
+						return 0
+					end
 				end
 			else
-				return 1
+				if actor and ( gulag:get_population() < 4 or game.get_game_time():diffSec( gulag.stateBegin ) > 1200 ) then
+					actor:disable_info_portion( "agr_rush_start" )
+					return 0
+				else
+					return 2
+				end
 			end
 		end
 	end
