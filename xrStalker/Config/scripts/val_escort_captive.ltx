@@ -1,12 +1,17 @@
 [logic]
 active = walker1
+on_death = death
 combat_ignore = combat_ignore
+
+[death]
+on_info = %+val_escort_captive_dead%
 
 [walker1]
 path_walk = val_escort_captive_walk
 ;path_look = val_escort_captive_look
 on_signal = fight | %+val_escort_combat%
 on_info = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
+on_info2 = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave %+val_escort_captive_can_leave%
 combat_ignore_cond = always
 
 [remark@wait]
@@ -18,7 +23,7 @@ meet_state = caution
 meet_talk_enabled = true
 ;on_info = {=val_escort_combat_end} walker@leave
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave
-on_info2 = {-val_escort_actor_helped -val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
+on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
 combat_ignore_cond = always
 
 ;[walker@flee]

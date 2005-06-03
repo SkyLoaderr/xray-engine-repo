@@ -1,0 +1,39 @@
+[logic]
+active = walker1
+on_death = death
+
+[death]
+on_info = %+val_escort_nap1_dead%
+ 
+[walker1]
+path_walk = val_nap1_exit_walk
+path_look = val_nap1_exit_look
+meet_dialog = val_nap1_dialog
+meet_enabled = true
+on_info = {+val_nap1_go_rescue} camper@wait, {+val_nap1_no_thanx} walker3
+ 
+[camper@wait]
+path_walk = val_nap1_go_rescue_walk
+path_look = val_nap1_go_rescue_look
+;combat_ignore = combat_ignore
+radius = 3
+def_state_moving = rush
+no_retreat = true
+on_signal = escort_start | %+val_escort_start%
+on_info = {+val_escort_combat} remark@fight
+;on_signal = fight | remark@fight %+val_escort_combat%
+
+[remark@fight]
+;path_walk = val_nap1_go_rescue_walk
+;path_look = val_nap1_go_rescue_look
+;radius = 10
+;no_retreat = true
+on_info = {+val_escort_captive_can_leave} walker3
+
+;[combat_ignore]
+ 
+[walker3]
+path_walk = val_nap1_no_thanx_walk
+path_look = val_nap1_no_thanx_look
+;meet_dialog = val_nap1_dialog_done
+;meet_enabled = true
