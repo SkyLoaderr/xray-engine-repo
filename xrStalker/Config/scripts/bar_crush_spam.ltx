@@ -19,10 +19,10 @@ on_timer = 35000| %+bar_ecolog_crush_heli_down%
 on_info2 = {+bar_ecolog_crush_heli_down} sr_idle@attract_ecolog %=bar_crush_heli_down%
 
 [sr_idle@attract_ecolog]
-on_timer = 7000| sr_idle@attract_freedom %=bar_ecolog_crush_attract_actor%
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@attract_freedom %=bar_ecolog_crush_attract_actor%
 
 [sr_idle@attract_freedom]
-on_timer = 10000| sr_idle@freedom_2 %=bar_freedom_attack_attract_actor%
+on_timer = 10000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_2 %=bar_freedom_attack_attract_actor%
                                                                                                                                                                                                    	
 [sr_idle@freedom_2]
 on_info = %=bar_check_heli_scene%
