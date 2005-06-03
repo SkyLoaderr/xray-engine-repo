@@ -32,6 +32,7 @@
 <info_portion id="val_escort_captive_fight"></info_portion>
 <info_portion id="val_escort_captive_offline"></info_portion>
 <info_portion id="val_escort_captive_can_leave"></info_portion>
+<info_portion id="val_escort_got_reward"></info_portion>
 
 <!-- Стартует машина около бензоколонки -->
 <info_portion id="val_truck_actor_near_gas_st"></info_portion>
