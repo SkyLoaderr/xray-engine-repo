@@ -311,8 +311,9 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 		//---------------------------
 		BulletData& BD = *BulletIt;
 		HitData NewHit;
-		//---------------------------
+		//---------------------------		
 		NewHit.Completed = false;
+		NewHit.Deadly = false;
 		NewHit.BoneID = element;
 		NewHit.TargetID = TargetID;
 		NewHit.BulletID = BD.Bullet.m_dwID;
