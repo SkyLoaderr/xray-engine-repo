@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
-<string_table>
+
 	<string id="bar_ecolog_crush_start_heli">
 		<text>Ну все Волкодав, ты допрыгался. Сюда летит военный вертолет. Сейчас они вас, как щенков!</text>
 	</string>
@@ -114,5 +113,3 @@
     <string id="bar_arena_fight_dead">
 		<text>Итак! Противник уложил претендента. Вот так номер!</text>
     </string>
-
-</string_table>

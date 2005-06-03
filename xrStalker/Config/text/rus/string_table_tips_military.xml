@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
-<string_table>
+
     <string id="mil_info_max_village">
         <text>Меченый будь осторожен - говорят в деревне появилась новая аномалия - движется очень быстро, к тому же ее падлу не видно.</text>
     </string>
@@ -21,5 +20,3 @@
     <string id="mil_mission_complete">
 		<text>Наша задача выполнена. Спасибо за помощь.</text>
     </string>
-
-</string_table>
