@@ -166,7 +166,9 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_ecolog_crush_actor_enemy" then
 		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
 		return true				
-
+	elseif info_id == "bar_kill_professor_volkodav_dead" then
+		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
+		return true				
 
 	elseif info_id == "bar_dolg_veteran_start" then
 		level_tasks.add_location(501, "bar_dolg_arhive_document_location")
