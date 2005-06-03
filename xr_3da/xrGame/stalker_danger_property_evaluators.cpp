@@ -53,7 +53,17 @@ CStalkerPropertyEvaluatorDangerUnknown::CStalkerPropertyEvaluatorDangerUnknown	(
 
 _value_type CStalkerPropertyEvaluatorDangerUnknown::evaluate	()
 {
-	return				(true);
+	if (!m_object->memory().danger().selected())
+		return			(false);
+
+	switch (m_object->memory().danger().selected()->type()) {
+		case CDangerObject::eDangerTypeBulletRicochet :
+		case CDangerObject::eDangerTypeEntityDeath :
+		case CDangerObject::eDangerTypeFreshEntityCorpse :
+			return		(true);
+		default :
+			return		(false);
+	};
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,7 +77,17 @@ CStalkerPropertyEvaluatorDangerInDirection::CStalkerPropertyEvaluatorDangerInDir
 
 _value_type CStalkerPropertyEvaluatorDangerInDirection::evaluate	()
 {
-	return				(false);
+	if (!m_object->memory().danger().selected())
+		return			(false);
+
+	switch (m_object->memory().danger().selected()->type()) {
+		case CDangerObject::eDangerTypeAttackSound :
+		case CDangerObject::eDangerTypeEntityAttacked :
+		case CDangerObject::eDangerTypeAttacked :
+			return		(true);
+		default :
+			return		(false);
+	};
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,7 +101,10 @@ CStalkerPropertyEvaluatorDangerWithGrenade::CStalkerPropertyEvaluatorDangerWithG
 
 _value_type CStalkerPropertyEvaluatorDangerWithGrenade::evaluate	()
 {
-	return				(false);
+	if (!m_object->memory().danger().selected())
+		return			(false);
+
+	return				(CDangerObject::eDangerTypeGrenade == m_object->memory().danger().selected()->type());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,7 +118,10 @@ CStalkerPropertyEvaluatorDangerBySound::CStalkerPropertyEvaluatorDangerBySound	(
 
 _value_type CStalkerPropertyEvaluatorDangerBySound::evaluate	()
 {
-	return				(false);
+	if (!m_object->memory().danger().selected())
+		return			(false);
+
+	return				(CDangerObject::eDangerTypeEnemySound == m_object->memory().danger().selected()->type());
 }
 
 //////////////////////////////////////////////////////////////////////////
