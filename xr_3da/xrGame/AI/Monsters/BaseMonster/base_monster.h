@@ -81,6 +81,7 @@ public:
 	virtual	BOOL			net_SaveRelevant				();
 	virtual void			net_Export						(NET_Packet& P);
 	virtual void			net_Import						(NET_Packet& P);
+	virtual void			net_Relcase						(CObject *O);
 
 	//save/load server serialization
 	virtual void			save							(NET_Packet &output_packet) {inherited::save(output_packet);}

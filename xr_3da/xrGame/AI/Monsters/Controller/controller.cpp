@@ -258,6 +258,9 @@ void CController::control_hit()
 	active_control_fx			= true;
 	time_control_hit_started	= Device.dwTimeGlobal;
 
+	VERIFY			(EnemyMan.get_enemy());
+
+	PsyHit			(EnemyMan.get_enemy(), 30.f);
 }
 
 #define TEXTURE_SIZE_PERCENT 2.f
