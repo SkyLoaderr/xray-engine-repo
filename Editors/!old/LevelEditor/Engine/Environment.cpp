@@ -173,7 +173,10 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sky_texture.create		(st);
 	sky_texture_env.create	(st_env);
 	clouds_texture.create	(pSettings->r_string	(S,"clouds_texture"));
-	clouds_color			= pSettings->r_fvector4	(S,"clouds_color");		clouds_color.mul(.5f); clouds_color.w*=2.f; 
+	LPCSTR	cldclr			= pSettings->r_string	(S,"clouds_color");
+	float	multiplier		= 0, save=0;
+	sscanf					("%f,%f,%f,%f,%f",&clouds_color.x,&clouds_color.y,&clouds_color.z,&clouds_color.w,&multiplier);
+	save=clouds_color.w;	clouds_color.mul		(.5f*multiplier);		clouds_color.w	= save; 
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	if (pSettings->line_exist(S,"sky_rotation"))	sky_rotation	= deg2rad(pSettings->r_float(S,"sky_rotation"));
 	else											sky_rotation	= 0;
