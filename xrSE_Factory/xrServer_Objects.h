@@ -121,7 +121,7 @@
 // 102 = CSE_ALifeAnomalousZone			appended m_owner_id
 // 103 = CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(102)
+#define SPAWN_VERSION	u16(103)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
