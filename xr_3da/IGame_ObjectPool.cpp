@@ -10,15 +10,53 @@ IGame_ObjectPool::IGame_ObjectPool(void)
 
 IGame_ObjectPool::~IGame_ObjectPool(void)
 {
-	R_ASSERT			(map_POOL.empty());
+	R_ASSERT			(m_PrefetchObjects.empty());
 }
 
 void IGame_ObjectPool::prefetch	()
 {
+	R_ASSERT			(m_PrefetchObjects.empty());
+
+	u32	mem_0			= Memory.mem_usage();
+	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
+	int	p_count			= 0;
+	::Render->model_Logging	(FALSE);
+
+	string256 section;
+	// prefetch objects
+	strconcat				(section,"prefetch_objects_",g_pGamePersistent->m_game_params.m_game_type);
+	CInifile::Sect& sect	= pSettings->r_section(section);
+	for (CInifile::SectIt I=sect.begin(); I!=sect.end(); I++)	{
+		CInifile::Item& item= *I;
+		CLASS_ID CLS		= pSettings->r_clsid(item.first.c_str(),"class");
+		p_count				++;
+		CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
+		pObject->Load		(item.first.c_str());
+		VERIFY2				(pObject->cNameSect().c_str(),item.first.c_str());
+		m_PrefetchObjects.push_back	(pObject);
+	}
+
+	// out statistic
+	::Render->model_Logging	(TRUE);
+	p_time					= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec() - p_time;
+	u32		p_mem			= Memory.mem_usage() - mem_0;
+	if (p_count){
+		float 	a_time		= float(p_time)/float(p_count);
+		Msg					("* [Object-prefetch] objects: %d",		p_count);
+		Msg					("* [Object-prefetch] time:    %d ms",	iFloor(p_time));
+		Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
+		Msg					("* [Object-prefetch] average: %2.2f ms, %d bytes", a_time, p_mem/p_count);
+	}
 }
 
-void IGame_ObjectPool::clear	()
+void IGame_ObjectPool::clear()
 {
+	// Clear POOL
+	ObjectVecIt it			= m_PrefetchObjects.begin();
+	ObjectVecIt itE			= m_PrefetchObjects.end();
+	for (; it!=itE; it++)	
+		xr_delete			(*it);
+	m_PrefetchObjects.clear	(); 
 }
 
 CObject*	IGame_ObjectPool::create			( LPCSTR	name	)

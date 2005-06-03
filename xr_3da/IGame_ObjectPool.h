@@ -6,6 +6,7 @@ class ENGINE_API				CObject;
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API 				IGame_ObjectPool
 {
+/*
 private:
 	struct str_pred : public std::binary_function<shared_str&, shared_str&, bool> 
 	{	
@@ -16,7 +17,10 @@ private:
 	typedef POOL::iterator							POOL_IT;
 private:
 	POOL						map_POOL;
-
+*/
+	typedef xr_vector<CObject*>	ObjectVec;
+	typedef ObjectVec::iterator	ObjectVecIt;
+	ObjectVec					m_PrefetchObjects;
 public:
 	void						prefetch			( );
 	void						clear				( );
