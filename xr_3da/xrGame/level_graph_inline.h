@@ -534,6 +534,16 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;
+#ifdef DEBUG
+				if (tpaOutputPoints.size() > 100000) {
+					Msg			(
+						"CLevelGraph::create_straight_path : Loop became infinite (%d,[%f][%f][%f],[%f][%f][%f])",
+						start_vertex_id,
+						VPUSH(v3d(start_point)),
+						VPUSH(v3d(finish_point))
+					);
+				}
+#endif
 				break;
 			}
 		}
