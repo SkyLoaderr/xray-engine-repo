@@ -369,8 +369,10 @@ function bar_freedom_angry_actor(actor,npc)
 	if actor:has_info("bar_ecolog_crush_actor_enemy")
 	then
 		npc:set_relation(game_object.enemy, actor)
-		news_manager.send_tip(actor, "bar_freedom_attack_spy", nil, "freedom")
 	end
+end
+function bar_freedom_angry_actor_notify(actor,npc)
+	news_manager.send_tip(actor, "bar_freedom_attack_spy", nil, "freedom")
 end
 function bar_crush_heli_start(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_start_heli", nil, "ecolog")
