@@ -1,10 +1,9 @@
 [logic]
-active = follower1
+active = remark@switch
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
 on_combat = combat
-on_info = {+val_escort_start} %=val_escort_guard_unset_fight%
 
 [death]
 on_info = %-val_escort_guard1_combat +val_escort_guard1_dead%
@@ -18,16 +17,27 @@ on_info3 = {=val_hit_by_nap1 -val_escort_actor_start_combat} %+val_escort_nap1_s
 [combat]
 on_info = %+val_escort_guard1_combat%
 
-[follower1]
+[remark@switch]
+on_info = {+val_escort_start} follower@walk %=val_escort_guard_unset_fight%
+
+[follower@walk]
 leader = 400
 anim_walk = patrol
 anim_run = assault
 no_retreat = true
-;on_info = {+val_escort_combat} %=val_escort_set_fight%
-on_info = {+val_escort_captive_dead} walker1 %-val_escort_guard1_combat%, %-val_escort_guard1_combat%
+on_info = {+val_escort_combat} follower@fight %=val_escort_set_fight%
+on_info2 = {+val_escort_captive_dead} walker@return %-val_escort_guard1_combat%, %-val_escort_guard1_combat%
 combat_ignore_cond = {=val_fighting_captive -val_escort_actor_start_combat}
-on_signal = leader_dead | walker1
+;on_signal = leader_dead | walker@return
 
-[walker1]
+[follower@fight]
+leader = 400
+anim_walk = patrol
+anim_run = assault
+no_retreat = true
+on_info = {+val_escort_captive_dead} walker@return %-val_escort_guard1_combat%, %-val_escort_guard1_combat%
+combat_ignore_cond = {=val_fighting_captive -val_escort_actor_start_combat}
+
+[walker@return]
 path_walk = val_escort_guard1_return_walk 
 path_look = val_escort_guard1_return_look
