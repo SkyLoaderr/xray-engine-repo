@@ -430,22 +430,6 @@
                 <action>dialogs.break_dialog</action>
                 <give_info>val_escort_nap1_join</give_info>
             </phrase>
-            <phrase id="212">
-                <text>val_escort_nap1_dialog_212</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_escort_got_reward</give_info>
-                <has_info>val_escort_nap1_join</has_info>
-            </phrase>
-            <phrase id="411">
-                <text>val_escort_nap1_dialog_411</text>
-                <next>4111</next>
-                <next>4112</next>
-            </phrase>
-            <phrase id="2111">
-                <text>val_escort_nap1_dialog_2111</text>
-                <next>411</next>
-                <next>412</next>
-            </phrase>
             <phrase id="31">
                 <text>val_escort_nap1_dialog_31</text>
                 <next>311</next>
@@ -453,18 +437,6 @@
             <phrase id="412">
                 <text>val_escort_nap1_dialog_412</text>
                 <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="21">
-                <text>val_escort_nap1_dialog_21</text>
-                <next>211</next>
-                <next>212</next>
-            </phrase>
-            <phrase id="211">
-                <text>val_escort_nap1_dialog_211</text>
-                <action>dialogs.break_dialog</action>
-                <dont_has_info>val_escort_nap1_join</dont_has_info>
-                <give_info>val_escort_got_reward</give_info>
-                <next>2111</next>
             </phrase>
             <phrase id="51">
                 <text>val_escort_nap1_dialog_51</text>
@@ -534,6 +506,33 @@
                 <action>dialogs.break_dialog</action>
                 <give_info>val_nap1_go_rescue</give_info>
                 <give_info>val_escort_quest_start</give_info>
+            </phrase>
+            <phrase id="21">
+                <text>val_escort_nap1_dialog_21</text>
+                <next>211</next>
+                <next>212</next>
+            </phrase>
+            <phrase id="2111">
+                <text>val_escort_nap1_dialog_2111</text>
+                <next>411</next>
+                <next>412</next>
+            </phrase>
+            <phrase id="411">
+                <text>val_escort_nap1_dialog_411</text>
+                <next>4111</next>
+                <next>4112</next>
+            </phrase>
+            <phrase id="212">
+                <text>val_escort_nap1_dialog_212</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_escort_got_reward</give_info>
+                <has_info>val_escort_nap1_join</has_info>
+            </phrase>
+            <phrase id="211">
+                <text>val_escort_nap1_dialog_211</text>
+                <dont_has_info>val_escort_nap1_join</dont_has_info>
+                <give_info>val_escort_got_reward</give_info>
+                <next>2111</next>
             </phrase>
         </phrase_list>
     </dialog>
