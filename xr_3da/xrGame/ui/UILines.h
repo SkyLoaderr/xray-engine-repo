@@ -41,7 +41,7 @@ public:
 	// own methods
 			void			Reset();
 			void			ParseText();
-			int				GetVisibleHeight()					const;
+			int				GetVisibleHeight()							;
 			void			SetLinesInterval(float f)					{ m_interval = f; }
 			float			GetLinesInterval()					const	{ return m_interval; }
 

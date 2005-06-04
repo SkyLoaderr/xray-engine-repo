@@ -21,11 +21,18 @@ void xrServer::Process_update(NET_Packet& P, ClientID sender)
 
 		P.r_u16			(ID);
 		P.r_u8			(size);
+		u32	_pos		= P.r_tell();
 		CSE_Abstract	*E	= ID_to_entity(ID);
 		
 		if (E) {
+			//Msg				("sv_import: %d '%s'",E->ID,E->name_replace());
 			E->net_Ready	= TRUE;
 			E->UPDATE_Read	(P);
+			if ((P.r_tell()-_pos) != size)	{
+				string16	tmp;
+				CLSID2TEXT	(E->m_tClassID,tmp);
+				Debug.fatal	("Beer from the creator of '%s'",tmp);
+			}
 		}
 		else
 			P.r_advance	(size);

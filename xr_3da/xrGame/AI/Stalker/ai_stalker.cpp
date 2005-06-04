@@ -290,6 +290,8 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	else
 		LoadSounds	(*cNameSect());
 
+	sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection));
+
 	return							(TRUE);
 }
 

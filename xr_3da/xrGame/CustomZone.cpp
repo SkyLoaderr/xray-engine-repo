@@ -281,8 +281,9 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 		return					(FALSE);
 
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
-	CSE_ALifeAnomalousZone		*Z = smart_cast<CSE_ALifeAnomalousZone*>(e);
+	CSE_ALifeCustomZone			*Z = smart_cast<CSE_ALifeCustomZone*>(e);
 	VERIFY						(Z);
+//	CSE_ALifeAnomalousZone		*C = smart_cast<CSE_ALifeAnomalousZone*>(e);
 	
 	m_fMaxPower					= Z->m_maxPower;
 	m_fAttenuation				= Z->m_attn;

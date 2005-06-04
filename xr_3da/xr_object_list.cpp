@@ -171,6 +171,7 @@ u32	CObjectList::net_Export			(NET_Packet* _Packet,	u32 start, u32 count	)
 		if (P->net_Relevant() && !P->getDestroy())	{
 			Packet.w_u16			(u16(P->ID())	);
 			Packet.w_chunk_open8	(position);
+			//Msg						("cl_export: %d '%s'",P->ID(),*P->cName());
 			P->net_Export			(Packet);
 #ifdef DEBUG
 			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
@@ -183,7 +184,7 @@ u32	CObjectList::net_Export			(NET_Packet* _Packet,	u32 start, u32 count	)
 			if (0==(--count))		break;
 		}
 	}
-	return	start;
+	return	start+1;
 }
 
 void CObjectList::net_Import		(NET_Packet* Packet)

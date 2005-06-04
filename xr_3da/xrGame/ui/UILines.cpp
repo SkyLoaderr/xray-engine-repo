@@ -13,9 +13,11 @@
 #include "UIXmlInit.h"
 #include "uilinestd.h"
 
+
 CUILines::CUILines()
 {
-	SetFont(UI()->Font()->pFontLetterica18Russian);
+	m_pFont = NULL;
+//	SetFont(UI()->Font()->pFontLetterica18Russian);
 	m_interval = 0.3f;
 	m_eTextAlign = CGameFont::alLeft;
 	m_dwTextColor = 0xffffffff;
@@ -59,7 +61,9 @@ void CUILines::Reset(){
 
 void CUILines::ParseText(){
 	Reset();
-	if(NULL==m_pFont) return;
+	if(NULL==m_pFont)
+		SetFont(UI()->Font()->pFontLetterica18Russian);
+
 #pragma fixme("Andy to Satan. m_pFont==NULL ????")
 	CUILine* line = ParseTextToColoredLine(m_text.c_str());
 
@@ -69,7 +73,9 @@ void CUILines::ParseText(){
 	xr_delete(line);
 }
 
-int CUILines::GetVisibleHeight() const{
+int CUILines::GetVisibleHeight() {
+	if(NULL==m_pFont)
+		SetFont(UI()->Font()->pFontLetterica18Russian);
 	int interval = int(m_interval*m_pFont->CurrentHeightRel());
 	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
@@ -77,6 +83,10 @@ int CUILines::GetVisibleHeight() const{
 void CUILines::Draw(int x, int y){
 	if (m_text.empty())
 		return;
+	
+	if(NULL==m_pFont)
+		SetFont(UI()->Font()->pFontLetterica18Russian);
+
 	R_ASSERT(m_pFont);
 
 	m_pFont->SetColor(m_dwTextColor);
