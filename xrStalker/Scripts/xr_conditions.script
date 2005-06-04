@@ -156,6 +156,19 @@ function val_hit_by_nap1(actor, npc)
 	return hit_by_nap1
 end
 
+function val_hit_by_guard(actor, npc)
+	local g1 = utils.obj_by_sid(407)
+	local g2 = utils.obj_by_sid(408)
+	if g1 == nil and g2 == nil then return false end
+	local t = db.storage[npc:id()].hit
+	local hit_by_guard = (t ~= nil and
+						  ((g1 ~= nil and t.who == g1:id()) or
+						   (g2 ~= nil and t.who == g2:id())
+						  ))
+	printf("_bp: hit_by_guard: %s", if_then_else(hit_by_guard, "true", "false"))
+	return hit_by_guard
+end
+
 function val_fighting_sacrifice_victim(actor, npc)
 	-- FIXME: use SID!!!
 	return db.storage[npc:id()].enemy:name() == "val_sacrifice_victim"
