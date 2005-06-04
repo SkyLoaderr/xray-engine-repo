@@ -1,13 +1,13 @@
 <!-- darkvalley quest locations -->
-	<val_escort_nap1 hint="val_escort_nap1" store="1">
+	<val_escort_nap1_location hint="val_escort_nap1" store="1">
 		<level_map spot="val_escort_nap1_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="val_escort_nap1_spot" pointer="quest_pointer"></mini_map>
-	</val_escort_nap1>
+	</val_escort_nap1_location>
 
-	<val_escort_captive hint="val_escort_captive" store="1">
+	<val_escort_captive_location hint="val_escort_captive" store="1">
 		<level_map spot="val_escort_captive_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="val_escort_captive_spot" pointer="quest_pointer"></mini_map>
-	</val_escort_captive>
+	</val_escort_captive_location>
 
 	<!-- spots -->
     <val_escort_nap1_spot x="0" y="0" width="32" height="32" alignment="c">
