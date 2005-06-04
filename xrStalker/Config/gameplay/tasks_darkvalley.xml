@@ -1,6 +1,13 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_tasks_data>
+	<game_task id="val_escort_release_stalker">
+		<title>val_escort_release_stalker</title>
+		<objective>
+			<text>val_escort_release_stalker_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 	<game_task id="val_suicide_find_lost_stalker">
 		<title>val_suicide_find_lost_stalker</title>
 		<objective>
