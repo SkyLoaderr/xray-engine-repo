@@ -1327,7 +1327,6 @@ void CSE_ALifeCreatureActor::load(NET_Packet &tNetPacket)
 }
 void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	Msg("CSE_ALifeCreatureActor::UPDATE_Read [%d] name [%s]", ID, name_replace());
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 	tNetPacket.r_u16			(mstate		);
