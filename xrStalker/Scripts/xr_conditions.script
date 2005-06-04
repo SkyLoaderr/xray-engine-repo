@@ -150,7 +150,7 @@ end
 function val_hit_by_nap1(actor, npc)
 	local nap1 = utils.obj_by_sid(406)
 	local t = db.storage[npc:id()].hit
-	local hit_by_nap1 = t ~= nil and t.who == nap1:id()
+	local hit_by_nap1 = (t ~= nil and t.who == nap1:id())
 	printf("_bp: hit_by_nap1: %s", if_then_else(hit_by_nap1, "true", "false"))
 	return hit_by_nap1
 end
