@@ -633,20 +633,19 @@ end
 -- DARK VALLEY
 function val_escort_captive_friend(actor, npc)
 	local captive = utils.obj_by_sid(400)
-	local nap1 = utils.obj_by_sid(406)
-	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
-		return
-	end
+	if not captive or not captive:alive() then return end
 
-	--local ignore_actor = distance_between(actor, st) > 10
-	
-	npc:set_relation(game_object.enemy, nap1)
-	nap1:set_relation(game_object.enemy, npc)
-
-	--npc:set_relation(game_object.enemy, actor)
-	--actor:set_relation(game_object.enemy, npc)
+	npc:set_relation(game_object.friend, captive)
+	captive:set_relation(game_object.friend, npc)
 end
 
+function val_escort_captive_enemy(actor, npc)
+	local captive = utils.obj_by_sid(400)
+	if not captive or not captive:alive() then return end
+
+	npc:set_relation(game_object.enemy, captive)
+	captive:set_relation(game_object.enemy, npc)
+end
 
 function val_escort_set_fight(actor, npc)
 	--local captive = utils.obj_by_sid(400)
