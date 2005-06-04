@@ -50,7 +50,7 @@ end
 
 function hit_by_actor(actor, npc)
 	local t = db.storage[npc:id()].hit
-	local hit_by_actor = t ~= nil and t.who == actor:id()
+	local hit_by_actor = (t ~= nil and t.who == actor:id())
 	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
 	return hit_by_actor
 end
