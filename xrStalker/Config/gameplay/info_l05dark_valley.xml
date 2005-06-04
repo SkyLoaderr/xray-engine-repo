@@ -17,9 +17,9 @@
 
 <!-- Сцена 3 - транспортировка пленного -->
 <info_portion id="val_escort_quest_start"></info_portion>
-<info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_start"></info_portion>
 <info_portion id="val_escort_combat"></info_portion>
+<info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_guard1_combat"></info_portion>
