@@ -18,14 +18,12 @@ class CUIWindow  : public CUISimpleWindow
 {
 public:
 	using CUISimpleWindow::Init;
-	////////////////////////////////////
-	//конструктор/деструктор
-	CUIWindow();
-	virtual ~CUIWindow();
+
+				CUIWindow						();
+	virtual		~CUIWindow						();
 
 	////////////////////////////////////
 	//инициализация
-//	virtual void			Init				(int x, int y, int width, int height);
 	virtual void			Init				(Irect* pRect);
 
 	virtual CUIDragDropItem*cast_drag_drop_item	()								{return NULL;}
@@ -76,14 +74,10 @@ public:
 	virtual CUIWindow*		GetMessageTarget	();
 
 	//реакция на клавиатуру
-//	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
 	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
 	virtual void			SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
 
 	
-	//список перечисление, на которые должна быть предусмотрена реакция
-//	typedef enum{MOUSE_CAPTURE_LOST, 
-//				 KEYBOARD_CAPTURE_LOST} E_MESSAGE;
 	
 	//обработка сообщений не предусмотреных стандартными обработчиками
 	//ф-ция должна переопределяться
@@ -105,11 +99,6 @@ public:
 	//положение и размеры окна
 
 	//относительные координаты
-//	IC const Ivector2&		GetWndPos			() 									{return m_iWndPos;}
-//	IC void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
-//	IC void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
-
-//	Irect					GetWndRect			()									;//	{return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);}
 	void					SetWndRect			(int x, int y, int width, int height) {m_wndPos.set(x,y); m_wndSize.set(width,height); }
 	IC void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
 
@@ -120,13 +109,6 @@ public:
 	Irect					GetAbsoluteRect		() ;
 	Ivector2				GetAbsolutePos		() 									{Irect abs = GetAbsoluteRect(); return Ivector2().set(abs.x1,abs.y1);}
 
-//	virtual void			SetWidth			(int width)			{m_iWndSize.x=width;}
-//	virtual void			SetHeight			(int height)		{m_iWndSize.y=height;}
-
-//	virtual int				GetWidth			()					{return m_iWndSize.x;}
-//	virtual int				GetHeight			()					{return m_iWndSize.y;}
-
-	////////////////////////////////////
 	//прорисовка окна
 	virtual void			Draw				();
 	virtual void			Draw				(int x, int y);

@@ -73,6 +73,7 @@ void CUIScrollBar::SetStepSize(u32 step)
 	UpdateScrollBar			();
 }
 
+
 void CUIScrollBar::SetRange(u32 iMin, u32 iMax) 
 {
 	m_iMinPos				= iMin;  

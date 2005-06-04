@@ -92,18 +92,9 @@ public:
 
 	//отсечение части изображение, при его выходе за
 	//пределы родительского окна
-	void TextureClipper(int offset_x = 0, 
-						int offset_y = 0,
-						Irect* pClipRect = NULL);
+	void TextureClipper						(int offset_x = 0, int offset_y = 0,Irect* pClipRect = NULL);
+	void TextureClipper						(int offset_x, int offset_y, Irect* pClipRect, CUIStaticItem& UIStaticItem);
 
-	void TextureClipper(int offset_x, 
-						int offset_y,
-						Irect* pClipRect, 
-						CUIStaticItem& UIStaticItem);
-
-	//virtual void	SetTextureScaleXY		(float new_scale_x, float new_scale_y);
-	//virtual float	GetTextureScaleX		();
-	//virtual float	GetTextureScaleY		();
 	
 	void			SetShader				(const ref_shader& sh);
 	CUIStaticItem&	GetUIStaticItem			()						{return m_UIStaticItem;}
