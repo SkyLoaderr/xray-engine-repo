@@ -5,5 +5,5 @@ active = sr_tip
 name = val_give_escort_task_pda
 sender = dolg
 type = tips
-cond = {-val_escort_quest_start -val_nap1_go_rescue - val_nap1_no_thanx -val_escort_captive_dead} %+val_escort_quest_start%
-on_info = {+val_escort_quest_start} nil
+cond = {-val_escort_show_tip -val_nap1_go_rescue - val_nap1_no_thanx -val_escort_captive_dead} %+val_escort_show_tip%
+on_info = {+val_escort_show_tip} nil
