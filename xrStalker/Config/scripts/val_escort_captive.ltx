@@ -18,19 +18,19 @@ combat_ignore_cond = always
 no_move = true
 no_rotate = true
 anim = caution
-meet_dialog = val_escort_captive_dialog
-meet_state = caution
-meet_talk_enabled = true
+;meet_dialog = val_escort_captive_dialog
+;meet_state = caution
+;meet_talk_enabled = true
 ;on_info = {=val_escort_combat_end} walker@leave
-on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave
+on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
 on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
 combat_ignore_cond = always
 
-;[walker@flee]
-;reactions = ignore
-;path_walk = val_escort_captive_flee_walk
-;path_look = val_escort_captive_flee_look
-;combat_ignore_cond = always
+[remark@talk]
+meet_dialog = val_escort_captive_dialog
+meet_state = caution
+meet_enabled = true
+on_timer = 60000 | walker@leave
 
 [walker@leave]
 path_walk = val_leave_level_walk
