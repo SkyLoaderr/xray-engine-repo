@@ -62,12 +62,14 @@ end
 function process_map_spot(info_id)
 	if info_id == "val_escort_quest_start" then
 		add_location(406, "val_escort_nap1")
-		
+		return true
 	elseif info_id == "val_escort_start" then
 		remove_location(406, "val_escort_nap1")
 		add_location(400, "val_escort_captive")
-	elseif info_id == "val_escort_captive_can_leave" or info_id = "val_escort_captive_dead" then
+		return true
+	elseif info_id == "val_escort_captive_can_leave" or info_id == "val_escort_captive_dead" then
 		remove_location(400, "val_escort_captive")
+		return true
 	end
 
 	return false
