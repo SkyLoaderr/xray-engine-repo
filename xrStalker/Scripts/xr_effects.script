@@ -631,7 +631,7 @@ function gar_send_dolg_warning()
 end
 
 -- DARK VALLEY
-function val_escort_guard_set_fight(actor, npc)
+function val_escort_set_fight(actor, npc)
 	--local captive = utils.obj_by_sid(400)
 	local nap1 = utils.obj_by_sid(406)
 	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
@@ -647,7 +647,7 @@ function val_escort_guard_set_fight(actor, npc)
 	--actor:set_relation(game_object.enemy, npc)
 end
 
-function val_escort_guard_unset_fight(actor, npc)
+function val_escort_unset_fight(actor, npc)
 	--local captive = utils.obj_by_sid(400)
 	local nap1 = utils.obj_by_sid(406)
 	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
