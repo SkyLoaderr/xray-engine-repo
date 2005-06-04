@@ -953,6 +953,9 @@
 						RelativePath=".\Config\ui\map_spots_agroprom.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\map_spots_darkvalley.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\map_spots_escape.xml">
 					</File>
 					<File
