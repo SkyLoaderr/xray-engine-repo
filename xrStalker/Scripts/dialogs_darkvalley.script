@@ -42,3 +42,11 @@ function val_suicide_give_artefact(npc, actor)
 		dialogs.relocate_item(npc, obj, "in")   
 	end
 end
+
+function val_escort_nap1_could_ask_join(actor, npc)
+	if db.actor:dont_has_info("val_escort_nap1_join") and
+	   db.actor:dont_has_info("val_escort_captive_dead") then
+	   return true
+	end
+	return false
+end

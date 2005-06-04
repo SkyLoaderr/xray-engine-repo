@@ -8,32 +8,50 @@ on_info = %+val_escort_nap1_dead%
 [walker1]
 path_walk = val_nap1_exit_walk
 path_look = val_nap1_exit_look
-meet_dialog = val_nap1_dialog
+meet_dialog = val_escort_nap1_dialog
 meet_enabled = true
-on_info = {+val_nap1_go_rescue} camper@wait, {+val_nap1_no_thanx} walker3
- 
+on_info = {+val_nap1_go_rescue} camper@wait, {+val_escort_captive_dead} walker@fake_task
+
+;--------------------------------------------------------------------------
+; задание принято. ожидание в засаде
 [camper@wait]
 path_walk = val_nap1_go_rescue_walk
 path_look = val_nap1_go_rescue_look
-;combat_ignore = combat_ignore
+;combat_ignore_cond = {-val_escort_combat =val_fighting_guards}
 radius = 3
 def_state_moving = rush
 no_retreat = true
 on_signal = escort_start | %+val_escort_start%
 on_info = {+val_escort_combat} remark@fight
-;on_signal = fight | remark@fight %+val_escort_combat%
 
+; бой с гвардами
 [remark@fight]
-;path_walk = val_nap1_go_rescue_walk
-;path_look = val_nap1_go_rescue_look
-;radius = 10
-;no_retreat = true
-on_info = {+val_escort_captive_can_leave} walker3
+on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@task_done
 
-;[combat_ignore]
- 
-[walker3]
-path_walk = val_nap1_no_thanx_walk
-path_look = val_nap1_no_thanx_look
-;meet_dialog = val_nap1_dialog_done
-;meet_enabled = true
+; гварды убиты
+[walker@task_done]
+path_walk = val_nap1_task_done_walk
+path_look = val_nap1_task_done_look
+meet_dialog = val_escort_nap1_dialog
+meet_enabled = true
+; берем напарником
+;on_info = {+val_escort_nap1_join} follower1
+on_timer = 60000 | walker@leave
+
+;--------------------------------------------------------------------------
+; игрок не принял задание. фейковая засада
+[walker@fake_task]
+path_walk = val_nap1_go_rescue_walk
+path_look = val_nap1_go_rescue_look
+on_signal = escort_start | remark@fake_wait
+
+[remark@fake_wait]
+;snd = 'Where are they?'
+snd_timeout = 3000
+on_timer = 7000 | walker@leave
+
+;--------------------------------------------------------------------------
+; уходим с уровня
+[walker@leave]
+path_walk = val_leave_level_walk
+;path_look = val_leave_level_look
