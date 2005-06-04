@@ -1,3 +1,11 @@
+    <string id="val_escort_release_stalker">
+        <text>Помочь освободить сталкера захваченого в плен.</text>
+    </string>
+
+    <string id="val_escort_release_stalker_0">
+        <text>Друг, помоги освободить моего напарника. Его скоро должны переводить под охраной на базу монолита.</text>
+    </string>
+
     <string id="val_suicide_find_lost_stalker">
         <text>Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.</text>
     </string>
