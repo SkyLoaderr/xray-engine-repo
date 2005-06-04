@@ -180,7 +180,7 @@ void CBaseMonster::debug_fsm()
 		case eStateBurerAttack_FaceEnemy:				sprintf(st,"Attack :: Face Enemy");			break;
 		case eStateBurerAttack_Melee:					sprintf(st,"Attack :: Melee");				break;
 		case eStateBurerScanning:						sprintf(st,"Attack :: Scanning");			break;
-		
+		case eStateCustomMoveToRestrictor:				sprintf(st,"Moving To Restrictor :: Position not accessible");	break;
 		case eStateUnknown:								sprintf(st,"Unknown State :: ");			break;
 		default:										sprintf(st,"Undefined State ::");			break;
 	}

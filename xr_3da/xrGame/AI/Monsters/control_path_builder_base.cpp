@@ -40,7 +40,14 @@ void CControlPathBuilderBase::reset()
 	m_extrapolate					= false;
 	m_velocity_mask					= u32(-1);
 	m_desirable_mask				= u32(-1);
-
+	
+	if (!m_man->path_builder().accessible(m_object->Position())) {
+		m_target_found.node		= m_man->path_builder().restrictions().accessible_nearest(m_object->Position(), m_target_found.position);
+	} else {
+		m_target_found.node			= u32(-1);
+		m_target_found.position		= m_object->Position();
+	}
+	
 	prepare_builder					();
 }
 

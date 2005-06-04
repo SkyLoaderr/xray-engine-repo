@@ -13,7 +13,6 @@
 void CControlPathBuilderBase::prepare_builder() 
 {
 	m_target_selected.init		();
-	m_target_found.init			();
 	m_target_set.init			();
 
 	m_time						= 0;
@@ -25,6 +24,16 @@ void CControlPathBuilderBase::prepare_builder()
 	m_force_rebuild				= false;
 	m_target_actual				= false;
 	m_wait_path_end				= false;
+
+	m_target_selected.init		();
+	m_target_set.init			();
+
+	if (!m_man->path_builder().accessible(m_object->Position())) {
+		m_target_found.node			= m_man->path_builder().restrictions().accessible_nearest(m_object->Position(), m_target_found.position);
+	} else {
+		m_target_found.node			= u32(-1);
+		m_target_found.position		= m_object->Position();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

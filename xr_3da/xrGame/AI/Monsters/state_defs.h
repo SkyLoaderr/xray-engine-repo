@@ -114,6 +114,7 @@ enum EMonsterState {
 	eStateCustom					= eGlobalState << 15,
 
 	eStateBurerScanning				= eStateCustom | 1, 
+	eStateCustomMoveToRestrictor	= eStateCustom | 2,
 	
 	// -------------------------------------------------------------
 	// custom attack states
