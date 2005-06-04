@@ -134,33 +134,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="val_ambush_dialog">
-        <phrase_list>
-            <phrase id="111">
-                <text>val_ambush_dialog_111</text>
-                <action>dialogs_darkvalley.val_punch_ambush</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="112">
-                <text>val_ambush_dialog_112</text>
-                <action>dialogs_darkvalley.val_punch_ambush</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>val_ambush_dialog_11</text>
-                <next>111</next>
-                <next>112</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="val_prisoner_hello">
         <phrase_list>
             <phrase id="141">
@@ -173,7 +146,7 @@
                 <next>14112</next>
             </phrase>
             <phrase id="5">
-                <text></text>
+                <text />
                 <has_info>val_prisoner_wait_actor</has_info>
                 <next>15</next>
             </phrase>
@@ -210,7 +183,7 @@
                 <give_info>val_prisoner_raid</give_info>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>val_sacrifice_start</dont_has_info>
                 <dont_has_info>val_prisoner_free</dont_has_info>
                 <dont_has_info>val_prisoner_plr_captured</dont_has_info>
@@ -221,7 +194,7 @@
                 <next>111</next>
             </phrase>
             <phrase id="2">
-                <text></text>
+                <text />
                 <dont_has_info>val_prisoner_sit</dont_has_info>
                 <dont_has_info>val_prisoner_free</dont_has_info>
                 <dont_has_info>val_prisoner_plr_captured</dont_has_info>
@@ -242,7 +215,7 @@
                 <next>141</next>
             </phrase>
             <phrase id="4">
-                <text></text>
+                <text />
                 <dont_has_info>val_prisoner_raid</dont_has_info>
                 <dont_has_info>val_prisoner_wait_actor</dont_has_info>
                 <has_info>val_prisoner_free</has_info>
@@ -253,7 +226,7 @@
                 <next>131</next>
             </phrase>
             <phrase id="3">
-                <text></text>
+                <text />
                 <dont_has_info>val_prisoner_open_cage</dont_has_info>
                 <dont_has_info>val_prisoner_free</dont_has_info>
                 <has_info>val_prisoner_plr_captured</has_info>
@@ -270,7 +243,7 @@
                 <give_info>val_prisoner_sit</give_info>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -284,7 +257,34 @@
             </phrase>
         </phrase_list>
     </dialog>
-     <dialog id="val_escort_captive_dialog">
+    <dialog id="val_ambush_dialog">
+        <phrase_list>
+            <phrase id="111">
+                <text>val_ambush_dialog_111</text>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="112">
+                <text>val_ambush_dialog_112</text>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>val_ambush_dialog_11</text>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="val_escort_captive_dialog">
         <phrase_list>
             <phrase id="111">
                 <text>val_escort_captive_dialog_111</text>
@@ -293,10 +293,6 @@
             <phrase id="1111">
                 <text>val_escort_captive_dialog_1111</text>
                 <next>11111</next>
-            </phrase>
-            <phrase id="3111">
-                <text>val_escort_captive_dialog_3111</text>
-                <next>31111</next>
             </phrase>
             <phrase id="3112">
                 <text>val_escort_captive_dialog_3112</text>
@@ -329,12 +325,6 @@
                 <text>val_escort_captive_dialog_3121</text>
                 <next>31211</next>
             </phrase>
-            <phrase id="311">
-                <text></text>
-                <has_info>val_escort_actor_helped</has_info>
-                <next>3111</next>
-                <next>3112</next>
-            </phrase>
             <phrase id="11111">
                 <text>val_escort_captive_dialog_11111</text>
                 <give_info>val_escort_captive_can_leave</give_info>
@@ -345,11 +335,6 @@
                 <next>3</next>
                 <next>211</next>
             </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>val_escort_captive_can_leave</dont_has_info>
-                <next>11</next>
-            </phrase>
             <phrase id="22">
                 <text>val_escort_captive_dialog_22</text>
                 <next>3</next>
@@ -358,12 +343,6 @@
             <phrase id="11">
                 <text>val_escort_captive_dialog_11</text>
                 <next>111</next>
-            </phrase>
-            <phrase id="3">
-                <text>val_escort_captive_dialog_3</text>
-                <dont_has_info>val_escort_captive_join</dont_has_info>
-                <dont_has_info>val_escort_nap1_dead</dont_has_info>
-                <next>31</next>
             </phrase>
             <phrase id="21">
                 <text>val_escort_captive_dialog_21</text>
@@ -386,6 +365,10 @@
                 <text>val_escort_captive_dialog_221</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
+            <phrase id="211">
+                <text>val_escort_captive_dialog_211</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
@@ -396,9 +379,26 @@
                 <text>val_escort_captive_dialog_41</text>
                 <next>211</next>
             </phrase>
-            <phrase id="211">
-                <text>val_escort_captive_dialog_211</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="3111">
+                <text>val_escort_captive_dialog_3111</text>
+                <next>31111</next>
+            </phrase>
+            <phrase id="311">
+                <text></text>
+                <has_info>val_escort_actor_helped</has_info>
+                <next>3111</next>
+                <next>3112</next>
+            </phrase>
+            <phrase id="3">
+                <text>val_escort_captive_dialog_3</text>
+                <dont_has_info>val_escort_captive_join</dont_has_info>
+                <dont_has_info>val_escort_nap1_dead</dont_has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>val_escort_captive_can_leave</dont_has_info>
+                <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -411,11 +411,6 @@
             <phrase id="41121">
                 <text>val_escort_nap1_dialog_41121</text>
                 <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="111">
-                <text>val_escort_nap1_dialog_111</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_nap1_go_rescue</give_info>
             </phrase>
             <phrase id="112">
                 <text>val_escort_nap1_dialog_112</text>
@@ -435,23 +430,11 @@
                 <action>dialogs.break_dialog</action>
                 <give_info>val_escort_nap1_join</give_info>
             </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>val_escort_guard1_dead</dont_has_info>
-                <dont_has_info>val_escort_guard2_dead</dont_has_info>
-                <dont_has_info>val_escort_captive_dead</dont_has_info>
-                <next>11</next>
-            </phrase>
             <phrase id="212">
                 <text>val_escort_nap1_dialog_212</text>
                 <action>dialogs.break_dialog</action>
                 <give_info>val_escort_got_reward</give_info>
                 <has_info>val_escort_nap1_join</has_info>
-            </phrase>
-            <phrase id="41">
-                <text>val_escort_nap1_dialog_41</text>
-                <next>411</next>
-                <next>412</next>
             </phrase>
             <phrase id="411">
                 <text>val_escort_nap1_dialog_411</text>
@@ -471,24 +454,10 @@
                 <text>val_escort_nap1_dialog_412</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="11">
-                <text>val_escort_nap1_dialog_11</text>
-                <dont_has_info>val_escort_captive_dead</dont_has_info>
-                <next>111</next>
-                <next>112</next>
-            </phrase>
             <phrase id="21">
                 <text>val_escort_nap1_dialog_21</text>
                 <next>211</next>
                 <next>212</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
             </phrase>
             <phrase id="211">
                 <text>val_escort_nap1_dialog_211</text>
@@ -496,16 +465,6 @@
                 <dont_has_info>val_escort_nap1_join</dont_has_info>
                 <give_info>val_escort_got_reward</give_info>
                 <next>2111</next>
-            </phrase>
-            <phrase id="4">
-                <text></text>
-                <dont_has_info>val_escort_nap1_join</dont_has_info>
-                <dont_has_info>val_escort_captive_dead</dont_has_info>
-                <has_info>val_escort_guard1_dead</has_info>
-                <has_info>val_escort_guard2_dead</has_info>
-                <has_info>val_escort_actor_helped</has_info>
-                <has_info>val_escort_got_reward</has_info>
-                <next>41</next>
             </phrase>
             <phrase id="51">
                 <text>val_escort_nap1_dialog_51</text>
@@ -533,6 +492,48 @@
                 <has_info>val_escort_guard2_dead</has_info>
                 <has_info>val_escort_actor_helped</has_info>
                 <next>21</next>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <dont_has_info>val_escort_nap1_join</dont_has_info>
+                <dont_has_info>val_escort_captive_dead</dont_has_info>
+                <has_info>val_escort_guard1_dead</has_info>
+                <has_info>val_escort_guard2_dead</has_info>
+                <has_info>val_escort_actor_helped</has_info>
+                <has_info>val_escort_got_reward</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>val_escort_nap1_dialog_41</text>
+                <next>411</next>
+                <next>412</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>val_escort_guard1_dead</dont_has_info>
+                <dont_has_info>val_escort_guard2_dead</dont_has_info>
+                <dont_has_info>val_escort_captive_dead</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>val_escort_nap1_dialog_11</text>
+                <dont_has_info>val_escort_captive_dead</dont_has_info>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="111">
+                <text>val_escort_nap1_dialog_111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_nap1_go_rescue</give_info>
+                <give_info>val_escort_quest_start</give_info>
             </phrase>
         </phrase_list>
     </dialog>
