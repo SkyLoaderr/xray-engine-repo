@@ -1,7 +1,7 @@
 // UIArtefactMergerWnd.h:  подменю для работы с аппаратом 
 // производства новых артефактов
 //////////////////////////////////////////////////////////////////////
-
+/*
 #pragma once
 
 #include "uiframewindow.h"
@@ -20,8 +20,6 @@ public:
 	
 	virtual void Init(int x, int y, int width, int height);
 
-//	typedef enum{CLOSE_BUTTON_CLICKED,
-//				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	void InitArtefactMerger(CArtefactMerger* pArtefactMerger);
@@ -44,3 +42,4 @@ protected:
 	//указатель на устройство сочетания артефактов
 	CArtefactMerger* m_pArtefactMerger;
 };
+*/

@@ -14,72 +14,62 @@
 
 const char * const CELL_TEXTURE		= "ui\\ui_inv_lattice";
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 CUIDragDropList::CUIDragDropList()
 {
 	SetCellHeight				(50);
 	SetCellWidth				(50);
 
-//	m_vpCellStatic.clear		();
-//	m_vGridState.clear			();
-
-
 	m_pCheckProc				= NULL;
 
-	m_bCustomPlacement			= false;
-	m_bBlockCustomPlacement		= false;
+
 
 	m_iViewRowsNum				= 0;
 	m_iCurrentFirstRow			= 0;
 
 	m_DragDropItemsList.clear	();
 
-	m_bScrollBarEnabled			= true;
-
 	m_fItemsScaleX				= 1.0f;
 	m_fItemsScaleY				= 1.0f;
 
 	m_iColsNum = m_iRowsNum		= 0;
 
-	m_bGridVisible				= true;
-	m_bUnlimitedCapacity		= false;
-	m_needScrollToTop			= false;
-	m_needScrollRecalculate		= false;
+	m_flags.zero				();
+	m_flags.set					(flCustomPlacement,		FALSE);
+	m_flags.set					(flBlockCustomPlacement,FALSE);
+	m_flags.set					(flScrollBarEnabled,	TRUE);
+	m_flags.set					(flGridVisible,			TRUE);
+	m_flags.set					(flUnlimitedCapacity,	FALSE);
+	m_flags.set					(flNeedScrollToTop,		FALSE);
+	m_flags.set					(flNeedScrollRecalculate,FALSE);
 }
 
 CUIDragDropList::~CUIDragDropList()
 {
 	
-	DetachAll();
+	DetachAll					();
 
-	m_vGridState.clear();
-	delete_data(m_vpCellStatic);
-	m_DragDropItemsList.clear();
+	m_vGridState.clear			();
+	delete_data					(m_vpCellStatic);
+	m_DragDropItemsList.clear	();
 	
 
 }
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
-//	CTimer	T;
-
 	CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
 	if(pDragDropItem) 
 	{
-//	T.Start();
 		PlaceItemInGrid(pDragDropItem);
-//		Msg("-CUIDragDropList::AttachChild:PlaceItemInGrid: %f",T.GetElapsed_sec());
 
 
-		pDragDropItem->SetCellWidth(GetCellWidth());
-		pDragDropItem->SetCellHeight(GetCellHeight());
+		pDragDropItem->SetCellWidth		(GetCellWidth());
+		pDragDropItem->SetCellHeight	(GetCellHeight());
 
-		m_DragDropItemsList.push_back(pDragDropItem);
+		m_DragDropItemsList.push_back	(pDragDropItem);
 
-		pDragDropItem->ClipperOn();
-		ScrollBarRecalculate(true);
+		pDragDropItem->ClipperOn		();
+		ScrollBarRecalculate			(true);
 	}
 
 	inherited::AttachChild(pChild);
@@ -108,14 +98,10 @@ void CUIDragDropList::DropAll()
 	CUIWindow::DetachAll();
 	m_DragDropItemsList.clear();
 
-	//освободить фокус мыши, если вдруг кто забыл это сделать!!!!
-	//а ведь забывают, суки!!!!
-	//выскакивает глюк, когда вместо одного элемента
-	//тянется совсем другой.
 	if (GetParent())
 		GetParent()->SetCapture(this, false);
-	m_pMouseCapturer = NULL;
 
+	m_pMouseCapturer = NULL;
 
 
 	for(u32 i=0; i<m_vpCellStatic.size(); ++i)
@@ -144,11 +130,11 @@ void CUIDragDropList::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 	case WINDOW_MOUSE_WHEEL_DOWN:
-		if(m_bScrollBarEnabled)
+		if( m_flags.test(flScrollBarEnabled) )
 			m_ScrollBar.TryScrollInc();
 			break;
 	case WINDOW_MOUSE_WHEEL_UP:
-		if(m_bScrollBarEnabled)
+		if( m_flags.test(flScrollBarEnabled) )
 			m_ScrollBar.TryScrollDec();
 			break;
 	}
@@ -214,13 +200,8 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						   wnd_rect.bottom)/2;;
 
 
-			if( rect.in(pt_center)/*PtInRect(&rect, pt_center)*/ || pItem->NeedMoveWithoutRectCheck())
+			if( rect.in(pt_center) || pItem->NeedMoveWithoutRectCheck())
 			{
-
-				//отсоединить у прошлого родителя
-				//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
-
-
 				////если есть куда брать и работает доп. проверка
 				OnCustomPlacement();
 				int place_row, place_col;
@@ -240,11 +221,11 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				{
 
 					bool placeExists = false;
-					if (m_bUnlimitedCapacity)
+					if ( m_flags.test(flUnlimitedCapacity) )
 					{
 						while (!CanPlaceItemInGrid(pItem, place_row, place_col))
 						{
-							InitGrid(GetRows() + 1, GetCols(), m_bGridVisible, m_iViewRowsNum);
+							InitGrid(GetRows() + 1, GetCols(), !!m_flags.test(flGridVisible), m_iViewRowsNum);
 						}
 						placeExists = true;
 					}
@@ -257,7 +238,6 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					{	
 						//отсоединить у прошлого родителя
 						pItem->GetParent()->SetCapture(pItem, false);
-						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 						AttachChild(pItem);
 						pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
@@ -270,8 +250,6 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					else
 					{
 						RemoveItemFromGrid(pItem);
-						//обратно к прошлому родителю
-						//((CUIDragDropList*)pItem->GetParent())->AttachChild(pItem);
 					}
 				}
 				OffCustomPlacement();
@@ -283,8 +261,6 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OnCustomPlacement();
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
-
-//			pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 
 			ScrollBarRecalculate(false);
 
@@ -303,13 +279,11 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUIDragDropList::Init(int x, int y, int width, int height)
 {
-//	m_ScrollBar.Init(GetWidth()-CUIScrollBar::SCROLLBAR_WIDTH,0,
-//					 GetHeight(), false);
-
 	inherited::Init(x, y, width, height);
 	ScrollBarRecalculate(true);
 	m_ScrollBar.Show(false);
 }
+
 //инициализация сетки Drag&Drop
 void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, 
 							   bool bGridVisible, int iViewRowsNum)
@@ -347,7 +321,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
 
-	m_bGridVisible = bGridVisible;
+	m_flags.set(flGridVisible,bGridVisible);
 	if(bGridVisible)
 	{
 		ReallocateCells(GetViewRows()*m_iColsNum);
@@ -371,8 +345,6 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 				if (!IsChild( *it ) )
 					AttachChild( *it );
 				
-//.				(*it)->SetTextureScaleXY(1, 1);
-
 				++it;
 			}
 		}
@@ -387,11 +359,11 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	bool found_place = false;
 
 	//разместить элемент на найденном месте если лист с бесконечной вместимостью
-	if (m_bUnlimitedCapacity)
+	if ( m_flags.test(flUnlimitedCapacity) )
 	{
 		while (!CanPlaceItemInGrid(pItem, place_row, place_col))
 		{
-			InitGrid(GetRows() + 7, GetCols(), m_bGridVisible, m_iViewRowsNum);
+			InitGrid(GetRows() + 7, GetCols(), !!m_flags.test(flGridVisible), m_iViewRowsNum);
 		}
 		found_place = true;
 	}
@@ -414,7 +386,6 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 	R_ASSERT(GetCols()>0);
 
 	int i,j;
-//	int k,m;
 
 	place_row = -1;
 	place_col = -1;
@@ -451,7 +422,6 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 	if(place_row == -1)
 	{
 		place_row = m_iCurrentFirstRow + 
-			//item_center_y/GetCellHeight()
 			iFloor((float)item_center_y/GetCellHeight()
 			- (float)pItem->GetGridHeight()/2  + .5f);
 	}
@@ -467,7 +437,7 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 		place_row = GetRows()- 1 - pItem->GetGridHeight()/2;
 
 
-	if(m_bCustomPlacement && !m_bBlockCustomPlacement)
+	if(GetCustomPlacement() && !IsCustomPlacementBlocked())
 	{
 		if(CanPlace(place_row, place_col, pItem))
 		{
@@ -617,7 +587,7 @@ void CUIDragDropList::Draw()
 }
 void CUIDragDropList::Update()
 {
-	if(m_needScrollRecalculate)
+	if( m_flags.test(flNeedScrollRecalculate) )
 		ScrollBarRecalculateTotal();
 
 	inherited::Update();
@@ -650,15 +620,14 @@ int CUIDragDropList::GetScrollPos()
 }
 void CUIDragDropList::DetachAll()
 {
-	//m_DragDropItemsList.clear();
 	inherited::DetachAll();
 }
 
 void CUIDragDropList::EnableScrollBar(bool enable)
 {
-	m_bScrollBarEnabled = enable;
+	m_flags.set(flScrollBarEnabled,enable);
 
-	if(m_bScrollBarEnabled)
+	if(enable)
 	{
 		m_ScrollBar.Enable(true);
 		m_ScrollBar.Show(true);
@@ -725,24 +694,18 @@ void CUIDragDropList::ScrollBarRecalculateTotal()
 		m_ScrollBar.SetRange(0, bottom);
 		m_ScrollBar.SetPageSize(m_iViewRowsNum);
 //.		
-		if (max > u32(bottom) ) 
-		{
-			SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
-		}
+		if (max > u32(bottom) ) 						SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
 
-		if (m_needScrollToTop)
-		{
-			SetScrollPos(0);
-		}
+		if ( m_flags.test(flNeedScrollToTop) )			SetScrollPos(0);
 	}
 	UpdateList();
-	m_needScrollRecalculate = false;
+	m_flags.set(flNeedScrollRecalculate,FALSE);
 }
 
 void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
 {
-	m_needScrollRecalculate	= true;
-	m_needScrollToTop			= needScrollToTop;
+	m_flags.set				(flNeedScrollRecalculate,TRUE);
+	m_flags.set				(flNeedScrollToTop,needScrollToTop);
 }
 
 //////////////////////////////////////////////////////////////////////////

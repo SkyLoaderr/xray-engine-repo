@@ -19,6 +19,7 @@
 #include "../actor_defs.h"
 #include "../actor.h"
 #include "UIMainIngameWnd.h"
+#include "../Artifact.h"
 
 using namespace InventoryUtilities;
 
@@ -273,12 +274,6 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case INVENTORY_EAT_ACTION:	//съесть объект
 				EatItem();
 				break;
-			case INVENTORY_ARTEFACT_MERGER_ACTIVATE:
-				StartArtefactMerger();
-				break;
-			case INVENTORY_ARTEFACT_MERGER_DEACTIVATE:
-				StopArtefactMerger();
-				break;
 			case INVENTORY_ATTACH_ADDON:{
 					m_pItemToUpgrade = (PIItem)pData;
 					AttachAddon();
@@ -298,13 +293,13 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 	//сообщения от ArtifactMerger
-	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED)
-	{
-	}
-	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED)
-	{
-		StopArtefactMerger();
-	}
+//	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED)
+//	{
+//	}
+//	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED)
+//	{
+//		StopArtefactMerger();
+//	}
 	else if(pWnd == &UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -366,7 +361,7 @@ void CUIInventoryWnd::InitInventory()
 	SetCurrentItem(NULL);
 	
 	UIPropertiesBox.Hide();
-	UIArtefactMergerWnd.Hide();
+//	UIArtefactMergerWnd.Hide();
 
 	m_pInv = pInv;
 
@@ -716,8 +711,8 @@ bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 
 	//если это артефакт из устройства то положить без всяких проверок
-	if(pItem->GetParent() == &this_inventory->UIArtefactMergerWnd.UIArtefactList)
-		return true;
+//	if(pItem->GetParent() == &this_inventory->UIArtefactMergerWnd.UIArtefactList)
+//		return true;
 
 
 	PIItem pInvItem = (PIItem)pItem->GetData();

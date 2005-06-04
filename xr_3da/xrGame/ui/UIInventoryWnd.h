@@ -18,10 +18,8 @@ class CInventory;
 
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
-#include "UIArtifactMergerWnd.h"
 #include "UISleepWnd.h"
 
-//#include "UICharacterInfo.h"
 #include "UIOutfitInfo.h"
 #include "UIItemInfo.h"
 
@@ -59,9 +57,6 @@ public:
 	virtual void Show();
 	virtual void Hide();
 
-	//для работы с сочетателем артефактом извне
-	bool IsArtefactMergeShown() {return UIArtefactMergerWnd.IsShown();}
-	void AddArtefactToMerger(CArtefact* pArtefact);
 	//для добавления новых предметов во время работы с интерфейсом (например 
 	//отсоединенных аддонов)
 	void AddItemToBag(PIItem pItem);
@@ -118,8 +113,6 @@ protected:
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
-	//менюшка для работы с устройством производства артефактов
-	CUIArtefactMerger	UIArtefactMergerWnd;
 	
 	//информация о персонаже
 	//CUICharacterInfo UICharacterInfo;

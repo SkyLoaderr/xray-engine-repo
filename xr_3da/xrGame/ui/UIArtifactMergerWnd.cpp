@@ -2,7 +2,7 @@
 // производства новых артефактов
 //////////////////////////////////////////////////////////////////////
 
-
+/*
 #include "stdafx.h"
 #include "UIArtifactMergerWnd.h"
 
@@ -136,3 +136,4 @@ void CUIArtefactMerger::PerformArtefactMerger()
 	}
 }
 
+*/

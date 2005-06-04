@@ -35,7 +35,6 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_iGridRow = 0;
 
 	m_pData = NULL;
-//	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
 
 	m_bClipper = false;
@@ -61,7 +60,6 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_pMouseCapturer = NULL;
 
 	m_pData = NULL;
-//	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
 
 	m_iOldMouseX = x;
@@ -128,9 +126,6 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 			ClipperOff();
 			m_bNeedOldMousePosRecalc = true;
 
-//			deltaX = GetWndRect().left - m_previousPos.x;
-//			deltaY = GetWndRect().top - m_previousPos.y;
-
 			m_previousPos.x = GetWndRect().left;
 			m_previousPos.y = GetWndRect().top;
 		}
@@ -154,19 +149,12 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 		}
 		else if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
-		//	if(!cursor_on_button)
-		//		m_eButtonState = BUTTON_UP;
-			
-			//только если включен режим	drag drop
-//			else 
 			if(m_bDDEnabled) 
 			{
 				deltaX = x - m_iOldMouseX;
 				deltaY = y - m_iOldMouseY;
 				if (m_bNeedOldMousePosRecalc)
 				{
-//					deltaX = clampr(deltaX, -1, 1);
-//					deltaY = clampr(deltaY, -1, 1);
 					deltaX = 0;
 					deltaY = 0;
 					m_bNeedOldMousePosRecalc = false;
@@ -193,9 +181,6 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 
 			GetTop()->SendMessage(this, DRAG_DROP_ITEM_DROP);
 			ClipperOn();
-			
-			/////
-			//SetWndPos(m_previousPos.x,	m_previousPos.y);
 		}
 	}
 

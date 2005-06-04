@@ -10,7 +10,7 @@
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
 #include "xr_level_controller.h"
-
+#include "Artifact.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"

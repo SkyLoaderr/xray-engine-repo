@@ -18,9 +18,6 @@
 #include "../ArtifactMerger.h"
 
 #include "../weapon.h"
-//#include "../silencer.h"
-//#include "../scope.h"
-//#include "../grenadelauncher.h"
 
 #include "../script_space.h"
 #include "../script_process.h"
@@ -94,10 +91,6 @@ void CUIInventoryWnd::Init()
 	////////////////////////////////////////
 	//окно с описанием активной вещи
 	
-	//для работы с артефактами
-	AttachChild(&UIArtefactMergerWnd);
-	xml_init.InitWindow(uiXml, "frame_window", 0, &UIArtefactMergerWnd);
-	UIArtefactMergerWnd.Hide();
 
 	AttachChild(&UIDescrWnd);
 	xml_init.InitStatic(uiXml, "descr_static", 0, &UIDescrWnd);
@@ -135,8 +128,6 @@ void CUIInventoryWnd::Init()
 
 	//информация о персонаже
 	// attributs suit of character (actor)
-	//UIStaticPersonal.AttachChild(&UICharacterInfo);
-	//UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), INVENTORY_CHARACTER_XML);
 
 	UIStaticPersonal.AttachChild(&UIOutfitInfo);
 	xml_init.InitStatic(uiXml, "outfit_info_window",0, &UIOutfitInfo);
@@ -440,54 +431,6 @@ bool CUIInventoryWnd::ToBelt()
 	SendEvent_Item2Belt(m_pCurrentItem);
 	//---------------------------------------------------------------------------
 	return true;
-}
-
-//запуск и остановка меню работы с артефактами
-void CUIInventoryWnd::StartArtefactMerger()
-{
-	UIArtefactMergerWnd.InitArtefactMerger(smart_cast<CArtefactMerger*>(m_pCurrentItem));
-	UIArtefactMergerWnd.Show();
-}
-void CUIInventoryWnd::StopArtefactMerger()
-{
-	UIArtefactMergerWnd.Hide();
-	
-	//скинуть все элементы из усторйства артефактов в рюкзак
-	for(DRAG_DROP_LIST_it it = UIArtefactMergerWnd.UIArtefactList.GetDragDropItemsList().begin(); 
- 						  UIArtefactMergerWnd.UIArtefactList.GetDragDropItemsList().end() != it;
-						  ++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-		UIBagList.AttachChild(pDragDropItem);
-	}
-
-	//((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
-	UIArtefactMergerWnd.UIArtefactList.DropAll();
-}
-
-//для работы с сочетателем артефактом извне
-void CUIInventoryWnd::AddArtefactToMerger(CArtefact* pArtefact)
-{
-	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
-
-	
-	CUIDragDropItem& UIDragDropItem = *(*it);
-
-//	m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
-//	CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
-
-	UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-	UIDragDropItem.SetShader(GetEquipmentIconsShader());
-	UIDragDropItem.SetGridHeight(pArtefact->GetGridHeight());
-	UIDragDropItem.SetGridWidth(pArtefact->GetGridWidth());
-	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										pArtefact->GetXPos()*INV_GRID_WIDTH,
-										pArtefact->GetYPos()*INV_GRID_HEIGHT,
-										pArtefact->GetGridWidth()*INV_GRID_WIDTH,
-										pArtefact->GetGridHeight()*INV_GRID_HEIGHT);
-	UIDragDropItem.SetData(pArtefact);
-	UIArtefactMergerWnd.UIArtefactList.AttachChild(&UIDragDropItem);
-
 }
 
 void CUIInventoryWnd::AddItemToBag(PIItem pItem)

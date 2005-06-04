@@ -21,63 +21,60 @@ class CUIDragDropItem : public CUIButton
 {
 	typedef CUIButton inherited;
 public:
-	CUIDragDropItem();
-	virtual ~ CUIDragDropItem();
+					CUIDragDropItem				();
+	virtual			~CUIDragDropItem			();
 
 
-	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
-	virtual CUIDragDropItem*	cast_drag_drop_item	()	{return this;}
+	virtual void	Init						(LPCSTR tex_name, int x, int y, int width, int height);
+	virtual CUIDragDropItem* cast_drag_drop_item()	{return this;}
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void Draw();
-	virtual void Update();
+	virtual void	OnMouse						(int x, int y, EUIMessages mouse_action);
+	virtual void	Draw						();
+	virtual void	Update						();
 
-	void EnableDragDrop(bool bEnable = true)	{m_bDDEnabled = bEnable;}
-	bool IsDragDropEnabled() const		{ return m_bDDEnabled; }
+	void			EnableDragDrop				(bool bEnable = true)	{m_bDDEnabled = bEnable;}
+	bool			IsDragDropEnabled			() const		{ return m_bDDEnabled; }
 
-	Ivector2 GetPreviousPos() {return m_previousPos;}
+	Ivector2		GetPreviousPos				() {return m_previousPos;}
 
 
 	//размеры в сетке Drag&Drop
-	void SetGridWidth(int iGridWidth) {m_iGridWidth = iGridWidth;}
-	void SetGridHeight(int iGridHeight) {m_iGridHeight = iGridHeight;}
-	int GetGridWidth() {return m_iGridWidth;}
-	int GetGridHeight() {return m_iGridHeight;}
+	void			SetGridWidth				(int iGridWidth) {m_iGridWidth = iGridWidth;}
+	void			SetGridHeight				(int iGridHeight) {m_iGridHeight = iGridHeight;}
+	int				GetGridWidth				() {return m_iGridWidth;}
+	int				GetGridHeight				() {return m_iGridHeight;}
 
 	//положение в сетке
-	int GetGridRow() {return m_iGridRow;}
-	int GetGridCol() {return m_iGridCol;}
-	void SetGridRow(int iGridRow) {m_iGridRow = iGridRow;}
-	void SetGridCol(int iGridCol) {m_iGridCol = iGridCol;}
+	int				GetGridRow					() {return m_iGridRow;}
+	int				GetGridCol					() {return m_iGridCol;}
+	void			SetGridRow					(int iGridRow) {m_iGridRow = iGridRow;}
+	void			SetGridCol					(int iGridCol) {m_iGridCol = iGridCol;}
 
-	virtual void* GetData() {return m_pData;}
-	virtual void SetData(void* pData) {m_pData = pData;}
+	virtual void*	GetData						() {return m_pData;}
+	virtual void	SetData						(void* pData) {m_pData = pData;}
 
-//	void SetCustomUpdate(CUSTOM_UPDATE_PROC pCustomUpdateProc) 
-//								{m_pCustomUpdateProc = pCustomUpdateProc;}
-	void SetCustomDraw(CUSTOM_DRAW_PROC pCustomDrawProc) 
-								{m_pCustomDrawProc = pCustomDrawProc;}
+	void			SetCustomDraw				(CUSTOM_DRAW_PROC pCustomDrawProc){m_pCustomDrawProc = pCustomDrawProc;}
 
 	//размеры клеточки сетки
-	int GetCellWidth() {return m_iCellWidth;}
-	int GetCellHeight() {return m_iCellHeight;}
-	void SetCellWidth(int iCellWidth) {m_iCellWidth = iCellWidth;}
-	void SetCellHeight(int iCellHeight) {m_iCellHeight = iCellHeight;}
+	int				GetCellWidth				() {return m_iCellWidth;}
+	int				GetCellHeight				() {return m_iCellHeight;}
+	void			SetCellWidth				(int iCellWidth) {m_iCellWidth = iCellWidth;}
+	void			SetCellHeight				(int iCellHeight) {m_iCellHeight = iCellHeight;}
 
 	bool m_bInFloat;
 
 	// —пециальные функции дл€ перемещени€ вещи посредством посылки сообщени€
 	// ITEM_DROP даже если она не находитс€ над контролом в который бросают.
 	// »спользуетс€ дл€ принудительного вытаскивани€ вещи из слота.
-	void MoveOnNextDrop() { m_bMoveOnNextDrop = true; }
+	void			MoveOnNextDrop				() { m_bMoveOnNextDrop = true; }
 	// ѕроверка необходимости перемещени€ вещи без проверки находжени€ вещи над контролом
-	bool NeedMoveWithoutRectCheck() { return m_bMoveOnNextDrop ? m_bMoveOnNextDrop = false, true : false; }
+	bool			NeedMoveWithoutRectCheck	() { return m_bMoveOnNextDrop ? m_bMoveOnNextDrop = false, true : false; }
 
 	// ѕропорционально скейлим себ€ по типу зума
-	virtual void Rescale(float scale_x, float scale_y);
+	virtual void	Rescale						(float scale_x, float scale_y);
 
 	// ѕодсвечиваем себ€ в инвентаре
-	void Highlight(bool on);
+	void			Highlight					(bool on);
 
 protected:
 	
@@ -107,7 +104,6 @@ protected:
 	//присоеденены к элементу
 	void* m_pData; 
 
-//	CUSTOM_UPDATE_PROC m_pCustomUpdateProc;
 	CUSTOM_DRAW_PROC m_pCustomDrawProc;
 
 	// ѕризнак перемещени€ вещи в другой слот, при следующей посылке ITEM_DROP сообщени€.
