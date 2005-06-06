@@ -27,7 +27,7 @@ add_to_type_list(SZoneMapEntityData)
 class	game_cl_GameState	: public game_GameState, public ISheduled
 {
 	typedef game_GameState	inherited;
-	string256							m_game_type_name;
+	shared_str							m_game_type_name;
 	CUIGameCustom*						m_game_ui_custom;
 //	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
 protected:
@@ -64,8 +64,8 @@ protected:
 public:
 									game_cl_GameState		();
 	virtual							~game_cl_GameState		();
-				LPCSTR				type_name				() const {return m_game_type_name;};
-				void				set_type_name			(LPCSTR s){strcpy(m_game_type_name,s);};
+				LPCSTR				type_name				() const {return *m_game_type_name;};
+				void				set_type_name			(LPCSTR s)	{ m_game_type_name=s; };
 	virtual		void				Init					(){};
 	virtual		void				net_import_state		(NET_Packet& P);
 	virtual		void				net_import_update		(NET_Packet& P);

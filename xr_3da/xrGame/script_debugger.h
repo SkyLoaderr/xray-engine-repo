@@ -20,22 +20,19 @@ struct lua_State;
 #define DMOD_STOP					11
 
 struct SBreakPoint{
-	string256	fileName;
+	shared_str	fileName;
 	s32			nLine;
-	SBreakPoint(){fileName[0]=0;nLine=0;};
+	SBreakPoint()	{nLine=0;};
 	SBreakPoint(const SBreakPoint& other)
 	{
 		operator = (other);
 	};
 	SBreakPoint& operator = (const SBreakPoint& other){
-		fileName[0]=0;
-		strcat(fileName,other.fileName);
-		nLine = other.nLine;
+		fileName=	other.fileName;
+		nLine	=	other.nLine;
 		return *this;
 	}
-
 };
-
 
 class CScriptDebugger
 {

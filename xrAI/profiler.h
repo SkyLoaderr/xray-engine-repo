@@ -52,7 +52,6 @@ protected:
 	PORTIONS			m_portions;
 	TIMERS				m_timers;
 	bool				m_actual;
-	string256			m_temp;
 	xrCriticalSection	m_section;
 
 protected:

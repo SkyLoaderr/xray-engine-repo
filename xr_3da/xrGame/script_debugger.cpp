@@ -482,8 +482,7 @@ bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
 		if(bp.nLine == lineNum)
 			if( xr_strlen(bp.fileName) == xr_strlen(sFileName) )
 			{
-				if( xr_strcmp(strlwr(bp.fileName), strlwr(sFileName)) == 0)
-//				if( strstr(bp.fileName, sFileName)==bp.fileName )
+				if(stricmp(*bp.fileName, sFileName) == 0)
 					return true;
 			}
 	}
@@ -497,11 +496,13 @@ void CScriptDebugger::FillBreakPointsIn(CMailSlotMsg* msg)
 	msg->r_int(nCount);
 	for(s32 i=0; i<nCount; ++i){
 		SBreakPoint bp;
-		msg->r_string(bp.fileName);
-		s32 bpCount = 0;
+		string256	fn;
+		msg->r_string	(fn);
+		bp.fileName	=	fn;
+		s32 bpCount =	0;
 		msg->r_int(bpCount);
 
-		for(s32 j=0; j<bpCount; ++j){
+		for(s32 j=0; j<bpCount; ++j)	{
 			msg->r_int(bp.nLine);
 			m_breakPoints.push_back(bp);
 		}

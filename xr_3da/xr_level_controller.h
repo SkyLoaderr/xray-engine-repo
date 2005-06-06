@@ -98,8 +98,8 @@ extern _keybind	keynames		[];
 extern int		key_binding		[];
 extern void		CCC_RegisterInput();
 
-struct _conCmd{
-	string512	cmd;
+struct _conCmd	{
+	shared_str	cmd;
 };
 
 class ConsoleBindCmds{
