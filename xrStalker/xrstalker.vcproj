@@ -1504,6 +1504,9 @@
 				<File
 					RelativePath=".\scripts\monster_test.script">
 				</File>
+				<File
+					RelativePath=".\scripts\test_heli_2.script">
+				</File>
 			</Filter>
 			<Filter
 				Name="Documentation"
@@ -1664,9 +1667,6 @@
 				</File>
 				<File
 					RelativePath=".\scripts\test_heli.script">
-				</File>
-				<File
-					RelativePath=".\scripts\test_heli_2.script">
 				</File>
 				<File
 					RelativePath=".\scripts\test_heli_attack.script">
