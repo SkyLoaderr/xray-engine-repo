@@ -66,10 +66,10 @@ class CRelationMapLocation :public CMapLocation
 {
 	typedef CMapLocation inherited;
 	shared_str				m_curr_spot_name;
-	CInventoryOwner*		m_pInvOwnerEntity;
-	CInventoryOwner*		m_pInvOwnerActor;
+	u16						m_pInvOwnerEntityID;
+	u16						m_pInvOwnerActorID;
 public:
-							CRelationMapLocation			(const shared_str& type, u16 object_id, CInventoryOwner* pInvOwnerActor, CInventoryOwner* pInvOwnerEntity);
+							CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID);
 	virtual					~CRelationMapLocation			();
 	virtual bool			Update							(); //returns actual
 };

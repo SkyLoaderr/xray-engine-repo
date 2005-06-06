@@ -7,7 +7,7 @@
 #include "ai_space.h"
 #include "game_graph.h"
 #include "xrServer.h"
-#include "xrServer_Objects_ALife.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 #include "ui/UIXmlInit.h"
 #include "ui/UIMapWnd.h"
 #include "alife_simulator.h"
@@ -325,12 +325,12 @@ CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 	return NULL;
 }
 
-CRelationMapLocation::CRelationMapLocation			(const shared_str& type, u16 object_id, CInventoryOwner* pInvOwnerActor, CInventoryOwner* pInvOwnerEntity)
+CRelationMapLocation::CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID)
 :CMapLocation(*type,object_id)
 {
 	m_curr_spot_name	= type;
-	m_pInvOwnerEntity	= pInvOwnerEntity;
-	m_pInvOwnerActor	= pInvOwnerActor;
+	m_pInvOwnerEntityID	= pInvOwnerEntityID;
+	m_pInvOwnerActorID	= pInvOwnerActorID;
 }
 
 CRelationMapLocation::~CRelationMapLocation			()
@@ -341,7 +341,25 @@ bool CRelationMapLocation::Update()
 	if (false==inherited::Update() ) return false;
 
 	ALife::ERelationType relation = ALife::eRelationTypeFriend;
-	relation =  RELATION_REGISTRY().GetRelationType(m_pInvOwnerEntity, m_pInvOwnerActor);
+
+	if(ai().get_alife())		
+	{
+		CSE_ALifeTraderAbstract*	pEnt = NULL;
+		CSE_ALifeTraderAbstract*	pAct = NULL;
+		pEnt = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerEntityID,true));
+		pAct = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerActorID,true));
+		if(!pEnt || !pAct)	return false;
+		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+	}else{
+		CInventoryOwner*			pEnt = NULL;
+		CInventoryOwner*			pAct = NULL;
+
+		pEnt = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_pInvOwnerEntityID));
+		pAct = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_pInvOwnerActorID));
+		if(!pEnt || !pAct)	return false;
+		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+	}
+
 	const shared_str& sname = RELATION_REGISTRY().GetSpotName(relation);
 	if(m_curr_spot_name != sname){
 		LoadSpot(*sname, true);

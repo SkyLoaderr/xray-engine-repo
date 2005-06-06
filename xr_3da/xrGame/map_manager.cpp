@@ -109,7 +109,7 @@ CMapLocation* CMapManager::AddRelationLocation(CInventoryOwner* pInvOwner)
 	FindLocationBySpotID key(sname, pInvOwner->object_id());
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	if( it == Locations().end() ){
-		CMapLocation* l = xr_new<CRelationMapLocation>(*key.spot_id, key.object_id, pActor, pInvOwner);
+		CMapLocation* l = xr_new<CRelationMapLocation>(*key.spot_id, key.object_id, pActor->object_id(), pInvOwner->object_id());
 		Locations().push_back( SLocationKey(key.spot_id, key.object_id) );
 		Locations().back().location = l;
 		return l;
