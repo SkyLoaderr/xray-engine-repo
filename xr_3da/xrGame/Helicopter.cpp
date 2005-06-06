@@ -91,6 +91,7 @@ void CHelicopter::Load(LPCSTR section)
 	inherited::Load						(section);
 	m_movement.Load						(section);
 	m_body.Load							(section);
+	m_enemy.Load						(section);
 
 
 /*

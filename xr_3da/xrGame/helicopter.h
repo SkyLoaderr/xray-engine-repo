@@ -23,10 +23,14 @@ struct SHeliEnemy{
 	EHeliHuntState					type;
 	Fvector							destEnemyPos;
 	u32								destEnemyID;
+	float							fire_trail_length;
+	bool							bUseFireTrail;
+	float							fStartFireTime;
 	void reinit						();
 	void Update						();
 	void save						(NET_Packet &output_packet);
 	void load						(IReader &input_packet);
+	void Load						(LPCSTR section);
 };
 
 enum EHeliBodyState{eBodyByPath,eBodyToPoint};
@@ -310,6 +314,8 @@ public:
 	void					SetEnemy						(CScriptGameObject* e);
 	void					SetEnemy						(Fvector* pos);
 	void					UnSetEnemy						();
+	void					SetFireTrailLength				(float val);
+	bool					UseFireTrail					();
 
 	float					GetRealAltitude					();
 

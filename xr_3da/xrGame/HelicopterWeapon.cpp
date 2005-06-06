@@ -62,22 +62,41 @@ void CHelicopter::MGunUpdateFire()
 }
 void CHelicopter::OnShot		()
 {
-	FireBullet(get_CurrentFirePoint(),m_fire_dir, 
-		fireDispersionBase,
-		m_CurrentAmmo, 
-		ID(),
-		ID(),
-		OnServer());
+	Fvector fire_pos,fire_dir;
+	fire_pos = get_CurrentFirePoint();
+	fire_dir = m_fire_dir;
+
+	static float fire_trail_speed = 2.0f; //m/s
+	if(m_enemy.bUseFireTrail){
+		Fvector enemy_pos = m_enemy.destEnemyPos;
+
+		float	dt		= Device.fTimeGlobal - m_enemy.fStartFireTime; VERIFY(dt>=0);
+		float	dist	= m_enemy.fire_trail_length - dt*fire_trail_speed;
+		if(dist<0)		return;
+
+		Fvector fp		= fire_pos;
+		fp.y			= enemy_pos.y;
+		Fvector	fd;
+		fd.sub(enemy_pos,fp).normalize_safe();
+		if(dist > (m_enemy.fire_trail_length/2.0f) )
+			fd.mul(-1.0f);
+
+		enemy_pos.mad(fd,dist);
+
+		fire_dir.sub(enemy_pos,fire_pos).normalize_safe();
+	};
+
+	FireBullet(fire_pos, fire_dir, fireDispersionBase, m_CurrentAmmo, ID(), ID(), OnServer());
 
 	StartShotParticles	();
 	if(m_bShotLight) Light_Start();
 
 
-	StartFlameParticles();
-	StartSmokeParticles(m_fire_pos, zero_vel);
-	OnShellDrop(m_fire_pos, zero_vel);
+	StartFlameParticles		();
+	StartSmokeParticles		(fire_pos, zero_vel);
+	OnShellDrop				(fire_pos, zero_vel);
 
-	HUD_SOUND::PlaySound(m_sndShot, m_fire_pos, this, false);
+	HUD_SOUND::PlaySound	(m_sndShot, fire_pos, this, false);
 
 }
 
@@ -86,13 +105,19 @@ void CHelicopter::MGunFireStart()
 	if(!m_use_mgun_on_attack)
 		return;
 
-	CShootingObject::FireStart();
+	if(FALSE==IsWorking() && m_enemy.bUseFireTrail){
+		//start calc fire trail
+		m_enemy.fStartFireTime			= Device.fTimeGlobal;
+	}
+
+	CShootingObject::FireStart	();
 }
 
 void CHelicopter::MGunFireEnd()
 {
-	CShootingObject::FireEnd();
-	StopFlameParticles	();
+	CShootingObject::FireEnd	();
+	StopFlameParticles			();
+	m_enemy.fStartFireTime		= -1.0f;
 }
 
 bool between(const float& src, const float& min, const float& max){return( (src>min)&&(src<max));}
