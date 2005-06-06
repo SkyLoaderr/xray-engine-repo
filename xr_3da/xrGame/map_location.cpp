@@ -17,7 +17,6 @@
 //////////////////////////////////////////////////
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
-	ZeroMemory(m_hint, sizeof(m_hint) );
 	m_flags.zero			();
 	m_level_spot			= NULL;
 	m_level_spot_pointer	= NULL;

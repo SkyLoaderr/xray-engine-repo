@@ -21,7 +21,7 @@ enum ELocationFlags
 
 private:
 	flags32					m_flags;
-	string512				m_hint;
+	shared_str				m_hint;
 	CMapSpot*				m_level_spot;
 	CMapSpotPointer*		m_level_spot_pointer;
 	CMiniMapSpot*			m_minimap_spot;
@@ -44,8 +44,8 @@ protected :
 public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
-	virtual		LPCSTR		GetHint							()					{return m_hint;};
-	void					SetHint							(LPCSTR hint)		{strcpy(m_hint,hint);};
+	virtual		LPCSTR		GetHint							()					{return *m_hint;};
+	void					SetHint							(LPCSTR hint)		{m_hint = hint;};
 
 	void					UpdateMiniMap					(CUICustomMap* map);
 	void					UpdateLevelMap					(CUICustomMap* map);
