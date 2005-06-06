@@ -416,8 +416,6 @@
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
-		<team>Bandit_veteran</team>
-
 		<class>Bandit_leader</class>
 		<community>bandit</community>
 		
