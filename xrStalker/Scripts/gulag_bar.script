@@ -1291,7 +1291,7 @@ function checkMonster(npc_community, gulag_type)
 	end
 	
 	if gulag_type == "rostok_flesh_angar" then
-		return npc_community == "flesh"
+		return npc_community == "pseudodog"
 	end
 
 	if gulag_type == "rostok_dogs_on_exit" then
