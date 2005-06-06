@@ -794,7 +794,7 @@ function load_job(sj, gname, type, squad, groups)
 
 	end
 	
-	-- ROSTOK FLESH ANGAR
+	-- ROSTOK PSEUDODOGS ANGAR
 
 	if type == "rostok_flesh_angar" then
 		t = { section = "logic@rostok_flesh_angar", 
