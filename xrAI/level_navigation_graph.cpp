@@ -324,7 +324,7 @@ IC	void CLevelNavigationGraph::generate_edges	()
 			if (!valid_vertex_id(vertex_id))
 				continue;
 
-			VERIFY				(vertex_id != this->vertex_id(i));
+			VERIFY2				(vertex_id != this->vertex_id(i),"AI map is CORRUPTED! REGENERATE IT");
 
 			CCellVertex			*cell = &m_temp_cross[vertex_id];
 			VERIFY				(cell);
