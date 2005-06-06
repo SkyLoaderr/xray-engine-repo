@@ -4,6 +4,8 @@
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "Car.h"
 
 #include "Weapon.h"

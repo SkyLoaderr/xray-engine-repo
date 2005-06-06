@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "alife_space.h"
+#include "hit.h"
 #include "phdestroyable.h"
 #include "physicsshellholder.h"
 #include "xrMessages.h"
@@ -17,7 +19,7 @@
 /*
 [impulse_transition]
 random_min              =1       ; х массу объекта = величина случайно направленного импульса 
-; с случайно выбранной точкой приложения в пределах нового обекта
+; с случайн				о выбранной точкой приложения в пределах нового обекта
 random_hit_imp         =0.1     ; х величена хит - импульса =............
 
 ;ref_bone                       ; кость из по которой определяется скорость для частей у который связь не задана по умолчанию рут
@@ -109,8 +111,8 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 	}
 	else
 	{
-		//obj->PPhysicsShell()->Deactivate();
-		obj->PPhysicsShell()->PureStep();
+
+
 		obj->PPhysicsShell()->Disable();
 		obj->PPhysicsShell()->DisableCollision();
 		
@@ -175,21 +177,10 @@ void CPHDestroyable::SheduleUpdate(u32 dt)
 {
 	if(!m_flags.test(fl_destroyed)||!m_flags.test(fl_released)) return;
 	CPhysicsShellHolder *obj=PPhysicsShellHolder();
-	//CActor				*A		=smart_cast<CActor*>(obj)	;
-	//if(A)
-	//{
-	//	A->character_physics_support()->SetRemoved();
-	//	obj->setVisible(FALSE);
-	//	obj->setEnabled(FALSE);
-	//}
-	//else
+
 	if( CanRemoveObject() )
 	{
 		if (obj->Local())	obj->DestroyObject();
-//		NET_Packet			P;
-//		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
-//		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-//		if (obj->Local()) obj->u_EventSend			(P);
 	}
 
 }
@@ -199,6 +190,7 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	VERIFY(m_depended_objects);
 	m_depended_objects--;
 	if(!m_depended_objects)m_flags.set(fl_released,TRUE);
+
 	CPhysicsShell* own_shell=PPhysicsShellHolder()->PPhysicsShell();
 	CPhysicsShell* new_shell=dn->PPhysicsShellHolder()->PPhysicsShell();
 	
@@ -206,6 +198,7 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	dBodyID own_body=own_shell->get_ElementByStoreOrder(0)->get_body();
 
 	u16 new_el_number = new_shell->get_ElementsNumber();
+
 
 	for(u16 i=0;i<new_el_number;++i)
 	{
@@ -225,4 +218,9 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 
 	
 
+}
+
+void CPHDestroyable::SetFatalHit(const SHit& hit)
+{
+	m_fatal_hit=hit;
 }

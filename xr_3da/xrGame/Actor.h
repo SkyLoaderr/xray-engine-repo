@@ -18,7 +18,7 @@
 #include "InventoryOwner.h"
 #include "../StatGraph.h"
 #include "PhraseDialogManager.h"
-#include "CharacterPhysicsSupport.h"
+
 #include "step_manager.h"
 
 using namespace ACTOR_DEFS;

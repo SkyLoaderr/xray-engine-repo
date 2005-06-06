@@ -14,6 +14,8 @@
 #include "entitycondition.h"
 #include "script_space.h"
 #include "script_game_object.h"
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "CharacterPhysicsSupport.h"
 #include "script_callback_ex.h"
 #include "game_object_space.h"

@@ -11,6 +11,8 @@
 #ifndef PURE_DYNAMIC_CAST
 #	ifdef XRGAME_EXPORTS
 #		include "../fbasicvisual.h"
+#		include "alife_space.h"
+#		include "hit.h"
 #		include "actor.h"
 #		include "custommonster.h"
 #		include "ai/stalker/ai_stalker.h"

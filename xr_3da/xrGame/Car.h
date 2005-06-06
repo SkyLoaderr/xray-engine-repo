@@ -8,7 +8,6 @@
 #include "holder_custom.h"
 #include "PHSkeleton.h"
 #include "DamagableItem.h"
-#include "PHDestroyable.h"
 #include "phcollisiondamagereceiver.h"
 #include "CarDamageParticles.h"
 #include "xrserver_objects_alife.h"

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "../xr_ioconsole.h"
 #include "customzone.h"
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "actor.h"
 #include "hudmanager.h"
 #include "ParticlesObject.h"

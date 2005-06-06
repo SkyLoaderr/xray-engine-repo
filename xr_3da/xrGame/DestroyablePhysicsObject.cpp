@@ -1,6 +1,7 @@
 #include "stdafx.h"	
 #include "PHCollisionDamageReceiver.h"
 #include "PhysicObject.h"
+#include "hit.h"
 #include "PHDestroyable.h"
 #include "hit_immunity.h"
 #include "damage_manager.h"
@@ -79,6 +80,7 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_fHealth-=P;
 	if(m_fHealth<=0.f) Destroy();
+	CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
 		
 }
 void CDestroyablePhysicsObject::Destroy()

@@ -10,19 +10,8 @@ class CPHDestroyableNotificator
 public:
 	virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)=0;
 };
-struct SDestroyInfo
-{
-	shared_str visual_name				;
-	u16		   source_bone				;
-	float	   lv_transition_factor		;
-	float      av_transition_factor		;
-///////////////////////////////////////////
-	Fvector	   predef_hit_impulse		;
-	Fvector	   predef_hit_pos			;
-///////////////////////////////////////////
-	Fvector	   hit_impulse				;
-	Fvector	   hit_pos					;
-};
+
+
 class	CPHDestroyable :
 public  CPHDestroyableNotificator
 
@@ -30,6 +19,7 @@ public  CPHDestroyableNotificator
 			xr_vector<shared_str>		m_destroyed_obj_visual_names																											;
 			u16							m_depended_objects;
 			Flags8						m_flags																																	;
+			SHit						m_fatal_hit;
 			enum
 			{
 				fl_destroyable		= 1<<0,
@@ -41,7 +31,7 @@ public:
 										CPHDestroyable				()																											;
 			void						Init						()																											;
 			void						RespawnInit					()																											;
-	
+			void						SetFatalHit					(const SHit& hit)																							;
 			void						Destroy						(u16 ref_id=u16(-1),LPCSTR section="ph_skeleton_object")													;	
 
 			void						Load						(LPCSTR section)																							;

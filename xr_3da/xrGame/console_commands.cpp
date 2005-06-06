@@ -13,6 +13,8 @@
 #include "game_cl_base.h"
 #include "game_sv_single.h"
 #include "gamepersistent.h"
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "actor.h"
 #include "Actor_Flags.h"
 #include "customzone.h"

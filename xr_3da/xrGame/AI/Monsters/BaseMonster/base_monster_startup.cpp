@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "base_monster.h"
+#include "../../../ai_space.h"
+#include "../../../hit.h"
+#include "../../../PHDestroyable.h"
 #include "../../../CharacterPhysicsSupport.h"
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
@@ -11,9 +14,10 @@
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../sound_player.h"
-#include "../../../ai_space.h"
+
 #include "../state_manager.h"
 #include "../controlled_entity.h"
+
 
 void CBaseMonster::Load(LPCSTR section)
 {

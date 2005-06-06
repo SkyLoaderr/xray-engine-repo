@@ -5,7 +5,6 @@
 #include "alife_space.h"
 #include "PHSkeleton.h"
 #include "Entity_Alive.h"
-#include "PHDestroyable.h"
 #include "PHSoundPlayer.h"
 class CPhysicsShell;
 class CPHMovementControl;

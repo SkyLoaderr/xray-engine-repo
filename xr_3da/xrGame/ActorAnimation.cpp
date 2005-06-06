@@ -12,6 +12,8 @@
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "Car.h"
 #include "../skeletonanimated.h"
 #include "clsid_game.h"

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "team_base_zone.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "hit.h"
 #include "Actor.h"
 #include "HUDManager.h"
 #include "level.h"

@@ -5,6 +5,8 @@
 #include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "car.h"
 #include "hudmanager.h"
 #include "cameralook.h"

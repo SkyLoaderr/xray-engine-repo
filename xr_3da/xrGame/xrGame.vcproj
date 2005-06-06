@@ -9508,6 +9508,16 @@
 					RelativePath=".\PHActivationShape.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Hit"
+				Filter="">
+				<File
+					RelativePath=".\Hit.cpp">
+				</File>
+				<File
+					RelativePath=".\Hit.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="UI"

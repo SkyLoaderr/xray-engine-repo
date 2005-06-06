@@ -4,6 +4,9 @@
 #include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
+#include "alife_space.h"
+#include "hit.h"
+#include "PHDestroyable.h"
 #include "car.h"
 #include "net_utils.h"
 #include "../skeletoncustom.h"
