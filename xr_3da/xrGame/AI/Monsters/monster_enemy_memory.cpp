@@ -25,6 +25,7 @@ void CMonsterEnemyMemory::init_external(CBaseMonster *M, TTime mem_time)
 
 void CMonsterEnemyMemory::update() 
 {
+	VERIFY		(monster->g_Alive());
 	// Обновить врагов
 	for (xr_vector<const CEntityAlive *>::const_iterator I = monster->memory().enemy().objects().begin(); I != monster->memory().enemy().objects().end(); ++I) {
 		if (monster->memory().visual().visible_now(*I)) add_enemy(*I);

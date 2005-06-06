@@ -360,11 +360,13 @@ void CBaseMonster::net_Relcase(CObject *O)
 	inherited::net_Relcase(O);
 
 	// TODO: do not clear, remove only object O
-	EnemyMemory.clear	();
-	SoundMemory.clear	();
-	CorpseMemory.clear	();
-	HitMemory.clear		();
+	if (g_Alive()) {
+		EnemyMemory.clear	();
+		SoundMemory.clear	();
+		CorpseMemory.clear	();
+		HitMemory.clear		();
 
-	UpdateMemory		();
+		UpdateMemory		();
+	}
 }
 	
