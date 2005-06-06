@@ -43,7 +43,7 @@ public:
 	virtual void 	Select					(BOOL flag);
 	void 			Construct				(LPVOID data);
 
-    IC bool			CheckVersion			()  {return m_pReference?(m_Version==m_pReference->m_Version):false;}
+    IC bool			CheckVersion			()  {return m_pReference?(m_Version==m_pReference->Version()):false;}
     // get object properties methods
 	IC bool 		RefCompare				(CEditableObject *to){return m_pReference?!!(m_pReference==to):false; }
 	IC bool 		RefCompare				(LPCSTR ref){return ref&&m_pReference?(strcmp(ref,m_pReference->GetName())==0):false; }

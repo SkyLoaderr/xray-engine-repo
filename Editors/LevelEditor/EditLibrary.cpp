@@ -157,6 +157,8 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 
     xr_delete(form->m_pEditObject);
 	xr_delete(m_Thm);
+
+    
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormDestroy(TObject *Sender)
@@ -336,7 +338,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     	if (obj&&cbPreview->Checked){
             AnsiString tex_name;
             tex_name = ChangeFileExt(obj->GetName(),".thm");
-            if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,obj->m_Version)){
+            if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,obj->Version())){
 	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
                 AnsiString full_name;
                 FHelper.MakeFullName(node,0,full_name);
@@ -353,9 +355,9 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 bool TfrmEditLibrary::GenerateLOD(ListItem* prop, bool bHighQuality)
 {
 	VERIFY				(prop);	
-    xr_string nm	= prop->Key();
-    ChangeReference	(nm.c_str());
-    CEditableObject* O = m_pEditObject->GetReference();
+    xr_string nm		= prop->Key();
+    ChangeReference		(nm.c_str());
+    CEditableObject* O 	= m_pEditObject->GetReference();
     if (O&&O->IsMUStatic()){
         BOOL bLod 	= O->m_Flags.is(CEditableObject::eoUsingLOD);
         O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
@@ -364,7 +366,7 @@ bool TfrmEditLibrary::GenerateLOD(ListItem* prop, bool bHighQuality)
         string512 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
         tex_name 	= xr_string("lod_")+tmp;
         tex_name 	= ImageLib.UpdateFileName(tex_name);
-        ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version,bHighQuality?7:1);
+        ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->Version(),bHighQuality?7:1);
         O->OnDeviceDestroy();
         O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
         ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());
@@ -546,7 +548,6 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         	nm = ChangeFileExt(ExtractFileName(*it),"").c_str();
             CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
-                O->m_Version = FS.get_file_age(it->c_str());
                 save_nm = xr_string(FS.get_path(_objects_)->m_Path)+folder.c_str()+EFS.ChangeFileExt(nm,".object");
 
                 if (FS.exist(save_nm.c_str()))

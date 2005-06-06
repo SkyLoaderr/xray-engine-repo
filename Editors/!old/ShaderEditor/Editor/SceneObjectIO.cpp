@@ -72,7 +72,7 @@ void CSceneObject::Save(IWriter& F){
 
     // reference object version
     F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE); R_ASSERT2(m_pReference,"Empty SceneObject REFS");
-    F.w_s32			(m_pReference->m_Version);
+    F.w_s32			(m_pReference->Version());
     F.w_s32			(0); // reserved
     F.w_stringZ		(m_ReferenceName);
     F.close_chunk	();

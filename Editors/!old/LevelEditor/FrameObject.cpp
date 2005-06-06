@@ -184,8 +184,10 @@ void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
 
 void __fastcall TfraObject::ExtBtn4Click(TObject *Sender)
 {
-    if (TfrmChoseItem::SelectItem(smObject,m_Current,1,m_Current))
-    	m_Items->SelectItem(m_Current,true,false,true);
+    if (TfrmChoseItem::SelectItem(smObject,m_Current,1,m_Current)){
+    	m_Items->SelectItem	(m_Current,true,false,true);
+        RefreshList			();
+    }
 }
 //---------------------------------------------------------------------------
 
