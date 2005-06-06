@@ -21,6 +21,12 @@ public:
 	virtual void		InitTexture		(const char* texture);
 	virtual void		Draw			();
 	virtual void		Draw			(int x, int y);
+	virtual void		SetWndPos		(int x, int y);
+	virtual void		SetWndPos		(const Ivector2& pos);
+	virtual void		SetWndSize		(const Ivector2& size);
+	virtual void		SetWndRect		(const Irect& rect);
+	virtual void		SetWidth		(int width);
+	virtual void		SetHeight		(int height);
 	virtual void		Update			();
 			void		SetTextureColor	(u32 cl);
 protected:

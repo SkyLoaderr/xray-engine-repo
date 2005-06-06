@@ -618,6 +618,9 @@ void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
 
 bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
+	if (UIPropertiesBox.GetVisible())
+		UIPropertiesBox.OnKeyboard(dik, keyboard_action);
+
 	if(dik==DIK_NUMPAD7 && keyboard_action==WINDOW_KEY_PRESSED){
 		m_pCurrentItem->ChangeCondition(-0.05f);
 		UIItemInfo.InitItem(m_pCurrentItem);

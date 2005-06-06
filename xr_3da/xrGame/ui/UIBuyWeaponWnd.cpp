@@ -1120,6 +1120,9 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	if (WINDOW_KEY_RELEASED == keyboard_action) 
 		return true;
 
+	if (UIPropertiesBox.GetVisible())
+		UIPropertiesBox.OnKeyboard(dik, keyboard_action);
+
 	switch (UIBagWnd.GetMenuLevel())
 	{
 	case mlRoot:

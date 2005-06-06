@@ -45,6 +45,9 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+
 	//возращает индекс нажатого элемента или -1 если
 	//такого элемента не было
 	int GetClickedIndex();

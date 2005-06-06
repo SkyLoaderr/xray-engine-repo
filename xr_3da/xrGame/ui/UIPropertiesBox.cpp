@@ -166,3 +166,8 @@ void CUIPropertiesBox::Draw()
 {
 	inherited::Draw();
 }
+
+bool CUIPropertiesBox::OnKeyboard(int dik, EUIMessages keyboard_action){
+	Hide();
+	return true;
+}

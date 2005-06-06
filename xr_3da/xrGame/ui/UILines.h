@@ -26,8 +26,10 @@ public:
 	virtual u32				GetTextColor()						const	{return m_dwTextColor;}
 	virtual void			SetFont(CGameFont* pFont)					{m_pFont = pFont;}
 	virtual CGameFont*		GetFont()							const	{return m_pFont;}
-	virtual void			SetTextAlignment(ETextAlignment alignment)	{m_eTextAlign = alignment;}
+	virtual void			SetTextAlignment(ETextAlignment al)			{m_eTextAlign = al;}
 	virtual ETextAlignment	GetTextAlignment()					const	{return m_eTextAlign;}
+			void			SetVTextAlignment(EVTextAlignment al)		{m_eVTextAlign = al;}
+			EVTextAlignment GetVTextAlignment()					const	{return m_eVTextAlign;}
 
     // IUISimpleWindow methods
 	virtual void			Init(int x, int y, int width, int height);
@@ -42,17 +44,18 @@ public:
 	// own methods
 			void			Reset();
 			void			ParseText();
-			int				GetVisibleHeight()							;
+			int				GetVisibleHeight()					const;
 			void			SetLinesInterval(float f)					{ m_interval = f; }
 			float			GetLinesInterval()					const	{ return m_interval; }
 
 
 protected:
 				// %c<255,255,255,255>
-		u32		GetColorFromText(const xr_string& str) const;
-		u32		GetIndentByAlign(u32 length) const;
-		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text) const;
-	CUILine*	ParseTextToColoredLine(const xr_string& str) const;
+		u32		GetColorFromText(const xr_string& str)									const;
+		u32		GetIndentByAlign(u32 length)											const;
+		u32		GetVIndentByAlign()														const;
+		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text)	const;
+	CUILine*	ParseTextToColoredLine(const xr_string& str)							const;
 
 	// IUITextControl data
 	typedef xr_string						Text;
@@ -64,6 +67,7 @@ protected:
 	xr_string		m_text;
 
 	ETextAlignment	m_eTextAlign;
+	EVTextAlignment	m_eVTextAlign;
 	u32				m_dwTextColor;
 
 private:

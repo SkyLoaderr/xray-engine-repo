@@ -44,6 +44,7 @@ void CUIChatLog::Init(int x, int y, int width, int height)
 //	AttachChild(&UILogList);
 //	UILogList.Init(0,0,width,height);
 //	xml_init.InitListWnd(uiXml, "chat_log_list", 0, &UILogList);
+	EnableScrollBar(false);
 	CUIStatic* ps = xr_new<CUIStatic>();
 	AttachChild(ps);
 	ps->Init(x, y, width, height);

@@ -19,6 +19,7 @@ CUILines::CUILines()
 	m_pFont = NULL;
 	m_interval = 0.3f;
 	m_eTextAlign = CGameFont::alLeft;
+	m_eVTextAlign = valTop;
 	m_dwTextColor = 0xffffffff;
 
 	m_bShowMe = true;
@@ -31,13 +32,14 @@ CUILines::~CUILines(){
 
 }
 
-void CUILines::Init(int x, int y, int width, int heigt){
-	SetFont(UI()->Font()->pFontLetterica18Russian);
+void CUILines::Init(int x, int y, int width, int heigt){	
 	CUISimpleWindow::Init(x, y, width, heigt);
 }
 
 void CUILines::SetText(const char* text){
-	R_ASSERT2(m_pFont, "can't set text without FONT");
+	if (!m_pFont)
+		SetFont(UI()->Font()->pFontLetterica18Russian);
+//	R_ASSERT2(m_pFont, "can't set text without FONT");
 
 	if (text)
 	{
@@ -74,7 +76,7 @@ void CUILines::ParseText(){
 	xr_delete(line);
 }
 
-int CUILines::GetVisibleHeight() {
+int CUILines::GetVisibleHeight() const{
 	int interval = int(m_interval*m_pFont->CurrentHeightRel());
 	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
@@ -89,7 +91,8 @@ void CUILines::Draw(int x, int y){
 	m_pFont->SetAligment(m_eTextAlign);
 
 	Ivector2 pos;
-	pos.y= y + (m_wndSize.y - GetVisibleHeight())/2;
+	// get vertical indent
+	pos.y= y + GetVIndentByAlign();
 	int height = (int)m_pFont->CurrentHeightRel();
 	int size = m_lines.size();
 
@@ -125,6 +128,20 @@ u32 CUILines::GetIndentByAlign(u32 length)const{
 		return (m_wndSize.x - length);
 	default:
 			NODEFAULT;
+	}
+	return 0;
+}
+
+u32 CUILines::GetVIndentByAlign()const{
+	switch(m_eVTextAlign) {
+	case valTop: 
+		return 0;
+	case valCenter:
+		return (m_wndSize.y - GetVisibleHeight())/2;
+	case valBotton:
+		return m_wndSize.y - GetVisibleHeight();
+	default:
+		NODEFAULT;
 	}
 	return 0;
 }

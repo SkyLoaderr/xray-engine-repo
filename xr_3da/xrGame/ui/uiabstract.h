@@ -17,6 +17,12 @@ public:
 	virtual ETextAlignment	GetTextAlignment()					const	= 0;
 };
 
+typedef enum {
+	valTop = 0,
+	valCenter,
+	valBotton
+} EVTextAlignment;
+
 class IUITextControl : public IUIFontControl{
 public:
 	virtual ~IUITextControl()											 {};

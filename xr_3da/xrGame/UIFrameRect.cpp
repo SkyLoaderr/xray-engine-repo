@@ -188,6 +188,41 @@ void CUIFrameRect::Update(){
 
 }
 
+void CUIFrameRect::SetWndPos(int x, int y){
+	m_wndPos.x = x;
+	m_wndPos.y = y;
+	uFlags.set(flValidSize, false);
+}
+
+void CUIFrameRect::SetWndSize(const Ivector2& size){
+	m_wndSize = size;
+	uFlags.set(flValidSize, false);
+}
+
+void CUIFrameRect::SetWndRect(const Irect& rect){
+	m_wndPos.x = rect.x1;
+	m_wndPos.y = rect.y1;
+	m_wndSize.x = rect.x2 - rect.x1;
+	m_wndSize.y = rect.y2 - rect.y1;
+
+	uFlags.set(flValidSize, false);
+}
+
+void CUIFrameRect::SetWndPos(const Ivector2& pos){
+	m_wndPos = pos;
+	uFlags.set(flValidSize, false);
+}
+
+void CUIFrameRect::SetHeight(int height){
+	m_wndSize.y = height;
+	uFlags.set(flValidSize, false);
+}
+
+void CUIFrameRect::SetWidth(int width){
+	m_wndSize.x = width;
+	uFlags.set(flValidSize, false);
+}
+
 void CUIFrameRect::Draw(int x, int y){
 	int dx = m_wndPos.x - x;
 	int dy = m_wndPos.y - y;
