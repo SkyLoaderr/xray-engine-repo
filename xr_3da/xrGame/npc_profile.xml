@@ -39,7 +39,7 @@
 		<class>Bandit_master</class>
 	</character>
 	<character id="gar_bandit_leader">
-		<class>gar_bandit_leader</class>
+		<class>Bandit_leader</class>
 	</character>
 
 	<!-- Soldier  -->
