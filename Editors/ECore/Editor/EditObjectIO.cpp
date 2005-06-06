@@ -31,7 +31,10 @@ bool CEditableObject::LoadObject(const char* fname)
     bool bRes = Load(*OBJ);
     OBJ->close();
 	FS.r_close(F);
-    if (bRes) m_LoadName = fname;
+    if (bRes){ 
+    	m_LoadName 		= fname;
+        m_ObjectVersion = FS.get_file_age(fname);
+    }
     return bRes;
 }
 #endif
@@ -55,18 +58,19 @@ bool CEditableObject::SaveObject(const char* fname)
     }
 
     // save object
-    IWriter* F		= FS.w_open(fname);
+    IWriter* F			= FS.w_open(fname);
 	if (F){
-        F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
-        Save		(*F);
-        F->close_chunk();
+        F->open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
+        Save			(*F);
+        F->close_chunk	();
 
-        FS.w_close	(F);                             
+        FS.w_close		(F);
 
-        m_LoadName 	= fname;
-        return		true;
+        m_LoadName 		= fname;
+        m_ObjectVersion = FS.get_file_age(fname);
+        return			true;
     }else{
-    	return 		false;
+    	return 			false;
     }
 }
 
@@ -81,12 +85,6 @@ void CEditableObject::Save(IWriter& F)
 	F.close_chunk	();
 
     F.w_chunk		(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
-
-    // object version
-    F.open_chunk	(EOBJ_CHUNK_LIB_VERSION);
-    F.w_s32			(m_Version);
-    F.w_s32			(0);
-    F.close_chunk	();
 
 //    Log("1: ",F.tell());
     // meshes
@@ -199,9 +197,6 @@ bool CEditableObject::Load(IReader& F)
 			F.r_stringZ		(m_ClassScript);
 		}
 
-		// file version
-		R_ASSERT(F.find_chunk(EOBJ_CHUNK_LIB_VERSION));
-		m_Version			= F.r_s32();
 		// surfaces
 		if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
 			u32 cnt = F.r_u32();

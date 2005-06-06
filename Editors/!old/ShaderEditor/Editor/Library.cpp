@@ -114,13 +114,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
     FS.update_path(fn,_objects_,EFS.ChangeFileExt(name,".object").c_str());
     const CLocatorAPI::file* F = FS.exist(fn.c_str());
     if (F){
-        if (m_EditObject->Load(fn.c_str())){
-        	if (m_EditObject->m_Version!=(int)F->modif){
-	            m_EditObject->m_Version = F->modif;
-//                m_EditObject->Modified();
-            }
-            return m_EditObject;
-        }
+        if (m_EditObject->Load(fn.c_str()))	return m_EditObject;
     }else{
 		ELog.Msg(mtError,"Can't find file '%s'",fn);
     }

@@ -224,7 +224,7 @@ public:
     AnsiString		m_LoadName;
     int				m_RefCount;
 protected:
-    int				m_Version;
+    int				m_ObjectVersion;
 
     void 			ClearGeometry			();
 
@@ -262,7 +262,7 @@ public:
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
-    IC int 			Version 				() 	{return m_Version;}
+    IC int 			Version 				() 	{return m_ObjectVersion;}
 
     // LOD
 	xr_string		GetLODTextureName		();
@@ -459,7 +459,7 @@ public:
 #define EOBJ_CHUNK_SURFACES2		0x0906                                 
 #define EOBJ_CHUNK_SURFACES3		0x0907
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
-#define EOBJ_CHUNK_LIB_VERSION     	0x0911
+#define _EOBJ_CHUNK_LIB_VERSION_   	0x0911 // obsolette
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
 #define EOBJ_CHUNK_BONES			0x0913
 //#define EOBJ_CHUNK_OMOTIONS			0x0914

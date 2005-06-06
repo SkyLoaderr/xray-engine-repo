@@ -37,7 +37,7 @@ CEditableObject::CEditableObject(LPCSTR name)
 	m_LibName		= name;
 
 	m_Flags.zero	();
-    m_Version		= 0;
+    m_ObjectVersion	= 0;
 
 #ifdef _EDITOR
     m_Visual		= 0;
