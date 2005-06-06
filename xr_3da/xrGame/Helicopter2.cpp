@@ -347,7 +347,7 @@ void SHeliEnemy::load(IReader &input_packet)
 	destEnemyID			= input_packet.r_u32();
 
 	fire_trail_length	= input_packet.r_float();
-	bUseFireTrail		= input_packet.r_u8();
+	bUseFireTrail		= !!input_packet.r_u8();
 
 }
 void CHelicopter::SetFireTrailLength(float val)
