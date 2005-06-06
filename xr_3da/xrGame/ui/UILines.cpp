@@ -1,5 +1,5 @@
 // File:		UILines.cpp
-// Description:	Multilines Text Control
+// Description:	Multi-line Text Control
 // Created:		12.03.2005
 // Author:		Serge Vynnycheko
 // Mail:		narrator@gsc-game.kiev.ua
@@ -17,7 +17,6 @@
 CUILines::CUILines()
 {
 	m_pFont = NULL;
-//	SetFont(UI()->Font()->pFontLetterica18Russian);
 	m_interval = 0.3f;
 	m_eTextAlign = CGameFont::alLeft;
 	m_dwTextColor = 0xffffffff;
@@ -32,15 +31,14 @@ CUILines::~CUILines(){
 
 }
 
-//void CUILines::SetWndRect(const Irect& rect){
-//	
-//}
-//
-//Irect CUILines::GetWndRect() const {
-//
-//}
+void CUILines::Init(int x, int y, int width, int heigt){
+	SetFont(UI()->Font()->pFontLetterica18Russian);
+	CUISimpleWindow::Init(x, y, width, heigt);
+}
 
 void CUILines::SetText(const char* text){
+	R_ASSERT2(m_pFont, "can't set text without FONT");
+
 	if (text)
 	{
         m_text = text;
@@ -61,10 +59,13 @@ void CUILines::Reset(){
 
 void CUILines::ParseText(){
 	Reset();
-	if(NULL==m_pFont)
-		SetFont(UI()->Font()->pFontLetterica18Russian);
 
-#pragma fixme("Andy to Satan. m_pFont==NULL ????")
+	if (m_text.length() && NULL == m_pFont)
+		R_ASSERT2(false, "can't parse text without font");
+		
+	if(NULL == m_pFont)
+		return;
+
 	CUILine* line = ParseTextToColoredLine(m_text.c_str());
 
 	while (line->GetLength(m_pFont) > 0)
@@ -74,8 +75,6 @@ void CUILines::ParseText(){
 }
 
 int CUILines::GetVisibleHeight() {
-	if(NULL==m_pFont)
-		SetFont(UI()->Font()->pFontLetterica18Russian);
 	int interval = int(m_interval*m_pFont->CurrentHeightRel());
 	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
@@ -83,9 +82,6 @@ int CUILines::GetVisibleHeight() {
 void CUILines::Draw(int x, int y){
 	if (m_text.empty())
 		return;
-	
-	if(NULL==m_pFont)
-		SetFont(UI()->Font()->pFontLetterica18Russian);
 
 	R_ASSERT(m_pFont);
 

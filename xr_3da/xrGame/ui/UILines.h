@@ -30,6 +30,7 @@ public:
 	virtual ETextAlignment	GetTextAlignment()					const	{return m_eTextAlign;}
 
     // IUISimpleWindow methods
+	virtual void			Init(int x, int y, int width, int height);
 	virtual void			Draw();
 	virtual void			Draw(int x, int y);
 	virtual void			Update();
