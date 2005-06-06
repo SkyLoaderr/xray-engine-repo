@@ -260,50 +260,6 @@ IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _dow
 #endif
 }
 
-IC	void CLevelNavigationGraph::verify_marks	()
-{
-	_CROSS_TABLE::const_iterator	_i = m_temp_cross.begin();
-	const_vertex_iterator		i = begin();
-	const_vertex_iterator		e = end();
-	for ( ; i != e; ++i, ++_i) {
-		const CCellVertex		*current_cell = &*_i;
-		if (!current_cell)
-			continue;
-
-		if (!current_cell->m_use)
-			continue;
-
-		if (!current_cell->m_mark)
-			continue;
-
-		u32						current_mark = current_cell->m_mark - 1;
-		if (current_mark == 2803) {
-			Msg					("%d : [%f][%f][%f]",i-begin(),VPUSH(vertex_position(i)));
-		};
-		CSectorGraph::CVertex	*sector_vertex = sectors().vertex(current_mark);
-		u32						usage = current_cell->m_use;
-		u32						I;
-		do {
-			I					= usage;
-			usage				&= usage - 1;
-			I					^= usage;
-			I					= (I >> 1) + 1;
-			I					= (I ^ (I >> 2)) - 1;
-
-			u32					vertex_id = (*i).link(I);
-			if (!valid_vertex_id(vertex_id))
-				continue;
-
-			CCellVertex			*cell = &m_temp_cross[vertex_id];
-			VERIFY				(cell);
-
-			u32					mark = cell->m_mark - 1;
-			VERIFY				(mark != current_mark);
-		}
-		while (usage);
-	}
-}
-
 IC	void CLevelNavigationGraph::generate_sectors()
 {
 	xr_delete				(m_sectors);
@@ -326,9 +282,6 @@ IC	void CLevelNavigationGraph::generate_sectors()
 #	endif
 #endif
 	while (!m_temp.empty()) {
-		if (group_id == 2803) {
-			__asm int 3;
-		}
 		select_sector		(id,right,down);
 		build_sector		(id,right,down,++group_id);
 #ifdef AI_COMPILER
@@ -337,9 +290,6 @@ IC	void CLevelNavigationGraph::generate_sectors()
 #	endif
 #endif
 		update_cells		(id,right,down);
-		if (group_id == 2804) {
-			verify_marks	();
-		}
 	}
 
 #ifdef DEBUG
@@ -373,6 +323,8 @@ IC	void CLevelNavigationGraph::generate_edges	()
 			u32					vertex_id = (*i).link(I);
 			if (!valid_vertex_id(vertex_id))
 				continue;
+
+			VERIFY				(vertex_id != this->vertex_id(i));
 
 			CCellVertex			*cell = &m_temp_cross[vertex_id];
 			VERIFY				(cell);
@@ -412,11 +364,11 @@ IC	void CLevelNavigationGraph::generate_edges	()
 #ifdef DEBUG
 IC	void CLevelNavigationGraph::check_vertices	()
 {
-	VERIFY						(m_global_count == header().vertex_count());
+	VERIFY							(m_global_count == header().vertex_count());
 	_CROSS_TABLE::const_iterator	I = m_temp_cross.begin();
 	_CROSS_TABLE::const_iterator	E = m_temp_cross.end();
 	for ( ; I != E; ++I)
-		VERIFY					((*I).m_mark);
+		VERIFY						((*I).m_mark);
 }
 
 IC	void CLevelNavigationGraph::check_edges		()
@@ -500,7 +452,6 @@ void CLevelNavigationGraph::generate	(LPCSTR filename)
 		return;
 
 	generate_sectors	();
-	verify_marks		();
 	generate_edges		();
 	generate_cross		();
 	

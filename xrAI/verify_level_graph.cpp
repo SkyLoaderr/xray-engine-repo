@@ -41,6 +41,30 @@ IC	bool single_link(const CLevelGraph &level_graph, u32 i1, u32 i2, u32 link_ind
 	return						(level_graph.value(level_graph.vertex(i1),link_index) != i2);
 }
 
+bool verify_invalid_links	(const CLevelGraph &graph)
+{
+	bool								result = true;
+	CLevelGraph::const_vertex_iterator	I = graph.begin();
+	CLevelGraph::const_vertex_iterator	E = graph.end();
+	for ( ; I != E; ++I) {
+		u32								vertex_id = graph.vertex_id(I);
+		CLevelGraph::const_iterator		i,e;
+		graph.begin						(I,i,e);
+		for ( ; i != e; ++i) {
+			u32							link_vertex_id = graph.value(I,i);
+			if (!graph.valid_vertex_id(link_vertex_id))
+				continue;
+
+			if (vertex_id == link_vertex_id) {
+				Msg						("Vertex [%d][%f][%f][%f] has link to itself",vertex_id,VPUSH(graph.vertex_position(I)));
+				result					= false;
+				continue;
+			}
+		}
+	};
+	return								(result);
+}
+
 void verify_level_graph	(LPCSTR name, bool verbose)
 {
 	Msg				("Verifying level %s",name);
@@ -51,6 +75,14 @@ void verify_level_graph	(LPCSTR name, bool verbose)
 		Progress	(1.f);
 		Msg			("Level graph is empty!");
 		xr_delete	(level_graph);
+		return;
+	}
+
+	if (!verify_invalid_links(*level_graph)) {
+		Progress	(1.f);
+		Msg			("AI map is CORRUPTED : REGENERATE AI-MAP");
+		xr_delete	(level_graph);
+		return;
 	}
 
 	stack_storage	= (CLevelGraph::CVertex**)xr_malloc(level_graph->header().vertex_count()*sizeof(CLevelGraph::CVertex*));
@@ -107,7 +139,7 @@ void verify_level_graph	(LPCSTR name, bool verbose)
 		for ( ; II != EE; ++II)
 			if (!*II) {
 				valid	= false;
-				Msg		("AI-map is not valid :\nNode \n%6d[%f][%f][%f]\ncannot be reached from the node\n%6d[%f][%f][%f]\n",u32(II - BB),VPUSH(level_graph->vertex_position(u32(II - BB))),*I,VPUSH(level_graph->vertex_position(*I)));
+				Msg		("AI-map is NOT valid :\nNode \n%6d[%f][%f][%f]\ncannot be reached from the node\n%6d[%f][%f][%f]\n",u32(II - BB),VPUSH(level_graph->vertex_position(u32(II - BB))),*I,VPUSH(level_graph->vertex_position(*I)));
 				break;
 			}
 
