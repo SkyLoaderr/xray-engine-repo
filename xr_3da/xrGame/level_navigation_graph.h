@@ -54,6 +54,7 @@ private:
 protected:
 	IC		void				check_vertices			();
 	IC		void				check_edges				();
+	IC		void				verify_marks			();
 
 public:
 			void				render					();
