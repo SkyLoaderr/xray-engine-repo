@@ -20,7 +20,6 @@ public:
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
 public:
 
-	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 	float					m_fAccuracy;
 	float					m_fIntelligence;
