@@ -61,7 +61,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 		}
 	}
 
-	if		(debug_mode)		dbg_register	(_ptr,size);
+	if		(debug_mode)		dbg_register		(_ptr,size);
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Leave		();
 	if(g_globalCheckAddr==_ptr){
