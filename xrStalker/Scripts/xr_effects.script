@@ -637,6 +637,7 @@ function val_escort_captive_friend(actor, npc)
 
 	npc:set_relation(game_object.friend, captive)
 	captive:set_relation(game_object.friend, npc)
+	printf("_bp: val_escort_captive_friend")
 end
 
 function val_escort_nap1_friend(actor, npc)
@@ -653,6 +654,7 @@ function val_escort_captive_enemy(actor, npc)
 
 	npc:set_relation(game_object.enemy, captive)
 	captive:set_relation(game_object.enemy, npc)
+	printf("_bp: val_escort_captive_enemy")
 end
 
 function val_escort_nap1_enemy(actor, npc)
