@@ -38,7 +38,7 @@
 	<character id="bandit_master">
 		<class>Bandit_master</class>
 	</character>
-	<character id="Bandit_leader">
+	<character id="gar_bandit_leader">
 		<class>gar_bandit_leader</class>
 	</character>
 
