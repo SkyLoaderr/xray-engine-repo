@@ -585,7 +585,7 @@ function mil_bomb_explode (actor, npc)
     h.power = 1000;
     h.direction = vector():set( 1, 0, 0 );
     h.impulse = 1;
-    h.draftsman = nil;
+    h.draftsman = db.actor;
     h.type = hit.chemical_burn;
     source:hit (h);
     
