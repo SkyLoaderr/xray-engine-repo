@@ -409,5 +409,35 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+	<specific_character id="gar_bandit_leader" team_default = "1">
+		<name>Предводитель бандитов</name>
+		<icon x="22" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<team>Bandit_veteran</team>
+
+		<class>Bandit_leader</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+	</specific_character>
+
+
 	
 </xml>
