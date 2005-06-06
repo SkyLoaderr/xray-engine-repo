@@ -16,6 +16,7 @@ class CElevatorState
 		clbDepart		,
 		clbNoLader		
 	};
+
 Estate m_state;
 
 CClimableObject	*m_ladder;	

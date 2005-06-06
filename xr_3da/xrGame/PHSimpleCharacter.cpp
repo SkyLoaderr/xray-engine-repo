@@ -449,8 +449,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		(
 			b_on_ground												 &&
 			m_ground_contact_normal[1]>M_SQRT1_2/2.f				 && 
-			!b_external_impulse										 && 
-			dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.||
+			!b_external_impulse										 /*&& 
+			dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.*/||
 			fis_zero(linear_vel_smag)								 ||
 			m_elevator_state.ClimbingState()
 			)
@@ -950,10 +950,13 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 
 	if(dV_valid(linear_velocity))
 	{	
+		m_mean_y=m_mean_y*0.9999f+linear_velocity[1]*0.0001f;
 		mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
+		
 		if(mag>l_limit)
 		{
 			dReal f=mag/l_limit;
+
 			if(b_lose_ground&&linear_velocity[1]<0.f)
 				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
 			else			 
@@ -978,6 +981,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,linear_velocity);
+
 }
 
 void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
@@ -1232,7 +1236,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		}
 	}
 	float soft_param=dumping_rate+normal[1]*(1.f-dumping_rate);//=(1.f-normal[1])*dumping_rate +normal[1]
-	if(is_control&&!b_lose_control||b_jumping){
+	if(is_control){//&&!b_lose_control||b_jumping
 		if(g1==m_wheel||g2==m_wheel&&!bClimable)
 		{
 			c->surface.mu = 0.f;//0.00f;
@@ -1257,7 +1261,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 void CPHSimpleCharacter::FootProcess(dContact* c,bool &do_collide ,bool bo)
 {
-	if(m_elevator_state.Active()||!is_control||!b_clamb_jump||b_side_contact)		return;
+	if(m_elevator_state.ClimbingState() ||!is_control||!b_clamb_jump||b_side_contact)		return;
 			
 ///////////////////////////////////////////////////////////////////////////////////
 			dReal*		normal				=c->geom.normal						;

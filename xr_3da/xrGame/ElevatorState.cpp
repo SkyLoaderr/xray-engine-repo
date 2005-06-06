@@ -29,7 +29,7 @@ float CElevatorState::ClimbDirection()
 }
 
 void CElevatorState::PhTune(float step)
-{
+{	
 	VERIFY(m_character&&m_character->b_exist&&m_character->is_active());
 	if(!m_ladder)			return;
 	switch(m_state)
@@ -40,7 +40,7 @@ void CElevatorState::PhTune(float step)
 	case 	clbClimbingUp	:UpdateStClimbingUp()	;		break;					
 	case 	clbClimbingDown	:UpdateStClimbingDown()	;		break;	
 	case	clbDepart		:UpdateDepart()			;		break;
-	case	clbNoLader		:m_ladder = NULL		;		break;
+	case	clbNoLader		:m_ladder = NULL		;		break;		
 	}
 
 }
@@ -77,8 +77,23 @@ void CElevatorState::EvaluateState()
 	
 }
 
+#ifdef DEBUG
+const char*	dbg_state[] =	{
+		"clbNone"			,				
+		"clbNearUp"			,			
+		"clbNearDown"		,		
+		"clbClimbingUp"		,		
+		"clbClimbingDown"	,	
+		"clbDepart"			,
+		"clbNoLader"		
+};
+#endif
 void CElevatorState::SwitchState(Estate new_state)
 {
+	
+#ifdef DEBUG
+	Msg("%s",dbg_state[new_state]);
+#endif
 	VERIFY(m_character);
 	if((m_state!=clbClimbingUp&&m_state!=clbClimbingDown) &&
 	   (new_state==clbClimbingUp||new_state==clbClimbingDown)
@@ -210,7 +225,7 @@ void CElevatorState::UpdateClimbingCommon(const Fvector	&d_to_ax,float to_ax,con
 	VERIFY(m_ladder&&m_character);
 	if(to_ax-m_character->FootRadius()>out_dist)
 										SwitchState((clbNoLader));
-	if(fis_zero(ca)) 
+	if(fis_zero(ca)&&d_to_ax.dotproduct(m_ladder->Norm())<0.f) 
 		m_character->ApplyForce(d_to_ax,m_character->Mass()*world_gravity);//
 }
 void CElevatorState::GetControlDir(Fvector& dir)

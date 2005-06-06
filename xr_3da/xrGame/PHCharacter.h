@@ -46,7 +46,7 @@ u16* p_lastMaterial;
 ///////////////////////////////////////////////////////////////////////////
 dVector3 m_safe_velocity;
 dVector3 m_safe_position;
-
+dReal	 m_mean_y;
 public:
 enum ERestrictionType
 {
