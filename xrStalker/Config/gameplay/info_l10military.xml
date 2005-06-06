@@ -25,6 +25,8 @@
 	<info_portion id="mil_dolg_before_explode"></info_portion>
 	<info_portion id="mil_dolg_after_explode"></info_portion>
 	<info_portion id="mil_scull_dead"></info_portion>
+	<info_portion id="mil_dolg_phase1"></info_portion>
+	<info_portion id="mil_dolg_phase2"></info_portion>
 		
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
