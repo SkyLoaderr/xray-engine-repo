@@ -6,6 +6,8 @@ combat_ignore = combat_ignore
 [death]
 on_info = %+val_escort_captive_dead%
 
+[combat_ignore]
+
 [walker1]
 path_walk = val_escort_captive_walk
 ;path_look = val_escort_captive_look
@@ -18,9 +20,6 @@ combat_ignore_cond = always
 no_move = true
 no_rotate = true
 anim = caution
-;meet_dialog = val_escort_captive_dialog
-;meet_state = caution
-;meet_talk_enabled = true
 ;on_info = {=val_escort_combat_end} walker@leave
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
 on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
