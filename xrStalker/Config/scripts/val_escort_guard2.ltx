@@ -2,7 +2,7 @@
 active = remark@switch
 on_death = death
 on_hit = hit
-combat_ignore = combat_ignore
+;combat_ignore = combat_ignore
 on_combat = combat
 
 [death]
@@ -30,10 +30,10 @@ no_retreat = true
 on_info = {+val_escort_combat} remark@fight ;%=val_escort_set_fight%
 on_info2 = {+val_escort_nap1_dead} walker@return, {+val_escort_captive_dead} walker@return %-val_escort_guard2_combat%, %-val_escort_guard2_combat%
 ;combat_ignore = combat_ignore
-combat_ignore_cond = {-val_escort_combat}
+;combat_ignore_cond = {-val_escort_combat}
 ;on_signal = leader_dead | walker@return
 
-[combat_ignore]
+;[combat_ignore]
 
 [remark@fight]
 no_retreat = true
