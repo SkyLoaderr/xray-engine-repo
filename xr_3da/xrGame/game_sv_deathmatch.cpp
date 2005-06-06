@@ -11,6 +11,7 @@
 #include "clsid_game.h"
 #include "Actor.h"
 #include "game_cl_base.h"
+#include "xr_level_controller.h"
 
 #define DELAYED_ROUND_TIME	7000
 
@@ -1773,3 +1774,14 @@ void game_sv_Deathmatch::ConsoleCommands_Clear	()
 
 };
 //-----------------------------------------------------------------------------
+void game_sv_Deathmatch::OnPlayerFire (ClientID id_who, NET_Packet &P)
+{
+	u16 PlayerID = P.r_u16();
+	game_PlayerState*	ps	=	get_eid	(PlayerID);
+	if (!ps || ps->Skip) return;
+	if (ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+	{
+		ps->resetFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+		signal_Syncronize();
+	};
+};

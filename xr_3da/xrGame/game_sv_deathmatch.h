@@ -127,6 +127,7 @@ public:
 	virtual		void				OnTimelimitExceed		();
 				void				OnPlayerScores			();
 	virtual		void				OnDestroyObject			(u16 eid_who);
+	virtual		void				OnPlayerFire (ClientID id_who, NET_Packet &P);
 	// Main
 	virtual		void				Update					();
 				BOOL				AllPlayers_Ready		();

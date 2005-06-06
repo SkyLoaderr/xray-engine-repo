@@ -57,6 +57,7 @@ enum {
 	M_STATISTIC_UPDATE,
 	M_STATISTIC_UPDATE_RESPOND,
 	//-----------------------------------------------------
+	M_PLAYER_FIRE,
 
 	MSG_FORCEDWORD				= u32(-1)
 };
