@@ -670,4 +670,9 @@ void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)
 	string1024 resStr;
 	sprintf(resStr, "%s\"%s\" %sis now %s\"%s\"", Color_Teams[Team], OldName, Color_Main, Color_Teams[Team], NewName);
 	CommonMessageOut(resStr);
+	//-------------------------------------------
+	CObject* pObj = Level().Objects.net_Find(ObjID);
+	if (pObj)
+		pObj->cName_set(NewName);
+
 }
