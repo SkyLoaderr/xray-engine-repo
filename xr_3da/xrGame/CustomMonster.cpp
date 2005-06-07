@@ -593,15 +593,17 @@ void CCustomMonster::OnRender()
 		P1.y				+= 1.f;
 		RCache.dbg_DrawAABB	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
 	}
-	if (memory().enemy().selected()) {
-		Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
-		P1.y				+= 1.f;
-		RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
-	}
-	if (memory().danger().selected()) {
-		Fvector				P1 = memory().danger().selected()->position();
-		P1.y				+= 1.f;
-		RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+	if (g_Alive()) {
+		if (memory().enemy().selected()) {
+			Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
+			P1.y				+= 1.f;
+			RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+		}
+		if (memory().danger().selected()) {
+			Fvector				P1 = memory().danger().selected()->position();
+			P1.y				+= 1.f;
+			RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+		}
 	}
 	/*
 	{
