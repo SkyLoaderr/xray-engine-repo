@@ -12,6 +12,7 @@
 #include "object_broker.h"
 #include "agent_manager.h"
 #include "agent_memory_manager.h"
+#include "explosive.h"
 
 CAgentMemberManager::~CAgentMemberManager		()
 {
@@ -62,10 +63,14 @@ void CAgentMemberManager::remove_links			(CObject *object)
 	MEMBER_STORAGE::iterator	I = m_members.begin();
 	MEMBER_STORAGE::iterator	E = m_members.end();
 	for ( ; I != E; ++I) {
-		if ((*I)->grenade_reaction().m_grenade && ((*I)->grenade_reaction().m_grenade->ID() == object->ID()))
-			(*I)->grenade_reaction().clear();
+		if ((*I)->grenade_reaction().m_grenade) {
+			const CGameObject	*explosive  =smart_cast<const CGameObject*>((*I)->grenade_reaction().m_grenade);
+			VERIFY				(explosive);
+			if (explosive->ID() == object->ID())
+				(*I)->grenade_reaction().clear();
+		}
 
-		if ((*I)->grenade_reaction().m_game_object && ((*I)->grenade_reaction().m_game_object->ID() == object->ID())) {
+		if ((*I)->grenade_reaction().m_game_object && ((*I)->grenade_reaction().m_game_object->ID() == object->ID()))
 			(*I)->grenade_reaction().clear();
 
 		if ((*I)->member_death_reaction().m_member && ((*I)->member_death_reaction().m_member->ID() == object->ID()))
