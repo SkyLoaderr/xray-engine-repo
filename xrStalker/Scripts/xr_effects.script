@@ -153,80 +153,6 @@ function garbage_monster_death(actor, npc)
     
 end
 
--- ѕри смерти кровососа дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
--- с обрыва
-function val_bs_victim_dead(actor, npc)
-	printf("_bp: val_bs_victim_dead: npc='%s'", npc:name())
-	local h = hit()
-	h.power = 100
-	h.direction = utils.vector_copy_by_val(patrol("val_bs_hit_direction"):point(0)):sub(npc:position())
-	h.bone = "bip01_spine1"
-	h.draftsman = npc 
-	h.impulse = 2000
-	h.type = hit.wound
-	npc:hit(h)
-end
-
--- ѕри смерти пленного дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
--- в пропасть
-function val_sacrifice_victim_dead(actor, npc)
-	printf("_bp: val_sacrifice_victim_dead: npc='%s'", npc:name())
-	local h = hit()
-	h.power = 100
-	h.direction = utils.vector_copy_by_val(patrol("val_sacrifice_fall_direction"):point(0)):sub(npc:position())
-	h.bone = "bip01_spine1"
-	h.draftsman = npc 
-	h.impulse = 2000
-	h.type = hit.wound
-	npc:hit(h)
-end
-
-function val_suicide_kill_self(actor, npc)
-	local snd_obj = sound_object([[Weapons\walther_shoot]])
-	if snd_obj ~= nil then
-		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
-	end
-
-	--[[
-	snd_obj = sound_object([[ambient\random\rnd_fallscream]])
-	if snd_obj ~= nil then
-		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
-	end
-	--]]
-
-	--[[
-	action(
-		npc,
-		particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
-		cond	(cond.time_end, time_infinite)
-	)
-	--]]
-
-	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())
-	local h = hit()
-	h.power = 1000
-	h.direction = vector_rotate_y(npc:direction(), 90)
-	h.bone = "bip01_head"
-	h.draftsman = npc 
-	h.impulse = 200 --350
-	h.type = hit.wound
-	npc:hit(h)
-end
-
-function val_sacrifice_force_guards_kill_victim(actor, npc)
-	local guard1 = utils.obj_by_sid(404)
-	if guard1 then
-		npc:set_relation(game_object.enemy, guard1)
-		guard1:set_relation(game_object.enemy, npc)
-	end
-	
-	local guard2 = utils.obj_by_sid(405)
-	if guard2 then
-		npc:set_relation(game_object.enemy, guard2)
-		guard2:set_relation(game_object.enemy, npc)
-	end
-end
-
 function test_hit_in_actor_dir(actor, npc)
 --
 	-- TODO: реагировать только на смерть от пули (last hit = пул€)
@@ -631,6 +557,80 @@ function gar_send_dolg_warning()
 end
 
 -- DARK VALLEY
+-- ѕри смерти кровососа дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
+-- с обрыва
+function val_bs_victim_dead(actor, npc)
+	printf("_bp: val_bs_victim_dead: npc='%s'", npc:name())
+	local h = hit()
+	h.power = 100
+	h.direction = utils.vector_copy_by_val(patrol("val_bs_hit_direction"):point(0)):sub(npc:position())
+	h.bone = "bip01_spine1"
+	h.draftsman = npc 
+	h.impulse = 2000
+	h.type = hit.wound
+	npc:hit(h)
+end
+
+-- ѕри смерти пленного дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
+-- в пропасть
+function val_sacrifice_victim_dead(actor, npc)
+	printf("_bp: val_sacrifice_victim_dead: npc='%s'", npc:name())
+	local h = hit()
+	h.power = 100
+	h.direction = utils.vector_copy_by_val(patrol("val_sacrifice_fall_direction"):point(0)):sub(npc:position())
+	h.bone = "bip01_spine1"
+	h.draftsman = npc 
+	h.impulse = 2000
+	h.type = hit.wound
+	npc:hit(h)
+end
+
+function val_suicide_kill_self(actor, npc)
+	local snd_obj = sound_object([[Weapons\walther_shoot]])
+	if snd_obj ~= nil then
+		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+	end
+
+	--[[
+	snd_obj = sound_object([[ambient\random\rnd_fallscream]])
+	if snd_obj ~= nil then
+		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+	end
+	--]]
+
+	--[[
+	action(
+		npc,
+		particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		cond	(cond.time_end, time_infinite)
+	)
+	--]]
+
+	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())
+	local h = hit()
+	h.power = 1000
+	h.direction = vector_rotate_y(npc:direction(), 90)
+	h.bone = "bip01_head"
+	h.draftsman = npc 
+	h.impulse = 200 --350
+	h.type = hit.wound
+	npc:hit(h)
+end
+
+function val_sacrifice_force_guards_kill_victim(actor, npc)
+	local guard1 = utils.obj_by_sid(404)
+	if guard1 then
+		npc:set_relation(game_object.enemy, guard1)
+		guard1:set_relation(game_object.enemy, npc)
+	end
+	
+	local guard2 = utils.obj_by_sid(405)
+	if guard2 then
+		npc:set_relation(game_object.enemy, guard2)
+		guard2:set_relation(game_object.enemy, npc)
+	end
+end
+
 function val_escort_captive_friend(actor, npc)
 	local captive = utils.obj_by_sid(400)
 	if not captive or not captive:alive() then return end
