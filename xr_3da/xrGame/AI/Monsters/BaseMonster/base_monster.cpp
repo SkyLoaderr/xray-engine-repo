@@ -368,6 +368,9 @@ void CBaseMonster::net_Relcase(CObject *O)
 		CorpseMemory.clear	();
 		HitMemory.clear		();
 
+		EnemyMan.reinit		();
+		CorpseMan.reinit	();
+
 		UpdateMemory		();
 	}
 }
