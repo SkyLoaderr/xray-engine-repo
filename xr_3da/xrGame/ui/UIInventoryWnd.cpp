@@ -136,10 +136,13 @@ void CUIInventoryWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
-	//окошко для диалога параметров сна
-	AttachChild(&UISleepWnd);
-	xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
-	UISleepWnd.Init();
+
+	if (GameID() == GAME_SINGLE)
+	{
+		AttachChild(&UISleepWnd);
+		xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
+		UISleepWnd.Init();
+	}
 //	UISleepWnd.SetText(*string_table("rest"));
 
 	//Списки Drag&Drop
