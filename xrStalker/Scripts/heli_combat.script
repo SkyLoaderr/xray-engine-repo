@@ -361,6 +361,8 @@ function heli_combat:flyby_update_flight( see_enemy )
 		if not self.state_initialized then
 			local p = self:flyby_calc_best_attack_dist_point()
 
+			self.heliObject:ClearEnemy()
+
 			self.heliObject:SetDestPosition( p )
 
 			self.state_initialized = true
@@ -369,7 +371,9 @@ function heli_combat:flyby_update_flight( see_enemy )
 	elseif self.state == flyby_state_to_enemy then
 		if not self.state_initialized then
 
-			--self.heliObject:Стрелять_дорожкой()
+			self.heliObject:SetEnemy( self.enemy )
+
+			--self.heliObject:UseFireTrail( true )
 
 			self.state_initialized = true
 		end
