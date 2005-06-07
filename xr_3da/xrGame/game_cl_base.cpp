@@ -11,7 +11,7 @@
 game_cl_GameState::game_cl_GameState()
 {
 	local_player				= 0;
-	m_game_type_name[0]			= 0;
+	m_game_type_name			= 0;
 
 	shedule.t_min				= 5;
 	shedule.t_max				= 20;

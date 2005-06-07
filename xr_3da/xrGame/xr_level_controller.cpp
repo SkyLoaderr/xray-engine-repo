@@ -380,9 +380,8 @@ public:
 
 void ConsoleBindCmds::bind(int dik, LPCSTR N)
 {
-	_conCmd& c = m_bindConsoleCmds[dik];
-	ZeroMemory(c.cmd,sizeof(c.cmd));
-	strcat(c.cmd, N);
+	_conCmd& c	= m_bindConsoleCmds[dik];
+	c.cmd		= N;
 }
 void ConsoleBindCmds::unbind(int dik)
 {
@@ -404,9 +403,10 @@ bool ConsoleBindCmds::execute(int dik)
 	if(it==m_bindConsoleCmds.end())
 		return false;
 
-	Console->Execute(it->second.cmd);
+	Console->Execute(it->second.cmd.c_str());
 	return true;
 }
+
 void ConsoleBindCmds::save(IWriter* F)
 {
 	xr_map<int,_conCmd>::iterator it = m_bindConsoleCmds.begin();

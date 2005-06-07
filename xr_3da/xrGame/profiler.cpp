@@ -40,6 +40,7 @@ CProfiler::CProfiler		()
 
 IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_size)
 {
+	string256					m_temp;
 	LPCSTR						i, j = str;
 	u32							count = 0;
 	while ((i = strchr(j,'/')) != 0) {
@@ -59,6 +60,7 @@ IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_si
 
 void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
 {
+	string256	m_temp;
 	float						_time = float(timer_time)*CPU::cycles2milisec;
 	TIMERS::iterator			i = m_timers.find(timer_id);
 	if (i == m_timers.end()) {
