@@ -12,7 +12,7 @@ void IGame_Level::LL_CheckTextures()
 	BOOL	bError	= FALSE;
 	if (m_base>64*1024*1024 || c_base>400)
 	{
-		LPCSTR msg	= "Too many base-textures (limit: 400 textures or 64M).\n        Reduce number of textures (better) or their resolution (worse).";
+		// LPCSTR msg	= "Too many base-textures (limit: 400 textures or 64M).\n        Reduce number of textures (better) or their resolution (worse).";
 		// Msg		("***FATAL***: %s",msg);
 		bError		= TRUE;
 	}
