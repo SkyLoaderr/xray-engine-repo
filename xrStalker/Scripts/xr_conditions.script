@@ -136,6 +136,15 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for Dark Valley
 ------------------------------------------------------------------------------------
+function check_fighting(actor, npc, p)
+	for i, v in pairs(p) do
+		if db.storage[npc:id()].enemy:story_id() == val then
+			return true
+		end
+	end
+	return false
+end
+
 function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
 	-- db.storage[npc:id()].enemy:story_id() == 400
