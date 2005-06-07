@@ -39,7 +39,10 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		pApp->Level_Set			(level_id);
 
 		// Load level
-		R_ASSERT2				(Load(level_id),"Loading failed.");
+		R_ASSERT2							(Load(level_id),"Loading failed.");
+
+		// Begin spawn
+		pApp->LoadTitle						("CLIENT: Spawning...");
 
 		// Send physics to single or multithreaded mode
 		LoadPhysicsGameParams				();
@@ -54,10 +57,11 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		else								Device.seqFrame.Add		(g_pNetProcessor,REG_PRIORITY_LOW	- 2);
 
 		// Waiting for connection/configuration completition
-		pApp->LoadTitle						("CLIENT: Spawning...");
-		while (!net_isCompleted_Connect())	Sleep(5);
-		while (!net_isCompleted_Sync())		{ ClientReceive(); Sleep(5); }
-		while (!game_configured)			{ ClientReceive(); Sleep(5); }
+		CTimer	timer_sync	;	timer_sync.Start	();
+		while	(!net_isCompleted_Connect())	Sleep	(5);
+		Msg		("* connection sync: %d ms", timer_sync.GetElapsed_ms())
+		while	(!net_isCompleted_Sync())	{ ClientReceive(); Sleep(5); }
+		while	(!game_configured)			{ ClientReceive(); Sleep(5); }
 		
 		// HUD
 		pHUD->Load							();

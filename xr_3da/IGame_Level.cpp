@@ -85,14 +85,14 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	// Msg						("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 
 	// Objects
-	pApp->LoadTitle				("Loading game...");
+	// pApp->LoadTitle			("Loading game...");
 	g_pGamePersistent->Environment.mods_load	();
 	R_ASSERT					(Load_GameSpecific_Before());
 	Objects.Load				();
 	R_ASSERT					(Load_GameSpecific_After ());
 
 	// Done
-	pApp->LoadTitle				("Syncronizing...");
+	// pApp->LoadTitle				("Syncronizing...");
 	FS.r_close					( LL_Stream );
 	bReady						= true;
 	if (!g_pGamePersistent->bDedicatedServer)	IR_Capture();
