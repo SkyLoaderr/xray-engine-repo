@@ -120,6 +120,8 @@ public:
 	virtual void			setInertia				(const dMass& M)								= 0;																
 	virtual void			addInertia				(const dMass& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
+	virtual void			applyImpulseVsMC		(const Fvector& pos,const Fvector& dir, float val)=0;
+	virtual void			applyImpulseVsGF		(const Fvector& pos,const Fvector& dir, float val)=0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;

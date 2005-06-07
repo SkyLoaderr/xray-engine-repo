@@ -160,7 +160,9 @@ public:																																				//
 	virtual bool			isFixed							(){return !!(m_flags.test(flFixed));}
 	virtual void			applyForce						(const Fvector& dir, float val);															//aux
 	virtual void			applyForce						(float x,float y,float z);																//called anywhere ph state influent
-	virtual void			applyImpulse					(const Fvector& dir, float val);														//aux
+	virtual void			applyImpulse					(const Fvector& dir, float val);//aux
+	virtual void			applyImpulseVsMC				(const Fvector& pos,const Fvector& dir, float val);										//
+	virtual void			applyImpulseVsGF				(const Fvector& pos,const Fvector& dir, float val);										//
 	virtual void			applyGravityAccel				(const Fvector& accel);
 	virtual void			getForce						(Fvector& force);
 	virtual void			getTorque						(Fvector& torque);

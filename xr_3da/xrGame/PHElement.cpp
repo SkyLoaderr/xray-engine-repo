@@ -587,11 +587,35 @@ void	CPHElement::UnFreeze()
 	if(!m_body) return;
 	if(m_flags.test(flWasEnabledBeforeFreeze)/*was_enabled_before_freeze*/)dBodyEnable(m_body);
 }
+void	CPHElement::applyImpulseVsMC(const Fvector& pos,const Fvector& dir, float val)
+{
+	if(!bActive||m_flags.test(flFixed)) return;
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	/////////////////////////////////////////////////////////////////////////
+	Fvector impulse;
+	impulse.set(dir);
+	impulse.mul(val);
+	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,pos.x, pos.y,pos.z);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	////////////////////////////////////////////////////////////////////////
+}
+void	CPHElement::applyImpulseVsGF(const Fvector& pos,const Fvector& dir, float val)
+{
+	if(!bActive||m_flags.test(flFixed)) return;
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	/////////////////////////////////////////////////////////////////////////
+	Fvector impulse;
+	impulse.set(dir);
+	impulse.mul(val);
+	dBodyAddForceAtPos(m_body, impulse.x,impulse.y,impulse.z,pos.x, pos.y,pos.z);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	////////////////////////////////////////////////////////////////////////
+}
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,u16 id)
 {
 
 	if(!bActive||m_flags.test(flFixed)) return;
-	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+
 	val/=fixed_step;
 	Fvector body_pos;
 	if(id!=BI_NONE)
@@ -633,18 +657,13 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 		DBG_ClosedCashedDraw(10000);
 	}
 #endif	
-
-	Fvector impulse;
-	impulse.set(dir);
-	impulse.mul(val);
-	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,body_pos.x, body_pos.y, body_pos.z);
+	applyImpulseVsMC(body_pos,dir,val);
 	if(m_fratures_holder)
 	{
 		///impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
+		Fvector impulse;impulse.set(dir);impulse.mul(val);
 		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
-
-	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 void CPHElement::applyImpact(const SPHImpact& I)
 {
@@ -976,6 +995,7 @@ void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
 {														
 	applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 }
+
 
 void CPHElement::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
 {

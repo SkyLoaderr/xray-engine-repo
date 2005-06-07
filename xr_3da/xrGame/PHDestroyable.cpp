@@ -198,15 +198,25 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	dBodyID own_body=own_shell->get_ElementByStoreOrder(0)->get_body();
 
 	u16 new_el_number = new_shell->get_ElementsNumber();
-
-
+////////////////////////////////////////////////////////////
+	Fvector pos;
+	if(m_fatal_hit.is_valide())
+	{
+		Fmatrix m;m.set(PKinematics(PPhysicsShellHolder()->Visual())->LL_GetTransform(m_fatal_hit.bone()));
+		m.mulA(PPhysicsShellHolder()->XFORM());
+		m.transform_tiny(pos,m_fatal_hit.bone_space_position());
+	
+////////////////////////////////////////////////////////////
 	for(u16 i=0;i<new_el_number;++i)
 	{
 		CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
-		Fvector mc; mc.set(e->mass_Center());
-		dVector3 res_vell;
-		dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
-		e->set_LinearVel(*(Fvector*)&res_vell);
+		e->applyImpulseVsGF(pos,m_fatal_hit.direction(),m_fatal_hit.phys_impulse());
+		//Fvector mc; mc.set(e->mass_Center());
+		//dVector3 res_vell;
+		//dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
+		//e->set_LinearVel(*(Fvector*)&res_vell);
+
+	}
 	}
 
 
