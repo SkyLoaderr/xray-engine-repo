@@ -42,8 +42,6 @@ void CControlAnimationBase::reinit()
 
 	aa_time_last_attack		= 0;
 
-	pCurAnimTriple			= 0;
-
 	// обновить количество анимаций
 	UpdateAnimCount			();
 

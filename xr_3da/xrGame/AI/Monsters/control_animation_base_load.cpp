@@ -9,7 +9,7 @@ void CControlAnimationBase::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVeloci
 
 	new_item.target_name	= tn;
 	new_item.spec_id		= s_id;
-	new_item.velocity		= vel;
+	new_item.velocity		= *vel;
 	new_item.pos_state		= p_s;
 
 	new_item.fxs.front		= fx_front;
@@ -30,7 +30,7 @@ void CControlAnimationBase::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVeloci
 
 	new_item.target_name	= tn;
 	new_item.spec_id		= s_id;
-	new_item.velocity		= vel;
+	new_item.velocity		= *vel;
 	new_item.pos_state		= p_s;
 
 	new_item.count			= 0;

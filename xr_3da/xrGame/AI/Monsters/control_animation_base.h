@@ -6,7 +6,15 @@
 #include "anim_triple.h"
 
 class		CJumping;
-class		CAnimTriple;
+
+
+struct SEventVelocityBounce : public ControlCom::IEventData {
+	float	m_ratio;
+
+	IC		SEventVelocityBounce(float ratio) : m_ratio(ratio) {}
+
+};
+
 
 //////////////////////////////////////////////////////////////////////////
 class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>, 
@@ -57,8 +65,6 @@ class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>,
 		} m_accel;
 
 		// ---------------------------------------------------------------------------------------
-
-		CAnimTriple					*pCurAnimTriple;
 
 		EMotionAnim					spec_anim; 
 

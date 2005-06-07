@@ -90,6 +90,9 @@ public:
 
 					bool	check_start_conditions		(ControlCom::EContolType);
 
+					// path buidler specials
+					bool	build_path_line				(CControl_Com*, const Fvector &target, u32 node, u32 vel_mask);
+		
 private:
 	ControlCom::EContolType	com_type					(CControl_Com*);
 

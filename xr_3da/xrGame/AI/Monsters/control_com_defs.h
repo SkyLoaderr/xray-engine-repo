@@ -46,5 +46,11 @@ namespace ControlCom {
 		eventTravelPointChange,
 		eventJumpEnd,
 	};
+
+	enum ECaptureType {
+		eCapturePath		= u32(1) << 0,
+		eCaptureMovement	= u32(1) << 1,
+		eCaptureDir			= u32(1) << 2,
+	};
 };
 

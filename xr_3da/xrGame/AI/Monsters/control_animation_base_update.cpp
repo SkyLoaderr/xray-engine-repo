@@ -13,7 +13,10 @@
 
 void CControlAnimationBase::update_frame()
 {
-	update();
+	update				();
+
+	// raise event on velocity bounce
+	CheckVelocityBounce	();
 }
 
 void CControlAnimationBase::update()
@@ -199,8 +202,8 @@ void CControlAnimationBase::CheckVelocityBounce()
 		if (prev_speed > cur_speed) ratio = -ratio;
 
 		// prepare event
-		CEventVelocityBounce		event(ratio);
-		m_object->EventMan.raise	(eventVelocityBounce, &event);
+		SEventVelocityBounce		event(ratio);
+		m_man->notify				(ControlCom::eventVelocityBounce, &event);
 
 	}
 	m_prev_character_velocity = cur_speed;

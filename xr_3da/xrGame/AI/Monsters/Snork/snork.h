@@ -12,7 +12,6 @@ class CSnork :	public CBaseMonster {
 	SVelocityParam	m_fsVelocityJumpOne;
 	SVelocityParam	m_fsVelocityJumpTwo;
 
-	CSnorkJump		*Jump;
 	CControlJump	*m_jump;
 
 	SAnimationTripleData anim_triple_jump;

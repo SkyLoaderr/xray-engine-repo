@@ -705,4 +705,7 @@ void CScriptGameObject::info_clear()
 #endif
 }
 
-
+bool CScriptGameObject::jump(CScriptGameObject *enemy)
+{
+	return false;
+}

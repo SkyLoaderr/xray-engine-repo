@@ -51,6 +51,8 @@ public:
 			bool	is_turning			();
 
 			void	get_heading			(float &current, float &target);
+
+			float	angle_to_target		(const Fvector &position);	
 private:				
 			void	pitch_correction	();
 };

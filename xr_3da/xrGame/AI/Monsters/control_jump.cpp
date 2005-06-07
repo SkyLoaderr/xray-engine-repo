@@ -45,10 +45,10 @@ void CControlJump::activate()
 	m_man->capture		(this, ControlCom::eControlMovement);
 	m_man->capture		(this, ControlCom::eControlTripleAnimation);
 	m_man->subscribe	(this, ControlCom::eventTAChange);
+	m_man->subscribe	(this, ControlCom::eventVelocityBounce);
 
 	m_man->path_stop	(this);
 	m_man->move_stop	(this);
-	m_man->dir_stop		(this);
 
 	if (m_data.target_object)
 		start_jump	(get_target(m_data.target_object));
@@ -59,32 +59,40 @@ void CControlJump::activate()
 
 void CControlJump::on_release()
 {
-	//m_man->release_pure	(this);
+	m_man->unlock		(this, ControlCom::eControlPath);
 	m_man->release		(this, ControlCom::eControlPath);
 	m_man->release		(this, ControlCom::eControlDir);
 	m_man->release		(this, ControlCom::eControlMovement);
 
 	if (m_man->triple_anim().is_active()) m_man->release		(this, ControlCom::eControlTripleAnimation);
 	m_man->unsubscribe	(this, ControlCom::eventTAChange);
+	m_man->unsubscribe	(this, ControlCom::eventVelocityBounce);
 }
 
 void CControlJump::start_jump(const Fvector &point)
 {
-	m_blend_speed					= -1.f;
-	m_target_position				= point;
+	m_blend_speed						= -1.f;
+	m_target_position					= point;
 
 	m_object->dir().set_heading_speed	(3.f);
 	m_object->dir().face_target			(point);
 
-	m_velocity_bounced	= false;
-	m_object_hitted		= false;
+	SControlDirectionData		*ctrl_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
+	VERIFY						(ctrl_dir);
+	ctrl_dir->heading.target_speed	= 3.f;
+	ctrl_dir->heading.target_acc	= flt_max;
+	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(point);
 
-	m_time_started		= 0;
-	m_jump_time			= 0;
 
-	m_enable_bounce		= true;
+	m_velocity_bounced					= false;
+	m_object_hitted						= false;
 
-	m_object->set_ignore_collision_hit		(true);
+	m_time_started						= 0;
+	m_jump_time							= 0;
+
+	m_enable_bounce						= true;
+
+	m_object->set_ignore_collision_hit	(true);
 
 	// activate triple animation
 	m_data.triple_anim.skip_prepare	= m_data.skip_prepare;
@@ -97,7 +105,8 @@ void CControlJump::start_jump(const Fvector &point)
 	ctrl_data->pool[2]		= m_data.triple_anim.pool[2];
 	ctrl_data->skip_prepare	= m_data.triple_anim.skip_prepare;
 	ctrl_data->execute_once	= m_data.triple_anim.execute_once;
-	
+	ctrl_data->capture_type = 0;
+
 	m_man->activate			(ControlCom::eControlTripleAnimation);
 
 }
@@ -112,8 +121,13 @@ void CControlJump::update_frame()
 	set_animation_speed	();
 	hit_test			();
 
-	// TODO!!!!!!!!
-	m_object->move().set_velocity_from_path	();
+	
+	// Set Velocity from path
+	SControlMovementData		*ctrl_move = (SControlMovementData*)m_man->data(this, ControlCom::eControlMovement); 
+	VERIFY						(ctrl_move);
+	
+	ctrl_move->velocity_target	= m_object->move().get_velocity_from_path();
+	ctrl_move->acc				= flt_max;
 }
 
 bool CControlJump::is_landing()
@@ -144,21 +158,26 @@ bool CControlJump::is_landing()
 
 void CControlJump::build_line()
 {
-	return;
-	//if (m_velocity_mask == u32(-1)) return;
-	//
-	//Fvector target_position;
-	//target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
+	if (m_data.velocity_mask == u32(-1)) return;
+	
+	Fvector target_position;
+	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
-	//if (!m_object->movement().build_special(target_position, u32(-1), m_velocity_mask)) stop();
-	//else m_object->movement().enable_path();
+	if (!m_man->build_path_line(this, target_position, u32(-1), m_data.velocity_mask)) stop();
+	else { 
+		// Set Velocity from path
+		SControlPathBuilderData		*ctrl_path = (SControlPathBuilderData*)m_man->data(this, ControlCom::eControlPath); 
+		VERIFY						(ctrl_path);
+	
+		ctrl_path->enable			= true;
+
+		m_man->lock					(this, ControlCom::eControlPath);
+		
+	}
 }
 
 void CControlJump::set_animation_speed() 
 {
-	//SCurrentAnimationInfo &info = m_object->anim().cur_anim_info();
-	//if (!info.blend) return;
-	//
 	//if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide)) {
 	//	if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
 	//	info.speed.current = (info.blend->timeTotal / m_jump_time);
@@ -170,11 +189,10 @@ void CControlJump::set_animation_speed()
 void CControlJump::stop()
 {
 	if (m_man->triple_anim().is_active())	m_man->release(this, ControlCom::eControlTripleAnimation);
-	//m_object->movement().stop_now			();
 	m_object->path().prepare_builder		();
 	m_object->set_ignore_collision_hit		(false);
 
-	m_man->notify(ControlCom::eventJumpEnd, 0);
+	m_man->notify							(ControlCom::eventJumpEnd, 0);
 }
 
 void CControlJump::pointbreak()
@@ -211,25 +229,20 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			if (m_man->triple_anim().is_active()) m_man->release(this, ControlCom::eControlTripleAnimation);
 			stop();
 		}
+	} else if (type == ControlCom::eventVelocityBounce) {
+		SEventVelocityBounce *event_data = (SEventVelocityBounce *)data;
+		if ((event_data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
+			if (is_on_the_ground()) {
+				m_velocity_bounced	= true;
+				build_line			();
+			} else {
+				if (!m_enable_bounce) {
+					m_enable_bounce = true;
+				} else stop();
+			}
+		}
 	}
 }
-
-//void CControlJump::on_velocity_bounce(IEventData *p_data)
-//{
-//	if (!m_active) return;
-//
-//	CEventVelocityBounce *data = (CEventVelocityBounce *)p_data;
-//	if ((data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
-//		if (is_on_the_ground()) {
-//			m_velocity_bounced	= true;
-//			build_line			();
-//		} else {
-//			if (!m_enable_bounce) {
-//				m_enable_bounce = true;
-//			} else stop();
-//		}
-//	}
-//}
 
 void CControlJump::hit_test() 
 {

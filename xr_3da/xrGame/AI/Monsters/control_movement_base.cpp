@@ -83,10 +83,10 @@ void CControlMovementBase::stop_accel()
 						flt_max);
 }
 
-void CControlMovementBase::set_velocity_from_path()
+float CControlMovementBase::get_velocity_from_path()
 {
-	if (m_man->path_builder().path().empty())	return;
-	if (!m_man->path_builder().enabled())		return;	
+	if (m_man->path_builder().path().empty())	return 0.f;
+	if (!m_man->path_builder().enabled())		return 0.f;	
 
 	// get target velocity from path
 	float velocity = 0.f;
@@ -109,9 +109,8 @@ void CControlMovementBase::set_velocity_from_path()
 		m_object->dir().set_heading_speed	(current_velocity.real_angular_velocity);
 	}
 
-	m_velocity	= velocity;
-	m_accel		= ((m_man->movement().velocity_current() > velocity) ? 
-						m_object->anim().accel_get(eAV_Braking) :
-						m_object->anim().accel_get(eAV_Accel));
-
+	return velocity;
+	//m_accel		= ((m_man->movement().velocity_current() > velocity) ? 
+	//	m_object->anim().accel_get(eAV_Braking) :
+	//m_object->anim().accel_get(eAV_Accel));
 }

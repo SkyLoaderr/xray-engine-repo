@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "snork.h"
 #include "snork_state_manager.h"
-#include "snork_jump.h"
 #include "../../../detail_path_manager_space.h"
 #include "../../../detail_path_manager.h"
 #include "../../../level.h"
@@ -10,24 +9,21 @@
 
 CSnork::CSnork() 
 {
-	StateMan	= xr_new<CStateManagerSnork>	(this);
-	Jump		= xr_new<CSnorkJump>			(this);
-	m_jump		= xr_new<CControlJump>			();
+	StateMan		= xr_new<CStateManagerSnork>	(this);
+	m_jump			= xr_new<CControlJump>			();
 
-	control().add(m_jump, ControlCom::eControlJump);
+	control().add	(m_jump, ControlCom::eControlJump);
 }
 
 CSnork::~CSnork()
 {
 	xr_delete		(StateMan);
-	xr_delete		(Jump);
 	xr_delete		(m_jump);
 }
 
 void CSnork::Load(LPCSTR section)
 {
 	inherited::Load			(section);
-	Jump->load				(section);
 
 	anim().accel_load	(section);
 
@@ -46,34 +42,34 @@ void CSnork::Load(LPCSTR section)
 		SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
 		//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
-		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND);
-		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,				PS_STAND);
-		anim().AddAnim(eAnimWalkDamaged,		"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
+		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
 		anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND);
 		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
 		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1,	&velocity_walk,	PS_STAND);
-		anim().AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND);
+		anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND);
+		anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND);
 		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimDie,				"stand_die_",			0,  &velocity_none,				PS_STAND);
-		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,				PS_STAND);
-		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,			PS_STAND);
-		anim().AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND);
-		anim().AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
+		anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
+		anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
 
 
 		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
 		anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
 		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_WALK_BKWD,	eAnimWalkFwd);
 		anim().LinkAction(ACT_RUN,			eAnimRun);
 		anim().LinkAction(ACT_EAT,			eAnimEat);
-		anim().LinkAction(ACT_SLEEP,			eAnimStandIdle);
+		anim().LinkAction(ACT_SLEEP,		eAnimStandIdle);
 		anim().LinkAction(ACT_REST,			eAnimStandIdle);
 		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
 		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
-		anim().LinkAction(ACT_STEAL,			eAnimSteal);
+		anim().LinkAction(ACT_STEAL,		eAnimSteal);
 		anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 
 		anim().AA_Load(pSettings->r_string(section, "attack_params"));
@@ -102,7 +98,6 @@ void CSnork::reinit()
 void CSnork::UpdateCL()
 {
 	inherited::UpdateCL	();
-	Jump->update_frame	();
 
 	//////////////////////////////////////////////////////////////////////////
 	CObject *obj = Level().CurrentEntity();
@@ -215,9 +210,11 @@ void CSnork::try_to_jump()
 	//Jump->try_to_jump(MonsterMovement::eSnorkVelocityParamsJump);
 	if (!EnemyMan.get_enemy()) return;
 	
+	CEntityAlive *target = const_cast<CEntityAlive*>(EnemyMan.get_enemy());
+	if (!m_jump->can_jump(target)) return;
+	
 	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(const_cast<CEntityAlive*>(EnemyMan.get_enemy()), anim_triple_jump, MonsterMovement::eSnorkVelocityParamsJump);
-		//control().activate(ControlCom::eControlJump);
+		anim().jump(target, anim_triple_jump, MonsterMovement::eSnorkVelocityParamsJump);
 	}
 }
 

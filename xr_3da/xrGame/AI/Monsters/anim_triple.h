@@ -19,6 +19,7 @@ struct SAnimationTripleData : public ControlCom::IComData {
 	MotionID	pool[3];
 	bool		skip_prepare;
 	bool		execute_once;
+	u32			capture_type;
 };
 
 class CAnimationTriple : public CControl_ComCustom<SAnimationTripleData>{

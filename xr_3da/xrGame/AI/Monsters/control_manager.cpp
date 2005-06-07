@@ -194,9 +194,9 @@ void CControl_Manager::capture(CControl_Com *com, ControlCom::EContolType type) 
 	VERIFY(!capturer || is_base(capturer));
 
 	if (target->is_active()) {
-		target->ced()->on_release();
+		target->ced()->on_release						();
 		// if there is base capturer - stop control com
-		if (capturer) capturer->cing()->on_stop_control(type);
+		if (capturer) capturer->cing()->on_stop_control	(type);
 	}
 
 	// 3. 
@@ -318,6 +318,14 @@ void CControl_Manager::dir_stop(CControl_Com *com)
 bool CControl_Manager::check_start_conditions(ControlCom::EContolType type)
 {
 	return m_control_elems[type]->check_start_conditions();
+}
+
+bool CControl_Manager::build_path_line(CControl_Com *com, const Fvector &target, u32 node, u32 vel_mask)
+{
+	CControl_Com *path		= m_control_elems[ControlCom::eControlPath];
+	VERIFY					(com == path->ced()->capturer());
+
+	return (path_builder().build_special(target, node, vel_mask));
 }
 
 

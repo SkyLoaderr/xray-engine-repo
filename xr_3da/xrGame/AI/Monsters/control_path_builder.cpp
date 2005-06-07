@@ -115,6 +115,48 @@ void CControlPathBuilder::on_travel_point_change()
 }
 
 //////////////////////////////////////////////////////////////////////////
+// Special Build Path
+//////////////////////////////////////////////////////////////////////////
+bool CControlPathBuilder::is_path_built()
+{
+	return (!path_completed() && (detail().time_path_built() >= Device.dwTimeGlobal));
+}
+
+bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel_mask)
+{
+	if (node == u32(-1)) {
+		// нода в прямой видимости?
+		restrictions().add_border(object().Position(), target);
+		node = ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),target);
+		restrictions().remove_border();
+
+		if (!ai().level_graph().valid_vertex_id(node) || !accessible(node)) return false;
+	}
+
+	enable_movement						(true);
+
+	detail().set_velocity_mask			(vel_mask);	
+	detail().set_desirable_mask			(vel_mask);
+
+	detail().set_try_min_time			(false); 
+	detail().set_use_dest_orientation	(false);
+
+	level_selector().set_evaluator		(0);
+	detail().set_path_type				(eDetailPathTypeSmooth);
+	set_path_type						(MovementManager::ePathTypeLevelPath);
+
+	detail().set_dest_position			(target);
+	set_level_dest_vertex				(node);
+
+	set_build_path_at_once				();
+	update_path							();	
+
+	if (is_path_built())				return true;
+
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Services
 //////////////////////////////////////////////////////////////////////////
 

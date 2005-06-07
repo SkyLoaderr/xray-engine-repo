@@ -5,6 +5,7 @@
 
 class CAbstractVertexEvaluator;
 class CCustomMonster;
+class CControl_Manager;
 
 struct SControlPathBuilderData : public ControlCom::IComData {
 	bool		use_dest_orientation;
@@ -32,6 +33,7 @@ class CControlPathBuilder :
 	typedef CMovementManager							inherited;
 	typedef CControl_ComPure<SControlPathBuilderData>	inherited_com;
 
+	friend	class CControl_Manager;
 	
 	CAbstractVertexEvaluator	*m_selector_approach;
 
@@ -55,4 +57,6 @@ public:
 
 private:	
 			void	init_selector			(CAbstractVertexEvaluator *S, Fvector target_pos);
+			bool	is_path_built			();
+			bool	build_special			(const Fvector &target, u32 node, u32 vel_mask);
 };

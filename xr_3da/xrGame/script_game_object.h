@@ -465,6 +465,10 @@ public:
 			
 			void				info_add				(LPCSTR text);
 			void				info_clear				();
+			
+			// Monster Jumper
+			bool				jump					(CScriptGameObject *enemy);
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

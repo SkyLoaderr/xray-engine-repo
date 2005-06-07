@@ -34,5 +34,5 @@ public:
 	void	set_heading_speed		(float value, bool force = false);
 	void	set_heading				(float value, bool force = false);
 
-	IC	const	SAxis	&heading	() {return m_heading;}		
+	IC	const	SAxis	&heading	() {return m_heading;}	
 };
