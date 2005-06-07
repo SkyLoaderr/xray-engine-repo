@@ -78,7 +78,9 @@ void CHelicopter::script_register(lua_State *L)
 				.def("SetDestPosition",						&CHelicopter::SetDestPosition)
 				.def("LookAtPoint",							&CHelicopter::LookAtPoint)
 				.def("SetFireTrailLength",					&CHelicopter::SetFireTrailLength)
-				.def("UseFireTrail",						&CHelicopter::UseFireTrail)
+
+				.def("UseFireTrail",						(bool (CHelicopter::*)(void)) CHelicopter::UseFireTrail)
+				.def("UseFireTrail",						(void (CHelicopter::*)(bool)) CHelicopter::UseFireTrail)
 
 				.def("Die",									&CHelicopter::DieHelicopter)
 				.def("StartFlame",							&CHelicopter::StartFlame)

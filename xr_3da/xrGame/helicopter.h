@@ -316,6 +316,7 @@ public:
 	void					UnSetEnemy						();
 	void					SetFireTrailLength				(float val);
 	bool					UseFireTrail					();
+	void					UseFireTrail					(bool val);
 
 	float					GetRealAltitude					();
 

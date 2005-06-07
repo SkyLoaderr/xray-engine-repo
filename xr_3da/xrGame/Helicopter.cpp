@@ -94,20 +94,6 @@ void CHelicopter::Load(LPCSTR section)
 	m_enemy.Load						(section);
 
 
-/*
-	m_body.model_angSpeedBank			= pSettings->r_float(section,"model_angular_sp_bank");
-	m_body.model_angSpeedPitch			= pSettings->r_float(section,"model_angular_sp_pitch");
-	m_body.model_pitch_k				= pSettings->r_float(section,"model_pitch_koef");
-	m_body.model_bank_k					= pSettings->r_float(section,"model_bank_koef");
-
-	m_movement.angularSpeedPitch		= pSettings->r_float(section,"path_angular_sp_pitch");
-	m_movement.angularSpeedHeading		= pSettings->r_float(section,"path_angular_sp_heading");
-	m_movement.LinearAcc_fw				= pSettings->r_float(section,"path_linear_acc_fw");
-	m_movement.LinearAcc_bk				= pSettings->r_float(section,"path_linear_acc_bk");
-	m_movement.onPointRangeDist			= pSettings->r_float(section,"on_point_range_dist");
-	m_movement.maxLinearSpeed			= pSettings->r_float(section,"velocity");
-	m_movement.min_altitude				= pSettings->r_float(section,"min_altitude");
-*/
 	m_death_ang_vel						= pSettings->r_fvector3(section,"death_angular_vel");
 	m_death_lin_vel_k					= pSettings->r_float(section,"death_lin_vel_koeff");
 
@@ -122,6 +108,8 @@ void CHelicopter::Load(LPCSTR section)
 	HUD_SOUND::LoadSound				(section,"snd_shoot", m_sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
 	HUD_SOUND::LoadSound				(section,"snd_shoot_rocket", m_sndShotRocket, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
 	CRocketLauncher::Load				(section);
+
+	UseFireTrail						(m_enemy.bUseFireTrail);//temp force reloar disp params
 
 	m_sAmmoType							= pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load					(*m_sAmmoType);
@@ -142,7 +130,7 @@ void CHelicopter::Load(LPCSTR section)
 //lighting & sounds
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
 	m_explode_particle					= pSettings->r_string(section,"explode_particle");
-
+w
 	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
 	m_explodeSound.create				(TRUE,*expl_snd);
 
@@ -492,4 +480,5 @@ void CHelicopter::load(IReader &input_packet)
 	m_body.load		(input_packet);
 	m_enemy.load	(input_packet);
 	input_packet.r_fvector3(XFORM().c);
+	UseFireTrail	(m_enemy.bUseFireTrail);//force reloar disp params
 }

@@ -348,8 +348,8 @@ void SHeliEnemy::load(IReader &input_packet)
 
 	fire_trail_length	= input_packet.r_float();
 	bUseFireTrail		= !!input_packet.r_u8();
-
 }
+
 void CHelicopter::SetFireTrailLength(float val)
 {
 	m_enemy.fire_trail_length	=	val;
@@ -357,6 +357,18 @@ void CHelicopter::SetFireTrailLength(float val)
 bool CHelicopter::UseFireTrail()
 {
 	return m_enemy.bUseFireTrail;
+}
+
+void CHelicopter::UseFireTrail(bool val)
+{
+	m_enemy.bUseFireTrail = val;
+	if(val){
+		fireDispersionBase	= pSettings->r_float		(*cNameSect(),"fire_dispersion_null");
+		fireDispersionBase	= deg2rad					(fireDispersionBase);
+	}else{
+		fireDispersionBase	= pSettings->r_float		(*cNameSect(),"fire_dispersion_base");
+		fireDispersionBase	= deg2rad					(fireDispersionBase);
+	}
 }
 
 
