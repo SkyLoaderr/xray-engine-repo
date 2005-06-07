@@ -537,12 +537,14 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
 						break;
 					}
+					/*
 					CActor* pActor = smart_cast<CActor*>(pOKiller);
 					if (pActor)
 					{
 						KMS.m_killer.m_name = pKiller ? pKiller->name : *(pActor->cName());
 						KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Teams_u32[pActor->g_Team()];
 					};
+					*/
 				};
 
 				if (pKiller)

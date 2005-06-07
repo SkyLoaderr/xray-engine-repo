@@ -50,6 +50,8 @@ struct	game_PlayerState
 	//---------------------------
 	u8			m_bCurrentVoteAgreed;
 	//---------------------------
+	DEF_DEQUE	(OLD_GAME_ID, u16);
+	OLD_GAME_ID	mOldIDs;
 
 /*
 private:
@@ -65,6 +67,8 @@ public:
 			void	resetFlag				(u16 f);
 			LPCSTR	getName					(){return name;}
 			void	setName					(LPCSTR s){strcpy(name,s);}
+			void	SetGameID				(u16 NewID);
+			bool	HasOldID				(u16 ID);
 
 #ifndef AI_COMPILER
 	virtual void	net_Export				(NET_Packet& P);

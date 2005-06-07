@@ -83,6 +83,14 @@ game_PlayerState*	game_sv_GameState::get_eid (u16 id) //if exist
 	CSE_Abstract* entity = get_entity_from_eid(id);
 	if (entity && entity->owner->ps->GameID == id)
 		return entity->owner->ps;
+	//-------------------------------------------------
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		game_PlayerState*	ps	=	get_it	(it);
+		if (ps->HasOldID(id)) return ps;
+	};
+	//-------------------------------------------------
 	return NULL;
 }
 

@@ -302,7 +302,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 	Msg		("* %s respawned as %s",get_option_s(options,"name","Player"), (0 == pA) ? "spectator" : "actor");
 	spawn_end				(E,id);
 
-	ps_who->GameID = CL->owner->ID;
+	ps_who->SetGameID(CL->owner->ID);
 
 	signal_Syncronize();
 }
@@ -732,7 +732,7 @@ void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
 	OnPlayerKillPlayer(ps_killer, ps_killed);
 
 	//---------------------------------------------------
-	SendPlayerKilledMessage(KilledID, KillType, KillerID, WeaponID, SpecialKill);
+	SendPlayerKilledMessage(ps_killed->GameID, KillType, ps_killer->GameID, WeaponID, SpecialKill);
 };
 	
 void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill)

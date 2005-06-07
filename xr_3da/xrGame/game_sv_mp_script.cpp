@@ -141,8 +141,8 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 	
 	Msg		("* %s respawned as %s",get_option_s(options,"name","Player"), (0 == pA) ? "spectator" : "actor");
 	spawn_end				(E,id);
-
-	ps_who->GameID = CL->owner->ID;
+	
+	ps_who->SetGameID(CL->owner->ID);
 
 	CL->owner->owner = CL;
 

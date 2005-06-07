@@ -35,6 +35,7 @@ game_PlayerState::game_PlayerState()
 	RespawnTime = 0;
 	//--------------------------------
 	Rping = 0;
+	mOldIDs.clear();
 }
 
 void game_PlayerState::clear()
@@ -52,6 +53,7 @@ void game_PlayerState::clear()
 	m_bClearRun = false;
 
 	DeathTime = 0;
+	mOldIDs.clear();
 }
 
 game_PlayerState::~game_PlayerState()
@@ -117,6 +119,23 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	DeathTime = P.r_u32();
 //	DeathTime = Level().timeServer() - xdt;
 };
+
+void	game_PlayerState::SetGameID				(u16 NewID)
+{
+	if (mOldIDs.size()>=10)
+	{
+		mOldIDs.pop_front();
+	};
+	mOldIDs.push_back(GameID);
+	GameID = NewID;
+}
+bool	game_PlayerState::HasOldID				(u16 ID)
+{
+	OLD_GAME_ID_it ID_i = std::find(mOldIDs.begin(), mOldIDs.end(), ID);
+	if (ID_i != mOldIDs.end() && *(ID_i)== ID)
+		return true;
+	return false;
+}
 
 game_TeamState::game_TeamState()
 {
