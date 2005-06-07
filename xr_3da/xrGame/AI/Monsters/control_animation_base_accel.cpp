@@ -63,7 +63,7 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 
 
 			ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(*IT);
-			SVelocityParam		*param	= item_it->second.velocity;
+			SVelocityParam		*param	= &item_it->second.velocity;
 			float				from	= param->velocity.linear * param->min_factor;
 			float				to		= param->velocity.linear * param->max_factor;
 
@@ -71,7 +71,7 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 				((cur_speed < from) && (IT == I->begin()))					|| 
 				((cur_speed + EPS_L >= to) &&	(IT+1 == I->end())) ) {
 					best_anim	= IT;
-					best_param	= item_it->second.velocity;
+					best_param	= &item_it->second.velocity;
 				}
 
 				if ((*IT) == target_anim) found = true;
@@ -105,8 +105,8 @@ bool CControlAnimationBase::accel_chain_test()
 		for (SEQ_VECTOR_IT IT = I->begin() + 1; IT != I->end(); IT++) {
 			anim_to = get_sd()->m_tAnims.find(*IT);
 
-			float from	=	anim_from->second.velocity->velocity.linear * anim_from->second.velocity->max_factor;
-			float to	=	anim_to->second.velocity->velocity.linear * anim_to->second.velocity->min_factor;
+			float from	=	anim_from->second.velocity.velocity.linear * anim_from->second.velocity.max_factor;
+			float to	=	anim_to->second.velocity.velocity.linear * anim_to->second.velocity.min_factor;
 
 			sprintf(error_msg,"Incompatible speed ranges. Monster[%s] From animation  [%s] To animation [%s]",*m_object->cName(),*anim_from->second.target_name, *anim_to->second.target_name);
  			VERIFY2(to < from, error_msg);

@@ -108,7 +108,7 @@ void CControlAnimationBase::SelectVelocities()
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	// получить скорости движения по анимации
-	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular_real);
+	anim_vel.set(item_it->second.velocity.velocity.linear, item_it->second.velocity.velocity.angular_real);
 
 	//	// проверить на совпадение
 	//	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
@@ -152,7 +152,7 @@ void CControlAnimationBase::SelectVelocities()
 	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-	m_object->dir().set_heading_speed(item_it->second.velocity->velocity.angular_real);
+	m_object->dir().set_heading_speed(item_it->second.velocity.velocity.angular_real);
 
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию

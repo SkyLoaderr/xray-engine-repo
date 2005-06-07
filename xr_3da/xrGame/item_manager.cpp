@@ -78,6 +78,6 @@ void CItemManager::remove_links		(CObject *object)
 	if (I != m_objects.end())
 		m_objects.erase			(I);
 
-	if (m_selected->ID() == object->ID())
+	if (m_selected && (m_selected->ID() == object->ID()))
 		m_selected				= 0;
 }

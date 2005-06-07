@@ -354,7 +354,7 @@ bool CControlAnimationBase::IsStandCurAnim()
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
+	if (fis_zero(item_it->second.velocity.velocity.linear)) return true;
 	return false;
 }
 
@@ -464,7 +464,7 @@ void CControlAnimationBase::ValidateAnimation()
 {
 
 	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
+	bool is_moving_anim		= !fis_zero(item_it->second.velocity.velocity.linear);
 	bool is_moving_on_path	= m_object->control().path_builder().is_moving_on_path();
 
 	if (is_moving_on_path && is_moving_anim) {
