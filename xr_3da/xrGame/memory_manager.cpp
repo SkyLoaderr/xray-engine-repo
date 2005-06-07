@@ -229,4 +229,5 @@ void CMemoryManager::remove_links	(CObject *object)
 
 	danger().remove_links		(object);
 	enemy().remove_links		(object);
+	item().remove_links			(object);
 }
