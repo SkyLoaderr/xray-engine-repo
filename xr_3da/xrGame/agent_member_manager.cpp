@@ -59,6 +59,19 @@ void CAgentMemberManager::update				()
 
 void CAgentMemberManager::remove_links			(CObject *object)
 {
+	MEMBER_STORAGE::iterator	I = m_members.begin();
+	MEMBER_STORAGE::iterator	E = m_members.end();
+	for ( ; I != E; ++I) {
+		if ((*I)->grenade_reaction().m_grenade && ((*I)->grenade_reaction().m_grenade->ID() == object->ID()))
+			(*I)->grenade_reaction().clear();
+
+		if ((*I)->grenade_reaction().m_game_object && ((*I)->grenade_reaction().m_game_object->ID() == object->ID())) {
+			(*I)->grenade_reaction().clear();
+
+		if ((*I)->member_death_reaction().m_member && ((*I)->member_death_reaction().m_member->ID() == object->ID()))
+			(*I)->member_death_reaction().clear();
+	}
+
 }
 
 void CAgentMemberManager::register_in_combat	(const CAI_Stalker *object)
