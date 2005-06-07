@@ -82,7 +82,11 @@ void CHelicopter::OnShot		()
 		if(dist > (m_enemy.fire_trail_length/2.0f) ){
 			fd.mul(-1.0f);
 			dist = dist - (m_enemy.fire_trail_length/2.0f);
+		}else{
+			dist = (m_enemy.fire_trail_length/2.0f) - dist;
 		}
+		
+
 		static float fire_trace_width = pSettings->r_float(*cNameSect(),"fire_trace_width");
 		enemy_pos.mad(fd,dist);
 		Fvector disp_dir;
