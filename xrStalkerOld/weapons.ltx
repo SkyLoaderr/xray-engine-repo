@@ -954,7 +954,7 @@ tracer			= off
 wm_size         = 0.1
 
 jump_height = 1
-fake_grenade_name = wpn_fake_missile
+fake_grenade_name = wpn_fake_missile1
 
 ;могут ли боеприпасы быть неограниченными : 1 - могут, 0 - не могут
 can_be_unlimited = false
@@ -1000,7 +1000,7 @@ buck_shot		= 0
 tracer			= off
 wm_size         = 0.1
 
-fake_grenade_name = wpn_fake_missile1
+fake_grenade_name = wpn_fake_missile
 
 ;могут ли боеприпасы быть неограниченными : 1 - могут, 0 - не могут
 can_be_unlimited = false
@@ -1056,7 +1056,7 @@ can_be_unlimited = false
 
 
 [wpn_fake_missile]
-visual                  = weapons\ammo\ammo_vog-25p.ogf
+visual                  = weapons\ammo\ammo_vog-25.ogf
 cform                    = skeleton
 class                    = G_FAKE
 $prefetch 		= 32
@@ -1085,7 +1085,7 @@ up_throw_factor		= 1.5
 
 ;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
 
-explode_particles	= explosions\explosion_01d
+explode_particles	= explosions\explosion_04a
 
 
 light_color		         = 1.9,1.2,0.5
@@ -1097,7 +1097,7 @@ ph_mass			 = 5
 ;engine_f			= 530
 ;engine_u			= 90
 
-jump_height = 1
+jump_height = 0
 
 wm_size                  = 0.1 ;0.05
 
@@ -1161,7 +1161,7 @@ up_throw_factor		= 1.5
 
 ;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
 
-explode_particles	= explosions\explosion_01d
+explode_particles	= explosions\explosion_01c
 
 
 light_color		         = 1.9,1.4,0.5
@@ -1173,7 +1173,7 @@ ph_mass			 = 5
 ;engine_f			= 530
 ;engine_u			= 90
 
-jump_height = 0
+jump_height = 1
 
 ;трассы от осколков
 tracer_head_speed	     = 100
@@ -1187,8 +1187,8 @@ explode_duration		 = 5		;подолжительность взрыва (с)
 snd_explode = weapons\f1_explode
 
 ;свойства которые читаются, но не используются
-inv_name		= "VOG-25"
-inv_name_short	= "VOG-25"
+inv_name		= "VOG-25P"
+inv_name_short	= "VOG-25P"
 inv_weight		= .2
 
 inv_grid_width		= 1
