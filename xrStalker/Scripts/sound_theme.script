@@ -244,6 +244,7 @@ function load_sound(obj)
     theme["mil_dolg_killer"]                = load_sound_from_ltx(obj, "mil_dolg_killer")
     theme["mil_dolg_scull"]                 = load_sound_from_ltx(obj, "mil_dolg_scull")
     theme["mil_max_to_actor"]               = load_sound_from_ltx(obj, "mil_max_to_actor")
+    theme["mil_collect_phrases"]            = load_sound_from_ltx(obj, "mil_collect_phrases")
 
 	-- релш, йнрнпше мсфмн опхбеярх й бюпхюмрс нямнбмни релш
 	theme["esc_volk_greet1"]			= load_sound_from_ltx(obj, "volk_greet1")
