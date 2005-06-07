@@ -162,7 +162,7 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 		Sleep			(5)	; 
 		Server->Update	()	;
 	}
-	Msg							("client : connection %s - <%s>", m_bConnectResult ? "accepted" : "rejected", m_sConnectResult.c_str());
+	Msg							("%c client : connection %s - <%s>", m_bConnectResult ?'*':'!', m_bConnectResult ? "accepted" : "rejected", m_sConnectResult.c_str());
 	if		(!m_bConnectResult) 
 	{
 		Disconnect		()	;

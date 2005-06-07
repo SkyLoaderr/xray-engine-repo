@@ -91,7 +91,7 @@ const char*	dbg_state[] =	{
 void CElevatorState::SwitchState(Estate new_state)
 {
 	
-#ifdef DEBUG
+#ifdef _DEBUG
 	Msg("%s",dbg_state[new_state]);
 #endif
 	VERIFY(m_character);

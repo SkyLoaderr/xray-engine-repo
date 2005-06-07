@@ -36,7 +36,7 @@ BOOL xrServer::Connect(shared_str &session_name)
 	csPlayers.Enter			();
 //	game->type				= type_id;
 #ifdef DEBUG
-	Msg("Created server_game %s",game->type_name());
+	Msg("* Created server_game %s",game->type_name());
 #endif
 	game->Create			(session_name);
 	csPlayers.Leave			();

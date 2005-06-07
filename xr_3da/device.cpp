@@ -119,8 +119,8 @@ void CRenderDevice::PreCache	(u32 amount)
 
 void CRenderDevice::Run			()
 {
-    MSG         msg;
-    BOOL		bGotMsg;
+    MSG				msg;
+    BOOL			bGotMsg;
 	Log				("Starting engine...");
 	thread_name		("X-RAY Primary thread");
 

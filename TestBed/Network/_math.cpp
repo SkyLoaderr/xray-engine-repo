@@ -229,6 +229,7 @@ void _initialize_cpu_thread	()
 #define _MM_FLUSH_ZERO_ON 0x8000
 #define _MM_SET_FLUSH_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_FLUSH_ZERO_MASK) | (mode))
 #define _MM_SET_DENORMALS_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_DENORMALS_ZERO_MASK) | (mode))
+static	BOOL	_denormals_are_zero_supported	= TRUE;
 void _initialize_cpu_thread	()
 {
 	// fpu & sse
@@ -236,12 +237,12 @@ void _initialize_cpu_thread	()
 	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
 		//_mm_setcsr ( _mm_getcsr() | (_MM_FLUSH_ZERO_ON+_MM_DENORMALS_ZERO_ON) );
 		_MM_SET_FLUSH_ZERO_MODE			(_MM_FLUSH_ZERO_ON);
-		__try
-		{
-			_MM_SET_DENORMALS_ZERO_MODE	(_MM_DENORMALS_ZERO_ON);
-		}
-		__except(EXCEPTION_EXECUTE_HANDLER)
-		{
+		if (_denormals_are_zero_supported)	{
+			__try	{
+				_MM_SET_DENORMALS_ZERO_MODE	(_MM_DENORMALS_ZERO_ON);
+			} __except(EXCEPTION_EXECUTE_HANDLER) {
+				_denormals_are_zero_supported	= FALSE;
+			}
 		}
 	}
 }

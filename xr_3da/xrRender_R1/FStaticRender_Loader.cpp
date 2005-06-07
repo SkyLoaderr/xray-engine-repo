@@ -78,7 +78,7 @@ void CRender::level_Load(IReader* fs)
 	HOM.Load					();
 
 	// Lights
-	pApp->LoadTitle				("Loading lights...");
+	//pApp->LoadTitle				("Loading lights...");
 	LoadLights					(fs);
 
 	// End
