@@ -157,4 +157,7 @@ void CEnemyManager::remove_links			(CObject *object)
 
 	if (m_last_enemy->ID() == object->ID())
 		m_last_enemy			= 0;
+
+	if (m_selected->ID() == object->ID())
+		m_selected				= 0;
 }
