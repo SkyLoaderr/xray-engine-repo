@@ -57,6 +57,13 @@ void CStalkerDangerPlanner::finalize			()
 //	object().sound().remove_active_sounds		(u32(-1));
 }
 
+void CStalkerDangerPlanner::update			()
+{
+	inherited::update				();
+	object().react_on_grenades		();
+	object().react_on_member_death	();
+}
+
 void CStalkerDangerPlanner::initialize		()
 {
 	inherited::initialize						();

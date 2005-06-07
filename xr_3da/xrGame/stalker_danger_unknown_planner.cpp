@@ -54,7 +54,6 @@ void CStalkerDangerUnknownPlanner::finalize					()
 void CStalkerDangerUnknownPlanner::add_evaluators			()
 {
 	add_evaluator			(eWorldPropertyDanger			,xr_new<CStalkerPropertyEvaluatorDangers>					(m_object,"danger"));
-	add_evaluator			(eWorldPropertyDangerUnknown	,xr_new<CStalkerPropertyEvaluatorDangerUnknown>				(m_object,"danger unknown"));
 	add_evaluator			(eWorldPropertyCoverActual		,xr_new<CStalkerPropertyEvaluatorDangerUnknownCoverActual>	(m_object,"danger unknown : cover actual"));
 	add_evaluator			(eWorldPropertyCoverReached		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyCoverReached,true,true,"danger unknown : cover reached"));
 	add_evaluator			(eWorldPropertyLookedAround		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyLookedAround,true,true,"danger unknown : looked around"));
@@ -65,13 +64,11 @@ void CStalkerDangerUnknownPlanner::add_actions				()
 	CStalkerActionBase		*action;
 
 	action					= xr_new<CStalkerActionDangerUnknownTakeCover>	(m_object,"take cover");
-	add_condition			(action,eWorldPropertyDangerUnknown,	true);
 	add_effect				(action,eWorldPropertyCoverActual,		true);
 	add_effect				(action,eWorldPropertyCoverReached,		true);
 	add_operator			(eWorldOperatorDangerUnknownTakeCover,	action);
 
 	action					= xr_new<CStalkerActionDangerUnknownLookAround>	(m_object,"look around");
-	add_condition			(action,eWorldPropertyDangerUnknown,	true);
 	add_condition			(action,eWorldPropertyCoverActual,		true);
 	add_condition			(action,eWorldPropertyCoverReached,		true);
 	add_condition			(action,eWorldPropertyLookedAround,		false);
@@ -79,7 +76,6 @@ void CStalkerDangerUnknownPlanner::add_actions				()
 	add_operator			(eWorldOperatorDangerUnknownLookAround,	action);
 
 	action					= xr_new<CStalkerActionDangerUnknownSearch>	(m_object,"search");
-	add_condition			(action,eWorldPropertyDangerUnknown,	true);
 	add_condition			(action,eWorldPropertyCoverActual,		true);
 	add_condition			(action,eWorldPropertyCoverReached,		true);
 	add_condition			(action,eWorldPropertyLookedAround,		true);
