@@ -464,10 +464,12 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 	}
 }
 
+static	CTimer	phase_timer		;
 void CApplication::LoadBegin	()
 {
 	ll_dwReference++;
-	if (1==ll_dwReference) {
+	if (1==ll_dwReference)	{
+		phase_timer.Start	();
 		::Sound->set_volume (0.f);
 		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 		ll_hLogo1.create	("font","ui\\ui_logo");
@@ -482,6 +484,7 @@ void CApplication::LoadEnd		()
 	ll_dwReference--;
 	if (0==ll_dwReference)		{
 		::Sound->set_volume		(1.f);
+		Msg						("* phase time: %d ms",phase_timer.GetElapsed_ms());
 	}
 }
 
@@ -492,6 +495,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Device.dwFrame				+= 1;
 	Device.Begin				();
 
+	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
 	Log							(S,S2);
 
 	if	(g_pGamePersistent->bDedicatedServer)	{
@@ -514,7 +518,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 
 		// Draw title
-		R_ASSERT					(pFontSystem);
+		VERIFY						(pFontSystem);
 		pFontSystem->Clear			();
 		pFontSystem->SetColor		(color_rgba(192,192,192,255));
 		pFontSystem->SetAligment	(CGameFont::alCenter);
