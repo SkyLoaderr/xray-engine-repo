@@ -59,7 +59,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		// Waiting for connection/configuration completition
 		CTimer	timer_sync	;	timer_sync.Start	();
 		while	(!net_isCompleted_Connect())	Sleep	(5);
-		Msg		("* connection sync: %d ms", timer_sync.GetElapsed_ms())
+		Msg		("* connection sync: %d ms", timer_sync.GetElapsed_ms());
 		while	(!net_isCompleted_Sync())	{ ClientReceive(); Sleep(5); }
 		while	(!game_configured)			{ ClientReceive(); Sleep(5); }
 		
