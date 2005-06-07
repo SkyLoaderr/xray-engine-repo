@@ -665,7 +665,7 @@ void	IPureClient::Sync_Thread	()
 			if (net_DeltaArray.size()>=syncSamples)	{
 				net_Syncronised	= TRUE;
 				net_TimeDelta	= net_TimeDelta_Calculated;
-				Msg				("* CL_TimeSync: DELTA: %d",net_TimeDelta);
+				// Msg			("* CL_TimeSync: DELTA: %d",net_TimeDelta);
 			}
 		}
 	}

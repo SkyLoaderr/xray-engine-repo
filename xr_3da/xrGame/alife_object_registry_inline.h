@@ -68,5 +68,5 @@ void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &pred
 	for ( ; I != E; ++I)
 		predicate				((*I).second);
 
-	Msg							("%d objects are successfully loaded",count);
+	Msg							("* %d objects are successfully loaded",count);
 }

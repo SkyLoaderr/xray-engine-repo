@@ -258,7 +258,7 @@ void CActor::reload	(LPCSTR section)
 
 void CActor::Load	(LPCSTR section )
 {
-	Msg						("Loading actor: %s",section);
+	// Msg					("Loading actor: %s",section);
 	inherited::Load			(section);
 	material().Load			(section);
 	CInventoryOwner::Load	(section);
