@@ -195,20 +195,40 @@ public:
 		CActor *l_pPlayer = smart_cast<CActor*>(l_pObj);
 		if(l_pPlayer) {
 			NET_Packet		P;
-//			l_pPlayer->u_EventGen		(P,GEG_PLAYER_KILL,l_pPlayer->ID()	);
 			l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
 			P.w_u16(GAME_EVENT_PLAYER_KILL);
-
 			P.w_u16			(u16(l_pPlayer->ID())	);
-			//			P.w_s16			(s16(l_team));
-			//			P.w_s16			((s16)0);
-			//			P.w_u32			(0);
 			l_pPlayer->u_EventSend		(P);
 		}
 	}
 	virtual void	Info	(TInfo& I)		
 	{
 		strcpy(I,"player kill"); 
+	}
+};
+
+class CCC_Name : public IConsole_Command {
+public:
+	CCC_Name(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (GameID() == GAME_SINGLE) return;
+		if (!Game().local_player) return;
+		
+		string1024 NewName = "";
+		sscanf	(args,"%s", NewName);
+		if (!xr_strlen(NewName)) return;
+	
+		NET_Packet		P;
+		Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
+		P.w_u16(GAME_EVENT_PLAYER_NAME);
+		P.w_stringZ(NewName);
+		Game().u_EventSend(P);
+	}
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"player name"); 
 	}
 };
 
@@ -2027,4 +2047,5 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,		"sv_statistic_save_auto", &g_bStatisticSaveAuto, 0, 1);
 
 	CMD4(CCC_AuthCheck,		"sv_auth_check",		&g_SV_Disable_Auth_Check, 0, 1);
+	CMD1(CCC_Name,			"name");
 }

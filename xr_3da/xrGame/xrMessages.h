@@ -184,6 +184,7 @@ enum EGameMessages {  //game_cl <----> game_sv messages
 
 	GAME_EVENT_SCRIPT_BEGINS_FROM,
 	GAME_EVENT_PLAYER_AUTH,
+	GAME_EVENT_PLAYER_NAME,
 	GAME_EVENT_FORCEDWORD				= u32(-1)
 };
 

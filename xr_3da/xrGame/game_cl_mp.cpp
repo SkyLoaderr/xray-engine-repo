@@ -261,6 +261,10 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			OnVoteEnd(P);
 		}break;
+	case GAME_EVENT_PLAYER_NAME:
+		{
+			OnPlayerChangeName(P);
+		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
@@ -654,3 +658,16 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 
 	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
 };
+
+void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)
+{
+	u16 ObjID = P.r_u16();
+	s16 Team = P.r_s16();
+	string1024 OldName, NewName;
+	P.r_stringZ(OldName);
+	P.r_stringZ(NewName);
+
+	string1024 resStr;
+	sprintf(resStr, "%s\"%s\" %sis now %s\"%s\"", Color_Teams[Team], OldName, Color_Main, Color_Teams[Team], NewName);
+	CommonMessageOut(resStr);
+}

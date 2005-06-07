@@ -140,18 +140,12 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 	{	
 	case GAME_EVENT_PLAYER_KILLED:  //playerKillPlayer
 		{
-//			ClientID cl1, cl2;
-//			P.r_clientID(cl1);
-//			P.r_clientID(cl2);
-//			OnPlayerKillPlayer( cl1, cl2 );
 			OnPlayerKilled(P);
 		}break;
-
 	case GAME_EVENT_PLAYER_READY:// cs & dm 
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
-			OnPlayerReady		(l_pC->ID);
-			
+			OnPlayerReady		(l_pC->ID);			
 		}break;
 	case GAME_EVENT_VOTE_START:
 		{
@@ -169,6 +163,10 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 		{
 			if (!IsVoteEnabled()) break;
 			OnVoteNo(sender);
+		}break;
+	case GAME_EVENT_PLAYER_NAME:
+		{
+			OnPlayerChangeName(P, sender);
 		}break;
 	default:
 		inherited::OnEvent(P, type, time, sender);
@@ -749,8 +747,6 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerI
 	P.w_u16	(WeaponID);
 	P.w_u8	(SpecialKill);
 
-//	u_EventSend(P);
-
 	u32	cnt = get_players_count();	
 	for(u32 it=0; it<cnt; it++)	
 	{
@@ -759,4 +755,52 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerI
 		if (!l_pC || !l_pC->net_Ready || !ps) continue;
 		m_server->SendTo(l_pC->ID, P);
 	};
+};
+
+void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
+{
+	string1024 NewName = "";
+	P.r_stringZ(NewName);
+	xrClientData*	pClient	= (xrClientData*)m_server->ID_to_client	(sender);
+	
+	if (!pClient || !pClient->net_Ready) return;
+	game_PlayerState* ps = pClient->ps;
+	if (!ps) return;
+
+	if (pClient->owner)
+	{
+		NET_Packet			P;
+		GenerateGameMessage(P);
+		P.w_u32(GAME_EVENT_PLAYER_NAME);
+		P.w_u16(pClient->owner->ID);
+		P.w_s16(ps->team);
+		P.w_stringZ(ps->getName());
+		P.w_stringZ(NewName);
+		//---------------------------------------------------		
+		u32	cnt = get_players_count();	
+		for(u32 it=0; it<cnt; it++)	
+		{
+			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+			game_PlayerState* ps	= l_pC->ps;
+			if (!l_pC || !l_pC->net_Ready || !ps) continue;
+			m_server->SendTo(l_pC->ID, P);
+		};
+		//---------------------------------------------------
+		pClient->owner->set_name_replace(NewName);
+		pClient->owner->set_name(NewName);
+		if (strstr(pClient->Name.c_str(), "name="))
+		{
+			string1024 tmpName = "";
+			strcpy(tmpName, pClient->Name.c_str());
+			*(strstr(tmpName, "name=")+5) = 0;
+			sprintf(tmpName, "%s%s", tmpName, NewName);
+			char* ptmp = strstr(strstr(pClient->Name.c_str(), "name="), "/");
+			if (ptmp)
+				sprintf(tmpName, "%s%s", tmpName, ptmp);
+			pClient->Name._set(tmpName);
+		}
+	};
+
+	ps->setName(NewName);
+	signal_Syncronize();
 };
