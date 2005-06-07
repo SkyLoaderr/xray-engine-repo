@@ -103,7 +103,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, xrGUID *save_guid)
 	
 	build_root_spawns			();
 
-	Msg							("%d spawn points are successfully loaded",m_spawns.vertex_count());
+	Msg							("* %d spawn points are successfully loaded",m_spawns.vertex_count());
 }
 
 void CALifeSpawnRegistry::save_updates			(IWriter &stream)
