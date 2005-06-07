@@ -253,6 +253,9 @@
 		<class>Svoboda_master_Ugrumiy</class>
 	</character>
 
+	<character id="svoboda_blockpost_leader">
+		<class>Svoboda_blockpost_leader</class>
+	</character>
 
 	<character id="dolg_veteran_cherep">
 		<class>Dolg_specnaz_cherep</class>
