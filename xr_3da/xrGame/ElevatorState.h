@@ -14,7 +14,7 @@ class CElevatorState
 		clbClimbingUp	,		
 		clbClimbingDown	,	
 		clbDepart		,
-		clbNoLader		
+		clbNoLadder		
 	};
 
 Estate m_state;

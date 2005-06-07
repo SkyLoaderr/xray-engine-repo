@@ -48,7 +48,8 @@ enum
 	phHitApplicationPoints		=		1<<15,
 	phDbgDrawCashedTriesStat	=		1<<16,
 	phDbgDrawCarDynamics		=		1<<17,
-	phDbgDrawCarPlots			=		1<<18
+	phDbgDrawCarPlots			=		1<<18,
+	phDbgLadder					=		1<<19
 };
 struct SPHObjDBGDraw
 {
