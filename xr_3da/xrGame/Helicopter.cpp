@@ -130,7 +130,7 @@ void CHelicopter::Load(LPCSTR section)
 //lighting & sounds
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
 	m_explode_particle					= pSettings->r_string(section,"explode_particle");
-w
+
 	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
 	m_explodeSound.create				(TRUE,*expl_snd);
 
