@@ -812,7 +812,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
-		                     return obj:profile_name () == "svoboda_specnaz"
+		                     return obj:profile_name () == "svoboda_blockpost_leader"
 		            end
 		}
 	table.insert(sj, t)		
