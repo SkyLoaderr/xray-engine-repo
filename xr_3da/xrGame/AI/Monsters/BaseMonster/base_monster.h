@@ -151,6 +151,9 @@ public:
 	bool					m_script_processing_active;
 	bool					m_script_state_must_execute;
 
+
+	virtual bool			jump							(CObject *enemy) {return false;}
+
 	//----------------------------------------------------------------------------------
 
 	virtual void			SetTurnAnimation				(bool turn_left);

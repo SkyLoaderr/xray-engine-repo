@@ -32,6 +32,7 @@
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
 #include "level_debug.h"
+#include "ai/monsters/BaseMonster/base_monster.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
@@ -707,5 +708,10 @@ void CScriptGameObject::info_clear()
 
 bool CScriptGameObject::jump(CScriptGameObject *enemy)
 {
-	return false;
+	CBaseMonster	*monster = smart_cast<CBaseMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot process jump for not a monster!");
+		return false;
+	}
+	return 			monster->jump(&enemy->object());
 }

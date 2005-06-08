@@ -1,0 +1,231 @@
+----------------------------------------------------------------------------------------------------
+-- Mob Jump
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Jim
+----------------------------------------------------------------------------------------------------
+
+local STATE_CAMP		= 1
+local STATE_JUMP		= 2
+local STATE_ALIFE		= 3
+local STATE_MOVE_HOME	= 4
+
+
+class "mob_jump"
+
+----------------------------------------------------------------------------------------------------
+-- CONSTRUCTION SCHEME
+----------------------------------------------------------------------------------------------------
+function mob_jump:__init(obj, storage)
+	self.object = obj
+	self.st		= storage
+end
+
+----------------------------------------------------------------------------------------------------
+-- RESET SCHEME
+----------------------------------------------------------------------------------------------------
+function mob_jump:reset_scheme()
+    printf("Jump: reset_scheme: %s", self.object:name())
+	xr_logic.mob_capture		(self.object, true)
+
+	-- reset signals
+	self.st.signals				= {}
+	
+	-- initialize look point
+	if self.st.look_point then
+		self.look_path = patrol(self.st.look_point)
+		if not self.look_path then
+			utils.abort("object '%s': unable to find look_point '%s' on the map",
+				self.object:name(), self.st.look_point)
+		end
+	else
+		self.look_path = nil
+	end
+
+	-- initialize home point
+	if self.st.home_point then
+		self.home_path = patrol(self.st.home_point)
+		if not self.home_path then
+			utils.abort("object '%s': unable to find home_point '%s' on the map",
+				self.object:name(), self.st.home_point)
+		end
+	else
+		self.home_path = nil
+	end
+
+	self.state_current	= STATE_CAMP
+	self.state_prev     = self.state_current
+	self.jumped			= false
+	
+end
+
+----------------------------------------------------------------------------------------------------
+-- UPDATE
+----------------------------------------------------------------------------------------------------
+
+function mob_jump:update(delta)
+	
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
+
+	self:select_state	()	
+	self:execute_state  ()	
+
+end
+
+----------------------------------------------------------------------------------------------------
+-- SERVICE FUNCTIONS
+----------------------------------------------------------------------------------------------------
+function mob_jump:select_state()
+
+	self.state_prev = self.state_current
+		
+	-- if enemy
+	if self.object:get_enemy() ~= nil then
+		-- if have not jumped yet - jump
+		if self.jumped == false then
+			self.state_current = STATE_JUMP
+		else -- else go alife and fight
+			self.state_current = STATE_ALIFE
+		end
+	else -- no enemy
+		
+		-- check if we go home
+		if (self.home_path ~= nil) and (self.home_path:level_vertex_id(0) ~= self.object:level_vertex_id()) then
+			self.state_current = STATE_MOVE_HOME
+		else 
+			-- we are on place - camp!
+			self.state_current = STATE_CAMP
+		end
+					
+	end
+end
+
+----------------------------------
+-- EXECUTE_STATE
+function mob_jump:execute_state()
+	
+	-- DBG
+--	if (self.state_current ~= self.state_prev) then
+--		local str1 = ""
+--		local str2 = ""
+--		
+--		if self.state_current == STATE_CAMP then str1 = "STATE_CAMP" end
+--		if self.state_current == STATE_JUMP then str1 = "STATE_JUMP" end
+--		if self.state_current == STATE_ALIFE then str1 = "STATE_ALIFE" end
+--		if self.state_current == STATE_MOVE_HOME then str1 = "STATE_MOVE_HOME" end
+--		
+--		if self.state_prev == STATE_CAMP then str2 = "STATE_CAMP" end
+--		if self.state_prev == STATE_JUMP then str2 = "STATE_JUMP" end
+--		if self.state_prev == STATE_ALIFE then str2 = "STATE_ALIFE" end
+--		if self.state_prev == STATE_MOVE_HOME then str2 = "STATE_MOVE_HOME" end
+--		
+--		printf("~MOB_JUMP: From [%s] To [%s]", str2, str1)		
+--	end
+	
+	
+	
+	if (self.state_current == STATE_ALIFE) and (self.state_prev == STATE_ALIFE) then
+		return
+	end
+	
+	if (self.state_current == STATE_ALIFE) and (self.state_prev ~= STATE_ALIFE) then
+		xr_logic.mob_release(self.object)
+		return
+	end
+
+	if (self.state_current ~= STATE_ALIFE) and (self.state_prev == STATE_ALIFE) then
+		xr_logic.mob_capture(self.object, true)
+	end
+	
+	
+	-- STATE_CAMP
+	if self.state_current == STATE_CAMP then
+		
+		self.jumped			= false	
+		
+		-- handle look point
+		if self.look_path then 
+			if not self.object:action() then
+				action(	self.object, 
+						look(look.point, self.look_path:point(0)), 
+						cond(cond.look_end)
+				)
+			end
+		end
+	
+		return
+	end
+	
+	-- STATE_JUMP
+	if self.state_current == STATE_JUMP then
+			
+		local enemy = self.object:get_enemy()
+	
+		-- process jump
+		if self.object:jump(enemy) then
+			
+			self.st.signals["jump_end"] = true
+			self.jumped					= true
+		else 
+			-- face enemy if cannot jump
+			if not self.object:action() then
+				action(	self.object, 
+						look(look.point, enemy:position()), 
+						cond(cond.look_end)
+				)
+			end
+		end	
+		
+		return
+	end
+	
+	-- STATE_MOVE_HOME
+	if self.state_current == STATE_MOVE_HOME then
+		if not self.object:action() then
+			action(	self.object, 
+					move(move.run_fwd, 
+					self.home_path:level_vertex_id(0), 
+					self.home_path:point(0), 0.2), 
+					cond(cond.move_end))
+		end
+		
+		return
+	end
+
+end
+
+----------------------------------------------------------------------------------------------------
+-- ADD_TO_BINDER
+----------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+	local new_action = mob_jump(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+----------------------------------------------------------------------------------------------------
+-- SET_SCHEME
+----------------------------------------------------------------------------------------------------
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local storage				= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	storage.logic				= xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	-- время, которое монстр находится под скриптом
+	--storage.skip_prepare		= utils.cfg_get_number(ini, section, "skip_prepare", npc, false, 10)
+	--storage.target				= utils.cfg_get_number(ini, section, "target_offset", npc, false)
+	--utils.cfg_get_bool(ini, section, "smth",  npc, false)
+	storage.look_point      = utils.cfg_get_string(ini, section, "path_look",	npc, false, gulag_name)
+	storage.home_point		= utils.cfg_get_string(ini, section, "path_home",	npc, false, gulag_name)
+	
+	if	not ini:line_exist( section, "path_home" ) and 
+		not ini:line_exist( section, "on_signal" ) then
+		utils.abort("Bad jump scheme usage! Must be either `path_home` or `on_signal` line used")
+	end 
+end
+

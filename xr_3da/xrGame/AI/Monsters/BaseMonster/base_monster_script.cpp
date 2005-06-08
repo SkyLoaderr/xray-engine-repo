@@ -46,16 +46,16 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	switch (l_tMovementAction.m_tGoalType) {
 		
 		case CScriptMovementAction::eGoalTypeObject : {
-			//CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
-			//movement().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
+			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+			path().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
 		case CScriptMovementAction::eGoalTypePathPosition :
 		case CScriptMovementAction::eGoalTypeNoPathPosition :
-			//movement().set_target_point	(l_tMovementAction.m_tDestinationPosition);
+			path().set_target_point	(l_tMovementAction.m_tDestinationPosition);
 			break;
 		case CScriptMovementAction::eGoalTypePathNodePosition :
-			//movement().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
+			path().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
 			break;
 	}
 	return			(true);		

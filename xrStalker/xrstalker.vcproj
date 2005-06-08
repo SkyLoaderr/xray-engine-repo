@@ -1360,6 +1360,13 @@
 						RelativePath=".\Config\scripts\val_underground_door.ltx">
 					</File>
 				</Filter>
+				<Filter
+					Name="Tests"
+					Filter="">
+					<File
+						RelativePath=".\config\scripts\test_jumper.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Zones"
@@ -1802,7 +1809,13 @@
 						Name="Monster"
 						Filter="">
 						<File
+							RelativePath=".\scripts\mob_alife_control.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\mob_eluder.script">
+						</File>
+						<File
+							RelativePath=".\scripts\mob_jump.script">
 						</File>
 						<File
 							RelativePath=".\scripts\mob_remark.script">

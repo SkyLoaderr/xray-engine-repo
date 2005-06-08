@@ -6,6 +6,7 @@
 #include "../../../level.h"
 #include "../monster_velocity_space.h"
 #include "../control_jump.h"
+#include "../../../sound_player.h"
 
 CSnork::CSnork() 
 {
@@ -237,3 +238,14 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 	anim().AA_GetParams	(params, "stand_attack_2_1");
 	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
+
+bool CSnork::jump(CObject *enemy)
+{
+	if (!m_jump->can_jump(enemy)) return false;
+	if (!control().check_start_conditions(ControlCom::eControlJump))  return false;
+	
+	anim().jump(enemy, anim_triple_jump, MonsterMovement::eSnorkVelocityParamsJump);
+	sound().play(MonsterSpace::eMonsterSoundAttack);
+	return true;
+}
+

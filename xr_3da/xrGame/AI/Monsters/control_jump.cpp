@@ -114,7 +114,10 @@ void CControlJump::start_jump(const Fvector &point)
 
 void CControlJump::update_frame()
 {
-	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail().completed(m_object->Position())) stop();
+	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail().completed(m_object->Position())) {
+		stop();
+		return;
+	}
 
 	if (is_landing()) pointbreak();
 	

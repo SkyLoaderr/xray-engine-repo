@@ -248,11 +248,7 @@ enum EPState {
 };
 
 typedef		shared_str			anim_string;
-#define		DEFAULT_ANIM	eAnimStandIdle
-
-class CMotionDef;
-DEFINE_VECTOR	(CMotionDef*,		ANIM_VECTOR,			ANIM_IT);
-
+#define		DEFAULT_ANIM		eAnimStandIdle
 
 // элемент анимации
 struct SAnimItem {
