@@ -82,12 +82,14 @@ function heli_binder:net_spawn( data )
 
 	db.add_obj( self.object )
 	db.add_heli( self.object )
+
 	return true
 end
 
 function heli_binder:net_destroy()
 	db.del_obj( self.object )
 	db.del_heli( self.object )
+
 	object_binder.net_destroy( self )
 end
 
@@ -139,9 +141,11 @@ function heli_binder:check_health()
 			heli:StartFlame()
 		end
 
-		if health <= 0.5 then
+		if health <= 0.5 and not self.st.immortal then
 			heli:Die()
-			db.del_heli(self.object)
+
+			db.del_heli( self.object )
+
 			self.last_alt       = self.heliObject:GetRealAltitude()
 			self.alt_check_time = device():time_global() + 1000
 		end
@@ -166,4 +170,3 @@ function heli_binder:check_health()
 		end
 	end
 end
-

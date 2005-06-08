@@ -368,5 +368,7 @@ function set_scheme( npc, ini, scheme, section )
 	a.path_move_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	a.path_look_info = nil -- не загружены.
 
-	db.storage[npc:id()].combat:read_custom_data( ini, section )
+	local st = db.storage[npc:id()]
+	st.combat:read_custom_data( ini, section )
+	st.immortal = utils.cfg_get_bool( ini, section, "immortal", npc, false, false )
 end
