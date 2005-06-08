@@ -56,6 +56,8 @@
 	<info_portion id="mil_zoneguard_first"></info_portion>
 	<info_portion id="mil_zoneguard_talk"></info_portion>
 	<info_portion id="mil_zoneguard_dont_talk"></info_portion>
+	<info_portion id="mil_zoneguard_test1_passed"></info_portion>
+	<info_portion id="mil_zoneguard_test2_passed"></info_portion>
 
 	<!-- Диалог с патрулями-->
 	<info_portion id="mil_freedom_speak_patrol1"></info_portion>

@@ -109,8 +109,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 2, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_max"
+		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
 
@@ -119,8 +118,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 2, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker1"
+		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
     -- Павлик Морозов
@@ -140,7 +138,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker2",
 		predicate = function (obj)
 		                     return obj:profile_name () == "svoboda_specnaz"
 		            end         
@@ -153,7 +150,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker4",
 		predicate = function (obj)
 		                     return obj:profile_name () == "svoboda_specnaz"
 		            end         
@@ -194,8 +190,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker7",
+		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
 	-- просто мужик на входе
@@ -203,8 +198,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker9",
+		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
 
@@ -252,7 +246,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp1",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	    }
@@ -260,7 +254,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp2",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -268,7 +262,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_kamp3",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -276,7 +270,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep1",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -284,7 +278,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep2",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -292,7 +286,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep3",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -300,7 +294,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker7",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
@@ -308,7 +302,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker5",
 		idle = 0,
-		prior = 0, state = {0, 3},
+		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 	}
