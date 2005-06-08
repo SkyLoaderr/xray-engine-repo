@@ -193,7 +193,10 @@ function load_sound(obj)
 	theme[obj:id()]["gar_dm_newbie_no_money"]		= load_sound_from_ltx(obj, "gar_dm_newbie_no_money")
 	theme[obj:id()]["gar_dm_newbie_help_me"]		= load_sound_from_ltx(obj, "gar_dm_newbie_help_me")
 	theme[obj:id()]["gar_dm_newbie_thank_you"]		= load_sound_from_ltx(obj, "gar_dm_newbie_thank_you")
-
+	
+	theme[obj:id()]["gar_hellcar_alarm"]			= load_sound_from_ltx(obj, "gar_hellcar_alarm")
+	theme[obj:id()]["gar_hellcar_ambush"]			= load_sound_from_ltx(obj, "gar_hellcar_ambush")
+	
 	-- DarkValley
 	theme[obj:id()]["val_ambush_come_here"]			= load_sound_from_ltx(obj, "val_ambush_come_here")
 	theme[obj:id()]["val_prisoner_captive_help_me"]	= load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
