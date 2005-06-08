@@ -17,8 +17,6 @@ void IGame_ObjectPool::prefetch	()
 {
 	R_ASSERT			(m_PrefetchObjects.empty());
 
-	u32	mem_0			= Memory.mem_usage();
-	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 	int	p_count			= 0;
 	::Render->model_Logging	(FALSE);
 
@@ -38,15 +36,6 @@ void IGame_ObjectPool::prefetch	()
 
 	// out statistic
 	::Render->model_Logging	(TRUE);
-	p_time					= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec() - p_time;
-	u32		p_mem			= Memory.mem_usage() - mem_0;
-	if (p_count){
-		float 	a_time		= float(p_time)/float(p_count);
-		Msg					("* [Object-prefetch] objects: %d",		p_count);
-		Msg					("* [Object-prefetch] time:    %d ms",	iFloor(p_time));
-		Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
-		Msg					("* [Object-prefetch] average: %2.2f ms, %d bytes", a_time, p_mem/p_count);
-	}
 }
 
 void IGame_ObjectPool::clear()
