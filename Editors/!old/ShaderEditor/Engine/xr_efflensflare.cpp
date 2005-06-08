@@ -370,7 +370,6 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
             _2render.push_back	(m_Current->m_Source.hShader);
         }
 	}
-/*
 	if (fBlend>=EPS_L)
 	{
 		if(bFlares){
@@ -413,7 +412,6 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
             }
 		}
 	}
-*/
 	RCache.Vertex.Unlock	(_2render.size()*4,hGeom.stride());
 
 	RCache.set_xform_world	(Fidentity);
