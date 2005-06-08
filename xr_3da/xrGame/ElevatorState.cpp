@@ -4,7 +4,7 @@
 #include "PHCharacter.h"
 #include "MathUtils.h"
 #ifdef DEBUG
-#include "Statgraph.h"
+#include "../Statgraph.h"
 #include "PHDebug.h"
 #endif
 static const float getting_on_dist		=0.3f;
