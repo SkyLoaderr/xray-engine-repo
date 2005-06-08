@@ -231,7 +231,8 @@ public:
 	}
 	IC SelfRef	random_dir		(CRandom& R = ::Random)
 	{
-		z	= R.randF(-1,1);
+		//z	= R.randF(-1,1);
+		z	= _cos(R.randF(PI));
 		T a = R.randF(PI_MUL_2);
 		T r = _sqrt(1-z*z);
 		T sa= _sin (a);
