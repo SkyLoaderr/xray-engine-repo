@@ -73,6 +73,7 @@
 
 <!-- Монолог возле трубы -->
 <info_portion id="val_tunnel_talk_start"></info_portion>
+<info_portion id="val_tunnel_plr_detected"></info_portion>
 
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password">
