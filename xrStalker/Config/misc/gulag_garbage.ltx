@@ -7,6 +7,8 @@ active = camper@gar_bandit_agr_camper1
 [camper@gar_bandit_agr_camper1]
 path_walk = camper_walk1
 path_look = camper_look1
+radius = 15
+;sniper = true
 
 
 [logic@gar_bandit_agr_camper2]
@@ -31,6 +33,8 @@ active = camper@gar_bandit_agr_camper4
 [camper@gar_bandit_agr_camper4]
 path_walk = camper_walk4
 path_look = camper_look4
+radius = 15
+;sniper = true
 
 
 [logic@gar_bandit_agr_camper5]
@@ -39,6 +43,8 @@ active = camper@gar_bandit_agr_camper5
 [camper@gar_bandit_agr_camper5]
 path_walk = camper_walk5
 path_look = camper_look5
+radius = 15
+;sniper = true
 
 
 [logic@gar_bandit_agr_kamp1]
@@ -164,19 +170,21 @@ anim_run = assault
 [combat_ignore@follower4]
 
 
-[logic@gar_bandit_agr_follower5]
-active = follower@gar_bandit_agr_follower5
+[logic@gar_bandit_agr_leader_raid2]
+active = walker@gar_bandit_agr_leader_raid2
 on_hit = hit@bandits
 on_death = death@bandits
-combat_ignore = combat_ignore@follower5
+combat_ignore = combat_ignore@leader2
 
-[follower@gar_bandit_agr_follower5]
+[walker@gar_bandit_agr_leader_raid2]
+path_walk = raid_walk2
+path_look = raid_look2
 combat_ignore_cond = {-gar_counter_fire}
-anim_walk = raid
-anim_run = assault
+on_signal = start2 | %+gar_open_fire%
 
 
-[combat_ignore@follower5]
+
+[combat_ignore@leader2]
 
 
 ;-------------------------------------------------------------------------------------------------
@@ -345,6 +353,8 @@ radius = 15
 
 [logic@gar_dolg_blokpost_zoneguard1]
 active = zoneguard@gar_dolg_blokpost_zoneguard1
+on_combat = combat
+
 
 [zoneguard@gar_dolg_blokpost_zoneguard1]
 path_walk = zoneguard_walk1
@@ -359,8 +369,10 @@ ignore_cond = {+agroprom_military_case_have +gar_free_pass}
 meet_talk_enabled = true
 meet_dialog = gar_dolg_blokpost
 
+
 [logic@gar_dolg_blokpost_zoneguard2]
 active = zoneguard@gar_dolg_blokpost_zoneguard2
+on_combat = combat
 
 [zoneguard@gar_dolg_blokpost_zoneguard2]
 path_walk = zoneguard_walk2
@@ -376,6 +388,7 @@ ignore_cond = {+agroprom_military_case_have +gar_free_pass}
 
 [logic@gar_dolg_blokpost_zoneguard3]
 active = zoneguard@gar_dolg_blokpost_zoneguard3
+on_combat = combat
 
 [zoneguard@gar_dolg_blokpost_zoneguard3]
 path_walk = zoneguard_walk3
@@ -388,6 +401,8 @@ no_move = true
 anim = backoff
 ignore_cond = {+agroprom_military_case_have +gar_free_pass}
 
+[combat]
+combat_type = camper
 
 [logic@gar_dolg_blokpost_kamp1]
 active = kamp@gar_dolg_blokpost_kamp1
@@ -423,6 +438,7 @@ active = follower1@gar_dolg_blokpost_raid2
 [follower1@gar_dolg_blokpost_raid2]
 anim_walk = raid
 anim_run = assault
+formation_line = true
 
 
 [logic@gar_dolg_blokpost_raid3]
@@ -431,6 +447,7 @@ active = follower2@gar_dolg_blokpost_raid3
 [follower2@gar_dolg_blokpost_raid3]
 anim_walk = raid
 anim_run = assault
+formation_line = true
 
 ;*****************************************************************
 ;Bandits on factory
@@ -438,149 +455,176 @@ anim_run = assault
 
 [logic@gar_seryi_bandits_camper10]
 active = camper@gar_seryi_bandits_camper10
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper10]
 path_walk = camper10_walk
 path_look = camper10_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper20]
 active = camper@gar_seryi_bandits_camper20
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper20]
 path_walk = camper20_walk
 path_look = camper20_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper30]
 active = camper@gar_seryi_bandits_camper30
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper30]
 path_walk = camper30_walk
 path_look = camper30_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper40]
 active = camper@gar_seryi_bandits_camper40
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper40]
 path_walk = camper40_walk
 path_look = camper40_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper50]
 active = camper@gar_seryi_bandits_camper50
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper50]
 path_walk = camper50_walk
 path_look = camper50_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper60]
 active = camper@gar_seryi_bandits_camper60
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper60]
 path_walk = camper60_walk
 path_look = camper60_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
+[hit@bandits_seryi]
+on_info = %+gar_seryi_open_fire%
+
+[death@bandits_seryi]
+on_info = %+gar_seryi_open_fire%
 
 
 [logic@gar_seryi_bandits_camper11]
 active = camper@gar_seryi_bandits_camper11
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper11]
 path_walk = camper11_walk
 path_look = camper11_look
-
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 [logic@gar_seryi_bandits_camper21]
 active = camper@gar_seryi_bandits_camper21
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper21]
 path_walk = camper21_walk
 path_look = camper21_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper31]
 active = camper@gar_seryi_bandits_camper31
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper31]
 path_walk = camper31_walk
 path_look = camper31_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper41]
 active = camper@gar_seryi_bandits_camper41
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper41]
 path_walk = camper41_walk
 path_look = camper41_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper51]
 active = camper@gar_seryi_bandits_camper51
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper51]
 path_walk = camper51_walk
 path_look = camper51_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper61]
 active = camper@gar_seryi_bandits_camper61
+combat_ignore = combat_ignore
+on_hit = hit@bandits_seryi
+on_death = death@bandits_seryi
 
 [camper@gar_seryi_bandits_camper61]
 path_walk = camper61_walk
 path_look = camper61_look
+combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_walker1]
-active = walker@gar_seryi_bandits_walker1
-
-[walker@gar_seryi_bandits_walker1]
-path_walk = walker_walk1
-path_look = walker_look1
+active = nil
 
 
 [logic@gar_seryi_bandits_walker2]
-active = walker@gar_seryi_bandits_walker2
-
-[walker@gar_seryi_bandits_walker2]
-path_walk = walker_walk2
-path_look = walker_look2
+active = nil
 
 
 [logic@gar_seryi_bandits_walker3]
-active = walker@gar_seryi_bandits_walker3
-
-[walker@gar_seryi_bandits_walker3]
-path_walk = walker_walk3
-path_look = walker_look3
+active = nil
 
 
 [logic@gar_seryi_bandits_walker4]
-active = walker@gar_seryi_bandits_walker4
-
-[walker@gar_seryi_bandits_walker4]
-path_walk = walker_walk4
-path_look = walker_look4
+active = nil
 
 
 [logic@gar_seryi_bandits_walker5]
-active = walker@gar_seryi_bandits_walker5
-
-[walker@gar_seryi_bandits_walker5]
-path_walk = walker_walk5
-path_look = walker_look5
+active = nil
 
 
 [logic@gar_seryi_bandits_walker6]
-active = walker@gar_seryi_bandits_walker6
-
-[walker@gar_seryi_bandits_walker6]
-path_walk = walker_walk6
-path_look = walker_look6
-
+active = nil
 
 ;*****************************************************************
 ;Boars2 (Dolg Quest)
