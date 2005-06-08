@@ -62,7 +62,7 @@ function set_sound(npc, sound, now)
 			local t = 0		
 			for k,v in db.sound[key].snd do
 				snd_table[t] = {}
-				get_sound(sound_theme.theme[v], snd_table[t], npc)
+				get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
 				t = t + 1
 			end	
 			for k,v in snd_table do
@@ -117,14 +117,16 @@ end
 
 function play_sound(npc, themes)
 	-- нужно составить список тем
+	print_table(themes)
 	local snd_table = {}
 	local t = 0		
 	for k,v in themes do
 		snd_table[t] = {}
-		if sound_theme.theme[v] ~= nil then
-			get_sound(sound_theme.theme[v], snd_table[t], npc)
+		print_table(sound_theme.theme[npc:id()])
+		if sound_theme.theme[npc:id()][v] ~= nil then
+			get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
 		else
-			utils.abort("ERROR: ILLEGAL PLAY SOUND!!! %s fo %s", v, npc:name())
+			utils.abort("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
 		end
 		t = t + 1
 	end	
