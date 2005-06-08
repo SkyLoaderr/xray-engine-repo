@@ -9,7 +9,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_hellcar_group_hellcar",
 			idle = 0,
 			prior = 10, state = {0,1},
-			in_rest = "", out_rest = "gar_grave_car",
+			in_rest = "", out_rest = "gar_graveyard_car",
 			predicate = function(obj) 
         					return obj:profile_name() == "stalker_gar_hellcar"			           
 						end
@@ -18,61 +18,61 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_hellcar_group_walker1",
 			idle = 0,
 			prior = 8, state = {0},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_walker2",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_walker3",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_rest1",
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_rest2",
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_rest3",
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_camper1",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_camper2",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_camper3",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_grave_car"
+			in_rest = "", out_rest = "gar_graveyard_car"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_hellcar_group_camper4",
 			idle = 0,
 			prior = 10, state = {2},
-			in_rest = "", out_rest = "gar_grave_car",
+			in_rest = "", out_rest = "gar_graveyard_car",
 			predicate = function(obj) 
         					return obj:profile_name() == "stalker_gar_hellcar"			           
 						end
@@ -153,7 +153,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_leader_raid",
 			idle = 0,
-			prior = 10, state = {1},
+			prior = 11, state = {1},
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
         		return obj:profile_name() == "gar_bandit_leader"			           
