@@ -16,10 +16,30 @@ class	CPHDestroyable :
 public  CPHDestroyableNotificator
 
 {
+			
 			xr_vector<shared_str>		m_destroyed_obj_visual_names																											;
-			u16							m_depended_objects;
+			u16							m_depended_objects																														;
 			Flags8						m_flags																																	;
-			SHit						m_fatal_hit;
+			SHit						m_fatal_hit																																;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+			float						m_random_min																															;     
+			float						m_random_hit_imp																														;
+			u16							ref_bone																																;
+
+			float						m_imp_transition_factor																													;
+			float						m_lv_transition_factor																													;
+			float						m_av_transition_factor																													;
+*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+					source_bone            =-1      ;-1- ref_bone
+					imp_transition_factor  =1       ; коэффициент передачи импульса     
+					lv_transition_factor   =1       ; коэффициент передачи линейной скорости 
+					av_transition_factor   =1       ; коэффициент передачи угловой скорости
+*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			enum
 			{
 				fl_destroyable		= 1<<0,

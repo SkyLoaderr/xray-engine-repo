@@ -15,21 +15,21 @@
 #include "game_graph.h"
 #include "PHCollideValidator.h"
 #include "PHShell.h"
-
+#include "MathUtils.h"
 /*
-[impulse_transition]
+[impulse_transition_to_parts]
 random_min              =1       ; х массу объекта = величина случайно направленного импульса 
 ; с случайн				о выбранной точкой приложения в пределах нового обекта
 random_hit_imp         =0.1     ; х величена хит - импульса =............
 
 ;ref_bone                       ; кость из по которой определяется скорость для частей у который связь не задана по умолчанию рут
-imp_transition_factor  =0.1     ; фактор с которым прикладывается хит по исходному объекту ко всем частям кроме взрывов
+imp_transition_factor  =0.1     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
 lv_transition_factor   =1       ; коэффициент передачи линейной скорости
 av_transition_factor   =1       ; коэффициент передачи угловой скорости
 
 
-[physics\box\prt\box_wood_01_prt1]
-source_bone            =-1      ;-1- ref_bone
+[impulse_transition_from_source_bone]
+source_bone            =0       ; ref_bone
 imp_transition_factor  =1       ; коэффициент передачи импульса     
 lv_transition_factor   =1       ; коэффициент передачи линейной скорости 
 av_transition_factor   =1       ; коэффициент передачи угловой скорости
@@ -112,7 +112,7 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 	else
 	{
 
-
+		obj->PPhysicsShell()->PureStep();
 		obj->PPhysicsShell()->Disable();
 		obj->PPhysicsShell()->DisableCollision();
 		
@@ -191,33 +191,81 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	m_depended_objects--;
 	if(!m_depended_objects)m_flags.set(fl_released,TRUE);
 
-	CPhysicsShell* own_shell=PPhysicsShellHolder()->PPhysicsShell();
-	CPhysicsShell* new_shell=dn->PPhysicsShellHolder()->PPhysicsShell();
-	
+	CPhysicsShell	*own_shell=PPhysicsShellHolder()->PPhysicsShell()			;
+	CPhysicsShell	*new_shell=dn->PPhysicsShellHolder()->PPhysicsShell()		;
+	CKinematics		*own_K	  =PKinematics(PPhysicsShellHolder()->Visual())		;
+	CKinematics		*new_K	  =PKinematics(dn->PPhysicsShellHolder()->Visual())	;
+	VERIFY			(own_K&&new_K&&own_shell&&new_shell)						;
+	CInifile		*own_ini  =own_K->LL_UserData()								;
+	CInifile		*new_ini  =new_K->LL_UserData()								;
 //////////////////////////////////////////////////////////////////////////////////	
-//	dBodyID own_body=
-		own_shell->get_ElementByStoreOrder(0)->get_body();
 
-	u16 new_el_number = new_shell->get_ElementsNumber();
 ////////////////////////////////////////////////////////////
 	Fvector pos;
 	if(m_fatal_hit.is_valide())
 	{
-		Fmatrix m;m.set(PKinematics(PPhysicsShellHolder()->Visual())->LL_GetTransform(m_fatal_hit.bone()));
-		m.mulA(PPhysicsShellHolder()->XFORM());
-		m.transform_tiny(pos,m_fatal_hit.bone_space_position());
-	
-////////////////////////////////////////////////////////////
-	for(u16 i=0;i<new_el_number;++i)
-	{
-		CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
-		e->applyImpulseVsGF(pos,m_fatal_hit.direction(),m_fatal_hit.phys_impulse());
-		//Fvector mc; mc.set(e->mass_Center());
-		//dVector3 res_vell;
-		//dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
-		//e->set_LinearVel(*(Fvector*)&res_vell);
+			Fmatrix m;m.set(own_K->LL_GetTransform(m_fatal_hit.bone()));
+			m.mulA(PPhysicsShellHolder()->XFORM());
+			m.transform_tiny(pos,m_fatal_hit.bone_space_position());
+		
+			////////////////////////////////////////////////////////////////////////////////////
+			float						random_min										=0.1f	;  
+			float						random_hit_imp									=0.1f	;
+			////////////////////////////////////////////////////////////////////////////////////
+			u16							ref_bone										=own_K->LL_GetBoneRoot();
+			
+			float						imp_transition_factor							=1.f	;
+			float						lv_transition_factor							=1.f	;
+			float						av_transition_factor							=1.f	;
+			////////////////////////////////////////////////////////////////////////////////////
+			if(own_ini&&own_ini->section_exist("impulse_transition_to_parts"))
+			{
+				random_min				=own_ini->r_float("impulse_transition_to_parts","random_min");
+				random_hit_imp			=own_ini->r_float("impulse_transition_to_parts","random_hit_imp");
+				////////////////////////////////////////////////////////
+				if(own_ini->line_exist("impulse_transition_to_parts","ref_bone"))
+					ref_bone				=own_K->LL_BoneID(own_ini->r_string("impulse_transition_to_parts","ref_bone"));
+				imp_transition_factor	=own_ini->r_float("impulse_transition_to_parts","imp_transition_factor");
+				lv_transition_factor	=own_ini->r_float("impulse_transition_to_parts","lv_transition_factor");
+				av_transition_factor	=own_ini->r_float("impulse_transition_to_parts","av_transition_factor");
+			}
 
-	}
+			if(new_ini&&new_ini->section_exist("impulse_transition_from_source_bone"))
+			{
+				//random_min				=new_ini->r_float("impulse_transition_from_source_bone","random_min");
+				//random_hit_imp			=new_ini->r_float("impulse_transition_from_source_bone","random_hit_imp");
+				////////////////////////////////////////////////////////
+				if(new_ini->line_exist("impulse_transition_from_source_bone","ref_bone"))
+					ref_bone				=own_K->LL_BoneID(new_ini->r_string("impulse_transition_from_source_bone","ref_bone"));
+				imp_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","imp_transition_factor");
+				lv_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","lv_transition_factor");
+				av_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","av_transition_factor");
+			}
+			//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			
+		dBodyID own_body=own_shell->get_Element(ref_bone)->get_body()			;
+
+		u16 new_el_number = new_shell->get_ElementsNumber()									;
+
+		for(u16 i=0;i<new_el_number;++i)
+		{
+			CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
+			float random_hit=random_min*e->getMass()+random_hit_imp*m_fatal_hit.phys_impulse();
+			Fvector rnd_dir;rnd_dir.random_dir();
+			e->applyImpulse(rnd_dir,random_hit);
+
+			e->applyImpulseVsGF(pos,m_fatal_hit.direction(),m_fatal_hit.phys_impulse()*imp_transition_factor);
+
+			Fvector mc; mc.set(e->mass_Center());
+			dVector3 res_lvell;
+			dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_lvell);
+			cast_fv(res_lvell).mul(lv_transition_factor);
+			e->set_LinearVel(cast_fv(res_lvell));
+
+			Fvector res_avell;res_avell.mul(av_transition_factor);
+			e->set_AngularVel(res_avell);
+		}
 	}
 
 
