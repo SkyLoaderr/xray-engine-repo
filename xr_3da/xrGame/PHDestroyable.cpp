@@ -195,7 +195,8 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 	CPhysicsShell* new_shell=dn->PPhysicsShellHolder()->PPhysicsShell();
 	
 //////////////////////////////////////////////////////////////////////////////////	
-	dBodyID own_body=own_shell->get_ElementByStoreOrder(0)->get_body();
+//	dBodyID own_body=
+		own_shell->get_ElementByStoreOrder(0)->get_body();
 
 	u16 new_el_number = new_shell->get_ElementsNumber();
 ////////////////////////////////////////////////////////////
