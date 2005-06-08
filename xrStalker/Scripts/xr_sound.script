@@ -81,7 +81,7 @@ end
 
 function set_sound_play(npc, sound)
 	printf("*SND* play SND to [%s]", utils.to_str(sound))
-	local key = get_key(npc)
+	local key = npc:id()
 	if db.sound[key].last_snd == nil then
 		db.sound[key].last_snd = {}
 	end
