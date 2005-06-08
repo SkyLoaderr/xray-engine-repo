@@ -22,7 +22,7 @@ void IGame_ObjectPool::prefetch	()
 	int	p_count			= 0;
 	::Render->model_Logging	(FALSE);
 
-	string256 section;
+	string256 section	;
 	// prefetch objects
 	strconcat				(section,"prefetch_objects_",g_pGamePersistent->m_game_params.m_game_type);
 	CInifile::Sect& sect	= pSettings->r_section(section);
