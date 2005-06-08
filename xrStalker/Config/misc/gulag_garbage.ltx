@@ -198,12 +198,8 @@ path_walk = hellcar_walk
 path_look = hellcar_look
 meet_talk_enabled = true
 meet_enabled = true
-anim = hello
-on_signal = alarm | remark@hellcar_way0
-;on_info = {+gar_direction -gar_alarm} remark@hellcar_way
-
-[remark@hellcar_way0]
-on_time = 3000 | remark@hellcar_way
+anim_state = hello
+on_info = {+gar_direction -gar_alarm} remark@hellcar_way
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
@@ -222,13 +218,14 @@ on_info = {+gar_bandits_raid} walker@gar_hellcar_group_return_observer
 
 [walker@gar_hellcar_group_return_observer]
 path_walk = return_observer_walk
-;path_look = return_observer_look
-;on_signal = alarm | remark@gar_hellcar_group_return_observer
+on_signal = alarm %+gar_direction%
+path_look = return_observer_look
+on_signal = alarm | remark@gar_hellcar_group_return_observer %+gar_direction%
 
-;[remark@gar_hellcar_group_return_observer]
+[remark@gar_hellcar_group_return_observer]
 ;snd = gar_hellcar_alarm
 ;on_signal = sound_end |walker@gar_hellcar_group_return_observer %+gar_direction%
-;anim = idle
+anim = idle
 
 
 
