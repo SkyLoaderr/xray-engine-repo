@@ -157,17 +157,14 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	if (!bHold)	fAccel			= 1.0f;
 
 	switch (dik) {
+	case DIK_GRAVE:
+		if (bShift) { strcat(editor,"~"); break; }
 	case DIK_ESCAPE:
 		if (!bHold) {
 			if  ( g_pGameLevel || 
 				( g_pGamePersistent && g_pGamePersistent->m_pMainUI && g_pGamePersistent->m_pMainUI->IsActive() ))
 				Hide();
 		}
-		break;
-	case DIK_GRAVE:
-		if (bShift) strcat(editor,"~");
-		else
-			if (g_pGameLevel && !bHold) Hide();
 		break;
 	case DIK_PRIOR:
 		scroll_delta++;
