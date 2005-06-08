@@ -3,6 +3,8 @@
 --	автор:  Диденко Руслан  (Stohe)
 --	update: Чугай Александр (Chugai)
 ----------------------------------------------------------------------------------------------------------------------
+key_by_id = {}
+num_by_key = {}
 
 	function get_sound(path, tt, npc)
 		if path == nil then return nil end
@@ -30,12 +32,28 @@
 -- Формирование ключа персонажа
 function get_key(npc)
 	local group = npc:group()
+	local key
 	if group == 0 then
-		return group
+		key = utils.to_str(npc:id())
+	else
+		local team = npc:team()
+		local squad = npc:squad()
+		key = utils.to_str(team).."_"..utils.to_str(squad).."_"..utils.to_str(group)
 	end
-	local team = npc:team()
-	local squad = npc:squad()
-	return utils.to_str(team).."_"..utils.to_str(squad).."_"..utils.to_str(group)
+	if xr_sound.key_by_id[npc:id()] ~= key then
+		if xr_sound.num_by_key[xr_sound.key_by_id[npc:id()]] ~= nil and
+		   xr_sound.num_by_key[xr_sound.key_by_id[npc:id()]] >= 1 
+		then
+		   xr_sound.num_by_key[xr_sound.key_by_id[npc:id()]] = xr_sound.num_by_key[xr_sound.key_by_id[npc:id()]] - 1
+		end
+		xr_sound.key_by_id[npc:id()] = key
+		if xr_sound.num_by_key[key] == nil then
+			xr_sound.num_by_key[key] = 1
+		else
+			xr_sound.num_by_key[key] = xr_sound.num_by_key[key] + 1
+		end
+	end
+	return key
 end
 	
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -93,13 +111,13 @@ function update(npc)
 	if npc:active_sound_count() ~= 0 then return end
 	local key = get_key(npc)
 	if db.sound[key] ~= nil and db.sound[key].snd == nil then return end
-
 	local key_table = db.sound[key]
 	if  key_table ~= nil and
 	   (key_table.begin == nil or
 	   device():time_global() - key_table.begin >= key_table.idle)
 	then
-		if key_table.last_npc ~= npc:id() and
+		if (xr_sound.num_by_key[key] <= 1 or
+		   key_table.last_npc ~= npc:id()) and
 		   key_table.busy ~= true
 		then
 			this.play_sound(npc, key_table.snd)
@@ -117,12 +135,10 @@ end
 
 function play_sound(npc, themes, personal)
 	-- нужно составить список тем
-	print_table(themes)
 	local snd_table = {}
 	local t = 0		
 	for k,v in themes do
 		snd_table[t] = {}
-		print_table(sound_theme.theme[npc:id()])
 		if sound_theme.theme[npc:id()][v] ~= nil then
 			get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
 		else
@@ -139,11 +155,10 @@ function play_sound(npc, themes, personal)
 		--printf("!")
 		--print_table(snd)
 		if snd.min_snd == nil then return end
-		local key
+		local key = get_key(npc)
+		local last_snd_key = key
 		if personal == true then
-			key = npc:id()
-		else
-			key = get_key(npc)
+			last_snd_key = npc:id()
 		end
 		db.sound[key].begin = device():time_global()
 		db.sound[key].idle = math.random(snd.min_snd, snd.max_snd)*1000			
@@ -152,16 +167,16 @@ function play_sound(npc, themes, personal)
 		-- необходимо ли нам играть into или rnd звуки
 		if snd.into_max ~= nil and
 			snd.into_max > 0 and
-			(db.sound[key].last_snd[snd.into_id] == nil or
-			db.sound[key].last_snd[snd.into_id] < snd.into_max-1)
+			(db.sound[last_snd_key].last_snd[snd.into_id] == nil or
+			db.sound[last_snd_key].last_snd[snd.into_id] < snd.into_max-1)
 		then
 			-- играем входные
-			if db.sound[key].last_snd[snd.into_id] == nil then db.sound[key].last_snd[snd.into_id] = -1 end
+			if db.sound[last_snd_key].last_snd[snd.into_id] == nil then db.sound[last_snd_key].last_snd[snd.into_id] = -1 end
 			
-			printf("*SND* play seq [%s]", db.sound[key].last_snd[snd.into_id]+1)
-			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[key].last_snd[snd.into_id]+1)
-			db.sound[key].last_snd[snd.into_id] = db.sound[key].last_snd[snd.into_id] + 1
-			--printf("*SND* play seq [%s]", db.sound[key].last_snd[snd.into_id])
+			printf("*SND* play seq [%s]", db.sound[last_snd_key].last_snd[snd.into_id]+1)
+			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[last_snd_key].last_snd[snd.into_id]+1)
+			db.sound[last_snd_key].last_snd[snd.into_id] = db.sound[last_snd_key].last_snd[snd.into_id] + 1
+			--printf("*SND* play seq [%s]", db.sound[last_snd_key].last_snd[snd.into_id])
 			return
 		end		
 		if snd.rnd_max ~= nil and
@@ -172,9 +187,9 @@ function play_sound(npc, themes, personal)
 			if snd.rnd_max == 1 then
 				s = 0
 			else
-				if db.sound[key].last_snd[snd.rnd_id] ~= nil then
+				if db.sound[last_snd_key].last_snd[snd.rnd_id] ~= nil then
 					s = math.random(0, snd.rnd_max-2)
-					if s >= db.sound[key].last_snd[snd.rnd_id] then s = s + 1 end
+					if s >= db.sound[last_snd_key].last_snd[snd.rnd_id] then s = s + 1 end
 				else
 					s = math.random(0, snd.rnd_max-1)					
 				end	
@@ -182,7 +197,7 @@ function play_sound(npc, themes, personal)
 							
 			printf("*SND* play rnd [%s]", s)
 			npc:play_sound(snd.rnd_id, 1, 0, 1, 0, s)
-			db.sound[key].last_snd[snd.rnd_id] = s
+			db.sound[last_snd_key].last_snd[snd.rnd_id] = s
 		end		
 	end			
 end
