@@ -66,6 +66,7 @@
 	<info_portion id="mil_max_first"></info_portion>
 	<info_portion id="mil_max_talk"></info_portion>
 	<info_portion id="mil_max_talk2"></info_portion>
+	<info_portion id="mil_max_talk3"></info_portion>
 	<info_portion id="mil_max_job">
 		<task>mil_mad_job</task>
 		<action>level_tasks.notify_new_task</action>
