@@ -17,6 +17,7 @@ protected:
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 */
 	CUIGameDM*						m_game_ui;
+	shared_str						Actor_Spawn_Effect;
 public :
 									game_cl_Deathmatch();
 	virtual							~game_cl_Deathmatch();
@@ -81,6 +82,8 @@ protected:
 	virtual		void				ConvertTime2String		(string64* str, u32 Time);
 	virtual		int					GetPlayersPlace			(game_PlayerState* ps);
 
+	virtual		void				PlayParticleEffect		(LPCSTR EffName, Fvector& pos);
+
 public:
 	virtual		char*				getTeamSection			(int Team);
 	virtual	void					SetCurrentBuyMenu		();
@@ -100,6 +103,8 @@ public:
 
 	virtual		void				OnRender				();
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
+
+	virtual		void				OnSpawn					(CObject* pObj);
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

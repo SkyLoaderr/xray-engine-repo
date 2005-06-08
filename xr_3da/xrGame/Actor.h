@@ -639,7 +639,6 @@ protected:
 		LPCSTR					invincibility_fire_shield_3rd;
 		LPCSTR					invincibility_fire_shield_1st;
 		u32						last_hit_frame;
-		LPCSTR					m_spawn_effect;
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif

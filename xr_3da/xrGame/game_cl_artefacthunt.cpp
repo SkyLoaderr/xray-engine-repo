@@ -32,14 +32,13 @@ game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen");
 	
 	m_bBuyEnabled	= FALSE;
+	//---------------------------------
+	m_Eff_Af_Spawn = "";
+	m_Eff_Af_Disappear = "";
 }
 
 void game_cl_ArtefactHunt::Init ()
 {
-//	string64	Team1, Team2;
-//	std::strcpy(Team1, TEAM1_MENU);
-//	std::strcpy(Team2, TEAM2_MENU);
-//	LoadTeamData(TEAM0_MENU);
 	LoadTeamData(TEAM1_MENU);
 	LoadTeamData(TEAM2_MENU);
 
@@ -47,7 +46,6 @@ void game_cl_ArtefactHunt::Init ()
 	old_artefactID = 0;
 	old_teamInPossession = 0;
 	//---------------------------------------------------
-	//---------------------------------------------------------
 	string256	fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) 
 	{
@@ -101,7 +99,13 @@ void game_cl_ArtefactHunt::Init ()
 
 		FS.r_close	(F);
 	}
+	//-------------------------------------------------------
+	if (pSettings->line_exist("artefacthunt_gamedata", "artefact_spawn_effect"))
+		m_Eff_Af_Spawn = pSettings->r_string("artefacthunt_gamedata", "artefact_spawn_effect");
+	if (pSettings->line_exist("artefacthunt_gamedata", "artefact_disappear_effect"))
+		m_Eff_Af_Disappear = pSettings->r_string("artefacthunt_gamedata", "artefact_disappear_effect");
 };
+
 game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 {
 	pMessageSounds[0].destroy();
@@ -643,3 +647,27 @@ bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerStat
 		( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
 		CanBeReady());
 }
+
+void	game_cl_ArtefactHunt::OnSpawn					(CObject* pObj)
+{
+	inherited::OnSpawn(pObj);
+	if (!pObj) return;
+	CArtefact* pArtefact = smart_cast<CArtefact*>(pObj);
+	if (pArtefact)
+	{
+		if (xr_strlen(m_Eff_Af_Spawn))
+			PlayParticleEffect(m_Eff_Af_Spawn.c_str(), pObj->Position());
+	};	
+}
+
+void	game_cl_ArtefactHunt::OnDestroy				(CObject* pObj)
+{	
+	inherited::OnDestroy(pObj);
+	if (!pObj) return;
+	CArtefact* pArtefact = smart_cast<CArtefact*>(pObj);
+	if (pArtefact)
+	{
+		if (xr_strlen(m_Eff_Af_Disappear))
+			PlayParticleEffect(m_Eff_Af_Disappear.c_str(), pObj->Position());
+	};	
+};

@@ -269,7 +269,11 @@ void CLevel::ProcessGameEvents		()
 				continue;
 			}
 			if (type != GE_DESTROY_REJECT)
+			{
+				if (type == GE_DESTROY)
+					Game().OnDestroy(GO);
 				GO->OnEvent		(P,type);
+			}
 			else {
 				u32				pos = P.r_tell();
 				u16				id = P.r_u16();
@@ -291,7 +295,10 @@ void CLevel::ProcessGameEvents		()
 
 				GO->OnEvent		(P,GE_OWNERSHIP_REJECT);
 				if (ok)
+				{
+					Game().OnDestroy(GD);
 					GD->OnEvent	(P,GE_DESTROY);
+				};
 			}
 		}
 	}

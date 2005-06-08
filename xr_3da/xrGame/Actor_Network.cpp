@@ -792,26 +792,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	
 	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
 	//-------------------------------------------------------------
-	if (m_spawn_effect)
-	{		
-		// вычислить позицию и направленность партикла
-		Fmatrix pos; 
-
-		CParticlesPlayer::MakeXFORM(this,0,Fvector().set(0.f,1.f,0.f),Fvector().set(0.f,0.f,0.f),pos);
-
-		// установить particles
-		CParticlesObject* ps = NULL;
-
-		ps = xr_new<CParticlesObject>(m_spawn_effect,TRUE);
-
-		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-		GamePersistent().ps_needtoplay.push_back(ps);
-	};
-	//-------------------------------------------------------------
-
-
-
-	//-------------------------------------------------------------
 	m_pLastHitter = NULL;
 	m_pLastHittingWeapon = NULL;
 	m_s16LastHittedElement = -1;

@@ -115,4 +115,8 @@ public:
 	virtual		bool				IsServerControlHits		()	{return m_bServerControlHits;};
 	virtual		bool				IsEnemy					(game_PlayerState* ps)	{return false;};
 	virtual		bool				PlayerCanSprint			(CActor* pActor) {return true;};
+
+	virtual		void				OnSpawn					(CObject* pObj)	{};
+	virtual		void				OnDestroy				(CObject* pObj)	{};
+
 };

@@ -6,6 +6,8 @@ class CUIGameAHunt;
 class game_cl_ArtefactHunt :public game_cl_TeamDeathmatch
 {
 	CUIGameAHunt*						m_game_ui;
+	shared_str							m_Eff_Af_Spawn;
+	shared_str							m_Eff_Af_Disappear;
 	typedef game_cl_TeamDeathmatch inherited;
 protected:
 	ref_sound							pMessageSounds[8];
@@ -42,4 +44,7 @@ public :
 	virtual			void				GetMapEntities(xr_vector<SZoneMapEntityData>& dst);
 	virtual			char*				getTeamSection			(int Team);
 	virtual			bool				PlayerCanSprint			(CActor* pActor);
+
+	virtual			void				OnSpawn					(CObject* pObj);
+	virtual			void				OnDestroy				(CObject* pObj);
 };
