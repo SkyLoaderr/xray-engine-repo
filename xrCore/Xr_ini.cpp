@@ -145,11 +145,22 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			}
 			// start new section
 			R_ASSERT3(strchr(str,']'),"Bad ini section found: ",str);
-			LPCSTR inherited_name = strstr(str,"]:");
-			if (0!=inherited_name){
-				inherited_name	+= 2;
-				const Sect& inherited_section = r_section(inherited_name);
-				Current.Data	= inherited_section.Data;
+			LPCSTR inherited_names = strstr(str,"]:");
+			if (0!=inherited_names){
+				VERIFY2			(bReadOnly,"Allow for readonly mode only.");
+				inherited_names	+= 2;
+				int cnt			= _GetItemCount(inherited_names);
+				for (int k=0; k<cnt; ++k){
+					xr_string	tmp;
+					_GetItem	(inherited_names,k,tmp);
+					Sect& inherited_section = r_section(tmp.c_str());
+					for (SectIt it=inherited_section.begin(); it!=inherited_section.end(); it++){
+						const Item& I		= *it;
+						SectIt	sect_it		= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
+						if (sect_it!=Current.end() && sect_it->first.equal(I.first)) sect_it->second	= I.second;
+						else														Current.Data.insert	(sect_it,I);
+					}
+				}
 			}
 			*strchr(str,']') 	= 0;
 			Current.Name 		= strlwr(str+1);
