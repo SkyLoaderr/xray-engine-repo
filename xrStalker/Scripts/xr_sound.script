@@ -86,7 +86,7 @@ function set_sound_play(npc, sound)
 		db.sound[key].last_snd = {}
 	end
 	stop_play_sound(npc)
-	this.play_sound(npc, parse_names(sound))
+	this.play_sound(npc, parse_names(sound), true)
 end
 
 function update(npc)
@@ -115,7 +115,7 @@ function update(npc)
 end
 
 
-function play_sound(npc, themes)
+function play_sound(npc, themes, personal)
 	-- нужно составить список тем
 	print_table(themes)
 	local snd_table = {}
@@ -139,7 +139,12 @@ function play_sound(npc, themes)
 		--printf("!")
 		--print_table(snd)
 		if snd.min_snd == nil then return end
-		local key = get_key(npc)
+		local key
+		if personal == true then
+			key = npc:id()
+		else
+			key = get_key(npc)
+		end
 		db.sound[key].begin = device():time_global()
 		db.sound[key].idle = math.random(snd.min_snd, snd.max_snd)*1000			
 		db.sound[key].busy = true
