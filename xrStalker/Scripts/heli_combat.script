@@ -5,8 +5,9 @@
 В отличие от сталкеров боевая схема не является отдельным действием, а вызывается из других схем.
 
 Сделать:
+	- поиск
 	- задание врага в custom data
-	- конфликт отступления
+	- отступление
 	- вынести настройки в ltx
 --------------------------------------------------------------------------------------------------]]
 
@@ -18,6 +19,8 @@ local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy_pos   = 1
 
 local flyby_attack_altitude      = 15
+
+local change_combat_type_timeout = 5000
 
 ----------------------------------------------------------------------------------------------------
 class "heli_combat"
@@ -46,8 +49,14 @@ function heli_combat:read_custom_data( ini, section )
 	self.section_changed   = true
 end
 
+-- выбор типа боя.
+-- если освещённость ноды, на которой враг = 0, то он indoor, иначе outdoor
 function heli_combat:choose_combat_type()
-	return combat_type_flyby
+	if self.enemy:level_vertex_light( self.enemy:level_vertex_id() ) == 0 then
+		return combat_type_round
+	else
+		return combat_type_flyby
+	end
 end
 
 function heli_combat:set_combat_type( new_combat_type )
@@ -159,7 +168,7 @@ function heli_combat:update_forgetting()
 end
 
 -- Обновление боевой схемы. Вызывается из обновлений схем логики вертолёта.
--- возвращает true, если бой активен (нету combat_ignore, есть враг)
+-- возвращает true, если бой активен (то есть нету combat_ignore и есть враг)
 function heli_combat:update()
 	if self.enemy_id then
 		self.enemy = level.object_by_id( self.enemy_id )
@@ -290,6 +299,8 @@ function heli_combat:round_update( see_enemy )
 	if not self.round_initialized then
 		self:round_initialize()
 	end
+
+	printf( "heli_combat: round_update" )
 
 	self:round_update_shooting( see_enemy )
 	self:round_update_flight  ( see_enemy )
