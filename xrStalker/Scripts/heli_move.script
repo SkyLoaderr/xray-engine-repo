@@ -203,13 +203,11 @@ function heli_move:check_health_flags()
 	local die   = self:waypoint_param( self.path_move_info, self.last_index, "die" )
 
 	if flame then
-		if self.heliObject:GetfHealth() >= 30 then
-			self.heliObject:SetfHealth( 29 )
-		end
+		bind_heli.heli_start_flame( self.object )
 	end
 
 	if die then
-		self.heliObject:SetfHealth( 0.5 )
+		bind_heli.heli_die( self.object )
 	end
 end
 
@@ -370,5 +368,5 @@ function set_scheme( npc, ini, scheme, section )
 
 	local st = db.storage[npc:id()]
 	st.combat:read_custom_data( ini, section )
-	st.immortal = utils.cfg_get_bool( ini, section, "immortal", npc, false, false )
+	st.invulnerable = utils.cfg_get_bool( ini, section, "invulnerable", npc, false, false )
 end

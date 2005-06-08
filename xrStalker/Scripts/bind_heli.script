@@ -54,8 +54,8 @@ function heli_binder:reinit()
 	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
 
 	-- на случай загрузки
-	self.last_alt       = self.heliObject:GetRealAltitude()
-	self.alt_check_time = device():time_global() + 1000
+	self.st.last_alt       = self.heliObject:GetRealAltitude()
+	self.st.alt_check_time = device():time_global() + 1000
 end
 
 function heli_binder:update( delta )
@@ -135,19 +135,21 @@ function heli_binder:check_health()
 --	printf( "heli health: %d", heli:GetfHealth() )
 
 	if not heli.m_dead then
-		local health = heli:GetfHealth()
+		local health 
 
-		if health < 30 and not heli.m_flame_started then
-			heli:StartFlame()
+		if self.st.invulnerable then
+			health = 100
+			heli:SetfHealth( health )
+		else
+			health = heli:GetfHealth()
 		end
 
-		if health <= 0.5 and not self.st.immortal then
-			heli:Die()
+		if health < 30 and not heli.m_flame_started then
+			heli_start_flame( self.object )
+		end
 
-			db.del_heli( self.object )
-
-			self.last_alt       = self.heliObject:GetRealAltitude()
-			self.alt_check_time = device():time_global() + 1000
+		if health <= 0.5 then
+			heli_die( self.object )
 		end
 	elseif not heli.m_exploded then
 		-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
@@ -158,15 +160,32 @@ function heli_binder:check_health()
 			self.heliObject:Explode()
 		end
 
-		if self.alt_check_time < device():time_global() then
-			self.alt_check_time = device():time_global() + 500
+		if self.st.alt_check_time < device():time_global() then
+			self.st.alt_check_time = device():time_global() + 500
 
-			if self.last_alt - altitude < 1 then
+			if self.st.last_alt - altitude < 1 then
 --				printf( "heli: explode (hanged)" )
 				heli:Explode()
 			end
 
-			self.last_alt = altitude
+			self.st.last_alt = altitude
 		end
 	end
 end
+
+function heli_start_flame( obj )
+	obj:get_helicopter():StartFlame()
+end
+
+function heli_die( obj )
+	local heli = obj:get_helicopter()
+	local st   = db.storage[obj:id()]
+
+	heli:Die()
+
+	db.del_heli( obj )
+
+	st.last_alt       = heli:GetRealAltitude()
+	st.alt_check_time = device():time_global() + 1000
+end
+
