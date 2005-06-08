@@ -25,6 +25,7 @@
 	<info_portion id="gar_open_fire"></info_portion>
 	<info_portion id="gar_counter_fire"></info_portion>
 	<info_portion id="gar_direction"></info_portion>
+	<info_portion id="gar_start_graveyard"></info_portion>
 	
 	
 	<!-- Застава Долга -->
