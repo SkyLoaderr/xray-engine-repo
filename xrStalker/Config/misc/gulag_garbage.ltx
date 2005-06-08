@@ -201,7 +201,7 @@ on_info = {+gar_direction} remark@hellcar_way
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
-on_signal = sound_end  %+gar_alarm%
+on_signal = sound_end |walker1@hellcar_way %+gar_alarm%
 
 
 [logic@gar_hellcar_group_walker1]
@@ -219,7 +219,7 @@ on_signal = alarm | remark@gar_hellcar_group_return_observer
 
 [remark@gar_hellcar_group_return_observer]
 snd = gar_hellcar_alarm
-on_signal = sound_end  %+gar_direction%
+on_signal = sound_end |walker@gar_hellcar_group_return_observer %+gar_direction%
 
 
 [logic@gar_hellcar_group_walker2]
