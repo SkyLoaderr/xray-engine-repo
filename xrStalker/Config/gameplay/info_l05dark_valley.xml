@@ -20,6 +20,7 @@
 <info_portion id="val_escort_start"></info_portion>
 <info_portion id="val_escort_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
+<info_portion id="val_escort_nap1_phrase3"></info_portion>
 <info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_guard1_combat"></info_portion>
@@ -36,6 +37,10 @@
 <info_portion id="val_escort_got_reward"></info_portion>
 <info_portion id="val_escort_nap1_join"></info_portion>
 <info_portion id="val_escort_captive_join"></info_portion>
+
+<!-- Напарник 1 -->
+<info_portion id="val_escort_nap1_go_rescue"></info_portion>
+<info_portion id="val_escort_nap1_no_thanx"></info_portion>
 
 <!-- Стартует машина около бензоколонки -->
 <info_portion id="val_truck_actor_near_gas_st"></info_portion>
@@ -63,13 +68,10 @@
 <info_portion id="val_sacrifice_finish"></info_portion>
 <info_portion id="val_sacrifice_victim_escaped"></info_portion>
 <info_portion id="val_sacrifice_plr_detected"></info_portion>
-<info_portion id="val_sacrifice_near_pit"></info_portion>
 <info_portion id="val_sacrifice_victim_killed"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase1_done"></info_portion>
 <info_portion id="val_sacrifice_guard2_phrase12_done"></info_portion>
-<info_portion id="val_sacrifice_phrase_help_3_done"></info_portion>
-<info_portion id="val_sacrifice_phrase_threat_1_done"></info_portion>
-<info_portion id="val_sacrifice_phrase_threat_2_done"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase3_done"></info_portion>
 
 <!-- Монолог возле трубы -->
 <info_portion id="val_tunnel_talk_start"></info_portion>
@@ -92,10 +94,6 @@
 <info_portion id="val_suicide_artefact_given">
 	<task>val_suicide_artefact_quest</task>
 </info_portion>
-
-<!-- Напарник 1 -->
-<info_portion id="val_nap1_go_rescue"></info_portion>
-<info_portion id="val_nap1_no_thanx"></info_portion>
 
 
 </game_information_portions>
