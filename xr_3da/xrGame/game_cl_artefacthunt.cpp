@@ -237,8 +237,13 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			sprintf(Text, "%sArtefact has been destroyed.", 
 				Color_Main);
+			u16 ArtefactID = P.r_u16();
+			//-------------------------------------------
+			CObject* pObj = Level().Objects.net_Find(ArtefactID);
+			if (pObj && xr_strlen(m_Eff_Af_Disappear))
+				PlayParticleEffect(m_Eff_Af_Disappear.c_str(), pObj->Position());
+			//-------------------------------------------
 			CommonMessageOut(Text);
-
 		}break;
 
 //-----GAME MESSAGES
@@ -664,13 +669,4 @@ void	game_cl_ArtefactHunt::OnDestroy				(CObject* pObj)
 {	
 	inherited::OnDestroy(pObj);
 	if (!pObj) return;
-	CArtefact* pArtefact = smart_cast<CArtefact*>(pObj);
-	if (pArtefact)
-	{
-		if (!pArtefact->H_Parent())
-		{
-			if (xr_strlen(m_Eff_Af_Disappear))
-				PlayParticleEffect(m_Eff_Af_Disappear.c_str(), pObj->Position());
-		};
-	};	
 };

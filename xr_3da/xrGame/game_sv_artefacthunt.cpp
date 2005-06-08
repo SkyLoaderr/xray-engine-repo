@@ -561,15 +561,15 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 {
 	if (m_dwArtefactID != 0)
 	{
-		//-----------------------------------------------
 		NET_Packet	P;
-		u_EventGen(P, GE_DESTROY, m_dwArtefactID);
-		Level().Send(P,net_flags(TRUE,TRUE));
 		//-----------------------------------------------
-		//	P.w_begin			(M_GAMEMESSAGE);
 		GenerateGameMessage (P);
 		P.w_u32				(GAME_EVENT_ARTEFACT_DESTROYED);
+		P.w_u16				(m_dwArtefactID);
 		u_EventSend(P);
+		//-----------------------------------------------
+		u_EventGen(P, GE_DESTROY, m_dwArtefactID);
+		Level().Send(P,net_flags(TRUE,TRUE));
 		//-----------------------------------------------
 	};
 	Artefact_PrepareForSpawn();
