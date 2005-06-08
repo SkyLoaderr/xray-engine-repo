@@ -571,17 +571,23 @@ function val_bs_victim_dead(actor, npc)
 	npc:hit(h)
 end
 
--- При смерти пленного дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
--- в пропасть
-function val_sacrifice_victim_dead(actor, npc)
-	printf("_bp: val_sacrifice_victim_dead: npc='%s'", npc:name())
+-- Дать сталкеру небольшой пинок. Например чтоб скинуть его с возвышения.
+-- параметры: actor, npc, p[direction,bone,power,impulse]
+-- если direction строка, то считается, что это имя пути и в сторону первой точки производится толчек.
+-- если число, то story_id
+function hit_npc(actor, npc, p)
 	local h = hit()
-	h.power = 100
-	h.direction = utils.vector_copy_by_val(patrol("val_sacrifice_fall_direction"):point(0)):sub(npc:position())
-	h.bone = "bip01_spine1"
-	h.draftsman = npc 
-	h.impulse = 2000
+	h.draftsman = npc
 	h.type = hit.wound
+	if type(p[1]) == 'number' then
+		local hitter = utils.obj_by_sid(p[1])
+		h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
+	else
+		h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
+	end
+	h.bone = p[2]
+	h.power = p[3]
+	h.impulse = p[4]
 	npc:hit(h)
 end
 
