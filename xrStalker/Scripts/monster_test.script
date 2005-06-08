@@ -16,7 +16,7 @@ end
 
 
 function on_trade_start(str)
-    printf("%s",str)    
+    --printf("%s",str)    
     printf("[TRADE START] callback")
 
 end
