@@ -96,7 +96,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Max
     t = {section = "logic@mil_freedom_max",
 		idle = 0,
-		prior = 10, state = {0},
+		prior = 11, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
