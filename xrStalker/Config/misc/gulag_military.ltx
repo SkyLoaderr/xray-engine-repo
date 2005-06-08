@@ -154,12 +154,21 @@ path_look = max_look
 meet_enabled = true
 meet_dialog = mil_max_dialog
 on_info = {+mil_max_talk3} remark1@mil_freedom_max
+on_info2 = {+mil_actor_on_lukash -mil_dolg_dead} walker2@mil_freedom_max
 
 [remark1@mil_freedom_max]
 snd = mil_max_before_collect
 snd_anim_sync = true
 anim = idle
 on_signal = action_end | walker11@mil_freedom_max_attack %+mil_freedom_attack%
+
+[walker2@mil_freedom_max]
+path_walk = max_center_walk
+path_look = max_center_look
+meet_enabled = true
+meet_dialog = mil_max_dialog
+on_timer = 300000 | walker1@mil_freedom_max
+on_info = {+mil_max_talk3} remark1@mil_freedom_max
 
 
 ;----------------------------------- Мужик у костра 1-----------------------
