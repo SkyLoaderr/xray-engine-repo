@@ -102,49 +102,72 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	--' Agroprom factory
-	if type == "agr_factory" then
-		t = { section = "logic@agr_factory_walker1",
+	if type == "agr_factory_mil" then
+		-- вояки, заходящие с запада
+		t = { section = "logic@agr_factory_skirmish1_camper1",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			predicate = function(obj)
+			            	return obj:name() == "agr_factory_mil_camper1"
+			            end,
+			in_rest = "", out_rest = ""--"agr_factory_skirmish1"
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@agr_factory_walker2",
+		t = { section = "logic@agr_factory_skirmish1_nil",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			in_rest = "", out_rest = "agr_factory_skirmish1"
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@agr_factory_walker3",
+		t = { section = "logic@agr_factory_skirmish1_nil",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			in_rest = "", out_rest = "agr_factory_skirmish1"
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@agr_factory_walker4",
+		t = { section = "logic@agr_factory_skirmish1_nil",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			in_rest = "", out_rest = "agr_factory_skirmish1"
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@agr_factory_walker5",
+
+		-- вояки, заходящие с востока
+		t = { section = "logic@agr_factory_skirmish1_camper2",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			predicate = function(obj)
+			            	return obj:name() == "agr_factory_mil_camper2"
+			            end,
+			in_rest = "", out_rest = ""--"agr_factory_skirmish1"
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@agr_factory_walker6",
+		t = { section = "logic@agr_factory_skirmish1_nil",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_restrictor"
+			in_rest = "", out_rest = "agr_factory_skirmish1"
 		}
-		table.insert(sj, t)
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_skirmish1_nil",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_skirmish1"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_skirmish1_nil",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_skirmish1"
+		}
+		table.insert(sj, t)		
 	end
 
 	--' Agroprom rush
@@ -194,7 +217,7 @@ function load_states(gname, type)
 		end
 	end
 
-	if type == "agr_factory" then
+	if type == "agr_factory_mil" then
 		return function( gulag )
 			if gulag:getCasualities() >= 3 then
 				local actor = db.actor
@@ -236,7 +259,7 @@ function load_states(gname, type)
 end
 
 function checkStalker(npc_community, gulag_type)
-	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
+	if gulag_type == "agr_nii" or gulag_type == "agr_factory_mil" then
 		return npc_community == "military"
 	end
 

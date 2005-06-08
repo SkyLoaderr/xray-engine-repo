@@ -1,5 +1,5 @@
 ;-------------------------------------------------------------------------------------------------
-;-- AGROPROM MILITARY
+;-- AGROPROM. База военных на НИИ Агропром
 ;-------------------------------------------------------------------------------------------------
 
 [logic@agr_nii_walker1]
@@ -117,57 +117,30 @@ active = sleeper3@agr_nii
 path_main = sleep3
 
 ;-------------------------------------------------------------------------------------------------
-;-- AGROPROM. Soldiers on the factory
+;-- AGROPROM. Солдаты на фабрике дерутся с группой Крота.
 ;-------------------------------------------------------------------------------------------------
-[logic@agr_factory_walker1]
-active = walker1@agr_factory
+[logic@agr_factory_skirmish1_camper1]
+active = camper1@agr_factory_skirmish1
 
-[walker1@agr_factory]
-path_walk = walk1
-path_look = look1
-
-
-[logic@agr_factory_walker2]
-active = walker2@agr_factory
-
-[walker2@agr_factory]
-path_walk = walk2
-path_look = look2
+[camper1@agr_factory_skirmish1]
+path_walk = camper1_walk
+path_look = camper1_look
 
 
-[logic@agr_factory_walker3]
-active = walker3@agr_factory
+[logic@agr_factory_skirmish1_camper2]
+active = camper2@agr_factory_skirmish1
 
-[walker3@agr_factory]
-path_walk = walk3
-path_look = look3
-
-
-[logic@agr_factory_walker4]
-active = walker4@agr_factory
-
-[walker4@agr_factory]
-path_walk = walk4
-path_look = look4
+[camper2@agr_factory_skirmish1]
+path_walk = camper2_walk
+path_look = camper2_look
 
 
-[logic@agr_factory_walker5]
-active = walker5@agr_factory
+[logic@agr_factory_skirmish1_nil]
+active = nil
 
-[walker5@agr_factory]
-path_walk = walk5
-path_look = look5
-
-
-[logic@agr_factory_walker6]
-active = walker6@agr_factory
-
-[walker6@agr_factory]
-path_walk = walk6
-path_look = look6
 
 ;-------------------------------------------------------------------------------------------------
-;-- AGROPROM RUSH (dogs)
+;-- AGROPROM RUSH (собаки)
 ;-------------------------------------------------------------------------------------------------
 [logic@agr_rush_nest_inside_nil]
 active = nil
