@@ -37,20 +37,21 @@ meet_dialog = mil_trader_dialog
 
 
 ;------------------------------------- Охранник арсенала --------------------------
-[logic@mil_freedom_arsenal]
-active = zoneguard1@mil_freedom_arsenal
-on_combat = combat@mil_freedom_max
+;[logic@mil_freedom_arsenal]
+;active = zoneguard1@mil_freedom_arsenal
+;on_combat = combat@mil_freedom_max
 
-[zoneguard1@mil_freedom_arsenal]
-path_walk = armory_walk_warn
-path_look = armory_look_warn
-zone_warn = warn_zone
-no_move = true
-team = freedom_bodyguards1
-meet_talk_enabled = true
-meet_dialog = mil_guard_arsenal_dialog
-anim = backoff
-meet_state = backoff
+;[zoneguard1@mil_freedom_arsenal]
+;path_walk = armory_walk_warn
+;path_look = armory_look_warn
+;zone_warn = warn_zone
+;no_move = true
+;team = freedom_bodyguards1
+;meet_talk_enabled = true
+;meet_dialog = mil_guard_arsenal_dialog
+;anim = backoff
+;meet_state = backoff
+
 
 
 ;------------------------------------- Охранник у Лукаша -------------------------
@@ -468,14 +469,14 @@ no_retreat = true
 wounded_enabled = false
 
 ;------------------------------------- Охранник арсенала --------------------------
-[logic@mil_freedom_arsenal_combat1]
-active = camper1@mil_freedom_arsenal_combat1
+;[logic@mil_freedom_arsenal_combat1]
+;active = camper1@mil_freedom_arsenal_combat1
 
-[camper1@mil_freedom_arsenal_combat1]
-path_walk = defense_walk5
-path_look = defense_look5
-radius = 1
-no_retreat = true
+;[camper1@mil_freedom_arsenal_combat1]
+;path_walk = defense_walk5
+;path_look = defense_look5
+;radius = 1
+;no_retreat = true
 
 ;------------------------------------- Охранник у Лукаша -------------------------
 [logic@mil_freedom_guard_combat1]

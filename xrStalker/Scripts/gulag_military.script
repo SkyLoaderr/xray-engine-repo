@@ -49,16 +49,16 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
     -- Охранник арсенала
-    t = {section = "logic@mil_freedom_arsenal",
-		idle = 0,
-		prior = 11, state = {0, 3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (obj)
-		                     return obj:profile_name () == "svoboda_specnaz"
-		            end
-		}
-	table.insert(sj, t)		
+    --t = {section = "logic@mil_freedom_arsenal",
+		--idle = 0,
+		--prior = 11, state = {0, 3},
+		--squad = squad, group = groups[0],
+		--in_rest = "", out_rest = "",
+		--predicate = function (obj)
+		                     --return obj:profile_name () == "svoboda_specnaz"
+		            --end
+		--}
+	--table.insert(sj, t)		
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_guard1",
 		idle = 0,
@@ -340,16 +340,16 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
     -- Охранник арсенала
-    t = {section = "logic@mil_freedom_arsenal_combat1",
-		idle = 0,
-		prior = 11, state = {1, 2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (obj)
-		                     return obj:profile_name () == "svoboda_specnaz"
-		            end
-		}
-	table.insert(sj, t)		
+    --t = {section = "logic@mil_freedom_arsenal_combat1",
+		--idle = 0,
+		--prior = 11, state = {1, 2},
+		--squad = squad, group = groups[0],
+		--in_rest = "", out_rest = "",
+		--predicate = function (obj)
+		                     --return obj:profile_name () == "svoboda_specnaz"
+		            --end
+		--}
+	--table.insert(sj, t)		
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_guard_combat1",
 		idle = 0,
