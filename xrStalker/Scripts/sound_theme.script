@@ -156,6 +156,7 @@ function load_sound(obj)
 
 	-- speach
     theme["speach"]						= load_sound_from_ltx(obj, "speach")
+    theme["speachs"]					= load_sound_from_ltx(obj, "speachs")
     
 	-- угрозы
 	theme["threat_weap"]				= load_sound_from_ltx(obj, "threat_weap")
@@ -263,7 +264,7 @@ function load_sound(obj)
 	db.sound[obj:id()] = {}
 	
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
---	print_table(theme)
+	--print_table(theme)
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------
