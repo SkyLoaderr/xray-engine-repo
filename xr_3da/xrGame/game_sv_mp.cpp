@@ -100,11 +100,14 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	if (xrCData && xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 	if (xrCData) 
 	{
-		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		xrCData->ps->deaths				+=	1;
-		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
+//		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+//		xrCData->ps->deaths				+=	1;
+//		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
 		//-------------------------------------------------------
-		Game().m_WeaponUsageStatistic.OnPlayerKilled(xrCData->ps);
+//		Game().m_WeaponUsageStatistic.OnPlayerKilled(xrCData->ps);
+		//-------------------------------------------------------
+		OnPlayerKillPlayer(xrCData->ps, xrCData->ps);
+		xrCData->ps->m_bClearRun = false;
 	};
 	//-------------------------------------------------------
 	CActor* pActor = smart_cast <CActor*>(pObject);
@@ -131,6 +134,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	
 	if (xrCData) SetPlayersDefItems		(xrCData->ps);
 	signal_Syncronize();
+	//-------------------------------------------------------	
 };
 
 
@@ -732,7 +736,7 @@ void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
 	OnPlayerKillPlayer(ps_killer, ps_killed);
 
 	//---------------------------------------------------
-	SendPlayerKilledMessage(ps_killed->GameID, KillType, ps_killer->GameID, WeaponID, SpecialKill);
+	SendPlayerKilledMessage((ps_killed)?ps_killed->GameID:KilledID, KillType, (ps_killer)?ps_killer->GameID:KillerID, WeaponID, SpecialKill);
 };
 	
 void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill)
