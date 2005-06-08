@@ -468,9 +468,11 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 			// init
 			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 			game_PlayerState* pstate	= l_pC->ps;
-			if (!l_pC->net_Ready || pstate->Skip || pstate == ps || pstate->team != ps->team) continue;		
-						
-			Player_AddMoney(pstate, pTeam->m_iM_TargetSucceedAll);
+			if (!l_pC->net_Ready || pstate->Skip || pstate == ps) continue;
+			if (pstate->team == ps->team)
+				Player_AddMoney(pstate, pTeam->m_iM_TargetSucceedAll);
+			else
+				Player_AddMoney(pstate, pTeam->m_iM_TargetFailed);
 		}
 	}
 

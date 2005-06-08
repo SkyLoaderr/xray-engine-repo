@@ -41,6 +41,7 @@
 		s32					m_iM_TargetTeam		;
 		s32					m_iM_TargetSucceed	;
 		s32					m_iM_TargetSucceedAll	;
+		s32					m_iM_TargetFailed	;
 
 		s32					m_iM_RoundWin		;
 		s32					m_iM_RoundLoose		;

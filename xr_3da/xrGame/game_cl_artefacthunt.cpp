@@ -667,7 +667,10 @@ void	game_cl_ArtefactHunt::OnDestroy				(CObject* pObj)
 	CArtefact* pArtefact = smart_cast<CArtefact*>(pObj);
 	if (pArtefact)
 	{
-		if (xr_strlen(m_Eff_Af_Disappear))
-			PlayParticleEffect(m_Eff_Af_Disappear.c_str(), pObj->Position());
+		if (!pArtefact->H_Parent())
+		{
+			if (xr_strlen(m_Eff_Af_Disappear))
+				PlayParticleEffect(m_Eff_Af_Disappear.c_str(), pObj->Position());
+		};
 	};	
 };

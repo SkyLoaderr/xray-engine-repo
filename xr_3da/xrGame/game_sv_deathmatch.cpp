@@ -1062,6 +1062,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 		NewTeam.m_iM_TargetTeam			= GetMoneyAmount(caSection, "target_team");
 		NewTeam.m_iM_TargetSucceed		= GetMoneyAmount(caSection, "target_succeed");
 		NewTeam.m_iM_TargetSucceedAll	= GetMoneyAmount(caSection, "target_succeed_all");
+		NewTeam.m_iM_TargetFailed		= GetMoneyAmount(caSection, "target_failed");
 
 		NewTeam.m_iM_RoundWin			= GetMoneyAmount(caSection, "round_win");
 		NewTeam.m_iM_RoundLoose			= GetMoneyAmount(caSection, "round_loose");
