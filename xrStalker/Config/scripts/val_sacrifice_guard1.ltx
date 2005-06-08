@@ -1,85 +1,83 @@
 [logic]
-active = follower1
+active = camper@wait
+on_combat = combat
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
 
+[combat]
+on_info = {=see_actor} camper@kill %+val_sacrifice_plr_detected%
+
 [death]
-on_info = {=killed_by_actor} walker@leave %+val_sacrifice_plr_detected%
+on_info = {=killed_by_actor} %+val_sacrifice_plr_detected%
 
 [hit]
 on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
 
 [combat_ignore]
 
-[follower1]
-leader = 401
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
-on_signal = leader_dead | walker@leave
-on_info = {+val_sacrifice_near_pit} camper@near_pit
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
+;401 = "val_sacrifice_victim"
+;403 = "val_sacrifice_bloodsucker"
+;404 = "val_sacrifice_guard1"
+;405 = "val_sacrifice_guard2"
 
-[camper@near_pit]
-radius = 0
-path_walk = val_sacrifice_guard1_walk
+; ждем пока игрок не зайдет в одну из стартовых зон
+[camper@wait]
+path_walk = val_sacrifice_guard1_walk 
 path_look = val_sacrifice_guard1_look
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
 def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
-on_signal = arrived | remark@near_pit
+on_info = {+val_sacrifice_start} remark@phrase1
+on_info2 = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
+combat_ignore_cond = {!see_actor}, {=check_fighting(403:401)}
 
-[remark@near_pit]
+; первая фраза. ждем на 2 фразы второго охранника
+[remark@phrase1]
 no_move = true
 no_rotate = true
 anim = guard
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
-on_info3 = {+val_sacrifice_phrase_help_1_done} remark@near_pit2
+snd = speach
+on_signal = sound_end | %+val_sacrifice_guard1_phrase1_done%
+on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
+on_info2 = {+val_sacrifice_guard2_phrase12_done} remark@phrase2
+combat_ignore_cond = {-val_sacrifice_victim_killed !see_actor}, {=check_fighting(403:401)}
 
-[remark@near_pit2]
+; произносим вторую фразу, после чего переходим в схему убийства пленного
+[remark@phrase2]
 no_move = true
 no_rotate = true
 anim = guard
-snd = val_sacrifice_threat_1
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
-on_info3 = {+val_sacrifice_phrase_help_2_done} remark@near_pit3
-on_signal = sound_end | %+val_sacrifice_phrase_threat_1_done%
+snd = speach
+on_signal = sound_end | camper@kill
+on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
+combat_ignore_cond = {-val_sacrifice_victim_killed !see_actor}, {=check_fighting(403:401)}
 
-[remark@near_pit3]
-no_move = true
-no_rotate = true
-anim = guard
-snd = val_sacrifice_threat_2
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
-on_info3 = {+val_sacrifice_phrase_help_3_done} camper@kill
-on_signal = sound_end | %+val_sacrifice_phrase_threat_2_done%
-
+; убиваем пленного
 [camper@kill]
 radius = 0
-path_walk = val_sacrifice_guard1_walk
+path_walk = val_sacrifice_guard1_walk 
 path_look = val_sacrifice_guard1_look
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_prisoner -val_prisoner_free}
 def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
+on_info = {+val_sacrifice_victim_killed -val_sacrifice_plr_detected} remark@phrase3, {+val_sacrifice_plr_detected} walker@leave
+combat_ignore_cond = {=check_fighting(403)}
 
+; завершающая фраза
+[remark@phrase3]
+no_move = true
+no_rotate = true
+anim = guard
+snd = speach
+on_signal = sound_end | walker@leave %+val_sacrifice_guard1_phrase3_done%
+on_info = {+val_sacrifice_plr_detected} walker@leave
+combat_ignore_cond = {=check_fighting(403)}
+
+; уходим
 [walker@leave]
 path_walk = val_sacrifice_guard1_leave_walk 
 path_look = val_sacrifice_guard1_leave_look
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
+combat_ignore_cond = {=check_fighting(403)}

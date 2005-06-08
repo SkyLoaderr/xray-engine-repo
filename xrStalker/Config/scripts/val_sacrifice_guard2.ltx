@@ -1,40 +1,60 @@
 [logic]
-active = follower1
+active = camper@wait
+on_combat = combat
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
 
+[combat]
+on_info = {=see_actor} walker@leave %+val_sacrifice_plr_detected%
+
 [death]
-on_info = {=killed_by_actor} walker@leave %+val_sacrifice_plr_detected%
+on_info = {=killed_by_actor} %+val_sacrifice_plr_detected%
 
 [hit]
 on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
 
 [combat_ignore]
 
-[follower1]
-leader = 401
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
-on_signal = leader_dead | walker@leave
-on_info = {+val_sacrifice_near_pit} camper@near_pit
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
+;401 = "val_sacrifice_victim"
+;403 = "val_sacrifice_bloodsucker"
+;404 = "val_sacrifice_guard1"
+;405 = "val_sacrifice_guard2"
 
-[camper@near_pit]
-radius = 0
-path_walk = val_sacrifice_guard2_walk
+; ждем пока первый охранник произнесет свою первую фразу
+[camper@wait]
+path_walk = val_sacrifice_guard2_walk 
 path_look = val_sacrifice_guard2_look
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
 def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
-on_info = {+val_sacrifice_victim_killed} walker@leave
-on_info2 = {+val_sacrifice_plr_detected} walker@leave
+on_info = {+val_sacrifice_guard1_phrase1_done} remark@phrase1
+on_info2 = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_killed} walker@leave
+combat_ignore_cond = {!see_actor}, {=check_fighting(403:401)}
 
+; первая фраза. переходим ко второй
+[remark@phrase1]
+no_move = true
+no_rotate = true
+anim = guard
+snd = speach
+on_signal = sound_end | remark@phrase2
+on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_killed} walker@leave
+combat_ignore_cond = {!see_actor}, {=check_fighting(403:401)}
+
+; вторая фраза
+[remark@phrase2]
+no_move = true
+no_rotate = true
+anim = guard
+snd = speach
+on_signal = sound_end | %+val_sacrifice_guard2_phrase12_done%
+on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase3_done} walker@leave
+combat_ignore_cond = {!see_actor}, {=check_fighting(403:401)}
+
+; уходим
 [walker@leave]
 path_walk = val_sacrifice_guard2_leave_walk 
 path_look = val_sacrifice_guard2_leave_look
-;combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=fighting_actor -val_sacrifice_plr_detected}, {=val_fighting_prisoner}
-combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {+val_sacrifice_plr_detected} never, {=fighting_actor -val_prisoner_free}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner -val_prisoner_free}
+combat_ignore_cond = {=check_fighting(403)}
