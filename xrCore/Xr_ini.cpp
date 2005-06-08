@@ -105,6 +105,17 @@ CInifile::~CInifile( )
 	xr_free	(fName);
 }
 
+static void	insert_item(CInifile::Sect& tgt, const CInifile::Item& I)
+{
+	CInifile::SectIt	sect_it		= std::lower_bound(tgt.begin(),tgt.end(),*I.first,item_pred);
+	if (sect_it!=tgt.end() && sect_it->first.equal(I.first)){ 
+		sect_it->second	= I.second;
+		sect_it->comment= I.comment;
+	}else{
+		tgt.Data.insert	(sect_it,I);
+	}
+}
+
 void	CInifile::Load(IReader* F, LPCSTR path)
 {
 	R_ASSERT(F);
@@ -154,12 +165,8 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 					xr_string	tmp;
 					_GetItem	(inherited_names,k,tmp);
 					Sect& inherited_section = r_section(tmp.c_str());
-					for (SectIt it=inherited_section.begin(); it!=inherited_section.end(); it++){
-						const Item& I		= *it;
-						SectIt	sect_it		= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
-						if (sect_it!=Current.end() && sect_it->first.equal(I.first)) sect_it->second	= I.second;
-						else														Current.Data.insert	(sect_it,I);
-					}
+					for (SectIt it=inherited_section.begin(); it!=inherited_section.end(); it++)
+						insert_item	(Current,*it);
 				}
 			}
 			*strchr(str,']') 	= 0;
@@ -182,15 +189,9 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 				I.comment	= bReadOnly?0:comment;
 
 				if (bReadOnly) {
-					if (*I.first) {
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
-						Current.Data.insert(it,I);
-					}
+					if (*I.first)							insert_item	(Current,I);
 				} else {
-					if (*I.first || *I.second || *I.comment) {
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
-						Current.Data.insert(it,I);
-					}
+					if (*I.first || *I.second || *I.comment)insert_item	(Current,I);
 				}
 			}
 		}
