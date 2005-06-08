@@ -71,6 +71,9 @@
 <info_portion id="val_sacrifice_phrase_threat_1_done"></info_portion>
 <info_portion id="val_sacrifice_phrase_threat_2_done"></info_portion>
 
+<!-- Монолог возле трубы -->
+<info_portion id="val_tunnel_talk_start"></info_portion>
+
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password">
 	<article>storyline_borov_flash_info</article>
