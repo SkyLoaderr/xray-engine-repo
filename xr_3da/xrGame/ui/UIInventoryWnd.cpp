@@ -103,7 +103,7 @@ void CUIInventoryWnd::Init()
 	UIDescrWnd.AttachChild(&UIDropButton);
 	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
 	UIDropButton.SetMessageTarget(this);
-	UIDropButton.SetTextAlign(CGameFont::alLeft);
+//	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
 	////////////////////////////////////
 	//Окно с информации о персонаже

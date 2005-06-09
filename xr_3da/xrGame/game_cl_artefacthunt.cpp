@@ -143,9 +143,9 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
-	LPSTR	Color_Teams[3]		= {"%c255,255,255", "%c64,255,64", "%c64,64,255"};
-	char	Color_Main[]		= "%c192,192,192";
-	char	Color_Artefact[]	= "%c255,255,0";
+	LPSTR	Color_Teams[3]		= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
+	char	Color_Main[]		= "%c<255,192,192,192>";
+	char	Color_Artefact[]	= "%c<255,255,255,0>";
 	LPSTR	TeamsNames[3]		= {"Zero Team", "Team Green", "Team Blue"};
 
 	switch(msg)	{

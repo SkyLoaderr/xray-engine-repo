@@ -25,7 +25,7 @@ CUILines::CUILines()
 	m_bShowMe = true;
 	m_wndPos.x = 0;
 	m_wndPos.y = 0;
-	
+	uFlags.set(flNeedReparse, false);
 }
 
 CUILines::~CUILines(){
@@ -39,17 +39,25 @@ void CUILines::Init(int x, int y, int width, int heigt){
 void CUILines::SetText(const char* text){
 	if (!m_pFont)
 		SetFont(UI()->Font()->pFontLetterica18Russian);
-//	R_ASSERT2(m_pFont, "can't set text without FONT");
 
 	if (text)
 	{
         m_text = text;
-        ParseText();
+		uFlags.set(flNeedReparse, true);
 	}
 	else
 		Reset();
 }
 
+void CUILines::AddChar(const char ch){
+	m_text.push_back(ch);
+	uFlags.set(flNeedReparse, true);
+}
+
+void CUILines::DelChar(int i){
+	m_text.erase(i);
+	uFlags.set(flNeedReparse, true);
+}
 
 const char* CUILines::GetText() const{
 	return m_text.c_str();
@@ -60,6 +68,7 @@ void CUILines::Reset(){
 }
 
 void CUILines::ParseText(){
+	VERIFY(g_bRendering);
 	Reset();
 
 	if (m_text.length() && NULL == m_pFont)
@@ -74,6 +83,7 @@ void CUILines::ParseText(){
 		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x));
 
 	xr_delete(line);
+	uFlags.set(flNeedReparse, false);
 }
 
 int CUILines::GetVisibleHeight() const{
@@ -84,6 +94,9 @@ int CUILines::GetVisibleHeight() const{
 void CUILines::Draw(int x, int y){
 	if (m_text.empty())
 		return;
+
+	if (uFlags.is(flNeedReparse)) 
+		ParseText();
 
 	R_ASSERT(m_pFont);
 
@@ -104,6 +117,8 @@ void CUILines::Draw(int x, int y){
 		m_lines[i].Draw(m_pFont, pos.x, pos.y);
 		pos.y+= height + interval;
 	}
+
+	m_pFont->OnRender();
 }
 
 void CUILines::Draw(){
@@ -114,7 +129,7 @@ void CUILines::Update(){
 }
 
 void CUILines::OnDeviceReset(){
-	ParseText();
+	uFlags.set(flNeedReparse, true);
 }
 
 u32 CUILines::GetIndentByAlign(u32 length)const{

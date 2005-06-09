@@ -62,7 +62,7 @@ void CUIMessagesWindow::Init(int x, int y, int width, int height){
 	else
 	{
 		m_pChatLog = xr_new<CUIChatLog>();
-//		m_pChatLog->Show(true);
+		m_pChatLog->Show(true);
 		AttachChild(m_pChatLog);
 		m_pChatWnd = xr_new<CUIChatWnd>(m_pChatLog);
 		AttachChild(m_pChatWnd);

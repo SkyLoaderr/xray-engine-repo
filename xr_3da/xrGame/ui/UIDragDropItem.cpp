@@ -19,7 +19,7 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 
-	m_str = "";
+	//m_str = "";
 
 	m_bButtonClicked = false;
 	m_bCursorOverWindow = false;

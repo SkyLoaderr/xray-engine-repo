@@ -131,7 +131,7 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 			Element *pLocalItem		= smart_cast<Element*>(GetItem(GetSize() - 1));
 			pLocalItem->SetGroupID	(GroupID);
 			pLocalItem->SetTextColor(MsgColor);
-			pLocalItem->SetFont		(pFont);
+			pLocalItem->SetFont		(elementFont);
 			*prevWord				= tmpChar;
 			memorizedWord			= prevWord + symToSkip;
 			wrapSentence			= false;

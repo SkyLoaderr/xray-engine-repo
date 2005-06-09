@@ -14,7 +14,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const 		fieldsCaptionColor		= "%c216,186,140";
+const char * const 		fieldsCaptionColor		= "%c<255,216,186,140>";
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -88,14 +88,14 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		sprintf(str, "%s", pInvItem->Name());
 		UIName.SetText(str);
 
-		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("weight"), pInvItem->Weight());
+		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl("weight"), pInvItem->Weight());
 		UIWeight.SetText(str);
 
-		sprintf(str, "%s%s: %%cdefault%d", fieldsCaptionColor, *stbl("base cost"), pInvItem->Cost());
+		sprintf(str, "%s%s: %%c<default>%d", fieldsCaptionColor, *stbl("base cost"), pInvItem->Cost());
 		UICost.SetText(str);
 		
 		float cond = pInvItem->GetCondition();
-		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("condition"), cond);
+		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl("condition"), cond);
 		UICondition.SetText				(str);
 		UICondProgresBar.Show			(true);
 		UICondProgresBar.SetProgressPos	( s16(iFloor(cond*100.0f+1.0f-EPS)) );
@@ -156,7 +156,7 @@ void CUIItemInfo::AlignRight(CUIStatic &Item, int offset)
 	{
 		float	s	= Item.GetFont()->SizeOf(Item.GetText());
 				s	-= Item.GetFont()->SizeOf(fieldsCaptionColor);
-				s	-= Item.GetFont()->SizeOf("%cdefault");
+				s	-= Item.GetFont()->SizeOf("%c<default>");
 		Item.SetWndPos(static_cast<int>(GetWndRect().right - s) + offset, Item.GetWndRect().top);
 	}
 }

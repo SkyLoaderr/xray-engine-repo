@@ -64,9 +64,9 @@ public:
 	static void		SetText					(LPCSTR str, STRING &arr);
 	virtual void	SetText					(LPCSTR str);
 	virtual void	SetLines				(LPCSTR str);
-	LPCSTR			GetText					()								{return m_str;}
+	LPCSTR			GetText					()								{return m_lines.GetText();}
 
-	virtual void SetTextAlign				(CGameFont::EAligment align)	{m_eTextAlign = align;}
+	virtual void SetTextAlign				(CGameFont::EAligment align)	{m_eTextAlign = align; m_lines.SetTextAlignment(align);}
 	CGameFont::EAligment GetTextAlign		()								{return m_eTextAlign;}
 
 	void		SetTextAlign_script			(u32 align)						{ m_eTextAlign = (CGameFont::EAligment)align;	}
@@ -186,8 +186,8 @@ protected:
 	CUIStaticItem m_UIStaticItem;
 
 	//текст
-	LPSTR m_str;
-	STRING m_sEdit;
+//	LPSTR m_str;
+//	STRING m_sEdit;
 
 	/////////////////////////////////////
 	//форматированный вывод текста

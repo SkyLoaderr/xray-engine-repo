@@ -38,23 +38,23 @@ void CUITabButtonMP::UpdateTextAlign(){
 	{
 	case O_VERTICAL:
         if (CUIButton::BUTTON_PUSHED == m_eButtonState)
-            m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2 - TEXT_INDENTION;
+            m_iTextOffsetY =  - TEXT_INDENTION;
 		else
-			m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+			m_iTextOffsetY = 0;
 
-		if(m_eTextAlign == CGameFont::alCenter)
-			m_iTextOffsetX = GetWidth()/2;
-		else if(m_eTextAlign == CGameFont::alRight)
-			m_iTextOffsetX = GetWidth();
+//		if(m_eTextAlign == CGameFont::alCenter)
+//			m_iTextOffsetX = GetWidth()/2;
+//		else if(m_eTextAlign == CGameFont::alRight)
+//			m_iTextOffsetX = GetWidth();
 
 		break;
 	case O_HORIZONTAL:
-   			m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+//   			m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
 
 			if (m_bCursorOverWindow)
-				m_iTextOffsetX = GetWidth()/2 + 100;
+				m_iTextOffsetX = 100;
 			else
-				m_iTextOffsetX = GetWidth()/2;
+				m_iTextOffsetX = 0;
 
 		break;
 	default:
@@ -78,6 +78,7 @@ void CUITabButtonMP::Update(){
 	m_bIsEnabled = m_bCursorOverWindow ? true : m_bIsEnabled;
 	CUITabButton::Update();
 	m_bIsEnabled = tempEnabled;
+	UpdateTextAlign();
 }
 
 void CUITabButtonMP::Draw(){

@@ -15,7 +15,7 @@ const char * const	clDefault	= "default";
 
 CUIStatic:: CUIStatic()
 {
-	m_str					= NULL;
+	//m_str					= NULL;
 	m_bAvailableTexture		= false;
 	m_bTextureEnable		= true;
 
@@ -135,12 +135,12 @@ void CUIStatic::Draw(int x, int y){
 }
 
 void CUIStatic::DrawText(){
-	if (GetFont()){
-		GetFont()->SetAligment(GetTextAlign());
-		GetFont()->SetColor(m_dwFontColor);
-		Irect r = GetAbsoluteRect();
-		DrawString(r);
-	}
+	//if (GetFont()){
+	//	GetFont()->SetAligment(GetTextAlign());
+	//	GetFont()->SetColor(m_dwFontColor);
+	//	Irect r = GetAbsoluteRect();
+	//	DrawString(r);
+	//}
 	Irect r = GetAbsoluteRect();
 	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
 }
@@ -226,105 +226,108 @@ void CUIStatic::SetFont(CGameFont* pFont){
 
 void CUIStatic::AddLetter(char letter)
 {
-	if(!new_word)
-	{
-		new_word = true;
-		word_length = 1;
-	}
-	else
-		++word_length;
+	m_lines.AddChar(letter);
 
-	buf_str[word_length-1] = letter;
+	//if(!new_word)
+	//{
+	//	new_word = true;
+	//	word_length = 1;
+	//}
+	//else
+	//	++word_length;
+
+	//buf_str[word_length-1] = letter;
 }
 
 //прочитать цвет r,g,b
 u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 {
-	char buf[12];
-	u32 symbols_to_copy;
-	u32 str_offset = 0;
+	return 0;
+	//char buf[12];
+	//u32 symbols_to_copy;
+	//u32 str_offset = 0;
 
-	// Try default color first
-	if (strstr(static_cast<char*>(m_str + pos), clDefault)== m_str + pos)
-	{
-		u32 cl = GetTextColor();
-		r = (cl >> 16) & 0xff;
-		g = (cl >> 8) & 0xff;
-		b = cl & 0xff;
-		return xr_strlen(clDefault);
+	//// Try default color first
+	//if (strstr(static_cast<char*>(m_str + pos), clDefault)== m_str + pos)
+	//{
+	//	u32 cl = GetTextColor();
+	//	r = (cl >> 16) & 0xff;
+	//	g = (cl >> 8) & 0xff;
+	//	b = cl & 0xff;
+	//	return xr_strlen(clDefault);
 
-	}
+	//}
 
-	// Try predefined colors
-	for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
-	{
-		if (strstr(static_cast<char*>(m_str + pos), *it->first) == m_str + pos)
-		{
-			r = (it->second >> 16) & 0xff;
-			g = (it->second >> 8) & 0xff;
-			b = it->second  & 0xff;
+	//// Try predefined colors
+	//for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
+	//{
+	//	if (strstr(static_cast<char*>(m_str + pos), *it->first) == m_str + pos)
+	//	{
+	//		r = (it->second >> 16) & 0xff;
+	//		g = (it->second >> 8) & 0xff;
+	//		b = it->second  & 0xff;
 
-			return xr_strlen(*it->first);
-		}
-	}
+	//		return xr_strlen(*it->first);
+	//	}
+	//}
 
-	if(xr_strlen(m_str)-pos>11)
-		symbols_to_copy = 11;
-	else
-		symbols_to_copy = (u32)xr_strlen(m_str)-pos;
+	//if(xr_strlen(m_str)-pos>11)
+	//	symbols_to_copy = 11;
+	//else
+	//	symbols_to_copy = (u32)xr_strlen(m_str)-pos;
 
-	
-	for(u32 i=0; i<symbols_to_copy; ++i)
-	{
-		buf[i] = m_str[i+pos];
-	}
-	 buf[11]=0;
+	//
+	//for(u32 i=0; i<symbols_to_copy; ++i)
+	//{
+	//	buf[i] = m_str[i+pos];
+	//}
+	// buf[11]=0;
 
-	
-	r = g = b = 0;
-	
-	char seps[]   = ",";
-	char *token = NULL;
+	//
+	//r = g = b = 0;
+	//
+	//char seps[]   = ",";
+	//char *token = NULL;
 
-    token = strtok(buf, seps );
+ //   token = strtok(buf, seps );
 
-	if(NULL != token)
-	{
-		r = atoi(token);
-		str_offset += (u32)xr_strlen(token);
-		++str_offset;
-	}
-	else
-		return 0;
-    
-	token = strtok( NULL, seps );
+	//if(NULL != token)
+	//{
+	//	r = atoi(token);
+	//	str_offset += (u32)xr_strlen(token);
+	//	++str_offset;
+	//}
+	//else
+	//	return 0;
+ //   
+	//token = strtok( NULL, seps );
 
-	if(NULL != token)
-	{
-		g = atoi(token);
-		str_offset += (u32)xr_strlen(token);
-		++str_offset;
-	}
-	else
-		return 0;
+	//if(NULL != token)
+	//{
+	//	g = atoi(token);
+	//	str_offset += (u32)xr_strlen(token);
+	//	++str_offset;
+	//}
+	//else
+	//	return 0;
 
-	token = strtok( NULL, seps );
+	//token = strtok( NULL, seps );
 
-	if(NULL != token)
-	{
-		b = atoi(token);
-		if(b>99)
-			str_offset += 3;
-		else if(b>9)
-			str_offset += 2;
-		else
-			str_offset += 1;
-	}
-	else
-		return 0;
+	//if(NULL != token)
+	//{
+	//	b = atoi(token);
+	//	if(b>99)
+	//		str_offset += 3;
+	//	else if(b>9)
+	//		str_offset += 2;
+	//	else
+	//		str_offset += 1;
+	//}
+	//else
+	//	return 0;
 
 
-	return str_offset;
+	//return str_offset;
 }
 
 void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect)
@@ -437,6 +440,7 @@ void  CUIStatic::SetShader(const ref_shader& sh)
 
 void CUIStatic::SetText(LPCSTR str, STRING &arr) 
 {
+#pragma todo("Satan->Satan : useless function")
 	arr.clear();
 
 	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
@@ -451,23 +455,24 @@ void CUIStatic::SetLines(LPCSTR str){
 
 void CUIStatic::SetText(LPCSTR str)
 {
-	if(str == NULL) 
-	{
-		m_str = NULL;
-		return;
-	}
+	m_lines.SetText(str);
+	//if(str == NULL) 
+	//{
+	//	m_str = NULL;
+	//	return;
+	//}
 
-	CUIStatic::SetText(str, m_sEdit);
+	//CUIStatic::SetText(str, m_sEdit);
 
-	m_str = &m_sEdit.front();
+	//m_str = &m_sEdit.front();
 
-	buf_str.clear();
-	str_len = m_sEdit.size();
-	buf_str.resize(str_len+1);
+	//buf_str.clear();
+	//str_len = m_sEdit.size();
+	//buf_str.resize(str_len+1);
 
-	Irect r = GetAbsoluteRect();
-	r.left += GetTextX() + m_iElipsisIndent;
-	Elipsis(r, m_ElipsisPos);
+	//Irect r = GetAbsoluteRect();
+	//r.left += GetTextX() + m_iElipsisIndent;
+	//Elipsis(r, m_ElipsisPos);
 }
 
 void CUIStatic::SetTextColor(u32 color, E4States state){
@@ -514,6 +519,7 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 
 void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 {
+#pragma todo("Satan->Satan : bad function")
 	// Codde guards
 	R_ASSERT(pFont);
 	if (str.empty()) return;
@@ -611,119 +617,122 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 void CUIStatic::DrawString(const Irect &rect)
 {
 	// Вывод текста
+#pragma todo("Satan->Satan : must be unreachable")
 
-	if(m_str == NULL) return;
+	//if(m_str == NULL) return;
 
-	if(!GetFont() || !m_str || !m_str[0]) return;	
+	//if(!GetFont() || !m_str || !m_str[0]) return;	
 
-	//положение пишущей каретки
-	curretX = 0;
-	curretY = 0;
-	//выводимый текст
-	outX = 0;
-	outY = 0;
+	////положение пишущей каретки
+	//curretX = 0;
+	//curretY = 0;
+	////выводимый текст
+	//outX = 0;
+	//outY = 0;
 
-	new_word = false;
-	word_length = 0;
+	//new_word = false;
+	//word_length = 0;
 
-	space_width = (int)GetFont()->SizeOf(' ');
-	GetFont()->SetAligment(m_eTextAlign);
+	//space_width = (int)GetFont()->SizeOf(' ');
+	//GetFont()->SetAligment(m_eTextAlign);
 
-	for(u32 i = 0; i<str_len+1; ++i)
-	{
-		char cur_char;
+	//for(u32 i = 0; i<str_len+1; ++i)
+	//{
+	//	char cur_char;
 
-		if(i<str_len)
-			cur_char = m_str[i];
-		else
-			//завершить весь вывод пробелом
-			cur_char = ' ';
+	//	if(i<str_len)
+	//		cur_char = m_str[i];
+	//	else
+	//		//завершить весь вывод пробелом
+	//		cur_char = ' ';
 
-		switch(cur_char)
-		{
-		case ' ':
-			WordOut(rect);
+	//	switch(cur_char)
+	//	{
+	//	case ' ':
+	//		WordOut(rect);
 
-			//"нарисовать" пробел
-			if(curretX+space_width >= GetWidth())
-			{
-				curretY += (int)GetFont()->CurrentHeight();
-				curretX = space_width;
-			}
-			else
-			{
-				curretX += space_width;
-			}
-			break;
-		case '\\':
-			if(i+1<str_len)
-			{
-				//переход на новую строку
-				if(m_str[i+1]== 'n')
-				{
-					WordOut(rect);
+	//		//"нарисовать" пробел
+	//		if(curretX+space_width >= GetWidth())
+	//		{
+	//			curretY += (int)GetFont()->CurrentHeight();
+	//			curretX = space_width;
+	//		}
+	//		else
+	//		{
+	//			curretX += space_width;
+	//		}
+	//		break;
+	//	case '\\':
+	//		if(i+1<str_len)
+	//		{
+	//			//переход на новую строку
+	//			if(m_str[i+1]== 'n')
+	//			{
+	//				WordOut(rect);
 
-					//перевести курсор на новую строку
-					curretY += (int)GetFont()->CurrentHeight();
-					curretX = 0;
-				}
-				//вывести символ '\'
-				else if(m_str[i+1]== '\\')
-				{
-					AddLetter('\\');
-				}
-			}
-			++i;
-			break;
-		case '%':
-			if(i+1<str_len)
-			{
-				if(m_str[i+1]== 'c')
-				{
-					// First of all try to applying predefined colors
+	//				//перевести курсор на новую строку
+	//				curretY += (int)GetFont()->CurrentHeight();
+	//				curretX = 0;
+	//			}
+	//			//вывести символ '\'
+	//			else if(m_str[i+1]== '\\')
+	//			{
+	//				AddLetter('\\');
+	//			}
+	//		}
+	//		++i;
+	//		break;
+	//	case '%':
+	//		if(i+1<str_len)
+	//		{
+	//			if(m_str[i+1]== 'c')
+	//			{
+	//				// First of all try to applying predefined colors
 
-					int r,g,b;
-					u32 offset = ReadColor(i+2, r,g,b);
+	//				int r,g,b;
+	//				u32 offset = ReadColor(i+2, r,g,b);
 
-					//++i;
-					i+= offset;
+	//				//++i;
+	//				i+= offset;
 
-					u32 color = RGB_ALPHA(GetTextColor() >> 24,r,g,b);
-					GetFont()->SetColor(color);
-				}
-				//вывести символ '%'
-				else if(m_str[i+1]== '%')
-				{
-					AddLetter('%');				
-				}
-			}
-			++i;
-			break;
-		default:
-			AddLetter(m_str[i]);
-		}
-	}
-	GetFont()->OnRender();
+	//				u32 color = RGB_ALPHA(GetTextColor() >> 24,r,g,b);
+	//				GetFont()->SetColor(color);
+	//			}
+	//			//вывести символ '%'
+	//			else if(m_str[i+1]== '%')
+	//			{
+	//				AddLetter('%');				
+	//			}
+	//		}
+	//		++i;
+	//		break;
+	//	default:
+	//		AddLetter(m_str[i]);
+	//	}
+	//}
+	//GetFont()->OnRender();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Elipsis(const Irect &rect, EElipsisPosition elipsisPos)
 {
-	if (eepNone == elipsisPos) return;
+#pragma todo("Satan->Satan : need adaptation")
+	//if (eepNone == elipsisPos) return;
 
-	CUIStatic::Elipsis(m_sEdit, rect, elipsisPos, GetFont());
+	//CUIStatic::Elipsis(m_sEdit, rect, elipsisPos, GetFont());
 
-	// Now paste elipsis
-	m_str = &m_sEdit.front();
-	str_len = m_sEdit.size();
-	buf_str.resize(str_len + 1);
+	//// Now paste elipsis
+	//m_str = &m_sEdit.front();
+	//str_len = m_sEdit.size();
+	//buf_str.resize(str_len + 1);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 {
+#pragma todo("Satan->Satan : need adaptation")
 	m_ElipsisPos		= pos;
 	m_iElipsisIndent	= indent;
 }

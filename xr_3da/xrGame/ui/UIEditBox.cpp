@@ -64,7 +64,10 @@ void CUIEditBox::OnMouse(int x, int y, EUIMessages mouse_action)
 
 		//курсор в конец строки, перед символом
 		//окончания строки
-		m_iCursorPos = m_sEdit.size()-1;
+		
+		//m_iCursorPos = m_sEdit.size()-1;
+		// ->>
+		m_iCursorPos = xr_strlen(m_lines.GetText());
 	}
 }
 
@@ -112,7 +115,7 @@ bool CUIEditBox::KeyPressed(int dik)
 		break;
 	case DIK_RIGHT:
 	case DIKEYBOARD_RIGHT:
-		if(m_iCursorPos < m_sEdit.size()-1) ++m_iCursorPos;
+		if(m_iCursorPos < xr_strlen(m_lines.GetText())) ++m_iCursorPos;
 		return true;
 		break;
 	case DIK_LSHIFT:
@@ -133,15 +136,17 @@ bool CUIEditBox::KeyPressed(int dik)
 		if(m_iCursorPos > 0)
 		{
 			--m_iCursorPos;
-			m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+            //m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+			m_lines.DelChar(m_iCursorPos);
 		}
 		str_updated = true; 
 		break;
 	case DIK_DELETE:
 	case DIKEYBOARD_DELETE:
-		if(m_iCursorPos < m_sEdit.size()-1)
+		if(m_iCursorPos < xr_strlen(m_lines.GetText()))
 		{
-			m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+#pragma todo("Satan->Satan: ...")
+			//m_sEdit.erase(&m_sEdit[m_iCursorPos]);
 		}
 		str_updated = true; 
 		break;
@@ -161,11 +166,11 @@ bool CUIEditBox::KeyPressed(int dik)
 		break;
 	}
 
-	if(str_updated)
-	{
-		m_str = &m_sEdit[0];
-		return true;
-	}
+	//if(str_updated)
+	//{
+	//	m_str = &m_sEdit[0];
+	//	return true;
+	//}
 
 	return true;
 }
@@ -193,14 +198,16 @@ void CUIEditBox::AddChar(char c)
 	
 	
 	int text_length;
-	text_length = int(GetFont()->SizeOf(&m_sEdit.front()) + 
-					GetFont()->SizeOf(buf));
+	text_length = (int)m_lines.GetFont()->SizeOf(m_lines.GetText());
+		//int(GetFont()->SizeOf(&m_sEdit.front()) + GetFont()->SizeOf(buf));
 	
 	//строка длинее полосы ввода
-	if(text_length>GetWidth()) 
+	if(text_length>GetWidth() - 1) 
 		return;
+
+	m_lines.AddChar(c);
 	
-	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
+//	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
 	++m_iCursorPos;
 
 	/*if(!m_sEdit.empty()) m_sEdit.pop_back();
@@ -275,9 +282,9 @@ void CUIEditBox::Update()
 */
 	}
 		
-	m_str = &m_sEdit[0];
-	str_len = m_sEdit.size();
-	buf_str.resize(str_len+1);
+	//m_str = &m_sEdit[0];
+	//str_len = m_sEdit.size();
+	//buf_str.resize(str_len+1);
 
 	CUIStatic::Update();
 }
@@ -291,12 +298,12 @@ void  CUIEditBox::Draw()
 		Irect rect = GetAbsoluteRect();
 		float outX, outY;
 
-		STRING buf_str;
-		buf_str.assign(&m_sEdit.front(), 
-					&m_sEdit[m_iCursorPos]);
-		buf_str.push_back(0);
+		//STRING buf_str;
+		//buf_str.assign(&m_sEdit.front(), 
+		//			&m_sEdit[m_iCursorPos]);
+		//buf_str.push_back(0);
 
-		outX = GetFont()->SizeOf(&buf_str.front());
+		outX = GetFont()->SizeOf(m_lines.GetText());
 		outY = 0;
 
 		GetFont()->SetColor(0xAAFFFF00);
@@ -310,5 +317,5 @@ void  CUIEditBox::Draw()
 void CUIEditBox::SetText(LPCSTR str)
 {
 	inherited::SetText(str);
-	m_iCursorPos = m_sEdit.size() - 1;
+	m_iCursorPos = xr_strlen(m_lines.GetText());
 }

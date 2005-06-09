@@ -19,7 +19,7 @@ CUIButton:: CUIButton()
 	m_eButtonState				= BUTTON_NORMAL;
 	m_ePressMode				= NORMAL_PRESS;
 
-	m_str						= "";
+//	m_str						= "";
 
 	m_bButtonClicked			= false;
 	
@@ -45,6 +45,7 @@ CUIButton:: CUIButton()
 	m_iShadowOffsetY			= 0;
 
 	m_lines.SetTextAlignment(CGameFont::alCenter);
+	m_lines.SetVTextAlignment(valCenter);
 }
 
  CUIButton::~ CUIButton()
@@ -205,42 +206,62 @@ void CUIButton::DrawHighlightedText(){
 	}
 
 	Irect rect = GetAbsoluteRect();
-	Irect r = GetSelfClipRect();
-	CGameFont * F = GetFont();
-	F->SetColor(m_HighlightColor);
+//	Irect r = GetSelfClipRect();
+//	CGameFont * F = GetFont();
+//	F->SetColor(m_HighlightColor);
+	u32 def_col = m_lines.GetTextColor();
 
-	UI()->OutText(F, r, 
-		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r, 
-		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r,
-		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r, 
-		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r,
-		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r,
-		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r,
-		(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
-		(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
-	UI()->OutText(F, r,
-		(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
-		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-		m_str);
+	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   + 0 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   - 0 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
+	m_lines.Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
+
+	m_lines.SetTextColor(def_col);
+
+	//UI()->OutText(F, r, 
+	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r, 
+	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r,
+	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r, 
+	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r,
+	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r,
+	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r,
+	//	(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+	//	(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
+	//UI()->OutText(F, r,
+	//	(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
+	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+	//	m_str);
 }
 
 void CUIButton::DrawText(){
@@ -258,38 +279,38 @@ void CUIButton::DrawText(){
 		down_offset = m_iPushOffsetY;
 	}
 
-	Irect rect = GetAbsoluteRect();
-	CGameFont * F = GetFont();
+	//Irect rect = GetAbsoluteRect();
+	//CGameFont * F = GetFont();
 
-	if (F)
+	//if (F)
+	//{
+	//	UpdateTextAlign();
+	//	F->SetAligment(GetTextAlign());
+
+	if(IsHighlightText() && xr_strlen(m_lines.GetText())>0 && m_bEnableTextHighlighting)
 	{
-		UpdateTextAlign();
-		F->SetAligment(GetTextAlign());
-
-		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
-		{
-			DrawHighlightedText();
-		}
-
-		F->SetColor(m_dwFontColor);
-
-		if (!m_bNewRenderMethod)
-		{
-			if(m_str && xr_strlen(m_str)>0)
-				UI()->OutText(GetFont(), GetSelfClipRect(), 
-				(float)rect.left + right_offset  +  m_iTextOffsetX, 
-				(float)rect.top + down_offset  + m_iTextOffsetY,
-				m_str);
-			GetFont()->OnRender();
-		}
-		else
-		{
-			rect.left	+=	right_offset;
-			rect.top	+=	down_offset;
-
-			inherited::DrawString(rect);
-		}
+		DrawHighlightedText();
 	}
+
+	//	F->SetColor(m_dwFontColor);
+
+	//	if (!m_bNewRenderMethod)
+	//	{
+	//		if(m_str && xr_strlen(m_str)>0)
+	//			UI()->OutText(GetFont(), GetSelfClipRect(), 
+	//			(float)rect.left + right_offset  +  m_iTextOffsetX, 
+	//			(float)rect.top + down_offset  + m_iTextOffsetY,
+	//			m_str);
+	//		GetFont()->OnRender();
+	//	}
+	//	else
+	//	{
+	//		rect.left	+=	right_offset;
+	//		rect.top	+=	down_offset;
+
+	//		inherited::DrawString(rect);
+	//	}
+	//}
 
     Irect r = GetAbsoluteRect();
 	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
@@ -309,19 +330,19 @@ void  CUIButton::Update()
 void CUIButton::UpdateTextAlign()
 {
 #pragma todo("Need change for ::m_lines")
-	if (m_iTextOffsetY < 0)
-		m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+	//if (m_iTextOffsetY < 0)
+	//	m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
 
-	if(m_eTextAlign == CGameFont::alCenter)
-	{
-		m_iTextOffsetX = GetWidth()/2;
-	}
-	else if(m_eTextAlign == CGameFont::alRight)
-	{
-		m_iTextOffsetX = GetWidth();
-	}
-	else
-	{
-		m_iTextOffsetX = 0;
-	}
+	//if(m_eTextAlign == CGameFont::alCenter)
+	//{
+	//	m_iTextOffsetX = GetWidth()/2;
+	//}
+	//else if(m_eTextAlign == CGameFont::alRight)
+	//{
+	//	m_iTextOffsetX = GetWidth();
+	//}
+	//else
+	//{
+	//	m_iTextOffsetX = 0;
+	//}
 }

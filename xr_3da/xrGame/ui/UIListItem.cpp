@@ -41,8 +41,8 @@ void CUIListItem::Init(int x, int y, int width, int height)
 
 void CUIListItem::Init(const char* str, int x, int y, int width, int height)
 {
-	SetText(str);
 	Init(x,y,width, height);
+	SetText(str);	
 }
 
 void CUIListItem::OnMouse(int x, int y, EUIMessages mouse_action)
@@ -58,7 +58,7 @@ void CUIListItem::Draw()
 
 int CUIListItem::GetSignWidht()
 {
-	return (int)GetFont()->SizeOf(m_str);
+	return (int)GetFont()->SizeOf(m_lines.GetText());
 }
 
 bool CUIListItem::IsHighlightText()

@@ -22,9 +22,11 @@ public:
 	// IUITextControl methods
 	virtual void			SetText(const char* text);
 	virtual const char*		GetText()							const;
-	virtual void			SetTextColor(u32 color)						{m_dwTextColor = color;}
+			void			AddChar(const char ch);
+			void			DelChar(int i);
+	virtual void			SetTextColor(u32 color)						{m_dwTextColor = color; uFlags.set(flNeedReparse, true);}
 	virtual u32				GetTextColor()						const	{return m_dwTextColor;}
-	virtual void			SetFont(CGameFont* pFont)					{m_pFont = pFont;}
+	virtual void			SetFont(CGameFont* pFont)					{m_pFont = pFont; uFlags.set(flNeedReparse, true);}
 	virtual CGameFont*		GetFont()							const	{return m_pFont;}
 	virtual void			SetTextAlignment(ETextAlignment al)			{m_eTextAlign = al;}
 	virtual ETextAlignment	GetTextAlignment()					const	{return m_eTextAlign;}
@@ -70,8 +72,12 @@ protected:
 	EVTextAlignment	m_eVTextAlign;
 	u32				m_dwTextColor;
 
-private:
 	CGameFont*		m_pFont;
+
+	enum {
+		flNeedReparse = (1<<0)
+	};
+	Flags32			uFlags;
 
  //   // IUISimpleWindow
 	//bool			m_bShowMe;
