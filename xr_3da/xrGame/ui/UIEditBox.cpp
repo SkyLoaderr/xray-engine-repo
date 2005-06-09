@@ -145,8 +145,7 @@ bool CUIEditBox::KeyPressed(int dik)
 	case DIKEYBOARD_DELETE:
 		if(m_iCursorPos < xr_strlen(m_lines.GetText()))
 		{
-#pragma todo("Satan->Satan: ...")
-			//m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+			m_lines.DelChar(m_iCursorPos);
 		}
 		str_updated = true; 
 		break;

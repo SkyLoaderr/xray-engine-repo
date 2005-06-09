@@ -61,18 +61,6 @@ void CUIChatWnd::SetEditBoxPrefix(const shared_str &prefix)
 	UIPrefix.SetText(*prefix);
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIChatWnd::Say(const shared_str &phrase)
-{
-	R_ASSERT(pUILogList);
-	pUILogList->Show(true);
-	pUILogList->AddLogMessage(phrase, m_AuthorName);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIChatWnd::Show()
 {
 	UIEditBox.CaptureFocus(true);
@@ -93,15 +81,10 @@ void CUIChatWnd::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status
 {
 	if (&UIEditBox == pChildWindow && false == capture_status)
 	{
-		if (xr_strlen(UIEditBox.GetText()) > 0)
-		{
 			shared_str phrase = UIEditBox.GetText();
-///			Say(phrase);
-//			sendNextMessageToTeam ? Game().ChatSayTeam(phrase) : Game().ChatSayAll(phrase);
 			if (pOwner)
 				pOwner->OnKeyboardPress(kCHAT);
 			UIEditBox.SetText("");
-		}
 	}
 
 	inherited::SetKeyboardCapture(pChildWindow, capture_status);

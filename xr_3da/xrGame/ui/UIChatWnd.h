@@ -39,7 +39,6 @@ public:
 	virtual void		SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
 	virtual bool		NeedCursor			() {return false;}
 	void				Init				(CUIXml& uiXml);
-	void				Say					(const shared_str &phrase);
 	void				SetEditBoxPrefix	(const shared_str &prefix);
 	void				TeamChat			() { sendNextMessageToTeam = true; }
 	void				AllChat				() { sendNextMessageToTeam = false; }
