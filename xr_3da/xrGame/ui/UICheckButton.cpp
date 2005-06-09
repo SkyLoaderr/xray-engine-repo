@@ -8,6 +8,7 @@
 
 CUICheckButton::CUICheckButton(void)
 {	
+	m_lines.SetTextAlignment(CGameFont::alLeft);
 }
 
 CUICheckButton::~CUICheckButton(void)
