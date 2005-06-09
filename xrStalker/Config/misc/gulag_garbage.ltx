@@ -192,19 +192,30 @@ on_signal = start2 | %+gar_open_fire%
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_hellcar_group_hellcar]
 active = walker1@hellcar_way
+meet = meet
 
 [walker1@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
-meet_talk_enabled = true
-meet_enabled = true
+;meet_talk_enabled = true
+;meet_enabled = true
 anim_state = hello
 on_info = {+gar_direction -gar_alarm} remark@hellcar_way
+meet = meet
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
 on_signal = sound_end |walker1@hellcar_way %+gar_alarm%
 anim = idle
+
+[meet]
+meet_state = 50|hell0@talk_hello
+meet_state_wpn = 50|hell0@talk_hello
+victim = 50|actor
+victim_wpn = 50|actor
+use = true
+use_wpn = true
+
 
 
 
