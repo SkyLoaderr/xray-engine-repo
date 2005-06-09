@@ -294,7 +294,7 @@ u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &re
 //	VERIFY							(accessible(result,EPS_L));
 //	return							(vertex_result);
 	VERIFY							(m_in_space_restriction);
-	return							(m_in_space_restriction->accessible_nearest(this,position,result,false))
+	return							(m_in_space_restriction->accessible_nearest(this,position,result,false));
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const
