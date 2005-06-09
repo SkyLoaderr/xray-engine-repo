@@ -1054,7 +1054,7 @@ function check_state_lager_bandits(gulag)
 			end
 		end		
 		
-		if gulag.alarm_start == nil or game.get_game_time():diffSec(gulag.alarm_start) > 300 then
+		if gulag.alarm_start == nil or game.get_game_time():diffSec(gulag.alarm_start) > 900 then
 			return state_normal -- обычное состояние
 		end
 		return state_alarm -- тревога
