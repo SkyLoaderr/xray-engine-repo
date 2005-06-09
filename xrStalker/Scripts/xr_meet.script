@@ -112,7 +112,7 @@ function action_meet_wait:execute ()
 	end
 	
 	local tt = db.storage[self.object:id()]
-	if tt.active_scheme then
+	if tt.active_scheme and not self.object:is_talking() then
 		if db.actor then
 			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
 				return
