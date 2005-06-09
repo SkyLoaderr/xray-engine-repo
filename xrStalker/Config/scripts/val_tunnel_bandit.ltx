@@ -12,7 +12,9 @@ on_info = {=hit_by_actor} walker@leave %+val_tunnel_plr_detected%
 
 [combat_ignore]
 
+;--------------------------------------------------------------------------
 ; ждем пока игрок не зайдет в стартовую зону
+;--------------------------------------------------------------------------
 [camper@wait]
 path_walk = val_tunnel_bandit_walk 
 path_look = val_tunnel_bandit_look
@@ -23,7 +25,9 @@ def_state_moving_fire = patrol_fire
 on_info = {+val_tunnel_talk_start} remark@phrase
 combat_ignore_cond = {-val_tunnel_plr_detected}
 
+;--------------------------------------------------------------------------
 ; говорим
+;--------------------------------------------------------------------------
 [remark@phrase]
 no_move = true
 no_rotate = true
@@ -32,7 +36,9 @@ snd = speach
 on_signal = sound_end | walker@leave
 combat_ignore_cond = {-val_tunnel_plr_detected}
 
+;--------------------------------------------------------------------------
 ; уходим
+;--------------------------------------------------------------------------
 [walker@leave]
 path_walk = val_tunnel_bandit_leave_walk 
 path_look = val_tunnel_bandit_leave_look

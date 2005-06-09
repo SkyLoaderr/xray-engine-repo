@@ -8,6 +8,13 @@ on_info = %+val_escort_captive_dead%
 
 [combat_ignore]
 
+;--------------------------------------------------------------------------
+; стандартный диалог
+;--------------------------------------------------------------------------
+[meet@def]
+meet_dialog = val_escort_captive_dialog
+
+;--------------------------------------------------------------------------
 [walker1]
 path_walk = val_escort_captive_walk
 path_look = val_escort_captive_look
@@ -16,6 +23,7 @@ on_info = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} r
 on_info2 = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave %+val_escort_captive_can_leave%
 combat_ignore_cond = always
 
+;--------------------------------------------------------------------------
 [remark@wait]
 no_move = true
 no_rotate = true
@@ -25,17 +33,15 @@ on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
 on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
 combat_ignore_cond = always
 
+;--------------------------------------------------------------------------
 [remark@talk]
-meet_dialog = val_escort_captive_dialog
-meet_state = caution
-meet_enabled = true
+meet = meet@def
 on_timer = 60000 | walker@leave
 
+;--------------------------------------------------------------------------
 [walker@leave]
 path_walk = val_escort_captive_leave_walk
 path_look = val_escort_captive_leave_look
-meet_dialog = val_escort_captive_dialog
-meet_state = caution
-meet_enabled = true
+meet = meet@def
 ;combat_ignore_cond = always
 on_signal = arrived | nil %+val_escort_captive_offline%
