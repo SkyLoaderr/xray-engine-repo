@@ -38,28 +38,11 @@ function action_meet_wait:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	-- кешируемые данные
-	self.startdialog = nil
 	self.sound = nil
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
 	
-	-- стартовый диалог
-	if self.a.meet_dialog ~= nil then			
-		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.meet_dialog)
-		if self.startdialog ~= tmp then
-			self.startdialog = tmp
-			printf("*DIALOGS %s* SET [%s]", self.object:name(), utils.to_str(tmp))
-			if tmp == nil or tmp == "nil" then
-				-- восстановление начального
-				self.object:restore_default_start_dialog()
-			else
-				-- установка нового
-				self.object:set_start_dialog(tmp)				
-			end
-		end
-	end
-
 	local victim = nil	
 	if self.a.meet_manager.victim == "actor" then
 		victim = db.actor
@@ -130,6 +113,7 @@ function meet_manager:__init(npc, storage)
 	self.a = storage
 	self.a.actor = nil
 	self.emerg_state = false
+	self.startdialog = nil
 end
 function meet_manager:update()	
 	if db.actor then
@@ -137,6 +121,23 @@ function meet_manager:update()
 	else
 		return
 	end
+	
+	-- стартовый диалог
+	if self.a.meet_dialog ~= nil then			
+		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_dialog)
+		if self.startdialog ~= tmp then
+			self.startdialog = tmp
+			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
+			if tmp == nil or tmp == "nil" then
+				-- восстановление начального
+				self.npc:restore_default_start_dialog()
+			else
+				-- установка нового
+				self.npc:set_start_dialog(tmp)				
+			end
+		end
+	end
+		
 	self.dist = self.npc:position():distance_to(self.a.actor:position())
 	self:process_use()
 	self.victim = self:process_victim()
@@ -485,8 +486,8 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 end
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
 function dialog_manager_reset(npc, stype)
-	printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
 	if stype == modules.stype_mobile then
+		printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
 		--' Смена стартового диалога
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
