@@ -19,6 +19,15 @@ path_walk = leader_walk
 path_look = leader_look
 meet_dialog = mil_leader_start_dialog
 meet_talk_enabled = true
+on_info = {+mil_bodyguard_talk} remark1@mil_freedom_lukash
+
+[remark1@mil_freedom_lukash]
+no_rotate = true
+no_move = true
+snd_anim_sync = true
+snd = mil_guard_to_max
+anim = guard_rac
+on_signal = action_end | walker1@mil_freedom_lukash %-mil_bodyguard_talk%
 
 [dialogs@mil_freedom_lukash]
 id = mil_lukash_dialog_rg6, mil_lukash_dialog_after
@@ -96,6 +105,7 @@ path_look = zoneguard_look_kill2
 no_retreat = true
 def_state_moving_fire = threat_fire
 def_state_campering_fire = threat_fire
+
 
 
 ;------------------------------------- Телохранитель 2 --------------------------
