@@ -13,7 +13,9 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 						   DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T, 
 						   DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z,
 						   DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7,
-						   DIK_8, DIK_9};
+						   DIK_8, DIK_9,
+						   DIK_LBRACKET, DIK_RBRACKET, DIK_SEMICOLON, DIK_APOSTROPHE, DIK_GRAVE, DIK_BACKSLASH,
+						   DIK_COMMA, DIK_PERIOD, DIK_SLASH, DIK_MULTIPLY};
 
 static xr_map<u32, char> gs_DIK2CHR;
 
@@ -22,10 +24,10 @@ static xr_map<u32, char> gs_DIK2CHR;
 CUIEditBox::CUIEditBox(void)
 {
 	char l_c;
-	for(l_c = 'a'; l_c <= 'z'; ++l_c) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
-	for(l_c = '0'; l_c <= '9'; ++l_c) {
-		gs_DIK2CHR[DILetters['z'-'a'+l_c+1-'0']] = l_c;
-	}
+	for(l_c = 'a'; l_c <= 'z'; ++l_c) 
+		gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
+	for(l_c = '0'; l_c <= '9'; ++l_c)
+        gs_DIK2CHR[DILetters['z'-'a'+l_c+1-'0']] = l_c;
 
 	m_bShift = false;
 	m_bInputFocus = false;
@@ -102,74 +104,80 @@ bool CUIEditBox::OnKeyboard(int dik, EUIMessages keyboard_action)
 bool CUIEditBox::KeyPressed(int dik)
 {
 	xr_map<u32, char>::iterator it;
-	bool str_updated = false; 
 
+	char out_me = ' ';
 
 	switch(dik)
 	{
 	//перемещение курсора
 	case DIK_LEFT:
 	case DIKEYBOARD_LEFT:
-		if(m_iCursorPos > 0) --m_iCursorPos;
+		if(m_iCursorPos > 0) 
+			--m_iCursorPos;
 		return true;
-		break;
 	case DIK_RIGHT:
 	case DIKEYBOARD_RIGHT:
-		if(m_iCursorPos < xr_strlen(m_lines.GetText())) ++m_iCursorPos;
+		if(m_iCursorPos < xr_strlen(m_lines.GetText())) 
+			++m_iCursorPos;
 		return true;
-		break;
 	case DIK_LSHIFT:
 	case DIK_RSHIFT:
 		m_bShift = true;
 		return true;
-		break;
 	case DIK_ESCAPE:
 		SetText("");
+		return true;
 	case DIK_RETURN:
 	case DIK_NUMPADENTER:
 		GetParent()->SetKeyboardCapture(this, false);
 		m_bInputFocus = false;
 		m_iKeyPressAndHold = 0;
 		return true;
-		break;
 	case DIK_BACKSPACE:
 		if(m_iCursorPos > 0)
 		{
 			--m_iCursorPos;
-            //m_sEdit.erase(&m_sEdit[m_iCursorPos]);
 			m_lines.DelChar(m_iCursorPos);
 		}
-		str_updated = true; 
-		break;
+		return true;
 	case DIK_DELETE:
 	case DIKEYBOARD_DELETE:
 		if(m_iCursorPos < xr_strlen(m_lines.GetText()))
-		{
 			m_lines.DelChar(m_iCursorPos);
-		}
-		str_updated = true; 
-		break;
+		return true;
 	case DIK_SPACE:
-		AddChar(' ');
-		str_updated = true; 
-		break;
+		out_me = ' ';					break;
+	case DIK_LBRACKET:
+        out_me = m_bShift ? '{' : '[';	break;
+	case DIK_RBRACKET:
+		out_me = m_bShift ? '}' : ']';	break;
+	case DIK_SEMICOLON:
+		out_me = m_bShift ? ':' : ';';	break;
+	case DIK_APOSTROPHE:
+		out_me = m_bShift ? '"' : '\'';	break;
+	case DIK_BACKSLASH:
+		out_me = m_bShift ? '|' : '\\';	break;
+	case DIK_SLASH:
+		out_me = m_bShift ? '?' : '/';	break;
+	case DIK_COMMA:
+		out_me = m_bShift ? '<' : ',';	break;
+	case DIK_PERIOD:
+		out_me = m_bShift ? '>' : '.';	break;
+	case DIK_MINUS:
+		out_me = m_bShift ? '_' : '-';	break;
+	case DIK_EQUALS:
+		out_me = m_bShift ? '+' : '=';	break;
 	default:
 		it = gs_DIK2CHR.find(dik);
 			
 		//нажата клавиша с буквой 
 		if (gs_DIK2CHR.end() != it)
-		{
 			AddLetter((*it).second);
-			str_updated = true; 
-		}
-		break;
+
+		return true;
 	}
 
-	//if(str_updated)
-	//{
-	//	m_str = &m_sEdit[0];
-	//	return true;
-	//}
+	AddChar(out_me);
 
 	return true;
 }
@@ -198,28 +206,34 @@ void CUIEditBox::AddChar(char c)
 	
 	int text_length;
 	text_length = (int)m_lines.GetFont()->SizeOf(m_lines.GetText());
-		//int(GetFont()->SizeOf(&m_sEdit.front()) + GetFont()->SizeOf(buf));
 	
 	//строка длинее полосы ввода
 	if(text_length>GetWidth() - 1) 
 		return;
 
-	m_lines.AddChar(c);
-	
-//	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
+	m_lines.AddChar(c, m_iCursorPos);
 	++m_iCursorPos;
-
-	/*if(!m_sEdit.empty()) m_sEdit.pop_back();
-	m_sEdit.push_back(c);
-	m_sEdit.push_back(0);*/
 }
 
 void CUIEditBox::AddLetter(char c)
 {
 	if(m_bShift)
 	{
-		c = c-'a';
-		c = c+'A';
+		switch(c) {
+		case '1': c='!';	break;
+		case '2': c='@';	break;
+		case '3': c='#';	break;
+		case '4': c='$';	break;
+		case '5': c='%';	break;
+		case '6': c='^';	break;
+		case '7': c='&';	break;
+		case '8': c='*';	break;
+		case '9': c='(';	break;
+		case '0': c=')';	break;
+		default:
+			c = c-'a';
+			c = c+'A';
+		}
 	}
 	
 	AddChar(c);
@@ -259,32 +273,7 @@ void CUIEditBox::Update()
 		}
 		else
 			last_time = cur_time;
-
-
-/*	
-
-		//нарисовать курсор
-		Irect rect = GetAbsoluteRect();
-		float outX, outY;
-
-		STRING buf_str;
-		buf_str.assign(&m_sEdit.front(), 
-					   &m_sEdit[m_iCursorPos]);
-		buf_str.push_back(0);
-
-		outX = GetFont()->SizeOf(&buf_str.front());
-		outY = 0;
-
-		GetFont()->SetColor(0xFFFFFF00);
-		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
-					   (float)rect.top+outY,  "|");
-*/
 	}
-		
-	//m_str = &m_sEdit[0];
-	//str_len = m_sEdit.size();
-	//buf_str.resize(str_len+1);
-
 	CUIStatic::Update();
 }
 
@@ -297,16 +286,10 @@ void  CUIEditBox::Draw()
 		Irect rect = GetAbsoluteRect();
 		float outX, outY;
 
-		//STRING buf_str;
-		//buf_str.assign(&m_sEdit.front(), 
-		//			&m_sEdit[m_iCursorPos]);
-		//buf_str.push_back(0);
-
 		outX = GetFont()->SizeOf(m_lines.GetText());
 		outY = 0;
 
 		GetFont()->SetColor(0xAAFFFF00);
-//		Irect r = GetClipRect();
 		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
