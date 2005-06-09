@@ -99,7 +99,8 @@ end
 
 function set_sound_play(npc, sound)
 	printf("*SND* play SND to [%s]", utils.to_str(sound))
-	local key = npc:id()
+	local key = utils.to_str(npc:id())
+	if db.sound[key] == nil then db.sound[key] = {} end
 	if db.sound[key].last_snd == nil then
 		db.sound[key].last_snd = {}
 	end
@@ -158,7 +159,7 @@ function play_sound(npc, themes, personal)
 		local key = get_key(npc)
 		local last_snd_key = key
 		if personal == true then
-			last_snd_key = npc:id()
+			last_snd_key = utils.to_str(npc:id())
 		end
 		db.sound[key].begin = device():time_global()
 		db.sound[key].idle = math.random(snd.min_snd, snd.max_snd)*1000			
