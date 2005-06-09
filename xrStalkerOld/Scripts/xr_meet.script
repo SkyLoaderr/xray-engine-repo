@@ -49,6 +49,7 @@ function action_meet_wait:execute ()
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.meet_dialog)
 		if self.startdialog ~= tmp then
 			self.startdialog = tmp
+			printf("*DIALOGS %s* SET [%s]", utils.to_str(tmp))
 			if tmp == nil or tmp == "nil" then
 				-- восстановление начального
 				self.object:restore_default_start_dialog()
@@ -471,14 +472,14 @@ function dialog_manager_reset(npc, stype)
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
 			if overrides.meet_dialog then
---				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
+				printf("*DIALOGS_MOB*: Set start dialog %s", overrides.meet_dialog)
 				npc:set_start_dialog(overrides.meet_dialog)
 			else
---				printf("*DIALOGS*: Restore start dialog")
+				printf("*DIALOGS_MOB*: Restore start dialog")
 				npc:restore_default_start_dialog()
 			end
 		else
---			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Restore start dialog")
+			printf("*DIALOGS_MOB*: SCHEME HAS NO OVERRIDES: Restore start dialog")
 			npc:restore_default_start_dialog()
 		end
 	end
