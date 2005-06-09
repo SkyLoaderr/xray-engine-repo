@@ -759,9 +759,16 @@ active = walker11@mil_freedom_max_attack
 [walker11@mil_freedom_max_attack]
 path_walk = attack_way7_1
 path_look = attack_look_max1
-on_signal = arrive | remark2@mil_freedom_max_attack
+on_signal = arrive | remark1@mil_freedom_max_attack
 team = freedom
 meet_enabled = false
+
+[remark1@mil_freedom_max_attack]
+snd = mil_max_to_tolyan
+no_rotate = true
+no_move = true
+anim = idle
+on_signal = action_end | remark2@mil_freedom_max_attack
 
 [remark2@mil_freedom_max_attack]
 snd = mil_max_to_kolyan
