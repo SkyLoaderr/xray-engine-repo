@@ -62,6 +62,7 @@ function heli_binder:update( delta )
 	object_binder.update( self, delta )
 
 --	printf( "heli_binder update" )
+--	printf( "%d", self.object:level_vertex_light( db.actor:level_vertex_id() ) )
 
 	if not self.initialized and db.actor then
 		self.initialized = true

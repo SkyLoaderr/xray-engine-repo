@@ -18,9 +18,12 @@ local combat_type_search = 2   -- поиск врага, кружение вокруг точки, где послед
 local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy_pos   = 1
 
-local flyby_attack_altitude      = 15
+local flyby_attack_altitude      = 20
 
-local change_combat_type_timeout = 5000
+local combat_type_change_delay   = 5000
+local visibility_delay           = 3000
+
+local dummy_vector = vector()
 
 ----------------------------------------------------------------------------------------------------
 class "heli_combat"
@@ -32,8 +35,10 @@ function heli_combat:__init( object, heliObject )
 
 	local ltx        = bind_heli.get_heli_ltx()
 
-	self.min_attack_dist = utils.cfg_get_number( ltx, "helicopter", "min_attack_dist", self.object, true )
-	self.max_attack_dist = utils.cfg_get_number( ltx, "helicopter", "max_attack_dist", self.object, true )
+	self.min_attack_dist  = utils.cfg_get_number( ltx, "helicopter", "min_attack_dist", self.object, true )
+	self.max_attack_dist  = utils.cfg_get_number( ltx, "helicopter", "max_attack_dist", self.object, true )
+	self.default_velocity = utils.cfg_get_number( ltx, "helicopter", "velocity",        self.object, true )
+	self.round_velocity   = 10
 
 	self.retreat_already = false
 
@@ -51,13 +56,14 @@ end
 
 -- выбор типа боя.
 -- если освещённость ноды, на которой враг = 0, то он indoor, иначе outdoor
-function heli_combat:choose_combat_type()
-	if self.enemy:level_vertex_light( self.enemy:level_vertex_id() ) == 0 then
-		return combat_type_round
-	else
-		return combat_type_flyby
-	end
-end
+--function heli_combat:choose_combat_type( see_enemy )
+--	if self.enemy:level_vertex_light( self.enemy:level_vertex_id() ) == 0 then
+--	if not see_enemy then
+--		return combat_type_round
+--	else
+--		return combat_type_flyby
+--	end
+--end
 
 function heli_combat:set_combat_type( new_combat_type )
 	if new_combat_type ~= self.combat_type then
@@ -74,7 +80,8 @@ function heli_combat:initialize()
 	self.enemy_last_seen_time  = 0
 	self.can_forget_enemy      = false
 
-	self:set_combat_type( self:choose_combat_type() )
+	self:set_combat_type( combat_type_flyby ) --self:choose_combat_type() )
+	self.combat_type_change_time = nil
 
 	self.initialized           = true
 end
@@ -147,7 +154,7 @@ function heli_combat:update_enemy_visibility()
 
 		return true
 	else
-		return device():time_global() - self.enemy_last_seen_time < 3000
+		return device():time_global() - self.enemy_last_seen_time < visibility_delay
 	end
 end
 
@@ -164,6 +171,31 @@ function heli_combat:update_forgetting()
 	   not self.enemy:alive() )
 	then
 		self:forget_enemy()
+	end
+end
+
+function heli_combat:update_combat_type( see_enemy )
+	local ct
+
+	if see_enemy then
+		ct = combat_type_flyby
+	else
+		ct = combat_type_round
+	end
+
+	printf( "heli_combat: combat type: current=%d delayed=%d", self.combat_type, ct )
+
+	if ct ~= self.combat_type then
+		if self.combat_type_change_time then
+			if self.combat_type_change_time < device():time_global() then
+				self:set_combat_type( ct )
+				self.combat_type_change_time = nil
+			end
+		else
+			self.combat_type_change_time = device():time_global() + combat_type_change_delay
+		end
+	else
+		self.combat_type_change_time = nil
 	end
 end
 
@@ -193,6 +225,10 @@ function heli_combat:update()
 	local see_enemy = self:update_enemy_visibility()
 --	printf( "see_enemy = %s", tostring( see_enemy ) )
 
+	self:update_combat_type( see_enemy )
+	-- FIXME
+	self.heliObject:GetSpeedInDestPoint(0)
+
 	if self.combat_type == combat_type_round then
 		self:round_update( see_enemy )
 	elseif self.combat_type == combat_type_flyby then
@@ -217,6 +253,8 @@ function heli_combat:round_initialize()
 	self.center_pos            = self.enemy_last_seen_pos
 	self.flight_direction      = random_choice( true, false )
 	self.round_initialized     = true
+	self.heliObject:SetMaxVelocity( self.round_velocity )
+	self.heliObject:UseFireTrail( false )
 end
 
 function heli_combat:round_choose_attack_dist( retreat )
@@ -226,13 +264,13 @@ function heli_combat:round_choose_attack_dist( retreat )
 		return 100
 	end
 
-	if dist < self.min_attack_dist then
-		return self.min_attack_dist
-	elseif dist > self.max_attack_dist then
+--	if dist < self.min_attack_dist then
+--		return self.min_attack_dist
+--	elseif dist > self.max_attack_dist then
 		return self.max_attack_dist
-	else
-		return dist
-	end
+--	else
+--		return dist
+--	end
 end
 
 function heli_combat:round_setup_flight( direction, retreat )
@@ -314,6 +352,9 @@ function heli_combat:flyby_initialize()
 	self.state_initialized     = false
 	self.was_callback          = false
 	self.flyby_initialized     = true
+
+	self.heliObject:LookAtPoint( dummy_vector, false )
+	self.heliObject:SetMaxVelocity( self.default_velocity )
 end
 
 function heli_combat:flyby_choose_initial_state()
@@ -345,7 +386,7 @@ function heli_combat:flyby_calc_best_attack_dist_point()
 	local o = self.enemy_last_seen_pos
 	o.y = 0
 
-	local r = self.max_attack_dist
+	local r = self.min_attack_dist
 
 	local ret = self:flyby_cross_ray_circle( p, v, o, r )
 	ret.y = flyby_attack_altitude
@@ -384,7 +425,7 @@ function heli_combat:flyby_update_flight( see_enemy )
 
 			self.heliObject:SetEnemy( self.enemy )
 
-			--self.heliObject:UseFireTrail( true )
+			self.heliObject:UseFireTrail( true )
 
 			self.state_initialized = true
 		end
@@ -400,5 +441,9 @@ function heli_combat:flyby_update( see_enemy )
 		self:flyby_initialize()
 	end
 
+	printf( "heli_combat: flyby_update" )
+
 	self:flyby_update_flight( see_enemy )
+
+--	printf( "speed in dest point %d", self.heliObject:GetSpeedInDestPoint(0) )
 end
