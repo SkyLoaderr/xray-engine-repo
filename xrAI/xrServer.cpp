@@ -496,8 +496,17 @@ void		xrServer::BannedList_Load		()
 
 #ifdef DEBUG
 
+static	BOOL	_ve_initialized			= FALSE;
+static	BOOL	_ve_use					= FALSE;
+
 bool xrServer::verify_entities				() const
 {
+	if (!_ve_initialized)	{
+		_ve_initialized					= TRUE;
+		if (strstr(Core.Params,"-ve"))	_ve_use=TRUE;
+	}
+	if (!_ve_use)						return true;
+
 	xrS_entities::const_iterator		I = entities.begin();
 	xrS_entities::const_iterator		E = entities.end();
 	for ( ; I != E; ++I) {
