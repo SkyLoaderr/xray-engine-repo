@@ -362,6 +362,13 @@ states = {
 				animstate = "stand",
 				animation = "cr_raciya"
 			},
+	wait_rac = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "raciya"
+			},
 	guard_rac = {weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.free,
