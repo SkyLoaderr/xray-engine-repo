@@ -77,6 +77,10 @@
 <info_portion id="val_tunnel_talk_start"></info_portion>
 <info_portion id="val_tunnel_plr_detected"></info_portion>
 
+<!-- Открытие дверей -->
+<info_portion id="val_opendoor_start"></info_portion>
+<info_portion id="val_opendoor_soldier_start"></info_portion>
+
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password">
 	<article>storyline_borov_flash_info</article>
