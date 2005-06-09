@@ -259,7 +259,7 @@ states = {
 				animation = "eat_bread"
 			},
 
-	hello = {	weapon = "strapped",
+	hello = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,

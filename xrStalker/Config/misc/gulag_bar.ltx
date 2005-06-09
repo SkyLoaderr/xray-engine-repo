@@ -445,7 +445,7 @@ radius = 5
 ; Свобода, атакующая ученных
 ;*******************************************************************
 [helihunter@bar_freedom_attack]
-dist = 80
+dist = 100
 
 [death@bar_freedom_attack_commander]
 on_info = %+bar_kill_professor_volkodav_dead%
@@ -460,7 +460,7 @@ path_look = camper_1_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_1 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
-heli_hunter = true
+heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 
 [camper1@bar_freedom_attack_sniper_1]
 path_walk = acamper_1_walk
@@ -496,7 +496,7 @@ path_look = camper_3_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_3 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
-heli_hunter = true
+heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 
 [camper1@bar_freedom_attack_sniper_3]
 path_walk = acamper_3_walk
@@ -550,7 +550,7 @@ path_look = guard_2_look
 on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_guard_2 %=bar_freedom_angry_actor%
 meet_talk_enabled = true
 meet_dialog = bar_svoboda_dialog
-heli_hunter = true
+heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 
 [camper1@bar_freedom_attack_guard_2]
 path_walk = aguard_2_walk

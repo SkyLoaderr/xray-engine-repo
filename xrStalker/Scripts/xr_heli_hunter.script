@@ -33,7 +33,9 @@ function evaluator_shoot:evaluate()
 		return false
 	end
 	overrides = xr_logic.generic_scheme_overrides( self.object )
-	if overrides and overrides.heli_hunter then
+	if overrides and overrides.heli_hunter ~= nil and
+	   xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.heli_hunter) == "true"
+	then
 		if self.a.heli == nil then
 			-- поиск вертолета
 			self.a.heli = this.get_nearest_heli(self.object:position(), self.a.attack_dist_sqr)
