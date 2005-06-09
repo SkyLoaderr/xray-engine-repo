@@ -280,19 +280,21 @@ u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &re
 	if (m_out_space_restriction)
 		return						(m_out_space_restriction->accessible_nearest(this,position,result,true));
 
-	u32								vertex_result = u32(-1);
-	FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
-	FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
-	for ( ; I != E; ++I)
-		if ((*I).m_restriction->inside(position) || (*I).m_restriction->on_border(position)) {
-			vertex_result			= (*I).m_restriction->accessible_nearest(position,result,false);
-			break;
-		}
-
-	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
-	result							= ai().level_graph().vertex_position(vertex_result);
-	VERIFY							(accessible(result,EPS_L));
-	return							(vertex_result);
+//	u32								vertex_result = u32(-1);
+//	FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
+//	FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
+//	for ( ; I != E; ++I)
+//		if ((*I).m_restriction->inside(position) || (*I).m_restriction->on_border(position)) {
+//			vertex_result			= (*I).m_restriction->accessible_nearest(position,result,false);
+//			break;
+//		}
+//
+//	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
+//	result							= ai().level_graph().vertex_position(vertex_result);
+//	VERIFY							(accessible(result,EPS_L));
+//	return							(vertex_result);
+	VERIFY							(m_in_space_restriction);
+	return							(m_in_space_restriction->accessible_nearest(this,position,result,false))
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const
