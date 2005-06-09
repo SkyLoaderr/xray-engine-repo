@@ -55,7 +55,7 @@ void CUISubLine::Draw(CGameFont* pFont, int x, int y) const{
 	Irect r;
 	r.x1=0; r.x2=1024;
 	r.y1=0; r.y2=768;
-	UI()->OutText(pFont, r, (float)x, (float)y, m_text.c_str());
+	UI()->OutText(pFont, r, (float)x, (float)y, "%s", m_text.c_str());
 }
 
 u32 CUISubLine::GetLength(CGameFont* pFont) const{

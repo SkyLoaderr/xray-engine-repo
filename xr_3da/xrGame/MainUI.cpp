@@ -347,7 +347,7 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 			y *= GetScaleY();
 		}
 
-		pFont->Out(x, y, str.c_str());
+		pFont->Out(x, y, "%s", str.c_str());
 	}
 }
 

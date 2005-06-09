@@ -23,6 +23,7 @@ public:
 	virtual void			SetText(const char* text);
 	virtual const char*		GetText()							const;
 			void			AddChar(const char ch);
+			void			AddChar(const char ch, int pos);
 			void			DelChar(int i);
 	virtual void			SetTextColor(u32 color)						{m_dwTextColor = color; uFlags.set(flNeedReparse, true);}
 	virtual u32				GetTextColor()						const	{return m_dwTextColor;}

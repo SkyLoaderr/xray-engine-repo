@@ -54,6 +54,11 @@ void CUILines::AddChar(const char ch){
 	uFlags.set(flNeedReparse, true);
 }
 
+void CUILines::AddChar(const char ch, int pos){
+	m_text.insert(m_text.begin()+pos, ch);
+	uFlags.set(flNeedReparse, true);
+}
+
 void CUILines::DelChar(int i){
 	m_text.erase(i);
 	uFlags.set(flNeedReparse, true);
