@@ -21,12 +21,12 @@
 
 IC	CLevelGraph::const_vertex_iterator CLevelGraph::begin	() const
 {
-	return		(m_nodes);
+	return				(m_nodes);
 }
 
 IC	CLevelGraph::const_vertex_iterator CLevelGraph::end		() const
 {
-	return		(m_nodes + header().vertex_count());
+	return				(m_nodes + header().vertex_count());
 }
 
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
@@ -433,12 +433,14 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 	start					= start_point;
 	dest					= finish_point;
 	dir.sub					(dest,start);
+	u32						dest_xz = vertex_position(v3d(dest)).xz();
 	Fvector2				temp;
 	Fvector					pos3d;
 	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
 
 	if (bClearPath)
 		tpaOutputPoints.clear	();
+	
 	if (bAddFirstPoint) {
 		pos3d				= v3d(start_point);
 		if (bAssignY)
@@ -447,6 +449,17 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 		path_node.set_vertex_id(start_vertex_id);
 		tpaOutputPoints.push_back(path_node);
 	}
+
+	if (vertex(start_vertex_id)->position().xz() == dest_xz) {
+		Fvector						tIntersectPoint	= v3d(dest);
+		if (bAssignY)
+			tIntersectPoint.y		= vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+		path_node.set_position		(tIntersectPoint);
+		path_node.set_vertex_id		(start_vertex_id);
+		tpaOutputPoints.push_back	(path_node);
+		return						(true);
+	}
+
 
 	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 	for (;;) {
@@ -457,7 +470,8 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 			u32				next_vertex_id = value(cur_vertex_id,I);
 			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
-			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			CVertex			*v = vertex(next_vertex_id);
+			unpack_xz		(v,temp.x,temp.y);
 			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
@@ -522,7 +536,7 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 				path_node.set_vertex_id(next_vertex_id);
 				tpaOutputPoints.push_back(path_node);
 
-				if (box.contains(dest)) {
+				if (dest_xz == v->position().xz()/**box.contains(dest)/**/) {
 					tIntersectPoint = v3d(dest);
 					if (bAssignY)
 						tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);

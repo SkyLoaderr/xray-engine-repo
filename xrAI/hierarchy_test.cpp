@@ -354,9 +354,61 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 #define TEST_COUNT 1
 
+struct STravelPathPoint {
+	Fvector				position;
+	u32					vertex_id;
+	u32					velocity;
+
+	IC	void set_position	(const Fvector &pos)
+	{
+		position		= pos;
+	}
+
+	IC	void set_vertex_id	(const u32 _vertex_id)
+	{
+		vertex_id		= _vertex_id;
+	}
+
+	IC	Fvector &get_position	()
+	{
+		return			(position);
+	}
+
+	IC	u32		get_vertex_id	()
+	{
+		return			(vertex_id);
+	}
+};
+
 void test_hierarchy		(LPCSTR name)
 {
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
+
+	///
+	///
+	///
+#if 0
+	{
+		STravelPathPoint			t;
+		u32							vertex_id = 97666;
+		Fvector2					start = Fvector2().set(-235.900452f,60.900448f);
+		Fvector2					dest  = Fvector2().set(-236.249985f,61.250000f);;
+		xr_vector<STravelPathPoint>	path;
+		bool						value = level_graph->create_straight_path<false>(
+			vertex_id,
+			start,
+			dest,
+			path,
+			t,
+			false,
+			false
+		);
+	}
+#endif
+	///
+	///
+	///
+
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
 
 	Msg							("ai map : %d nodes",level_graph->header().vertex_count());
