@@ -18,7 +18,7 @@ local combat_type_search = 2   -- поиск врага, кружение вокруг точки, где послед
 local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy_pos   = 1
 
-local flyby_attack_altitude      = 20
+local flyby_attack_altitude      = 35
 
 local combat_type_change_delay   = 5000
 local visibility_delay           = 3000
