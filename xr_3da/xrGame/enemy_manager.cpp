@@ -52,6 +52,9 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		)
 		return				(false);
 
+//	if (entity_alive->CLS_ID == CLSID_OBJECT_ACTOR)
+//		return				(false);
+
 	return					(m_useful_callback ? m_useful_callback(m_object->lua_game_object(),entity_alive->lua_game_object()) : true);
 }
 
@@ -160,4 +163,34 @@ void CEnemyManager::remove_links			(CObject *object)
 
 	if (m_selected && (m_selected->ID() == object->ID()))
 		m_selected				= 0;
+}
+
+void CEnemyManager::ignore_monster_threshold			(const float &ignore_monster_threshold)
+{
+	m_ignore_monster_threshold	= ignore_monster_threshold;
+}
+
+void CEnemyManager::restore_ignore_monster_threshold	()
+{
+	m_ignore_monster_threshold	= READ_IF_EXISTS(pSettings,r_float,*m_object->cNameSect(),"ignore_monster_threshold",1.f);
+}
+
+float CEnemyManager::ignore_monster_threshold			() const
+{
+	return						(m_ignore_monster_threshold);
+}
+
+void CEnemyManager::max_ignore_monster_distance			(const float &max_ignore_monster_distance)
+{
+	m_max_ignore_distance		= max_ignore_monster_distance;
+}
+
+void CEnemyManager::restore_max_ignore_monster_distance	()
+{
+	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,*m_object->cNameSect(),"max_ignore_distance",0.f);
+}
+
+float CEnemyManager::max_ignore_monster_distance		() const
+{
+	return						(m_max_ignore_distance);
 }

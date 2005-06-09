@@ -208,6 +208,13 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("animation_count",				&CScriptGameObject::animation_count)
 		.def("animation_slot",				&CScriptGameObject::animation_slot)
 
+		.def("ignore_monster_threshold",				&CScriptGameObject::set_ignore_monster_threshold)
+		.def("restore_ignore_monster_threshold",		&CScriptGameObject::restore_ignore_monster_threshold)
+		.def("ignore_monster_threshold",				&CScriptGameObject::ignore_monster_threshold)
+		.def("max_ignore_monster_distance",				&CScriptGameObject::set_max_ignore_monster_distance)
+		.def("restore_max_ignore_monster_distance",		&CScriptGameObject::restore_max_ignore_monster_distance)
+		.def("max_ignore_monster_distance",				&CScriptGameObject::max_ignore_monster_distance)
+
 		.def("eat",							&CScriptGameObject::eat)
 
 		.def("extrapolate_length",			(float (CScriptGameObject::*)() const)(CScriptGameObject::extrapolate_length))

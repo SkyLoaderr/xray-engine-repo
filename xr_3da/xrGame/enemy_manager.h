@@ -45,6 +45,15 @@ public:
 	IC		const CEntityAlive	*last_enemy			() const;
 	IC		USEFULE_CALLBACK	&useful_callback	();
 			void				remove_links		(CObject *object);
+
+public:
+			void				ignore_monster_threshold			(const float &ignore_monster_threshold);
+			void				restore_ignore_monster_threshold	();
+			float				ignore_monster_threshold			() const;
+			void				max_ignore_monster_distance			(const float &max_ignore_monster_distance);
+			void				restore_max_ignore_monster_distance	();
+			float				max_ignore_monster_distance			() const;
+
 };
 
 #include "enemy_manager_inline.h"

@@ -355,3 +355,64 @@ CHolderCustom* CScriptGameObject::get_current_holder()
 	else
 		return NULL;
 }
+
+void CScriptGameObject::set_ignore_monster_threshold	(float ignore_monster_threshold)
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member set_ignore_monster_threshold!");
+		return;
+	}
+	clamp				(ignore_monster_threshold,0.f,1.f);
+	stalker->memory().enemy().ignore_monster_threshold	(ignore_monster_threshold);
+}
+
+void CScriptGameObject::restore_ignore_monster_threshold	()
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member restore_ignore_monster_threshold!");
+		return;
+	}
+	stalker->memory().enemy().restore_ignore_monster_threshold	();
+}
+
+float CScriptGameObject::ignore_monster_threshold		() const
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member ignore_monster_threshold!");
+		return			(0.f);
+	}
+	return				(stalker->memory().enemy().ignore_monster_threshold());
+}
+
+void CScriptGameObject::set_max_ignore_monster_distance	(const float &max_ignore_monster_distance)
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member set_max_ignore_monster_distance!");
+		return;
+	}
+	stalker->memory().enemy().max_ignore_monster_distance	(max_ignore_monster_distance);
+}
+
+void CScriptGameObject::restore_max_ignore_monster_distance	()
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member restore_max_ignore_monster_distance!");
+		return;
+	}
+	stalker->memory().enemy().restore_max_ignore_monster_distance	();
+}
+
+float CScriptGameObject::max_ignore_monster_distance	() const
+{
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member max_ignore_monster_distance!");
+		return			(0.f);
+	}
+	return				(stalker->memory().enemy().max_ignore_monster_distance());
+}

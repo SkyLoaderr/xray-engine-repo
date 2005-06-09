@@ -469,6 +469,13 @@ public:
 			// Monster Jumper
 			bool				jump					(CScriptGameObject *enemy);
 
+			void				set_ignore_monster_threshold		(float ignore_monster_threshold);
+			void				restore_ignore_monster_threshold	();
+			float				ignore_monster_threshold			() const;
+			void				set_max_ignore_monster_distance		(const float &max_ignore_monster_distance);
+			void				restore_max_ignore_monster_distance	();
+			float				max_ignore_monster_distance			() const;
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
