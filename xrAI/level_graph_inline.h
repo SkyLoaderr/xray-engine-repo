@@ -424,6 +424,9 @@ IC  Fvector2 CLevelGraph::v2d(const Fvector &vector3d) const
 template <bool bAssignY, typename T>
 IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<T> &tpaOutputPoints, const T &example, bool bAddFirstPoint, bool bClearPath) const
 {
+	if (!valid_vertex_position(v3d(finish_point)))
+		return				(false);
+
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;
 	Fbox2					box;
 	Fvector2				identity, start, dest, dir;
