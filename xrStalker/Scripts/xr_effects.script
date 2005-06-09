@@ -56,7 +56,9 @@ end
 
 function gar_send_dymon_alarm()
 	if db.actor then
+		printf("!!!!!!!!!!!!!!!!!!!!!")
 		if db.actor:has_info("gar_start_graveyard") then
+			printf("!!!!!!!!!!!!!!!!!!!!!")
 			news_manager.send_tip(db.actor, "tips_gar_hellcar_alarm", 10000, "stalker", 10000)
 		end
 	end
