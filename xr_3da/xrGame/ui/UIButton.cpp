@@ -210,6 +210,7 @@ void CUIButton::DrawHighlightedText(){
 //	CGameFont * F = GetFont();
 //	F->SetColor(m_HighlightColor);
 	u32 def_col = m_lines.GetTextColor();
+	m_lines.SetTextColor(m_HighlightColor);
 
 	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
