@@ -287,6 +287,9 @@ function process_map_spot(info_id)
 
 	elseif info_id == "gar_alarm" then
 		remove_location(107, "gar_graveyard_car_location")
+	
+	elseif info_id == "gar_bandit_leader_dead" then
+		remove_location(107, "gar_graveyard_car_location"
 
 	
 	-- agroprom
