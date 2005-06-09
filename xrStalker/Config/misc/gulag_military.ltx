@@ -136,7 +136,6 @@ on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_max
 actor_dialogs = dialogs@mil_freedom_max
 on_death = death@mil_freedom_max
-meet = on_meet@mil_freedom_max
 active = walker1@mil_freedom_max
 
 [spawn@mil_freedom_max]
@@ -148,7 +147,13 @@ antirad
 on_info = %=military_max_dead%
 
 [on_meet@mil_freedom_max]
-distance = 5
+meet_state = 10|ward@mil_max_to_actor
+meet_state_wpn = 10|ward@mil_max_to_actor
+victim = 20|nil|10|actor
+victim_wpn = 20|nil|10|actor
+use = true
+use_wpn = false
+meet_dialog = mil_max_dialog
 
 [dialogs@mil_freedom_max]
 id = mil_max_dialog_common1,mil_max_dialog_common2,mil_max_dialog_common3
@@ -177,8 +182,7 @@ on_signal = action_end | walker11@mil_freedom_max_attack %+mil_freedom_attack%
 [walker2@mil_freedom_max]
 path_walk = max_center_walk
 path_look = max_center_look
-meet_enabled = true
-meet_dialog = mil_max_dialog
+meet = on_meet@mil_freedom_max
 on_timer = 120000 | walker1@mil_freedom_max %-mil_actor_on_lukash%
 on_info = {+mil_max_talk3} remark1@mil_freedom_max
 
@@ -325,8 +329,7 @@ zone_guard = kill_enter_zone
 snd_greet = mil_freedom_zoneguard
 team = freedom_guards
 no_move = true
-meet_talk_enabled = true
-meet_dialog = mil_zoneguard_dialog
+meet = on_meet1@mil_freedom_stalker8
 on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
 
 [zoneguard2@mil_freedom_stalker8]
@@ -336,8 +339,26 @@ zone_warn  = zone6
 snd_greet = talk_hello
 team = freedom_guards
 no_move = true
-meet_talk_enabled = true
+meet = on_meet2@mil_freedom_stalker8
+
+[on_meet1@mil_freedom_stalker8]
+meet_state = 5|ward@mil_freedom_zoneguard
+meet_state_wpn = 10|backoff@threat_weapon
+victim = 20|nil|10|actor
+victim_wpn = 20|nil|10|actor
+use = true
+use_wpn = false
 meet_dialog = mil_zoneguard_dialog
+
+[on_meet2@mil_freedom_stalker8]
+meet_state = 5|ward
+meet_state_wpn = 5|ward
+victim = 20|nil|10|actor
+victim_wpn = 20|nil|10|actor
+use = true
+use_wpn = true
+meet_dialog = mil_zoneguard_dialog
+
 
 ;----------------------------------- Мужик на входе 1 -----------------------
 [logic@mil_freedom_stalker9]
