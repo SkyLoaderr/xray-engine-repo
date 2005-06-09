@@ -43,7 +43,7 @@ function action_meet_wait:initialize()
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
-
+	
 	-- стартовый диалог
 	if self.a.meet_dialog ~= nil then			
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.meet_dialog)
@@ -108,6 +108,15 @@ function action_meet_wait:execute ()
 		else
 			self.sound = nil
 			xr_sound.set_sound(self.object, nil)
+		end
+	end
+	
+	local tt = db.storage[self.object:id()]
+	if tt.active_scheme then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
+				return
+			end
 		end
 	end
 end
