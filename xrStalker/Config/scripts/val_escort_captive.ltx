@@ -10,7 +10,7 @@ on_info = %+val_escort_captive_dead%
 
 [walker1]
 path_walk = val_escort_captive_walk
-;path_look = val_escort_captive_look
+path_look = val_escort_captive_look
 on_signal = fight | %+val_escort_combat -val_escort_wait%
 on_info = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
 on_info2 = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave %+val_escort_captive_can_leave%
@@ -32,8 +32,8 @@ meet_enabled = true
 on_timer = 60000 | walker@leave
 
 [walker@leave]
-path_walk = val_leave_level_walk
-path_look = val_leave_level_look
+path_walk = val_escort_captive_leave_walk
+path_look = val_escort_captive_leave_look
 meet_dialog = val_escort_captive_dialog
 meet_state = caution
 meet_enabled = true

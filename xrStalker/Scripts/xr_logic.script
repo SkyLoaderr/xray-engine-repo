@@ -491,15 +491,30 @@ function pick_section_from_condlist(actor, npc, condlist)
 					utils.abort("object '%s': pick_section_from_condlist: function '%s' is " ..
 						"not defined in xr_conditions.script", npc:name(), infop.func)
 				end
-				if xr_conditions[infop.func](actor, npc) then
-					if not infop.expected then
-						infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
-						break
+				--if xr_conditions[infop.func](actor, npc) then
+				if infop.params then
+					if xr_conditions[infop.func](actor, npc, infop.params) then
+						if not infop.expected then
+							infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
+							break
+						end
+					else
+						if infop.expected then
+							infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
+							break
+						end
 					end
 				else
-					if infop.expected then
-						infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
-						break
+					if xr_conditions[infop.func](actor, npc) then
+						if not infop.expected then
+							infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
+							break
+						end
+					else
+						if infop.expected then
+							infop_conditions_met = false -- инфопоршен есть, но не должен присутствовать
+							break
+						end
 					end
 				end
 			elseif actor:has_info(infop.name) then
@@ -526,7 +541,11 @@ function pick_section_from_condlist(actor, npc, condlist)
 						utils.abort("object '%s': pick_section_from_condlist: function '%s' is " ..
 							"not defined in xr_effects.script", if_then_else(npc, npc:name(), "nil"), infop.func)
 					end
-					xr_effects[infop.func](actor, npc)
+					if infop.params then
+						xr_effects[infop.func](actor, npc, infop.params)
+					else
+						xr_effects[infop.func](actor, npc)
+					end
 				elseif infop.required then
 					if not actor:has_info(infop.name) then
 						--printf("_bp: setting infoportion: %s", infop.name)
@@ -687,7 +706,7 @@ end
 -- На входе имеем пустой массив и строку вида "  +infop1  -infop2 +infop3 ... "
 -- Заполнить массив:
 -- { "infop_name" = true/false }.
-function parse_infop(rslt, str) 
+function parse_infop1(rslt, str) 
 	--printf("_bp: parse_infop: %s", utils.to_str(str))
 	if str then
 		local infop_name, sign
@@ -706,6 +725,61 @@ function parse_infop(rslt, str)
 				rslt[infop_n] = { func = infop_name, expected = true }
 			elseif sign == "!" then
 				rslt[infop_n] = { func = infop_name, expected = false }
+			else
+				abort_syntax_error_in_cond(npc, section, field)
+			end
+			infop_n = infop_n + 1
+		end
+	end
+end
+
+function parse_func_params(str)
+	local lst = {}
+	local n
+	for par in string.gfind(str, "%s*([^:]+)%s*") do
+		n = tonumber(par)
+		if n then table.insert(lst, n)
+		else table.insert(lst, par) end
+	end
+	return lst
+end
+
+function parse_infop(rslt, str) 
+	--printf("_bp: parse_infop1: %s", utils.to_str(str))
+	if str then
+		local infop_name, sign
+		local infop_n = 1
+		local at, params
+		for s in string.gfind(str, "%s*([%-%+%~%=%!][^%-%+%~%=%!%s]+)%s*") do
+			--printf("_bp: parse_infop: s=%s", utils.to_str(s))
+			sign = string.sub(s, 1, 1)
+			infop_name = string.sub(s, 2)
+			params = nil
+
+			-- парсим параметры функций
+			at = string.find(infop_name, "%(")
+			if at then
+				if string.sub(infop_name, -1) ~= ")" then
+					abort_syntax_error_in_cond(npc, section, field)
+				end
+				if at < string.len(infop_name) - 1 then
+					params = parse_func_params(string.sub(infop_name, at + 1, -2))
+				end
+				infop_name = string.sub(infop_name, 1, at - 1)
+			end
+
+			if sign == "+" then
+				rslt[infop_n] = { name = infop_name, required = true }
+			elseif sign == "-" then
+				rslt[infop_n] = { name = infop_name, required = false }
+			elseif sign == "~" then
+				rslt[infop_n] = { prob = tonumber(infop_name) }
+			elseif sign == "=" then
+				--printf("_bp: n = %s; r = %s", infop_name, utils.to_str(params))
+				rslt[infop_n] = { func = infop_name, expected = true, params = params }
+			elseif sign == "!" then
+				--printf("_bp: n = %s; r = %s", infop_name, utils.to_str(params))
+				rslt[infop_n] = { func = infop_name, expected = false, params = params }
 			else
 				abort_syntax_error_in_cond(npc, section, field)
 			end

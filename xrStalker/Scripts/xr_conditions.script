@@ -140,12 +140,93 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for Dark Valley
 ------------------------------------------------------------------------------------
-function check_fighting(actor, npc, p)
+function hitted_by(actor, npc, p)
+	local npc1
+	local t = db.storage[npc:id()].hit
+	if t then
+		for i, v in pairs(p) do
+			npc1 = utils.obj_by_sid(v)
+			if npc1 and t.who == npc1:id() then
+				printf("_bp: hitted_by(%d)", v)
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function killed_by(actor, npc, p)
+	local npc1
+	local t = db.storage[npc:id()].death
+	if t then
+		for i, v in pairs(p) do
+			npc1 = utils.obj_by_sid(v)
+			if npc1 and t.killer == npc1:id() then
+				printf("_bp: killed_by(%d)", v)
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- проверка (по story_id) все ли проверяемые сталкеры живы
+function is_alive_all(actor, npc, p)
+	local npc1
 	for i, v in pairs(p) do
-		if db.storage[npc:id()].enemy:story_id() == val then
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and not npc1:alive() then
+			return false
+		end
+	end
+	return true
+end
+
+-- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров жив
+function is_alive_one(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and npc1:alive() then
 			return true
 		end
 	end
+	return false
+end
+
+-- проверка (по story_id) все ли проверяемые сталкеры мертвы
+function is_dead_all(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and npc1:alive() then
+			return false
+		end
+	end
+	return true
+end
+
+-- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров мертв
+function is_dead_one(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and not npc1:alive() then
+			return true
+		end
+	end
+	return false
+end
+
+-- проверка (по story_id) того, что мы атакуем хотя бы кого-то одного из списка
+function check_fighting(actor, npc, p)
+	for i, v in pairs(p) do
+		if type(v) == 'number' and db.storage[npc:id()].enemy:story_id() == v then
+			--printf("_bp: check_fighting(%d) = true", v)
+			return true
+		end
+	end
+	--printf("_bp: check_fighting() = false")
 	return false
 end
 

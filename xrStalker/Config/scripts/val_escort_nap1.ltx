@@ -1,8 +1,12 @@
 [logic]
-active = walker1
+active = walker@wait
+on_combat = combat
 on_hit = hit
 on_death = death
 combat_ignore = combat_ignore
+
+[combat]
+on_info = {=hitted_by(407:408)} remark@fight %+val_escort_combat%
 
 [death]
 on_info = %+val_escort_nap1_dead%
@@ -10,35 +14,91 @@ on_info = %+val_escort_nap1_dead%
 [hit]
 on_info = {=val_hit_by_guard} %+val_escort_combat%
 
-[walker1]
-path_walk = val_nap1_exit_walk
-path_look = val_nap1_exit_look
+[combat_ignore]
+
+;--------------------------------------------------------------------------
+; ждем пока игрок не подойдет на дистанцию, тогда проговариваем фразу
+;--------------------------------------------------------------------------
+[walker@wait]
+path_walk = val_escort_nap1_walk
+path_look = val_escort_nap1_look
+on_info = {+val_sacrifice_victim_killed} walker@fake_task
+on_actor_dist_le = 3 | remark@phrase1
+
+[remark@phrase1]
+no_move = true
+no_rotate = true
+anim = guard
+snd = speach
+on_signal = sound_end | walker@talk
+on_info = {+val_sacrifice_victim_killed} walker@fake_task
+
+;--------------------------------------------------------------------------
+; ждем диалога с игроком.
+;--------------------------------------------------------------------------
+[walker@talk]
+path_walk = val_escort_nap1_walk
+path_look = val_escort_nap1_look
 meet_dialog = val_escort_nap1_dialog
 meet_enabled = true
-on_info = {+val_nap1_go_rescue} camper@wait, {+val_escort_captive_dead} walker@fake_task
+on_info = {+val_escort_nap1_go_rescue} camper@ambush_go %+val_escort_start%, {+val_sacrifice_victim_killed} walker@fake_task
+
+;--------------------------------------------------------------------------
+; задание принято. идем к месту засады
+;--------------------------------------------------------------------------
+[camper@ambush_go]
+path_walk = val_escort_nap1_rescue_walk
+path_look = val_escort_nap1_rescue_look
+radius = 2
+def_state_moving = rush
+no_retreat = true
+on_signal = ambush_start | remark@phrase2
+on_info = {+val_escort_combat} remark@fight
+combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
+
+[remark@phrase2]
+no_move = true
+no_rotate = true
+anim = hide
+snd = speach
+on_timer = 8000 | remark@phrase3
+on_info = {+val_escort_captive_dead} walker@fake_task
+combat_ignore_cond = {-val_escort_combat}
+
+[remark@phrase3]
+no_move = true
+no_rotate = true
+anim = hide
+snd = speach
+on_signal = sound_end | camper@ambush_wait
+on_info = {+val_escort_captive_dead} remark@fake_wait
+combat_ignore_cond = {-val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; задание принято. ожидание в засаде
-[camper@wait]
-path_walk = val_nap1_go_rescue_walk
-path_look = val_nap1_go_rescue_look
+;--------------------------------------------------------------------------
+[camper@ambush_wait]
+path_walk = val_escort_nap1_rescue_walk
+path_look = val_escort_nap1_rescue_look
 radius = 3
 def_state_moving = rush
 no_retreat = true
 on_signal = escort_start | %+val_escort_start%
-on_info = {+val_escort_combat} remark@fight
+on_info = {+val_escort_nap1_phrase3} remark@phrase3, {+val_escort_combat} remark@fight
 combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
 
-[combat_ignore]
-
+;--------------------------------------------------------------------------
 ; бой с гвардами
+;--------------------------------------------------------------------------
 [remark@fight]
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@task_done
 
+;--------------------------------------------------------------------------
 ; гварды убиты
+;--------------------------------------------------------------------------
 [walker@task_done]
-path_walk = val_nap1_task_done_walk
-path_look = val_nap1_task_done_look
+path_walk = val_escort_nap1_done_walk
+path_look = val_escort_nap1_done_look
 meet_dialog = val_escort_nap1_dialog
 meet_enabled = true
 ; берем напарником
@@ -47,9 +107,10 @@ on_timer = 60000 | walker@leave
 
 ;--------------------------------------------------------------------------
 ; игрок не принял задание. фейковая засада
+;--------------------------------------------------------------------------
 [walker@fake_task]
-path_walk = val_nap1_go_rescue_walk
-path_look = val_nap1_go_rescue_look
+path_walk = val_escort_nap1_rescue_walk
+path_look = val_escort_nap1_rescue_look
 on_signal = escort_start | remark@fake_wait
 
 [remark@fake_wait]
@@ -60,8 +121,8 @@ on_timer = 7000 | walker@leave
 ;--------------------------------------------------------------------------
 ; уходим с уровня
 [walker@leave]
-path_walk = val_leave_level_walk
-path_look = val_leave_level_look
+path_walk = val_escort_nap1_leave_walk
+path_look = val_escort_nap1_leave_look
 meet_dialog = val_escort_nap1_dialog
 meet_enabled = true
 on_signal = arrived | nil
