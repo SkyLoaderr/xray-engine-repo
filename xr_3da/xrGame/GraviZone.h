@@ -18,16 +18,17 @@ class CBaseGraviZone : public CCustomZone
 {
 private:
 	typedef		CCustomZone					inherited;
-	//typedef		CTelekinesis				TTelekinesis;
 
 public:
-	CBaseGraviZone(void);
+					CBaseGraviZone(void);
 	virtual			~CBaseGraviZone(void);
 
 	virtual void	Load (LPCSTR section);
 
-	virtual BOOL	net_Spawn(CSE_Abstract* DC);
-	virtual void	net_Destroy();
+	virtual BOOL	net_Spawn		(CSE_Abstract* DC);
+	virtual void	net_Destroy		();
+	virtual	void	net_Relcase		(CObject* O);
+
 
 	//воздействие зоной на объект
 	virtual void	Affect(SZoneObjectInfo* O);
@@ -76,6 +77,6 @@ class CGraviZone	: public CBaseGraviZone
 protected:
 	virtual CTelekinesis& Telekinesis()						{return m_telekinesis;}
 public:
-	CGraviZone		(void)			{}
-	virtual		~CGraviZone		(void)			{}
+						CGraviZone		(void)			{}
+	virtual				~CGraviZone		(void)			{}
 };

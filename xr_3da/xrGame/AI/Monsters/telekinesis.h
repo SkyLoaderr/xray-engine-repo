@@ -59,6 +59,10 @@ CTelekineticObject	get_object_by_index (u32 index) {VERIFY(objects.size() > inde
 					
 			// обновить состон€ие на shedule_Update			
 			void	schedule_update		();
+
+			// объект был удален - удалить все св€зи на объект
+			void	remove_links		(CObject *O);
+
 protected:
 	virtual CTelekineticObject*	alloc_tele_object(){return xr_new<CTelekineticObject>();}
 private:

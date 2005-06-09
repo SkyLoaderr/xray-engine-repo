@@ -90,6 +90,7 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 
+	virtual void	net_Relcase			(CObject *O);
 	virtual	void	shedule_Update		(u32 dt);
 	virtual void	UpdateCL			();
 	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);

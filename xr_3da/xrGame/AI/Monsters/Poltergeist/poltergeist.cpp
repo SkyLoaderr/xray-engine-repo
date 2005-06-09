@@ -281,6 +281,14 @@ CMovementManager *CPoltergeist::create_movement_manager	()
 	return							(m_movement_manager);
 }
 
+
+void CPoltergeist::net_Relcase(CObject *O)
+{
+	inherited::net_Relcase		(O);
+	CTelekinesis::remove_links	(O);
+}
+
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CPoltergeist::show_debug_info()
 {

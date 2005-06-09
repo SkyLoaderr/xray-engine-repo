@@ -344,6 +344,13 @@ void CBurer::on_scan_success()
 	EnemyMan.add_enemy(pA);
 }
 
+void CBurer::net_Relcase(CObject *O)
+{
+	inherited::net_Relcase		(O);
+
+	TTelekinesis::remove_links	(O);
+}
+
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBurer::show_debug_info()

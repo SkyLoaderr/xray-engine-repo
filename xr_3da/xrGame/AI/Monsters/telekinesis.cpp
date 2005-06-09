@@ -206,3 +206,13 @@ u32 CTelekinesis::get_objects_count()
 	return count;
 }
 
+// объект был удален - удалить все связи на объект
+void CTelekinesis::remove_links(CObject *O)
+{
+	for (TELE_OBJECTS_IT it = objects.begin(); it != objects.end(); ++it) {
+		if ((*it)->get_object() == O) {
+			objects.erase(it);
+			return;
+		}
+	}
+}

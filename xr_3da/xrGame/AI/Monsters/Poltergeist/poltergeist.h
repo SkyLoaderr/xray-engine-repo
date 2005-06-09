@@ -44,6 +44,8 @@ public:
 
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	net_Destroy			();
+	virtual void	net_Relcase			(CObject *O);
+
 	virtual void	UpdateCL			();
 	virtual	void	shedule_Update		(u32 dt);
 

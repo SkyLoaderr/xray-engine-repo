@@ -295,3 +295,9 @@ float CBaseGraviZone ::RelativePower(float dist)
 	return power < 0 ? 0 : power;
 }
 
+void CBaseGraviZone::net_Relcase(CObject* O)
+{
+	inherited::net_Relcase(O);
+	
+	Telekinesis().remove_links(O);
+}
