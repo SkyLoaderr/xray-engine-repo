@@ -49,7 +49,8 @@ enum
 	phDbgDrawCashedTriesStat	=		1<<16,
 	phDbgDrawCarDynamics		=		1<<17,
 	phDbgDrawCarPlots			=		1<<18,
-	phDbgLadder					=		1<<19
+	phDbgLadder					=		1<<19,
+	phDbgDrawExplosions			=		1<<20
 };
 struct SPHObjDBGDraw
 {

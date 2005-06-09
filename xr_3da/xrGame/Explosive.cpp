@@ -22,7 +22,10 @@
 #include "xrmessages.h"
 #include "gamemtllib.h"
 #include "clsid_game.h"
-
+#ifdef DEBUG
+#include "StatGraph.h"
+#include "PHDebug.h"
+#endif
 #define EFFECTOR_RADIUS 30.f
 
 CExplosive::CExplosive(void) 
@@ -114,11 +117,22 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 // Взрыв 
 /////////////////////////////////////////////////////////
-
+struct SExpQParams
+{
+	SExpQParams(const Fvector& ec,const Fvector& d)
+	{
+		shoot_factor=1.f;
+		expl_centre.set(ec);
+		l_dir.set(d);
+	}
+	Fvector	expl_centre			;					
+	Fvector l_dir				;
+	float	shoot_factor		;
+};
 //проверка на попадание "осколком" по объекту
 ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
 {
-	float& shoot_factor	= *(float*)params;
+	SExpQParams& ep	= *(SExpQParams*)params;
 	u16 mtl_idx			= GAMEMTL_NONE_IDX;
 	if(result.O){	
 		CKinematics* V  = 0;
@@ -132,9 +146,18 @@ ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
 		mtl_idx			= T->material;
 	}	
 	SGameMtl* mtl		= GMLib.GetMaterialByIdx(mtl_idx);
-	shoot_factor		*=mtl->fShootFactor;
-	return				(shoot_factor>0.01f);
+	ep.shoot_factor		*=mtl->fShootFactor;
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
+	{
+		Fvector p;p.set(ep.l_dir);p.mul(result.range);p.add(ep.expl_centre);
+		u8 c	=u8(mtl->fShootFactor*255.f);
+		DBG_DrawPoint(p,0.1f,D3DCOLOR_XRGB(255-c,0,c));
+	}
+#endif
+	return				(ep.shoot_factor>0.01f);
 }
+
 float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
 
@@ -142,15 +165,18 @@ float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_
 	pExpObject->Center(l_pos);
 	Fvector l_dir; 
 	l_dir.sub(l_pos, expl_centre); 
-	l_dir.normalize();
-
-	pExpObject->setEnabled(FALSE);
-	
-	collide::ray_defs RD		(expl_centre,l_dir,expl_radius,CDB::OPT_CULL,collide::rqtBoth);
-	float	shoot_factor		= 1.f;
-	g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&shoot_factor);
-	pExpObject->setEnabled(TRUE);
-
+	float range=l_dir.magnitude();
+	float shoot_factor=1.f;
+	if(range>EPS_L)
+	{
+		pExpObject->setEnabled(FALSE);
+		l_dir.mul(1.f/range);
+		collide::ray_defs RD		(expl_centre,l_dir,range,CDB::OPT_CULL,collide::rqtBoth);
+		SExpQParams	ep(expl_centre,l_dir);
+		g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&ep);
+		shoot_factor=ep.shoot_factor;
+		pExpObject->setEnabled(TRUE);
+	}
 	//if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, collide::rqtBoth, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
 	//if(pExpObject != RQ.O) return 0;
@@ -181,7 +207,13 @@ void CExplosive::Explode()
 
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
-
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
+	{
+		DBG_OpenCashedDraw();
+		DBG_DrawPoint(pos,0.3f,D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
 //	Msg("---------CExplosive Explode [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 	OnBeforeExplosion();
 	//играем звук взрыва
@@ -243,7 +275,7 @@ void CExplosive::Explode()
 											m_fCurrentHitPower, m_fCurrentHitImpulse, Initiator(),
 											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
 	}	
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (cast_game_object()->Remote()) return;
 	
 	/////////////////////////////////
@@ -284,12 +316,20 @@ void CExplosive::Explode()
 			l_pGO->Center(l_goPos); 
 		else 
 			l_goPos.set(l_pGO->Position());
-		
+
 		l_dir.sub(l_goPos, pos); 
 		l_dst = l_dir.magnitude(); 
+		if(l_dst>m_fBlastRadius){m_blasted_objects.pop_back();continue;}
+#ifdef DEBUG
+		if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
+		{
+			DBG_DrawPoint(l_goPos,0.3f,D3DCOLOR_XRGB(0,0,255));
+			DBG_DrawLine(pos,l_goPos,D3DCOLOR_XRGB(0,0,255));
+		}
+#endif
 		l_dir.div(l_dst); 
 		l_dir.y += m_fUpThrowFactor;
-
+		
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		
 		if(l_pGO->Visual()) 
@@ -348,7 +388,13 @@ void CExplosive::Explode()
 		}
 		m_blasted_objects.pop_back();
 	}	
-
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
+	{
+		DBG_ClosedCashedDraw(100000);
+		
+	}
+#endif
 	//////////////////////////////////////////////////////////////////////////
 	// Explode Effector	//////////////
 	CGameObject* GO = smart_cast<CGameObject*>(Level().CurrentEntity());
