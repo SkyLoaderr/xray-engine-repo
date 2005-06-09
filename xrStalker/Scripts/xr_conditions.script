@@ -212,13 +212,14 @@ function is_dead_one(actor, npc, p)
 	for i, v in pairs(p) do
 		npc1 = utils.obj_by_sid(v)
 		if npc1 and not npc1:alive() then
+			printf("_bp: is_dead_one(%d) = true", v)
 			return true
 		end
 	end
 	return false
 end
 
--- проверка (по story_id) того, что мы атакуем хотя бы кого-то одного из списка
+-- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
 function check_fighting(actor, npc, p)
 	for i, v in pairs(p) do
 		if type(v) == 'number' and db.storage[npc:id()].enemy:story_id() == v then
