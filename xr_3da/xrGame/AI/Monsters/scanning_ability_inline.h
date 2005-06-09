@@ -58,7 +58,8 @@ void CScanningAbilityAbstract::schedule_update()
 
 	if (state == eStateDisabled) return;
 
-	CObject *scan_obj	= Level().CurrentEntity();
+	CActor *scan_obj	= smart_cast<CActor *>(Level().CurrentEntity());
+	if (!scan_obj)		return;
 
 	// проверка на активность
 	if (state == eStateNotActive) {
