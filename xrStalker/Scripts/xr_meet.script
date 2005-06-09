@@ -49,7 +49,7 @@ function action_meet_wait:execute ()
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.meet_dialog)
 		if self.startdialog ~= tmp then
 			self.startdialog = tmp
-			printf("*DIALOGS %s* SET [%s]", utils.to_str(tmp))
+			printf("*DIALOGS %s* SET [%s]", self.object:name(), utils.to_str(tmp))
 			if tmp == nil or tmp == "nil" then
 				-- восстановление начального
 				self.object:restore_default_start_dialog()
@@ -281,12 +281,12 @@ function set_meet(npc, ini, scheme, section)
 	st.meet_manager = meet_manager(npc, st)
 end
 -- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
-function reset_meet(npc, scheme, st)
+function reset_meet(npc, scheme, st, section)
 	local meet_section
 	if scheme == "nil" then
 		meet_section = utils.cfg_get_string(st.ini, st.section_logic, "meet", npc, false, "")
 	else
-		meet_section = utils.cfg_get_string(st.ini, scheme, "meet", npc, false, "")
+		meet_section = utils.cfg_get_string(st.ini, section, "meet", npc, false, "")
 	end
 	init_meet(npc, st.ini, meet_section, st, scheme)
 end

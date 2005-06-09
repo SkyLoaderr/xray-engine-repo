@@ -313,7 +313,7 @@ function activate_by_section(npc, ini, section, loading)
 
 	if section == "nil" then
 		db.storage[npc_id].overrides = nil
-		reset_generic_schemes_on_scheme_switch(npc, "nil")
+		reset_generic_schemes_on_scheme_switch(npc, "nil", "nil")
 		db.storage[npc_id].active_section = nil
 		db.storage[npc_id].active_scheme = nil
 		db.storage[npc_id].pstor = nil
@@ -331,7 +331,7 @@ function activate_by_section(npc, ini, section, loading)
 		db.storage[npc_id].overrides = cfg_get_overrides(ini, section, npc)
 
 		-- Сбросить общие схемы:
-		reset_generic_schemes_on_scheme_switch(npc, scheme)
+		reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
@@ -367,7 +367,7 @@ end
 --	Производит сброс состояния объекта (снимает коллбеки, отключает разговор) непосредственно перед включением
 --	новой схемы.
 --]]
-function reset_generic_schemes_on_scheme_switch(npc, scheme)
+function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = db.storage[npc:id()]
 
@@ -377,7 +377,7 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme)
 
 	if st.stype == modules.stype_stalker then
 		xr_meet.dialog_manager_reset(npc, st.stype)
-		xr_meet.reset_meet(npc, scheme, st.meet)
+		xr_meet.reset_meet(npc, scheme, st.meet, section)
 		xr_reactions.reset_rules(npc)
 	elseif st.stype == modules.stype_mobile then
 		--printf("_bp: disabling talk")
