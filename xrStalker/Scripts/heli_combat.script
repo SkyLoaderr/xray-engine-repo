@@ -79,6 +79,7 @@ function heli_combat:initialize()
 	self.enemy_last_seen_pos   = self.enemy:position()
 	self.enemy_last_seen_time  = 0
 	self.can_forget_enemy      = false
+	self.section_changed       = true
 
 	self:set_combat_type( combat_type_flyby ) --self:choose_combat_type() )
 	self.combat_type_change_time = nil
