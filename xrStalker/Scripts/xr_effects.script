@@ -318,7 +318,7 @@ function bar_crush_heli_start(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_start_heli", nil, "ecolog")
 end
 function bar_crush_heli_down(actor,npc)
-	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 3, "freedom")
+	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "freedom")
 end
 function bar_ecolog_crush_attract_actor(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_attract_actor", nil, "ecolog")
