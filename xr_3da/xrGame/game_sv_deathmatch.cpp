@@ -1586,6 +1586,7 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 			SetPlayersDefItems(ps);
 			RespawnPlayer(l_pC->ID, true);
 			SpawnWeaponsForActor(l_pC->owner, ps);
+			Check_ForClearRun(ps);
 		}
 	};
 };

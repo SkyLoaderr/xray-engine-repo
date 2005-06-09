@@ -212,8 +212,8 @@ void CSpectator::cam_Update	(CActor* A)
 	}else{
 		CCameraBase* cam			= cameras[eacFreeFly];
 		Fvector point0, point, dangle;
-//		point.set					(0.f,1.6f,0.f);
-		point.set(cam->vPosition);
+		point.set					(0.f,1.6f,0.f);
+//		point.set(cam->vPosition);
 		point0.set(point);
 		XFORM().transform_tiny	(point);
 
@@ -221,7 +221,7 @@ void CSpectator::cam_Update	(CActor* A)
 		dangle.set					(0,0,0);
 		
 		cam->Update					(point,dangle);
-		cam->vPosition.set(point0);
+//		cam->vPosition.set(point0);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
 	};

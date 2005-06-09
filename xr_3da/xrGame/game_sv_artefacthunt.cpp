@@ -449,6 +449,10 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	{
 		MoveAllAlivePlayers();
 	};
+	if (m_iReinforcementTime > 0 || m_iReinforcementTime == -1)
+	{
+		RespawnAllNotAlivePlayers();
+	};
 	//-----------------------------------------------------------
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps) return;
@@ -544,6 +548,7 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	signal_Syncronize();
 	//-------------------------------------------------
+	/*
 	if (m_bArtefactWasBringedToBase)
 	{
 		if (m_iReinforcementTime == -1)
@@ -552,6 +557,7 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 		};
 		m_bArtefactWasBringedToBase = false;
 	};
+	*/
 	//-------------------------------------------------
 	if (m_bAnomaliesEnabled)	StartAnomalies();
 	//-------------------------------------------------
@@ -834,9 +840,12 @@ void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 		{
 			RespawnPlayer(l_pC->ID, true);
 			SpawnWeaponsForActor(l_pC->owner, ps);
+			Check_ForClearRun(ps);
 		};
 	}
 	signal_Syncronize();
+
+	m_dwNextReinforcementTime = Level().timeServer() + m_iReinforcementTime;
 };
 
 void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
