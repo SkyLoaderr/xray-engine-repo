@@ -396,7 +396,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
 	t = { section = "logic@val_lager_bandits_sleeper_normal1",
 		idle = 0,
-		prior = 4, state = { state_normal, state_alarm, state_alarm_actor_inside },
+		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = function(obj) 
@@ -429,7 +429,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_sleeper_normal2",
 		idle = 0,
-		prior = 4, state = { state_normal, state_alarm, state_alarm_actor_inside },
+		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = function(obj) 
@@ -462,7 +462,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_sleeper_normal3",
 		idle = 0,
-		prior = 4, state = { state_normal, state_alarm, state_alarm_actor_inside },
+		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = function(obj) 
@@ -495,7 +495,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_sleeper_normal4",
 		idle = 0,
-		prior = 4, state = { state_normal, state_alarm, state_alarm_actor_inside },
+		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = function(obj) 
