@@ -9,7 +9,7 @@ CUILabel::CUILabel()
 
 void CUILabel::Init(int x, int y, int width, int height){
 	CUIFrameLineWnd::Init(x,y,width,height);
-	m_lines.Init(x,y,width, height);
+	m_lines.Init(0,0,width, height);
 }
 
 void CUILabel::Draw(){
