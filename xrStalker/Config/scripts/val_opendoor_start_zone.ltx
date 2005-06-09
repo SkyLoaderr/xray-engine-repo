@@ -1,9 +1,5 @@
 [logic]
-active = sr_tip
+active = sr_idle
 
-[sr_tip]
-name = val_give_escort_task_pda
-sender = dolg
-type = tips
-cond = {-val_escort_show_tip -val_escort_nap1_go_rescue -val_escort_nap1_no_thanx -val_escort_captive_dead -val_sacrifice_victim_killed} %+val_escort_show_tip%
-on_info = {+val_escort_show_tip} nil
+[sr_idle]
+on_actor_inside = nil %+val_opendoor_start%

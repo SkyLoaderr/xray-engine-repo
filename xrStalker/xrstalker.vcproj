@@ -1321,6 +1321,9 @@
 						RelativePath=".\Config\scripts\val_opendoor_start_zone.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\val_opendoor_victim.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\val_prisoner_button.ltx">
 					</File>
 					<File
