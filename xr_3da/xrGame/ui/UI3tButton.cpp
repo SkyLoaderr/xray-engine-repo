@@ -29,6 +29,8 @@ CUI3tButton::CUI3tButton(){
 
 	AttachChild(&m_background);	
 	AttachChild(&m_hint);
+
+	m_bEnableTextHighlighting = false;
 }
 
 CUI3tButton::~CUI3tButton(){
