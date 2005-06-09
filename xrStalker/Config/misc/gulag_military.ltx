@@ -18,7 +18,7 @@ on_info = %+mil_lukash_dead%
 path_walk = leader_walk
 path_look = leader_look
 on_info = {+mil_bodyguard_talk} remark1@mil_freedom_lukash
-meet = on_meet@mil_freedom_lukash
+meet = meet@mil_freedom_lukash
 
 [remark1@mil_freedom_lukash]
 no_rotate = true
@@ -31,7 +31,7 @@ on_signal = action_end | walker1@mil_freedom_lukash %-mil_bodyguard_talk%
 [dialogs@mil_freedom_lukash]
 id = mil_lukash_dialog_rg6, mil_lukash_dialog_after
 
-[on_meet@mil_freedom_lukash]
+[meet@mil_freedom_lukash]
 meet_state = 5|ward@mil_lukash_to_actor
 meet_state_wpn = 5|ward@mil_lukash_to_actor
 victim = 10|actor
@@ -145,11 +145,6 @@ combat_ignore = combat_ignore@mil_freedom_max
 actor_dialogs = dialogs@mil_freedom_max
 on_death = death@mil_freedom_max
 active = walker1@mil_freedom_max
-
-[spawn@mil_freedom_max]
-max_flash
-medkit = 2
-antirad
 
 [death@mil_freedom_max]
 on_info = %=military_max_dead%
@@ -351,7 +346,7 @@ meet = on_meet2@mil_freedom_stalker8
 
 [on_meet1@mil_freedom_stalker8]
 meet_state = 5|ward@mil_freedom_zoneguard
-meet_state_wpn = 10|backoff@threat_weapon
+meet_state_wpn = 10|backoff@threat_weap
 victim = 20|nil|10|actor
 victim_wpn = 20|nil|10|actor
 use = true
