@@ -908,30 +908,6 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
-    --κύμοεπ 8
-    t = {section = "logic@mil_fblockpost_camper8",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    --κύμοεπ 9
-    t = {section = "logic@mil_fblockpost_camper9",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    --κύμοεπ 10
-    t = {section = "logic@mil_fblockpost_camper10",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
 end
 
 function check_blockpost_state (gulag)
@@ -1079,30 +1055,6 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 	table.insert(sj, t)		
     --κύμοεπ 5
     t = {section = "logic@mil_fneutral_camper5",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    --κύμοεπ 6
-    t = {section = "logic@mil_fneutral_camper6",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    --κύμοεπ 7
-    t = {section = "logic@mil_fneutral_camper7",
-		idle = 0,
-		prior = 1, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    --κύμοεπ 8
-    t = {section = "logic@mil_fneutral_camper8",
 		idle = 0,
 		prior = 1, state = {2},
 		squad = squad, group = groups[0],
