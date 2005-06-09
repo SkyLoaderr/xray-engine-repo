@@ -5,7 +5,7 @@
 
 	<!-- BAG WINDOW -->
 	<bag_background_static x="10" y="234" width="350" height="440">
-		<text x="50" y="10" font="graffiti22" r="231" g="153" b="22" align="c">ui_inv_items_list</text>
+		<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
 	</bag_background_static>
 	
 	<!-- BACK BUTTON FOR BAG -->
@@ -114,7 +114,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">1</text>
+				<text font="letterica25" x="0" y="-4" align="c">1</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -139,7 +139,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">2</text>
+				<text font="letterica25" x="0" y="-4" align="c">2</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -163,7 +163,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">3</text>
+				<text font="letterica25" x="0" y="-4" align="c">3</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -187,7 +187,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">4</text>
+				<text font="letterica25" x="0" y="-4" align="c">4</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -211,7 +211,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">5</text>
+				<text font="letterica25" x="0" y="-4" align="c">5</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -236,7 +236,7 @@
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>	
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">1</text>
+				<text font="letterica25" x="0" y="-4" align="c">1</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -259,7 +259,7 @@
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">2</text>
+				<text font="letterica25" x="0" y="-4" align="c">2</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -282,7 +282,7 @@
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">3</text>
+				<text font="letterica25" x="0" y="-4" align="c">3</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -305,7 +305,7 @@
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="letterica25" x="13" y="-4" align="c">4</text>
+				<text font="letterica25" x="0" y="-4" align="c">4</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -354,7 +354,7 @@
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 		<hint x="-42" y="12" width="29" height="29">
-			<text font="letterica25" x="13" y="-1" align="c">A</text>
+			<text font="letterica25" x="0" y="-1" align="c">A</text>
 			<text_color>
 				<e a="255" r="255" g="255" b="0"/>
 				<d a="255" r="87" g="87" b="72"/>					
@@ -377,7 +377,7 @@
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 		<hint x="-42" y="12" width="29" height="29">
-			<text font="letterica25" x="13" y="-1" align="c">C</text>
+			<text font="letterica25" x="0" y="-1" align="c">C</text>
 			<text_color>
 				<e a="255" r="255" g="255" b="0"/>
 				<d a="255" r="87" g="87" b="72"/>					

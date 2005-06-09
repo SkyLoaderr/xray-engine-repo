@@ -87,7 +87,8 @@ function mp_main:InitControls()
 	
 	-- background
 	self.bk = CUIStatic()
-	self.bk:InitSharedTexture("ui_mp_main.xml", "background")
+	self.bk:SetAutoDelete(true)
+	self.bk:InitTexture("ui\\ui_mp_main")
 	self.bk:Init(0,0,1024,768)
 	self:AttachChild(self.bk)
 	
@@ -98,63 +99,92 @@ function mp_main:InitControls()
 	
 	-- Player Name	
 	local st = CUIStatic()
+	st:SetAutoDelete(true)
 	xml:InitStatic("static_player_name",0,st)
---	st:Init(l_st_pname.x, l_st_pname.y, l_st_pname.width, l_st_pname.height)
---	st:SetFont(self.font_cap)
---	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
-	st:SetLines("Player Name:")
-	st:InitTexture("ui\\ui_debug_red_n_black")
-	st:SetStretchTexture(true)
 	self.bk:AttachChild(st)
 	
 	st = CUIEditBox()
-	st:Init(l_ed_pname.x, l_ed_pname.y, l_ed_pname.width, l_ed_pname.height)
-	st:SetText("Fantomas")
-	st:SetFont(self.font_edit)
---	st:InitTexture("ui\\ui_debug_red_n_black")
-	st:SetStretchTexture(true)	
-	self.bk:AttachChild(st)	
+	st:SetAutoDelete(true)
+	xml:InitStatic("edit_player_name",0,st)
+	self.bk:AttachChild(st)
 	
 	-- CD Key
 	st = CUIStatic()
+	st:SetAutoDelete(true)
 	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
 	st:SetFont(self.font_cap)
 	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
 	st:SetLines("CD Key")	
---	st:InitTexture("ui\\ui_debug_red_n_black")
 	st:SetStretchTexture(true)	
 	self.bk:AttachChild(st)
 	
-	-- bnt client
-	local btn = CUI3tButton()
-	btn:Init(l_btn_client.x, l_btn_client.y, l_btn_client.width, l_btn_client.height)
-	btn:SetFont(self.font_tab_btn)
---	btn:SetTextColor(l_tab_col.a, l_tab_col.r, l_tab_col.g, l_tab_col.b)
-	btn:SetTextColor(255, 255, 0, 0)
-	btn:SetLines("Client")
-	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
-	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
-	self.bk:AttachChild(btn)
-	-- btn server
+	self.tab = CUITabControl()
+	self.tab:SetWindowName("tab")
+	xml:InitTab("tab",0,self.tab)
+	self.bk:AttachChild(self.tab)	
+	self:Register(self.tab)
+	
+	self.dlg_join = ui_mm_mp_join.mp_join()
+	self.dlg_join:InitControls(121,224, xml, self)
+	self.bk:AttachChild(self.dlg_join)
+	
+	self.dlg_options = ui_mm_mp_options.mp_options()
+	self.dlg_options:InitControls(121,224, xml, self)
+	self.dlg_options:Show(false)
+	self.bk:AttachChild(self.dlg_options)
+	
 	btn = CUI3tButton()
-	btn:Init(l_btn_server.x, l_btn_server.y, l_btn_server.width, l_btn_server.height)
-	btn:SetFont(self.font_tab_btn)
-	btn:SetLines("Server")
-	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
-	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
+	xml:Init3tButton("btn_create",0,btn)
+	btn:Enable(false)
+	btn:SetWindowName("btn_create")
+	self:Register(btn)
 	self.bk:AttachChild(btn)
-	-- btn server
+	
 	btn = CUI3tButton()
-	btn:Init(l_btn_options.x, l_btn_options.y, l_btn_options.width, l_btn_options.height)
-	btn:SetFont(self.font_tab_btn)
-	btn:SetLines("Options")
-	btn:InitSharedTexture("ui_common.xml", "ui_button_tablist")
-	btn:SetTextureOffset(0,l_tabbtn_texture_offset)
+	xml:Init3tButton("btn_join",0,btn)
+	btn:SetWindowName("btn_join")
+	self:Register(btn)
+	self.bk:AttachChild(btn)
+	
+	btn = CUI3tButton()
+	xml:Init3tButton("btn_cancel",0,btn)
+	btn:SetWindowName("btn_cancel")
+	self:Register(btn)
 	self.bk:AttachChild(btn)
 end
 
 function mp_main:InitCallBacks()
+	self:AddCallback("btn_cancel",	ui_events.BUTTON_CLICKED,	self.OnBtn_Calncel,	self)
+	self:AddCallback("btn_create",	ui_events.BUTTON_CLICKED,	self.OnBtn_Create,	self)
+	self:AddCallback("btn_join",	ui_events.BUTTON_CLICKED,	self.OnBtn_Join,	self)
+	self:AddCallback("tab",			ui_events.TAB_CHANGED,		self.OnTabChange,	self)
+end
 
+function mp_main:OnTabChange()
+	self.dlg_join:Show(false)
+	self.dlg_options:Show(false)
+
+	local i = self.tab:GetActiveIndex()
+	if i == 0 then
+		self.dlg_join:Show(true)
+	elseif i == 2 then
+		self.dlg_options:Show(true)
+	end
+--	else if i == 1 then
+--		self.dlg_create:Show(true)
+--	end
+end
+
+function mp_main:OnBtn_Calncel()
+	self:GetHolder():start_stop_menu(self,true)
+end
+
+function mp_main:OnBtn_Create()
+	
+end
+
+function mp_main:OnBtn_Join()
+	
 end
 
 function mp_main:OnKeyboard(dik, keyboard_action)

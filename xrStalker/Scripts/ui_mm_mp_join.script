@@ -5,3 +5,95 @@
 -- mail:		narrator@gsc-game.kiev.ua
 --
 -- Copyright 2005 GSC Game World
+
+
+class "mp_join" (CUIWindow)
+
+function mp_join:__init() super()
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+   
+end
+
+function mp_join:__finalize()
+
+end
+
+function mp_join:InitControls(x, y, xml, handler)
+	self:Init(x,y, 738, 416)
+	
+	self.bk = CUIFrameWindow()
+	xml:InitFrame("frame",0, self.bk)
+	self:AttachChild(self.bk)
+	
+	self.srvlist = CServerList()
+	xml:InitServerList("tab_client:server_list", self.srvlist)
+	self.bk:AttachChild(self.srvlist)
+	
+	local frm = CUILabel()
+	xml:InitLabel("tab_client:cap_network_connection",0,frm)
+	self.bk:AttachChild(frm)
+	
+	frm = CUILabel()
+	xml:InitLabel("tab_client:cap_server_list",0,frm)
+	self.bk:AttachChild(frm)
+	
+	frm = CUILabel()
+	xml:InitLabel("tab_client:cap_filters",0,frm)
+	self.bk:AttachChild(frm)
+	
+	local radio = CUITabControl()
+	xml:InitTab("tab_client:radio_tab_network_connection",0,radio)
+	self.bk:AttachChild(radio)
+	handler:Register(radio)
+	
+	local btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_empty",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_full",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_with_pass",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_without_pass",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_without_ff",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_without_pb",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_client:check_listen_servers",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUI3tButton()
+	xml:Init3tButton("tab_client:btn_refresh",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUI3tButton()
+	xml:Init3tButton("tab_client:btn_quick_refresh",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUI3tButton()
+	xml:Init3tButton("tab_client:btn_server_info",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+
+end
