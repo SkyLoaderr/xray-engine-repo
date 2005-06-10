@@ -66,10 +66,10 @@ function stats()
     end
 
     table.sort	(out_stats, function (a,b) return a.count<b.count end)
-	print_table (out_stats)
---    for n,c in pairs(sort_stats) do
---		printf		("%5d : %s",c,n)
---    end
+--	print_table (out_stats)
+    for n,c in pairs(sort_stats) do
+		printf		("%5d : %s",c.count,c.name)
+    end
 	debug.sethook(hook, "c")	-- restore
 end
 
