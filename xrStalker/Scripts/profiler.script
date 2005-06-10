@@ -53,3 +53,4 @@ end
 
 -- profiler.main()
 -- profiler.stats()
+main()
