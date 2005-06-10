@@ -1,13 +1,15 @@
 local Counters = {}
 local Names = {}
 
-local old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
+old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
 local function hook (context)
 		printf("hook-called")
 		
 		if old_hook_func~=nil then
+			local save	= old_hook_func
 			old_hook_func(context)
+			old_hook_func = save;
 		end
 		
 		local f = debug.getinfo(2, "f").func
