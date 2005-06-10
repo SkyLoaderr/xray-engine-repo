@@ -51,7 +51,7 @@ function stats()
 	local		sort_stats = {}
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
-		sort_stats[count] = func
+		table.insert(sort_stats,count,func)
 		--printf	("%s : %d",getname(func), count)
     end
 
