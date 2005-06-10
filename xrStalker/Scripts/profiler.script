@@ -4,6 +4,7 @@ local Names = {}
 local old_hook = debug.gethook();
 
 local function hook (context)
+		printf("hook-called")
 		old_hook(context)
 		local f = debug.getinfo(2, "f").func
 		if Counters[f] == nil then    -- first time `f' is called?
