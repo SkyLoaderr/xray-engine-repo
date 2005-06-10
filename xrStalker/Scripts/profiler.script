@@ -58,7 +58,7 @@ function stats()
 		--printf	("%s : %d",getname(func), count)
     end
 
-    table.sort	(sort_stats, function cmp(a,b) return a.c<b.c end)
+    table.sort	(sort_stats, function (a,b) return a.c<b.c end)
 
     for count, func in pairs(sort_stats) do
 		printf		("%s : %d",getname(func), count)
