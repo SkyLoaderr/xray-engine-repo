@@ -1379,6 +1379,9 @@
 					Name="Tests"
 					Filter="">
 					<File
+						RelativePath=".\config\scripts\test1.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\test_jumper.ltx">
 					</File>
 				</Filter>
@@ -1825,6 +1828,9 @@
 						Filter="">
 						<File
 							RelativePath=".\scripts\mob_alife_control.script">
+						</File>
+						<File
+							RelativePath=".\scripts\mob_camp.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\mob_eluder.script">

@@ -47,6 +47,7 @@ load_scheme("mob_trade",      "mob_trade",   stype_mobile)
 load_scheme("mob_kicker",     "mob_kicker",  stype_mobile) 
 load_scheme("mob_eluder",     "mob_eluder",  stype_mobile)
 load_scheme("mob_jump",		  "mob_jump",	 stype_mobile)
+load_scheme("mob_camp",		  "mob_camp",	 stype_mobile)
 
 
 ----------------------------------------------------------------------
