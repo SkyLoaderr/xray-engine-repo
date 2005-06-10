@@ -52,17 +52,17 @@ function stats()
 	local		order = 0;
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
-		table[order] = {c=count,f=func}
+		table[order] = {c=count,f=getname(func)}
 		order = order+1
 		--table.insert(sort_stats,count,func)
 		--printf	("%s : %d",getname(func), count)
     end
 
     table.sort	(sort_stats, function (a,b) return a.c<b.c end)
-
-    for value in pairs(sort_stats) do
-		printf		("%s : %d",getname(value.f), value.count)
-    end
+	print_table (sort_stats)
+--    for value in pairs(sort_stats) do
+--		printf		("%s : %d",getname(value.f), value.count)
+--    end
 	debug.sethook(hook, "c")	-- restore
 end
 
