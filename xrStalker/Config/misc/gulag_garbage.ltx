@@ -564,16 +564,11 @@ on_death = death@bandits_seryi
 path_walk = camper11_walk
 path_look = camper11_look
 combat_ignore_cond = {-gar_seryi_open_fire}
-on_info = {+gar_begin_assault} remark@gar_seryi_bandits_1
+on_info = {+gar_begin_assault -gar_seryi_ceitnot} remark@gar_seryi_bandits_1
 
 [remark@gar_seryi_bandits_1]
 snd = gar_bandits_seryi
-on_signal = sound_end| camper@gar_seryi_bandits_camper111 %+gar_seryi_ceitnot%
-combat_ignore_cond = {-gar_seryi_open_fire}
-
-[camper@gar_seryi_bandits_camper111]
-path_walk = camper11_walk
-path_look = camper11_look
+on_signal = sound_end| camper@gar_seryi_bandits_camper11 %+gar_seryi_ceitnot%
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
