@@ -14,8 +14,8 @@ local function hook (context)
 		
 	local f = debug.getinfo(2, "f").func
 	if Counters[f] == nil then    -- first time `f' is called?
-		table.insert(Counters,f,1)
---		Counters[f] = 1
+--		table.insert(Counters,f,1)
+		Counters[f] = 1
 		Names[f] = debug.getinfo(2, "Sn")
 	else  -- only increment the counter
 		Counters[f] =
@@ -48,11 +48,18 @@ function main()
 end
 
 function stats()
+	local		stats = {}
 	printf		("profiler statistics stuff:")
     for func, count in pairs(Counters) do
-		printf("%s : %d",getname(func), count)
+		stats[count] = func;
+		--printf	("%s : %d",getname(func), count)
     end
 
+    for count, func  in pairs(stats) do
+		printf		("%s : %d",getname(func), count)
+    end
+
+/**
 	printf		("----");
 	
 	print_table	(Counters);
@@ -67,6 +74,7 @@ function stats()
 	printf		("----");
 
 	print_table	(Counters);
+/**/
 end
 
 -- profiler.main()
