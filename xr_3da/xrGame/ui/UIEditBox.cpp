@@ -13,9 +13,7 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 						   DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T, 
 						   DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z,
 						   DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7,
-						   DIK_8, DIK_9,
-						   DIK_LBRACKET, DIK_RBRACKET, DIK_SEMICOLON, DIK_APOSTROPHE, DIK_GRAVE, DIK_BACKSLASH,
-						   DIK_COMMA, DIK_PERIOD, DIK_SLASH, DIK_MULTIPLY};
+						   DIK_8, DIK_9};
 
 static xr_map<u32, char> gs_DIK2CHR;
 
