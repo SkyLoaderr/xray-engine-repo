@@ -28,7 +28,7 @@ local function getname (func)
 end
 
 function main()	
-    local f = assert(loadfile(arg[1]))
+    -- local f = assert(loadfile(arg[1]))
     debug.sethook(hook, "c")	-- turn on the hook
 end
 

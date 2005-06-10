@@ -2321,6 +2321,9 @@
 				<File
 					RelativePath=".\scripts\_G.script">
 				</File>
+				<File
+					RelativePath=".\scripts\profiler.script">
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
