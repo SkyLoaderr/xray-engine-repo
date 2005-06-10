@@ -927,46 +927,87 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 		
-		t = { section = "logic@gar_seryi_bandits_kamp1",
+		t = { section = "logic@gar_seryi_bandits_walker1",
 			idle = 0,
 			prior = 5, state = {2},
 			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_walker2",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_walker3",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_walker4",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_walker5",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_walker6",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_seryi_bandits_kamp1",
+			idle = 0,
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp2",
 			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp3",
 			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp4",
 			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp5",
 			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp6",
 			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = "gar_seryi_battle_restrictor"
+			prior = 5, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
 end
 
 
+function gar_seryi_killed()
+	return db.actor:has_info("garbage_meetstalker_die") and
+	       db.actor:has_info("gar_seryi_drug_die") and
+	       db.actor:has_info("gar_seryi_drug2_die")
+end
 
 function load_states(gname, type)
 	if type == "gar_hellcar_group" then
@@ -1012,19 +1053,33 @@ function load_states(gname, type)
 			local actor = db.actor
 			if actor ~= nil then
 				if gulag.state == 0 then
+					if gar_seryi_killed() then
+						return 3
+					end
+
 					if actor:has_info("gar_seryi_actor_enter") then
 						return 1
 					else
 						return 0
 					end
 				elseif gulag.state == 1 then
+					if gar_seryi_killed() then
+						return 3
+					end
+
 					if actor:has_info("gar_seryi_ceitnot") then
 						return 2
 					else
 						return 1
 					end
+				elseif gulag.state == 2 then
+					if gar_seryi_killed() then
+						return 3
+					else
+						return 2
+					end
 				else
-					return 2
+					return 3
 				end
 			else
 				return gulag.state
