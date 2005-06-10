@@ -814,7 +814,7 @@ void CUIBuyWeaponWnd::Update()
 	bool flag = true;
 	if (UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty() && flag)
 	{
-		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT);
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT));
 		flag = false;
 	}
 

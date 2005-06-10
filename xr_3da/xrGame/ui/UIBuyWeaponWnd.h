@@ -165,7 +165,7 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 	bool		m_bIgnoreMoney;
 
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
-	int			m_iIconTextureX, m_iIconTextureY;
+	float		m_iIconTextureX, m_iIconTextureY;
 	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);
 	void		BuyReaction();
 
