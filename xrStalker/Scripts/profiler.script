@@ -8,7 +8,7 @@ local function hook (context)
 		
 	if old_hook_func~=nil then
 		local save	= old_hook_func
-		old_hook_func(context)
+	--	old_hook_func(context)
 		old_hook_func = save;
 	end
 		
