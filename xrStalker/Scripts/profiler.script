@@ -1,9 +1,9 @@
 local Counters = {}
 local Names = {}
 
-old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
+local old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
-function hook (context)
+local function hook (context)
 		printf("hook-called")
 		
 		if old_hook_func~=nil then
@@ -19,7 +19,7 @@ function hook (context)
 		end
     end
 
-function getname (func)
+local function getname (func)
     local n = Names[func]
     if n.what == "C" then
         return n.name
@@ -33,11 +33,10 @@ function getname (func)
 end
 
 function main()	
-    -- local f = assert(loadfile(arg[1]))
     debug.sethook(hook, "c")	-- turn on the hook
-    while true do
-		coroutine.yield()
-    end
+--    while true do
+--		coroutine.yield()
+--  end
 end
 
 function stats()
