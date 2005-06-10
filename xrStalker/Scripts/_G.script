@@ -981,23 +981,23 @@ function print_table(table, subs)
   end
   for k,v in table do
     if type(v) == "table" then
-      printf(sub.."%s:", k)
+      printf(sub.."%s:", tostring(k))
       print_table(v, sub.."    ")
     elseif type(v) == "function" then
-      printf(sub.."%s:function", k)
+      printf(sub.."%s:function", tostring(k))
     elseif type(v) == "userdata" then
-      printf(sub.."%s:userdata", k)
+      printf(sub.."%s:userdata", tostring(k))
     elseif type(v) == "boolean" then
 	if v == true then 
-		printf(sub.."%s:true", k)
+		printf(sub.."%s:true", tostring(k))
 	else
-		printf(sub.."%s:false", k)
+		printf(sub.."%s:false", tostring(k))
 	end
     else
       if v ~= nil then
-        printf(sub.."%s:%s", k,v)
+        printf(sub.."%s:%s", tostring(k),v)
       else
-        printf(sub.."%s:nil", k,v)
+        printf(sub.."%s:nil", tostring(k),v)
       end
     end
   end
