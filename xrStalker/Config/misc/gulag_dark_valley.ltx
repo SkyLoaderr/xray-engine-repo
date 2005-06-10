@@ -184,6 +184,26 @@ combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=val_fighting_capti
 
 ;---
 
+[logic@val_lager_bandits_patrol_normal4]
+active = walker1@val_lager_bandits_patrol_normal4
+combat_ignore = combat_ignore@val_lager_bandits_patrol_normal4
+
+[walker1@val_lager_bandits_patrol_normal4]
+path_walk = patrol_walk4
+path_look = patrol_look4
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=val_fighting_captive}
+
+[logic@val_lager_bandits_patrol_alarm4]
+active = walker1@val_lager_bandits_patrol_alarm4
+combat_ignore = combat_ignore@val_lager_bandits_patrol_alarm4
+
+[walker1@val_lager_bandits_patrol_alarm4]
+path_walk = patrol_alarm_walk4
+path_look = patrol_alarm_look4
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}, {=val_fighting_captive}
+
+;---
+
 [logic@val_lager_bandits_sniper_normal1]
 active = camper1@val_lager_bandits_sniper_normal1
 combat_ignore = combat_ignore@val_lager_bandits_sniper_normal1
