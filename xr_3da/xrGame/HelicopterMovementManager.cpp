@@ -190,6 +190,7 @@ void SHeliMovementState::SetDestPosition(Fvector* pos)
 	if(need_to_del_path&&currPatrolPath){
 		CPatrolPath* tmp = const_cast<CPatrolPath*>(currPatrolPath);
 		xr_delete( tmp );
+		need_to_del_path = false;
 	}
 }
 
