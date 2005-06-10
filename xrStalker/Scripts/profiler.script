@@ -3,6 +3,21 @@ local Names = {}
 
 old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
+local function getname (func)
+    local n = Names[func]
+--	if n.what == "C" then
+--		if n.name ~= nil then
+--			return n.name
+--		end
+--	end
+    local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
+    if n.namewhat ~= "" then
+        return string.format("%s (%s)", loc, n.name) 
+    else
+        return string.format("%s", loc)
+    end
+end
+
 local function hook (context)
 --	printf("hook-called [%s][%s][%s]-[%s]",tostring(old_hook_func),tostring(old_hook_mask),tostring(old_hook_count),tostring(context))
 		
@@ -21,22 +36,11 @@ local function hook (context)
 		Counters[f] = Counters[f] + 1
 	end
 	
+	if ("[[C]]:-1"==getname(f)) then
+	  if (nil ~= call_debugger)	then call_debugger() end
+	end
+	
 --	printf("hook end")
-end
-
-local function getname (func)
-    local n = Names[func]
---	if n.what == "C" then
---		if n.name ~= nil then
---			return n.name
---		end
---	end
-    local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
-    if n.namewhat ~= "" then
-        return string.format("%s (%s)", loc, n.name) 
-    else
-        return string.format("%s", loc)
-    end
 end
 
 function main()	
