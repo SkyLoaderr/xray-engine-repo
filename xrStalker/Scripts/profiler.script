@@ -48,14 +48,14 @@ function main()
 end
 
 function stats()
-	local		_stats = {}
-	printf		("profiler statistics stuff:")
+	local		sort_stats = {}
+	printf		("profiler statistics")
     for func, count in pairs(Counters) do
-		_stats[count] = func;
+		sort_stats[count] = func
 		--printf	("%s : %d",getname(func), count)
     end
 
-    for count, func in pairs(_stats) do
+    for count, func in pairs(sort_stats) do
 		printf		("%s : %d",getname(func), count)
     end
 end
