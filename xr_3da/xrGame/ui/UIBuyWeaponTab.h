@@ -22,7 +22,7 @@ public:
 	virtual void OnTabChange(int iCur, int iPrev);
 			void SetActiveState(bool bState = true);
 private:
-	void virtual Init(int x, int y, int width, int height);
+	void virtual Init(float x, float y, float width, float height);
 
 	bool				m_bActiveState;
 	CUIStatic			m_staticBackground;

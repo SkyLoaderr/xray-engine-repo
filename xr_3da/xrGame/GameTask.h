@@ -26,7 +26,7 @@ struct SGameTaskObjective
 	ARTICLE_ID article_id;
 	//прикрипленная иконка
 	shared_str icon_texture_name;
-	int icon_x, icon_y, icon_width, icon_height;
+	float icon_x, icon_y, icon_width, icon_height;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ public:
 	virtual shared_str		ObjectiveTitle	() {return data()->title;}
 	virtual ARTICLE_ID		ObjectiveArticle(u32 index);
 	virtual ETaskState		ObjectiveState  (u32 index);
-	virtual void			ObjectiveIcon	(u32 index, shared_str& tex_name, int& x, int& y, int& width, int& height);
+	virtual void			ObjectiveIcon	(u32 index, shared_str& tex_name, float& x, float& y, float& width, float& height);
 	//инициализируется значениями из реестра актера
 	TASK_STATE_VECTOR	m_ObjectiveStates;
 	ALife::_TIME_ID		m_ReceiveTime;

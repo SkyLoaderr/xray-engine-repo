@@ -31,7 +31,7 @@ private:
 	int						m_ttl;
 	u32						m_actual_time;
 	Fvector					m_position_global; //last global position, actual time only current frame 
-	Ivector2 				m_position_on_map; //last position on parent map, actual time only current frame
+	Fvector2 				m_position_on_map; //last position on parent map, actual time only current frame
 private:
 							CMapLocation					(const CMapLocation&){}; //disable copy ctor
 

@@ -250,7 +250,7 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		m_position_on_map =	map->ConvertRealToLocal(position);
 
 		sp->SetWndPos(m_position_on_map);
-		Irect wnd_rect = sp->GetWndRect();
+		Frect wnd_rect = sp->GetWndRect();
 
 		if( map->IsRectVisible(wnd_rect) ) {
 
@@ -262,7 +262,7 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 				sp->SetHeading( h_ );
 			}
 
-			Irect clip_rect = map->GetClipperRect();
+			Frect clip_rect = map->GetClipperRect();
 			sp->SetClipRect( clip_rect );
 			map->AttachChild(sp);
 		}
@@ -276,13 +276,13 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 {
 	float		heading;
-	Ivector2	pointer_pos;
+	Fvector2	pointer_pos;
 	map->GetPointerTo(m_position_on_map, sp->GetWidth()/2, pointer_pos, heading);
 
 	sp->SetWndPos(pointer_pos);
 	sp->SetHeading(heading);
 
-	Irect clip_rect = map->GetClipperRect();
+	Frect clip_rect = map->GetClipperRect();
 	sp->SetClipRect( clip_rect );
 	map->AttachChild(sp);
 }

@@ -134,7 +134,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 					UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 	AttachChild(&UIBackground);
-	UIBackground.Init(0, 0, 1024, 768);
+	UIBackground.Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	UIBackground.SetShader(GetBuyMenuShader());	
 
 	AttachChild(&UIAutobuyIndication);
@@ -256,7 +256,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
 }
 
-void CUIBuyWeaponWnd::OnMouseScroll(int iDirection){
+void CUIBuyWeaponWnd::OnMouseScroll(float iDirection){
 
 }
 
@@ -736,16 +736,13 @@ void CUIBuyWeaponWnd::OnMenuLevelChange(){
 		UITabControl.SetActiveState();
 }
 
-void CUIBuyWeaponWnd::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIBuyWeaponWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if (WINDOW_LBUTTON_DOWN == mouse_action || WINDOW_RBUTTON_DOWN == mouse_action)
 	{
-		Irect		r = UIOutfitIcon.GetAbsoluteRect();
-		Ivector2	p;
-		p.x = x;
-		p.y = y;
+		Frect		r = UIOutfitIcon.GetAbsoluteRect();
 
-		if ( r.in(p))
+		if ( r.in(x,y))
 		{
 			SendMessage(&UIOutfitIcon, static_cast<s16>(mouse_action), NULL);
 		}
@@ -877,8 +874,8 @@ void CUIBuyWeaponWnd::Hide()
 // Контекстное меню
 void CUIBuyWeaponWnd::ActivatePropertiesBox()
 {
-	int x,y;
-	Irect rect = GetAbsoluteRect();
+	float x,y;
+	Frect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);
 
 	UIPropertiesBox.RemoveAll();
@@ -1448,8 +1445,8 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
 
 			UIItemInfo.UIItemImage.SetShader(pDDItemMP->GetUIStaticItem().GetShader());
-			Irect o_r = pDDItemMP->GetUIStaticItem().GetOriginalRect();
-			Irect v_r = pDDItemMP->GetUIStaticItem().GetRect();
+			Frect o_r = pDDItemMP->GetUIStaticItem().GetOriginalRect();
+			Frect v_r = pDDItemMP->GetUIStaticItem().GetRect();
 			UIItemInfo.UIItemImage.GetUIStaticItem().SetOriginalRect(o_r.x1, o_r.y1, o_r.width(), o_r.height());
 			UIItemInfo.UIItemImage.GetUIStaticItem().SetRect(v_r);
 			UIItemInfo.UIItemImage.SetStretchTexture(true);

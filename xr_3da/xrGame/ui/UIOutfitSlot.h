@@ -14,8 +14,8 @@ public:
 	CUIOutfitSlot();
 	virtual ~CUIOutfitSlot();
 
-	virtual void Init(int x, int y, int width, int height);
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void Init(float x, float y, float width, float height);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 
 	virtual void AttachChild(CUIWindow *pChild);
 	virtual void DetachChild(CUIWindow *pChild);
@@ -41,6 +41,6 @@ protected:
 	//иконка с изображение сталкера в полный рост
 	CUIStatic UIOutfitIcon;
 
-	int m_iNoOutfitX;
-	int m_iNoOutfitY;
+	float m_iNoOutfitX;
+	float m_iNoOutfitY;
 };

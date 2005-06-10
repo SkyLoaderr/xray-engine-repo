@@ -31,17 +31,17 @@ CUIPropertiesBox::~CUIPropertiesBox()
 }
 
 
-void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int height)
+void CUIPropertiesBox::Init(LPCSTR base_name, float x, float y, float width, float height)
 {
 	inherited::Init(base_name, x,y, width, height);
 
 	AttachChild(&m_UIListWnd);
 	
-	m_UIListWnd.Init(iFloor(OFFSET_X),
-					 iFloor(OFFSET_Y), 
-					 width - iFloor(OFFSET_X*2), 
-					 height - iFloor(OFFSET_Y*2),
-					 iFloor(ITEM_HEIGHT) );
+	m_UIListWnd.Init(OFFSET_X,
+					 OFFSET_Y, 
+					 width - OFFSET_X*2, 
+					 height - OFFSET_Y*2,
+					 ITEM_HEIGHT );
 	m_UIListWnd.EnableActiveBackground(true);
 	m_UIListWnd.EnableScrollBar(false);
 
@@ -81,21 +81,21 @@ void CUIPropertiesBox::RemoveAll()
 	m_UIListWnd.RemoveAll();
 }
 
-void CUIPropertiesBox::Show(int x, int y)
+void CUIPropertiesBox::Show(float x, float y)
 {
-	int x_pos, y_pos;
+	float x_pos, y_pos;
 
 
 	//выбрать позицию, чтобы окношко полностью влазило в экран
-	if(x+GetWidth()<(int)Device.dwWidth)
+	if(x+GetWidth()<float(Device.dwWidth))
 		x_pos = x;
 	else
-		x_pos = x - (x+GetWidth()-iFloor( Device.dwWidth/UI()->GetScaleX() )  );
+		x_pos = x - (x+GetWidth()-( Device.dwWidth/UI()->GetScaleX() )  );
 	
-	if(y+GetHeight()<(int)Device.dwHeight)
+	if(y+GetHeight()<float(Device.dwHeight))
 		y_pos = y;
 	else
-		y_pos = y - (y+GetHeight()-iFloor( Device.dwHeight/UI()->GetScaleY() )  );
+		y_pos = y - (y+GetHeight()-( Device.dwHeight/UI()->GetScaleY() )  );
 		
 	SetWndPos(x_pos,y_pos);
 
@@ -123,7 +123,7 @@ void CUIPropertiesBox::Hide()
 	GetParent()->SetCapture(this, false);
 }
 
-void CUIPropertiesBox::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	bool cursor_on_box;
 
@@ -146,8 +146,8 @@ void CUIPropertiesBox::AutoUpdateSize()
 {
 	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
 			  FRAME_BORDER_HEIGHT*2);
-	SetWidth(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2);
-	m_UIListWnd.SetWidth(m_UIListWnd.GetLongestSignWidth());
+	SetWidth(float(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2));
+	m_UIListWnd.SetWidth(float(m_UIListWnd.GetLongestSignWidth()));
 }
 
 int CUIPropertiesBox::GetClickedIndex() 

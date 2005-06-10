@@ -25,21 +25,19 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
+	virtual void Init(LPCSTR base_name, float x, float y, float width, float height);
 
 
-	//сообщения, отправляемые родительскому окну
-//	typedef enum{PROPERTY_CLICKED} E_MESSAGE;
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
 	bool AddItem_script(const char*  str){return AddItem(str);};
 	void RemoveItem(int index);
 	void RemoveAll();
 
-	virtual void Show(int x, int y);
+	virtual void Show(float x, float y);
 	virtual void Hide();
 
 	virtual void Update();

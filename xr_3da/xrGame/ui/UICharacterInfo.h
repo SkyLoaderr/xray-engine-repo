@@ -20,7 +20,7 @@ public:
 	CUICharacterInfo();
 	virtual		~CUICharacterInfo();
 
-	void		Init(int x, int y, int width, int height, const char* xml_name);
+	void		Init(float x, float y, float width, float height, const char* xml_name);
 	void		InitCharacter(CInventoryOwner* pInvOwner);
 	void		InitCharacter(CCharacterInfo* pCharInfo);
 	void		SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill);

@@ -79,13 +79,13 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 
 	CStringTable		stbl;
 	SGameTaskObjective	*obj = NULL;
-	Irect				r;
+	Frect				r;
 	CUIJobItem			*pJobItem = NULL;
 	u32					color = 0xffffffff;
 
 
 	// ѕробегаемс€ по таскам и заносим их как задани€
-	int tmp = 0;
+	float tmp = 0;
 
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 

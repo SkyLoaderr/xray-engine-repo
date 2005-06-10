@@ -7,11 +7,10 @@
 class CUICursor
 {
 	ref_shader		hShader;
-//	ref_geom		hGeom;	
 	bool			bVisible;
 	bool			bHoldMode;
 	Fvector2		vPos;
-	Fvector2		vDelta;
+	Fvector2		vPrevPos;
 	Fvector2		vHoldPos;
 
 	CUIStaticItem	m_si;	
@@ -21,11 +20,11 @@ public:
 	virtual			~CUICursor		();
 	void			Render			();
 	void			HoldMode		(bool b);
-	Ivector2		GetPosDelta		();
-	void			SetPos			(int x, int y);
-	void			GetPos			(int& x, int& y);
-	Ivector2		GetPos			();
-	void			MoveBy			(int dx, int dy);
+	Fvector2		GetPosDelta		();
+	void			SetPos			(float x, float y);
+	void			GetPos			(float& x, float& y);
+	Fvector2		GetPos			();
+	void			MoveBy			(float dx, float dy);
 
 	bool			IsVisible		() {return bVisible;}
 	void			Show			() {bVisible = true;}
@@ -34,6 +33,12 @@ public:
 
 	void SetSensitivity(float sens) {m_fSensitivity = sens;}
 	float GetSensitivity() {return m_fSensitivity;}
+
+public:
+	typedef fastdelegate::FastDelegate1<Fvector2>	CURSOR_MOVE_EVENT;
+	CURSOR_MOVE_EVENT				m_cursor_move_event;
+	void			SetMoveReceiver(CURSOR_MOVE_EVENT cb){m_cursor_move_event = cb;};
+
 };
 
 #endif //__XR_UICURSOR_H__

@@ -33,7 +33,7 @@ public:
 	virtual void	Update();
 
 	// Смещение иконки
-	void SetIconOffset(const int oX, const int oY);
+	void SetIconOffset(const float oX, const float oY);
 protected:
 	CUIStaticItem	m_Icon;
 	// Размер иконки
@@ -43,7 +43,7 @@ protected:
 	// Иконка отображается
 	bool			m_bIconDraw;
 	// Запоминаем предыдущий AbsoluteRect
-	Irect			m_OldAbsoluteWndRect;
+	Frect			m_OldAbsoluteWndRect;
 };
 
 #endif	//UI_ICONED_LIST_ITEM_H_

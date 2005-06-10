@@ -22,14 +22,14 @@ void S2DVert::rotate_pt(const Fvector2& pivot, float cosA, float sinA)
 	pt.y			= t.y*cosA-t.x*sinA;
 	pt.add			(pivot);
 }
-void C2DFrustum::CreateFromRect(const Irect& rect)
+void C2DFrustum::CreateFromRect(const Frect& rect)
 {
 	m_rect.set(float(rect.x1), float(rect.y1), float(rect.x2), float(rect.y2) );
 	planes.resize	(4);
-	planes[0].build(Fvector2().set(rect.lt.x,rect.lt.y),Fvector2().set(-1, 0));
-	planes[1].build(Fvector2().set(rect.lt.x,rect.lt.y),Fvector2().set( 0,-1));
-	planes[2].build(Fvector2().set(rect.rb.x,rect.rb.y),Fvector2().set(+1, 0));
-	planes[3].build(Fvector2().set(rect.rb.x,rect.rb.y),Fvector2().set( 0,+1));
+	planes[0].build(rect.lt, Fvector2().set(-1, 0));
+	planes[1].build(rect.lt, Fvector2().set( 0,-1));
+	planes[2].build(rect.rb, Fvector2().set(+1, 0));
+	planes[3].build(rect.rb, Fvector2().set( 0,+1));
 }
 
 sPoly2D* C2DFrustum::ClipPoly(sPoly2D& S, sPoly2D& D) const
@@ -278,7 +278,7 @@ void	CMainUI::OnRender		(void)
 //pureFrame
 void	CMainUI::OnFrame		(void)
 {
-	m_2DFrustum.CreateFromRect	(Irect().set(0,0,Device.dwWidth,Device.dwHeight));
+	m_2DFrustum.CreateFromRect	(Frect().set(0.0f,0.0f,float(Device.dwWidth),float(Device.dwHeight)));
 	if(!IsActive() && m_startDialog){
 		xr_delete					(m_startDialog);
 	}
@@ -325,9 +325,9 @@ float CMainUI::ClientToScreenScaledY(float top, u32 align)
 	return top * GetScaleY();
 }
 
-void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...)
+void CMainUI::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...)
 {
-	if (r.in(static_cast<int>(x), static_cast<int>(y)))
+	if (r.in(x, y))
 	{
 		R_ASSERT(pFont);
 		va_list	lst;
@@ -351,31 +351,38 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 	}
 }
 
-Irect CMainUI::ScreenRect()
+Frect CMainUI::ScreenRect()
 {
-	return Irect().set(0,0,UI_BASE_WIDTH,UI_BASE_HEIGHT);
+	static Frect R={0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT};
+	//return Frect().set(0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	return R;
 }
 
-void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
+void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 {
-	Irect r_top			= ScreenRect();
-	Irect result		= r_tgt;
+	Frect r_top			= ScreenRect();
+	Frect result		= r_tgt;
 	if (!m_Scissors.empty()&&!overlapped){
 		r_top			= m_Scissors.top();
 	}
 	if (!result.intersection(r_top,r_tgt))
-			result.set	(0,0,0,0);
+			result.set	(0.0f,0.0f,0.0f,0.0f);
 
 	VERIFY(result.x1>=0&&result.y1>=0&&result.x2<=UI_BASE_WIDTH&&result.y2<=UI_BASE_HEIGHT);
 	m_Scissors.push		(result);
 
-	result.lt.x 		= iFloor(ClientToScreenScaledX(float(result.lt.x),0));
-	result.lt.y 		= iFloor(ClientToScreenScaledY(float(result.lt.y),0));
-	result.rb.x 		= iFloor(ClientToScreenScaledX(float(result.rb.x),0));
-	result.rb.y 		= iFloor(ClientToScreenScaledY(float(result.rb.y),0));
+	result.lt.x 		= ClientToScreenScaledX(float(result.lt.x),0);
+	result.lt.y 		= ClientToScreenScaledY(float(result.lt.y),0);
+	result.rb.x 		= ClientToScreenScaledX(float(result.rb.x),0);
+	result.rb.y 		= ClientToScreenScaledY(float(result.rb.y),0);
 
 	VERIFY(result.x1>=0&&result.y1>=0&&(result.x2<=UI_BASE_WIDTH*GetScaleX())&&(result.y2<=UI_BASE_HEIGHT*GetScaleY()));
-	RCache.set_Scissor	(&result);
+	Irect r;
+	r.x1 = iFloor(result.x1);
+	r.x2 = iFloor(result.x2);
+	r.y1 = iFloor(result.y1);
+	r.y2 = iFloor(result.y2);
+	RCache.set_Scissor	(&r);
 }
 
 void CMainUI::PopScissor()
@@ -386,12 +393,13 @@ void CMainUI::PopScissor()
 	if(m_Scissors.empty())
 		RCache.set_Scissor(NULL);
 	else{
-		const Irect& top= m_Scissors.top();
+		const Frect& top= m_Scissors.top();
 		Irect tgt;
-		tgt.lt.x 		= iFloor(ClientToScreenScaledX(float(top.lt.x),0));
-		tgt.lt.y 		= iFloor(ClientToScreenScaledY(float(top.lt.y),0));
-		tgt.rb.x 		= iFloor(ClientToScreenScaledX(float(top.rb.x),0));
-		tgt.rb.y 		= iFloor(ClientToScreenScaledY(float(top.rb.y),0));
+		tgt.lt.x 		= iFloor(ClientToScreenScaledX(top.lt.x,0));
+		tgt.lt.y 		= iFloor(ClientToScreenScaledY(top.lt.y,0));
+		tgt.rb.x 		= iFloor(ClientToScreenScaledX(top.rb.x,0));
+		tgt.rb.y 		= iFloor(ClientToScreenScaledY(top.rb.y,0));
+
 		RCache.set_Scissor(&tgt);
 	}
 }

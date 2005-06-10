@@ -27,7 +27,7 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
+	virtual void Init(LPCSTR base_name, float x, float y, float width, float height);
 	virtual void SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle);
 			void SetStyle_script(u32 messageBoxStyle){SetStyle((E_MESSAGEBOX_STYLE)messageBoxStyle);};
 	virtual void SetText(LPCSTR str);
@@ -42,7 +42,7 @@ public:
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{OK_CLICKED, YES_CLICKED, NO_CLICKED, CANCEL_CLICKED} E_MESSAGE;
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 

@@ -33,7 +33,7 @@ CUIPdaListItem::~CUIPdaListItem()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaListItem::Init(int x, int y, int width, int height)
+void CUIPdaListItem::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 

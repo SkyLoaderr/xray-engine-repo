@@ -19,7 +19,7 @@ public:
 	CUIPdaDialogWnd();
 	virtual ~CUIPdaDialogWnd();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 
 //	typedef enum{BACK_BUTTON_CLICKED,
 //				 MESSAGE_BUTTON_CLICKED} E_MESSAGE;

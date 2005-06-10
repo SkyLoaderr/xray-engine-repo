@@ -16,7 +16,7 @@ const char * const		JOB_ITEM_XML		= "job_item.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIJobItem::CUIJobItem(int leftOffest)
+CUIJobItem::CUIJobItem(float leftOffest)
 	:	m_id				(0),
 		articleTypeMsg		(PDA_OPEN_ENCYCLOPEDIA_ARTICLE)
 {
@@ -50,14 +50,14 @@ CUIJobItem::CUIJobItem(int leftOffest)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIJobItem::Init(int x, int y, int width, int height)
+void CUIJobItem::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color)
+void CUIJobItem::SetPicture(LPCSTR texName, const Frect &originalRect, u32 color)
 {
 	UIPicture.InitTexture	(texName);
 	UIPicture.SetColor		(color);
@@ -70,24 +70,7 @@ void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color
 
 	UIPicture.SetOriginalRect(originalRect.x1, originalRect.y1, originalRect.x2, originalRect.y2);
 	UIPicture.ClipperOn();
-//.	Irect r = UIPicture.GetWndRect();
 	UIPicture.SetStretchTexture(true);
-/*
-	float mx = 1.0f;
-	float my = 1.0f;
-	if (r.right - r.left < originalRect.x2 || r.bottom - r.top < originalRect.y2)
-	{
-		mx = static_cast<float>(r.right - r.left) / originalRect.x2;
-		my = static_cast<float>(r.bottom - r.top) / originalRect.y2;
-		UIPicture.SetTextureScaleXY(mx, my);
-	}
-
-	int offX = static_cast<int>(r.right - r.left - originalRect.x2 * mx) / 2;
-	int offY = static_cast<int>(r.bottom - r.top - originalRect.y2 * my) / 2;
-	clamp<int>(offX, 0, r.right - r.left);
-	clamp<int>(offY, 0, r.bottom - r.top);
-	UIPicture.SetTextureOffset(offX, offY);
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -119,11 +102,11 @@ void CUIJobItem::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 }
 void CUIJobItem::ScalePictureXY			(float x, float y) 
 { 
-	int oldH = UIPicture.GetHeight();
-	UIPicture.SetWidth( iFloor(float(UIPicture.GetWidth())*x) );
-	UIPicture.SetHeight( iFloor(float(UIPicture.GetHeight())*y) );
+	float oldH = UIPicture.GetHeight();
+	UIPicture.SetWidth( UIPicture.GetWidth()*x );
+	UIPicture.SetHeight( UIPicture.GetHeight()*y );
 
-	int newH = UIPicture.GetHeight();
+	float newH = UIPicture.GetHeight();
 
-	UIPicture.MoveWndDelta(0, iFloor(float(oldH-newH)/2.0f) );
+	UIPicture.MoveWndDelta(0.0f, (oldH-newH)/2.0f );
 }

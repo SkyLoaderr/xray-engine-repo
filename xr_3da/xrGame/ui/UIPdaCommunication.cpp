@@ -47,7 +47,7 @@ void CUIPdaCommunication::Init()
 	uiXml.Init(CONFIG_PATH, UI_PATH,PDA_XML);
 	CUIXmlInit xml_init;
 
-	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
+	inherited::Init(0,0, float(Device.dwWidth), float(Device.dwHeight));
 
 	//окно разговора по PDA
 //	AttachChild(&UIPdaDialogWnd);

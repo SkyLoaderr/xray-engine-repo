@@ -52,9 +52,9 @@ public:
 	virtual void DropAll						();
 		
 	virtual void SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse						(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse						(float x, float y, EUIMessages mouse_action);
 
-	virtual void Init							(int x, int y, int width, int height);
+	virtual void Init							(float x, float y, float width, float height);
 	virtual void InitGrid						(int iRowsNum, int iColsNum, 
 													bool bGridVisible = true, int iViewRowsNum = 0);
 	int			GetCols							() {return m_iColsNum;}

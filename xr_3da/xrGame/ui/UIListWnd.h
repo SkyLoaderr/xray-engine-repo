@@ -29,10 +29,10 @@ public:
 	CUIListWnd();
 	virtual ~CUIListWnd();
 
-	virtual void Init(int x, int y, int width, int height);
-	virtual void Init(int x, int y, int width, int height, int item_height);
+	virtual void Init(float x, float y, float width, float height);
+	virtual void Init(float x, float y, float width, float height, float item_height);
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
@@ -43,14 +43,14 @@ public:
 
 	// Добавление элементов в листбокс
 	template <class Element>
-	bool AddItem			(const char*  str, const int shift = 0, void* pData = NULL,
+	bool AddItem			(const char*  str, const float shift = 0.0f, void* pData = NULL,
 							 int value = 0, int insertBeforeIdx = -1);
 
 	virtual bool AddText_script (LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
 	virtual bool AddItem_script(CUIListItem* item);
 
 	template <class Element>
-	bool AddParsedItem		(const CUIString &str, const int shift,
+	bool AddParsedItem		(const CUIString &str, const float shift,
 							 const u32 &MsgColor, CGameFont* pFont = NULL,
 							 void* pData = NULL, int value = 0, int insertBeforeIdx = -1);
 
@@ -76,13 +76,13 @@ public:
 
 	int GetSize();
 
-	void SetItemWidth(int iItemWidth);
-	int GetItemWidth() {return m_iItemWidth;}
+	void SetItemWidth(float iItemWidth);
+	float GetItemWidth() {return m_iItemWidth;}
 
-	void SetItemHeight(int iItemHeight); 
-	int GetItemHeight() {return m_iItemHeight;}
+	void SetItemHeight(float iItemHeight); 
+	float GetItemHeight() {return m_iItemHeight;}
 
-	virtual void SetHeight(int height);
+	virtual void SetHeight(float height);
 
 	//подготовить все элементы заново
 	void Reset();
@@ -101,7 +101,7 @@ public:
 	//возвращает ширину в пикселях самой длиной надписи на элементах
 	int GetLongestSignWidth();
 
-	virtual void SetWidth(int width);
+	virtual void SetWidth(float width);
 
 	void SetTextColor(u32 color) {m_dwFontColor = color;} 
 	u32 GetTextColor() {return m_dwFontColor;}
@@ -132,7 +132,7 @@ public:
 	// ширину надписи в пискелях
 	// Возвращаем вектор уникальных идентификаторов для интерактивных элементов в строке, которые нам 
 	// будут посылаться в поле pData при нажатии на интерактивный элемент
-	xr_vector<int> AddInteractiveItem(const char *str2, const int shift = 0,
+	xr_vector<int> AddInteractiveItem(const char *str2, const float shift = 0.0f,
 		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
 	void	SetNewRenderMethod	(bool value)	{ m_bNewRenderMethod = value; }
@@ -159,8 +159,8 @@ protected:
 	LIST_ITEM_LIST	m_ItemList; 
 
 	//размеры элемента списка
-	int		m_iItemHeight;
-	int		m_iItemWidth;
+	float		m_iItemHeight;
+	float		m_iItemWidth;
 
 	//количество рядов для элементов
 	int		m_iRowNum;
@@ -206,7 +206,7 @@ protected:
 	// Вспомогательная функци нахождения начала следующего слова начиная с текущей позиции
 	LPSTR	FindNextWord(LPSTR currPos) const;
 	// Вспомогательная функци определения длинны строки до конца слова начиная с текущей позиции
-	int		WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const;
+	float		WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const;
 	bool	IsEmptyDelimiter(const char c) const;
 };
 

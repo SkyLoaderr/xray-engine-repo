@@ -89,7 +89,7 @@ void CHelicopter::script_register(lua_State *L)
 				.def("isVisible",							&CHelicopter::isVisible)
 
 				.def("GetRealAltitude",						&CHelicopter::GetRealAltitude)
-
+				.def("GetSafeAltitude",						&CHelicopter::GetSafeAltitude)
 				.def("TurnLighting",						&CHelicopter::TurnLighting)
 				.def("TurnEngineSound",						&CHelicopter::TurnEngineSound)
 				.def_readwrite("m_use_rocket_on_attack",	&CHelicopter::m_use_rocket_on_attack)

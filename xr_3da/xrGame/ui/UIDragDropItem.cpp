@@ -54,7 +54,7 @@ CUIDragDropItem::~ CUIDragDropItem()
 
 }
 
-void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
+void CUIDragDropItem::Init(LPCSTR tex_name, float x, float y, float width, float height)
 {
 	m_pParentWnd = NULL;
 	m_pMouseCapturer = NULL;
@@ -74,10 +74,10 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	SetStretchTexture	(true);
 }
 
-void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
+void  CUIDragDropItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	int deltaX = 0;
-	int deltaY = 0;
+	float deltaX = 0;
+	float deltaY = 0;
 
 
 	//проверить попадает ли курсор на кнопку
@@ -196,7 +196,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 
 void CUIDragDropItem::Draw()
 {
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 	m_UIStaticItem.SetPos(rect.left , rect.top);
 
 	if (m_bInFloat) 
@@ -220,8 +220,8 @@ void CUIDragDropItem::Update()
 
 void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 {
-	SetWidth	(iFloor(GetGridWidth() * scale_x * INV_GRID_WIDTH));
-	SetHeight	(iFloor(GetGridHeight() * scale_y * INV_GRID_HEIGHT));
+	SetWidth	(GetGridWidth() * scale_x * INV_GRID_WIDTH);
+	SetHeight	(GetGridHeight() * scale_y * INV_GRID_HEIGHT);
 	cur_scale_x = scale_x;
 	cur_scale_y = scale_y;
 }

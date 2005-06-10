@@ -24,11 +24,11 @@ public:
 	CUIItemInfo();
 	virtual ~CUIItemInfo();
 
-	void		Init		(int x, int y, int width, int height, const char* xml_name);
+	void		Init		(float x, float y, float width, float height, const char* xml_name);
 	void		InitItem	(CInventoryItem* pInvItem);
 
 	virtual void Draw();
-	void		AlignRight(CUIStatic &Item, int offset);
+	void		AlignRight(CUIStatic &Item, float offset);
 
 	CUIStatic	UIName;
 	CUIStatic	UIWeight;
@@ -38,6 +38,6 @@ public:
 	CUIProgressBar	UICondProgresBar;
 
 	//для изображения предмета крупным планом
-	Ivector2	UIItemImageSize; 
+	Fvector2	UIItemImageSize; 
 	CUIStatic	UIItemImage;
 };

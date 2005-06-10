@@ -40,7 +40,7 @@ class					CUIArtefactPanel;
 
 struct CUSTOM_TEXTURE
 {
-	CUSTOM_TEXTURE(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0)
+	CUSTOM_TEXTURE(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0)
 	{
 		static_item		= si;
 		x1				= left;
@@ -51,7 +51,7 @@ struct CUSTOM_TEXTURE
 	};
 		
 	CUIStaticItem*	static_item;
-	int				x1, y1, x2, y2;
+	float			x1, y1, x2, y2;
 	int				texPriority;
 };
 
@@ -81,12 +81,12 @@ public:
 	bool SetDelayForPdaMessage          (int iValue, int iDelay);
 	void AddGameMessage	(LPCSTR message, int iId = -1, int iDelay = 0);
 	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage, int iId = -1, int iDelay = 0);
-	void AddIconedGameMessage			(LPCSTR textureName, Irect originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
+	void AddIconedGameMessage			(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
 protected:
 	CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
 
 public:
-	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0);
+	void AddStaticItem					(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
 	void AddInfoMessage	(LPCSTR message);
@@ -225,10 +225,10 @@ protected:
 	CWeapon*			m_pWeapon;
 	CInventoryItem*		m_pItem;
 
-	int					m_iWeaponIconX;
-	int					m_iWeaponIconY;
-	int					m_iWeaponIconWidth;
-	int					m_iWeaponIconHeight;
+	float				m_iWeaponIconX;
+	float				m_iWeaponIconY;
+	float				m_iWeaponIconWidth;
+	float				m_iWeaponIconHeight;
 
 	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
 	float				fuzzyShowInfo;
@@ -267,10 +267,10 @@ protected:
 	CInventoryItem*		m_pPickUpItem;
 	CUIStatic			UIPickUpItemIcon;
 
-	int					m_iPickUpItemIconX;
-	int					m_iPickUpItemIconY;
-	int					m_iPickUpItemIconWidth;
-	int					m_iPickUpItemIconHeight;
+	float					m_iPickUpItemIconX;
+	float					m_iPickUpItemIconY;
+	float					m_iPickUpItemIconWidth;
+	float					m_iPickUpItemIconHeight;
 
     void				UpdatePickUpItem();
 public:

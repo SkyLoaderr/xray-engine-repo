@@ -35,9 +35,9 @@ public:
 			EVTextAlignment GetVTextAlignment()					const	{return m_eVTextAlign;}
 
     // IUISimpleWindow methods
-	virtual void			Init(int x, int y, int width, int height);
+	virtual void			Init(float x, float y, float width, float height);
 	virtual void			Draw();
-	virtual void			Draw(int x, int y);
+	virtual void			Draw(float x, float y);
 	virtual void			Update();
 
 
@@ -47,7 +47,7 @@ public:
 	// own methods
 			void			Reset();
 			void			ParseText();
-			int				GetVisibleHeight()					const;
+			float				GetVisibleHeight()					const;
 			void			SetLinesInterval(float f)					{ m_interval = f; }
 			float			GetLinesInterval()					const	{ return m_interval; }
 
@@ -55,8 +55,8 @@ public:
 protected:
 				// %c<255,255,255,255>
 		u32		GetColorFromText(const xr_string& str)									const;
-		u32		GetIndentByAlign(u32 length)											const;
-		u32		GetVIndentByAlign()														const;
+		float	GetIndentByAlign(float length)											const;
+		float	GetVIndentByAlign()														const;
 		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text)	const;
 	CUILine*	ParseTextToColoredLine(const xr_string& str)							const;
 

@@ -21,7 +21,7 @@ const char * const 		fieldsCaptionColor		= "%c<255,216,186,140>";
 CUIItemInfo::CUIItemInfo()
 {
 //	y_rotate_angle = 0;
-	UIItemImageSize.set(0,0);
+	UIItemImageSize.set(0.0f,0.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ CUIItemInfo::~CUIItemInfo()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name)
+void CUIItemInfo::Init(float x, float y, float width, float height, const char* xml_name)
 {
 	inherited::Init(x, y, width, height);
 
@@ -117,12 +117,12 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		int m_iXPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_x");
 		int m_iYPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_y");
 
-		UIItemImage.GetUIStaticItem().SetOriginalRect(	m_iXPos * INV_GRID_WIDTH,		m_iYPos * INV_GRID_HEIGHT,
-														m_iGridWidth * INV_GRID_WIDTH,	m_iGridHeight * INV_GRID_HEIGHT);
+		UIItemImage.GetUIStaticItem().SetOriginalRect(	float(m_iXPos*INV_GRID_WIDTH), float(m_iYPos*INV_GRID_HEIGHT),
+														float(m_iGridWidth*INV_GRID_WIDTH),	float(m_iGridHeight*INV_GRID_HEIGHT));
 		UIItemImage.TextureOn	();
 		UIItemImage.ClipperOn	();
 		UIItemImage.SetStretchTexture(true);
-		Irect v_r				= {0,0,m_iGridWidth * INV_GRID_WIDTH,	m_iGridHeight * INV_GRID_HEIGHT};
+		Frect v_r				= {0.0f, 0.0f, float(m_iGridWidth*INV_GRID_WIDTH),	float(m_iGridHeight*INV_GRID_HEIGHT)};
 		UIItemImage.GetUIStaticItem().SetRect(v_r);
 		UIItemImage.SetWidth	(_min(v_r.width(),	UIItemImageSize.x));
 		UIItemImage.SetHeight	(_min(v_r.height(),	UIItemImageSize.y));
@@ -150,13 +150,13 @@ void CUIItemInfo::Draw()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIItemInfo::AlignRight(CUIStatic &Item, int offset)
+void CUIItemInfo::AlignRight(CUIStatic &Item, float offset)
 {
 	if (Item.GetFont())
 	{
 		float	s	= Item.GetFont()->SizeOf(Item.GetText());
 				s	-= Item.GetFont()->SizeOf(fieldsCaptionColor);
 				s	-= Item.GetFont()->SizeOf("%c<default>");
-		Item.SetWndPos(static_cast<int>(GetWndRect().right - s) + offset, Item.GetWndRect().top);
+		Item.SetWndPos(GetWndRect().right - s + offset, Item.GetWndRect().top);
 	}
 }

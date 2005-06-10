@@ -39,7 +39,7 @@ public:
 
 	CUIInteractiveListItem();
 	virtual ~CUIInteractiveListItem() {}
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Update();
 	virtual void Draw();
 
@@ -47,14 +47,14 @@ public:
 	// заключенная в знаки-разделители является интерактивной. При нажатии на
 	// кнопку соответствующая константа из массива pIDArr передается родитeльскому
 	// окну
-	virtual void Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height);
+	virtual void Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, float height);
 	//	// Задаем цвет текста неинтерактивной части поля
 	//	virtual void SetStaticTextColor(u32 uColor) {}
 	//	// Задаем цвет теста интерактивной части тесктового поля
 	//	virtual void SetInteractiveTextColor(u32 uColor) {}
 	// Переопределяем функцию получения абсолютных координат.
 	// Это нужно для выделения интерактивных элементов
-	virtual Irect GetAbsoluteSubRect();
+	virtual Frect GetAbsoluteSubRect();
 	// Вкл/выкл интреактивное поведение
 	bool	m_bInteractiveBahaviour;
 	// Назначаем ID нужному элементу
@@ -72,11 +72,11 @@ private:
 	// Бинарная функция для проверки попадания курсора мыши в диапазон
 	struct mouse_hit: 
 		public std::binary_function<FIELDS_COORDS_VECTOR::value_type, 
-		std::pair<int, int>, 
+		std::pair<float, float>, 
 		bool>
 	{
 		bool operator() (const FIELDS_COORDS_VECTOR::value_type &interactiveCrd,
-			const std::pair<int, int> &mouseCrd) const
+			const std::pair<float, float> &mouseCrd) const
 		{
 			return interactiveCrd.pairScreenCrd.first <= mouseCrd.first && interactiveCrd.pairScreenCrd.second >= mouseCrd.first;
 		}

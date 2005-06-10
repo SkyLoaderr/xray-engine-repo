@@ -15,7 +15,7 @@
 class CArtefact;
 
 class CUIArtefactPanel : public CUIWindow{
-	typedef xr_vector<Irect>::const_iterator ITr;
+	typedef xr_vector<Frect>::const_iterator ITr;
 	typedef xr_vector<CUIStaticItem*>::const_iterator ITsi;
 
 public:
@@ -29,6 +29,6 @@ public:
 
 protected:
 	float						m_fScale;
-	xr_vector<Irect>            m_vRects;
+	xr_vector<Frect>            m_vRects;
 	CUIStaticItem               m_si;
 };

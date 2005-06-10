@@ -209,7 +209,7 @@ CUIInventoryWnd::~CUIInventoryWnd()
 	ClearDragDrop(m_vDragDropItems);
 }
 
-void CUIInventoryWnd::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	//вызов дополнительного меню по правой кнопке
 	if(mouse_action == WINDOW_RBUTTON_DOWN)
@@ -449,10 +449,10 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 	UIDragDropItem.SetGridHeight(pItem->GetGridHeight());
 	UIDragDropItem.SetGridWidth(pItem->GetGridWidth());
 	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										pItem->GetXPos()*INV_GRID_WIDTH,
-										pItem->GetYPos()*INV_GRID_HEIGHT,
-										pItem->GetGridWidth()*INV_GRID_WIDTH,
-										pItem->GetGridHeight()*INV_GRID_HEIGHT);
+										float(pItem->GetXPos()*INV_GRID_WIDTH),
+										float(pItem->GetYPos()*INV_GRID_HEIGHT),
+										float(pItem->GetGridWidth()*INV_GRID_WIDTH),
+										float(pItem->GetGridHeight()*INV_GRID_HEIGHT));
 	if(m_pInv->Get(pItem->object().ID(), false))
         UIBeltList.AttachChild(&UIDragDropItem);
 	else if(m_pInv->Get(pItem->object().ID(), true))
@@ -516,7 +516,7 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const int offset = -10;
+	const float offset = -10.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
 	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);

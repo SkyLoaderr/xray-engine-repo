@@ -11,12 +11,13 @@ using namespace luabind;
 bool CUIListWnd::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doParse)
 {
 	CUIString			s;
+	float shift_ = float(shift);
 	s.SetText(str);
 	if(doParse){
 		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
 	}
 
-	return AddParsedItem<CUIListItem>(s, shift, color, pFont);
+	return AddParsedItem<CUIListItem>(s, shift_, color, pFont);
 
 }
 

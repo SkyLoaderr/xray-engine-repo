@@ -35,7 +35,7 @@ CUIPdaDialogWnd::~CUIPdaDialogWnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
+void CUIPdaDialogWnd::Init(float x, float y, float width, float height)
 {
 	CUIXml		uiXml;
 	bool xml_result =uiXml.Init(CONFIG_PATH, UI_PATH,PDA_DIALOG_XML);

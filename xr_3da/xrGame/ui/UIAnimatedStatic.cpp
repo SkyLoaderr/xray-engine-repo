@@ -76,5 +76,5 @@ void CUIAnimatedStatic::SetFrame(const u32 frameNum)
 
 	currRow = frameNum / m_uAnimCols;
 	currCol = frameNum % m_uAnimCols;
-	GetUIStaticItem().SetOriginalRect(currCol * m_uFrameWidth, currRow * m_uFrameHeight, m_uFrameWidth, m_uFrameHeight);
+	GetUIStaticItem().SetOriginalRect(float(currCol*m_uFrameWidth), float(currRow*m_uFrameHeight), float(m_uFrameWidth), float(m_uFrameHeight));
 }

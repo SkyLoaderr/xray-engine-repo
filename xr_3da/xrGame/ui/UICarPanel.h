@@ -19,5 +19,5 @@ public:
 	void				SetCarHealth	(float value);
 	void				SetSpeed		(float speed);
 	void				SetRPM			(float rmp);
-	void				Init			(int x, int y, int width, int height);
+	void				Init			(float x, float y, float width, float height);
 };

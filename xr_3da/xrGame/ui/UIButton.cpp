@@ -35,14 +35,14 @@ CUIButton:: CUIButton()
 	m_HighlightColor			= 0xFF999999;
 	m_uAccelerator				= static_cast<u32>(-1);
 
-	m_iTexOffsetX				= 0;
-	m_iTexOffsetY				= 0;
+	m_iTexOffsetX				= 0.0f;
+	m_iTexOffsetY				= 0.0f;
 
 	m_bNewRenderMethod			= false;
 	m_bEnableTextHighlighting	= true;
 
-	m_iShadowOffsetX			= 0;
-	m_iShadowOffsetY			= 0;
+	m_iShadowOffsetX			= 0.0f;
+	m_iShadowOffsetY			= 0.0f;
 
 	m_lines.SetTextAlignment(CGameFont::alCenter);
 	m_lines.SetVTextAlignment(valCenter);
@@ -63,12 +63,12 @@ void CUIButton::Reset()
 }
 
 
-void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
+void CUIButton::Init(LPCSTR tex_name, float x, float y, float width, float height)
 {
 	CUIStatic::Init(tex_name, x, y, width, height);
 }
 
-void CUIButton::Init(int x, int y, int width, int height)
+void CUIButton::Init(float x, float y, float width, float height)
 {
 	CUIStatic::Init(x, y, width, height);
 }
@@ -80,7 +80,7 @@ void CUIButton::Enable(bool status){
 		m_bCursorOverWindow = false;
 }
 
-void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
+void  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	m_bButtonClicked = false;
 
@@ -163,7 +163,7 @@ void CUIButton::OnClick(){
 
 void CUIButton::DrawTexture()
 {
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
@@ -176,7 +176,7 @@ void CUIButton::DrawTexture()
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
 		else
 		{
-			Irect r={0,0,
+			Frect r={0,0,
 				m_UIStaticItem.GetOriginalRectScaled().width(),
 				m_UIStaticItem.GetOriginalRectScaled().height()};
 			m_UIStaticItem.SetRect(r);
@@ -190,14 +190,14 @@ void CUIButton::DrawTexture()
 }
 
 void CUIButton::DrawHighlightedText(){
-	int right_offset;
-	int down_offset;
+	float right_offset;
+	float down_offset;
 
 	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 		//|| !m_bAvailableTexture)
 	{
-		right_offset = 0;
-		down_offset = 0;
+		right_offset = 0.0f;
+		down_offset = 0.0f;
 	}
 	else
 	{
@@ -205,7 +205,7 @@ void CUIButton::DrawHighlightedText(){
 		down_offset = m_iPushOffsetY;
 	}
 
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 //	Irect r = GetSelfClipRect();
 //	CGameFont * F = GetFont();
 //	F->SetColor(m_HighlightColor);
@@ -266,8 +266,8 @@ void CUIButton::DrawHighlightedText(){
 }
 
 void CUIButton::DrawText(){
-	int right_offset;
-	int down_offset;
+	float right_offset;
+	float down_offset;
 
 	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 	{
@@ -313,7 +313,7 @@ void CUIButton::DrawText(){
 	//	}
 	//}
 
-    Irect r = GetAbsoluteRect();
+    Frect r = GetAbsoluteRect();
 	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
 }
 

@@ -4,12 +4,12 @@
 
 
 struct LIST_SRV_SIZES {
-	int icon;
-	int server;
-	int map;
-	int game; 
-	int players;
-	int ping;
+	float icon;
+	float server;
+	float map;
+	float game; 
+	float players;
+	float ping;
 };
 
 struct LIST_SRV_INFO{
@@ -35,7 +35,7 @@ public:
 	virtual void Draw();
 
 	// own
-	virtual void Init(LIST_SRV_ITEM& params, int x, int y, int width, int height);
+	virtual void Init(LIST_SRV_ITEM& params, float x, float y, float width, float height);
 	CUIListItemServer();
 
 protected:

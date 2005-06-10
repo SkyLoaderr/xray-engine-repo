@@ -27,20 +27,20 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
-	virtual void Init(int x, int y, int width, int height);
-	virtual void Init(LPCSTR base_name, Irect* pRect);
+	virtual void Init(LPCSTR base_name, float x, float y, float width, float height);
+	virtual void Init(float x, float y, float width, float height);
+	virtual void Init(LPCSTR base_name, Frect* pRect);
 
 	virtual void InitTexture(const char* texture);
 			void SetTextureColor(u32 color)										{m_UIWndFrame.SetTextureColor(color);}
 //	virtual void SetRect2Item(int item, int x, int y, int width, int height);
 
 	//для статических спрайтов, перекрывающий окно
-	void InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset);
-	void InitLeftBottom(LPCSTR tex_name, int left_offset, int up_offset);
+	void InitLeftTop(LPCSTR tex_name, float left_offset, float up_offset);
+	void InitLeftBottom(LPCSTR tex_name, float left_offset, float up_offset);
 
-	virtual void SetWidth(int width);
-	virtual void SetHeight(int height);
+	virtual void SetWidth(float width);
+	virtual void SetHeight(float height);
 	
 	// Устанавливаем цвет всего фрейма
 	void SetColor(u32 cl);
@@ -55,7 +55,7 @@ public:
 	CUIStatic*	GetTitleStatic(){return &UITitleText;};
 
 	bool		GetClipper()							{ return m_bClipper; }
-	void		SetClipper(bool value, Irect clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
+	void		SetClipper(bool value, Frect clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
 
 protected:
 
@@ -66,28 +66,28 @@ protected:
 	//основной фрейм 
 	CUIFrameRect m_UIWndFrame;
 
-	void		FrameClip(const Irect parentAbsR);
+	void		FrameClip(const Frect parentAbsR);
 	
 	//заголовки поверх него
 
 	bool m_bOverLeftTop; 
 	bool m_bOverLeftBottom;
 
-	int m_iLeftTopOffset;
-	int m_iUpTopOffset;
+	float m_iLeftTopOffset;
+	float m_iUpTopOffset;
 
-	int m_iLeftBottomOffset;
-	int m_iUpBottomOffset;
+	float m_iLeftBottomOffset;
+	float m_iUpBottomOffset;
 
 	CUIStaticItem m_UIStaticOverLeftTop;
 	CUIStaticItem m_UIStaticOverLeftBottom;
 
 	// clipper
 	bool	m_bClipper;
-	Irect	m_ClipRect;
+	Frect	m_ClipRect;
 
 private:
-	inline void ClampMax_Zero(Irect &r);
+	inline void ClampMax_Zero(Frect &r);
 
 };
 	

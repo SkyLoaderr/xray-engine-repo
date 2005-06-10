@@ -15,7 +15,7 @@ CUICheckButton::~CUICheckButton(void)
 {
 }
 
-void CUICheckButton::Init(int x, int y, int width, int height){
+void CUICheckButton::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 	InitTexture();
 	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
@@ -23,11 +23,11 @@ void CUICheckButton::Init(int x, int y, int width, int height){
 
 void CUICheckButton::InitTexture(){
 	CUI3tButton::InitTexture("ui_checker");
-	Irect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
+	Frect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
 	CUI3tButton::SetTextX(r.width());	
 }
 
-void CUICheckButton::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUICheckButton::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	CUIWindow::OnMouse(x, y, mouse_action);
 }

@@ -51,7 +51,7 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
 }
 
-int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
+int CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& info){
 
 	if ( 0 == xr_strlen(info.m_name))
 		return 0;
@@ -86,24 +86,24 @@ void CUIPdaKillMessage::SetColor(u32 color){
 	m_ext_info.SetColor(color);
 }
 
-int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
+int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info){
 	if ( 0 == info.m_rect.width())
 		return 0;
 
 	if (info.m_shader == NULL)
 		return 0;
 
-	int		y = 0;
-	int		selfHeight = GetHeight();
-	float	scale = 0;
-	Irect	rect = info.m_rect;
+	float		y = 0;
+	float		selfHeight = GetHeight();
+	float		scale = 0;
+	Frect		rect = info.m_rect;
 
-	int width = rect.width();
-	int height = rect.height();
+	float width = rect.width();
+	float height = rect.height();
 	
 	scale = 1;
-	width  = (int)((float)width*scale);
-	height = (int)((float)height*scale);
+	width  = width*scale;
+	height = height*scale;
 	y = (selfHeight - height) /2;
 	refStatic.Init(x, y, width, height);
 	refStatic.SetOriginalRect(info.m_rect);
@@ -113,7 +113,7 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	return width;
 }
 
-void CUIPdaKillMessage::Init(int x, int y, int width, int height){
+void CUIPdaKillMessage::Init(float x, float y, float width, float height){
 	inherited::Init(x, y, width, height);
 }
 

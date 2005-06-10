@@ -49,6 +49,9 @@
 #endif
 //////////////////////////////////////////////////////////////////////////
 
+#include "UIDragDropListEx.h"
+static CTestDragDropWnd* w = NULL;
+
 using namespace InventoryUtilities;
 
 //	hud adjust mode
@@ -334,6 +337,7 @@ void CUIMainIngameWnd::Init()
 //////////////////////////////////////////////////////////////////////////
 void CUIMainIngameWnd::Draw()
 {
+
 	bool zoom_mode = false;
 	bool scope_mode = false;
 
@@ -553,9 +557,9 @@ void CUIMainIngameWnd::Update()
 			UIWeaponSignAmmo.Show(false);
 
 			UIWeaponBack.SetText(m_pItem->NameShort());
-			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - 
-				UIWeaponBack.GetAbsoluteRect().left) * 0.5 - 
-				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2));
+			UIWeaponBack.SetTextX(		(UIWeaponBack.GetAbsoluteRect().right - 
+										UIWeaponBack.GetAbsoluteRect().left) * 0.5f - 
+										UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2.0f);
 
 		}
 		else if(pWeapon)
@@ -590,17 +594,16 @@ void CUIMainIngameWnd::Update()
 					int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
 					int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
 
-					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(
-						m_iXPos * INV_GRID_WIDTH,
-						m_iYPos * INV_GRID_HEIGHT,
-						m_iGridWidth * INV_GRID_WIDTH,
-						m_iGridHeight * INV_GRID_HEIGHT);
+					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(m_iXPos * INV_GRID_WIDTH),
+																	float(m_iYPos * INV_GRID_HEIGHT),
+																	float(m_iGridWidth * INV_GRID_WIDTH),
+																	float(m_iGridHeight * INV_GRID_HEIGHT));
 					UIWeaponIcon.SetStretchTexture(true);
 
 					// now perform only width scale for ammo, which (W)size >2
 					// all others ammo (1x1, 1x2) will be not scaled (original picture)
-					int w = iFloor(0.5f+ ((m_iGridWidth>2)?1.6f:m_iGridWidth)*INV_GRID_WIDTH*0.9f);
-					int h = iFloor(0.5f+INV_GRID_HEIGHT*0.9f);//1 cell
+					float w = ((m_iGridWidth>2)?1.6f:m_iGridWidth)*INV_GRID_WIDTH*0.9f;
+					float h = INV_GRID_HEIGHT*0.9f;//1 cell
 					UIWeaponIcon.SetWidth(w);
 					UIWeaponIcon.SetHeight(h);
 				}
@@ -613,9 +616,9 @@ void CUIMainIngameWnd::Update()
 
 
 			UIWeaponBack.SetText(m_pItem->NameShort());
-			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - 
-				UIWeaponBack.GetAbsoluteRect().left) * 0.5 - 
-				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2));
+			UIWeaponBack.SetTextX(((UIWeaponBack.GetAbsoluteRect().right - 
+				UIWeaponBack.GetAbsoluteRect().left) * 0.5f - 
+				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2.0f));
 
 
 			int	AE = m_pWeapon->GetAmmoElapsed();
@@ -735,6 +738,15 @@ void CUIMainIngameWnd::Update()
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
+	if(dik==DIK_K&&strstr(Core.Params,"andy")){
+		if(!w){
+			w = xr_new<CTestDragDropWnd>	();
+			Game().StartStopMenu			(w,true);
+		}else{
+			Game().StartStopMenu			(w,true);
+			xr_delete						(w);
+		}
+	}
 	// поддержка режима adjust hud mode
 	bool flag = false;
 	if (g_bHudAdjustMode)
@@ -1145,7 +1157,7 @@ void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCS
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Irect originalRect, LPCSTR message, int iId, int iDelay)
+void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay)
 {
 	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(textureName, originalRect, message, iId, iDelay);
 }
@@ -1160,7 +1172,7 @@ void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 	R_ASSERT(UIInfoMessages.GetFont());
 	pItem->UIMsgText.SetFont(UIInfoMessages.GetFont());
 	pItem->UIMsgText.SetTextColor(UIInfoMessages.GetTextColor());
-	pItem->UIMsgText.SetWndPos(-static_cast<int>(UIInfoMessages.GetFont()->SizeOf(message) / 2),
+	pItem->UIMsgText.SetWndPos(-(UIInfoMessages.GetFont()->SizeOf(message) / 2.0f),
 								pItem->UIMsgText.GetWndRect().top);
 	UIInfoMessages.ScrollToBegin();
 
@@ -1222,11 +1234,11 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 		
 	if(news.texture_name)
 	{
-		Irect rect;
-		rect.left = news.x1;
-		rect.right = news.x2;
-		rect.top = news.y1;
-		rect.bottom = news.y2;
+		Frect rect;
+		rect.left		= float(news.x1);
+		rect.right		= float(news.x2);
+		rect.top		= float(news.y1);
+		rect.bottom		= float(news.y2);
 		AddIconedGameMessage(news.texture_name, rect, news.FullText(), news.news_text, news.show_time);
 	}
 	else
@@ -1308,7 +1320,7 @@ struct priority_greater : public std::binary_function<CUSTOM_TEXTURE, CUSTOM_TEX
 
 //////////////////////////////////////////////////////////////////////////
 
-void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, int left, int top, int right, int bottom, int priority)
+void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, float left, float top, float right, float bottom, int priority)
 {
 	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom, priority));
 
@@ -1505,10 +1517,10 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
 	int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
 
-	float scale_x = float(m_iPickUpItemIconWidth)/
+	float scale_x = m_iPickUpItemIconWidth/
 		float(m_iGridWidth*INV_GRID_WIDTH);
 
-	float scale_y = float(m_iPickUpItemIconHeight)/
+	float scale_y = m_iPickUpItemIconHeight/
 		float(m_iGridHeight*INV_GRID_HEIGHT);
 
 	scale_x = (scale_x>1) ? 1.0f : scale_x;
@@ -1517,15 +1529,15 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	float scale = scale_x<scale_y?scale_x:scale_y;
 
 	UIPickUpItemIcon.GetUIStaticItem().SetOriginalRect(
-		m_iXPos * INV_GRID_WIDTH,
-		m_iYPos * INV_GRID_HEIGHT,
-		m_iGridWidth * INV_GRID_WIDTH,
-		m_iGridHeight * INV_GRID_HEIGHT);
+		float(m_iXPos * INV_GRID_WIDTH),
+		float(m_iYPos * INV_GRID_HEIGHT),
+		float(m_iGridWidth * INV_GRID_WIDTH),
+		float(m_iGridHeight * INV_GRID_HEIGHT));
 
 	UIPickUpItemIcon.SetStretchTexture(true);
 
-	UIPickUpItemIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
-	UIPickUpItemIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale));
+	UIPickUpItemIcon.SetWidth(m_iGridWidth*INV_GRID_WIDTH*scale);
+	UIPickUpItemIcon.SetHeight(m_iGridHeight*INV_GRID_HEIGHT*scale);
 
 	UIPickUpItemIcon.SetWndPos(m_iPickUpItemIconX + 
 		(m_iPickUpItemIconWidth - UIPickUpItemIcon.GetWidth())/2,

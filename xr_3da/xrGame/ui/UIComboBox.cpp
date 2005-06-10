@@ -10,8 +10,8 @@
 #include "StdAfx.h"
 #include "UIComboBox.h"
 
-#define CB_HEIGHT 19
-#define BTN_SIZE  23
+#define CB_HEIGHT 19.0f
+#define BTN_SIZE  23.0f
 
 CUIComboBox::CUIComboBox(){
 	// edit box
@@ -48,7 +48,7 @@ void CUIComboBox::SetVertScroll(bool bVScroll){
 	this->m_list.EnableScrollBar(bVScroll);
 }
 
-void CUIComboBox::Init(int x, int y, int width){
+void CUIComboBox::Init(float x, float y, float width){
 	m_bInited = true;
 	if (0 == m_iListHeight)
 		m_iListHeight = 4;
@@ -83,7 +83,7 @@ void CUIComboBox::Init(int x, int y, int width){
 	m_frameWnd.Show(false);
 }
 
-void CUIComboBox::Init(int x, int y, int width, int height){
+void CUIComboBox::Init(float x, float y, float width, float height){
 	this->Init(x, y, width);
 }
 
@@ -117,7 +117,7 @@ void CUIComboBox::Update(){
 		SetState(S_Disabled);
 }
 
-void CUIComboBox::OnMouse(int x, int y, EUIMessages mouse_action){
+void CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
     CUIWindow::OnMouse(x, y, mouse_action);
 
 	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
@@ -177,9 +177,9 @@ void CUIComboBox::ShowList(bool bShow){
 		int iCurHeight;
 
 		if (m_list.GetChildNum() <= this->m_iListHeight)
-			iCurHeight = m_iListHeight*CB_HEIGHT;
+			iCurHeight = iFloor(m_iListHeight*CB_HEIGHT);
 		else
-			iCurHeight = m_list.GetChildNum()*CB_HEIGHT;
+			iCurHeight = iFloor(m_list.GetChildNum()*CB_HEIGHT);
 
 		SetHeight(m_editBox.GetHeight() + iCurHeight);
 

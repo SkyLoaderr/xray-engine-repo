@@ -26,7 +26,7 @@ m_bInteractiveBahaviour(true)
 //	height:	высота элемента
 //	StartShift:	смещение относительно левого кра€ в пробелах
 //-----------------------------------------------------------------------------/
-void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height)
+void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, float height)
 {
 	CGameFont	*pFont	= GetFont();
 	R_ASSERT(pFont);
@@ -70,9 +70,9 @@ void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data
 //-----------------------------------------------------------------------------/
 //  ќбработка событий мыши
 //-----------------------------------------------------------------------------/
-void CUIInteractiveListItem::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIInteractiveListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	std::pair<int, int> tmpPair(x, y);
+	std::pair<float, float> tmpPair(x, y);
 	itCurrIItem = std::find_if(vPositions.begin(), vPositions.end(), 
 		std::bind2nd(mouse_hit(), tmpPair));
 
@@ -89,9 +89,9 @@ void CUIInteractiveListItem::OnMouse(int x, int y, EUIMessages mouse_action)
 //-----------------------------------------------------------------------------/
 //  ѕолучаем координаты интерактивного пол€ дл€ подсветки
 //-----------------------------------------------------------------------------/
-Irect CUIInteractiveListItem::GetAbsoluteSubRect()
+Frect CUIInteractiveListItem::GetAbsoluteSubRect()
 {
-	Irect tmpRect = CUIWindow::GetAbsoluteRect();
+	Frect tmpRect = CUIWindow::GetAbsoluteRect();
 	if (itCurrIItem != vPositions.end())
 	{
 		tmpRect.left	+= (*itCurrIItem).pairScreenCrd.first;
@@ -132,40 +132,40 @@ void CUIInteractiveListItem::Draw()
 		GetFont()->SetAligment(GetTextAlign());
 
 		GetFont()->SetColor(m_HighlightColor);
-		Irect rect = GetSelfClipRect();
+		Frect rect = GetSelfClipRect();
 		CGameFont* F = GetFont();
 
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 1 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 1 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 0 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top + 0 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 0 +m_iTextOffsetY,
+			rect.left + 1 +m_iTextOffsetX, 
+			rect.top - 0 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 0 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
+			rect.left + 0 +m_iTextOffsetX, 
+			rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 		UI()->OutText(F, rect,
-			(float)rect.left + 0 +m_iTextOffsetX,  
-			(float)rect.top - 1 +m_iTextOffsetY,
+			rect.left + 0 +m_iTextOffsetX,  
+			rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
 
 	}

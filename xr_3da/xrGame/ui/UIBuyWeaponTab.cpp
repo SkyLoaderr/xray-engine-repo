@@ -57,7 +57,7 @@ void CUIBuyWeaponTab::Init(CUIXml& xml, char* path){
 	SetActiveState();
 }
 
-void CUIBuyWeaponTab::Init(int x, int y, int width, int height){
+void CUIBuyWeaponTab::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x, y, width, height);	
 }
 

@@ -16,15 +16,15 @@ public:
 	CUIPdaKillMessage(int iDelay);
 	virtual ~CUIPdaKillMessage();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 			void Init(KillMessageStruct& msg);
 	virtual void SetFont(CGameFont* pFont);
 	virtual void SetTextColor(u32 color);
 	virtual void SetColor(u32 color);
 
 protected:
-			int InitText(CUIStatic& refStatic, int x, PlayerInfo& info);
-			int InitIcon(CUIStatic& refStatic, int x, IconInfo& info);
+			int InitText(CUIStatic& refStatic, float x, PlayerInfo& info);
+			int InitIcon(CUIStatic& refStatic, float x, IconInfo& info);
 
     CUIStatic	m_victim_name;
 	CUIStatic	m_initiator;

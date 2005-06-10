@@ -17,10 +17,10 @@ public:
 	CUIListItem(void);
 	virtual ~CUIListItem(void);
 
-	virtual void Init(int x, int y, int width, int height);
-	virtual void Init(const char* str, int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
+	virtual void Init(const char* str, float x, float y, float width, float height);
 	
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Draw();
 
 			void* GetData() {return m_pData;}

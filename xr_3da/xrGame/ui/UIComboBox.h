@@ -28,15 +28,15 @@ public:
 	virtual CUIListWnd*	GetListWnd();
 	virtual bool		SetListLength(int length);
 	virtual void		SetVertScroll(bool bVScroll = true);
-	virtual void		Init(int x, int y, int width);
-	virtual void		Init(int x, int y, int width, int height);
+	virtual void		Init(float x, float y, float width);
+	virtual void		Init(float x, float y, float width, float height);
 	virtual void		AddItem(LPCSTR str, bool bSelected);
 	virtual void		AddItem(LPCSTR str);
 	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = 0);
 	virtual void		Draw();
 protected:
 	virtual void		SetState(UIState state);	
-	virtual void		OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void		OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void		OnBtnClicked();
 	virtual void		ShowList(bool bShow);
 	virtual void		OnListItemSelect();

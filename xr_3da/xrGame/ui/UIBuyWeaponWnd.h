@@ -48,8 +48,8 @@ public:
 	void InitInventory();
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void OnMouseScroll(int iDirection);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void OnMouseScroll(float iDirection);
 
 
 	virtual void Update();

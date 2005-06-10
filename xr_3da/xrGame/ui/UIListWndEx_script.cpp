@@ -21,8 +21,8 @@ bool CUIListWndEx::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* p
 	if(doParse){
 		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
 	}
-
-	return AddParsedItem<CUIListItemEx>(s, shift, color, pFont);
+	float shift_ = float(shift);
+	return AddParsedItem<CUIListItemEx>(s, shift_, color, pFont);
 
 }
 

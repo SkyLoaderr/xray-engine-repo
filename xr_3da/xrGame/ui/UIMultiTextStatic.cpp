@@ -23,7 +23,7 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 
 void CUIMultiTextStatic::Draw()
 {
-	Irect r = GetAbsoluteRect();
+	Frect r = GetAbsoluteRect();
 
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
@@ -66,7 +66,7 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::GetPhraseByIndex(u32 idx)
 
 CUIMultiTextStatic::SPh::SPh()
 	:	elipsisPos			(CUIStatic::eepEnd),
-		maxWidth			(-1)
+		maxWidth			(-1.0f)
 {
 	effect.SetStyleParams(CUITextBanner::tbsNone);
 	effect.StopAnimation();
@@ -93,7 +93,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 		STRING s;
 		CUIStatic::SetText(*str, s);
 
-		Irect r;
+		Frect r;
 		r.left		= 0;
 		r.right		= maxWidth;
 		r.top		= 0;

@@ -19,7 +19,7 @@ CUIFrameLineWnd::CUIFrameLineWnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLineWnd::Init(int x, int y, int width, int height){
+void CUIFrameLineWnd::Init(float x, float y, float width, float height){
 	inherited::Init(x,y, width, height);
 	UITitleText.Init(0,0, width, 50);
 	inherited::Init(x,y, width, height);
@@ -27,7 +27,7 @@ void CUIFrameLineWnd::Init(int x, int y, int width, int height){
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLineWnd::Init(LPCSTR base_name, int x, int y, int width, int height, bool horizontal)
+void CUIFrameLineWnd::Init(LPCSTR base_name, float x, float y, float width, float height, bool horizontal)
 {
 	Init(x,y,width,height);
 	InitTexture(base_name, horizontal);
@@ -41,7 +41,7 @@ void CUIFrameLineWnd::Init(LPCSTR base_name, int x, int y, int width, int height
 
 void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 
-	Irect rect = GetAbsoluteRect();	
+	Frect rect = GetAbsoluteRect();	
 
 	if (horizontal)
 	{
@@ -59,7 +59,7 @@ void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 
 void CUIFrameLineWnd::Draw()
 {
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 	UIFrameLine.SetPos(rect.left, rect.top);
 	UIFrameLine.Render();
 
@@ -68,7 +68,7 @@ void CUIFrameLineWnd::Draw()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLineWnd::SetWidth(int width)
+void CUIFrameLineWnd::SetWidth(float width)
 {
 	inherited::SetWidth(width);
 	if (bHorizontal)
@@ -77,7 +77,7 @@ void CUIFrameLineWnd::SetWidth(int width)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLineWnd::SetHeight(int height)
+void CUIFrameLineWnd::SetHeight(float height)
 {
 	inherited::SetHeight(height);
 	if (!bHorizontal)

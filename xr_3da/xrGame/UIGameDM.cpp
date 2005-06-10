@@ -84,11 +84,11 @@ void	CUIGameDM::Init				()
 	int ScreenW = UI_BASE_WIDTH;
 	int ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	Irect FrameRect = pFragList->GetFrameRect ();
-	int FrameW	= FrameRect.right - FrameRect.left;
-	int FrameH	= FrameRect.bottom - FrameRect.top;
+	Frect FrameRect = pFragList->GetFrameRect ();
+	float FrameW	= FrameRect.right - FrameRect.left;
+	float FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pFragList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pFragList->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 
 
 	m_pFragLists->AttachChild(pFragList);
@@ -96,14 +96,14 @@ void	CUIGameDM::Init				()
 	FrameRect = pPlayerList->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
-	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pPlayerList->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 
 	m_pPlayerLists->AttachChild(pPlayerList);
 	//-----------------------------------------------------------
 	FrameRect = pStatisticWnd->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
-	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 
 	m_pStatisticWnds->AttachChild(pStatisticWnd);
 };

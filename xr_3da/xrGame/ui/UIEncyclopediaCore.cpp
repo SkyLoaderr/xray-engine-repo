@@ -82,7 +82,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		// Image
 		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
 		img.SetWndPos(0, 0);
-		Irect r = pInfoList->GetAbsoluteRect();
+		Frect r = pInfoList->GetAbsoluteRect();
 
 		img.SetClipRect(r);
 		UIImgMask.SetClipper(true, r);
@@ -188,7 +188,7 @@ void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 	s.SetWndPos(((pInfoList->GetWndRect().right - pInfoList->GetWndRect().left) - (s.GetWndRect().right - s.GetWndRect().left) - 15) / 2, s.GetWndRect().top);
 
 	// Теперь добавляем в лист столько пустых айтемов, чтобы они полностью перекрыли нашу картинку
-	int emptyItemsCnt = iCeil(static_cast<float>(s.GetWndRect().bottom) / pInfoList->GetItemHeight());
+	int emptyItemsCnt = iCeil(s.GetWndRect().bottom / pInfoList->GetItemHeight());
 
 	for (int i = 0; i < emptyItemsCnt; ++i)
 	{
@@ -202,7 +202,7 @@ void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if (pInfoList == pWnd && SCROLLBAR_VSCROLL == msg && m_pCurrArticle)
 	{
-		Irect r = m_pCurrArticle->data()->image.GetWndRect();
+		Frect r = m_pCurrArticle->data()->image.GetWndRect();
 		m_pCurrArticle->data()->image.SetWndPos(r.left,
 			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
 		m_iCurrentInfoListPos = pInfoList->GetListPosition();

@@ -25,17 +25,17 @@ public:
 	virtual			~CUIDragDropItem			();
 
 
-	virtual void	Init						(LPCSTR tex_name, int x, int y, int width, int height);
+	virtual void	Init						(LPCSTR tex_name, float x, float y, float width, float height);
 	virtual CUIDragDropItem* cast_drag_drop_item()	{return this;}
 
-	virtual void	OnMouse						(int x, int y, EUIMessages mouse_action);
+	virtual void	OnMouse						(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw						();
 	virtual void	Update						();
 
 	void			EnableDragDrop				(bool bEnable = true)	{m_bDDEnabled = bEnable;}
 	bool			IsDragDropEnabled			() const		{ return m_bDDEnabled; }
 
-	Ivector2		GetPreviousPos				() {return m_previousPos;}
+	Fvector2		GetPreviousPos				() {return m_previousPos;}
 
 
 	//размеры в сетке Drag&Drop
@@ -79,13 +79,13 @@ public:
 protected:
 	
 	float cur_scale_x, cur_scale_y;
-	int m_iOldMouseX;
-	int m_iOldMouseY;
+	float m_iOldMouseX;
+	float m_iOldMouseY;
 
 	//включен ли drag drop
 	bool m_bDDEnabled;
 
-	Ivector2 m_previousPos;
+	Fvector2 m_previousPos;
 
 	//размер и положение в сетке
 	//элементов Drag&Drop 

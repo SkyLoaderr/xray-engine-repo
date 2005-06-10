@@ -32,7 +32,7 @@ void CUIPdaContactsWnd::Show(bool status)
 	}
 }
 
-void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
+void CUIPdaContactsWnd::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 

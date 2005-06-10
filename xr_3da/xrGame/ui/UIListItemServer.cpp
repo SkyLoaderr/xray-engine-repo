@@ -11,13 +11,13 @@ CUIListItemServer::CUIListItemServer(){
 	AttachChild(&m_ping);
 }
 
-void CUIListItemServer::Init(LIST_SRV_ITEM& params, int x, int y, int width, int height){
+void CUIListItemServer::Init(LIST_SRV_ITEM& params, float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 
 	SetTextColor(params.color);
 	SetFont(params.font);
 
-	int offset = 0;
+	float offset = 0.0f;
 
 	m_icon.Init(offset, 0, params.size.icon, height);
 	offset += params.size.icon;

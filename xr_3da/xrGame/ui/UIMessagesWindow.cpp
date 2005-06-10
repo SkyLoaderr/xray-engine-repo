@@ -41,7 +41,7 @@ void CUIMessagesWindow::AddLogMessage(const shared_str& msg){
 	m_pGameLog->AddLogMessage(msg);
 }
 
-void CUIMessagesWindow::Init(int x, int y, int width, int height){
+void CUIMessagesWindow::Init(float x, float y, float width, float height){
 
 	CUIXml xml;
 
@@ -170,7 +170,7 @@ void CUIMessagesWindow::AddPersonalPdaMessage(CInventoryOwner* pSender, LPCSTR m
 		pItem->InitCharacter(pSender);	
 }
 
-void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Irect originalRect, LPCSTR message, int iId, int iDelay){
+void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay){
 	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iId, iDelay);
 
 	if (pItem)

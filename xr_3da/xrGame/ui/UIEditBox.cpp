@@ -56,7 +56,7 @@ void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 }
 
-void CUIEditBox::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if(mouse_action == WINDOW_LBUTTON_DOWN && !m_bInputFocus)
 	{
@@ -283,7 +283,7 @@ void  CUIEditBox::Draw()
 	if(m_bInputFocus)
 	{	
 		//нарисовать курсор
-		Irect rect = GetAbsoluteRect();
+		Frect rect = GetAbsoluteRect();
 		float outX, outY;
 
 		outX = GetFont()->SizeOf(m_lines.GetText());

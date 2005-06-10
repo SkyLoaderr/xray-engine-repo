@@ -22,11 +22,11 @@ CUICustomItem::~CUICustomItem()
 //--------------------------------------------------------------------
 //для вывода части изображения
 void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, 
-						   int x1, int y1, int x2, int y2)
+						   float x1, float y1, float x2, float y2)
 {
 	CTexture* T		= RCache.get_ActiveTexture(0);
-	Ivector2		ts;
-	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	Fvector2		ts;
+	ts.set			(float(T->get_Width()),float(T->get_Height()));
 	
 	if (!(uFlags&flValidRect)){
 		SetRect		(0,0,ts.x,ts.y);
@@ -40,13 +40,15 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color,
 	//координаты на экране в пикселях
 	float scX		= UI()->GetScaleX();
 	float scY		= UI()->GetScaleY();
-	LTp.set			(iFloor(pos.x+float(x1)*scX), iFloor(pos.y+float(y1)*scY) );
-	RBp.set			(iFloor(pos.x+float(x2)*scX), iFloor(pos.y+float(y2)*scY) );
-//	LTp.set			((pos.x+float(x1)*scX), (pos.y+float(y1)*scY) );
-//	RBp.set			((pos.x+float(x2)*scX), (pos.y+float(y2)*scY) );
+	LTp.set			(pos.x+x1*scX, pos.y+y1*scY );
+	RBp.set			(pos.x+x2*scX, pos.y+y2*scY );
+//.	LTp.set			(iFloor(pos.x+float(x1)*scX), iFloor(pos.y+float(y1)*scY) );
+//.	RBp.set			(iFloor(pos.x+float(x2)*scX), iFloor(pos.y+float(y2)*scY) );
 	//текстурные координаты
-	LTt.set			( float(iOriginalRect.x1)/float(ts.x),float(iOriginalRect.y1)/float(ts.y));
-	RBt.set			( float(iOriginalRect.x2)/float(ts.x),float(iOriginalRect.y2)/float(ts.y));
+	LTt.set			( iOriginalRect.x1/ts.x, iOriginalRect.y1/ts.y);
+	RBt.set			( iOriginalRect.x2/ts.x, iOriginalRect.y2/ts.y);
+//.	LTt.set			( float(iOriginalRect.x1)/float(ts.x),float(iOriginalRect.y1)/float(ts.y));
+//.	RBt.set			( float(iOriginalRect.x2)/float(ts.x),float(iOriginalRect.y2)/float(ts.y));
 
 	// Check mirror mode
 	if (tmMirrorHorisontal == eMirrorMode || tmMirrorBoth == eMirrorMode)	std::swap	(LTt.x,RBt.x);
@@ -78,10 +80,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color)
 void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, float angle)
 {
 	CTexture* T		= RCache.get_ActiveTexture(0);
-	Ivector2		ts;
+	Fvector2		ts;
 	Fvector2		hp;
-	ts.set			((int)T->get_Width(),(int)T->get_Height());
-	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	ts.set			(float(T->get_Width()),float(T->get_Height()));
+	hp.set			(0.5f/ts.x,0.5f/ts.y);
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	if (!(uFlags&flValidOriginalRect)){
@@ -95,14 +97,14 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 	float sinA		= _sin(angle);
 
 	// Rotation
-	if(!(uFlags&flValidHeadingPivot))	pivot.set(float(iVisRect.x2)/2.f,float(iVisRect.y2)/2.f);
-	else								pivot.set(iHeadingPivot.x,iHeadingPivot.y);
+	if(!(uFlags&flValidHeadingPivot))	pivot.set(iVisRect.x2/2.f, iVisRect.y2/2.f);
+	else								pivot.set(iHeadingPivot.x, iHeadingPivot.y);
 	pivot.x			*= UI()->GetScaleX();
 	pivot.y			*= UI()->GetScaleY();
 	offset.set		(pos.x,pos.y);
 	Fvector2		LTt,RBt;
-	LTt.set			(float(iOriginalRect.x1)/float(ts.x)+hp.x, float(iOriginalRect.y1)/float(ts.y)+hp.y);
-	RBt.set			(float(iOriginalRect.x2)/float(ts.x)+hp.x, float(iOriginalRect.y2)/float(ts.y)+hp.y);
+	LTt.set			(iOriginalRect.x1/ts.x+hp.x, iOriginalRect.y1/ts.y+hp.y);
+	RBt.set			(iOriginalRect.x2/ts.x+hp.x, iOriginalRect.y2/ts.y+hp.y);
 	// Check mirror mode
 	if (tmMirrorHorisontal == eMirrorMode || tmMirrorBoth == eMirrorMode)	std::swap	(LTt.x,RBt.x);
 	if (tmMirrorVertical == eMirrorMode || tmMirrorBoth == eMirrorMode)		std::swap	(LTt.y,RBt.y);
@@ -132,9 +134,9 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 			Pointer->set	((*R)[k].pt.x, (*R)[k].pt.y,	color, (*R)[k].uv.x, (*R)[k].uv.y); 
 }
 
-Irect CUICustomItem::GetOriginalRectScaled()
+Frect CUICustomItem::GetOriginalRectScaled()
 {
-	Irect rect = iOriginalRect;
+	Frect rect = iOriginalRect;
 
 	rect.x2		= rect.x1 + rect.width();
 	rect.y2		= rect.y1 + rect.height();
@@ -142,12 +144,12 @@ Irect CUICustomItem::GetOriginalRectScaled()
 	return rect;
 }
 
-Irect CUICustomItem::GetOriginalRect() const
+Frect CUICustomItem::GetOriginalRect() const
 {
 	return iOriginalRect;
 }
 
-void CUICustomItem::SetOriginalRect(int x, int y, int width, int height)
+void CUICustomItem::SetOriginalRect(float x, float y, float width, float height)
 {
 	iOriginalRect.set(x,y,x+width,y+height); 
 	uFlags|=flValidOriginalRect; 

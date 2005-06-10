@@ -165,7 +165,7 @@ bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
     return false;
 }
 
-void CUIBag::Init(int x, int y, int width, int height){
+void CUIBag::Init(float x, float y, float width, float height){
 	CUIStatic::Init(x, y, width, height);
 }
 

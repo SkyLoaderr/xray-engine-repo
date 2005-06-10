@@ -73,13 +73,14 @@ void InventoryUtilities::AmmoDrawProc(CUIDragDropItem* pItem)
 
 	if (pAmmoItem->m_boxCurr > 1)
 	{
-		int left	= pItem->GetUIStaticItem().GetPosX() + 5;
-		int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
+		float left	= pItem->GetUIStaticItem().GetPosX() + 5;
+		float bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
 
 		pItem->GetFont()->SetColor(0xffffffff);
-		UI()->OutText(pItem->GetFont(), pItem->GetSelfClipRect(), float(left), 
-			float(bottom - pItem->GetFont()->CurrentHeight()),
-			"%d",	pAmmoItem->m_boxCurr);
+		UI()->OutText(	pItem->GetFont(), pItem->GetSelfClipRect(), left, 
+						bottom - pItem->GetFont()->CurrentHeight(),
+						"%d",	pAmmoItem->m_boxCurr);
+
 		pItem->GetFont()->OnRender();
 	}
 }
@@ -96,7 +97,7 @@ void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 
 	if (pEatableItem->m_iPortionsNum > 1)
 	{
-		Irect rect = pItem->GetAbsoluteRect();
+		Frect rect = pItem->GetAbsoluteRect();
 
 		pItem->GetFont()->SetColor(0xffffffff);
 		if(pEatableItem->m_iPortionsNum>0)

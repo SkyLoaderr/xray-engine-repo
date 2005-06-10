@@ -326,6 +326,7 @@ public:
 
 //	virtual float			GetfHealth						() const;
 	virtual float			SetfHealth						(float value) {return CEntity::SetfHealth(value);};
+	float					GetSafeAltitude					()				{return m_movement.GetSafeAltitude();};
 
 #ifdef DEBUG
 public:

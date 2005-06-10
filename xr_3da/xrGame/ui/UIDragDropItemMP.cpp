@@ -123,11 +123,11 @@ void CUIDragDropItemMP::Draw()
 	if (m_bInFloat) 
 		UI()->PushScissor(UI()->ScreenRect(),true);
 
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 
 	//отцентрировать родительскую иконку по центру ее окна
-	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
-	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
+	float right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
+	float down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
 
 	// Отрисовываем аддоны по порядку
 	if (bAddonsAvailable)

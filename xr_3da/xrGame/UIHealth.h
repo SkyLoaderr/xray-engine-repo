@@ -11,8 +11,8 @@ class CUIHealth
 	CUIStaticItem	back;
 	CUIStaticItem	health_bar;
 	CUIStaticItem	armor_bar;
-	Irect			health_rect;
-	Irect			armor_rect;
+	Frect			health_rect;
+	Frect			armor_rect;
 	Fcolor			s_color,m_color,e_color;
 public:
 					CUIHealth		();

@@ -64,7 +64,7 @@ void CUI3tButton::PlaySoundH(){
 		m_sound_h.play(NULL, sm_2D);
 }
 
-void CUI3tButton::Init(int x, int y, int width, int height){
+void CUI3tButton::Init(float x, float y, float width, float height){
 	m_background.Init(0, 0, width, height);
     CUIButton::Init(x, y, width, height);
 }
@@ -139,7 +139,7 @@ void CUI3tButton::SetTextColorT(u32 color){
 	SetTextColor(color, CUIStatic::T);
 }
 
-void CUI3tButton::SetTextureOffset(int x, int y){
+void CUI3tButton::SetTextureOffset(float x, float y){
 	this->m_background.SetTextureOffset(x, y);
 }
 

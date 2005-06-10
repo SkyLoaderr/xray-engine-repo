@@ -8,21 +8,21 @@ CUILabel::CUILabel()
 	m_lines.SetVTextAlignment(valCenter);
 }
 
-void CUILabel::Init(int x, int y, int width, int height){
+void CUILabel::Init(float x, float y, float width, float height){
 	CUIFrameLineWnd::Init(x,y,width,height);
 	m_lines.Init(0,0,width, height);
 }
 
 void CUILabel::Draw(){
 	CUIFrameLineWnd::Draw();
-	Irect r = GetAbsoluteRect();
+	Frect r = GetAbsoluteRect();
 	m_lines.Draw(r.x1 + m_textPos.x, r.y1 + m_textPos.y);
 }
 
-void CUILabel::SetTextPosX(int x){
+void CUILabel::SetTextPosX(float x){
 	m_textPos.x = x;
 }
 
-void CUILabel::SetTextPosY(int y){
+void CUILabel::SetTextPosY(float y){
 	m_textPos.y = y;
 }

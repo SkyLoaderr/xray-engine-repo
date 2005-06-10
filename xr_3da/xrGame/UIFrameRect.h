@@ -17,16 +17,16 @@ public:
 	using CUISimpleWindow::Init;
 
 						CUIFrameRect	();
-	virtual void		Init			(LPCSTR base_name, int x, int y, int w, int h);//, DWORD align);
+	virtual void		Init			(LPCSTR base_name, float x, float y, float w, float h);//, DWORD align);
 	virtual void		InitTexture		(const char* texture);
 	virtual void		Draw			();
-	virtual void		Draw			(int x, int y);
-	virtual void		SetWndPos		(int x, int y);
-	virtual void		SetWndPos		(const Ivector2& pos);
-	virtual void		SetWndSize		(const Ivector2& size);
-	virtual void		SetWndRect		(const Irect& rect);
-	virtual void		SetWidth		(int width);
-	virtual void		SetHeight		(int height);
+	virtual void		Draw			(float x, float y);
+	virtual void		SetWndPos		(float x, float y);
+	virtual void		SetWndPos		(const Fvector2& pos);
+	virtual void		SetWndSize		(const Fvector2& size);
+	virtual void		SetWndRect		(const Frect& rect);
+	virtual void		SetWidth		(float width);
+	virtual void		SetHeight		(float height);
 	virtual void		Update			();
 			void		SetTextureColor	(u32 cl);
 protected:

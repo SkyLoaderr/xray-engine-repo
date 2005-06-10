@@ -29,7 +29,7 @@ class C2DFrustum{//only rect form
 	svector<Fplane2,FRUSTUM_MAXPLANES> planes;
 	Frect						m_rect;
 public:
-	void		CreateFromRect	(const Irect& rect);
+	void		CreateFromRect	(const Frect& rect);
 	sPoly2D*	ClipPoly		(sPoly2D& S, sPoly2D& D) const;
 };
 //---------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ class CMainUI :
 		flGameSaveScreenshot= (1<<5),
 	};
 	Flags8			m_Flags;
-	xr_stack<Irect> m_Scissors;
+	xr_stack<Frect> m_Scissors;
 	C2DFrustum		m_2DFrustum;
 	string_path		m_screenshot_name;
 	u32				m_screenshotFrame;
@@ -88,7 +88,7 @@ public:
 	virtual void	OnFrame							(void);
 
 
-	void			OutText							(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...);
+	void			OutText							(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...);
 
 	void			OnDeviceCreate					();
 
@@ -99,9 +99,9 @@ public:
 	float			ClientToScreenScaledX			(float left, u32 align);
 	float			ClientToScreenScaledY			(float top, u32 align);
 
-	Irect			ScreenRect						();
+	Frect			ScreenRect						();
 	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
-	void			PushScissor						(const Irect& r, bool overlapped=false);
+	void			PushScissor						(const Frect& r, bool overlapped=false);
 	void			PopScissor						();
 	void			Screenshot						(IRender_interface::ScreenshotMode mode=IRender_interface::SM_NORMAL, LPCSTR name = 0);
 protected:

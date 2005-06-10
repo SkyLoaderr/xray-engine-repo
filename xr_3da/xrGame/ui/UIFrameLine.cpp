@@ -26,7 +26,7 @@ CUIFrameLine::CUIFrameLine()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLine::Init(LPCSTR base_name, int x, int y, int size, bool horizontal, DWORD align)
+void CUIFrameLine::Init(LPCSTR base_name, float x, float y, float size, bool horizontal, DWORD align)
 {
 	SetPos			(x, y);
 	SetSize			(size);
@@ -64,15 +64,15 @@ void CUIFrameLine::UpdateSize()
 	// Left or top texture
 //	RCache.set_Shader(elements[flFirst].GetShader());
 //	T				= RCache.get_ActiveTexture(0);
-	int f_width		= elements[flFirst].GetOriginalRect().width();//static_cast<int>(T->get_Width());
-	int f_height	= elements[flFirst].GetOriginalRect().height();//static_cast<int>(T->get_Height());
+	float f_width		= elements[flFirst].GetOriginalRect().width();//static_cast<int>(T->get_Width());
+	float f_height	= elements[flFirst].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 	elements[flFirst].SetPos(iPos.x, iPos.y);
 
 	// Right or bottom texture
 //	RCache.set_Shader(elements[flSecond].GetShader());
 //	T				= RCache.get_ActiveTexture(0);
-	int s_width		= elements[flSecond].GetOriginalRect().width();// static_cast<int>(T->get_Width());
-	int s_height	= elements[flSecond].GetOriginalRect().height();//static_cast<int>(T->get_Height());
+	float s_width		= elements[flSecond].GetOriginalRect().width();// static_cast<int>(T->get_Width());
+	float s_height	= elements[flSecond].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 	bHorizontalOrientation ?
 		elements[flSecond].SetPos(iPos.x + iSize - s_width, iPos.y) :
 		elements[flSecond].SetPos(iPos.x, iPos.y + iSize - s_height);
@@ -85,7 +85,7 @@ void CUIFrameLine::UpdateSize()
 
 
 	// Now stretch back texture to remaining space
-	int back_width, back_height;
+	float back_width, back_height;
 
 	if (bHorizontalOrientation)
 	{
@@ -105,24 +105,25 @@ void CUIFrameLine::UpdateSize()
 	}
 
 	// Now resize back texture
-	int rem, tile;
+	float rem;
+	int tile;
 
 //	RCache.set_Shader(elements[flBack].GetShader());
 //	T				= RCache.get_ActiveTexture(0);
-	int b_width		= elements[flBack].GetOriginalRect().width();//static_cast<int>(T->get_Width());
-	int b_height	= elements[flBack].GetOriginalRect().height();//static_cast<int>(T->get_Height());
+	float b_width		= elements[flBack].GetOriginalRect().width();//static_cast<int>(T->get_Width());
+	float b_height	= elements[flBack].GetOriginalRect().height();//static_cast<int>(T->get_Height());
 
 	if (bHorizontalOrientation)
 	{
-		rem			= back_width % b_width;
-		tile		= iFloor(static_cast<float>(back_width) / b_width);	
+		rem			= fmod( back_width, b_width);
+		tile		= iFloor(back_width / b_width);	
 		elements[flBack].SetPos(iPos.x + f_width, iPos.y);
 		elements[flBack].SetTile(tile, 1, rem, 0);
 	}
 	else
 	{
-		rem			= back_height % b_height;
-		tile		= iFloor(static_cast<float>(back_height) / b_height);
+		rem			= fmod(back_height, b_height);
+		tile		= iFloor(back_height/b_height);
 		elements[flBack].SetPos(iPos.x, iPos.y + f_height);
 		elements[flBack].SetTile(1, tile, 0, rem);
 	}

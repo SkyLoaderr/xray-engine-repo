@@ -19,7 +19,7 @@ private:
 public:
 	virtual			~CUIMotionIcon				()										;
 					CUIMotionIcon				()										;
-			void			Init				(int x, int y, int width, int height)	;
+			void			Init				(float x, float y, float width, float height)	;
 			void			ShowState			(EState state)							;
 			void			SetProgressPos		(s16 Pos);
 };

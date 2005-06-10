@@ -36,7 +36,7 @@ void CUIChatLog::AddLogMessage(const shared_str &msg, const shared_str &author)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIChatLog::Init(int x, int y, int width, int height)
+void CUIChatLog::Init(float x, float y, float width, float height)
 {
 	CUIListWnd::Init(x, y, width, height);
 

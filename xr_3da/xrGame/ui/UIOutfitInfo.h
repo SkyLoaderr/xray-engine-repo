@@ -16,7 +16,7 @@ class CUIOutfitInfo : public CUIStatic {
 public:
 	CUIOutfitInfo();
 	virtual ~CUIOutfitInfo();
-	virtual void Init(int x, int y, int widht, int height);
+	virtual void Init(float x, float y, float widht, float height);
 
 	virtual void Update();
 			void Update(CCustomOutfit& outfit);	

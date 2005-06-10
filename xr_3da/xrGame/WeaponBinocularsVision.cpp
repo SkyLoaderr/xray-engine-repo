@@ -115,10 +115,10 @@ void SBinocVisibleObj::Update()
 		}
 	}
 
-	m_lt.SetWndPos		( iFloor(cur_rect.lt.x)+2, iFloor(cur_rect.lt.y)+2 );
-	m_lb.SetWndPos		( iFloor(cur_rect.lt.x)+2, iFloor(cur_rect.rb.y)-14 );
-	m_rt.SetWndPos		( iFloor(cur_rect.rb.x)-14, iFloor(cur_rect.lt.y)+2 );
-	m_rb.SetWndPos		( iFloor(cur_rect.rb.x)-14, iFloor(cur_rect.rb.y)-14 );
+	m_lt.SetWndPos		( (cur_rect.lt.x)+2,	(cur_rect.lt.y)+2 );
+	m_lb.SetWndPos		( (cur_rect.lt.x)+2,	(cur_rect.rb.y)-14 );
+	m_rt.SetWndPos		( (cur_rect.rb.x)-14,	(cur_rect.lt.y)+2 );
+	m_rb.SetWndPos		( (cur_rect.rb.x)-14,	(cur_rect.rb.y)-14 );
 
 	m_flags.set		(flVisObjNotValid, FALSE);
 }

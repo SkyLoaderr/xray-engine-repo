@@ -26,10 +26,10 @@ public:
 	virtual ~ CUIButton();
 
 
-	virtual void	Init(LPCSTR tex_name, int x, int y, int width, int height);
-	virtual void	Init(int x, int y, int width, int height);
+	virtual void	Init(LPCSTR tex_name, float x, float y, float width, float height);
+	virtual void	Init(float x, float y, float width, float height);
 
-	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void	OnClick();
 
 	//прорисовка окна
@@ -53,10 +53,10 @@ public:
 	//заново подготовить состояние
     virtual void	Reset();
 
-	void			SetPushOffsetX(int offset_x) {m_iPushOffsetX = offset_x;}
-	void			SetPushOffsetY(int offset_y) {m_iPushOffsetY = offset_y;}
-	int				GetPushOffsetX() {return m_iPushOffsetX;}
-	int				GetPushOffsetY() {return m_iPushOffsetY;}
+	void			SetPushOffsetX(float offset_x) {m_iPushOffsetX = offset_x;}
+	void			SetPushOffsetY(float offset_y) {m_iPushOffsetY = offset_y;}
+	float			GetPushOffsetX() {return m_iPushOffsetX;}
+	float			GetPushOffsetY() {return m_iPushOffsetY;}
 
 	virtual	void	UpdateTextAlign();
 
@@ -92,7 +92,7 @@ public:
 	void			SetNewRenderMethod(bool newMethod) { m_bNewRenderMethod = newMethod; }
 
 	// Смещение подсветки текста относительно самого текста. Может для при дания эффекта тени
-	void			SetShadowOffset(int offsetX, int offsetY) { m_iShadowOffsetX = offsetX; m_iShadowOffsetY = offsetY; }
+	void			SetShadowOffset(float offsetX, float offsetY) { m_iShadowOffsetX = offsetX; m_iShadowOffsetY = offsetY; }
 
 protected:
 	
@@ -110,8 +110,8 @@ protected:
 	E_PRESS_MODE	m_ePressMode;
 
 	//смещение кнопки при нажатии
-	int				m_iPushOffsetX;
-	int				m_iPushOffsetY;
+	float				m_iPushOffsetX;
+	float				m_iPushOffsetY;
 
 	// Цвет подсветки
 	u32				m_HighlightColor;
@@ -121,8 +121,8 @@ protected:
 	bool			m_bNewRenderMethod;
 
 	// Смещение подсветки текста
-	int				m_iShadowOffsetX;
-	int				m_iShadowOffsetY;
+	float				m_iShadowOffsetX;
+	float				m_iShadowOffsetY;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

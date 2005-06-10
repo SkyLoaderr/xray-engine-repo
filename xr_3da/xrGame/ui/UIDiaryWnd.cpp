@@ -165,11 +165,11 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			if (m_pActiveSubdialog == &UIContractsWnd)
 			{
 				VERIFY(m_pLeftHorisontalLine);
-				Irect r = m_pLeftHorisontalLine->GetWndRect();
+				Frect r = m_pLeftHorisontalLine->GetWndRect();
 				m_pLeftHorisontalLine->SetWndPos(r.left, r.top - contractsOffset);
 			}
 
-			Irect r;
+			Frect r;
 
 			EDiaryIDs id;
 			if (m_pActorDiaryRoot->Find(pTVItem))

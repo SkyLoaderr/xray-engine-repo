@@ -22,15 +22,15 @@ CUIOutfitSlot::~CUIOutfitSlot()
 {
 }
 
-void CUIOutfitSlot::Init(int x, int y, int width, int height)
+void CUIOutfitSlot::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 	
 	inherited::AttachChild(&UIOutfitIcon);
 	UIOutfitIcon.Init				(0,0,width,height);
 
-	m_iNoOutfitX					= pSettings->r_u32("without_outfit", "full_scale_icon_x");
-	m_iNoOutfitY					= pSettings->r_u32("without_outfit", "full_scale_icon_y");
+	m_iNoOutfitX					= pSettings->r_float("without_outfit", "full_scale_icon_x");
+	m_iNoOutfitY					= pSettings->r_float("without_outfit", "full_scale_icon_y");
 
 	SetOriginalOutfit				();
 
@@ -69,10 +69,10 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	{
 		UIOutfitIcon.SetShader(GetCharIconsShader());
 		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			pOutfit->GetIconX()*ICON_GRID_WIDTH,
-			pOutfit->GetIconY()*ICON_GRID_HEIGHT,
-			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-			CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+			float(pOutfit->GetIconX()*ICON_GRID_WIDTH),
+			float(pOutfit->GetIconY()*ICON_GRID_HEIGHT),
+			float(CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH),
+			float(CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT));
 	}
 
 	// Скрываем изображение
@@ -121,7 +121,7 @@ void CUIOutfitSlot::DropAll()
 	inherited::AttachChild(&UIOutfitIcon);
 }
 
-void CUIOutfitSlot::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIOutfitSlot::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if (WINDOW_LBUTTON_DB_CLICK == mouse_action)
 	{
@@ -183,6 +183,6 @@ void CUIOutfitSlot::SetMPOutfit()
 		sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
 
 		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			m_iSkinX, m_iSkinY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT); 
+			float(m_iSkinX), float(m_iSkinY), float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT)); 
 	}
 }

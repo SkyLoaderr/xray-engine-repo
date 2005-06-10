@@ -82,20 +82,20 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	string256 buf;
 	XML_NODE* n = NULL;
 	
-	Irect base_rect;
+	Frect base_rect;
 	base_rect.x1 = 0;
 	base_rect.y1 = 0;
-	base_rect.x2 = xml->ReadAttribInt(path, 0, "width", 0);
-	base_rect.y2 = xml->ReadAttribInt(path, 0, "height", 0);
+	base_rect.x2 = xml->ReadAttribFlt(path, 0, "width", 0);
+	base_rect.y2 = xml->ReadAttribFlt(path, 0, "height", 0);
 
 	strconcat(buf, path, ":texture_above");
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
-		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
-		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
-		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
+		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
 		
 		m_icon_above.create("hud\\default",texture);
 		m_tex_rect_above.set(x,y,width,height);
@@ -105,10 +105,10 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
-		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
-		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
-		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
+		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
 		
 		m_icon_below.create("hud\\default",texture);
 		m_tex_rect_below.set(x,y,width,height);
@@ -117,10 +117,10 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		int x				= xml->ReadAttribInt(buf, 0, "x", base_rect.x1);
-		int y				= xml->ReadAttribInt(buf, 0, "y", base_rect.y1);
-		int width			= xml->ReadAttribInt(buf, 0, "width", base_rect.width());
-		int height			= xml->ReadAttribInt(buf, 0, "height", base_rect.height());
+		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
 		
 		m_icon_normal.create("hud\\default",texture);
 		m_tex_rect_normal.set(x,y,width,height);

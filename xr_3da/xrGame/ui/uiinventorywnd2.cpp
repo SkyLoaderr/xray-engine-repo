@@ -28,11 +28,11 @@ using namespace InventoryUtilities;
 
 void CUIInventoryWnd::ActivatePropertiesBox()
 {
-	int x,y;
+	float x,y;
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();
@@ -413,10 +413,10 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									pInv->m_slots[i].m_pIItem->GetXPos()*INV_GRID_WIDTH,
-									pInv->m_slots[i].m_pIItem->GetYPos()*INV_GRID_HEIGHT,
-									pInv->m_slots[i].m_pIItem->GetGridWidth()*INV_GRID_WIDTH,
-									pInv->m_slots[i].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
+									float(pInv->m_slots[i].m_pIItem->GetXPos()*INV_GRID_WIDTH),
+									float(pInv->m_slots[i].m_pIItem->GetYPos()*INV_GRID_HEIGHT),
+									float(pInv->m_slots[i].m_pIItem->GetGridWidth()*INV_GRID_WIDTH),
+									float(pInv->m_slots[i].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT));
 
 			UITopList[i].AttachChild(&UIDragDropItem);
 			UIDragDropItem.Rescale(UITopList[i].GetItemsScaleX(), UITopList[i].GetItemsScaleY());
@@ -445,10 +445,10 @@ void CUIInventoryWnd::InitInventory()
 		UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetXPos()*INV_GRID_WIDTH,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetYPos()*INV_GRID_HEIGHT,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth()*INV_GRID_WIDTH,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
+									float(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetXPos()*INV_GRID_WIDTH),
+									float(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetYPos()*INV_GRID_HEIGHT),
+									float(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth()*INV_GRID_WIDTH),
+									float(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT));
 
 
 		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
@@ -478,10 +478,10 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									(*it)->GetXPos()*INV_GRID_WIDTH,
-									(*it)->GetYPos()*INV_GRID_HEIGHT,
-									(*it)->GetGridWidth()*INV_GRID_WIDTH,
-									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+									float((*it)->GetXPos()*INV_GRID_WIDTH),
+									float((*it)->GetYPos()*INV_GRID_HEIGHT),
+									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
+									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
 
 
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
@@ -531,10 +531,10 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-								(*it)->GetXPos()*INV_GRID_WIDTH,
-								(*it)->GetYPos()*INV_GRID_HEIGHT,
-								(*it)->GetGridWidth()*INV_GRID_WIDTH,
-								(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+								float((*it)->GetXPos()*INV_GRID_WIDTH),
+								float((*it)->GetYPos()*INV_GRID_HEIGHT),
+								float((*it)->GetGridWidth()*INV_GRID_WIDTH),
+								float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
 				
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 

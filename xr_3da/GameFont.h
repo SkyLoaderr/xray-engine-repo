@@ -63,17 +63,10 @@ public:
 
 	void					Initialize		(LPCSTR shader, LPCSTR texture);
 
-//	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
-//	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC void					SetColor		(u32 C)		{dwCurrentColor=C;};
 
-//#ifdef DEBUG
-//	void					SetSizeI		(float S);
-//	void					SetSize			(float S);
-//#else
 	IC void					SetSizeI		(float S)	{fCurrentSize=S*Device.dwWidth;};
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
-//#endif
 
 	IC float				GetSize			()			{return fCurrentSize;};
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
@@ -85,7 +78,6 @@ public:
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
 	IC float				SizeOfRel		(LPCSTR s){return SizeOf(s)*1024.0f/Device.dwWidth;}
-//	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y;}
 	IC float				CurrentHeightRel(){return CurrentHeight()*768.0f/Device.dwHeight;}
 	void					OutSetI			(float x, float y);

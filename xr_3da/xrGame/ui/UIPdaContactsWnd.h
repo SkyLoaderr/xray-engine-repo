@@ -26,7 +26,7 @@ public:
 	CUIPdaContactsWnd();
 	virtual ~CUIPdaContactsWnd();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{CONTACT_SELECTED} E_MESSAGE;

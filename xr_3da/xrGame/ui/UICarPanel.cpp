@@ -5,7 +5,7 @@
 const LPCSTR CAR_PANEL_XML = "car_panel.xml";
 const LPCSTR POINTER_ARROW_TEX = "ui\\hud_map_arrow";
 
-void CUICarPanel::Init			(int x, int y, int width, int height)
+void CUICarPanel::Init			(float x, float y, float width, float height)
 {
 	CUIXml uiXml;
 	bool result = uiXml.Init(CONFIG_PATH, UI_PATH, CAR_PANEL_XML);

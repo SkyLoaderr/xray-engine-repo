@@ -16,7 +16,7 @@ public:
 	CUIAutobuyIndication();
 	~CUIAutobuyIndication();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 
 	void SetPrices(int p1, int p2, int p3);
 	void HighlightItem(int index);

@@ -36,12 +36,12 @@ void CUIHealth::Out	(float _health, float _armor)
 	// health bar
 	val = health/100.f; clamp(val,0.f,1.f);
 	C.lerp(s_color,m_color,e_color,val);
-	health_bar.SetRect	(health_rect.x1,health_rect.y1,iFloor(float(health_rect.x2)*val),health_rect.y2);
+	health_bar.SetRect	(health_rect.x1,health_rect.y1,health_rect.x2*val,health_rect.y2);
 	health_bar.SetColor	(C);
 	// armor bar
 	val = armor/100.f;	clamp(val,0.f,1.f);
 	C.lerp(s_color,m_color,e_color,val);
-	armor_bar.SetRect	(armor_rect.x1,armor_rect.y1,iFloor(float(armor_rect.x2)*val),armor_rect.y2);
+	armor_bar.SetRect	(armor_rect.x1,armor_rect.y1,armor_rect.x2*val,armor_rect.y2);
 	armor_bar.SetColor	(C);
 }
 //--------------------------------------------------------------------

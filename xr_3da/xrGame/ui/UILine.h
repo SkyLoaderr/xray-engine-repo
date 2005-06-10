@@ -42,15 +42,15 @@ CUILine& operator=(const CUILine& other);
 	void AddSubLine(const char* str, u32 color);
 	void AddSubLine(const CUISubLine* subLine);
 	void Clear();
-	u32  GetLength(CGameFont* pFont)								const;
-CUILine* CutByLength(CGameFont* pFont, int length);
+	float  GetLength(CGameFont* pFont)								const;
+CUILine* CutByLength(CGameFont* pFont, float length);
 
-	void Draw(CGameFont* pFont, int x, int y)						const;
+	void Draw(CGameFont* pFont, float x, float y)						const;
 protected:
 	bool GetWord(Word& w, const xr_string& text, int begin)			const;
 CUILine* Cut2Pos(Position& pos, bool to_first = true);
-	int  GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont) const;
-	int  GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont) const;
+	float GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont) const;
+	float GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont) const;
 	bool InitPos(Position& pos)										const;
 	bool IncPos(Position& pos)										const;
     xr_vector<CUISubLine> m_subLines;

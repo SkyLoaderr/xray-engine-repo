@@ -32,7 +32,7 @@ CUILines::~CUILines(){
 
 }
 
-void CUILines::Init(int x, int y, int width, int heigt){	
+void CUILines::Init(float x, float y, float width, float heigt){	
 	CUISimpleWindow::Init(x, y, width, heigt);
 }
 
@@ -91,12 +91,12 @@ void CUILines::ParseText(){
 	uFlags.set(flNeedReparse, false);
 }
 
-int CUILines::GetVisibleHeight() const{
-	int interval = int(m_interval*m_pFont->CurrentHeightRel());
-	return ((int)m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
+float CUILines::GetVisibleHeight() const{
+	float interval = m_interval*m_pFont->CurrentHeightRel();
+	return (m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
 
-void CUILines::Draw(int x, int y){
+void CUILines::Draw(float x, float y){
 	if (m_text.empty())
 		return;
 
@@ -108,13 +108,13 @@ void CUILines::Draw(int x, int y){
 	m_pFont->SetColor(m_dwTextColor);
 	m_pFont->SetAligment(m_eTextAlign);
 
-	Ivector2 pos;
+	Fvector2 pos;
 	// get vertical indent
 	pos.y= y + GetVIndentByAlign();
-	int height = (int)m_pFont->CurrentHeightRel();
-	int size = m_lines.size();
+	float height	= m_pFont->CurrentHeightRel();
+	u32 size		= m_lines.size();
 
-	int interval = int(m_interval*m_pFont->CurrentHeightRel());
+	float interval = m_interval*m_pFont->CurrentHeightRel();
 
 	for (int i=0; i<size; i++)
 	{
@@ -137,7 +137,7 @@ void CUILines::OnDeviceReset(){
 	uFlags.set(flNeedReparse, true);
 }
 
-u32 CUILines::GetIndentByAlign(u32 length)const{
+float CUILines::GetIndentByAlign(float length)const{
 	switch (m_eTextAlign)
 	{
 	case CGameFont::alCenter:
@@ -152,7 +152,7 @@ u32 CUILines::GetIndentByAlign(u32 length)const{
 	return 0;
 }
 
-u32 CUILines::GetVIndentByAlign()const{
+float CUILines::GetVIndentByAlign()const{
 	switch(m_eVTextAlign) {
 	case valTop: 
 		return 0;

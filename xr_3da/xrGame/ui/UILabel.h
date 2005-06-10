@@ -7,7 +7,7 @@ class CUILabel : public CUIFrameLineWnd,IUITextControl
 {
 public:
 	// CUIFrameLineWnd
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual void Draw();
 	
 	// IUIFontControl{
@@ -25,10 +25,10 @@ public:
 	// own
 	CUILabel();
 
-	virtual void SetTextPosX(int x);
-	virtual void SetTextPosY(int y);
+	virtual void SetTextPosX(float x);
+	virtual void SetTextPosY(float y);
 
 protected:
 	CUILines m_lines;
-	Ivector2 m_textPos;
+	Fvector2 m_textPos;
 };

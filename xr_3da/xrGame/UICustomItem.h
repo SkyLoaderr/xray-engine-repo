@@ -27,13 +27,13 @@ protected:
 
 	//прямоугольник(в пикселях) 
 	//геом. регион  на который натягикается текстура с текстурными координатами iOriginalRect
-	Irect			iVisRect;
+	Frect			iVisRect;
 
 	//фрейм текстуры в пикселях отн. 0/0
-	Irect			iOriginalRect;
+	Frect			iOriginalRect;
 
 	// точка, относительно которой применяем поворот
-	Ivector2		iHeadingPivot;
+	Fvector2		iHeadingPivot;
 
 	u32				uFlags;
 	u32				uAlign;
@@ -42,21 +42,21 @@ protected:
 public:
 					CUICustomItem			();
 	virtual			~CUICustomItem			();
-	IC void			SetRect					(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
-	IC void			SetRect					(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
-	  void			SetOriginalRect			(int x, int y, int width, int height);
+	IC void			SetRect					(float x1, float y1, float x2, float y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
+	IC void			SetRect					(const Frect& r){iVisRect.set(r); uFlags|=flValidRect; }
+	  void			SetOriginalRect			(float x, float y, float width, float height);
 
-	IC Irect		GetRect					() {return iVisRect;}
-	   Irect		GetOriginalRect			() const;
-	   Irect		GetOriginalRectScaled	();
+	IC Frect		GetRect					() {return iVisRect;}
+	   Frect		GetOriginalRect			() const;
+	   Frect		GetOriginalRectScaled	();
 	
-	   void			SetHeadingPivot			(const Ivector2& p)		{iHeadingPivot=p; uFlags|=flValidHeadingPivot;}
-	   Ivector2		GetHeadingPivot			()						{return iHeadingPivot;}
+	   void			SetHeadingPivot			(const Fvector2& p)		{iHeadingPivot=p; uFlags|=flValidHeadingPivot;}
+	   Fvector2		GetHeadingPivot			()						{return iHeadingPivot;}
 	   
 
 	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color, 
-														int x1, int y1, 
-														int x2, int y2);
+														float x1, float y1, 
+														float x2, float y2);
 	
 	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color);
 	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color, float angle);

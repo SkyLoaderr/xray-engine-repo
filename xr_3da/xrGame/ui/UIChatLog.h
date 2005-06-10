@@ -25,7 +25,7 @@ class CUIChatLog: public CUIListWnd
 public:
 	void					AddLogMessage	(const shared_str &msg, const shared_str &author);
 //	CUIListWnd &			GetLogList		()	{ return UILogList; }
-	virtual void			Init			(int x, int y, int width, int height);
+	virtual void			Init			(float x, float y, float width, float height);
 //	virtual void			SetFont			(CGameFont* pFont);
 	virtual void			Update			();
 //	CUIListWnd*				operator*		() {return &UILogList;}

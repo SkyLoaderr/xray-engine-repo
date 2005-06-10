@@ -280,14 +280,14 @@ void CController::UpdateCL()
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent);
 
-			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX2,int(x1),int(y1),int(x2),int(y2));
+			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX2,x1,y1,x2,y2);
 		} else if (percent2 > 0){
 			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent2);
 			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent2);
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent2);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent2);
 
-			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX,int(x1),int(y1),int(x2),int(y2));
+			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX,x1,y1,x2,y2);
 
 		} else active_control_fx = false;
 	}

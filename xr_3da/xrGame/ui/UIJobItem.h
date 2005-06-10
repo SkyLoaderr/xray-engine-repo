@@ -22,9 +22,9 @@ class CUIJobItem: public CUIListItem
 	typedef CUIListItem inherited;
 
 public:
-					CUIJobItem				(int leftOffest = 0);
-	void			Init					(int x, int y, int width, int height);
-	void			SetPicture				(LPCSTR texName, const Irect &originalRect, u32 color);
+					CUIJobItem				(float leftOffest = 0);
+	void			Init					(float x, float y, float width, float height);
+	void			SetPicture				(LPCSTR texName, const Frect &originalRect, u32 color);
 	void			ScalePictureXY			(float x, float y);
 	void			SetCaption				(LPCSTR caption);
 	void			SetDescription			(LPCSTR description);

@@ -12,7 +12,7 @@ CUIMotionIcon::~CUIMotionIcon()
 {
 
 }
-void CUIMotionIcon::Init			(int x, int y, int width, int height)
+void CUIMotionIcon::Init			(float x, float y, float width, float height)
 {
 	CUIXml uiXml;
 	bool result = uiXml.Init(CONFIG_PATH, UI_PATH, MOTION_ICON_XML);

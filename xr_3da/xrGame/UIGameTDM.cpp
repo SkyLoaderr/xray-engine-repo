@@ -38,17 +38,17 @@ void CUIGameTDM::Init ()
 	int ScreenW = UI_BASE_WIDTH;
 	int ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	Irect FrameRect = pFragListT1->GetFrameRect ();
-	int FrameW	= FrameRect.right - FrameRect.left;
-	int FrameH	= FrameRect.bottom - FrameRect.top;
+	Frect FrameRect = pFragListT1->GetFrameRect ();
+	float FrameW	= FrameRect.right - FrameRect.left;
+	float FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pFragListT1->SetWndRect(ScreenW/4-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pFragListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	FrameRect = pFragListT2->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pFragListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pFragListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	m_pFragLists->AttachChild(pFragListT1);
 	m_pFragLists->AttachChild(pFragListT2);
@@ -63,13 +63,13 @@ void CUIGameTDM::Init ()
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pPlayerListT1->SetWndRect(ScreenW/4-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pPlayerListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	FrameRect = pPlayerListT2->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pPlayerListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
 	m_pPlayerLists->AttachChild(pPlayerListT2);
@@ -77,7 +77,7 @@ void CUIGameTDM::Init ()
 	FrameRect = pStatisticWnd->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
-	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 
 	m_pStatisticWnds->AttachChild(pStatisticWnd);
 }

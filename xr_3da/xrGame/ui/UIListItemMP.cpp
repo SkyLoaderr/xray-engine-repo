@@ -53,7 +53,7 @@ CUIListItemMP::~CUIListItemMP(){
 
 }
 
-void CUIListItemMP::Init(int x, int y, int width, int height){
+void CUIListItemMP::Init(float x, float y, float width, float height){
 	CUIListItem::Init(x, y, width, height);	
 }
 

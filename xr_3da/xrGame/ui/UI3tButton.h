@@ -20,7 +20,7 @@ public:
 	// appearance
 	using CUIButton::Init;
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual void InitTexture(LPCSTR tex_name);
 	virtual void InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched, LPCSTR tex_highlighted);	
 			void InitTextureEnabled(LPCSTR texture);
@@ -31,7 +31,7 @@ public:
 			void SetTextColorH(u32 color);
 			void SetTextColorD(u32 color);
 			void SetTextColorT(u32 color);
-	virtual void SetTextureOffset(int x, int y);	
+	virtual void SetTextureOffset(float x, float y);	
 			void InitSoundH(LPCSTR sound_file);
 			void InitSoundT(LPCSTR sound_file);
 

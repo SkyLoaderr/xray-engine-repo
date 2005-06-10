@@ -111,10 +111,10 @@ void CGameTask::load_shared	(LPCSTR)
 		if(tag_text)
 			objective.article_id = tag_text;
 		objective.icon_texture_name = uiXml.Read(task_node, "objective:icon", i, NULL);
-		objective.icon_x = uiXml.ReadAttribInt(task_node, "objective:icon", i, "x");
-		objective.icon_y = uiXml.ReadAttribInt(task_node, "objective:icon", i, "y");
-		objective.icon_width = uiXml.ReadAttribInt(task_node, "objective:icon", i, "width");
-		objective.icon_height = uiXml.ReadAttribInt(task_node, "objective:icon", i, "height");
+		objective.icon_x = uiXml.ReadAttribFlt(task_node, "objective:icon", i, "x");
+		objective.icon_y = uiXml.ReadAttribFlt(task_node, "objective:icon", i, "y");
+		objective.icon_width = uiXml.ReadAttribFlt(task_node, "objective:icon", i, "width");
+		objective.icon_height = uiXml.ReadAttribFlt(task_node, "objective:icon", i, "height");
 		data()->m_Objectives.push_back(objective);
 	}
 }
@@ -148,7 +148,7 @@ ETaskState	CGameTask::ObjectiveState  (u32 index)
 }
 
 void 	CGameTask::ObjectiveIcon  (u32 index, shared_str& tex_name, 
-								   int& x, int& y, int& width, int& height)
+								   float& x, float& y, float& width, float& height)
 {
 	VERIFY(index<m_ObjectiveStates.size());
 	tex_name = data()->m_Objectives[index].icon_texture_name;

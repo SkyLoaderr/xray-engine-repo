@@ -8,7 +8,7 @@ CServerList::CServerList(){
 	AttachChild(&m_list);
 }
 
-void CServerList::Init(int x, int y, int width, int height){
+void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 //	m_list.Init(x,y,width,height);
 }
@@ -19,16 +19,16 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	CUIXmlInit::InitListWnd(xml_doc, strconcat(buf,path,":list"), 0, &m_list);
 	CUIXmlInit::InitFont(xml_doc, strconcat(buf,path,":list_item:text"), 0, m_itemInfo.color, m_itemInfo.font);
 
-	m_itemInfo.size.icon	= xml_doc.ReadAttribInt( strconcat(buf, path, ":sizes"), 0, "icon");
-	m_itemInfo.size.server	= xml_doc.ReadAttribInt( buf, 0, "server");
-	m_itemInfo.size.map		= xml_doc.ReadAttribInt( buf, 0, "map");
-	m_itemInfo.size.game	= xml_doc.ReadAttribInt( buf, 0, "game");
-	m_itemInfo.size.players	= xml_doc.ReadAttribInt( buf, 0, "players");
-	m_itemInfo.size.ping	= xml_doc.ReadAttribInt( buf, 0, "ping");
+	m_itemInfo.size.icon	= xml_doc.ReadAttribFlt( strconcat(buf, path, ":sizes"), 0, "icon");
+	m_itemInfo.size.server	= xml_doc.ReadAttribFlt( buf, 0, "server");
+	m_itemInfo.size.map		= xml_doc.ReadAttribFlt( buf, 0, "map");
+	m_itemInfo.size.game	= xml_doc.ReadAttribFlt( buf, 0, "game");
+	m_itemInfo.size.players	= xml_doc.ReadAttribFlt( buf, 0, "players");
+	m_itemInfo.size.ping	= xml_doc.ReadAttribFlt( buf, 0, "ping");
 ////////////////////////////////////////////////////////////////////////
 	CUIListItemServer* item = xr_new<CUIListItemServer>();
-	int w = m_list.GetItemWidth();
-	int h = m_list.GetItemHeight();
+	float w = m_list.GetItemWidth();
+	float h = m_list.GetItemHeight();
 
 	m_itemInfo.info.server	= "server name";
 	m_itemInfo.info.map		= "map";
@@ -47,7 +47,6 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	m_itemInfo.info.ping	= "666";
 
 	item = xr_new<CUIListItemServer>();
-	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
 }
 

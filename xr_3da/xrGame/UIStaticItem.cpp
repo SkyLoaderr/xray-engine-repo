@@ -11,8 +11,8 @@ CUIStaticItem::CUIStaticItem()
 	dwColor			= 0xffffffff;
 	iTileX			= 1;
 	iTileY			= 1;
-	iRemX			= 0;
-	iRemY			= 0;
+	iRemX			= 0.0f;
+	iRemY			= 0.0f;
 
 	hShader			= NULL;
 #ifdef DEBUG
@@ -43,7 +43,7 @@ void CUIStaticItem::SetShader(const ref_shader& sh)
 }
 //--------------------------------------------------------------------
 
-void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
+void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, u32 align)
 {
 	//by Dandy
 	//used for reinitializing StaticItems during the game
@@ -73,8 +73,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	float fw					= iVisRect.x2*UI()->GetScaleX();
 	float fh					= iVisRect.y2*UI()->GetScaleY();
 
-	int tile_x					= (iRemX==0)?iTileX:iTileX+1;
-	int tile_y					= (iRemY==0)?iTileY:iTileY+1;
+	int tile_x					= fis_zero(iRemX)?iTileX:iTileX+1;
+	int tile_y					= fis_zero(iRemY)?iTileY:iTileY+1;
 	int							x,y;
 	if (!(tile_x&&tile_y))		return;
 	// render
@@ -90,7 +90,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	std::ptrdiff_t p_cnt		= (pv-start_pv)/3;						VERIFY((pv-start_pv)<=8*tile_x*tile_y);
 	RCache.Vertex.Unlock		(u32(pv-start_pv),hGeom_fan.stride());
 	// set scissor
-	Irect clip_rect				= {iPos.x,iPos.y,iPos.x+iVisRect.x2*iTileX+iRemX,iPos.y+iVisRect.y2*iTileY+iRemY};
+	Frect clip_rect				= {iPos.x,iPos.y,iPos.x+iVisRect.x2*iTileX+iRemX,iPos.y+iVisRect.y2*iTileY+iRemY};
 	UI()->PushScissor			(clip_rect);
 	// set geom
 	RCache.set_Geometry			(hGeom_fan);
@@ -107,7 +107,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Fvector2 bp;
-	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y),uAlign);
+	UI()->ClientToScreenScaled	(bp, iPos.x, iPos.y, uAlign);
 	// actual rendering
 	u32		vOffset;
 	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(32,hGeom_fan.stride(),vOffset);

@@ -31,7 +31,7 @@ public:
 	void					AddLogMessage	(const shared_str& msg);
 	void					AddLogMessage	(KillMessageStruct& msg);
 //	CUIListWnd &			GetLogList		()	{ return UILogList; }
-	virtual void			Init			(int x, int y, int width, int height);
+	virtual void			Init			(float x, float y, float width, float height);
 //	virtual void			SetFont			(CGameFont* pFont);
 	virtual void			Update			();
 //	virtual void			Draw			();

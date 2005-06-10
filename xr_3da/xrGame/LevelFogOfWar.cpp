@@ -164,10 +164,10 @@ void CLevelFogOfWar::Draw	()
 	CUICustomMap* m					= ((CUICustomMap*)(GetParent()));
 
 	Frect	tgt;
-	Irect	clip_rect				= m->GetClipperRect();
-	Ivector2	map_abs_pos			= m->GetAbsolutePos();
+	Frect	clip_rect				= m->GetClipperRect();
+	Fvector2	map_abs_pos			= m->GetAbsolutePos();
 
-	Irect	vis_rect;
+	Frect	vis_rect;
 	vis_rect.set(	clip_rect.lt.x-map_abs_pos.x,
 					clip_rect.lt.y-map_abs_pos.y,
 					clip_rect.rb.x-map_abs_pos.x,

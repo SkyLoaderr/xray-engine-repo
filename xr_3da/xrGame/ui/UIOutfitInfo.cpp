@@ -27,7 +27,7 @@ CUIOutfitInfo::CUIOutfitInfo(){
 CUIOutfitInfo::~CUIOutfitInfo(){
 }
 
-void CUIOutfitInfo::Init(int x, int y, int width, int height){
+void CUIOutfitInfo::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x, y, width, height);
 	// init Caption
 	m_staticTitle.Init(TITLE_INDENT_X, 0, width, 40);

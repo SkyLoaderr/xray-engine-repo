@@ -17,7 +17,7 @@ private:
 public:
 					CUIPdaListItem		();
 	virtual			~CUIPdaListItem		();
-	virtual void	Init				(int x, int y, int width, int height);
+	virtual void	Init				(float x, float y, float width, float height);
 	virtual void	InitCharacter		(CInventoryOwner* pInvOwner);
 	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

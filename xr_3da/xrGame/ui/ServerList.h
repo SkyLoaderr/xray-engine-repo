@@ -11,7 +11,7 @@ class CServerList : public CUIWindow{
 public:
 	CServerList();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 			void InitFromXml(CUIXml& xml_doc, const char* path);
 
 

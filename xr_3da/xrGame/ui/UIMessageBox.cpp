@@ -22,7 +22,7 @@ CUIMessageBox::~CUIMessageBox()
 #define BUTTON_WIDTH 140
 
 
-void CUIMessageBox::Init(LPCSTR base_name, int x, int y, int width, int height)
+void CUIMessageBox::Init(LPCSTR base_name, float x, float y, float width, float height)
 {
 	AttachChild(&m_UIStatic);
 	m_UIStatic.Init(0,0, width, height);
@@ -59,8 +59,8 @@ void CUIMessageBox::AutoCenter()
 {
 	if(!GetParent()) return;
 
-	int x = (GetParent()->GetWidth() - GetWidth())/2;
-	int y = (GetParent()->GetHeight() - GetHeight())/2;
+	float x = (GetParent()->GetWidth() - GetWidth())/2;
+	float y = (GetParent()->GetHeight() - GetHeight())/2;
 
 	SetWndPos(x,y);
 }
@@ -138,7 +138,7 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 {
 	m_eMessageBoxStyle = messageBoxStyle;
 
-	int width = GetWidth();
+	float width = GetWidth();
 
 	switch(m_eMessageBoxStyle)
 	{
@@ -149,7 +149,7 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 
 		m_UIButtonYesOk.SetWndRect(width/2 - BUTTON_WIDTH/2, 
 						 m_UIButtonYesOk.GetWndRect().top,
-						 BUTTON_WIDTH,50);
+						 float(BUTTON_WIDTH),50.0f);
 
 		m_UIButtonNo.Show(false);
 		m_UIButtonNo.Enable(false);
@@ -174,7 +174,7 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 
 		m_UIButtonNo.SetWndRect(width/2 + BUTTON_WIDTH/2, 
 							 m_UIButtonNo.GetWndRect().top,
-							 BUTTON_WIDTH,50);
+							 float(BUTTON_WIDTH),50.0f);
 
 		m_UIButtonCancel.Show(false);
 		m_UIButtonCancel.Enable(false);
@@ -205,7 +205,7 @@ void CUIMessageBox::SetText(LPCSTR str)
 	}
 	m_UIStatic.SetText(str);
 }
-void CUIMessageBox::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x, y, mouse_action);
 }

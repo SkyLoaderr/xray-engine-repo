@@ -20,7 +20,6 @@ CUICursor::CUICursor()
 	bVisible		= false;
 	vPos.set		(0.f,0.f);
 	vHoldPos.set	(0,0);
-	vDelta.set		(0,0);
 
 	hShader.create	("hud\\cursor","ui\\ui_ani_cursor");
 	m_si.SetShader(hShader);
@@ -43,8 +42,8 @@ void CUICursor::Render	()
 	F->SetSizeI			(0.02f);
 	F->OutSetI			(0.f,-0.9f);
 	F->SetColor			(0xffffffff);
-	Ivector2			pt = GetPos();
-	F->OutNext			("%d-%d",pt.x, pt.y);
+	Fvector2			pt = GetPos();
+	F->OutNext			("%f-%f",pt.x, pt.y);
 
 	if(bHoldMode)
 		F->OutNext		("Hold Mode");
@@ -52,8 +51,8 @@ void CUICursor::Render	()
 #endif
 	if(bHoldMode) return;
 	// Convert to screen coords
-	int cx	= int((vPos.x+1)/2*UI_BASE_WIDTH);
-	int cy	= int((vPos.y+1)/2*UI_BASE_HEIGHT);
+	float cx	= (vPos.x+1)/2.0f*UI_BASE_WIDTH;
+	float cy	= (vPos.y+1)/2.0f*UI_BASE_HEIGHT;
 
 	m_si.SetPos(cx, cy);
 	m_si.Render();
@@ -61,11 +60,10 @@ void CUICursor::Render	()
 //--------------------------------------------------------------------
 
 //move cursor to screen coordinates
-void CUICursor::SetPos(int x, int y)
+void CUICursor::SetPos(float x, float y)
 {
-	vDelta.set		(0,0);
-	vPos.x =(float)2*x/(float)UI_BASE_WIDTH - 1.0f;
-	vPos.y =(float)2*y/(float)UI_BASE_HEIGHT - 1.0f;
+	vPos.x =2.0f*x/UI_BASE_WIDTH - 1.0f;
+	vPos.y =2.0f*y/UI_BASE_HEIGHT - 1.0f;
 
 	if(vPos.x<-1) vPos.x=-1;
 	if(vPos.x>1) vPos.x=1;
@@ -73,31 +71,34 @@ void CUICursor::SetPos(int x, int y)
 	if(vPos.y>1) vPos.y=1;
 }
 
-void CUICursor::GetPos(int& x, int& y)
+void CUICursor::GetPos(float& x, float& y)
 {
-	x = (int)((vPos.x+1.0f)*(float)UI_BASE_WIDTH/2);
-	y = (int)((vPos.y+1.0f)*(float)UI_BASE_HEIGHT/2);
+	x = (vPos.x+1.0f)*UI_BASE_WIDTH/2.0f;
+	y = (vPos.y+1.0f)*UI_BASE_HEIGHT/2.0f;
 
 }
 
-Ivector2 CUICursor::GetPos()
+Fvector2 CUICursor::GetPos()
 {
-	Ivector2 pt;
+	Fvector2 pt;
 
-	int x, y;
-	GetPos(x, y);
-	pt.x = x;
-	pt.y = y;
+	GetPos(pt.x, pt.y);
 
 	return  pt;
 }
 
-Ivector2 CUICursor::GetPosDelta()
+float DI2DD(float val, float base)
 {
-	Ivector2 res;
-	res.x = iFloor( (vDelta.x/2.0f)*(float)UI_BASE_WIDTH );
-	res.y = iFloor( (vDelta.y/2.0f)*(float)UI_BASE_HEIGHT );
-	return res;
+	return (val+1.0f)*base/2.0f;
+}
+
+Fvector2 CUICursor::GetPosDelta()
+{
+	Fvector2 res_delta;
+	res_delta.x = DI2DD(vPos.x,UI_BASE_WIDTH)-DI2DD(vPrevPos.x,UI_BASE_WIDTH);
+	res_delta.y = DI2DD(vPos.y,UI_BASE_WIDTH)-DI2DD(vPrevPos.y,UI_BASE_WIDTH);
+
+	return res_delta;
 }
 
 void CUICursor::HoldMode		(bool b)
@@ -111,15 +112,22 @@ void CUICursor::HoldMode		(bool b)
 	bHoldMode = b;
 }
 
-void CUICursor::MoveBy(int dx, int dy)
+void CUICursor::MoveBy(float dx, float dy)
 {
-	vDelta.x = (float)m_fSensitivity*dx/(float)UI_BASE_WIDTH * UI()->GetScaleX();
-	vDelta.y = (float)m_fSensitivity*dy/(float)UI_BASE_HEIGHT * UI()->GetScaleY();
+	vPrevPos = vPos;
+	Fvector2 vDelta;
+	vDelta.x = m_fSensitivity*dx/UI_BASE_WIDTH * UI()->GetScaleX();
+	vDelta.y = m_fSensitivity*dy/UI_BASE_HEIGHT * UI()->GetScaleY();
 
 	if(!bHoldMode){
 		vPos.x += vDelta.x;
 		vPos.y += vDelta.y;
 	}
+	
 	clamp(vPos.x, -1.f, 1.f);
 	clamp(vPos.y, -1.f, 1.f);
+
+
+	if(!m_cursor_move_event.empty())
+		m_cursor_move_event(GetPosDelta());
 }

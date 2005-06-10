@@ -28,7 +28,7 @@ CUIListItem::~CUIListItem(void)
 {
 }
 
-void CUIListItem::Init(int x, int y, int width, int height)
+void CUIListItem::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 
@@ -39,13 +39,13 @@ void CUIListItem::Init(int x, int y, int width, int height)
 }
 
 
-void CUIListItem::Init(const char* str, int x, int y, int width, int height)
+void CUIListItem::Init(const char* str, float x, float y, float width, float height)
 {
 	Init(x,y,width, height);
 	SetText(str);	
 }
 
-void CUIListItem::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	CUIButton::OnMouse(x, y, mouse_action);
 }	

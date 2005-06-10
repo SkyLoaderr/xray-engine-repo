@@ -16,7 +16,7 @@ public:
 	CUIPdaMsgListItem(int iDelay);
 	virtual ~CUIPdaMsgListItem(void);
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual void InitCharacter(CInventoryOwner* pInvOwner);
 	virtual bool IsTimeToDestroy();
 	virtual void SetDelay(int iDelay);

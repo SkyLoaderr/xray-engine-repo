@@ -33,20 +33,20 @@ CUIFrameWindow::~CUIFrameWindow()
 //#define LEFT_BOTTOM_OFFSET 19
 //#define UP_BOTTOM_OFFSET 125
 
-void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
+void CUIFrameWindow::Init(LPCSTR base_name, float x, float y, float width, float height)
 {
 	Init(x,y,width,height);
 	InitTexture(base_name);	
 }
 
-void CUIFrameWindow::Init(int x, int y, int width, int height)
+void CUIFrameWindow::Init(float x, float y, float width, float height)
 {
 	CUIWindow::Init(x,y,width,height);
 	m_UIWndFrame.Init(x,y,width,height);
 	UITitleText.Init(0,0, width, 50);
 }
 
-void CUIFrameWindow::Init(LPCSTR base_name, Irect* pRect)
+void CUIFrameWindow::Init(LPCSTR base_name, Frect* pRect)
 {
 	Init(base_name, pRect->left, pRect->top, 
 				pRect->right - pRect->left, 
@@ -60,7 +60,7 @@ void CUIFrameWindow::InitTexture(const char* texture){
 
 
 
-void CUIFrameWindow::InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset)
+void CUIFrameWindow::InitLeftTop(LPCSTR tex_name, float left_offset, float up_offset)
 {
 	m_iLeftTopOffset = left_offset;
 	m_iUpTopOffset = up_offset;
@@ -73,7 +73,7 @@ void CUIFrameWindow::InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset
 
 	m_bOverLeftTop = true;
 }
-void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_offset)
+void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, float left_offset, float up_offset)
 {
 	m_iLeftBottomOffset = left_offset;
 	m_iUpBottomOffset = up_offset;
@@ -98,8 +98,8 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_off
 //
 void CUIFrameWindow::Draw()
 {
-	Irect rect = GetAbsoluteRect();
-	Ivector2 v;
+	Frect rect = GetAbsoluteRect();
+	Fvector2 v;
 
 	v.x = rect.x1;
 	v.y = rect.y1;
@@ -137,7 +137,7 @@ void CUIFrameWindow::Update(){
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameWindow::SetWidth(int width)
+void CUIFrameWindow::SetWidth(float width)
 {
 	inherited::SetWidth(width);
 	m_UIWndFrame.SetWidth(width);
@@ -145,7 +145,7 @@ void CUIFrameWindow::SetWidth(int width)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameWindow::SetHeight(int height)
+void CUIFrameWindow::SetHeight(float height)
 {
 	inherited::SetHeight(height);
 	m_UIWndFrame.SetHeight(height);
@@ -162,7 +162,7 @@ void CUIFrameWindow::SetColor(u32 cl)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameWindow::FrameClip(const Irect parentAbsR)
+void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 {
 	using std::min;
 	using std::max;
@@ -172,13 +172,14 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 	if (!GetParent()) return;
 
 	// Клиппаем по границам окна-парента
-	Irect		ourAbsR		= GetAbsoluteRect();
+	Frect		ourAbsR		= GetAbsoluteRect();
 	CTexture	*T;
-	Ivector2	ts;
-	int			rem_x, rem_y, tile_x, tile_y;
-	int			size_x, size_y;
-	Irect		r, null;
-	null.set(0, 0, 0, 0);
+	Fvector2	ts;
+	int			tile_x, tile_y;
+	float		rem_x, rem_y;
+	float			size_x, size_y;
+	Frect		r, null;
+	null.set(0.0f, 0.0f, 0.0f, 0.0f);
 
 	m_UIWndFrame.UpdateSize();
 
@@ -233,15 +234,15 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosY(), parentAbsR.top);
 	size_x		= min(ourAbsR.right, parentAbsR.right) -
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left);
-	rem_y		= size_y % ts.y;
-	rem_x		= size_x % ts.x;
-	tile_y		= iFloor(float(size_y) / ts.y);
-	tile_x		= iFloor(float(size_x) / ts.x);
+	rem_y		= fmod(size_y, ts.y);
+	rem_x		= fmod(size_x, ts.x);
+	tile_y		= iFloor(size_y / ts.y);
+	tile_x		= iFloor(size_x / ts.x);
 
 	if (tile_y < 0) tile_y = 0;
 	if (tile_x < 0) tile_x = 0;
-	clamp(rem_x, 0, abs(rem_x));
-	clamp(rem_y, 0, abs(rem_y));
+	set_positive(rem_x);
+	set_positive(rem_y);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmR].SetTile(tile_x, tile_y, rem_x, rem_y);
 
@@ -273,16 +274,16 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosX(), parentAbsR.left);
 	size_y		= min(ourAbsR.bottom, parentAbsR.bottom) -
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmRB].GetPosY(), parentAbsR.top);
-	rem_x		= size_x % ts.x;
-	rem_y		= size_y % ts.y;
+	rem_x		= fmod(size_x, ts.x);
+	rem_y		= fmod(size_y, ts.y);
 	tile_x		= iFloor(float(size_x) / ts.x);
 	tile_y		= iFloor(float(size_y) / ts.y);
 
 	ClampMax_Zero(r);
 	if (tile_x < 0) tile_x = 0;
 	if (tile_y < 0) tile_y = 0;
-	clamp(rem_x, 0, abs(rem_x));
-	clamp(rem_y, 0, abs(rem_y));
+	set_positive(rem_x);
+	set_positive(rem_y);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmB].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
@@ -314,15 +315,15 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosY(), parentAbsR.top);
 	size_x		= min(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosX(), parentAbsR.right) -
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left);
-	rem_x		= size_x % ts.x;
-	rem_y		= size_y % ts.y;
+	rem_x		= fmod(size_x, ts.x);
+	rem_y		= fmod(size_y, ts.y);
 	tile_y		= iFloor(float(size_y) / ts.y);
 	tile_x		= iFloor(float(size_x) / ts.y);
 
 	if (tile_y < 0) tile_y = 0;
 	if (tile_x < 0) tile_x = 0;
-	clamp(rem_x, 0, abs(rem_x));
-	clamp(rem_y, 0, abs(rem_y));
+	set_positive(rem_x);
+	set_positive(rem_y);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmL].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
@@ -354,14 +355,15 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosX(), parentAbsR.left);
 	size_y		= min(m_UIWndFrame.frame[CUIFrameRect::fmBK].GetPosY(), parentAbsR.bottom) -
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top);
-	rem_x		= size_x % ts.x;
-	rem_y		= size_y % ts.y;
+	rem_x		= fmod(size_x, ts.x);
+	rem_y		= fmod(size_y, ts.y);
 	tile_x		= iFloor(float(size_x) / ts.x);
 	tile_y		= iFloor(float(size_y) / ts.y);
 
 	if (tile_x < 0 || tile_y < 0)
 	{
-		rem_x = rem_y = tile_x = tile_y = 0;
+		rem_x = rem_y = 0.0f;
+		tile_x = tile_y = 0;
 	}
 
 	m_UIWndFrame.frame[CUIFrameRect::fmT].SetTile	(tile_x, tile_y, rem_x, rem_y);
@@ -382,8 +384,8 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmBK].GetPosX(), parentAbsR.left);
 	size_y		= min(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.bottom) -
 				  max(m_UIWndFrame.frame[CUIFrameRect::fmBK].GetPosY(), parentAbsR.top);
-	rem_x		= size_x % ts.x;
-	rem_y		= size_y % ts.y;
+	rem_x		= fmod(size_x, ts.x);
+	rem_y		= fmod(size_y, ts.y);
 	tile_x		= iFloor(float(size_x) / ts.x);
 	tile_y		= iFloor(float(size_y) / ts.y);
 
@@ -405,10 +407,10 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 
 //////////////////////////////////////////////////////////////////////////
 
-inline void CUIFrameWindow::ClampMax_Zero(Irect &r)
+inline void CUIFrameWindow::ClampMax_Zero(Frect &r)
 {
-	clamp(r.x1, 0, abs(r.x1));
-	clamp(r.x2, 0, abs(r.x2));
-	clamp(r.y1, 0, abs(r.y1));
-	clamp(r.y2, 0, abs(r.y2));
+	clamp(r.x1, 0.0f, abs(r.x1));
+	clamp(r.x2, 0.0f, abs(r.x2));
+	clamp(r.y1, 0.0f, abs(r.y1));
+	clamp(r.y2, 0.0f, abs(r.y2));
 }

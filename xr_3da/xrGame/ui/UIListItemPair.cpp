@@ -56,7 +56,7 @@ CUIListItemPair::~CUIListItemPair(){
 
 void CUIListItemPair::Draw(){	
 	//CUIListItemEx::Draw();
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable){		
 		m_UIStaticItem.SetPos(rect.left, rect.top);		
@@ -68,21 +68,21 @@ void CUIListItemPair::Draw(){
 			m_UIStaticItem.Render();
 	}
 
-	int width  = this->GetWidth();
-	int height = this->GetHeight();
+	float width  = this->GetWidth();
+	float height = this->GetHeight();
 	const int indent = 10; // indent between 
 	
 	// get max length for both elements
-	int maxFileNameLength = width * this->m_iBorder/100 - indent;
-	int maxDateTimeLength = width - maxFileNameLength;
+	float maxFileNameLength = width * this->m_iBorder/100 - indent;
+	float maxDateTimeLength = width - maxFileNameLength;
 
 	// get length of elements
 //	int realFileNameLength = (int)m_staticFileName.GetFont()->SizeOf(m_staticFileName.GetText());
 //	int realDateTimeLength = (int)m_staticDateTime.GetFont()->SizeOf(m_staticDateTime.GetText());
 
 	// get height of elements
-	int fileNameHeight = (int)m_staticFileName.GetFont()->CurrentHeight();
-	int dateTimeHeight = (int)m_staticDateTime.GetFont()->CurrentHeight();
+	float fileNameHeight = m_staticFileName.GetFont()->CurrentHeight();
+	float dateTimeHeight = m_staticDateTime.GetFont()->CurrentHeight();
 
 	//m_staticFileName.Init
 	m_staticFileName.SetWndRect(0,                          (height - fileNameHeight)/2 , maxFileNameLength, height);

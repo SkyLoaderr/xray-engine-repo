@@ -31,7 +31,7 @@ CUIAutobuyIndication::~CUIAutobuyIndication(){
 
 }
 
-void CUIAutobuyIndication::Init(int x, int y, int width, int height){
+void CUIAutobuyIndication::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x, y, WIDTH*3 + INDENT*2, HEIGHT);
 
 	int _x = 0;

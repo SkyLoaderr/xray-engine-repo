@@ -25,19 +25,19 @@ protected:
 	s16				m_iMaxPos;
 
 	//текущий состояние полосы в пикселях
-	int				m_iCurrentLength;
+	float				m_iCurrentLength;
 
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
 	//вывод при помощи тайлов, иначе вся текстура - показывает 100% прогресса
-	int				m_iProgressLength;
+	float				m_iProgressLength;
 
 	//items
 	CUIStaticItem	m_UIProgressItem;
 	CUIStaticItem	m_UIBackgroundItem;
 	bool			m_bBackgroundPresent;
-	Ivector2		m_BackgroundOffset;
+	Fvector2		m_BackgroundOffset;
 
 	//обновить полосу
 	void			UpdateProgressBar();
@@ -53,11 +53,11 @@ public:
 	virtual			~CUIProgressBar(void);
 
 
-	virtual void	Init(int x, int y, int length, int broad, bool bIsHorizontal);
+	virtual void	Init(float x, float y, float length, float broad, bool bIsHorizontal);
 
-	void			SetProgressTexture(LPCSTR tex_name, int progress_length, 
-						int x, int y, int width, int height, u32 color = 0xFFFFFFFF);
-	void			SetBackgroundTexture(LPCSTR tex_name, int x, int y, int width, int height, int offs_x, int offs_y);
+	void			SetProgressTexture(LPCSTR tex_name, float progress_length, 
+						float x, float y, float width, float height, u32 color = 0xFFFFFFFF);
+	void			SetBackgroundTexture(LPCSTR tex_name, float x, float y, float width, float height, float offs_x, float offs_y);
 
 	void			SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
 						UpdateProgressBar();}

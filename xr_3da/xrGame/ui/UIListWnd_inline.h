@@ -7,7 +7,7 @@
 //=============================================================================
 
 template <class Element>
-bool CUIListWnd::AddItem(const char*  str, const int shift, void* pData,
+bool CUIListWnd::AddItem(const char*  str, const float shift, void* pData,
 						 int value, int insertBeforeIdx)
 {
 	//создать новый элемент и добавить его в список
@@ -29,7 +29,7 @@ bool CUIListWnd::AddItem(const char*  str, const int shift, void* pData,
 //////////////////////////////////////////////////////////////////////////
 
 template <class Element>
-bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
+bool CUIListWnd::AddParsedItem(const CUIString &str, const float shift,
 							   const u32 &MsgColor, CGameFont* pFont,
 							   void* pData, int value, int insertBeforeIdx)
 {
@@ -44,15 +44,15 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 	R_ASSERT(elementFont);
 
 	int			GroupID				= GetSize();
-	int			lineTotalWidth		= this->GetItemWidth() - shift - this->GetRightIndention();
+	float		lineTotalWidth		= this->GetItemWidth() - shift - this->GetRightIndention();
 	LPSTR		nextWord			= &text.front();
 	LPSTR		memorizedWord		= &text.front();
 	LPSTR		prevWord			= nextWord;
 	bool		wrapSentence		= false;
 	char		tmpChar				= 0;
-	int			lineLength			= 0;
-	int			wordLength			= 0;
-	int			totalWordLength		= 0;
+	float			lineLength			= 0;
+	float		wordLength			= 0;
+	float			totalWordLength		= 0;
 	int			wordLengthInChars	= 0;
 	int			symToSkip			= 0;
 	size_t		stringLength		= text.size();
@@ -114,13 +114,13 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 			totalWordLength = wordLength;
 		}
 
-		if (lineLength + wordLength > lineTotalWidth)
+		if ( float(lineLength + wordLength) > lineTotalWidth)
 		{
 			wrapSentence	= true;
 			lineLength		= 0;
 		}
 
-		wordLength		=  static_cast<int>(wordLength + (nextWord - prevWord - wordLengthInChars) * spaceSize + wordLength - totalWordLength);
+		wordLength		=  (wordLength + (nextWord - prevWord - wordLengthInChars) * spaceSize + wordLength - totalWordLength);
 		lineLength		+= wordLength;
 
 		if (wrapSentence)

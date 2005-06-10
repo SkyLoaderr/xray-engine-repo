@@ -36,7 +36,7 @@ class CMiniMapSpot :public CMapSpot
 {
 	typedef CMapSpot inherited;
 	ref_shader				m_icon_above,m_icon_normal,m_icon_below;
-	Irect					m_tex_rect_above,m_tex_rect_normal,m_tex_rect_below;
+	Frect					m_tex_rect_above,m_tex_rect_normal,m_tex_rect_below;
 public:
 							CMiniMapSpot					(CMapLocation*);
 	virtual					~CMiniMapSpot					();

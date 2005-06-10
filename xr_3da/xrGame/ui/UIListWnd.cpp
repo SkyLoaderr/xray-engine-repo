@@ -51,29 +51,29 @@ CUIListWnd::~CUIListWnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::Init(int x, int y, int width, int height)
+void CUIListWnd::Init(float x, float y, float width, float height)
 {
 	Init(x, y, width, height, DEFAULT_ITEM_HEIGHT);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
+void CUIListWnd::Init(float x, float y, float width, float height, float item_height)
 {
 	CUIWindow::Init(x, y, width, height);
 
-	SetItemWidth(width - CUIScrollBar::SCROLLBAR_WIDTH);
+	SetItemWidth(width - SCROLLBAR_WIDTH);
 	
 	m_iFirstShownIndex = 0;
 
 	SetItemHeight(item_height);
-	m_iRowNum = height/m_iItemHeight;
+	m_iRowNum = iFloor(height/m_iItemHeight);
 
 	UpdateList();
 
 	//добавить полосу прокрутки
 	AttachChild(&m_ScrollBar);
-	m_ScrollBar.Init(width-CUIScrollBar::SCROLLBAR_WIDTH,
+	m_ScrollBar.Init(width-SCROLLBAR_WIDTH,
 						0,height, false);
 
 	m_ScrollBar.SetRange(0,0);
@@ -85,17 +85,17 @@ void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
 
 
 	m_StaticActiveBackground.Init(ACTIVE_BACKGROUND,"hud\\default", 0,0,alNone);
-	m_StaticActiveBackground.SetTile(m_iItemWidth/ACTIVE_BACKGROUND_WIDTH, 
-									 m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT,
-									 m_iItemWidth%ACTIVE_BACKGROUND_WIDTH, 
-									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
+	m_StaticActiveBackground.SetTile(iFloor(m_iItemWidth/ACTIVE_BACKGROUND_WIDTH), 
+									 iFloor(m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT),
+									 fmod(m_iItemWidth,float(ACTIVE_BACKGROUND_WIDTH)), 
+									 fmod(m_iItemHeight,float(ACTIVE_BACKGROUND_HEIGHT)));
 }
 //////////////////////////////////////////////////////////////////////////
 
 /*was made within plan of dinamic changing of appea*/
-void CUIListWnd::SetHeight(int height){
+void CUIListWnd::SetHeight(float height){
 	CUIWindow::SetHeight(height);
-	m_iRowNum = height/m_iItemHeight;
+	m_iRowNum = iFloor(height/m_iItemHeight);
 	m_ScrollBar.SetHeight(height);
 	this->UpdateList();
 	this->UpdateScrollBar();
@@ -103,13 +103,14 @@ void CUIListWnd::SetHeight(int height){
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::SetWidth(int width)
+void CUIListWnd::SetWidth(float width)
 {
 	inherited::SetWidth(width);
-	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 
-									 m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT,
-									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 
-									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
+	m_StaticActiveBackground.SetTile(iFloor(GetWidth()/ACTIVE_BACKGROUND_WIDTH), 
+									 iFloor(m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT),
+									 fmod(GetWidth(),float(ACTIVE_BACKGROUND_WIDTH)), 
+									 fmod(float(m_iItemHeight),float(ACTIVE_BACKGROUND_HEIGHT))
+									 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -380,7 +381,7 @@ void CUIListWnd::Draw()
 
 	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
 	{
-		Irect rect = GetAbsoluteRect();
+		Frect rect = GetAbsoluteRect();
 		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 		{
 			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);
@@ -409,17 +410,17 @@ int CUIListWnd::GetSize()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::SetItemWidth(int iItemWidth)
+void CUIListWnd::SetItemWidth(float iItemWidth)
 {
 	m_iItemWidth = iItemWidth;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::SetItemHeight(int iItemHeight)
+void CUIListWnd::SetItemHeight(float iItemHeight)
 {
 	m_iItemHeight = iItemHeight;
-	m_iRowNum = GetHeight()/iItemHeight;
+	m_iRowNum = iFloor(GetHeight()/iItemHeight);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -461,7 +462,7 @@ int CUIListWnd::FindItemWithValue(int iValue)
 }
 
 
-void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIListWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 	case WINDOW_LBUTTON_DB_CLICK:
@@ -598,7 +599,7 @@ void CUIListWnd::SetFocusedItem(int iNewFocusedItem)
 //  Interactive element insertion
 //=============================================================================
 
-xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const int shift,
+xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const float shift,
 											  const u32 &MsgColor, CGameFont* pFont, int pushAfter)
 {
 	string1024	str = {0};
@@ -694,7 +695,7 @@ LPSTR CUIListWnd::FindNextWord(LPSTR currPos) const
 
 //////////////////////////////////////////////////////////////////////////
 
-int CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const
+float CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const
 {
 	VERIFY(font);
 	static string256 str;
@@ -712,7 +713,7 @@ int CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) c
 	if (currPos)
 	{
 		strncpy(str, memorizedPos, charsCount);
-		return static_cast<int>(font->SizeOf(str));
+		return (font->SizeOf(str));
 	}
 	else
 		return 0;

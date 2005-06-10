@@ -126,7 +126,7 @@ void CUIDragDropList::DropAll()
 	ScrollBarRecalculate(true);
 }
 
-void CUIDragDropList::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIDragDropList::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 	case WINDOW_MOUSE_WHEEL_DOWN:
@@ -177,9 +177,9 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 		if( !IsChild(pWnd) ) 
 		{
-			Irect rect = GetAbsoluteRect();
-			Ivector2 pt_lt, pt_lb, pt_rt, pt_rb;
-			Irect wnd_rect = pWnd->GetAbsoluteRect();
+			Frect rect = GetAbsoluteRect();
+			Fvector2 pt_lt, pt_lb, pt_rt, pt_rb;
+			Frect wnd_rect = pWnd->GetAbsoluteRect();
 			
 			pt_lt.x = wnd_rect.left;
 			pt_lt.y = wnd_rect.top;
@@ -193,7 +193,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pt_rb.x = wnd_rect.right;
 			pt_rb.y = wnd_rect.bottom;		
 
-			Ivector2 pt_center;
+			Fvector2 pt_center;
 			pt_center.x = (wnd_rect.right+
 						   wnd_rect.left)/2;
 			pt_center.y = (wnd_rect.top+
@@ -277,7 +277,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 
 
-void CUIDragDropList::Init(int x, int y, int width, int height)
+void CUIDragDropList::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 	ScrollBarRecalculate(true);
@@ -311,12 +311,12 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 
 
-	SetWidth(m_iColsNum*GetCellWidth() + CUIScrollBar::SCROLLBAR_WIDTH + SCROLLBAR_OFFSET_X);
-	SetHeight(GetViewRows()*GetCellHeight());
+	SetWidth(float(m_iColsNum*GetCellWidth()) + SCROLLBAR_WIDTH + SCROLLBAR_OFFSET_X);
+	SetHeight(float(GetViewRows()*GetCellHeight()));
 
 	if (!IsChild(&m_ScrollBar))
 		AttachChild(&m_ScrollBar);
-	m_ScrollBar.Init(GetWidth() - CUIScrollBar::SCROLLBAR_WIDTH, SCROLLBAR_OFFSET_Y, 
+	m_ScrollBar.Init(GetWidth() - SCROLLBAR_WIDTH, SCROLLBAR_OFFSET_Y, 
 					GetHeight(), false);
 
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
@@ -334,11 +334,11 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 			for(j=0; j<GetCols(); ++j){
 
 				(*it)->Init(CELL_TEXTURE,
-								j*(GetCellWidth()),
-								i*(GetCellHeight()),
-								(GetCellWidth()),
-								(GetCellHeight()));
-				(*it)->GetUIStaticItem().SetOriginalRect(0, 0, 52, 52);
+								float(j*(GetCellWidth())),
+								float(i*(GetCellHeight())),
+								float(GetCellWidth()),
+								float(GetCellHeight()));
+				(*it)->GetUIStaticItem().SetOriginalRect(0.0f, 0.0f, 52.0f, 52.0f);
 				(*it)->ClipperOn();
 				(*it)->SetStretchTexture(true);
 
@@ -397,8 +397,8 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 
 	//проверяем, можно ли разместить элемент на том месте на 
 	//котором он сейчас
-	Irect item_rect		= pItem->GetAbsoluteRect();
-	Irect rect			= GetAbsoluteRect();
+	Frect item_rect		= pItem->GetAbsoluteRect();
+	Frect rect			= GetAbsoluteRect();
 
 	if(item_rect.left - rect.left<0)
 		place_col = 0;
@@ -600,8 +600,8 @@ void CUIDragDropList::UpdateList()
 		CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
 		{
-			int y = (pDragDropItem->GetGridRow()-m_iCurrentFirstRow)*GetCellHeight();
-			int x = (pDragDropItem->GetGridCol())*GetCellWidth();
+			float y = float((pDragDropItem->GetGridRow()-m_iCurrentFirstRow)*GetCellHeight());
+			float x = float((pDragDropItem->GetGridCol())*GetCellWidth());
 			pDragDropItem->SetWndPos(x, y);
 		}
 	}

@@ -21,7 +21,7 @@ CUIProgressBar::~CUIProgressBar(void)
 {
 }
 
-void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizontal)
+void CUIProgressBar::Init(float x, float y, float length, float broad, bool bIsHorizontal)
 {
 	m_bIsHorizontal = bIsHorizontal;
 
@@ -35,9 +35,9 @@ void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizonta
 }
 
 void CUIProgressBar::SetProgressTexture(LPCSTR tex_name, 
-											int progress_length, 
-											int x, int y,
-											int width, int height,
+											float progress_length, 
+											float x, float y,
+											float width, float height,
 											u32 color)
 {
 	m_iProgressLength			= progress_length;
@@ -45,7 +45,7 @@ void CUIProgressBar::SetProgressTexture(LPCSTR tex_name,
 	m_UIProgressItem.Init		(tex_name, "hud\\default", x, y, alNone);
 	m_UIProgressItem.SetColor	(color);
 
-	if (width!=0 && height!=0)
+	if (!fis_zero(width) && !fis_zero(height))
 		m_UIProgressItem.SetOriginalRect(x, y, width, height);
 
 	if(m_bIsHorizontal){
@@ -54,7 +54,7 @@ void CUIProgressBar::SetProgressTexture(LPCSTR tex_name,
 		m_UIProgressItem.SetRect(0, 0, GetWidth(), m_iProgressLength);
 	}
 }
-void CUIProgressBar::SetBackgroundTexture(LPCSTR tex_name, int x, int y, int width, int height, int offs_x, int offs_y)
+void CUIProgressBar::SetBackgroundTexture(LPCSTR tex_name, float x, float y, float width, float height, float offs_x, float offs_y)
 {
 	if (tex_name&&tex_name[0]){
 		m_bBackgroundPresent = true;
@@ -82,8 +82,8 @@ void CUIProgressBar::UpdateProgressBar()
 	float fCurrentLength = m_iProgressPos*progressbar_unit;
 
 	//утановить размер и положение каретки
-	if(m_bIsHorizontal)	m_iCurrentLength = (int)(GetWidth()*fCurrentLength); 	
-	else				m_iCurrentLength = (int)(GetHeight()*fCurrentLength); 	
+	if(m_bIsHorizontal)	m_iCurrentLength = GetWidth()*fCurrentLength; 	
+	else				m_iCurrentLength = GetHeight()*fCurrentLength; 	
 
 	if(m_bUseColor){
 		Fcolor curr;
@@ -117,7 +117,7 @@ bool CUIProgressBar::ProgressInc()
 
 void CUIProgressBar::Draw()
 {
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 
 	//нарисовать подложку
 	if(m_bBackgroundPresent){
@@ -125,7 +125,7 @@ void CUIProgressBar::Draw()
 		m_UIBackgroundItem.Render();
 	}
 
-	Irect progress_rect;
+	Frect progress_rect;
 	m_UIProgressItem.SetPos	(rect.left, rect.top);
 
 	if(m_bIsHorizontal){

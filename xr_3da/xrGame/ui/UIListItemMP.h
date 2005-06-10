@@ -17,7 +17,7 @@ public:
 	CUIListItemMP();
 	virtual ~CUIListItemMP();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual void SetText(LPCSTR sServer, LPCSTR sMap, LPCSTR sMode, LPCSTR sPlayers, LPCSTR sPing);
 	//virtual void SetHighlightText(bool bHighlight);
 

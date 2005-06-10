@@ -195,10 +195,10 @@ void CUICarBodyWnd::UpdateLists()
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									(*it)->GetXPos()*INV_GRID_WIDTH,
-									(*it)->GetYPos()*INV_GRID_HEIGHT,
-									(*it)->GetGridWidth()*INV_GRID_WIDTH,
-									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+									float((*it)->GetXPos()*INV_GRID_WIDTH),
+									float((*it)->GetYPos()*INV_GRID_HEIGHT),
+									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
+									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
 
 			UIDragDropItem.SetData((*it));
 
@@ -240,10 +240,10 @@ void CUICarBodyWnd::UpdateLists()
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									(*it)->GetXPos()*INV_GRID_WIDTH,
-									(*it)->GetYPos()*INV_GRID_HEIGHT,
-									(*it)->GetGridWidth()*INV_GRID_WIDTH,
-									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+									float((*it)->GetXPos()*INV_GRID_WIDTH),
+									float((*it)->GetYPos()*INV_GRID_HEIGHT),
+									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
+									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
 			UIDragDropItem.SetData((*it));
 
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
@@ -470,7 +470,7 @@ void CUICarBodyWnd::EnableAll()
 void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const int offset = -10;
+	const float offset = -10.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
 	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
