@@ -30,7 +30,7 @@ local function getname (func)
 		if n.name ~= nil then
 			return n.name
 		end
-		return tostring(n.namewhat)
+		return tostring(n.short_src)
     end
     local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
     if n.namewhat ~= "" then
