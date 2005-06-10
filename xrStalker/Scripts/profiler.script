@@ -27,7 +27,10 @@ end
 local function getname (func)
     local n = Names[func]
     if n.what == "C" then
-        return tostring(n.name)
+		if n.name ~= nil then
+			return n.name
+		end
+		return tostring(n.namewhat)
     end
     local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
     if n.namewhat ~= "" then
