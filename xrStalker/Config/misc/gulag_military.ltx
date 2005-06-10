@@ -1251,7 +1251,15 @@ distance = 5
 [walker1@mil_fneutral_commander]
 path_walk = commander_walk
 path_look = commander_look
-meet_enabled = true
+meet = on_meet@@mil_fneutral_commander
+
+[on_meet@@mil_fneutral_commander]
+meet_state = 10|ward
+meet_state_wpn = 10|ward
+victim = 10|actor
+victim_wpn = 10|actor
+use = true
+use_wpn = true
 meet_dialog = mil_neutral_commander
 
 
