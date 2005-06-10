@@ -68,7 +68,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task>
+	<game_task id="mil_blockpost_job">
 		<title>mil_blockpost_job</title>
 		<objective>
 			<text>mil_blockpost_help</text>
