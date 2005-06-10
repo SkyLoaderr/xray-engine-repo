@@ -138,7 +138,7 @@ function actor_binder:update(delta)
 	-- срабатывает только при перемещении актёра каждый метр
 	if self.last_position:distance_to_sqr( self.object:position() ) >= 1 then
 		bind_restrictor.actor_update(delta)
-		printf( "bind_restrictor.actor_update(delta)" )
+
 		self.last_position = self.object:position()
 	end
 
