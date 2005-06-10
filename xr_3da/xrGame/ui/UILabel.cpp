@@ -5,6 +5,7 @@
 CUILabel::CUILabel()
 {
 	m_textPos.set(0,0);
+	m_lines.SetVTextAlignment(valCenter);
 }
 
 void CUILabel::Init(int x, int y, int width, int height){
