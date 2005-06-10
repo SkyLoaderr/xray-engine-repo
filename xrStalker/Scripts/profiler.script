@@ -18,8 +18,7 @@ local function hook (context)
 		Counters[f] = 1
 		Names[f] = debug.getinfo(2, "Sn")
 	else  -- only increment the counter
-		Counters[f] =
-		Counters[f] + 1
+		Counters[f] = Counters[f] + 1
 	end
 	
 --	printf("hook end")
@@ -50,11 +49,16 @@ end
 function stats()
 	debug.sethook	(nil)
 	local		sort_stats = {}
+	local		order = 0;
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
-		table.insert(sort_stats,count,func)
+		table[order] = {c=count,f=func}
+		order = order+1
+		--table.insert(sort_stats,count,func)
 		--printf	("%s : %d",getname(func), count)
     end
+
+    table.sort	(sort_stats, function cmp(a,b) return a.c<b.c end)
 
     for count, func in pairs(sort_stats) do
 		printf		("%s : %d",getname(func), count)
