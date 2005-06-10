@@ -1210,14 +1210,15 @@ function load_states(gname, type)
 	
 	if type == "rostok_flesh_angar" then        
 		return function(gulag)
-			local t = db.zone_by_name["rostok_angar_flesh_territory"]
-			if t and db.actor then
-				if t:inside(db.actor:position()) then
-					return 1
-				else
-					return 0
-				end
-			end
+--			local t = db.zone_by_name["rostok_angar_flesh_territory"]
+--			if t and db.actor then
+--				if t:inside(db.actor:position()) then
+--					return 1
+--				else
+--					return 0
+--				end
+--			end
+			return 0
 		end
 	end
 
