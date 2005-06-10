@@ -432,9 +432,9 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 
 		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
 		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			static_cast<int>(*it), 
-			static_cast<int>(*(it+1)),
-			SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT - 15);
+			(*it), 
+			(*(it+1)),
+			float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT - 15));
 		this_inventory->UIOutfitIcon.Show(true);
 		this_inventory->UIOutfitIcon.SetColor(pDDItemMP->GetColor());
 

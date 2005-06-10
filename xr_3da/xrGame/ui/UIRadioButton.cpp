@@ -8,7 +8,6 @@
 
 
 void CUIRadioButton::Init(float x, float y, float width, float height){
-void CUIRadioButton::Init(int x, int y, int width, int height){
 	m_lines.SetTextAlignment(CGameFont::alLeft);
     CUI3tButton::InitTexture("ui_radio");
 	Frect r = m_background.GetE()->GetStaticItem()->GetRect(); 
