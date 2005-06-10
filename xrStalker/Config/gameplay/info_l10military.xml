@@ -181,6 +181,8 @@
 	
 	<!-- Гулаг Свободы у выхода на Радар -->
 	<info_portion id="mil_fblockpost_alarm"></info_portion>
+	<info_portion id="mil_fblockpost_quest"></info_portion>
+	<info_portion id="mil_fblockpost_quest_complete"></info_portion>
 	
 	
 </game_information_portions>

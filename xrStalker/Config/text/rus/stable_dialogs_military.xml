@@ -540,11 +540,113 @@
     <string id="mil_dolg_soldier_dialog_7">
         <text>Ок.</text>
     </string>
-    <string id="mil_freedom_commander_0">
-        <text>Привет.</text>
+    <string id="mil_freedom_commander_1001">
+        <text>Слушаю тебя сталкер.</text>
     </string>
-    <string id="mil_freedom_commander_1000">
-        <text>Пока</text>
+    <string id="mil_freedom_commander_1002">
+        <text>Меня прислал Лукаш.</text>
+    </string>
+    <string id="mil_freedom_commander_1003">
+        <text>А! Новобранец! Отлично! Лишний ствол никогда не помещает.</text>
+    </string>
+    <string id="mil_freedom_commander_1004">
+        <text>Как тут у вас дела?</text>
+    </string>
+    <string id="mil_freedom_commander_1005">
+        <text>Скажу тебе честно - хреново. Что-то происходит в центре Зоны, монстры так и прут. Недавно еще двух ребят потеряли, так что ты как нельзя вовремя. Не дрейфишь?</text>
+    </string>
+    <string id="mil_freedom_commander_1006">
+        <text>Да нет. Чай уже не мальчик. Как говориться - "Хороший монстр - мертвый монстр".</text>
+    </string>
+    <string id="mil_freedom_commander_1007">
+        <text>Вот это правильно. Ну ладно, к делу. Разведчик вернулся - сказал, что столько монстров он даже во сне не видел, даже  сосчитать их не смог. Так что грядущей ночью тут будет жарко.</text>
+    </string>
+    <string id="mil_freedom_commander_1008">
+        <text>Монстры это не так страшно как люди...</text>
+    </string>
+    <string id="mil_freedom_commander_1009">
+        <text>Это ты прав. Но с людьми, если их можно так назвать, нам тоже предстоит столкнуться. Группы "монолитовцев" периодически пытаются прорваться. Надеюсь они не нагрянут вместе с монстрами.</text>
+    </string>
+    <string id="mil_freedom_commander_1010">
+        <text>Где мое место?</text>
+    </string>
+    <string id="mil_freedom_commander_1011">
+        <text>Засядь где ни будь за баррикадой, вперед не суйся, а то там от пуль тесно, под наш же огонь попадешь. Задача ясна?</text>
+    </string>
+    <string id="mil_freedom_commander_1012">
+        <text>Ясна!</text>
+    </string>
+    <string id="mil_freedom_commander_1013">
+        <text>Надеюсь увидеть тебя живым на утро. И не уходи далеко, а то сочту тебя дезертиром. Со всеми вытекающими... Свободен.</text>
+    </string>
+    <string id="mil_freedom_commander_2001">
+        <text>Выбери себе место, а то потом будет некогда.</text>
+    </string>
+    <string id="mil_freedom_commander_3001">
+        <text>Всех положили или еще будут ?</text>
+    </string>
+    <string id="mil_freedom_commander_3002">
+        <text>Похоже, что всех. Как по мне, то на сегодня достаточно. Спасибо за помощь. Вот, возьми деньжат - они тебе пригодятся.</text>
+    </string>
+    <string id="mil_freedom_commander_3003">
+        <text>Удачи вам...</text>
+    </string>
+    <string id="mil_freedom_commander_3004">
+        <text>Спасибо, она нам не помешает.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_0">
+        <text>Где патронов взять, а то у меня маловато осталось.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_1">
+        <text>У меня есть патроны к Калашу и Лрке. Тебе какие?</text>
+    </string>
+    <string id="mil_freedom_commander_common1_20">
+        <text>К АК.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_21">
+        <text>Держи.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_30">
+        <text>К Лр.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_31">
+        <text>Держи.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_40">
+        <text>Давай все!</text>
+    </string>
+    <string id="mil_freedom_commander_common1_41">
+        <text>Не борзей.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_50">
+        <text>К моему стволу не пойдет.</text>
+    </string>
+    <string id="mil_freedom_commander_common1_51">
+        <text>Ну, у нас других нет.</text>
+    </string>
+    <string id="mil_freedom_commander_common2_0">
+        <text>Что это за место вообще такое?</text>
+    </string>
+    <string id="mil_freedom_commander_common2_1">
+        <text>Мы называем его Барьер. Так оно в принципе и есть. Это последний цивилизованный блокпост в Зоне, буфер между людьми и дикой территорией.</text>
+    </string>
+    <string id="mil_freedom_commander_common2_2">
+        <text>А что там дальше?</text>
+    </string>
+    <string id="mil_freedom_commander_common2_3">
+        <text>Дальше там только смерть. Ну или судьба "служить монолиту" - Мой монолит! Во имя твое! Бла - бла - бла. Одни словом ходить туда не стоит. Вот мы и разыгрываем из себя воинство Света - не даем силам зла заполонить Зону. Ну и задерживаем авантюристов, по крайней мере предупреждаем что б туда не совались.</text>
+    </string>
+    <string id="mil_freedom_commander_common2_4">
+        <text>Зачем вам это надо? Вы могли бы отступить, а не рисковать каждый день ради других.</text>
+    </string>
+    <string id="mil_freedom_commander_common2_5">
+        <text>А кто же тогда, как не мы? Долг? Они конечно доки по части истребления, истязания и  глумления над монстрами. Но они никогда и ничего не будут делать ради кого-то, ты их здесь видишь - нет? Я тоже. Странно. Тем более мы не ставим перед собой цель уничтожать существ населяющих Зону, а понимаем необходимость барьера - черты которую ни одной из сторон переступать не стоит, потому что это может привести к непредсказуемым последствиям.</text>
+    </string>
+    <string id="mil_freedom_commander_common2_6">
+        <text>К каким?</text>
+    </string>
+    <string id="mil_freedom_commander_common2_7">
+        <text>Непредсказуемым. Я сказал.</text>
     </string>
     <string id="mil_guard_arsenal_dialog_1000">
         <text>Стой. Доступ к арсеналу разрешен только членам группировки.</text>

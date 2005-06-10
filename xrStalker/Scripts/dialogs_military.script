@@ -100,3 +100,15 @@ function actor_punch (first_speaker, second_speaker)
 	xr_punch.put_actor_to_sleep_instantly ()
 	dialogs.break_dialog (first_speaker, second_speaker, 0)
 end
+
+function send_ammo_for_AK (actor, npc)
+    printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+end
+
+function send_ammo_for_LR (actor, npc)
+    printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+end
+
+function commander_transfer (actor, npc)
+    dialogs.relocate_money (npc, npc:money() / 2, "in")
+end

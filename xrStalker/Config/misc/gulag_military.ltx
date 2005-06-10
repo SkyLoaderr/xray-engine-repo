@@ -1129,16 +1129,21 @@ center_point = kamp
 ;------- командир
 [logic@mil_fblockpost_commander]
 active = walker1@mil_fblockpost_commander
-meet = on_meet@mil_fblockpost_commander
 
 [walker1@mil_fblockpost_commander]
 path_walk = commander_walk
 path_look = commander_look
-meet_enabled = true
-meet_dialog = mil_freedom_commander
+meet = on_meet@mil_fblockpost_commander
 
 [on_meet@mil_fblockpost_commander]
-distance = 5
+meet_state = 10|ward
+meet_state_wpn = 10|ward
+victim = 10|actor
+victim_wpn = 10|actor
+use = true
+use_wpn = true
+meet_dialog = mil_freedom_commander
+
 
 ;-- патруль 1
 [logic@mil_fblockpost_patrol1]
