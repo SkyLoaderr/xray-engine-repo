@@ -114,6 +114,11 @@ void CControlPathBuilder::on_travel_point_change()
 	m_man->notify	(ControlCom::eventTravelPointChange, 0);
 }
 
+void CControlPathBuilder::on_build_path()
+{
+	m_man->notify	(ControlCom::eventPathBuilt, 0);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Special Build Path
 //////////////////////////////////////////////////////////////////////////

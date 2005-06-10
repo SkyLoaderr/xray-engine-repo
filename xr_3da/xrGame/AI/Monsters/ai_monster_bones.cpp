@@ -155,3 +155,14 @@ void bonesManipulation::Update(CBoneInstance *bone, u32 cur_time)
 	}
 }
 
+bonesAxis &bonesManipulation::GetBoneParams(CBoneInstance *bone, u8 axis_used)
+{
+	// найти бону bone в m_Bones
+	for (u32 i=0; i<m_Bones.size(); ++i)  {
+		if ((m_Bones[i].bone == bone) && (m_Bones[i].axis == axis_used)) {
+			return m_Bones[i].params;
+		}
+	}
+	VERIFY(FALSE);
+	return m_Bones[0].params;
+}

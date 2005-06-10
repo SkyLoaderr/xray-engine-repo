@@ -33,7 +33,17 @@ void CStateMonsterTurnAwayFromActorAbstract::execute()
 }
 
 
+
+#define CStateMonstertTestIdleAbstract CStateMonstertTestIdle<_Object>
+
+TEMPLATE_SPECIALIZATION
+void CStateMonstertTestIdleAbstract::execute()
+{
+	object->set_action			(ACT_STAND_IDLE);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterLookActorAbstract
 #undef CStateMonsterTurnAwayFromActorAbstract
+#undef CStateMonstertTestIdleAbstract
 

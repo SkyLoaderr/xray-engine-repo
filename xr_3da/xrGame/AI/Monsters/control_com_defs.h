@@ -44,6 +44,7 @@ namespace ControlCom {
 		eventSequenceEnd,
 		eventRotationEnd,
 		eventTravelPointChange,
+		eventPathBuilt,
 		eventJumpEnd,
 	};
 

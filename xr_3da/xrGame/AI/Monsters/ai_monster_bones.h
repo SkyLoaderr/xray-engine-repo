@@ -40,14 +40,16 @@ class bonesManipulation {
 
 	bool	bActive;
 public:
-	void Reset				();
+	void 		Reset				();
 
-	void AddBone			(CBoneInstance *bone, u8 axis_used);
-	void SetMotion			(CBoneInstance *bone, u8 axis_used, float target_yaw, float r_speed, u32 t);
+	void 		AddBone				(CBoneInstance *bone, u8 axis_used);
+	void 		SetMotion			(CBoneInstance *bone, u8 axis_used, float target_yaw, float r_speed, u32 t);
 
-	void Update				(CBoneInstance *bone, u32 cur_time);
-	bool IsActive			() {return bActive;}
-	bool IsReturn			() {return in_return_state;}
+	void 		Update				(CBoneInstance *bone, u32 cur_time);
+	bool 		IsActive			() {return bActive;}
+	bool 		IsReturn			() {return in_return_state;}
+
+	bonesAxis	&GetBoneParams		(CBoneInstance *bone, u8 axis_used);
 };
 
 

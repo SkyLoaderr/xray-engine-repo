@@ -51,8 +51,29 @@ void CControlPathBuilderBase::reset()
 	prepare_builder					();
 }
 
+
+void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
+{
+	switch (type) {
+	case ControlCom::eventPathBuilt: check_failure(); break;
+	}
+}
+
+void CControlPathBuilderBase::on_start_control(ControlCom::EContolType type)
+{
+	switch (type) {
+	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	break;
+	}
+}
+
+void CControlPathBuilderBase::on_stop_control(ControlCom::EContolType type)
+{
+	switch (type) {
+	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	break;
+	}
+}
+
 void CControlPathBuilderBase::detour_graph_points()
 {
 	set_game_path_type	();
 }
-

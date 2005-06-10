@@ -102,17 +102,17 @@ function mob_camp:select_state()
 		
 		local dist = enemy:position():distance_to(self.home_path:point(self.cur_point_index))
 		if (self.state_prev == STATE_MOVE_HOME) and (dist > self.st.home_min_radius) then 
-			return 
 		elseif (self.state_prev == STATE_ALIFE) and (dist > self.st.home_max_radius) then
 			self.state_current = STATE_MOVE_HOME
-			return
 		elseif (self.state_prev == STATE_CAMP) and (dist > self.st.home_min_radius) then
-			return
 		else 
 			self.state_current = STATE_ALIFE
 		end
 		
-	else -- no enemy
+	end
+	
+	-- select MOVE_HOME OR CAMP
+	if (enemy == nil) or ((enemy ~= nil) and (self.state_current ~= STATE_ALIFE) ) then
 		-- check if we go home
 		if (self.home_path ~= nil) and 
 			(self.home_path:point(self.cur_point_index):distance_to(self.object:position()) > 1) and
@@ -130,23 +130,23 @@ end
 -- EXECUTE_STATE
 function mob_camp:execute_state()
 	
-	-- DBG
-	if (self.state_current ~= self.state_prev) then
-		local str1 = ""
-		local str2 = ""
-		
-		if self.state_current == STATE_CAMP then str1 = "STATE_CAMP" end
-		if self.state_current == STATE_JUMP then str1 = "STATE_JUMP" end
-		if self.state_current == STATE_ALIFE then str1 = "STATE_ALIFE" end
-		if self.state_current == STATE_MOVE_HOME then str1 = "STATE_MOVE_HOME" end
-		
-		if self.state_prev == STATE_CAMP then str2 = "STATE_CAMP" end
-		if self.state_prev == STATE_JUMP then str2 = "STATE_JUMP" end
-		if self.state_prev == STATE_ALIFE then str2 = "STATE_ALIFE" end
-		if self.state_prev == STATE_MOVE_HOME then str2 = "STATE_MOVE_HOME" end
-		
-		printf("~MOB_CAMP: From [%s] To [%s]", str2, str1)		
-	end
+--	-- DBG
+--	if (self.state_current ~= self.state_prev) then
+--		local str1 = ""
+--		local str2 = ""
+--		
+--		if self.state_current == STATE_CAMP then str1 = "STATE_CAMP" end
+--		if self.state_current == STATE_JUMP then str1 = "STATE_JUMP" end
+--		if self.state_current == STATE_ALIFE then str1 = "STATE_ALIFE" end
+--		if self.state_current == STATE_MOVE_HOME then str1 = "STATE_MOVE_HOME" end
+--		
+--		if self.state_prev == STATE_CAMP then str2 = "STATE_CAMP" end
+--		if self.state_prev == STATE_JUMP then str2 = "STATE_JUMP" end
+--		if self.state_prev == STATE_ALIFE then str2 = "STATE_ALIFE" end
+--		if self.state_prev == STATE_MOVE_HOME then str2 = "STATE_MOVE_HOME" end
+--		
+--		printf("~MOB_CAMP: From [%s] To [%s]", str2, str1)		
+--	end
 		
 	
 	

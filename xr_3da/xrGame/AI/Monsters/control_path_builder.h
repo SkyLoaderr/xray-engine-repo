@@ -46,6 +46,7 @@ public:
 	virtual void	update_schedule			();
 
 	virtual	void	on_travel_point_change	();
+	virtual void	on_build_path			();
 
 			// services
 			bool	is_path_end				(float dist_to_end);

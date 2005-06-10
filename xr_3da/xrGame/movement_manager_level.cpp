@@ -94,6 +94,8 @@ void CMovementManager::process_level_path()
 				level_path().intermediate_index()
 			);
 
+			on_build_path	();
+
 			if (detail().failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
 				break;

@@ -20,7 +20,7 @@ void CControlPathBuilderBase::update_frame()
 	set_path_builder_params							();	
 	
 	// ןנמגונטעü םא סבמי
-	check_failure									();
+	//check_failure									();
 
 	STOP_PROFILE;
 }

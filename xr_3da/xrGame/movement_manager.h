@@ -231,6 +231,7 @@ public:
 			float	speed					(CPHMovementControl *movement_control) const;
 
 	virtual void	on_travel_point_change	() {}
+	virtual void	on_build_path			() {}
 
 	template <typename T>
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;
