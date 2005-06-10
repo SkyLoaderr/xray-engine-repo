@@ -49,7 +49,7 @@ end
 function stats()
 	debug.sethook	(nil)
 	local		sort_stats = {}
-	local		order = 0;
+	local		order = 1;
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
 		sort_stats[order] = {c=count,f=getname(func)}
