@@ -96,9 +96,6 @@
 				RelativePath=".\Config\game.ltx">
 			</File>
 			<File
-				RelativePath=".\config\prefetch.ltx">
-			</File>
-			<File
 				RelativePath=".\Config\script.ltx">
 			</File>
 			<File
@@ -1412,6 +1409,22 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\zones.ltx">
+				</File>
+			</Filter>
+			<Filter
+				Name="Prefetch"
+				Filter="">
+				<File
+					RelativePath=".\config\prefetch\prefetch.ltx">
+				</File>
+				<File
+					RelativePath=".\config\prefetch\prefetch_globals.ltx">
+				</File>
+				<File
+					RelativePath=".\config\prefetch\prefetch_mp.ltx">
+				</File>
+				<File
+					RelativePath=".\config\prefetch\prefetch_single.ltx">
 				</File>
 			</Filter>
 		</Filter>
