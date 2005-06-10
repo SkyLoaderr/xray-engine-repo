@@ -181,9 +181,16 @@
 	
 	<!-- Гулаг Свободы у выхода на Радар -->
 	<info_portion id="mil_fblockpost_alarm"></info_portion>
-	<info_portion id="mil_fblockpost_quest"></info_portion>
+	<info_portion id="mil_fblockpost_quest">
+			<task>mil_blockpost_job</task>
+	</info_portion>			
 	<info_portion id="mil_fblockpost_quest_complete"></info_portion>
+	<info_portion id="mil_fblockpost_quest_fail"></info_portion>
+	<info_portion id="mil_fblockpost_rush_end"></info_portion>
 	<info_portion id="mil_fblockpost_ammo"></info_portion>
+	<info_portion id="mil_fblockpost_rush_wave1"></info_portion>
+	<info_portion id="mil_fblockpost_rush_wave2"></info_portion>
+	<info_portion id="mil_fblockpost_rush_wave3"></info_portion>
 	
 	
 </game_information_portions>

@@ -70,3 +70,7 @@
 	<string id="mil_courier_phase3">
 	<text>Уничтожить стукача.</text>
 </string>
+
+<string id="mil_blockpost_help">
+	<text>Оказать помощь блокпосту Свободы "Барьер"</text>
+</string>
