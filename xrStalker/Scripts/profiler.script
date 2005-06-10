@@ -56,7 +56,7 @@ function stats()
 		if (sort_stats[n]==nil) then
 			sort_stats[n]={name=n,c=count}
 		else 
-			sort_stats[n]={name=n,sort_stats[n].c+count}
+			sort_stats[n]={name=n,c=sort_stats[n].c+count}
 		end
 		--table.insert(sort_stats,{c=count,f=})
 		--sort_stats[order] = 
