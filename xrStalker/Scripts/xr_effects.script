@@ -615,7 +615,7 @@ end
 function meet_seriy_fail(actor, npc)
 	if db.actor then
 		if db.actor:dont_has_info("garbage_meetstalker_done") and 
-		   db.actor:has_info("garbage_meetstalker_die") and
+		   db.actor:has_info("garbage_meetstalker_die")
 		then
 			level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
 		end
