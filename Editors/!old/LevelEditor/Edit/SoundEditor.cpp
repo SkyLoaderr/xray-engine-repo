@@ -383,7 +383,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         ESoundThumbnail* thm=m_THM_Current.back();
         u32 size=0;
         u32 time=0;
-		PlaySound(thm->SrcName(), size, time);
+        PlaySound(thm->SrcName(), size, time);
 
         CanvasValue* C=0;
         C=PHelper().CreateCanvas	(props,"Attenuation",	"", 64);
