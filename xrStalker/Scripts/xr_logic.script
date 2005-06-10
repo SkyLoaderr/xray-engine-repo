@@ -764,6 +764,8 @@ function parse_infop(rslt, str)
 				end
 				if at < string.len(infop_name) - 1 then
 					params = parse_func_params(string.sub(infop_name, at + 1, -2))
+				else
+					params = {}
 				end
 				infop_name = string.sub(infop_name, 1, at - 1)
 			end
