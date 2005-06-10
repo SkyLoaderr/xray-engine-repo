@@ -48,33 +48,16 @@ function main()
 end
 
 function stats()
-	local		stats = {}
+	local		_stats = {}
 	printf		("profiler statistics stuff:")
     for func, count in pairs(Counters) do
-		stats[count] = func;
+		_stats[count] = func;
 		--printf	("%s : %d",getname(func), count)
     end
 
-    for count, func  in pairs(stats) do
+    for count, func in pairs(_stats) do
 		printf		("%s : %d",getname(func), count)
     end
-
-/**
-	printf		("----");
-	
-	print_table	(Counters);
-	
-	table.sort	(Counters,function (a,b) return a>b end)
-
-	printf		("profiler statistics:")
-    for func, count in pairs(Counters) do
-		printf("%s : %d",getname(func), count)
-    end
-
-	printf		("----");
-
-	print_table	(Counters);
-/**/
 end
 
 -- profiler.main()
