@@ -29,7 +29,7 @@ local function getname (func)
     if n.what == "C" then
         return n.name
     end
-    local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
+    local loc = string.format("[%s]:%s", n.short_src, tostring(n.linedefined))
     if n.namewhat ~= "" then
         return string.format("%s (%s)", loc, n.name)
     else
@@ -47,7 +47,7 @@ end
 function stats()
 	printf("profiler statistics:")
     for func, count in pairs(Counters) do
-      printf("%s : %d",getname(func), count)
+		printf("%s : %d",getname(func), count)
     end
 end
 
