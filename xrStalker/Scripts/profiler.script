@@ -47,8 +47,13 @@ function main()
 end
 
 function stats()
-	printf("profiler statistics:")
+	
+	printf("profiler statistics stuff:")
+	print_table(Counters);
+	printf("profiler statistics stuff after:")
 	table.sort(Counters,function (a,b) return a>b end)
+	print_table(Counters);
+	printf("profiler statistics:")
     for func, count in pairs(Counters) do
 		printf("%s : %d",getname(func), count)
     end
