@@ -251,19 +251,28 @@ on_signal = return | %-mil_freedom_attack% nil
 active = walker1@mil_freedom_stalker4
 on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker4
-meet = on_meet@mil_freedom_stalker4
 
 [combat_ignore@mil_freedom_stalker4]
 
 [on_meet@mil_freedom_stalker4]
-distance = 5
+meet_state = 10|ward@mil_max_to_actor
+meet_state_wpn = 10|backoff@threat_weap
+victim = 10|nil|10|actor
+victim_wpn = 10|nil|10|actor
+use = true
+use_wpn = false
+meet_dialog = mil_patrol_dialog1
 
 ;Niieieiia ninoiyiea
 [walker1@mil_freedom_stalker4]
 path_walk = patrol_path2
 path_look = patrol_look2
-meet_enabled = true
-meet_dialog = mil_patrol_dialog1
+meet = on_meet@mil_freedom_stalker4
+on_info = {+mil_patrol1_talk} walker2@mil_freedom_stalker4
+
+[walker1@mil_freedom_stalker4]
+path_walk = patrol_path2
+path_look = patrol_look2
 
 
 ;----------------------------------- Патрульный командир -----------------------
@@ -271,7 +280,15 @@ meet_dialog = mil_patrol_dialog1
 active = walker1@mil_freedom_stalker5
 on_combat = combat@mil_freedom_max
 combat_ignore = combat_ignore@mil_freedom_stalker5
-meet = on_meet@mil_freedom_stalker5
+
+[on_meet@mil_freedom_stalker5]
+meet_state = 10|ward@mil_max_to_actor
+meet_state_wpn = 10|backoff@threat_weap
+victim = 10|nil|10|actor
+victim_wpn = 10|nil|10|actor
+use = true
+use_wpn = false
+meet_dialog = mil_patrol_dialog2
 
 [on_meet@mil_freedom_stalker5]
 distance = 5
@@ -281,9 +298,12 @@ distance = 5
 [walker1@mil_freedom_stalker5]
 path_walk = patrol_path1
 path_look = patrol_look1
-meet_enabled = true
-meet_dialog = mil_patrol_dialog2
-meet_state = ward
+meet = on_meet@mil_freedom_stalker5
+on_info = {+mil_patrol2_talk} walker2@mil_freedom_stalker5
+
+[walker1@mil_freedom_stalker5]
+path_walk = patrol_path1
+path_look = patrol_look1
 
 
 ;----------------------------------- Патрульный мужик 1 -----------------------
