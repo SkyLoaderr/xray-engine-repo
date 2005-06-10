@@ -49,11 +49,12 @@ end
 function stats()
 	debug.sethook	(nil)
 	local		sort_stats = {}
-	local		order = 1;
+	--local		order = 1;
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
-		sort_stats[order] = {c=count,f=getname(func)}
-		order = order+1
+		table.insert(sort_stats,{c=count,f=getname(func)})
+		--sort_stats[order] = 
+		--order = order+1
 		--table.insert(sort_stats,count,func)
 		--printf	("%s : %d",getname(func), count)
     end
