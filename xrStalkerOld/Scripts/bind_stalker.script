@@ -49,6 +49,8 @@ function actor_binder:reinit()
 	self.st = db.storage[npc_id]
 	self.st.pstor = nil
 
+	self.last_position = vector():set( 0, 100000, 0 )
+
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
@@ -132,15 +134,22 @@ function actor_binder:update(delta)
 	lasttime = game.time()
 ]]
 
-	--' обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
-	bind_restrictor.actor_update(delta)
+	-- обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
+	-- срабатывает только при перемещении актёра каждый метр
+	if self.last_position:distance_to_sqr( self.object:position() ) >= 1 then
+		bind_restrictor.actor_update(delta)
+		printf( "bind_restrictor.actor_update(delta)" )
+		self.last_position = self.object:position()
+	end
 
- 	if  self.bCheckStart then
+ 	if self.bCheckStart then
 		printf("SET DEFAULT INFOS")		
+
 		if self.object:dont_has_info("storyline_actor_start") and
-		   (level.name() == "l01_escape") then
+		   (level.name() == "l01_escape")
+		then
 			self.object:give_info_portion("storyline_actor_start")
-			_G.g_start_avi=true
+			_G.g_start_avi = true
 			printf("*AVI* RUN START AVI")			
 		end
 
@@ -155,11 +164,11 @@ function actor_binder:update(delta)
 		if self.object:dont_has_info("level_changer_icons") then
 			self.object:give_info_portion("level_changer_icons")
 		end
+
 		level_tasks.add_lchanger_location()
+
 		self.bCheckStart = false		
-	end			
-
-
+	end		
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:save(packet)
