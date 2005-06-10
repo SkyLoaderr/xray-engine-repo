@@ -667,6 +667,12 @@ end
 
 function check_state (gulag)
     
+    if gulag.state == 3 then
+       if db.actor:has_info ("mil_freedom_attack") then
+          return 3
+       end
+    end        
+    
     if db.actor:has_info ("mil_freedom_under_attack") then
        if this.check_enemy (gulag) == true then
           if db.actor:has_info ("mil_enemy_nearest") then
@@ -683,10 +689,8 @@ function check_state (gulag)
           return 0
        end
     end            
-    printf ("GULAG SET TO STATE %d", gulag.state) 
     
     if db.actor:has_info ("mil_freedom_attack") then
-       printf ("GULAG SET TO STATE 3") 
        return 3
     end   
     return 0
@@ -695,14 +699,21 @@ end
 function check_enemy (gulag)
     for k,v in gulag.Object do
         if v:best_enemy () ~= nil then 
-           printf ("GULAG HAS ENEMY AT %d", device ():time_global ())
            return true
         end
     end       
-    printf ("GULAG DONT HAS ENEMY AT %d", device ():time_global ())
     return false
 end
 
+function is_actor_enemy (gulag)
+    for k,v in gulag.Object do
+        local e = v:best_enemy ()
+        if e ~= nil and e:id () == db.actor:id () then
+           return true 
+        end
+    end       
+    return false
+end
 -----------------------------------------------------------------------
 -- √улаг монстров около труб
 --    0 - нормальное состо€ние
