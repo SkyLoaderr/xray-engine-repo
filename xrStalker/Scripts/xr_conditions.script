@@ -1,7 +1,107 @@
 
 -- Каждая функция в этом файле используется как условие xr_logic: {=функция !функция}
--- Формат: function f(actor, npc)
+-- Если в функцию необходимо передавать параметры, то:  {=функция(парам1:парам2:...) !функция(парам1:парам2:...)}
+-- Формат: function f(actor, npc). В случае передачи параметров: function f(actor, npc, p).
 -- Детали реализации нужно помещать в файл xr_conditions_impl.script, а не в этот файл.
+
+-- ----------------------------------------------------------------------------------------------------
+-- Общие функции
+-- ----------------------------------------------------------------------------------------------------
+
+-- Проверка того что удар был нанесен кем-то из npc указанных в списке.
+-- Параметры это story_id персонажей. Можно задавать несколько story_id.
+function hitted_by(actor, npc, p)
+	local npc1
+	local t = db.storage[npc:id()].hit
+	if t then
+		for i, v in pairs(p) do
+			npc1 = utils.obj_by_sid(v)
+			if npc1 and t.who == npc1:id() then
+				printf("_bp: hitted_by(%d)", v)
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Проверка того что персонаж был убит кем-то из npc указанных в списке.
+-- Параметры это story_id персонажей. Можно задавать несколько story_id.
+function killed_by(actor, npc, p)
+	local npc1
+	local t = db.storage[npc:id()].death
+	if t then
+		for i, v in pairs(p) do
+			npc1 = utils.obj_by_sid(v)
+			if npc1 and t.killer == npc1:id() then
+				printf("_bp: killed_by(%d)", v)
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- проверка (по story_id) все ли проверяемые сталкеры живы
+function is_alive_all(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and not npc1:alive() then
+			return false
+		end
+	end
+	return true
+end
+
+-- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров жив
+function is_alive_one(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and npc1:alive() then
+			return true
+		end
+	end
+	return false
+end
+
+-- проверка (по story_id) все ли проверяемые сталкеры мертвы
+function is_dead_all(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and npc1:alive() then
+			return false
+		end
+	end
+	return true
+end
+
+-- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров мертв
+function is_dead_one(actor, npc, p)
+	local npc1
+	for i, v in pairs(p) do
+		npc1 = utils.obj_by_sid(v)
+		if npc1 and not npc1:alive() then
+			printf("_bp: is_dead_one(%d) = true", v)
+			return true
+		end
+	end
+	return false
+end
+
+-- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
+function check_fighting(actor, npc, p)
+	for i, v in pairs(p) do
+		if type(v) == 'number' and db.storage[npc:id()].enemy:story_id() == v then
+			printf("_bp: check_fighting(%d) = true", v)
+			return true
+		end
+	end
+	--printf("_bp: check_fighting() = false")
+	return false
+end
 
 -- DELME: для тестов: {=test_condition_actor_near}
 function test_condition_actor_near(actor, npc)
@@ -140,97 +240,6 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for Dark Valley
 ------------------------------------------------------------------------------------
-function hitted_by(actor, npc, p)
-	local npc1
-	local t = db.storage[npc:id()].hit
-	if t then
-		for i, v in pairs(p) do
-			npc1 = utils.obj_by_sid(v)
-			if npc1 and t.who == npc1:id() then
-				printf("_bp: hitted_by(%d)", v)
-				return true
-			end
-		end
-	end
-	return false
-end
-
-function killed_by(actor, npc, p)
-	local npc1
-	local t = db.storage[npc:id()].death
-	if t then
-		for i, v in pairs(p) do
-			npc1 = utils.obj_by_sid(v)
-			if npc1 and t.killer == npc1:id() then
-				printf("_bp: killed_by(%d)", v)
-				return true
-			end
-		end
-	end
-	return false
-end
-
--- проверка (по story_id) все ли проверяемые сталкеры живы
-function is_alive_all(actor, npc, p)
-	local npc1
-	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
-		if npc1 and not npc1:alive() then
-			return false
-		end
-	end
-	return true
-end
-
--- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров жив
-function is_alive_one(actor, npc, p)
-	local npc1
-	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
-		if npc1 and npc1:alive() then
-			return true
-		end
-	end
-	return false
-end
-
--- проверка (по story_id) все ли проверяемые сталкеры мертвы
-function is_dead_all(actor, npc, p)
-	local npc1
-	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
-		if npc1 and npc1:alive() then
-			return false
-		end
-	end
-	return true
-end
-
--- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров мертв
-function is_dead_one(actor, npc, p)
-	local npc1
-	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
-		if npc1 and not npc1:alive() then
-			printf("_bp: is_dead_one(%d) = true", v)
-			return true
-		end
-	end
-	return false
-end
-
--- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
-function check_fighting(actor, npc, p)
-	for i, v in pairs(p) do
-		if type(v) == 'number' and db.storage[npc:id()].enemy:story_id() == v then
-			--printf("_bp: check_fighting(%d) = true", v)
-			return true
-		end
-	end
-	--printf("_bp: check_fighting() = false")
-	return false
-end
-
 function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
 	-- db.storage[npc:id()].enemy:story_id() == 400
