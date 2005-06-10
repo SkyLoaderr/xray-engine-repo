@@ -623,6 +623,7 @@ function meet_seriy_fail(actor, npc)
 end
 
 function gar_send_dolg_warning()
+	printf ("!-!-!")
 	if db.actor then
 		if xr_gulag.getGulagPopulation("gar_dolg") > 0 then
 			news_manager.send_tip(db.actor, "gar_dolg_warning", 0, "dolg")
