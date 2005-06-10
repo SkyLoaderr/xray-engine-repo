@@ -92,8 +92,16 @@ void prefetch_module(LPCSTR file_name)
 	ai().script_engine().process_file(file_name);
 }
 
+void break_into_debugger()
+{
+	__asm int 3;
+};
+
 void CScriptEngine::script_register(lua_State *L)
 {
+#ifdef DEBUG
+	function	(L,	"call_debugger",				break_into_debugger);
+#endif
 	function	(L,	"log",							LuaLog);
 	function	(L,	"error_log",					ErrorLog);
 	function	(L,	"flush",						FlushLogs);
