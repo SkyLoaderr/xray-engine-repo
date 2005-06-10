@@ -33,6 +33,7 @@ function main()
 end
 
 function stats()
+	printf("profiler statistics:")
     for func, count in pairs(Counters) do
       printf("%s : %d",getname(func), count)
     end
