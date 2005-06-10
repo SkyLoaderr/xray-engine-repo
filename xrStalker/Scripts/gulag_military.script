@@ -982,12 +982,12 @@ function load_job_fneutral (sj, gname, type, squad, groups)
     --командир
     t = {section = "logic@mil_fneutral_commander",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 2, state = {0, 1},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""--,
-		--predicate = function (obj)
-		                     --return obj:profile_name () == "stalker_master"
-		            --end
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "stalker_master"
+		            end
 		}
 	table.insert(sj, t)		
     --патрульный 1
