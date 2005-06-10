@@ -54,12 +54,14 @@ on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phr
 combat_ignore_cond = {=check_fighting(403:401)}
 
 [camper@kill_wait]
+radius = 0
 path_walk = val_sacrifice_guard2_walk 
 path_look = val_sacrifice_guard2_look
 def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
+no_retreat = true
 on_info = {=is_dead_one(401)} walker@leave
 combat_ignore_cond = {=check_fighting(403:401)}
 
