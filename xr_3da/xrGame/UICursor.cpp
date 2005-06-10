@@ -96,7 +96,7 @@ Fvector2 CUICursor::GetPosDelta()
 {
 	Fvector2 res_delta;
 	res_delta.x = DI2DD(vPos.x,UI_BASE_WIDTH)-DI2DD(vPrevPos.x,UI_BASE_WIDTH);
-	res_delta.y = DI2DD(vPos.y,UI_BASE_WIDTH)-DI2DD(vPrevPos.y,UI_BASE_WIDTH);
+	res_delta.y = DI2DD(vPos.y,UI_BASE_HEIGHT)-DI2DD(vPrevPos.y,UI_BASE_HEIGHT);
 
 	return res_delta;
 }

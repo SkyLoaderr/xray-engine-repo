@@ -16,6 +16,7 @@ namespace GameObject {
 
 		eInventoryPda,
 		eInventoryInfo,
+		eArticleInfo,
 
 		eUseObject,
 

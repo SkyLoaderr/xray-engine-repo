@@ -39,6 +39,7 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("patrol_path_in_point",	int(GameObject::ePatrolPathInPoint)),
 				value("inventory_pda",			int(GameObject::eInventoryPda)),
 				value("inventory_info",			int(GameObject::eInventoryInfo)),
+				value("article_info",			int(GameObject::eArticleInfo)),
 				value("use_object",				int(GameObject::eUseObject)),
 				value("hit",					int(GameObject::eHit)),
 				value("sound",					int(GameObject::eSound)),
