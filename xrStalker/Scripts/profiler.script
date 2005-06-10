@@ -54,9 +54,9 @@ function stats()
     for func, count in pairs(Counters) do
 		local n		= getname(func)
 		if (sort_stats[n]==nil) then
-			sort_stats[n]=count
+			sort_stats[n]={name=n,c=count}
 		else 
-			sort_stats[n]=sort_stats[n]+count
+			sort_stats[n]={name=n,sort_stats[n].c+count}
 		end
 		--table.insert(sort_stats,{c=count,f=})
 		--sort_stats[order] = 
@@ -65,11 +65,11 @@ function stats()
 		--printf	("%s : %d",getname(func), count)
     end
 
-    table.sort	(sort_stats, function (a,b) return a<b end)
---	print_table (sort_stats)
-    for n,c in pairs(sort_stats) do
-		printf		("%5d : %s",c,n)
-    end
+    table.sort	(sort_stats, function (a,b) return a.c<b.c end)
+	print_table (sort_stats)
+--    for n,c in pairs(sort_stats) do
+--		printf		("%5d : %s",c,n)
+--    end
 	debug.sethook(hook, "c")	-- restore
 end
 
