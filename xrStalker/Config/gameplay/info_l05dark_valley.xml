@@ -64,6 +64,7 @@
 <info_portion id="val_prisoner_plr_captured"></info_portion>
 
 <!-- Жертвоприношение -->
+<info_portion id="val_sacrifice_spawn"></info_portion>
 <info_portion id="val_sacrifice_start"></info_portion>
 <info_portion id="val_sacrifice_finish"></info_portion>
 <info_portion id="val_sacrifice_victim_escaped"></info_portion>
@@ -80,6 +81,7 @@
 <!-- Открытие дверей -->
 <info_portion id="val_opendoor_start"></info_portion>
 <info_portion id="val_opendoor_soldier_start"></info_portion>
+<info_portion id="val_opendoor_victim_start"></info_portion>
 <info_portion id="val_opendoor_plr_detected"></info_portion>
 
 <!-- Игрок нашел флешку Борова -->
