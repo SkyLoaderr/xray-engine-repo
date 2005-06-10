@@ -9,6 +9,8 @@
 	</info_portion>
 	<info_portion id="garbage_meetstalker_done"></info_portion>
 	<info_portion id="garbage_meetstalker_die"></info_portion>
+	<info_portion id="gar_seryi_drug_die"></info_portion>
+	<info_portion id="gar_seryi_drug2_die"></info_portion>
 	
 	<info_portion id="gar_seryi_actor_enter"></info_portion>
 	<info_portion id="gar_seryi_ceitnot"></info_portion>
@@ -59,8 +61,4 @@
 
 
 
-
-  <info_portion id="gar_monsters_rush_wave1"></info_portion>
-  <info_portion id="gar_monsters_rush_wave2"></info_portion>
-  <info_portion id="gar_monsters_rush_wave3"></info_portion>
 </game_information_portions>
