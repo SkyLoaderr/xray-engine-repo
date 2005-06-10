@@ -21,8 +21,8 @@ public:
 	struct SParticlesInfo
 	{
 		CParticlesObject*	ps;
-		Fvector				dir;
-
+		//Fvector				dir;
+		Fmatrix				x_form;
 		u16					sender_id;	//id - объекта, который запустил партиклы
 		int					life_time;	//время жизни партикла (-1) - бесконечно
 		
@@ -74,6 +74,10 @@ public:
 
 	void					StartParticles			(const shared_str& ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
 	void					StartParticles			(const shared_str& ps_name, const Fvector& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
+
+	void					StartParticles			(const shared_str& ps_name, u16 bone_num,  const Fmatrix& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
+	void					StartParticles			(const shared_str& ps_name, const Fmatrix& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
+
 
 	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
 	void					StopParticles			(const shared_str& particles_name, u16 bone_id=BI_NONE);

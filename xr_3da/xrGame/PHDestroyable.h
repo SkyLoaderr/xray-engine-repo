@@ -53,7 +53,7 @@ public:
 			void						RespawnInit					()																											;
 			void						SetFatalHit					(const SHit& hit)																							;
 			void						Destroy						(u16 ref_id=u16(-1),LPCSTR section="ph_skeleton_object")													;	
-
+			SHit						&FatalHit					(){return m_fatal_hit;}
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
 virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn);

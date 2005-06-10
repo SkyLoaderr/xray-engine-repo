@@ -79,9 +79,11 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 	P*=hit_scale;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_fHealth-=P;
-	if(m_fHealth<=0.f) Destroy();
-	CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
-		
+	if(m_fHealth<=0.f)
+	{
+		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+		Destroy();
+	}
 }
 void CDestroyablePhysicsObject::Destroy()
 {
@@ -91,7 +93,25 @@ void CDestroyablePhysicsObject::Destroy()
 		m_destroy_sound.play_at_pos(this,Position());
 	}
 	if(*m_destroy_particles)
-			StartParticles(m_destroy_particles,Fvector().set(0,1,0),ID());
+	{		
+			//Fvector dir;dir.set(0,1,0);
+		Fmatrix m;m.identity();
+		/////////////////////////////////////////////////
+		m.j.set(0,1.f,0);
+		///////////////////////////////////////////////
+
+		Fvector hdir;hdir.set(CPHDestroyable::FatalHit().direction());
+
+		if(fsimilar(m.j.dotproduct(hdir),1.f,EPS_L))
+		{
+			do {
+				hdir.random_dir();
+			} while(fsimilar(m.j.dotproduct(hdir),1.f,EPS_L));
+		}
+		m.i.crossproduct(m.j,hdir);m.i.normalize();
+		m.k.crossproduct(m.i,m.j);
+			StartParticles(m_destroy_particles,m,ID());
+	}
 }
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {

@@ -7,7 +7,12 @@
 #include "../xr_object.h"
 #include "../skeletoncustom.h"
 //-------------------------------------------------------------------------------------
-
+static void generate_orthonormal_basis(const Fvector& dir,Fmatrix &result)
+{
+	result.identity		();
+	result.k.normalize	(dir);
+	Fvector::generate_orthonormal_basis(result.k, result.j, result.i);
+}
 CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(const shared_str& ps_name)
 {
 	for (ParticlesInfoListIt it=particles.begin(); it!=particles.end(); it++)
@@ -110,9 +115,16 @@ CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics
 }
 
 
-
 void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
+	Fmatrix xform;
+	generate_orthonormal_basis(dir,xform);
+	StartParticles(particles_name,bone_num,xform,sender_id,life_time,auto_stop);
+}
+void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone_num, const Fmatrix& xform, u16 sender_id, int life_time, bool auto_stop)
+{
+
+
 	R_ASSERT(*particles_name);
 	
 	CObject* object					= m_self_object;
@@ -123,18 +135,20 @@ void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone
 	if(!pBoneInfo) return;
 
 	SParticlesInfo* particles_info	= pBoneInfo->AppendParticles(object,particles_name);
-	particles_info->dir				= dir;
+	//particles_info->dir				= dir;
+
 	particles_info->sender_id		= sender_id;
 
 	particles_info->life_time		= life_time;
 	particles_info->cur_time		= 0;
 	particles_info->auto_stop		= auto_stop;
-
+	particles_info->x_form			.set(xform);
 
 	//начать играть партиклы
-	Fmatrix xform;
-	MakeXFORM						(object,pBoneInfo->index,particles_info->dir,pBoneInfo->offset,xform);
-	particles_info->ps->UpdateParent(xform,zero_vel);
+
+	//MakeXFORM						(object,pBoneInfo->index,dir,pBoneInfo->offset,particles_info->x_form);
+	GetBonePos(object,pBoneInfo->index,pBoneInfo->offset,particles_info->x_form.c);
+	particles_info->ps->UpdateParent(particles_info->x_form,zero_vel);
 	if(!particles_info->ps->IsPlaying())
 		particles_info->ps->Play		();
 
@@ -143,21 +157,30 @@ void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone
 
 void CParticlesPlayer::StartParticles(const shared_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
+	Fmatrix xform;
+	generate_orthonormal_basis(dir,xform);
+	StartParticles(ps_name,xform,sender_id,life_time,auto_stop);
+}
+
+void CParticlesPlayer::StartParticles(const shared_str& ps_name, const Fmatrix& xform, u16 sender_id, int life_time, bool auto_stop)
+{
+	
 	CObject* object					= m_self_object;
 	VERIFY(object);
 	for(BoneInfoVecIt it = m_Bones.begin(); it!=m_Bones.end(); it++){
 		SParticlesInfo* particles_info	= it->AppendParticles(object,ps_name);
-		particles_info->dir			= dir;
+		//particles_info->dir			= dir;
 		particles_info->sender_id	= sender_id;
 
 		particles_info->life_time		= life_time;
 		particles_info->cur_time		= 0;
 		particles_info->auto_stop		= auto_stop;
-
+		particles_info->x_form			.set(xform);
 		//начать играть партиклы
-		Fmatrix xform;
-		MakeXFORM					(object,it->index,particles_info->dir,it->offset,xform);
-		particles_info->ps->UpdateParent(xform,zero_vel);
+
+		//MakeXFORM					(object,it->index,dir,it->offset,particles_info->x_form);
+		GetBonePos(object,it->index,it->offset,particles_info->x_form.c);
+		particles_info->ps->UpdateParent(particles_info->x_form,zero_vel);
 		if(!particles_info->ps->IsPlaying())
 			particles_info->ps->Play	();
 	}
@@ -217,9 +240,10 @@ void CParticlesPlayer::UpdateParticles()
 		for (ParticlesInfoListIt p_it=b_info.particles.begin(); p_it!=b_info.particles.end(); p_it++){
 			SParticlesInfo& p_info	= *p_it;
 			//обновить позицию партиклов
-			Fmatrix xform;
-			MakeXFORM				(object,b_info.index,p_info.dir,b_info.offset,xform);
-			p_info.ps->UpdateParent(xform, parent_vel);
+			//Fmatrix xform;
+			//MakeXFORM				(object,b_info.index,p_info.dir,b_info.offset,xform);
+			GetBonePos(object,b_info.index,b_info.offset,p_info.x_form.c);
+			p_info.ps->UpdateParent(p_info.x_form, parent_vel);
 
 			//обновить время существования
 			p_info.cur_time += Device.dwTimeDelta;
@@ -251,9 +275,7 @@ void CParticlesPlayer::GetBonePos	(CObject* pObject, u16 bone_id, const Fvector&
 
 void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result)
 {
-	result.identity		();
-	result.k.normalize	(dir);
-	Fvector::generate_orthonormal_basis(result.k, result.j, result.i);
+	generate_orthonormal_basis(dir,result);
 	GetBonePos(pObject, bone_id, offset, result.c);
 }
 

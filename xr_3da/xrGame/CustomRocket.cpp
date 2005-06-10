@@ -105,6 +105,7 @@ void CCustomRocket::activate_physic_shell	()
 	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 	m_pPhysicsShell->set_ContactCallback(NULL);
 	m_pPhysicsShell->SetAirResistance(0.f,0.f);
+	m_pPhysicsShell->SetAllGeomTraced();
 }
 
 void CCustomRocket::create_physic_shell	()
