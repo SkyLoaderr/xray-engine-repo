@@ -39,9 +39,9 @@ end
 
 function main()	
     debug.sethook(hook, "c")	-- turn on the hook
-    while true do
-		coroutine.yield()
-    end
+--    while true do
+--		coroutine.yield()
+--    end
 end
 
 function stats()
