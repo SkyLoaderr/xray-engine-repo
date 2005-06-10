@@ -299,12 +299,13 @@ end
 -- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
 function reset_meet(npc, scheme, st, section)
 	local meet_section
-	if scheme == "nil" then
+	printf("[%s]", utils.to_str(st.section_logic))
+	if scheme == nil or scheme == "nil" then
 		meet_section = utils.cfg_get_string(st.ini, st.section_logic, "meet", npc, false, "")
 	else
 		meet_section = utils.cfg_get_string(st.ini, section, "meet", npc, false, "")
 	end
-	init_meet(npc, st.ini, meet_section, st, scheme)
+	init_meet(npc, st.ini, meet_section, st.meet, scheme)
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
@@ -348,8 +349,8 @@ function init_meet(npc, ini, section, st, scheme)
 	if tmp then
 		st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", tmp)
 	end
-	st.zone				= parse_zone_data(npc, utils.cfg_get_string(ini, section, "zone", npc, false, ""))	
-	st.syndata			= parse_syn_data(npc, utils.cfg_get_string(ini, section, "synpairs", npc, false, ""))	
+	st.zone				= parse_zone_data(npc, utils.cfg_get_string(st.ini, section, "zone", npc, false, ""))	
+	st.syndata			= parse_syn_data(npc, utils.cfg_get_string(st.ini, section, "synpairs", npc, false, ""))	
 	--print_table(st)
 end
 

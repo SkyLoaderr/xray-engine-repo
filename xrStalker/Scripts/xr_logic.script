@@ -377,7 +377,7 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 
 	if st.stype == modules.stype_stalker then
 		xr_meet.dialog_manager_reset(npc, st.stype)
-		xr_meet.reset_meet(npc, scheme, st.meet, section)
+		xr_meet.reset_meet(npc, scheme, st, section)
 		xr_reactions.reset_rules(npc)
 	elseif st.stype == modules.stype_mobile then
 		--printf("_bp: disabling talk")
