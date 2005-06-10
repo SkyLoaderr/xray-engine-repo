@@ -48,25 +48,24 @@ end
 
 function stats()
 	debug.sethook	(nil)
-	local		sort_stats = {}
+	local		temp = {}, sort_stats = {}
 	--local		order = 1;
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
 		local n		= getname(func)
 		if (sort_stats[n]==nil) then
-			table.insert(sort_stats,n,{name=n,c=count})
+			sort_stats[n]=count
 		else 
-			sort_stats[n]={name=n,c=sort_stats[n].c+count}
+			sort_stats[n]=sort_stats[n] + count
 		end
-		--table.insert(sort_stats,{c=count,f=})
-		--sort_stats[order] = 
-		--order = order+1
-		--table.insert(sort_stats,count,func)
-		--printf	("%s : %d",getname(func), count)
     end
 
-    table.sort	(sort_stats, function (a,b) return a.c<b.c end)
-	print_table (sort_stats)
+    for i,j in pairs(sort_stats) do
+		table.insert(temp,{name=i,count=j})
+    end
+
+    table.sort	(temp, function (a,b) return a.count<b.count end)
+	print_table (temp)
 --    for n,c in pairs(sort_stats) do
 --		printf		("%5d : %s",c,n)
 --    end
