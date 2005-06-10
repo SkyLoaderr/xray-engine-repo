@@ -288,13 +288,13 @@ u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &re
 //			vertex_result			= (*I).m_restriction->accessible_nearest(position,result,false);
 //			break;
 //		}
-//
+
 //	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
 //	result							= ai().level_graph().vertex_position(vertex_result);
 //	VERIFY							(accessible(result,EPS_L));
 //	return							(vertex_result);
 	VERIFY							(m_in_space_restriction);
-	return							(m_in_space_restriction->accessible_nearest(this,position,result,false));
+	return							(m_in_space_restriction->accessible_nearest(m_in_space_restriction,position,result,false));
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const
