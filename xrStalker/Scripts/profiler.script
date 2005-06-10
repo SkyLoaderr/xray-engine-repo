@@ -6,11 +6,11 @@ old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 local function hook (context)
 --	printf("hook-called [%s][%s][%s]-[%s]",tostring(old_hook_func),tostring(old_hook_mask),tostring(old_hook_count),tostring(context))
 		
-	if old_hook_func~=nil then
-		local save	= old_hook_func
+--	if old_hook_func~=nil then
+--		local save	= old_hook_func
 	--	old_hook_func(context)
-		old_hook_func = save;
-	end
+--		old_hook_func = save;
+--	end
 		
 	local f = debug.getinfo(2, "f").func
 	if Counters[f] == nil then    -- first time `f' is called?
@@ -48,7 +48,7 @@ end
 
 function stats()
 	printf("profiler statistics:")
-	table.sort(Counters,function (a,b) return Counters[a]<Counters[b] end)
+	table.sort(Counters,function (a,b) return a>b end)
     for func, count in pairs(Counters) do
 		printf("%s : %d",getname(func), count)
     end
