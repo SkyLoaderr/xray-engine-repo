@@ -4,7 +4,7 @@ local Names = {}
 old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
 local function hook (context)
-		printf("hook-called")
+		printf("hook-called [%s][%s][%s]",tostring(old_hook_func),tostring(old_hook_mask),tostring(old_hook_count))
 		
 		if old_hook_func~=nil then
 			local save	= old_hook_func
