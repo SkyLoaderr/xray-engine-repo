@@ -48,6 +48,7 @@ function main()
 end
 
 function stats()
+	debug.sethook	(nil)
 	local		sort_stats = {}
 	printf		("profiler statistics")
     for func, count in pairs(Counters) do
@@ -58,6 +59,7 @@ function stats()
     for count, func in pairs(sort_stats) do
 		printf		("%s : %d",getname(func), count)
     end
+	debug.sethook(hook, "c")	-- restore
 end
 
 -- profiler.main()
