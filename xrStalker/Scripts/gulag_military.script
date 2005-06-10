@@ -813,7 +813,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --командир
     t = {section = "logic@mil_fblockpost_commander",
 		idle = 0,
-		prior = 2, state = {0, 1},
+		prior = 4, state = {0, 1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
@@ -824,7 +824,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --патрульный 1
     t = {section = "logic@mil_fblockpost_patrol1",
 		idle = 0,
-		prior = 2, state = {0, 1},
+		prior = 3, state = {0, 1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
