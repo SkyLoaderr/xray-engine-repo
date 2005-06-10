@@ -54,7 +54,7 @@ function stats()
     for func, count in pairs(Counters) do
 		local n		= getname(func)
 		if (sort_stats[n]==nil) then
-			sort_stats[n]={name=n,c=count}
+			table.insert(sort_stats,n,{name=n,c=count})
 		else 
 			sort_stats[n]={name=n,c=sort_stats[n].c+count}
 		end
