@@ -61,7 +61,7 @@ function stats()
 
     table.sort	(sort_stats, function (a,b) return a.c<b.c end)
 --	print_table (sort_stats)
-    for value in pairs(sort_stats) do
+    for i,value in pairs(sort_stats) do
 		printf		("%5d : %s",value.c,value.f)
     end
 	debug.sethook(hook, "c")	-- restore
