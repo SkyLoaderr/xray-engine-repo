@@ -3,12 +3,12 @@ local Names = {}
 
 local old_hook = debug.gethook();
 
-local function hook (context)
+local function hook ()--context)
 		printf("hook-called")
 		
-		if old_hook~=nil then
-			old_hook(context)
-		end
+--		if old_hook~=nil then
+--			old_hook(context)
+--		end
 		
 		local f = debug.getinfo(2, "f").func
 		if Counters[f] == nil then    -- first time `f' is called?
