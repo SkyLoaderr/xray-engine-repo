@@ -211,8 +211,9 @@ void CAI_PseudoDog::OnJumpStop()
 void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_PSI_ATTACK) == ASP_PSI_ATTACK) {
-		anim().Seq_Add(eAnimAttackPsi);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimAttackPsi);
+		anim().Seq_Switch	();
 
 		CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 		if (pA) {

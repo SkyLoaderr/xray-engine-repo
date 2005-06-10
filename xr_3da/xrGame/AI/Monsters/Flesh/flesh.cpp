@@ -118,13 +118,15 @@ void CAI_Flesh::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_DRAG_CORPSE) == 	ASP_DRAG_CORPSE) anim().SetCurAnim(eAnimDragCorpse);
 
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Add(eAnimCheckCorpse);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimCheckCorpse);
+		anim().Seq_Switch	();
 	}
 
 	if ((spec_params & ASP_BACK_ATTACK) == ASP_BACK_ATTACK) {
-		anim().Seq_Add(eAnimAttackFromBack);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimAttackFromBack);
+		anim().Seq_Switch	();
 	}
 
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) anim().SetCurAnim(eAnimAttackRat);

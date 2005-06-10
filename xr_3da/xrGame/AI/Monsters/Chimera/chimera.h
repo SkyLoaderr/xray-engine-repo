@@ -1,11 +1,11 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
-#include "../jump_ability.h"
 #include "../../../script_export_space.h"
+#include "../anim_triple.h"
 
-class CStateManagerChimera;
+class CControlJump;
 
-class CChimera : public CBaseMonster, public CJumpingAbility {
+class CChimera : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
 
 	bool		b_upper_state;
@@ -16,7 +16,8 @@ class CChimera : public CBaseMonster, public CJumpingAbility {
 	SVelocityParam	m_fsVelocityJumpTwo;
 	SVelocityParam	m_fsVelocityRunAttack;
 
-
+	CControlJump	*m_jump;
+	SAnimationTripleData anim_triple_jump;
 
 public:
 					CChimera			();

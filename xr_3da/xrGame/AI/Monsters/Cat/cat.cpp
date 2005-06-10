@@ -124,8 +124,9 @@ void CCat::try_to_jump()
 void CCat::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Add	(eAnimCheckCorpse);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimCheckCorpse);
+		anim().Seq_Switch	();
 	}
 
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) anim().SetCurAnim(eAnimAttackRat);

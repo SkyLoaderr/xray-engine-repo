@@ -147,6 +147,8 @@ void CPoltergeist::reinit()
 	
 	m_height							= 0.3f;
 	time_height_updated					= 0;
+	
+	EnableHide							();
 }
 
 void CPoltergeist::Hide()
@@ -172,7 +174,7 @@ void CPoltergeist::Show()
 	
 	setVisible(TRUE);
 
-	
+	anim().Seq_Init		();
 	anim().Seq_Add		(eAnimMiscAction_00);
 	anim().Seq_Switch	();
 

@@ -6,22 +6,25 @@
 #include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../PhysicsShell.h"
+#include "../control_jump.h"
 
 CChimera::CChimera()
 {
 	StateMan = xr_new<CStateManagerChimera>	(this);
 
-	CJumpingAbility::init_external			(this);
+	m_jump			= xr_new<CControlJump>			();
+	control().add	(m_jump, ControlCom::eControlJump);
 }
 
 CChimera::~CChimera()
 {
-	xr_delete(StateMan);
+	xr_delete		(StateMan);
+	xr_delete		(m_jump);
 }
+
 void CChimera::Load(LPCSTR section)
 {
 	inherited::Load			(section);
-	CJumpingAbility::load	(section);
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -127,14 +130,7 @@ void CChimera::reinit()
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpOne,			CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpTwo,			CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
-	MotionID			def1, def2, def3;
-	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
-
-	def1				= pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
-	def2				= pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
-	def3				= pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
-
-	CJumpingAbility::reinit(def1, def2, def3);
+	anim().TA_FillData(anim_triple_jump, "jump_attack_0", "jump_attack_1", "jump_attack_2", true, false);
 }
 
 void CChimera::SetTurnAnimation(bool turn_left)
@@ -182,8 +178,6 @@ EAction CChimera::CustomVelocityIndex2Action(u32 velocity_index)
 
 void CChimera::TranslateActionToPathParams()
 {
-	if (!path().enabled()) return;
-
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
@@ -263,11 +257,20 @@ void CChimera::HitEntityInJump(const CEntity *pEntity)
 void CChimera::UpdateCL()
 {
 	inherited::UpdateCL				();
-	CJumpingAbility::update_frame	();
+	//CJumpingAbility::update_frame	();
 }
 
 void CChimera::try_to_jump()
 {
+	if (!EnemyMan.get_enemy()) return;
+
+	CEntityAlive *target = const_cast<CEntityAlive*>(EnemyMan.get_enemy());
+	if (!m_jump->can_jump(target)) return;
+
+	if (control().check_start_conditions(ControlCom::eControlJump)) {
+		anim().jump(target, anim_triple_jump, MonsterMovement::eChimeraVelocityParamsJump);
+	}
+
 	//CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
 	//if (!target || !EnemyMan.see_enemy_now()) return;
 
@@ -277,5 +280,5 @@ void CChimera::try_to_jump()
 
 void CChimera::jump_over_physics(const Fvector &target)
 {
-	CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump, true);
+	//CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump, true);
 }

@@ -59,7 +59,7 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 	
-	state_id = eStateCustom;
+	//state_id = eStateCustom;
 
 	object->try_to_jump();
 

@@ -105,7 +105,7 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 	inherited::critical_finalize();
 
 	object->CControlledActor::free_from_control	();
-	object->anim().TA_Deactivate				();
+	//object->anim().TA_Deactivate				();
 	object->CInvisibility::manual_activate		();
 }
 

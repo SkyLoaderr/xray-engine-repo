@@ -253,8 +253,9 @@ void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
 void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Add(eAnimCheckCorpse);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimCheckCorpse);
+		anim().Seq_Switch	();
 	}
 
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
