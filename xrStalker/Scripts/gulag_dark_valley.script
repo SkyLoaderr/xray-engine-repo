@@ -398,7 +398,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -409,7 +409,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -420,7 +420,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -431,7 +431,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -442,7 +442,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -453,7 +453,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -464,7 +464,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -475,7 +475,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -486,7 +486,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -497,7 +497,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -508,7 +508,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
@@ -519,7 +519,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 4, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = function(obj) 
 		            	return obj:profile_name() == "bandit_general"
 		            end
