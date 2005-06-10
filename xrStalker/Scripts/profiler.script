@@ -1,9 +1,9 @@
 local Counters = {}
 local Names = {}
 
-local old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
+old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
-local function hook (context)
+function hook (context)
 		printf("hook-called")
 		
 		if old_hook_func~=nil then
@@ -19,7 +19,7 @@ local function hook (context)
 		end
     end
 
-local function getname (func)
+function getname (func)
     local n = Names[func]
     if n.what == "C" then
         return n.name
