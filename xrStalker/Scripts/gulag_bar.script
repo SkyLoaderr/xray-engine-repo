@@ -1082,6 +1082,450 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 
+
+	-- ROSTOK TUNEL ENTER
+	if type == "rostok_tunel_enter" then
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@rostok_tunel_enter_snork", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_enter_snork", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_snork",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)
+	end
+	
+	-- ROSTOK TUNEL MIDDLE
+	if type == "rostok_tunel_middle" then
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_middle_restrictor"
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano"
+		}
+		table.insert(sj, t)	
+	end
+
+
+	-- ROSTOK TUNEL DEEP
+	if type == "rostok_tunel_deep" then
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_tushkano",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@rostok_tunel_deep_snork", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_snork",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_tunel_tushkano", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.tushkano_s
+			            end
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@rostok_tunel_deep_snork", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad,
+			in_rest = "", out_rest = "rostok_tunel_attack_zone",
+			predicate = function(obj)
+				         	return get_clsid(obj) == clsid.snork_s
+			            end
+		}
+		table.insert(sj, t)	
+	end		
 end
 
 function load_states(gname, type)
@@ -1210,15 +1654,14 @@ function load_states(gname, type)
 	
 	if type == "rostok_flesh_angar" then        
 		return function(gulag)
---			local t = db.zone_by_name["rostok_angar_flesh_territory"]
---			if t and db.actor then
---				if t:inside(db.actor:position()) then
---					return 1
---				else
---					return 0
---				end
---			end
-			return 0
+			local t = db.zone_by_name["rostok_angar_flesh_territory"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
+			end
 		end
 	end
 
@@ -1244,6 +1687,36 @@ function load_states(gname, type)
 				return 1
 			else
 				return 0
+			end
+		end
+	end
+
+
+	if type == "rostok_tunel_enter" or
+	   type == "rostok_tunel_middle"
+	then        
+		return function(gulag)
+			local t = db.zone_by_name["rostok_tunel_snork"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
+			end
+		end
+	end
+
+	if type == "rostok_tunel_deep"
+	then        
+		return function(gulag)
+			local t = db.zone_by_name["rostok_tunel_attack_zone"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
 			end
 		end
 	end
@@ -1301,6 +1774,17 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "rostok_dogs_on_exit" then
 		return npc_community == "dog" or
 		       npc_community == "pseudodog"
+	end
+
+	if gulag_type == "rostok_tunel_enter" or
+	   gulag_type == "rostok_tunel_deep"
+	then
+		return npc_community == "snork" or
+		       npc_community == "tushkano"
+	end
+
+	if gulag_type == "rostok_tunel_middle" then
+		return npc_community == "tushkano"
 	end
 	
 	return false

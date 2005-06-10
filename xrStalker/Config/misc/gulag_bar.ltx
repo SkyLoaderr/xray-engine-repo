@@ -1116,8 +1116,25 @@ on_info = %+bar_arena_savage_defeated +bar_arena_monstr_dead%
 		
 		
 		
+;*****************************************************************
+; ROSTOK TUNEL ENTER
+;*****************************************************************		
+[logic@rostok_tunel_tushkano]
+active = nil
 		
-		
-		
-		
+
+[logic@rostok_tunel_enter_snork]
+active = mob_jump@rostok_tunel_enter_snork
+
+[mob_jump@rostok_tunel_enter_snork]
+path_home = path_home
+path_look = path_look
+
+
+[logic@rostok_tunel_deep_snork]
+active = mob_jump@rostok_tunel_deep_snork
+
+[mob_jump@rostok_tunel_deep_snork]
+path_home = path_home
+path_look = path_look
 		
