@@ -1042,6 +1042,7 @@ function IsMonster (object)
        id == clsid.poltergeist_s or 
        id == clsid.gigant_s or 
        id == clsid.zombie_s or 
+       id == clsid.tushkano_s or 
        id == clsid.snork_s then return true end
     return false
 end
