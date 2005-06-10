@@ -31,7 +31,7 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 on_info = {+val_sacrifice_start} remark@phrase1, {+val_escort_nap1_go_rescue} remark@phrase1
 on_info2 = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
-combat_ignore_cond = {!see_actor}, {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403:401)}
 
 ; первая фраза. ждем на 2 фразы второго охранника
 [remark@phrase1]
@@ -42,7 +42,7 @@ snd = speach
 on_signal = sound_end | %+val_sacrifice_guard1_phrase1_done%
 on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
 on_info2 = {+val_sacrifice_guard2_phrase12_done} remark@phrase2
-combat_ignore_cond = {-val_sacrifice_victim_killed !see_actor}, {=check_fighting(403:401)}
+combat_ignore_cond = {-val_sacrifice_victim_killed}, {=check_fighting(403:401)}
 
 ; произносим вторую фразу, после чего переходим в схему убийства пленного
 [remark@phrase2]
@@ -52,7 +52,7 @@ anim = guard
 snd = speach
 on_signal = sound_end | camper@kill
 on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_killed} walker@leave
-combat_ignore_cond = {-val_sacrifice_victim_killed !see_actor}, {=check_fighting(403:401)}
+combat_ignore_cond = {-val_sacrifice_victim_killed}, {=check_fighting(403:401)}
 
 ; убиваем пленного
 [camper@kill]
