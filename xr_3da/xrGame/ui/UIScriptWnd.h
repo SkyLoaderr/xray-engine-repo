@@ -13,7 +13,6 @@ namespace boost {
 
 class CUIDialogWndEx :public CUIDialogWnd, public DLL_Pure
 {
-typedef boost::function<void(),std::allocator<void> > void_function;
 typedef CUIDialogWnd				inherited;
 typedef xr_vector<SCallbackInfo*>	CALLBACKS;
 typedef CALLBACKS::iterator			CALLBACK_IT;
@@ -31,9 +30,7 @@ public:
 	virtual						~CUIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &functor, const luabind::object &object);
-			void				AddCallback			(LPCSTR control_id, s16 event, const void_function &f);
 	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
-			void				test();
 
 template<typename T>
 IC	T*	GetControl(LPCSTR name);

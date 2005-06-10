@@ -76,7 +76,7 @@ CUIWindow::~CUIWindow()
 //	SetWndRect(x, y, width, height);
 //}
 
-void CUIWindow::Init(Irect* pRect)
+void CUIWindow::Init(Frect* pRect)
 {
 	SetWndRect(*pRect);
 }
@@ -94,8 +94,8 @@ void CUIWindow::Draw()
 	}
 }
 
-void CUIWindow::Draw(int x, int y){
-	m_wndPos.set(x,y);
+void CUIWindow::Draw(float x, float y){
+	SetWndPos(x, y);
 	Draw();
 }
 
@@ -144,9 +144,9 @@ void CUIWindow::DetachAll()
 }
 
 //абсолютные координаты, от начала экрана
-Irect CUIWindow::GetAbsoluteRect() 
+Frect CUIWindow::GetAbsoluteRect() 
 {
-	Irect rect;
+	Frect rect;
 
 
 	//окно самого верхнего уровня
@@ -173,9 +173,9 @@ Irect CUIWindow::GetAbsoluteRect()
 
 #define DOUBLE_CLICK_TIME 250
 
-void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 {	
-	Irect	wndRect = GetWndRect();
+	Frect	wndRect = GetWndRect();
 
 	cursor_pos.x = x;
 	cursor_pos.y = y;
@@ -248,7 +248,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
-		Irect wndRect = (*it)->GetWndRect();
+		Frect wndRect = (*it)->GetWndRect();
 		if (wndRect.in(cursor_pos) )
 		{
 			if((*it)->IsEnabled())
@@ -272,7 +272,7 @@ void CUIWindow::OnMouseMove(){
 	// do nothing 
 }
 
-void CUIWindow::OnMouseScroll(int iDirection){
+void CUIWindow::OnMouseScroll(float iDirection){
 	; // do nothing
 }
 
@@ -394,7 +394,7 @@ CUIWindow* CUIWindow::GetChildMouseHandler(){
 
 	for(u32 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
-		Irect wndRect = (*it)->GetWndRect();
+		Frect wndRect = (*it)->GetWndRect();
 		// very strange code.... i can't understand difference between
 		// first and second condition. I Got It from OnMouse() method;
 		if (wndRect.in(cursor_pos) )
@@ -492,38 +492,3 @@ void CUIWindow::SetParent(CUIWindow* pNewParent)
 
 	m_pParentWnd = pNewParent;
 }
-
-//Irect CUIWindow::GetWndRect()
-//{
-//	switch (m_alignment){
-//		case waNone:
-//			return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);
-//			break;
-//		case waCenter:{
-//				Irect res;
-//				int half_w = iFloor(float(m_iWndSize.x)/2.0f);
-//				int half_h = iFloor(float(m_iWndSize.y)/2.0f);
-//				res.set(m_iWndPos.x - half_w,
-//						m_iWndPos.y - half_h,
-//						m_iWndPos.x + half_w,
-//						m_iWndPos.y + half_h);
-//				return res;
-//			}break;
-//		default:
-//			NODEFAULT;
-//	};
-//	return Irect().null();
-//}
-//
-//void CUIWindow::SetWndRect(int x, int y, int width, int height)
-//{
-//	switch (m_alignment){
-//		case waNone:
-//		case waCenter:{
-//				m_iWndPos.set(x,y); 
-//				m_iWndSize.set(width,height);
-//			}break;
-//		default:
-//			NODEFAULT;
-//	};
-//}

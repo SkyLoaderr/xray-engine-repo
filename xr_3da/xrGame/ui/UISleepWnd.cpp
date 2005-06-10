@@ -29,7 +29,7 @@ CUISleepWnd::~CUISleepWnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUISleepWnd::Init(int x, int y, int width, int height)
+void CUISleepWnd::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
 }

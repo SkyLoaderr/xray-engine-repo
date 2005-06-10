@@ -29,11 +29,11 @@ void CUITextureMaster::ParseShTexInfo(LPCSTR xml_file){
 		regions regs;
 		for (int i = 0; i<num; i++)
 		{
-			Irect r;
-			r.x1 = xml.ReadAttribInt("texture",i,"x");
-			r.x2 = xml.ReadAttribInt("texture",i,"width") + r.x1;
-			r.y1 = xml.ReadAttribInt("texture",i,"y");
-			r.y2 = xml.ReadAttribInt("texture",i,"height") + r.y1;
+			Frect r;
+			r.x1 = xml.ReadAttribFlt("texture",i,"x");
+			r.x2 = xml.ReadAttribFlt("texture",i,"width") + r.x1;
+			r.y1 = xml.ReadAttribFlt("texture",i,"y");
+			r.y2 = xml.ReadAttribFlt("texture",i,"height") + r.y1;
 			xr_string id = xml.ReadAttrib("texture",i,"id");
 
 			regs.insert(mk_pair(id,r));

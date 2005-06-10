@@ -64,43 +64,43 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 	AttachChild(&UIHighlight);
 	UIHighlight.Init(0, 0, width, height);
 
-	Irect r	= UIBackground.GetAbsoluteRect();
+	Frect r	= UIBackground.GetAbsoluteRect();
 
 	// Координаты бекграунда
-	r.bottom	-= BORDER;
-	r.left		+= BORDER;
-	r.top		+= BORDER;
-	r.right		-= BORDER;
+	r.bottom	-= float(BORDER);
+	r.left		+= float(BORDER);
+	r.top		+= float(BORDER);
+	r.right		-= float(BORDER);
 
-	int bkWidth				= r.right	- r.left, 
-		bkHeight			= r.bottom	- r.top,
+	float	bkWidth				= r.width(), 
+			bkHeight			= r.height(),
 		// Координаты текстуры
-		texWidth			= SKIN_TEX_WIDTH,
-		texHeight			= SKIN_TEX_HEIGHT;
+		texWidth			= float(SKIN_TEX_WIDTH),
+		texHeight			= float(SKIN_TEX_HEIGHT);
 
 	// Коеффициент сжатия
 	float stretchKoeff = 1.0f;
 
 	// Проверяем какое из отношений меньше
-	float dW = static_cast<float>(bkWidth)	/ texWidth;
-	float dH = static_cast<float>(bkHeight)	/ texHeight;
+	float dW = bkWidth	/ texWidth;
+	float dH = bkHeight	/ texHeight;
 
 	(dW < dH) ? stretchKoeff = dW : stretchKoeff = dH;
 
-	texWidth	= static_cast<int>(texWidth		* stretchKoeff);
-	texHeight	= static_cast<int>(texHeight	* stretchKoeff);
+	texWidth	= texWidth		* stretchKoeff;
+	texHeight	= texHeight	* stretchKoeff;
 
 	if (dW < dH)
 	{
 		float f		 = (bkHeight - texHeight) / 2.0f;
-		r.top		+= static_cast<long>(f);
-		r.bottom	-= static_cast<long>(f);
+		r.top		+= f;
+		r.bottom	-= f;
 	}
 	else
 	{
 		float f		 = (bkWidth - texWidth) / 2.0f;
-		r.left		+= static_cast<long>(f);
-		r.right		-= static_cast<long>(f);
+		r.left		+= f;
+		r.right		-= f;
 	}
 
 	UIHighlight.Init(BORDER, BORDER, r.right - r.left, r.bottom - r.top);

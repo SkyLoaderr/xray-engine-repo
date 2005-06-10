@@ -19,9 +19,9 @@ public:
 CUISubLine& operator=(const CUISubLine& other);
 	
 const CUISubLine*	Cut2Pos(int i);
-	void			Draw(CGameFont* pFont, int x, int y)	const;
-	u32				GetLength(CGameFont* pFont)				const;
-	u32				GetVisibleLength(CGameFont* pFont)		const;
+	void			Draw(CGameFont* pFont, float x, float y)	const;
+	float			GetLength(CGameFont* pFont)				const;
+	float			GetVisibleLength(CGameFont* pFont)		const;
 	void			FreeBuffer();
 
 	xr_string	m_text;

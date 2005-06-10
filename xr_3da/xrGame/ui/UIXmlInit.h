@@ -80,7 +80,7 @@ public:
 	// ‘ункци€ чтени€ алайна из xml файла и применени€ его к координатам.
 	// Return true если дл€ данного окна есть выравнивание
 	static bool					InitAlignment(CUIXml &xml_doc, const char *path,
-											  int index, int &x, int &y,CUIWindow* pWnd);
+											  int index, float &x, float &y,CUIWindow* pWnd);
 
 	// јвтоматическа€ инициализаци€ статических элеменитов
 	// „тобы вернуть указатели на созданые статики (нам бывает необходимо пр€тать их, например)
@@ -95,9 +95,9 @@ public:
 	// 1. align - выравнивание (см. EUIItemAlign)
 	// 2. coord - координата к которй будет примененно выравнивание
 	// Return: измененна€ координата
-	static int					ApplyAlignX(int coord, u32 align);
-	static int					ApplyAlignY(int coord, u32 align);
-	static void					ApplyAlign(int &x, int &y, u32 align);
+	static float					ApplyAlignX(float coord, u32 align);
+	static float					ApplyAlignY(float coord, u32 align);
+	static void						ApplyAlign(float &x, float &y, u32 align);
 
 	// Initialize and store predefined colors
 	typedef std::pair<shared_str, u32> ColorMap;

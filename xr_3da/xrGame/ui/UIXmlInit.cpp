@@ -74,11 +74,11 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
+	float width = xml_doc.ReadAttribFlt(path, index, "width");
+	float height = xml_doc.ReadAttribFlt(path, index, "height");
 	pWnd->Init(x, y, width, height);
 
    	string256 buf;
@@ -112,8 +112,8 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	strconcat(buf,path,":left_top_texture");
 	shared_str tex_name = xml_doc.Read(buf, index, NULL);
 
-	int x = xml_doc.ReadAttribInt(buf, index, "x");
-	int y = xml_doc.ReadAttribInt(buf, index, "y");
+	float x = xml_doc.ReadAttribFlt(buf, index, "x");
+	float y = xml_doc.ReadAttribFlt(buf, index, "y");
 
 	if(*tex_name) pWnd->InitLeftTop(*tex_name, x,y);
 
@@ -121,8 +121,8 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	strconcat(buf,path,":left_bottom_texture");
 	tex_name = xml_doc.Read(buf, index, NULL);
 
-	x = xml_doc.ReadAttribInt(buf, index, "x");
-	y = xml_doc.ReadAttribInt(buf, index, "y");
+	x = xml_doc.ReadAttribFlt(buf, index, "x");
+	y = xml_doc.ReadAttribFlt(buf, index, "y");
 
 	if(*tex_name) pWnd->InitLeftBottom(*tex_name, x,y);
 
@@ -188,8 +188,8 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	}
 
 	// Text coordinates
-	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x", -1);
-	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y", -1);
+	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", -1);
+	float text_y = xml_doc.ReadAttribFlt(*text_path, index, "y", -1);
 	shared_str text = xml_doc.Read(*text_path, index, NULL);
 
 	pWnd->SetTextX(text_x);
@@ -253,8 +253,8 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	pWnd->SetAccelerator(accel);
 
-	int shadowOffsetX	= xml_doc.ReadAttribInt(path, index, "shadow_offset_x", 0);
-	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
+	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
+	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
 
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
 
@@ -303,11 +303,11 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 153));
 	u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 153));
 
-	int shadowOffsetX	= xml_doc.ReadAttribInt(path, index, "shadow_offset_x", 0);
-	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
+	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
+	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
 
-	int pushOffsetX		= xml_doc.ReadAttribInt(path, index, "push_off_x", 2);
-	int pushOffsetY		= xml_doc.ReadAttribInt(path, index, "push_off_y", 3);
+	float pushOffsetX		= xml_doc.ReadAttribFlt(path, index, "push_off_x", 2);
+	float pushOffsetY		= xml_doc.ReadAttribFlt(path, index, "push_off_y", 3);
 
 	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
@@ -324,13 +324,13 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
 
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
+	float width = xml_doc.ReadAttribFlt(path, index, "width");
+	float height = xml_doc.ReadAttribFlt(path, index, "height");
 
 
 	pWnd->Init(x,y, width,height);
@@ -366,14 +366,14 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 	
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
 
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
-	int item_height = xml_doc.ReadAttribInt(path, index, "item_height");
+	float width = xml_doc.ReadAttribFlt(path, index, "width");
+	float height = xml_doc.ReadAttribFlt(path, index, "height");
+	float item_height = xml_doc.ReadAttribFlt(path, index, "item_height");
 	int active_background = xml_doc.ReadAttribInt(path, index, "active_bg");
 
 	// Init font from xml config file
@@ -404,13 +404,13 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 
 	string256 buf;
 	
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
 
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
-	int width = xml_doc.ReadAttribInt(path, index, "length");
-	int height = xml_doc.ReadAttribInt(path, index, "broad");
+	float width = xml_doc.ReadAttribFlt(path, index, "length");
+	float height = xml_doc.ReadAttribFlt(path, index, "broad");
 	bool is_horizontal = (xml_doc.ReadAttribInt(path, index, "horz")==1);
 
 	pWnd->Init(x, y, width, height, is_horizontal);
@@ -428,14 +428,14 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	LPCSTR texture = xml_doc.Read(buf, index, NULL);
 	if(!texture) return false;
 
-	int progress_length = xml_doc.ReadAttribInt(buf, index, "length");
+	float progress_length = xml_doc.ReadAttribFlt(buf, index, "length");
 	int r = xml_doc.ReadAttribInt(buf, index, "r");
 	int g = xml_doc.ReadAttribInt(buf, index, "g");
 	int b = xml_doc.ReadAttribInt(buf, index, "b");
-	int tex_x = xml_doc.ReadAttribInt(buf, index, "x");
-	int tex_y = xml_doc.ReadAttribInt(buf, index, "y");
-	int tex_w = xml_doc.ReadAttribInt(buf, index, "width");
-	int tex_h = xml_doc.ReadAttribInt(buf, index, "height");
+	float tex_x = xml_doc.ReadAttribFlt(buf, index, "x");
+	float tex_y = xml_doc.ReadAttribFlt(buf, index, "y");
+	float tex_w = xml_doc.ReadAttribFlt(buf, index, "width");
+	float tex_h = xml_doc.ReadAttribFlt(buf, index, "height");
 
 	u32 color = RGB_ALPHA(0xFF, r, g, b);
 
@@ -444,12 +444,12 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	// background
 	strconcat(buf,path,":background");
 	texture = xml_doc.Read(buf, index, NULL);
-	tex_x = xml_doc.ReadAttribInt(buf, index, "x");
-	tex_y = xml_doc.ReadAttribInt(buf, index, "y");
-	tex_w = xml_doc.ReadAttribInt(buf, index, "width");
-	tex_h = xml_doc.ReadAttribInt(buf, index, "height");
-	x = xml_doc.ReadAttribInt(buf, index, "offs_x");
-	y = xml_doc.ReadAttribInt(buf, index, "offs_y");
+	tex_x = xml_doc.ReadAttribFlt(buf, index, "x");
+	tex_y = xml_doc.ReadAttribFlt(buf, index, "y");
+	tex_w = xml_doc.ReadAttribFlt(buf, index, "width");
+	tex_h = xml_doc.ReadAttribFlt(buf, index, "height");
+	x = xml_doc.ReadAttribFlt(buf, index, "offs_x");
+	y = xml_doc.ReadAttribFlt(buf, index, "offs_y");
 
 	pWnd->SetBackgroundTexture(texture,tex_x,tex_y,tex_w,tex_h,x,y);
 	
@@ -612,13 +612,13 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 
 	string256 buf;
 
-	int x			= xml_doc.ReadAttribInt(path, index, "x");
-	int y			= xml_doc.ReadAttribInt(path, index, "y");
+	float x			= xml_doc.ReadAttribFlt(path, index, "x");
+	float y			= xml_doc.ReadAttribFlt(path, index, "y");
 
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
-	int width		= xml_doc.ReadAttribInt(path, index, "width");
-	int height		= xml_doc.ReadAttribInt(path, index, "height");
+	float width		= xml_doc.ReadAttribFlt(path, index, "width");
+	float height	= xml_doc.ReadAttribFlt(path, index, "height");
 	bool vertical	= !!xml_doc.ReadAttribInt(path, index, "vertical");
 
 	int	r			= xml_doc.ReadAttribInt(path, index, "r", 0xff);
@@ -646,8 +646,8 @@ bool CUIXmlInit::InitLabel(CUIXml& xml_doc, const char* path, int index, CUILabe
 
 	string256 buf;
 	shared_str text_path = strconcat(buf,path,":text");
-	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x", 0);
-	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y", 0);
+	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", 0);
+	float text_y = xml_doc.ReadAttribFlt(*text_path, index, "y", 0);
 
 	if (text_x)
 		pWnd->SetTextPosX(text_x);
@@ -720,9 +720,9 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 		p = pWnd->AddPhrase();
 
 		status			&= InitTextBanner(xml_doc, ph, i, &p->effect);
-		p->outX			= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "x", 0));
-		p->outY			= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "y", 0));
-		p->maxWidth		= xml_doc.ReadAttribInt(ph, i, "width", -1);
+		p->outX			= (xml_doc.ReadAttribFlt(ph, i, "x", 0));
+		p->outY			= (xml_doc.ReadAttribFlt(ph, i, "y", 0));
+		p->maxWidth		= xml_doc.ReadAttribFlt(ph, i, "width", -1);
 
 		CGameFont *pFont;
 		InitFont(xml_doc, ph, i, argb, pFont);
@@ -804,12 +804,12 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISi
 	string256 buf;
 	strconcat(buf, path, ":texture");
 
-	Irect rect;
+	Frect rect;
 
-	rect.x1			= xml_doc.ReadAttribInt(buf, index, "x", 0);
-	rect.y1			= xml_doc.ReadAttribInt(buf, index, "y", 0);
-	rect.x2			= rect.x1 + xml_doc.ReadAttribInt(buf, index, "width", 0);	
-	rect.y2			= rect.y1 + xml_doc.ReadAttribInt(buf, index, "height", 0);
+	rect.x1			= xml_doc.ReadAttribFlt(buf, index, "x", 0);
+	rect.y1			= xml_doc.ReadAttribFlt(buf, index, "y", 0);
+	rect.x2			= rect.x1 + xml_doc.ReadAttribFlt(buf, index, "width", 0);	
+	rect.y2			= rect.y1 + xml_doc.ReadAttribFlt(buf, index, "height", 0);
 	int	a			= xml_doc.ReadAttribInt(buf, index, "a", 255);
 	int	r			= xml_doc.ReadAttribInt(buf, index, "r", 255);
 	int	g			= xml_doc.ReadAttribInt(buf, index, "g", 255);
@@ -861,10 +861,10 @@ bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, CUIStatic*
         id = xml_doc.ReadAttrib("texture", i, "id");
 		if (0 == xr_strcmp(id.c_str(), t_id))
 		{
-			int x		= xml_doc.ReadAttribInt("texture", i, "x");
-			int y		= xml_doc.ReadAttribInt("texture", i, "y");
-			int width	= xml_doc.ReadAttribInt("texture", i, "width", -1);
-			int height	= xml_doc.ReadAttribInt("texture", i, "height", -1);
+			float x		= xml_doc.ReadAttribFlt("texture", i, "x");
+			float y		= xml_doc.ReadAttribFlt("texture", i, "y");
+			float width	= xml_doc.ReadAttribFlt("texture", i, "width", -1);
+			float height	= xml_doc.ReadAttribFlt("texture", i, "height", -1);
 
 			if (-1 == width || -1 == height)
                 return false;
@@ -885,8 +885,8 @@ bool CUIXmlInit::InitTextureOffset(CUIXml &xml_doc, LPCSTR path, int index, CUIS
 	else
 		strconcat(textureOffset, path, ":texture_offset");
 
-	int x = xml_doc.ReadAttribInt(textureOffset, index, "x");
-	int y = xml_doc.ReadAttribInt(textureOffset, index, "y");
+	float x = xml_doc.ReadAttribFlt(textureOffset, index, "x");
+	float y = xml_doc.ReadAttribFlt(textureOffset, index, "y");
 
 	pWnd->SetTextureOffset(x, y);
 
@@ -985,7 +985,7 @@ bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUIStati
 
 //////////////////////////////////////////////////////////////////////////
 
-int CUIXmlInit::ApplyAlignX(int coord, u32 align)
+float CUIXmlInit::ApplyAlignX(float coord, u32 align)
 {
 	return coord;
 /*
@@ -1010,7 +1010,7 @@ int CUIXmlInit::ApplyAlignX(int coord, u32 align)
 
 //////////////////////////////////////////////////////////////////////////
 
-int CUIXmlInit::ApplyAlignY(int coord, u32 align)
+float CUIXmlInit::ApplyAlignY(float coord, u32 align)
 {
 	return coord;
 /*
@@ -1035,7 +1035,7 @@ int CUIXmlInit::ApplyAlignY(int coord, u32 align)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIXmlInit::ApplyAlign(int &x, int &y, u32 align)
+void CUIXmlInit::ApplyAlign(float &x, float &y, u32 align)
 {
 	x = ApplyAlignX(x, align);
 	y = ApplyAlignY(y, align);
@@ -1044,7 +1044,7 @@ void CUIXmlInit::ApplyAlign(int &x, int &y, u32 align)
 //////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitAlignment(CUIXml &xml_doc, const char *path,
-							   int index, int &x, int &y,CUIWindow* pWnd)
+							   int index, float &x, float &y,CUIWindow* pWnd)
 {
 	xr_string wnd_alignment = xml_doc.ReadAttrib(path, index, "alignment", "");
 	
@@ -1110,15 +1110,14 @@ void CUIXmlInit::InitColorDefs()
 bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index, CUIArtefactPanel* pWnd){
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
 	InitAlignment(xml_doc, path, index, x, y, pWnd);
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
+	float width = xml_doc.ReadAttribFlt(path, index, "width");
+	float height = xml_doc.ReadAttribFlt(path, index, "height");
 	pWnd->Init(x, y, width, height);
 
-	LPCSTR strScale = xml_doc.ReadAttrib(path, index, "scale");
-	float fScale = static_cast<float>(atof(strScale));
+	float fScale = xml_doc.ReadAttribFlt(path, index, "scale");
 	pWnd->SetScaleXY(fScale,fScale);
 	return true;
 }

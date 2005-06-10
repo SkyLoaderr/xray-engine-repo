@@ -15,13 +15,13 @@ public:
 	CUIScrollBox(void);
 	virtual ~CUIScrollBox(void);
 
-	virtual void Init(int x, int y, int length, int broad, bool bIsHorizontal);
+	virtual void Init(float x, float y, float length, float broad, bool bIsHorizontal);
 
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{SCROLLBOX_MOVE, SCROLLBOX_STOP} E_MESSAGE;
 
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Draw();
 						
 
@@ -30,8 +30,8 @@ protected:
 	//горизонтальный или вертикальный 
 	bool m_bIsHorizontal;
 
-	int m_iOldMouseX;
-	int m_iOldMouseY;
+	float m_iOldMouseX;
+	float m_iOldMouseY;
 
 };
 

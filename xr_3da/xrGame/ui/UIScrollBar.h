@@ -11,6 +11,9 @@
 #include "UIButton.h"
 #include "UIScrollBox.h"
 
+#define SCROLLBAR_WIDTH  16.0f
+#define SCROLLBAR_HEIGHT 16.0f
+
 
 class CUIScrollBar :public CUIWindow
 {
@@ -57,7 +60,7 @@ protected:
 protected:
 	u32				ScrollSize			(){return _max(0,m_iMaxPos-m_iMinPos-m_iPageSize+1);}
 	void			ClampByViewRect		();
-	void			SetPosScrollFromView(int view_pos, int view_width, int view_offs);
+	void			SetPosScrollFromView(float view_pos, float view_width, float view_offs);
 	int				PosViewFromScroll	(int view_size, int view_offs);
 	void			SetScrollPosClamped	(u32 iPos) { 
 														m_iScrollPos = iPos; 
@@ -70,18 +73,18 @@ public:
 			bool	GetEnabled		()					{return m_b_enabled;}
 	virtual void	Show			(bool b);
 	virtual void	Enable			(bool b);
-	virtual void	Init			(int x, int y, int length, bool bIsHorizontal);
+	virtual void	Init			(float x, float y, float length, bool bIsHorizontal);
 
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void	OnMouse(float x, float y, EUIMessages mouse_action);
 
 	virtual void	Draw			();
 
-	virtual void	SetWidth		(int width);
-	virtual void	SetHeight		(int height);
+	virtual void	SetWidth		(float width);
+	virtual void	SetHeight		(float height);
 
 	virtual void	Reset			();
 	// В листбоксе скроллбар глючит если мы удаляем элементы снизу листа, а скроллбар
@@ -102,7 +105,6 @@ public:
 	void			SetScrollPos	(u32 iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
 	int				GetScrollPos	() {return _max(m_iMinPos,m_iScrollPos);}
 	// базовые размеры для кнопок
-	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};
 	void			TryScrollInc	();
 	void			TryScrollDec	();
 };

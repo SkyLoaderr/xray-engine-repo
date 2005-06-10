@@ -47,7 +47,6 @@ export_class &script_register_ui_window1(export_class &instance)
 		.def("AddCallback",		(void(BaseType::*)(LPCSTR, s16, const luabind::functor<void>&, const luabind::object&))BaseType::AddCallback)
 
 		.def("Register",		&BaseType::Register)
-		.def("test",			&BaseType::test)
 
 		.def("GetButton",		(CUIButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIButton>)
 		.def("GetMessageBox",	(CUIMessageBox* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIMessageBox>)

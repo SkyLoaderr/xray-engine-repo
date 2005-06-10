@@ -51,20 +51,20 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	}
 
 	// Ok button
-	Irect r = m_vSkinWindows[0].UIBackground.GetWndRect();
+	Frect r = m_vSkinWindows[0].UIBackground.GetWndRect();
 
 	AttachChild(&UIOkBtn);
 	xml_init.InitButton(xmlDoc, "button", 0, &UIOkBtn);
-	Irect rect = UIOkBtn.GetWndRect();
+	Frect rect = UIOkBtn.GetWndRect();
 
-	UIOkBtn.SetWndPos(UI_BASE_WIDTH / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
+	UIOkBtn.SetWndPos(UI_BASE_WIDTH / 2 - ((rect.right - rect.left) * 1.5),
 		r.bottom + r.top / 2 - UIOkBtn.GetHeight());
 
 	// cancel button
 	AttachChild(&UICancelBtn);
 	xml_init.InitButton(xmlDoc, "button", 1, &UICancelBtn);
 	rect	= UICancelBtn.GetWndRect();
-	UICancelBtn.SetWndPos(UI_BASE_WIDTH / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
+	UICancelBtn.SetWndPos(UI_BASE_WIDTH / 2 + ((rect.right - rect.left) * 0.5),
 		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
 
 	SetFont(HUD().Font().pFontHeaderRussian);
@@ -123,14 +123,9 @@ int CUISkinSelectorWnd::SwitchSkin(const int idx)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUISkinSelectorWnd::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	Ivector2 activePoint;
-
-	activePoint.x = x;
-	activePoint.y = y;
-
-	Irect rect;
+	Frect rect;
 
 	inherited::OnMouse(x, y, mouse_action); // need to generate DB_CLICK action
 	
@@ -139,7 +134,7 @@ void CUISkinSelectorWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 			for (int i = 0; i < SKINS_COUNT; ++i)
 			{
 				rect = m_vSkinWindows[i].UIHighlight.GetAbsoluteRect();
-				if (rect.in(activePoint) && i != m_uActiveIndex)
+				if (rect.in(x,y) && i != m_uActiveIndex)
 				{
 					SwitchSkin(i);
 				}
@@ -180,9 +175,9 @@ void CUISkinSelectorWnd::DrawKBAccelerators()
 {
 	for (u8 i = 0; i < SKINS_COUNT; ++i)
 	{
-		Irect rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
+		Frect rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
 
-		Irect r;
+		Frect r;
 		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 		UI()->OutText(GetFont(), r,

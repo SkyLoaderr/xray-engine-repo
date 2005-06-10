@@ -35,7 +35,7 @@ void CUIWndCallback::OnEvent(CUIWindow* pWnd, s16 msg, void* pData)
 	(*it)->m_callback();
 	
 	if ((*it)->m_cpp_callback)	
-		(*it)->m_cpp_callback();
+		(*it)->m_cpp_callback(pWnd, pData);
 }
 
 
@@ -44,24 +44,7 @@ SCallbackInfo*	CUIWndCallback::NewCallback ()
 	m_callbacks.push_back( xr_new<SCallbackInfo>() );
 	return m_callbacks.back();
 }
-/*
-void CUIWndCallback::AddCallback(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function)
-{
-	SCallbackInfo* c	= NewCallback ();
-	c->m_callback.set	(lua_function);
-	c->m_controlName	= control_id;
-	c->m_event			= event;
-	
-}
 
-void CUIWndCallback::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
-{
-	SCallbackInfo* c	= NewCallback ();
-	c->m_callback.set	(lua_object,method);
-	c->m_controlName	= control_id;
-	c->m_event			= event;
-}
-*/
 void CUIWndCallback::AddCallback(LPCSTR control_id, s16 event, const void_function &f)
 {
 	SCallbackInfo* c	= NewCallback ();

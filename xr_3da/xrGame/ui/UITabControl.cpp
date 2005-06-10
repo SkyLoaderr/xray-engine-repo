@@ -23,7 +23,7 @@ CUITabControl::~CUITabControl()
 }
 
 // добавление кнопки-закладки в список закладок контрола
-bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, int x, int y, int width, int height)
+bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height)
 {
 	CUITabButton *pNewButton = xr_new<CUITabButton>();
 	if (!pNewButton) return false;
@@ -162,7 +162,7 @@ void CUITabControl::OnTabChange(int iCur, int iPrev){
 	GetMessageTarget()->SendMessage(this, TAB_CHANGED, NULL);
 }
 
-void CUITabControl::Init(int x, int y, int width, int height)
+void CUITabControl::Init(float x, float y, float width, float height)
 {
 	CUIWindow::Init(x, y, width, height);
 }

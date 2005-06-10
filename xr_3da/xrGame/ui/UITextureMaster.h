@@ -24,8 +24,8 @@ protected:
 
 	typedef xr_string region_name;
 	typedef xr_string shader_name;
-	typedef xr_map<region_name, Irect>				regions;
-	typedef xr_map<region_name, Irect>::iterator	regions_it;
+	typedef xr_map<region_name, Frect>				regions;
+	typedef xr_map<region_name, Frect>::iterator	regions_it;
 	typedef xr_map<shader_name, regions>			shared_textures;
 	typedef xr_map<shader_name, regions>::iterator	shared_textures_it;
 

@@ -20,7 +20,7 @@ public:
 	CUITabControl();
 	virtual ~CUITabControl();
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void OnTabChange(int iCur, int iPrev);
 	virtual void OnStaticFocusReceive(CUIWindow* pWnd);
@@ -28,7 +28,7 @@ public:
 	virtual void Update();
 
 	// Добавление кнопки-закладки в список закладок контрола
-	bool AddItem(const char *pItemName, const char *pTexName, int x, int y, int width, int height);
+	bool AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height);
 	bool AddItem(CUITabButton *pButton);
 
 	void RemoveItem(const u32 Index);

@@ -639,10 +639,10 @@ void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropList& dragDropList
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									(*it)->GetXPos()*INV_GRID_WIDTH,
-									(*it)->GetYPos()*INV_GRID_HEIGHT,
-									(*it)->GetGridWidth()*INV_GRID_WIDTH,
-									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+									float((*it)->GetXPos()*INV_GRID_WIDTH),
+									float((*it)->GetYPos()*INV_GRID_HEIGHT),
+									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
+									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
 
 			UIDragDropItem.SetData((*it));
 
@@ -675,7 +675,7 @@ void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropList& dragDropList
 void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const int offset = -15;
+	const float offset = -15.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
 	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);

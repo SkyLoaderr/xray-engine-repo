@@ -26,24 +26,24 @@ CUIScrollBar::~CUIScrollBar(void)
 {
 }
 
-void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
+void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal)
 {
 	m_bIsHorizontal = bIsHorizontal;
 
 	if(m_bIsHorizontal){
 		CUIWindow::Init			(x,y, length, SCROLLBAR_HEIGHT);
-		m_DecButton.Init		(SCROLLBAR_LEFT_ARROW, 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init		(SCROLLBAR_RIGHT_ARROW,length-SCROLLBAR_WIDTH, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_ScrollBox.Init		(SCROLLBAR_WIDTH, 0, length/2, SCROLLBAR_HEIGHT, m_bIsHorizontal);
-		m_StaticBackground.Init	(SCROLLBAR_BACKGROUND_HORZ ,"hud\\default", 0,0,alNone);
-		m_ScrollWorkArea		= _max(0,GetWidth()-2*SCROLLBAR_WIDTH);
+		m_DecButton.Init		(SCROLLBAR_LEFT_ARROW, 0.0f, 0.0f, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_IncButton.Init		(SCROLLBAR_RIGHT_ARROW,length-SCROLLBAR_WIDTH, 0.0f, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_ScrollBox.Init		(SCROLLBAR_WIDTH, 0.0f, length/2, SCROLLBAR_HEIGHT, m_bIsHorizontal);
+		m_StaticBackground.Init	(SCROLLBAR_BACKGROUND_HORZ ,"hud\\default", 0.0f, 0.0f,alNone);
+		m_ScrollWorkArea		= _max(0,iFloor(GetWidth()-2*SCROLLBAR_WIDTH));
 	}else{
 		CUIWindow::Init			(x,y, SCROLLBAR_WIDTH, length);
-		m_DecButton.Init		(SCROLLBAR_UP_ARROW,0, 0,SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init		(SCROLLBAR_DOWN_ARROW, 0, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_DecButton.Init		(SCROLLBAR_UP_ARROW,0.0f, 0.0f ,SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_IncButton.Init		(SCROLLBAR_DOWN_ARROW, 0.0f, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 		m_ScrollBox.Init		(0, SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, length/2, m_bIsHorizontal);
-		m_StaticBackground.Init	(SCROLLBAR_BACKGROUND_VERT ,"hud\\default", 0,0,alNone);
-		m_ScrollWorkArea		= _max(0,GetHeight()-2*SCROLLBAR_HEIGHT);
+		m_StaticBackground.Init	(SCROLLBAR_BACKGROUND_VERT ,"hud\\default", 0.0f, 0.0f ,alNone);
+		m_ScrollWorkArea		= _max(0,iFloor(GetHeight()-2*SCROLLBAR_HEIGHT));
 	}
 
 	if(!IsChild(&m_DecButton))	AttachChild(&m_DecButton);
@@ -55,15 +55,15 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 
 
 //корректировка размеров скроллера
-void CUIScrollBar::SetWidth(int width)
+void CUIScrollBar::SetWidth(float width)
 {
-	if(width<=0) width = 1;
+	if(width<=0.0f) width = 1.0f;
 	inherited::SetWidth(width);
 }
 
-void CUIScrollBar::SetHeight(int height)
+void CUIScrollBar::SetHeight(float height)
 {
-	if(height<=0) height = 1;
+	if(height<=0.0f) height = 1.0f;
 	inherited::SetHeight(height);
 }
 
@@ -98,26 +98,26 @@ void CUIScrollBar::UpdateScrollBar()
 	Show						( !!(0!=ScrollSize()) );
 	if (IsShown()){
 		//уcтановить размер и положение каретки
-		int box_sz				= iFloor(float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos));
+		float box_sz				= float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos);
 		if(m_bIsHorizontal){	
 			// set width
-			clamp					(box_sz,_min(int(SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
+			clamp					(box_sz,_min(SCROLLBAR_WIDTH,GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
 			m_ScrollBox.SetWidth	(box_sz);
 			// set pos
-			int pos					= PosViewFromScroll(m_ScrollBox.GetWidth(),SCROLLBAR_WIDTH);
-			m_ScrollBox.SetWndPos	(pos, m_ScrollBox.GetWndRect().top);
+			int pos					= PosViewFromScroll(iFloor(m_ScrollBox.GetWidth()),iFloor(SCROLLBAR_WIDTH));
+			m_ScrollBox.SetWndPos	(float(pos), m_ScrollBox.GetWndRect().top);
 		}else{
 			// set height
-			clamp					(box_sz,_min(int(SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
+			clamp					(box_sz,_min(SCROLLBAR_HEIGHT,GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
 			m_ScrollBox.SetHeight	(box_sz);
 			// set pos
-			int pos					= PosViewFromScroll(m_ScrollBox.GetHeight(),SCROLLBAR_HEIGHT);
-			m_ScrollBox.SetWndPos	(m_ScrollBox.GetWndRect().left, pos);
+			int pos				= PosViewFromScroll(iFloor(m_ScrollBox.GetHeight()),iFloor(SCROLLBAR_HEIGHT));
+			m_ScrollBox.SetWndPos	(m_ScrollBox.GetWndRect().left, float(pos));
 		}
 	}
 }
 
-void CUIScrollBar::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIScrollBar::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 		case WINDOW_MOUSE_WHEEL_DOWN:
@@ -152,12 +152,12 @@ void CUIScrollBar::ClampByViewRect()
 	}
 }
 
-void CUIScrollBar::SetPosScrollFromView(int view_pos, int view_size, int view_offs)
+void CUIScrollBar::SetPosScrollFromView(float view_pos, float view_size, float view_offs)
 {
 	u32 scroll_size	= ScrollSize();
-	int pos			= view_pos-view_offs;
-	int work_size	= m_ScrollWorkArea-view_size;
-	SetScrollPosClamped	(work_size?iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos)):0);
+	float pos			= view_pos-view_offs;
+	float work_size	= m_ScrollWorkArea-view_size;
+	SetScrollPosClamped	(work_size?iFloor(((pos/work_size)*(scroll_size) + m_iMinPos)):0);
 }
 
 int CUIScrollBar::PosViewFromScroll(int view_size, int view_offs)
@@ -261,18 +261,18 @@ void CUIScrollBar::Draw()
 	//нарисовать фоновую подложку
 	if(m_bIsHorizontal){
 		if (m_StaticBackground.GetOriginalRect().width()){
-			int tile		= iFloor(GetWidth()/float(m_StaticBackground.GetOriginalRect().width()));
-			int rem			= GetWidth()-tile*m_StaticBackground.GetOriginalRect().width();
-			m_StaticBackground.SetTile(tile,1,rem,0);
+			int tile		= iFloor(GetWidth()/m_StaticBackground.GetOriginalRect().width());
+			float rem			= GetWidth()-tile*m_StaticBackground.GetOriginalRect().width();
+			m_StaticBackground.SetTile(tile,1,rem,0.0f);
 		}
 	}else{
 		if (m_StaticBackground.GetOriginalRect().height()){
-			int tile		= iFloor(GetHeight()/float(m_StaticBackground.GetOriginalRect().height()));
-			int rem			= GetHeight()-tile*m_StaticBackground.GetOriginalRect().height();
-			m_StaticBackground.SetTile(1,tile,0,rem);
+			int tile		= iFloor(GetHeight()/m_StaticBackground.GetOriginalRect().height());
+			float rem			= GetHeight()-tile*m_StaticBackground.GetOriginalRect().height();
+			m_StaticBackground.SetTile(1,tile,0.0f,rem);
 		}
 	}
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 	m_StaticBackground.SetPos(rect.left,rect.top);
 	m_StaticBackground.Render();
 

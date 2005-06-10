@@ -23,7 +23,7 @@ CUIScrollBox::~CUIScrollBox(void)
 }
 
 
-void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
+void CUIScrollBox::Init(float x, float y, float length, float broad, bool bIsHorizontal)
 {
 	m_bIsHorizontal = bIsHorizontal;
 
@@ -45,10 +45,10 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 //////////////////////////////////////////////////////////////////////////
 
 
-void CUIScrollBox::OnMouse(int x, int y, EUIMessages mouse_action)
+void CUIScrollBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	int deltaX = 0;
-	int deltaY = 0;
+	float deltaX = 0;
+	float deltaY = 0;
 
 	//проверить попадает ли курсор на кнопку
 	//координаты заданы относительно самой кнопки
@@ -131,14 +131,14 @@ void CUIScrollBox::Draw()
 {
 	if(m_bIsHorizontal){
 		if (m_UIStaticItem.GetOriginalRect().width()){
-			int tile		= iFloor(GetWidth()/float(m_UIStaticItem.GetOriginalRect().width()));
-			int rem			= GetWidth()-tile*m_UIStaticItem.GetOriginalRect().width();
+			int tile		= iFloor(GetWidth()/m_UIStaticItem.GetOriginalRect().width());
+			float rem		= GetWidth()-tile*m_UIStaticItem.GetOriginalRect().width();
 			m_UIStaticItem.SetTile(tile,1,rem,0);
 		}
 	}else{
 		if (m_UIStaticItem.GetOriginalRect().height()){
-			int tile		= iFloor(GetHeight()/float(m_UIStaticItem.GetOriginalRect().height()));
-			int rem			= GetHeight()-tile*m_UIStaticItem.GetOriginalRect().height();
+			int tile		= iFloor(GetHeight()/m_UIStaticItem.GetOriginalRect().height());
+			float rem		= GetHeight()-tile*m_UIStaticItem.GetOriginalRect().height();
 			m_UIStaticItem.SetTile(1,tile,0,rem);
 		}
 	}

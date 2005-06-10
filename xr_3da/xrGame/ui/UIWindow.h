@@ -24,7 +24,7 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void			Init				(Irect* pRect);
+	virtual void			Init				(Frect* pRect);
 
 	virtual CUIDragDropItem*cast_drag_drop_item	()								{return NULL;}
 
@@ -54,9 +54,9 @@ public:
 	
 
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void OnMouseMove();
-	virtual void OnMouseScroll(int iDirection);
+	virtual void OnMouseScroll(float iDirection);
 	virtual void OnDbClick();
 	virtual void OnMouseDown(bool left_button = true);
 	virtual void OnMouseUp(bool left_button = true);
@@ -95,23 +95,17 @@ public:
 	virtual void			Show				(bool status)									{SetVisible(status); Enable(status); }
 	IC		bool			IsShown				()												{return this->GetVisible();}
 	
-	////////////////////////////////////
-	//положение и размеры окна
-
-	//относительные координаты
-	void					SetWndRect			(int x, int y, int width, int height) {m_wndPos.set(x,y); m_wndSize.set(width,height); }
-	IC void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
-
-	virtual void			MoveWndDelta		(int dx, int dy)					{m_wndPos.x+=dx;m_wndPos.y+=dy;}
-	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
-
 	//абсолютные координаты
-	Irect					GetAbsoluteRect		() ;
-	Ivector2				GetAbsolutePos		() 									{Irect abs = GetAbsoluteRect(); return Ivector2().set(abs.x1,abs.y1);}
+	Frect					GetAbsoluteRect		() ;
+	Fvector2				GetAbsolutePos		() 												{Frect abs = GetAbsoluteRect(); return Fvector2().set(abs.x1,abs.y1);}
+
+
+	virtual void			SetWndRect_script(float x, float y, float width, float height)		{CUISimpleWindow::SetWndRect(x,y,width,height);}
+	virtual void			SetWndRect_script(Frect rect)										{CUISimpleWindow::SetWndRect(rect);}
 
 	//прорисовка окна
 	virtual void			Draw				();
-	virtual void			Draw				(int x, int y);
+	virtual void			Draw				(float x, float y);
 	//обновление окна передпрорисовкой
 	virtual void			Update				();
 
@@ -130,7 +124,6 @@ public:
 																					return  m_pParentWnd->GetFont();}
 
 	DEF_LIST (WINDOW_LIST, CUIWindow*);
-//	DEF_VECTOR (WINDOW_LIST, CUIWindow*);
 	WINDOW_LIST&			GetChildWndList		()							{return m_ChildWndList; }
 
 
@@ -145,7 +138,6 @@ public:
 
 	IC void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
 	IC bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
-//	IC void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
 protected:
 	shared_str				m_windowName;
 	//список дочерних окон
@@ -169,20 +161,9 @@ protected:
 	//кому шлем сообщения
 	CUIWindow*				m_pMessageTarget;
 
-	//положение и размер окна, задается 
-	//относительно родительского окна
-//	Ivector2				m_iWndPos;
-//	Ivector2				m_iWndSize;
-
 	//разрешен ли ввод пользователя
 	bool					m_bIsEnabled;
-	//показывать ли окно
-//	bool					m_bIsShown;
 
-
-	/////////////
-	//указатель на используемый шрифт
-	//временно!!!!
 	CGameFont*				m_pFont;
 
 
@@ -203,13 +184,12 @@ protected:
 								WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child);
 								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);
 	};
-//private:
-//	EWindowAlignment		m_alignment;
+
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
 	virtual LPCSTR			GetHint			()						{return NULL;};
 	// Последняя позиция мышки
-	Ivector2 cursor_pos;
+	Fvector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 
 };

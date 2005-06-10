@@ -25,13 +25,13 @@ CUIWpnDragDropItem::~ CUIWpnDragDropItem()
 
 void CUIWpnDragDropItem::Draw()
 {
-	int bk_w = GetWidth();
+	float bk_w = GetWidth();
 	if(m_pWeapon && m_pWeapon->IsSilencerAttached()){
 		
-		int d = iFloor(cur_scale_x*iSilencerGridWidth*INV_GRID_WIDTH);
+		float d = cur_scale_x*iSilencerGridWidth*INV_GRID_WIDTH;
 		SetWidth	(bk_w-d);
 
-		Irect out_rect;
+		Frect out_rect;
 
 		out_rect.top =   0;
 		out_rect.bottom = GetHeight();
@@ -47,7 +47,7 @@ void CUIWpnDragDropItem::Draw()
 
 	if(!m_pWeapon)	return;
 
-	Irect rect = GetAbsoluteRect();
+	Frect rect = GetAbsoluteRect();
 
 	if (m_bInFloat) 
 		UI()->PushScissor(UI()->ScreenRect(),true);
@@ -63,10 +63,10 @@ void CUIWpnDragDropItem::Draw()
 
 		m_UIStaticScope.SetPos(	rect.left + w,
 								rect.top + h);
-		m_UIStaticScope.SetRect(	0, 
-									0, 
-									iFloor(cur_scale_x*iScopeGridWidth*INV_GRID_WIDTH), 
-									iFloor(cur_scale_y*iScopeGridHeight*INV_GRID_HEIGHT));
+		m_UIStaticScope.SetRect(	0.0f, 
+									0.0f, 
+									(cur_scale_x*iScopeGridWidth*INV_GRID_WIDTH), 
+									(cur_scale_y*iScopeGridHeight*INV_GRID_HEIGHT));
 
 		m_UIStaticScope.Render();
 	}
@@ -82,10 +82,10 @@ void CUIWpnDragDropItem::Draw()
 		m_UIStaticSilencer.SetPos(	rect.left + w,
 									rect.top  + h);
 
-		m_UIStaticSilencer.SetRect(	0, 
-									0, 
-									iFloor(cur_scale_x*iSilencerGridWidth*INV_GRID_WIDTH), 
-									iFloor(cur_scale_y*iSilencerGridHeight*INV_GRID_HEIGHT));
+		m_UIStaticSilencer.SetRect(	0.0f, 
+									0.0f, 
+									(cur_scale_x*iSilencerGridWidth*INV_GRID_WIDTH), 
+									(cur_scale_y*iSilencerGridHeight*INV_GRID_HEIGHT));
 
 		m_UIStaticSilencer.Render();
 	}
@@ -101,10 +101,11 @@ void CUIWpnDragDropItem::Draw()
 		m_UIStaticGrenadeLauncher.SetPos(	rect.left + w,
 											rect.top + h);
 
-		m_UIStaticGrenadeLauncher.SetRect(	0, 
-									0, 
-									iFloor(cur_scale_x*iLauncherGridWidth*INV_GRID_WIDTH), 
-									iFloor(cur_scale_y*iLauncherGridHeight*INV_GRID_HEIGHT));
+		m_UIStaticGrenadeLauncher.SetRect(	
+									0.0f, 
+									0.0f, 
+									(cur_scale_x*iLauncherGridWidth*INV_GRID_WIDTH), 
+									(cur_scale_y*iLauncherGridHeight*INV_GRID_HEIGHT));
 
 		m_UIStaticGrenadeLauncher.Render();
 
@@ -135,8 +136,8 @@ void CUIWpnDragDropItem::SetData(void* pData)
 			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
 
 			m_UIStaticGrenadeLauncher.SetOriginalRect(
-				iXPos*INV_GRID_WIDTH, iYPos*INV_GRID_HEIGHT,
-				iLauncherGridWidth*INV_GRID_WIDTH, iLauncherGridHeight*INV_GRID_HEIGHT);
+				float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
+				float(iLauncherGridWidth*INV_GRID_WIDTH), float(iLauncherGridHeight*INV_GRID_HEIGHT));
 		}
 		if(m_pWeapon->ScopeAttachable())
 		{
@@ -149,8 +150,8 @@ void CUIWpnDragDropItem::SetData(void* pData)
 			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
 
 			m_UIStaticScope.SetOriginalRect(
-				iXPos*INV_GRID_WIDTH, iYPos*INV_GRID_HEIGHT,
-				iScopeGridWidth*INV_GRID_WIDTH, iScopeGridHeight*INV_GRID_HEIGHT);
+				float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
+				float(iScopeGridWidth*INV_GRID_WIDTH), float(iScopeGridHeight*INV_GRID_HEIGHT));
 			
 		}
 		if(m_pWeapon->SilencerAttachable())
@@ -164,8 +165,8 @@ void CUIWpnDragDropItem::SetData(void* pData)
 			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
 
 			m_UIStaticSilencer.SetOriginalRect(
-				iXPos*INV_GRID_WIDTH, iYPos*INV_GRID_HEIGHT,
-				iSilencerGridWidth*INV_GRID_WIDTH, iSilencerGridHeight*INV_GRID_HEIGHT);
+				float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
+				float(iSilencerGridWidth*INV_GRID_WIDTH), float(iSilencerGridHeight*INV_GRID_HEIGHT));
 
 
 		}

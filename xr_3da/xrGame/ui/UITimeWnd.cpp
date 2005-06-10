@@ -37,19 +37,19 @@ void CUITimeWnd::SetText(LPCSTR str){
 	this->m_staticString.SetText(str);
 }
 
-void CUITimeWnd::SetTextX(int x){
+void CUITimeWnd::SetTextX(float x){
 	this->m_staticString.SetTextX(x);
 }
 
-void CUITimeWnd::SetTextY(int y){
+void CUITimeWnd::SetTextY(float y){
 	this->m_staticString.SetTextY(y);
 }
 
-void CUITimeWnd::Init(int x, int y, int widht, int height){
+void CUITimeWnd::Init(float x, float y, float widht, float height){
     Init(x,y);	
 }
 
-void CUITimeWnd::Init(int x, int y){
+void CUITimeWnd::Init(float x, float y){
 	CUIStatic::Init(x, y, TIMER_WIDTH, TIMER_HEIGHT);
 	CUIStatic::InitTexture("ui\\ui_dg_time");
 

@@ -16,14 +16,14 @@ class CUITimeWnd : public CUIStatic {
 public:
 	CUITimeWnd();
 	virtual ~CUITimeWnd();
-	virtual void Init(int x, int y, int widht, int height);
-	virtual void Init(int x, int y);	
+	virtual void Init(float x, float y, float widht, float height);
+	virtual void Init(float x, float y);	
 	virtual void InitTexture(LPCSTR tex_name, LPCSTR sh_name="hud\\default") {/*only STUB!!: we can't change texture*/};
 	virtual void SetFont(CGameFont* pFont);
 	virtual void SetTextColor(u32 color);
 	virtual void SetText(LPCSTR str);
-	virtual void SetTextX(int x);
-	virtual void SetTextY(int y);
+	virtual void SetTextX(float x);
+	virtual void SetTextY(float y);
 	virtual void Update();
 protected:
 	CUIStatic	m_staticString;

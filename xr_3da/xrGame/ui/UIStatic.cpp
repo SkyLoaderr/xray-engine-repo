@@ -24,10 +24,10 @@ CUIStatic:: CUIStatic()
 
 	SetTextAlign			(CGameFont::alLeft);
 
-	m_iTextOffsetX			= 0;
-	m_iTextOffsetY			= 0;
-	m_iTexOffsetY			= 0;
-	m_iTexOffsetX			= 0;
+	m_iTextOffsetX			= 0.0f;
+	m_iTextOffsetY			= 0.0f;
+	m_iTexOffsetY			= 0.0f;
+	m_iTexOffsetX			= 0.0f;
 
 	m_dwFontColor			= 0xFFFFFFFF;
 
@@ -60,19 +60,19 @@ void CUIStatic::SetLightAnim(LPCSTR lanim)
 		m_lanim	= NULL;
 }
 
-void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
+void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float height)
 {
 	Init(x, y, width, height);
 	InitTexture(tex_name);
 }
 
-void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width, int height)
+void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height)
 {
 	Init(x, y, width, height);
 	InitTextureEx(tex_name, sh_name);
 }
 
-void CUIStatic::Init(int x, int y, int width, int height){
+void CUIStatic::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 	m_lines.Init(x,y,width,height);
 }
@@ -111,9 +111,9 @@ void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 void  CUIStatic::Draw()
 {
 	if(m_bClipper){
-		Irect clip_rect;
+		Frect clip_rect;
 		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right && -1 == m_ClipRect.top && -1 == m_ClipRect.left){
-			Irect our_rect	= GetAbsoluteRect();
+			Frect our_rect	= GetAbsoluteRect();
 			clip_rect		= our_rect;
 			if(GetParent())	clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());			
 		}else				
@@ -129,10 +129,6 @@ void  CUIStatic::Draw()
 	if(m_bClipper)	UI()->PopScissor();
 }
 
-void CUIStatic::Draw(int x, int y){
-	m_wndPos.set(x,y);
-	Draw();
-}
 
 void CUIStatic::DrawText(){
 	//if (GetFont()){
@@ -141,20 +137,20 @@ void CUIStatic::DrawText(){
 	//	Irect r = GetAbsoluteRect();
 	//	DrawString(r);
 	//}
-	Irect r = GetAbsoluteRect();
+	Frect r = GetAbsoluteRect();
 	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
 }
 
 void CUIStatic::DrawTexture(){
 
 	if(m_bAvailableTexture && m_bTextureEnable){
-		Irect rect = GetAbsoluteRect();
+		Frect rect = GetAbsoluteRect();
 		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bStretchTexture)
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
 		else{
-			Irect r={0,0,
+			Frect r={0.0f,0.0f,
 				m_UIStaticItem.GetOriginalRectScaled().width(),
 				m_UIStaticItem.GetOriginalRectScaled().height()};
 			if (r.width()&&r.height())	m_UIStaticItem.SetRect(r);
@@ -184,7 +180,7 @@ void CUIStatic::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::WordOut(const Irect &rect)
+void CUIStatic::WordOut(const Frect &rect)
 {
 	//вывести слово
 
@@ -330,7 +326,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	//return str_offset;
 }
 
-void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect)
+void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect)
 {
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
 }
@@ -340,10 +336,10 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect)
 //относительно окна CUIStatic (используется для центрирования текстур)
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
+void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect,
 							   CUIStaticItem& UIStaticItem)
 {
-	Irect parent_rect;
+	Frect parent_rect;
 	
 	if(pClipRect == NULL)
 		if(GetParent())
@@ -353,22 +349,22 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 	else
 		parent_rect = *pClipRect;
 		
-	Irect rect = GetAbsoluteRect();
-	Irect out_rect;
+	Frect rect = GetAbsoluteRect();
+	Frect out_rect;
 
 
 	//проверить попадает ли изображение в окно
 	if(rect.left>parent_rect.right || rect.right<parent_rect.left ||
 		rect.top>parent_rect.bottom ||  rect.bottom<parent_rect.top)
 	{
-		Irect r;
-		r.set(0,0,0,0);
+		Frect r;
+		r.set(0.0f,0.0f,0.0f,0.0f);
 		UIStaticItem.SetRect(r);
 		return;
 	}
 
 	
-	int out_x, out_y;
+	float out_x, out_y;
 	out_x = rect.left;
 	out_y = rect.top;
 
@@ -385,7 +381,7 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 	if( m_bStretchTexture )
 		UIStaticItem.SetRect(out_rect);
 	else{
-		Irect r;
+		Frect r;
 		r.x1 = out_rect.left;
 		r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
 			out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
@@ -409,14 +405,14 @@ void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 {
 	m_bClipper = false;
 
-	Irect out_rect;
+	Frect out_rect;
 
 	out_rect.top =   0;
 	out_rect.bottom = GetHeight();
 	out_rect.left =  0;
 	out_rect.right = GetWidth();
 	
-	Irect r;
+	Frect r;
 	r.x1 = out_rect.left;
 	r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
 		   out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
@@ -480,7 +476,7 @@ void CUIStatic::SetTextColor(u32 color, E4States state){
 	m_bUseTextColor[state] = true;
 }
 
-Irect CUIStatic::GetClipperRect()
+Frect CUIStatic::GetClipperRect()
 {
 	if (m_bClipper)
 		return m_ClipRect;
@@ -488,16 +484,16 @@ Irect CUIStatic::GetClipperRect()
 		return GetSelfClipRect();
 }
 
-Irect CUIStatic::GetSelfClipRect()
+Frect CUIStatic::GetSelfClipRect()
 {
-	Irect	r;
+	Frect	r;
 	if (m_bClipper)
 	{
 		r.set(GetUIStaticItem().GetRect());
 		r.add(GetUIStaticItem().GetPosX(), GetUIStaticItem().GetPosY());
 	}
 	else
-		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+		r.set(0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	return r;
 }
@@ -511,13 +507,13 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	if (m_pMask)
 	{
 		AttachChild			(m_pMask);
-		Irect r				= GetWndRect();
+		Frect r				= GetWndRect();
 		m_pMask->SetWidth	(r.right - r.left);
 		m_pMask->SetHeight	(r.bottom - r.top);
 	}
 }
 
-void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
+void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
 {
 #pragma todo("Satan->Satan : bad function")
 	// Codde guards
@@ -537,7 +533,7 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 	// Идем по словам и считаем их длину
 	while (str.end() != it)
 	{
-		if (iFloor(lineWidth) < static_cast<int>(width))
+		if (lineWidth < width)
 		{
 			if (delimSpace == *it || delimTab == *it)
 			{
@@ -614,7 +610,7 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
     processedStr.swap(str);
 }
 
-void CUIStatic::DrawString(const Irect &rect)
+void CUIStatic::DrawString(const Frect &rect)
 {
 	// Вывод текста
 #pragma todo("Satan->Satan : must be unreachable")
@@ -715,7 +711,7 @@ void CUIStatic::DrawString(const Irect &rect)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::Elipsis(const Irect &rect, EElipsisPosition elipsisPos)
+void CUIStatic::Elipsis(const Frect &rect, EElipsisPosition elipsisPos)
 {
 #pragma todo("Satan->Satan : need adaptation")
 	//if (eepNone == elipsisPos) return;
@@ -739,14 +735,14 @@ void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::SetClipRect(Irect r)
+void CUIStatic::SetClipRect(Frect r)
 {
 	m_ClipRect = r;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
+void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
 {
 	if (eepNone == elipsisPos) return;
 
@@ -830,7 +826,7 @@ void CUIStatic::OnFocusLost(){
 void CUIStatic::PerformTextLengthLimit(int limit){
 	// our minimal length is length of two spaces
 	int minLength = (int)this->GetFont()->SizeOf("  ");
-	int selfWidth = this->GetWidth();
+	int selfWidth = iFloor(this->GetWidth());
 
 	// no coment
 	if (limit < 0)

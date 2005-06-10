@@ -26,7 +26,7 @@ CUITalkDialogWnd::~CUITalkDialogWnd()
 {
 }
 
-void CUITalkDialogWnd::Init(int x, int y, int width, int height)
+void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, TALK_XML);

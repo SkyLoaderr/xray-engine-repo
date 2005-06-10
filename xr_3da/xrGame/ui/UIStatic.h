@@ -34,9 +34,8 @@ public:
 	virtual			~CUIStatic				();
 
 	// IUISimpleWindow
-	virtual void	Init					(int x, int y, int width, int height);
+	virtual void	Init					(float x, float y, float width, float height);
 	virtual void	Draw					();
-	virtual void	Draw					(int x, int y);
 	virtual void	Update					();
 
 	// IUISingleTextureOwner
@@ -44,15 +43,15 @@ public:
 	virtual ref_shader& GetShader();
 	virtual void		SetTextureColor(u32 color);
 	virtual u32			GetTextureColor() const;
-	virtual void		SetOriginalRect(const Irect& r)							{m_UIStaticItem.SetOriginalRect(r);}
-	virtual void		SetOriginalRectEx(const Irect& r)						{m_UIStaticItem.SetOriginalRectEx(r);}
+	virtual void		SetOriginalRect(const Frect& r)							{m_UIStaticItem.SetOriginalRect(r);}
+	virtual void		SetOriginalRectEx(const Frect& r)						{m_UIStaticItem.SetOriginalRectEx(r);}
 	//
-			void		SetOriginalRect(int x, int y, int width, int height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);}
-			void		SetHeadingPivot(const Ivector2& p){m_UIStaticItem.SetHeadingPivot(p);}
+			void		SetOriginalRect(float x, float y, float width, float height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);}
+			void		SetHeadingPivot(const Fvector2& p){m_UIStaticItem.SetHeadingPivot(p);}
 
 	void			SetLightAnim			(LPCSTR lanim);
-	virtual void	Init					(LPCSTR tex_name, int x, int y, int width, int height);	
-			void	InitEx					(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width, int height);
+	virtual void	Init					(LPCSTR tex_name, float x, float y, float width, float height);	
+			void	InitEx					(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height);
 
 	virtual void	DrawTexture				();
 	virtual void	DrawText				();
@@ -92,18 +91,18 @@ public:
 
 	//отсечение части изображение, при его выходе за
 	//пределы родительского окна
-	void TextureClipper						(int offset_x = 0, int offset_y = 0,Irect* pClipRect = NULL);
-	void TextureClipper						(int offset_x, int offset_y, Irect* pClipRect, CUIStaticItem& UIStaticItem);
+	void TextureClipper						(float offset_x = 0, float offset_y = 0,Frect* pClipRect = NULL);
+	void TextureClipper						(float offset_x, float offset_y, Frect* pClipRect, CUIStaticItem& UIStaticItem);
 
 	
 	void			SetShader				(const ref_shader& sh);
 	CUIStaticItem&	GetUIStaticItem			()						{return m_UIStaticItem;}
 
-	virtual	void SetTextX					(int text_x)			{m_iTextOffsetX = text_x;}
-	virtual	void SetTextY					(int text_y)			{m_iTextOffsetY = text_y;}
-	virtual	void SetTextPos					(int x, int y)			{SetTextX(x); SetTextY(y);}
-	int			 GetTextX					()						{return m_iTextOffsetX;}
-	int			 GetTextY					()						{return m_iTextOffsetY;}
+	virtual	void SetTextX					(float text_x)			{m_iTextOffsetX = text_x;}
+	virtual	void SetTextY					(float text_y)			{m_iTextOffsetY = text_y;}
+	virtual	void SetTextPos					(float x, float y)		{SetTextX(x); SetTextY(y);}
+			float GetTextX					()						{return m_iTextOffsetX;}
+			float GetTextY					()						{return m_iTextOffsetY;}
 
 	virtual void SetTextColor				(u32 color)				{ m_dwFontColor = color; m_lines.SetTextColor(color);} 
 			void SetTextColor_script	(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
@@ -114,20 +113,20 @@ public:
 	void		SetStretchTexture			(bool stretch_texture)	{m_bStretchTexture = stretch_texture;}
 	bool		GetStretchTexture			()						{return m_bStretchTexture;}
 
-	void		SetClipRect					(Irect r);
-	Irect		GetSelfClipRect				();
-	Irect		GetClipperRect				();
+	void		SetClipRect					(Frect r);
+	Frect		GetSelfClipRect				();
+	Frect		GetClipperRect				();
 
 	// Работа с маской
 	void SetMask							(CUIFrameWindow *pMask);
 	// Cмещение текстуры кнопки
-	virtual void SetTextureOffset			(int x, int y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
-	Ivector2	GetTextureOffeset			() const			{ Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
+	virtual void SetTextureOffset			(float x, float y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
+	Fvector2	GetTextureOffeset			() const				{ Fvector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
-	static void PreprocessText				(STRING &str, u32 width, CGameFont *pFont);
+	static void PreprocessText				(STRING &str, float width, CGameFont *pFont);
 	// Функция вывода текста
-	void DrawString							(const Irect &rect);
+	void DrawString							(const Frect &rect);
 	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
 	// надпись. Вот для этого и предназначена эта функция
 	enum EElipsisPosition
@@ -185,14 +184,11 @@ protected:
 	bool m_bTextureEnable;
 	CUIStaticItem m_UIStaticItem;
 
-	//текст
-//	LPSTR m_str;
-//	STRING m_sEdit;
 
 	/////////////////////////////////////
 	//форматированный вывод текста
 	/////////////////////////////////////
-	void WordOut(const Irect &rect);
+	void WordOut(const Frect &rect);
 	void AddLetter(char letter);
 	u32 ReadColor(int pos, int& r, int& g, int& b);
 	
@@ -205,8 +201,8 @@ protected:
 
 	//смещение текста,  в зависимости от выбранного
 	//метода центровки
-	int m_iTextOffsetX;
-	int m_iTextOffsetY;
+	float m_iTextOffsetX;
+	float m_iTextOffsetY;
 
 	//буфер в который записывается уже отформатированная строка
 	xr_vector<char> buf_str;
@@ -227,18 +223,18 @@ protected:
 	CUIFrameWindow	*m_pMask;
 
 	// для смещения текстуры
-	int m_iTexOffsetX, m_iTexOffsetY;
+	float m_iTexOffsetX, m_iTexOffsetY;
 
 	// Обрезка надписи
 	EElipsisPosition	m_ElipsisPos;
-	void Elipsis(const Irect &rect, EElipsisPosition elipsisPos);
+	void Elipsis(const Frect &rect, EElipsisPosition elipsisPos);
 	int	m_iElipsisIndent;
 
 	// Clip rect
-	Irect	m_ClipRect;
+	Frect	m_ClipRect;
 
 public:
-	static void Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
+	static void Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

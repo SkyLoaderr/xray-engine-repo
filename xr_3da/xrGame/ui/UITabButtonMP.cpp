@@ -22,9 +22,6 @@ CUITabButtonMP::~CUITabButtonMP(){
 
 }
 
-//void CUITabButtonMP::Init(int x, int y, int width, int height){
-//	CUITabButton::Init(x, y, width, height);
-//}
 
 void CUITabButtonMP::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = 0 */){
 	if (this == pWnd)

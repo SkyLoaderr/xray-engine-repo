@@ -7,10 +7,11 @@
 #include ".\uiradiobutton.h"
 
 
+void CUIRadioButton::Init(float x, float y, float width, float height){
 void CUIRadioButton::Init(int x, int y, int width, int height){
 	m_lines.SetTextAlignment(CGameFont::alLeft);
     CUI3tButton::InitTexture("ui_radio");
-	Irect r = m_background.GetE()->GetStaticItem()->GetRect(); 
+	Frect r = m_background.GetE()->GetStaticItem()->GetRect(); 
 	CUI3tButton::SetTextX(r.width());
     CUI3tButton::Init(x,y, width, r.height());
 	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());

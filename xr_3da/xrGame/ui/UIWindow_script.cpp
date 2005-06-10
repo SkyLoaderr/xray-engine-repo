@@ -75,14 +75,14 @@ void CUIWindow::script_register(lua_State *L)
 		def("GetFontGraffiti50Russian",	&GetFontGraffiti50Russian),
 		def("GetFontLetterica25",		&GetFontLetterica25),
 
-		class_<Irect>("Irect")
+		class_<Frect>("Irect")
 		.def(					constructor<>())
-		.def_readwrite("right",					&Irect::right)
-		.def_readwrite("left",					&Irect::left)
-		.def_readwrite("top",					&Irect::top)
-		.def_readwrite("bottom",				&Irect::bottom)
-		.def("width",							&Irect::width)
-		.def("height",							&Irect::height),
+		.def_readwrite("right",					&Frect::right)
+		.def_readwrite("left",					&Frect::left)
+		.def_readwrite("top",					&Frect::top)
+		.def_readwrite("bottom",				&Frect::bottom)
+		.def("width",							&Frect::width)
+		.def("height",							&Frect::height),
 
 		class_<CUIWindow>("CUIWindow")
 		.def(							constructor<>())
@@ -91,10 +91,10 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetAutoDelete",			&CUIWindow::SetAutoDelete)
 		.def("IsAutoDelete",			&CUIWindow::IsAutoDelete)
 
-		.def("SetWndRect",				(void (CUIWindow::*)(Irect))				 CUIWindow::SetWndRect)
-		.def("SetWndRect",				(void (CUIWindow::*)(int,int,int,int))   CUIWindow::SetWndRect)
-		.def("Init",					(void (CUIWindow::*)(int,int,int,int))   CUIWindow::Init)
-		.def("Init",					(void (CUIWindow::*)(Irect*))			 CUIWindow::Init)
+		.def("SetWndRect",				(void (CUIWindow::*)(Frect))					CUIWindow::SetWndRect_script)
+		.def("SetWndRect",				(void (CUIWindow::*)(float,float,float,float))   CUIWindow::SetWndRect_script)
+		.def("Init",					(void (CUIWindow::*)(float,float,float,float))   CUIWindow::Init)
+		.def("Init",					(void (CUIWindow::*)(Frect*))			 CUIWindow::Init)
 		.def("GetWidth",				&CUIWindow::GetWidth)
 		.def("SetWidth",				&CUIWindow::SetWidth)
 		.def("GetHeight",				&CUIWindow::GetHeight)
@@ -127,7 +127,7 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetHeight",				&CUIFrameWindow::SetHeight)
 		.def("SetColor",				&CUIFrameWindow::SetColor)
 		.def("GetTitleStatic",			&CUIFrameWindow::GetTitleStatic)
-		.def("Init",					(void(CUIFrameWindow::*)(LPCSTR,int,int,int,int))CUIFrameWindow::Init)
+		.def("Init",					(void(CUIFrameWindow::*)(LPCSTR,float,float,float,float))CUIFrameWindow::Init)
 		.def("InitLeftTop",				&CUIFrameWindow::InitLeftTop)
 		.def("InitLeftBottom",			&CUIFrameWindow::InitLeftBottom),
 
@@ -138,7 +138,7 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetOrientation",					&CUIFrameLineWnd::SetOrientation)
 		.def("SetColor",						&CUIFrameLineWnd::SetColor)
 		.def("GetTitleStatic",					&CUIFrameLineWnd::GetTitleStatic)
-		.def("Init",							(void(CUIFrameLineWnd::*)(LPCSTR,int,int,int,int,bool))CUIFrameLineWnd::Init),
+		.def("Init",							(void(CUIFrameLineWnd::*)(LPCSTR,float,float,float,float,bool))CUIFrameLineWnd::Init),
 
 		class_<CUILabel, CUIFrameLineWnd>("CUILabel")
 		.def(					constructor<>())

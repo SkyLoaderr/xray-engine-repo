@@ -18,7 +18,7 @@ public:
 	virtual ~CUISleepWnd();
 
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(float x, float y, float width, float height);
 	virtual void Init();
 	virtual void SetText(LPCSTR str);
 
