@@ -119,25 +119,74 @@ path_main = sleep3
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. Солдаты на фабрике дерутся с группой Крота.
 ;-------------------------------------------------------------------------------------------------
-[logic@agr_factory_skirmish1_camper1]
-active = camper1@agr_factory_skirmish1
+[logic@agr_factory_assault_camper1]
+active = camper1@agr_factory_assault
 
-[camper1@agr_factory_skirmish1]
+[camper1@agr_factory_assault]
 path_walk = camper1_walk
 path_look = camper1_look
 
 
-[logic@agr_factory_skirmish1_camper2]
-active = camper2@agr_factory_skirmish1
+[logic@agr_factory_assault_camper2]
+active = camper2@agr_factory_assault
 
-[camper2@agr_factory_skirmish1]
+[camper2@agr_factory_assault]
 path_walk = camper2_walk
 path_look = camper2_look
 
 
-[logic@agr_factory_skirmish1_nil]
+[logic@agr_factory_assault_nil]
 active = nil
 
+;-------------------------------------------------------------------------------------------------
+;-- AGROPROM. Группа Крота обороняется.
+;-------------------------------------------------------------------------------------------------
+[logic@agr_factory_defence_camper1]
+active = camper1@agr_factory_defence
+
+[camper1@agr_factory_defence]
+path_walk = walk1
+path_look = look1
+
+
+[logic@agr_factory_defence_camper2]
+active = camper2@agr_factory_defence
+
+[camper2@agr_factory_defence]
+path_walk = walk2
+path_look = look2
+
+
+[logic@agr_factory_defence_camper3]
+active = camper3@agr_factory_defence
+
+[camper3@agr_factory_defence]
+path_walk = walk3
+path_look = look3
+
+
+[logic@agr_factory_defence_camper4]
+active = camper4@agr_factory_defence
+
+[camper4@agr_factory_defence]
+path_walk = walk4
+path_look = look4
+
+
+[logic@agr_factory_defence_walker5]
+active = walker5@agr_factory_defence
+
+[walker5@agr_factory_defence]
+path_walk = walk5
+path_look = look5
+
+
+[logic@agr_factory_defence_walker6]
+active = walker6@agr_factory_defence
+
+[walker6@agr_factory_defence]
+path_walk = walk6
+path_look = look6
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM RUSH (собаки)
