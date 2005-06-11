@@ -1,5 +1,6 @@
 local						Counters = {}
 local						Names = {}
+local						timer = profile_timer()
 local						old_hook_func, old_hook_mask, old_hook_count
 
 local function hook			(context,line_number)
@@ -42,6 +43,8 @@ function setup_hook			()
 		return
 	end
 	
+	timer:start				()
+
 	old_hook_func, 
 	old_hook_mask, 
 	old_hook_count			= debug.gethook();
@@ -52,6 +55,7 @@ end
 function clear_hook			()	
 --	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
 	debug.sethook			()
+	timer:stop				()
 end
 
 local function getname		(func)
@@ -87,14 +91,24 @@ function stats				()
 
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
+    local					script = profile_timer()
+    local					count = 0
     for n,c in pairs(out_stats) do
+		script				= script + c.count.timer
+		count				= count + c.count.count
 		printf				("%7.2fms [%6d] : %s",c.count.timer:time()/1000,c.count.count,c.name)
     end
     
+	printf					("profile time  : %7.2fms",timer:time()/1000)
+	printf					("scripts time  : %7.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
+	printf					("scripts count : %d",count)
+
 	setup_hook				()
 end
 
 function clear				()
 	Counters				= {}
 	Names					= {}
+	timer					= profile_timer()
+	timer:start				()
 end
