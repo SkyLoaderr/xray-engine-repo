@@ -97,12 +97,13 @@ function stats				()
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
     for n,c in pairs(out_stats) do
-		printf				("%7.2fms (%5.2f%%) [%6d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.count,c.name)
+		printf				("%7.2fms (%5.2f%%) [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.count,c.name)
     end
     
+	printf					("")
 	printf					("profile time : %8.2fms",timer:time()/1000)
 	printf					("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
-	printf					("call count   : %9d",count)
+	printf					("call count   : %d",count)
 
 	setup_hook				()
 end
