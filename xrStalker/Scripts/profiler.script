@@ -59,5 +59,3 @@ function stats				()
     
 	setup_hook				()
 end
-
-setup_hook					()
