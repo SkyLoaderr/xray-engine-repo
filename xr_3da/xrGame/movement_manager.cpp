@@ -169,15 +169,16 @@ void CMovementManager::update_path				()
 
 	time_start				();
 	
-	if (!game_path().evaluator()) 		
+	if (!game_path().evaluator())
 		game_path().set_evaluator	(base_game_params());
 
-	if (!level_path().evaluator()) 
+	if (!level_path().evaluator())
 		level_path().set_evaluator	(base_level_params());
 
 #pragma todo("Optimize this in case of slowdown or not intended behaviour")
-	if (!restrictions().actual())
+	if (!restrictions().actual()) {
 		m_path_actuality	= false;
+	}
 
 	restrictions().actual	(true);
 
@@ -193,6 +194,11 @@ void CMovementManager::update_path				()
 			}
 			case ePathTypeLevelPath : {
 				m_path_state	= ePathStateSelectLevelVertex;
+				if (!restrictions().accessible(level_path().dest_vertex_id())) {
+					Fvector							temp;
+					level_path().set_dest_vertex	(restrictions().accessible_nearest(detail().dest_position(),temp));
+					detail().set_dest_position		(temp);
+				}
 				break;
 			}
 			case ePathTypePatrolPath : {
@@ -266,23 +272,6 @@ bool CMovementManager::actual_all				() const
 #endif
 }
 
-void CMovementManager::verify_detail_path		()
-{
-	if (detail().path().empty() || detail().completed(detail().dest_position()))
-		return;
-
-	float distance = 0.f;
-	for (u32 i=detail().curr_travel_point_index() + 1, n=detail().path().size(); i<n; ++i) {
-		if (!restrictions().accessible(detail().path()[i].position,EPS_L)) {
-			m_path_actuality	= false;
-			return;
-		}
-		distance	+= detail().path()[i].position.distance_to(detail().path()[i-1].position);
-		if (distance >= verify_distance)
-			break;
-	}
-}
-
 void CMovementManager::teleport					(u32 game_vertex_id)
 {
 	NET_Packet				net_packet;
@@ -317,4 +306,21 @@ bool CMovementManager::distance_to_destination_greater	(const float &distance_to
 	}
 
 	return					(false);
+}
+
+void CMovementManager::verify_detail_path		()
+{
+	if (detail().path().empty() || detail().completed(detail().dest_position()))
+		return;
+
+	float distance = 0.f;
+	for (u32 i=detail().curr_travel_point_index() + 1, n=detail().path().size(); i<n; ++i) {
+		if (!restrictions().accessible(detail().path()[i].position,EPS_L)) {
+			m_path_actuality	= false;
+			return;
+		}
+		distance	+= detail().path()[i].position.distance_to(detail().path()[i-1].position);
+		if (distance >= verify_distance)
+			break;
+	}
 }

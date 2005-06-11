@@ -132,7 +132,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		}
 	}
 	
-	if (prev_cur_point_index != detail().curr_travel_point_index()) on_travel_point_change();
+	if (prev_cur_point_index != detail().curr_travel_point_index()) on_travel_point_change(prev_cur_point_index);
 
 	if (dist_to_target < EPS_L) {
 #pragma todo("Dima to ? : is this correct?")
