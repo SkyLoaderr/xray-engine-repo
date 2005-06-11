@@ -86,8 +86,9 @@ function proceed()
 		actor:dont_has_info("garbage_meetstalker_done") and
 		actor:dont_has_info("garbage_meetstalker_end")
 	then
-		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0) and
-		actor:has_info("garbage_meetstalker_end")
+		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
+		actor:give_info_portion("garbage_meetstalker_end")
+		
 	end
 
 

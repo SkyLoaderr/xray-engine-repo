@@ -67,8 +67,8 @@ function actor_binder:info_callback(npc, info_id)
 	level_tasks.process_map_spot(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:article_callback(group, name)
-	printf("CALLED [%s][%s]", group, name)
+function actor_binder:article_callback(npc, group, name)
+	printf("article_callback [%s][%s]", group, name)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:inventory_callback(npc, info_id)
