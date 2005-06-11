@@ -93,3 +93,8 @@ function stats				()
     
 	setup_hook				()
 end
+
+function clear				()
+	Counters				= {}
+	Names					= {}
+end
