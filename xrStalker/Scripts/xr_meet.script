@@ -299,7 +299,7 @@ end
 -- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
 function reset_meet(npc, scheme, st, section)
 	local meet_section
-	printf("[%s]", utils.to_str(st.section_logic))
+--	printf("[%s]", utils.to_str(st.section_logic))
 	if scheme == nil or scheme == "nil" then
 		meet_section = utils.cfg_get_string(st.ini, st.section_logic, "meet", npc, false, "")
 	else
