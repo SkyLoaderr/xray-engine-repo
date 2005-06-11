@@ -6,7 +6,7 @@ local function hook			(context)
 	printf					("hook start")
 	if nil ~= old_hook_func then
 		if old_hook_func ~= hook then
-			old_hook_func	(context)
+--			old_hook_func	(context)
 		end
 	end
 	
