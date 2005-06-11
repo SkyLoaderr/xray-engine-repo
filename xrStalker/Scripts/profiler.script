@@ -1,7 +1,7 @@
 local						Counters = {}
 local						Names = {}
 
-local						old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
+old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
 local function getname		(func)
     local					n = Names[func]
