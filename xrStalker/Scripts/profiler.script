@@ -51,7 +51,7 @@ end
 
 function clear_hook			()	
 --	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
-	debug.sethook			()
+	debug.sethook			(nil)
 end
 
 local function getname		(func)
