@@ -120,11 +120,9 @@ function gar_dm_bandit_demand(actor, npc)
 	end
 end
 
-function gar_send_dymon_alarm()
-	if db.actor then
-		if db.actor:has_info("gar_start_graveyard") then
-			news_manager.send_tip(db.actor, "tips_gar_hellcar_alarm", 10, "stalker", 10000)
-		end
+function gar_send_dymon_alarm(actor, npc)
+	if actor:has_info("gar_start_graveyard") then
+		news_manager.send_tip(actor, "tips_gar_hellcar_alarm", 10, "stalker", 10000)
 	end
 end
 
@@ -612,19 +610,8 @@ end
 
 
 -- GARBAGE
-function meet_seriy_fail(actor, npc)
-	printf ("!-!-!")
-	if db.actor then
-		if db.actor:dont_has_info("garbage_meetstalker_done") and 
-		   db.actor:has_info("garbage_meetstalker_die")
-		then
-			level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
-		end
-	end
-end
 
 function gar_send_dolg_warning()
-	printf ("!-!-!")
 	if db.actor then
 		if xr_gulag.getGulagPopulation("gar_dolg") > 0 then
 			news_manager.send_tip(db.actor, "gar_dolg_warning", 0, "dolg")
@@ -757,4 +744,8 @@ function val_escort_unset_fight(actor, npc)
 
 	--npc:set_relation(game_object.friend, actor)
 	--actor:set_relation(game_object.friend, npc)
+end
+
+function agr_krot_sos( actor, npc )
+	news_manager.send_tip( actor, "tips_agr_krot_sos", 0, "krot", 10000 )
 end

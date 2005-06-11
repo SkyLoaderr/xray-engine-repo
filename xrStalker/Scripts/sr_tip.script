@@ -21,6 +21,9 @@ function action_tip:update(delta)
 	--end
 
 	local actor = db.actor
+	if not actor then
+		return
+	end
 
 	if self.object:inside(actor:position()) then
 		--print_table(self.st.conditions)	

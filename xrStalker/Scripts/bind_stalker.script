@@ -50,7 +50,7 @@ function actor_binder:reinit()
 	self.st = db.storage[npc_id]
 	self.st.pstor = nil
 
-	self.last_position = vector():set( 0, 100000, 0 )
+	self.next_restrictors_update_time = -10000
 
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 --	self.object:set_callback(callback.article_info, self.article_callback, self)
@@ -122,13 +122,14 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
-	
-	if self.delayed_sleep_callback_start_tm and
-	   device():time_global() >= self.delayed_sleep_callback_start_tm then
+
+	local time = device():time_global()
+
+	if self.delayed_sleep_callback_start_tm and time >= self.delayed_sleep_callback_start_tm then
 		self:delayed_sleep_callback()
 	end
 
-	if self.st.enable_input_tm and device():time_global() >= self.st.enable_input_tm then
+	if self.st.enable_input_tm and time >= self.st.enable_input_tm then
 		level.enable_input()
 		self.st.enable_input_tm = nil
 	end
@@ -140,12 +141,12 @@ function actor_binder:update(delta)
 	lasttime = game.time()
 ]]
 
-	-- обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
-	-- срабатывает только при перемещении актёра каждый метр
-	if self.last_position:distance_to_sqr( self.object:position() ) >= 1 then
+	-- обновление рестрикторов, которые под логикой
+	-- срабатывает через интервалы времени
+	if self.next_restrictors_update_time < time then
 		bind_restrictor.actor_update(delta)
 
-		self.last_position = self.object:position()
+		self.next_restrictors_update_time = time + 1000
 	end
 
  	if self.bCheckStart then

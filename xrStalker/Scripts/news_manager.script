@@ -24,6 +24,14 @@ news = {
 	tips_gar_hellcar_alarm = [[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]
 }
 
+tips_icons = {
+	dolg     = { 150,   0 },
+	freedom  = {   0, 150 },
+	ecolog   = { 450, 100 },
+	arena    = { 350, 150 },
+	stalker  = { 100, 150 },
+	krot     = { 200,  50 },
+}
 
 function send_news(actor, news_id, timeout, showtime)
 	if db.actor == nil or news_id == nil then return false end
@@ -48,49 +56,34 @@ function send_news(actor, news_id, timeout, showtime)
 end
 
 function send_tip(actor, news_id, timeout, sender, showtime)
-	if db.actor == nil or news_id == nil then return false end
-	
+	if news_id == nil then return false end
+
 	if timeout == nil then timeout = 0 end
-			
+	if showtime == nil then showtime = 5000 end
+
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(db.actor, timeout, sound_object.s2d)
+			snd_obj:play(actor, timeout, sound_object.s2d)
 		end
 	end
+
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_tip]])
 	if snd_obj ~= nil then
-		snd_obj:play(db.actor, timeout, sound_object.s2d)
+		snd_obj:play(actor, timeout, sound_object.s2d)
 	end
+
 	local x = 50
 	local y = 100
-	if sender ~= nil then
-		if sender == "dolg" then
-			x = 150
-			y = 0
-		end	
-		if sender == "freedom" then
-			x = 0
-			y = 150
-		end	
-		if sender == "ecolog" then
-			x = 450
-			y = 100
-		end	
-		if sender == "arena" then
-			x = 350
-			y = 150
-		end
-		if sender == "stalker" then
-			x = 100
-			y = 150
-		end	
+	if sender ~= nil and tips_icons[sender] ~= nil then
+		x = tips_icons[sender][1]
+		y = tips_icons[sender][2]
 	end
-	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)
-	if showtime == nil then showtime = 5000 end
-	db.actor:set_news_show_time(news_id, showtime)	
+
+	actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)
+	actor:set_news_show_time(news_id, showtime)	
 end
 
 function send_help(actor)
