@@ -21,16 +21,13 @@ function process_tasks ()
        if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
           db.actor:give_info_portion ("mil_fblockpost_spot_set")
           level_tasks.add_location (724, "mil_fblockpost_location")
-          printf ("FBLOCKPOST LOCATION ADDED")
        end
     end
     
     if db.actor:has_info ("mil_fblockpost_spot") then
-       printf ("FBLOCKPOST LOCATION REMOVED 1")
        if db.actor:has_info ("mil_fblockpost_spot_remove") then
           level_tasks.remove_location_safe (724, "mil_fblockpost_location")
           db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
-          printf ("FBLOCKPOST LOCATION REMOVED 2")
        end
     end      
             
