@@ -50,7 +50,8 @@ function setup_hook			()
 end
 
 function clear_hook			()	
-    debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
+--	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
+	debug.sethook			()
 end
 
 local function getname		(func)
