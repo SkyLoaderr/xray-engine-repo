@@ -61,6 +61,8 @@
 <info_portion id="val_prisoner_door_unlocked"></info_portion>
 <info_portion id="val_prisoner_door_unlocked_demo"></info_portion>
 <info_portion id="val_prisoner_free"></info_portion>
+<info_portion id="val_prisoner_give_info"></info_portion>
+<info_portion id="val_prisoner_join"></info_portion>
 <info_portion id="val_prisoner_plr_captured"></info_portion>
 
 <!-- Жертвоприношение -->

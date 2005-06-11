@@ -148,55 +148,40 @@
         <text>Я ошибся зданием, извини. Я уже ухожу.</text>
     </string>
     <string id="val_prisoner_hello_11">
-        <text>Помоги мне! Я разведчик "Долга". По своей глупости попался бандитам. Они тут... Ш-ш-ш.. Кто-то идет. Подожди тут, я посмотрю.</text>
+        <text>Эй, друг! Я разведчик "Долга". По своей глупости попался бандитам. Помоги выбраться отсюда.</text>
     </string>
     <string id="val_prisoner_hello_111">
-        <text>ОК, я жду.</text>
-    </string>
-    <string id="val_prisoner_hello_12">
-        <text>Видел? Эти суки убивают сталкеров ради развлечения. Я буду следующим. Помоги мне выбраться отсюда.</text>
-    </string>
-    <string id="val_prisoner_hello_121">
         <text>Я постараюсь. Сделаю что смогу.</text>
     </string>
-    <string id="val_prisoner_hello_122">
+    <string id="val_prisoner_hello_112">
         <text>Что-то нет у меня желания связываться с бандитами. Сам выбирайся как знаешь.</text>
     </string>
-    <string id="val_prisoner_hello_13">
-        <text>Нам никто не поможет. Мы обречены..</text>
-    </string>
-    <string id="val_prisoner_hello_131">
-        <text>Не отчаивайся. Надо что-то придумать.</text>
-    </string>
-    <string id="val_prisoner_hello_14">
+    <string id="val_prisoner_hello_21">
         <text>Спасибо, брат. Я твой должник. Может, тебе чем-то поможет эта иформация: от охранников я слышал, что на Базу Монолита можно пройти только в одежде бандитов, но еще нужно знать пароль. Этот пароль записан в ПДА у Борова, лидера бандитов. Также Боров хранит у себя ключ от секретной Лаборатории Х18, вход на которую и расположен где-то на Базе Монолита. Только пробраться к Борову нелегко - там очень серьезная охрана.</text>
     </string>
-    <string id="val_prisoner_hello_141">
+    <string id="val_prisoner_hello_211">
         <text>Думаю, эта информация будет мне полезна.</text>
     </string>
-    <string id="val_prisoner_hello_1411">
-        <text>А теперь я покажу этим бандитам кузькину мать. Всех выкошу, падлы такие!</text>
+    <string id="val_prisoner_hello_2111">
+        <text>Буду выбираться щас к своим. Только отсюдова живым бы еще уйти.</text>
     </string>
-    <string id="val_prisoner_hello_14111">
-        <text>Ну, давай. Удачи тебе.</text>
+    <string id="val_prisoner_hello_21111">
+        <text>Удачи тебе. Может еще свидимся. Пока.</text>
     </string>
-    <string id="val_prisoner_hello_14112">
-        <text>Лучше давай я проверю окрестности и дам тебе знать, когда сниму всех охранников. А ты подожди здесь.</text>
+    <string id="val_prisoner_hello_31">
+        <text>Уходить надо отседова, а то бандюки могут невзначай заглянуть. Чего хотел? Только побыстрей давай.</text>
     </string>
-    <string id="val_prisoner_hello_15">
-        <text>Ну что, как там ситуация?</text>
+    <string id="val_prisoner_hello_311">
+        <text>Нет, ничего.</text>
     </string>
-    <string id="val_prisoner_hello_151">
-        <text>Все отлично. Можешь выбираться.</text>
+    <string id="val_prisoner_hello_5">
+        <text>Слушай, может вместе пойдем? Легче все же будет вдвоем то.</text>
     </string>
-    <string id="val_prisoner_hello_1511">
-        <text>Спасибо за все, брат. Пока.</text>
+    <string id="val_prisoner_hello_51">
+        <text>Почему бы и не пойти. Ты мне помог, а долг платежом красен. Идем.</text>
     </string>
-    <string id="val_prisoner_hello_15111">
-        <text>Удачи.</text>
-    </string>
-    <string id="val_prisoner_hello_152">
-        <text>Подожди еще немного.</text>
+    <string id="val_prisoner_hello_511">
+        <text>Вот и отлично. Пошли.</text>
     </string>
     <string id="val_rob_dialog_11">
         <text>Нужна пушка? Я возле озера Янтарь нашел чей-то тайник, там была винтовка Гаусса. Вещь отличная - бъет за 100 метров наповал. Могу продать, если интересует. За 300 рублей она твоя - вынесу через 2 минуты.</text>
