@@ -1,84 +1,59 @@
-local Counters = {}
-local Names = {}
+local						Counters = {}
+local						Names = {}
 
 old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
 
-local function getname (func)
-    local n = Names[func]
---	if n.what == "C" then
---		if n.name ~= nil then
---			return n.name
---		end
---	end
-    local loc = string.format("[%s]:%s", n.short_src, n.linedefined)
-    if n.namewhat ~= "" then
-        return string.format("%s (%s)", loc, n.name) 
+local function getname		(func)
+    local					n = Names[func]
+    local					loc = string.format("[%s]:%s", n.short_src, n.linedefined)
+    if "" ~= n.namewhat then
+        return				string.format("%s (%s)", loc, n.name) 
     else
-        return string.format("%s", loc)
+        return				string.format("%s", loc)
     end
 end
 
-local function hook (context)
---	printf("hook-called [%s][%s][%s]-[%s]",tostring(old_hook_func),tostring(old_hook_mask),tostring(old_hook_count),tostring(context))
-		
---	if old_hook_func~=nil then
---		local save	= old_hook_func
-	--	old_hook_func(context)
---		old_hook_func = save;
---	end
-		
-	local f = debug.getinfo(2, "f").func
-	if Counters[f] == nil then    -- first time `f' is called?
---		table.insert(Counters,f,1)
-		Counters[f] = 1
-		Names[f] = debug.getinfo(2, "Sn")
-	else  -- only increment the counter
-		Counters[f] = Counters[f] + 1
+local function hook			(context)
+	local					f = debug.getinfo(2, "f").func
+	if nil == Counters[f] then
+		Counters[f]			= 1
+		Names[f]			= debug.getinfo(2, "Sn")
+	else
+		Counters[f]			= Counters[f] + 1
 	end
-	
---	if ("[[C]]:-1"==getname(f)) then
---	  if (nil ~= call_debugger)	then call_debugger() end
---	end
-	
---	printf("hook end")
 end
 
-function main()	
-    debug.sethook(hook, "c")	-- turn on the hook
---    while true do
---		coroutine.yield()
---    end
+function setup_hook			(func)	
+    debug.sethook			(func, "c")
 end
 
-function stats()
-	debug.sethook	(nil)
-	local		sort_stats = {}
-	--local		order = 1;
-	printf		("profiler statistics")
-
+function stats				()
+	setup_hook				(nil)
+	
+	printf					("profiler statistics")
+	
+	local					sort_stats = {}
     for func, count in pairs(Counters) do
-		local n		= getname(func)
-		if (sort_stats[n]==nil) then
-			sort_stats[n]=count
+		local				n = getname(func)
+		if (nil == sort_stats[n]) then
+			sort_stats[n]	= count
 		else 
-			sort_stats[n]=sort_stats[n] + count
+			sort_stats[n]	= sort_stats[n] + count
 		end
     end
 
-	local		out_stats = {}
+	local					out_stats = {}
     for i,j in pairs(sort_stats) do
-		table.insert(out_stats,{name=i,count=j})
+		table.insert		(out_stats,{name=i,count=j})
     end
 
-    table.sort	(out_stats, function (a,b) return a.count<b.count end)
---	print_table (out_stats)
+    table.sort				(out_stats, function (a,b) return a.count<b.count end)
+    
     for n,c in pairs(out_stats) do
-		printf		("%5d : %s",c.count,c.name)
+		printf				("%5d : %s",c.count,c.name)
     end
-	debug.sethook(hook, "c")	-- restore
-
+    
+	setup_hook				(hook)
 end
 
--- profiler.main()
--- profiler.stats()
-main()
+setup_hook					()
