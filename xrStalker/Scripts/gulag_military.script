@@ -668,6 +668,10 @@ end
 function check_state (gulag)
     
     if gulag.state == 3 then
+       if db.actor:has_info ("mil_dolg_after_explode") then
+          db.actor:disable_info_portion ("mil_freedom_attack")
+          return 2
+       end   
        if db.actor:has_info ("mil_freedom_attack") then
           return 3
        end
