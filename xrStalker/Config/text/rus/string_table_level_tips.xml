@@ -3,6 +3,7 @@
 <!-- ÏÐÈ ËÎÊÀËÈÇÀÖÈÈ ÍÅ ÇÀÁÛÒÜ ÈÇÌÅÍÈÒÜ ÏÓÒÜ -->
 #include "text\rus\string_table_tips_escape.xml"
 #include "text\rus\string_table_tips_garbage.xml"
+#include "text\rus\string_table_tips_agroprom.xml"
 #include "text\rus\string_table_tips_darkvalley.xml"
 #include "text\rus\string_table_tips_bar-rostok.xml"
 #include "text\rus\string_table_tips_military.xml"
