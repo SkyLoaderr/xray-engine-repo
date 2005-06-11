@@ -58,6 +58,8 @@
        	</info_portion>
 	<info_portion id="agr_heli_landed">
        	</info_portion>
+	<info_portion id="agr_factory_assault_start">
+       	</info_portion>
 	
 
 </game_information_portions>
