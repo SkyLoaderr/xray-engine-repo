@@ -1,6 +1,3 @@
-if profile_portion == nil then
-	return
-end
 local						Counters = {}
 local						Names = {}
 local						old_hook_func, old_hook_mask, old_hook_count
@@ -30,6 +27,9 @@ local function hook			(context,line_number)
 end
 
 function setup_hook			()	
+if profile_portion == nil then
+	return
+end
 	old_hook_func, 
 	old_hook_mask, 
 	old_hook_count			= debug.gethook();
