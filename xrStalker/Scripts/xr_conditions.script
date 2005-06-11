@@ -73,6 +73,8 @@ function is_dead_all(actor, npc, p)
 		npc1 = utils.obj_by_sid(v)
 		if npc1 and npc1:alive() then
 			return false
+		else
+			printf("_bp: is_dead(%d) = true", v)
 		end
 	end
 	return true
