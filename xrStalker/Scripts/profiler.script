@@ -84,24 +84,25 @@ function stats				()
 		end
     end
 
+    local					script = profile_timer()
+    local					count = 0
+    
 	local					out_stats = {}
     for i,j in pairs(sort_stats) do
 		table.insert		(out_stats,{name=i,count=j})
+		script				= script + j.timer
+		count				= count + j.count
     end
 
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
-    local					script = profile_timer()
-    local					count = 0
     for n,c in pairs(out_stats) do
-		script				= script + c.count.timer
-		count				= count + c.count.count
-		printf				("%7.2fms [%6d] : %s",c.count.timer:time()/1000,c.count.count,c.name)
+		printf				("%7.2fms (%5.2f%%) [%6d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.count,c.name)
     end
     
-	printf					("profile time      : %8.2fms",timer:time()/1000)
-	printf					("time in scripts   : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
-	printf					("script call count : %9d",count)
+	printf					("profile time : %8.2fms",timer:time()/1000)
+	printf					("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
+	printf					("call count   : %9d",count)
 
 	setup_hook				()
 end
