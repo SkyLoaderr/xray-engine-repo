@@ -11,18 +11,18 @@ local function hook			(context,line_number)
 	local					f = debug.getinfo(2, "f").func
 
 	if "return" == context then
-		Counters[f].timer.stop	()
+		Counters[f].timer:stop	()
 		return
 	end
 
 	
 	if nil == Counters[f] then
 		Counters[f]				= {count=1,timer=profile_portion()}
-		Counters[f].timer.start	()
+		Counters[f].timer:start	()
 		Names[f]				= debug.getinfo(2, "Sn")
 	else
 		Counters[f].count		= Counters[f].count + 1
-		Counters[f].timer.start	()
+		Counters[f].timer:start	()
 	end
 end
 
