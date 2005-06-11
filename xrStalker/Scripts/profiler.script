@@ -8,7 +8,7 @@ local function hook			(context,line_number)
 --			old_hook_func	(context,line_number)
 --		end
 --	end
-	printf					("hook [%s]",context)
+--	printf					("hook [%s]",context)
 	
 	if "line" == context then
 		return
