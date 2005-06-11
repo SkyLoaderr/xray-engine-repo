@@ -5,6 +5,13 @@
 В отличие от сталкеров боевая схема не является отдельным действием, а вызывается из других схем.
 
 Сделать:
+	- запрет смены типа боя
+	- при частом прятании/показывании врага быстро переключается на дорожки
+	- замеры расстояний без учёта высоты
+	- комментарии
+	- долго не видит = ракета
+	- разнести обновление видимости
+	- сохранение дополнить
 	- задание врага в custom data
 	- отступление
 	- вынести настройки в ltx
@@ -80,9 +87,10 @@ function heli_combat:initialize()
 	self.section_changed       = true
 
 	self:set_combat_type( combat_type_flyby ) --self:choose_combat_type() )
-	self.combat_type_change_time = nil
+	self.change_combat_type_time    = nil
+	self.change_combat_type_allowed = true
 
-	self.initialized           = true
+	self.initialized = true
 end
 
 function heli_combat:save( packet )
@@ -197,6 +205,7 @@ end
 function heli_combat:update_combat_type( see_enemy )
 	local ct
 
+	-- без учёта инерций вертолёт переключается просто: видит=заход в лоб, не видит=облёт кругом
 	if see_enemy then
 		ct = combat_type_flyby
 	else
@@ -206,16 +215,16 @@ function heli_combat:update_combat_type( see_enemy )
 	printf( "heli_combat: combat type: current=%d delayed=%d", self.combat_type, ct )
 
 	if ct ~= self.combat_type then
-		if self.combat_type_change_time then
-			if self.combat_type_change_time < device():time_global() then
+		if self.change_combat_type_time then
+			if self.change_combat_type_time < device():time_global() and self.change_combat_type_allowed then
 				self:set_combat_type( ct )
-				self.combat_type_change_time = nil
+				self.change_combat_type_time = nil
 			end
 		else
-			self.combat_type_change_time = device():time_global() + combat_type_change_delay
+			self.change_combat_type_time = device():time_global() + combat_type_change_delay
 		end
 	else
-		self.combat_type_change_time = nil
+		self.change_combat_type_time = nil
 	end
 end
 
@@ -264,13 +273,16 @@ end
 -- Фунциии для поиска врага и кружащего боя
 ----------------------------------------------------------------------------------------------
 function heli_combat:search_initialize()
-	self.change_dir_time       = 0
-	self.change_pos_time       = 0
-	self.center_pos            = self.enemy_last_seen_pos
-	self.flight_direction      = random_choice( true, false )
-	self.search_initialized    = true
+	self.change_dir_time            = 0
+	self.change_pos_time            = 0
+	self.center_pos                 = self.enemy_last_seen_pos
+	self.flight_direction           = random_choice( true, false )
+	self.change_combat_type_allowed = true
+
 	self.heliObject:SetMaxVelocity( self.search_velocity )
 	self.heliObject:UseFireTrail( false )
+
+	self.search_initialized         = true
 end
 
 function heli_combat:search_choose_attack_dist( retreat )
@@ -364,20 +376,25 @@ end
 -- Фунциии для боя с пролётами над целью
 ----------------------------------------------------------------------------------------------
 function heli_combat:flyby_initialize()
-	self.state                 = self:flyby_choose_initial_state()
+	self:flyby_set_initial_state()
+
 	self.state_initialized     = false
 	self.was_callback          = false
 	self.flyby_initialized     = true
 
-	self.heliObject:LookAtPoint( dummy_vector, false )
 	self.heliObject:SetMaxVelocity( self.default_velocity )
+	self.heliObject:LookAtPoint( dummy_vector, false )
 end
 
-function heli_combat:flyby_choose_initial_state()
+function heli_combat:flyby_set_initial_state()
 	if self.object:position():distance_to( self.enemy_last_seen_pos ) < self.flyby_attack_dist then
-		return flyby_state_to_attack_dist
+--		self.heliObject:LookAtPoint( dummy_vector, false )
+
+		self.state = flyby_state_to_attack_dist
 	else
-		return flyby_state_to_enemy
+--		self.heliObject:LookAtPoint( self.enemy:position(), true )
+
+		self.state = flyby_state_to_enemy
 	end
 end
 
@@ -428,20 +445,22 @@ function heli_combat:flyby_update_flight( see_enemy )
 	if self.state == flyby_state_to_attack_dist then
 		if not self.state_initialized then
 			local p = self:flyby_calc_best_attack_dist_point()
+			self.heliObject:SetDestPosition( p )
+--			self.heliObject:LookAtPoint( dummy_vector, false )
 
 			self.heliObject:ClearEnemy()
 
-			self.heliObject:SetDestPosition( p )
+			self.change_combat_type_allowed = true
 
-			self.state_initialized = true
+			self.state_initialized  = true
 		end
 
 	elseif self.state == flyby_state_to_enemy then
 		if not self.state_initialized then
-
 			self.heliObject:SetEnemy( self.enemy )
-
 			self.heliObject:UseFireTrail( true )
+
+			self.change_combat_type_allowed = false
 
 			self.state_initialized = true
 		end
