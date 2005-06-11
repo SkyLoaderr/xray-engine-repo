@@ -613,6 +613,7 @@ end
 
 -- GARBAGE
 function meet_seriy_fail(actor, npc)
+	printf ("!-!-!")
 	if db.actor then
 		if db.actor:dont_has_info("garbage_meetstalker_done") and 
 		   db.actor:has_info("garbage_meetstalker_die")
