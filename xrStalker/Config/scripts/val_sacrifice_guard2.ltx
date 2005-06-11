@@ -9,7 +9,8 @@ combat_ignore = combat_ignore
 on_info = {=see_actor} camper@kill_wait %+val_sacrifice_plr_detected% ;{=see_actor} 
 
 [death]
-on_info = {=killed_by_actor} %+val_sacrifice_plr_detected%
+on_info = %+val_sacrifice_guard2_dead%
+on_info2 = {=killed_by_actor} %+val_sacrifice_plr_detected%
 
 [hit]
 on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
@@ -30,7 +31,7 @@ def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 on_info = {+val_sacrifice_guard1_phrase1_done} remark@phrase1
-on_info2 = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_killed} walker@leave
+on_info2 = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
 combat_ignore_cond = {=check_fighting(403:401)}
 
 ; первая фраза. переходим ко второй
@@ -40,7 +41,7 @@ no_rotate = true
 anim = guard
 snd = speach
 on_signal = sound_end | remark@phrase2
-on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_killed} walker@leave
+on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
 combat_ignore_cond = {=check_fighting(403:401)}
 
 ; вторая фраза

@@ -69,7 +69,9 @@
 <info_portion id="val_sacrifice_finish"></info_portion>
 <info_portion id="val_sacrifice_victim_escaped"></info_portion>
 <info_portion id="val_sacrifice_plr_detected"></info_portion>
-<info_portion id="val_sacrifice_victim_killed"></info_portion>
+<info_portion id="val_sacrifice_victim_dead"></info_portion>
+<info_portion id="val_sacrifice_guard1_dead"></info_portion>
+<info_portion id="val_sacrifice_guard2_dead"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase1_done"></info_portion>
 <info_portion id="val_sacrifice_guard2_phrase12_done"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase3_done"></info_portion>

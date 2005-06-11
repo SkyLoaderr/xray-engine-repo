@@ -43,6 +43,8 @@ function killed_by(actor, npc, p)
 end
 
 -- проверка (по story_id) все ли проверяемые сталкеры живы
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
 function is_alive_all(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
@@ -55,6 +57,8 @@ function is_alive_all(actor, npc, p)
 end
 
 -- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров жив
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
 function is_alive_one(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
@@ -67,6 +71,8 @@ function is_alive_one(actor, npc, p)
 end
 
 -- проверка (по story_id) все ли проверяемые сталкеры мертвы
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
 function is_dead_all(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
@@ -83,6 +89,8 @@ function is_dead_all(actor, npc, p)
 end
 
 -- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров мертв
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
 function is_dead_one(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
