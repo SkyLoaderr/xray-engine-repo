@@ -125,10 +125,10 @@ struct profile_timer_script {
 
 	IC		bool					operator<				(const profile_timer_script &profile_timer) const
 	{
-		VERIFY					(!profile_timer.m_start_time);
-		VERIFY					(!profile_timer.m_recurse_mark);
-		VERIFY					(!m_start_time);
-		VERIFY					(!m_recurse_mark);
+//		VERIFY					(!profile_timer.m_start_time);
+//		VERIFY					(!profile_timer.m_recurse_mark);
+//		VERIFY					(!m_start_time);
+//		VERIFY					(!m_recurse_mark);
 		return					(m_accumulated < profile_timer.m_accumulated);
 	}
 
