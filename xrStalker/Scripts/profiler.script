@@ -99,9 +99,9 @@ function stats				()
 		printf				("%7.2fms [%6d] : %s",c.count.timer:time()/1000,c.count.count,c.name)
     end
     
-	printf					("profile time  : %7.2fms",timer:time()/1000)
-	printf					("scripts time  : %7.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
-	printf					("scripts count : %d",count)
+	printf					("profile time      : %8.2fms",timer:time()/1000)
+	printf					("time in scripts   : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
+	printf					("script call count : %9d",count)
 
 	setup_hook				()
 end
