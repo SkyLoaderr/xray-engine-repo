@@ -741,6 +741,9 @@
     <string id="mil_leader_start_dialog_5003">
         <text>Если чувствуешь в себе силы, то можешь пойти на заставу у выхода на Радар - по некоторым признакам там ожидается очередная попытка прорыва мутантов или Монолита. Надо помочь ребятам.</text>
     </string>
+    <string id="mil_leader_start_dialog_5004">
+        <text>Ну, ты же ребятам на "Барьере" помог, так что - отдыхай.</text>
+    </string>
     <string id="mil_leader_start_dialog_6001">
         <text>Отдыхай. Работы пока нет.</text>
     </string>
@@ -767,6 +770,15 @@
     </string>
     <string id="mil_leader_start_dialog_8001">
         <text>Ты провалил задание и теперь этих документов нам не видать, как своих ушей. Нам не нужны такие неудачники.</text>
+    </string>
+    <string id="mil_leader_start_dialog_8004">
+        <text>Да, задачу ты завалил... Плохо дело. Но, поскольку ты помог ребятам на "Барьере", так и быть - отныне ты член группировки "Свобода". Поздравляю. Теперь ты можешь отдыхать на территории базы, когда захочешь, можешь рассчитывать на помощь.</text>
+    </string>
+    <string id="mil_leader_start_dialog_8005">
+        <text>Есть какая-то еще работа ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_8006">
+        <text>Пока нет.</text>
     </string>
     <string id="mil_lukash_dialog_kill_0">
         <text>default text</text>
