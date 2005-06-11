@@ -112,6 +112,7 @@
 	<info_portion id="mil_actor_in_khutor_zone_inside"></info_portion>
 	<info_portion id="mil_courier_khutor_leave"></info_portion>
 	<info_portion id="mil_courier_report"></info_portion>
+	<info_portion id="mil_courier_call"></info_portion>
 	
 
 	<!-- Хутор наемников -->
