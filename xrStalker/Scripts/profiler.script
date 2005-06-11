@@ -23,8 +23,8 @@ local function hook			(context)
 	end
 end
 
-function setup_hook			(func)	
-    debug.sethook			(func, "c")
+function setup_hook			()	
+    debug.sethook			(hook, "c")
 end
 
 function clear_hook			()	
