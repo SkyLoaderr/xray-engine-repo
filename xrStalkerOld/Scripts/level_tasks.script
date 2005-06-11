@@ -470,8 +470,8 @@ function is_map_spot_present (sid, location)
 end
   
 
-function add_lchanger_location()local 
-	sim = alife()
+function add_lchanger_location()
+	local sim = alife()
 	if sim then
 		-- escape
 		local obj = sim:story_object(91)
