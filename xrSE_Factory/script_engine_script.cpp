@@ -158,6 +158,11 @@ struct profile_timer_script {
 		m_accumulated			+= temp - m_start_time;
 		m_start_time			= 0;
 	}
+
+	IC		float					time					() const
+	{
+		return					((float(portion.m_accumulated)*CPU::cycles2microsec));
+	}
 };
 
 IC	profile_timer_script	operator+	(const profile_timer_script &portion0, const profile_timer_script &portion1)
@@ -167,10 +172,10 @@ IC	profile_timer_script	operator+	(const profile_timer_script &portion0, const p
 	return					(result);
 }
 
-IC	std::ostream& operator<<(std::ostream &stream, const profile_timer_script &portion)
+IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &portion)
 {
-	stream						<< (float(portion.m_accumulated)*CPU::cycles2microsec);
-	return						(stream);
+	stream					<< (float(portion.m_accumulated)*CPU::cycles2microsec);
+	return					(stream);
 }
 
 void CScriptEngine::script_register(lua_State *L)
@@ -184,6 +189,7 @@ void CScriptEngine::script_register(lua_State *L)
 			.def(tostring(self))
 			.def("start",&profile_timer_script::start)
 			.def("stop",&profile_timer_script::stop)
+			.def("time",&profile_timer_script::time)
 	];
 
 	function	(L,	"log",							LuaLog);

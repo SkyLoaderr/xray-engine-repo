@@ -88,11 +88,11 @@ function stats				()
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
     for n,c in pairs(out_stats) do
-		printf				("count : %d",c.count.count)
-		printf				("name  : %s",c.name)
-		printf				("timer : %s",tostring(c.count.timer))
-		printf				("timer : %s",c.count.timer)
-		printf				("%s [%d] : %s",tostring(c.count.timer),c.count.count,c.name)
+--		printf				("count : %d",c.count.count)
+--		printf				("name  : %s",c.name)
+--		printf				("timer : %s",tostring(c.count.timer))
+--		printf				("timer : %s",c.count.timer)
+		printf				("%f [%d] : %s",c.count.timer:time(),c.count.count,c.name)
     end
     
 	setup_hook				()
