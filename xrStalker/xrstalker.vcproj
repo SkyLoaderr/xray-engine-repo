@@ -594,6 +594,9 @@
 						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_agroprom.xml">
 						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_agroprom.xml">
+						</File>
 					</Filter>
 					<Filter
 						Name="l04_darkvalley"
