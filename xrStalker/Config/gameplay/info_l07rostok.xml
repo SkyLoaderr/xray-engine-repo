@@ -218,7 +218,10 @@
 	<info_portion id="bar_deactivate_radar_done"></info_portion>
 
 	<!-- TUNEL -->
-	<info_portion id="rostok_tunel_searched"></info_portion>	
+	<info_portion id="rostok_tunel_searched"></info_portion>
+	<info_portion id="rostok_tunel_gordon_diary">
+		<article>rostok_tunel_gordon_diary</article>
+	</info_portion>
 	
 	<!-- ARENA -->
 	<info_portion id="bar_arena_door_1_open"></info_portion>
