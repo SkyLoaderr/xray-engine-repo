@@ -101,75 +101,31 @@ function load_job( sj, gname, type, squad, groups )
 		table.insert(sj, t)
 	end
 
-	--' Agroprom factory militaries
+	--' Agroprom factory assaulting soldiers
 	if type == "agr_factory_assault" then
-		-- вояки, заходящие с запада
-		t = { --section = "logic@agr_factory_assault_camper1",
-			section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
---			predicate = function(obj)
---			            	return obj:name() == "agr_factory_assault"..i
---			            end,
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
+		for i = 1, 8 do
+			t = { section = "logic@agr_factory_assault_walker"..i,
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[1],
+				predicate = function(obj)
+				            	return obj:name() == "agr_factory_assault_soldier"..i
+				            end,
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
 
-		-- вояки, заходящие с востока
-		t = { --section = "logic@agr_factory_assault_camper2",
-			section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
---			predicate = function(obj)
---			            	return obj:name() == "agr_factory_assault_camper2"
---			            end,
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_factory_assault_nil",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = "agr_factory_skirmish1"
-		}
-		table.insert(sj, t)
+		for i = 1, 8 do
+			t = { section = "logic@agr_factory_assault_nil",
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_factory_skirmish1"
+			}
+			table.insert(sj, t)
+		end
+
 	end
 
 	--' Agroprom factory Krot's stalkers
@@ -183,7 +139,7 @@ function load_job( sj, gname, type, squad, groups )
 			}
 			table.insert(sj, t)
 		end
-		for i = 1, 2 do
+		for i = 5, 6 do
 			t = { section = "logic@agr_factory_defence_walker"..i,
 				idle = 0,
 				prior = 0, state = {0},
@@ -243,11 +199,21 @@ function load_states( gname, type )
 
 	if type == "agr_factory_assault" then
 		return function( gulag )
-			return 0
+			if gulag.state == 0 then
+				for k, v in gulag.Object do
+					if v:best_enemy() then
+						return 1
+					end
+				end
+
+				return 0
+			else
+				return 1
+			end
 		end
 	end
 
-	if type == "agr_factory_krots" then
+	if type == "agr_factory_defence" then
 		return function( gulag )
 			return 0
 		end
