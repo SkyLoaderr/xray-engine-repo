@@ -30,7 +30,7 @@ function actor_binder:net_destroy()
 	db.del_actor(self.object)
 
 	self.object:set_callback(callback.inventory_info, nil)
---	self.object:set_callback(callback.article_info, nil)
+	self.object:set_callback(callback.article_info, nil)
 	self.object:set_callback(callback.on_item_take, nil)
 	self.object:set_callback(callback.on_item_drop, nil)
 	self.object:set_callback(callback.actor_sleep, nil)
@@ -53,7 +53,7 @@ function actor_binder:reinit()
 	self.next_restrictors_update_time = -10000
 
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
---	self.object:set_callback(callback.article_info, self.article_callback, self)
+	self.object:set_callback(callback.article_info, self.article_callback, self)
 	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
 	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
@@ -67,8 +67,8 @@ function actor_binder:info_callback(npc, info_id)
 	level_tasks.process_map_spot(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:article_callback()
-	printf("CALLED")
+function actor_binder:article_callback(group, name)
+	printf("CALLED [%s][%s]", group, name)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:inventory_callback(npc, info_id)
