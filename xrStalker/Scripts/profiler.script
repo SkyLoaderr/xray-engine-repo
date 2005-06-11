@@ -1,20 +1,31 @@
+if profile_portion == nil then
+	return
+end
 local						Counters = {}
 local						Names = {}
 local						old_hook_func, old_hook_mask, old_hook_count
 
-local function hook			(context)
-	if nil ~= old_hook_func then
-		if old_hook_func ~= hook then
---			old_hook_func	(context)
-		end
-	end
-	
+local function hook			(context,line_number)
+--	if nil ~= old_hook_func then
+--		if old_hook_func ~= hook then
+--			old_hook_func	(context,line_number)
+--		end
+--	end
 	local					f = debug.getinfo(2, "f").func
+
+	if "return" == context then
+		Counters[f].timer.stop	()
+		return
+	end
+
+	
 	if nil == Counters[f] then
-		Counters[f]			= 1
-		Names[f]			= debug.getinfo(2, "Sn")
+		Counters[f]				= {count=1,timer=profile_portion()}
+		Counters[f].timer.start	()
+		Names[f]				= debug.getinfo(2, "Sn")
 	else
-		Counters[f]			= Counters[f] + 1
+		Counters[f].count		= Counters[f].count + 1
+		Counters[f].timer.start	()
 	end
 end
 
@@ -23,7 +34,7 @@ function setup_hook			()
 	old_hook_mask, 
 	old_hook_count			= debug.gethook();
 	
-    debug.sethook			(hook, "c")
+    debug.sethook			(hook, "cr")
 end
 
 function clear_hook			()	
@@ -51,7 +62,8 @@ function stats				()
 		if (nil == sort_stats[n]) then
 			sort_stats[n]	= count
 		else 
-			sort_stats[n]	= sort_stats[n] + count
+			sort_stats[n].count	= sort_stats[n].count + count.count
+			sort_stats[n].timer	= sort_stats[n].timer + count.timer
 		end
     end
 
@@ -60,10 +72,10 @@ function stats				()
 		table.insert		(out_stats,{name=i,count=j})
     end
 
-    table.sort				(out_stats, function (a,b) return a.count<b.count end)
+    table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
     for n,c in pairs(out_stats) do
-		printf				("%8d : %s",c.count,c.name)
+		printf				("%8f [%8d] : %s",c.count.timer,c.count.count,c.name)
     end
     
 	setup_hook				()
