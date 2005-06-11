@@ -1068,4 +1068,4 @@ function level_object_by_sid( sid )
 	return nil
 end
    
--- profiler.main()
+profiler.setup_hook	()
