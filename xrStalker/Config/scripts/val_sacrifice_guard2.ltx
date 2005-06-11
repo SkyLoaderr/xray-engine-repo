@@ -6,7 +6,7 @@ on_hit = hit
 combat_ignore = combat_ignore
 
 [combat]
-on_info = walker@leave %+val_sacrifice_plr_detected% ;{=see_actor} 
+on_info = {=see_actor} camper@kill_wait %+val_sacrifice_plr_detected% ;{=see_actor} 
 
 [death]
 on_info = {=killed_by_actor} %+val_sacrifice_plr_detected%
