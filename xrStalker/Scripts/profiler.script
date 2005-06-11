@@ -8,6 +8,10 @@ local function hook			(context,line_number)
 --			old_hook_func	(context,line_number)
 --		end
 --	end
+	if "line" == context then
+		return
+	end
+
 	local					f = debug.getinfo(2, "f").func
 
 	if "return" == context then
@@ -15,7 +19,10 @@ local function hook			(context,line_number)
 		return
 	end
 
-	
+	if "call" ~= context then
+		return
+	end
+
 	if nil == Counters[f] then
 		Counters[f]				= {count=1,timer=profile_portion()}
 		Counters[f].timer:start	()
