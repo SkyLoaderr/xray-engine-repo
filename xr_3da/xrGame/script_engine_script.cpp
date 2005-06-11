@@ -115,8 +115,8 @@ struct profile_timer_script {
 
 	IC		profile_timer_script&	operator=				(const profile_timer_script &profile_timer)
 	{
-		VERIFY					(!profile_timer.m_start_time);
-		VERIFY					(!profile_timer.m_recurse_mark);
+//		VERIFY					(!profile_timer.m_start_time);
+//		VERIFY					(!profile_timer.m_recurse_mark);
 		m_start_time			= profile_timer.m_start_time;
 		m_accumulated			= profile_timer.m_accumulated;
 		m_recurse_mark			= profile_timer.m_recurse_mark;
