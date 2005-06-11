@@ -17,8 +17,9 @@ local function hook			(context,line_number)
 	local					f = debug.getinfo(2, "f").func
 
 	if "return" == context then
-		if Counters[f].timer ~= nil then
-			Counters[f].timer:stop	()
+		local				temp = Counters[f]
+		if temp.timer ~= nil then
+			temp.timer:stop	()
 		end
 		return
 	end
