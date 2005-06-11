@@ -88,7 +88,7 @@ function stats				()
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
     for n,c in pairs(out_stats) do
-		printf				("%8f [%8d] : %s",c.count.timer,c.count.count,c.name)
+		printf				("%8f [%8d] : %s",tostring(c.count.timer),c.count.count,c.name)
     end
     
 	setup_hook				()
