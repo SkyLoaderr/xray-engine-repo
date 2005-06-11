@@ -295,6 +295,11 @@ function process_map_spot(info_id)
 
 	
 	-- agroprom
+	elseif ( info_id == "agr_factory_assault_start" or info_id == "agr_warning_recieved" ) and
+	       not is_map_spot_present (303, "agr_factory_skirmish1_location")
+	then
+		add_location(303, "agr_factory_skirmish1_location")
+
 	elseif info_id == "agr_krot_band" then
 		add_location(302, "agr_krot_location")
 
@@ -313,6 +318,7 @@ function process_map_spot(info_id)
 	elseif info_id == "agroprom_military_case_have" then
 		remove_location(300, "agr_military_case_location")
 		add_location(500, "bar_barman_location")
+
 
 	-- DARK VALLEY
 	elseif darkvalley_tasks.process_map_spot(info_id) then
