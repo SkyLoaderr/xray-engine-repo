@@ -61,7 +61,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload
 			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 		else
 #	endif
-			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
+			if (false)lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
 #endif
 
 		if (!do_string)
@@ -118,7 +118,7 @@ bool CScriptThread::update()
 			else {
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
-				if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
+				if(false || !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
 #	endif
 				{
 					VERIFY		(m_current_stack_level);

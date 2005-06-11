@@ -36,9 +36,9 @@ local function hook (context)
 		Counters[f] = Counters[f] + 1
 	end
 	
-	if ("[[C]]:-1"==getname(f)) then
-	  if (nil ~= call_debugger)	then call_debugger() end
-	end
+--	if ("[[C]]:-1"==getname(f)) then
+--	  if (nil ~= call_debugger)	then call_debugger() end
+--	end
 	
 --	printf("hook end")
 end

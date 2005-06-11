@@ -94,7 +94,7 @@ void prefetch_module(LPCSTR file_name)
 
 void break_into_debugger()
 {
-	__asm int 3;
+//	__asm int 3;
 };
 
 void CScriptEngine::script_register(lua_State *L)
