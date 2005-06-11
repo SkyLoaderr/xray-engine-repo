@@ -261,12 +261,9 @@ function process_map_spot(info_id)
 	elseif info_id == "garbage_meetstalker_start" then
 		add_location(100, "gar_seryi_location")
 
-	elseif info_id == "garbage_meetstalker_done" then
+	elseif info_id == "garbage_meetstalker_done" or	info_id == "garbage_meetstalker_die" then
 		remove_location(100, "gar_seryi_location")
 
-	elseif info_id == "garbage_meetstalker_die" then
-		remove_location(100, "gar_seryi_location")
-	
 	elseif info_id == "gar_kill_boars_quest" then
 		add_location(105, "gar_boars_nest_location")
 		
