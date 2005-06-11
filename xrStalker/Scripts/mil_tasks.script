@@ -16,6 +16,24 @@ function process_tasks ()
           level_tasks.remove_location (707, "mil_lukash_location")
        end   
     end
+    
+    if db.actor:has_info ("mil_fblockpost_spot") then
+       if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
+          db.actor:give_info_portion ("mil_fblockpost_spot_set")
+          level_tasks.add_location (724, "mil_fblockpost_location")
+          printf ("FBLOCKPOST LOCATION ADDED")
+       end
+    end
+    
+    if db.actor:has_info ("mil_fblockpost_spot") then
+       printf ("FBLOCKPOST LOCATION REMOVED 1")
+       if db.actor:has_info ("mil_fblockpost_spot_remove") then
+          level_tasks.remove_location_safe (724, "mil_fblockpost_location")
+          db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
+          printf ("FBLOCKPOST LOCATION REMOVED 2")
+       end
+    end      
+            
     	
 	if actor:object ("bandit_flash") then 
 	   db.actor:give_info_portion("mil_bandit_flash_get")  
@@ -33,12 +51,16 @@ function process_tasks ()
 	   db.actor:give_info_portion("mil_rg6_gain")  
 	end	
 	
-	if db.actor:has_info ("mil_fblockpost_quest") then
-	   if db.actor:has_info ("mil_fblockpost_quest_complete") then
-	      level_tasks.set_task_state (task.completed, "mil_blockpost_job", 0) 
-	   end
-	   if db.actor:has_info ("mil_fblockpost_quest_fail") then
-	      level_tasks.set_task_state (task.fail, "mil_blockpost_job", 0) 
+	if db.actor:dont_has_info ("mil_fblockpost_final") then
+	   if db.actor:has_info ("mil_fblockpost_quest") then
+          if db.actor:has_info ("mil_fblockpost_quest_complete") then
+	         level_tasks.set_task_state (task.completed, "mil_blockpost_job", 0) 
+	         db.actor:give_info_portion ("mil_fblockpost_final")
+	      end
+	      if db.actor:has_info ("mil_fblockpost_quest_fail") then
+             level_tasks.set_task_state (task.fail, "mil_blockpost_job", 0) 
+             db.actor:give_info_portion ("mil_fblockpost_final")
+	      end   
 	   end   
 	end   
 	

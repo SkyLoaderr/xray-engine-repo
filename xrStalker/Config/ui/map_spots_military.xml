@@ -72,3 +72,13 @@
     <mil_courier_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_courier_spot>
+	
+	<mil_fblockpost_location hint="mil_fblockpost" store="1">
+		<level_map spot="mil_fblockpost_commander" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_fblockpost_commander" pointer="quest_pointer"></mini_map>
+	</mil_fblockpost_location>
+	
+    <mil_fblockpost_commander x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_fblockpost_commander>
+	

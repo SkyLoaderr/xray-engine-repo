@@ -74,3 +74,7 @@
 <string id="mil_blockpost_help">
 	<text>Оказать помощь блокпосту Свободы "Барьер"</text>
 </string>
+
+<string id="mil_fblockpost_commander">
+	<text>Командир блокпоста "Кеп"</text>
+</string>

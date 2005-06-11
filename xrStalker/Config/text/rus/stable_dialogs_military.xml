@@ -594,6 +594,15 @@
     <string id="mil_freedom_commander_3004">
         <text>Спасибо, она нам не помешает.</text>
     </string>
+    <string id="mil_freedom_commander_4001">
+        <text>Слушаю тебя сталкер.</text>
+    </string>
+    <string id="mil_freedom_commander_4002">
+        <text>Меня к вам Лукаш в помощь отправил.</text>
+    </string>
+    <string id="mil_freedom_commander_4003">
+        <text>О, новобранец ! Кстати ! Лишний ствол никогда не помещает.</text>
+    </string>
     <string id="mil_freedom_commander_common1_0">
         <text>Где патронов взять, а то у меня маловато осталось.</text>
     </string>

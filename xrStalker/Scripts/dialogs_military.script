@@ -103,10 +103,12 @@ end
 
 function send_ammo_for_AK (actor, npc)
     printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+    dialogs.relocate_item(npc, npc:object("ammo_5.56x45_ap"), "in")
 end
 
 function send_ammo_for_LR (actor, npc)
-    printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+    --printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+    dialogs.relocate_item(npc, npc:object("ammo_11.43x23_hydro"), "in")
 end
 
 function commander_transfer (actor, npc)

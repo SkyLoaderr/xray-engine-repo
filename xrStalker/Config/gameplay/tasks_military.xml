@@ -69,7 +69,7 @@
 	</game_task>
 	
 	<game_task id="mil_blockpost_job">
-		<title>mil_blockpost_job</title>
+		<title>mil_blockpost_help</title>
 		<objective>
 			<text>mil_blockpost_help</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
