@@ -1,7 +1,37 @@
 local						Counters = {}
 local						Names = {}
+local						old_hook_func, old_hook_mask, old_hook_count
 
-local						old_hook_func, old_hook_mask, old_hook_count = debug.gethook();
+local function hook			(context)
+	printf					("hook start")
+	if nil ~= old_hook_func then
+		if old_hook_func ~= hook then
+			old_hook_func	(context)
+		end
+	end
+	
+	local					f = debug.getinfo(2, "f").func
+	if nil == Counters[f] then
+		Counters[f]			= 1
+		Names[f]			= debug.getinfo(2, "Sn")
+	else
+		Counters[f]			= Counters[f] + 1
+	end
+
+	printf					("hook end")
+end
+
+function setup_hook			()	
+	old_hook_func, 
+	old_hook_mask, 
+	old_hook_count			= debug.gethook();
+	
+    debug.sethook			(hook, "c")
+end
+
+function clear_hook			()	
+    debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
+end
 
 local function getname		(func)
     local					n = Names[func]
@@ -11,24 +41,6 @@ local function getname		(func)
     else
         return				string.format("%s", loc)
     end
-end
-
-local function hook			(context)
-	local					f = debug.getinfo(2, "f").func
-	if nil == Counters[f] then
-		Counters[f]			= 1
-		Names[f]			= debug.getinfo(2, "Sn")
-	else
-		Counters[f]			= Counters[f] + 1
-	end
-end
-
-function setup_hook			()	
-    debug.sethook			(hook, "c")
-end
-
-function clear_hook			()	
-    debug.sethook			(nil)
 end
 
 function stats				()
