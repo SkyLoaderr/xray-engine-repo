@@ -51,9 +51,7 @@ end
 
 function clear_hook			()	
 --	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
-	printf					("clearing hook start")
-	debug.sethook			(nil)
-	printf					("clearing hook end")
+	debug.sethook			()
 end
 
 local function getname		(func)
@@ -88,6 +86,8 @@ function stats				()
     end
 
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
+
+	printf					("profiler statistics output")
     
     for n,c in pairs(out_stats) do
 		printf				("%s [%8d] : %s",tostring(c.count.timer),c.count.count,c.name)
