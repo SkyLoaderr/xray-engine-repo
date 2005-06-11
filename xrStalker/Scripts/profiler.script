@@ -24,7 +24,7 @@ local function hook			(context,line_number)
 	end
 
 	if nil == Counters[f] then
-		Counters[f]				= {count=1,timer=profile_portion()}
+		Counters[f]				= {count=1,timer=profile_timer()}
 		Counters[f].timer:start	()
 		Names[f]				= debug.getinfo(2, "Sn")
 	else
@@ -34,9 +34,10 @@ local function hook			(context,line_number)
 end
 
 function setup_hook			()	
-if profile_portion == nil then
-	return
-end
+	if profile_timer == nil then
+		return
+	end
+	
 	old_hook_func, 
 	old_hook_mask, 
 	old_hook_count			= debug.gethook();
