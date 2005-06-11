@@ -51,7 +51,9 @@ end
 
 function clear_hook			()	
 --	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
+	printf					("clearing hook start")
 	debug.sethook			(nil)
+	printf					("clearing hook end")
 end
 
 local function getname		(func)
