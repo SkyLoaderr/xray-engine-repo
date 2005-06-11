@@ -54,7 +54,7 @@ function stats				()
     table.sort				(out_stats, function (a,b) return a.count<b.count end)
     
     for n,c in pairs(out_stats) do
-		printf				("%5d : %s",c.count,c.name)
+		printf				("%8d : %s",c.count,c.name)
     end
     
 	setup_hook				()
