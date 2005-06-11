@@ -50,8 +50,8 @@ function setup_hook			()
 end
 
 function clear_hook			()	
-	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
---	debug.sethook			()
+--	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
+	debug.sethook			()
 end
 
 local function getname		(func)
@@ -86,11 +86,12 @@ function stats				()
     end
 
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
-
-	printf					("profiler statistics output")
     
     for n,c in pairs(out_stats) do
-		printf				("%s [%8d] : %s",tostring(c.count.timer),c.count.count,c.name)
+		printf				("count : %d",c.count.count)
+		printf				("name  : %s",c.name)
+		printf				("timer : %s",tostring(c.count.timer))
+		printf				("%s [%d] : %s",tostring(c.count.timer),c.count.count,c.name)
     end
     
 	setup_hook				()
