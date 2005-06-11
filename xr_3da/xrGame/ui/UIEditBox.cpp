@@ -272,23 +272,28 @@ void CUIEditBox::Update()
 		else
 			last_time = cur_time;
 	}
-	CUIStatic::Update();
+	CUILabel::Update();
 }
 
 void  CUIEditBox::Draw()
 {
-	CUIStatic::Draw();
+	CUILabel::Draw();
 	if(m_bInputFocus)
 	{	
 		//нарисовать курсор
 		Frect rect = GetAbsoluteRect();
 		float outX, outY;
 
-		outX = GetFont()->SizeOf(m_lines.GetText());
+#pragma todo("Satan->Satan: seems i must to optimize this bullshit")
+		xr_string tmp_str = m_lines.GetText();
+		tmp_str.assign(tmp_str.begin(), tmp_str.begin()+m_iCursorPos);
+
+		outX = GetFont()->SizeOf(tmp_str.c_str());
 		outY = 0;
 
+
 		GetFont()->SetColor(0xAAFFFF00);
-		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left+outX, 
+		UI()->OutText(GetFont(), GetWndRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
 	}
@@ -296,6 +301,6 @@ void  CUIEditBox::Draw()
 
 void CUIEditBox::SetText(LPCSTR str)
 {
-	inherited::SetText(str);
+	CUILabel::SetText(str);
 	m_iCursorPos = xr_strlen(m_lines.GetText());
 }

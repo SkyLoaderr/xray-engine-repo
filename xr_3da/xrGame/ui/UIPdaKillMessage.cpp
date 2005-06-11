@@ -42,8 +42,8 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 	R_ASSERT2(GetHeight(), "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 #endif	
 
-	int		x = 0;
-	int width = 0;
+	float		x = 0;
+	float width = 0;
 
 	width = InitText(m_killer_name, x, msg.m_killer);		x += width + INDENT;
 	width = InitIcon(m_initiator,   x, msg.m_initiator);	x += width + INDENT;
@@ -51,17 +51,17 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
 }
 
-int CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& info){
+float CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& info){
 
 	if ( 0 == xr_strlen(info.m_name))
 		return 0;
 
-	int		y = 0;
-	int		selfHeight = GetHeight();
-	CGameFont* pFont = GetFont();
+	float		y = 0;
+	float		selfHeight = GetHeight();
+	CGameFont*	pFont = GetFont();
 
-	int width = (int)pFont->SizeOf(*info.m_name);
-	int height = (int)pFont->CurrentHeight();
+	float width = pFont->SizeOf(*info.m_name);
+	float height = pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
 	if (width > 110)
@@ -86,7 +86,7 @@ void CUIPdaKillMessage::SetColor(u32 color){
 	m_ext_info.SetColor(color);
 }
 
-int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info){
+float CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info){
 	if ( 0 == info.m_rect.width())
 		return 0;
 

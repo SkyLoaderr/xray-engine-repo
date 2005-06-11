@@ -630,7 +630,11 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 
 	shared_str base_name = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
-	if(!base_name) return false;
+	if(!base_name) 
+	{
+		pWnd->Init(x, y, width, height);
+		return true;
+	}
 
 	pWnd->Init(*base_name, x, y, width, height, !vertical);
 

@@ -9,7 +9,7 @@ void CUIEditBox::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIEditBox, CUIStatic>("CUIEditBox")
+		class_<CUIEditBox, CUILabel>("CUIEditBox")
 		.def(						constructor<>())
 
 //		.def("",				&CUIEditBox:: )

@@ -12,7 +12,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 CUIFrameLineWnd::CUIFrameLineWnd()
-	:	bHorizontal(true)
+	:	bHorizontal(true),
+		m_bTextureAvailable(false)
 {
 	AttachChild(&UITitleText);
 }
@@ -53,17 +54,22 @@ void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 		UIFrameLine.Init(tex_name, rect.left, rect.top, rect.bottom - rect.top, horizontal, alNone);
 		UITitleText.Init(0,0, 50, rect.bottom - rect.top);
 	}
+
+	m_bTextureAvailable = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIFrameLineWnd::Draw()
 {
-	Frect rect = GetAbsoluteRect();
-	UIFrameLine.SetPos(rect.left, rect.top);
-	UIFrameLine.Render();
+	if (m_bTextureAvailable)
+	{
+		Frect rect = GetAbsoluteRect();
+		UIFrameLine.SetPos(rect.left, rect.top);
+		UIFrameLine.Render();
 
-	inherited::Draw();
+		inherited::Draw();
+	}	
 }
 
 //////////////////////////////////////////////////////////////////////////

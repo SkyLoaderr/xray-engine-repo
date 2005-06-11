@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "UIStatic.h"
+#include "UILabel.h"
 #include "../script_export_space.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -12,9 +12,8 @@ class game_cl_GameState;
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIEditBox : public CUIStatic
+class CUIEditBox : public CUILabel
 {
-	typedef CUIStatic inherited;
 public:
 					CUIEditBox		();
 	virtual			~CUIEditBox		();

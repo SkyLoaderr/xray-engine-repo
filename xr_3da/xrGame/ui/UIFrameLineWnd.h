@@ -35,7 +35,8 @@ public:
 
 protected:
 	bool			bHorizontal;
-	CUIFrameLine	UIFrameLine;
+	bool			m_bTextureAvailable;
+	CUIFrameLine	UIFrameLine;	
 };
 
 #endif	// UI_FRAME_LINE_WND_H_

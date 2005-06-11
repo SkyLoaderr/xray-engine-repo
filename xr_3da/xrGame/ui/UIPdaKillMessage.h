@@ -23,8 +23,8 @@ public:
 	virtual void SetColor(u32 color);
 
 protected:
-			int InitText(CUIStatic& refStatic, float x, PlayerInfo& info);
-			int InitIcon(CUIStatic& refStatic, float x, IconInfo& info);
+			float InitText(CUIStatic& refStatic, float x, PlayerInfo& info);
+			float InitIcon(CUIStatic& refStatic, float x, IconInfo& info);
 
     CUIStatic	m_victim_name;
 	CUIStatic	m_initiator;
