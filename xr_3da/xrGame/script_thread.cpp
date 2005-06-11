@@ -61,7 +61,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload
 			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 		else
 #	endif
-			if (false)lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
+			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
 #endif
 
 		if (!do_string)

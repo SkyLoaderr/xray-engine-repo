@@ -94,7 +94,7 @@ void CScriptEngine::setup_callbacks		()
 #if !XRAY_EXCEPTIONS
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 #endif
-		if (false)luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
+		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
 	}
 
 #if !XRAY_EXCEPTIONS
@@ -154,7 +154,7 @@ void CScriptEngine::script_export		()
 #	ifdef USE_DEBUGGER
 		if( !debugger() || !debugger()->Active()  )
 #	endif
-			if (false)lua_sethook					(lua(),lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
+			lua_sethook					(lua(),lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
 #endif
 
 #ifdef XRGAME_EXPORTS
