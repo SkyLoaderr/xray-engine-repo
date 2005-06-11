@@ -3,7 +3,6 @@ local						Names = {}
 local						old_hook_func, old_hook_mask, old_hook_count
 
 local function hook			(context)
-	printf					("hook start")
 	if nil ~= old_hook_func then
 		if old_hook_func ~= hook then
 --			old_hook_func	(context)
@@ -17,8 +16,6 @@ local function hook			(context)
 	else
 		Counters[f]			= Counters[f] + 1
 	end
-
-	printf					("hook end")
 end
 
 function setup_hook			()	
