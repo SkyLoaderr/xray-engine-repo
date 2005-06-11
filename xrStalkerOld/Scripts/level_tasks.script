@@ -86,6 +86,7 @@ function proceed()
 		actor:dont_has_info("garbage_meetstalker_done")
 	then
 		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
+	end
 
 
 	--' AGROPROM
