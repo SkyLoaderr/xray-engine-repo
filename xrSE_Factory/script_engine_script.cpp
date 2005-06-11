@@ -161,7 +161,7 @@ struct profile_timer_script {
 
 	IC		float					time					() const
 	{
-		return					((float(portion.m_accumulated)*CPU::cycles2microsec));
+		return					((float(m_accumulated)*CPU::cycles2microsec));
 	}
 };
 
