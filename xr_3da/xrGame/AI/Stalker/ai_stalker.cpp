@@ -160,6 +160,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_run_crouch				= pSettings->r_float(section,"disp_run_crouch");
 	m_disp_stand_stand				= pSettings->r_float(section,"disp_stand_stand");
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
+	m_disp_stand_stand_zoom			= pSettings->r_float(section,"disp_stand_stand_zoom");
+	m_disp_stand_crouch_zoom		= pSettings->r_float(section,"disp_stand_crouch_zoom");
 	
 }
 
@@ -629,6 +631,7 @@ void CAI_Stalker::spawn_supplies	()
 
 #ifdef DEBUG
 #include "../../visual_memory_manager.h"
+#include "../../danger_manager.h"
 void CAI_Stalker::OnRender			()
 {
 	inherited::OnRender		();
@@ -644,6 +647,55 @@ void CAI_Stalker::OnRender			()
 		t1.setHP				(-movement().m_body.target.yaw,-movement().m_body.target.pitch);
 		t1.add					(t0);
 		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
+	}
+
+	if (memory().danger().selected()) {
+		Fvector						position = memory().danger().selected()->position();
+		u32							level_vertex_id = ai().level_graph().vertex_id(position);
+		float						half_size = ai().level_graph().header().cell_size()*.5f;
+		position.y					+= 1.f;
+		RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+
+		if (ai().level_graph().valid_vertex_id(level_vertex_id)) {
+			LevelGraph::CVertex			*v = ai().level_graph().vertex(level_vertex_id);
+			Fvector						direction;
+			float						best_value = -1.f;
+
+			for (u32 i=0, j = 0; i<36; ++i) {
+				float				value = ai().level_graph().cover_in_direction(float(10*i)/180.f*PI,v);
+				direction.setHP		(float(10*i)/180.f*PI,0);
+				direction.normalize	();
+				direction.mul		(value*half_size);
+				direction.add		(position);
+				direction.y			= position.y;
+				RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+				value				= ai().level_graph().compute_square(float(10*i)/180.f*PI,PI/2.f,v);
+				if (value > best_value) {
+					best_value		= value;
+					j				= i;
+				}
+			}
+
+			direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x,position.y,position.z + half_size*float(v->cover(1))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x + half_size*float(v->cover(2))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			float				value = ai().level_graph().cover_in_direction(float(10*j)/180.f*PI,v);
+			direction.setHP		(float(10*j)/180.f*PI,0);
+			direction.normalize	();
+			direction.mul		(value*half_size);
+			direction.add		(position);
+			direction.y			= position.y;
+			RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
+		}
 	}
 
 	if (!psAI_Flags.is(aiVision))

@@ -38,31 +38,39 @@
 using namespace StalkerSpace;
 
 const float DANGER_DISTANCE = 5.f;
-const u32	DANGER_INTERVAL = 30000;
+const u32	DANGER_INTERVAL = 120000;
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
 	float				base = PI/180.f;
 	
 	//влияние ранга на меткость
-	base *= m_fRankDisperison;
+	base				*= m_fRankDisperison;
 
-	if (movement().movement_type() == eMovementTypeWalk)
-		if (movement().body_state() == eBodyStateStand)
-			return		(base*m_disp_walk_stand);
+	if (!movement().path_completed()) {
+		if (movement().movement_type() == eMovementTypeWalk)
+			if (movement().body_state() == eBodyStateStand)
+				return		(base*m_disp_walk_stand);
+			else
+				return		(base*m_disp_walk_crouch);
 		else
-			return		(base*m_disp_walk_crouch);
+			if (movement().movement_type() == eMovementTypeRun)
+				if (movement().body_state() == eBodyStateStand)
+					return	(base*m_disp_run_stand);
+				else
+					return	(base*m_disp_run_crouch);
+	}
+	
+	if (movement().body_state() == eBodyStateStand)
+		if (zoom_state())
+			return			(base*m_disp_stand_stand);
+		else
+			return			(base*m_disp_stand_stand_zoom);
 	else
-		if (movement().movement_type() == eMovementTypeRun)
-			if (movement().body_state() == eBodyStateStand)
-				return	(base*m_disp_run_stand);
-			else
-				return	(base*m_disp_run_crouch);
+		if (zoom_state())
+			return			(base*m_disp_stand_crouch);
 		else
-			if (movement().body_state() == eBodyStateStand)
-				return	(base*m_disp_stand_stand);
-			else
-				return	(base*m_disp_stand_crouch);
+			return			(base*m_disp_stand_crouch_zoom);
 }
 
 void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
@@ -284,67 +292,67 @@ bool CAI_Stalker::ready_to_kill			()
 	);
 }
 
-bool CAI_Stalker::can_kill_member		()
+bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy) const
 {
-	Fvector					position, direction;
-	g_fireParams			(0,position,direction);
-	
-	if (can_kill_member(position,direction))
+	collide::rq_result		ray_query_result;
+	Level().ObjectSpace.RayPick(position, direction, 50.f, collide::rqtBoth, ray_query_result);
+
+	if (!ray_query_result.O)
+		return				(false);
+
+	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(ray_query_result.O);
+	if (!entity_alive || (entity_alive->ID() == ID()))
+		return				(false);
+
+	if (is_relation_enemy(entity_alive) == enemy)
+		return				(true);
+
+	return					(false);
+}
+
+bool CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy) const
+{
+	if (can_kill_entity(position,direction,enemy))
 		return				(true);
 
 	float					yaw, pitch, safety_fire_angle = PI_DIV_8;
 	direction.getHP			(yaw,pitch);
 
 	direction.setHP			(yaw - safety_fire_angle,pitch);
-	if (can_kill_member(position,direction))
+	if (can_kill_entity(position,direction,enemy))
 		return				(true);
 
 	direction.setHP			(yaw + safety_fire_angle,pitch);
-	if (can_kill_member(position,direction))
+	if (can_kill_entity(position,direction,enemy))
 		return				(true);
 
 	direction.setHP			(yaw,pitch - safety_fire_angle);
-	if (can_kill_member(position,direction))
+	if (can_kill_entity(position,direction,enemy))
 		return				(true);
 
 	direction.setHP			(yaw,pitch + safety_fire_angle);
-	if (can_kill_member(position,direction))
+	if (can_kill_entity(position,direction,enemy))
 		return				(true);
 
 	return					(false);
 }
 
-bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &direction) const
+bool CAI_Stalker::can_kill_entity		(bool enemy)
 {
-	collide::rq_result		ray_query_result;
-	Level().ObjectSpace.RayPick(position, direction, 50.f, collide::rqtBoth, ray_query_result);
-	
-	if (!ray_query_result.O)
-		return				(false);
-	
-	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(ray_query_result.O);
-	if (!entity_alive || (entity_alive->ID() == ID()))
-		return				(false);
+	Fvector					position, direction;
+	g_fireParams			(0,position,direction);
 
-	if (!is_relation_enemy(entity_alive))
-		return				(true);
+	return					(can_kill_entity_from(position,direction,enemy));
+}
 
-	return					(false);
+bool CAI_Stalker::can_kill_member		()
+{
+	return					(can_kill_entity(false));
 }
 
 bool CAI_Stalker::can_kill_enemy		()
 {
-//	Fvector					position, direction;
-//	g_fireParams			(0,position,direction);
-//
-//	collide::rq_result		ray_query_result;
-//	Level().ObjectSpace.RayPick(position, direction, 50.f, collide::rqtBoth, ray_query_result);
-//
-//	if (!ray_query_result.O)
-//		return				(false);
-//
-//	return					(ray_query_result.O->ID() == enemy()->ID());
-	return					(angle_difference(movement().m_head.current.yaw,movement().m_head.target.yaw) < PI_DIV_8);
+	return					(can_kill_entity(true));
 }
 
 bool CAI_Stalker::undetected_anomaly	()
@@ -364,24 +372,35 @@ bool CAI_Stalker::inside_anomaly		()
 	return					(false);
 }
 
+bool CAI_Stalker::zoom_state			() const
+{
+	if (!inventory().ActiveItem())
+		return				(false);
+
+	if ((movement().movement_type() != eMovementTypeStand) && (movement().body_state() != eBodyStateCrouch) && !movement().path_completed())
+		return				(false);
+
+	switch (CObjectHandler::planner().current_action_state_id()) {
+		case ObjectHandlerSpace::eWorldOperatorAim1 :
+		case ObjectHandlerSpace::eWorldOperatorAim2 :
+		case ObjectHandlerSpace::eWorldOperatorAimingReady1 :
+		case ObjectHandlerSpace::eWorldOperatorAimingReady2 :
+		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
+		case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
+		case ObjectHandlerSpace::eWorldOperatorFire1 :
+		case ObjectHandlerSpace::eWorldOperatorFire2 :
+			return			(true);
+	}
+
+	return					(false);
+}
+
 void CAI_Stalker::update_range_fov		(float &new_range, float &new_fov, float start_range, float start_fov)
 {
 	float					range = start_range, fov = start_fov;
 
-	if (inventory().ActiveItem() && ((movement().movement_type() == eMovementTypeStand) || (movement().body_state() == eBodyStateCrouch))) {
-		switch (CObjectHandler::planner().current_action_state_id()) {
-			case ObjectHandlerSpace::eWorldOperatorAim1 :
-			case ObjectHandlerSpace::eWorldOperatorAim2 :
-			case ObjectHandlerSpace::eWorldOperatorAimingReady1 :
-			case ObjectHandlerSpace::eWorldOperatorAimingReady2 :
-			case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
-			case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
-			case ObjectHandlerSpace::eWorldOperatorFire1 :
-			case ObjectHandlerSpace::eWorldOperatorFire2 : {
-				inventory().ActiveItem()->modify_holder_params(range,fov);
-				break;
-			}
-		}
-	}
+	if (zoom_state())
+		inventory().ActiveItem()->modify_holder_params(range,fov);
+
 	return					(inherited::update_range_fov(new_range,new_fov,range,fov));
 }

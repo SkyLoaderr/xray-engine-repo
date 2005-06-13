@@ -95,6 +95,8 @@ private:
 	float							m_disp_run_crouch;
 	float							m_disp_stand_stand;
 	float							m_disp_stand_crouch;
+	float							m_disp_stand_stand_zoom;
+	float							m_disp_stand_crouch_zoom;
 
 private:
 	float							m_fRankDisperison;
@@ -258,8 +260,11 @@ public:
 			bool						can_buy_weapon			();
 			bool						not_enough_ammo			();
 			bool						can_buy_ammo			();
+
+			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy) const;
+			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy) const;
+			bool						can_kill_entity			(bool enemy);
 			bool						can_kill_member			();
-			bool						can_kill_member			(const Fvector &position, const Fvector &direction) const;
 			bool						can_kill_enemy			();
 			
 	virtual LPCSTR						Name					() const;
@@ -373,6 +378,10 @@ public:
 	IC		bool						group_behaviour					() const;
 	virtual	void						update_range_fov				(float &new_range, float &new_fov, float start_range, float start_fov);
 			void __stdcall				update_object_handler			();
+			bool						zoom_state						() const;
+			void						react_on_grenades				();
+			void						react_on_member_death			();
+
 
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION

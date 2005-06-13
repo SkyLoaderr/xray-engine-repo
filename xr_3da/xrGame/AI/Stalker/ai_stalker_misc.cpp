@@ -17,13 +17,27 @@
 #include "../../stalker_movement_manager.h"
 #include "../../explosive.h"
 #include "../../agent_manager.h"
+#include "../../agent_member_manager.h"
 #include "../../agent_explosive_manager.h"
+#include "../../member_order.h"
+#include "../../level.h"
+#include "../../sound_player.h"
+#include "ai_stalker_space.h"
+#include "../../danger_manager.h"
+
+const u32 TOLLS_INTERVAL	= 2000;
+const u32 GRENADE_INTERVAL	= 0*1000;
+const float FRIENDLY_GRENADE_ALARM_DIST	= 5.f;
 
 bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *object) const
 {
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
-	if (explosive && (explosive->CurrentParentID() != 0xffff))
+	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
 		agent_manager().explosive().register_explosive(explosive,object);
+		CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(Level().Objects.net_Find(explosive->CurrentParentID()));
+		if (entity_alive)
+			memory().danger().add(CDangerObject(entity_alive,object->Position(),Device.dwTimeGlobal,CDangerObject::eDangerTypeGrenade,CDangerObject::eDangerPerceiveTypeVisual,object));
+	}
 
 	if (!memory().item().useful(object))
 		return			(false);
@@ -86,3 +100,45 @@ void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection &movement_
 	}
 }
 
+void CAI_Stalker::react_on_grenades		()
+{
+	CMemberOrder::CGrenadeReaction	&reaction = agent_manager().member().member(this).grenade_reaction();
+	if (!reaction.m_processing)
+		return;
+
+	if (Device.dwTimeGlobal < reaction.m_time + GRENADE_INTERVAL)
+		return;
+
+//	u32							interval = AFTER_GRENADE_DESTROYED_INTERVAL;
+	const CMissile				*missile = smart_cast<const CMissile*>(reaction.m_grenade);
+//	if (missile && (missile->destroy_time() > Device.dwTimeGlobal))
+//		interval				= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
+//	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
+
+	if (missile && agent_manager().member().group_behaviour()) {
+//		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
+		CEntityAlive			*initiator = smart_cast<CEntityAlive*>(Level().Objects.net_Find(reaction.m_grenade->CurrentParentID()));
+		if (is_relation_enemy(initiator))
+			sound().play		(StalkerSpace::eStalkerSoundGrenadeAlarm);
+		else
+			if (missile->Position().distance_to(Position()) < FRIENDLY_GRENADE_ALARM_DIST)
+				sound().play	(StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm);
+	}
+
+	reaction.clear				();
+}
+
+void CAI_Stalker::react_on_member_death	()
+{
+	CMemberOrder::CMemberDeathReaction	&reaction = agent_manager().member().member(this).member_death_reaction();
+	if (!reaction.m_processing)
+		return;
+
+	if (Device.dwTimeGlobal < reaction.m_time + TOLLS_INTERVAL)
+		return;
+
+	if (agent_manager().member().group_behaviour())
+		sound().play			(StalkerSpace::eStalkerSoundTolls);
+
+	reaction.clear				();
+}
