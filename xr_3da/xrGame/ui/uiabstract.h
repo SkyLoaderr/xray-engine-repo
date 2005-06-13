@@ -151,7 +151,7 @@ public:
 			default:
 				NODEFAULT;
 		};
-		return Frect().null();
+		//return Frect().null();
 	}
 				void			MoveWndDelta		(float dx, float dy)				{m_wndPos.x+=dx;m_wndPos.y+=dy;}
 				void			MoveWndDelta		(const Fvector2& d)					{ MoveWndDelta(d.x, d.y);	};
