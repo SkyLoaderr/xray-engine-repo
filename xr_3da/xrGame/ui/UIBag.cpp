@@ -690,10 +690,10 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 		pDDItem->SetGridWidth(iGridWidth);
 
 		pDDItem->GetUIStaticItem().SetOriginalRect(
-			iXPos * INV_GRID_WIDTH,
-			iYPos * INV_GRID_HEIGHT,
-			iGridWidth * INV_GRID_WIDTH,
-			iGridHeight * INV_GRID_HEIGHT);
+			float(iXPos * INV_GRID_WIDTH),
+			float(iYPos * INV_GRID_HEIGHT),
+			float(iGridWidth * INV_GRID_WIDTH),
+			float(iGridHeight * INV_GRID_HEIGHT));
 
 
 		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());		

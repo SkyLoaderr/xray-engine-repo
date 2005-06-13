@@ -91,8 +91,8 @@ CUILine* CUILine::CutByLength(CGameFont* pFont, float length){
     if (!pos.word_2.exist())
 		return Cut2Pos(pos);
 
-	int len2w1 = GetLength_inclusiveWord_1(pos, pFont);
-	int len2w2 = GetLength_inclusiveWord_2(pos, pFont);
+	float len2w1 = GetLength_inclusiveWord_1(pos, pFont);
+	float len2w2 = GetLength_inclusiveWord_2(pos, pFont);
 
 	if (len2w1 > length)
 	{

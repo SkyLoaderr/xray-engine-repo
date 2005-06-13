@@ -35,8 +35,8 @@ void CUIGameTDM::Init ()
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
 
-	int ScreenW = UI_BASE_WIDTH;
-	int ScreenH = UI_BASE_HEIGHT;
+	float ScreenW = UI_BASE_WIDTH;
+	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
 	Frect FrameRect = pFragListT1->GetFrameRect ();
 	float FrameW	= FrameRect.right - FrameRect.left;

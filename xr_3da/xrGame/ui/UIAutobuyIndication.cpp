@@ -14,9 +14,9 @@
 
 using namespace InventoryUtilities;
 
-const int HEIGHT = 15;
-const int WIDTH = 40;
-const int INDENT = 3;
+const float HEIGHT = 15.0f;
+const float WIDTH = 40.0f;
+const float INDENT = 3.0f;
 const u32 COLOR_HIGHLIGHTED = 0xffffffff;
 const u32 COLOR_NORMAL      = 0xaaaaaaaa;
 const u32 COLOR_DISABLED    = 0x0;

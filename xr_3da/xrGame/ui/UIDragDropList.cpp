@@ -411,8 +411,8 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 		place_row = m_iCurrentFirstRow + GetViewRows()- pItem->GetGridHeight();
 
 
-	int item_center_x = pItem->GetWidth()/2 + item_rect.left - rect.left;
-	int item_center_y = pItem->GetHeight()/2 + item_rect.top - rect.top;
+	int item_center_x = iFloor(pItem->GetWidth()/2 + item_rect.left - rect.left);
+	int item_center_y = iFloor(pItem->GetHeight()/2 + item_rect.top - rect.top);
 
 
 	if(place_col == -1)
@@ -513,8 +513,8 @@ void CUIDragDropList::PlaceItemAtPos(int place_row, int place_col, CUIDragDropIt
 
 
 	//разместить само окно элемента
-	pItem->SetWndPos(place_col*GetCellWidth(),
-		(place_row-m_iCurrentFirstRow)*GetCellHeight());
+	pItem->SetWndPos(	float(place_col*GetCellWidth()),
+						float((place_row-m_iCurrentFirstRow)*GetCellHeight()));
 
 	pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 
@@ -716,7 +716,7 @@ void CUIDragDropList::HighlightCell(int row, int col, bool on)
 
 	if (static_cast<u32>(row*GetCols() + col) >= m_vpCellStatic.size()) return;
 	CUIStatic * cell = m_vpCellStatic[row*GetCols() + col];
-	cell->GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 52, 52);
+	cell->GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64.0f, 0.0f, 52.0f, 52.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////

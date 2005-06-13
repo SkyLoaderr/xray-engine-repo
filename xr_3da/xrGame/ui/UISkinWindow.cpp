@@ -25,10 +25,10 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 	CUIXmlInit xml_init;
 	shared_str texture;
 	string256 buf;
-	int width	( UI_BASE_WIDTH / SKINS_COUNT );
-	int height( xmlDoc.ReadAttribInt(PATH_XML, 0, "height") );
-	int x		( index*width );
-	int y		(UI_BASE_HEIGHT / 2 - height / 2 );
+	float width	 = UI_BASE_WIDTH / SKINS_COUNT );
+	float height = xmlDoc.ReadAttribFlt(PATH_XML, 0, "height");
+	float x		 = index*width;
+	float y		 = UI_BASE_HEIGHT/2.0f - height/2.0f;
 
 	CUIWindow::Init(x, y, width, height);
 
@@ -42,16 +42,16 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 // init left top
 	strconcat(buf, PATH_XML, ":left_top_texture");
 	texture = xmlDoc.Read(buf, index, NULL);
-	x = xmlDoc.ReadAttribInt(buf, index, "x");
-	y = xmlDoc.ReadAttribInt(buf, index, "y");
+	x = float(xmlDoc.ReadAttribInt(buf, index, "x"));
+	y = float(xmlDoc.ReadAttribInt(buf, index, "y"));
 	if(*texture)
 		pWnd->InitLeftTop(*texture, x, y);
 
 // init left bottom	
 	strconcat(buf,PATH_XML,":left_bottom_texture");
 	texture = xmlDoc.Read(buf, index, NULL);
-	x = xmlDoc.ReadAttribInt(buf, index, "x");
-	y = xmlDoc.ReadAttribInt(buf, index, "y");
+	x = float(xmlDoc.ReadAttribInt(buf, index, "x"));
+	y = float(xmlDoc.ReadAttribInt(buf, index, "y"));
 	if(*texture) 
 		pWnd->InitLeftBottom(*texture, x, y);
 

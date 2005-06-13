@@ -81,8 +81,8 @@ void	CUIGameDM::Init				()
 	pStatisticWnd->SetAutoDelete(true);
 
 
-	int ScreenW = UI_BASE_WIDTH;
-	int ScreenH = UI_BASE_HEIGHT;
+	float ScreenW = UI_BASE_WIDTH;
+	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
 	Frect FrameRect = pFragList->GetFrameRect ();
 	float FrameW	= FrameRect.right - FrameRect.left;

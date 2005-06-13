@@ -57,8 +57,8 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	xml_init.InitButton(xmlDoc, "button", 0, &UIOkBtn);
 	Frect rect = UIOkBtn.GetWndRect();
 
-	UIOkBtn.SetWndPos(UI_BASE_WIDTH / 2 - ((rect.right - rect.left) * 1.5),
-		r.bottom + r.top / 2 - UIOkBtn.GetHeight());
+	UIOkBtn.SetWndPos(	UI_BASE_WIDTH/2.0f - ((rect.right - rect.left) * 1.5),
+						r.bottom + r.top/2.0f - UIOkBtn.GetHeight());
 
 	// cancel button
 	AttachChild(&UICancelBtn);
