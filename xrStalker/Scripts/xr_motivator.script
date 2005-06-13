@@ -163,9 +163,6 @@ end
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 
---	printf("[%s]", utils.to_str(self.object:max_ignore_monster_distance()))
---	printf("[%s]", utils.to_str(self.object:ignore_monster_threshold()))
-	
 	if not self.initialized and db.actor then
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
