@@ -62,11 +62,6 @@ void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 		m_bInputFocus = true;
 		m_iKeyPressAndHold = 0;
 
-		//курсор в конец строки, перед символом
-		//окончания строки
-		
-		//m_iCursorPos = m_sEdit.size()-1;
-		// ->>
 		m_iCursorPos = xr_strlen(m_lines.GetText());
 	}
 }
@@ -278,6 +273,7 @@ void CUIEditBox::Update()
 void  CUIEditBox::Draw()
 {
 	CUILabel::Draw();
+
 	if(m_bInputFocus)
 	{	
 		//нарисовать курсор
@@ -295,8 +291,8 @@ void  CUIEditBox::Draw()
 		GetFont()->SetColor(0xAAFFFF00);
 		UI()->OutText(GetFont(), GetWndRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
-
-	}
+		GetFont()->OnRender();
+	}	
 }
 
 void CUIEditBox::SetText(LPCSTR str)

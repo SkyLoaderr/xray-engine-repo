@@ -926,19 +926,10 @@
 					RelativePath=".\Config\ui\trade_new.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\ui_common.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\ui_ingame.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_mm_mp.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_mp_main.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_old_textures.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\zone_map.xml">
@@ -969,6 +960,19 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\map_spots_rostok.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="textures_desc"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\ui_common.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_mp_main.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_old_textures.xml">
 					</File>
 				</Filter>
 			</Filter>
@@ -1476,6 +1480,9 @@
 				<Filter
 					Name="multiplayer"
 					Filter="">
+					<File
+						RelativePath=".\Scripts\ui_mm_mp_options.script">
+					</File>
 					<File
 						RelativePath=".\Scripts\ui_mp_main.script">
 					</File>
