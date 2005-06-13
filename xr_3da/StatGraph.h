@@ -133,6 +133,13 @@ public:
 
 		m_Markers.push_back(NewMarker);
 	};
+	
+	IC  const SMarker& Marker(u32 ID)
+	{
+		VERIFY(ID<m_Markers.size());
+		return m_Markers[ID];
+	};
+
 	IC	void		UpdateMarkerPos	(u32 ID, float NewPos)
 	{
 		if (ID >= m_Markers.size()) return;
