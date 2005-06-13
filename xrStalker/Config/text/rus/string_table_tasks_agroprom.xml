@@ -7,3 +7,10 @@
     <string id="agr_military_case">
         <text>Добыть военные документы</text>
     </string>
+
+    <string id="agr_help_stalkers">
+        <text>Помочь сталкерам Крота</text>
+    </string>
+    <string id="agr_help_stalkers_0">
+        <text>Помочь сталкерам Крота отбиться от военных на заводе</text>
+    </string>

@@ -122,6 +122,16 @@ function proceed()
 		actor:give_info_portion("agroprom_find_stalker_phantom")
 	end
 	
+	if actor:has_info("agr_help_stalkers_assault_dead") then
+		actor:give_info_portion("agr_krot_band_done")
+		set_task_state(task.completed, "agr_help_stalkers", 0)
+	end
+
+	if actor:has_info("agr_help_stalkers_defence_dead") then
+		actor:give_info_portion("agr_krot_band_done")
+		set_task_state(task.fail, "agr_help_stalkers", 0)
+	end
+
 	
 	darkvalley_tasks.proceed()
 

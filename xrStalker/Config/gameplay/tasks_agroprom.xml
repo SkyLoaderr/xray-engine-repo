@@ -40,5 +40,13 @@
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-	
+
+	<game_task id="agr_help_stalkers">
+		<title>agr_help_stalkers</title>
+		<objective>
+			<text>agr_help_stalkers_0</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+		</objective>
+	</game_task>
+
 </game_tasks_data>

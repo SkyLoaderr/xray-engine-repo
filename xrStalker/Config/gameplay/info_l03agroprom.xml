@@ -55,11 +55,25 @@
 
 
 	<info_portion id="agr_heli_descent">
-       	</info_portion>
+	</info_portion>
 	<info_portion id="agr_heli_landed">
-       	</info_portion>
+	</info_portion>
+
 	<info_portion id="agr_factory_assault_start">
-       	</info_portion>
-	
+	</info_portion>
+    <info_portion id="agr_help_stalkers_start">
+		<task>agr_help_stalkers</task>
+		<action>level_tasks.notify_new_task</action>
+    </info_portion>
+	<info_portion id="agr_help_stalkers_assault_dead">
+	</info_portion>
+	<info_portion id="agr_help_stalkers_defence_dead">
+	</info_portion>
+    <info_portion id="agr_help_stalkers_done">
+    	<disable>agr_help_stalkers_start</disable>
+    	<disable>agr_help_stalkers_assault_dead</disable>
+    	<disable>agr_help_stalkers_defence_dead</disable>
+    </info_portion>
+
 
 </game_information_portions>
