@@ -129,7 +129,7 @@ function stats				()
 	printf					("")
 	printf					("profile time : %8.2fms",timer:time()/1000)
 	printf					("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
-	printf					("call count   : %d",count)
+	printf					("call count   : %8d",count)
 
 	setup_hook				()
 end
