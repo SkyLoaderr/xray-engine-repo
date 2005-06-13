@@ -185,6 +185,9 @@
 				RelativePath=".\LUA_TEST.cpp">
 			</File>
 			<File
+				RelativePath=".\profiler_test.cpp">
+			</File>
+			<File
 				RelativePath=".\registry_test.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"

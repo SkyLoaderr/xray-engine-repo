@@ -1937,6 +1937,7 @@ extern void slipch_test();
 extern void string_test();
 extern void broker_test();
 extern void test_id_generator();
+extern void profiler_test();
 
 int __cdecl main(int argc, char* argv[])
 {
@@ -1951,7 +1952,8 @@ int __cdecl main(int argc, char* argv[])
 //	test_smart_container();
 //	callback_test::callback_test();
 //	slipch_test();
-//	return 0;
+	profiler_test();
+	return 0;
 
 	Core._initialize				("lua-test",NULL);
 	printf	("xrLuaCompiler v0.1\n");
