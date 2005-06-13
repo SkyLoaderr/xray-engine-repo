@@ -24,7 +24,7 @@ function action_car:__init(obj, storage)
 end
 
 function action_car:reset_scheme(loading)
-	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
+--	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
 
@@ -103,17 +103,17 @@ end
 function action_car:at_target_waypoint()
 	local dist = self.object:position():distance_to(self.patrol_walk:point(self.target_pt))
 	local arrived = dist < 5
-	printf("_bp: action_car:at_target_waypoint(self.target_pt=%d) = %d (arrived = %s)",
+--	printf("_bp: action_car:at_target_waypoint(self.target_pt=%d) = %d (arrived = %s)",
 		self.target_pt, dist, utils.to_str(arrived))
 	return arrived
 end
 
 function action_car:arrival_callback(index)
-	printf("_bp: action_car: arrival_callback() called")
+--	printf("_bp: action_car: arrival_callback() called")
 
 	local suggested_explode = self.st.path_walk_info[index]["explode"]
 	if suggested_explode == "true" then
-		printf("action_car:arrival_callback(): EXPLODE")
+--		printf("action_car:arrival_callback(): EXPLODE")
 		self.object:car_explode()
 	end
 
@@ -171,7 +171,7 @@ function action_car:go_to_waypoint()
 	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
 	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
 	if utils.no_need_to_rotate_xz(self.object, self.patrol_walk:point(self.target_pt)) then
-		printf("_bp: no_need_to_rotate")
+--		printf("_bp: no_need_to_rotate")
 		if self.state ~= state_moving_fwd then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
@@ -186,7 +186,7 @@ function action_car:go_to_waypoint()
 		local rotate_left = utils.angle_left_xz(self.object:direction(), 
 		                                    utils.vector_copy_by_val(self.patrol_walk:point(self.target_pt)):sub(
 		                                                                     self.object:position()))
-		printf("_bp: must rotate: left? %s", utils.to_str(rotate_left))
+--		printf("_bp: must rotate: left? %s", utils.to_str(rotate_left))
 		if rotate_left then
 			if self.state ~= state_rotating_left then 
 				xr_logic.mob_capture(self.object, true)
@@ -227,7 +227,7 @@ end
 
 -- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
-	printf("_bp: action_car:update(): state=%d", self.state)
+--	printf("_bp: action_car:update(): state=%d", self.state)
 
 	--if not self.object:action() then
 	--	printf("_bp: CAR EXPLODE")
@@ -251,7 +251,7 @@ function action_car:fast_update()
 			local cur_pos = self.object:position()
 			local diff = self.last_pos:distance_to(cur_pos)
 			if diff < self.min_delta_per_sec then
-				printf("_bp: car got stuck: explode")
+--				printf("_bp: car got stuck: explode")
 				xr_logic.mob_capture(self.object, true)
 				action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
 				self:car_explode()
@@ -280,7 +280,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
-	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+--	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 
 	local new_action = action_car(npc, storage)
 
