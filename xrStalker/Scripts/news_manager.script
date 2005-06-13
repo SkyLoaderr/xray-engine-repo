@@ -119,9 +119,9 @@ function send_encyclopedy(type)
 		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
 	if type == "encyclopedy" then
-		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 150,100,50,50, 0)
+		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 350,150,50,50, 0)
 	else
-		db.actor:give_game_news("general_new_diary", "ui\\ui_icons_task", 150,100,50,50, 0)
+		db.actor:give_game_news("general_new_diary", "ui\\ui_icons_task", 350,150,50,50, 0)
 	end	
 end
 
