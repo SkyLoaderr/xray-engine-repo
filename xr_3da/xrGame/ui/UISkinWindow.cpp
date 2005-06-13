@@ -25,7 +25,7 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 	CUIXmlInit xml_init;
 	shared_str texture;
 	string256 buf;
-	float width	 = UI_BASE_WIDTH / SKINS_COUNT );
+	float width	 = UI_BASE_WIDTH / SKINS_COUNT;
 	float height = xmlDoc.ReadAttribFlt(PATH_XML, 0, "height");
 	float x		 = index*width;
 	float y		 = UI_BASE_HEIGHT/2.0f - height/2.0f;
@@ -103,7 +103,7 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 		r.right		-= f;
 	}
 
-	UIHighlight.Init(BORDER, BORDER, r.right - r.left, r.bottom - r.top);
+	UIHighlight.Init(float(BORDER), float(BORDER), r.right - r.left, r.bottom - r.top);
 
 	UIHighlight.SetShader(GetMPCharIconsShader());
 	UIHighlight.GetUIStaticItem().SetColor(clInactive);
@@ -113,10 +113,10 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 
 	// Размеры иконки персонажа : 128х341
 	UIHighlight.GetUIStaticItem().SetOriginalRect(
-		m_iSkinX,
-		m_iSkinY,
-		CHAR_ICON_FULL_WIDTH*ICON_GRID_HEIGHT,
-		static_cast<int>(5.07f*ICON_GRID_WIDTH));
+		float(m_iSkinX),
+		float(m_iSkinY),
+		float(CHAR_ICON_FULL_WIDTH*ICON_GRID_HEIGHT),
+		(5.07f*ICON_GRID_WIDTH));
 
 	UIHighlight.ClipperOn();
 //	UIHighlight.SetTextureScaleXY(stretchKoeff,stretchKoeff);
