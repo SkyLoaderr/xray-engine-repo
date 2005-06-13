@@ -51,13 +51,20 @@ void CControlPathBuilder::update_schedule()
 {
 	START_PROFILE("AI/Base Monster/Think/Update Path");
 	
+	// the one and only reason is because of the restriction-change, so wait until
+	// position and node will be in valid state
+	if (!accessible(m_data.target_position) || 
+		( (m_data.target_node != u32(-1)) && (!accessible(m_data.target_node)) )) {
+		return;
+	}
+
 	// reset evaluator
 	level_selector().set_evaluator			(0);
 	use_selector_path						(false);
 	
 	// set enabled
 	enable_movement							(m_data.enable);
-	
+
 	// set params only if enable params
 	if (m_data.enable) {
 		detail().set_path_type				(eDetailPathTypeSmooth);
@@ -109,7 +116,7 @@ void CControlPathBuilder::init_selector(CAbstractVertexEvaluator *S, Fvector tar
 	S->m_tEnemy			= 0;
 }
 
-void CControlPathBuilder::on_travel_point_change(const u32 &previous_travel_point_index)
+void CControlPathBuilder::on_travel_point_change()
 {
 	m_man->notify	(ControlCom::eventTravelPointChange, 0);
 }
