@@ -6,20 +6,17 @@
 #include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../PhysicsShell.h"
-#include "../control_jump.h"
 
 CChimera::CChimera()
 {
 	StateMan = xr_new<CStateManagerChimera>	(this);
 
-	m_jump			= xr_new<CControlJump>			();
-	control().add	(m_jump, ControlCom::eControlJump);
+	control().add	(&m_jump, ControlCom::eControlJump);
 }
 
 CChimera::~CChimera()
 {
 	xr_delete		(StateMan);
-	xr_delete		(m_jump);
 }
 
 void CChimera::Load(LPCSTR section)
@@ -130,7 +127,7 @@ void CChimera::reinit()
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpOne,			CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpTwo,			CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
-	anim().TA_FillData(anim_triple_jump, "jump_attack_0", "jump_attack_1", "jump_attack_2", true, false);
+	anim().load_jump_data(m_jump_data, "jump_attack_0", "jump_attack_1", "jump_attack_2", MonsterMovement::eChimeraVelocityParamsJump);
 }
 
 void CChimera::SetTurnAnimation(bool turn_left)
@@ -265,17 +262,11 @@ void CChimera::try_to_jump()
 	if (!EnemyMan.get_enemy()) return;
 
 	CEntityAlive *target = const_cast<CEntityAlive*>(EnemyMan.get_enemy());
-	if (!m_jump->can_jump(target)) return;
+	if (!m_jump.can_jump(target)) return;
 
 	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(target, anim_triple_jump, MonsterMovement::eChimeraVelocityParamsJump);
+		anim().jump(target, m_jump_data);
 	}
-
-	//CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
-	//if (!target || !EnemyMan.see_enemy_now()) return;
-
-	//if (CJumpingAbility::can_jump(target))
-	//	CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump);
 }
 
 void CChimera::jump_over_physics(const Fvector &target)

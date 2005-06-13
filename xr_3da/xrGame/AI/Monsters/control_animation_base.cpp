@@ -590,22 +590,31 @@ void CControlAnimationBase::set_animation_speed()
 	ctrl_data->speed			= m_cur_anim.speed.target;
 }
 
-void CControlAnimationBase::jump(CObject *obj, const SAnimationTripleData &ta, u32 vel_mask)
+void CControlAnimationBase::jump(CObject *obj, const SControlJumpData &ta)
 {
 	m_man->capture(this, ControlCom::eControlJump);
 	
-	SControlJumpData *ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
-	VERIFY(ctrl_data);
+	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
+	VERIFY				(ctrl_data);
 	
-	ctrl_data->target_object			= obj;
-	ctrl_data->velocity_mask			= vel_mask;
-	ctrl_data->target_position			= obj->Position();
-	ctrl_data->skip_prepare				= ta.skip_prepare;
-	ctrl_data->triple_anim.pool[0]		= ta.pool[0];
-	ctrl_data->triple_anim.pool[1]		= ta.pool[1];
-	ctrl_data->triple_anim.pool[2]		= ta.pool[2];
-	ctrl_data->triple_anim.execute_once = ta.execute_once;
-	ctrl_data->triple_anim.skip_prepare = ta.skip_prepare;
+	ctrl_data->target_object	= obj;
+	ctrl_data->velocity_mask	= ta.velocity_mask;
+	ctrl_data->target_position	= obj->Position();
+	ctrl_data->skip_prepare		= ta.skip_prepare;
+	ctrl_data->pool[0]			= ta.pool[0];
+	ctrl_data->pool[1]			= ta.pool[1];
+	ctrl_data->pool[2]			= ta.pool[2];
 	
-	m_man->activate(ControlCom::eControlJump);
+	m_man->activate		(ControlCom::eControlJump);
+}
+
+void CControlAnimationBase::load_jump_data(SControlJumpData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask)
+{
+	// Load triple animations
+	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
+	data.pool[0]		= skel_animated->ID_Cycle_Safe(s1);	VERIFY(data.pool[0]);
+	data.pool[1]		= skel_animated->ID_Cycle_Safe(s2);	VERIFY(data.pool[1]);
+	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
+	data.skip_prepare	= false;
+	data.velocity_mask	= vel_mask;
 }

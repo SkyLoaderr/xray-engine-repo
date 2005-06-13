@@ -5,21 +5,17 @@
 #include "../../../detail_path_manager.h"
 #include "../../../level.h"
 #include "../monster_velocity_space.h"
-#include "../control_jump.h"
 #include "../../../sound_player.h"
 
 CSnork::CSnork() 
 {
 	StateMan		= xr_new<CStateManagerSnork>	(this);
-	m_jump			= xr_new<CControlJump>			();
-
-	control().add	(m_jump, ControlCom::eControlJump);
+	control().add	(&m_jump, ControlCom::eControlJump);
 }
 
 CSnork::~CSnork()
 {
 	xr_delete		(StateMan);
-	xr_delete		(m_jump);
 }
 
 void CSnork::Load(LPCSTR section)
@@ -93,7 +89,7 @@ void CSnork::reinit()
 	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 	
-	anim().TA_FillData(anim_triple_jump, "stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", true, false);
+	anim().load_jump_data(m_jump_data, "stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", MonsterMovement::eSnorkVelocityParamsJump);
 }
 
 void CSnork::UpdateCL()
@@ -212,10 +208,10 @@ void CSnork::try_to_jump()
 	if (!EnemyMan.get_enemy()) return;
 	
 	CEntityAlive *target = const_cast<CEntityAlive*>(EnemyMan.get_enemy());
-	if (!m_jump->can_jump(target)) return;
+	if (!m_jump.can_jump(target)) return;
 	
 	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(target, anim_triple_jump, MonsterMovement::eSnorkVelocityParamsJump);
+		anim().jump(target, m_jump_data);
 	}
 }
 
@@ -242,10 +238,10 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 
 bool CSnork::jump(CObject *enemy)
 {
-	if (!m_jump->can_jump(enemy)) return false;
+	if (!m_jump.can_jump(enemy)) return false;
 	if (!control().check_start_conditions(ControlCom::eControlJump))  return false;
 	
-	anim().jump(enemy, anim_triple_jump, MonsterMovement::eSnorkVelocityParamsJump);
+	anim().jump(enemy, m_jump_data);
 	sound().play(MonsterSpace::eMonsterSoundAttack);
 	return true;
 }

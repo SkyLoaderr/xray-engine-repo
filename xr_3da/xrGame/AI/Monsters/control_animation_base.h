@@ -4,6 +4,7 @@
 #include "../../../SkeletonAnimated.h"
 #include "control_combase.h"
 #include "anim_triple.h"
+#include "control_jump.h"
 
 class		CJumping;
 
@@ -249,6 +250,7 @@ public:
 	void					select_animation	();
 	void					set_animation_speed	();
 
-	void					jump				(CObject *obj, const SAnimationTripleData &ta, u32 vel_mask);
+	void					jump				(CObject *obj, const SControlJumpData &ta);
+	void					load_jump_data		(SControlJumpData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask);
 };
 

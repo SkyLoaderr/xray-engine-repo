@@ -1,17 +1,24 @@
 #pragma once
 #include "control_combase.h"
-#include "anim_triple.h"
+#include "../../../SkeletonAnimated.h"
 
 struct SControlJumpData : public ControlCom::IComData {
 	CObject					*target_object;
 	u32						velocity_mask;
 	Fvector					target_position;
 	bool					skip_prepare;
-	SAnimationTripleData	triple_anim;
+	MotionID				pool[3];
 };
 
 class CControlJump : public CControl_ComCustom<SControlJumpData> {
 	typedef CControl_ComCustom<SControlJumpData> inherited;
+
+	enum EStateAnimJump {
+		eStatePrepare,
+		eStateGlide,
+		eStateGround,
+		eStateNone
+	};
 
 	// loadable parameters
 	u32				m_delay_after_jump;
@@ -36,6 +43,10 @@ class CControlJump : public CControl_ComCustom<SControlJumpData> {
 	bool			m_velocity_bounced;
 	bool			m_use_prediction;
 	bool			m_enable_bounce;
+
+	// animation
+	EStateAnimJump	m_anim_state_prev;
+	EStateAnimJump	m_anim_state_current;
 
 public:
 	virtual void	load					(LPCSTR section);
@@ -78,4 +89,9 @@ private:
 			Fvector	predict_position	(CObject *obj, const Fvector &pos);
 
 			void	start_jump			(const Fvector &point);
+
+			// animation control method
+			void	select_next_anim_state	();
+			void	play_selected			();
+			void	on_start_jump			();
 };

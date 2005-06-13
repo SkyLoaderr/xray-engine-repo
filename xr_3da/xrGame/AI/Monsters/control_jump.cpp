@@ -7,7 +7,6 @@
 #include "../../detail_path_manager.h"
 #include "../../level.h"
 
-
 void CControlJump::reinit()
 {
 	inherited::reinit		();
@@ -39,12 +38,8 @@ bool CControlJump::check_start_conditions()
 
 void CControlJump::activate()
 {
-	//m_man->capture_pure	(this);
-	m_man->capture		(this, ControlCom::eControlPath);
-	m_man->capture		(this, ControlCom::eControlDir);
-	m_man->capture		(this, ControlCom::eControlMovement);
-	m_man->capture		(this, ControlCom::eControlTripleAnimation);
-	m_man->subscribe	(this, ControlCom::eventTAChange);
+	m_man->capture_pure	(this);
+	m_man->subscribe	(this, ControlCom::eventAnimationEnd);
 	m_man->subscribe	(this, ControlCom::eventVelocityBounce);
 
 	m_man->path_stop	(this);
@@ -60,13 +55,9 @@ void CControlJump::activate()
 void CControlJump::on_release()
 {
 	m_man->unlock		(this, ControlCom::eControlPath);
-	m_man->release		(this, ControlCom::eControlPath);
-	m_man->release		(this, ControlCom::eControlDir);
-	m_man->release		(this, ControlCom::eControlMovement);
-
-	if (m_man->triple_anim().is_active()) m_man->release		(this, ControlCom::eControlTripleAnimation);
-	m_man->unsubscribe	(this, ControlCom::eventTAChange);
+	m_man->release_pure (this);
 	m_man->unsubscribe	(this, ControlCom::eventVelocityBounce);
+	m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);
 }
 
 void CControlJump::start_jump(const Fvector &point)
@@ -94,21 +85,9 @@ void CControlJump::start_jump(const Fvector &point)
 
 	m_object->set_ignore_collision_hit	(true);
 
-	// activate triple animation
-	m_data.triple_anim.skip_prepare	= m_data.skip_prepare;
-
-	SAnimationTripleData	*ctrl_data = (SAnimationTripleData*)m_man->data(this, ControlCom::eControlTripleAnimation); 
-	VERIFY					(ctrl_data);
-
-	ctrl_data->pool[0]		= m_data.triple_anim.pool[0];
-	ctrl_data->pool[1]		= m_data.triple_anim.pool[1];
-	ctrl_data->pool[2]		= m_data.triple_anim.pool[2];
-	ctrl_data->skip_prepare	= m_data.triple_anim.skip_prepare;
-	ctrl_data->execute_once	= m_data.triple_anim.execute_once;
-	ctrl_data->capture_type = 0;
-
-	m_man->activate			(ControlCom::eControlTripleAnimation);
-
+	m_anim_state_current				= m_data.skip_prepare ? eStateGlide : eStatePrepare;
+	m_anim_state_prev					= m_data.skip_prepare ? eStatePrepare : eStateNone;
+	select_next_anim_state				();
 }
 
 
@@ -191,17 +170,16 @@ void CControlJump::set_animation_speed()
 
 void CControlJump::stop()
 {
-	if (m_man->triple_anim().is_active())	m_man->release(this, ControlCom::eControlTripleAnimation);
 	m_object->path().prepare_builder		();
 	m_object->set_ignore_collision_hit		(false);
-
 	m_man->notify							(ControlCom::eventJumpEnd, 0);
 }
 
 void CControlJump::pointbreak()
 {
-	m_man->triple_anim().pointbreak();
-	m_time_started	= 0;
+	m_time_started				= 0;
+	m_anim_state_current		= eStateGround;
+	select_next_anim_state		();
 }
 
 Fvector CControlJump::get_target(CObject *obj)
@@ -218,21 +196,7 @@ Fvector CControlJump::get_target(CObject *obj)
 
 void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
 {
-	if (type == ControlCom::eventTAChange) {
-		STripleAnimEventData *event_data = (STripleAnimEventData *)data;
-		if (event_data->m_current_state == eStateExecute) {
-			// получить время физ.прыжка
-			float ph_time = m_object->m_PhysicMovementControl->JumpMinVelTime(m_target_position);
-			// выполнить прыжок в соответствии с делителем времени
-			m_object->m_PhysicMovementControl->Jump(m_target_position,ph_time/m_jump_factor);
-			m_jump_time			= ph_time/m_jump_factor;
-			m_time_started		= Device.dwTimeGlobal;
-			m_time_next_allowed	= m_time_started + m_delay_after_jump;
-		} else if (event_data->m_current_state == eStateNone) {
-			if (m_man->triple_anim().is_active()) m_man->release(this, ControlCom::eControlTripleAnimation);
-			stop();
-		}
-	} else if (type == ControlCom::eventVelocityBounce) {
+	if (type == ControlCom::eventVelocityBounce) {
 		SEventVelocityBounce *event_data = (SEventVelocityBounce *)data;
 		if ((event_data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
 			if (is_on_the_ground()) {
@@ -244,6 +208,8 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 				} else stop();
 			}
 		}
+	} else if (type == ControlCom::eventAnimationEnd) {
+		select_next_anim_state();
 	}
 }
 
@@ -345,4 +311,45 @@ Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 	if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
 
 	return prediction_pos;
+}
+//////////////////////////////////////////////////////////////////////////
+//
+
+
+void CControlJump::select_next_anim_state()
+{
+	if (m_anim_state_current == eStateNone) {
+		stop();
+		return;
+	}
+
+	play_selected	();
+
+	if ((m_anim_state_current == eStateGlide) && (m_anim_state_prev != eStateGlide)) 
+		on_start_jump	();
+
+	m_anim_state_prev = m_anim_state_current;
+	if (m_anim_state_current != eStateGlide) 
+		m_anim_state_current = EStateAnimJump(m_anim_state_current + 1);
+}
+
+void CControlJump::play_selected()
+{
+	// start new animation
+	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
+	VERIFY						(ctrl_data);
+
+	ctrl_data->motion			= m_data.pool[m_anim_state_current];
+	ctrl_data->start_animation	= true;
+}
+
+void CControlJump::on_start_jump()
+{
+	// получить время физ.прыжка
+	float ph_time = m_object->m_PhysicMovementControl->JumpMinVelTime(m_target_position);
+	// выполнить прыжок в соответствии с делителем времени
+	m_object->m_PhysicMovementControl->Jump(m_target_position,ph_time/m_jump_factor);
+	m_jump_time			= ph_time/m_jump_factor;
+	m_time_started		= Device.dwTimeGlobal;
+	m_time_next_allowed	= m_time_started + m_delay_after_jump;
 }
