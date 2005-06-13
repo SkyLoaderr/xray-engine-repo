@@ -117,7 +117,11 @@
 	<info_portion id="mil_ara_end"></info_portion>	
 	<info_portion id="mil_ara_entered"></info_portion>	
 	<info_portion id="mil_ara_dead"></info_portion>	
-	
+	<info_portion id="mil_courier_start"></info_portion>
+	<info_portion id="mil_courier_death"></info_portion>
+	<info_portion id="mil_courier_meet"></info_portion>
+	<info_portion id="mil_courier_visited"></info_portion>
+	<info_portion id="mil_ara_leave"></info_portion>	
 
 	<!-- Хутор наемников -->
 	<info_portion id="mil_killer_with_bandits_combat"></info_portion>
@@ -155,11 +159,6 @@
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	
-	<info_portion id="mil_courier_start"></info_portion>
-	<info_portion id="mil_courier_death"></info_portion>
-	<info_portion id="mil_courier_meet"></info_portion>
-	<info_portion id="mil_courier_visited"></info_portion>
-
 	<!-- Диалог с поваром-->
 	<info_portion id="mil_cook_dialog1"></info_portion>
 	<info_portion id="mil_cook_dialog2"></info_portion>
