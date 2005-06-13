@@ -21,7 +21,7 @@ news = {
 	bar_ecolog_spam_3  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_5]],
 	bar_ecolog_spam_4  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]],
 	bar_ecolog_attack  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]],
-	tips_gar_hellcar_alarm = [[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]
+	tips_gar_dymon_alarm = [[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]
 }
 
 tips_icons = {
