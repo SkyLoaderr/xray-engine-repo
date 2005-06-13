@@ -15,17 +15,6 @@ local act_fight_far   = base + 1
 local act_look_around = base + 2
 local act_go_to_pos   = base + 3
 
-function send_to_nearest_accessible_vertex( npc, v_id )
-	if not npc:accessible( v_id ) then
-		local vtemp = vector()
-		v_id, vtemp = npc:accessible_nearest( level.vertex_position( v_id ), vtemp )
-	end
-
-	npc:set_dest_level_vertex_id( v_id )
-
-	return v_id
-end
-
 --------------------------------------------------------------------------------------------------------------
 class "evaluator_combat_monolith" ( property_evaluator )
 
@@ -135,7 +124,7 @@ end
 function action_fight_far:execute()
 	action_base.execute( self )
 
-	send_to_nearest_accessible_vertex( self.object, self.object:best_enemy():level_vertex_id() )
+	utils.send_to_nearest_accessible_vertex( self.object, self.object:best_enemy():level_vertex_id() )
 end
 
 function action_fight_far:finalize()
@@ -214,7 +203,7 @@ function action_go_to_pos:execute()
 	if self.st.last_seen_vert_id ~= self.cached_id then
 		self.cached_id = self.st.last_seen_vert_id
 
-		self.st.last_seen_vert_id = send_to_nearest_accessible_vertex( self.object, self.cached_id )
+		self.st.last_seen_vert_id = utils.send_to_nearest_accessible_vertex( self.object, self.cached_id )
 	end
 end
 
