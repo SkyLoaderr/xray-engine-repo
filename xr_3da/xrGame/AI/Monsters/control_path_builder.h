@@ -45,7 +45,7 @@ public:
 	virtual void	reinit					();
 	virtual void	update_schedule			();
 
-	virtual	void	on_travel_point_change	();
+	virtual	void	on_travel_point_change	(const u32 &previous_travel_point_index);
 	virtual void	on_build_path			();
 
 			// services
