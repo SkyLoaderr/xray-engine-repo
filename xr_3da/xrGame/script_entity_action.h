@@ -26,8 +26,8 @@ public:
 	CScriptSoundAction		m_tSoundAction;
 	CScriptParticleAction	m_tParticleAction;
 	CScriptObjectAction		m_tObjectAction;
-	CScriptActionCondition		m_tActionCondition;
-	CScriptMonsterAction			m_tMonsterAction;
+	CScriptActionCondition	m_tActionCondition;
+	CScriptMonsterAction	m_tMonsterAction;
 	void					*m_user_data;
 
 public:
