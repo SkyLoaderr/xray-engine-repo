@@ -7364,6 +7364,16 @@
 							<File
 								RelativePath=".\DBG_Car.cpp">
 							</File>
+							<Filter
+								Name="CarWeapon"
+								Filter="">
+								<File
+									RelativePath=".\CarWeapon.cpp">
+								</File>
+								<File
+									RelativePath=".\CarWeapon.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="heli"

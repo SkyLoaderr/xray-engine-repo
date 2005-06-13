@@ -3,6 +3,7 @@
 #include "boar_state_manager.h"
 #include "../../../../skeletoncustom.h"
 #include "../monster_velocity_space.h"
+#include "../../../game_object_space.h"
 
 CAI_Boar::CAI_Boar()
 {
@@ -117,7 +118,7 @@ BOOL CAI_Boar::net_Spawn (CSE_Abstract* DC)
 	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
 	{
 		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
-		BI.set_callback(BoneCallback,this);
+		BI.set_callback(bctCustom,BoneCallback,this);
 	}
 	
 	_cur_delta		= _target_delta = 0.f;

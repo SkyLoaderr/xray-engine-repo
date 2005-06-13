@@ -44,3 +44,10 @@ namespace GameObject {
 		eDummy = u32(-1),
 	};
 };
+
+enum EBoneCallbackType{
+	bctDummy			= u32(0),
+	bctPhysics,
+	bctCustom,
+	bctForceU32			= u32(-1),
+};

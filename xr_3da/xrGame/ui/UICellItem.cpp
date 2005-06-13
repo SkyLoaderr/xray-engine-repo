@@ -40,12 +40,7 @@ void CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
 CUIFlyingItem* CUICellItem::CreateFlyingItem()
 {
 	CUIFlyingItem* res = xr_new<CUIFlyingItem>(this);
-	res->GetUIStaticItem().SetShader(GetShader());
-	res->SetOriginalRect(GetUIStaticItem().GetOriginalRect());
-	res->SetWndSize(GetWndSize());
-	res->SetWndPos(GetAbsolutePos());
-	res->TextureAvailable			(true);
-	res->TextureOn					();
+	res->Init(GetShader(),GetAbsoluteRect(),GetUIStaticItem().GetOriginalRect());
 	return res;
 }
 
@@ -53,22 +48,35 @@ CUIFlyingItem* CUICellItem::CreateFlyingItem()
 
 CUIFlyingItem::CUIFlyingItem(CUICellItem* parent)
 {
-	m_pParent = parent;
-	HUD().GetUI()->AddDialogToRender(this);
-	GetUICursor()->SetMoveReceiver(CUICursor::CURSOR_MOVE_EVENT(this,&CUIFlyingItem::OnMouseMoved));
+	m_pParent						= parent;
+	m_static.SetAutoDelete			(false);
+	AttachChild						(&m_static);
+	HUD().GetUI()->StartStopMenu	(this,false);
+//	GetUICursor()->SetMoveReceiver(CUICursor::CURSOR_MOVE_EVENT(this,&CUIFlyingItem::OnMouseMoved));
 }
 
 CUIFlyingItem::~CUIFlyingItem()
 {
-	HUD().GetUI()->RemoveDialogToRender(this);
+	HUD().GetUI()->StartStopMenu	(this,false);
+}
+
+void CUIFlyingItem::Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect)
+{
+	SetWndRect						(rect);
+	m_static.SetShader				(sh);
+	m_static.SetOriginalRect		(text_rect);
+	m_static.SetWndPos				(0.0f,0.0f);
+	m_static.SetWndSize				(GetWndSize());
+	m_static.TextureAvailable		(true);
+	m_static.TextureOn				();
 
 }
 
 void CUIFlyingItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-//	if(mouse_action == WINDOW_MOUSE_MOVE){
-//		MoveWndDelta(GetUICursor()->GetPosDelta());
-//	}
+	if(mouse_action == WINDOW_MOUSE_MOVE){
+		MoveWndDelta(GetUICursor()->GetPosDelta());
+	}
 }
 
 void CUIFlyingItem::OnMouseMoved(Fvector2 delta)

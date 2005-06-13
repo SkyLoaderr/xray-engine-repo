@@ -14,7 +14,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "../skeletoncustom.h"
-
+#include "game_object_space.h"
 
 //----------------------------------------------------------------------------------------
 
@@ -250,9 +250,9 @@ bool	CWeaponMounted::attach_Actor		(CGameObject* actor)
 	m_pPhysicsShell->EnabledCallbacks(FALSE);
 	// enable actor rotate callback
 	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_x_bone);	
-	biX.set_callback		(BoneCallbackX,this);
+	biX.set_callback		(bctCustom,BoneCallbackX,this);
 	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_y_bone);	
-	biY.set_callback		(BoneCallbackY,this);
+	biY.set_callback		(bctCustom,BoneCallbackY,this);
 	// set actor to mounted position
 	const Fmatrix& A	= K->LL_GetTransform(actor_bone);
 	Fvector ap;
@@ -267,9 +267,9 @@ void	CWeaponMounted::detach_Actor		()
 	CHolderCustom::detach_Actor();
 	// disable actor rotate callback
 	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_x_bone);	
-	biX.set_callback		(0,0);
+	biX.set_callback		(bctDummy,0,0);
 	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_y_bone);	
-	biY.set_callback		(0,0);
+	biY.set_callback		(bctDummy,0,0);
 	// enable shell callback
 	m_pPhysicsShell->EnabledCallbacks(TRUE);
 	

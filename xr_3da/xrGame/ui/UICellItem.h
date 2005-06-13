@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIStatic.h"
+#include "UIDialogWnd.h"
 
 class CUIFlyingItem;
 class CUICellItem :public CUIStatic
@@ -33,13 +34,15 @@ public:
 
 };
 
-class CUIFlyingItem: public CUIStatic
+class CUIFlyingItem: public CUIDialogWnd
 {
 private:
-	typedef		CUIStatic	inherited;
-	CUICellItem* m_pParent;
+	typedef		CUIDialogWnd	inherited;
+	CUIStatic				m_static;
+	CUICellItem*			m_pParent;
 public:
 							CUIFlyingItem(CUICellItem* parent);
+	virtual		void		Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect);
 	virtual					~CUIFlyingItem();
 	virtual		void		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();

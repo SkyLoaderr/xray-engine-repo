@@ -18,11 +18,12 @@ void		CBoneInstance::construct	()
 	mRenderTransform.identity	();
 	Callback_overwrite			= FALSE;
 }
-void		CBoneInstance::set_callback	(BoneCallback C, void* Param, BOOL overwrite)
+void		CBoneInstance::set_callback	(u32 Type, BoneCallback C, void* Param, BOOL overwrite)
 {	
 	Callback			= C; 
 	Callback_Param		= Param; 
 	Callback_overwrite	= overwrite;
+	Callback_type		= Type;
 }
 void		CBoneInstance::set_param	(u32 idx, float data)
 {

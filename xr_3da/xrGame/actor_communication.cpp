@@ -96,7 +96,10 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 			actor_diary_article = true;
 
 		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime(), article.data()->articleType));
-		callback(GameObject::eArticleInfo)(lua_game_object(), *(article.data()->group), *(article.data()->name));
+		LPCSTR g,n;
+		g = *(article.data()->group);
+		n = *(article.data()->name);
+		callback(GameObject::eArticleInfo)(lua_game_object(), g, n);
 
 	}
 

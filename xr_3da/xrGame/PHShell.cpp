@@ -12,6 +12,7 @@
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
 #include "PHCollideValidator.h"
+#include "game_object_space.h"
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
 //#include "../ode/src/collision_kernel.h"
@@ -247,7 +248,7 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 	if(!bActive) return;
 	VERIFY(m_pKinematics);
 	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(id);
-	if(!instance.Callback_Param) return;
+	if(instance.Callback_type!=bctPhysics || !instance.Callback_Param) return;
 
 	((CPhysicsElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, id);
 	EnableObject(0);
@@ -280,7 +281,7 @@ CPhysicsElement* CPHShell::get_Element(u16 bone_id)
 		CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(bone_id);
 		if(instance.Callback==BonesCallback||instance.Callback==StataticRootBonesCallBack)
 		{
-			return (CPhysicsElement*) instance.Callback_Param;
+			return (instance.Callback_type==bctPhysics)?(CPhysicsElement*)instance.Callback_Param:NULL;
 		}
 	}
 
@@ -923,7 +924,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
-			B.set_callback(0,cast_PhysicsElement(elements[element]));
+			B.set_callback(bctPhysics,0,cast_PhysicsElement(elements[element]));
 		}
 		else
 		{
@@ -931,7 +932,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 			element++;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			B.set_callback(BonesCallback,cast_PhysicsElement(elements[element]));
+			B.set_callback(bctPhysics,BonesCallback,cast_PhysicsElement(elements[element]));
 			B.Callback_overwrite=TRUE;
 		}
 	}
@@ -973,13 +974,13 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	if(mask.is(1ui64<<(u64)id))
 	{
 		if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
-			B.set_callback(0,cast_PhysicsElement(elements[element]));
+			B.set_callback(bctPhysics,0,cast_PhysicsElement(elements[element]));
 		}else{
 			element_position_in_set_calbacks++;
 			element=element_position_in_set_calbacks;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			B.set_callback(bones_callback,cast_PhysicsElement(elements[element]));
+			B.set_callback(bctPhysics,bones_callback,cast_PhysicsElement(elements[element]));
 			//B.Callback_overwrite=TRUE;
 		}
 	}
@@ -996,7 +997,7 @@ void CPHShell::ZeroCallbacksRecursive(u16 id)
 {
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
-	B.set_callback(0,0);
+	B.set_callback(bctDummy,0,0);
 	B.Callback_overwrite=FALSE;
 	for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
 		ZeroCallbacksRecursive		((*it)->GetSelfID());

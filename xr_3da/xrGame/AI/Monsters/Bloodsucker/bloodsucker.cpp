@@ -13,6 +13,7 @@
 #include "../../../level_debug.h"
 #include "../monster_velocity_space.h"
 #include "../../../gamepersistent.h"
+#include "../../../game_object_space.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -185,8 +186,8 @@ void CAI_Bloodsucker::vfAssignBones()
 	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
 	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
 	{
-		bone_spine->set_callback(BoneCallback,this);
-		bone_head->set_callback(BoneCallback,this);
+		bone_spine->set_callback(bctCustom,BoneCallback,this);
+		bone_head->set_callback(bctCustom,BoneCallback,this);
 	}
 
 	// Bones settings

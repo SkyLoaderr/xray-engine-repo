@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
 #include "stalker_movement_manager.h"
+#include "game_object_space.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -101,11 +102,11 @@ void CStalkerAnimationManager::assign_bone_callbacks	()
 	LPCSTR							section = *object().cNameSect();
 	
 	int								head_bone = kinematics->LL_BoneID(pSettings->r_string(section,"bone_head"));
-	kinematics->LL_GetBoneInstance	(u16(head_bone)).set_callback(head_callback,&object());
+	kinematics->LL_GetBoneInstance	(u16(head_bone)).set_callback(bctCustom,head_callback,&object());
 
 	int								shoulder_bone = kinematics->LL_BoneID(pSettings->r_string(section,"bone_shoulder"));
-	kinematics->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(shoulder_callback,&object());
+	kinematics->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(bctCustom,shoulder_callback,&object());
 
 	int								spin_bone = kinematics->LL_BoneID(pSettings->r_string(section,"bone_spin"));
-	kinematics->LL_GetBoneInstance	(u16(spin_bone)).set_callback(spine_callback,&object());
+	kinematics->LL_GetBoneInstance	(u16(spin_bone)).set_callback(bctCustom,spine_callback,&object());
 }

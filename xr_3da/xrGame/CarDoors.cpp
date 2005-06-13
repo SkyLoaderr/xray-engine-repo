@@ -11,6 +11,7 @@
 #include "net_utils.h"
 #include "../skeletoncustom.h"
 #include "MathUtils.h"
+#include "game_object_space.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CCar::DoorHit(float P,s16 element,ALife::EHitType hit_type)
 {
@@ -340,7 +341,7 @@ void CCar::SDoor::ClosedToOpening()
 	CKinematics* pKinematics=smart_cast<CKinematics*>(pcar->Visual());
 //	CBoneData& bone_data= pKinematics->LL_GetData(u16(bone_id));
 	CBoneInstance& bone_instance=pKinematics->LL_GetBoneInstance(u16(bone_id));
-	bone_instance.set_callback(pcar->PPhysicsShell()->GetBonesCallback(),joint->PSecond_element());
+	bone_instance.set_callback(bctPhysics,pcar->PPhysicsShell()->GetBonesCallback(),joint->PSecond_element());
 	
 	door_form.set(bone_instance.mTransform);
 	//door_form.mulB(pcar->XFORM());
@@ -362,7 +363,7 @@ void CCar::SDoor::ClosingToClosed()
 	CKinematics* pKinematics=smart_cast<CKinematics*>(pcar->Visual());
 //	CBoneData& bone_data= pKinematics->LL_GetData(u16(bone_id));
 	CBoneInstance& bone_instance=pKinematics->LL_GetBoneInstance(u16(bone_id));
-	bone_instance.set_callback(0,joint->PFirst_element());
+	bone_instance.set_callback(bctPhysics,0,joint->PFirst_element());
 	bone_instance.Callback_overwrite=FALSE;
 	joint->PSecond_element()->Deactivate();
 	joint->Deactivate();

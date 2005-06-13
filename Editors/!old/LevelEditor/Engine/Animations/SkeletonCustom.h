@@ -6,7 +6,7 @@
 #include		"bone.h"
 
 // consts
-const	u32		MAX_BONE_PARAMS		=	5;
+const	u32		MAX_BONE_PARAMS		=	4;
 const	u32		UCalc_Interval		=	100;	// 10 fps
 
 // refs
@@ -35,10 +35,10 @@ public:
 	void*				Callback_Param;
 	BOOL				Callback_overwrite;					// performance hint - don't calc anims
 	float				param			[MAX_BONE_PARAMS];	// 
-
+	u32					Callback_type;						//
 	// methods
 	void				construct		();
-	void				set_callback	(BoneCallback C, void* Param, BOOL overwrite=FALSE);
+	void				set_callback	(u32 Type, BoneCallback C, void* Param, BOOL overwrite=FALSE);
 	void				set_param		(u32 idx, float data);
 	float				get_param		(u32 idx);
 

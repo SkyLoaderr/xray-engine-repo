@@ -5,6 +5,7 @@
 #include "xrserver_objects_alife.h"
 #include "../skeletonanimated.h"
 #include "../xr_collide_form.h"
+#include "game_object_space.h"
 
 
 CPhysicObject::CPhysicObject(void) 
@@ -150,7 +151,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	E->add_Box			(bb);
 	E->setMass			(10.f);
 	E->set_ParentElement(root_e);
-	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
+	B.set_callback		(bctPhysics,m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);
 	if( !(m_type==epotFreeChain && root_e==0) )
 	{		

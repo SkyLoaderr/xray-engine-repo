@@ -9,6 +9,7 @@
 #include "actorEffector.h"
 #include "camerafirsteye.h"
 #include "xr_level_controller.h"
+#include "game_object_space.h"
 
 void __stdcall	CWeaponStatMgun::BoneCallbackX		(CBoneInstance *B)
 {
@@ -41,17 +42,17 @@ void CWeaponStatMgun::SetBoneCallbacks()
 	m_pPhysicsShell->EnabledCallbacks(FALSE);
 	
 	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(BoneCallbackX,this);
+	biX.set_callback		(bctCustom,BoneCallbackX,this);
 	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
-	biY.set_callback		(BoneCallbackY,this);
+	biY.set_callback		(bctCustom,BoneCallbackY,this);
 }
 
 void CWeaponStatMgun::ResetBoneCallbacks()
 {
 	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(0,0);
+	biX.set_callback		(bctDummy,0,0);
 	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
-	biY.set_callback		(0,0);
+	biY.set_callback		(bctDummy,0,0);
 
 	m_pPhysicsShell->EnabledCallbacks(TRUE);
 }

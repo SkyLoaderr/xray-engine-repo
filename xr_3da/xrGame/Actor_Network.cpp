@@ -35,6 +35,7 @@
 #include "ui/UIArtefactPanel.h"
 #include "ui/UIMainIngameWnd.h"
 #include "gamepersistent.h"
+#include "game_object_space.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -872,10 +873,10 @@ void	CActor::SetCallbacks()
 	u16 spine1_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(Spin0Callback,this);
-	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(Spin1Callback,this);
-	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
+	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(bctCustom,Spin0Callback,this);
+	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(bctCustom,Spin1Callback,this);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(bctCustom,ShoulderCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctCustom,HeadCallback,this);
 }
 void	CActor::ResetCallbacks()
 {
@@ -885,10 +886,10 @@ void	CActor::ResetCallbacks()
 	u16 spine1_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(0,0);
-	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(0,0);
-	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(0,0);
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(0,0);
+	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctDummy,0,0);
 }
 
 void	CActor::OnChangeVisual()

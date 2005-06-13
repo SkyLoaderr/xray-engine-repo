@@ -4,6 +4,7 @@
 #include "script_entity_action.h"
 #include "xrServer_Objects_ALife.h"
 #include "../skeletoncustom.h"
+#include "game_object_space.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -89,10 +90,10 @@ BOOL CProjector::net_Spawn(CSE_Abstract* DC)
 	
 	//////////////////////////////////////////////////////////////////////////
 	CBoneInstance& b_x = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(bone_x.id);	
-	b_x.set_callback(BoneCallbackX,this);
+	b_x.set_callback(bctCustom,BoneCallbackX,this);
 
 	CBoneInstance& b_y = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(bone_y.id);	
-	b_y.set_callback(BoneCallbackY,this);
+	b_y.set_callback(bctCustom,BoneCallbackY,this);
 	
 	Direction().getHP(_current.yaw,_current.pitch);
 	_start = _target = _current;

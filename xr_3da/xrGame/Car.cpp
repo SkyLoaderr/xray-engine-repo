@@ -21,6 +21,8 @@
 #include "../skeletonanimated.h"
 #include "level.h"
 #include "ui/UIMainIngameWnd.h"
+#include "CarWeapon.h"
+#include "game_object_space.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
@@ -70,6 +72,8 @@ CCar::CCar(void)
 	m_death_time=u32(-1);
 	m_time_to_explode=5000;
 	b_exploded=false;
+	m_car_weapon=NULL;
+
 #ifdef DEBUG
 	InitDebug();
 #endif
@@ -83,6 +87,7 @@ CCar::~CCar(void)
 	xr_delete			(m_car_sound);
 	ClearExhausts		();
 	xr_delete			(inventory);
+	xr_delete			(m_car_weapon);
  //	xr_delete			(l_tpEntityAction);
 }
 
@@ -135,6 +140,12 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	else							b_exploded=false;
 									
 	CDamagableItem::RestoreEffect();
+	
+	
+	CInifile* pUserData		= PKinematics(Visual())->LL_UserData(); 
+	if(pUserData->section_exist("mounted_weapon_definition"))
+		m_car_weapon = xr_new<CCarWeapon>(this);
+
 	return							(CScriptEntity::net_Spawn(DC) && R);
 }
 
@@ -158,7 +169,7 @@ void	CCar::net_Destroy()
 	if(m_bone_steer!=BI_NONE)
 	{
 
-		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(0,0);
+		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(bctDummy,0,0);
 
 	}
 	inherited::net_Destroy();
@@ -315,7 +326,7 @@ void CCar::UpdateCL				( )
 	CExplosive::UpdateCL();
 	if(Owner()) return;
 	UpdateEx			(DEFAULT_FOV);
-
+	if(m_car_weapon)m_car_weapon->UpdateCL();
 }
 
  void CCar::VisualUpdate(float fov)
@@ -394,6 +405,12 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 
 void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	if(m_car_weapon){
+		Fvector pos;
+		who->Center(pos);
+		m_car_weapon->SetParam(DESIRED_POS,pos);
+	}
+
 	//if(||) P=0.f;
 	WheelHit(P,element,hit_type);
 	DoorHit(P,element,hit_type);
@@ -689,7 +706,7 @@ void CCar::Init()
 	if(ini->line_exist("car_definition","steer"))
 	{
 		m_bone_steer=pKinematics->LL_BoneID(ini->r_string("car_definition","steer"));
-		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(cb_Steer,this);
+		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(bctPhysics,cb_Steer,this);
 	}
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;

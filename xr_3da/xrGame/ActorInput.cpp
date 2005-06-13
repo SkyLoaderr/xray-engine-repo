@@ -326,17 +326,7 @@ void CActor::ActorUse()
 		CGameObject::u_EventGen		(P, GEG_PLAYER_DETACH_HOLDER, ID());
 		P.w_u32						(GO->ID());
 		CGameObject::u_EventSend	(P);
-//		if(use_Holder(0))return;
-/*
-		CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
-		if(smart_cast<CCar*>(holder)) if(use_Vehicle(0))return;
-		switch (holder->CLS_ID)
-		{
-		//case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
-		case CLSID_OBJECT_W_MOUNTED:
-		case CLSID_OBJECT_W_STATMGUN:
-			if(use_MountedWeapon(0))	return;	break;
-		}*/
+		return;
 	}
 				
 	if(m_PhysicMovementControl->PHCapture())

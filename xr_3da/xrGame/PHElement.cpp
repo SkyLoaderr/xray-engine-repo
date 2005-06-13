@@ -6,6 +6,7 @@
 #include "PHContactBodyEffector.h"
 #include "MathUtils.h"
 #include "PhysicsShellHolder.h"
+#include "game_object_space.h"
 #include "../skeletoncustom.h"
 #include <../ode/src/util.h>
 #ifdef DEBUG
@@ -217,7 +218,7 @@ void		CPHElement::Deactivate()
 	CKinematics* K=m_shell->PKinematics();
 	if(K)
 	{
-		K->LL_GetBoneInstance(m_SelfID).set_callback(0,0);
+		K->LL_GetBoneInstance(m_SelfID).set_callback(bctDummy,0,0);
 	}
 }
 
@@ -318,7 +319,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	CKinematics* K=m_shell->PKinematics();
 	if(K)
 	{
-		K->LL_GetBoneInstance(m_SelfID).set_callback(m_shell->GetBonesCallback(),static_cast<CPhysicsElement*>(this));
+		K->LL_GetBoneInstance(m_SelfID).set_callback(bctPhysics,m_shell->GetBonesCallback(),static_cast<CPhysicsElement*>(this));
 	}
 }
 void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){

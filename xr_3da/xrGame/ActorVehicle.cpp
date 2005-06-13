@@ -17,6 +17,7 @@
 #include "PHShellSplitter.h"
 
 #include "actor_anim_defs.h"
+#include "game_object_space.h"
 
 
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
@@ -41,7 +42,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 
 	ResetCallbacks		();
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(VehicleHeadCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctPhysics, VehicleHeadCallback,this);
 
 	m_PhysicMovementControl->DestroyCharacter();
 	//PIItem iitem=inventory().ActiveItem();

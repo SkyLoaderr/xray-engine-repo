@@ -99,7 +99,4 @@ public:
 
 	virtual void			Action				(int id, u32 flags);
 	virtual void			SetParam			(int id, Fvector2 val);
-
-
-
 };

@@ -19,6 +19,7 @@ class ENGINE_API			CBoneInstance;
 class						CActor;
 class						CInventory;
 class						CSE_PHSkeleton;
+class						CCarWeapon;
 // defs
 
 class CScriptEntityAction;
@@ -314,6 +315,7 @@ virtual void ApplyDamage(u16 level);
 private:
 	typedef CEntity			inherited;
 private:
+	CCarWeapon*				m_car_weapon;
 	float					m_steer_angle;
 	bool					m_repairing;
 	u16						m_bone_steer;
