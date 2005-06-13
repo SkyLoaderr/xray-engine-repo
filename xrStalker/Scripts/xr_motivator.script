@@ -61,32 +61,8 @@ function motivator_binder:reinit()
     --' Создание менеджера контроля положений тела
 	self.st.state_mgr = state_mgr.bind_manager(self.object)
 	
-    --' Настройка схемы реакции
-	self.st.reactions = {
-		enabled = true,
-		time_wait = 5*60*1000,
-		evn = xr_reactions.events(self.object),
-		obj = {position = nil,
-				id = nil,
-				type = nil,
-				time = nil,
-				visibility = nil
-			},
-		rules = {}
-    }
-    xr_reactions.add_to_binder(self.object, char_ini)
-
 	--' Компаньон
 	xr_assistance.add_to_binder(self.object)		
-//	--' помощник, мля !!!
-//	db.storage[self.object:id ()].sos = {
-//		enabled = false,
-//		npc = nil,
-//		initialized = false,
-//		code = 0,
-//		need_follow = false
-//    }
-//	xr_sos.add_to_binder(self.object, char_ini)	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
