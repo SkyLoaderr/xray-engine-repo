@@ -109,7 +109,11 @@ function stats				()
     
 	local					out_stats = {}
     for i,j in pairs(sort_stats) do
-		table.insert		(out_stats,{name=i,count=j})
+		local				k = i
+		if k == "[[C]]:-1" then
+			k				= "[[C]]:-1 (self)"
+		end
+		table.insert		(out_stats,{name=k,count=j})
 		script				= script + j.timer
 		count				= count + j.count
     end
