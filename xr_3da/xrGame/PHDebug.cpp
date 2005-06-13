@@ -478,15 +478,16 @@ CFunctionGraph::~CFunctionGraph()
 }
 void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num=500)
 {
+	x_min=x0;x_max=x1;
 	m_stat_graph=xr_new<CStatGraph>();
 	m_function=fun;
 	R_ASSERT(!m_function.empty()&&m_stat_graph);
 	R_ASSERT(x1>x0);
-	float s=(x1-x0)/points_num;
+	s=(x_max-x_min)/points_num;
 	R_ASSERT(s>0.f);
 	m_stat_graph->SetRect(l,t,w,h,D3DCOLOR_XRGB(255,255,255),D3DCOLOR_XRGB(255,255,255));
 	float min=dInfinity;float max=-dInfinity;
-	for(float x=x0;x<x1;x+=s)
+	for(float x=x_min;x<x_max;x+=s)
 	{
 		float val=m_function(x);
 	
@@ -496,14 +497,23 @@ void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int 
 	R_ASSERT(min<dInfinity&&max>-dInfinity && min<=max);
 	m_stat_graph->SetMinMax(min,max,points_num);
 
-	for(float x=x0;x<x1;x+=s)
+	for(float x=x_min;x<x_max;x+=s)
 	{
 		float val=m_function(x);
 		m_stat_graph->AppendItem(val,D3DCOLOR_XRGB(0,255,0));
 
 	}
-
+	m_stat_graph->AddMarker(CStatGraph::stVert, 0, D3DCOLOR_XRGB(255, 0, 0));
+	m_stat_graph->AddMarker(CStatGraph::stHor, 0, D3DCOLOR_XRGB(255, 0, 0));
 }
+
+void CFunctionGraph::UpdateMarkers				(float M0, float M1)
+{
+	M0=(M0-x_min)/s;
+	m_stat_graph->UpdateMarkerPos(0, M0);
+	m_stat_graph->UpdateMarkerPos(1, M1);
+}
+
 void CFunctionGraph::Clear()
 {
 	xr_delete(m_stat_graph);

@@ -100,7 +100,7 @@ public:
 private:
 	CStatGraph						*m_stat_graph						;
 	type_function					m_function							;
-	//float x_min,x_max;
+	float x_min,x_max,s;
 	//float y_min,y_max;
 	//Fvector2 left_bottom;
 	//Fvector2 range;
@@ -111,6 +111,7 @@ public:
 	void Init						(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/);
 	void Clear						()									;
 	bool IsActive					()									;
+	void UpdateMarkers				(float M0, float M1);
 };
 #endif
 #endif

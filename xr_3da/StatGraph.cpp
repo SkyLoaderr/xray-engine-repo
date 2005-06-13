@@ -25,6 +25,7 @@ CStatGraph::~CStatGraph()
 {
 	Device.seqRender.Remove		(this);
 	OnDeviceDestroy();
+	m_Markers.clear();
 }
 
 void CStatGraph::OnDeviceCreate()
@@ -206,6 +207,40 @@ void CStatGraph::RenderPoints( FVF::TL0uv** ppv, ElementsDeq* pelements )
 };
 */
 
+void	CStatGraph::RenderMarkers	( FVF::TL0uv** ppv, MarkersDeq* pmarkers )
+{
+	float elem_offs		= float(rb.x-lt.x)/max_item_count;
+	float elem_factor	= float(rb.y-lt.y)/float(mx-mn);
+	float base_y		= float(rb.y)+(mn*elem_factor);
+
+	for (MarkersDeqIt it=pmarkers->begin();  it!=pmarkers->end() && it!=pmarkers->end()+1; it++)
+	{
+		SMarker &CurMarker = *it;
+		float X0 = 0, Y0 = 0, X1 = 0, Y1 = 0;
+		switch (CurMarker.m_eStyle)
+		{
+		case stVert:
+			{
+				X0 = CurMarker.m_fPos*elem_offs+lt.x;
+				clamp(X0, float(lt.x), float(rb.x));
+				X1 = X0;
+				Y0 = float(lt.y);
+				Y1 = float(rb.y);
+			}break;
+		case stHor:
+			{
+				X0 = float(lt.x);
+				X1 = float(rb.x);
+				Y0 = base_y - CurMarker.m_fPos*elem_factor;
+				clamp(Y0, float(lt.y), float(rb.y));
+				Y1 = Y0;
+			}break;
+		}
+		(*ppv)->set		(X0,Y0,CurMarker.m_dwColor); (*ppv)++;
+		(*ppv)->set		(X1,Y1,CurMarker.m_dwColor); (*ppv)++;
+	}
+}
+
 void CStatGraph::OnRender()
 {
 	RCache.OnFrameEnd();
@@ -254,9 +289,6 @@ void CStatGraph::OnRender()
 			switch(it->style)
 			{
 			case stBar:		RenderBars		(&pv_Tri, &(it->elements));		break;
-//			case stCurve:	RenderLines		(&pv_Line, &(it->elements));	break;
-//			case stBarLine:	RenderBarLines	(&pv_Line, &(it->elements));	break;
-				//	case stPoint:	RenderPoints(&pv_Line, &(it->elements));		break;
 			};
 		};
 		dwCount 				= u32(pv_Tri-pv_Tri_start);
@@ -274,10 +306,8 @@ void CStatGraph::OnRender()
 		{
 			switch(it->style)
 			{
-//			case stBar:		RenderBars		(&pv_Tri, &(it->elements));		break;
 			case stCurve:	RenderLines		(&pv_Line, &(it->elements));	break;
 			case stBarLine:	RenderBarLines	(&pv_Line, &(it->elements));	break;
-				//	case stPoint:	RenderPoints(&pv_Line, &(it->elements));		break;
 			};
 		};
 
@@ -286,5 +316,20 @@ void CStatGraph::OnRender()
 		RCache.set_Geometry		(hGeomLine);
 		RCache.Render	   		(D3DPT_LINELIST,dwOffsetLine,dwCount/2);
 	};
-}
 
+	if (!m_Markers.empty())
+	{
+		dwOffsetLine = 0;
+		LineElem = m_Markers.size()*2;
+
+		pv_Line_start = (FVF::TL0uv*)RCache.Vertex.Lock(LineElem,hGeomLine->vb_stride,dwOffsetLine);
+		pv_Line = pv_Line_start;
+
+		RenderMarkers		(&pv_Line, &(m_Markers));
+
+		dwCount 				= u32(pv_Line-pv_Line_start);
+		RCache.Vertex.Unlock	(dwCount,hGeomLine->vb_stride);
+		RCache.set_Geometry		(hGeomLine);
+		RCache.Render	   		(D3DPT_LINELIST,dwOffsetLine,dwCount/2);
+	}
+};

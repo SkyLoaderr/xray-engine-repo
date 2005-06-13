@@ -10,7 +10,9 @@ public:
         stCurve,
 		stBarLine,
 		stPoint,
-    };
+		stVert,
+		stHor,
+   };
 protected:
 	struct SElement{
     	u32 		color;
@@ -49,6 +51,17 @@ protected:
 	u32				back_color;
 	ref_geom 		hGeomTri;
 	ref_geom 		hGeomLine;
+
+	
+	struct SMarker {
+		EStyle			m_eStyle;
+		float			m_fPos;
+		u32				m_dwColor;
+	};
+
+	DEFINE_DEQUE	(SMarker,MarkersDeq,MarkersDeqIt);
+	MarkersDeq		m_Markers;
+
 protected:
 	virtual void	RenderBack		();
 
@@ -56,6 +69,7 @@ protected:
 	virtual void	RenderLines		( FVF::TL0uv** ppv, ElementsDeq* pelements );
 	virtual void	RenderBarLines	( FVF::TL0uv** ppv, ElementsDeq* pelements );
 //	virtual void	RenderPoints	( FVF::TL0uv** ppv, ElementsDeq* pelements );
+	virtual	void	RenderMarkers	( FVF::TL0uv** ppv, MarkersDeq* pmarkers );
 public:
   					CStatGraph	();
 					~CStatGraph	();
@@ -109,5 +123,31 @@ public:
 		subgraphs.push_back(SSubGraph(S));
 		return subgraphs.size()-1;
 	};
+
+	IC	void		AddMarker (EStyle Style, float pos, u32 Color)
+	{
+		SMarker NewMarker;
+		NewMarker.m_dwColor = Color;
+		NewMarker.m_eStyle = Style;
+		NewMarker.m_fPos = pos;
+
+		m_Markers.push_back(NewMarker);
+	};
+	IC	void		UpdateMarkerPos	(u32 ID, float NewPos)
+	{
+		if (ID >= m_Markers.size()) return;
+		SMarker &pMarker = m_Markers[ID];
+		pMarker.m_fPos = NewPos;
+	};
+	IC	void		ClearMarkers()
+	{
+		m_Markers.clear();
+	}
+
+	IC	void		RemoveMarker(u32 ID)
+	{
+		if (ID >= m_Markers.size()) return;
+		m_Markers.erase(m_Markers.begin()+ID);
+	}
 };
 #endif

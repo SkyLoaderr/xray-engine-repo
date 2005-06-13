@@ -46,7 +46,7 @@ void CCar::DbgCreatePlots()
 	m_dbg_dynamic_plot	->AppendSubGraph(CStatGraph::stCurve);
 	rpm_pow_max_ratio   =m_max_rpm								/m_max_power;
 	//--------------------------------------
-
+	m_dbg_dynamic_plot	->AddMarker(CStatGraph::stHor, 0, D3DCOLOR_XRGB(255, 0, 0));
 //////////////////////////////
 	b_plots=true;
 }
@@ -90,6 +90,10 @@ void CCar::DbgUbdateCl()
 			m_dbg_dynamic_plot->AppendItem(m_current_engine_power,D3DCOLOR_XRGB(255,0,0));
 			m_dbg_dynamic_plot->AppendItem(EngineCurTorque()/torq_pow_max_ratio,D3DCOLOR_XRGB(0,255,0),1);
 			m_dbg_dynamic_plot->AppendItem(m_current_rpm/rpm_pow_max_ratio,D3DCOLOR_XRGB(0,0,255),2);
+
+			m_dbg_dynamic_plot->UpdateMarkerPos(0, m_current_engine_power);
+
+			m_dbg_power_rpm.UpdateMarkers(m_current_rpm, m_current_engine_power);
 		}
 	}
 }
