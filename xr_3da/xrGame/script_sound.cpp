@@ -44,12 +44,14 @@ const Fvector &CScriptSound::GetPosition() const
 void CScriptSound::Play			(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",Device.dwTimeGlobal,m_sound.handle->file_name(),delay,flags);
 	m_sound.play		(&object->object(),flags,delay);
 }
 
 void CScriptSound::PlayUnlimited	(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
 	VERIFY				((flags & sm_Looped) != sm_Looped);
 	m_sound.play_unlimited(&object->object(),flags,delay);
 }
@@ -57,6 +59,7 @@ void CScriptSound::PlayUnlimited	(CScriptGameObject *object, float delay, int fl
 void CScriptSound::PlayAtPos		(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
 	m_sound.play_at_pos(&object->object(), position,flags,delay);
 }
 
@@ -64,5 +67,6 @@ void CScriptSound::PlayAtPosUnlimited(CScriptGameObject *object, const Fvector &
 {
 	VERIFY				(m_sound.handle);
 	VERIFY				((flags & sm_Looped) != sm_Looped);
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
 	m_sound.play_at_pos_unlimited(&object->object(), position,flags,delay);
 }
