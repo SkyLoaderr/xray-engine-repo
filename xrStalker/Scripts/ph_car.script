@@ -21,6 +21,10 @@ class "action_car"
 function action_car:__init(obj, storage)
 	self.object = obj
 	self.st = storage
+	self.car = self.object:get_car()
+	self.car:Action(CCar.eWpnActivate,1)
+	local fire_pos = vector():set( 0, 0, 0 )
+	self.car:SetParam(CCar.eWpnDesiredPos,fire_pos)
 end
 
 function action_car:reset_scheme(loading)
@@ -233,6 +237,8 @@ function action_car:fast_update()
 	--	self.object:explode(0)
 	--	self.object:Explode()
 	--end
+	local aaa = db.actor():position()
+	self.car:SetParam(CCar.eWpnDesiredPos,fire_pos)
 
 	if self.state == state_end then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
