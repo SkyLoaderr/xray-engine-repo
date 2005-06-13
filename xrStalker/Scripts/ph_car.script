@@ -103,8 +103,7 @@ end
 function action_car:at_target_waypoint()
 	local dist = self.object:position():distance_to(self.patrol_walk:point(self.target_pt))
 	local arrived = dist < 5
---	printf("_bp: action_car:at_target_waypoint(self.target_pt=%d) = %d (arrived = %s)",
-		self.target_pt, dist, utils.to_str(arrived))
+--	printf("_bp: action_car:at_target_waypoint(self.target_pt=%d) = %d (arrived = %s)",		self.target_pt, dist, utils.to_str(arrived))
 	return arrived
 end
 
