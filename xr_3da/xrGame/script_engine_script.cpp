@@ -134,12 +134,13 @@ struct profile_timer_script {
 
 	IC		void					start					()
 	{
-		u64						temp = CPU::GetCycleCount();
-		if (!m_recurse_mark) {
-			VERIFY				(!m_start_time);
-			m_start_time		= temp;
+		if (m_recurse_mark) {
+			++m_recurse_mark;
+			return;
 		}
-		++m_recurse_mark;
+
+		VERIFY					(!m_start_time);
+		m_start_time			= CPU::GetCycleCount();
 	}
 
 	IC		void					stop					()
@@ -155,7 +156,7 @@ struct profile_timer_script {
 		if (m_recurse_mark)
 			return;
 		
-		m_accumulated			+= temp - m_start_time;
+		m_accumulated			+= temp - m_start_time - CPU::cycles_overhead;
 		m_start_time			= 0;
 	}
 
