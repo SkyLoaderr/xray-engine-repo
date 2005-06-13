@@ -210,7 +210,7 @@ function action_idle:initialize ()
     action_base.initialize (self)
 
     state_mgr.set_state(self.object, "wounded")
-    xr_meet.override_meet (self.object, true)
+--    xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()    
 end
 ------------
@@ -230,7 +230,7 @@ end
 ------------
 function action_idle:finalize ()
     action_base.finalize (self) 
-    xr_meet.override_meet (self.object, false)
+    --xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -257,7 +257,7 @@ function action_help:initialize ()
     
     this.usable(self.object, true)
     
-    xr_meet.override_meet (self.object, true)
+    --xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
     
     --if self.a.replace_theme == true then
@@ -308,7 +308,7 @@ end
 function action_help:finalize ()
     action_base.finalize (self)
     this.usable(self.object, false)
-    xr_meet.override_meet (self.object, false)
+    --xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -330,7 +330,7 @@ end
 function action_stand:initialize ()
     action_base.initialize (self)
     self.stage = 0
-    xr_meet.override_meet (self.object, true)
+    --xr_meet.override_meet (self.object, true)
     if self.a.on_medikit ~= nil and actor then
        xr_logic.pick_section_from_condlist (db.actor, self.object, self.a.on_medikit.condlist) 
     end   
@@ -360,7 +360,7 @@ function action_stand:execute ()
 end    
 ------------
 function action_stand:finalize ()   
-    xr_meet.override_meet (self.object, false)
+    --xr_meet.override_meet (self.object, false)
     action_base.finalize (self)
     self.a.sit = false
 end    
@@ -385,7 +385,7 @@ end
 function action_enemy:initialize ()
     action_base.initialize (self)
     
-    xr_meet.override_meet (self.object, true)    
+    --xr_meet.override_meet (self.object, true)    
     self.send_time = device ():time_global ()
     this.usable(self.object, true)
 end
@@ -418,7 +418,7 @@ end
 function action_enemy:finalize ()
     action_base.finalize (self)
     this.usable(self.object, false)
-    xr_meet.override_meet (self.object, false)
+    --xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
