@@ -236,9 +236,8 @@ function action_car:fast_update()
 	--	self.object:Explode()
 	--end
 	local pos_ = db.actor:position()
-	local act_id = CCar.eWpnDesiredPos
-	self.car:SetParam(act_id,pos_)
-	self.car:SetParam(CCar.eWpnAutoFire,1)
+	self.car:SetParam(CCar.eWpnDesiredPos,pos_)
+	self.car:Action(CCar.eWpnAutoFire,1)
 
 	if self.state == state_end then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
