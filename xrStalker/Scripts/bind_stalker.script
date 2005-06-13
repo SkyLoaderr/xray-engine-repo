@@ -68,7 +68,7 @@ function actor_binder:info_callback(npc, info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:article_callback(npc, group, name)
-	printf("article_callback [%s][%s]", group, name)
+--	printf("article_callback [%s][%s]", group, name)
 	if group == "Diary" then
 		news_manager.send_encyclopedy("diary")
 	else
