@@ -20,6 +20,8 @@
 #include "entitycondition.h"
 #include "ai_object_location.h"
 
+#include "level.h"
+
 using namespace StalkerMovement;
 
 IC	void CStalkerMovementManager::setup_head_speed		()
@@ -234,17 +236,30 @@ bool CStalkerMovementManager::script_control		()
 void CStalkerMovementManager::setup_movement_params	()
 {
 	inherited::set_path_type				(path_type());
-	detail().set_path_type		(detail_path_type());
-	level_selector().set_evaluator	(node_evaluator());
-	level_path().set_evaluator		(path_evaluator() ? path_evaluator() : base_level_params());
+	detail().set_path_type					(detail_path_type());
+	level_selector().set_evaluator			(node_evaluator());
+	level_path().set_evaluator				(path_evaluator() ? path_evaluator() : base_level_params());
 
 	if (use_desired_position()) {
-		VERIFY											(_valid(desired_position()));
-		detail().set_dest_position			(desired_position());
+		VERIFY								(_valid(desired_position()));
+		if (!restrictions().actual() && !restrictions().accessible(desired_position())) {
+			Fvector							temp;
+			level_path().set_dest_vertex	(restrictions().accessible_nearest(desired_position(),temp));
+			detail().set_dest_position		(temp);
+		}
+		else
+			detail().set_dest_position		(desired_position());
 	}
 	else
-		if ((path_type() != MovementManager::ePathTypePatrolPath) && (path_type() != MovementManager::ePathTypeGamePath)  && (path_type() != MovementManager::ePathTypeNoPath))
-			detail().set_dest_position		(ai().level_graph().vertex_position(level_path().dest_vertex_id()));
+		if ((path_type() != MovementManager::ePathTypePatrolPath) && (path_type() != MovementManager::ePathTypeGamePath)  && (path_type() != MovementManager::ePathTypeNoPath)) {
+			if (!restrictions().actual() && !restrictions().accessible(level_path().dest_vertex_id())) {
+				Fvector							temp;
+				level_path().set_dest_vertex	(restrictions().accessible_nearest(ai().level_graph().vertex_position(level_path().dest_vertex_id()),temp));
+				detail().set_dest_position		(temp);
+			}
+			else
+				detail().set_dest_position		(ai().level_graph().vertex_position(level_path().dest_vertex_id()));
+		}
 
 	if (use_desired_direction()) {
 		VERIFY											(_valid(desired_direction()));
@@ -349,6 +364,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_body.speed		= PI_MUL_2;
 		set_desirable_speed		(object().m_fCurSpeed);
 		setup_head_speed		();
+		m_current.m_movement_type	= eMovementTypeStand;
 		return;
 	}
 
@@ -356,16 +372,42 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	CDetailPathManager::STravelParams	current_velocity = detail().velocity(point.velocity);
 
 	if (fis_zero(current_velocity.linear_velocity)) {
-		if (mental_state() != eMentalStateDanger) {
-			setup_body_orientation			();
-			object().sight().enable(false);
+		if (mental_state() == eMentalStateFree) {
+			setup_body_orientation	();
+			object().sight().enable	(false);
 		}
-		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail().curr_travel_point_index())) {
+		if ((mental_state() != eMentalStateFree) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail().curr_travel_point_index())) {
 			m_last_turn_index			= detail().curr_travel_point_index();
 			object().sight().enable(true);
 			if (detail().curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[detail().curr_travel_point_index() + 1];
 				current_velocity	= detail().velocity(point.velocity);
+			}
+		}
+	}
+	else {
+		if (mental_state() != eMentalStateDanger) {
+			if (mental_state() == eMentalStatePanic) {
+				if (!fis_zero(path_direction_angle(),PI_DIV_8*.5f)) {
+					u32					temp = u32(-1);
+					temp				^= eVelocityFree;
+					temp				^= eVelocityDanger;
+					temp				^= eVelocityPanic;
+					point.velocity		&= temp;
+					point.velocity		|= eVelocityDanger;
+					current_velocity	= detail().velocity(point.velocity);
+				}
+			}
+			else {
+				if (!fis_zero(path_direction_angle(),PI_DIV_8*.5f)) {
+					setup_body_orientation	();
+					object().sight().enable	(false);
+					current_velocity		= detail().velocity(path()[detail().curr_travel_point_index()].velocity);
+					current_velocity.linear_velocity	= 0.f;
+					current_velocity.real_angular_velocity	= PI;
+				}
+				else
+					object().sight().enable	(true);
 			}
 		}
 	}
@@ -423,27 +465,6 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	setup_head_speed		();
 }
 
-void CStalkerMovementManager::update(u32 time_delta)
-{
-	VERIFY						((m_target.m_mental_state != eMentalStateFree) || (m_target.m_body_state != eBodyStateCrouch));
-	m_current					= m_target;
-
-	if (movement_type() != eMovementTypeStand)
-		setup_movement_params	();
-
-	if (script_control())
-		return;
-
-	if (movement_type() != eMovementTypeStand)
-		setup_velocities		();
-
-	if (movement_type() != eMovementTypeStand)
-		update_path				();
-
-	parse_velocity_mask			();
-}
-
-
 void CStalkerMovementManager::set_nearest_accessible_position()
 {
 	set_nearest_accessible_position(object().Position(),object().ai_location().level_vertex_id());
@@ -461,4 +482,79 @@ void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_po
 
 	set_level_dest_vertex		(level_vertex_id);
 	set_desired_position		(&desired_position);
+}
+
+void CStalkerMovementManager::update(u32 time_delta)
+{
+	VERIFY						((m_target.m_mental_state != eMentalStateFree) || (m_target.m_body_state != eBodyStateCrouch));
+	m_current					= m_target;
+
+	if (movement_type() != eMovementTypeStand)
+		setup_movement_params	();
+
+	if (script_control())
+		return;
+
+	if (movement_type() != eMovementTypeStand)
+		setup_velocities		();
+
+	if (movement_type() != eMovementTypeStand)
+		update_path				();
+
+
+	if (false)
+	{
+		typedef xr_vector<CObject*>			OBJECTS;
+		typedef xr_vector<CAI_Stalker*>		AGENTS;
+
+		AGENTS								agents;
+
+		{
+			const float						distance_to_check = 2.f;
+			const float						distance_to_check_sqr = _sqr(distance_to_check);
+			Level().ObjectSpace.GetNearest	(object().Position(), distance_to_check); 
+			OBJECTS							&objects = Level().ObjectSpace.q_nearest;
+			OBJECTS::const_iterator			I = objects.begin();
+			OBJECTS::const_iterator			E = objects.end();
+			for ( ; I != E; ++I) {
+				if (object().Position().distance_to_sqr((*I)->Position()) > distance_to_check_sqr)
+					continue;
+
+				CAI_Stalker					*member = smart_cast<CAI_Stalker*>(*I);
+				if (!member)
+					continue;
+
+				agents.push_back			(member);
+			}
+		}
+
+		if (agents.empty())
+			return;
+
+		{
+			AGENTS::iterator				I = agents.begin();
+			AGENTS::iterator				E = agents.end();
+			for ( ; I != E; ++I) {
+				if ((*I)->movement().detail().path().empty())
+					continue;
+
+				Fvector						direction = Fvector().sub((*I)->Position(),object().Position());
+				float						y,p;
+				direction.getHP				(y,p);
+				y							*= -1;
+				if (angle_difference(y,body_orientation().current.yaw) > PI_DIV_4)
+					continue;
+
+				m_current.m_movement_type	= eMovementTypeStand;
+				break;
+			}
+		}
+	}
+
+	parse_velocity_mask			();
+}
+
+void CStalkerMovementManager::on_travel_point_change	(const u32 &previous_travel_point_index)
+{
+	inherited::on_travel_point_change	(previous_travel_point_index);
 }
