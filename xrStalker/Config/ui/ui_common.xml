@@ -9,7 +9,6 @@
     <texture id="ui_listline_b" x="0" y="37" width="4" height="18" />
     <texture id="ui_listline_back" x="4" y="37" width="28" height="18" />
     <texture id="ui_listline_e" x="32" y="37" width="4" height="18" />
-    <texture id="ui_tablist_divider" x="0" y="55" width="36" height="31" />
     <texture id="ui_button_ordinary_d" x="0" y="86" width="117" height="29" />
     <texture id="ui_button_ordinary_e" x="0" y="115" width="117" height="29" />
     <texture id="ui_button_ordinary_h" x="0" y="144" width="117" height="29" />
@@ -104,7 +103,6 @@
     <texture id="ui_table_button_t_b" x="147" y="179" width="5" height="19" />
     <texture id="ui_table_button_t_back" x="152" y="179" width="28" height="19" />
     <texture id="ui_table_button_t_e" x="180" y="179" width="5" height="19" />
-    <texture id="ui_table_divider" x="114" y="65" width="1" height="10" />
     <texture id="ui_droplist_listline_l" x="186" y="142" width="4" height="18" />
     <texture id="ui_droplist_listline_r" x="191" y="142" width="4" height="18" />
     <texture id="ui_droplist_listline_back" x="186" y="161" width="26" height="18" />
@@ -131,4 +129,10 @@
     <texture id="ui_checker_h" x="213" y="206" width="32" height="23" />
     <texture id="ui_droplist_button_h_r" x="277" y="206" width="25" height="23" />
     <texture id="ui_radio_h" x="245" y="206" width="32" height="23" />
+    <texture id="ui_tablist_divider_b" x="0" y="55" width="36" height="31" />
+    <texture id="ui_tablist_divider_back" x="0" y="55" width="36" height="31" />
+    <texture id="ui_tablist_divider_e" x="0" y="55" width="36" height="31" />
+    <texture id="ui_table_divider_b" x="114" y="65" width="1" height="10" />
+    <texture id="ui_table_divider_back" x="114" y="65" width="1" height="10" />
+    <texture id="ui_table_divider_e" x="114" y="65" width="1" height="10" />
 </ui_texture>
