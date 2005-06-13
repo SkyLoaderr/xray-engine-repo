@@ -209,7 +209,7 @@
 	</mp_af_enemy_mini_pointer>	
 	
 	<mp_af_friend_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="255" g="255" b="0"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0"> ui\ui_map_arrow_02</texture>
 	</mp_af_friend_mini_pointer>	
 
 </map_spots>
