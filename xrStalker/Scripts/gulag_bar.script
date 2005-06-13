@@ -1176,7 +1176,7 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 
-		t = { section = "logic@rostok_tunel_tushkano", 
+		t = { section = "logic@rostok_tunel_enter_snork", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad,
 			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
@@ -1185,7 +1185,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@rostok_tunel_tushkano", 
+		t = { section = "logic@rostok_tunel_enter_snork", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad,
 			in_rest = "", out_rest = "rostok_tunel_snork",
@@ -1645,10 +1645,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
-				end
+				end			
 			end
+			return 0
 		end
 	end
 	
@@ -1658,10 +1657,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
-				end
+				end			
 			end
+			return 0
 		end
 	end
 
@@ -1671,10 +1669,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
-				end
+				end			
 			end
+			return 0
 		end
 	end
 
@@ -1685,9 +1682,8 @@ function load_states(gname, type)
 			   db.actor:has_info("bar_arena_monstr_ready")
 			then
 				return 1
-			else
-				return 0
 			end
+			return 0
 		end
 	end
 
@@ -1700,8 +1696,6 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
 				end
 			end
 			return 0
@@ -1715,10 +1709,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
 				end
 			end
+			return 0
 		end
 	end
 	
