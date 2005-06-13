@@ -284,7 +284,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 
 	local manager = object:motivation_action_manager()
 
-	--properties["event"] 		= xr_evaluators_id.reaction
+	properties["event"] 		= xr_evaluators_id.reaction
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
 	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 3
