@@ -194,7 +194,7 @@ function load_sound(obj)
 	theme[obj:id()]["gar_dm_newbie_help_me"]		= load_sound_from_ltx(obj, "gar_dm_newbie_help_me")
 	theme[obj:id()]["gar_dm_newbie_thank_you"]		= load_sound_from_ltx(obj, "gar_dm_newbie_thank_you")
 	
-	theme[obj:id()]["gar_hellcar_alarm"]			= load_sound_from_ltx(obj, "gar_hellcar_alarm")
+	theme[obj:id()]["gar_dymon_alarm"]				= load_sound_from_ltx(obj, "gar_dymon_alarm")
 	theme[obj:id()]["gar_hellcar_ambush"]			= load_sound_from_ltx(obj, "gar_hellcar_ambush")
 	theme[obj:id()]["gar_bandits_seryi"]			= load_sound_from_ltx(obj, "gar_bandits_seryi")
 	theme[obj:id()]["gar_seryi_seryi"]				= load_sound_from_ltx(obj, "gar_seryi_seryi")
