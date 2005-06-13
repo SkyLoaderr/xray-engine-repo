@@ -238,7 +238,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 		end
 		local info_section = utils.cfg_get_string(ini, section, "info", npc, false, "")
 		if info_section then
-			xr_use.set_npc_info(npc, ini, "info", info_section)
+			stalker_generic.set_npc_info(npc, ini, "info", info_section)
 		end
 
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
@@ -382,6 +382,8 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 	if st.stype == modules.stype_stalker then
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_meet.reset_meet(npc, scheme, st, section)
+		stalker_generic.reset_threshold(npc, scheme, st, section)
+		
 	elseif st.stype == modules.stype_mobile then
 		--printf("_bp: disabling talk")
 		--npc:disable_talk() -- теперь делается в dialog_manager_reset

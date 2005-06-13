@@ -51,36 +51,3 @@ function disable_scheme(npc, scheme)
 		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
 	end
 end
-
-
-
-----------------------------------------------------------------------------------------------------------------------
--- STALKER NPC INFO
-----------------------------------------------------------------------------------------------------------------------
-function set_npc_info(npc, ini, scheme, section)
-	printf("INFO SECTION [%s]", utils.to_str(section))
-
-	local in_info	= get_infos_from_data(npc, utils.cfg_get_string(ini, section, "in", npc, false, ""))
-	local out_info	= get_infos_from_data(npc, utils.cfg_get_string(ini, section, "out", npc, false, ""))
-
-	for k,v in in_info do
-		npc:give_info_portion(v)
-	end
-	for k,v in out_info do
-		npc:disable_info_portion(v)
-	end
-end
-function get_infos_from_data(npc, s)
---	printf("get_infos_from_data [%s]", utils.to_str(s))
-	local t = {}
-    if s then
-		for name in string.gfind( s, "(%|*[^%|]+%|*)%p*" ) do
---			printf("[%s]", utils.to_str(name))
-			local condlist = xr_logic.parse_condlist(npc, "in", name, name)
-			if condlist then
-				table.insert(t, xr_logic.pick_section_from_condlist(db.actor, npc, condlist))
-			end
-		end
-	end
-    return t
-end
