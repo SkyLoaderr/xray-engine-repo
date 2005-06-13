@@ -50,3 +50,14 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	m_list.AddItem<CUIListItemServer>(item);
 }
 
+void	CServerList::RefreshGameSpyList	(bool Local)
+{
+	if (Local)
+	{
+		Msg("Refresh Local List");
+	}
+	else
+	{
+		Msg("Refresh MasterServer List");
+	}
+}

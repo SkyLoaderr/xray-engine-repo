@@ -13,6 +13,8 @@ public:
 
 	virtual void Init(float x, float y, float width, float height);
 			void InitFromXml(CUIXml& xml_doc, const char* path);
+	
+	virtual void	RefreshGameSpyList	(bool Local);
 
 
 protected:
