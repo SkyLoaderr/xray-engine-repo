@@ -139,6 +139,7 @@ struct profile_timer_script {
 			return;
 		}
 
+		++m_recurse_mark;
 		VERIFY					(!m_start_time);
 		m_start_time			= CPU::GetCycleCount();
 	}
