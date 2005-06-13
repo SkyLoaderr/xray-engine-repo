@@ -238,14 +238,14 @@ on_signal = final | walker3@mil_freedom_stalker3
 [walker3@mil_freedom_stalker3]
 path_walk = stukach_walk4
 path_look = stukach_look4
-on_signal = arrive | remark2@mil_freedom_stalker3
+on_signal = arrive | remark2@mil_freedom_stalker3 %+mil_courier_call%
 on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %=mil_courier_quest_fail%
 
 [remark2@mil_freedom_stalker3]
 no_rotate = true
 no_move = true
 snd = talk_hello
-on_info = mil_ara_end | walker4@mil_freedom_stalker3
+on_info = {+mil_ara_end} | walker4@mil_freedom_stalker3 %+mil_courier_meet%
 
 [walker4@mil_freedom_stalker3]
 path_walk = stukach_walk5

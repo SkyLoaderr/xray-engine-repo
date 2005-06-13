@@ -64,11 +64,15 @@
 </string>
 	
 	<string id="mil_courier_phase2">
-	<text>ќпределить, с кем он встречалс€.</text>
+	<text>ќпределить, с кем он встречаетс€.</text>
 </string>
 	
 	<string id="mil_courier_phase3">
 	<text>”ничтожить стукача.</text>
+</string>
+
+	<string id="mil_courier_phase4">
+	<text>”ничтожить того, с кем курьер встречалс€</text>
 </string>
 
 <string id="mil_blockpost_help">

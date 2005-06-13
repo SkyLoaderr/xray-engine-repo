@@ -101,6 +101,8 @@
 	<!--  вест с курьером-->
 	<info_portion id="mil_courier_quest_part1"></info_portion>
 	<info_portion id="mil_courier_quest_part2"></info_portion>
+	<info_portion id="mil_courier_quest_part3"></info_portion>
+	<info_portion id="mil_courier_quest_part4"></info_portion>
 	<info_portion id="mil_courier_quest">
 		<task>mil_courier_job</task>
 		<action>level_tasks.notify_new_task</action>
