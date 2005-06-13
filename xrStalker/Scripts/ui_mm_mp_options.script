@@ -2,23 +2,176 @@
 --
 
 
-class "mp_create" (CUIWindow)
+class "mp_options" (CUIWindow)
 
-function mp_create:__init() super()
+function mp_options:__init() super()
 end
 
-function mp_create:__finalize()
+function mp_options:__finalize()
 
 end
 
-function mp_create:InitControls(x, y, xml, handler)
+function mp_options:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
 	
 	self.bk = CUIFrameWindow()
 	xml:InitFrame("frame",0, self.bk)
 	self:AttachChild(self.bk)
-
-
+	
+	local lbl = CUILabel()
+	xml:InitLabel("tab_options:cap_network_connection",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUILabel()
+	xml:InitLabel("tab_options:cap_respawn_options",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUILabel()
+	xml:InitLabel("tab_options:cap_server_list",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUILabel()
+	xml:InitLabel("tab_options:cap_weather_options",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_freeze_time",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_damage_block",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_friendly_fire",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_frag_limit",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_time_limit",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_artefact_stay",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_artefact_num",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_anomaly_time",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_artefact_delay",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_starting_weather",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_options:cap_rate_of_change",0,lbl)
+	self.bk:AttachChild(lbl)
+	
+	
+	local btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_public_server",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_map_rotation",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_spectator",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_allow_voting",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+		
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_damage_block",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_auto_team_balance",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_friendly_indicators",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	btn = CUICheckButton()
+	xml:InitStatic("tab_options:check_no_anmalies",0,btn)
+	self.bk:AttachChild(btn)
+	handler:Register(btn)
+	
+	radio = CUITabControl()
+	xml:InitTab("tab_options:radio_tab_respawn_options",0,radio)
+	self.bk:AttachChild(radio)
+	handler:Register(radio)
+	
+	-- edit boxes
+	local edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_spectator",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_force_respawn",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_reinforcement",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_freeze_time",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_damage_block",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_frag_limit",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_time_limit",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_artefact_stay",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_artefact_dealy",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_artefact_dealy",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_anomaly_time",0,edt)
+	self.bk:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_options:edit_rate_of_change",0,edt)
+	self.bk:AttachChild(edt)
 end
 
 

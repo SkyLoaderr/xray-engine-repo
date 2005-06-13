@@ -5,3 +5,55 @@
 -- Mail:		narrator@gsc-game.kiev.ua
 --
 -- Copyright 2005 GSC Game World
+
+class "mp_server" (CUIWindow)
+
+function mp_server:__init() super()
+end
+
+function mp_server:__finalize()
+
+end
+
+function mp_server:InitControls(x, y, xml, handler)
+	self:Init(x,y, 738, 416)
+	
+	local lbl = CUILabel()
+	xml:InitLabel("tab_server:cap_server_settings",0,lbl)
+	self:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_server:cap_server_name",0,lbl)
+	self:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_server:cap_password",0,lbl)
+	self:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_server:cap_game_mode",0,lbl)
+	self:AttachChild(lbl)
+	
+	lbl = CUIStatic()
+	xml:InitStatic("tab_server:cap_max_players",0,lbl)
+	self:AttachChild(lbl)
+	
+	-- CHECK BOXES
+	local btn = CUICheckButton()
+	xml:InitStatic("tab_server:check_dedicated",0,btn)
+	self:AttachChild(btn)
+	handler:Register(btn)
+	
+	-- EDIT BOXES
+	local edt = CUIEditBox()
+	xml:InitLabel("tab_server:edit_server_name",0,edt)
+	self:AttachChild(edt)
+	
+	edt = CUIEditBox()
+	xml:InitLabel("tab_server:edit_password",0,edt)
+	self:AttachChild(edt)
+	
+	
+
+end
+

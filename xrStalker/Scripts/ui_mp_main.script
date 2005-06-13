@@ -105,7 +105,7 @@ function mp_main:InitControls()
 	
 	st = CUIEditBox()
 	st:SetAutoDelete(true)
-	xml:InitStatic("edit_player_name",0,st)
+	xml:InitLabel("edit_player_name",0,st)
 	self.bk:AttachChild(st)
 	
 	-- CD Key
@@ -128,10 +128,16 @@ function mp_main:InitControls()
 	self.dlg_join:InitControls(121,224, xml, self)
 	self.bk:AttachChild(self.dlg_join)
 	
+	self.dlg_server = ui_mm_mp_server.mp_server()
+	self.dlg_server:InitControls(121,224, xml, self)
+	self.dlg_server:Show(false)
+	self.bk:AttachChild(self.dlg_server)
+	
 	self.dlg_options = ui_mm_mp_options.mp_options()
 	self.dlg_options:InitControls(121,224, xml, self)
 	self.dlg_options:Show(false)
 	self.bk:AttachChild(self.dlg_options)
+	
 	
 	btn = CUI3tButton()
 	xml:Init3tButton("btn_create",0,btn)
@@ -163,12 +169,15 @@ end
 function mp_main:OnTabChange()
 	self.dlg_join:Show(false)
 	self.dlg_options:Show(false)
+	self.dlg_server:Show(false)
 
 	local i = self.tab:GetActiveIndex()
 	if i == 0 then
 		self.dlg_join:Show(true)
 	elseif i == 2 then
 		self.dlg_options:Show(true)
+	else
+		self.dlg_server:Show(true)
 	end
 --	else if i == 1 then
 --		self.dlg_create:Show(true)
