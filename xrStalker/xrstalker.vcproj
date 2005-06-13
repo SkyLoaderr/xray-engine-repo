@@ -495,7 +495,10 @@
 					Name="weapons_mp"
 					Filter="">
 					<File
-						RelativePath=".\Config\mp\weapons_mp\w_knife_mp.ltx">
+						RelativePath=".\Config\mp\weapons_mp\items_mp.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\mp\weapons_mp\outfit_mp.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\mp\weapons_mp\weapons_mp.ltx">
