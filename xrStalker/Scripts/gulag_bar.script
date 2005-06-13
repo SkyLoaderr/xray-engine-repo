@@ -1176,7 +1176,7 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 
-		t = { section = "logic@rostok_tunel_enter_snork", 
+		t = { section = "logic@rostok_tunel_tushkano", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad,
 			in_rest = "", out_rest = "rostok_tunel_enter_restrictor",
@@ -1185,7 +1185,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@rostok_tunel_enter_snork", 
+		t = { section = "logic@rostok_tunel_tushkano", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad,
 			in_rest = "", out_rest = "rostok_tunel_snork",
@@ -1704,6 +1704,7 @@ function load_states(gname, type)
 					return 0
 				end
 			end
+			return 0
 		end
 	end
 
