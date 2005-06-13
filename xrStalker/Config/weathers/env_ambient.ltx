@@ -1,15 +1,25 @@
 [ambient_env_0]
 sound_period		= 10, 30					; <from,to>				(sec)
 sounds				= ambient\b1,ambient\b2		; <snd0,snd1..sndN>		sounds name
-effect_period		= 10, 60					; <from,to>				(sec)
-effects				= ae0_effect_0,ae0_effect_1	; <eff0,eff1..effN>		effects sect name
+effect_period		= 10, 20					; <from,to>				(sec)
+effects				= ae0_effect_0,ae0_effect_1,ae0_effect_2	; <eff0,eff1..effN>		effects sect name
 
 [ae0_effect_0]
 life_time			= 10						; life time (sec)
-particles			= nature\fog_stormy_02			; particle name
-sound				= nature\new_drone1			; sound name
+particles			= nature\fog_stormy			; particle name
+sound				= nature\wind1			; sound name
 
 [ae0_effect_1]
 life_time			= 12						
-particles			= nature\vortex_01
-sound				= nature\new_drone2
+particles			= nature\fog_stormy_02
+sound				= nature\wind2
+
+[ae0_effect_2]
+life_time			= 12						
+particles			= nature\fog_tornado_01
+sound				= nature\wind3
+
+[ae0_effect_1]
+life_time			= 6						
+particles			= nature\fog_stormy_02
+sound				= nature\wind4
