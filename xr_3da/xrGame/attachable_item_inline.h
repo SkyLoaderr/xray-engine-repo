@@ -10,14 +10,10 @@
 
 IC	CAttachableItem::CAttachableItem				()
 {
-	init				();
-}
-
-IC	void CAttachableItem::init						()
-{
 	m_offset.identity	();
 	m_bone_name			= "";
 	m_enabled			= true;
+	m_auto_attach		= true;
 }
 
 IC	shared_str CAttachableItem::bone_name				() const

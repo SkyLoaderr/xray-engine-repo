@@ -17,7 +17,6 @@
 
 CAttachableItem::~CAttachableItem	()
 {
-	init				();
 }
 
 void CAttachableItem::reinit		()
@@ -38,7 +37,7 @@ void CAttachableItem::reload		(LPCSTR section)
 	m_offset.setHPB		(VPUSH(angle_offset));
 	m_offset.c			= position_offset;
 	m_bone_name			= pSettings->r_string	(section,"attach_bone_name");
-	m_enabled			= true;
+	enable				(m_auto_attach = !!(READ_IF_EXISTS(pSettings,r_bool,section,"auto_attach",TRUE)));
 }
 
 void CAttachableItem::OnH_A_Chield	() 
@@ -52,13 +51,13 @@ void CAttachableItem::OnH_A_Chield	()
 
 void CAttachableItem::renderable_Render()
 {
-	::Render->set_Transform	(&XFORM());
-	::Render->add_Visual	(Visual());
+	::Render->set_Transform			(&XFORM());
+	::Render->add_Visual			(Visual());
 }
 void CAttachableItem::OnH_A_Independent	()
 {
 	inherited::OnH_A_Independent	();
-	enable(true);
+	enable							(m_auto_attach);
 }
 
 void CAttachableItem::enable		(bool value)
@@ -76,6 +75,7 @@ void CAttachableItem::enable		(bool value)
 		owner->attach		(this);
 		setVisible			(true);
 	}
+	
 	if (!value && enabled() && H_Parent()) {
 		CGameObject			*game_object = smart_cast<CGameObject*>(H_Parent());
 		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(game_object);
@@ -88,14 +88,21 @@ void CAttachableItem::enable		(bool value)
 
 bool  CAttachableItem::can_be_attached		() const
 {
-	if(!m_pInventory) return false;
-	if( !m_pInventory->IsBeltUseful() ) return true;
-	if(m_eItemPlace != eItemPlaceBelt) return false;
+	if (!m_pInventory)
+		return				(false);
+
+	if (!m_pInventory->IsBeltUseful())
+		return				(true);
+
+	if (m_eItemPlace != eItemPlaceBelt)
+		return				(false);
 	 
-	return true;
+	return					(true);
 }
 void CAttachableItem::afterAttach			()
-{}
+{
+}
 
 void CAttachableItem::afterDetach			()
-{}
+{
+}

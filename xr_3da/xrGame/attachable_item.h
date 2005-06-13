@@ -20,11 +20,11 @@ protected:
 	Fmatrix					m_offset;
 	u16						m_bone_id;
 	bool					m_enabled;
+	bool					m_auto_attach;
 
 public:
 	IC						CAttachableItem		();
 	virtual					~CAttachableItem	();
-	IC		void			init				();
 	virtual	void			reinit				();
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reload				(LPCSTR section);
