@@ -16,24 +16,32 @@ local function hook			(context,line_number)
 	end
 
 	local					f = debug.getinfo(2, "f").func
---	local					caller = debug.getinfo(3, "f")
---	local					g = nil
---	if caller ~= nil then
---		g					= caller.func;
---	end
+	local					caller = debug.getinfo(3, "f")
+	local					g = nil
+	if caller ~= nil then
+		g					= caller.func;
+	end
 
 	if "return" == context then
 		if Counters[f] ~= nil then
 			Counters[f].timer:stop		()
---			Counters[f].child_timer:stop()
---			if g ~= nil then
---				Counters[g].timer:start	()
---			end
+			Counters[f].child_timer:stop()
+			if g ~= nil then
+				Counters[g].timer:start	()
+			end
+		end
+		return
+	end
+
+	if "tail return" == context then
+		if g ~= nil then
+			Counters[g].timer:start	()
 		end
 		return
 	end
 
 	if "call" ~= context then
+		error_log	(string.format("Unknown hook message type : %s",context))
 		return
 	end
 
@@ -42,14 +50,14 @@ local function hook			(context,line_number)
 	end
 	
 	if nil == Counters[f] then
-		Counters[f]						= {count=1,timer=profile_timer()}--,child_timer=profile_timer()}
+		Counters[f]						= {count=1,timer=profile_timer(),child_timer=profile_timer()}
+		Counters[f].child_timer:start	()
 		Counters[f].timer:start			()
---		Counters[f].child_timer:start	()
 		Names[f]						= debug.getinfo(2, "Sn")
 	else
 		Counters[f].count				= Counters[f].count + 1
+		Counters[f].child_timer:start	()
 		Counters[f].timer:start			()
---		Counters[f].child_timer:start	()
 	end
 end
 
@@ -92,7 +100,7 @@ function stats				()
 		else 
 			sort_stats[n].count			= sort_stats[n].count		+ count.count
 			sort_stats[n].timer			= sort_stats[n].timer		+ count.timer
---			sort_stats[n].child_timer	= sort_stats[n].child_timer + count.child_timer
+			sort_stats[n].child_timer	= sort_stats[n].child_timer + count.child_timer
 		end
     end
 
@@ -109,9 +117,11 @@ function stats				()
     table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
     
     for n,c in pairs(out_stats) do
-		printf				("%9.2fms (%5.2f%%) [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.count,c.name)
+		printf				("%9.2fms (%5.2f%%) %9.2fms [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.child_timer:time()/1000,c.count.count,c.name)
     end
     
+	printf					("")
+	printf					(" pure time :   %%%%   :  children  :   count  : function name")
 	printf					("")
 	printf					("profile time : %8.2fms",timer:time()/1000)
 	printf					("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
