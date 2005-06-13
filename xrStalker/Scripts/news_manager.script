@@ -42,7 +42,7 @@ function send_news(actor, news_id, timeout, showtime)
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(db.actor, timeout+1000, sound_object.s2d)
+			snd_obj:play(db.actor, timeout+1, sound_object.s2d)
 		end		
 	end
 	--' Играем дефолтный звук
@@ -65,7 +65,7 @@ function send_tip(actor, news_id, timeout, sender, showtime)
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(actor, timeout+1000, sound_object.s2d)
+			snd_obj:play(actor, timeout+1, sound_object.s2d)
 		end
 	end
 
