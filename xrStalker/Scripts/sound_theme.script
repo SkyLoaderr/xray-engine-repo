@@ -251,7 +251,9 @@ function load_sound(obj)
     theme[obj:id()]["mil_dolg_scull"]                 = load_sound_from_ltx(obj, "mil_dolg_scull")
     theme[obj:id()]["mil_max_to_actor"]               = load_sound_from_ltx(obj, "mil_max_to_actor")
     theme[obj:id()]["mil_collect_phrases"]            = load_sound_from_ltx(obj, "mil_collect_phrases")
-
+    theme[obj:id()]["mil_pavlik_to_ara"]              = load_sound_from_ltx(obj, "mil_pavlik_to_ara")
+    theme[obj:id()]["mil_ara_to_pavlik"]              = load_sound_from_ltx(obj, "mil_ara_to_pavlik")
+    theme[obj:id()]["mil_ara_ambush"]                 = load_sound_from_ltx(obj, "mil_ara_ambush")
 	-- релш, йнрнпше мсфмн опхбеярх й бюпхюмрс нямнбмни релш
 	theme[obj:id()]["esc_volk_greet1"]			= load_sound_from_ltx(obj, "volk_greet1")
 	theme[obj:id()]["esc_volk_greet2"]			= load_sound_from_ltx(obj, "volk_greet2")
