@@ -16,10 +16,18 @@ local function hook			(context,line_number)
 	end
 
 	local					f = debug.getinfo(2, "f").func
+	local					caller = debug.getinfo(3, "f")
+	local					g = nil
+	if caller ~= nil then
+		g					= caller.func;
+	end
 
 	if "return" == context then
 		if Counters[f] ~= nil then
-			Counters[f].timer:stop	()
+			Counters[f].timer:stop		()
+			if g ~= nil then
+				Counters[g].timer:start	()
+			end
 		end
 		return
 	end
@@ -28,6 +36,10 @@ local function hook			(context,line_number)
 		return
 	end
 
+	if g ~= nil then
+		Counters[g].timer:stop	()
+	end
+	
 	if nil == Counters[f] then
 		Counters[f]				= {count=1,timer=profile_timer()}
 		Counters[f].timer:start	()
