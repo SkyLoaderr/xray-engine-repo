@@ -9,7 +9,6 @@ local function hook			(context,line_number)
 --			old_hook_func	(context,line_number)
 --		end
 --	end
---	printf					("hook [%s]",context)
 	
 	if "line" == context then
 		return
@@ -53,7 +52,7 @@ local function hook			(context,line_number)
 		Counters[f]						= {count=1,timer=profile_timer(),child_timer=profile_timer()}
 		Counters[f].child_timer:start	()
 		Counters[f].timer:start			()
-		Names[f]						= debug.getinfo(2, "Sn")
+		Names[f]						= debug.getinfo(2,"Sn")
 	else
 		Counters[f].count				= Counters[f].count + 1
 		Counters[f].child_timer:start	()
