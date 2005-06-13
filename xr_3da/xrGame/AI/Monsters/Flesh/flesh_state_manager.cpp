@@ -33,10 +33,8 @@ void CStateManagerFlesh::execute()
 
 		if (enemy) {
 			switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:	state_id = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			state_id = eStateAttack; break;
+				case eStrong:	state_id = eStatePanic; break;
+				case eWeak:		state_id = eStateAttack; break;
 			}
 
 		} else if (object->HitMemory.is_hit()) {

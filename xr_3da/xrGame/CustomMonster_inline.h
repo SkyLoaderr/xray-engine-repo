@@ -55,3 +55,8 @@ IC	CSound_UserDataVisitor *CCustomMonster::sound_user_data_visitor	() const
 	VERIFY			(m_sound_user_data_visitor);
 	return			(m_sound_user_data_visitor);
 }
+
+IC	float CCustomMonster::panic_threshold				() const
+{
+	return	(m_panic_threshold);
+}

@@ -228,6 +228,13 @@ public:
 	virtual bool				useful					(const CDangerManager *manager, const CDangerObject &object) const;
 	virtual float				evaluate				(const CDangerManager *manager, const CDangerObject &object) const;
 
+protected:
+	float						m_panic_threshold;
+
+public:
+	IC		float				panic_threshold			() const;
+
+
 private:
 	CSound_UserDataVisitor			*m_sound_user_data_visitor;
 

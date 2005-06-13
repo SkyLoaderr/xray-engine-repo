@@ -174,6 +174,8 @@ void CCustomMonster::reload		(LPCSTR section)
 
 	m_far_plane_factor			= READ_IF_EXISTS(pSettings,r_float,section,"far_plane_factor",1.f);
 	m_fog_density_factor		= READ_IF_EXISTS(pSettings,r_float,section,"fog_density_factor",.05f);
+
+	m_panic_threshold			= pSettings->r_float(section,"panic_threshold");
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)

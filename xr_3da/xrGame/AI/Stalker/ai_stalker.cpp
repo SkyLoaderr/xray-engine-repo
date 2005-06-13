@@ -161,7 +161,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_stand_stand				= pSettings->r_float(section,"disp_stand_stand");
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
 	
-	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -282,8 +281,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	if (!fis_zero(SpecificCharacter().panic_threshold()))
 		m_panic_threshold						= SpecificCharacter().panic_threshold();
-	else
-		m_panic_threshold						= pSettings->r_float(cNameSect(),"panic_threshold");
 
 	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
 	LPCSTR snd_sound_sect = SpecificCharacter().SndConfigSect();

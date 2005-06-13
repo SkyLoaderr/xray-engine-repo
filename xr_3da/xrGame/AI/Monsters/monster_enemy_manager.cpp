@@ -67,11 +67,11 @@ void CMonsterEnemyManager::update()
 	// обновить опасность врага
 	danger_type = eNone;
 
-	switch (dwfChooseAction(0, 0.8f, 0.6f, 0.4f, 0.2f,monster->g_Team(),monster->g_Squad(),monster->g_Group(),0,1,2,3,4, monster, 30.f)) {
-		case 4 : 	danger_type = eVeryStrong;	break;
-		case 3 : 	danger_type = eStrong;		break;
-		case 2 : 	danger_type = eNormal;		break;
-		case 1 : 
+	switch (dwfChooseAction(0, monster->panic_threshold(), 0.f, 0.f, 0.f, monster->g_Team(),monster->g_Squad(),monster->g_Group(),0,1,2,3,4, monster, 30.f)) {
+		case 4 : 	
+		case 3 : 	
+		case 2 : 	
+		case 1 :	danger_type = eStrong;		break;
 		case 0 : 	danger_type = eWeak;		break;
 	}
 

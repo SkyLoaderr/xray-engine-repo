@@ -33,10 +33,8 @@ void CStateManagerBurer::execute()
 
 	if (object->EnemyMan.get_enemy()) {
 		switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = eStateAttack; break;
+				case eStrong:	state = eStatePanic; break;
+				case eWeak:		state = eStateAttack; break;
 		}
 	} else if (object->HitMemory.is_hit() && (object->HitMemory.get_last_hit_time() + 10000 > Device.dwTimeGlobal)) 
 		state = eStateHitted;

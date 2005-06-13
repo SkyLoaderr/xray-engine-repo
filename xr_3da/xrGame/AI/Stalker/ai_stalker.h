@@ -82,9 +82,6 @@ private:
 private:
 	bool							m_demo_mode;
 
-private:
-	float							m_panic_threshold;
-	
 	// ALife
 private:
 	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
@@ -348,7 +345,6 @@ public:
 	IC	CMotivationActionManagerStalker &brain							() const;
 	IC	CSightManager					&sight							() const;
 	IC	CSSetupManager					&setup							() const;
-	IC		float						panic_threshold					() const;
 	IC		void						body_action						(const StalkerSpace::EBodyAction &body_action);
 	IC		const StalkerSpace::EBodyAction	&body_action				() const;
 
