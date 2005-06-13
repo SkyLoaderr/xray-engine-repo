@@ -98,9 +98,8 @@ IC	bool CPathManagerTemplate::failed() const
 TEMPLATE_SPECIALIZATION
 IC	void CPathManagerTemplate::set_evaluator(_VertexEvaluator *evaluator)
 {
-	if ((evaluator != m_evaluator) || !m_evaluator->actual()) {
+	if ((evaluator != m_evaluator) || !m_evaluator->actual())
 		m_actuality			= false;
-	}
 	m_evaluator				= evaluator;
 }
 
