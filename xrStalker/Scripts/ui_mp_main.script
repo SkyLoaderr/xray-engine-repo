@@ -164,6 +164,8 @@ function mp_main:InitCallBacks()
 	self:AddCallback("btn_create",	ui_events.BUTTON_CLICKED,	self.OnBtn_Create,	self)
 	self:AddCallback("btn_join",	ui_events.BUTTON_CLICKED,	self.OnBtn_Join,	self)
 	self:AddCallback("tab",			ui_events.TAB_CHANGED,		self.OnTabChange,	self)
+	-- ui_mm_mp_join
+	self:AddCallback("btn_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
 end
 
 function mp_main:OnTabChange()
@@ -179,9 +181,15 @@ function mp_main:OnTabChange()
 	else
 		self.dlg_server:Show(true)
 	end
---	else if i == 1 then
---		self.dlg_create:Show(true)
---	end
+end
+
+function mp_main:OnBtn_Refresh()
+	local i = self.radio_net_connection:GetActiveIndex()
+	if i == 0 then
+		self.server_list:RefreshList(false)
+	else
+		self.server_list:RefreshList(true)
+	end
 end
 
 function mp_main:OnBtn_Calncel()

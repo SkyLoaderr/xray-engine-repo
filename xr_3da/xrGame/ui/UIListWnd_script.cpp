@@ -70,7 +70,9 @@ void CUIListWnd::script_register(lua_State *L)
 		.def(							constructor<>()),
 
 		class_<CServerList, CUIWindow>("CServerList")
-		.def(							constructor<>())	
+		.def(							constructor<>())
+		.def("RefreshList",		&CServerList::RefreshGameSpyList)
+		
 
 		];
 }

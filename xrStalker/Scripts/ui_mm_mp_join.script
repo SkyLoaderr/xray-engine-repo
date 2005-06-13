@@ -25,9 +25,10 @@ function mp_join:InitControls(x, y, xml, handler)
 	xml:InitFrame("frame",0, self.bk)
 	self:AttachChild(self.bk)
 	
-	self.srvlist = CServerList()
-	xml:InitServerList("tab_client:server_list", self.srvlist)
-	self.bk:AttachChild(self.srvlist)
+	local srvlist = CServerList()
+	xml:InitServerList("tab_client:server_list", srvlist)
+	self.bk:AttachChild(srvlist)
+	handler.server_list = srvlist
 	
 	local frm = CUILabel()
 	xml:InitLabel("tab_client:cap_network_connection",0,frm)
@@ -41,10 +42,10 @@ function mp_join:InitControls(x, y, xml, handler)
 	xml:InitLabel("tab_client:cap_filters",0,frm)
 	self.bk:AttachChild(frm)
 	
-	local radio = CUITabControl()
+	local radio = CUITabControl()	
 	xml:InitTab("tab_client:radio_tab_network_connection",0,radio)
 	self.bk:AttachChild(radio)
-	handler:Register(radio)
+	handler.radio_net_connection = radio
 	
 	local btn = CUICheckButton()
 	xml:InitStatic("tab_client:check_empty",0,btn)
@@ -82,6 +83,7 @@ function mp_join:InitControls(x, y, xml, handler)
 	handler:Register(btn)
 	
 	btn = CUI3tButton()
+	btn:SetWindowName("btn_refresh")
 	xml:Init3tButton("tab_client:btn_refresh",0,btn)
 	self.bk:AttachChild(btn)
 	handler:Register(btn)
