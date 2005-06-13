@@ -235,7 +235,7 @@ function action_car:fast_update()
 	--	self.object:explode(0)
 	--	self.object:Explode()
 	--end
-	local aaa = db.actor():position()
+	local aaa = db.actor:position()
 	self.car:SetParam(CCar.eWpnDesiredPos,fire_pos)
 	self.car:SetParam(CCar.eWpnAutoFire,1)
 
