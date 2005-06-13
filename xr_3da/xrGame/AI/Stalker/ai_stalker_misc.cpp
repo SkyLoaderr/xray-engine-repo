@@ -23,7 +23,11 @@
 #include "../../level.h"
 #include "../../sound_player.h"
 #include "ai_stalker_space.h"
-#include "../../danger_manager.h"
+
+//#define USE_STEALTH
+#ifdef USE_STEALTH
+#	include "../../danger_manager.h"
+#endif
 
 const u32 TOLLS_INTERVAL	= 2000;
 const u32 GRENADE_INTERVAL	= 0*1000;
@@ -34,9 +38,11 @@ bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *objec
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
 	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
 		agent_manager().explosive().register_explosive(explosive,object);
+#ifdef USE_STEALTH
 		CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(Level().Objects.net_Find(explosive->CurrentParentID()));
 		if (entity_alive)
 			memory().danger().add(CDangerObject(entity_alive,object->Position(),Device.dwTimeGlobal,CDangerObject::eDangerTypeGrenade,CDangerObject::eDangerPerceiveTypeVisual,object));
+#endif
 	}
 
 	if (!memory().item().useful(object))
