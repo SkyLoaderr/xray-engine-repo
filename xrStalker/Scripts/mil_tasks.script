@@ -97,8 +97,10 @@ function process_khutor ()
        --if db.actor:dont_has_info ("mil_courier_khutor_leave") then  -- если он его не покинул...
           if db.actor:has_info ("mil_actor_in_khutor_zone") then --если и актер на хуторе
              if db.actor:dont_has_info ("mil_courier_quest_part1") then   
-                level_tasks.set_task_state (task.completed, "mil_courier_job", 1) -- первая часть выполнена
-                db.actor:give_info_portion ("mil_courier_quest_part1")
+                if db.actor:has_info ("mil_courier_call") then
+                   level_tasks.set_task_state (task.completed, "mil_courier_job", 1) -- первая часть выполнена
+                   db.actor:give_info_portion ("mil_courier_quest_part1")
+                end   
              end   
              if db.actor:has_info ("mil_ara_entered") then --если в это время явился Ара, то и вторая часть выполнена
                 if db.actor:dont_has_info ("mil_courier_quest_part2") then   
