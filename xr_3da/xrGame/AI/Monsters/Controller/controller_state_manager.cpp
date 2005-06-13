@@ -3,11 +3,6 @@
 #include "controller_state_manager.h"
 #include "../controlled_entity.h"
 
-//#include "../../../phmovementcontrol.h"
-//#include "../../../PhysicsShell.h"
-//#include "../../../PHCharacter.h"
-//#include "../../../phcapture.h"
-
 #include "../states/monster_state_rest.h"
 #include "controller_state_attack.h"
 #include "../states/monster_state_attack_melee.h"
@@ -20,6 +15,8 @@
 #include "../states/monster_state_hitted.h"
 
 #include "../../../entitycondition.h"
+
+#include "../states/state_test_state.h"
 
 CStateManagerController::CStateManagerController(CController *obj) : inherited(obj)
 {
@@ -43,6 +40,9 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 			xr_new<CStateMonsterEating<CController> >(obj)
 		)
 	);
+
+
+	add_state(eStateCustom, xr_new<CStateMonsterTestState<CController> >(obj));
 }
 
 CStateManagerController::~CStateManagerController()
@@ -85,6 +85,8 @@ void CStateManagerController::execute()
 		else			state_id = eStateRest;
 	}
 	
+	state_id = eStateCustom;
+
 	if (enemy) object->set_controlled_task(eTaskAttack);
 	else object->set_controlled_task(eTaskFollow);
 

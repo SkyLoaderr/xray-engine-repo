@@ -5,6 +5,7 @@
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
+#include "../ai_monster_bones.h"
 
 class CController : public CBaseMonster, 
 					public CJumping,
@@ -71,6 +72,20 @@ public:
 
 			void	control_hit					();
 	//-------------------------------------------------------------------
+
+public: 
+	static	void __stdcall	bone_callback			(CBoneInstance *B);
+	void					assign_bones			();
+	void					look_direction			(Fvector to_dir, float bone_turn_speed);
+
+	bonesManipulation		m_bones;
+
+	CBoneInstance			*bone_spine;
+	CBoneInstance			*bone_head;
+
+	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
+	MonsterSpace::SBoneRotation m_head_orient;
+	void					update_head_orientation	();
 
 public:
 	virtual bool	use_center_to_aim			() const {return true;}

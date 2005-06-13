@@ -116,7 +116,7 @@ void CControlPathBuilder::init_selector(CAbstractVertexEvaluator *S, Fvector tar
 	S->m_tEnemy			= 0;
 }
 
-void CControlPathBuilder::on_travel_point_change()
+void CControlPathBuilder::on_travel_point_change(const u32 &previous_travel_point_index)
 {
 	m_man->notify	(ControlCom::eventTravelPointChange, 0);
 }

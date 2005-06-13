@@ -14,6 +14,7 @@
 #include "../../../ui/UIMainIngameWnd.h"
 #include "../monster_velocity_space.h"
 #include "../../../level_debug.h"
+#include "../../../game_object_space.h"
 
 
 CController::CController()
@@ -145,6 +146,9 @@ BOOL CController::net_Spawn(CSE_Abstract *DC)
 		CPsyAuraController::set_auto_activate(false);
 	}
 
+	
+	assign_bones();
+	
 	return (TRUE);
 }
 
@@ -181,8 +185,9 @@ void CController::set_controlled_task(u32 task)
 void CController::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Add(eAnimCheckCorpse);
-		anim().Seq_Switch();
+		anim().Seq_Init		();
+		anim().Seq_Add		(eAnimCheckCorpse);
+		anim().Seq_Switch	();
 	}
 
 } 
@@ -236,6 +241,9 @@ void CController::reinit()
 	CPsyAuraController::reinit();
 	
 	int_need_deactivate = false;
+
+	m_bones.Reset();
+	m_head_orient = control().path_builder().body_orientation();
 }
 
 void CController::control_hit()
@@ -261,7 +269,7 @@ void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	CJumping::Update();
-	CPsyAuraController::frame_update();
+	//CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
 		processing_deactivate();
@@ -296,9 +304,20 @@ void CController::UpdateCL()
 void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	CPsyAuraController::schedule_update();
+	//CPsyAuraController::schedule_update();
 
 	UpdateControlled();
+
+	
+	
+	
+	Fvector	dir;
+	dir.set	(Level().CurrentEntity()->Position());
+	dir.sub	(Position());
+
+	look_direction(dir,PI_MUL_2);
+
+	update_head_orientation();
 }
 
 void CController::Jump()
@@ -342,6 +361,101 @@ void CController::OnFreedFromControl(const CEntity *entity)
 			return;
 	}
 }
+
+
+void __stdcall CController::bone_callback(CBoneInstance *B)
+{
+	CController *this_class = static_cast<CController*> (B->Callback_Param);
+	this_class->m_bones.Update(B, Device.dwTimeGlobal);
+}
+
+
+void CController::assign_bones()
+{
+	// Установка callback на кости
+
+	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
+	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
+	{
+		bone_spine->set_callback(bctCustom,bone_callback,this);
+		bone_head->set_callback(bctCustom, bone_callback,this);
+	}
+
+	// Bones settings
+	m_bones.Reset();
+	m_bones.AddBone(bone_spine, AXIS_X);	m_bones.AddBone(bone_spine, AXIS_Y);
+	m_bones.AddBone(bone_head, AXIS_X);		m_bones.AddBone(bone_head, AXIS_Y);
+}
+
+
+#define MAX_BONE_ANGLE			PI_DIV_2
+#define MAX_HEAD_BONE_ANGLE		PI_DIV_6
+#define MAX_TORSO_BONE_ANGLE	PI_DIV_2
+
+void CController::look_direction(Fvector to_dir, float bone_turn_speed)
+{
+	if (!control().path_builder().is_moving_on_path())
+		dir().face_target(Level().CurrentEntity()->Position(), 4000);
+
+	// получаем вектор направления к источнику звука и его мировые углы
+	float		yaw,pitch;
+	to_dir.getHP(yaw,pitch);
+	yaw = angle_normalize(-yaw);
+
+	// установить параметры вращения по yaw
+	float cur_yaw, target_yaw;
+	control().direction().get_heading(cur_yaw, target_yaw);		// текущий мировой угол монстра
+	
+	float bone_angle;											// угол для боны	
+
+	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
+
+	if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
+		bone_angle = dy;
+	} else {													// torso & bone turn 
+		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
+		else bone_angle = MAX_BONE_ANGLE;
+	}
+
+	//bone_angle /= 2;
+	if (!from_right(yaw,cur_yaw)) bone_angle *= -1.f;
+
+	m_bones.SetMotion(bone_spine, AXIS_X,  bone_angle, bone_turn_speed, 100);
+	//m_bones.SetMotion(bone_head,  AXIS_X,  bone_angle , bone_turn_speed, 100);
+
+	// установить параметры вращения по pitch
+	clamp(pitch, -MAX_BONE_ANGLE, MAX_BONE_ANGLE);
+	//pitch /= 2; 
+
+	m_bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
+	m_bones.SetMotion(bone_head, AXIS_Y, pitch, bone_turn_speed, 100);	
+}
+
+const MonsterSpace::SBoneRotation &CController::head_orientation	() const
+{
+	return m_head_orient;
+}
+
+void CController::update_head_orientation()
+{
+	m_head_orient.current.yaw	= 0.f;
+	m_head_orient.current.pitch	= 0.f;
+	m_head_orient.current.roll	= 0.f;
+
+	bonesAxis &x_spine = m_bones.GetBoneParams	(bone_spine, AXIS_X);
+	bonesAxis &x_head = m_bones.GetBoneParams	(bone_head,	 AXIS_X);
+
+	float yaw = x_spine.cur_yaw + x_head.cur_yaw;
+
+	// установить параметры вращения по yaw
+	float cur_yaw, target_yaw;
+	control().direction().get_heading(cur_yaw, target_yaw);		// текущий мировой угол монстра
+
+	cur_yaw += yaw;
+	m_head_orient.current.yaw	= cur_yaw;
+}
+
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CController::show_debug_info()
