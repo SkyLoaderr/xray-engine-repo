@@ -111,8 +111,18 @@ function send_task(actor, type)
 		db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", 350,100,50,50, 0)
 	elseif type == "fail" then
 		db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", 300,100,50,50, 0)
+	end	
+end
+function send_encyclopedy(type)
+	local snd_obj = sound_object([[device\pda\pda_objective]])
+	if snd_obj ~= nil then
+		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
-	
+	if type == "encyclopedy" then
+		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 150,100,50,50, 0)
+	else
+		db.actor:give_game_news("general_new_diary", "ui\\ui_icons_task", 150,100,50,50, 0)
+	end	
 end
 
 function relocate_item(actor, type)

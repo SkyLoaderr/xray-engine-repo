@@ -66,5 +66,11 @@
     <string id="general_out_money">
         <text>Потеряны деньги.</text>
     </string>
+    <string id="general_new_encyclopedy">
+        <text>Новая статья в энциклопедии.</text>
+    </string>
+    <string id="general_new_diary">
+        <text>Новая запись в дневнике.</text>
+    </string>    
     
 </string_table>
