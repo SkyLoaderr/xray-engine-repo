@@ -171,12 +171,8 @@ void CCarWeapon::UpdateBarrelDir()
 	m_cur_x_rot		= angle_inertion_var(m_cur_x_rot,m_tgt_x_rot,m_min_gun_speed,m_max_gun_speed,PI,Device.fTimeDelta);
 	m_cur_y_rot		= angle_inertion_var(m_cur_y_rot,m_tgt_y_rot,m_min_gun_speed,m_max_gun_speed,PI,Device.fTimeDelta);
 	static float dir_eps = deg2rad(5.0f);
-	if( !fsimilar(m_cur_x_rot,m_tgt_x_rot,dir_eps)|| !fsimilar(m_cur_y_rot,m_tgt_y_rot,dir_eps)){
+	if( !fsimilar(m_cur_x_rot,m_tgt_x_rot,dir_eps)|| !fsimilar(m_cur_y_rot,m_tgt_y_rot,dir_eps))
 		m_allow_fire=FALSE;
-
-		if(Device.dwFrame%30==0)
-			Msg("diff=[%f] deg",FireDirDiff());
-	}
 
 #if (0)
 	if(Device.dwFrame%200==0){
