@@ -2,9 +2,6 @@
 #include "ShootingObject.h"
 #include "HudSound.h"
 
-#define DESIRED_DIR 1
-#define DESIRED_POS 2
-
 class CCarWeapon :public CShootingObject
 {
 protected:
@@ -21,7 +18,16 @@ protected:
 	virtual const Fmatrix&	get_ParticlesXFORM	();
 	
 	CPhysicsShellHolder*	m_object;
+	bool					m_bActive;
+	bool					m_bAutoFire;
 public:
+	enum{
+			eWpnDesiredDir		=1,
+			eWpnDesiredPos,
+			eWpnActivate,
+			eWpnFire,
+			eWpnAutoFire,
+	};	
 							CCarWeapon			(CPhysicsShellHolder* obj);
 				virtual		~CCarWeapon			();
 	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
@@ -31,7 +37,8 @@ public:
 			void			Action				(int id, u32 flags);
 			void			SetParam			(int id, Fvector2 val);
 			void			SetParam			(int id, Fvector val);
-
+			bool			AllowFire			();
+			float			FireDirDiff			();
 private:
 	u16						m_rotate_x_bone, m_rotate_y_bone, m_fire_bone, m_camera_bone;
 	float					m_tgt_x_rot, m_tgt_y_rot, m_cur_x_rot, m_cur_y_rot, m_bind_x_rot, m_bind_y_rot;
@@ -40,6 +47,7 @@ private:
 
 	Fmatrix					m_i_bind_x_xform, m_i_bind_y_xform, m_fire_bone_xform;
 	Fvector2				m_lim_x_rot, m_lim_y_rot; //in bone space
+	float					m_min_gun_speed, m_max_gun_speed;
 	CCartridge*				m_Ammo;
 	float					m_barrel_speed;
 	Fvector					m_destEnemyDir;

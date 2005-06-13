@@ -324,9 +324,9 @@ void CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
 	CExplosive::UpdateCL();
+	if(m_car_weapon)m_car_weapon->UpdateCL();
 	if(Owner()) return;
 	UpdateEx			(DEFAULT_FOV);
-	if(m_car_weapon)m_car_weapon->UpdateCL();
 }
 
  void CCar::VisualUpdate(float fov)
@@ -408,7 +408,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	if(m_car_weapon){
 		Fvector pos;
 		who->Center(pos);
-		m_car_weapon->SetParam(DESIRED_POS,pos);
+		m_car_weapon->SetParam(CCarWeapon::eWpnDesiredPos,pos);
 	}
 
 	//if(||) P=0.f;

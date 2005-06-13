@@ -16,6 +16,7 @@
 #include "xr_level_controller.h"
 #include "../skeletoncustom.h"
 #include "level.h"
+#include "CarWeapon.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
 {
@@ -189,4 +190,45 @@ void	CCar::OnKeyboardHold(int cmd)
 	}
 //	clamp(m_vCamDeltaHP.x, -PI_DIV_2,	PI_DIV_2);
 //	clamp(m_vCamDeltaHP.y, active_camera->lim_pitch.x,	active_camera->lim_pitch.y);
+}
+void CCar::Action(int id, u32 flags)
+{
+	if(m_car_weapon)m_car_weapon->Action(id,flags);
+}
+void CCar::SetParam(int id, Fvector2 val)
+{
+	if(m_car_weapon)m_car_weapon->SetParam(id,val);
+}
+void CCar::SetParam			(int id, Fvector val)
+{
+	if(m_car_weapon)m_car_weapon->SetParam(id,val);
+}
+bool CCar::WpnCanHit()
+{
+	if(m_car_weapon) return m_car_weapon->AllowFire();
+	return false;
+}
+
+float CCar::FireDirDiff()
+{
+	if(m_car_weapon) return m_car_weapon->FireDirDiff();
+	return 0.0f;
+}
+#include "script_game_object.h"
+bool CCar::isObjectVisible			(CScriptGameObject* O_)
+{
+	CObject* O = &O_->object();
+	Fvector dir_to_object;
+	Fvector to_point;
+	O->Center(to_point);
+	Fvector from_point = XFORM().c;
+	dir_to_object.sub(to_point,from_point).normalize_safe();
+	float ray_length = from_point.distance_to(to_point);
+
+
+	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic);
+	collide::rq_result rq;
+	Level().ObjectSpace.RayPick(from_point, dir_to_object, ray_length, collide::rqtStatic,rq);
+		
+	return !res;
 }

@@ -41,6 +41,7 @@ public:
 	virtual CCameraBase*	Camera				()				= 0;
 	virtual void			Action				(int id, u32 flags)				{};
 	virtual void			SetParam			(int id, Fvector2 val)			{};
+	virtual void			SetParam			(int id, Fvector val)			{};
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

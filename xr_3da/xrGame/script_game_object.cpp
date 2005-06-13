@@ -33,6 +33,7 @@
 #include "detail_path_manager.h"
 #include "level_navigation_graph.h"
 
+
 class CScriptBinderObject;
 
 //////////////////////////////////////////////////////////////////////////
@@ -165,6 +166,7 @@ CHelicopter* CScriptGameObject::get_helicopter	()
 	}
 	return helicopter;
 }
+
 
 CHangingLamp* CScriptGameObject::get_hanging_lamp()
 {

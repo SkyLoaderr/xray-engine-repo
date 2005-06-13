@@ -14,6 +14,8 @@
 #include "CarDamageParticles.h"
 #include "hit_immunity.h"
 #include "Explosive.h"
+#include "PHDestroyable.h"
+
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -21,6 +23,11 @@ class						CInventory;
 class						CSE_PHSkeleton;
 class						CCarWeapon;
 // defs
+
+#ifdef DEBUG
+	#include "StatGraph.h"
+	#include "PHDebug.h"
+#endif
 
 class CScriptEntityAction;
 
@@ -514,6 +521,12 @@ public:
 	virtual void			OnBeforeExplosion	();
 	virtual void			ResetScriptData		(void *P=0);
 
+	virtual void			Action				(int id, u32 flags);
+	virtual void			SetParam			(int id, Fvector2 val);
+	virtual void			SetParam			(int id, Fvector val);
+			bool			WpnCanHit			();
+			float			FireDirDiff			();
+			bool			isObjectVisible		(CScriptGameObject* O);
 	// Hits
 	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
 	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};

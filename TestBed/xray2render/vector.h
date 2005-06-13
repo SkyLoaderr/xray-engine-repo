@@ -232,6 +232,7 @@ IC float		angle_inertion_var(float src, float tgt, float min_speed, float max_sp
 	src				= angle_normalize_signed	(src);
 	float speed		= _abs((max_speed-min_speed)*angle_difference(tgt,src)/clmp)+min_speed;
 	angle_lerp		(src,tgt,speed,dt);
+	src				= angle_normalize_signed	(src);
 	float dH		= angle_difference_signed	(src,tgt);
 	float dCH		= clampr					(dH,-clmp,clmp);
 	src				-= dH-dCH;

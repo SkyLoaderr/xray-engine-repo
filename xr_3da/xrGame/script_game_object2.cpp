@@ -34,6 +34,7 @@
 #include "../skeletonanimated.h"
 #include "../CameraBase.h"
 #include "ai/stalker/ai_stalker.h"
+#include "car.h"
 
 void CScriptGameObject::explode	(u32 level_time)
 {
@@ -415,4 +416,14 @@ float CScriptGameObject::max_ignore_monster_distance	() const
 		return			(0.f);
 	}
 	return				(stalker->memory().enemy().max_ignore_monster_distance());
+}
+
+CCar* CScriptGameObject::get_car	()
+{
+	CCar		*car = smart_cast<CCar*>(&object());
+	if (!car) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member get_car!");
+		NODEFAULT;
+	}
+	return car;
 }

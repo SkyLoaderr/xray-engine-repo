@@ -25,6 +25,8 @@ void __stdcall	CCarWeapon::BoneCallbackY		(CBoneInstance *B)
 
 CCarWeapon::CCarWeapon(CPhysicsShellHolder* obj)
 {
+	m_bActive	= false;
+	m_bAutoFire	= false;
 	m_object	= obj;
 	m_Ammo		= xr_new<CCartridge>();
 
@@ -34,7 +36,8 @@ CCarWeapon::CCarWeapon(CPhysicsShellHolder* obj)
 	m_rotate_x_bone			= K->LL_BoneID	(pUserData->r_string("mounted_weapon_definition","rotate_x_bone"));
 	m_rotate_y_bone			= K->LL_BoneID	(pUserData->r_string("mounted_weapon_definition","rotate_y_bone"));
 	m_fire_bone				= K->LL_BoneID	(pUserData->r_string("mounted_weapon_definition","fire_bone"));
-
+	m_min_gun_speed			= pUserData->r_float("mounted_weapon_definition","min_gun_speed");
+	m_max_gun_speed			= pUserData->r_float("mounted_weapon_definition","max_gun_speed");
 	CBoneData& bdX			= K->LL_GetData(m_rotate_x_bone); //VERIFY(bdX.IK_data.type==jtJoint);
 	m_lim_x_rot.set			(bdX.IK_data.limits[0].limit.x,bdX.IK_data.limits[0].limit.y);
 	CBoneData& bdY			= K->LL_GetData(m_rotate_y_bone); //VERIFY(bdY.IK_data.type==jtJoint);
@@ -55,9 +58,14 @@ CCarWeapon::CCarWeapon(CPhysicsShellHolder* obj)
 	m_destEnemyDir.setHP				(m_bind_y_rot,m_bind_x_rot);
 	m_object->XFORM().transform_dir		(m_destEnemyDir);
 
+
+
+//	static float f1 = 0.5f;
+//	static float f2 = 1.5f;
+//	static float f3 = PI_MUL_2;
+
 	inheritedShooting::Light_Create		();
-//	Load								(pUserData->r_string("mounted_weapon_definition","wpn_section"));
-	Load								("stationary_mgun");
+	Load								(pUserData->r_string("mounted_weapon_definition","wpn_section"));
 	SetBoneCallbacks					();
 	m_object->processing_activate		();
 }
@@ -77,6 +85,7 @@ void CCarWeapon::Load(LPCSTR section)
 
 void CCarWeapon::UpdateCL()
 {
+	if(!m_bActive)				return;
 	UpdateBarrelDir				();
 	UpdateFire					();
 }
@@ -87,10 +96,13 @@ void CCarWeapon::UpdateFire()
 
 	inheritedShooting::UpdateFlameParticles();
 	inheritedShooting::UpdateLight();
-//	if(m_allow_fire){
-//		FireStart();
-//	}else
-//		FireEnd();
+	
+	if(m_bAutoFire){
+		if(m_allow_fire){
+			FireStart();
+		}else
+			FireEnd();
+	};
 
 	if(!IsWorking()){
 		if(fTime<0) fTime = 0.f;
@@ -105,7 +117,7 @@ void CCarWeapon::UpdateFire()
 
 void CCarWeapon::SetBoneCallbacks()
 {
-	m_object->PPhysicsShell()->EnabledCallbacks(FALSE);
+//	m_object->PPhysicsShell()->EnabledCallbacks(FALSE);
 	
 	CBoneInstance& biX		= smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
 	biX.set_callback		(bctCustom,BoneCallbackX,this);
@@ -120,7 +132,7 @@ void CCarWeapon::ResetBoneCallbacks()
 	CBoneInstance& biY		= smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
 	biY.set_callback		(bctDummy,0,0);
 
-	m_object->PPhysicsShell()->EnabledCallbacks(TRUE);
+//	m_object->PPhysicsShell()->EnabledCallbacks(TRUE);
 }
 
 void CCarWeapon::UpdateBarrelDir()
@@ -143,24 +155,28 @@ void CCarWeapon::UpdateBarrelDir()
 	{// x angle
 		m_i_bind_x_xform.transform_dir(dep); dep.normalize();
 		m_tgt_x_rot		= angle_normalize_signed(m_bind_x_rot-dep.getP());
-		float sv_x		= m_tgt_x_rot;
+//		float sv_x		= m_tgt_x_rot;
 		
 		clamp			(m_tgt_x_rot,-m_lim_x_rot.y,-m_lim_x_rot.x);
-		if (!fsimilar(sv_x,m_tgt_x_rot,EPS_L)) m_allow_fire=FALSE;
+//		if (!fsimilar(sv_x,m_tgt_x_rot,EPS_L)) m_allow_fire=FALSE;
 	}
 	{// y angle
 		m_i_bind_y_xform.transform_dir(dep); dep.normalize();
 		m_tgt_y_rot		= angle_normalize_signed(m_bind_y_rot-dep.getH());
-		float sv_y		= m_tgt_y_rot;
+//		float sv_y		= m_tgt_y_rot;
 		clamp			(m_tgt_y_rot,-m_lim_y_rot.y,-m_lim_y_rot.x);
-		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
+//		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
 	}
-	static float f1 = 0.5f;
-	static float f2 = 1.5f;
-	static float f3 = PI_MUL_2;
 
-	m_cur_x_rot		= angle_inertion_var(m_cur_x_rot,m_tgt_x_rot,f1,f2,f3,Device.fTimeDelta);
-	m_cur_y_rot		= angle_inertion_var(m_cur_y_rot,m_tgt_y_rot,f1,f2,f3,Device.fTimeDelta);
+	m_cur_x_rot		= angle_inertion_var(m_cur_x_rot,m_tgt_x_rot,m_min_gun_speed,m_max_gun_speed,PI,Device.fTimeDelta);
+	m_cur_y_rot		= angle_inertion_var(m_cur_y_rot,m_tgt_y_rot,m_min_gun_speed,m_max_gun_speed,PI,Device.fTimeDelta);
+	static float dir_eps = deg2rad(5.0f);
+	if( !fsimilar(m_cur_x_rot,m_tgt_x_rot,dir_eps)|| !fsimilar(m_cur_y_rot,m_tgt_y_rot,dir_eps)){
+		m_allow_fire=FALSE;
+
+		if(Device.dwFrame%30==0)
+			Msg("diff=[%f] deg",FireDirDiff());
+	}
 
 #if (0)
 	if(Device.dwFrame%200==0){
@@ -168,6 +184,18 @@ void CCarWeapon::UpdateBarrelDir()
 		Msg("m_cur_y_rot=[%f]",m_cur_y_rot);
 	}
 #endif
+}
+bool CCarWeapon::AllowFire()
+{
+	return m_allow_fire;
+}
+
+float CCarWeapon::FireDirDiff()
+{
+	Fvector d1,d2;
+	d1.set(m_cur_x_rot,m_cur_y_rot,0).normalize_safe();
+	d2.set(m_tgt_x_rot,m_tgt_y_rot,0).normalize_safe();
+	return rad2deg( acos(d1.dotproduct(d2)) );
 }
 
 const Fvector&	CCarWeapon::get_CurrentFirePoint()
@@ -211,17 +239,28 @@ void CCarWeapon::OnShot()
 void CCarWeapon::Action				(int id, u32 flags)
 {
 	switch (id){
-		case kWPN_FIRE:{
-			if(flags==CMD_START)	FireStart	();
+		case eWpnFire:{
+			if(flags==1)			FireStart	();
 			else					FireEnd		();
 		}break;
+		case eWpnActivate:{
+			if(flags==1)			m_bActive = true;
+			else					{m_bActive = false; FireEnd();}
+		}break;
+
+		case eWpnAutoFire:{
+			if(flags==1)			m_bAutoFire = true;
+			else					m_bAutoFire = false;
+		}break;
+
+			
 	}
 }
 
 void CCarWeapon::SetParam			(int id, Fvector2 val)
 {
 	switch (id){
-		case DESIRED_DIR:
+		case eWpnDesiredDir:
 			m_destEnemyDir.setHP				(val.x,val.y);
 		break;
 	}
@@ -230,7 +269,7 @@ void CCarWeapon::SetParam			(int id, Fvector2 val)
 void CCarWeapon::SetParam			(int id, Fvector val)
 {
 	switch (id){
-		case DESIRED_POS:
+		case eWpnDesiredPos:
 			m_destEnemyDir.sub(val,m_fire_pos).normalize_safe();
 		break;
 	}

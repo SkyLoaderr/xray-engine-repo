@@ -1,6 +1,8 @@
 #ifndef PH_DESTROYABLE
 #define PH_DESTROYABLE
 
+#include "hit.h"
+
 class CPhysicsShellHolder;
 class CSE_Abstract;
 class CPHDestroyableNotificate;
