@@ -130,10 +130,10 @@
 		</cap_max_players>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
 		<edit_password x="150" y="65" width="275" height="21">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		
 		<check_dedicated x="307" y="115" width="118" height="21">
@@ -222,42 +222,42 @@
 		</check_no_anmalies>
 		
 		<edit_spectator x="175" y="90" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_spectator>
 		<edit_force_respawn x="175" y="185" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_force_respawn>
 		<edit_reinforcement x="175" y="210" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_reinforcement>
 
 		
 		<edit_freeze_time x="175" y="270" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_freeze_time>
 		<edit_damage_block x="175" y="295" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_damage_block>
 		
 		<edit_frag_limit x="423" y="65" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_frag_limit>
 		<edit_time_limit x="423" y="90" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_time_limit>
 		<edit_artefact_stay x="423" y="115" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_artefact_stay>
 		<edit_artefact_dealy x="423" y="165" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_artefact_dealy>
 		
 		<edit_anomaly_time x="423" y="300" width="45" height="23">
-			<texture>ui_linetext_d</texture>
+			<texture>ui_linetextSmall_d</texture>
 		</edit_anomaly_time>
 		
 		<edit_rate_of_change x="671" y="65" width="45" height="23">
-			<texture>ui_linetext_e</texture>
+			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
 		
 		<radio_tab_respawn_options x="10" y="185" width="142" height="76" radio="1">
