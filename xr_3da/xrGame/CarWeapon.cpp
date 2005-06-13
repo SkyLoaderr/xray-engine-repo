@@ -155,17 +155,12 @@ void CCarWeapon::UpdateBarrelDir()
 	{// x angle
 		m_i_bind_x_xform.transform_dir(dep); dep.normalize();
 		m_tgt_x_rot		= angle_normalize_signed(m_bind_x_rot-dep.getP());
-//		float sv_x		= m_tgt_x_rot;
-		
 		clamp			(m_tgt_x_rot,-m_lim_x_rot.y,-m_lim_x_rot.x);
-//		if (!fsimilar(sv_x,m_tgt_x_rot,EPS_L)) m_allow_fire=FALSE;
 	}
 	{// y angle
 		m_i_bind_y_xform.transform_dir(dep); dep.normalize();
 		m_tgt_y_rot		= angle_normalize_signed(m_bind_y_rot-dep.getH());
-//		float sv_y		= m_tgt_y_rot;
 		clamp			(m_tgt_y_rot,-m_lim_y_rot.y,-m_lim_y_rot.x);
-//		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
 	}
 
 	m_cur_x_rot		= angle_inertion_var(m_cur_x_rot,m_tgt_x_rot,m_min_gun_speed,m_max_gun_speed,PI,Device.fTimeDelta);
