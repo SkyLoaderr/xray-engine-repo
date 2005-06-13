@@ -135,4 +135,16 @@
     <texture id="ui_table_divider_b" x="114" y="65" width="1" height="10" />
     <texture id="ui_table_divider_back" x="114" y="65" width="1" height="10" />
     <texture id="ui_table_divider_e" x="114" y="65" width="1" height="10" />
+    <texture id="ui_button_arrow_left_e" x="954" y="46" width="44" height="29" />
+    <texture id="ui_button_arrow_left_h" x="753" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_left_t" x="797" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_right_e" x="841" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_right_h" x="885" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_right_t" x="929" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_top_e" x="973" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_top_h" x="723" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_top_t" x="767" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_bot_e" x="811" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_bot_h" x="855" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_bot_t" x="899" y="107" width="44" height="29" />
 </ui_texture>

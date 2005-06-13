@@ -206,3 +206,5 @@ void CUIMessagesWindow::DrawPdaMessages(){
         m_pGameLog2->Draw();
 }
 
+void CUIMessagesWindow():
+

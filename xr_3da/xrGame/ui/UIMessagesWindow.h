@@ -39,6 +39,8 @@ public:
 	void SetChatOwner(game_cl_GameState* owner);
 	CUIChatWnd* GetChatWnd() {return m_pChatWnd;}
 
+	virtual void Update();
+
 
 protected:
 CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
