@@ -1,6 +1,6 @@
 [logic]
 active = camper@start
-on_combat = combat
+;on_combat = combat
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
@@ -8,8 +8,8 @@ combat_ignore = combat_ignore
 [death]
 on_info = %=hit_npc(412:bip01_head:400:2000)%
 
-[combat]
-on_info = {=see_actor} nil %+val_opendoor_plr_detected%
+;[combat]
+;on_info = {=see_actor} nil %+val_opendoor_plr_detected%
 
 [hit]
 on_info = {=hit_by_actor} nil %+val_opendoor_plr_detected%
@@ -25,7 +25,7 @@ no_retreat = true
 on_signal = victim_start | %+val_opendoor_victim_start%
 on_info = {+val_opendoor_victim_start} camper@fight
 on_info2 = {+val_opendoor_plr_detected} nil
-combat_ignore_cond = always
+combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 
 [camper@fight]
 path_walk = val_opendoor_monolith_walk
@@ -36,6 +36,7 @@ radius = 1
 no_retreat = true
 on_info = {=is_dead_one(411)} camper@wait
 on_info2 = {+val_opendoor_plr_detected} nil
+combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 ;combat_ignore_cond = {=fighting_actor}
 
 [camper@wait]

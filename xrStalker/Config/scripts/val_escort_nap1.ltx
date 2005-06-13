@@ -12,7 +12,7 @@ on_info = {=hitted_by(407:408)} remark@fight %+val_escort_combat%
 on_info = %+val_escort_nap1_dead%
 
 [hit]
-on_info = {=val_hit_by_guard} %+val_escort_combat%
+on_info = {=hitted_by(407:408)} %+val_escort_combat%
 
 [combat_ignore]
 
@@ -21,8 +21,8 @@ on_info = {=val_hit_by_guard} %+val_escort_combat%
 ;--------------------------------------------------------------------------
 [meet@def]
 meet_dialog = val_escort_nap1_dialog
-meet_state = 15|hello@talk_hello|10|wait@wait|5|ward@wait
-meet_state_wpn = 5|threat@threat_weapon
+meet_state = 15|hello@talk_hello|10|wait@|5|wait_na@
+meet_state_wpn = 10|threat@threat_weap
 victim = actor
 victim_vpn = actor
 use = true
@@ -65,7 +65,7 @@ path_look = val_escort_nap1_rescue_look
 radius = 2
 def_state_moving = rush
 no_retreat = true
-on_signal = ambush_start | camper@wait_for_actor
+on_signal = ambush_start | remark@phrase2 ;camper@wait_for_actor
 on_info = {+val_escort_combat} remark@fight
 combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
 
@@ -79,7 +79,7 @@ radius = 2
 def_state_moving = rush
 no_retreat = true
 on_info = {+val_escort_combat} remark@fight
-on_actor_dist_le = 3 | remark@phrase2
+on_actor_dist_le_nvis = 3 | remark@phrase2
 combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
 
 ;--------------------------------------------------------------------------

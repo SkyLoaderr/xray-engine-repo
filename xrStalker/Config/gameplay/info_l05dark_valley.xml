@@ -69,8 +69,8 @@
 <info_portion id="val_sacrifice_spawn"></info_portion>
 <info_portion id="val_sacrifice_start"></info_portion>
 <info_portion id="val_sacrifice_finish"></info_portion>
-<info_portion id="val_sacrifice_victim_escaped"></info_portion>
 <info_portion id="val_sacrifice_plr_detected"></info_portion>
+<info_portion id="val_sacrifice_victim_free"></info_portion>
 <info_portion id="val_sacrifice_victim_dead"></info_portion>
 <info_portion id="val_sacrifice_guard1_dead"></info_portion>
 <info_portion id="val_sacrifice_guard2_dead"></info_portion>

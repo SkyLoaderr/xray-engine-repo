@@ -20,11 +20,11 @@ no_rotate = true
 anim = wait_na
 combat_ignore_cond = always
 ;combat_ignore_keep_when_attacked = true
-on_info = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} remark@free %+val_sacrifice_victim_escaped%
+on_info = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} remark@free %+val_sacrifice_victim_free%
 
 [remark@free]
 on_timer = 60000 | walker@leave
-;on_signal = escaped | %+val_sacrifice_victim_escaped%
+;on_signal = escaped | %+val_sacrifice_victim_free%
 
 [walker@leave]
 path_walk = val_sacrifice_victim_leave_walk
