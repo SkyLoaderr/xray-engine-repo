@@ -59,10 +59,7 @@ function motivator_binder:reinit()
 	--state_mgr.bind_manager(self.object, self.st.state_mgr)
 
     --' Создание менеджера контроля положений тела
-	self.st.state_mgr = state_mgr.bind_manager(self.object)
-	
-	--' Компаньон
-	xr_assistance.add_to_binder(self.object)		
+	self.st.state_mgr = state_mgr.bind_manager(self.object)	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
@@ -331,7 +328,6 @@ end
 
 -- Эвалюаторы, которые имеют высший приоритет, и, соответственно, перебивают остальные скрипты собой
 function addCommonPrecondition(action)
-	--action:add_precondition (world_property(xr_evaluators_id.reaction,			false))
 	action:add_precondition (world_property(xr_evaluators_id.assistance + 1,	false))
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
 	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 1,  false))
