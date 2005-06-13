@@ -36,6 +36,9 @@ path_look = val_escort_nap1_look
 on_info = {+val_sacrifice_spawn} walker@fake_task
 on_actor_dist_le = 10 | remark@phrase1
 
+;--------------------------------------------------------------------------
+; фраза: Друг, подходи, есть дело.
+;--------------------------------------------------------------------------
 [remark@phrase1]
 no_move = true
 no_rotate = true
@@ -62,10 +65,25 @@ path_look = val_escort_nap1_rescue_look
 radius = 2
 def_state_moving = rush
 no_retreat = true
-on_signal = ambush_start | remark@phrase2
+on_signal = ambush_start | camper@wait_for_actor
 on_info = {+val_escort_combat} remark@fight
 combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
 
+;--------------------------------------------------------------------------
+; Ждем, чтоб актер подошел поближе
+;--------------------------------------------------------------------------
+[camper@wait_for_actor]
+path_walk = val_escort_nap1_rescue_walk
+path_look = val_escort_nap1_rescue_look
+radius = 2
+def_state_moving = rush
+no_retreat = true
+on_info = {+val_escort_combat} remark@fight
+on_actor_dist_le = 3 | remark@phrase2
+combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
+
+;--------------------------------------------------------------------------
+; фраза: Прячься за укрытием на той стороне дороги. Они скоро появятся. Открывай огонь ТОЛЬКО после меня.
 ;--------------------------------------------------------------------------
 [remark@phrase2]
 no_move = true
@@ -76,6 +94,8 @@ on_timer = 35000 | remark@phrase3
 on_info = {+val_escort_captive_dead} walker@fake_task
 combat_ignore_cond = {-val_escort_combat}
 
+;--------------------------------------------------------------------------
+; фраза: Идут. Сейчас мы их.
 ;--------------------------------------------------------------------------
 [remark@phrase3]
 no_move = true
