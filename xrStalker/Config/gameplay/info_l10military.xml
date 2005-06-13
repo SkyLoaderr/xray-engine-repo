@@ -115,6 +115,7 @@
 	<info_portion id="mil_courier_call"></info_portion>
 	<info_portion id="mil_ara_arrive"></info_portion>
 	<info_portion id="mil_ara_end"></info_portion>	
+	<info_portion id="mil_ara_entered"></info_portion>	
 	
 
 	<!-- Хутор наемников -->
