@@ -116,6 +116,7 @@
 	<info_portion id="mil_ara_arrive"></info_portion>
 	<info_portion id="mil_ara_end"></info_portion>	
 	<info_portion id="mil_ara_entered"></info_portion>	
+	<info_portion id="mil_ara_dead"></info_portion>	
 	
 
 	<!-- Хутор наемников -->
