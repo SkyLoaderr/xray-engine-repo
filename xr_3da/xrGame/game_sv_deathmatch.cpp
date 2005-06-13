@@ -840,7 +840,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 		for (u32 j = 0; j < count; ++j)
 		{
 			_GetItem(wpnNames, j, wpnSingleName);
-			R_ASSERT2(pSettings->line_exist(m_sBaseWeaponCostSection, wpnSingleName), "No base item cost!");
+			R_ASSERT3(pSettings->line_exist(m_sBaseWeaponCostSection, wpnSingleName), "No base item cost!", wpnSingleName);
 
 			WeaponDataStruct	NewWpnData;
 
