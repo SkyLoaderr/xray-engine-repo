@@ -16,18 +16,19 @@ local function hook			(context,line_number)
 	end
 
 	local					f = debug.getinfo(2, "f").func
-	local					caller = debug.getinfo(3, "f")
-	local					g = nil
-	if caller ~= nil then
-		g					= caller.func;
-	end
+--	local					caller = debug.getinfo(3, "f")
+--	local					g = nil
+--	if caller ~= nil then
+--		g					= caller.func;
+--	end
 
 	if "return" == context then
 		if Counters[f] ~= nil then
 			Counters[f].timer:stop		()
-			if g ~= nil then
-				Counters[g].timer:start	()
-			end
+--			Counters[f].child_timer:stop()
+--			if g ~= nil then
+--				Counters[g].timer:start	()
+--			end
 		end
 		return
 	end
@@ -41,12 +42,14 @@ local function hook			(context,line_number)
 	end
 	
 	if nil == Counters[f] then
-		Counters[f]				= {count=1,timer=profile_timer()}
-		Counters[f].timer:start	()
-		Names[f]				= debug.getinfo(2, "Sn")
+		Counters[f]						= {count=1,timer=profile_timer()}--,child_timer=profile_timer()}
+		Counters[f].timer:start			()
+--		Counters[f].child_timer:start	()
+		Names[f]						= debug.getinfo(2, "Sn")
 	else
-		Counters[f].count		= Counters[f].count + 1
-		Counters[f].timer:start	()
+		Counters[f].count				= Counters[f].count + 1
+		Counters[f].timer:start			()
+--		Counters[f].child_timer:start	()
 	end
 end
 
@@ -87,8 +90,9 @@ function stats				()
 		if (nil == sort_stats[n]) then
 			sort_stats[n]	= count
 		else 
-			sort_stats[n].count	= sort_stats[n].count + count.count
-			sort_stats[n].timer	= sort_stats[n].timer + count.timer
+			sort_stats[n].count			= sort_stats[n].count		+ count.count
+			sort_stats[n].timer			= sort_stats[n].timer		+ count.timer
+--			sort_stats[n].child_timer	= sort_stats[n].child_timer + count.child_timer
 		end
     end
 
