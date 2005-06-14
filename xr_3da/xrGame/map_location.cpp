@@ -13,7 +13,7 @@
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
 #include "relation_registry.h"
-
+#include "InventoryOwner.h"
 //////////////////////////////////////////////////
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {

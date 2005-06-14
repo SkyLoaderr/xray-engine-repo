@@ -10,7 +10,8 @@ CUIFrameRect::CUIFrameRect()
 {
 	m_wndPos.set		(0,0);
 	m_wndSize.set		(0,0);
-	uFlags.zero		();
+	uFlags.zero			();
+	m_itm_mask.one		();
 }
 //--------------------------------------------------------------------
 
@@ -182,7 +183,8 @@ void CUIFrameRect::Draw()
 		UpdateSize();
 
 	for (int k=0; k<fmMax; ++k) 
-		frame[k].Render	();
+		if(m_itm_mask.test(u16(1<<k)))
+			frame[k].Render	();
 }
 
 void CUIFrameRect::Update(){

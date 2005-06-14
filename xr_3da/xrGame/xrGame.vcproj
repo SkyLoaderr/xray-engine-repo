@@ -10064,6 +10064,22 @@
 						RelativePath=".\ui\UIListItemServer.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Followers"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIFollowerIcon.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIFollowerIcon.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIFollowerPanel.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIFollowerPanel.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
@@ -10073,9 +10089,6 @@
 				</File>
 				<File
 					RelativePath=".\ui\uiabstract.h">
-				</File>
-				<File
-					RelativePath=".\ui\UIMessages.h">
 				</File>
 				<File
 					RelativePath=".\ui\UIWndCallback.cpp">
@@ -10091,6 +10104,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\tinyxml.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMessages.h">
 					</File>
 					<File
 						RelativePath=".\ui\UITextureMaster.cpp">

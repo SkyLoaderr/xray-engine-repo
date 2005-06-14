@@ -54,5 +54,5 @@ void CUIContractsWnd::Init()
 void CUIContractsWnd::Show(bool status)
 {
 	inherited::Show(status);
-	status ? UICharInfo.UIIcon.SetMask(&UIMask) : UICharInfo.UIIcon.SetMask(NULL);
+	status ? UICharInfo.UIIcon().SetMask(&UIMask) : UICharInfo.UIIcon().SetMask(NULL);
 }

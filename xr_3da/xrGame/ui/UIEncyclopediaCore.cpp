@@ -85,7 +85,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		Frect r = pInfoList->GetAbsoluteRect();
 
 		img.SetClipRect(r);
-		UIImgMask.SetClipper(true, r);
+//		UIImgMask.SetClipper(true, r);
 		AdjustImagePos(img);
 		pInfoList->AttachChild(&img);
 		

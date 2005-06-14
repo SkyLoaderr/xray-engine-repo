@@ -122,10 +122,15 @@ void CUICursor::MoveBy(float dx, float dy)
 	if(!bHoldMode){
 		vPos.x += vDelta.x;
 		vPos.y += vDelta.y;
+		clamp(vPos.x, -1.f, 1.f);
+		clamp(vPos.y, -1.f, 1.f);
+	}else{
+		vPrevPos.x -= vDelta.x;
+		vPrevPos.y -= vDelta.y;
+		clamp(vPrevPos.x, -1.f, 1.f);
+		clamp(vPrevPos.y, -1.f, 1.f);
 	}
 	
-	clamp(vPos.x, -1.f, 1.f);
-	clamp(vPos.y, -1.f, 1.f);
 
 
 	if(!m_cursor_move_event.empty())

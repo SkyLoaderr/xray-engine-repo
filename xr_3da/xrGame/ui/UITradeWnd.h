@@ -23,6 +23,7 @@ class CEatableItem;
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
 
+class CTrade;
 
 class CUITradeWnd: public CUIWindow
 {

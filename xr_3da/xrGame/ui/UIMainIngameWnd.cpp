@@ -747,6 +747,17 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			xr_delete						(w);
 		}
 	}
+	
+/*	if(dik==DIK_O&&strstr(Core.Params,"andy")){
+		ref_shader sh_base, sh_1[1000];
+		sh_base.create("hud\\default","ui\\ui_icons_task");
+		CTimer T;
+		T.Start();
+		for (int i=0; i<1000; ++i){
+			sh_1[i].create("hud\\default","ui\\ui_icons_task");
+		}
+		Msg("--creating shader consumed [%d] ms",T.GetElapsed_ms()/1000);
+	}*/
 	// поддержка режима adjust hud mode
 	bool flag = false;
 	if (g_bHudAdjustMode)

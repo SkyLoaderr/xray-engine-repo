@@ -15,6 +15,7 @@
 #include "UIStatic.h"
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"
+#include "UIFrameWindow.h"
 
 //////////////////////////////////////////////////////////////////////////
 

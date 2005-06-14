@@ -689,7 +689,7 @@ void CUIDragDropList::ScrollBarRecalculateTotal()
 		// Иначе требуется и необходим пересчет
 		EnableScrollBar(true);
 
-		u32 min, max;
+		int min, max;
 		m_ScrollBar.GetRange(min, max);
 		m_ScrollBar.SetRange(0, bottom);
 		m_ScrollBar.SetPageSize(m_iViewRowsNum);

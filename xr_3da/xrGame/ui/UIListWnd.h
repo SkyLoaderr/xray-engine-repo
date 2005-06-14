@@ -93,7 +93,7 @@ public:
 
 	void ScrollToBegin();
 	void ScrollToEnd();
-	void ScrollToPos(u32 position);
+	void ScrollToPos(int position);
 	
 	bool IsActiveBackgroundEnabled() {return m_bActiveBackgroundEnable;}
 	void EnableActiveBackground(bool enable) {m_bActiveBackgroundEnable = enable;}

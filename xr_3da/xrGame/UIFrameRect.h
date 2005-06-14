@@ -8,10 +8,11 @@
 class CUIFrameRect: public CUISimpleWindow, CUIMultiTextureOwner //public CUICustomItem
 {
 public:
-	enum{
+	enum EFramePart{
 		fmBK=0,
 		fmL, fmR, fmT, fmB, fmLT, fmRB, fmRT, fmLB, fmMax
 	};
+	Flags16		m_itm_mask;
 
 	friend class CUIFrameWindow;
 	using CUISimpleWindow::Init;
@@ -29,6 +30,7 @@ public:
 	virtual void		SetHeight		(float height);
 	virtual void		Update			();
 			void		SetTextureColor	(u32 cl);
+			void		SetVisiblePart	(EFramePart p, BOOL b)	{m_itm_mask.set(u16(1<<p), b);};
 protected:
 	CUIStaticItem	frame[fmMax];
 
@@ -36,7 +38,7 @@ protected:
 		flValidSize	= (1<<0),
 		flSingleTex	= (1<<1),
 	};
-	Flags32			uFlags;
+	Flags8			uFlags;
 	void			UpdateSize		();
 };
 

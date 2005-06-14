@@ -1,16 +1,16 @@
 // UICharacterInfo.h:  окошко, с информацией о персонаже
 // 
 //////////////////////////////////////////////////////////////////////
-
-#include "uiwindow.h"
-#include "uistatic.h"
-#include "UIFrameWindow.h"
-#include "UIListWnd.h"
-
-#include "..\InventoryOwner.h"
-
 #pragma once
 
+#include "uiwindow.h"
+#include "../alife_space.h"
+#include "../character_info_defs.h"
+
+class CInventoryOwner;
+class CUIStatic;
+class CUIListWnd;
+class CCharacterInfo;
 
 class CUICharacterInfo: public CUIWindow
 {
@@ -28,17 +28,35 @@ public:
 	void		ResetAllStrings();
 
 	virtual void	Update				();
-
-	CUIStatic	UIIcon;
+			void	UpdateRelation		();
+	enum{
+		eUIIcon	=	0,
+		eUIName,
+		eUIRank,
+		eUIRankCaption,
+		eUICommunity,
+		eUICommunityCaption,
+		eUIReputation,
+		eUIReputationCaption,
+		eUIRelation,
+		eUIRelationCaption,
+		eMaxCaption,
+	};
+	CUIStatic*	m_icons[eMaxCaption];
 	CInventoryOwner* pInvOwner;
+/*
+	CUIStatic	UIIcon;
 	CUIStatic	UIName;
 	CUIStatic	UIRank, UIRankCaption;
 	CUIStatic	UICommunity, UICommunityCaption;
 	CUIStatic	UIReputation, UIReputationCaption;
-	CUIStatic	UIRelation, UIRelationCaption;
+	CUIStatic	UIRelation, UIRelationCaption;*/
 	// Biography
-	CUIListWnd	UIBio;
+	CUIListWnd*	pUIBio;
 
 	// Для автоматического выравнивания текста после кепшинов установить этот флаг
 	bool		m_bInfoAutoAdjust;
+
+	CUIStatic&	UIIcon()		{return *m_icons[eUIIcon];}	
+	CUIStatic&	UIName()		{return *m_icons[eUIName];}	
 };

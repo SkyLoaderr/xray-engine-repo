@@ -64,6 +64,7 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 			{				
 				tc->CreateShader((*sht_it).first.c_str());	// texture file name
 				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+//				tc->SetOriginalRect((*reg_it).second);    // region on texture
 				return;
 			}
 		}

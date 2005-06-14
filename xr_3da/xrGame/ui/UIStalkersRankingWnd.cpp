@@ -44,7 +44,6 @@ void CUIStalkersRankingWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "info_frame_window", 0, &UIInfoFrame);
 	UIInfoFrame.AttachChild(&UIInfoHeader);
 	xml_init.InitFrameLine(uiXml, "info_frame_line", 0, &UIInfoHeader);
-	UIInfoHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
 
 	UIInfoFrame.AttachChild(&UIStalkersList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIStalkersList);
@@ -61,10 +60,10 @@ void CUIStalkersRankingWnd::Init()
 		UICharacterWindow.GetHeight(), 
 		STALKERS_RANKING_CHARACTER_XML);
 	UICharacterInfo.m_bInfoAutoAdjust = false;
-	UICharacterInfo.UIName.Show(false);
+//	UICharacterInfo.UIName().Show(false);
 
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
-	UICharacterInfo.UIIcon.SetMask(&UIMask);
+	UICharacterInfo.UIIcon().SetMask(&UIMask);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UICharIconFrame);
@@ -73,10 +72,7 @@ void CUIStalkersRankingWnd::Init()
 	UIInfoFrame.AttachChild(&UIArticleHeader);
 	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);
 
-	string256 buf;
-	ZeroMemory(buf, sizeof(buf));
-//	strconcat(buf, ALL_PDA_HEADER_PREFIX, "/", UIArticleHeader.GetText());
-//	UIInfoHeader.UITitleText.SetText(buf);
+//	UIInfoHeader.UITitleText.SetText(UICharacterInfo.UIName().GetText());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -134,6 +130,7 @@ void CUIStalkersRankingWnd::Show(bool status)
 }
 
 //////////////////////////////////////////////////////////////////////////
+#include "../character_info.h"
 
 void CUIStalkersRankingWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -142,7 +139,7 @@ void CUIStalkersRankingWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		UICharacterWindow.Show(true);
 		CCharacterInfo &charInfo = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData())->CharacterInfo();
 		UICharacterInfo.InitCharacter(&charInfo);
-		UICharIconHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
+		UICharIconHeader.UITitleText.SetText(charInfo.Name());
 	}
 }
 

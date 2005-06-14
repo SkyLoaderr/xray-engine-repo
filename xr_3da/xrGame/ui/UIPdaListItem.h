@@ -9,6 +9,7 @@
 #include "..\InventoryOwner.h"
 #include "UIMultiTextStatic.h"
 #include "UIIconedListItem.h"
+#include "UIFrameWindow.h"
 
 class CUIPdaListItem : public CUIListItem
 {

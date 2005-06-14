@@ -798,6 +798,7 @@ void CUIGlobalMapSpot::Draw		()
 void CUIGlobalMapSpot::Init	(u32 color)
 {
 	inherited::Init(0.0f,0.0f,20.0f,20.0f);
+	UIBorder.SetVisiblePart(CUIFrameRect::fmBK,FALSE);
 	UIBorder.Init("ui_frame_very_small",0.0f,0.0f,20.0f,20.0f);
 	UIBorder.SetColor(color);
 	AttachChild(&UIBorder);
@@ -833,7 +834,6 @@ void CUIGlobalMapSpot::Update()
 	UIBorder.SetWndPos		(0.0f,0.0f);
 	UIBorder.SetWidth		(rect.width());
 	UIBorder.SetHeight		(rect.height());
-	UIBorder.SetClipper(true, w->GetClipperRect() );
 
 	//highlight border
 	if(w->MapWnd()->ActiveLevelMap()==m_owner_map)

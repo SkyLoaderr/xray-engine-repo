@@ -42,27 +42,27 @@ protected:
 	CUIStaticItem	m_StaticBackground;
 
 	//текущая позиция
-	u32				m_iScrollPos;
+	int				m_iScrollPos;
 
 	// step size
-	u32				m_iStepSize;
+	int				m_iStepSize;
 
 	//границы отображения
-	u32				m_iMinPos;
-	u32				m_iMaxPos;
+	int				m_iMinPos;
+	int				m_iMaxPos;
 
 	//размер отображаемой страницы
-	u32				m_iPageSize;
+	int				m_iPageSize;
 
 	// internal use
-	u32				m_ScrollWorkArea;
+	int				m_ScrollWorkArea;
 	bool			m_b_enabled;
 protected:
 	u32				ScrollSize			(){return _max(0,m_iMaxPos-m_iMinPos-m_iPageSize+1);}
 	void			ClampByViewRect		();
 	void			SetPosScrollFromView(float view_pos, float view_width, float view_offs);
 	int				PosViewFromScroll	(int view_size, int view_offs);
-	void			SetScrollPosClamped	(u32 iPos) { 
+	void			SetScrollPosClamped	(int iPos) { 
 														m_iScrollPos = iPos; 
 														clamp(m_iScrollPos,m_iMinPos,m_iMaxPos-m_iPageSize+1); }
 public:
@@ -92,17 +92,17 @@ public:
 	void			Refresh			();
 	// скролинг
 	// величина шага при нажатии кнопок или колеса мыши
-	void			SetStepSize		(u32 step);
+	void			SetStepSize		(int step);
 	// диапазон значений 
-	void 			SetRange		(u32 iMin, u32 iMax);
-	void 			GetRange		(u32& iMin, u32& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
-	u32 			GetMaxRange		() {return m_iMaxPos;}
-	u32 			GetMinRange		() {return m_iMinPos;}
+	void 			SetRange		(int iMin, int iMax);
+	void 			GetRange		(int& iMin, int& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
+	int 			GetMaxRange		() {return m_iMaxPos;}
+	int 			GetMinRange		() {return m_iMinPos;}
 	// размер страницы (влияет на диапазон каретки от (m_iMinPos .. m_iMaxPos-m_iPageSize) )
-	void			SetPageSize		(u32 iPage) { m_iPageSize = _max(0,iPage); UpdateScrollBar();}
-	u32				GetPageSize		() {return m_iPageSize;}
+	void			SetPageSize		(int iPage) { m_iPageSize = _max(0,iPage); UpdateScrollBar();}
+	int				GetPageSize		() {return m_iPageSize;}
 	// положение каретки
-	void			SetScrollPos	(u32 iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
+	void			SetScrollPos	(int iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
 	int				GetScrollPos	() {return _max(m_iMinPos,m_iScrollPos);}
 	// базовые размеры для кнопок
 	void			TryScrollInc	();

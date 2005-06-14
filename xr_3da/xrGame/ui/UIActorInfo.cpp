@@ -41,7 +41,6 @@ void CUIActorInfoWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "info_frame_window", 0, &UIInfoFrame);
 	UIInfoFrame.AttachChild(&UIInfoHeader);
 	xml_init.InitFrameLine(uiXml, "info_frame_line", 0, &UIInfoHeader);
-	UIInfoHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
 
 	UIInfoFrame.AttachChild(&UIInfoList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIInfoList);
@@ -57,10 +56,10 @@ void CUIActorInfoWnd::Init()
 		UICharacterWindow.GetHeight(), 
 		ACTOR_CHARACTER_XML);
 	UICharacterInfo.m_bInfoAutoAdjust = false;
-	UICharacterInfo.UIName.Show(false);
+	UICharacterInfo.UIName().Show(false);
 
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
-	UICharacterInfo.UIIcon.SetMask(&UIMask);
+	UICharacterInfo.UIIcon().SetMask(&UIMask);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UICharIconFrame);
@@ -69,10 +68,8 @@ void CUIActorInfoWnd::Init()
 	UIInfoFrame.AttachChild(&UIArticleHeader);
 	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);
 
-	string256 buf;
-	ZeroMemory(buf, sizeof(buf));
-//	strconcat(buf, ALL_PDA_HEADER_PREFIX, "/", UIArticleHeader.GetText());
-//	UIInfoHeader.UITitleText.SetText(buf);
+	UIInfoHeader.UITitleText.SetText(UICharacterInfo.UIName().GetText());
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,7 +83,7 @@ void CUIActorInfoWnd::Show(bool status)
 	if (pActor)
 	{
 		UICharacterInfo.InitCharacter(&pActor->CharacterInfo());
-		UICharIconHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
+		UICharIconHeader.UITitleText.SetText(UICharacterInfo.UIName().GetText());
 	}
 }
 

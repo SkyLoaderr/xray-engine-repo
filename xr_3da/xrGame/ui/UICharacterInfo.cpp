@@ -17,18 +17,26 @@ using namespace InventoryUtilities;
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
+#include "uistatic.h"
+//#include "UIFrameWindow.h"
+#include "UIListWnd.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::CUICharacterInfo()
-	:	m_bInfoAutoAdjust		(true),
-	pInvOwner(NULL)
 {
+	ZeroMemory			(m_icons,eMaxCaption*sizeof(CUIStatic*));
+	pUIBio				= NULL;
+	pInvOwner			= NULL;
+	m_bInfoAutoAdjust	= true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::~CUICharacterInfo()
 {
+	for(int i=0; i<eMaxCaption;++i)
+		if(m_icons[i])xr_delete(m_icons[i]);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,141 +50,98 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, const c
 	R_ASSERT3(xml_result, "xml file not found", xml_name);
 
 	CUIXmlInit xml_init;
+	CUIStatic*	pItem = NULL;
 
-	AttachChild(&UIIcon);
 	if(uiXml.NavigateToNode("icon_static",0))	
 	{
-		xml_init.InitStatic(uiXml, "icon_static", 0, &UIIcon);
-		UIIcon.ClipperOn();
-//.		UIIcon.SetStretchTexture(true);
-		UIIcon.Show(true);
-		UIIcon.Enable(true);
-	}
-	else
-	{
-		UIIcon.Show(false);
-		UIIcon.Enable(false);
+		pItem = m_icons[eUIIcon] = xr_new<CUIStatic>();
+		xml_init.InitStatic	(uiXml, "icon_static", 0, pItem);
+		pItem->ClipperOn	();
+		pItem->Show			(true);
+		pItem->Enable		(true);
+		AttachChild(pItem);
 	}
 
-	AttachChild(&UIName);
 	if(uiXml.NavigateToNode("name_static", 0)){
-		xml_init.InitStatic(uiXml, "name_static", 0, &UIName);
-		UIName.SetElipsis(CUIStatic::eepEnd, 0);
-	}else{
-		UIName.Show(false);
-		UIName.Enable(false);
+		pItem = m_icons[eUIName] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "name_static", 0, pItem);
+		pItem->SetElipsis(CUIStatic::eepEnd, 0);
+		AttachChild(pItem);
 	}
 
 
 	///////////////
 	// rank
-	AttachChild(&UIRank);
 	if(uiXml.NavigateToNode("rank_static", 0))
 	{
-		xml_init.InitStatic(uiXml, "rank_static", 0, &UIRank);
-		UIRank.SetElipsis(CUIStatic::eepEnd, 1);
-	}
-	else
-	{
-		UIRank.Show(false);
-		UIRank.Enable(false);
+		pItem = m_icons[eUIRank] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "rank_static", 0, pItem);
+		pItem->SetElipsis(CUIStatic::eepEnd, 1);
+		AttachChild(pItem);
 	}
 
-	AttachChild(&UIRankCaption);
 	if(uiXml.NavigateToNode("rank_caption", 0))
 	{
-		xml_init.InitStatic(uiXml, "rank_caption", 0, &UIRankCaption);
+		pItem = m_icons[eUIRankCaption] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "rank_caption", 0, pItem);
+		AttachChild(pItem);
 	}
-	else
-	{
-		UIRankCaption.Show(false);
-		UIRankCaption.Enable(false);
-	}
-
-
 	/////////////////////
 	//community
-	AttachChild(&UICommunity);
 	if(uiXml.NavigateToNode("community_static", 0))
 	{
-		xml_init.InitStatic(uiXml, "community_static", 0, &UICommunity);
-		UICommunity.SetElipsis(CUIStatic::eepEnd, 1);
-	}
-	else
-	{
-		UICommunity.Show(false);
-		UICommunity.Enable(false);
+		pItem = m_icons[eUICommunity] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "community_static", 0, pItem);
+		pItem->SetElipsis(CUIStatic::eepEnd, 1);
+		AttachChild(pItem);
 	}
 
-	AttachChild(&UICommunityCaption);
 	if(uiXml.NavigateToNode("community_caption", 0))
 	{
-		xml_init.InitStatic(uiXml, "community_caption", 0, &UICommunityCaption);
-	}
-	else
-	{
-		UICommunityCaption.Show(false);
-		UICommunityCaption.Enable(false);
+		pItem = m_icons[eUICommunityCaption] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "community_caption", 0, pItem);
+		AttachChild(pItem);
 	}
 
 	/////////////////////
 	//reputation
-	AttachChild(&UIReputation);
 	if(uiXml.NavigateToNode("reputation_static", 0))
 	{
-		xml_init.InitStatic(uiXml, "reputation_static", 0, &UIReputation);
-		UIReputation.SetElipsis(CUIStatic::eepEnd, 1);
+		pItem = m_icons[eUIReputation] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "reputation_static", 0, pItem);
+		pItem->SetElipsis(CUIStatic::eepEnd, 1);
+		AttachChild(pItem);
 	}
-	else
-	{
-		UIReputation.Enable(false);
-		UIReputation.Show(false);
-	}
-	AttachChild(&UIReputationCaption);
+
 	if(uiXml.NavigateToNode("reputation_caption", 0))
 	{
-		xml_init.InitStatic(uiXml, "reputation_caption", 0, &UIReputationCaption);
-	}
-	else
-	{
-		UIReputationCaption.Enable(false);
-		UIReputationCaption.Show(false);
+		pItem = m_icons[eUIReputationCaption] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "reputation_caption", 0, pItem);
+		AttachChild(pItem);
 	}
 
 	///////////////////
 	// relation
-	AttachChild(&UIRelation);
 	if(uiXml.NavigateToNode("relation_static", 0))
 	{
-		xml_init.InitStatic(uiXml, "relation_static", 0, &UIRelation);
-		UIRelation.SetElipsis(CUIStatic::eepEnd, 1);
-	}
-	else
-	{
-		UIRelation.Enable(false);
-		UIRelation.Show(false);
+		pItem = m_icons[eUIRelation] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "relation_static", 0, pItem);
+		pItem->SetElipsis(CUIStatic::eepEnd, 1);
+		AttachChild(pItem);
 	}
 
-	AttachChild(&UIRelationCaption);
 	if(uiXml.NavigateToNode("relation_caption", 0))
 	{
-		xml_init.InitStatic(uiXml, "relation_caption", 0, &UIRelationCaption);
-	}
-	else
-	{
-		UIRelationCaption.Enable(false);
-		UIRelationCaption.Show(false);
+		pItem = m_icons[eUIRelationCaption] = xr_new<CUIStatic>();
+		xml_init.InitStatic(uiXml, "relation_caption", 0, pItem);
+		AttachChild(pItem);
 	}
 
-	AttachChild(&UIBio);
 	if (uiXml.NavigateToNode("biography_list", 0))
 	{
-		xml_init.InitListWnd(uiXml, "biography_list", 0, &UIBio);
-	}
-	else
-	{
-		UIBio.Enable(false);
-		UIBio.Show(false);
+		pUIBio = xr_new<CUIListWnd>();
+		xml_init.InitListWnd(uiXml, "biography_list", 0, pUIBio);
+		AttachChild(pUIBio);
 	}
 }
 
@@ -187,8 +152,11 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	VERIFY(pCharInfo);
 
 	string256		str;
-	strcpy			(str,pCharInfo->Name());
-	UIName.SetText	(str);
+	if(m_icons[eUIName]){
+//		strcpy						(str,pCharInfo->Name());
+		m_icons[eUIName]->SetText	(pCharInfo->Name());
+	}
+
 	CStringTable	stbl;
 
 	float offset;
@@ -200,13 +168,15 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 #endif
 	if (m_bInfoAutoAdjust)
 	{
-		if (UIRankCaption.IsEnabled() && UIRankCaption.GetFont())
+		if (	m_icons[eUIRankCaption] && 
+				m_icons[eUIRankCaption]->IsEnabled() && 
+				m_icons[eUIRankCaption]->GetFont())
 		{
-			offset = (UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5.0f);
-			UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10.0f, UIRank.GetWndRect().bottom);
+			offset = (m_icons[eUIRankCaption]->GetFont()->SizeOf(m_icons[eUIRankCaption]->GetText()) + m_icons[eUIRankCaption]->GetWndRect().left + 5.0f);
+			m_icons[eUIRank]->SetWndRect(offset, m_icons[eUIRank]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIRank]->GetWndRect().bottom);
 		}
 	}
-	UIRank.SetText(str);
+	m_icons[eUIRank]->SetText(str);
 
 
 #ifdef _DEBUG
@@ -216,41 +186,46 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 #endif
 	if (m_bInfoAutoAdjust)
 	{
-		if (UIReputationCaption.IsEnabled() && UIReputationCaption.GetFont())
+		if (m_icons[eUIReputationCaption] &&
+			m_icons[eUIReputationCaption]->IsEnabled() && 
+			m_icons[eUIReputationCaption]->GetFont())
 		{
-			offset = (UIReputationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIReputationCaption.GetWndRect().left + 5.0f);
-			UIReputation.SetWndRect(offset, UIReputation.GetWndRect().top, GetWndRect().right - offset - 10.0f, UIReputation.GetWndRect().bottom);
+			offset = (m_icons[eUIReputationCaption]->GetFont()->SizeOf(m_icons[eUIReputationCaption]->GetText()) + m_icons[eUIReputationCaption]->GetWndRect().left + 5.0f);
+			m_icons[eUIReputation]->SetWndRect(offset, m_icons[eUIReputation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIReputation]->GetWndRect().bottom);
 		}
 	}
-	UIReputation.SetText(str);
+	if(m_icons[eUIReputation])
+		m_icons[eUIReputation]->SetText(str);
 
 	sprintf(str, "%s", *CStringTable()(pCharInfo->Community().id()));
 	if (m_bInfoAutoAdjust)
 	{
-		if (UICommunityCaption.IsEnabled() && UICommunityCaption.GetFont())
+		if (m_icons[eUICommunityCaption] && 
+			m_icons[eUICommunityCaption]->IsEnabled() && 
+			m_icons[eUICommunityCaption]->GetFont())
 		{
-			offset = (UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5.0f);
-			UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10.0f, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
+			offset = (m_icons[eUICommunityCaption]->GetFont()->SizeOf(m_icons[eUICommunityCaption]->GetText()) + m_icons[eUICommunityCaption]->GetWndRect().left + 5.0f);
+			m_icons[eUICommunity]->SetWndRect(offset, m_icons[eUICommunity]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUICommunity]->GetWndRect().top);
 		}
 	}
-	UICommunity.SetText(str);
+	if(m_icons[eUICommunity])
+		m_icons[eUICommunity]->SetText(str);
 
-	UIIcon.SetShader(GetCharIconsShader());
-	UIIcon.GetUIStaticItem().SetOriginalRect(
-		float(pCharInfo->TradeIconX()*ICON_GRID_WIDTH),
-		float(pCharInfo->TradeIconY()*ICON_GRID_HEIGHT),
-		float(CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
-		float(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
+	m_icons[eUIIcon]->SetShader(GetCharIconsShader());
+	m_icons[eUIIcon]->GetUIStaticItem().SetOriginalRect(	float(pCharInfo->TradeIconX()*ICON_GRID_WIDTH),
+															float(pCharInfo->TradeIconY()*ICON_GRID_HEIGHT),
+															float(CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
+															float(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
 
 	// Bio
-	if (UIBio.IsEnabled())
+	if (pUIBio && pUIBio->IsEnabled())
 	{
-		UIBio.RemoveAll();
+		pUIBio->RemoveAll();
 		static CUIString str;
 		if (pCharInfo->Bio())
 		{
 			str.SetText(pCharInfo->Bio());
-			UIBio.AddParsedItem<CUIListItem>(str, 0.0f, UIBio.GetTextColor(), UIBio.GetFont());
+			pUIBio->AddParsedItem<CUIListItem>(str, 0.0f, pUIBio->GetTextColor(), pUIBio->GetFont());
 		}
 	}
 }
@@ -263,19 +238,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 	pInvOwner = pOwner;
 	InitCharacter(&pInvOwner->CharacterInfo());
 
-	CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
-	if (m_pActor)
-	{
-		UIRelationCaption.Show(false);
-		UIRelation.Show(false);
-	}
-	else
-	{
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(pActor)
-			SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)),
-						RELATION_REGISTRY().GetAttitude(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
-	}
+	UpdateRelation();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -289,13 +252,13 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 
 	switch(relation) {
 	case ALife::eRelationTypeFriend:
-		UIRelation.SetTextColor(0xff00ff00);
+		m_icons[eUIRelation]->SetTextColor(0xff00ff00);
 		break;
 	case ALife::eRelationTypeNeutral:
-		UIRelation.SetTextColor(0xffc0c0c0);
+		m_icons[eUIRelation]->SetTextColor(0xffc0c0c0);
 		break;
 	case ALife::eRelationTypeEnemy:
-		UIRelation.SetTextColor(0xffff0000);
+		m_icons[eUIRelation]->SetTextColor(0xffff0000);
 		break;
 	default:
 		NODEFAULT;
@@ -308,11 +271,11 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 	sprintf(str, "%s", *stbl(GetGoodwillAsText(goodwill)));
 #endif
 
-	UIRelation.SetText(str);
+	m_icons[eUIRelation]->SetText(str);
 	if (m_bInfoAutoAdjust)
 	{
-		float offset = (UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5.0f);
-		UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10.0f, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
+		float offset = (m_icons[eUIRelationCaption]->GetFont()->SizeOf(m_icons[eUIRelationCaption]->GetText()) + m_icons[eUIRelationCaption]->GetWndRect().left + 5.0f);
+		m_icons[eUIRelation]->SetWndRect(offset, m_icons[eUIRelation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUIRelation]->GetWndRect().top);
 	}
 }
 
@@ -321,25 +284,20 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 
 void CUICharacterInfo::ResetAllStrings()
 {
-	UIName.SetText("");
-	UIRank.SetText("");
-	UICommunity.SetText("");
-	UIRelation.SetText("");
-	UIReputation.SetText("");
+	if(m_icons[eUIName])		m_icons[eUIName]->SetText("");
+	if(m_icons[eUIRank])		m_icons[eUIRank]->SetText("");
+	if(m_icons[eUICommunity])	m_icons[eUICommunity]->SetText("");
+	if(m_icons[eUIRelation])	m_icons[eUIRelation]->SetText("");
+	if(m_icons[eUIReputation])	m_icons[eUIReputation]->SetText("");
 }
 
-void CUICharacterInfo::Update()
+void CUICharacterInfo::UpdateRelation()
 {
-	inherited::Update();
-	if( pInvOwner&&(smart_cast<CObject*>(pInvOwner))->getDestroy() )
-		pInvOwner = NULL;
-
-	if(pInvOwner&&Device.dwFrame%30){
 		CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
 		if (m_pActor)
 		{
-			UIRelationCaption.Show(false);
-			UIRelation.Show(false);
+			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show(false);
+			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show(false);
 		}
 		else
 		{
@@ -348,5 +306,15 @@ void CUICharacterInfo::Update()
 				SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)),
 							RELATION_REGISTRY().GetAttitude(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
 		}
-	}
+}
+
+void CUICharacterInfo::Update()
+{
+	inherited::Update();
+
+	if( pInvOwner&&(smart_cast<CObject*>(pInvOwner))->getDestroy() )
+		pInvOwner = NULL;
+
+	if(pInvOwner && (Device.dwFrame%30==0 ) )
+		UpdateRelation();
 }

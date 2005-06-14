@@ -561,11 +561,11 @@ void CUIListWnd::ScrollToEnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::ScrollToPos(u32 position)
+void CUIListWnd::ScrollToPos(int position)
 {
 	if (IsScrollBarEnabled())
 	{
-		u32 pos = position;
+		int pos = position;
 		clamp(pos, m_ScrollBar.GetMinRange(), (m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1));
 		m_ScrollBar.SetScrollPos(pos);
 		m_iFirstShownIndex = m_ScrollBar.GetScrollPos();

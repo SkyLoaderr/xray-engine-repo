@@ -52,7 +52,7 @@ void CUIPdaListItem::Init(float x, float y, float width, float height)
 	if (uiXml.NavigateToNode("mask_frame_window", 0))
 	{
 		xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
-		UIInfo.UIIcon.SetMask(&UIMask);
+		UIInfo.UIIcon().SetMask(&UIMask);
 	}
 
 	AttachChild(&UIName);UIName.SetAutoDelete(false);
@@ -74,11 +74,11 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 	VERIFY(pInvOwner);
 	UIInfo.InitCharacter(pInvOwner);
 //	UIInfo.UIIcon.GetUIStaticItem().SetScaleXY(1.0/CHAR_ICON_WIDTH, 1.0/CHAR_ICON_HEIGHT);
-	UIInfo.UIIcon.SetStretchTexture(true);
-	UIInfo.UIIcon.SetWidth(ICON_GRID_HEIGHT);
-	UIInfo.UIIcon.SetHeight(ICON_GRID_HEIGHT);
-	UIInfo.UIIcon.ClipperOn();
-	UIName.SetText(UIInfo.UIName.GetText());
+	UIInfo.UIIcon().SetStretchTexture(true);
+	UIInfo.UIIcon().SetWidth(ICON_GRID_HEIGHT);
+	UIInfo.UIIcon().SetHeight(ICON_GRID_HEIGHT);
+	UIInfo.UIIcon().ClipperOn();
+	UIName.SetText(UIInfo.UIName().GetText());
 }
 
 //////////////////////////////////////////////////////////////////////////

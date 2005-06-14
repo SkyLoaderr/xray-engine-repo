@@ -67,14 +67,14 @@ void CUIScrollBar::SetHeight(float height)
 	inherited::SetHeight(height);
 }
 
-void CUIScrollBar::SetStepSize(u32 step)
+void CUIScrollBar::SetStepSize(int step)
 {
 	m_iStepSize				= step;
 	UpdateScrollBar			();
 }
 
 
-void CUIScrollBar::SetRange(u32 iMin, u32 iMax) 
+void CUIScrollBar::SetRange(int iMin, int iMax) 
 {
 	m_iMinPos				= iMin;  
 	m_iMaxPos				= iMax;
@@ -154,7 +154,7 @@ void CUIScrollBar::ClampByViewRect()
 
 void CUIScrollBar::SetPosScrollFromView(float view_pos, float view_size, float view_offs)
 {
-	u32 scroll_size	= ScrollSize();
+	int scroll_size	= ScrollSize();
 	float pos			= view_pos-view_offs;
 	float work_size	= m_ScrollWorkArea-view_size;
 	SetScrollPosClamped	(work_size?iFloor(((pos/work_size)*(scroll_size) + m_iMinPos)):0);
@@ -163,7 +163,7 @@ void CUIScrollBar::SetPosScrollFromView(float view_pos, float view_size, float v
 int CUIScrollBar::PosViewFromScroll(int view_size, int view_offs)
 {
 	int work_size	= m_ScrollWorkArea-view_size;
-	u32 scroll_size	= ScrollSize();
+	int scroll_size	= ScrollSize();
 	return			scroll_size?(m_iScrollPos*work_size+scroll_size*view_offs-m_iMinPos*work_size)/scroll_size:0;
 }
 

@@ -15,7 +15,6 @@
 //////////////////////////////////////////////////////////////////////
 
 CUIFrameWindow::CUIFrameWindow()
-	:	m_bClipper	(false)
 {
 	m_bOverLeftTop = false; 
 	m_bOverLeftBottom = false;
@@ -104,11 +103,6 @@ void CUIFrameWindow::Draw()
 	v.x = rect.x1;
 	v.y = rect.y1;
 	m_UIWndFrame.SetWndPos(v);
-	// Clipper all static items in frame rect
-	if (m_bClipper)
-	{
-		FrameClip(m_ClipRect);
-	}
 
 	m_UIWndFrame.Draw();
 

@@ -53,9 +53,7 @@ public:
 	//текст заголовка
 	CUIStatic UITitleText;
 	CUIStatic*	GetTitleStatic(){return &UITitleText;};
-
-	bool		GetClipper()							{ return m_bClipper; }
-	void		SetClipper(bool value, Frect clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
+	void		SetVisiblePart	(CUIFrameRect::EFramePart p, BOOL b)	{m_UIWndFrame.SetVisiblePart(p,b);};
 
 protected:
 
@@ -82,17 +80,7 @@ protected:
 	CUIStaticItem m_UIStaticOverLeftTop;
 	CUIStaticItem m_UIStaticOverLeftBottom;
 
-	// clipper
-	bool	m_bClipper;
-	Frect	m_ClipRect;
-
 private:
 	inline void ClampMax_Zero(Frect &r);
 
 };
-	
-//	virtual void SetShader(const ref_shader& sh);
-//	virtual void CreateShader(const char* tex, const char*sh = "hud\\default")	{m_UIWndFrame.CreateShader(tex,sh);}
-//	virtual ref_shader& GetShader();
-//	virtual u32  GetTextureColor()										const	{return m_UIWndFrame.GetTextureColor();}
-//	virtual void SetOriginalRect(Irect& r)	{}
