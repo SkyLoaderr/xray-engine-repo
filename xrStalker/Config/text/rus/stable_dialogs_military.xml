@@ -1314,4 +1314,67 @@
     <string id="mil_zoneguard_dialog_91">
         <text>Какой ты настырный... Повторяю - количество патронов в рожке пистолета-пулемета "Бизон" российского спецназа?</text>
     </string>
+    <string id="mil_skull_dialog_2">
+        <text>Кто это к нам пришел ?</text>
+    </string>
+    <string id="mil_skull_dialog_201">
+        <text>Кажется, вам нужна помощь ?</text>
+    </string>
+    <string id="mil_skull_dialog_202">
+        <text>Ты до безумия прав. Для рискового парня всегда есть возможность заработать. Ты я думаю, как раз из таких, я прав?</text>
+    </string>
+    <string id="mil_skull_dialog_203">
+        <text>Это зависит от того, что надо делать.</text>
+    </string>
+    <string id="mil_skull_dialog_204">
+        <text>Делать то как раз придется самое привычное. Тут за холмом главный рассадник этих подонков свободных, который я со своими ребятами собираюсь разворошить, но...</text>
+    </string>
+    <string id="mil_skull_dialog_205">
+        <text>Но?</text>
+    </string>
+    <string id="mil_skull_dialog_206">
+        <text>Есть небольшая проблема. Так как вход на базу один и хорошо охраняется, мы недолго думая собрались сделать еще один, но...</text>
+    </string>
+    <string id="mil_skull_dialog_207">
+        <text>Но?</text>
+    </string>
+    <string id="mil_skull_dialog_208">
+        <text>Отправил я ночью бойца подорвать забор. Но, толи снайпер попался хороший, толи день не наш, в общем, завалили его. Так что теперь взрывчатка установлена на заборе, а взорвать ее мы не можем.</text>
+    </string>
+    <string id="mil_skull_dialog_209">
+        <text>Почему?</text>
+    </string>
+    <string id="mil_skull_dialog_210">
+        <text>Я не хочу посылать ребят под пули этого засранца, но ты вполне можешь его убрать. В тебя то он сразу стрелять не станет. Что скажешь?</text>
+    </string>
+    <string id="mil_skull_dialog_211">
+        <text>Сколько я за это получу?</text>
+    </string>
+    <string id="mil_skull_dialog_212">
+        <text>Вот это правильный подход. 2500 от нас, и кучу снаряжения на базе - трупов там будет много, это я тебе обещаю. И нам поможешь и сам доволен будешь. Тат как?</text>
+    </string>
+    <string id="mil_skull_dialog_213">
+        <text>Я готов. Я сообщу вам как только разберусь с ним.</text>
+    </string>
+    <string id="mil_skull_dialog_214">
+        <text>Давай.</text>
+    </string>
+    <string id="mil_skull_dialog_223">
+        <text>Вначале я должен поглядеть, а потом я скажу, лады?</text>
+    </string>
+    <string id="mil_skull_dialog_224">
+        <text>Ждем. Но не долго.</text>
+    </string>
+    <string id="mil_skull_dialog_301">
+        <text>Мы, кажется, договаривались ?</text>
+    </string>
+    <string id="mil_skull_dialog_401">
+        <text>Хорошая работа. Получи свои деньги. Если хочешь, иди с нами.</text>
+    </string>
+    <string id="mil_skull_dialog_402">
+        <text>До встречи.</text>
+    </string>
+    <string id="mil_skull_dialog_501">
+        <text>Спасибо за работу.</text>
+    </string>
 </string_table>
