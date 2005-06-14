@@ -53,7 +53,8 @@ IC float getLastRP_Scale(CDB::COLLIDER* DB, RayCache& C)
 		{
 			CDB::RESULT& rpinf = DB->r_begin()[I];
 			// Access to texture
-			CDB::TRI& clT								= Level.get_tris()	[rpinf.id];
+//			CDB::TRI& clT								= 
+				Level.get_tris()	[rpinf.id];
 			b_rc_face& F								= g_rc_faces		[rpinf.id];
 
 			b_material& M	= g_materials				[F.dwMaterial];
@@ -122,7 +123,7 @@ IC float rayTrace	(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float R, RayCache&
 	} else {
 		return getLastRP_Scale(DB,C);
 	}
-	return 0;
+//	return 0;
 }
 
 IC int	calcSphereSector(Fvector& dir)
