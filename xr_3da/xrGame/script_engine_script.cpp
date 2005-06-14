@@ -180,7 +180,7 @@ IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &portion)
 	return					(stream);
 }
 
-ICF	u32	script_time_global	()	{ return CRenderDevice::TimerAsync(); }
+ICF	u32	script_time_global	()	{ return Device.TimerAsync(); }
 
 void CScriptEngine::script_register(lua_State *L)
 {
