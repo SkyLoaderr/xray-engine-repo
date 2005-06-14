@@ -1571,123 +1571,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_freedom_commander">
-        <phrase_list>
-            <phrase id="2001">
-                <text>mil_freedom_commander_2001</text>
-            </phrase>
-            <phrase id="3000">
-                <text />
-                <has_info>mil_fblockpost_quest_complete</has_info>
-                <next>3001</next>
-            </phrase>
-            <phrase id="3001">
-                <text>mil_freedom_commander_3001</text>
-                <next>3002</next>
-            </phrase>
-            <phrase id="3003">
-                <text>mil_freedom_commander_3003</text>
-                <next>3004</next>
-            </phrase>
-            <phrase id="3002">
-                <text>mil_freedom_commander_3002</text>
-                <action>dialogs_military.commander_transfer</action>
-                <next>3003</next>
-            </phrase>
-            <phrase id="4001">
-                <text>mil_freedom_commander_4001</text>
-                <next>4002</next>
-            </phrase>
-            <phrase id="2000">
-                <text />
-                <has_info>mil_fblockpost_quest</has_info>
-                <next>2001</next>
-            </phrase>
-            <phrase id="1000">
-                <text />
-                <dont_has_info>mil_fblockpost_quest</dont_has_info>
-                <dont_has_info>mil_lukash_blockpost</dont_has_info>
-                <next>1001</next>
-            </phrase>
-            <phrase id="1001">
-                <text>mil_freedom_commander_1001</text>
-                <next>1002</next>
-            </phrase>
-            <phrase id="4002">
-                <text>mil_freedom_commander_4002</text>
-                <next>4003</next>
-            </phrase>
-            <phrase id="4000">
-                <text />
-                <dont_has_info>mil_fblockpost_quest</dont_has_info>
-                <give_info>mil_fblockpost_spot_remove</give_info>
-                <has_info>mil_lukash_blockpost</has_info>
-                <next>4001</next>
-            </phrase>
-            <phrase id="1003">
-                <text>mil_freedom_commander_1003</text>
-                <next>1004</next>
-            </phrase>
-            <phrase id="1002">
-                <text>mil_freedom_commander_1002</text>
-                <next>1003</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1000</next>
-                <next>2000</next>
-                <next>3000</next>
-                <next>4000</next>
-            </phrase>
-            <phrase id="3004">
-                <text>mil_freedom_commander_3004</text>
-            </phrase>
-            <phrase id="4003">
-                <text>mil_freedom_commander_4003</text>
-                <next>1004</next>
-            </phrase>
-            <phrase id="1004">
-                <text>mil_freedom_commander_1004</text>
-                <next>1005</next>
-            </phrase>
-            <phrase id="1005">
-                <text>mil_freedom_commander_1005</text>
-                <next>1006</next>
-            </phrase>
-            <phrase id="1006">
-                <text>mil_freedom_commander_1006</text>
-                <next>1007</next>
-            </phrase>
-            <phrase id="1007">
-                <text>mil_freedom_commander_1007</text>
-                <next>1008</next>
-            </phrase>
-            <phrase id="1008">
-                <text>mil_freedom_commander_1008</text>
-                <next>1009</next>
-            </phrase>
-            <phrase id="1009">
-                <text>mil_freedom_commander_1009</text>
-                <next>1010</next>
-            </phrase>
-            <phrase id="1010">
-                <text>mil_freedom_commander_1010</text>
-                <next>1011</next>
-            </phrase>
-            <phrase id="1011">
-                <text>mil_freedom_commander_1011</text>
-                <next>1012</next>
-            </phrase>
-            <phrase id="1012">
-                <text>mil_freedom_commander_1012</text>
-                <give_info>mil_fblockpost_quest</give_info>
-                <next>1013</next>
-            </phrase>
-            <phrase id="1013">
-                <text>mil_freedom_commander_1013</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_freedom_commander_common1">
         <dont_has_info>mil_fblockpost_ammo</dont_has_info>
         <phrase_list>
@@ -2101,12 +1984,6 @@
             <phrase id="1226">
                 <text>mil_leader_start_dialog_1226</text>
             </phrase>
-            <phrase id="1225">
-                <text>mil_leader_start_dialog_1225</text>
-                <give_info>mil_leader_quest1_complete</give_info>
-                <give_info>mil_courier_quest</give_info>
-                <next>1226</next>
-            </phrase>
             <phrase id="2001">
                 <text>mil_leader_start_dialog_2001</text>
             </phrase>
@@ -2224,25 +2101,6 @@
             <phrase id="1212">
                 <text>mil_leader_start_dialog_1212</text>
             </phrase>
-            <phrase id="1221">
-                <text>mil_leader_start_dialog_1221</text>
-                <give_info>mil_leader_quest1_complete</give_info>
-                <give_info>mil_leader_quest1_start</give_info>
-                <has_info>mil_dolg_dead</has_info>
-                <next>1222</next>
-            </phrase>
-            <phrase id="1222">
-                <text>mil_leader_start_dialog_1222</text>
-                <next>1223</next>
-            </phrase>
-            <phrase id="1223">
-                <text>mil_leader_start_dialog_1223</text>
-                <next>1224</next>
-            </phrase>
-            <phrase id="1224">
-                <text>mil_leader_start_dialog_1224</text>
-                <next>1225</next>
-            </phrase>
             <phrase id="5002">
                 <text>mil_leader_start_dialog_5002</text>
                 <give_info>mil_lukash_blockpost</give_info>
@@ -2302,6 +2160,149 @@
                 <text>mil_leader_start_dialog_3001</text>
                 <action>dialogs_military.set_task3_complete</action>
                 <next>3002</next>
+            </phrase>
+            <phrase id="1221">
+                <text>mil_leader_start_dialog_1221</text>
+                <give_info>mil_leader_quest1_complete</give_info>
+                <give_info>mil_leader_quest1_start</give_info>
+                <has_info>mil_dolg_dead</has_info>
+                <next>1222</next>
+            </phrase>
+            <phrase id="1222">
+                <text>mil_leader_start_dialog_1222</text>
+                <next>1223</next>
+            </phrase>
+            <phrase id="1223">
+                <text>mil_leader_start_dialog_1223</text>
+                <next>1224</next>
+            </phrase>
+            <phrase id="1224">
+                <text>mil_leader_start_dialog_1224</text>
+                <next>1225</next>
+            </phrase>
+            <phrase id="1225">
+                <text>mil_leader_start_dialog_1225</text>
+                <give_info>mil_leader_quest1_complete</give_info>
+                <give_info>mil_courier_quest</give_info>
+                <next>1226</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_freedom_commander">
+        <phrase_list>
+            <phrase id="3003">
+                <text>mil_freedom_commander_3003</text>
+                <next>3004</next>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_freedom_commander_3002</text>
+                <action>dialogs_military.commander_transfer</action>
+                <next>3003</next>
+            </phrase>
+            <phrase id="1000">
+                <text></text>
+                <dont_has_info>mil_fblockpost_quest</dont_has_info>
+                <dont_has_info>mil_lukash_blockpost</dont_has_info>
+                <next>1001</next>
+            </phrase>
+            <phrase id="1001">
+                <text>mil_freedom_commander_1001</text>
+                <next>1002</next>
+            </phrase>
+            <phrase id="4002">
+                <text>mil_freedom_commander_4002</text>
+                <next>4003</next>
+            </phrase>
+            <phrase id="1003">
+                <text>mil_freedom_commander_1003</text>
+                <next>1004</next>
+            </phrase>
+            <phrase id="1002">
+                <text>mil_freedom_commander_1002</text>
+                <next>1003</next>
+            </phrase>
+            <phrase id="3004">
+                <text>mil_freedom_commander_3004</text>
+            </phrase>
+            <phrase id="4003">
+                <text>mil_freedom_commander_4003</text>
+                <next>1004</next>
+            </phrase>
+            <phrase id="1004">
+                <text>mil_freedom_commander_1004</text>
+                <next>1005</next>
+            </phrase>
+            <phrase id="1005">
+                <text>mil_freedom_commander_1005</text>
+                <next>1006</next>
+            </phrase>
+            <phrase id="1006">
+                <text>mil_freedom_commander_1006</text>
+                <next>1007</next>
+            </phrase>
+            <phrase id="1007">
+                <text>mil_freedom_commander_1007</text>
+                <next>1008</next>
+            </phrase>
+            <phrase id="1008">
+                <text>mil_freedom_commander_1008</text>
+                <next>1009</next>
+            </phrase>
+            <phrase id="1009">
+                <text>mil_freedom_commander_1009</text>
+                <next>1010</next>
+            </phrase>
+            <phrase id="1010">
+                <text>mil_freedom_commander_1010</text>
+                <next>1011</next>
+            </phrase>
+            <phrase id="1011">
+                <text>mil_freedom_commander_1011</text>
+                <next>1012</next>
+            </phrase>
+            <phrase id="1012">
+                <text>mil_freedom_commander_1012</text>
+                <give_info>mil_fblockpost_quest</give_info>
+                <next>1013</next>
+            </phrase>
+            <phrase id="1013">
+                <text>mil_freedom_commander_1013</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+                <next>3000</next>
+                <next>4000</next>
+            </phrase>
+            <phrase id="4000">
+                <text></text>
+                <dont_has_info>mil_fblockpost_quest</dont_has_info>
+                <give_info>mil_fblockpost_spot_remove</give_info>
+                <has_info>mil_lukash_blockpost</has_info>
+                <next>4001</next>
+            </phrase>
+            <phrase id="4001">
+                <text>mil_freedom_commander_4001</text>
+                <next>4002</next>
+            </phrase>
+            <phrase id="3001">
+                <text>mil_freedom_commander_3001</text>
+                <next>3002</next>
+            </phrase>
+            <phrase id="2001">
+                <text>mil_freedom_commander_2001</text>
+            </phrase>
+            <phrase id="3000">
+                <text></text>
+                <has_info>mil_fblockpost_quest_complete</has_info>
+                <next>3001</next>
+            </phrase>
+            <phrase id="2000">
+                <text></text>
+                <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
+                <has_info>mil_fblockpost_quest</has_info>
+                <next>2001</next>
             </phrase>
         </phrase_list>
     </dialog>
