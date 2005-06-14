@@ -72,6 +72,7 @@ void CDangerManager::reinit			()
 {
 	m_objects.clear			();
 	m_time_line				= 0;
+	m_selected				= 0;
 }
 
 void CDangerManager::reload			(LPCSTR section)
