@@ -69,7 +69,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:article_callback(npc, group, name)
 --	printf("article_callback [%s][%s]", group, name)
-	if device().precache_frame >1 return
+	if device().precache_frame >1 then return end
 	
 	if group == "Diary" then
 		news_manager.send_encyclopedy("diary")
