@@ -147,6 +147,7 @@
     </dialog>
     <dialog id="agr_stalker_esc">
         <dont_has_info>agr_warning_recieved</dont_has_info>
+        <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>agr_stalker_esc_0</text>
