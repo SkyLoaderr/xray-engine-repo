@@ -25,7 +25,7 @@ class						CCarWeapon;
 // defs
 
 #ifdef DEBUG
-	#include "StatGraph.h"
+	#include "../StatGraph.h"
 	#include "PHDebug.h"
 #endif
 

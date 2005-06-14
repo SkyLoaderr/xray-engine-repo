@@ -23,7 +23,7 @@
 #include "gamemtllib.h"
 #include "clsid_game.h"
 #ifdef DEBUG
-#include "StatGraph.h"
+#include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
 #define EFFECTOR_RADIUS 30.f
