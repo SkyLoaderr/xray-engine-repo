@@ -144,15 +144,15 @@ sun_dir			=	-18.0, 291
 
 
 [default_a_02]
-flares			=	flares_gradient
-sky_texture		=	sky\sky_1_cube
+flares			=	flares_sun_rise
+sky_texture		=	sky\sky_3_cube
 sky_rotation	=	0
-sky_color		=	1.0,    1.0,  	1.0
+sky_color		=	0.8,    0.8,  	0.8
 clouds_texture	=	oblaka
-clouds_color	=	0.337, 0.357, 0.388, 0.95, 1.7
+clouds_color	=   0.282, 0.286, 0.341, 0.5, 1.7
 gust_factor		=	0.2
 far_plane		=	350
-fog_color		=	0.337, 0.357, 0.388
+fog_color		=	0.282, 0.286, 0.341
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
@@ -161,12 +161,11 @@ bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
-ambient			=	0.0925, 0.0941, 0.0980
+ambient			=	0.05,   0.05,  	0.05
 lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=   0.741, 0.753, 0.788,  1
+hemi_color		=	0.4,    0.4,  	0.4,	1.0
 sun_color		=	0.0,    0.0,  	0.0
-sun_dir			=	-25.0, 292
-env_ambient		=	ambient_env_0
+sun_dir			=	-6.0, 293
 
 
 
@@ -744,8 +743,11 @@ flares			=	flares_gradient
 sky_texture		=	sky\sky_1_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
+clouds_texture	=	oblaka
+clouds_color	=	0.337, 0.357, 0.388, 0.95, 1.7
+gust_factor		=	0.2
 far_plane		=	350
-fog_color		=	0.345,  0.357,  0.388
+fog_color		=	0.337, 0.357, 0.388
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
@@ -754,11 +756,12 @@ bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
-ambient			=	0.08,   0.08,  	0.08
+ambient			=	0.0925, 0.0941, 0.0980
 lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=   0.7,    0.7,    0.7,  1
+hemi_color		=   0.741, 0.753, 0.788,  1
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292
+env_ambient		=	ambient_env_0
 
 [ev_16]
 flares			=
