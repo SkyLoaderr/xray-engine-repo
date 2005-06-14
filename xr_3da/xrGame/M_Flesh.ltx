@@ -266,3 +266,18 @@ bip01_head 			= 2.5, -1, 0.10
 	255,006,255,255 ;на всех уровнях, по городам
 	255,007,255,255 ;на всех уровнях, по промзастройкам
 	255,008,255,255 ;на всех уровнях, по туннелям
+
+[flesh_weak]:m_flesh_e
+$spawn				= "monsters\fleshes\flesh_01_weak"
+visual				 = monsters\flesh\flesh
+panic_threshold		= 0.5
+
+[flesh_normal]:m_flesh_e
+$spawn				= "monsters\fleshes\flesh_02_normal"
+visual				 = monsters\flesh\flesh
+panic_threshold		= 0.2
+
+[flesh_strong]:m_flesh_e
+$spawn				= "monsters\fleshes\flesh_03_strong"
+visual				 = monsters\flesh\flesh
+panic_threshold		= 0.1	
