@@ -77,7 +77,7 @@ void __fastcall TfraSpawn::FormShow(TObject *Sender)
     	LPCSTR val;
     	if (it->line_exist	("$spawn",&val)){
         	shared_str v	= pSettings->r_string_wb(it->Name,"$spawn");
-	    	LHelper().CreateItem(items,*v,0,0,(LPVOID)*it->Name);
+            if (v.size())	LHelper().CreateItem(items,*v,0,0,(LPVOID)*it->Name);
         }
     }
     m_Items->AssignItems	(items,false,true);

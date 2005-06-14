@@ -420,7 +420,7 @@ bool EDetailManager::Export(LPCSTR path)
 
     int slot_cnt		= dtH.size_x*dtH.size_z;
 	for (int slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-    	DetailSlot* it = &dtSlots[slot_idx];
+    	DetailSlot* it 	= &dtSlots[slot_idx];
         for (int part=0; part<4; part++){
         	u8 id		= it->r_id(part);
         	if (id!=DetailSlot::ID_Empty) {
@@ -474,7 +474,13 @@ bool EDetailManager::Export(LPCSTR path)
     if (bRes){
     	xr_vector<DetailSlot> dt_slots(slot_cnt); dt_slots.assign(dtSlots,dtSlots+slot_cnt);
         for (slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-            DetailSlot& it = dt_slots[slot_idx];
+            DetailSlot& it 	= dt_slots[slot_idx];
+            // zero colors need lighting
+	        it.c_dir		= 0;
+	        it.c_hemi		= 0;
+	        it.c_r			= 0;
+	        it.c_g			= 0;
+	        it.c_b			= 0;
             for (int part=0; part<4; part++){
                 u8 id		= it.r_id(part);
                 if (id!=DetailSlot::ID_Empty) it.w_id(part,remap_object[id]);
