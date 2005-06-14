@@ -888,6 +888,72 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 
+	-- ROSTOK PSEUDODOGS STROYKA
+
+	if type == "rostok_stroyka_dogs" then
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_home"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_home"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_home"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_home"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_home"
+		}
+		table.insert(sj, t)
+		
+		
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rostok_stroyka_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "rostok_stroyka_dogs_territory"
+		}
+		table.insert(sj, t)
+	end
 
 	-- ROSTOK DOG ON EXIT
 
@@ -1663,6 +1729,19 @@ function load_states(gname, type)
 		end
 	end
 
+	if type == "rostok_stroyka_dogs" then        
+		return function(gulag)
+			local t = db.zone_by_name["rostok_stroyka_dogs_territory"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				end			
+			end
+			return 0
+		end
+	end
+
+
 	if type == "rostok_dogs_on_exit" then        
 		return function(gulag)
 			local t = db.zone_by_name["rostok_dogs_on_exit_territory"]
@@ -1762,6 +1841,10 @@ function checkMonster(npc_community, gulag_type)
 	end
 	
 	if gulag_type == "rostok_flesh_angar" then
+		return npc_community == "pseudodog"
+	end
+
+	if gulag_type == "rostok_stroyka_dogs" then
 		return npc_community == "pseudodog"
 	end
 
