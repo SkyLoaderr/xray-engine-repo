@@ -165,13 +165,12 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				Color_Main,
 				Color_Artefact);
 			CommonMessageOut(Text);
-						
-			CActor* pActor = smart_cast<CActor*> (Level().CurrentEntity());
-			if (!pActor) break;
-			if (pActor->ID() == PlayerID)
+
+			if (!Game().local_player) break;
+			if (Game().local_player->GameID == PlayerID)
 				pMessageSounds[3].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
-				if (pActor->g_Team() == Team)
+				if (Game().local_player->team == Team)
 					pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 				else
 					pMessageSounds[7].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
@@ -208,22 +207,15 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				TeamsNames[Team], 
 				Color_Main);
 			CommonMessageOut(Text);
-
-			CActor* pActor = smart_cast<CActor*> (Level().CurrentEntity());
-			if (!pActor) break;
-			if (pActor->ID() == PlayerID)
+			
+			if (!Game().local_player) break;
+			if (Game().local_player->GameID == PlayerID)
 				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
-				if (pActor->g_Team() == Team)
+				if (Game().local_player->team == Team)
 					pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 				else
 					pMessageSounds[6].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
-/*
-			if (Level().CurrentEntity() && Level().CurrentEntity()->ID() == PlayerID)
-				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
-			else
-				pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
-*/
 		}break;
 	case GAME_EVENT_ARTEFACT_SPAWNED: //ahunt
 		{
@@ -245,46 +237,6 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			//-------------------------------------------
 			CommonMessageOut(Text);
 		}break;
-
-//-----GAME MESSAGES
-		/*
-	case GAME_EVENT_PLAYER_ENTER_TEAM_BASE:
-		{
-			u16 player_id;
-			u8  base_team_id;
-			P.r_u16(player_id);
-			P.r_u8(base_team_id);
-			OnObjectEnterTeamBase(player_id, base_team_id);
-
-			if(OnServer()){
-				NET_Packet			P_;
-				sv_GameEventGen		(P_);
-				P_.w_u16			(GAME_EVENT_PLAYER_ENTER_TEAM_BASE);
-				P_.w_u16			(player_id);
-				P_.w_u8				(base_team_id);
-				sv_EventSend		(P_);
-			};
-
-		}break;
-	case GAME_EVENT_PLAYER_LEAVE_TEAM_BASE:
-		{
-			u16 player_id;
-			u8  base_team_id;
-			P.r_u16(player_id);
-			P.r_u8(base_team_id);
-			OnObjectLeaveTeamBase(player_id, base_team_id);
-
-			if(OnServer()){
-				NET_Packet			P_;
-				sv_GameEventGen		(P_);
-				P_.w_u16			(GAME_EVENT_PLAYER_LEAVE_TEAM_BASE);
-				P_.w_u16			(player_id);
-				P_.w_u8				(base_team_id);
-				sv_EventSend		(P_);
-			};
-		}break;
-		*/
-
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
