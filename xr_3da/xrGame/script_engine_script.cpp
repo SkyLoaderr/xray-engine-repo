@@ -115,8 +115,8 @@ struct profile_timer_script {
 
 	IC		profile_timer_script&	operator=				(const profile_timer_script &profile_timer)
 	{
-//		VERIFY					(!profile_timer.m_start_time);
-//		VERIFY					(!profile_timer.m_recurse_mark);
+//		THROW					(!profile_timer.m_start_time);
+//		THROW					(!profile_timer.m_recurse_mark);
 		m_start_time			= profile_timer.m_start_time;
 		m_accumulated			= profile_timer.m_accumulated;
 		m_recurse_mark			= profile_timer.m_recurse_mark;
@@ -125,10 +125,10 @@ struct profile_timer_script {
 
 	IC		bool					operator<				(const profile_timer_script &profile_timer) const
 	{
-//		VERIFY					(!profile_timer.m_start_time);
-//		VERIFY					(!profile_timer.m_recurse_mark);
-//		VERIFY					(!m_start_time);
-//		VERIFY					(!m_recurse_mark);
+//		THROW					(!profile_timer.m_start_time);
+//		THROW					(!profile_timer.m_recurse_mark);
+//		THROW					(!m_start_time);
+//		THROW					(!m_recurse_mark);
 		return					(m_accumulated < profile_timer.m_accumulated);
 	}
 
@@ -140,7 +140,7 @@ struct profile_timer_script {
 		}
 
 		++m_recurse_mark;
-		VERIFY					(!m_start_time);
+		THROW					(!m_start_time);
 		m_start_time			= CPU::GetCycleCount();
 	}
 
@@ -148,11 +148,11 @@ struct profile_timer_script {
 	{
 		u64						temp = CPU::GetCycleCount();
 		
-		VERIFY					(m_recurse_mark);
+		THROW					(m_recurse_mark);
 		--m_recurse_mark;
 		
-		VERIFY					(temp > m_start_time);
-		VERIFY					(m_start_time);
+		THROW					(temp > m_start_time);
+		THROW					(m_start_time);
 		
 		if (m_recurse_mark)
 			return;
