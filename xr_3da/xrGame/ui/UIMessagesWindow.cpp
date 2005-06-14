@@ -142,12 +142,12 @@ void CUIMessagesWindow::AddPdaMessage(LPCSTR message, int iId, int iDelay){
 }
 
 CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay){
-CTimer T;
-T.Start();
-Msg("---begin");
+//CTimer T;
+//T.Start();
+//Msg("---begin");
 	CUIPdaMsgListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
-Msg("----t1[%d]",T.GetElapsed_ms());
+//Msg("----t1[%d]",T.GetElapsed_ms());
 	pListWnd->AddItem<CUIListItem>(pItem, 0); 
 	pListWnd->ScrollToBegin();
 	// create animation

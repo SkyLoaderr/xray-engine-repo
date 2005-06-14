@@ -80,15 +80,15 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 		return								false;
 	}
 
-CTimer T;
-T.Start();
+//CTimer T;
+//T.Start();
 	if(delay==0){
 		pActor->AddGameNews(news_data);
 	}
 	else{
 		pActor->AddGameNews_deffered(news_data,delay);
 	}
-Msg("---CScriptGameObject::GiveGameNews [%d]ms",T.GetElapsed_ms());
+//Msg("---CScriptGameObject::GiveGameNews [%d]ms",T.GetElapsed_ms());
 	return true;
 }
 bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
