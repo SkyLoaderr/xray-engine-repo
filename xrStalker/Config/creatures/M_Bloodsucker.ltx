@@ -309,3 +309,18 @@ bip01_head 			= 8, -1, 0.4
 	255,007,255,255 ;на всех уровнях, по промзастройкам
 	255,008,255,255 ;на всех уровнях, по туннелям
 	255,009,255,255 ;на всех уровнях, по подземельям
+
+[bloodsucker_weak]:m_bloodsucker_e
+$spawn				= "monsters\bloodsuckers\bloodsucker_01_weak"
+visual				= monsters\krovosos\krovosos
+panic_threshold		= 0.5
+
+[bloodsucker_normal]:m_bloodsucker_e
+$spawn				= "monsters\bloodsuckers\bloodsucker_02_normal"
+visual				= monsters\krovosos\krovosos
+panic_threshold		= 0.2
+
+[bloodsucker_strong]:m_bloodsucker_e
+$spawn				= "monsters\bloodsuckers\bloodsucker_03_strong"
+visual				= monsters\krovosos\krovosos
+panic_threshold		= 0.05
