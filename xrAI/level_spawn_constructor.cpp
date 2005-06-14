@@ -393,8 +393,13 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 			l_tpaStack.end()
 		);
 
-		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size())
+		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
 			zone->m_wArtefactSpawnCount	= (u16)l_tpaStack.size();
+			if (!zone->m_wArtefactSpawnCount) {
+				zone->m_fProbability	= 0.f;
+				Msg						("- Cannot generate artefact spawn positions for zone [%s] on level [%s]",zone->s_name_replace(),*level().name());
+			}
+		}
 		else
 			random_shuffle				(l_tpaStack.begin(),l_tpaStack.end());
 
