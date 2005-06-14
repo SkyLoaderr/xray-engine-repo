@@ -33,7 +33,7 @@ use = true
 [walker@wait]
 path_walk = val_escort_nap1_walk
 path_look = val_escort_nap1_look
-on_info = {+val_sacrifice_spawn} walker@fake_task
+on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
 on_actor_dist_le = 10 | remark@phrase1
 
 ;--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ no_rotate = true
 anim = guard
 snd = speach
 on_signal = sound_end | walker@talk
-on_info = {+val_sacrifice_spawn} walker@fake_task
+on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
 
 ;--------------------------------------------------------------------------
 ; ждем диалога с игроком.
@@ -54,7 +54,8 @@ on_info = {+val_sacrifice_spawn} walker@fake_task
 path_walk = val_escort_nap1_walk
 path_look = val_escort_nap1_look
 meet = meet@def
-on_info = {+val_escort_nap1_go_rescue} camper@ambush_go %+val_escort_start%, {+val_sacrifice_spawn} walker@fake_task
+on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
+on_info2 = {+val_escort_nap1_go_rescue} camper@ambush_go %+val_escort_start%
 
 ;--------------------------------------------------------------------------
 ; задание принято. идем к месту засады
