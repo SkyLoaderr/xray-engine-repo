@@ -44,7 +44,7 @@ const Fvector &CScriptSound::GetPosition() const
 void CScriptSound::Play			(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
-//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",Device.dwTimeGlobal,m_sound.handle->file_name(),delay,flags);
+	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",Device.dwTimeGlobal,m_sound.handle->file_name(),delay,flags);
 	m_sound.play		(&object->object(),flags,delay);
 }
 
