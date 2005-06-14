@@ -150,6 +150,7 @@ public:
 	virtual void				Enable					  ();
 	virtual void				Disable					  ();
 	virtual void				DisableCollision		  ();
+	virtual void				EnableCollision			  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}
 	
 //CPHObject 

@@ -88,7 +88,10 @@ void CPHShell::DisableCollision()
 {
 	CPHObject::collision_disable();
 }
-
+void CPHShell::EnableCollision()
+{
+	CPHObject::collision_enable();
+}
 void CPHShell::ReanableObject()
 {
 	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);

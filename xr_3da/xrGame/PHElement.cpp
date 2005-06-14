@@ -552,7 +552,7 @@ void CPHElement::Enable()	{
 void CPHElement::Disable()	{
 
 //	return;
-	if(!dBodyIsEnabled(m_body)) return;
+	if(!bActive||!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
 	//if(!b_contacts_saved)
 	//{

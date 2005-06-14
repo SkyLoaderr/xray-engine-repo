@@ -19,10 +19,11 @@ public  CPHDestroyableNotificator
 
 {
 			
-			xr_vector<shared_str>		m_destroyed_obj_visual_names																											;
-			u16							m_depended_objects																														;
-			Flags8						m_flags																																	;
-			SHit						m_fatal_hit																																;
+			xr_vector<shared_str>						m_destroyed_obj_visual_names																											;
+			xr_vector<CPHDestroyableNotificate *>		m_notificate_objects																													;
+			u16											m_depended_objects																														;
+			Flags8										m_flags																																	;
+			SHit										m_fatal_hit																																;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 			float						m_random_min																															;     
@@ -58,12 +59,16 @@ public:
 			SHit						&FatalHit					(){return m_fatal_hit;}
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
-virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn);
-IC			bool						CanDestroy					()												{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
-virtual		bool						CanRemoveObject				(){return true;}
-virtual		void						SheduleUpdate				(u32 dt);
+virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)																				;
+IC			bool						CanDestroy					()										{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed)	;}
+virtual		bool						CanRemoveObject				()																								{return true;}
+virtual		void						SheduleUpdate				(u32 dt)																									;
 virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str visual_name)														;
 virtual		void						InitServerObject			(CSE_Abstract*				D)																				;
+private:
+			void						NotificatePart				(CPHDestroyableNotificate *dn)																				;
+			void						PhysicallyRemoveSelf		()																											;
+			void						PhysicallyRemovePart		(CPHDestroyableNotificate *dn)																				;																											;
 };
 
 

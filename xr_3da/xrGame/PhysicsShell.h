@@ -293,6 +293,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				NetInterpolationModeOFF ()													= 0;
 	virtual void				Disable					()													= 0;
 	virtual void				DisableCollision		()													= 0;
+	virtual void				EnableCollision			()													= 0;
 	virtual void				PureStep				(float step = fixed_step)							= 0;
 	virtual void				SetGlTransformDynamic   (const Fmatrix &form)								= 0;
 	virtual void				StaticCollideStep		(float step = fixed_step)							= 0;
