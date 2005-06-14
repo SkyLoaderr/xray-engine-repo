@@ -311,6 +311,14 @@ end
 function init_meet(npc, ini, section, st, scheme)
 	printf("MEET SECTION [%s][%s]", utils.to_str(section), utils.to_str(scheme))
 
+	if utils.to_str(section) == st.meet_section and
+	   st.meet_section ~= nil 
+	then
+		return
+	end
+	
+	st.meet_section = utils.to_str(section)
+	
 	if section == nil then
 		-- Загружаем дефолты!
 		if scheme == nil or scheme == "nil" then
