@@ -272,21 +272,17 @@ bip01_head 			= 10.0, -1, 1.00
 	255,013,255,255 ;на всех уровнях, по дорогам
 	255,014,255,255 ;на всех уровнях, по железнодорожным насыпям
 
-[dog_default]:m_dog_e
-$spawn     = "monsters\dogs\dog_default"
-visual	   = monsters\dog\dog
+[dog_weak]:m_dog_e
+$spawn				= "monsters\dogs\dog_01_weak"
+visual				= monsters\dog\dog
+panic_threshold		= 0.0
 
-[dog_angry]:m_dog_e
-$spawn				= "monsters\dogs\dog_angry"
-health_hit_part 	= 0.001
-visual				 = monsters\dog\dog_bulterier
+[dog_normal]:m_dog_e
+$spawn				= "monsters\dogs\dog_02_normal"
+visual				= monsters\dog\dog_red
+panic_threshold		= 0.2
 
-[dog_easy]:m_dog_e
-$spawn				= "monsters\dogs\dog_easy"
-Morale_Hit_Quant	= 0.9
-visual				 = monsters\dog\dog_red
-
-[dog_deaf]:m_dog_e
-$spawn				= "monsters\dogs\dog_deaf"
-SoundThreshold		 = 1.0 
-visual				 = monsters\dog\dog_white
+[dog_strong]:m_dog_e
+$spawn				= "monsters\dogs\dog_03_strong"
+visual				= monsters\dog\dog_white
+panic_threshold		= 1.0
