@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- CHARACTER INFO IN THE PDA CONTACT -->
 <window>
 	<!-- ICON -->
@@ -44,7 +44,6 @@
 		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">relation</text>
 	</relation_caption>
 
-
 	<!-- BIO 
 	<biography_list x="0" y="143" width="262" height="242" item_height="15">
 		<font font="letterica16" r="190" g="190" b="225"></font>
@@ -55,10 +54,9 @@
 		<base_texture>ui\ui_pda_frame2</base_texture>
 	</mask_frame_window> -->
 	
-	<!-- NAME -->
-	<static x="0" y="0" width="260" height="18">
+	<name_static x="0" y="0" width="260" height="18">
 		<text x="16" y="0" font="letterica18" r="225" g="225" b="250"></text>
-	</static>
+	</name_static>
 
 
 </window>
