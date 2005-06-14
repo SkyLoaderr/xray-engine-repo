@@ -186,7 +186,7 @@ function load_job( sj, gname, type, squad, groups )
 		table.insert(sj, t)
 		-- сражаются на улице
 		for i = 1, 8 do
-			t = { section = "logic@agr_factory_assault_nil",
+			t = { section = "logic@agr_factory_assault_skirmish_walker"..i,
 				idle = 0,
 				prior = 0, state = {1},
 				squad = squad, group = groups[1],

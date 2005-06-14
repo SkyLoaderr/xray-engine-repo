@@ -117,8 +117,9 @@ active = sleeper3@agr_nii
 path_main = sleep3
 
 ;-------------------------------------------------------------------------------------------------
-;-- AGROPROM. Солдаты на фабрике дерутся с группой Крота.
+;-- AGROPROM. Солдаты на фабрике 
 ;-------------------------------------------------------------------------------------------------
+; -------------- бегут к сталкерам Крота
 [logic@agr_factory_assault_walker1]
 active = walker1@agr_factory_assault
 
@@ -183,8 +184,72 @@ path_walk = walk8
 ;path_look = look8
 
 
-[logic@agr_factory_assault_nil]
-active = nil
+;--------------------------- дерутся с группой Крота. -------------------------
+[logic@agr_factory_assault_skirmish_walker1]
+active = walker1@agr_factory_assault_skirmish
+
+[walker1@agr_factory_assault_skirmish]
+path_walk = skirmish_walk1
+;path_look = skirmish_look1
+
+
+[logic@agr_factory_assault_skirmish_walker2]
+active = walker2@agr_factory_assault_skirmish
+
+[walker2@agr_factory_assault_skirmish]
+path_walk = skirmish_walk2
+;path_look = skirmish_look2
+
+
+[logic@agr_factory_assault_skirmish_walker3]
+active = walker3@agr_factory_assault_skirmish
+
+[walker3@agr_factory_assault_skirmish]
+path_walk = skirmish_walk3
+;path_look = skirmish_look3
+
+
+[logic@agr_factory_assault_skirmish_walker4]
+active = walker4@agr_factory_assault_skirmish
+
+[walker4@agr_factory_assault_skirmish]
+path_walk = skirmish_walk4
+;path_look = skirmish_look4
+
+
+[logic@agr_factory_assault_skirmish_walker5]
+active = walker5@agr_factory_assault_skirmish
+
+[walker5@agr_factory_assault_skirmish]
+path_walk = skirmish_walk5
+;path_look = skirmish_look5
+
+
+[logic@agr_factory_assault_skirmish_walker6]
+active = walker6@agr_factory_assault_skirmish
+
+[walker6@agr_factory_assault_skirmish]
+path_walk = skirmish_walk6
+;path_look = skirmish_look6
+
+
+[logic@agr_factory_assault_skirmish_walker7]
+active = walker7@agr_factory_assault_skirmish
+
+[walker7@agr_factory_assault_skirmish]
+path_walk = skirmish_walk7
+;path_look = skirmish_look7
+
+
+[logic@agr_factory_assault_skirmish_walker8]
+active = walker8@agr_factory_assault_skirmish
+
+[walker8@agr_factory_assault_skirmish]
+path_walk = skirmish_walk8
+;path_look = skirmish_look8
+
+
+
 
 
 [logic@agr_factory_assault_bld_walker1]
