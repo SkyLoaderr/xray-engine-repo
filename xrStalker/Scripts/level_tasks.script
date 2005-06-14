@@ -92,46 +92,8 @@ function proceed()
 	end
 
 
-	--' AGROPROM
-	if actor:has_info("agr_krot_band") and
-	   actor:object("krot_flash") ~= nil
-	then
-		actor:give_info_portion("agr_krot_band_done")
-		actor:give_info_portion("agr_find_gunslinger_cache")
-		set_task_state(task.completed, "agr_meet_krot_band", 0)
-	end
 
-	if actor:has_info("agroprom_military_case") and
-	   actor:dont_has_info("agroprom_military_case_have") and
-	   actor:object("quest_case_02") ~= nil
-	then
-		actor:give_info_portion("agroprom_military_case_have")
-		set_task_state(task.completed, "agroprom_get_military_documents", 1)
-	end
-
-	if actor:has_info("agr_find_gunslinger_cache") and
-	   actor:object("gunslinger_flash") ~= nil
-	then
-		actor:give_info_portion("agr_find_gunslinger_cache_done")
-		set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
-	end
-
-	if actor:dont_has_info("agroprom_find_stalker_phantom") and
-	   actor:object("gunslinger_flash") ~= nil
-	then
-		actor:give_info_portion("agroprom_find_stalker_phantom")
-	end
-	
-	if actor:has_info("agr_help_stalkers_assault_dead") then
-		actor:give_info_portion("agr_krot_band_done")
-		set_task_state(task.completed, "agr_help_stalkers", 0)
-	end
-
-	if actor:has_info("agr_help_stalkers_defence_dead") then
-		actor:give_info_portion("agr_krot_band_done")
-		set_task_state(task.fail, "agr_help_stalkers", 0)
-	end
-
+	agroprom_tasks.proceed()
 	
 	darkvalley_tasks.proceed()
 
@@ -307,31 +269,9 @@ function process_map_spot(info_id)
 		remove_location(107, "gar_graveyard_car_location")
 
 	
-	-- agroprom
-	elseif ( info_id == "agr_factory_assault_start" or info_id == "agr_warning_recieved" ) and
-	       not is_map_spot_present (303, "agr_factory_skirmish1_location")
-	then
-		add_location(303, "agr_factory_skirmish1_location")
-
-	elseif info_id == "agr_krot_band" then
-		add_location(302, "agr_krot_location")
-
-	elseif info_id == "agr_krot_band_done" then
-		remove_location(302, "agr_krot_location")
-
-	elseif info_id == "agr_find_gunslinger_cache" then
-		add_location(301, "agr_gunslinger_cache_location")
-
-	elseif info_id == "agr_find_gunslinger_cache_done" then
-		remove_location(301, "agr_gunslinger_cache_location")
-
-	elseif info_id == "agroprom_military_case" then
-		add_location(300, "agr_military_case_location")
-
-	elseif info_id == "agroprom_military_case_have" then
-		remove_location(300, "agr_military_case_location")
-		add_location(500, "bar_barman_location")
-
+	-- Agroprom
+	elseif agroprom_tasks.process_map_spot(info_id) then
+		return
 
 	-- DARK VALLEY
 	elseif darkvalley_tasks.process_map_spot(info_id) then
