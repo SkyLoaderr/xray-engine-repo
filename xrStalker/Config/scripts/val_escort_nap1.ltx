@@ -67,7 +67,7 @@ def_state_moving = rush
 no_retreat = true
 on_signal = ambush_start | remark@phrase2 ;camper@wait_for_actor
 on_info = {+val_escort_combat} remark@fight
-combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
+combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; Ждем, чтоб актер подошел поближе
@@ -80,7 +80,7 @@ def_state_moving = rush
 no_retreat = true
 on_info = {+val_escort_combat} remark@fight
 on_actor_dist_le_nvis = 3 | remark@phrase2
-combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
+combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; фраза: Прячься за укрытием на той стороне дороги. Они скоро появятся. Открывай огонь ТОЛЬКО после меня.
@@ -92,7 +92,7 @@ anim = hide
 snd = speach
 on_timer = 35000 | remark@phrase3
 on_info = {+val_escort_captive_dead} walker@fake_task
-combat_ignore_cond = {-val_escort_combat}
+combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; фраза: Идут. Сейчас мы их.
@@ -104,7 +104,7 @@ anim = hide
 snd = speach
 on_signal = sound_end | camper@ambush_wait
 on_info = {+val_escort_captive_dead} remark@fake_wait
-combat_ignore_cond = {-val_escort_combat}
+combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; задание принято. ожидание в засаде
@@ -117,7 +117,7 @@ def_state_moving = rush
 no_retreat = true
 on_signal = escort_start | %+val_escort_start%
 on_info = {+val_escort_nap1_phrase3} remark@phrase3, {+val_escort_combat} remark@fight
-combat_ignore_cond = {-val_escort_combat} ; =val_fighting_guards}
+combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; бой с гвардами
