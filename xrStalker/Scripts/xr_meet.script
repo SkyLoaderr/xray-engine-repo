@@ -521,9 +521,7 @@ function is_meet(npc)
 	local manager = npc:motivation_action_manager()
 	if manager and manager:initialized() then
 		local id = manager:current_action_id()
-		if id >= xr_actions_id.stohe_meet_base + 1 and
-		   id <= xr_actions_id.stohe_meet_base + 4
-		then
+		if id == xr_actions_id.stohe_meet_base + 1 then
 			return true
 		end
 	end
