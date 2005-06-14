@@ -66,7 +66,7 @@ function action_companion_activity:initialize()
 	state_mgr.set_state(self.object, self.last_state,
 		nil, nil, nil, { animation = true })
 	
-	self.keep_state_until = 
+	self.keep_state_until = time_global()
 end
 
 function action_companion_activity:beh_walk_simple()
@@ -125,7 +125,7 @@ function action_companion_activity:beh_walk_simple()
 
 		new_state = "guard_na"
 	else
-		local t = 
+		local t = time_global()
 		if t >= self.keep_state_until then
 			self.keep_state_until = t + keep_state_min_time
 
