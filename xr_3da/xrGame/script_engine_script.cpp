@@ -180,6 +180,8 @@ IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &portion)
 	return					(stream);
 }
 
+ICF	u32	script_time_global	()	{ return CRenderDevice::TimerAsync(); }
+
 void CScriptEngine::script_register(lua_State *L)
 {
 	module(L)[
@@ -205,6 +207,7 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"bit_xor",						bit_xor);
 	function	(L,	"bit_not",						bit_not);
 	function	(L, "user_name",					user_name);
+	function	(L, "time_global",					script_time_global);
 #ifdef XRGAME_EXPORTS
 	function	(L,	"device",						get_device);
 #endif
