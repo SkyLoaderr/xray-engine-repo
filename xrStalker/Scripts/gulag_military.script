@@ -857,15 +857,6 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
-	-- состояние 1
-    --кэмпер 3
-    t = {section = "logic@mil_fblockpost_camper9",
-		idle = 0,
-		prior = 1, state = {1},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
 	-- состояние 2
     --кэмпер 1
     t = {section = "logic@mil_fblockpost_camper1",
@@ -1022,15 +1013,6 @@ function load_job_fneutral (sj, gname, type, squad, groups)
     t = {section = "logic@mil_fneutral_camper5",
 		idle = 0,
 		prior = 1, state = {0, 1},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- состояние 1
-    --кэмпер 3
-    t = {section = "logic@mil_fneutral_camper8",
-		idle = 0,
-		prior = 1, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
