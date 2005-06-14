@@ -702,7 +702,7 @@ end
 
 function check_enemy (gulag)
     for k,v in gulag.Object do
-        if v:best_enemy () ~= nil then 
+        if v:best_enemy () ~= nil and v:story_id () ~= 710 then 
            return true
         end
     end       

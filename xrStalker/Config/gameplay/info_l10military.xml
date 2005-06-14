@@ -202,6 +202,9 @@
 	<info_portion id="mil_fblockpost_spot"></info_portion>
 	<info_portion id="mil_fblockpost_spot_set"></info_portion>
 	<info_portion id="mil_fblockpost_spot_remove"></info_portion>
+
+	<!-- Охотнички, мля -->
+	<info_portion id="mil_hunt_ready"></info_portion>
 	
 	
 </game_information_portions>

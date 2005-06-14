@@ -595,6 +595,27 @@ function mil_bomb_explode (actor, npc)
 
 end
 
+function mil_hunters_psi_hit (actor, npc)
+    if npc == nil then return end
+    printf ("PSI HIT TO STALKER %s", npc:name ())
+    local h = hit ();
+    h.power = 1000;
+    h.direction = vector():set( 1, 0, 0 );
+    h.impulse = 1;
+    h.draftsman = npc;
+    h.type = hit.telepatic;
+    source:hit (h);
+end
+
+function mil_transfer_docs_to_ara (actor, npc)
+    local ara = utils.obj_by_sid (719)
+    local pavlik = utils.obj_by_sid (710)
+    if ara == nil or pavlik == nil or pavlik:object ("mil_courier_doc") == nil then
+       return
+    end   
+    ara:transfer_item (pavlik:object ("mil_courier_doc"), pavlik)
+end
+
 function mil_emeny_nearest (actor, npc)
     if actor == nil or actor:alive () == false then
        return
