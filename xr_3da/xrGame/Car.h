@@ -44,14 +44,16 @@ class CCar :
 	public CExplosive
 {
 #ifdef DEBUG
-	CFunctionGraph m_dbg_power_rpm		;
-	CStatGraph	   *m_dbg_dynamic_plot	;
-	bool			b_plots				;
-	void InitDebug		 ()				;
-	void DbgSheduleUpdate()				;
-	void DbgUbdateCl	 ()				;
-	void DbgCreatePlots	 ()				;
-	void DBgClearPlots	 ()				;
+	CFunctionGraph 					m_dbg_power_rpm			;
+	CFunctionGraph 					m_dbg_torque_rpm		;
+	CStatGraph	   					*m_dbg_dynamic_plot		;
+	bool							b_plots					;
+	float _stdcall			TorqueRpmFun		(float rpm)		{return Parabola(rpm)/rpm;}
+	void 					InitDebug			()				;
+	void 					DbgSheduleUpdate	()				;
+	void 					DbgUbdateCl			()				;
+	void 					DbgCreatePlots		()				;
+	void 					DBgClearPlots		()				;
 #endif
 	
 	
@@ -416,6 +418,7 @@ private:
 	float EnginePower();
 	float EngineDriveSpeed();
 	float DriveWheelsMeanAngleRate();
+IC	float EngineRpmFromWheels(){return dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);}
 	/////////////////////////////////////////////////////////////////////////	
 	void SteerRight();
 	void SteerLeft();

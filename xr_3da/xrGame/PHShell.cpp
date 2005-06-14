@@ -459,6 +459,15 @@ void CPHShell::TransformPosition(const Fmatrix &form)
 	for(;i!=e;i++) (*i)->TransformPosition(form);
 }
 
+void CPHShell::SetGlTransformDynamic(const Fmatrix &form)
+{
+	VERIFY(bActive);
+	Fmatrix current,replace;
+	GetGlobalTransformDynamic(&current);
+	current.invert();
+	replace.mul(form,current);
+	TransformPosition(replace);
+}
 void CPHShell::SmoothElementsInertia(float k)
 {
 	dMass m_avrg;

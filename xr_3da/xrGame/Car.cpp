@@ -125,6 +125,9 @@ void	CCar::Load					( LPCSTR section )
 
 BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 {
+#ifdef DEBUG
+	InitDebug();
+#endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
 	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
 	BOOL							R = inherited::net_Spawn(DC);
@@ -165,6 +168,9 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 
 void	CCar::net_Destroy()
 {
+#ifdef DEBUG
+	DBgClearPlots();
+#endif
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	if(m_bone_steer!=BI_NONE)
 	{
@@ -461,7 +467,7 @@ void CCar::detach_Actor()
 	//H_SetParent(NULL);
 	processing_deactivate();
 #ifdef DEBUG
-	m_dbg_power_rpm.Clear();
+	DBgClearPlots();
 #endif
 }
 
@@ -1399,7 +1405,7 @@ float CCar::DriveWheelsMeanAngleRate()
 float CCar::EngineDriveSpeed()
 {
 	//float wheel_speed,drive_speed=dInfinity;
-	float calc_rpm=dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);
+	float calc_rpm=EngineRpmFromWheels();
 
 	if(!b_clutch&&calc_rpm<m_min_rpm)
 	{

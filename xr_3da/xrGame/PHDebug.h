@@ -50,7 +50,8 @@ enum
 	phDbgDrawCarDynamics		=		1<<17,
 	phDbgDrawCarPlots			=		1<<18,
 	phDbgLadder					=		1<<19,
-	phDbgDrawExplosions			=		1<<20
+	phDbgDrawExplosions			=		1<<20,
+	phDbgDrawCarAllTrnsm		=		1<<21
 };
 struct SPHObjDBGDraw
 {
@@ -98,20 +99,25 @@ struct CFunctionGraph
 public:
 	typedef fastdelegate::FastDelegate1<float,float> type_function;
 private:
-	CStatGraph						*m_stat_graph						;
-	type_function					m_function							;
+	CStatGraph						*m_stat_graph																																					;
+	type_function					m_function																																						;
 	float x_min,x_max,s;
 	//float y_min,y_max;
 	//Fvector2 left_bottom;
 	//Fvector2 range;
 public:
 
-	CFunctionGraph					()									;
-	~CFunctionGraph					()									;
-	void Init						(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/);
-	void Clear						()									;
-	bool IsActive					()									;
-	void UpdateMarkers				(float M0, float M1);
+	CFunctionGraph						()																																								;
+	~CFunctionGraph						()																																								;
+	void	Init						(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num=500,u32 color=D3DCOLOR_XRGB(0,255,0),u32 bk_color=D3DCOLOR_XRGB(255,255,255))	;
+	void	Clear						()																																								;
+	bool	IsActive					()																																								;
+	void	AddMarker					(CStatGraph::EStyle Style, float pos, u32 Color)																												;
+	void	UpdateMarker				(u32 ID, float M1)																																				;
+IC	float	ScaleX						(float x)																												{VERIFY(IsActive());return(x-x_min)/s	;}	
+	void	ScaleMarkerPos				(u32 ID, float &p)																																				;
+	void	ScaleMarkerPos				(CStatGraph::EStyle Style, float &p)																															;
+IC	float	ResolutionX					(){VERIFY(IsActive());return s;} 
 };
 #endif
 #endif

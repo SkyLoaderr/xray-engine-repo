@@ -476,7 +476,7 @@ CFunctionGraph::~CFunctionGraph()
 	xr_delete(m_stat_graph);
 	m_function.clear();
 }
-void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num=500)
+void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int w, int h,int points_num/*=500*/,u32 color/*=*/,u32 bk_color)
 {
 	x_min=x0;x_max=x1;
 	m_stat_graph=xr_new<CStatGraph>();
@@ -485,7 +485,7 @@ void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int 
 	R_ASSERT(x1>x0);
 	s=(x_max-x_min)/points_num;
 	R_ASSERT(s>0.f);
-	m_stat_graph->SetRect(l,t,w,h,D3DCOLOR_XRGB(255,255,255),D3DCOLOR_XRGB(255,255,255));
+	m_stat_graph->SetRect(l,t,w,h,bk_color,bk_color);
 	float min=dInfinity;float max=-dInfinity;
 	for(float x=x_min;x<x_max;x+=s)
 	{
@@ -500,20 +500,35 @@ void CFunctionGraph::Init(type_function fun,float x0,float x1,int l, int t, int 
 	for(float x=x_min;x<x_max;x+=s)
 	{
 		float val=m_function(x);
-		m_stat_graph->AppendItem(val,D3DCOLOR_XRGB(0,255,0));
+		m_stat_graph->AppendItem(val,color);
 
 	}
-	m_stat_graph->AddMarker(CStatGraph::stVert, 0, D3DCOLOR_XRGB(255, 0, 0));
-	m_stat_graph->AddMarker(CStatGraph::stHor, 0, D3DCOLOR_XRGB(255, 0, 0));
+	//m_stat_graph->AddMarker(CStatGraph::stVert, 0, D3DCOLOR_XRGB(255, 0, 0));
+	//m_stat_graph->AddMarker(CStatGraph::stHor, 0, D3DCOLOR_XRGB(255, 0, 0));
 }
 
-void CFunctionGraph::UpdateMarkers				(float M0, float M1)
+void CFunctionGraph::AddMarker(CStatGraph::EStyle Style, float pos, u32 Color)
 {
-	M0=(M0-x_min)/s;
-	m_stat_graph->UpdateMarkerPos(0, M0);
-	m_stat_graph->UpdateMarkerPos(1, M1);
+	VERIFY(IsActive());
+	ScaleMarkerPos(Style,pos);
+	m_stat_graph->AddMarker(Style,pos,Color);
 }
-
+void CFunctionGraph::UpdateMarker				(u32 ID, float M)
+{
+	VERIFY(IsActive());
+	ScaleMarkerPos(ID,M);
+	m_stat_graph->UpdateMarkerPos(ID, M);
+}
+void CFunctionGraph::ScaleMarkerPos(u32 ID,float &p)
+{
+	VERIFY(IsActive());
+	ScaleMarkerPos(m_stat_graph->Marker(ID).m_eStyle,p);
+}
+void CFunctionGraph::ScaleMarkerPos(CStatGraph::EStyle Style, float &p)
+{
+	VERIFY(IsActive());
+	if(Style==CStatGraph::stVert)	p=ScaleX(p);
+}
 void CFunctionGraph::Clear()
 {
 	xr_delete(m_stat_graph);

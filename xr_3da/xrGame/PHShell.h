@@ -128,6 +128,7 @@ public:
 	virtual void				set_LinearVel			  (const Fvector& velocity);
 	virtual void				set_AngularVel			  (const Fvector& velocity);
 	virtual void				TransformPosition		  (const Fmatrix &form);
+	virtual void				SetGlTransformDynamic	  (const Fmatrix &form);
 	virtual void				set_ApplyByGravity		  (bool flag);
 	virtual void				SetMaterial				  (u16 m);
 	virtual void				SetMaterial				  (LPCSTR m);
