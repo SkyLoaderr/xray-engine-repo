@@ -180,11 +180,11 @@ function action_camera_activity:update(delta)
 				
 				-- Проверяем нужно ли делать паузу
 				if self.st.pause_after_lost_target > 0 then
-					printf("_hr: mode PAUSA time = %d", device():time_global())
+					printf("_hr: mode PAUSA time = %d", time_global())
 					self.state = camera_pause
-					self.pause_start = device():time_global()
+					self.pause_start = time_global()
 				else --if self.st.signals["enemy_tracking"] then
-					printf("_hr: mode MOVE time = %d", device():time_global())
+					printf("_hr: mode MOVE time = %d", time_global())
 					self.state = camera_move
 					self.st.signals["enemy_tracking"] = false
 				end
@@ -200,7 +200,7 @@ function action_camera_activity:update(delta)
     elseif self.state == camera_move then
 		--printf("camera state == camera_move")
 		if self:in_focus(lense_dir, actor_dir, dist) then
-			printf("_hr: mode TRACKING time = %d", device():time_global())
+			printf("_hr: mode TRACKING time = %d", time_global())
 			if self.object:action() then
 				printf("_hr: del MOVING action")
 				xr_logic.mob_capture(self.object, true)
@@ -247,9 +247,9 @@ function action_camera_activity:update(delta)
 	
     if self.state == camera_pause then
 		printf("camera state == camera_pause")
-		if device():time_global() >= self.pause_start + self.st.pause_after_lost_target
+		if time_global() >= self.pause_start + self.st.pause_after_lost_target
 		then
-			printf("_hr: mode MOVE time = %d", device():time_global())
+			printf("_hr: mode MOVE time = %d", time_global())
 			self.state = camera_move
 		end
     end
@@ -301,7 +301,7 @@ function action_camera_activity:update(delta)
 			-- Проверяем нужно ли делать паузу
 			if self.st.pause_after_lost_target > 0 then
 				self.pause = true
-				self.pause_start = device():time_global()
+				self.pause_start = time_global()
 				return
 			elseif self.st.signals["enemy_tracking"] then
 				self.st.signals["enemy_tracking"] = false
@@ -311,7 +311,7 @@ function action_camera_activity:update(delta)
 
     -- Проверяем не в паузе ли мы
     if self.pause then
-		if self.pause_start + self.st.pause_after_lost_target > device():time_global()
+		if self.pause_start + self.st.pause_after_lost_target > time_global()
 		then
 			return
 		end

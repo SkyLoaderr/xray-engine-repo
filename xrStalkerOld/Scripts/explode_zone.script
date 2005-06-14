@@ -31,12 +31,12 @@ function main()
 		if item ~= nil and
 		   begin ~= nil
 		then
-			if device():time_global() - begin > 10*1000 then
+			if time_global() - begin > 10*1000 then
 				item:explode(0)
 				item = nil
 			else
-				printf("Time %d of 10", (device():time_global() - begin)/1000)
-				result_text = string.format("blow up in %d seconds", (device():time_global() - begin)/1000)
+				printf("Time %d of 10", (time_global() - begin)/1000)
+				result_text = string.format("blow up in %d seconds", (time_global() - begin)/1000)
 				item:set_tip_text(result_text)	
 
 			end
@@ -52,7 +52,7 @@ function zone_enter(zzone, obj)
 	   obj:clsid() == clsid.obj_explosive then
 		printf("BOMB")
 		item = obj
-		begin = device():time_global()	
+		begin = time_global()	
 	end
 end
 function zone_exit(zzone, obj)
@@ -71,7 +71,7 @@ function fuelcan_use(usable_obj, who_use_obj)
 	printf("USE %s", who_use_obj:name())
 
 	item = usable_obj
-	begin = device():time_global()	
+	begin = time_global()	
 
 	-- usable_obj:set_nonscript_usable(true)
 	-- usable_obj:set_tip_text_default()

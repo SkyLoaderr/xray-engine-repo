@@ -45,8 +45,8 @@ function evaluator_close_combat:evaluate()
 	if self.close_combat == true then
 		local a = self.object:memory_time(self.object:best_enemy())
 		if a then
---			printf("%s - %s ? %s", device():time_global(), a, 20000)
-			if device():time_global() - a > 20000 then
+--			printf("%s - %s ? %s", time_global(), a, 20000)
+			if time_global() - a > 20000 then
 				self.close_combat = false
 			end
 		else			
@@ -159,8 +159,8 @@ function action_patrol:execute()
 	
 	--забывание врага по времени.	
 	if self.a.mem_enemy ~= nil then
-		--printf("ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
-		if device():time_global()- self.a.mem_enemy > self.a.idle then
+		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+		if time_global()- self.a.mem_enemy > self.a.idle then
 			if self.enemy ~= nil then
 				self.object:enable_memory_object(self.enemy, false)
 			end
@@ -223,7 +223,7 @@ function action_patrol:execute()
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
 
-				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(device():time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 				-- сканируем
 				self:scan(-1)
 			else				
@@ -250,13 +250,13 @@ function action_patrol:execute()
 			-- если мы на точке - запустить счетчик сканирования и посканировать определенное время.
 			if self:on_place() then
 				if self.scantime == nil then
-					self.scantime = device():time_global()
+					self.scantime = time_global()
 				end
-				--printf("SCAN [%s] of [%s]", utils.to_str(device():time_global() - self.scantime), utils.to_str(self.a.scantime_free))
+				--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
 				-- сканируем
 				self:scan(self.a.wp_flag)
 				-- проверка на завершение сканирования.
-				if self.scantime ~= nil and device():time_global() - self.scantime >= self.a.scantime_free then	
+				if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then	
 					self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
 				end
 			else
@@ -284,7 +284,7 @@ function action_patrol:scan(flag)
 	end
 
 	if self.a.scan_begin == nil or
-	   device():time_global() - self.a.scan_begin > self.a.time_scan_delta then
+	   time_global() - self.a.scan_begin > self.a.time_scan_delta then
 	
 		self.next_point = self:get_next_point(flag)
 		if self.a.cur_look_point == nil then
@@ -307,12 +307,12 @@ function action_patrol:scan(flag)
 			self.a.last_look_point = self.next_point
 		else
 			if self.a.scan_begin ~= nil then
-				self.a.cur_look_point = self.a.cur_look_point + (device():time_global() - self.a.scan_begin)/self.a.time_scan_delta
+				self.a.cur_look_point = self.a.cur_look_point + (time_global() - self.a.scan_begin)/self.a.time_scan_delta
 			else
 				self.a.cur_look_point = self.a.cur_look_point + 1
 			end
 		end	
-		self.a.scan_begin = device():time_global()
+		self.a.scan_begin = time_global()
 	end
 end
 function action_patrol:get_next_point(flag)

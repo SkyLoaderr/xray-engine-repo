@@ -99,11 +99,11 @@ function HeliManager:Start()
          printf("------------EXPLODE----------------------")
          self.m_heliObject:Explode()
          self.m_heliObject:TurnLighting(true)
-         self.m_start_lighting = device():time_global()
+         self.m_start_lighting = time_global()
       end
    end
 
-   if (self.m_b_exploded==true) and (self.m_start_lighting~=0) and (device():time_global()-self.m_start_lighting>15000)  then		
+   if (self.m_b_exploded==true) and (self.m_start_lighting~=0) and (time_global()-self.m_start_lighting>15000)  then		
          self.m_heliObject:TurnLighting(false)
          self.m_start_lighting = 0
    end

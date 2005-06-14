@@ -115,7 +115,7 @@ function update(npc)
 	local key_table = db.sound[key]
 	if  key_table ~= nil and
 	   (key_table.begin == nil or
-	   device():time_global() - key_table.begin >= key_table.idle)
+	   time_global() - key_table.begin >= key_table.idle)
 	then
 		if (xr_sound.num_by_key[key] <= 1 or
 		   key_table.last_npc ~= npc:id()) and
@@ -161,7 +161,7 @@ function play_sound(npc, themes, personal)
 		if personal == true then
 			last_snd_key = utils.to_str(npc:id())
 		end
-		db.sound[key].begin = device():time_global()
+		db.sound[key].begin = time_global()
 		db.sound[key].idle = math.random(snd.min_snd, snd.max_snd)*1000			
 		db.sound[key].busy = true
 		db.sound[key].last_npc = npc:id()

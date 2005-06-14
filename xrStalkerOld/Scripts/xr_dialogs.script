@@ -124,7 +124,7 @@ function dialog_mgr:new_dialog()
 		-- если не смогли, то диалог начаться не может
 		self:reset_dialog()
 		-- следующую проверку возможности начала диалога отложить на небольшое время
-		self.a.idle_end = device():time_global() + 5000
+		self.a.idle_end = time_global() + 5000
 	end
 end
 
@@ -136,7 +136,7 @@ function dialog_mgr:reset_dialog()
 	self.a.cur_npc          = nil
 
 	-- следующий диалог может начаться лишь по истечению периода молчанки
-	self.a.idle_end   = device():time_global() + math.random( idle_min, idle_max ) * 1000
+	self.a.idle_end   = time_global() + math.random( idle_min, idle_max ) * 1000
 
 --	printf( "reset dialog" )
 end
@@ -207,7 +207,7 @@ function dialog_mgr:new_phrase()
 	end
 
 	-- установить задержку перед новой фразой
-	self.a.phrase_delay_end = device():time_global() + math.random( pause_min, pause_max ) * 1000
+	self.a.phrase_delay_end = time_global() + math.random( pause_min, pause_max ) * 1000
 	self.a.phrase_playing   = false
 
 --	printf( "phrase selected" )
@@ -223,7 +223,7 @@ function dialog_mgr:update()
 
 	if self.a.cur_dlg then	-- активен ли диалог?
 		if self.object:id() == self.a.cur_npc:id() then	-- обновление текущего говорящего?
-			if self.a.phrase_delay_end < device():time_global() then -- окончилась ли необходимая задержка перед фразой?
+			if self.a.phrase_delay_end < time_global() then -- окончилась ли необходимая задержка перед фразой?
 				if self.a.phrase_playing then	-- начали ли уже играть звук?
 					if self.a.cur_npc:active_sound_count() == 0 then	-- звук закончился?
 						if not self:new_phrase() then
@@ -242,7 +242,7 @@ function dialog_mgr:update()
 		end
 	else
 		-- если можно, начать диалог и у нас не один говорящий
-		if self.a.dlgs and self.a.idle_end < device():time_global() and table.getn( self.a.npcs ) > 1 then
+		if self.a.dlgs and self.a.idle_end < time_global() and table.getn( self.a.npcs ) > 1 then
 			self:new_dialog()
 		end
 	end

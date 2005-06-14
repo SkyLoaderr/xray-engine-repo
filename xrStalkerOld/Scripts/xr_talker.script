@@ -71,7 +71,7 @@ function next_phrase(ch, vict, previous_phrase)
 end
 
 function stop_talking(id)
-	local dis_until = device():time_global() + aftertalk_disable_time
+	local dis_until = time_global() + aftertalk_disable_time
 	talkers[id].state = state_none
 	talkers[id].disabled_until = dis_until
 	talkers[talkers[id].whom:id()].state = state_none
@@ -116,7 +116,7 @@ function evaluator_need_talker:evaluate ()
 			return true
 		end
 
-		if device():time_global() < talkers[id].disabled_until then
+		if time_global() < talkers[id].disabled_until then
 			return false
 		end
 	end
@@ -139,7 +139,7 @@ function evaluator_need_talker:evaluate ()
 					local distance = vo:position():distance_to(self.object:position())
 					--printf("dist: %d", distance)
 					if distance < 5 and
-					   (not talkers[vo_id] or device():time_global() >= talkers[vo_id].disabled_until) and
+					   (not talkers[vo_id] or time_global() >= talkers[vo_id].disabled_until) and
 					   (not talkers[vo_id] or talkers[vo_id].state == state_none) then
 						if not talkers[id] then
 							talkers[id] = self.new_state()
@@ -233,7 +233,7 @@ function action_talker_activity:execute()
 				return
 			end
 			self.object:play_sound(xr_sounds_id.zmey_talker_base, 1, 0, 1, 0, phrase)
-			talkers[id].expiration_time = device():time_global() + time
+			talkers[id].expiration_time = time_global() + time
 			talkers[id].state = state_talking
 
 			talkers[id].whom:set_movement_type(move.stand)
@@ -251,7 +251,7 @@ function action_talker_activity:execute()
 	end
 
 	if talkers[id].state == state_talking then
-		if device():time_global() >= talkers[id].expiration_time then
+		if time_global() >= talkers[id].expiration_time then
 			local phrase, time = this.next_phrase(self.object, talkers[id].whom, talkers[id].previous_phrase)
 			talkers[talkers[id].whom:id()].previous_phrase = phrase
 			if not phrase then
@@ -259,7 +259,7 @@ function action_talker_activity:execute()
 				return
 			end
 			talkers[id].whom:play_sound(xr_sounds_id.zmey_talker_base, 1, 0, 1, 0, phrase)
-			talkers[talkers[id].whom:id()].expiration_time = device():time_global() + time
+			talkers[talkers[id].whom:id()].expiration_time = time_global() + time
 			talkers[talkers[id].whom:id()].state = state_talking
 			
 			talkers[id].state = state_listening

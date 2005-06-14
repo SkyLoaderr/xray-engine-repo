@@ -247,10 +247,10 @@ function action_car:fast_update()
 		return false
 	end
 
-	if device():time_global() >= self.last_pos_time + self.min_car_explode_time then
+	if time_global() >= self.last_pos_time + self.min_car_explode_time then
 		if not self.last_pos then
 			self.last_pos = self.object:position()
-			self.last_pos_time = device():time_global()
+			self.last_pos_time = time_global()
 		else
 			local cur_pos = self.object:position()
 			local diff = self.last_pos:distance_to(cur_pos)
@@ -263,7 +263,7 @@ function action_car:fast_update()
 				return false
 			end
 			self.last_pos = cur_pos
-			self.last_pos_time = device():time_global()
+			self.last_pos_time = time_global()
 		end
 	end
 	
@@ -279,7 +279,7 @@ function action_car:fast_update()
 end
 
 function action_car:car_explode()
-	self.object:explode(device():time_global())
+	self.object:explode(time_global())
 end
 
 ---------------------------------------------------------------------------------------------------------------------

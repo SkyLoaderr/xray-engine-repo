@@ -87,7 +87,7 @@ function action_punch_activity:execute()
 				{ look_object = whom }, 
 				{animation = true})
 			--self.object:add_animation("udar_0", true)
-			self.expiration_time = device():time_global() + 700
+			self.expiration_time = time_global() + 700
 			self.state = state_punch
 		else
 			self.object:set_desired_direction(whom:direction())
@@ -100,7 +100,7 @@ function action_punch_activity:execute()
 	end
 
 	if self.state == state_punch then
-		if device():time_global() >= self.expiration_time then
+		if time_global() >= self.expiration_time then
 			local actor_st = db.storage[whom:id()].punch
 			if not actor_st then
 				actor_st = {}

@@ -174,7 +174,7 @@ function HeliManager:update()
 		self.heliObject:Die()
 
 		self.last_alt       = self.heliObject:GetRealAltitude()
-		self.alt_check_time = device():time_global() + 1000
+		self.alt_check_time = time_global() + 1000
 	end
 
 	if state == CHelicopter.eDead then
@@ -187,8 +187,8 @@ function HeliManager:update()
 			self.heliObject:Explode()
 		end
 
-		if self.alt_check_time < device():time_global() then
-			self.alt_check_time = device():time_global() + 500
+		if self.alt_check_time < time_global() then
+			self.alt_check_time = time_global() + 500
 
 			if self.last_alt - altitude < 1 then
 				self.b_exploded = true

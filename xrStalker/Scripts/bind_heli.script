@@ -55,7 +55,7 @@ function heli_binder:reinit()
 
 	-- на случай загрузки
 	self.st.last_alt       = self.heliObject:GetRealAltitude()
-	self.st.alt_check_time = device():time_global() + 1000
+	self.st.alt_check_time = time_global() + 1000
 end
 
 function heli_binder:update( delta )
@@ -161,8 +161,8 @@ function heli_binder:check_health()
 			self.heliObject:Explode()
 		end
 
-		if self.st.alt_check_time < device():time_global() then
-			self.st.alt_check_time = device():time_global() + 500
+		if self.st.alt_check_time < time_global() then
+			self.st.alt_check_time = time_global() + 500
 
 			if self.st.last_alt - altitude < 1 then
 --				printf( "heli: explode (hanged)" )
@@ -187,6 +187,6 @@ function heli_die( obj )
 	db.del_heli( obj )
 
 	st.last_alt       = heli:GetRealAltitude()
-	st.alt_check_time = device():time_global() + 1000
+	st.alt_check_time = time_global() + 1000
 end
 

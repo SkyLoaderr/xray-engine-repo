@@ -122,7 +122,7 @@ function action_bodyguard_activity:waypoint_callback(obj, action_type, index)
 	self.state = state_standing
 
 	self.object:clear_animations () -- не играть анимацию во время поворота!
-	self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
+	self.expiration_time = time_global() + 1500; -- дать 100 мс на поворот
 	self:look_at_waypoint(1) -- поворачиваемся
 end
 
@@ -163,9 +163,9 @@ function action_bodyguard_activity:execute()
 				end
 			
 				if has_weapon and dist_center <= 5 and
-				   (not this.bg_warn_rem_weapon_times[self.st.path_center] or device():time_global() > this.bg_warn_rem_weapon_times[self.st.path_center] + 60000) then
+				   (not this.bg_warn_rem_weapon_times[self.st.path_center] or time_global() > this.bg_warn_rem_weapon_times[self.st.path_center] + 60000) then
 					self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-					this.bg_warn_rem_weapon_times[self.st.path_center] = device():time_global()
+					this.bg_warn_rem_weapon_times[self.st.path_center] = time_global()
 					this.bg_wpn_info[self.st.path_center] = utils.wpn_info_get(actor)
 				elseif dist_center > 5 and this.bg_warn_rem_weapon_times[self.st.path_center] then
 					this.bg_warn_rem_weapon_times[self.st.path_center] = nil
@@ -187,7 +187,7 @@ function action_bodyguard_activity:execute()
 				elseif self.path_active ~= self.st.path_main then
 					if has_weapon and dist_center <= 5 then
 						self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-						this.bg_warn_rem_weapon_times[self.st.path_center] = device():time_global()
+						this.bg_warn_rem_weapon_times[self.st.path_center] = time_global()
 					end
 
 					self.path_active = self.st.path_main

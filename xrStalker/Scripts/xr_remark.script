@@ -58,7 +58,7 @@ function action_remark_activity:reset_scheme()
 	
 	self.state = state_initial
 
-	self.reset_time = device():time_global()
+	self.reset_time = time_global()
 	
 	self.snd_scheduled = false
 	self.snd_start_time = nil
@@ -88,7 +88,7 @@ function action_remark_activity:activate_sound()
 	end
 	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound", self.object:name())
 
-	self.snd_start_time = device():time_global()
+	self.snd_start_time = time_global()
 	self.snd_scheduled = true				
 
 	printf("_bp1 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
@@ -234,7 +234,7 @@ function action_remark_activity:step()
 		-- Пробовать включать звук, когда мы близко, или долго не можем добраться до игрока:
 		if self.st.snd and
 		   (distance_between(self.object, self.target) <= self.st.snd_dist or
-		    device():time_global() - self.reset_time >= self.st.snd_timeout) then
+		    time_global() - self.reset_time >= self.st.snd_timeout) then
 			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
 			if not self.st.snd_anim_sync then
 				self:activate_sound()
@@ -242,7 +242,7 @@ function action_remark_activity:step()
 		end
 
 		if distance_between(self.object, self.target) < 3 or
-		   self.st.arrival_timeout <= device():time_global() - self.reset_time then
+		   self.st.arrival_timeout <= time_global() - self.reset_time then
 			self:stand_still()
 			self.st.no_move = true -- Не получается пробежать к актеру - больше и не пытаться
 			self:signal_arrival()
@@ -282,7 +282,7 @@ function action_remark_activity:execute()
 
 	--printf("_bp3 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 	if self.snd_scheduled then -- запросили запуск звука на этом апдейте
-		if device():time_global() - self.snd_start_time > 1000 then
+		if time_global() - self.snd_start_time > 1000 then
 			-- нужно, чтобы прошел как минимум 1 апдейт, но не меньше 1-й секунды, прежде чем считать, что звук
 			-- стартовал и ждать его окончания
 			self.snd_started = true

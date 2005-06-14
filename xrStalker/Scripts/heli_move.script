@@ -67,7 +67,7 @@ function heli_move:reset_scheme( loading )
 		self.was_callback     = xr_logic.pstor_retrieve( self.object, "wc"  )
 
 		if self.look_finish_time then
-			self.look_finish_time = self.look_finish_time + device():time_global()
+			self.look_finish_time = self.look_finish_time + time_global()
 		end
 	else
 		self.heliObject:ClearEnemy()
@@ -85,7 +85,7 @@ function heli_move:reset_scheme( loading )
 end
 
 function heli_move:save()
-	local lft = self.look_finish_time and ( self.look_finish_time - device():time_global() )
+	local lft = self.look_finish_time and ( self.look_finish_time - time_global() )
 
 	xr_logic.pstor_store( self.object, "st",  self.state )
 	xr_logic.pstor_store( self.object, "li",  self.last_index       or false )
@@ -121,7 +121,7 @@ function heli_move:update( delta )
 	end
 
 	if self.state == state_look then
-		if self.look_finish_time < device():time_global() then
+		if self.look_finish_time < time_global() then
 			self:update_movement_state()
 		end
 	end
@@ -293,7 +293,7 @@ function heli_move:update_look_state()
 
 	-- если хотели задержаться, то посчитать время окончания задержки, иначе оно уже наступило
 	if self.look_duration then
-		self.look_finish_time = self.look_duration + device():time_global()
+		self.look_finish_time = self.look_duration + time_global()
 
 		self:process_attack_params( self.path_look_info, self.look_index )
 	else

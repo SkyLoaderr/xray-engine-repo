@@ -179,7 +179,7 @@ end
 -----------------------------------------------------------------------------------
 --' Инициализация торговли
 function trade_init(seller, buyer)
-	db.storage[seller:id()].meet.begin_wait_to_see.begin = device():time_global()/1000
+	db.storage[seller:id()].meet.begin_wait_to_see.begin = time_global()/1000
 	xr_position.setPosition(db.storage[seller:id()].meet.Seller, 
 							db.storage[seller:id()].meet.Seller:level_vertex_id())
 	db.storage[seller:id()].meet.Buyer = buyer

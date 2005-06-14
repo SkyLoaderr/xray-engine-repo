@@ -85,9 +85,9 @@ function PsyAntenna:update_postprocess	()
 //	self.pp.params.noise				= self.noise_var;
 end
 function PsyAntenna:update_psy_hit		(dt)
-	local d_time						= device():time_global()-self.hit_time;
+	local d_time						= time_global()-self.hit_time;
 	if d_time>200 and self.power_factor.a>0.01 then
-		self.hit_time					= device():time_global();
+		self.hit_time					= time_global();
 		local psy_hit 					= hit();
 		psy_hit.power 					= self.power_factor.a*self.hit_amplitude;
 		psy_hit.direction 				= vector():set( 0, 0, 0 );
@@ -165,11 +165,11 @@ function main()
 	while db.actor==nil do wait(); end;
 	if false==db.actor:has_info("psy_antenna_off") then
 		g_PsyAntenna:construct			();
-		local prev_time					= device():time_global();
+		local prev_time					= time_global();
 		while 1 do
 			wait						();
-			local dt					= device():time_global()-prev_time;
-			prev_time					= device():time_global();
+			local dt					= time_global()-prev_time;
+			prev_time					= time_global();
 			g_PsyAntenna:update			(dt);
 		end
 	end

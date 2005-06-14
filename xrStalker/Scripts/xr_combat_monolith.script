@@ -141,14 +141,14 @@ end
 function action_look_around:initialize()
 	action_base.initialize( self )
 
-	self.forget_time     = device():time_global() + 30000
+	self.forget_time     = time_global() + 30000
 	self.change_dir_time = 0
 end
 
 function action_look_around:execute()
 	action_base.execute( self )
 
-	if self.forget_time < device():time_global() then
+	if self.forget_time < time_global() then
 		self.object:enable_memory_object( self.object:best_enemy(), false )
 
 		self.st.last_seen_vert_id = nil
@@ -156,8 +156,8 @@ function action_look_around:execute()
 		return
 	end
 
-	if self.change_dir_time < device():time_global() then
-		self.change_dir_time = device():time_global() + math.random( 1000, 2000 )
+	if self.change_dir_time < time_global() then
+		self.change_dir_time = time_global() + math.random( 1000, 2000 )
 
 		local ang = math.rad( math.random( 0, 359 ) )
 		local pos = self.object:position():add( vector():set( math.cos( ang ), 0, math.sin( ang ) ) )

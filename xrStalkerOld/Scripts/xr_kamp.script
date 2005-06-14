@@ -189,7 +189,7 @@ function action_go_patrol:execute()
 	self.move_mgr:update()
 end
 function action_go_patrol:end_path(mode, number)
-	self.a.timer.act1.begin = device():time_global()/1000
+	self.a.timer.act1.begin = time_global()/1000
 	self.a.action = 0
 	return false
 end
@@ -241,7 +241,7 @@ function action_wait:execute()
 				if value.kamp ~= nil and
 				   value.kamp.center_point == self.a.center_point and
 				   value.kamp.timer.act1.begin ~= nil and
-				   (device():time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time 
+				   (time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time 
 				then
 					free = false
 				end
@@ -255,7 +255,7 @@ function action_wait:execute()
 		local rr = math.random(table.getn(actions))
 		self.a.action = actions[rr]
 		self.a.last_action = self.a.action
-		self.timer.begin = device():time_global()/1000
+		self.timer.begin = time_global()/1000
 		self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle		
 		--' ïîâåðíóòü åãî ëèöîì ê öåíòðó
 		local pp = patrol(self.a.center_point):point(0)
@@ -264,7 +264,7 @@ function action_wait:execute()
 	if self.a.action == 5 then
 	
 		--'!!! ÏÐÎÑÒÎ ÑÈÄÈÌ È ÂÒÛÊÀÅÌ	
-		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
+		if (time_global()/1000 - self.timer.begin) < self.timer.idle then
 			xr_sound.set_sound(self.object, "weather, state")
 		else
 			self.a.action = 0

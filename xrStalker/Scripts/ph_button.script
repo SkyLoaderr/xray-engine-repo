@@ -17,7 +17,7 @@ function ph_button:reset_scheme()
 	--ska:PlayCycle(self.st.anim)
 	self.object:play_cycle(self.st.anim)
 
-	self.last_hit_tm = device():time_global()
+	self.last_hit_tm = time_global()
 	self.object:set_callback(callback.hit, self.hit_callback, self)
 	self.object:set_callback(callback.use_object, self.use_callback, self)
 end
@@ -43,8 +43,8 @@ end
 function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
 	printf("_bp: ph_button:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount,
 		if_then_else(who ~= nil, who:name(), "nil"))
-	if device():time_global() - self.last_hit_tm > 500 then
-		self.last_hit_tm = device():time_global()
+	if time_global() - self.last_hit_tm > 500 then
+		self.last_hit_tm = time_global()
 		if self:try_switch() then
 			return
 		end

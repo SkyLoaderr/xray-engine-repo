@@ -70,7 +70,7 @@ function pp_radar:process(pp)
 		--local force = 100 - distance
 		--printf("force = %d", force)
 	
-		local tm = device():time_global()
+		local tm = time_global()
 		local slowd = distance * 0.05 -- чем больше множитель, тем медленней колебания
 		if slowd > 1 then
 			tm = (tm / slowd) / 10
@@ -104,7 +104,7 @@ function pp_radar:process(pp)
 		
 		--effect.percent = percent
 	
-	--local percent = ((device():time_global() - self.start_time) * 100) / self.life_time
+	--local percent = ((time_global() - self.start_time) * 100) / self.life_time
 	--local percent = math.random(100)
 	--local percent = self.percent
 	if percent < 0 then
@@ -155,7 +155,7 @@ function pp_radar:process(pp)
 end
 
 function pp_radar:finished()
-	return self.stop_time < device():time_global()
+	return self.stop_time < time_global()
 end
 
 
@@ -167,7 +167,7 @@ function main()
 	actor = get_actor()
 	radar = patrol("radar")
 	
-	local effect = pp_radar(4, device():time_global() + 5000, 4000)
+	local effect = pp_radar(4, time_global() + 5000, 4000)
 	effect:start()
 	while true do
 		if not level.object("radar_control") then

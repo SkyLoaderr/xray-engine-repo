@@ -16,7 +16,7 @@ function action_impulse:__init(obj, storage)
 end
 
 function action_impulse:perform_impulse(pt)
-	printf("self:perform_impulse: %d", device():time_global())
+	printf("self:perform_impulse: %d", time_global())
 	if self.st.velocity_x == 0 then
 		self.joint:set_max_force_and_velocity(0, 0, 0)
 	else
@@ -57,11 +57,11 @@ function action_impulse:reset_scheme()
 	
 		self:perform_impulse(pt)
 	
-		self.start_time = device():time_global()
+		self.start_time = time_global()
 	end
 	
 	self.axis = 1	
-	self.next_impulse_tm = device():time_global()
+	self.next_impulse_tm = time_global()
 end
 
 function action_impulse:update(delta)
@@ -71,21 +71,21 @@ function action_impulse:update(delta)
 		return
 	end
 	
-	if self.st.duration and device():time_global() > self.start_time + self.st.duration then
+	if self.st.duration and time_global() > self.start_time + self.st.duration then
 		self.joint:set_max_force_and_velocity(0, 0, 0)
 		self.joint:set_max_force_and_velocity(0, 0, 1)
 		self.joint:set_max_force_and_velocity(0, 0, 2)
 		self.st.duration = nil
 	else
 		if not self.st.path_dir then
-			if device():time_global() >= self.next_impulse_tm then
+			if time_global() >= self.next_impulse_tm then
 				local pt = {}
 				pt.x = self.axis
 				pt.y = self.axis
 				pt.z = self.axis
 				self:perform_impulse(pt)
 				self.axis = -self.axis
-				self.next_impulse_tm = device():time_global() + self.st.interval	
+				self.next_impulse_tm = time_global() + self.st.interval	
 			end
 		end
 	end

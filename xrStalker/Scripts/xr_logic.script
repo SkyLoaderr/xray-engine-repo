@@ -311,7 +311,7 @@ function activate_by_section(npc, ini, section, loading)
 			section, npc:name(), db.storage[npc_id].active_section)
 	end
 
-	db.storage[npc_id].activation_time = device():time_global()
+	db.storage[npc_id].activation_time = time_global()
 	-- GAMETIME added by Stohe.
 	db.storage[npc_id].activation_game_time = game.get_game_time()
 
@@ -606,7 +606,7 @@ function try_switch_to_another_section(npc, st, actor)
 
 	local switched = false
 	for n, c in pairs(l) do
-		--printf("_bp: %d: %s", device():time_global(), c.name)
+		--printf("_bp: %d: %s", time_global(), c.name)
 		if c.name == "on_actor_dist_le" then
 			printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
 			if npc:see(actor) and distance_between(actor, npc) <= c.v1 then
@@ -639,9 +639,9 @@ function try_switch_to_another_section(npc, st, actor)
 		elseif c.name == "on_info" or c.name == "on_info2" or c.name == "on_info3" then
 			switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 		elseif c.name == "on_timer" or c.name == "on_timer2" then
-			--printf("_bp: on_timer: %d >= %d", device():time_global(),
+			--printf("_bp: on_timer: %d >= %d", time_global(),
 			--	db.storage[npc_id].activation_time + c.v1)
-			if device():time_global() >= db.storage[npc_id].activation_time + c.v1 then
+			if time_global() >= db.storage[npc_id].activation_time + c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 			
@@ -1062,7 +1062,7 @@ end
 
 function save_logic(obj, packet)
 	local npc_id = obj:id()
-	local cur_tm = device():time_global()
+	local cur_tm = time_global()
 	
 	local activation_time = db.storage[npc_id].activation_time
 	if not activation_time then
@@ -1076,7 +1076,7 @@ end
 
 function load_logic(obj, reader)
 	local npc_id = obj:id()
-	local cur_tm = device():time_global()
+	local cur_tm = time_global()
 	
 	db.storage[npc_id].activation_time = reader:r_s32() + cur_tm
 

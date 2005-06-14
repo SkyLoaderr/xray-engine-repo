@@ -37,7 +37,7 @@ function main()
 
 		printf( "[raid_heli] BEGIN PATROL" )
 
-		while active and not enemy and device():time_global() < t do
+		while active and not enemy and time_global() < t do
 			wait()
 		end
 
@@ -69,7 +69,7 @@ function main()
 
 		printf( "%d -> %d", pnt, pnt + 1 )
 
-		while t > device():time_global() and active and not enemy do
+		while t > time_global() and active and not enemy do
 			wait()
 		end
 

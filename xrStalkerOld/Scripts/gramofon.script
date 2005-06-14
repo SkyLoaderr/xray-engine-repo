@@ -56,7 +56,7 @@ function m_gramofon:__init(obj_name, _commander_name)
   	self.param        	= 0
     self.melody       	= nil
     self.delay        	= 0
-    self.time         	= device():time_global() - 30000
+    self.time         	= time_global() - 30000
     self.need_stop    	= false
     self.curState     	= siren_off
     printf("_______curState = %d", self.curState)
@@ -179,10 +179,10 @@ function m_gramofon:select_sound()
         self:play_sound( self.sounds[ 1 ] )
         self.hours = h
 	else
-		if( self.snd == nil and device():time_global() > self.time + time_pause ) then
+		if( self.snd == nil and time_global() > self.time + time_pause ) then
         	i = math.random( 2, 14 )
         	self:play_sound( self.sounds[ i ] )
-        	self.time = device():time_global() + self.sounds[i]:length()
+        	self.time = time_global() + self.sounds[i]:length()
     	end
     end
 end
@@ -199,13 +199,13 @@ end
 function m_gramofon:play()
   	if( self.snd ) then
       	if( self.snd:playing() ) then return end          	--Музыка играет, не тревожим
-        self.time = device():time_global()
+        self.time = time_global()
         self.snd  = nil
     end
 
     --Выдерживаем паузу перед игрой звука
     if( self.delay ~= 0 ) then
-    	if( device():time_global() < self.time + self.delay ) then return end
+    	if( time_global() < self.time + self.delay ) then return end
         self.delay  = 0
     end
 

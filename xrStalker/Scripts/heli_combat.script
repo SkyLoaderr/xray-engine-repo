@@ -101,7 +101,7 @@ function heli_combat:save( packet )
 	packet:w_bool( self.initialized )
 
 	if self.initialized then
-		local t = device():time_global()
+		local t = 
 
 		packet:w_s16 ( self.enemy_id )
 		packet:w_u32 ( self.change_dir_time - t )
@@ -119,7 +119,7 @@ function heli_combat:load( packet )
 	self.initialized     = packet:r_bool()
 
 	if self.initialized then
-		local t = device():time_global()
+		local t = 
 		self.enemy_last_seen_pos = vector()
 		self.center_pos          = vector()
 
@@ -160,23 +160,23 @@ function heli_combat:update_enemy_visibility()
 
 	if self.combat_type == combat_type_search then
 		if see then
-			self.enemy_last_seen_time = device():time_global()
+			self.enemy_last_seen_time = 
 			self.enemy_last_seen_pos  = self.enemy:position()
 
 			return true
 		else
-			return device():time_global() - self.enemy_last_seen_time < visibility_delay
+			return  - self.enemy_last_seen_time < visibility_delay
 		end
 	else
 		if see then
 			if not self.enemy_last_spot_time then
-				self.enemy_last_spot_time = device():time_global()
+				self.enemy_last_spot_time = 
 			end
 
-			if device():time_global() - self.enemy_last_spot_time < visibility_delay then
+			if  - self.enemy_last_spot_time < visibility_delay then
 				return false
 			else
-				self.enemy_last_seen_time = device():time_global()
+				self.enemy_last_seen_time = 
 				self.enemy_last_seen_pos  = self.enemy:position()
 
 				return true
@@ -198,7 +198,7 @@ end
 
 function heli_combat:update_forgetting()
 	if self.can_forget_enemy and
-	   ( device():time_global() - self.enemy_last_seen_time > 60000 or
+	   (  - self.enemy_last_seen_time > 60000 or
 	   not self.enemy:alive() )
 	then
 		self:forget_enemy()
@@ -219,12 +219,12 @@ function heli_combat:update_combat_type( see_enemy )
 
 	if ct ~= self.combat_type then
 		if self.change_combat_type_time then
-			if self.change_combat_type_time < device():time_global() and self.change_combat_type_allowed then
+			if self.change_combat_type_time <  and self.change_combat_type_allowed then
 				self:set_combat_type( ct )
 				self.change_combat_type_time = nil
 			end
 		else
-			self.change_combat_type_time = device():time_global() + combat_type_change_delay
+			self.change_combat_type_time =  + combat_type_change_delay
 		end
 	else
 		self.change_combat_type_time = nil
@@ -321,7 +321,7 @@ end
 
 function heli_combat:search_update_flight( see_enemy )
 	-- менять время от времени направление облёта
-	if self.change_dir_time < device():time_global() then
+	if self.change_dir_time <  then
 		local t
 
 		if see_enemy then
@@ -330,7 +330,7 @@ function heli_combat:search_update_flight( see_enemy )
 			t = math.random( 15000, 20000 )
 		end
 
-		self.change_dir_time = device():time_global() + t --+ 1000000
+		self.change_dir_time =  + t --+ 1000000
 
 		printf( "heli_combat: going by round path, t=%d", t )
 
@@ -341,8 +341,8 @@ function heli_combat:search_update_flight( see_enemy )
 	end
 
 	-- периодически проверть, не переместился ли враг и достаточно ли у вертолёта здоровья
-	if self.change_pos_time < device():time_global() then
-		self.change_pos_time = device():time_global() + 2000
+	if self.change_pos_time <  then
+		self.change_pos_time =  + 2000
 
 		if not self.can_forget_enemy and
 		   self.object:position():distance_to( self.enemy_last_seen_pos ) <= self.search_attack_dist

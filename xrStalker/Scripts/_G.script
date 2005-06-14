@@ -16,6 +16,11 @@ function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
 end
 
+----------------------------------------------------------------------
+if nil == time_global then
+	time_global = function () return device():time_global() end
+end
+
 function wait_game(time_to_wait)
     verify_if_thread_is_running()
     if (time_to_wait == nil) then
@@ -33,8 +38,8 @@ function wait(time_to_wait)
     if (time_to_wait == nil) then
         coroutine.yield()
     else
-        local time_to_stop = device():time_global() + time_to_wait
-        while device():time_global() <= time_to_stop do
+        local time_to_stop = time_global() + time_to_wait
+        while time_global() <= time_to_stop do
             coroutine.yield()
         end
     end
@@ -92,7 +97,7 @@ end
 function pp_effector:process(pp)
     effector.process(self,pp)
 
-    local curr_time = device():time_global()
+    local curr_time = time_global()
     local d         = 0.0
 
     if curr_time < self.start_time then
@@ -146,7 +151,7 @@ function pp_effector:process(pp)
 end
 
 function pp_effector:finished()
-    return          self.stop_time < device():time_global()
+    return          self.stop_time < time_global()
 end
 
 --
@@ -164,7 +169,7 @@ end
 function pp_linear_lerp:process(pp)
     effector.process(self,pp)
 
-    local curr_time = device():time_global()
+    local curr_time = time_global()
     local d         = 0.0
 
     if curr_time < self.start_time then
@@ -218,7 +223,7 @@ function pp_linear_lerp:process(pp)
 end
 
 function pp_linear_lerp:finished()
-    return          self.stop_time < device():time_global()
+    return          self.stop_time < time_global()
 end
 --
 -- end of postprocess for rainbow

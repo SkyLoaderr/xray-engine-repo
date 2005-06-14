@@ -101,7 +101,7 @@ end
 function move_mgr:extrapolate_callback(npc)
 	--printf("___EXTRAPOLATE_CALLBACK___")
 	self.can_use_get_current_point_index = true
-	self.current_point_init_time = device():time_global()
+	self.current_point_init_time = time_global()
 end
 
 function move_mgr:standing_on_terminal_waypoint()
@@ -199,7 +199,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- — момента включени€ схемы должна пройти как минимум секунда, прежде чем
 	-- провер€ть состо€ние синхронизации с другими сталкерами (иначе после лоада
 	-- они могут не успеть заспавнитьс€).
-	self.syn_signal_set_tm = device():time_global() + 1000
+	self.syn_signal_set_tm = time_global() + 1000
 	self.syn_signal = nil
 
 	self.sound_after_anim_start = nil
@@ -219,9 +219,9 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- ѕока этот флаг не станет true (он будет установлен в extrapolate_callback), нельз€ использовать
 	-- значение, которое возвращает get_current_point_index().
 	self.can_use_get_current_point_index = false
-	self.walk_until = device():time_global() + walk_min_time
-	self.run_until = device():time_global() + walk_min_time + run_min_time
-	self.keep_state_until = device():time_global()
+	self.walk_until = time_global() + walk_min_time
+	self.run_until = time_global() + walk_min_time + run_min_time
+	self.keep_state_until = time_global()
 
 	self.team = team
 	if self.team then
@@ -289,7 +289,7 @@ function move_mgr:update()
 		self:reset_sl() -- отпустить прожектор
 	end
 	
-	if self.syn_signal and device():time_global() >= self.syn_signal_set_tm then
+	if self.syn_signal and time_global() >= self.syn_signal_set_tm then
 		if self:sync_ok() then
 			self:scheme_set_signal(self.syn_signal)
 			self.syn_signal = nil
@@ -298,7 +298,7 @@ function move_mgr:update()
 	end
 	
 	if self.can_use_get_current_point_index and not self:arrived_to_first_waypoint() then
-		local t = device():time_global()
+		local t = time_global()
 		if t >= self.keep_state_until then
 			self.keep_state_until = t + keep_state_min_time
 
@@ -438,7 +438,7 @@ end
 function move_mgr:turn_end_callback()
 	local syn = self.path_look_info[self.last_look_index]["syn"]
 	if syn then
-		--self.syn_signal_set_tm = device():time_global() + 1000
+		--self.syn_signal_set_tm = time_global() + 1000
 		self.syn_signal = self.path_look_info[self.last_look_index]["sig"]
 		if not self.syn_signal then
 			utils.abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)

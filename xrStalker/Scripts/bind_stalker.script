@@ -10,7 +10,7 @@ class "actor_binder" (object_binder)
 function actor_binder:__init (obj) super(obj)
 	self.bCheckStart = false
 	
-	self.delayed_sleep_callback_start_tm = device():time_global()
+	self.delayed_sleep_callback_start_tm = time_global()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
@@ -84,7 +84,7 @@ function actor_binder:inventory_callback(npc, info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:sleep_callback()
-	self.delayed_sleep_callback_start_tm = device():time_global() + 1500
+	self.delayed_sleep_callback_start_tm = time_global() + 1500
 end
 ----------------------------------------------------------------------------------------------------------------------
 local drop_location = nil
@@ -111,7 +111,7 @@ function actor_binder:delayed_sleep_callback()
 		if self.st.punch.disable_input_tm then
 			printf("_bp: disable_input")
 			level.disable_input()
-			self.st.enable_input_tm = device():time_global() + self.st.punch.disable_input_tm
+			self.st.enable_input_tm = time_global() + self.st.punch.disable_input_tm
 			self.st.punch.disable_input_tm = nil
 		end
 
@@ -130,7 +130,7 @@ end
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
 
-	local time = device():time_global()
+	local time = time_global()
 
 	if self.delayed_sleep_callback_start_tm and time >= self.delayed_sleep_callback_start_tm then
 		self:delayed_sleep_callback()

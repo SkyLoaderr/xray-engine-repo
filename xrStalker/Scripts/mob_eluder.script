@@ -114,7 +114,7 @@ end
 -- Check Script Control
 function mob_eluder:check_script_control()
 	
-	local cur_time		= device():time_global()
+	local cur_time		= time_global()
 	local dist_to_actor	= self.object:position():distance_to(db.actor:position())
 	
 	local used_dist_check = (self.st.min_dist ~= 0) and (self.st.max_dist ~= 0)

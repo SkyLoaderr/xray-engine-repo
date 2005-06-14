@@ -363,7 +363,7 @@ end
 function action_help:wait_for_player2 ()
 
     if self.act.type == 1 then
-       self.act.begin = device():time_global () / 1000
+       self.act.begin = time_global() / 1000
        self.act.type = 2
        local dir = self.a.npc:position ():sub (self.object:position ())
        dir:normalize ()

@@ -347,12 +347,12 @@ function body_state:anim_update(type)
 
 	--' ќпредел€ем нужно ли добавл€ть анимацию или ждать
 	if (self.states.begin == nil or
-	   device():time_global() - self.states.begin > self.states.idle) and
+	   time_global() - self.states.begin > self.states.idle) and
 	   self.npc:animation_count() <= 1 and
 	   self.states.current_state ~= nil
 	then
 		--' ќпределение промежутков времени между анимаци€ми
-		self.states.begin = device():time_global()
+		self.states.begin = time_global()
 		self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
 										self.animations[self.states.current_state].prop.sumidle) * 1000
 		if math.random(100) < self.animations[self.states.current_state].prop.rnd then

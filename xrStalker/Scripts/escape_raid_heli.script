@@ -10,13 +10,13 @@ function main()
 	heli_mgr:initialize( "heli", "way_raid_heli" )
 --	heli_mgr:initialize( "heli", "w" )
 
---	local t = device():time_global() + 10000
+--	local t =  + 10000
 	while true do
 		if not heli_mgr:update() then
 			break
 		end
 
---		if t and t < device():time_global() then
+--		if t and t <  then
 --			t = nil
 --			heli_mgr:send_to_stay_point()
 --			printf( "TO STAY POINT" )

@@ -739,7 +739,7 @@ end
 --' апдейт
 function animation:update()
 --	printf("update")
---	printf("		time %s", device():time_global())				
+--	printf("		time %s", time_global())				
 --	printf("		current state %s", utils.to_str(self.states.current_state))
 --	printf("		target state %s", utils.to_str(self.states.target_state))
 --	printf("		anims %s", self.npc:animation_count())
@@ -872,7 +872,7 @@ function animation:update()
 		then			
 			if self.states.begin == nil then
 				self:play_rnd(self.states.current_state, 100)
-			elseif device():time_global() - self.states.begin > self.states.idle then
+			elseif time_global() - self.states.begin > self.states.idle then
 				self:play_rnd(self.states.current_state, self.animations[self.states.current_state].prop.rnd)
 			end
 		end		
@@ -898,7 +898,7 @@ function animation:play_rnd(state, rnd)
 	end
 	
 	--' Определение промежутков времени между анимациями	
-	self.states.begin = device():time_global()
+	self.states.begin = time_global()
 	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
 									self.animations[state].prop.sumidle) * 1000
 	if math.random(100) < rnd then	
@@ -953,8 +953,8 @@ function animation:callback_init()
 --		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
 		   self.mgr.callback.begin == nil
 		then
-				self.mgr.callback.begin = device():time_global()
---				printf("		Callback initialized %s", device():time_global())				
+				self.mgr.callback.begin = time_global()
+--				printf("		Callback initialized %s", time_global())				
 		end
 end
 --' обработка колбека на время
@@ -966,9 +966,9 @@ function animation:callback_process()
 		   self.mgr.callback.begin ~= nil
 		then
 --			printf("callback process")
---			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
-			if device():time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
---				printf("		Callback called %s", device():time_global())
+--			printf("	%s - %s ? %s", time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
+			if time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
+--				printf("		Callback called %s", time_global())
 				
 				local a = self.mgr.callback.func
 				local b = self.mgr.callback.obj

@@ -70,7 +70,7 @@ function evaluator_need_robber:evaluate ()
 				end
 			end
 			if team.interrupted_and_blocked_until and
-			   device():time_global() < team.interrupted_and_blocked_until then
+			   time_global() < team.interrupted_and_blocked_until then
 				return false
 			end
 		end
@@ -378,20 +378,20 @@ function action_robber_activity:fsm_step()
 			utils.stalker_look_at_stalker(self.object, actor)
 		elseif self.role == role_leader then
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: I am leader", self.object:name())
-			self.expiration_time = device():time_global() + 3000
+			self.expiration_time = time_global() + 3000
 			self:say(xr_sounds_id.zmey_robber_stop)
 			self.state = state_leader_waiting_for_plr_to_stop
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 5.2 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_helper then
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: I am helper", self.object:name())
-			self.expiration_time = device():time_global() + 1000
+			self.expiration_time = time_global() + 1000
 			self.state = state_helper_waiting_for_leader
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 5.3 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_puncher then
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: I am puncher", self.object:name())
-			self.expiration_time = device():time_global() + 12000
+			self.expiration_time = time_global() + 12000
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 5.4 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
@@ -401,7 +401,7 @@ function action_robber_activity:fsm_step()
 
 	if self.state == state_leader_waiting_for_plr_to_stop then
 		utils.stalker_look_at_stalker(self.object, actor)
-		if self.object:active_sound_count() == 0 and device():time_global() >= self.expiration_time then
+		if self.object:active_sound_count() == 0 and time_global() >= self.expiration_time then
 			if not team.plr_stop_pos then
 				team.plr_stop_pos = actor:position()
 			end
@@ -410,7 +410,7 @@ function action_robber_activity:fsm_step()
 					team.plr_num_bullets = active_item:get_ammo_in_magazine()
 				end
 				self:say(xr_sounds_id.zmey_robber_drop_weap)
-				self.expiration_time = device():time_global() + 3000
+				self.expiration_time = time_global() + 3000
 				self.state = state_leader_shouting_drop_your_weapon
 				--utils.trace(script_name(), "_bp: xr_robbers [%s]: 6 state change: %s",
 				--	self.object:name(), utils.to_str(self.state))
@@ -426,10 +426,10 @@ function action_robber_activity:fsm_step()
 
 	if self.state == state_leader_shouting_drop_your_weapon then
 		utils.stalker_look_at_stalker(self.object, actor)
-		if self.object:active_sound_count() == 0 and device():time_global() >= self.expiration_time and
+		if self.object:active_sound_count() == 0 and time_global() >= self.expiration_time and
 		   isWeapon(active_item) then
 			self:say(xr_sounds_id.zmey_robber_do_what_i_say)
-			self.expiration_time = device():time_global() + 5000
+			self.expiration_time = time_global() + 5000
 			self.state = state_no_more_actions
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 7 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
@@ -439,7 +439,7 @@ function action_robber_activity:fsm_step()
 
 	if self.state == state_helper_waiting_for_leader then
 		utils.stalker_look_at_stalker(self.object, actor)
-		if device():time_global() >= self.expiration_time then
+		if time_global() >= self.expiration_time then
 			self:say(xr_sounds_id.zmey_robber_do_not_move)
 			self.state = state_no_more_actions
 		end
@@ -450,7 +450,7 @@ function action_robber_activity:fsm_step()
 	if self.state == state_puncher_waiting_for_plr_to_drop_weapon then
 		utils.stalker_look_at_stalker(self.object, actor)
 		local isweapon = isWeapon(active_item)
-		if not isweapon or device():time_global() >= self.expiration_time then
+		if not isweapon or time_global() >= self.expiration_time then
 			if not isweapon then
 				team.plr_num_bullets = -1
 				-- чтобы если он опять поднимет оружие, кол-во патронов было бы уже другим
@@ -471,7 +471,7 @@ function action_robber_activity:fsm_step()
 		if self.object:position():distance_to(actor:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
 			self.object:add_animation("udar_0", true)
-			self.expiration_time = device():time_global() + 700
+			self.expiration_time = time_global() + 700
 			self.state = state_puncher_waiting_to_grab_money
 		else
 			self.object:set_desired_direction(actor:direction())
@@ -482,9 +482,9 @@ function action_robber_activity:fsm_step()
 	
 	if self.state == state_puncher_waiting_to_grab_money then
 		utils.trace(script_name(), "_bp: xr_robbers [%s, %d]: puncher waiting to grab money",
-			self.object:name(), device():time_global())
+			self.object:name(), time_global())
 		utils.stalker_look_at_stalker(self.object, actor)
-		local time_global = device():time_global()
+		local time_global = time_global()
 		if time_global >= self.expiration_time --[[and time_global - self.expiration_time < 150]] then
 			local anim_count = self.object:animation_count()
 			if anim_count > 0 and self.object:position():distance_to(actor:position()) < 2 then
@@ -540,7 +540,7 @@ function action_robber_activity:finalize()
 	self.object:clear_animations()
 
 	local team = this.teams[self.st.team]
-	team.interrupted_and_blocked_until = device():time_global() + 15000
+	team.interrupted_and_blocked_until = time_global() + 15000
 
 	action_base.finalize(self)
 end

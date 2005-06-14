@@ -113,7 +113,7 @@ function action_door:fastcall()
 end
 
 function action_door:close_check()
-	printf("_bp: close_check(): %d", device():time_global())
+	printf("_bp: close_check(): %d", time_global())
 	if not self.initialized then
 		printf("_bp: close_check(): not initialized")
 		return false
@@ -127,7 +127,7 @@ function action_door:close_check()
 end
 
 function action_door:close_action()
-	printf("_bp: close_action(): %d", device():time_global())
+	printf("_bp: close_action(): %d", time_global())
 
 	printf("_bp: action_door:update(): door blocked")
 	-- «акрыли до предела, будем блокировать

@@ -8,7 +8,7 @@ end
 
 function main()
 	local dog  = get_level_object( "m_dog1" )
-    local time = device():time_global() + 2000
+    local time = time_global() + 2000
     dog:script( true, this.script_name() )
 
     dog:set_callback ( this.move_callback, game_object.movement )
@@ -19,10 +19,10 @@ function main()
         	action( dog, move( move.walk_fwd, patrol( "way1" , patrol.next, patrol.continue, true, index) ), cond( cond.move_end ) )
         end
 
-        if( device():time_global() > time + 5000 ) then
+        if( time_global() > time + 5000 ) then
         	reset_action( dog, this.script_name() )
             action( dog, anim( anim.look_around, 0 ), cond( cond.time_end, 2000 ) )
-            time = device():time_global() + 4000
+            time = time_global() + 4000
         end
 
         wait()
