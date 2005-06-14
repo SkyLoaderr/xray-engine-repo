@@ -223,6 +223,11 @@ void CGameSpawnConstructor::add_object				(CSE_Abstract *object)
 	m_critical_section.Leave	();
 }
 
+void CGameSpawnConstructor::remove_object			(CSE_Abstract *object)
+{
+	spawn_graph().remove_vertex	(object->m_tSpawnID);
+}
+
 void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 {
 	m_actor							= 0;

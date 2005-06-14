@@ -29,3 +29,9 @@ IC	const CGameGraph::SLevel &CLevelSpawnConstructor::level	() const
 {
 	return						(m_level);
 }
+
+IC	CGameSpawnConstructor &CLevelSpawnConstructor::game_spawn_constructor	() const
+{
+	VERIFY						(m_game_spawn_constructor);
+	return						(*m_game_spawn_constructor);
+}

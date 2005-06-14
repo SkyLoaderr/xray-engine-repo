@@ -336,6 +336,39 @@ struct remove_too_far_predicate {
 	}
 };
 
+class remove_invalid_zones_predicate {
+public:
+	typedef CLevelSpawnConstructor::SPAWN_STORAGE	SPAWN_STORAGE;
+
+private:
+	const SPAWN_STORAGE					*m_zones;
+	const CLevelSpawnConstructor		*m_level_spawn_constructor;
+
+public:
+	IC			remove_invalid_zones_predicate	(const CLevelSpawnConstructor *level_spawn_constructor, const SPAWN_STORAGE *zones)
+	{
+		VERIFY							(level_spawn_constructor);
+		m_level_spawn_constructor		= level_spawn_constructor;
+
+		VERIFY							(zones);
+		m_zones							= zones;
+	}
+
+	IC	bool	operator()						(CSE_ALifeObject *object) const
+	{
+		SPAWN_STORAGE::const_iterator	I = std::find(m_zones->begin(),m_zones->end(),object);
+		if (I == m_zones->end())
+			return						(false);
+
+		VERIFY							(!object->m_spawn_control);
+		VERIFY							(object->m_story_id == INVALID_STORY_ID);
+		m_level_spawn_constructor->game_spawn_constructor().remove_object(object);
+		CSE_Abstract					*abstract = object;
+		F_entity_Destroy				(abstract);
+		return							(true);
+	}
+};
+
 void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 {
 	// create graph engine
@@ -343,6 +376,7 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 	m_graph_engine						= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
 
 	xr_vector<u32>						l_tpaStack;
+	SPAWN_STORAGE						zones;
 	l_tpaStack.reserve					(1024);
 	SPAWN_STORAGE::iterator				I = m_spawns.begin();
 	SPAWN_STORAGE::iterator				E = m_spawns.end();
@@ -396,8 +430,13 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
 			zone->m_wArtefactSpawnCount	= (u16)l_tpaStack.size();
 			if (!zone->m_wArtefactSpawnCount) {
-				zone->m_fProbability	= 0.f;
-				Msg						("- Cannot generate artefact spawn positions for zone [%s] on level [%s]",zone->s_name_replace(),*level().name());
+				Msg						("! CANNOT GENERATE ARTEFACT SPAWN POSITIONS FOR ZONE [%s] ON LEVEL [%s]",zone->name_replace(),*level().name());
+				Msg						("! ZONE [%s] ON LEVEL [%s] IS REMOVED BY AI COMPILER",zone->name_replace(),*level().name());
+				R_ASSERT3				(zone->m_story_id != INVALID_STORY_ID,"Cannot remove story object",zone->name_replace());
+				R_ASSERT3				(!zone->m_spawn_control,"Cannot remove spawn control object",zone->name_replace());
+				zones.push_back			(zone);
+				l_tpaStack.clear		();
+				continue;
 			}
 		}
 		else
@@ -420,6 +459,9 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 		
 		l_tpaStack.clear				();
 	}
+
+	I									= std::remove_if(m_spawns.begin(),m_spawns.end(),remove_invalid_zones_predicate(this,&zones));
+	m_spawns.erase						(I,m_spawns.end());
 }
 
 void CLevelSpawnConstructor::fill_level_changers				()
@@ -490,12 +532,12 @@ void CLevelSpawnConstructor::Execute							()
 {
 	load_objects						();
 	fill_spawn_groups					();
-	
+
 	init								();
 	
 	correct_objects						();
 	generate_artefact_spawn_positions	();
-
+	
 	xr_delete							(m_level_graph);
 	xr_delete							(m_cross_table);
 	xr_delete							(m_graph_engine);

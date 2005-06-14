@@ -80,6 +80,7 @@ public:
 	virtual							~CGameSpawnConstructor	();
 			void					add_story_object		(ALife::_STORY_ID id,CSE_ALifeDynamicObject *object, LPCSTR level_name);
 			void					add_object				(CSE_Abstract *object);
+			void					remove_object			(CSE_Abstract *object);
 	IC		void					add_level_changer		(CSE_ALifeLevelChanger *level_changer);
 	IC		void					add_level_points		(const LEVEL_POINT_STORAGE &level_points);
 	IC		u32						level_id				(LPCSTR level_name);

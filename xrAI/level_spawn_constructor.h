@@ -77,6 +77,7 @@ public:
 	IC		CSE_ALifeCreatureActor		*actor								() const;
 	IC		const CGameGraph::SLevel	&level								() const;
 			void						update								();
+	IC		CGameSpawnConstructor		&game_spawn_constructor				() const;
 };
 
 #include "level_spawn_constructor_inline.h"
