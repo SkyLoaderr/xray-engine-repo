@@ -410,7 +410,8 @@ void CEnvironment::load		()
     }
 
 	// music
-	if (pSettings->section_exist("music")){
+	if (pSettings->section_exist("music"))
+	if (0){
 		CInifile::Sect&		S	= pSettings->r_section	("music");
 		CInifile::SectIt	it	= S.begin(), end = S.end();
 		for (;it!=end; it++)
