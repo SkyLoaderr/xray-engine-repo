@@ -159,9 +159,9 @@
 		<texture r="0" g="255" b="255">ui\ui_teambase</texture>
 	</mp_team_base_2_mini_spot>
 	
-	<mp_friend_mini_spot width="3" height="3" alignment="c"> 
+	<mp_friend_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="0" g="255" b="0">ui\hud_map_point</texture>
-	</mp_friend_mini_spot>stretch = "1"
+	</mp_friend_mini_spot>
 		
 	<mp_af_friend_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
 		<texture r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture>
