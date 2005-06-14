@@ -163,19 +163,19 @@
 		<texture r="0" g="255" b="0">ui\hud_map_point</texture>
 	</mp_friend_mini_spot>
 		
-	<mp_af_friend_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
+	<mp_af_friend_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
 		<texture r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
 		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</mp_af_friend_mini_spot>
 
-	<mp_af_enemy_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
+	<mp_af_enemy_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_enemy"> 
 		<texture r="255" g="0" b="0" stretch = "1">ui\ui_mini_af_spot</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="255" g="0" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
 		<texture_above x="0" y="0" width="8" height="4" r="255" g="0" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</mp_af_enemy_mini_spot>
 	
-	<mp_af_neutral_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
+	<mp_af_neutral_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_neutral">> 
 		<texture r="255" g="255" b="255" stretch = "1">ui\ui_mini_af_spot</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="255" g="0" b="255" stretch = "1">ui\ui_mini_af_spot</texture_below>
 		<texture_above x="0" y="0" width="8" height="4" r="255" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
@@ -200,15 +200,15 @@
 		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="255"> ui\ui_map_arrow_02</texture>
 	</mp_team_base_2_pointer>	
 	
-	<mp_af_neutral_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
+	<mp_af_neutral_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_neutral"> 
 		<texture x="8" y="7" width="15" height="17" r="255" g="255" b="255"> ui\ui_map_arrow_02</texture>
 	</mp_af_neutral_mini_pointer>	
 	
-	<mp_af_enemy_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
+	<mp_af_enemy_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_enemy"> 
 		<texture x="8" y="7" width="15" height="17" r="255" g="0" b="0"> ui\ui_map_arrow_02</texture>
 	</mp_af_enemy_mini_pointer>	
 	
-	<mp_af_friend_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
+	<mp_af_friend_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
 		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0"> ui\ui_map_arrow_02</texture>
 	</mp_af_friend_mini_pointer>	
 
