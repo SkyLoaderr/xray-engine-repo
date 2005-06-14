@@ -26,7 +26,8 @@ CScriptSound::CScriptSound				(LPCSTR caSoundName, ESoundTypes sound_type)
 
 CScriptSound::~CScriptSound		()
 {
-	m_sound.destroy();
+	THROW3					(!m_sound.feedback,"playing sound is not completed, but is destroying",m_sound.handle ? m_sound.handle->file_name() : "unknown");
+	m_sound.destroy			();
 }
 
 const Fvector &CScriptSound::GetPosition() const
