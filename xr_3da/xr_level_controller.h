@@ -85,6 +85,10 @@ enum	EKeyBinding
 
 	kVOTEYES		,
 	kVOTENO			,
+
+	kNEXT_SLOT		,
+	kPREV_SLOT		,
+
 	kFORCEDWORD		= u32(-1)
 };
 

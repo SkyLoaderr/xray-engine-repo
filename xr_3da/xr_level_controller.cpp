@@ -92,9 +92,11 @@ _keybind  keybind[]		= {
 	{ "ext_14",			kEXT_14			},
 	{ "ext_15",			kEXT_15			},
 
-	{ "vote_yes",			kVOTEYES	},
-	{ "vote_no",			kVOTENO		},
+	{ "vote_yes",		kVOTEYES		},
+	{ "vote_no",		kVOTENO			},
 
+	{ "next_slot",		kNEXT_SLOT		},
+	{ "prev_slot",		kPREV_SLOT		},
 
 	{ NULL, 			0				}
 };

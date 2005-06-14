@@ -154,11 +154,25 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			m_dwStartKickTime = Level().timeServer();
 		}break;
 		//-----------------------------------------------------
+	case kNEXT_SLOT:
+		{
+			OnNextWeaponSlot();
+		}break;
+	case kPREV_SLOT:
+		{
+			OnPrevWeaponSlot();
+		}break;
 	}
 }
 void CActor::IR_OnMouseWheel(int direction)
 {
 	if(inventory().Action( (direction>0)? kWPN_ZOOM_DEC:kWPN_ZOOM_INC , CMD_START)) return;
+
+
+	if (direction>0)
+		OnNextWeaponSlot				();
+	else
+		OnPrevWeaponSlot				();
 }
 
 void CActor::IR_OnKeyboardRelease(int cmd)
@@ -408,3 +422,54 @@ BOOL CActor::HUDview				( )const
 }
 
 //void CActor::IR_OnMousePress(int btn)
+static	u32 SlotsToCheck [] = {
+		KNIFE_SLOT		,		// 0
+		PISTOL_SLOT		,		// 1
+		RIFLE_SLOT		,		// 2
+		GRENADE_SLOT	,		// 3
+		APPARATUS_SLOT	,		// 4
+};
+
+void	CActor::OnNextWeaponSlot()
+{
+	u32 ActiveSlot = inventory().GetActiveSlot();
+	if (ActiveSlot == NO_ACTIVE_SLOT) ActiveSlot = inventory().GetPrevActiveSlot();
+	if (ActiveSlot == NO_ACTIVE_SLOT) return;
+	
+	u32 NumSlotsToCheck = sizeof(SlotsToCheck)/sizeof(u32);	
+	for (u32 CurSlot=0; CurSlot<NumSlotsToCheck; CurSlot++)
+	{
+		if (SlotsToCheck[CurSlot] == ActiveSlot) break;
+	};
+	if (CurSlot >= NumSlotsToCheck) return;
+	for (u32 i=CurSlot+1; i<NumSlotsToCheck; i++)
+	{
+		if (inventory().ItemFormSlot(SlotsToCheck[i]))
+		{
+			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
+			return;
+		}
+	}
+};
+
+void	CActor::OnPrevWeaponSlot()
+{
+	u32 ActiveSlot = inventory().GetActiveSlot();
+	if (ActiveSlot == NO_ACTIVE_SLOT) ActiveSlot = inventory().GetPrevActiveSlot();
+	if (ActiveSlot == NO_ACTIVE_SLOT) return;
+
+	u32 NumSlotsToCheck = sizeof(SlotsToCheck)/sizeof(u32);	
+	for (u32 CurSlot=0; CurSlot<NumSlotsToCheck; CurSlot++)
+	{
+		if (SlotsToCheck[CurSlot] == ActiveSlot) break;
+	};
+	if (CurSlot >= NumSlotsToCheck) return;
+	for (s32 i=s32(CurSlot-1); i>=0; i--)
+	{
+		if (inventory().ItemFormSlot(SlotsToCheck[i]))
+		{
+			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
+			return;
+		}
+	}
+};

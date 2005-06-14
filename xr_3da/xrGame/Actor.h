@@ -682,6 +682,8 @@ public:
 	virtual void				OnCriticalRadiationHealthLoss	();
 
 	virtual	bool				InventoryAllowSprint			();
+	virtual void				OnNextWeaponSlot				();
+	virtual void				OnPrevWeaponSlot				();
 public:	//. hack for MP test
 	ref_light					dbgmp_light						;
 };
