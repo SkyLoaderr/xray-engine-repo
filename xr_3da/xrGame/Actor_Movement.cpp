@@ -266,7 +266,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			}
 		}
 
-		if (!CanSprint())
+		if ((mstate_wf&mcSprint) && !CanSprint())
 		{
 			mstate_wf				&= ~mcSprint;
 		}
@@ -544,6 +544,7 @@ bool CActor::CanSprint			()
 						Game().PlayerCanSprint(this)
 						&& CanRun()
 						&& !(mstate_real&mcLStrafe || mstate_real&mcRStrafe)
+						&& InventoryAllowSprint()
 						;
 
 	return can_Sprint;

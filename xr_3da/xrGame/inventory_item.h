@@ -193,7 +193,9 @@ protected:
 	ALife::_TIME_ID			m_dwItemRemoveTime;
 	ALife::_TIME_ID			m_dwItemIndependencyTime;
 
-
+	//  [6/14/2005]
+	bool	m_bAllowSprint;
+	//  [6/14/2005]
 	////////// network //////////////////////////////////////////////////
 public:
 	virtual void	make_Interpolation	();
@@ -211,6 +213,10 @@ public:
 
 	virtual bool			NeedToDestroyObject	() const;
 	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+
+	//  [6/14/2005]
+	virtual	bool	IsSprintAllowed		() const {return m_bAllowSprint;} ;
+	//  [6/14/2005]
 
 protected:
 	virtual void	UpdateXForm	();

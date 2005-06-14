@@ -680,6 +680,8 @@ public:
 	virtual	void				OnCriticalHitHealthLoss			();
 	virtual	void				OnCriticalWoundHealthLoss		();
 	virtual void				OnCriticalRadiationHealthLoss	();
+
+	virtual	bool				InventoryAllowSprint			();
 public:	//. hack for MP test
 	ref_light					dbgmp_light						;
 };

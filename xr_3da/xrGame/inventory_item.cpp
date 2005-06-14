@@ -127,6 +127,12 @@ void CInventoryItem::Load(LPCSTR section)
 	else
 		m_dwItemRemoveTime = ITEM_REMOVE_TIME;
 	//////////////////////////////////////
+	//  [6/14/2005]
+	if (pSettings->line_exist(section, "sprint_allowed"))
+		m_bAllowSprint = pSettings->r_bool(section, "sprint_allowed") == 1;
+	else
+		m_bAllowSprint = true;
+	//  [6/14/2005]
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)

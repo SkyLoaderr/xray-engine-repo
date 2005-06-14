@@ -1809,3 +1809,17 @@ bool				CActor::Check_for_BackStab_Bone			(u16 element)
 	return false;
 }
 
+bool				CActor::InventoryAllowSprint			()
+{
+	PIItem pActiveItem = inventory().ActiveItem();
+	if (pActiveItem && !pActiveItem->IsSprintAllowed())
+	{
+		return false;
+	};
+	PIItem pOutfitItem = inventory().ItemFormSlot(OUTFIT_SLOT);
+	if (pOutfitItem && !pOutfitItem->IsSprintAllowed())
+	{
+		return false;
+	}
+	return true;
+};
