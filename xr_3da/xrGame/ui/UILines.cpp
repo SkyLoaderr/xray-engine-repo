@@ -116,7 +116,7 @@ void CUILines::Draw(float x, float y){
 
 	float interval = m_interval*m_pFont->CurrentHeightRel();
 
-	for (int i=0; i<size; i++)
+	for (int i=0; i<(int)size; i++)
 	{
  		pos.x = x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
 		m_lines[i].Draw(m_pFont, pos.x, pos.y);

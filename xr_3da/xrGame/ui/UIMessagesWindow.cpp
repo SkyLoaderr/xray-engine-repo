@@ -100,7 +100,7 @@ void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INF
 		R_ASSERT(pSender);
 
 	CUIPdaMsgListItem* pItem = NULL;
-	CUIPdaMsgListItem* pItem2 = NULL;
+//	CUIPdaMsgListItem* pItem2 = NULL;
 
 	pItem = xr_new<CUIPdaMsgListItem>();
 //.	pItem2 = xr_new<CUIPdaMsgListItem>();
