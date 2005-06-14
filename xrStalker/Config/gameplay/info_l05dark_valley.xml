@@ -42,6 +42,20 @@
 <info_portion id="val_escort_nap1_go_rescue"></info_portion>
 <info_portion id="val_escort_nap1_no_thanx"></info_portion>
 
+<!-- Жертвоприношение -->
+<info_portion id="val_sacrifice_not_spawn"></info_portion>
+<info_portion id="val_sacrifice_spawn"></info_portion>
+<info_portion id="val_sacrifice_start"></info_portion>
+<info_portion id="val_sacrifice_finish"></info_portion>
+<info_portion id="val_sacrifice_plr_detected"></info_portion>
+<info_portion id="val_sacrifice_victim_free"></info_portion>
+<info_portion id="val_sacrifice_victim_dead"></info_portion>
+<info_portion id="val_sacrifice_guard1_dead"></info_portion>
+<info_portion id="val_sacrifice_guard2_dead"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase1_done"></info_portion>
+<info_portion id="val_sacrifice_guard2_phrase12_done"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase3_done"></info_portion>
+
 <!-- Стартует машина около бензоколонки -->
 <info_portion id="val_truck_actor_near_gas_st"></info_portion>
 <info_portion id="val_truck_start"></info_portion>
@@ -65,21 +79,9 @@
 <info_portion id="val_prisoner_join"></info_portion>
 <info_portion id="val_prisoner_plr_captured"></info_portion>
 
-<!-- Жертвоприношение -->
-<info_portion id="val_sacrifice_spawn"></info_portion>
-<info_portion id="val_sacrifice_start"></info_portion>
-<info_portion id="val_sacrifice_finish"></info_portion>
-<info_portion id="val_sacrifice_plr_detected"></info_portion>
-<info_portion id="val_sacrifice_victim_free"></info_portion>
-<info_portion id="val_sacrifice_victim_dead"></info_portion>
-<info_portion id="val_sacrifice_guard1_dead"></info_portion>
-<info_portion id="val_sacrifice_guard2_dead"></info_portion>
-<info_portion id="val_sacrifice_guard1_phrase1_done"></info_portion>
-<info_portion id="val_sacrifice_guard2_phrase12_done"></info_portion>
-<info_portion id="val_sacrifice_guard1_phrase3_done"></info_portion>
-
 <!-- Монолог возле трубы -->
 <info_portion id="val_tunnel_talk_start"></info_portion>
+<info_portion id="val_tunnel_bandit_leave"></info_portion>
 <info_portion id="val_tunnel_plr_detected"></info_portion>
 
 <!-- Открытие дверей -->
