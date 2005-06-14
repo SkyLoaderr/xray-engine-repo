@@ -59,6 +59,7 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 
 	GAME_NEWS_DATA news_data;
 	news_data.news_text = CStringTable().IndexById(news);
+
 	news_data.show_time = DEFAULT_NEWS_SHOW_TIME;
 	
 	if(xr_strlen(texture_name)>0)
@@ -78,12 +79,16 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"no entrance found for news in string table", news);
 		return								false;
 	}
-	
-	if(delay==0)
-		pActor->AddGameNews(news_data);
-	else
-		pActor->AddGameNews_deffered(news_data,delay);
 
+CTimer T;
+T.Start();
+	if(delay==0){
+		pActor->AddGameNews(news_data);
+	}
+	else{
+		pActor->AddGameNews_deffered(news_data,delay);
+	}
+Msg("---CScriptGameObject::GiveGameNews [%d]ms",T.GetElapsed_ms());
 	return true;
 }
 bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)

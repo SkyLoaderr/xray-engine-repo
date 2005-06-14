@@ -51,5 +51,5 @@ CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iI
 	CUIChatLog*	m_pChatLog;
 	CUIChatWnd*	m_pChatWnd;
 	CUIGameLog*	m_pGameLog;
-	CUIGameLog*	m_pGameLog2;
+//.	CUIGameLog*	m_pGameLog2;
 };

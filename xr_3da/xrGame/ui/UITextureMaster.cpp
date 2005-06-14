@@ -72,6 +72,10 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 }
 
 void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
+//	CTimer T;
+//	T.Start();
+//	Msg("----InitTexture-begin");
 	xr_string tx = texture_name;
 	InitTexture(tx, tc);
+//	Msg("----InitTexture[%d]",T.GetElapsed_ms());
 }

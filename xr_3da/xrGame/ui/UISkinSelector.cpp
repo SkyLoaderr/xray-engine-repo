@@ -57,15 +57,15 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	xml_init.InitButton(xmlDoc, "button", 0, &UIOkBtn);
 	Frect rect = UIOkBtn.GetWndRect();
 
-	UIOkBtn.SetWndPos(	UI_BASE_WIDTH/2.0f - ((rect.right - rect.left) * 1.5),
+	UIOkBtn.SetWndPos(	UI_BASE_WIDTH/2.0f - ((rect.right - rect.left) * 1.5f),
 						r.bottom + r.top/2.0f - UIOkBtn.GetHeight());
 
 	// cancel button
 	AttachChild(&UICancelBtn);
 	xml_init.InitButton(xmlDoc, "button", 1, &UICancelBtn);
 	rect	= UICancelBtn.GetWndRect();
-	UICancelBtn.SetWndPos(UI_BASE_WIDTH / 2 + ((rect.right - rect.left) * 0.5),
-		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
+	UICancelBtn.SetWndPos(UI_BASE_WIDTH/2.0f + ((rect.right - rect.left) * 0.5f),
+		r.bottom+r.top/2.0f - UICancelBtn.GetHeight());
 
 	SetFont(HUD().Font().pFontHeaderRussian);
 }
