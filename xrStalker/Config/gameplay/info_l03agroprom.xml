@@ -61,6 +61,8 @@
 
 	<info_portion id="agr_factory_assault_start">
 	</info_portion>
+	<info_portion id="agr_factory_assault_skirmish">
+	</info_portion>
     <info_portion id="agr_help_stalkers_start">
 		<task>agr_help_stalkers</task>
 		<action>level_tasks.notify_new_task</action>

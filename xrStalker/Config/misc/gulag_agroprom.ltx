@@ -119,69 +119,103 @@ path_main = sleep3
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. Солдаты на фабрике 
 ;-------------------------------------------------------------------------------------------------
-; -------------- бегут к сталкерам Крота
+; -------------- подкрадываются к сталкерам Крота -----------------------
+[combat_ignore@agr_factory_assault]
+
 [logic@agr_factory_assault_walker1]
 active = walker1@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker1@agr_factory_assault]
 path_walk = walk1
 ;path_look = look1
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker2]
 active = walker2@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker2@agr_factory_assault]
 path_walk = walk2
 ;path_look = look2
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker3]
 active = walker3@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker3@agr_factory_assault]
 path_walk = walk3
 ;path_look = look3
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker4]
 active = walker4@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker4@agr_factory_assault]
 path_walk = walk4
 ;path_look = look4
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker5]
 active = walker5@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker5@agr_factory_assault]
 path_walk = walk5
 ;path_look = look5
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker6]
 active = walker6@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker6@agr_factory_assault]
 path_walk = walk6
 ;path_look = look6
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker7]
 active = walker7@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker7@agr_factory_assault]
 path_walk = walk7
 ;path_look = look7
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 [logic@agr_factory_assault_walker8]
 active = walker8@agr_factory_assault
+combat_ignore = combat_ignore@agr_factory_assault
 
 [walker8@agr_factory_assault]
 path_walk = walk8
 ;path_look = look8
+combat_ignore_cond = always
+team = agr_assault
+on_signal = s | %+agr_factory_assault_skirmish%
 
 
 ;--------------------------- дерутся с группой Крота. -------------------------
@@ -316,55 +350,118 @@ path_walk = walk8
 ;path_look = look8
 
 ;-------------------------------------------------------------------------------------------------
-;-- AGROPROM. Группа Крота обороняется.
+;-- AGROPROM. Группа Крота
 ;-------------------------------------------------------------------------------------------------
+; ------------------- ждут атаки -----------------------
+[combat_ignore@agr_factory_defence]
+
 [logic@agr_factory_defence_camper1]
 active = camper1@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [camper1@agr_factory_defence]
 path_walk = walk1
 path_look = look1
+combat_ignore_cond = always
 
 
 [logic@agr_factory_defence_camper2]
 active = camper2@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [camper2@agr_factory_defence]
 path_walk = walk2
 path_look = look2
+combat_ignore_cond = always
 
 
 [logic@agr_factory_defence_camper3]
 active = camper3@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [camper3@agr_factory_defence]
 path_walk = walk3
 path_look = look3
+combat_ignore_cond = always
 
 
 [logic@agr_factory_defence_camper4]
 active = camper4@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [camper4@agr_factory_defence]
 path_walk = walk4
 path_look = look4
+combat_ignore_cond = always
 
 
 [logic@agr_factory_defence_walker5]
 active = walker5@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [walker5@agr_factory_defence]
 path_walk = walk5
 path_look = look5
+combat_ignore_cond = always
 
 
 [logic@agr_factory_defence_walker6]
 active = walker6@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
 
 [walker6@agr_factory_defence]
 path_walk = walk6
 path_look = look6
+combat_ignore_cond = always
 
+
+;---------------- отстреливаются от военных -----------------
+[logic@agr_factory_defence_skirmish_camper1]
+active = camper1@agr_factory_defence_skirmish
+
+[camper1@agr_factory_defence_skirmish]
+path_walk = walk1
+path_look = look1
+
+
+[logic@agr_factory_defence_skirmish_camper2]
+active = camper2@agr_factory_defence_skirmish
+
+[camper2@agr_factory_defence_skirmish]
+path_walk = walk2
+path_look = look2
+
+
+[logic@agr_factory_defence_skirmish_camper3]
+active = camper3@agr_factory_defence_skirmish
+
+[camper3@agr_factory_defence_skirmish]
+path_walk = walk3
+path_look = look3
+
+
+[logic@agr_factory_defence_skirmish_camper4]
+active = camper4@agr_factory_defence_skirmish
+
+[camper4@agr_factory_defence_skirmish]
+path_walk = walk4
+path_look = look4
+
+
+[logic@agr_factory_defence_skirmish_walker5]
+active = walker5@agr_factory_defence_skirmish
+
+[walker5@agr_factory_defence_skirmish]
+path_walk = walk5
+path_look = look5
+
+
+[logic@agr_factory_defence_skirmish_walker6]
+active = walker6@agr_factory_defence_skirmish
+
+[walker6@agr_factory_defence_skirmish]
+path_walk = walk6
+path_look = look6
 
 ;---------------- помогают Кроту -----------------
 
