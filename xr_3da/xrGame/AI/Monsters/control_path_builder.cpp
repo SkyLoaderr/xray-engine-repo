@@ -136,6 +136,8 @@ bool CControlPathBuilder::is_path_built()
 
 bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel_mask)
 {
+	if (!accessible(target)) return false;
+	
 	if (node == u32(-1)) {
 		// нода в прямой видимости?
 		restrictions().add_border(object().Position(), target);
