@@ -16,7 +16,7 @@ CUIStaticItem::CUIStaticItem()
 
 	hShader			= NULL;
 #ifdef DEBUG
-//	dbg_tex_name[0] = NULL;
+	dbg_tex_name = NULL;
 #endif
 	hGeom_list.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hGeom_fan.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
@@ -36,7 +36,7 @@ void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 //	Msg("----hShader.create[%d]",T.GetElapsed_ms());
 
 #ifdef DEBUG
-//	strcpy(dbg_tex_name,tex);
+	dbg_tex_name = tex;
 #endif
 }
 //--------------------------------------------------------------------

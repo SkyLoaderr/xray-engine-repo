@@ -23,7 +23,7 @@ public:
 	using CUICustomItem::SetOriginalRect;
 
 #ifdef DEBUG
-//	string_path		dbg_tex_name;
+	shared_str	dbg_tex_name;
 #endif
 					CUIStaticItem	();
 	virtual			~CUIStaticItem	();
