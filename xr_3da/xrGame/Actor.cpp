@@ -1326,8 +1326,9 @@ bool  CActor::NeedToDestroyObject() const
 	}
 	else 
 	{
+		if (g_Alive()) return false;
 		if (g_iCorpseRemove == -1) return false;
-		if (g_iCorpseRemove == 0) return true;
+		if (g_iCorpseRemove == 0 && m_bAllowDeathRemove) return true;
 		if(TimePassedAfterDeath()>m_dwBodyRemoveTime && m_bAllowDeathRemove)
 			return true;
 		else
