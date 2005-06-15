@@ -34,7 +34,7 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 on_info = {+val_sacrifice_guard1_phrase1_done} remark@phrase1
 on_info2 = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; фраза: Да он уже достал, в натуре! На этой неделе уже 3 раза туда...
@@ -46,7 +46,7 @@ anim = guard
 snd = speach
 on_signal = sound_end | remark@phrase2
 on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ш-ш-ш-ш.. Слышал? Что-то у меня дурное предчувствие. Короче, не хочется мне из Лагеря уходить.
@@ -58,7 +58,7 @@ anim = guard
 snd = speach
 on_signal = sound_end | %+val_sacrifice_guard2_phrase12_done%
 on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase3_done} camper@kill_wait
-combat_ignore_cond = {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; ждем пока не убьют пленного
@@ -73,7 +73,7 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 no_retreat = true
 on_info = {=is_dead_one(401)} walker@leave
-combat_ignore_cond = {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; уходим

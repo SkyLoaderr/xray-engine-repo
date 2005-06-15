@@ -34,7 +34,7 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 on_info = {+val_sacrifice_start} remark@phrase1
 on_info2 = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403:401)}
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ну давай, типа собирайся. Боров сказал отвести этого болвана на Базу Монолита.
@@ -48,7 +48,7 @@ snd = speach
 on_signal = sound_end | %+val_sacrifice_guard1_phrase1_done%
 on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
 on_info2 = {+val_sacrifice_guard2_phrase12_done} remark@phrase2
-combat_ignore_cond = {=check_fighting(403:401)} ;{-val_sacrifice_victim_dead}, 
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; фраза: Угу. А у меня есть идея.
@@ -61,7 +61,7 @@ anim = guard
 snd = speach
 on_signal = sound_end | camper@kill
 on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403:401)} ;{-val_sacrifice_victim_dead}, 
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; убиваем пленного
