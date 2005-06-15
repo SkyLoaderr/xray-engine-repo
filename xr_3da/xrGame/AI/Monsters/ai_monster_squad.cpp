@@ -112,3 +112,24 @@ void CMonsterSquad::UpdateSquadCommands()
 	ProcessAttack	();
 	ProcessIdle		();
 }
+
+void CMonsterSquad::Net_Relcase(CObject *O)
+{
+	// Удалить все цели, объекты которых невалидны или ушли в оффлайн
+	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); ++it_goal) {
+		SMemberGoal goal = it_goal->second;
+		if (goal.entity == O) {
+			it_goal->second.entity	= 0;
+			it_goal->second.type	= MG_None;
+		}
+	}
+
+	// Удалить все цели, объекты которых невалидны или ушли в оффлайн
+	for (MEMBER_COMMAND_MAP_IT it = m_commands.begin(); it != m_commands.end(); it++) {
+		SSquadCommand com = it->second;
+		if (com.entity == O) {
+			it->second.entity	= 0;
+			it->second.type		= SC_NONE;
+		}
+	}
+}

@@ -372,6 +372,8 @@ void CBaseMonster::net_Relcase(CObject *O)
 		CorpseMan.reinit	();
 
 		UpdateMemory		();
+		
+		monster_squad().net_relcase(O);
 	}
 }
 	
