@@ -41,7 +41,7 @@ EMeetActionType	CSE_ALifeAnomalousZone::tfGetActionType(CSE_ALifeSchedulable *tp
 
 bool CSE_ALifeAnomalousZone::bfActive()
 {
-	return						(m_maxPower > EPS_L);
+	return						(fis_zero(m_maxPower,EPS_L) || !interactive());
 }
 
 CSE_ALifeDynamicObject *CSE_ALifeAnomalousZone::tpfGetBestDetector()
