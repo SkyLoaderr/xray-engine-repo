@@ -2,13 +2,13 @@
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 
-	<!-- NAME -->
+	<!-- NAME 
 	<name_static x="0" y="0" width="130" height="22">
 		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
-	</name_static>
+	</name_static>-->
 
 	<!-- ICON -->
-	<icon_static x="0" y="30" width="130" height="108"></icon_static>
+	<icon_static x="0" y="0" width="100" height="140"></icon_static>
 
 	<!-- RANK 
 	<rank_static x="50" y="141" width="125" height="15">
