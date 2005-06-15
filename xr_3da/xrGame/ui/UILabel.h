@@ -6,7 +6,10 @@
 class CUILabel : public CUIFrameLineWnd,IUITextControl 
 {
 public:
-	// CUIFrameLineWnd
+	//IUISimpleWindow
+	virtual void SetWidth(float width);
+	virtual void SetHeight(float height);
+    // CUIFrameLineWnd
 	virtual void Init(float x, float y, float width, float height);
 	virtual void Draw();
 	

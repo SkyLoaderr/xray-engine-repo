@@ -26,3 +26,13 @@ void CUILabel::SetTextPosX(float x){
 void CUILabel::SetTextPosY(float y){
 	m_textPos.y = y;
 }
+
+void CUILabel::SetWidth(float width){
+	m_lines.SetWidth(width);
+	CUIFrameLineWnd::SetWidth(width);
+}
+
+void CUILabel::SetHeight(float height){
+	m_lines.SetHeight(height);
+	CUIFrameLineWnd::SetHeight(height);
+}

@@ -97,7 +97,7 @@ CUILine* CUILine::CutByLength(CGameFont* pFont, float length){
 	if (len2w1 > length)
 	{
 		// cut part of word
-		R_ASSERT(false);
+//		R_ASSERT(false);
 		return Cut2Pos(pos);  // !!!DANGER!!! STUB
 	}
 	else if (len2w1 <= length && len2w2 > length)
