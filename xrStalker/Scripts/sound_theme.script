@@ -38,6 +38,8 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_5",
 	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_6"
 	                      }
+ph_snd_themes["siren"] =  { "ambient\\siren" }
+	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
 	local c = obj:story_id()
