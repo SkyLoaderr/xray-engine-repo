@@ -257,6 +257,7 @@ protected:
 
 public:
 			void __stdcall			update_sound_player		();
+	virtual	void					on_restrictions_change	();
 };
 
 #include "custommonster_inline.h"

@@ -1061,3 +1061,9 @@ void CCustomMonster::set_range		(float new_range)
 	VERIFY		(new_range > 1.f);
 	eye_range	= new_range;
 }
+
+void CCustomMonster::on_restrictions_change	()
+{
+	memory().on_restrictions_change		();
+	movement().on_restrictions_change	();
+}

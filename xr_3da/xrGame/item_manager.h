@@ -29,6 +29,7 @@ public:
 	virtual	float		do_evaluate		(const CGameObject *object) const;
 	virtual void		update			();
 			void		remove_links	(CObject *object);
+	virtual	void		on_restrictions_change	();
 };
 
 #include "item_manager_inline.h"

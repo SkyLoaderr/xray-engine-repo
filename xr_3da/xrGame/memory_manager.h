@@ -53,6 +53,7 @@ public:
 	virtual	void				reload			(LPCSTR section);
 	virtual	void				update			(float time_delta);
 			void				remove_links	(CObject *object);
+	virtual void				on_restrictions_change	();
 
 public:
 			void				enable			(const CObject *object, bool enable);

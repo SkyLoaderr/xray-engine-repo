@@ -30,11 +30,6 @@ IC	bool CRestrictedObject::actual			() const
 	return				(m_actual);
 }
 
-IC	void CRestrictedObject::actual			(bool value)
-{
-	m_actual			= value;
-}
-
 #ifdef DEBUG
 IC	void CRestrictedObject::initialize		()
 {

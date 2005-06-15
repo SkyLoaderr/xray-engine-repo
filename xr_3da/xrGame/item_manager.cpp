@@ -81,3 +81,14 @@ void CItemManager::remove_links		(CObject *object)
 	if (m_selected && (m_selected->ID() == object->ID()))
 		m_selected				= 0;
 }
+
+void CItemManager::on_restrictions_change	()
+{
+	if (!m_selected)
+		return;
+
+	if (m_object->accessible(m_selected->Position()))
+		return;
+
+	m_selected					= 0;
+}

@@ -344,3 +344,11 @@ void CRestrictedObject::remove_all_restrictions	()
 	
 	STOP_PROFILE;
 }
+
+void CRestrictedObject::actual					(bool value)
+{
+	m_actual			= value;
+	if (!actual())
+		m_object->on_restrictions_change	();
+}
+

@@ -231,3 +231,13 @@ void CMemoryManager::remove_links	(CObject *object)
 	enemy().remove_links		(object);
 	item().remove_links			(object);
 }
+
+void CMemoryManager::on_restrictions_change	()
+{
+	if (!m_object->g_Alive())
+		return;
+
+//	danger().on_restrictions_change	();
+//	enemy().on_restrictions_change	();
+	item().on_restrictions_change	();
+}

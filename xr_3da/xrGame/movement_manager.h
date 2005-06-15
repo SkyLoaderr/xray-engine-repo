@@ -261,6 +261,9 @@ public:
 	IC		CCustomMonster			&object						() const;
 	IC		CLevelPathBuilder		&level_path_builder			() const;
 	IC		CDetailPathBuilder		&detail_path_builder		() const;
+
+public:
+			void					on_restrictions_change		();
 };
 
 #include "movement_manager_inline.h"

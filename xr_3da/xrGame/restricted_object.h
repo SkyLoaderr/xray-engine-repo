@@ -11,7 +11,7 @@
 #include "alife_space.h"
 
 class CSE_Abstract;
-class CGameObject;
+class CCustomMonster;
 
 namespace RestrictionSpace {
 	enum ERestrictorTypes;
@@ -26,7 +26,7 @@ private:
 	typedef CGameObject inherited;
 
 private:
-	CGameObject			*m_object;
+	CCustomMonster		*m_object;
 	mutable bool		m_applied;
 	mutable bool		m_removed;
 	bool				m_actual;
@@ -61,7 +61,7 @@ public:
 	IC		bool		applied							() const;
 	IC		CGameObject	&object							() const;
 	IC		bool		actual							() const;
-	IC		void		actual							(bool value);
+			void		actual							(bool value);
 
 
 public:
