@@ -14,7 +14,7 @@
 	</mil_crazy_location>
 
     <mil_crazy_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="200" y="150" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="224" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_crazy_spot>
 
 	<mil_secret_location hint="mil_secret" store="1">
@@ -33,7 +33,7 @@
 	</mil_rg6_location>
 
     <mil_rg6_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="50" y="150" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="96" y="192" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_rg6_spot>
 	
 	<mil_lukash_location hint="mil_lukash" store="1">
@@ -42,7 +42,7 @@
 	</mil_lukash_location>
 
     <mil_lukash_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="150" y="150" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_lukash_spot>
 
 	<mil_sniper_location hint="mil_sniper" store="1">
