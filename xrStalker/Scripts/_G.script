@@ -1073,4 +1073,4 @@ function level_object_by_sid( sid )
 	return nil
 end
    
-profiler.setup_hook	()
+--profiler.setup_hook	()
