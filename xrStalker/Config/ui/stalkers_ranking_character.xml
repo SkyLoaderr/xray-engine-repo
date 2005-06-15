@@ -2,7 +2,7 @@
 <!-- CHARACTER INFO IN THE PDA DIALOG -->
 <window>
 	<!-- ICON -->
-	<icon_static x="0" y="0" width="106" height="120"></icon_static>
+	<icon_static x="0" y="0" width="120" height="120"></icon_static>
 
 	<!-- NAME 
 	<name_static x="30" y="182" width="240" height="16">
