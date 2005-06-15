@@ -3,8 +3,8 @@
 <window>
 
 	<!-- NAME -->
-	<name_static x="0" y="110" width="100" height="22">
-		<text x="0" y="0" font="graffiti19" r="238" g="155" b="23"></text>
+	<name_static x="0" y="105" width="100" height="15">
+		<text x="0" y="0" font="letterica16" r="238" g="155" b="23"></text>
 	</name_static>
 
 	<!-- ICON -->
