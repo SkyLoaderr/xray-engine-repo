@@ -20,3 +20,6 @@
     <string id="mil_mission_complete">
 		<text>Наша задача выполнена. Спасибо за помощь.</text>
     </string>
+    <string id="mil_after_sniper_dead">
+		<text>"Меченый, подходи к нам. Сейчас все соберутся и начнем веселье !"</text>
+    </string>
