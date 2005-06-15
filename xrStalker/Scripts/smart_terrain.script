@@ -767,6 +767,7 @@ function update( self )
 --		if self.duration_end < game.time() then
 --			self:remove_gulag()
 --		else
+		if is_gulag_available( self.gparams ) then
 			if self.check_time < game.get_game_time() then
 				self.check_time = game.get_game_time() + check_period
 
@@ -790,6 +791,9 @@ function update( self )
 					self.gulag:calculate()
 				end
 			end
+		else
+			remove_gulag( self )
+		end
 --		end
 	end
 end
