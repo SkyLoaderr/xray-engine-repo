@@ -25,7 +25,7 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
     }
 }
 
-void CSoundRender_Emitter::stop	()
+void CSoundRender_Emitter::i_stop()
 {
 	if (target)	SoundRender->i_stop		(this);
 	if (owner)	
@@ -35,6 +35,12 @@ void CSoundRender_Emitter::stop	()
 		owner					= NULL;
 	}
 	state = stStopped;
+}
+
+void CSoundRender_Emitter::stop	(BOOL bDeffered)
+{
+	if (bDeffered)			bStopping=TRUE;
+	else					i_stop();
 }
 
 void CSoundRender_Emitter::rewind()

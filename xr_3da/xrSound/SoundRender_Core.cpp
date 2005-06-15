@@ -287,10 +287,9 @@ void	CSoundRender_Core::destroy	(ref_sound& S )
 		return;
 	}
 	verify_refsound					(S);
-	if (S.feedback)		
-	{
-		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
-		E->stop					();
+	if (S.feedback){
+		CSoundRender_Emitter* E		= (CSoundRender_Emitter*)S.feedback;
+		E->stop						(FALSE);
 	}
 	R_ASSERT			(0==S.feedback);
 	i_destroy_source	((CSoundRender_Source*)S.handle);
@@ -449,7 +448,7 @@ void						CSoundRender_Core::refresh_env_library()
 void						CSoundRender_Core::refresh_sources()
 {
 	for (u32 eit=0; eit<s_emitters.size(); eit++)
-    	s_emitters[eit]->stop();
+    	s_emitters[eit]->stop(FALSE);
 	for (u32 sit=0; sit<s_sources.size(); sit++){
     	CSoundRender_Source* s = s_sources[sit];
     	s->unload		();

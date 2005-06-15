@@ -50,16 +50,19 @@ public:
 
 	BOOL						bMoved;
 	BOOL						b2D;
+	BOOL						bStopping;
 	u32							dwTimeStarted;			// time of "Start"
 	u32							dwTimeToStop;			// time to "Stop"
 	u32							dwTimeToPropagade;
 
 	u32							marker;
+	void						i_stop					();
 public:
 	void						Event_Propagade			();
 	void						Event_ReleaseOwner		();
 	BOOL						isPlaying				(void)					{ return state!=stStopped; }
 
+	virtual BOOL				is_2D					()						{ return b2D; }
 	virtual void				switch_to_2D			();
 	virtual void				switch_to_3D			();
 	virtual void				set_position			(const Fvector &pos)	{ p_source.position	= pos; bMoved=TRUE;					}
@@ -79,7 +82,7 @@ public:
 	BOOL						update_culling			(float dt);
 	void						update_environment		(float dt);
 	void						rewind					();
-	virtual void				stop					();
+	virtual void				stop					(BOOL bDeffered);
 
 	CSoundRender_Emitter		();
 	~CSoundRender_Emitter		();

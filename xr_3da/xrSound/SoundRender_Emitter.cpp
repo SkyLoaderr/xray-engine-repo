@@ -29,6 +29,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	position			= 0;
 	bMoved				= TRUE;
 	b2D					= FALSE;
+	bStopping			= FALSE;
 	dwTimeStarted		= 0;
 	dwTimeToStop		= 0;
 	dwTimeToPropagade	= 0;
@@ -74,7 +75,7 @@ void CSoundRender_Emitter::Event_Propagade	()
 void CSoundRender_Emitter::switch_to_2D()
 {
  	b2D 						= TRUE;	
-    set_position				(SoundRender->listener_position()); 
+//.	set_position				(SoundRender->listener_position()); 
 	set_priority				(100.f);
 }
 

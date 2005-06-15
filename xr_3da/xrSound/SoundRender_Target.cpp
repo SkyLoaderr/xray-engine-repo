@@ -64,7 +64,7 @@ void	CSoundRender_Target::update			()
 void	CSoundRender_Target::fill_parameters()
 {
 	VERIFY			(pEmitter);
-	if (pEmitter->b2D){
-        pEmitter->set_position(SoundRender->listener_position());
-    }
+//.	if (pEmitter->b2D){
+//.		pEmitter->set_position(SoundRender->listener_position());
+//.	}
 }

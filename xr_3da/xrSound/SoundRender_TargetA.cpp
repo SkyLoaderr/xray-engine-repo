@@ -122,11 +122,12 @@ void	CSoundRender_TargetA::fill_parameters()
     // 3D params
     A_CHK(alSourcef	(pSource, AL_REFERENCE_DISTANCE, 	pEmitter->p_source.min_distance));
     A_CHK(alSourcef	(pSource, AL_MAX_DISTANCE, 			pEmitter->p_source.max_distance));
-	if (pEmitter->b2D){
-		A_CHK(alSource3f(pSource, AL_POSITION,	 		0.f,0.f,0.f));
-	}else{
-		A_CHK(alSource3f(pSource, AL_POSITION,	 		pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
-	}
+//.	if (pEmitter->b2D){
+//.		A_CHK(alSource3f(pSource, AL_POSITION,	 		-5.f,0.f,0.f));
+//.	}else{
+//.		A_CHK(alSource3f(pSource, AL_POSITION,	 		pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
+//.	}
+	A_CHK(alSource3f(pSource, AL_POSITION,	 			pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
     A_CHK(alSourcei	(pSource, AL_SOURCE_RELATIVE,		pEmitter->b2D));
     // 2D params
     A_CHK(alSourcef	(pSource, AL_ROLLOFF_FACTOR,		psSoundRolloff));
