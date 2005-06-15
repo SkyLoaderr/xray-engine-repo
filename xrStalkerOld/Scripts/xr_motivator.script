@@ -194,7 +194,7 @@ function motivator_binder:update(delta)
 	else
 		stop_play_sound(self.object)
 	end
---[[
+
 	self.object:info_clear()
 	local best_enemy = self.object:best_enemy()
 	if best_enemy then
@@ -205,7 +205,7 @@ function motivator_binder:update(delta)
 		self.object:info_add('section -- ' .. active_section)
 	end
 	self.object:info_add('name -- ' .. self.object:name())
-    ]] 
+
 	--' Ïğîâåğêà ÒÈÌ ÑÊÂÀÄ ÃĞÓÏ
 	--[[
 	if memtsg[self.object:id()] == nil then
