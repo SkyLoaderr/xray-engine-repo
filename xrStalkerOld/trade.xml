@@ -4,8 +4,8 @@
 	<static_icon x="27" y="22" width="143" height="199">
 		<texture>ui\ui_trade_character</texture>
 	</static_icon>
-	<static_icon x="843" y="22" width="143" height="221">
-		<texture mirror="h" width="141" height="221">ui\ui_trade_character</texture>
+	<static_icon x="843" y="22" width="143" height="199">
+		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
 	</static_icon>
 
 
