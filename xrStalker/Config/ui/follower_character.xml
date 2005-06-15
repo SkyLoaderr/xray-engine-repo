@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- CHARACTER INFO IN THE INVENTORY MENU -->
+<window>
+
+	<!-- NAME -->
+	<name_static x="0" y="0" width="130" height="22">
+		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
+	</name_static>
+
+	<!-- ICON -->
+	<icon_static x="0" y="30" width="130" height="108"></icon_static>
+
+	<!-- RANK 
+	<rank_static x="50" y="141" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
+	</rank_static> -->
+	
+	<!-- RANK CAPTION 
+	<rank_caption x="15" y="141" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">rank</text>
+	</rank_caption>-->
+
+	<!-- COMMUNITY 
+	<community_static x="50" y="153" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
+	</community_static>-->
+
+	<!-- COMMUNITY CAPTION 
+	<community_caption x="15" y="153" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">community</text>
+	</community_caption>-->
+
+	<!-- RELATION 
+	<relation_static x="50" y="166" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
+	</relation_static>-->
+
+	<!-- RELATION CAPTION 
+	<relation_caption x="15" y="166" width="125" height="15">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">relation</text>
+	</relation_caption>-->
+</window>
