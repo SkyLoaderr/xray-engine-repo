@@ -2,8 +2,6 @@
 ;-- Darkvalley Bandits camp
 ;-------------------------------------------------------------------------------------------------
 
-;---
-
 [logic@val_lager_bandits_leader_normal]
 active = walker1@val_lager_bandits_leader_normal
 combat_ignore = combat_ignore@val_lager_bandits_leader_normal
@@ -472,285 +470,279 @@ combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacr
 ;-- Darkvalley Monolith base
 ;-------------------------------------------------------------------------------------------------
 
-;---
-
-[logic@val_monolith_base_guard_normal1]
-active = zoneguard1@val_monolith_base_guard_normal1
-combat_ignore = combat_ignore@val_monolith_base_guard_normal1
-
-[zoneguard1@val_monolith_base_guard_normal1]
-path_walk = guard_walk1
-path_look = guard_look1
-zone_warn = guard1_warn_zone
-zone_guard = guard1_kill_zone
-no_move = true
-team = val_mon_guards1
-meet_dialog = val_monolith_guard_password
-meet_talk_enabled = true
-meet_state = threat
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal1
-on_actor_in_zone = val_monolith_base_guard1_kill_zone | {-val_monolith_password_ok} %+val_monolith_actor_detected%
-
-[walker1@val_monolith_base_guard_normal1]
-path_walk = guard_walk1
-path_look = guard_look1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_guard_normal2]
-active = zoneguard1@val_monolith_base_guard_normal2
-combat_ignore = combat_ignore@val_monolith_base_guard_normal2
-
-[zoneguard1@val_monolith_base_guard_normal2]
-path_walk = guard_walk2
-path_look = guard_look2
-zone_warn = guard2_warn_zone
-zone_guard = guard2_kill_zone
-no_move = true
-team = val_mon_guards2
-meet_dialog = val_monolith_guard_password
-meet_talk_enabled = true
-meet_state = threat
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal2
-on_actor_in_zone = val_monolith_base_guard2_kill_zone | {-val_monolith_password_ok} %+val_monolith_actor_detected%
-
-[walker1@val_monolith_base_guard_normal2]
-path_walk = guard_walk2
-path_look = guard_look2
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_guard_normal3]
-active = zoneguard1@val_monolith_base_guard_normal3
-combat_ignore = combat_ignore@val_monolith_base_guard_normal3
-
-[zoneguard1@val_monolith_base_guard_normal3]
-path_walk = guard_walk3
-path_look = guard_look3
-zone_warn = guard3_warn_zone
-zone_guard = guard3_kill_zone
-no_move = true
-team = val_mon_guards3
-meet_dialog = val_monolith_guard_password
-meet_talk_enabled = true
-meet_state = threat
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal3
-on_actor_in_zone = val_monolith_base_guard3_kill_zone | {-val_monolith_password_ok} %+val_monolith_actor_detected%
-
-[walker1@val_monolith_base_guard_normal3]
-path_walk = guard_walk3
-path_look = guard_look3
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
+;--- PATROL --------------------------------------------------------------------------------------
 
 [logic@val_monolith_base_patrol_normal1]
 active = walker1@val_monolith_base_patrol_normal1
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal1
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal1
 
 [walker1@val_monolith_base_patrol_normal1]
-path_walk = patrol_walk1
-path_look = patrol_look1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk1
+path_look = in_patrol_look1
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_patrol_normal2]
 active = walker1@val_monolith_base_patrol_normal2
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal2
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal2
 
 [walker1@val_monolith_base_patrol_normal2]
-path_walk = patrol_walk2
-path_look = patrol_look2
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk2
+path_look = in_patrol_look2
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_patrol_normal3]
 active = walker1@val_monolith_base_patrol_normal3
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal3
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal3
 
 [walker1@val_monolith_base_patrol_normal3]
-path_walk = patrol_walk3
-path_look = patrol_look3
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk3
+path_look = in_patrol_look3
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_patrol_normal4]
 active = walker1@val_monolith_base_patrol_normal4
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal4
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal4
 
 [walker1@val_monolith_base_patrol_normal4]
-path_walk = patrol_walk4
-path_look = patrol_look4
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk4
+path_look = in_patrol_look4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_patrol_normal5]
 active = walker1@val_monolith_base_patrol_normal5
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal5
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal5
 
 [walker1@val_monolith_base_patrol_normal5]
-path_walk = patrol_walk5
-path_look = patrol_look5
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk5
+path_look = in_patrol_look5
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_patrol_normal6]
 active = walker1@val_monolith_base_patrol_normal6
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal6
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal6
 
 [walker1@val_monolith_base_patrol_normal6]
-path_walk = patrol_walk6
-path_look = patrol_look6
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+path_walk = in_patrol_walk6
+path_look = in_patrol_look6
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
-;---
-
-[logic@val_monolith_base_patrol_normal7]
-active = walker1@val_monolith_base_patrol_normal7
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal7
-
-[walker1@val_monolith_base_patrol_normal7]
-path_walk = patrol_walk7
-path_look = patrol_look7
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_patrol_normal8]
-active = walker1@val_monolith_base_patrol_normal8
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal8
-
-[walker1@val_monolith_base_patrol_normal8]
-path_walk = patrol_walk8
-path_look = patrol_look8
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_patrol_normal9]
-active = walker1@val_monolith_base_patrol_normal9
-combat_ignore = combat_ignore@val_monolith_base_patrol_normal9
-
-[walker1@val_monolith_base_patrol_normal9]
-path_walk = patrol_walk9
-path_look = patrol_look9
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal1]
-active = camper1@val_monolith_base_sniper_normal1
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal1
-
-[camper1@val_monolith_base_sniper_normal1]
-path_walk = sniper_walk1
-path_look = sniper_look1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal2]
-active = camper1@val_monolith_base_sniper_normal2
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal2
-
-[camper1@val_monolith_base_sniper_normal2]
-path_walk = sniper_walk2
-path_look = sniper_look2
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal3]
-active = camper1@val_monolith_base_sniper_normal3
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal3
-
-[camper1@val_monolith_base_sniper_normal3]
-path_walk = sniper_walk3
-path_look = sniper_look3
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal4]
-active = camper1@val_monolith_base_sniper_normal4
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal4
-
-[camper1@val_monolith_base_sniper_normal4]
-path_walk = sniper_walk4
-path_look = sniper_look4
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal5]
-active = camper1@val_monolith_base_sniper_normal5
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal5
-
-[camper1@val_monolith_base_sniper_normal5]
-path_walk = sniper_walk5
-path_look = sniper_look5
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal6]
-active = camper1@val_monolith_base_sniper_normal6
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal6
-
-[camper1@val_monolith_base_sniper_normal6]
-path_walk = sniper_walk6
-path_look = sniper_look6
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
-
-[logic@val_monolith_base_sniper_normal7]
-active = camper1@val_monolith_base_sniper_normal7
-combat_ignore = combat_ignore@val_monolith_base_sniper_normal7
-
-[camper1@val_monolith_base_sniper_normal7]
-path_walk = sniper_walk7
-path_look = sniper_look7
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
-
-;---
+;--- KAMP1 ---------------------------------------------------------------------------------------
 
 [logic@val_monolith_base_kamp1_normal1]
 active = kamp1@val_monolith_base_kamp1_normal1
-combat_ignore = combat_ignore@val_monolith_base_kamp1_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal1
 
 [kamp1@val_monolith_base_kamp1_normal1]
-center_point = kamp1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+center_point = in_kamp1
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_kamp1_normal2]
 active = kamp1@val_monolith_base_kamp1_normal2
-combat_ignore = combat_ignore@val_monolith_base_kamp1_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal2
 
 [kamp1@val_monolith_base_kamp1_normal2]
-center_point = kamp1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+center_point = in_kamp1
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
 [logic@val_monolith_base_kamp1_normal3]
 active = kamp1@val_monolith_base_kamp1_normal3
-combat_ignore = combat_ignore@val_monolith_base_kamp1_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal3
 
 [kamp1@val_monolith_base_kamp1_normal3]
-center_point = kamp1
-combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+center_point = in_kamp1
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
+;---
+
+[logic@val_monolith_base_kamp1_normal4]
+active = kamp1@val_monolith_base_kamp1_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal4
+
+[kamp1@val_monolith_base_kamp1_normal4]
+center_point = in_kamp1
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP2 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp2_normal1]
+active = kamp2@val_monolith_base_kamp2_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal1
+
+[kamp2@val_monolith_base_kamp2_normal1]
+center_point = in_kamp2
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal2]
+active = kamp2@val_monolith_base_kamp2_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal2
+
+[kamp2@val_monolith_base_kamp2_normal2]
+center_point = in_kamp2
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal3]
+active = kamp2@val_monolith_base_kamp2_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal3
+
+[kamp2@val_monolith_base_kamp2_normal3]
+center_point = in_kamp2
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal4]
+active = kamp2@val_monolith_base_kamp2_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal4
+
+[kamp2@val_monolith_base_kamp2_normal4]
+center_point = in_kamp2
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP3 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp3_normal1]
+active = kamp3@val_monolith_base_kamp3_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal1
+
+[kamp3@val_monolith_base_kamp3_normal1]
+center_point = in_kamp3
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal2]
+active = kamp3@val_monolith_base_kamp3_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal2
+
+[kamp3@val_monolith_base_kamp3_normal2]
+center_point = in_kamp3
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal3]
+active = kamp3@val_monolith_base_kamp3_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal3
+
+[kamp3@val_monolith_base_kamp3_normal3]
+center_point = in_kamp3
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal4]
+active = kamp3@val_monolith_base_kamp3_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal4
+
+[kamp3@val_monolith_base_kamp3_normal4]
+center_point = in_kamp3
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP4 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp4_normal1]
+active = kamp4@val_monolith_base_kamp4_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal1
+
+[kamp4@val_monolith_base_kamp4_normal1]
+center_point = in_kamp4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal2]
+active = kamp4@val_monolith_base_kamp4_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal2
+
+[kamp4@val_monolith_base_kamp4_normal2]
+center_point = in_kamp4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal3]
+active = kamp4@val_monolith_base_kamp4_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal3
+
+[kamp4@val_monolith_base_kamp4_normal3]
+center_point = in_kamp4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal4]
+active = kamp4@val_monolith_base_kamp4_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal4
+
+[kamp4@val_monolith_base_kamp4_normal4]
+center_point = in_kamp4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal5]
+active = kamp4@val_monolith_base_kamp4_normal5
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal5
+
+[kamp4@val_monolith_base_kamp4_normal5]
+center_point = in_kamp4
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP5 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp5_normal1]
+active = kamp5@val_monolith_base_kamp5_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal1
+
+[kamp5@val_monolith_base_kamp5_normal1]
+center_point = in_kamp5
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal2]
+active = kamp5@val_monolith_base_kamp5_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal2
+
+[kamp5@val_monolith_base_kamp5_normal2]
+center_point = in_kamp5
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal3]
+active = kamp5@val_monolith_base_kamp5_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal3
+
+[kamp5@val_monolith_base_kamp5_normal3]
+center_point = in_kamp5
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal4]
+active = kamp5@val_monolith_base_kamp5_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal4
+
+[kamp5@val_monolith_base_kamp5_normal4]
+center_point = in_kamp5
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
