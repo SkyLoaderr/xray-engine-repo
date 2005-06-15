@@ -80,14 +80,14 @@ end
 function send_help(actor)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
-	pda_sos:play(db.actor, timeout, sound_object.s2d)
+	pda_sos:play(db.actor, 0, sound_object.s2d)
 	db.actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,50, 0)
 end
 
 function send_task(actor, type)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
-	pda_task:play(db.actor, timeout, sound_object.s2d)
+	pda_task:play(db.actor, 0, sound_object.s2d)
 	if type == "new" then
 		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,50, 0)
 	elseif type == "update" then
@@ -99,7 +99,7 @@ function send_task(actor, type)
 	end	
 end
 function send_encyclopedy(type)
-	pda_task:play(db.actor, timeout, sound_object.s2d)
+	pda_task:play(db.actor, 0, sound_object.s2d)
 	if type == "encyclopedy" then
 		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 350,150,50,50, 0)
 	else
