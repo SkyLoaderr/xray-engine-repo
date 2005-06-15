@@ -113,7 +113,7 @@ void CEffect_Rain::RenewItem(Item& dest, float height, BOOL bHit)
 		dest.Phit.set	(dest.P);
 	}
 }
-
+//#include "xr_input.h"
 void	CEffect_Rain::Render	()
 {
 #ifndef _EDITOR
@@ -127,13 +127,26 @@ void	CEffect_Rain::Render	()
 	if (E&&E->renderable.ROS)
 		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable.ROS->get_luminocity_hemi()),0.2f));
 #endif
-
+/*
+	if (pInput->iGetAsyncKeyState(DIK_J))
+	{
+		snd_Ambient.stop_deffered();
+	}
+	if (pInput->iGetAsyncKeyState(DIK_H))
+	{
+		snd_Ambient.stop();
+	}
+	if (pInput->iGetAsyncKeyState(DIK_L))
+	{
+		snd_Ambient.play(0,sm_Looped);
+	}
+*/
 	switch (state)
 	{
 	case stIdle:		
 		if (factor<EPS_L)		return;
 		state					= stWorking;
-		snd_Ambient.play		(0,sm_2D|sm_Looped);
+		snd_Ambient.play		(0,sm_Looped);
 		snd_Ambient.set_range	(source_offset,source_offset*2.f);
 		break;
 	case stWorking:
@@ -148,10 +161,12 @@ void	CEffect_Rain::Render	()
 	u32 desired_items			= iFloor	(0.5f*(1.f+factor)*float(max_desired_items));
 
 	// ambient sound
-	Fvector						sndP;
-	sndP.mad					(Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
-	snd_Ambient.set_position	(sndP);
-	snd_Ambient.set_volume		(1.5f*factor*hemi_factor);
+	if (snd_Ambient.feedback){
+		Fvector					sndP;
+		sndP.mad				(Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
+		snd_Ambient.set_position(sndP);
+		snd_Ambient.set_volume	(1.5f*factor*hemi_factor);
+	}
 
 	// visual
 	float		factor_visual	= factor/2.f+.5f;
