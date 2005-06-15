@@ -52,6 +52,7 @@ void CScriptSound::script_register(lua_State *L)
 			.def("play_at_pos_clone",			(void (CScriptSound::*)(CScriptGameObject*,const Fvector &,float))(CScriptSound::PlayAtPosUnlimited))
 			.def("play_at_pos_clone",			(void (CScriptSound::*)(CScriptGameObject*,const Fvector &,float, int))(CScriptSound::PlayAtPosUnlimited))
 			.def("stop",						&CScriptSound::Stop)
+			.def("stop_deffered",				&CScriptSound::StopDeffered)
 			.def("playing",						&CScriptSound::IsPlaying)
 			.def("length",						&CScriptSound::Length)
 	];

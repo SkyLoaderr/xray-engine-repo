@@ -36,6 +36,7 @@ public:
 	IC		void				PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position, float delay);
 			void				PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position, float delay, int flags);
 	IC		void				Stop				();
+	IC		void				StopDeffered		();
 	IC		void				SetPosition			(const Fvector &position);
 	IC		void				SetFrequency		(float frequency);
 	IC		void				SetVolume			(float volume);

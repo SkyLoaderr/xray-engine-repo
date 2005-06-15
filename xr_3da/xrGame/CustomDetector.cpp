@@ -144,9 +144,6 @@ void CCustomDetector::UpdateCL()
 	if(!m_pCurrentActor) return;
 	if( !m_pCurrentActor->m_inventory->Get(ID(),false))	return;
 
-	bool sound_2d = m_pCurrentActor && m_pCurrentActor->HUDview();
-
-
 	///////////////////////////////////
 	//звуки обнаружения аномальных зон
 	///////////////////////////////////
@@ -179,10 +176,8 @@ void CCustomDetector::UpdateCL()
 			
 		if((float)zone_info.snd_time > current_snd_time)
 		{
-			Fvector				C;
-			H_Parent()->Center	(C);
 			zone_info.snd_time	= 0;
-			zone_type.detect_snd.play_at_pos(this,C,sound_2d?sm_2D:0);
+			zone_type.detect_snd.play_at_pos(this,Fvector().set(0,0,0),sm_2D);
 		} 
 		else 
 			zone_info.snd_time += Device.dwTimeDelta;

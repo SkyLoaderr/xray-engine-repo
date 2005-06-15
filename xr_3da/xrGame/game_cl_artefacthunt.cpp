@@ -168,12 +168,12 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			if (!Game().local_player) break;
 			if (Game().local_player->GameID == PlayerID)
-				pMessageSounds[3].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+				pMessageSounds[3].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 			else
 				if (Game().local_player->team == Team)
-					pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+					pMessageSounds[4].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 				else
-					pMessageSounds[7].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+					pMessageSounds[7].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}break;
 	case GAME_EVENT_ARTEFACT_DROPPED: //ahunt
 		{
@@ -191,7 +191,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				Color_Artefact);
 			CommonMessageOut(Text);
 
-			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+			pMessageSounds[0].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}break;
 	case GAME_EVENT_ARTEFACT_ONBASE: //ahunt
 		{
@@ -210,12 +210,12 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			
 			if (!Game().local_player) break;
 			if (Game().local_player->GameID == PlayerID)
-				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+				pMessageSounds[1].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 			else
 				if (Game().local_player->team == Team)
-					pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+					pMessageSounds[2].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 				else
-					pMessageSounds[6].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+					pMessageSounds[6].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}break;
 	case GAME_EVENT_ARTEFACT_SPAWNED: //ahunt
 		{
@@ -223,7 +223,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				Color_Main);
 			CommonMessageOut(Text);
 
-			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+			pMessageSounds[5].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}break;
 	case GAME_EVENT_ARTEFACT_DESTROYED:  //ahunt
 		{

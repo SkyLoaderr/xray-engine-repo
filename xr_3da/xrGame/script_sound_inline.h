@@ -103,6 +103,12 @@ IC	void CScriptSound::Stop					()
 	m_sound.stop		();
 }
 
+IC	void CScriptSound::StopDeffered			()
+{
+	VERIFY				(m_sound.handle);
+	m_sound.stop_deffered();
+}
+
 IC	void CScriptSound::SetPosition			(const Fvector &position)
 {
 	VERIFY				(m_sound.handle);

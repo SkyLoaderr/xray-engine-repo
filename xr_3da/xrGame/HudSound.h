@@ -43,8 +43,9 @@ struct HUD_SOUND
 	ICF void		set_position	(const Fvector& pos)
 	{
 		if(m_activeSnd)	{ 
-			if (m_activeSnd->snd.feedback)	m_activeSnd->snd.set_position	(pos);
-			else							m_activeSnd	= NULL;
+			if (m_activeSnd->snd.feedback&&!m_activeSnd->snd.feedback->is_2D())	
+									m_activeSnd->snd.set_position	(pos);
+			else					m_activeSnd	= NULL;
 		}
 	}
 

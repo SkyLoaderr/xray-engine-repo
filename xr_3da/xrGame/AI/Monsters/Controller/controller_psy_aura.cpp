@@ -52,7 +52,7 @@ void CPsyAuraController::schedule_update()
 	
 	// Падение энергии у врагов
 	if (is_active()) {
-		if (m_actor && !m_sound.feedback) m_sound.play_at_pos(m_actor,m_actor->Position(), sm_2D);
+		if (m_actor && !m_sound.feedback) m_sound.play_at_pos(m_actor,Fvector().set(0,0,0), sm_2D);
 
 		for (ENEMY_VECTOR_IT it = m_enemies.begin(); it != m_enemies.end(); it++) {
 			
