@@ -32,4 +32,6 @@ void luaV_settable (lua_State *L, const TObject *t, TObject *key, StkId val);
 StkId luaV_execute (lua_State *L);
 void luaV_concat (lua_State *L, int total, int last);
 
+__declspec(dllexport) int luaV_strcmp (const TString *ls, const TString *rs);
+
 #endif

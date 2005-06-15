@@ -1661,12 +1661,16 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 	}
 	// print class properties
 	{
+#ifndef USE_NATIVE_LUA_STRINGS
 		typedef std::map<const char*, luabind::detail::class_rep::callback, luabind::detail::ltstr> PROPERTIES;
+#else
+		typedef luabind::detail::class_rep::callback_map PROPERTIES;
+#endif
 		const PROPERTIES &properties = crep->properties();
 		PROPERTIES::const_iterator	I = properties.begin();
 		PROPERTIES::const_iterator	E = properties.end();
 		for ( ; I != E; ++I)
-			printf	("    property %s;\n",(*I).first);
+			printf	("    property %s;\n",getstr((*I).first.m_object));
 		if (!properties.empty())
 			printf		("    \n");
 	}

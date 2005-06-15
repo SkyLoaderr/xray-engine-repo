@@ -319,6 +319,21 @@ LUA_API const char *lua_tostring (lua_State *L, int idx) {
   }
 }
 
+LUA_API TString* lua_tostring_object (lua_State *L, int idx) {
+  StkId o = luaA_indexAcceptable(L, idx);
+  if (o == NULL)
+    return NULL;
+  else if (ttisstring(o))
+    return tsvalue(o);
+  else {
+    TString *s;
+    lua_lock(L);  /* `luaV_tostring' may create a new string */
+    s = (luaV_tostring(L, o) ? tsvalue(o) : NULL);
+    luaC_checkGC(L);
+    lua_unlock(L);
+    return s;
+  }
+}
 
 LUA_API size_t lua_strlen (lua_State *L, int idx) {
   StkId o = luaA_indexAcceptable(L, idx);
@@ -406,6 +421,14 @@ LUA_API void lua_pushlstring (lua_State *L, const char *s, size_t len) {
   lua_unlock(L);
 }
 
+LUA_API void lua_push_string_object	(lua_State *L, TString *string)
+{
+  lua_lock		(L);
+  luaC_checkGC	(L);
+  setsvalue2s	(L->top, string);
+  api_incr_top	(L);
+  lua_unlock	(L);
+}
 
 LUA_API void lua_pushstring (lua_State *L, const char *s) {
   if (s == NULL)
@@ -413,7 +436,6 @@ LUA_API void lua_pushstring (lua_State *L, const char *s) {
   else
     lua_pushlstring(L, s, xr_strlen(s));
 }
-
 
 LUA_API const char *lua_pushvfstring (lua_State *L, const char *fmt,
                                       va_list argp) {

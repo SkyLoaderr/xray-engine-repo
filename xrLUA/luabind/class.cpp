@@ -29,6 +29,22 @@
 #include <iostream>
 
 namespace luabind { namespace detail {
+
+#ifdef USE_NATIVE_LUA_STRINGS
+	template <typename T>
+	inline void swap_maps(lua_State *L, std::hash_map<lua_string_holder,T,TString_hash_compare> &map0, std::map<const char *,T,ltstr> &map1)
+	{
+		typedef std::hash_map<lua_string_holder,T,TString_hash_compare>	MAP0;
+		typedef std::map<const char *,T,ltstr>							MAP1;
+
+		VERIFY			(map0.empty());
+		MAP1::iterator	I = map1.begin();
+		MAP1::iterator	E = map1.end();
+		for ( ; I != E; ++I)
+			map0.insert	(std::make_pair(lua_string_holder(L,(*I).first),(*I).second));
+		map1.clear		();
+	}
+#endif
     
 	struct method_name
 	{
@@ -150,13 +166,22 @@ namespace luabind { namespace detail {
         // constructors
         m_constructor.swap(crep->m_constructor);
 
+#ifndef USE_NATIVE_LUA_STRINGS
         crep->m_getters.swap(m_getters);
         crep->m_setters.swap(m_setters);
+#else
+        swap_maps(L,crep->m_getters,m_getters);
+        swap_maps(L,crep->m_setters,m_setters);
+#endif
 
         for (int i = 0; i < detail::number_of_operators; ++i)
             crep->m_operators[i].swap(m_operators[i]);
 
+#ifndef USE_NATIVE_LUA_STRINGS
         crep->m_static_constants.swap(m_static_constants);
+#else
+        swap_maps(L,crep->m_static_constants,m_static_constants);
+#endif
 
 		typedef std::list<detail::method_rep> methods_t;
 
