@@ -25,6 +25,25 @@ function hitted_by(actor, npc, p)
 	return false
 end
 
+-- ѕроверка, что персонаж держит в руке пистолет
+function active_pistol(actor, npc)
+	local wpn = npc:active_item()
+	if wpn == nil then
+		return false
+	end
+	wpn = get_clsid(wpn)
+	if wpn == nil then
+		return false
+	end
+	if wpn == clsid.wpn_hpsa then return true
+    elseif wpn == clsid.wpn_hpsa then return true
+    elseif wpn == clsid.wpn_pm then return true
+    elseif wpn == clsid.wpn_fort then return true
+    elseif wpn == clsid.wpn_walther then return true
+    elseif wpn == clsid.wpn_usp45 then return true
+    else return false end
+end
+
 -- ѕроверка того что персонаж был убит кем-то из npc указанных в списке.
 -- ѕараметры это story_id персонажей. ћожно задавать несколько story_id.
 function killed_by(actor, npc, p)
