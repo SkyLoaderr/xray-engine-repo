@@ -87,7 +87,7 @@ void CItemManager::on_restrictions_change	()
 	if (!m_selected)
 		return;
 
-	if (m_object->accessible(m_selected->Position()))
+	if (m_object->movement().restrictions().accessible(m_selected->Position()))
 		return;
 
 	m_selected					= 0;

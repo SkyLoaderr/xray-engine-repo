@@ -13,7 +13,7 @@
 #include "level_navigation_graph.h"
 
 #ifdef DEBUG
-#	include "gameobject.h"
+#	include "custommonster.h"
 #endif
 
 CDetailPathManager::CDetailPathManager	(CRestrictedObject *object)

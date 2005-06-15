@@ -176,7 +176,7 @@ void CMovementManager::update_path				()
 		level_path().set_evaluator	(base_level_params());
 
 #pragma todo("Optimize this in case of slowdown or not intended behaviour")
-	if (!restrictions().actual(true)) {
+	if (!restrictions().actual()) {
 		m_path_actuality	= false;
 	}
 
