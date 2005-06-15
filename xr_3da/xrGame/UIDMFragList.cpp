@@ -12,9 +12,10 @@
 CUIDMFragList::CUIDMFragList()
 {
 	SetHeaderColumnText(0, "Name");
-	SetHeaderColumnText(1, "Frags");
-	SetHeaderColumnText(2, "Deaths");
-	SetHeaderColumnText(3, "Ping");
+	SetHeaderColumnText(1, "");
+	SetHeaderColumnText(2, "Frags");
+	SetHeaderColumnText(3, "Deaths");
+	SetHeaderColumnText(4, "Ping");
 
 	Show();
 }
@@ -50,19 +51,23 @@ bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 {
 	if (ItemID>= items.size()) return false;
 
-	game_PlayerState* P = (game_PlayerState*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
+	game_PlayerState* PS = (game_PlayerState*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
 
-	if (P->testFlag(GAME_PLAYER_FLAG_LOCAL) ) SelectItem(ItemID);
+	if (PS->testFlag(GAME_PLAYER_FLAG_LOCAL) ) SelectItem(ItemID);
 
 	char Text[1024];
-	pItem->FieldsVector[0]->SetText(P->name);
-	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
-	sprintf(Text, "%d", P->deaths); pItem->FieldsVector[2]->SetText(Text);
-	if (P == Game().local_player)
-		sprintf(Text, "%d/%d", P->ping, Level().GetRealPing()); 
+	pItem->FieldsVector[0]->SetText(PS->name);
+	if (PS->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+		pItem->FieldsVector[1]->SetText("DEAD");
 	else
-		sprintf(Text, "%d/%d", P->ping, P->Rping); 
-	pItem->FieldsVector[3]->SetText(Text);
+		pItem->FieldsVector[1]->SetText("");
+	sprintf(Text, "%d", PS->kills); pItem->FieldsVector[2]->SetText(Text);
+	sprintf(Text, "%d", PS->deaths); pItem->FieldsVector[3]->SetText(Text);
+	if (PS == Game().local_player)
+		sprintf(Text, "%d/%d", PS->ping, Level().GetRealPing()); 
+	else
+		sprintf(Text, "%d/%d", PS->ping, PS->Rping); 
+	pItem->FieldsVector[4]->SetText(Text);
 
 	return true;
 };
@@ -96,8 +101,9 @@ void	CUIDMFragList::Update()
 		pItem->FieldsVector[0]->SetText(NULL);
 		pItem->FieldsVector[1]->SetText(NULL);
 		pItem->FieldsVector[2]->SetText(NULL);
+		pItem->FieldsVector[3]->SetText(NULL);
+		pItem->FieldsVector[4]->SetText(NULL);
 	};
-
 };
 
 //--------------------------------------------------------------------

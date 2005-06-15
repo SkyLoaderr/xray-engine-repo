@@ -8,9 +8,10 @@
 CUIDMPlayerList::CUIDMPlayerList()
 {
 	SetHeaderColumnText(0, "Name");
-	SetHeaderColumnText(1, "Frags");
-	SetHeaderColumnText(2, "Status");
-	SetHeaderColumnText(3, "");
+	SetHeaderColumnText(1, "");
+	SetHeaderColumnText(2, "Frags");
+	SetHeaderColumnText(3, "Status");
+	SetHeaderColumnText(4, "");
 }
 
 CUIDMPlayerList::~CUIDMPlayerList()
@@ -27,10 +28,12 @@ bool	CUIDMPlayerList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 
 	char Text[1024];
 	pItem->FieldsVector[0]->SetText(P->name);
-	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
+	pItem->FieldsVector[1]->SetText("");
+	sprintf(Text, "%d", P->kills); pItem->FieldsVector[2]->SetText(Text);
 	if (P->testFlag(GAME_PLAYER_FLAG_READY) )
-		pItem->FieldsVector[2]->SetText("READY");
+		pItem->FieldsVector[3]->SetText("READY");
 	else
-		pItem->FieldsVector[2]->SetText("");
+		pItem->FieldsVector[3]->SetText("");
+	pItem->FieldsVector[4]->SetText("");
 	return true;
 };
