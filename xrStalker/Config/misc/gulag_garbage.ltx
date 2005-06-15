@@ -229,9 +229,18 @@ on_info = {+gar_bandits_raid} walker@gar_hellcar_group_return_observer
 path_walk = return_observer_walk
 path_look = return_observer_look
 on_signal = alarm | remark@gar_hellcar_group_return_observer %+gar_direction%
+meet = meet@1
 
 [remark@gar_hellcar_group_return_observer]
 anim = idle
+
+[meet@1]
+Meet_state 		= 3| wait@wait
+Meet_state_wpn 	= 3| wait@wait
+Victim 		= 3| actor
+Victim_wpn 		= 3| actor
+Use			= false
+Use_wpn		= false
 
 
 
@@ -272,18 +281,29 @@ active = kamp@gar_hellcar_group_rest3
 center_point = kamp_point
 
 
+
+[meet@hellcar_group_in_battle]
+Meet_state 		= 2| wait@wait
+Meet_state_wpn 	= 2| wait@wait
+Victim 		= 3| actor
+Victim_wpn 		= 3| actor
+Use			= false
+Use_wpn		= false
+
+
+
 [logic@gar_hellcar_group_camper1]
 active = camper@gar_hellcar_group_camper1
 on_hit = hit
 on_death = death
 combat_ignore = combat_ignore@hellcar1
 
-
 [camper@gar_hellcar_group_camper1]
 path_walk = camper1_walk
 path_look = camper1_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
+meet = meet@hellcar_group_in_battle
 
 
 [combat_ignore@hellcar1]
@@ -301,11 +321,14 @@ on_hit = hit
 on_death = death
 combat_ignore = combat_ignore@hellcar2
 
+
+
 [camper@gar_hellcar_group_camper2]
 path_walk = camper2_walk
 path_look = camper2_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
+meet = meet@hellcar_group_in_battle
 
 [combat_ignore@hellcar2]
 
@@ -321,6 +344,7 @@ path_walk = camper3_walk
 path_look = camper3_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
+meet = meet@hellcar_group_in_battle
 
 
 [combat_ignore@hellcar3]
@@ -332,12 +356,12 @@ on_hit = hit
 on_death = death
 combat_ignore = combat_ignore@hellcar4
 
-
 [camper@gar_hellcar_group_camper4]
 path_walk = camper4_walk
 path_look = camper4_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
+meet = meet@hellcar_group_in_battle
 
 
 [combat_ignore@hellcar4]
@@ -395,53 +419,47 @@ meet = meet@zoneguard1
 
 
 [meet@zoneguard1]
-meet_state = 20| {-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
-meet_state_wpn = 20| {-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
-victim = 20| actor
-victim_wpn = 20| actor
+meet_state = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+meet_state_wpn = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+victim = 20|actor
+victim_wpn = 20|actor
 use	= true
 use_wpn = true
-zone_warn = gar_dolg_blokpost_zone_warn| {+gar_free_pass} back_off@ {+gar_free_pass} gar_dolg_blokpost
-;, {+gar_free_pass} guard@talk_hello
-zone_kill = gar_dolg_blokpost_zone_guard| {+gar_free_pass} true@ {+gar_free_pass} talk_abuse
-;, {+gar_free_pass} guard@talk_hello
+zone = gar_dolg_blokpost_zone_warn|{-gar_free_pass}backoff@{-gar_free_pass}gar_dolg_blokpost|gar_dolg_blokpost_zone_guard|{-gar_free_pass}true@{-gar_free_pass}gar_dolg_blokpost
 meet_dialog = gar_dolg_blokpost
 
 
 
 
-
-
 [logic@gar_dolg_blokpost_zoneguard2]
-active = zoneguard@gar_dolg_blokpost_zoneguard2
+active = walker@gar_dolg_blokpost_zoneguard2
 on_combat = combat
 
-[zoneguard@gar_dolg_blokpost_zoneguard2]
+[walker@gar_dolg_blokpost_zoneguard2]
 path_walk = zoneguard_walk2
 path_look = zoneguard_look2
-zone_warn = zone_warn
-zone_guard = zone_guard
-team = 2
-no_move = true
-;snd_greet = dolg_blokpost
-anim = backoff
-ignore_cond = {+agroprom_military_case_have +gar_free_pass}
+meet = meet@zoneguard2
+
+[meet@zoneguard2]
+meet_state = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+meet_state_wpn = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+victim = 20|actor
+victim_wpn = 20|actor
+use	= false
+use_wpn = false
+zone = gar_dolg_blokpost_zone_warn|{-gar_free_pass}backoff@{-gar_free_pass}gar_dolg_blokpost|gar_dolg_blokpost_zone_guard|{-gar_free_pass}true@{-gar_free_pass}gar_dolg_blokpost
+
 
 
 [logic@gar_dolg_blokpost_zoneguard3]
-active = zoneguard@gar_dolg_blokpost_zoneguard3
+active = walker@gar_dolg_blokpost_zoneguard3
 on_combat = combat
 
-[zoneguard@gar_dolg_blokpost_zoneguard3]
+[walker@gar_dolg_blokpost_zoneguard3]
 path_walk = zoneguard_walk3
 path_look = zoneguard_look3
-zone_warn = zone_warn
-zone_guard = zone_guard
-team = 3
-no_move = true
-;snd_greet = dolg_blokpost
-anim = backoff
-ignore_cond = {+agroprom_military_case_have +gar_free_pass}
+meet = meet@zoneguard2
+
 
 [combat]
 combat_type = camper
