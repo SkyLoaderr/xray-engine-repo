@@ -10,21 +10,28 @@ class ESoundSource: public CCustomObject
 	ref_sound		m_Source;
     shared_str		m_WAVName;
     CSound_params	m_Params;
+    Fvector2		m_PlayTime;
+    Fvector2		m_RandomPause;
+    Fvector2		m_ActiveTime;
+    u32				m_NextTime;
+    u32				m_StopTime;
     // edit events
     void __stdcall 	OnChangeWAV		(PropValue* prop);
     void __stdcall 	OnChangeSource	(PropValue* prop);
 	void __stdcall  OnControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
     void			ResetSource		();
     enum{
-    	flLooped		= (1<<0),
-    	flPlaying		= (1<<1)
+    	flLooped	= (1<<0),
+    	flPlaying	= (1<<1),
+        flSimulating= (1<<2)
     };
     Flags32			m_Flags;
     enum ECommand{
     	stNothing,
     	stPlay,
         stStop,
-        stPause
+        stPause,
+        stSimulate,
     };
     ECommand		m_Command;
 public:
@@ -45,6 +52,7 @@ public:
     void			SetSourceWAV	(LPCSTR fname);
     void			Play			(){m_Command=stPlay;}
     void			Stop			(){m_Command=stStop;}
+    void			Simulate		(){m_Command=stSimulate;}
 
 	virtual void 	Render			(int priority, bool strictB2F);
 	virtual bool 	RayPick			(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);

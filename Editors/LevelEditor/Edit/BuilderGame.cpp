@@ -45,7 +45,7 @@ BOOL SceneBuilder::BuildGame()
 
     // save static sounds
     {
-        xr_string lev_sound_static 		= MakeLevelPath("level.sound_static");
+        xr_string lev_sound_static 			= MakeLevelPath("level.snd_static");
         EFS.MarkFile						(lev_sound_static.c_str(),true);
         if (F.sound_static.chunk)    	
             if (!F.sound_static.stream.save_to	(lev_sound_static.c_str())) bRes = FALSE;
@@ -53,7 +53,7 @@ BOOL SceneBuilder::BuildGame()
 
     // save sound envs
     {
-        xr_string lev_sound_env 			= MakeLevelPath("level.sound_environment");
+        xr_string lev_sound_env 			= MakeLevelPath("level.snd_env");
         EFS.MarkFile						(lev_sound_env.c_str(),true);
         if (LSndLib->MakeEnvGeometry		(F.sound_env_geom.stream,false))
             if (!F.sound_env_geom.stream.save_to(lev_sound_env.c_str())) bRes = FALSE;

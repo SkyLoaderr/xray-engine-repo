@@ -7,6 +7,7 @@
 #include "d3dutils.h"
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
+#include "IGame_Persistent.h"
 //----------------------------------------------------
 
 #define VIS_RADIUS 0.25f
@@ -25,6 +26,7 @@
 #define SOUND_CHUNK_SOURCE_FLAGS		0x1005
 #define SOUND_CHUNK_SOURCE_PARAMS2		0x1006
 #define SOUND_CHUNK_SOURCE_PARAMS3		0x1007
+#define SOUND_CHUNK_GAME_PARAMS			0x1008
 //----------------------------------------------------
 
 ESoundSource::ESoundSource(LPVOID data, LPCSTR name)
@@ -49,6 +51,11 @@ void ESoundSource::Construct(LPVOID data)
 
     m_Flags.set				(flLooped,TRUE);
 	m_Command				= stNothing; 
+	m_RandomPause.set		(0.f,0.f);
+	m_ActiveTime.set		(0.f,0.f);
+    m_PlayTime.set			(0.f,0.f);
+    m_NextTime				= 0;
+    m_StopTime				= 0;
 }
 
 ESoundSource::~ESoundSource()
@@ -160,10 +167,20 @@ bool ESoundSource::Load(IReader& F)
     if(F.find_chunk(SOUND_CHUNK_SOURCE_FLAGS))
 		F.r			(&m_Flags,sizeof(m_Flags));
     
+
+    if(F.find_chunk(SOUND_CHUNK_GAME_PARAMS)){
+	    F.r_fvector2			(m_RandomPause);
+    	F.r_fvector2			(m_ActiveTime);
+	    F.r_fvector2			(m_PlayTime);
+	}
+    
     ResetSource		();
 
     switch (m_Type){
-    case stStaticSource: if (m_Flags.is(flPlaying)) Play(); break;
+    case stStaticSource: 
+    	if (m_Flags.is(flPlaying)) 		Play(); 
+    	if (m_Flags.is(flSimulating)) 	Simulate(); 
+    break;
     default: THROW;
     }
     return true;
@@ -193,6 +210,12 @@ void ESoundSource::Save(IWriter& F)
     F.w_float		(m_Params.max_distance);
     F.w_float		(m_Params.max_ai_distance);
     F.close_chunk	();
+
+    F.open_chunk	(SOUND_CHUNK_GAME_PARAMS);
+    F.w_fvector2	(m_RandomPause);
+    F.w_fvector2	(m_ActiveTime);
+    F.w_fvector2	(m_PlayTime);
+    F.close_chunk	();
 }
 
 //----------------------------------------------------
@@ -213,8 +236,9 @@ void ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
-    case 0: Play();	break;
-    case 1: Stop();	break;
+    case 0: Play();		break;
+    case 1: Stop();		break;
+    case 2: Simulate(); break;
 	}
     UI->RedrawScene();
     bModif = false;
@@ -224,22 +248,31 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	ButtonValue* B;
-    B=PHelper().CreateButton	(values, PrepareKey(pref,"Controls"), 	"Play,Stop",0);
+    B=PHelper().CreateButton	(values, PrepareKey(pref,"Custom\\Controls"), 	"Play,Stop,Simulate",0);
     B->OnBtnClickEvent.bind		(this,&ESoundSource::OnControlClick);
     PropValue* V;
-    V=PHelper().CreateChoose	(values,PrepareKey(pref,"WAVE name"),	&m_WAVName,					smSoundSource);
+    V=PHelper().CreateChoose	(values,PrepareKey(pref,"Source\\WAVE name"),	&m_WAVName,					smSoundSource);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeWAV);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Frequency"),	&m_Params.freq,				0.0f,2.f);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Source\\Frequency"),	&m_Params.freq,				0.0f,2.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Volume"),		&m_Params.volume,			0.0f,1.f);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Source\\Volume"),		&m_Params.volume,			0.0f,1.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Min dist"),	&m_Params.min_distance,		0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Source\\Min dist"),	&m_Params.min_distance,		0.1f,1000.f,0.1f,1);
     V->Owner()->Enable			(FALSE);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max dist"),	&m_Params.max_distance,		0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Source\\Max dist"),	&m_Params.max_distance,		0.1f,1000.f,0.1f,1);
     V->Owner()->Enable			(FALSE);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max ai dist"),	&m_Params.max_ai_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Source\\Max ai dist"),	&m_Params.max_ai_distance,	0.1f,1000.f,0.1f,1);
     V->Owner()->Enable			(FALSE);
-//	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
+	PHelper().CreateCaption		(values,PrepareKey(pref,"Game\\Active time\\Hint"),	"Zero - play sound looped round the clock.");
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Active time\\From"),	&m_ActiveTime.x);
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Active time\\To"),	&m_ActiveTime.y);
+	PHelper().CreateCaption		(values,PrepareKey(pref,"Game\\Play time\\Hint"),	"Zero - play sound once.");
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Play time\\From"),	&m_PlayTime.x);
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Play time\\To"),		&m_PlayTime.y);
+	PHelper().CreateCaption		(values,PrepareKey(pref,"Game\\Pause delta\\Hint"),	"Zero - play sound looped.");
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Pause delta\\From"),	&m_RandomPause.x);
+	PHelper().CreateTime		(values,PrepareKey(pref,"Game\\Pause delta\\To"),	&m_RandomPause.y);
+//	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),	&m_Flags,				flLooped);
 //    V->OnChangeEvent			= OnChangeSource;
 }
 //----------------------------------------------------
@@ -260,15 +293,50 @@ void ESoundSource::OnFrame()
     	m_Source.play		(0,m_Flags.is(flLooped));
 		m_Source.set_params	(&m_Params);
 		m_Command			= stNothing; 
+		m_Flags.set			(flPlaying,TRUE);
     break;
     case stStop: 
 		m_Source.stop		();
         m_Command			= stNothing; 
+		m_Flags.set			(flPlaying,FALSE);
+		m_Flags.set			(flSimulating,FALSE);
     break;
+    case stSimulate:{
+		m_Flags.set			(flSimulating,TRUE);
+    	if ((fis_zero(m_ActiveTime.x)&&fis_zero(m_ActiveTime.y))||
+        	((g_pGamePersistent->Environment.fGameTime>m_ActiveTime.x)&&(g_pGamePersistent->Environment.fGameTime<m_ActiveTime.y))){
+            if (0==m_Source.feedback){
+            	if (fis_zero(m_RandomPause.x)&&fis_zero(m_RandomPause.y)){    
+                    m_Source.play			(0,sm_Looped);
+                    m_Source.set_params		(&m_Params);
+                    m_StopTime				= 0xFFFFFFFF;
+				}else{
+                    if (Device.dwTimeGlobal>=m_NextTime){
+                    	bool bFullPlay		= fis_zero(m_PlayTime.x)&&fis_zero(m_PlayTime.y);
+                        m_Source.play		(0,bFullPlay?0:sm_Looped);
+                        m_Source.set_params	(&m_Params);
+                        if (bFullPlay){
+                            m_StopTime		= 0xFFFFFFFF;
+                            m_NextTime		= Device.dwTimeGlobal+m_Source.handle->length_ms()+Random.randF(m_RandomPause.x,m_RandomPause.y)*1000;
+                        }else{
+                            m_StopTime		= bFullPlay?0:Device.dwTimeGlobal+Random.randF(m_PlayTime.x,m_PlayTime.y)*1000;
+                            m_NextTime		= m_StopTime+Random.randF(m_RandomPause.x,m_RandomPause.y)*1000;
+                        }
+                    }
+                }
+            }else{
+                if (Device.dwTimeGlobal>=m_StopTime)
+	            	m_Source.stop_deffered();
+            }
+            
+        }else{
+            if (0!=m_Source.feedback)
+            	m_Source.stop_deffered();
+        }
+    }break;
     case stNothing:    		break;
     default: THROW;
     }
-	m_Flags.set(flPlaying,!!m_Source.feedback);
 }
 
 void ESoundSource::ResetSource()
@@ -295,12 +363,18 @@ bool ESoundSource::ExportGame(SExportStreams& F)
 {
 	SExportStreamItem& I	= F.sound_static;
 	I.stream.open_chunk		(I.chunk++);
+	I.stream.open_chunk		(0);
     I.stream.w_stringZ		(m_WAVName);
     I.stream.w_fvector3		(m_Params.position);
     I.stream.w_float		(m_Params.volume);
     I.stream.w_float		(m_Params.freq);
-    I.stream.w_float		(m_Params.min_distance);
-    I.stream.w_float		(m_Params.max_distance);
+    I.stream.w_u32			(m_ActiveTime.x*1000);
+    I.stream.w_u32			(m_ActiveTime.y*1000);
+    I.stream.w_u32			(m_PlayTime.x*1000);
+    I.stream.w_u32			(m_PlayTime.y*1000);
+    I.stream.w_u32			(m_RandomPause.x*1000);
+    I.stream.w_u32			(m_RandomPause.y*1000);
+    I.stream.close_chunk	();
     I.stream.close_chunk	();
     return true;
 }
