@@ -1,28 +1,33 @@
 
 news = {
-	tips_esc_trader_about_pda		= [[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_1]],
-	escape_stalker_killed			= [[characters_voice\human_01\scenario\trader\trader_tutorial_end_2]],
-	tutorial_flash_anomaly_alarm	= [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]],
-	escape_stalker_helped			= [[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]],
-	tutorial_trader_look_vagon		= [[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]],
-	gar_dolg_warning				= [[characters_voice\human_01\scenario\duty\duty_warning1]],
-	bar_ecolog_crush_heli_down  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_1]],
-	bar_freedom_attack_attract_actor= [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_2]],
-	bar_freedom_spam_1  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_6]],
-	bar_freedom_spam_2  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_4]],
-	bar_freedom_spam_3  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_3]],
-	bar_freedom_spam_4  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_5]],
-	bar_freedom_attack  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_7]],
-	bar_freedom_attack_spy  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_8]],
-	bar_ecolog_crush_start_heli  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_1]],
-	bar_ecolog_crush_attract_actor  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_2]],
-	bar_ecolog_spam_1  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_3]],
-	bar_ecolog_spam_2  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_4]],
-	bar_ecolog_spam_3  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_5]],
-	bar_ecolog_spam_4  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]],
-	bar_ecolog_attack  = [[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]],
-	tips_gar_hellcar_alarm = [[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]
+	tips_esc_trader_about_pda		= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_1]]),
+	escape_stalker_killed			= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_end_2]]),
+	tutorial_flash_anomaly_alarm	= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]]),
+	escape_stalker_helped			= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]]),
+	tutorial_trader_look_vagon		= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]]),
+	gar_dolg_warning				= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
+	bar_ecolog_crush_heli_down		= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_1]]),
+	bar_freedom_attack_attract_actor= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_2]]),
+	bar_freedom_spam_1				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_6]]),
+	bar_freedom_spam_2				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_4]]),
+	bar_freedom_spam_3				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_3]]),
+	bar_freedom_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_5]]),
+	bar_freedom_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_7]]),
+	bar_freedom_attack_spy			= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_8]]),
+	bar_ecolog_crush_start_heli		= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_1]]),
+	bar_ecolog_crush_attract_actor  = sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_2]]),
+	bar_ecolog_spam_1				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_3]]),
+	bar_ecolog_spam_2				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_4]]),
+	bar_ecolog_spam_3				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_5]]),
+	bar_ecolog_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]]),
+	bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
+	tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]])
 }
+
+pda_news = sound_object([[device\pda\pda_news]])
+pda_tips = sound_object([[device\pda\pda_tip]])
+pda_sos  = sound_object([[device\pda\pda_sos]])
+pda_task = sound_object([[device\pda\pda_objective]])
 
 tips_icons = {
 	dolg     = { 150,   0 },
@@ -39,17 +44,11 @@ function send_news(actor, news_id, timeout, showtime)
 	if timeout == nil then timeout = 0 end
 		
 	if news[news_id] ~= nil then
-		--' Играем звук забитый
-		local snd_obj = sound_object(news[news_id])
-		if snd_obj ~= nil then
-			snd_obj:play(db.actor, timeout+1, sound_object.s2d)
-		end		
+		--' Играем звук забитый	
+		news[news_id]:play(db.actor, timeout+1, sound_object.s2d)
 	end
 	--' Играем дефолтный звук
-	local snd_obj = sound_object([[device\pda\pda_news]])
-	if snd_obj ~= nil then
-		snd_obj:play(db.actor, timeout, sound_object.s2d)
-	end
+	pda_news:play(db.actor, timeout, sound_object.s2d)
 	db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
 	if showtime == nil then showtime = 5000 end
 	db.actor:set_news_show_time(news_id, showtime)
@@ -63,18 +62,10 @@ function send_tip(actor, news_id, timeout, sender, showtime)
 
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
-		local snd_obj = sound_object(news[news_id])
-		if snd_obj ~= nil then
-			snd_obj:play(actor, timeout+1, sound_object.s2d)
-		end
+		news[news_id]:play(db.actor, timeout+1, sound_object.s2d)
 	end
-
 	--' Играем дефолтный звук
-	local snd_obj = sound_object([[device\pda\pda_tip]])
-	if snd_obj ~= nil then
-		snd_obj:play(actor, timeout, sound_object.s2d)
-	end
-
+	pda_tips:play(db.actor, timeout, sound_object.s2d)
 	local x = 50
 	local y = 100
 	if sender ~= nil and tips_icons[sender] ~= nil then
@@ -89,20 +80,14 @@ end
 function send_help(actor)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
-	local snd_obj = sound_object([[device\pda\pda_sos]])
-	if snd_obj ~= nil then
-		snd_obj:play(db.actor, 0, sound_object.s2d)
-	end
+	pda_sos:play(db.actor, timeout, sound_object.s2d)
 	db.actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,50, 0)
 end
 
 function send_task(actor, type)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
-	local snd_obj = sound_object([[device\pda\pda_objective]])
-	if snd_obj ~= nil then
-		snd_obj:play(db.actor, 0, sound_object.s2d)
-	end
+	pda_task:play(db.actor, timeout, sound_object.s2d)
 	if type == "new" then
 		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,50, 0)
 	elseif type == "update" then
@@ -114,10 +99,7 @@ function send_task(actor, type)
 	end	
 end
 function send_encyclopedy(type)
-	local snd_obj = sound_object([[device\pda\pda_objective]])
-	if snd_obj ~= nil then
-		snd_obj:play(db.actor, 0, sound_object.s2d)
-	end
+	pda_task:play(db.actor, timeout, sound_object.s2d)
 	if type == "encyclopedy" then
 		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 350,150,50,50, 0)
 	else
