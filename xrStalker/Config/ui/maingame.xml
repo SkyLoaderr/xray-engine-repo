@@ -132,6 +132,6 @@
 		<background x="0" y="0" width="100" height="8" >ui\ui_mg_progress_efficiency_empty</background>
 	</sound_noise_bar>
 	
-	<followers_panel x="200" y="20" icon_width="100" icon_height="140" v_ident="5" h_ident="10">
+	<followers_panel x="200" y="5" icon_width="100" icon_height="140" v_ident="5" h_ident="10">
 	</followers_panel>
 </window>
