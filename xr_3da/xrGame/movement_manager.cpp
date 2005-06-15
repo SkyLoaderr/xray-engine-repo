@@ -313,7 +313,7 @@ void CMovementManager::verify_detail_path		()
 	if (detail().path().empty() || detail().completed(detail().dest_position()))
 		return;
 
-	if (restrictions().out_restrictions()->size())
+	if (restrictions().out_restrictions().size())
 		return;
 
 	float distance = 0.f;
