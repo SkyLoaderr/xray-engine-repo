@@ -28,8 +28,8 @@ CROS_impl::CROS_impl	()
 	result_iterator		= 0;
 	result_frame		= u32(-1);
 	result_sun			= 0;
-	hemi_value			= 0.2f;
-	hemi_smooth			= 0.2f;
+	hemi_value			= 0.5f;
+	hemi_smooth			= 0.5f;
 	sun_value			= 0.2f;
 	sun_smooth			= 0.2f;
 
@@ -131,7 +131,7 @@ void	CROS_impl::update	(IRenderable* O)
 	
 	// hemi-tracing
 	if	(MODE & IRender_ObjectSpecific::TRACE_HEMI)	{
-		for (u32 it=0; it<3;	it++)		{	// three samples per one frame
+		for (u32 it=0; it<5;	it++)		{	// five samples per one frame
 			u32	sample		= 0					;
 			if	(result_count<lt_hemisamples)	{ sample=result_count; result_count++;							}
 			else								{ sample=(result_iterator%lt_hemisamples); result_iterator++;	}
@@ -139,7 +139,7 @@ void	CROS_impl::update	(IRenderable* O)
 			// take sample
 			Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
 			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
-			//		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
+			//	Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 		}
 	}
 
@@ -149,7 +149,7 @@ void	CROS_impl::update	(IRenderable* O)
 	int		_pass			=	0;
 	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
-	update_smooth			();
+	update_smooth			()	;
 
 	// light-tracing
 	BOOL	bTraceLights	= MODE & IRender_ObjectSpecific::TRACE_LIGHTS;
