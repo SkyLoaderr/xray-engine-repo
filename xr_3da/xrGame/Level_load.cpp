@@ -12,6 +12,7 @@
 #include "../x_ray.h"
 #include "gamemtllib.h"
 #include "PhysicsCommon.h"
+#include "level_sounds.h"
 
 //#define	OLES_REMAPPING
 //#define	ALEX_REMAPPING
@@ -77,6 +78,9 @@ BOOL CLevel::Load_GameSpecific_After()
 		FS.r_close		(F);
 	}
 	// loading static sounds
+	VERIFY								(m_static_sound_manager);
+	m_static_sound_manager->Load		();
+/*
 	if (FS.exist(fn_game, "$level$", "level.sound_static")) {
 		IReader *F		= FS.r_open	(fn_game);
 		u32				chunk = 0;
@@ -98,8 +102,9 @@ BOOL CLevel::Load_GameSpecific_After()
 		}
 		FS.r_close				(F);
 	}
+*/
 	// loading sound environment
-	if (FS.exist(fn_game, "$level$", "level.sound_environment")) {
+	if (FS.exist(fn_game, "$level$", "level.snd_env")) {
 		IReader *F				= FS.r_open	(fn_game);
 		::Sound->set_geometry_env(F);
 		FS.r_close				(F);

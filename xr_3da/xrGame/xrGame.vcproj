@@ -6046,6 +6046,16 @@
 							RelativePath=".\autosave_manager_inline.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Level Sounds"
+						Filter="">
+						<File
+							RelativePath=".\level_sounds.cpp">
+						</File>
+						<File
+							RelativePath=".\level_sounds.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Level Controller"

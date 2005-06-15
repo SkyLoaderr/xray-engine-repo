@@ -27,6 +27,7 @@ class	CGameObject;
 class	CAutosaveManager;
 class	CPHCommander;
 class	CLevelDebug;
+class	CStaticSoundManager;
 
 #define DEFAULT_FOV				90.f
 
@@ -47,6 +48,8 @@ private:
 protected:
 	typedef IGame_Level			inherited;
 	
+	CStaticSoundManager			*m_static_sound_manager;
+
 	// patrol path storage
 	CPatrolPathStorage			*m_patrol_path_storage;
 	// movement restriction manager
@@ -222,8 +225,9 @@ public:
 //	void				SetGameTime				(ALife::_TIME_ID GameTime);
 
 	// gets current daytime [0..23]
-	u8					GetDayTime();
-	float				GetGameDayTimeSec();
+	u8					GetDayTime				();
+	u32					GetGameDayTimeMS		();
+	float				GetGameDayTimeSec		();
 	float				GetEnvironmentGameDayTimeSec();
 
 protected:

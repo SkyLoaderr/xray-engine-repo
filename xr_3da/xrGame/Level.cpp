@@ -56,7 +56,7 @@
 #include "level_debug.h"
 #endif
 
-
+#include "level_sounds.h"
 
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
@@ -101,6 +101,8 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwLastNetUpdateTime		= 0;
 
 	physics_step_time_callback	= (PhysicsStepTimeCallback*) &PhisStepsCallback;
+
+	m_static_sound_manager		= xr_new<CStaticSoundManager>();
 
 	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
 
@@ -165,6 +167,8 @@ CLevel::~CLevel()
 		xr_delete		(static_Sounds[i]);
 	}
 	static_Sounds.clear	();
+
+	xr_delete					(m_static_sound_manager);
 
 	xr_delete					(m_patrol_path_storage);
 
@@ -403,6 +407,9 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.Begin		();
 	BulletManager().Update				();
 	Device.Statistic.TEST0.End			();
+
+	// update static sounds
+	m_static_sound_manager->Update		();
 }
 
 void CLevel::OnRender()
@@ -666,6 +673,11 @@ u8 CLevel::GetDayTime()
 float CLevel::GetGameDayTimeSec()
 {
 	return	(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
+}
+
+u32 CLevel::GetGameDayTimeMS()
+{
+	return	(u32(s64(GetGameTime() % (24*60*60*1000))));
 }
 
 float CLevel::GetEnvironmentGameDayTimeSec()
