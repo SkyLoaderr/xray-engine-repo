@@ -20,7 +20,7 @@
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
 #include "game_graph.h"
-#include "gameobject.h"
+#include "custommonster.h"
 
 CRestrictedObject::~CRestrictedObject		()
 {
