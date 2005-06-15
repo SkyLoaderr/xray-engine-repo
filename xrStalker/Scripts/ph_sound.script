@@ -55,7 +55,7 @@ function snd_source:update(delta)
     if self.last_update == 0 then
        self.last_update = device ():time_global ()
     else
-       if device ():time_global () - self.last_update > 100 then
+       if device ():time_global () - self.last_update > 50 then
           self.last_update = 0
        else
           return     
@@ -71,7 +71,11 @@ function snd_source:update(delta)
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
        end
-       self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
+       if self.st.looped == false then
+          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
+       else 
+          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), sound_object.looped)
+       end   
        printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        played_sound = self.sound_list[self.current_sound]
     end
@@ -89,6 +93,7 @@ end
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st    = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	st.theme    =  utils.cfg_get_string(ini, section, "snd",	npc, false, "")
+	st.theme    = utils.cfg_get_string(ini, section, "snd",	npc, false, "")
+	st.looped   = utils.cfg_get_bool (ini, section, "looped", npc, false)
 end
     
