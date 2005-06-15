@@ -374,22 +374,42 @@ radius = 15
 
 
 [logic@gar_dolg_blokpost_zoneguard1]
-active = zoneguard@gar_dolg_blokpost_zoneguard1
+active = walker@gar_dolg_blokpost_zoneguard1
 on_combat = combat
+meet = meet@zoneguard1
 
-
-[zoneguard@gar_dolg_blokpost_zoneguard1]
+[walker@gar_dolg_blokpost_zoneguard1]
 path_walk = zoneguard_walk1
 path_look = zoneguard_look1
-zone_warn = zone_warn
-zone_guard = zone_guard
-team = 1
-no_move = true
+meet = meet@zoneguard1
+
+;zone_warn = zone_warn
+;zone_guard = zone_guard
+;team = 1
+;no_move = true
 ;snd_greet = dolg_blokpost
-anim = backoff
-ignore_cond = {+agroprom_military_case_have +gar_free_pass}
-meet_talk_enabled = true
+;anim = backoff
+;ignore_cond = {+agroprom_military_case_have +gar_free_pass}
+;meet_talk_enabled = true
+;meet_dialog = gar_dolg_blokpost
+
+
+[meet@zoneguard1]
+meet_state = 20| {-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+meet_state_wpn = 20| {-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
+victim = 20| actor
+victim_wpn = 20| actor
+use	= true
+use_wpn = true
+zone_warn = gar_dolg_blokpost_zone_warn| {+gar_free_pass} back_off@ {+gar_free_pass} gar_dolg_blokpost
+;, {+gar_free_pass} guard@talk_hello
+zone_kill = gar_dolg_blokpost_zone_guard| {+gar_free_pass} true@ {+gar_free_pass} talk_abuse
+;, {+gar_free_pass} guard@talk_hello
 meet_dialog = gar_dolg_blokpost
+
+
+
+
 
 
 [logic@gar_dolg_blokpost_zoneguard2]
