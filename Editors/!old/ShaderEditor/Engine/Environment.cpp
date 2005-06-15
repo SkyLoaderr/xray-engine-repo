@@ -533,7 +533,6 @@ void CEnvironment::SelectEnvs(float gt)
 void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
-	if (!psDeviceFlags.is(rsEnvironment))		return;
 	fGameTime				+= Device.fTimeDelta*fTimeFactor;
     if (fsimilar(ed_to_time,day_tm)&&fsimilar(ed_from_time,0.f)){
 	    if (fGameTime>day_tm)	fGameTime-=day_tm;
@@ -547,6 +546,7 @@ void CEnvironment::OnFrame()
             Current[0]=Current[1]=0;
         }
     }
+	if (!psDeviceFlags.is(rsEnvironment))		return;
 #else
 	if (!g_pGameLevel)		return;
 #endif
