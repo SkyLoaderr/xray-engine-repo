@@ -6,7 +6,7 @@ function proceed()
 		actor:object("hunters_toz") ~= nil 
 	then		
 		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
-		set_task_state(task.completed, "bar_hunter_rifle", 1)
+		level_tasks.set_task_state(task.completed, "bar_hunter_rifle", 1)
 	end 
 
 	if	actor:has_info("bar_kill_veteran_start") and 
@@ -14,7 +14,7 @@ function proceed()
 		actor:object("bar_lucky_pda") ~= nil 
 	then		
 		actor:give_info_portion("bar_kill_veteran_killed")
-		set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
 	end 
 
 	-- выдача информации с флешки профессора
@@ -37,7 +37,7 @@ function proceed()
 		actor:object("bar_sniper_pda") ~= nil 
 	then		
 		actor:give_info_portion("bar_bar_drunk_dolg_quest_gain")
-		set_task_state(task.completed, "bar_drunk_dolg_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_drunk_dolg_quest", 1)
 	end 
 
 
@@ -46,7 +46,7 @@ function proceed()
 		actor:object("bar_darklab_documents") ~= nil 
 	then		
 		actor:give_info_portion("bar_darklab_document_gain")
-		set_task_state(task.completed, "bar_darklab_documents", 1)
+		level_tasks.set_task_state(task.completed, "bar_darklab_documents", 1)
 	end 
 
 	if	actor:has_info("bar_svoboda_rg6_start") and 
@@ -54,7 +54,7 @@ function proceed()
 		actor:object("dolg_arhive_documents") ~= nil 
 	then		
 		actor:give_info_portion("bar_dolg_veteran_gain")
-		set_task_state(task.completed, "bar_dolg_test_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_dolg_test_quest", 1)
 	end 
 
 	if	actor:has_info("bar_svoboda_rg6_start") and 
@@ -63,7 +63,7 @@ function proceed()
 		actor:object("wpn_rg-6") ~= nil 
 	then		
 		actor:give_info_portion("mil_svoboda_rg6_gain")
-		set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
+		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
 	end 
 
 	if	actor:has_info("bar_kill_borov_start") and
@@ -71,7 +71,7 @@ function proceed()
 		actor:object("borov_flash") ~= nil
 	then		
 		actor:give_info_portion("val_borov_info_gain")
-		set_task_state(task.completed, "bar_dolg_borov_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_dolg_borov_quest", 1)
 	end 
 
 	if	actor:has_info("bar_kill_svoboda_ambush_start") and
@@ -79,7 +79,7 @@ function proceed()
 		actor:object("bar_tiran_pda") ~= nil
 	then		
 		actor:give_info_portion("bar_kill_svoboda_ambush_killed")
-		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 1)
 	end 
 
 	if	actor:has_info("bar_kill_svoboda_leader_start") and
@@ -87,7 +87,7 @@ function proceed()
 		actor:object("mil_svoboda_leader_pda") ~= nil
 	then		
 		actor:give_info_portion("mil_kill_svoboda_leader_killed")
-		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
+		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
 	end 
 
 
@@ -96,26 +96,26 @@ function proceed()
 		actor:object("bar_decoding_documents") ~= nil 
 	then		
 		actor:give_info_portion("yan_decoding_gain")
-		set_task_state(task.completed, "bar_decoding_documents", 1)
+		level_tasks.set_task_state(task.completed, "bar_decoding_documents", 1)
 	end 
 
 end
 
 function process_map_spot(info_id)
 	if info_id == "agroprom_military_case_done" then
-		set_task_state(task.completed, "agroprom_get_military_documents", 0)
+		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 0)
 		return true	
 	elseif info_id == "bar_svoboda_rg6_done" then
-		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
+		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
 		return true
 	elseif info_id == "bar_kill_borov_done" then
-		set_task_state(task.completed, "bar_dolg_borov_quest", 0)
+		level_tasks.set_task_state(task.completed, "bar_dolg_borov_quest", 0)
 		return true
 	elseif info_id == "bar_kill_svoboda_ambush_done" then
-		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
+		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
 		return true	
 	elseif info_id == "bar_kill_svoboda_leader_done" then
-		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
+		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
 		return true	
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		level_tasks.add_location(502, "bar_hunter_toz_location")
