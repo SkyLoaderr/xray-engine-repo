@@ -74,7 +74,7 @@ function snd_source:update(delta)
        if self.st.looped == false then
           self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
        else 
-          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), sound_object.looped)
+          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
        end   
        printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        played_sound = self.sound_list[self.current_sound]
