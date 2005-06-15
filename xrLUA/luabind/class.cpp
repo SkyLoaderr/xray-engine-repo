@@ -42,6 +42,10 @@ namespace luabind { namespace detail {
     {   
         class_registration(char const* name);
 
+#ifdef USE_NATIVE_LUA_STRINGS
+//		mutable lua_State	*m_state;
+#endif
+
         void register_(lua_State* L) const;
 
         const char* m_name;
@@ -50,12 +54,26 @@ namespace luabind { namespace detail {
 
         // datamembers, some members may be readonly, and
         // only have a getter function
-        mutable std::map<const char*, detail::class_rep::callback, detail::ltstr> m_getters;
-        mutable std::map<const char*, detail::class_rep::callback, detail::ltstr> m_setters;
+#ifndef USE_NATIVE_LUA_STRINGS
+		mutable std::map<const char*, detail::class_rep::callback, ltstr> m_getters;
+		mutable std::map<const char*, detail::class_rep::callback, ltstr> m_setters;
+#else
+		typedef std::hash_map<lua_string_holder, detail::class_rep::callback, TString_hash_compare>	callback_map;
+
+		mutable callback_map m_getters;
+        mutable callback_map m_setters;
+#endif
 
         // the operators in lua
         mutable std::vector<detail::class_rep::operator_callback> m_operators[detail::number_of_operators]; 
-        mutable std::map<const char*, int, detail::ltstr> m_static_constants;
+
+#ifndef USE_NATIVE_LUA_STRINGS
+		mutable std::map<const char*, int, detail::ltstr> m_static_constants;
+#else
+		typedef std::hash_map<lua_string_holder, int, TString_hash_compare> STATIC_CONSTANTS;
+
+		mutable STATIC_CONSTANTS m_static_constants;
+#endif
 
         mutable std::vector<class_base::base_desc> m_bases;
         mutable detail::construct_rep m_constructor;
@@ -89,6 +107,9 @@ namespace luabind { namespace detail {
     class_registration::class_registration(char const* name)
     {
         m_name = name;
+#ifdef USE_NATIVE_LUA_STRINGS
+//		m_state = 0;
+#endif
     }
 
     void class_registration::register_(lua_State* L) const
@@ -96,6 +117,10 @@ namespace luabind { namespace detail {
         LUABIND_CHECK_STACK(L);
 
         assert(lua_type(L, -1) == LUA_TTABLE);
+
+#ifdef USE_NATIVE_LUA_STRINGS
+//		m_state		= L;
+#endif
 
         lua_pushstring(L, m_name);
 
@@ -274,7 +299,12 @@ namespace luabind { namespace detail {
         c.pointer_offset = 0;
 
         const char* key = name;
+#ifndef USE_NATIVE_LUA_STRINGS
         m_registration->m_getters[key] = c;
+#else
+//        m_registration->m_getters[lua_string_holder(m_registration->m_state,key)] = c;
+        m_registration->m_getters[lua_string_holder(g_global_lua_state,key)] = c;
+#endif
     }
 
 #ifdef LUABIND_NO_ERROR_CHECKING
@@ -300,7 +330,13 @@ namespace luabind { namespace detail {
 
 
         const char* key = name;
+#ifndef USE_NATIVE_LUA_STRINGS
         m_registration->m_setters[key] = c;
+#else
+//		m_registration->m_setters[lua_string_holder(m_registration->m_state,key)] = c;
+		
+		m_registration->m_setters[lua_string_holder(g_global_lua_state,key)] = c;
+#endif
     }
 
     void class_base::add_base(const base_desc& b)
@@ -363,7 +399,13 @@ namespace luabind { namespace detail {
 
     void class_base::add_static_constant(const char* name, int val)
     {
+#ifndef USE_NATIVE_LUA_STRINGS
         m_registration->m_static_constants[name] = val;
+#else
+//		m_registration->m_static_constants[lua_string_holder(m_registration->m_state,name)] = val;
+
+		m_registration->m_static_constants[lua_string_holder(g_global_lua_state,name)] = val;
+#endif
     }
 
     void class_base::add_inner_scope(scope& s)
