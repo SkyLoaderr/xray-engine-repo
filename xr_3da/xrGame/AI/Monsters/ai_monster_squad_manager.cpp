@@ -83,11 +83,12 @@ void CMonsterSquadManager::update(CEntity *entity)
 	}
 }
 
-void CMonsterSquadManager::net_relcase(CObject *O)
+void CMonsterSquadManager::remove_links(CObject *O)
 {
 	for (u32 team_id=0; team_id<team.size();team_id++) {
 		for (u32 squad_id=0; squad_id<team[team_id].size(); squad_id++) {
-			team[team_id][squad_id]->Net_Relcase(O);
+			CMonsterSquad *squad = team[team_id][squad_id];
+			if (squad) squad->remove_links(O);
 		}
 	}
 

@@ -101,7 +101,7 @@ public:
 	
 	void		UpdateSquadCommands	();	
 
-	void		Net_Relcase			(CObject *O);
+	void		remove_links			(CObject *O);
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	//  Общие данные

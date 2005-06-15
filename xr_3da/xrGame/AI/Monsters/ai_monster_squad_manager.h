@@ -22,7 +22,7 @@ public:
 
 	void			update					(CEntity *entity);
 
-	void			net_relcase				(CObject *O);
+	void			remove_links			(CObject *O);
 };
 
 

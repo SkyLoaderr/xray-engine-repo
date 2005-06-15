@@ -373,7 +373,7 @@ void CBaseMonster::net_Relcase(CObject *O)
 
 		UpdateMemory		();
 		
-		monster_squad().net_relcase(O);
+		monster_squad().remove_links(O);
 	}
 }
 	

@@ -113,7 +113,7 @@ void CMonsterSquad::UpdateSquadCommands()
 	ProcessIdle		();
 }
 
-void CMonsterSquad::Net_Relcase(CObject *O)
+void CMonsterSquad::remove_links(CObject *O)
 {
 	// Удалить все цели, объекты которых невалидны или ушли в оффлайн
 	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); ++it_goal) {
