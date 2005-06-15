@@ -2,10 +2,10 @@
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 
-	<!-- NAME 
-	<name_static x="0" y="0" width="130" height="22">
-		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
-	</name_static>-->
+	<!-- NAME -->
+	<name_static x="0" y="110" width="100" height="22">
+		<text x="0" y="0" font="graffiti19" r="238" g="155" b="23"></text>
+	</name_static>
 
 	<!-- ICON -->
 	<icon_static x="0" y="0" width="100" height="100"></icon_static>

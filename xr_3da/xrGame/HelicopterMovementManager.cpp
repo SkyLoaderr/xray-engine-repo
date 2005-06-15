@@ -146,8 +146,8 @@ bool SHeliMovementState::AlreadyOnPoint()
 		float new_dist = desiredPoint.distance_to(P1);
 		res = new_dist>dist;
 	}
-	if(res)
-		Msg("--------OnPoint id=[%d] dist=[%f]", currPatrolVertex->vertex_id(), dist);
+//	if(res)
+//		Msg("--------OnPoint id=[%d] dist=[%f]", currPatrolVertex->vertex_id(), dist);
 
 	return res;
 }
