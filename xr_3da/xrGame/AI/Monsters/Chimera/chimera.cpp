@@ -127,7 +127,7 @@ void CChimera::reinit()
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpOne,			CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpTwo,			CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
-	anim().load_jump_data(m_jump_data, "jump_attack_0", "jump_attack_1", "jump_attack_2", MonsterMovement::eChimeraVelocityParamsJump);
+	anim().load_jump_data(m_jump.setup_data(), "jump_attack_0", "jump_attack_1", "jump_attack_2", MonsterMovement::eChimeraVelocityParamsJump);
 }
 
 void CChimera::SetTurnAnimation(bool turn_left)
@@ -265,11 +265,18 @@ void CChimera::try_to_jump()
 	if (!m_jump.can_jump(target)) return;
 
 	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(target, m_jump_data);
+		m_jump.setup_data().skip_prepare = false;
+		anim().jump(target, m_jump.setup_data());
 	}
 }
 
 void CChimera::jump_over_physics(const Fvector &target)
 {
-	//CJumpingAbility::jump(target, MonsterMovement::eChimeraVelocityParamsJump, true);
+	if (control().check_start_conditions(ControlCom::eControlJump)) {
+		m_jump.setup_data().skip_prepare	= true;
+		m_jump.setup_data().target_object	= 0;
+		m_jump.setup_data().target_position	= target;
+
+		anim().jump(m_jump.setup_data());
+	}
 }

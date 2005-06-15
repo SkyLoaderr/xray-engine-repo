@@ -313,6 +313,9 @@ void CMovementManager::verify_detail_path		()
 	if (detail().path().empty() || detail().completed(detail().dest_position()))
 		return;
 
+	if (restrictions().out_restrictions()->size())
+		return;
+
 	float distance = 0.f;
 	for (u32 i=detail().curr_travel_point_index() + 1, n=detail().path().size(); i<n; ++i) {
 		if (!restrictions().accessible(detail().path()[i].position,EPS_L)) {

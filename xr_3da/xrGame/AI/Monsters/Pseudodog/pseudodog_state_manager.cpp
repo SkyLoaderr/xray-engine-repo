@@ -103,6 +103,8 @@ void CStateManagerPseudodog::execute()
 		else			state_id = eStateRest;
 	}
 
+	object->try_to_jump();
+	
 	select_state(state_id); 
 
 	// выполнить текущее состояние

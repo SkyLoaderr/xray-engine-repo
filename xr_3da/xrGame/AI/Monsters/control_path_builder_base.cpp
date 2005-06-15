@@ -55,21 +55,26 @@ void CControlPathBuilderBase::reset()
 void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
 {
 	switch (type) {
-	case ControlCom::eventPathBuilt: check_failure(); break;
+	case ControlCom::eventPathBuilt:			check_failure(); break;
+	case ControlCom::eventTravelPointChange:	travel_point_changed(); break;
 	}
 }
 
 void CControlPathBuilderBase::on_start_control(ControlCom::EContolType type)
 {
 	switch (type) {
-	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	break;
+	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	
+									m_man->subscribe	(this, ControlCom::eventTravelPointChange);	
+									break;
 	}
 }
 
 void CControlPathBuilderBase::on_stop_control(ControlCom::EContolType type)
 {
 	switch (type) {
-	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	break;
+	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	
+									m_man->unsubscribe	(this, ControlCom::eventTravelPointChange);	
+									break;
 	}
 }
 

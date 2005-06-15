@@ -33,7 +33,8 @@ public:
 	virtual void	reinit				();
 	virtual void	update_frame		();
 
-	void	on_animation_end	();	
+			void	on_animation_end	();	
+			CBlend	*current_blend		() {return blend;}
 
 private:
 	void	update				();

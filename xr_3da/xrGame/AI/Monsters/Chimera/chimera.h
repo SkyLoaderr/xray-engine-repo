@@ -15,7 +15,6 @@ class CChimera : public CBaseMonster {
 	SVelocityParam		m_fsVelocityRunAttack;
 
 	CControlJump		m_jump;
-	SControlJumpData	m_jump_data;
 
 public:
 					CChimera			();

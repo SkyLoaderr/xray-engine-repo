@@ -251,6 +251,7 @@ public:
 	void					set_animation_speed	();
 
 	void					jump				(CObject *obj, const SControlJumpData &ta);
+	void					jump				(const SControlJumpData &ta);
 	void					load_jump_data		(SControlJumpData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask);
 };
 

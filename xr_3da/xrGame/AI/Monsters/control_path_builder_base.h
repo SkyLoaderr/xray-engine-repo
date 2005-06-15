@@ -135,6 +135,8 @@ private:
 		IC	bool		failed					();
 
 		void		reset						();
+
+		void		travel_point_changed		();
 };
 
 #include "control_path_builder_base_inline.h"

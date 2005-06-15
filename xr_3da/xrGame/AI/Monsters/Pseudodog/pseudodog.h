@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../BaseMonster/base_monster.h"
-#include "../ai_monster_jump.h"
 #include "../../../script_export_space.h"
+#include "../control_jump.h"
 
-class CAI_PseudoDog : public CBaseMonster, public CJumping {
+class CAI_PseudoDog : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
 
+	CControlJump		m_jump;
+
 public:
-	bool			strike_in_jump;
 
 	SAttackEffector m_psi_effector;
 
@@ -31,19 +32,15 @@ public:
 	virtual void	reinit				();
 	virtual void	reload				(LPCSTR section);
 
-	virtual void	UpdateCL			();
-
-	virtual void	OnJumpStop			();
-	virtual bool	CanJump				() {return true;}
-	
 	virtual bool	ability_can_drag	() {return true;}
 	virtual bool	ability_psi_attack	() {return true;}
 	virtual bool	ability_can_jump	() {return true;}
 
-
 	virtual void	CheckSpecParams		(u32 spec_params);
 	//virtual void	play_effect_sound	();
 
+			void	try_to_jump			();
+		
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

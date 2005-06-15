@@ -601,6 +601,7 @@ void CControlAnimationBase::jump(CObject *obj, const SControlJumpData &ta)
 	ctrl_data->velocity_mask	= ta.velocity_mask;
 	ctrl_data->target_position	= obj->Position();
 	ctrl_data->skip_prepare		= ta.skip_prepare;
+	ctrl_data->play_glide_once	= ta.play_glide_once;
 	ctrl_data->pool[0]			= ta.pool[0];
 	ctrl_data->pool[1]			= ta.pool[1];
 	ctrl_data->pool[2]			= ta.pool[2];
@@ -616,5 +617,25 @@ void CControlAnimationBase::load_jump_data(SControlJumpData &data, LPCSTR s1, LP
 	data.pool[1]		= skel_animated->ID_Cycle_Safe(s2);	VERIFY(data.pool[1]);
 	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
 	data.skip_prepare	= false;
+	data.play_glide_once = true;
 	data.velocity_mask	= vel_mask;
+}
+
+void CControlAnimationBase::jump(const SControlJumpData &ta)
+{
+	m_man->capture		(this, ControlCom::eControlJump);
+
+	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
+	VERIFY				(ctrl_data);
+
+	ctrl_data->target_object	= ta.target_object;
+	ctrl_data->velocity_mask	= ta.velocity_mask;
+	ctrl_data->target_position	= ta.target_position;
+	ctrl_data->skip_prepare		= ta.skip_prepare;
+	ctrl_data->play_glide_once	= ta.play_glide_once;
+	ctrl_data->pool[0]			= ta.pool[0];
+	ctrl_data->pool[1]			= ta.pool[1];
+	ctrl_data->pool[2]			= ta.pool[2];
+
+	m_man->activate		(ControlCom::eControlJump);
 }

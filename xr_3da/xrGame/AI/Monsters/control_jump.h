@@ -7,6 +7,7 @@ struct SControlJumpData : public ControlCom::IComData {
 	u32						velocity_mask;
 	Fvector					target_position;
 	bool					skip_prepare;
+	bool					play_glide_once;
 	MotionID				pool[3];
 };
 
@@ -68,6 +69,8 @@ public:
 
 			void	disable_bounce			() {m_enable_bounce = false;}
 
+SControlJumpData	&setup_data				() {return m_data;}
+
 private:	
 			// service routines		
 			// build path after jump 
@@ -76,8 +79,6 @@ private:
 			Fvector get_target			(CObject *obj);
 			// finalize jump
 			void	pointbreak			();
-			// set current blend speed
-			void	set_animation_speed	();
 			// check for hit object
 			void	hit_test			();
 

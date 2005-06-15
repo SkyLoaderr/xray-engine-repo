@@ -100,7 +100,6 @@ void CControlJump::update_frame()
 
 	if (is_landing()) pointbreak();
 	
-	set_animation_speed	();
 	hit_test			();
 
 	
@@ -140,8 +139,6 @@ bool CControlJump::is_landing()
 
 void CControlJump::build_line()
 {
-	if (m_data.velocity_mask == u32(-1)) return;
-	
 	Fvector target_position;
 	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
@@ -156,16 +153,6 @@ void CControlJump::build_line()
 		m_man->lock					(this, ControlCom::eControlPath);
 		
 	}
-}
-
-void CControlJump::set_animation_speed() 
-{
-	//if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide)) {
-	//	if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
-	//	info.speed.current = (info.blend->timeTotal / m_jump_time);
-	//} else {
-	//	info.speed.current = 1.f;
-	//}
 }
 
 void CControlJump::stop()
@@ -199,9 +186,11 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 	if (type == ControlCom::eventVelocityBounce) {
 		SEventVelocityBounce *event_data = (SEventVelocityBounce *)data;
 		if ((event_data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
-			if (is_on_the_ground()) {
+ 			if (is_on_the_ground()) {
 				m_velocity_bounced	= true;
-				build_line			();
+				if (m_data.velocity_mask != u32(-1)) build_line();
+				else stop();
+				
 			} else {
 				if (!m_enable_bounce) {
 					m_enable_bounce = true;
@@ -323,10 +312,12 @@ void CControlJump::select_next_anim_state()
 		return;
 	}
 
-	play_selected	();
+	if (m_anim_state_current == eStateGlide) {
+		if (m_anim_state_prev != eStateGlide)	on_start_jump();
+		else if (m_data.play_glide_once)		return;
+	}
 
-	if ((m_anim_state_current == eStateGlide) && (m_anim_state_prev != eStateGlide)) 
-		on_start_jump	();
+	play_selected	();
 
 	m_anim_state_prev = m_anim_state_current;
 	if (m_anim_state_current != eStateGlide) 
@@ -341,6 +332,13 @@ void CControlJump::play_selected()
 
 	ctrl_data->motion			= m_data.pool[m_anim_state_current];
 	ctrl_data->start_animation	= true;
+	
+	if (m_anim_state_current == eStateGlide) {
+		VERIFY				(m_man->animation().current_blend());
+		ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
+	} else 
+		ctrl_data->speed	= -1.f;
+
 }
 
 void CControlJump::on_start_jump()
