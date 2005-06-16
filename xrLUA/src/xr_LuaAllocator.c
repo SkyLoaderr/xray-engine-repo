@@ -3394,7 +3394,7 @@ Void_t* mALLOc(size_t bytes)
     aligned.
   */
 
-	stat_hook	(bytes);
+	//stat_hook	(bytes);
 	checked_request2size(bytes, nb);
 
   /*
