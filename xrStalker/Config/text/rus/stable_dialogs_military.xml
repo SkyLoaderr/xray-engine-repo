@@ -516,6 +516,9 @@
     <string id="mil_dolg_skull_dialog_131">
         <text>Ждем. Но не долго.</text>
     </string>
+    <string id="mil_dolg_skull_dialog_200">
+        <text>Спасибо за помощь, Меченый. Возьми свой гонорар.</text>
+    </string>
     <string id="mil_dolg_soldier_dialog_0">
         <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а ты?</text>
     </string>
