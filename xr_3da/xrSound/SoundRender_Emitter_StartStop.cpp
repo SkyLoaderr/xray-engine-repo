@@ -23,6 +23,7 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
     }else{
 		state				= _loop?stStartingLoopedDelayed:stStartingDelayed;
     }
+	bStopping				=	FALSE;
 }
 
 void CSoundRender_Emitter::i_stop()
