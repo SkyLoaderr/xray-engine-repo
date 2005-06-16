@@ -22,6 +22,7 @@ news = {
 	bar_ecolog_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]]),
 	bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
 	tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]])
+	gar_dolg_blokpost_warning		= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]) 
 }
 
 pda_news = sound_object([[device\pda\pda_news]])
