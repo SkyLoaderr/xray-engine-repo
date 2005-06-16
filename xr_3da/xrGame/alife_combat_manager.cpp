@@ -137,17 +137,17 @@ bool CALifeCombatManager::bfCheckObjectDetection(CSE_ALifeSchedulable *tpALifeSc
 			ai().ef_storage().alife().member_item()	= smart_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable1);
 			ai().ef_storage().alife().member()	= tpALifeSchedulable1;
 			ai().ef_storage().alife().enemy()		= tpALifeSchedulable2;
-			return										(randF(100) < (int)ai().ef_storage().m_pfEnemyDetectProbability->ffGetValue());
+			return										(randF(100) < ai().ef_storage().m_pfEnemyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeAnomalyMonster : {
 			ai().ef_storage().alife().enemy()		= tpALifeSchedulable1;
-			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyInteractProbability->ffGetValue());
+			return										(randF(100) < ai().ef_storage().m_pfAnomalyInteractProbability->ffGetValue());
 		}
 		case eCombatTypeMonsterAnomaly : {
 			ai().ef_storage().alife().member_item()	= tpALifeSchedulable1->tpfGetBestDetector();
 			ai().ef_storage().alife().member()	= tpALifeSchedulable1;
 			ai().ef_storage().alife().enemy()		= tpALifeSchedulable2;
-			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
+			return										(randF(100) < ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeSmartTerrain : {
 			CSE_ALifeSmartZone							*smart_zone	= smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable1);
@@ -319,7 +319,7 @@ void CALifeCombatManager::vfPerformAttackAction(int iCombatGroupIndex)
 		}
 #endif
 		for (int i=0, n=iFloor(ai().ef_storage().m_pfWeaponAttackTimes->ffGetValue() + .5f); i<n; ++i) {
-			if (randF(100) < (int)ai().ef_storage().m_pfWeaponSuccessProbability->ffGetValue()) {
+			if (randF(100) < ai().ef_storage().m_pfWeaponSuccessProbability->ffGetValue()) {
 				// choose random enemy group member and perform hit with random power
 				// multiplied by immunity factor
 				int							l_iIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());
