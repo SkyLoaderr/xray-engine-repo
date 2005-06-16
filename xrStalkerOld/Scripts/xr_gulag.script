@@ -34,6 +34,7 @@ end
 
 function fract:addObject(npc)
 	self.Object[npc:id()] = npc
+	self.ObjectJob[npc:id()] = nil
 end
 
 function fract:loadObject( obj_id, jobN )
@@ -63,7 +64,12 @@ function fract:spawn_callback( id, obj )
 end
 
 function fract:removeObject( npc_id, npc )
-	self:clearAllJob( npc_id )
+	if npc:alive() then
+		self:freeNpc_and_reinit( npc_id )
+	else
+		self:freeNpc( npc_id )
+	end
+
 	self:set_restrictions( npc, "", "" )
 	self.Object[npc_id]      = nil
 	self.restrictors[npc_id] = nil
@@ -87,18 +93,19 @@ function fract:calculate()
 
 	--' Изменение потерь в лагере
 	for k,v in self.Object do
-		if v:alive() ~= true then
+		if not v:alive() then
 			self:changeCasualities(1)
-			self.Object[k] = nil
+--			self.Object[k]    = nil
+			self:removeObject( k, v )
 		end
 	end
 
 	--' Обнуление работ с несуществующими персонажами
-	for k,v in self.Job do
-		if v.object ~= nil and self.Object[v.object:id()] == nil then
-			v.object = nil				
-		end
-	end
+--	for k,v in self.Job do
+--		if v.object ~= nil and self.Object[v.object:id()] == nil then
+--			v.object = nil				
+--		end
+--	end
 
 	if self.calculateStates ~= nil then 
 		self:changeState(self.calculateStates(self))
@@ -150,13 +157,24 @@ function fract:updateJob()
 	end
 
 	-- освобождение npc с работ, не существующих в данном состоянии
-	for k,v in self.Job do
-		if not self:availState(v.state, self.state) then
-			v.object = nil
+--	for k,v in self.Job do
+--		if not self:availState(v.state, self.state) then
+--			v.object = nil
+--		end
+--	end
+	local jobN
+	for k,v in self.Object do
+		jobN = self.ObjectJob[k]
+		if jobN then
+			if not self:availState(self.Job[jobN].state, self.state) then
+				self:freeNpc( k )
+			end
 		end
 	end
 
 	-- переназначение работ
+	jobN = 1
+
 	for k,v in self.Job do
 --		printf( "   %s", v.section )
 
@@ -168,7 +186,7 @@ function fract:updateJob()
 				local f = false
 				for kk,vv in self.Object do
 					if ((v.predicate == nil or v.predicate(vv) == true) and self:getJob(vv) == nil) then
-						self:setJob(vv, v)
+						self:setJob(vv, v, jobN)
 						f = true
 						break
 						--return
@@ -179,12 +197,12 @@ function fract:updateJob()
 					for i = table.getn(self.Job), k, -1 do
 						if self.Job[i].object ~= nil and self.Job[i].prior < v.prior then 
 							if v.predicate == nil or v.predicate(self.Job[i].object) == true then
-								self:setJob(self.Job[i].object, v)
+								self:setJob(self.Job[i].object, v, jobN)
 								break
 								--return
 							end
 						end
-					end			
+					end
 				end
 --			else
 --				if v.object then
@@ -194,6 +212,8 @@ function fract:updateJob()
 --				end
 			end
        	end
+
+       	jobN = jobN + 1
 	end
 end
 
@@ -254,11 +274,13 @@ function fract:get_stype( obj )
 	end
 end
 
-function fract:setJob(npc, job)
-	self:clearAllJob(npc:id())
+function fract:setJob(npc, job, jobN)
+	self:freeNpc(npc:id())
 
 	job.object = npc
 	job.begin  = game.time()
+
+	self.ObjectJob[npc:id()] = jobN
 
 	--' Спейс рестрикторы
 	self:set_restrictions(job.object, job.out_rest, job.in_rest)
@@ -334,21 +356,20 @@ function fract:set_restrictions(npc, r_out, r_in)
 end
 
 function fract:getJob(npc)
-	if npc == nil then return nil end
-	for k,v in self.Job do
-		if v.object ~= nil and v.object:id() == npc:id() then
-			return v
-		end
-	end
-	return nil
+	local jobN = self.ObjectJob[npc:id()]
+	return jobN and self.Job[jobN]
 end
 
-function fract:clearAllJob(npc_id)
-	for k,v in self.Job do
-		if v.object ~= nil and v.object:id() == npc_id then	
-			v.object = nil
-		end
+function fract:freeNpc(npc_id)
+	local jobN = self.ObjectJob[npc_id]
+	if jobN then
+		self.ObjectJob[npc_id] = nil
+		self.Job[jobN].object  = nil
 	end
+end
+
+function fract:freeNpc_and_reinit(npc_id)
+	self:freeNpc(npc_id)
 
 	-- если сталкер в онлайне, то сбросить его схему поведения
 	local t = self.Object[npc_id]
@@ -359,10 +380,7 @@ function fract:clearAllJob(npc_id)
 end
 
 function fract:npcExists(npc)
-	if self.Object[npc:id()] ~= nil then
-		return true
-	end
-	return false
+	return self.Object[npc:id()] ~= nil
 end
 
 function fract:idNPCOnJob(job_name)
@@ -449,7 +467,7 @@ function resetJob(name, npc)
 	local gulag = fraction[name]
 
 	if gulag ~= nil then
-		gulag:clearAllJob(npc:id())
+		gulag:freeNpc_and_reinit(npc:id())
 
 --		if gulag:all_spawned() then
 --			gulag:updateJob()
