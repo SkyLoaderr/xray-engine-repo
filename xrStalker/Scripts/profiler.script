@@ -1,3 +1,4 @@
+--test
 local						Counters = {}
 local						Names = {}
 local						timer = profile_timer()
