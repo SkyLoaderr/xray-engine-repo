@@ -471,14 +471,15 @@ end
 function cl_smart_terrain:on_enter( obj )
 	-- если есть активный гулаг, то вероятность будет зависеть от него, иначе вероятность 100%
 	-- И если не входит уже в какой-то гулаг
-	printf( "[smart_terrain %s] trying to 'on_touch' obj=%s", self:name(), obj:name() )
-	if ( not self.gulag or ( math.random( 100 ) <= self.gparams.probability ) ) and
-	   not xr_gulag.isUnderFraction( obj )
-	then
-		printf( "[smart_terrain %s] on_touch obj=%s", self:name(), obj:name() )
-		on_touch( self, obj )
-	else
-		printf( tostring( xr_gulag.isUnderFraction( obj ) ) )
+--	printf( "[smart_terrain %s] trying to 'on_touch' obj=%s", self:name(), obj:name() )
+
+	if ( not self.gulag or ( math.random( 100 ) <= self.gparams.probability ) ) then
+		if not xr_gulag.isUnderFraction( obj ) then
+--			printf( "[smart_terrain %s] on_touch obj=%s", self:name(), obj:name() )
+			on_touch( self, obj )
+		else
+			printf( "[smart_terrain %s] npc '%s' is already in smart_terrain '%s'", self:name(), obj:name(), tostring( xr_gulag.isUnderFraction( obj ) ) )
+		end
 	end
 end
 
@@ -756,9 +757,9 @@ function on_touch( self, obj )
 				add_npc( self, obj )
 			else
 				if not self.idle_end or self.idle_end < game.get_game_time() then
-					printf( "[smart_terrain %s] trying to create gulag", self:name() )
+--					printf( "[smart_terrain %s] trying to create gulag", self:name() )
 					if create_gulag( self ) then
-						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
+--						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
 						add_npc( self, obj )
 					end
 				end
