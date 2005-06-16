@@ -500,7 +500,7 @@ int CUIListWnd::GetLongestSignWidth()
 void CUIListWnd::UpdateScrollBar()
 {
 	//спрятать скорлинг, если он не нужен
-	if(m_ItemList.size()<=m_ScrollBar.GetPageSize())
+	if ((int)m_ItemList.size()<=m_ScrollBar.GetPageSize())
 		m_ScrollBar.Show(false);
 	else
 		m_ScrollBar.Show(true);
@@ -550,7 +550,7 @@ void CUIListWnd::ScrollToEnd()
 {
 	u32 pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
 
-	if(pos > m_ScrollBar.GetMinRange())
+	if ((int)pos > m_ScrollBar.GetMinRange())
 		m_ScrollBar.SetScrollPos(pos);
 	else
 		m_ScrollBar.SetScrollPos(m_ScrollBar.GetMinRange());
