@@ -84,9 +84,6 @@ int CLuaEditor::Sci(int nCmd, int wParam, int lParam)
 	ASSERT(m_fnScintilla);
 	ASSERT(m_ptrScintilla);
 
-	static int nLineTotal = 0;
-	int cnt = m_fnScintilla(m_ptrScintilla, SCI_GETLINECOUNT, 0, 0);
-	
 	return m_fnScintilla(m_ptrScintilla, nCmd, wParam, lParam);
 }
 

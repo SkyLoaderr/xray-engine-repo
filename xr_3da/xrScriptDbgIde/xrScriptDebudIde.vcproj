@@ -188,13 +188,25 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="CallStack.h">
+			</File>
+			<File
 				RelativePath=".\DebugDialog.cpp">
+			</File>
+			<File
+				RelativePath=".\DebugDialog.h">
 			</File>
 			<File
 				RelativePath=".\FindReplaceDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\FindReplaceDlg.h">
+			</File>
+			<File
 				RelativePath=".\GotoLineDialog.cpp">
+			</File>
+			<File
+				RelativePath=".\GotoLineDialog.h">
 			</File>
 			<File
 				RelativePath="ide2.cpp">
@@ -215,6 +227,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ide2.h">
 			</File>
 			<File
 				RelativePath="ide2.rc">
@@ -240,6 +255,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="LuaDoc.h">
+			</File>
+			<File
 				RelativePath="LuaEditor.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -258,6 +276,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="LuaEditor.h">
 			</File>
 			<File
 				RelativePath=".\LuaEditor_find.cpp">
@@ -283,6 +304,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="LuaFrame.h">
+			</File>
+			<File
 				RelativePath="LuaView.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -301,6 +325,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="LuaView.h">
 			</File>
 			<File
 				RelativePath="MainFrame.cpp">
@@ -323,6 +350,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="MainFrame.h">
+			</File>
+			<File
 				RelativePath="MDIClientWnd.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -343,7 +373,13 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="MDIClientWnd.h">
+			</File>
+			<File
 				RelativePath=".\NewProjectDlg.cpp">
+			</File>
+			<File
+				RelativePath=".\NewProjectDlg.h">
 			</File>
 			<File
 				RelativePath="OutputWnd.cpp">
@@ -366,6 +402,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="OutputWnd.h">
+			</File>
+			<File
 				RelativePath="Project.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -384,6 +423,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Project.h">
 			</File>
 			<File
 				RelativePath="ProjectFile.cpp">
@@ -406,6 +448,12 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="ProjectFile.h">
+			</File>
+			<File
+				RelativePath="Resource.h">
+			</File>
+			<File
 				RelativePath="ScintillaBar.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -426,7 +474,13 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="ScintillaBar.h">
+			</File>
+			<File
 				RelativePath=".\ScintillaCtrl.cpp">
+			</File>
+			<File
+				RelativePath=".\ScintillaCtrl.h">
 			</File>
 			<File
 				RelativePath="ScintillaView.cpp">
@@ -449,10 +503,19 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="ScintillaView.h">
+			</File>
+			<File
+				RelativePath=".\ScriptThreadsBar.cpp">
+			</File>
+			<File
 				RelativePath=".\ScriptThreadsBar.h">
 			</File>
 			<File
 				RelativePath=".\SSOptionsDlg.cpp">
+			</File>
+			<File
+				RelativePath=".\SSOptionsDlg.h">
 			</File>
 			<File
 				RelativePath="StdAfx.cpp">
@@ -477,6 +540,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="StdAfx.h">
+			</File>
+			<File
 				RelativePath="TreeViewFiles.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -497,7 +563,13 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="TreeViewFiles.h">
+			</File>
+			<File
 				RelativePath=".\TreeViewLocals.cpp">
+			</File>
+			<File
+				RelativePath=".\TreeViewLocals.h">
 			</File>
 			<File
 				RelativePath="VariablesBar.cpp">
@@ -520,6 +592,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="VariablesBar.h">
+			</File>
+			<File
 				RelativePath="WatchBar.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -538,6 +613,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="WatchBar.h">
 			</File>
 			<File
 				RelativePath="WatchList.cpp">
@@ -560,6 +638,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="WatchList.h">
+			</File>
+			<File
 				RelativePath="WorkspaceWnd.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -578,91 +659,6 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
-			<File
-				RelativePath="CallStack.h">
-			</File>
-			<File
-				RelativePath=".\DebugDialog.h">
-			</File>
-			<File
-				RelativePath=".\FindReplaceDlg.h">
-			</File>
-			<File
-				RelativePath=".\GotoLineDialog.h">
-			</File>
-			<File
-				RelativePath="ide2.h">
-			</File>
-			<File
-				RelativePath="LuaDoc.h">
-			</File>
-			<File
-				RelativePath="LuaEditor.h">
-			</File>
-			<File
-				RelativePath="LuaFrame.h">
-			</File>
-			<File
-				RelativePath="LuaView.h">
-			</File>
-			<File
-				RelativePath="MainFrame.h">
-			</File>
-			<File
-				RelativePath="MDIClientWnd.h">
-			</File>
-			<File
-				RelativePath=".\NewProjectDlg.h">
-			</File>
-			<File
-				RelativePath="OutputWnd.h">
-			</File>
-			<File
-				RelativePath="Project.h">
-			</File>
-			<File
-				RelativePath="ProjectFile.h">
-			</File>
-			<File
-				RelativePath="Resource.h">
-			</File>
-			<File
-				RelativePath="ScintillaBar.h">
-			</File>
-			<File
-				RelativePath=".\ScintillaCtrl.h">
-			</File>
-			<File
-				RelativePath="ScintillaView.h">
-			</File>
-			<File
-				RelativePath=".\ScriptThreadsBar.cpp">
-			</File>
-			<File
-				RelativePath=".\SSOptionsDlg.h">
-			</File>
-			<File
-				RelativePath="StdAfx.h">
-			</File>
-			<File
-				RelativePath="TreeViewFiles.h">
-			</File>
-			<File
-				RelativePath=".\TreeViewLocals.h">
-			</File>
-			<File
-				RelativePath="VariablesBar.h">
-			</File>
-			<File
-				RelativePath="WatchBar.h">
-			</File>
-			<File
-				RelativePath="WatchList.h">
 			</File>
 			<File
 				RelativePath="WorkspaceWnd.h">

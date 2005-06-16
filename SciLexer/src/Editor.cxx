@@ -28,6 +28,8 @@
 #include "ViewStyle.h"
 #include "Document.h"
 #include "Editor.h"
+//#include <winbase.h>
+
 
 Caret::Caret() :
 active(false), on(false), period(500) {}
@@ -1403,6 +1405,7 @@ void Editor::ShowCaretAtCurrentPosition() {
 		caret.active = true;
 		caret.on = true;
 		SetTicking(true);
+		Platform::DebugPrintf("hasFocus=1 %0x \n");
 	} else {
 		caret.active = false;
 		caret.on = false;
@@ -5240,6 +5243,7 @@ bool Editor::Idle() {
 }
 
 void Editor::SetFocusState(bool focusState) {
+	fprintf(stderr,"---dfg-df-sdf-\n");
 	hasFocus = focusState;
 	NotifyFocus(hasFocus);
 	if (hasFocus) {

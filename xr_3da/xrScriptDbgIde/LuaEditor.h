@@ -146,20 +146,20 @@ public:
 
 	void	AdjustCurrTabIndent();
 
-	void Print(bool showDialog);
-	CharacterRange GetSelection();
-	void GotoLineDlg();
-	void FindText(CString str);
-	CLuaView*	m_lua_view;
-	int Sci(int nCmd, int wParam=0, int lParam=0);
+	void			Print				(bool showDialog);
+	CharacterRange	GetSelection		();
+	void			GotoLineDlg			();
+	void			FindText			(CString str);
+	int				Sci					(int nCmd, int wParam=0, int lParam=0);
+	CLuaView*		m_lua_view;
 
 protected:
-	int (*m_fnScintilla)(void*,int,int,int);
-	void *m_ptrScintilla;
-	CUIntArray	m_pages;
-	BOOL m_bShowCalltips;
-	CString m_strCallTip;
-	CString m_currCallTip;
+	int				(*m_fnScintilla)(void*,int,int,int);
+	void			*m_ptrScintilla;
+	CUIntArray		m_pages;
+	BOOL			m_bShowCalltips;
+	CString			m_strCallTip;
+	CString			m_currCallTip;
 
 
 	// Generated message map functions
