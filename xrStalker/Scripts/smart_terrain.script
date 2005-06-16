@@ -753,7 +753,7 @@ function on_touch( self, obj )
 				add_npc( self, obj )
 			else
 				if not self.idle_end or self.idle_end < game.get_game_time() then
-					printf( "[smart_terrain %s] trying to create gulag type=%s", self:name(), self.gparams.type )
+					printf( "[smart_terrain %s] trying to create gulag", self:name() )
 					if create_gulag( self ) then
 						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
 						add_npc( self, obj )
