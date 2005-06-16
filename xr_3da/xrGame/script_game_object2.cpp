@@ -114,12 +114,12 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size, queue_interval);
 }
 
-void CScriptGameObject::play_cycle(LPCSTR anim)
+void CScriptGameObject::play_cycle(LPCSTR anim, bool mix_in)
 {
 	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(object().Visual());
 	if(sa){
 		MotionID m	= sa->ID_Cycle(anim);
-		if (m) sa->PlayCycle(m);
+		if (m) sa->PlayCycle(m,(BOOL)mix_in);
 		else 
 		{
 			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError ,"CGameObject : has not cycle %s",anim);
@@ -130,6 +130,12 @@ void CScriptGameObject::play_cycle(LPCSTR anim)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : is not animated object");
 	}
 }
+
+void CScriptGameObject::play_cycle(LPCSTR anim)
+{
+	play_cycle	(anim,true);
+}
+
 void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
 {
 	CScriptHit		&tLuaHit = *tpLuaHit;
