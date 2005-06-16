@@ -227,12 +227,11 @@ void CParticlesPlayer::AutoStopParticles(const shared_str& ps_name, u16 bone_id)
 }
 void CParticlesPlayer::UpdateParticles()
 {
-	if(!m_bActiveBones) return;
-
-	m_bActiveBones  = false;
+	VERIFY	(m_bActiveBones);
+	m_bActiveBones			= false;
 
     CObject* object			= m_self_object;
-	VERIFY(object);
+	VERIFY	(object);
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
 		SBoneInfo& b_info	= *b_it;

@@ -157,5 +157,5 @@ void CPhysicsShellHolder::UpdateCL	()
 {
 	inherited::UpdateCL	();
 	//обновить присоединенные партиклы
-	UpdateParticles	();
+	if (m_bActiveBones)	UpdateParticles	();
 }
