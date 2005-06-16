@@ -31,19 +31,9 @@ function proceed()
 	then
 		actor:give_info_portion("agroprom_find_stalker_phantom")
 	end
-	
-	if actor:has_info("agr_help_stalkers_assault_dead") then
-		actor:give_info_portion("agr_help_stalkers_done")
-		level_tasks.set_task_state(task.completed, "agr_help_stalkers", 0)
-	end
-
-	if actor:has_info("agr_help_stalkers_defence_dead") then
-		actor:give_info_portion("agr_help_stalkers_done")
-		level_tasks.set_task_state(task.fail, "agr_help_stalkers", 0)
-	end
 end
 
-function process_map_spot(info_id)
+function process_info_portion(info_id)
 	if ( info_id == "agr_factory_assault_start" or info_id == "agr_warning_recieved" ) and
 	       not level_tasks.is_map_spot_present (303, "agr_factory_skirmish1_location")
 	then
@@ -53,6 +43,17 @@ function process_map_spot(info_id)
 	elseif info_id == "agr_help_stalkers_done" then
 		level_tasks.remove_location(303, "agr_factory_skirmish1_location")
 		return true
+
+	elseif info_id == "agr_help_stalkers_assault_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
+--		actor:give_info_portion("agr_help_stalkers_done")
+		level_tasks.set_task_state(task.completed, "agr_help_stalkers", 0)
+		return true
+
+	elseif info_id == "agr_help_stalkers_defence_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
+--		actor:give_info_portion("agr_help_stalkers_done")
+		level_tasks.set_task_state(task.fail, "agr_help_stalkers", 0)
+		return true
+
 
 	elseif info_id == "agr_krot_band" then
 		level_tasks.add_location(302, "agr_krot_location")

@@ -158,7 +158,7 @@ end
 
 
 
-function process_map_spot(info_id)
+function process_info_portion(info_id)
 
 	if info_id == "tutorial_artefact_start" then
 		add_location(002, "tutorial_artefact_location")
@@ -276,15 +276,15 @@ function process_map_spot(info_id)
 
 	
 	-- Agroprom
-	elseif agroprom_tasks.process_map_spot(info_id) then
+	elseif agroprom_tasks.process_info_portion(info_id) then
 		return
 
 	-- DARK VALLEY
-	elseif darkvalley_tasks.process_map_spot(info_id) then
+	elseif darkvalley_tasks.process_info_portion(info_id) then
 		return
 
 	-- BAR ROSTOK
-	elseif bar_rostok_tasks.process_map_spot(info_id) then
+	elseif bar_rostok_tasks.process_info_portion(info_id) then
 		return
 
 	-- military	

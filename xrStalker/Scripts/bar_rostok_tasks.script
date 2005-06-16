@@ -101,7 +101,7 @@ function proceed()
 
 end
 
-function process_map_spot(info_id)
+function process_info_portion(info_id)
 	if info_id == "agroprom_military_case_done" then
 		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 0)
 		return true	

@@ -64,7 +64,7 @@ function actor_binder:info_callback(npc, info_id)
 	--' Сюжет
 	level_tasks.proceed(self.object)
 	-- Отметки на карте
-	level_tasks.process_map_spot(info_id)
+	level_tasks.process_info_portion(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:article_callback(npc, group, name)

@@ -59,7 +59,7 @@ function proceed()
 		
 end
 
-function process_map_spot(info_id)
+function process_info_portion(info_id)
 	if info_id == "val_escort_show_tip" then
 		level_tasks.add_location(406, "val_escort_nap1_location")
 		return true
