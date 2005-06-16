@@ -148,12 +148,12 @@ void CUIOutfitInfo::Update(shared_str section_name){
 }
 
 void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
-	values[0] = (int)(100.0*pSettings->r_float(section_name, "burn_immunity"));
-	values[1] = (int)(100.0*pSettings->r_float(section_name, "chemical_burn_immunity"));
-	values[2] = (int)(100.0*pSettings->r_float(section_name, "explosion_immunity"));
-	values[3] = (int)(100.0*pSettings->r_float(section_name, "fire_wound_immunity"));
-	values[4] = (int)(100.0*pSettings->r_float(section_name, "shock_immunity"));
-	values[5] = (int)(100.0*pSettings->r_float(section_name, "strike_immunity"));
+	values[0] = iFloor(100.0*pSettings->r_float(section_name, "burn_immunity"));
+	values[1] = iFloor(100.0*pSettings->r_float(section_name, "chemical_burn_immunity"));
+	values[2] = iFloor(100.0*pSettings->r_float(section_name, "explosion_immunity"));
+	values[3] = iFloor(100.0*pSettings->r_float(section_name, "fire_wound_immunity"));
+	values[4] = iFloor(100.0*pSettings->r_float(section_name, "shock_immunity"));
+	values[5] = iFloor(100.0*pSettings->r_float(section_name, "strike_immunity"));
 }
 
 void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr){
