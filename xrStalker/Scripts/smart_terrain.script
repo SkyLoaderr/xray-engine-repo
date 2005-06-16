@@ -766,10 +766,18 @@ function on_touch( self, obj )
 					if create_gulag( self ) then
 						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
 						add_npc( self, obj )
+					else
+						printf( "[smart_terrain %s] can't create gulag", self:name() )
 					end
+				else
+					printf( "[smart_terrain %s] idle period", self:name() )
 				end
 			end
+		else
+			printf( "[smart_terrain %s] npc has 'no_smart' section", self:name() )
 		end
+	else
+		printf( "[smart_terrain %s] only stalkers and monsters are supported", self:name() )
 	end
 end
 
