@@ -37,14 +37,22 @@
 	
 	<tab_client>	
 		<server_list x="8" y="99" width="539" height="310">
-			<sizes icon="45" server="120" map="150" game="101" players="45" ping="35"/>
-			<list x="0" y="0" width="530" height="300" item_height="18"/>
+			<sizes icon="46" server="167" map="124" game="102" players="46" ping="35"/>
+			<frame x="0" y="20" width="520" height="280" item_height="18">
+				<texture>ui_droplist_listbox</texture>
+				<!--texture>ui_frame_very_small</texture-->				
+			</frame>
+			<list x="0" y="20" width="530" height="280" item_height="18"/>
 			<list_item>
 				<text font="letterica16" r="115" g="114" b="112"/>
 			</list_item>
-			<header>
-				<text font="letterica16" r="215" g="195" b="170" x="10"/>
+			<header x="0" y="0" width="0" height="18">
+				<text font="letterica16" r="215" g="195" b="170" x="2"/>
+				<texture>ui_table_button_e</texture>
 			</header>
+			<separator x="0" y="0" width="1" height="30" vertical="1">
+				<texture>ui_table_divider</texture>
+			</separator>
 			<filter>
 				<text font="letterica16" r="215" g="195" b="170"/>
 			</filter>		
@@ -55,7 +63,7 @@
 			<text font="letterica16" r="215" g="195" b="170" x="10">Network connection</text>
 		</cap_network_connection>
 		
-		<cap_server_list x="6" y="70" width="500" height="23">
+		<cap_server_list x="6" y="70" width="535" height="23">
 			<texture>ui_brokenline</texture>
 			<text font="letterica16" r="215" g="195" b="170" x="10">List of servers</text>
 		</cap_server_list>
@@ -117,17 +125,19 @@
 		</cap_server_settings>
 		
 		<cap_server_name x="23" y="40" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170" x="10">Server Name</text>
+			<text font="letterica16" r="215" g="195" b="170">Server Name</text>
 		</cap_server_name>
 		<cap_password x="23" y="65" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170" x="10">Password</text>
+			<text font="letterica16" r="215" g="195" b="170">Password</text>
 		</cap_password>
 		<cap_game_mode x="23" y="90" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170" x="10">Game Mode</text>
+			<text font="letterica16" r="215" g="195" b="170">Game Mode</text>
 		</cap_game_mode>
 		<cap_max_players x="23" y="115" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170" x="10">Max Players</text>
+			<text font="letterica16" r="215" g="195" b="170">Max Players</text>
 		</cap_max_players>
+		<spin_max_players x="150" y="115" width="45" height="21">		
+		</spin_max_players>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
 			<texture>ui_linetextSmall_e</texture>

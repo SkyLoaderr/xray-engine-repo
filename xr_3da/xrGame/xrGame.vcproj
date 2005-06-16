@@ -10090,6 +10090,22 @@
 						RelativePath=".\ui\UIFollowerPanel.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="OptionsItem"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIOptionsItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOptionsItem.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIOptionsManager.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOptionsManager.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
@@ -10508,6 +10524,28 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIInteractiveBackground.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SpinBox"
+					Filter="">
+					<File
+						RelativePath=".\ui\UICustomSpin.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICustomSpin.h">
+					</File>
+					<File
+						RelativePath=".\ui\UISpinNum.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISpinNum.h">
+					</File>
+					<File
+						RelativePath=".\ui\UISpinText.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISpinText.h">
 					</File>
 				</Filter>
 			</Filter>

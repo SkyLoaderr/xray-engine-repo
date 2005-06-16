@@ -3,6 +3,7 @@
 #include "UI3tButton.h"
 #include "UICheckButton.h"
 #include "UIRadioButton.h"
+#include "UISpinNum.h"
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
 
@@ -44,6 +45,16 @@ void CUIButton::script_register(lua_State *L)
 		class_<CUICheckButton, CUI3tButton>("CUICheckButton")
 		.def(							constructor<>())
 		.def("GetCheck",				&CUICheckButton::GetCheck)
-		.def("SetCheck",				&CUICheckButton::SetCheck)
+		.def("SetCheck",				&CUICheckButton::SetCheck),
+
+		class_<CUICustomSpin, CUIWindow>("CUICustomSpin")
+		.def("Init",				&CUICustomSpin::Init),
+
+		class_<CUISpinNum, CUICustomSpin>("CUISpinNum")
+		.def(							constructor<>())
+/*
+		class_<CUICustomSpin, CUIWindow>("CUICustomSpin")
+		.def(							constructor<>())	*/	
+
 	];
 }

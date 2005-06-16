@@ -42,14 +42,16 @@
     <texture id="ui_spiner_b" x="96" y="0" width="14" height="21" />
     <texture id="ui_spiner_back" x="110" y="0" width="17" height="21" />
     <texture id="ui_spiner_e" x="127" y="0" width="14" height="21" />
-    <texture id="ui_spiner_button_d_t" x="141" y="0" width="14" height="21" />
-    <texture id="ui_spiner_button_d_b" x="155" y="0" width="14" height="21" />
-    <texture id="ui_spiner_button_e_t" x="169" y="0" width="14" height="21" />
-    <texture id="ui_spiner_button_e_b" x="183" y="0" width="14" height="21" />
-    <texture id="ui_spiner_button_h_b" x="141" y="21" width="14" height="21" />
-    <texture id="ui_spiner_button_h_t" x="155" y="21" width="14" height="21" />
-    <texture id="ui_spiner_button_t_b" x="169" y="21" width="14" height="21" />
-    <texture id="ui_spiner_button_t_t" x="183" y="21" width="14" height="21" />
+    
+    <texture id="ui_spiner_button_t_d" x="143" y="0" width="11" height="11" />
+    <texture id="ui_spiner_button_t_e" x="171" y="0" width="11" height="11" />
+    <texture id="ui_spiner_button_t_h" x="157" y="21" width="11" height="11" />
+    <texture id="ui_spiner_button_t_t" x="185" y="21" width="11" height="11" />
+    <texture id="ui_spiner_button_b_d" x="157" y="11" width="11" height="11" />
+    <texture id="ui_spiner_button_b_e" x="185" y="11" width="11" height="11" />
+    <texture id="ui_spiner_button_b_h" x="143" y="32" width="11" height="11" />
+    <texture id="ui_spiner_button_b_t" x="171" y="32" width="11" height="11" />
+    
     <texture id="ui_slider_button_h" x="41" y="45" width="24" height="17" />
     <texture id="ui_slider_button_e" x="65" y="45" width="24" height="17" />
     <texture id="ui_slider_button_t" x="89" y="45" width="24" height="17" />

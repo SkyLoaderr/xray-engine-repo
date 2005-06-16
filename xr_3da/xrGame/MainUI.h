@@ -4,6 +4,7 @@ struct CFontManager;
 class CUIWindow;
 class CUIDialogWnd;
 class CUICursor;
+class CUIOptionsManager;
 #include "../IInputReceiver.h"
 #include "../IGame_Persistent.h"
 #include "UIDialogHolder.h"
@@ -41,10 +42,11 @@ class CMainUI :
 	public CDialogHolder
 
 {
-	CFontManager*	m_pFontManager;
-	CUICursor*		m_pUICursor;
+	CFontManager*		m_pFontManager;
+	CUIOptionsManager*	m_pOptionsManager;
+	CUICursor*			m_pUICursor;
 
-	CUIDialogWnd*	m_startDialog;
+	CUIDialogWnd*		m_startDialog;
 
 	enum{
 		flRestoreConsole	= (1<<0),
@@ -67,7 +69,8 @@ public:
 	virtual void	Activate						(bool bActive); 
 	virtual	bool	IsActive						(); 
 
-	CFontManager*	Font							()							{return m_pFontManager;}
+	CFontManager*		Font						()							{return m_pFontManager;}
+	CUIOptionsManager*	OptionsManager				()							{return m_pOptionsManager;}
 	//IInputReceiver
 	virtual void	IR_OnMousePress					(int btn);
 	virtual void	IR_OnMouseRelease				(int btn);

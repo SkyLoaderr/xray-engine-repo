@@ -27,6 +27,7 @@ public:
 	virtual void SetWidth(float width);
 	virtual void SetHeight(float height);
 	virtual void SetOrientation(bool horizontal);
+			float GetTextureHeight();
 	void SetColor(u32 cl);
 
 	// Also we can display textual caption on the frame

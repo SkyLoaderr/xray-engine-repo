@@ -18,6 +18,7 @@
 
 class CUIFrameLine: public CUICustomItem
 {
+	friend class CUIFrameLineWnd;
 	enum
 	{
 		flFirst = 0,	// Left or top

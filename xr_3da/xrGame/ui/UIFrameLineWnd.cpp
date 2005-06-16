@@ -92,6 +92,10 @@ void CUIFrameLineWnd::SetHeight(float height)
 		UIFrameLine.SetSize(height);
 }
 
+float CUIFrameLineWnd::GetTextureHeight(){
+	return UIFrameLine.elements[0].GetRect().height();
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIFrameLineWnd::SetOrientation(bool horizontal)

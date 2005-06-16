@@ -1,0 +1,48 @@
+///////////////////////////////////
+// class CUIOptionsManager
+///////////////////////////////////
+
+#include "StdAfx.h"
+#include "UIOptionsManager.h"
+#include "UIOptionsItem.h"
+
+void CUIOptionsManager::RegisterItem(CUIOptionsItem* item, const char* group){
+	groups_it it = m_groups.find(group);
+
+	if (m_groups.end() != it)
+	{
+		(*it).second.push_back(item);
+	}
+	else
+	{
+		group_name gr_name = group;
+		items_list list;
+
+		list.push_back(item);
+		m_groups.insert(mk_pair(gr_name, list));
+	}
+}
+
+void CUIOptionsManager::SetDefaultValues(const char* group){
+	groups_it it = m_groups.find(group);
+
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
+
+	for (u32 i = 0; i < (*it).second.size(); i++)
+		(*it).second[i]->SetDefaultValue();
+}
+
+void CUIOptionsManager::SaveValues(const char* group){
+	groups_it it = m_groups.find(group);
+
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
+
+	for (u32 i = 0; i < (*it).second.size(); i++)
+		(*it).second[i]->SaveValue();
+}
+
+
+
+
+
+
