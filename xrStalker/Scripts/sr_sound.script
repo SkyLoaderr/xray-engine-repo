@@ -12,6 +12,11 @@ local sound_types = {
 		"ambient\\floor_creak2",
 		"ambient\\floor_creak3"
 	},
+	rats_panic = {
+		"ambient\\rats_panic_1",
+		"ambient\\rats_panic_2",
+		"ambient\\rats_panic_3"
+	},
 	random = {
 		"ambient\\random\\new_drone1",
 		"ambient\\random\\new_drone2",
