@@ -609,11 +609,11 @@ end
 function mil_hunters_psi_hit (actor, npc)
     if npc == nil then return end
     local h = hit ();
-    h.power = 1000;
+    h.power = 95;
     h.direction = vector():set( 1, 0, 0 );
     h.impulse = 1;
     h.draftsman = npc;
-    h.type = hit.strike;
+    h.type = hit.telepatic;
     npc:hit (h);
 end
 
