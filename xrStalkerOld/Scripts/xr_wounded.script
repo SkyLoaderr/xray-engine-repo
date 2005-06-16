@@ -326,14 +326,14 @@ function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
 
 	if tostring(section) == st.meet_section and
-	   tostring(section) ~= nil 
+	   tostring(section) ~= "nil" 
 	then
 		return
 	end
 	
 	st.wounded_section = utils.to_str(section)
 	
-	if section == nil then
+	if tostring(section) == "nil" then
 		-- Загружаем дефолты!
 		st.hp_state			= xr_meet.parse_data(npc, "30|help_me@help|10|wounded_heavy@help_heavy")
 		st.hp_state_see		= xr_meet.parse_data(npc, "30|wounded@help_see|10|wounded_heavy@help_heavy")
