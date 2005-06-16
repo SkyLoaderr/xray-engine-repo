@@ -18,8 +18,15 @@ function ph_on_hit:update(delta)
 end
 
 function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
-	printf("_bp: ph_on_hit:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount,
-		if_then_else(who ~= nil, who:name(), "nil"))
+	local who_name
+	if who then
+		who_name = who:name()
+	else
+		who_name = "nil"
+	end
+
+	printf("_bp: ph_on_hit:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount, who_name)
+
 	if db.storage[self.object:id()].active_scheme then
 		if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
 			return

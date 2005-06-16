@@ -41,8 +41,15 @@ function ph_button:try_switch()
 end
 
 function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
-	printf("_bp: ph_button:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount,
-		if_then_else(who ~= nil, who:name(), "nil"))
+	local who_name
+	if who then
+		who_name = who:name()
+	else
+		who_name = "nil"
+	end
+
+	printf("_bp: ph_button:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount, who_name)
+
 	if time_global() - self.last_hit_tm > 500 then
 		self.last_hit_tm = time_global()
 		if self:try_switch() then
