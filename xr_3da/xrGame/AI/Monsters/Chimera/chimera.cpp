@@ -6,6 +6,7 @@
 #include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../PhysicsShell.h"
+#include "../../../sound_player.h"
 
 CChimera::CChimera()
 {
