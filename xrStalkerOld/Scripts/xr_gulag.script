@@ -358,14 +358,14 @@ function fract:clearAllJob(npc_id)
 	end
 end
 
-function fract:stalkerExist(npc)
+function fract:npcExists(npc)
 	if self.Object[npc:id()] ~= nil then
 		return true
 	end
 	return false
 end
 
-function fract:idStalkerOnJob(job_name)
+function fract:idNPCOnJob(job_name)
 	for k,v in self.Job do
 		if v.section == job_name then
 			if v.object ~= nil then
@@ -421,7 +421,7 @@ end
 
 function isUnderFraction(npc)
 	for k,v in fraction do
-		if v:stalkerExist(npc) == true then
+		if v:npcExists(npc) == true then
 			return k
 		end		
 	end

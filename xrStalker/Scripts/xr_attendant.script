@@ -45,7 +45,7 @@ function evaluator_leader:evaluate ()
     
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
     if t ~= nil and t.dependent ~= nil then 
-       self.st.leader_id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.dependent)
+       self.st.leader_id = xr_gulag.fraction[gulag]:idNPCOnJob (t.dependent)
        if self.st.leader_id ~= nil then 
           self.time = 0  
           return true
