@@ -70,6 +70,9 @@ private:
 
 private:
 	bool					m_call_script_callback;
+#ifdef USE_HEAD_BONE_PART_FAKE
+	u32						m_script_bone_part_mask;
+#endif
 
 protected:
 			void			fill_object_info				();

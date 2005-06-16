@@ -13,7 +13,16 @@
 class CBlend;
 class CAI_Stalker;
 
+#define USE_HEAD_BONE_PART_FAKE
+
 class CStalkerAnimationPair {
+#ifdef USE_HEAD_BONE_PART_FAKE
+public:
+	enum {
+		all_bone_parts = u16(0xf),
+	};
+#endif
+
 private:
 	MotionID				m_animation;
 	CBlend					*m_blend;
@@ -28,7 +37,11 @@ private:
 #endif
 
 protected:
+#ifndef USE_HEAD_BONE_PART_FAKE
 			void			play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
+#else
+			void			play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part);
+#endif
 
 public:
 	IC						CStalkerAnimationPair	();
@@ -43,7 +56,11 @@ public:
 	IC		void			global_animation		(bool global_animation);
 	IC		bool			global_animation		() const;
 	IC		void			make_inactual			();
+#ifndef USE_HEAD_BONE_PART_FAKE
 			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
+#else
+			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part = all_bone_parts);
+#endif
 #ifdef DEBUG
 	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);
 #endif

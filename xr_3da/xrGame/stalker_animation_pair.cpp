@@ -34,10 +34,19 @@ void CStalkerAnimationPair::synchronize		(CSkeletonAnimated *skeleton_animated, 
 	blend()->timeCurrent	= stalker_animation.blend()->timeCurrent;
 }
 
+#ifndef USE_HEAD_BONE_PART_FAKE
 void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+#else
+void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
+#endif
 {
 	m_blend				= 0;
 	for (u16 i=0; i<MAX_PARTS; ++i) {
+#ifdef USE_HEAD_BONE_PART_FAKE
+		if (!(bone_part & (1 << i)))
+			continue;
+#endif
+
 		CBlend			*blend = 0;
 		if (!m_blend)
 			blend		= skeleton_animated->LL_PlayCycle(i,animation(),TRUE,callback,object);
@@ -49,7 +58,11 @@ void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_a
 	}
 }
 
+#ifndef USE_HEAD_BONE_PART_FAKE
 void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+#else
+void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
+#endif
 {
 	VERIFY					(animation());
 	if (actual()) {
@@ -76,7 +89,11 @@ void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCa
 		}
 	}
 	else
+#ifndef USE_HEAD_BONE_PART_FAKE
 		play_global_animation	(skeleton_animated,callback,object);
+#else
+		play_global_animation	(skeleton_animated,callback,object,bone_part);
+#endif
 	m_actual				= true;
 
 	if (m_step_dependence)

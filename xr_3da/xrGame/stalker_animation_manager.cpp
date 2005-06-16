@@ -62,6 +62,13 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	if (!object().g_Alive())
 		return;
 
+#ifdef USE_HEAD_BONE_PART_FAKE
+	VERIFY						(!m_head_animations.A.empty());
+	u16							bone_part = m_skeleton_animated->LL_GetMotionDef(m_head_animations.A.front())->bone_or_part;
+	VERIFY						(bone_part != BI_NONE);
+	m_script_bone_part_mask		= CStalkerAnimationPair::all_bone_parts ^ (1 << bone_part);
+#endif
+
 	assign_bone_callbacks		();
 
 #ifdef DEBUG
@@ -96,11 +103,19 @@ void CStalkerAnimationManager::update						()
 
 		if (!script_animations().empty()) {
 			global().reset		();
+#ifndef USE_HEAD_BONE_PART_FAKE
 			head().reset		();
+#endif
 			torso().reset		();
 			legs().reset		();
 			script().animation	(assign_script_animation());
+#ifndef USE_HEAD_BONE_PART_FAKE
 			script().play		(m_skeleton_animated,script_play_callback,&object());
+#else
+			script().play		(m_skeleton_animated,script_play_callback,&object(),m_script_bone_part_mask);
+			head().animation	(assign_head_animation());
+			head().play			(m_skeleton_animated,head_play_callback,&object());
+#endif
 			return;
 		}
 		
@@ -108,7 +123,9 @@ void CStalkerAnimationManager::update						()
 
 		const MotionID			&global_animation = assign_global_animation();
 		if (global_animation) {
+#ifndef USE_HEAD_BONE_PART_FAKE
 			head().reset		();
+#endif
 			torso().reset		();
 			legs().reset		();
 			global().animation	(global_animation);
