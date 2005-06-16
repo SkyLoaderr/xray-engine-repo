@@ -29,7 +29,7 @@ function evaluator_can_fight:__init(name, storage) super(nil, name)
     self.a = storage
 end
 function evaluator_can_fight:evaluate ()
-    return self.a.wound_manager.fight == "true"
+    return self.a.wound_manager.fight ~= "false"
 end    
 
 ----------------------------------------------------------------------------------------------------------------------

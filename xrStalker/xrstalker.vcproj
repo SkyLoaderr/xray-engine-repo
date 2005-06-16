@@ -582,6 +582,9 @@
 							RelativePath=".\Config\text\rus\stable_storyline_info_garbage.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_garbage.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tips_garbage.xml">
 						</File>
 					</Filter>
