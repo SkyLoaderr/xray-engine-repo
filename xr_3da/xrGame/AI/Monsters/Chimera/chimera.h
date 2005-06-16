@@ -31,6 +31,7 @@ public:
 	virtual bool	ability_run_attack			() {return true;}
 	virtual bool	ability_jump_over_physics	() {return true;}
 	virtual void	jump_over_physics			(const Fvector &target);
+	virtual bool	jump						(CObject *enemy);
 			
 			void	try_to_jump					();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);

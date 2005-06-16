@@ -214,6 +214,17 @@ void CAI_PseudoDog::jump_over_physics(const Fvector &target)
 	}
 }
 
+bool CAI_PseudoDog::jump(CObject *enemy)
+{
+	if (!m_jump.can_jump(enemy)) return false;
+	if (!control().check_start_conditions(ControlCom::eControlJump))  return false;
+
+	anim().jump(enemy, m_jump.setup_data());
+	sound().play(MonsterSpace::eMonsterSoundAttack);
+	return true;
+}
+
+
 //void CAI_PseudoDog::play_effect_sound()
 //{
 //	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
