@@ -32,9 +32,9 @@ function action_tip:update(delta)
 		   xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist) ~= nil
 		then
 			if self.st.type == "tips" then
-				news_manager.send_tip( actor, self.st.info, self.st.timeout, self.st.sender )
+				news_manager.send_tip( actor, self.st.info, self.st.timeout, self.st.sender, self.st.showtime )
 			elseif self.st.type == "news" then
-				news_manager.send_news( actor, self.st.info, self.st.timeout )
+				news_manager.send_news( actor, self.st.info, self.st.timeout, self.st.showtime )
 			end
 		end
 	end
@@ -58,10 +58,11 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
 
-	st.info   = utils.cfg_get_string( ini, section, "name",   obj, true,  "", "" )
-	st.type   = utils.cfg_get_string( ini, section, "type",   obj, false, "", "news" )
-	st.sender = utils.cfg_get_string( ini, section, "sender", obj, false, "", nil )
-	st.timeout = utils.cfg_get_string( ini, section, "timeout", obj, false, "", nil )
+	st.info     = utils.cfg_get_string( ini, section, "name",     obj, true,  "", "" )
+	st.type     = utils.cfg_get_string( ini, section, "type",     obj, false, "", "news" )
+	st.sender   = utils.cfg_get_string( ini, section, "sender",   obj, false, "", nil )
+	st.timeout  = utils.cfg_get_number( ini, section, "timeout",  obj, false,     nil )
+	st.showtime = utils.cfg_get_number( ini, section, "showtime", obj, false,     nil )
 
 	st.conditions = xr_logic.cfg_get_condlist( ini, section, "cond", obj )
 end
