@@ -252,7 +252,7 @@ function action_patrol:execute()
 				if self.scantime == nil then
 					self.scantime = time_global()
 				end
-				printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
+				--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
 				-- сканируем
 				self:scan(self.a.wp_flag)
 				-- если мы стоим на финальной точке - не ресетить.
