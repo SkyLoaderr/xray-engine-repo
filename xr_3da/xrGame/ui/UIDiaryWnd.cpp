@@ -283,7 +283,7 @@ void CUIDiaryWnd::SetContractTrader()
 			UIContractsWnd.UICharInfo.InitCharacter(&character_info);
 
 			LPCSTR artefact_list_func	= READ_IF_EXISTS(pSettings,r_string,"artefacts_tasks", "script_func", "");
-			if (!xr_strlen(artefact_list_func)) {
+			if (!artefact_list_func || !xr_strlen(artefact_list_func)) {
 				UIContractsWnd.UIListWnd.RemoveAll();
 				return;
 			}
