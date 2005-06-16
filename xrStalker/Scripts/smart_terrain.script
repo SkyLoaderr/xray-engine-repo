@@ -546,7 +546,7 @@ function read_ini( self )
 
 		if ini:line_exist( sect, "type" ) then
 			ggi.type                            = ini:r_string( sect, "type" )
-			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
+			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       0,     0 )
 			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   10000, 10001 )
 			ggi.capacity                        = r_num ( ini, sect, "capacity",   100 )
 			ggi.probability                     = r_num ( ini, sect, "p",          100 )
@@ -717,9 +717,13 @@ function remove_gulag( self )
 
 	-- если все успешно освобождены, то можно уничтожать гулаг
 	if o then
-		self.idle_end = game.CTime()
-		self.idle_end:setHMSms( 0, 0, 0, math.random( self.gparams.idle_min * h2ms, self.gparams.idle_max * h2ms ) )
-		self.idle_end:add( game.get_game_time() )
+		if self.gparams.idle_max > 0 then
+			self.idle_end = game.CTime()
+			self.idle_end:setHMSms( 0, 0, 0, math.random( self.gparams.idle_min * h2ms, self.gparams.idle_max * h2ms ) )
+			self.idle_end:add( game.get_game_time() )
+		else
+			self.idle_end = nil
+		end
 
 		self:destroyGulag()
 
