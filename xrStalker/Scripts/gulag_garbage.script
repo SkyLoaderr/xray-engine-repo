@@ -429,7 +429,55 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "gar_boars_tusniyak"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_tusniyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_tusniyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_tusniyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_tusniyak"
+		}
+		table.insert(sj, t)
 		
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_boars_territory"
+		}
+		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
@@ -1110,7 +1158,7 @@ function load_states(gname, type)
 					if t:inside(db.actor:position()) then
 						return 1
 					else
-						if gulag:get_population() >= 9 then
+						if gulag:get_population() >= 12 then
 							return 2
 						else
 							return 0
