@@ -190,7 +190,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 0, state = {1},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish1"
+				in_rest = "", out_rest = "agr_factory_skirmish"
 			}
 			table.insert(sj, t)
 		end
@@ -214,7 +214,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 0, state = {0},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish1"
+				in_rest = "", out_rest = "agr_factory_skirmish_defence"
 			}
 			table.insert(sj, t)
 		end
@@ -223,7 +223,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 0, state = {0},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish1"
+				in_rest = "", out_rest = "agr_factory_skirmish_defence"
 			}
 			table.insert(sj, t)
 		end
@@ -233,7 +233,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 0, state = {1},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish1"
+				in_rest = "", out_rest = "agr_factory_skirmish_defence"
 			}
 			table.insert(sj, t)
 		end
@@ -242,7 +242,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 0, state = {1},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish1"
+				in_rest = "", out_rest = "agr_factory_skirmish_defence"
 			}
 			table.insert(sj, t)
 		end
