@@ -101,6 +101,7 @@ CLocatorAPI::CLocatorAPI()
 	GetSystemInfo		(&sys_inf);
 	dwAllocGranularity	= sys_inf.dwAllocationGranularity;
     m_iLockRescan		= 0;
+	dwOpenCounter		= 0;
 }
 
 CLocatorAPI::~CLocatorAPI()
@@ -633,6 +634,8 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	desc_f.name		= fname;
 	files_it	I 	= files.find(desc_f);
 	if (I == files.end()) return NULL;
+
+	dwOpenCounter	++;
 
 	const	file& desc	= *I;
 	LPCSTR	source_name = &fname[0];

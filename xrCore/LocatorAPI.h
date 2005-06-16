@@ -129,6 +129,7 @@ public:
 	};    
 	Flags32						m_Flags			;
 	u32							dwAllocGranularity;
+	u32							dwOpenCounter;
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
