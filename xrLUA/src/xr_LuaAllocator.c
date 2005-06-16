@@ -3356,7 +3356,7 @@ static int sYSTRIm(pad, av) size_t pad; mstate av;
 /*
   ------------------------------ malloc ------------------------------
 */
-
+extern	void	stat_hook	(size_t bytes);
 
 #if __STD_C
 Void_t* mALLOc(size_t bytes)
@@ -3394,7 +3394,8 @@ Void_t* mALLOc(size_t bytes)
     aligned.
   */
 
-  checked_request2size(bytes, nb);
+	stat_hook	(bytes);
+	checked_request2size(bytes, nb);
 
   /*
     Bypass search if no frees yet
