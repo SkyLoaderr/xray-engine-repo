@@ -734,7 +734,79 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "gar_dogs_tusnyak"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak"
+		}
+		table.insert(sj, t)
 		
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory"
+		}
+		table.insert(sj, t)
 		t = { section = "logic@gar_dogs_nest", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
@@ -847,7 +919,55 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "gar_dogs_tusnyak2"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_tusnyak2"
+		}
+		table.insert(sj, t)
 		
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dogs_nest2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "gar_dogs_territory2"
+		}
+		table.insert(sj, t)
 		t = { section = "logic@gar_dogs_nest2", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
