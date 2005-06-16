@@ -321,7 +321,14 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UISndNoiseBar);
 	xml_init.InitProgressBar(uiXml, "sound_noise_bar", 0, &UISndNoiseBar);
-	
+
+	AttachChild(&UIStaticDiskIO);
+	UIStaticDiskIO.SetWndRect				(1000,750,16,16);
+	UIStaticDiskIO.GetUIStaticItem().SetRect(0,0,16,16);
+	UIStaticDiskIO.InitTexture				("ui\\ui_disk_io");
+	UIStaticDiskIO.SetOriginalRect			(0,0,32,32);
+	UIStaticDiskIO.SetStretchTexture		(TRUE);
+
 /*	// uncoment to test ArtefactPanel
 	Irect rect;
 	rect.left = 698; rect.right = 750;
@@ -337,9 +344,12 @@ void CUIMainIngameWnd::Init()
 //////////////////////////////////////////////////////////////////////////
 void CUIMainIngameWnd::Draw()
 {
-
 	bool zoom_mode = false;
 	bool scope_mode = false;
+
+	// show IO icon
+	UIStaticDiskIO.Show(FS.dwOpenCounter>0); 
+	FS.dwOpenCounter = 0;
 
 	float	luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
 	static float cur_lum = luminocity;

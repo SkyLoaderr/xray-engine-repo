@@ -97,6 +97,7 @@ protected:
 	bool m_bShowHudInfo;
 	bool m_bShowHudCrosshair;
 	
+	CUIStatic			UIStaticDiskIO;
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
