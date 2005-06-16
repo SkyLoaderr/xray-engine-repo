@@ -477,6 +477,8 @@ function cl_smart_terrain:on_enter( obj )
 	then
 		printf( "[smart_terrain %s] on_touch obj=%s", self:name(), obj:name() )
 		on_touch( self, obj )
+	else
+		printf( tostring( xr_gulag.isUnderFraction( obj ) ) )
 	end
 end
 
