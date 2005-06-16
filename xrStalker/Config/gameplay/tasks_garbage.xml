@@ -9,5 +9,22 @@
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-
+	
+	<game_task id="gar_kill_boars">
+		<title>gar_kill_boars</title>
+		<objective>
+			<text>gar_kill_boars_main</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>gar_kill_boars_1</text>
+			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>gar_kill_boars_2</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+	
+	
 </game_tasks_data>

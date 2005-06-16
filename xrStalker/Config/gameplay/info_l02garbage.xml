@@ -35,8 +35,12 @@
 	
 	
 	<!-- Застава Долга -->
-	<info_portion id="gar_kill_boars_quest"></info_portion>	
-	<info_portion id="gar_kill_boars_done"></info_portion>	
+	<info_portion id="gar_kill_boars_quest">
+		<task>gar_kill_boars</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>	
+	<info_portion id="gar_kill_boars_done"></info_portion>
+	<info_portion id="gar_kill_boars_request"></info_portion>	
 	<info_portion id="gar_free_pass"></info_portion>
 
 	<!-- Тестовые инфопошены -->

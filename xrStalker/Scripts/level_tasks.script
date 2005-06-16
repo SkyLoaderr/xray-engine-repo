@@ -88,10 +88,16 @@ function proceed()
 	then
 		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
 		actor:give_info_portion("garbage_meetstalker_end")
-		
 	end
-
-
+	
+	if actor:has_info("gar_kill_boars_done") and
+		actor:dont_has_info("gar_kill_boars_request") 
+	then
+		actor:give_info_portion("gar_kill_boars_request")
+		level_tasks.set_task_state(task.completed, "gar_kill_boars", 1)
+	end
+	
+	
 
 	agroprom_tasks.proceed()
 	
