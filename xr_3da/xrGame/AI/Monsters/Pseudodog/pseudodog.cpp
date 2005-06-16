@@ -202,6 +202,17 @@ void CAI_PseudoDog::try_to_jump()
 	}
 }
 
+void CAI_PseudoDog::jump_over_physics(const Fvector &target)
+{
+	if (control().check_start_conditions(ControlCom::eControlJump)) {
+		m_jump.setup_data().skip_prepare	= true;
+		m_jump.setup_data().target_object	= 0;
+		m_jump.setup_data().target_position	= target;
+
+		anim().jump(m_jump.setup_data());
+		m_jump.setup_data().skip_prepare	= false;
+	}
+}
 
 //void CAI_PseudoDog::play_effect_sound()
 //{

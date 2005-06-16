@@ -269,7 +269,7 @@ void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	CJumping::Update();
-	//CPsyAuraController::frame_update();
+	CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
 		processing_deactivate();
@@ -304,7 +304,7 @@ void CController::UpdateCL()
 void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	//CPsyAuraController::schedule_update();
+	CPsyAuraController::schedule_update();
 
 	UpdateControlled();
 

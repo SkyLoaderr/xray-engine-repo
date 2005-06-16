@@ -39,6 +39,9 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	//virtual void	play_effect_sound	();
 
+	virtual bool	ability_jump_over_physics	() {return true;}
+	virtual void	jump_over_physics			(const Fvector &target);
+
 			void	try_to_jump			();
 		
 	DECLARE_SCRIPT_REGISTER_FUNCTION

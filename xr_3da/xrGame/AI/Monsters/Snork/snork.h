@@ -11,7 +11,6 @@ class CSnork :	public CBaseMonster {
 	SVelocityParam	m_fsVelocityJumpTwo;
 
 	CControlJump		m_jump;
-	SControlJumpData	m_jump_data;
 
 public:
 					CSnork				();
@@ -22,6 +21,9 @@ public:
 	virtual void	UpdateCL			();
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual bool	jump				(CObject *enemy);
+	virtual bool	ability_jump_over_physics	() {return true;}
+	virtual void	jump_over_physics			(const Fvector &target);
+
 
 			void	try_to_jump			();
 

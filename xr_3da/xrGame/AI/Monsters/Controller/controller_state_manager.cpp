@@ -64,14 +64,14 @@ void CStateManagerController::execute()
 				case eWeak:		state_id = eStateAttack; break;
 		}
 		
-		if (state_id == eStateAttack) {
-			if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_TIME_ENEMY_HIDDEN < Device.dwTimeGlobal) {
-				if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
-				else {
-					if (object->EnemyMan.get_enemy_position().distance_to(object->Position()) < FIND_ENEMY_MAX_DISTANCE) state_id = eStateFindEnemy;
-				}
-			}
-		}
+		//if (state_id == eStateAttack) {
+		//	if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_TIME_ENEMY_HIDDEN < Device.dwTimeGlobal) {
+		//		if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
+		//		else {
+		//			if (object->EnemyMan.get_enemy_position().distance_to(object->Position()) < FIND_ENEMY_MAX_DISTANCE) state_id = eStateFindEnemy;
+		//		}
+		//	}
+		//}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
@@ -83,7 +83,7 @@ void CStateManagerController::execute()
 		else			state_id = eStateRest;
 	}
 	
-	state_id = eStateCustom;
+	//state_id = eStateCustom;
 
 	if (enemy) object->set_controlled_task(eTaskAttack);
 	else object->set_controlled_task(eTaskFollow);

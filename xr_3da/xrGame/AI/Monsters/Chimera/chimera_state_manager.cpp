@@ -39,12 +39,17 @@ void CStateManagerChimera::execute()
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy	();
 
 	if (enemy) {
-		if (check_state(eStateThreaten)) state_id = eStateThreaten;
-		else {
-			switch (object->EnemyMan.get_danger_type()) {
-				case eStrong:	state_id = eStatePanic; break;
-				case eWeak:		state_id = eStateAttack; break;
-			}
+		//if (check_state(eStateThreaten)) state_id = eStateThreaten;
+		//else {
+		//	switch (object->EnemyMan.get_danger_type()) {
+		//		case eStrong:	state_id = eStatePanic; break;
+		//		case eWeak:		state_id = eStateAttack; break;
+		//	}
+		//}
+
+		switch (object->EnemyMan.get_danger_type()) {
+			case eStrong:	state_id = eStatePanic; break;
+			case eWeak:		state_id = eStateAttack; break;
 		}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;

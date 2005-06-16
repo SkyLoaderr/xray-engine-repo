@@ -89,7 +89,7 @@ void CSnork::reinit()
 	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
 	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 	
-	anim().load_jump_data(m_jump_data, "stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", MonsterMovement::eSnorkVelocityParamsJump);
+	anim().load_jump_data(m_jump.setup_data(), "stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", MonsterMovement::eSnorkVelocityParamsJump);
 }
 
 void CSnork::UpdateCL()
@@ -211,7 +211,7 @@ void CSnork::try_to_jump()
 	if (!m_jump.can_jump(target)) return;
 	
 	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(target, m_jump_data);
+		anim().jump(target, m_jump.setup_data());
 	}
 }
 
@@ -241,8 +241,21 @@ bool CSnork::jump(CObject *enemy)
 	if (!m_jump.can_jump(enemy)) return false;
 	if (!control().check_start_conditions(ControlCom::eControlJump))  return false;
 	
-	anim().jump(enemy, m_jump_data);
+	anim().jump(enemy, m_jump.setup_data());
 	sound().play(MonsterSpace::eMonsterSoundAttack);
 	return true;
 }
+
+void CSnork::jump_over_physics(const Fvector &target)
+{
+	if (control().check_start_conditions(ControlCom::eControlJump)) {
+		m_jump.setup_data().skip_prepare	= true;
+		m_jump.setup_data().target_object	= 0;
+		m_jump.setup_data().target_position	= target;
+
+		anim().jump(m_jump.setup_data());
+		m_jump.setup_data().skip_prepare	= false;
+	}
+}
+
 

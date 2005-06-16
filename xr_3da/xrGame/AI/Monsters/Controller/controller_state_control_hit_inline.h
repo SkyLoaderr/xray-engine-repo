@@ -89,8 +89,6 @@ TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
-	
-	object->anim().TA_Deactivate();
 }
 
 //////////////////////////////////////////////////////////////////////////

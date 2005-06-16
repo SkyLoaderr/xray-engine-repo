@@ -254,7 +254,6 @@ void CChimera::HitEntityInJump(const CEntity *pEntity)
 void CChimera::UpdateCL()
 {
 	inherited::UpdateCL				();
-	//CJumpingAbility::update_frame	();
 }
 
 void CChimera::try_to_jump()

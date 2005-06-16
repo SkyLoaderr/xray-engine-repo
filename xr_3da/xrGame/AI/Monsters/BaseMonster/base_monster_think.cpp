@@ -181,7 +181,7 @@ void CBaseMonster::check_jump_over_physics()
 
 		for (u32 k=0;k<tpObjects.size();k++) {
 			CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[k]);
-			if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->Radius() < 1.f)) continue;
+			if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->Radius() < 0.5f)) continue;
 			if (Position().distance_to(obj->Position()) < MAX_DIST_SUM / 2) continue;
 
 			Fvector dir = Fvector().sub(travel_point.position, Position());
