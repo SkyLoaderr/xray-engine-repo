@@ -129,7 +129,13 @@ void CStalkerAnimationManager::update						()
 			torso().reset		();
 			legs().reset		();
 			global().animation	(global_animation);
+#ifndef USE_HEAD_BONE_PART_FAKE
 			global().play		(m_skeleton_animated,global_play_callback,&object());
+#else
+			global().play		(m_skeleton_animated,global_play_callback,&object(),m_script_bone_part_mask);
+			head().animation	(assign_head_animation());
+			head().play			(m_skeleton_animated,head_play_callback,&object());
+#endif
 			return;
 		}
 
