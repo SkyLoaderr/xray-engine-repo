@@ -199,13 +199,6 @@ struct TString_hash_compare {
 	
 	inline	bool	operator()	(const lua_string_holder &str0, const lua_string_holder &str1) const
 	{
-////		if (str0.tsv.hash != str1.tsv.hash)
-////			return	(str0.tsv.hash < str1.tsv.hash);
-
-//		if (str0.tsv.len != str1.tsv.len)
-//			return	(str0.tsv.len < str1.tsv.len);
-
-//		return		(xr_strcmp((const char *)str0.tsv.tt,(const char *)str1.tsv.tt) < 0);
 		return		(luaV_strcmp(str0.m_object,str1.m_object) < 0);
 	}
 };
@@ -250,8 +243,34 @@ lua_State *open_lua()
 	return					(L);
 }
 
+struct test_class {
+	int		m_reference_count;
+	int		m_lua_reference;
+};
+
+#include <boost/intrusive_ptr.hpp>
+
+typedef boost::intrusive_ptr<test_class>	test_ptr;
+
+void intrusive_ptr_add_ref(test_class *p)
+{
+	p->m_reference_count++;
+}
+
+void intrusive_ptr_release(test_class *p)
+{
+	p->m_reference_count--;
+	if (!p->m_reference_count)
+		printf	("we are completely unreferenced!\n");
+}
+
 void profiler_test	()
 {
+	test_ptr	a = xr_new<test_class>();
+	test_ptr	b = a;
+	a			= 0;
+	b			= 0;
+
 /**
 	lua_string_map			strings;
 	

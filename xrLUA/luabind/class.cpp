@@ -32,10 +32,24 @@ namespace luabind { namespace detail {
 
 #ifdef USE_NATIVE_LUA_STRINGS
 	template <typename T>
-	inline void swap_maps(lua_State *L, std::hash_map<lua_string_holder,T,TString_hash_compare> &map0, std::map<const char *,T,ltstr> &map1)
+	inline void swap_maps(lua_State *L, std::hash_map<lua_string_holder,T,TString_hash_compare,custom_allocator_type<std::pair<lua_string_holder,T> > > &map0, std::map<const char *,T,ltstr> &map1)
 	{
-		typedef std::hash_map<lua_string_holder,T,TString_hash_compare>	MAP0;
-		typedef std::map<const char *,T,ltstr>							MAP1;
+		typedef std::hash_map<
+			lua_string_holder,
+			T,
+			TString_hash_compare,
+			custom_allocator_type<
+				std::pair<
+					lua_string_holder,
+					T
+				>
+			>
+		>				MAP0;
+		typedef std::map<
+			const char *,
+			T,
+			ltstr
+		>				MAP1;
 
 		VERIFY			(map0.empty());
 		MAP1::iterator	I = map1.begin();

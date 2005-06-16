@@ -239,8 +239,9 @@ int luabind::detail::class_rep::gettable(lua_State* L)
 #ifndef USE_NATIVE_LUA_STRINGS
 	const char* key = lua_tostring(L, 2);
 #else
-	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
-	const char* key = getstr(str.m_object);
+//	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
+	TString		*str = lua_tostring_object(L,2);
+	const char* key = getstr(str);
 #endif
 
 #ifndef LUABIND_NO_ERROR_CHECKING
@@ -326,8 +327,9 @@ bool luabind::detail::class_rep::settable(lua_State* L)
 #ifndef USE_NATIVE_LUA_STRINGS
 	const char* key = lua_tostring(L, 2);
 #else
-	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
-	const char* key = getstr(str.m_object);
+//	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
+	TString		*str = lua_tostring_object(L,2);
+	const char* key = getstr(str);
 #endif
 
 	if (std::strlen(key) == lua_strlen(L, 2))
@@ -1315,8 +1317,9 @@ int luabind::detail::class_rep::lua_class_gettable(lua_State* L)
 #ifndef USE_NATIVE_LUA_STRINGS
 	const char* key		= lua_tostring(L, 2);
 #else
-	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
-	const char* key = getstr(str.m_object);
+//	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
+	TString		*str = lua_tostring_object(L,2);
+	const char* key = getstr(str);
 #endif
 	const char* _ok_	= "__ok";
 
@@ -1408,8 +1411,9 @@ int luabind::detail::class_rep::lua_class_settable(lua_State* L)
 #ifndef USE_NATIVE_LUA_STRINGS
 	const char* key = lua_tostring(L, 2);
 #else
-	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
-	const char* key = getstr(str.m_object);
+//	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
+	TString		*str = lua_tostring_object(L,2);
+	const char* key = getstr(str);
 #endif
 
 #ifndef USE_NATIVE_LUA_STRINGS
@@ -1483,8 +1487,9 @@ int luabind::detail::class_rep::static_class_gettable(lua_State* L)
 #ifndef USE_NATIVE_LUA_STRINGS
 	const char* key = lua_tostring(L, 2);
 #else
-	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
-	const char* key = getstr(str.m_object);
+//	lua_string_holder	str = lua_string_holder(L,lua_tostring_object(L,2));
+	TString		*str = lua_tostring_object(L,2);
+	const char* key = getstr(str);
 #endif
 
 	if (std::strlen(key) != lua_strlen(L, 2))
