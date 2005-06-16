@@ -474,6 +474,7 @@ function cl_smart_terrain:on_enter( obj )
 	if ( not self.gulag or ( math.random( 100 ) <= self.gparams.probability ) ) and
 	   not xr_gulag.isUnderFraction( obj )
 	then
+		printf( "[smart_terrain %s] on_touch obj=%s", self:name(), obj:name() )
 		on_touch( self, obj )
 	end
 end
@@ -752,7 +753,9 @@ function on_touch( self, obj )
 				add_npc( self, obj )
 			else
 				if not self.idle_end or self.idle_end < game.get_game_time() then
+					printf( "[smart_terrain %s] trying to create gulag type=%s", self:name(), self.gparams.type )
 					if create_gulag( self ) then
+						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
 						add_npc( self, obj )
 					end
 				end
