@@ -426,8 +426,6 @@ void CWeaponMagazined::UpdateCL			()
 	}
 
 	UpdateSounds		();
-
-
 }
 
 void CWeaponMagazined::UpdateSounds	()
