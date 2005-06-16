@@ -25,3 +25,8 @@ function meet_seriy_done(actor, npc)
 		end
 	end
 end
+
+function gar_kill_boars_complete(actor, npc)
+			db.actor:give_info_portion("gar_free_pass")
+			level_tasks.set_task_state(task.completed, "gar_kill_boars", 0)
+end
