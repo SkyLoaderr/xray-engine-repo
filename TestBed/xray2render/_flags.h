@@ -12,8 +12,8 @@ public:
 	T 	flags;
 
     IC	TYPE	get		()											{ return flags;}
-    IC	SelfRef	zero	()											{ flags=(T)0x00000000;	return *this;	}
-    IC	SelfRef	one		()											{ flags=(T)0xffffffff;	return *this;	}
+    IC	SelfRef	zero	()											{ flags=T(0);	return *this;	}
+    IC	SelfRef	one		()											{ flags=T(-1);	return *this;	}
     IC	SelfRef	invert	()											{ flags	=	~flags;		return *this;	}
     IC	SelfRef	invert	(const Self& f)								{ flags	=	~f.flags;	return *this;	}
     IC	SelfRef	invert	(const T mask)								{ flags ^=	mask;		return *this;	}
