@@ -45,6 +45,10 @@ function action_process_enemy:enemy_callback( obj, enemy )
 end
 
 function action_process_enemy:hit_callback(obj, amount, local_direction, who, bone_index)
+	if who == nil then	
+		return
+	end
+
 	printf("_bp: action_process_enemy: hit_callback(): obj='%s'", obj:name())
 	if amount == 0 then
 		-- Кто-то стрельнул в воздух
