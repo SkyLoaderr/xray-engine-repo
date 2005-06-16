@@ -471,6 +471,7 @@ end
 function cl_smart_terrain:on_enter( obj )
 	-- если есть активный гулаг, то вероятность будет зависеть от него, иначе вероятность 100%
 	-- И если не входит уже в какой-то гулаг
+	printf( "[smart_terrain %s] trying to 'on_touch' obj=%s", self:name(), obj:name() )
 	if ( not self.gulag or ( math.random( 100 ) <= self.gparams.probability ) ) and
 	   not xr_gulag.isUnderFraction( obj )
 	then
