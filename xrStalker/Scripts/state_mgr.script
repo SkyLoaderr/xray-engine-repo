@@ -179,15 +179,12 @@ function act_state_mgr_end:execute()
 				   level.object_by_id(self.st.look_object):alive() == true
 				then
 					if state_lib.states[self.st.target_state].weapon == "sniper_fire" then
-						printf("FIRE1")
 						self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
 					else
-						printf("FIRE2")
 						self.object:set_item(object.fire1, self.object:best_weapon())
 					end
 					return
 				else
-					printf("IDLE1")
 					self.object:set_item(object.idle, self.object:best_weapon())
 					return
 				end
@@ -196,21 +193,17 @@ function act_state_mgr_end:execute()
 			if self.st.look_position ~= nil and 
 			   self.st.look_object == nil
 			then
-				printf("FIRE3")
 				self.object:set_item(object.fire1, self.object:best_weapon())
 				return
 			else
-				if self.st.target_state == "psy_shoot_fire" then
-					printf("FIRE_SELF")
+				if self.st.target_state == "psy_shoot" then
 					self.object:set_item(object.fire1, self.object:best_weapon())
 					return
 				end
-				printf("IDLE2")
 				self.object:set_item(object.idle, self.object:best_weapon())
 				return				
 			end
 		else
-			printf("IDLE3")
 			self.object:set_item(object.idle, self.object:best_weapon())
 		end
 	end

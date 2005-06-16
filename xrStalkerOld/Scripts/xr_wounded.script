@@ -1,616 +1,359 @@
+----------------------------------------------------------------------------------------------------------------------
+--	Схема раненного
+--	автор: Диденко Руслан (Stohe)
+--	TODO:
+----------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
--- misc functions
-------------------------------------------------------------------------------------------
-function send_sos (npc)
-    local act = db.actor
-    if act == nil or  act:alive () == false or npc:relation (act) == game_object.enemy then
-       return 
-    end
-        
-    if distance_between (npc, act) > 100.0  then
-       return 
-    end
-    
-    if act ~= nil then
---		news_manager.send_help (act)    
-	end
-end
-------------------------------------------------------------------------------------------
--- Property's
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-class "evaluator_enable" (property_evaluator) 
-------------
-function evaluator_enable:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_enable:evaluate ()
-    return true 
-end    
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-class "evaluator_medikit" (property_evaluator)
-------------
-function evaluator_medikit:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_medikit:evaluate ()
-    return self.object:object ("medkit") ~= nil or self.object:object ("bandage") ~= nil
-end
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
 class "evaluator_wound" (property_evaluator) 
-------------
-function evaluator_wound:__init (name, storage) super (nil, name)
+function evaluator_wound:__init(name, storage) super(nil, name)
     self.a = storage
 end
-------------
 function evaluator_wound:evaluate ()
-	local overrides = xr_logic.generic_scheme_overrides (self.object)
-	if overrides ~= nil and overrides.wounded_enabled == false then
-  	   return false
+	self.a.wound_manager:update()
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
 	end
+	if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() and
+	   self.a.wound_manager.fight == "true"
+	then
+		return false
+	end
+	return self.a.wound_manager.state ~= "nil"
+end    
+
+class "evaluator_can_fight" (property_evaluator) 
+function evaluator_can_fight:__init(name, storage) super(nil, name)
+    self.a = storage
+end
+function evaluator_can_fight:evaluate ()
+    return self.a.wound_manager.fight == "true"
+end    
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+class "action_wounded" (action_base)
+function action_wounded:__init(name, storage) super(nil, name)
+    self.a = storage
+end
+function action_wounded:initialize ()
+    action_base.initialize (self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+	self.sound = "nil"
+	self.object:enable_talk()
+end
+function action_wounded:execute ()
+    action_base.execute (self)
+	wound_manager = self.a.wound_manager
 	
-	self.wound = self.a.enabled and this.is_wounded(self.object, self.a.hp_max)
-    this.process_map_spot(self.object, self.wound, self.a)
-	if self.wound then
-		self.a.state_talkable = false
-		self.object:disable_trade()
+	local victim = nil	
+	if wound_manager.victim == "actor" then
+		victim = db.actor
+	elseif wound_manager.victim == "nil" then
+		victim = nil
 	else
-		self.a.state_talkable = true
-		self.object:enable_trade()
-	end
-    return self.wound
-end
-------------------------------------------------------------------------------------------
-
-class "evaluator_final" (property_evaluator) 
-------------
-function evaluator_final:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_final:evaluate ()
-    if self.object.health < self.a.hp_max and self.a.ignore_time == 0 then 
-       self.a.final = false 
-    end
-    return self.a.final
-end
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-class "evaluator_cover" (property_evaluator) 
-------------
-function evaluator_cover:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_cover:evaluate ()
-	if not (self.a.enabled and this.is_wounded(self.object, self.a.hp_max)) then
-		self.a.cover = false
-	end
-    return self.a.cover
-end
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "evaluator_friend" (property_evaluator) 
-------------
-function evaluator_friend:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_friend:evaluate ()
-
-	local vtable = self.object:not_yet_visible_objects ()
-	if vtable == nil then return false end
-	
-	local dist = 100000.0
-	local npc = nil
-	
-	for v in vtable do
-		local vo = v:object ()
-		if v.value > 0.25 * self.object:visibility_threshold () then
-		   local type = object_type (vo)
-		   if type == "stalker" then
-		      if dist > distance_between (self.object, vo) then
-		         dist = distance_between (self.object, vo)
-		         npc = vo
-		      end   
-		   end    
-        end
-	end
-	
-	if npc == nil then return false end
-	self.a.npc = npc
-	if self.object:relation (npc) == game_object.enemy then return false end
-	return true
-		
-end
-------------------------------------------------------------------------------------------
-
-
-
-------------------------------------------------------------------------------------------
-class "action_cover" (action_base)
-------------
-function action_cover:__init (name, storage) super (nil, name)
-    self.a = storage
-    self.pos = vector ():set (0, 0, 0)
-    self.vid = -1
-    self.stage = 0
-    self.dir = vector ():set (0, 0, 0)
-end
-------------
-function action_cover:initialize ()
-    action_base.initialize (self)
-    
-    local pt = self.object:safe_cover (self.object:position (), 20, 0)
-    if pt == nil or self.object.health < self.a.hp_min then
-       self.pos = self.object:position ()
-       self.vid = self.object:level_vertex_id ()
-    else
-       self.pos = pt:position ()
-       self.vid = pt:level_vertex_id ()    
-    end    
-    
-    if self.object:accessible (self.vid) == false then
-       local vtemp = vector ():set (0, 0, 0); 
-       self.vid, vtemp = self.object:accessible_nearest (self.pos, vtemp)
-       self.pos = vtemp
-    end    
-
-    self.object:set_node_evaluator        ()
-    self.object:set_path_evaluator        ()
-    self.object:set_desired_position      (self.pos)
-    self.object:set_desired_direction     ()
-    self.object:set_detail_path_type      (move.line)
-    self.object:set_path_type             (game_object.level_path)
-    self.object:set_dest_level_vertex_id  (self.vid)
-    
-    state_mgr.set_state(self.object, "walk")
-end
-------------
-function action_cover:execute ()
-    action_base.execute (self)
-    if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
-		self.a.cover = true
-    end    
-end    
-------------
-function action_cover:finalize ()
-    action_base.finalize (self)
-end    
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "action_idle" (action_base)
-------------
-function action_idle:__init (name, storage) super (nil, name)
-    self.a = storage
-   	--self.sounds = 
-   	            --{ rnd = 100,
---				  maxidle = 5, 
---				  sumidle = 2,
-				  --themes = { "help" } 
-				--}
-    self.send_time = 0;
-    self.actor = nil	
-end
-------------
-function action_idle:initialize ()
-    action_base.initialize (self)
-
-    state_mgr.set_state(self.object, "wounded")
---    xr_meet.override_meet (self.object, true)
-    self.send_time = device ():time_global ()    
-end
-------------
-function action_idle:execute ()
-    action_base.execute (self)
-    if self.object:is_talking () == false then
-       xr_sound.set_sound(self.object, "help")
-    end   
-    
-    if device ():time_global () - self.send_time > 15000 then    
-       if self.object:is_talking () == false then
-          this.send_sos (self.object)
-       end   
-       self.send_time = device ():time_global ()
-    end   
-end    
-------------
-function action_idle:finalize ()
-    action_base.finalize (self) 
-    --xr_meet.override_meet (self.object, false)
-end    
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "action_help" (action_base)
-------------
-function action_help:__init (name, storage) super (nil, name)
-    self.a = storage
-    self.first = false
-   	--self.sounds = 
-   	            --{ rnd = 100,
---				  maxidle = 5, 
-				  --sumidle = 2,
-				  --themes = { "help_see" } 
-				--}
-    self.send_time = 0
-    self.actor = nil
-    self.first_sound = true
-end
-------------
-function action_help:initialize ()
-    action_base.initialize (self)
-    
-    this.usable(self.object, true)
-    
-    --xr_meet.override_meet (self.object, true)
-    self.send_time = device ():time_global ()
-    
-    --if self.a.replace_theme == true then
-       --printf ("WOUNDED : clear default theme. Object %s", self.object:name ()) 
-       --self.sounds.themes = {}
-    --end
-        
-    --local found = false
-    --if self.a.theme ~= nil then
-       --for a = 1, table.getn (self.sounds.themes), 1 do
-           --if self.sounds.themes[a] == self.a.theme then
-              --found = true
-           --end
-       --end
-       --if found == false then         
-          --table.insert (self.sounds.themes, self.a.theme)
-          --printf ("Additional theme %s added", self.a.theme)
-       --end   
-    --end
-    
-    state_mgr.set_state(self.object, "help_me")
-
-    self.first_sound = true
-end
-------------
-function action_help:execute ()
-    action_base.execute (self)
-    this.usable(self.object, true)
-    
-    if self.object:is_talking () == false then
-       if self.object:active_sound_count() == 0 and self.first_sound == true then 
-	      xr_sound.set_sound(self.object, "help_see", true)
-	      self.first_sound = false
-	   else    
-	      xr_sound.set_sound(self.object, "help_see")
-	   end   
-	end   
-	
-    if device ():time_global () - self.send_time > 15000 then    
-       if self.object:is_talking () == false then
-          this.send_sos (self.object) 
-       end   
-       self.send_time = device ():time_global ()
-    end   
-    
-end    
-------------
-function action_help:finalize ()
-    action_base.finalize (self)
-    this.usable(self.object, false)
-    --xr_meet.override_meet (self.object, false)
-end    
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "action_stand" (action_base)
-------------
-function action_stand:__init (name, storage) super (nil, name)
-    self.a = storage
-    self.first = false
-   	--self.sounds = 
-   	            --{ rnd = 100,
---				  maxidle = 5, 
-				  --sumidle = 2,
-				  --themes = { "help_stalker_thanx" } 
-				--}
-end
-------------
-function action_stand:initialize ()
-    action_base.initialize (self)
-    self.stage = 0
-    --xr_meet.override_meet (self.object, true)
-    if self.a.on_medikit ~= nil and actor then
-       xr_logic.pick_section_from_condlist (db.actor, self.object, self.a.on_medikit.condlist) 
-    end   
-    
-    if self.object:object ("medkit") ~= nil then
-       self.object:eat (self.object:object ("medkit"))
-    elseif self.object:object ("bandage") ~= nil then
-       self.object:eat (self.object:object ("bandage"))
-    end   
-end
-------------
-function action_stand:execute ()
-    action_base.execute (self)
-    
-    if self.stage == 0 then
-	   xr_sound.set_sound(self.object, nil, true)
-       xr_sound.set_sound_play(self.object, "help_stalker_thanx")
-       return
-    end
-    
-    if self.stage == 1 then
-       self.stage = 2
-    end    
-    
-    if self.object:is_talking () == true then
-    end   
-end    
-------------
-function action_stand:finalize ()   
-    --xr_meet.override_meet (self.object, false)
-    action_base.finalize (self)
-    self.a.sit = false
-end    
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-class "action_enemy" (action_base)
-------------
-function action_enemy:__init (name, storage) super (nil, name)
-    self.a = storage
-    self.first = false
-   	--self.sounds = 
-   	            --{ rnd = 100,
---				  maxidle = 5, 
-				  --sumidle = 2,
-				  --themes = { "help_see" } 
-				--}
-    self.send_time = 0
-    self.actor = nil
-end
-------------
-function action_enemy:initialize ()
-    action_base.initialize (self)
-    
-    --xr_meet.override_meet (self.object, true)    
-    self.send_time = device ():time_global ()
-    this.usable(self.object, true)
-end
-------------
-function action_enemy:execute ()
-    action_base.execute (self)
-	this.usable(self.object, true)
-	
-    local enemy = self.object:best_enemy ()
-    state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
-	
-	if enemy and distance_between(self.object, enemy) < 20 and self.object:see(enemy) == true then
-		if enemy:alive() == true then 
-			state_mgr.set_state(self.object, "hide_fire", nil,nil, {look_object = enemy})
-		else 
-			state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy, look_position = enemy:position()})
-		end	
-    end
-
-	if self.object:active_sound_count() == 0 then
-		xr_sound.set_sound(self.object, "help_see")		
-	end     
-    
-    if device ():time_global () - self.send_time > 15000 then    
-       this.send_sos (self.object) 
-       self.send_time = device ():time_global ()
-    end   
-end    
-------------
-function action_enemy:finalize ()
-    action_base.finalize (self)
-    this.usable(self.object, false)
-    --xr_meet.override_meet (self.object, false)
-end    
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "action_medkit" (action_base)
-------------
-function action_medkit:__init (name, storage) super (nil, name)
-end
-------------
-function action_medkit:initialize ()
-    action_base.initialize (self)
-end
-------------
-function action_medkit:execute ()
-    action_base.execute (self)
-    if self.object:object ("medkit") ~= nil then
-       self.object:eat (self.object:object ("medkit"))
-    elseif self.object:object ("bandage") ~= nil then
-       self.object:eat (self.object:object ("bandage"))
-    end
-end
-------------
-function action_medkit:finalize ()    
-    action_base.finalize (self)
-end    
-    
-
-------------------------------------------------------------------------------------------
-function process_map_spot(npc, wound, st)
-	if wound and npc:alive() and st.cover then
-		this.show_yourself(npc)
-	else
-		this.hide_yourself(npc)
-	end
-end
-function show_yourself(npc)
-	if npc and not level.map_has_object_spot(npc:id(), "general_wounded_location") then
-		level.map_add_object_spot(npc:id(), "general_wounded_location", "")
-	end		
-end
-function hide_yourself(npc)
-	if npc and level.map_has_object_spot(npc:id(), "general_wounded_location") then
-		level.map_remove_object_spot(npc:id(), "general_wounded_location")
-	end		
-end
-
-function usable(obj, type)
-	if type then
-		if db.actor and obj:relation(db.actor) ~= game_object.enemy then
-			obj:enable_talk()
-			return
+		local sim = alife()
+		if sim then
+			victim = sim:story_object(victim)
 		end
 	end
-	obj:disable_talk()
+
+	-- отправляем чудака в кавер.
+	if wound_manager.cover == "true" then
+		if self.pos == nil or self.vid == nil then
+			local pt = self.object:safe_cover(self.object:position(), 20, 0)
+			self.pos = pt:position()
+			self.vid = pt:level_vertex_id()    	
+			if self.object:accessible(self.vid) == false then
+				local vtemp = vector():set(0, 0, 0); 
+				self.vid, vtemp = self.object:accessible_nearest(self.pos, vtemp)
+				self.pos = vtemp
+			end
+			self.object:set_node_evaluator        ()
+			self.object:set_path_evaluator        ()
+			self.object:set_desired_position      (self.pos)
+			self.object:set_desired_direction     ()
+			self.object:set_detail_path_type      (move.line)
+			self.object:set_path_type             (game_object.level_path)
+			self.object:set_dest_level_vertex_id  (self.vid)    
+			state_mgr.set_state(self.object, "walk")
+			return
+		else
+			-- кавер выбран, просто туда идем
+			if self.object:accessible(self.vid) == false then
+				self.vid = nil
+				return
+			end
+			printf("dist to cover [%s]", self.object:position():distance_to(self.pos))
+			if self.object:position():distance_to_sqr(self.pos) > 1 then
+				return
+			end			
+		end
+	else
+		self.pos = nil
+		self.vid = nil
+	end    
+
+    
+
+
+
+	
+	local synsound = nil
+	if wound_manager.state == "true" then
+		local h = hit()
+		h.power = 0
+		h.direction = self.object:direction()
+		h.bone = "bip01_spine"
+		h.draftsman = db.actor
+		h.impulse = 0
+		h.type = hit.wound
+		self.object:hit(h)		
+	else
+		-- является ли текущий звук синхронным для текущего стейта
+		for k,v in self.a.syndata do
+			if v.state == wound_manager.state and
+			   v.sound == wound_manager.sound
+			then
+				synsound = wound_manager.sound
+			end
+		end	
+		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, nil, synsound)
+	end
+
+	if synsound == nil then
+		-- нужно отыграть фоновый
+		if self.sound ~= wound_manager.sound then
+			self.sound = wound_manager.sound
+			xr_sound.set_sound(self.object, wound_manager.sound)
+		end
+	else
+		-- нужно зарубить фоновый
+		if self.sound ~= nil then
+			self.sound = "nil"
+			xr_sound.set_sound(self.object, nil)
+		end
+	end
+	
+	local tt = db.storage[self.object:id()]
+	if tt.active_scheme and not self.object:is_talking() then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
+				return
+			end
+		end
+	end
+end    
+function action_wounded:finalize ()
+    action_base.finalize (self)
+    self.object:disable_talk()
+    xr_sound.set_sound(self.object, nil)
+end    
+
+----------------------------------------------------------------------------------------------------------------------
+-- Class wound_manager
+----------------------------------------------------------------------------------------------------------------------
+class "Cwound_manager"
+function Cwound_manager:__init(npc, storage)
+	self.npc = npc
+	self.a = storage
 end
-------------------------------------------------------------------------------------------
+function Cwound_manager:update()
+	hp	= 100*self.npc.health
+	psy	= 100*self.npc.psy_health
+	
+--	printf("PSY [%s] HP [%s]", psy, hp)
+
+	self.state, self.sound = self:process_psy_wound(psy)
+	
+	if self.state == "nil" and
+	   self.sound == "nil"
+	then
+		-- проверяем на обычную раненость
+		self.fight	= self:process_fight(hp)
+		self.cover	= self:process_cover(hp)
+		self.victim = self:process_victim(hp)
+		self.state, self.sound = self:process_hp_wound(hp)
+		
+		--жрание аптечек и прочей срани.
+		if self.npc:object("medkit") ~= nil then
+			self.npc:eat(self.npc:object("medkit"))
+		elseif self.npc:object("bandage") ~= nil then
+			self.npc:eat(self.npc:object("bandage"))
+		end   
+		
+	else
+		-- устанавливаем пси раненость
+		self.fight = "false"
+		self.cover = "false"
+		self.victim = "nil"
+	end	
+--	printf("f[%s]c[%s]v[%s]", utils.to_str(self.fight), utils.to_str(self.cover), utils.to_str(self.victim))
+--	printf("st[%s]so[%s]", utils.to_str(self.state), utils.to_str(self.sound))
+end
+function Cwound_manager:process_fight(hp)
+	key = self:get_key_from_distance(self.a.hp_fight, hp)
+	if key ~= nil then
+		if self.a.hp_fight[key].state then
+			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_fight[key].state))
+		end
+	end		
+	return "true"
+end
+function Cwound_manager:process_cover(hp)
+	key = self:get_key_from_distance(self.a.hp_cover, hp)
+	if key ~= nil then
+		if self.a.hp_cover[key].state then
+			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_cover[key].state))
+		end
+	end		
+	return "true"
+end
+function Cwound_manager:process_victim(hp)
+	key = self:get_key_from_distance(self.a.hp_victim, hp)
+	if key ~= nil then
+		if self.a.hp_victim[key].state then
+			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_victim[key].state))
+		end
+	end		
+	return "nil"
+end
+function Cwound_manager:process_hp_wound(hp)
+	key = self:get_key_from_distance(self.a.hp_state, hp)
+	if key ~= nil then
+		if self.npc:see(db.actor) then
+			if self.a.hp_state_see[key].state then
+				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_state_see[key].state)
+			end
+			if self.a.hp_state_see[key].sound then
+				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_state_see[key].sound)
+			end
+		else
+			if self.a.hp_state[key].state then
+				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_state[key].state)
+			end
+			if self.a.hp_state[key].sound then
+				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_state[key].sound)
+			end
+		end
+		return tostring(r1),tostring(r2)
+	end		
+	return "nil","nil"
+end
+function Cwound_manager:process_psy_wound(hp)
+	key = self:get_key_from_distance(self.a.psy_state, hp)
+	if key ~= nil then
+		if self.a.psy_state[key].state then
+			r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.psy_state[key].state)
+		end
+		if self.a.psy_state[key].sound then
+			r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.psy_state[key].sound)
+		end
+		return tostring(r1),tostring(r2)
+	end		
+	return "nil","nil"
+end
+function Cwound_manager:get_key_from_distance(t, hp)
+	local key
+	for k,v in t do
+		if v.dist >= hp then 
+			key = k 
+		else
+			return key
+		end		
+	end
+	return key
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- binder
+----------------------------------------------------------------------------------------------------------------------
 function add_to_binder (object, ini, scheme, section, st)
 
     local operators     = {}
     local properties    = {}
     
-    properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
-    properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
-    properties["sit"]           =   xr_evaluators_id.sidor_wounded_base + 2
-    properties["friend"]        =   xr_evaluators_id.sidor_wounded_base + 3
-    properties["cover"]         =   xr_evaluators_id.sidor_wounded_base + 4
-    properties["medikit"]       =   xr_evaluators_id.sidor_wounded_base + 5
-	properties["contact"]		=   xr_evaluators_id.stohe_meet_base + 1         
+    properties["wounded"]		=   xr_evaluators_id.sidor_wounded_base + 0
+    properties["can_fight"]     =   xr_evaluators_id.sidor_wounded_base + 1
     
-    operators["cover"]          =   xr_actions_id.sidor_act_wounded_base + 0
-    operators["sit"]            =   xr_actions_id.sidor_act_wounded_base + 1
-    operators["idle"]           =   xr_actions_id.sidor_act_wounded_base + 2
-    operators["help"]           =   xr_actions_id.sidor_act_wounded_base + 3
-    operators["friend"]         =   xr_actions_id.sidor_act_wounded_base + 4
-    operators["enemy"]          =   xr_actions_id.sidor_act_wounded_base + 5
-    operators["clear"]          =   xr_actions_id.sidor_act_wounded_base + 6
-    operators["stand"]          =   xr_actions_id.sidor_act_wounded_base + 7
-    operators["medkit"]         =   xr_actions_id.sidor_act_wounded_base + 8
+    operators["wounded"]        =   xr_actions_id.sidor_act_wounded_base + 0
     
     
     local manager = object:motivation_action_manager ()
-    manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("wounded_enabled", st))
-    manager:add_evaluator (properties["wound"],     this.evaluator_wound        ("wounded_wound", st))
-    manager:add_evaluator (properties["friend"],    this.evaluator_friend       ("wounded_see_friend", st))
-    manager:add_evaluator (properties["cover"],     this.evaluator_cover        ("wounded_in_cover", st))
-    manager:add_evaluator (properties["medikit"],   this.evaluator_medikit      ("wounded_medikit", st))
+    manager:add_evaluator (properties["wounded"],		this.evaluator_wound("wounded", st))
+    manager:add_evaluator (properties["can_fight"],     this.evaluator_can_fight("can_fight", st))
 
-    local action = this.action_cover ("wounded_action_cover", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["medikit"],         false))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["cover"],           false))
-    action:add_effect       (world_property (properties["cover"],           true))
-   	manager:add_action      (operators["cover"], action)
+    local action = this.action_wounded("wounded_action", st)
+    action:add_precondition (world_property(stalker_ids.property_alive,    true))
+    action:add_precondition (world_property(properties["wounded"],         true))
+    action:add_effect (world_property(properties["wounded"],        false))
+    action:add_effect (world_property(stalker_ids.property_enemy,	false))
+   	manager:add_action      (operators["wounded"], action)
    
-    action = this.action_idle ("wounded_action_idle", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["medikit"],         false))
-    action:add_precondition (world_property (properties["cover"],           true))
-    action:add_precondition (world_property (properties["friend"],          false))
-    action:add_effect       (world_property (properties["medikit"],         true))
-   	manager:add_action      (operators["idle"], action)
-
-    action = this.action_help ("wounded_action_help", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["medikit"],         false))
-    action:add_precondition (world_property (properties["cover"],           true))
-    action:add_precondition (world_property (properties["friend"],          true))
-    action:add_effect       (world_property (properties["medikit"],         true))
-   	manager:add_action      (operators["help"], action)
-
-    action = this.action_stand ("wounded_action_stand", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["medikit"],         true))
-    action:add_precondition (world_property (properties["cover"],           true))
-    action:add_effect       (world_property (properties["wound"],           false))
-   	manager:add_action      (operators["stand"], action)
-
-    action = this.action_enemy ("wounded_action_enemy", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (stalker_ids.property_enemy,    true))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["cover"],           true))
-    action:add_effect       (world_property (stalker_ids.property_enemy,    false))
-   	manager:add_action      (operators["enemy"], action)
-   	
-   	action = this.action_medkit ("wounded_action_medkit", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["medikit"],         true))
-    action:add_effect       (world_property (properties["wound"],           false))
-   	manager:add_action      (operators["medkit"], action)
-    
     action = manager:action (xr_actions_id.alife)
-    action:add_precondition (world_property (properties["wound"],  false))
+    action:add_precondition (world_property(properties["wounded"],			false))
     
     action = manager:action (stalker_ids.action_combat_planner)
-    action:add_precondition (world_property (properties["cover"],           false))
-
+    action:add_precondition (world_property(properties["can_fight"],       true))
 end
+
+
 ------------
-function set_wounded (object, ini, scheme, section)
-
-	local st = xr_logic.assign_storage_and_bind (object, ini, scheme, section)
-    	
-    st.on_medikit = xr_logic.cfg_get_condlist (ini, section, "on_medikit", object)
-    st.dialog  = utils.cfg_get_string (ini, section, "dialog", object, false, "")
-    st.on_sit_info = xr_logic.cfg_get_condlist (ini, section, "on_sit", object)
-    st.hp_min = utils.cfg_get_number (ini, section, "hp_min", object, false, 10)
-    st.hp_max = utils.cfg_get_number (ini, section, "hp_max", object, false, 20)
-    st.theme = utils.cfg_get_string (ini, section, "help_theme", object, false, "")
-    st.replace_theme = utils.cfg_get_bool (ini, section, "replace_default_theme", object, false, false)
-    if st.theme == "" then st.theme = nil end
-   
-    if st.replace_theme == true and st.theme == nil then
-       abort ("WOUNDED SCHEME IS NOT WORKING WITHOUT EMPTY THEMES LIST !!! Object %s", npc:name ()) 
-    end
-           
-    if st.hp_min >= st.hp_max then
-       abort ("WOUNDED SCHEME IS NOT WORKING WHILE hp_min MORE OR EQUAL THAN hp_max !!! Object %s", npc:name ())
-    end
-    st.hp_min = st.hp_min / 100.0
-    st.hp_max = st.hp_max / 100.0
-    st.sit = false
-    st.cover = false
-    st.ignore_time = 0
-
-    st.enabled = true -- added by Zmey
+-- Вызывается только в начале на чтении логики, создает экшены, эвалуаторы и производит
+-- первичную настройку.
+function set_wounded(npc, ini, scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.wound_manager = Cwound_manager(npc, st)
 end
-
-function is_wounded(npc, hp_max)
-    return npc.health < hp_max
-end
-
--- added by Zmey
-function disable_scheme(npc, scheme)
-	local st = db.storage[npc:id()][scheme]
-	if st then
-		st.enabled = false
+-- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
+function reset_wounded(npc, scheme, st, section)
+	local wounded_section
+	if scheme == nil or scheme == "nil" then
+		wounded_section = utils.cfg_get_string(st.ini, st.section_logic, "wounded", npc, false, "")
+	else
+		wounded_section = utils.cfg_get_string(st.ini, section, "wounded", npc, false, "")
 	end
+	init_wounded(npc, st.ini, wounded_section, st.wounded, scheme)
+end
+-- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
+function init_wounded(npc, ini, section, st, scheme)
+	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
+
+	if tostring(section) == st.meet_section and
+	   tostring(section) ~= nil 
+	then
+		return
+	end
+	
+	st.wounded_section = utils.to_str(section)
+	
+	if section == nil then
+		-- Загружаем дефолты!
+		st.hp_state			= xr_meet.parse_data(npc, "30|help_me@help|10|wounded_heavy@help_heavy")
+		st.hp_state_see		= xr_meet.parse_data(npc, "30|wounded@help_see|10|wounded_heavy@help_heavy")
+		st.psy_state		= xr_meet.parse_data(npc, "50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20|{=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy")
+		st.hp_victim		= xr_meet.parse_data(npc, "30|actor|10|nil")
+		st.hp_cover			= xr_meet.parse_data(npc, "30|true|10|false")
+		st.hp_fight			= xr_meet.parse_data(npc, "30|true|10|false")
+		st.syndata			= xr_meet.parse_syn_data(npc, "wounded@help")
+		return
+	end
+
+	st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
+	st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, ""))
+	st.psy_state	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "psy_state", npc, false, ""))
+	st.hp_victim	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_victim", npc, false, ""))
+	st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, ""))
+	st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
+	st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
+end
+
+function is_wounded(npc)
+	return db.storage[npc:id()].wounded.wound_manager.state ~= "nil"
 end

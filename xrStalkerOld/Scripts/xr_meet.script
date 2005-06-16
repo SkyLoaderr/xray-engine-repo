@@ -4,7 +4,6 @@
 --	TODO:
 ----------------------------------------------------------------------------------------------------------------------
 
-local sounds = {}
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
@@ -13,8 +12,11 @@ class "evaluator_contact" (property_evaluator)
 function evaluator_contact:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-function evaluator_contact:evaluate()
+function evaluator_contact:evaluate()	
 	if db.actor and self.object:see(db.actor) then
+		if xr_wounded.is_wounded(self.object) then
+			return false
+		end
 		self.a.meet_manager:update()
 		if self.mgr == nil then
 			self.mgr = self.object:motivation_action_manager()
@@ -22,7 +24,7 @@ function evaluator_contact:evaluate()
 		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
 			return false
 		end
-		return self.a.meet_manager.state ~= nil
+		return self.a.meet_manager.state ~= "nil"
 	else
 		return false
 	end
@@ -44,15 +46,16 @@ function action_meet_wait:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	-- кешируемые данные
-	self.sound = nil
+	self.sound = "nil"
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
+	meet_manager = self.a.meet_manager
 	
 	local victim = nil	
-	if self.a.meet_manager.victim == "actor" then
+	if meet_manager.victim == "actor" then
 		victim = db.actor
-	elseif self.a.meet_manager.victim == "nil" or self.a.meet_manager.victim == nil then
+	elseif meet_manager.victim == "nil" then
 		victim = nil
 	else
 		local sim = alife()
@@ -62,44 +65,46 @@ function action_meet_wait:execute ()
 	end
 	
 	local synsound = nil
-	if self.a.meet_manager.state == "true" then
+	if meet_manager.state == "true" then
 		local h = hit()
 		h.power = 0
 		h.direction = self.object:direction()
 		h.bone = "bip01_spine"
-		h.draftsman = self.a.actor
+		h.draftsman = db.actor
 		h.impulse = 0
 		h.type = hit.wound
 		self.object:hit(h)		
 	else
 		-- является ли текущий звук синхронным для текущего стейта
 		for k,v in self.a.syndata do
-			if v.state == self.a.meet_manager.state and
-			   v.sound == self.a.meet_manager.sound
+			if v.state == meet_manager.state and
+			   v.sound == meet_manager.sound
 			then
-				synsound = self.a.meet_manager.sound
+				synsound = meet_manager.sound
 			end
 		end
 		
-		if self.a.meet_manager.emerg_state == true then
-			state_mgr.set_state(self.object, self.a.meet_manager.state, nil, nil, {look_object = victim}, {animation = true}, synsound)
+		if meet_manager.emerg_state == true then
+			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, {animation = true}, synsound)
 		else
-			state_mgr.set_state(self.object, self.a.meet_manager.state, nil, nil, {look_object = victim}, nil, synsound)
+			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, nil, synsound)
 		end
 	end
 
-	if not (self.sound == nil and synsound ~= nil) and
-	   not (self.sound == self.a.meet_manager.sound)
-	then
-		if synsound == nil then	
-			self.sound = self.a.meet_manager.sound
-			xr_sound.set_sound(self.object, self.a.meet_manager.sound)
-		else
-			self.sound = nil
+	if synsound == nil then
+		-- нужно отыграть фоновый
+		if self.sound ~= meet_manager.sound then
+			self.sound = meet_manager.sound
+			xr_sound.set_sound(self.object, meet_manager.sound)
+		end
+	else
+		-- нужно зарубить фоновый
+		if self.sound ~= nil then
+			self.sound = "nil"
 			xr_sound.set_sound(self.object, nil)
 		end
 	end
-	
+
 	local tt = db.storage[self.object:id()]
 	if tt.active_scheme and not self.object:is_talking() then
 		if db.actor then
@@ -111,23 +116,17 @@ function action_meet_wait:execute ()
 end
 function action_meet_wait:finalize ()
 	action_base.finalize(self)
+	xr_sound.set_sound(self.object, nil)
 end
 
-class "meet_manager"
-function meet_manager:__init(npc, storage)
+class "Cmeet_manager"
+function Cmeet_manager:__init(npc, storage)
 	self.npc = npc
 	self.a = storage
-	self.a.actor = nil
 	self.emerg_state = false
 	self.startdialog = nil
 end
-function meet_manager:update()	
-	if db.actor then
-		self.a.actor = db.actor
-	else
-		return
-	end
-	
+function Cmeet_manager:update()
 	-- стартовый диалог
 	if self.a.meet_dialog ~= nil then			
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_dialog)
@@ -144,13 +143,13 @@ function meet_manager:update()
 		end
 	end
 		
-	self.dist = self.npc:position():distance_to(self.a.actor:position())
+	self.dist = self.npc:position():distance_to(db.actor:position())
 	self:process_use()
 	self.victim = self:process_victim()
 
 	self.state_zone,self.sound_zone = self:process_zone()
-	if self.state_zone ~= nil then
-		if self.victim == nil or self.victim == "nil" then
+	if self.state_zone ~= "nil" then
+		if self.victim == "nil" then
 			self.victim = "actor"
 		end
 		self.state,self.sound = self.state_zone,self.sound_zone
@@ -159,8 +158,8 @@ function meet_manager:update()
 	end
 	
 end
-function meet_manager:process_zone()
-	if self.a.zone == nil then return nil end
+function Cmeet_manager:process_zone()
+	if self.a.zone == nil then return "nil","nil" end
 	key = self:get_key_from_zone(self.a.zone)
 	if key ~= nil then
 		if self.a.zone[key].state then
@@ -170,12 +169,12 @@ function meet_manager:process_zone()
 		if self.a.zone[key].sound then
 			r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].sound)
 		end
-		return r1, r2
+		return tostring(r1), tostring(r2)
 	end
-	return nil
+	return "nil","nil"
 end
-function meet_manager:process_meet()
-	if isWeapon(self.a.actor:active_item())	then
+function Cmeet_manager:process_meet()
+	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.meet_state_wpn)
 		if key ~= nil then
 			if self.a.meet_state_wpn[key].state then
@@ -185,7 +184,7 @@ function meet_manager:process_meet()
 			if self.a.meet_state_wpn[key].sound then
 				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].sound)
 			end
-			return r1, r2
+			return tostring(r1), tostring(r2)
 		end	
 	else
 		key = self:get_key_from_distance(self.a.meet_state)
@@ -197,26 +196,26 @@ function meet_manager:process_meet()
 			if self.a.meet_state[key].sound then
 				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].sound)
 			end
-			return r1, r2
+			return tostring(r1), tostring(r2)
 		end	
 	end
-	return nil,nil
+	return "nil","nil"
 end
-function meet_manager:process_victim()
-	if isWeapon(self.a.actor:active_item())	then
+function Cmeet_manager:process_victim()
+	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.victim_wpn)
 		if key ~= nil then
-			return xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim_wpn[key].state)
+			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim_wpn[key].state))
 		end	
 	else
 		key = self:get_key_from_distance(self.a.victim)
 		if key ~= nil then
-			return xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim[key].state)
+			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim[key].state))
 		end	
 	end
-	return nil
+	return "nil"
 end
-function meet_manager:get_key_from_distance(t)
+function Cmeet_manager:get_key_from_distance(t)
 	local key
 	for k,v in t do
 		if v.dist >= self.dist then 
@@ -227,17 +226,17 @@ function meet_manager:get_key_from_distance(t)
 	end
 	return key
 end
-function meet_manager:get_key_from_zone(t)
+function Cmeet_manager:get_key_from_zone(t)
 	for k,v in t do
-		if utils.npc_in_zone(self.a.actor, db.zone_by_name[v.zone]) then 
+		if utils.npc_in_zone(db.actor, db.zone_by_name[v.zone]) then 
 			return k 
 		end		
 	end
 	return nil
 end
-function meet_manager:process_use()
+function Cmeet_manager:process_use()
 	local t
-	if isWeapon(self.a.actor:active_item())	then
+	if isWeapon(db.actor:active_item())	then
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use_wpn)
 	else
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use)
@@ -251,7 +250,7 @@ function meet_manager:process_use()
 		end
 	elseif t == "self" then
 		if not self.npc:is_talking() then
-			self.a.actor:run_talk_dialog(self.npc)
+			db.actor:run_talk_dialog(self.npc)
 		end
 	end
 end
@@ -267,7 +266,7 @@ function add_to_binder(object, char_ini)
 
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
-	properties["wound"]         = xr_evaluators_id.sidor_wounded_base + 1
+	properties["wounded"]		= xr_evaluators_id.sidor_wounded_base + 0
 
 	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
 
@@ -278,8 +277,8 @@ function add_to_binder(object, char_ini)
 	local action = action_meet_wait (object:name(),"action_process_meet", db.storage[object:id()].meet, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["wound"],		false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
+	action:add_precondition		(world_property(properties["wounded"], 		false))
 	action:add_effect 			(world_property(properties["contact"], 		false))
 	manager:add_action (operators["contact"], action)
 
@@ -294,7 +293,7 @@ end
 -- первичную настройку.
 function set_meet(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.meet_manager = meet_manager(npc, st)
+	st.meet_manager = Cmeet_manager(npc, st)
 end
 -- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
 function reset_meet(npc, scheme, st, section)
@@ -309,20 +308,21 @@ function reset_meet(npc, scheme, st, section)
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
-	printf("MEET SECTION [%s][%s]", utils.to_str(section), utils.to_str(scheme))
+	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
 
-	if utils.to_str(section) == st.meet_section and
-	   st.meet_section ~= nil 
+	if tostring(section) == st.meet_section and
+	   tostring(section) ~= "nil" 
 	then
 		return
 	end
 	
-	st.meet_section = utils.to_str(section)
+	st.meet_section = utils.tostring(section)
 	
-	if section == nil then
+	if tostring(section) == "nil" then
 		-- Загружаем дефолты!
-		if scheme == nil or scheme == "nil" then
-			st.meet_state		= parse_data(npc, "30|hello@hail|20|wait@wait")
+		if tostring(scheme) == "nil" then
+			printf("loading alife default")
+			st.meet_state		= parse_data(npc, "30|hello@hail|20|wait@state")
 			st.meet_state_wpn	= parse_data(npc, "30|backoff@threat_weap")
 			st.victim			= parse_data(npc, "30|actor")
 			st.victim_wpn		= parse_data(npc, "30|actor")
@@ -330,6 +330,7 @@ function init_meet(npc, ini, section, st, scheme)
 			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
 			st.syndata			= parse_syn_data(npc, "hello@hail|backoff@threat_weap")
 		else
+			printf("loading scheme default")
 			st.meet_state		= parse_data(npc, "")
 			st.meet_state_wpn	= parse_data(npc, "")
 			st.victim			= parse_data(npc, "")
@@ -357,8 +358,8 @@ function init_meet(npc, ini, section, st, scheme)
 	if tmp then
 		st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", tmp)
 	end
-	st.zone				= parse_zone_data(npc, utils.cfg_get_string(st.ini, section, "zone", npc, false, ""))	
-	st.syndata			= parse_syn_data(npc, utils.cfg_get_string(st.ini, section, "synpairs", npc, false, ""))	
+	st.zone				= parse_zone_data(npc, utils.cfg_get_string(ini, section, "zone", npc, false, ""))
+	st.syndata			= parse_syn_data(npc, utils.cfg_get_string(ini, section, "synpairs", npc, false, ""))
 	--print_table(st)
 end
 

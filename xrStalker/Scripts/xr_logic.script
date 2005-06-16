@@ -203,7 +203,6 @@ function disable_generic_schemes(npc, stype)
 		xr_use.disable_scheme(npc, "use")
 		xr_hit.disable_scheme(npc, "hit")
 		xr_meet.disable_scheme(npc, "actor_dialogs")
-		xr_wounded.disable_scheme(npc, "wounded")
 		xr_heli_hunter.disable_scheme(npc, "heli_hunter")
 		xr_combat_ignore.disable_scheme(npc, "combat_ignore")
 		xr_punch.disable_scheme(npc, "punch")
@@ -382,6 +381,7 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 	if st.stype == modules.stype_stalker then
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_meet.reset_meet(npc, scheme, st, section)
+		xr_wounded.reset_wounded(npc, scheme, st, section)
 		stalker_generic.reset_threshold(npc, scheme, st, section)
 		
 	elseif st.stype == modules.stype_mobile then

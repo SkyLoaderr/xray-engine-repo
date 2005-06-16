@@ -386,6 +386,13 @@ states = {
 				animstate = "wounded",
 				animation = nil
 			},
+	wounded_heavy = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "wounded",
+				animation = "wound_heavy"
+			},
 	help_me = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
@@ -400,7 +407,7 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = "psy_pain"
+				animation = "psy_armed"
 			},
 	psy_armed = {weapon = "unstrapped",
 				movement = move.stand,
@@ -409,14 +416,7 @@ states = {
 				animstate = "stand",
 				animation = "psy_armed"
 			},
-	psy_shoot = {weapon = "unstrapped",
-				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
-				animstate = "stand",
-				animation = "psy_shoot"
-			},
-	psy_shoot_fire = {weapon = "fire",
+	psy_shoot = {weapon = "fire",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,

@@ -25,9 +25,9 @@ function hitted_by(actor, npc, p)
 	return false
 end
 
--- Проверка, что персонаж держит в руке пистолет
-function active_pistol(actor, npc)
-	local wpn = npc:active_item()
+-- Проверка, что лучшее оружие персонажа - пистолет
+function best_pistol(actor, npc)
+	local wpn = npc:best_weapon()
 	if wpn == nil then
 		return false
 	end

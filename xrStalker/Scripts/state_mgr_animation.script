@@ -278,11 +278,7 @@ function animation:__init(npc, mgr)
 						idle	= nil,
 						rnd		= { [0] = { "sit_0_idle_1",
 											"sit_0_idle_2",
-											"sit_0_idle_3" },
-									[1] = nil,
-									[2] = nil,
-									[3] = nil,
-									[4] = nil}},
+											"sit_0_idle_3" }}},
 		sit_knee	= {	prop	= { maxidle = 5,
 									sumidle = 3,
 									rnd = 80 },
@@ -291,11 +287,7 @@ function animation:__init(npc, mgr)
 						idle	= nil,
 						rnd		= { [0] = { "sit_1_idle_1",
 											"sit_1_idle_2",
-											"sit_1_idle_3" },
-									[1] = nil,
-									[2] = nil,
-									[3] = nil,
-									[4] = nil}},
+											"sit_1_idle_3" }}},
 		sit_ass		= {	prop	= { maxidle = 5,
 									sumidle = 3,
 									rnd = 80 },
@@ -304,11 +296,7 @@ function animation:__init(npc, mgr)
 						idle	= nil,
 						rnd		= { [0] = { "sit_2_idle_1",
 											"sit_2_idle_2",
-											"sit_2_idle_3" },
-									[1] = nil,
-									[2] = nil,
-									[3] = nil,
-									[4] = nil}},
+											"sit_2_idle_3" }}},
 
 
 											
@@ -352,7 +340,7 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= nil,
+						rnd		= {	[0]	= {	"uhodi_1_0" },
 									[1]	= {	"uhodi_1_0" },
 									[2]	= {	"uhodi_2_0" },
 									[3]	= {	"uhodi_3_0" },
@@ -363,7 +351,7 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= nil,
+						rnd		= {	[0]	= {	"uhodi_1_1" },
 									[1]	= {	"uhodi_1_1" },
 									[2]	= {	"uhodi_2_1" },
 									[3]	= {	"uhodi_3_1" },
@@ -371,52 +359,32 @@ function animation:__init(npc, mgr)
 		hide_s_left	= {	prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into	= {	[0]	= nil,
-									[1]	= nil,
-									[2]	= {	"sss_left_0", {s="speach"}, "sss_left_1" },
-									[3]	= nil,
-									[4]	= nil},
+						into	= {	[0]	= {	"sss_left_0", {s="speach"}, "sss_left_1" },
+									[2]	= {	"sss_left_0", {s="speach"}, "sss_left_1" }},
 						out		= nil,
 						idle	= nil,
 						rnd		= nil},
 		hide_s_right = {prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into 	= {	[0]	= nil,
-									[1]	= nil,
-									[2]	= {	"sss_right_0", {s="speach"}, "sss_right_1"},
-									[3]	= nil,
-									[4]	= nil
-							    	},
+						into 	= {	[0]	= {	"sss_right_0", {s="speach"}, "sss_right_1"},
+									[2]	= {	"sss_right_0", {s="speach"}, "sss_right_1"}},
 						out		= nil,
-						rnd	= nil,
+						rnd		= nil,
 						idle	= nil},
 		dynamite	 = {prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into 	= {	[0]	= {	"dinamit_0" },
-									[1]	= {	"dinamit_0" },
-									[2]	= {	"dinamit_0" },
-									[3]	= {	"dinamit_0" },
-									[4]	= {	"dinamit_0" }
-							    	},
+						into 	= {	[0]	= {	"dinamit_0" }},
 						out		= nil,
 						rnd		= nil,
 						idle	= nil},
 		suicide		= {	prop	= { maxidle = 5,
 									sumidle = 2,
 									rnd = 100 },
-						into	= {	[0]	= {	"kamikadze_0" },
-									[1]	= {	"kamikadze_0" },
-									[2]	= {	"kamikadze_0" },
-									[3]	= {	"kamikadze_0" },
-									[4]	= {	"kamikadze_0" }},
+						into	= {	[0]	= {	"kamikadze_0" }},
 						out		= nil,
-						idle	= {	[0]	= 	"kamikadze_1",
-									[1]	= 	"kamikadze_1" ,
-									[2]	= 	"kamikadze_1" ,
-									[3]	= 	"kamikadze_1" ,
-									[4]	= 	"kamikadze_1" },
+						idle	= {	[0]	= 	"kamikadze_1" },
 						rnd		= nil},
 		punch		= {	prop	= { maxidle = 5,
 									sumidle = 2,
@@ -431,22 +399,21 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"sleep_idle_1" },
-									[1]	= {	"sleep_idle_1" },
-									[2]	= {	"sleep_idle_1" },
-									[3]	= {	"sleep_idle_1" },
-									[4]	= {	"sleep_idle_1" }}},
+						rnd		= {	[0]	= {	"sleep_idle_1" }}},
+		wound_heavy	= {	prop	= { maxidle = 5,
+									sumidle = 10,
+									rnd = 100 },
+						into	= {	[0]	= {	"waunded_1_in" }},
+						out		= {	[0]	= {	"waunded_1_out" }},
+						idle	= {	[0]	= "waunded_1_idle_0" },
+						rnd		= nil},
 		help_me		= {	prop	= { maxidle = 5,
 									sumidle = 10,
 									rnd = 100 },
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"wounded_ruka_0" },
-									[1]	= {	"wounded_ruka_0" },
-									[2]	= {	"wounded_ruka_0" },
-									[3]	= {	"wounded_ruka_0" },
-									[4]	= {	"wounded_ruka_0" }}},
+						rnd		= {	[0]	= {	"wounded_ruka_0" }}},
 		eat_bread	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
@@ -470,19 +437,16 @@ function animation:__init(npc, mgr)
 									sumidle = 10,
 									rnd = 80 },
 						into	= { [0]	= {"knopka_0"} },
-						out	= { [0]	= "knopka_1" },
+						out		= { [0]	= "knopka_1" },
 						idle	= { [0]	= "knopka_2" },
 						rnd		= nil },
 
 		warding		= {	prop	= { maxidle = 10,
 									sumidle = 10,
 									rnd = 0 },
-						into	= {	[0]	= "ohrana_0",
-									[1]	= "ohrana_0" },
-						out		= {	[0]	= "ohrana_2",
-						            [1]	= "ohrana_2" },
-						idle	= {	[0]	= "ohrana_1",
-									[1]	= "ohrana_1" },
+						into	= {	[0]	= "ohrana_0"},
+						out		= {	[0]	= "ohrana_2"},
+						idle	= {	[0]	= "ohrana_1"},
 						rnd		= nil },			
 
 		bar_fas		= {	prop	= { maxidle = 5,
@@ -542,28 +506,25 @@ function animation:__init(npc, mgr)
 						out		= nil,
 						idle	= nil,
 						rnd		= nil },
-		psy_pain	= {	prop	= { maxidle = 1,
-									sumidle = 1,
-									rnd = 100 },
-						into	= {	[0]	= "idle_0_to_psy_0_idle_0" },
-						out		= {	[0]	= "psy_0_idle_0_to_idle_0" },
-						idle	= {	[0]	= "psy_0_idle_0" },
-						rnd		= { [0]	= {	"psy_0_idle_1",
-											"psy_0_idle_2",
-											"psy_0_idle_3" } } },
 		psy_armed	= {	prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into	= {	[1]	= "idle_0_to_psy_1_idle_0" },
-						out		= {	[1]	= "psy_1_idle_0_to_idle_0" },
-						idle	= {	[1]	= "psy_1_idle_0" },
-						rnd		= { [1]	= {	"psy_1_idle_1",
+						into	= {	[0]	= "idle_0_to_psy_0_idle_0",
+									[1]	= "idle_0_to_psy_1_idle_0" },
+						out		= {	[0]	= "psy_0_idle_0_to_idle_0",
+									[1]	= "psy_1_idle_0_to_idle_0" },
+						idle	= {	[0]	= "psy_0_idle_0",
+									[1]	= "psy_1_idle_0" },
+						rnd		= { [0]	= {	"psy_0_idle_1",
+											"psy_0_idle_2",
+											"psy_0_idle_3" },
+									[1]	= {	"psy_1_idle_1",
 											"psy_1_idle_2",
 											"psy_1_idle_3" } } },
 		psy_shoot	= {	prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into	= {	[1]	= "psy_1_shot_0" },
+						into	= {	[1]	= {"psy_1_shot_0", {sh=1000}} },
 						out		= nil,
 						idle	= {	[1]	= "psy_1_death_0" },
 						rnd		= nil },					
@@ -680,28 +641,30 @@ function animation:set_state(id, reset)
 	if self.animations[self.states.current_state] ~= nil and
 	   self.mgr.emerg.animation_nout ~= true
 	then
-		if self.animations[self.states.current_state].out ~= nil and
-		   self.animations[self.states.current_state].out[wpn_slot] ~= nil		
-		then
-			if type(self.animations[self.states.current_state].out[wpn_slot]) == "table" then
-				for k,v in self.animations[self.states.current_state].out[wpn_slot] do
-					if type(v) == "table" then
-						self:set_anim_callback(v)
-					else
-						self.npc:add_animation(v, true)
+		if self.animations[self.states.current_state].out ~= nil then
+			anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].out)
+			if anima then
+				if type(anima) == "table" then
+					for k,v in anima do
+						if type(v) == "table" then
+							self:set_anim_callback(v)
+						else
+							self.npc:add_animation(v, true)
+						end
 					end
+				else
+					self.npc:add_animation(anima, true)
 				end
-			else
-				self.npc:add_animation(self.animations[self.states.current_state].out[wpn_slot], true)
-			end
-			nn = nn +1
+				nn = nn +1
+			end			
 		end
 	end
 	--' вход в новое состояние	
 	if self.animations[id] ~= nil then
-		if self.animations[id].into ~= nil and self.animations[id].into[wpn_slot] ~= nil then
-			if type(self.animations[id].into[wpn_slot]) == "table" then
-				for k,v in self.animations[id].into[wpn_slot] do
+		if self.animations[id].into ~= nil then
+			anima = self:anim_for_slot(wpn_slot,self.animations[id].into)
+			if type(anima) == "table" then
+				for k,v in anima do
 					if type(v) == "table" then
 						self:set_anim_callback(v)
 					else
@@ -710,7 +673,7 @@ function animation:set_state(id, reset)
 				end
 				nn = nn +1
 			else
-				self.npc:add_animation(self.animations[id].into[wpn_slot], true)
+				self.npc:add_animation(anima, true)
 				nn = nn +1
 			end
 		end
@@ -721,7 +684,10 @@ function animation:set_state(id, reset)
 			self:play_rnd(id, 100)			
 		end
 		if self.animations[id].idle ~= nil then
-			self.npc:add_animation(self.animations[id].idle[wpn_slot], true)
+			anima = self:anim_for_slot(wpn_slot,self.animations[id].idle)
+			if anima then
+				self.npc:add_animation(anima, true)
+			end
 			nn = nn + 1
 		else
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
@@ -903,16 +869,17 @@ function animation:play_rnd(state, rnd)
 									self.animations[state].prop.sumidle) * 1000
 	if math.random(100) < rnd then	
 		local wpn_slot = self:weapon_slot()
-		if self.animations[state].rnd[wpn_slot] == nil then			
+		local anima = self:anim_for_slot(wpn_slot,self.animations[state].rnd)
+		if anima == nil then			
 			return
 		end
 		
 		local r
-		if table.getn(self.animations[state].rnd[wpn_slot]) > 1 then			
+		if table.getn(anima) > 1 then			
 			if self.states.last_id == nil then
-				r = math.random(table.getn(self.animations[state].rnd[wpn_slot]))
+				r = math.random(table.getn(anima))
 			else
-				r = math.random(table.getn(self.animations[state].rnd[wpn_slot])-1)
+				r = math.random(table.getn(anima)-1)
 				if r >= self.states.last_id then
 					r = r + 1
 				end
@@ -923,8 +890,8 @@ function animation:play_rnd(state, rnd)
 		end		
 		self.npc:clear_animations()
 		printf("rnd animations added for [%s]", utils.to_str(state))
-		if self.animations[state].rnd[wpn_slot][r] ~= nil then
-		    self.npc:add_animation(self.animations[state].rnd[wpn_slot][r], true)
+		if anima[r] ~= nil then
+			self.npc:add_animation(anima[r], true)
 			-- добавить рандомный звук
 			if self.mgr.synsound then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
@@ -932,11 +899,14 @@ function animation:play_rnd(state, rnd)
 			end
 		else
 			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
-						table.getn(self.animations[state].rnd[wpn_slot]),
+						table.getn(anima),
 						state, wpn_slot )
 		end
 		if self.animations[state].idle ~= nil then
-			self.npc:add_animation (self.animations[state].idle[wpn_slot], true)
+			anima = self:anim_for_slot(wpn_slot,self.animations[state].idle)
+			if anima then
+				self.npc:add_animation(anima, true)
+			end
 		else
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
 			self.mgr.animstate:add_idle_animation()
@@ -986,6 +956,7 @@ function animation:set_anim_callback(a)
 	self.clb_settings.a = a.a
 	self.clb_settings.d = a.d
 	self.clb_settings.s = a.s
+	self.clb_settings.sh = a.sh
 	return true 
 end
 --' коллбек на особые действия
@@ -1009,6 +980,17 @@ function animation:anim_callback()
 		if self.clb_settings.s ~= nil then
 			xr_sound.set_sound_play(self.npc, self.clb_settings.s)
 		end
+		if self.clb_settings.sh ~= nil then
+			-- наносим хит себе.
+			local h = hit()
+			h.power = self.clb_settings.sh
+			h.direction = vector_rotate_y(self.npc:direction(), 90)
+			h.bone = "bip01_head"
+			h.draftsman = self.npc
+			h.impulse = 200
+			h.type = hit.wound
+			self.npc:hit(h)
+		end
 	end
 	return true 
 end
@@ -1028,39 +1010,17 @@ function animation:weapon_slot()
 	end
 	
 	printf("SLOT [%s]", utils.to_str(weapon:animation_slot()))
-
---[[	
-		local id = get_clsid(weapon)
-		if id == nil then 
-			return 0
-		end
-		if id == clsid.wpn_pm or
-		   id == clsid.wpn_walther or
-		   id == clsid.wpn_hpsa or
-		   id == clsid.wpn_fort or
-		   id == clsid.wpn_usp45 then
-			return 1
-		end
-		if id == clsid.wpn_vintorez or
-		   id == clsid.wpn_val or
-		   id == clsid.wpn_groza or
-		   id == clsid.wpn_fn2000 or   
-		   id == clsid.wpn_ak74 or	
-		   id == clsid.wpn_lr300 or
-		   id == clsid.wpn_svd or
-   		   id == clsid.wpn_svu then
-			return 2
-		end
-		if id == clsid.wpn_shotgun or
-		   id == clsid.wpn_bm16 then
-			return 3
-		end
-		if id == clsid.wpn_rpg7 then
-			return 4
-		end
-]]		
 		
 	return weapon:animation_slot()
+end
+--' оружейный слот
+function animation:anim_for_slot(slot, t)
+	printf("ANIM for SLOT [%s]", slot)
+	if t[slot] ~= nil then
+		return t[slot]
+	else
+		return t[0]
+	end			
 end
 
 
