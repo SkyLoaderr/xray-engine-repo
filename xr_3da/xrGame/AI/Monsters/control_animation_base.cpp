@@ -439,6 +439,7 @@ void CControlAnimationBase::TA_Activate(const SAnimationTripleData &data)
 	ctrl_data->pool[2]		= data.pool[2];
 	ctrl_data->skip_prepare	= data.skip_prepare;
 	ctrl_data->execute_once	= data.execute_once;
+	ctrl_data->capture_type	= ControlCom::eCaptureDir | ControlCom::eCapturePath | ControlCom::eCaptureMovement;
 	
 	m_man->activate		(ControlCom::eControlTripleAnimation);
 }
