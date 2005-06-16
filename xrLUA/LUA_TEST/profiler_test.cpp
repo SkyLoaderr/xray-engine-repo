@@ -266,10 +266,45 @@ void intrusive_ptr_release(test_class *p)
 
 void profiler_test	()
 {
-	test_ptr	a = xr_new<test_class>();
-	test_ptr	b = a;
-	a			= 0;
-	b			= 0;
+	xr_vector<u32>		lua_allocs, temp, temp1;
+	lua_allocs.reserve	(11000000);
+	FILE				*f = fopen("x:/xray_oles.txt","rt");
+	for (u32 i;!feof(f);) {
+		fscanf				(f,"%d",&i);
+		lua_allocs.push_back(i);
+	}
+	fclose				(f);
+	std::sort			(lua_allocs.begin(),lua_allocs.end());
+	temp				= lua_allocs;
+	temp.erase			(std::unique(temp.begin(),temp.end()),temp.end());
+	temp1.assign		(temp.size(),0);
+	
+	xr_vector<u32>::iterator	prev = lua_allocs.begin();
+	xr_vector<u32>::iterator	I = lua_allocs.begin();
+	xr_vector<u32>::iterator	E = lua_allocs.end();
+	xr_vector<u32>::iterator	J = temp1.begin();
+	for ( ; I != E; ++I) {
+		if (*I == *prev)
+			continue;
+		VERIFY			(J != temp1.end());
+		*J				= I - prev;
+		prev			= I;
+		++J;
+	}
+	VERIFY				(J != temp1.end());
+	*J					= lua_allocs.end() - prev;
+
+	I	= temp1.begin();
+	E	= temp1.end();
+	J	= temp.begin();
+	for ( ; I != E; ++I, ++J)
+		printf	("%8d : %8d\n",*J,*I);
+
+	return;
+//	test_ptr	a = xr_new<test_class>();
+//	test_ptr	b = a;
+//	a			= 0;
+//	b			= 0;
 
 /**
 	lua_string_map			strings;
