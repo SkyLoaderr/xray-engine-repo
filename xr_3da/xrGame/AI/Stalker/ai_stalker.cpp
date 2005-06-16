@@ -649,7 +649,7 @@ void CAI_Stalker::OnRender			()
 		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
 	}
 
-	if (memory().danger().selected()) {
+	if (memory().danger().selected() && ai().level_graph().valid_vertex_position(memory().danger().selected()->position())) {
 		Fvector						position = memory().danger().selected()->position();
 		u32							level_vertex_id = ai().level_graph().vertex_id(position);
 		float						half_size = ai().level_graph().header().cell_size()*.5f;
