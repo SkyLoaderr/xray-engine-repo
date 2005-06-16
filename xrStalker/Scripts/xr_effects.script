@@ -548,7 +548,7 @@ function mil_actor_enemy_set (actor, npc)
     if sniper ~= nil then
        sniper:set_relation (game_object.enemy, db.actor) 
     end   
-    xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)    
+    --xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)    
 end
 
 function mil_actor_enemy_reset (actor, npc)
@@ -556,7 +556,7 @@ function mil_actor_enemy_reset (actor, npc)
     if sniper ~= nil then
        sniper:set_relation (game_object.neutral, db.actor) 
     end   
-    xr_gulag.setGulagRelation ("mil_freedom", game_object.neutral, db.actor)    
+    --xr_gulag.setGulagRelation ("mil_freedom", game_object.neutral, db.actor)    
 end
 
 function val_suicide_stalker_died(actor, npc)
