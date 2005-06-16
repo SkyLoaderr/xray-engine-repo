@@ -694,7 +694,7 @@ void CUIDragDropList::ScrollBarRecalculateTotal()
 		m_ScrollBar.SetRange(0, bottom);
 		m_ScrollBar.SetPageSize(m_iViewRowsNum);
 //.		
-		if (max > u32(bottom) ) 						SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
+		if (max > bottom) 								SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
 
 		if ( m_flags.test(flNeedScrollToTop) )			SetScrollPos(0);
 	}
