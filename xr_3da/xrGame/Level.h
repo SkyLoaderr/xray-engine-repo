@@ -27,7 +27,7 @@ class	CGameObject;
 class	CAutosaveManager;
 class	CPHCommander;
 class	CLevelDebug;
-class	CStaticSoundManager;
+class	CLevelSoundManager;
 
 #define DEFAULT_FOV				90.f
 
@@ -48,7 +48,7 @@ private:
 protected:
 	typedef IGame_Level			inherited;
 	
-	CStaticSoundManager			*m_static_sound_manager;
+	CLevelSoundManager			*m_level_sound_manager;
 
 	// patrol path storage
 	CPatrolPathStorage			*m_patrol_path_storage;

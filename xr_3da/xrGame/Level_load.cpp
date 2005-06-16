@@ -78,31 +78,9 @@ BOOL CLevel::Load_GameSpecific_After()
 		FS.r_close		(F);
 	}
 	// loading static sounds
-	VERIFY								(m_static_sound_manager);
-	m_static_sound_manager->Load		();
-/*
-	if (FS.exist(fn_game, "$level$", "level.sound_static")) {
-		IReader *F		= FS.r_open	(fn_game);
-		u32				chunk = 0;
-		string256		wav_name;
-		CSound_params	params;
-		for (IReader *OBJ = F->open_chunk_iterator(chunk); OBJ; OBJ = F->open_chunk_iterator(chunk,OBJ)) {
-			static_Sounds.push_back	(xr_new<ref_sound>());
-			ref_sound* S			= static_Sounds.back();
+	VERIFY								(m_level_sound_manager);
+	m_level_sound_manager->Load			();
 
-			OBJ->r_stringZ		(wav_name,sizeof(wav_name));
-			S->create			(TRUE,wav_name);
-			OBJ->r_fvector3		(params.position);
-			params.volume		= OBJ->r_float();
-			params.freq			= OBJ->r_float();
-			params.min_distance = OBJ->r_float();
-			params.max_distance	= OBJ->r_float();
-			S->play				(0,true);
-			S->set_params		(&params);
-		}
-		FS.r_close				(F);
-	}
-*/
 	// loading sound environment
 	if (FS.exist(fn_game, "$level$", "level.snd_env")) {
 		IReader *F				= FS.r_open	(fn_game);

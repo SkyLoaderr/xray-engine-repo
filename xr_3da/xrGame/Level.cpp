@@ -102,7 +102,7 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 
 	physics_step_time_callback	= (PhysicsStepTimeCallback*) &PhisStepsCallback;
 
-	m_static_sound_manager		= xr_new<CStaticSoundManager>();
+	m_level_sound_manager		= xr_new<CLevelSoundManager>();
 
 	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
 
@@ -168,7 +168,7 @@ CLevel::~CLevel()
 	}
 	static_Sounds.clear	();
 
-	xr_delete					(m_static_sound_manager);
+	xr_delete					(m_level_sound_manager);
 
 	xr_delete					(m_patrol_path_storage);
 
@@ -409,7 +409,7 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.End			();
 
 	// update static sounds
-	m_static_sound_manager->Update		();
+	m_level_sound_manager->Update		();
 }
 
 void CLevel::OnRender()

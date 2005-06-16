@@ -19,12 +19,35 @@ public:
 	void 			Update			(u32 gt, u32 rt);
 };
 
-class CStaticSoundManager
+// music interface
+struct	SMusicTrack
+{
+#ifdef DEBUG
+	shared_str		m_DbgName;
+#endif
+	ref_sound		m_SourceLeft;
+	ref_sound		m_SourceRight;
+	Ivector2		m_ActiveTime;
+	Ivector2		m_PauseTime;
+	float			m_Volume;
+public:
+	void			Load			(LPCSTR fn, LPCSTR params);
+	BOOL			IsPlaying		(){return m_SourceLeft.feedback || m_SourceRight.feedback;}
+	void			Play			();
+	void			Stop			();
+	void			SetVolume		(float volume);
+};
+
+class CLevelSoundManager
 {
 	DEFINE_VECTOR(SStaticSound,StaticSoundsVec,StaticSoundsVecIt);
 	StaticSoundsVec	m_StaticSounds;
-//	u32				m_UpdateIndex;
+	DEFINE_VECTOR(SMusicTrack,MusicTrackVec,MusicTrackVecIt);
+	MusicTrackVec	m_MusicTracks;
+	u32				m_NextTrackTime;
+	int				m_CurrentTrack;
 public:
+					CLevelSoundManager();
 	void			Load			();
 	void			Unload			();
 	void			Update			();
