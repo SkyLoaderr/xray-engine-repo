@@ -196,7 +196,7 @@ void CMovementManager::update_path				()
 				m_path_state	= ePathStateSelectLevelVertex;
 				if (!restrictions().accessible(level_path().dest_vertex_id())) {
 					Fvector							temp;
-					level_path().set_dest_vertex	(restrictions().accessible_nearest(detail().dest_position(),temp));
+					level_path().set_dest_vertex	(restrictions().accessible_nearest(ai().level_graph().vertex_position(level_path().dest_vertex_id()),temp));
 					detail().set_dest_position		(temp);
 				}
 				break;
