@@ -3,9 +3,6 @@ function process_tasks ()
     
     process_crazy ()
     
-    if actor:dont_has_info ("mil_cook_map_spot") then
-       level_tasks.remove_location (728, "mil_cook_location")
-    end   
     
     if db.actor:has_info ("mil_lukash_dead") and 
        db.actor:has_info ("mil_sniper_dead") and
