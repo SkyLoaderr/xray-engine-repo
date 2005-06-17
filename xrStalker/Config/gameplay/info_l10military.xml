@@ -6,6 +6,7 @@
 		<task>mil_freedom_rg6_task</task>
 		<action>level_tasks.notify_new_task</action>
     </info_portion>
+    <info_portion id="mil_freedom_rg6_task_complete"></info_portion>
 
 	<!-- Сообщение в дневник -->
 	<info_portion id="mil_actor_main_quest">
