@@ -121,12 +121,11 @@ function process_info_portion(info_id)
 		level_tasks.add_location(502, "bar_hunter_toz_location")
 		return true
 	elseif info_id == "bar_bar_hunter_quest_find_rifle" then
-		level_tasks.remove_location (502, "bar_hunter_toz_location")	
-		level_tasks.add_location (504, "bar_hunter_location")
+		level_tasks.remove_location_safe(502, "bar_hunter_toz_location")	
+		level_tasks.add_location(504, "bar_hunter_location")
 		return true
 	elseif info_id == "bar_bar_hunter_quest_finish" then
-		level_tasks.remove_location(504, "bar_hunter_location")
-		level_tasks.remove_location (502, "bar_hunter_toz_location")
+		level_tasks.remove_location_safe(504, "bar_hunter_location")
 		return true
 
 	elseif info_id == "bar_resque_research_start" then
@@ -196,7 +195,7 @@ function process_info_portion(info_id)
 		level_tasks.add_location(511, "bar_crazy_veterans_location")
 		return true	
 	elseif info_id == "bar_kill_veteran_killed" then
-		level_tasks.remove_location(511, "bar_crazy_veterans_location")
+		level_tasks.remove_location_safe(511, "bar_crazy_veterans_location")
 		level_tasks.add_location(500, "bar_barman_location")
 		return true
 	elseif info_id == "bar_kill_veteran_done" then
