@@ -233,7 +233,7 @@ function action_patrol:execute()
 					if self.a.suggested_state.campering then
 						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
 					else
-						state_mgr.set_state(self.object, "hide", nil, nil)
+						self.move_mgr:update()
 					end		
 				else
 					if self.a.suggested_state.moving then
