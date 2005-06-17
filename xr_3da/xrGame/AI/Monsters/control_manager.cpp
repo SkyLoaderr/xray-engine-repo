@@ -73,6 +73,8 @@ void CControl_Manager::reinit()
 
 void CControl_Manager::update_frame()
 {
+	if (!m_object->g_Alive()) return;
+
 	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
 		// update coms
 		if (it->second->is_active() && !is_locked(it->second)) {
@@ -83,6 +85,8 @@ void CControl_Manager::update_frame()
 
 void CControl_Manager::update_schedule()
 {
+	if (!m_object->g_Alive()) return;
+
 	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
 		// update coms
 		if (it->second->is_active() && !is_locked(it->second)) {
