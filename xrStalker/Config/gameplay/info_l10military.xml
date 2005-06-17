@@ -226,6 +226,7 @@
 	<info_portion id="mil_fblockpost_spot_set"></info_portion>
 	<info_portion id="mil_fblockpost_spot_remove"></info_portion>
 	<info_portion id="mil_actor_blockpost"></info_portion>
+	<info_portion id="mil_neutral_commander_talk"></info_portion>
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>

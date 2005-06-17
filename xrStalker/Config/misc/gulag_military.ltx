@@ -1285,13 +1285,15 @@ meet = on_meet@mil_freedom_max
 [on_meet@mil_fneutral_commander]
 distance = 5
 
-;[dialogs@mil_fneutral_commander]
-;id = mil_neutral_commander
-
 [walker1@mil_fneutral_commander]
 path_walk = commander_walk
 path_look = commander_look
 meet = on_meet@@mil_fneutral_commander
+on_info = {+mil_neutral_commander_talk} walker2@mil_fneutral_commander 
+
+[walker2@mil_fneutral_commander]
+path_walk = commander_walk
+path_look = commander_look
 
 [on_meet@@mil_fneutral_commander]
 meet_state = 10|ward
