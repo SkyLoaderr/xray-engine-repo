@@ -467,7 +467,7 @@ synpairs = hello@hail
 			
 			
 [death@bar_freedom_attack_commander]
-on_info = %+bar_kill_professor_volkodav_dead%
+on_info = %+bar_kill_professor_volkodav_dead +bar_heli_scene_volkodav_die%
 
 [logic@bar_freedom_attack_sniper_1]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_1, camper1@bar_freedom_attack_sniper_1 %=bar_freedom_angry_actor%
@@ -781,8 +781,8 @@ on_info = {+bar_resque_research_done} nil
 combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
 
 [death@ecolog_crush]
-on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_done +bar_resque_research_corruped%, {+bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_fail +bar_resque_research_corruped%, %+bar_resque_research_dead +bar_resque_research_corruped%
-on_info2 = {+bar_resque_research_start} %+bar_resque_research_fail%
+on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_done +bar_resque_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_fail +bar_resque_research_corruped +bar_heli_scene_professor_die%, %+bar_resque_research_dead +bar_resque_research_corruped +bar_heli_scene_professor_die%
+on_info2 = {+bar_resque_research_start} %+bar_resque_research_fail +bar_heli_scene_professor_die%, %+bar_heli_scene_professor_die%
 
 
 
