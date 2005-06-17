@@ -216,6 +216,6 @@
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
 	<info_portion id="mil_controller_ready"></info_portion>
-	<info_portion id="mil_hunter_after_dilog"></info_portion>	
+	<info_portion id="mil_hunter_after_dialog"></info_portion>	
 	
 </game_information_portions>
