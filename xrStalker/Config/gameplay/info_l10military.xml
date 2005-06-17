@@ -2,6 +2,9 @@
 
 <game_information_portions>
 
+	<!-- Сообщение в дневник -->
+	<info_portion id="mil_actor_main_quest"></info_portion>
+
 	<!-- Выключение матюгальника -->
 	<info_portion id="mil_matugalnik_off"></info_portion>
 	
@@ -202,9 +205,11 @@
 	<info_portion id="mil_fblockpost_spot"></info_portion>
 	<info_portion id="mil_fblockpost_spot_set"></info_portion>
 	<info_portion id="mil_fblockpost_spot_remove"></info_portion>
+	<info_portion id="mil_actor_blockpost"></info_portion>
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
 	<info_portion id="mil_controller_ready"></info_portion>
+	
 	
 </game_information_portions>
