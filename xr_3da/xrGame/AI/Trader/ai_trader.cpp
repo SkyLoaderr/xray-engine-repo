@@ -235,8 +235,8 @@ void CAI_Trader::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());
 
-	P.w_float						(inventory().TotalWeight());
-	P.w_u32							(m_dwMoney);
+//	P.w_float						(inventory().TotalWeight());
+//	P.w_u32							(m_dwMoney);
 }
 
 void CAI_Trader::net_Import		(NET_Packet& P)

@@ -81,8 +81,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 
 	//CSE_ALifeCreatureTrader
-	P.w_float			(inventory().TotalWeight());
-	P.w_u32				(m_dwMoney);
+//	P.w_float			(inventory().TotalWeight());
+//	P.w_u32				(m_dwMoney);
 
 	//CSE_ALifeCreatureActor
 	

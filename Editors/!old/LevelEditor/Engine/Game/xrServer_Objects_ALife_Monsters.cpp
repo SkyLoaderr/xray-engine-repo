@@ -440,14 +440,14 @@ CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation () const
 
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_float			(m_fCumulativeItemMass);
-	tNetPacket.w_u32			(m_dwMoney);
+//	tNetPacket.w_float			(m_fCumulativeItemMass);
+//	tNetPacket.w_u32			(m_dwMoney);
 };
 
 void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	tNetPacket.r_float			(m_fCumulativeItemMass);
-	tNetPacket.r_u32			(m_dwMoney);
+//	tNetPacket.r_float			(m_fCumulativeItemMass);
+//	tNetPacket.r_u32			(m_dwMoney);
 };
 
 

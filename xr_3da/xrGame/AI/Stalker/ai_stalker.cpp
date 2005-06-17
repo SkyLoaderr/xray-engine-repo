@@ -52,6 +52,11 @@
 #include "ai_stalker_space.h"
 #include "../../mt_config.h"
 
+#ifdef DEBUG
+#	include "../../alife_simulator.h"
+#	include "../../alife_object_registry.h"
+#endif
+
 using namespace StalkerSpace;
 
 extern int g_AI_inactive_time;
@@ -343,8 +348,8 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	// export last known packet
 	R_ASSERT						(!NET.empty());
 	net_update& N					= NET.back();
-	P.w_float						(inventory().TotalWeight());
-	P.w_u32							(m_dwMoney);
+//	P.w_float						(inventory().TotalWeight());
+//	P.w_u32							(m_dwMoney);
 
 	P.w_float_q16					(fEntityHealth,-500,1000);
 
@@ -604,6 +609,12 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 
 	UpdateInventoryOwner(DT);
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		smart_cast<CSE_ALifeHumanStalker*>(ai().alife().objects().object(ID()))->check_inventory_consistency();
+	}
+#endif
 	
 	VERIFY				(_valid(Position()));
 	m_pPhysics_support->in_shedule_Update(DT);
