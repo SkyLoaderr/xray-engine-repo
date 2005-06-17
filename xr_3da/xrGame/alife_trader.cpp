@@ -169,13 +169,19 @@ bool CSE_ALifeTraderAbstract::check_inventory_consistency	()
 		mass					+= item->m_fMass;
 	}
 
-	VERIFY						(fis_zero(m_fCumulativeItemMass - mass,EPS_L));
+	VERIFY2						(fis_zero(m_fCumulativeItemMass - mass,EPS_L),base()->name_replace());
 	if (!fis_zero(m_fCumulativeItemMass - mass,EPS_L))
 		return					(false);
 
-	VERIFY						(m_iCumulativeItemVolume == volume);
+	VERIFY2						(m_iCumulativeItemVolume == volume,base()->name_replace());
 	if (m_iCumulativeItemVolume != volume)
 		return					(false);
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg						("[LSS] [%s] inventory is consistent [%f][%d]",base()->name_replace(),mass,volume);
+	}
+#endif
 
 	return						(true);
 }
@@ -211,6 +217,7 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
 
+	VERIFY								(m_fCumulativeItemMass >= 0.f);
 	VERIFY								(!bALifeRequest || !bAddChildren || check_inventory_consistency());
 }
 
@@ -263,6 +270,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;
 
+	VERIFY									(m_fCumulativeItemMass >= 0.f);
 	VERIFY									(!bALifeRequest || check_inventory_consistency());
 }
 

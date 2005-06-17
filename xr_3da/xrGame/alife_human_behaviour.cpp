@@ -20,6 +20,7 @@ using namespace ALife;
 void CSE_ALifeHumanAbstract::update			()
 {
 	VERIFY				(need_update(this));
+	VERIFY				(check_inventory_consistency());
 	if (!bfActive())
 		return;
 	m_dwTotalMoney		= u32(-1);
