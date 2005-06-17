@@ -6,7 +6,7 @@ on_hit = hit
 combat_ignore = combat_ignore
 
 [death]
-on_info = %=hit_npc(412:bip01_head:400:2000)%
+on_info = %=hit_npc(412:bip01_head:400:2500)%
 
 ;[combat]
 ;on_info = {=see_actor} nil %+val_opendoor_plr_detected%
@@ -51,4 +51,11 @@ radius = 0
 no_retreat = true
 on_info = {+val_opendoor_plr_detected} nil
 combat_ignore_cond = always
+wounded = wounded
 
+[wounded]
+hp_state = 3|help_me@help
+hp_state_see = 3|wounded@help_see
+hp_victim = 3|nil
+hp_fight = 3|false
+hp_cover = 3|false
