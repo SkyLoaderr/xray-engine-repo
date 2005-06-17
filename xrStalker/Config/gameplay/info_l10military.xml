@@ -12,7 +12,9 @@
 
 	<!-- Болтовня с охранником у ворот -->
 	<info_portion id="mil_cook_question_already"></info_portion>
-	<info_portion id="mil_cook_map_spot"></info_portion>
+	<info_portion id="mil_cook_map_spot">
+		<action>mil_tasks.set_cook_mapspot</action>
+	</info_portion>
 	
 	<!-- Нападение на базу Свободы -->
 	<info_portion id="mil_enemy_nearest"></info_portion>

@@ -3,6 +3,10 @@ function process_tasks ()
     
     process_crazy ()
     
+    if actor:dont_has_info ("mil_cook_map_spot")
+       level_tasks.remove_location (728, "mil_cook_location")
+    end   
+    
     if db.actor:has_info ("mil_lukash_dead") and 
        db.actor:has_info ("mil_sniper_dead") and
        db.actor:has_info ("mil_dolg_mission_complete") and 
@@ -227,3 +231,7 @@ function process_khutor ()
     --end   
 end
 
+
+function set_cook_mapspot ()
+   level_tasks.add_location (728, "mil_cook_location")
+end
