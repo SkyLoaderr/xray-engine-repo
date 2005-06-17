@@ -922,9 +922,9 @@
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
-			ammo_11.43x23_fmj = 1 \n
-			wpn_svd \n
-			ammo_7.62x54_7h1 = 1 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 		</supplies>
 			
@@ -1176,6 +1176,35 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER SNIPER----------------------->
+	<specific_character id="stalker_sniper" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="10" y="0"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>Stalker_sniper</class>
+		<community>stalker</community>
+		
+		<rank>50</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_svd \n
+			ammo_7.62x54_7h14 = 1 \n
+			device_torch \n
+		</supplies>
+						
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 	-->
 </xml>

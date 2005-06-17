@@ -21,6 +21,11 @@
 	<character id="stalker_master">
 		<class>Stalker_master</class>
 	</character>
+	<character id="stalker_sniper">
+		<class>Stalker_sniper</class>
+	</character>
+
+
 
 	<!-- Bandit  -->	
 	<character id="bandit">
