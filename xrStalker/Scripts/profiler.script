@@ -73,6 +73,7 @@ function setup_hook			()
 	old_hook_mask, 
 	old_hook_count			= debug.gethook();
 	
+    debug.sethook			()
     debug.sethook			(hook, "cr")
     
    	started					= true
@@ -153,13 +154,12 @@ function stats				()
 end
 
 function clear				()
-	Counters				= {}
-	Names					= {}
-	
 	if started == true then
 		clear_hook			()
 	end
 
+	Counters				= {}
+	Names					= {}
 	timer					= profile_timer()
 	
 	setup_hook				()
