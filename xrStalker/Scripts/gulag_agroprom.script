@@ -209,16 +209,7 @@ function load_job( sj, gname, type, squad, groups )
 	--' Agroprom factory Krot's stalkers
 	if type == "agr_factory_defence" then
 		-- ждут военных
-		for i = 1, 4 do
-			t = { section = "logic@agr_factory_defence_camper"..i,
-				idle = 0,
-				prior = 0, state = {0},
-				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish_defence"
-			}
-			table.insert(sj, t)
-		end
-		for i = 5, 6 do
+		for i = 1, 6 do
 			t = { section = "logic@agr_factory_defence_walker"..i,
 				idle = 0,
 				prior = 0, state = {0},
@@ -228,16 +219,7 @@ function load_job( sj, gname, type, squad, groups )
 			table.insert(sj, t)
 		end
 		-- отстреливаются от военных
-		for i = 1, 4 do
-			t = { section = "logic@agr_factory_defence_skirmish_camper"..i,
-				idle = 0,
-				prior = 0, state = {1},
-				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_factory_skirmish_defence"
-			}
-			table.insert(sj, t)
-		end
-		for i = 5, 6 do
+		for i = 1, 6 do
 			t = { section = "logic@agr_factory_defence_skirmish_walker"..i,
 				idle = 0,
 				prior = 0, state = {1},
