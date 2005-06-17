@@ -9,7 +9,7 @@
 #include "script_game_object.h"
 #include "xrmessages.h"
 #include "date_time.h"
-
+#include "ui/UIDialogWnd.h"
 #include <luabind/adopt_policy.hpp>
 
 using namespace luabind;

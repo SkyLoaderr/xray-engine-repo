@@ -4,14 +4,16 @@
 
 
 //класс абстрактного диалога
-#include "ui/UIDialogWnd.h"
+//#include "ui/UIDialogWnd.h"
 
-#include "ui/UIMultiTextStatic.h"
+//#include "ui/UIMultiTextStatic.h"
 #include "script_export_space.h"
 // refs
 class CUI;
 class CTeamBaseZone;
 class game_cl_GameState;
+class CUIDialogWnd;
+class CUICaption;
 
 class CUIGameCustom :public DLL_Pure, public ISheduled
 {
@@ -22,8 +24,8 @@ protected:
 	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
 	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
 	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
-	CUICaption*			GameCaptions			() {return &m_gameCaptions;}
-	CUICaption			m_gameCaptions;
+	CUICaption*			GameCaptions			() {return m_pgameCaptions;}
+	CUICaption*			m_pgameCaptions;
 //	CUIDialogWnd*		m_pMainInputReceiver;
 public:
 

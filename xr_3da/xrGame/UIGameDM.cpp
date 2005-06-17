@@ -39,28 +39,28 @@ CUIGameDM::CUIGameDM()
 	m_pStatisticWnds					= xr_new<CUIWindow>();
 
 	m_time_caption = "timelimit";
-	m_gameCaptions.addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.95f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.95f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
 	m_spectrmode_caption = "spetatormode";
-	m_gameCaptions.addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
 	m_spectator_caption = "spectator";
-	m_gameCaptions.addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(0.0f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(0.0f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressjump_caption = "pressjump";
-	m_gameCaptions.addCustomMessage(m_pressjump_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_pressjump_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressbuy_caption = "pressbuy";
-	m_gameCaptions.addCustomMessage(m_pressbuy_caption, DI2PX(0.0f), DI2PY(0.95f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_pressbuy_caption, DI2PX(0.0f), DI2PY(0.95f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_round_result_caption =	"round_result";
-	m_gameCaptions.addCustomMessage(m_round_result_caption, DI2PX(0.0f), DI2PY(-0.1f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
+	GameCaptions()->addCustomMessage(m_round_result_caption, DI2PX(0.0f), DI2PY(-0.1f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
 	m_force_respawn_time_caption =	"force_respawn_time";
-	m_gameCaptions.addCustomMessage(m_force_respawn_time_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_force_respawn_time_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_frags_and_place_caption =	"frags_and_place";
-	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
+	GameCaptions()->addCustomMessage(m_frags_and_place_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
 	//-----------------------------------------------------------------------
 	m_vote_caption0 = "votecaption0";
 	m_vote_caption1 = "votecaption1";
 	m_votetimeresult_caption= "votetimeresultcaption";
-	m_gameCaptions.addCustomMessage(m_vote_caption0, DI2PX(-1.0f), DI2PY(-0.45f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
-	m_gameCaptions.addCustomMessage(m_vote_caption1, DI2PX(-1.0f), DI2PY(-0.4f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
-	m_gameCaptions.addCustomMessage(m_votetimeresult_caption, DI2PX(-1.0f), DI2PY(-0.35f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_vote_caption0, DI2PX(-1.0f), DI2PY(-0.45f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_vote_caption1, DI2PX(-1.0f), DI2PY(-0.4f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_votetimeresult_caption, DI2PX(-1.0f), DI2PY(-0.35f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)
@@ -135,7 +135,7 @@ void	CUIGameDM::ReInitInventoryWnd		()
 
 void CUIGameDM::SetTimeMsgCaption		(LPCSTR str)
 {
-		m_gameCaptions.setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
 }
 
 void CUIGameDM::ShowFragList			(bool bShow)
@@ -164,57 +164,57 @@ void CUIGameDM::ShowStatistic			(bool bShow)
 
 void CUIGameDM::SetSpectrModeMsgCaption		(LPCSTR str)
 {
-		m_gameCaptions.setCaption(m_spectrmode_caption, str, SPECTRMODE_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_spectrmode_caption, str, SPECTRMODE_MSG_COLOR, true);
 }
 
 void CUIGameDM::SetSpectatorMsgCaption		(LPCSTR str)
 {
-		m_gameCaptions.setCaption(m_spectator_caption, str, NORMAL_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_spectator_caption, str, NORMAL_MSG_COLOR, true);
 }
 
 void CUIGameDM::SetPressJumpMsgCaption		(LPCSTR str)
 {
-		m_gameCaptions.setCaption(m_pressjump_caption, str, NORMAL_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_pressjump_caption, str, NORMAL_MSG_COLOR, true);
 }
 
 void CUIGameDM::SetPressBuyMsgCaption		(LPCSTR str)
 {
-		m_gameCaptions.setCaption(m_pressbuy_caption, str, NORMAL_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_pressbuy_caption, str, NORMAL_MSG_COLOR, true);
 }
 
 
 void CUIGameDM::SetRoundResultCaption(LPCSTR str)
 {
-	m_gameCaptions.setCaption(m_round_result_caption, str, ROUND_RESULT_COLOR, true);
+	GameCaptions()->setCaption(m_round_result_caption, str, ROUND_RESULT_COLOR, true);
 }
 
 void CUIGameDM::SetForceRespawnTimeCaption(LPCSTR str)
 {
-	m_gameCaptions.setCaption(m_force_respawn_time_caption, str, NORMAL_MSG_COLOR, true);
+	GameCaptions()->setCaption(m_force_respawn_time_caption, str, NORMAL_MSG_COLOR, true);
 }
 
 void CUIGameDM::SetFragsAndPlaceCaption(LPCSTR str)
 {
-	m_gameCaptions.setCaption(m_frags_and_place_caption, str, FRAGS_AND_PLACE_COLOR, true);
+	GameCaptions()->setCaption(m_frags_and_place_caption, str, FRAGS_AND_PLACE_COLOR, true);
 }
 
 void CUIGameDM::SetVoteMessage					(LPCSTR str)
 {
 	if (str[0])
 	{
-		m_gameCaptions.setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
-		m_gameCaptions.setCaption(m_vote_caption1, "Press [ for Yes or ] for No", VOTE1_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_vote_caption1, "Press [ for Yes or ] for No", VOTE1_MSG_COLOR, true);
 	}
 	else
 	{
-		m_gameCaptions.setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
-		m_gameCaptions.setCaption(m_vote_caption1, "", VOTE1_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
+		GameCaptions()->setCaption(m_vote_caption1, "", VOTE1_MSG_COLOR, true);
 	}
 };
 
 void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
 {
-	m_gameCaptions.setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
+	GameCaptions()->setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
 }
 
 bool		CUIGameDM::IR_OnKeyboardPress		(int dik)

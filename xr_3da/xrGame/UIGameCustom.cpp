@@ -3,6 +3,7 @@
 #include "ui.h"
 #include "level.h"
 #include "hudmanager.h"
+#include "ui/UIMultiTextStatic.h"
 
 CUIGameCustom::CUIGameCustom()
 {
@@ -11,10 +12,12 @@ CUIGameCustom::CUIGameCustom()
 	shedule.t_min			= 5;
 	shedule.t_max			= 20;
 	shedule_register		();
+	m_pgameCaptions		= xr_new<CUICaption>();
 }
 
 CUIGameCustom::~CUIGameCustom()
 {
+	xr_delete(m_pgameCaptions);
 	shedule_unregister();
 }
 
@@ -58,7 +61,7 @@ void CUIGameCustom::Render()
 		if((*it)->IsShown())
 			(*it)->Draw();
 */
-	m_gameCaptions.Draw();
+	GameCaptions()->Draw();
 }
 
 bool CUIGameCustom::IR_OnKeyboardPress(int dik) 

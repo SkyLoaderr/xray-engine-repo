@@ -54,6 +54,7 @@ struct SActorMotions;
 struct SActorVehicleAnims;
 class  CActorCondition;
 class SndShockEffector;
+class CActorFollowerMngr;
 
 class	CActor: 
 	public CEntityAlive, 
@@ -373,8 +374,12 @@ public:
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
 	LPCSTR					GetDefaultActionForObject	() {return *m_sDefaultObjAction;}
-protected:
+	void					AddFollower					(CInventoryOwner*);
+	void					RemoveFollower				(CInventoryOwner*);
 
+protected:
+	void					DestroyFollowerInternal();//hack
+	CActorFollowerMngr*		m_followers;
 	CUsableScriptObject*	m_pUsableObject;
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;

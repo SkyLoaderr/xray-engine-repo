@@ -4617,7 +4617,7 @@
 								Name="hash_fixed"
 								Filter="">
 								<File
-									RelativePath=".\vertex_manager_hash_fixed.h">
+									RelativePath=".\vertex_manager_hash_fixed.h">
 								</File>
 								<File
 									RelativePath=".\vertex_manager_hash_fixed_inline.h">
@@ -6139,6 +6139,12 @@
 						</File>
 						<File
 							RelativePath=".\ActorEffector.h">
+						</File>
+						<File
+							RelativePath=".\ActorFollowers.cpp">
+						</File>
+						<File
+							RelativePath=".\ActorFollowers.h">
 						</File>
 						<File
 							RelativePath=".\ActorInput.cpp">
@@ -10075,7 +10081,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Followers"
+					Name="FollowersPanel"
 					Filter="">
 					<File
 						RelativePath=".\ui\UIFollowerIcon.cpp">

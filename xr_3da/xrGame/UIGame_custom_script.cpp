@@ -3,6 +3,7 @@
 
 #include "script_space.h"
 #include "xrServer_script_macroses.h"
+#include "ui/UIMultiTextStatic.h"
 using namespace luabind;
 
 
@@ -18,12 +19,12 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 
 void UIGame_custom_script::AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color, LPCSTR def_text )
 {
-	m_gameCaptions.addCustomMessage(id,x,y,font_size,pFont,(CGameFont::EAligment)alignment,color,def_text);
+	GameCaptions()->addCustomMessage(id,x,y,font_size,pFont,(CGameFont::EAligment)alignment,color,def_text);
 }
 
 void UIGame_custom_script::CustomMessageOut(LPCSTR id, LPCSTR msg, u32 color)
 {
-	m_gameCaptions.setCaption(id,msg,color,true);
+	GameCaptions()->setCaption(id,msg,color,true);
 }
 
 

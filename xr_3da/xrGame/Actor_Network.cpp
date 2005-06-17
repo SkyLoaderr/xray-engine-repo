@@ -632,7 +632,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
 	m_snd_noise			= 0.0f;
 	m_sndShockEffector	= NULL;
-
+	m_followers			= NULL;
 	if (m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
@@ -846,6 +846,8 @@ void CActor::net_Destroy	()
 	
 	if(m_sndShockEffector)
 		xr_delete(m_sndShockEffector);
+
+	DestroyFollowerInternal();
 }
 
 void CActor::net_Relcase	(CObject* O)
