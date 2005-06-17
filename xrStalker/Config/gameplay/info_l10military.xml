@@ -42,6 +42,7 @@
 	<info_portion id="mil_freedom_under_attack"></info_portion>
 	
 	<!-- Диалоговые инфопоршены-->
+	<info_portion id="mil_lukash_guard_talked"></info_portion>
 	
 	<!-- Диалог с долговцами-->
 	<info_portion id="mil_dolg_first"></info_portion>
