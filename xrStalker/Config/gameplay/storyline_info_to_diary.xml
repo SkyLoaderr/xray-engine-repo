@@ -46,7 +46,7 @@
 
 
 	<article id="mil_actor_main_quest" name = "Military main task" group="Diary">
-        <texture x="50" y="150" width="50" height="50">ui\ui_icon_photo</texture>
+        <texture x="50" y="150" width="50" height="50">ui\ui_icon_task</texture>
         <text>mil_actor_main_quest</text>
 	</article>
 
