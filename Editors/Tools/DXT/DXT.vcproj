@@ -130,7 +130,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
-				ImportLibrary=".\Debug/dxt.lib"/>
+				ImportLibrary="x:\dxt.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
