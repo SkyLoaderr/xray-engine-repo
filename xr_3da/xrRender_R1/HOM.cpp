@@ -141,7 +141,7 @@ void CHOM::Render_DB			(CFrustum& base)
 	CDB::RESULT*	end			= xrc.r_end		();
 	
 	Fvector			COP			= Device.vCameraPosition;
-	std::remove_if	(it,end,pred_fb(m_pTris));
+	end				= std::remove_if	(it,end,pred_fb(m_pTris));
 	std::sort		(it,end,pred_fb(m_pTris,COP));
 
 	float			view_dim	= occ_dim_0;
