@@ -214,6 +214,116 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	FS.r_close	(src);
 }
 
+void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_list)
+{
+	if (!list->empty()){
+		u32				dwTimeStart	= timeGetTime();
+		string256		fname;
+		strconcat		(fname,tgt_name,".xrp");
+		unlink			(fname);
+
+		for (u32 it=0; it<fl_list->size(); it++){
+			fs_desc.w_stringZ	((*fl_list)[it]);
+			fs_desc.w_u32		(0		);
+			fs_desc.w_u32		(0		);
+			fs_desc.w_u32		(0		);
+		}
+
+		fs				= FS.w_open	(fname);
+		fs->open_chunk	(0);
+		//***main process***: BEGIN
+		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
+		for (u32 it=0; it<list->size(); it++){
+			Compress	((*list)[it],tgt_name);
+		}
+		xr_free			(c_heap);
+		fs->close_chunk	();
+		//***main process***: END
+
+		// save list
+		bytesDST		= fs->tell	();
+		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
+		FS.w_close		(fs);
+		u32	dwTimeEnd	= timeGetTime();
+		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
+			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
+			bytesDST/1024,bytesSRC/1024,
+			100.f*float(bytesDST)/float(bytesSRC),
+			((dwTimeEnd-dwTimeStart)/1000)/60,
+			((dwTimeEnd-dwTimeStart)/1000)%60,
+			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
+			);
+	} else {
+		printf("ERROR: folder not found.\n");
+	}
+}
+
+void ProcessNormal(LPCSTR tgt_name)
+{
+	// collect files
+	xr_vector<char*>*	list	= FS.file_list_open	("$target_folder$",FS_ListFiles);
+	R_ASSERT2			(list,	"Unable to open folder!!!");
+	// collect folders
+	xr_vector<char*>*	fl_list	= FS.file_list_open	("$target_folder$",FS_ListFolders);
+	R_ASSERT2			(fl_list,	"Unable to open folder!!!");
+	// compress
+	CompressList		(tgt_name,list,fl_list);
+	// free lists
+	FS.file_list_close	(fl_list);
+	FS.file_list_close	(list);
+}
+
+void ProcessLTX(LPCSTR tgt_name)
+{
+	xr_string		ltx_name;
+	FS.update_path	(ltx_name,"$app_root$","compress.ltx");
+	CInifile ltx	(ltx_name.c_str());
+
+	xr_vector<char*> list;
+	xr_vector<char*> fl_list;
+	CInifile::Sect& sect	= ltx.r_section("config");
+	for (CInifile::SectIt s_it=sect.begin(); s_it!=sect.end(); s_it++){
+		bool bRecursive = 0==xr_strcmp(s_it->second.c_str(),"recursive");
+		u32 mask	= bRecursive?FS_ListFiles:FS_ListFiles|FS_RootOnly;
+
+		LPCSTR path = 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
+
+		xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,mask);
+		R_ASSERT3			(i_list,	"Unable to open file list:", path);
+		// collect folders
+		xr_vector<char*>*	i_fl_list	= FS.file_list_open	("$target_folder$",path,FS_ListFolders);
+		R_ASSERT3			(i_fl_list,	"Unable to open folder list:", path);
+		
+		xr_vector<char*>::iterator it	= i_list->begin();
+		xr_vector<char*>::iterator itE	= i_list->end();
+		xr_string tmp_path;
+		for (;it!=itE;++it){ 
+			tmp_path		= xr_string(path)+xr_string(*it);
+			list.push_back	(xr_strdup(tmp_path.c_str()));
+		}
+		it					= i_fl_list->begin();
+		itE					= i_fl_list->end();
+		for (;it!=itE;++it){ 
+			tmp_path		= xr_string(path)+xr_string(*it);
+			fl_list.push_back(xr_strdup(tmp_path.c_str()));
+		}
+
+		// free lists
+		FS.file_list_close	(i_fl_list);
+		FS.file_list_close	(i_list);
+	}
+	// compress
+	CompressList	(tgt_name,&list,&fl_list);
+
+	// free
+	xr_vector<char*>::iterator it	= list.begin();
+	xr_vector<char*>::iterator itE	= list.end();
+	for (;it!=itE;++it) xr_free(*it);
+	it				= fl_list.begin();
+	itE				= fl_list.end();
+	for (;it!=itE;++it) xr_free(*it);
+}
+
 int __cdecl main	(int argc, char* argv[])
 {
 	Core._initialize("xrCompress",0,FALSE);
@@ -222,8 +332,7 @@ int __cdecl main	(int argc, char* argv[])
 	LPCSTR params = GetCommandLine();
 
 	if(strstr(params,"-diff")){
-		ProcessDifference();
-
+		ProcessDifference	();
 	}else{
 		if (argc<2)	{
 			printf("ERROR: u must pass folder name as parameter.\n");
@@ -236,125 +345,15 @@ int __cdecl main	(int argc, char* argv[])
 		string_path		folder;		strlwr(strconcat(folder,argv[1],"\\"));
 		printf			("\nCompressing files (%s)...",folder);
 
-		FS._initialize	(CLocatorAPI::flTargetFolderOnly,folder);
+		FS._initialize	(CLocatorAPI::flTargetFolderOnly|CLocatorAPI::flScanAppRoot,folder);
 
-		xr_vector<char*>*	list	= FS.file_list_open	("$target_folder$",FS_ListFiles);
-		R_ASSERT2			(list,	"Unable to open folder!!!");
-
-		if (!list->empty())
-		{
-			u32				dwTimeStart	= timeGetTime();
-			string256		fname;
-			strconcat		(fname,argv[1],".xrp");
-			unlink			(fname);
-
-			// collect folders
-			xr_vector<char*>*	fl_list	= FS.file_list_open	("$target_folder$",FS_ListFolders);
-			R_ASSERT2			(fl_list,	"Unable to open folder!!!");
-
-
-
-			for (u32 it=0; it<fl_list->size(); it++){
-				fs_desc.w_stringZ	((*fl_list)[it]);
-				fs_desc.w_u32		(0		);
-				fs_desc.w_u32		(0		);
-				fs_desc.w_u32		(0		);
-			}
-			FS.file_list_close	(fl_list);
-
-			fs				= FS.w_open	(fname);
-			fs->open_chunk	(0);
-			//***main process***: BEGIN
-			c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
-			for (u32 it=0; it<list->size(); it++){
-				Compress	((*list)[it],argv[1]);
-			}
-			xr_free			(c_heap);
-			fs->close_chunk	();
-			//***main process***: END
-
-			// save list
-			bytesDST		= fs->tell	();
-			fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
-			FS.w_close		(fs);
-			u32	dwTimeEnd	= timeGetTime();
-			printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
-				filesTOTAL,filesSKIP,filesVFS,filesALIAS,
-				bytesDST/1024,bytesSRC/1024,
-				100.f*float(bytesDST)/float(bytesSRC),
-				((dwTimeEnd-dwTimeStart)/1000)/60,
-				((dwTimeEnd-dwTimeStart)/1000)%60,
-				float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
-				);
-		} else {
-			printf("ERROR: folder not found.\n");
+		if(strstr(params,"-ltx")){
+			ProcessLTX		(argv[1]);
+		}else{
+			ProcessNormal	(argv[1]);
 		}
-		FS.file_list_close	(list);
 	}
 
 	Core._destroy		();
 	return 0;
 }
-
-/*
-if(strstr(params,"-dpack")){
-bDiff = true;
-FS_orig = xr_new<CLocatorAPI>	();
-FS_orig->m_Flags.set(CLocatorAPI::flReady,TRUE);
-FS_orig->_initialize(CLocatorAPI::flReady);
-
-string_path		N;
-_finddata_t		sFile;
-intptr_t		hFile;
-FFVec			rec_files;
-// find all files
-strconcat(N,Core.ApplicationPath,"\\*.xp*");
-if (-1==(hFile=_findfirst(N, &sFile))){
-return		false;
-}
-// загоняем в вектор для того *.xp* приходили в сортированном порядке
-rec_files.push_back(sFile);
-while			( _findnext( hFile, &sFile ) == 0 )
-rec_files.push_back(sFile);
-_findclose		( hFile );
-
-std::sort		(rec_files.begin(), rec_files.end(), pred_str_ff);
-
-for (FFIt it=rec_files.begin(); it!=rec_files.end(); it++)
-FS_orig->register_archieve( (*it).name );
-
-list_orig	= FS_orig->file_list_open	("",FS_ListFiles);
-fl_list_orig	= FS_orig->file_list_open("",FS_ListFolders);
-strcat(root_pth,"");
-}
-
-
-if(bDiff){
-for(u32 i=0; i<list_orig->size();++i){
-file_comparer fc(list_orig->at(i),FS_orig);
-xr_vector<char*>::iterator it = std::find_if(list->begin(),list->end(),fc);
-if(it != list->end()){
-printf("skip file %s\n",list_orig->at(i));
-list->erase(it);
-}
-}
-};
-
-if(bDiff){
-for(u32 i=0; i<fl_list_orig->size();++i){
-file_comparer fc(fl_list_orig->at(i));
-xr_vector<char*>::iterator it = std::find_if(fl_list->begin(),fl_list->end(),fc);
-if(it != fl_list->end()){
-printf("skip folder %s\n",fl_list_orig->at(i));
-fl_list->erase(it);
-}
-}
-};
-
-
-if(bDiff){
-FS_orig->file_list_close(list_orig);
-FS_orig->file_list_close(fl_list_orig);
-xr_delete(FS_orig);
-}
-*/
