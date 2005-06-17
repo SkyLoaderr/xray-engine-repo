@@ -235,3 +235,14 @@ end
 function set_cook_mapspot ()
    level_tasks.add_location (728, "mil_cook_location")
 end
+
+function set_lukash_mapspot ()
+    level_tasks.add_location (707, "mil_lukash_location")
+end
+
+function remove_lukash_map_spot (actor, npc)
+    if db.actor:has_info ("mil_lukash_map_spot") then
+       level_tasks.remove_location (707, "mil_lukash_location")
+       db.actor:disable_info_portion ("mil_lukash_map_spot")
+    end   
+end

@@ -501,6 +501,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>mil_zoneguard_common1</actor_dialog>
+		<actor_dialog>mil_zoneguard_common2</actor_dialog>
 	</specific_character>
 
 
