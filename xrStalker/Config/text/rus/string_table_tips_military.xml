@@ -23,3 +23,6 @@
     <string id="mil_after_sniper_dead">
 		<text>"Меченый, подходи к нам. Сейчас все соберутся и начнем веселье !"</text>
     </string>
+	<string id="mil_actor_blockpost">
+		<text>"Сталкеры, не забывайте о Барьере. Помогите, кто может."</text>
+	</string>
