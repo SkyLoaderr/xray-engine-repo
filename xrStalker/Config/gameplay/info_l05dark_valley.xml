@@ -101,6 +101,7 @@
 <info_portion id="val_explosion_start"></info_portion>
 <info_portion id="val_explosion_victim_dead"></info_portion>
 <info_portion id="val_explosion_wait"></info_portion>
+<info_portion id="val_explosion_bad"></info_portion>
 
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password">
