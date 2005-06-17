@@ -10977,9 +10977,6 @@
 				</Filter>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\history_ss.txt">
-		</File>
 	</Files>
 	<Globals>
 		<Global
