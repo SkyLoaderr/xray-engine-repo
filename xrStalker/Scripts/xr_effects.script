@@ -647,6 +647,10 @@ function mil_hunters_psi_hit (actor, npc)
     npc:hit (h);
 end
 
+function mil_remove_cook_map_spot (actor, npc)
+    level_tasks.remove_location (728, "mil_cook_location")
+end
+
 function mil_transfer_docs_to_ara (actor, npc)
     local ara = utils.obj_by_sid (719)
     local pavlik = utils.obj_by_sid (710)
