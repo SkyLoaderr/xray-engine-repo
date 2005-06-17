@@ -80,4 +80,12 @@
 		</objective>
 	</game_task>
 
+	<game_task id="mil_freedom_rg6_task">
+		<title>mil_freedom_rg6_task</title>
+		<objective>
+			<text>mil_freedom_rg6_task</text>
+			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
 </game_tasks_data>

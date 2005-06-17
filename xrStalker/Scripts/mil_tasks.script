@@ -45,8 +45,9 @@ function process_tasks ()
 	   db.actor:give_info_portion("mil_max_owner_flash_get")  
 	end
 	
-	if actor:object ("wpn_rg-6") then 
-	   db.actor:give_info_portion("mil_rg6_gain")  
+	if actor:object ("wpn_rg-6") and actor:has_info ("mil_freedom_rg6_task") then 
+	   --db.actor:give_info_portion("mil_rg6_gain")  
+	   level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
 	end	
 	
 	if db.actor:dont_has_info ("mil_fblockpost_final") then
