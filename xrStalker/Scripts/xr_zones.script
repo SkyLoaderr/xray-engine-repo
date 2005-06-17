@@ -1,24 +1,35 @@
 --[[------------------------------------------------------------------------------------------------------------------
 Binder скриптовых зон
+Нужен как клиентская (онлайновая) часть объекта smart terrain. И ТОЛЬКО smart terrain!
 Чугай Саша
 --------------------------------------------------------------------------------------------------------------------]]
 
-local ini, r
-
 function bind( obj )
-	obj:bind_object( zone_binder( obj ) )
+	local ini = obj:spawn_ini()
+
+	if not ini then
+		return
+	end
+
+	if ini:section_exist( "gulag1" ) then
+		if obj:clsid() == clsid.smart_terrain then
+			if alife() then
+				obj:bind_object( zone_binder( obj ) )
+			else
+				printf( "No simulation! SMART_TERRAIN '%s' disabled.", obj:name() )
+			end
+		else
+			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", obj:name() )
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- класс zone_binder. Он контролирует скриптовую зону, подключает различные классы управления зоной.
+-- класс zone_binder. Он контролирует скриптовую зону для smart terrain
 ----------------------------------------------------------------------------------------------------------------------
 class "zone_binder" ( object_binder )
 
 function zone_binder:__init( obj ) super( obj )
-end
-
-function zone_binder:reinit()
-	object_binder.reinit( self )
 end
 
 function zone_binder:net_spawn( server_object )
@@ -29,68 +40,17 @@ function zone_binder:net_spawn( server_object )
 	db.add_zone( self.object )
 
 	self.object:set_callback( callback.zone_enter, self.on_enter, self )
-	self.object:set_callback( callback.zone_exit,  self.on_leave, self )
 
-	self.managers = {}
-
-	ini = self.object:spawn_ini()
-
-	if not ini then
-		return true
-	end
-
-	if ini:section_exist( "gulag1" ) then
-		if self.object:clsid() == clsid.smart_terrain then
-			if alife() then
-				self.managers.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
-			else
-				printf( "No simulation! SMART_TERRAIN '%s' disabled.", self.object:name() )
-			end
-		else
-			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", self.object:name() )
-		end
-	end
-
-	--if ini:section_exist( "monster" ) then
-	--	self.managers.monster = script_zone.monster_zone( self.object, ini )
-	--	if not self.managers.monster.ini_ok then
-	--		utils.abort( "'monster' manager NOT initialized" )
-	--	end
-	--end
-
-	if ini:section_exist( "zone_spawner" ) then
-		self.managers.z_spawner = zone_spawner.zone_spawner( self.object, ini )
-		if not self.managers.z_spawner.ini_ok then
-			utils.abort( "'zone_spawner' manager NOT initialized" )
-		end
-	end
-
-	if ini:section_exist( "escape_raid" ) then
-		self.managers.factory = escape_raid.escape_raid( self.object, ini )
-		if not self.managers.factory.ini_ok then
-			utils.abort( "'escape_raid' manager NOT initialized" )
-		end
-		escape_raid.zone = self.managers.factory
-	end
-  
-	if ini:section_exist( "spawner" ) then
-		xr_spawner.create_spawner()
-		self.managers.spawner = xr_spawner.spawner
-	end
-
-	if ini:section_exist( "tips" ) or ini:section_exist( "no_weapon" ) or ini:section_exist( "sound" ) then
-		utils.abort( "script zone '%s': You must use a restrictor instead of sctript zone", self.object:name() )
-	end
+	self.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
 
 	return true
 end
 
 function zone_binder:net_destroy()
 	self.object:set_callback( callback.zone_enter, nil )
-	self.object:set_callback( callback.zone_exit, nil )
 
-	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
-
+	self.cl_smart_terrain:destroy()
+	
 	db.del_zone( self.object )
 
 	object_binder.net_destroy( self )
@@ -105,7 +65,7 @@ function zone_binder:save( packet )
 	printf( "zone binder save" )
 	object_binder.save( self, packet )
 
-	table.foreach( self.managers, function( k, v ) if v.save then v:save( packet ) end end )
+	self.cl_smart_terrain:save( packet )
 end
 
 function zone_binder:load( packet )
@@ -116,25 +76,12 @@ end
 function zone_binder:update( delta )
 	object_binder.update( self, delta )
 
-	table.foreach( self.managers, function( k, v ) if v.update then v:update() end end )
-end
-
-function zone_binder:reload( section )
-	object_binder.reload( self, section )
+	self.cl_smart_terrain:update()
 end
 
 -- callback на вход в зону
 function zone_binder:on_enter( zone, obj )
 	printf( "[zone %s] on_enter obj=%s, clsid=%s", zone:name(), obj:name(), obj:clsid() )
 
-	-- вызвать callback-и всех подключённых классов управления
-	table.foreach( self.managers, function( k, v ) if v.on_enter then v:on_enter( obj ) end end )
-end
-
--- callback на выход из зоны
-function zone_binder:on_leave( zone, obj )
-	printf( "[zone %s] on_leave obj=%s", zone:name(), obj:name() )
-
-	-- вызвать callback-и всех подключённых классов управления
-	table.foreach( self.managers, function( k, v ) if v.on_leave then v:on_leave( obj ) end end )
+	self.cl_smart_terrain:on_enter( obj )
 end
