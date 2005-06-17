@@ -90,7 +90,7 @@ void CALifeGraphRegistry::setup_current_level	()
 	ai().load					(*(*I).second.name());
 }
 
-void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query)
+void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query, bool add_children)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -107,10 +107,10 @@ void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 
 	VERIFY						(alife_query || !smart_cast<CSE_ALifeDynamicObject*>(&object) || (ai().game_graph().vertex(smart_cast<CSE_ALifeDynamicObject*>(&object)->m_tGraphID)->level_id() == level().level_id()));
 	if (trader)
-		trader->attach			(item,alife_query);
+		trader->attach			(item,alife_query,add_children);
 }
 
-void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query)
+void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query, bool remove_children)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -132,7 +132,7 @@ void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 	VERIFY						(alife_query || !smart_cast<CSE_ALifeDynamicObject*>(&object) || (ai().game_graph().vertex(smart_cast<CSE_ALifeDynamicObject*>(&object)->m_tGraphID)->level_id() == level().level_id()));
 
 	if (trader)
-		trader->detach			(item,0,alife_query);
+		trader->detach			(item,0,alife_query,remove_children);
 	else {
 		bool					value = std::find(object.children.begin(),object.children.end(),item->base()->ID) != object.children.end();
 		if (value) {

@@ -78,8 +78,8 @@ public:
 										CALifeGraphRegistry		();
 	virtual								~CALifeGraphRegistry	();
 			void						update					(CSE_ALifeDynamicObject		*object);
-			void						attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
-			void						detach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
+			void						attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true, bool add_children = true);
+			void						detach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true, bool remove_children = true);
 	IC		void						assign					(CSE_ALifeMonsterAbstract	*object);
 	IC		void						add						(CALifeEvent				*event,		GameGraph::_GRAPH_ID		game_vertex_id);
 	IC		void						remove					(CALifeEvent				*event,		GameGraph::_GRAPH_ID		game_vertex_id);
