@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "ServerList.h"
-#include "GameSpy_defs.h" 
+#include "../GameSpy_defs.h" 
 
 #include "../GameSpy/available.h"
 #include "../GameSpy/QR2/qr2regkeys.h"

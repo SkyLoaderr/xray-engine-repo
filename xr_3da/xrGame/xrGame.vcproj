@@ -4618,7 +4618,6 @@
 								Filter="">
 								<File
 									RelativePath=".\vertex_manager_hash_fixed.h">
-
 								</File>
 								<File
 									RelativePath=".\vertex_manager_hash_fixed_inline.h">
@@ -8470,7 +8469,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
@@ -8499,6 +8499,13 @@
 								UsePrecompiledHeader="0"
 								CallingConvention="0"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameSpy\darray.h">
@@ -8521,7 +8528,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
@@ -8550,6 +8558,13 @@
 								UsePrecompiledHeader="0"
 								CallingConvention="0"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameSpy\hashtable.h">
@@ -8572,7 +8587,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
@@ -8604,7 +8620,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
@@ -8639,7 +8656,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
@@ -8677,7 +8695,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
@@ -8712,7 +8731,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
@@ -8751,7 +8771,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
@@ -8786,7 +8807,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
@@ -8822,6 +8844,13 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_crypt.h">
@@ -8838,11 +8867,25 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_server.c">
 							<FileConfiguration
 								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
@@ -8858,6 +8901,13 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_serverbrowsing.h">
@@ -8866,6 +8916,13 @@
 							RelativePath=".\GameSpy\ServerBrowsing\sb_serverlist.c">
 							<FileConfiguration
 								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
