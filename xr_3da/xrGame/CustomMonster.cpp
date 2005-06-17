@@ -420,9 +420,10 @@ void CCustomMonster::UpdateCL	()
 		}
 	}
 
+#ifdef DEBUG
 	// Camera
 	if (IsMyCamera()) UpdateCamera();
-
+#endif
 }
 
 void CCustomMonster::UpdatePositionAnimation()
