@@ -192,9 +192,9 @@ typedef void (*qr2_natnegcallback_t)(int cookie, void *userdata);
 typedef void (*qr2_clientmessagecallback_t)(gsi_char *data, int len, void *userdata);	
 typedef void (*qr2_publicaddresscallback_t)(unsigned int ip, unsigned short port, void *userdata);
 
-void qr2_register_natneg_callback(qr2_t qrec, qr2_natnegcallback_t nncallback);
-void qr2_register_clientmessage_callback(qr2_t qrec, qr2_clientmessagecallback_t cmcallback);
-void qr2_register_publicaddress_callback(qr2_t qrec, qr2_publicaddresscallback_t pacallback);
+void __cdecl qr2_register_natneg_callback(qr2_t qrec, qr2_natnegcallback_t nncallback);
+void __cdecl qr2_register_clientmessage_callback(qr2_t qrec, qr2_clientmessagecallback_t cmcallback);
+void __cdecl qr2_register_publicaddress_callback(qr2_t qrec, qr2_publicaddresscallback_t pacallback);
 
 
 /*****************
@@ -207,7 +207,7 @@ Use this function to register custom server, player, and team keys that your ser
 All custom keys should be registered prior to calling qr2_init. Reserved keys are already registered and should not be
 passed to this function.
 *******************/
-void qr2_register_key(int keyid, const gsi_char *key);
+void __cdecl qr2_register_key(int keyid, const gsi_char *key);
 
 
 /************
@@ -242,7 +242,7 @@ queries and send heartbeats to the master server.
 Returns
 e_qrnoerror is successful, otherwise one of the qr2_error_t constants above.
 ************/
-qr2_error_t qr2_init(/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, const gsi_char *gamename, const gsi_char *secret_key,
+qr2_error_t __cdecl qr2_init(/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, const gsi_char *gamename, const gsi_char *secret_key,
 			int ispublic, int natnegotiate,
 			qr2_serverkeycallback_t server_key_callback,
 			qr2_playerteamkeycallback_t player_key_callback,
@@ -290,7 +290,7 @@ problems.
 Unless you are using multiple instances of the SDK, you should pass NULL
 for qrec.
 ********************/
-void qr2_think(qr2_t qrec);
+void __cdecl qr2_think(qr2_t qrec);
 
 /*******************
 QR2_PARSE_QUERY
@@ -330,7 +330,7 @@ If you pass in a qrec that was returned from qr_init, all resources associated
 with that qrec will be freed. If you passed NULL into qr_int, you can pass
 NULL in here as well.
 ******************/
-void qr2_shutdown(qr2_t qrec);
+void __cdecl qr2_shutdown(qr2_t qrec);
 
 
 
@@ -340,7 +340,7 @@ QR2_KEYBUFFER_ADD
 Use this function to add a registered key to the key buffer when asked to provide 
 a list of supported keys.
 ******************/
-void qr2_keybuffer_add(qr2_keybuffer_t keybuffer, int keyid);
+void __cdecl qr2_keybuffer_add(qr2_keybuffer_t keybuffer, int keyid);
 
 /*****************
 QR2_BUFFER_ADD / ADD_INT
@@ -348,8 +348,8 @@ QR2_BUFFER_ADD / ADD_INT
 These functions are used to add a key's value to the outgoing buffer when
 requested in a callback function.
 ******************/
-void qr2_buffer_add(qr2_buffer_t outbuf, const gsi_char *value);
-void qr2_buffer_add_int(qr2_buffer_t outbuf, int value);
+void __cdecl qr2_buffer_add(qr2_buffer_t outbuf, const gsi_char *value);
+void __cdecl qr2_buffer_add_int(qr2_buffer_t outbuf, int value);
 
 
 /* for CDKey SDK integration */
@@ -391,8 +391,8 @@ struct qr2_implementation_s
 
 // These need to be defined, even in GSI_UNICODE MODE
 void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender);
-void qr2_buffer_addA(qr2_buffer_t outbuf, const char *value);
-qr2_error_t qr2_initA(/*[out]*/qr2_t *qrec, const char *ip, int baseport, const char *gamename, const char *secret_key,
+void __cdecl qr2_buffer_addA(qr2_buffer_t outbuf, const char *value);
+qr2_error_t __cdecl qr2_initA(/*[out]*/qr2_t *qrec, const char *ip, int baseport, const char *gamename, const char *secret_key,
 			int ispublic, int natnegotiate,
 			qr2_serverkeycallback_t server_key_callback,
 			qr2_playerteamkeycallback_t player_key_callback,

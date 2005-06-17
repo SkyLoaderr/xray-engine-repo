@@ -35,7 +35,7 @@ INCLUDES
 	#define gassert(a)
 #endif
 
-
+#define BUFSIZE 512
 
 #ifdef __cplusplus
 extern "C" {
@@ -601,7 +601,7 @@ static void process_ison(char *buf, struct sockaddr_in *fromaddr)
 
 static void send_disconnect_req(gsproduct_t *prod, gsclient_t *client)
 {
-	char buf[512];
+	char buf[BUFSIZE];
 	int len;
 	const char discformat[] = {'\\','d','i','s','c','\\','\\','p','i','d','\\','%','d','\\','c','d','\\','%','s','\\','i','p','\\','%','d','\0'}; //\\disc\\\\pid\\%d\\cd\\%s\\ip\\%d
 	
@@ -614,7 +614,7 @@ static void send_disconnect_req(gsproduct_t *prod, gsclient_t *client)
 
 static void send_auth_req(gsproduct_t *prod, gsclient_t *client, char *challenge, char *response)
 {
-	char buf[512];
+	char buf[BUFSIZE];
 	int len;
 	const char authformat[] = {'\\','a','u','t','h','\\','\\','p','i','d','\\','%','d','\\','c','h','\\','%','s','\\','r','e','s','p','\\','%','s','\\','i','p','\\','%','d','\\','s','k','e','y','\\','%','d','\0'}; //\\auth\\\\pid\\%d\\ch\\%s\\resp\\%s\\ip\\%d\\skey\\%d
 
@@ -623,8 +623,9 @@ static void send_auth_req(gsproduct_t *prod, gsclient_t *client, char *challenge
 	client->sttime = current_time();
 	client->ntries = 1;
 /* \auth\\pid\12\ch\efx3232\resp\fe6667736f0c8ed7ff5cd9c0e74f98fd69e4da39560b82f40a628522ed10f0165c1d44a0\ip\2342342\skey\132432 */
-	len = sprintf(buf, authformat,
+	len = snprintf(buf, BUFSIZE, authformat,
 			prod->pid, challenge, response, client->ip, client->sesskey);
+	buf[BUFSIZE-1] = '\0'; // sometimes snprintf doesn't null terminate
 	xcode_buf(buf, len);
 	sendto(sock, buf, len, 0, (struct sockaddr *)&valaddr, sizeof(valaddr));
 	/* save a copy for resends */

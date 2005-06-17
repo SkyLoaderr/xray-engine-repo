@@ -1,13 +1,6 @@
 #include "xrServer.h"
 //#include "GameSpy/QR2/qr2.h"
-#pragma once
-#define GAMESPY_GAMENAME			"stalkersc"
-#define GAMESPY_PRODUCTID			0
-#define	GAMESPY_BASEPORT			5447
-#define	GAMESPY_MAXCHALLANGESIZE	32
-
-#define	DEDICATED_KEY			100
-#define	FFIRE_KEY				101
+#include "GameSpy_defs.h"
 
 class xrGameSpyClientData	: public xrClientData
 {

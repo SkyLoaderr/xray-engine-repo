@@ -16,11 +16,10 @@
 // Static debug data
 static struct GSIDebugInstance gGSIDebugInstance; // simple singleton "class"
 
-
 // Line prefixes, e.g. "[ cat][type][ lev] text"
 static char* gGSIDebugCatStrings[GSIDebugCat_Count] =
 {
-	" GP ", "PEER", " QR2", "  SB", "  V2", " CMN", " APP"
+	" GP ", "PEER", " QR2", "  SB", "  V2", " CMN", " APP", "  AD"
 };
 static char* gGSIDebugTypeStrings[GSIDebugType_Count] =
 {
@@ -63,6 +62,19 @@ void gsDebugVaList(GSIDebugCategory theCat, GSIDebugType theType,
 	assert(theLevel <= (1<<GSIDebugLevel_Count));
 	assert(theTokenStr);
 
+	// Make thread safe
+	if (gGSIDebugInstance.mInitialized == 0)
+	{
+		// Warning: Slight race condition risk here the first time
+		//          gsDebug functions are used.
+		//          The risk is minimal since you usually set
+		//          debug levels and targets at program startup
+		gGSIDebugInstance.mInitialized = 1;
+		gsiInitializeCriticalSection(&gGSIDebugInstance.mDebugCrit);
+	}
+
+	gsiEnterCriticalSection(&gGSIDebugInstance.mDebugCrit);
+
 	// Are we currently logging this type and level?
 	aCurLevel = gGSIDebugInstance.mGSIDebugLevel[theCat][theType];
 	if (aCurLevel & theLevel) // check the flag
@@ -87,6 +99,8 @@ void gsDebugVaList(GSIDebugCategory theCat, GSIDebugType theType,
 			                                     theTokenStr, theParamList);
 		}
 	}
+	
+	gsiLeaveCriticalSection(&gGSIDebugInstance.mDebugCrit);
 }
 
 

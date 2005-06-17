@@ -26,7 +26,7 @@ extern "C" {
 
 #define RESPONSE_SIZE 73
 
-void gcd_compute_response(char *cdkey, char *challenge,/*out*/ char response[73]);
+void __cdecl gcd_compute_response(char *cdkey, char *challenge,/*out*/ char response[73]);
 
 
 #ifdef __cplusplus

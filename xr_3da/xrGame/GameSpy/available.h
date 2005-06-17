@@ -28,7 +28,7 @@ typedef enum
 
 // start an available check for a particular game
 // return 0 if no error starting up, non-zero if there's an error
-void GSIStartAvailableCheck(const gsi_char * gamename);
+void __cdecl GSIStartAvailableCheck(const gsi_char * gamename);
 
 // let the available check think
 // continue to call this while it returns GSIACWaiting
@@ -37,7 +37,7 @@ void GSIStartAvailableCheck(const gsi_char * gamename);
 // continue to use the GameSpy SDKs.  the backend services are not available
 // for the game.  in this case, you can show the user a
 // message based on the particular result.
-GSIACResult GSIAvailableCheckThink(void);
+GSIACResult __cdecl GSIAvailableCheckThink(void);
 
 // this should only be used if the availability check needs to be aborted
 // for example, if the player leaves the game's multiplayer area before the check completes

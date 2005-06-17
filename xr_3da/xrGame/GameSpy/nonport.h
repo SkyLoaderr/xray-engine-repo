@@ -177,6 +177,7 @@ devsupport@gamespy.com
 
 	#if defined(_WIN32)
 		#define _tsnprintf _snprintf
+		#define   snprintf _snprintf  // make non-underscore legal for consistency
 	#else
 		#define _tsnprintf snprintf
 	#endif
@@ -219,6 +220,7 @@ extern "C" {
 	//       Currently, SDKs will share a single static one
 	typedef void* GSIMemoryMgrPtr;
 	GSIMemoryMgrPtr gsMemMgrCreate(void* thePoolBuffer, size_t thePoolSize);
+	void gsMemMgrDestroy();
 
 	// Diagnostics
 	void gsMemMgrDumpStats();
@@ -303,6 +305,28 @@ typedef gsi_u32           goa_uint32; //  these types will be removed once all S
 	#define gsi_char  unsigned short
 #endif // goa_char
 
+#if defined(_WIN32)
+	typedef CRITICAL_SECTION GSICriticalSection;
+	typedef HANDLE GSISemaphoreID;
+	typedef HANDLE GSIThreadID;
+	typedef DWORD (WINAPI *GSThreadFunc)(void *arg);
+#elif defined(_PS2)
+	typedef int GSIThreadID;
+	typedef int GSISemaphoreID;
+
+	// A critical section is a re-entrant semaphore
+	typedef struct 
+	{
+		GSISemaphoreID mSemaphore;
+		GSIThreadID mOwnerThread;
+		gsi_u32 mEntryCount; // track re-entry
+		gsi_u32 mPad; // make 16bytes
+	} GSICriticalSection; 
+	typedef void (*GSThreadFunc)(void *arg);
+#endif
+
+
+
 // expected ranges for integer types
 #define GSI_MIN_I8      (-127 - 1)
 #define GSI_MAX_I8        127
@@ -324,7 +348,7 @@ typedef gsi_u32           goa_uint32; //  these types will be removed once all S
 
 gsi_time current_time();         // milliseconds
 gsi_time current_time_hires();   // microseconds
-void msleep(gsi_time msec);      // milliseconds
+void __cdecl msleep(gsi_time msec);      // milliseconds
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -333,8 +357,8 @@ void Util_RandSeed(unsigned long seed); // to seed it
 int  Util_RandInt(int low, int high);   // retrieve a random int
 
 // Base 64 encoding (printable characters)
-void B64Encode(const char *input, char *output, int inlen, int useAlternateEncoding);
-void B64Decode(char *input, char *output, int *len, int useAlternateEncoding);
+void B64Encode(const char *input, char *output, int inlen, int encodingType);
+void B64Decode(char *input, char *output, int *len, int encodingType);
 
 void SocketStartUp();
 void SocketShutDown();
@@ -497,13 +521,35 @@ typedef struct GSIResolveHostnameInfo * GSIResolveHostnameHandle;
 
 // start resolving a hostname
 // returns 0 on success, -1 on error
-int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle);
+int  gsiStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle);
 // cancel a resolve in progress
-void GSICancelResolvingHostname(GSIResolveHostnameHandle handle);
+void gsiCancelResolvingHostname(GSIResolveHostnameHandle handle);
 // returns GSI_STILL_RESOLVING if still resolving the hostname
 // returns GSI_ERROR_RESOLVING if it was unable to resolve the hostname
 // on success, returns the IP of the host in network byte order
-unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle);
+unsigned int gsiGetResolvedIP(GSIResolveHostnameHandle handle);
+
+
+// Thread
+int  gsiStartThread(GSThreadFunc aThreadFunc,  gsi_u32 theStackSize, void *arg, GSIThreadID* theThreadIdOut);
+void gsiCancelThread(GSIThreadID theThreadID);
+void gsiCleanupThread(GSIThreadID theThreadID);
+
+// Thread Synchronization - Startup/Shutdown
+gsi_u32 gsiHasThreadShutdown(GSIThreadID theThreadID);
+
+// Thread Synchronization - Critical Section
+void gsiInitializeCriticalSection(GSICriticalSection *theCrit);
+void gsiEnterCriticalSection(GSICriticalSection *theCrit);
+void gsiLeaveCriticalSection(GSICriticalSection *theCrit);
+void gsiDeleteCriticalSection(GSICriticalSection *theCrit);
+
+// Thread Synchronization - Semaphore
+GSISemaphoreID gsiCreateSemaphore(gsi_i32 theInitialCount, gsi_i32 theMaxCount, char* theName);
+gsi_u32        gsiWaitForSemaphore(GSISemaphoreID theSemaphore, gsi_u32 theTimeoutMs);
+void           gsiReleaseSemaphore(GSISemaphoreID theSemaphore, gsi_i32 theReleaseCount);
+void           gsiCloseSemaphore(GSISemaphoreID theSemaphore);
+
 
 #if defined(UNDER_CE)
 //CE does not have the stdlib time() call
@@ -531,6 +577,14 @@ extern int wprintf(const wchar_t*,...);
 
 // Include debug header AFTER types are declared
 #include "gsiDebug.h"
+
+#define XXTEA_KEY_SIZE 17
+
+// prototypes
+//////////////////////////////////////////////////////////////////////
+
+gsi_i8 * gsXxteaEncrypt(const gsi_i8 * iStr, gsi_i32 iLength, gsi_i8 key[XXTEA_KEY_SIZE], gsi_i32 *oLength);
+gsi_i8 * gsXxteaDecrypt(const gsi_i8 * iStr, gsi_i32 iLength, gsi_i8 key[XXTEA_KEY_SIZE], gsi_i32 *oLength);
 
 #endif // #ifndef GSI_MEM_ONLY
 

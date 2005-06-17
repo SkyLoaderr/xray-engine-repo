@@ -62,7 +62,7 @@ you can simply pass in NULL.
 #ifdef QR2CDKEY_INTEGRATION
 
 #include "../qr2/qr2.h"
-int gcd_init_qr2(qr2_t qrec, int gameid);
+int __cdecl gcd_init_qr2(qr2_t qrec, int gameid);
 
 #endif
 
@@ -71,21 +71,21 @@ gcd_shutdown
 Frees the socket and client structures
 Also calls gcd_disconnect_all to make sure all users are signaled as offline
 *********/
-void gcd_shutdown(void);
+void __cdecl gcd_shutdown(void);
 
 /********
 gcd_authenticate_user
 Creates a new client and sends a request for authorization to the
 validation server.
 *********/
-void gcd_authenticate_user(int gameid, int localid, unsigned int userip, char *challenge, char *response, 
+void __cdecl gcd_authenticate_user(int gameid, int localid, unsigned int userip, char *challenge, char *response, 
 						   AuthCallBackFn authfn, void *instance);
 
 /********
 gcd_disconnect_user
 Notify the validation server that a user has disconnected
 *********/
-void gcd_disconnect_user(int gameid, int localid);
+void __cdecl gcd_disconnect_user(int gameid, int localid);
 
 
 /********
@@ -100,7 +100,7 @@ Processes any pending data from the validation server
 and calls the callback to indicate whether a client was 
 authorized or not
 *********/
-void gcd_think(void);
+void __cdecl gcd_think(void);
 
 /********
 gcd_getkeyhash

@@ -12,10 +12,21 @@ CServerList::CServerList(){
 		AttachChild(&m_header[i]);
 	for (int i = 0; i<5; i++)
 		AttachChild(&m_separator[i]);
+
+	m_serverBrowser = NULL;
+	GameSpy_Browser_ClearServersList();
 }
+
+CServerList::~CServerList()
+{
+	GameSpy_Browser_ClearServersList();
+	GameSpy_Browser_Destroy();	
+};
 
 void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
+
+	GameSpy_Browser_Init();
 }
 
 void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
@@ -43,6 +54,7 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	InitHeader();
 
 ////////////////////////////////////////////////////////////////////////
+	/*
 	CUIListItemServer* item = xr_new<CUIListItemServer>();
 	float w = m_list.GetItemWidth();
 	float h = m_list.GetItemHeight();
@@ -66,6 +78,7 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	item = xr_new<CUIListItemServer>();
 	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
+	*/
 }
 
 void	CServerList::InitHeader(){
@@ -117,4 +130,22 @@ void	CServerList::RefreshGameSpyList	(bool Local){
 	{
 		Msg("Refresh MasterServer List");
 	}
+	GameSpy_Browser_RefreshList(Local);
 }
+
+
+void CServerList::AddServerToList	(ServerInfo* pServerInfo)
+{
+	CUIListItemServer* item = xr_new<CUIListItemServer>();
+	float w = m_list.GetItemWidth();
+	float h = m_list.GetItemHeight();
+
+	m_itemInfo.info.server	= pServerInfo->m_ServerName;
+	m_itemInfo.info.map		= pServerInfo->m_SessionName;
+	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
+	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
+	m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
+
+	item->Init(m_itemInfo, 0, 0, w, h);
+	m_list.AddItem<CUIListItemServer>(item);
+};

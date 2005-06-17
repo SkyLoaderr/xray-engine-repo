@@ -49,7 +49,8 @@ typedef enum
 	GSIDebugType_Misc,     // None of the above
 	// add new ones here (update string table in gsiDebug.c!)
 
-	GSIDebugType_Count
+	GSIDebugType_Count,
+	GSIDebugType_All = GSIDebugType_Count
 } GSIDebugType;
 
 
@@ -65,9 +66,11 @@ typedef enum
 	GSIDebugCat_Voice,
 	GSIDebugCat_Common,
 	GSIDebugCat_App,
+	GSIDebugCat_AD,
 	// Add new ones here (update string table in gsiDebug.c!)
 	
 	GSIDebugCat_Count,
+	GSIDebugCat_All = GSIDebugCat_Count
 } GSIDebugCategory;
 
 
@@ -114,6 +117,8 @@ typedef struct GSIDebugInstance
 {
 	FILE* mGSIDebugFile;
 	GSIDebugCallback mDebugCallback;
+	gsi_i32 mInitialized;
+	GSICriticalSection mDebugCrit;
 
 	GSIDebugLevel mGSIDebugLevel[GSIDebugCat_Count][GSIDebugType_Count];
 } GSIDebugInstance;

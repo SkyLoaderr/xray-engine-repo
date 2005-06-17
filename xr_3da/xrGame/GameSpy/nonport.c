@@ -541,6 +541,7 @@ int DisableNagle(SOCKET sock)
 		fd_set * aExceptFds = NULL;
 		int aResult;
 		struct timeval aTimeout = { 0, 0 };
+		char	TmpTest[1024];
 
 		assert(theSocket != INVALID_SOCKET);
 
@@ -568,12 +569,19 @@ int DisableNagle(SOCKET sock)
 		// Perform the select
 		aResult = select(FD_SETSIZE, aReadFds, aWriteFds, aExceptFds, &aTimeout);
 		if(aResult == SOCKET_ERROR)
+		{
+			OutputDebugString("SOCKET_ERROR");
 			return SOCKET_ERROR;
+		}
 
 		// Check results.
 		/////////////////
 		if(theReadFlag != NULL)
 		{
+//			OutputDebugString("Read Result - ");
+//			sprintf(TmpTest, "%d\n", aResult);
+//			OutputDebugString(TmpTest);
+
 			if((aResult > 0) && FD_ISSET(theSocket, aReadFds))
 				*theReadFlag = 1;
 			else
@@ -581,6 +589,7 @@ int DisableNagle(SOCKET sock)
 		}
 		if(theWriteFlag != NULL)
 		{
+			OutputDebugString("Write \n");
 			if((aResult > 0) && FD_ISSET(theSocket, aWriteFds))
 				*theWriteFlag = 1;
 			else
@@ -588,6 +597,7 @@ int DisableNagle(SOCKET sock)
 		}
 		if(theExceptFlag != NULL)
 		{
+			OutputDebugString("Exept \n");
 			if((aResult > 0) && FD_ISSET(theSocket, aExceptFds))
 				*theExceptFlag = 1;
 			else
@@ -643,7 +653,7 @@ int DisableNagle(SOCKET sock)
 		// Poll the fds
 		//    1 fds, 0 ms timeout
 		result = sceInsockPoll(&aPollFdSet, 1, 0);
-		if (result == 1)
+		if (result > 0)
 		{
 			// If the Flag is valid, set the return value
 			if ((theReadFlag   != NULL))
@@ -848,14 +858,63 @@ int IsPrivateIP(IN_ADDR * addr)
 }
 
 #if defined(_WIN32)
-typedef HANDLE GSIThreadID;
-static int GSIStartThread(DWORD (WINAPI * func)(void * arg), void * arg, GSIThreadID * id)
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+					/////////////  THREAD  /////////////  
+
+void gsiInitializeCriticalSection(GSICriticalSection *theCrit) { InitializeCriticalSection(theCrit); }
+void gsiEnterCriticalSection     (GSICriticalSection *theCrit) { EnterCriticalSection(theCrit);      }
+void gsiLeaveCriticalSection     (GSICriticalSection *theCrit) { LeaveCriticalSection(theCrit);      }
+void gsiDeleteCriticalSection    (GSICriticalSection *theCrit) { DeleteCriticalSection(theCrit);     }
+
+gsi_u32 gsiHasThreadShutdown(GSIThreadID theThreadID) 
+{ 
+	DWORD result = WaitForSingleObject(theThreadID, 0); 
+	if (result == WAIT_ABANDONED || result == WAIT_OBJECT_0)
+		return 1; // thread is dead
+	else
+		return 0; // keep waiting
+}
+
+GSISemaphoreID gsiCreateSemaphore(gsi_i32 theInitialCount, gsi_i32 theMaxCount, char* theName)
+{
+	GSISemaphoreID aSemaphore = CreateSemaphore(NULL, theInitialCount, theMaxCount, theName);
+	if (aSemaphore == NULL)
+	{
+		gsDebugFormat(GSIDebugCat_Common, GSIDebugType_Misc, GSIDebugLevel_WarmError,
+			"Failed to create semaphore\r\n");
+	}
+	return aSemaphore;
+}
+
+// Waits for -- and signals -- the semaphore
+gsi_u32 gsiWaitForSemaphore(GSISemaphoreID theSemaphore, gsi_u32 theTimeoutMs)
+{
+	DWORD result = WaitForSingleObject((HANDLE)theSemaphore, (DWORD)theTimeoutMs);
+	return (gsi_u32)result;
+}
+
+// Allow other objects to access the semaphore
+void gsiReleaseSemaphore(GSISemaphoreID theSemaphore, gsi_i32 theReleaseCount)
+{
+	ReleaseSemaphore(theSemaphore, theReleaseCount, NULL);
+}
+
+void gsiCloseSemaphore(GSISemaphoreID theSemaphore)
+{
+	CloseHandle(theSemaphore);
+}
+
+
+int gsiStartThread(GSThreadFunc func, gsi_u32 theStackSize, void *arg, GSIThreadID * id)
 {
 	HANDLE handle;
 	DWORD threadID;
 
 	// create the thread
-	handle = CreateThread(NULL, 0, func, arg, 0, &threadID);
+	handle = CreateThread(NULL, theStackSize, func, arg, 0, &threadID);
 	if(handle == NULL)
 		return -1;
 
@@ -865,21 +924,110 @@ static int GSIStartThread(DWORD (WINAPI * func)(void * arg), void * arg, GSIThre
 	return 0;
 }
 
-static void GSICancelThread(GSIThreadID id)
+void gsiCancelThread(GSIThreadID id)
 {
 	//TODO: is TerminateThread causing lost resources?
 	TerminateThread(id, 0);
 }
 
-static void GSICleanupThread(GSIThreadID id)
+void gsiCleanupThread(GSIThreadID id)
 {
 	GSI_UNUSED(id);
 }
 #elif defined(_PS2)
-typedef int GSIThreadID;
-static int GSIStartThread(void (*func)(void * arg), void * arg, GSIThreadID * id)
+
+
+void gsiInitializeCriticalSection(GSICriticalSection *theCrit) 
 {
-	const int stackSize = (0x1000);
+	theCrit->mSemaphore = gsiCreateSemaphore(1, 1, NULL); 
+	theCrit->mOwnerThread = 0;
+	theCrit->mEntryCount = 0;
+}
+void gsiEnterCriticalSection(GSICriticalSection *theCrit) 
+{ 
+	// If we're not already in it, wait for it
+	if (GetThreadId() != theCrit->mOwnerThread)
+	{
+		gsiWaitForSemaphore(theCrit->mSemaphore, 0);
+		theCrit->mOwnerThread = GetThreadId();
+	}
+
+	// Increment entry count
+	theCrit->mEntryCount++;
+}
+void gsiLeaveCriticalSection(GSICriticalSection *theCrit)
+{ 
+	// We must be the owner? (assert?)
+	if (GetThreadId() != theCrit->mOwnerThread)
+	{
+		assert(GetThreadId() == theCrit->mOwnerThread);
+		return;
+	}
+
+	// Release semaphore
+	theCrit->mEntryCount--;
+	if (theCrit->mEntryCount == 0)
+	{
+		theCrit->mOwnerThread = 0;
+		gsiReleaseSemaphore(theCrit->mSemaphore, 1);     
+	}
+}
+
+void gsiDeleteCriticalSection(GSICriticalSection *theCrit) 
+{ 
+	gsiCloseSemaphore(theCrit->mSemaphore);       
+}
+
+gsi_u32 gsiHasThreadShutdown(GSIThreadID theThreadID) 
+{ 
+	struct ThreadParam aStatus;
+	ReferThreadStatus(theThreadID, &aStatus);
+	if (aStatus.status == THS_DORMANT)
+		return 1; // dead
+	else
+		return 0; // still kicking;
+}
+
+GSISemaphoreID gsiCreateSemaphore(gsi_i32 theInitialCount, gsi_i32 theMaxCount, char* theName)
+{
+	struct SemaParam aParam;
+	int aSemaphore = 0;
+
+	aParam.initCount = theInitialCount;
+	aParam.maxCount = theMaxCount;
+	
+	aSemaphore = CreateSema(&aParam);
+	if (aSemaphore < 0)
+	{
+		gsDebugFormat(GSIDebugCat_Common, GSIDebugType_Misc, GSIDebugLevel_WarmError,
+			"Failed to create semaphore\r\n");
+	}
+	return aSemaphore;
+}
+
+gsi_u32 gsiWaitForSemaphore(GSISemaphoreID theSemaphore, gsi_u32 theTimeoutMs)
+{
+	int result = WaitSema(theSemaphore);
+	return (gsi_u32)result;
+
+	GSI_UNUSED(theTimeoutMs);
+}
+
+void gsiReleaseSemaphore(GSISemaphoreID theSemaphore, gsi_i32 theReleaseCount)
+{
+	while (theReleaseCount-- > 0)
+		SignalSema(theSemaphore);
+	//ReleaseSemaphore(theSemaphore, theReleaseCount, NULL);
+}
+
+void gsiCloseSemaphore(GSISemaphoreID theSemaphore)
+{
+	DeleteSema(theSemaphore);
+}
+
+int gsiStartThread(GSThreadFunc func,  gsi_u32 theStackSize, void *arg, GSIThreadID *id)
+{
+	const int stackSize = theStackSize;
 	const int threadPriority = 3;
 	struct ThreadParam param;
 	void * stack;
@@ -916,24 +1064,37 @@ static int GSIStartThread(void (*func)(void * arg), void * arg, GSIThreadID * id
 	// store the id
 	*id = threadID;
 
+	// Note:  This was added to prevent PS2 lockups when starting multiple threads
+	//        The PS2 would block for approx 5 seconds
+	msleep(1);
+
 	return 0;
 }
 
-static void GSICancelThread(GSIThreadID id)
+
+void gsiCancelThread(GSIThreadID id)
 {
+	void* aStack = NULL;
+
+	// get the stack ptr
+	struct ThreadParam aThreadParam;
+	ReferThreadStatus(id, &aThreadParam);
+	aStack = (void*)aThreadParam.stack;
+
 	// terminate the thread
 	TerminateThread(id);
 
 	// delete the thread
 	DeleteThread(id);
 
-	//TODO: we aren't freeing the stack!
+	//free the stack
+	gsifree(aStack);
 }
 
-static void GSICleanupThread(GSIThreadID id)
+void gsiCleanupThread(GSIThreadID id)
 {
 	// same as cancel (terminates just to be sure)
-	GSICancelThread(id);
+	gsiCancelThread(id);
 }
 #endif
 
@@ -949,9 +1110,9 @@ typedef struct GSIResolveHostnameInfo
 
 #if defined(_WIN32) || defined(_PS2)
 	#if defined(_WIN32)
-DWORD WINAPI GSIResolveHostnameThread(void * arg)
+DWORD WINAPI gsiResolveHostnameThread(void * arg)
 	#elif defined(_PS2)
-static void GSIResolveHostnameThread(void * arg)
+static void gsiResolveHostnameThread(void * arg)
 	#endif
 {
 	HOSTENT * hostent;
@@ -982,7 +1143,7 @@ static void GSIResolveHostnameThread(void * arg)
 	#endif
 }
 
-int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle)
+int gsiStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle)
 {
 	GSIResolveHostnameInfo * info;
 
@@ -1003,7 +1164,7 @@ int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * 
 	info->finishedResolving = 0;
 
 	// start the thread
-	if(GSIStartThread(GSIResolveHostnameThread, info, &info->threadID) == -1)
+	if(gsiStartThread(gsiResolveHostnameThread, (0x1000), info, &info->threadID) == -1)
 	{
 		gsifree(info->hostname);
 		gsifree(info);
@@ -1016,16 +1177,16 @@ int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * 
 	return 0;
 }
 
-void GSICancelResolvingHostname(GSIResolveHostnameHandle handle)
+void gsiCancelResolvingHostname(GSIResolveHostnameHandle handle)
 {
 	// cancel the thread
-	GSICancelThread(handle->threadID);
+	gsiCancelThread(handle->threadID);
 
 	gsifree(handle->hostname);
 	gsifree(handle);
 }
 
-unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle)
+unsigned int gsiGetResolvedIP(GSIResolveHostnameHandle handle)
 {
 	unsigned int ip;
 
@@ -1037,14 +1198,14 @@ unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle)
 	ip = handle->ip;
 
 	// free resources
-	GSICleanupThread(handle->threadID);
+	gsiCleanupThread(handle->threadID);
 	gsifree(handle->hostname);
 	gsifree(handle);
 
 	return ip;
 }
 #else
-int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle)
+int gsiStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * handle)
 {
 	GSIResolveHostnameInfo * info;
 	HOSTENT * hostent;
@@ -1068,12 +1229,12 @@ int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * 
 	return 0;
 }
 
-void GSICancelResolvingHostname(GSIResolveHostnameHandle handle)
+void gsiCancelResolvingHostname(GSIResolveHostnameHandle handle)
 {
 	gsifree(handle);
 }
 
-unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle)
+unsigned int gsiGetResolvedIP(GSIResolveHostnameHandle handle)
 {
 	// we always to the resolve in the initial call for systems without
 	// an async version, so we'll always have the IP at this point
@@ -1465,14 +1626,29 @@ static void TripToQuart(const char *trip, char *quart, int inlen)
 
 const char defaultEncoding[] = {'+','/','='};
 const char alternateEncoding[] = {'[',']','_'};
+const char urlSafeEncodeing[] = {'-','_','='};
 
-
-void B64Decode(char *input, char *output, int *len, int useAlternateEncoding)
+void B64Decode(char *input, char *output, int *len, int encodingType)
 {
-	const char *encoding = (useAlternateEncoding) ? alternateEncoding : defaultEncoding;
+	const char *encoding;
 	char *holdin = input;
 	int outlen = -1;
 	int inlen = (int)strlen(input);
+
+	// 10-31-2004 : Added by Saad Nader
+	// now supports URL safe encoding
+	////////////////////////////////////////////////
+	switch(encodingType)
+	{	
+		case 1: 
+			encoding = alternateEncoding;
+			break;
+		case 2:
+			encoding = urlSafeEncodeing;
+			break;
+		default: encoding = defaultEncoding;
+	}
+	
 	while (*input)
 	{
 		if (*input == encoding[2])
@@ -1515,12 +1691,27 @@ void B64Decode(char *input, char *output, int *len, int useAlternateEncoding)
 
 }
 
-void B64Encode(const char *input, char *output, int inlen, int useAlternateEncoding)
+void B64Encode(const char *input, char *output, int inlen, int encodingType)
 {
-	const char *encoding = (useAlternateEncoding) ? alternateEncoding : defaultEncoding;
+	const char *encoding;
 	char *holdout = output;
 	char *lastchar;
 	int todo = inlen;
+	
+	// 10-31-2004 : Added by Saad Nader
+	// now supports URL safe encoding
+	////////////////////////////////////////////////
+	switch(encodingType)
+	{	
+		case 1: 
+			encoding = alternateEncoding;
+			break;
+		case 2:
+			encoding = urlSafeEncodeing;
+			break;
+		default: encoding = defaultEncoding;
+	}
+	
 //assume interval of 3
 	while (todo > 0)
 	{
@@ -1558,6 +1749,144 @@ void B64Encode(const char *input, char *output, int inlen, int useAlternateEncod
 #if defined(_MSC_VER)
 #pragma warning ( default: 4127 )
 #endif // _MSC_VER
+
+void gsiPadRight(char *cArray, char padChar, int cLength);
+char * gsiXxteaAlg(const char *sIn, int nIn, char key[XXTEA_KEY_SIZE], int bEnc, int *nOut);
+
+void gsiPadRight(char *cArray, char padChar, int cLength)
+{
+	int diff;
+	int length = strlen(cArray);
+	
+	diff = cLength - length;
+	memset(&cArray[length], padChar, diff);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// The heart of the XXTEA encryption/decryption algorithm.
+//
+// sIn:  Input stream.
+// nIn:  Input length (bytes).
+// key:  Key (only first 128 bits are significant).
+// bEnc: Encrypt (else decrypt)?
+char * gsiXxteaAlg(const char *sIn, int nIn, char key[XXTEA_KEY_SIZE], int bEnc, int *nOut)
+{
+	int	i, p, n1;
+	unsigned int *k, *v, z, y;
+	char *oStr = NULL, *pStr = NULL;
+	char *sIn2 = NULL;
+	/////////////////////////////////
+	// ERROR CHECK!
+	if (!sIn || !key[0] || nIn == 0)
+		return NULL;
+	
+	// Convert stream length to a round number of 32-bit words
+	// Convert byte	count to 32-bit	word count
+	nIn	= (nIn + 3)/4;
+	if ( nIn <=	1 )		// XXTEA requires at least 64 bits
+		nIn	= 2;
+
+	// Load	and	zero-pad first 16 characters (128 bits)	of key
+	gsiPadRight( key , '\0', XXTEA_KEY_SIZE);
+	k = (unsigned int *)key;
+
+	// Load and zero-pad entire input stream as 32-bit words
+	sIn2 = gsimalloc(4 * nIn);
+	strcpy(sIn2, sIn);
+	gsiPadRight( sIn2, '\0', 4*nIn);
+	v = (unsigned int *)sIn2;
+
+	// Prepare to encrypt or decrypt
+	n1 = nIn - 1;
+	z = v[ n1 ];
+	y = v[ 0 ];
+	i = ( int )( 6 + 52/nIn );
+
+	if (bEnc == 1)		// Encrypt
+	{
+		unsigned int sum = 0;
+		while ( i-- != 0 ) 
+		{
+			int	e;
+			sum += 0x9E3779B9;
+			e = ( int )( sum >> 2 );
+			for ( p = -1; ++p < nIn; ) 
+			{
+				y = v[( p < n1 ) ? p + 1 : 0 ];
+				z = ( v[ p ] +=
+					(	 (( z >> 5 ) ^ ( y << 2 ))
+					+ (( y >> 3 ) ^ ( z << 4 )))
+					^ (	 ( sum ^ y )
+					+ ( k[( p ^ e ) & 3 ] ^ z )));
+			}
+		}
+	}
+	else if (bEnc == 0)			// Decrypt
+	{
+		unsigned int sum = ( unsigned int ) i * 0x9E3779B9;
+		while ( sum != 0 ) 
+		{
+			int	e = ( int )( sum >> 2 );
+			for ( p = nIn; p-- != 0; )
+			{
+				z = v[( p != 0 ) ? p - 1 : n1 ];
+				y = ( v[ p ] -=
+					(	 (( z >> 5 ) ^ ( y << 2 ))
+					+ (( y >> 3 ) ^ ( z << 4 )))
+					^ (	 ( sum ^ y )
+					+ ( k[( p ^ e ) & 3 ] ^ z )));
+			}
+			sum -= 0x9E3779B9;
+		}
+	}
+	else return NULL;
+	// Convert result from 32-bit words to a byte stream
+	
+	
+	oStr = gsimalloc(4 * nIn + 1);
+	pStr = oStr;
+	*nOut = 4 *nIn;
+	for ( i = -1; ++i < nIn; ) 
+	{
+		unsigned int q = v[ i ];
+		
+		*pStr++ = (char)(q & 0xFF);
+		*pStr++ = (char)(( q >>  8 ) & 0xFF);
+		*pStr++ = (char)(( q >> 16 ) & 0xFF);
+		*pStr++ = (char)(( q >> 24 ) & 0xFF);
+	}
+	*pStr = '\0';
+	return oStr;
+	
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// XXTEA Encrpyt
+// params
+// iStr    : the input string to be encrypted
+// iLength : the length of the input string
+// key     : the key used to encrypt
+char * gsXxteaEncrypt(const char * iStr, int iLength, char key[XXTEA_KEY_SIZE], int *oLength)
+{
+	return gsiXxteaAlg( iStr, iLength, key, 1, oLength );
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// XXTEA Decrypt
+// params
+// iStr    : the input string to be decrypted
+// iLength : the length of the input string
+// key     : the key used to decrypt
+char * gsXxteaDecrypt(const char * iStr, int iLength, char key[XXTEA_KEY_SIZE], int *oLength)
+{
+	return gsiXxteaAlg( iStr, iLength, key, 0, oLength);
+}
 
 #ifdef __cplusplus
 }
