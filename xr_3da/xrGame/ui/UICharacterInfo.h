@@ -11,7 +11,7 @@ class CInventoryOwner;
 class CUIStatic;
 class CUIListWnd;
 class CCharacterInfo;
-
+class CUIXml;
 class CUICharacterInfo: public CUIWindow
 {
 private:
@@ -20,12 +20,13 @@ public:
 	CUICharacterInfo();
 	virtual		~CUICharacterInfo();
 
-	void		Init(float x, float y, float width, float height, const char* xml_name);
-	void		InitCharacter(CInventoryOwner* pInvOwner);
-	void		InitCharacter(CCharacterInfo* pCharInfo);
-	void		SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill);
+	void		Init					(float x, float y, float width, float height, CUIXml* xml_doc);
+	void		Init					(float x, float y, float width, float height, const char* xml_name);
+	void		InitCharacter			(CInventoryOwner* pInvOwner);
+	void		InitCharacter			(CCharacterInfo* pCharInfo);
+	void		SetRelation				(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill);
 	
-	void		ResetAllStrings();
+	void		ResetAllStrings			();
 
 	virtual void	Update				();
 			void	UpdateRelation		();
@@ -44,19 +45,13 @@ public:
 	};
 	CUIStatic*	m_icons[eMaxCaption];
 	CInventoryOwner* pInvOwner;
-/*
-	CUIStatic	UIIcon;
-	CUIStatic	UIName;
-	CUIStatic	UIRank, UIRankCaption;
-	CUIStatic	UICommunity, UICommunityCaption;
-	CUIStatic	UIReputation, UIReputationCaption;
-	CUIStatic	UIRelation, UIRelationCaption;*/
+	u32				m_ownerID;
 	// Biography
 	CUIListWnd*	pUIBio;
 
 	// Для автоматического выравнивания текста после кепшинов установить этот флаг
 	bool		m_bInfoAutoAdjust;
 
-	CUIStatic&	UIIcon()		{return *m_icons[eUIIcon];}	
-	CUIStatic&	UIName()		{return *m_icons[eUIName];}	
+	CUIStatic&	UIIcon()		{VERIFY(m_icons[eUIIcon]);return *m_icons[eUIIcon];}	
+	CUIStatic&	UIName()		{VERIFY(m_icons[eUIName]);return *m_icons[eUIName];}	
 };

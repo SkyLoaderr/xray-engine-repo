@@ -77,9 +77,9 @@ protected:
 	CUIStatic			*m_pLeftHorisontalLine;
 
 	//список торговцев, которые дают заказы на артефакты
-	CUITreeViewItem*	m_pContractsTreeItem;
+//	CUITreeViewItem*	m_pContractsTreeItem;
 	// —писок стаей дневника
-	CUITreeViewItem		*m_pActorDiaryRoot;
+//	CUITreeViewItem		*m_pActorDiaryRoot;
 	// ”казатели на разделы с задани€ми
 	CUITreeViewItem		*m_pJobsRoot;
 	CUITreeViewItem		*m_pActiveJobs;

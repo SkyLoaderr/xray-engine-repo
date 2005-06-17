@@ -2,9 +2,9 @@
 /// Список контактов PDA
 ///////////////////////////////////////////////////////////
 #include "stdafx.h"
-#include "UIPdaWnd.h"
+#include "UIPdaContactsWnd.h"
 #include "UIPdaListItem.h"
-
+#include "UIPdaAux.h"
 #include "../Pda.h"
 #include "../HUDManager.h"
 

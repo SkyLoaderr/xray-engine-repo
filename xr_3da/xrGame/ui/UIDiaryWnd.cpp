@@ -56,11 +56,11 @@ CUIDiaryWnd::CUIDiaryWnd()
 	:	m_pActiveSubdialog		(NULL),
 		m_pTreeItemFont			(NULL),
 		m_pTreeRootFont			(NULL),
-		m_pContractsTreeItem	(NULL),
+//		m_pContractsTreeItem	(NULL),
 		m_uTreeRootColor		(0xffffffff),
 		m_uTreeItemColor		(0xffffffff),
 		m_pLeftHorisontalLine	(NULL),
-		m_pActorDiaryRoot		(NULL),
+//		m_pActorDiaryRoot		(NULL),
 		m_pActiveJobs			(NULL),
 		m_pJobsRoot				(NULL),
 		m_pNews					(NULL)
@@ -172,7 +172,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			Frect r;
 
 			EDiaryIDs id;
-			if (m_pActorDiaryRoot->Find(pTVItem))
+			if (false/*m_pActorDiaryRoot->Find(pTVItem)*/)
 			{
 				id = idActorDiary;
 			}
@@ -234,7 +234,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
 				m_pActiveSubdialog->Show(true);
 
-				if (idActorDiary == id)
+				/*if (idActorDiary == id)
 				{
 					caption = static_cast<xr_string>(ALL_PDA_HEADER_PREFIX) +
 						m_pActorDiaryRoot->GetHierarchyAsText() +
@@ -242,7 +242,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					UIFrameWndHeader.UITitleText.SetText(caption.c_str());
 					caption.erase(0, caption.find_last_of("/") + 1);
 					ArticleCaption(caption.c_str());
-				}
+				}*/
 			}
 		}
 	}
@@ -349,7 +349,7 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItem->MarkArticleAsRead(true);
-
+/*
 	// Contracts section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("Contracts"));
@@ -369,7 +369,7 @@ void CUIDiaryWnd::InitTreeView()
 	UITreeView.AddItem(pTVItem);
 	m_pActorDiaryRoot = pTVItem;
 	pTVItem->MarkArticleAsRead(true);
-
+*/
 	// News section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("News"));
@@ -401,7 +401,7 @@ void CUIDiaryWnd::InitDiary()
 {
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
-
+/*
 	m_pContractsTreeItem->Close();
 	m_pContractsTreeItem->DeleteAllSubItems();
 
@@ -431,7 +431,7 @@ void CUIDiaryWnd::InitDiary()
 			}
 		}
 	}
-
+*/
 	ReloadArticles();
 }
 
@@ -442,7 +442,7 @@ void  CUIDiaryWnd::ReloadArticles()
 	if(!pActor) return;
 
 	// “ут добавл€ютс€ записи в дневник игрока
-	UIActorDiaryWnd.DeleteArticles(m_pActorDiaryRoot);
+//	UIActorDiaryWnd.DeleteArticles(m_pActorDiaryRoot);
 
 	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 	{
@@ -479,7 +479,9 @@ void CUIDiaryWnd::SetActiveSubdialog(EPdaSections section)
 //		if (!m_pJobsRoot->IsOpened())
 //			UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
 //		SendMessage(this, DIARY_RESET_PREV_ACTIVE_ITEM, NULL);
-		UITreeView.SendMessage(m_pActorDiaryRoot, BUTTON_CLICKED, NULL);
+
+
+//.		UITreeView.SendMessage(m_pActorDiaryRoot, BUTTON_CLICKED, NULL);
 		break;
 	default:
 		NODEFAULT;

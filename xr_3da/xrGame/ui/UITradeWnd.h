@@ -3,27 +3,32 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
+#include "UIWindow.h"
+#include "../inventory_space.h"
 
 class CInventoryOwner;
 class CEatableItem;
 
-#include "UIDialogWnd.h"
-#include "UIStatic.h"
-#include "UIButton.h"
-#include "UIWpnDragDropItem.h"
-#include "UIDragDropList.h"
-#include "UIProgressBar.h"
-#include "UIPropertiesBox.h"
+//#include "UIDialogWnd.h"
+//#include "UIStatic.h"
+//#include "UIButton.h"
+//#include "UIWpnDragDropItem.h"
+//#include "UIDragDropList.h"
+//#include "UIProgressBar.h"
+//#include "UIPropertiesBox.h"
 
-#include "UIEditBox.h"
-#include "UIListWnd.h"
-#include "UIMessageBox.h"
-#include "UIMultiTextStatic.h"
+//#include "UIEditBox.h"
+//#include "UIListWnd.h"
+//#include "UIMessageBox.h"
+//#include "UIMultiTextStatic.h"
 
-#include "UICharacterInfo.h"
-#include "UIItemInfo.h"
+//#include "UICharacterInfo.h"
+//#include "UIItemInfo.h"
 
 class CTrade;
+struct CUITradeInternal;
+class CUIDragDropList;
+class CUIWpnDragDropItem;
 
 class CUITradeWnd: public CUIWindow
 {
@@ -53,7 +58,9 @@ public:
 	void StartTrade();
 	void StopTrade();
 protected:
-	CUIStatic			UIStaticTop;
+
+	CUITradeInternal*	m_uidata;
+/*	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
 
 	CUIStatic			UIOurBagWnd;
@@ -81,7 +88,7 @@ protected:
 	//информаци€ о перетаскиваемом предмете
 	CUIFrameWindow		UIDescWnd;
 	CUIItemInfo			UIItemInfo;
-
+*/
 	bool				bStarted;
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
@@ -111,19 +118,19 @@ protected:
 	void UpdateLists();
 
 	void FillList	(TIItemContainer& cont, CUIDragDropList& list, bool do_colorize);
+/*
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
-	// сообщени€ о результатах сделки
-//	CUIMessageBox	 UIMessageBox;
 	CUIStatic		UIDealMsg;
 	CUIButton		UIDealClose;
+*/
 	bool			m_bDealControlsVisible;
 
 	void SwitchDealControls(bool on);
 	bool GetDealControlStatus() { return m_bDealControlsVisible; }
 	bool CanMoveToOther(CUIDragDropItem* pItem);
 	//список элементов drag drop
-	DD_ITEMS_VECTOR	m_vDragDropItems;
+	xr_vector<CUIWpnDragDropItem*>	m_vDragDropItems;
 
 	//указатели игрока и того с кем торгуем
 	CInventory* m_pInv;

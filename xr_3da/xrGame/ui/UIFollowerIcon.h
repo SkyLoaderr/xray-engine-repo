@@ -1,9 +1,24 @@
 #pragma once
-#include "UIWindow.h"
+#include "UICharacterInfo.h"
 
-class UIFollowerIcon: public CUIWindow
+class CUICharacterInfo;
+class CInventoryOwner;
+class CUIStatic;
+
+class UIFollowerIcon: public CUICharacterInfo
 {
+	typedef CUICharacterInfo		inherited;
+	enum{
+		efiUICurrentActionIcon	=	0,
+		efiUIHealthIcon,
+		efiMax,
+	};
+	CUIStatic*	m_icons[efiMax];
 public:
-	virtual void Draw		();
-	virtual void Update		();
+				UIFollowerIcon	();
+	virtual		~UIFollowerIcon	();
+			void Init			(Frect rect, const char* xml_name);
+			void InitCharacter	(CInventoryOwner* pInvOwner);
+	virtual void Draw			();
+	virtual void Update			();
 };

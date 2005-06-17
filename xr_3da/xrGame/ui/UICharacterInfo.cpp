@@ -29,6 +29,7 @@ CUICharacterInfo::CUICharacterInfo()
 	pUIBio				= NULL;
 	pInvOwner			= NULL;
 	m_bInfoAutoAdjust	= true;
+	m_ownerID			= u32(-1);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,30 +42,26 @@ CUICharacterInfo::~CUICharacterInfo()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUICharacterInfo::Init(float x, float y, float width, float height, const char* xml_name)
+void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml* xml_doc)
 {
 	inherited::Init(x, y, width, height);
-
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
-	R_ASSERT3(xml_result, "xml file not found", xml_name);
 
 	CUIXmlInit xml_init;
 	CUIStatic*	pItem = NULL;
 
-	if(uiXml.NavigateToNode("icon_static",0))	
+	if(xml_doc->NavigateToNode("icon_static",0))	
 	{
 		pItem = m_icons[eUIIcon] = xr_new<CUIStatic>();
-		xml_init.InitStatic	(uiXml, "icon_static", 0, pItem);
+		xml_init.InitStatic	(*xml_doc, "icon_static", 0, pItem);
 		pItem->ClipperOn	();
 		pItem->Show			(true);
 		pItem->Enable		(true);
 		AttachChild(pItem);
 	}
 
-	if(uiXml.NavigateToNode("name_static", 0)){
+	if(xml_doc->NavigateToNode("name_static", 0)){
 		pItem = m_icons[eUIName] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "name_static", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "name_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 0);
 		AttachChild(pItem);
 	}
@@ -72,77 +69,85 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, const c
 
 	///////////////
 	// rank
-	if(uiXml.NavigateToNode("rank_static", 0))
+	if(xml_doc->NavigateToNode("rank_static", 0))
 	{
 		pItem = m_icons[eUIRank] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "rank_static", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "rank_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
 	}
 
-	if(uiXml.NavigateToNode("rank_caption", 0))
+	if(xml_doc->NavigateToNode("rank_caption", 0))
 	{
 		pItem = m_icons[eUIRankCaption] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "rank_caption", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "rank_caption", 0, pItem);
 		AttachChild(pItem);
 	}
 	/////////////////////
 	//community
-	if(uiXml.NavigateToNode("community_static", 0))
+	if(xml_doc->NavigateToNode("community_static", 0))
 	{
 		pItem = m_icons[eUICommunity] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "community_static", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "community_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
 	}
 
-	if(uiXml.NavigateToNode("community_caption", 0))
+	if(xml_doc->NavigateToNode("community_caption", 0))
 	{
 		pItem = m_icons[eUICommunityCaption] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "community_caption", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "community_caption", 0, pItem);
 		AttachChild(pItem);
 	}
 
 	/////////////////////
 	//reputation
-	if(uiXml.NavigateToNode("reputation_static", 0))
+	if(xml_doc->NavigateToNode("reputation_static", 0))
 	{
 		pItem = m_icons[eUIReputation] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "reputation_static", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "reputation_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
 	}
 
-	if(uiXml.NavigateToNode("reputation_caption", 0))
+	if(xml_doc->NavigateToNode("reputation_caption", 0))
 	{
 		pItem = m_icons[eUIReputationCaption] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "reputation_caption", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "reputation_caption", 0, pItem);
 		AttachChild(pItem);
 	}
 
 	///////////////////
 	// relation
-	if(uiXml.NavigateToNode("relation_static", 0))
+	if(xml_doc->NavigateToNode("relation_static", 0))
 	{
 		pItem = m_icons[eUIRelation] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "relation_static", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "relation_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
 	}
 
-	if(uiXml.NavigateToNode("relation_caption", 0))
+	if(xml_doc->NavigateToNode("relation_caption", 0))
 	{
 		pItem = m_icons[eUIRelationCaption] = xr_new<CUIStatic>();
-		xml_init.InitStatic(uiXml, "relation_caption", 0, pItem);
+		xml_init.InitStatic(*xml_doc, "relation_caption", 0, pItem);
 		AttachChild(pItem);
 	}
 
-	if (uiXml.NavigateToNode("biography_list", 0))
+	if (xml_doc->NavigateToNode("biography_list", 0))
 	{
 		pUIBio = xr_new<CUIListWnd>();
-		xml_init.InitListWnd(uiXml, "biography_list", 0, pUIBio);
+		xml_init.InitListWnd(*xml_doc, "biography_list", 0, pUIBio);
 		AttachChild(pUIBio);
 	}
+}
+
+void CUICharacterInfo::Init(float x, float y, float width, float height, const char* xml_name)
+{
+	CUIXml uiXml;
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
+	R_ASSERT3(xml_result, "xml file not found", xml_name);
+	Init(x,y,width,height,&uiXml);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -176,7 +181,8 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 			m_icons[eUIRank]->SetWndRect(offset, m_icons[eUIRank]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIRank]->GetWndRect().bottom);
 		}
 	}
-	m_icons[eUIRank]->SetText(str);
+	if(m_icons[eUIRank])
+		m_icons[eUIRank]->SetText(str);
 
 
 #ifdef _DEBUG
@@ -216,6 +222,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 															float(pCharInfo->TradeIconY()*ICON_GRID_HEIGHT),
 															float(CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
 															float(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
+	m_icons[eUIIcon]->SetStretchTexture						(true);
 
 	// Bio
 	if (pUIBio && pUIBio->IsEnabled())
@@ -236,6 +243,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 {
 	VERIFY(pOwner);
 	pInvOwner = pOwner;
+	m_ownerID = (smart_cast<CObject*>(pInvOwner))->ID();
 	InitCharacter(&pInvOwner->CharacterInfo());
 
 	UpdateRelation();
@@ -293,6 +301,7 @@ void CUICharacterInfo::ResetAllStrings()
 
 void CUICharacterInfo::UpdateRelation()
 {
+	if(!m_icons[eUIRelation] ||!m_icons[eUIRelationCaption]) return;
 		CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
 		if (m_pActor)
 		{
@@ -311,7 +320,10 @@ void CUICharacterInfo::UpdateRelation()
 void CUICharacterInfo::Update()
 {
 	inherited::Update();
-
+	if( m_ownerID!=u32(-1) ){
+		if (NULL==Level().Objects.net_Find(m_ownerID) )
+			pInvOwner = NULL;
+	}
 	if( pInvOwner&&(smart_cast<CObject*>(pInvOwner))->getDestroy() )
 		pInvOwner = NULL;
 

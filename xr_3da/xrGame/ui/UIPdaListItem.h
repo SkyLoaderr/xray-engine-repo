@@ -5,11 +5,13 @@
 
 #pragma once
 #include "UIListItem.h"
-#include "UICharacterInfo.h"
-#include "..\InventoryOwner.h"
-#include "UIMultiTextStatic.h"
-#include "UIIconedListItem.h"
-#include "UIFrameWindow.h"
+//#include "UIMultiTextStatic.h"
+//#include "UIIconedListItem.h"
+
+class CUIFrameWindow;
+class CUIIconedListItem;
+class CUICharacterInfo;
+class CInventoryOwner;
 
 class CUIPdaListItem : public CUIListItem
 {
@@ -24,7 +26,7 @@ public:
 
 protected:
 	//информация о персонаже
-	CUIFrameWindow			UIMask;
-	CUIIconedListItem		UIName;
-	CUICharacterInfo		UIInfo;
+	CUIFrameWindow*			UIMask;
+	CUIIconedListItem*		UIName;
+	CUICharacterInfo*		UIInfo;
 };

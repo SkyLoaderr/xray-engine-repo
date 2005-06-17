@@ -5,24 +5,14 @@
 #ifndef UI_PDA_COMMUNICATION_H_
 #define UI_PDA_COMMUNICATION_H_
 
-#include "UIPdaContactsWnd.h"
-//#include "UIPdaDialogWnd.h"
-
-#include "UIDialogWnd.h"
-#include "UIStatic.h"
-#include "UIButton.h"
-#include "UIEditBox.h"
-#include "UIListWnd.h"
-#include "UIFrameWindow.h"
-
-#include "../PhraseDialogDefs.h"
-
+#include "UIWindow.h"
 
 
 class CInventoryOwner;
 class CActor;
 class CPhraseDialogManager;
-
+class CUIPdaContactsWnd;
+class CPda;
 ///////////////////////////////////////
 // Подложка и основные кнопки PDA
 ///////////////////////////////////////
@@ -59,7 +49,7 @@ public:
 protected:
 
 //	CUIFrameWindow		UIMainPdaFrame;
-	CUIPdaContactsWnd	UIPdaContactsWnd;
+	CUIPdaContactsWnd*	UIPdaContactsWnd;
 	//указатель на владельца инвентаря вызвавшего менюшку
 	CInventoryOwner*	m_pInvOwner;
 	CPda*				m_pPda;

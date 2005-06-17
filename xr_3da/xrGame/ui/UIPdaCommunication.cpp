@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "UIPdaCommunication.h"
+#include "UIPdaContactsWnd.h"
+
 #include "../Pda.h"
 #include "UIPdaWnd.h"
 
@@ -29,7 +31,7 @@ CUIPdaCommunication::CUIPdaCommunication()
 	m_pPda = NULL;
 
 	SetFont(HUD().Font().pFontMedium);
-
+	UIPdaContactsWnd	= NULL;
 //	m_pOurDialogManager = m_pOthersDialogManager = NULL;
 
 //	ToTopicMode();
@@ -55,9 +57,10 @@ void CUIPdaCommunication::Init()
 //	UIPdaDialogWnd.Show(false);
 
 	//список контактов
-	AttachChild(&UIPdaContactsWnd);
-	UIPdaContactsWnd.Init(0,0, GetWidth(), GetHeight());
-	UIPdaContactsWnd.Show(false);
+	UIPdaContactsWnd = xr_new<CUIPdaContactsWnd>(); UIPdaContactsWnd->SetAutoDelete(true);
+	AttachChild(UIPdaContactsWnd);
+	UIPdaContactsWnd->Init(0,0, GetWidth(), GetHeight());
+	UIPdaContactsWnd->Show(false);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -75,7 +78,7 @@ void CUIPdaCommunication::InitPDACommunication()
 	InitPdaContacts();
 
 //	UIPdaDialogWnd.Show(false);
-	UIPdaContactsWnd.Show(true);
+	UIPdaContactsWnd->Show(true);
 }
 
 
@@ -188,7 +191,7 @@ void CUIPdaCommunication::Show(bool status)
 ////////////////////////////////////////
 void CUIPdaCommunication::InitPdaContacts()
 {
-	UIPdaContactsWnd.RemoveAll();
+	UIPdaContactsWnd->RemoveAll();
 
 	xr_vector<CPda*> pda_list;
 	m_pPda->ActiveContacts(pda_list);
@@ -196,7 +199,7 @@ void CUIPdaCommunication::InitPdaContacts()
 	xr_vector<CPda*>::iterator it = pda_list.begin();
 
 	for(; it!=pda_list.end();++it){
-		UIPdaContactsWnd.AddContact(*it);
+		UIPdaContactsWnd->AddContact(*it);
 	}
 }
 
@@ -210,7 +213,7 @@ void CUIPdaCommunication::UpdatePdaContacts()
 
 	for(; it!=pda_list.end();++it){
 		CPda* pPda = (*it);
-		if(!UIPdaContactsWnd.IsInList(pPda))
-			UIPdaContactsWnd.RemoveContact(pPda);
+		if(!UIPdaContactsWnd->IsInList(pPda))
+			UIPdaContactsWnd->RemoveContact(pPda);
 	}
 }
