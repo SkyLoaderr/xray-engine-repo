@@ -1,0 +1,43 @@
+//-----------------------------------------------------------------------------
+// 17.06.2005
+//-----------------------------------------------------------------------------
+---- Operation started at time 10:17:22 ----
+Replacing p:\xr_3da\xrGame\stalker_animation_manager.cpp
+Replacing p:\xr_3da\xrGame\stalker_animation_manager.h
+Replacing p:\xr_3da\xrGame\stalker_animation_pair.cpp
+Replacing p:\xr_3da\xrGame\stalker_animation_pair.h
+Replacing p:\xr_3da\xrGame\ui\UIMainIngameWnd.cpp
+Replacing p:\xr_3da\xrGame\ui\UIMainIngameWnd.h
+Replacing p:\xrCore\_flags.h
+Replacing X:\gamedata\xrstalker.vcproj
+Replacing x:\gamedata\config\creatures\actor.ltx
+Replacing x:\gamedata\config\creatures\M_Rat.ltx
+Replacing x:\gamedata\config\gameplay\info_l05dark_valley.xml
+Replacing x:\gamedata\config\scripts\val_opendoor_monolith.ltx
+Replacing x:\gamedata\config\scripts\val_opendoor_soldier.ltx
+Replacing x:\gamedata\config\scripts\val_opendoor_victim.ltx
+Replacing x:\gamedata\config\ui\maingame.xml
+Replacing x:\gamedata\config\weapons\w_svd.ltx
+Replacing x:\gamedata\scripts\gulag_garbage.script
+Replacing x:\gamedata\scripts\ph_button.script
+Replacing x:\gamedata\scripts\ph_on_hit.script
+Replacing x:\gamedata\scripts\ph_sound.script
+Replacing x:\gamedata\scripts\smart_terrain.script
+Replacing x:\gamedata\scripts\sr_sound.script
+Replacing x:\gamedata\scripts\sr_tip.script
+Replacing x:\gamedata\scripts\state_lib.script
+Replacing x:\gamedata\scripts\state_mgr.script
+Replacing x:\gamedata\scripts\state_mgr_animation.script
+Replacing x:\gamedata\scripts\xr_attendant.script
+Replacing x:\gamedata\scripts\xr_camper.script
+Replacing x:\gamedata\scripts\xr_combat_ignore.script
+Replacing x:\gamedata\scripts\xr_combat_monolith.script
+Replacing x:\gamedata\scripts\xr_conditions.script
+Replacing x:\gamedata\scripts\xr_gulag.script
+Replacing x:\gamedata\scripts\xr_logic.script
+Replacing x:\gamedata\scripts\xr_meet.script
+Replacing x:\gamedata\scripts\xr_motivator.script
+Replacing x:\gamedata\scripts\xr_wounded.script
+---- Operation started at time 10:17:57 ----
+Getting x:\gamedata\config\text\rus\string_table_tasks_garbage.xml
+---- Operation completed successfully at time 10:18:47 ----
