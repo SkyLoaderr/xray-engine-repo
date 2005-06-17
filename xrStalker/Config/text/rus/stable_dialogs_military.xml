@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="mil_bodyguard_dialog_0">
-        <text>Чего тебе.</text>
+        <text>Чего тебе ?</text>
     </string>
     <string id="mil_bodyguard_dialog_1">
-        <text>Мне к Лукашу.</text>
+        <text>Мне к Лукашу, есть жизненно важная для вас информация.</text>
     </string>
     <string id="mil_bodyguard_dialog_2">
-        <text>Ствол прибери и не вздумай доставать - пристрелю.</text>
-    </string>
-    <string id="mil_bodyguard_dialog_3">
-        <text>Проходи, и не вздумай достать ствол - без башки останешься.</text>
-    </string>
-    <string id="mil_bodyguard_dialog_4">
-        <text>Спасибо.</text>
+        <text>Ну, проходи. И не вздумай баловать - вперед ногами вынесут.</text>
     </string>
     <string id="mil_bodyguard_dialog_5">
-        <text>Ок.</text>
+        <text>Уговорил.</text>
     </string>
     <string id="mil_cook_common1_0">
         <text>Здравствуй.</text>
@@ -1064,6 +1058,30 @@
     </string>
     <string id="mil_trader_dialog_0">
         <text>Ну, чего приволок ?</text>
+    </string>
+    <string id="mil_zoneguard_common1_0">
+        <text>У вас тут повар есть ?</text>
+    </string>
+    <string id="mil_zoneguard_common1_1">
+        <text>А как же. А на кой он тебе ?</text>
+    </string>
+    <string id="mil_zoneguard_common1_2">
+        <text>Да, хочу у него жратвой разжиться.</text>
+    </string>
+    <string id="mil_zoneguard_common1_3">
+        <text>Так он у себя, бормочет.</text>
+    </string>
+    <string id="mil_zoneguard_common1_4">
+        <text>Бормочет ?</text>
+    </string>
+    <string id="mil_zoneguard_common1_5">
+        <text>Именно. Пьянь болотная. Если бы готовить не умел, то давно бы его спровадили с базы. На кухне он. Я тебе наводку дам - найдешь.</text>
+    </string>
+    <string id="mil_zoneguard_common1_6">
+        <text>Спасибо, брат.</text>
+    </string>
+    <string id="mil_zoneguard_common1_7">
+        <text>Не за что.</text>
     </string>
     <string id="mil_zoneguard_dialog_10">
         <text>Тебе того же. Что тебя сюда привело ?\n</text>
