@@ -2,6 +2,7 @@ local						Counters = {}
 local						Names = {}
 local						timer = profile_timer()
 local						old_hook_func, old_hook_mask, old_hook_count
+local						started = false
 
 local function hook			(context,line_number)
 --	if nil ~= old_hook_func then
@@ -61,6 +62,11 @@ local function hook			(context,line_number)
 end
 
 function setup_hook			()	
+	if started == true then
+		printf				("profiler hook is already setup!")
+		return
+	end
+	
 	timer:start				()
 
 	old_hook_func, 
@@ -68,12 +74,20 @@ function setup_hook			()
 	old_hook_count			= debug.gethook();
 	
     debug.sethook			(hook, "cr")
+    
+   	started					= true
 end
 
 function clear_hook			()	
+   	if started == false then
+		printf				("profiler hook wasn't setup!")
+   		return;
+   	end
 --	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
 	debug.sethook			()
 	timer:stop				()
+	
+	started					= false
 end
 
 local function getname		(func)
@@ -87,6 +101,11 @@ local function getname		(func)
 end
 
 function stats				()
+	if started == false then
+		printf				("profiler hook wasn't setup!")
+		return
+	end
+
 	clear_hook				()
 	
 	printf					("profiler statistics")
@@ -136,6 +155,12 @@ end
 function clear				()
 	Counters				= {}
 	Names					= {}
+	
+	if started == true then
+		clear_hook			()
+	end
+
 	timer					= profile_timer()
-	timer:start				()
+	
+	setup_hook				()
 end
