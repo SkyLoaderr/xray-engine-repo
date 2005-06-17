@@ -8,10 +8,10 @@
 
 #include "../igame_level.h"
 #include "net_client.h"
-#include "infoportiondefs.h"
 #include "script_export_space.h"
 #include "../StatGraph.h"
 #include "xrMessages.h"
+#include "alife_space.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -244,17 +244,6 @@ public:
 	CMapManager&			MapManager					()	{return *m_map_manager;}
 	CFogOfWarMngr&			FogOfWarMngr				()	{return *m_pFogOfWarMngr;}
 
-/*
-	void					AddEntityMapLocation		(const CGameObject* object, EMapLocationFlags location_type);
-	void					AddObjectMapLocationIcon	(const CGameObject* object, EMapLocationFlags location_type, LPCSTR name, LPCSTR text, int icon_x, int icon_y);
-
-	void					AddMapLocation				(const SMapLocation& map_location, EMapLocationFlags location_type);
-	void					RemoveMapLocationByID		(u16 object_id, EMapLocationFlags location_type);
-	void					RemoveMapLocationByInfo		(INFO_INDEX info_index);
-	void					RemoveMapLocations			();
-	SMapLocation*			GetMapLocationByID			(u16 object_id);
-	void					UpdateMapLocation			();
-*/
 	//работа с пулями
 protected:	
 	CBulletManager*		m_pBulletManager;
