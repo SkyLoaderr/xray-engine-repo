@@ -17,6 +17,7 @@
 CAI_PseudoDog::CAI_PseudoDog()
 {
 	StateMan = xr_new<CStateManagerPseudodog>(this);
+	com_man().add_ability(ControlCom::eControlJump);
 }
 
 CAI_PseudoDog::~CAI_PseudoDog()

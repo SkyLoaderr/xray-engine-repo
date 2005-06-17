@@ -10,6 +10,7 @@
 CSnork::CSnork() 
 {
 	StateMan		= xr_new<CStateManagerSnork>	(this);
+	com_man().add_ability(ControlCom::eControlJump);
 }
 
 CSnork::~CSnork()

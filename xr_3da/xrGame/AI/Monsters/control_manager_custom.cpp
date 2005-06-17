@@ -34,17 +34,17 @@ void CControlManagerCustom::add_ability(ControlCom::EContolType type)
 	} else if (type == ControlCom::eControlTripleAnimation) {
 		
 		m_triple_anim	= xr_new<CAnimationTriple>();
-		m_man->add		(m_sequencer, ControlCom::eControlTripleAnimation);
+		m_man->add		(m_triple_anim, ControlCom::eControlTripleAnimation);
 	
 	} else if (type == ControlCom::eControlRotationJump) {
 
 		m_rotation_jump = xr_new<CControlRotationJump>();
-		m_man->add		(m_sequencer, ControlCom::eControlRotationJump);
+		m_man->add		(m_rotation_jump, ControlCom::eControlRotationJump);
 
 	} else if (type == ControlCom::eControlJump) {
 
 		m_jump			= xr_new<CControlJump>();
-		m_man->add		(m_sequencer, ControlCom::eControlJump);
+		m_man->add		(m_jump, ControlCom::eControlJump);
 
 	}	
 }

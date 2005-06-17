@@ -40,8 +40,8 @@ CControl_Manager::~CControl_Manager()
 
 void CControl_Manager::init_external()
 {
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)
-		it->second->init_external(this, m_object);
+	//for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)
+	//	it->second->init_external(this, m_object);
 }
 
 void CControl_Manager::load(LPCSTR section)
@@ -148,6 +148,7 @@ ControlCom::IComData *CControl_Manager::data(CControl_Com *who, ControlCom::ECon
 void CControl_Manager::add(CControl_Com *com, ControlCom::EContolType type)
 {
 	m_control_elems[type] = com;
+	com->init_external(this, m_object);
 }
 void CControl_Manager::set_base_controller(CControl_Com *com, ControlCom::EContolType type)
 {
