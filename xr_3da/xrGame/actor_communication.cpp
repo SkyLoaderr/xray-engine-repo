@@ -420,7 +420,6 @@ void CActor::UpdateContact		(u16 contact_id)
 		(*it).time = Level().GetGameTime();
 	}
 }
-
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
 	if(Game().Type() != GAME_SINGLE) return;
