@@ -51,6 +51,7 @@ BOOL	testSKIP		(LPCSTR path)
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
 
+	if (0==stricmp(p_ext,".avi"))	return TRUE;
 	if (0==stricmp(p_ext,".key"))	return TRUE;
 	if (0==stricmp(p_ext,".tga"))	return TRUE;
 	if (0==stricmp(p_ext,".txt"))	return TRUE;
@@ -273,11 +274,18 @@ void ProcessNormal(LPCSTR tgt_name)
 	FS.file_list_close	(list);
 }
 
-void ProcessLTX(LPCSTR tgt_name)
+void ProcessLTX(LPCSTR tgt_name, LPCSTR params)
 {
 	xr_string		ltx_name;
-	FS.update_path	(ltx_name,"$app_root$","compress.ltx");
-	CInifile ltx	(ltx_name.c_str());
+	LPCSTR ltx_fn	= strstr(params,".ltx");				VERIFY(ltx_fn!=0);
+	string_path		fn;
+	string_path		tmp;
+	strncpy			(tmp,params,ltx_fn-params); tmp[ltx_fn-params]=0;
+	_Trim			(tmp);
+	bool bExist		= FS.exist(fn,"$app_root$",tmp,".ltx"); 
+	R_ASSERT3		(bExist,"ERROR: Can't find ltx file: ",fn);
+	CInifile ltx	(fn);
+	printf			("Processing LTX...\n");
 
 	xr_vector<char*> list;
 	xr_vector<char*> fl_list;
@@ -288,6 +296,7 @@ void ProcessLTX(LPCSTR tgt_name)
 
 		LPCSTR path = 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
 
+		printf				("- Append path: '%s'\n",s_it->first.c_str());
 		xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,mask);
 		R_ASSERT3			(i_list,	"Unable to open file list:", path);
 		// collect folders
@@ -343,12 +352,13 @@ int __cdecl main	(int argc, char* argv[])
 		printf			("[settings] VFS:  'level.*'\n");
 
 		string_path		folder;		strlwr(strconcat(folder,argv[1],"\\"));
-		printf			("\nCompressing files (%s)...",folder);
+		printf			("\nCompressing files (%s)...\n\n",folder);
 
 		FS._initialize	(CLocatorAPI::flTargetFolderOnly|CLocatorAPI::flScanAppRoot,folder);
 
-		if(strstr(params,"-ltx")){
-			ProcessLTX		(argv[1]);
+		LPCSTR p		= strstr(params,"-ltx");
+		if(0!=p){
+			ProcessLTX		(argv[1],p+4);
 		}else{
 			ProcessNormal	(argv[1]);
 		}
