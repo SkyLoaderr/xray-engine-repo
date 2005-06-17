@@ -116,11 +116,16 @@ public:
 	occTri*		m_pTris	;
 	Fvector		camera	;
 public:
+	pred_fb		(occTri* _t) : m_pTris(_t)	{}
 	pred_fb		(occTri* _t, Fvector& _c) : m_pTris(_t), camera(_c)	{}
 	ICF bool	operator()		(CDB::RESULT& _1, CDB::RESULT& _2)	{
 		occTri&	t0	= m_pTris	[_1.id];
 		occTri&	t1	= m_pTris	[_2.id];
 		return	camera.distance_to_sqr(t0.center) < camera.distance_to_sqr(t1.center);
+	}
+	ICF bool	operator()		(CDB::RESULT& _1)	{
+		occTri&	T	= m_pTris	[_1.id];
+		return	T.skip>Device.dwFrame;
 	}
 };
 
@@ -136,6 +141,7 @@ void CHOM::Render_DB			(CFrustum& base)
 	CDB::RESULT*	end			= xrc.r_end		();
 	
 	Fvector			COP			= Device.vCameraPosition;
+	std::remove_if	(it,end,pred_fb(m_pTris));
 	std::sort		(it,end,pred_fb(m_pTris,COP));
 
 	float			view_dim	= occ_dim_0;
@@ -169,7 +175,6 @@ void CHOM::Render_DB			(CFrustum& base)
 	{
 		// Control skipping
 		occTri& T			= m_pTris	[it->id];
-		if (T.skip>_frame)	continue;
 		u32	next			= _frame + ::Random.randI(3,10);
 
 		// Test for good occluder - should be improved :)
