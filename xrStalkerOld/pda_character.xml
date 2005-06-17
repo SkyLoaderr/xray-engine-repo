@@ -2,7 +2,8 @@
 <!-- CHARACTER INFO IN THE PDA CONTACT -->
 <window>
 	<!-- ICON -->
-	<icon_static x="260" y="5" width="128" height="64"></icon_static>
+	<icon_static x="324" y="5" width="64" height="64"></icon_static>
+	<!-- <icon_static x="260" y="5" width="128" height="64"></icon_static> -->
 
 	<!-- RANK -->
 	<rank_static x="130" y="20" width="240" height="16">
