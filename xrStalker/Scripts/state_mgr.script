@@ -163,50 +163,47 @@ function act_state_mgr_end:execute()
 	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then
 		state_mgr_direction.update_movement_direction(self.object, self.st)
 	end
+	local t = state_lib.states[self.st.target_state].weapon
+	local w = isWeapon(self.object:best_weapon())
+
+	if not w then
+		return
+	end
 	
-	if isWeapon(self.object:best_weapon()) and
-	   state_lib.states[self.st.target_state].weapon ~= nil and
-	   state_lib.states[self.st.target_state].weapon ~= "strapped" and
-	   state_lib.states[self.st.target_state].weapon ~= "none"
-	then
-		if state_lib.states[self.st.target_state].weapon == "fire" or
-		   state_lib.states[self.st.target_state].weapon == "sniper_fire"
-		then
-			if self.st.look_object ~= nil then
-				if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
-				   (not IsStalker(level.object_by_id(self.st.look_object)) or				
-				   self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy) and
-				   level.object_by_id(self.st.look_object):alive() == true
-				then
-					if state_lib.states[self.st.target_state].weapon == "sniper_fire" then
-						self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
-					else
-						self.object:set_item(object.fire1, self.object:best_weapon())
-					end
-					return
-				else
-					self.object:set_item(object.idle, self.object:best_weapon())
-					return
-				end
-			end
-				
-			if self.st.look_position ~= nil and 
-			   self.st.look_object == nil
+	if t == "fire" or t == "sniper_fire" then
+		if self.st.look_object ~= nil then
+			if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
+				(not IsStalker(level.object_by_id(self.st.look_object)) or				
+				self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy) and
+				level.object_by_id(self.st.look_object):alive() == true
 			then
-				self.object:set_item(object.fire1, self.object:best_weapon())
+				if t == "sniper_fire" then
+					self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
+				else
+					self.object:set_item(object.fire1, self.object:best_weapon())
+				end
 				return
 			else
-				if self.st.target_state == "psy_shoot" then
-					self.object:set_item(object.fire1, self.object:best_weapon())
-					return
-				end
 				self.object:set_item(object.idle, self.object:best_weapon())
-				return				
+				return
 			end
-		else
-			self.object:set_item(object.idle, self.object:best_weapon())
 		end
-	end
+			
+		if self.st.look_position ~= nil and 
+			self.st.look_object == nil
+		then
+			self.object:set_item(object.fire1, self.object:best_weapon())
+			return
+		else
+			if self.st.target_state == "psy_shoot" then
+				self.object:set_item(object.fire1, self.object:best_weapon())
+				return
+			end
+			self.object:set_item(object.idle, self.object:best_weapon())
+			return				
+		end
+		return
+	end	
 end
 function act_state_mgr_end:finalize()
 	action_base.finalize(self)
@@ -249,6 +246,8 @@ function state_manager:__init(npc)
 	self.properties["weapon_unstrapped_now"]= 16
 	self.properties["weapon_none"]			= 17
 	self.properties["weapon_none_now"]		= 18
+	self.properties["weapon_drop"]			= 19
+	self.properties["weapon_fire"]			= 20
 	
 	self.properties["movement"]				= 21
 	self.properties["movement_walk"]		= 22
@@ -308,6 +307,8 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["weapon_unstrapped_now"],	state_mgr_weapon.eva_state_mgr_weapon_unstrapped_now("state_mgr_weapon_unstrapped_now", self))
 	self.planner:add_evaluator(self.properties["weapon_none"],				state_mgr_weapon.eva_state_mgr_weapon_none("state_mgr_weapon_none", self))
 	self.planner:add_evaluator(self.properties["weapon_none_now"],			state_mgr_weapon.eva_state_mgr_weapon_none_now("state_mgr_weapon_none_now", self))
+	self.planner:add_evaluator(self.properties["weapon_drop"],				state_mgr_weapon.eva_state_mgr_weapon_drop("state_mgr_weapon_drop", self))
+	self.planner:add_evaluator(self.properties["weapon_fire"],				state_mgr_weapon.eva_state_mgr_weapon_fire("state_mgr_weapon_fire", self))
 	
 	self.planner:add_evaluator(self.properties["movement"],					state_mgr_movement.eva_state_mgr_movement("state_mgr_movement", self))
 	self.planner:add_evaluator(self.properties["movement_walk"],			state_mgr_movement.eva_state_mgr_movement_walk("state_mgr_movement_walk", self))
@@ -366,6 +367,8 @@ function state_manager:__init(npc)
 	self.operators["weapon_strapp"]			= 11
 	self.operators["weapon_unstrapp"]		= 12
 	self.operators["weapon_none"]			= 13
+	self.operators["weapon_fire"]			= 14
+	self.operators["weapon_drop"]			= 15
 	
 	self.operators["movement"]				= 21
 	self.operators["movement_walk"]			= 22
@@ -398,7 +401,7 @@ function state_manager:__init(npc)
 	self.operators["animation_wait_state"]	= 74
 	
 	--' Actions
-	local action = state_mgr_weapon.act_state_mgr_weapon_unstrapp("state_mgr_weapon_unstrapp")
+	local action = state_mgr_weapon.act_state_mgr_weapon_unstrapp("state_mgr_weapon_unstrapp", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_unstrapped"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
@@ -407,7 +410,7 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["weapon_unstrapped_now"],true))
 	self.planner:add_action(self.operators["weapon_unstrapp"], action)
 	
-	action = state_mgr_weapon.act_state_mgr_weapon_strapp("state_mgr_weapon_strapp")
+	action = state_mgr_weapon.act_state_mgr_weapon_strapp("state_mgr_weapon_strapp", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_strapped"],		true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
@@ -416,7 +419,7 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["weapon_strapped_now"],	true))
 	self.planner:add_action(self.operators["weapon_strapp"], action)
 
-	action = state_mgr_weapon.act_state_mgr_weapon_none("state_mgr_weapon_none")
+	action = state_mgr_weapon.act_state_mgr_weapon_none("state_mgr_weapon_none", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_none"],			true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
@@ -424,6 +427,24 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_none_now"],		true))
 	self.planner:add_action(self.operators["weapon_none"], action)
+
+	action = state_mgr_weapon.act_state_mgr_weapon_drop("state_mgr_weapon_drop", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["weapon_drop"],			true))
+	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_effect 			(world_property(self.properties["weapon"], 				true))
+	action:add_effect 			(world_property(self.properties["weapon_none_now"],		true))
+	self.planner:add_action(self.operators["weapon_drop"], action)
+
+	action = state_mgr_weapon.act_state_mgr_weapon_fire("state_mgr_weapon_fire", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["weapon_fire"],			true))
+	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_effect 			(world_property(self.properties["weapon"], 				true))
+	action:add_effect 			(world_property(self.properties["weapon_unstrapped_now"],true))
+	self.planner:add_action(self.operators["weapon_fire"], action)
 
 
 	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")
@@ -516,6 +537,7 @@ function state_manager:__init(npc)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["direction_search"],	false))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))	
@@ -526,6 +548,7 @@ function state_manager:__init(npc)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["direction_search"],	true))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))	
@@ -704,13 +727,13 @@ function state_manager:__init(npc)
 	self.emerg = {}
 	self.synsound = nil
 	self.yaw_delta = nil
+	self.need_reweapon = false
 end
 function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
 	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
 	end
-
 	if target then
 		if target.look_position then
 			printf("look position: %s %s %s", target.look_position.x,
@@ -728,29 +751,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		printf("look target NIL")
 	end
 
---	printf("Timeout %s", utils.to_str(timeout))
-	
-	self.target_state = state_name
-	if state_lib.states[state_name].reset == true then
-		self.reset_state = true
-	else
-		self.reset_state = false
-	end
-	
-
-	if emerg ~= nil then
-		if  self.animation:target_state() ~= state_lib.states[state_name].animation 
-		then
-			self.emerg.animation = emerg.animation
-			self.emerg.animation_nout = emerg.animation_nout
-		end
-	end
-
-	self.synsound = synsound
-	if self.synsound then
-		printf("synsound: %s", utils.to_str(self.synsound))
-	end
-	
+	--сперва устанавливаем углы.
 	if target ~= nil then
 		self.look_position = target.look_position
 		if target.look_object ~= nil then 
@@ -764,6 +765,34 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		self.look_object = nil
 		self.no_rotate = true
 	end
+	-- меняем угол точности.
+	if yaw_delta ~= nil then
+		self.yaw_delta = yaw_delta
+	else
+		self.yaw_delta = 5
+	end
+
+	if self.target_state ~= state_name then
+		self.target_state = state_name
+--		printf("SETING_REWEAPON")
+		self.need_reweapon = true
+	end
+	if state_lib.states[state_name].reset == true then
+		self.reset_state = true
+	else
+		self.reset_state = false
+	end
+	
+
+	if emerg ~= nil then
+		if  self.animation:target_state() ~= state_lib.states[state_name].animation then
+			self.emerg.animation = emerg.animation
+			self.emerg.animation_nout = emerg.animation_nout
+		end
+	end
+
+	self.synsound = synsound
+	
 	
 	self.callback = callback
 	if timeout ~= nil and
@@ -778,11 +807,6 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		end
 	end
 	
-	if yaw_delta ~= nil then
-		self.yaw_delta = yaw_delta
-	else
-		self.yaw_delta = 5
-	end
 end
 function state_manager:get_state()
 	return self.target_state

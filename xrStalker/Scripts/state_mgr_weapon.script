@@ -6,45 +6,47 @@ function eva_state_mgr_weapon:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon:evaluate()
---[[
-	if self.object:best_weapon() == nil or
-	   get_clsid(self.object:best_weapon()) == clsid.obj_bolt 
-	then
-		printf("WEAPON NOT PRESENT")
-		return true
-	end
-]]
 --	printf("	-- best weapon %s", utils.to_str(self.object:best_weapon():name()))
 --	printf("	-- weapon strapped %s", utils.to_str(self.object:weapon_strapped()))
 --	printf("	-- weapon unstrapped %s", utils.to_str(self.object:weapon_unstrapped()))
 --	printf("	-- weapon strappable %s", utils.to_str(strappable_weapon(self.object:best_weapon())))
+	local weapon = state_lib.states[self.st.target_state].weapon
+	if (weapon == nil) then
+		return true
+	end
+	if self.st.need_reweapon then
+--		printf("REWEAPON")
+		return false
+	end
 	
 	if not isWeapon(self.object:best_weapon()) then
 --		printf("isWeapon = false")
 		return true
 	end
-
-	if (state_lib.states[self.st.target_state].weapon == nil) or
-	
-	   (state_lib.states[self.st.target_state].weapon == "strapped" and
-	   ((strappable_weapon(self.object:best_weapon()) and self.object:weapon_strapped()) or
-		(not strappable_weapon(self.object:best_weapon()) and self.object:active_item() == nil))) or
-		
-	   ((state_lib.states[self.st.target_state].weapon == "unstrapped" or
-	     state_lib.states[self.st.target_state].weapon == "fire" or
-	     state_lib.states[self.st.target_state].weapon == "sniper_fire") and
-		self.object:weapon_unstrapped() and	
-		self.object:active_item() ~= nil and		
-		self.object:best_weapon() ~= nil and
-		self.object:active_item():id() == self.object:best_weapon():id()) or
-		
-	   (state_lib.states[self.st.target_state].weapon == "none" and
-	    self.object:active_item() == nil)
-	then
---		printf("eva_state_mgr_weapon:evaluate() TRUE")
+	local bestweapon = self.object:best_weapon()
+	local activeitem = self.object:active_item()
+	if (weapon == "strapped" and
+	   ((strappable_weapon(bestweapon) and self.object:weapon_strapped()) or
+	   (not strappable_weapon(bestweapon) and activeitem == nil))) then
+		return true
+	end		
+	if ((weapon == "unstrapped" or
+	   weapon == "fire" or
+	   weapon == "sniper_fire") and
+	   self.object:weapon_unstrapped() and	
+	   activeitem ~= nil and		
+	   bestweapon ~= nil and
+	   activeitem:id() == bestweapon:id()) then
+		return true
+	end		
+	if (weapon == "none" and
+	   activeitem == nil) then
 		return true
 	end
---	printf("eva_state_mgr_weapon:evaluate() FALSE")
+	if (weapon == "drop" and
+	   activeitem == nil) then
+		return true
+	end
 	return false
 end
 --' Лочим ли мы все это для оружия или нет?
@@ -82,9 +84,7 @@ function eva_state_mgr_weapon_unstrapped:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_unstrapped:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "unstrapped" or
-		   state_lib.states[self.st.target_state].weapon == "fire" or
-		   state_lib.states[self.st.target_state].weapon == "sniper_fire"
+	return state_lib.states[self.st.target_state].weapon == "unstrapped"
 end
 --' Держит ли уже он оружие в руках
 class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)
@@ -114,35 +114,55 @@ function eva_state_mgr_weapon_none_now:evaluate()
 	return self.object:active_item() == nil
 end
 
+--' Необходимо ли бросить оружие
+class "eva_state_mgr_weapon_drop" (property_evaluator)
+function eva_state_mgr_weapon_drop:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_drop:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "drop"			
+end
+
+--' Необходимо ли стрелять
+class "eva_state_mgr_weapon_fire" (property_evaluator)
+function eva_state_mgr_weapon_fire:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_fire:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "fire" or
+	       state_lib.states[self.st.target_state].weapon == "sniper_fire"
+end
+
 
 --' Достать оружие
 class "act_state_mgr_weapon_unstrapp" (action_base)
-function act_state_mgr_weapon_unstrapp:__init(name) super (nil, name)
+function act_state_mgr_weapon_unstrapp:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_weapon_unstrapp:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.idle, self.object:best_weapon())
+	self.st.need_reweapon = false
 end
 function act_state_mgr_weapon_unstrapp:execute()
---	printf("*STATE MGR* Weapon Unstrap action")
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_unstrapp:finalize()
 	action_base.finalize(self)
 end
-
 --' Спрятать оружие
 class "act_state_mgr_weapon_strapp" (action_base)
-function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
+function act_state_mgr_weapon_strapp:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_weapon_strapp:initialize()
 	action_base.initialize(self)
-	printf("*STATE MGR* Weapon Strap action")
 	if strappable_weapon(self.object:best_weapon()) then
 		self.object:set_item(object.strap, self.object:best_weapon())
 	else
 		self.object:set_item(object.idle, nil)
 	end
+	self.st.need_reweapon = false
 end
 function act_state_mgr_weapon_strapp:execute()	
 	action_base.execute(self)
@@ -150,23 +170,55 @@ end
 function act_state_mgr_weapon_strapp:finalize()
 	action_base.finalize(self)
 end
-
 --' убрать оружие
 class "act_state_mgr_weapon_none" (action_base)
-function act_state_mgr_weapon_none:__init(name) super (nil, name)
+function act_state_mgr_weapon_none:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_weapon_none:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.idle, nil)
+	self.st.need_reweapon = false
 end
 function act_state_mgr_weapon_none:execute()
---	printf("*STATE MGR* Weapon Strap action")
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_none:finalize()
 	action_base.finalize(self)
 end
+--' стрелять оружие
+class "act_state_mgr_weapon_fire" (action_base)
+function act_state_mgr_weapon_fire:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_weapon_fire:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.st.need_reweapon = false
+end
+function act_state_mgr_weapon_fire:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_fire:finalize()
+	action_base.finalize(self)
+end
 
+--' бросить оружие
+class "act_state_mgr_weapon_drop" (action_base)
+function act_state_mgr_weapon_drop:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_weapon_drop:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.drop, self.object:best_weapon())
+	self.st.need_reweapon = false
+end
+function act_state_mgr_weapon_drop:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_drop:finalize()
+	action_base.finalize(self)
+end
 
 
 

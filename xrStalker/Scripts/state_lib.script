@@ -386,7 +386,7 @@ states = {
 				animstate = "wounded",
 				animation = nil
 			},
-	wounded_heavy = {	weapon = "strapped",
+	wounded_heavy = { weapon = "drop",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -402,7 +402,7 @@ states = {
 			},
 
 	-- ѕси раненый
-	psy_pain = {weapon = "strapped",
+	psy_pain = {weapon = "drop",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
