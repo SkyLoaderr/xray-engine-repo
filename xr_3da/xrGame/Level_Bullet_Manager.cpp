@@ -233,7 +233,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	BOOL result						= FALSE;
 	result							= Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet, test_callback);
 	if (result) range				= (Level().ObjectSpace.r_results.r_begin()+Level().ObjectSpace.r_results.r_count()-1)->range;
-
+	range = _max(EPS_L,range);
 	// whine test
 	xr_vector<ISpatial*>& r_spatial = g_pGameLevel->ObjectSpace.r_spatial;
 	g_SpatialSpace->q_ray			(r_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
