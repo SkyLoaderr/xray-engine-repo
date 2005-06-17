@@ -152,9 +152,6 @@ void CControlManagerCustom::ta_deactivate()
 // Работа с последовательностями
 void CControlManagerCustom::seq_init()
 {
-	if (!m_man->check_start_conditions(ControlCom::eControlSequencer)) 
-		return;
-
 	m_man->capture				(this,	ControlCom::eControlSequencer);
 
 	SAnimationSequencerData		*ctrl_data = (SAnimationSequencerData*)m_man->data(this, ControlCom::eControlSequencer); 
@@ -165,9 +162,6 @@ void CControlManagerCustom::seq_init()
 
 void CControlManagerCustom::seq_add(MotionID motion)
 {
-	if (!m_man->check_start_conditions(ControlCom::eControlSequencer)) 
-		return;
-
 	SAnimationSequencerData		*ctrl_data = (SAnimationSequencerData*)m_man->data(this, ControlCom::eControlSequencer); 
 	if (!ctrl_data) return;
 
@@ -176,9 +170,6 @@ void CControlManagerCustom::seq_add(MotionID motion)
 
 void CControlManagerCustom::seq_switch()
 {
-	if (!m_man->check_start_conditions(ControlCom::eControlSequencer)) 
-		return;
-
 	m_man->activate(ControlCom::eControlSequencer);
 }
 
