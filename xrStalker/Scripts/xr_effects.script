@@ -347,28 +347,44 @@ end
 --------------------------------------------------------- 
 
 function bar_freedom_spam_1(actor, npc)
-	news_manager.send_tip(actor, "bar_freedom_spam_1", nil, "freedom")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_freedom_spam_1", nil, "freedom")
+	end
 end
 function bar_freedom_spam_2(actor, npc)
-	news_manager.send_tip(actor, "bar_freedom_spam_2", nil, "freedom")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_freedom_spam_2", nil, "freedom")
+	end
 end
 function bar_freedom_spam_3(actor, npc)
-	news_manager.send_tip(actor, "bar_freedom_spam_3", nil, "freedom")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_freedom_spam_3", nil, "freedom")
+	end
 end
 function bar_freedom_spam_4(actor, npc)
-	news_manager.send_tip(actor, "bar_freedom_spam_4", nil, "freedom")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_freedom_spam_4", nil, "freedom")
+	end
 end
 function bar_ecolog_spam_1(actor, npc)
-	news_manager.send_tip(actor, "bar_ecolog_spam_1", nil, "ecolog")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_spam_1", nil, "ecolog")
+	end
 end
 function bar_ecolog_spam_2(actor, npc)
-	news_manager.send_tip(actor, "bar_ecolog_spam_2", nil, "ecolog")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_spam_2", nil, "ecolog")
+	end
 end
 function bar_ecolog_spam_3(actor, npc)
-	news_manager.send_tip(actor, "bar_ecolog_spam_3", nil, "ecolog")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_spam_3", nil, "ecolog")
+	end
 end
 function bar_ecolog_spam_4(actor, npc)
-	news_manager.send_tip(actor, "bar_ecolog_spam_4", nil, "ecolog")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_spam_4", nil, "ecolog")
+	end
 end
 function bar_freedom_angry_actor(actor,npc)
 	if db.actor:has_info("bar_ecolog_crush_actor_enemy")
@@ -377,24 +393,33 @@ function bar_freedom_angry_actor(actor,npc)
 	end
 end
 function bar_freedom_angry_actor_notify(actor,npc)
-	if db.actor:has_info("bar_ecolog_crush_actor_enemy")
+	if db.actor:has_info("bar_ecolog_crush_actor_enemy") and
+	   db.actor:dont_has_info("bar_heli_scene_volkodav_die")
 	then
 		news_manager.send_tip(actor, "bar_freedom_attack_spy", 4, "freedom")
 	end
 end
 function bar_crush_heli_start(actor,npc)
-	news_manager.send_tip(actor, "bar_ecolog_crush_start_heli", nil, "ecolog")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_crush_start_heli", nil, "ecolog")
+	end
 end
 function bar_crush_heli_down(actor,npc)
-	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "freedom")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "freedom")
+	end
 end
 function bar_ecolog_crush_attract_actor(actor,npc)
-	news_manager.send_tip(actor, "bar_ecolog_crush_attract_actor", nil, "ecolog")
-	level_tasks.add_location(503, "bar_ecolog_crush_location")
+	if db.actor:dont_has_info("bar_heli_scene_professor_die") then
+		news_manager.send_tip(actor, "bar_ecolog_crush_attract_actor", nil, "ecolog")
+		level_tasks.add_location(503, "bar_ecolog_crush_location")
+	end
 end
 function bar_freedom_attack_attract_actor(actor,npc)
-	news_manager.send_tip(actor, "bar_freedom_attack_attract_actor", nil, "freedom")
-	level_tasks.add_location(509, "bar_freedom_volkodav_location")
+	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
+		news_manager.send_tip(actor, "bar_freedom_attack_attract_actor", nil, "freedom")
+		level_tasks.add_location(509, "bar_freedom_volkodav_location")
+	end
 end
 function bar_check_heli_scene(actor,npc)
 	if not db.actor then return end
