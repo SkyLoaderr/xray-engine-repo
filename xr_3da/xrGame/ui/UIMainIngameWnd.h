@@ -103,7 +103,6 @@ protected:
 	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
 	CUIStatic			UIStaticPower;    // delete me ! :P
-
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton			UIStaticQuickHelp;

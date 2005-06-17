@@ -42,7 +42,6 @@
 #include "../string_table.h"
 #include "../clsid_game.h"
 #include "UIArtefactPanel.h"
-
 #ifdef DEBUG
 #include "../attachable_item.h"
 #include "../../xr_input.h"
@@ -104,8 +103,8 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	UIZoneMap					= xr_new<CUIZoneMap>();
 	m_pPickUpItem				= NULL;
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
-	m_pMPChatWnd = NULL;
-	m_pMPLogWnd = NULL;	
+	m_pMPChatWnd				= NULL;
+	m_pMPLogWnd					= NULL;	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -329,16 +328,6 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetOriginalRect			(0,0,32,32);
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
-/*	// uncoment to test ArtefactPanel
-	Irect rect;
-	rect.left = 698; rect.right = 750;
-	rect.top = 0;    rect.bottom = 48;
-
-	vRects.push_back(rect);
-	rect.left = 749; rect.right = 801;
-	vRects.push_back(rect);
-
-	m_artefactPanel.InitIcons(vRects);	*/
 }
 
 //////////////////////////////////////////////////////////////////////////
