@@ -353,7 +353,7 @@
 	<specific_character id="svoboda_cook" team_default = "1">
 		<name>"Повар"</name>
 		
-		<icon x="12" y="0"></icon>
+		<icon x="4" y="3"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Повар группировки "Свобода". Детальная информация отсутствует.</bio>
 		
