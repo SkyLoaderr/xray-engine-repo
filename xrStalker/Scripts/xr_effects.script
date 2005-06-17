@@ -145,6 +145,11 @@ function give_all_quests(actor, npc)
 	bar_dialogs.quests()
 end
 
+function give_rostok_quests(actor, npc)
+	bar_dialogs.rostok_quests()
+end
+
+
 -- Вызов этой функции отключит обработчик [combat] боя для персонажа.
 -- Используется в случаях, когда все необходимые действия, такие как переключение на другую секцию,
 -- уже выполнены, и повторно выполнять их во время боя нельзя (а условия секции [combat] проверяются на каждом
