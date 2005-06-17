@@ -82,3 +82,7 @@
 <string id="mil_fblockpost_commander">
 	<text>Командир блокпоста "Кеп"</text>
 </string>
+
+<string id="mil_freedom_rg6_task">
+	<text>Достать РГ6 у Свободы</text>
+</string>
