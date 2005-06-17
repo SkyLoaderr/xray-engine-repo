@@ -31,7 +31,7 @@ CStateManagerZombie::~CStateManagerZombie()
 
 void CStateManagerZombie::execute()
 {
-	if (object->anim().TA_IsActive()) return;
+	if (object->com_man().ta_is_active()) return;
 	
 	u32 state_id = u32(-1);
 	

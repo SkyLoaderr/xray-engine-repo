@@ -86,9 +86,7 @@ void CFracture::Load(LPCSTR section)
 void CFracture::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Init		();
-		anim().Seq_Add		(eAnimCheckCorpse);
-		anim().Seq_Switch	();
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
 
 	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {

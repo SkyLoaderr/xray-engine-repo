@@ -1,9 +1,8 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
-#include "../jump_ability.h"
 #include "../../../script_export_space.h"
 
-class CCat : public CBaseMonster, public CJumpingAbility {
+class CCat : public CBaseMonster{
 	typedef		CBaseMonster	inherited;
 public:
 					CCat				();

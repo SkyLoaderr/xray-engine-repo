@@ -56,8 +56,7 @@ void CStateBurerAttackGraviAbstract::execute()
 			/***************************/
 		case ACTION_WAIT_TRIPLE_END:
 			/***************************/
-
-			if (!object->anim().TA_IsActive()) {
+			if (!object->com_man().ta_is_active()) {
 				m_action = ACTION_COMPLETED; 
 			}
 
@@ -85,7 +84,8 @@ void CStateBurerAttackGraviAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	object->anim().TA_Deactivate	();
+	// ???????????????????????????????????
+	//object->anim().TA_Deactivate	();
 	object->DeactivateShield		();
 	object->StopGraviPrepare		();
 	object->set_script_capture		(false);
@@ -117,7 +117,7 @@ bool CStateBurerAttackGraviAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::ExecuteGraviStart()
 {
-	object->anim().TA_Activate(object->anim_triple_gravi);
+	object->com_man().ta_activate(object->anim_triple_gravi);
 
 	time_gravi_started			= Device.dwTimeGlobal;
 
@@ -137,7 +137,7 @@ void CStateBurerAttackGraviAbstract::ExecuteGraviContinue()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::ExecuteGraviFire()
 {
-	object->anim().TA_PointBreak();
+	object->com_man().ta_pointbreak();
 
 	Fvector from_pos;
 	Fvector target_pos;

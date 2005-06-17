@@ -1,16 +1,12 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../../../script_export_space.h"
-#include "../control_jump.h"
-
 
 class CSnork :	public CBaseMonster {
 	typedef		CBaseMonster		inherited;
 
 	SVelocityParam	m_fsVelocityJumpOne;
 	SVelocityParam	m_fsVelocityJumpTwo;
-
-	CControlJump		m_jump;
 
 public:
 					CSnork				();
@@ -22,11 +18,6 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual bool	jump				(CObject *enemy);
 	virtual bool	ability_jump_over_physics	() {return true;}
-	virtual void	jump_over_physics			(const Fvector &target);
-
-
-			void	try_to_jump			();
-
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
 			
 			bool	find_geometry		(Fvector &dir);

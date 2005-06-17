@@ -21,7 +21,6 @@ CController::CController()
 {
 	StateMan = xr_new<CStateManagerController>(this);
 
-	CJumping::Init(this);
 	CPsyAuraController::init_external(this);
 	
 	time_control_hit_started = 0;
@@ -34,7 +33,6 @@ CController::~CController()
 void CController::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	CJumping::Load	(section);
 
 	// Load Control FX texture
 	m_UIControlFX.Init(pSettings->r_string(section, "control_fx_texture"), "hud\\default",0,0,0);
@@ -185,9 +183,7 @@ void CController::set_controlled_task(u32 task)
 void CController::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Init		();
-		anim().Seq_Add		(eAnimCheckCorpse);
-		anim().Seq_Switch	();
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
 
 } 
@@ -229,10 +225,10 @@ void CController::reload(LPCSTR section)
 	inherited::reload			(section);
 	CPsyAuraController::reload	(section);
 
-	anim().TA_FillData(anim_triple_control,	"stand_sit_down_attack_0",	"control_attack_0",	"sit_stand_up_attack_0", true, false);
+	com_man().ta_fill_data(anim_triple_control,	"stand_sit_down_attack_0",	"control_attack_0",	"sit_stand_up_attack_0", true, false);
 
-	SVelocityParam &velocity_run = move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-	CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, velocity_run.velocity.angular_real);
+	//SVelocityParam &velocity_run = move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	//CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, velocity_run.velocity.angular_real);
 }
 
 void CController::reinit()
@@ -268,7 +264,7 @@ void CController::control_hit()
 void CController::UpdateCL()
 {
 	inherited::UpdateCL();
-	CJumping::Update();
+	
 	CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
@@ -322,10 +318,6 @@ void CController::shedule_Update(u32 dt)
 
 void CController::Jump()
 {
-	if (CJumping::Check(Position(),EnemyMan.get_enemy()->Position(),EnemyMan.get_enemy())){
-		sound().play(MonsterSpace::eMonsterSoundAttackHit);
-		anim().ActivateJump();
-	}
 }
 
 void CController::Die(CObject* who)

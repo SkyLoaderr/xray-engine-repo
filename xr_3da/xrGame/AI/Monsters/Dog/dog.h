@@ -2,12 +2,10 @@
 
 #include "../BaseMonster/base_monster.h"
 #include "../ai_monster_bones.h"
-#include "../ai_monster_jump.h"
 #include "../controlled_entity.h"
 #include "../../../script_export_space.h"
 
 class CAI_Dog : public CBaseMonster, 
-				public CJumping,
 				public CControlledEntity<CAI_Dog> {
 	
 	typedef		CBaseMonster				inherited;
@@ -27,7 +25,6 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual	void	OnSoundPlay			();
 
-	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
 
 	virtual bool	ability_can_drag		() {return true;}

@@ -41,8 +41,8 @@ void CBurer::reload(LPCSTR section)
 	sound().add			(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
 	sound().add			(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 
-	anim().TA_FillData(anim_triple_gravi,	"stand_gravi_0",	"stand_gravi_1",	"stand_gravi_2",	true, false);
-	anim().TA_FillData(anim_triple_tele,	"stand_tele_0",		"stand_tele_1",		"stand_tele_2",		true, false);
+	com_man().ta_fill_data(anim_triple_gravi,	"stand_gravi_0",	"stand_gravi_1",	"stand_gravi_2",	true, false);
+	com_man().ta_fill_data(anim_triple_tele,	"stand_tele_0",		"stand_tele_1",		"stand_tele_2",		true, false);
 }
 
 void CBurer::Load(LPCSTR section)
@@ -327,7 +327,7 @@ void CBurer::Die(CObject* who)
 {
 	inherited::Die(who);
 
-	anim().TA_Deactivate();
+	if (com_man().ta_is_active()) com_man().ta_deactivate();
 	CTelekinesis::Deactivate();
 }
 

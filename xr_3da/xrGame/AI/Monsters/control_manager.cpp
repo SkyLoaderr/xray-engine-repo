@@ -22,17 +22,9 @@ CControl_Manager::CControl_Manager(CBaseMonster *obj)
 {
 	m_object			= obj;
 
-	m_sequencer			= xr_new<CAnimationSequencer>	();
-	m_rotation_jump		= xr_new<CControlRotationJump>	();
-	m_triple_anim		= xr_new<CAnimationTriple>		();
-
 	m_animation			= xr_new<CControlAnimation>	();
 	m_movement			= xr_new<CControlMovement>	();
 	m_direction			= xr_new<CControlDirection>	();
-
-	add			(m_sequencer,		ControlCom::eControlSequencer);
-	add			(m_rotation_jump,	ControlCom::eControlRotationJump);
-	add			(m_triple_anim,		ControlCom::eControlTripleAnimation);
 
 	add			(m_animation,		ControlCom::eControlAnimation);
 	add			(m_direction,		ControlCom::eControlDir);
@@ -42,9 +34,6 @@ CControl_Manager::CControl_Manager(CBaseMonster *obj)
 CControl_Manager::~CControl_Manager()
 {
 	xr_delete(m_animation);
-	xr_delete(m_sequencer);
-	xr_delete(m_triple_anim);
-	xr_delete(m_rotation_jump);
 	xr_delete(m_direction);
 	xr_delete(m_movement);
 }

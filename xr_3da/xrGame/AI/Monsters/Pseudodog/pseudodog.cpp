@@ -17,8 +17,6 @@
 CAI_PseudoDog::CAI_PseudoDog()
 {
 	StateMan = xr_new<CStateManagerPseudodog>(this);
-
-	control().add	(&m_jump, ControlCom::eControlJump);
 }
 
 CAI_PseudoDog::~CAI_PseudoDog()
@@ -161,15 +159,13 @@ void CAI_PseudoDog::reload(LPCSTR section)
 	
 	sound().add				(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 	
-	anim().load_jump_data	(m_jump.setup_data(), "jump_prepare_0", "jump_glide_0", "jump_glide_0", u32(-1));
+	com_man().load_jump_data("jump_prepare_0", "jump_glide_0", "jump_glide_0", u32(-1));
 }
 
 void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_PSI_ATTACK) == ASP_PSI_ATTACK) {
-		anim().Seq_Init		();
-		anim().Seq_Add		(eAnimAttackPsi);
-		anim().Seq_Switch	();
+		com_man().seq_run(anim().get_motion_id(eAnimAttackPsi));
 
 		CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 		if (pA) {
@@ -190,38 +186,14 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 }
 
 
-void CAI_PseudoDog::try_to_jump()
-{
-	if (!EnemyMan.get_enemy()) return;
-
-	CEntityAlive *target = const_cast<CEntityAlive*>(EnemyMan.get_enemy());
-	if (!m_jump.can_jump(target)) return;
-
-	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		anim().jump(target, m_jump.setup_data());
-	}
-}
-
-void CAI_PseudoDog::jump_over_physics(const Fvector &target)
-{
-	if (control().check_start_conditions(ControlCom::eControlJump)) {
-		m_jump.setup_data().skip_prepare	= true;
-		m_jump.setup_data().target_object	= 0;
-		m_jump.setup_data().target_position	= target;
-
-		anim().jump(m_jump.setup_data());
-		m_jump.setup_data().skip_prepare	= false;
-	}
-}
-
 bool CAI_PseudoDog::jump(CObject *enemy)
 {
-	if (!m_jump.can_jump(enemy)) return false;
-	if (!control().check_start_conditions(ControlCom::eControlJump))  return false;
+	if (com_man().jump (enemy)) {
+		sound().play			(MonsterSpace::eMonsterSoundAttack);
+		return true;
+	}
 
-	anim().jump(enemy, m_jump.setup_data());
-	sound().play(MonsterSpace::eMonsterSoundAttack);
-	return true;
+	return false;
 }
 
 

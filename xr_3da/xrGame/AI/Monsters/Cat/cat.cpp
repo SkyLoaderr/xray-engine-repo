@@ -7,8 +7,6 @@
 CCat::CCat()
 {
 	StateMan = xr_new<CStateManagerCat>		(this);
-	
-	CJumpingAbility::init_external			(this);
 }
 
 CCat::~CCat()
@@ -19,7 +17,6 @@ CCat::~CCat()
 void CCat::Load(LPCSTR section)
 {
 	inherited::Load			(section);
-	CJumpingAbility::load	(section);
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -109,24 +106,19 @@ void CCat::reinit()
 	def2 = pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
 	def3 = pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
 
-	CJumpingAbility::reinit(def1, def2, def3);
+	//CJumpingAbility::reinit(def1, def2, def3);
 }
 
 void CCat::try_to_jump()
 {
 	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
 	if (!target || !EnemyMan.see_enemy_now()) return;
-
-	if (CJumpingAbility::can_jump(target))
-		CJumpingAbility::jump(target);
 }
 
 void CCat::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Init		();
-		anim().Seq_Add		(eAnimCheckCorpse);
-		anim().Seq_Switch	();
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
 
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) anim().SetCurAnim(eAnimAttackRat);
@@ -166,7 +158,6 @@ void CCat::CheckSpecParams(u32 spec_params)
 void CCat::UpdateCL()
 {
 	inherited::UpdateCL				();
-	CJumpingAbility::update_frame	();
 }
 
 void CCat::HitEntityInJump(const CEntity *pEntity)

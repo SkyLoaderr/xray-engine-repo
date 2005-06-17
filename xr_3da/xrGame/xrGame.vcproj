@@ -2831,22 +2831,6 @@
 									RelativePath=".\ai\Monsters\energy_holder.h">
 								</File>
 							</Filter>
-							<Filter
-								Name="Jump"
-								Filter="">
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_jump.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_jump.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\jump_ability.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\jump_ability.h">
-								</File>
-							</Filter>
 						</Filter>
 						<Filter
 							Name="Event Handler"
@@ -2932,6 +2916,12 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\control_manager.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\control_manager_custom.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\control_manager_custom.h">
 							</File>
 							<Filter
 								Name="Pure Coms"
@@ -3080,6 +3070,16 @@
 									</File>
 									<File
 										RelativePath=".\ai\Monsters\control_jump.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Run Attack"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_run_attack.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_run_attack.h">
 									</File>
 								</Filter>
 							</Filter>

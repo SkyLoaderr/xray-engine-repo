@@ -67,8 +67,8 @@ void CStateBurerAttackTeleAbstract::execute()
 			/***************************/
 		case ACTION_WAIT_TRIPLE_END:
 			/***************************/
-
-			if (!object->anim().TA_IsActive()) {
+			
+			if (!object->com_man().ta_is_active()) {
 				if (IsActiveObjects())
 					m_action = ACTION_TELE_STARTED;
 				else 
@@ -111,7 +111,8 @@ void CStateBurerAttackTeleAbstract::critical_finalize()
 {
 	inherited::critical_finalize		();
 
-	object->anim().TA_Deactivate		();
+	// ???????????????????????????????????????????????????
+	//object->anim().TA_Deactivate		();
 	object->CTelekinesis::Deactivate	();
 	object->DeactivateShield			();
 
@@ -197,7 +198,7 @@ void CStateBurerAttackTeleAbstract::FindObjects()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackTeleAbstract::ExecuteTeleStart()
 {
-	object->anim().TA_Activate(object->anim_triple_tele);
+	object->com_man().ta_activate(object->anim_triple_tele);
 	time_started = Device.dwTimeGlobal;
 	object->ActivateShield();
 
@@ -230,7 +231,7 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleContinue()
 		selected_object = tele_object.get_object();
 	} else {
 		if (!IsActiveObjects() || (time_started + MAX_TIME_CHECK_FAILURE < Device.dwTimeGlobal)) {
-			object->anim().TA_Deactivate	();
+			object->com_man().ta_deactivate	();
 			m_action						= ACTION_COMPLETED;
 		} 
 	}
@@ -239,7 +240,7 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleContinue()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackTeleAbstract::ExecuteTeleFire()
 {
-	object->anim().TA_PointBreak();
+	object->com_man().ta_pointbreak();
 
 	Fvector enemy_pos = object->EnemyMan.get_enemy()->Position();
 	enemy_pos.y += 5 * object->EnemyMan.get_enemy()->Radius();

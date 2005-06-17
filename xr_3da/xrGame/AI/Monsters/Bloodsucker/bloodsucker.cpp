@@ -134,7 +134,7 @@ void CAI_Bloodsucker::reinit()
 
 	Bones.Reset();
 
-	anim().TA_FillData(anim_triple_vampire, "vampire_0", "vampire_1", "vampire_2", false, false);
+	com_man().ta_fill_data(anim_triple_vampire, "vampire_0", "vampire_1", "vampire_2", false, false);
 	
 	// Find out target
 	//anim().AddAnimTranslation	(def1,"vampire_0");
@@ -254,9 +254,7 @@ void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
 void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		anim().Seq_Init		();
-		anim().Seq_Add		(eAnimCheckCorpse);
-		anim().Seq_Switch	();
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
 
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {

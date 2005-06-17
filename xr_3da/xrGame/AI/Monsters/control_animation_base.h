@@ -6,14 +6,10 @@
 #include "anim_triple.h"
 #include "control_jump.h"
 
-class		CJumping;
-
-
 struct SEventVelocityBounce : public ControlCom::IEventData {
 	float	m_ratio;
 
 	IC		SEventVelocityBounce(float ratio) : m_ratio(ratio) {}
-
 };
 
 
@@ -24,8 +20,6 @@ class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>,
 
 
 		REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
-
-		CJumping				*pJumping;
 
 		// работа с последовательностями
 		SEQ_VECTOR				seq_states;
@@ -121,20 +115,6 @@ public:
 	void		SetCurAnim				(EMotionAnim a) {cur_anim_info().motion = a;}
 	EMotionAnim	GetCurAnim				() {return  cur_anim_info().motion;} 
 
-	// работа с последовательностями
-	void		Seq_Init				();
-	void		Seq_Add					(EMotionAnim a);
-	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
-	bool		Seq_Active				() {return false;}
-
-	//-------------------------------------------------------------------------------
-	// Triple Animation
-	void		TA_Activate				(const SAnimationTripleData &data);
-	void		TA_PointBreak			();
-	void		TA_FillData				(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep);
-	bool		TA_IsActive				();
-	void		TA_Deactivate			();
-
 	void		AnimSpec_Play			(EMotionAnim a);
 	bool		AnimSpec_Active			() {return (spec_anim != eAnimUndefined);}
 	void		AnimSpec_Stop			() {spec_anim = eAnimUndefined;}
@@ -222,16 +202,7 @@ public:
 
 	bool	accel_check_braking		(float before_interval);
 
-	// -----------------------------------------------------
-	// Jumps
-
-	void	ActivateJump			();
-	void	DeactivateJump			();
-	bool	JumpActive				();
-
-	// Critical Action
-
-	bool	IsCriticalAction		();
+	// --------------------------------------------------------------------------------	
 
 	void	CheckVelocityBounce		();
 
@@ -249,9 +220,5 @@ public:
 
 	void					select_animation	();
 	void					set_animation_speed	();
-
-	void					jump				(CObject *obj, const SControlJumpData &ta);
-	void					jump				(const SControlJumpData &ta);
-	void					load_jump_data		(SControlJumpData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask);
 };
 

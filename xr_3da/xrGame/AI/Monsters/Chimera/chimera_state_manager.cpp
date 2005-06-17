@@ -40,13 +40,6 @@ void CStateManagerChimera::execute()
 
 	if (enemy) {
 		//if (check_state(eStateThreaten)) state_id = eStateThreaten;
-		//else {
-		//	switch (object->EnemyMan.get_danger_type()) {
-		//		case eStrong:	state_id = eStatePanic; break;
-		//		case eWeak:		state_id = eStateAttack; break;
-		//	}
-		//}
-
 		switch (object->EnemyMan.get_danger_type()) {
 			case eStrong:	state_id = eStatePanic; break;
 			case eWeak:		state_id = eStateAttack; break;
@@ -63,20 +56,6 @@ void CStateManagerChimera::execute()
 	}
 	
 	//state_id = eStateCustom;
-
-	object->try_to_jump();
-
-	// check jumping conditions
-	//if (state_id == eStateAttack) {
-	//	if (!object->anim().IsCriticalAction()) {
-	//		CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
-	//		if (object->CJumpingAbility::can_jump(target)) {
-	//			object->try_to_jump();
-	//		}
-	//	}
-	//}
-
-	if (object->CriticalActionInfo->is_fsm_locked()) return;
 
 	select_state(state_id); 
 

@@ -174,9 +174,7 @@ void CPoltergeist::Show()
 	
 	setVisible(TRUE);
 
-	anim().Seq_Init		();
-	anim().Seq_Add		(eAnimMiscAction_00);
-	anim().Seq_Switch	();
+	com_man().seq_run(anim().get_motion_id(eAnimMiscAction_00));
 
 	Position() = m_current_position;
 	movement_control()->SetPosition(Position());

@@ -47,7 +47,7 @@ void CStateControllerControlHitAbstract::execute()
 			break;
 
 		case eActionWaitTripleEnd:
-			if (!object->anim().TA_IsActive()) {
+			if (!object->com_man().ta_is_active()) {
 				m_action = eActionCompleted; 
 			}
 
@@ -99,7 +99,7 @@ void CStateControllerControlHitAbstract::critical_finalize()
 TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::execute_hit_prepare()
 {
-	object->anim().TA_Activate(object->anim_triple_control);
+	object->com_man().ta_activate(object->anim_triple_control);
 	object->play_control_sound_start();
 
 	time_control_started = Device.dwTimeGlobal;
@@ -117,7 +117,7 @@ void CStateControllerControlHitAbstract::execute_hit_continue()
 TEMPLATE_SPECIALIZATION
 void CStateControllerControlHitAbstract::execute_hit_fire()
 {
-	object->anim().TA_PointBreak();
+	object->com_man().ta_pointbreak();
 	
 	if (object->EnemyMan.see_enemy_now()) object->control_hit();
 }

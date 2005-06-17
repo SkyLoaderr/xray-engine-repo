@@ -10,7 +10,6 @@ CAI_Dog::CAI_Dog()
 {
 	StateMan = xr_new<CStateManagerDog>(this);
 
-	CJumping::Init				(this);
 	CControlled::init_external	(this);
 }
 
@@ -31,11 +30,11 @@ void CAI_Dog::reinit()
 void CAI_Dog::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	CJumping::Load	(section);
+	
 
 	// todo: PUT visual from load OFF
-	SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-	CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, velocity_run.velocity.angular_real);
+	//SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	//CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, velocity_run.velocity.angular_real);
 
 	anim().AddReplacedAnim(&m_bDamaged,		eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged,		eAnimWalkFwd,	eAnimWalkDamaged);
@@ -130,10 +129,9 @@ void CAI_Dog::Load(LPCSTR section)
 
 void CAI_Dog::CheckSpecParams(u32 spec_params)
 {
-	//if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-	//	anim().Seq_Add(eAnimCheckCorpse);
-	//	anim().Seq_Switch();
-	//}
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
+	}
 	
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
 		anim().SetCurAnim(eAnimThreaten);
@@ -149,55 +147,19 @@ void CAI_Dog::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	CJumping::Update();
-	float trace_dist = 1.0f;
-
-	// Проверить на нанесение хита во время прыжка
-	if (CJumping::IsGlide()) {
-
-		if (strike_in_jump) return;
-		
-		const CEntity *pE = smart_cast<const CEntity *>(CJumping::GetEnemy());
-		if (!pE) return;
-
-		Fvector trace_from;
-		Center(trace_from);
-		setEnabled(false);
-		collide::rq_result	l_rq;
-
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , collide::rqtBoth, l_rq)) {
-			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
-				//HitEntity(pE, inherited::db().m_fHitPower,Direction());
-				strike_in_jump = true;
-			}
-		}
-		setEnabled(true);			
-
-		// !!!
-		// LookPosition(pE->Position());
-	}
-
 	//// Rotation Jump
 	//if (is_state(StateMan->get_state_type(), eStateAttack)) {
 	//	if (rot_jump.check_start_conditions()) rot_jump.execute();
 	//}
 	
-	if (is_state(StateMan->get_state_type(), eStateAttack)) {
-		if (control().check_start_conditions(ControlCom::eControlRotationJump)) {
-			control().activate(ControlCom::eControlRotationJump);
-			//control().activate(ControlCom::eControlRotationJump);
-		}
-	}
+	//if (is_state(StateMan->get_state_type(), eStateAttack)) {
+	//	if (control().check_start_conditions(ControlCom::eControlRotationJump)) {
+	//		control().activate(ControlCom::eControlRotationJump);
+	//		//control().activate(ControlCom::eControlRotationJump);
+	//	}
+	//}
 
 }
-
-void CAI_Dog::OnJumpStop()
-{
-	anim().DeactivateJump();
-	//anim().Update();
-	strike_in_jump = false;
-}
-
 
 //#define TURN_HEAD_ANGLE PI_DIV_4
 //

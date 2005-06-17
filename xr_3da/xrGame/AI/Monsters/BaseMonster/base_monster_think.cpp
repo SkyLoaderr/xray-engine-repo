@@ -101,10 +101,6 @@ void CBaseMonster::post_fsm_update()
 	// Rotation Jump
 //	if (is_state(state, eStateAttack) && ability_rotation_jump()) check_rotation_jump();
 
-	// Jump over physics
-	if (ability_jump_over_physics()) {
-		check_jump_over_physics();
-	}
 }
 
 void CBaseMonster::squad_notify()
@@ -163,65 +159,3 @@ void CBaseMonster::check_rotation_jump()
 	//m_time_last_rotation_jump		= Device.dwTimeGlobal;
 }
 
-#define MAX_DIST_SUM	6.f
-
-void CBaseMonster::check_jump_over_physics()
-{
-	if (!control().path_builder().is_moving_on_path()) return;
-
-	Fvector prev_pos	= Position();
-	float	dist_sum	= 0.f;
-
-	for(u32 i = movement().detail().curr_travel_point_index(); i<movement().detail().path().size();i++) {
-		const DetailPathManager::STravelPathPoint &travel_point = movement().detail().path()[i];
-
-		// получить список объектов вокруг врага
-		Level().ObjectSpace.GetNearest	(travel_point.position, Radius());
-		xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
-
-		for (u32 k=0;k<tpObjects.size();k++) {
-			CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[k]);
-			if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->Radius() < 0.5f)) continue;
-			if (Position().distance_to(obj->Position()) < MAX_DIST_SUM / 2) continue;
-
-			Fvector dir = Fvector().sub(travel_point.position, Position());
-
-			// проверка на  Field-Of-View
-			float	my_h	= Direction().getH();
-			float	h		= dir.getH();
-
-			float from	= angle_normalize(my_h - deg(8));
-			float to	= angle_normalize(my_h + deg(8));
-
-			if (!is_angle_between(h, from, to)) continue;
-
-			dir = Fvector().sub(obj->Position(), Position());
-
-			// вычислить целевую позицию для прыжка
-			
-			// --------------------------------------------------------
-			//Fvector center;
-			//obj->Center(center);
-			//float height = Fvector().add(center, obj->Radius()).y;
-
-			//Fvector target;
-			//target.mad(Position(), Direction(), dir.magnitude());
-			//target.y = height;
-			
-			// --------------------------------------------------------
-
-			Fvector target;
-			obj->Center(target);
-			target.y += obj->Radius();
-			// --------------------------------------------------------
-
-			jump_over_physics(target);
-			return;
-		}
-
-		dist_sum += prev_pos.distance_to(travel_point.position);
-		if (dist_sum > MAX_DIST_SUM) break;
-
-		prev_pos = travel_point.position;
-	}
-}

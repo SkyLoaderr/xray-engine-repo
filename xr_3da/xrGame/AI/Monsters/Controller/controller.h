@@ -1,14 +1,12 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../anim_triple.h"
-#include "../ai_monster_jump.h"
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
 #include "../ai_monster_bones.h"
 
 class CController : public CBaseMonster, 
-					public CJumping,
 					public CPsyAuraController {
 
 	typedef		CBaseMonster	inherited;

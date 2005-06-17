@@ -57,12 +57,6 @@ void CStateManagerSnork::execute()
 
 //	state_id = eStateFindEnemy;
 
-	if (state_id == eStateAttack) {
-		object->try_to_jump();
-	}
-
-	if (object->CriticalActionInfo->is_fsm_locked()) return;
-
 	select_state(state_id); 
 
 	// выполнить текущее состояние

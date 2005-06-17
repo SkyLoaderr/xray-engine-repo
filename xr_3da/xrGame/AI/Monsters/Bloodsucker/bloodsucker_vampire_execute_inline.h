@@ -78,7 +78,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 			break;
 
 		case eActionWaitTripleEnd:
-			if (!object->anim().TA_IsActive()) {
+			if (!object->com_man().ta_is_active()) {
 				m_action = eActionCompleted; 
 			}
 
@@ -105,6 +105,8 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 	inherited::critical_finalize();
 
 	object->CControlledActor::free_from_control	();
+	
+	// TODO: Find if need this line
 	//object->anim().TA_Deactivate				();
 	object->CInvisibility::manual_activate		();
 }
@@ -135,8 +137,8 @@ bool CStateBloodsuckerVampireExecuteAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
 {
-	object->anim().TA_Activate		(object->anim_triple_vampire);
-	time_vampire_started			= Device.dwTimeGlobal;
+	object->com_man().ta_activate		(object->anim_triple_vampire);
+	time_vampire_started				= Device.dwTimeGlobal;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -151,7 +153,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
-	object->anim().TA_PointBreak				();
+	object->com_man().ta_pointbreak				();
 }
 
 //////////////////////////////////////////////////////////////////////////

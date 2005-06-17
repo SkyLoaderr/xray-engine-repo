@@ -37,11 +37,7 @@ void CBaseMonster::Load(LPCSTR section)
 
 	fEntityHealth					= (float)pSettings->r_u32		(section,"Health");
 
-	if (ability_can_jump())
-		m_jumping					= smart_cast<CJumping *>(this);
-
 	m_controlled					= smart_cast<CControlledEntityBase*>(this);
-
 
 	settings_load					(section);
 

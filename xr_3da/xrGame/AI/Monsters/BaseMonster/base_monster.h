@@ -28,6 +28,8 @@
 
 #include "../ai_monster_utils.h"
 
+#include "../control_manager_custom.h"
+
 class CCharacterPhysicsSupport;
 class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
@@ -124,8 +126,6 @@ public:
 	virtual	void			post_fsm_update					();
 			void			squad_notify					();
 
-			void			check_jump_over_physics			();
-	virtual void			jump_over_physics				(const Fvector &target) {}
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	// ---------------------------------------------------------------------------------
@@ -276,7 +276,6 @@ public:
 
 	// -----------------------------------------------------------------------------
 	
-	CJumping				*m_jumping;
 	CControlledEntityBase	*m_controlled;	
 
 	// -----------------------------------------------------------------------------
@@ -326,6 +325,8 @@ public:
 	CControlPathBuilderBase	&path	(){return (*m_path_base);}
 	CControlDirectionBase	&dir	(){return (*m_dir_base);}
 
+	CControlManagerCustom	m_com_manager;
+	CControlManagerCustom	&com_man() {return m_com_manager;}
 
 // DEBUG stuff
 #ifdef DEBUG

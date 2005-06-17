@@ -16,13 +16,16 @@ namespace ControlCom {
 		//// 3rd level 
 		eControlJump,					// capture: path, movement, triple_anim     disable : fsm, dir
 		eControlRotationJump,			// capture: path, movement, sequencer, dir
-//		eControlRunAttack,				// capture: path, movement, sequencer
+		eControlRunAttack,				// capture: path, movement, sequencer
 
 		eControlAnimationBase,
 		eControlMovementBase,
 		eControlPathBase,
 		eControlDirBase,
 
+		eControlCustom,
+		
+		
 		eControllersCount,
 
 		eControlInvalid		= u32(-1)

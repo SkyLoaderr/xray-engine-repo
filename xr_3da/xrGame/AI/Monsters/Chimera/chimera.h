@@ -1,7 +1,6 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../../../script_export_space.h"
-#include "../control_jump.h"
 
 class CChimera : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
@@ -13,8 +12,6 @@ class CChimera : public CBaseMonster {
 	SVelocityParam		m_fsVelocityJumpOne;
 	SVelocityParam		m_fsVelocityJumpTwo;
 	SVelocityParam		m_fsVelocityRunAttack;
-
-	CControlJump		m_jump;
 
 public:
 					CChimera			();
@@ -28,13 +25,8 @@ public:
 	virtual void	CheckSpecParams				(u32 spec_params);
 	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
 	virtual	void	TranslateActionToPathParams ();
-	virtual bool	ability_run_attack			() {return true;}
-	virtual bool	ability_jump_over_physics	() {return true;}
-	virtual void	jump_over_physics			(const Fvector &target);
-	virtual bool	jump						(CObject *enemy);
-			
-			void	try_to_jump					();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
+	virtual bool	jump						(CObject *enemy);
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
 	

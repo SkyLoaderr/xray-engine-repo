@@ -2,13 +2,9 @@
 #include "control_com_defs.h"
 
 #include "control_animation.h"
-#include "control_sequencer.h"
-#include "control_rotation_jump.h"
 #include "control_direction.h"
 #include "control_path_builder.h"
 #include "control_movement.h"
-#include "anim_triple.h"
-
 
 
 class CBaseMonster;
@@ -27,13 +23,9 @@ class CControl_Manager {
 	CONTROLLERS_MAP			m_base_elems;
 
 	CControlAnimation		*m_animation;
-	CAnimationSequencer		*m_sequencer;
-	CControlRotationJump	*m_rotation_jump;
 	CControlDirection		*m_direction;
 	CControlMovement		*m_movement;
 	CControlPathBuilder		*m_path;
-	CAnimationTriple		*m_triple_anim;
-	
 
 public:
 							CControl_Manager			(CBaseMonster *);
@@ -75,7 +67,6 @@ public:
 		CControlDirection	&direction					() {return (*m_direction);}
 		CControlPathBuilder	&path_builder				() {return (*m_path);}
 		CControlMovement	&movement					() {return (*m_movement);}
-	CAnimationTriple		&triple_anim				() {return (*m_triple_anim);}
 
 					void	install_path_manager		(CControlPathBuilder *);
 

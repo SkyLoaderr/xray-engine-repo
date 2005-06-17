@@ -59,7 +59,6 @@ CBaseMonster::CBaseMonster()
 	MeleeChecker.init_external		(this);
 	Morale.init_external			(this);
 
-	m_jumping						= 0;
 	m_controlled					= 0;
 
 	m_anim_base						= xr_new<CControlAnimationBase>		();
@@ -75,6 +74,11 @@ CBaseMonster::CBaseMonster()
 	control().set_base_controller	(m_anim_base, ControlCom::eControlAnimation);
 	control().set_base_controller	(m_move_base, ControlCom::eControlMovement);
 	control().set_base_controller	(m_dir_base,  ControlCom::eControlDir);
+
+	m_com_manager.add_ability		(ControlCom::eControlSequencer);
+	m_com_manager.add_ability		(ControlCom::eControlTripleAnimation);
+	
+	control().add					(&m_com_manager,  ControlCom::eControlCustom);
 }
 
 

@@ -45,8 +45,6 @@ void CControlAnimationBase::reinit()
 	// обновить количество анимаций
 	UpdateAnimCount			();
 
-	pJumping				= 0;
-
 	// инициализация информации о текущей анимации
 	m_cur_anim.motion			= eAnimStandIdle;
 	m_cur_anim.index			= 0;
@@ -76,9 +74,6 @@ void CControlAnimationBase::on_start_control(ControlCom::EContolType type)
 		m_man->subscribe	(this, ControlCom::eventAnimationEnd);	
 		select_animation	();
 		break;
-	case ControlCom::eControlSequencer:			m_man->subscribe	(this, ControlCom::eventSequenceEnd);	break;
-	case ControlCom::eControlTripleAnimation:	m_man->subscribe	(this, ControlCom::eventTAChange);		break;
-	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);	break;
 	}
 }
 
@@ -86,9 +81,6 @@ void CControlAnimationBase::on_stop_control	(ControlCom::EContolType type)
 {
 	switch (type) {
 	case ControlCom::eControlAnimation: m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);	break;
-	case ControlCom::eControlSequencer: m_man->unsubscribe	(this, ControlCom::eventSequenceEnd);	break;
-	case ControlCom::eControlTripleAnimation: m_man->unsubscribe	(this, ControlCom::eventTAChange);	break;
-	case ControlCom::eControlJump:		m_man->unsubscribe	(this, ControlCom::eventJumpEnd);	break;
 	}
 }
 
@@ -96,14 +88,6 @@ void CControlAnimationBase::on_event(ControlCom::EEventType type, ControlCom::IE
 {
 	switch (type) {
 	case ControlCom::eventAnimationEnd: select_animation();	break;
-	case ControlCom::eventSequenceEnd:	m_man->release(this, ControlCom::eControlSequencer); break;
-	case ControlCom::eventTAChange: 
-		{
-			STripleAnimEventData *event_data = (STripleAnimEventData *)data;
-			if (event_data->m_current_state == eStateNone) TA_Deactivate();
-			break;
-		}
-	case ControlCom::eventJumpEnd: m_man->release(this, ControlCom::eControlJump); break;
 	}
 }
 
@@ -173,10 +157,10 @@ void CControlAnimationBase::CheckTransition(EMotionAnim from, EMotionAnim to)
 
 			// переход годится
 			if (!b_activated) {
-				Seq_Init();
+				m_object->com_man().seq_init();
 			}
 
-			Seq_Add(I->anim_transition);
+			m_object->com_man().seq_add(get_motion_id(I->anim_transition));
 			b_activated	= true;	
 
 
@@ -191,20 +175,9 @@ void CControlAnimationBase::CheckTransition(EMotionAnim from, EMotionAnim to)
 	}
 
 	if (b_activated) {
-		Seq_Switch				();
+		m_object->com_man().seq_switch		();
 	}
 }
-
-// Callback на завершение анимации
-//void CControlAnimationBase::OnAnimationEnd() 
-//{ 
-//	if (Seq_Active())		Seq_Switch();
-//	if (AnimSpec_Active())	AnimSpec_Stop();
-//
-//	if (pJumping && pJumping->IsActive()) pJumping->OnAnimationEnd();
-//
-//	m_object->EventMan.raise(eventAnimationEnd);
-//}
 
 void CControlAnimationBase::CheckReplacedAnim()
 {
@@ -215,31 +188,6 @@ void CControlAnimationBase::CheckReplacedAnim()
 		}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Работа с последовательностями
-void CControlAnimationBase::Seq_Init()
-{
-	m_man->capture		(this,	ControlCom::eControlSequencer);
-
-	SAnimationSequencerData		*ctrl_data = (SAnimationSequencerData*)m_man->data(this, ControlCom::eControlSequencer); 
-	if (!ctrl_data) return;
-
-	ctrl_data->motions.clear	();
-}
-
-void CControlAnimationBase::Seq_Add(EMotionAnim a)
-{
-	SAnimationSequencerData		*ctrl_data = (SAnimationSequencerData*)m_man->data(this, ControlCom::eControlSequencer); 
-	if (!ctrl_data) return;
-
-	
-	ctrl_data->motions.push_back(get_motion_id(a));
-}
-
-void CControlAnimationBase::Seq_Switch()
-{
-	m_man->activate(ControlCom::eControlSequencer);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Attack Animation
@@ -411,53 +359,6 @@ LPCSTR CControlAnimationBase::GetActionName(EAction action)
 {
 	return dbg_action_name_table[action];
 }
-//////////////////////////////////////////////////////////////////////////
-
-void CControlAnimationBase::TA_FillData(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep)
-{
-	// Load triple animations
-	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
-	data.pool[0]		= skel_animated->ID_Cycle_Safe(s1);	VERIFY(data.pool[0]);
-	data.pool[1]		= skel_animated->ID_Cycle_Safe(s2);	VERIFY(data.pool[1]);
-	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
-	data.execute_once	= execute_once;
-	data.skip_prepare	= skip_prep;
-}
-
-
-void CControlAnimationBase::TA_Activate(const SAnimationTripleData &data)
-{
-	if (!m_man->triple_anim().check_start_conditions()) return;
-	
-	m_man->capture			(this,	ControlCom::eControlTripleAnimation);
-	
-	SAnimationTripleData	*ctrl_data = (SAnimationTripleData*)m_man->data(this, ControlCom::eControlTripleAnimation); 
-	VERIFY					(ctrl_data);
-	
-	ctrl_data->pool[0]		= data.pool[0];
-	ctrl_data->pool[1]		= data.pool[1];
-	ctrl_data->pool[2]		= data.pool[2];
-	ctrl_data->skip_prepare	= data.skip_prepare;
-	ctrl_data->execute_once	= data.execute_once;
-	ctrl_data->capture_type	= ControlCom::eCaptureDir | ControlCom::eCapturePath | ControlCom::eCaptureMovement;
-	
-	m_man->activate		(ControlCom::eControlTripleAnimation);
-}
-
-void CControlAnimationBase::TA_PointBreak()
-{
-	m_man->triple_anim().pointbreak();
-}
-
-bool CControlAnimationBase::TA_IsActive()
-{
-	return (m_man->triple_anim().is_active());
-}
-
-void CControlAnimationBase::TA_Deactivate()
-{
-	m_man->release(this, ControlCom::eControlTripleAnimation); 
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -522,28 +423,6 @@ CMotionDef *CControlAnimationBase::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 inde
 	return				(skeleton_animated->LL_GetMotionDef(motion_id));
 }
 
-
-void CControlAnimationBase::ActivateJump()
-{
-	pJumping = smart_cast<CJumping *>(m_object);
-}
-void CControlAnimationBase::DeactivateJump()
-{
-	pJumping = 0;
-}
-
-bool CControlAnimationBase::JumpActive()
-{
-	if (pJumping && pJumping->IsActive()) return true;
-	return false;
-
-}
-
-bool CControlAnimationBase::IsCriticalAction()
-{
-	return (JumpActive() || Seq_Active() || TA_IsActive() || AnimSpec_Active());
-}
-
 void CControlAnimationBase::AddAnimTranslation(const MotionID &motion, LPCSTR str)
 {
 	m_anim_motion_map.insert(mk_pair(motion, str));	
@@ -589,54 +468,4 @@ void CControlAnimationBase::set_animation_speed()
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	if (!ctrl_data) return;
 	ctrl_data->speed			= m_cur_anim.speed.target;
-}
-
-void CControlAnimationBase::jump(CObject *obj, const SControlJumpData &ta)
-{
-	m_man->capture(this, ControlCom::eControlJump);
-	
-	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
-	VERIFY				(ctrl_data);
-	
-	ctrl_data->target_object	= obj;
-	ctrl_data->velocity_mask	= ta.velocity_mask;
-	ctrl_data->target_position	= obj->Position();
-	ctrl_data->skip_prepare		= ta.skip_prepare;
-	ctrl_data->play_glide_once	= ta.play_glide_once;
-	ctrl_data->pool[0]			= ta.pool[0];
-	ctrl_data->pool[1]			= ta.pool[1];
-	ctrl_data->pool[2]			= ta.pool[2];
-	
-	m_man->activate		(ControlCom::eControlJump);
-}
-
-void CControlAnimationBase::load_jump_data(SControlJumpData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask)
-{
-	// Load triple animations
-	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
-	data.pool[0]		= skel_animated->ID_Cycle_Safe(s1);	VERIFY(data.pool[0]);
-	data.pool[1]		= skel_animated->ID_Cycle_Safe(s2);	VERIFY(data.pool[1]);
-	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
-	data.skip_prepare	= false;
-	data.play_glide_once = true;
-	data.velocity_mask	= vel_mask;
-}
-
-void CControlAnimationBase::jump(const SControlJumpData &ta)
-{
-	m_man->capture		(this, ControlCom::eControlJump);
-
-	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
-	VERIFY				(ctrl_data);
-
-	ctrl_data->target_object	= ta.target_object;
-	ctrl_data->velocity_mask	= ta.velocity_mask;
-	ctrl_data->target_position	= ta.target_position;
-	ctrl_data->skip_prepare		= ta.skip_prepare;
-	ctrl_data->play_glide_once	= ta.play_glide_once;
-	ctrl_data->pool[0]			= ta.pool[0];
-	ctrl_data->pool[1]			= ta.pool[1];
-	ctrl_data->pool[2]			= ta.pool[2];
-
-	m_man->activate		(ControlCom::eControlJump);
 }
