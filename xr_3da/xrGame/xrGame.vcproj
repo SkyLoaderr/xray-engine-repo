@@ -4617,7 +4617,8 @@
 								Name="hash_fixed"
 								Filter="">
 								<File
-									RelativePath=".\vertex_manager_hash_fixed.h">
+									RelativePath=".\vertex_manager_hash_fixed.h">
+
 								</File>
 								<File
 									RelativePath=".\vertex_manager_hash_fixed_inline.h">
@@ -8461,7 +8462,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
@@ -8489,13 +8491,30 @@
 						RelativePath=".\GameSpy\available.h">
 					</File>
 					<File
+						RelativePath=".\GameSpy\darray.c">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\GameSpy\darray.h">
+					</File>
+					<File
+						RelativePath=".\GameSpy_defs.h">
+					</File>
+					<File
 						RelativePath=".\GameSpy\gsiDebug.c">
 						<FileConfiguration
 							Name="Debug|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
@@ -8523,6 +8542,19 @@
 						RelativePath=".\GameSpy\gsiDebug.h">
 					</File>
 					<File
+						RelativePath=".\GameSpy\hashtable.c">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\GameSpy\hashtable.h">
+					</File>
+					<File
 						RelativePath=".\GameSpy\md5.h">
 					</File>
 					<File
@@ -8532,7 +8564,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
@@ -8563,7 +8596,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
@@ -8597,7 +8631,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
@@ -8634,7 +8669,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Mixed|Win32">
@@ -8668,7 +8704,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Mixed|Win32">
@@ -8706,7 +8743,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Mixed|Win32">
@@ -8740,7 +8778,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Mixed|Win32">
@@ -8766,6 +8805,72 @@
 						</File>
 						<File
 							RelativePath=".\GameSpy\CDKey\gcdkeys.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ServerBrowsing"
+						Filter="">
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_ascii.h">
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_crypt.c">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_crypt.h">
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_internal.h">
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_queryengine.c">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_server.c">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_serverbrowsing.c">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_serverbrowsing.h">
+						</File>
+						<File
+							RelativePath=".\GameSpy\ServerBrowsing\sb_serverlist.c">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 				</Filter>
@@ -10072,6 +10177,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\ServerList.h">
+					</File>
+					<File
+						RelativePath=".\ui\ServerList_GameSpy_func.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIListItemServer.cpp">
