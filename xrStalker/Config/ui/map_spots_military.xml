@@ -81,4 +81,13 @@
     <mil_fblockpost_commander x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_fblockpost_commander>
+
+	<mil_cook_location hint="mil_cook" store="1">
+		<level_map spot="mil_cook_mapspot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_cook_mapspot" pointer="quest_pointer"></mini_map>
+	</mil_cook_location>
+	
+    <mil_cook_mapspot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_cook_mapspot>
 	
