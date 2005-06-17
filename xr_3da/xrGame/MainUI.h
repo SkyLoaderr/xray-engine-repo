@@ -107,9 +107,6 @@ public:
 	void			PushScissor						(const Frect& r, bool overlapped=false);
 	void			PopScissor						();
 	void			Screenshot						(IRender_interface::ScreenshotMode mode=IRender_interface::SM_NORMAL, LPCSTR name = 0);
-protected:
-	DEFINE_MAP(xr_string, ref_shader, ShaderMap, ShaderMap_it);
-	ShaderMap		m_shaders;
 };
 
 

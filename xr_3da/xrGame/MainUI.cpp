@@ -125,13 +125,6 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
-
-	ShaderMap_it it;
-	for (it = m_shaders.begin(); it != m_shaders.end(); it++)
-	{
-		Msg("-- UI shader holder: freeing of shader %s", it->first.c_str());
-		it->second.destroy();
-	}
 }
 void CMainUI::Activate	(bool bActivate)
 {
