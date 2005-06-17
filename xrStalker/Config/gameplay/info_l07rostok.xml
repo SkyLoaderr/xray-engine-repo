@@ -164,7 +164,9 @@
 	
     <info_portion id="bar_spawn_heli_psevdodogs"></info_portion>
     <info_portion id="bar_heli_scene_stay_online"></info_portion>
-    
+
+    <info_portion id="bar_heli_scene_professor_die"></info_portion>
+    <info_portion id="bar_heli_scene_volkodav_die"></info_portion>
     
     <!-- FREEDOM FLASH QUEST -->
 	<info_portion id="bar_kill_professor_start">
