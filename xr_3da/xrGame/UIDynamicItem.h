@@ -1,7 +1,7 @@
 #ifndef __XR_UIDYNAMICITEM_H__
 #define __XR_UIDYNAMICITEM_H__
 #pragma once
-
+/*
 #include "uicustomitem.h"
 
 struct SDynamicItemData{
@@ -34,5 +34,5 @@ public:
 	void			Render			(float angle);
 	u32				size			(){return item_cnt;}
 };
-
+*/
 #endif //__XR_UIDYNAMICITEM_H__
