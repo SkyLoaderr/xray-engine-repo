@@ -369,6 +369,10 @@
 		<class>Svoboda_trader</class>
 	</character>
 
+	<character id="svoboda_zoneguard">
+		<class>Svoboda_zoneguard</class>
+	</character>
+
 	<!-- Radar  -->
 	<character id="stalker_rad_jaw">
 		<class>stalker_rad_jaw</class>
