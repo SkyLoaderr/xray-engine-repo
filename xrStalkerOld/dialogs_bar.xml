@@ -3766,6 +3766,75 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_ecolog_crush_professor_start">
+        <phrase_list>
+            <phrase id="21">
+                <text>bar_ecolog_crush_professor_start_21</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <dont_has_info>bar_resque_research_done</dont_has_info>
+                <has_info>bar_resque_research_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <has_info>bar_resque_research_done</has_info>
+                <has_info>bar_resque_research_start</has_info>
+                <has_info>bar_resque_research_reward</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_resque_research_start</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_ecolog_crush_professor_start_11</text>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_ecolog_crush_professor_start_111</text>
+                <give_info>bar_resque_research_start</give_info>
+                <give_info>bar_ecolog_crush_actor_enemy</give_info>
+                <give_info>bar_freedom_attack_ecolog</give_info>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_ecolog_crush_professor_start_1111</text>
+            </phrase>
+            <phrase id="112">
+                <text>bar_ecolog_crush_professor_start_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="1121">
+                <text>bar_ecolog_crush_professor_start_1121</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_ecolog_crush_professor_start_41</text>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <dont_has_info>bar_resque_research_reward</dont_has_info>
+                <give_info>bar_resque_research_reward</give_info>
+                <has_info>bar_resque_research_done</has_info>
+                <has_info>bar_resque_research_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_ecolog_crush_professor_start_31</text>
+                <action>bar_dialogs.professor_for_resque</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -4009,25 +4078,9 @@
     </dialog>
     <dialog id="bar_svoboda_volkodav_start">
         <phrase_list>
-            <phrase id="5">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <dont_has_info>bar_kill_professor_reject</dont_has_info>
-                <dont_has_info>bar_kill_professor_reward</dont_has_info>
-                <has_info>bar_resque_research_dead</has_info>
-                <has_info>bar_kill_professor_fail</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_not_give_quest</precondition>
-                <next>11</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_svoboda_volkodav_start_111</text>
-                <give_info>bar_kill_professor_start</give_info>
-                <give_info>bar_freedom_attack_ecolog</give_info>
-                <next>1111</next>
+            <phrase id="1111">
+                <text>bar_svoboda_volkodav_start_1111</text>
+                <next>11111</next>
             </phrase>
             <phrase id="11111">
                 <text>bar_svoboda_volkodav_start_11111</text>
@@ -4039,26 +4092,8 @@
                 <give_info>bar_freedom_attack_ecolog</give_info>
                 <next>1121</next>
             </phrase>
-            <phrase id="2">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <has_info>bar_kill_professor_reject</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <dont_has_info>bar_kill_professor_reject</dont_has_info>
-                <dont_has_info>bar_resque_research_dead</dont_has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="6">
-                <text></text>
-                <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <dont_has_info>bar_kill_professor_reject</dont_has_info>
-                <has_info>bar_resque_research_dead</has_info>
-                <has_info>bar_kill_professor_reward</has_info>
-                <next>61</next>
+            <phrase id="1121">
+                <text>bar_svoboda_volkodav_start_1121</text>
             </phrase>
             <phrase id="0">
                 <text></text>
@@ -4069,112 +4104,78 @@
                 <next>5</next>
                 <next>6</next>
             </phrase>
-            <phrase id="51">
-                <text>bar_svoboda_volkodav_start_51</text>
-            </phrase>
-            <phrase id="61">
-                <text>bar_svoboda_volkodav_start_61</text>
-            </phrase>
-            <phrase id="1121">
-                <text>bar_svoboda_volkodav_start_1121</text>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_svoboda_volkodav_start_1111</text>
-                <next>11111</next>
-            </phrase>
             <phrase id="11">
                 <text>bar_svoboda_volkodav_start_11</text>
                 <next>111</next>
                 <next>112</next>
             </phrase>
-            <phrase id="31">
-                <text>bar_svoboda_volkodav_start_31</text>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_freedom_attack_ecolog</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_svoboda_volkodav_start_111</text>
+                <give_info>bar_kill_professor_start</give_info>
+                <give_info>bar_freedom_attack_ecolog</give_info>
+                <next>1111</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <dont_has_info>bar_resque_research_dead</dont_has_info>
+                <has_info>bar_freedom_attack_ecolog</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <precondition>bar_dialogs.volkodav_not_give_quest</precondition>
+                <has_info>bar_freedom_attack_ecolog</has_info>
+                <has_info>bar_resque_research_dead</has_info>
+                <next>21</next>
             </phrase>
             <phrase id="21">
                 <text>bar_svoboda_volkodav_start_21</text>
             </phrase>
-            <phrase id="4">
+            <phrase id="31">
+                <text>bar_svoboda_volkodav_start_31</text>
+            </phrase>
+            <phrase id="6">
                 <text></text>
                 <precondition>bar_dialogs.volkodav_give_quest</precondition>
-                <dont_has_info>bar_kill_professor_reject</dont_has_info>
-                <dont_has_info>bar_kill_professor_reward</dont_has_info>
-                <give_info>bar_kill_professor_reward</give_info>
+                <has_info>bar_freedom_attack_ecolog</has_info>
                 <has_info>bar_resque_research_dead</has_info>
-                <has_info>bar_kill_professor_done</has_info>
-                <next>41</next>
+                <has_info>bar_kill_professor_reward</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_svoboda_volkodav_start_61</text>
             </phrase>
             <phrase id="41">
                 <text>bar_svoboda_volkodav_start_41</text>
                 <action>bar_dialogs.volkodav_for_kill_professor</action>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_ecolog_crush_professor_start">
-        <phrase_list>
-            <phrase id="21">
-                <text>bar_ecolog_crush_professor_start_21</text>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <dont_has_info>bar_resque_research_done</dont_has_info>
-                <has_info>bar_resque_research_start</has_info>
-                <next>21</next>
-            </phrase>
             <phrase id="4">
                 <text></text>
-                <has_info>bar_resque_research_done</has_info>
-                <has_info>bar_resque_research_start</has_info>
-                <has_info>bar_resque_research_reward</has_info>
+                <precondition>bar_dialogs.volkodav_give_quest</precondition>
+                <dont_has_info>bar_kill_professor_reward</dont_has_info>
+                <give_info>bar_kill_professor_reward</give_info>
+                <has_info>bar_freedom_attack_ecolog</has_info>
+                <has_info>bar_resque_research_dead</has_info>
+                <has_info>bar_kill_professor_done</has_info>
                 <next>41</next>
             </phrase>
-            <phrase id="1">
+            <phrase id="51">
+                <text>bar_svoboda_volkodav_start_51</text>
+            </phrase>
+            <phrase id="5">
                 <text></text>
-                <dont_has_info>bar_resque_research_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_ecolog_crush_professor_start_11</text>
-                <next>111</next>
-                <next>112</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_ecolog_crush_professor_start_111</text>
-                <give_info>bar_resque_research_start</give_info>
-                <give_info>bar_ecolog_crush_actor_enemy</give_info>
-                <give_info>bar_freedom_attack_ecolog</give_info>					
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_ecolog_crush_professor_start_1111</text>
-            </phrase>
-            <phrase id="112">
-                <text>bar_ecolog_crush_professor_start_112</text>
-                <next>1121</next>
-            </phrase>
-            <phrase id="1121">
-                <text>bar_ecolog_crush_professor_start_1121</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_ecolog_crush_professor_start_41</text>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>bar_resque_research_reward</dont_has_info>
-                <give_info>bar_resque_research_reward</give_info>
-                <has_info>bar_resque_research_done</has_info>
-                <has_info>bar_resque_research_start</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_ecolog_crush_professor_start_31</text>
-                <action>bar_dialogs.professor_for_resque</action>
+                <precondition>bar_dialogs.volkodav_give_quest</precondition>
+                <dont_has_info>bar_kill_professor_reward</dont_has_info>
+                <dont_has_info>bar_kill_professor_done</dont_has_info>
+                <give_info>bar_kill_professor_reward</give_info>
+                <has_info>bar_freedom_attack_ecolog</has_info>
+                <has_info>bar_resque_research_dead</has_info>
+                <next>51</next>
             </phrase>
         </phrase_list>
     </dialog>
