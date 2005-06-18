@@ -270,7 +270,10 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;
 
-	VERIFY									(m_fCumulativeItemMass >= 0.f);
+//	if(!(fis_zero(m_fCumulativeItemMass) || m_fCumulativeItemMass > 0.f)){
+//		Msg("ERROR !!! m_fCumulativeItemMass = %f",m_fCumulativeItemMass);
+//	}
+//	VERIFY									(m_fCumulativeItemMass >= 0.f);
 	VERIFY									(!bALifeRequest || check_inventory_consistency());
 }
 
