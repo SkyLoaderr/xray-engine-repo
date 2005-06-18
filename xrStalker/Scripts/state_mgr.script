@@ -172,10 +172,16 @@ function act_state_mgr_end:execute()
 	
 	if t == "fire" or t == "sniper_fire" then
 		if self.st.look_object ~= nil then
-			if self.object:see(level.object_by_id(self.st.look_object)) ~= nil and
-				(not IsStalker(level.object_by_id(self.st.look_object)) or				
-				self.object:relation(level.object_by_id(self.st.look_object)) == game_object.enemy) and
-				level.object_by_id(self.st.look_object):alive() == true
+			local look_object = level.object_by_id(self.st.look_object)
+			if look_object == nil then
+				printf("STATE_MGR[%s] clearing look object", self.object:name())
+				self.st.look_object = nil
+				return
+			end
+			if self.object:see(look_object) ~= nil and
+				(not IsStalker(look_object) or				
+				self.object:relation(look_object) == game_object.enemy) and
+				look_object:alive() == true
 			then
 				if t == "sniper_fire" then
 					self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
@@ -751,7 +757,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		printf("look target NIL")
 	end
 
-	--сперва устанавливаем углы.
+	--сперва устанавливаем цели
 	if target ~= nil then
 		self.look_position = target.look_position
 		if target.look_object ~= nil then 
