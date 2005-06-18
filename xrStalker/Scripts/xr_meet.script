@@ -365,7 +365,7 @@ function init_meet(npc, ini, section, st, scheme)
 		st.zone				= parse_zone_data(npc, utils.cfg_get_string(ini, section, "zone", npc, false, ""))
 		st.syndata			= parse_syn_data(npc, utils.cfg_get_string(ini, section, "synpairs", npc, false, ""))
 	end
-	print_table(st)
+	--print_table(st)
 
 	-- флажок, что функция хотя бы раз вызывалась
 	st.meet_set = true
