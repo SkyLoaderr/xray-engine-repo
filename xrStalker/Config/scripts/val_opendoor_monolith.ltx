@@ -16,6 +16,17 @@ on_info = {=hit_by_actor} nil %+val_opendoor_plr_detected%
 
 [combat_ignore]
 
+;--------------------------------------------------------------------------
+; стандартный диалог
+;--------------------------------------------------------------------------
+[meet@def]
+meet_dialog = val_escort_nap1_dialog
+meet_state = 15|hello@talk_hello|10|wait@|5|wait_na@
+meet_state_wpn = 10|threat@threat_weap
+victim = 30|actor
+victim_vpn = 20|actor
+use = true
+
 [camper@start]
 path_walk = val_opendoor_monolith_walk
 path_look = val_opendoor_monolith_look
@@ -23,6 +34,7 @@ def_state_moving = assault
 def_state_campering = threat
 def_state_campering_fire = threat_fire
 no_retreat = true
+meet = meet@def
 on_signal = victim_start | %+val_opendoor_victim_start%
 on_info = {+val_opendoor_victim_start} camper@fight
 on_info2 = {+val_opendoor_plr_detected} nil
@@ -36,6 +48,7 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 no_retreat = true
+meet = meet@def
 on_info = {=is_dead_one(411)} camper@wait
 on_info2 = {+val_opendoor_plr_detected} nil
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
@@ -49,6 +62,7 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 no_retreat = true
+meet = meet@def
 on_info = {+val_opendoor_plr_detected} nil
 combat_ignore_cond = always
 wounded = wounded
