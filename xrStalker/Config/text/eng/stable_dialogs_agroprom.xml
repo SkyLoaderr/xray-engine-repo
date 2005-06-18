@@ -1,87 +1,102 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="agr_factory_krot_about_0">
-        <text>What are you doing here?</text>
+        <text>Что вы здесь делаете?</text>
     </string>
     <string id="agr_factory_krot_about_1">
-        <text>And how do you think?</text>
+        <text>А ты как думаешь?</text>
     </string>
     <string id="agr_factory_krot_about_2">
-        <text>Searching for the artifacts?</text>
+        <text>Ищете артефакты?</text>
     </string>
     <string id="agr_factory_krot_about_21">
-        <text>You can put it that way. Everyone seeks for the artifacts, but not every knows where they truly can be found.</text>
+        <text>Можно и так сказать. Артефакты все ищут, только не все знают где искать действительно ценные, а не всякую мишуру.</text>
     </string>
     <string id="agr_factory_krot_about_211">
-        <text>What do you know about that?</text>
+        <text>А ты знаешь?</text>
     </string>
     <string id="agr_factory_krot_about_2111">
-        <text>Of course, I know, otherwise what will I be doing in the place that lacks artifacts? I got the info on where you can learn about how to break through to the Zone’s center. I can sell if you’re interested. Two grands will do. You understand, that there are far enough artifacts in the center so you could reimburse it.</text>
+        <text>Конечно знаю, иначе что я бы делал там, где артефактов хороших отродясь не было? Есть у меня информация, где можно узнать о том, как к центру Зоны проникнуть. Если ты заинтересовать - могу продать. Две тысячи всего. Сам понимаешь, в центре зоны столько артефактов, что эти две тысячи ты за час заработаешь.</text>
     </string>
     <string id="agr_factory_krot_about_21111">
-        <text>Okay, I’ll take it.</text>
+        <text>Хорошо, беру.</text>
     </string>
     <string id="agr_factory_krot_about_211111">
-        <text>Deal.</text>
+        <text>По рукам.</text>
     </string>
     <string id="agr_factory_krot_about_211112">
-        <text>Deal. But be careful, don’t put your ass under the fire. Hehe. I appreciate people with the sense of humor. Take a grand back. And buy water proof pants, ha ha.</text>
+        <text>Договорились. Только осторожнее, не подставляй свою задницу под пули. Хе-хе. Ценю людей с чувством юмора. Забери тысячу назад. Купишь себе трусы попрочнее. Ха-ха.</text>
     </string>
     <string id="agr_factory_krot_about_21112">
-        <text>No thanks.</text>
+        <text>Нет, спасибо.</text>
     </string>
     <string id="agr_factory_krot_about_211121">
-        <text>Well, you choose.</text>
+        <text>Ну, как знаешь.</text>
     </string>
     <string id="agr_factory_krot_about_3">
-        <text>Wandering?</text>
+        <text>Гуляете?</text>
     </string>
     <string id="agr_factory_krot_about_31">
-        <text>You’re really funny indeed. We’re working here and they – having sweet time on vacations. Recently “worked” with the militaries. If you set too many questions – we’ll “work” with you.</text>
+        <text>Смешной ты, ей богу. Гуляют на Канарах, а мы тут работаем. Вот недавно с военными "поработали". А будешь задавать много вопросов - и с тобой "поработаем".</text>
     </string>
     <string id="agr_factory_krot_about_4">
-        <text>Put your asses under the fire?</text>
+        <text>Подставляете свои задницы под пули?</text>
     </string>
     <string id="agr_factory_krot_about_41">
-        <text>Ha ha. Yeah, I see that you’re kind of a guy with the sense of humor. I welcome that. I meet such guys too seldom. The other ones are too morose I say, afraid of the death.</text>
+        <text>Ха-ха. Да ты, я вижу, малый с чувством юмора. Ценю. Таких ребят редко когда в зоне встретишь. Все угрюмые какие то, нет чтобы радоваться каждому прожитому дню - постоянно боятся смерти.</text>
     </string>
     <string id="agr_factory_krot_about_5">
-        <text>I don’t have a clue.</text>
+        <text>Не знаю.</text>
     </string>
     <string id="agr_factory_krot_about_51">
-        <text>You don’t say so, you don’t know. If you were to the Zone for the same time I did you’ll understand what are people doing here.</text>
+        <text>Надо же, ты не знаешь. Вот побываешь в Зоне с мое - тогда сам узнаешь, что здесь люди делают.</text>
     </string>
     <string id="agr_factory_krot_start_0">
-        <text>Well, whatcha want?</text>
+        <text>Ну! Чего тебе?</text>
     </string>
     <string id="agr_factory_stalker_about_0">
-        <text>Whatcha doing here?</text>
+        <text>Что вы здесь делаете?</text>
     </string>
     <string id="agr_factory_stalker_about_1">
-        <text>Putting our asses under the fire. Talk to Mole for details. He’s in chief here.</text>
+        <text>Сидим и подставляем свои задницы под пули. Более подробно у Крота спрашивай. Он здесь за главного.</text>
     </string>
     <string id="agr_factory_stalker_start_0">
-        <text>Gosh, what a stir, I won’t wish it to my worst enemy. Those militaries are too impudent indeed.</text>
+        <text>Ух! Ну тут и заварушка была, врагу не пожелаешь. Совсем эти военные борзеют.</text>
+    </string>
+    <string id="agr_stalker_esc_0">
+        <text>Что ты здесь делаешь?</text>
+    </string>
+    <string id="agr_stalker_esc_20">
+        <text>Я из группы Крота, что засела на заводе. Я не знаю как, но группу вычислили военные и я не стал дожидаться их появления и свалил с завода.</text>
+    </string>
+    <string id="agr_stalker_esc_200">
+        <text>У тебя есть еще информация?</text>
+    </string>
+    <string id="agr_stalker_esc_30">
+        <text>Нет, я больше ничего не знаю.</text>
+    </string>
+    <string id="agr_stalker_esc_300">
+        <text>Спасибо, удачи.</text>
     </string>
     <string id="agr_stalker_talk_level_0">
-        <text>Put a picture of this place for me.</text>
+        <text>Расскажи мне об этом месте.</text>
     </string>
     <string id="agr_stalker_talk_level_1">
-        <text>This is the “Agroprom” institute. The structure itself is situated in the south-west. And the large factory on the North – this is the institute’s production and technical base. Building have been abandoned long ago, and people have stopped thinking about it, cos there is nothing left to steal. But recently militaries started to search something there.</text>
+        <text>Это территория НИИ "Агропром". Само здание института находится на юго-западе. А большой завод на севере - это производственно-техническая база института. Здания давно заброшены были, о них и думать уже все перестали, украсть то из них все равно нечего. Но последнее время военные начали что-то активно искать.</text>
     </string>
     <string id="agr_stalker_talk_level_2">
-        <text>Give me more specific information on the institute.</text>
+        <text>Расскажи поподробнее об институте.</text>
     </string>
     <string id="agr_stalker_talk_level_21">
-        <text>Rumors say that until the accident in 1986 it was the single Gramineae selection and genetics institute building. Also there were experimental fields at the factory place. After the accident institute has been closed and the fields were burned. And then remembered, whitewashed the building, fenced in and built barracks. Constructed factory on the fields place. I don’t know what were they doing in that institute, but it’s obvious that they spent money left and right.</text>
+        <text>Об институте этом легенды ходят. До аварии в 1986 году здесь только и было, что одиноко стоящее здание института селекции и генетики злаковых. А на месте завода были экспериментальные поля. После аварии институт закрыли, а поля сожгли. А потом вспомнили, здание побелили, обнесли забором, бараки построили. На месте полей выстроили завод. Уж не знаю чем там в институте занимались, но денег явно не жалели.</text>
     </string>
     <string id="agr_stalker_talk_level_3">
-        <text>Give me more detailed info on the factory.</text>
+        <text>Расскажи поподробнее о заводе.</text>
     </string>
     <string id="agr_stalker_talk_level_31">
-        <text>Factory has been built at the end of 80th. Supposed to construct and mend the machines, which can treat the radioactively infected soil. But as far as I know, no one has seen such a machine. Now it’s totally tenantless. Only stalkers like to stay at there. It’s said that it’s rather safe place, if not to peep into the dark corners.</text>
+        <text>Завод этот выстроили в конце восьмидесятых. Вроде как для того, чтобы строить и проверять машины, которые способны обрабатывать радиоактивно-зараженную почву. Но насколько я знаю, никто ни одной такой машины так и не увидел. Сейчас он пуст совсем. Только сталкеры любят там останавливаться. Говорят что довольно безопасное место, если не заглядывать в темные углы.</text>
     </string>
     <string id="agr_stalker_talk_level_4">
-        <text>Thanks.</text>
+        <text>Спасибо.</text>
     </string>
 </string_table>

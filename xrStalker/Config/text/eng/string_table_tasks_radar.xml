@@ -1,0 +1,29 @@
+	<string id="rad_antenna">
+		<text>Антенны</text>
+	</string>
+	<string id="rad_code_door">
+		<text>Какая-то дверь</text>
+	</string>
+
+	<string id="rad_find_stalkers">
+		<text>Найти разведчиков на Припяти</text>
+	</string>
+	<string id="rad_find_stalkers_0">
+		<text>Лёха-Челюсть просил найти его людей на Припяти</text>
+	</string>
+	<string id="rad_find_stalkers_1">
+		<text>Найти разведчиков на Припяти</text>
+	</string>
+	<string id="rad_find_stalkers_2">
+		<text>Вернуться к Челюсти</text>
+	</string>
+
+	<string id="rad_find_treasurer">
+		<text>Найти казначея</text>
+	</string>
+	<string id="rad_find_treasurer_0">
+		<text>Найти казначея. Он побежал туда.</text>
+	</string>
+	<string id="rad_find_treasurer_1">
+		<text>Вернуться к вожаку</text>
+	</string>

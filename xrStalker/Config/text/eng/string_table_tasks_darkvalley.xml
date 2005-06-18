@@ -1,0 +1,23 @@
+    <string id="val_escort_release_stalker">
+        <text>Помочь освободить сталкера захваченого в плен.</text>
+    </string>
+
+    <string id="val_escort_release_stalker_0">
+        <text>Друг, помоги освободить моего напарника. Его скоро должны переводить под охраной на базу монолита.</text>
+    </string>
+
+    <string id="val_suicide_find_lost_stalker">
+        <text>Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.</text>
+    </string>
+
+    <string id="val_suicide_find_lost_stalker_0">
+        <text>Меченый, сталкеры шепчутся о появлении в окрестностях сталкера Сокола, которого не видели уже месяцев шесть. Он пытался найти проход к центру зоны и бесследно исчез, а теперь вот вдруг объявился. Его недавно видели в Темной Долине, где-то за базой Монолита. Будет время - разузнай, что там с ним.</text>
+    </string>
+
+    <string id="val_suicide_artefact_quest">
+        <text>fixme - Отнести артефакт бармену.</text>
+    </string>
+
+    <string id="val_suicide_artefact_quest_0">
+        <text>fixme - Сталкер в Темной Долине попросил отнести артефакт бармену.</text>
+    </string>

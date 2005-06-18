@@ -1,174 +1,237 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="gar_dolg_about_0">
-        <text>Can you tell something interesting?</text>
+    <string id="gar_dolg_blokpost_11">
+        <text>Стой, сталкер. Дальше тебе нельзя!</text>
     </string>
-    <string id="gar_dolg_about_1">
-        <text>I have a lot to tell. But possibly you’ve heard of that kinda vermin like mutants a lot. I can acquaint you with us, “Duty” grouping. But don’t you dare to ask me about those morons from “Freedom”.</text>
+    <string id="gar_dolg_blokpost_111">
+        <text>А почему собственно?</text>
     </string>
-    <string id="gar_dolg_about_2">
-        <text>Tell me about your grouping.</text>
+    <string id="gar_dolg_blokpost_1111">
+        <text>Дальше находится наша территория - база группировки Долг. И мы очень придирчиво выбираем тех, кого пускаем к себе домой. Если у тебя нет особо важных дел к нашему руководству, то мы тебя не пропустим.</text>
     </string>
-    <string id="gar_dolg_about_21">
-        <text>We’ve been here from the very beginning. The grouping itself has been found by the toughies from one of special task forces, sent in the Zone to investigate the full picture of its appearance. We got into a serious scrape there. After the half of our troops has perished under the terrible circumstances, the ones survived swore that wouldn’t leave until they coped with the task.</text>
+    <string id="gar_dolg_blokpost_11111">
+        <text>Ладно, я пойду пока. Но я еще вернусь!</text>
     </string>
-    <string id="gar_dolg_about_3">
-        <text>You’ve mentioned about the “Freedom” morons?</text>
+    <string id="gar_dolg_blokpost_111111">
+        <text>Да пожалуйста. В любое время дня и ночи.</text>
     </string>
-    <string id="gar_dolg_about_31">
-        <text>Total imbeciles and bloody scums. They can’t get it clear that the Zone is the world’s pest place. Besides they want to stretch the Zone all over the world, to the every single distant place. They may use all the possible and impossible means for their goal. I can’t wait when we finish them.</text>
+    <string id="gar_dolg_blokpost_11112">
+        <text>У меня есть дело к бармену. Думаю, знаете о таком?</text>
     </string>
-    <string id="gar_dolg_about_4">
-        <text>Thanks.</text>
+    <string id="gar_dolg_blokpost_111121">
+        <text>Даже если это и так, проход стоит денег. Плати полштуки и мы тебя пропустим. Или ты можешь оказать нам одну услугу. Выбирай.</text>
     </string>
-    <string id="gar_dolg_acces_0">
-        <text>Why don’t you let anyone pass to the North?</text>
+    <string id="gar_dolg_blokpost_1111211">
+        <text>Лучше я тебе денег дам.</text>
     </string>
-    <string id="gar_dolg_acces_1">
-        <text>Cos we don’t need that rabble at “Rostok”.</text>
+    <string id="gar_dolg_blokpost_11112111">
+        <text>Отлично, теперь проходи, и лучше чтобы у тебя дествительно было важное дело к бармену. Но в проходе много аномалий, будь осторожен.</text>
     </string>
-    <string id="gar_dolg_acces_2">
-        <text>What’s there on the “Rostok”?</text>
+    <string id="gar_dolg_blokpost_1111212">
+        <text>Что за услуга?</text>
     </string>
-    <string id="gar_dolg_acces_21">
-        <text>It concerns you not! You’ll learn when you come there.</text>
+    <string id="gar_dolg_blokpost_11112121">
+        <text>В общем, мелочи. Тут неподалеку одно гнездо кабанов. Надо бы его почистить. Я тебе покажу, где оно находится. Зачистишь и считай, что ты заплатил взнос.</text>
     </string>
-    <string id="gar_dolg_acces_3">
-        <text>Listen, mate. I urgently need to go further. You understand?</text>
+    <string id="gar_dolg_blokpost_111121211">
+        <text>Договорились. Пойду-ка я на охоту, кабанчика молочного подстрелю.</text>
     </string>
-    <string id="gar_dolg_acces_31">
-        <text>Too insolent for the newbie. Or is it kinda gentle hint?! Well it may cost you about 500 rubles to get through.</text>
+    <string id="gar_dolg_blokpost_1111212111">
+        <text>Удачи, сталкер.</text>
     </string>
-    <string id="gar_dolg_acces_311">
-        <text>Now we are talking. Take these money.</text>
+    <string id="gar_dolg_blokpost_111121212">
+        <text>Пойду-ка я денег подсобираю.</text>
     </string>
-    <string id="gar_dolg_acces_3111">
-        <text>Deal, you can pass.</text>
+    <string id="gar_dolg_blokpost_1111212121">
+        <text>Ага, тут на свалке бутылки пустые валяются, собери, сдай, авось денег и накопишь.</text>
     </string>
-    <string id="gar_dolg_acces_312">
-        <text>No thanks, I’ll make it myself.</text>
+    <string id="gar_dolg_blokpost_22">
+        <text>Ну как там кабанчики поживают?</text>
     </string>
-    <string id="gar_dolg_acces_3121">
-        <text>Hehe, what a greedy one you are. Well, try.</text>
+    <string id="gar_dolg_blokpost_221">
+        <text>Пока поживают.</text>
     </string>
-    <string id="gar_dolg_acces_4">
-        <text>Thanks.</text>
+    <string id="gar_dolg_blokpost_2211">
+        <text>Когда будешь из них окорочка делать, мне один принеси.</text>
     </string>
-    <string id="gar_dolg_guard_start_2">
-        <text>Stop! You can’t go further! Newbies have nothing to deal with “Rostok”.</text>
+    <string id="gar_dolg_blokpost_222">
+        <text>Извини, окорочек тебе не принес, все сам съел.</text>
     </string>
-    <string id="gar_dolg_guard_start_3">
-        <text>You’re not a bad guy, go ahead.</text>
+    <string id="gar_dolg_blokpost_2221">
+        <text>Шутник, мля... Ладно, проходи, но я тебе еще окорочек этот вспомню.</text>
     </string>
-    <string id="gar_dolg_guard_start_4">
-        <text>Thanks my friend! You are doing quite well killing mutants. You can access the "Rostok" area any time.</text>
-    </string>
-    <string id="gar_dolg_guard_start_5">
-        <text>Well, buddy, you are a mere pro in getting rid of monsters. When you are in "Rostok" area - make sure to come to see our leader. Possibly you will find common language with him.</text>
-    </string>
-    <string id="gar_dolg_guard_start_6">
-        <text>Why are you standing? Move on.</text>
-    </string>
-    <string id="gar_dolg_start_2">
-        <text>Hmm… What do you want?</text>
-    </string>
-    <string id="gar_dolg_start_3">
-        <text>Hi, I’m glad that you also don’t like mutants. It was fun. You’re decent guy. We’ll admit you to the North.</text>
-    </string>
-    <string id="gar_dolg_start_4">
-        <text>Hey. I'm glad you hate mutants too. It was funny. You are a good guy. We will let you pass to the north.</text>
-    </string>
-    <string id="gar_dolg_start_5">
-        <text>Great! You gave them a hard time. Should everybody kill so many mutants as you, they would have vanished long ago. The path to the north is open to you.</text>
+    <string id="gar_dolg_blokpost_33">
+        <text>Будешь у бармена, передай привет от меня. Да, не забудь, в проходе много аномалий, будь осторожен.</text>
     </string>
     <string id="gar_dram_novice_level_0">
-        <text>Can you tell something about the Dump?</text>
+        <text>Можешь что-нибудь о Свалке рассказать?</text>
     </string>
     <string id="gar_dram_novice_level_1">
-        <text>Well there is nothing really essential in there. Dump as it is. Unless some maniacal bastard on the bridge that shoots everything that moves. It’s said that his head is wanted for reward. Moreover the northern road to “Rostok” is guarded by the “Duty” soldiers. You’d better don’t deal with those, guys in “Duty” a really gloomy ones. That’s it, I guess.</text>
+        <text>Да ничего вроде тут такого и нету. Свалка как свалка. Северную дорогу на "Бар" охраняют боевики "Долга". С ними лучше не связываться, в "Долге" вообще мрачные ребята собираются. Справа - проходы в темную Долину, но там очень сильная радиация. Чуть ближе - "Гримпенская трясина", болота полные аномалий. Говорят, так можно неплохо на артефакты разжиться, но на неприятности разжиться там намного проще. Единственное, что хорошо - хоть собаки Баскервилей на болотах нет.</text>
     </string>
     <string id="gar_dram_novice_level_2">
-        <text>Noteworthy information, thanks.</text>
+        <text>Интересная информация, спасибо, учту.</text>
+    </string>
+    <string id="gar_dramm_novice_start_0">
+        <text>Спасибо, друг мой, ты мне очень помог.</text>
+    </string>
+    <string id="gar_dramm_novice_start_1">
+        <text>В следующий раз не попадай в подобные передряги. Этим ты сэкономишь себе нервы, а мне патроны.</text>
     </string>
     <string id="gar_dramm_novice_start_2">
-        <text>Thanks for saving. Now I’m in debt. How can I thank you… O! Information costs money, so listen. I’ve seen monolithians while moving from the Dark Valley. Morose guys in brown uniform. I’ve never noticed them coming to the border so closely. And the bandits who arranged big base in there, I’ve hardly made it to escape. So be careful, if you wander there.</text>
+        <text>Не все так просто. Сейчас мои друзья неподалеку ждут рейд бандитов, чтобы остановить их. Если бандиты станут контролировать эту свалку, то ни для кого не будет прохода вглубь Зоны. Я борюсь за будущее сталкеров. Поговори с нашим командиром, он тут рядом на кладбище машин со своими бойцами стоит. Я сейчас к нему иду, пошли вместе.</text>
     </string>
-    <string id="gar_dramm_novice_start_3">
-        <text>Ho ho! Hi, mate! Thousand thanks for saving my ass. I promise I’ll requite like for like.</text>
+    <string id="gar_dramm_novice_start_21">
+        <text>Хмм... Тоже мне Супермен в подгузниках нашелся. Кто бы тебя самого спас.</text>
     </string>
-    <string id="gar_kran_stalkers_about_0">
-        <text>Are you gathering here for no particular reason or what?</text>
+    <string id="gar_dramm_novice_start_211">
+        <text>Ну вот этого не надо. Любого так подловить могли на дороге.</text>
     </string>
-    <string id="gar_kran_stalkers_about_1">
-        <text>Bandits have plagued nearly everyone. Now I’m prepared, so lets move and give those bandits a rape session.</text>
+    <string id="gar_hellcar_bandits_damaged_0">
+        <text>Привет, рад тебя видеть.</text>
     </string>
-    <string id="gar_kran_stalkers_about_2">
-        <text>Can I go with you?</text>
+    <string id="gar_hellcar_bandits_damaged_1">
+        <text>Взаимно.</text>
     </string>
-    <string id="gar_kran_stalkers_about_21">
-        <text>No its personal. No strangers, sorry.</text>
+    <string id="gar_hellcar_dialog_quest_0">
+        <text>И тебе привет. Какое дело?</text>
     </string>
-    <string id="gar_kran_stalkers_about_3">
-        <text>Heard anything on the Gunslinger?</text>
+    <string id="gar_hellcar_dialog_quest_1">
+        <text>Тут некоторое время назад объявились бандиты. Если они смогут контролировать эту территорию, то тогда вглубь Зоны уже будет не пробиться. А этого не хочеться допустить.</text>
     </string>
-    <string id="gar_kran_stalkers_about_31">
-        <text>Yeah, but not too much. It’s said that he made it to the center of the Zone.</text>
+    <string id="gar_hellcar_dialog_quest_11">
+        <text>А я чем могу помочь? И ты думаешь, что военные их не выбьют, если они станут сильно наглеть?</text>
     </string>
-    <string id="gar_kran_stalkers_about_4">
-        <text>Haven’t you been acquainted with stalker Seriy.</text>
+    <string id="gar_hellcar_dialog_quest_111">
+        <text>Выбить-то выбьют, но обычным сталкерам от этого легче не станет. Мы тут постреляли этих ублюдков, но не всех. Оставшиеся побежали за подмогой. Если поможешь нам уничтожить их подкрепление, то я в долгу не останусь.</text>
     </string>
-    <string id="gar_kran_stalkers_about_41">
-        <text>I think that I’ve heard that he was waiting for someone on garage. But be careful – bridge near the crushed truck with corpses is occupied my that maniac bastard.</text>
+    <string id="gar_hellcar_dialog_quest_1111">
+        <text>Ладно, разомнусь перед дорогой дальней....</text>
     </string>
-    <string id="gar_kran_stalkers_about_411">
-        <text>What is that maniac?</text>
+    <string id="gar_hellcar_dialog_quest_11111">
+        <text>Отлично. Мы им тут устроим засаду, так что раньше времени огонь не открывай.</text>
     </string>
-    <string id="gar_kran_stalkers_about_4112">
-        <text>Ordinary Zone’s loony. Shoots everyone on sight. No chance to approach, cos of the immediate fire.</text>
+    <string id="gar_hellcar_dialog_quest_111111">
+        <text>Я буду действовать по обстоятельствам.</text>
     </string>
-    <string id="gar_kran_stalkers_about_412">
-        <text>What kind of a corpse truck?</text>
+    <string id="gar_hellcar_dialog_quest_1112">
+        <text>Это не мое дело и рисковать своей шкурой я не буду.</text>
     </string>
-    <string id="gar_kran_stalkers_about_4121">
-        <text>Recently in stormy night the truck has crushed here. Overloaded with stalkers’ corpses. Where they were taken to and from stays unclear.</text>
+    <string id="gar_hellcar_dialog_quest_11121">
+        <text>Как хочешь, потом сам будешь локти кусать, когда будешь платить пошлину отморозкам.</text>
     </string>
-    <string id="gar_kran_stalkers_about_413">
-        <text>Fine. I’ll be cautious.</text>
+    <string id="gar_hellcar_dialog_quest_111211">
+        <text>Я уж как-нибудь разберусь сам.</text>
     </string>
-    <string id="gar_kran_stalkers_about_4131">
-        <text>Please do. Caution hasn’t yet harmed anyone.</text>
+    <string id="gar_hellcar_dialog_quest_1113">
+        <text>Старик, не парься. Я их тут пощипал маленько. Так что их подкрепление разве что ряды жмуриков пополнит.</text>
     </string>
-    <string id="gar_kran_stalkers_about_5">
-        <text>Thanks.</text>
+    <string id="gar_hellcar_dialog_quest_11131">
+        <text>Да, ты крут. Но я все же подстрахуюсь. Мало ли что.</text>
+    </string>
+    <string id="gar_hellcar_dialog_quest_111311">
+        <text>Счастливо оставаться.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_0">
+        <text>Да вроде бы жив.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_1">
+        <text>Теперь у меня появилось свободное время, и я с удовольствием помогу тебе в твоем деле. Такие люди как ты, просто так не ходят. Кроме того я достаточно много знаю, могу поделиться информацией.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_11">
+        <text>Отлично, у меня действительно есть важное дело и я буду рад такому спутнику как ты. *Даймон становится фолловером* Прекондишн *он еще не фолловер*</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_12">
+        <text>Нет, спасибо, этот бой только мой.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_121">
+        <text>Как знаешь, я не всю жизнь буду тебя ждать, чай не красна девица.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_1211">
+        <text>Так я к тебе свататься и не собираюсь. Бывай, старик.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_13">
+        <text>Расскажи сначала о себе.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_13111">
+        <text>Меня зовут Даймон. Я пришел сюда три года назад. Как и многие здесь - беглец. На мне висит два убийста и тяжкие телесные. Несколько лет назад моего друга сильно избили в чужом районе. Его по кускам в реанимации собирали. Пришлось нанести визит вежливости. Когда меня пришли задерживать менты, пришлось пристрелить одного из них и выпрыгнуть с третьего этажа. С тех пор я обретаюсь здесь. И счет свой и набор статей увеличил прилично. А здесь по мере сил борюсь с бесперделом. Как и на Большой Земле. Тренирую и организовываю молодняк, учу их здесь выживать</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_131111">
+        <text>А чего в Долг не пойдешь с такими гуманистическими убеждениями?</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_1311111">
+        <text>Долг борется против Зоны, а я борюсь за людей. Кроме того, они слишком сильно связаны с правительством и армией. Не горю желанием в одно прекрасное утро проснуться в КПЗ.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_13111111">
+        <text>Ну ладно, удачи тебе, крестоносец.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_14">
+        <text>Что это за место?</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_141">
+        <text>Свалка. Место, где нам самое место. Видишь кучи всякого хлама? Туда лучше не ходи, там радиоактивные отходы, счетчик Гейгера как соловей поет. Тут единственный удобный проход вглубь Зоны. И последнее время здесь стали активизироваться бандиты. Дальше, куда ходят опытные сталкеры, где территория \nДолга, они сунуться бояться. А здесь шакалить, обдирая молодняк - милое дело. Так что, если всем наплевать, приходиться опять браться за оружие.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_1411">
+        <text>Да, я уже вижу, что тебе больше всех надо.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_14111">
+        <text>Нет, это называется активная жизненная позиция. Везде, а тем более здесь необходимо оставаться человеком, а не скотом, у которого только одна цель - жажда наживы.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_141111">
+        <text>Да ладно, я не хотел тебя обидеть.</text>
+    </string>
+    <string id="gar_hellcar_dialog_thanks_15">
+        <text>Спасибо, мне от тебя ничего не надо.</text>
+    </string>
+    <string id="gar_hellcar_start_11">
+        <text>Приветствую тебя, сталкер. Есть одно дело.</text>
+    </string>
+    <string id="gar_hellcar_start_21">
+        <text>Мне не о чем с тобой говорить.</text>
+    </string>
+    <string id="gar_hellcar_start_211">
+        <text>Ладно.</text>
+    </string>
+    <string id="gar_hellcar_start_31">
+        <text>Спасибо, друг, ты помог нам. Как ты?</text>
+    </string>
+    <string id="gar_hellcar_start_41">
+        <text>Дело еще не сделано, болтать будем потом.</text>
+    </string>
+    <string id="gar_hellcar_start_411">
+        <text>Хорошо.</text>
+    </string>
+    <string id="gar_hellcar_start_51">
+        <text>Привет.</text>
     </string>
     <string id="gar_seriy_help_0">
-        <text>Wait, Seriy, stand firm!</text>
+        <text>Вот теперь есть время поговорить спокойно.</text>
     </string>
     <string id="gar_seriy_help_1">
-        <text>I am, I am. Got a med kit?</text>
+        <text>Согласен. Ты вообще, откуда нарисовался?</text>
     </string>
-    <string id="gar_seriy_help_2">
-        <text>Sure. Take it.</text>
+    <string id="gar_seriy_help_11">
+        <text>Я вообще с Лисом общался намедни. Говорит, что у тебя есть информация о группе Стрелка.</text>
     </string>
-    <string id="gar_seriy_help_21">
-        <text>Oh, thanks. I want to share secret with you. Take this flash drive, information on it will help you to get to the center of Zone.</text>
+    <string id="gar_seriy_help_111">
+        <text>Ну допустим, а учитывая твою почти безвозмездную помощь, даже расскажу. Меня будет ждать один из ребят, бывший диггер, Кротом кличут. Он раскопал нычку Стрелка и вытащил на свет божий одни документы, которые на многое проливают свет. Но так как у него на хвосте бандюки сидели, то он их не взял с собой, просто место запомнил. А так как меня теперь стерегут, то я пока уйду в подполье. Вот тебе координаты места встречи с ним и скажи ему, что ты от меня. Вот на флешке тут тоже кое-какие материалы есть.</text>
     </string>
-    <string id="gar_seriy_help_3">
-        <text>Well.. Seriy.. I think it’s just not your day…</text>
+    <string id="gar_seriy_help_1111">
+        <text>Спасибо. Не зря я твою серую шкуру спасал. Удачи, сталкер.</text>
     </string>
-    <string id="gar_seriy_help_31">
-        <text>Dammit…</text>
+    <string id="gar_seriy_help_11111">
+        <text>Ок, а я тут подожду, скоро мои ребята подвалят.</text>
     </string>
-    <string id="gar_seriy_start_2">
-        <text>I’ve been shot… Shit! I’m unwell…</text>
+    <string id="gar_seriy_start_11">
+        <text>Блин, чувак, какой свистеж на хрен?! Тут сейчас только пули свистеть будут. Поможешь отбиться, тогда и побазарим.</text>
     </string>
-    <string id="gar_seriy_start_3">
-        <text>Hello, mate. Thanks for you help then.</text>
+    <string id="gar_seriy_start_22">
+        <text>Фу, было жарко.</text>
     </string>
     <string id="gar_stalker_about_level_0">
-        <text>Can you tell about the local?</text>
+        <text>Можешь рассказать о здешних местах?</text>
     </string>
     <string id="gar_stalker_about_level_1">
-        <text>Well, listen. We’re now standing at big fetid dump. All the bloody radioactive refuse and debris has been taken here after the accident in 1986. So it’s totally filled with that rubbish, above and beyond the anomalies here and there among the trash. That’s why the only one you can meet here is an ordinary newbies. Why the newbies gather bandits around them. Thus it’s better for you not to stay for long here. Further to the North – radioactive hot beds, trespassing without protection is fatal. If you go to the North, you’ll find the abandoned “Rostok” factory, stalkers’ bar in there you’ll find it with ease. Dark Valley to the East, gloomy, foggy place. “Agroprom” territory to the West. I’ll mark places on your map where you can get safely to.</text>
+        <text>Ну, в общем слушай. Мы с тобой сейчас находимся на большой вонючей свалке. Сюда после аварии в 1986 году свозили радиоактивный мусор, краны, разбитую технику. В общем кругом хлам разбитый, да и аномалий среди обломков достаточно. Артефакты встречаются, правда не сильно хорошие. Потому тут в основном новички и встречаются. А где новички, там и бандитов хватает. Так что лучше здесь не задерживаться. Дальше к востоку много радиационных очагов, без защиты туда нельзя. Если идти на юг, то выйдешь границе Зоны. Если пойдешь на север, то выйдешь к заброшенному заводу "Росток", на нем бар сталкеров, найти его не составит труда. На востоке Темная Долина, мрачное, вечно туманное место. На западе территория НИИ "Агропром". Я отмечу у тебя на карте места, где можно безопасно перебраться.</text>
     </string>
 </string_table>

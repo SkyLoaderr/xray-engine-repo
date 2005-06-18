@@ -1,23 +1,27 @@
-<?xml version='1.0' encoding="UTF-8"?>
-<!-- for descriptions of various items -->
+п»ї<?xml version='1.0' encoding="windows-1251"?>
+<!-- для описания всевозможных предметов в игре -->
 <string_table>
 	<string id="item test1">
-		<text> This is a ITEM test string</text>
+		<text>This is a ITEM test string</text>
 	</string>
 	<string id="item test2">
 		<text>This is a another ITEM test string</text>
 	</string>
 
 	<string id="item_krot_flash">
-		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
+		<text>Флешка Крота с информацией о тайнике Стрелка</text>
 	</string>
 	<string id="item_gunslinger_flash">
-		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
+		<text>Флешка из тайника Стрелка</text>
 	</string>
 	<string id="item_scientist_flash">
-		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ</text>
+		<text>Флешка мёртвого учёного найденного в лесу</text>
 	</string>
 	<string id="item_quest_case_02">
-		<text>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
+		<text>Документы из лагеря военных на НИИ Агропром</text>
 	</string>
+	<string id="item_pri_lom_ak74">
+		<text>Личный автомат сталкера по кличке Лом</text>
+	</string>
+
 </string_table>

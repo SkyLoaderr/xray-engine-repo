@@ -1,345 +1,345 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="Zone">
-        <text>Zone</text>
+        <text>Зона</text>
     </string>
     <string id="Artifacts">
-        <text>Artifacts</text>
+        <text>Артефакты</text>
     </string>
     <string id="af-medusa">
-        <text>Medusa </text>
+        <text>Медуза</text>
     </string>
     <string id="enc_zone_artifact_af-medusa">
-        <text>Artifact generated in “Trigger” anomaly. Constitutes of pressed plants remainings (freaky curved by heavy gravity), soil and generally everything that hits upon the immediate proximity to the anomaly. Wearing the artifact on the belt increases the immunity to the “operating” gravity anomalies like “Vortex” and “Whirligig”, also has an impact as the defence field, reducing the damage from the shooting weapons. Slightly radioactive. The cost is low because of rather high prevalence.</text>
+        <text>Артефакт образующийся в аномалии «Трамплин». Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в непосредственную близость от аномалии. При ношении артефакта на поясе увеличивает иммунитет к «втягивающим» гравитационным аномалиям, таким как «воронка» и «карусель» », а также оказывает незначительный эффект защитного поля, снижающего поражение от стрелкового оружия. Слегка радиактивен. Цена продажи невысока по причине достаточно широкого распространения. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-cristall-flower">
-        <text>Stone flower</text>
+        <text>Каменный цветок</text>
     </string>
     <string id="enc_zone_artifact_af-cristall-flower">
-        <text>Artifact generated in “Trigger” anomaly. Fine excrescence with the mirror surface and yellow-red insertions. Constitutes of pressed plants remnants (freaky curved by heavy gravity), soil and generally everything that hits upon the immediate proximity to the anomaly. Wearing the artifact on the belt increases the immunity to the “operating” gravity anomalies like “Vortex” and “Whirligig”, also has an impact as the defence field, reducing the damage from the shooting weapons. Radioactive. The cost and appearance probability – medium. Scientific organizations, collectors and jewellers are deeply interested in this artifact.</text>
+        <text>Артефакт образующийся в аномалии «Трамплин». Красивое образование с зеркальной поверхностью и желтокрасными вкраплениями. Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в непосредственную близость от аномалии. При ношении артефакта на поясе увеличивает иммунитет к «втягивающим» гравитационным аномалиям, таким как «воронка» и «карусель», а также оказывает легкий эффект защитного поля, снижающего поражение от стрелкового оружия. Радиактивен. Цена продажи и вероятность появления - средняя. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-night-star">
-        <text>Night star</text>
+        <text>Ночная Звезда</text>
     </string>
     <string id="enc_zone_artifact_af-night-star">
-        <text>Artifact occasionally generated in “Trigger” anomaly. Fine excrescence with the mirror surface and color phosphorescing insertions. At night it illuminates everything around itself in 1-2 metres radius, for which it received such a name within stalkers. Constitutes of pressed plants remnants (freaky curved by heavy gravity), soil and generally everything that hits upon the immediate proximity to the anomaly. Wearing the artifact on the belt greatly increases the immunity to the “operating” gravity anomalies like “Vortex” and “Whirligig”, also has an impact as the defence field, reducing the damage from the shooting weapons. While it is highly radioactive, thus continuous bearing is contra-indicated. Appearance probability – medium. Cost – extremely high. Scientific organizations, militaries are deeply interested in this artifact.</text>
+        <text>Артефакт изредка образующийся в аномалии «Трамплин». Красивое образование с зеркальной поверхностью и цветными фосфорицирующими вкраплениями. Ночью освещает зеленоватым светом все вокруг себя в радиусе 1-2 метра, за что и получил у сталкеров такое название. Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в непосредственную близость от аномалии. При ношении артефакта на поясе сильно увеличивает иммунитет к «втягивающим» гравитационным аномалиям, таким как «воронка» и «карусель», а также оказывает эффект защитного поля снижающего поражение от стрелкового оружия. Но при этом сильно радиактивен, поэтому долгое ношение противопоказано. Цена продажи – очень высокая. Вероятность появления - низкая. Интерес к артефакту проявляют научные организации, военные.</text>
     </string>
     <string id="af-vyvert">
-        <text>Twist</text>
+        <text>Выверт</text>
     </string>
     <string id="enc_zone_artifact_af-vyvert">
-        <text>Artifact generated in “Vortex” anomaly. Constitutes of pressed plants remnants (freaky curved by heavy gravity), soil and generally everything that hits upon the immediate proximity to the anomaly. Wearing the artifact on the belt increases the immunity to the “shock” gravity anomalies like “Trigger”. The cost is low because of rather high prevalence. Scientific organizations are deeply interested in this artifact.</text>
+        <text>Артефакт образующийся в аномалии «Воронка». Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в непосредственную близость от аномалии. При ношении артефакта на поясе увеличивает иммунитет к «ударным» гравитационным аномалиям, таким как «Трамплин». Цена продажи невысока по причине достаточно широкого распространения. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-gravi">
-        <text>Gravity</text>
+        <text>Грави</text>
     </string>
     <string id="enc_zone_artifact_af-gravi">
-        <text>Fine artifact generated in “Vortex” anomaly. Constitutes of pressed plants remnants (freaky curved by heavy gravity), soil and generally everything that hits upon the immediate proximity to the anomaly. Wearing the artifact on the belt increases the immunity to the “shock” gravity anomalies like “Trigger”. The cost and appearance probability – medium. Scientific organizations, collectors and jewellers are deeply interested in this artifact.</text>
+        <text>Красивый артефакт образующийся в аномалии «Воронка». Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в непосредственную близость от аномалии. При ношении артефакта на поясе увеличивает иммунитет к «ударным» гравитационным аномалиям, таким как «Трамплин». Цена продажи и вероятность появления - средняя. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-gold-fish">
-        <text>Gold Fish</text>
+        <text>Золотая Рыбка</text>
     </string>
     <string id="enc_zone_artifact_af-gold-fish">
-        <text>Artifact occasionally generated in “Vortex” anomaly. Fine excrescence with the mirror surface. At night it illuminates everything around itself in 1-2 metres radius. Constitutes of pressed plants remnants (freaky curved by heavy gravity), soil and generally everything that hits the anomaly upon the “discharging” moment. Wearing the artifact on the belt increases the immunity to the “shock” gravity anomalies like “Trigger”, but this damn thing due to its gravitational field draws bullets, which isn’t causing joy to its owner. Cost – extremely high. Scientific organizations, collectors and jewellers are deeply interested in this artifact.</text>
+        <text>Артефакт изредка образующийся в аномалии «Воронка». Красивое образование с зеркальной поверхностью. Ночью освещает пространство вокруг себя в радиусе 1-2 метра. Представляет собой спрессованные и причудливо изогнутые сильной гравитацией остатки растений , почвы и вообще всего, что попадает в аномалию в момент «разрядки». При ношении артефакта на поясе увеличивает иммунитет к «ударным» гравитационным аномалиям, таким как «Трамплин», но при этом эта зараза ,за счет мощного гравитационного поля «притягивает» пули, что совсем не радует ее владельца. Цена продажи – очень высокая. Вероятность появления - низкая. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-blood">
-        <text>Stone Blood</text>
+        <text>Кровь Камня</text>
     </string>
     <string id="enc_zone_artifact_af-blood">
-        <text>Artifact generated in “Whirligig” anomaly. Constitutes of ugly red excrescence formed by pressed freaky curved and polymerized plants remnants, soil and bones. Bearing this artifact on the belt speeds up the wounds healing and stops bleeding in some mystic way. Popular belief is spread among stalkers that this artifact contains the power of people who died in this anomaly. Although, this artifact attracts predators to its bearer. The cost isn’t high because of rather rather high prevalence. Scientific organizations, medics first of all and various religious cults show great interest in this artifact.</text>
+        <text>Артефакт образующийся в аномалии «Карусель». Представляет собой уродливое красноватое образование из спрессованных и причудливо изогнутых полимеризированных остатков растений , почвы и костей. При ношении артефакта на поясе, неким мистическим образом, слегка ускоряет заживление ран и останавливает кровотечения. У сталкеров существует поверье, что в этом артефакте заключена сила погибших в аномалии людей. Правда, этот артефакт привлекает хищников, к его владельцу. Цена продажи невысока по причине достаточно широкого распространения. Интерес к артефакту проявляют научные организации, в первую очередь медики и всевозможные религиозные культы.</text>
     </string>
     <string id="af-mincer-meat">
-        <text>Meat Loaf</text>
+        <text>Ломоть мяса</text>
     </string>
     <string id="enc_zone_artifact_af-mincer-meat">
-        <text>Artifact generated in “Whirligig” anomaly. Constitutes of ugly or excrescence formed by pressed freaky curved and polymerized plants remnants, soil and bones. Bearing this artifact on the belt speeds up the wounds healing and stops bleeding in some mystic way. Popular belief is spread among stalkers that this artifact contains the power of people who died in this anomaly. Although, this artifact attracts predators to its bearer. The cost and the appearance probability - medium. Scientific organizations, medics first of all and various religious cults show great interest in this artifact.</text>
+        <text>Артефакт образующийся в аномалии «Карусель». Представляет собой уродливое желтоватое образование из спрессованных и причудливо изогнутых полимеризированных остатков растений , почвы и костей. При ношении артефакта на поясе, неким мистическим образом, значительно ускоряет заживление ран и хорошо останавливает кровотечения. У сталкеров существует поверье, что в этом артефакте заключена сила погибших в аномалии людей. Правда, этот артефакт привлекает хищников, к его владельцу. Цена продажи и вероятность появления - средняя. Интерес к артефакту проявляют научные организации, в первую очередь медики и всевозможные религиозные культы.</text>
     </string>
     <string id="af-soul">
-        <text>Soul</text>
+        <text>Душа</text>
     </string>
     <string id="enc_zone_artifact_af-soul">
-        <text>Rare artifact generated in “Whirligig” anomaly. Constitutes of yellow-red shining excrescence formed by pressed freaky curved and polymerized plants remnants, soil and bones. Popular belief is spread among stalkers that this artifact contains the power of people who died in this anomaly. Bearing this artifact on the belt rejuvenates the health to its maximum and stops all the bleedings. Although, it lowers endurance and monsters with telepathic ability psi attack resistance. Also stalkers note an important fact – wearing this artifact on the belt causes constant hunger. The cost is extremely high. Appearance probability – low. Scientific organizations, medics first of all and various religious cults show great interest in this artifact.</text>
+        <text>Редкий артефакт образующийся в аномалии «Карусель». Представляет собой желтовато-красное блестящее образование из спрессованных и причудливо изогнутых полимеризированных остатков растений , почвы и костей. У сталкеров существует поверье, что в этом артефакте заключены души погибших в аномалии людей. При ношении артефакта на поясе, неким мистическим образом, в течении нескольких секунд полностью востанавливается здоровье человека и останавливаются любые кровотечения. В тоже время ухудщается выносливость и устойчивость к пси-атаке монстров-телепатов. Также сталкеры отмечают забавный факт – когда носишь на поясе этот артефакт, постоянно хочется есть. Цена продажи очень высокая. Вероятность появления - низкая. Интерес к артефакту проявляют научные организации, в первую очередь медики и всевозможные религиозные культы.</text>
     </string>
     <string id="af-drops">
-        <text>Drops</text>
+        <text>Капли</text>
     </string>
     <string id="enc_zone_artifact_af-drops">
-        <text>Artifact generated by “Fryer” anomaly. Tear-shaped excrescences with chapped glossy surface. Stalkers say that bearing this artifact reduces the damage from brutes bites. Worsen the endurance. Cost isn’t high. Collectors and jewellers show interest in this artifact.\n </text>
+        <text>Артефакт производимый аномалией «Жарка». Каплевидные образования с потрескавшейся глянцевитой поверхностью. Сталкеры говорят, что ношение артефакта снижает вред от укусов зверья. Ухудшает выносливость. Цена невысокая. Интерес к артефакту проявляют коллекционеры и ювелиры.</text>
     </string>
     <string id="af-fireball">
-        <text>Fireball</text>
+        <text>Огенный Шар</text>
     </string>
     <string id="enc_zone_artifact_af-fireball">
-        <text>Artifact generated in “Fryer” anomaly. Translucent red excrescence of a globe shape. Stalkers say that bearing this artifact reduces the damage from brutes’ bites. Worsen the endurance. The cost is average. Collectors and jewellers are deeply interested in this artifact.</text>
+        <text>Артефакт производимый аномалией «Жарка». Полупрозрачное красноватое образование шаровидной формы. Сталкеры говорят, что ношение артефакта снижает вред от укусов зверья. Ухудшает выносливость. Цена средняя. Интерес к артефакту проявляют коллекционеры и ювелиры.</text>
     </string>
     <string id="af-cristall">
-        <text>Crystal</text>
+        <text>Кристалл</text>
     </string>
     <string id="enc_zone_artifact_af-cristall">
-        <text>Artifact generated by the “Fryer” anomaly. Its name precisely describes the artifact’s shape – big red shining crystal. Stalkers claim that bearing this artifact scares away several mutants and noticeably reduces damage from brutes’ bites. Alas, this artifact hazardously impacts the endurance. Although, it’s better not to come close to the fires with this artifact. The cost is extremely high. Appearance probability – low. Scientific organizations are greatly interested in this artifact.</text>
+        <text>Артефакт производимый аномалией «Жарка». Его название очень точно описывает форму артефакта – это большой переливающийся кристалл красноватого цвета. Сталкеры утверждают, что ношение артефакта отпугивает некоторых мутантов и значительно снижает вред от укусов зверья. Но, увы, артефакт отвратительно влияет на выносливость. И к тому же к кострам с этим артефактом лучше не подходить. Цена – высокая. Вероятность появления – низкая. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-electra-sparkler">
-        <text>Sparkler</text>
+        <text>Бенгальский Огонь</text>
     </string>
     <string id="enc_zone_artifact_af-electra-sparkler">
-        <text>Artifact generated by “Electra” anomaly. Translucent amorphous excrescence which \ngenerates small lightnings-sparkles around it time to time. Bearing this artifact on the belt increases endurance. Cost is low. Scientific organizations, collecors and jewellers show interest in this artifact.</text>
+        <text>Артефакт производимый аномалией «Электра». Полупрозрачное аморфное образование иногда генерящее вокруг себя маленькие молнии-искры. Ношение артефакта на поясе слегка увеличивает выносливость. Цена невысокая. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-electra-flash">
-        <text>Flash</text>
+        <text>Вспышка</text>
     </string>
     <string id="enc_zone_artifact_af-electra-flash">
-        <text>Artifact generated by “Electra” anomaly. Translucent amorphous excrescence with spruting light beams from within and generating small lightnings-sparkles around it time to time. Bearing the artifact on the belt slightly increases the endurance. Cost is average. Scientific organizations, collectors and jewellers are fascinated with it.</text>
+        <text>Артефакт производимый аномалией «Электра». Полупрозрачное аморфное образование с бьющими изнутри лучиками света и иногда, генерящее вокруг себя маленькие молнии-искры. Ношение артефакта на поясе слегка увеличивает выносливость. Цена средняя. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-electra-moonlight">
-        <text>Moonlight</text>
+        <text>Лунный Свет</text>
     </string>
     <string id="enc_zone_artifact_af-electra-moonlight">
-        <text>Artifact generated by “Electra” anomaly. Translucent amorphous excrescence with glittering core, which generates small lightnings-sparkles around it time to time. Bearing the artifact on the belt noticeably increases the endurance. But any even the weakest “Electra” anomaly becomes mortally dangerous. Radioactive. Cost is high. Scientific organizations, collectors and jewellers show interest in it.</text>
+        <text>Артефакт производимый аномалией «Электра». Полупрозрачное аморфное образование со светящейся сердцевиной, генерящее вокруг себя маленькие молнии-искры. Ношение артефакта на поясе значительно увеличивает выносливость. Но любая, даже самая слабая аномалия «Электра», становится смертельно опасной. Радиактивен. Цена высокая. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-rusty-thorn">
-        <text>Thorn</text>
+        <text>Колючка</text>
     </string>
     <string id="enc_zone_artifact_af-rusty-thorn">
-        <text>Artifact generated by “Rusty hair” anomaly. Bearing it on the belt slightly increases person’s psi defence. Cost is low. Scientific organizations, collectors and jewellers show interest in it.</text>
+        <text>Артефакт производимый аномалией «Ржавые Волосы». При ношении на поясе слегка увеличивает пси-защиту человека. Цена низкая. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-rusty-kristall">
-        <text>Crystal Thorn</text>
+        <text>Кристальная Колючка</text>
     </string>
     <string id="enc_zone_artifact_af-rusty-kristall">
-        <text>Artifact generated by “Rusty Hair” anomaly. Bearing it on the belt increases person’s psi defence. Cost is average. Scientific organizations, collectors and jewellers show interest in it.</text>
+        <text>Артефакт производимый аномалией «Ржавые Волосы». При ношении на поясе увеличивает пси-защиту человека. Цена средняя. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-rusty-sea-urchin">
-        <text>See Urchin</text>
+        <text>Морской Еж</text>
     </string>
     <string id="enc_zone_artifact_af-rusty-sea-urchin">
-        <text>Artifact generated by “Rusty hair” anomaly. Bearing it on the belt noticeably increases person’s psi defence. When activating by throwing becomes bouncing needle-mine. Cost is high. Scientific organizations, collectors and jewellers show interest in it.</text>
+        <text>Артефакт производимый аномалией «Ржавые Волосы». При ношении на поясе значительно увеличивает пси-защиту человека. При активации путем бросания становится прыгающей игло-миной. Цена высокая. Интерес к артефакту проявляют научные организации, коллекционеры и ювелиры.</text>
     </string>
     <string id="af-fuzz-kolobok">
-        <text>Kolobok</text>
+        <text>Колобок</text>
     </string>
     <string id="enc_zone_artifact_af-fuzz-kolobok">
-        <text>Artifact generated by “Fuzz” anomaly. Bearing it on the belt noticeably increases person’s organism resistance to the radiation. Although, it’s better not to come too close to the artifact’s “parent” – damage will be repeatedly increased. Cost is high. Scientific organizations, firstly medics are interested in it.</text>
+        <text>Артефакт производимый аномалией «Жгучий Пух». При ношении на поясе значительно увеличивает стойкость организма человека к радиации. Однако к аномалии-«родителю» артефакта лучше не приближаться – повреждения будут многократно усилены. Цена высокая. Интерес к артефакту проявляют научные организации, в первую очередь медики.</text>
     </string>
     <string id="af-ameba-slime">
-        <text>Slime</text>
+        <text>Слизь</text>
     </string>
     <string id="enc_zone_artifact_af-ameba-slime">
-        <text>Artifact generated by “Slush” anomaly. Translucent or excrescence. Bearing artifact on the belt slightly reduce damage from anomalies “Rusty Hair” and “Fuzz” and slightly scares predators away. Cost is low. Scientific organizations show interest in it.</text>
+        <text>Артефакт производимый аномалией «Холодец». Полупрозрачное желеобразное образование. Ношение артефакта на поясе слегка уменьшает поражение от аномалий «Ржавые Волосы» и «Жгучий Пух» и слегка отпугивает хищников. Цена невысокая. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-ameba-slug">
-        <text>Slug</text>
+        <text>Слизняк</text>
     </string>
     <string id="enc_zone_artifact_af-ameba-slug">
-        <text>Artifact generated by “Slush” anomaly. Translucent or excrescence. Bearing artifact on the belt slightly reduce damage from anomalies “Rusty Hair” and “Fuzz” and slightly scares predators away. Cost is average. Scientific organizations show interest in it.</text>
+        <text>Артефакт производимый аномалией «Холодец». Полупрозрачное желеобразное образование. Ношение артефакта на поясе уменьшает поражение от аномалий «Ржавые Волосы» и «Жгучий Пух» и незначительно отпугивает хищников. Цена средняя. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-ameba-mica">
-        <text>Mica</text>
+        <text>Слюда</text>
     </string>
     <string id="enc_zone_artifact_af-ameba-mica">
-        <text>Artifact generated by “Slush” anomaly. Translucent or excrescence. Bearing artifact on the belt slightly reduce damage from anomalies “Rusty Hair” and “Fuzz” and slightly scares predators away, but constant wearing cause any single scratch to become mortally dangerous because of the rapid bleedings. Cost is high. Scientific organizations show interest in it.</text>
+        <text>Артефакт производимый аномалией «Холодец». Полупрозрачное желеобразное образование. Ношение артефакта на поясе значительно уменьшает поражение от аномалий «Ржавые Волосы» и «Жгучий Пух» и отпугивает хищников, однако при длительном ношении приводит к тому что любая царапина становится смертельно опасной из-за ускоренных кровотечений. Цена высокая. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-dummy-glassbeads">
-        <text>Glassbeads</text>
+        <text>Мамины Бусы</text>
     </string>
     <string id="enc_zone_artifact_af-dummy-glassbeads">
-        <text>Artifact generates temporal field around it which locally slows the time. Freaky curved spiral strewed by shining pearl-drops. Reduces fatigue, hunger, slows bleedings. Radioactive. Activated by pressing. Generates “Time Machine” anomaly within several seconds after activations. Costs a huge bit of brass. This artifact is alluring to almost everyone.</text>
+        <text>Артефакт генерит вокруг себя темпоральное поле локально замедляющее время. Причудливо изогнутая спираль, усеянная блестящими каплями-жемчужинами. Замедляет появление усталости, голода, замедляет кровотечения. Радиактивен. Активируется нажатием. После активации в течение нескольких секунд генерит аномалию «Машина времени». Цена продажи бешенная. Интерес к артефакту проявляют пожалуй все кому не лень.</text>
     </string>
     <string id="af-dummy-pellicle">
-        <text>Pellicle</text>
+        <text>Пленка</text>
     </string>
     <string id="enc_zone_artifact_af-dummy-pellicle">
-        <text>Generated by “Boost” anomaly. Superfine pellicle of glassy substance with unusual dioptric abilities. Radioactive. Gives an owner almost total fatigue resistance. It can be activated by pressing after that artifacts is generating “Boost” anomaly for several seconds. Cost is really high. Scientific organizations, collectors, jewellers, showbusiness show great interest in this artifact.</text>
+        <text>Рождается аномалиями «Лифт». Тоньчайшая пленка стекловидного вещества с необычными преломляющими свойствами. Радиактивен. Дает ее обладателю практически полное отсутствие усталости. При этом ее можно ативировать нажатием, после чего в течение нескольких секунд артефакт генерит аномалию «Лифт». Цена продажи очень высокая. Интерес к артефакту проявляют научные организации, коллекционеры, ювелиры, шоу бизнес.</text>
     </string>
     <string id="af-dummy-battery">
-        <text>Battery</text>
+        <text>Батарейка</text>
     </string>
     <string id="enc_zone_artifact_af-dummy-battery">
-        <text>Artifacts’ origin is unknown. Ribbed shining excrescence. Very useful artifact for his bearer. Increases all health characteristics, endurance, radioactivity resistance. Although, bearing it requires avoiding any anomalies because the damage will be increased. Gives an impression that artifact increases any processes running nearby. Selling cost – huge. Scientific organizations show great interest in the artifact.</text>
+        <text>Происхождение артефакта неизвестно. Ребристое блестящее образование. Очень полезный артефакт для ее носителя. Улучшает все характеристики здоровья, выносливости, радиационной стойкости. Однако, нося его, необходимо избегать любых аномалий поскольку повреждения будут усилены. Создается впечатления, что артефакт усиливает любые процессы протекающие в вокруг него. Цена продажи - огромная. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-dummy-dummy">
-        <text>Dummy</text>
+        <text>Пустышка</text>
     </string>
     <string id="enc_zone_artifact_af-dummy-dummy">
-        <text>Artifact’s origin is unknown. Two hard discs connected with each other by the slime. Slightly reduces damage from all the gravy anomalies and blows absorbing the shock waves. Selling cost is average. Scientific organizations show interest in the artifact.</text>
+        <text>Происхождение артефакта неизвестно. Два жестких диска сцепленные вместе слизью. Слегка снижает поражение от всех гравитационных аномалий и взрывов абсорбируя ударные волны. Цена продажи средняя. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="af-dummy-spring">
-        <text>Spring</text>
+        <text>Пружина</text>
     </string>
     <string id="enc_zone_artifact_af-dummy-spring">
-        <text>Artifact’s origin is unknown. Two hard discs connected with each other by the slime. Can move by itself due to the small bounces. Appearance of alive creatures cause its bouncing and inflicts shock damage. In small premises with few enemies produces an amusing effect of “elastic” bomb. It’s important to run far away after its activation. Bearing it on the belt slightly reduces the damage from all the gravy anomalies and blows absorbing the shock waves. Radioactive. Selling cost is extremely high. Scientific organizations show great interest in this artifact. </text>
+        <text>Происхождение артефакта неизвестно. Два жестких диска сцепленные вместе слизью. Может самостоятельно перемещаться посредством небольших прыжков. При появлении рядом с ним живых существ подпрыгивает и наносит им ударные повреждения. В небольших помещениях, при значительном количестве врагов получается забавный эффект «резиновой» бомбы. Важно только после ее активации подальше отбежать. При ношении на поясе слегка снижает поражение от всех гравитационных аномалий и взрывов абсорбируя ударные волны. Радиактивен. Цена продажи очень высокая. Интерес к артефакту проявляют научные организации.</text>
     </string>
     <string id="Anomalies">
-        <text>Anomalies</text>
+        <text>Аномалии</text>
     </string>
     <string id="Bald">
-        <text>Trigger</text>
+        <text>Трамплин</text>
     </string>
     <string id="enc_zone_anomalies_bald">
-        <text>This anomaly has been discovered in 2008. Inflicts shock damage with the gravity field, like shock wave from the blow. “Lives” in average one week on one place. Changes influence power during its “life”. Influence power – from bruises and injuries to the immediate death with “launching” body to the orbit. Discovered by distortion of the air above it, giddy leaves and typical spots on the ground of red-brown color – places of losers and newbies “starts”. Its influence on the person can greatly reduce bearing “Twist”, “Gravity” and “Gold Fish”. Well served by any kinds of detectors and throwing different metallic objects on it. Randomly generates three types of artifacts around it: “Medusa”, “Stone Flower” and “Night Star”.</text>
+        <text>Эту аномалию обнаружили одной из первых еще в 2008. Наносит ударные повреждения гравитационным полем, по типу ударной волны от взрыва. «Живет» на одном месте в среднем неделю. За время «жизни» меняет силу воздействия. Сила воздействия - от синяков и ушибов до мгновенной смерти с «запуском» тельца на орбиту. Обнаруживается по искажениям воздуха над ней, кружащейся листве, а также характерным пятнам на земле красно бурого цвета – местами «стартов» неудачников и новичков-балбесов. Ее влияние на человека может немного снизить ношение артефактов «Выверт», «Грави» и «Золтая Рыбка». Хорошо обнаруживается любыми видами детекторов и бросанием в нее различных металлических предметов. Случайным образом генерит вокруг себя три типа артефактов: «Медуза», «Каменный цветок» и «Ночная звезда».</text>
     </string>
     <string id="Gravi">
-        <text>Vortex</text>
+        <text>Воронка</text>
     </string>
     <string id="enc_zone_anomalies_gravi">
-        <text>Anomaly, presumably, gravitational by its nature.\nA small black hole. When anomaly activates, it intensively draws in all objects within a radius of 10-15 meters. It is highly important not to get into the zone of maximal effect, while this anomaly is extremely dangerous. It brakes bones and compresses body into bloody lump of flesh and then blows it up, after critical mass accumulates in the center and «core» «discharge». At this moment anomaly litters around the results of «insertion», thus creating new artifacts. During its «life» period anomaly doesn’t change its place and power of influence. It “lives” at one place for about a week. Its influence can de reduced, if you attach «Medusa», «Stone Flower» and «Night Star» artifacts to your belt. The anomaly can be detected by air distortion, twirling leaves, characteristic dark spot on the ground in the center of anomaly and dismember bodies of animals around it. It can be revealed with upgraded detectors only or by means of different metallic items. Usually generates the following artifacts: «Twist», «Gravity» и «Gold Fish».</text>
+        <text>Аномалия, предположительно, гравитационной природы. Маленькая «черная дыра». При срабатывании со страшной силой втягивает все предметы находящиеся в радиусе 10-15 метров в центр. Очень важно не упустить момент начала втягивания и не попасть в зону максмально сильного эффекта, потому как ушибами в данном случае не обойтись – аномалия при любой силе сметрельно опасна. Аномалия ломает кости и сжимает тело в некий окровавленный комок, а затем разрывает его в момент «разрядки» «ядра», которая происходит после накопления в центре некой критической массы. В этот момент аномалия разбрасывает результаты «запрессовки» вокруг себя создавая в том числле новые артефакты. За время «жизни» аномалия не меняет места своего появления и мало влияет силу воздействия. «Живет» на одном месте в среднем неделю. Ее влияние на человека может немного снизить ношение артефактов «Медуза», «Каменный цветок» и «Ночная звезда» на поясе. Обнаруживается по искажениям воздуха над ней, кружащейся листве, по расчлененным трупам животных и характерному темному пятну на земле в центре аномалии. Обнаруживается только продвитнутыми детекторами и бросанием в нее различных металлических предметов. Обычно генерит вокруг себя три типа артефактов: «Выверт», «Грави» и «Золтая Рыбка».</text>
     </string>
     <string id="Meat">
-        <text>Whirlgig</text>
+        <text>Карусель</text>
     </string>
     <string id="enc_zone_anomalies_meat">
-        <text>Merry name for this lousy thing is called forth the effect of rising any alive creature in the air with the following untwisting it and vivid diverting of various body parts. Very dangerous. The nature of this vortex like anomaly isn’t completely discovered. Discovered by the light dusty whirlwind and scattered around body parts of animals and people. It’s important not to miss the moment of the beginning of pulling into the anomaly vortex and not to trap into the zone of maximum effect in the center. Its influence on the person can be reduced by bearing “Medusa”, “Stone Flower” and “Night Star” on the belt. Usually generates three types of artifacts around it: “Stone Blood”, “Meat Loaf” and “ Soul”. All the artifacts of this sub natural “mincing machine” are mystically influencing on the vital human powers.</text>
+        <text>Веселое название этой дряни обусловлено эффектом поднятия в воздух любого живого существа с последующей раскруткой оного и живописным отрыванием различных частей тела. Очень опасна. Природа этой вихреподобной аномалии до конца не известна. Обнаруживается по легкому пылевому вихрю и разбросанным частям тел животных и людей вокруг. Очень важно не упустить момент начала втягивания в аномальный вихрь и не попасть в зону максмально сильного эффекта в центре. Ее влияние на человека может немного снизить ношение артефактов «Медуза», «Каменный цветок» и «Ночная звезда» на поясе. Обычно генерит вокруг себя три типа артефактов: «Кровь камня», «Ломоть Мяса» и «Душа». Все артефакты этой над-природной «мясорубки-убийцы» неким мистическим образом влияют на жизненные силы человека.</text>
     </string>
     <string id="Zharka">
-        <text>Fryer</text>
+        <text>Жарка</text>
     </string>
     <string id="enc_zone_anomalies_zharka">
-        <text>Slightly visible in inactive condition cloud of the hot air. When the alive creature traps into it compact zone of combustion with the temperature near 1500K. All the living instantly burns and in the majority of cases dies. The danger of this anomaly is caused by its moving through the unclear random routes. The positive moment is in that “Fryer” activates any other anomalies thus it can be followed safely, without surprises. Discovered only by advanced detectors and throwing different metallic objects on it. Generates artifacts “ Drops”, “Fireball” and “ Crystal”.</text>
+        <text>Слегка видимое в неактивном состояниии облако горячего воздуха. При попадании в него живого существа образуется компактная зона горения с температурой около 1500К. Все живое мгновенно загорается и в болшинстве случаев гибнет. Опасность этой аномалии заключается еще и в том, что она постоянно движется по неким случайным маршрутам. Положительным моментом является то, что «жарка» при свое прохождении активизирует любые другие аномалиии, таким образом можно довольно безопасно следовать за ней, не опасаясь неожиданностей. Обнаруживается только продвитнутыми детекторами и бросанием в нее различных металлических предметов. При активизации генерит артефакты «Капли», «Огненый шар» и «Кристалл».</text>
     </string>
     <string id="Electra">
-        <text>Electra</text>
+        <text>Электра</text>
     </string>
     <string id="enc_zone_anomalies_electra">
-        <text>Anomaly that accumulates static electricity in zone of about 10 meters in radius. If activated the anomaly explodes with a dozen of mini lightnings, contact with it usually finishes with your death. The peculiar feature of this anomaly is a bluish smoke above it. The anomaly can be easy revealed with detectors of any type or by means of different metallic items. It randomly generates 3 types of artifacts: «Sparkler», «Flash» and «Moonlight».</text>
+        <text>Аномальное образование накапливающее в некой зоне со средним радиусом 10 метров статическое электричество. Потревоженная аномалия взрывается десятком мини-молний. Поражение током практически всегда смертельно. Характреной особенностью аномалии является видимый голубоватый туман над ней. Хорошо обнаруживается любыми видами детекторов и бросанием в нее различных металлических предметов. Случайным образом генерит вокруг себя три типа артефактов: «Бенгальский Огонь», «Вспышка» и «Лунный Свет».</text>
     </string>
     <string id="Rusty">
-        <text>Rusty Hair</text>
+        <text>Ржавые Волосы</text>
     </string>
     <string id="enc_zone_anomalies_rusty">
-        <text>Mutations of flora led to appearance of this liana like spiny species. It can cause damage with its spikes. Anomaly generates around it 3 types of artifacts: «Thorn», «Crystal Thorn», «Sea Urchin». All those artifacts, when attached to the belt, improve the psi-resistance and some of them can be used as bouncing spiny mines.</text>
+        <text>Мутации раститений привели к появлению этих лианоподобных колючих образования. При приближении наносят колющие повреждения. Генерит вокруг себя три типа артефактов-семян: «Колючка», «Кристальная Колючка», «Морской еж». Все артефакты этой аномалии при ношении на поясе влияют на пси-сопротивляемость человека и некоторые из них обладают опасным и иногда полезным свойством становится прыгающими игло-минами.</text>
     </string>
     <string id="Fuzz">
-        <text>Fuzz</text>
+        <text>Жгучий пух</text>
     </string>
     <string id="enc_zone_anomalies_fuzz">
-        <text>Anomalous vegetation. If person approaches, it throws out a cloud of particles. Those particles in contact with the skin cause damage similar to damage caused by   venomous jelly-fishes. Anomaly generates around artifact «Kolobok». All artifacts generated by this anomaly improve resistance to radiation.</text>
+        <text>Аномальная растительность. При приближении выбрасывает облако частиц, которые при контакте с телом человека наносят повреждения по типу стрекательных клеток ядовитых медуз. Генерит вокруг себя артефакт «Колобок». Все артефакты этой аномалии при ношении на поясе влияют на стойкость человека к радиации, за счет сильных абсорбирующих свойств пуха.</text>
     </string>
     <string id="Radioactive">
-        <text>Radioactive hotbed</text>
+        <text>Радиоактивный очаг</text>
     </string>
     <string id="enc_zone_anomalies_radioactive">
-        <text>Zone of high radiation – over 50 mR/h. These zones are often noted on the map. The only advice – avoid staying in such zones for a long period of time.</text>
+        <text>Зона повышенного уровня радиации. Обычноc с уровнем выше 50 mR/h. Часто отмечены на картах. Единственный совет - избегать длительного нахождения в ней.</text>
     </string>
     <string id="Ameba">
-        <text>Slush</text>
+        <text>Холодец</text>
     </string>
     <string id="enc_zone_anomalies_ameba">
-        <text>The nature of this jellylike erupting thing is not yet researched. Causes damage similar to strong acid. Anomaly generates around «Slime», «Slug», «Mica» artifacts.</text>
+        <text>Природа этой медузоподобной гадости выскакивающей из под земли не-исследована. При контакте наносит повреждения сходные с действием сильной кислоты. Генерит артефакты: «Слизь», «Слизняк», «Слюда».</text>
     </string>
     <string id="Time">
-        <text>Time Machine</text>
+        <text>Машина времени</text>
     </string>
     <string id="enc_zone_anomalies_time">
-        <text>This anomaly can be called a miracle – it repeatedly slows down the time in radius of several meters. Anomaly has no influence on health but, is person gets into it, he can spend a lot of time on getting out of it. But if you lure opponent into it… The anfractuous artifact «Glassbeads» is usually situated in its center. By taking it we deactivate the zone. This temporal mine may come in handy later. </text>
+        <text>Эту аномалию воистину можно назвать чудом – в локальном объеме радиусом в несколько метров многократно замедляется время. Она не влиет на здоровье, но попав в нее можно потратить уйму времени на выход из нее. Зато ловко заманив в нее противников можно расслабиться и дать волю воображению. Обычно в ее центре находится спиралевидный артефакт «Мамины бусы» взяв его мы дэ-активируем зону. В последствии такая темпоральная мина очень пригодится.</text>
     </string>
     <string id="Lift">
-        <text>Boost</text>
+        <text>Лифт</text>
     </string>
     <string id="enc_zone_anomalies_lift">
-        <text>Harmless gravity anomaly allowing for several minutes to forget what Earth gravitation is. On a local scope with several meters radius, the gravitation will be decreased multiple times. Gradually drifting within throughout several minutes one can get out of it. The negative side is the loss of time and the fact that floundering on its waves you turn an easy prey to an armed enemy. Still though, lurking an opponent into it is a popular local stalker pastime. Generates «Pellicle» artifacts.  </text>
+        <text>Безвредная грави-аномалия позволяющая на несколько минут забыть о земном тяготении. В локальном объеме радиусом несколько метров земное притяжения многократно уменьшается. Постепенно дрейфуя в ней в течении нескольких минут из нее можно выбраться. Отрицательным моментом является потеря времени и тот факт, что барахтаясь на ее волнах становишься легкой добычей для противника с оружием. Впрочем заманивание в нее противников является местным сталкеровским атракционом. Генерит артефакты «Пленка».</text>
     </string>
     <string id="Locations">
-        <text>Locations</text>
+        <text>Локации</text>
     </string>
     <string id="Escape">
-        <text>Escape</text>
+        <text>Застава</text>
     </string>
     <string id="enc_zone_locations_escape">
-        <text>The Zone entrance, army cordon. In the village basement close to the army post you will locate the dealer. My advice is not to poke your nose or get in the field of soldiers view, they are ordered to shoot on sight… You are not to kill soldiers, only if there’s an extreme emergency – each killed one costs a pretty penny to the dealer, so I don’t think you’ll make him happy with a kill-fest. On the plains, you’ll find large packs of blind dogs, so unless you wanna kill yourself, don’t go there. </text>
+        <text>Предбанник Зоны, армейский кордон. В погребе за деревеньке возле армейского блокпоста найдешь торговца. Соваться на блокпост и попадаться на глаза солдатам не советую, у них приказ стрелять без предупреждения... Убивать солдат нельзя, только в крайнем случае, за каждого убитого торговцу приходится расплачиваться и он не будет доволен таким раскладом. На равнинах крупные стаи слепых псов, суются к ним только смертники.</text>
     </string>
     <string id="Garbage">
-        <text>Garbage</text>
+        <text>Свалка</text>
     </string>
     <string id="enc_zone_locations_garbage">
-        <text>This is a huge stinky dump, where heaps of radioactive trash was delivered after the accident in 1986… this includes destroyed cranes, vehicles… You can also locate remnants of old structures. Mutants are frequent as well. That place is popular with newbies mainly, as well as bandits naturally, so don’t stay long. Further down there you’ll find quite a few radioactive hotbeds, can’t do there without protection.</text>
+        <text>Это большая вонючая свалка, куда после аварии в 86 году свозили горы радиоактивного мусора... разбитые краны, техника... Можно найти останки старых построек. Можно встретить мутантов. Здесь в основном новички крутятся и само собой бандиты, куда ж без них. Можно найти артефактов по мелочи, но лучше здесь надолго не останавливаться. Дальше очень много радиационных очагов, без защиты туда нельзя.</text>
     </string>
     <string id="Agroprom">
-        <text>Agroprom</text>
+        <text>Агропром</text>
     </string>
     <string id="enc_zone_locations_agroprom">
-        <text>Stalkers call this area dead, the radiation is too high here… If you proceed deeper into the area, you’ll come out to radioactive plains, there also is a shallow rusty lake nearby. The entire lake is filled with remains of vehicles, one gigantic heap of rusty trash is barely covered with water. Among other finds, there are an old institute and factory, but the latter is too densely covered with some mutated muck. Don’t go there without gas mask – otherwise you’ll get a heavy portion. </text>
+        <text>Сталкеры называют эту территорию мертвой, тут слишком сильная радиация... Если продвигаться в глубь территории но выйдешь на радиоактивные равнины, можно найти мелкое ржавое озеро. Все озеро заполнено останками машин, одна большая куча ржавого хлама слегка покрытая водой. Еще можно найти старый институт и фабрику, только она слишком обросла какой-то мутированной гадостью. Без противогаза не ходи, на раз схлопочешь дозу.</text>
     </string>
     <string id="Darkdolina">
-        <text>Dark valley</text>
+        <text>Темная долина</text>
     </string>
     <string id="enc_zone_locations_darkdolina">
-        <text>This is a dark valley which is always murky and foggy. It frequently rains here. Besides, the anomaly concentration here is one of the highest… One can locate decent artifacts, so as find certain death… You are sure to meet veterans here – that’s the place they earn money in, shoveling off artifacts out of the very arse. The word is the Slugs gang have re-appeared again, no certainty though – they all had been shot down I heard. There’s an entrance to laboratory, though none came back from there, so my advice would be no-go there… It looks like Dwarves, or maybe something even worse…</text>
+        <text>Это темная долина, тут всегда мрачно и туманно. Часто идет дождь. Ко всему здесь одна из самых высоких концентраций аномалий... Можно разжиться неплохими артефактами, а можно легко расстаться с жизнью... Обязательно встретишь ветеранов, они здесь денежки зарабатывают, вытаскивая из самой задницы артефакты. Слышал говорили про банду Слизней, типа опять появились, на самом деле хрен знает их вроде перестреляли уже всех. Есть вход в лабораторию, только оттуда никто не возвращался, потому не советую туда соваться... Вроде карлики, а может и что пострашнее...</text>
     </string>
     <string id="Darklab">
         <text>Darklab</text>
     </string>
     <string id="enc_zone_locations_darklab">
-        <text>An underground laboratory, a gloomy place, which is said to contain documents revealing mysteries of the Zone, but most likely it’s just a junk of documents. It’s located on the lower levels of the laboratory, but the word is there are heaps of documents which they failed to burn earlier. And, naturally – that is the place where one of the murkiest underground representatives dwell – Burers and Bloodsuckers… Dwarves were virtually never seen, they are said to rebuff bullets therefore making usual weapons useless against them… Well, they also are said to hurl heavy bricks and metal armature using weird forces.    </text>
+        <text>Подземная лаборатория мрачное местечко, говорят что там хранятся документы, открывающие тайны Зоны, но скорее всего это просто какой-то документальный хлам. Лежит он на нижних уровнях лаборатории, там по слухам целые завалы документов, которые когда-то не успели сжечь. Ну и конечно здесь обретаются одни из самых мрачных представителей подземелий – бюреры и кровососы... Карликов почти никто никогда не видел, говорят что справиться обычным оружием не получается, пули отскакивают... Вот, и вроде как кидаются тяжелыми булыжниками и металлическими арматурами при помощи странных сил.</text>
     </string>
     <string id="Bar">
-        <text>Bar</text>
+        <text>Бар</text>
     </string>
     <string id="enc_zone_locations_bar">
-        <text>Hehe… Before the accident in 1986 it was a regular city-structured village. Now, as you get it, it’s ruined remnants of the former village… In the local underground cafe of a food store you will find stalker bar, where stalkers from the entire Zone gather. The local dealer works as bartender here… holds, so to say, the premises. That’s your destination if you are up to trading, communicating and getting an interesting task… The latest news are there as well. If you go from the village, you’ll reach an old “Rostok” factory. Behind the factory there is a base of “Duty” grouping. The base is closed  for the people from outside, don’t go there my advice is.  </text>
+        <text>Хехе... До аварии в 86 это был обычный поселок городского типа. Теперь, как понимаешь, это уже разваленные остатки бывшего поселка... В местной подземной кафешке продовольственного магазина найдешь бар сталкеров, тут собираются сталкеры со всей Зоны, местный торговец работает здесь барменом... содержит, так сказать, помещение. Тебе туда если хочешь поторговать, пообщаться и интересное задание получить... Ну и новости последние узнаешь Если идти от поселка, то придешь к старому заводу Росток. За заводом, находится база группировки «Долг». База закрыта от посторонних, не советую туда ломиться.</text>
     </string>
     <string id="Rostok">
-        <text>Rostok</text>
+        <text>Росток</text>
     </string>
     <string id="enc_zone_locations_rostok">
-        <text>Morose factory I admit. Many have died there… more is the pity. Bloodsuckers bred there in numbers, bastards… one can notice them even at night now. And they, as is well known, become stronger, having gulped one’s blood. Rumors say that there is something of the extreme importance, something vital indeed… Guys from Duty poked there recently, no one survived only the screams were covering the nearby areas. I don’t intend on your going there, let them starve those freaky bloodsuckers.</text>
+        <text>Мрачный, я тебе скажу, этот заводик. Скоко наших там полегло... просто нет слов. Кровососы там развелись, гады... уже ночами выползать начали. А они, как известно, становятся сильнее, когда крови напьются. Но говорят что-то важное на этом заводе находится, что-то просто жизненно необходимое... Недавно вот сунулись из Долга туда, да так все и сгинули, только крики их мы целый день по округе слышали. Не ходи туда, пусть они там все сгниют, кровососы эти.</text>
     </string>
     <string id="Yantar">
-        <text>Yantar</text>
+        <text>Янтарь</text>
     </string>
     <string id="enc_zone_locations_yantar">
-        <text>The legendary lake Yantar, I surely know this one. The black, oily water… which drains the souls of stalkers who approach it: they disappear leaving nothing but the empty shell plop into water and move towards… the island in fog… The zombied empties then roam around. Once they spot you – they stream after you, so that’d be high time you cleared out, as they are many, the ex-stalkers, who perished at the lake, only to leave the empties roaming about… If you outskirt the lake and zombies, you can find a scientific camp, where they study something… they were brought by chopper, which also delivers them foodstuffs regularly, so they are well-set there… One can chat with them, they may buy artifacts, even can ask you to accomplish something for them. </text>
+        <text>Легендарное озеро Янтарь, как же, конечно знаю. Черное, маслянистое... души оно сталкерские выпивает, только подойди к бережку, враз и нет тебя, только оболочка пустая бултых в воду и туда... к островку, значит, в тумане плывет... И зомбяки-пустышки кругом бродят, увидят выть начинают и за тобой, тут уж ноги делать надо, потому как много их, сталкеров бывших сгинуло на этом озере, а теперь пустышки только бродят... Если обойти озеро и зомбяков, то лагерь научный найдешь, они там изучают что-то... Их вертолет привез, он же им регулярно провизию поставляет, так что они там хорошо окопались... С ними потолковать можно, они артефакты покупают, даже что-то выполнить могут попросить.</text>
     </string>
     <string id="Military-loc">
-        <text>Army base</text>
+        <text>Армейская база</text>
     </string>
     <string id="enc_zone_locations_military-loc">
-        <text>Abandoned army base is there, an old village and a small lake. The grouping called Sin is now located within the army base… former religious zealots, who believed in the divine essence of the Zone, appear now to be under mutants control, although it still remains unclear. Once each member’s PDA has logged off, since there has been no sign from them.</text>
+        <text>Заброшенная армейская база там, старая деревенька и небольшое озерцо. А на армейской базе группировка обосновалась Грех называется... бывшие религиозные фанатики, верили в божественную сущность Зоны, а теперь сами превратились в непонять что, слухи ходят что под контролем они у мутантов. Как то все PDA членов этой группировки разом отключились, с тех пор о них ничего не слышно.</text>
     </string>
     <string id="Deadcity">
-        <text>Dead city</text>
+        <text>Мертвый город</text>
     </string>
     <string id="enc_zone_locations_deadcity">
-        <text>Dead city – the city of zombies and Freedom grouping, that has all the Zone anarchist bastards in it. Many storied buildings have snipers-anarchists which shoot off the strangers. So think twice before entering it.</text>
+        <text>Мертвый город, город зомби и группировки Свобода, куда входят все анархистские ублюдки Зоны. В многоэтажках сидят снайперы-анархисты и отстреливают всех чужих. Так что дважды подумай прежде чем соваться туда</text>
     </string>
     <string id="Phenomena">
-        <text>Phenomena</text>
+        <text>Феномены</text>
     </string>
     <string id="Surge">
-        <text>Surge</text>
+        <text>Выброс</text>
     </string>
     <string id="enc_zone_phenomena_surge_general">
-        <text>In equal periods of time waves surging the gravity substance in combination with sharply increased psychotropic influence takes place. During this activity being in the Zone is mortally dangerous, the whole territory suffers invisible waves, person without the special equipment dies in few seconds, the earth starts to shake, then comes the series of flares. Strikingly sky and black-and-white world, eyes can’t stand the blinding sun. During the surge phantom excrescences and haze in the places of gravy anomalies can be seen.</text>
+        <text>Через равные промежутки времени по Зоне проходят волны выброса гравитационного рода в сочетании с резко повышенным психотропным воздействием. Во время этой активности, нахождение в Зоне смертельно опасно, по всей территории проходят невидимые волны, человек без спецоборудования гибнет в считанные секунды, начинает трястись земля, затем следует серия вспышек. Ярко светящееся небо и черно-белый мир, глаза не выдерживают слепящего солнца. Во время выброса можно увидеть фантомные образования и марево на местах гравитационных аномалий.</text>
     </string>
     <string id="Surge-story">
-        <text>Surge story</text>
+        <text>Рассказ о Выбросе</text>
     </string>
     <string id="enc_zone_phenomena_surge_surge-story">
-        <text>Resonant earthquake and lightning sparkles shine the black boiling skies. Stalker hardly get on well to enter the house – the surge begins. Continuous underearth strike shakes the house. The dust appears, rubbish falls from the shelves. The room is brightened by a flare of extremely blazing light through the broken window. The world loses its colors and turns grey. Through the opened door one can see the street and blackened blind dog corpse in it. Hurricane wind carries this rubbish the heaviest part of the surge begins. The earth arises everything is filled with the dead light. Then comes the many-voiced boom and din, lightning flares. The fallen objects shake on the floor. Stalker, having hidden in the corner, covers up his eyes that are becoming blind. There comes the peak of the surge. The very last, the strongest and the most terrible strike arrives. It pulls the earth and breaks the trees. Instantly it becomes dark then comes the light and whistle of gone mad Zone, stalker loses conscience…</text>
+        <text>Гулкое землетрясение и вспышки молний освещают черные кипящие облака. Сталкер еле успевает забежать в дом - начинается выброс. Протяжный подземный удар сотрясает дом. Поднимается пыль, валится с полок мусор. Через разбитое окно комнату освещает вспышка невероятно яркого света. Мир теряет цвета и сереет. Через открытый дверной проем видна улица и лежащий на асфальте почерневший труп слепого пса. Ураганный ветер несет мусор, начинается самый тяжелый момент выброса. Земля встает на дыбы, все заливается мертвым светом. Появляется многоголосый гул и грохот, вспышки молний. На полу трясутся упавшие вещи. Сталкер, забившись в угол, прикрывает слепнущие глаза. И вот наступает пик выброса. Происходит последний, самый сильный и страшный удар. Он дергает землю, ломает деревья. На мгновение становится темно, а потом свет и свист, сошедшей с ума Зоны, вырубает сознание у сталкера...</text>
     </string>
     <string id="Zone-story">
-        <text>Zone stories</text>
+        <text>Рассказы о Зоне</text>
     </string>
     <string id="Story-2006">
-        <text>Year 2006, the 12th of April, 14:33</text>
+        <text>2006 год, 12 апреля, 14:33.</text>
     </string>
     <string id="enc_zone_zone-story_story-2006">
-        <text>Chernobyl zone has been enlightened by the brightest, unbearable light. In the silver from the light sky clouds began to exhale. Then after the moment of the total silence comes the din and earthquake. People were falling on the ground holding their bleeding eyes and ears. Light appeared above the huge territory. Those who could run saving their lives. It looked as the stores of buried nuclear fuel exploded, tearing APP and outskirts to parts. The governmental forces have surrounded the Zone… Epicenter of the blow is situated in the kilometer from the APP. Supposedly, all the personnel died at the very first moments. Many people have been captured by the damage zone. Organizing lifesaving operations was really impossible, strange energetic shocks that posed hazard to the life of scientists. Few month after the accident crisis situation appeared – Zone has suddenly grown in size, consuming 5 kilometers of the surrounding territories. The majority of the governmental forces and the laboratory have instantly been destroyed. People began to panic. The citizens of the nearby villages and towns have been swiftly evacuated. The world is in imminent danger, which can’t be measured.</text>
+        <text>Чернобыльская зона осветилась ярчайшим, нестерпимым светом. На серебряном от света небе испарялись облака. После мгновения полной тишины, пришел грохот и землетрясение. Люди падали на землю, зажимая кровоточащие глаза и уши. Сияние появилось над огромной территорией. Кто мог, тот бежал, спасая свою жизнь. Со стороны это выглядело, как будто запасы похороненного ядерного топлива взлетели на воздух, разорвав на куски АЭС и окрестности. К вечеру правительственные войска оцепили Зону… Эпицентр взрыва находится в километре от АЭС. Предположительно, весь персонал погиб в первые мгновения. Много людей попали в зону поражения. Организовать спасательные операции не представляется возможным, в зоне действуют странные энергетические возмущения, представляющие смертельную опасность исследователям. Через несколько месяцев после аварии, возникла кризисная ситуация - Зона резко увеличилась, поглотив под собой пять километров окрестностей. Большая часть правительственных войск и лабораторий мгновенно погибла. Началась паника. Жителей окрестных сел и городов в спешке эвакуировали. Над миром повисла опасность, величину которой можно только предполагать.</text>
     </string>
     <string id="Story-2008">
-        <text>Year 2008</text>
+        <text>2008 год</text>
     </string>
     <string id="enc_zone_zone-story_story-2008">
-        <text>Two years have passed since the uncanny accident happened – the Zone exploded to leave radioactive clouds cover up vast expanses. \nIn the aftermath there have been left an enormous number of dead and missing people, lifeless animals, blackened structures, deformed forests. Thirty kilometers sealed off with the army, scientists cracking their minds to explain the happenings. The Zone grows, various anomalies bearing death to the trapped discovered within: the invisible force tears people apart, inflicts terrifying wounds causing blood to fountain. The rare expeditions encounter mutated animals, which could not appear in the Zone naturally. The catastrophe, mutants, infection – all appears an effect of some eerie phenomena… </text>
+        <text>Прошло два года с тех пор, как случилась жуткая катастрофа - взорвалась Зона, и радиоактивные облака накрыли огромную территорию. Невероятное количество погибших и пропавших без вести людей, мертвые животные, почерневшие постройки, искореженные леса. Тридцать километров оцеплены армией, ученые не могут дать объяснений случившемуся. Зона растет, внутри обнаружены различные аномалии, попадание в которые приводит к смерти, невидимая сила разрывает на части людей, наносит страшные раны, из которых фонтаном бьет кровь. Редкие экспедиции сталкиваются с мутированными животными, которые не могли самостоятельно появится в Зоне. Катастрофа, мутанты, заражение все является следствием каких-то жутких явлений...</text>
     </string>
     <string id="Story-2010">
-        <text>Year 2010</text>
+        <text>2010 год</text>
     </string>
     <string id="enc_zone_zone-story_story-2010">
-        <text>The first expeditions can penetrate Zone for several kilometers without mortal danger. Amateurs, marauders and poachers have appeared in the Zone. They were said to be stalkers. Stalkers wander along the Zone in search for the diverse anomalous excrescence (artifacts), which will be repaid by the underground merchants.</text>
+        <text>Первые экспедиции могут без смертельной опасности проникать на несколько километров вглубь Зоны. В Зоне появились исследователи любители, мародеры и браконьеры. Всех их без разбора назвали сталкерами. Сталкеры путешествуют по Зоне в поисках разнообразных аномальных образований (артефактов), за которые получают деньги от подпольных торговцев.</text>
     </string>
     <string id="Story-raid">
-        <text>Large-scale Zone penetration</text>
+        <text>Крупномасштабный прорыв Зоны</text>
     </string>
     <string id="enc_zone_zone-story_story-raid">
-        <text>Army detachments, led by the miliraty stalkers, have set out with the large-scale expedition into the depths of the Zone. Break to the epicentre of the Zone and eliminate the bottom of mortal anomalous fields or at least learn the reason and the circumstances of such events. The game begins when the last army detachment, with the coverage of the aviation and armoured troops went deep inside it. The whole expedition counting up to 1000 soldiers, stalkers and technicians has perished. Separate groups settled in the Zone territory without any hope for salvation.</text>
+        <text>Армейские части, возглавляемые отрядами военных сталкеров, выступили крупной экспедицией внутрь Зоны. Цель – прорваться к эпицентру Зоны и уничтожить причину появления смертельных аномальных полей или хотя бы узнать причину и последствия этих проявлений. На момент начала игры, последняя армейская часть, при поддержке авиации и бронетехники ушла вглубь. Вся армейская экспедиция, насчитывающая около 1000 солдат, сталкеров и техников, практически полностью погибла. Отдельные группы осели на территории Зоны без всякой надежды на спасение...</text>
     </string>
 </string_table>

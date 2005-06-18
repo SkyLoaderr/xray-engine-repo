@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="dialog_universal_1202">
+        <text>Я слышал только о группировке "Долг" - это "санитары Зоны</text>
+    </string>
+    <string id="dialog_universal_1381">
+        <text>text in default</text>
+    </string>
+    <string id="dialog_universal_1382">
+        <text>text in default</text>
+    </string>
+    <string id="dialog_universal_2000">
+        <text>Извини, мне пора</text>
+    </string>
+    <string id="dialog_universal_01">
+        <text>У меня к тебе парочка дел....</text>
+    </string>
+    <string id="dialog_universal_1500">
+        <text>Мне надо идти</text>
+    </string>
+    <string id="dialog_universal_400">
+        <text>Давай поторгуем</text>
+    </string>
+    <string id="dialog_universal_401">
+        <text>Как раз хотел тебе предложить…!</text>
+    </string>
+    <string id="dialog_universal_402">
+        <text>Без проблем……</text>
+    </string>
+    <string id="dialog_universal_800">
+        <text>Что это место? Я ничего не помню…</text>
+    </string>
+    <string id="dialog_universal_1000">
+        <text>Какие новости за последнее время?</text>
+    </string>
+    <string id="dialog_universal_1330">
+        <text>А что по поводу солдат и военных?</text>
+    </string>
+    <string id="dialog_universal_1340">
+        <text>Расскажи о сталкерах подробнее</text>
+    </string>
+    <string id="dialog_universal_1350">
+        <text>Расскажи мне о себе</text>
+    </string>
+    <string id="dialog_universal_1360">
+        <text>Ты слышал о группировках в Зоне?</text>
+    </string>
+    <string id="dialog_universal_700">
+        <text>Какие среди сталкеров ходят разговоры?</text>
+    </string>
+    <string id="dialog_universal_701">
+        <text>Многие считают, что Зона - живой организм, который живет по своим законам и правилам. Следовательно, человек, который вторгся в Зону, является чужеродным предметом, не подчиняющимся ее законам и правилам, и Зона всеми способами пытается от них избавиться. Естественно, это касается не только сталкеров, но и военных….</text>
+    </string>
+    <string id="dialog_universal_4012">
+        <text>Спасибо, это все</text>
+    </string>
+    <string id="dialog_universal_4011">
+        <text>Я хотел еще кое-что</text>
+    </string>
+    <string id="dialog_universal_702">
+        <text>Сталкеры придумали поговорку:слабых Зона отсеивает быстро, сильных же сводит с ума. Хватит пальцев на одной руке, что бы пересчитать тех героев, которые дошли до Центра и вернулись.</text>
+    </string>
+    <string id="dialog_universal_100">
+        <text>Где можно заработать деньги и раздобыть экипировку?</text>
+    </string>
+    <string id="dialog_universal_801">
+        <text>Это, собственно, то место, откуда все начинают свой поход в Зону. Ночью здесь опасно, хотя те чудовища из центра Зоны, о которых рассказывают сталкеры, здесь не появляются. Кстати, будь осторожен, не далеко - блокпост….</text>
+    </string>
+    <string id="dialog_universal_802">
+        <text>Предбанник Зоны, армейский кордон. \nВ основном тут крупные стаи слепых псов, иногда забегают мутанты со Свалки. Будь особенно осторожен ночью. А если пойдешь по дороге на север, то доберешься до Свалки.</text>
+    </string>
+    <string id="dialog_universal_1001">
+        <text>Серый с компанией пытался прорваться сквозь блок пост - всех убили.</text>
+    </string>
+    <string id="dialog_universal_1002">
+        <text>Слышал, что у одного из сталкеров, вернувшегося из глубины Зоны, военные отобрали, в обмен на жизнь, ценный артефакт. Говорят, ученые в шоке.</text>
+    </string>
+    <string id="dialog_universal_101">
+        <text>У торговца в его подвале, а больше мест я не знаю. Только лучше не огорчать его - потом такие цены заломит, что будешь крошки по углам собирать.</text>
+    </string>
+    <string id="dialog_universal_102">
+        <text>Если тебе нужно оружие и экипировка, или работенка, можешь обратиться к торговцу в деревеньке возле блокпоста. У него же можно сбыть артефакты по весьма выгодным ценам. И вообще, с ним лучше дружить - цены напрямую зависят от его отношения к тебе.</text>
+    </string>
+    <string id="dialog_universal_1320">
+        <text>Расскажи мне о Зоне</text>
+    </string>
+    <string id="dialog_universal_1300">
+        <text>Ты можешь мне рассказать про некоторые вещи?</text>
+    </string>
+    <string id="dialog_universal_1312">
+        <text>Не отдыхай на открытых местах, остерегайся аномалий, мутантов и бандитов, не атакуй военных…и прячься от Выброса, иначе мгновенно умрешь…</text>
+    </string>
+    <string id="dialog_universal_1311">
+        <text>Даже не знаю, что тебе посоветовать, я сам тут не очень долго. Первое, что тебе надо сделать - это раздобыть экипировку и хорошее оружие, без этого в Зоне никуда.…</text>
+    </string>
+    <string id="dialog_universal_1310">
+        <text>Можешь дать несколько советов новичку?</text>
+    </string>
+    <string id="dialog_universal_1301">
+        <text>Что ты хочешь знать?</text>
+    </string>
+    <string id="dialog_universal_13111">
+        <text>Мне нужна еще информация</text>
+    </string>
+    <string id="dialog_universal_13112">
+        <text>Спасибо, этого достаточно</text>
+    </string>
+    <string id="dialog_universal_1321">
+        <text>Да я сам новичок, толком ничего и не знаю. Я пока только осваиваюсь.…</text>
+    </string>
+    <string id="dialog_universal_1322">
+        <text>Зона…. Это не просто круг в сорок километров диаметром, и уже даже не часть мира. Это новый мир, со своими законами и странностями.</text>
+    </string>
+    <string id="dialog_universal_1331">
+        <text>Солдат в округе много и убивать можно только в крайнем случае. Помни, что торговец не будет доволен таким раскладом.</text>
+    </string>
+    <string id="dialog_universal_1332">
+        <text>Солдаты и военные тут повсюду. На блокпост не суйся, стреляют на поражение. Не забывай, если ты будешь убивать солдат, торговец будет очень не доволен.</text>
+    </string>
+    <string id="dialog_universal_1341">
+        <text>Я только новичок, почти ничего о жизни сталкеров еще не знаю.</text>
+    </string>
+    <string id="dialog_universal_1342">
+        <text>Сталкер - это человек, нет, пожалуй, это разумное существо, способное понимать законы Зоны и соблюдать их. Если ты будешь их соблюдать, то это гарантирует тебе здесь относительно спокойную жизнь.</text>
+    </string>
+    <string id="dialog_universal_1351">
+        <text>Ничего примечательно в моей истории нет. Получилось так, что от знакомого я узнал про Зону и решил, что это хорошая возможность подзаработать. И вот я здесь.</text>
+    </string>
+    <string id="dialog_universal_1352">
+        <text>Я пришел сюда в поисках себя, тем более у меня есть плюс- мне нечего терять, дома меня ни кто не ждёт.</text>
+    </string>
+    <string id="dialog_universal_1361">
+        <text>Я тут не долго, нет, я ничего такого не слышал. Хотя, вполне возможно, они есть.</text>
+    </string>
+    <string id="dialog_universal_1362">
+        <text>Я слышал только о группировке Долг - это санитары Зоны</text>
+    </string>
+    <string id="dialog_universal_1370">
+        <text>Что ты знаешь об аномалиях?</text>
+    </string>
+    <string id="dialog_universal_1371">
+        <text>Это смертоносные участки Зоны. Будь осторожен, обходи их стороной.</text>
+    </string>
+    <string id="dialog_universal_0">
+        <text>Привет!</text>
+    </string>
+    <string id="dialog_universal_1372">
+        <text>Аномалии - это раны на теле нашей матушки-Земли. Выбраться из них практически не возможно, так что остерегайся.</text>
+    </string>
+    <string id="dialog_universal_02">
+        <text>Что ты хочешь?</text>
+    </string>
+</string_table>

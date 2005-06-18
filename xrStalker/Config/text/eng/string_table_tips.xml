@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="inventory_item_use">
-        <text>Pickup item ($$ACTION_USE$$)</text>
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
-        <text>Talk with the person ($$ACTION_USE$$)</text>
+        <text>Говорить ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Search corpse ($$ACTION_USE$$)</text>
+        <text>Обыскать труп ($$ACTION_USE$$)</text>
     </string>
     <string id="car_use">
-        <text>Open door ($$ACTION_USE$$)</text>
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
     </string>
     <string id="physic_shell_use">
-        <text>Move object ()</text>
+        <text>Двигать объект ()</text>
     </string>
 </string_table>

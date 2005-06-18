@@ -690,7 +690,7 @@
 						RelativePath=".\Config\text\eng\stable_dialogs_bar.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\stable_dialogs_darkvalley.ltx">
+						RelativePath=".\Config\text\eng\stable_dialogs_darkvalley.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_escape.xml">
@@ -699,10 +699,46 @@
 						RelativePath=".\Config\text\eng\stable_dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_labx18.xml">
+					</File>
+					<File
 						RelativePath=".\config\text\eng\stable_dialogs_military.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_radar.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_uni.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_bar-rostok.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_darkvalley.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_radar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_to_diary.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_artefacts.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_enc_equipment.xml">
@@ -738,16 +774,55 @@
 						RelativePath=".\Config\text\eng\string_table_outfit.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_darkvalley.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\string_table_tasks_escape.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_radar.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\string_table_tips.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_bar-rostok.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_darkvalley.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips_military.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_ui.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">

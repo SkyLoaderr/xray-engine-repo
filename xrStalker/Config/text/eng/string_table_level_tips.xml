@@ -1,99 +1,77 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+<!-- ПРИ ЛОКАЛИЗАЦИИ НЕ ЗАБЫТЬ ИЗМЕНИТЬ ПУТЬ -->
+#include "text\rus\string_table_tips_escape.xml"
+#include "text\rus\string_table_tips_garbage.xml"
+#include "text\rus\string_table_tips_agroprom.xml"
+#include "text\rus\string_table_tips_darkvalley.xml"
+#include "text\rus\string_table_tips_bar-rostok.xml"
+#include "text\rus\string_table_tips_military.xml"
+
+#include "text\rus\stable_storyline_info_escape.xml"
+#include "text\rus\stable_storyline_info_garbage.xml"
+#include "text\rus\stable_storyline_info_agroprom.xml"
+#include "text\rus\stable_storyline_info_darkvalley.xml"
+#include "text\rus\stable_storyline_info_bar-rostok.xml"
+#include "text\rus\stable_storyline_info_military.xml"
+#include "text\rus\stable_storyline_info_radar.xml"
+
+#include "text\rus\string_table_tasks_escape.xml"
+#include "text\rus\string_table_tasks_agroprom.xml"
+#include "text\rus\string_table_tasks_darkvalley.xml"
+#include "text\rus\string_table_tasks_bar.xml"
+#include "text\rus\string_table_tasks_military.xml"
+#include "text\rus\string_table_tasks_radar.xml"
+#include "text\rus\string_table_tasks_garbage.xml"
+
+    <string id="inventory_item_use">
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
+    </string>
+    <string id="character_use">
+        <text>Говорить ($$ACTION_USE$$)</text>
+    </string>
+    <string id="dead_character_use">
+        <text>Обыскать труп ($$ACTION_USE$$)</text>
+    </string>
+    <string id="car_use">
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
+    </string>
+    <string id="physic_shell_use">
+        <text>Двигать объект ()</text>
+    </string>
+
     <string id="general_help">
-        <text>Help me!!! I need medikit.</text>
+        <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_new_task">
-        <text>New tasks received.</text>
+        <text>Получено новое задание.</text>
     </string>
     <string id="general_complete_task">
-        <text>Task completed.</text>
+        <text>Задание выплонено.</text>
     </string>
     <string id="general_fail_task">
-        <text>Task failed.</text>
+        <text>Задание провалено.</text>
     </string>
     <string id="general_update_task">
-        <text>Task updated.</text>
+        <text>Задание обновлено.</text>
     </string>
     <string id="general_in_item">
-        <text>Object acquired.</text>
+        <text>Получен предмет.</text>
     </string>
     <string id="general_out_item">
-        <text>Object lost.</text>
+        <text>Потерян предмет.</text>
     </string>
     <string id="general_in_money">
-        <text>Money gained.</text>
+        <text>Получены деньги.</text>
     </string>
     <string id="general_out_money">
-        <text>Money lost.</text>
+        <text>Потеряны деньги.</text>
     </string>
-    <string id="tips_esc_trader_how_to_talk">
-        <text>To talk to someone point sight at him and press ‘E’ button.</text>
+    <string id="general_new_encyclopedy">
+        <text>Новая статья в энциклопедии.</text>
     </string>
-    <string id="tips_esc_trader_activate_pda">
-        <text>To activate PDA, press 'P' button.</text>
-    </string>
-    <string id="tips_esc_trader_activate_map">
-        <text>To activate map press 'M'.</text>
-    </string>
-    <string id="tips_esc_trader_quest_1">
-        <text>Find artifact in the place pointed on the map and bring it to the trader.</text>
-    </string>
-    <string id="tutorial_trader_search_corpses">
-        <text>Search dead bodies, you may find some useful staff.</text>
-    </string>
-    <string id="tutorial_trader_give_medikit">
-        <text>Hand a medikit to this dunce.</text>
-    </string>
-    <string id="tips_esc_trader_about_pda">
-        <text>Press Contact (С). In and on minimap on the screen other stalkers with activated PDA will appear. Their attitude to you will also be stated on the screen. Be careful if you see enemies on the screen. However bandits and, heh, monsters usually don’t use PDA, so you better watch out in the Zone.</text>
-    </string>
-    <string id="tips_esc_trader_about_anomalies">
-        <text>Watch out! You’re nearby anomalies. Use bolts to define their borders.</text>
-    </string>
-    <string id="tutorial_flash_anomaly_alarm">
-        <text>Marked, watch out. Next time it may be you!</text>
-    </string>
-    <string id="tutorial_trader_look_vagon">
-        <text>Hey, there is some kind of action near you. I send coordinates to you. Check, what are going there.</text>
-    </string>
-    <string id="escape_stalker_killed">
-        <text>Well, Marked, it’s up to you. This way or another, you’ve passed the examination, but deal with Wolf and his team on your own. Generally I’m waiting for you, got some job.</text>
-    </string>
-    <string id="escape_stalker_death">
-        <text>empty text</text>
-    </string>
-    <string id="escape_stalker_helped">
-        <text>Well done, Marked. If it continues, you’ll acquire many friends. Come into mine, we’ll have a chat.</text>
-    </string>
-    <string id="info_esc_give_agroprom_task">
-        <text>Branded One. The military uncovered something  in SRI “Agroprom”. And this is something I’m very after, so as you I guess. You need to gain the info and deliver it to bartender in stalker bar. Get on it.</text>
-    </string>
-    <string id="gar_dolg_warning">
-        <text>Stalker, you’ve have intruded territory under Duty control… Any assault attempt on our people will be punished by the mere death.</text>
-    </string>
-    <string id="tips_garbage_rush_starter">
-        <text>Attention everyone!!! Duty outpost online. The pack of mutants is moving towards the Bar from the Black Valley. Everyone who will help us to shoot out that scums will be granted gratitude from our side. You have Duty word.</text>
-    </string>
-    <string id="info_val_give_suicider_task">
-        <text>Branded one, stalkers whisper of Hawk stalker to have shown up in the village vicinity. He wasn’t seen around for over six months now. He attempted finding a passage to the zone center and disappeared without trace, and now popped up back again. He was seen recently in Dark Valley, somewhere behind the Monolith base. When time allows, find out what’s about him.  </text>
-    </string>
-    <string id="mil_info_max_village">
-        <text>Branded one, be careful – a new anomaly is said to have shown up in the village – it’s moving swift-fast, and moreover, the damn thing can’t be seen.</text>
-    </string>
-    <string id="mil_info_max_mines">
-        <text>Mind the mines – sapper can be mistaken twice…</text>
-    </string>
-    <string id="mil_info_freedom_radio">
-        <text>If you sit for the whole night in the village on Tower – something will definitely happen… :) </text>
-    </string>
-    <string id="mil_info_to_all">
-        <text>Attention, all the volunteers to thin out your brains – the passage to Radar is guarded by Monolith squad. I gather you are aware they shoot up everyone. Good luck.</text>
-    </string>
-    <string id="escape_wounded_start">
-        <text>Hey, Marked, one stalker just returned from deep raid into Zone. He is wounded and can't move anymore. Help him, may be he know something about Gunslinger.</text>
-    </string>
-    <string id="escape_stalker_help">
-        <text>Hey, Marked. There is a badly wounded stalker not far from you, he was coming back after a trip deep inside the Zone. Help him, he may know something about the Gunslinger.</text>
-    </string>
+    <string id="general_new_diary">
+        <text>Новая запись в дневнике.</text>
+    </string>    
+    
 </string_table>

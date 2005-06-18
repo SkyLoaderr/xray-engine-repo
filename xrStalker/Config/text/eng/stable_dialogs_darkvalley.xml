@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="val_ambush_dialog_11">
+        <text>Привет, сталкер! Для тебя есть плохая новость. Это наша территория и ты пойдешь с нами.</text>
+    </string>
+    <string id="val_ambush_dialog_111">
+        <text>Ну ладно. Ведите.</text>
+    </string>
+    <string id="val_ambush_dialog_112">
+        <text>Не дорос ты еще, щенок, чтобы мне угрожать.</text>
+    </string>
+    <string id="val_escort_captive_dialog_11">
+        <text>Спасибо, что спас меня. Бандиты, суки, хотели отдать меня монолитовцам. А эти полузомби, по слухам, скармливают сталкеров монстрам, которыми кишит секретная лаборатория под Базой Монолита. Монолитовцы почти никого не пускают на свою территорию, разве что на людей в костюме бандитов не обращают внимания. Да и у тех на входе пароль требуют.</text>
+    </string>
+    <string id="val_escort_captive_dialog_111">
+        <text>Ага, значит, достаточно всего лишь достать где-то костюм бандита, узнать пароль - и вход на Базу Монолита открыт?</text>
+    </string>
+    <string id="val_escort_captive_dialog_1111">
+        <text>"Всего лишь"! Если в лагере бандитов достать костюм не так уж и сложно, то узнать пароль - задача практически неразрешимая. Никто из бандитов откровенничать с тобой не будет. Слышал я в разговоре бандитов, что пароль также хранится на ПДА у Борова, лидера бандитов, но к нему пробраться вообще нереально - в охранниках у него очень серьезные ребята.</text>
+    </string>
+    <string id="val_escort_captive_dialog_11111">
+        <text>ОК, спасибо за информацию.</text>
+    </string>
+    <string id="val_escort_captive_dialog_111111">
+        <text>Без проблем.</text>
+    </string>
+    <string id="val_escort_captive_dialog_21">
+        <text>Спасибо за помощь.</text>
+    </string>
+    <string id="val_escort_captive_dialog_211">
+        <text>Увидимся.</text>
+    </string>
+    <string id="val_escort_captive_dialog_22">
+        <text>Я тут подумываю скоро сваливать отседова, так что если есть че спросить - спрашивай.</text>
+    </string>
+    <string id="val_escort_captive_dialog_221">
+        <text>Не бери в голову. Пока.</text>
+    </string>
+    <string id="val_escort_captive_dialog_3">
+        <text>Пойдешь со мной?</text>
+    </string>
+    <string id="val_escort_captive_dialog_3111">
+        <text>Ок. Я твой должник, а долги я отдаю. Пошли.</text>
+    </string>
+    <string id="val_escort_captive_dialog_31111">
+        <text>Вдвоем будет веселей.</text>
+    </string>
+    <string id="val_escort_captive_dialog_3112">
+        <text>Извини, нам не по пути.</text>
+    </string>
+    <string id="val_escort_captive_dialog_31121">
+        <text>Ну и проваливай.</text>
+    </string>
+    <string id="val_escort_captive_dialog_3121">
+        <text>Ты мне не помог, так что нам не по пути. Проваливай.</text>
+    </string>
+    <string id="val_escort_captive_dialog_31211">
+        <text>И тебе того же.</text>
+    </string>
+    <string id="val_escort_captive_dialog_41">
+        <text>Напарника жалко. Хороший был пацан.</text>
+    </string>
+    <string id="val_escort_captive_dialog_44">
+        <text>"Всего лишь"! Если в лагере бандитов достать костюм не так уж и сложно, то узнать пароль - задача практически неразрешимая. Никто из бандитов откровенничать с тобой не будет. Слышал я в разговоре бандитов, что пароль также хранится на ПДА у Борова, лидера бандитов, но к нему пробраться вообще нереально - в охранниках у него очень серьезные ребята.</text>
+    </string>
+    <string id="val_escort_captive_dialog_444">
+        <text>ОК, спасибо за информацию.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_11">
+        <text>Привет. Помоги мне освободить друга.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_111">
+        <text>Побежали.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_112">
+        <text>Сам выкручивайся.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_21">
+        <text>Спасибо, братан. Мы отбили моего напарника. Вот твоя награда.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_211">
+        <text>Ок, спасибо. Если будет чего надо - свисни.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_2111">
+        <text>Договорились.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_212">
+        <text>Хорошо, давай.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_31">
+        <text>Оставь меня. Мой друг погиб. Я возвращаюсь на базу.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_311">
+        <text>Пока.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_41">
+        <text>Что?</text>
+    </string>
+    <string id="val_escort_nap1_dialog_411">
+        <text>Пойдешь со мной?</text>
+    </string>
+    <string id="val_escort_nap1_dialog_4111">
+        <text>Ок, пошли.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_41111">
+        <text>Всегда хорошо иметь верное плечо.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_4112">
+        <text>Извини, у меня другие планы.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_41121">
+        <text>Что ж, тогда удачи тебе.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_412">
+        <text>Пока.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_51">
+        <text>Как жизнь?</text>
+    </string>
+    <string id="val_escort_nap1_dialog_511">
+        <text>В норме. До встречи.</text>
+    </string>
+    <string id="val_monolith_guard_password_0">
+        <text>Стоять! Говори пароль.</text>
+    </string>
+    <string id="val_monolith_guard_password_1">
+        <text>Большой Монолит</text>
+    </string>
+    <string id="val_monolith_guard_password_2">
+        <text>Ядерная зима</text>
+    </string>
+    <string id="val_monolith_guard_password_3">
+        <text>Ночное солнце</text>
+    </string>
+    <string id="val_monolith_guard_password_4">
+        <text>Пароль</text>
+    </string>
+    <string id="val_monolith_guard_password_5">
+        <text>Слушай, я вчера напился, забыл пароль. Пропусти меня, я в долгу не останусь.</text>
+    </string>
+    <string id="val_monolith_guard_password_6">
+        <text>Вообще-то я новенький, мне пароль еще не доверили. А пройти сюда мне надо - наш лидер приказал.</text>
+    </string>
+    <string id="val_monolith_guard_password_7">
+        <text>Какой такой пароль? А ну пропускай меня, иначе у тебя будут крупные неприятности.</text>
+    </string>
+    <string id="val_monolith_guard_password_8">
+        <text>Я ошибся зданием, извини. Я уже ухожу.</text>
+    </string>
+    <string id="val_prisoner_hello_11">
+        <text>Эй, друг! Я разведчик "Долга". По своей глупости попался бандитам. Помоги выбраться отсюда.</text>
+    </string>
+    <string id="val_prisoner_hello_111">
+        <text>Я постараюсь. Сделаю что смогу.</text>
+    </string>
+    <string id="val_prisoner_hello_112">
+        <text>Что-то нет у меня желания связываться с бандитами. Сам выбирайся как знаешь.</text>
+    </string>
+    <string id="val_prisoner_hello_21">
+        <text>Спасибо, брат. Я твой должник. Может, тебе чем-то поможет эта иформация: от охранников я слышал, что на Базу Монолита можно пройти только в одежде бандитов, но еще нужно знать пароль. Этот пароль записан в ПДА у Борова, лидера бандитов. Также Боров хранит у себя ключ от секретной Лаборатории Х18, вход на которую и расположен где-то на Базе Монолита. Только пробраться к Борову нелегко - там очень серьезная охрана.</text>
+    </string>
+    <string id="val_prisoner_hello_211">
+        <text>Думаю, эта информация будет мне полезна.</text>
+    </string>
+    <string id="val_prisoner_hello_2111">
+        <text>Буду выбираться щас к своим. Только отсюдова живым бы еще уйти.</text>
+    </string>
+    <string id="val_prisoner_hello_21111">
+        <text>Удачи тебе. Может еще свидимся. Пока.</text>
+    </string>
+    <string id="val_prisoner_hello_31">
+        <text>Уходить надо отседова, а то бандюки могут невзначай заглянуть. Чего хотел? Только побыстрей давай.</text>
+    </string>
+    <string id="val_prisoner_hello_311">
+        <text>Нет, ничего.</text>
+    </string>
+    <string id="val_prisoner_hello_5">
+        <text>Слушай, может вместе пойдем? Легче все же будет вдвоем то.</text>
+    </string>
+    <string id="val_prisoner_hello_51">
+        <text>Почему бы и не пойти. Ты мне помог, а долг платежом красен. Идем.</text>
+    </string>
+    <string id="val_prisoner_hello_511">
+        <text>Вот и отлично. Пошли.</text>
+    </string>
+    <string id="val_rob_dialog_11">
+        <text>Нужна пушка? Я возле озера Янтарь нашел чей-то тайник, там была винтовка Гаусса. Вещь отличная - бъет за 100 метров наповал. Могу продать, если интересует. За 300 рублей она твоя - вынесу через 2 минуты.</text>
+    </string>
+    <string id="val_rob_dialog_111">
+        <text>Держи деньги. И побыстрее давай.</text>
+    </string>
+    <string id="val_rob_dialog_112">
+        <text>Нет, спасибо, не хочу.</text>
+    </string>
+    <string id="val_rob_dialog_113">
+        <text>Нет денег. Буду богатый - куплю обязательно.</text>
+    </string>
+    <string id="val_rob_dialog_21">
+        <text>Ну что, надумал купить пушку?</text>
+    </string>
+    <string id="val_suicider_dialog_11">
+        <text>Я был там! Я видел ЭТО! ОНО залезло ко мне в мозги и говорило со мной. ОНО говорило со мной! В голове звучал ужасный голос, выжигая мозги. Ужас... Ужас. Ужас! Не ходи туда! ОНО станет тобой так же, как стало мной. Дикая боль в голове... И голос... Шепчет мне.</text>
+    </string>
+    <string id="val_suicider_dialog_111">
+        <text>Успокойся, дружище. Все хорошо, ты уже в безопасности.</text>
+    </string>
+    <string id="val_suicider_dialog_1111">
+        <text>...шепот.. Шепот и скрип детских качелей.. Моя дочка... Я так хочу увидеть ее, но я не могу появиться перед ней. ОНО в моей голове и я теперь сам стал чудовищем. Нет, нельзя. Друг, передай Бармену мой артефакт. Это все, что я нашел там, когда ОНО влезло мне в голову. Бармен передаст это моей жене, моей дочке. Это компенсирует им..</text>
+    </string>
+    <string id="val_suicider_dialog_11111">
+        <text>Что компенсирует?</text>
+    </string>
+</string_table>
