@@ -672,17 +672,23 @@ function mil_hunters_psi_hit (actor, npc)
     
     local hunter = utils.obj_by_sid (725)
     if hunter ~= nil and hunter:alive () == true then
-       hunter:hit (h)
+       if hunter.psy_health > 0.1 then
+          hunter:hit (h)
+       end   
     end   
     
     hunter = utils.obj_by_sid (726)
     if hunter ~= nil and hunter:alive () == true then
-       hunter:hit (h)
+       if hunter.psy_health > 0.1 then
+          hunter:hit (h)
+       end   
     end   
 
     hunter = utils.obj_by_sid (727)
     if hunter ~= nil and hunter:alive () == true then
-       hunter:hit (h)
+       if hunter.psy_health > 0.1 then
+          hunter:hit (h)
+       end   
     end   
 end
 
