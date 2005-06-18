@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "gameobject.h"
+#include "explosive.h"
+
 class CExplosive;
 class CGameObject;
 class CAI_Stalker;
@@ -22,7 +25,7 @@ public:
 public:
 	IC					CDangerExplosive	(const CExplosive *grenade, const CGameObject *game_object, CAI_Stalker *reactor, u32 time);
 	IC	bool			operator==			(const CExplosive *grenade) const;
-		bool			operator==			(const u16 &id) const;
+	IC	bool			operator==			(const u16 &id) const;
 };
 
 #include "danger_explosive_inline.h"
