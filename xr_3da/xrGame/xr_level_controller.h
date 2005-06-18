@@ -88,6 +88,12 @@ enum	EKeyBinding
 
 	kNEXT_SLOT		,
 	kPREV_SLOT		,
+	
+	kFOLLOWER1		,
+	kFOLLOWER2		,
+	kFOLLOWER3		,
+	kFOLLOWER4		,
+	kFOLLOWER5		,
 
 	kFORCEDWORD		= u32(-1)
 };

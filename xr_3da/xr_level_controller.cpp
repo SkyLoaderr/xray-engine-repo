@@ -98,6 +98,11 @@ _keybind  keybind[]		= {
 	{ "next_slot",		kNEXT_SLOT		},
 	{ "prev_slot",		kPREV_SLOT		},
 
+	{ "follower1",		kFOLLOWER1		},
+	{ "follower2",		kFOLLOWER2		},
+	{ "follower3",		kFOLLOWER3		},
+	{ "follower4",		kFOLLOWER4		},
+	{ "follower5",		kFOLLOWER5		},
 	{ NULL, 			0				}
 };
 
