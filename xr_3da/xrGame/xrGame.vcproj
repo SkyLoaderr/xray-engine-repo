@@ -8501,14 +8501,16 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -8529,6 +8531,19 @@
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								CallingConvention="0"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -8560,7 +8575,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
@@ -8588,6 +8604,19 @@
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								CallingConvention="0"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								CallingConvention="0"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -8619,7 +8648,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
@@ -8652,7 +8682,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
@@ -8688,7 +8719,8 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								WarningLevel="2"/>
+								WarningLevel="2"
+								CallingConvention="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
@@ -8727,7 +8759,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="DebugNoExceptions|Win32">
@@ -8763,7 +8796,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="DebugNoExceptions|Win32">
@@ -8803,7 +8837,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="DebugNoExceptions|Win32">
@@ -8839,7 +8874,8 @@
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
-									WarningLevel="2"/>
+									WarningLevel="2"
+									CallingConvention="0"/>
 							</FileConfiguration>
 							<FileConfiguration
 								Name="DebugNoExceptions|Win32">
@@ -8875,6 +8911,19 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_crypt.h">
@@ -8898,6 +8947,19 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_server.c">
@@ -8915,6 +8977,19 @@
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\ServerBrowsing\sb_serverbrowsing.c">
@@ -8931,6 +9006,19 @@
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
 							</FileConfiguration>
 						</File>
 						<File
@@ -8951,6 +9039,19 @@
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
 									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									CallingConvention="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
 							</FileConfiguration>
 						</File>
 					</Filter>
