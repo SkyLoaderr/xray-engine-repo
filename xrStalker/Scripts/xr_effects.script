@@ -16,6 +16,7 @@ function hit_npc(actor, npc, p)
 	h.type = hit.wound
 	if type(p[1]) == 'number' then
 		local hitter = utils.obj_by_sid(p[1])
+		if not hitter then return end
 		h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
 	else
 		h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
@@ -29,14 +30,20 @@ end
 -- Дать сталкеру небольшой пинок после смерти. Аналогично предыдущему, только направление хита теперь
 -- вычисляется через убийцу. Поэтому параметра direction нет.
 -- параметры: actor, npc, p[bone,power,impulse]
+-- FIXME: killer:position() isn't working
 function hit_by_killer(actor, npc, p)
+	if not npc then return end
 	local t = db.storage[npc:id()].death
-	if t == nil then return end
-	local npc1 = db.storage[t.killer]
+	if t == nil or t.killer == -1 then return end
+	local killer = db.storage[t.killer]
+	if killer == nil then return end
+	local p1, p2
+	p1 = npc:position()
+	p2 = killer:position()
 	local h = hit()
 	h.draftsman = npc
 	h.type = hit.wound
-	h.direction = utils.vector_copy_by_val(npc:position()):sub(npc1:position())
+	h.direction = utils.vector_copy_by_val(p1):sub(p2)
 	h.bone = p[1]
 	h.power = p[2]
 	h.impulse = p[3]
@@ -44,6 +51,7 @@ function hit_by_killer(actor, npc, p)
 end
 
 function set_friends(actor, npc, p)
+    local npc1
 	for i, v in pairs(p) do
 		npc1 = utils.obj_by_sid(v)
 		if npc1 and npc1:alive() then
@@ -55,6 +63,7 @@ function set_friends(actor, npc, p)
 end
 
 function set_enemies(actor, npc, p)
+    local npc1
 	for i, v in pairs(p) do
 		--printf("_bp: set_enemies(%d)", v)
 		npc1 = utils.obj_by_sid(v)
