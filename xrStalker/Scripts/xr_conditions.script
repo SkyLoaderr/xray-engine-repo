@@ -134,6 +134,13 @@ function check_fighting(actor, npc, p)
 	return false
 end
 
+-- true, если гулага с таким именем не существует или в нём есть хоть кто-то
+function gulag_empty(actor, npc, p)
+	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
+end
+
+-------------------------------------------------------------------------------------------------------
+
 -- DELME: для тестов: {=test_condition_actor_near}
 function test_condition_actor_near(actor, npc)
 	if distance_between(actor, npc) <= 3 then
