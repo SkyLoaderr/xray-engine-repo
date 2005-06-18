@@ -75,6 +75,8 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	m_visible_now		= visible;
 
 #ifdef USE_EVALUATOR
+	ai().ef_storage().non_alife().member_item() = 0;
+	ai().ef_storage().non_alife().enemy_item() = 0;
 	ai().ef_storage().non_alife().member()	= m_object;
 	ai().ef_storage().non_alife().enemy()	= object;
 	float				distance = m_object->Position().distance_to_sqr(object->Position());

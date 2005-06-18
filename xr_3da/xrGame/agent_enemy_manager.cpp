@@ -69,6 +69,8 @@ IC	void CAgentEnemyManager::setup_mask	(CMemberEnemy &enemy)
 
 float CAgentEnemyManager::evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const
 {
+	ai().ef_storage().non_alife().member_item() = 0;
+	ai().ef_storage().non_alife().enemy_item() = 0;
 	ai().ef_storage().non_alife().member() = object0;
 	ai().ef_storage().non_alife().enemy()  = object1;
 	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);

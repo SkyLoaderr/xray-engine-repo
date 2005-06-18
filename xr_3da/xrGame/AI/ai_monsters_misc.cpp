@@ -131,6 +131,9 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 				}
 		}
 
+	ai().ef_storage().non_alife().member_item() = 0;
+	ai().ef_storage().non_alife().enemy_item() = 0;
+
 	WRITE_QUERY_TO_LOG("\nNew query");
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,*ai().ef_storage().m_pfVictoryProbability)) {
 		Group.m_dwLastActionTime	= Device.dwTimeGlobal;
