@@ -669,6 +669,9 @@
     <string id="mil_guard_arsenal_dialog_2003">
         <text>Понятно.</text>
     </string>
+    <string id="mil_hunter_after_dialog_0">
+        <text>Ну, вот и все. Тварь подохла. Мы возвращаемся на базу.</text>
+    </string>
     <string id="mil_hunter_dialog_0">
         <text>А тебя то сталкер как в это гиблое место занесло, уноси лучше ноги пока не поздно.</text>
     </string>
