@@ -424,6 +424,13 @@ function is_courier_time (actor, npc)
     return level.get_time_hours() >= 22 and level.get_time_hours() < 23
 end    
 
+function is_controller_dead (actor, npc)
+    local c = utils.obj_by_sid (729)
+    if c == nil then return false end
+    return not c:alive ()
+end    
+    
+
 ------------------------------------------------------------------------------------
 -- Special functions for Deadcity
 ------------------------------------------------------------------------------------
