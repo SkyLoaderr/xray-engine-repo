@@ -312,11 +312,11 @@ end
 function init_meet(npc, ini, section, st, scheme)
 	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
 
---	if tostring(section) == st.meet_section and
---	   tostring(section) ~= "nil" 
---	then
---		return
---	end
+	if tostring(section) == st.meet_section and
+	   tostring(section) ~= "nil" 
+	then
+		return
+	end
 	
 	st.meet_section = utils.tostring(section)
 	
