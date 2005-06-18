@@ -325,7 +325,7 @@ end
 function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
 
-	if tostring(section) == st.meet_section and
+	if tostring(section) == st.wounded_section and
 	   tostring(section) ~= "nil" 
 	then
 		return
