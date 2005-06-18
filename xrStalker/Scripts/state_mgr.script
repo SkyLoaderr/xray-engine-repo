@@ -684,7 +684,7 @@ function state_manager:__init(npc)
 
 	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_animation_stop", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
-	action:add_precondition		(world_property(self.properties["mental"],				true))
+	--action:add_precondition		(world_property(self.properties["mental"],				true))
 	--action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation"],			false))
 	action:add_precondition		(world_property(self.properties["animation_none"],		true))
