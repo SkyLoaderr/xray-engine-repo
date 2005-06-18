@@ -28,11 +28,14 @@ function se_stalker:can_switch_online ()
 		self.spawner_present = self.ini:section_exist ("spawner")
 	end
 
-	if self.ini == nil or self.spawner_present == false or (db.actor ~= nil and db.actor:alive () == false)
-	then
+	if self.ini == nil or self.spawner_present == false	then
 		return cse_alife_human_stalker.can_switch_online (self)
 	end
-
+    
+    if db.actor ~= nil and db.actor:alive () == false then
+       return self.online
+    end    
+    
 	if self.online == false then
    	    -- если игрока нет, то в оффлайн
         if db.actor == nil then return false end
@@ -42,7 +45,7 @@ function se_stalker:can_switch_online ()
         if xr_spawner.check_spawn (self) == true then 
            return true
         end
-        return cse_alife_human_stalker.can_switch_online (self)
+        return false --cse_alife_human_stalker.can_switch_online (self)
     end    	    
 
 	--return xr_spawner.check_spawn (self)
