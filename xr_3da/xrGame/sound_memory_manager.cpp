@@ -300,4 +300,7 @@ void CSoundMemoryManager::remove_links	(CObject *object)
 	SOUNDS::iterator		I = std::find_if(m_sounds->begin(),m_sounds->end(),CSoundObjectPredicate(object));
 	if (I != m_sounds->end())
 		m_sounds->erase		(I);
+
+	if (m_selected_sound && m_selected_sound->m_object && (m_selected_sound->m_object->ID() == object->ID()))
+		m_selected_sound	= 0;
 }
