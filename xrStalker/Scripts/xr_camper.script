@@ -236,6 +236,7 @@ function action_patrol:execute()
 						self.move_mgr:update()
 					end		
 				else
+					printf("!!!")
 					if self.a.suggested_state.moving then
 						state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil)
 					else

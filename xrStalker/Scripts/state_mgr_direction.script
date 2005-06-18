@@ -40,8 +40,8 @@ function eva_state_mgr_direction:evaluate()
 	else	
 		-- если текущая позиция ненулевая
 		local dir = vector():sub(self.st.target_position, self.object:position())
-		--printf("DIR[%s] head: %f", self.object:name(), yaw_degree(dir, self.object:head_orientation()))
-		--printf("DIR[%s] body: %f", self.object:name(), yaw_degree(dir, self.object:direction()))
+		printf("DIR[%s] head: %f", self.object:name(), yaw_degree(dir, self.object:head_orientation()))
+		printf("DIR[%s] body: %f", self.object:name(), yaw_degree(dir, self.object:direction()))
 
 		if yaw_degree(dir, self.object:head_orientation()) > self.st.yaw_delta then
 			return false
