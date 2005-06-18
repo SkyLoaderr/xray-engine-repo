@@ -86,7 +86,7 @@ function action_door:door_play_snd_from_set(sndset)
 		utils.abort("object '%s': unable to create a sound object for sound '%s' (soundset '%s')",
 			self.object:name(), snd, sndset)
 	end
-	self.snd_obj:play_at_pos(self.object, self.object:position(), 0, sound_object.s3d) -- FIXME: don't use position()
+	self.snd_obj:play_at_pos(self.object, self.object:position())--, 0, sound_object.s2d) -- FIXME: don't use position()
 end
 
 function action_door:update(delta)
