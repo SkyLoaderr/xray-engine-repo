@@ -348,19 +348,19 @@ function init_meet(npc, ini, section, st, scheme)
 		if tmp then
 			st.use			= xr_logic.parse_condlist(npc, section, "use", tmp)
 		else
-			st.use			= xr_logic.parse_condlist(npc, section, "", tmp)
+			st.use			= xr_logic.parse_condlist(npc, section, "use", "")
 		end
 		tmp = utils.cfg_get_string(ini, section, "use_wpn", npc, false, "")
 		if tmp then
 			st.use_wpn		= xr_logic.parse_condlist(npc, section, "use_wpn", tmp)
 		else
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "", tmp)
+			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "")
 		end
 		tmp = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
 		if tmp then
 			st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", tmp)
 		else
-			st.meet_dialog	= xr_logic.parse_condlist(npc, section, "", tmp)
+			st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", "")
 		end
 		st.zone				= parse_zone_data(npc, utils.cfg_get_string(ini, section, "zone", npc, false, ""))
 		st.syndata			= parse_syn_data(npc, utils.cfg_get_string(ini, section, "synpairs", npc, false, ""))
