@@ -38,6 +38,10 @@ function mp_server:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_server:cap_max_players",0,lbl)
 	self:AttachChild(lbl)
 	
+	local spin = CUISpinNum()
+	xml:InitWindow("tab_server:spin_max_players",0,spin)
+	self:AttachChild(spin)
+	
 	-- CHECK BOXES
 	local btn = CUICheckButton()
 	xml:InitStatic("tab_server:check_dedicated",0,btn)
@@ -52,8 +56,5 @@ function mp_server:InitControls(x, y, xml, handler)
 	edt = CUIEditBox()
 	xml:InitLabel("tab_server:edit_password",0,edt)
 	self:AttachChild(edt)
-	
-	
-
 end
 
