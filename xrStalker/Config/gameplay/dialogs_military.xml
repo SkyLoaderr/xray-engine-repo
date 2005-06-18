@@ -2371,12 +2371,6 @@
                 <text>mil_dolg_skull_dialog_200</text>
                 <action>dialogs_military.mil_dolg_payment</action>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
             <phrase id="2">
                 <text></text>
                 <has_info>mil_sniper_dead</has_info>
@@ -2388,9 +2382,19 @@
                 <dont_has_info>mil_sniper_get_job</dont_has_info>
                 <next>100</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
             <phrase id="3">
-                <text>mil_dolg_skull_dialog_3</text>
+                <text></text>
                 <has_info>mil_sniper_get_job</has_info>
+                <next>300</next>
+            </phrase>
+            <phrase id="300">
+                <text>mil_dolg_skull_dialog_300</text>
             </phrase>
         </phrase_list>
     </dialog>
