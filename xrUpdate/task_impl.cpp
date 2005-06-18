@@ -18,21 +18,22 @@ void checkRightFolderName(LPSTR fn);
 CFileOperation fo;      // create object
 
 
-void CTask::exec()
+BOOL CTask::exec()
 {
-	if( !is_enabled() ) return;
+	if( !is_enabled() ) return TRUE;
 	sort_sub_tasks();
 	CTaskArray::iterator sub_task_it =	m_sub_tasks.begin();
 	for(;sub_task_it !=m_sub_tasks.end();++sub_task_it)
-		(*sub_task_it)->run();
+		if (FALSE==(*sub_task_it)->run()) return FALSE;
 
+	return TRUE;
 }
 
 
-void CTaskCopyFiles::run()
+BOOL CTaskCopyFiles::run()
 {
-	if( !is_enabled() ) return;
-	CTask::exec();
+	if( !is_enabled() ) return TRUE;
+	if(FALSE==CTask::exec()) return FALSE;
 
 	CFileNamesArray::iterator it = m_file_names.begin();
 	string_path file_name;
@@ -57,23 +58,26 @@ void CTaskCopyFiles::run()
 		};
 		++it;
 		}
+	return TRUE;
 }
 
-void CTaskCopyFolder::run ()
+BOOL CTaskCopyFolder::run ()
 {
-	if( !is_enabled() ) return;
-	CTask::exec();
+	if( !is_enabled() ) return TRUE;
+	if(FALSE==CTask::exec()) return FALSE;
 
 	Msg("[%s]:Copying folder %s to %s ",name(),*m_source_folder, *m_target_folder);
 	check_RO(*m_target_folder);
 	copy_folder(*m_source_folder, *m_target_folder);
+
+	return TRUE;
 }
 
-void CTaskExecute::run	()
+BOOL CTaskExecute::run	()
 {
 //	проверить : cmd.exe attrib.... copy,,, sds
-	if( !is_enabled() ) return;
-	CTask::exec();
+	if( !is_enabled() ) return TRUE;
+	if(FALSE==CTask::exec()) return FALSE;
 
 	string_path cur_dir;
 	if( xr_strlen(m_working_folder) ){
@@ -86,12 +90,14 @@ void CTaskExecute::run	()
 
 	if( xr_strlen(m_working_folder) )
 		SetCurrentDirectoryA(cur_dir);
+
+	return TRUE;
 }
 
-void CTaskBatchExecute::run					()
+BOOL CTaskBatchExecute::run					()
 {
-	if( !is_enabled() ) return;
-	CTask::exec();
+	if( !is_enabled() ) return TRUE;
+	if(FALSE==CTask::exec()) return FALSE;
 
 	// если надо установить раб каталог
 	string_path cur_dir;
@@ -121,6 +127,7 @@ void CTaskBatchExecute::run					()
 	if( xr_strlen(m_working_folder) )
 		SetCurrentDirectoryA(cur_dir);
 
+	return TRUE;
 }
 
 

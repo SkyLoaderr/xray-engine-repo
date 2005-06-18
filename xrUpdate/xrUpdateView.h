@@ -11,6 +11,7 @@ class CCopyFilesTaskPropDlg;
 class CCopyFolderDlgProp;
 class CExecAppTaskDlgProp;
 class CBatchTaskDlgProp;
+class CNotifyTaskPropDlg;
 
 class CxrUpdateView : public CFormView
 {
@@ -65,6 +66,7 @@ protected:
 	CCopyFolderDlgProp*		m_copy_folder_dlg;
 	CExecAppTaskDlgProp*	m_exec_process_dlg;
 	CBatchTaskDlgProp*		m_batch_process_dlg;
+	CNotifyTaskPropDlg*		m_notify_dlg;
 
 	void					CreateRoot											();
 	HTREEITEM				FillTaskTree										(CTask*, HTREEITEM parent=NULL);
@@ -80,6 +82,7 @@ protected:
 	afx_msg void			OnAddCopyFolderTask									();
 	afx_msg void			OnAddExecuteTask									();
 	afx_msg void			OnAddBatchExecuteTask								();
+	afx_msg void			OnAddNotificationTask								();
 	void					TryAddNewTask										(int t);
 
 	HTREEITEM				CopyBranch											( HTREEITEM htiBranch, HTREEITEM htiNewParent, 

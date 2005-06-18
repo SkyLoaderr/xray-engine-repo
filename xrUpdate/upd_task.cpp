@@ -28,6 +28,8 @@ dddd* m_ddd = xr_new<dddd>();
 		return eTaskRunExecutable;
 	if(0==strcmp(xr_strlwr(s),"batch_execute"))
 		return eTaskBatchExecute;
+	if(0==strcmp(xr_strlwr(s),"notification"))
+		return eTaskNotification;
 	if(0==strcmp(xr_strlwr(s),"root"))
 		return eTaskRoot;
 	
@@ -47,6 +49,8 @@ shared_str typeToStr(ETaskType t)
 		return "batch_execute";
 	if(t==eTaskRoot)
 		return "root";
+	if(t==eTaskNotification)
+		return "notification";
 	return "unknown";
 }
 
@@ -374,12 +378,43 @@ CTask*	CTaskFacrory::create_task(ETaskType t)
 		case eTaskRoot:{
 			return xr_new<CTaskRoot>();
 		}break;
+		case eTaskNotification:{
+			return xr_new<CTaskNotification>();
+			}break;
 		case eTaskUnknown:{
 			R_ASSERT("unknown task type");
 			return 0;
 		}break;
 	}
 	return NULL;
+}
+
+
+BOOL CTaskNotification::load(CInifile& ini, LPCSTR section)
+{
+	CTask::load(ini, section);
+	m_params		= ini.r_string_wb(section,	"text");
+	return TRUE;
+}
+
+BOOL CTaskNotification::save(CInifile& ini, LPCSTR section)
+{
+	CTask::save(ini, section);
+	SaveStringWithBrackets(ini,section,"text",m_params);
+	return TRUE;
+}
+
+BOOL CTaskNotification::run()
+{
+	return IDYES == AfxMessageBox(*m_params,MB_YESNO|MB_ICONSTOP);
+}
+
+void CTaskNotification::copy_to(CTask* t)
+{
+	CTask::copy_to(t);
+	CTaskNotification* tt = dynamic_cast<CTaskNotification*>(t);
+
+	tt->m_params	= m_params;
 }
 
 CTask*	CTaskFacrory::create_task(CInifile& ini, LPCSTR section)

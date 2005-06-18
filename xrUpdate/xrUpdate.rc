@@ -101,6 +101,14 @@ BEGIN
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL
 END
 
+IDD_DIALOG_NOTIFY_TASK DIALOGEX 0, 0, 272, 45
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_NOTIFY_TEXT,7,18,258,12,ES_AUTOHSCROLL
+    LTEXT           "Text to notify",IDC_STATIC,14,7,75,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -122,6 +130,14 @@ BEGIN
     BEGIN
         RIGHTMARGIN, 189
         BOTTOMMARGIN, 126
+    END
+
+    IDD_DIALOG_NOTIFY_TASK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 38
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -188,6 +204,8 @@ BEGIN
         MENUITEM "Batch execute",               ID_COPYFILESTASK_BATCHEXECUTE
 
         MENUITEM "Root",                        ID_COPYFILESTASK_ROOT
+        MENUITEM "Notification",                ID_COPYFILESTASK_NOTIFICATION
+
     END
 END
 

@@ -13,6 +13,7 @@
 #include "ExecAppTaskDlgProp.h"
 #include "BatchTaskDlgProp.h"
 #include ".\xrupdateview.h"
+#include "NotifyTaskPropDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +73,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_COMMAND(ID_COPYFILESTASK_EXECUTEPROCESS,  OnAddExecuteTask)
 	ON_COMMAND(ID_COPYFILESTASK_BATCHEXECUTE,  OnAddBatchExecuteTask)
 	ON_COMMAND(ID_COPYFILESTASK_ROOT,           OnAddRootTask)
+	ON_COMMAND(ID_COPYFILESTASK_NOTIFICATION,	OnAddNotificationTask)
 	ON_MESSAGE(ADD_LOG_MSG, OnAddLogMsg)
 
 	ON_EN_CHANGE(IDC_EDIT_TASK_NAME, OnEnChangeEditTaskName)
@@ -108,6 +110,8 @@ CxrUpdateView::CxrUpdateView()
 	m_copy_folder_dlg = xr_new<CCopyFolderDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_CPY_FOLDER),this);
 	m_exec_process_dlg = xr_new<CExecAppTaskDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_EXEC_PROCESS),this);
 	m_batch_process_dlg = xr_new<CBatchTaskDlgProp>(MAKEINTRESOURCE(IDD_BATCH_TASK),this);
+	m_notify_dlg = xr_new<CNotifyTaskPropDlg>(MAKEINTRESOURCE(IDD_DIALOG_NOTIFY_TASK),this);
+
 	g_view = this;
 }
 CxrUpdateView::~CxrUpdateView()
@@ -126,6 +130,10 @@ CxrUpdateView::~CxrUpdateView()
 
 	m_batch_process_dlg->DestroyWindow();
 	xr_delete(m_batch_process_dlg);
+
+	m_notify_dlg->DestroyWindow();
+	xr_delete(m_notify_dlg);
+
 }
 int CxrUpdateView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
@@ -178,7 +186,7 @@ void CxrUpdateView::OnInitialUpdate()
 		m_copy_folder_dlg->Create(MAKEINTRESOURCE(IDD_DIALOG_CPY_FOLDER),this);
 		m_exec_process_dlg->Create(MAKEINTRESOURCE(IDD_DIALOG_EXEC_PROCESS),this);
 		m_batch_process_dlg->Create(MAKEINTRESOURCE(IDD_BATCH_TASK),this);
-
+		m_notify_dlg->Create(MAKEINTRESOURCE(IDD_DIALOG_NOTIFY_TASK),this);
 		m_task_name_edt.EnableWindow(FALSE);
 
 		m_images.Create (IDR_MAINFRAME, 16, 1, RGB(0,255,0));
@@ -349,6 +357,21 @@ BOOL CxrUpdateView::ShowPropDlg(CTask* t)
 	return TRUE;
 	}
 
+	if(t->type()==eTaskNotification){
+		m_notify_dlg->init_(t);
+		if(m_cur_prop_wnd!=m_notify_dlg){
+			if(m_cur_prop_wnd)
+				m_cur_prop_wnd->ShowWindow(SW_HIDE);
+
+			m_notify_dlg->SetParent( this );
+			m_notify_dlg->ShowWindow(SW_SHOW);
+			m_notify_dlg->MoveWindow(&r_place);
+			m_cur_prop_wnd = m_notify_dlg;
+		}
+	return TRUE;
+	}
+
+
 	return FALSE;
 }
 
@@ -357,10 +380,14 @@ void CxrUpdateView::OnBnClickedBtnRun()
 	AfxGetApp()->DoWaitCursor(1); // 0 => restore, 1=> begin, -1=> end
 
 	CTask* t = GetDocument()->m_task;
-	t->exec();
+	BOOL res = t->exec();
 
 	AfxGetApp()->DoWaitCursor(-1); // 0 => restore, 1=> begin, -1=> end
-	AfxMessageBox("Done");
+	if(res==TRUE)
+		AfxMessageBox("Done");
+	else
+		AfxMessageBox("Error :(");
+
 }
 
 void CxrUpdateView::OnBnClickedButtonAdd()
@@ -389,6 +416,11 @@ void CxrUpdateView::OnBnClickedButtonAdd()
 void CxrUpdateView::OnAddCopyFilesTask()
 {
 	TryAddNewTask(eTaskCopyFiles);
+}
+
+void CxrUpdateView::OnAddNotificationTask()
+{
+	TryAddNewTask(eTaskNotification);
 }
 
 void CxrUpdateView::OnAddCopyFolderTask()

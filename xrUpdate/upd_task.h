@@ -8,7 +8,8 @@ enum ETaskType{
 	eTaskCopyFolder,
 	eTaskDelete,
 	eTaskRunExecutable,
-	eTaskBatchExecute
+	eTaskBatchExecute,
+	eTaskNotification
 };
 ETaskType strToType(LPCSTR str);
 shared_str typeToStr(ETaskType t);
@@ -26,7 +27,7 @@ protected:
 	BOOL			m_enabled;
 	CTaskArray		m_sub_tasks;
 	virtual void	copy_to				(CTask*);
-	virtual void	run					()                                     =0;
+	virtual BOOL	run					()                                     =0;
 public:
 	u32				m_priority;
 	HTREEITEM		m_tree_itm;
@@ -46,14 +47,14 @@ public:
 	void			set_enabled			(BOOL b);
 	virtual BOOL	load				(CInifile& ini, LPCSTR section);
 	virtual BOOL	save				(CInifile& ini, LPCSTR section);
-	virtual void	exec				();
+	virtual BOOL	exec				();
 	CTask*			copy				(BOOL bRoot);
 	BOOL			section_exist		(LPCSTR s);
 };
 
 class CTaskRoot :public CTask
 {
-	virtual void	run					()										{CTask::exec();};
+	virtual BOOL	run					()										{return CTask::exec();};
 public:
 					CTaskRoot			()										{m_type=eTaskRoot;};
 	virtual			~CTaskRoot			()										{};
@@ -64,7 +65,7 @@ class CTaskCopyFiles :public CTask
 	shared_str		m_target_folder;
 	CFileNamesArray m_file_names;
 	virtual void	copy_to				(CTask*);
-	virtual void	run					();
+	virtual BOOL	run					();
 public:
 					CTaskCopyFiles		()										{m_type=eTaskCopyFiles;};
 	virtual			~CTaskCopyFiles		()										{};
@@ -80,7 +81,7 @@ class CTaskCopyFolder :public CTask
 	shared_str		m_source_folder;
 	shared_str		m_target_folder;
 	virtual void	copy_to				(CTask*);
-	virtual void	run					();
+	virtual BOOL	run					();
 public:
 					CTaskCopyFolder		()										{m_type=eTaskCopyFolder;};
 	virtual			~CTaskCopyFolder	()										{};
@@ -95,7 +96,7 @@ public:
 
 class CTaskDelete :public CTask
 {
-	virtual void	run					(){};
+	virtual BOOL	run					(){return TRUE;};
 public:
 					CTaskDelete			()										{m_type=eTaskDelete;};
 	virtual			~CTaskDelete		()										{};
@@ -108,7 +109,7 @@ class CTaskExecute :public CTask
 	shared_str		m_params;
 	shared_str		m_working_folder;
 	virtual void	copy_to				(CTask*);
-	virtual void	run					();
+	virtual BOOL	run					();
 public:
 					CTaskExecute		()										{m_type=eTaskRunExecutable;};
 	virtual			~CTaskExecute		()										{};
@@ -129,7 +130,7 @@ class CTaskBatchExecute :public CTask
 	shared_str		m_params;
 	shared_str		m_working_folder;
 	virtual void	copy_to				(CTask*);
-	virtual void	run					();
+	virtual BOOL	run					();
 public:
 					CTaskBatchExecute	()										{m_type=eTaskBatchExecute;};
 	virtual			~CTaskBatchExecute	()										{};
@@ -143,6 +144,20 @@ public:
 
 };
 
+class CTaskNotification :public CTask
+{
+	shared_str		m_params;
+public:
+					CTaskNotification	()										{m_type=eTaskNotification;};
+	virtual			~CTaskNotification	()										{};
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
+	virtual void	copy_to				(CTask*);
+	virtual BOOL	run					();
+		LPCSTR		text				()			{return *m_params;}
+		void		setText				(LPCSTR s)	{m_params = s;}
+
+};
 
 class CTaskFacrory
 {

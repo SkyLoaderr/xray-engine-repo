@@ -14,6 +14,8 @@
 #define IDD_BATCH_TASK                  135
 #define IDD_LOG_DIALOG                  136
 #define IDR_LOG_MENU                    137
+#define IDD_DIALOG1                     138
+#define IDD_DIALOG_NOTIFY_TASK          138
 #define IDC_TREE1                       1000
 #define IDC_BUTTON1                     1002
 #define IDC_BTN_RUN                     1003
@@ -51,20 +53,22 @@
 #define IDC_BTN_SEL_WRK_FOLDER_5        1037
 #define IDC_BUTTON7                     1038
 #define IDC_UPD_BTN                     1038
+#define IDC_EDIT_NOTIFY_TEXT            1039
 #define ID_COPYFILESTASK_S              32771
 #define ID_COPYFILESTASK_COPYFOLDERTASK 32772
 #define ID_COPYFILESTASK_EXECUTEPROCESS 32773
 #define ID_COPYFILESTASK_BATCHEXECUTE   32774
 #define ID_MENU_CLEARALL                32775
 #define ID_COPYFILESTASK_ROOT           32776
+#define ID_COPYFILESTASK_NOTIFICATION   32777
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_COMMAND_VALUE         32778
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
