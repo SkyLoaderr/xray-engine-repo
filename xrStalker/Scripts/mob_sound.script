@@ -69,7 +69,7 @@ local snd = {
 	},
 
 	trader_door_close_start = {
-		[[device\door_closing]]
+		[[device\door_closing_]]
 	},
 
 	trader_door_close_stop = {
