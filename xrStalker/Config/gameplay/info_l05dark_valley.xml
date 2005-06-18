@@ -87,6 +87,12 @@
 <info_portion id="val_tunnel_bandit_leave"></info_portion>
 <info_portion id="val_tunnel_plr_detected"></info_portion>
 
+<!-- Матюгальник -->
+<info_portion id="val_matugalnik_off"></info_portion>
+<info_portion id="val_opendoor_soldier_start"></info_portion>
+<info_portion id="val_opendoor_victim_start"></info_portion>
+<info_portion id="val_opendoor_plr_detected"></info_portion>
+
 <!-- Открытие дверей -->
 <info_portion id="val_opendoor_start"></info_portion>
 <info_portion id="val_opendoor_soldier_start"></info_portion>
