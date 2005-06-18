@@ -213,12 +213,19 @@ states = {
 				animstate = "stand",
 				animation = "warding"
 			},
-	search = {weapon = nil,
+	search	= {weapon = nil,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "poisk"
+			},
+	salut	 = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "salut"
 			},
 
 
