@@ -90,6 +90,9 @@
 <!-- Матюгальник -->
 <info_portion id="val_matugalnik_off"></info_portion>
 
+<!-- Ворота -->
+<info_portion id="val_gate_start"></info_portion>
+
 <!-- Открытие дверей -->
 <info_portion id="val_opendoor_start"></info_portion>
 <info_portion id="val_opendoor_soldier_start"></info_portion>
