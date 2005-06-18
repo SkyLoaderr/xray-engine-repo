@@ -12,7 +12,9 @@ class "evaluator_contact" (property_evaluator)
 function evaluator_contact:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-function evaluator_contact:evaluate()	
+function evaluator_contact:evaluate()
+	if self.a.meet_set ~= true then return false end
+	
 	if db.actor and self.object:see(db.actor) then
 		if xr_wounded.is_wounded(self.object) then
 			return false
@@ -309,7 +311,9 @@ end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
 	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
-
+	-- флажок, что функция хотя бы раз вызывалась
+	st.meet_set = true
+	
 	if tostring(section) == st.meet_section and
 	   tostring(section) ~= "nil" 
 	then

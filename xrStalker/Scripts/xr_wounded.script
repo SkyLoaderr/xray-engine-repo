@@ -12,6 +12,8 @@ function evaluator_wound:__init(name, storage) super(nil, name)
     self.a = storage
 end
 function evaluator_wound:evaluate ()
+	if self.a.wounded_set ~= true then return false end
+	
 	self.a.wound_manager:update()
 	if self.mgr == nil then
 		self.mgr = self.object:motivation_action_manager()
@@ -324,7 +326,9 @@ end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
-
+	-- флажок, что функция хотя бы раз вызывалась
+	st.wounded_set = true
+	
 	if tostring(section) == st.wounded_section and
 	   tostring(section) ~= "nil" 
 	then
