@@ -327,11 +327,11 @@ end
 function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
 
-	if tostring(section) == st.wounded_section and
-	   tostring(section) ~= "nil" 
-	then
-		return
-	end
+--	if tostring(section) == st.wounded_section and
+--	   tostring(section) ~= "nil" 
+--	then
+--		return
+--	end
 	
 	st.wounded_section = utils.to_str(section)
 	
