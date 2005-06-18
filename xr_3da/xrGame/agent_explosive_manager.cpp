@@ -19,7 +19,7 @@
 #include "visual_memory_manager.h"
 #include "danger_object_location.h"
 
-const float GRENADE_RADIUS	= 20.f;
+const float GRENADE_RADIUS	= 5.f;
 const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 20000;
 
 struct CRemoveExplosivesPredicate {
@@ -33,7 +33,11 @@ void CAgentExplosiveManager::remove_links	(CObject *object)
 {
 	TO_BE_DESTROYED::iterator		I = std::find(m_explosives_to_remove.begin(),m_explosives_to_remove.end(),object->ID());
 	if (I != m_explosives_to_remove.end())
-		m_explosives_to_remove.erase	(I);
+		m_explosives_to_remove.erase(I);
+
+	EXPLOSIVES::iterator			J = std::find(m_explosives.begin(),m_explosives.end(),object->ID());
+	if (J != m_explosives.end())
+		m_explosives.erase			(J);
 }
 
 void CAgentExplosiveManager::register_explosive	(const CExplosive *explosive, const CGameObject *game_object)
