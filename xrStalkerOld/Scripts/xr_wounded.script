@@ -326,9 +326,7 @@ end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
-	-- флажок, что функция хотя бы раз вызывалась
-	st.wounded_set = true
-	
+
 	if tostring(section) == st.wounded_section and
 	   tostring(section) ~= "nil" 
 	then
@@ -346,16 +344,17 @@ function init_wounded(npc, ini, section, st, scheme)
 		st.hp_cover			= xr_meet.parse_data(npc, "30|true|10|false")
 		st.hp_fight			= xr_meet.parse_data(npc, "30|true|10|false")
 		st.syndata			= xr_meet.parse_syn_data(npc, "wounded@help")
-		return
+	else
+		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
+		st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, ""))
+		st.psy_state	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "psy_state", npc, false, ""))
+		st.hp_victim	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_victim", npc, false, ""))
+		st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, ""))
+		st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
+		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
 	end
-
-	st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
-	st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, ""))
-	st.psy_state	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "psy_state", npc, false, ""))
-	st.hp_victim	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_victim", npc, false, ""))
-	st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, ""))
-	st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
-	st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
+	-- флажок, что функция хотя бы раз вызывалась
+	st.wounded_set = true
 end
 
 function is_wounded(npc)
