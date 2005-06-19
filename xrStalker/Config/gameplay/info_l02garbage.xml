@@ -32,6 +32,7 @@
 	<info_portion id="gar_direction"></info_portion>
 	<info_portion id="gar_start_graveyard"></info_portion>
 	<info_portion id="gar_no_mapspot"></info_portion>
+	<info_portion id="gar_animation_radio"></info_portion>
 	
 	
 	<!-- Застава Долга -->

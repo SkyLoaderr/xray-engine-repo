@@ -274,6 +274,11 @@ function process_info_portion(info_id)
 	elseif info_id == "gar_no_mapspot" then
 		remove_location(107, "gar_graveyard_car_location")
 
+	elseif info_id == "gar_kill_boars_done" then
+		add_location(108, "gar_dolg_blokpost_location")
+		
+	elseif info_id == "gar_free_pass" then
+		remove_location(108, "gar_dolg_blokpost_location")
 	
 	-- Agroprom
 	elseif agroprom_tasks.process_info_portion(info_id) then
