@@ -1,13 +1,23 @@
 [logic]
-active = heli_move@start
+active = heli_move@wait
+
+[heli_move@wait]
+path_move = val_stairs_heli_wait_move
+engine_sound = false
+on_info = {+val_gate_start} heli_move@start
 
 [heli_move@start]
-path_move = val_stairs_heli_walk
+path_move = val_stairs_heli_move
 path_look = val_stairs_heli_look
-on_signal = start_victim1 | %+val_stairs_victim1_start%
+on_signal = start_victim1 | heli_move@victim1 %+val_stairs_victim1_start%
+;on_info = {+val_stairs_victim1_dead} heli_move@roket ;, {+val_stairs_victim2_start} heli_move@roket
+
+[heli_move@victim1]
+path_move = val_stairs_heli_victim1_move
+path_look = val_stairs_heli_victim1_look
 on_info = {+val_stairs_victim1_dead} heli_move@roket ;, {+val_stairs_victim2_start} heli_move@roket
 
 [heli_move@roket]
-path_move = val_stairs_heli_roket_walk
+path_move = val_stairs_heli_roket_move
 path_look = val_stairs_heli_roket_look
 on_time = 5000 | nil
