@@ -188,7 +188,7 @@
 	
 <!-- pointers definitions -->
 	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="115" y="115" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>
 	</actor_pointer>
 	
 	<!-- multiplayer -->
