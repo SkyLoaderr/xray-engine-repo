@@ -97,7 +97,7 @@
 		<level_map spot="mil_freedom_barier_spot" pointer=""></level_map>
 	</mil_freedom_barier_location>
 	
-    <mil_freedom_barier_spot x="0" y="0" width="64" height="48" alignment="c">
+    <mil_freedom_barier_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="224" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_freedom_barier_spot>
 	
