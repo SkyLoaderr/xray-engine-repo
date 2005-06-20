@@ -495,12 +495,6 @@ void CCustomMonster::eye_pp_s1			()
 	if (g_Alive()) {
 		update_range_fov					(new_range, new_fov, human_being() ? memory().visual().current_state().m_max_view_distance*eye_range : eye_range, eye_fov);
 	}
-
-	if (!_valid(new_range)) {
-		float									new_range = eye_range, new_fov = eye_fov;
-		if (g_Alive())
-			update_range_fov					(new_range, new_fov, memory().visual().current_state().m_max_view_distance*eye_range, eye_fov);
-	}
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
 	Fmatrix									mProject,mFull,mView;
