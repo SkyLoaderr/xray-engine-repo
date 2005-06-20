@@ -49,6 +49,7 @@ function process_tasks ()
 	   if actor:object ("wpn_rg-6") and actor:has_info ("mil_freedom_rg6_task") then 
 	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
 	      actor:give_info_portion ("mil_freedom_rg6_task_complete")
+	      level_tasks.remove_location (706, "mil_rg6_location")
 	   end   
 	end	
 	
