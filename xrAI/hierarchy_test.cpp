@@ -380,8 +380,41 @@ struct STravelPathPoint {
 	}
 };
 
+#include "game_graph.h"
+
+void test_game_graph	()
+{
+	string256			file_name;
+	FS.update_path		(file_name,"$game_data$",GRAPH_NAME);
+	CGameGraph			*graph = xr_new<CGameGraph>(file_name);
+
+	const CGameGraph::CVertex	*I = graph->vertex(0), *B = I;
+	const CGameGraph::CVertex	*E = graph->vertex(0) + graph->header().vertex_count();
+	for ( ; I != E; ++I) {
+		CGameGraph::const_iterator	i, e;
+		u32							vertex_id = u32(I - B);
+		graph->begin				(vertex_id,i,e);
+		for ( ; i != e; ++i) {
+			const CGameGraph::CVertex	*J = graph->vertex(graph->value(vertex_id,i));
+			if ((*I).level_id() != (*J).level_id()) {
+				Msg					(
+					"Connection point %s[%f][%f][%f] -> %s[%f][%f][%f]",
+					*graph->header().level((*I).level_id()).name(),
+					VPUSH((*I).level_point()),
+					*graph->header().level((*J).level_id()).name(),
+					VPUSH((*J).level_point())
+				);
+			}
+		}
+	}
+
+	xr_delete			(graph);
+}
+
 void test_hierarchy		(LPCSTR name)
 {
+	test_game_graph				();
+
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
 
 	///

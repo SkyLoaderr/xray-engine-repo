@@ -73,6 +73,9 @@ public:
 
 								CLevelGameGraph(CGameGraph::SLevel *tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
 	{
+//		if (!stricmp("l06_rostok",*tLevel->name())) {
+//			__asm int 3;
+//		}
 		m_tLevel				= *tLevel;
 		m_dwOffset				= dwOffset;
 		m_tpLevelPoints.clear	();
@@ -213,8 +216,10 @@ public:
 						S								= xr_strdup(tpGraphPoint->name_replace());
 						T.caConnectName					= xr_strdup(*tpGraphPoint->m_caConnectionPointName);
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,*tpGraphPoint->m_caConnectionLevelName);
-						T.tGraphID						= (GameGraph::_GRAPH_ID)i;
-						T.tOldGraphID					= tGraphID;
+//						T.tGraphID						= (GameGraph::_GRAPH_ID)i;
+//						T.tOldGraphID					= tGraphID;
+						T.tOldGraphID					= (GameGraph::_GRAPH_ID)i;
+						T.tGraphID						= tGraphID;
 
 						bool							ok = true;
 						VERTEX_MAP::const_iterator		II = m_tVertexMap.begin();
@@ -545,6 +550,12 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 						Msg						("Level %s with id %d has an INVALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",*(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,*(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
 						R_ASSERT				(M != (*K).second->m_tVertexMap.end());
 					}
+
+//					if (!stricmp("l06_rostok",*(*I).second->m_tLevel.name())) {
+//						__asm int 3;
+//					}
+					Msg							("Level %s with id %d has VALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",*(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,*(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
+
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
 					VERIFY3						(tConnectionVertex.tGraphID < (*I).second->m_tpVertices.size(),"Rebuild graph for the level",*(*I).second->m_tLevel.name());
 					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",*(*K).second->m_tLevel.name());
