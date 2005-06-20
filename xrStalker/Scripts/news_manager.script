@@ -56,8 +56,30 @@ function send_news(actor, news_id, timeout, showtime)
 	db.actor:set_news_show_time(news_id, showtime)
 end
 
-function send_tip(actor, news_id, timeout, sender, showtime)
+function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	if news_id == nil then return false end
+	printf("try to send tips for [%s]", tostring(sender_id))
+	if sender_id ~= nil then
+		local sim = alife()
+		if sim ~= nil then
+			local npc = sim:story_object(sender_id)
+			if npc ~= nil then
+				if npc.online then
+					--в онлайне проверяем на раненность
+					printf("check wounded")
+					if xr_wounded.is_heavy_wounded(npc) then
+						printf("[PDA]Cannot send tips [%s], sender is heavy wounded", tostring(news_id))
+						return false
+					end
+				end
+				-- в других случаях только на смерть
+				if npc:alive() == 1 then
+					printf("[PDA]Cannot send tips [%s], sender is dead", tostring(news_id))
+					return false
+				end
+			end
+		end
+	end
 
 	if timeout == nil then timeout = 0 end
 	if showtime == nil then showtime = 5000 end
@@ -76,6 +98,7 @@ function send_tip(actor, news_id, timeout, sender, showtime)
 	end
 	actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)
 	actor:set_news_show_time(news_id, showtime)	
+	return true
 end
 
 function send_help(actor)

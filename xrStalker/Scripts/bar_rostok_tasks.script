@@ -159,13 +159,10 @@ function process_info_portion(info_id)
 		level_tasks.set_task_state(task.fail, "bar_kill_professor", 0)
 		return true
 	elseif info_id == "bar_freedom_attack_ecolog" then
-		if db.actor:dont_has_info("bar_heli_scene_volkodav_die") then
-			news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
+		if news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom", nil, 509) then
+			db.actor:give_info_portion("bar_freedom_defence_ecolog")
 		end
-		if db.actor:dont_has_info("bar_heli_scene_professor_die") then
-			news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
-		end
-		return true				
+		return true
 	elseif info_id == "bar_ecolog_crush_actor_enemy" then
 		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
 		return true				
