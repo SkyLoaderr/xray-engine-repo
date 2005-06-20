@@ -91,12 +91,10 @@ end
 -- SERVICE FUNCTIONS
 ----------------------------------------------------------------------------------------------------
 function mob_camp:select_state()
-
 	self.state_prev = self.state_current
-		
+	
 	-- if enemy
 	local enemy = self.object:get_enemy()
-	
 	
 	if enemy ~= nil then
 		
@@ -122,8 +120,17 @@ function mob_camp:select_state()
 			-- we are on place - camp!
 			self.state_current = STATE_CAMP
 		end
-					
 	end
+	
+	-- Отпускать в alife монстров, которых обстреляли
+	local h = self.object:get_monster_hit_info()
+	if (enemy == nil) and (h.who) and (h.time ~= 0) then
+		local dist = self.object:position():distance_to(self.home_path:point(self.cur_point_index))
+		if (dist < self.st.home_min_radius) then 
+			self.state_current = STATE_ALIFE
+		end
+	end
+	
 end
 
 ----------------------------------
