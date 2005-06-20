@@ -367,17 +367,29 @@ function add_lchanger_location()
 		end
 
 		-- garbage
-		obj = sim:story_object(193)
+		obj = sim:story_object(191)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_down_location", "to_escape")
+			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
 		end
 		obj = sim:story_object(192)
 		if obj then
 			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
 		end
-		obj = sim:story_object(191)
+		obj = sim:story_object(193)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
+			level.map_add_object_spot(obj.id, "lchanger_down_location", "to_escape")
+		end
+		obj = sim:story_object(194)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_up_location", "to_rostok")
+		end
+		obj = sim:story_object(195)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_darkvalley")
+		end
+		obj = sim:story_object(196)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_darkvalley")
 		end
 		
 		-- agroprom
@@ -389,5 +401,23 @@ function add_lchanger_location()
 		if obj then
 			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
 		end
+
+		-- rostok
+		obj = sim:story_object(591)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+		end
+		obj = sim:story_object(592)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_military")
+		end
+
+		-- military
+		obj = sim:story_object(771)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_rostok")
+		end
+
+
 	end
 end
