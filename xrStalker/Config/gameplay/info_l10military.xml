@@ -232,6 +232,10 @@
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
 	<info_portion id="mil_controller_ready"></info_portion>
-	<info_portion id="mil_hunter_after_dialog"></info_portion>	
+	<info_portion id="mil_hunter_after_dialog"></info_portion>
+
+
+	<!-- Отметки на карте мест -->
+	<info_portion id="mil_barier_locator"></info_portion>
 	
 </game_information_portions>
