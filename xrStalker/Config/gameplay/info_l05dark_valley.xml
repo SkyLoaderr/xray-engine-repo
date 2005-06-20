@@ -94,6 +94,10 @@
 <info_portion id="val_gate_start"></info_portion>
 <info_portion id="val_gate_plr_detected"></info_portion>
 
+<!-- Лестница -->
+<info_portion id="val_stairs_start"></info_portion>
+<info_portion id="val_stairs_start_victims"></info_portion>
+
 <!-- Открытие дверей -->
 <info_portion id="val_opendoor_start"></info_portion>
 <info_portion id="val_opendoor_soldier_start"></info_portion>
