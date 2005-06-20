@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------
--- Mob Jump
+-- Mob Camp
 ----------------------------------------------------------------------------------------------------
 -- Разработчик: Jim
 ----------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ end
 -- RESET SCHEME
 ----------------------------------------------------------------------------------------------------
 function mob_camp:reset_scheme()
-    printf("Jump: reset_scheme: %s", self.object:name())
+    printf("Camp: reset_scheme: %s", self.object:name())
 	xr_logic.mob_capture		(self.object, true)
 
 	-- initialize look point
@@ -48,20 +48,26 @@ function mob_camp:reset_scheme()
 	end
 
 	-- checkings
-	if (self.home_path == nil) or (self.look_path == nil) then
-		utils.abort("object '%s': you must setup home path and look path!", self.object:name())
+	if (self.home_path ~= nil) and (self.look_path ~= nil) then
+		if (self.home_path:count() ~= self.look_path:count()) then
+			utils.abort("object '%s': you must setup home path points count must be equal to look path points count!", self.object:name())	
+		end
 	end
-	
-	if (self.home_path:count() ~= self.look_path:count()) then
-		utils.abort("object '%s': you must setup home path points count must be equal to look path points count!", self.object:name())	
-	end
-	
-	
+
+	-- save position and node of object
+	self.camp_position		= vector():set(self.object:position())
+	self.camp_node			= self.object:level_vertex_id()
 
 	self.state_current		= STATE_CAMP
 	self.state_prev			= self.state_current
 	
-	self.cur_point_index	= math.random(0, self.home_path:count() - 1)
+	-- select cur point
+	if self.home_path then
+		self.cur_point_index	= math.random(0, self.home_path:count() - 1)
+	else 
+		self.cur_point_index	= 0
+	end
+	
 	self.time_point_changed = time_global()
 end
 
@@ -77,7 +83,10 @@ function mob_camp:update(delta)
 
 	-- update point changer
 	if (self.time_point_changed + self.st.time_change_point < time_global()) then
-		self.cur_point_index	= math.random(0, self.home_path:count() - 1)
+		if self.home_path then
+			self.cur_point_index	= math.random(0, self.home_path:count() - 1)
+		end
+
 		self.time_point_changed = time_global()
 	end
 	
@@ -96,9 +105,16 @@ function mob_camp:select_state()
 	-- if enemy
 	local enemy = self.object:get_enemy()
 	
+	local home_position = self.camp_position
+	local home_node		= self.camp_node
+	
+	if (self.home_path ~= nil) then
+		home_position	= self.home_path:point(self.cur_point_index)
+		home_node		= self.home_path:level_vertex_id(self.cur_point_index)
+	end
+	
 	if enemy ~= nil then
-		
-		local dist = enemy:position():distance_to(self.home_path:point(self.cur_point_index))
+		local dist = enemy:position():distance_to(home_position)
 		if (self.state_prev == STATE_MOVE_HOME) and (dist > self.st.home_min_radius) then 
 		elseif (self.state_prev == STATE_ALIFE) and (dist > self.st.home_max_radius) then
 			self.state_current = STATE_MOVE_HOME
@@ -112,9 +128,8 @@ function mob_camp:select_state()
 	-- select MOVE_HOME OR CAMP
 	if (enemy == nil) or ((enemy ~= nil) and (self.state_current ~= STATE_ALIFE) ) then
 		-- check if we go home
-		if (self.home_path ~= nil) and 
-			(self.home_path:point(self.cur_point_index):distance_to(self.object:position()) > 1) and
-			(self.home_path:level_vertex_id(self.cur_point_index) ~= self.object:level_vertex_id()) then
+		if  (home_position:distance_to(self.object:position()) > 1) and
+			(home_node ~= self.object:level_vertex_id()) then
 			self.state_current = STATE_MOVE_HOME
 		else 
 			-- we are on place - camp!
@@ -125,7 +140,7 @@ function mob_camp:select_state()
 	-- Отпускать в alife монстров, которых обстреляли
 	local h = self.object:get_monster_hit_info()
 	if (enemy == nil) and (h.who) and (h.time ~= 0) then
-		local dist = self.object:position():distance_to(self.home_path:point(self.cur_point_index))
+		local dist = self.object:position():distance_to(home_position)
 		if (dist < self.st.home_min_radius) then 
 			self.state_current = STATE_ALIFE
 		end
@@ -137,7 +152,7 @@ end
 -- EXECUTE_STATE
 function mob_camp:execute_state()
 	
---	-- DBG
+	-- DBG
 --	if (self.state_current ~= self.state_prev) then
 --		local str1 = ""
 --		local str2 = ""
@@ -178,6 +193,7 @@ function mob_camp:execute_state()
 		if self.look_path then 
 			if not self.object:action() then
 				action(	self.object, 
+						anim(anim.stand_idle),
 						look(look.point, self.look_path:point(self.cur_point_index)), 
 						cond(cond.look_end)
 				)
@@ -190,10 +206,19 @@ function mob_camp:execute_state()
 	-- STATE_MOVE_HOME
 	if self.state_current == STATE_MOVE_HOME then
 		if not self.object:action() then
+
+			local home_position = self.camp_position
+			local home_node		= self.camp_node
+			
+			if (self.home_path ~= nil) then
+				home_position	= self.home_path:point(self.cur_point_index)
+				home_node		= self.home_path:level_vertex_id(self.cur_point_index)
+			end
+			
 			action(	self.object, 
 					move(move.run_fwd, 
-					self.home_path:level_vertex_id(self.cur_point_index), 
-					self.home_path:point(self.cur_point_index), 0.2), 
+					home_node, 
+					home_position),
 					cond(cond.move_end))
 		end
 		return
