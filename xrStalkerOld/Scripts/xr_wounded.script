@@ -361,6 +361,6 @@ function is_wounded(npc)
 	return db.storage[npc:id()].wounded.wound_manager.state ~= "nil"
 end
 
-function is_heavy_wounded(npc)
-	return db.storage[npc:id()].wounded.wound_manager.state == "wounded_heavy"
+function is_heavy_wounded_by_id(npc_id)
+	return db.storage[npc_id].wounded.wound_manager.state == "wounded_heavy"
 end
