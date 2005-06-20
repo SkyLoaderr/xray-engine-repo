@@ -172,17 +172,30 @@ function check_spawn (s_object)
 			if xr_logic.pick_section_from_condlist(actor, spawn_list[s_object.id].npc, 
 			 								   spawn_list[s_object.id].cond.condlist) ~= nil 
 		    then
+				if s_object:name() == "bar_ecolog_crush_1" then
+					printf("[%s]COND TRUE, spawn true", s_object.name)
+				end
 				return true
 			else
 			    spawn_list[s_object.id].npc = nil
 			    spawn_list[s_object.id].online = false
+				if s_object:name() == "bar_ecolog_crush_1" then
+					printf("[%s]COND FALSE, spawn false", s_object.name)
+				end			    
 				return false 
 			end
 		else
+			if s_object:name() == "bar_ecolog_crush_1" then
+				printf("[%s]NO COND, spawn true(always)", s_object.name)
+			end
+
 			return true
 		end
 	end
 	spawn_list[s_object.id].npc = nil
+	if s_object:name() == "bar_ecolog_crush_1" then
+		printf("[%s]ACTOR NIL, spawn false", s_object.name)
+	end
 	return false
 end
 -----------------------------------------------------------------------------------
