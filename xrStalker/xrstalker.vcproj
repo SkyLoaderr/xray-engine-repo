@@ -1457,6 +1457,12 @@
 						RelativePath=".\Config\scripts\val_stairs_heli.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\val_stairs_victim1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val_stairs_victim2.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\val_suicide_and_escort_start_zone.ltx">
 					</File>
 					<File

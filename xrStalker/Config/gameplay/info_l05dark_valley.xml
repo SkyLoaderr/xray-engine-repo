@@ -96,6 +96,7 @@
 
 <!-- Лестница -->
 <info_portion id="val_stairs_victim1_start"></info_portion>
+<info_portion id="val_stairs_victim1_dead"></info_portion>
 <info_portion id="val_stairs_victim2_start"></info_portion>
 
 <!-- Открытие дверей -->
