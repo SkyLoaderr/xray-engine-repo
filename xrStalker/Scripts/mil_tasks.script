@@ -233,7 +233,7 @@ end
 
 function process_info_portion(info_id)
 	if info_id == "mil_barier_locator" then
-		level_tasks.add_location(770, "mil_freedom_barier_location")
+		--level_tasks.add_location(770, "mil_freedom_barier_location")
 		return true	
 	elseif info_id == "mil_max_job" then
 	       add_location (703, "mil_crazy_location")
