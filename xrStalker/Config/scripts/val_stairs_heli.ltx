@@ -1,0 +1,32 @@
+[logic]
+active = remark1
+combat_ignore = combat_ignore
+on_death = death
+
+[death]
+on_info = %+val_sacrifice_victim_dead +val_sacrifice_finish%
+on_info2 = {=killed_by(404)} %=hit_npc(404:bip01_spine1:100:2000)%, {=killed_by(405)} %=hit_npc(405:bip01_spine1:100:2000)%
+
+[combat_ignore]
+
+;401 = "val_sacrifice_victim"
+;403 = "val_sacrifice_bloodsucker"
+;404 = "val_sacrifice_guard1"
+;405 = "val_sacrifice_guard2"
+
+[remark1]
+no_move = true
+no_rotate = true
+anim = wait_na
+combat_ignore_cond = always
+;combat_ignore_keep_when_attacked = true
+on_info = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} remark@free %+val_sacrifice_victim_free%
+
+[remark@free]
+on_timer = 60000 | walker@leave
+;on_signal = escaped | %+val_sacrifice_victim_free%
+
+[walker@leave]
+path_walk = val_sacrifice_victim_leave_walk
+path_look = val_sacrifice_victim_leave_look
+on_signal = arrived | nil %+val_sacrifice_finish%

@@ -822,10 +822,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1452,6 +1452,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\val_sos_bs.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val_stairs_heli.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\scripts\val_suicide_and_escort_start_zone.ltx">
