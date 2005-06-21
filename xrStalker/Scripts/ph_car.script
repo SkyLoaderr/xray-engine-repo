@@ -281,7 +281,7 @@ end
 function action_car:at_target_walkpoint()
     --printf("_bp: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
 	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
-	local arrived = dist < 5 --self.car:CurrentVel().z * default_arriving_factor
+	local arrived = dist < 8 --self.car:CurrentVel().z * default_arriving_factor
 	--printf("_bp: action_car:at_target_walkpoint(self.target_walk_pt=%d) = %d (arrived = %s)",		self.target_walk_pt, dist, utils.to_str(arrived))
     --if arrived then
     --    printf("_bp: arrived = %f < %f * %f", dist, self.speed, default_arriving_factor)
@@ -663,22 +663,24 @@ function action_car:fast_update()
 	        end
 	    end
 	elseif self.state_firetarget == state_firetarget_actor then
-	    if self.car:IsObjectVisible(db.actor) then
-	        if self.car:CanHit() then
-	            --printf("_bp: fighting actor.")
+	    if self.car:CanHit() then
+	        if not self.car:IsObjectVisible(db.actor) then
+	            printf("_bp: actor is visible.")
 	            if self.state_shooting == state_none then
+	                printf("_bp: fighting actor.")
 		            self.state_shooting = state_shooting_on
 		        end
 		    else
-	            --printf("_bp: searching actor.")
+	            printf("_bp: actor isn't visible.")
 		        self.state_shooting = state_none
+		        --self:rot_to_firepoint(nil, self.state_shooting)
 		    end
-		    local p = db.actor:position()
-		    self:rot_to_firepoint(p, self.state_shooting)
 		else
+	        printf("_bp: searching actor.")
 		    self.state_shooting = state_none
-		    self:rot_to_firepoint(nil, self.state_shooting)
 		end
+		local p = db.actor:position()
+		self:rot_to_firepoint(p, self.state_shooting)
 	end
 	
 	return false
