@@ -32,6 +32,25 @@ void CServerList::Init(float x, float y, float width, float height){
 	GameSpy_Browser_Init();
 }
 
+void CServerList::SetFilters(SServerFilters& sf){
+	m_sf = sf;
+	GameSpy_Browser_OnUpdateCompleted();
+}
+
+bool CServerList::IsValidItem(ServerInfo& item){
+	bool result = true;
+
+	result &= m_sf.empty ? (m_sf.empty == (item.m_ServerNumPlayers == 0))						: true;
+	result &= m_sf.full ? (m_sf.full == (item.m_ServerNumPlayers == item.m_ServerMaxPlayers))	: true;
+	result &= m_sf.with_pass ? (m_sf.with_pass == item.m_bPassword)								: true;
+	result &= m_sf.without_pass ? (m_sf.without_pass != item.m_bPassword)						: true;
+	result &= m_sf.without_ff ? (m_sf.without_ff != item.m_bFFire)								: true;
+	//result &= m_sf.without_pb ? (m_sf.without_pb = item.m)
+	result &= m_sf.listen_servers ? (m_sf.listen_servers != item.m_bDedicated)					: true;
+
+	return result;
+}
+
 void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	CUIXmlInit::InitWindow(xml_doc, path, 0, this);
 	string256 buf;

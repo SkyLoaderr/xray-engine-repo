@@ -69,10 +69,22 @@ void CUIListWnd::script_register(lua_State *L)
 		class_<CUIListItem, CUIButton>("CUIListItem")
 		.def(							constructor<>()),
 
+		class_<SServerFilters>("SServerFilters")
+		.def(							constructor<>())
+		.def_readwrite("empty",				&SServerFilters::empty)
+		.def_readwrite("full",				&SServerFilters::full)
+		.def_readwrite("with_pass",			&SServerFilters::with_pass)
+		.def_readwrite("without_pass",		&SServerFilters::without_pass)
+		.def_readwrite("without_ff",		&SServerFilters::without_ff)
+		.def_readwrite("without_pb",		&SServerFilters::without_pb)
+		.def_readwrite("listen_servers",	&SServerFilters::listen_servers),
+
 		class_<CServerList, CUIWindow>("CServerList")
 		.def(							constructor<>())
 		.def("RefreshList",				&CServerList::RefreshGameSpyList)
 		.def("ConnectToSelected",		&CServerList::ConnectToSelected)
+		.def("SetFilters",				&CServerList::SetFilters)
+		
 		
 
 		];

@@ -33,6 +33,17 @@ struct ServerInfo{
 	bool			operator	==		(LPCSTR Address){int res = xr_strcmp(m_Address, Address);return	res	 == 0;};
 };
 
+class SServerFilters{
+public:
+	bool	empty;
+	bool	full;
+	bool	with_pass;
+	bool	without_pass;
+	bool	without_ff;
+	bool	without_pb;
+	bool	listen_servers;
+};
+
 DEF_VECTOR(SERVERINFO, ServerInfo);
 
 class CServerList : public CUIWindow{
@@ -46,6 +57,7 @@ public:
 			void InitSeparator();
 			void AddServerToList	(ServerInfo* pServerInfo);
 			void ConnectToSelected();
+			void SetFilters(SServerFilters& sf);
 
 	virtual void GameSpy_Browser_Init();
 	virtual void GameSpy_Browser_Destroy();
@@ -60,7 +72,10 @@ public:
 
 
 protected:
-	LIST_SRV_ITEM m_itemInfo;
+			bool IsValidItem(ServerInfo& item);
+
+	LIST_SRV_ITEM	m_itemInfo;
+	SServerFilters	m_sf;
 	CUIListWnd		m_list;
 	CUIFrameWindow	m_frame;
 	CUILabel		m_header[6];

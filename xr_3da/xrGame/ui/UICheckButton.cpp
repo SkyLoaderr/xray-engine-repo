@@ -57,4 +57,5 @@ void CUICheckButton::OnMouseDown(bool left_button){
 		else
 			m_eButtonState = BUTTON_NORMAL;
 	}
+	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
 }
