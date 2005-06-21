@@ -1,31 +1,31 @@
 <string id="bar_resque_information">
-	<text>Спасти профессора Круглова.</text>
+	<text>Save professor Kruglov.</text>
 </string>
 
     <string id="bar_resque_scientific_information">
-	<text>Необходимо любой ценой вывести профессора Круглова за пределы "Ростка".</text>
+	<text>By all means possible escort professor Kruglov beyond the perimeter of "Rostok".</text>
 </string>
 
     <string id="bar_kill_professor">
-	<text>Убить профессора Круглова.</text>
+	<text>Kill professor Kruglov.</text>
 </string>
 
     <string id="bar_kill_professor_info">
-	<text>Помогите боевикам Свободы в охоте на профессора Круглова.</text>
+	<text>Help the Freedom combatants in their hunt on professor Kruglov.</text>
 </string>
 
 
 	<string id="bar_hunter_rifle">
-	<text>Ружье охотника</text>
+	<text>Hunter's rifle</text>
 </string>
 	<string id="bar_bring_hunter_rifle">
-	<text>Вернуть охотнику фамильное ружье</text>
+	<text>Give hunter the family rifle back</text>
 </string>
 	<string id="bar_hunter_find_rifle">
-	<text>Найти ружье, утерянное у домика кровососов</text>
+	<text>Find the rifle lost at bloodsuckers' hut</text>
 </string>
 	<string id="bar_hunter_return_rifle">
-	<text>Вернуть ружье охотнику</text>
+	<text>Return rifle to the hunter</text>
 </string>
 
 	<string id="bar_dolg_test_quest">
@@ -67,13 +67,13 @@
 
 
 	<string id="bar_dolg_svoboda_ambush_quest">
-	<text>Уничтожение боевиков Свободы на дикой территории</text>
+	<text>Cleansing of Freedom combatants on wild territory</text>
 </string>
 	<string id="bar_dolg_kill_tiran">
-	<text>Уничтожить предводителя отряда Тирана. Снять с трупа нашивки Тирана, как доказательство его смерти</text>
+	<text>Killing the head of Tyran squad. Tear insignia off Tyran's body as a proof to his death</text>
 </string>
 	<string id="bar_dolg_svoboda_ambush_return">
-	<text>Вернуться к генералу Воронину с нашивками Тирана</text>
+	<text>Return to general Voronin with Tyran's insignia</text>
 </string>
 
 
@@ -102,16 +102,16 @@
 </string>
 
 	<string id="bar_crazy_veterans_quest">
-	<text>Уничтожить безумных ветеранов</text>
+	<text>Neutralize insane veterans</text>
 </string>
 	<string id="bar_kill_veterans">
-	<text>Уничтожить лагерь сумасшедших ветеранов</text>
+	<text>Destroy the camp of mad veterans</text>
 </string>
 	<string id="bar_kill_crazy_veterans">
-	<text>Убить ветеранов и взять ПДА их лидера</text>
+	<text>Kill the veterans and grab their leader's PDA</text>
 </string>
 	<string id="bar_bring_pda_lucky">
-	<text>Принести этот ПДА бармену в качестве доказательства</text>
+	<text>Bring that PDA to batender as a proof</text>
 </string>
 	
 	<string id="secret_laboratory_documents">
