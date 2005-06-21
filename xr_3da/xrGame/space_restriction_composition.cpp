@@ -110,6 +110,11 @@ void CSpaceRestrictionComposition::test_correctness()
 		m_test_storage.erase		(I,m_test_storage.end());
 	}
 
+	if (m_test_storage.empty()) {
+		m_correct					= false;
+		return;
+	}
+
 	xr_vector<u32>					nodes;
 	{
 		RESTRICTIONS::iterator		I = m_restrictions.begin();
