@@ -1206,177 +1206,6 @@
     <string id="bar_dolg_zavskald_reward_1311">
         <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
     </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_0">
-        <text>Я бы хотел кое-что узнать.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_1">
-        <text>Да да!?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_11">
-        <text>Кто вы и как здесь оказались?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_111">
-        <text>Моя фамилия Круглов. Я профессор биологии, изучаю Зону, классифицирую все, что там найду. Вот, например, вчера наткнулся на один очень интересный вид Antropomorphus Dendromutantus Vulgaris. Работаю в Зоне, нахожу и описываю новые виды мутировавших животных, их повадки и особенности. Потом эта информация анализируется и я передаю ее в академию наук, кое-что передаю бармену. Мои открытия уже не раз спасали жизни сталкеров. Время от времени мы обращаемся к сталкерам, за помощью. Я как раз вез результаты своего исследования на Янтарь, когда мой вертолет был обстрелян.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_1112">
-        <text>Да. Наверно неприятно садиться на "дикую территорию" в горящем вертолете.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_12">
-        <text>Ты наверно многое знаешь о Зоне. Может поделишься, тем что знаешь?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_121">
-        <text>Зона - это замечательный подарок человечеству. Конечно, жить здесь нельзя, радиация, аномалии, мутанты - смертельно опасны, но они представляют собой огромную научную ценность. Это почти природный эксперимент, просто заповедник для ученых. Сложно представить, что станет с наукой, после изучения Зоны. Новые технологии, лекарства, сорта растений, лекарственных и употребляемых в пищу. Биотехнологии, исцеление неизлечимых болезней, да мало ли чего еще. Может быть пищевая проблема для всей Земли будет решена. Если бы только нам не мешали, может быть мы бы уже вели человечество в "золотой век".</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_1211">
-        <text>Ребята из Долга думают иначе, да и Свобода не особо стремится вам помогать. А как по мне, лучше бы ее не было вовсе.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_12111">
-        <text>Вы не можете представить себе картину в целом, в глобальном масштабе. Для вас же проблемы здесь и сейчас важнее любого прогресса в будущем.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_121111">
-        <text>Не уверен, что готов положить свою жизнь на алтарь науки.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_1212">
-        <text>Может быть и есть польза в изучении Зоны.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_12121">
-        <text>Вы тоже это видите? Как приятно найти в собеседнике не узколобого практика. Я всегда говорил, надо смотреть на проблему шире, отрешиться от человеческих мерок. Пусть даже есть вред от Зоны, но может же быть и польза, и польза огромная я вам скажу.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_121211">
-        <text>Как правило "не узколобые практики" в Зоне не выживают. Так уж повелось.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_13">
-        <text>Почему Свобода охотится за этой информацией?</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_131">
-        <text>Не хочу вас обидеть, но сталкеры - как дети. На них очень влияет то, что они узнают. Вы посмотрите на легенды сталкеров, про исполняющий желания "Монолит", например. Это же просто детский сад. Только игры в Зоне идут уже с оружием и стоят жизней. А "Свобода" ведет себя как обиженный ребенок, от которого утаивают опасную информацию. Вот только в руках у них не палки, а автоматы. И для них нет преград в применении силы, они легко начинают стрелять, уничтожая исследователей Зоны. Им кажется, получи они эту информацию, как перед ними откроются ворота к центру Зоны. Просто наивные дураки и, к сожалению, очень опасные дураки.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_1311">
-        <text>Я бы легенды так легко не сбрасывал со счетов. Кое-кто жизнью рисковал, чтобы донести эту информацию.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_give_info_dp_14">
-        <text>К сожалению, мне пора. Удачи.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_11">
-        <text>Сталкер, помоги! Мы возвращались с Янтаря, когда нас сбили эти придурки из "Свободы". Говорят что им информация нужна, но я то знаю, что перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_111">
-        <text>Хорошо, следуй за мной.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_1111">
-        <text>Как ты скажешь, сталкер. Я в твоей власти, только выведи меня отсюда.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_112">
-        <text>Нет. Выбирайся сам.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_1121">
-        <text>Нет. Я уверен, что ты это не со зла. Сам отсюда я все равно никуда не смогу уйти. Если передумаешь - я буду здесь, если не умру.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_21">
-        <text>Поторопись, нужно поскорее выбраться отсюда.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_31">
-        <text>Фух. Неужели мы в безопасности? Наконец-то. Спасибо тебе за помощь. Я вечный твой должник, а пока возьми вот эту флешку. На ней результаты этой экспедиции. Уверен, что бармен за эту информацию достойно заплатит.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_41">
-        <text>Здравствуй, сталкер. От имени всей мировой науки выражаю тебе свое почтение.</text>
-    </string>
-    <string id="bar_ecolog_dialog_0">
-        <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
-    </string>
-    <string id="bar_svoboda_dialog_0">
-        <text>Все вопросы задавай Волкодаву, нашему старшему.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_0">
-        <text>Я бы хотел кое-что узнать.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_1">
-        <text>Узнать? Ну наглец. Ну давай, попробуй, спроси.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_11">
-        <text>Что из себя представляет группировка "Свобода"?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_111">
-        <text>Группировка Свобода - это сталкеры, которые считают, что Зона - это всеобщее достояние. А те же военные и ученые хотят монополизировать ее, и стать единственными владельцами уникальной информации и материалов. Мы считаем это неправильным и всеми силами боремся против тех, кто пытается стать единоличным хозяином Зоны и информации о ней. На этой почве, кстати, и возник наш конфликт с Долгом.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_1111">
-        <text>Я бы хотел присоединиться к Свободе. Как это сделать?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_11111">
-        <text>Приходишь к нашему лидеру и он решает, достоин ли ты стать бойцом Свободы. Может дать тебе какое-то задание, выполнив которое, тебя примут к нам.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_111111">
-        <text>Спасибо за информацию.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_1112">
-        <text>Почему вы воюете с Долгом?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_11121">
-        <text>Они - те же монополисты, но если ученые изучают Зону, то "долговцы" стараются закрыть Зону от всех, кроме себя, разумеется. По их словам, они хотят Зону уничтожить, дескать это чистое зло, подлежащее искоренению, и как крестоносцы очищают мир от "заразы Зоны". И никаких разумных доводов слушать не хотят. Знаем мы таких гуманистов с красивыми лозунгами - попомни мои слова, все себе заграбастать хотят.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_111211">
-        <text>хм...</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_12">
-        <text>Кто ты и чем занимаешься?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_121">
-        <text>Как я говорил, зовут меня Волкодав, а здесь, в Зоне, я командую подразделением Свободы под названием Псы. До Зоны наемничал по всему миру, был высокооплачиваемым воякой. Был в Афгане, в Боснии, в Ираке, еще в десятке горячих точек, где приобрел бесценный жизненный опыт, десяток шрамов и два стальных ребра.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_1211">
-        <text>А чего в Зону ушел?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_12111">
-        <text>А подставили меня как-то работодатели. Еле живой выбрался, с тех пор у меня ребра неродные и стоят. Вычухался, навестил их и после этого решил, что надо податься туда, куда они за мной не пойдут. А таких мест на свете мало - обидчивые они у меня, работодатели. А тут Зона подвернулась, здесь только такие психи как я и мои Псы нормально себя чувствуют, остальные же пытаются слинять поскорее.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_121111">
-        <text>Да, Зона - это место не для маменькиных сынков.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_13">
-        <text>Кто такие Псы?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_131">
-        <text>Псы - это моя гордость, отряд Свободы, для особых операций. Идут за мной в огонь и в воду, за нами только трупы и руины остаются. Каждого бойца лично отбирал. Если ты хочешь к нам податься, то сильно постараться придется. Я кого попало в отряд не беру. Только лучших из лучших.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_1311">
-        <text>Ясно.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_info_dp_14">
-        <text>Я передумал.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_11">
-        <text>Здоров. Я Волкодав, вожак этой стаи. У нас тут небольшая охота. Зажали ученых, там за вертолетом. Мои ребята потихоньку их обстреливают, чтоб не сбежали. Ты давай подключайся, сейчас будем добивать. Если поможешь, то отдам тебе скафандр научный, из сбитого вертолета вытащили.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_111">
-        <text>Я буду участвовать в охоте, кто добыча?</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_1111">
-        <text>Твоя цель - профессор Круглов, убей его, иначе сбежит он во время боя, я их породу знаю. Если убьешь его, скафандр твой, нет значит не судьба.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_11111">
-        <text>За дело.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_112">
-        <text>Нет, я отказываюсь от участия.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_1121">
-        <text>Тогда не лезь под пули, смотри как охотится стая Волкодава.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_21">
-        <text>Иди своей дорогой, Сталкер.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_31">
-        <text>Потом, сталкер, все потом. Сперва охота!</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_41">
-        <text>Отличная работа. Завалил Круглова, вот держи скафандр научный.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_51">
-        <text>Да сталкер, тебе под силу разве что на крыс охотится. Мы всю работу сами сделали, так что ты ничего не получишь. Иди дальше тренируйся.</text>
-    </string>
-    <string id="bar_svoboda_volkodav_start_61">
-        <text>Веселая была охота. Что тебе нужно?</text>
-    </string>
     <string id="barman_dialog_0">
         <text>default text</text>
     </string>
@@ -1388,5 +1217,176 @@
     </string>
     <string id="barmen_dialog_2">
         <text>text in default</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_0">
+        <text>I would like to find out something.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_1">
+        <text>Well, shoot!?</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_11">
+        <text>Who are you and how did you get here?</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_111">
+        <text>My name is Kruglov. I'm the professor of biology, I examine the Zone, classifying everything that I might find. Well, for example, yesterday I encountered very interesting species of Antropomorphus Dendromutantus Vulgaris. I work in the Zone, discovering and describing new types of mutated animals, their habits and peculiarities. Then this information is analyzed and I hand it over to the academy of sciences, something even tell to the barkeep. My discoveries have saved stalkers' lives more than once. In respond we seek help from the stalkers time to time. I was just carrying the results of my investigations to Yantar, when my helicopter fired upon.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_1112">
+        <text>Well. I guess it's now really pleasant to land the "wild territory" in the ablaze copter.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_12">
+        <text>You are supposed to know a lot about the Zone. Maybe you can share with me the information you possess?</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_121">
+        <text>Zone - is the perfect gift to the humanity. No doubt there can be no living in here, radiation, anomalies, mutants are mortally dangerous, but they present a huge scientific value. This is nearly a natural experiment, a real reserve for the scientists. It's hard to imagine what might happen to the science after the examination of the Zone. New technologies, medicines, sorts of plants, herbs and edible ones. Biotechnologies, curing untreatable illnesses and what of it. The global Earth foodstuff problem might be solved. If it were not for the preventers we could possible be leading the humanity to the "golden age".</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_1211">
+        <text>Guys from the Duty grouping think otherwise, and the Freedom is not eager to help you. As to me it shouldn't have existed at all.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_12111">
+        <text>You can't conceive the entire picture in the global scale. Personally for you the problems here and now are much more significant than any progress in the future.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_121111">
+        <text>I'm not sure that I'm ready to sacrifice my life on the altar of science.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_1212">
+        <text>There might be a use in examining the Zone.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_12121">
+        <text>Do you see it as well? How lovely is to find a conversable different from narrow-minded practician. I always say that the problem must be treated much broader, that the human yardsticks evaded. Maybe there is the harm from the Zone, but there can be benefit as well, and the benefit is huge I admit.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_121211">
+        <text>As a rule those "non narrow-minded practicians" can't survive in the Zone. That's the way the cookie crumbles.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_13">
+        <text>Why is Freedom hunting for the information?</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_131">
+        <text>Stalkers are like children, no offence though. They are really influenced by what they catch on. Consider for example stalkers legends about wish-granting "Monolith". This is truly a kind of childish folly. However this folly causes dangerous games with weapons and they even cost lives. And "Freedom" is behaving like an offended child, who is kept away from the dangerous information. Although they have not the sticks but guns and automatics. They see no bounds in acts of force, they are eager to shoot eliminating the researchers of the Zone. It seems to them that if they possessed this information the gates to the center of the Zone would open to them. Just naive fools, and, unfortunately, very dangerous fools.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_1311">
+        <text>If I were you I wouldn't neglect the legends at all. Some people risked their lives in order to deliver this information.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_14">
+        <text>Unfortunately, I've got to go. Good luck.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_11">
+        <text>Stalker, help! We were returning from Yantar, when we were hit by those bozos from "Freedom". It's said that they require this information, but I know that they'll shoot us down. Lead me to the Yantar and I'll share with you everything I know about the "brains burner", and bartender is definitely to pay you well for this kind of info.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_111">
+        <text>Okay then, follow me.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1111">
+        <text>As you say, stalker. I'm under your command, just help me out of here.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_112">
+        <text>No. Extricate yourself on your own.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1121">
+        <text>Oh, I'm sure you've said that without of spite. Anyway I won't manage to get out of here on my own. If you change your mind - I'll wait here, if I don't die earlier.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_21">
+        <text>Hurry up, we need to get out of here quickly.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_31">
+        <text>Ooh. Are we really in safety? At last. Thanks for your help. I'm in the eternal debt before you, and now take this flash-drive. It contains the results of this expedition. I'm dead sure that the barkeep gives a worthy loot for it.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_41">
+        <text>Greetings, stalker. On behalf of the entire world's science I express my respect to you.</text>
+    </string>
+    <string id="bar_ecolog_dialog_0">
+        <text>Stalker, professor wants to talk to thee. Get to him, be so kind.</text>
+    </string>
+    <string id="bar_svoboda_dialog_0">
+        <text>Set all questions to Wolfhound, our supremo.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_0">
+        <text>I wanted to find out something.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_1">
+        <text>Find out? What an insolence. Well okay try and ask.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_11">
+        <text>What does the "Freedom" grouping look like?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_111">
+        <text>Freedom grouping includes stalkers, who consider the Zone to be the common property. While the militaries and scientists desire to monopolize it and become the sole owners of the unique information and materials. We regard it as improper and do our best to fight those ones who try to become the individual proprietors of the Zone and the information about it. By the way owing to this we had the conflict with Duty emerged.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_1111">
+        <text>I would like to join Freedom. How can I do that?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_11111">
+        <text>Get to our leader and he'll decide, if you are worthy of becoming Freedom soldier. Can give you certain task, having fulfilled which you'll be accepted with our brethren.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_111111">
+        <text>Thanks for the information.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_1112">
+        <text>Why do you carry war with the Duty?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_11121">
+        <text>They are the monopolists as well, but if the scientists are examining the Zone, "duties" on the other hand attempt to close the Zone from everyone, except for them, for sure. According to their words they want to destroy the Zone, they say it's pure evil, that requires total annihilation, they purge the world from "Zone's pests". However they pay attention to no reasonable arguments. We know such humanists with attractive slogans - remember my words, their only desire is to take everything into possession.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_111211">
+        <text>hem...</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_12">
+        <text>Who are you and what are you engaged in?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_121">
+        <text>As I've said before my name is Wolfhound, while here in the Zone I'm in command of Freedom grouping named Canis. Until my arrival to the Zone I war a mercenary all over the world, used to get a fair payment for this. Been to Afghanistan, Bosnia, Iraq and in dozen of hot spots more, received invaluable experience, dozen of scars and two steel ribs.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_1211">
+        <text>And why have you gone to the Zone?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_12111">
+        <text>I was once abandoned by my employers. I was more dead than alive when I got out from there, since then I've got artificial ribs in my body. Recovered, visited my bosses then, after that I've decided to go there where they won't follow me to. But there are really few such places in the world - these employers are quite touchy, heh. Then I found the Zone, only such nuts as mine canisians are feeling themselves comfortable in here, the others are trying to get out as quick as possible.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_121111">
+        <text>Yes, Zone is not a place for sissified suckers.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_13">
+        <text>Who are those Canisians?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_131">
+        <text>Canisians are my proud, Freedom force, for special operations. They follow me through thick and thin, we leave only corpses and ruins behind. Each hireling has been picked out by me personally. If you want to join us, you should do your best. I don't take whoever to the troop. Only best of the best.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_1311">
+        <text>Clear.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_info_dp_14">
+        <text>I've changed my mind.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_11">
+        <text>Hi. I'm Wolfhound the leader of this troop. We have a little hunt. Blocked the scientists behind the helicopter. My guys lay constant fire on them, in order not to let them run away. Join us, we're gonna finish them now. If you help us, I'll reward you with the scientific-suit, we've found it in the knocked down copter.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_111">
+        <text>I'll take part in the hunt, who's honored to be the prey?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_1111">
+        <text>Your goal is professor Kruglov, eliminate him, otherwise he'll escape during the fight, I know his type. If you manage to kill him, the suit is yours, if not then unlucky you are.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_11111">
+        <text>To the business.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_112">
+        <text>No, I reject to participate.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_1121">
+        <text>Then don't Тогда не лезь под пули, смотри как охотится стая Волкодава.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_21">
+        <text>Proceed your own way, Stalker.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_31">
+        <text>Later, stalker, later. Hunt's first of all!</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_41">
+        <text>Perfect job. Killed Kruglov - take the scientific suit.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_51">
+        <text>Well, stalker, I guess you are capable only to hunt the rats. We've done the whole job so you'll receive nothing. Go practice yourself.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_61">
+        <text>It was a worthy hunt. What do you need?</text>
     </string>
 </string_table>

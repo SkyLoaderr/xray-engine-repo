@@ -1,115 +1,115 @@
 
 	<string id="bar_ecolog_crush_start_heli">
-		<text>Ну все Волкодав, ты допрыгался. Сюда летит военный вертолет. Сейчас они вас, как щенков!</text>
+		<text>Well okay Wolfhound that's it. The military copter is comming here. Now they'll crush you like dummies!</text>
 	</string>
 	<string id="bar_ecolog_crush_heli_down">
-		<text>Хехе, вот и все. Нету вашего вертолета! Сейчас и вы получите, крысы правительственные!</text>
+		<text>Hehe, that's it. You copter is done with! Now you'll get yours, governmental rats!</text>
 	</string>
 	<string id="bar_ecolog_crush_attract_actor">
-		<text>Сталкер, друг! Умоляю не уходи, помоги нам! Анархисты сбили наш вертолет и сейчас нас будут добивать. У нас есть раненые, нам нужна твоя помощь!</text>
+		<text>Stalker, brol! I beg you, don’t go, help us out! Anarchists shook down our helicopter and are about to take us out. We’ve got casualties, assistance needed!</text>
 	</string>
 	<string id="bar_freedom_attack_attract_actor">
-		<text>Мужик, давай сюды! Дело есть. Вместе добьем этих правительственных крыс.</text>
+		<text>Buddy, get over here! Got a matter for ye. Lets smash those governmental rats together.</text>
 	</string>
     <string id="bar_freedom_spam_1">
-		<text>Короче, ты, ученный болван. Или отдаешь мне результаты, или уедешь отсюда в пластиковом мешке.</text>
+		<text>Listen, bookworm. Either you give me the results or leave here inside the plastic bag.</text>
     </string>
     <string id="bar_freedom_spam_2">
-		<text>Круглов, я не знаю латыни, но я знаю язык оружия. Мне попросить вас на нем? Или вы сами отдадите информацию?</text>
+		<text>Gruglov, I don't know Latin, but I pretty much know the language of guns. Isn't it fancy enough? Or will you give to me the information amicably?</text>
     </string>
     <string id="bar_freedom_spam_3">
-		<text>Профессор, ты же умный человек. Отдай информацию и иди на все четыре стороны.</text>
+		<text>Professor, make use of your wits. Dish out the data and be free to go.</text>
     </string>
     <string id="bar_freedom_spam_4">
-		<text>Круглов, ты еще не понял?! Мы сбили ваш долбанный вертолет и нам нужна та информация, которую вы везете. После того как ты нам ее отдашь, можешь со своими ребятами валить. Это ваш последний шанс выбраться отсюда, давай флэшку и проваливай</text>
+		<text>Kruglov, haven't you dug it yet?! We've knocked down your bloody copter and we demand the information that you're transporting. Once you hand it over to us, you can turn loose around with your guys. This is your last chance to get out of here, gimme the damn flash-drive and get lost.</text>
     </string>
     <string id="bar_freedom_attack">
-		<text>Все, разговоры окончены. Начинается стрельба.</text>
+		<text>That's it, the talks are over. Now guns start speaking.</text>
     </string>
     <string id="bar_freedom_attack_spy">
-		<text>Меченый. Ты, сучонок, за подставу нам еще заплатишь.</text>
+		<text>Branded one. You, son of a bitch, will pay for that setup-trap.</text>
     </string>
 
     <string id="bar_ecolog_spam_1">
-		<text>Обойдешься, шакал. Сперва школу закончи, а потом будешь ультиматумы ставить.</text>
+		<text>You'll live well without it, jackal. Finish your school first and then pose demands.</text>
     </string>
     <string id="bar_ecolog_spam_2">
-		<text>Если вы нападете, я уничтожу информацию. Фиг вам, а не мои труды.</text>
+		<text>If you attack, I’ll destroy the data. You'll get no business with my documents.</text>
     </string>
     <string id="bar_ecolog_spam_3">
-		<text>Если не хотите, чтобы я уничтожил результаты исследований - держитесь подальше.</text>
+		<text>If you don't want me to destroy the research results, just stay away.</text>
     </string>
     <string id="bar_ecolog_spam_4">
-		<text>Волкодав, уводи своих собак, пока хвосты не ободрали!</text>
+		<text>Wolfhound, withdraw your dogs, until they've got their tails in place!</text>
     </string>        
     
     <string id="bar_ecolog_attack">
-		<text>Как вам будет угодно.</text>
+		<text>As you wish.</text>
     </string>
     
 
 
     <string id="bar_arena_fight_pseudodog">
-		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
-		В левом углу арены, белая, пушистая, но невероятно злая Псевдособака!
-		В правом углу арены, пришедший из ниоткуда, идущий в никуда. Все называют его Меченным!
+		<text>Attention everyone! The new round begins soon on the Arena!
+		A warm and fuzzy, but extremely spiteful Pseudo-dog in the left corner!
+		And the came-from-nowhere and going-to-nowhere man in the right corner. Everyone calls him Branded one!
 		</text>
     </string>
     <string id="bar_arena_fight_snork">
-		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
-		В левом углу арены, знаток восточных единоборств и правильного питания Снорк!
-		В правом углу арены, человек без прошлого. Все называют его Меченным!
+		<text>Attention everyone! The new round begins soon on the Arena!
+		An expert of matrial arts and proper nurition Snork in the left corner!
+		And a man without the past. Everyone calls him Branded one!
 		</text>
     </string>
     <string id="bar_arena_fight_bloodsucker">
-		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
-		В левом углу арены, кровожадный и вечно голодный Кровосос!
-		В правом углу арены, человек? Да, человек! Все называют его Меченным!
+		<text>Attention everyone! The new round begins soon on the Arena!
+		Blood-thirsty and always hungry Bloodsucker in the left corner!
+		And, is it a man in the right corner? Oh, yes it is! Everyone calls him Branded one!
 		</text>
     </string>
     <string id="bar_arena_fight_burer">
-		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
-		В левом углу арены, он знает кунг-фу, он умеет гнуть ложки, это Бюрер!
-		В правом углу арены, герой, чей поиск никогда не закончится! Все называют его Меченным!
+		<text>Attention everyone! The new round begins soon on the Arena!
+		He is familiar with kung-fu, he can bend the spoons, he's Burer!
+		And a hero, whos pursue will never end! Everyone calls him Branded one!
 		</text>
     </string>
     <string id="bar_arena_fight_savage">
-		<text>Внимание! Внимание! Скоро на Арене начнется новый бой!
-		В левом углу арены, вы знаете его, вы любите его. А он вас ненавидит. Это Зверь!
-		В правом углу арены, все еще живой, Меченный!
+		<text>Attention everyone! The new round begins soon on the Arena!
+		You know him, and you love him. While he hates you. The Beast in the left corner!
+		And in the right corner, still alive, Branded one!
 		</text>
     </string>
 
     <string id="bar_arena_actor_afraid">
-		<text>Бой отменяется. Претендент испугался и не вышел на ринг.</text>
+		<text>The battle is cancelled. Candidate is startled and haven't arrived to the arena.</text>
     </string>
     <string id="bar_arena_fight_begin">
-		<text>Бой начался!</text>
+		<text>The battle has begun!</text>
     </string>
     <string id="bar_arena_fight_10">
-		<text>Прошло 10 секунд!</text>
+		<text>10 seconds have passed!</text>
     </string>
     <string id="bar_arena_fight_20">
-		<text>Прошло 20 секунд!</text>
+		<text>20 seconds have passed!</text>
     </string>
     <string id="bar_arena_fight_30">
-		<text>Прошло 30 секунд!</text>
+		<text>30 seconds have passed!</text>
     </string>
     <string id="bar_arena_fight_40">
-		<text>Прошло 40 секунд!</text>
+		<text>40 seconds have passed!</text>
     </string>
     <string id="bar_arena_fight_50">
-		<text>Прошло 50 секунд!</text>
+		<text>50 seconds have passed!</text>
     </string>
     <string id="bar_arena_fight_60">
-		<text>Прошла минута!</text>
+		<text>A minute has passed!</text>
     </string>
     <string id="bar_arena_fight_victory">
-		<text>Итак! Претендент успел уложить противника в отведенное время и выиграл!</text>
+		<text>And so! The candidate was in time to knock down the opponent and won the match!</text>
     </string>
     <string id="bar_arena_fight_lose">
-		<text>Итак! Претендент уложил противника, но не успел в отведенное время, и проиграл!</text>
+		<text>And so! The candidate has knocked down the enemy, but didn't fit in time and thus lost!</text>
     </string>
     <string id="bar_arena_fight_dead">
-		<text>Итак! Противник уложил претендента. Вот так номер!</text>
+		<text>And so! The opponent has defeated the candidate. That was worth seeing!</text>
     </string>
