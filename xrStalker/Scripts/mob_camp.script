@@ -26,14 +26,10 @@ function mob_camp:reset_scheme()
 	xr_logic.mob_capture		(self.object, true)
 
 	-- initialize look point
-	if self.st.look_point then
-		self.look_path = patrol(self.st.look_point)
-		if not self.look_path then
-			utils.abort("object '%s': unable to find look_point '%s' on the map",
-				self.object:name(), self.st.look_point)
-		end
-	else
-		self.look_path = nil
+	self.look_path = patrol(self.st.look_point)
+	if not self.look_path then
+		utils.abort("object '%s': unable to find look_point '%s' on the map",
+			self.object:name(), self.st.look_point)
 	end
 
 	-- initialize home point
@@ -48,7 +44,8 @@ function mob_camp:reset_scheme()
 	end
 
 	-- checkings
-	if (self.home_path ~= nil) and (self.look_path ~= nil) then
+	-- if there is home path and look path - point count must be equal
+	if self.home_path then
 		if (self.home_path:count() ~= self.look_path:count()) then
 			utils.abort("object '%s': you must setup home path points count must be equal to look path points count!", self.object:name())	
 		end
@@ -62,11 +59,7 @@ function mob_camp:reset_scheme()
 	self.state_prev			= self.state_current
 	
 	-- select cur point
-	if self.home_path then
-		self.cur_point_index	= math.random(0, self.home_path:count() - 1)
-	else 
-		self.cur_point_index	= 0
-	end
+	self.cur_point_index	= math.random(0, self.look_path:count() - 1)
 	
 	self.time_point_changed = time_global()
 end
@@ -83,10 +76,7 @@ function mob_camp:update(delta)
 
 	-- update point changer
 	if (self.time_point_changed + self.st.time_change_point < time_global()) then
-		if self.home_path then
-			self.cur_point_index	= math.random(0, self.home_path:count() - 1)
-		end
-
+		self.cur_point_index	= math.random(0, self.look_path:count() - 1)
 		self.time_point_changed = time_global()
 	end
 	
@@ -102,16 +92,17 @@ end
 function mob_camp:select_state()
 	self.state_prev = self.state_current
 	
-	-- if enemy
-	local enemy = self.object:get_enemy()
 	
 	local home_position = self.camp_position
 	local home_node		= self.camp_node
 	
-	if (self.home_path ~= nil) then
+	if self.home_path then
 		home_position	= self.home_path:point(self.cur_point_index)
 		home_node		= self.home_path:level_vertex_id(self.cur_point_index)
 	end
+	
+	-- if enemy
+	local enemy = self.object:get_enemy()
 	
 	if enemy ~= nil then
 		local dist = enemy:position():distance_to(home_position)
@@ -190,14 +181,12 @@ function mob_camp:execute_state()
 	-- STATE_CAMP
 	if self.state_current == STATE_CAMP then
 		-- handle look point
-		if self.look_path then 
-			if not self.object:action() then
-				action(	self.object, 
-						anim(anim.stand_idle),
-						look(look.point, self.look_path:point(self.cur_point_index)), 
-						cond(cond.look_end)
-				)
-			end
+		if not self.object:action() then
+			action(	self.object, 
+					anim(anim.stand_idle),
+					look(look.point, self.look_path:point(self.cur_point_index)), 
+					cond(cond.look_end)
+			)
 		end
 	
 		return
@@ -210,7 +199,7 @@ function mob_camp:execute_state()
 			local home_position = self.camp_position
 			local home_node		= self.camp_node
 			
-			if (self.home_path ~= nil) then
+			if self.home_path then
 				home_position	= self.home_path:point(self.cur_point_index)
 				home_node		= self.home_path:level_vertex_id(self.cur_point_index)
 			end
@@ -253,8 +242,15 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false, 30)
 	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false, 40)
 	
+	-- check min and max radius
 	if	storage.home_min_radius > storage.home_max_radius then
 		utils.abort("Mob_Camp : Home Min Radius MUST be < Max Radius")
 	end 
+	
+	-- check if there is look point (must be!)
+	if (not storage.look_point) or (not patrol(storage.look_point)) then
+		utils.abort("object '%s': unable to find look_point '%s' on the map",
+					npc:name(), storage.look_point)
+	end
 end
 
