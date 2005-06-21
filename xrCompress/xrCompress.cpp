@@ -52,7 +52,6 @@ BOOL	testSKIP		(LPCSTR path)
 	_splitpath			(path, 0, 0, p_name, p_ext );
 
 	if (0==stricmp(p_ext,".swatch"))return TRUE;
-	if (0!=strstr (p_ext,".~"))		return TRUE;
 	if (0==stricmp(p_ext,".db"))	return TRUE;
 	if (0==stricmp(p_ext,".avi"))	return TRUE;
 	if (0==stricmp(p_ext,".key"))	return TRUE;
