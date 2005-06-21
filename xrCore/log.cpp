@@ -33,8 +33,8 @@ void AddOne				(const char *split)
 	logCS.Enter			();
 
 #ifdef DEBUG
-	OutputDebugString	(split);
-	OutputDebugString	("\n");
+	//OutputDebugString	(split);
+	//OutputDebugString	("\n");
 #endif
 
 	LogFile.push_back	(shared_str(split));

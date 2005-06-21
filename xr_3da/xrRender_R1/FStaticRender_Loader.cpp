@@ -144,9 +144,11 @@ void CRender::level_Unload		()
 	Shaders.clear_and_free		();
 
 	//. dbg
-	Device.Resources->_DumpMemoryUsage	();
+#ifdef DEBUG
+	// Device.Resources->_DumpMemoryUsage	();
 	Device.Resources->DBG_VerifyGeoms	();
 	Device.Resources->DBG_VerifyTextures();
+#endif
 	b_loaded					= FALSE;
 }
 

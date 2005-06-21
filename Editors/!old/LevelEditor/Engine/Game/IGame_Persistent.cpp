@@ -98,22 +98,14 @@ void IGame_Persistent::OnGameStart	()
 
 	Msg					("* [prefetch] time:    %d ms",	iFloor(p_time));
 	Msg					("* [prefetch] memory:  %dKb",	p_mem/1024);
-	Msg	("------------- after: IGame_Persistent:: prefetch");
-	Device.Resources->_DumpMemoryUsage	();
 #endif
 }
 
 void IGame_Persistent::OnGameEnd	()
 {
 #ifndef _EDITOR
-	Msg	("------------- before: IGame_Persistent::OnGameEnd");
-	Device.Resources->_DumpMemoryUsage	();
 	ObjectPool.clear					();
-	Msg	("------------- after: ObjectPool.clear, before: Render->models_Clear");
-	Device.Resources->_DumpMemoryUsage	();
 	Render->models_Clear				();
-	Msg	("------------- after:  IGame_Persistent::OnGameEnd");
-	Device.Resources->_DumpMemoryUsage	();
 #endif
 }
 

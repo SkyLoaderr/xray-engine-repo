@@ -23,8 +23,15 @@ class	ENGINE_API				IBlender;
 #pragma pack(push,4)
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		STextureList	: public xr_resource, public svector<std::pair<u32,ref_texture>, 8+4>	{
+struct	ENGINE_API		STextureList	: public xr_resource, public xr_vector<std::pair<u32,ref_texture> >	{
 						~STextureList	();
+
+						IC BOOL		equal (const STextureList& base) const
+						{
+							if (size()!=base.size())	return FALSE;
+							for (u32 cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
+							return TRUE;
+						}
 };
 typedef	resptr_core<STextureList,resptr_base<STextureList> >								ref_texture_list;
 //////////////////////////////////////////////////////////////////////////
