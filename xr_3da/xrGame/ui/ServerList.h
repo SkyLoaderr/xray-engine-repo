@@ -45,6 +45,7 @@ public:
 			void InitHeader();
 			void InitSeparator();
 			void AddServerToList	(ServerInfo* pServerInfo);
+			void ConnectToSelected();
 
 	virtual void GameSpy_Browser_Init();
 	virtual void GameSpy_Browser_Destroy();

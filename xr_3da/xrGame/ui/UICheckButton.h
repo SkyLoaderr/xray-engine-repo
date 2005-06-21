@@ -8,12 +8,16 @@
 #pragma once
 
 #include "ui3tbutton.h"
+#include "UIOptionsItem.h"
 
-class CUICheckButton :public CUI3tButton
-{
+class CUICheckButton : public CUI3tButton, public CUIOptionsItem {
 public:
 	CUICheckButton(void);
 	virtual ~CUICheckButton(void);
+
+	// CUIOptionsItem
+	virtual void	SetDefaultValue();
+	virtual void	SaveValue();
 
 	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Init(float x, float y, float width, float height);

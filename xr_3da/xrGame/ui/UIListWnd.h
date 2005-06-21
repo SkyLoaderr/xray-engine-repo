@@ -117,6 +117,7 @@ public:
 	void SetFocusedItem(int iNewFocusedItem);
 	int GetFocusedItem() { return m_iFocusedItem; }
 	int GetSelectedItem() { return m_iSelectedItem; }
+	void ShowSelectedItem(bool show = true)	{ m_bShowSelectedItem = show;}
 	
 	void ResetFocusCapture() { m_bForceFocusedItem = false; }
 
@@ -173,6 +174,8 @@ protected:
 	int		m_iFocusedItemGroupID;
 	int     m_iSelectedItem;
 	int     m_iSelectedItemGroupID;
+
+	bool	m_bShowSelectedItem;
 
 	// Если хотим принудительно выставлять фокус, то поднять этот флаг
 	bool	m_bForceFocusedItem;

@@ -14,6 +14,7 @@
 #include "UIFrameWindow.h"
 #include "UIStatic.h"
 #include "UICheckButton.h" // #include "UI3tButton.h" // #include "UIButton.h"
+#include "UICustomSpin.h"
 #include "UIRadioButton.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
@@ -134,7 +135,22 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
-//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitOptionsItem(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd){
+	char buf[256];
+	strconcat(buf,paht,":options_item");
+
+	if (xml_doc.NavigateToNode(buf,index))
+	{
+        shared_str entry = xml_doc.ReadAttrib(buf, index,"entry");
+        shared_str group = xml_doc.ReadAttrib(buf, index,"group");
+
+		pWnd->Register(*entry, *group);
+		return true;
+	}
+	else return false;	
+}
+
 
 bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIStatic* pWnd)
@@ -152,6 +168,20 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	if( xr_strlen(str_flag) )
 		pWnd->SetLightAnim(str_flag);
 	
+	return true;
+}
+
+bool CUIXmlInit::InitCheck(CUIXml& xml_doc, LPCSTR path, int index, CUICheckButton* pWnd){
+	InitStatic(xml_doc, path, index, pWnd);
+	InitOptionsItem(xml_doc, path, index, pWnd);
+
+	return true;
+}
+
+bool CUIXmlInit::InitSpin(CUIXml& xml_doc, const char* path, int index, CUICustomSpin* pWnd){
+	InitWindow(xml_doc, path, index, pWnd);
+	InitOptionsItem(xml_doc, path, index, pWnd);
+
 	return true;
 }
 
@@ -1136,6 +1166,7 @@ u32 CUIXmlInit::GetARGB(CUIXml& xml_doc, const char* path, int index){
 
 	return color_argb(a, r, g, b);
 }
+
 
 
 

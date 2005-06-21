@@ -6,6 +6,9 @@
 class CUIWindow;
 class CUIFrameWindow;
 class CUIStatic;
+class CUICheckButton;
+class CUISpinNum;
+class CUISpinText;
 class CUIButton;
 class CUI3tButton;
 class CUICheckButton;
@@ -35,6 +38,9 @@ public:
 	void InitFrameLine	(LPCSTR path, int index, CUIFrameLineWnd* pWnd);
 	void InitLabel		(LPCSTR path, int index, CUILabel* pWnd);
 	void InitStatic		(LPCSTR path, int index, CUIStatic* pWnd);
+	void InitCheck		(LPCSTR path, int index, CUICheckButton* pWnd);
+	void InitSpinNum	(LPCSTR path, int index, CUISpinNum* pWnd);
+	void InitSpinText	(LPCSTR path, int index, CUISpinText* pWnd);
 	void InitButton		(LPCSTR path, int index, CUIButton* pWnd);
 	void Init3tButton	(LPCSTR path, int index, CUI3tButton* pWnd);
 	void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);

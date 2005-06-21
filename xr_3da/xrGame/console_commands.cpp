@@ -35,6 +35,7 @@
 #include "PHDebug.h"
 #include "ui/UIDebugFonts.h" 
 #include "hudmanager.h"
+#include "ui/UIOptConCom.h"
 
 #endif
 
@@ -94,6 +95,8 @@ extern	BOOL	g_bDrawBulletHit;
 #endif
 
 int g_AI_inactive_time = 0;
+
+CUIOptConCom g_OptConCom;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -1806,6 +1809,9 @@ public		:
 
 void CCC_RegisterCommands()
 {
+	// options
+	g_OptConCom.Init();
+
 	// game
 	CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 	CMD3(CCC_Mask,				"g_god",				&psActorFlags,	AF_GODMODE	);

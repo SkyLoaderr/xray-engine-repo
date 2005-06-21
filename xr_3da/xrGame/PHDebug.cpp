@@ -511,23 +511,23 @@ void CFunctionGraph::AddMarker(CStatGraph::EStyle Style, float pos, u32 Color)
 {
 	VERIFY(IsActive());
 	ScaleMarkerPos(Style,pos);
-	m_stat_graph->AddMarker(Style,pos,Color);
+//	m_stat_graph->AddMarker(Style,pos,Color);
 }
 void CFunctionGraph::UpdateMarker				(u32 ID, float M)
 {
 	VERIFY(IsActive());
 	ScaleMarkerPos(ID,M);
-	m_stat_graph->UpdateMarkerPos(ID, M);
+//	m_stat_graph->UpdateMarkerPos(ID, M);
 }
 void CFunctionGraph::ScaleMarkerPos(u32 ID,float &p)
 {
 	VERIFY(IsActive());
-	ScaleMarkerPos(m_stat_graph->Marker(ID).m_eStyle,p);
+//	ScaleMarkerPos(m_stat_graph->Marker(ID).m_eStyle,p);
 }
 void CFunctionGraph::ScaleMarkerPos(CStatGraph::EStyle Style, float &p)
 {
 	VERIFY(IsActive());
-	if(Style==CStatGraph::stVert)	p=ScaleX(p);
+//	if(Style==CStatGraph::stVert)	p=ScaleX(p);
 }
 void CFunctionGraph::Clear()
 {

@@ -14,6 +14,7 @@ struct LIST_SRV_SIZES {
 
 struct LIST_SRV_INFO{
 	shared_str server;
+	shared_str port;
 	shared_str map;
 	shared_str game;
 	shared_str players;
@@ -29,19 +30,24 @@ struct LIST_SRV_ITEM {
 
 class CUIListItemServer : public CUIListItem {
 public:
+	CUIListItemServer();
+
+
 	// CUISimpleWindow
 	using CUIWindow::Init;
-
 	virtual void Draw();
 
 	// own
 	virtual void Init(LIST_SRV_ITEM& params, float x, float y, float width, float height);
-	CUIListItemServer();
+			void CreateConsoleCommand(xr_string& command, LPCSTR player_name);
+	
 
 protected:
 			void SetTextColor(u32 color);
 			void SetFont(CGameFont* pFont);
 	LIST_SRV_SIZES m_sizes;
+
+	LIST_SRV_ITEM m_srv_info;
 
 	CUIStatic m_icon;
 	CUIStatic m_server;

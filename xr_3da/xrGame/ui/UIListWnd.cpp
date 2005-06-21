@@ -25,6 +25,7 @@ CUIListWnd::CUIListWnd()
 	m_iSelectedItem             = -1;
 	m_iFocusedItemGroupID		= -1;
 	m_iSelectedItemGroupID      = -1;
+	m_bShowSelectedItem			= false;
 	m_dwFontColor				= 0xFFFFFFFF;
 	SetItemHeight				(DEFAULT_ITEM_HEIGHT);
 	m_bVertFlip					= false;
@@ -393,6 +394,23 @@ void CUIListWnd::Draw()
 			{
 				m_StaticActiveBackground.SetPos(rect.left, rect.top + 
 								(pListItem2->GetIndex() - m_iFirstShownIndex)*GetItemHeight());
+				m_StaticActiveBackground.Render();
+			}
+		}
+	}
+	
+	if(m_iSelectedItem != -1 && m_bShowSelectedItem)
+	{
+		Frect rect = GetAbsoluteRect();
+		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+		{
+			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);
+			if (!pListItem2) continue;
+			if (pListItem2->GetGroupID() == -1) continue;
+			if (pListItem2->GetIndex() == m_iSelectedItem) 
+			{
+				m_StaticActiveBackground.SetPos(rect.left, rect.top + 
+					(pListItem2->GetIndex() - m_iFirstShownIndex)*GetItemHeight());
 				m_StaticActiveBackground.Render();
 			}
 		}

@@ -13,6 +13,10 @@ public:
 
 	virtual void	Init(float x, float y, float width, float height);
 
+	// CUIOptionsItem
+	virtual void	SetDefaultValue();
+	virtual void	SaveValue();
+
     virtual void	OnBtnUpClick();
 	virtual void	OnBtnDownClick();
 

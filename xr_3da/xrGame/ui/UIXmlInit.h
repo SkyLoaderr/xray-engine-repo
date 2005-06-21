@@ -20,6 +20,8 @@ class CUIWindow;
 class CUIFrameWindow;
 class CUIStaticItem;
 class CUIStatic;
+class CUICheckButton;
+class CUICustomSpin;
 class CUIButton;
 class CUI3tButton;
 class CUIDragDropList;
@@ -32,6 +34,7 @@ class CUITextBanner;
 class CUIMultiTextStatic;
 class CUIAnimatedStatic;
 class CUIArtefactPanel;
+class CUIOptionsItem;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -46,6 +49,8 @@ public:
 	static bool InitFrameLine			(CUIXml& xml_doc, const char* path, int index, CUIFrameLineWnd* pWnd);
 	static bool InitLabel				(CUIXml& xml_doc, const char* path, int index, CUILabel* pWnd);
 	static bool InitStatic				(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
+	static bool	InitCheck				(CUIXml& xml_doc, const char* path, int index, CUICheckButton* pWnd);
+	static bool InitSpin				(CUIXml& xml_doc, const char* path, int index, CUICustomSpin* pWnd);
 	static bool InitText				(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
 	static bool InitText				(CUIXml& xml_doc, const char* path, int index, IUITextControl* pWnd);
 	static bool InitButton				(CUIXml& xml_doc, const char* path, int index, CUIButton* pWnd);
@@ -68,6 +73,7 @@ public:
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd);
 	static bool InitSharedTexture		(CUIXml& xml_doc, const char* path, CUIStatic *pWnd);
 	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
+	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 
 

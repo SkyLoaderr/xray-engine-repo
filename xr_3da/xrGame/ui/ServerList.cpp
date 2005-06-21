@@ -3,15 +3,18 @@
 #include "UIXmlInit.h"
 #include "xrXmlParser.h"
 #include "../string_table.h"
+#include "../xr_ioconsole.h"
 
 
 CServerList::CServerList(){
-	AttachChild(&m_list);
+	m_list.ShowSelectedItem();
 	AttachChild(&m_frame);
 	for (int i = 0; i<6; i++)
 		AttachChild(&m_header[i]);
 	for (int i = 0; i<5; i++)
 		AttachChild(&m_separator[i]);
+
+	AttachChild(&m_list);
 
 	m_serverBrowser = NULL;
 	GameSpy_Browser_ClearServersList();
@@ -81,7 +84,21 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	*/
 }
 
-void	CServerList::InitHeader(){
+void CServerList::ConnectToSelected(){
+	int sel = m_list.GetSelectedItem();
+	if (-1 == sel)
+		return;
+	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list.GetItem(sel));
+
+	xr_string command;
+
+	item->CreateConsoleCommand(command, "Satan");
+
+	Console->Execute("main_menu off");
+	Console->Execute(command.c_str());
+}
+
+void CServerList::InitHeader(){
 	Fvector2 pos;
 	pos.set(0,0);
 
@@ -141,6 +158,7 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	float h = m_list.GetItemHeight();
 
 	m_itemInfo.info.server	= pServerInfo->m_ServerName;
+	m_itemInfo.info.port.sprintf("%d", pServerInfo->m_Port);
 	m_itemInfo.info.map		= pServerInfo->m_SessionName;
 	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
 	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);

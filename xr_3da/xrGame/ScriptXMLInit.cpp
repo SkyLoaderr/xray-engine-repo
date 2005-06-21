@@ -4,6 +4,8 @@
 #include "ui\UIXmlInit.h"
 #include "ui\UITextureMaster.h"
 #include "ui\UICheckButton.h" //#include "ui\UI3tButton.h"
+#include "ui\UISpinNum.h"
+#include "ui\UISpinText.h"
 #include "ui\UIListWnd.h"
 #include "ui\UITabControl.h"
 #include "ui\UIFrameWindow.h"
@@ -50,6 +52,18 @@ void CScriptXmlInit::InitStatic(LPCSTR path, int index, CUIStatic* pWnd){
 	CUIXmlInit::InitStatic(m_xml, path, index, pWnd);
 }
 
+void CScriptXmlInit::InitCheck(LPCSTR path, int index, CUICheckButton* pWnd){
+	CUIXmlInit::InitCheck(m_xml, path, index, pWnd);
+}
+
+void CScriptXmlInit::InitSpinNum(LPCSTR path, int index, CUISpinNum* pWnd){
+	CUIXmlInit::InitSpin(m_xml, path, index, pWnd);
+}
+
+void CScriptXmlInit::InitSpinText(LPCSTR path, int index, CUISpinText *pWnd){
+	CUIXmlInit::InitSpin(m_xml, path, index, pWnd);
+}
+
 
 void CScriptXmlInit::InitButton(LPCSTR path, int index, CUIButton* pWnd){
 	CUIXmlInit::InitButton(m_xml, path, index, pWnd);
@@ -90,10 +104,13 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("ParseShTexInfo",	&CScriptXmlInit::ParseShTexInfo)
 		.def("FreeShTexInfo",	&CScriptXmlInit::FreeShTexInfo)
 		.def("InitWindow",		&CScriptXmlInit::InitWindow)
-		.def("InitFrame",		&CScriptXmlInit::InitFrame)	
+		.def("InitFrame",		&CScriptXmlInit::InitFrame)
 		.def("InitFrameLine",	&CScriptXmlInit::InitFrameLine)
 		.def("InitLabel",		&CScriptXmlInit::InitLabel)
-		.def("InitStatic",		&CScriptXmlInit::InitStatic)	
+		.def("InitStatic",		&CScriptXmlInit::InitStatic)
+		.def("InitCheck",		&CScriptXmlInit::InitCheck)
+		.def("InitSpinNum",		&CScriptXmlInit::InitSpinNum)
+		.def("InitSpinText",	&CScriptXmlInit::InitSpinText)
 		.def("InitButton",		&CScriptXmlInit::InitButton)
 		.def("Init3tButton",	&CScriptXmlInit::Init3tButton)
 		.def("InitList",		&CScriptXmlInit::InitList)

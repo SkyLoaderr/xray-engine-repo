@@ -7,17 +7,25 @@
 // copyright 2005 GSC Game World
 
 #include "StdAfx.h"
+#include "UI3tButton.h"
+#include "UIFrameLineWnd.h"
+#include "UILines.h"
 #include "UICustomSpin.h"
 
 #define SPIN_HEIGHT 21
 #define BTN_SIZE 11
 
 CUICustomSpin::CUICustomSpin(){
-	AttachChild(&m_frameLine);
-	AttachChild(&m_btnUp);
-	AttachChild(&m_btnDown);
-	m_lines.SetTextAlignment(CGameFont::alLeft);
-	m_lines.SetVTextAlignment(valCenter);
+	m_pFrameLine	= xr_new<CUIFrameLineWnd>();
+	m_pBtnUp		= xr_new<CUI3tButton>();
+	m_pBtnDown		= xr_new<CUI3tButton>();
+	m_pLines		= xr_new<CUILines>();
+
+	AttachChild(m_pFrameLine);
+	AttachChild(m_pBtnUp);
+	AttachChild(m_pBtnDown);
+	m_pLines->SetTextAlignment(CGameFont::alLeft);
+	m_pLines->SetVTextAlignment(valCenter);
 }
 
 CUICustomSpin::~CUICustomSpin(){
@@ -26,21 +34,22 @@ CUICustomSpin::~CUICustomSpin(){
 
 void CUICustomSpin::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,SPIN_HEIGHT);
-	m_frameLine.Init(0,0,width, SPIN_HEIGHT);
-	m_frameLine.InitTexture("ui_spiner");
-	m_btnUp.Init(width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
-	m_btnUp.InitTexture("ui_spiner_button_t");
-	m_btnDown.Init(width - BTN_SIZE, BTN_SIZE, BTN_SIZE, BTN_SIZE);
-	m_btnDown.InitTexture("ui_spiner_button_b");
-	m_lines.Init(0,0,width - BTN_SIZE, SPIN_HEIGHT);
+	m_pFrameLine->Init(0,0,width, SPIN_HEIGHT);
+	m_pFrameLine->InitTexture("ui_spiner");
+	m_pBtnUp->Init(width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
+	m_pBtnUp->InitTexture("ui_spiner_button_t");
+	m_pBtnDown->Init(width - BTN_SIZE, BTN_SIZE, BTN_SIZE, BTN_SIZE);
+	m_pBtnDown->InitTexture("ui_spiner_button_b");
+
+	m_pLines->Init(3,0,width - BTN_SIZE - 3, SPIN_HEIGHT);
 }
 
 void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL */){
 	if (BUTTON_CLICKED == msg)
 	{
-		if (&m_btnUp == pWnd)
+		if (m_pBtnUp == pWnd)
 			OnBtnUpClick();
-		else if (&m_btnDown == pWnd)
+		else if (m_pBtnDown == pWnd)
 			OnBtnDownClick();
 	}
 }
@@ -56,6 +65,6 @@ void CUICustomSpin::OnBtnDownClick(){
 void CUICustomSpin::Draw(){
 	CUIWindow::Draw();
 	Fvector2 pos = GetAbsolutePos();
-	m_lines.Draw(pos.x, pos.y);
+	m_pLines->Draw(pos.x, pos.y);
 }
 

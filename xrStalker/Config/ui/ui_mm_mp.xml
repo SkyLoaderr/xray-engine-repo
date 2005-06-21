@@ -44,7 +44,7 @@
 			</frame>
 			<list x="0" y="20" width="530" height="280" item_height="18"/>
 			<list_item>
-				<text font="letterica16" r="115" g="114" b="112"/>
+				<text font="letterica16" r="255" g="255" b="255"/>
 			</list_item>
 			<header x="0" y="0" width="0" height="18">
 				<text font="letterica16" r="215" g="195" b="170" x="2"/>
@@ -83,24 +83,31 @@
 		</radio_tab_network_connection>
 		
 		<check_empty x="570" y="40" width="80" height="22">
+			<options_item entry="net_filter_empty" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Empty</text>
 		</check_empty>
 		<check_full x="570" y="65" width="80" height="22">
+			<options_item entry="net_filter_full" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Full</text>
 		</check_full>
 		<check_with_pass x="570" y="90" width="150" height="22">
+			<options_item entry="net_filter_with_password" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">With password</text>
 		</check_with_pass>
 		<check_without_pass x="570" y="115" width="150" height="22">
+			<options_item entry="net_filter_with_password" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Without password</text>
 		</check_without_pass>
 		<check_without_ff x="570" y="140" width="150" height="22">
+			<options_item entry="net_filter_without_friendlyfire" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Without Friendly Fire</text>
 		</check_without_ff>
 		<check_without_pb x="570" y="165" width="150" height="22">
+			<options_item entry="net_filter_without_punkbusier" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Without PunkBusier</text>
 		</check_without_pb>
 		<check_listen_servers x="570" y="190" width="150" height="22">
+			<options_item entry="net_filter_listenservers" group="mm_mp_client"/>
 			<text font="letterica16" r="115" g="114" b="112">Listen Servers</text>
 		</check_listen_servers>		
 		
@@ -136,7 +143,9 @@
 		<cap_max_players x="23" y="115" width="121" height="21">
 			<text font="letterica16" r="215" g="195" b="170">Max Players</text>
 		</cap_max_players>
-		<spin_max_players x="150" y="115" width="45" height="21">		
+		
+		<spin_max_players x="150" y="115" width="45" height="21">
+			<options_item entry="net_srv_maxplayers" group="mm_mp_server"/>	
 		</spin_max_players>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">

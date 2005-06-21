@@ -8,26 +8,33 @@
 
 #pragma once
 #include "UIWindow.h"
-#include "UI3tButton.h"
-#include "UIFrameLineWnd.h"
-#include "UILines.h"
+#include "UIOptionsItem.h"
+
+class CUI3tButton;
+class CUIFrameLineWnd;
+class CUILines;
 
 
-class CUICustomSpin : public CUIWindow{
+class CUICustomSpin : public CUIWindow, public CUIOptionsItem {
 public:
 	CUICustomSpin();
 	~CUICustomSpin();
 
+	// CUIWindow
 	virtual void	Init(float x, float y, float width, float height);
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
-	virtual void	OnBtnUpClick();
-	virtual void	OnBtnDownClick();
-
 	virtual void	Draw();
 
+
+
+	// own
+	virtual void	OnBtnUpClick();
+	virtual void	OnBtnDownClick();
+	
+
 protected:
-	CUIFrameLineWnd	m_frameLine;
-	CUI3tButton		m_btnUp;
-	CUI3tButton		m_btnDown;
-	CUILines		m_lines;
+	CUIFrameLineWnd*	m_pFrameLine;
+	CUI3tButton*		m_pBtnUp;
+	CUI3tButton*		m_pBtnDown;
+	CUILines*			m_pLines;
 };

@@ -10401,6 +10401,22 @@
 					<File
 						RelativePath=".\ui\UIOptionsManager.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIOptionsManagerScript.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOptionsManagerScript.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="OptionsConsoleCommands"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIOptConCom.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOptConCom.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

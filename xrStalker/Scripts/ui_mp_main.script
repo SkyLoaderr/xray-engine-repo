@@ -145,18 +145,26 @@ function mp_main:InitControls()
 	btn:SetWindowName("btn_create")
 	self:Register(btn)
 	self.bk:AttachChild(btn)
+	self.btn_create = btn
 	
 	btn = CUI3tButton()
 	xml:Init3tButton("btn_join",0,btn)
 	btn:SetWindowName("btn_join")
 	self:Register(btn)
 	self.bk:AttachChild(btn)
+	self.btn_join = btn
 	
 	btn = CUI3tButton()
 	xml:Init3tButton("btn_cancel",0,btn)
 	btn:SetWindowName("btn_cancel")
 	self:Register(btn)
 	self.bk:AttachChild(btn)
+	
+	
+	-- SET DEFAULT VALUES FOR CONTROLS	
+	local opt = COptionsManager()
+	opt:SetDefaultValues("mm_mp_client")
+	opt:SetDefaultValues("mm_mp_server")
 end
 
 function mp_main:InitCallBacks()
@@ -172,14 +180,18 @@ function mp_main:OnTabChange()
 	self.dlg_join:Show(false)
 	self.dlg_options:Show(false)
 	self.dlg_server:Show(false)
+	self.btn_join:Enable(false)
+	self.btn_create:Enable(false)
 
 	local i = self.tab:GetActiveIndex()
 	if i == 0 then
 		self.dlg_join:Show(true)
+		self.btn_join:Enable(true)
 	elseif i == 2 then
 		self.dlg_options:Show(true)
 	else
 		self.dlg_server:Show(true)
+		self.btn_create:Enable(true)
 	end
 end
 
@@ -193,15 +205,19 @@ function mp_main:OnBtn_Refresh()
 end
 
 function mp_main:OnBtn_Calncel()
-	self:GetHolder():start_stop_menu(self,true)
+	self:GetHolder():start_stop_menu(self,true)	
 end
 
 function mp_main:OnBtn_Create()
-	
+	local opt = COptionsManager()
+	opt:SaveValues("mm_mp_server")
 end
 
 function mp_main:OnBtn_Join()
+	local opt = COptionsManager()
+	opt:SaveValues("mm_mp_client")
 	
+	self.server_list:ConnectToSelected();
 end
 
 function mp_main:OnKeyboard(dik, keyboard_action)

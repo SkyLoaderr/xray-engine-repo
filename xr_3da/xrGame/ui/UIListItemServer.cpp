@@ -40,6 +40,8 @@ void CUIListItemServer::Init(LIST_SRV_ITEM& params, float x, float y, float widt
 
 	m_ping.Init(offset, 0, params.size.game, height);
 	m_ping.m_lines.SetText(*params.info.ping);
+
+	m_srv_info = params;
 }
 
 void CUIListItemServer::Draw(){
@@ -64,4 +66,18 @@ void CUIListItemServer::SetFont(CGameFont* pFont){
 	m_game.SetFont(pFont);
 	m_players.SetFont(pFont);
 	m_ping.SetFont(pFont);
+}
+
+void CUIListItemServer::CreateConsoleCommand(xr_string& command, LPCSTR player_name){
+	command = "start server(";
+	command+= *m_srv_info.info.map;
+	command+= "/";
+	command+= *m_srv_info.info.game;
+	command+= ") client(";
+	command+= *m_srv_info.info.server;
+	command+= "/port=";
+	command+= *m_srv_info.info.port;
+	command+= "/name=";
+	command+= player_name;
+	command+= ")";
 }
