@@ -116,4 +116,10 @@
         <text>rad_code_door_info</text>
     </article>
 
+    <article id="agr_rats_n_solders" name="agr_rats_n_solders" group="Diary">
+        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>agr_rats_n_solders_text</text>
+    </article>
+
+
 </encyclopedia>

@@ -78,6 +78,51 @@
     <string id="agr_stalker_esc_300">
         <text>Спасибо, удачи.</text>
     </string>
+    <string id="agr_stalker_talk_about_ratcatcher_0">
+        <text>Хай!</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_1">
+        <text>Про Крысолова знаешь? Информация будет стоить 30 денег.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_11">
+        <text>По рукам.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_111">
+        <text>Есть у нас тут один герой местный, зовут Крысолов. Живет он на болотах. Он развел столько крыс в коллекторах, что что они скоро съедят заживо легавых.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_1111">
+        <text>Отлично. Спасибо.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_1112">
+        <text>Расскажи подробнее о коллекторах.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_11121">
+        <text>Коллекторы... Да обычная вонючая канализация. Отводит агропромовские стоки к ближайшему водоему. \n</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_111211">
+        <text>Отлично. Пока. Береги себя.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_12">
+        <text>Знаю уже. Спасибо.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_121">
+        <text>Больше ничего рассказать не могу.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_13">
+        <text>У меня не достаточно средств.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_14">
+        <text>Мне это не интересно.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_3">
+        <text>Что у вас тут интересного творится?</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_31">
+        <text>Совсем ничего.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_311">
+        <text>Тоска не земная....</text>
+    </string>
     <string id="agr_stalker_talk_level_0">
         <text>Расскажи мне об этом месте.</text>
     </string>

@@ -78,4 +78,16 @@
     </info_portion>
 
 
+
+
+    <info_portion id="agr_pda_solders_rats">
+		<article>agr_rats_n_solders</article>
+    </info_portion>
+    <info_portion id="agr_sold_about_ratcatcher">    
+    </info_portion>
+
+
+
+
+
 </game_information_portions>

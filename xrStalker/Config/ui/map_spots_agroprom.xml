@@ -37,3 +37,13 @@
     <agr_military_case_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
 	</agr_military_case_spot>
+
+
+	<agr_ratcatcher_location hint="agr_ratcatcher_swamp" store="1">
+		<level_map spot="agr_ratcatcher_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="agr_ratcatcher_spot" pointer="quest_pointer"></mini_map>
+	</agr_ratcatcher_location>
+
+     	<agr_ratcatcher_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="224" y="64" width="32" height="32">ui\ui_icons_map</texture>
+	</agr_ratcatcher_spot>
