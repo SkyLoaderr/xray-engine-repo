@@ -402,7 +402,7 @@ function add_lchanger_location()
 			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
 		end
 
-		-- agroprom
+		-- darkvalley
 		obj = sim:story_object(415)
 		if obj then
 			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_garbage")
