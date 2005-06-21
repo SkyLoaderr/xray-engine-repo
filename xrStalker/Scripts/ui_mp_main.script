@@ -106,6 +106,7 @@ function mp_main:InitControls()
 	st = CUIEditBox()
 	st:SetAutoDelete(true)
 	xml:InitLabel("edit_player_name",0,st)
+	st:SetText("Player_name")
 	self.bk:AttachChild(st)
 	self.player_name = st
 	
