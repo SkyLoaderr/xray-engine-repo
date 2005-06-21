@@ -51,6 +51,9 @@ BOOL	testSKIP		(LPCSTR path)
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
 
+	if (0==stricmp(p_ext,".swatch"))return TRUE;
+	if (0!=strstr (p_ext,".~"))		return TRUE;
+	if (0==stricmp(p_ext,".db"))	return TRUE;
 	if (0==stricmp(p_ext,".avi"))	return TRUE;
 	if (0==stricmp(p_ext,".key"))	return TRUE;
 	if (0==stricmp(p_ext,".tga"))	return TRUE;
@@ -375,7 +378,8 @@ int __cdecl main	(int argc, char* argv[])
 			printf("	;<path>     = <recurse>\n");
 			printf("	.\\         = false\n");
 			printf("	textures\   = true\n");
-				
+			
+			Core._destroy();
 			return 3;
 		}
 		printf			("[settings] SKIP: '*.key','build.*'\n");
