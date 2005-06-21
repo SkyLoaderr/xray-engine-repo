@@ -12,6 +12,7 @@
 CWeaponBinoculars::CWeaponBinoculars() : CWeaponCustomPistol("BINOCULARS")
 {
 	m_binoc_vision	= NULL;
+	m_bVision		= false;
 }
 
 CWeaponBinoculars::~CWeaponBinoculars()
@@ -27,6 +28,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	// Sounds
 	HUD_SOUND::LoadSound(section, "snd_zoomin",  sndZoomIn,		TRUE, SOUND_TYPE_ITEM_USING);
 	HUD_SOUND::LoadSound(section, "snd_zoomout", sndZoomOut,	TRUE, SOUND_TYPE_ITEM_USING);
+	m_bVision = !!pSettings->r_bool(section,"vision_present");
 }
 
 void CWeaponBinoculars::Hide		()
@@ -57,7 +59,8 @@ void CWeaponBinoculars::OnZoomIn		()
 		HUD_SOUND::StopSound(sndZoomOut);
 		bool hud_mode = (Level().CurrentEntity() == H_Parent());
 		HUD_SOUND::PlaySound(sndZoomIn, H_Parent()->Position(), H_Parent(), hud_mode);
-		m_binoc_vision = xr_new<CBinocularsVision>(this);
+		if(m_bVision)
+			m_binoc_vision = xr_new<CBinocularsVision>(this);
 	}
 
 	inherited::OnZoomIn();

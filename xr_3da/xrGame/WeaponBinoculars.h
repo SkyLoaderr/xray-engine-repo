@@ -16,7 +16,7 @@ protected:
 	HUD_SOUND		sndZoomIn;
 	HUD_SOUND		sndZoomOut;
 	float			m_fRTZoomFactor; //run-time zoom factor
-
+	bool			m_bVision;
 //	CUIFrameWindow*	UIEntityBorder;
 public:
 					CWeaponBinoculars	(); 
