@@ -87,6 +87,7 @@ void CInventoryOwner::reinit				()
 BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 {
 	//получить указатель на объект, InventoryOwner
+	m_inventory->setSlotsBlocked(false);
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 	CSE_Abstract* E	= (CSE_Abstract*)(DC);

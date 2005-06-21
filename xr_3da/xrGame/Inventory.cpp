@@ -443,8 +443,11 @@ bool CInventory::Ruck(PIItem pIItem)
 	return true;
 }
 
-bool CInventory::Activate(u32 slot) 
+bool CInventory::Activate(u32 slot, bool force) 
 {	
+	if(isSlotsBlocked()&&!force)
+		return false;
+
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot number");
 
 //	Msg("CInventory::Activate slot [%d] frame =[%d]", slot, Device.dwFrame);
@@ -1117,3 +1120,19 @@ void CInventory::Items_SetCurrentEntityHud(bool current_entity)
 		}
 	}
 };
+
+void CInventory::setSlotsBlocked(bool b)
+{
+	u32 InventorySlot		= GetActiveSlot();
+	u32 InventoryPrevSlot	= GetPrevActiveSlot();
+	if(b){
+		if(InventorySlot != NO_ACTIVE_SLOT)
+			if (Activate(NO_ACTIVE_SLOT,true))
+				SetPrevActiveSlot(InventorySlot);
+	}else{
+		if(InventoryPrevSlot != NO_ACTIVE_SLOT)
+			if (Activate(InventoryPrevSlot,true))
+				SetPrevActiveSlot(NO_ACTIVE_SLOT);
+	}
+	m_bDoBlockAllSlots = b;
+}

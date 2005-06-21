@@ -225,16 +225,16 @@ bool CCar::isObjectVisible			(CScriptGameObject* O_)
 	Fvector dir_to_object;
 	Fvector to_point;
 	O->Center(to_point);
-	Fvector from_point = XFORM().c;
+	
+	Fvector from_point;
+	Center(from_point);
 	dir_to_object.sub(to_point,from_point).normalize_safe();
 	float ray_length = from_point.distance_to(to_point);
 
 
 	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic);
-	collide::rq_result rq;
-	Level().ObjectSpace.RayPick(from_point, dir_to_object, ray_length, collide::rqtStatic,rq);
 		
-	return !res;
+	return (0==res);
 }
 
 bool CCar::HasWeapon()

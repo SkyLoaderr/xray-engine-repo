@@ -853,12 +853,14 @@ bool CScriptGameObject::attachable_item_enabled	() const
 void  CScriptGameObject::RestoreWeapon		()
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
-	pActor->RestoreHidedWeapon(GEG_PLAYER_INVENTORYMENU_CLOSE);
+	pActor->inventory().setSlotsBlocked(false);
+//	pActor->RestoreHidedWeapon(GEG_PLAYER_INVENTORYMENU_CLOSE);
 }
 void  CScriptGameObject::HideWeapon			()
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
-	pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);
+	pActor->inventory().setSlotsBlocked(true);
+//	pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);
 }
 
 

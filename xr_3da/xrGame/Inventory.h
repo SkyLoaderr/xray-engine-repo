@@ -73,7 +73,7 @@ public:
 
 
 	// Активировать объект в указанном слоте	
-	bool Activate(u32 slot);
+	bool Activate(u32 slot, bool force=false);
 	// Возвращает указатель на объект в активном слоте
 	PIItem ActiveItem() const;
 	// Возвращает указатель на объект в слоте указаным номером
@@ -161,6 +161,8 @@ public:
 	u32			ModifyFrame							() const				{return m_dwModifyFrame;}
 	void		Items_SetCurrentEntityHud			(bool current_entity);
 	bool		isBeautifulForActiveSlot			(CInventoryItem *pIItem);
+	bool		isSlotsBlocked						()			{return m_bDoBlockAllSlots;}
+	void		setSlotsBlocked						(bool b);
 protected:
 	// Активный слот и слот который станет активным после смены
     //значения совпадают в обычном состоянии (нет смены слотов)
@@ -192,7 +194,7 @@ protected:
 
 	//кадр на котором произошло последнее изменение в инвенторе
 	u32	m_dwModifyFrame;
-
+	bool		m_bDoBlockAllSlots;
 
 	//буфферный список
 	TIItemContainer			l_subs; 
