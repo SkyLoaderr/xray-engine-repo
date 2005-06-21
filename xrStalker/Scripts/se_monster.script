@@ -55,7 +55,7 @@ function se_monster:can_switch_online ()
 	end
 
     --стандартная проверка у родителя, если нет спавнера или игрок помер
-	if self.ini == nil or self.spawner_present == false or (db.actor ~= nil and db.actor:alive () == false)
+	if self.ini == nil or self.spawner_present == false then --or (db.actor ~= nil and db.actor:alive () == false)
 	--if self.ini == nil or self.spawner_present == false or db.actor == nil
 	then 
 	    return cse_alife_monster_base.can_switch_online (self)
@@ -63,7 +63,7 @@ function se_monster:can_switch_online ()
 	
 	if self.online == false then
    	    -- если игрока нет, то в оффлайн
-        if db.actor == nil then return false end
+        if db.actor == nil or db.actor:alive () == false then return false end
         
         --если задана дистанция проверки, то проверим.
         if self.check_distance == true then
@@ -79,7 +79,7 @@ function se_monster:can_switch_online ()
         --все проверки прошли - финал, вызов спавнера
 	    return xr_spawner.check_spawn (self) and cse_alife_monster_base.can_switch_online (self)
     else
-        if db.actor == nil then return true end
+        if db.actor == nil or db.actor:alive () == false then return true end
         if xr_spawner.check_spawn (self) == true then 
            return true
         end
