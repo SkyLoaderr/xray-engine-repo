@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
-	<static_player_name x="137" y="143" width="100" height="24">
-		<options_item entry="net_palyer_name" group="mm_mp_client"/>
+	<static_player_name x="137" y="143" width="100" height="24">		
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_player_name</text>
 	</static_player_name>
 	<edit_player_name x="237" y="143" width="236" height="24">
+		<options_item entry="net_palyer_name" group="mm_mp_client"/>
 		<text font="letterica18" r="215" g="195" b="170"></text>
 	</edit_player_name>
 		
