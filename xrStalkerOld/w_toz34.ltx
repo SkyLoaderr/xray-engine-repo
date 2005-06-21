@@ -7,7 +7,7 @@ $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
 cform                    = skeleton
-class                    = W_SHOTGN
+class                    = W_BM16
 min_radius               = 0
 max_radius               = 50
 description				= enc_weapons1_wpn-toz34
@@ -143,13 +143,32 @@ orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapons\toz34\wpn_toz34_hud.ogf
 
-anim_idle		= idle
-anim_reload		= reload
-anim_draw		= draw
-anim_holster	= holster
-anim_shoot		= shoot
-anim_shoot_both = shoot_both
-anim_idle_aim	= idle_aim
+;anim_idle		= idle
+;anim_reload		= reload
+;anim_draw		= draw
+;anim_holster	= holster
+;anim_shoot		= shoot
+;anim_shoot_both = shoot_both
+;anim_idle_aim	= idle_aim
+
+
+anim_idle					= idle
+anim_reload					= reload ;reload both
+anim_draw					= draw
+anim_holster				= holster
+anim_shoot					= shoot1
+anim_shoot_both 			= shoot1
+anim_idle_aim				= idle_aim
+
+anim_reload_1				= reload_one
+anim_shoot_1				= shoot1
+
+anim_idle_1					= idle
+anim_idle_2					= idle
+
+anim_zoomed_idle_1			= idle_aim
+anim_zoomedidle_2			= idle_aim
+
 
 ;смещения HUD для режима приближения
 zoom_offset			= -0.127000,0.001000,0.000000
