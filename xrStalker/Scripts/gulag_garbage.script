@@ -1351,7 +1351,7 @@ function load_states(gname, type)
 					return 0
 				end
 			else
-				if gulag:get_population() <= 6 then
+				if gulag:get_population() <= 6 or xr_gulag.getGulagPopulation("gar_nest_flesh") == 0 then
 					return 0
 				else
 					return 1
