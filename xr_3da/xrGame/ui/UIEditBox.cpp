@@ -6,7 +6,7 @@
 #include <dinput.h>
 #include "uieditbox.h"
 #include "../HUDManager.h"
-#include "xr_ioconsole.h"
+#include "../../xr_ioconsole.h"
 
 static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, 
 						   DIK_F, DIK_G, DIK_H, DIK_I, DIK_J, 
