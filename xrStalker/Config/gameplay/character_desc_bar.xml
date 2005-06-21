@@ -413,6 +413,7 @@
 
 		
 		<rank>90</rank>
+		<panic_threshold>0.1</panic_threshold>
 		<reputation>40</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
