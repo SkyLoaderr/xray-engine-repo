@@ -52,6 +52,7 @@ function main_multi_tab:InitControls(x, y, handler)
 	btn:SetFont(self.btn.font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
+	btn:Enable(false)
 	handler:Register(btn)
 	self:AttachChild(btn)	
 		
