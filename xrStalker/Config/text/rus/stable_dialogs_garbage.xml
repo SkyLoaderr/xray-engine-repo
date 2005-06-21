@@ -205,10 +205,10 @@
         <text>Привет.</text>
     </string>
     <string id="gar_seriy_help_0">
-        <text>Вот теперь есть время поговорить спокойно.</text>
+        <text>Теперь есть время поговорить спокойно?</text>
     </string>
     <string id="gar_seriy_help_1">
-        <text>Согласен. Ты вообще, откуда нарисовался?</text>
+        <text>Уже да. Ты вообще, откуда нарисовался?</text>
     </string>
     <string id="gar_seriy_help_11">
         <text>Я вообще с Лисом общался намедни. Говорит, что у тебя есть информация о группе Стрелка.</text>
@@ -227,6 +227,9 @@
     </string>
     <string id="gar_seriy_start_22">
         <text>Фу, было жарко.</text>
+    </string>
+    <string id="gar_seriy_start_33">
+        <text>Привет, чувак, тут только что такая веселуха была, что мама дорогая.</text>
     </string>
     <string id="gar_stalker_about_level_0">
         <text>Можешь рассказать о здешних местах?</text>
