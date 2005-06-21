@@ -24,8 +24,10 @@ function WeatherManager:construct()
 	local game_ltx			= ini_file("game.ltx");
 	if game_ltx:line_exist(self.level_name,"weathers") == true then
 		local tmp			= game_ltx:r_string(self.level_name,"weathers");
-		for itm in string.gfind(tmp, '[^, ]+') do 
-			table.insert	(self.weather_list,itm);
+		if tmp ~= nil then
+			for itm in string.gfind(tmp, '[^, ]+') do 
+				table.insert	(self.weather_list,itm);
+			end
 		end
 	end
 	-- установить текущий день
