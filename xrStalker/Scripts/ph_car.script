@@ -663,24 +663,24 @@ function action_car:fast_update()
 	        end
 	    end
 	elseif self.state_firetarget == state_firetarget_actor then
-	    if self.car:CanHit() then
-	        if not self.car:IsObjectVisible(db.actor) then
-	            printf("_bp: actor is visible.")
+	    if self.car:IsObjectVisible(db.actor) then
+	        printf("_bp: actor is visible.")
+	        if self.car:CanHit() then
 	            if self.state_shooting == state_none then
 	                printf("_bp: fighting actor.")
 		            self.state_shooting = state_shooting_on
 		        end
 		    else
-	            printf("_bp: actor isn't visible.")
+	            printf("_bp: searching actor.")
 		        self.state_shooting = state_none
-		        --self:rot_to_firepoint(nil, self.state_shooting)
 		    end
+		    local p = db.actor:position()
+		    self:rot_to_firepoint(p, self.state_shooting)
 		else
-	        printf("_bp: searching actor.")
+	        printf("_bp: actor isn't visible.")
 		    self.state_shooting = state_none
+		    self:rot_to_firepoint(nil, self.state_shooting)
 		end
-		local p = db.actor:position()
-		self:rot_to_firepoint(p, self.state_shooting)
 	end
 	
 	return false
