@@ -12,6 +12,6 @@ class CUIFollowerPanel :public CUIWindow
 public:
 	virtual					~CUIFollowerPanel();
 	void	Init			(CUIXml* doc, LPCSTR path, int index);
-	void	AddFollower		(CInventoryOwner* f);
-	void	RemoveFollower	(CInventoryOwner* f);
+	void	AddFollower		(u16 id);
+	void	RemoveFollower	(u16 id);
 };

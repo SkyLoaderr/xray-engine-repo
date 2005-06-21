@@ -7,7 +7,7 @@
 #include "../alife_space.h"
 #include "../character_info_defs.h"
 
-class CInventoryOwner;
+//class CInventoryOwner;
 class CUIStatic;
 class CUIListWnd;
 class CCharacterInfo;
@@ -43,12 +43,12 @@ public:
 		eUIRelationCaption,
 		eMaxCaption,
 	};
-	CUIStatic*	m_icons[eMaxCaption];
-	CInventoryOwner* pInvOwner;
-	u32				m_ownerID;
+	CUIStatic*			m_icons[eMaxCaption];
+	//CInventoryOwner* pInvOwner;
+	u32					m_ownerID;
 	// Biography
-	CUIListWnd*	pUIBio;
-
+	CUIListWnd*			pUIBio;
+	bool				hasOwner()			{return (m_ownerID!=u32(-1));}
 	// Для автоматического выравнивания текста после кепшинов установить этот флаг
 	bool		m_bInfoAutoAdjust;
 

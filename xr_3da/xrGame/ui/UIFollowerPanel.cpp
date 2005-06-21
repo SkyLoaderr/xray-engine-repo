@@ -21,7 +21,7 @@ void CUIFollowerPanel::Init(CUIXml* doc, LPCSTR path, int index)
 	m_iconSize.y	= doc->ReadAttribFlt(path, index, "icon_height");
 }
 
-void CUIFollowerPanel::AddFollower(CInventoryOwner* f)
+void CUIFollowerPanel::AddFollower(u16 id)
 {
 	int cnt = inherited::GetChildNum();				
 	Fvector2 new_size;
@@ -39,16 +39,18 @@ void CUIFollowerPanel::AddFollower(CInventoryOwner* f)
 	icon_rect.y2			= m_iconSize.y+icon_rect.y1;
 	icon->Init				(icon_rect, "follower_character.xml");
 	AttachChild				(icon);
-	icon->InitCharacter		(f);
+
+
+	icon->InitCharacter		(id);
 }
 
-void CUIFollowerPanel::RemoveFollower(CInventoryOwner* f)
+void CUIFollowerPanel::RemoveFollower(u16 id)
 {
 	WINDOW_LIST& wl = GetChildWndList();
 	WINDOW_LIST_it it;
 	for(it=wl.begin();it!=wl.end();++it){
 		UIFollowerIcon* i = smart_cast<UIFollowerIcon*>(*it);
-		if(i->pInvOwner == f){
+		if(i->m_ownerID == id){
 			DetachChild		(*it);
 			break;
 		}

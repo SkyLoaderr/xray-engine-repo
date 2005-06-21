@@ -62,6 +62,12 @@ LPCSTR CMapSpotPointer::GetHint()
 {
 	m_pointer_hint = "to: ";
 	m_pointer_hint += inherited::GetHint();
+	Fvector2 cam_pos;
+	cam_pos.set(Device.vCameraPosition.x,Device.vCameraPosition.z);
+	float dist = MapLocation()->Position().distance_to(cam_pos);
+	string32 s;
+	sprintf(s," [%.2f]m.", dist);
+	m_pointer_hint += s;
 	return m_pointer_hint.c_str();
 }
 

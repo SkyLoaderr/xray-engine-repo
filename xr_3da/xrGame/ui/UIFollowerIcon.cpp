@@ -4,7 +4,7 @@
 #include "xrxmlparser.h"
 #include "UIXmlInit.h"
 #include "UIStatic.h"
-
+#include "../level.h"
 UIFollowerIcon::UIFollowerIcon()
 {
 	ZeroMemory			(m_icons,efiMax*sizeof(CUIStatic*));
@@ -45,9 +45,10 @@ void UIFollowerIcon::Init(Frect rect, const char* xml_name)
 	}
 }
 
-void UIFollowerIcon::InitCharacter	(CInventoryOwner* pInvOwner)
+void UIFollowerIcon::InitCharacter	(u16 id)
 {
-	inherited::InitCharacter(pInvOwner);
+	CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(id));
+	inherited::InitCharacter(IO);
 }
 
 void UIFollowerIcon::Draw()

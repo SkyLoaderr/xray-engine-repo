@@ -32,7 +32,9 @@ void CUIGameSP::SetClGame (game_cl_GameState* g)
 bool CUIGameSP::IR_OnKeyboardPress(int dik) 
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
-	
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if( !pActor || !pActor->g_Alive() ) return false;
+
 	switch (key_binding[dik])
 	{
 	case kINVENTORY: 
@@ -71,7 +73,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 */
 	}
 	
-	
+/*	
 	//временно! пока, по убыванию сил до критического
 	//уровня персонаж не засыпает, а просто переходит
 	//в меню инвенторя
@@ -85,7 +87,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 				return true;
 			}
 	}
-	
+	*/
 
 	return false;
 }

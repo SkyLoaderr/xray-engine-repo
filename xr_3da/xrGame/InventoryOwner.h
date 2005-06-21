@@ -75,7 +75,7 @@ public:
 	//торговля и общение с персонажем
 
 	virtual bool	AllowItemToTrade 	(CInventoryItem const * item, EItemPlace place) const {return true;};
-
+	virtual void	OnFollowerCmd		(int cmd)		{};//redefine for CAI_Stalkker
 	//инициализация объекта торговли
 	CTrade* GetTrade();
 

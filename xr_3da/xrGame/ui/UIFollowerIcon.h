@@ -18,7 +18,7 @@ public:
 				UIFollowerIcon	();
 	virtual		~UIFollowerIcon	();
 			void Init			(Frect rect, const char* xml_name);
-			void InitCharacter	(CInventoryOwner* pInvOwner);
+			void InitCharacter	(u16 id);
 	virtual void Draw			();
 	virtual void Update			();
 };

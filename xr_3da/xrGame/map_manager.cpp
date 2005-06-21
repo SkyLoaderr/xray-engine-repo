@@ -75,7 +75,8 @@ CMapManager::CMapManager()
 
 CMapManager::~CMapManager()
 {
-	xr_delete(m_locations);
+	Cleanup			();
+	xr_delete		(m_locations);
 }
 
 void CMapManager::initialize(u16 id)

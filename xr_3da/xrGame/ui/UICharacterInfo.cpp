@@ -27,7 +27,7 @@ CUICharacterInfo::CUICharacterInfo()
 {
 	ZeroMemory			(m_icons,eMaxCaption*sizeof(CUIStatic*));
 	pUIBio				= NULL;
-	pInvOwner			= NULL;
+//	pInvOwner			= NULL;
 	m_bInfoAutoAdjust	= true;
 	m_ownerID			= u32(-1);
 }
@@ -241,10 +241,8 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 {
-	VERIFY(pOwner);
-	pInvOwner = pOwner;
-	m_ownerID = (smart_cast<CObject*>(pInvOwner))->ID();
-	InitCharacter(&pInvOwner->CharacterInfo());
+	m_ownerID = (smart_cast<CObject*>(pOwner))->ID();
+	InitCharacter(&pOwner->CharacterInfo());
 
 	UpdateRelation();
 }
@@ -292,41 +290,41 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 
 void CUICharacterInfo::ResetAllStrings()
 {
-	if(m_icons[eUIName])		m_icons[eUIName]->SetText("");
-	if(m_icons[eUIRank])		m_icons[eUIRank]->SetText("");
-	if(m_icons[eUICommunity])	m_icons[eUICommunity]->SetText("");
-	if(m_icons[eUIRelation])	m_icons[eUIRelation]->SetText("");
-	if(m_icons[eUIReputation])	m_icons[eUIReputation]->SetText("");
+	if(m_icons[eUIName])		m_icons[eUIName]->SetText		("");
+	if(m_icons[eUIRank])		m_icons[eUIRank]->SetText		("");
+	if(m_icons[eUICommunity])	m_icons[eUICommunity]->SetText	("");
+	if(m_icons[eUIRelation])	m_icons[eUIRelation]->SetText	("");
+	if(m_icons[eUIReputation])	m_icons[eUIReputation]->SetText	("");
 }
 
 void CUICharacterInfo::UpdateRelation()
 {
 	if(!m_icons[eUIRelation] ||!m_icons[eUIRelationCaption]) return;
-		CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
-		if (m_pActor)
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+
+		if (pActor->ID()==m_ownerID || !!hasOwner())
 		{
-			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show(false);
-			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show(false);
+			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show	(false);
+			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show			(false);
 		}
 		else
 		{
-			CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+			CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_ownerID));
 			if(pActor)
-				SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)),
-							RELATION_REGISTRY().GetAttitude(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
+				SetRelation(RELATION_REGISTRY().GetRelationType(IO,		static_cast<CInventoryOwner*>(pActor)),
+							RELATION_REGISTRY().GetAttitude(IO,			static_cast<CInventoryOwner*>(pActor)));
 		}
 }
 
 void CUICharacterInfo::Update()
 {
 	inherited::Update();
-	if( m_ownerID!=u32(-1) ){
-		if (NULL==Level().Objects.net_Find(m_ownerID) )
-			pInvOwner = NULL;
-	}
-	if( pInvOwner&&(smart_cast<CObject*>(pInvOwner))->getDestroy() )
-		pInvOwner = NULL;
 
-	if(pInvOwner && (Device.dwFrame%30==0 ) )
-		UpdateRelation();
+
+	if(hasOwner() && (Device.dwFrame%100==0)  ){
+		if (NULL==Level().Objects.net_Find(m_ownerID) )
+			m_ownerID = u32(-1);
+		else
+			UpdateRelation();
+	}
 }
