@@ -54,6 +54,10 @@ function process_info_portion(info_id)
 		level_tasks.set_task_state(task.fail, "agr_help_stalkers", 0)
 		return true
 
+	elseif info_id == "agr_sold_about_ratcatcher" then
+		level_tasks.add_location(304, "agr_ratcatcher_location")
+		return true
+
 
 	elseif info_id == "agr_krot_band" then
 		level_tasks.add_location(302, "agr_krot_location")
