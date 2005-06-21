@@ -31,12 +31,11 @@
 #include "game_sv_deathmatch.h"
 #include "date_time.h"
 #include "mt_config.h"
+#include "ui/UIOptConCom.h"
 #ifdef DEBUG
 #include "PHDebug.h"
 #include "ui/UIDebugFonts.h" 
 #include "hudmanager.h"
-#include "ui/UIOptConCom.h"
-
 #endif
 
 extern void show_smart_cast_stats		();
