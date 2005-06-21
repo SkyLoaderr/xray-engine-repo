@@ -94,7 +94,7 @@ void					CRender::reset_end				()
 	xrRender_apply_tf			();
 	HWOCC.occq_create			(occq_size);
 	Target						=	xr_new<CRenderTarget>	();
-	L_Projector->invalidate		()	;
+	if (L_Projector)			L_Projector->invalidate		();
 }
 void					CRender::OnFrame				()
 {

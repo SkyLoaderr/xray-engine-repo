@@ -89,23 +89,31 @@ void IGame_Persistent::OnGameStart	()
 	float	p_time		=			1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 	u32	mem_0			=			Memory.mem_usage()	;
 
-	ObjectPool.prefetch				();
-	Render->models_Prefetch			();
-	Device.Resources->DeferredUpload();
+	ObjectPool.prefetch					();
+	Render->models_Prefetch				();
+	Device.Resources->DeferredUpload	();
 
 	p_time				=			1000.f*Device.GetTimerGlobal()->GetElapsed_sec() - p_time;
 	u32		p_mem		=			Memory.mem_usage() - mem_0	;
 
 	Msg					("* [prefetch] time:    %d ms",	iFloor(p_time));
 	Msg					("* [prefetch] memory:  %dKb",	p_mem/1024);
+	Msg	("------------- after: IGame_Persistent:: prefetch");
+	Device.Resources->_DumpMemoryUsage	();
 #endif
 }
 
 void IGame_Persistent::OnGameEnd	()
 {
 #ifndef _EDITOR
-	ObjectPool.clear				();
-	Render->models_Clear			();
+	Msg	("------------- before: IGame_Persistent::OnGameEnd");
+	Device.Resources->_DumpMemoryUsage	();
+	ObjectPool.clear					();
+	Msg	("------------- after: ObjectPool.clear, before: Render->models_Clear");
+	Device.Resources->_DumpMemoryUsage	();
+	Render->models_Clear				();
+	Msg	("------------- after:  IGame_Persistent::OnGameEnd");
+	Device.Resources->_DumpMemoryUsage	();
 #endif
 }
 

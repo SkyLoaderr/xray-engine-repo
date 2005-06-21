@@ -118,8 +118,7 @@ void CRender::level_Unload		()
 	L_DB->Unload				();
 
 	//*** Visuals
-	for (I=0; I<Visuals.size(); I++)
-	{
+	for (I=0; I<Visuals.size(); I++)	{
 		Visuals[I]->Release();
 		xr_delete(Visuals[I]);
 	}
@@ -144,6 +143,10 @@ void CRender::level_Unload		()
 	//*** Shaders
 	Shaders.clear_and_free		();
 
+	//. dbg
+	Device.Resources->_DumpMemoryUsage	();
+	Device.Resources->DBG_VerifyGeoms	();
+	Device.Resources->DBG_VerifyTextures();
 	b_loaded					= FALSE;
 }
 
