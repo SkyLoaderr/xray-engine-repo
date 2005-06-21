@@ -218,6 +218,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_list)
 {
 	if (!list->empty()){
+		string256		caption;
 		u32				dwTimeStart	= timeGetTime();
 		string256		fname;
 		strconcat		(fname,tgt_name,".xrp");
@@ -235,6 +236,8 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 		//***main process***: BEGIN
 		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
 		for (u32 it=0; it<list->size(); it++){
+			sprintf		(caption,"Compress files: %d/%d - %d%%",it,list->size(),iFloor((it*100)/list->size()));
+			SetWindowText(GetConsoleWindow(),caption);
 			Compress	((*list)[it],tgt_name);
 		}
 		xr_free			(c_heap);
