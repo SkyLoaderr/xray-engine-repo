@@ -567,7 +567,7 @@ bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 
 void CCar::ParseDefinitions()
 {
-	
+	 
 	
 	bone_map.clear();
 
@@ -704,11 +704,18 @@ void CCar::CreateSkeleton()
 void CCar::Init()
 {
 
+	CPHCollisionDamageReceiver::Init();
+
 	//get reference wheel radius
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
 	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
 	///SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+
+	if(ini->section_exist("air_resistance"))
+	{
+		PPhysicsShell()->SetAirResistance(default_k_l*ini->r_float("air_resistance","linear_factor"),default_k_w*ini->r_float("air_resistance","angular_factor"));
+	}
 	if(ini->line_exist("car_definition","steer"))
 	{
 		m_bone_steer=pKinematics->LL_BoneID(ini->r_string("car_definition","steer"));
@@ -801,7 +808,7 @@ void CCar::Init()
 
 		}
 	}
-	CPHCollisionDamageReceiver::Init();
+	
 
 	if(ini->section_exist("immunities"))
 	{
@@ -1659,6 +1666,7 @@ template <class T> IC void CCar::fill_wheel_vector(LPCSTR S,xr_vector<T>& type_w
 			SWheel& wheel			=	(m_wheels_map.insert(mk_pair(bone_id,SWheel(this)))).first->second;
 			wheel.bone_id			=	bone_id;
 			twheel.pwheel			=	&wheel;
+			wheel						.Load(S1);
 		}
 		else
 		{

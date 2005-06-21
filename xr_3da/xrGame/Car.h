@@ -22,6 +22,8 @@ class						CActor;
 class						CInventory;
 class						CSE_PHSkeleton;
 class						CCarWeapon;
+struct						dxGeomUserData;
+struct						dSurfaceParameters;
 // defs
 
 #ifdef DEBUG
@@ -123,23 +125,35 @@ public:
 	public CDamagableHealthItem
 	{
 		typedef		CDamagableHealthItem inherited;
-		u16 bone_id;
-		bool inited;
-		float radius;
-		CPhysicsJoint* joint;
-		CCar*	car;
-		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
-		void RestoreNetState(const CSE_ALifeCar::SWheelState& a_state);
-		void SaveNetState(NET_Packet& P);
-		void ApplyDriveAxisVel(float vel);
-		void ApplyDriveAxisTorque(float torque);
-		void ApplyDriveAxisVelTorque(float vel,float torque);
-		void ApplySteerAxisVel(float vel);
-		void ApplySteerAxisTorque(float torque);
-		void ApplySteerAxisVelTorque(float vel,float torque);
-		void SetSteerLoLimit		(float lo);
-		void SetSteerHiLimit		(float hi);
-		void SetSteerLimits			(float hi,float lo);
+		u16									bone_id				;
+		bool								inited				;
+		float								radius				;
+		CPhysicsJoint						*joint				;
+		CCar								*car				;
+		struct			SWheelCollisionParams
+		{
+			float						spring_factor		;
+			float						damping_factor		;
+			float						mu_factor			;
+			ObjectContactCallbackFun*	saved_cb			;
+			SWheelCollisionParams				();
+		}									collision_params	;
+
+	IC	static	void			applywheelCollisionParams				(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+		static	void __stdcall  WheellCollisionCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)							;
+				void 			Init									();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
+				void			Load									(LPCSTR section);
+				void 			RestoreNetState							(const CSE_ALifeCar::SWheelState& a_state)														;
+				void 			SaveNetState							(NET_Packet& P)																					;
+				void 			ApplyDriveAxisVel						(float vel)																						;
+				void 			ApplyDriveAxisTorque					(float torque)																					;
+				void 			ApplyDriveAxisVelTorque					(float vel,float torque)																		;
+				void 			ApplySteerAxisVel						(float vel)																						;
+				void 			ApplySteerAxisTorque					(float torque)																					;
+				void 			ApplySteerAxisVelTorque					(float vel,float torque)																		;
+				void 			SetSteerLoLimit							(float lo)																						;
+				void			SetSteerHiLimit							(float hi)																						;
+				void			SetSteerLimits							(float hi,float lo)																				;
 
 virtual void ApplyDamage			(u16 level);
 		SWheel(CCar* acar)

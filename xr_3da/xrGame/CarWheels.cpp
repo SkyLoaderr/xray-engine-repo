@@ -9,7 +9,38 @@
 #include "PHDestroyable.h"
 #include "car.h"
 #include "../skeletoncustom.h"
+#include "ExtendedGeom.h"
 
+CCar::SWheel::SWheelCollisionParams::SWheelCollisionParams()
+{
+		spring_factor								=1		;
+		damping_factor								=1		;
+		mu_factor									=1		;
+		saved_cb									=NULL	;
+}
+IC void CCar::SWheel::applywheelCollisionParams(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	if(ud&&ud->object_callback==WheellCollisionCallback)
+	{
+		SWheelCollisionParams	&cp	=		*((SWheelCollisionParams*)(ud->callback_data))	;
+		dSurfaceParameters		&sp	=		c.surface										;
+		sp.mu						*=		cp.mu_factor									;
+		MulSprDmp(sp.soft_cfm,sp.soft_cfm,cp.spring_factor,cp.damping_factor)				;
+		if(cp.saved_cb)
+		{
+			cp.saved_cb(do_colide,c,material_1,material_2);
+		}
+	}
+}
+
+void  CCar::SWheel::WheellCollisionCallback(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	
+	dxGeomUserData					*ud1			=			retrieveGeomUserData(c.geom.g1)	;
+	dxGeomUserData					*ud2			=			retrieveGeomUserData(c.geom.g2)	;
+	applywheelCollisionParams		(ud1,do_colide,c,material_1,material_2)						;
+	applywheelCollisionParams		(ud2,do_colide,c,material_1,material_2)						;
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CCar::WheelHit(float P,s16 element,ALife::EHitType hit_type)
@@ -26,15 +57,40 @@ void CCar::SWheel::Init()
 {
 	if(inited) return;
 	BONE_P_PAIR_CIT bone=bone_map.find(bone_id);
-	R_ASSERT2(bone->second.element,"No Element was created for wheel-check collision is set");
+	R_ASSERT2(bone->second.element,"No Element was created for wheel. Check collision is set");
 	bone->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
-	radius=bone->second.element->getRadius();
-	R_ASSERT2(bone->second.joint,"No wheel joint was set for a wheel");
-	joint=bone->second.joint;
+	CPhysicsElement	*e=bone->second.element	;
+	CPhysicsJoint	*j=bone->second.joint	;
+	radius=e->getRadius();
+	R_ASSERT2(j,"No wheel joint was set for a wheel");
+	joint=j;
 	joint->SetBackRef(&joint);
 	R_ASSERT2(dJointGetType(joint->GetDJoint())==dJointTypeHinge2,"No wheel join was set for a wheel, only wheel-joint valid!!!");
 	ApplyDriveAxisVelTorque(0.f,0.f);
+	collision_params.saved_cb=e->get_ObjectContactCallback();
+	e->set_ObjectContactCallback(WheellCollisionCallback);
+	e->set_CallbackData((void*)&collision_params);
+	e->SetAirResistance(0,0);
 	inited=true;
+}
+void CCar::SWheel::Load(LPCSTR section)
+{
+	CKinematics		*K			=PKinematics(car->Visual())		;
+	CInifile		*ini		=K->LL_UserData()				;
+	VERIFY						(ini)							;
+	if(ini->section_exist(section))
+	{
+		collision_params.damping_factor	=ini->r_float(section,"damping_factor")		;	
+		collision_params.damping_factor	=ini->r_float(section,"spring_factor")		;
+		collision_params.mu_factor		=ini->r_float(section,"friction_factor")	;
+	} 
+	else if(ini->section_exist("wheels_params"))
+	{
+		collision_params.damping_factor	=ini->r_float("wheels_params","damping_factor")		;	
+		collision_params.damping_factor	=ini->r_float("wheels_params","spring_factor")		;
+		collision_params.mu_factor		=ini->r_float("wheels_params","friction_factor")	;
+	}
+
 }
 void CCar::SWheel::ApplyDriveAxisTorque(float torque)
 {
