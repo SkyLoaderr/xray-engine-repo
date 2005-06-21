@@ -22,7 +22,7 @@ function WeatherManager:construct()
 	end
 	-- заполнить список погод
 	local game_ltx			= ini_file("game.ltx");
-	if game_ltx:line_exist(self.level_name,"weathers") then
+	if game_ltx:line_exist(self.level_name,"weathers") == true then
 		local tmp			= game_ltx:r_string(self.level_name,"weathers");
 		for itm in string.gfind(tmp, '[^, ]+') do 
 			table.insert	(self.weather_list,itm);
