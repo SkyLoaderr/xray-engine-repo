@@ -7,7 +7,7 @@
 #include "StdAfx.h"
 #include "UISpinNum.h"
 #include "UILines.h"
-#include "xr_ioconsole.h"
+#include "../../xr_ioconsole.h"
 
 CUISpinNum::CUISpinNum()
 :	m_iVal(0),

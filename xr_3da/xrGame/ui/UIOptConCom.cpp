@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include "xr_ioconsole.h"
-#include "xr_ioc_cmd.h"
+#include "../../xr_ioconsole.h"
+#include "../../xr_ioc_cmd.h"
 #include "UIOptConCom.h"
 
 

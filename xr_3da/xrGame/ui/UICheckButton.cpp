@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include ".\uicheckbutton.h"
 #include "../HUDManager.h"
-#include "xr_ioconsole.h"
+#include "../../xr_ioconsole.h"
 
 CUICheckButton::CUICheckButton(void)
 {	
