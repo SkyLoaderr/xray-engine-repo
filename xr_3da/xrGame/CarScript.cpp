@@ -22,7 +22,8 @@ void CCar::script_register(lua_State *L)
 					value("eWpnDesiredPos",							int(CCarWeapon::eWpnDesiredPos)),
 					value("eWpnActivate",							int(CCarWeapon::eWpnActivate)),
 					value("eWpnFire",								int(CCarWeapon::eWpnFire)),
-					value("eWpnAutoFire",							int(CCarWeapon::eWpnAutoFire))
+					value("eWpnAutoFire",							int(CCarWeapon::eWpnAutoFire)),
+					value("eWpnToDefaultDir",						int(CCarWeapon::eWpnToDefaultDir))
 				]
 		.def("Action",			&CCar::Action)
 //		.def("SetParam",		(void (CCar::*)(int,Fvector2)) CCar::SetParam)
@@ -30,6 +31,8 @@ void CCar::script_register(lua_State *L)
 		.def("CanHit",			&CCar::WpnCanHit)
 		.def("FireDirDiff",		&CCar::FireDirDiff)
 		.def("IsObjectVisible",	&CCar::isObjectVisible)
+		.def("HasWeapon",		&CCar::HasWeapon)
+		.def("CurrentVel",		&CCar::CurrentVel)
 		.def(constructor<>())
 	];
 }

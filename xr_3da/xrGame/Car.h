@@ -527,9 +527,11 @@ public:
 	virtual void			Action				(int id, u32 flags);
 	virtual void			SetParam			(int id, Fvector2 val);
 	virtual void			SetParam			(int id, Fvector val);
+			bool			HasWeapon			();
 			bool			WpnCanHit			();
 			float			FireDirDiff			();
 			bool			isObjectVisible		(CScriptGameObject* O);
+			Fvector			CurrentVel			();
 	// Hits
 	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
 	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};

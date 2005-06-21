@@ -5,8 +5,8 @@ class CInventoryOwner;
 
 class CActorFollowerMngr
 {
-	typedef CInventoryOwner			FOLLOWER_T;
-	typedef xr_vector<FOLLOWER_T*>	FOLLOWER_V;
+	typedef u16						FOLLOWER_T;
+	typedef xr_vector<FOLLOWER_T>	FOLLOWER_V;
 	typedef FOLLOWER_V::iterator	FOLLOWER_IT;
 
 	FOLLOWER_V						m_followers;
@@ -14,8 +14,9 @@ class CActorFollowerMngr
 public:
 			CActorFollowerMngr		();
 			~CActorFollowerMngr		();
-	void	AddFollower				(FOLLOWER_T* f);
-	void	RemoveFollower			(FOLLOWER_T* f);
+	void	AddFollower				(u16 id);
+	void	RemoveFollower			(u16 id);
+	void	SendCommand				(int cmd);
 };
 
 

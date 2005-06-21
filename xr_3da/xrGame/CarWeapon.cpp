@@ -243,7 +243,9 @@ void CCarWeapon::Action				(int id, u32 flags)
 			if(flags==1)			m_bAutoFire = true;
 			else					m_bAutoFire = false;
 		}break;
-
+		case eWpnToDefaultDir:{
+			SetParam(eWpnDesiredDir,Fvector2().set(m_bind_y_rot,m_bind_x_rot));
+		}break;
 			
 	}
 }

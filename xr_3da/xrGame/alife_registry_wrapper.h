@@ -14,7 +14,7 @@ class CALifeRegistryWrapper
 {
 public:
 	IC				CALifeRegistryWrapper	() {holder_id = 0xffff;}
-	virtual			~CALifeRegistryWrapper	() {}
+	virtual			~CALifeRegistryWrapper	() {delete_data(local_registry);}
 
 	IC	void		init					(u16 id) {holder_id = id;}
 	

@@ -48,6 +48,15 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if (!g_Alive()) return;
 
+	switch(cmd){
+		case kFOLLOWER1:
+		case kFOLLOWER2:
+		case kFOLLOWER3:
+		case kFOLLOWER4:
+		case kFOLLOWER5:
+			SendCmdToFollowers(cmd);	break;
+	};
+
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress			(cmd);

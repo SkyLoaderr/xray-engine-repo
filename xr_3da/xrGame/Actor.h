@@ -374,11 +374,12 @@ public:
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
 	LPCSTR					GetDefaultActionForObject	() {return *m_sDefaultObjAction;}
-	void					AddFollower					(CInventoryOwner*);
-	void					RemoveFollower				(CInventoryOwner*);
-
+	void					AddFollower					(u16 id);
+	void					RemoveFollower				(u16 id);
+	void					SendCmdToFollowers			(int cmd);
 protected:
 	void					DestroyFollowerInternal();//hack
+	CActorFollowerMngr&		Followers	();
 	CActorFollowerMngr*		m_followers;
 	CUsableScriptObject*	m_pUsableObject;
 	// Person we're looking at

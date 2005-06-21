@@ -217,6 +217,10 @@ float CCar::FireDirDiff()
 #include "script_game_object.h"
 bool CCar::isObjectVisible			(CScriptGameObject* O_)
 {
+	if(!O_){
+		Msg("Attempt to call CCar::isObjectVisible method wihth passed NULL parameter");
+		return false;
+	}
 	CObject* O = &O_->object();
 	Fvector dir_to_object;
 	Fvector to_point;
@@ -231,4 +235,17 @@ bool CCar::isObjectVisible			(CScriptGameObject* O_)
 	Level().ObjectSpace.RayPick(from_point, dir_to_object, ray_length, collide::rqtStatic,rq);
 		
 	return !res;
+}
+
+bool CCar::HasWeapon()
+{
+	return (m_car_weapon != NULL);
+}
+
+Fvector CCar::CurrentVel()
+{
+	Fvector lin_vel;
+	m_pPhysicsShell->get_LinearVel(lin_vel);
+
+	return lin_vel;
 }

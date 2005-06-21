@@ -27,6 +27,7 @@ public:
 			eWpnActivate,
 			eWpnFire,
 			eWpnAutoFire,
+			eWpnToDefaultDir,
 	};	
 							CCarWeapon			(CPhysicsShellHolder* obj);
 				virtual		~CCarWeapon			();
