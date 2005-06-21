@@ -108,12 +108,13 @@ ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 
 void	Compress			(LPCSTR path, LPCSTR base)
 {
-	filesTOTAL			++;
+	filesTOTAL		++;
 
-	printf				("\n%-80s   ",path);
+	printf			("\n%-80s   ",path);
 	if (testSKIP(path))	{
 		filesSKIP	++;
-		printf(" - a SKIP");
+		printf		(" - a SKIP");
+		Msg			("%-80s   - SKIP",path);
 		return;
 	}
 
@@ -133,6 +134,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	{
 		filesALIAS			++;
 		printf				("ALIAS");
+		Msg					("%-80s   - ALIAS (%s)",path,A->path);
 
 		// Alias found
 		c_ptr				= A->c_ptr;
@@ -148,6 +150,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 			c_size_compressed	= src->length();
 			fs->w				(src->pointer(),c_size_real);
 			printf				("VFS");
+			Msg					("%-80s   - VFS",path);
 		} else {
 			// Compress into BaseFS
 			c_ptr				=	fs->tell();
@@ -170,6 +173,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 					c_size_compressed	= c_size_real;
 					fs->w				(src->pointer(),c_size_real);
 					printf				("VFS (R)");
+					Msg					("%-80s   - VFS (R)",path);
 				} else {
 					// Compressed OK - optimize
 					{
@@ -181,6 +185,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 					}
 					fs->w				(c_data,c_size_compressed);
 					printf				("%3.1f%%",	100.f*float(c_size_compressed)/float(src->length()));
+					Msg					("%-80s   - OK (%3.1f%%)",path,100.f*float(c_size_compressed)/float(src->length()));
 				}
 
 				// cleanup
@@ -190,6 +195,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 				c_size_compressed		= c_size_real;
 				//				fs->w					(src->pointer(),c_size_real);
 				printf					("VFS (R)");
+				Msg						("%-80s   - EMPTY",path);
 			}
 		}
 	}
@@ -257,8 +263,16 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 			((dwTimeEnd-dwTimeStart)/1000)%60,
 			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
 			);
+		Msg			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
+			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
+			bytesDST/1024,bytesSRC/1024,
+			100.f*float(bytesDST)/float(bytesSRC),
+			((dwTimeEnd-dwTimeStart)/1000)/60,
+			((dwTimeEnd-dwTimeStart)/1000)%60,
+			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
+			);
 	} else {
-		printf("ERROR: folder not found.\n");
+		Msg			("ERROR: folder not found.");
 	}
 }
 
