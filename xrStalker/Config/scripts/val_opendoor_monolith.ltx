@@ -33,7 +33,7 @@ def_state_moving = assault
 def_state_campering = threat
 def_state_campering_fire = threat_fire
 no_retreat = true
-meet = meet@def
+;meet = meet@def
 on_signal = victim_start | %+val_opendoor_victim_start%
 on_info = {+val_opendoor_victim_start} camper@fight
 on_info2 = {+val_opendoor_plr_detected} nil
@@ -47,7 +47,7 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 no_retreat = true
-meet = meet@def
+;meet = meet@def
 on_info = {=is_dead_one(411)} camper@wait
 on_info2 = {+val_opendoor_plr_detected} nil
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
@@ -61,7 +61,7 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 no_retreat = true
-meet = meet@def
+;meet = meet@def
 on_info = {+val_opendoor_plr_detected} nil
 combat_ignore_cond = always
 wounded = wounded
