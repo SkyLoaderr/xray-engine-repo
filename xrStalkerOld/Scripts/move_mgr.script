@@ -431,7 +431,9 @@ function move_mgr:scheme_set_signal(sig)
 		self.object:name(), sig, utils.to_str(stor.active_scheme))
 	if stor ~= nil and stor[stor.active_scheme] ~= nil then
 		local signals = stor[stor.active_scheme].signals
-		signals[sig] = true
+		if signals ~= nil then
+		   signals[sig] = true
+		end   
 	end	
 end
 
