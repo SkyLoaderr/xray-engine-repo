@@ -12,6 +12,16 @@ on_info = {=hit_by_actor} nil %+val_opendoor_plr_detected%
 
 [combat_ignore]
 
+;--------------------------------------------------------------------------
+; стандартный диалог
+;--------------------------------------------------------------------------
+[meet@def]
+meet_state = 5|wait_na@
+meet_state_wpn = 10|threat@threat_weap
+victim = 10|actor
+victim_vpn = 10|actor
+use = true
+
 [camper@start]
 path_walk = val_opendoor_soldier_walk
 path_look = val_opendoor_soldier_look
@@ -19,6 +29,7 @@ def_state_moving = assault
 def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
+meet = meet@def
 on_signal = fight | camper@fight
 ;combat_ignore_cond = always
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
@@ -30,6 +41,7 @@ def_state_moving = assault
 def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
+meet = meet@def
 on_info = {=is_dead_one(410)} remark@talk
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 ;combat_ignore_cond = {=fighting_actor}
@@ -37,11 +49,13 @@ combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 [remark@talk]
 snd = speach
 anim = guard_rac
+meet = meet@def
 on_signal = sound_end | walker@leave
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 
 [walker@leave]
 path_walk = val_opendoor_soldier_leave_walk
 path_look = val_opendoor_soldier_leave_look
-combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
+meet = meet@def
 on_signal = arrived | nil
+combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
