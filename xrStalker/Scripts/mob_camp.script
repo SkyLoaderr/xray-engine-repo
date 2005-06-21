@@ -105,11 +105,13 @@ function mob_camp:select_state()
 	local enemy = self.object:get_enemy()
 	
 	if enemy ~= nil then
-		local dist = enemy:position():distance_to(home_position)
-		if (self.state_prev == STATE_MOVE_HOME) and (dist > self.st.home_min_radius) then 
-		elseif (self.state_prev == STATE_ALIFE) and (dist > self.st.home_max_radius) then
+		local enemy_dist	= enemy:position():distance_to(home_position)
+		--local my_dist		= self.object:position():distance_to(home_position)
+		
+		if (self.state_prev == STATE_MOVE_HOME) and (enemy_dist > self.st.home_min_radius) then 
+		elseif (self.state_prev == STATE_ALIFE) and (enemy_dist > self.st.home_max_radius) then
 			self.state_current = STATE_MOVE_HOME
-		elseif (self.state_prev == STATE_CAMP) and (dist > self.st.home_min_radius) then
+		elseif (self.state_prev == STATE_CAMP) and (enemy_dist > self.st.home_min_radius) then
 		else 
 			self.state_current = STATE_ALIFE
 		end
