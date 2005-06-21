@@ -179,7 +179,7 @@ void ArrayInsertSorted(DArray array, const void *newElem, ArrayCompareFn compara
 	int found;
 	assert( comparator);
 	res=mybsearch(newElem, array->list,	array->count, array->elemsize, comparator, &found);
-	n = (((char *)res - (char *)array->list) / array->elemsize);
+	n = ((int)((char *)res - (char *)array->list) / array->elemsize);
 	ArrayInsertAt(array, newElem, n);
 }
 
@@ -233,7 +233,7 @@ int ArraySearch(DArray array, const void *key, ArrayCompareFn comparator,
 		res=mylsearch(key, ArrayNth(array, fromIndex), 
 					  array->count - fromIndex, array->elemsize, comparator);
 	if (res != NULL && found)
-		return (((char *)res - (char *)array->list) / array->elemsize);
+		return ((int)((char *)res - (char *)array->list) / array->elemsize);
 	else
 		return NOT_FOUND;
 }
