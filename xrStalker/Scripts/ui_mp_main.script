@@ -107,6 +107,7 @@ function mp_main:InitControls()
 	st:SetAutoDelete(true)
 	xml:InitLabel("edit_player_name",0,st)
 	self.bk:AttachChild(st)
+	self.player_name = st
 	
 	-- CD Key
 	st = CUIStatic()
@@ -241,7 +242,8 @@ function mp_main:OnBtn_Join()
 	local opt = COptionsManager()
 	opt:SaveValues("mm_mp_client")
 	
-	self.server_list:ConnectToSelected();
+	self.server_list:SetPlayerName(self.player_name:GetText())	
+	self.server_list:ConnectToSelected()
 end
 
 function mp_main:OnKeyboard(dik, keyboard_action)
