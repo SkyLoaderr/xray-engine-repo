@@ -9,8 +9,11 @@
 
 void CRender::level_Load(IReader* fs)
 {
-	R_ASSERT			(0!=g_pGameLevel);
-	R_ASSERT			(!b_loaded);
+	R_ASSERT						(0!=g_pGameLevel);
+	R_ASSERT						(!b_loaded);
+
+	// Main target
+	Target							= xr_new<CRenderTarget>		();
 
 	// Begin
 	pApp->LoadBegin					();
@@ -40,7 +43,6 @@ void CRender::level_Load(IReader* fs)
 	}
 
 	// Components
-	Target						= xr_new<CRenderTarget>		();
 	Wallmarks					= xr_new<CWallmarksEngine>	();
 	Details						= xr_new<CDetailManager>	();
 
@@ -137,10 +139,10 @@ void CRender::level_Unload()
 	//*** Components
 	xr_delete					(Details);
 	xr_delete					(Wallmarks);
-	xr_delete					(Target);
 
 	//*** Shaders
 	Shaders.clear_and_free		();
+	xr_delete					(Target);
 	b_loaded					= FALSE;
 }
 
