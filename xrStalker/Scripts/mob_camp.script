@@ -162,8 +162,6 @@ function mob_camp:execute_state()
 --	end
 		
 	
-	
-	
 	if (self.state_current == STATE_ALIFE) and (self.state_prev == STATE_ALIFE) then
 		return
 	end
