@@ -822,10 +822,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1342,6 +1342,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\rostok_tunel_deep.ltx">
 					</File>
 				</Filter>
 				<Filter
