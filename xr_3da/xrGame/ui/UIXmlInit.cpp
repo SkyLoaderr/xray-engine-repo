@@ -22,6 +22,7 @@
 #include "UITabControl.h"
 //#include "UIFrameLineWnd.h"
 #include "UILabel.h"
+#include "UIEditBox.h"
 #include "UITextBanner.h"
 #include "UIMultiTextStatic.h"
 #include "UIAnimatedStatic.h"
@@ -504,7 +505,6 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
 {
@@ -687,6 +687,13 @@ bool CUIXmlInit::InitLabel(CUIXml& xml_doc, const char* path, int index, CUILabe
 		pWnd->SetTextPosX(text_x);
 	if (text_y)
         pWnd->SetTextPosY(text_y);
+
+	return true;
+}
+
+bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEditBox* pWnd){
+	InitLabel(xml_doc, path, index, pWnd);
+	InitOptionsItem(xml_doc, path, index, pWnd);
 
 	return true;
 }

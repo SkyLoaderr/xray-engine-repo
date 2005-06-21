@@ -16,6 +16,8 @@ protected:
 	};
 	int	m_iMaxPlayers;
 	Flags32 m_uNetFilters;
+
+	string64 m_playerName;
 	/*int m_iNetConnectionLan;
 	int m_iNetFilterEmpty;
 	int m_iNetFilterFull;

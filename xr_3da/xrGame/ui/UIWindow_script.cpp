@@ -142,7 +142,8 @@ void CUIWindow::script_register(lua_State *L)
 
 		class_<CUILabel, CUIFrameLineWnd>("CUILabel")
 		.def(					constructor<>())
-		.def("SetText",						&CUILabel::SetText),
+		.def("SetText",						&CUILabel::SetText)
+		.def("GetText",						&CUILabel::GetText),
 
 
 

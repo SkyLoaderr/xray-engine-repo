@@ -4,6 +4,7 @@
 #include "xrXmlParser.h"
 #include "../string_table.h"
 #include "../../xr_ioconsole.h"
+#include "UIEditBox.h"
 
 
 CServerList::CServerList(){
@@ -35,6 +36,10 @@ void CServerList::Init(float x, float y, float width, float height){
 void CServerList::SetFilters(SServerFilters& sf){
 	m_sf = sf;
 	GameSpy_Browser_OnUpdateCompleted();
+}
+
+void CServerList::SetPlayerName(const char* name){
+	m_palyerName = name;
 }
 
 bool CServerList::IsValidItem(ServerInfo& item){
@@ -111,7 +116,7 @@ void CServerList::ConnectToSelected(){
 
 	xr_string command;
 
-	item->CreateConsoleCommand(command, "Satan");
+	item->CreateConsoleCommand(command, m_palyerName.c_str());
 
 	Console->Execute("main_menu off");
 	Console->Execute(command.c_str());

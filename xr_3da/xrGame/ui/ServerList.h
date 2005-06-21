@@ -58,6 +58,7 @@ public:
 			void AddServerToList	(ServerInfo* pServerInfo);
 			void ConnectToSelected();
 			void SetFilters(SServerFilters& sf);
+			void SetPlayerName(const char* name);
 
 	virtual void GameSpy_Browser_Init();
 	virtual void GameSpy_Browser_Destroy();
@@ -80,6 +81,7 @@ protected:
 	CUIFrameWindow	m_frame;
 	CUILabel		m_header[6];
 	CUIFrameLineWnd	m_separator[5];
+	xr_string		m_palyerName;
 
 	ServerBrowser m_serverBrowser;
 

@@ -30,6 +30,7 @@ class CUIListWnd;
 class CUITabControl;
 class CUIFrameLineWnd;
 class CUILabel;
+class CUIEditBox;
 class CUITextBanner;
 class CUIMultiTextStatic;
 class CUIAnimatedStatic;
@@ -48,6 +49,7 @@ public:
 	static bool InitFrameWindow			(CUIXml& xml_doc, const char* path,	int index, CUIFrameWindow* pWnd);
 	static bool InitFrameLine			(CUIXml& xml_doc, const char* path, int index, CUIFrameLineWnd* pWnd);
 	static bool InitLabel				(CUIXml& xml_doc, const char* path, int index, CUILabel* pWnd);
+	static bool InitEditBox				(CUIXml& xml_doc, const char* paht, int index, CUIEditBox* pWnd);
 	static bool InitStatic				(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
 	static bool	InitCheck				(CUIXml& xml_doc, const char* path, int index, CUICheckButton* pWnd);
 	static bool InitSpin				(CUIXml& xml_doc, const char* path, int index, CUICustomSpin* pWnd);

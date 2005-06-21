@@ -16,6 +16,7 @@ class CUIListWnd;
 class CUITabControl;
 class CUIFrameLineWnd;
 class CUILabel;
+class CUIEditBox;
 class CUITextBanner;
 class CUIMultiTextStatic;
 class CUIAnimatedStatic;
@@ -37,6 +38,7 @@ public:
 	void InitFrame		(LPCSTR path, int index, CUIFrameWindow* pWnd);
 	void InitFrameLine	(LPCSTR path, int index, CUIFrameLineWnd* pWnd);
 	void InitLabel		(LPCSTR path, int index, CUILabel* pWnd);
+    void InitEditBox	(LPCSTR path, int index, CUIEditBox* pWnd);
 	void InitStatic		(LPCSTR path, int index, CUIStatic* pWnd);
 	void InitCheck		(LPCSTR path, int index, CUICheckButton* pWnd);
 	void InitSpinNum	(LPCSTR path, int index, CUISpinNum* pWnd);

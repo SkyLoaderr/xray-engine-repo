@@ -18,6 +18,9 @@ void CUIOptConCom::Init(){
 	CMD3(CCC_Mask,	"net_filter_without_punkbusier",	&m_uNetFilters,	flNetFilterWithoutPunkbusier);
 	CMD3(CCC_Mask,	"net_filter_listenservers",			&m_uNetFilters,	flNetFilterListenServers);
 
+	CMD3(CCC_String,	"net_palyer_name",				m_playerName,	64);
+
+
 //	CMD4(CCC_Mask,	"net_con_publicserver",				&m_uNetFilters,	0, 1);
 //	CMD4(CCC_Mask,	"net_con_maprotation",				&m_uNetFilters,	0, 1);
 //	CMD4(CCC_Mask,	"net_con_spectator_on",				&m_uNetFilters,	0, 1);

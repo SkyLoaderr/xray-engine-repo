@@ -5,6 +5,7 @@
 #pragma once
 #include "UILabel.h"
 #include "../script_export_space.h"
+#include "UIOptionsItem.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -12,11 +13,14 @@ class game_cl_GameState;
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIEditBox : public CUILabel
-{
+class CUIEditBox : public CUILabel, public CUIOptionsItem {
 public:
 					CUIEditBox		();
 	virtual			~CUIEditBox		();
+
+	// CUIOptionsItem
+	virtual void	SetDefaultValue();
+	virtual void	SaveValue();
 
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

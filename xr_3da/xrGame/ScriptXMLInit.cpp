@@ -11,6 +11,7 @@
 #include "ui\UIFrameWindow.h"
 #include "ui\UILabel.h"
 #include "ui\ServerList.h"
+#include "ui\UIEditBox.h"
 
 #include "script_space.h"
 using namespace luabind;
@@ -46,6 +47,10 @@ void CScriptXmlInit::InitFrameLine(LPCSTR path, int index, CUIFrameLineWnd* pWnd
 
 void CScriptXmlInit::InitLabel(LPCSTR path, int index, CUILabel* pWnd){
 	CUIXmlInit::InitLabel(m_xml, path, index, pWnd);
+}
+
+void CScriptXmlInit::InitEditBox(LPCSTR path, int index, CUIEditBox* pWnd){
+	CUIXmlInit::InitEditBox(m_xml, path, index, pWnd);
 }
 
 void CScriptXmlInit::InitStatic(LPCSTR path, int index, CUIStatic* pWnd){

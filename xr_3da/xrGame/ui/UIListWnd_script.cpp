@@ -84,8 +84,7 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("RefreshList",				&CServerList::RefreshGameSpyList)
 		.def("ConnectToSelected",		&CServerList::ConnectToSelected)
 		.def("SetFilters",				&CServerList::SetFilters)
-		
-		
+		.def("SetPlayerName",			&CServerList::SetPlayerName)	
 
 		];
 }
