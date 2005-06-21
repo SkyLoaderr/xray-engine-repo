@@ -12,9 +12,6 @@ void CRender::level_Load(IReader* fs)
 	R_ASSERT						(0!=g_pGameLevel);
 	R_ASSERT						(!b_loaded);
 
-	// Main target
-	Target							= xr_new<CRenderTarget>		();
-
 	// Begin
 	pApp->LoadBegin					();
 	Device.Resources->DeferredLoad	(TRUE);
@@ -22,6 +19,7 @@ void CRender::level_Load(IReader* fs)
 
 	// Shaders
 	pApp->LoadTitle					("Loading shaders...");
+	Target							= xr_new<CRenderTarget>		();	// Main target
 	{
 		chunk = fs->open_chunk		(fsL_SHADERS);
 		R_ASSERT2					(chunk,"Level doesn't builded correctly.");
@@ -75,18 +73,25 @@ void CRender::level_Load(IReader* fs)
 	}
 
 	// Sectors
-	pApp->LoadTitle		("Loading sectors & portals...");
-	LoadSectors			(fs);
+	pApp->LoadTitle				("Loading sectors & portals...");
+	LoadSectors					(fs);
 
 	// HOM
-	HOM.Load			();
+	HOM.Load					();
 
 	// Lights
-	// pApp->LoadTitle		("Loading lights...");
-	LoadLights			(fs);
+	// pApp->LoadTitle			("Loading lights...");
+	LoadLights					(fs);
 
 	// End
-	pApp->LoadEnd		();
+	pApp->LoadEnd				();
+
+	// sanity-clear
+	lstLODs.clear				();
+	lstLODgroups.clear			();
+	mapLOD.clear				();
+
+	// signal loaded
 	b_loaded					= TRUE	;
 }
 

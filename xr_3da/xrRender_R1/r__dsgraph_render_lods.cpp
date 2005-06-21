@@ -22,7 +22,10 @@ void R_dsgraph_structure::r_dsgraph_render_lods	(bool _setup_zb, bool _clear)
 	// *** Fill VB and generate groups
 	u32		shid							= _setup_zb?SE_R1_LMODELS:SE_R1_NORMAL_LQ;
 	FLOD*						firstV		= (FLOD*)lstLODs[0].pVisual;
+	Msg							("dbg_lods: shid[%d],firstV[%X]",shid,u32((void*)firstV));
+	Msg							("dbg_lods: shader[%X]",u32((void*)firstV->shader._get()));
 	ref_selement				cur_S		= firstV->shader->E[shid];
+	Msg							("dbg_lods: shader_E[%X]",u32((void*)cur_S._get()));
 	int							cur_count	= 0;
 	u32							vOffset		;
 	FLOD::_hw*					V			= (FLOD::_hw*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->geom->vb_stride, vOffset);
