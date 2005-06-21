@@ -20,9 +20,6 @@ end
 --------------------
 function se_stalker:can_switch_online ()
 	if self.under_smart_terrain then
-		if self:name() == "bar_ecolog_crush_1" then
-			printf("[%s]UNDER SMRT, spawn true", self:name())
-		end		
 		return true
 	end
 
@@ -32,47 +29,26 @@ function se_stalker:can_switch_online ()
 	end
 
 	if self.ini == nil or self.spawner_present == false	then
-		if self:name() == "bar_ecolog_crush_1" then
-			printf("[%s]NO SPAWNER, spawn default", self:name())
-		end		
 		return cse_alife_human_stalker.can_switch_online (self)
 	end
     
     if db.actor ~= nil and db.actor:alive () == false then
-		if self:name() == "bar_ecolog_crush_1" then
-			printf("[%s]ACTOR DEAD, spawn previous", self:name())
-		end		
        return self.online
     end    
     
 	if self.online == false then
    	    -- если игрока нет, то в оффлайн
         if db.actor == nil then 
-        	if self:name() == "bar_ecolog_crush_1" then
-				printf("[%s]NO ACTOR, spawn false", self:name())
-			end		
 			return false 
 		end
-       	if self:name() == "bar_ecolog_crush_1" then
-			printf("[%s]SELF OFFLINE, spawn checker", self:name())
-		end		
 	    return xr_spawner.check_spawn (self) and cse_alife_human_stalker.can_switch_online (self)
     else
         if db.actor == nil then 
-        	if self:name() == "bar_ecolog_crush_1" then
-				printf("[%s]NO ACTOR, spawn true", self:name())
-			end		       
 			return true 
 		end
         if xr_spawner.check_spawn (self) == true then 
-       		if self:name() == "bar_ecolog_crush_1" then
-				printf("[%s]SELF ONLINE, spawn checker", self:name())
-			end		
            return true
         end
-       	if self:name() == "bar_ecolog_crush_1" then
-			printf("[%s]SELF ONLINE, spawn false", self:name())
-		end		        
         return false --cse_alife_human_stalker.can_switch_online (self)
     end    	    
 
