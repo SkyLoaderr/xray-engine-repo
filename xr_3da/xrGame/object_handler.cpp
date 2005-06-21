@@ -80,6 +80,11 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 
 	if (planner().object().g_Alive())
 		switch_torch			(inventory_item,true);
+
+	if (inventory_item->useful_for_NPC() && (inventory_item->object().cNameSect() == m_item_to_spawn)) {
+		m_item_to_spawn			= shared_str();
+		m_ammo_in_box_to_spawn	= 0;
+	}
 }
 
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
@@ -88,8 +93,11 @@ void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 	
 	if (m_infinite_ammo && planner().object().g_Alive() && !inventory_item->useful_for_NPC()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
-		if (weapon_ammo)
-			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object().Position(),planner().object().ai_location().level_vertex_id(),planner().object().ID());
+		if (weapon_ammo) {
+			Level().spawn_item		(*weapon_ammo->cNameSect(),planner().object().Position(),planner().object().ai_location().level_vertex_id(),planner().object().ID());
+			m_item_to_spawn			= weapon_ammo->cNameSect();
+			m_ammo_in_box_to_spawn	= weapon_ammo->m_boxSize;
+		}
 	}
 
 	planner().remove_item		(inventory_item);

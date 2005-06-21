@@ -34,7 +34,7 @@ u32 CAI_Stalker::GetWeaponAmmo() const
 {
 	if (!GetCurrentWeapon())
 		return		(0);
-	return			(GetCurrentWeapon()->GetAmmoCurrent());	
+	return			(GetCurrentWeapon()->GetAmmoCurrent(true));	
 }
 
 //CInventoryItem *CAI_Stalker::GetCurrentEquipment() const

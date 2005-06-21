@@ -782,7 +782,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	F_entity_Destroy(D);
 }
 
-int CWeapon::GetAmmoCurrent() const
+int CWeapon::GetAmmoCurrent(bool use_item_to_spawn) const
 {
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
@@ -816,6 +816,14 @@ int CWeapon::GetAmmoCurrent() const
 				iAmmoCurrent = iAmmoCurrent + l_pAmmo->m_boxCurr;
 			}
 		}
+
+		if (!use_item_to_spawn)
+			continue;
+
+		if (!m_pInventory->GetOwner()->item_to_spawn())
+			continue;
+
+		iAmmoCurrent += m_pInventory->GetOwner()->ammo_in_box_to_spawn();
 	}
 	return l_count + iAmmoCurrent;
 }
@@ -1178,7 +1186,7 @@ ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()	const
 
 bool CWeapon::can_kill	() const
 {
-	if (GetAmmoCurrent() || m_ammoTypes.empty())
+	if (GetAmmoCurrent(true) || m_ammoTypes.empty())
 		return				(true);
 
 	return					(false);
@@ -1195,6 +1203,7 @@ CInventoryItem *CWeapon::can_kill	(CInventory *inventory) const
 		CInventoryItem	*inventory_item = smart_cast<CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
+		
 		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->object().cNameSect());
 		if (i != m_ammoTypes.end())
 			return			(inventory_item);
@@ -1214,6 +1223,7 @@ const CInventoryItem *CWeapon::can_kill	(const xr_vector<const CGameObject*> &it
 		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
+
 		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->object().cNameSect());
 		if (i != m_ammoTypes.end())
 			return			(inventory_item);

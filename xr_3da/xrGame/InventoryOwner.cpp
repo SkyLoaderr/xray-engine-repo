@@ -79,6 +79,8 @@ void CInventoryOwner::reload				(LPCSTR section)
 void CInventoryOwner::reinit				()
 {
 	CAttachmentOwner::reinit	();
+	m_item_to_spawn				= shared_str();
+	m_ammo_in_box_to_spawn		= 0;
 }
 
 //call this after CGameObject::net_Spawn

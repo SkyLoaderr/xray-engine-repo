@@ -311,7 +311,7 @@ u32 CScriptGameObject::GetAmmoCurrent() const
 	const CWeapon	*weapon = smart_cast<const CWeapon*>(&object());
 	if (!weapon)
 		return		(0);
-	return			(weapon->GetAmmoCurrent());
+	return			(weapon->GetAmmoCurrent(true));
 }
 
 //////////////////////////////////////////////////////////////////////////

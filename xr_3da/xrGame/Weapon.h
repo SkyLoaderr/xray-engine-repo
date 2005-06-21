@@ -410,7 +410,7 @@ protected:
 public:
 	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;						}
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
-	int						GetAmmoCurrent		()  const;
+	int						GetAmmoCurrent		(bool use_item_to_spawn = false)  const;
 
 	void					SetAmmoElapsed		(int ammo_count);
 
