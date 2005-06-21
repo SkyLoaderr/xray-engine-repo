@@ -375,7 +375,21 @@ void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, GameGraph::_GRA
 		Msg									("! cannot teleport entity with id %d",id);
 		return;
 	}
-	
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg									("[LSS] teleporting object [%s][%s][%d] from level [%s], position [%f][%f][%f] to level [%s], position [%f][%f][%f]",
+			object->name_replace(),
+			*object->s_name,
+			object->ID,
+			*(ai().game_graph().header().level(ai().game_graph().vertex(object->m_tGraphID)->level_id()).name()),
+			VPUSH(ai().game_graph().vertex(object->m_tGraphID)->level_point()),
+			*(ai().game_graph().header().level(ai().game_graph().vertex(game_vertex_id)->level_id()).name()),
+			VPUSH(ai().game_graph().vertex(game_vertex_id)->level_point())
+		);
+	}
+#endif
+
 	if (object->m_bOnline)
 		switch_offline						(object);
 	graph().change							(object,object->m_tGraphID,game_vertex_id);
