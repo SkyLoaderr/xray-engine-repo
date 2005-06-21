@@ -81,6 +81,7 @@ public:
 	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
+	virtual void			set_CallbackData		(void * cd)												= 0;
 	virtual void			set_PhysicsRefObject	(CPhysicsShellHolder* ref_object)						= 0;
 	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
 	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
@@ -102,44 +103,45 @@ class	CPhysicsElement		: public CPhysicsBase
 {
 
 public:
-	u16						m_SelfID;
-	virtual CPhysicsShell*	PhysicsShell			()												= 0;		
-	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
-	virtual CPhysicsShellHolder*PhysicsRefObject	()												= 0;
-	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
-	virtual	void			add_Box					(const Fobb&		V)							= 0;
-	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
-	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
-	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
-	virtual CODEGeom*		last_geom				()												= 0;
-	virtual bool			has_geoms				()												= 0;
-	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
-	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
+			u16								m_SelfID;
+	virtual CPhysicsShell*					PhysicsShell							()												= 0;		
+	virtual void							set_ContactCallback						(ContactCallbackFun* callback)					= 0;
+	virtual CPhysicsShellHolder*			PhysicsRefObject						()												= 0;
+	virtual	void							add_Sphere								(const Fsphere&		V)							= 0;
+	virtual	void							add_Box									(const Fobb&		V)							= 0;
+	virtual	void							add_Cylinder							(const Fcylinder&	V)							= 0;
+	virtual void							add_Shape								(const SBoneShape& shape)						= 0;
+	virtual void							add_Shape								(const SBoneShape& shape,const Fmatrix& offset)	= 0;
+	virtual CODEGeom*						last_geom								()												= 0;
+	virtual bool							has_geoms								()												= 0;
+	virtual void							add_Mass								(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
+	virtual	void							set_ParentElement						(CPhysicsElement* p)							= 0;
 
-	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
-	virtual void			setInertia				(const dMass& M)								= 0;																
-	virtual void			addInertia				(const dMass& M)								= 0;
-	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
-	virtual void			applyImpulseVsMC		(const Fvector& pos,const Fvector& dir, float val)=0;
-	virtual void			applyImpulseVsGF		(const Fvector& pos,const Fvector& dir, float val)=0;
-	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
+	virtual	void							set_BoxMass								(const Fobb& box, float mass)					= 0;	
+	virtual void							setInertia								(const dMass& M)								= 0;																
+	virtual void							addInertia								(const dMass& M)								= 0;
+	virtual void							setMassMC								(float M,const Fvector& mass_center)			= 0;
+	virtual void							applyImpulseVsMC						(const Fvector& pos,const Fvector& dir, float val)=0;
+	virtual void							applyImpulseVsGF						(const Fvector& pos,const Fvector& dir, float val)=0;
+	virtual void							applyImpulseTrace						(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 
-	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual u16				setGeomFracturable		(CPHFracture &fracture)							= 0;
-	virtual CPHFracture&	Fracture				(u16 num)										= 0;
+	virtual void							setDensityMC							(float M,const Fvector& mass_center)			= 0;
+	virtual u16								setGeomFracturable						(CPHFracture &fracture)							= 0;
+	virtual CPHFracture&					Fracture								(u16 num)										= 0;
 	//get
-	virtual u16				numberOfGeoms			()												= 0;
-	virtual	dBodyID			get_body				()												= 0;
-	virtual const Fvector&	mass_Center				()												= 0;
-	virtual const Fvector&	local_mass_Center		()												= 0;
-	virtual float			getRadius				()												= 0;
-	virtual	dMass*			getMassTensor			()												= 0;
-	virtual void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
-	virtual	void			get_MaxAreaDir			(Fvector& dir)									= 0;
-	virtual	void			Fix						()												= 0;
-	virtual bool			isFixed					()												= 0;
+	virtual u16								numberOfGeoms							()												= 0;
+	virtual	dBodyID							get_body								()												= 0;
+	virtual const Fvector&					mass_Center								()												= 0;
+	virtual const Fvector&					local_mass_Center						()												= 0;
+	virtual float							getRadius								()												= 0;
+	virtual	dMass*							getMassTensor							()												= 0;
+	virtual void							get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
+	virtual	void							get_MaxAreaDir							(Fvector& dir)									= 0;
+	virtual	ObjectContactCallbackFun		*get_ObjectContactCallback				()												= 0;
+	virtual	void							Fix										()												= 0;
+	virtual bool							isFixed									()												= 0;
 
-	virtual ~CPhysicsElement						()												{};
+	virtual									~CPhysicsElement						()												{};
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

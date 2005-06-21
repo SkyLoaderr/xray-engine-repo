@@ -594,6 +594,7 @@ void	CPHElement::applyImpulseVsMC(const Fvector& pos,const Fvector& dir, float v
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	/////////////////////////////////////////////////////////////////////////
 	Fvector impulse;
+	val/=fixed_step;
 	impulse.set(dir);
 	impulse.mul(val);
 	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,pos.x, pos.y,pos.z);
@@ -606,6 +607,7 @@ void	CPHElement::applyImpulseVsGF(const Fvector& pos,const Fvector& dir, float v
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	/////////////////////////////////////////////////////////////////////////
 	Fvector impulse;
+	val/=fixed_step;
 	impulse.set(dir);
 	impulse.mul(val);
 	dBodyAddForceAtPos(m_body, impulse.x,impulse.y,impulse.z,pos.x, pos.y,pos.z);
@@ -616,8 +618,6 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 {
 
 	if(!bActive||m_flags.test(flFixed)) return;
-
-	val/=fixed_step;
 	Fvector body_pos;
 	if(id!=BI_NONE)
 	{
@@ -662,7 +662,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	if(m_fratures_holder)
 	{
 		///impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
-		Fvector impulse;impulse.set(dir);impulse.mul(val);
+		Fvector impulse;impulse.set(dir);impulse.mul(val/fixed_step);
 		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
 }
@@ -888,7 +888,14 @@ void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	CPHGeometryOwner::set_ObjectContactCallback(callback);
 }
-
+ObjectContactCallbackFun* CPHElement::get_ObjectContactCallback()
+{
+	return CPHGeometryOwner::get_ObjectContactCallback();
+}
+void CPHElement::set_CallbackData(void * cd)
+{
+	CPHGeometryOwner::set_CallbackData(cd);
+}
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
 	push_untill=0;

@@ -70,12 +70,12 @@ void CCar::DbgUbdateCl()
 			Fvector v;
 			m_pPhysicsShell->get_LinearVel(v);
 			string32 s;
-			sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
-			HUD().Font().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
-			HUD().Font().pFontSmall->OutSet	(120,530);
-			HUD().Font().pFontSmall->OutNext(s);
-			HUD().Font().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
-			HUD().Font().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
+			sprintf									(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
+			HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff));
+			HUD().Font().pFontSmall->OutSet			(120,530);
+			HUD().Font().pFontSmall->OutNext		(s);
+			HUD().Font().pFontSmall->OutNext		("Transmission num:      [%d]",m_current_transmission_num);
+			HUD().Font().pFontSmall->OutNext		("gear ratio:			  [%3.2f]",m_current_gear_ratio);
 			HUD().Font().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
 			HUD().Font().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
 			HUD().Font().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
@@ -91,7 +91,7 @@ void CCar::DbgUbdateCl()
 			m_dbg_dynamic_plot->AppendItem(EngineCurTorque()/torq_pow_max_ratio,D3DCOLOR_XRGB(0,255,0),1);
 			m_dbg_dynamic_plot->AppendItem(m_current_rpm/rpm_pow_max_ratio,D3DCOLOR_XRGB(0,0,255),2);
 
-//			m_dbg_dynamic_plot->UpdateMarkerPos(0, m_current_engine_power);
+			m_dbg_dynamic_plot->UpdateMarkerPos(0, m_current_rpm/rpm_pow_max_ratio);
 
 	//		m_dbg_power_rpm.UpdateMarkers(m_current_rpm, m_current_engine_power);
 		}

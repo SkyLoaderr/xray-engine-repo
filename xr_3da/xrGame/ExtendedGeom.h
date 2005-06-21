@@ -20,28 +20,29 @@ struct Triangle
 	dReal pos;
 	dReal depth;
 	CDB::TRI* T ;
-
 };
 
 
 class CGameObject;
 struct dxGeomUserData
 {
-	dVector3	last_pos;
-	bool		pushing_neg,pushing_b_neg,b_static_colide;
-	Triangle	neg_tri,b_neg_tri;
+	dVector3					last_pos										;
+	bool						pushing_neg,pushing_b_neg,b_static_colide		;
+	Triangle					neg_tri,b_neg_tri								;
 
-	CPHObject*	ph_object;
-	CPhysicsShellHolder* ph_ref_object;
-	u16			material;
-	u16			tri_material;
-	ContactCallbackFun* callback;
-	ObjectContactCallbackFun* object_callback;
-	u16			element_position;
-	u16			bone_id;
-	xr_vector<int>	cashed_tries;
-	Fvector			last_aabb_size;
-	Fvector			last_aabb_pos;
+	CPHObject					*ph_object										;
+	CPhysicsShellHolder			*ph_ref_object									;
+	u16							material										;
+	u16							tri_material									;
+	ContactCallbackFun			*callback										;
+	void						*callback_data									;
+	ObjectContactCallbackFun	*object_callback								;
+	u16							element_position								;
+	u16							bone_id											;
+	xr_vector<int>				cashed_tries									;
+	Fvector						last_aabb_size									;
+	Fvector						last_aabb_pos									;
+
 //	struct ContactsParameters
 //	{
 //	dReal damping;
@@ -52,6 +53,7 @@ struct dxGeomUserData
 //	unsigned int maxc;
 //	};
 };
+
 IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
 {
 	return (dxGeomUserData*) dGeomGetData(geom);
@@ -98,6 +100,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	(dGeomGetUserData(geom))->ph_ref_object=NULL;
 	(dGeomGetUserData(geom))->element_position=u16(-1);
 	(dGeomGetUserData(geom))->bone_id=u16(-1);
+	(dGeomGetUserData(geom))->callback_data=NULL;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;
@@ -122,6 +125,10 @@ IC void dGeomDestroyUserData(dxGeom* geom)
 	dGeomSetData		(geom,0);
 }
 
+IC void dGeomUserDataSetCallbackData(dxGeom* geom,void *cd)
+{
+	(dGeomGetUserData(geom))->callback_data=cd;
+}
 IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 {
 	(dGeomGetUserData(geom))->ph_object=phObject;

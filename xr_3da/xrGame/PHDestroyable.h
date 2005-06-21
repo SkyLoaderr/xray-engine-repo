@@ -60,6 +60,7 @@ public:
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
 virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)																				;
+			void						PhysicallyRemoveSelf		()																											;
 IC			bool						CanDestroy					()										{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed)	;}
 virtual		bool						CanRemoveObject				()																								{return true;}
 virtual		void						SheduleUpdate				(u32 dt)																									;
@@ -67,7 +68,6 @@ virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str v
 virtual		void						InitServerObject			(CSE_Abstract*				D)																				;
 private:
 			void						NotificatePart				(CPHDestroyableNotificate *dn)																				;
-			void						PhysicallyRemoveSelf		()																											;
 			void						PhysicallyRemovePart		(CPHDestroyableNotificate *dn)																				;																											;
 };
 

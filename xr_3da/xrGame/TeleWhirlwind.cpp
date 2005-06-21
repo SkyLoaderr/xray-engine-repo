@@ -161,6 +161,7 @@ bool	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val)
 	CPHDestroyable* D=object->ph_destroyable();
 	if(D)
 	{
+		D->PhysicallyRemoveSelf();
 		D->Destroy(m_telekinesis->OwnerObject()->ID());
 		
 		m_telekinesis->add_impact(dir,val*10.f);

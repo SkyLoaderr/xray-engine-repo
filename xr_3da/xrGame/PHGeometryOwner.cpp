@@ -252,7 +252,16 @@ void CPHGeometryOwner::set_ObjectContactCallback(ObjectContactCallbackFun* callb
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;++i) (*i)->set_obj_contact_cb(callback);
 }
-
+ObjectContactCallbackFun* CPHGeometryOwner::get_ObjectContactCallback()
+{
+	return object_contact_callback;
+}
+void CPHGeometryOwner::set_CallbackData(void * cd)
+{
+	VERIFY(b_builded);
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;++i) (*i)->set_callback_data(cd);
+}
 void CPHGeometryOwner::set_PhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	m_phys_ref_object=ref_object;
