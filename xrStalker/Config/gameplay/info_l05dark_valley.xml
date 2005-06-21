@@ -102,6 +102,7 @@
 
 <!-- Раздавленный монолитовец -->
 <info_portion id="val_smashed_start"></info_portion>
+<info_portion id="val_smashed_kill_victim"></info_portion>
 
 <!-- Взрыв -->
 <info_portion id="val_explosion_check"></info_portion>
