@@ -207,6 +207,7 @@
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			medkit = 1 \n
+			hand_radio \n
 		</supplies>
 
 		<start_dialog>gar_hellcar_start</start_dialog>
