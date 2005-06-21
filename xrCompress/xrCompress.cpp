@@ -106,7 +106,7 @@ ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 	return 0;
 }
 
-void	Compress			(LPCSTR path, LPCSTR base)
+void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 {
 	filesTOTAL		++;
 
@@ -162,7 +162,11 @@ void	Compress			(LPCSTR path, LPCSTR base)
 				{
 					// c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
 					c_size_compressed	= c_size_max;
-					R_ASSERT			(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
+					if (bFast){		
+						R_ASSERT(LZO_E_OK == lzo1x_1_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
+					}else{
+						R_ASSERT(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
+					}
 				}
 				t_compress_total	+=	t_compress.GetElapsed_clk();
 
@@ -176,7 +180,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 					Msg					("%-80s   - VFS (R)",path);
 				} else {
 					// Compressed OK - optimize
-					{
+					if (!bFast){
 						u8*		c_out	= xr_alloc<u8>	(c_size_real);
 						u32		c_orig	= c_size_real;
 						R_ASSERT		(LZO_E_OK	== lzo1x_optimize	(c_data,c_size_compressed,c_out,&c_orig, NULL));
@@ -221,7 +225,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	FS.r_close	(src);
 }
 
-void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_list)
+void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_list, BOOL bFast)
 {
 	if (!list->empty()){
 		string256		caption;
@@ -242,9 +246,9 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 		//***main process***: BEGIN
 		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
 		for (u32 it=0; it<list->size(); it++){
-			sprintf		(caption,"Compress files: %d/%d - %d%%",it,list->size(),iFloor((it*100)/list->size()));
+			sprintf		(caption,"Compress files: %d/%d - %d%%",it,list->size(),(it*100)/list->size());
 			SetWindowText(GetConsoleWindow(),caption);
-			Compress	((*list)[it],tgt_name);
+			Compress	((*list)[it],tgt_name,bFast);
 		}
 		xr_free			(c_heap);
 		fs->close_chunk	();
@@ -276,7 +280,7 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 	}
 }
 
-void ProcessNormal(LPCSTR tgt_name)
+void ProcessNormal(LPCSTR tgt_name, BOOL bFast)
 {
 	// collect files
 	xr_vector<char*>*	list	= FS.file_list_open	("$target_folder$",FS_ListFiles);
@@ -285,13 +289,13 @@ void ProcessNormal(LPCSTR tgt_name)
 	xr_vector<char*>*	fl_list	= FS.file_list_open	("$target_folder$",FS_ListFolders);
 	R_ASSERT2			(fl_list,	"Unable to open folder!!!");
 	// compress
-	CompressList		(tgt_name,list,fl_list);
+	CompressList		(tgt_name,list,fl_list,bFast);
 	// free lists
 	FS.file_list_close	(fl_list);
 	FS.file_list_close	(list);
 }
 
-void ProcessLTX(LPCSTR tgt_name, LPCSTR params)
+void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 {
 	xr_string		ltx_name;
 	LPCSTR ltx_fn	= strstr(params,".ltx");				VERIFY(ltx_fn!=0);
@@ -299,7 +303,7 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params)
 	string_path		tmp;
 	strncpy			(tmp,params,ltx_fn-params); tmp[ltx_fn-params]=0;
 	_Trim			(tmp);
-	bool bExist		= FS.exist(fn,"$app_root$",tmp,".ltx"); 
+	bool bExist		= !!FS.exist(fn,"$app_root$",tmp,".ltx"); 
 	R_ASSERT3		(bExist,"ERROR: Can't find ltx file: ",fn);
 	CInifile ltx	(fn);
 	printf			("Processing LTX...\n");
@@ -308,10 +312,10 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params)
 	xr_vector<char*> fl_list;
 	CInifile::Sect& sect	= ltx.r_section("config");
 	for (CInifile::SectIt s_it=sect.begin(); s_it!=sect.end(); s_it++){
-		bool bRecursive = 0==xr_strcmp(s_it->second.c_str(),"recursive");
-		u32 mask	= bRecursive?FS_ListFiles:FS_ListFiles|FS_RootOnly;
+		bool bRecurse	= CInifile::IsBOOL(s_it->second.c_str());
+		u32 mask		= bRecurse?FS_ListFiles:FS_ListFiles|FS_RootOnly;
 
-		LPCSTR path = 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
+		LPCSTR path		= 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
 
 		printf				("- Append path: '%s'\n",s_it->first.c_str());
 		xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,mask);
@@ -339,7 +343,7 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params)
 		FS.file_list_close	(i_list);
 	}
 	// compress
-	CompressList	(tgt_name,&list,&fl_list);
+	CompressList	(tgt_name,&list,&fl_list,bFast);
 
 	// free
 	xr_vector<char*>::iterator it	= list.begin();
@@ -362,7 +366,16 @@ int __cdecl main	(int argc, char* argv[])
 	}else{
 		if (argc<2)	{
 			printf("ERROR: u must pass folder name as parameter.\n");
-			printf("or use -diff /? option to get information about creating difference.\n");
+			printf("-diff /? option to get information about creating difference.\n");
+			printf("-fast - fast compression.\n");
+			printf("-ltx file_name.ltx - pathes to compress.\n");
+			printf("\n");
+			printf("LTX format:\n");
+			printf("	[config]\n");
+			printf("	;<path>     = <recurse>\n");
+			printf("	.\\         = false\n");
+			printf("	textures\   = true\n");
+				
 			return 3;
 		}
 		printf			("[settings] SKIP: '*.key','build.*'\n");
@@ -373,11 +386,13 @@ int __cdecl main	(int argc, char* argv[])
 
 		FS._initialize	(CLocatorAPI::flTargetFolderOnly|CLocatorAPI::flScanAppRoot,folder);
 
+		BOOL bFast		= 0!=strstr(params,"-fast");
+
 		LPCSTR p		= strstr(params,"-ltx");
 		if(0!=p){
-			ProcessLTX		(argv[1],p+4);
+			ProcessLTX		(argv[1],p+4,bFast);
 		}else{
-			ProcessNormal	(argv[1]);
+			ProcessNormal	(argv[1],bFast);
 		}
 	}
 
