@@ -57,7 +57,6 @@ function se_monster:can_switch_online ()
     --стандартная проверка у родителя, если нет спавнера или игрок помер
 	if self.ini == nil or self.spawner_present == false then --or (db.actor ~= nil and db.actor:alive () == false)
 	--if self.ini == nil or self.spawner_present == false or db.actor == nil
-	then 
 	    return cse_alife_monster_base.can_switch_online (self)
 	end    
 	
