@@ -120,7 +120,10 @@ end
 ------------------------------ callbacks ---------------------------------
 function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 	printf( "heli_binder: hit callback" )
-	self.st.combat.enemy_id = enemy_id
+
+	if not self.st.combat.enemy_id then
+		self.st.combat.enemy_id = enemy_id
+	end
 end
 
 function heli_binder:on_point( distance, position, path_idx )
