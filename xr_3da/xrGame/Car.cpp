@@ -411,11 +411,11 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 
 void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(m_car_weapon){
+/*	if(m_car_weapon){
 		Fvector pos;
 		who->Center(pos);
 		m_car_weapon->SetParam(CCarWeapon::eWpnDesiredPos,pos);
-	}
+	}*/
 
 	//if(||) P=0.f;
 	WheelHit(P,element,hit_type);
