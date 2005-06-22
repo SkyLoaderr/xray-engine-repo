@@ -36,6 +36,20 @@ function action_gate:initialize(loading)
 	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
 	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
 	
+	local disable_snd
+	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
+	-- впервые (т.е. после загрузки уровня или после загрузки сохраненной игры),
+	-- иначе игрок услышит хлопок...
+	if not self.st.script_used_more_than_once then
+		disable_snd = true
+		self.st.script_used_more_than_once = true
+	end
+	if self.st.closed then
+		self:close_gate(disable_snd)
+	else
+		self:open_gate(disable_snd)
+	end
+
 	if self.st.locked then
 	    local angle_left = self.joint_left:get_axis_angle(1)
 	    local angle_right = self.joint_right:get_axis_angle(1)
@@ -67,20 +81,6 @@ function action_gate:initialize(loading)
 		self.tip_close = string_table():get_by_id(self.st.tip_close)
 	else
 		self.tip_close = nil
-	end
-
-	local disable_snd
-	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
-	-- впервые (т.е. после загрузки уровня или после загрузки сохраненной игры),
-	-- иначе игрок услышит хлопок...
-	if not self.st.script_used_more_than_once then
-		disable_snd = true
-		self.st.script_used_more_than_once = true
-	end
-	if self.st.closed then
-		self:close_gate()
-	else
-		self:open_gate(disable_snd)
 	end
 
 	self.object:set_nonscript_usable(false)
@@ -190,8 +190,8 @@ function action_gate:is_closed()
 	end
 end
 
-function action_gate:close_gate()
-	local disable_snd = self:is_closed()
+function action_gate:close_gate(disable_snd)
+	--local disable_snd = self:is_closed()
 	if not disable_snd then
 		if self.st.snd_close_start then
 			self:gate_play_snd_from_set(self.st.snd_close_start)
@@ -266,6 +266,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
+	--st.state     = utils.cfg_get_string(ini, section, "state", npc, false, "free")
 	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	if not st.locked then
