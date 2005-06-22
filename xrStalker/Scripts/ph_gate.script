@@ -5,6 +5,9 @@
 -- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
+local def_min_limit = 0.0
+local def_max_limit = 100.0 * math.pi / 180.0
+
 class "action_gate"
 
 function action_gate:__init(obj, storage)
@@ -32,15 +35,27 @@ function action_gate:initialize(loading)
 	end
 	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
 	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
+	
+	if self.st.locked then
+	    local angle_left = self.joint_left:get_axis_angle(1)
+	    local angle_right = self.joint_right:get_axis_angle(1)
+	    self.joint_left:set_limits(angle_left, angle_left, 1)
+	    self.joint_right:set_limits(angle_right, angle_right, 1)
+	else
+	    self.joint_left:set_limits(def_min_limit, def_max_limit, 1)
+	    self.joint_right:set_limits(def_min_limit, def_max_limit, 1)
+	end
 
 	self.left_low_limits, self.left_hi_limits = 0, 0
 	self.left_low_limits, self.left_hi_limits	= self.joint_left:get_limits(self.left_low_limits, self.left_hi_limits, 0)
+	printf("_bp: left_limits(%f,%f)", self.left_low_limits, self.left_hi_limits)
 
 	self.right_low_limits, self.right_hi_limits = 0, 0
 	self.right_low_limits, self.right_hi_limits	= self.joint_right:get_limits(self.right_low_limits, self.right_hi_limits, 0)
+	printf("_bp: right_limits(%f,%f)", self.right_low_limits, self.right_hi_limits)
 
 	self.run = 0
-	self.block = false
+	--self.block = false
 	self.soundless_block = false
 
 	if self.st.tip_open then
@@ -124,7 +139,8 @@ function action_gate:close_check()
 		return false
 	end
 
-	if self.block then
+	--if self.block then
+	if self.st.locked then
 		return self:is_closed()
 	end
 	printf("_bp: close_check(): false")
@@ -132,13 +148,13 @@ function action_gate:close_check()
 end
 
 function action_gate:close_action()
-	printf("_bp: close_action(): %d", time_global())
+	--printf("_bp: close_action(): %d", time_global())
 
 	printf("_bp: action_gate:update(): gate blocked")
 	-- Закрыли до предела, будем блокировать
 	self.joint_left:set_max_force_and_velocity(10000, -1, 1)
-	self.joint_right:set_max_force_and_velocity(10000, 1, 1)
-	self.block = false
+	self.joint_right:set_max_force_and_velocity(10000, -1, 1)
+	--self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
 	if not self.soundless_block and self.st.snd_close_stop then
 		self:gate_play_snd_from_set(self.st.snd_close_stop)
@@ -154,8 +170,8 @@ function action_gate:open_gate(disable_snd)
 	end
 	
 	self.joint_left:set_max_force_and_velocity(200, 3, 0)
-	self.joint_right:set_max_force_and_velocity(200, -3, 0)
-	self.block = false
+	self.joint_right:set_max_force_and_velocity(200, 3, 0)
+	--self.block = false
 
 	if self.tip_close then
 		self.object:set_tip_text(self.tip_close)
@@ -163,12 +179,12 @@ function action_gate:open_gate(disable_snd)
 end
 
 function action_gate:is_closed()
-	local angle_left = self.joint_left:get_axis_angle(90)
-	local angle_right = self.joint_right:get_axis_angle(-90)
+	local angle_left = self.joint_left:get_axis_angle(1)
+	local angle_right = self.joint_right:get_axis_angle(1)
 	printf("_bp: action_gate:update(): left: angle %f limits %f, %f; right: angle %f limits %f, %f",
 		angle_left, self.left_low_limits, self.left_hi_limits,
 		angle_right, self.right_low_limits, self.right_hi_limits)
-	if angle_left <= self.left_hi_limits and angle_right >= self.right_hi_limits then
+	if angle_left <= self.left_low_limits and angle_right <= self.right_low_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
@@ -183,19 +199,15 @@ function action_gate:close_gate()
 	end
 
 	-- Ставим коллбек для отлова окончания закрытия двери (чтобы заблокировать ее и проиграть звук, если нужно):
-	printf("_bp: action_gate: setting physics callback from close_gate")
-	--level.add_call(self, "close_check", "close_action") -- OK
-	self.object:set_fastcall(self.fastcall,self)
-	self.object:set_fastcall(self.fastcall,self)
-	self.object:set_fastcall(self.fastcall,self)
-	--level.add_call(self, self.close_check, self.close_action)
-	--level.remove_call(self, self.close_check, self.close_action)
-	--level.add_call(self, action_gate.close_check, action_gate.close_action)
-	--level.remove_calls_for_object(self);
+	--printf("_bp: action_gate: setting physics callback from close_gate")
+	--self.object:set_fastcall(self.fastcall,self)
+	--self.object:set_fastcall(self.fastcall,self)
+	--self.object:set_fastcall(self.fastcall,self)
+
 	printf("_bp: action_gate:close_gate()")
-	self.joint_left:set_max_force_and_velocity(200, -3, 1)
+	self.joint_left:set_max_force_and_velocity(200, 3, 1)
 	self.joint_right:set_max_force_and_velocity(200, 3, 1)
-	self.block = true -- Закрываем и блокируем	
+	--self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
 
 	if self.tip_open then
@@ -228,11 +240,11 @@ function action_gate:gate_callback(gate, actor)
 		return
 	end
 
-	local angle_left = self.joint_left:get_axis_angle(90)
-	local angle_right = self.joint_right:get_axis_angle(-90)
+	local angle_left = self.joint_left:get_axis_angle(1)
+	local angle_right = self.joint_right:get_axis_angle(1)
 
 	if angle_left - self.left_low_limits < self.left_hi_limits - angle_left and
-	   angle_right - self.right_low_limits > self.right_hi_limits - angle_right then
+	   angle_right - self.right_low_limits < self.right_hi_limits - angle_right then
 		self:open_gate(false)
 	else
 		self:close_gate(false)
