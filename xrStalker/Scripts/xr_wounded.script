@@ -337,7 +337,7 @@ function init_wounded(npc, ini, section, st, scheme)
 	
 	if tostring(section) == "nil" then
 		-- Загружаем дефолты!
-		if npc:character_community() == "monolith"
+		if npc:character_community() == "monolith" then
 			st.hp_state			= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
 			st.hp_state_see		= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
 			st.psy_state		= xr_meet.parse_data(npc, "")
