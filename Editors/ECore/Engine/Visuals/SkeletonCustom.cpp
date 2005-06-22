@@ -172,6 +172,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	//Msg				("skeleton: %s",N);
 	inherited::Load	(N, data, dwFlags);
 
+    pUserData		= 0;
 	// User data
 	IReader* UD 	= data->open_chunk(OGF_S_USERDATA);
 #ifndef _EDITOR    
