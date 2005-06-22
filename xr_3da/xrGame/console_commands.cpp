@@ -1600,18 +1600,14 @@ public:
 #endif
 
 class CCC_PHIterations : public CCC_Integer {
-private: 
-int	value;
 public:
 		CCC_PHIterations(LPCSTR N) :
-		CCC_Integer(N,&value,5,50)
+		CCC_Integer(N,&phIterations,5,50)
 		{};
 	  virtual void	Execute	(LPCSTR args)
 	  {
-		  CCC_Integer::Execute(args);
-		  dxWorld w;
-		  dWorldSetQuickStepNumIterations(&w,value);
-		  phIterations=value;
+		  CCC_Integer::Execute	(args);
+		  dWorldSetQuickStepNumIterations(NULL,phIterations);
 	  }
 };
 

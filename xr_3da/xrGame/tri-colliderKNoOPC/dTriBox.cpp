@@ -208,7 +208,7 @@ contact->depth = outDepth;
   dReal signum;
   //sepparation along tri plane normal;
   const dReal *triAx	=T->norm;
- //dNormalize3(triAx);
+ //accurate_normalize(triAx);
 
 
  dReal sidePr=
@@ -327,7 +327,7 @@ dVector3 axis,outAx;
 #define TEST(ax,ox,c) \
 for(i=0;i<3;++i){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
-	dNormalize3(axis);\
+	accurate_normalize(axis);\
 	int ix1=(i+1)%3;\
 	int ix2=(i+2)%3;\
 	sidePr=\
@@ -361,7 +361,7 @@ dVector3 pos;
 #define TEST(ax,ox,c) \
 for(i=0;i<3;++i){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
-	dNormalize3(axis);\
+	accurate_normalize(axis);\
 	int ix1=(i+1)%3;\
 	int ix2=(i+2)%3;\
 	sidePr=\

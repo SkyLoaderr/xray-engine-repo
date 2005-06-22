@@ -4,7 +4,7 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"
 #include "gamemtllib.h"
-
+#include "MathUtils.h"
 void CPHContactBodyEffector::Init(dBodyID body,const dContact& contact,SGameMtl* material)
 {
 	CPHBaseBodyEffector::Init(body);
@@ -43,7 +43,7 @@ void CPHContactBodyEffector::Apply()
 		if(!m_material->Flags.is(SGameMtl::flPassable))
 		{
 			dVector3& norm=m_contact.geom.normal;
-			dNormalize3(norm);
+			accurate_normalize(norm);
 			dMass m;
 			dBodyGetMass(m_body,&m);
 			dReal prg=1.f*dDOT(force,norm);//+dDOT(linear_velocity,norm)*m.mass/fixed_step

@@ -3,6 +3,7 @@
 
 #include "TriPrimitiveCollideClassDef.h"
 #include "../ode_include.h"
+#include "../MathUtils.h"
 struct Triangle;
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
@@ -181,7 +182,7 @@ inline dReal FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* Bx
 
 	dVector3 fragmentonAx={Pt2[0]-Pt1[0],Pt2[1]-Pt1[1],Pt2[2]-Pt1[2]};
 	dReal BxExPr;
-	dNormalize3(fragmentonAx);
+	accurate_normalize(fragmentonAx);
 	dReal BxPPr=dDOT(fragmentonAx,BxP);
 	BxExPr=
 		dFabs(dDOT14(fragmentonAx,R+0)*BxEx[0])+
@@ -199,7 +200,7 @@ inline dReal FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* Bx
 
 	dVector3 crossAx0;
 	dCROSS114(crossAx0,=,fragmentonAx,R+0);
-	dNormalize3(crossAx0);	
+	accurate_normalize(crossAx0);	
 	BxExPr=
 		dFabs(dDOT14(crossAx0,R+0)*BxEx[0])+
 		dFabs(dDOT14(crossAx0,R+1)*BxEx[1])+
@@ -210,7 +211,7 @@ inline dReal FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* Bx
 
 	dVector3 crossAx1;
 	dCROSS114(crossAx1,=,fragmentonAx,R+1);
-	dNormalize3(crossAx1);
+	accurate_normalize(crossAx1);
 	BxExPr=
 		dFabs(dDOT14(crossAx1,R+0)*BxEx[0])+
 		dFabs(dDOT14(crossAx1,R+1)*BxEx[1])+
@@ -221,7 +222,7 @@ inline dReal FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* Bx
 
 	dVector3 crossAx2;
 	dCROSS114(crossAx2,=,fragmentonAx,R+2);
-	dNormalize3(crossAx2);
+	accurate_normalize(crossAx2);
 	BxExPr=
 		dFabs(dDOT14(crossAx2,R+0)*BxEx[0])+
 		dFabs(dDOT14(crossAx2,R+1)*BxEx[1])+
@@ -293,7 +294,7 @@ dReal* axis;
 dReal currentDepth,depth;
 dReal currentDistance,distanse;
 dReal BxExPr;
-dNormalize3(fragmentonAx);
+accurate_normalize(fragmentonAx);
 dReal BxPPr=dDOT(fragmentonAx,BxP);
 
 BxExPr=
@@ -322,7 +323,7 @@ distance=currentDistance;
 else 
 dVector3 crossAx0;
 dCROSS114(crossAx0,=,fragmentonAx,R+0);
-dNormalize3(crossAx0);	
+accurate_normalize(crossAx0);	
 BxExPr=
 dFabs(dDOT14(crossAx0,R+0)*BxEx[0])+
 dFabs(dDOT14(crossAx0,R+1)*BxEx[1])+
@@ -333,7 +334,7 @@ dReal depth0=BxExPr/2.f-dFabs(distance0);
 
 dVector3 crossAx1;
 dCROSS114(crossAx1,=,fragmentonAx,R+1);
-dNormalize3(crossAx1);
+accurate_normalize(crossAx1);
 BxExPr=
 dFabs(dDOT14(crossAx1,R+0)*BxEx[0])+
 dFabs(dDOT14(crossAx1,R+1)*BxEx[1])+
@@ -344,7 +345,7 @@ dReal depth1=BxExPr/2.f-dFabs(distance1);
 
 dVector3 crossAx2;
 dCROSS114(crossAx2,=,fragmentonAx,R+2);
-dNormalize3(crossAx2);
+accurate_normalize(crossAx2);
 BxExPr=
 dFabs(dDOT14(crossAx2,R+0)*BxEx[0])+
 dFabs(dDOT14(crossAx2,R+1)*BxEx[1])+

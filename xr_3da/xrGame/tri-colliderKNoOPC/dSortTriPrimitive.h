@@ -147,7 +147,7 @@ int dSortTriPrimitiveCollide (
 		dVectorSub(tri.side1,vertices[2],vertices[1]);
 		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
-		dNormalize3(tri.norm);
+		accurate_normalize(tri.norm);
 		
 		tri.pos=dDOT(vertices[0],tri.norm);//
 		tri.pos=dDOT(vertices[0],tri.norm);

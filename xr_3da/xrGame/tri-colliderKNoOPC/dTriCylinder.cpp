@@ -2,59 +2,62 @@
 #include "dTriColliderCommon.h"
 #include "../dCylinder/dCylinder.h"
 #include "dTriCylinder.h"
+#include "../MathUtils.h"
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+/*(lp+t*lv-cp)^2=r^2 => t1,t2 =>O1=lp+t1*lv;O2=lp+t2*lv */
+//O1,O2 seems to be sphere line intersections
 bool circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal* lv,const dReal* lp,dReal sign,dVector3 point){
 
-dVector3 LC={lp[0]-cp[0],lp[1]-cp[1],lp[2]-cp[2]};
+	dVector3 LC={lp[0]-cp[0],lp[1]-cp[1],lp[2]-cp[2]};
 
-dReal A,B,C,B_A,B_A_2,D;
-dReal t1,t2;
-A=dDOT(lv,lv);
-B=dDOT(LC,lv);
-C=dDOT(LC,LC)-r*r;
-B_A=B/A;
-B_A_2=B_A*B_A;
-D=B_A_2-C;
-if(D<0.f){
-	
-	point[0]=lp[0]-lv[0]*B;
-	point[1]=lp[1]-lv[1]*B;
-	point[2]=lp[2]-lv[2]*B;
-	return false;
-	
-}
-else{
-t1=-B_A-_sqrt(D);
-t2=-B_A+_sqrt(D);
+	dReal A,B,C,B_A,B_A_2,D;
+	dReal t1,t2;
+	A=dDOT(lv,lv);
+	B=dDOT(LC,lv);
+	C=dDOT(LC,LC)-r*r;
+	B_A=B/A;
+	B_A_2=B_A*B_A;
+	D=B_A_2-C;
+	if(D<0.f){
+		
+		point[0]=lp[0]-lv[0]*B;
+		point[1]=lp[1]-lv[1]*B;
+		point[2]=lp[2]-lv[2]*B;
+		return false;
+		
+	}
+	else{
+	t1=-B_A-_sqrt(D);
+	t2=-B_A+_sqrt(D);
 
-dVector3 O1={lp[0]+lv[0]*t1,lp[1]+lv[1]*t1,lp[2]+lv[2]*t1};
-dVector3 O2={lp[0]+lv[0]*t2,lp[1]+lv[1]*t2,lp[2]+lv[2]*t2};
-//dVector3 test1={O1[0]-cp[0],O1[1]-cp[1],O1[2]-cp[2]};
-//dVector3 test2={O2[0]-cp[0],O2[1]-cp[1],O2[2]-cp[2]};
-//dReal t=_sqrt(dDOT(test1,test1));
-//t=_sqrt(dDOT(test2,test2));
+	dVector3 O1={lp[0]+lv[0]*t1,lp[1]+lv[1]*t1,lp[2]+lv[2]*t1};
+	dVector3 O2={lp[0]+lv[0]*t2,lp[1]+lv[1]*t2,lp[2]+lv[2]*t2};
+	//dVector3 test1={O1[0]-cp[0],O1[1]-cp[1],O1[2]-cp[2]};
+	//dVector3 test2={O2[0]-cp[0],O2[1]-cp[1],O2[2]-cp[2]};
+	//dReal t=_sqrt(dDOT(test1,test1));
+	//t=_sqrt(dDOT(test2,test2));
 
-dReal cpPr=sign*dDOT(cn,cp);
+	dReal cpPr=sign*dDOT(cn,cp);
 
-dReal dist1=(sign*dDOT41(cn,O1)-cpPr);
-dReal dist2=(sign*dDOT41(cn,O2)-cpPr);
+	dReal dist1=(sign*dDOT41(cn,O1)-cpPr);
+	dReal dist2=(sign*dDOT41(cn,O2)-cpPr);
 
-if(dist1<dist2){
-				point[0]=O1[0];
-				point[1]=O1[1];
-				point[2]=O1[2];
-				}
-else{			point[0]=O2[0];
-				point[1]=O2[1];
-				point[2]=O2[2];
-				}
-				
+	if(dist1<dist2){
+					point[0]=O1[0];
+					point[1]=O1[1];
+					point[2]=O1[2];
+					}
+	else{			point[0]=O2[0];
+					point[1]=O2[1];
+					point[2]=O2[2];
+					}
+					
 
-return true;
-}
+	return true;
+	}
 }
 
 int dSortedTriCyl (
@@ -106,7 +109,7 @@ int dSortedTriCyl (
 
 	
 	if(dist>0.f) 
-		return 0;
+			return 0;
 	dReal depth=sidePr-dist;
 	outDepth=depth;
 	signum=-1.f;
@@ -249,6 +252,16 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+//#define CHECK_EXIT
+#ifdef  CHECK_EXIT
+	int Check (int check)
+	{
+		return check;
+	}
+	#define RETURN0				return Check(0)
+#else	
+	#define RETURN0				return 0
+#endif
 
 		int dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
@@ -289,7 +302,7 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 ////////////////////////////////////////////////////////////////////////////
 //sepparation along tri plane normal;///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-dNormalize3(triAx);
+accurate_normalize(triAx);
 
 //cos0=dDOT14(triAx,R+0);
 cos1=dFabs(dDOT14(triAx,R+1));
@@ -306,13 +319,13 @@ sin1=_sqrt(REAL(1.)-cos1*cos1);
 dReal sidePr=cos1*hlz+sin1*radius;
 
 dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
-if(dist>0.f) return 0;
+if(dist>0.f) RETURN0;
 dReal depth=sidePr-dFabs(dist);
 outDepth=depth;
 signum=dist>0.f ? 1.f : -1.f;
 
 code=0;
-if(depth<0.f) return 0;
+if(depth<0.f) RETURN0;
 
 dReal depth0,depth1,depth2,dist0,dist1,dist2;
 bool isPdist0,isPdist1,isPdist2;
@@ -355,7 +368,7 @@ if(depth0>depth1)
 					}
 				}
 			else 
-				return 0;
+				RETURN0;
 		else
 			if(testV2){
 				if(depth2<outDepth) 
@@ -366,7 +379,7 @@ if(depth0>depth1)
 					}
 			}
 			else 
-				return 0;
+				RETURN0;
 else
 		if(depth1>depth2)
 			if(testV1){
@@ -378,7 +391,7 @@ else
 					}
 			}
 			else 
-				return 0;
+				RETURN0;
 
 		else
 			if(testV2){
@@ -389,7 +402,7 @@ else
 					code=2;
 					}
 			}
-			else return 0;
+			else RETURN0;
 }
 
 
@@ -406,7 +419,7 @@ dReal pointDepth=0.f;
 	axis[1]=v##vx[1]-p[1]-R[5]*posProj;\
 	axis[2]=v##vx[2]-p[2]-R[9]*posProj;\
 \
-	dNormalize3(axis);\
+	accurate_normalize(axis);\
 \
 \
 	dist0=dDOT(v0,axis)-dDOT(p,axis);\
@@ -442,7 +455,7 @@ dReal pointDepth=0.f;
 							}\
 					}\
 	}\
-	else return 0;\
+	else RETURN0;\
 			\
 \
 \
@@ -471,7 +484,7 @@ bool outV2=true;
 /////////////////////////////////////////////////////////////////////////////
 #define TEST(ax,nx,ox,c)	if(cylinderCrossesLine(p,R+1,hlz,v##ax,v##nx,triSideAx##ax,tpos))	{\
 	dCROSS114(axis,=,triSideAx##ax,R+1);\
-	dNormalize3(axis);\
+	accurate_normalize(axis);\
 	dist##ax=dDOT(v##ax,axis)-dDOT(p,axis);\
 	dist##ox=dDOT(v##ox,axis)-dDOT(p,axis);\
 \
@@ -497,20 +510,20 @@ depth##ox=radius-dFabs(dist##ox);\
 						code=c;\
 					}\
 				}\
-			else if(depth##ox<0.f) return 0;\
+			else if(depth##ox<0.f) RETURN0;\
 \
 }\
 }
 
-dNormalize3(triSideAx0);
+accurate_normalize(triSideAx0);
 if(outV0&&outV1) 
 TEST(0,1,2,7)
 
-dNormalize3(triSideAx1);
+accurate_normalize(triSideAx1);
 if(outV1&&outV2) 
 TEST(1,2,0,8)
 
-dNormalize3(triSideAx2);
+accurate_normalize(triSideAx2);
 if(outV2&&outV0) 
 TEST(2,0,1,9)
 #undef TEST
@@ -552,7 +565,7 @@ tAx[2]=R[10]*cos0-R[8]*cos2;\
 dCROSS(axis,=,triSideAx##ax,tAx);\
 \
 }\
-dNormalize3(axis);\
+accurate_normalize(axis);\
 dist##ax=dDOT(v##ax,axis)-dDOT(p,axis);\
 if(dist##ax*dDOT(axis,triSideAx##nx)>0.f){\
 \
@@ -591,7 +604,7 @@ depth##ox=sidePr-dFabs(dist##ox);\
 						code=c;\
 					}\
 				}\
-			else if(depth##ox<0.f) return 0;\
+			else if(depth##ox<0.f) RETURN0;\
 \
 \
 }\
@@ -599,13 +612,13 @@ depth##ox=sidePr-dFabs(dist##ox);\
 }
 
 if(7!=code)
-TEST(0,1,2,10)
+	TEST(0,1,2,10)
 
 if(8!=code)
-TEST(1,2,0,11)
+	TEST(1,2,0,11)
 
 if(9!=code)
-TEST(2,0,1,12)
+	TEST(2,0,1,12)
 
 #undef TEST
 

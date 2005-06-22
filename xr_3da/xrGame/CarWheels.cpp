@@ -165,7 +165,7 @@ void CCar::SWheel::ApplyDamage(u16 level)
 	
 		dJointGetHinge2Axis2(dj,v);
 		v[0]+=0.1f;v[1]+=0.1f;v[2]+=0.1f;
-		dNormalize3(v);
+		accurate_normalize(v);
 		dJointSetHinge2Axis2(dj,v[0],v[1],v[2]);
 		joint->GetJointSDfactors(sf,df);
 		sf/=30.f;df*=8.f;

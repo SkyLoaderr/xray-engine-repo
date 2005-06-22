@@ -107,6 +107,7 @@ public:
 	bool b_starting;
 	bool b_stalling;
 	bool b_breaks;
+	bool b_transmission_switching;
 
 	u32	 m_dwStartTime;
 	float m_fuel;

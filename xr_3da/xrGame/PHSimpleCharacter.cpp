@@ -511,7 +511,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		dVector3 sidedir;
 		dVector3 y={0.,1.,0.};
 		dCROSS(sidedir,=,m_control_force,y);
-		dNormalize3(sidedir);
+		accurate_normalize(sidedir);
 		dReal vProj=dDOT(sidedir,chVel);
 
 		dBodyAddForce(m_body,m_control_force[0],m_control_force[1],m_control_force[2]);//+2.f*9.8f*70.f
@@ -522,7 +522,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 				-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
 				);
 		//if(b_clamb_jump){
-		//dNormalize3(m_control_force);
+		//accurate_normalize(m_control_force);
 		//dReal proj=dDOT(m_control_force,chVel);
 		//if(proj<0.f)
 		//		dBodyAddForce(m_body,-chVel[0]*500.f,-chVel[1]*500.f,-chVel[2]*500.f);
@@ -671,7 +671,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
 			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
-			dNormalize3(norm);
+			accurate_normalize(norm);
 			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
 			if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
 				return 
@@ -687,7 +687,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
 			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
-			dNormalize3(norm);
+			accurate_normalize(norm);
 			if(norm[1]>CHWON_ANG_COS) return 
 				true;
 		}
@@ -747,18 +747,18 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	dCROSS(sidedir,=,y,accel);
 	if(b_clamb_jump&&b_valide_wall_contact){
 		dCROSS(fvdir,=,sidedir,m_wall_contact_normal);
-		dNormalize3(fvdir);
+		accurate_normalize(fvdir);
 		dVectorAddMul(m_control_force,fvdir,m.mass*pull_force);
 	}
 	else{
 		 if(b_valide_ground_contact&&(m_ground_contact_normal[1]>M_SQRT1_2)){//M_SQRT1_2//0.8660f
 		 dCROSS(fvdir,=,sidedir,m_ground_contact_normal);
-		 dNormalize3(fvdir);
+		 accurate_normalize(fvdir);
 		 dVectorAddMul(m_control_force,fvdir,m.mass*pull_force);
 		 }
 		else{
 			dVectorSet(fvdir,accel);
-			dNormalize3(fvdir);
+			accurate_normalize(fvdir);
 			dVectorAddMul(m_control_force,fvdir,m.mass*pull_force*1.5f);
 		}
 
