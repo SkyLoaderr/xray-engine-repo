@@ -114,18 +114,18 @@ using namespace Opcode;
 
 //! TO BE DOCUMENTED
 
-IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
+ICF bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 {
 	Point vmin, vmax;
-	for(u32 q=0;q<=2;++q)
-	{
-		if(normal[q]>0.0f)	{ vmin[q] =-maxbox[q]; vmax[q]= maxbox[q]; }
-		else				{ vmin[q] = maxbox[q]; vmax[q]=-maxbox[q]; }
-	}
-	if((normal|vmin)+d>0.0f) return false;
-	if((normal|vmax)+d>=0.0f) return true;
-
-	return false;
+	if(normal[0]>0.0f)	{ vmin[0] =-maxbox[0]; vmax[0]= maxbox[0]; }
+	else				{ vmin[0] = maxbox[0]; vmax[0]=-maxbox[0]; }
+	if(normal[1]>0.0f)	{ vmin[1] =-maxbox[1]; vmax[1]= maxbox[1]; }
+	else				{ vmin[1] = maxbox[1]; vmax[1]=-maxbox[1]; }
+	if(normal[2]>0.0f)	{ vmin[2] =-maxbox[2]; vmax[2]= maxbox[2]; }
+	else				{ vmin[2] = maxbox[2]; vmax[2]=-maxbox[2]; }
+	if((normal|vmin)+d >  0.0f)	return false;
+	if((normal|vmax)+d >= 0.0f)	return true;
+	return	false		;
 }
 
 //! TO BE DOCUMENTED

@@ -27,23 +27,23 @@ public:
 		d			= - n.normalize(_n).dotproduct(_p);
 		return *this;
 	}
-	IC	SelfRef	project(_vector2<T> &pdest, _vector2<T> &psrc)
+	IC	SelfRef	project		(_vector2<T> &pdest, _vector2<T> &psrc)
 	{
 		pdest.mad	(psrc,n,-classify(psrc));
 		return *this;
 	}
-	IC	T		classify(const _vector2<T> &v) const	
+	IC	T		classify	(const _vector2<T> &v) const	
 	{
 		return n.dotproduct(v)+d;
 	}
-	IC	SelfRef	normalize() 
+	IC	SelfRef	normalize	() 
 	{
 		T denom = 1.f / n.magnitude();
 		n.mul(denom);
 		d*=denom;
 		return *this;
 	}
-	IC	T	distance	(const _vector2<T> &v)	
+	IC	T		distance	(const _vector2<T> &v)	
 	{
 		return _abs(classify(v));
 	}
