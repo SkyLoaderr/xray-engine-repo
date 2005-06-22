@@ -105,8 +105,8 @@ function mp_main:InitControls()
 	
 	st = CUIEditBox()
 	st:SetAutoDelete(true)
-	xml:InitLabel("edit_player_name",0,st)
 	st:SetText("Player_name")
+	xml:InitEditBox("edit_player_name",0,st)
 	self.bk:AttachChild(st)
 	self.player_name = st
 	
@@ -165,8 +165,8 @@ function mp_main:InitControls()
 	
 	-- SET DEFAULT VALUES FOR CONTROLS	
 	local opt = COptionsManager()
-	opt:SetDefaultValues("mm_mp_client")
-	opt:SetDefaultValues("mm_mp_server")
+	opt:SetCurrentValues("mm_mp_client")
+	opt:SetCurrentValues("mm_mp_server")
 end
 
 function mp_main:InitCallBacks()
