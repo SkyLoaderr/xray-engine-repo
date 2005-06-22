@@ -49,7 +49,7 @@ function action_process_enemy:hit_callback(obj, amount, local_direction, who, bo
 		return
 	end
 
-	printf("_bp: action_process_enemy: hit_callback(): obj='%s'", obj:name())
+--	printf("_bp: action_process_enemy: hit_callback(): obj='%s'", obj:name())
 	if amount == 0 then
 		-- Кто-то стрельнул в воздух
 		return
@@ -97,4 +97,3 @@ function disable_scheme( npc, scheme )
 		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
 	end
 end
-
