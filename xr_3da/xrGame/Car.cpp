@@ -1424,7 +1424,7 @@ float CCar::EngineDriveSpeed()
 	if(b_transmission_switching)
 	{
 		calc_rpm=m_max_rpm;
-		if(calc_rpm>m_power_rpm) b_transmission_switching=false;
+		if(m_current_rpm>m_power_rpm) b_transmission_switching=false;
 	}else
 	{
 		calc_rpm=EngineRpmFromWheels();
