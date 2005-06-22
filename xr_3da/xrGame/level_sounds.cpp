@@ -133,6 +133,7 @@ void CLevelSoundManager::Load()
 	CInifile gameLtx	(gameLtxPath);
 	if (gameLtx.section_exist(Level().name())){
 		if (gameLtx.line_exist(Level().name(),"music_tracks")){
+			Msg("- Loading music tracks...");
 			LPCSTR music_sect		= gameLtx.r_string(Level().name(),"music_tracks");
 			if (music_sect && music_sect[0]){
 				CInifile::Sect&	S	= gameLtx.r_section	(music_sect);
@@ -143,7 +144,6 @@ void CLevelSoundManager::Load()
 					m_MusicTracks.back().Load(*it->first,*it->second);
 				}
 			}
-			if (!m_MusicTracks.empty()) Msg("- Loading %d music tracks...",m_MusicTracks.size());
 		}
 	}
 }
