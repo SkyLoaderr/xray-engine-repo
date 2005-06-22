@@ -2,51 +2,43 @@
 
 <game_information_portions>
 
-    <info_portion id="agroprom_military_case">
+	<info_portion id="agroprom_military_case">
 		<task>agroprom_get_military_documents</task>
 		<action>level_tasks.notify_new_task</action>
-    </info_portion>
-    <info_portion id="agroprom_military_case_have">
-    </info_portion>
-    <info_portion id="agroprom_military_case_done">
-    </info_portion>
+	</info_portion>
+	<info_portion id="agroprom_military_case_have">
+	</info_portion>
+	<info_portion id="agroprom_military_case_done">
+	</info_portion>
 
-    <info_portion id="agr_krot_band">
+	<info_portion id="agr_krot_band_start">
 		<task>agr_meet_krot_band</task>
 		<article>storyline_seriy_flash_info</article>
 		<action>level_tasks.notify_new_task</action>
-    </info_portion>
-    <info_portion id="agr_krot_band_done">
-    	<disable>agr_krot_band</disable>
-    </info_portion>
+	</info_portion>
+	<info_portion id="agr_krot_band_done">
+		<disable>agr_krot_band_start</disable>
+	</info_portion>
 
-    <info_portion id="agr_find_gunslinger_cache">
+	<info_portion id="agr_find_gunslinger_cache">
 		<task>agroprom_find_gunslinger_cache</task>
 		<article>storyline_gunslinger_cache_info</article>
 		<action>level_tasks.notify_new_task</action>
-    </info_portion>
-    <info_portion id="agr_find_gunslinger_cache_done">
-    	<disable>agr_find_gunslinger_cache</disable>
-    </info_portion>
-
-
-    <info_portion id="agroprom_find_stalker_phantom">
-    	<task>agroprom_find_stalker_phantom</task>
-    	<article>storyline_gunslinger_flash_info</article>
-    	<action>level_tasks.notify_new_task</action>
-    </info_portion>
-    <info_portion id="agroprom_find_stalker_phantom_done">
-    	<disable>agroprom_find_stalker_phantom</disable>
-    </info_portion>
-
-	<!-- infoportions для ситуации на заводе на агропроме -->
-	<info_portion id="agr_factory_combat_start">
+	</info_portion>
+	<info_portion id="agr_find_gunslinger_cache_done">
+		<disable>agr_find_gunslinger_cache</disable>
 	</info_portion>
 
-	<info_portion id="agr_factory_need_help">
+
+	<info_portion id="agroprom_find_stalker_phantom">
+		<task>agroprom_find_stalker_phantom</task>
+		<article>storyline_gunslinger_flash_info</article>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
+	<info_portion id="agroprom_find_stalker_phantom_done">
+		<disable>agroprom_find_stalker_phantom</disable>
 	</info_portion>
 
-	<!-- начало атаки собак -->
 	<info_portion id="agr_rush_start">
 	</info_portion>
 
@@ -63,20 +55,34 @@
 	</info_portion>
 	<info_portion id="agr_factory_assault_skirmish">
 	</info_portion>
-    <info_portion id="agr_help_stalkers_start">
+	<info_portion id="agr_help_stalkers_start">
 		<task>agr_help_stalkers</task>
 		<action>level_tasks.notify_new_task</action>
-    </info_portion>
+	</info_portion>
 	<info_portion id="agr_help_stalkers_assault_dead">
 	</info_portion>
 	<info_portion id="agr_help_stalkers_defence_dead">
 	</info_portion>
-    <info_portion id="agr_help_stalkers_done">
-    	<disable>agr_help_stalkers_start</disable>
-    	<disable>agr_help_stalkers_assault_dead</disable>
-    	<disable>agr_help_stalkers_defence_dead</disable>
-    </info_portion>
+	<info_portion id="agr_help_stalkers_done">
+		<disable>agr_help_stalkers_start</disable>
+	</info_portion>
 
+	<info_portion id="agr_krot_skirmish_start">
+	</info_portion>
+	<info_portion id="agr_krot_dead">
+	</info_portion>
+	<info_portion id="agr_help_krot_start">
+		<task>agr_help_krot</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
+	<info_portion id="agr_help_krot_done">
+		<disable>agr_help_krot_start</disable>
+	</info_portion>
+
+	<info_portion id="agr_factory_spawn_spetsnaz">
+	</info_portion>
+	<info_portion id="agr_krot_go_to_well">
+	</info_portion>
 
 
 
