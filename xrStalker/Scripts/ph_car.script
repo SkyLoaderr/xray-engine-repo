@@ -73,6 +73,10 @@ function action_car:reset_scheme(loading)
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
 
+	if self.st.invulnerable then
+	    self.def_health = self.object.health
+	end
+
 	if loading then
 		self.speed = xr_logic.pstor_retrieve(self.object, "speed")
 		self.loop = xr_logic.pstor_retrieve(self.object, "loop")
@@ -553,6 +557,10 @@ function action_car:update(delta)
 	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 		return
 	end
+	
+	if self.st.invulnerable then
+	    self.object.health = self.def_health
+	end
 end
 
 function action_car:stop_car()
@@ -711,6 +719,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 --function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name, default_val)
 	st.fire_target = utils.cfg_get_string(ini, section, "target", npc, false, gulag_name, "points")
 	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
+	st.invulnerable = utils.cfg_get_bool(ini, section, "invulnerable", npc, false, false)
 
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще не загружены.
 	st.path_fire_info = nil
