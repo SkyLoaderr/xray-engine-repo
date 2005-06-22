@@ -35,7 +35,6 @@
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/DXT.pch"
