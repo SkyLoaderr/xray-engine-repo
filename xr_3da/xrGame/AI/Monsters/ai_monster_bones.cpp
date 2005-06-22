@@ -49,7 +49,7 @@ void bonesBone::Apply()
 
 	// создать матрицу вращения и умножить на mTransform боны
 	Fmatrix M;
-	M.setXYZi (x, y, z);
+	M.setHPB (-y, -x, -z);
 	bone->mTransform.mulB(M);
 }
 

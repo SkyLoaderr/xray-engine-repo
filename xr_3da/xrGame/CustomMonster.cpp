@@ -415,7 +415,7 @@ void CCustomMonster::UpdateCL	()
 
 		if (use_model_pitch()) {
 			Fmatrix M;
-			M.setXYZi (NET_Last.o_torso.pitch, 0.0f, 0.0f);
+			M.setHPB (0.0f, -NET_Last.o_torso.pitch, 0.0f);
 			XFORM().mulB(M);
 		}
 	}

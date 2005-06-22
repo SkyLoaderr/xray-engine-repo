@@ -198,7 +198,7 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 	if (angle_normalize_signed(yaw - cur_yaw) > 0) dy *= -1.f;
 
 	Fmatrix M;
-	M.setXYZi (dy, 0.f, 0.f);
+	M.setHPB (0.f, -dy, 0.f);
 	B->mTransform.mulB(M);
 }
 
