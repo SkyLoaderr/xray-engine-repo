@@ -38,7 +38,7 @@ void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 	CProjector	*P = static_cast<CProjector*>(B->Callback_Param);
 
 	Fmatrix M;
-	M.setXYZi (-P->_current.pitch,0.0f, 0.0f);
+	M.setHPB (0.0f, P->_current.pitch,0.0f);
 	B->mTransform.mulB(M);
 }
 
@@ -50,7 +50,7 @@ void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 	if (angle_normalize_signed(P->_start.yaw - P->_current.yaw) > 0) delta_yaw = -delta_yaw;
 
 	Fmatrix M;
-	M.setXYZi (0.0, delta_yaw, 0.0f);
+	M.setHPB (-delta_yaw, 0.0, 0.0f);
 	B->mTransform.mulB(M);
 }
 

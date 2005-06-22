@@ -203,7 +203,7 @@ void CBreakableObject::Split()
 	//for (u16 k=0; k<K->LL_BoneCount(); k++){
 	
 		//		Fmatrix& M = K->LL_GetTransform(k);
-		//		Fmatrix R; R.setXYZi(0.1,0.1,0.1);
+		//		Fmatrix R; R.setHPB(-0.1,-0.1,-0.1);
 		//		M.mulB		(R);
 		//		Fmatrix S;	S.scale(0.98f,0.98f,0.98f);
 		//		M.mulB		(S);
