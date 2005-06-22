@@ -9,7 +9,7 @@ class CUIOptionsItem;
 class CUIOptionsManager{
 	friend class CUIOptionsItem;
 public:
-	void SetDefaultValues(const char* group);
+	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
 protected:
 	void RegisterItem(CUIOptionsItem* item, const char* group);

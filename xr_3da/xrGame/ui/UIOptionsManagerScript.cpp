@@ -8,8 +8,8 @@
 
 using namespace luabind;
 
-void CUIOptionsManagerScript::SetDefaultValues(const char* group){
-	UI()->OptionsManager()->SetDefaultValues(group);
+void CUIOptionsManagerScript::SetCurrentValues(const char* group){
+	UI()->OptionsManager()->SetCurrentValues(group);
 }
 
 void CUIOptionsManagerScript::SaveValues(const char* group){
@@ -22,7 +22,7 @@ void CUIOptionsManagerScript::script_register(lua_State *L)
 		[
 			class_<CUIOptionsManagerScript>("COptionsManager")
 			.def(							constructor<>())
-			.def("SetDefaultValues",	CUIOptionsManagerScript::SetDefaultValues )
+			.def("SetCurrentValues",	CUIOptionsManagerScript::SetCurrentValues )
 			.def("SaveValues",			CUIOptionsManagerScript::SaveValues )
 		
 

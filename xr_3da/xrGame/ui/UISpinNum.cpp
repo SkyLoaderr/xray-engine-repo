@@ -7,7 +7,6 @@
 #include "StdAfx.h"
 #include "UISpinNum.h"
 #include "UILines.h"
-#include "../../xr_ioconsole.h"
 
 CUISpinNum::CUISpinNum()
 :	m_iVal(0),
@@ -15,8 +14,6 @@ CUISpinNum::CUISpinNum()
 	m_iMax(100),
 	m_iStep(1)
 {
-//	m_entry = ;
-	Register("net_srv_maxplayers", "net_srv");
 
 }
 
@@ -24,17 +21,13 @@ CUISpinNum::~CUISpinNum(){
 
 }
 
-void CUISpinNum::SetDefaultValue(){
-	Console->GetInteger(m_entry.c_str(), m_iVal, m_iMin, m_iMax);
+void CUISpinNum::SetCurrentValue(){
+	GetOptIntegerValue(m_iVal, m_iMin, m_iMax);
 	SetValue();
 }
 
 void CUISpinNum::SaveValue(){
-	char buf[16];
-	xr_string command = m_entry;
-	command += " ";
-	command += itoa(m_iVal, buf, 10);
-    Console->Execute(command.c_str());
+	SaveOptIntegerValue(m_iVal);
 }
 
 void CUISpinNum::Init(float x, float y, float width, float height){

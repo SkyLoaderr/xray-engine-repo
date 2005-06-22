@@ -19,7 +19,7 @@ public:
 	virtual			~CUIEditBox		();
 
 	// CUIOptionsItem
-	virtual void	SetDefaultValue();
+	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
 
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData = NULL);

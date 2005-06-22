@@ -16,7 +16,7 @@ public:
 	virtual ~CUICheckButton(void);
 
 	// CUIOptionsItem
-	virtual void	SetDefaultValue();
+	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
 
 	virtual void OnMouse(float x, float y, EUIMessages mouse_action);

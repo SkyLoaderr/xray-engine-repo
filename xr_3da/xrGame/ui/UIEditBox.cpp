@@ -6,7 +6,7 @@
 #include <dinput.h>
 #include "uieditbox.h"
 #include "../HUDManager.h"
-#include "../../xr_ioconsole.h"
+
 
 static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, 
 						   DIK_F, DIK_G, DIK_H, DIK_I, DIK_J, 
@@ -42,15 +42,12 @@ CUIEditBox::~CUIEditBox(void)
 {
 }	
 
-void CUIEditBox::SetDefaultValue(){
-	SetText(Console->GetString(m_entry.c_str()));
+void CUIEditBox::SetCurrentValue(){
+	SetText(GetOptStringValue());
 }
 
 void CUIEditBox::SaveValue(){
-	xr_string command = m_entry;
-	command += " ";
-	command += GetText();
-	Console->Execute(command.c_str());
+	SaveOptStringValue(GetText());
 }
 
 void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)

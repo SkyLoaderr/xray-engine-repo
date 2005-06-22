@@ -9,7 +9,18 @@ class CUIOptionsItem{
 public:
 	virtual void Register(const char* entry, const char* group);
 protected:
-	virtual void	SetDefaultValue()	=0;
+	virtual void	SetCurrentValue()	=0;
 	virtual void	SaveValue()			=0;
+
+			// string
+			LPCSTR	GetOptStringValue();
+			void	SaveOptStringValue(const char* val);
+			// integer
+			void 	GetOptIntegerValue(int& val, int& min, int& max);
+			void	SaveOptIntegerValue(int val);
+			// bool
+			bool	GetOptBoolValue();
+			void	SaveOptBoolValue(bool val);
+private:
 	xr_string		m_entry;
 };

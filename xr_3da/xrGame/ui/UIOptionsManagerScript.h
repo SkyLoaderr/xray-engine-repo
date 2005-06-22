@@ -4,7 +4,7 @@
 
 class CUIOptionsManagerScript {
 public:
-	void SetDefaultValues(const char* group);
+	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
