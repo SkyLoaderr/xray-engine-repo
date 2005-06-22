@@ -198,7 +198,7 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 	if (angle_normalize_signed(yaw - cur_yaw) > 0) dy *= -1.f;
 
 	Fmatrix M;
-	M.setHPB (0.f, -dy, 0.f);
+	M.setXYZi (dy, 0.f, 0.f);
 	B->mTransform.mulB(M);
 }
 
@@ -264,9 +264,10 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(inventory().Take(smart_cast<CGameObject*>(Obj), false, false)) 
+			if(inventory().CanTakeItem(smart_cast<CInventoryItem*>(Obj))){
 				Obj->H_SetParent(this);
-			else
+				inventory().Take(smart_cast<CGameObject*>(Obj), false, false);
+			}else
 			{
 				NET_Packet				P;
 				u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());

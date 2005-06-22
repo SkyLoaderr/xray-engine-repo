@@ -49,9 +49,13 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if(pFood)
 				pFood->m_eItemPlace = eItemPlaceRuck;
 
-			if(inventory().Take(smart_cast<CGameObject*>(O), false, true)) 
-			{
+			CGameObject* _GO = smart_cast<CGameObject*>(O);
+			
+			if( inventory().CanTakeItem(smart_cast<CInventoryItem*>(_GO)) ){
+
 				O->H_SetParent(smart_cast<CObject*>(this));
+
+				inventory().Take(_GO, false, true);
 				
 
 				//добавить новый артефакт в меню, если
@@ -61,22 +65,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				if( ui&&ui->UIGame() )
 					pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 				
-/*				CArtefact* pArtefact = smart_cast<CArtefact*>(O);
-				if(pGameSP && pArtefact)
-				{
-					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu &&
-						pGameSP->InventoryMenu.IsArtefactMergeShown())
-					{
-						pGameSP->InventoryMenu.AddArtefactToMerger(pArtefact);
-					}
-				}
-*/
-
-
-/*				CScope* pScope = smart_cast<CScope*>(O);
-				CSilencer* pSilencer = smart_cast<CSilencer*>(O);
-				CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(O);
-*/
 				//добавить отсоединенный аддон в инвентарь
 				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
 				{

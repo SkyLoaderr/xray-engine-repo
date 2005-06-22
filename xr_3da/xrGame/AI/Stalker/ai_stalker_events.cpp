@@ -41,8 +41,9 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
 #endif
 			CGameObject	*_O = smart_cast<CGameObject*>(O);
-			if (inventory().Take(_O,true, false)) { //GetScriptControl()
+			if (inventory().CanTakeItem(smart_cast<CInventoryItem*>(_O))) { //GetScriptControl()
 				O->H_SetParent(this);
+				inventory().Take(_O,true, false);
 				if (!inventory().ActiveItem() && GetScriptControl() && smart_cast<CShootingObject*>(O))
 					CObjectHandler::set_goal	(eObjectActionIdle,_O);
 

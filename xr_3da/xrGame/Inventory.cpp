@@ -107,12 +107,12 @@ void CInventory::Clear()
 	m_dwModifyFrame = Device.dwFrame;
 }
 
-bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placement)
+void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placement)
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
 	VERIFY(pIItem);
 
-	if(!CanTakeItem(pIItem)) return false;
+	VERIFY(CanTakeItem(pIItem));
 	
 	pIItem->m_pInventory = this;
 	pIItem->m_drop = false;
@@ -172,13 +172,50 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	CalcTotalWeight();
 	m_dwModifyFrame = Device.dwFrame;
 
-	return true;
+	pIItem->object().processing_deactivate();
+
 }
 
 bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
+
+	pIItem->object().processing_activate(); 
 	
+	switch(pIItem->m_eItemPlace)
+	{
+	case eItemPlaceBelt:{
+			VERIFY(InBelt(pIItem));
+			m_belt.erase(std::find(m_belt.begin(), m_belt.end(), pIItem));
+		}break;
+	case eItemPlaceRuck:{
+			VERIFY(InRuck(pIItem));
+			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
+		}break;
+	case eItemPlaceSlot:{
+			VERIFY(InSlot(pIItem));
+			if(m_iActiveSlot == pIItem->GetSlot()) Activate(NO_ACTIVE_SLOT);
+			m_slots[pIItem->GetSlot()].m_pIItem = NULL;							
+			pIItem->object().processing_deactivate();
+		}break;
+	default:
+		NODEFAULT;
+	};
+	m_all.erase(std::find(m_all.begin(), m_all.end(), pIItem));
+	pIItem->m_pInventory = NULL;
+
+	if (call_drop && smart_cast<CInventoryItem*>(pObj))
+		m_pOwner->OnItemDrop	(smart_cast<CInventoryItem*>(pObj));
+
+	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
+
+	m_drop_last_frame = true;
+
+	return true;
+
+
+/*
 	if(pIItem && (std::find(m_all.begin(),m_all.end(),pIItem) != m_all.end())) 
 	{
 		if (pIItem->GetSlot() == m_iActiveSlot && pIItem->GetSlot() != 0xffffffff &&
@@ -205,8 +242,9 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 		};
 	}
 	return false;
+*/
 }
-
+/*
 void CInventory::Replace(PIItem pIItem)
 {
 	//выкинуть предмет из старого места
@@ -317,7 +355,7 @@ void CInventory::ReplaceAll()
 
 	m_dwModifyFrame = Device.dwFrame;
 }
-
+*/
 
 
 bool CInventory::DropAll()
@@ -380,6 +418,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	pIItem->m_eItemPlace = eItemPlaceSlot;
 	pIItem->OnMoveToSlot();
 	
+	pIItem->object().processing_activate();
 
 	return true;
 }
@@ -411,7 +450,10 @@ bool CInventory::Belt(PIItem pIItem)
 	pIItem->m_eItemPlace = eItemPlaceBelt;
 	m_pOwner->OnItemBelt(pIItem, p);
 	pIItem->OnMoveToBelt();
-	
+
+	if(in_slot)
+		pIItem->object().processing_deactivate();
+
 	return true;
 }
 
@@ -419,8 +461,9 @@ bool CInventory::Ruck(PIItem pIItem)
 {
 	if(!CanPutInRuck(pIItem)) return false;
 	
+	bool in_slot = InSlot(pIItem);
 	//вещь была в слоте
-	if(InSlot(pIItem)) 
+	if(in_slot) 
 	{
 		if(m_iActiveSlot == pIItem->GetSlot()) Activate(NO_ACTIVE_SLOT);
 		m_slots[pIItem->GetSlot()].m_pIItem = NULL;
@@ -440,6 +483,10 @@ bool CInventory::Ruck(PIItem pIItem)
 	m_pOwner->OnItemRuck(pIItem, pIItem->m_eItemPlace);
 	pIItem->m_eItemPlace = eItemPlaceRuck;
 	pIItem->OnMoveToRuck();
+
+	if(in_slot)
+		pIItem->object().processing_deactivate();
+
 	return true;
 }
 
@@ -993,7 +1040,7 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 {
 	VERIFY			(inventory_item);
 	VERIFY			(m_pOwner);
-	VERIFY			(inventory_item->object().H_Parent() == NULL);
+//	VERIFY			(inventory_item->object().H_Parent() == NULL);
 
 	if(!inventory_item->CanTake()) return false;
 

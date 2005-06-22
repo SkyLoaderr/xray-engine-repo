@@ -39,7 +39,7 @@ public:
 	//если у владельца инвентаря ничего не активировано (e.g. трейдер)
 	//strict_placement - сохранить порядок вещей, загруженный из серверного объекта,
 	//иначе вещь ложится на первое доступное место
-	bool Take(CGameObject *pObj, bool bNotActivate, bool strict_placement);
+	void Take(CGameObject *pObj, bool bNotActivate, bool strict_placement);
 	//Выбросить предмет
 	bool Drop(CGameObject *pObj, bool call_drop = true);							// Выбросить объект
 	// Выбросить все
@@ -47,8 +47,8 @@ public:
 	// Очистить всё
 	void Clear();
 	//расположить предметы в инвентаре в соответствии с ItemPlace
-	void ReplaceAll		();
-	void Replace		(PIItem pItem);
+//	void ReplaceAll		();
+//	void Replace		(PIItem pItem);
 
 	
 	// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак

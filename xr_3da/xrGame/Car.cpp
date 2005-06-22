@@ -723,12 +723,11 @@ void CCar::Init()
 	}
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
-	b_exploded						=false;
-	b_engine_on						=false;
-	b_clutch						=false;
-	b_starting						=false;
-	b_stalling						=false;
-	b_transmission_switching		=false;
+	b_exploded=false;
+	b_engine_on=false;
+	b_clutch   =false;
+	b_starting =false;
+	b_stalling =false;
 	m_root_transform.set(bone_map.find(pKinematics->LL_GetBoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
@@ -1145,13 +1144,10 @@ void CCar::Transmission(size_t num)
 
 	if(num<m_gear_ratious.size())
 	{
-		if(CurrentTransmission()!=num)
-		{
-			m_car_sound					->TransmissionSwitch()		;
-			m_current_transmission_num	=num						;
-			m_current_gear_ratio		=m_gear_ratious[num][0]		;
-			b_transmission_switching	=true						;
-		}
+		if(CurrentTransmission()!=num)m_car_sound->TransmissionSwitch();
+		m_current_transmission_num=num;
+		m_current_gear_ratio=m_gear_ratious[num][0];
+
 	}
 #ifdef DEBUG
 	//Log("Transmission switch %d",(u32)num);
@@ -1386,22 +1382,18 @@ float CCar::EnginePower()
 {
 
 	float value;
-	if(b_transmission_switching)
+	if(m_current_rpm<m_min_rpm)
 	{
-		value=0.f;
-	}else{
-		if(m_current_rpm<m_min_rpm)
-		{
-			if(b_starting) value= Parabola(m_min_rpm);
+		if(b_starting) value= Parabola(m_min_rpm);
 
-		}
-		else
-		{
-			if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) 
-															b_starting=false;
-		}
-		value = Parabola(m_current_rpm);
 	}
+	else
+	{
+		if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) 
+														b_starting=false;
+	}
+
+	value = Parabola(m_current_rpm);
 	return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
 }
 float CCar::DriveWheelsMeanAngleRate()
@@ -1420,21 +1412,13 @@ float CCar::DriveWheelsMeanAngleRate()
 float CCar::EngineDriveSpeed()
 {
 	//float wheel_speed,drive_speed=dInfinity;
-	float calc_rpm=0.f;
-	if(b_transmission_switching)
-	{
-		calc_rpm=m_max_rpm;
-		if(calc_rpm>m_power_rpm) b_transmission_switching=false;
-	}else
-	{
-		calc_rpm=EngineRpmFromWheels();
+	float calc_rpm=EngineRpmFromWheels();
 
-		if(!b_clutch&&calc_rpm<m_min_rpm)
-		{
-			calc_rpm=m_min_rpm;
-		}
-		limit_above(calc_rpm,m_max_rpm)		;
+	if(!b_clutch&&calc_rpm<m_min_rpm)
+	{
+		calc_rpm=m_min_rpm;
 	}
+	limit_above(calc_rpm,m_max_rpm);
 	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;
@@ -1491,9 +1475,10 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
-			if(GetInventory()->Take(smart_cast<CGameObject*>(O), false, false)) 
+			if( GetInventory()->CanTakeItem(smart_cast<CInventoryItem*>(O)) ) 
 			{
 				O->H_SetParent(this);
+				GetInventory()->Take(smart_cast<CGameObject*>(O), false, false);
 			}
 			else 
 			{
