@@ -10,7 +10,7 @@
 		//! Constructor from array
 		IC				Point(float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
 		//! Constructor from array
-		IC				Point(const float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
+		IC				Point(const float f[3]) : x(f[0]), y(f[1]), z(f[2])			{}
 		//! Copy constructor
 		IC				Point(const Point& p) : x(p.x), y(p.y), z(p.z)				{}
 		//! Destructor
@@ -31,7 +31,7 @@
 		IC	float		Magnitude()							const		{ return _sqrt(x*x + y*y + z*z);										}
 
 		//! Return largest axis
-		IC	u32		LargestAxis()						const
+		IC	u32			LargestAxis()						const
 						{
 							const float* Vals = &x;
 							u32 m = 0;
@@ -42,23 +42,23 @@
 
 		// Arithmetic operators
 		//! Operator for Point Negate = - Point
-		IC	Point		operator-()							const		{ return Point(-x, -y, -z);							}
+		ICF	Point		operator-()							const		{ return Point(-x, -y, -z);							}
 
 		//! Operator for Point Plus = Point + Point.
-		IC	Point		operator+(const Point& p)			const		{ return Point(x + p.x, y + p.y, z + p.z);			}
+		ICF	Point		operator+(const Point& p)			const		{ return Point(x + p.x, y + p.y, z + p.z);			}
 		//! Operator for Point Minus = Point - Point.
-		IC	Point		operator-(const Point& p)			const		{ return Point(x - p.x, y - p.y, z - p.z);			}
+		ICF	Point		operator-(const Point& p)			const		{ return Point(x - p.x, y - p.y, z - p.z);			}
 		//! Operator for Point Scale = Point * float.
-		IC	Point		operator*(float s)					const		{ return Point(x * s,   y * s,   z * s );			}
+		ICF	Point		operator*(float s)					const		{ return Point(x * s,   y * s,   z * s );			}
 		//! Operator for Point Scale = float * Point.
 		friend			Point		operator*(float s, const Point& p)				{ return Point(s * p.x, s * p.y, s * p.z);			}
 		//! Operator for Point Scale = Point / float.
-		IC	Point		operator/(float s)					const		{ s = 1.0f / s; return Point(x * s, y * s, z * s);	}
+		ICF	Point		operator/(float s)					const		{ s = 1.0f / s; return Point(x * s, y * s, z * s);	}
 
 		//! Operator for float DotProd = Point | Point.
-		IC	float		operator|(const Point& p)			const		{ return x*p.x + y*p.y + z*p.z;						}
+		ICF	float		operator|(const Point& p)			const		{ return x*p.x + y*p.y + z*p.z;						}
 		//! Operator for Point VecProd = Point ^ Point.
-		IC	Point		operator^(const Point& p)			const
+		ICF	Point		operator^(const Point& p)			const
 						{
 							return Point(
 							y * p.z - z * p.y,
@@ -67,18 +67,18 @@
 						}
 
 		//! Operator for Point += Point.
-		IC	Point&		operator+=(const Point& p)						{ x += p.x; y += p.y; z += p.z;	return *this;		}
+		ICF	Point&		operator+=(const Point& p)						{ x += p.x; y += p.y; z += p.z;	return *this;		}
 		//! Operator for Point += float.
-		IC	Point&		operator+=(float s)								{ x += s;   y += s;   z += s;	return *this;		}
+		ICF	Point&		operator+=(float s)								{ x += s;   y += s;   z += s;	return *this;		}
 
 		//! Operator for Point -= Point.
-		IC	Point&		operator-=(const Point& p)						{ x -= p.x; y -= p.y; z -= p.z;	return *this;		}
+		ICF	Point&		operator-=(const Point& p)						{ x -= p.x; y -= p.y; z -= p.z;	return *this;		}
 		//! Operator for Point -= float.
-		IC	Point&		operator-=(float s)								{ x -= s;   y -= s;   z -= s;	return *this;		}
+		ICF	Point&		operator-=(float s)								{ x -= s;   y -= s;   z -= s;	return *this;		}
 		//! Operator for Point *= float.
-		IC	Point&		operator*=(float s)								{ x *= s; y *= s; z *= s;		return *this;		}
+		ICF	Point&		operator*=(float s)								{ x *= s; y *= s; z *= s;		return *this;		}
 		//! Operator for Point /= float.
-		IC	Point&		operator/=(float s)								{ s = 1.0f/s; x *= s; y *= s; z *= s; return *this; }
+		ICF	Point&		operator/=(float s)								{ s = 1.0f/s; x *= s; y *= s; z *= s; return *this; }
 
 		// Arithmetic operators
 		//! Operator for Point Mul = Point * Matrix3x3.
@@ -91,9 +91,9 @@
 	//					Point&		operator*=(const Matrix4x4& mat);
 
 		//! Access as array
-		IC				operator	const	float*() const	{ return &x; }
+		ICF				operator	const	float*() const	{ return &x; }
 		//! Access as array
-		IC				operator			float*()		{ return &x; }
+		ICF				operator			float*()		{ return &x; }
 
 		public:
 						float		x;		//!< x coordinate
