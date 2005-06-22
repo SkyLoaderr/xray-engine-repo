@@ -561,6 +561,17 @@ char * CConsole::GetToken(LPCSTR cmd)
 	return GetString(cmd);
 }
 
+xr_token* CConsole::GetXRToken(LPCSTR cmd)
+{
+	vecCMD_IT I = Commands.find(cmd);
+	if (I!=Commands.end()) {
+		IConsole_Command* C = I->second;
+		CCC_Token* cf = dynamic_cast<CCC_Token*>(C);
+		return cf->GetToken();
+	}
+	return NULL;
+}
+
 /*
 char * CConsole::GetNextValue(LPCSTR cmd)
 {

@@ -145,6 +145,7 @@ public		:
 			tok++;
 		}
 	}
+	xr_token* GetToken(){return tokens;}
 };
 
 class ENGINE_API	CCC_Float : public IConsole_Command
@@ -253,10 +254,10 @@ protected:
 public:
 	CCC_String(LPCSTR N, LPSTR V, int _size=2) :
 		IConsole_Command(N),
-		bLowerCaseArgs	(FALSE),
 		value	(V),
 		size	(_size)
 	{
+		bLowerCaseArgs	=	FALSE;
 		R_ASSERT(V);
 		R_ASSERT(size>1);
 	};
