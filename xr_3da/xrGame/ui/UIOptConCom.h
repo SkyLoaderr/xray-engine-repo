@@ -18,14 +18,6 @@ protected:
 	Flags32 m_uNetFilters;
 
 	string64 m_playerName;
-	/*int m_iNetConnectionLan;
-	int m_iNetFilterEmpty;
-	int m_iNetFilterFull;
-	int m_iNetFilterWithPassword;
-	int m_iNetFilterWithoutPassword;
-	int m_iNetFilterWithoutFriendlyFire;
-	int m_iNetFilterWithoutPunkbusier;
-	int m_iNetFilterListenServers;*/
 
 	int m_iNetConPublicServer;
 	int m_iNetConMapRotation;

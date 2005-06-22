@@ -7,7 +7,7 @@
 
 void CUIOptConCom::Init(){
 	m_iMaxPlayers = 32;
-	CMD4(CCC_Integer,	"net_srv_maxplayers",				&m_iMaxPlayers,						2, 32);
+	CMD4(CCC_Integer,	"net_srv_maxplayers",				&m_iMaxPlayers,						32, 32);
 
 	CMD3(CCC_Mask,	"net_connection_lan",				&m_uNetFilters,	flNetConnectionLan);
 	CMD3(CCC_Mask,	"net_filter_empty",					&m_uNetFilters,	flNetFilterEmpty);
@@ -17,7 +17,8 @@ void CUIOptConCom::Init(){
 	CMD3(CCC_Mask,	"net_filter_without_friendlyfire",	&m_uNetFilters,	flNetFilterWithoutFriendlyFire);
 	CMD3(CCC_Mask,	"net_filter_without_punkbusier",	&m_uNetFilters,	flNetFilterWithoutPunkbusier);
 	CMD3(CCC_Mask,	"net_filter_listenservers",			&m_uNetFilters,	flNetFilterListenServers);
-
+    
+	strcpy(m_playerName, "player name");
 	CMD3(CCC_String,	"net_palyer_name",				m_playerName,	64);
 
 
