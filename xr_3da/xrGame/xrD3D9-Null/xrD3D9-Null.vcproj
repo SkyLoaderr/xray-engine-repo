@@ -286,6 +286,16 @@
 				RelativePath=".\IDirect3DStateBlock9.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="IDirect3DCubeTexture9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DCubeTexture9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DCubeTexture9.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
