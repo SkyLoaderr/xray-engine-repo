@@ -5,8 +5,8 @@
 -- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
-local def_min_limit = 0.0
-local def_max_limit = 100.0 * math.pi / 180.0
+local def_min_limit = -100.0 * math.pi / 180.0
+local def_max_limit = 0.0
 
 class "action_gate"
 
