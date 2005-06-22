@@ -170,11 +170,12 @@ virtual void ApplyDamage			(u16 level);
 		SWheel* pwheel;
 		float	pos_fvd;
 		float gear_factor;
-		void  Init();
-		void  Drive();
-		void  Neutral();
-		void  UpdatePower();
-		float ASpeed();
+		void	Init		()						;
+		void	Drive		()						;
+		void	Neutral		()						;
+		void	UpdatePower	()						;
+		float	ASpeed		()						;
+		void	Load		(LPCSTR /*section*/){}	;
 	};
 	struct SWheelSteer 
 	{
@@ -189,21 +190,24 @@ virtual void ApplyDamage			(u16 level);
 		{
 			return -pos_right*dJointGetHinge2Angle1 (pwheel->joint->GetDJoint());
 		}
-		void Init();
-		void SteerRight();
-		void SteerLeft();
-		void SteerIdle();
-		void Limit();
+		void	 Init		()						;
+		void	 SteerRight	()						;
+		void	 SteerLeft	()						;
+		void	 SteerIdle	()						;
+		void	 Limit		()						;
+		void	 Load		(LPCSTR /*section*/){}	;
 	};
 	struct SWheelBreak 
 	{
-		SWheel* pwheel;
-		float break_torque;
-		float hand_break_torque;
-		void Init();
-		void Break(float k);
-		void HandBreak();
-		void Neutral();
+		SWheel		*pwheel				;
+		float		break_torque		;
+		float		hand_break_torque	;
+		bool		loaded				;
+		void	 Init			()					;
+		void	 Break			(float k)			;
+		void	 HandBreak		()					;
+		void	 Neutral		()					;
+		void	 Load			(LPCSTR section)	;
 	};
 
 	struct SExhaust

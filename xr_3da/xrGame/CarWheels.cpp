@@ -80,14 +80,14 @@ void CCar::SWheel::Load(LPCSTR section)
 	VERIFY						(ini)							;
 	if(ini->section_exist(section))
 	{
-		collision_params.damping_factor	=ini->r_float(section,"damping_factor")		;	
-		collision_params.damping_factor	=ini->r_float(section,"spring_factor")		;
-		collision_params.mu_factor		=ini->r_float(section,"friction_factor")	;
+		collision_params.damping_factor	=READ_IF_EXISTS(ini,r_float,section,"damping_factor",collision_params.damping_factor);
+		collision_params.spring_factor	=READ_IF_EXISTS(ini,r_float,section,"spring_factor",collision_params.spring_factor);
+		collision_params.mu_factor		=READ_IF_EXISTS(ini,r_float,section,"friction_factor",collision_params.mu_factor);
 	} 
 	else if(ini->section_exist("wheels_params"))
 	{
 		collision_params.damping_factor	=ini->r_float("wheels_params","damping_factor")		;	
-		collision_params.damping_factor	=ini->r_float("wheels_params","spring_factor")		;
+		collision_params.spring_factor	=ini->r_float("wheels_params","spring_factor")		;
 		collision_params.mu_factor		=ini->r_float("wheels_params","friction_factor")	;
 	}
 
@@ -337,10 +337,32 @@ void CCar::SWheelSteer::Limit()
 void CCar::SWheelBreak::Init()
 {
 	pwheel->Init();
-	break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
-	hand_break_torque=pwheel->car->m_hand_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
+	float k=pwheel->radius/pwheel->car->m_ref_radius;
+	if(loaded)
+	{
+		break_torque			*=k;
+		hand_break_torque		*=k;
+	}else
+	{
+		break_torque=pwheel->car->m_break_torque*k;
+		hand_break_torque=pwheel->car->m_hand_break_torque*k;
+	}
 }
-
+void CCar::SWheelBreak::Load(LPCSTR section)
+{
+	CKinematics		*K			=PKinematics(pwheel->car->Visual())		;
+	CInifile		*ini		=K->LL_UserData()						;
+	VERIFY						(ini)									;
+	if(ini->section_exist(section))
+	{	
+		break_torque					=READ_IF_EXISTS(ini,r_float,section,"break_torque",break_torque);
+		hand_break_torque				=READ_IF_EXISTS(ini,r_float,section,"hand_break_torque",hand_break_torque);
+		loaded							=true;
+	}else
+	{
+		loaded=false;
+	}
+}
 void CCar::SWheelBreak::Break(float k)
 {
 	pwheel->ApplyDriveAxisVelTorque(0.f,100000.f*break_torque*k);

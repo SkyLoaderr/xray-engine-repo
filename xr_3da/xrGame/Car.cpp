@@ -1682,6 +1682,7 @@ template <class T> IC void CCar::fill_wheel_vector(LPCSTR S,xr_vector<T>& type_w
 			wheel.bone_id			=	bone_id;
 			twheel.pwheel			=	&wheel;
 			wheel						.Load(S1);
+			twheel						.Load(S1);
 		}
 		else
 		{
