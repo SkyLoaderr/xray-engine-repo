@@ -12,6 +12,7 @@ function eva_state_mgr_animation:evaluate()
 		state_lib.states[self.st.target_state].animation == nil and
 		self.st.callback.begin == nil
 	then
+		printf("animation false")
 		return false
 	end
 
@@ -931,7 +932,7 @@ function animation:callback_init()
 		
 		if self.mgr.callback ~= nil and
 		   self.mgr.callback.func ~= nil and
---		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
+		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
 		   self.mgr.callback.begin == nil
 		then
 				self.mgr.callback.begin = time_global()

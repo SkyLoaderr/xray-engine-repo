@@ -180,7 +180,7 @@ function action_patrol:execute()
 
 		if self.object:see(self.enemy) == true then
 			-- отстрел врага
-			--printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
+			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.sniper == true then
 				if self.a.suggested_state.campering_fire then
 					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
@@ -230,19 +230,20 @@ function action_patrol:execute()
 			else				
 				-- если норетрит или мы на месте - ныкатьс€, иначе идти на точку
 				if self:on_place() then 
+					printf("on place[%s]", self.object:name())
 					if self.a.suggested_state.campering then
 						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
 					else
 						self.move_mgr:update()
 					end		
 				else
-					printf("!!![%s]", self.object:name())
-					if self.a.suggested_state.moving then
-						state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil)
-					else
-						state_mgr.set_state(self.object, "sneak", nil, nil)
-					end
-					self.move_mgr:update()
+					-- идем дальше путем забывани€ врага
+					printf("not place[%s]", self.object:name())
+					self.object:enable_memory_object(self.enemy, false)
+					self.a.enemy_id = nil
+					self.enemy = nil
+					self.a.mem_enemy = nil
+					self:reset_scheme() -- —“–јЎЌ≈…Ў»… ‘≈… 
 				end
 			end
 		end

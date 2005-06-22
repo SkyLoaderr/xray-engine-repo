@@ -160,7 +160,7 @@ end
 function act_state_mgr_end:execute()
 	action_base.execute(self)
 
-	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then
+	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then		
 		state_mgr_direction.update_movement_direction(self.object, self.st)
 	end
 	local t = state_lib.states[self.st.target_state].weapon
@@ -169,8 +169,8 @@ function act_state_mgr_end:execute()
 	if not w then
 		return
 	end
-	
 	if t == "fire" or t == "sniper_fire" then
+--		printf("FIRE 1")
 		if self.st.look_object ~= nil then
 			local look_object = level.object_by_id(self.st.look_object)
 			if look_object == nil then
@@ -198,6 +198,7 @@ function act_state_mgr_end:execute()
 		if self.st.look_position ~= nil and 
 			self.st.look_object == nil
 		then
+--			printf("FIRE!!!")
 			self.object:set_item(object.fire1, self.object:best_weapon())
 			return
 		else
