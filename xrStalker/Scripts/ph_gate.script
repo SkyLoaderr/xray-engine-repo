@@ -136,7 +136,7 @@ function action_gate:close_action()
 
 	printf("_bp: action_gate:update(): gate blocked")
 	-- Закрыли до предела, будем блокировать
-	self.joint_left:set_max_force_and_velocity(10000, 1, 1)
+	self.joint_left:set_max_force_and_velocity(10000, -1, 1)
 	self.joint_right:set_max_force_and_velocity(10000, 1, 1)
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
@@ -153,7 +153,7 @@ function action_gate:open_gate(disable_snd)
 		end
 	end
 	
-	self.joint_left:set_max_force_and_velocity(200, -3, 0)
+	self.joint_left:set_max_force_and_velocity(200, 3, 0)
 	self.joint_right:set_max_force_and_velocity(200, -3, 0)
 	self.block = false
 
@@ -164,11 +164,11 @@ end
 
 function action_gate:is_closed()
 	local angle_left = self.joint_left:get_axis_angle(90)
-	local angle_right = self.joint_right:get_axis_angle(90)
+	local angle_right = self.joint_right:get_axis_angle(-90)
 	printf("_bp: action_gate:update(): left: angle %f limits %f, %f; right: angle %f limits %f, %f",
 		angle_left, self.left_low_limits, self.left_hi_limits,
 		angle_right, self.right_low_limits, self.right_hi_limits)
-	if angle_left >= self.left_hi_limits and angle_right >= self.right_hi_limits then
+	if angle_left <= self.left_hi_limits and angle_right >= self.right_hi_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
@@ -193,7 +193,7 @@ function action_gate:close_gate()
 	--level.add_call(self, action_gate.close_check, action_gate.close_action)
 	--level.remove_calls_for_object(self);
 	printf("_bp: action_gate:close_gate()")
-	self.joint_left:set_max_force_and_velocity(200, 3, 1)
+	self.joint_left:set_max_force_and_velocity(200, -3, 1)
 	self.joint_right:set_max_force_and_velocity(200, 3, 1)
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
@@ -229,9 +229,9 @@ function action_gate:gate_callback(gate, actor)
 	end
 
 	local angle_left = self.joint_left:get_axis_angle(90)
-	local angle_right = self.joint_right:get_axis_angle(90)
+	local angle_right = self.joint_right:get_axis_angle(-90)
 
-	if angle_left - self.left_low_limits > self.left_hi_limits - angle_left and
+	if angle_left - self.left_low_limits < self.left_hi_limits - angle_left and
 	   angle_right - self.right_low_limits > self.right_hi_limits - angle_right then
 		self:open_gate(false)
 	else
