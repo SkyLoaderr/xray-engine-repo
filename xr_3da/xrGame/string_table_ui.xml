@@ -15,7 +15,6 @@
 	</string>
 
 	<!-- Надпись на физической двери -->
-
 	<string id="tip_door_locked">
 		<text>Дверь заперта</text>
 	</string>
@@ -26,6 +25,19 @@
 
 	<string id="tip_door_close">
 		<text>Нажмите 'E' для того, чтобы закрыть дверь</text>
+	</string>
+
+	<!-- Надпись на физических воротах -->
+	<string id="tip_gate_locked">
+		<text>Ворота закрыты</text>
+	</string>
+
+	<string id="tip_gate_open">
+		<text>Нажмите 'E' для того, чтобы открыть ворота</text>
+	</string>
+
+	<string id="tip_gate_close">
+		<text>Нажмите 'E' для того, чтобы закрыть ворота</text>
 	</string>
 
 </string_table>
