@@ -43,7 +43,7 @@ combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrific
 no_move = true
 no_rotate = true
 anim = guard
-snd = speach
+snd = speech
 on_signal = sound_end | remark@phrase2
 on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
@@ -55,7 +55,7 @@ combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrific
 no_move = true
 no_rotate = true
 anim = guard
-snd = speach
+snd = speech
 on_signal = sound_end | %+val_sacrifice_guard2_phrase12_done%
 on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase3_done} camper@kill_wait
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
