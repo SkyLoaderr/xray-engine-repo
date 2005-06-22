@@ -577,10 +577,16 @@ bool CExportSkeleton::PrepareGeometry()
 //.                        st_FaceVert& 	fv 	= face.pv[k];
                         st_SVert& 		sv 	= MESH->m_SVertices[f_idx*3+k];
                         if ((sv.bone1==BI_NONE)||(sv.bone0==sv.bone1)){
-	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
+	                        v[k].set		(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
                         }else{                                   
-                        	split.m_b2Link = TRUE;     
-	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone1);
+                        	if (fsimilar(sv.w,0.f,EPS_L)){ 
+		                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
+                            }else if (fsimilar(sv.w,1.f,EPS_L)){
+		                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone1,sv.bone1);
+                            }else{
+                                split.m_b2Link = TRUE;     
+                                v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone1);
+                            }
                         }
                     }
                     split.add_face(v[0], v[1], v[2]);
