@@ -2,7 +2,7 @@
 #include "alife_abstract_registry.h"
 
 class CMapLocation;
-struct SLocationKey : public IPureSerializeObject<IReader,IWriter> {
+struct SLocationKey : public IPureSerializeObject<IReader,IWriter>,public IPureDestroyableObject {
 	shared_str		spot_type;
 	u16				object_id;
 	CMapLocation*	location;
@@ -13,8 +13,9 @@ struct SLocationKey : public IPureSerializeObject<IReader,IWriter> {
 	bool operator < (const SLocationKey& key)const{
 		return  actual > key.actual;} //move non-actual to tail
 	
-	virtual void save(IWriter &stream);
-	virtual void load(IReader &stream);
+	virtual void save								(IWriter &stream);
+	virtual void load								(IReader &stream);
+	virtual void destroy							();
 };
 
 DEFINE_VECTOR (SLocationKey, Locations, Locations_it);

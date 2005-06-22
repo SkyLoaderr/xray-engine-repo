@@ -14,7 +14,6 @@ public:
 							CMapManager					();
 							~CMapManager				();
 	void					Update						();
-	void					Cleanup						();
 	void					initialize					(u16 id);
 	Locations&				Locations					();
 	CMapLocation*			AddMapLocation				(const shared_str& spot_type, u16 id);

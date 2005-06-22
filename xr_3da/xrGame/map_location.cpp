@@ -14,6 +14,7 @@
 #include "alife_object_registry.h"
 #include "relation_registry.h"
 #include "InventoryOwner.h"
+#include "object_broker.h"
 //////////////////////////////////////////////////
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
@@ -31,11 +32,14 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 
 CMapLocation::~CMapLocation()
 {
-	xr_delete(m_level_spot);
-	xr_delete(m_level_spot_pointer);
-	xr_delete(m_minimap_spot);
-	xr_delete(m_minimap_spot_pointer);
+}
 
+void CMapLocation::destroy()
+{
+	delete_data(m_level_spot);
+	delete_data(m_level_spot_pointer);
+	delete_data(m_minimap_spot);
+	delete_data(m_minimap_spot_pointer);
 }
 
 CUIXml	g_uiSpotXml;

@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include "object_interfaces.h"
 
 class CMapSpot;
 class CMiniMapSpot;
@@ -8,7 +8,7 @@ class CMapSpotPointer;
 class CUICustomMap;
 class CInventoryOwner;
 
-class CMapLocation
+class CMapLocation :public IPureDestroyableObject
 {
 public:
 enum ELocationFlags
@@ -44,6 +44,7 @@ protected :
 public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
+	virtual void			destroy							();
 	virtual		LPCSTR		GetHint							()					{return *m_hint;};
 	void					SetHint							(LPCSTR hint)		{m_hint = hint;};
 

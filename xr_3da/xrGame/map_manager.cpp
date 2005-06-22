@@ -44,6 +44,11 @@ void SLocationKey::load(IReader &stream)
 	location->SetRefCount(c);
 }
 
+void SLocationKey::destroy()
+{
+	delete_data(location);
+}
+
 void CMapLocationRegistry::save(IWriter &stream)
 {
 	stream.w_u32			((u32)objects().size());
@@ -75,8 +80,7 @@ CMapManager::CMapManager()
 
 CMapManager::~CMapManager()
 {
-	Cleanup			();
-	xr_delete		(m_locations);
+	delete_data		(m_locations);
 }
 
 void CMapManager::initialize(u16 id)
@@ -127,7 +131,7 @@ void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
 	if( it!=Locations().end() ){
 
 		if( 1==(*it).location->RefCount() ){
-			xr_delete				((*it).location);		
+			delete_data				(*it);
 			Locations().erase		(it);
 		}else
 			(*it).location->Release();
@@ -139,7 +143,7 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	FindLocationByID key(id);
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	while( it!= Locations().end() ){
-		xr_delete				((*it).location);		
+		delete_data				(*it);
 		Locations().erase		(it);
 
 		it = std::find_if(Locations().begin(),Locations().end(),key);
@@ -154,15 +158,6 @@ u16 CMapManager::HasMapLocation(const shared_str& spot_type, u16 id)
 		return (*it).location->RefCount();
 	
 	return 0;
-}
-
-void CMapManager::Cleanup()//force
-{
-	Locations_it it = Locations().begin();
-	for(; it!=Locations().end();++it){
-		xr_delete		((*it).location);	
-	}
-	Locations().clear();
 }
 
 void CMapManager::Update()
