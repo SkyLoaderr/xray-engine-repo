@@ -252,9 +252,10 @@ protected:
 	int				size;
 public:
 	CCC_String(LPCSTR N, LPSTR V, int _size=2) :
-	  IConsole_Command(N),
-	  value	(V),
-	  size	(_size)
+		IConsole_Command(N),
+		bLowerCaseArgs	(FALSE),
+		value	(V),
+		size	(_size)
 	{
 		R_ASSERT(V);
 		R_ASSERT(size>1);

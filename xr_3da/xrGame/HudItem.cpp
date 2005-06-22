@@ -252,7 +252,6 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 		origin.mad		(xform_orig.j,	-pitch * PITCH_OFFSET_N);
 
 		// calc moving inertion
-#pragma todo("TO ANDY: write moving inertion here...")
 	}
 /*
 	static u32 sl = 0;
