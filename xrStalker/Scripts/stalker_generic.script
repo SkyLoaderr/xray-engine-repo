@@ -58,3 +58,41 @@ function reset_threshold(npc, scheme, st, section)
 		end
 	end
 end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- STALKER MAP SHOW
+----------------------------------------------------------------------------------------------------------------------
+-- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
+function reset_show_spot(npc, scheme, st, section)
+	local spot_section
+	if scheme == nil or scheme == "nil" then
+		spot_section = utils.cfg_get_string(st.ini, st.section_logic, "show_spot", npc, false, "")
+	else
+		spot_section = utils.cfg_get_string(st.ini, section, "show_spot", npc, false, "")
+	end
+	printf("STALKER SPOT SECTION [%s]", utils.to_str(spot_section))
+
+	if spot_section == nil then
+		spot_section = "true"
+	end
+	
+
+	spot_condlist = xr_logic.parse_condlist(npc, section, "show_spot", spot_section)
+	spot	= xr_logic.pick_section_from_condlist(db.actor, npc, spot_condlist)
+	sim		= alife()
+	obj		= sim:object(npc:id())
+	
+	if spot == "false" then
+		-- прячем
+		if obj then
+			obj:visible_for_map(false)
+		end
+	else
+		-- ставим
+		if obj then			
+			obj:visible_for_map(true)
+		end
+	end
+end
+
