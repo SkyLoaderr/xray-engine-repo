@@ -119,8 +119,8 @@ IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 	Point vmin, vmax;
 	for(u32 q=0;q<=2;++q)
 	{
-		if(normal[q]>0.0f)	{ vmin[q]=-maxbox[q]; vmax[q]=maxbox[q]; }
-		else				{ vmin[q]=maxbox[q]; vmax[q]=-maxbox[q]; }
+		if(normal[q]>0.0f)	{ vmin[q] =-maxbox[q]; vmax[q]= maxbox[q]; }
+		else				{ vmin[q] = maxbox[q]; vmax[q]=-maxbox[q]; }
 	}
 	if((normal|vmin)+d>0.0f) return false;
 	if((normal|vmax)+d>=0.0f) return true;
