@@ -1,39 +1,43 @@
 ----------------------------------------------------------------------------------------------------
--- Physic door control
+-- Physic gate control
 ----------------------------------------------------------------------------------------------------
--- Исходный скрипт: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
--- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
+-- Исходный скрипт (ph_door): Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
-class "action_door"
+class "action_gate"
 
-function action_door:__init(obj, storage)
-	printf	("action_door::action_door() called")
+function action_gate:__init(obj, storage)
+	printf	("action_gate::action_gate() called")
 	self.object = obj
 	self.st = storage
 	self.snd_obj = nil
 end
 
-function action_door:__finalize()
-	printf	("action_door::~action_door() called")
+function action_gate:__finalize()
+	printf	("action_gate::~action_gate() called")
 end
 
-function action_door:reset_scheme(loading)
-	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
+function action_gate:reset_scheme(loading)
+	printf("_bp: action_gate:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.initialized = false
 	
 	self:initialize(loading)
 end
 
-function action_door:initialize(loading)
+function action_gate:initialize(loading)
 	local ph_shell = self.object:get_physics_shell()
 	if not ph_shell then
 		return
 	end
-	self.joint = ph_shell:get_joint_by_bone_name("door")
+	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
+	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
 
-	self.low_limits, self.hi_limits = 0, 0
-	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+	self.left_low_limits, self.left_hi_limits = 0, 0
+	self.left_low_limits, self.left_hi_limits	= self.joint_left:get_limits(self.left_low_limits, self.left_hi_limits, 0)
+
+	self.right_low_limits, self.right_hi_limits = 0, 0
+	self.right_low_limits, self.right_hi_limits	= self.joint_right:get_limits(self.right_low_limits, self.right_hi_limits, 0)
 
 	self.run = 0
 	self.block = false
@@ -59,22 +63,22 @@ function action_door:initialize(loading)
 		self.st.script_used_more_than_once = true
 	end
 	if self.st.closed then
-		self:close_door()
+		self:close_gate()
 	else
-		self:open_door(disable_snd)
+		self:open_gate(disable_snd)
 	end
 
 	self.object:set_nonscript_usable(false)
-	self.object:set_callback(callback.use_object, self.door_callback, self)
+	self.object:set_callback(callback.use_object, self.gate_callback, self)
 
 	if self.st.snd_init then
-		self:door_play_snd_from_set(self.st.snd_init)
+		self:gate_play_snd_from_set(self.st.snd_init)
 	end
 	
 	self.initialized = true
 end
 
-function action_door:door_play_snd_from_set(sndset)
+function action_gate:gate_play_snd_from_set(sndset)
 	local snd = mob_sound.pick_sound_from_set(self.object, sndset, {})
 	if not snd then
 		utils.abort("physic object '%s': section '%s': sound set '%s' does not exist",
@@ -89,11 +93,11 @@ function action_door:door_play_snd_from_set(sndset)
 	self.snd_obj:play_at_pos(self.object, self.object:position())--, 0, sound_object.s2d) -- FIXME: don't use position()
 end
 
-function action_door:update(delta)
-	--printf("_bp: action_door:update()", delta)
+function action_gate:update(delta)
+	--printf("_bp: action_gate:update()", delta)
 
 	if not self.initialized then
-		utils.abort("object '%s': door failed to initialize", self.object:name())
+		utils.abort("object '%s': gate failed to initialize", self.object:name())
 	end
 
 	local actor = db.actor
@@ -103,17 +107,17 @@ function action_door:update(delta)
 	end
 end
 
-function action_door:fastcall()
+function action_gate:fastcall()
 	if self:close_check() then
 		self:close_action()
-		printf("_bp: action_door: fastcall(): return true")
+		printf("_bp: action_gate: fastcall(): return true")
 		return true
 	end
-	printf("_bp: action_door: fastcall(): return false")
+	printf("_bp: action_gate: fastcall(): return false")
 	return false
 end
 
-function action_door:close_check()
+function action_gate:close_check()
 	printf("_bp: close_check(): %d", time_global())
 	if not self.initialized then
 		printf("_bp: close_check(): not initialized")
@@ -127,28 +131,30 @@ function action_door:close_check()
 	return false
 end
 
-function action_door:close_action()
+function action_gate:close_action()
 	printf("_bp: close_action(): %d", time_global())
 
-	printf("_bp: action_door:update(): door blocked")
+	printf("_bp: action_gate:update(): gate blocked")
 	-- Закрыли до предела, будем блокировать
-	self.joint:set_max_force_and_velocity(10000, 1, 1)
+	self.joint_left:set_max_force_and_velocity(10000, 1, 1)
+	self.joint_right:set_max_force_and_velocity(10000, 1, 1)
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
 	if not self.soundless_block and self.st.snd_close_stop then
-		self:door_play_snd_from_set(self.st.snd_close_stop)
+		self:gate_play_snd_from_set(self.st.snd_close_stop)
 	end
 end
 
-function action_door:open_door(disable_snd)
-	printf("_bp: action_door:open_door()")
+function action_gate:open_gate(disable_snd)
+	printf("_bp: action_gate:open_gate()")
 	if not disable_snd then
 		if self.st.snd_open_start then
-			self:door_play_snd_from_set(self.st.snd_open_start)
+			self:gate_play_snd_from_set(self.st.snd_open_start)
 		end
 	end
 	
-	self.joint:set_max_force_and_velocity(200, -3, 0)
+	self.joint_left:set_max_force_and_velocity(200, -3, 0)
+	self.joint_right:set_max_force_and_velocity(200, -3, 0)
 	self.block = false
 
 	if self.tip_close then
@@ -156,36 +162,39 @@ function action_door:open_door(disable_snd)
 	end
 end
 
-function action_door:is_closed()
-	local angle = self.joint:get_axis_angle(90)
-	printf("_bp: action_door:update(): angle %f limits %f, %f",
-		angle, self.low_limits, self.hi_limits)
-	if angle >= self.hi_limits then
+function action_gate:is_closed()
+	local angle_left = self.joint_left:get_axis_angle(90)
+	local angle_right = self.joint_right:get_axis_angle(90)
+	printf("_bp: action_gate:update(): left: angle %f limits %f, %f; right: angle %f limits %f, %f",
+		angle_left, self.left_low_limits, self.left_hi_limits,
+		angle_right, self.right_low_limits, self.right_hi_limits)
+	if angle_left >= self.left_hi_limits and angle_right >= self.right_hi_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
 end
 
-function action_door:close_door()
+function action_gate:close_gate()
 	local disable_snd = self:is_closed()
 	if not disable_snd then
 		if self.st.snd_close_start then
-			self:door_play_snd_from_set(self.st.snd_close_start)
+			self:gate_play_snd_from_set(self.st.snd_close_start)
 		end
 	end
 
 	-- Ставим коллбек для отлова окончания закрытия двери (чтобы заблокировать ее и проиграть звук, если нужно):
-	printf("_bp: action_door: setting physics callback from close_door")
+	printf("_bp: action_gate: setting physics callback from close_gate")
 	--level.add_call(self, "close_check", "close_action") -- OK
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
 	--level.add_call(self, self.close_check, self.close_action)
 	--level.remove_call(self, self.close_check, self.close_action)
-	--level.add_call(self, action_door.close_check, action_door.close_action)
+	--level.add_call(self, action_gate.close_check, action_gate.close_action)
 	--level.remove_calls_for_object(self);
-	printf("_bp: action_door:close_door()")
-	self.joint:set_max_force_and_velocity(200, 3, 1)
+	printf("_bp: action_gate:close_gate()")
+	self.joint_left:set_max_force_and_velocity(200, 3, 1)
+	self.joint_right:set_max_force_and_velocity(200, 3, 1)
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
 
@@ -194,10 +203,10 @@ function action_door:close_door()
 	end
 end
 
-function action_door:try_switch()
-	printf("_bp: action_door: object '%s': try_switch", self.object:name())
+function action_gate:try_switch()
+	printf("_bp: action_gate: object '%s': try_switch", self.object:name())
 	local st = db.storage[self.object:id()]
-	if st.active_scheme and st.active_scheme == "ph_door" and self.st.on_use then
+	if st.active_scheme and st.active_scheme == "ph_gate" and self.st.on_use then
 		--if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
 		if xr_logic.switch_to_section(self.object, self.st,
 		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_use.condlist)) then
@@ -207,24 +216,26 @@ function action_door:try_switch()
 	return false
 end
 
-function action_door:door_callback(door, actor)
+function action_gate:gate_callback(gate, actor)
 	if self:try_switch() then
 		return
 	end
 
 	if self.st.locked then
 		if self.st.snd_open_start then
-			self:door_play_snd_from_set(self.st.snd_open_start)
+			self:gate_play_snd_from_set(self.st.snd_open_start)
 		end
 		return
 	end
 
-	local angle = self.joint:get_axis_angle(90)
+	local angle_left = self.joint_left:get_axis_angle(90)
+	local angle_right = self.joint_right:get_axis_angle(90)
 
-	if angle - self.low_limits > self.hi_limits - angle then
-		self:open_door(false)
+	if angle_left - self.left_low_limits > self.left_hi_limits - angle_left and
+	   angle_right - self.right_low_limits > self.right_hi_limits - angle_right then
+		self:open_gate(false)
 	else
-		self:close_door(false)
+		self:close_gate(false)
 	end
 end
 
@@ -232,7 +243,7 @@ end
 function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 
-	local new_action = action_door(npc, storage)
+	local new_action = action_gate(npc, storage)
 
 	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
 	xr_logic.subscribe_action_for_events(npc, storage, new_action)
@@ -246,10 +257,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	if not st.locked then
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")
-		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
+		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_gate_open")
+		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_gate_close")
 	else
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
+		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_gate_locked")
 	end
 	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
 	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
