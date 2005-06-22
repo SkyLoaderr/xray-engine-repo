@@ -132,14 +132,18 @@ void CLevelSoundManager::Load()
 	FS.update_path		(gameLtxPath, "$game_config$", "game.ltx");
 	CInifile gameLtx	(gameLtxPath);
 	if (gameLtx.section_exist(Level().name())){
-		if (gameLtx.line_exist(Level().name(),"musics")){
-			CInifile::Sect&	S	= gameLtx.r_section	(gameLtx.r_string(Level().name(),"musics"));
-			CInifile::SectIt it	= S.begin(), end = S.end();
-			m_MusicTracks.reserve	(S.size());
-			for (;it!=end; it++){
-				m_MusicTracks.push_back	(SMusicTrack());
-				m_MusicTracks.back().Load(*it->first,*it->second);
+		if (gameLtx.line_exist(Level().name(),"music_tracks")){
+			LPCSTR music_sect		= gameLtx.r_string(Level().name(),"music_tracks");
+			if (music_sect && music_sect[0]){
+				CInifile::Sect&	S	= gameLtx.r_section	(music_sect);
+				CInifile::SectIt it	= S.begin(), end = S.end();
+				m_MusicTracks.reserve	(S.size());
+				for (;it!=end; it++){
+					m_MusicTracks.push_back	(SMusicTrack());
+					m_MusicTracks.back().Load(*it->first,*it->second);
+				}
 			}
+			if (!m_MusicTracks.empty()) Msg("- Loading %d music tracks...",m_MusicTracks.size());
 		}
 	}
 }
