@@ -511,6 +511,148 @@ active = walker6@agr_factory_defence_krot
 path_walk = krot_walk6
 ;path_look = krot_look6
 
+;---------------- Бегут к колодцу и стоят там -----------------
+
+[logic@agr_factory_defence_to_well_walker1]
+active = walker1@agr_factory_defence_to_well
+
+[walker1@agr_factory_defence_to_well]
+path_walk = to_well_walk1
+on_signal = well | walker1@agr_factory_defence_well
+
+[walker1@agr_factory_defence_well]
+path_walk = well_walk1
+path_look = well_look1
+
+
+[logic@agr_factory_defence_to_well_walker2]
+active = walker2@agr_factory_defence_to_well
+
+[walker2@agr_factory_defence_to_well]
+path_walk = to_well_walk2
+on_signal = well | walker2@agr_factory_defence_well
+
+[walker2@agr_factory_defence_well]
+path_walk = well_walk2
+path_look = well_look2
+
+
+[logic@agr_factory_defence_to_well_walker3]
+active = walker3@agr_factory_defence_to_well
+
+[walker3@agr_factory_defence_to_well]
+path_walk = to_well_walk3
+on_signal = well | walker3@agr_factory_defence_well
+
+[walker3@agr_factory_defence_well]
+path_walk = well_walk3
+path_look = well_look3
+
+
+[logic@agr_factory_defence_to_well_walker4]
+active = walker4@agr_factory_defence_to_well
+
+[walker4@agr_factory_defence_to_well]
+path_walk = to_well_walk4
+on_signal = well | walker4@agr_factory_defence_well
+
+[walker4@agr_factory_defence_well]
+path_walk = well_walk4
+path_look = well_look4
+
+
+[logic@agr_factory_defence_to_well_walker5]
+active = walker5@agr_factory_defence_to_well
+
+[walker5@agr_factory_defence_to_well]
+path_walk = to_well_walk5
+on_signal = well | walker5@agr_factory_defence_well
+
+[walker5@agr_factory_defence_well]
+path_walk = well_walk5
+path_look = well_look5
+
+
+[logic@agr_factory_defence_to_well_walker6]
+active = walker6@agr_factory_defence_to_well
+
+[walker6@agr_factory_defence_to_well]
+path_walk = to_well_walk6
+on_signal = well | walker6@agr_factory_defence_well
+
+[walker6@agr_factory_defence_well]
+path_walk = well_walk6
+path_look = well_look6
+
+;-------------------------------------------------------------------------------------------------
+;-- AGROPROM Удерживающие Крота солдаты
+;-------------------------------------------------------------------------------------------------
+
+; ------------------ стреляют по точкам -----------------------
+[combat_ignore@agr_factory_hold_fake]
+
+[on_hit@agr_factory_hold_fake]
+on_info = {=hit_by_actor} %+agr_krot_skirmish_start%
+
+[logic@agr_factory_hold_fake_walker1]
+active = walker1@agr_factory_hold_fake
+combat_ignore = combat_ignore@agr_factory_hold_fake
+on_hit = on_hit@agr_factory_hold_fake
+
+[walker1@agr_factory_hold_fake]
+path_walk = fake_walk1
+path_look = fake_look1
+combat_ignore_cond = always
+
+
+[logic@agr_factory_hold_fake_walker2]
+active = walker2@agr_factory_hold_fake
+combat_ignore = combat_ignore@agr_factory_hold_fake
+on_hit = on_hit@agr_factory_hold_fake
+
+[walker2@agr_factory_hold_fake]
+path_walk = fake_walk2
+path_look = fake_look2
+combat_ignore_cond = always
+
+
+[logic@agr_factory_hold_fake_walker3]
+active = walker3@agr_factory_hold_fake
+combat_ignore = combat_ignore@agr_factory_hold_fake
+on_hit = on_hit@agr_factory_hold_fake
+
+[walker3@agr_factory_hold_fake]
+path_walk = fake_walk3
+path_look = fake_look3
+combat_ignore_cond = always
+
+; ------------------ а) срываются в универсальный бой под рестриктором --------------------
+; ------------------ б) Убили Крота. Ходят по путям без рестрикторов ----------------------
+[logic@agr_factory_hold_walker1]
+active = walker1@agr_factory_hold
+
+[walker1@agr_factory_hold]
+path_walk = walk1
+path_look = look1
+
+
+[logic@agr_factory_hold_walker2]
+active = walker2@agr_factory_hold
+
+[walker2@agr_factory_hold]
+path_walk = walk2
+path_look = look2
+
+
+[logic@agr_factory_hold_walker3]
+active = walker3@agr_factory_hold
+
+[walker3@agr_factory_hold]
+path_walk = walk3
+path_look = look3
+
+
+
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM RUSH (собаки)
 ;-------------------------------------------------------------------------------------------------
