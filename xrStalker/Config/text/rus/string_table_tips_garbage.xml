@@ -11,3 +11,9 @@
 	<string id="gar_dolg_blokpost_warning">
         <text>Сталкер, ты на территории, контролируемой Долгом. Любое проявление агрессии будет наказано.</text>
     </string>
+    <string id="gar_direction_fire">
+        <text>Ждем противника, огонь не открываем. Я стреляю первым - потом вы.</text>
+    </string>
+    <string id="gar_hellcar_victory">
+        <text>Молодцы, парни, мы их одолели. Всем отдыхать, а ты сталкер, подойди ко мне, поболтаем.</text>
+    </string>

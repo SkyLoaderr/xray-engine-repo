@@ -135,7 +135,13 @@ function gar_send_dymon_alarm(actor, npc)
 	end
 end
 
+function gar_direction_fire(actor, npc)
+	news_manager.send_tip(actor, "gar_direction_fire", 0, "stalker", 0)
+end
 
+function gar_hellcar_victory(actor, npc)
+	news_manager.send_tip( actor, "gar_hellcar_victory", 0, "stalker", 0)
+end
 	
 function actor_friend(actor, npc)
 	printf("_bp: xr_effects: actor_friend(): npc='%s': time=%d", npc:name(), time_global())
