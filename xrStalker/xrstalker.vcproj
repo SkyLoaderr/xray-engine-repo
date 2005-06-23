@@ -822,10 +822,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1483,6 +1483,19 @@
 					</File>
 					<File
 						RelativePath=".\config\scripts\test_jumper.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="Agroprom"
+					Filter="">
+					<File
+						RelativePath=".\Config\scripts\agr\agr_factory_assault_trigger.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\agr\agr_krot.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\agr\agr_krot_combat_trigger.ltx">
 					</File>
 				</Filter>
 			</Filter>
