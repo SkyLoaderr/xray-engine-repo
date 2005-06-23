@@ -3,6 +3,12 @@
 #include "control_combase.h"
 #include "BaseMonster/base_monster.h"
 
+enum EActiveComAction {
+	eRemove			= u32(0),
+	eAdd			
+};
+
+
 // DEBUG purpose only
 char *dbg_control_name_table[] = {
 		"Control_Movement",
@@ -61,25 +67,34 @@ void CControl_Manager::reinit()
 {
 	// todo: make it simpler
 	// reinit pure first, base second, custom third
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
+	CONTROLLERS_MAP_IT it;
+
+	for (it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
 		if (is_pure(it->second)) it->second->reinit();
 	
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
+	for (it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
 		if (is_base(it->second)) it->second->reinit();
 	
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
+	for (it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  
 		if (!is_pure(it->second) && !is_base(it->second)) it->second->reinit();
+
+	// fill active elems
+	m_active_elems.clear();
+	for (it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
+		if (it->second->is_active() && !is_locked(it->second)) {
+			m_active_elems.push_back(it->second);
+		}
+	}
+
 }
 
 void CControl_Manager::update_frame()
 {
 	if (!m_object->g_Alive()) return;
 
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
+	for (COM_VEC_IT it = m_active_elems.begin(); it != m_active_elems.end(); ++it)  {
 		// update coms
-		if (it->second->is_active() && !is_locked(it->second)) {
-			it->second->update_frame();
-		}
+		(*it)->update_frame();
 	}
 }
 
@@ -87,11 +102,9 @@ void CControl_Manager::update_schedule()
 {
 	if (!m_object->g_Alive()) return;
 
-	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
+	for (COM_VEC_IT it = m_active_elems.begin(); it != m_active_elems.end(); ++it)  {
 		// update coms
-		if (it->second->is_active() && !is_locked(it->second)) {
-			it->second->update_schedule();
-		}
+		(*it)->update_schedule();
 	}
 }
 
@@ -220,7 +233,7 @@ void CControl_Manager::release(CControl_Com *com, ControlCom::EContolType type) 
 		// if active - finalize
 		if (target->is_active()) {
 			target->ced()->on_release		();
-			target->set_active				(false);
+			deactivate						(type);
 		}
 
 		com->cing()->on_stop_control		(type);
@@ -247,11 +260,13 @@ void CControl_Manager::release_pure(CControl_Com *com)
 
 void CControl_Manager::activate(ControlCom::EContolType type)
 {
-	m_control_elems[type]->set_active();
+	m_control_elems[type]->set_active	();
+	check_active_com					(m_control_elems[type], eAdd);
 }
 void CControl_Manager::deactivate(ControlCom::EContolType type)
 {
-	m_control_elems[type]->set_active(false);
+	m_control_elems[type]->set_active	(false);
+	check_active_com					(m_control_elems[type], eRemove);
 }
 
 bool CControl_Manager::is_captured(ControlCom::EContolType type)
@@ -277,6 +292,9 @@ void CControl_Manager::lock(CControl_Com *com, ControlCom::EContolType type)
 	VERIFY	(m_control_elems[type]->ced()->capturer() == com);
 	
 	m_control_elems[type]->ced()->set_locked();
+	
+	// it's now locked so remove from active list
+	check_active_com(m_control_elems[type], eRemove);
 }
 
 void CControl_Manager::unlock(CControl_Com *com, ControlCom::EContolType type)
@@ -285,6 +303,9 @@ void CControl_Manager::unlock(CControl_Com *com, ControlCom::EContolType type)
 	VERIFY	(m_control_elems[type]->ced()->capturer() == com);
 
 	m_control_elems[type]->ced()->set_locked(false);
+	
+	// it's unlocked so add to active list
+	check_active_com(m_control_elems[type], eAdd);
 }
 
 void CControl_Manager::path_stop(CControl_Com *com)
@@ -320,6 +341,19 @@ bool CControl_Manager::build_path_line(CControl_Com *com, const Fvector &target,
 	VERIFY					(com == path->ced()->capturer());
 
 	return (path_builder().build_special(target, node, vel_mask));
+}
+
+void CControl_Manager::check_active_com(CControl_Com *com, bool b_add)
+{
+	if (b_add){
+		if (com->is_active() && !com->ced()->is_locked()) {
+			COM_VEC_IT it = std::find(m_active_elems.begin(),m_active_elems.end(),com);
+			if (it != m_active_elems.end()) m_active_elems.push_back(com);
+		}
+	} else {
+		COM_VEC_IT it = std::find(m_active_elems.begin(),m_active_elems.end(),com);
+		if (it != m_active_elems.end()) m_active_elems.erase(it);
+	}
 }
 
 

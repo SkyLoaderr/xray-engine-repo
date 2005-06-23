@@ -21,6 +21,9 @@ class CControl_Manager {
 	DEFINE_MAP				(ControlCom::EContolType, CControl_Com*, CONTROLLERS_MAP, CONTROLLERS_MAP_IT);
 	CONTROLLERS_MAP			m_control_elems;
 	CONTROLLERS_MAP			m_base_elems;
+	
+	DEFINE_VECTOR			(CControl_Com*, COM_VEC, COM_VEC_IT);
+	COM_VEC					m_active_elems;
 
 	CControlAnimation		*m_animation;
 	CControlDirection		*m_direction;
@@ -92,6 +95,8 @@ private:
 		bool				is_locked					(CControl_Com*);
 
 		void				dump						(CControl_Com *com, LPCSTR action, ControlCom::EContolType type);
+
+		void				check_active_com			(CControl_Com *com, bool b_add);
 };
 
 
