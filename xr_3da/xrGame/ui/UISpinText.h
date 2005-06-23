@@ -10,8 +10,16 @@ class CUISpinText : public CUICustomSpin{
 public:
 	CUISpinText();
 	~CUISpinText();
+	// CUIOptionsItem
+	virtual void	SetCurrentValue();
+	virtual void	SaveValue();
 
-    void	AddItem(xr_string& item);
+	// own
+	virtual void	OnBtnUpClick();
+	virtual void	OnBtnDownClick();
+
+
+    void	AddItem(const char* item);
 
 protected:
 	void	SetItem();
@@ -19,4 +27,5 @@ protected:
 	typedef xr_vector<xr_string>::iterator	Items_it;
 
     Items	m_list;
+	u32		m_curItem;
 };

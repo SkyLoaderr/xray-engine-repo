@@ -148,6 +148,9 @@
 		<spin_max_players x="150" y="115" width="45" height="21">
 			<options_item entry="net_srv_maxplayers" group="mm_mp_server"/>	
 		</spin_max_players>
+		<spin_game_mode x="150" y="90" width="275" height="21">
+			<options_item entry="net_srv_gamemode" group="mm_mp_server"/>	
+		</spin_game_mode>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
 			<texture>ui_linetextSmall_e</texture>

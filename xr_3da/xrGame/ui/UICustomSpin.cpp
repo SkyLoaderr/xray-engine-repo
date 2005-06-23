@@ -41,7 +41,7 @@ void CUICustomSpin::Init(float x, float y, float width, float height){
 	m_pBtnDown->Init(width - BTN_SIZE, BTN_SIZE, BTN_SIZE, BTN_SIZE);
 	m_pBtnDown->InitTexture("ui_spiner_button_b");
 
-	m_pLines->Init(3,0,width - BTN_SIZE - 3, SPIN_HEIGHT);
+	m_pLines->Init(10,0,width - BTN_SIZE - 10, SPIN_HEIGHT);
 }
 
 void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL */){

@@ -38,7 +38,7 @@ void CUILines::Init(float x, float y, float width, float heigt){
 
 void CUILines::SetText(const char* text){
 	if (!m_pFont)
-		SetFont(UI()->Font()->pFontLetterica18Russian);
+		SetFont(UI()->Font()->pFontLetterica16Russian);
 
 	if (text)
 	{

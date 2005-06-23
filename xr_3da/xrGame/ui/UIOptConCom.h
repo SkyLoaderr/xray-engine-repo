@@ -3,6 +3,7 @@
 class CUIOptConCom {
 public:
 	void Init();
+	CUIOptConCom();
 protected:
 	enum{
 		flNetConnectionLan				= 1,
@@ -16,6 +17,8 @@ protected:
 	};
 	int	m_iMaxPlayers;
 	Flags32 m_uNetFilters;
+
+	u32			m_curGameMode;
 
 	string64 m_playerName;
 

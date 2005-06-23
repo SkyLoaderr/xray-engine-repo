@@ -4,6 +4,7 @@
 #include "UICheckButton.h"
 #include "UIRadioButton.h"
 #include "UISpinNum.h"
+#include "UISpinText.h"
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
 
@@ -51,10 +52,10 @@ void CUIButton::script_register(lua_State *L)
 		.def("Init",				&CUICustomSpin::Init),
 
 		class_<CUISpinNum, CUICustomSpin>("CUISpinNum")
-		.def(							constructor<>())
-/*
-		class_<CUICustomSpin, CUIWindow>("CUICustomSpin")
-		.def(							constructor<>())	*/	
+		.def(							constructor<>()),
+
+		class_<CUISpinText, CUICustomSpin>("CUISpinText")
+		.def(							constructor<>())		
 
 	];
 }

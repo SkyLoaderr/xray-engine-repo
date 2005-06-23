@@ -13,14 +13,18 @@ protected:
 	virtual void	SaveValue()			=0;
 
 			// string
-			LPCSTR	GetOptStringValue();
-			void	SaveOptStringValue(const char* val);
+			LPCSTR		GetOptStringValue();
+			void		SaveOptStringValue(const char* val);
 			// integer
-			void 	GetOptIntegerValue(int& val, int& min, int& max);
-			void	SaveOptIntegerValue(int val);
+			void		GetOptIntegerValue(int& val, int& min, int& max);
+			void		SaveOptIntegerValue(int val);
 			// bool
-			bool	GetOptBoolValue();
-			void	SaveOptBoolValue(bool val);
+			bool		GetOptBoolValue();
+			void		SaveOptBoolValue(bool val);
+			// token
+			char*		GetOptTokenValue();
+			xr_token*	GetOptToken();
+			void		SaveOptTokenValue(const char* val);
 private:
 	xr_string		m_entry;
 };
