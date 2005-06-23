@@ -64,6 +64,16 @@ function process_info_portion(info_id)
 	elseif info_id == "agr_sold_about_ratcatcher" then
 		level_tasks.add_location(304, "agr_ratcatcher_location")
 		return true
+		
+-- collector entrance		
+	elseif info_id == "agr_collector_entrance_info" then
+		level_tasks.add_location(304, "agr_collector_entrance_location")
+		return true	
+		
+-- captains chamber
+	elseif info_id == "agr_captains_chamber_info" then
+		level_tasks.add_location(304, "agr_captains_chamber_location")
+		return true	
 
 
 	elseif info_id == "agr_help_krot_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then

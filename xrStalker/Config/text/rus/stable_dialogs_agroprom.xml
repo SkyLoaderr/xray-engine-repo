@@ -144,4 +144,34 @@
     <string id="agr_stalker_talk_level_4">
         <text>Спасибо.</text>
     </string>
+    <string id="agr_swamp_ratcatcher_start_0">
+        <text>О! Человечина пришла! Какими судьбами?</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_0">
+        <text>Здраствуй. Ты Крысолов?</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_01">
+        <text>Ну да. Зачем пришел?</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_011">
+        <text>Расскажи мне о коллекторе. Как в него попасть, и куда эти туннели выведут?</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_0111">
+        <text>Коллектор? Там нынче опасно.\nВход у входа в коллектор.\nВыходов шесть. Каждый выход у своего выхода.\nТеритория НИИ патрулируется.\nРасписание патрулей находится у капитана в каптерке.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_01111">
+        <text>Откуда столько информации?</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_011111">
+        <text>Крысы рассказали.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_0111111">
+        <text>Ясно. Прощай.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_012">
+        <text>Да как тебе сказать... Стрелу свою ищу в этом болоте.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_123">
+        <text>А... понятно.... я в общем не из этой сказки.\nХа-ха-ха...</text>
+    </string>
 </string_table>

@@ -221,22 +221,6 @@
                 <has_info>agr_sold_about_ratcatcher</has_info>
                 <next>311</next>
             </phrase>
-            <phrase id="11">
-                <text>agr_stalker_talk_about_ratcatcher_11</text>
-                <precondition>agroprom_dialog.has_30_money</precondition>
-                <action>agroprom_dialog.give_30_money_to_stalker_for_info_about_ratcatcher</action>
-                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
-                <give_info>agr_sold_about_ratcatcher</give_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="1">
-                <text>agr_stalker_talk_about_ratcatcher_1</text>
-                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-            </phrase>
             <phrase id="13">
                 <text>agr_stalker_talk_about_ratcatcher_13</text>
                 <precondition>agroprom_dialog.not_has_30_money</precondition>
@@ -252,6 +236,68 @@
                 <text>agr_stalker_talk_about_ratcatcher_0</text>
                 <next>1</next>
                 <next>31</next>
+            </phrase>
+            <phrase id="1">
+                <text>agr_stalker_talk_about_ratcatcher_1</text>
+                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="11">
+                <text>agr_stalker_talk_about_ratcatcher_11</text>
+                <precondition>agroprom_dialog.has_30_money</precondition>
+                <action>agroprom_dialog.give_30_money_to_stalker_for_info_about_ratcatcher</action>
+                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
+                <give_info>agr_sold_about_ratcatcher</give_info>
+                <next>111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_swamp_ratcatcher_talks">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>01</next>
+            </phrase>
+            <phrase id="01">
+                <text>agr_swamp_ratcatcher_talks_01</text>
+                <next>011</next>
+                <next>012</next>
+            </phrase>
+            <phrase id="012">
+                <text>agr_swamp_ratcatcher_talks_012</text>
+                <next>123</next>
+            </phrase>
+            <phrase id="011">
+                <text>agr_swamp_ratcatcher_talks_011</text>
+                <dont_has_info>agr_collector_entrance_info</dont_has_info>
+                <next>0111</next>
+            </phrase>
+            <phrase id="0111">
+                <text>agr_swamp_ratcatcher_talks_0111</text>
+                <give_info>agr_collector_entrance_info</give_info>
+                <give_info>agr_captains_chamber_info</give_info>
+                <next>01111</next>
+            </phrase>
+            <phrase id="01111">
+                <text>agr_swamp_ratcatcher_talks_01111</text>
+                <give_info>agr_captains_chamber_info</give_info>
+                <give_info>agr_collector_entrance_info</give_info>
+                <next>011111</next>
+            </phrase>
+            <phrase id="011111">
+                <text>agr_swamp_ratcatcher_talks_011111</text>
+                <next>0111111</next>
+            </phrase>
+            <phrase id="123">
+                <text>agr_swamp_ratcatcher_talks_123</text>
+                <next>0111111</next>
+            </phrase>
+            <phrase id="0111111">
+                <text>agr_swamp_ratcatcher_talks_0111111</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>

@@ -89,7 +89,14 @@
     <info_portion id="agr_pda_solders_rats">
 		<article>agr_rats_n_solders</article>
     </info_portion>
+    
     <info_portion id="agr_sold_about_ratcatcher">    
+    </info_portion>
+
+    <info_portion id="agr_collector_entrance_info">    
+    </info_portion>
+    
+    <info_portion id="agr_captains_chamber_info">    
     </info_portion>
 
 
