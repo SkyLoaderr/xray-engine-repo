@@ -1362,7 +1362,7 @@ void dSolveLCP (int n, dReal *A, dReal *x, dReal *b,
 
 //***************************************************************************
 // accuracy and timing test
-
+#ifdef _DEBUG
 extern "C" void dTestSolveLCP()
 {
   int n = 100;
@@ -1470,3 +1470,4 @@ extern "C" void dTestSolveLCP()
     printf ("time=%10.3f ms  avg=%10.4f\n",time * 1000.0,average);
   }
 }
+#endif

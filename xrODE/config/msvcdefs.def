@@ -76,9 +76,7 @@ dCreateGeomTransform
 dCreatePlane
 dCreateRay
 dCreateSphere
-dDebug
 dDQfromW
-dError
 dFactorCholesky
 dFactorLDLT
 dGeomBoxGetLengths
@@ -234,7 +232,6 @@ dMassSetSphereTotal
 dMassSetZero
 dMassTranslate
 dMaxDifference
-dMessage
 dMultiply0
 dMultiply1
 dMultiply2
@@ -278,12 +275,8 @@ dSpaceGetNumGeoms
 dSpaceQuery
 dSpaceRemove
 dSpaceSetCleanup
-dTestMatrixComparison
-dTestRand
-dTestSolveLCP
 dWorldCreate
 dWorldDestroy
-dWorldExportDIF
 dWorldGetAutoDisableAngularThreshold
 dWorldGetAutoDisableFlag
 dWorldGetAutoDisableLinearThreshold

@@ -339,7 +339,7 @@ static void fprintDoubleWithPrefix (FILE *f, double a, char *fmt)
   fprintf (f,"n");
 }
 
-
+#ifdef _DEBUG
 void dTimerReport (FILE *fout, int average)
 {
   int i;
@@ -396,3 +396,4 @@ void dTimerReport (FILE *fout, int average)
   }
   fprintf (fout,"\n");
 }
+#endif

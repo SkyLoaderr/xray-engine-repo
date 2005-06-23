@@ -64,6 +64,7 @@ extern "C" dMessageFunction *dGetMessageHandler()
   return message_function;
 }
 
+#ifdef _DEBUG
 
 static void printMessage (int num, const char *msg1, const char *msg2,
 			  va_list ap)
@@ -120,7 +121,7 @@ extern "C" void dMessage (int num, const char *msg, ...)
 
 #include "windows.h"
 
-
+#ifdef _DEBUG
 extern "C" void dError (int num, const char *msg, ...)
 {
   va_list ap;
@@ -152,7 +153,6 @@ extern "C" void dDebug (int num, const char *msg, ...)
   abort();
 }
 
-
 extern "C" void dMessage (int num, const char *msg, ...)
 {
   va_list ap;
@@ -160,6 +160,7 @@ extern "C" void dMessage (int num, const char *msg, ...)
   if (message_function) message_function (num,msg,ap);
   else printMessage (num,"ODE Message",msg,ap);
 }
-
+#endif
+#endif
 
 #endif

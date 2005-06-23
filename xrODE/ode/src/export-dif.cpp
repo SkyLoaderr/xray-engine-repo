@@ -38,6 +38,8 @@
 #include "joint.h"
 #include "collision_kernel.h"
 
+#ifdef _DEBUG
+
 //***************************************************************************
 // utility
 
@@ -412,7 +414,6 @@ static void printGeom (PrintingContext &c, dxGeom *g)
 
 //***************************************************************************
 // world
-
 void dWorldExportDIF (dWorldID w, FILE *file, const char *prefix)
 {
 	PrintingContext c;
@@ -531,3 +532,4 @@ void dWorldExportDIF (dWorldID w, FILE *file, const char *prefix)
 		num++;
 	}
 }
+#endif
