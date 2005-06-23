@@ -76,10 +76,10 @@ function proceed()
 
 
 	--' GARBAGE
-	if actor:dont_has_info("agr_krot_band") and
+	if actor:dont_has_info("agr_krot_band_start") and
 		actor:object("garbage_seriy_flash") ~= nil 
 	then
-		actor:give_info_portion("agr_krot_band")
+		actor:give_info_portion("agr_krot_band_start")
 	end       	
 	
 	if actor:has_info("garbage_meetstalker_die") and
