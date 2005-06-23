@@ -89,14 +89,26 @@ center_point = kamp_point
 active = kamp@gar_bandit_agr_kamp5
 
 [kamp@gar_bandit_agr_kamp5]
-center_point = kamp_point
+center_point = kamp_point1
 
 
 [logic@gar_bandit_agr_kamp6]
 active = kamp@gar_bandit_agr_kamp6
 
 [kamp@gar_bandit_agr_kamp6]
-center_point = kamp_point
+center_point = kamp_point1
+
+[logic@gar_bandit_agr_kamp7]
+active = kamp@gar_bandit_agr_kamp7
+
+[kamp@gar_bandit_agr_kamp7]
+center_point = kamp_point1
+
+[logic@gar_bandit_agr_kamp8]
+active = kamp@gar_bandit_agr_kamp8
+
+[kamp@gar_bandit_agr_kamp8]
+center_point = kamp_point1
 
 
 [logic@gar_bandit_agr_leader_raid]
@@ -179,6 +191,33 @@ anim_run = assault
 
 [combat_ignore@follower4]
 
+[logic@gar_bandit_agr_follower5]
+active = follower@gar_bandit_agr_follower5
+on_hit = hit@bandits
+on_death = death@bandits
+combat_ignore = combat_ignore@follower5
+
+[follower@gar_bandit_agr_follower5]
+combat_ignore_cond = {-gar_counter_fire}
+anim_walk = raid
+anim_run = assault
+
+[combat_ignore@follower5]
+
+
+[logic@gar_bandit_agr_follower6]
+active = follower@gar_bandit_agr_follower6
+on_hit = hit@bandits
+on_death = death@bandits
+combat_ignore = combat_ignore@follower6
+
+[follower@gar_bandit_agr_follower6]
+combat_ignore_cond = {-gar_counter_fire}
+anim_walk = raid
+anim_run = assault
+
+[combat_ignore@follower6]
+
 
 [logic@gar_bandit_agr_leader_raid2]
 active = walker@gar_bandit_agr_leader_raid2
@@ -190,7 +229,7 @@ combat_ignore = combat_ignore@leader2
 path_walk = raid_walk2
 path_look = raid_look2
 combat_ignore_cond = {-gar_counter_fire}
-on_signal = start2 | %+gar_open_fire%
+on_signal = start2 | %+gar_counter_fire%
 
 
 
@@ -233,7 +272,13 @@ victim_wpn = 30|actor
 use = true
 use_wpn = true
 
-
+[meet@after_battle]
+meet_state = 10|hello@talk_hello| 5|ward@wait
+meet_state_wpn = 10|hello@talk_hello| 5|ward@wait
+victim = 15|actor
+victim_wpn = 15|actor
+use = true
+use_wpn = true
 
 
 [logic@gar_hellcar_group_walker1]
@@ -300,6 +345,17 @@ active = kamp@gar_hellcar_group_rest3
 center_point = kamp_point
 
 
+[logic@gar_hellcar_group_rest4]
+active = remark@hellcar_way_final
+
+[remark@hellcar_way_final]
+on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
+
+[walker2@hellcar_way]
+path_walk = hellcar_walk
+path_look = hellcar_look
+meet = meet@after_battle
+
 
 [meet@hellcar_group_in_battle]
 Meet_state 		= 2| wait@wait
@@ -325,6 +381,7 @@ combat_ignore_cond = {-gar_open_fire}
 meet = meet@hellcar_group_in_battle
 
 
+
 [combat_ignore@hellcar1]
 
 [hit]
@@ -339,8 +396,6 @@ active = camper@gar_hellcar_group_camper2
 on_hit = hit
 on_death = death
 combat_ignore = combat_ignore@hellcar2
-
-
 
 [camper@gar_hellcar_group_camper2]
 path_walk = camper2_walk
@@ -376,6 +431,14 @@ on_death = death
 combat_ignore = combat_ignore@hellcar4
 
 [camper@gar_hellcar_group_camper4]
+path_walk = camper4_walk
+path_look = camper4_look
+radius = 7
+combat_ignore_cond = {-gar_open_fire}
+meet = meet@hellcar_group_in_battle
+on_signal = direction | camper@gar_hellcar_group_camper4_new %=gar_direction_fire%
+
+[camper@gar_hellcar_group_camper4_new]
 path_walk = camper4_walk
 path_look = camper4_look
 radius = 7
