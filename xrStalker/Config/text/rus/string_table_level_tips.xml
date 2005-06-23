@@ -24,6 +24,8 @@
 #include "text\rus\string_table_tasks_radar.xml"
 #include "text\rus\string_table_tasks_garbage.xml"
 
+#include "text\rus\string_table_mapspots_agroprom.xml"
+
     <string id="inventory_item_use">
         <text>Поднять предмет ($$ACTION_USE$$)</text>
     </string>
