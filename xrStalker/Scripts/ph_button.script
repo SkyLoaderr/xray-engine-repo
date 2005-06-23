@@ -15,7 +15,7 @@ function ph_button:reset_scheme()
 	--local visual = self.object:Visual()
 	--local ska = visual:dcast_PSkeletonAnimated()
 	--ska:PlayCycle(self.st.anim)
-	self.object:play_cycle(self.st.anim)
+	self.object:play_cycle(self.st.anim, self.st.blending)
 
 	self.last_hit_tm = time_global()
 	self.object:set_callback(callback.hit, self.hit_callback, self)
@@ -84,5 +84,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.on_press  = xr_logic.cfg_get_condlist(ini, section, "on_press", npc)
 
 	st.anim = utils.cfg_get_string(ini, section, "anim", npc, true, "")
+	st.blending = utils.cfg_get_bool (ini, section, "anim_blend", npc, false, true)
+    if st.blending == nil then 	
+       st.blending = true 
+    end
 end
 
