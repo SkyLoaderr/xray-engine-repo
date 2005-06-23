@@ -142,7 +142,11 @@ void print_class						(lua_State *L, luabind::detail::class_rep *crep)
 		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	I = constants.begin();
 		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	E = constants.end();
 		for ( ; I != E; ++I)
-			Msg		("    const %s = %d;",(*I).first,(*I).second);
+#ifndef USE_NATIVE_LUA_STRINGS
+			Msg		("    const %s = %d;",j(*I).first,(*I).second);
+#else
+			Msg		("    const %s = %d;",getstr((*I).first.m_object),(*I).second);
+#endif
 		if (!constants.empty())
 			Msg		("    ");
 	}
@@ -157,7 +161,11 @@ void print_class						(lua_State *L, luabind::detail::class_rep *crep)
 		PROPERTIES::const_iterator	I = properties.begin();
 		PROPERTIES::const_iterator	E = properties.end();
 		for ( ; I != E; ++I)
+#ifndef USE_NATIVE_LUA_STRINGS
 			Msg	("    property %s;",(*I).first);
+#else
+			Msg	("    property %s;",getstr((*I).first.m_object));
+#endif
 		if (!properties.empty())
 			Msg		("    ");
 	}
