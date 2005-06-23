@@ -169,7 +169,7 @@ virtual void ApplyDamage			(u16 level);
 	{
 		SWheel* pwheel;
 		float	pos_fvd;
-		float gear_factor;
+		float	gear_factor;
 		void	Init		()						;
 		void	Drive		()						;
 		void	Neutral		()						;
@@ -199,15 +199,14 @@ virtual void ApplyDamage			(u16 level);
 	};
 	struct SWheelBreak 
 	{
-		SWheel		*pwheel				;
-		float		break_torque		;
-		float		hand_break_torque	;
-		bool		loaded				;
-		void	 Init			()					;
-		void	 Break			(float k)			;
-		void	 HandBreak		()					;
-		void	 Neutral		()					;
-		void	 Load			(LPCSTR section)	;
+		SWheel			*pwheel							;
+		float			break_torque					;
+		float			hand_break_torque				;
+		void		 Init			()					;
+		void		 Break			(float k)			;
+		void		 HandBreak		()					;
+		void		 Neutral		()					;
+		void		 Load			(LPCSTR section)	;
 	};
 
 	struct SExhaust
@@ -395,8 +394,6 @@ private:
 
 	float					m_steering_speed;
 	float					m_ref_radius;
-	float					m_break_torque;
-	float					m_hand_break_torque;
 	size_t					m_current_transmission_num;
 	///////////////////////////////////////////////////
 	CCarLights				m_lights;

@@ -338,29 +338,21 @@ void CCar::SWheelBreak::Init()
 {
 	pwheel->Init();
 	float k=pwheel->radius/pwheel->car->m_ref_radius;
-	if(loaded)
-	{
-		break_torque			*=k;
-		hand_break_torque		*=k;
-	}else
-	{
-		break_torque=pwheel->car->m_break_torque*k;
-		hand_break_torque=pwheel->car->m_hand_break_torque*k;
-	}
+
+	break_torque			*=k;
+	hand_break_torque		*=k;
 }
 void CCar::SWheelBreak::Load(LPCSTR section)
 {
-	CKinematics		*K			=PKinematics(pwheel->car->Visual())		;
-	CInifile		*ini		=K->LL_UserData()						;
-	VERIFY						(ini)									;
+	CKinematics		*K			=PKinematics(pwheel->car->Visual())												;
+	CInifile		*ini		=K->LL_UserData()																;
+	VERIFY						(ini)																			;
+	break_torque		=		ini->r_float("car_definition","break_torque")									;
+	hand_break_torque	=		READ_IF_EXISTS(ini,r_float,"car_definition","hand_break_torque",break_torque)	;
 	if(ini->section_exist(section))
 	{	
 		break_torque					=READ_IF_EXISTS(ini,r_float,section,"break_torque",break_torque);
 		hand_break_torque				=READ_IF_EXISTS(ini,r_float,section,"hand_break_torque",hand_break_torque);
-		loaded							=true;
-	}else
-	{
-		loaded=false;
 	}
 }
 void CCar::SWheelBreak::Break(float k)

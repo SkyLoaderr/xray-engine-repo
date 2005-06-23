@@ -621,13 +621,7 @@ void CCar::ParseDefinitions()
 
 	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
 	m_steering_speed	=		ini->r_float("car_definition","steering_speed");
-	m_break_torque		=		ini->r_float("car_definition","break_torque");
-	m_hand_break_torque	=		ini->r_float("car_definition","break_torque");
 
-	if(ini->line_exist("car_definition","hand_break_torque"))
-	{
-		m_hand_break_torque=ini->r_float("car_definition","hand_break_torque");
-	}
 	if(ini->line_exist("car_definition","break_time"))
 	{
 		m_break_time=ini->r_float("car_definition","break_time");
@@ -1687,6 +1681,7 @@ template <class T> IC void CCar::fill_wheel_vector(LPCSTR S,xr_vector<T>& type_w
 		else
 		{
 			twheel.pwheel			=	&(m_wheels_map.find(bone_id))->second;
+			twheel						.Load(S1);
 		}
 	}
 }
