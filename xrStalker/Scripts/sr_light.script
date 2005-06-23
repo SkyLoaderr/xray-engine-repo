@@ -1,0 +1,90 @@
+local light_zones = {}
+
+---------------------------------------------------------------------------------------------------------------------
+class "action_light"
+
+function action_light:__init (obj, storage)
+	self.object = obj
+	self.st = storage
+	self.stalkers = {}
+	self.active = false
+end
+
+function action_light:reset_scheme()
+    printf("_bp: sr_light: action_idle:reset_scheme: self.object:name()='%s'", self.object:name())
+end
+
+function action_light:update(delta)
+
+	local actor = db.actor
+
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+	   self.active = false     
+	   self.stalkers = {}
+	   return
+	end	
+	self.active = true
+end
+
+function action_light:check_stalker (stalker)
+    if self.active == false then 
+       return false
+    end
+    
+    local id = stalker:id ()
+    local torch = stalker:object ("device_torch")
+    -- если у сталкера нет фонарика, то гоним его в шею 
+    if torch == nil then 
+       if self.stalkers[id] ~= nil then 
+          self.stalkers[id] = nil
+       end     
+       return  false
+    end
+    
+	if self.object:inside(stalker:position ()) then
+       torch:enable_attachable_item (self.st.light)
+       if self.stalkers[id] == nil then
+          self.stalkers[id] = stalker
+       end     
+       return true
+    end
+    self.stalkers[id] = nil
+    return false    
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+	local new_action = action_light (npc, storage)
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+	table.insert (light_zones, new_action)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	st.light = utils.cfg_get_bool (ini, section, "light_on", npc, false, false)
+end
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+function check_light_zone (stalker)
+    if stalker == nil or stalker:alive () == false then 
+       return 
+    end
+    local size = table.getn (light_zones)
+    if size == 0 then 
+       return 
+    end
+    for a = 1, size, 1 do
+        if light_zones[a]:check_stalker (stalker) == true then
+           return
+        end    
+    end    
+    local torch = stalker:object ("device_torch")
+    if torch == nil then
+       return
+    end
+    torch:enable_attachable_item (false)        
+end

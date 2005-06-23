@@ -52,7 +52,7 @@ function motivator_binder:reinit()
     db.storage[self.object:id()] = {  followers = {} }
     self.st = db.storage[self.object:id()]
     
-    self.torch = xr_light.torch_light(self.object)
+    --self.torch = xr_light.torch_light(self.object)
 
     --' Положения тела
     self.st.state = xr_state.body_state(self.object)
@@ -177,7 +177,8 @@ function motivator_binder:update(delta)
 		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
-	self.torch:update()
+    sr_light.check_light_zone (self.object)
+	--self.torch:update()
     
 	--' Апдейт менеджера состояний тела
 	if self.st.state_mgr then

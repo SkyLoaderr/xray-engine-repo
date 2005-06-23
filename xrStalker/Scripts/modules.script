@@ -80,3 +80,5 @@ load_scheme("sr_no_weapon",   "sr_no_weapon", stype_restrictor)
 load_scheme("sr_tip",         "sr_tip",       stype_restrictor)
 load_scheme("sr_sound",       "sr_sound",     stype_restrictor)
 load_scheme("sr_idle",        "sr_idle",      stype_restrictor)
+load_scheme("sr_light",       "sr_light",     stype_restrictor) 
+
