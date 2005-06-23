@@ -1549,9 +1549,6 @@
 			<Filter
 				Name="models"
 				Filter="">
-				<File
-					RelativePath=".\niva_engine.ltx">
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
