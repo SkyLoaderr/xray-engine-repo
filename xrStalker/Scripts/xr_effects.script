@@ -851,3 +851,11 @@ end
 function agr_krot_sos( actor, npc )
 	news_manager.send_tip( actor, "tips_agr_krot_sos", 0, "krot", 10000 )
 end
+
+function agr_krot_sos1( actor, npc )
+	news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
+end
+
+function agr_krot_sos2( actor, npc )
+	news_manager.send_tip( actor, "tips_agr_krot_sos2", 0, "krot", 10000 )
+end

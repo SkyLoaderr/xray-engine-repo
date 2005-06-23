@@ -3,12 +3,19 @@
 function proceed()
     local actor = db.actor
 
-	if actor:has_info("agr_krot_band") and
-	   actor:object("krot_flash") ~= nil
-	then
-		actor:give_info_portion("agr_krot_band_done")
+	if actor:object("krot_flash") then
+		if level_tasks.is_map_spot_present(302, "agr_krot_location") then
+			level_tasks.remove_location(302, "agr_krot_location")
+		end
+
 		actor:give_info_portion("agr_find_gunslinger_cache")
-		level_tasks.set_task_state(task.completed, "agr_meet_krot_band", 0)
+
+		actor:give_info_portion("agr_factory_spawn_spetsnaz")
+
+		if actor:has_info("agr_krot_band_start") then
+			actor:give_info_portion("agr_krot_band_done")
+			level_tasks.set_task_state(task.completed, "agr_meet_krot_band", 0)
+		end
 	end
 
 	if actor:has_info("agroprom_military_case") and
@@ -59,12 +66,22 @@ function process_info_portion(info_id)
 		return true
 
 
-	elseif info_id == "agr_krot_band" then
+	elseif info_id == "agr_help_krot_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then
 		level_tasks.add_location(302, "agr_krot_location")
 		return true
 
-	elseif info_id == "agr_krot_band_done" then
-		level_tasks.remove_location(302, "agr_krot_location")
+	elseif info_id == "agr_krot_dead" and db.actor:has_info( "agr_help_krot_start" ) then
+		db.actor:give_info_portion("agr_help_krot_done")
+		level_tasks.set_task_state(task.fail, "agr_help_krot", 0)
+		return true
+
+	elseif info_id == "agr_help_krot_done" then
+		level_tasks.set_task_state(task.completed, "agr_help_krot", 0)
+		return true
+
+
+	elseif info_id == "agr_krot_band_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then
+		level_tasks.add_location(302, "agr_krot_location")
 		return true
 
 	elseif info_id == "agr_find_gunslinger_cache" then

@@ -5,7 +5,7 @@
 local t = {}
 
 function load_job( sj, gname, type, squad, groups )
-	--' Agroprom NII
+	------------------ Agroprom NII ------------------------------------------
 	if type == "agr_nii" then
 		t = { section = "logic@agr_nii_walker1",
 			idle = 0,
@@ -101,7 +101,7 @@ function load_job( sj, gname, type, squad, groups )
 		table.insert(sj, t)
 	end
 
-	--' Agroprom factory assaulting soldiers
+	------------------ Солдаты атакующие группу Крота ------------------------------------------
 	if type == "agr_factory_assault" then
 		-- идут к обороняющимся
 		t = { section = "logic@agr_factory_assault_walker1",
@@ -206,7 +206,7 @@ function load_job( sj, gname, type, squad, groups )
 		end
 	end
 
-	--' Agroprom factory Krot's stalkers
+	------------------ Сталкеры из группы Крота ------------------------------------------
 	if type == "agr_factory_defence" then
 		-- ждут военных
 		for i = 1, 6 do
@@ -238,9 +238,53 @@ function load_job( sj, gname, type, squad, groups )
 			}
 			table.insert(sj, t)
 		end
+		-- бегут по путям к колодцу и стоят там
+		for i = 1, 6 do
+			t = { section = "logic@agr_factory_defence_to_well_walker"..i,
+				idle = 0,
+				prior = 0, state = {3},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
 	end
 
-	--' Agroprom rush
+	------------------ Солдаты удерживают Крота ------------------------------------------
+	if type == "agr_factory_hold" then
+		-- стреляют по точкам
+		for i = 1, 3 do
+			t = { section = "logic@agr_factory_hold_fake_walker"..i,
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_factory_hold_restrictor"
+			}
+			table.insert(sj, t)
+		end
+		-- срываются в универсальный бой под рестриктором
+		for i = 1, 3 do
+			t = { section = "logic@agr_factory_hold_walker"..i,
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_factory_hold_restrictor"
+			}
+			table.insert(sj, t)
+		end
+		-- Убили Крота. Ходят по путям без рестрикторов
+		for i = 1, 3 do
+			t = { section = "logic@agr_factory_hold_walker"..i,
+				idle = 0,
+				prior = 0, state = {2},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+	end
+
+	------------------ Гнездо и лавина собак ------------------------------------------
 	if type == "agr_rush" then
 		local dogs_num = 12
 
@@ -306,8 +350,8 @@ function load_states( gname, type )
 				if xr_gulag.getGulagPopulation( "agr_factory_defence" ) > 0 then
 					return 1
 				else
-					db.actor:give_info_portion( "agr_help_stalkers_defence_dead" )
 					db.actor:give_info_portion( "agr_help_stalkers_done" )
+					db.actor:give_info_portion( "agr_help_stalkers_defence_dead" )
 					return 2
 				end
 			else
@@ -318,6 +362,11 @@ function load_states( gname, type )
 
 	if type == "agr_factory_defence" then
 		return function( gulag )
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			end
+
 			if gulag.state == 0 then
 --				for k, v in gulag.Object do
 --					if v:best_enemy() then
@@ -326,7 +375,7 @@ function load_states( gname, type )
 --				end
 --				return 0
 
-				if db.actor:has_info( "agr_factory_assault_skirmish" ) then
+				if actor:has_info( "agr_factory_assault_skirmish" ) then
 					return 1
 				else
 					return 0
@@ -336,9 +385,40 @@ function load_states( gname, type )
 				if xr_gulag.getGulagPopulation( "agr_factory_assault" ) > 0 then
 					return 1
 				else
-					db.actor:give_info_portion( "agr_help_stalkers_assault_dead" )
-					db.actor:give_info_portion( "agr_help_stalkers_done" )
+					actor:give_info_portion( "agr_help_stalkers_done" )
+					actor:give_info_portion( "agr_help_stalkers_assault_dead" )
 					return 2
+				end
+			else
+				if actor:has_info( "agr_krot_go_to_well" ) then
+					return 3
+				else
+					return 2
+				end
+			end
+		end
+	end
+
+	if type == "agr_factory_hold" then
+		return function( gulag )
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			end
+
+			if gulag.state == 0 then
+				if actor:has_info( "agr_krot_dead" ) then
+					return 2
+				elseif actor:has_info( "agr_krot_skirmish_start" ) then
+					return 1
+				else
+					return 0
+				end
+			elseif gulag.state == 1 then
+				if actor:has_info( "agr_krot_dead" ) then
+					return 2
+				else
+					return 1
 				end
 			else
 				return 2
@@ -376,7 +456,7 @@ function load_states( gname, type )
 end
 
 function checkStalker( npc_community, gulag_type )
-	if gulag_type == "agr_nii" or gulag_type == "agr_factory_assault" then
+	if gulag_type == "agr_nii" or gulag_type == "agr_factory_assault" or gulag_type == "agr_factory_hold" then
 		return npc_community == "military"
 	end
 
