@@ -21,6 +21,10 @@ CUICustomSpin::CUICustomSpin(){
 	m_pBtnDown		= xr_new<CUI3tButton>();
 	m_pLines		= xr_new<CUILines>();
 
+    m_pFrameLine->SetAutoDelete(true);
+	m_pBtnUp->SetAutoDelete(true);
+	m_pBtnUp->SetAutoDelete(true);
+
 	AttachChild(m_pFrameLine);
 	AttachChild(m_pBtnUp);
 	AttachChild(m_pBtnDown);
@@ -29,7 +33,7 @@ CUICustomSpin::CUICustomSpin(){
 }
 
 CUICustomSpin::~CUICustomSpin(){
-
+	xr_delete(m_pLines);
 }
 
 void CUICustomSpin::Init(float x, float y, float width, float height){
@@ -41,7 +45,7 @@ void CUICustomSpin::Init(float x, float y, float width, float height){
 	m_pBtnDown->Init(width - BTN_SIZE, BTN_SIZE, BTN_SIZE, BTN_SIZE);
 	m_pBtnDown->InitTexture("ui_spiner_button_b");
 
-	m_pLines->Init(10,0,width - BTN_SIZE - 10, SPIN_HEIGHT);
+	m_pLines->Init(0,0,width - BTN_SIZE - 10, SPIN_HEIGHT);
 }
 
 void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL */){
@@ -65,6 +69,6 @@ void CUICustomSpin::OnBtnDownClick(){
 void CUICustomSpin::Draw(){
 	CUIWindow::Draw();
 	Fvector2 pos = GetAbsolutePos();
-	m_pLines->Draw(pos.x, pos.y);
+	m_pLines->Draw(pos.x + 3, pos.y);
 }
 
