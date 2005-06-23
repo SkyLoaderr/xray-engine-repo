@@ -360,7 +360,7 @@ private:
 	xr_vector <SWheelSteer> m_steering_wheels;
 	xr_vector <SWheelBreak> m_breaking_wheels;
 	xr_vector <SExhaust>	m_exhausts;
-	shared_str					m_exhaust_particles;
+	shared_str				m_exhaust_particles;
 	xr_map	  <u16,SDoor>	m_doors;
 	xr_vector <SDoor*>		m_doors_update;
 	xr_vector <Fvector>		m_gear_ratious;
@@ -374,9 +374,11 @@ private:
 	float					m_doors_torque_factor;
 	/////////////////////////////////////////////////////////////
 
-	float					m_max_power;//best rpm
-	float					m_power_increment_factor;
-	float					m_rpm_increment_factor;
+	float					m_max_power					;//best rpm
+	float					m_power_increment_factor	;
+	float					m_power_decrement_factor	;
+	float					m_rpm_increment_factor		;
+	float					m_rpm_decrement_factor		;
 	/////////////////////porabola
 	float m_a,m_b,m_c;
 
@@ -399,24 +401,22 @@ private:
 	CCarLights				m_lights;
 	////////////////////////////////////////////////////
 	/////////////////////////////////////////////////
-	void		   InitParabola();
-	float _stdcall Parabola(float rpm);
+	void				InitParabola();
+	float	_stdcall	Parabola(float rpm);
 	//float GetSteerAngle();
-	void LimitWheels();
-	void Drive();
-	
-	void Starter();
-
-	void StartEngine();
-	void StopEngine();
-	void Stall();
-	void Clutch();
-	void Unclutch();
-	void SwitchEngine();
-	void NeutralDrive();
-	void UpdatePower();
-	void ReleasePedals();
-	void ResetKeys();
+	void				 LimitWheels	()	;
+	void				 Drive			()	;
+	void				 Starter		()	;
+	void				 StartEngine	()	;
+	void				 StopEngine		()	;
+	void				 Stall			()	;
+	void				 Clutch			()	;
+	void				 Unclutch		()	;
+	void				 SwitchEngine	()	;
+	void				 NeutralDrive	()	;
+	void				 UpdatePower	()	;
+	void				 ReleasePedals	()	;
+	void				 ResetKeys		()	;
 
 	////////////////////////////////////////////////////////////////////////
 	float RefWheelMaxSpeed()
@@ -431,32 +431,31 @@ private:
 	{
 		return EngineCurTorque()*((m_current_gear_ratio<0.f) ? -m_current_gear_ratio : m_current_gear_ratio);
 	}
-	float EnginePower();
-	float EngineDriveSpeed();
-	float DriveWheelsMeanAngleRate();
-IC	float EngineRpmFromWheels(){return dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);}
+	float	 EnginePower				();
+	float	 EngineDriveSpeed			();
+	float	 DriveWheelsMeanAngleRate	();
+IC	float	 EngineRpmFromWheels		(){return dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);}
 	/////////////////////////////////////////////////////////////////////////	
-	void SteerRight();
-	void SteerLeft();
-	void SteerIdle();
-	void Transmission(size_t num);
-	void CircleSwitchTransmission();
-	void TransmissionUp();
-	void TransmissionDown();
-IC	size_t CurrentTransmission(){return m_current_transmission_num;}
-	void PressRight();
-	void PressLeft();
-	void PressForward();
-	void PressBack();
-	void PressBreaks();
+	void	SteerRight					();
+	void	SteerLeft					();
+	void	SteerIdle					();
+	void	Transmission				(size_t num);
+	void	CircleSwitchTransmission	();
+	void	TransmissionUp				();
+	void	TransmissionDown			();
+IC	size_t	CurrentTransmission		(){return m_current_transmission_num;}
+	void	PressRight					();
+	void	PressLeft					();
+	void	PressForward				();
+	void	PressBack					();
+	void	PressBreaks					();
 
-	void ReleaseRight();
-	void ReleaseLeft();
-	void ReleaseForward();
-	void ReleaseBack();
-	void ReleaseBreaks();
-
-	void Revert							();
+	void	ReleaseRight				();
+	void	ReleaseLeft					();
+	void	ReleaseForward				();
+	void	ReleaseBack					();
+	void	ReleaseBreaks				();
+	void	Revert						();
 
 	void StartBreaking					();
 	void StopBreaking					();

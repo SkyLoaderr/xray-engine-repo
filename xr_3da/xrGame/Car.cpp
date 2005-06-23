@@ -65,6 +65,8 @@ CCar::CCar(void)
 	m_doors_torque_factor = 2.f;
 	m_power_increment_factor=0.5f;
 	m_rpm_increment_factor=0.5f;
+	m_power_decrement_factor=0.5f;
+	m_rpm_decrement_factor=0.5f;
 	b_breaks=false;
 	m_break_start=0.f;
 	m_break_time=1.;
@@ -595,20 +597,19 @@ void CCar::ParseDefinitions()
 	m_max_rpm			*=		(1.f/60.f*2.f*M_PI);
 
 
-	m_min_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
-	m_min_rpm			*=		(1.f/60.f*2.f*M_PI);
+	m_min_rpm					=		ini->r_float("car_definition","idling_engine_rpm");
+	m_min_rpm					*=		(1.f/60.f*2.f*M_PI);
 
-	m_power_rpm			=		ini->r_float("car_definition","max_power_rpm");
-	m_power_rpm			*=		(1.f/60.f*2.f*M_PI);//
+	m_power_rpm					=		ini->r_float("car_definition","max_power_rpm");
+	m_power_rpm					*=		(1.f/60.f*2.f*M_PI);//
 
-	m_torque_rpm		=		ini->r_float("car_definition","max_torque_rpm");
-	m_torque_rpm		*=		(1.f/60.f*2.f*M_PI);//
+	m_torque_rpm				=		ini->r_float("car_definition","max_torque_rpm");
+	m_torque_rpm				*=		(1.f/60.f*2.f*M_PI);//
 
-	if(ini->line_exist("car_definition","power_increment_factor"))
-		m_power_increment_factor=	ini->r_float("car_definition","power_increment_factor");
-
-	if(ini->line_exist("car_definition","rpm_increment_factor"))
-		m_rpm_increment_factor=	ini->r_float("car_definition","rpm_increment_factor");
+	m_power_increment_factor	=		READ_IF_EXISTS(ini,r_float,"car_definition","power_increment_factor",m_power_increment_factor);
+	m_rpm_increment_factor		=		READ_IF_EXISTS(ini,r_float,"car_definition","rpm_increment_factor",m_rpm_increment_factor);
+	m_power_decrement_factor	=		READ_IF_EXISTS(ini,r_float,"car_definition","power_decrement_factor",m_power_increment_factor);
+	m_rpm_decrement_factor		=		READ_IF_EXISTS(ini,r_float,"car_definition","rpm_decrement_factor",m_rpm_increment_factor);
 
 	if(ini->line_exist("car_definition","exhaust_particles"))
 	{
@@ -1396,7 +1397,11 @@ float CCar::EnginePower()
 		}
 		value = Parabola(m_current_rpm);
 	}
-	return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
+
+	if(value>m_current_engine_power)
+		return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
+	else
+		return value * m_power_decrement_factor+m_current_engine_power*(1.f-m_power_decrement_factor);
 }
 float CCar::DriveWheelsMeanAngleRate()
 {
@@ -1429,7 +1434,11 @@ float CCar::EngineDriveSpeed()
 		}
 		limit_above(calc_rpm,m_max_rpm)		;
 	}
-	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
+	if(calc_rpm>m_current_rpm)
+		return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
+	else
+		return		(1.f-m_rpm_decrement_factor)*m_current_rpm+m_rpm_decrement_factor*calc_rpm;
+
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;
 }
