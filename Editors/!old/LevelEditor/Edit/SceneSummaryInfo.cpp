@@ -85,6 +85,7 @@ void SSceneSummary::STextureInfo::Prepare	()
             Msg("!Can't get info from texture: '%s'",file_name.c_str());
         }else{
             info			= T->_Format();
+            pixel_area		*=info.width*info.height;
         }
         xr_delete			(T);
     }else{
@@ -109,6 +110,8 @@ void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%3.2f m^2",effective_area));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Pixel Area"),	shared_str().sprintf("%3.2f p^2",pixel_area));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Area Ratio"),	shared_str().sprintf("%3.2f p/m",_sqrt(pixel_area/effective_area)));
         AnsiString tmp;
         for (objinf_map_it o_it=objects.begin(); o_it!=objects.end(); o_it++){
         	tmp += AnsiString().sprintf("%s%s[%d*%3.2f]",tmp.Length()?"; ":"",o_it->first.c_str(),o_it->second.ref_count,o_it->second.area);
@@ -131,7 +134,7 @@ void SSceneSummary::STextureInfo::Export	(IWriter* F, u32& mem_use)
 {
 	string128		mask;
 	string4096		tmp;
-    strcpy			(mask,"%s=%s,%d,%d,%s,%d,%3.2f,%s");
+    strcpy			(mask,"%s=%s,%d,%d,%s,%d,%3.2f,%3.2f,%3.2f,%s");
     if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
         if (0!=info.detail_name.size()){
         	strcat	(mask,",%s,%3.2f");
@@ -146,7 +149,7 @@ void SSceneSummary::STextureInfo::Export	(IWriter* F, u32& mem_use)
     sprintf			(tmp,mask,*file_name,info.FormatString(),
     				info.width,info.height,info.HasAlpha()?"present":"absent",
                     iFloor(tex_mem/1024),
-                    effective_area, tmp2.c_str(), 
+                    effective_area, pixel_area, _sqrt(pixel_area/effective_area), tmp2.c_str(), 
                     *info.detail_name, info.detail_scale);
 	F->w_string		(tmp);
 }
@@ -172,10 +175,11 @@ bool SSceneSummary::ExportSummaryInfo(LPCSTR fn)
         // textures
         u32 total_mem_usage		= 0; 
         F->w_string				("[TEXTURES]");
-        F->w_string				("texture name=format,width,height,alpha,mem usage (Kb),area,objects (name[count*area]),detail name,detail scale");
+        F->w_string				("texture name=format,width,height,alpha,mem usage (Kb),area,pixel_area,area ratio,objects (name[count*area]),detail name,detail scale");
         for (u32 stt=sttFirst; stt<sttLast; stt++){
             u32 cur_mem_usage	= 0; 
             float cur_area		= 0; 
+            float cur_p_area	= 0; 
             xr_string pref	= "[";
             pref				+= get_token_name(summary_texture_type_tokens,stt);
             pref				+= "]";
@@ -183,14 +187,17 @@ bool SSceneSummary::ExportSummaryInfo(LPCSTR fn)
             for (TISetIt it=textures.begin(); it!=textures.end(); it++){
                 STextureInfo* info= (STextureInfo*)(&(*it));
                 if (info->type==stt){ 
-                    cur_area		+=info->effective_area;
-                    info->Export	(F,cur_mem_usage);
+                    cur_area	+= info->effective_area;
+                    cur_p_area	+= info->pixel_area;
+                    info->Export(F,cur_mem_usage);
                 }
             }
             total_mem_usage		+= cur_mem_usage;
             sprintf				(tmp,"%s mem usage - %d Kb",pref.c_str(),cur_mem_usage);
             F->w_string			(tmp);
             sprintf				(tmp,"%s effective area - %3.2f m^2",pref.c_str(),cur_area);
+            F->w_string			(tmp);
+            sprintf				(tmp,"%s pixel area - %3.2f m^2",pref.c_str(),cur_p_area);
             F->w_string			(tmp);
         }
         sprintf					(tmp,"Total mem usage - %d Kb",total_mem_usage);
@@ -248,18 +255,22 @@ void SSceneSummary::FillProp(PropItemVec& items)
     for (u32 stt=sttFirst; stt<sttLast; stt++){
         u32 cur_mem_usage	= 0; 
         float cur_area		= 0; 
+        float cur_p_area	= 0; 
     	shared_str pref		= PrepareKey("Textures",get_token_name(summary_texture_type_tokens,stt));
 	    CaptionValue* mem 	= PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage").c_str(), "");
 	    CaptionValue* area 	= PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area").c_str(), "");
+	    CaptionValue* p_area= PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Pixel Area").c_str(), "");
 		for (TISetIt it=textures.begin(); it!=textures.end(); it++){
 	        STextureInfo* info= (STextureInfo*)(&(*it));
 	    	if (info->type==stt){ 
-            	cur_area	+=info->effective_area;
+            	cur_area	+= info->effective_area;
+                cur_p_area	+= info->pixel_area;
             	info->FillProp(items,pref.c_str(),cur_mem_usage);
             }
         }
 	    mem->ApplyValue		(shared_str().sprintf("%d Kb",iFloor(cur_mem_usage/1024)));
 	    area->ApplyValue 	(shared_str().sprintf("%3.2f m^2",cur_area));
+        p_area->ApplyValue 	(shared_str().sprintf("%3.2f",cur_p_area));
         total_mem_usage		+= cur_mem_usage;
     }
     total_count->ApplyValue	(shared_str().sprintf("%d",		textures.size()));

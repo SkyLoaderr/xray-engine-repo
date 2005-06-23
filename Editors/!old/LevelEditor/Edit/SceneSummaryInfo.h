@@ -29,6 +29,7 @@ private:
         DEFINE_MAP(shared_str,SObjInfo,objinf_map,objinf_map_it);
         objinf_map			objects;
         float				effective_area;
+        float				pixel_area;
 		void 				OnHighlightClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
     public:
     	STextureInfo(const shared_str& fn, ESummaryTextureType t)
@@ -37,6 +38,7 @@ private:
         	ZeroMemory		(&info,sizeof(info));
             type			= t;
         	effective_area 	= 0;
+            pixel_area		= 0;
         }
         void		Prepare	();
         void		FillProp(PropItemVec& items, LPCSTR pref, u32& mem_use);   
@@ -99,7 +101,7 @@ private:
     void		Prepare				();
 public:
     			SSceneSummary		(){ Clear(); }
-    void 		AppendTexture		(shared_str name, ESummaryTextureType type, float area, shared_str obj_name)
+    void 		AppendTexture		(shared_str name, ESummaryTextureType type, float area, float pixel_area, shared_str obj_name)
     {
         TISetIt it 			= std::find(textures.begin(),textures.end(),name);
         if (it==textures.end()){
@@ -115,6 +117,7 @@ public:
         }
         o_it->second.ref_count++;
         info->effective_area+=area;
+        info->pixel_area+=pixel_area;
     }
     void 		AppendObject		(shared_str name)
     {

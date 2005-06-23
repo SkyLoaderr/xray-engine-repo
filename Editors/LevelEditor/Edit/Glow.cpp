@@ -202,7 +202,7 @@ void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
 bool CGlow::GetSummaryInfo(SSceneSummary* inf)
 {
 	inherited::GetSummaryInfo	(inf);
-	if (m_TexName.size()) 	inf->AppendTexture(ChangeFileExt(*m_TexName,"").LowerCase().c_str(),SSceneSummary::sttGlow,0,"$GLOW$");
+	if (m_TexName.size()) 	inf->AppendTexture(ChangeFileExt(*m_TexName,"").LowerCase().c_str(),SSceneSummary::sttGlow,0,0,"$GLOW$");
 	inf->glow_cnt++;
 	return true;
 }

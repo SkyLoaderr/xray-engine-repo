@@ -87,14 +87,16 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (IsStatic()||IsMUStatic()){
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-			float area	= 0.f;
+			float area			= 0.f;
+			float pixel_area	= 0.f;
             for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++){
-            	area	+= (*m)->CalculateSurfaceArea(*s_it,true);
+            	area			+= (*m)->CalculateSurfaceArea(*s_it,true);
+                pixel_area		+= (*m)->CalculateSurfacePixelArea(*s_it,true);
             }
-            inf->AppendTexture(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str(),SSceneSummary::sttBase,area,m_LibName.c_str());
+            inf->AppendTexture(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str(),SSceneSummary::sttBase,area,pixel_area,m_LibName.c_str());
         }
         if (m_Flags.is(eoUsingLOD)){
-            inf->AppendTexture(GetLODTextureName().c_str(),SSceneSummary::sttLOD,0,"$LOD$");
+            inf->AppendTexture(GetLODTextureName().c_str(),SSceneSummary::sttLOD,0,0,"$LOD$");
             inf->lod_objects.insert	(m_LibName.c_str());
             inf->object_lod_ref_cnt++;
         }
