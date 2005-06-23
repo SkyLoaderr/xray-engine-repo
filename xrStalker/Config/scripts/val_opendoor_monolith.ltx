@@ -38,7 +38,7 @@ on_signal = victim_start | %+val_opendoor_victim_start%
 ;on_info = {+val_opendoor_victim_start} camper@fight
 on_info = {=is_dead_one(411)} camper@wait
 on_info2 = {+val_opendoor_plr_detected} nil
-combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
+combat_ignore_cond = {!check_fighting(411)} ;{=fighting_actor -val_opendoor_plr_detected}
 wounded = wounded
 
 ;[camper@fight]
