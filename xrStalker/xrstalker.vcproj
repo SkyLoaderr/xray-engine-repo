@@ -825,10 +825,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1582,9 +1582,6 @@
 					RelativePath=".\Scripts\ui_main_new_tab.script">
 				</File>
 				<File
-					RelativePath=".\Scripts\ui_mm_mp_join.script">
-				</File>
-				<File
 					RelativePath=".\Scripts\ui_numpad.script">
 				</File>
 				<File
@@ -1600,40 +1597,16 @@
 					Name="multiplayer"
 					Filter="">
 					<File
+						RelativePath=".\Scripts\ui_mm_mp_join.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\ui_mm_mp_options.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\ui_mm_mp_server.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\ui_mp_main.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_base.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_base_tab.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_create.script">
-					</File>
-					<File
-						RelativePath=".\scripts\ui_multiplayer_create_base_tab.script">
-					</File>
-					<File
-						RelativePath=".\scripts\ui_multiplayer_create_map_tab.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_dialog.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_find.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_gametype_tab.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\ui_multiplayer_map_tab.script">
-					</File>
-					<File
-						RelativePath=".\scripts\ui_multiplayer_options_tab.script">
 					</File>
 				</Filter>
 				<Filter
