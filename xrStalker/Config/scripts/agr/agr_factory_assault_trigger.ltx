@@ -1,0 +1,16 @@
+[logic]
+active = sr_idle
+
+[sr_idle]
+on_actor_inside = %+agr_factory_assault_start +agr_help_stalkers_start% sr_idle@sos
+
+[sr_idle@sos]
+on_info  = %=agr_krot_sos% sr_idle@sos_pause
+on_info2 = {+agr_help_stalkers_done} sr_idle@help_krot
+
+[sr_idle@sos_pause]
+on_timer = 10000 | sr_idle@sos
+on_info2 = {+agr_help_stalkers_done} sr_idle@help_krot
+
+[sr_idle@help_krot]
+on_info = {+agr_help_stalkers_assault_dead} %=agr_krot_sos1 +agr_help_krot_start% nil, {+agr_help_stalkers_defence_dead} %=agr_krot_sos2 +agr_help_krot_start% nil
