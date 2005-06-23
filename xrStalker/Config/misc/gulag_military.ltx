@@ -180,22 +180,8 @@ path_walk = max_walk
 path_look = max_look
 meet = on_meet@mil_freedom_max
 on_info = {+mil_max_talk3} remark1@mil_freedom_max
-on_info2 = {+mil_actor_on_lukash -mil_dolg_dead} walker2@mil_freedom_max
-
-[remark1@mil_freedom_max]
-snd = mil_max_before_collect
-snd_anim_sync = true
-anim = wait_rac
-no_move = true
-no_rotate = true
-on_signal = action_end | walker11@mil_freedom_max_attack %+mil_freedom_attack%
-
-[walker2@mil_freedom_max]
-path_walk = max_center_walk
-path_look = max_center_look
-meet = on_meet@mil_freedom_max
-on_timer = 120000 | walker1@mil_freedom_max %-mil_actor_on_lukash%
-on_info = {+mil_max_talk3} remark1@mil_freedom_max
+on_info2 = {+mil_actor_on_lukash -mil_dolg_dead} %+mil_freedom_attack%
+;walker2@mil_freedom_max 
 
 
 ;----------------------------------- Мужик у костра 1-----------------------
@@ -815,12 +801,37 @@ active = nil
 ;----------------------------------- Макс-----------------------
 [logic@mil_freedom_max_attack]
 ;active = remark1@mil_freedom_max_attack
-active = walker11@mil_freedom_max_attack
+;active = walker11@mil_freedom_max_attack
+active = walker2@mil_freedom_max_attack
 
 ;[remark1@mil_freedom_max_attack]
 ;snd = mil_max_before_collect
 ;snd_anim_sync = true
 ;on_signal = action_end | walker11@mil_freedom_max_attack
+
+[remark1@mil_freedom_max_attack]
+snd = mil_max_before_collect
+snd_anim_sync = true
+anim = wait_rac
+no_move = true
+no_rotate = true
+on_signal = action_end | walker11@mil_freedom_max_attack
+
+[walker2@mil_freedom_max_attack]
+path_walk = max_center_walk
+path_look = max_center_look
+meet = on_meet@mil_freedom_max_attack
+on_info = {+mil_max_talk3} remark1@mil_freedom_max_attack
+
+[on_meet@mil_freedom_max_attack]
+meet_state = 10|ward@mil_max_to_actor
+meet_state_wpn = 10|ward@mil_max_to_actor
+victim = 20|nil|10|actor
+victim_wpn = 20|nil|10|actor
+use = true
+use_wpn = false
+meet_dialog = mil_max_dialog
+
 
 [walker11@mil_freedom_max_attack]
 path_walk = attack_way7_1
