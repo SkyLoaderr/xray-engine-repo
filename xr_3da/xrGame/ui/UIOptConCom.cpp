@@ -23,6 +23,7 @@ void CUIOptConCom::Init(){
 	CMD3(CCC_String,	"net_palyer_name",				m_playerName,	64);
 
 	// client
+	m_uNetFilters.assign(0xffffffff);
 	CMD3(CCC_Mask,	"net_connection_lan",				&m_uNetFilters,	flNetConnectionLan);
 	CMD3(CCC_Mask,	"net_filter_empty",					&m_uNetFilters,	flNetFilterEmpty);
 	CMD3(CCC_Mask,	"net_filter_full",					&m_uNetFilters,	flNetFilterFull);
