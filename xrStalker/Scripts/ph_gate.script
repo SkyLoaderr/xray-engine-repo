@@ -5,8 +5,55 @@
 -- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
+----------------------------------------------------------------------------------------------------
+--[[
+Состояния:
+state: состояние, в котором дверь находится при инициализации
+    opened - в открытом
+    closed - в закрытом
+    none - в текущем (дефолтном)
+locking: блокировка дверей
+    stick - прилипание дверей к крайним состояниям
+    soft - дверь заблокирована с помощью силы, т.е. можно ее открыть/пробить машиной
+        state:
+            opened - блокировать в открытом состоянии
+            closed - в закрытом
+            none - не используется (мягкая блокировка возможна только в крайних положениях)
+    hard - блокировка двери с помощью границ. Ворота можно только сломать.
+        state:
+            opened - блокировать в открытом состоянии
+            closed - в закрытом
+            none - в текущем
+    none - дверь не заблокирована
+--]]
+
+local state_none = 0
+
+local state_opened = 1
+local state_closed = 2
+
+local state_lock_stick = 1
+local state_lock_soft = 2
+local state_lock_hard = 3
+----------------------------------------------------------------------------------------------------
+
 local def_min_limit = -100.0 * math.pi / 180.0
 local def_max_limit = 0.0
+local def_close_angle = 0.0
+local def_max_close_angle_diff = 10 * math.pi / 180.0
+local def_stick_angle = 5 * math.pi / 180.0
+
+local def_open_force = 200
+local def_open_velocity = 3
+
+local def_close_force = 200
+local def_close_velocity = 3
+
+local def_stick_force = 100
+local def_stick_velocity = 1
+
+local def_soft_lock_force = 30000
+local def_soft_lock_velocity = 5
 
 class "action_gate"
 
@@ -33,45 +80,7 @@ function action_gate:initialize(loading)
 	if not ph_shell then
 		return
 	end
-	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
-	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
 	
-	local disable_snd
-	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
-	-- впервые (т.е. после загрузки уровня или после загрузки сохраненной игры),
-	-- иначе игрок услышит хлопок...
-	if not self.st.script_used_more_than_once then
-		disable_snd = true
-		self.st.script_used_more_than_once = true
-	end
-	if self.st.closed then
-		self:close_gate(disable_snd)
-	else
-		self:open_gate(disable_snd)
-	end
-
-	if self.st.locked then
-	    local angle_left = self.joint_left:get_axis_angle(1)
-	    local angle_right = self.joint_right:get_axis_angle(1)
-	    self.joint_left:set_limits(angle_left, angle_left, 1)
-	    self.joint_right:set_limits(angle_right, angle_right, 1)
-	else
-	    self.joint_left:set_limits(def_min_limit, def_max_limit, 1)
-	    self.joint_right:set_limits(def_min_limit, def_max_limit, 1)
-	end
-
-	self.left_low_limits, self.left_hi_limits = 0, 0
-	self.left_low_limits, self.left_hi_limits	= self.joint_left:get_limits(self.left_low_limits, self.left_hi_limits, 0)
-	printf("_bp: left_limits(%f,%f)", self.left_low_limits, self.left_hi_limits)
-
-	self.right_low_limits, self.right_hi_limits = 0, 0
-	self.right_low_limits, self.right_hi_limits	= self.joint_right:get_limits(self.right_low_limits, self.right_hi_limits, 0)
-	printf("_bp: right_limits(%f,%f)", self.right_low_limits, self.right_hi_limits)
-
-	self.run = 0
-	--self.block = false
-	self.soundless_block = false
-
 	if self.st.tip_open then
 		self.tip_open = string_table():get_by_id(self.st.tip_open)
 	else
@@ -83,8 +92,119 @@ function action_gate:initialize(loading)
 		self.tip_close = nil
 	end
 
+	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
+	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
+	
+	local angle_left = self.joint_left:get_axis_angle(1)
+	local angle_right = self.joint_right:get_axis_angle(1)
+	printf("_bp: gate def angles. left(%f) right(%f)", angle_left, angle_right)
+
+	local disable_snd
+	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
+	-- впервые (т.е. после загрузки уровня или после загрузки сохраненной игры),
+	-- иначе игрок услышит хлопок...
+	if not self.st.script_used_more_than_once then
+		disable_snd = true
+		self.st.script_used_more_than_once = true
+	end
+
+	if self.st.state == "opened" then
+	    printf("_bp: ph_gate.state = opened")
+	    self.state = state_opened
+		--self:open_gate(disable_snd)
+	elseif self.st.state == "closed" then
+	    printf("_bp: ph_gate.state = closed")
+	    self.state = state_closed
+		--self:close_gate(disable_snd)
+	else
+	    printf("_bp: ph_gate.state = none")
+	    self.state = state_none
+	end
+	
+	if self.st.locking == "stick" then
+	    printf("_bp: ph_gate.locking = stick")
+	    self.locking = state_lock_stick
+	    if self.state == state_opened then
+	        self.left_stick_dir = 1
+	        self.right_stick_dir = 1
+	    elseif self.state == state_closed then
+	        self.left_stick_dir = -1
+	        self.right_stick_dir = -1
+	    else
+	        self.left_stick_dir = 0
+	        self.right_stick_dir = 0
+	    end
+	elseif self.st.locking == "soft" then
+	    printf("_bp: ph_gate.locking = soft")
+	    local angle_left, angle_right, force, velocity
+
+	    self.locking = state_lock_soft
+	    if self.state == state_opened then
+	        force = def_soft_lock_force
+	        velocity = -def_soft_lock_velocity
+	    elseif self.state == state_closed then
+	        force = def_soft_lock_force
+	        velocity = def_soft_lock_velocity
+	    else
+	        force = 0
+	        velocity = 0
+	    end
+	    self.joint_left:set_max_force_and_velocity(force, velocity, 1)
+	    self.joint_right:set_max_force_and_velocity(force, velocity, 1)
+
+	    if self.tip_open then
+		    self.object:set_tip_text(self.tip_open)
+	    end
+	elseif self.st.locking == "hard" then
+	    printf("_bp: ph_gate.locking = hard")
+	    local angle_left
+	    local angle_right
+
+	    self.locking = state_lock_hard
+	    if self.state == state_opened then
+	        angle_left = def_max_limit
+	        angle_right = def_max_limit
+	    elseif self.state == state_closed then
+	        angle_left = def_min_limit
+	        angle_right = def_min_limit
+	    else
+	        angle_left = self.joint_left:get_axis_angle(1)
+	        angle_right = self.joint_right:get_axis_angle(1)
+	    end
+	    self.joint_left:set_limits(angle_left, angle_left, 1)
+	    self.joint_right:set_limits(angle_right, angle_right, 1)
+
+	    if self.tip_open then
+		    self.object:set_tip_text(self.tip_open)
+	    end
+	else
+	    printf("_bp: ph_gate.locking = none")
+	    self.locking = state_none
+	    if self.state == state_opened then
+		    self:open_gate(disable_snd)
+	    elseif self.state == state_closed then
+		    self:close_gate(disable_snd)
+	    end
+	end
+	
+	--self.joint_left:set_limits(def_min_limit, def_max_limit, 1)
+	--self.joint_right:set_limits(def_min_limit, def_max_limit, 1)
+
+	self.left_low_limits, self.left_hi_limits = 0, 0
+	self.left_low_limits, self.left_hi_limits	= self.joint_left:get_limits(self.left_low_limits, self.left_hi_limits, 0)
+	printf("_bp: left_limits(%f,%f)", self.left_low_limits, self.left_hi_limits)
+
+	self.right_low_limits, self.right_hi_limits = 0, 0
+	self.right_low_limits, self.right_hi_limits	= self.joint_right:get_limits(self.right_low_limits, self.right_hi_limits, 0)
+	printf("_bp: right_limits(%f,%f)", self.right_low_limits, self.right_hi_limits)
+
+	--self.block = false
+	self.soundless_block = false
+
 	self.object:set_nonscript_usable(false)
-	self.object:set_callback(callback.use_object, self.gate_callback, self)
+	-- FIXME: перевести под универсальную схему
+	self.object:set_callback(callback.use_object, self.use_callback, self)
+	self.object:set_callback(callback.hit, self.hit_callback, self)
 
 	if self.st.snd_init then
 		self:gate_play_snd_from_set(self.st.snd_init)
@@ -122,6 +242,7 @@ function action_gate:update(delta)
 	end
 end
 
+--[[
 function action_gate:fastcall()
 	if self:close_check() then
 		self:close_action()
@@ -152,14 +273,17 @@ function action_gate:close_action()
 
 	printf("_bp: action_gate:update(): gate blocked")
 	-- Закрыли до предела, будем блокировать
-	self.joint_left:set_max_force_and_velocity(10000, -1, 1)
-	self.joint_right:set_max_force_and_velocity(10000, -1, 1)
+	--self.joint_left:set_max_force_and_velocity(10000, -1, 1)
+	--self.joint_right:set_max_force_and_velocity(10000, -1, 1)
+	self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
+	self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
 	--self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
 	if not self.soundless_block and self.st.snd_close_stop then
 		self:gate_play_snd_from_set(self.st.snd_close_stop)
 	end
 end
+--]]
 
 function action_gate:open_gate(disable_snd)
 	printf("_bp: action_gate:open_gate()")
@@ -169,8 +293,11 @@ function action_gate:open_gate(disable_snd)
 		end
 	end
 	
-	self.joint_left:set_max_force_and_velocity(200, 3, 0)
-	self.joint_right:set_max_force_and_velocity(200, 3, 0)
+	--self.joint_left:set_max_force_and_velocity(200, 3, 0)
+	--self.joint_right:set_max_force_and_velocity(200, 3, 0)
+	self.joint_left:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
+	self.joint_right:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
+	self.state = state_opened
 	--self.block = false
 
 	if self.tip_close then
@@ -205,10 +332,13 @@ function action_gate:close_gate(disable_snd)
 	--self.object:set_fastcall(self.fastcall,self)
 
 	printf("_bp: action_gate:close_gate()")
-	self.joint_left:set_max_force_and_velocity(200, 3, 1)
-	self.joint_right:set_max_force_and_velocity(200, 3, 1)
+	--self.joint_left:set_max_force_and_velocity(200, 3, 1)
+	--self.joint_right:set_max_force_and_velocity(200, 3, 1)
+	self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
+	self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
 	--self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
+	self.state = state_closed
 
 	if self.tip_open then
 		self.object:set_tip_text(self.tip_open)
@@ -228,8 +358,37 @@ function action_gate:try_switch()
 	return false
 end
 
-function action_gate:gate_callback(gate, actor)
+-- 
+function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
+    printf("_bp: action_gate:hit_callback()")
+	if self.locking == state_lock_hard or self.locking == state_lock_soft then
+		if self.st.snd_open_start then
+			self:gate_play_snd_from_set(self.st.snd_open_start)
+		end
+		return
+	end
+--[[
+	if self.locking == state_lock_stick then
+	    self.left_stick_dir, self.right_stick_dir = self:get_stickness()
+	    if 
+	    self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
+	    self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
+	    --if s ~= 0 then
+	    --end
+	end
+--]]
+end
+
+function action_gate:use_callback(obj, who)
+    printf("_bp: action_gate:use_callback()")
 	if self:try_switch() then
+		return
+	end
+	
+	if self.locking == state_lock_hard or self.locking == state_lock_soft then
+		if self.st.snd_open_start then
+			self:gate_play_snd_from_set(self.st.snd_open_start)
+		end
 		return
 	end
 
@@ -243,11 +402,13 @@ function action_gate:gate_callback(gate, actor)
 	local angle_left = self.joint_left:get_axis_angle(1)
 	local angle_right = self.joint_right:get_axis_angle(1)
 
-	if angle_left - self.left_low_limits < self.left_hi_limits - angle_left and
-	   angle_right - self.right_low_limits < self.right_hi_limits - angle_right then
-		self:open_gate(false)
-	else
+	--if angle_left - self.left_low_limits < self.left_hi_limits - angle_left and
+	--   angle_right - self.right_low_limits < self.right_hi_limits - angle_right then
+	if angle_left < def_close_angle - def_max_close_angle_diff or
+	   angle_right < def_close_angle - def_max_close_angle_diff then
 		self:close_gate(false)
+	else
+		self:open_gate(false)
 	end
 end
 
@@ -266,9 +427,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	--st.state     = utils.cfg_get_string(ini, section, "state", npc, false, "free")
-	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
-	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
+	st.state     = utils.cfg_get_string(ini, section, "state", npc, false, "", "none")
+	st.locking   = utils.cfg_get_string(ini, section, "locking", npc, false, "", "none")
+
+	--st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
+	--st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	if not st.locked then
 		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_gate_open")
 		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_gate_close")
@@ -283,3 +446,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 end
 
+function disable_scheme(npc, scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
+	end
+end
