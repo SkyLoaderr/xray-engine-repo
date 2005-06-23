@@ -9,6 +9,11 @@
 		<mini_map  spot="val_escort_captive_spot" pointer="quest_pointer"></mini_map>
 	</val_escort_captive_location>
 
+	<val_exit_gate_location hint="val_exit_gate_location" store="1">
+		<level_map spot="val_exit_gate_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="val_exit_gate_spot" pointer="quest_pointer"></mini_map>
+	</val_exit_gate_location>
+
 	<!-- spots -->
     <val_escort_nap1_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
@@ -17,3 +22,7 @@
     <val_escort_captive_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</val_escort_captive_spot>
+
+    <val_exit_gate_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="160" width="32" height="32">ui\ui_icons_map</texture>
+	</val_exit_gate_spot>
