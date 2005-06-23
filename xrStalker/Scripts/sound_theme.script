@@ -161,7 +161,7 @@ function load_sound(obj)
 	-- ожидание
 	theme[obj:id()]["wait"]							= load_sound_from_ltx(obj, "wait")
 
-	-- speach
+	-- speech
     theme[obj:id()]["speech"]						= load_sound_from_ltx(obj, "speech")
     
 	-- угрозы
