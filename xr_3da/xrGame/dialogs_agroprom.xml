@@ -256,6 +256,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_swamp_ratcatcher_talks">
+        <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>agr_swamp_ratcatcher_talks_0</text>
