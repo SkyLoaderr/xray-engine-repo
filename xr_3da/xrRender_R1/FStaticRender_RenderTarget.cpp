@@ -36,7 +36,7 @@ BOOL CRenderTarget::Create	()
 	curHeight			= Device.dwHeight;
 
 	// Select mode to operate in
-	float	amount		= ps_r__Supersample?ps_r__Supersample:1	;
+	float	amount		= ps_r__Supersample?float(ps_r__Supersample):1	;
 	float	scale		= _sqrt	(amount);
 	rtWidth				= clampr(iFloor(scale*Device.dwWidth  + .5f), 128, 2048);
 	rtHeight			= clampr(iFloor(scale*Device.dwHeight + .5f), 128, 2048);
