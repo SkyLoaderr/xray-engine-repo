@@ -47,15 +47,16 @@ void CUIActorDiaryWnd::Init(CUIListWnd *idxList)
 
 	CUIXmlInit xml_init;
 
-	AttachChild(&UIInfoList);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIInfoList);
-	UIInfoList.ActivateList(false);
-	UIInfoList.EnableScrollBar(true);
-	UIInfoList.EnableActiveBackground(false);
-	UIInfoList.SetNewRenderMethod(true);
-	UIInfoList.SetMessageTarget(m_pCore);
+	UIInfoList = xr_new<CUIListWnd>(); UIInfoList->SetAutoDelete(true);
+	AttachChild(UIInfoList);
+	xml_init.InitListWnd(uiXml, "list", 0, UIInfoList);
+	UIInfoList->ActivateList(false);
+	UIInfoList->EnableScrollBar(true);
+	UIInfoList->EnableActiveBackground(false);
+	UIInfoList->SetNewRenderMethod(true);
+	UIInfoList->SetMessageTarget(m_pCore);
 
-	m_pCore->Init(&UIInfoList, idxList);
+	m_pCore->Init(UIInfoList, idxList);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ void CUIActorDiaryWnd::DeleteArticles(CUITreeViewItem *pRoot)
 	R_ASSERT(pRoot);
 	pRoot->Close();
 	m_pCore->DeleteArticles();
-	UIInfoList.RemoveAll();
+	UIInfoList->RemoveAll();
 	pRoot->DeleteAllSubItems();
 }
 //////////////////////////////////////////////////////////////////////////
@@ -86,6 +87,10 @@ void CUIActorDiaryWnd::ReloadArticles		()
 void CUIActorDiaryWnd::Show(bool status)
 {
 	inherited::Show(status);
-	UIInfoList.Show(status);
+	UIInfoList->Show(status);
 	m_pCore->Show(status);
+}
+void CUIActorDiaryWnd::AddArticle(ARTICLE_ID id, bool bReaded)	
+{ 
+	m_pCore->AddArticle(id, bReaded); 
 }

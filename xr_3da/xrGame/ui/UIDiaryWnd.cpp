@@ -29,7 +29,7 @@
 #include "../string_table.h"
 #include "../alife_registry_wrappers.h"
 #include "../level.h"
-
+#include "UIEncyclopediaCore.h"
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	DIARY_XML			= "events_new.xml";
@@ -486,4 +486,9 @@ void CUIDiaryWnd::SetActiveSubdialog(EPdaSections section)
 	default:
 		NODEFAULT;
 	}
+}
+
+void CUIDiaryWnd::OpenDiaryTree(ARTICLE_ID id) 
+{ 
+	UIActorDiaryWnd.m_pCore->OpenTree(id); 
 }

@@ -15,6 +15,18 @@
 #include "../HUDManager.h"
 #include "../level.h"
 #include "../game_cl_base.h"
+
+#include "UIStatic.h"
+#include "UIFrameWindow.h"
+#include "UITabControl.h"
+#include "UIPdaCommunication.h"
+#include "UIMapWnd.h"
+#include "UIDiaryWnd.h"
+#include "UIFrameLineWnd.h"
+#include "UIEncyclopediaWnd.h"
+#include "UIStalkersRankingWnd.h"
+#include "UIActorInfo.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const PDA_XML					= "pda.xml";
@@ -52,61 +64,72 @@ void CUIPdaWnd::Init()
 					CUIXmlInit::ApplyAlignY(0, alCenter),
 					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	AttachChild(&UIMainPdaFrame);
-	xml_init.InitStatic(uiXml, "background_static", 0, &UIMainPdaFrame);
+	UIMainPdaFrame = xr_new<CUIStatic>(); UIMainPdaFrame->SetAutoDelete(true);
+	AttachChild(UIMainPdaFrame);
+	xml_init.InitStatic(uiXml, "background_static", 0, UIMainPdaFrame);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	// Main buttons background
-	UIMainPdaFrame.AttachChild(&UIMainButtonsBackground);
-	xml_init.InitFrameLine(uiXml, "mbbackground_frame_line", 0, &UIMainButtonsBackground);
+	UIMainButtonsBackground = xr_new<CUIFrameLineWnd>(); UIMainButtonsBackground->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIMainButtonsBackground);
+	xml_init.InitFrameLine(uiXml, "mbbackground_frame_line", 0, UIMainButtonsBackground);
 
 	// Timer background
-	UIMainPdaFrame.AttachChild(&UITimerBackground);
-	xml_init.InitFrameLine(uiXml, "timer_frame_line", 0, &UITimerBackground);
+	UITimerBackground = xr_new<CUIFrameLineWnd>(); UITimerBackground->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UITimerBackground);
+	xml_init.InitFrameLine(uiXml, "timer_frame_line", 0, UITimerBackground);
 
 	// Oкно коммуникaции
-	UIPdaCommunication.Init();
-	UIMainPdaFrame.AttachChild(&UIPdaCommunication);
+	UIPdaCommunication = xr_new<CUIPdaCommunication>(); UIPdaCommunication->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIPdaCommunication);
+	UIPdaCommunication->Init();
 
 	// Oкно карты
-	UIMainPdaFrame.AttachChild(&UIMapWnd);
-	UIMapWnd.Init();
+	UIMapWnd = xr_new<CUIMapWnd>(); UIMapWnd->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIMapWnd);
+	UIMapWnd->Init();
 
 	// Oкно новостей
-	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
-	UIDiaryWnd.Init();
+	UIDiaryWnd = xr_new<CUIDiaryWnd>(); UIDiaryWnd->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIDiaryWnd);
+	UIDiaryWnd->Init();
 
 	// Окно энциклопедии
-	UIMainPdaFrame.AttachChild(&UIEncyclopediaWnd);
-	UIEncyclopediaWnd.Init();
-	UIEncyclopediaWnd.Show(false);
+	UIEncyclopediaWnd = xr_new<CUIEncyclopediaWnd>(); UIEncyclopediaWnd->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIEncyclopediaWnd);
+	UIEncyclopediaWnd->Init();
+	UIEncyclopediaWnd->Show(false);
 
 	// Окно статистики о актере
-	UIMainPdaFrame.AttachChild(&UIActorInfo);
-	UIActorInfo.Init();
-	UIActorInfo.Show(false);
+	UIActorInfo = xr_new<CUIActorInfoWnd>(); UIActorInfo->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIActorInfo);
+	UIActorInfo->Init();
+	UIActorInfo->Show(false);
 
 	// Окно рейтинга сталкеров
-	UIMainPdaFrame.AttachChild(&UIStalkersRanking);
-	UIStalkersRanking.Init();
-	UIStalkersRanking.Show(false);
+	UIStalkersRanking = xr_new<CUIStalkersRankingWnd>(); UIStalkersRanking->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIStalkersRanking);
+	UIStalkersRanking->Init();
+	UIStalkersRanking->Show(false);
 
-	m_pActiveDialog = &UIDiaryWnd;
+	m_pActiveDialog = UIDiaryWnd;
 
 	// Tab control
-	UIMainPdaFrame.AttachChild(&UITabControl);
-	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
-	UITabControl.SetMessageTarget(this);
+	UITabControl = xr_new<CUITabControl>(); UITabControl->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UITabControl);
+	xml_init.InitTabControl(uiXml, "tab", 0, UITabControl);
+	UITabControl->SetMessageTarget(this);
 
 	// Off button
-	UIMainPdaFrame.AttachChild(&UIOffButton);
-	xml_init.InitButton(uiXml, "off_button", 0, &UIOffButton);
-	UIOffButton.SetPushOffsetX(0);
-	UIOffButton.SetPushOffsetY(0);
-	UIOffButton.TextureOff();
-	UIOffButton.SetMessageTarget(this);
+	UIOffButton = xr_new<CUIButton>(); UIOffButton->SetAutoDelete(true);
+	UIMainPdaFrame->AttachChild(UIOffButton);
+	xml_init.InitButton(uiXml, "off_button", 0, UIOffButton);
+	UIOffButton->SetPushOffsetX(0);
+	UIOffButton->SetPushOffsetY(0);
+	UIOffButton->TextureOff();
+	UIOffButton->SetMessageTarget(this);
 
 	// Draw();
 }
@@ -115,7 +138,7 @@ void CUIPdaWnd::Init()
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if(pWnd == &UITabControl)
+	if(pWnd == UITabControl)
 	{
 		if (TAB_CHANGED == msg)
 		{
@@ -123,29 +146,29 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveDialog->Show(false);
 
 			// Add custom dialogs here
-			switch (UITabControl.GetActiveIndex()) 
+			switch (UITabControl->GetActiveIndex()) 
 			{
 			case eptEvents:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIDiaryWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIDiaryWnd);
 				InventoryUtilities::SendInfoToActor("ui_pda_events");
 				break;
 			case eptComm:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIPdaCommunication);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIPdaCommunication);
 				InventoryUtilities::SendInfoToActor("ui_pda_contacts");
 				break;
 			case eptMap:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIMapWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIMapWnd);
 				break;
 			case eptEncyclopedia:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIEncyclopediaWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIEncyclopediaWnd);
 				InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
 				break;
 			case eptActorStatistic:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIActorInfo);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIActorInfo);
 				InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
 				break;
 			case eptRanking:
-				m_pActiveDialog = smart_cast<CUIWindow*>(&UIStalkersRanking);
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIStalkersRanking);
 				InventoryUtilities::SendInfoToActor("ui_pda_ranking");
 				break;
 			default:
@@ -158,17 +181,16 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	// Сменить точку центрирования карты. Новые координаты поступают в pData
 	else if (PDA_MAP_SET_ACTIVE_POINT == msg)
 	{
-		UIMapWnd.SetActivePoint(*reinterpret_cast<Fvector*>(pData));
+		UIMapWnd->SetActivePoint(*reinterpret_cast<Fvector*>(pData));
 	}
-	else if (&UIOffButton == pWnd)
+	else if (UIOffButton == pWnd)
 	{
 		if (STATIC_FOCUS_RECEIVED == msg)
-			UIOffButton.TextureOn();
+			UIOffButton->TextureOn();
 		else if (STATIC_FOCUS_LOST == msg)
-			UIOffButton.TextureOff();
+			UIOffButton->TextureOff();
 		else if (BUTTON_CLICKED == msg)
 			Game().StartStopMenu(this,true);
-			//HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
 	else if (PDA_ENCYCLOPEDIA_HAS_ARTICLE == msg)
 	{
@@ -176,7 +198,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		if (pItem)
 		{
 			bool* b = (bool*)pData;
-			*b = UIEncyclopediaWnd.HasArticle(pItem->GetAdditionalMaterialID());
+			*b = UIEncyclopediaWnd->HasArticle(pItem->GetAdditionalMaterialID());
 			//SetActiveSubdialog(epsEncyclopedia, pItem->GetAdditionalMaterialID());
 		}
 	}
@@ -198,7 +220,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (PDA_GO_BACK == msg)
 	{
-		UITabControl.SetNewActiveTab	(eptEvents);
+		UITabControl->SetNewActiveTab	(eptEvents);
 	}
 	else
 	{
@@ -248,7 +270,7 @@ void CUIPdaWnd::UpdateDateTime()
 
 	if (xr_strcmp(strTime.c_str(), prevStrTime))
 	{
-		UITimerBackground.UITitleText.SetText(strTime.c_str());
+		UITimerBackground->UITitleText.SetText(strTime.c_str());
 		prevStrTime = strTime.c_str();
 	}
 }
@@ -268,28 +290,37 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, ARTICLE_ID addiotionalV
 	switch (section)
 	{
 	case epsActiveJobs:
-		UITabControl.SetNewActiveTab	(eptEvents);
-		UIDiaryWnd.SetActiveSubdialog	(section);
+		UITabControl->SetNewActiveTab	(eptEvents);
+		UIDiaryWnd->SetActiveSubdialog	(section);
 		break;
 	case epsMap:
-		UITabControl.SetNewActiveTab	(eptMap);
+		UITabControl->SetNewActiveTab	(eptMap);
 		break;
 	case epsContacts:
-		UITabControl.SetNewActiveTab	(eptComm);
+		UITabControl->SetNewActiveTab	(eptComm);
 		break;
 	case epsEncyclopedia:
 //		UITabControl.SetNewActiveTab	(eptEncyclopedia);
-		UIEncyclopediaWnd.OpenTree		(addiotionalValue);
-		UITabControl.SetNewActiveTab	(eptEncyclopedia);
-		UIEncyclopediaWnd.UIBack.Show	(true);
+		UIEncyclopediaWnd->OpenTree		(addiotionalValue);
+		UITabControl->SetNewActiveTab	(eptEncyclopedia);
+		UIEncyclopediaWnd->UIBack.Show	(true);
 		break;
 	case epsDiaryArticle:
-		UITabControl.SetNewActiveTab	(eptEvents);
-		UIDiaryWnd.SetActiveSubdialog	(section);
-		UIDiaryWnd.OpenDiaryTree		(addiotionalValue);
-		UIEncyclopediaWnd.UIBack.Show	(true);
+		UITabControl->SetNewActiveTab	(eptEvents);
+		UIDiaryWnd->SetActiveSubdialog	(section);
+		UIDiaryWnd->OpenDiaryTree		(addiotionalValue);
+		UIEncyclopediaWnd->UIBack.Show	(true);
 		break;
 	default:
 		NODEFAULT;
 	}
+}
+
+void CUIPdaWnd::OnNewArticleAdded	()
+{
+	if(UIDiaryWnd->IsShown() &&	UIDiaryWnd->UIActorDiaryWnd.IsShown())
+		UIDiaryWnd->ReloadArticles();
+
+	if(UIEncyclopediaWnd->IsShown())
+		UIEncyclopediaWnd->ReloadArticles();
 }

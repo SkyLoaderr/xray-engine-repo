@@ -13,12 +13,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "UIDialogWnd.h"
-#include "UIListWnd.h"
-#include "UIEncyclopediaCore.h"
-#include "../encyclopedia_article.h"
-
+#include "UIWindow.h"
+#include "../encyclopedia_article_defs.h"
 //////////////////////////////////////////////////////////////////////////
+class CUIListWnd;
+class CUIEncyclopediaCore;
+class CUITreeViewItem;
 
 class CUIActorDiaryWnd: public CUIWindow
 {
@@ -29,7 +29,7 @@ public:
 	virtual			~CUIActorDiaryWnd	();
 	void			Init				(CUIListWnd *idxList);
 
-	void			AddArticle			(ARTICLE_ID id, bool bReaded)	{ m_pCore->AddArticle(id, bReaded); }
+	void			AddArticle			(ARTICLE_ID id, bool bReaded);
 	void			DeleteArticles		(CUITreeViewItem *pRoot);
 	void			ShowArticle			(CUITreeViewItem *pItem);
 	virtual void	Show				(bool status);
@@ -38,7 +38,7 @@ public:
 
 	CUIEncyclopediaCore *m_pCore;
 private:
-	CUIListWnd		UIInfoList;
+	CUIListWnd*		UIInfoList;
 };
 
 //////////////////////////////////////////////////////////////////////////

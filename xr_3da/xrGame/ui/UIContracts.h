@@ -11,7 +11,7 @@
 
 // #pragma once
 
-#include "UIDialogWnd.h"
+#include "UIWindow.h"
 #include "UIStatic.h"
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"

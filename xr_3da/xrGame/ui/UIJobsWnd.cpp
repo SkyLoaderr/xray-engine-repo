@@ -58,11 +58,12 @@ void CUIJobsWnd::Init()
 
 	CUIXmlInit xml_init;
 
-	AttachChild(&UIList);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIList);
-	UIList.ActivateList(true);
-	UIList.EnableScrollBar(true);
-	UIList.EnableActiveBackground(false);
+	UIList = xr_new<CUIListWnd>(); UIList->SetAutoDelete(true);
+	AttachChild(UIList);
+	xml_init.InitListWnd(uiXml, "list", 0, UIList);
+	UIList->ActivateList(true);
+	UIList->EnableScrollBar(true);
+	UIList->EnableActiveBackground(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,7 +96,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 
 		pJobItem = xr_new<CUIJobItem>(tmp);
 		obj = &task->data()->m_Objectives[i];
-		UIList.AddItem<CUIListItem>(pJobItem);
+		UIList->AddItem<CUIListItem>(pJobItem);
 		r.set(obj->icon_x, obj->icon_y, obj->icon_width, obj->icon_height);
 
 
@@ -150,7 +151,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 
 void CUIJobsWnd::ReloadJobs()
 {
-	UIList.RemoveAll();
+	UIList->RemoveAll();
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 

@@ -3,18 +3,12 @@
 //	---------------------------------------------------------------------------
 //  Jobs dialog subwindow in Diary window
 //=============================================================================
+#pragma once
 
-#ifndef UI_JOBS_WND_H_
-#define UI_JOBS_WND_H_
-
-#include "UIDialogWnd.h"
-#include "UIStatic.h"
-#include "UIFrameWindow.h"
-#include "UIFrameLineWnd.h"
-#include "UIListWnd.h"
-#include "xrXMLParser.h"
-
+#include "UIWindow.h"
 #include "../GameTask.h"
+
+class CUIListWnd;
 
 class CUIJobsWnd: public CUIWindow
 {
@@ -29,7 +23,7 @@ public:
 	void AddTask(CGameTask * const task);
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
 	// придется писать обертки над всеми управляющими функциями листбокса
-	CUIListWnd		UIList;
+	CUIListWnd*		UIList;
 	// Загрузить jobs
 	void ReloadJobs();
 
@@ -45,5 +39,3 @@ protected:
 	// CurrentFilter
 	ETaskState			filter;
 };
-
-#endif

@@ -5,20 +5,20 @@
 #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIStatic.h"
-#include "UIFrameWindow.h"
-#include "UITabControl.h"
-#include "UIPdaCommunication.h"
-#include "UIMapWnd.h"
-#include "UIDiaryWnd.h"
-#include "UIFrameLineWnd.h"
-#include "UIEncyclopediaWnd.h"
 #include "UIPdaAux.h"
-#include "UIActorInfo.h"
-#include "UIStalkersRankingWnd.h"
 #include "../encyclopedia_article_defs.h"
 
 class CInventoryOwner;
+class CUIFrameLineWnd;
+class CUIButton;
+class CUITabControl;
+class CUIStatic;
+class CUIMapWnd;
+class CUIPdaCommunication;
+class CUIEncyclopediaWnd;
+class CUIDiaryWnd;
+class CUIActorInfoWnd;
+class CUIStalkersRankingWnd;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -34,14 +34,14 @@ private:
 	typedef CUIDialogWnd	inherited;
 protected:
 	//элементы декоративного интерфейса
-	CUIFrameLineWnd			UIMainButtonsBackground;
-	CUIFrameLineWnd			UITimerBackground;
+	CUIFrameLineWnd*		UIMainButtonsBackground;
+	CUIFrameLineWnd*		UITimerBackground;
 
 	// Кнопочка выключения ПДА
-	CUIButton				UIOffButton;
+	CUIButton*				UIOffButton;
 
 	// кнопки PDA
-	CUITabControl			UITabControl;
+	CUITabControl*			UITabControl;
 
 	// Установить игровое время
 	void					UpdateDateTime		();
@@ -57,18 +57,18 @@ protected:
 	};
 protected:
 	// Бэкграунд
-	CUIStatic UIMainPdaFrame;
+	CUIStatic*				UIMainPdaFrame;
 
 	// Текущий активный диалог
 	CUIWindow*				m_pActiveDialog;
 public:
 	// Поддиалоги PDA
-	CUIMapWnd				UIMapWnd;
-	CUIPdaCommunication		UIPdaCommunication;
-	CUIEncyclopediaWnd		UIEncyclopediaWnd;
-	CUIDiaryWnd				UIDiaryWnd;
-	CUIActorInfoWnd			UIActorInfo;
-	CUIStalkersRankingWnd	UIStalkersRanking;
+	CUIMapWnd*				UIMapWnd;
+	CUIPdaCommunication*	UIPdaCommunication;
+	CUIEncyclopediaWnd*		UIEncyclopediaWnd;
+	CUIDiaryWnd*			UIDiaryWnd;
+	CUIActorInfoWnd*		UIActorInfo;
+	CUIStalkersRankingWnd*	UIStalkersRanking;
 public:
 							CUIPdaWnd			();
 	virtual					~CUIPdaWnd			();
@@ -81,6 +81,7 @@ public:
 	virtual void 			Update				();
 	virtual void 			Show				();
 	virtual void 			Hide				();
+			void			OnNewArticleAdded	();
 	
 	// Специфичные для родительского окна PDA сообщения:
 	// Смена точки центрирования карты
