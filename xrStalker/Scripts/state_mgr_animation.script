@@ -427,6 +427,31 @@ function animation:__init(npc, mgr)
 						idle	= { [0]	= "item_2_aim_0" },
 						rnd		= { [0]	= {	"item_2_prepare_0",
 											"item_2_attack_0" } }},
+		eat_vodka	= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 80 },
+						into	= { [0]	= {"item_4_draw_0",  {a="vodka_a"}, "item_4_draw_1"} },
+						out		= { [0]	= {"item_4_holster_0", {d="vodka_a"}, "item_4_holster_1"} },
+						idle	= { [0]	= "item_4_aim_0" },
+						rnd		= { [0]	= {	"item_4_prepare_0",
+											"item_4_attack_0" } }},
+		eat_kolbasa	= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 80 },
+						into	= { [0]	= {"item_4_draw_0", {a="kolbasa_a"}, "item_4_draw_1"}},
+						out		= { [0]	= {"item_1_holster_0", {d="kolbasa_a"}, "item_1_holster_1"} },
+						idle	= { [0]	= "item_1_aim_0" },
+						rnd		= { [0]	= {	"item_1_prepare_0",
+											"item_1_attack_0" } }},
+
+		guitar_wait	= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 80 },
+						into	= { [0]	= {"sit_1_guitar_0_0", {a="guitar_a"}, "sit_1_guitar_0_1"}},
+						out		= { [0]	= {"guitar_0_sit_1_0", {d="guitar_a"}, "guitar_0_sit_1_1"} },
+						idle	= { [0]	= "guitar_3" },
+						rnd		= { [0]	= {	"guitar_1",
+											"guitar_2" } }},
 
 
 		choosing	= {	prop	= { maxidle = 8,
@@ -629,11 +654,12 @@ function animation:__init(npc, mgr)
 		target_state = nil,
 		begin = nil,
 		idle = nil,
-		
-		hand_radio	= {mode = "detach", done = true},
-		bread_a		= {mode = "detach", done = true},
-		vodka_a		= {mode = "detach", done = true},
-		binocular_a	= {mode = "detach", done = true}
+		attach_items = {hand_radio	= {mode = "detach", done = true},
+						bread_a		= {mode = "detach", done = true},
+						vodka_a		= {mode = "detach", done = true},
+						kolbasa_a	= {mode = "detach", done = true},
+						guitar_a	= {mode = "detach", done = true},
+						binocular_a	= {mode = "detach", done = true}}
 	}
 	
 	self.clb_settings = {
@@ -736,49 +762,23 @@ function animation:update()
 	end
 
 	-- АТТАЧ ДЕТАЧ ОБЪЕКТОВ
-	if self.states.hand_radio.done == false then
-		local t = self.npc:object("hand_radio")
-		if t then
-			if self.states.hand_radio.mode == "attach" then
-				t:enable_attachable_item(true)
-			elseif self.states.hand_radio.mode == "detach" then
-				t:enable_attachable_item(false)
+	for k,v in self.states.attach_items do
+		printf("Trying to attach [%s]", tostring(k))
+		if v.done == false then
+			printf("proceed [%s]", tostring(k))
+			local t = self.npc:object(k)
+			if t then
+				printf("item [%s] exist", tostring(k))
+				if v.mode == "attach" then
+					printf("item [%s] attached", tostring(k))
+					t:enable_attachable_item(true)
+				elseif v.mode == "detach" then
+					printf("item [%s] detached", tostring(k))
+					t:enable_attachable_item(false)
+				end
 			end
+			v.done = true
 		end
-		self.states.hand_radio.done = true
-	end
-	if self.states.bread_a.done == false then
-		local t = self.npc:object("bread_a")
-		if t then
-			if self.states.bread_a.mode == "attach" then
-				t:enable_attachable_item(true)
-			elseif self.states.bread_a.mode == "detach" then
-				t:enable_attachable_item(false)
-			end
-		end
-		self.states.bread_a.done = true
-	end
-	if self.states.vodka_a.done == false then
-		local t = self.npc:object("vodka_a")
-		if t then
-			if self.states.vodka_a.mode == "attach" then
-				t:enable_attachable_item(true)
-			elseif self.states.vodka_a.mode == "detach" then
-				t:enable_attachable_item(false)
-			end
-		end
-		self.states.vodka_a.done = true
-	end
-	if self.states.binocular_a.done == false then
-		local t = self.npc:object("binocular_a")
-		if t then
-			if self.states.binocular_a.mode == "attach" then
-				t:enable_attachable_item(true)
-			elseif self.states.binocular_a.mode == "detach" then
-				t:enable_attachable_item(false)
-			end
-		end
-		self.states.binocular_a.done = true
 	end
 	
 	-- обрубить анимации и экстренно начать сразу
@@ -976,18 +976,18 @@ function animation:anim_callback()
 	self.clb_settings.cnt = self.clb_settings.cnt - 1
 	if self.clb_settings.cnt == 0 then
 		if self.clb_settings.a ~= nil and
-		   self.states[self.clb_settings.a] ~= nil 
+		   self.states.attach_items[self.clb_settings.a] ~= nil 
 		then
 			printf("item [%s] attach", utils.to_str(self.clb_settings.a))	
-			self.states[self.clb_settings.a].mode = "attach"
-			self.states[self.clb_settings.a].done = false
+			self.states.attach_items[self.clb_settings.a].mode = "attach"
+			self.states.attach_items[self.clb_settings.a].done = false
 		end
 		if self.clb_settings.d ~= nil and
-		   self.states[self.clb_settings.d] ~= nil 
+		   self.states.attach_items[self.clb_settings.d] ~= nil 
 		then
 			printf("item [%s] detach", utils.to_str(self.clb_settings.a))	
-			self.states[self.clb_settings.d].mode = "detach"
-			self.states[self.clb_settings.d].done = false
+			self.states.attach_items[self.clb_settings.d].mode = "detach"
+			self.states.attach_items[self.clb_settings.d].done = false
 		end
 		if self.clb_settings.s ~= nil then
 			xr_sound.set_sound_play(self.npc, self.clb_settings.s)

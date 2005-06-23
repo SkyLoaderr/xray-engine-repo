@@ -265,6 +265,28 @@ states = {
 				animstate = "sit_knee",
 				animation = "eat_bread"
 			},
+	eat_vodka	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "eat_vodka"
+			},
+	eat_kolbasa	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "eat_kolbasa"
+			},
+
+	guitar_wait	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_knee",
+				animation = "guitar_wait"
+			},
 
 	hello = {	weapon = "unstrapped",
 				movement = move.stand,
