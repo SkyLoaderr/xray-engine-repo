@@ -865,7 +865,14 @@ path_walk = attack_way7_3
 path_look = attack_look3
 ;on_signal = final | walker14@mil_freedom_max_attack
 no_retreat = true
-on_info = {+mil_dolg_dead} walker15@mil_freedom_max_attack
+on_info = {+mil_dolg_dead} remark4@mil_freedom_max_attack
+
+[remark4@mil_freedom_max_attack]
+snd = mil_freedom_victory5
+no_rotate = true
+no_move = true
+anim = idle
+on_signal = action_end | walker15@mil_freedom_max_attack
 
 [walker14@mil_freedom_max_attack]
 path_walk = attack_way7_5
