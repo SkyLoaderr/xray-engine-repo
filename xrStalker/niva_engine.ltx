@@ -1,0 +1,14 @@
+;-------------------------------------------------------------------------------
+;------ Factory parameters of Engine -------------------------------------------
+fuel_tank		= 40		    ; L
+fuel_consumption	= 11.43		; L / (100k R); liters per 100 000 rotations
+engine_power		= 40;40		; horse_power (kW=hp*0.808) max power
+max_power_rpm		= 5000		; (nominal rpm ) on this rpm value engine power reaches maximum
+max_torque_rpm		= 4500		; on this rpm engine torque reaches maximum
+
+power_increment_factor	= 0.01
+rpm_increment_factor	= 0.01
+; additional engine parameters
+
+max_engine_rpm		= 7000;3000  ; rpm (5000) rpm will never be more
+idling_engine_rpm	= 2000		 ; rpm (750) min rpm - starts from this rpm value
