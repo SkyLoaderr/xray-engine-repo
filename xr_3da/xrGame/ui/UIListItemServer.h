@@ -14,7 +14,7 @@ struct LIST_SRV_SIZES {
 
 struct LIST_SRV_INFO{
 	shared_str server;
-	shared_str port;
+	shared_str address;
 	shared_str map;
 	shared_str game;
 	shared_str players;

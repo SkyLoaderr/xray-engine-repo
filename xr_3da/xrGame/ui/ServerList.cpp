@@ -45,13 +45,13 @@ void CServerList::SetPlayerName(const char* name){
 bool CServerList::IsValidItem(ServerInfo& item){
 	bool result = true;
 
-	result &= m_sf.empty ? (m_sf.empty == (item.m_ServerNumPlayers == 0))						: true;
-	result &= m_sf.full ? (m_sf.full == (item.m_ServerNumPlayers == item.m_ServerMaxPlayers))	: true;
-	result &= m_sf.with_pass ? (m_sf.with_pass == item.m_bPassword)								: true;
-	result &= m_sf.without_pass ? (m_sf.without_pass != item.m_bPassword)						: true;
-	result &= m_sf.without_ff ? (m_sf.without_ff != item.m_bFFire)								: true;
+	result &= !m_sf.empty ? (m_sf.empty == (item.m_ServerNumPlayers == 0))						: true;
+	result &= !m_sf.full ? (m_sf.full == (item.m_ServerNumPlayers == item.m_ServerMaxPlayers))	: true;
+	result &= !m_sf.with_pass ? (m_sf.with_pass == item.m_bPassword)							: true;
+	result &= !m_sf.without_pass ? (m_sf.without_pass != item.m_bPassword)						: true;
+	result &= !m_sf.without_ff ? (m_sf.without_ff != item.m_bFFire)								: true;
 	//result &= m_sf.without_pb ? (m_sf.without_pb = item.m)
-	result &= m_sf.listen_servers ? (m_sf.listen_servers != item.m_bDedicated)					: true;
+	result &= !m_sf.listen_servers ? (m_sf.listen_servers != item.m_bDedicated)					: true;
 
 	return result;
 }
@@ -182,7 +182,11 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	float h = m_list.GetItemHeight();
 
 	m_itemInfo.info.server	= pServerInfo->m_ServerName;
-	m_itemInfo.info.port.sprintf("%d", pServerInfo->m_Port);
+	xr_string address = pServerInfo->m_HostName;
+	char port[8];
+	address+= "/port=";	
+	address+= itoa(pServerInfo->m_Port, port, 10);
+	m_itemInfo.info.address = address.c_str();
 	m_itemInfo.info.map		= pServerInfo->m_SessionName;
 	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
 	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);

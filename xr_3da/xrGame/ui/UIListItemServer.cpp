@@ -74,9 +74,7 @@ void CUIListItemServer::CreateConsoleCommand(xr_string& command, LPCSTR player_n
 	command+= "/";
 	command+= *m_srv_info.info.game;
 	command+= ") client(";
-	command+= *m_srv_info.info.server;
-	command+= "/port=";
-	command+= *m_srv_info.info.port;
+	command+= *m_srv_info.info.address;
 	command+= "/name=";
 	command+= player_name;
 	command+= ")";

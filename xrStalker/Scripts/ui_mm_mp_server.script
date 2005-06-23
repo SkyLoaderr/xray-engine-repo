@@ -42,6 +42,10 @@ function mp_server:InitControls(x, y, xml, handler)
 	xml:InitSpinNum("tab_server:spin_max_players",0,spin)
 	self:AttachChild(spin)
 	
+	spin = CUISpinText()
+	xml:InitSpinText("tab_server:spin_game_mode",0,spin)
+	self:AttachChild(spin)
+	
 	-- CHECK BOXES
 	local btn = CUICheckButton()
 	xml:InitStatic("tab_server:check_dedicated",0,btn)
