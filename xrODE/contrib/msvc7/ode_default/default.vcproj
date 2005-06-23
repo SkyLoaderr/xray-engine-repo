@@ -93,7 +93,7 @@
 			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			UseOfATL="1"
+			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
