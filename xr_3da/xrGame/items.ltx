@@ -16,8 +16,8 @@ inv_grid_width			= 1
 inv_grid_height			= 1
 inv_grid_x				= 11
 inv_grid_y				= 9
-attach_angle_offset		= 0, 1.57, 0.5   ;устанавливается в радианах Angle*PI/180
-attach_position_offset	= 0.11 , -0.03 , 0.08
+attach_angle_offset		= -0.287979, 1.560923, 1.544060
+attach_position_offset	= 0.096910, -0.013594, 0.107925
 attach_bone_name		= bip01_r_hand
 auto_attach				= false
 
@@ -98,6 +98,25 @@ hud = wpn_vodka_hud
 position_offset		= 0.0,0.0,0.0
 angle_offset		= 1.570790,1.570790,3.14159 ;90,90,180 ;считается в радианах Angle*PI/180
 
+[kolbasa_a]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "food and drugs\kolbasa_a"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = weapons\kolbasa\kolbasa.ogf
+cost					= 20
+inv_name				= "kolbasa"
+inv_name_short			= "kolbasa"
+inv_weight				= .5
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 19
+inv_grid_y				= 12
+attach_angle_offset		= -0.287979, 1.560923, 1.544060
+attach_position_offset	= 0.096910, -0.013594, 0.107925
+attach_bone_name		= bip01_r_hand
+auto_attach				= false
 
 [conserva]
 GroupControlSection	= spawn_group
