@@ -31,7 +31,7 @@ public:
 
 		u32		distortion			: 1;	// run-time modified
 		u32		disasm				: 1;	// config
-		u32		newtc				: 1;	// config
+		u32		forceskinw			: 1;	// config
 	}			o;
 	struct		_stats		{
 		u32		o_queries,	o_culled;

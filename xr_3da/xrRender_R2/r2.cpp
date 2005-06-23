@@ -110,6 +110,7 @@ void					CRender::create					()
 	o.distortion_enabled= (strstr(Core.Params,"-nodistort"))?	FALSE	:TRUE	;
 	o.distortion		= o.distortion_enabled;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
+	o.forceskinw		= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
 
 	// constants
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
@@ -386,6 +387,11 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Name		=	"FORCE_GLOSS";
 		defines[def_it].Definition	=	c_gloss;
 		def_it						++	;
+	}
+	if (o.forceskinw)		{
+		defines[def_it].Name		=	"SKIN_COLOR";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
 	}
 
 	// skinning

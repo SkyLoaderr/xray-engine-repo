@@ -56,6 +56,7 @@ public:
 		u32		disasm				: 1;
 
 		u32		forcegloss			: 1;
+		u32		forceskinw			: 1;
 		float	forcegloss_v		;
 	}			o;
 	struct		_stats		{
