@@ -14,10 +14,21 @@ on_info = {+val_stairs_start} heli_move@start
 [heli_move@start]
 path_move = val_stairs_heli_move
 path_look = val_stairs_heli_look
-on_signal = arrived | heli_move@patrol
+on_signal = arrived | heli_move@patrol1
 
-[heli_move@patrol]
+[heli_move@patrol1]
 path_move = val_monolith_heli_move
 path_look = val_monolith_heli_look
 combat_enemy = actor
+combat_use_rocket = false
+combat_use_mgun = true
+on_info = {+val_opendoor_start -val_opendoor_end} heli_move@patrol2
+
+[heli_move@patrol2]
+path_move = val_monolith_heli_move
+path_look = val_monolith_heli_look
+combat_use_rocket = false
+combat_use_mgun = true
+on_info = {+val_opendoor_end} heli_move@patrol1
+
 
