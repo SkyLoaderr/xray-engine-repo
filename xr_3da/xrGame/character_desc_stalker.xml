@@ -184,6 +184,9 @@
 
 		<start_dialog>agr_factory_krot_start</start_dialog>
 		<actor_dialog>agr_factory_krot_about</actor_dialog>
+		<actor_dialog>agr_krot_general_info</actor_dialog>
+		<actor_dialog>agr_krot_gunslinger_secret</actor_dialog>
+		<actor_dialog>agr_krot_tunnel</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_gar_hellcar" team_default = "1">
