@@ -58,6 +58,8 @@ enum{
 	COMMAND_UNDO,
 	COMMAND_REDO,
 
+    COMMAND_EXECUTE_COMMAND_LIST,
+
     COMMAND_MAIN_LAST
 };
 //------------------------------------------------------------------------------
