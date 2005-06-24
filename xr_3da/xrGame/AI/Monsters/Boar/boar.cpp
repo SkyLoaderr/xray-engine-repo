@@ -127,18 +127,6 @@ BOOL CAI_Boar::net_Spawn (CSE_Abstract* DC)
 	return TRUE;
 }
 
-
-void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
-{
-	//Fvector dir;
-	//dir.sub(to_point, Position());
-	//float yaw,pitch;
-	//dir.getHP(yaw,pitch);
-
-	//movement().m_body.target.yaw = angle_normalize(-yaw);
-}
-
-
 void CAI_Boar::CheckSpecParams(u32 spec_params)
 {
 	//if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {

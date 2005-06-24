@@ -1,11 +1,3 @@
-////////////////////////////////////////////////////////////////////////////
-//	Module 		: base_monster.h
-//	Created 	: 21.05.2003
-//  Modified 	: 21.05.2003
-//	Author		: Serge Zhem
-//	Description : AI Behaviour for all the monsters of class "Base Monster"
-////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "../../../CustomMonster.h"
@@ -302,11 +294,6 @@ IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;
 
 private:
 	bool					m_first_update_initialized;
-
-	u32						m_time_last_rotation_jump;
-	// -----------------------------------------------------------------------------
-				void		check_rotation_jump	();
-	// -----------------------------------------------------------------------------
 	bool					ignore_collision_hit;	
 	
 

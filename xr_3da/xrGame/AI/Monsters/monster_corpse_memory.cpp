@@ -105,3 +105,13 @@ CORPSE_MAP_IT CMonsterCorpseMemory::find_best_corpse()
 
 	return it;
 }
+
+void CMonsterCorpseMemory::remove_links(CObject *O)
+{
+	for (CORPSE_MAP_IT	I = m_objects.begin();I!=m_objects.end();++I) {
+		if ((*I).first == O) {
+			m_objects.erase(I);
+			break;
+		}
+	}
+}

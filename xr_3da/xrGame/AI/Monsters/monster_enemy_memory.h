@@ -5,7 +5,7 @@
 class CBaseMonster;
 
 class CMonsterEnemyMemory {
-	CBaseMonster		*monster;
+	CBaseMonster	*monster;
 	TTime			time_memory;
 
 	ENEMIES_MAP		m_objects;
@@ -25,6 +25,7 @@ public:
 	const ENEMIES_MAP	&get_memory				() {return m_objects;}
 
 	void				clear					() {m_objects.clear();}
+	void				remove_links			(CObject *O);
 	
 	void				add_enemy				(const CEntityAlive *enemy);
 	void				add_enemy				(const CEntityAlive *enemy, const Fvector &pos, u32 vertex, u32 time);

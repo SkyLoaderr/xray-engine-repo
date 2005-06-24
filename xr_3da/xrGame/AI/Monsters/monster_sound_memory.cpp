@@ -197,3 +197,21 @@ bool CMonsterSoundMemory::get_sound_from_object(const CObject* obj, SoundElem	&v
 
 	return false;
 }
+
+struct pred_remove_relcase {
+	CObject *obj;
+	pred_remove_relcase(CObject *o) {obj = o;}
+
+	bool operator() (const SoundElem &x) {
+		if (x.who == obj) return true;
+
+		return false;
+	}
+};
+
+void CMonsterSoundMemory::remove_links(CObject *O)
+{
+	// удаление устаревших звуков
+	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_relcase(O));
+	Sounds.erase(I,Sounds.end());
+}

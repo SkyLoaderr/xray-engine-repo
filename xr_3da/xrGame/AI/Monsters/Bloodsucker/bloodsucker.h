@@ -50,7 +50,6 @@ public:
 	virtual void			net_Destroy				();
 
 	virtual	void			Load					(LPCSTR section);
-	virtual	void			LookPosition			(Fvector to_point, float angular_speed = PI_DIV_3);
 	virtual	void			PitchCorrection			() {}
 
 	virtual	void			CheckSpecParams			(u32 spec_params);

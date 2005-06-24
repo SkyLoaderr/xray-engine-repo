@@ -89,5 +89,6 @@ public:
 	bool		is_loud_sound			(float val);
 	
 	void		clear					() {Sounds.clear();}
+	void		remove_links			(CObject *O);
 };
 

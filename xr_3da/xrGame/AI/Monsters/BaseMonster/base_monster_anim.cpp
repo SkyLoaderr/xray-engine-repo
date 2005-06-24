@@ -16,20 +16,6 @@
 void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
 	control().animation().update_frame();
-
-	//SCurrentAnimationInfo &info = anim().cur_anim_info();
-	//
-	//if (anim().PrepareAnimation()) {
-	//	CSkeletonAnimated					*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
-	//	info.blend							= skeleton_animated->LL_PlayCycle(m_default_bone_part, anim().m_tpCurAnim, TRUE, vfPlayEndCallBack, this);
-
-	//	CStepManager::on_animation_start	(anim().m_tpCurAnim, info.blend);
-	//}
-
-	//// установить скорость текущей анимации
-	//if (info.blend && (info.speed.current > 0.f)) {
-	//	info.blend->speed = info.speed.current;
-	//}
 }
 
 

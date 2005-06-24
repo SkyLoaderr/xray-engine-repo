@@ -233,14 +233,6 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	//Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
 }
 
-void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
-{
-	Fvector	dir;
-	dir.set(to_point);
-	dir.sub(Position());
-	LookDirection(dir,angular_speed);
-}
-
 void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
 {
 	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());

@@ -124,38 +124,3 @@ void CBaseMonster::squad_notify()
 	
 	squad->UpdateGoal(this, goal);
 }
-
-#define ROTATION_JUMP_DELAY		6000
-
-void CBaseMonster::check_rotation_jump()
-{
-	//if (anim().IsCriticalAction()) return;
-	//if (m_time_last_rotation_jump + ROTATION_JUMP_DELAY > Device.dwTimeGlobal)	return;
-
-	//Fvector							enemy_position;
-	//enemy_position.set				(EnemyMan.get_enemy()->Position());
-
-	//if (dir().is_face_target(enemy_position, 120 * PI / 180)) return;
-
-	//dir().face_target				(enemy_position);
-	//
-	//// everything is good, so set animation sequence
-	//EMotionAnim						anim = dir().is_from_right(enemy_position) ? eAnimJumpRight : eAnimJumpLeft;
-
-	//anim().Seq_Add				(anim);
-	//anim().Seq_Switch			();
-	//
-	//// calculate angular speed according to animation speed and angle difference
-	//const CControlDirectionBase::SAxis &yaw = dir().heading();	
-
-	//float angular_velocity; 
-	//float delta_yaw					= angle_difference(yaw.current, yaw.target);
-	//float time						= anim().GetCurAnimTime	();
-	//angular_velocity				= delta_yaw / time;
-
-	//// set angular speed in exclusive force mode, coz it has already locked by Seq_Switch
-	//dir().set_heading_speed		(angular_velocity, true);
-
-	//m_time_last_rotation_jump		= Device.dwTimeGlobal;
-}
-

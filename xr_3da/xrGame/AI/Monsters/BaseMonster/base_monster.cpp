@@ -367,15 +367,15 @@ void CBaseMonster::net_Relcase(CObject *O)
 
 	// TODO: do not clear, remove only object O
 	if (g_Alive()) {
-		EnemyMemory.clear	();
-		SoundMemory.clear	();
-		CorpseMemory.clear	();
-		HitMemory.clear		();
+		EnemyMemory.remove_links	(O);
+		SoundMemory.remove_links	(O);
+		CorpseMemory.remove_links	(O);
+		HitMemory.remove_hit_info	(O);
 
-		EnemyMan.reinit		();
-		CorpseMan.reinit	();
+		EnemyMan.reinit				();
+		CorpseMan.reinit			();
 
-		UpdateMemory		();
+		UpdateMemory				();
 		
 		monster_squad().remove_links(O);
 	}

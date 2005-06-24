@@ -129,3 +129,13 @@ ENEMIES_MAP_IT CMonsterEnemyMemory::find_best_enemy()
 
 	return it;
 }
+
+void CMonsterEnemyMemory::remove_links(CObject *O)
+{
+	for (ENEMIES_MAP_IT	I = m_objects.begin();I!=m_objects.end();++I) {
+		if ((*I).first == O) {
+			m_objects.erase(I);
+			break;
+		}
+	}
+}
