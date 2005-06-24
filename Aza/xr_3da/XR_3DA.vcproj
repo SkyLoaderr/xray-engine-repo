@@ -148,6 +148,7 @@
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="FALSE"
@@ -1072,6 +1073,18 @@
 						</File>
 						<File
 							RelativePath="xrImage_Resampler.h">
+						</File>
+						<File
+							RelativePath=".\xrTheora_Stream.cpp">
+						</File>
+						<File
+							RelativePath=".\xrTheora_Stream.h">
+						</File>
+						<File
+							RelativePath=".\xrTheora_Surface.cpp">
+						</File>
+						<File
+							RelativePath=".\xrTheora_Surface.h">
 						</File>
 					</Filter>
 					<Filter

@@ -5,6 +5,7 @@
 #include "render.h"
 //#include "xr_avi.h"
 #include "tntQAVI.h"
+#include "xrTheora_Surface.h"
 
 #define		PRIORITY_HIGH	12
 #define		PRIORITY_NORMAL	8
@@ -23,6 +24,7 @@ CTexture::CTexture		()
 {
 	pSurface			= NULL;
 	pAVI				= NULL;
+	pTheora				= NULL;
 	desc_cache			= 0;
 	seqMSPF				= 0;
 	flags.MemoryUsage	= 0;
@@ -57,21 +59,32 @@ void CTexture::Apply	(u32 dwStage)
 {
 	if (!flags.bLoaded)			Load	();
 
-	if (pAVI && pAVI->NeedUpdate())
-	{
-		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
-		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
+	if (pTheora){
+		if (pTheora->Update(Device.dwTimeDelta)){
+			R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
+			IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
+			D3DLOCKED_RECT		R;
+			R_CHK				(T2D->LockRect(0,&R,NULL,0));
+			R_ASSERT			(R.Pitch == int(pTheora->Width()*4));
+			pTheora->DecompressFrame((u32*)R.pBits);
+			R_CHK				(T2D->UnlockRect(0));
+		}
+	}else if (pAVI){
+		if (pAVI->NeedUpdate()){
+			R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
+			IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
 
-		// AVI
-		D3DLOCKED_RECT R;
-		R_CHK	(T2D->LockRect(0,&R,NULL,0));
-		R_ASSERT(R.Pitch == int(pAVI->m_dwWidth*4));
-//		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
-		BYTE* ptr; pAVI->GetFrame(&ptr);
-		CopyMemory(R.pBits,ptr,pAVI->m_dwWidth*pAVI->m_dwHeight*4);
-//		R_ASSERT(pAVI->GetFrame((BYTE*)(&R.pBits)));
+			// AVI
+			D3DLOCKED_RECT R;
+			R_CHK	(T2D->LockRect(0,&R,NULL,0));
+			R_ASSERT(R.Pitch == int(pAVI->m_dwWidth*4));
+			//		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
+			BYTE* ptr; pAVI->GetFrame(&ptr);
+			CopyMemory(R.pBits,ptr,pAVI->m_dwWidth*pAVI->m_dwHeight*4);
+			//		R_ASSERT(pAVI->GetFrame((BYTE*)(&R.pBits)));
 
-		R_CHK	(T2D->UnlockRect(0));
+			R_CHK	(T2D->UnlockRect(0));
+		}
 	} else if (!seqDATA.empty()) {
 		// SEQ
 		u32	frame		= Device.TimerAsyncMM()/seqMSPF; //Device.dwTimeGlobal
@@ -137,8 +150,36 @@ void CTexture::Load		()
 
 	Preload							();
 
-	// Check for AVI
+	// Check for OGM
 	string256 fn;
+	if (FS.exist(fn,"$game_textures$",*cName,".ogm")){
+		// AVI
+		pTheora		= xr_new<CTheoraSurface>();
+
+		if (!pTheora->Load(fn)) {
+			xr_delete(pTheora);
+			Debug.fatal("Can't open video stream");
+		} else {
+			flags.MemoryUsage	= pTheora->Width()*pTheora->Height()*4;
+			pTheora->Play		(TRUE);
+
+			// Now create texture
+			IDirect3DTexture9*	pTexture = 0;
+			HRESULT hrr = HW.pDevice->CreateTexture(
+				pTheora->Width(),pTheora->Height(),1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,
+				&pTexture,NULL
+				);
+			pSurface	= pTexture;
+			if (FAILED(hrr))
+			{
+				Debug.fatal	("Invalid video stream");
+				R_CHK		(hrr);
+				xr_delete	(pTheora);
+				pSurface	= 0;
+			}
+
+		}
+	} else
 	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
 		// AVI
 		pAVI = xr_new<CAviPlayerCustom>();
@@ -223,6 +264,7 @@ void CTexture::Unload	()
 	_RELEASE		(pSurface);
 
 	xr_delete		(pAVI);
+	xr_delete		(pTheora);
 }
 
 void CTexture::desc_update	()
@@ -233,4 +275,24 @@ void CTexture::desc_update	()
 		IDirect3DTexture9*	T	= (IDirect3DTexture9*)pSurface;
 		R_CHK					(T->GetLevelDesc(0,&desc));
 	}
+}
+
+void CTexture::video_Play		(BOOL looped)	
+{ 
+	if (pTheora) pTheora->Play(looped); 
+}
+
+void CTexture::video_Pause		(BOOL state)
+{
+	if (pTheora) pTheora->Pause(state); 
+}
+
+void CTexture::video_Stop			()				
+{ 
+	if (pTheora) pTheora->Stop(); 
+}
+
+BOOL CTexture::video_IsPlaying	()				
+{ 
+	return (pTheora)?pTheora->IsPlaying():FALSE; 
 }

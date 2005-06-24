@@ -2,11 +2,9 @@
 #include "xrtheora_surface.h"
 #include "xrtheora_stream.h"
 
-#include "tga.h"
-
-ctheora_surface::ctheora_surface()
+CTheoraSurface::CTheoraSurface()
 {
-	ready				= false;
+	ready				= FALSE;
 	// streams
 	m_rgb				= 0;
 	m_alpha				= 0;
@@ -19,11 +17,11 @@ ctheora_surface::ctheora_surface()
 	sdl_yuv_overlay		= 0;
 #endif
 	// controls
-	playing				= false;
-	looped				= false;
+	playing				= FALSE;
+	looped				= FALSE;
 }
 
-ctheora_surface::~ctheora_surface()
+CTheoraSurface::~CTheoraSurface()
 {
 	xr_delete			(m_rgb);
 	xr_delete			(m_alpha);
@@ -32,37 +30,20 @@ ctheora_surface::~ctheora_surface()
 #endif
 }
 
-void ctheora_surface::reset()
+void CTheoraSurface::Reset()
 {
-	if (m_rgb)			m_rgb->reset	();
-	if (m_alpha)		m_alpha->reset	();
+	if (m_rgb)			m_rgb->Reset	();
+	if (m_alpha)		m_alpha->Reset	();
 	tm_play				= 0;
 }
 
-bool ctheora_surface::valid()
+BOOL CTheoraSurface::Valid()
 {
 	return				ready;
 }
-
-void ctheora_surface::write_tga(u32 width, u32 height, u32 frame, u32 pixelformat)
-{
 /*
-	Y = round( 0.256788 * R + 0.504129 * G + 0.097906 * B) +  16 
-	U = round(-0.148223 * R - 0.290993 * G + 0.439216 * B) + 128
-	V = round( 0.439216 * R - 0.367788 * G - 0.071427 * B) + 128
-
-	C = Y - 16
-	D = U - 128
-	E = V - 128
-
-	R = clip( round( 1.164383 * C                   + 1.596027 * E  ) )
-	G = clip( round( 1.164383 * C - (0.391762 * D) - (0.812968 * E) ) )
-	B = clip( round( 1.164383 * C +  2.017232 * D                   ) )
-
-	R = clip(( 298 * C           + 409 * E + 128) >> 8)
-	G = clip(( 298 * C - 100 * D - 208 * E + 128) >> 8)
-	B = clip(( 298 * C + 516 * D           + 128) >> 8)
-*/
+void CTheoraSurface::write_tga(u32 width, u32 height, u32 frame, u32 pixelformat)
+{
 	VERIFY		(m_rgb);
 	yuv_buffer*	yuv_rgb		= m_rgb->current_yuv_buffer();
 	yuv_buffer*	yuv_alpha	= m_alpha?m_alpha->current_yuv_buffer():0;
@@ -134,51 +115,45 @@ void ctheora_surface::write_tga(u32 width, u32 height, u32 frame, u32 pixelforma
 
 	u_free(data);
 }
-
-void ctheora_surface::update(u32 dt)
+*/
+BOOL CTheoraSurface::Update(u32 dt)
 {
-	VERIFY				(valid());
+	VERIFY				(Valid());
+	BOOL redraw			= FALSE;
 	if (playing){
 		tm_play			+= dt;
 		if (tm_play>tm_total){ 
 			if (looped){	
 				tm_play %= tm_total;
-				reset	();
+				Reset	();
 			}else{	
-				stop	();
-				return;
+				Stop	();
+				return	FALSE;
 			}
 		}
-		bool redraw		= false;
-		if (m_rgb)		redraw|=m_rgb->decode	(tm_play);
-		if (m_alpha)	redraw|=m_alpha->decode	(tm_play);
-		if (redraw){	
-			write_tga		(m_rgb->t_info.frame_width,m_rgb->t_info.frame_height,(u32)m_rgb->d_frame,m_rgb->t_info.pixelformat);
-			write_sdl_video	();
-		}
+		if (m_rgb)		redraw|=m_rgb->Decode	(tm_play);
+		if (m_alpha)	redraw|=m_alpha->Decode	(tm_play);
 	}
+	return redraw;
 } 
 
-bool ctheora_surface::load(const char* fname)
+BOOL CTheoraSurface::Load(const char* fname)
 {
-	VERIFY				(false==ready);
-	vfs::reader src		= vfs::ropen(fname); VERIFY(src);
-	
-	bool res;
-	m_rgb				= u_new<ctheora_stream>();
-	if (res=m_rgb->load(src)){
+	VERIFY				(FALSE==ready);
+	m_rgb				= xr_new<CTheoraStream>();
+	BOOL res			= m_rgb->Load(fname);
+	if (res){
 		string_path		alpha,ext;
-		sz_cpy			(alpha,sizeof(alpha),fname);
-		pstr pext		= sz_fileext(alpha);
+		strcpy			(alpha,fname);
+		pstr pext		= strext(alpha);
 		if (pext){	
-			sz_cpy		(ext,sizeof(ext),pext);
+			strcpy		(ext,pext);
 			*pext		= 0;
 		}
-		sz_concat		(alpha,sizeof(alpha),alpha,"#alpha",ext);
-		src				= vfs::ropen(fname);
-		if (src){
-			m_alpha		= u_new<ctheora_stream>	();
-			if (!m_alpha->load(src))	res = false;
+		strconcat		(alpha,alpha,"#alpha",ext);
+		if (FS.exist(alpha)){
+			m_alpha		= xr_new<CTheoraStream>	();
+			if (!m_alpha->Load(alpha))	res = FALSE;
 		}
 	}
 	if (res){
@@ -190,64 +165,99 @@ bool ctheora_surface::load(const char* fname)
 			VERIFY		(m_rgb->t_info.pixelformat==m_alpha->t_info.pixelformat);
 		}
 #endif
+		VERIFY3			(btwIsPow2(m_rgb->t_info.frame_width)&&btwIsPow2(m_rgb->t_info.frame_height),"Invalid size.",fname);
 		tm_total		= m_rgb->tm_total;
 		VERIFY			(0!=tm_total);
 		// reset playback
-		reset			();
+		Reset			();
 		// open SDL video
+#ifdef SDL_OUTPUT
 		open_sdl_video	();
-		ready			= true;
+#endif
+		ready			= TRUE;
 	}else{
 		xr_delete		(m_rgb);
 		xr_delete		(m_alpha);
 	}
 	return				res;
 }
-/*
-bool ctheora_surface::load(vfs::reader src)
+
+u32	CTheoraSurface::Width()
 {
-	VERIFY				(false==ready);
-	
-	char tmp[4];
-	src->r				(tmp,4);
-	src->seek			(0);
-	bool res			= true;
-	if (0==strncmp(tmp,"OggS",4)){
-		// simple ogg
-		m_rgb			= u_new<ctheora_stream>();
-		if (!m_rgb->load(src))			res	= false;
-	}else{
-		// complex ogg (rgb(chunk #1) + alpha channel(chunk #2))
-		vfs::reader r	= src->chunk_open	(1); // 1 - rgb channel 
-		VERIFY			(r);
-		m_rgb			= u_new<ctheora_stream>	();
-		if (!m_rgb->load(r))			res	= false;
-		if (res){
-			r			= src->chunk_open	(2); // 2 - alpha channel 
-			if (r){
-				m_alpha	= u_new<ctheora_stream>	();
-				if (!m_alpha->load(r))	res = false;
+	return				m_rgb->t_info.frame_width;
+}
+
+u32	CTheoraSurface::Height()
+{
+	return				m_rgb->t_info.frame_height;
+}
+
+void CTheoraSurface::DecompressFrame(u32* data)
+{
+	VERIFY		(m_rgb);
+	yuv_buffer*	yuv_rgb		= m_rgb->CurrentFrame();
+	yuv_buffer*	yuv_alpha	= m_alpha?m_alpha->CurrentFrame():0;
+
+	u32 width		= m_rgb->t_info.frame_width;
+	u32 height		= m_rgb->t_info.frame_height;
+	u32 pixelformat	= m_rgb->t_info.pixelformat;
+/*
+	Memory.mem_fill32(data,0x00FF0000,width*height);
+/*/
+	int uv_w=1, uv_h=1;
+	switch (pixelformat){
+	case OC_PF_444:	uv_w=1; uv_h=1; break;
+	case OC_PF_422:	uv_w=2; uv_h=1; break;
+	case OC_PF_420:	uv_w=2; uv_h=2; break;
+	default: NODEFAULT;
+	}
+	static const float K = 0.256788f + 0.504129f + 0.097906f;
+
+	// rgb
+	if (yuv_rgb){
+		yuv_buffer&	yuv	= *yuv_rgb;
+		u32 pos = 0;
+		for (u32 h=0; h<height; ++h){
+			u8* Y		= yuv.y+yuv.y_stride*h;
+			u8* U		= yuv.u+yuv.uv_stride*(h/uv_h);
+			u8* V		= yuv.v+yuv.uv_stride*(h/uv_h);
+			for (u32 w=0; w<width; ++w){
+				u8 y	= Y[w];
+				u8 u	= U[w/uv_w];
+				u8 v	= V[w/uv_w];
+
+				int C	= y - 16;
+				int D	= u - 128;
+				int E	= v - 128;
+
+				int R	= clampr(( 298 * C           + 409 * E + 128) >> 8,0,255);
+				int G	= clampr(( 298 * C - 100 * D - 208 * E + 128) >> 8,0,255);
+				int B	= clampr(( 298 * C + 516 * D           + 128) >> 8,0,255);
+				data[pos++] = color_rgba(R,G,B,0);
 			}
 		}
 	}
-	if (res){
-		VERIFY((0==m_alpha) || (m_alpha&&(m_rgb->tm_total==m_alpha->tm_total)));
-		tm_total		= m_rgb->tm_total;
-		VERIFY			(0!=tm_total);
-		// reset playback
-		reset			();
-		// open SDL video
-		open_sdl_video	();
-		ready			= true;
-	}else{
-		xr_delete		(m_rgb);
-		xr_delete		(m_alpha);
+
+	// alpha
+	if (yuv_alpha){
+		yuv_buffer&	yuv	= *yuv_alpha;
+		u32 pos = 0;
+		for (u32 h=0; h<height; ++h){
+			u8* Y		= yuv.y+yuv.y_stride*h;
+//			u8* U		= yuv.u+yuv.uv_stride*(h/uv_h);
+//			u8* V		= yuv.v+yuv.uv_stride*(h/uv_h);
+			for (u32 w=0; w<width; ++w){
+				u8 y	= Y[w];
+				u32& clr= data[pos++];
+				clr		= subst_alpha(clr,iFloor(float((y-16))/K));
+			}
+		}
 	}
-	return				res;
+//*/
 }
-*/
+
 #ifdef SDL_OUTPUT
-void ctheora_surface::open_sdl_video()
+void CTheoraSurface::open_sdl_video()
 {
 	VERIFY(m_rgb);
 	theora_info& t_info		= m_rgb->t_info;
@@ -276,7 +286,7 @@ void ctheora_surface::open_sdl_video()
 	SDL_DisplayYUVOverlay	(sdl_yuv_overlay, &sdl_rect);
 }
 
-void ctheora_surface::write_sdl_video()
+void CTheoraSurface::write_sdl_video()
 {
 	VERIFY(m_rgb);
 	theora_info& t_info		= m_rgb->t_info;

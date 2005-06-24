@@ -4,8 +4,8 @@
 
 #include <theora/theora.h>
 
-class ctheora_stream{
-	friend	class		ctheora_surface;
+class ENGINE_API CTheoraStream{
+	friend	class		CTheoraSurface;
 
 	ogg_sync_state		o_sync_state;
 	ogg_page			o_page;
@@ -23,21 +23,19 @@ class ctheora_stream{
 	u32					key_rate;			// theora have const key rate
 	float				fpms;
 protected:
-	int					read_data			();
-	bool				parse_headers		();
-
-	void				invalidate			();
+	int					ReadData			();
+	BOOL				ParseHeaders		();
 public:
-						ctheora_stream		();
-	virtual				~ctheora_stream		();
+						CTheoraStream		();
+	virtual				~CTheoraStream		();
 
-	bool				load				(IReader* reader);
+	BOOL				Load				(const char* fname);
 
-	void				reset				();
+	void				Reset				();
 
-	bool				decode				(u32 tm_play);
+	BOOL				Decode				(u32 tm_play);
 
-	yuv_buffer*			current_yuv_buffer	()					{return &t_yuv_buffer;}
+	yuv_buffer*			CurrentFrame		()					{return &t_yuv_buffer;}
 };
 
 #endif //xrTheora_StreamH

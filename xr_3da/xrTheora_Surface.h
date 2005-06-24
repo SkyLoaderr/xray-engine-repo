@@ -8,44 +8,49 @@
 #endif
 
 // refs
-class ctheora_stream;
+class CTheoraStream;
 
-class ctheora_surface{
+class ENGINE_API CTheoraSurface{
 #ifdef SDL_OUTPUT
 	// SDL Video playback structures 
 	SDL_Surface*		sdl_screen;
 	SDL_Overlay*		sdl_yuv_overlay;
 	SDL_Rect			sdl_rect;
 #endif
-	ctheora_stream*		m_rgb;
-	ctheora_stream*		m_alpha;
+	CTheoraStream*		m_rgb;
+	CTheoraStream*		m_alpha;
 
+	u32					tm_start;
 	u32					tm_play;
 	u32					tm_total;
-	bool				ready;
+	BOOL				ready;
 public:
-	bool				playing;
-	bool				looped;
+	BOOL				playing;
+	BOOL				looped;
 protected:
-	void				invalidate			();
-	void				reset				();
+	void				Reset				();
 
 #ifdef SDL_OUTPUT
 	void				open_sdl_video		();
 	void				write_sdl_video		();
 #endif
 public:
-						ctheora_surface		();
-	virtual				~ctheora_surface	();
+						CTheoraSurface		();
+	virtual				~CTheoraSurface	();
 
-	bool				valid				();
-	bool				load				(const char* fname);
+	BOOL				Valid				();
+	BOOL				Load				(const char* fname);
 
-	void				update				(u32 dt);
+	BOOL				Update				(u32 dt);
+	void				DecompressFrame		(u32* dst);
 
-	void				play				(bool _looped)		{playing=true;looped=_looped;}
-	void				pause				(bool _pause)		{playing=!_pause;}
-	void				stop				()					{playing=false;reset();}
+	void				Play				(BOOL _looped)		{playing=TRUE;looped=_looped;}
+	void				Pause				(BOOL _pause)		{playing=!_pause;}
+	void				Stop				()					{playing=FALSE;Reset();}
+	BOOL				IsPlaying			()					{return playing;}
+
+	u32					Width				();
+	u32					Height				();
 };
 
 #endif //xrTheora_SurfaceH

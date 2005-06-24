@@ -5,6 +5,7 @@
 #include "xr_resource.h"
 
 class ENGINE_API CAviPlayerCustom;
+class ENGINE_API CTheoraSurface;
 
 class ENGINE_API CTexture			: public xr_resource_named				{
 public:
@@ -18,6 +19,7 @@ public:
 	}									flags;
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
+	CTheoraSurface*						pTheora;
 	float								m_material;
 	shared_str							m_bumpmap;
 
@@ -28,21 +30,26 @@ public:
 	// Description
 	IDirect3DBaseTexture9*				desc_cache;
 	D3DSURFACE_DESC						desc;
-	IC BOOL								desc_valid	()		{ return pSurface==desc_cache; }
-	IC void								desc_enshure()		{ if (!desc_valid()) desc_update(); }
-	void								desc_update	();
+	IC BOOL								desc_valid		()		{ return pSurface==desc_cache; }
+	IC void								desc_enshure	()		{ if (!desc_valid()) desc_update(); }
+	void								desc_update		();
 public:
-	void								Preload		();
-	void								Load		();
-	void								Unload		(void);
-	void								Apply		(u32 dwStage);
+	void								Preload			();
+	void								Load			();
+	void								Unload			(void);
+	void								Apply			(u32 dwStage);
 
-	void								surface_set	(IDirect3DBaseTexture9* surf);
-	IDirect3DBaseTexture9*				surface_get ();
+	void								surface_set		(IDirect3DBaseTexture9* surf);
+	IDirect3DBaseTexture9*				surface_get 	();
 
-	IC BOOL								isUser		()		{ return flags.bUser;					}
-	IC u32								get_Width	()		{ desc_enshure(); return desc.Width;	}
-	IC u32								get_Height	()		{ desc_enshure(); return desc.Height;	}
+	IC BOOL								isUser			()		{ return flags.bUser;					}
+	IC u32								get_Width		()		{ desc_enshure(); return desc.Width;	}
+	IC u32								get_Height		()		{ desc_enshure(); return desc.Height;	}
+
+	void								video_Play		(BOOL looped);
+	void								video_Pause		(BOOL state);
+	void								video_Stop		();
+	BOOL								video_IsPlaying	();
 
 	CTexture							();
 	virtual ~CTexture					();
