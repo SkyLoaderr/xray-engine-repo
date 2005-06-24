@@ -65,7 +65,7 @@ function action_door:initialize(loading)
 	end
 
 	self.object:set_nonscript_usable(false)
-	self.object:set_callback(callback.use_object, self.door_callback, self)
+	--self.object:set_callback(callback.use_object, self.use_callback, self)
 
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
@@ -212,7 +212,7 @@ function action_door:try_switch()
 	return false
 end
 
-function action_door:door_callback(door, actor)
+function action_door:use_callback(door, actor)
 	if self:try_switch() then
 		return
 	end
