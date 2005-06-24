@@ -53,6 +53,7 @@ protected:
 			void	Load				(LPCSTR section)														;//client load
 public:
 			void	SetAutoRemove		(u32 time=existence_time)												;
+IC			bool	IsRemoving			(){return b_removing;}
 			u32		DefaultExitenceTime ()																		{return existence_time;}
 					CPHSkeleton			()																		;
 	virtual			~CPHSkeleton		()																		;

@@ -113,7 +113,7 @@ void CDestroyablePhysicsObject::Destroy()
 		m.k.crossproduct(m.i,m.j);
 			StartParticles(m_destroy_particles,m,ID());
 	}
-	shedule_register();
+	if(!CPHSkeleton::IsRemoving())shedule_register();
 }
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {
