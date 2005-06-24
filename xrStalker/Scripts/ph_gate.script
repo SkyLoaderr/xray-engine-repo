@@ -9,19 +9,19 @@
 --[[
 Состояния:
 state: состояние, в котором дверь находится при инициализации
-    opened - в открытом
+    open - в открытом
     closed - в закрытом
     none - в текущем (дефолтном)
 locking: блокировка дверей
     stick - прилипание дверей к крайним состояниям
     soft - дверь заблокирована с помощью силы, т.е. можно ее открыть/пробить машиной
         state:
-            opened - блокировать в открытом состоянии
+            open - блокировать в открытом состоянии
             closed - в закрытом
             none - не используется (мягкая блокировка возможна только в крайних положениях)
     hard - блокировка двери с помощью границ. Ворота можно только сломать.
         state:
-            opened - блокировать в открытом состоянии
+            open - блокировать в открытом состоянии
             closed - в закрытом
             none - в текущем
     none - дверь не заблокирована
@@ -29,7 +29,7 @@ locking: блокировка дверей
 
 local state_none = 0
 
-local state_opened = 1
+local state_open = 1
 local state_closed = 2
 
 local state_lock_stick = 1
@@ -166,9 +166,9 @@ function action_gate:initialize(loading)
 		self.st.script_used_more_than_once = true
 	end
 
-	if self.st.state == "opened" then
-	    printf("_bp: ph_gate.state = opened")
-	    self.state = state_opened
+	if self.st.state == "open" then
+	    printf("_bp: ph_gate.state = open")
+	    self.state = state_open
 		self:open_gate(disable_snd)
 	    --if self.tip_close then
 		--    self.object:set_tip_text(self.tip_close)
@@ -196,7 +196,7 @@ function action_gate:initialize(loading)
 	if self.st.locking == "stick" then
 	    printf("_bp: ph_gate.locking = stick")
 	    self.locking = state_lock_stick
-	    if self.state == state_opened then
+	    if self.state == state_open then
 	        self.left_stick_dir = 1
 	        self.right_stick_dir = 1
 	    elseif self.state == state_closed then
@@ -211,7 +211,7 @@ function action_gate:initialize(loading)
 	    local angle_left, angle_right, force, velocity
 
 	    self.locking = state_lock_soft
-	    if self.state == state_opened then
+	    if self.state == state_open then
 	        force = def_soft_lock_force
 	        velocity = -def_soft_lock_velocity
 	    elseif self.state == state_closed then
@@ -235,7 +235,7 @@ function action_gate:initialize(loading)
 	    local angle_right
 
 	    self.locking = state_lock_hard
-	    if self.state == state_opened then
+	    if self.state == state_open then
 	        angle_left = def_close_limit
 	        angle_right = def_close_limit
 	        --self:open_gate(disable_snd)
@@ -264,7 +264,7 @@ function action_gate:initialize(loading)
 	else
 	    printf("_bp: ph_gate.locking = none")
 	    self.locking = state_none
-	    --if self.state == state_opened then
+	    --if self.state == state_open then
 		--    self:open_gate(disable_snd)
 	    --elseif self.state == state_closed then
 		--    self:close_gate(disable_snd)
@@ -283,8 +283,8 @@ function action_gate:initialize(loading)
 
 	self.object:set_nonscript_usable(false)
 	-- FIXME: перевести под универсальную схему
-	self.object:set_callback(callback.hit, self.hit_callback, self)
-	self.object:set_callback(callback.use_object, self.use_callback, self)
+	--self.object:set_callback(callback.hit, self.hit_callback, self)
+	--self.object:set_callback(callback.use_object, self.use_callback, self)
 
 	if self.st.snd_init then
 		self:gate_play_snd_from_set(self.st.snd_init)
@@ -379,7 +379,7 @@ function action_gate:open_gate(disable_snd)
 	self:set_max_fv(2, def_open_force, -def_open_velocity)
 	--self.joint_left:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
 	--self.joint_right:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
-	self.state = state_opened
+	self.state = state_open
 
 	if self.tip_close then
 		self.object:set_tip_text(self.tip_close)
