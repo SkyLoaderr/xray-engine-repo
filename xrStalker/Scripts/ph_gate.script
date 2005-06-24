@@ -169,11 +169,17 @@ function action_gate:initialize(loading)
 	if self.st.state == "opened" then
 	    printf("_bp: ph_gate.state = opened")
 	    self.state = state_opened
-		--self:open_gate(disable_snd)
+		self:open_gate(disable_snd)
+	    --if self.tip_close then
+		--    self.object:set_tip_text(self.tip_close)
+	    --end
 	elseif self.st.state == "closed" then
 	    printf("_bp: ph_gate.state = closed")
 	    self.state = state_closed
-		--self:close_gate(disable_snd)
+		self:close_gate(disable_snd)
+	    --if self.tip_open then
+		--    self.object:set_tip_text(self.tip_open)
+	    --end
 	else
 	    printf("_bp: ph_gate.state = none")
 	    self.state = state_none
@@ -258,11 +264,11 @@ function action_gate:initialize(loading)
 	else
 	    printf("_bp: ph_gate.locking = none")
 	    self.locking = state_none
-	    if self.state == state_opened then
-		    self:open_gate(disable_snd)
-	    elseif self.state == state_closed then
-		    self:close_gate(disable_snd)
-	    end
+	    --if self.state == state_opened then
+		--    self:open_gate(disable_snd)
+	    --elseif self.state == state_closed then
+		--    self:close_gate(disable_snd)
+	    --end
 	end
 --[[
 	self.left_open_limits, self.left_close_limits = 0, 0
@@ -539,7 +545,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	--st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	--st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
-	if not st.locked then
+	if st.locking ~= "soft" and st.locking ~= "hard" then
 		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_gate_open")
 		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_gate_close")
 	else
