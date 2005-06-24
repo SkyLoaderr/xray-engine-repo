@@ -338,6 +338,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_krot_gunslinger_secret">
+        <has_info>agr_can_ask_krot_about_gunslinger</has_info>
         <phrase_list>
             <phrase id="10">
                 <text>agr_krot_gunslinger_secret_10</text>
