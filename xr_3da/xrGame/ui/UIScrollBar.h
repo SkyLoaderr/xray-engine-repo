@@ -8,12 +8,14 @@
 #pragma once
 #include "uiwindow.h"
 
-#include "UIButton.h"
-#include "UIScrollBox.h"
+//#include "UIButton.h"
+//#include "UIScrollBox.h"
 
 #define SCROLLBAR_WIDTH  16.0f
 #define SCROLLBAR_HEIGHT 16.0f
-
+class CUIButton;
+class CUIScrollBox;
+class CUIStaticItem;
 
 class CUIScrollBar :public CUIWindow
 {
@@ -32,14 +34,14 @@ protected:
 	bool			m_bIsHorizontal;
 
 	//кнопки скролинга
-	CUIButton		m_DecButton;
-	CUIButton		m_IncButton;
+	CUIButton*		m_DecButton;
+	CUIButton*		m_IncButton;
 
 	//каретка скролинга
-	CUIScrollBox	m_ScrollBox;
+	CUIScrollBox*	m_ScrollBox;
 
 	//подложка для скролинга
-	CUIStaticItem	m_StaticBackground;
+	CUIStaticItem*	m_StaticBackground;
 
 	//текущая позиция
 	int				m_iScrollPos;

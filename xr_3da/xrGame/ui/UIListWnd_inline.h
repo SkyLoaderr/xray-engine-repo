@@ -38,8 +38,6 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const float shift,
 	// Actually I didn't change string contents. I only temorary replace some symbols
 	STRING&	text			= const_cast<STRING&>(str.m_str);
 
-	LPCSTR	clDefault		= "default";
-
 	CGameFont *elementFont = (NULL == pFont) ? this->GetFont() : pFont;
 	R_ASSERT(elementFont);
 
@@ -78,28 +76,6 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const float shift,
 				lineLength		= 0;
 			}
 
-			if (*(prevWord + 1) == 'c')
-			{
-				for (CUIXmlInit::ColorDefs::const_iterator colorIt = CUIXmlInit::GetColorDefs()->begin();
-														   colorIt != CUIXmlInit::GetColorDefs()->end();
-														   ++colorIt)
-				{
-					if (prevWord + 2 == strstr(prevWord + 2, *colorIt->first))
-					{
-						symToSkip = 2 + colorIt->first.size();
-						break;
-					}
-				}
-				if (prevWord + 2 == strstr(prevWord + 2, clDefault))
-				{
-					symToSkip = 2 + xr_strlen(clDefault);
-				}
-//				if (prevWord + 2 + xr_strlen("red") < &text.front() + stringLength &&
-//					prevWord + 2 == strstr(prevWord + 2, "red"))
-//				{
-//					symToSkip = 2 + xr_strlen("red");
-//				}
-			}
 		}
 
 		wordLength		= WordTailSize(prevWord + symToSkip, elementFont, wordLengthInChars);
@@ -179,10 +155,10 @@ bool CUIListWnd::AddItem(Element* pItem, int insertBeforeIdx)
 	UpdateList();
 
 	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(
+	m_ScrollBar->SetRange(0,s16(m_ItemList.size()-1));
+	m_ScrollBar->SetPageSize(s16(
 		(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
-	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+	m_ScrollBar->SetScrollPos(s16(m_iFirstShownIndex));
 //	m_ScrollBar.Refresh();
 
 	UpdateScrollBar();

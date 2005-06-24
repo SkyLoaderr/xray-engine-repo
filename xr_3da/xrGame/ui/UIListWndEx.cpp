@@ -19,11 +19,11 @@ CUIListWndEx::~CUIListWndEx(){
 }
 
 void CUIListWndEx::SendMessage(CUIWindow *pWnd, s16 msg, void* pData){
-	if(pWnd == &m_ScrollBar)
+	if(pWnd == m_ScrollBar)
 	{
 		if(msg == SCROLLBAR_VSCROLL)
 		{
-			m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+			m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 			UpdateList();
 			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL, NULL);
 		}

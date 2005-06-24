@@ -16,7 +16,7 @@
 #include "../HUDManager.h"
 #include "../alife_registry_wrappers.h"
 #include "../actor.h"
-
+#include "UIXmlInit.h"
 //////////////////////////////////////////////////////////////////////////
 
 const char * const		ENCYCLOPEDIA_CORE_XML		= "encyclopedia.xml";

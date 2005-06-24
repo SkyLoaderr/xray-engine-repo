@@ -7,6 +7,7 @@
 #include "UIPdaAux.h"
 #include "../Pda.h"
 #include "../HUDManager.h"
+#include "UIXmlInit.h"
 
 #define PDA_CONTACT_HEIGHT 70
 

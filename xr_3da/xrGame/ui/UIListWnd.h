@@ -10,7 +10,7 @@
 #include "uiwindow.h"
 #include "uilistitem.h"
 #include "uiscrollbar.h"
-#include "UIXmlInit.h"
+//#include "UIXmlInit.h"
 
 #include "../script_export_space.h"
 
@@ -18,7 +18,7 @@
 
 
 DEF_LIST (LIST_ITEM_LIST, CUIListItem*);
-
+class CUIScrollBar;
 
 class CUIListWnd :public CUIWindow
 {
@@ -88,7 +88,7 @@ public:
 	void Reset();
 
 	void EnableScrollBar(bool enable);
-	bool IsScrollBarEnabled() {return m_ScrollBar.GetEnabled();}
+	bool IsScrollBarEnabled();
 	void UpdateScrollBar();
 
 	void ScrollToBegin();
@@ -150,7 +150,7 @@ public:
 protected:
 
 	//полоса прокрутки
-	CUIScrollBar	m_ScrollBar;
+	CUIScrollBar*	m_ScrollBar;
 
 	//обновления елементов списка, вызвается
 	//если произошли изменения

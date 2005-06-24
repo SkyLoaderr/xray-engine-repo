@@ -5,6 +5,7 @@
 #include"stdafx.h"
 #include ".\uilistwnd.h"
 #include "UIInteractiveListItem.h"
+#include "uiscrollbar.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -70,19 +71,19 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 	SetItemHeight(item_height);
 	m_iRowNum = iFloor(height/m_iItemHeight);
 
-	UpdateList();
 
 	//добавить полосу прокрутки
-	AttachChild(&m_ScrollBar);
-	m_ScrollBar.Init(width-SCROLLBAR_WIDTH,
+	m_ScrollBar = xr_new<CUIScrollBar>(); m_ScrollBar->SetAutoDelete(true);
+	AttachChild(m_ScrollBar);
+	m_ScrollBar->Init(width-SCROLLBAR_WIDTH,
 						0,height, false);
 
-	m_ScrollBar.SetRange(0,0);
-	m_ScrollBar.SetPageSize(s16(0));
-	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+	m_ScrollBar->SetRange(0,0);
+	m_ScrollBar->SetPageSize(s16(0));
+	m_ScrollBar->SetScrollPos(s16(m_iFirstShownIndex));
 
-	m_ScrollBar.Show(false);
-	m_ScrollBar.Enable(false);
+	m_ScrollBar->Show(false);
+	m_ScrollBar->Enable(false);
 
 
 	m_StaticActiveBackground.Init(ACTIVE_BACKGROUND,"hud\\default", 0,0,alNone);
@@ -90,6 +91,8 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 									 iFloor(m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT),
 									 fmod(m_iItemWidth,float(ACTIVE_BACKGROUND_WIDTH)), 
 									 fmod(m_iItemHeight,float(ACTIVE_BACKGROUND_HEIGHT)));
+
+	UpdateList();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -97,7 +100,7 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 void CUIListWnd::SetHeight(float height){
 	CUIWindow::SetHeight(height);
 	m_iRowNum = iFloor(height/m_iItemHeight);
-	m_ScrollBar.SetHeight(height);
+	m_ScrollBar->SetHeight(height);
 	this->UpdateList();
 	this->UpdateScrollBar();
 }
@@ -138,14 +141,14 @@ void CUIListWnd::RemoveItem(int index)
 
 	//обновить полосу прокрутки
 	if(m_ItemList.size()>0)
-		m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
+		m_ScrollBar->SetRange(0,s16(m_ItemList.size()-1));
 	else
-		m_ScrollBar.SetRange(0,0);
+		m_ScrollBar->SetRange(0,0);
 
-	m_ScrollBar.SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
+	m_ScrollBar->SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
 									 m_iRowNum:m_ItemList.size()));
-	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
-	m_ScrollBar.Refresh();
+	m_ScrollBar->SetScrollPos(s16(m_iFirstShownIndex));
+	m_ScrollBar->Refresh();
 
 	//перенумеровать индексы заново
 	i=0;
@@ -203,9 +206,9 @@ void CUIListWnd::RemoveAll()
 	Reset();
 
 	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,0);
-	m_ScrollBar.SetPageSize(0);
-	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+	m_ScrollBar->SetRange(0,0);
+	m_ScrollBar->SetPageSize(0);
+	m_ScrollBar->SetScrollPos(s16(m_iFirstShownIndex));
 
 	UpdateScrollBar();
 }
@@ -265,11 +268,11 @@ void CUIListWnd::UpdateList()
 
 void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == &m_ScrollBar)
+	if(pWnd == m_ScrollBar)
 	{
 		if(msg == SCROLLBAR_VSCROLL)
 		{
-			m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+			m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 			UpdateList();
 			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL, NULL);
 		}
@@ -487,10 +490,10 @@ void CUIListWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		mouse_action = WINDOW_LBUTTON_DOWN;
 		break;
 	case WINDOW_MOUSE_WHEEL_DOWN:
-			m_ScrollBar.TryScrollInc();
+			m_ScrollBar->TryScrollInc();
 			break;
 	case WINDOW_MOUSE_WHEEL_UP:
-			m_ScrollBar.TryScrollDec();
+			m_ScrollBar->TryScrollDec();
 			break;
 	}
 
@@ -518,30 +521,30 @@ int CUIListWnd::GetLongestSignWidth()
 void CUIListWnd::UpdateScrollBar()
 {
 	//спрятать скорлинг, если он не нужен
-	if ((int)m_ItemList.size()<=m_ScrollBar.GetPageSize())
-		m_ScrollBar.Show(false);
+	if ((int)m_ItemList.size()<=m_ScrollBar->GetPageSize())
+		m_ScrollBar->Show(false);
 	else
-		m_ScrollBar.Show(true);
+		m_ScrollBar->Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::EnableScrollBar(bool enable)
 {
-	m_ScrollBar.SetEnabled(enable);
+	m_ScrollBar->SetEnabled(enable);
 	UpdateScrollBar();
 
 /*	m_bScrollBarEnabled = enable;
 
 	if(m_bScrollBarEnabled)
 	{
-		m_ScrollBar.Enable(true);
-		m_ScrollBar.Show(true);
+		m_ScrollBar->Enable(true);
+		m_ScrollBar->Show(true);
 	}
 	else
 	{
-		m_ScrollBar.Enable(false);
-		m_ScrollBar.Show(false);
+		m_ScrollBar->Enable(false);
+		m_ScrollBar->Show(false);
 	}
 
 	UpdateScrollBar();
@@ -557,8 +560,8 @@ void CUIListWnd::ActivateList(bool activity)
 
 void CUIListWnd::ScrollToBegin()
 {
-	m_ScrollBar.SetScrollPos((s16)m_ScrollBar.GetMinRange());
-	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+	m_ScrollBar->SetScrollPos((s16)m_ScrollBar->GetMinRange());
+	m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 	UpdateList();
 }
 
@@ -566,14 +569,14 @@ void CUIListWnd::ScrollToBegin()
 
 void CUIListWnd::ScrollToEnd()
 {
-	u32 pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
+	u32 pos = m_ScrollBar->GetMaxRange()- m_ScrollBar->GetPageSize() + 1;
 
-	if ((int)pos > m_ScrollBar.GetMinRange())
-		m_ScrollBar.SetScrollPos(pos);
+	if ((int)pos > m_ScrollBar->GetMinRange())
+		m_ScrollBar->SetScrollPos(pos);
 	else
-		m_ScrollBar.SetScrollPos(m_ScrollBar.GetMinRange());
+		m_ScrollBar->SetScrollPos(m_ScrollBar->GetMinRange());
 
-	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+	m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 	UpdateList();
 }
 
@@ -584,9 +587,9 @@ void CUIListWnd::ScrollToPos(int position)
 	if (IsScrollBarEnabled())
 	{
 		int pos = position;
-		clamp(pos, m_ScrollBar.GetMinRange(), (m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1));
-		m_ScrollBar.SetScrollPos(pos);
-		m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+		clamp(pos, m_ScrollBar->GetMinRange(), (m_ScrollBar->GetMaxRange() - m_ScrollBar->GetPageSize() + 1));
+		m_ScrollBar->SetScrollPos(pos);
+		m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 		UpdateList();
 	}
 }
@@ -742,4 +745,9 @@ float CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount)
 bool CUIListWnd::IsEmptyDelimiter(const char c) const
 {
 	return ' ' == c;
+}
+
+bool CUIListWnd::IsScrollBarEnabled() 
+{
+	return m_ScrollBar->GetEnabled();
 }

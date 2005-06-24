@@ -3,7 +3,6 @@
 
 #include "hudmanager.h"
 
-//#include "levelFogOfWar.h"
 
 #include "InfoPortion.h"
 #include "Pda.h"
@@ -17,7 +16,7 @@
 #include "game_graph.h"
 
 #include "ui/UIMapWnd.h"
-
+#include "ui/UIXmlInit.h"
 //////////////////////////////////////////////////////////////////////////
 
 CUIZoneMap::CUIZoneMap()
