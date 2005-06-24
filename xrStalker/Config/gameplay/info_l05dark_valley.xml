@@ -102,6 +102,9 @@
 <info_portion id="val_opendoor_soldier_start"></info_portion>
 <info_portion id="val_opendoor_victim_start"></info_portion>
 <info_portion id="val_opendoor_plr_detected"></info_portion>
+<info_portion id="val_opendoor_chase_start"></info_portion>
+<info_portion id="val_opendoor_chase_check"></info_portion>
+
 
 <!-- Òèïñû -->
 <info_portion id="val_exit_gate_show"></info_portion>
