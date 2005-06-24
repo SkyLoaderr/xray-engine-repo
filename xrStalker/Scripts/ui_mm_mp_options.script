@@ -124,6 +124,13 @@ function mp_options:InitControls(x, y, xml, handler)
 	self.bk:AttachChild(radio)
 	handler:Register(radio)
 	
+	-- spin boxes
+	local spin = CUISpinText()
+	xml:InitSpinText("tab_options:spin_weather",0,spin)
+	self.bk:AttachChild(spin)
+	handler:Register(radio)
+	handler.spin_weather = spin
+	
 	-- edit boxes
 	local edt = CUIEditBox()
 	xml:InitLabel("tab_options:edit_spectator",0,edt)

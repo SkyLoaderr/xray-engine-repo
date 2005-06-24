@@ -130,16 +130,15 @@ function mp_main:InitControls()
 	self.dlg_join:InitControls(121,224, xml, self)
 	self.bk:AttachChild(self.dlg_join)
 	
-	self.dlg_server = ui_mm_mp_server.mp_server()
-	self.dlg_server:InitControls(121,224, xml, self)
-	self.dlg_server:Show(false)
-	self.bk:AttachChild(self.dlg_server)
-	
 	self.dlg_options = ui_mm_mp_options.mp_options()
 	self.dlg_options:InitControls(121,224, xml, self)
 	self.dlg_options:Show(false)
 	self.bk:AttachChild(self.dlg_options)
-	
+
+	self.dlg_server = ui_mm_mp_server.mp_server()
+	self.dlg_server:InitControls(121,224, xml, self)
+	self.dlg_server:Show(false)
+	self.bk:AttachChild(self.dlg_server)
 	
 	btn = CUI3tButton()
 	xml:Init3tButton("btn_create",0,btn)
@@ -182,9 +181,9 @@ function mp_main:InitCallBacks()
 	self:AddCallback("check_without_pb",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_listen_servers",ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	
-	self:AddCallback("tab",			ui_events.TAB_CHANGED,		self.OnTabChange,	self)	
+	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)	
 	-- ui_mm_mp_join
-	self:AddCallback("btn_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
+	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
 end
 
 function mp_main:OnFilterChange()
@@ -241,7 +240,7 @@ end
 
 function mp_main:OnBtn_Join()
 	local opt = COptionsManager()
-	opt:SaveValues("mm_mp_client")
+--	opt:SaveValues("mm_mp_client")
 	
 	self.server_list:SetPlayerName(self.player_name:GetText())	
 	self.server_list:ConnectToSelected()

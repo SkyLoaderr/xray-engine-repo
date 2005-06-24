@@ -18,6 +18,25 @@ end
 function mp_server:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
 	
+	-- SPIN BOXES	
+	local spin = CUISpinNum()
+	xml:InitSpinNum("tab_server:spin_max_players",0,spin)
+	self:AttachChild(spin)
+	
+	spin = CUISpinText()
+	xml:InitSpinText("tab_server:spin_game_mode",0,spin)
+	self:AttachChild(spin)
+	handler.spin_mode = spin
+	
+	local map_list = CUIMapList()
+	xml:InitMapList("tab_server:map_list",map_list)
+	self:AttachChild(map_list)
+	map_list:SetWeatherSelector(handler.spin_weather)
+	map_list:SetModeSelector(handler.spin_mode)
+	map_list:LoadMapList()
+	map_list:UpdateMapList(GAME_TYPE.GAME_DEATHMATCH)
+
+	
 	local lbl = CUILabel()
 	xml:InitLabel("tab_server:cap_server_settings",0,lbl)
 	self:AttachChild(lbl)
@@ -37,14 +56,6 @@ function mp_server:InitControls(x, y, xml, handler)
 	lbl = CUIStatic()
 	xml:InitStatic("tab_server:cap_max_players",0,lbl)
 	self:AttachChild(lbl)
-	
-	local spin = CUISpinNum()
-	xml:InitSpinNum("tab_server:spin_max_players",0,spin)
-	self:AttachChild(spin)
-	
-	spin = CUISpinText()
-	xml:InitSpinText("tab_server:spin_game_mode",0,spin)
-	self:AttachChild(spin)
 	
 	-- CHECK BOXES
 	local btn = CUICheckButton()

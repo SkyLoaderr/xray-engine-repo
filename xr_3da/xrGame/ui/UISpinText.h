@@ -19,7 +19,8 @@ public:
 	virtual void	OnBtnDownClick();
 
 
-    void	AddItem(const char* item);
+			void	AddItem(const char* item);
+			LPCSTR	GetText();
 
 protected:
 	void	SetItem();

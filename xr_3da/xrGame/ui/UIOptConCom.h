@@ -15,12 +15,17 @@ protected:
 		flNetFilterWithoutPunkbusier	= 64,
 		flNetFilterListenServers		= 128,
 	};
-	int	m_iMaxPlayers;
-	Flags32 m_uNetFilters;
+	enum{
+		flNetSrvDedicated				= 1
+	};
+	int			m_iMaxPlayers;
+	Flags32		m_uNetFilters;
 
 	u32			m_curGameMode;
 
-	string64 m_playerName;
+	string64	m_playerName;
+	string64	m_serverName;
+	Flags32		m_uNetSrvParams;
 
 	int m_iNetConPublicServer;
 	int m_iNetConMapRotation;

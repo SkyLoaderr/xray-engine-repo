@@ -20,6 +20,10 @@ void CUISpinText::AddItem(const char* item){
 	m_list.push_back(item);
 }
 
+LPCSTR CUISpinText::GetText(){
+	return m_pLines->GetText();
+}
+
 void CUISpinText::SetItem(){
 	m_pLines->SetText(m_list[m_curItem].c_str());
 }

@@ -52,9 +52,15 @@ void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL 
 	if (BUTTON_CLICKED == msg)
 	{
 		if (m_pBtnUp == pWnd)
+		{
 			OnBtnUpClick();
+			GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+		}
 		else if (m_pBtnDown == pWnd)
+		{
 			OnBtnDownClick();
+			GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+		}
 	}
 }
 

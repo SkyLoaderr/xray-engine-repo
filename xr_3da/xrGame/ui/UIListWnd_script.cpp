@@ -3,6 +3,7 @@
 #include "UIListItemEx.h"
 #include "ServerList.h"
 #include "UIMapList.h"
+#include "UISpinText.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
@@ -45,27 +46,24 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("SetItemHeight",			&CUIListWnd::SetItemHeight)
 		.def("GetItem",					&CUIListWnd::GetItem)
 		.def("GetItemPos",				&CUIListWnd::GetItemPos)
-		.def("GetSize",				&CUIListWnd::GetSize)
-		.def("ScrollToBegin",				&CUIListWnd::ScrollToBegin)
+		.def("GetSize",					&CUIListWnd::GetSize)
+		.def("ScrollToBegin",			&CUIListWnd::ScrollToBegin)
 		.def("ScrollToEnd",				&CUIListWnd::ScrollToEnd)
 		.def("ScrollToPos",				&CUIListWnd::ScrollToPos)
-		.def("GetLongestSignWidth",				&CUIListWnd::GetLongestSignWidth)
+		.def("GetLongestSignWidth",		&CUIListWnd::GetLongestSignWidth)
 		.def("SetWidth",				&CUIListWnd::SetWidth)
-		.def("SetTextColor",				&CUIListWnd::SetTextColor)
-		.def("ActivateList",				&CUIListWnd::ActivateList)
-		.def("IsListActive",				&CUIListWnd::IsListActive)
+		.def("SetTextColor",			&CUIListWnd::SetTextColor)
+		.def("ActivateList",			&CUIListWnd::ActivateList)
+		.def("IsListActive",			&CUIListWnd::IsListActive)
 		.def("SetVertFlip",				&CUIListWnd::SetVertFlip)
 		.def("GetVertFlip",				&CUIListWnd::GetVertFlip)
-		.def("SetFocusedItem",				&CUIListWnd::SetFocusedItem)
-		.def("GetFocusedItem",				&CUIListWnd::GetFocusedItem)
+		.def("SetFocusedItem",			&CUIListWnd::SetFocusedItem)
+		.def("GetFocusedItem",			&CUIListWnd::GetFocusedItem)
 
-		.def("GetSelectedItem",				&CUIListWnd::GetSelectedItem)
-		.def("ResetFocusCapture",				&CUIListWnd::ResetFocusCapture)
-		.def("SetRightIndention",				&CUIListWnd::SetRightIndention)
-		.def("GetRightIndention",				&CUIListWnd::GetRightIndention),
-/*		.def("",				&CUIListWnd::)
-		.def("",				&CUIListWnd::)
-		.def("",				&CUIListWnd::)*/
+		.def("GetSelectedItem",			&CUIListWnd::GetSelectedItem)
+		.def("ResetFocusCapture",		&CUIListWnd::ResetFocusCapture)
+		.def("SetRightIndention",		&CUIListWnd::SetRightIndention)
+		.def("GetRightIndention",		&CUIListWnd::GetRightIndention),
 
 		class_<CUIListItem, CUIButton>("CUIListItem")
 		.def(							constructor<>()),
@@ -89,6 +87,20 @@ void CUIListWnd::script_register(lua_State *L)
 
 		class_<CUIMapList, CUIWindow>("CUIMapList")
 		.def(							constructor<>())
+		.def("SetWeatherSelector",		&CUIMapList::SetWeatherSelector)
+		.def("SetModeSelector",			&CUIMapList::SetModeSelector)
+		.def("UpdateMapList",			&CUIMapList::UpdateMapList)
+		.def("LoadMapList",				&CUIMapList::LoadMapList),
 
-		];
+		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")
+		.enum_("gametype")
+		[
+			value("GAME_UNKNOWN",			int(GAME_UNKNOWN)),
+			value("GAME_DEATHMATCH",		int(GAME_DEATHMATCH)),
+			value("GAME_TEAMDEATHMATCH",	int(GAME_TEAMDEATHMATCH)),
+			value("GAME_ARTEFACTHUNT",		int(GAME_ARTEFACTHUNT)),
+			value("GAME_END_LIST",			int(GAME_END_LIST))
+		]
+		
+	];
 }

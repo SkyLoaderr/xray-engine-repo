@@ -81,8 +81,10 @@ public:
 
 	void SetItemHeight(float iItemHeight); 
 	float GetItemHeight() {return m_iItemHeight;}
+    virtual void SetHeight(float height);
 
-	virtual void SetHeight(float height);
+
+	int	GetItemsCount()	{return m_ItemList.size();}
 
 	//подготовить все элементы заново
 	void Reset();

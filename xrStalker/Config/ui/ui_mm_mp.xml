@@ -176,10 +176,10 @@
 			<frame_2 x="235" y="18" width="166" height="231">
 				<texture>ui_droplist_listbox</texture>
 			</frame_2>
-			<list_1 x="0" y="18" width="184" height="231">
+			<list_1 x="0" y="18" width="184" height="231" item_height="18">
 				<texture>ui_droplist_listbox</texture>
 			</list_1>
-			<list_2 x="235" y="18" width="184" height="231">
+			<list_2 x="235" y="18" width="184" height="231" item_height="18">
 				<texture>ui_droplist_listbox</texture>
 			</list_2>
 			<btn_left x="191" y="62" width="37" height="23">
@@ -320,6 +320,9 @@
 		<edit_rate_of_change x="671" y="65" width="45" height="23">
 			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
+		
+		<spin_weather x="637" y="40" width="112" height="23">					
+		</spin_weather>
 		
 		<radio_tab_respawn_options x="10" y="185" width="142" height="76" radio="1">
 			<button x="0" y="0" width="142">
