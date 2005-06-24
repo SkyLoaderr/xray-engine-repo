@@ -12,6 +12,7 @@
 #include "ai_space.h"
 #include "alife_object_registry.h"
 #include "alife_story_registry.h"
+#include "script_engine.h"
 
 using namespace luabind;
 
