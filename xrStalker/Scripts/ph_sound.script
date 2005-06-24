@@ -37,7 +37,7 @@ function snd_source:reset_scheme()
 	   self.current_sound = 1
 	end   
 	
-	self.object:set_callback(callback.hit, self.hit_callback, self)
+	--self.object:set_callback(callback.hit, self.hit_callback, self)
 	self.destructed = false
 	
 end
