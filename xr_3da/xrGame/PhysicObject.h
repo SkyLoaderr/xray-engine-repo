@@ -15,7 +15,10 @@ class CPhysicObject :
 	typedef CPhysicsShellHolder inherited;
 	EPOType				m_type;
 	float				m_mass;
-
+	bool				b_sheduled;
+protected:
+			void	SheduleRegister		(){if(!b_sheduled)shedule_register();b_sheduled=true;}
+			void	SheduleUnregister	(){if(b_sheduled)shedule_unregister();b_sheduled=false;}
 private:
 	//Creating
 			void	CreateBody			(CSE_ALifeObjectPhysic	*po)													;
@@ -26,8 +29,8 @@ private:
 public:
 	CPhysicObject(void);
 	virtual ~CPhysicObject(void);
+IC			bool	IsSheduled			(){return b_sheduled;}	
 	virtual BOOL	net_Spawn			( CSE_Abstract* DC)																	;
-
 	virtual void	CreatePhysicsShell	(CSE_Abstract* e)																;
 	virtual void	net_Destroy			()																				;
 	virtual void	Load				(LPCSTR section)																;

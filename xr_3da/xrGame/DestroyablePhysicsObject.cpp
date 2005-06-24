@@ -60,7 +60,7 @@ BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 	}
 	CParticlesPlayer::LoadParticles(K);
 	RunStartupAnim(DC);
-	
+	if(CPHSkeleton::IsRemoving())SheduleRegister();
 	return res;
 }
 
@@ -87,7 +87,6 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 }
 void CDestroyablePhysicsObject::Destroy()
 {
-	
 	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	if(m_destroy_sound.handle)
 	{
@@ -113,7 +112,7 @@ void CDestroyablePhysicsObject::Destroy()
 		m.k.crossproduct(m.i,m.j);
 			StartParticles(m_destroy_particles,m,ID());
 	}
-	if(!CPHSkeleton::IsRemoving())shedule_register();
+	SheduleRegister();
 }
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {
