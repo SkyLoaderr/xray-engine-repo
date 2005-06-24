@@ -78,19 +78,22 @@ function reset_show_spot(npc, scheme, st, section)
 	end
 	
 
-	spot_condlist = xr_logic.parse_condlist(npc, section, "show_spot", spot_section)
-	spot	= xr_logic.pick_section_from_condlist(db.actor, npc, spot_condlist)
-	sim		= alife()
-	obj		= sim:object(npc:id())
-	
-	if spot == "false" then
-		-- пр€чем
-		if obj then
+	local spot_condlist = xr_logic.parse_condlist(npc, section, "show_spot", spot_section)
+	local spot = xr_logic.pick_section_from_condlist(db.actor, npc, spot_condlist)
+
+	local sim  = alife()
+	if not sim then
+		return
+	end
+
+	local obj  = sim:object(npc:id())
+
+	if obj then
+		if spot == "false" then
+			-- пр€чем
 			obj:visible_for_map(false)
-		end
-	else
-		-- ставим
-		if obj then			
+		else
+			-- ставим
 			obj:visible_for_map(true)
 		end
 	end
