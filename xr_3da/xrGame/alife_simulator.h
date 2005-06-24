@@ -33,4 +33,6 @@ add_to_type_list(CALifeSimulator)
 
 #pragma warning(pop)
 
+extern int	story_id	(LPCSTR story_id);
+
 #include "alife_simulator_inline.h"
