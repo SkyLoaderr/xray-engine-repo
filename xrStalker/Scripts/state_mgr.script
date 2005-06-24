@@ -38,6 +38,9 @@ function evaluator_state_mgr_idle_alife:__init(name, state_manager) super (nil, 
 	self.t = nil
 end
 function evaluator_state_mgr_idle_alife:evaluate()
+	if not self.object:alive() then
+		return true
+	end
 	-- апдейт менеджера анимаций
 	self.st.animstate:update()	
 	self.st.animation:update()
