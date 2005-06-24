@@ -77,8 +77,10 @@ function heli_combat:set_enemy_from_custom_data( combat_enemy )
 			if db.actor then
 				self.enemy_id = db.actor:id()
 			else
-				self.enemy_id = nil
+				self:forget_enemy()
 			end
+		elseif combat_enemy == "nil" then
+			self:forget_enemy()
 		else
 			self.enemy_id = level_object_by_sid( tonumber( combat_enemy ) )
 		end
@@ -88,6 +90,7 @@ function heli_combat:set_enemy_from_custom_data( combat_enemy )
 			self.initialized      = false
 		else
 			self.enemy_forgetable = true
+			self:forget_enemy()
 		end
 	end
 end
