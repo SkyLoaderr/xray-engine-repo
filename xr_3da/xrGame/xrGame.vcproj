@@ -10348,25 +10348,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ServerList"
-					Filter="">
-					<File
-						RelativePath=".\ui\ServerList.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\ServerList.h">
-					</File>
-					<File
-						RelativePath=".\ui\ServerList_GameSpy_func.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemServer.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemServer.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="FollowersPanel"
 					Filter="">
 					<File
@@ -11110,6 +11091,35 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIPdaKillMessage.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ServerList"
+					Filter="">
+					<File
+						RelativePath=".\ui\ServerList.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\ServerList.h">
+					</File>
+					<File
+						RelativePath=".\ui\ServerList_GameSpy_func.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIListItemServer.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIListItemServer.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="MapList"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIMapList.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMapList.h">
 					</File>
 				</Filter>
 			</Filter>

@@ -39,9 +39,8 @@
 	<tab_client>	
 		<server_list x="8" y="99" width="539" height="310">
 			<sizes icon="46" server="167" map="124" game="102" players="46" ping="35"/>
-			<frame x="0" y="20" width="520" height="280" item_height="18">
+			<frame x="0" y="20" width="520" height="280">
 				<texture>ui_droplist_listbox</texture>
-				<!--texture>ui_frame_very_small</texture-->				
 			</frame>
 			<list x="0" y="20" width="530" height="280" item_height="18"/>
 			<list_item>
@@ -162,6 +161,45 @@
 		<check_dedicated x="307" y="115" width="118" height="21">
 			<text font="letterica16" r="115" g="114" b="112">Dedicated</text>			
 		</check_dedicated>
+		<map_list x="7" y="158" width="419" height="247">
+			<header_1 x="0" y="0" width="166" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">available maps</text>
+				<texture>ui_table_button_e</texture>
+			</header_1>
+			<header_2 x="235" y="0" width="166" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">selected maps</text>
+				<texture>ui_table_button_e</texture>
+			</header_2>
+			<frame_1 x="0" y="18" width="166" height="231">
+				<texture>ui_droplist_listbox</texture>
+			</frame_1>
+			<frame_2 x="235" y="18" width="166" height="231">
+				<texture>ui_droplist_listbox</texture>
+			</frame_2>
+			<list_1 x="0" y="18" width="184" height="231">
+				<texture>ui_droplist_listbox</texture>
+			</list_1>
+			<list_2 x="235" y="18" width="184" height="231">
+				<texture>ui_droplist_listbox</texture>
+			</list_2>
+			<btn_left x="191" y="62" width="37" height="23">
+				<texture_offset x="-3" y="-1"/>
+				<texture>ui_button_arrow_left</texture>
+			</btn_left>
+			<btn_right x="191" y="90" width="37" height="23">
+				<texture_offset x="-3" y="-1"/>
+				<texture>ui_button_arrow_right</texture>
+			</btn_right>
+			<btn_up x="191" y="138" width="37" height="23">
+				<texture_offset x="-3" y="-1"/>
+				<texture>ui_button_arrow_up</texture>
+			</btn_up>
+			<btn_down x="191" y="166" width="37" height="23">
+				<texture_offset x="-3" y="-1"/>
+				<texture>ui_button_arrow_down</texture>
+			</btn_down>
+						
+		</map_list>
 		
 	</tab_server>
 	

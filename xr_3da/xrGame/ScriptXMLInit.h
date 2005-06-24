@@ -22,6 +22,7 @@ class CUIMultiTextStatic;
 class CUIAnimatedStatic;
 class CUIArtefactPanel;
 class CServerList;
+class CUIMapList;
 
 class CScriptXmlInit {
 public:
@@ -48,6 +49,7 @@ public:
 	void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);
 	void InitTab		(LPCSTR path, int index, CUITabControl* pWnd);
 	void InitServerList	(LPCSTR path, CServerList* pWnd);
+	void InitMapList	(LPCSTR path, CUIMapList* pWnd);
 
 protected:
 	CUIXml	m_xml;

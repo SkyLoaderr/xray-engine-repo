@@ -2,6 +2,7 @@
 #include "UIListWnd.h"
 #include "UIListItemEx.h"
 #include "ServerList.h"
+#include "UIMapList.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
@@ -84,7 +85,10 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("RefreshList",				&CServerList::RefreshGameSpyList)
 		.def("ConnectToSelected",		&CServerList::ConnectToSelected)
 		.def("SetFilters",				&CServerList::SetFilters)
-		.def("SetPlayerName",			&CServerList::SetPlayerName)	
+		.def("SetPlayerName",			&CServerList::SetPlayerName),
+
+		class_<CUIMapList, CUIWindow>("CUIMapList")
+		.def(							constructor<>())
 
 		];
 }

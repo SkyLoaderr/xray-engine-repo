@@ -11,6 +11,7 @@
 #include "ui\UIFrameWindow.h"
 #include "ui\UILabel.h"
 #include "ui\ServerList.h"
+#include "ui\UIMapList.h"
 #include "ui\UIEditBox.h"
 
 #include "script_space.h"
@@ -100,6 +101,11 @@ void CScriptXmlInit::InitServerList(LPCSTR path, CServerList* pWnd){
 	pWnd->InitFromXml(m_xml, path);
 }
 
+void CScriptXmlInit::InitMapList(LPCSTR path, CUIMapList* pWnd){
+	pWnd->InitFromXml(m_xml, path);
+}
+
+
 void CScriptXmlInit::script_register(lua_State *L){
 	module(L)
 	[
@@ -122,6 +128,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitList",		&CScriptXmlInit::InitList)
 		.def("InitTab",			&CScriptXmlInit::InitTab)
 		.def("InitServerList",	&CScriptXmlInit::InitServerList)
+		.def("InitMapList",	&CScriptXmlInit::InitMapList)
 
 	];
 
