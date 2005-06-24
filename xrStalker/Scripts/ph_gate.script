@@ -37,8 +37,9 @@ local state_lock_soft = 2
 local state_lock_hard = 3
 ----------------------------------------------------------------------------------------------------
 
-local def_min_limit = -100.0 * math.pi / 180.0
-local def_max_limit = 0.0
+local def_open_limit = -100.0 * math.pi / 180.0
+local def_close_limit = 0.0
+
 local def_close_angle = 0.0
 local def_max_close_angle_diff = 10 * math.pi / 180.0
 local def_stick_angle = 5 * math.pi / 180.0
@@ -62,6 +63,7 @@ function action_gate:__init(obj, storage)
 	self.object = obj
 	self.st = storage
 	self.snd_obj = nil
+	self.bone_id = {}
 end
 
 function action_gate:__finalize()
@@ -75,9 +77,55 @@ function action_gate:reset_scheme(loading)
 	self:initialize(loading)
 end
 
+function action_gate:get_bone_id(name)
+    local joint = self.ph_shell:get_joint_by_bone_name(name)
+    if joint then
+        return joint:get_bone_id()
+    end
+    return nil
+end
+
+function action_gate:set_max_fv(bone_idx, force, vel)
+    local id = self.bone_id[bone_idx]
+    if id ~= nil then
+        local joint = self.ph_shell:get_joint_by_bone_id(id)
+        if joint then
+            joint:set_max_force_and_velocity(force, vel, 1)
+            return true
+        end
+        self.bone_id[bone_idx] = nil
+    end
+    return false
+end
+
+function action_gate:set_limits(bone_idx, min, max)
+    local id = self.bone_id[bone_idx]
+    if id ~= nil then
+        local joint = self.ph_shell:get_joint_by_bone_id(id)
+        if joint then
+            joint:set_limits(min, max, 1)
+            return true
+        end
+        self.bone_id[bone_idx] = nil
+    end
+    return false
+end
+
+function action_gate:get_angle(bone_idx)
+    local id = self.bone_id[bone_idx]
+    if id ~= nil then
+        local joint = self.ph_shell:get_joint_by_bone_id(id)
+        if joint then
+            return joint:get_axis_angle(1)
+        end
+        self.bone_id[bone_idx] = nil
+    end
+    return 0
+end
+
 function action_gate:initialize(loading)
-	local ph_shell = self.object:get_physics_shell()
-	if not ph_shell then
+	self.ph_shell = self.object:get_physics_shell()
+	if not self.ph_shell then
 		return
 	end
 	
@@ -92,12 +140,22 @@ function action_gate:initialize(loading)
 		self.tip_close = nil
 	end
 
-	self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
-	self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
+    self.bone_id[1] = self:get_bone_id("door_left")
+    self.bone_id[2] = self:get_bone_id("door_right")
+	--self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
+	--self.joint_right = ph_shell:get_joint_by_bone_name("door_right")
 	
-	local angle_left = self.joint_left:get_axis_angle(1)
-	local angle_right = self.joint_right:get_axis_angle(1)
-	printf("_bp: gate def angles. left(%f) right(%f)", angle_left, angle_right)
+	local angle_left = 0
+	local angle_right = 0
+	
+	if self.joint_left then
+        angle_left = self.joint_left:get_axis_angle(1)
+	    printf("_bp: gate left angle %f", angle_left)
+    end
+    if self.joint_right then
+        angle_right = self.joint_right:get_axis_angle(1)
+	    printf("_bp: gate right angle %f", angle_right)
+    end
 
 	local disable_snd
 	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
@@ -121,6 +179,14 @@ function action_gate:initialize(loading)
 	    self.state = state_none
 	end
 	
+	self.left_open_limits = def_open_limit
+	self.left_close_limits = def_close_limit
+	self.right_open_limits = def_open_limit
+	self.right_close_limits = def_close_limit
+	
+	self:set_limits(1, def_open_limit, def_close_limit)
+	self:set_limits(2, def_open_limit, def_close_limit)
+
 	if self.st.locking == "stick" then
 	    printf("_bp: ph_gate.locking = stick")
 	    self.locking = state_lock_stick
@@ -149,8 +215,10 @@ function action_gate:initialize(loading)
 	        force = 0
 	        velocity = 0
 	    end
-	    self.joint_left:set_max_force_and_velocity(force, velocity, 1)
-	    self.joint_right:set_max_force_and_velocity(force, velocity, 1)
+	    self:set_max_fv(1, force, velocity)
+	    self:set_max_fv(2, force, velocity)
+	    --self.joint_left:set_max_force_and_velocity(force, velocity, 1)
+	    --self.joint_right:set_max_force_and_velocity(force, velocity, 1)
 
 	    if self.tip_open then
 		    self.object:set_tip_text(self.tip_open)
@@ -162,17 +230,27 @@ function action_gate:initialize(loading)
 
 	    self.locking = state_lock_hard
 	    if self.state == state_opened then
-	        angle_left = def_max_limit
-	        angle_right = def_max_limit
+	        angle_left = def_close_limit
+	        angle_right = def_close_limit
+	        --self:open_gate(disable_snd)
 	    elseif self.state == state_closed then
-	        angle_left = def_min_limit
-	        angle_right = def_min_limit
+	        angle_left = def_open_limit
+	        angle_right = def_open_limit
 	    else
-	        angle_left = self.joint_left:get_axis_angle(1)
-	        angle_right = self.joint_right:get_axis_angle(1)
+	        angle_left = self:get_angle(1)
+	        angle_right = self:get_angle(2)
+	        --angle_left = self.joint_left:get_axis_angle(1)
+	        --angle_right = self.joint_right:get_axis_angle(1)
 	    end
-	    self.joint_left:set_limits(angle_left, angle_left, 1)
-	    self.joint_right:set_limits(angle_right, angle_right, 1)
+	    self.left_open_limits = angle_left
+	    self.left_close_limits = angle_left
+	    self.right_open_limits = angle_right
+	    self.right_close_limits = angle_right
+	
+	    self:set_limits(1, angle_left, angle_left)
+	    self:set_limits(2, angle_right, angle_right)
+	    --self.joint_left:set_limits(angle_left, angle_left, 1)
+	    --self.joint_right:set_limits(angle_right, angle_right, 1)
 
 	    if self.tip_open then
 		    self.object:set_tip_text(self.tip_open)
@@ -186,25 +264,21 @@ function action_gate:initialize(loading)
 		    self:close_gate(disable_snd)
 	    end
 	end
-	
-	--self.joint_left:set_limits(def_min_limit, def_max_limit, 1)
-	--self.joint_right:set_limits(def_min_limit, def_max_limit, 1)
+--[[
+	self.left_open_limits, self.left_close_limits = 0, 0
+	self.left_open_limits, self.left_close_limits	= self.joint_left:get_limits(self.left_open_limits, self.left_close_limits, 0)
+	printf("_bp: left_limits(%f,%f)", self.left_open_limits, self.left_close_limits)
 
-	self.left_low_limits, self.left_hi_limits = 0, 0
-	self.left_low_limits, self.left_hi_limits	= self.joint_left:get_limits(self.left_low_limits, self.left_hi_limits, 0)
-	printf("_bp: left_limits(%f,%f)", self.left_low_limits, self.left_hi_limits)
-
-	self.right_low_limits, self.right_hi_limits = 0, 0
-	self.right_low_limits, self.right_hi_limits	= self.joint_right:get_limits(self.right_low_limits, self.right_hi_limits, 0)
-	printf("_bp: right_limits(%f,%f)", self.right_low_limits, self.right_hi_limits)
-
-	--self.block = false
+	self.right_open_limits, self.right_close_limits = 0, 0
+	self.right_open_limits, self.right_close_limits	= self.joint_right:get_limits(self.right_open_limits, self.right_close_limits, 0)
+	printf("_bp: right_limits(%f,%f)", self.right_open_limits, self.right_close_limits)
+--]]
 	self.soundless_block = false
 
 	self.object:set_nonscript_usable(false)
 	-- FIXME: перевести под универсальную схему
-	self.object:set_callback(callback.use_object, self.use_callback, self)
 	self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.object:set_callback(callback.use_object, self.use_callback, self)
 
 	if self.st.snd_init then
 		self:gate_play_snd_from_set(self.st.snd_init)
@@ -295,10 +369,11 @@ function action_gate:open_gate(disable_snd)
 	
 	--self.joint_left:set_max_force_and_velocity(200, 3, 0)
 	--self.joint_right:set_max_force_and_velocity(200, 3, 0)
-	self.joint_left:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
-	self.joint_right:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
+	self:set_max_fv(1, def_open_force, -def_open_velocity)
+	self:set_max_fv(2, def_open_force, -def_open_velocity)
+	--self.joint_left:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
+	--self.joint_right:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
 	self.state = state_opened
-	--self.block = false
 
 	if self.tip_close then
 		self.object:set_tip_text(self.tip_close)
@@ -309,9 +384,9 @@ function action_gate:is_closed()
 	local angle_left = self.joint_left:get_axis_angle(1)
 	local angle_right = self.joint_right:get_axis_angle(1)
 	printf("_bp: action_gate:update(): left: angle %f limits %f, %f; right: angle %f limits %f, %f",
-		angle_left, self.left_low_limits, self.left_hi_limits,
-		angle_right, self.right_low_limits, self.right_hi_limits)
-	if angle_left <= self.left_low_limits and angle_right <= self.right_low_limits then
+		angle_left, self.left_open_limits, self.left_close_limits,
+		angle_right, self.right_open_limits, self.right_close_limits)
+	if angle_left <= self.left_open_limits and angle_right <= self.right_open_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
@@ -334,9 +409,10 @@ function action_gate:close_gate(disable_snd)
 	printf("_bp: action_gate:close_gate()")
 	--self.joint_left:set_max_force_and_velocity(200, 3, 1)
 	--self.joint_right:set_max_force_and_velocity(200, 3, 1)
-	self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
-	self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
-	--self.block = true -- Закрываем и блокируем	
+	self:set_max_fv(1, def_close_force, def_close_velocity)
+	self:set_max_fv(2, def_close_force, def_close_velocity)
+	--self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
+	--self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
 	self.soundless_block = disable_snd
 	self.state = state_closed
 
@@ -367,16 +443,47 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 		end
 		return
 	end
---[[
+
 	if self.locking == state_lock_stick then
-	    self.left_stick_dir, self.right_stick_dir = self:get_stickness()
-	    if 
-	    self.joint_left:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
-	    self.joint_right:set_max_force_and_velocity(def_close_force, def_close_velocity, 1)
-	    --if s ~= 0 then
-	    --end
+	    local force, velocity
+	    local stick_close = false
+
+	    if self.tip_close then
+		    self.object:set_tip_text(self.tip_close)
+	    end
+
+	    local angle_left = self:get_angle(1)
+	    if angle_left > self.left_open_limits - def_stick_angle then
+	        force = def_open_force
+	        velocity = -def_open_velocity
+	    elseif angle_left < self.left_close_limits + def_stick_angle then
+	        force = def_close_force
+	        velocity = def_close_velocity
+	        stick_close = true
+	    else
+	        force = 0
+	        velocity = 0
+	    end	    
+	    self:set_max_fv(1, force, velocity)
+	    --self.joint_left:set_max_force_and_velocity(force, velocity, 1)
+
+	    local angle_right = self:get_angle(2)
+	    if angle_right > self.right_open_limits - def_stick_angle then
+	        force = def_open_force
+	        velocity = -def_open_velocity
+	    elseif angle_right < self.right_close_limits + def_stick_angle then
+	        force = def_close_force
+	        velocity = def_close_velocity
+	        if stick_close and self.tip_open then
+		        self.object:set_tip_text(self.tip_open)
+	        end
+	    else
+	        force = 0
+	        velocity = 0
+	    end
+	    self:set_max_fv(2, force, velocity)
+	    --self.joint_right:set_max_force_and_velocity(force, velocity, 1)
 	end
---]]
 end
 
 function action_gate:use_callback(obj, who)
@@ -399,13 +506,13 @@ function action_gate:use_callback(obj, who)
 		return
 	end
 
-	local angle_left = self.joint_left:get_axis_angle(1)
-	local angle_right = self.joint_right:get_axis_angle(1)
+	local angle_left = self:get_angle(1)
+	local angle_right = self:get_angle(1)
 
-	--if angle_left - self.left_low_limits < self.left_hi_limits - angle_left and
-	--   angle_right - self.right_low_limits < self.right_hi_limits - angle_right then
-	if angle_left < def_close_angle - def_max_close_angle_diff or
-	   angle_right < def_close_angle - def_max_close_angle_diff then
+	--if angle_left - self.left_open_limits < self.left_close_limits - angle_left and
+	--   angle_right - self.right_open_limits < self.right_close_limits - angle_right then
+	if self.bone_id[1] and angle_left < def_close_angle - def_max_close_angle_diff or
+	   self.bone_id[2] and angle_right < def_close_angle - def_max_close_angle_diff then
 		self:close_gate(false)
 	else
 		self:open_gate(false)
