@@ -18,10 +18,6 @@ end
 function mp_server:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
 	
-	local map_list = CUIMapList()
-	xml:InitMapList("tab_server:map_list",map_list)
-	self:AttachChild(map_list)
-	
 	local lbl = CUILabel()
 	xml:InitLabel("tab_server:cap_server_settings",0,lbl)
 	self:AttachChild(lbl)
