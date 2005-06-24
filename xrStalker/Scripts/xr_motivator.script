@@ -55,7 +55,7 @@ function motivator_binder:reinit()
     --self.torch = xr_light.torch_light(self.object)
 
     --' Положения тела
-    self.st.state = xr_state.body_state(self.object)
+    --self.st.state = xr_state.body_state(self.object)
 	--state_mgr.bind_manager(self.object, self.st.state_mgr)
 
     --' Создание менеджера контроля положений тела
