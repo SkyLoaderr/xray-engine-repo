@@ -96,6 +96,7 @@
 <!-- Ворота -->
 <info_portion id="val_gate_start"></info_portion>
 <info_portion id="val_gate_plr_detected"></info_portion>
+<info_portion id="val_gate_btr_arrived"></info_portion>
 
 <!-- Открытие дверей -->
 <info_portion id="val_opendoor_start"></info_portion>
