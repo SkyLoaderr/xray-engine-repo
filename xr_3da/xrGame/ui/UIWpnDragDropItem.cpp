@@ -25,7 +25,7 @@ CUIWpnDragDropItem::~ CUIWpnDragDropItem()
 
 void CUIWpnDragDropItem::Draw()
 {
-	float bk_w = GetWidth();
+/*	float bk_w = GetWidth();
 	if(m_pWeapon && m_pWeapon->IsSilencerAttached()){
 		
 		float d = cur_scale_x*iSilencerGridWidth*INV_GRID_WIDTH;
@@ -40,10 +40,10 @@ void CUIWpnDragDropItem::Draw()
 
 		m_UIStaticItem.SetRect(out_rect);
 	}
-
+*/
 	inherited::Draw();
 	
-	SetWidth(bk_w);
+//	SetWidth(bk_w);
 
 	if(!m_pWeapon)	return;
 
@@ -216,7 +216,7 @@ void CUIWpnDragDropItem::UpdateGridWidth(bool b)
 		int new_width = 0;
 
 		if(m_pWeapon->SilencerAttachable() && m_pWeapon->IsSilencerAttached())
-			new_width = m_pWeapon->GetGridWidth()+1;
+			new_width = m_pWeapon->GetGridWidth();//+1;
 		else
 			new_width = m_pWeapon->GetGridWidth();
 
@@ -227,6 +227,7 @@ void CUIWpnDragDropItem::UpdateGridWidth(bool b)
 		}
 
 	}
+
 }
 
 void CUIWpnDragDropItem::Update()
