@@ -173,9 +173,9 @@
 	<info_portion id="test_info_3"></info_portion>
 	<info_portion id="test_info_4"></info_portion>
 	<info_portion id="test_info_5"></info_portion>
-<!--	
-	<info_portion id="test_andy_info>
+
+	<info_portion id="test_andy_info">
 		<task>andy_task_1</task>
 	</info_portion>
--->	
+
 </game_information_portions>
