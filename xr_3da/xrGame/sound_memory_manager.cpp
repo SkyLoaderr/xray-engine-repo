@@ -44,6 +44,7 @@ void CSoundMemoryManager::reinit				()
 	m_priorities.clear		();
 	m_last_sound_time		= 0;
 	m_sound_threshold		= m_min_sound_threshold;
+	VERIFY					(_valid(m_sound_threshold));
 	m_selected_sound		= 0;
 }
 
@@ -158,7 +159,9 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	}
 
 	m_last_sound_time		= Device.dwTimeGlobal;
+	VERIFY					(_valid(m_sound_threshold));
 	m_sound_threshold		= _max(m_sound_threshold,sound_power);
+	VERIFY					(_valid(m_sound_threshold));
 }
 
 void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fvector &position, float sound_power)
