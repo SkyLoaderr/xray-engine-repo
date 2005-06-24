@@ -82,11 +82,12 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 	if(m_fHealth<=0.f)
 	{
 		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
-		Destroy();
+		if(CPHDestroyable::CanDestroy())Destroy();
 	}
 }
 void CDestroyablePhysicsObject::Destroy()
 {
+	
 	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	if(m_destroy_sound.handle)
 	{
@@ -112,16 +113,23 @@ void CDestroyablePhysicsObject::Destroy()
 		m.k.crossproduct(m.i,m.j);
 			StartParticles(m_destroy_particles,m,ID());
 	}
+	shedule_register();
 }
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {
-	CPHDestroyable::InitServerObject(D);
+	CSE_PHSkeleton					*ps = smart_cast<CSE_PHSkeleton*>(D);
+	R_ASSERT						(ps);
+	if(ps->_flags.test(CSE_PHSkeleton::flSpawnCopy)) 
+									inherited::InitServerObject(D);
+	else					
+									CPHDestroyable::InitServerObject(D);
+
 	CSE_ALifeObjectPhysic			*PO = smart_cast<CSE_ALifeObjectPhysic*>(D);
 	if(PO)PO->type=epotSkeleton;
 }
 void CDestroyablePhysicsObject::shedule_Update(u32 dt)
 {
-	CPhysicsShellHolder::shedule_Update(dt);
+	inherited::shedule_Update(dt);
 	CPHDestroyable::SheduleUpdate(dt);
 }
 

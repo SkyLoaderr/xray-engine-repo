@@ -9,6 +9,7 @@ class CPHDestroyable;
 class CPHCollisionDamageReceiver;
 class CPHSoundPlayer;
 class IDamageSource;
+class CPHSkeleton;
 class CPhysicsShellHolder:  public CGameObject,
 							public CParticlesPlayer
 	
@@ -33,12 +34,13 @@ public:
 	{
 		return this;
 	}
-	virtual CPHDestroyable				*ph_destroyable		(){return NULL;}
-	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return NULL;}
-	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
-	virtual IDamageSource*				cast_IDamageSource			()	{return NULL;}
-	virtual CPHSoundPlayer*				ph_sound_player				()  {return NULL;}	
+	virtual CPHDestroyable				*ph_destroyable				()	{return NULL;}
+	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver	()	{return NULL;}
+	virtual CPHSkeleton					*PHSkeleton					()	{return NULL;}
+	virtual CPhysicsShellHolder			*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer			*cast_particles_player		()	{return this;}
+	virtual IDamageSource				*cast_IDamageSource			()	{return NULL;}
+	virtual CPHSoundPlayer				*ph_sound_player				()  {return NULL;}	
 	virtual void						enable_notificate			()	{}
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);

@@ -23,6 +23,7 @@ public:
 	virtual DLL_Pure					*_construct					()								;
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()								{return this;}
 	virtual CParticlesPlayer*			cast_particles_player		()								{return this;}
+	virtual CPHDestroyable*				ph_destroyable				()								{return this;}
 	virtual void						shedule_Update				(u32 dt)						;
 	virtual bool						CanRemoveObject				()								;
 	virtual void						OnChangeVisual				();

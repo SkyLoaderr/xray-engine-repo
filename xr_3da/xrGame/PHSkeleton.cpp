@@ -13,10 +13,10 @@
 #include "ai_object_location.h"
 #include "ai_space.h"
 #include "game_graph.h"
-
+#include "PHDestroyable.h"
 #define F_MAX         3.402823466e+38F
 
-u32 CPHSkeleton::remove_time=5000;
+u32 CPHSkeleton::existence_time=5000;
 
 bool IC CheckObjectSize(CKinematics* K)
 {
@@ -58,7 +58,7 @@ void CPHSkeleton::RespawnInit()
 
 void CPHSkeleton::Init()
 {
-	m_unsplit_time = u32(-1);
+	m_remove_time = u32(-1);
 	b_removing=false;
 	m_startup_anim=NULL;
 }
@@ -119,7 +119,7 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 
 void CPHSkeleton::Load(LPCSTR section)
 {
-		remove_time= pSettings->r_u32(section,"remove_time")*1000;
+		existence_time= pSettings->r_u32(section,"remove_time")*1000;
 }
 
 void CPHSkeleton::Update(u32 dt)
@@ -131,7 +131,10 @@ void CPHSkeleton::Update(u32 dt)
 		PHSplit();
 	}
 
-	if(b_removing&&(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time&&m_unsplited_shels.empty()) 
+	if(b_removing&&
+		Device.dwTimeGlobal>m_remove_time&&
+		//(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time&&
+		m_unsplited_shels.empty()) 
 	{
 		if (obj->Local())	obj->DestroyObject	();
 /*
@@ -254,6 +257,11 @@ void CPHSkeleton::SpawnCopy()
 	if(PPhysicsShellHolder()->Local()) {
 		CSE_Abstract*				D	= F_entity_Create("ph_skeleton_object");//*cNameSect()
 		R_ASSERT					(D);
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
+		R_ASSERT					(l_tpALifePhysicObject);
+		l_tpALifePhysicObject->_flags.set	(CSE_PHSkeleton::flSpawnCopy,1);
+		/////////////////////////////////////////////////////////////////////////////////////////////
 		InitServerObject			(D);
 		// Send
 		NET_Packet			P;
@@ -344,13 +352,16 @@ void CPHSkeleton::CopySpawnInit()
 }
 
 
-void CPHSkeleton::SetAutoRemove()
+
+
+void CPHSkeleton::SetAutoRemove(u32 time/*=CSE_PHSkeleton::existence_time*/)
 {
 	b_removing=true;
-	m_unsplit_time=Device.dwTimeGlobal;
-	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
-}
 
+	m_remove_time=Device.dwTimeGlobal+iFloor(time/phTimefactor);
+	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
+	PPhysicsShellHolder()->shedule_register();
+}
 
 static bool removable;//for RecursiveBonesCheck
 void CPHSkeleton::RecursiveBonesCheck(u16 id)
@@ -395,9 +406,6 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 	l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
 	l_tpALifePhysicObject->set_visual	(*obj->cNameVisual());
 
-
-
-	l_tpALifePhysicObject->_flags.set	(CSE_PHSkeleton::flSpawnCopy,1);
 	l_tpALifePhysicObject->source_id	= u16(obj->ID());
 	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 	D->s_name			= "ph_skeleton_object";//*cNameSect()

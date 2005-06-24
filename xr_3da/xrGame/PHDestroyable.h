@@ -62,6 +62,7 @@ public:
 virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)																				;
 			void						PhysicallyRemoveSelf		()																											;
 IC			bool						CanDestroy					()										{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed)	;}
+IC			bool						Destroyable					()										{return !!m_flags.test(fl_destroyable);}
 virtual		bool						CanRemoveObject				()																								{return true;}
 virtual		void						SheduleUpdate				(u32 dt)																									;
 virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str visual_name)														;
