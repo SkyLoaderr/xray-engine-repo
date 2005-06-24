@@ -103,6 +103,9 @@
 <info_portion id="val_opendoor_victim_start"></info_portion>
 <info_portion id="val_opendoor_plr_detected"></info_portion>
 
+<!-- Типсы -->
+<info_portion id="val_exit_gate_show"></info_portion>
+
 <!-- Раздавленный монолитовец -->
 <info_portion id="val_smashed_start"></info_portion>
 <info_portion id="val_smashed_kill_victim"></info_portion>
