@@ -4,7 +4,12 @@ active = heli_move@wait
 [heli_move@wait]
 path_move = val_stairs_heli_wait_move
 engine_sound = false
-on_info = {+val_gate_start} heli_move@start
+on_info = {+val_raid_start} heli_move@ready
+
+[heli_move@ready]
+path_move = val_stairs_heli_ready_move
+engine_sound = false
+on_info = {+val_stairs_start} heli_move@start
 
 [heli_move@start]
 path_move = val_stairs_heli_move
