@@ -16,8 +16,11 @@
 		<article>storyline_seriy_flash_info</article>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
+	<info_portion id="agr_can_ask_krot_about_gunslinger">
+	</info_portion>
 	<info_portion id="agr_krot_band_done">
 		<disable>agr_krot_band_start</disable>
+		<disable>agr_can_ask_krot_about_gunslinger</disable>
 	</info_portion>
 
 	<info_portion id="agr_find_gunslinger_cache">
@@ -43,12 +46,6 @@
 	</info_portion>
 
 	<info_portion id="agr_warning_recieved">
-	</info_portion>
-
-
-	<info_portion id="agr_heli_descent">
-	</info_portion>
-	<info_portion id="agr_heli_landed">
 	</info_portion>
 
 	<info_portion id="agr_factory_assault_start">
