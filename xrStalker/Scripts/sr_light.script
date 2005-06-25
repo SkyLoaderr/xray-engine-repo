@@ -8,10 +8,12 @@ function action_light:__init (obj, storage)
 	self.st = storage
 	self.stalkers = {}
 	self.active = false
+	self.id = self.object:id ()
 end
 
 function action_light:reset_scheme()
     printf("_bp: sr_light: action_idle:reset_scheme: self.object:name()='%s'", self.object:name())
+    table.insert (light_zones, self)
 end
 
 function action_light:update(delta)
@@ -21,6 +23,13 @@ function action_light:update(delta)
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 	   self.active = false     
 	   self.stalkers = {}
+	   local i = self.object:id ()
+	   for a = 1, table.getn (light_zones), 1 do    
+	       if light_zones[a].id == i then
+	          table.remove (light_zones, a)
+	          return
+	       end
+	   end         
 	   return
 	end	
 	self.active = true
@@ -57,7 +66,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 	local new_action = action_light (npc, storage)
 	xr_logic.subscribe_action_for_events(npc, storage, new_action)
-	table.insert (light_zones, new_action)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
@@ -73,10 +81,21 @@ function check_light_zone (stalker)
     if stalker == nil or stalker:alive () == false then 
        return 
     end
+    
+    --printf ("SR_LIGHT : PREPARE FOR CHECK STALKER %s", stalker:name ())
+    
     local size = table.getn (light_zones)
     if size == 0 then 
+       local t = stalker:object ("device_torch")
+       if t == nil then
+          return
+       end
+       --printf ("LIGHT ON STALKER %s is off !!!", stalker:name ())
+       t:enable_attachable_item (false)        
        return 
     end
+    
+    --printf ("SR_LIGHT : CHECK STALKER %s", stalker:name ())
     for a = 1, size, 1 do
         if light_zones[a]:check_stalker (stalker) == true then
            return
@@ -86,5 +105,6 @@ function check_light_zone (stalker)
     if torch == nil then
        return
     end
+    --printf ("LIGHT ON STALKER %s is off !!!", stalker:name ())
     torch:enable_attachable_item (false)        
 end
