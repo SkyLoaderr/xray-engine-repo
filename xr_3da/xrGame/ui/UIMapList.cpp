@@ -68,16 +68,16 @@ void CUIMapList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData ){
 	}
 }
 
-extern xr_token* g_GameModes;
+xr_token g_GameModes[ ];
 
 void CUIMapList::OnModeChange(){
-	xr_string game_mode = m_pModeSelector->GetText();
-
-	if (game_mode == g_GameModes[0].name)
+	LPCSTR text = m_pModeSelector->GetText();
+	
+	if (0 == strcmp(text, g_GameModes[0].name))
 		UpdateMapList(GAME_DEATHMATCH);
-	else if (game_mode == g_GameModes[1].name)
+	else if (0 == strcmp(text, g_GameModes[1].name))
 		UpdateMapList(GAME_TEAMDEATHMATCH);
-	else if (game_mode == g_GameModes[2].name)
+	else if (0 == strcmp(text, g_GameModes[2].name))
 		UpdateMapList(GAME_ARTEFACTHUNT);
 }
 
@@ -236,6 +236,7 @@ void CUIMapList::OnBtnUpClick(){
 		xr_string text = m_pList2->GetItem(isel)->GetText();
 		m_pList2->RemoveItem(isel);
 		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel-1);
+		m_pList2->SetSelectedItem(isel - 1);
 	}
 
 }
@@ -243,11 +244,12 @@ void CUIMapList::OnBtnUpClick(){
 void CUIMapList::OnBtnDownClick(){
 	int isel = m_pList2->GetSelectedItem();
 
-	if (isel < m_pList2->GetItemsCount())
+	if (isel < m_pList2->GetItemsCount() - 1 )
 	{
 		xr_string text = m_pList2->GetItem(isel)->GetText();
 		m_pList2->RemoveItem(isel);
-		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel-1);
+		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel+1);
+		m_pList2->SetSelectedItem(isel+1);
 	}
 
 

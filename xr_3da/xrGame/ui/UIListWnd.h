@@ -119,6 +119,7 @@ public:
 	void SetFocusedItem(int iNewFocusedItem);
 	int GetFocusedItem() { return m_iFocusedItem; }
 	int GetSelectedItem() { return m_iSelectedItem; }
+	void SetSelectedItem(int sel) {m_iSelectedItem = sel;}
 	void ShowSelectedItem(bool show = true)	{ m_bShowSelectedItem = show;}
 	
 	void ResetFocusCapture() { m_bForceFocusedItem = false; }
