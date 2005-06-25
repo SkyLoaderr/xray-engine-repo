@@ -377,7 +377,20 @@ void TfraLeftBar::SetReadOnly(BOOL val)
     ebOptimizeMotions->Enabled	= !val;
     ebExportBatch->Enabled		= !val;
 	ebExport->Enabled			= !val;
+    ebExecuteCommands->Enabled	= !val;
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TfraLeftBar::ebExecuteCommandsClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_EXECUTE_COMMAND_LIST);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
+{
+	ExecCommand(COMMAND_QUIT);	
+}
+//---------------------------------------------------------------------------
 

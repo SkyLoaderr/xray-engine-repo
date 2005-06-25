@@ -680,6 +680,20 @@ object fraLeftBar: TfraLeftBar
         OnClick = ExportC1Click
       end
     end
+    object N12: TMenuItem
+      Caption = '-'
+    end
+    object ebExecuteCommands: TMenuItem
+      Caption = 'Execute Commands...'
+      OnClick = ebExecuteCommandsClick
+    end
+    object N13: TMenuItem
+      Caption = '-'
+    end
+    object Quit1: TMenuItem
+      Caption = 'Quit'
+      OnClick = Quit1Click
+    end
   end
   object pmPreviewObject: TMxPopupMenu
     Alignment = paCenter
