@@ -217,6 +217,8 @@ function load_sound(obj)
 	theme[obj:id()]["val_sacrifice_threat_1"]		= load_sound_from_ltx(obj, "val_sacrifice_threat_1")
 	theme[obj:id()]["val_sacrifice_threat_2"]		= load_sound_from_ltx(obj, "val_sacrifice_threat_2")
 	theme[obj:id()]["val_sacrifice_bs_eat"]			= load_sound_from_ltx(obj, "val_sacrifice_bs_eat")
+	theme[obj:id()]["val_rob_leader_call"]			= load_sound_from_ltx(obj, "val_rob_leader_call")
+	theme[obj:id()]["val_rob_guard_jeer"]			= load_sound_from_ltx(obj, "val_rob_guard_jeer")
 
 	-- Bar Rostok Duty Guards
 	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
