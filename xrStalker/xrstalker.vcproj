@@ -825,10 +825,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1555,6 +1555,20 @@
 				<File
 					RelativePath=".\Config\models\niva_engine.ltx">
 				</File>
+				<Filter
+					Name="objects"
+					Filter="">
+					<File
+						RelativePath=".\Config\models\objects\box_wood_01.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="vehicles"
+					Filter="">
+					<File
+						RelativePath=".\Config\models\vehicles\veh_zaz_u_01.ltx">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
