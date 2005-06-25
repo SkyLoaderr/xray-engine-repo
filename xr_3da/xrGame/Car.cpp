@@ -1007,6 +1007,7 @@ void CCar::StartBreaking()
 }
 void CCar::StopBreaking()
 {
+	NeutralDrive();
 	b_breaks=false;
 }
 void CCar::PressRight()
@@ -1205,7 +1206,11 @@ void CCar::InitParabola()
 }
 void CCar::PhTune(dReal step)
 {
-
+	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
+	{
+		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
+		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*world_gravity/2.f,0);
+	}
 }
 void CCar::UpdateBack()
 {
@@ -1224,8 +1229,8 @@ void CCar::UpdateBack()
 				i->Break(k);
 		if(DriveWheelsMeanAngleRate()<m_breaks_to_back_rate)
 		{
-			DriveBack();
 			StopBreaking();
+			DriveBack();
 		}
 	}
 	//else
@@ -1564,6 +1569,7 @@ void CCar::PhDataUpdate(dReal step)
 			D->Update();
 		}
 	}
+	
 
 }
 

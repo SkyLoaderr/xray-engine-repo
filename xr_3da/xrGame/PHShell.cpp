@@ -1111,7 +1111,14 @@ CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 	}
 	return nearest_element;
 }
-
+void CPHShell::CreateSpace()
+{
+	if(!m_space) 
+	{
+		m_space=dSimpleSpaceCreate(0);
+		dSpaceSetCleanup (m_space, 0);
+	}
+}
 void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 {
 
