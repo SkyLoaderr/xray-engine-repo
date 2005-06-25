@@ -12,6 +12,7 @@ class "motivator_binder" (object_binder)
 function motivator_binder:__init (obj) super(obj)
 	self.initialized = false
 	self.loaded = false
+	self.last_update = 0
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -177,7 +178,10 @@ function motivator_binder:update(delta)
 		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
-    sr_light.check_light_zone (self.object)
+    if device ():time_global () - self.last_update > 1000 then
+       sr_light.check_light_zone (self.object)
+       self.last_update = device ():time_global ()
+    end   
 	--self.torch:update()
     
 	--' Апдейт менеджера состояний тела
