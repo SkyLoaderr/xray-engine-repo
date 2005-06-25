@@ -140,6 +140,7 @@ protected:
 
 	//буфферный вектор для проверки уникальность аттрибутов
 	std::vector<shared_str> m_AttribValues;
+	Clear					();
 private:
 	typedef TiXmlElement	XML_ELEM;
 	TiXmlDocument	m_Doc;

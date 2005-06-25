@@ -31,10 +31,13 @@ XRXMLPARSER_API CUIXml::CUIXml()
 
 XRXMLPARSER_API CUIXml::~CUIXml()
 {
-	m_Doc.Clear();
+	Clear();
 }
 
-
+CUIXml::Clear()
+{
+	m_Doc.Clear();
+}
 
 bool CUIXml::Init(LPCSTR path_alias, LPCSTR path, LPCSTR xml_filename)
 {
