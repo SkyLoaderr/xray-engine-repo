@@ -359,6 +359,7 @@ void CPHSkeleton::SetAutoRemove(u32 time/*=CSE_PHSkeleton::existence_time*/)
 	b_removing=true;
 	m_remove_time=Device.dwTimeGlobal+iFloor(time/phTimefactor);
 	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
+	PPhysicsShellHolder()->SheduleRegister();
 }
 
 static bool removable;//for RecursiveBonesCheck

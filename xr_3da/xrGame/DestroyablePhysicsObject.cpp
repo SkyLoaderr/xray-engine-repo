@@ -60,7 +60,6 @@ BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 	}
 	CParticlesPlayer::LoadParticles(K);
 	RunStartupAnim(DC);
-	if(CPHSkeleton::IsRemoving())SheduleRegister();
 	return res;
 }
 

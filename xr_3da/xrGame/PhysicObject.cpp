@@ -12,7 +12,6 @@ CPhysicObject::CPhysicObject(void)
 {
 	m_type			=	epotBox;
 	m_mass			=	10.f;
-	b_sheduled		=	false;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -27,7 +26,6 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	m_type					= EPOType(po->type);
 	m_mass					= po->mass;
 	inherited::net_Spawn	(DC);
-	b_sheduled		=	true;
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -72,9 +70,7 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 void CPhysicObject::net_Destroy()
 {
 	inherited::net_Destroy();
-	b_sheduled		=	false;
 	CPHSkeleton::RespawnInit();
-
 }
 
 void CPhysicObject::net_Save(NET_Packet& P)

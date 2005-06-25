@@ -211,7 +211,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 	CInifile		*new_ini  =new_K->LL_UserData()								;
 	//////////////////////////////////////////////////////////////////////////////////	
 	Fmatrix			own_transform;
-	own_shell		->GetGlobalTransformDynamic		(&own_transform)				;
+	own_shell		->GetGlobalTransformDynamic		(&own_transform)			;
 	new_shell		->SetGlTransformDynamic			(own_transform)				;
 	////////////////////////////////////////////////////////////
 	Fvector pos;

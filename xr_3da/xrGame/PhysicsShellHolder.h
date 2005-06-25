@@ -14,7 +14,13 @@ class CPhysicsShellHolder:  public CGameObject,
 							public CParticlesPlayer
 	
 {
+	bool				b_sheduled;
 public:
+	void	SheduleRegister		(){if(!IsSheduled())shedule_register();b_sheduled=true;}
+	void	SheduleUnregister	(){if(IsSheduled())shedule_unregister();b_sheduled=false;}
+IC	bool	IsSheduled			(){return b_sheduled;}	
+public:
+
 	typedef CGameObject inherited;
 	
 
@@ -43,6 +49,7 @@ public:
 	virtual CPHSoundPlayer				*ph_sound_player				()  {return NULL;}	
 	virtual void						enable_notificate			()	{}
 public:
+
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);
 	virtual void			PHSetMaterial		(LPCSTR m);

@@ -19,13 +19,15 @@ void CPhysicsShellHolder::net_Destroy()
 	CPHSriptReqGObjComparer cmpr(this);
 	Level().ph_commander_scripts().remove_calls(&cmpr);
 	//удалить партиклы из ParticlePlayer
-	CParticlesPlayer::net_DestroyParticles	();
+	CParticlesPlayer::net_DestroyParticles		();
 	inherited::net_Destroy						();
+	b_sheduled									=	false;
 	xr_delete									(m_pPhysicsShell);
 }
 BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
 	BOOL ret=inherited::net_Spawn(DC);
+	b_sheduled				=	true;
 	create_physic_shell			();
 	CParticlesPlayer::net_SpawnParticles		();
 	return ret;
@@ -52,7 +54,8 @@ void CPhysicsShellHolder::create_physic_shell	()
 
 void CPhysicsShellHolder::init			()
 {
-	m_pPhysicsShell				= NULL;
+	m_pPhysicsShell				=	NULL		;
+	b_sheduled					=	false		;
 }
 
 void CPhysicsShellHolder::activate_physic_shell()
