@@ -143,5 +143,8 @@
 	<task>val_suicide_artefact_quest</task>
 </info_portion>
 
+<!-- Погоня -->
+<info_portion id="val_chase_plr_in_car"></info_portion>
+
 
 </game_information_portions>
