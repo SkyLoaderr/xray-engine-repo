@@ -299,7 +299,12 @@ function action_gate:gate_play_snd_from_set(sndset)
 		utils.abort("physic object '%s': section '%s': sound set '%s' does not exist",
 			self.object:name(), self.st.section, sndset)
 	end
-	
+    
+    if self.snd_obj ~= nil then
+       self.snd_obj:stop ()
+       self.snd_obj = nil
+    end    
+    	
 	self.snd_obj = sound_object(snd)
 	if not self.snd_obj then
 		utils.abort("object '%s': unable to create a sound object for sound '%s' (soundset '%s')",
