@@ -10,6 +10,16 @@ on_info = {+val_exit_gate_show} heli_move@ready
 path_move = val_chase_heli_ready_move
 path_look = val_chase_heli_ready_look
 engine_sound = true
+;combat_enemy = actor
+combat_use_rocket = true
+combat_use_mgun = false
+invulnerable = true
+on_info = {+val_chase_plr_in_car} heli_move@start
+
+[heli_move@start]
+path_move = val_chase_heli_start_move
+path_look = val_chase_heli_start_look
+engine_sound = true
 combat_enemy = actor
 combat_use_rocket = true
 combat_use_mgun = false
