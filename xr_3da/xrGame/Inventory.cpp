@@ -111,7 +111,7 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
 	VERIFY(pIItem);
-
+	VERIFY(pIItem->m_pInventory==NULL);
 	VERIFY(CanTakeItem(pIItem));
 	
 	pIItem->m_pInventory = this;
@@ -173,12 +173,16 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	m_dwModifyFrame = Device.dwFrame;
 
 	pIItem->object().processing_deactivate();
-
+	VERIFY(pIItem->m_eItemPlace != eItemPlaceUndefined);
 }
 
 bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
+	VERIFY(pIItem);
+	VERIFY(pIItem->m_pInventory);
+	VERIFY(pIItem->m_pInventory==this);
+	VERIFY(pIItem->m_eItemPlace!=eItemPlaceUndefined);
 
 	pIItem->object().processing_activate(); 
 	
