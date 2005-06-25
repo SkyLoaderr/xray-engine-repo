@@ -31,10 +31,10 @@ XRXMLPARSER_API CUIXml::CUIXml()
 
 XRXMLPARSER_API CUIXml::~CUIXml()
 {
-	Clear();
+	ClearInternal();
 }
 
-CUIXml::Clear()
+CUIXml::ClearInternal()
 {
 	m_Doc.Clear();
 }
