@@ -1,18 +1,63 @@
 [logic]
-active = walker1
+active = walker@start
+
+;--------------------------------------------------------------------------
+; стандартная встреча
+;--------------------------------------------------------------------------
+[meet@def]
+meet_state = 10|wait@|5|wait_na@
+meet_state_wpn = 10|threat@threat_weap
+victim = 15|actor
+victim_vpn = 10|actor
+use = true
+
+;--------------------------------------------------------------------------
+; стартовый диалог
+;--------------------------------------------------------------------------
+[meet@start]
+meet_dialog = val_rob_dialog
+meet_state = 15|hello@talk_hello|10|wait@|5|wait_na@
+meet_state_wpn = 10|threat@threat_weap
+victim = 20|actor
+victim_vpn = 10|actor
+use = true
+
+;--------------------------------------------------------------------------
+; игнорирование игрока
+;--------------------------------------------------------------------------
+[meet@ignore]
+meet_state = 0|wait_na@
+meet_state_wpn = 3|threat@threat_weap
+victim = 1|actor
+victim_vpn = 3|actor
+use = true
+
+;--------------------------------------------------------------------------
+[walker@start]
+path_walk = val_rob_leader_walk
+path_look = val_rob_leader_look
+meet = meet@def
+on_actor_dist_le = 30 | remark@call
+
+[remark@call]
+snd = val_rob_leader_call
+on_signal = sound_end | walker1
 
 [walker1]
 path_walk = val_rob_leader_walk
 path_look = val_rob_leader_look
-meet_dialog = val_rob_dialog
-meet_enabled = true
+;meet_dialog = val_rob_dialog
+;meet_enabled = true
+meet = meet@start
 on_info = {+val_rob_buying} walker2
 
 [walker2]
 path_walk = val_rob_leader_kamp_walk
 path_look = val_rob_leader_kamp_look
 def_state_moving = run
+meet = meet@ignore
 on_signal = arrived | kamp1
 
 [kamp1]
+meet = meet@ignore
 center_point = val_rob_camp
