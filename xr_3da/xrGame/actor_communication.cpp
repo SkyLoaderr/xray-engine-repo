@@ -19,6 +19,7 @@
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
 #include "alife_news_registry.h"
+
 #include "script_game_object.h"
 
 #include "game_cl_base.h"
@@ -96,6 +97,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	}
 }
 
+
 void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 {
 	VERIFY(info_portion);
@@ -117,8 +119,18 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 				break;
 		}
 
-		if(it1 == task_vector.end())
+		if(it1 == task_vector.end()){
 			task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
+		
+			CGameTask task;
+			task.Init(task_vector.back());
+			SGameTaskObjective	*obj = NULL;
+			for (u32 i = 0; i < task.ObjectivesNum(); ++i){
+				obj = &task.data()->m_Objectives[i];
+				if(obj->object_id!=u16(-1) && obj->map_location.size())
+					Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
+			}
+		}
 	}
 
 	//установить флажок необходимости прочтения тасков в PDA

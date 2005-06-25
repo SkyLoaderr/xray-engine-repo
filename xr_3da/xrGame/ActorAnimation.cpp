@@ -106,6 +106,8 @@ void SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR 
 	holster			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_holster_0"));
 	draw			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_draw_0"));
 	reload			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_0"));
+	reload_1		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_1"));
+	reload_2		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_2"));
 	drop			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_drop_0"));
 	attack			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
 	attack_zoom		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_0"));
@@ -149,6 +151,8 @@ void SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	m_torso[5].Create(K,base,"_6");
 	m_torso[6].Create(K,base,"_7");
 	m_torso[7].Create(K,base,"_8");
+	m_torso[8].Create(K,base,"_9");
+	m_torso[9].Create(K,base,"_10");
 
 
 	m_head_idle.invalidate();///K->ID_Cycle("head_idle_0");
@@ -180,6 +184,8 @@ void SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 	m_torso[5].Create(K,base,"_6");
 	m_torso[6].Create(K,base,"_7");
 	m_torso[7].Create(K,base,"_8");
+	m_torso[8].Create(K,base,"_9");
+	m_torso[9].Create(K,base,"_10");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
 	m_head_idle		= K->ID_Cycle("head_idle_0");
@@ -343,6 +349,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 					if (!m_bAnimTorsoPlayed) {
 						if (W) {
 							bool K =inventory().ActiveItem()->object().CLS_ID == CLSID_OBJECT_W_KNIFE;
+							bool R3 = W->IsTriStateReload();
 							
 							if(K)
 							{
@@ -373,7 +380,19 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 								case CWeapon::eIdle:	M_torso	= W->IsZoomed()?TW->aim_zoom:TW->aim;		break;
 								case CWeapon::eFire:	M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack;	break;
 								case CWeapon::eFire2:	M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack; break;
-								case CWeapon::eReload:	M_torso	= TW->reload;	break;
+								case CWeapon::eReload:	
+									if(!R3)
+										M_torso	= TW->reload;
+									else{
+										CWeapon::EWeaponSubStates sub_st = W->GetReloadState();
+										switch (sub_st){
+											case CWeapon::eSubstateReloadBegin:			M_torso	= TW->reload;	break;
+											case CWeapon::eSubstateReloadInProcess:		M_torso	= TW->reload_1; break;
+											case CWeapon::eSubstateReloadEnd:			M_torso	= TW->reload_2; break;
+											default:									M_torso	= TW->reload;	break;
+										}
+									}break;
+
 								case CWeapon::eShowing:	M_torso	= TW->draw;		break;
 								case CWeapon::eHiding:	M_torso	= TW->holster;	break;
 								default				 :  M_torso	= TW->aim;		break;

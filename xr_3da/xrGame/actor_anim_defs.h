@@ -21,6 +21,8 @@ struct					SActorMotions
 			MotionID	draw;
 			MotionID	drop;
 			MotionID	reload;
+			MotionID	reload_1;
+			MotionID	reload_2;
 			MotionID	attack;
 			MotionID	attack_zoom;
 			MotionID	fire_idle;
@@ -40,7 +42,7 @@ struct					SActorMotions
 		MotionID		death;
 		SAnimState		m_walk;
 		SAnimState		m_run;
-		STorsoWpn		m_torso[8];
+		STorsoWpn		m_torso[10];
 		MotionID		m_torso_idle;
 		MotionID		m_head_idle;
 

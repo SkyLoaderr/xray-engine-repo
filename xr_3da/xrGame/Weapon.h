@@ -158,7 +158,8 @@ public:
 
 
 	BOOL					AutoSpawnAmmo		() const		{ return m_bAutoSpawnAmmo; };
-
+	bool					IsTriStateReload	() const		{ return m_bTriStateReload;}
+	EWeaponSubStates		GetReloadState		() const		{ return (EWeaponSubStates)m_sub_state;}
 protected:
 	bool					m_bTriStateReload;
 	u8						m_sub_state;
