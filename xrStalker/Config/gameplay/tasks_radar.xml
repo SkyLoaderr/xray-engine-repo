@@ -37,19 +37,19 @@
 			<text>andy_task_1_1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>escape_blockpost_case</object_story_id>
+			<object_story_id>Escape_blockpost_case</object_story_id>
 		</objective>
 		<objective>
 			<text>andy_task_1_2</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>escape_robbed_novice</object_story_id>
+			<object_story_id>Escape_robbed_novice</object_story_id>
 		</objective>
 		<objective>
 			<text>andy_task_1_3</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>escape_Tutorial_Artefact</object_story_id>
+			<object_story_id>Escape_Tutorial_Artefact</object_story_id>
 		</objective>
 	</game_task>
 
