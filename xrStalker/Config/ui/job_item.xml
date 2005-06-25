@@ -2,8 +2,8 @@
 <!-- JOB ITEM -->
 <window>
 	<!-- PICTURE -->
-	<p	<picture_static x="0" y="0" width="64" height="60">
-text x="16" y="0" font="letterica18" r="225" g="225" b="250"></text>
+	<picture_static x="0" y="0" width="60" height="60">
+		<text x="16" y="0" font="letterica18" r="225" g="225" b="250"></text>
 	</picture_static>
 	
 	<!-- CAPTION -->
