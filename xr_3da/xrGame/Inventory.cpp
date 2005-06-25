@@ -180,6 +180,8 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
 	VERIFY(pIItem);
+	if(pIItem->m_pInventory!=this) return false;
+
 	VERIFY(pIItem->m_pInventory);
 	VERIFY(pIItem->m_pInventory==this);
 	VERIFY(pIItem->m_eItemPlace!=eItemPlaceUndefined);
