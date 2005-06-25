@@ -233,9 +233,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
     
 	ELog.Msg( mtInformation, "EScene: loading '%s'", map_name);
     if (FS.exist(full_name.c_str())){
-        IReader* F = FS.r_open(full_name.c_str());
+        IReader* F 	= FS.r_open(full_name.c_str());
         // Version
-        R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
+        R_ASSERT	(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI->UpdateScene();
@@ -320,8 +320,6 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         
 		return true;
     }else{
-    	FS_Path* P = FS.get_path("$app_root$");
-        Log(P->m_Path);
     	ELog.Msg(mtError,"Can't find file: '%s'",map_name);
     }
 	return false;

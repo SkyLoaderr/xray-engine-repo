@@ -224,7 +224,10 @@ public:
 
     void			SynchronizeObjects();
 
-    void			ShowSummaryInfo	();
+    void			ClearSummaryInfo	();
+    void			CollectSummaryInfo	();
+    void			ShowSummaryInfo		();
+    void			ExportSummaryInfo	(LPCSTR f_name);
 
     xr_string		LevelPath		();
     shared_str 		LevelPrefix		(){return m_LevelOp.m_LevelPrefix; }

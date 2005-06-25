@@ -201,7 +201,9 @@ void __fastcall TfraLeftBar::ebBuildClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::miSceneSummaryClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_SCENE_SUMMARY );
+	ExecCommand( COMMAND_CLEAR_SCENE_SUMMARY );
+	ExecCommand( COMMAND_COLLECT_SCENE_SUMMARY );
+	ExecCommand( COMMAND_SHOW_SCENE_SUMMARY );
 }
 //---------------------------------------------------------------------------
 
@@ -618,6 +620,12 @@ void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExecuteCommand1Click(TObject *Sender)
+{
+	ExecCommand(COMMAND_EXECUTE_COMMAND_LIST);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 {
 	ExecCommand(COMMAND_QUIT);
@@ -699,6 +707,7 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
 
 
 

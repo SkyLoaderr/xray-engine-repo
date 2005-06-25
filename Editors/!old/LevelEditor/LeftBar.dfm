@@ -1791,6 +1791,13 @@ object fraLeftBar: TfraLeftBar
     object N7: TMenuItem
       Caption = '-'
     end
+    object ExecuteCommand1: TMenuItem
+      Caption = 'Execute Commands...'
+      OnClick = ExecuteCommand1Click
+    end
+    object N24: TMenuItem
+      Caption = '-'
+    end
     object Quit1: TMenuItem
       Caption = 'Quit'
       OnClick = Quit1Click

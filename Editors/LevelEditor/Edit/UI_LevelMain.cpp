@@ -361,10 +361,37 @@ void CommandRedo(u32 p1, u32 p2, u32& res)
     }
 }
 
-void CommandSceneSummary(u32 p1, u32 p2, u32& res)
+void CommandClearSceneSummary(u32 p1, u32 p2, u32& res)
+{
+    if( !Scene->locked() ){
+        Scene->ClearSummaryInfo();
+    } else {
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        res = FALSE;
+    }
+}
+void CommandCollectSceneSummary(u32 p1, u32 p2, u32& res)
+{
+    if( !Scene->locked() ){
+        Scene->CollectSummaryInfo();
+    } else {
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        res = FALSE;
+    }
+}
+void CommandShowSceneSummary(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
         Scene->ShowSummaryInfo();
+    } else {
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        res = FALSE;
+    }
+}
+void CommandExportSceneSummary(u32 p1, u32 p2, u32& res)
+{
+    if( !Scene->locked() ){
+        Scene->ExportSummaryInfo((LPCSTR)p1);
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         res = FALSE;
@@ -710,7 +737,10 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_SAVE_SELECTION,            CommandSaveSelection);
 	REGISTER_CMD_S	    (COMMAND_UNDO,              		CommandUndo);
 	REGISTER_CMD_S	    (COMMAND_REDO,              		CommandRedo);
-	REGISTER_CMD_S	    (COMMAND_SCENE_SUMMARY,             CommandSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_CLEAR_SCENE_SUMMARY,	    CommandClearSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_COLLECT_SCENE_SUMMARY,     CommandCollectSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_SHOW_SCENE_SUMMARY,        CommandShowSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_EXPORT_SCENE_SUMMARY,      CommandExportSceneSummary);
 	REGISTER_CMD_S	    (COMMAND_SCENE_HIGHLIGHT_TEXTURE,	CommandSceneHighlightTexture);
 	REGISTER_CMD_S	    (COMMAND_OPTIONS,              		CommandOptions);
 	REGISTER_CMD_S	    (COMMAND_BUILD,              		CommandBuild);

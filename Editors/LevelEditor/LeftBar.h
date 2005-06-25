@@ -183,6 +183,8 @@ __published:	// IDE-managed Components
 	TMenuItem *ExportErrorList1;
 	TMenuItem *miHightlightTexture;
 	TMenuItem *MakeSoundOccluder1;
+	TMenuItem *N24;
+	TMenuItem *ExecuteCommand1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -272,6 +274,7 @@ __published:	// IDE-managed Components
 	void __fastcall ExportErrorList1Click(TObject *Sender);
 	void __fastcall miHightlightTextureClick(TObject *Sender);
 	void __fastcall MakeSoundOccluder1Click(TObject *Sender);
+	void __fastcall ExecuteCommand1Click(TObject *Sender);
 private:	// User declarations
     void RedrawBar();
 	void __fastcall miRecentFilesClick(TObject *Sender);

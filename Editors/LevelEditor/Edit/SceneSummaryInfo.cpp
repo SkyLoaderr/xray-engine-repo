@@ -85,7 +85,6 @@ void SSceneSummary::STextureInfo::Prepare	()
             Msg("!Can't get info from texture: '%s'",file_name.c_str());
         }else{
             info			= T->_Format();
-            pixel_area		*=info.width*info.height;
         }
         xr_delete			(T);
     }else{
@@ -110,8 +109,8 @@ void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
         PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%3.2f m^2",effective_area));
-        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Pixel Area"),	shared_str().sprintf("%3.2f p^2",pixel_area));
-        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Area Ratio"),	shared_str().sprintf("%3.2f p/m",_sqrt(pixel_area/effective_area)));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Pixel Area"),	shared_str().sprintf("%3.2f p^2",pixel_area*info.width*info.height));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Area Ratio"),	shared_str().sprintf("%3.2f p/m",_sqrt((pixel_area*info.width*info.height)/effective_area)));
         AnsiString tmp;
         for (objinf_map_it o_it=objects.begin(); o_it!=objects.end(); o_it++){
         	tmp += AnsiString().sprintf("%s%s[%d*%3.2f]",tmp.Length()?"; ":"",o_it->first.c_str(),o_it->second.ref_count,o_it->second.area);
@@ -149,7 +148,7 @@ void SSceneSummary::STextureInfo::Export	(IWriter* F, u32& mem_use)
     sprintf			(tmp,mask,*file_name,info.FormatString(),
     				info.width,info.height,info.HasAlpha()?"present":"absent",
                     iFloor(tex_mem/1024),
-                    effective_area, pixel_area, _sqrt(pixel_area/effective_area), tmp2.c_str(), 
+                    effective_area, pixel_area*info.width*info.height, _sqrt((pixel_area*info.width*info.height)/effective_area), tmp2.c_str(), 
                     *info.detail_name, info.detail_scale);
 	F->w_string		(tmp);
 }
@@ -171,6 +170,7 @@ bool SSceneSummary::ExportSummaryInfo(LPCSTR fn)
 {
 	IWriter* F 				= FS.w_open(fn); 
     if (F){
+	    Prepare					();
         string256				tmp;
         // textures
         u32 total_mem_usage		= 0; 
@@ -188,7 +188,7 @@ bool SSceneSummary::ExportSummaryInfo(LPCSTR fn)
                 STextureInfo* info= (STextureInfo*)(&(*it));
                 if (info->type==stt){ 
                     cur_area	+= info->effective_area;
-                    cur_p_area	+= info->pixel_area;
+                    cur_p_area	+= info->pixel_area*info->info.width*info->info.height;
                     info->Export(F,cur_mem_usage);
                 }
             }
@@ -264,7 +264,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
 	        STextureInfo* info= (STextureInfo*)(&(*it));
 	    	if (info->type==stt){ 
             	cur_area	+= info->effective_area;
-                cur_p_area	+= info->pixel_area;
+                cur_p_area	+= info->pixel_area*info->info.width*info->info.height;
             	info->FillProp(items,pref.c_str(),cur_mem_usage);
             }
         }
@@ -377,25 +377,31 @@ void SSceneSummary::FillProp(PropItemVec& items)
 }
 
 static SSceneSummary s_summary;
-void EScene::ShowSummaryInfo()
+void EScene::ClearSummaryInfo	()
 {
-	s_summary.Clear	();
-	bool bRes=true;
+	s_summary.Clear				();
+}
 
+void EScene::CollectSummaryInfo	()
+{
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
     for (; _I!=_E; _I++)
         if (_I->second)	_I->second->GetSummaryInfo(&s_summary);
-    
+}
+
+void EScene::ShowSummaryInfo		()
+{
 	PropItemVec items;
-	if (bRes){
-        // fill items
-        s_summary.FillProp(items);
-        m_SummaryInfo->ShowProperties();
-    }else{
-    	ELog.DlgMsg(mtInformation,"Summary info empty.");
-    }
-	m_SummaryInfo->AssignItems(items);
+    // fill items
+    s_summary.FillProp				(items);
+    m_SummaryInfo->ShowProperties	();
+	m_SummaryInfo->AssignItems		(items);
+}
+
+void EScene::ExportSummaryInfo	(LPCSTR f_name)
+{
+    s_summary.ExportSummaryInfo	(f_name);
 }
 //--------------------------------------------------------------------------------------------------
 
