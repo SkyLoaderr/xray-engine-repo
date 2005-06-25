@@ -10,11 +10,13 @@ on_info = {+val_raid_start} heli_move@ready
 path_move = val_stairs_heli_ready_move
 path_look = val_stairs_heli_ready_look
 engine_sound = true
+combat_enemy = nil
 on_info = {+val_stairs_start} heli_move@start
 
 [heli_move@start]
 path_move = val_stairs_heli_move
 path_look = val_stairs_heli_look
+combat_enemy = nil
 on_signal = arrived | heli_move@patrol1
 
 [heli_move@patrol1]
