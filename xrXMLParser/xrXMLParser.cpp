@@ -34,7 +34,7 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 	ClearInternal();
 }
 
-CUIXml::ClearInternal()
+void CUIXml::ClearInternal()
 {
 	m_Doc.Clear();
 }

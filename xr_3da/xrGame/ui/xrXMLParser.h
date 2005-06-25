@@ -52,7 +52,7 @@ class XRXMLPARSER_API CUIXml
 public:
 	CUIXml();
 	virtual ~CUIXml();
-	ClearInternal					();
+	void	ClearInternal					();
 
 	bool Init(LPCSTR path_alias, LPCSTR path, LPCSTR  xml_filename);
 	bool Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_filename);
