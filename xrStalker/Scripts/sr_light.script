@@ -49,7 +49,7 @@ function action_light:check_stalker (stalker)
        end     
        return  false
     end
-    
+    -- а, если этот тормоз забрался в рестриктор, то включим ему фонарь
 	if self.object:inside(stalker:position ()) then
        torch:enable_attachable_item (self.st.light)
        if self.stalkers[id] == nil then
@@ -57,6 +57,7 @@ function action_light:check_stalker (stalker)
        end     
        return true
     end
+    -- если мужик за пределами рестриктора, то вырубим фонарь и вышвырнем мужика.
     self.stalkers[id] = nil
     return false    
 end
