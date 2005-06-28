@@ -3,19 +3,22 @@
 ----------------------------------------------------------------------------------------------------
 -- Исходный скрипт: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
+-- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
 --[[
 C++ class CCar : CGameObject,holder {
-    const eWpnActivate = 3;
-    const eWpnAutoFire = 5;
-    const eWpnDesiredDir = 1;
-    const eWpnDesiredPos = 2;
-    const eWpnFire = 4;
+    const  = 2262;
+    const  = 2263;
+    const  = 2266;
+    const  = 2264;
+    const  = 2265;
+    const  = 2267;
     
     CCar ();
     
     function _construct();
+    function CurrentVel();
     function getVisible() const;
     function net_Spawn(cse_abstract*);
     function setVisible(number);
@@ -24,6 +27,7 @@ C++ class CCar : CGameObject,holder {
     function Visual();
     function IsObjectVisible(game_object*);
     function net_Import(net_packet&);
+    function HasWeapon();
     function engaged();
     function FireDirDiff();
     function CanHit();
@@ -37,8 +41,9 @@ C++ class CCar : CGameObject,holder {
 local default_min_delta_per_sec = 0.2
 local default_min_car_explode_time = 1000
 local default_moving_speed = 10
-local default_arriving_factor = 0.75
+local default_arriving_factor = 0.4
 local default_min_fire_time = 0
+local default_update_time = 1.5
 
 local state_none = 0
 
@@ -294,12 +299,18 @@ end
 
 function action_car:at_target_walkpoint()
     --printf("_bp: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
+    local curVel = self.car:CurrentVel()
 	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
-	local arrived = dist < 8 --self.car:CurrentVel().z * default_arriving_factor
+	local arrived = 2 * dist < default_update_time * (curVel.x + self.speed) --default_update_time > 2 * dist / (curVel.x + self.speed)
+	--local arrived = dist < curVel.x * default_arriving_factor --8
 	--printf("_bp: action_car:at_target_walkpoint(self.target_walk_pt=%d) = %d (arrived = %s)",		self.target_walk_pt, dist, utils.to_str(arrived))
-    --if arrived then
-    --    printf("_bp: arrived = %f < %f * %f", dist, self.speed, default_arriving_factor)
-    --end
+    if arrived then
+        printf("_bp: arrived = %f < %f, dist(%f), curSpd(%f), spd(%f)",
+               default_update_time,
+               2 * dist / (curVel.x + self.speed),
+               dist, curVel.x, self.speed)
+        --printf("_bp: arrived = %f < (%f,%f,%f) * %f, spd(%f)", dist, curVel.x, curVel.y, curVel.z, default_arriving_factor, self.speed)
+    end
 	return arrived
 end
 
@@ -574,8 +585,10 @@ function action_car:update(delta)
 end
 
 function action_car:stop_car()
+    printf("_bp: car stopping.")
 	xr_logic.mob_capture(self.object, true)
-	action(self.object, move(move.off, 0), cond(cond.time_end, 1000)) --cond(cond.move_end))
+	action(self.object, move(move.off, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
+	self.speed = 0
 end
 
 -- Вернуть true, если апдейты больше не нужны
@@ -620,7 +633,7 @@ function action_car:fast_update()
                 printf("_bp: 3.cannon stopped.")
 	            self.state_cannon = state_cannon_stop
                 self:rot_to_firepoint(nil, 0)
-                self:set_signal("shooting_end")
+                --self:set_signal("shooting_end")
 				return false
 			end
 			self.last_pos = cur_pos
