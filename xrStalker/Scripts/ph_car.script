@@ -41,9 +41,9 @@ C++ class CCar : CGameObject,holder {
 local default_min_delta_per_sec = 0.2
 local default_min_car_explode_time = 1000
 local default_moving_speed = 10
-local default_arriving_factor = 0.4
+--local default_arriving_factor = 0.4
 local default_min_fire_time = 0
-local default_update_time = 1.5
+local default_update_time = 1.6
 
 local state_none = 0
 
