@@ -301,6 +301,7 @@ function action_car:at_target_walkpoint()
     --printf("_bp: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
     local curVel = self.car:CurrentVel()
 	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
+	--local arrived = dist < default_update_time * curVel.x --default_update_time > 2 * dist / (curVel.x + self.speed)
 	local arrived = 2 * dist < default_update_time * (curVel.x + self.speed) --default_update_time > 2 * dist / (curVel.x + self.speed)
 	--local arrived = dist < curVel.x * default_arriving_factor --8
 	--printf("_bp: action_car:at_target_walkpoint(self.target_walk_pt=%d) = %d (arrived = %s)",		self.target_walk_pt, dist, utils.to_str(arrived))
@@ -614,7 +615,7 @@ function action_car:fast_update()
 	end
 
 	if (self.state_moving ~= state_moving_end and self.state_moving ~= state_moving_stop or
-	   self.state_cannon == state_cannon_stop) and 
+	   self.state_cannon ~= state_cannon_stop) and 
 	   time_global() >= self.last_pos_time + self.min_car_explode_time then
 		if not self.last_pos then
 			self.last_pos = self.object:position()
@@ -633,7 +634,7 @@ function action_car:fast_update()
                 printf("_bp: 3.cannon stopped.")
 	            self.state_cannon = state_cannon_stop
                 self:rot_to_firepoint(nil, 0)
-                --self:set_signal("shooting_end")
+                self:set_signal("shooting_end")
 				return false
 			end
 			self.last_pos = cur_pos
@@ -705,6 +706,7 @@ function action_car:fast_update()
 		        else
 	                printf("_bp: searching actor.")
 		            self.state_shooting = state_none
+		            self:set_signal("shooting_end")
 		        end
 		        local p = db.actor:position()
 		        self:rot_to_firepoint(p, self.state_shooting)
@@ -712,6 +714,7 @@ function action_car:fast_update()
 	            printf("_bp: actor isn't visible.")
 		        self.state_shooting = state_none
 		        self:rot_to_firepoint(nil, self.state_shooting)
+		        self:set_signal("shooting_end")
 		    end
 	    end
 	end
