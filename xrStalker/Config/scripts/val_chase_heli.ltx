@@ -25,7 +25,7 @@ combat_use_rocket = false
 combat_use_mgun = true
 invulnerable = true
 ;on_info = {+val_stairs_start} heli_move@start
-on_signal = arrived heli_move@chase
+on_signal = arrived | heli_move@chase
 
 [heli_move@chase]
 path_move = val_chase_heli_chase_move
