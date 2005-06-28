@@ -20,8 +20,17 @@ on_info = {+val_chase_plr_in_car} heli_move@start
 path_move = val_chase_heli_start_move
 path_look = val_chase_heli_start_look
 engine_sound = true
+combat_enemy = nil
+combat_use_rocket = false
+combat_use_mgun = true
+invulnerable = true
+;on_info = {+val_stairs_start} heli_move@start
+on_signal = arrived heli_move@chase
+
+[heli_move@chase]
+path_move = val_chase_heli_chase_move
+engine_sound = true
 combat_enemy = actor
 combat_use_rocket = true
 combat_use_mgun = false
 invulnerable = true
-;on_info = {+val_stairs_start} heli_move@start
