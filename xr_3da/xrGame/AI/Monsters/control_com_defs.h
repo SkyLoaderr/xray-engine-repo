@@ -37,6 +37,8 @@ namespace ControlCom {
 	enum EEventType {
 		eventAnimationStart = u32(0),
 		eventAnimationEnd,
+		eventLegsAnimationEnd,
+		eventTorsoAnimationEnd,
 		eventSoundStart,
 		eventSoundEnd,
 		eventParticlesStart,

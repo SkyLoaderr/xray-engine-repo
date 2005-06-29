@@ -2,8 +2,6 @@
 #include "control_animation_base.h"
 #include "BaseMonster/base_monster.h"
 #include "../../PHMovementControl.h"
-#include "ai_monster_jump.h"
-#include "custom_events.h"
 #include "../../detail_path_manager.h"
 #include "monster_velocity_space.h"
 
@@ -69,8 +67,6 @@ void CControlAnimationBase::SetTurnAnimation()
 		return;
 	}
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 // SelectVelocities
@@ -162,28 +158,7 @@ void CControlAnimationBase::SelectVelocities()
 	}
 }
 
-//#define ANIM_CHANGE_SPEED_VELOCITY 10.f
-//
-//void CControlAnimationBase::FrameUpdate()
-//{
-//	// update animation speed 
-//	if (m_cur_anim.speed.target > 0) {
-//		if (m_cur_anim.speed.current < 0) m_cur_anim.speed.current = 0.f;
-//		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
-//	} else m_cur_anim.speed.current = -1.f;
-//
-//	if (!IsCriticalAction()) {
-//		Update();
-//	} else {
-//		m_object->movement().disable_path();	
-//	}
-//
-//	// raise event on velocity bounce
-//	CheckVelocityBounce();
-//}
-
 #define VELOCITY_BOUNCE_THRESHOLD 1.5f
-
 
 void CControlAnimationBase::CheckVelocityBounce()
 {

@@ -117,8 +117,8 @@ void CControlAnimationBase::select_animation()
 	MotionID	cur_anim		= smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->second.target_name,itoa(index,s1,10)));
 
 	// Setup Com
-	ctrl_data->motion			= cur_anim;
-	ctrl_data->start_animation	= true;
+	ctrl_data->global.motion	= cur_anim;
+	ctrl_data->global.actual	= false;
 	ctrl_data->speed			= m_cur_anim.speed.target;
 
 	// Заполнить текущую анимацию
@@ -186,17 +186,6 @@ void CControlAnimationBase::CheckReplacedAnim()
 			cur_anim_info().motion = it->new_anim;
 			return;
 		}
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Attack Animation
-
-void CControlAnimationBase::AnimSpec_Play(EMotionAnim a)
-{
-	//// установить параметры
-	//spec_anim								= a;
-	//cur_anim_info().motion				= a;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -44,8 +44,8 @@ void CAnimationSequencer::play_selected()
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	VERIFY						(ctrl_data);
 
-	ctrl_data->motion			= m_data.motions[m_index];
-	ctrl_data->start_animation	= true;
+	ctrl_data->global.motion	= m_data.motions[m_index];
+	ctrl_data->global.actual	= false;
 }
 
 bool CAnimationSequencer::check_start_conditions()

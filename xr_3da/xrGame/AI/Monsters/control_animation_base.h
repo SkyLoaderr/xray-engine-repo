@@ -3,8 +3,6 @@
 #include "ai_monster_shared_data.h"
 #include "../../../SkeletonAnimated.h"
 #include "control_combase.h"
-#include "anim_triple.h"
-#include "control_jump.h"
 
 struct SEventVelocityBounce : public ControlCom::IEventData {
 	float	m_ratio;
@@ -17,14 +15,9 @@ struct SEventVelocityBounce : public ControlCom::IEventData {
 class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>, 
 								public CControl_ComBase {
 		typedef CControl_ComBase inherited;
-
+protected:
 
 		REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
-
-		// работа с последовательностями
-		SEQ_VECTOR				seq_states;
-		SEQ_VECTOR_IT			seq_it;				
-		bool					seq_playing;
 
 		// сохранённые анимации 
 		EMotionAnim				prev_motion; 
@@ -41,8 +34,6 @@ class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>,
 		u32						spec_params;			// дополнительные параметры
 
 		TTime					fx_time_last_play;
-
-		bool					bad_motion_fixed;		// true, если монстр пытается двигаться, но стоит на месте
 
 		// -------------------------------------------------------------------------------------
 		// Acceleration
@@ -63,7 +54,7 @@ class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>,
 
 		EMotionAnim					spec_anim; 
 
-private:
+protected:
 
 	ANIM_TO_MOTION_MAP			m_anim_motion_map;
 
@@ -109,15 +100,9 @@ public:
 	// -------------------------------------
 	void		CheckTransition			(EMotionAnim from, EMotionAnim to);
 
-	void		ShowDeath				();
-
 	void		SetSpecParams			(u32 param) {spec_params |= param;}
 	void		SetCurAnim				(EMotionAnim a) {cur_anim_info().motion = a;}
 	EMotionAnim	GetCurAnim				() {return  cur_anim_info().motion;} 
-
-	void		AnimSpec_Play			(EMotionAnim a);
-	bool		AnimSpec_Active			() {return (spec_anim != eAnimUndefined);}
-	void		AnimSpec_Stop			() {spec_anim = eAnimUndefined;}
 
 	// работа с анимациями атак
 	void		AA_Load					(LPCSTR section);
@@ -128,11 +113,9 @@ public:
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);
 
-	bool		BadMotionFixed			() {return bad_motion_fixed;}
-
 	MotionID	get_motion_id			(EMotionAnim a, u32 index = u32(-1));
 
-private:	
+protected:	
 
 	void		UpdateAnimCount			();
 
@@ -158,10 +141,10 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 
-private:
+protected:
 	void		update					();
 
-private:
+protected:
 	void		SelectAnimation			();
 	void		SelectVelocities		();
 
@@ -174,7 +157,7 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	// DEBUG
 
-private:
+protected:
 	LPCSTR		GetAnimationName		(EMotionAnim anim);
 	LPCSTR		GetActionName			(EAction action);
 

@@ -25,13 +25,12 @@ void CControlRunAttack::activate()
 	// start new animation
 	SControlAnimationData					*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	VERIFY									(ctrl_data);
-	ctrl_data->motion						= anim;
-	ctrl_data->start_animation				= true;
+	ctrl_data->global.motion				= anim;
+	ctrl_data->global.actual				= false;
 
 	// disable path builder and movement
 	m_man->path_stop						(this);
 	m_man->move_stop						(this);
-
 
 	// set angular speed in exclusive force mode
 	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 

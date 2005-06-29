@@ -40,6 +40,7 @@ void CControlJump::activate()
 {
 	m_man->capture_pure	(this);
 	m_man->subscribe	(this, ControlCom::eventAnimationEnd);
+	m_man->subscribe	(this, ControlCom::eventAnimationStart);
 	m_man->subscribe	(this, ControlCom::eventVelocityBounce);
 
 	m_man->path_stop	(this);
@@ -58,6 +59,7 @@ void CControlJump::on_release()
 	m_man->release_pure (this);
 	m_man->unsubscribe	(this, ControlCom::eventVelocityBounce);
 	m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);
+	m_man->unsubscribe	(this, ControlCom::eventAnimationStart);
 }
 
 void CControlJump::start_jump(const Fvector &point)
@@ -199,6 +201,17 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 		}
 	} else if (type == ControlCom::eventAnimationEnd) {
 		select_next_anim_state();
+	} else if (type == ControlCom::eventAnimationStart) {
+		
+		// start new animation
+		SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
+		VERIFY						(ctrl_data);
+		
+		if ((m_anim_state_current == eStateGlide) && (m_anim_state_prev == eStateGlide)) {
+			VERIFY				(m_man->animation().current_blend());
+			ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
+		} else 
+			ctrl_data->speed	= -1.f;
 	}
 }
 
@@ -330,15 +343,8 @@ void CControlJump::play_selected()
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	VERIFY						(ctrl_data);
 
-	ctrl_data->motion			= m_data.pool[m_anim_state_current];
-	ctrl_data->start_animation	= true;
-	
-	if (m_anim_state_current == eStateGlide) {
-		VERIFY				(m_man->animation().current_blend());
-		ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
-	} else 
-		ctrl_data->speed	= -1.f;
-
+	ctrl_data->global.motion	= m_data.pool[m_anim_state_current];
+	ctrl_data->global.actual	= false;
 }
 
 void CControlJump::on_start_jump()

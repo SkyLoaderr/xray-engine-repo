@@ -3,42 +3,50 @@
 #include "control_combase.h"
 #include "../../../SkeletonAnimated.h"
 
+struct SAnimationPart {
+	MotionID		motion;
+	CBlend			*blend;
+	bool			actual;
+	u32				time_started;
+	
+	void	init	() {
+		motion.invalidate	();
+		blend				= 0;
+		actual				= true;
+		time_started		= 0;
+	}
+};
+
 struct SControlAnimationData : public ControlCom::IComData {
-	MotionID			motion;
-	bool				start_animation;
 	float				speed;
+	
+	SAnimationPart		global;
+	SAnimationPart		legs;
+	SAnimationPart		torso;
 };
 
 class CControlAnimation : public CControl_ComPure<SControlAnimationData> {
 	typedef CControl_ComPure<SControlAnimationData> inherited;
 
-	CBlend					*blend;
-
-	u32						time_started;
-	
-	struct {
-		float				current;
-		float				target;
-	} speed;
-
-	float					acceleration;				// todo: find out if needed
-
-	u16						default_bone_part;
+	CSkeletonAnimated		*m_skeleton_animated;
 
 #ifdef DEBUG
 	shared_str				name;	
 #endif
 
 public:
-	virtual void	reinit				();
-	virtual void	update_frame		();
+	virtual void	reinit					();
+	virtual void	update_frame			();
 
-			void	on_animation_end	();	
-			CBlend	*current_blend		() {return blend;}
+			void	on_global_animation_end	();	
+			void	on_torso_animation_end	();
+			void	on_legs_animation_end	();
+
+			CBlend	*current_blend			() {return m_data.global.blend;}
 
 private:
-	void	update				();
 	void	play				();
+	void	play_part			(SAnimationPart &part, PlayCallback callback);
 };
 
 

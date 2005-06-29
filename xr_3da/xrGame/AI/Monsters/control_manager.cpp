@@ -79,7 +79,8 @@ void CControl_Manager::reinit()
 		if (!is_pure(it->second) && !is_base(it->second)) it->second->reinit();
 
 	// fill active elems
-	m_active_elems.clear();
+	m_active_elems.clear	();
+	m_active_elems.reserve	(ControlCom::eControllersCount);
 	for (it = m_control_elems.begin(); it != m_control_elems.end(); ++it)  {
 		if (it->second->is_active() && !is_locked(it->second)) {
 			m_active_elems.push_back(it->second);
@@ -88,14 +89,23 @@ void CControl_Manager::reinit()
 
 }
 
+struct predicate_remove {
+	IC bool	operator() (const CControl_Com *com) {
+		return (com == 0);
+	}
+};
+
 void CControl_Manager::update_frame()
 {
 	if (!m_object->g_Alive()) return;
 
 	for (COM_VEC_IT it = m_active_elems.begin(); it != m_active_elems.end(); ++it)  {
 		// update coms
-		(*it)->update_frame();
+		if ((*it)) (*it)->update_frame();
 	}
+
+	COM_VEC_IT it_remove = remove_if(m_active_elems.begin(), m_active_elems.end(), predicate_remove());
+	m_active_elems.erase(it_remove, m_active_elems.end());
 }
 
 void CControl_Manager::update_schedule()
@@ -104,8 +114,11 @@ void CControl_Manager::update_schedule()
 
 	for (COM_VEC_IT it = m_active_elems.begin(); it != m_active_elems.end(); ++it)  {
 		// update coms
-		(*it)->update_schedule();
+		if ((*it)) (*it)->update_schedule();
 	}
+
+	COM_VEC_IT it_remove = remove_if(m_active_elems.begin(), m_active_elems.end(), predicate_remove());
+	m_active_elems.erase(it_remove, m_active_elems.end());
 }
 
 ControlCom::EContolType CControl_Manager::com_type(CControl_Com *com)
@@ -348,11 +361,11 @@ void CControl_Manager::check_active_com(CControl_Com *com, bool b_add)
 	if (b_add){
 		if (com->is_active() && !com->ced()->is_locked()) {
 			COM_VEC_IT it = std::find(m_active_elems.begin(),m_active_elems.end(),com);
-			if (it != m_active_elems.end()) m_active_elems.push_back(com);
+			if (it == m_active_elems.end()) m_active_elems.push_back(com);
 		}
 	} else {
 		COM_VEC_IT it = std::find(m_active_elems.begin(),m_active_elems.end(),com);
-		if (it != m_active_elems.end()) m_active_elems.erase(it);
+		if (it != m_active_elems.end()) (*it) = 0; // do not remove just mark
 	}
 }
 

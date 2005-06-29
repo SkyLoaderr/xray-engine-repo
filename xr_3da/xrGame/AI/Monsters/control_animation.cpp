@@ -3,53 +3,86 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 
-
 void CControlAnimation::reinit()
 {
 	inherited::reinit			();
 
-	m_data.motion.invalidate	();
-	blend						= 0;
-	time_started				= 0;
+	m_data.global.init			();
+	m_data.legs.init			();
+	m_data.torso.init			();
 
-	default_bone_part			= smart_cast<CSkeletonAnimated*>(m_object->Visual())->LL_PartID("default");
-
-	m_data.start_animation		= false;
+	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
 }
 
 void CControlAnimation::update_frame() 
 {
-	update();
+	play();	
 }
 
-void CControlAnimation::update() 
-{
-	if (m_data.start_animation) play();
-
-	if (blend && (m_data.speed > 0)) {
-		blend->speed	= m_data.speed;
-	}
-}
-
-static void __stdcall animation_end_callback(CBlend* B)
+static void __stdcall global_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
-	controller->on_animation_end();
+	controller->on_global_animation_end();
+}
+static void __stdcall legs_animation_end_callback(CBlend* B)
+{
+	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
+	controller->on_legs_animation_end();
+}
+static void __stdcall torso_animation_end_callback(CBlend* B)
+{
+	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
+	controller->on_torso_animation_end();
 }
 
 void CControlAnimation::play() 
 {
-	VERIFY					(m_data.motion.valid());
+	if (!m_data.global.actual)
+		play_part(m_data.global,	global_animation_end_callback);
+	if (!m_data.legs.actual)
+		play_part(m_data.legs,		legs_animation_end_callback);
+	if (!m_data.torso.actual)
+		play_part(m_data.torso,		torso_animation_end_callback);
 
-	CSkeletonAnimated		*skeleton_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
-	blend					= skeleton_animated->LL_PlayCycle(default_bone_part, m_data.motion, TRUE, animation_end_callback, this);
-
-	time_started			= Device.dwTimeGlobal;
-	m_data.start_animation	= false;
+	// speed only for global
+	if (m_data.global.blend && (m_data.speed > 0)) {
+		m_data.global.blend->speed	= m_data.speed;		// TODO: make factor
+	}
 }
 
-void CControlAnimation::on_animation_end() 
+void CControlAnimation::on_global_animation_end() 
 {
-	m_man->notify			(ControlCom::eventAnimationEnd, 0);
+	m_man->notify		(ControlCom::eventAnimationEnd, 0);
 }
 
+void CControlAnimation::on_legs_animation_end() 
+{
+	m_man->notify		(ControlCom::eventLegsAnimationEnd, 0);
+}
+
+void CControlAnimation::on_torso_animation_end() 
+{
+	m_man->notify		(ControlCom::eventTorsoAnimationEnd, 0);
+}
+
+void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
+{
+	VERIFY					(part.motion.valid());
+
+	part.blend = 0;
+	for (u16 i=0; i<MAX_PARTS; ++i) {
+		CBlend		*blend = 0;
+		if (!part.blend)
+			blend	= m_skeleton_animated->LL_PlayCycle(i,part.motion, TRUE, callback, this);
+		else
+			m_skeleton_animated->LL_PlayCycle(i,part.motion,TRUE,0,0);
+
+		if (blend && !part.blend)
+			part.blend	= blend;
+	}
+	
+	part.time_started		= Device.dwTimeGlobal;
+	part.actual				= true;
+
+	m_man->notify			(ControlCom::eventAnimationStart, 0);
+}
