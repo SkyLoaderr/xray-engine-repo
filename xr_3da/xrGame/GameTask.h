@@ -95,7 +95,7 @@ class CGameTaskManager;
 
 struct SGameTaskObjective 
 {
-	SGameTaskObjective		()				{}
+	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1))	{}
 	shared_str				description;
 	ARTICLE_ID				article_id;
 	shared_str				map_location;

@@ -48,7 +48,9 @@ struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 	TASK_STATE_VECTOR	states;
 	bool	operator ==	(const TASK_ID& _task_id){return (task_id==_task_id);}
 };
-
+DEFINE_VECTOR		(TASK_DATA, GAME_TASK_VECTOR, GAME_TASK_IT);
+DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
+*/
 //for scripting access
 struct STaskObjective
 {
@@ -74,9 +76,7 @@ struct STasks{
 };
 
 
-DEFINE_VECTOR		(TASK_DATA, GAME_TASK_VECTOR, GAME_TASK_IT);
-DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
-*/
+
 
 
 typedef shared_str		TASK_ID;

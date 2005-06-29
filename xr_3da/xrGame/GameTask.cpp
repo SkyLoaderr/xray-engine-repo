@@ -232,6 +232,9 @@ bool	g_gameTaskXmlInited = false;
 
 CGameTask::CGameTask(const TASK_ID& id)
 {
+	m_ReceiveTime	= 0;
+	m_FinishTime	= 0;
+	m_Title			= NULL;
 	Load			(id);
 }
 
