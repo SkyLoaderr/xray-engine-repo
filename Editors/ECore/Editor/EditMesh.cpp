@@ -316,12 +316,12 @@ float CEditableMesh::CalculateSurfacePixelArea	(CSurface* surf, bool bMatch2Side
     IntVec& 	pol_lst = sp_it->second;
     for (int k=0; k<int(pol_lst.size()); k++){
         st_Face& F		= m_Faces[pol_lst[k]];
-        Fvector2 		e01,e02;
+        Fvector 		c,e01,e02;
         const Fvector2* tc[3];
         GetFaceTC		(pol_lst[k],tc);
-        e01.sub			(*tc[1],*tc[0]);
-        e02.sub			(*tc[2],*tc[0]);
-        area			+= e01.cross(e02).magnitude()/2.f;
+        e01.sub			(Fvector().set(tc[1]->x,tc[1]->y,0),Fvector().set(tc[0]->x,tc[0]->y,0));
+        e02.sub			(Fvector().set(tc[2]->x,tc[2]->y,0),Fvector().set(tc[0]->x,tc[0]->y,0));
+        area			+= c.crossproduct(e01,e02).magnitude()/2.f;
     }
     if (bMatch2Sided&&sp_it->first->m_Flags.is(CSurface::sf2Sided)) area*=2;
     return area;

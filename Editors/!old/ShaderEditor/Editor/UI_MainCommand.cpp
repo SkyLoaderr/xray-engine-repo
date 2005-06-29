@@ -19,6 +19,8 @@
 #include "ResourceManager.h"
 #include "igame_persistent.h"
 
+#include "TextForm.h"
+
 ECommandVec ECommands;
 BOOL 		bAllowReceiveCommand	= FALSE;
 
@@ -49,15 +51,15 @@ SESubCommand* FindCommandByCommandName(LPCSTR nm)
 {
     ECommandVec& cmds		= GetEditorCommands();
     xr_string cmd_name, sub_cmd_name;
-    _GetItem				(nm,0,cmd_name);
-    _GetItem				(nm,1,sub_cmd_name);
+    _GetItem				(nm,0,cmd_name,'.');
+    _GetItem				(nm,1,sub_cmd_name,'.');
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
     	SECommand*& CMD		= cmds[cmd_idx];
-        if (CMD&&(0==strcmp(CMD->name,cmd_name.c_str()))){
+        if (CMD&&(0==stricmp(CMD->name,cmd_name.c_str()))){
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
             	SESubCommand* SUB_CMD = CMD->sub_commands[sub_cmd_idx];
-                if (0==strcmp(SUB_CMD->desc,sub_cmd_name.c_str())) return SUB_CMD;
+                if (0==stricmp(SUB_CMD->desc,sub_cmd_name.c_str())) return SUB_CMD;
             }
 			return 			0;
         }
@@ -113,8 +115,11 @@ BOOL	LoadShortcuts(CInifile* ini)
                 LPCSTR _desc = SUB_CMD->Desc();
                 if (_desc&&_desc[0]){
                 	sprintf			(nm,"%s.%s.%d_%d",CMD->Name(),SUB_CMD->Desc(),SUB_CMD->p0,SUB_CMD->p1);
-                    if (!ini->line_exist("shortcuts",nm))
+                    _ChangeSymbol	(nm,' ','_');
+                    if (!ini->line_exist("shortcuts",nm)){
 						sprintf		(nm,"%s.\"%s\".%d_%d",CMD->Name(),SUB_CMD->Desc(),SUB_CMD->p0,SUB_CMD->p1);                    
+	                    _ChangeSymbol(nm,' ','_');
+                    }
                 }else				sprintf(nm,"%s",CMD->Name());
                 if (ini->line_exist("shortcuts",nm)) SUB_CMD->shortcut.hotkey=ini->r_u16("shortcuts",nm);
             }
@@ -133,6 +138,7 @@ BOOL	SaveShortcuts(CInifile* ini)
                 LPCSTR _desc = SUB_CMD->Desc();
                 if (_desc&&_desc[0])sprintf(nm,"%s.%s.%d_%d",CMD->Name(),SUB_CMD->Desc(),SUB_CMD->p0,SUB_CMD->p1);
                 else				sprintf(nm,"%s",CMD->Name());
+                _ChangeSymbol	(nm,' ','_');
                 ini->w_u16		("shortcuts",nm,SUB_CMD->shortcut.hotkey);
             }
         }
@@ -372,35 +378,65 @@ void 	CommandMuteSound(u32 p1, u32 p2, u32& res)
     SndLib->MuteSounds(p1);
 }
 
-void 	CommandExecuteCommandList(u32 _p1, u32 _p2, u32& res)
+void 	ExecuteCommandList(LPCSTR text)
 {
-	LPCSTR cmds_text		= (LPCSTR)_p1;
-    if (!(0==cmds_text || 0==xr_strlen(cmds_text))){
-    	IReader F			((void*)cmds_text,xr_strlen(cmds_text));
+    IReader F			((void*)text,xr_strlen(text));
+    while (!F.eof()){
         xr_string 			line, cmd, params, sp1, sp2;
-        while (!F.eof()){
-            F.r_string			(line);
-            _GetItem			(line.c_str(),0,cmd,'=');
-            _GetItem			(line.c_str(),1,params,'=');
+        F.r_string			(line);
+        line				= _Trim(line);
+        if (!line.empty()){
+            if (line[0]==';' || (line[0]=='/'&&line[1]=='/')) continue;
+            _GetItem			(line.c_str(),0,cmd,'(');
+            _GetItem			(line.c_str(),1,params,'(');
+            _GetItem			(params.c_str(),0,params,')');
             _GetItem			(params.c_str(),0,sp1,',');
             _GetItem			(params.c_str(),1,sp2,',');
-			// parse cmd
+            // parse cmd
             SESubCommand*	CMD = FindCommandByCommandName(cmd.c_str());
             // parse params
-            u32 p1=0, p2=0;
-            int r_1				= sscanf("%d",sp1.c_str(),&p1); if (0==r_1) p1=(u32)sp1.c_str();
-            int r_2				= sscanf("%d",sp2.c_str(),&p2); if (0==r_2) p2=(u32)sp2.c_str();
+            u32 				p1=CMD->p0, p2=CMD->p1;
+            int r_1				= sscanf(sp1.c_str(),"%d",&p1); 
+            if (1!=r_1){ 
+                _GetItem		(sp1.c_str(),1,sp1,'\"');
+                p1				= sp1.size()?(u32)sp1.c_str():p1;
+            }
+            int r_2				= sscanf(sp2.c_str(),"%d",&p2); 
+            if (1!=r_2){
+                _GetItem		(sp2.c_str(),1,sp2,'\"');
+                p2				= sp2.size()?(u32)sp2.c_str():p2;
+            }
             // execute command
             u32 bRes			= TRUE;
             if (CMD)			CMD->parent->command(p1,p2,bRes);
-            else				ELog.DlgMsg(mtError,"Can't find command: '%s'",cmd.c_str());
+            else{	
+            	ELog.DlgMsg(mtError,"Can't find command: '%s'",cmd.c_str());
+                break;
+            }
             if (FALSE==bRes){	
-            	ELog.DlgMsg		(mtError,"Can't execute command: '%s'",cmd.c_str());
+                ELog.DlgMsg		(mtError,"Can't execute command: '%s'",cmd.c_str());
                 break;
             }
         }
+    }
+}
+
+bool 	OnRunExecuteListClick(LPCSTR txt)
+{
+	ExecuteCommandList		(txt);
+    return true;
+}
+
+void 	CommandExecuteCommandList(u32 _p1, u32 _p2, u32& res)
+{
+	LPCSTR cmds_text		= (LPCSTR)_p1;
+    if (0==cmds_text || 0==xr_strlen(cmds_text)){
+    	AnsiString			text;
+    	if (TfrmText::RunEditor(text,"Execute command list",0,0,"Run",OnRunExecuteListClick))
+		    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Execute commands?")==mrYes)
+				ExecuteCommandList	(text.c_str());
     }else{
-    	ELog.DlgMsg			(mtError,"Invalid command line.");
+        ExecuteCommandList	(cmds_text);
     }
 }
 
@@ -455,8 +491,6 @@ void TUI::RegisterCommands()
     REGISTER_CMD_S	    (COMMAND_CREATE_SOUND_LIB,   	CommandCreateSoundLib);
     REGISTER_CMD_S	    (COMMAND_MUTE_SOUND,         	CommandMuteSound);
     REGISTER_CMD_S	    (COMMAND_EXECUTE_COMMAND_LIST, 	CommandExecuteCommandList);
-
-    ExecCommand(COMMAND_EXECUTE_COMMAND_LIST);
 }                                                                        
 
 //---------------------------------------------------------------------------
@@ -475,7 +509,7 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
     
 	bool bExec = false;
 
-    if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
+    if (Key==VK_ESCAPE) 	       COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
     return bExec;
 }
 //---------------------------------------------------------------------------

@@ -53,11 +53,17 @@ void ELibrary::OnDestroy()
 }
 //----------------------------------------------------
 
-void ELibrary::RefreshLibrary()
+void ELibrary::CleanLibrary()
 {
 	VERIFY(m_bReady);
-    OnDestroy();
-    OnCreate();
+    // remove all unused instance CEditableObject
+    for(EditObjPairIt O = m_EditObjects.begin(); O!=m_EditObjects.end(); ){
+    	if (0==O->second->m_RefCount){ 
+        	EditObjPairIt D		= O; O++;
+        	xr_delete			(D->second);
+            m_EditObjects.erase	(D);
+        }else					O++;
+    }
 }
 //----------------------------------------------------
 void ELibrary::ReloadObject(LPCSTR nm)

@@ -21,6 +21,7 @@ private:
         shared_str			detail_name;
         STextureParams  	info;
     	ESummaryTextureType type;
+        bool				bReady;
         struct SObjInfo{
         	int 			ref_count;
         	float 			area;
@@ -31,6 +32,7 @@ private:
         float				effective_area;
         float				pixel_area;
 		void 				OnHighlightClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void 				OnHighlightRatioClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
     public:
     	STextureInfo(const shared_str& fn, ESummaryTextureType t)
         {
@@ -39,6 +41,7 @@ private:
             type			= t;
         	effective_area 	= 0;
             pixel_area		= 0;
+            bReady			= false;
         }
         void		Prepare	();
         void		FillProp(PropItemVec& items, LPCSTR pref, u32& mem_use);   
@@ -58,11 +61,13 @@ private:
     	shared_str 			object_name;
         PIVec				info;
         u32					ref_count;
+        bool				bReady;
     public:
     	SObjectInfo(const shared_str& name)
         {
         	object_name		= name;
         	ref_count		= 0;
+            bReady			= false;
         }
         void		Prepare	();
         void		FillProp(PropItemVec& items, LPCSTR prvectoref);   
@@ -98,6 +103,7 @@ public:
     Fbox		bbox;
 private:
 	void 		OnFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
+public:
     void		Prepare				();
 public:
     			SSceneSummary		(){ Clear(); }

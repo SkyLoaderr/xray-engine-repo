@@ -32,7 +32,7 @@ public:
 	void 				Save				(FS_QueryMap* modif_map=0);
 
     void 				ReloadObjects		();
-    void 				RefreshLibrary		();
+    void 				CleanLibrary		();
     void 				ReloadObject		(LPCSTR name);
 
     CEditableObject*	CreateEditObject	(LPCSTR name);

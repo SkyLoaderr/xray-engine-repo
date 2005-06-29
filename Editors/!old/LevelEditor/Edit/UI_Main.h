@@ -73,7 +73,6 @@ protected:
     void PrepareRedraw	();
     void Redraw			();
 protected:
-    virtual void RealUpdateScene()=0;
     void D3D_CreateStateBlocks();
     void D3D_DestroyStateBlocks();
 public:
@@ -112,7 +111,11 @@ public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 protected:
-    virtual void	RealQuit				()=0;
+    virtual void	RealQuit		()=0;
+    virtual void 	RealUpdateScene	()=0;
+    void			RealRedrawScene	();
+    void			RealResize		();
+    void			OnFrame			();
 public:
     				TUI				();
     virtual 		~TUI			();
@@ -136,15 +139,15 @@ public:
     bool 			IsModified		();
 
     void __fastcall Idle			();
-    void 			Resize				(bool bForced=false){   m_Flags.set(flResize|flRedraw,TRUE); if (bForced) Idle(); }
+    void 			Resize				(bool bForced=false){   m_Flags.set(flResize|flRedraw,TRUE);if (bForced) RealResize(); }
     // add, remove, changing objects/scene
-    void 			UpdateScene			(bool bForced=false){	m_Flags.set(flUpdateScene,TRUE); if (bForced) Idle();}
+    void 			UpdateScene			(bool bForced=false){	m_Flags.set(flUpdateScene,TRUE); 	if (bForced) RealUpdateScene();}
     // only redraw scene
-    void 			RedrawScene			(bool bForced=false){   m_Flags.set(flRedraw,TRUE); if (bForced) Idle();}
+    void 			RedrawScene			(bool bForced=false){   m_Flags.set(flRedraw,TRUE); 		if (bForced) RealRedrawScene();}
 
     void 			SetRenderQuality	(float q)      {   Device.m_ScreenQuality = q;}
 // mouse action
-    void 			EnableSelectionRect	(bool flag );
+    void 			EnableSelectionRect	(bool flag );                                               
     void 			UpdateSelectionRect	(const Ivector2& from, const Ivector2& to );
 
     void 			MouseMultiClickCapture(bool b){m_MouseMultiClickCaptured = b;}

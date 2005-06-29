@@ -295,11 +295,7 @@ void TUI::CheckWindowPos(TForm* form)
 void TUI::PrepareRedraw()
 {
 	VERIFY(m_bReady);
-	if (m_Flags.is(flResize)){ 
-    	Device.Resize	(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
-        ExecCommand		(COMMAND_UPDATE_PROPERTIES);
-        return;
-    }
+	if (m_Flags.is(flResize)) 			RealResize();
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
@@ -401,6 +397,42 @@ void TUI::Redraw()
 	OutInfo();
 }
 //---------------------------------------------------------------------------
+void TUI::RealResize()
+{
+    Device.Resize		(m_D3DWindow->Width,m_D3DWindow->Height); 
+    m_Flags.set			(flResize,FALSE);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
+}
+void TUI::RealUpdateScene()
+{
+    Tools->UpdateProperties	(false);
+    m_Flags.set			(flUpdateScene,FALSE);
+}
+void TUI::RealRedrawScene()
+{
+    if (!psDeviceFlags.is(rsRenderRealTime)) 
+    	m_Flags.set		(flRedraw,FALSE);
+    Redraw				();         
+}
+void TUI::OnFrame()
+{
+	Device.FrameMove	();
+    SndLib->OnFrame		();
+    // tools on frame
+    if (m_Flags.is(flUpdateScene)) RealUpdateScene();
+    Tools->OnFrame		();
+	// show hint
+    ShowObjectHint		();
+	ResetBreak			();
+	// check mail
+    CheckMailslot		();
+    // OnFrame
+    TfrmImageLib::OnFrame();
+    TfrmSoundLib::OnFrame();
+    TfrmChoseItem::OnFrame();
+    // Progress
+    ProgressDraw		();
+}
 void TUI::Idle()         
 {
 	VERIFY(m_bReady);
@@ -409,31 +441,12 @@ void TUI::Idle()
     pInput->OnFrame();
     Sleep(1);
     if (ELog.in_use) return;
-	Device.FrameMove();
-    SndLib->OnFrame();
-    // tools on frame
-    if (m_Flags.is(flUpdateScene)){
-        Tools->UpdateProperties	(false);
-        RealUpdateScene			();
-    }
-    Tools->OnFrame	();
-    if (m_Flags.is(flRedraw)){
-	    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
-        Redraw				();         
-    }
-	// show hint
-    ShowObjectHint	();
-	ResetBreak		();
-	// check mail
-    CheckMailslot	();
-    // OnFrame
-    TfrmImageLib::OnFrame();
-    TfrmSoundLib::OnFrame();
-    TfrmChoseItem::OnFrame();
-    // Progress
-    ProgressDraw	();
     // test quit
     if (m_Flags.is(flNeedQuit))	RealQuit();
+
+    OnFrame			();
+
+    if (m_Flags.is(flRedraw))	RealRedrawScene();
 }
 //---------------------------------------------------------------------------
 void ResetActionToSelect()
