@@ -35,7 +35,7 @@ ICF void	accurate_normalize(float a[4])
 	}
 
 	dReal a0,a1,a2,aa0,aa1,aa2,l;
-	VERIFY (a);
+	dAASSERT (a);
 	a0 = a[0];
 	a1 = a[1];
 	a2 = a[2];
