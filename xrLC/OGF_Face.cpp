@@ -162,40 +162,81 @@ void OGF::Optimize	()
 	}
 
 	// Optimize texture coordinates
-	// 1. Calc bounds
-	Fvector2 Tdelta[8];
-	try {
-		for (u32 i=0; i<8; i++)
-		{
-			if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
-			Fvector2 Tmin,Tmax;
-			Tmin.set(flt_max,flt_max);
-			Tmax.set(flt_min,flt_min);
-			for (u32 j=0; j<vertices.size(); j++)
-			{
-				OGF_Vertex& V = vertices[j];
-				Tmin.min(V.UV[i]);
-				Tmax.max(V.UV[i]);
-			}
-			Tdelta[i].x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
-			Tdelta[i].y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
-		}
-	} catch(...) {
-		Msg	("* ERROR: optimize: std-geom : delta UV");
-	}
+	xr_vector<bool>	marker	(vertices.size(),false);
 
-	// 2. Recalc UV mapping
-	try {
-		for (u32 i=0; i<vertices.size(); i++)
-		{
-			svector<Fvector2,2>& UV = vertices[i].UV;
-			for (int j=0; j<2; j++)	{
-				if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
-				// else							UV[j].set(0,0 );
+	for (;;)	{
+		// 0. Search for the group
+		xr_vector<u32>	selection;
+		for (u32 fit=0; fit<faces.size(); fit++)	{
+			OGF_Face&	F		= faces[fit];
+			if (marker[F.v[0]])	continue;
+			if (marker[F.v[1]])	continue;
+			if (marker[F.v[2]])	continue;
+
+			// new face - if empty - just put it in, else check connectivity
+			if (selection.empty())	{
+				selection.push_back	(F.v[0]);	marker[F.v[0]]=true;
+				selection.push_back	(F.v[1]);	marker[F.v[1]]=true;
+				selection.push_back	(F.v[2]);	marker[F.v[2]]=true;
+			} else {
+				// check connectivity
+				BOOL	bConnected	=	FALSE;
+				for (u32 vid=0; vid<3; vid++)	{
+					u32		id = F.v	[vid];
+					for (u32 sid=0; sid<selection.size(); sid++)
+					{
+						if (id==selection[sid])	{
+							bConnected	= TRUE;	// this face shares at least one vertex with already selected faces
+							break;
+						}
+					}
+					if (bConnected)	break;
+				}
+				if (bConnected)		{
+					// add this face's vertices
+					if (!marker[F.v[0]])	{ selection.push_back	(F.v[0]);	marker[F.v[0]]=true; }
+					if (!marker[F.v[1]])	{ selection.push_back	(F.v[1]);	marker[F.v[1]]=true; }
+					if (!marker[F.v[2]])	{ selection.push_back	(F.v[2]);	marker[F.v[2]]=true; }
+				}
 			}
 		}
-	} catch(...) {
-		Msg	("* ERROR: optimize: std-geom : recalc UV");
+		if (selection.empty())		break;
+
+		// 1. Calc bounds
+		Fvector2 Tdelta[2];
+		try {
+			for (u32 i=0; i<2; i++)
+			{
+				if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
+				Fvector2 Tmin,Tmax;
+				Tmin.set(flt_max,flt_max);
+				Tmax.set(flt_min,flt_min);
+				for (u32 j=0; j<selection.size(); j++)
+				{
+					OGF_Vertex& V = vertices[selection[j]];
+					Tmin.min(V.UV[i]);
+					Tmax.max(V.UV[i]);
+				}
+				Tdelta[i].x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+				Tdelta[i].y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+			}
+		} catch(...) {
+			Msg	("* ERROR: optimize: std-geom : delta UV");
+		}
+
+		// 2. Recalc UV mapping
+		try {
+			for (u32 i=0; i<selection.size(); i++)
+			{
+				svector<Fvector2,2>& UV = vertices[selection[i]].UV;
+				for (int j=0; j<2; j++)	{
+					if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
+					// else							UV[j].set(0,0 );
+				}
+			}
+		} catch(...) {
+			Msg	("* ERROR: optimize: std-geom : recalc UV");
+		}
 	}
 }
 
