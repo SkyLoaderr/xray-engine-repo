@@ -109,12 +109,16 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 	if self.st.hit then
 		xr_logic.issue_event(self.object, self.st.hit, "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
+	if amount > 0 then 
+		sr_territory.issue_event(self.object, "hit_callback", obj, amount, local_direction, who, bone_index)
+	end
 end
 
 function motivator_binder:death_callback(victim, who)
 	if self.st.death then
 		xr_logic.issue_event(self.object, self.st.death, "death_callback", victim, who)
 	end
+	sr_territory.issue_event(self.object, "death_callback", victim, who)
 	self:stalker_death_impulse(victim, who)
 end
 

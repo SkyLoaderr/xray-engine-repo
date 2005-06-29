@@ -147,7 +147,11 @@
 
     <info_portion id="rostok_heli_down"></info_portion>
 
-    
+    <!-- BAR DOLG TERRITORY -->
+    <info_portion id="bar_dolg_territory_1_hit"></info_portion>
+    <info_portion id="bar_dolg_territory_2_hit"></info_portion>
+    <info_portion id="bar_dolg_territory_3_hit"></info_portion>
+    <info_portion id="bar_dolg_territory_kill"></info_portion>
     
 	<!-- ECOLOG FLASH QUEST -->
 	<info_portion id="bar_ecolog_crush_heli_start"></info_portion>
