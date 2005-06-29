@@ -152,7 +152,7 @@ function actor_binder:update(delta)
 	if self.next_restrictors_update_time < time then
 		bind_restrictor.actor_update(delta)
 
-		self.next_restrictors_update_time = time + 100
+		self.next_restrictors_update_time = time + 200
 	end
 
  	if self.bCheckStart then
