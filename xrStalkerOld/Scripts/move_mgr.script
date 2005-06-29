@@ -1,4 +1,3 @@
-
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
@@ -102,6 +101,7 @@ function move_mgr:extrapolate_callback(npc)
 	--printf("___EXTRAPOLATE_CALLBACK___")
 	self.can_use_get_current_point_index = true
 	self.current_point_init_time = time_global()
+	self.current_point_index = self.object:get_current_point_index()
 end
 
 function move_mgr:standing_on_terminal_waypoint()
@@ -124,7 +124,7 @@ end
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation, continue)
 	--printf("move_mgr:reset()")
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
@@ -219,6 +219,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- Пока этот флаг не станет true (он будет установлен в extrapolate_callback), нельзя использовать
 	-- значение, которое возвращает get_current_point_index().
 	self.can_use_get_current_point_index = false
+	self.current_point_index = nil
 	self.walk_until = time_global() + walk_min_time
 	self.run_until = time_global() + walk_min_time + run_min_time
 	self.keep_state_until = time_global()
@@ -239,10 +240,30 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.last_look_index = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
 
+	self.object:patrol_path_make_inactual()
+	self:setup_movement_by_patrol_path()
+end
+
+-- продолжить движение со следующей точки, а не с ближайшей.
+-- состояние move manager-a не сбрасывается.
+-- нужно, в частности, для кемпера.
+function move_mgr:continue()
+	printf("_bp: object '%s': continue moving", self.object:name())
+	self:setup_movement_by_patrol_path()
+end
+
+function move_mgr:setup_movement_by_patrol_path()
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_detail_path_type(move.line)
-	self.object:patrol_path_make_inactual()
-	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+
+	if self.current_point_index then
+		--printf("start point index=%d", self.current_point_index)
+		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+		self.object:set_start_point(self.current_point_index)
+	else
+		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+	end
+
 	self.state = state_moving
 
 	local is_term, idx = self:standing_on_terminal_waypoint()
@@ -302,7 +323,8 @@ function move_mgr:update()
 		if t >= self.keep_state_until then
 			self.keep_state_until = t + keep_state_min_time
 
-			local cur_pt = self.object:get_current_point_index()
+			--local cur_pt = self.object:get_current_point_index()
+			local cur_pt = self.current_point_index
 			-- self.patrol_walk здесь по идее то же самое, что вернет patrol(self.object:patrol()),
 			-- поэтому использую его для оптимизации.
 			local dist = self.object:position():distance_to(self.patrol_walk:point(cur_pt))
@@ -668,6 +690,4 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.object:name(), self.path_walk, index, self.path_look)
 	end
 end
-
--- Last modified: 2004/11/02 by Andrey Fidrya
 

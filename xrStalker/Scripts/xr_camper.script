@@ -168,7 +168,8 @@ function action_patrol:execute()
 			self.a.enemy_id = nil
 			self.enemy = nil
 			self.a.mem_enemy = nil
-			self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+			--self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+			self.move_mgr:continue()
 		end
 	end
 
@@ -243,7 +244,8 @@ function action_patrol:execute()
 					self.a.enemy_id = nil
 					self.enemy = nil
 					self.a.mem_enemy = nil
-					self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+					--self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+					self.move_mgr:continue()
 				end
 			end
 		end
@@ -264,7 +266,8 @@ function action_patrol:execute()
 				end
 				-- ÔÓ‚ÂÍ‡ Ì‡ Á‡‚Â¯ÂÌËÂ ÒÍ‡ÌËÓ‚‡ÌËˇ.
 				if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then
-					self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+					--self:reset_scheme() -- —“–¿ÿÕ≈…ÿ»… ‘≈… 
+					self.move_mgr:continue()
 				end
 			else
 				self.scantime = nil
