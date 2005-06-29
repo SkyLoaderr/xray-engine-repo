@@ -467,6 +467,7 @@ void CCar::detach_Actor()
 	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(false);
 	///Break();
 	//H_SetParent(NULL);
+	HandBreak();
 	processing_deactivate();
 #ifdef DEBUG
 	DBgClearPlots();
@@ -494,7 +495,7 @@ bool CCar::attach_Actor(CGameObject* actor)
 	PPhysicsShell()->Enable();
 	VisualUpdate();
 	processing_activate();
-
+	ReleaseHandBreak();
 //	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
 //	HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);
 	//HUD().GetUI()->UIMainIngameWnd.ShowBattery(true);
@@ -1007,7 +1008,13 @@ void CCar::StartBreaking()
 }
 void CCar::StopBreaking()
 {
-	NeutralDrive();
+	xr_vector<SWheelBreak>::iterator i,e;
+	i=m_breaking_wheels.begin();
+	e=m_breaking_wheels.end();
+	for(;i!=e;++i)
+		i->Neutral();
+	if(e_state_drive==drive) 
+		Drive();
 	b_breaks=false;
 }
 void CCar::PressRight()
@@ -1114,6 +1121,10 @@ void CCar::ReleaseForward()
 }
 void CCar::ReleaseBack()
 {
+	if(b_breaks)
+	{
+		StopBreaking();
+	}
 	if(fwp)
 	{
 		Clutch();
@@ -1227,7 +1238,10 @@ void CCar::UpdateBack()
 		e=m_breaking_wheels.end();
 		for(;i!=e;++i)
 				i->Break(k);
-		if(DriveWheelsMeanAngleRate()<m_breaks_to_back_rate)
+		Fvector v;
+		m_pPhysicsShell->get_LinearVel(v);
+		//if(DriveWheelsMeanAngleRate()<m_breaks_to_back_rate)
+		if(v.dotproduct(XFORM().k)<EPS)
 		{
 			StopBreaking();
 			DriveBack();
