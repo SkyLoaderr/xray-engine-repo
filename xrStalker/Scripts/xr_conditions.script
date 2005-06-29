@@ -10,7 +10,19 @@
 
 -- проверка состо€ни€ здоровь€ npc
 function check_health_le(actor, npc, p)
-    return p[1] and npc.health() < p[1]
+    return p[1] and npc.health < p[1]
+end
+
+-- ѕроверка на принадлежность к одной из групп
+function check_group(actor, npc, p)
+	local g = npc:group()
+	for i, v in pairs(p) do
+		if v == g then
+			printf("_bp: npc has group %d", v)
+			return true
+		end
+	end
+	return false
 end
 
 -- ѕроверка того что удар был нанесен кем-то из npc указанных в списке.
