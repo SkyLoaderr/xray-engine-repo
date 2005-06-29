@@ -472,7 +472,7 @@ void BodyCutForce(dBodyID body,float l_limit,float w_limit)
 void dMassSub(dMass *a,const dMass *b)
 {
 	int i;
-	dAASSERT (a && b);
+	VERIFY (a && b);
 	dReal denom = dRecip (a->mass-b->mass);
 	for (i=0; i<3; ++i) a->c[i] = (a->c[i]*a->mass - b->c[i]*b->mass)*denom;
 	a->mass-=b->mass;
