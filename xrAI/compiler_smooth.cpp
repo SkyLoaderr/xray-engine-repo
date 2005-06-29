@@ -265,7 +265,7 @@ void	xrSmoothNodes()
 		/*
 		mark[i]			= !!ValidNode	(NEW);
 
-		if (!mark[i])	inv_count++;
+		if (!mark[i])	inv_count++;.
 		*/
 	}
 	g_nodes = smoothed;
