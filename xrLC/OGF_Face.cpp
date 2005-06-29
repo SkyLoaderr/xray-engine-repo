@@ -162,7 +162,7 @@ void OGF::Optimize	()
 	}
 
 	// Optimize texture coordinates
-	xr_vector<bool>	marker	(vertices.size(),false);
+	xr_vector<bool>	marker; marker.assign(vertices.size(),false);
 
 	for (;;)	{
 		// 0. Search for the group
