@@ -305,7 +305,7 @@ void CGameTask::Highlight(int objective_id, bool bHighlight)
 
 	if(objective_id==0){
 		int c = 1;
-		for(;c<m_Objectives.size();++c){
+		for(;c<(int)m_Objectives.size();++c){
 			Highlight(c,bHighlight);
 		}
 	}

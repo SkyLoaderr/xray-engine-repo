@@ -134,8 +134,17 @@ u32 CStalkerAnimationManager::object_slot	() const
 MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState &body_state) const
 {
 	switch (m_weapon->STATE) {
-		case CWeapon::eReload :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+		case CWeapon::eReload : {
+			switch (m_weapon->GetReloadState()){
+				case CWeapon::eSubstateReloadBegin:			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+				case CWeapon::eSubstateReloadInProcess:		return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[1];
+				case CWeapon::eSubstateReloadEnd:			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[2];
+				default:									NODEFAULT;
+			}
+#ifdef DEBUG
+			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+#endif
+		}
 		case CWeapon::eShowing :
 			return m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0];
 		case CWeapon::eHiding :

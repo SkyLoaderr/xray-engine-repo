@@ -81,7 +81,8 @@ CObjectPropertyEvaluatorReady::CObjectPropertyEvaluatorReady(CWeapon *item, CAI_
 CObjectPropertyEvaluatorReady::_value_type CObjectPropertyEvaluatorReady::evaluate	()
 {
 	if (!m_ammo_type)
-		return		(_value_type(!m_item->IsMisfire() && m_item->GetAmmoElapsed()));
+//		return		(_value_type(!m_item->IsMisfire() && m_item->GetAmmoElapsed()));
+		return		(_value_type(!m_item->IsMisfire() && (m_item->GetAmmoElapsed() && (m_item->STATE != CWeapon::eReload))));
 	else
 		return		(_value_type(false));
 }
