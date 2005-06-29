@@ -20,7 +20,7 @@ typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
 typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
 
 //реестр заданий, полученных актером
-typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
+//typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
 
 //реестр новостей, полученных актером
 typedef CALifeRegistryWrapper<CGameNewsRegistry> GAME_NEWS_REGISTRY;
@@ -50,9 +50,11 @@ public:
 
 class CKnownContactsRegistryWrapper :	public CALifeRegistryWrapperObject<KNOWN_CONTACTS_REGISTRY> {};
 class CEncyclopediaRegistryWrapper :	public CALifeRegistryWrapperObject<ENCYCLOPEDIA_REGISTRY> {};
-class CGameTaskRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_TASK_REGISTRY> {};
+//class CGameTaskRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_TASK_REGISTRY> {};
 class CGameNewsRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_NEWS_REGISTRY> {};
 class CInfoPortionWrapper :				public CALifeRegistryWrapperObject<KNOWN_INFO_REGISTRY> {};
 class CRelationRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CRelationRegistry> > {};
 class CMapLocationWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CMapLocationRegistry> > {};
+class CGameTaskWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CGameTaskRegistry> > {};
+
 class CFogOfWarWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CFogOfWarRegistry> > {};

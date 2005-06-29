@@ -114,7 +114,7 @@ CActor::CActor() : CEntityAlive()
 
 	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
-	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
+//.	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
 	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
@@ -200,6 +200,7 @@ CActor::CActor() : CEntityAlive()
 	m_entity_condition		= NULL;
 	m_pLastHitter			= NULL;
 	m_pLastHittingWeapon	= NULL;
+	m_game_task_manager		= NULL;
 }
 
 
@@ -209,7 +210,7 @@ CActor::~CActor()
 
 	xr_delete				(contacts_registry);
 	xr_delete				(encyclopedia_registry);
-	xr_delete				(game_task_registry);
+//	xr_delete				(game_task_registry);
 	xr_delete				(game_news_registry);
 #ifdef DEBUG
 	Device.seqRender.Remove(this);

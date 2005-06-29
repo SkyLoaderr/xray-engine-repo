@@ -28,7 +28,7 @@ void CScriptTask::script_register(lua_State *L)
 				.def_readonly("name",				&CScriptTask::m_sName)
 				.def_readonly("organization",		&CScriptTask::m_sOrganization)
 				.def_readonly("quantity",			&CScriptTask::m_iQuantity)
-				.def_readonly("price",				&CScriptTask::m_iPrice),
+				.def_readonly("price",				&CScriptTask::m_iPrice)/*,
 			
 				class_<STaskObjective>("game_task_objective")
 				.def("name",						&STaskObjective::GetName)
@@ -43,6 +43,7 @@ void CScriptTask::script_register(lua_State *L)
 				class_<STasks>("game_task_list")
 				.def("get_tasks_num",				&STasks::Size)
 				.def("get_task",					&STasks::GetAt)
+*/
 		];
 }
 

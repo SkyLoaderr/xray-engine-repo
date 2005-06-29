@@ -36,6 +36,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "gamepersistent.h"
 #include "game_object_space.h"
+#include "GameTaskManager.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -657,7 +658,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	// инициализация реестров, используемых актером
 	contacts_registry->registry().init(ID());
 	encyclopedia_registry->registry().init(ID());
-	game_task_registry->registry().init(ID());
+//.	game_task_registry->registry().init(ID());
 	game_news_registry->registry().init(ID());
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
@@ -802,6 +803,8 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if (GameID() == GAME_SINGLE)
 		Level().MapManager().AddMapLocation("actor_location",ID());
 
+	m_game_task_manager	= xr_new<CGameTaskManager>();
+	GameTaskManager().initialize(ID());
 
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
@@ -811,7 +814,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
-
+	delete_data				(m_game_task_manager);
 	Level().MapManager().RemoveMapLocationByObjectID(ID());
 
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")

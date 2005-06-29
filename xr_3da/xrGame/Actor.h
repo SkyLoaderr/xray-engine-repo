@@ -55,6 +55,7 @@ struct SActorVehicleAnims;
 class  CActorCondition;
 class SndShockEffector;
 class CActorFollowerMngr;
+class CGameTaskManager;
 
 class	CActor: 
 	public CEntityAlive, 
@@ -136,15 +137,17 @@ struct SDefNewsMsg{
 public:	
 	void			AddGameNews_deffered	 (GAME_NEWS_DATA& news_data, u32 delay);
 	virtual void	AddGameNews				 (GAME_NEWS_DATA& news_data);
-	
+protected:
+	CGameTaskManager*				m_game_task_manager;
+
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 	virtual	void UpdateContact		(u16 contact_id);
 	virtual	void RunTalkDialog		(CInventoryOwner* talk_partner);
-	
+	CGameTaskManager&				GameTaskManager() const {return *m_game_task_manager;}
 	CKnownContactsRegistryWrapper	*contacts_registry;
 	CEncyclopediaRegistryWrapper	*encyclopedia_registry;
-	CGameTaskRegistryWrapper		*game_task_registry;
+//	CGameTaskRegistryWrapper		*game_task_registry;
 	CGameNewsRegistryWrapper		*game_news_registry;
 	CCharacterPhysicsSupport		*m_pPhysics_support;
 	//игровое имя 

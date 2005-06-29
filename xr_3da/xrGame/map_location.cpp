@@ -28,6 +28,7 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 
 	LoadSpot				(type, false);
 	m_refCount				= 1;
+	EnablePointer			();
 }
 
 CMapLocation::~CMapLocation()
@@ -316,9 +317,27 @@ u16	CMapLocation::AddRef()
 	return m_refCount;
 };
 
+void CMapLocation::save(IWriter &stream)
+{
+	stream.w_u16	(RefCount());
+	stream.w_stringZ(GetHint());
+	stream.w_u32	(m_flags.flags);
+}
+
+void CMapLocation::load(IReader &stream)
+{
+	u16 c =			stream.r_u16();
+	xr_string		hint;
+	stream.r_stringZ(hint);
+	SetHint			(hint.c_str());
+	SetRefCount		(c);
+	m_flags.flags	= stream.r_u32	();
+}
+
 CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 {
 	R_ASSERT(sp);
+	if(!PointerEnabled()) return NULL;
 	if(sp==m_level_spot)
 		return m_level_spot_pointer;
 	else

@@ -9,16 +9,17 @@
 #include "StdAfx.h"
 #include "UIJobItem.h"
 #include "UIXmlInit.h"
-
-//////////////////////////////////////////////////////////////////////////
+#include "../Gametask.h"
 
 const char * const		JOB_ITEM_XML		= "job_item.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
 CUIJobItem::CUIJobItem(float leftOffest)
-	:	m_id				(0),
-		articleTypeMsg		(PDA_OPEN_ENCYCLOPEDIA_ARTICLE)
+	:	/*m_id				(0),*/
+		articleTypeMsg		(PDA_OPEN_ENCYCLOPEDIA_ARTICLE),
+		m_GameTask			(NULL),
+		m_TaskObjectiveIdx	(-1)
 {
 	// Initialize internal structures
 	CUIXml uiXml;
@@ -91,6 +92,12 @@ void CUIJobItem::SetDescription(LPCSTR description)
 
 void CUIJobItem::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
+	if (this == pWnd && BUTTON_CLICKED == msg)
+	{
+		bool b = m_GameTask->Highlighted(m_TaskObjectiveIdx);
+		m_GameTask->Highlight(m_TaskObjectiveIdx, !b);
+	}
+
 	if (&UIAdditionalMaterials == pWnd && BUTTON_CLICKED == msg)
 	{
 		bool bEncHasArticle = false;
@@ -109,4 +116,31 @@ void CUIJobItem::ScalePictureXY			(float x, float y)
 	float newH = UIPicture.GetHeight();
 
 	UIPicture.MoveWndDelta(0.0f, (oldH-newH)/2.0f );
+}
+
+void CUIJobItem::SetGameTask(CGameTask* gt, int obj_idx)				
+{ 
+	m_GameTask = gt;
+	m_TaskObjectiveIdx = obj_idx;
+	if(m_GameTask->m_Objectives[m_TaskObjectiveIdx].article_id.size())
+		UIAdditionalMaterials.Show(true);
+}
+
+ARTICLE_ID CUIJobItem::GetAdditionalMaterialID	() const
+{
+	return m_GameTask->m_Objectives[m_TaskObjectiveIdx].article_id;
+}
+
+void CUIJobItem::Update()
+{
+	u32 clr;
+	if(m_GameTask->Highlighted(m_TaskObjectiveIdx))
+		clr = 0xff00ff00;
+	else
+		clr = 0xffffffff;
+
+	UICaption.SetTextColor				(clr);
+	UIDescription.SetTextColor			(clr);
+
+	inherited::Update		();
 }

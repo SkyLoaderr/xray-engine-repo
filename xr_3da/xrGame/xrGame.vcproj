@@ -7820,6 +7820,12 @@
 							<File
 								RelativePath=".\GameTaskDefs.h">
 							</File>
+							<File
+								RelativePath=".\GametaskManager.cpp">
+							</File>
+							<File
+								RelativePath=".\GametaskManager.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="encyclopedia"

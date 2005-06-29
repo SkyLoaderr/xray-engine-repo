@@ -547,6 +547,9 @@ public:
 			float			FireDirDiff			();
 			bool			isObjectVisible		(CScriptGameObject* O);
 			Fvector			CurrentVel			();
+	virtual float			GetfHealth						() const		{return CEntity::GetfHealth();};
+	virtual float			SetfHealth						(float value)	{return CEntity::SetfHealth(value);};
+
 	// Hits
 	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
 	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};

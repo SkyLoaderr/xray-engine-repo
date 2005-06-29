@@ -5,6 +5,7 @@
 #include "level.h"
 #include "relation_registry.h"
 #include "GameObject.h"
+#include "map_location.h"
 
 struct FindLocationBySpotID{
 	shared_str	spot_id;
@@ -26,22 +27,24 @@ struct FindLocationByID{
 void SLocationKey::save(IWriter &stream)
 {
 	stream.w		(&object_id,sizeof(object_id));
-	stream.w_u16	(location->RefCount());
-	stream.w_stringZ(location->GetHint());
 	stream.w_stringZ(spot_type);
+
+	location->save	(stream);
 }
 	
 void SLocationKey::load(IReader &stream)
 {
 	stream.r		(&object_id,sizeof(object_id));
-	u16 c =			stream.r_u16();
-	xr_string		hint;
-	stream.r_stringZ(hint);
+//	u16 c =			stream.r_u16();
+//	xr_string		hint;
+//	stream.r_stringZ(hint);
 	stream.r_stringZ(spot_type);
 
 	location  = xr_new<CMapLocation>(*spot_type, object_id);
-	location->SetHint(hint.c_str());
-	location->SetRefCount(c);
+	location->load	(stream);
+
+//	location->SetHint(hint.c_str());
+//	location->SetRefCount(c);
 }
 
 void SLocationKey::destroy()
@@ -152,10 +155,17 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 
 u16 CMapManager::HasMapLocation(const shared_str& spot_type, u16 id)
 {
+	CMapLocation* l = GetMapLocation(spot_type, id);
+	
+	return (l)?l->RefCount():0;
+}
+
+CMapLocation* CMapManager::GetMapLocation(const shared_str& spot_type, u16 id)
+{
 	FindLocationBySpotID key(spot_type, id);
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	if( it!=Locations().end() )
-		return (*it).location->RefCount();
+		return (*it).location;
 	
 	return 0;
 }

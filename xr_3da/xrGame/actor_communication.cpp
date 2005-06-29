@@ -34,6 +34,8 @@
 #include "game_object_space.h"
 #include "script_callback_ex.h"
 #include "encyclopedia_article.h"
+#include "GameTaskManager.h"
+#include "GameTaskdefs.h"
 
 class RemoveByIDPred
 {
@@ -103,7 +105,12 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	VERIFY(info_portion);
 
 	if(info_portion->GameTasks().empty()) return;
-
+	for(TASK_ID_VECTOR::const_iterator it = info_portion->GameTasks().begin();
+		it != info_portion->GameTasks().end(); it++)
+	{
+		GameTaskManager().GiveGameTaskToActor(*it);
+	}
+/*
 	GAME_TASK_VECTOR& task_vector = game_task_registry->registry().objects();
 
 	std::size_t old_size = task_vector.size();
@@ -111,7 +118,6 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	for(TASK_ID_VECTOR::const_iterator it = info_portion->GameTasks().begin();
 		it != info_portion->GameTasks().end(); it++)
 	{
-
 		for(GAME_TASK_VECTOR::const_iterator it1 = task_vector.begin();
 			it1 != task_vector.end(); it1++)
 		{
@@ -149,6 +155,7 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 			}
 		}
 	}
+*/
 }
 
 
@@ -222,7 +229,7 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 }
 
 
-void CActor::OnDisableInfo(INFO_ID info_id)  const
+void CActor::OnDisableInfo(INFO_ID info_id) const
 {
 //	Level().RemoveMapLocationByInfo(info_index);
 	CInventoryOwner::OnDisableInfo(info_id);

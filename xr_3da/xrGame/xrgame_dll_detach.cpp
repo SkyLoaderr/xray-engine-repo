@@ -52,8 +52,8 @@ void clean_game_globals()
 	CPhraseDialog::DeleteSharedData					();
 	CPhraseDialog::DeleteIdToIndexData				();
 
-	CGameTask::DeleteSharedData						();
-	CGameTask::DeleteIdToIndexData					();
+//	CGameTask::DeleteSharedData						();
+//	CGameTask::DeleteIdToIndexData					();
 
 
 	CCharacterInfo::DeleteSharedData				();

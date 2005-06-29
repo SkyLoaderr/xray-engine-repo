@@ -19,7 +19,7 @@
 #include "../string_table.h"
 #include "../alife_registry_wrappers.h"
 #include "../actor.h"
-
+#include "../gameTaskManager.h"
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	JOBS_XML						= "jobs.xml";
@@ -68,19 +68,18 @@ void CUIJobsWnd::Init()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIJobsWnd::AddTask(CGameTask * const task)
+void CUIJobsWnd::AddTask(CGameTask * task)
 {
 	// Code guards
 	R_ASSERT(task);
-	R_ASSERT(task->ObjectivesNum() > 0);
-	if (!task || task->ObjectivesNum() < 0)	return;
+	R_ASSERT(task->m_Objectives.size() > 0);
 
 	// Проверим на фильтре
-	if (filter != eTaskStateDummy && task->ObjectiveState(0) != filter) return;
+	if (filter != eTaskStateDummy && task->m_Objectives[0].task_state != filter) return;
 
 	CStringTable		stbl;
 	SGameTaskObjective	*obj = NULL;
-	Frect				r;
+//	Frect				r;
 	CUIJobItem			*pJobItem = NULL;
 	u32					color = 0xffffffff;
 
@@ -90,18 +89,19 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-	for (u32 i = 0; i < task->ObjectivesNum(); ++i)
+	for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 	{
 		if (i > 0) tmp = subitemsOffset;
 
-		pJobItem = xr_new<CUIJobItem>(tmp);
-		obj = &task->data()->m_Objectives[i];
-		UIList->AddItem<CUIListItem>(pJobItem);
-		r.set(obj->icon_x, obj->icon_y, obj->icon_width, obj->icon_height);
+		pJobItem = xr_new<CUIJobItem>	(tmp);
+		pJobItem->SetGameTask			(task, i);
+		obj = &task->m_Objectives[i];
+		UIList->AddItem<CUIListItem>	(pJobItem);
+//		r.set(obj->icon_rect.x1, obj->icon_rect.y1, obj->icon_rect.x2, obj->icon_rect.y2);
 
 
 		// Устанавливаем цвет иконок
-		switch (task->ObjectiveState(i))
+		switch (task->m_Objectives[i].task_state)
 		{
 		case eTaskStateCompleted:
 			color = 0xff00ff00;
@@ -117,16 +117,16 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		}
 
 		if (0 != obj->icon_texture_name.size())
-			pJobItem->SetPicture			(*obj->icon_texture_name, r, color);
+			pJobItem->SetPicture			(*obj->icon_texture_name, task->m_Objectives[i].icon_rect, color);
 
 
 		if(i == 0)
-			pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
-		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
-		if (task->ObjectiveArticle(i).size() )
+			pJobItem->SetCaption				(*stbl(task->m_Title));
+		pJobItem->SetDescription				(*stbl(task->m_Objectives[i].description));
+/*		if (task->m_Objectives[i].article_id.size() )
 		{
-			pJobItem->SetAdditionalMaterialID	(task->ObjectiveArticle(i));
-		}
+			pJobItem->SetAdditionalMaterialID	(task->m_Objectives[i].article_id);
+		}*/
 		if (i > 0) pJobItem->ScalePictureXY	(secondaryObjectiveScaleFactor,secondaryObjectiveScaleFactor);
 
 		if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
@@ -134,7 +134,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 			for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
 				it != pActor->encyclopedia_registry->registry().objects().end(); it++)
 			{
-				if (task->ObjectiveArticle(i) == it->article_id)
+				if (task->m_Objectives[i].article_id == it->article_id)
 				{
 					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 						pJobItem->SetCallbackMessage(PDA_OPEN_ENCYCLOPEDIA_ARTICLE);
@@ -155,14 +155,10 @@ void CUIJobsWnd::ReloadJobs()
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-	if (!pActor || !pActor->game_task_registry->registry().objects_ptr()) return;
-
-	for(GAME_TASK_VECTOR::const_iterator it = pActor->game_task_registry->registry().objects().begin();
-		pActor->game_task_registry->registry().objects().end() != it; ++it)
-	{
-		CGameTask task;
-		task.Init(*it);
-		AddTask(&task);
+	GameTasks& tasks = pActor->GameTaskManager().GameTasks();
+	GameTasks::iterator it =  tasks.begin();
+	for(;it!=tasks.end();++it){
+		AddTask((*it).game_task);
 	}
 }
 

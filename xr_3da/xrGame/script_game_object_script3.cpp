@@ -138,7 +138,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("get_task_state",				&CScriptGameObject::GetGameTaskState)
 		.def("set_task_state",				&CScriptGameObject::SetGameTaskState)
-		.def("get_all_tasks",				&CScriptGameObject::GetAllGameTasks)
+//		.def("get_all_tasks",				&CScriptGameObject::GetAllGameTasks)
 
 		.def("send_pda_message",			&CScriptGameObject::SendPdaMessage)
 

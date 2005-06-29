@@ -20,7 +20,7 @@ public:
 	virtual void Init();
 	virtual void Show(bool status);
 	// Добавить 1 таск
-	void AddTask(CGameTask * const task);
+	void AddTask(CGameTask * task);
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
 	// придется писать обертки над всеми управляющими функциями листбокса
 	CUIListWnd*		UIList;

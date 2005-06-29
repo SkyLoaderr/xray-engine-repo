@@ -54,13 +54,13 @@ add_to_registry_type_list(CEncyclopediaRegistry);
 #define encyclopedia_articles define_constant(CEncyclopediaRegistry) 
 #define registry_type_list save_registry_type_list(CEncyclopediaRegistry)
 
-
+/*
 //список заданий, выполняемых актером
 typedef CALifeAbstractRegistry<u16, GAME_TASK_VECTOR > CGameTaskRegistry;
 add_to_registry_type_list(CGameTaskRegistry);
 #define game_tasks define_constant(CGameTaskRegistry) 
 #define registry_type_list save_registry_type_list(CGameTaskRegistry)
-
+*/
 
 //список новостей полученных актером, состоит из новостей симуляции и сюжетных (скриптованых) новостей 
 typedef CALifeAbstractRegistry<u16, GAME_NEWS_VECTOR > CGameNewsRegistry;
@@ -79,6 +79,11 @@ add_to_registry_type_list(CSpecificCharacterRegistry);
 add_to_registry_type_list(CMapLocationRegistry);
 #define map_locations define_constant(CMapLocationRegistry) 
 #define registry_type_list save_registry_type_list(CMapLocationRegistry)
+
+//game tasks for actor
+add_to_registry_type_list(CGameTaskRegistry);
+#define map_locations define_constant(CGameTaskRegistry) 
+#define registry_type_list save_registry_type_list(CGameTaskRegistry)
 
 
 //fogOfWar

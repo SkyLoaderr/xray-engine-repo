@@ -21,6 +21,7 @@
 #include "../map_spot.h"
 #include "UIInventoryUtilities.h"
 #include "../LevelFogOfWar.h"
+#include "../map_location.h"
 
 const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях

@@ -17,6 +17,7 @@ enum ELocationFlags
 	eHideInOffline		= (1<<1),
 	eTTL				= (1<<2),
 	ePosToActor			= (1<<3),
+	ePointerEnabled		= (1<<4),
 };
 
 private:
@@ -47,6 +48,9 @@ public:
 	virtual void			destroy							();
 	virtual		LPCSTR		GetHint							()					{return *m_hint;};
 	void					SetHint							(LPCSTR hint)		{m_hint = hint;};
+	bool					PointerEnabled					()					{return !!m_flags.test(ePointerEnabled);};
+	void					EnablePointer					()					{m_flags.set(ePointerEnabled,TRUE);};
+	void					DisablePointer					()					{m_flags.set(ePointerEnabled,FALSE);};
 
 	void					UpdateMiniMap					(CUICustomMap* map);
 	void					UpdateLevelMap					(CUICustomMap* map);
@@ -61,6 +65,10 @@ public:
 	virtual		bool		Update							(); //returns actual
 	Fvector					GetLastPosition					() {return m_position_global;};
 	bool					Serializable					() const {return !!m_flags.test(eSerailizable);}
+
+	virtual void			save							(IWriter &stream);
+	virtual void			load							(IReader &stream);
+
 };
 
 class CRelationMapLocation :public CMapLocation

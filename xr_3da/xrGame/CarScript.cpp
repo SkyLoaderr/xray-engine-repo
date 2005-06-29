@@ -33,6 +33,8 @@ void CCar::script_register(lua_State *L)
 		.def("IsObjectVisible",	&CCar::isObjectVisible)
 		.def("HasWeapon",		&CCar::HasWeapon)
 		.def("CurrentVel",		&CCar::CurrentVel)
+		.def("GetfHealth",		&CCar::GetfHealth)
+		.def("SetfHealth",		&CCar::SetfHealth)
 		.def(constructor<>())
 	];
 }

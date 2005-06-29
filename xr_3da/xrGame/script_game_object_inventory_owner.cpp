@@ -534,7 +534,7 @@ LPCSTR CScriptGameObject::snd_character_profile_sect () const
 	return pInventoryOwner->SpecificCharacter().SndConfigSect();
 }
 
-
+#include "GameTaskManager.h"
 ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
@@ -542,19 +542,23 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGameTaskState available only for actor");
 		return eTaskStateDummy;
 	}
+	shared_str shared_name = task_id;
+	CGameTask* t= pActor->GameTaskManager().HasGameTask(shared_name);
+	if(NULL==t) return eTaskStateDummy;
 
-	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry->registry().objects_ptr();
-	if(!tasks) 
+	if ((std::size_t)objective_num >= t->m_Objectives.size()) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
 		return eTaskStateDummy;
-
-	for(GAME_TASK_VECTOR::const_iterator it = tasks->begin();
-			tasks->end() != it; it++)
-	{
-		if((*it).task_id == task_id) 
-			break;
 	}
+	return t->m_Objectives[objective_num].task_state;
+
+/*
+	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry->registry().objects();
+
+	shared_str _task_id = task_id;
+	GAME_TASK_VECTOR::iterator it = std::find(tasks.begin(),tasks.end(),_task_id);
 	
-	if(tasks->end() == it) 
+	if(tasks.end() == it) 
 		return eTaskStateDummy;
 
 	if ((std::size_t)objective_num >= (*it).states.size()) {
@@ -562,7 +566,8 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 		return eTaskStateDummy;
 	}
 
-	return (*it).states[objective_num];
+	return (*it).states[objective_num].m_state;
+*/
 }
 
 void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num)
@@ -573,15 +578,37 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 		return;
 	}
 
-	
-	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry->registry().objects();
-
-	for(GAME_TASK_VECTOR::iterator it = tasks.begin();
-			tasks.end() != it; it++)
-	{
-		if((*it).task_id == task_id) 
-			break;
+	shared_str shared_name = task_id;
+	CGameTask* t= pActor->GameTaskManager().HasGameTask(shared_name);
+	if(NULL==t){
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"actor does not has task", task_id);
+		return;
 	}
+
+	if ((std::size_t)objective_num >= t->m_Objectives.size()) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
+		return;
+	}
+	t->m_Objectives[objective_num].task_state = state;
+
+	if(0 == objective_num){//setState for task and all sub-tasks
+		
+		for(u32 i=0; i<t->m_Objectives.size();++i)
+			if( t->m_Objectives[i].task_state==eTaskStateInProgress )
+				t->m_Objectives[i].task_state =state;
+	}
+
+	//если мы устанавливаем финальное состояние для основного задания, то
+	//запомнить время выполнения
+	if(0 == objective_num && eTaskStateCompleted == state || eTaskStateFail == state)
+	{
+		t->m_FinishTime = Level().GetGameTime();
+	}
+
+/*
+	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry->registry().objects();
+	shared_str _task_id = task_id;
+	GAME_TASK_VECTOR::iterator it = std::find(tasks.begin(),tasks.end(),_task_id);
 
 	if (tasks.end() == it) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"actor does not has task", task_id);
@@ -592,13 +619,13 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 		return;
 	}
 
-	(*it).states[objective_num] = state;
+	(*it).states[objective_num].m_state = state;
 	
 	if(0 == objective_num){//setState for task and all sub-tasks
 		TASK_STATE_IT iit =(*it).states.begin();
 		for(;iit!=(*it).states.end();++iit)
-			if( (*iit)==eTaskStateInProgress )
-				(*iit)=state;
+			if( (*iit).m_state==eTaskStateInProgress )
+				(*iit).m_state =state;
 	}
 
 	//если мы устанавливаем финальное состояние для основного задания, то
@@ -607,6 +634,7 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	{
 		(*it).finish_time = Level().GetGameTime();
 	}
+*/
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -824,16 +852,15 @@ void  CScriptGameObject::RestoreWeapon		()
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
 	pActor->inventory().setSlotsBlocked(false);
-//	pActor->RestoreHidedWeapon(GEG_PLAYER_INVENTORYMENU_CLOSE);
 }
+
 void  CScriptGameObject::HideWeapon			()
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
 	pActor->inventory().setSlotsBlocked(true);
-//	pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);
 }
 
-
+/*
 STasks CScriptGameObject::GetAllGameTasks()
 {
 	STasks	tasks;
@@ -853,7 +880,7 @@ STasks CScriptGameObject::GetAllGameTasks()
 		tasks.m_all_tasks.resize(tasks.Size()+1);
 		STask& t = tasks.m_all_tasks.back();
 		t.m_name	= gt.Id();
-		t.m_state	= gt.m_ObjectiveStates[0];
+		t.m_state	= gt.m_ObjectiveStates[0].m_state;
 		u32 sub_num = gt.ObjectivesNum();
 		for(u32 i=0; i<sub_num;++i){
 			t.m_objectives.resize(t.m_objectives.size()+1);
@@ -863,7 +890,7 @@ STasks CScriptGameObject::GetAllGameTasks()
 		}
 	}
 	return tasks;
-};
+};*/
 
 int	CScriptGameObject::animation_slot			() const
 {
