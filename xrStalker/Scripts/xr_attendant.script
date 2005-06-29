@@ -377,6 +377,12 @@ function  add_to_binder(npc, ini, scheme, section, storage)
 
     local action = this.action_wait ("attendant_wait", storage)
     action:add_precondition     (world_property (stalker_ids.property_alive, true))
+	
+	-- added by Dima
+	if nil ~= stalker_ids.property_danger then
+		action:add_precondition	(world_property(stalker_ids.property_danger, false))
+	end
+		
     action:add_precondition     (world_property (stalker_ids.property_enemy, false))
     action:add_precondition     (world_property (properties["attendant_leader"], false))
     action:add_effect           (world_property (properties["attendant_leader"], true))

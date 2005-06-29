@@ -445,6 +445,12 @@ function add_to_binder (npc, ini, scheme, section, st)
     
     local action = this.action_position ("action_position", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+	
+	-- added by Dima
+	if nil ~= stalker_ids.property_danger then
+		action:add_precondition	(world_property(stalker_ids.property_danger, false))
+	end
+		
    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     (world_property (properties["rest"],            true))
    	action:add_precondition     (world_property (properties["on_position"],     false))
