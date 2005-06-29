@@ -24,7 +24,7 @@
 #include "../../sound_player.h"
 #include "ai_stalker_space.h"
 
-//#define USE_STEALTH
+#define USE_STEALTH
 #ifdef USE_STEALTH
 #	include "../../danger_manager.h"
 #endif

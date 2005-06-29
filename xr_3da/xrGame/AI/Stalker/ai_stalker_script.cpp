@@ -69,11 +69,15 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_enemy_can_be_seen",				StalkerDecisionSpace::eWorldPropertyEnemyCanBeSeen),
 				luabind::value("property_enemy_detoured",					StalkerDecisionSpace::eWorldPropertyEnemyDetoured),
 
-				luabind::value("property_danger_ricochet",					StalkerDecisionSpace::eWorldPropertyDangerRicochet),
-				luabind::value("property_danger_hit",						StalkerDecisionSpace::eWorldPropertyDangerHit),
-				luabind::value("property_danger_death",						StalkerDecisionSpace::eWorldPropertyDangerDeath),
-				luabind::value("property_danger_attack",					StalkerDecisionSpace::eWorldPropertyDangerAttack),
-				luabind::value("property_danger_corpse",					StalkerDecisionSpace::eWorldPropertyDangerCorpse),
+				luabind::value("property_danger_unknown",					StalkerDecisionSpace::eWorldPropertyDangerUnknown),
+				luabind::value("property_danger_in_direction",				StalkerDecisionSpace::eWorldPropertyDangerInDirection),
+				luabind::value("property_danger_grenade",					StalkerDecisionSpace::eWorldPropertyDangerGrenade),
+				luabind::value("property_danger_by_sound",					StalkerDecisionSpace::eWorldPropertyDangerBySound),
+
+				luabind::value("property_cover_actual",						StalkerDecisionSpace::eWorldPropertyCoverActual),
+				luabind::value("property_cover_reached",					StalkerDecisionSpace::eWorldPropertyCoverReached),
+				luabind::value("property_looked_around",					StalkerDecisionSpace::eWorldPropertyLookedAround),
+				luabind::value("property_grenade_exploded",					StalkerDecisionSpace::eWorldPropertyGrenadeExploded),
 
 				luabind::value("property_squad_action",						StalkerDecisionSpace::eWorldPropertySquadAction),
 				luabind::value("property_squad_goal",						StalkerDecisionSpace::eWorldPropertySquadAction),
@@ -112,12 +116,25 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_detour_enemy",						StalkerDecisionSpace::eWorldOperatorDetourEnemy),
 				luabind::value("action_search_enemy",						StalkerDecisionSpace::eWorldOperatorSearchEnemy),
 
-				luabind::value("action_danger_ricochet",					StalkerDecisionSpace::eWorldOperatorDangerRicochet),
-				luabind::value("action_danger_shot",						StalkerDecisionSpace::eWorldOperatorDangerShot),
-				luabind::value("action_danger_hit",							StalkerDecisionSpace::eWorldOperatorDangerHit),
-				luabind::value("action_danger_death",						StalkerDecisionSpace::eWorldOperatorDangerDeath),
-				luabind::value("action_danger_attack",						StalkerDecisionSpace::eWorldOperatorDangerAttack),
-				luabind::value("action_danger_corpse",						StalkerDecisionSpace::eWorldOperatorDangerCorpse),
+				luabind::value("action_danger_unknown_planner",				StalkerDecisionSpace::eWorldOperatorDangerUnknownPlanner),
+				luabind::value("action_danger_in_direction_planner",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionPlanner),
+				luabind::value("action_danger_grenade_planner",				StalkerDecisionSpace::eWorldOperatorDangerGrenadePlanner),
+				luabind::value("action_danger_by_sound_planner",			StalkerDecisionSpace::eWorldOperatorDangerBySoundPlanner),
+
+				luabind::value("action_danger_unknown_take_cover",			StalkerDecisionSpace::eWorldOperatorDangerUnknownTakeCover),
+				luabind::value("action_danger_unknown_look_around",			StalkerDecisionSpace::eWorldOperatorDangerUnknownLookAround),
+				luabind::value("action_danger_unknown_search",				StalkerDecisionSpace::eWorldOperatorDangerUnknownSearchEnemy),
+
+				luabind::value("action_danger_in_direction_take_cover",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionTakeCover),
+				luabind::value("action_danger_in_direction_look_out",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionLookOut),
+				luabind::value("action_danger_in_direction_look_around",	StalkerDecisionSpace::eWorldOperatorDangerInDirectionLookAround),
+				luabind::value("action_danger_in_direction_search",			StalkerDecisionSpace::eWorldOperatorDangerInDirectionSearchEnemy),
+
+				luabind::value("action_danger_grenade_take_cover",			StalkerDecisionSpace::eWorldOperatorDangerGrenadeTakeCover),
+				luabind::value("action_danger_grenade_wait_for_explosion",	StalkerDecisionSpace::eWorldOperatorDangerGrenadeWaitForExplosion),
+				luabind::value("action_danger_grenade_take_cover_after_explosion",	StalkerDecisionSpace::eWorldOperatorDangerGrenadeTakeCoverAfterExplosion),
+				luabind::value("action_danger_grenade_look_around",			StalkerDecisionSpace::eWorldOperatorDangerGrenadeLookAround),
+				luabind::value("action_danger_grenade_search",				StalkerDecisionSpace::eWorldOperatorDangerGrenadeSearch),
 
 				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction),
 				luabind::value("action_death_planner",						StalkerDecisionSpace::eWorldOperatorDeathPlanner),
@@ -125,7 +142,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_alife_dialog_planner",				StalkerDecisionSpace::eWorldOperatorALifeDialogPlanner),
 				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
 				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorAnomalyPlanner),
-				luabind::value("action_guard_planner",						StalkerDecisionSpace::eWorldOperatorGuardPlanner),
+				luabind::value("action_danger_planner",						StalkerDecisionSpace::eWorldOperatorDangerPlanner),
 				luabind::value("action_post_combat_wait",					StalkerDecisionSpace::eWorldOperatorPostCombatWait),
 				luabind::value("action_script",								StalkerDecisionSpace::eWorldOperatorScript)
 			]

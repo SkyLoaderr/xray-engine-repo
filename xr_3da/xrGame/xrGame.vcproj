@@ -1310,6 +1310,19 @@
 						RelativePath=".\step_manager_defs.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="MovementCoordinator"
+					Filter="">
+					<File
+						RelativePath=".\movement_coordinator.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_coordinator.h">
+					</File>
+					<File
+						RelativePath=".\movement_coordinator_inline.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ACover"
@@ -1477,6 +1490,9 @@
 						<Filter
 							Name="danger_explosive"
 							Filter="">
+							<File
+								RelativePath=".\danger_explosive.cpp">
+							</File>
 							<File
 								RelativePath=".\danger_explosive.h">
 							</File>
@@ -4002,6 +4018,116 @@
 										<File
 											RelativePath=".\stalker_combat_actions.h">
 										</File>
+										<File
+											RelativePath=".\stalker_combat_actions_inline.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="danger"
+									Filter="">
+									<File
+										RelativePath=".\stalker_danger_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_danger_planner.h">
+									</File>
+									<File
+										RelativePath=".\stalker_danger_planner_inline.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<Filter
+											Name="unknown"
+											Filter="">
+											<File
+												RelativePath=".\stalker_danger_unknown_planner.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_danger_unknown_planner.h">
+											</File>
+											<Filter
+												Name="actions"
+												Filter="">
+												<File
+													RelativePath=".\stalker_danger_unknown_actions.cpp">
+												</File>
+												<File
+													RelativePath=".\stalker_danger_unknown_actions.h">
+												</File>
+											</Filter>
+										</Filter>
+										<Filter
+											Name="in_direction"
+											Filter="">
+											<File
+												RelativePath=".\stalker_danger_in_direction_planner.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_danger_in_direction_planner.h">
+											</File>
+											<Filter
+												Name="actions"
+												Filter="">
+												<File
+													RelativePath=".\stalker_danger_in_direction_actions.cpp">
+												</File>
+												<File
+													RelativePath=".\stalker_danger_in_direction_actions.h">
+												</File>
+											</Filter>
+										</Filter>
+										<Filter
+											Name="grenade"
+											Filter="">
+											<File
+												RelativePath=".\stalker_danger_grenade_planner.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_danger_grenade_planner.h">
+											</File>
+											<Filter
+												Name="actions"
+												Filter="">
+												<File
+													RelativePath=".\stalker_danger_grenade_actions.cpp">
+												</File>
+												<File
+													RelativePath=".\stalker_danger_grenade_actions.h">
+												</File>
+											</Filter>
+										</Filter>
+										<Filter
+											Name="by_sound"
+											Filter="">
+											<File
+												RelativePath=".\stalker_danger_by_sound_planner.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_danger_by_sound_planner.h">
+											</File>
+											<Filter
+												Name="actions"
+												Filter="">
+												<File
+													RelativePath=".\stalker_danger_by_sound_actions.cpp">
+												</File>
+												<File
+													RelativePath=".\stalker_danger_by_sound_actions.h">
+												</File>
+											</Filter>
+										</Filter>
+									</Filter>
+									<Filter
+										Name="properties"
+										Filter="">
+										<File
+											RelativePath=".\stalker_danger_property_evaluators.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_danger_property_evaluators.h">
+										</File>
 									</Filter>
 								</Filter>
 								<Filter
@@ -4021,32 +4147,6 @@
 										</File>
 										<File
 											RelativePath=".\stalker_death_actions.h">
-										</File>
-									</Filter>
-								</Filter>
-								<Filter
-									Name="guard"
-									Filter="">
-									<File
-										RelativePath=".\stalker_guard_planner.cpp">
-									</File>
-									<File
-										RelativePath=".\stalker_guard_planner.h">
-									</File>
-									<File
-										RelativePath=".\stalker_guard_planner_inline.h">
-									</File>
-									<Filter
-										Name="actions"
-										Filter="">
-										<File
-											RelativePath=".\stalker_guard_actions.cpp">
-										</File>
-										<File
-											RelativePath=".\stalker_guard_actions.h">
-										</File>
-										<File
-											RelativePath=".\stalker_guard_actions_inline.h">
 										</File>
 									</Filter>
 								</Filter>
