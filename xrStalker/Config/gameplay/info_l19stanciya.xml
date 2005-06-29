@@ -1,1 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+	<info_portion id="aes_desant_wave1"></info_portion>
+	<info_portion id="aes_desant_wave2"></info_portion>
+	<info_portion id="aes_desant_wave3"></info_portion>
+</game_information_portions>
