@@ -4,7 +4,7 @@
 #include "control_manager.h"
 #include "monster_velocity_space.h"
 
-#define ROTATION_JUMP_DELAY		0
+#define ROTATION_JUMP_DELAY		5000
 #define CHECK_YAW				120 * PI / 180
 
 void CControlRotationJump::reinit()
