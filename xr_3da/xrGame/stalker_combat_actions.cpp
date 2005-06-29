@@ -39,10 +39,9 @@ typedef CStalkerActionBase::_edge_value_type _edge_value_type;
 // CStalkerActionCombatBase
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionCombatBase::CStalkerActionCombatBase	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
+CStalkerActionCombatBase::CStalkerActionCombatBase	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited	(object,action_name)
 {
-	m_last_cover	= last_cover;
 }
 
 void CStalkerActionCombatBase::initialize			()
@@ -61,18 +60,12 @@ void CStalkerActionCombatBase::finalize				()
 	object().sound().set_sound_mask	(0);
 }
 
-IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
-{
-	*m_last_cover			= last_cover;
-	object().agent_manager().member().member(m_object).cover(last_cover);
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionGetItemToKill
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(last_cover,object,action_name)
+CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
 }
 
@@ -118,8 +111,8 @@ void CStalkerActionGetItemToKill::execute	()
 // CStalkerActionMakeItemKilling
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(last_cover,object,action_name)
+CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
 }
 
@@ -168,8 +161,8 @@ void CStalkerActionMakeItemKilling::execute	()
 // CStalkerActionRetreatFromEnemy
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionRetreatFromEnemy::CStalkerActionRetreatFromEnemy	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(last_cover,object,action_name)
+CStalkerActionRetreatFromEnemy::CStalkerActionRetreatFromEnemy	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
 }
 
@@ -207,10 +200,10 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	object().movement().set_mental_state			(eMentalStatePanic);
 
 	object().m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false));
+	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false,false));
 	if (!point) {
 		object().m_ce_far->setup		(mem_object.m_object_params.m_position,0.f,300.f);
-		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false));
+		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false,false));
 	}
 
 	if (point) {
@@ -243,8 +236,8 @@ _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState 
 // CStalkerActionGetReadyToKill
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionGetReadyToKill::CStalkerActionGetReadyToKill(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionGetReadyToKill::CStalkerActionGetReadyToKill(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -296,7 +289,10 @@ void CStalkerActionGetReadyToKill::execute		()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 		object().movement().set_movement_type		(eMovementTypeRun);
-		object().brain().affect_cover				(false);
+		if (object().movement().path_completed() && object().Position().distance_to(point->position()) < 1.f)
+			object().brain().affect_cover			(true);
+		else
+			object().brain().affect_cover			(false);
 	}
 	else {
 		object().brain().affect_cover				(true);
@@ -315,8 +311,8 @@ void CStalkerActionGetReadyToKill::execute		()
 // CStalkerActionKillEnemy
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionKillEnemy::CStalkerActionKillEnemy(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionKillEnemy::CStalkerActionKillEnemy(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -379,8 +375,8 @@ void CStalkerActionKillEnemy::execute			()
 // CStalkerActionTakeCover
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionTakeCover::CStalkerActionTakeCover(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionTakeCover::CStalkerActionTakeCover(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -430,12 +426,17 @@ void CStalkerActionTakeCover::execute		()
 	}
 
 	if (point) {
-		last_cover						(point);
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
+		if (object().movement().path_completed() && object().Position().distance_to(point->position()) < 1.f)
+			object().brain().affect_cover			(true);
+		else
+			object().brain().affect_cover			(false);
 	}
-	else
+	else {
 		object().movement().set_nearest_accessible_position	();
+		object().brain().affect_cover				(true);
+	}
 
 	if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().can_kill_enemy())
 		object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon());
@@ -455,8 +456,8 @@ void CStalkerActionTakeCover::execute		()
 // CStalkerActionLookOut
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionLookOut::CStalkerActionLookOut(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionLookOut::CStalkerActionLookOut(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -523,10 +524,10 @@ void CStalkerActionLookOut::execute		()
 
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_close->setup			(position,10.f,170.f,10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
+	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
 	if (!point || (object().movement().desired_position().similar(object().Position()) && object().movement().path_completed())) {
 		object().m_ce_close->setup		(position,10.f,170.f,10.f);
-		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
+		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
 	}
 
 	if (point) {
@@ -544,8 +545,8 @@ void CStalkerActionLookOut::execute		()
 // CStalkerActionHoldPosition
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionHoldPosition::CStalkerActionHoldPosition(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionHoldPosition::CStalkerActionHoldPosition(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -597,8 +598,8 @@ void CStalkerActionHoldPosition::execute		()
 // CStalkerActionDetourEnemy
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionDetourEnemy::CStalkerActionDetourEnemy(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionDetourEnemy::CStalkerActionDetourEnemy(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -614,7 +615,7 @@ void CStalkerActionDetourEnemy::initialize		()
 	object().movement().set_movement_type		(eMovementTypeRun);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
-	last_cover									(0);
+	object().agent_manager().member().member(m_object).cover(0);
 }
 
 void CStalkerActionDetourEnemy::finalize		()
@@ -662,8 +663,8 @@ void CStalkerActionDetourEnemy::execute			()
 // CStalkerActionSearchEnemy
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionSearchEnemy::CStalkerActionSearchEnemy(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited(last_cover,object,action_name)
+CStalkerActionSearchEnemy::CStalkerActionSearchEnemy(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
 {
 }
 
@@ -679,7 +680,7 @@ void CStalkerActionSearchEnemy::initialize		()
 	object().movement().set_movement_type			(eMovementTypeRun);
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
-	last_cover							(0);
+	object().agent_manager().member().member(m_object).cover(0);
 }
 
 void CStalkerActionSearchEnemy::finalize		()
@@ -723,8 +724,8 @@ void CStalkerActionSearchEnemy::execute			()
 // CStalkerActionPostCombatWait
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionPostCombatWait::CStalkerActionPostCombatWait	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(last_cover, object, action_name)
+CStalkerActionPostCombatWait::CStalkerActionPostCombatWait	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
 {
 }
 
@@ -755,8 +756,8 @@ void CStalkerActionPostCombatWait::finalize			()
 // CStalkerActionGetDistance
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionGetDistance::CStalkerActionGetDistance	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(last_cover, object, action_name)
+CStalkerActionGetDistance::CStalkerActionGetDistance	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
 {
 }
 

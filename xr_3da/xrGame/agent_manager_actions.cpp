@@ -155,3 +155,48 @@ void CAgentManagerActionKillEnemy::execute			()
 #endif
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionReactOnDanger
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerActionReactOnDanger::CAgentManagerActionReactOnDanger	(CAgentManager *object, LPCSTR action_name) :
+	inherited		(object,action_name)
+{
+}
+
+void CAgentManagerActionReactOnDanger::initialize		()
+{
+	m_level_time					= Device.dwTimeGlobal + 10000;
+	m_object->location().clear		();
+}
+
+void CAgentManagerActionReactOnDanger::finalize			()
+{
+}
+
+void CAgentManagerActionReactOnDanger::execute			()
+{
+	m_object->explosive().react_on_explosives	();
+	m_object->corpse().react_on_member_death	();
+
+	CAgentMemberManager::iterator	I = m_object->member().members().begin();
+	CAgentMemberManager::iterator	E = m_object->member().members().end();
+	for ( ; I != E; ++I) {
+#ifndef TEST
+		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
+#else
+		if ((*I).object().enemy())
+			Msg						("%6d : %s vs %s",Device.dwTimeGlobal,*(*I).object().cName(),*(*I).object().enemy()->cName());
+		if (m_level_time >= Device.dwTimeGlobal) {
+			(*I).order_type			(AgentManager::eOrderTypeAction);
+			(*I).action				(CSetupAction(0.f,0));
+			(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
+			if ((*I).object().enemy())
+			(*I).action().sight		(CSightAction((*I).object().enemy(),true));
+		}
+		else
+			(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+#endif
+	}
+}

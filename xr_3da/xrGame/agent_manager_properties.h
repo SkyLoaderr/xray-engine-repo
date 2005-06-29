@@ -43,4 +43,17 @@ public:
 	virtual _value_type	evaluate						();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerPropertyEvaluatorDanger
+//////////////////////////////////////////////////////////////////////////
+
+class CAgentManagerPropertyEvaluatorDanger : public CAgentManagerPropertyEvaluator {
+protected:
+	typedef CAgentManagerPropertyEvaluator inherited;
+
+public:
+	IC					CAgentManagerPropertyEvaluatorDanger	(CAgentManager *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate								();
+};
+
 #include "agent_manager_properties_inline.h"

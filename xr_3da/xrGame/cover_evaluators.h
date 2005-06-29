@@ -41,6 +41,7 @@ public:
 	IC		bool		accessible			(const Fvector &position);
 	IC		bool		actual				() const;
 	IC		CRestrictedObject &object		() const;
+	IC		void		invalidate			();
 };
 
 //////////////////////////////////////////////////////////////////////////

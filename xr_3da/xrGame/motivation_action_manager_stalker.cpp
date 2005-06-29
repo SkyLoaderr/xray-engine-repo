@@ -10,6 +10,7 @@
 #include "motivation_action_manager_stalker.h"
 #include "stalker_motivations.h"
 #include "stalker_property_evaluators.h"
+#include "stalker_danger_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 #include "script_game_object.h"
@@ -17,7 +18,7 @@
 #include "stalker_anomaly_planner.h"
 #include "stalker_combat_planner.h"
 #include "stalker_death_planner.h"
-#include "stalker_guard_planner.h"
+#include "stalker_danger_planner.h"
 #include "stalker_squad_action.h"
 
 //#define GOAP_DEBUG
@@ -177,7 +178,7 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(planner,eWorldPropertyAlive,			true);
 	add_condition			(planner,eWorldPropertyEnemy,			false);
 	add_condition			(planner,eWorldPropertyAnomaly,			false);
-//	add_condition			(planner,eWorldPropertyDanger,			false);
+	add_condition			(planner,eWorldPropertyDanger,			false);
 	add_condition			(planner,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(planner,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorALifePlanner,planner);
@@ -189,13 +190,13 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(planner,eWorldPropertyEnemy,			false);
 	add_operator			(eWorldOperatorCombatPlanner,planner);
 
-	planner					= xr_new<CStalkerGuardPlanner>(m_object,"guard_planner");
+	planner					= xr_new<CStalkerDangerPlanner>(m_object,"danger_planner");
 	add_condition			(planner,eWorldPropertyAlive,			true);
 	add_condition			(planner,eWorldPropertyEnemy,			false);
 	add_condition			(planner,eWorldPropertyAnomaly,			false);
 	add_condition			(planner,eWorldPropertyDanger,			true);
 	add_effect				(planner,eWorldPropertyDanger,			false);
-	add_operator			(eWorldOperatorGuardPlanner,planner);
+	add_operator			(eWorldOperatorDangerPlanner,planner);
 
 	planner					= xr_new<CStalkerAnomalyPlanner>(m_object,"anomaly_planner");
 	add_condition			(planner,eWorldPropertyAlive,		true);

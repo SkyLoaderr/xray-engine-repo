@@ -29,6 +29,7 @@
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
 #include "item_manager.h"
+#include "danger_manager.h"
 #include "memory_space.h"
 #include "actor.h"
 #include "../skeletonanimated.h"
@@ -217,6 +218,21 @@ CScriptGameObject *CScriptGameObject::GetBestEnemy()
 	if (monster->memory().enemy().selected())
 		return				(monster->memory().enemy().selected()->lua_game_object());
 	return					(0);
+}
+
+CScriptGameObject *CScriptGameObject::GetBestDanger()
+{
+	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(&object());
+	if (!monster)
+		return				(0);
+
+	if (!monster->memory().danger().selected())
+		return				(0);
+
+	if (!monster->memory().danger().selected()->object())
+		return				(0);
+
+	return					(monster->memory().danger().selected()->object()->lua_game_object());
 }
 
 CScriptGameObject *CScriptGameObject::GetBestItem()

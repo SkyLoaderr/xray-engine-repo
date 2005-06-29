@@ -22,6 +22,7 @@ namespace AgentManager {
 		ePropertyOrders			= u32(0),
 		ePropertyItem,
 		ePropertyEnemy,
+		ePropertyDanger,
 
 		ePropertyScript,
 		ePropertyDummy			= u32(-1),
@@ -31,6 +32,7 @@ namespace AgentManager {
 		eOperatorNoOrders		= u32(0),
 		eOperatorGatherItem,
 		eOperatorKillEnemy,
+		eOperatorReactOnDanger,
 
 		eOperatorScript,
 		eOperatorDummy			= u32(-1),

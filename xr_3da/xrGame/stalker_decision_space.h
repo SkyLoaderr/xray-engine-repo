@@ -67,12 +67,15 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyEnemyDetoured,
 		eWorldPropertyPureEnemy,
 
-		eWorldPropertyDangerRicochet,
-		eWorldPropertyDangerShot,
-		eWorldPropertyDangerHit,
-		eWorldPropertyDangerDeath,
-		eWorldPropertyDangerAttack,
-		eWorldPropertyDangerCorpse,
+		eWorldPropertyDangerUnknown,
+		eWorldPropertyDangerInDirection,
+		eWorldPropertyDangerGrenade,
+		eWorldPropertyDangerBySound,
+
+		eWorldPropertyCoverActual,
+		eWorldPropertyCoverReached,
+		eWorldPropertyLookedAround,
+		eWorldPropertyGrenadeExploded,
 
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
@@ -126,13 +129,26 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorDetourEnemy,
 		eWorldOperatorSearchEnemy,
 
-// guard
-		eWorldOperatorDangerRicochet,
-		eWorldOperatorDangerShot,
-		eWorldOperatorDangerHit,
-		eWorldOperatorDangerDeath,
-		eWorldOperatorDangerAttack,
-		eWorldOperatorDangerCorpse,
+// danger
+		eWorldOperatorDangerUnknownPlanner,
+		eWorldOperatorDangerInDirectionPlanner,
+		eWorldOperatorDangerGrenadePlanner,
+		eWorldOperatorDangerBySoundPlanner,
+
+		eWorldOperatorDangerUnknownTakeCover,
+		eWorldOperatorDangerUnknownLookAround,
+		eWorldOperatorDangerUnknownSearchEnemy,
+
+		eWorldOperatorDangerInDirectionTakeCover,
+		eWorldOperatorDangerInDirectionLookOut,
+		eWorldOperatorDangerInDirectionLookAround,
+		eWorldOperatorDangerInDirectionSearchEnemy,
+
+		eWorldOperatorDangerGrenadeTakeCover,
+		eWorldOperatorDangerGrenadeWaitForExplosion,
+		eWorldOperatorDangerGrenadeTakeCoverAfterExplosion,
+		eWorldOperatorDangerGrenadeLookAround,
+		eWorldOperatorDangerGrenadeSearch,
 
 // global
 		eWorldOperatorPostCombatWait,
@@ -142,7 +158,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorALifeDialogPlanner,
 		eWorldOperatorCombatPlanner,
 		eWorldOperatorAnomalyPlanner,
-		eWorldOperatorGuardPlanner,
+		eWorldOperatorDangerPlanner,
 
 // script
 		eWorldOperatorScript,

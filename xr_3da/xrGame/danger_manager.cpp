@@ -133,28 +133,36 @@ float CDangerManager::do_evaluate	(const CDangerObject &object) const
 {
 	float					result = 0.f;
 	switch (object.type()) {
-		case CDangerObject::eDangerTypeRicochet : { // I perceived bullet(knife) ricochet
+		case CDangerObject::eDangerTypeBulletRicochet : { // I perceived bullet(knife) ricochet
 			result			+= 3000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeShot : { // someone is shooting
+		case CDangerObject::eDangerTypeAttackSound : { // someone is shooting
 			result			+= 2500.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeHit : { // someone is hit
+		case CDangerObject::eDangerTypeEntityAttacked : { // someone is hit
 			result			+= 2000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeDeath : { // someone becomes dead
+		case CDangerObject::eDangerTypeEntityDeath : { // someone becomes dead
+			result			+= 3000.f;
+			break;
+		}
+		case CDangerObject::eDangerTypeFreshEntityCorpse : { // I see a corpse
+			result			+= 2250.f;
+			break;
+		}
+		case CDangerObject::eDangerTypeAttacked : { // someone is attacked
+			result			+= 2000.f;
+			break;
+		}
+		case CDangerObject::eDangerTypeGrenade : { // grenade to explode nearby
 			result			+= 1000.f;
 			break;
 		}
-		case CDangerObject::eDangerTypeAttack : { // someone is attacked
-			result			+= 2000.f;
-			break;
-		}
-		case CDangerObject::eDangerTypeCorpse : { // I see a corpse
-			result			+= 2250.f;
+		case CDangerObject::eDangerTypeEnemySound : { // grenade to explode nearby
+			result			+= 1000.f;
 			break;
 		}
 		default : NODEFAULT;
@@ -172,7 +180,7 @@ void CDangerManager::add			(const CVisibleObject &object)
 
 	const CEntityAlive		*obj = smart_cast<const CEntityAlive*>(object.m_object);
 	if (obj && !obj->g_Alive() && obj->killer_id() != ALife::_OBJECT_ID(-1)) {
-		add					(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeCorpse,CDangerObject::eDangerPerceiveTypeVisual));
+		add					(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeFreshEntityCorpse,CDangerObject::eDangerPerceiveTypeVisual));
 		return;
 	}
 }
@@ -185,22 +193,22 @@ void CDangerManager::add			(const CSoundObject &object)
 	const CEntityAlive		*obj = smart_cast<const CEntityAlive*>(object.m_object);
 	
 	if (object.m_sound_type & SOUND_TYPE_BULLET_HIT) {
-		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeRicochet,CDangerObject::eDangerPerceiveTypeSound));
+		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeBulletRicochet,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 
 	if (object.m_sound_type & SOUND_TYPE_WEAPON_SHOOTING) {
-		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeShot,CDangerObject::eDangerPerceiveTypeSound));
+		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeAttackSound,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 
 	if (object.m_sound_type & SOUND_TYPE_INJURING) {
-		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeHit,CDangerObject::eDangerPerceiveTypeSound));
+		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeEntityAttacked,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 
 	if (object.m_sound_type & SOUND_TYPE_DYING) {
-		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeDeath,CDangerObject::eDangerPerceiveTypeSound));
+		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeEntityDeath,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 }
@@ -213,8 +221,11 @@ void CDangerManager::add			(const CHitObject &object)
 	if (fis_zero(object.m_amount))
 		return;
 
+	if (object.m_object->ID() == m_object->ID())
+		return;
+
 	const CEntityAlive		*obj = smart_cast<const CEntityAlive*>(object.m_object);
-	add						(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeAttack,CDangerObject::eDangerPerceiveTypeHit));
+	add						(CDangerObject(obj,obj->Position(),object.m_level_time,CDangerObject::eDangerTypeAttacked,CDangerObject::eDangerPerceiveTypeHit));
 }
 
 void CDangerManager::add			(const CDangerObject &object)

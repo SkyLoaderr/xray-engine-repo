@@ -139,6 +139,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("set_queue_size",				&CScriptGameObject::SetQueueSize)
 		.def("best_hit",					&CScriptGameObject::GetBestHit)
 		.def("best_sound",					&CScriptGameObject::GetBestSound)
+		.def("best_danger",					&CScriptGameObject::GetBestDanger)
 		.def("best_enemy",					&CScriptGameObject::GetBestEnemy)
 		.def("best_item",					&CScriptGameObject::GetBestItem)
 		.def("action_count",				&CScriptGameObject::GetActionCount)

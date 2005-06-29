@@ -289,22 +289,6 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorDangers
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerPropertyEvaluatorDangers : public CStalkerPropertyEvaluator {
-protected:
-	typedef CStalkerPropertyEvaluator inherited;
-
-private:
-	CDangerObject::EDangerType m_type;
-
-public:
-						CStalkerPropertyEvaluatorDangers	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "", const CDangerObject::EDangerType &type = CDangerObject::eDangerTypeDummy);
-	virtual _value_type	evaluate							();
-};
-
-//////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorEnemyCanBeSeen
 //////////////////////////////////////////////////////////////////////////
 

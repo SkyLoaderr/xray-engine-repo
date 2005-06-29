@@ -33,6 +33,10 @@ protected:
 	IC		bool					critical_point		(LevelGraph::CVertex *v, u32 index, u32 index0, u32 index1);
 	IC		bool					critical_cover		(u32 index);
 
+private:
+	template <typename _evaluator_type, typename _restrictor_type>
+	IC		bool					inertia				(float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const;
+
 public:
 									CCoverManager		();
 	virtual							~CCoverManager		();
@@ -46,6 +50,7 @@ public:
 	IC		CCoverPoint				*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator) const;
 	IC		bool					operator()			(const CCoverPoint *) const;
 	IC		float					weight				(const CCoverPoint *) const;
+	IC		void					finalize			(const CCoverPoint *) const;
 };
 
 #include "cover_manager_inline.h"

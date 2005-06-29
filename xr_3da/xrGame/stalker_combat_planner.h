@@ -22,7 +22,6 @@ private:
 	typedef CActionPlannerActionScript<CAI_Stalker> inherited;
 
 private:
-	CCoverPoint			*m_last_cover;
 	u32					m_last_level_time;
 	u16					m_last_enemy_id;
 
@@ -30,8 +29,6 @@ protected:
 			void		add_evaluators			();
 			void		add_actions				();
 	IC		void		update_cover			();
-			void		react_on_grenades		();
-			void		react_on_member_death	();
 
 public:
 						CStalkerCombatPlanner	(CAI_Stalker *object = 0, LPCSTR action_name = "");
@@ -41,10 +38,6 @@ public:
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
-
-public:
-	IC		void		last_cover				(CCoverPoint *last_cover);
-	IC		CCoverPoint	*last_cover				() const;
 };
 
 #include "stalker_combat_planner_inline.h"

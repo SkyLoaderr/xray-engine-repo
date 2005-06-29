@@ -21,6 +21,8 @@
 #include "cover_point.h"
 #include "agent_manager.h"
 #include "agent_member_manager.h"
+#include "inventory.h"
+#include "weapon.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -45,7 +47,7 @@ void CStalkerActionDangerGrenadeTakeCover::initialize						()
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_mental_state		(eMentalStateDanger);
+	object().movement().set_movement_type		(eMovementTypeRun);
 }
 
 void CStalkerActionDangerGrenadeTakeCover::execute							()
@@ -62,19 +64,37 @@ void CStalkerActionDangerGrenadeTakeCover::execute							()
 	else
 		object().movement().set_nearest_accessible_position	();
 
-	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+	EMentalState				temp;
+	{
+		if (!object().inventory().ActiveItem()) {
+			object().CObjectHandler::set_goal			(eObjectActionIdle);
+			temp										= eMentalStatePanic;
+		}
+		else {
+			CWeapon					*weapon = smart_cast<CWeapon*>(&object().inventory().ActiveItem()->object());
+			if (weapon && weapon->can_be_strapped() && object().best_weapon() && (object().best_weapon()->object().ID() == weapon->ID())) {
+				object().CObjectHandler::set_goal			(eObjectActionStrapped,object().inventory().ActiveItem());
+				if (weapon->strapped_mode())
+					temp									= eMentalStatePanic;
+				else
+					temp									= eMentalStateDanger;
+			}
+			else {
+				object().CObjectHandler::set_goal			(eObjectActionIdle);
+				temp										= eMentalStateDanger;
+			}
+		}
+	}
 
 	if (!object().movement().path_completed()) {
 		object().movement().set_body_state			(eBodyStateStand);
-		if (!object().movement().distance_to_destination_greater(2.f)) {
-			object().movement().set_mental_state	(eMentalStatePanic);
-			object().movement().set_movement_type	(eMovementTypeRun);
-			object().sight().setup					(CSightAction(SightManager::eSightTypeCover,true,true));
+		if (object().movement().distance_to_destination_greater(2.f)) {
+			object().movement().set_mental_state	(temp);
+			object().sight().setup					(CSightAction(SightManager::eSightTypePathDirection,true,true));
 		}
 		else {
 			object().movement().set_mental_state	(eMentalStateDanger);
-			object().movement().set_movement_type	(eMovementTypeRun);
-			object().sight().setup					(CSightAction(SightManager::eSightTypePathDirection,true,true));
+			object().sight().setup					(CSightAction(SightManager::eSightTypeCover,true,true));
 		}
 		return;
 	}
@@ -108,6 +128,7 @@ void CStalkerActionDangerGrenadeWaitForExplosion::initialize							()
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_body_state			(eBodyStateCrouch);
+	object().CObjectHandler::set_goal			(eObjectActionIdle,object().best_weapon());
 }
 
 void CStalkerActionDangerGrenadeWaitForExplosion::execute							()
@@ -210,6 +231,7 @@ void CStalkerActionDangerGrenadeLookAround::initialize						()
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_body_state			(eBodyStateCrouch);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
 }
 
 void CStalkerActionDangerGrenadeLookAround::execute							()

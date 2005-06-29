@@ -8,12 +8,12 @@
 
 #pragma once
 
-IC	void CStalkerCombatPlanner::last_cover			(CCoverPoint *last_cover)
-{
-	m_last_cover	= last_cover;
-}
+//IC	void CStalkerCombatPlanner::last_cover			(CCoverPoint *last_cover)
+//{
+//	m_last_cover	= last_cover;
+//}
 
-IC	CCoverPoint	*CStalkerCombatPlanner::last_cover	() const
-{
-	return			(m_last_cover);
-}
+//IC	CCoverPoint	*CStalkerCombatPlanner::last_cover	() const
+//{
+//	return			(m_last_cover);
+//}

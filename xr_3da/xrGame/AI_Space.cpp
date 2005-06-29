@@ -16,6 +16,7 @@
 #include "cover_manager.h"
 #include "cover_point.h"
 #include "script_engine.h"
+#include "movement_coordinator.h"
 
 CAI_Space *g_ai_space = 0;
 
@@ -26,6 +27,7 @@ CAI_Space::CAI_Space				()
 	m_graph_engine			= xr_new<CGraphEngine>(game_graph().header().vertex_count());
 	m_cover_manager			= xr_new<CCoverManager>();
 	m_script_engine			= xr_new<CScriptEngine>();
+	m_movement_coordinator	= xr_new<CMovementCoordinator>();
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
@@ -46,6 +48,7 @@ CAI_Space::~CAI_Space				()
 	}
 	xr_delete				(m_cover_manager);
 	xr_delete				(m_graph_engine);
+	xr_delete				(m_movement_coordinator);
 }
 
 void CAI_Space::load				(LPCSTR level_name)

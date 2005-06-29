@@ -24,6 +24,15 @@
 #include "level_navigation_graph.h"
 #include "profiler.h"
 
+#define STEALTH_MODE
+
+#ifdef STEALTH_MODE
+	const bool update_value = false;
+#else
+	const bool update_value = true;
+#endif // STEALTH_MODE
+
+
 CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSound_UserDataVisitor *visitor)
 {
 	VERIFY				(monster);
@@ -95,13 +104,12 @@ void CMemoryManager::update			(float time_delta)
 	enemy().reset		();
 	item().reset		();
 	greeting().reset	();
-//	danger().reset		();
 
 	if (visual().enabled())
-		update			(visual().objects());
+		update			(visual().objects(),true);
 
-	update				(sound().objects());
-	update				(hit().objects());
+	update				(sound().objects(),update_value);
+	update				(hit().objects(),update_value);
 	
 	enemy().update		();
 	item().update		();
@@ -119,7 +127,7 @@ void CMemoryManager::enable			(const CObject *object, bool enable)
 }
 
 template <typename T>
-void CMemoryManager::update			(const xr_vector<T> &objects)
+void CMemoryManager::update			(const xr_vector<T> &objects, bool add_enemies)
 {
 	xr_vector<T>::const_iterator	I = objects.begin();
 	xr_vector<T>::const_iterator	E = objects.end();
@@ -132,9 +140,11 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 
 		danger().add				(*I);
 		
-		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
-		if (entity_alive && enemy().add(entity_alive))
-			continue;
+		if (add_enemies) {
+			const CEntityAlive		*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
+			if (entity_alive && enemy().add(entity_alive))
+				continue;
+		}
 
 		const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
 		if (m_stalker && stalker && greeting().add(stalker))

@@ -266,23 +266,6 @@ _value_type CStalkerPropertyEvaluatorHumanToDialog::evaluate	()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorDangers
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerPropertyEvaluatorDangers::CStalkerPropertyEvaluatorDangers	(CAI_Stalker *object, LPCSTR evaluator_name, const CDangerObject::EDangerType &type) :
-	inherited		(object ? object->lua_game_object() : 0,evaluator_name),
-	m_type			(type)
-{
-}
-
-_value_type CStalkerPropertyEvaluatorDangers::evaluate	()
-{
-	if (!m_object->memory().danger().selected())
-		return			(false);
-	return				(m_type == CDangerObject::eDangerTypeDummy ? true : (m_type == m_object->memory().danger().selected()->type()));
-}
-
-//////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorEnemyCanBeSeen
 //////////////////////////////////////////////////////////////////////////
 
@@ -295,4 +278,3 @@ _value_type CStalkerPropertyEvaluatorEnemyCanBeSeen::evaluate	()
 	float				range = m_object->ffGetRange();
 	return				(range*range >= mem_object.m_object_params.m_position.distance_to_sqr(m_object->Position()));
 }
-

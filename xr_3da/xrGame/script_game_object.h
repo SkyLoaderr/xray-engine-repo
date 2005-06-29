@@ -304,6 +304,7 @@ public:
 			const MemorySpace::CHitObject	*GetBestHit			() const;
 			const MemorySpace::CSoundObject	*GetBestSound		() const;
 			CScriptGameObject	*GetBestEnemy		();
+			CScriptGameObject	*GetBestDanger		();
 			CScriptGameObject	*GetBestItem		();
 
 	_DECLARE_FUNCTION10			(GetActionCount,u32);

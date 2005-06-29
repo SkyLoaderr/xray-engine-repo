@@ -41,7 +41,7 @@ protected:
 
 protected:
 	template <typename T>
-			void				update			(const xr_vector<T> &objects);
+			void				update			(const xr_vector<T> &objects, bool add_enemies);
 	template <typename T, typename _predicate>
 			void				fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const;
 

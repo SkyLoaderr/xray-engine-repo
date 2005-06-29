@@ -14,6 +14,7 @@
 #include "agent_member_manager.h"
 #include "memory_manager.h"
 #include "hit_memory_manager.h"
+#include "visual_memory_manager.h"
 #include "enemy_manager.h"
 
 CStalkerSoundDataVisitor::~CStalkerSoundDataVisitor	()
@@ -44,7 +45,8 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (!m)
 		return;
 
-	object().memory().hit().add		(*m);
+	object().memory().hit().add						(*m);
+	object().memory().visual().add_visible_object	(data->object().memory().enemy().selected(),.001f);
 	
 //	object().agent_manager().member().register_in_combat(m_object);
 }

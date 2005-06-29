@@ -16,6 +16,7 @@ class	CEF_Storage;
 class	CALifeSimulator;
 class	CCoverManager;
 class	CScriptEngine;
+class	CMovementCoordinator;
 
 class CAI_Space {
 private:
@@ -32,6 +33,7 @@ private:
 	CALifeSimulator						*m_alife_simulator;
 	CCoverManager						*m_cover_manager;
 	CScriptEngine						*m_script_engine;
+	CMovementCoordinator				*m_movement_coordinator;
 
 private:
 			void						load			(LPCSTR				level_name);
@@ -39,20 +41,21 @@ private:
 	IC		void						set_alife		(CALifeSimulator *alife_simulator);
 
 public:
-										CAI_Space		();
-	virtual								~CAI_Space		();
-	IC		CGameGraph					&game_graph		() const;
-	IC		CGameGraph					*get_game_graph	() const;
-	IC		CLevelNavigationGraph		&level_graph	() const;
-	IC		const CLevelNavigationGraph	*get_level_graph() const;
-	IC		const CGameLevelCrossTable	&cross_table	() const;
-	IC		const CGameLevelCrossTable	*get_cross_table() const;
-	IC		CEF_Storage					&ef_storage		() const;
-	IC		CGraphEngine				&graph_engine	() const;
-	IC		const CALifeSimulator		&alife			() const;
-	IC		const CALifeSimulator		*get_alife		() const;
-	IC		const CCoverManager			&cover_manager	() const;
-	IC		CScriptEngine				&script_engine	() const;
+										CAI_Space				();
+	virtual								~CAI_Space				();
+	IC		CGameGraph					&game_graph				() const;
+	IC		CGameGraph					*get_game_graph			() const;
+	IC		CLevelNavigationGraph		&level_graph			() const;
+	IC		const CLevelNavigationGraph	*get_level_graph		() const;
+	IC		const CGameLevelCrossTable	&cross_table			() const;
+	IC		const CGameLevelCrossTable	*get_cross_table		() const;
+	IC		CEF_Storage					&ef_storage				() const;
+	IC		CGraphEngine				&graph_engine			() const;
+	IC		const CALifeSimulator		&alife					() const;
+	IC		const CALifeSimulator		*get_alife				() const;
+	IC		const CCoverManager			&cover_manager			() const;
+	IC		CScriptEngine				&script_engine			() const;
+	IC		CMovementCoordinator		&movement_coordinator	() const;
 
 #ifdef DEBUG
 			void						validate		(const u32			level_id) const;

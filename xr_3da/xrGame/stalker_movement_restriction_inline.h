@@ -8,11 +8,12 @@
 
 #pragma once
 
-IC	CStalkerMovementRestrictor::CStalkerMovementRestrictor	(CAI_Stalker *object, bool use_enemy_info)
+IC	CStalkerMovementRestrictor::CStalkerMovementRestrictor	(CAI_Stalker *object, bool use_enemy_info, bool notify_agent_manager)
 {
-	m_object			= object;
-	m_agent_manager		= &object->agent_manager();
-	m_use_enemy_info	= use_enemy_info;
+	m_object				= object;
+	m_agent_manager			= &object->agent_manager();
+	m_use_enemy_info		= use_enemy_info;
+	m_notify_agent_manager	= notify_agent_manager;
 }
 
 IC	bool CStalkerMovementRestrictor::operator()				(CCoverPoint *cover) const
@@ -23,4 +24,10 @@ IC	bool CStalkerMovementRestrictor::operator()				(CCoverPoint *cover) const
 IC	float CStalkerMovementRestrictor::weight				(CCoverPoint *cover) const
 {
 	return				(m_agent_manager->location().danger(cover));
+}
+
+IC	void CStalkerMovementRestrictor::finalize				(CCoverPoint *cover) const
+{
+	if (m_notify_agent_manager)
+		m_agent_manager->location().make_suitable(m_object,cover);
 }

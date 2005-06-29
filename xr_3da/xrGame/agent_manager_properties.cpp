@@ -15,6 +15,7 @@
 #include "memory_manager.h"
 #include "item_manager.h"
 #include "enemy_manager.h"
+#include "danger_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerPropertyEvaluatorGlobal
@@ -43,3 +44,18 @@ CAgentManagerPropertyEvaluatorEnemy::_value_type CAgentManagerPropertyEvaluatorE
 			return			(true);
 	return					(false);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerPropertyEvaluatorDanger
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerPropertyEvaluatorDanger::_value_type CAgentManagerPropertyEvaluatorDanger::evaluate	()
+{
+	CAgentMemberManager::iterator	I = m_object->member().members().begin();
+	CAgentMemberManager::iterator	E = m_object->member().members().end();
+	for ( ; I != E; ++I)
+		if ((*I)->object().memory().danger().selected())
+			return			(true);
+	return					(false);
+}
+

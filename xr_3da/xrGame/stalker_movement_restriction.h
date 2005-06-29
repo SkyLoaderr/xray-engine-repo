@@ -19,11 +19,13 @@ private:
 	CAI_Stalker			*m_object;
 	const CAgentManager	*m_agent_manager;
 	bool				m_use_enemy_info;
+	bool				m_notify_agent_manager;
 
 public:
-	IC					CStalkerMovementRestrictor	(CAI_Stalker *object, bool use_enemy_info);
+	IC					CStalkerMovementRestrictor	(CAI_Stalker *object, bool use_enemy_info, bool notify_agent_manager = true);
 	IC		bool		operator()					(CCoverPoint *cover) const;
 	IC		float		weight						(CCoverPoint *cover) const;
+	IC		void		finalize					(CCoverPoint *cover) const;
 };
 
 #include "stalker_movement_restriction_inline.h"

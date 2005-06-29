@@ -20,6 +20,7 @@
 #include "sight_manager.h"
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
+#include "patrol_path_manager.h"
 #include "sound_player.h"
 #include "ai/stalker/ai_stalker_space.h"
 
@@ -111,17 +112,18 @@ void CStalkerActionNoALife::initialize	()
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
 #else
-	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
+	object().CObjectHandler::set_goal			(eObjectActionIdle);
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
-	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_path_type			(MovementManager::ePathTypePatrolPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_nearest_accessible_position();
+	object().movement().patrol().set_path		("way_0000",PatrolPathManager::ePatrolStartTypeNearest);
+//	object().movement().set_nearest_accessible_position();
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type		(eMovementTypeStand);
-	object().movement().set_mental_state		(eMentalStateDanger);
-	object().sight().setup						(CSightAction(smart_cast<CGameObject*>(Level().CurrentEntity()),true));
+	object().movement().set_movement_type		(eMovementTypeRun);
+	object().movement().set_mental_state		(eMentalStatePanic);
+	object().sight().setup						(CSightAction(SightManager::eSightTypePathDirection));
 #endif
 }
 
@@ -148,5 +150,6 @@ void CStalkerActionNoALife::execute		()
 	else
 		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
 #else
+//	object().movement().set_movement_type		(eMovementTypeRun);
 #endif
 }

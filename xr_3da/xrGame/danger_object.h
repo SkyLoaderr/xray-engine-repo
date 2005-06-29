@@ -13,12 +13,14 @@
 class CDangerObject {
 public:
 	enum EDangerType {
-		eDangerTypeRicochet = u32(0),
-		eDangerTypeShot,
-		eDangerTypeAttack,
-		eDangerTypeHit,
-		eDangerTypeDeath,
-		eDangerTypeCorpse,
+		eDangerTypeBulletRicochet = u32(0),
+		eDangerTypeAttackSound,
+		eDangerTypeEntityAttacked,
+		eDangerTypeEntityDeath,
+		eDangerTypeFreshEntityCorpse,
+		eDangerTypeAttacked,
+		eDangerTypeGrenade,
+		eDangerTypeEnemySound,
 		eDangerTypeDummy = u32(-1),
 	};
 
@@ -31,20 +33,23 @@ public:
 
 private:
 	const CEntityAlive					*m_object;
+	const CObject						*m_dependent_object;
 	Fvector								m_position;
 	u32									m_time;
 	EDangerType							m_type;
 	EDangerPerceiveType					m_perceive_type;
 
 public:
-	IC									CDangerObject	(const CEntityAlive	*object, const Fvector &position, u32 time, const EDangerType &type, const EDangerPerceiveType	&perceive_type);
-	virtual								~CDangerObject	();
-	IC		const CEntityAlive			*object			() const;
-	IC		const Fvector				&position		() const;
-	IC		u32							time			() const;
-	IC		const EDangerType			&type			() const;
-	IC		const EDangerPerceiveType	&perceive_type	() const;
-	IC		bool						operator==		(const CDangerObject &object) const;
+	IC									CDangerObject			(const CEntityAlive	*object, const Fvector &position, u32 time, const EDangerType &type, const EDangerPerceiveType &perceive_type, const CObject *dependent_object = 0);
+	virtual								~CDangerObject			();
+	IC		const CEntityAlive			*object					() const;
+	IC		const Fvector				&position				() const;
+	IC		u32							time					() const;
+	IC		const EDangerType			&type					() const;
+	IC		const EDangerPerceiveType	&perceive_type			() const;
+	IC		const CObject				*dependent_object		() const;
+	IC		void						clear_dependent_object	();
+	IC		bool						operator==				(const CDangerObject &object) const;
 };
 
 #include "danger_object_inline.h"

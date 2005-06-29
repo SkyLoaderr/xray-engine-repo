@@ -76,4 +76,21 @@ public:
 	virtual void		execute						();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionReactOnDanger
+//////////////////////////////////////////////////////////////////////////
+
+class CAgentManagerActionReactOnDanger : public CAgentManagerActionBase {
+protected:
+	typedef CAgentManagerActionBase inherited;
+
+	u32					m_level_time;
+
+public:
+						CAgentManagerActionReactOnDanger(CAgentManager *object, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		finalize						();
+	virtual void		execute							();
+};
+
 #include "agent_manager_actions_inline.h"

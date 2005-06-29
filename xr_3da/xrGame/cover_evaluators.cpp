@@ -107,7 +107,7 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point, float weight)
 
 	value					/= weight;
 
-	if (value >= m_best_value)
+	if ((value > m_best_value) || ((value == m_best_value) && (cover_point > m_selected)))
 		return;
 
 	m_selected				= cover_point;
@@ -161,13 +161,13 @@ void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 	float						best_value = -1.f;
 	float						m_best_angle = 0.f;
 	for (float alpha = 0.f, step = PI_MUL_2/360.f; alpha < PI_MUL_2; alpha += step) {
-		float					value = ai().level_graph().compute_square(alpha,PI,m_level_vertex_id);
+		float					value = ai().level_graph().compute_square(alpha,PI_DIV_2,m_level_vertex_id);
 		if (value > best_value) {
 			best_value			= value;
 			m_best_angle		= alpha;
 		}
 	}
-	m_best_direction.setHP		(m_best_angle + PI,0.f);
+	m_best_direction.setHP		(m_best_angle,0.f);
 }
 
 void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point, float weight)
