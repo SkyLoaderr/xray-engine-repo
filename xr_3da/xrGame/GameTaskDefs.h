@@ -51,6 +51,17 @@ struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 DEFINE_VECTOR		(TASK_DATA, GAME_TASK_VECTOR, GAME_TASK_IT);
 DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
 */
+enum ETaskState {
+	eTaskStateFail			= 0,
+	eTaskStateInProgress	= 1,
+	eTaskStateCompleted		= 2,
+	eTaskStateDummy			= u32(-1)
+};
+
+enum ETaskFlags{
+	eTaskFlagMapPointer		= (1<<0),
+};
+
 //for scripting access
 struct STaskObjective
 {
@@ -83,16 +94,6 @@ typedef shared_str		TASK_ID;
 DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
 
 //состояние цели и задания
-enum ETaskState {
-	eTaskStateFail			= 0,
-	eTaskStateInProgress	= 1,
-	eTaskStateCompleted		= 2,
-	eTaskStateDummy			= u32(-1)
-};
-
-enum ETaskFlags{
-	eTaskFlagMapPointer		= (1<<0),
-};
 
 #include "alife_abstract_registry.h"
 
