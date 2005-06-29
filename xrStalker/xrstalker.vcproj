@@ -825,10 +825,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1929,6 +1929,9 @@
 						</File>
 						<File
 							RelativePath=".\scripts\xr_camper.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_combat_camper.script">
 						</File>
 						<File
 							RelativePath=".\scripts\xr_heli_hunter.script">
