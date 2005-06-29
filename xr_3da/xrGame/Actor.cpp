@@ -484,7 +484,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if (mstate_real & mcSprint && Level().CurrentControlEntity() == this)
 	{
-		mstate_real	&=~mcSprint;
+//		mstate_real	&=~mcSprint;
 		mstate_wishful	&=~mcSprint;
 
 //		psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
