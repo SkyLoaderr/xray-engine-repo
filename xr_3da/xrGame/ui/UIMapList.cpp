@@ -73,11 +73,11 @@ xr_token g_GameModes[ ];
 void CUIMapList::OnModeChange(){
 	LPCSTR text = m_pModeSelector->GetText();
 	
-	if (0 == strcmp(text, g_GameModes[0].name))
+	if (0 == xr_strcmp(text, g_GameModes[0].name))
 		UpdateMapList(GAME_DEATHMATCH);
-	else if (0 == strcmp(text, g_GameModes[1].name))
+	else if (0 == xr_strcmp(text, g_GameModes[1].name))
 		UpdateMapList(GAME_TEAMDEATHMATCH);
-	else if (0 == strcmp(text, g_GameModes[2].name))
+	else if (0 == xr_strcmp(text, g_GameModes[2].name))
 		UpdateMapList(GAME_ARTEFACTHUNT);
 }
 
