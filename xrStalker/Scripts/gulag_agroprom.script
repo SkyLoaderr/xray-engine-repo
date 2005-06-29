@@ -318,6 +318,32 @@ function load_job( sj, gname, type, squad, groups )
 			table.insert(sj, t)
 		end
 	end
+
+--boars-----------------------
+	if type == "agr_boar_nest_type" then
+			local boar_num = 4
+		for i=1, boar_num do
+			t = { section = "logic@agr_boar_nest_in", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "agr_boar_nest_territory"
+			}
+			table.insert(sj, t)
+		end
+
+
+		for i=1, boar_num do
+			t = { section = "logic@agr_boar_nest_out", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "agr_boar_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
+-------------
+
+	
 end
 
 function load_states( gname, type )
@@ -452,6 +478,26 @@ function load_states( gname, type )
 		end
 	end
 
+
+	
+if type == "agr_boar_nest_type" then        
+	return function(gulag)
+		local t = db.zone_by_name["agr_boar_territory"] 
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+
+
+
 	return nil
 end
 
@@ -471,6 +517,15 @@ function checkMonster( npc_community, gulag_type )
 	if gulag_type == "agr_rush" then
 		return npc_community == "dog"
 	end
+	
+	
+
+	
+	if gulag_type == "agr_boar_nest_type" then
+		return npc_community == "boar"
+	end
+
+
 
 	return false
 end
