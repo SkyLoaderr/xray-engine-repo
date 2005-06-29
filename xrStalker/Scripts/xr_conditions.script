@@ -9,16 +9,22 @@
 -- ----------------------------------------------------------------------------------------------------
 
 -- проверка состояния здоровья npc
-function check_health_le(actor, npc, p)
+function health_le(actor, npc, p)
     return p[1] and npc.health < p[1]
 end
 
--- Проверка на принадлежность к одной из групп
-function check_group(actor, npc, p)
-	local g = npc:group()
+-- проверка состояния "здоровья" физических обьектов (вертолет, БТР)
+function fhealth_le(actor, phys, p)
+    return p[1] and phys:GetfHealth() < p[1]
+end
+
+-- Проверка на принадлежность врага к одной из групп
+-- (можно задавать несколько через двоеточие)
+function enemy_group(actor, npc, p)
+	local g = db.storage[npc:id()].enemy:group()
 	for i, v in pairs(p) do
 		if v == g then
-			printf("_bp: npc has group %d", v)
+			printf("_bp: npc enemy is from group %d", v)
 			return true
 		end
 	end
