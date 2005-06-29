@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding="windows-1251"?>
 
-<game_tasks_data>
 	<game_task id="mil_kill_sniper">
 		<title>mil_quest_kill_sniper</title>
 		<objective>
@@ -87,5 +85,3 @@
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-
-</game_tasks_data>

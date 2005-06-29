@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding="windows-1251"?>
 
-<game_tasks_data>
 	<game_task id="storyline_eliminate_gunslinger">
 		<title>storyline_escape_eliminate_gunslinger</title>
 		<objective>
@@ -113,5 +111,3 @@
 		</objective>
 	</game_task>
 
-
-</game_tasks_data>

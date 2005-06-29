@@ -1,6 +1,3 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
-<game_tasks_data>
 
 	<game_task id="garbage_meet_stalker">
 		<title>garbage_meet_stalker</title>
@@ -26,5 +23,3 @@
 		</objective>
 	</game_task>
 	
-	
-</game_tasks_data>

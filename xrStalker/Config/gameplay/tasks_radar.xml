@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding="windows-1251"?>
 
-<game_tasks_data>
 	<game_task id="rad_find_stalkers">
 		<title>rad_find_stalkers</title>
 		<objective>
@@ -30,28 +28,3 @@
 	</game_task>
 
 
-<!-- temporary for andy, do not delete !!! -->
-	<game_task id="andy_task_1">
-		<title>andy_task_1_title</title>
-		<objective>
-			<text>andy_task_1_1</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>Escape_blockpost_case</object_story_id>
-		</objective>
-		<objective>
-			<text>andy_task_1_2</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>Escape_robbed_novice</object_story_id>
-		</objective>
-		<objective>
-			<text>andy_task_1_3</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>agr_krot_location</map_location_type>
-			<object_story_id>Escape_Tutorial_Artefact</object_story_id>
-		</objective>
-	</game_task>
-
-
-</game_tasks_data>

@@ -256,9 +256,6 @@
 					RelativePath=".\Config\gameplay\encyclopedia_zone.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\game_tasks.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\npc_profile.xml">
 				</File>
 				<File
@@ -304,6 +301,9 @@
 				<Filter
 					Name="tasks"
 					Filter="">
+					<File
+						RelativePath=".\Config\gameplay\game_tasks.xml">
+					</File>
 					<File
 						RelativePath=".\Config\gameplay\tasks_agroprom.xml">
 					</File>

@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding="windows-1251"?>
 
-<game_tasks_data>
 	<game_task id="bar_resque_information">
 		<title>bar_resque_information</title>
 		<objective>
@@ -193,6 +191,3 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-
-
-</game_tasks_data>
