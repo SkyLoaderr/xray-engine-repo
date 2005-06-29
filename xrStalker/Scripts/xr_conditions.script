@@ -8,14 +8,16 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 
--- проверка состояния здоровья npc
+-- true, если здоровье npc <= заданному значению
+-- false в противном случае
 function health_le(actor, npc, p)
     return p[1] and npc.health < p[1]
 end
 
--- проверка состояния "здоровья" физических обьектов (вертолет, БТР)
-function fhealth_le(actor, phys, p)
-    return p[1] and phys:GetfHealth() < p[1]
+-- true, если здоровье вертолёта <= заданному значению
+-- false в противном случае
+function heli_health_le(actor, obj, p)
+    return p[1] and obj:get_helicopter():GetfHealth() < p[1]
 end
 
 -- Проверка на принадлежность врага к одной из групп
