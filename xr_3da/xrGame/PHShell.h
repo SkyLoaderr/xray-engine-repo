@@ -122,6 +122,8 @@ public:
 	virtual		bool				isFractured						();
 	virtual		CPHShellSplitterHolder*	SplitterHolder				(){return m_spliter_holder;}
 	virtual		void				SplitProcess					(PHSHELL_PAIR_VECTOR &out_shels);
+	virtual		void				BlockBreaking					(){if(m_spliter_holder)m_spliter_holder->SetUnbreakable();}
+	virtual		void				UnblockBreaking					(){if(m_spliter_holder)m_spliter_holder->SetBreakable();}
 	///////	////////////////////////////////////////////////////////////////////////////////////////////
 	virtual		void				get_LinearVel					(Fvector& velocity);
 	virtual		void				get_AngularVel					(Fvector& velocity);

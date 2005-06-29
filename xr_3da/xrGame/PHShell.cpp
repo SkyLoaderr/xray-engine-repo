@@ -1199,7 +1199,7 @@ void CPHShell::setEndJointSplitter()
 
 bool CPHShell::isBreakable()
 {
-	return !!m_spliter_holder;
+	return (m_spliter_holder&&!m_spliter_holder->IsUnbreakable());
 }
 
 bool CPHShell::isFractured()

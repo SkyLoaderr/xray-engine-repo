@@ -12,7 +12,7 @@ CPHShellSplitterHolder::CPHShellSplitterHolder(CPHShell* shell)
 {
 	m_pShell=shell;
 	m_has_breaks=false;
-	bActive=false;
+	m_unbreakable=false;
 }
 
 CPHShellSplitterHolder::~CPHShellSplitterHolder()
@@ -475,17 +475,14 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 }
 void CPHShellSplitterHolder::Activate()
 {
-	if(bActive) return;
+	if(m_unbreakable) return;
 	CPHUpdateObject::Activate();
-	bActive=true;
 	if(m_pShell->bActive)PhTune(fixed_step);
 }
 
 void CPHShellSplitterHolder::Deactivate()
 {
-	if(!bActive)return;
 	CPHUpdateObject::Deactivate();
-	bActive=false;
 }
 void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {
@@ -516,7 +513,14 @@ u16 CPHShellSplitterHolder::FindRootGeom(u16 bone_id)
 	return iter->second->element_position();
 
 }
-
+void CPHShellSplitterHolder::SetUnbreakable() 
+{
+	Deactivate();m_unbreakable=true;
+}
+void CPHShellSplitterHolder::SetBreakable()
+{
+	m_unbreakable=false;if(m_pShell->isEnabled())Activate();
+}
 CPHShellSplitter::CPHShellSplitter()
 {
 	m_breaked=false;

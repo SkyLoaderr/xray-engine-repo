@@ -19,6 +19,8 @@ void CPhysicsShell::script_register(lua_State *L)
 			.def("get_joint_by_bone_id",		(CPhysicsJoint*(CPhysicsShell::*)(u16))(&CPhysicsShell::get_Joint))
 			.def("get_joint_by_order",			&CPhysicsShell::get_JointByStoreOrder)
 			.def("get_joints_number",			&CPhysicsShell::get_JointsNumber)
+			.def("block_breaking",				&CPhysicsShell::BlockBreaking)
+			.def("unblock_breaking",			&CPhysicsShell::UnblockBreaking)
 		];
 }
 

@@ -265,6 +265,8 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual bool				isFractured				()													= 0;
 	virtual CPHShellSplitterHolder*	SplitterHolder		()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
+	virtual	void				BlockBreaking			()													= 0;
+	virtual	void				UnblockBreaking			()													= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual void				applyHit				(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type)=0;
