@@ -224,41 +224,49 @@ function body_state:__init(npc)
 	self.current_state = "stand"
 
 	self.transfer_anim = {
-		stand		= { sit			= {"idle_0_to_sit_0"},
-						sit_knee	= {"idle_0_to_sit_1"},
-						sit_ass		= {"idle_0_to_sit_2"},
-						sleep		= {"idle_0_to_sit_0","sit_to_sleep_0"}, 
-						wounded		= {"idle_to_wounded_0"} },
+		stand		= { sit			= {nrm = {"idle_0_to_sit_0"}},
+						sit_knee	= {nrm = {"idle_0_to_sit_1"}},
+						sit_ass		= {nrm = {"idle_0_to_sit_2"}},
+						sleep		= {nrm = {"idle_0_to_sit_0","sit_to_sleep_0"}}, 
+						wounded		= {nrm = {"idle_to_wounded_0"}} },
 
-		sit			= { sit_knee	= {"sit_idle_0_to_sit_idle_1"},
-						sit_ass		= {"sit_idle_0_to_sit_idle_2"},
-						stand		= {"sit_to_idle_0"},
-						sleep		= {"sit_to_sleep_0"},
-						wounded		= {"sit_to_idle_0","idle_to_wounded_0"} },
+		sit			= { sit_knee	= {nrm = {"sit_idle_0_to_sit_idle_1"}},
+						sit_ass		= {nrm = {"sit_idle_0_to_sit_idle_2"}},
+						stand		= {nrm = {"sit_0_to_idle_0"},
+									   lazy ={"sit_0_lazy_idle_0"}},
+						sleep		= {nrm = {"sit_0_to_sleep_0"}},
+						wounded		= {nrm = {"sit_0_to_idle_0","idle_to_wounded_0"},
+									   lazy ={"sit_0_lazy_idle_0","idle_to_wounded_0"}} },
 
-		sit_knee	= { sit			= {"sit_idle_1_to_sit_idle_0"},
-						sit_ass		= {"sit_idle_1_to_sit_idle_2"},
-						stand		= {"sit_1_to_idle_0"},
-						sleep		= {"sit_idle_1_to_sleep_0"},
-						wounded		= {"sit_1_to_idle_0","idle_to_wounded_0"} },
+		sit_knee	= { sit			= {nrm = {"sit_idle_1_to_sit_idle_0"}},
+						sit_ass		= {nrm = {"sit_idle_1_to_sit_idle_2"}},
+						stand		= {nrm = {"sit_1_to_idle_0"},
+									   lazy ={"sit_1_lazy_idle_0"}},
+						sleep		= {nrm = {"sit_idle_1_to_sleep_0"}},
+						wounded		= {nrm = {"sit_1_to_idle_0","idle_to_wounded_0"},
+									   lazy ={"sit_1_lazy_idle_0","idle_to_wounded_0"}} },
 
-		sit_ass		= { sit			= {"sit_idle_2_to_sit_idle_0"},
-						sit_knee	= {"sit_idle_2_to_sit_idle_1"},
-						stand		= {"sit_2_to_idle_0"},
-						sleep		= {"sit_2_to_sleep_0"},
-						wounded		= {"sit_2_to_idle_0","idle_to_wounded_0"} },
+		sit_ass		= { sit			= {nrm = {"sit_idle_2_to_sit_idle_0"}},
+						sit_knee	= {nrm = {"sit_idle_2_to_sit_idle_1"}},
+						stand		= {nrm = {"sit_2_to_idle_0"},
+									   lazy= {"sit_2_lazy_idle_0"}},
+						sleep		= {nrm = {"sit_2_to_sleep_0"}},
+						wounded		= {nrm = {"sit_2_to_idle_0","idle_to_wounded_0"},
+									   lazy ={"sit_2_lazy_idle_0","idle_to_wounded_0"}} },
 						
-		sleep		= {	stand		= {"sleep_to_sit_0","sit_to_idle_0"},
-						sit			= {"sleep_0_to_sit_0"},
-						sit_knee	= {"sleep_0_to_sit_idle_1"},
-						sit_ass		= {"sleep_0_to_sit_2"},
-						wounded		= {"sleep_to_sit_0","sit_to_idle_0","idle_to_wounded_0"} },			
+		sleep		= {	stand		= {nrm = {"sleep_to_sit_0","sit_0_to_idle_0"},
+									   lazy ={"sleep_to_sit_0","sit_0_lazy_idle_0"}},
+						sit			= {nrm = {"sleep_0_to_sit_0"}},
+						sit_knee	= {nrm = {"sleep_0_to_sit_idle_1"}},
+						sit_ass		= {nrm = {"sleep_0_to_sit_2"}},
+						wounded		= {nrm = {"sleep_to_sit_0","sit_0_to_idle_0","idle_to_wounded_0"},
+									   nrm = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_0"}} },
 
-		wounded		= {	stand		= {"wounded_to_idle_0"},
-						sit			= {"wounded_to_idle_0","idle_0_to_sit_0"},
-						sit_knee	= {"wounded_to_idle_0","idle_0_to_sit_1"},
-						sit_ass		= {"wounded_to_idle_0","idle_0_to_sit_2"},
-						sleep		= {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"} } 
+		wounded		= {	stand		= {nrm = {"wounded_to_idle_0"}},
+						sit			= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0"}},
+						sit_knee	= {nrm = {"wounded_to_idle_0","idle_0_to_sit_1"}},
+						sit_ass		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_2"}},
+						sleep		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"}} } 
 	}
 
 	self.idle_anim = {
@@ -297,9 +305,24 @@ function body_state:set_state(id)
 	if self.transfer_anim[self.current_state] ~= nil and
 	   self.transfer_anim[self.current_state][id] ~= nil
 	then
-		for k,v in self.transfer_anim[self.current_state][id] do
-			self.npc:add_animation(v,true)
+		-- здесь проверяем, необходимо ли нам ленивое или быстрое вставание
+		local astate = self.transfer_anim[self.current_state][id]
+		local lazy = true
+		if self.npc:best_enemy() ~= nil then
+			lazy = false
 		end
+		
+		if lazy == true and
+		   astate.lazy ~= nil 
+		then
+			for k,v in astate.lazy do
+				self.npc:add_animation(v,true)
+			end		
+		else
+			for k,v in astate.nrm do
+				self.npc:add_animation(v,true)
+			end
+		end				
 	end
 	if self.idle_anim[id] ~= nil then
 		self.npc:add_animation(self.idle_anim[id],true)

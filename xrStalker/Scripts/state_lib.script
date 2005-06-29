@@ -227,6 +227,13 @@ states = {
 				animstate = "stand",
 				animation = "salut"
 			},
+	salut_free = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "salut_free"
+			},
 
 
 	-- Сидячие состояния
@@ -287,6 +294,27 @@ states = {
 				animstate = "sit_knee",
 				animation = "guitar_wait"
 			},
+	guitar_play	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_knee",
+				animation = "guitar_play"
+			},
+	harmonica_wait	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "harmonica_wait"
+			},
+	harmonica_play	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "harmonica_play"
+			},
 
 	hello = {	weapon = "unstrapped",
 				movement = move.stand,
@@ -334,7 +362,7 @@ states = {
 				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = "backoff2",
+				animation = "backoff",
 				reset = true
 			},
 	suicide = {	weapon = "unstrapped",
