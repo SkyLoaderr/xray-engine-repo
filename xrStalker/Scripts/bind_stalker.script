@@ -148,12 +148,11 @@ function actor_binder:update(delta)
 	lasttime = game.time()
 ]]
 
-	-- обновление рестрикторов, которые под логикой
-	-- срабатывает через интервалы времени
+	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
 	if self.next_restrictors_update_time < time then
 		bind_restrictor.actor_update(delta)
 
-		self.next_restrictors_update_time = time + 1000
+		self.next_restrictors_update_time = time + 100
 	end
 
  	if self.bCheckStart then
