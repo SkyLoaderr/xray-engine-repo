@@ -43,7 +43,7 @@ private:
 	bool				m_enabled;
 
 public:
-			void	add_visible_object		(const CObject *object, float time_delta);
+			void	add_visible_object		(const CObject *object, float time_delta, bool fictitious = false);
 
 protected:
 	IC		void	fill_object				(CVisibleObject &visible_object, const CGameObject *game_object);

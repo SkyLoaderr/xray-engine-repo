@@ -281,11 +281,11 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	return						(object->m_value >= current_state().m_visibility_threshold);
 }
 
-void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)
+void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta, bool fictitious)
 {
 	const CGameObject *game_object	= smart_cast<const CGameObject*>(object);
 	const CGameObject *self			= m_object;
-	if (!game_object || !visible(game_object,time_delta))
+	if (!game_object || (!fictitious && !visible(game_object,time_delta)))
 		return;
 
 	xr_vector<CVisibleObject>::iterator	J = std::find(m_objects->begin(),m_objects->end(),object_id(game_object));

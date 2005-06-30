@@ -40,13 +40,14 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 
 //	Msg			("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());
 
+	object().memory().visual().add_visible_object	(data->object().memory().enemy().selected(),.001f,true);
+
 	const MemorySpace::CHitObject	*m = data->object().memory().hit().hit(data->object().memory().enemy().selected());
 	
 	if (!m)
 		return;
 
 	object().memory().hit().add						(*m);
-	object().memory().visual().add_visible_object	(data->object().memory().enemy().selected(),.001f);
 	
 //	object().agent_manager().member().register_in_combat(m_object);
 }
