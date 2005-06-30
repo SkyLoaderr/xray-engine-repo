@@ -27,6 +27,7 @@ combat_enemy = actor
 combat_use_rocket = false
 combat_use_mgun = true
 invulnerable = true
+;on_info2 = {=heli_health_le(25)} heli_move@die
 on_info = {+val_opendoor_start -val_opendoor_end} heli_move@patrol2, {+val_exit_gate_show} heli_move@patrol2
 
 [heli_move@patrol2]
@@ -36,6 +37,9 @@ combat_use_rocket = false
 combat_use_mgun = true
 combat_enemy = nil
 invulnerable = true
+;on_info2 = {=heli_health_le(25)} heli_move@die
 on_info = {+val_opendoor_end -val_exit_gate_show} heli_move@patrol1
 
-
+[heli_move@die]
+path_move = val_monolith_heli_die_move
+combat_ignore = true
