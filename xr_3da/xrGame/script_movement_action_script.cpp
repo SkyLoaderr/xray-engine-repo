@@ -51,7 +51,7 @@ void CScriptMovementAction::script_register(lua_State *L)
 				value("right",					int(CScriptMovementAction::eInputKeyRight)),
 				value("up",						int(CScriptMovementAction::eInputKeyShiftUp)),
 				value("down",					int(CScriptMovementAction::eInputKeyShiftDown)),
-				value("break",					int(CScriptMovementAction::eInputKeyBreaks)),
+				value("handbrake",				int(CScriptMovementAction::eInputKeyBreaks)),
 				value("on",						int(CScriptMovementAction::eInputKeyEngineOn)),
 				value("off",					int(CScriptMovementAction::eInputKeyEngineOff))
 			]
