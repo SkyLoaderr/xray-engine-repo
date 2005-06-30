@@ -33,7 +33,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if( !pActor || !pActor->g_Alive() ) return false;
+	if( pActor && !pActor->g_Alive() ) return false;
 
 	switch (key_binding[dik])
 	{
