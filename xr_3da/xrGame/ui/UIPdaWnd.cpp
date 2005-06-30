@@ -130,7 +130,13 @@ void CUIPdaWnd::Init()
 	UIOffButton->SetPushOffsetY(0);
 	UIOffButton->TextureOff();
 	UIOffButton->SetMessageTarget(this);
-
+	if(GameID()!=GAME_SINGLE){
+		UITabControl->GetButtonsVector()->at(0)->Enable(false);
+		UITabControl->GetButtonsVector()->at(1)->Enable(false);
+		UITabControl->GetButtonsVector()->at(3)->Enable(false);
+		UITabControl->GetButtonsVector()->at(4)->Enable(false);
+		UITabControl->GetButtonsVector()->at(5)->Enable(false);
+	}
 	// Draw();
 }
 

@@ -533,22 +533,6 @@ void CUIListWnd::EnableScrollBar(bool enable)
 {
 	m_ScrollBar->SetEnabled(enable);
 	UpdateScrollBar();
-
-/*	m_bScrollBarEnabled = enable;
-
-	if(m_bScrollBarEnabled)
-	{
-		m_ScrollBar->Enable(true);
-		m_ScrollBar->Show(true);
-	}
-	else
-	{
-		m_ScrollBar->Enable(false);
-		m_ScrollBar->Show(false);
-	}
-
-	UpdateScrollBar();
-*/
 }
 
 void CUIListWnd::ActivateList(bool activity)
