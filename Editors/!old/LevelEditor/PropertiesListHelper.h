@@ -14,19 +14,19 @@ public:
 public:
 //------------------------------------------------------------------------------
 // predefind event routines
-    virtual void 				__stdcall 	FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted);
+    virtual bool 				__stdcall 	FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val);
     virtual void 				__stdcall 	FvectorRDOnBeforeEdit(PropValue* sender,Fvector& edit_val);
     virtual void 				__stdcall 	FvectorRDOnDraw		(PropValue* sender, xr_string& draw_val);
-    virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
+    virtual bool 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender, float& edit_val);
     virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender, float& edit_val);
     virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender, xr_string& draw_val);
 // R-name edit
     virtual void				__stdcall  	NameBeforeEdit		(PropValue* sender, shared_str& edit_val);
-    virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender, shared_str& edit_val, bool& accepted);
+    virtual bool 				__stdcall  	NameAfterEdit		(PropValue* sender, shared_str& edit_val);
     virtual void 				__stdcall  	NameDraw			(PropValue* sender, xr_string& draw_val);
 // C-name edit
     virtual void				__stdcall  	CNameBeforeEdit		(PropValue* sender, xr_string& edit_val);
-    virtual void 				__stdcall  	CNameAfterEdit		(PropValue* sender, xr_string& edit_val, bool& accepted);
+    virtual bool 				__stdcall  	CNameAfterEdit		(PropValue* sender, xr_string& edit_val);
     virtual void 				__stdcall  	CNameDraw			(PropValue* sender, xr_string& draw_val);
 public:
     virtual CaptionValue*  		__stdcall	CreateCaption	    (PropItemVec& items, shared_str key, shared_str val);

@@ -181,12 +181,13 @@ void CPropHelper::FvectorRDOnDraw(PropValue* sender, xr_string& draw_val)
     Fvector val;    val.set	(rad2deg(V->value->x),rad2deg(V->value->y),rad2deg(V->value->z));
     draw_sprintf	(draw_val,val,V->dec);
 }
-void CPropHelper::FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted)
+bool CPropHelper::FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val)
 {
     edit_val.set	(deg2rad(edit_val.x),deg2rad(edit_val.y),deg2rad(edit_val.z));
     VectorValue* V 	= dynamic_cast<VectorValue*>(sender); R_ASSERT(V);
     V->lim_mn.set	(deg2rad(V->lim_mn.x),deg2rad(V->lim_mn.y),deg2rad(V->lim_mn.z));  
     V->lim_mx.set	(deg2rad(V->lim_mx.x),deg2rad(V->lim_mx.y),deg2rad(V->lim_mx.z));  
+    return true;
 }
 //------------------------------------------------------------------------------
 
@@ -202,11 +203,12 @@ void CPropHelper::floatRDOnDraw(PropValue* sender, xr_string& draw_val)
     float val;    	val = rad2deg(*V->value);
     draw_sprintf	(draw_val,val,V->dec);
 }
-void CPropHelper::floatRDOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
+bool CPropHelper::floatRDOnAfterEdit(PropValue* sender, float& edit_val)
 {
     edit_val 		= deg2rad(edit_val);
     FloatValue* V 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(V);
     V->lim_mn 		= deg2rad(V->lim_mn); V->lim_mx = deg2rad(V->lim_mx);
+    return true;
 }
 //------------------------------------------------------------------------------
 
@@ -221,11 +223,11 @@ void CPropHelper::NameDraw(PropValue* sender, xr_string& draw_val)
 	int cnt			=_GetItemCount(V->value->c_str(),'\\');
 	draw_val 		= _SetPos(V->value->c_str(),cnt-1,'\\');
 }
-void CPropHelper::NameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
+bool CPropHelper::NameAfterEdit(PropValue* sender, shared_str& edit_val)
 {
 	RTextValue* V	= dynamic_cast<RTextValue*>(sender); VERIFY(V);
     ListItem* L		= (ListItem*)sender->tag;
-	accepted		= LHelper().NameAfterEdit(L,V->GetValue().c_str(),edit_val);
+	return 			LHelper().NameAfterEdit(L,V->GetValue().c_str(),edit_val);
 }
 void CPropHelper::CNameDraw(PropValue* sender, xr_string& draw_val)
 {
@@ -238,13 +240,14 @@ void CPropHelper::CNameBeforeEdit(PropValue* sender, xr_string& edit_val)
 	int cnt			=_GetItemCount(edit_val.c_str(),'\\');
 	edit_val		= _SetPos(edit_val.c_str(),cnt-1,'\\');
 }
-void CPropHelper::CNameAfterEdit(PropValue* sender, xr_string& edit_val, bool& accepted)
+bool CPropHelper::CNameAfterEdit(PropValue* sender, xr_string& edit_val)
 {
 	CTextValue* V	= dynamic_cast<CTextValue*>(sender); VERIFY(V);
     ListItem* L		= (ListItem*)sender->tag;
     shared_str tmp	= edit_val.c_str();
-	accepted		= LHelper().NameAfterEdit(L,V->GetValue(),tmp);
+	bool accepted	= LHelper().NameAfterEdit(L,V->GetValue(),tmp);
     edit_val		= tmp.c_str();
+    return 			accepted;
 }
 //---------------------------------------------------------------------------
 

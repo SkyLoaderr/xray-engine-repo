@@ -21,9 +21,9 @@
 // refs
 class CCustomObject;
 
-typedef fastdelegate::FastDelegate0<> 										TOnApplyClick;
+typedef fastdelegate::FastDelegate1<LPCSTR,bool>							TOnApplyClick;
 typedef fastdelegate::FastDelegate1<bool&> 									TOnCloseClick;
-typedef fastdelegate::FastDelegate3<const AnsiString&, AnsiString&, bool&> 	TOnCodeIndight;
+typedef fastdelegate::FastDelegate3<const AnsiString&, AnsiString&, bool&> 	TOnCodeInsight;
 
 class XR_EPROPS_API TfrmText : public TForm
 {
@@ -61,7 +61,7 @@ private:	// User declarations
 	AnsiString* 	m_Text;
     TOnApplyClick 	OnApplyClick;
     TOnCloseClick 	OnCloseClick;
-    TOnCodeIndight  OnCodeInsight;
+    TOnCodeInsight  OnCodeInsight;
     void			OutLineNumber();
 public:		// User declarations
 	enum{
@@ -70,8 +70,8 @@ public:		// User declarations
     };
 public:
     __fastcall TfrmText(TComponent* Owner);
-    static TfrmText* 	__fastcall CreateForm		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
-    static bool		 	__fastcall RunEditor		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
+    static TfrmText* 	__fastcall CreateForm		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, LPCSTR apply_name="Apply", TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeInsight on_insight=0);
+    static bool		 	__fastcall RunEditor		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, LPCSTR apply_name="Apply", TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeInsight on_insight=0);
     static void 		__fastcall DestroyForm		(TfrmText* form);
     bool 	Modified	(){return mmText->Modified;}
     void 	ApplyEdit	(){ebApplyClick(0);}

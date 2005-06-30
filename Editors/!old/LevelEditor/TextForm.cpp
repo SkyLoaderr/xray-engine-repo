@@ -27,7 +27,7 @@ __fastcall TfrmText::TfrmText(TComponent* Owner)
 void __fastcall TfrmText::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
-    else if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)) ebOk->Click();
+    else if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)){ ebApply->Click(); Key=0; }
 //.	else{
 //.    	UI->ApplyGlobalShortCut(Key, Shift);
 //.	}
@@ -45,7 +45,7 @@ void __fastcall TfrmText::FormShow(TObject *Sender)
 
 void __fastcall TfrmText::ebOkClick(TObject *Sender)
 {
-	ebApplyClick	(Sender);
+    *m_Text 		= mmText->Text;
     Close			();
     ModalResult 	= mrOk;
 }
@@ -60,13 +60,17 @@ void __fastcall TfrmText::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmText::ebApplyClick(TObject *Sender)
 {
-	*m_Text 				= mmText->Text;
-    if (!OnApplyClick.empty())OnApplyClick();
+    if (!OnApplyClick.empty()){
+    	if (OnApplyClick(mmText->Text.c_str()))
+			*m_Text 		= mmText->Text;
+    }else{
+        *m_Text 			= mmText->Text;
+    }
 	mmText->Modified 		= false;
 }
 //---------------------------------------------------------------------------
 
-TfrmText* __fastcall TfrmText::CreateForm(AnsiString& txt, LPCSTR caption, u32 flags, int lim, TOnApplyClick on_apply, TOnCloseClick on_close, TOnCodeIndight on_insight)
+TfrmText* __fastcall TfrmText::CreateForm(AnsiString& txt, LPCSTR caption, u32 flags, int lim, LPCSTR apply_name, TOnApplyClick on_apply, TOnCloseClick on_close, TOnCodeInsight on_insight)
 {
 	TfrmText* form			= xr_new<TfrmText>((TComponent*)0);
     form->Caption			= caption;
@@ -75,6 +79,7 @@ TfrmText* __fastcall TfrmText::CreateForm(AnsiString& txt, LPCSTR caption, u32 f
 	form->mmText->Text 		= txt;
     form->mmText->MaxLength = lim;
     form->mmText->PopupMenu	= (flags&flOurPPMenu)?form->pmTextMenu:0;
+    form->ebApply->Caption	= apply_name;
     form->OnApplyClick 		= on_apply;
     form->OnCloseClick		= on_close;
     form->OnCodeInsight		= on_insight;
@@ -84,7 +89,7 @@ TfrmText* __fastcall TfrmText::CreateForm(AnsiString& txt, LPCSTR caption, u32 f
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TfrmText::RunEditor(AnsiString& txt, LPCSTR caption, u32 flags, int lim, TOnApplyClick on_apply, TOnCloseClick on_close, TOnCodeIndight on_insight)
+bool __fastcall TfrmText::RunEditor(AnsiString& txt, LPCSTR caption, u32 flags, int lim, LPCSTR apply_name, TOnApplyClick on_apply, TOnCloseClick on_close, TOnCodeInsight on_insight)
 {
 	TfrmText* form			= xr_new<TfrmText>((TComponent*)0);
 	form 					= xr_new<TfrmText>((TComponent*)0);
@@ -94,6 +99,7 @@ bool __fastcall TfrmText::RunEditor(AnsiString& txt, LPCSTR caption, u32 flags, 
 	form->mmText->Text 		= txt;
     form->mmText->MaxLength = lim;
     form->mmText->PopupMenu	= (flags&flOurPPMenu)?form->pmTextMenu:0;
+    form->ebApply->Caption	= apply_name;
     form->OnApplyClick 		= on_apply;
     form->OnCloseClick		= on_close;
     form->OnCodeInsight		= on_insight;

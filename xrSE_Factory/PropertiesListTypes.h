@@ -87,7 +87,7 @@ public:
 	TYPE*				value;
 public:
 	typedef fastdelegate::FastDelegate2<PropValue*, T&> 		TOnBeforeEditEvent;
-	typedef fastdelegate::FastDelegate3<PropValue*, T&, bool&> 	TOnAfterEditEvent;
+	typedef fastdelegate::FastDelegate2<PropValue*, T&, bool> 	TOnAfterEditEvent;
     TOnBeforeEditEvent	OnBeforeEditEvent;
     TOnAfterEditEvent	OnAfterEditEvent;
 public:
@@ -201,10 +201,9 @@ public:
     template <class T1, class T2>
     IC bool 			AfterEdit		(T2& val)
     {
-    	bool Accepted	= true;
         T1* CV			= smart_cast<T1*>(values.front()); VERIFY(CV);
-        if (!CV->OnAfterEditEvent.empty()) CV->OnAfterEditEvent(CV,val,Accepted);
-        return Accepted;
+        if (!CV->OnAfterEditEvent.empty()) return CV->OnAfterEditEvent(CV,val);
+        return true;
 	}    
     template <class T1, class T2>
     IC bool 			ApplyValue		(const T2& val)
@@ -362,8 +361,8 @@ class CTextValue: public PropValue{
 public:
 	LPSTR				value;
 public:
-	typedef fastdelegate::FastDelegate2<PropValue*, xr_string&> 			TOnBeforeEditEvent;
-	typedef fastdelegate::FastDelegate3<PropValue*, xr_string&, bool&> 	TOnAfterEditEvent;
+	typedef fastdelegate::FastDelegate2<PropValue*, xr_string&> 		TOnBeforeEditEvent;
+	typedef fastdelegate::FastDelegate2<PropValue*, xr_string&, bool> 	TOnAfterEditEvent;
     TOnBeforeEditEvent	OnBeforeEditEvent;
     TOnAfterEditEvent	OnAfterEditEvent;
 public:

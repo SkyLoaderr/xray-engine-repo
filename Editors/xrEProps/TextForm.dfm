@@ -1,6 +1,6 @@
 object frmText: TfrmText
-  Left = 297
-  Top = 317
+  Left = -669
+  Top = 527
   Width = 443
   Height = 283
   Caption = 'Text'
