@@ -21,14 +21,14 @@ class CScriptTokenList;
 
 struct CScriptPropertiesListHelper {
 public:
-			void 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val, bool& accepted);
+			bool 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val);
 			void 				FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val);
 //			void 				FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
-			void 				floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted);
+			bool 				floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val);
 			void 				floatRDOnBeforeEdit	(PropValue* sender,  float&	 edit_val);
 //			void 				floatRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
 // name edit
-			void 				NameAfterEdit		(PropValue* sender,  LPCSTR& edit_val, bool& accepted);
+			bool 				NameAfterEdit		(PropValue* sender,  LPCSTR& edit_val);
 			void				NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val);
 //			void 				NameDraw			(PropValue* sender,  LPCSTR& draw_val);
 public:

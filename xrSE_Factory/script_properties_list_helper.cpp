@@ -60,9 +60,9 @@ typename CWrapHelper<T>::result_type	*wrap_value		(luabind::object object, LPCST
 	>(object,name));
 }
 
-void CScriptPropertiesListHelper::FvectorRDOnAfterEdit	(PropValue* sender,  Fvector& edit_val, bool& accepted)
+bool CScriptPropertiesListHelper::FvectorRDOnAfterEdit	(PropValue* sender,  Fvector& edit_val)
 {
-	PHelper().FvectorRDOnAfterEdit(sender,edit_val,accepted);
+	return PHelper().FvectorRDOnAfterEdit(sender,edit_val);
 }
 
 void CScriptPropertiesListHelper::FvectorRDOnBeforeEdit	(PropValue* sender, Fvector& edit_val)
@@ -79,9 +79,9 @@ void CScriptPropertiesListHelper::FvectorRDOnDraw		(PropValue* sender)
 }
 */
 
-void CScriptPropertiesListHelper::floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted)
+bool CScriptPropertiesListHelper::floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val)
 {
-	PHelper().floatRDOnAfterEdit(sender,edit_val,accepted);
+	return PHelper().floatRDOnAfterEdit(sender,edit_val);
 }
 
 void CScriptPropertiesListHelper::floatRDOnBeforeEdit	(PropValue* sender,  float&	 edit_val)
@@ -98,11 +98,12 @@ void CScriptPropertiesListHelper::floatRDOnDraw			(PropValue* sender,  LPCSTR& d
 }
 */
 
-void CScriptPropertiesListHelper::NameAfterEdit			(PropValue* sender,  LPCSTR& edit_val, bool& accepted)
+bool CScriptPropertiesListHelper::NameAfterEdit			(PropValue* sender,  LPCSTR& edit_val)
 {
 	shared_str		temp;
-	PHelper().NameAfterEdit(sender,temp,accepted);
-	edit_val	= *temp;
+	bool result		= PHelper().NameAfterEdit(sender,temp);
+	edit_val		= *temp;
+	return result;
 }
 
 void CScriptPropertiesListHelper::NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val)
