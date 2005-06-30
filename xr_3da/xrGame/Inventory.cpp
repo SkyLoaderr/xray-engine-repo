@@ -193,6 +193,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	case eItemPlaceBelt:{
 			VERIFY(InBelt(pIItem));
 			m_belt.erase(std::find(m_belt.begin(), m_belt.end(), pIItem));
+			pIItem->object().processing_deactivate();
 		}break;
 	case eItemPlaceRuck:{
 			VERIFY(InRuck(pIItem));
@@ -459,6 +460,8 @@ bool CInventory::Belt(PIItem pIItem)
 
 	if(in_slot)
 		pIItem->object().processing_deactivate();
+
+	pIItem->object().processing_activate();
 
 	return true;
 }

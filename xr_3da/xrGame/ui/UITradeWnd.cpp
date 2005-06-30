@@ -328,11 +328,11 @@ void CUITradeWnd::Update()
 //#include "../ai/trader/ai_trader.h"
 void CUITradeWnd::Show()
 {
-	inherited::Show(true);
-	inherited::Enable(true);
+	inherited::Show		(true);
+	inherited::Enable	(true);
 
-
-	ResetAll();
+	SetCurrentItem		(NULL);
+	ResetAll			();
 }
 
 //////////////////////////////////////////////////////////////////////////
