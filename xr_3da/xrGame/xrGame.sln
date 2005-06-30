@@ -1,0 +1,131 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGame", "xrGame.vcproj", "{A15B9EF4-D198-45DE-8836-C736D09FF389}"
+	ProjectSection(ProjectDependencies) = postProject
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C} = {435BAC9A-B225-457D-AB40-C9BD0CC8838C}
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1} = {90F938A1-176A-4379-A3D1-DD516E8A6DC1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrNetServer", "..\xrNetServer\xrNetServer.vcproj", "{435BAC9A-B225-457D-AB40-C9BD0CC8838C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrStalker", "X:\GameData\xrstalker.vcproj", "{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrD3D9-Null", "..\xrD3D9-Null\xrD3D9-Null.vcproj", "{0899B131-F1D4-4876-9BA1-67AC821DB9E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C} = {435BAC9A-B225-457D-AB40-C9BD0CC8838C}
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1} = {90F938A1-176A-4379-A3D1-DD516E8A6DC1}
+		{A15B9EF4-D198-45DE-8836-C736D09FF389} = {A15B9EF4-D198-45DE-8836-C736D09FF389}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XR_3DA", "..\xr_3DA\XR_3DA.vcproj", "{2578C6D8-660D-48AE-9322-7422F8664F06}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGameSpy", "P:\X_Ray\xrGameSpy\xrGameSpy.vcproj", "{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 7
+		SccProjectUniqueName0 = xrGame.vcproj
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SccProjectUniqueName1 = ..\\xrNetServer\\xrNetServer.vcproj
+		SccProjectName1 = \u0022$/xrNetServer\u0022,\u0020CDRAAAAA
+		SccLocalPath1 = ..\\xrNetServer
+		CanCheckoutShared = true
+		SccProjectUniqueName2 = X:\\GameData\\xrstalker.vcproj
+		SccProjectName2 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath2 = X:\\GameData
+		CanCheckoutShared = true
+		SccProjectUniqueName3 = ..\\xrD3D9-Null\\xrD3D9-Null.vcproj
+		SccProjectName3 = \u0022$/xr_3da/xrGame/xrD3D9-Null\u0022,\u0020LWBBAAAA
+		SccLocalPath3 = ..\\xrD3D9-Null
+		CanCheckoutShared = true
+		SccProjectUniqueName4 = ..\\xr_3DA\\XR_3DA.vcproj
+		SccProjectName4 = \u0022$/XR_3DA\u0022,\u0020WABAAAAA
+		SccLocalPath4 = ..\\xr_3DA
+		CanCheckoutShared = true
+		SccLocalPath5 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {DDA57DE3-4F46-40EB-82D4-3955F7619CCC}
+		SccProjectUniqueName6 = P:\\X_Ray\\xrGameSpy\\xrGameSpy.vcproj
+		SccProjectName6 = \u0022$/xr_3da/xrGame/xrGameSpy\u0022,\u0020MRDBAAAA
+		SccLocalPath6 = p:\\X_Ray\\xrGameSpy
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		DebugNoExceptions = DebugNoExceptions
+		Mixed = Mixed
+		Release = Release
+		xrGame - Server = xrGame - Server
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Debug.ActiveCfg = Debug|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Debug.Build.0 = Debug|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Mixed.ActiveCfg = Mixed|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Mixed.Build.0 = Mixed|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Release.ActiveCfg = Release|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.Release.Build.0 = Release|Win32
+		{A15B9EF4-D198-45DE-8836-C736D09FF389}.xrGame - Server.ActiveCfg = Debug|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Debug.ActiveCfg = Debug|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Debug.Build.0 = Debug|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Mixed.ActiveCfg = Mixed|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Mixed.Build.0 = Mixed|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Release.ActiveCfg = Release|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.Release.Build.0 = Release|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.xrGame - Server.ActiveCfg = Debug|Win32
+		{435BAC9A-B225-457D-AB40-C9BD0CC8838C}.xrGame - Server.Build.0 = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.ActiveCfg = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.Build.0 = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.xrGame - Server.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.xrGame - Server.Build.0 = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Debug.ActiveCfg = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Debug.Build.0 = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.DebugNoExceptions.Build.0 = Debug|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Mixed.ActiveCfg = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Mixed.Build.0 = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.ActiveCfg = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.Release.Build.0 = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.xrGame - Server.ActiveCfg = Release|Win32
+		{0899B131-F1D4-4876-9BA1-67AC821DB9E1}.xrGame - Server.Build.0 = Release|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.Build.0 = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.ActiveCfg = Release|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.Build.0 = Release|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.xrGame - Server.ActiveCfg = DebugNoExceptions|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.xrGame - Server.Build.0 = DebugNoExceptions|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Debug.ActiveCfg = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Debug.Build.0 = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.DebugNoExceptions.Build.0 = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Mixed.ActiveCfg = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Mixed.Build.0 = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.ActiveCfg = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.Build.0 = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.xrGame - Server.ActiveCfg = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.xrGame - Server.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

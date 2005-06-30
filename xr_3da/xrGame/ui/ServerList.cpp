@@ -16,30 +16,25 @@ CServerList::CServerList(){
 		AttachChild(&m_separator[i]);
 
 	AttachChild(&m_list);
-
-	m_serverBrowser = NULL;
-	GameSpy_Browser_ClearServersList();
 }
 
 CServerList::~CServerList()
 {
-	GameSpy_Browser_ClearServersList();
-	GameSpy_Browser_Destroy();	
 };
 
 void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 
-	GameSpy_Browser_Init();
+	m_GSBrowser.Init();
 }
 
 void CServerList::SetFilters(SServerFilters& sf){
 	m_sf = sf;
-	GameSpy_Browser_OnUpdateCompleted();
+	RefreshList();
 }
 
 void CServerList::SetPlayerName(const char* name){
-	m_palyerName = name;
+	m_playerName = name;
 }
 
 bool CServerList::IsValidItem(ServerInfo& item){
@@ -116,7 +111,7 @@ void CServerList::ConnectToSelected(){
 
 	xr_string command;
 
-	item->CreateConsoleCommand(command, m_palyerName.c_str());
+	item->CreateConsoleCommand(command, m_playerName.c_str());
 
 	Console->Execute("main_menu off");
 	Console->Execute(command.c_str());
@@ -171,12 +166,16 @@ void	CServerList::RefreshGameSpyList	(bool Local){
 	{
 		Msg("Refresh MasterServer List");
 	}
-	GameSpy_Browser_RefreshList(Local);
+	
+	m_GSBrowser.RefreshList_Full(Local);
+	RefreshList();
 }
 
 
 void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 {
+	if (!IsValidItem(*pServerInfo)) return;
+
 	CUIListItemServer* item = xr_new<CUIListItemServer>();
 	float w = m_list.GetItemWidth();
 	float h = m_list.GetItemHeight();
@@ -194,4 +193,17 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 
 	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
+};
+
+void	CServerList::RefreshList()
+{
+	m_list.RemoveAll();
+	//-------------------------------
+	int NumServersFound = m_GSBrowser.GetServersCount();
+	for (int i=0; i<NumServersFound; i++)
+	{
+		ServerInfo NewServerInfo;
+		m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, i);
+		AddServerToList(&NewServerInfo);
+	}
 };

@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "xrMessages.h"
 #include "xrGameSpyServer.h"
-#include "xrGameSpyServer_callbacks.h"
 #include "../igame_persistent.h"
+
+#include "GameSpy/GameSpy_Available.h"
 
 xrGameSpyServer::xrGameSpyServer()
 {
@@ -10,16 +11,7 @@ xrGameSpyServer::xrGameSpyServer()
 	m_bQR2_Initialized = FALSE;
 	m_bCDKey_Initialized = FALSE;
 	m_bCheckCDKey = false;
-
-	//set the secret key, in a semi-obfuscated manner
-	secret_key[0] = 't';
-	secret_key[1] = '9';
-	secret_key[2] = 'F';
-	secret_key[3] = 'j';
-	secret_key[4] = '3';
-	secret_key[5] = 'M';
-	secret_key[6] = 'x';
-	secret_key[7] = '\0';	
+	m_bDedicated = g_pGamePersistent->bDedicatedServer;
 }
 
 xrGameSpyServer::~xrGameSpyServer()
@@ -74,7 +66,8 @@ BOOL xrGameSpyServer::Connect(shared_str &session_name)
 	if (game->Type() != GAME_SINGLE) 
 	{
 		//----- Check for Backend Services ---
-		CheckAvailableServices();
+		CGameSpy_Available GSA;
+		if (!GSA.CheckAvailableServices()) return FALSE;
 
 		//------ Init of QR2 SDK -------------
 		QR2_Init();
@@ -92,12 +85,12 @@ void			xrGameSpyServer::Update				()
 
 	if (m_bQR2_Initialized)
 	{
-		qr2_think(NULL);
+		m_QR2.Think(NULL);
 	};
 
 	if (m_bCDKey_Initialized)
 	{
-		gcd_think();
+		m_GCDServer.Think();
 	};
 }
 
@@ -147,7 +140,7 @@ void			xrGameSpyServer::OnCL_Disconnected	(IClient* _CL)
 	if (m_bCDKey_Initialized)
 	{
 		Msg("GameSpy::CDKey::Server : Disconnecting Client");
-		gcd_disconnect_user(GAMESPY_PRODUCTID, int(_CL->ID.value()));
+		m_GCDServer.DisconnectUser(int(_CL->ID.value()));
 	};
 
 	csPlayers.Leave			();
@@ -169,7 +162,7 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 
 			Msg("GameSpy::CDKey::Server : Respond accepted, authenticate client.");
 
-			gcd_authenticate_user(GAMESPY_PRODUCTID, int(CL->ID.value()), 0, CL->m_pChallengeString, ResponseStr, ClientAuthorizeCallback, this);
+			m_GCDServer.AuthUser(int(CL->ID.value()), 0, CL->m_pChallengeString, ResponseStr, this);
 			return (0);
 		}break;
 		/*

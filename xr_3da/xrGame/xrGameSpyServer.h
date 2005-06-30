@@ -1,12 +1,13 @@
 #include "xrServer.h"
-//#include "GameSpy/QR2/qr2.h"
-#include "GameSpy_defs.h"
+#include "GameSpy/GameSpy_GCD_Server.h"
+#include "GameSpy/GameSpy_QR2.h"
+
 
 class xrGameSpyClientData	: public xrClientData
 {
 public:
-	char					m_pChallengeString[GAMESPY_MAXCHALLANGESIZE+1];
-	bool					m_bCDKeyAuth;
+	string64			m_pChallengeString;
+	bool				m_bCDKeyAuth;
 
 	xrGameSpyClientData			();
 	virtual ~xrGameSpyClientData	();
@@ -17,7 +18,6 @@ class xrGameSpyServer	: public xrServer
 private:
 	typedef xrServer inherited;
 private:
-	char							secret_key[9];
 	int								m_iReportToMasterServer;
 
 	BOOL							m_bQR2_Initialized;
@@ -28,9 +28,9 @@ private:
 	void							CDKey_Init						();
 	void							CDKey_ShutDown					();
 	void							SendChallengeString_2_Client	(IClient* C);
-	void							CreateRandomChallenge			(char* challenge, int nchars);
-
-	void							CheckAvailableServices			();
+	
+	CGameSpy_GCD_Server				m_GCDServer;
+	CGameSpy_QR2					m_QR2;
 protected:
 	virtual bool					NeedToCheckClient_GameSpy_CDKey	(IClient* CL);
 public:
@@ -39,9 +39,11 @@ public:
 	shared_str						Password;
 	int								m_iMaxPlayers;
 	bool							m_bCheckCDKey;
+	BOOL							m_bDedicated;
 
 	int								GetPlayersCount					();
-	void							OnCDKey_Validation				(ClientID ID, int res, char* errormsg);
+	void							OnCDKey_Validation				(int LocalID, int res, char* errormsg);
+	CGameSpy_QR2*					QR2() {return &m_QR2;} ;
 public:
 	xrGameSpyServer					();
 	virtual ~xrGameSpyServer		();
