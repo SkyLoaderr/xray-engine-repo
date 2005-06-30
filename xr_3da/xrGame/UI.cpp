@@ -34,6 +34,7 @@ CUI::CUI(CHUDManager* p)
 
 CUI::~CUI()
 {
+	xr_delete(m_pMessagesWnd);
 	for (UIMsgIt it=messages.begin(); messages.end() != it; ++it)
 		xr_delete(*it);
 	xr_delete(pUIGame);

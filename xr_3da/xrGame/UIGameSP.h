@@ -35,7 +35,7 @@ public:
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
 	CUIPdaWnd			PdaMenu;
-	CUIDiaryWnd			DiaryMenu;
+//	CUIDiaryWnd			DiaryMenu;
 	CUITalkWnd			TalkMenu;
 	CUICarBodyWnd		UICarBodyMenu;
 	

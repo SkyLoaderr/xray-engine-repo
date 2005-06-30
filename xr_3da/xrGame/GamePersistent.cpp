@@ -94,7 +94,6 @@ void CGamePersistent::OnAppStart()
 }
 
 extern void clean_game_globals	();
-extern void dump_all_wnds		();
 void CGamePersistent::OnAppEnd	()
 {
 	if(m_pMainUI->IsActive())
@@ -108,9 +107,6 @@ void CGamePersistent::OnAppEnd	()
 
 	GMLib.Unload				();
 
-#ifdef DEBUG
-	dump_all_wnds				();
-#endif
 }
 
 void CGamePersistent::Start		(LPCSTR op)

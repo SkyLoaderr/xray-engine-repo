@@ -5,27 +5,24 @@
 #include "stdafx.h"
 #include "UIWindow.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-//#define LOG_ALL_WINDOWS
-
-#ifdef LOG_ALL_WINDOWS
-xr_vector<CUIWindow*> g_globalWnds;
-#endif
-
-void dump_all_wnds()
-{
-#ifdef LOG_ALL_WINDOWS
-	xr_vector<CUIWindow*>::iterator it = g_globalWnds.begin();
-	Msg("---g_globalWnds.size()==[%d]",g_globalWnds.size());
-	for(;it!=g_globalWnds.end();++it)
-	{
-		CUIWindow* w = *it;
-		shared_str name = w->WindowName();
+//#define LOG_ALL_WNDS
+#ifdef LOG_ALL_WNDS
+	int ListWndCount = 0;
+	struct DBGList{
+		CUIWindow*		wnd;
+		int				num;
+	};
+	xr_vector<DBGList>	dbg_list_wnds;
+	void dump_list_wnd(){
+		Msg("------Total  wnds %d",dbg_list_wnds.size());
+		xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();
+		for(;_it!=dbg_list_wnds.end();++_it)
+			Msg("--leak detected ---- wnd = %d",(*_it).num);
 	}
+#else
+	void dump_list_wnd(){}
 #endif
-}
+
 
 CUIWindow::CUIWindow()
 {
@@ -47,8 +44,12 @@ CUIWindow::CUIWindow()
 	Enable					(true);
 	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
-#ifdef LOG_ALL_WINDOWS
-	g_globalWnds.push_back(this);
+
+#ifdef LOG_ALL_WNDS
+	ListWndCount++;
+	dbg_list_wnds.push_back(DBGList());
+	dbg_list_wnds.back().wnd = this;
+	dbg_list_wnds.back().num = ListWndCount;
 #endif
 }
 
@@ -63,11 +64,20 @@ CUIWindow::~CUIWindow()
 
 	DetachAll();
 
-#ifdef LOG_ALL_WINDOWS
-	xr_vector<CUIWindow*>::iterator it = std::find(g_globalWnds.begin(),g_globalWnds.end(),this);
-	VERIFY(it!=g_globalWnds.end());
-	g_globalWnds.erase(it);
+#ifdef LOG_ALL_WNDS
+	xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();
+	bool bOK = false;
+	for(;_it!=dbg_list_wnds.end();++_it){
+		if((*_it).wnd == this){
+			bOK = true;
+			dbg_list_wnds.erase(_it);
+			break;
+		}
+	}
+	if(!bOK)
+		Msg("CUIWindow::~CUIWindow.!!!!!!!!!!!!!!!!!!!!!!! cannot find window in list");
 #endif
+
 }
 
 //

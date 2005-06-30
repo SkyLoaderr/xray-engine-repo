@@ -210,7 +210,7 @@ void CUITreeViewItem::DeleteAllSubItems()
 		if (pWindow)
 			pWindow->DetachChild(*it);
 
-//		xr_delete(*it);
+		xr_delete(*it);
 	}
 
 	vSubItems.clear();

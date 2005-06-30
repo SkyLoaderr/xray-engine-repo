@@ -136,7 +136,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 
 	if (xml_doc->NavigateToNode("biography_list", 0))
 	{
-		pUIBio = xr_new<CUIListWnd>();
+		pUIBio = xr_new<CUIListWnd>();pUIBio->SetAutoDelete(true);
 		xml_init.InitListWnd(*xml_doc, "biography_list", 0, pUIBio);
 		AttachChild(pUIBio);
 	}

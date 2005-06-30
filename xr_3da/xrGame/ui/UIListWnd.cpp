@@ -35,9 +35,6 @@ CUIListWnd::CUIListWnd()
 	m_iLastUniqueID				= 0;
 	m_bNewRenderMethod			= false;
 	m_iRightIndention			= 0;
-	/* new_code_here
-	m_pClickedListItem          = NULL;
-	*/
 }
 
 //////////////////////////////////////////////////////////////////////////

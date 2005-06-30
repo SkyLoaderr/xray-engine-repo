@@ -26,7 +26,7 @@
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
 extern void release_smart_cast_stats				();
-
+extern void dump_list_wnd							();
 void clean_game_globals()
 {
 	// xml parser options
@@ -81,4 +81,5 @@ void clean_game_globals()
 	xr_delete										(g_profiler);
 	release_smart_cast_stats						();
 #endif
+	dump_list_wnd									();
 }
