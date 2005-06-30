@@ -79,7 +79,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function check_light_zone (stalker)
-    if stalker == nil or stalker:alive () == false then 
+    if stalker == nil or stalker:alive () == false or stalker:id () == db.actor:id () then 
        return 
     end
     
