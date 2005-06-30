@@ -208,7 +208,7 @@ function action_remark_activity:step()
 	if self.st.target == "actor" then
 		self.target = actor
 	else
-		self.target = utils.obj_by_sid(self.st.target_sid)
+		self.target = level_object_by_sid(self.st.target_sid)
 	end
 	if not self.target or not self.target:alive() then
 		return

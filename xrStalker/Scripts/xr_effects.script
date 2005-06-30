@@ -15,7 +15,7 @@ function hit_npc(actor, npc, p)
 	h.draftsman = npc
 	h.type = hit.wound
 	if type(p[1]) == 'number' then
-		local hitter = utils.obj_by_sid(p[1])
+		local hitter = level_object_by_sid(p[1])
 		if not hitter then return end
 		h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
 	else
@@ -53,7 +53,7 @@ end
 function set_friends(actor, npc, p)
     local npc1
 	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 and npc1:alive() then
 			--printf("_bp: %d:set_friends(%d)", npc:id(), npc1:id())
 			npc:set_relation(game_object.friend, npc1)
@@ -66,7 +66,7 @@ function set_enemies(actor, npc, p)
     local npc1
 	for i, v in pairs(p) do
 		--printf("_bp: set_enemies(%d)", v)
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 and npc1:alive() then
 			npc:set_relation(game_object.enemy, npc1)
 			npc1:set_relation(game_object.enemy, npc)
@@ -76,14 +76,14 @@ end
 
 -- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
 function gar_dm_bandits_fight(actor, npc)
-	local novice = utils.obj_by_sid(104)
+	local novice = level_object_by_sid(104)
 	if not novice or not novice:alive() then
 		return
 	end
 
 	local ignore_actor = distance_between(actor, novice) > 10
 
-	local bandit1 = utils.obj_by_sid(101)
+	local bandit1 = level_object_by_sid(101)
 	if bandit1 then
 		novice:set_relation(game_object.enemy, bandit1)
 		bandit1:set_relation(game_object.enemy, novice)
@@ -92,7 +92,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit2 = utils.obj_by_sid(102)
+	local bandit2 = level_object_by_sid(102)
 	if bandit2 then
 		novice:set_relation(game_object.enemy, bandit2)
 		bandit2:set_relation(game_object.enemy, novice)
@@ -101,7 +101,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit3 = utils.obj_by_sid(103)
+	local bandit3 = level_object_by_sid(103)
 	if bandit3 then
 		novice:set_relation(game_object.enemy, bandit3)
 		bandit3:set_relation(game_object.enemy, novice)
@@ -617,8 +617,8 @@ function mil_bomb_explode (actor, npc)
     
     db.actor:give_info_portion ("mil_freedom_under_attack")
     
-    local lukash = utils.obj_by_sid (707)
-    local skull = utils.obj_by_sid (708)
+    local lukash = level_object_by_sid (707)
+    local skull = level_object_by_sid (708)
     if lukash == nil or skull == nil then return end
     
     h.power = 1;
@@ -640,17 +640,17 @@ function mil_controller_dead (actor, npc)
     h.impulse = 1;
     h.draftsman = npc;
     h.type = hit.strike;
-    local hunter = utils.obj_by_sid (725)
+    local hunter = level_object_by_sid (725)
     if hunter ~= nil and hunter:alive () == true then
        printf ("KILL STALKER : %s", hunter:name ()) 
        hunter:hit (h)
     end    
-    hunter = utils.obj_by_sid (726)
+    hunter = level_object_by_sid (726)
     if hunter ~= nil and hunter:alive () == true then
        printf ("KILL STALKER : %s", hunter:name ()) 
        hunter:hit (h)
     end    
-    hunter = utils.obj_by_sid (727)
+    hunter = level_object_by_sid (727)
     if hunter ~= nil and hunter:alive () == true then
        printf ("KILL STALKER : %s", hunter:name ()) 
        hunter:hit (h)
@@ -659,7 +659,7 @@ end
 
 function mil_hunters_psi_hit (actor, npc)
     --if npc == nil then return end
-    local c = utils.obj_by_sid (729)
+    local c = level_object_by_sid (729)
     if c == nil then return end
     local h = hit ()
     h.power = 100
@@ -668,21 +668,21 @@ function mil_hunters_psi_hit (actor, npc)
     h.draftsman = c
     h.type = hit.telepatic
     
-    local hunter = utils.obj_by_sid (725)
+    local hunter = level_object_by_sid (725)
     if hunter ~= nil and hunter:alive () == true then
        if hunter.psy_health > 0.08 then
           hunter:hit (h)
        end   
     end   
     
-    hunter = utils.obj_by_sid (726)
+    hunter = level_object_by_sid (726)
     if hunter ~= nil and hunter:alive () == true then
        if hunter.psy_health > 0.08 then
           hunter:hit (h)
        end   
     end   
 
-    hunter = utils.obj_by_sid (727)
+    hunter = level_object_by_sid (727)
     if hunter ~= nil and hunter:alive () == true then
        if hunter.psy_health > 0.08 then
           hunter:hit (h)
@@ -695,8 +695,8 @@ function mil_remove_cook_map_spot (actor, npc)
 end
 
 function mil_transfer_docs_to_ara (actor, npc)
-    local ara = utils.obj_by_sid (719)
-    local pavlik = utils.obj_by_sid (710)
+    local ara = level_object_by_sid (719)
+    local pavlik = level_object_by_sid (710)
     if ara == nil or pavlik == nil or pavlik:object ("mil_courier_doc") == nil then
        return
     end   
@@ -775,13 +775,13 @@ function val_suicide_kill_self(actor, npc)
 end
 
 function val_sacrifice_force_guards_kill_victim(actor, npc)
-	local guard1 = utils.obj_by_sid(404)
+	local guard1 = level_object_by_sid(404)
 	if guard1 then
 		npc:set_relation(game_object.enemy, guard1)
 		guard1:set_relation(game_object.enemy, npc)
 	end
 	
-	local guard2 = utils.obj_by_sid(405)
+	local guard2 = level_object_by_sid(405)
 	if guard2 then
 		npc:set_relation(game_object.enemy, guard2)
 		guard2:set_relation(game_object.enemy, npc)
@@ -789,7 +789,7 @@ function val_sacrifice_force_guards_kill_victim(actor, npc)
 end
 
 function val_escort_captive_friend(actor, npc)
-	local captive = utils.obj_by_sid(400)
+	local captive = level_object_by_sid(400)
 	if not captive or not captive:alive() then return end
 
 	npc:set_relation(game_object.friend, captive)
@@ -798,7 +798,7 @@ function val_escort_captive_friend(actor, npc)
 end
 
 function val_escort_nap1_friend(actor, npc)
-	local nap1 = utils.obj_by_sid(406)
+	local nap1 = level_object_by_sid(406)
 	if not nap1 or not nap1:alive() then return end
 
 	npc:set_relation(game_object.friend, nap1)
@@ -806,7 +806,7 @@ function val_escort_nap1_friend(actor, npc)
 end
 
 function val_escort_captive_enemy(actor, npc)
-	local captive = utils.obj_by_sid(400)
+	local captive = level_object_by_sid(400)
 	if not captive or not captive:alive() then return end
 
 	npc:set_relation(game_object.enemy, captive)
@@ -815,7 +815,7 @@ function val_escort_captive_enemy(actor, npc)
 end
 
 function val_escort_nap1_enemy(actor, npc)
-	local nap1 = utils.obj_by_sid(406)
+	local nap1 = level_object_by_sid(406)
 	if not nap1 or not nap1:alive() then return end
 
 	npc:set_relation(game_object.enemy, nap1)
@@ -823,8 +823,8 @@ function val_escort_nap1_enemy(actor, npc)
 end
 
 function val_escort_set_fight(actor, npc)
-	--local captive = utils.obj_by_sid(400)
-	local nap1 = utils.obj_by_sid(406)
+	--local captive = level_object_by_sid(400)
+	local nap1 = level_object_by_sid(406)
 	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
 		return
 	end
@@ -839,8 +839,8 @@ function val_escort_set_fight(actor, npc)
 end
 
 function val_escort_unset_fight(actor, npc)
-	--local captive = utils.obj_by_sid(400)
-	local nap1 = utils.obj_by_sid(406)
+	--local captive = level_object_by_sid(400)
+	local nap1 = level_object_by_sid(406)
 	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
 		return
 	end

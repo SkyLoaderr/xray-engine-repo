@@ -40,7 +40,7 @@ function hitted_by(actor, npc, p)
 	local t = db.storage[npc:id()].hit
 	if t then
 		for i, v in pairs(p) do
-			npc1 = utils.obj_by_sid(v)
+			npc1 = level_object_by_sid(v)
 			if npc1 and t.who == npc1:id() then
 				printf("_bp: hitted_by(%d)", v)
 				return true
@@ -76,7 +76,7 @@ function killed_by(actor, npc, p)
 	local t = db.storage[npc:id()].death
 	if t then
 		for i, v in pairs(p) do
-			npc1 = utils.obj_by_sid(v)
+			npc1 = level_object_by_sid(v)
 			if npc1 and t.killer == npc1:id() then
 				printf("_bp: killed_by(%d)", v)
 				return true
@@ -92,7 +92,7 @@ end
 function is_alive_all(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 and not npc1:alive() then
 			return false
 		end
@@ -106,7 +106,7 @@ end
 function is_alive_one(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 and npc1:alive() then
 			return true
 		end
@@ -120,7 +120,7 @@ end
 function is_dead_all(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 then
 			if npc1:alive() then
 				return false
@@ -138,7 +138,7 @@ end
 function is_dead_one(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
-		npc1 = utils.obj_by_sid(v)
+		npc1 = level_object_by_sid(v)
 		if npc1 and not npc1:alive() then
 			printf("_bp: is_dead_one(%d) = true", v)
 			return true
@@ -327,7 +327,7 @@ function val_escort_combat_end(actor, npc)
 end
 
 function val_hit_by_nap1(actor, npc)
-	local nap1 = utils.obj_by_sid(406)
+	local nap1 = level_object_by_sid(406)
 	if nap1 == nil then return false end
 	local t = db.storage[npc:id()].hit
 	local hit_by_nap1 = (t ~= nil and t.who == nap1:id())
@@ -336,8 +336,8 @@ function val_hit_by_nap1(actor, npc)
 end
 
 function val_hit_by_guard(actor, npc)
-	local g1 = utils.obj_by_sid(407)
-	local g2 = utils.obj_by_sid(408)
+	local g1 = level_object_by_sid(407)
+	local g2 = level_object_by_sid(408)
 	if g1 == nil and g2 == nil then return false end
 	local t = db.storage[npc:id()].hit
 	local hit_by_guard = (t ~= nil and
@@ -377,7 +377,7 @@ end
 
 --[[
 function val_prisoner_in_cage(actor, npc)
-	local prisoner = utils.obj_by_sid(402)
+	local prisoner = level_object_by_sid(402)
 	if not prisoner then
 		return false
 	end
@@ -457,7 +457,7 @@ function is_courier_time (actor, npc)
 end    
 
 function is_controller_dead (actor, npc)
-    local c = utils.obj_by_sid (729)
+    local c = level_object_by_sid (729)
     if c == nil then return false end
     return not c:alive ()
 end    

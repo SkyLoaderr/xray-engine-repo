@@ -526,14 +526,6 @@ function get_nearest_waypoint(obj, pathname, ptr, cnt)
 	return pt_chosen
 end
 
-function obj_by_sid(sid)
-	local se_obj = alife():story_object(sid)
-	if se_obj then
-		return level.object_by_id(se_obj.id)
-	end
-	return nil
-end
-
 function npc_in_zone(npc, zone)
 	return npc ~= nil and zone ~= nil and zone:inside(npc:position())
 end
