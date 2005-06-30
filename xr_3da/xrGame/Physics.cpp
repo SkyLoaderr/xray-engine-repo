@@ -402,6 +402,10 @@ void FixBody(dBodyID body,float ext_param,float mass_param)
 	dMassAdjust(&m,mass_param);
 	dBodySetMass(body,&m);
 	dBodySetGravityMode(body,0);
+	dBodySetLinearVel(body,0,0,0);
+	dBodySetAngularVel(body,0,0,0);
+	dBodySetForce(body,0,0,0);
+	dBodySetTorque(body,0,0,0);
 }
 void FixBody(dBodyID body)
 {

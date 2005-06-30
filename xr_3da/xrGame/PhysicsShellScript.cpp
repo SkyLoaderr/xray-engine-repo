@@ -21,6 +21,10 @@ void CPhysicsShell::script_register(lua_State *L)
 			.def("get_joints_number",			&CPhysicsShell::get_JointsNumber)
 			.def("block_breaking",				&CPhysicsShell::BlockBreaking)
 			.def("unblock_breaking",			&CPhysicsShell::UnblockBreaking)
+			.def("is_breaking_blocked",			&CPhysicsShell::IsBreakingBlocked)
+			.def("is_breakable",				&CPhysicsShell::isBreakable)
+			.def("get_linear_vel",				&CPhysicsShell::get_LinearVel)
+			.def("get_angular_vel",				&CPhysicsShell::get_AngularVel)
 		];
 }
 
@@ -30,7 +34,15 @@ void CPhysicsElement::script_register(lua_State *L)
 		[
 			class_<CPhysicsElement>("physics_element")
 			.def("apply_force",					(void (CPhysicsElement::*)(float,float,float))(&CPhysicsElement::applyForce))
-
+			.def("is_breakable",				&CPhysicsElement::isBreakable)
+			.def("get_linear_vel",				&CPhysicsElement::get_LinearVel)
+			.def("get_angular_vel",				&CPhysicsElement::get_AngularVel)
+			.def("get_mass",					&CPhysicsElement::getMass)
+			.def("get_density",					&CPhysicsElement::getDensity)
+			.def("get_volume",					&CPhysicsElement::getVolume)
+			.def("fix",							&CPhysicsElement::Fix)
+			.def("release_fixed",				&CPhysicsElement::ReleaseFixed)
+			.def("is_fixed",					&CPhysicsElement::isFixed)
 		];
 }
 
@@ -58,5 +70,6 @@ void CPhysicsJoint::script_register(lua_State *L)
 			.def("get_limits",							&CPhysicsJoint::GetLimits,out_value(_2) + out_value(_3))
 			.def("get_axis_dir",						&CPhysicsJoint::GetAxisDirDynamic)
 			.def("get_anchor",							&CPhysicsJoint::GetAnchorDynamic)
+			.def("is_breakable",						&CPhysicsJoint::isBreakable)
 		];
 }

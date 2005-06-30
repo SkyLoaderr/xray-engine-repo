@@ -1385,6 +1385,13 @@ void	CPHElement::Fix()
 	m_flags.set(flFixed,TRUE);
 	FixBody(m_body);
 }
+void	CPHElement::ReleaseFixed()
+{
+	if(!isFixed())	return;
+	m_flags.set(flFixed,FALSE);
+	if(!bActive)return;
+	dBodySetMass(m_body,&m_mass);
+}
 void CPHElement::applyGravityAccel				(const Fvector& accel)
 {
 	if(m_flags.test(flFixed)) return;

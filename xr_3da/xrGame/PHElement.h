@@ -159,6 +159,7 @@ public:																																				//
 	virtual void						set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);							//aux (may not be)
 	virtual void						set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);							//aux (may not be)
 	virtual	void						Fix								();
+	virtual	void						ReleaseFixed					();
 	virtual bool						isFixed							(){return !!(m_flags.test(flFixed));}
 	virtual void						applyForce						(const Fvector& dir, float val);															//aux
 	virtual void						applyForce						(float x,float y,float z);																//called anywhere ph state influent
