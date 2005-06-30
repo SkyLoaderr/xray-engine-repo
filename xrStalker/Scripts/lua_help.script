@@ -1589,7 +1589,7 @@ C++ class danger_object {
     const enemy_sound = 7;
     const entity_attacked = 2;
     const grenade = 6;
-    const hiut = 2;
+    const hit = 2;
     const attack_sound = 1;
     const bullet_ricochet = 0;
     const entity_corpse = 4;
