@@ -56,14 +56,17 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				O->H_SetParent(smart_cast<CObject*>(this));
 
 				inventory().Take(_GO, false, true);
-				
 
 				//добавить новый артефакт в меню, если
 				//мы работали с устройством сочетания 
 				CUIGameSP* pGameSP = NULL;
 				CUI* ui = HUD().GetUI();
 				if( ui&&ui->UIGame() )
+				{
 					pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+					if (Level().CurrentViewEntity() == this)
+							HUD().GetUI()->UIGame()->ReInitInventoryWnd();
+				};
 				
 				//добавить отсоединенный аддон в инвентарь
 				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
@@ -107,6 +110,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 			CWeapon* pWeapon = smart_cast<CWeapon*>(O);
 			if (pWeapon) SelectBestWeapon();
+
+			if (Level().CurrentViewEntity() == this && HUD().GetUI() && HUD().GetUI()->UIGame())
+				HUD().GetUI()->UIGame()->ReInitInventoryWnd();
 		}
 		break;
 	case GE_INV_ACTION:

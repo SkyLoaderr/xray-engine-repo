@@ -19,8 +19,8 @@
 #include "string_table.h"
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
-#include "HUDManager.h"
-#include "UIGameCustom.h"
+//#include "HUDManager.h"
+//#include "UIGameCustom.h"
 
 #define ITEM_REMOVE_TIME		30000
 
@@ -234,10 +234,12 @@ void CInventoryItem::OnH_B_Independent	()
 {
 	UpdateXForm();
 	m_eItemPlace = eItemPlaceUndefined ;
+/*	
 	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
 	{
 		HUD().GetUI()->UIGame()->ReInitInventoryWnd();
 	};
+	*/
 }
 
 void CInventoryItem::OnH_A_Independent	()
@@ -252,10 +254,12 @@ void CInventoryItem::OnH_B_Chield		()
 
 void CInventoryItem::OnH_A_Chield		()
 {
+	/*
 	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
 	{
 		HUD().GetUI()->UIGame()->ReInitInventoryWnd();
 	};
+	*/
 }
 
 void CInventoryItem::UpdateCL()
