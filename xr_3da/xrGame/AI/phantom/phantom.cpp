@@ -76,8 +76,8 @@ BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 	VERIFY			(m_enemy);
 
 	// default init 
-	m_fly_particles	= 0;
-	fEntityHealth	= 0.001f;
+	m_fly_particles		= 0;
+	SetfHealth			(0.001f);
 
 	// orientate to enemy
 	XFORM().k.sub	(m_enemy->Position(),Position()).normalize();
@@ -248,7 +248,7 @@ void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_i
 {
 	if (m_State==stFly)	SwitchToState(stShoot);
 	if (g_Alive()){
-		fEntityHealth	= -1.f;
+		SetfHealth		(-1.f);
 		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
 	}
 }
@@ -348,7 +348,7 @@ void CPhantom::net_Import	(NET_Packet& P)
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth		= health;
+	SetfHealth			(health);
 
 	float fDummy;
 	u32 dwDummy;

@@ -65,7 +65,7 @@ class CCar :
 	virtual void						PhTune						(dReal step)			;
 /////////////////////////////////////////////////////////////////////////
 	virtual void						ApplyDamage					(u16 level)				;
-	virtual	float						Health						()						{return fEntityHealth;}
+	virtual	float						Health						()						{return GetfHealth();}
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return static_cast<CPHCollisionDamageReceiver*>(this);}
 ////////////////////////////////////////////////////////////////////////

@@ -33,9 +33,9 @@ private:
 protected:
 	// health & shield
 
-	virtual float GetfHealth() const { return fHealth; }
-	virtual float SetfHealth(float value) {fHealth = value; return value;}
-	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
+	virtual float			GetfHealth			() const			{ return fHealth; }
+	virtual float			SetfHealth			(float value)		{fHealth = value; return value;}
+//	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
 
 //	virtual float& GetEntityHealth() { return fHealth; }
 	
@@ -96,10 +96,10 @@ public:
 	bool					IsMyCamera			()const;
 
 	float					g_Armor				()const	{ return fArmor;	}
-	virtual float			g_Health			()const	{ return fEntityHealth;}
+	virtual float			g_Health			()const	{ return GetfHealth();}
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
 
-	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
+	virtual BOOL			g_Alive				()const	{ return GetfHealth()>0; }
 	virtual BOOL			g_State				(SEntityState&) const	{return FALSE;}
 	
 	virtual bool			AlreadyDie()			{return  0!=GetLevelDeathTime()?true:false;}

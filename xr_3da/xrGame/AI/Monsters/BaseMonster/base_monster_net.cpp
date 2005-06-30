@@ -26,7 +26,7 @@ void CBaseMonster::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16			(fEntityHealth,-500,1000);
+	P.w_float_q16			(GetfHealth(),-500,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -66,7 +66,7 @@ void CBaseMonster::net_Import(NET_Packet& P)
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;
+	SetfHealth			(health);
 
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);

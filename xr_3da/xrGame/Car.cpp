@@ -139,7 +139,7 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	PKinematics(Visual())->CalculateBones_Invalidate();
 	PKinematics(Visual())->CalculateBones();
 	m_fSaveMaxRPM					= m_max_rpm;
-	fEntityHealth					=co->health;
+	SetfHealth						(co->health);
 
 	if(!g_Alive())					b_exploded=true;
 	else							b_exploded=false;
@@ -247,7 +247,7 @@ void CCar::SaveNetState(NET_Packet& P)
 		for(;i!=e;++i)
 			i->second.SaveNetState(P);
 	}
-	P.w_float(fEntityHealth);
+	P.w_float(GetfHealth());
 }
 
 void CCar::RestoreNetState(CSE_PHSkeleton* po)
@@ -305,7 +305,7 @@ void CCar::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 	CPHSkeleton::Update(dt);
 	
-	if(m_death_time!=u32(-1)&&fEntityHealth<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
+	if(m_death_time!=u32(-1)&&GetfHealth()<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
 	{
 		CarExplode();
 		m_death_time=u32(-1);
@@ -367,7 +367,7 @@ void CCar::UpdateCL				( )
 		if(HUD().GetUI())//
 		{
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
-			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);
+			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetRPM(m_current_rpm/m_max_rpm/2.f);
 		}
@@ -427,10 +427,10 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	P *= m_HitTypeK[hit_type]*hitScale;
 	
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	if(fEntityHealth<=0.f)CExplosive::SetInitiator(who->ID());
+	if(GetfHealth()<=0.f)CExplosive::SetInitiator(who->ID());
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
-		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
 }
 void CCar::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
@@ -728,7 +728,7 @@ void CCar::Init()
 	m_root_transform.set(bone_map.find(pKinematics->LL_GetBoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
-	CDamagableItem::Init(fEntityHealth,3);
+	CDamagableItem::Init(GetfHealth(),3);
 
 	{
 		xr_map<u16,SWheel>::iterator i,e;

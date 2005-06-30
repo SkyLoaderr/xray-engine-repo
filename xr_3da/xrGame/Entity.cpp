@@ -67,7 +67,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 void CEntity::Die(CObject* who)
 {
 	set_ready_to_save	();
-	fEntityHealth		= -1.f;
+	SetfHealth			(-1.f);
 	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,false);
 }
 
@@ -90,8 +90,10 @@ float CEntity::CalcCondition(float hit)
 
 	// If Local() - perform some logic
 	if (Local() && g_Alive()) {
-		fEntityHealth		-=	lost_health; 
-		fEntityHealth		=	fEntityHealth<-1000?-1000:fEntityHealth;
+		SetfHealth			(GetfHealth()-lost_health);
+//		fEntityHealth		-=	lost_health; 
+		SetfHealth			((GetfHealth()<-1000)?-1000:GetfHealth());
+//		fEntityHealth		=	fEntityHealth<-1000?-1000:fEntityHealth;
 		fArmor				-=	lost_armor;
 	}
 
@@ -139,7 +141,8 @@ void CEntity::Load		(LPCSTR section)
 	inherited::Load		(section);
 
 	setVisible			(FALSE);
-	m_fMaxHealthValue = fEntityHealth = 100;
+	m_fMaxHealthValue /*= fEntityHealth*/ = 100;
+	SetfHealth			(100);
 	
 	// Team params
 	id_Team				= READ_IF_EXISTS(pSettings,r_s32,section,"team",-1);
@@ -218,16 +221,18 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 
 	// Initialize variables
 	if(E) {
-		fEntityHealth		= E->fHealth;
+		SetfHealth				(E->fHealth);
+//		fEntityHealth		= E->fHealth;
 		m_killer_id			= E->m_killer_id;
 	}
 	else
-		fEntityHealth		= 100.f;
+		SetfHealth				(100.f);
+//		fEntityHealth		= 100.f;
 
 	fArmor					= 0;
 
 	// Register
-	if (fEntityHealth > 0.f) {
+	if (GetfHealth() > 0.f) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
 		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
 	}

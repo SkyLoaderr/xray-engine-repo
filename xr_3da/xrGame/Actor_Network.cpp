@@ -284,7 +284,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	float health;
 	P.r_float_q16 (health,-500,1000);
 	//----------- for E3 -----------------------------
-	if (OnClient())fEntityHealth = health;
+	if (OnClient())SetfHealth(health);
 	//------------------------------------------------
 
 	float				fDummy;

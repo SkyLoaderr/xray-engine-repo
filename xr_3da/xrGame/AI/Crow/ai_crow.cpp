@@ -358,7 +358,7 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;
+	SetfHealth			(health);
 
 	float fDummy;
 	u32 dwDummy;
@@ -387,7 +387,7 @@ void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, COb
 {
 	bool				first_time = !!g_Alive();
 	
-	fEntityHealth		= 0	;
+	SetfHealth			(0);
 	set_death_time		()	;
 	if (eDeathDead!=st_current) 
 	{	

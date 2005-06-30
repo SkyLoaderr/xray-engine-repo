@@ -312,11 +312,6 @@ void CHelicopter::MoveStep()
 		dir.getHP(desired_H, desired_P);
 		
 
-//		angle_lerp	(m_movement.currPathH, desired_H, m_movement.GetAngSpeedHeading(), STEP);
-//		angle_lerp	(m_movement.currPathP, desired_P, m_movement.GetAngSpeedPitch(), STEP);
-		
-//		dir.setHP(m_movement.currPathH, m_movement.currPathP);
-
 		if(angle_difference(m_movement.currPathH,desired_H)>PI_DIV_3)
 			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
 		else
@@ -364,7 +359,6 @@ void CHelicopter::MoveStep()
 		angle_lerp			(m_body.currBodyH, center_desired_H, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
 	}else{
 		angle_lerp			(m_body.currBodyH, m_movement.currPathH, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
-//		m_body.currBodyH = m_movement.currPathH;
 	}
 
 

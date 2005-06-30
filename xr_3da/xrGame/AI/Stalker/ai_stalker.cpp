@@ -351,7 +351,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 //	P.w_float						(inventory().TotalWeight());
 //	P.w_u32							(m_dwMoney);
 
-	P.w_float_q16					(fEntityHealth,-500,1000);
+	P.w_float_q16					(GetfHealth(),-500,1000);
 
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
@@ -402,7 +402,8 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;
+	SetfHealth			(health);
+//	fEntityHealth = health;
 
 	P.r_u32							(N.dwTimeStamp);
 	P.r_u8							(flags);
@@ -592,7 +593,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.o_model			= movement().m_body.current.yaw;
 			uNext.o_torso			= movement().m_head.current;
 			uNext.p_pos				= vNewPosition;
-			uNext.fHealth			= fEntityHealth;
+			uNext.fHealth			= GetfHealth();
 			NET.push_back			(uNext);
 		}
 		else 
@@ -602,7 +603,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.o_model		= movement().m_body.current.yaw;
 			uNext.o_torso		= movement().m_head.current;
 			uNext.p_pos			= vNewPosition;
-			uNext.fHealth		= fEntityHealth;
+			uNext.fHealth		= GetfHealth();
 			NET.push_back		(uNext);
 		}
 	}

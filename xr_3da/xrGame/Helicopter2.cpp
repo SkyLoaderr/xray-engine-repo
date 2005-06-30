@@ -133,6 +133,8 @@ void CHelicopter::Explode ()
 void CHelicopter::SetDestPosition (Fvector* pos)
 {
 	m_movement.SetDestPosition(pos);
+	if(bDebug)
+		Msg("---SetDestPosition %f %f %f", pos->x, pos->y, pos->z);
 }
 
 float CHelicopter::GetDistanceToDestPosition()
@@ -175,8 +177,9 @@ float CHelicopter::GetMaxVelocity()
 
 void CHelicopter::SetSpeedInDestPoint(float sp)
 {
-	if(sp>=0.0f)
-		m_movement.SetSpeedInDestPoint(sp);
+	m_movement.SetSpeedInDestPoint(sp);
+	if(bDebug)
+		Msg("---SetSpeedInDestPoint %f", sp);
 }
 
 float CHelicopter::GetSpeedInDestPoint(float sp)
@@ -186,6 +189,8 @@ float CHelicopter::GetSpeedInDestPoint(float sp)
 void CHelicopter::SetOnPointRangeDist(float d)
 {
 	m_movement.onPointRangeDist = d;
+	if(bDebug)
+		Msg("---SetOnPointRangeDist %f", d);
 }
 
 float CHelicopter::GetOnPointRangeDist()

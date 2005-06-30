@@ -40,7 +40,7 @@ void CAI_Trader::Load(LPCSTR section)
 	inherited::Load					(section);
 
 	//fHealth							= pSettings->r_float	(section,"Health");
-	fEntityHealth = pSettings->r_float	(section,"Health");
+	SetfHealth( pSettings->r_float	(section,"Health") );
 
 	float max_weight = pSettings->r_float	(section,"max_item_mass");
 	inventory().SetMaxWeight(max_weight*1000);

@@ -180,7 +180,7 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
-	fEntityHealth					= tpSE_Rat->fHealth;
+	SetfHealth						(tpSE_Rat->fHealth);
 	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
 	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
 	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
@@ -260,7 +260,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16			(fEntityHealth,-500,1000);
+	P.w_float_q16			(GetfHealth(),-500,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -301,7 +301,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;	
+	SetfHealth			(health);	
 	
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);

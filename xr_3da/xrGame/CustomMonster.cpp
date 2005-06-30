@@ -200,7 +200,7 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16			(fEntityHealth,-500,1000);
+	P.w_float_q16			(GetfHealth(),-500,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -222,7 +222,7 @@ void CCustomMonster::net_Import(NET_Packet& P)
 
 	float health;
 	P.r_float_q16			(health,-500,1000);
-	fEntityHealth			= health;
+	SetfHealth				(health);
 
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
@@ -305,7 +305,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			uNext.o_model			= movement().m_body.current.yaw;
 			uNext.o_torso			= movement().m_body.current;
 			uNext.p_pos				= Position();
-			uNext.fHealth			= fEntityHealth;
+			uNext.fHealth			= GetfHealth();
 			NET.push_back			(uNext);
 		}
 		else 
@@ -315,7 +315,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			uNext.o_model		= movement().m_body.current.yaw;
 			uNext.o_torso		= movement().m_body.current;
 			uNext.p_pos			= Position();
-			uNext.fHealth		= fEntityHealth;
+			uNext.fHealth		= GetfHealth();
 			NET.push_back		(uNext);
 		}
 	}
@@ -743,7 +743,7 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 	eye_matrix.identity			();
 	movement().m_body.current.yaw		= movement().m_body.target.yaw		= -E->o_torso.yaw;
 	movement().m_body.current.pitch		= movement().m_body.target.pitch	= 0;
-	fEntityHealth				= E->fHealth;
+	SetfHealth							(E->fHealth);
 	if (!g_Alive())
 		set_death_time			();
 

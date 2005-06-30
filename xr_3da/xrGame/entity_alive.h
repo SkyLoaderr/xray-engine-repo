@@ -54,9 +54,9 @@ public:
 	virtual void			Die						(CObject* who);
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 	
-	virtual float GetfHealth() const;
-	virtual float SetfHealth(float value);
-	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
+	virtual float				GetfHealth				() const;
+	virtual float				SetfHealth				(float value);
+//	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
 
 	virtual float			g_Health			()	const;
 	virtual float			g_MaxHealth			()	const;

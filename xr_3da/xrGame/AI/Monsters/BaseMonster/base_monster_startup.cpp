@@ -35,7 +35,7 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 
-	fEntityHealth					= (float)pSettings->r_u32		(section,"Health");
+	SetfHealth						( (float)pSettings->r_u32		(section,"Health"));
 
 	m_controlled					= smart_cast<CControlledEntityBase*>(this);
 
