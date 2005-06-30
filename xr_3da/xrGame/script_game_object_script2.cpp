@@ -31,6 +31,7 @@
 #include "helicopter.h"
 #include "script_zone.h"
 #include "relation_registry.h"
+#include "danger_object.h"
 
 using namespace luabind;
 

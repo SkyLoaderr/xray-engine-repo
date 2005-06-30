@@ -78,6 +78,7 @@ class CHolderCustom;
 struct ScriptCallbackInfo;
 struct STasks;
 class CCar;
+class CDangerObject;
 
 class CScriptGameObject {
 	mutable CGameObject		*m_game_object;
@@ -304,7 +305,7 @@ public:
 			const MemorySpace::CHitObject	*GetBestHit			() const;
 			const MemorySpace::CSoundObject	*GetBestSound		() const;
 			CScriptGameObject	*GetBestEnemy		();
-			CScriptGameObject	*GetBestDanger		();
+			const CDangerObject	*GetBestDanger		();
 			CScriptGameObject	*GetBestItem		();
 
 	_DECLARE_FUNCTION10			(GetActionCount,u32);

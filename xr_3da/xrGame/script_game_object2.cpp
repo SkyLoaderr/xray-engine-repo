@@ -220,7 +220,7 @@ CScriptGameObject *CScriptGameObject::GetBestEnemy()
 	return					(0);
 }
 
-CScriptGameObject *CScriptGameObject::GetBestDanger()
+const CDangerObject *CScriptGameObject::GetBestDanger()
 {
 	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(&object());
 	if (!monster)
@@ -232,7 +232,7 @@ CScriptGameObject *CScriptGameObject::GetBestDanger()
 	if (!monster->memory().danger().selected()->object())
 		return				(0);
 
-	return					(monster->memory().danger().selected()->object()->lua_game_object());
+	return					(monster->memory().danger().selected());
 }
 
 CScriptGameObject *CScriptGameObject::GetBestItem()

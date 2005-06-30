@@ -12,6 +12,9 @@
 #include "script_game_object.h"
 #include "gameobject.h"
 #include "entity_alive.h"
+#include "danger_object.h"
+
+#include <luabind/operator.hpp>
 
 using namespace luabind;
 
@@ -29,6 +32,22 @@ template <typename T>
 CScriptGameObject *get_memory_object(const MemorySpace::CMemoryObject<T> &memory_object)
 {
 	return			(memory_object.m_object->lua_game_object());
+}
+
+CScriptGameObject *CDangerObject_object(const CDangerObject *self)
+{
+	VERIFY			(self);
+	return			(self->object() ? self->object()->lua_game_object() : 0);
+}
+
+CScriptGameObject *CDangerObject_dependent_object(const CDangerObject *self)
+{
+	VERIFY				(self);
+	if (!self->dependent_object())
+		return			(0);
+
+	const CGameObject	*game_object = smart_cast<const CGameObject*>(self->dependent_object());
+	return				(game_object ? game_object->lua_game_object() : 0);
 }
 
 void CMemoryInfo::script_register(lua_State *L)
@@ -101,6 +120,15 @@ void CMemoryInfo::script_register(lua_State *L)
 
 		class_<MemorySpace::CNotYetVisibleObject>("not_yet_visible_object")
 			.def_readonly("value",			&MemorySpace::CNotYetVisibleObject::m_value)
-			.def("object",					&not_yet_visible_object)
+			.def("object",					&not_yet_visible_object),
+
+		class_<CDangerObject>("danger_object")
+			.def(const_self == other<CDangerObject>())
+			.def("position",				&CDangerObject::position)
+			.def("time",					&CDangerObject::time)
+			.def("type",					&CDangerObject::type)
+			.def("perceive_type",			&CDangerObject::perceive_type)
+			.def("object",					&CDangerObject_object)
+			.def("dependent_object",		&CDangerObject_dependent_object)
 	];
 }

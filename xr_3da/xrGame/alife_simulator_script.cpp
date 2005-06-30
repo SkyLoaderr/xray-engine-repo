@@ -61,7 +61,7 @@ void generate_story_ids	(STORY_PAIRS &result)
 	for (k = 0; Ini->r_line(section,k,&N,&V); ++k) {
 		temp				= Ini->r_string_wb(section,N);
 		
-		R_ASSERT3			(NULL==strchr(*temp,' '),"Invalid story id description (contains spaces)!",*temp);
+		R_ASSERT3			(!strchr(*temp,' '),"Invalid story id description (contains spaces)!",*temp);
 		R_ASSERT2			(xr_strcmp(*temp,_INVALID_STORY_ID),"INVALID_STORY_ID redifinition!");
 		
 		STORY_PAIRS::const_iterator	I = result.begin();
