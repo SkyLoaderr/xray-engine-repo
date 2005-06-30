@@ -265,6 +265,9 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 
 u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
 {
+	if (!valid_vertex_position(v3d(finish_position)))
+		return				(u32(-1));
+
 	TIMER_START(CheckPositionInDirection)
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
 	Fbox2					box;
@@ -274,6 +277,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
+	u32						dest_xz = vertex_position(v3d(dest)).xz();
 	Fvector2				temp;
 	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
 
@@ -286,11 +290,12 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 			u32				next_vertex_id = value(cur_vertex_id,I);
 			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
-			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			CVertex			*v = vertex(next_vertex_id);
+			unpack_xz		(v,temp.x,temp.y);
 			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
-				if (/**box.contains(dest) && /**/inside(next_vertex_id,dest)) {
+				if (/**box.contains(dest) && /**inside(next_vertex_id,dest)/**/dest_xz == v->position().xz()) {
 					TIMER_STOP(CheckPositionInDirection)
 					return	(is_accessible(next_vertex_id) ? next_vertex_id : u32(-1));
 				}
@@ -386,6 +391,9 @@ IC  Fvector2 v2d(const Fvector &vector3d)
 
 bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
 {
+	if (!valid_vertex_position(v3d(finish_point)))
+		return				(false);
+
 	TIMER_START(CreateStraightPath)
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;
 	Fbox2					box;
@@ -395,6 +403,7 @@ bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &star
 	start					= start_point;
 	dest					= finish_point;
 	dir.sub					(dest,start);
+	u32						dest_xz = vertex_position(v3d(dest)).xz();
 	Fvector2				temp;
 	Fvector					pos3d;
 	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
@@ -419,7 +428,8 @@ bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &star
 			u32				next_vertex_id = value(cur_vertex_id,I);
 			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
-			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			CVertex			*v = vertex(next_vertex_id);
+			unpack_xz		(v,temp.x,temp.y);
 			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
@@ -469,7 +479,7 @@ bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &star
 				tpaOutputPoints.push_back(tIntersectPoint);
 				tpaOutputNodes.push_back(cur_vertex_id);
 
-				if (box.contains(dest)) {
+				if (/**box.contains(dest)/**/dest_xz == v->position().xz()) {
 					TIMER_STOP(CreateStraightPath)
 					return		(true);
 				}
