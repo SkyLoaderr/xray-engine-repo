@@ -78,14 +78,14 @@ C++ class flags32 {
 };
 
 C++ class matrix {
-    property _14_;
-    property _24_;
     property _34_;
-    property _44_;
     property c;
     property i;
-    property j;
     property k;
+    property _14_;
+    property _24_;
+    property _44_;
+    property j;
     
     matrix ();
     
@@ -222,67 +222,194 @@ C++ class vector {
     function add(const vector&, number);
 };
 
+C++ class story_ids {
+    const Escape_novice_lager_volk = 6;
+    const gar_dm_novice = 104;
+    const gar_exir_to_escape = 193;
+    const val_sacrifice_guard2 = 405;
+    const agr_ratcatcher = 304;
+    const bar_dolg_arhive_documents = 501;
+    const gar_exit_to_darkvalley_low = 195;
+    const rostok_exit_to_military = 592;
+    const val_stairs_victim1 = 413;
+    const val_stairs_victim2 = 414;
+    const agr_gunslinger_flash = 301;
+    const bar_water_tower = 508;
+    const gar_bandits_leader = 106;
+    const gar_boars_nest = 105;
+    const Escape_anomaly_field = 8;
+    const Invalid = 65535;
+    const Mil_Bomb = 723;
+    const gar_exit_to_darkvalley_high = 196;
+    const rad_code_door = 1001;
+    const val_tunnel_bandit = 409;
+    const Mil_Crazy = 703;
+    const Mil_Hunter1 = 725;
+    const bar_dolg_general_voronin = 507;
+    const test_searchlight1 = 20002;
+    const Escape_bridge_stalkers = 9;
+    const Garbage_Seriy = 100;
+    const Mil_Cook = 728;
+    const Mil_patrol_kamikadze3 = 722;
+    const Escape_Trader = 3;
+    const Mil_patrol_kamikadze2 = 721;
+    const Escape_blockpost_case = 0;
+    const Escape_stalker_from_raid = 5;
+    const Mil_Attacker5 = 715;
+    const Mil_Attacker7 = 717;
+    const agr_krot = 302;
+    const test_stalker2 = 20001;
+    const agr_military_documents = 300;
+    const esc_vagon_newbie1 = 12;
+    const Mil_Bandit_Secret = 705;
+    const Mil_Dolg_Zoneguard = 708;
+    const Mil_Exit_to_DeadCity = 772;
+    const esc_helicopter = 14;
+    const gar_dm_bandit2 = 102;
+    const INVALID_STORY_ID = -1;
+    const agr_collector_entrance = 305;
+    const bar_freedom_volkodav = 509;
+    const esc_vagon_newbie2 = 13;
+    const test_searchlight2 = 20003;
+    const val_opendoor_victim = 411;
+    const Mil_Attacker8 = 718;
+    const rostok_exit_to_bar = 591;
+    const val_escort_captive = 400;
+    const val_stopper_soldier1 = 418;
+    const Escape_robbed_novice = 1;
+    const Freedom_patrol_commander_level = 701;
+    const Mil_Hunter2 = 726;
+    const bar_ecolog_professor = 503;
+    const val_exit_gate = 421;
+    const Mil_Sniper = 704;
+    const val_stopper_soldier2 = 419;
+    const bar_dolg_captain_ivancov = 505;
+    const bar_dolg_polkovnik_petrenko = 506;
+    const val_sacrifice_guard1 = 404;
+    const Escape_tutorial_wounded = 4;
+    const Mil_Attacker6 = 716;
+    const Mil_Exit_to_Radar = 773;
+    const bar_hunter = 504;
+    const gar_dolg_blockpost = 108;
+    const val_escort_guard1 = 407;
+    const val_opendoor_monolith = 410;
+    const esc_exit_to_garbage_01 = 91;
+    const val_escort_guard2 = 408;
+    const val_stopper_soldier3 = 420;
+    const Escape_dinamite = 7;
+    const Mil_Courier = 710;
+    const Mil_Freedom_Kamikadze = 709;
+    const Mil_Locator_barier = 770;
+    const agr_exit_to_garbage_01 = 391;
+    const rad_antenna = 1000;
+    const test_stalker1 = 20000;
+    const Mil_Attacker4 = 714;
+    const bar_Barman = 500;
+    const bar_decoding_documents = 513;
+    const bar_drunk_dolg = 510;
+    const gar_exit_to_agroprom_02 = 192;
+    const Freedom_patrol_commander_base = 700;
+    const Mil_Hunter3 = 727;
+    const Mil_Lukash = 707;
+    const Mil_Master_Max = 702;
+    const bar_hunter_toz = 502;
+    const bar_svoboda_ambush_tiran = 514;
+    const Mil_Kap = 724;
+    const gar_dm_bandit3 = 103;
+    const Mil_Attacker2 = 712;
+    const agr_captains_chamber = 306;
+    const esc_level_patrol = 15;
+    const val_sacrifice_bloodsucker = 403;
+    const Mil_Attacker1 = 711;
+    const agr_exit_to_garbage_02 = 392;
+    const gar_exit_to_agroprom_01 = 191;
+    const val_opendoor_soldier = 412;
+    const agr_factory_skirmish1 = 303;
+    const bar_crazy_veterans_leader = 511;
+    const gar_dm_bandit1 = 101;
+    const val_escort_nap1 = 406;
+    const Escape_Tutorial_Artefact = 2;
+    const Mil_Exit_to_Bar = 771;
+    const val_lvl_changer1 = 415;
+    const val_sacrifice_victim = 401;
+    const Escape_raid_commander2 = 11;
+    const Mil_Informator = 719;
+    const bar_darklab_documents = 512;
+    const gar_graveyard_car = 107;
+    const Mil_RG6 = 706;
+    const Mil_patrol_kamikadze1 = 720;
+    const Mil_Attacker3 = 713;
+    const val_lvl_changer2 = 416;
+    const val_prisoner = 402;
+    const Escape_raid_commander1 = 10;
+    const Mil_Controller = 729;
+    const gar_exit_to_bar = 194;
+    const val_lvl_changer3 = 417;
+    
+};
+
 C++ class callback {
-    const action_animation = 15;
-    const action_movement = 13;
-    const action_object = 18;
-    const action_particle = 17;
-    const action_sound = 16;
-    const action_watch = 14;
-    const actor_sleep = 19;
-    const death = 6;
-    const helicopter_on_hit = 21;
-    const helicopter_on_point = 20;
-    const hit = 11;
-    const inventory_info = 9;
-    const inventory_pda = 8;
-    const on_item_drop = 23;
-    const on_item_take = 22;
-    const patrol_path_in_point = 7;
-    const script_animation = 24;
-    const sound = 12;
     const trade_perform_operation = 3;
+    const action_animation = 16;
+    const article_info = 10;
+    const inventory_info = 9;
     const trade_sell_buy_item = 2;
-    const trade_start = 0;
     const trade_stop = 1;
-    const use_object = 10;
+    const helicopter_on_hit = 22;
+    const on_item_drop = 24;
+    const action_watch = 15;
+    const actor_sleep = 20;
+    const death = 6;
+    const hit = 12;
+    const inventory_pda = 8;
+    const script_animation = 25;
+    const trade_start = 0;
+    const use_object = 11;
+    const action_movement = 14;
+    const action_particle = 18;
+    const action_sound = 17;
+    const helicopter_on_point = 21;
+    const patrol_path_in_point = 7;
     const zone_enter = 4;
+    const action_object = 19;
+    const on_item_take = 23;
+    const sound = 13;
     const zone_exit = 5;
     
 };
 
 C++ class game_messages {
-    const GAME_EVENT_ARTEFACT_DESTROYED = 13;
-    const GAME_EVENT_ARTEFACT_DROPPED = 15;
-    const GAME_EVENT_ARTEFACT_ONBASE = 16;
-    const GAME_EVENT_ARTEFACT_SPAWNED = 12;
-    const GAME_EVENT_ARTEFACT_TAKEN = 14;
-    const GAME_EVENT_BUY_MENU_CLOSED = 19;
-    const GAME_EVENT_PLAYER_BUY_FINISHED = 3;
-    const GAME_EVENT_PLAYER_CHANGE_SKIN = 4;
-    const GAME_EVENT_PLAYER_CHANGE_TEAM = 1;
-    const GAME_EVENT_PLAYER_CONNECTED = 5;
-    const GAME_EVENT_PLAYER_DISCONNECTED = 6;
-    const GAME_EVENT_PLAYER_ENTER_TEAM_BASE = 17;
-    const GAME_EVENT_PLAYER_JOIN_TEAM = 9;
     const GAME_EVENT_PLAYER_KILL = 2;
-    const GAME_EVENT_PLAYER_KILLED = 8;
-    const GAME_EVENT_PLAYER_LEAVE_TEAM_BASE = 18;
-    const GAME_EVENT_PLAYER_READY = 0;
-    const GAME_EVENT_ROUND_END = 11;
-    const GAME_EVENT_ROUND_STARTED = 10;
-    const GAME_EVENT_SCRIPT_BEGINS_FROM = 30;
     const GAME_EVENT_SKIN_MENU_CLOSED = 21;
     const GAME_EVENT_TEAM_MENU_CLOSED = 20;
+    const GAME_EVENT_PLAYER_CONNECTED = 5;
+    const GAME_EVENT_PLAYER_JOIN_TEAM = 9;
+    const GAME_EVENT_PLAYER_LEAVE_TEAM_BASE = 18;
+    const GAME_EVENT_ROUND_STARTED = 10;
+    const GAME_EVENT_ARTEFACT_DROPPED = 15;
+    const GAME_EVENT_PLAYER_BUY_FINISHED = 3;
+    const GAME_EVENT_ROUND_END = 11;
+    const GAME_EVENT_SCRIPT_BEGINS_FROM = 30;
+    const GAME_EVENT_ARTEFACT_DESTROYED = 13;
+    const GAME_EVENT_ARTEFACT_ONBASE = 16;
+    const GAME_EVENT_ARTEFACT_TAKEN = 14;
+    const GAME_EVENT_PLAYER_CHANGE_TEAM = 1;
+    const GAME_EVENT_PLAYER_DISCONNECTED = 6;
+    const GAME_EVENT_PLAYER_KILLED = 8;
+    const GAME_EVENT_ARTEFACT_SPAWNED = 12;
+    const GAME_EVENT_BUY_MENU_CLOSED = 19;
+    const GAME_EVENT_PLAYER_CHANGE_SKIN = 4;
+    const GAME_EVENT_PLAYER_ENTER_TEAM_BASE = 17;
+    const GAME_EVENT_PLAYER_READY = 0;
     
 };
 
 C++ class game_phases {
+    const GAME_PHASE_SCRIPT_BEGINS_FROM = 9;
+    const GAME_PHASE_TEAM1_SCORES = 3;
     const GAME_PHASE_INPROGRESS = 1;
     const GAME_PHASE_NONE = 0;
     const GAME_PHASE_PENDING = 2;
-    const GAME_PHASE_SCRIPT_BEGINS_FROM = 9;
-    const GAME_PHASE_TEAM1_SCORES = 3;
     const GAME_PHASE_TEAM2_SCORES = 4;
     const GAME_PHASE_TEAMS_IN_A_DRAW = 7;
     
@@ -298,376 +425,385 @@ C++ class game_player_flags {
 };
 
 C++ class key_bindings {
-    const kACCEL = 13;
-    const kBACK = 2;
-    const kBINOCULARS = 24;
-    const kBUY = 56;
-    const kCAM_1 = 18;
-    const kCAM_2 = 19;
-    const kCAM_3 = 20;
-    const kCAM_4 = 21;
-    const kCAM_ZOOM_IN = 22;
-    const kCAM_ZOOM_OUT = 23;
-    const kCHAT = 49;
-    const kCONSOLE = 53;
-    const kCROUCH = 10;
-    const kDOWN = 8;
-    const kDROP = 47;
-    const kEXT_1 = 63;
-    const kEXT_10 = 72;
-    const kEXT_11 = 73;
-    const kEXT_12 = 74;
-    const kEXT_13 = 75;
-    const kEXT_14 = 76;
-    const kEXT_15 = 77;
-    const kEXT_2 = 64;
-    const kEXT_3 = 65;
     const kEXT_4 = 66;
-    const kEXT_5 = 67;
-    const kEXT_6 = 68;
+    const kEXT_9 = 71;
+    const kINVENTORY = 55;
+    const kWPN_FUNC = 44;
+    const kWPN_ZOOM = 40;
+    const kCAM_ZOOM_IN = 22;
+    const kCROUCH = 10;
+    const kL_STRAFE = 3;
+    const kSKIN = 57;
+    const kTORCH = 25;
+    const kCAM_3 = 20;
+    const kQUIT = 52;
+    const kR_STRAFE = 4;
+    const kDOWN = 8;
+    const kEXT_2 = 64;
+    const kNIGHT_VISION = 26;
+    const kCAM_2 = 19;
+    const kWPN_7 = 33;
+    const kWPN_RELOAD = 39;
+    const kBINOCULARS = 24;
+    const kEXT_15 = 77;
+    const kWPN_5 = 31;
+    const kWPN_9 = 35;
+    const kWPN_FIRE = 38;
+    const kWPN_PREV = 37;
+    const kCAM_4 = 21;
+    const kCONSOLE = 53;
     const kEXT_7 = 69;
     const kEXT_8 = 70;
-    const kEXT_9 = 71;
-    const kFWD = 1;
-    const kINVENTORY = 55;
-    const kJUMP = 9;
-    const kLEFT = 5;
     const kL_LOOKOUT = 15;
-    const kL_STRAFE = 3;
-    const kNIGHT_VISION = 26;
-    const kQUIT = 52;
-    const kREPAIR = 14;
-    const kRIGHT = 6;
-    const kR_LOOKOUT = 16;
-    const kR_STRAFE = 4;
-    const kSCORES = 48;
-    const kSCREENSHOT = 51;
-    const kSKIN = 57;
     const kTEAM = 58;
-    const kTORCH = 25;
-    const kUP = 7;
-    const kUSE = 45;
-    const kWPN_1 = 27;
-    const kWPN_2 = 28;
-    const kWPN_3 = 29;
-    const kWPN_4 = 30;
-    const kWPN_5 = 31;
     const kWPN_6 = 32;
-    const kWPN_7 = 33;
-    const kWPN_8 = 34;
-    const kWPN_9 = 35;
+    const kACCEL = 13;
+    const kEXT_1 = 63;
+    const kEXT_6 = 68;
+    const kJUMP = 9;
+    const kR_LOOKOUT = 16;
+    const kCAM_1 = 18;
+    const kCAM_ZOOM_OUT = 23;
+    const kCHAT = 49;
+    const kEXT_11 = 73;
+    const kRIGHT = 6;
     const kWPN_AMMO = 43;
-    const kWPN_FIRE = 38;
-    const kWPN_FUNC = 44;
     const kWPN_NEXT = 36;
-    const kWPN_PREV = 37;
-    const kWPN_RELOAD = 39;
-    const kWPN_ZOOM = 40;
+    const kDROP = 47;
+    const kWPN_3 = 29;
+    const kEXT_10 = 72;
+    const kEXT_5 = 67;
+    const kWPN_8 = 34;
+    const kBUY = 56;
+    const kEXT_3 = 65;
+    const kLEFT = 5;
+    const kUSE = 45;
+    const kUP = 7;
+    const kWPN_1 = 27;
+    const kBACK = 2;
+    const kSCORES = 48;
+    const kEXT_12 = 74;
+    const kEXT_14 = 76;
+    const kREPAIR = 14;
+    const kWPN_2 = 28;
+    const kWPN_4 = 30;
+    const kEXT_13 = 75;
+    const kFWD = 1;
+    const kSCREENSHOT = 51;
     
 };
 
 C++ class snd_type {
-    const ambient = 128;
-    const anomaly = 268435456;
+    const item_take = 1082130432;
+    const monster = 536870912;
+    const no_sound = 0;
+    const idle = 2048;
+    const monster_step = 536903680;
+    const monster_talk = 536887296;
+    const object_break = 1024;
     const anomaly_idle = 268437504;
+    const world_ambient = 134217856;
+    const world_object_explode = 134217984;
+    const eat = 4096;
+    const item_hide = 1090519040;
+    const item_use = 1077936128;
+    const take = 8388608;
+    const weapon_empty = -2146435072;
+    const empty = 1048576;
+    const pick_up = 67108864;
+    const weapon_shoot = -2145386496;
+    const injure = 65536;
+    const monster_attack = 536879104;
+    const step = 32768;
     const attack = 8192;
     const bullet_hit = 524288;
     const die = 131072;
-    const drop = 33554432;
-    const eat = 4096;
-    const empty = 1048576;
     const hide = 16777216;
-    const idle = 2048;
-    const injure = 65536;
-    const item = 1073741824;
-    const item_drop = 1107296256;
-    const item_hide = 1090519040;
-    const item_pick_up = 1140850688;
-    const item_take = 1082130432;
-    const item_use = 1077936128;
-    const monster = 536870912;
-    const monster_attack = 536879104;
     const monster_die = 537001984;
-    const monster_eat = 536875008;
     const monster_injure = 536936448;
-    const monster_step = 536903680;
-    const monster_talk = 536887296;
-    const no_sound = 0;
-    const object_break = 1024;
-    const object_collide = 512;
-    const object_explode = 256;
-    const pick_up = 67108864;
     const reload = 262144;
-    const shoot = 2097152;
-    const step = 32768;
-    const take = 8388608;
-    const talk = 16384;
     const use = 4194304;
     const weapon = -2147483648;
     const weapon_bullet_hit = -2146959360;
-    const weapon_empty = -2146435072;
-    const weapon_reload = -2147221504;
-    const weapon_shoot = -2145386496;
     const world = 134217728;
-    const world_ambient = 134217856;
     const world_object_break = 134218752;
     const world_object_collide = 134218240;
-    const world_object_explode = 134217984;
+    const shoot = 2097152;
+    const talk = 16384;
+    const object_collide = 512;
+    const weapon_reload = -2147221504;
+    const ambient = 128;
+    const anomaly = 268435456;
+    const item = 1073741824;
+    const item_drop = 1107296256;
+    const drop = 33554432;
+    const item_pick_up = 1140850688;
+    const monster_eat = 536875008;
+    const object_explode = 256;
     
 };
 
 C++ class ui_events {
-    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 59;
-    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 60;
+    const DRAG_DROP_ITEM_DRAG = 20;
+    const MESSAGE_BOX_CANCEL_CLICKED = 40;
+    const MESSAGE_BOX_YES_CLICKED = 38;
+    const SCROLLBAR_HSCROLL = 31;
+    const SCROLLBAR_VSCROLL = 30;
+    const UNDRESS_OUTFIT = 59;
+    const DRAG_DROP_ITEM_RBUTTON_CLICK = 24;
+    const WINDOW_LBUTTON_DOWN = 0;
+    const WINDOW_MOUSE_CAPTURE_LOST  = 10;
+    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 61;
+    const DRAG_DROP_REFRESH_ACTIVE_ITEM = 25;
+    const WINDOW_MOUSE_MOVE = 4;
+    const INVENTORY_TO_SLOT_ACTION = 66;
+    const MAP_MOVED = 48;
+    const WINDOW_LBUTTON_UP = 2;
+    const INVENTORY_DETACH_SCOPE_ADDON = 69;
+    const INVENTORY_TO_BELT_ACTION  = 65;
+    const OUTFIT_RETURNED_BACK = 60;
+    const WINDOW_KEYBOARD_CAPTURE_LOST = 11;
     const BUTTON_CLICKED = 14;
-    const BUTTON_DOWN = 15;
+    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 71;
+    const INVENTORY_EAT_ACTION = 64;
+    const STATIC_FOCUS_RECEIVED = 12;
+    const LIST_ITEM_CLICKED = 32;
+    const TAB_CHANGED = 16;
+    const WINDOW_RBUTTON_UP = 3;
+    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 62;
     const CHECK_BUTTON_RESET = 18;
+    const DRAG_DROP_ITEM_MOVE = 22;
+    const PDA_CONTACTS_WND_CONTACT_SELECTED = 56;
+    const SCROLLBOX_MOVE = 28;
+    const TALK_DIALOG_QUESTION_CLICKED = 42;
+    const WINDOW_KEY_PRESSED = 8;
+    const WINDOW_RBUTTON_DOWN = 1;
+    const DRAG_DROP_ITEM_DROP  = 21;
+    const RADIOBUTTON_SET = 19;
+    const SCROLLBOX_STOP = 29;
+    const INVENTORY_DROP_ACTION = 63;
+    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 58;
+    const STATIC_FOCUS_LOST = 13;
+    const INVENTORY_DETACH_SILENCER_ADDON = 70;
+    const INVENTORY_TO_BAG_ACTION = 67;
+    const MAPSPOT_FOCUS_LOST = 44;
+    const MESSAGE_BOX_NO_CLICKED = 39;
+    const PDA_MAP_SET_ACTIVE_POINT = 49;
+    const WINDOW_LBUTTON_DB_CLICK = 7;
+    const MAPSPOT_FOCUS_RECEIVED = 43;
+    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 55;
+    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 41;
+    const TRADE_WND_CLOSED = 57;
+    const BUTTON_DOWN = 15;
     const CHECK_BUTTON_SET = 17;
     const DRAG_DROP_ITEM_DB_CLICK = 23;
-    const DRAG_DROP_ITEM_DRAG = 20;
-    const DRAG_DROP_ITEM_DROP  = 21;
-    const DRAG_DROP_ITEM_MOVE = 22;
-    const DRAG_DROP_ITEM_RBUTTON_CLICK = 24;
-    const DRAG_DROP_REFRESH_ACTIVE_ITEM = 25;
-    const INTERACTIVE_ITEM_CLICK = 33;
-    const INVENTORY_ATTACH_ADDON  = 66;
-    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 69;
-    const INVENTORY_DETACH_SCOPE_ADDON = 67;
-    const INVENTORY_DETACH_SILENCER_ADDON = 68;
-    const INVENTORY_DROP_ACTION = 61;
-    const INVENTORY_EAT_ACTION = 62;
-    const INVENTORY_TO_BAG_ACTION = 65;
-    const INVENTORY_TO_BELT_ACTION  = 63;
-    const INVENTORY_TO_SLOT_ACTION = 64;
-    const LIST_ITEM_CLICKED = 30;
-    const MAPSPOT_FOCUS_LOST = 42;
-    const MAPSPOT_FOCUS_RECEIVED = 41;
-    const MAP_MOVED = 46;
-    const MESSAGE_BOX_CANCEL_CLICKED = 38;
-    const MESSAGE_BOX_NO_CLICKED = 37;
-    const MESSAGE_BOX_OK_CLICKED = 35;
-    const MESSAGE_BOX_YES_CLICKED = 36;
-    const OUTFIT_RETURNED_BACK = 58;
-    const PDA_CONTACTS_WND_CONTACT_SELECTED = 54;
-    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 52;
-    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 53;
-    const PDA_MAP_SET_ACTIVE_POINT = 47;
-    const PROPERTY_CLICKED = 34;
-    const RADIOBUTTON_SET = 19;
-    const SCROLLBAR_HSCROLL = 29;
-    const SCROLLBAR_VSCROLL = 28;
-    const SCROLLBOX_MOVE = 26;
-    const SCROLLBOX_STOP = 27;
-    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 56;
-    const STATIC_FOCUS_LOST = 13;
-    const STATIC_FOCUS_RECEIVED = 12;
-    const TAB_CHANGED = 16;
-    const TALK_DIALOG_QUESTION_CLICKED = 40;
-    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 39;
-    const TRADE_WND_CLOSED = 55;
-    const UNDRESS_OUTFIT = 57;
-    const WINDOW_KEYBOARD_CAPTURE_LOST = 11;
-    const WINDOW_KEY_PRESSED = 8;
+    const INTERACTIVE_ITEM_CLICK = 35;
+    const INVENTORY_ATTACH_ADDON  = 68;
+    const MESSAGE_BOX_OK_CLICKED = 37;
+    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 54;
+    const PROPERTY_CLICKED = 36;
     const WINDOW_KEY_RELEASED = 9;
-    const WINDOW_LBUTTON_DB_CLICK = 7;
-    const WINDOW_LBUTTON_DOWN = 0;
-    const WINDOW_LBUTTON_UP = 2;
-    const WINDOW_MOUSE_CAPTURE_LOST  = 10;
-    const WINDOW_MOUSE_MOVE = 4;
-    const WINDOW_RBUTTON_DOWN = 1;
-    const WINDOW_RBUTTON_UP = 3;
+    
+};
+
+C++ class GAME_TYPE {
+    const GAME_ARTEFACTHUNT = 3;
+    const GAME_TEAMDEATHMATCH = 2;
+    const GAME_UNKNOWN = 0;
+    const GAME_DEATHMATCH = 1;
+    const GAME_END_LIST = 4;
     
 };
 
 C++ class hit_memory_object : entity_memory_object {
+    property last_level_time;
+    property level_time;
+    property self_info;
     property amount;
     property bone_index;
     property direction;
-    property last_level_time;
-    property level_time;
     property object_info;
-    property self_info;
     
     function object(const entity_memory_object&);
 };
 
 C++ class clsid {
-    const actor = 77;
-    const ameba_zone = 143;
-    const art_bast_artefact = 0;
-    const art_black_drops = 1;
-    const art_dummy = 3;
-    const art_electric_ball = 4;
-    const art_faded_ball = 5;
-    const art_galantine = 6;
-    const art_gravi = 7;
-    const art_gravi_black = 2;
-    const art_mercury_ball = 8;
-    const art_needles = 9;
-    const art_rusty_hair = 10;
-    const art_thorn = 11;
-    const art_zuda = 12;
-    const artefact = 40;
-    const artefact_s = 87;
-    const bloodsucker = 13;
-    const bloodsucker_s = 92;
-    const boar = 14;
-    const boar_s = 93;
-    const burer = 15;
-    const burer_s = 94;
-    const car = 50;
-    const car_s = 88;
-    const cat = 16;
-    const cat_s = 95;
-    const chimera = 26;
-    const chimera_s = 96;
-    const controller = 17;
-    const controller_s = 97;
-    const crow = 18;
-    const device_art_merger = 51;
-    const device_detector_simple = 53;
-    const device_pda = 52;
-    const device_torch = 54;
-    const dog_black = 19;
-    const dog_red = 20;
-    const dog_s = 98;
-    const equ_exo = 55;
-    const equ_military = 56;
-    const equ_scientific = 57;
-    const equ_stalker = 58;
-    const event = 59;
-    const flesh = 21;
-    const flesh_group = 22;
-    const flesh_s = 99;
-    const fracture = 23;
-    const fracture_s = 101;
-    const game = 63;
-    const game_cl_LastStanding = 46;
-    const game_cl_artefact_hunt = 44;
-    const game_cl_deathmatch = 45;
-    const game_cl_single = 47;
-    const game_cl_team_deathmatch = 48;
-    const game_sv_LastStanding = 111;
-    const game_sv_artefact_hunt = 109;
-    const game_sv_deathmatch = 110;
-    const game_sv_single = 112;
-    const game_sv_team_deathmatch = 113;
-    const game_ui_artefact_hunt = 114;
-    const game_ui_deathmatch = 115;
-    const game_ui_single = 116;
-    const game_ui_team_deathmatch = 117;
-    const gigant_s = 100;
-    const graph_point = 25;
-    const hanging_lamp = 80;
-    const helicopter = 49;
-    const hud_manager = 66;
-    const level = 62;
-    const level_changer = 75;
-    const main_menu = 76;
-    const obj_antirad = 67;
-    const obj_attachable = 68;
-    const obj_bolt = 69;
-    const obj_bottle = 70;
-    const obj_breakable = 78;
-    const obj_climable = 79;
-    const obj_document = 71;
-    const obj_explosive = 72;
-    const obj_food = 73;
-    const obj_medkit = 74;
-    const obj_phskeleton = 85;
-    const obj_phys_destroyable = 84;
-    const obj_physic = 81;
-    const phantom = 27;
-    const poltergeist = 28;
-    const poltergeist_s = 102;
-    const projector = 82;
-    const pseudo_gigant = 24;
-    const pseudodog_s = 103;
-    const rat = 29;
-    const rat_group = 30;
-    const script_object = 89;
-    const script_stalker = 35;
-    const script_zone = 86;
-    const smart_terrain = 90;
-    const smart_zone = 91;
-    const snork = 31;
-    const snork_s = 104;
-    const soldier = 32;
-    const space_restrictor = 107;
-    const spawn_group = 33;
-    const spectator = 108;
-    const stalker = 34;
-    const switcher = 83;
-    const team_base_zone = 151;
-    const torrid_zone = 152;
     const trader = 36;
-    const tushkano = 37;
-    const tushkano_s = 105;
-    const wpn_ak74 = 118;
-    const wpn_ammo = 39;
-    const wpn_ammo_m209 = 41;
-    const wpn_ammo_og7b = 42;
-    const wpn_ammo_vog25 = 43;
-    const wpn_binocular = 119;
-    const wpn_bm16 = 120;
-    const wpn_fn2000 = 121;
-    const wpn_fort = 122;
-    const wpn_grenade_f1 = 60;
-    const wpn_grenade_fake = 61;
-    const wpn_grenade_launcher = 123;
-    const wpn_grenade_rgd5 = 64;
-    const wpn_grenade_rpg7 = 65;
-    const wpn_groza = 124;
-    const wpn_hpsa = 125;
-    const wpn_knife = 126;
-    const wpn_lr300 = 127;
-    const wpn_mounted = 128;
-    const wpn_pm = 129;
-    const wpn_rg6 = 130;
-    const wpn_rpg7 = 131;
-    const wpn_scope = 132;
-    const wpn_shotgun = 133;
-    const wpn_silencer = 134;
-    const wpn_stat_mgun = 135;
+    const art_dummy = 3;
+    const hanging_lamp = 80;
+    const script_object = 89;
+    const snork = 31;
+    const pseudodog_s = 103;
+    const smart_zone = 91;
+    const obj_food = 73;
     const wpn_svd = 136;
-    const wpn_svu = 137;
-    const wpn_usp45 = 138;
-    const wpn_val = 139;
-    const wpn_vintorez = 140;
-    const wpn_walther = 141;
-    const zombie = 38;
-    const zombie_s = 106;
     const zone = 153;
-    const zone_acid_fog = 142;
-    const zone_bfuzz = 144;
-    const zone_dead = 145;
+    const crow = 18;
+    const obj_climable = 79;
+    const smart_terrain = 90;
+    const spectator = 108;
+    const wpn_lr300 = 127;
+    const artefact_s = 87;
+    const bloodsucker_s = 92;
+    const boar_s = 93;
+    const chimera = 26;
+    const main_menu = 76;
+    const tushkano = 37;
+    const wpn_hpsa = 125;
     const zone_galantine = 146;
-    const zone_mincer = 148;
-    const zone_mosquito_bald = 147;
-    const zone_radioactive = 149;
+    const fracture = 23;
+    const wpn_fort = 122;
+    const wpn_rpg7 = 131;
     const zone_rusty_hair = 150;
+    const game_cl_deathmatch = 45;
+    const space_restrictor = 107;
+    const wpn_bm16 = 120;
+    const wpn_grenade_fake = 61;
+    const cat = 16;
+    const fracture_s = 101;
+    const game_ui_single = 116;
+    const script_stalker = 35;
+    const device_art_merger = 51;
+    const dog_red = 20;
+    const game_sv_artefact_hunt = 109;
+    const wpn_ammo_vog25 = 43;
+    const art_galantine = 6;
+    const burer = 15;
+    const equ_stalker = 58;
+    const game_cl_team_deathmatch = 48;
+    const obj_breakable = 78;
+    const wpn_binocular = 119;
+    const wpn_knife = 126;
+    const wpn_shotgun = 133;
+    const game_cl_LastStanding = 46;
+    const level = 62;
+    const wpn_fn2000 = 121;
+    const wpn_pm = 129;
+    const poltergeist = 28;
+    const pseudo_gigant = 24;
+    const zombie_s = 106;
+    const car_s = 88;
+    const zombie = 38;
+    const flesh_s = 99;
+    const game_sv_deathmatch = 110;
+    const level_changer = 75;
+    const obj_phys_destroyable = 84;
+    const snork_s = 104;
+    const spawn_group = 33;
+    const actor = 77;
+    const art_rusty_hair = 10;
+    const cat_s = 95;
+    const poltergeist_s = 102;
+    const wpn_val = 139;
+    const obj_bottle = 70;
+    const stalker = 34;
+    const wpn_mounted = 128;
+    const projector = 82;
+    const tushkano_s = 105;
+    const art_faded_ball = 5;
+    const controller = 17;
+    const device_torch = 54;
+    const game_cl_artefact_hunt = 44;
+    const obj_phskeleton = 85;
+    const wpn_scope = 132;
+    const obj_physic = 81;
+    const wpn_svu = 137;
+    const zone_bfuzz = 144;
+    const art_black_drops = 1;
+    const art_gravi = 7;
+    const art_needles = 9;
+    const bloodsucker = 13;
+    const burer_s = 94;
+    const device_detector_simple = 53;
+    const dog_s = 98;
+    const event = 59;
+    const wpn_ammo = 39;
+    const wpn_usp45 = 138;
+    const artefact = 40;
+    const controller_s = 97;
+    const game_ui_team_deathmatch = 117;
+    const art_bast_artefact = 0;
+    const boar = 14;
+    const car = 50;
+    const helicopter = 49;
+    const obj_document = 71;
+    const obj_medkit = 74;
+    const wpn_ammo_m209 = 41;
+    const wpn_grenade_rgd5 = 64;
+    const wpn_ammo_og7b = 42;
+    const wpn_ak74 = 118;
+    const art_mercury_ball = 8;
+    const device_pda = 52;
+    const hud_manager = 66;
+    const obj_attachable = 68;
+    const rat = 29;
+    const team_base_zone = 151;
+    const equ_military = 56;
+    const flesh = 21;
+    const obj_explosive = 72;
+    const soldier = 32;
+    const wpn_grenade_rpg7 = 65;
+    const ameba_zone = 143;
+    const equ_exo = 55;
+    const equ_scientific = 57;
+    const flesh_group = 22;
+    const game = 63;
+    const torrid_zone = 152;
+    const art_zuda = 12;
+    const chimera_s = 96;
+    const dog_black = 19;
+    const game_sv_LastStanding = 111;
+    const wpn_stat_mgun = 135;
+    const wpn_vintorez = 140;
+    const art_electric_ball = 4;
+    const art_gravi_black = 2;
+    const game_cl_single = 47;
+    const obj_antirad = 67;
+    const obj_bolt = 69;
+    const wpn_groza = 124;
+    const wpn_silencer = 134;
+    const game_sv_team_deathmatch = 113;
+    const gigant_s = 100;
+    const switcher = 83;
+    const zone_dead = 145;
+    const rat_group = 30;
+    const wpn_walther = 141;
+    const wpn_grenade_f1 = 60;
+    const zone_mincer = 148;
+    const art_thorn = 11;
+    const game_sv_single = 112;
+    const zone_radioactive = 149;
+    const game_ui_artefact_hunt = 114;
+    const graph_point = 25;
+    const phantom = 27;
+    const script_zone = 86;
+    const zone_mosquito_bald = 147;
+    const game_ui_deathmatch = 115;
+    const wpn_grenade_launcher = 123;
+    const wpn_rg6 = 130;
+    const zone_acid_fog = 142;
     
 };
 
 C++ class memory_info : visible_memory_object {
-    property hit_info;
     property last_level_time;
     property level_time;
-    property object_info;
     property self_info;
     property sound_info;
     property visible;
     property visual_info;
+    property hit_info;
+    property object_info;
     
     function object(const game_memory_object&);
 };
 
 C++ class MonsterSpace {
     const head_anim_angry = 1;
+    const sound_script = 16;
     const head_anim_glad = 2;
     const head_anim_kind = 3;
     const head_anim_normal = 0;
-    const sound_script = 16;
     
 };
 
@@ -680,10 +816,10 @@ C++ class not_yet_visible_object {
 C++ class sound_memory_object : visible_memory_object {
     property last_level_time;
     property level_time;
-    property object_info;
-    property power;
     property self_info;
     property visible;
+    property object_info;
+    property power;
     
     function type() const;
     function object(const game_memory_object&);
@@ -692,9 +828,9 @@ C++ class sound_memory_object : visible_memory_object {
 C++ class visible_memory_object : game_memory_object {
     property last_level_time;
     property level_time;
-    property object_info;
     property self_info;
     property visible;
+    property object_info;
     
     function object(const game_memory_object&);
 };
@@ -760,9 +896,9 @@ C++ class object_params {
 
 C++ class effector_params {
     property blur;
+    property color_gray;
     property color_add;
     property color_base;
-    property color_gray;
     property dual;
     property gray;
     property noise;
@@ -770,25 +906,6 @@ C++ class effector_params {
     effector_params ();
     
     function assign(effector_params*, effector_params*);
-};
-
-C++ class game_task {
-    property state;
-    
-    function get_objective(number);
-    function name();
-    function get_objectives_num();
-};
-
-C++ class game_task_objective {
-    property state;
-    
-    function name();
-};
-
-C++ class game_task_list {
-    function get_tasks_num();
-    function get_task(number);
 };
 
 C++ class SZoneMapEntityData {
@@ -800,22 +917,22 @@ C++ class SZoneMapEntityData {
 };
 
 C++ class game_PlayerState {
-    property GameID;
     property LastBuyAcount;
     property RespawnTime;
     property Skip;
-    property deaths;
     property flags;
-    property kills;
-    property lasthitter;
     property lasthitweapon;
-    property money_delta;
+    property ping;
+    property team;
+    property GameID;
+    property deaths;
+    property kills;
     property money_for_round;
+    property lasthitter;
     property money_total;
     property pItemList;
-    property ping;
+    property money_delta;
     property skin;
-    property team;
     
     game_PlayerState ();
     
@@ -830,130 +947,130 @@ C++ class game_PlayerState {
 };
 
 C++ class DIK_keys {
-    const DIK_0 = 11;
-    const DIK_1 = 2;
-    const DIK_2 = 3;
-    const DIK_3 = 4;
-    const DIK_4 = 5;
-    const DIK_5 = 6;
-    const DIK_6 = 7;
-    const DIK_7 = 8;
-    const DIK_8 = 9;
-    const DIK_9 = 10;
-    const DIK_A = 30;
-    const DIK_ADD = 78;
-    const DIK_APOSTROPHE = 40;
-    const DIK_APPS = 221;
-    const DIK_AT = 145;
-    const DIK_AX = 150;
-    const DIK_B = 48;
-    const DIK_BACK = 14;
-    const DIK_BACKSLASH = 43;
-    const DIK_C = 46;
-    const DIK_CAPITAL = 58;
-    const DIK_CIRCUMFLEX = 144;
-    const DIK_COLON = 146;
-    const DIK_COMMA = 51;
-    const DIK_CONVERT = 121;
-    const DIK_D = 32;
-    const DIK_DECIMAL = 83;
-    const DIK_DELETE = 211;
-    const DIK_DIVIDE = 181;
-    const DIK_DOWN = 208;
-    const DIK_E = 18;
-    const DIK_END = 207;
-    const DIK_EQUALS = 13;
-    const DIK_ESCAPE = 1;
-    const DIK_F = 33;
-    const DIK_F1 = 59;
-    const DIK_F10 = 68;
-    const DIK_F11 = 87;
     const DIK_F12 = 88;
-    const DIK_F13 = 100;
-    const DIK_F14 = 101;
-    const DIK_F15 = 102;
-    const DIK_F2 = 60;
-    const DIK_F3 = 61;
-    const DIK_F4 = 62;
-    const DIK_F5 = 63;
     const DIK_F6 = 64;
-    const DIK_F7 = 65;
-    const DIK_F8 = 66;
-    const DIK_F9 = 67;
-    const DIK_G = 34;
-    const DIK_GRAVE = 41;
-    const DIK_H = 35;
-    const DIK_HOME = 199;
-    const DIK_I = 23;
-    const DIK_INSERT = 210;
     const DIK_J = 36;
-    const DIK_K = 37;
-    const DIK_KANA = 112;
-    const DIK_KANJI = 148;
-    const DIK_L = 38;
-    const DIK_LBRACKET = 26;
-    const DIK_LCONTROL = 29;
-    const DIK_LEFT = 203;
-    const DIK_LMENU = 56;
-    const DIK_LSHIFT = 42;
     const DIK_LWIN = 219;
-    const DIK_M = 50;
-    const DIK_MINUS = 12;
+    const DIK_SLASH = 53;
+    const DIK_YEN = 125;
+    const DIK_8 = 9;
+    const DIK_NUMPADENTER = 156;
+    const DIK_RMENU = 184;
+    const DIK_D = 32;
+    const DIK_F1 = 59;
+    const DIK_KANJI = 148;
+    const DIK_RCONTROL = 157;
+    const DIK_4 = 5;
+    const DIK_L = 38;
+    const DIK_U = 22;
+    const MOUSE_1 = 256;
+    const DIK_G = 34;
+    const DIK_NUMPAD1 = 79;
+    const DIK_NUMPADEQUALS = 141;
+    const DIK_Y = 21;
+    const MOUSE_2 = 512;
+    const DIK_7 = 8;
+    const DIK_F8 = 66;
     const DIK_MULTIPLY = 55;
+    const DIK_SEMICOLON = 39;
+    const DIK_STOP = 149;
+    const DIK_UNLABELED = 151;
+    const DIK_6 = 7;
+    const DIK_HOME = 199;
+    const DIK_S = 31;
+    const DIK_SYSRQ = 183;
+    const DIK_V = 47;
+    const DIK_C = 46;
+    const DIK_F11 = 87;
+    const DIK_X = 45;
+    const DIK_LSHIFT = 42;
+    const DIK_Z = 44;
+    const DIK_ESCAPE = 1;
+    const DIK_NUMPAD3 = 81;
+    const DIK_NUMPAD4 = 75;
+    const DIK_COMMA = 51;
+    const DIK_F14 = 101;
+    const DIK_H = 35;
+    const DIK_NUMPAD9 = 73;
+    const DIK_P = 25;
+    const DIK_Q = 16;
+    const DIK_KANA = 112;
+    const DIK_R = 19;
+    const DIK_B = 48;
+    const DIK_DECIMAL = 83;
+    const DIK_F2 = 60;
     const DIK_N = 49;
     const DIK_NEXT = 209;
     const DIK_NOCONVERT = 123;
-    const DIK_NUMLOCK = 69;
     const DIK_NUMPAD0 = 82;
-    const DIK_NUMPAD1 = 79;
-    const DIK_NUMPAD2 = 80;
-    const DIK_NUMPAD3 = 81;
-    const DIK_NUMPAD4 = 75;
-    const DIK_NUMPAD5 = 76;
-    const DIK_NUMPAD6 = 77;
-    const DIK_NUMPAD7 = 71;
-    const DIK_NUMPAD8 = 72;
-    const DIK_NUMPAD9 = 73;
-    const DIK_NUMPADCOMMA = 179;
-    const DIK_NUMPADENTER = 156;
-    const DIK_NUMPADEQUALS = 141;
-    const DIK_O = 24;
-    const DIK_P = 25;
-    const DIK_PAUSE = 197;
-    const DIK_PERIOD = 52;
-    const DIK_PRIOR = 201;
-    const DIK_Q = 16;
-    const DIK_R = 19;
-    const DIK_RBRACKET = 27;
-    const DIK_RCONTROL = 157;
     const DIK_RETURN = 28;
     const DIK_RIGHT = 205;
-    const DIK_RMENU = 184;
+    const DIK_BACKSLASH = 43;
+    const DIK_COLON = 146;
+    const DIK_END = 207;
+    const DIK_F5 = 63;
+    const DIK_LMENU = 56;
+    const DIK_NUMPADCOMMA = 179;
+    const DIK_W = 17;
+    const DIK_5 = 6;
+    const DIK_CONVERT = 121;
+    const DIK_DELETE = 211;
+    const DIK_SUBTRACT = 74;
+    const DIK_UNDERLINE = 147;
+    const DIK_BACK = 14;
+    const DIK_I = 23;
+    const DIK_TAB = 15;
+    const DIK_AX = 150;
+    const DIK_DIVIDE = 181;
+    const DIK_F10 = 68;
+    const DIK_NUMPAD2 = 80;
+    const DIK_NUMPAD7 = 71;
+    const DIK_NUMPAD8 = 72;
+    const DIK_APPS = 221;
+    const DIK_F15 = 102;
+    const DIK_NUMPAD5 = 76;
+    const DIK_PAUSE = 197;
+    const DIK_F7 = 65;
+    const DIK_MINUS = 12;
+    const DIK_NUMLOCK = 69;
+    const DIK_PERIOD = 52;
+    const DIK_AT = 145;
+    const DIK_LEFT = 203;
+    const DIK_ADD = 78;
+    const DIK_F13 = 100;
+    const DIK_F3 = 61;
+    const DIK_PRIOR = 201;
     const DIK_RSHIFT = 54;
     const DIK_RWIN = 220;
-    const DIK_S = 31;
-    const DIK_SCROLL = 70;
-    const DIK_SEMICOLON = 39;
-    const DIK_SLASH = 53;
-    const DIK_SPACE = 57;
-    const DIK_STOP = 149;
-    const DIK_SUBTRACT = 74;
-    const DIK_SYSRQ = 183;
+    const DIK_0 = 11;
+    const DIK_CAPITAL = 58;
+    const DIK_RBRACKET = 27;
+    const DIK_1 = 2;
+    const DIK_INSERT = 210;
+    const DIK_O = 24;
     const DIK_T = 20;
-    const DIK_TAB = 15;
-    const DIK_U = 22;
-    const DIK_UNDERLINE = 147;
-    const DIK_UNLABELED = 151;
     const DIK_UP = 200;
-    const DIK_V = 47;
-    const DIK_W = 17;
-    const DIK_X = 45;
-    const DIK_Y = 21;
-    const DIK_YEN = 125;
-    const DIK_Z = 44;
-    const MOUSE_1 = 256;
-    const MOUSE_2 = 512;
+    const DIK_9 = 10;
+    const DIK_APOSTROPHE = 40;
+    const DIK_DOWN = 208;
+    const DIK_F = 33;
+    const DIK_NUMPAD6 = 77;
+    const DIK_SCROLL = 70;
+    const DIK_SPACE = 57;
+    const DIK_3 = 4;
+    const DIK_F4 = 62;
+    const DIK_F9 = 67;
     const MOUSE_3 = 1024;
+    const DIK_GRAVE = 41;
+    const DIK_K = 37;
+    const DIK_LBRACKET = 26;
+    const DIK_2 = 3;
+    const DIK_CIRCUMFLEX = 144;
+    const DIK_A = 30;
+    const DIK_E = 18;
+    const DIK_EQUALS = 13;
+    const DIK_LCONTROL = 29;
+    const DIK_M = 50;
     
 };
 
@@ -963,6 +1080,18 @@ C++ class color_animator {
     function calculate(number);
     function load(string);
     function length();
+};
+
+C++ class profile_timer {
+    profile_timer ();
+    profile_timer (profile_timer&);
+    
+    operator +(const profile_timer&, profile_timer);
+    function stop();
+    function start();
+    function time() const;
+    function __tostring(profile_timer&);
+    operator <(const profile_timer&, profile_timer);
 };
 
 C++ class token {
@@ -1353,17 +1482,34 @@ C++ class CBurer : CGameObject {
     function use(CGameObject*);
 };
 
-C++ class CCar : CGameObject {
+C++ class CCar : CGameObject,holder {
+    const eWpnActivate = 3;
+    const eWpnAutoFire = 5;
+    const eWpnFire = 4;
+    const eWpnDesiredDir = 1;
+    const eWpnDesiredPos = 2;
+    const eWpnToDefaultDir = 6;
+    
     CCar ();
     
-    function Visual();
-    function getEnabled() const;
-    function net_Import(net_packet&);
+    function _construct();
+    function GetfHealth() const;
+    function CurrentVel();
     function getVisible() const;
     function net_Spawn(cse_abstract*);
     function setVisible(number);
-    function _construct();
+    function SetParam(number, vector);
     function net_Export(net_packet&);
+    function Visual();
+    function IsObjectVisible(game_object*);
+    function net_Import(net_packet&);
+    function HasWeapon();
+    function SetfHealth(number);
+    function engaged();
+    function FireDirDiff();
+    function CanHit();
+    function getEnabled() const;
+    function Action(number, number);
     function setEnabled(number);
     function use(CGameObject*);
 };
@@ -1434,6 +1580,16 @@ C++ class CController : CGameObject {
 C++ class cover_point {
     function level_vertex_id() const;
     function position() const;
+};
+
+C++ class danger_object {
+    function type() const;
+    function time() const;
+    operator ==(const danger_object&, danger_object);
+    function position() const;
+    function object(const danger_object*);
+    function perceive_type() const;
+    function dependent_object(const danger_object*);
 };
 
 C++ class CDialogHolder {
@@ -1576,40 +1732,41 @@ C++ class hanging_lamp {
 };
 
 C++ class CHelicopter {
-    const eAlive = 0;
-    const eBodyByPath = 0;
-    const eBodyToPoint = 1;
     const eDead = 1;
-    const eEnemyEntity = 2;
     const eEnemyNone = 0;
-    const eEnemyPoint = 1;
+    const eBodyByPath = 0;
+    const eEnemyEntity = 2;
     const eMovLanding = 4;
+    const eMovTakeOff = 5;
+    const eMovToPoint = 1;
+    const eAlive = 0;
+    const eBodyToPoint = 1;
+    const eEnemyPoint = 1;
     const eMovNone = 0;
     const eMovPatrolPath = 2;
     const eMovRoundPath = 3;
-    const eMovTakeOff = 5;
-    const eMovToPoint = 1;
     
-    property m_dead;
-    property m_exploded;
     property m_flame_started;
-    property m_light_started;
     property m_max_mgun_dist;
-    property m_max_rocket_dist;
     property m_min_mgun_dist;
-    property m_min_rocket_dist;
-    property m_syncronize_rocket;
-    property m_time_between_rocket_attack;
     property m_use_mgun_on_attack;
     property m_use_rocket_on_attack;
+    property m_dead;
+    property m_light_started;
+    property m_min_rocket_dist;
+    property m_time_between_rocket_attack;
+    property m_exploded;
+    property m_max_rocket_dist;
+    property m_syncronize_rocket;
     
+    function TurnEngineSound(boolean);
     function GetMaxVelocity();
     function GetfHealth() const;
     function SetSpeedInDestPoint(number);
-    function TurnEngineSound(boolean);
+    function TurnLighting(boolean);
     function SetOnPointRangeDist(number);
     function SetFireTrailLength(number);
-    function TurnLighting(boolean);
+    function GetMovementState();
     function LookAtPoint(vector, boolean);
     function GetOnPointRangeDist();
     function GetRealAltitude();
@@ -1631,7 +1788,7 @@ C++ class CHelicopter {
     function GetDistanceToDestPosition();
     function GetHuntState();
     function GetCurrVelocityVec();
-    function GetMovementState();
+    function GetSafeAltitude();
     function ClearEnemy();
     function SetEnemy(game_object*);
     function SetEnemy(vector*);
@@ -1639,18 +1796,20 @@ C++ class CHelicopter {
 
 C++ class holder {
     function engaged();
+    function Action(number, number);
+    function SetParam(number, vector);
 };
 
 C++ class FS {
+    const FS_sort_by_size_down = 3;
     const FS_ClampExt = 4;
-    const FS_ListFiles = 1;
-    const FS_ListFolders = 2;
     const FS_RootOnly = 8;
     const FS_sort_by_modif_down = 5;
     const FS_sort_by_modif_up = 4;
     const FS_sort_by_name_down = 1;
+    const FS_ListFiles = 1;
+    const FS_ListFolders = 2;
     const FS_sort_by_name_up = 0;
-    const FS_sort_by_size_down = 3;
     const FS_sort_by_size_up = 2;
     
     function get_file_age(string);
@@ -1693,112 +1852,125 @@ C++ class CMercuryBall : CGameObject {
 };
 
 C++ class stalker_ids {
+    const action_combat_planner = 49;
+    const action_danger_in_direction_look_around = 37;
+    const action_danger_unknown_look_around = 33;
+    const action_no_alife = 3;
+    const get_out_of_anomaly = 12;
+    const property_not_enough_food = 12;
+    const sound_panic_human = 10;
+    const action_post_combat_wait = 44;
+    const motivation_alive = 1;
+    const action_danger_grenade_take_cover_after_explosion = 41;
+    const action_get_ready_to_kill = 19;
+    const action_reach_customer_location = 7;
+    const property_enemy_can_be_seen = 33;
+    const property_position_holded = 32;
+    const property_squad_action = 44;
+    const sound_panic_monster = 11;
+    const action_gather_items = 2;
+    const property_cover_actual = 40;
+    const property_danger_grenade = 38;
+    const property_reached_task_location = 5;
+    const property_task_completed = 6;
+    const sound_script = 15;
+    const action_dialog = 11;
+    const property_customer_satisfied = 8;
+    const property_danger_by_sound = 39;
+    const property_danger_unknown = 36;
+    const property_script = 48;
+    const property_cover_reached = 41;
+    const property_not_enough_ammo = 18;
+    const action_danger_grenade_planner = 30;
+    const action_reach_task_location = 5;
+    const action_script = 52;
+    const property_not_enough_medikits = 14;
+    const property_reached_customer_location = 7;
+    const action_detour_enemy = 26;
+    const action_alife_planner = 47;
+    const action_danger_by_sound_planner = 31;
+    const action_kill_enemy = 20;
+    const sound_injuring_by_friend = 9;
+    const property_alive = 0;
+    const property_enemy_detoured = 34;
+    const property_see_enemy = 28;
+    const action_danger_grenade_search = 43;
+    const action_death_planner = 46;
+    const property_items = 20;
+    const sound_alarm = 4;
+    const action_anomaly_planner = 50;
+    const action_danger_grenade_take_cover = 39;
+    const action_search_enemy = 27;
+    const property_dead = 1;
+    const property_grenade_exploded = 43;
+    const sound_detour = 7;
+    const property_item_can_kill = 25;
+    const action_danger_grenade_wait_for_explosion = 40;
+    const action_danger_in_direction_look_out = 36;
+    const action_hold_position = 24;
+    const property_alife = 3;
+    const sound_attack = 5;
     const action_accomplish_task = 6;
     const action_aim_enemy = 18;
-    const action_alife_dialog_planner = 38;
-    const action_alife_planner = 37;
-    const action_already_dead = 0;
-    const action_anomaly_planner = 40;
-    const action_combat_planner = 39;
-    const action_communicate_with_customer = 8;
-    const action_danger_attack = 32;
-    const action_danger_corpse = 33;
-    const action_danger_death = 31;
-    const action_danger_hit = 30;
-    const action_danger_ricochet = 28;
-    const action_danger_shot = 29;
-    const action_dead = 1;
-    const action_death_planner = 36;
-    const action_detour_enemy = 26;
-    const action_dialog = 11;
     const action_find_ammo = 17;
-    const action_find_item_to_kill = 15;
-    const action_gather_items = 2;
-    const action_get_distance = 25;
-    const action_get_item_to_kill = 14;
-    const action_get_ready_to_kill = 19;
-    const action_guard_planner = 41;
-    const action_hold_position = 24;
-    const action_kill_enemy = 20;
     const action_look_out = 23;
-    const action_make_item_killing = 16;
-    const action_no_alife = 3;
-    const action_post_combat_wait = 34;
-    const action_reach_customer_location = 7;
-    const action_reach_task_location = 5;
-    const action_retreat_from_enemy = 21;
-    const action_script = 42;
-    const action_search_enemy = 27;
-    const action_solve_zone_puzzle = 4;
-    const action_squad_action = 35;
-    const action_take_cover = 22;
-    const detect_anomaly = 13;
-    const get_out_of_anomaly = 12;
-    const motivation_alive = 1;
-    const motivation_dead = 2;
-    const motivation_global = 0;
-    const motivation_script = 7;
-    const motivation_solve_zone_puzzle = 3;
-    const motivation_squad_action = 6;
     const motivation_squad_command = 4;
-    const motivation_squad_goal = 5;
-    const property_alife = 3;
-    const property_alive = 0;
-    const property_already_dead = 2;
-    const property_anomaly = 44;
-    const property_can_buy_ammo = 19;
-    const property_can_buy_food = 13;
-    const property_can_buy_medikits = 15;
-    const property_can_buy_weapon = 17;
-    const property_customer_satisfied = 8;
+    const property_anomaly = 46;
     const property_danger = 22;
-    const property_danger_attack = 40;
-    const property_danger_corpse = 41;
-    const property_danger_death = 39;
-    const property_danger_hit = 38;
-    const property_danger_ricochet = 36;
-    const property_dead = 1;
     const property_enemy = 21;
-    const property_enemy_can_be_seen = 33;
-    const property_enemy_detoured = 34;
-    const property_found_ammo = 26;
-    const property_found_item_to_kill = 24;
     const property_human_to_dialog = 9;
-    const property_in_cover = 30;
-    const property_inside_anomaly = 45;
-    const property_item_can_kill = 25;
-    const property_item_to_kill = 23;
-    const property_items = 20;
+    const property_looked_around = 42;
     const property_looked_out = 31;
-    const property_no_or_bad_weapon = 16;
-    const property_not_enough_ammo = 18;
-    const property_not_enough_food = 12;
-    const property_not_enough_medikits = 14;
-    const property_panic = 29;
-    const property_position_holded = 32;
-    const property_pure_enemy = 35;
-    const property_puzzle_solved = 4;
-    const property_reached_customer_location = 7;
-    const property_reached_task_location = 5;
-    const property_ready_to_kill = 27;
-    const property_script = 46;
-    const property_see_enemy = 28;
-    const property_squad_action = 42;
-    const property_squad_goal = 42;
-    const property_task_completed = 6;
-    const sound_alarm = 4;
-    const sound_attack = 5;
+    const action_alife_dialog_planner = 48;
+    const action_retreat_from_enemy = 21;
+    const motivation_dead = 2;
+    const motivation_script = 7;
+    const property_already_dead = 2;
+    const property_can_buy_weapon = 17;
+    const property_in_cover = 30;
+    const motivation_global = 0;
+    const motivation_squad_action = 6;
+    const property_item_to_kill = 23;
+    const action_danger_in_direction_planner = 29;
+    const action_danger_unknown_search = 34;
+    const property_can_buy_food = 13;
     const sound_backup = 6;
-    const sound_detour = 7;
-    const sound_die = 0;
-    const sound_die_in_anomaly = 1;
-    const sound_humming = 3;
+    const property_inside_anomaly = 47;
+    const property_pure_enemy = 35;
     const sound_injuring = 2;
-    const sound_injuring_by_friend = 9;
-    const sound_panic_human = 10;
-    const sound_panic_monster = 11;
-    const sound_script = 15;
+    const property_danger_in_direction = 37;
+    const property_no_or_bad_weapon = 16;
+    const property_ready_to_kill = 27;
+    const action_get_item_to_kill = 14;
+    const action_solve_zone_puzzle = 4;
+    const sound_humming = 3;
+    const action_danger_in_direction_take_cover = 35;
+    const action_danger_planner = 51;
+    const action_take_cover = 22;
+    const property_can_buy_medikits = 15;
+    const property_found_ammo = 26;
+    const action_already_dead = 0;
+    const action_communicate_with_customer = 8;
+    const motivation_solve_zone_puzzle = 3;
+    const sound_die_in_anomaly = 1;
+    const action_danger_in_direction_search = 38;
+    const action_find_item_to_kill = 15;
+    const action_make_item_killing = 16;
+    const property_panic = 29;
+    const action_danger_unknown_planner = 28;
+    const action_danger_unknown_take_cover = 32;
+    const property_puzzle_solved = 4;
+    const action_dead = 1;
+    const detect_anomaly = 13;
     const sound_search = 8;
+    const action_danger_grenade_look_around = 42;
+    const action_get_distance = 25;
+    const action_squad_action = 45;
+    const motivation_squad_goal = 5;
+    const property_can_buy_ammo = 19;
+    const property_found_item_to_kill = 24;
+    const property_squad_goal = 44;
+    const sound_die = 0;
     const sound_tolls = 12;
     
 };
@@ -1820,10 +1992,10 @@ C++ class patrol {
     const continue = 1;
     const custom = 3;
     const dummy = -1;
-    const nearest = 2;
-    const next = 4;
     const start = 0;
     const stop = 0;
+    const nearest = 2;
+    const next = 4;
     
     patrol (string);
     patrol (string, enum PatrolPathManager::EPatrolStartType);
@@ -1872,10 +2044,12 @@ C++ class physics_shell {
     function get_joints_number();
     function get_element_by_bone_id(number);
     function get_elements_number();
+    function unblock_breaking();
     function get_joint_by_bone_name(string);
     function get_element_by_order(number);
     function get_element_by_bone_name(string);
     function apply_force(number, number, number);
+    function block_breaking();
     function get_joint_by_order(number);
     function get_joint_by_bone_id(number);
 };
@@ -1921,19 +2095,16 @@ C++ class cpure_server_object : ipure_server_object {
 };
 
 C++ class render_device {
-    property aspect_ratio;
     property cam_dir;
+    property height;
+    property aspect_ratio;
     property cam_pos;
     property cam_right;
-    property cam_top;
     property fov;
-    property full_transform;
-    property height;
-    property precache_frame;
-    property projection;
-    property time_delta;
-    property view;
     property width;
+    property cam_top;
+    property precache_frame;
+    property time_delta;
     
     function time_global();
     function is_paused(render_device*);
@@ -1958,8 +2129,8 @@ C++ class CRustyHairArtefact : CGameObject {
 C++ class cse_anomalous_zone : cse_custom_zone,cse_alife_schedulable {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -1990,8 +2161,8 @@ C++ class cse_anomalous_zone : cse_custom_zone,cse_alife_schedulable {
 C++ class cse_alife_car : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2023,12 +2194,12 @@ C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_creature_abstract (string);
     
@@ -2063,12 +2234,12 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_creature_actor (string);
     
@@ -2104,12 +2275,12 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_creature_crow (string);
     
@@ -2144,12 +2315,12 @@ C++ class cse_alife_creature_phantom : cse_alife_creature_abstract {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_creature_phantom (string);
     
@@ -2183,8 +2354,8 @@ C++ class cse_alife_creature_phantom : cse_alife_creature_abstract {
 C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2215,8 +2386,8 @@ C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
 C++ class cse_alife_dynamic_object : cse_alife_object {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2247,8 +2418,8 @@ C++ class cse_alife_dynamic_object : cse_alife_object {
 C++ class cse_alife_dynamic_object_visual : cse_alife_dynamic_object,cse_visual {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2303,8 +2474,8 @@ C++ class cse_alife_group_abstract {
 C++ class cse_alife_helicopter : cse_alife_dynamic_object_visual,cse_motion,cse_ph_skeleton {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2336,12 +2507,12 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_human_abstract (string);
     
@@ -2378,12 +2549,12 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_human_stalker (string);
     
@@ -2422,8 +2593,8 @@ C++ class cse_alife_inventory_item {
 C++ class cse_alife_item : cse_alife_dynamic_object_visual,cse_alife_inventory_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2454,8 +2625,8 @@ C++ class cse_alife_item : cse_alife_dynamic_object_visual,cse_alife_inventory_i
 C++ class cse_alife_item_ammo : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2487,8 +2658,8 @@ C++ class cse_alife_item_ammo : cse_alife_item {
 C++ class cse_alife_item_artefact : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2520,8 +2691,8 @@ C++ class cse_alife_item_artefact : cse_alife_item {
 C++ class cse_alife_item_bolt : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2553,8 +2724,8 @@ C++ class cse_alife_item_bolt : cse_alife_item {
 C++ class cse_alife_item_custom_outfit : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2586,8 +2757,8 @@ C++ class cse_alife_item_custom_outfit : cse_alife_item {
 C++ class cse_alife_item_detector : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2619,8 +2790,8 @@ C++ class cse_alife_item_detector : cse_alife_item {
 C++ class cse_alife_item_document : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2652,8 +2823,8 @@ C++ class cse_alife_item_document : cse_alife_item {
 C++ class cse_alife_item_explosive : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2685,8 +2856,8 @@ C++ class cse_alife_item_explosive : cse_alife_item {
 C++ class cse_alife_item_grenade : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2718,8 +2889,8 @@ C++ class cse_alife_item_grenade : cse_alife_item {
 C++ class cse_alife_item_pda : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2751,8 +2922,8 @@ C++ class cse_alife_item_pda : cse_alife_item {
 C++ class cse_alife_item_torch : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2784,8 +2955,8 @@ C++ class cse_alife_item_torch : cse_alife_item {
 C++ class cse_alife_item_weapon : cse_alife_item {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2817,8 +2988,8 @@ C++ class cse_alife_item_weapon : cse_alife_item {
 C++ class cse_alife_level_changer : cse_alife_space_restrictor {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -2850,12 +3021,12 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_monster_abstract (string);
     
@@ -2891,12 +3062,12 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_monster_base (string);
     
@@ -2932,12 +3103,12 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_monster_rat (string);
     
@@ -2973,12 +3144,12 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     property group;
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
-    property position;
-    property script_version;
     property squad;
     property team;
+    property online;
+    property position;
+    property script_version;
     
     cse_alife_monster_zombie (string);
     
@@ -3013,8 +3184,8 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
 C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3045,8 +3216,8 @@ C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
 C++ class cse_alife_object : cse_abstract {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3077,8 +3248,8 @@ C++ class cse_alife_object : cse_abstract {
 C++ class cse_alife_object_breakable : cse_alife_dynamic_object_visual {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3130,8 +3301,8 @@ C++ class cse_alife_object_climable : cse_shape,cse_abstract {
 C++ class cse_alife_object_hanging_lamp : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3162,8 +3333,8 @@ C++ class cse_alife_object_hanging_lamp : cse_alife_dynamic_object_visual,cse_ph
 C++ class cse_alife_object_physic : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3194,8 +3365,8 @@ C++ class cse_alife_object_physic : cse_alife_dynamic_object_visual,cse_ph_skele
 C++ class cse_alife_object_projector : cse_alife_dynamic_object_visual {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3226,8 +3397,8 @@ C++ class cse_alife_object_projector : cse_alife_dynamic_object_visual {
 C++ class cse_alife_ph_skeleton_object : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3261,8 +3432,8 @@ C++ class cse_alife_schedulable : ipure_schedulable_object {
 C++ class cse_alife_smart_zone : cse_alife_space_restrictor,cse_alife_schedulable {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3296,8 +3467,8 @@ C++ class cse_alife_smart_zone : cse_alife_space_restrictor,cse_alife_schedulabl
 C++ class cse_alife_space_restrictor : cse_alife_dynamic_object,cse_shape {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3328,8 +3499,8 @@ C++ class cse_alife_space_restrictor : cse_alife_dynamic_object,cse_shape {
 C++ class cse_alife_team_base_zone : cse_alife_space_restrictor {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3360,8 +3531,8 @@ C++ class cse_alife_team_base_zone : cse_alife_space_restrictor {
 C++ class cse_torrid_zone : cse_custom_zone,cse_motion {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3392,8 +3563,8 @@ C++ class cse_torrid_zone : cse_custom_zone,cse_motion {
 C++ class cse_alife_trader : cse_alife_dynamic_object_visual,cse_alife_trader_abstract {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3429,8 +3600,8 @@ C++ class cse_alife_trader_abstract {
 C++ class cse_zone_visual : cse_anomalous_zone,cse_visual {
     property id;
     property level_vertex_id;
-    property online;
     property parent_id;
+    property online;
     property position;
     property script_version;
     
@@ -3699,9 +3870,9 @@ C++ class cse_visual {
 
 C++ class cond {
     const act_end = 128;
+    const move_end = 1;
     const anim_end = 4;
     const look_end = 2;
-    const move_end = 1;
     const object_end = 32;
     const sound_end = 8;
     const time_end = 64;
@@ -3714,17 +3885,17 @@ C++ class cond {
 
 C++ class anim {
     const asleep = 3;
-    const attack = 6;
-    const danger = 0;
     const dummy = -1;
     const eat = 3;
-    const free = 1;
     const lie_idle = 2;
-    const look_around = 7;
-    const panic = 2;
+    const sleep = 4;
     const rest = 5;
     const sit_idle = 1;
-    const sleep = 4;
+    const attack = 6;
+    const danger = 0;
+    const free = 1;
+    const look_around = 7;
+    const panic = 2;
     const stand_idle = 0;
     const turn = 8;
     const zombied = 4;
@@ -3790,42 +3961,44 @@ C++ class entity_action {
 };
 
 C++ class game_object {
-    const action_type_count = 6;
-    const animation = 2;
-    const dialog_pda_msg = 0;
     const dummy = -1;
-    const enemy = 2;
-    const friend = 0;
-    const game_path = 0;
     const info_pda_msg = 1;
+    const relation_fight_help_monster = 4;
+    const relation_fight_help_human = 2;
+    const relation_kill = 0;
+    const action_type_count = 6;
+    const friend = 0;
     const level_path = 1;
     const movement = 0;
-    const neutral = 1;
-    const no_path = 3;
-    const no_pda_msg = 2;
     const object = 5;
     const particle = 4;
     const patrol_path = 2;
-    const relation_attack = 1;
-    const relation_fight_help_human = 2;
-    const relation_fight_help_monster = 4;
-    const relation_kill = 0;
     const sound = 3;
+    const animation = 2;
+    const dialog_pda_msg = 0;
+    const enemy = 2;
+    const game_path = 0;
+    const no_path = 3;
+    const no_pda_msg = 2;
+    const neutral = 1;
+    const relation_attack = 1;
     const watch = 1;
     
-    property circumspection;
     property enabled;
-    property health;
-    property morale;
-    property power;
-    property psy_health;
-    property radiation;
     property satiety;
     property visible;
+    property circumspection;
+    property morale;
+    property power;
+    property radiation;
+    property health;
+    property psy_health;
     
     function hide_weapon();
     function memory_time(const game_object&);
     function dont_has_info(string);
+    function max_ignore_monster_distance(const number&);
+    function max_ignore_monster_distance() const;
     function best_item();
     function disable_info_portion(string);
     function add_animation(string);
@@ -3843,6 +4016,7 @@ C++ class game_object {
     function active_item();
     function mental_state() const;
     function play_cycle(string);
+    function play_cycle(string, boolean);
     function clear_animations();
     function enable_trade();
     function patrol();
@@ -3872,7 +4046,7 @@ C++ class game_object {
     function set_item(enum MonsterSpace::EObjectAction, game_object*, number, number);
     function info_add(string);
     function set_community_goodwill(number, game_object*);
-    function command(const entity_action*, boolean);
+    function team() const;
     function set_ammo_elapsed(number);
     function set_sight(enum SightManager::ESightType, const vector*, number);
     function set_sight(enum SightManager::ESightType, boolean, boolean);
@@ -3880,12 +4054,17 @@ C++ class game_object {
     function set_sight(enum SightManager::ESightType, const vector*);
     function set_sight(game_object*, boolean);
     function set_sight(game_object*, boolean, string);
+    function jump(game_object*);
+    function info_clear();
     function remove_restrictions(string, string);
     function action_count() const;
     function money();
-    function jump(game_object*);
+    function character_rank();
+    function inside(const vector&, number) const;
+    function inside(const vector&) const;
+    function active_zone_contact(number);
     function weapon_unstrapped() const;
-    function info_clear();
+    function set_nonscript_usable(boolean);
     function name() const;
     function set_range(number);
     function add_sound(string, number, enum ESoundTypes, number, number, number);
@@ -3897,149 +4076,150 @@ C++ class game_object {
     function get_current_direction();
     function action() const;
     function restore_weapon();
-    function character_reputation();
-    function inside(const vector&, number) const;
-    function inside(const vector&) const;
-    function active_zone_contact(number);
-    function set_nonscript_usable(boolean);
+    function set_tip_text_default();
+    function set_tip_text(string);
+    function see(const game_object*);
+    function see(string);
+    function get_holder_class();
     function enable_vision(boolean);
-    function set_movement_type(enum MonsterSpace::EMovementType);
+    function get_physics_shell() const;
     function alive() const;
     function set_mental_state(enum MonsterSpace::EMentalState);
     function squad() const;
     function reset_action_queue();
     function target_body_state() const;
-    function set_tip_text(string);
+    function set_task_state(enum ETaskState, string, number);
     function head_orientation() const;
     function snd_character_profile_sect() const;
     function script(boolean, string);
-    function binded_object();
+    function get_car();
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function get_holder_class();
-    function get_physics_shell() const;
-    function set_actor_position(vector);
-    function send_pda_message(enum EPdaMsg, game_object*);
-    function remove_all_restrictions();
     function get_helicopter();
-    function add_restrictions(string, string);
-    function give_info_portion_via_pda(string, game_object*);
-    function get_monster_hit_info();
+    function limping() const;
+    function set_actor_position(vector);
     function get_anomaly_power();
+    function remove_all_restrictions();
     function disable_anomaly();
+    function add_restrictions(string, string);
     function enable_anomaly();
+    function get_monster_hit_info();
+    function group() const;
+    function use(const game_object*);
+    function level_vertex_light(const number&) const;
     function memory_hit_objects() const;
     function can_script_capture() const;
     function set_sound_mask(number);
     function community_goodwill(game_object*);
     function vision_enabled() const;
-    function target_movement_type() const;
-    function safe_cover(const vector&, number, number);
+    function story_id() const;
+    function binded_object();
     function path_completed() const;
-    function set_tip_text_default();
-    function eat(game_object*);
+    function ignore_monster_threshold(number);
+    function ignore_monster_threshold() const;
+    function restore_sound_threshold();
     function attachable_item_enabled() const;
-    function parent() const;
-    function use(const game_object*);
-    function set_fastcall(const function<boolean>&, object);
+    function character_reputation();
     function set_character_rank(number);
-    function level_vertex_id() const;
-    function character_rank();
+    function set_fastcall(const function<boolean>&, object);
     function set_manual_invisibility(boolean);
-    function transfer_money(number, game_object*);
-    function set_start_point(number);
+    function level_vertex_id() const;
+    function set_goodwill(number, game_object*);
     function set_relation(enum ALife::ERelationType, game_object*);
     function general_goodwill(game_object*);
+    function set_start_point(number);
+    function transfer_item(game_object*, game_object*);
+    function change_goodwill(number, game_object*);
     function set_fov(number);
     function profile_name();
-    function change_goodwill(number, game_object*);
+    function eat(game_object*);
     function set_path_type(enum MovementManager::EPathType);
     function weapon_strapped() const;
     function get_ammo_total() const;
-    function give_game_news(string, string, number, number, number, number, number);
-    function set_goodwill(number, game_object*);
-    function position() const;
+    function best_danger();
     function restore_default_start_dialog();
+    function restore_max_ignore_monster_distance();
     function set_start_dialog(string);
-    function enable_memory_object(game_object*, boolean);
     function run_talk_dialog(game_object*);
+    function enable_memory_object(game_object*, boolean);
     function switch_to_talk();
     function switch_to_trade();
+    function transfer_money(number, game_object*);
     function get_current_outfit() const;
     function animation_count() const;
     function change_community_goodwill(number, game_object*);
     function out_restrictions();
-    function transfer_item(game_object*, game_object*);
-    function enable_attachable_item(boolean);
     function drop_item(game_object*, vector);
+    function enable_attachable_item(boolean);
     function is_trade_enabled();
     function disable_trade();
     function is_talk_enabled();
     function disable_talk();
-    function memory_sound_objects() const;
     function enable_talk();
-    function give_info_portion(string);
+    function memory_sound_objects() const;
     function stop_talk();
+    function give_info_portion(string);
     function is_talking();
+    function send_pda_message(enum EPdaMsg, game_object*);
     function get_hanging_lamp();
-    function get_all_tasks();
-    function set_task_state(enum ETaskState, string, number);
+    function get_task_state(string, number);
+    function get_info_time(string);
     function set_callback(enum GameObject::ECallbackType, const function<void>&);
     function set_callback(enum GameObject::ECallbackType, const function<void>&, object);
     function set_callback(enum GameObject::ECallbackType);
     function get_corpse() const;
-    function get_task_state(string, number);
-    function get_info_time(string);
+    function restore_ignore_monster_threshold();
+    function give_game_news(string, string, number, number, number, number, number);
     function set_news_show_time(string, number);
     function path_type() const;
     function rank();
-    function accuracy() const;
+    function give_info_portion_via_pda(string, game_object*);
     function set_anomaly_power(number);
     function movement_type() const;
-    function limping() const;
-    function explode(number);
-    function get_ammo_in_magazine();
     function accessible_nearest(const vector&, vector&);
+    function parent() const;
+    function get_ammo_in_magazine();
+    function visibility_threshold() const;
     function best_enemy();
     function death_time() const;
     function set_dest_level_vertex_id(number);
-    function bind_object(object_binder*);
+    function base_out_restrictions();
     function best_cover(const vector&, const vector&, number, number, number);
     function armor() const;
     function clsid() const;
-    function base_out_restrictions();
-    function vertex_in_direction(number, vector, number) const;
-    function get_script_name() const;
+    function extrapolate_length() const;
+    function extrapolate_length(number);
     function in_restrictions();
+    function get_script_name() const;
     function is_body_turning() const;
+    function best_hit() const;
     function set_character_reputation(number);
-    function restore_sound_threshold();
+    function command(const entity_action*, boolean);
     function accessible(const vector&);
     function accessible(number);
     function spawn_ini() const;
-    function action_by_index(number);
-    function game_vertex_id() const;
+    function not_yet_visible_objects() const;
+    function bind_object(object_binder*);
     function get_manual_invisibility();
     function get_current_holder();
-    function hit(hit*);
-    function visibility_threshold() const;
-    function not_yet_visible_objects() const;
-    function team() const;
-    function see(const game_object*);
-    function see(string);
-    function get_enemy() const;
-    function set_body_state(enum MonsterSpace::EBodyState);
+    function position() const;
+    function safe_cover(const vector&, number, number);
+    function set_desired_position();
+    function set_desired_position(const vector*);
     function active_sound_count();
     function active_sound_count(boolean);
-    function character_community();
-    function group() const;
-    function story_id() const;
-    function set_invisible(boolean);
-    function get_sound_info();
-    function extrapolate_length() const;
-    function extrapolate_length(number);
-    function base_in_restrictions();
+    function get_enemy() const;
     function set_actor_direction(number);
+    function set_body_state(enum MonsterSpace::EBodyState);
+    function game_vertex_id() const;
+    function character_community();
+    function action_by_index(number);
+    function get_sound_info();
+    function set_invisible(boolean);
+    function set_movement_type(enum MonsterSpace::EMovementType);
+    function vertex_in_direction(number, vector, number) const;
+    function base_in_restrictions();
+    function accuracy() const;
     function goodwill(game_object*);
     function has_info(string);
     function set_enemy_callback();
@@ -4058,35 +4238,34 @@ C++ class game_object {
     function get_invisible();
     function motivation_action_manager(game_object*);
     function id() const;
-    function level_vertex_light(const number&) const;
+    function explode(number);
     function set_sound_threshold(number);
     function bone_position(string) const;
-    function best_hit() const;
-    function set_desired_position();
-    function set_desired_position(const vector*);
+    function target_mental_state() const;
+    function target_movement_type() const;
     function object(string);
     function object(number);
     function fov() const;
-    function target_mental_state() const;
+    function hit(hit*);
     function set_actor_relation_flags(flags32);
     function character_name();
     function best_weapon();
 };
 
 C++ class hit {
-    const burn = 0;
-    const chemical_burn = 6;
     const dummy = 10;
-    const explosion = 7;
-    const fire_wound = 8;
-    const radiation = 4;
-    const shock = 1;
     const strike = 2;
     const telepatic = 5;
+    const burn = 0;
+    const radiation = 4;
+    const shock = 1;
+    const chemical_burn = 6;
+    const explosion = 7;
+    const fire_wound = 8;
     const wound = 3;
     
-    property direction;
     property draftsman;
+    property direction;
     property impulse;
     property power;
     property type;
@@ -4134,34 +4313,34 @@ C++ class MonsterHitInfo {
 };
 
 C++ class move {
-    const back = 4;
-    const break = 128;
+    const walk_bkwd = 1;
+    const line = 0;
+    const off = 512;
     const criteria = 2;
-    const crouch = 0;
-    const curve = 0;
     const curve_criteria = 2;
     const default = 0;
-    const dodge = 1;
-    const down = 64;
-    const drag = 3;
-    const force = 1;
-    const fwd = 2;
-    const jump = 4;
-    const left = 8;
-    const line = 0;
-    const none = 1;
-    const off = 512;
-    const on = 256;
-    const right = 16;
-    const run = 1;
     const run_fwd = 2;
-    const stand = 2;
-    const standing = 1;
     const steal = 5;
+    const back = 4;
+    const break = 128;
+    const crouch = 0;
+    const curve = 0;
+    const dodge = 1;
+    const jump = 4;
+    const none = 1;
+    const standing = 1;
     const up = 32;
     const walk = 0;
-    const walk_bkwd = 1;
     const walk_fwd = 0;
+    const stand = 2;
+    const drag = 3;
+    const force = 1;
+    const right = 16;
+    const down = 64;
+    const fwd = 2;
+    const left = 8;
+    const on = 256;
+    const run = 1;
     
     move ();
     move (enum CScriptMovementAction::EInputKeys);
@@ -4196,27 +4375,27 @@ C++ class move {
 };
 
 C++ class object {
-    const activate = 13;
-    const aim1 = 4;
-    const aim2 = 5;
     const deactivate = 14;
-    const drop = 10;
     const dummy = -1;
-    const fire1 = 6;
-    const fire2 = 7;
-    const hide = 19;
-    const idle = 8;
-    const reload = 2;
-    const reload1 = 2;
-    const reload2 = 3;
     const show = 18;
+    const activate = 13;
+    const fire2 = 7;
+    const reload1 = 2;
+    const idle = 8;
+    const reload2 = 3;
     const strap = 9;
     const switch1 = 0;
     const switch2 = 1;
-    const take = 20;
     const turn_off = 17;
     const turn_on = 16;
+    const aim1 = 4;
+    const drop = 10;
+    const hide = 19;
+    const reload = 2;
     const use = 15;
+    const aim2 = 5;
+    const fire1 = 6;
+    const take = 20;
     
     object ();
     object (game_object*, enum MonsterSpace::EObjectAction);
@@ -4278,6 +4457,7 @@ C++ class sound_object {
     function play_at_pos_clone(game_object*, const vector&, number, number);
     function get_position() const;
     function stop();
+    function stop_deffered();
     function play_clone(game_object*);
     function play_clone(game_object*, number);
     function play_clone(game_object*, number, number);
@@ -4289,15 +4469,15 @@ C++ class sound_object {
 };
 
 C++ class sound {
-    const attack = 2;
-    const attack_hit = 3;
-    const die = 5;
     const eat = 1;
     const growling = 11;
-    const idle = 0;
+    const attack = 2;
+    const die = 5;
     const panic = 10;
-    const steal = 9;
     const take_damage = 4;
+    const attack_hit = 3;
+    const idle = 0;
+    const steal = 9;
     const threaten = 6;
     
     sound ();
@@ -4328,10 +4508,10 @@ C++ class sound {
 };
 
 C++ class SoundInfo {
+    property time;
     property danger;
     property position;
     property power;
-    property time;
     property who;
     
 };
@@ -4378,12 +4558,12 @@ C++ class token_list {
 
 C++ class look {
     const cur_dir = 0;
-    const danger = 5;
-    const direction = 2;
-    const fire_point = 9;
     const path_dir = 1;
     const point = 3;
     const search = 6;
+    const danger = 5;
+    const direction = 2;
+    const fire_point = 9;
     
     look ();
     look (enum SightManager::ESightType);
@@ -4403,19 +4583,24 @@ C++ class look {
 C++ class CScriptXmlInit {
     CScriptXmlInit ();
     
+    function InitSpinText(string, number, CUISpinText*);
     function InitTab(string, number, CUITabControl*);
-    function InitWindow(string, number, CUIWindow*);
-    function FreeShTexInfo();
-    function InitServerList(string, CServerList*);
+    function InitStatic(string, number, CUIStatic*);
     function InitList(string, number, CUIListWnd*);
-    function Init3tButton(string, number, CUI3tButton*);
     function ParseShTexInfo(string);
     function InitLabel(string, number, CUILabel*);
-    function InitButton(string, number, CUIButton*);
-    function InitFrameLine(string, number, CUIFrameLineWnd*);
-    function InitStatic(string, number, CUIStatic*);
-    function InitFrame(string, number, CUIFrameWindow*);
+    function InitSpinNum(string, number, CUISpinNum*);
+    function InitMapList(string, CUIMapList*);
     function ParseFile(string);
+    function InitWindow(string, number, CUIWindow*);
+    function InitEditBox(string, number, CUIEditBox*);
+    function InitCheck(string, number, CUICheckButton*);
+    function InitServerList(string, CServerList*);
+    function FreeShTexInfo();
+    function InitFrameLine(string, number, CUIFrameLineWnd*);
+    function Init3tButton(string, number, CUI3tButton*);
+    function InitButton(string, number, CUIButton*);
+    function InitFrame(string, number, CUIFrameWindow*);
 };
 
 C++ class ce_script_zone : DLL_Pure {
@@ -4427,12 +4612,16 @@ C++ class ce_script_zone : DLL_Pure {
 C++ class CServerList : CUIWindow {
     CServerList ();
     
+    function SetPlayerName(string);
     function GetFont();
     function SetWindowName(string);
     function Enable(boolean);
     function SetHeight(number);
+    function SetFilters(SServerFilters&);
+    function RefreshList(boolean);
     function SetAutoDelete(boolean);
     function AttachChild(CUIWindow*);
+    function ConnectToSelected();
     function DetachChild(CUIWindow*);
     function SetFont(CGameFont*);
     function IsShown();
@@ -4469,9 +4658,9 @@ C++ class CSnork : CGameObject {
 };
 
 C++ class sound_params {
+    property min_distance;
     property frequency;
     property max_distance;
-    property min_distance;
     property position;
     property volume;
     
@@ -4718,6 +4907,29 @@ C++ class CUIComboBox : CUIWindow {
     function IsAutoDelete();
 };
 
+C++ class CUICustomSpin : CUIWindow {
+    function GetFont();
+    function SetWindowName(string);
+    function Enable(boolean);
+    function SetHeight(number);
+    function SetAutoDelete(boolean);
+    function AttachChild(CUIWindow*);
+    function DetachChild(CUIWindow*);
+    function SetFont(CGameFont*);
+    function IsShown();
+    function Show(boolean);
+    function SetWndRect(Irect);
+    function SetWndRect(number, number, number, number);
+    function GetHeight() const;
+    function SetWidth(number);
+    function GetWidth() const;
+    function IsEnabled();
+    function Init(number, number, number, number);
+    function Init(Irect*);
+    function WindowName();
+    function IsAutoDelete();
+};
+
 C++ class CUIDMFragList : CUIStatsWnd {
     CUIDMFragList ();
     
@@ -4823,75 +5035,59 @@ C++ class CUIScriptWnd : CUIDialogWnd,DLL_Pure {
     function AddCallback(string, number, const function<void>&);
     function AddCallback(string, number, const function<void>&, object);
     function SetAutoDelete(boolean);
-    function test();
+    function GetRadioButton(string);
     function OnKeyboard(number, enum EUIMessages);
-    function GetListWnd(string);
     function AttachChild(CUIWindow*);
     function GetStatic(string);
     function GetEditBox(string);
+    function GetListWnd(string);
     function GetTabControl(string);
-    function GetMessageBox(string);
     function Init(number, number, number, number);
     function Init(Irect*);
-    function GetFrameWindow(string);
+    function GetMessageBox(string);
     function WindowName();
-    function GetDialogWnd(string);
+    function GetFrameWindow(string);
     function GetHolder();
     function SetWndRect(Irect);
     function SetWndRect(number, number, number, number);
     function SetWindowName(string);
-    function GetButton(string);
+    function GetDialogWnd(string);
     function GetProgressBar(string);
+    function GetButton(string);
     function GetRadioGroup(string);
-    function GetRadioButton(string);
     function Load(string);
     function IsAutoDelete();
 };
 
-C++ class CUIEditBox : CUIStatic {
+C++ class CUIEditBox : CUILabel {
     CUIEditBox ();
     
-    function GetTextY();
+    function GetFont();
+    function SetWindowName(string);
     function Enable(boolean);
     function SetText(string);
-    function GetText();
-    function GetColor() const;
-    function GetWidth() const;
-    function GetClipperState();
-    function DetachChild(CUIWindow*);
-    function SetFont(CGameFont*);
-    function IsShown();
-    function Show(boolean);
-    function GetHeight() const;
-    function SetWidth(number);
-    function SetLines(string);
-    function IsEnabled();
-    function GetFont();
-    function SetStretchTexture(boolean);
-    function ClipperOn();
+    function GetText() const;
     function SetAutoDelete(boolean);
-    function SetTextColor(number, number, number, number);
+    function SetOrientation(boolean);
     function AttachChild(CUIWindow*);
-    function IsAutoDelete();
-    function GetStretchTexture();
-    function SetTextX(number);
-    function GetTextAlign();
-    function Init(number, number, number, number);
-    function Init(Irect*);
-    function Init(string, number, number, number, number);
-    function GetTextX();
-    function WindowName();
-    function SetTextureOffset(number, number);
-    function SetTextY(number);
+    function SetColor(number);
     function SetWndRect(Irect);
     function SetWndRect(number, number, number, number);
-    function SetWindowName(string);
+    function DetachChild(CUIWindow*);
+    function Show(boolean);
+    function SetFont(CGameFont*);
+    function IsShown();
+    function WindowName();
+    function GetTitleStatic();
+    function GetHeight() const;
+    function SetWidth(number);
+    function GetWidth() const;
+    function IsEnabled();
+    function Init(number, number, number, number);
+    function Init(Irect*);
+    function Init(string, number, number, number, number, boolean);
     function SetHeight(number);
-    function InitTexture(string);
-    function ClipperOff();
-    function SetOriginalRect(number, number, number, number);
-    function SetTextAlign(number);
-    function SetColor(number);
+    function IsAutoDelete();
 };
 
 C++ class CUIFrameLineWnd : CUIWindow {
@@ -4992,6 +5188,7 @@ C++ class CUILabel : CUIFrameLineWnd {
     function SetWindowName(string);
     function Enable(boolean);
     function SetHeight(number);
+    function GetText() const;
     function SetAutoDelete(boolean);
     function SetOrientation(boolean);
     function AttachChild(CUIWindow*);
@@ -5282,6 +5479,35 @@ C++ class CUIListWndEx : CUIListWnd {
     function IsAutoDelete();
 };
 
+C++ class CUIMapList : CUIWindow {
+    CUIMapList ();
+    
+    function GetFont();
+    function SetWindowName(string);
+    function Enable(boolean);
+    function SetHeight(number);
+    function SetAutoDelete(boolean);
+    function AttachChild(CUIWindow*);
+    function LoadMapList();
+    function UpdateMapList(enum GAME_TYPE);
+    function SetModeSelector(CUISpinText*);
+    function DetachChild(CUIWindow*);
+    function Show(boolean);
+    function SetFont(CGameFont*);
+    function IsShown();
+    function SetWeatherSelector(CUISpinText*);
+    function SetWndRect(Irect);
+    function SetWndRect(number, number, number, number);
+    function GetHeight() const;
+    function SetWidth(number);
+    function GetWidth() const;
+    function IsEnabled();
+    function Init(number, number, number, number);
+    function Init(Irect*);
+    function WindowName();
+    function IsAutoDelete();
+};
+
 C++ class CUIMessageBox : CUIFrameWindow {
     const STYLE_OK = 0;
     const STYLE_YES_NO = 1;
@@ -5319,6 +5545,13 @@ C++ class CUIMessageBox : CUIFrameWindow {
     function Show(boolean);
     function Show();
     function SetColor(number);
+};
+
+C++ class COptionsManager {
+    COptionsManager ();
+    
+    function SetCurrentValues(string);
+    function SaveValues(string);
 };
 
 C++ class CUIProgressBar : CUIWindow {
@@ -5389,6 +5622,56 @@ C++ class CUIPropertiesBox : CUIFrameWindow {
     function Show(boolean);
     function Show(number, number);
     function SetColor(number);
+};
+
+C++ class CUISpinNum : CUICustomSpin {
+    CUISpinNum ();
+    
+    function GetFont();
+    function SetWindowName(string);
+    function Enable(boolean);
+    function SetHeight(number);
+    function SetAutoDelete(boolean);
+    function AttachChild(CUIWindow*);
+    function DetachChild(CUIWindow*);
+    function SetFont(CGameFont*);
+    function IsShown();
+    function GetWidth() const;
+    function Show(boolean);
+    function GetHeight() const;
+    function SetWidth(number);
+    function WindowName();
+    function IsEnabled();
+    function Init(number, number, number, number);
+    function Init(Irect*);
+    function SetWndRect(Irect);
+    function SetWndRect(number, number, number, number);
+    function IsAutoDelete();
+};
+
+C++ class CUISpinText : CUICustomSpin {
+    CUISpinText ();
+    
+    function GetFont();
+    function SetWindowName(string);
+    function Enable(boolean);
+    function SetHeight(number);
+    function SetAutoDelete(boolean);
+    function AttachChild(CUIWindow*);
+    function DetachChild(CUIWindow*);
+    function SetFont(CGameFont*);
+    function IsShown();
+    function GetWidth() const;
+    function Show(boolean);
+    function GetHeight() const;
+    function SetWidth(number);
+    function WindowName();
+    function IsEnabled();
+    function Init(number, number, number, number);
+    function Init(Irect*);
+    function SetWndRect(Irect);
+    function SetWndRect(number, number, number, number);
+    function IsAutoDelete();
 };
 
 C++ class CUIStatic : CUIWindow {
@@ -5765,6 +6048,19 @@ C++ class net_packet {
     function r_angle8(number&);
 };
 
+C++ class SServerFilters {
+    property full;
+    property without_ff;
+    property without_pass;
+    property empty;
+    property listen_servers;
+    property with_pass;
+    property without_pb;
+    
+    SServerFilters ();
+    
+};
+
 C++ class UIGame_custom_script : CUIGameCustom {
     UIGame_custom_script ();
     
@@ -5791,8 +6087,8 @@ C++ class game_GameState : DLL_Pure {
 };
 
 C++ class game_cl_GameState : game_GameState {
-    property local_player;
     property local_svdpnid;
+    property local_player;
     property round;
     property start_time;
     property type;
@@ -5805,8 +6101,8 @@ C++ class game_cl_GameState : game_GameState {
 };
 
 C++ class game_cl_mp : game_cl_GameState {
-    property local_player;
     property local_svdpnid;
+    property local_player;
     property round;
     property start_time;
     property type;
@@ -5819,8 +6115,8 @@ C++ class game_cl_mp : game_cl_GameState {
 };
 
 C++ class game_cl_mp_script : game_cl_mp {
-    property local_player;
     property local_svdpnid;
+    property local_player;
     property round;
     property start_time;
     property type;
@@ -6000,8 +6296,8 @@ C++ class CTime {
     const DateToDay = 0;
     const DateToMonth = 1;
     const DateToYear = 2;
-    const TimeToHours = 0;
     const TimeToMilisecs = 3;
+    const TimeToHours = 0;
     const TimeToMinutes = 1;
     const TimeToSeconds = 2;
     
@@ -6038,39 +6334,40 @@ namespace  {
     function GetFontGraffiti32Russian();
     function bit_or(number, number);
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
-    function log(string);
     function system_ini();
     function GetFontHeaderRussian();
-    function prefetch(string);
+    function ef_storage();
     function cast_planner_to_action(action_planner*);
     function GetFontGraffiti19Russian();
     function GetFontLetterica25();
-    function device();
     function GetFontMedium();
-    function ef_storage();
     function GetFontSmall();
+    function dik_to_bind(number);
     function flush();
     function user_name();
-    function GetFontGraffiti50Russian();
-    function dik_to_bind(number);
     function error_log(string);
     function GetFontGraffiti22Russian();
-    function cast_alife_object_to_creature(cse_alife_object*);
     function GetFontLetterica18Russian();
-    function GetFontBigDigit();
+    function cast_alife_object_to_creature(cse_alife_object*);
+    function GetFontGraffiti50Russian();
     function cast_action_to_planner(action_base*);
-    function verify_if_thread_is_running();
     function GetFontLetterica16Russian();
+    function GetFontBigDigit();
+    function time_global();
     function GetFontArialN21Russian();
+    function verify_if_thread_is_running();
+    function log(string);
     function GetFontDI();
     function GetARGB(number, number, number, number);
     function script_server_object_version();
     function getFS();
     function bit_not(number);
+    function device();
     function editor();
-    function bit_xor(number, number);
     function GetFontHeaderEurope();
     function get_console();
+    function prefetch(string);
+    function bit_xor(number, number);
  
     namespace level {
         function enable_input();
