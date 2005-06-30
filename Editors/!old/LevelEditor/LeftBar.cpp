@@ -279,9 +279,9 @@ void __fastcall TfraLeftBar::RefreshObjects1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::RefreshLibrary1Click(TObject *Sender)
+void __fastcall TfraLeftBar::CleanLibraryClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_REFRESH_LIBRARY );
+	ExecCommand( COMMAND_CLEAN_LIBRARY );
 }
 //---------------------------------------------------------------------------
 
@@ -658,7 +658,7 @@ void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 {
-	ExecCommand(COMMAND_CLEAR_COMPILER_ERROR);
+	ExecCommand(COMMAND_CLEAR_DEBUG_DRAW);
 }
 //---------------------------------------------------------------------------
 
@@ -708,9 +708,9 @@ void TfraLeftBar::RefreshBar()
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
-
+void __fastcall TfraLeftBar::ClearDebugDraw1Click(TObject *Sender)
+{
+	ExecCommand(COMMAND_CLEAR_DEBUG_DRAW);
+}
+//---------------------------------------------------------------------------
 

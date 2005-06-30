@@ -146,6 +146,7 @@ bool __fastcall CParticleMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 
 void CParticleMain::RealUpdateScene()
 {
+	inherited::RealUpdateScene	();
 }
 //---------------------------------------------------------------------------
 

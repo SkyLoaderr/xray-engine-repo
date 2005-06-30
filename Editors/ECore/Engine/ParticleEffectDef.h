@@ -121,10 +121,10 @@ namespace PS
 		EPAVec 				m_EActionList;
 	public:             
 		void __stdcall  	FindActionByName	(LPCSTR new_name, bool& res);
-		void __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
+		bool __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionFrictionOnBeforeEdit	(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, xr_string& draw_val);
-		void __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val, bool& accepted);
+		bool __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionCutoffOnBeforeEdit		(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, xr_string& draw_val);
 		void __stdcall  	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
@@ -133,7 +133,7 @@ namespace PS
 	    void __stdcall  	OnFlagChange		(PropValue* sender);
 		void __stdcall  	OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __stdcall  	OnActionsClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-        void __stdcall  	OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val, bool& accepted);
+        bool __stdcall  	OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
 		BOOL				Equal				(const CPEDef* pe);

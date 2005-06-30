@@ -116,6 +116,7 @@ bool __fastcall CShaderMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 
 void CShaderMain::RealUpdateScene()
 {
+	inherited::RealUpdateScene	();
 }
 //---------------------------------------------------------------------------
 

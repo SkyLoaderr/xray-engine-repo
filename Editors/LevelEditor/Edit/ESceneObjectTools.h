@@ -68,7 +68,7 @@ public:
 
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 
-	virtual void 		HighlightTexture		(LPCSTR tex_name);
+	virtual void 		HighlightTexture		(LPCSTR tex_name, bool allow_ratio, u32 t_width, u32 t_height, BOOL mark);
 };
 //---------------------------------------------------------------------------
 #endif

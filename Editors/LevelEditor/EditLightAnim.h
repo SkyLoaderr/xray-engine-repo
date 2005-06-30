@@ -115,7 +115,7 @@ private:	// User declarations
     void	UpdateView		();
     int		iMoveKey;
     int 	iTgtMoveKey;
-    void __stdcall 			OnFrameCountAfterEdit	(PropValue* v, s32& val, bool& accepted);
+    bool __stdcall 			OnFrameCountAfterEdit	(PropValue* v, s32& val);
 	void __stdcall  		OnItemFocused			(TElTreeItem* item);
 
     TItemList*				m_Items;

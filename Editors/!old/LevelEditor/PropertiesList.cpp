@@ -129,7 +129,8 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     }
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
-    props->m_Flags.assign		(flags);
+    props->m_Flags.assign		(flags);   
+
     if (props->m_Flags.is_any(plItemFolders)){
     	if (props->m_Flags.is(plIFTop)){
             props->paFolders->Align	= alTop;
@@ -143,7 +144,7 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     	props->spFolders->Show	();
     	props->paFolders->Show	();
         props->paFolders->Refresh();
-    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus);
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus|(props->m_Flags.is(plMultiSelect)?TItemList::ilMultiSelect:0));
         props->m_Folders->OnItemFocusedEvent.bind(props,&TProperties::OnFolderFocused);
     }else{
     	props->spFolders->Hide	();
@@ -175,7 +176,7 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
     	props->spFolders->Show	();
     	props->paFolders->Show	();
         props->paFolders->Refresh();
-    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus);
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus|(props->m_Flags.is(plMultiSelect)?TItemList::ilMultiSelect:0)); 
         props->m_Folders->OnItemFocusedEvent.bind(props,&TProperties::OnFolderFocused);
     }else{
     	props->spFolders->Hide	();

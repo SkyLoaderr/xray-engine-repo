@@ -150,6 +150,7 @@ public:
         plIFTop			= (1<<4),
         plNoClearStore	= (1<<5),
         plReadOnly		= (1<<6),
+        plMultiSelect	= (1<<7),
     };
 protected:
     Flags32				m_Flags;

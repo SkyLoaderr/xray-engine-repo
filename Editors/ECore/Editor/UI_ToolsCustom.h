@@ -77,69 +77,87 @@ public:
 public:
 	AnsiString 			m_LastFileName;
 public:
-    struct ERR{
+    struct SDebugDraw{
 	    struct Face{
     		Fvector		p[3];
             u32			c;
             bool		i;
+            bool		m;
 	    };
 	    struct Line{
     		Fvector		p[2];
             u32			c;
             bool		i;
+            bool		m;
 	    };
 	    struct Point{
     		Fvector		p[1];
             u32			c;
             bool		i;
+            bool		m;
 	    };
 	    DEFINE_VECTOR(Face,FaceVec,FaceIt);
 	    DEFINE_VECTOR(Line,LineVec,LineIt);
 	    DEFINE_VECTOR(Point,PointVec,PointIt);
 		DEFINE_VECTOR(Fobb,OBBVec,OBBVecIt);
-    	FaceVec			m_Faces;
+    	FaceVec			m_WireFaces;
+    	FaceVec			m_SolidFaces;
 	    LineVec			m_Lines;
 	    PointVec		m_Points;
 		OBBVec 			m_OBB;
         void			Clear()
         {
-        	m_Faces.clear	();
+        	m_WireFaces.clear	();
+        	m_SolidFaces.clear	();
 	    	m_Lines.clear	();
 	    	m_Points.clear	();
             m_OBB.clear		();
         }
-        void AppendPoint(const Fvector& p0, u32 c=0xff0000ff, bool i=true)
+        void AppendPoint(const Fvector& p0, u32 c=0xff0000ff, bool i=true, bool m=true)
         {
         	m_Points.push_back(Point());
             m_Points.back().p[0].set(p0);
             m_Points.back().c	= c;
             m_Points.back().i	= i;
+            m_Points.back().m	= m;
         }
-        void AppendLine	(const Fvector& p0, const Fvector& p1, u32 c=0xff00ff00, bool i=true)
+        void AppendLine	(const Fvector& p0, const Fvector& p1, u32 c=0xff00ff00, bool i=true, bool m=true)
         {
         	m_Lines.push_back(Line());
         	m_Lines.back().p[0].set(p0);
         	m_Lines.back().p[1].set(p1);
             m_Lines.back().c	= c;
             m_Lines.back().i	= i;
+            m_Lines.back().m	= m;
         }
-        void AppendFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 c=0xffff0000, bool i=true)
+        void AppendWireFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 c=0xffff0000, bool i=true, bool m=true)
         {
-        	m_Faces.push_back(Face());
-        	m_Faces.back().p[0].set(p0);
-        	m_Faces.back().p[1].set(p1);
-        	m_Faces.back().p[2].set(p2);
-            m_Faces.back().c	= c;
-            m_Faces.back().i	= i;
+        	m_WireFaces.push_back(Face());
+        	m_WireFaces.back().p[0].set(p0);
+        	m_WireFaces.back().p[1].set(p1);
+        	m_WireFaces.back().p[2].set(p2);
+            m_WireFaces.back().c	= c;
+            m_WireFaces.back().i	= i;
+            m_WireFaces.back().m	= m;
+        }
+        void AppendSolidFace(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 c=0xffff0000, bool i=true, bool m=true)
+        {
+        	m_SolidFaces.push_back(Face());
+        	m_SolidFaces.back().p[0].set(p0);
+        	m_SolidFaces.back().p[1].set(p1);
+        	m_SolidFaces.back().p[2].set(p2);
+            m_SolidFaces.back().c	= c;
+            m_SolidFaces.back().i	= i;
+            m_SolidFaces.back().m	= m;
         }
         void AppendOBB	(const Fobb& obb)
         {
         	m_OBB.push_back(obb);
         }
     };
-    ERR					m_Errors;
+    SDebugDraw			m_DebugDraw;
 public:
-    void 				ClearErrors			(){m_Errors.Clear();}
+    void 				ClearDebugDraw		(){m_DebugDraw.Clear();}
 public:
 						CToolsCustom 		();
     virtual 			~CToolsCustom		();

@@ -461,7 +461,7 @@ public:
     }
     void export_portals()
     {
-    	Tools->ClearErrors();
+    	Tools->ClearDebugDraw();
     	for (sPortalIt p_it=portals.begin(); p_it!=portals.end(); p_it++){
 		    if (p_it->e.size()>1)
             {
@@ -499,7 +499,7 @@ public:
                 	Fvector& v0=verts[edges[p_it->e[0]].v[0]];
                 	Fvector& v1=verts[edges[p_it->e[0]].v[1]];
 				    ELog.Msg(mtError,"Can't create Portal from one edge :(\nPlease check geometry.\n'%s'<->'%s'", p_it->s[0]->Name, p_it->s[1]->Name);
-                    Tools->m_Errors.AppendLine(v0,v1);
+                    Tools->m_DebugDraw.AppendLine(v0,v1);
                 }
 
         }

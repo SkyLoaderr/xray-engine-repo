@@ -43,7 +43,7 @@ void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, xr_string& draw_val)
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, xr_string& nm, bool& res)
+bool CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, xr_string& nm)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
 	VERIFY			(nm.size());
@@ -61,6 +61,7 @@ void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, xr_string& nm, bool& r
             V->ApplyValue	(src_val);
         }
     }
+    return true;
 }
 //------------------------------------------------------------------------------
 
@@ -75,7 +76,7 @@ void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, 
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, xr_string& nm, bool& res)
+bool CSHEngineTools::ConstOnAfterEdit(PropValue* sender, xr_string& nm)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
     VERIFY			(nm.size());
@@ -93,9 +94,10 @@ void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, xr_string& nm, bool& re
             V->ApplyValue(src_val);
         }
     }
+    return true;
 }
 //------------------------------------------------------------------------------
-void CSHEngineTools::NameOnAfterEdit(PropValue* sender, xr_string& new_name, bool& res)
+bool CSHEngineTools::NameOnAfterEdit(PropValue* sender, xr_string& new_name)
 {
 	CTextValue* V 			= dynamic_cast<CTextValue*>(sender); R_ASSERT(V);
     AnsiString nn			= new_name.c_str();
@@ -103,6 +105,7 @@ void CSHEngineTools::NameOnAfterEdit(PropValue* sender, xr_string& new_name, boo
     	new_name			= nn.c_str();
     	RemoteRenameBlender(V->GetValue(),new_name.c_str());
     }
+    return true;
 }
 //------------------------------------------------------------------------------
 

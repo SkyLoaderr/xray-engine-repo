@@ -166,7 +166,7 @@ bool CPortal::Update(bool bLoadMode){
     }
     float m=m_Normal.magnitude();
     if (fabsf(m)<=EPS_S){
-    	Tools->m_Errors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
+    	Tools->m_DebugDraw.AppendWireFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
     	ELog.Msg(mtError,"Portal: Degenerate portal found.");
         SetValid(false);
 		return false;

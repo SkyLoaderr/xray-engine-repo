@@ -119,7 +119,7 @@ BOOL SceneBuilder::MakeGame( )
     try{
         do{
 	        // clear error
-            Tools->ClearErrors();
+            Tools->ClearDebugDraw();
 	        // validate scene
     	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false),	"Validation failed.","Invalid scene.");
         	// build

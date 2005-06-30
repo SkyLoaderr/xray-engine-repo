@@ -175,11 +175,12 @@ void TfrmEditLightAnim::UpdateView()
     Caption = AnsiString().sprintf("Light Animation Library%s",ebSave->Enabled?"*":"");
 }
 //------------------------------------------------------------------------------
-void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& val, bool& accepted)
+bool TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& val)
 {
 	if (val!=m_CurrentItem->iFrameCount) OnModified();
 	m_CurrentItem->Resize(val);
     UpdateView();    
+    return true;
 }
 //---------------------------------------------------------------------------
 

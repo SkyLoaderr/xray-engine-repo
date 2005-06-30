@@ -73,12 +73,25 @@ public:
 	ref_geom 	vs_L;
 	ref_geom 	vs_TL;
 	ref_geom 	vs_LIT;
+protected:
+    FVF::L*		m_DD_pv;
+    FVF::L*		m_DD_pv_start;
+    u32 		m_DD_base;
+    BOOL		m_DD_wire;
+	void 		DD_DrawFace_flush		(BOOL try_again);
+public:
+	void 		DD_DrawFace_begin		(BOOL bWire);
+	void 		DD_DrawFace_push		(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 clr);
+	void 		DD_DrawFace_end			();
 public:
 	CDrawUtilities()
     {
         vs_L	= 0;
         vs_TL	= 0;
         vs_LIT	= 0;
+        m_DD_pv			= 0;
+        m_DD_pv_start	= 0;
+        m_DD_base		= 0;
     }
     
     void OnDeviceCreate	();

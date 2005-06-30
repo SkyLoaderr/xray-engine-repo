@@ -105,7 +105,7 @@ public:
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
     void			SaveCompilerError	(LPCSTR fn);
-    void			HighlightTexture	(LPCSTR t_name);
+    void			HighlightTexture	(LPCSTR t_name, bool allow_ratio, u32 t_width, u32 t_height, bool leave_previous);
 
 	IC bool 		valid				()           	{ return m_Valid; }
 

@@ -124,7 +124,7 @@ private:
     float			m_fMaxAIDist;
     float			m_fBaseVolume;
     u32				m_uGameType;
-	void 			OnMaxAIDistAfterEdit(PropValue* sender, float& edit_val, bool& accepted);
+	bool 			OnMaxAIDistAfterEdit(PropValue* sender, float& edit_val);
 	void 			OnMaxDistChange		(PropValue* sender);
 public:
 					ESoundThumbnail	(LPCSTR src_name, bool bLoad=true);

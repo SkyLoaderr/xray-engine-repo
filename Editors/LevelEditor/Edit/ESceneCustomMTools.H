@@ -100,7 +100,7 @@ public:
 
     // utils
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf)=0;
-	virtual void 		HighlightTexture		(LPCSTR tex_name){}
+	virtual void 		HighlightTexture		(LPCSTR tex_name, bool allow_ratio, u32 t_width, u32 t_height, BOOL mark){}
     virtual void		GetBBox 				(Fbox& bb, bool bSelOnly)=0;
 };
 

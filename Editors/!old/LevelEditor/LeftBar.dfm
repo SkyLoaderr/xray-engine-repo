@@ -1843,6 +1843,13 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Highlight Texture...'
       OnClick = miHightlightTextureClick
     end
+    object N25: TMenuItem
+      Caption = '-'
+    end
+    object ClearDebugDraw1: TMenuItem
+      Caption = 'Clear Debug Draw'
+      OnClick = ClearDebugDraw1Click
+    end
   end
   object pmToolsEdit: TMxPopupMenu
     Alignment = paCenter
@@ -2240,9 +2247,9 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Reload Objects'
       OnClick = RefreshObjects1Click
     end
-    object RefreshLibrary2: TMenuItem
-      Caption = 'Refresh Library'
-      OnClick = RefreshLibrary1Click
+    object CleanLibrary: TMenuItem
+      Caption = 'Clean Library'
+      OnClick = CleanLibraryClick
     end
   end
   object pmImages: TMxPopupMenu

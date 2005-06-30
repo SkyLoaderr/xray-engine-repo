@@ -157,7 +157,7 @@ void EScene::Clear()
     for (; t_it!=t_end; t_it++)
         if (t_it->second)		t_it->second->Clear();
         
-    Tools->m_Errors.Clear	();
+    Tools->ClearDebugDraw	();
 
     m_RTFlags.set			(flRT_Unsaved|flRT_Modified,FALSE);
 }
@@ -387,12 +387,13 @@ void EScene::SelectLightsForObject(CCustomObject* obj)
     lt->SelectLightsForObject(obj);
 }
 
-void EScene::HighlightTexture(LPCSTR t_name)
+void EScene::HighlightTexture(LPCSTR t_name, bool allow_ratio, u32 t_width, u32 t_height, bool leave_previous)
 {
-    Tools->m_Errors.Clear		();
+    if (!leave_previous) 		Tools->ClearDebugDraw();
     SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
     SceneToolsMapPairIt t_end 	= m_SceneTools.end();
     for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->HighlightTexture(t_name);
+        if (t_it->second)		t_it->second->HighlightTexture(t_name,allow_ratio,t_width,t_height,!leave_previous);
+    UI->RedrawScene				();
 }
 

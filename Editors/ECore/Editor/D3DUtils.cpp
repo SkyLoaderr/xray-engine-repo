@@ -657,12 +657,11 @@ void CDrawUtilities::DrawFace(const Fvector& p0, const Fvector& p1, const Fvecto
     u32				vBase;
     if (bSolid)
     {
-        FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
+        FVF::L*	pv	 	= (FVF::L*)Stream->Lock(3,vs_L->vb_stride,vBase);
         pv->set			(p0,clr_s); pv++;
         pv->set			(p1,clr_s); pv++;
         pv->set			(p2,clr_s); pv++;
-        pv->set			(p0,clr_s); pv++;
-        Stream->Unlock	(4,vs_L->vb_stride);
+        Stream->Unlock	(3,vs_L->vb_stride);
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,1);
     }
     if (bWire)
@@ -675,6 +674,40 @@ void CDrawUtilities::DrawFace(const Fvector& p0, const Fvector& p1, const Fvecto
         Stream->Unlock	(4,vs_L->vb_stride);
 	    Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,3);
     }
+}
+//----------------------------------------------------
+
+static const u32 MAX_VERT_COUNT 	= 0xFFFF;
+void CDrawUtilities::DD_DrawFace_begin(BOOL bWire)
+{
+	VERIFY				(m_DD_pv_start==0);
+    m_DD_wire			= bWire;
+    m_DD_pv_start		= (FVF::L*)RCache.Vertex.Lock(MAX_VERT_COUNT,vs_L->vb_stride,m_DD_base);	
+    m_DD_pv				= m_DD_pv_start;
+}
+void CDrawUtilities::DD_DrawFace_flush(BOOL try_again)
+{
+    RCache.Vertex.Unlock(m_DD_pv-m_DD_pv_start,vs_L->vb_stride);
+    if (m_DD_wire)		Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+    Device.DP			(D3DPT_TRIANGLELIST,vs_L,m_DD_base,(m_DD_pv-m_DD_pv_start)/3);
+    if (m_DD_wire)		Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
+    if (try_again){
+	    m_DD_pv_start	= (FVF::L*)RCache.Vertex.Lock(MAX_VERT_COUNT,vs_L->vb_stride,m_DD_base);	
+        m_DD_pv			= m_DD_pv_start;
+    }
+}
+void CDrawUtilities::DD_DrawFace_push(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 clr)
+{
+    m_DD_pv->set		(p0,clr); m_DD_pv++;
+    m_DD_pv->set		(p1,clr); m_DD_pv++;
+    m_DD_pv->set		(p2,clr); m_DD_pv++;
+    if (m_DD_pv-m_DD_pv_start==MAX_VERT_COUNT)
+        DD_DrawFace_flush	(TRUE); 
+}
+void CDrawUtilities::DD_DrawFace_end()
+{
+    DD_DrawFace_flush	(FALSE); 	
+    m_DD_pv_start 		= 0;
 }
 //----------------------------------------------------
 

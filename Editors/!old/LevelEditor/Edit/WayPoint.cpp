@@ -585,10 +585,10 @@ CWayPoint* CWayObject::FindWayPoint(const shared_str& nm)
     return 0;
 }
 
-void CWayObject::OnWayPointNameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
+bool CWayObject::OnWayPointNameAfterEdit(PropValue* sender, shared_str& edit_val)
 {
     edit_val 		= AnsiString(edit_val.c_str()).LowerCase().c_str();
-    accepted 		= !FindWayPoint(edit_val);
+    return !FindWayPoint(edit_val);
 }
 
 void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)

@@ -377,6 +377,7 @@ bool __fastcall CActorMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 
 void CActorMain::RealUpdateScene()
 {
+	inherited::RealUpdateScene	();
 /*	if (GetEState()==esEditScene){
 	    Scene.OnObjectsUpdate();
     	Tools->OnObjectsUpdate(); // обновить все что как-то связано с объектами

@@ -105,6 +105,7 @@ void CommandLoad(u32 p1, u32 p2, u32& res)
                 Scene->UndoClear	();
                 Scene->UndoSave		();
                 Scene->m_RTFlags.set(EScene::flRT_Unsaved|EScene::flRT_Modified,FALSE);
+				ExecCommand			(COMMAND_CLEAN_LIBRARY);
                 ExecCommand			(COMMAND_UPDATE_CAPTION);
                 ExecCommand			(COMMAND_CHANGE_ACTION,etaSelect);
                 // lock
@@ -220,9 +221,9 @@ void CommandLoadFirstRecent(u32 p1, u32 p2, u32& res)
         res = ExecCommand(COMMAND_LOAD,(int)EPrefs.FirstRecentFile());
 }
 
-void CommandClearCompilerError(u32 p1, u32 p2, u32& res)
+void CommandClearDebugDraw(u32 p1, u32 p2, u32& res)
 {
-    Tools->ClearErrors	();
+    Tools->ClearDebugDraw();
     UI->RedrawScene		();
 }
 
@@ -250,10 +251,10 @@ void CommandValidateScene(u32 p1, u32 p2, u32& res)
         res = FALSE;
     }
 }
-void CommandRefreshLibrary(u32 p1, u32 p2, u32& res)
+void CommandCleanLibrary(u32 p1, u32 p2, u32& res)
 {
-    if (!Scene->ObjCount()&&!Scene->locked()){
-        Lib.RefreshLibrary();
+    if ( !Scene->locked() ){
+        Lib.CleanLibrary();
     }else{
         ELog.DlgMsg(mtError, "Scene must be empty before refreshing library!");
         res = FALSE;
@@ -403,7 +404,7 @@ void CommandSceneHighlightTexture(u32 p1, u32 p2, u32& res)
     if( !Scene->locked() ){
         LPCSTR new_val 		 	= 0;
 		if (TfrmChoseItem::SelectItem(smTexture,new_val,1))
-	       	Scene->HighlightTexture(new_val);
+	       	Scene->HighlightTexture(new_val,false,0,0,false);
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         res = FALSE;
@@ -724,11 +725,11 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_SAVEAS,              		CommandSaveAs);
 	REGISTER_CMD_S	    (COMMAND_CLEAR,              		CommandClear);
 	REGISTER_CMD_S	    (COMMAND_LOAD_FIRSTRECENT,          CommandLoadFirstRecent);
-	REGISTER_CMD_S	    (COMMAND_CLEAR_COMPILER_ERROR,      CommandClearCompilerError);
+	REGISTER_CMD_S	    (COMMAND_CLEAR_DEBUG_DRAW, 		    CommandClearDebugDraw);
 	REGISTER_CMD_S	    (COMMAND_IMPORT_COMPILER_ERROR,     CommandImportCompilerError);
 	REGISTER_CMD_S	    (COMMAND_EXPORT_COMPILER_ERROR,     CommandExportCompilerError);
 	REGISTER_CMD_S	    (COMMAND_VALIDATE_SCENE,            CommandValidateScene);
-	REGISTER_CMD_S	    (COMMAND_REFRESH_LIBRARY,           CommandRefreshLibrary);
+	REGISTER_CMD_S	    (COMMAND_CLEAN_LIBRARY,           	CommandCleanLibrary);
 	REGISTER_CMD_S	    (COMMAND_RELOAD_OBJECTS,            CommandReloadObject);
 	REGISTER_CMD_S	    (COMMAND_CUT,              			CommandCut);
 	REGISTER_CMD_S	    (COMMAND_COPY,              		CommandCopy);
@@ -946,12 +947,12 @@ bool CLevelMain::SelectionFrustum(CFrustum& frustum)
 //----------------------------------------------------
 void CLevelMain::RealUpdateScene()
 {
+	inherited::RealUpdateScene	();
 	if (GetEState()==esEditScene){
-	    Scene->OnObjectsUpdate();
-    	LTools->OnObjectsUpdate(); // обновить все что как-то связано с объектами
-	    RedrawScene();
+	    Scene->OnObjectsUpdate	();
+    	LTools->OnObjectsUpdate	(); // обновить все что как-то связано с объектами
+	    RedrawScene				();
     }
-    m_Flags.set(flUpdateScene,FALSE);
 }
 //---------------------------------------------------------------------------
 
@@ -1032,6 +1033,18 @@ void CLevelMain::OutInfo()
 void CLevelMain::RealQuit()
 {
 	frmMain->Close();
+}
+//---------------------------------------------------------------------------
+
+void CLevelMain::SaveSettings(CInifile* I)
+{
+	inherited::SaveSettings(I);
+    SSceneSummary::Save(I);
+}
+void CLevelMain::LoadSettings(CInifile* I)
+{
+	inherited::LoadSettings(I);
+    SSceneSummary::Load(I);
 }
 //---------------------------------------------------------------------------
 

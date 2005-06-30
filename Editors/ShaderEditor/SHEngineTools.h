@@ -90,14 +90,14 @@ friend class TfrmShaderProperties;
     // template
 	void __stdcall  		FillChooseTemplate	(ChooseItemVec& items, void* param);
     // matrix props                                                
-	void __stdcall  		MatrixOnAfterEdit	(PropValue* sender, xr_string& edit_val, bool& res);
+	bool __stdcall  		MatrixOnAfterEdit	(PropValue* sender, xr_string& edit_val);
 	void __stdcall  		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
 	void __stdcall  		MCOnDraw			(PropValue* sender, xr_string& draw_val);
     // constant props
-	void __stdcall  		ConstOnAfterEdit	(PropValue* sender, xr_string& edit_val, bool& res);
+	bool __stdcall  		ConstOnAfterEdit	(PropValue* sender, xr_string& edit_val);
 	void __stdcall  		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
     // name                                 
-	void __stdcall  		NameOnAfterEdit		(PropValue* sender, xr_string& edit_val, bool& res);
+	bool __stdcall  		NameOnAfterEdit		(PropValue* sender, xr_string& edit_val);
 
     void					RealResetShaders	();
 
@@ -108,7 +108,7 @@ friend class TfrmShaderProperties;
     void					ResetShaders		(bool bForced=false){m_bNeedResetShaders=true; if (bForced) RealResetShaders(); }
     void					UpdateObjectShader	();
 
-    void __stdcall 			OnPreviewObjectRefChange(PropValue* sender, u32& edit_val, bool& res); 
+    bool __stdcall 			OnPreviewObjectRefChange(PropValue* sender, u32& edit_val); 
 public:
 	CMemoryWriter			m_RenderShaders;
 

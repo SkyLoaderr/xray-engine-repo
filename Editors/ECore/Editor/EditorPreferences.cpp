@@ -182,10 +182,6 @@ void CEditorPreferences::Edit()
 }
 //---------------------------------------------------------------------------
 
-#define R_FLOAT_SAFE(S,L,D)	I->line_exist(S,L)?I->r_float(S,L):D;
-#define R_U32_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_u32(S,L):D;
-#define R_BOOL_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_bool(S,L):D;
-#define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string_wb(S,L):D;
 void CEditorPreferences::Load()
 {
 	xr_string	fn;
@@ -238,6 +234,8 @@ void CEditorPreferences::Load()
 
     // load shortcuts
     LoadShortcuts		(I);
+
+    UI->LoadSettings	(I);
     
     xr_delete			(I);
 
@@ -245,7 +243,6 @@ void CEditorPreferences::Load()
 }
 void CEditorPreferences::Save()
 {
-
 	xr_string fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
@@ -296,6 +293,7 @@ void CEditorPreferences::Save()
 
     // load shortcuts
     SaveShortcuts		(I);
+    UI->SaveSettings	(I);
 
 	xr_delete	(I);
 }

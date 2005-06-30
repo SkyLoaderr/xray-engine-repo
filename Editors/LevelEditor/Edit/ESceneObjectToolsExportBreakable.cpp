@@ -253,9 +253,9 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                         F.spawn.stream.w			(Packet.B.data,Packet.B.count);
                         F.spawn.stream.close_chunk	();
 
-                        Tools->m_Errors.AppendOBB	(P->m_OBB);
+                        Tools->m_DebugDraw.AppendOBB(P->m_OBB);
                         M.transform_dir				(local_normal);
-                        Tools->m_Errors.AppendLine	(P->m_RefOffset,Fvector().mad(P->m_RefOffset,local_normal,1.f));
+                        Tools->m_DebugDraw.AppendLine(P->m_RefOffset,Fvector().mad(P->m_RefOffset,local_normal,1.f));
                     }
                     destroy_entity				(m_Data);
                 }

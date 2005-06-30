@@ -75,6 +75,11 @@ public:		// User declarations
     LPCSTR 	FirstRecentFile		(){return scene_recent_list.empty()?"":scene_recent_list.front().c_str();}
 };
 //---------------------------------------------------------------------------
+#define R_FLOAT_SAFE(S,L,D)	I->line_exist(S,L)?I->r_float(S,L):D;
+#define R_U32_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_u32(S,L):D;
+#define R_BOOL_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_bool(S,L):D;
+#define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string_wb(S,L):D;
+//---------------------------------------------------------------------------
 extern ECORE_API CEditorPreferences EPrefs;
 //---------------------------------------------------------------------------
 

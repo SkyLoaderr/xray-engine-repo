@@ -32,7 +32,6 @@ private:
         float				effective_area;
         float				pixel_area;
 		void 				OnHighlightClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void 				OnHighlightRatioClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
     public:
     	STextureInfo(const shared_str& fn, ESummaryTextureType t)
         {
@@ -103,10 +102,23 @@ public:
     Fbox		bbox;
 private:
 	void 		OnFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
+	void 		OnHighlightClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 public:
     void		Prepare				();
+protected:
+	struct SPixelDensityPair{
+    	float	pm;
+        u32		color;
+        SPixelDensityPair(float _pm, u32 _c):pm(_pm),color(_c){}
+		bool operator < (const SPixelDensityPair& other)const{return pm < other.pm;};
+    };
+    DEFINE_VECTOR(SPixelDensityPair,PDVec,PDVecIt);
+    PDVec		pm_colors;
+	bool 		OnWeightAfterEditClick(PropValue* sender, float& edit_val);
 public:
-    			SSceneSummary		(){ Clear(); }
+    static u32	SelectPMColor		(float pm);
+public:
+    			SSceneSummary		();
     void 		AppendTexture		(shared_str name, ESummaryTextureType type, float area, float pixel_area, shared_str obj_name)
     {
         TISetIt it 			= std::find(textures.begin(),textures.end(),name);
@@ -164,5 +176,7 @@ public:
         sound_source_cnt	= 0;
         pe_static_cnt		= 0;
     }
+    static void	Load		(CInifile* I);
+    static void	Save		(CInifile* I);
 };
 #endif

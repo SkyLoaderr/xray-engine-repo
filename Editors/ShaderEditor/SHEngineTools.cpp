@@ -115,7 +115,7 @@ xr_token preview_obj_token[]={
 	{ 0,				0			}
 };
 
-void CSHEngineTools::OnPreviewObjectRefChange(PropValue* sender, u32& new_val, bool& res)
+bool CSHEngineTools::OnPreviewObjectRefChange(PropValue* sender, u32& new_val)
 {                                                                              
     LPCSTR fn=0;
     m_bCustomEditObject = false; 
@@ -124,7 +124,7 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropValue* sender, u32& new_val, b
     case pvoBox: 	fn	= "editor\\ShaderTest_Box"; 	break;
     case pvoSphere:	fn	= "editor\\ShaderTest_Sphere";	break;
     case pvoTeapot:	fn	= "editor\\ShaderTest_Teapot";	break;
-    case pvoCustom:	fn	= m_PreviewObject?m_PreviewObject->GetName():""; if (!TfrmChoseItem::SelectItem(smObject,fn)) return; m_bCustomEditObject = true; break;
+    case pvoCustom:	fn	= m_PreviewObject?m_PreviewObject->GetName():""; if (!TfrmChoseItem::SelectItem(smObject,fn)) return false; m_bCustomEditObject = true; break;
     }
     if (AnsiString(fn).LowerCase()!=AnsiString(m_PreviewObject?m_PreviewObject->GetName():"").LowerCase()){
         Lib.RemoveEditObject(m_PreviewObject);
@@ -133,6 +133,7 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropValue* sender, u32& new_val, b
         UpdateObjectShader	();
         UI->RedrawScene		();
     }
+    return true;
 }
 
 void CSHEngineTools::OnActivate()

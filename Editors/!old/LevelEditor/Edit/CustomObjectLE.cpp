@@ -174,11 +174,11 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
-void CCustomObject::OnObjectNameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
+bool CCustomObject::OnObjectNameAfterEdit(PropValue* sender, shared_str& edit_val)
 {
 	RTextValue* V = dynamic_cast<RTextValue*>(sender); VERIFY(V);
     edit_val 	= (AnsiString(edit_val.c_str()).LowerCase()).c_str();
-	accepted	= !IScene->FindObjectByName(edit_val.c_str(),0);
+	return !IScene->FindObjectByName(edit_val.c_str(),0);
 }
 
 void CCustomObject::OnNumChangePosition(PropValue* sender)

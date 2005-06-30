@@ -194,7 +194,7 @@ void CToolsCustom::RenderEnvironment()
 
 void CToolsCustom::Clear()
 {
-	ClearErrors			();
+	ClearDebugDraw		();
 }
 
 void CToolsCustom::Render()
@@ -206,22 +206,33 @@ void CToolsCustom::Render()
     Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
     AnsiString temp;
     int cnt=0;
-    for (ERR::PointIt vit=m_Errors.m_Points.begin(); vit!=m_Errors.m_Points.end(); vit++){
-        temp.sprintf		("P: %d",cnt++);
+    for (SDebugDraw::PointIt vit=m_DebugDraw.m_Points.begin(); vit!=m_DebugDraw.m_Points.end(); vit++){
+        if (vit->i)        temp.sprintf		("P: %d",cnt++);
         DU.dbgDrawVert(vit->p[0],						vit->c,	vit->i?temp.c_str():"");
     }
+    Device.SetShader		(Device.m_SelectionShader);
     cnt=0;
-    for (ERR::LineIt eit=m_Errors.m_Lines.begin(); eit!=m_Errors.m_Lines.end(); eit++){
-        temp.sprintf		("L: %d",cnt++);
-        DU.dbgDrawEdge(eit->p[0],eit->p[1],				eit->c,	eit->i?temp.c_str():"");
+    for (SDebugDraw::LineIt eit=m_DebugDraw.m_Lines.begin(); eit!=m_DebugDraw.m_Lines.end(); eit++){
+        if (eit->i)        temp.sprintf		("L: %d",cnt++);
+        DU.dbgDrawEdge		(eit->p[0],eit->p[1],				eit->c,	eit->i?temp.c_str():"");
+    }
+    Device.SetShader		(Device.m_SelectionShader);
+    cnt=0;
+    for (SDebugDraw::FaceIt fwit=m_DebugDraw.m_WireFaces.begin(); fwit!=m_DebugDraw.m_WireFaces.end(); fwit++){
+    	if (fwit->i)        temp.sprintf		("F: %d",cnt++);
+        DU.dbgDrawFace		(fwit->p[0],fwit->p[1],fwit->p[2],fwit->c,	fwit->i?temp.c_str():"");
     }
     cnt=0;
-    for (ERR::FaceIt fit=m_Errors.m_Faces.begin(); fit!=m_Errors.m_Faces.end(); fit++){
-        temp.sprintf		("F: %d",cnt++);
-        DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	fit->c,	fit->i?temp.c_str():"");
+    if (!m_DebugDraw.m_SolidFaces.empty()){
+	    Device.SetShader		(Device.m_SelectionShader);
+        DU.DD_DrawFace_begin	(FALSE);
+        for (SDebugDraw::FaceIt fsit=m_DebugDraw.m_SolidFaces.begin(); fsit!=m_DebugDraw.m_SolidFaces.end(); fsit++)
+            DU.DD_DrawFace_push	(fsit->p[0],fsit->p[1],fsit->p[2],	fsit->c);
+        DU.DD_DrawFace_end		();
     }
+    Device.SetShader		(Device.m_SelectionShader);
     cnt=0;
-    for (ERR::OBBVecIt oit=m_Errors.m_OBB.begin(); oit!=m_Errors.m_OBB.end(); oit++)
+    for (SDebugDraw::OBBVecIt oit=m_DebugDraw.m_OBB.begin(); oit!=m_DebugDraw.m_OBB.end(); oit++)
     {
         temp.sprintf		("OBB: %d",cnt++);
         DU.DrawOBB			(Fidentity,*oit,0x2F00FF00,0xFF00FF00);

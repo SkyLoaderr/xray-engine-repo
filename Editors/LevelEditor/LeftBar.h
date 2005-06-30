@@ -152,7 +152,7 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem16;
 	TMenuItem *MenuItem17;
 	TMenuItem *ReloadObjects1;
-	TMenuItem *RefreshLibrary2;
+	TMenuItem *CleanLibrary;
 	TMxPopupMenu *pmImages;
 	TMenuItem *N11;
 	TMenuItem *ImageEditor1;
@@ -185,6 +185,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MakeSoundOccluder1;
 	TMenuItem *N24;
 	TMenuItem *ExecuteCommand1;
+	TMenuItem *N25;
+	TMenuItem *ClearDebugDraw1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -241,7 +243,7 @@ __published:	// IDE-managed Components
 	void __fastcall CheckNewTexturesClick(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
-	void __fastcall RefreshLibrary1Click(TObject *Sender);
+	void __fastcall CleanLibraryClick(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
 	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
@@ -275,6 +277,7 @@ __published:	// IDE-managed Components
 	void __fastcall miHightlightTextureClick(TObject *Sender);
 	void __fastcall MakeSoundOccluder1Click(TObject *Sender);
 	void __fastcall ExecuteCommand1Click(TObject *Sender);
+	void __fastcall ClearDebugDraw1Click(TObject *Sender);
 private:	// User declarations
     void RedrawBar();
 	void __fastcall miRecentFilesClick(TObject *Sender);

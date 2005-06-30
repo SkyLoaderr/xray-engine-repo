@@ -575,7 +575,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             }
         }
         if (bNeedUpdate){
-			Lib.RefreshLibrary	();
+			Lib.CleanLibrary	();
 			InitObjects			();
             m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
         }

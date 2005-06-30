@@ -118,20 +118,20 @@ void __fastcall PS::CPEDef::OnFrameResize(PropValue* sender)
 	m_Frame.m_iFrameDimX	= iFloor(1.f/m_Frame.m_fTexSize.x);
 }
 
-void __fastcall PS::CPEDef::CollisionFrictionOnBeforeEdit(PropValue* sender, float& edit_val)
+void PS::CPEDef::CollisionFrictionOnBeforeEdit(PropValue* sender, float& edit_val)
 {    edit_val = 1.f-edit_val;}
-void __fastcall PS::CPEDef::CollisionFrictionOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
-{    edit_val = 1.f-edit_val;}
-void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, xr_string& draw_val)
+bool PS::CPEDef::CollisionFrictionOnAfterEdit(PropValue* sender, float& edit_val)
+{    edit_val = 1.f-edit_val; return true;}
+void PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, xr_string& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
 	draw_sprintf(draw_val,1.f-V->GetValue(),V->dec);
 }
-void __fastcall PS::CPEDef::CollisionCutoffOnBeforeEdit(PropValue* sender, float& edit_val)
+void PS::CPEDef::CollisionCutoffOnBeforeEdit(PropValue* sender, float& edit_val)
 {    edit_val = _sqrt(edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
-{    edit_val = (edit_val)*(edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, xr_string& draw_val)
+bool PS::CPEDef::CollisionCutoffOnAfterEdit(PropValue* sender, float& edit_val)
+{    edit_val = (edit_val)*(edit_val); return true;}
+void PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, xr_string& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
 	draw_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
@@ -172,10 +172,12 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
     }
 }
 
-void PS::CPEDef::OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
+bool PS::CPEDef::OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val)
 {
+	bool found				= false;
 	edit_val				= AnsiString(edit_val.c_str()).LowerCase().c_str();
-    FindActionByName		(edit_val.c_str(),accepted); accepted = !accepted;
+    FindActionByName		(edit_val.c_str(),found); 
+    return 					!found;
 }
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {

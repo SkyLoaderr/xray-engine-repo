@@ -14,11 +14,11 @@ enum {
 	COMMAND_REFRESH_SOUND_ENVS,
     COMMAND_REFRESH_SOUND_ENV_GEOMETRY,
     
-	COMMAND_REFRESH_LIBRARY,
+	COMMAND_CLEAN_LIBRARY,
     COMMAND_LIBRARY_EDITOR,
     COMMAND_LANIM_EDITOR,
     COMMAND_FILE_MENU,
-	COMMAND_CLEAR_COMPILER_ERROR,
+	COMMAND_CLEAR_DEBUG_DRAW,
     COMMAND_IMPORT_COMPILER_ERROR,
     COMMAND_EXPORT_COMPILER_ERROR,
 	COMMAND_VALIDATE_SCENE,
@@ -104,6 +104,9 @@ public:
 
     // commands
 	virtual	void	RegisterCommands		(); 
+
+    virtual void	SaveSettings			(CInifile*);
+    virtual void	LoadSettings			(CInifile*);
 };    
 extern CLevelMain*&	LUI;
 

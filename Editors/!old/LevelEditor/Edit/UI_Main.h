@@ -216,6 +216,8 @@ public:
 	void 			CommandBreakLastOperation	(u32 p1, u32 p2, u32& res);
 	void 			CommandRenderResize			(u32 p1, u32 p2, u32& res);
 
+    virtual void	SaveSettings				(CInifile*){}
+    virtual void	LoadSettings				(CInifile*){}
 protected:    
 // progress bar
     DEFINE_VECTOR	(SPBItem*,PBVec,PBVecIt);
