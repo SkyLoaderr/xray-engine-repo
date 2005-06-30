@@ -22,6 +22,20 @@ struct CRemoveMemberCorpsesPredicate {
 	}
 };
 
+struct CRemoveOfflineCorpsesPredicate {
+	CObject		*m_object;
+	IC		 CRemoveOfflineCorpsesPredicate	(CObject *object)
+	{
+		VERIFY		(object);
+		m_object	= object;
+	}
+
+	IC	bool operator()						(CMemberCorpse &corpse) const
+	{
+		return		(corpse.corpse()->ID() == m_object->ID());
+	}
+};
+
 bool CAgentCorpseManager::process_corpse	(CMemberOrder &member)
 {
 	float			min_dist_sqr = flt_max;
@@ -85,6 +99,8 @@ void CAgentCorpseManager::react_on_member_death			()
 
 void CAgentCorpseManager::remove_links	(CObject *object)
 {
+	MEMBER_CORPSES::iterator	I = remove_if(m_corpses.begin(),m_corpses.end(),CRemoveOfflineCorpsesPredicate(object));
+	m_corpses.erase				(I,m_corpses.end());
 }
 
 void CAgentCorpseManager::update		()
