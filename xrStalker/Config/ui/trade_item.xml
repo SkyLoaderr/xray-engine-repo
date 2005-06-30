@@ -27,12 +27,12 @@
 	</descr_list>
     
     <!-- CONDITION BAR -->
-    <condition_progress x="10" y="51" length="180" broad="30" horz="1" min="0" max="100" pos="100">
+    <condition_progress x="10" y="51" length="180" broad="15" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"></min_color>
 		<max_color r="0" g="255" b="0"></max_color>
         <texture tile="0" width="120" height="30" length="180" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
         <background x="0" y="0"  width="120" height="30">ui\ui_mg_progress_efficiency_empty</background>
     </condition_progress>
-    
+   
 </window>
 
