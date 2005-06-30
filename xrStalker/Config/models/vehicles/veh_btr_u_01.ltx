@@ -24,18 +24,18 @@ damage              	= damage_bones
 
 fuel_tank         		= 250.         	; L
 fuel_consumption  		= 20	       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 170.         	; horse_power (kW=hp*0.808) max power
-max_power_rpm     		= 2500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 1500.       	; on this rpm engine torque reaches maximum
+engine_power      		= 220.         	; horse_power (kW=hp*0.808) max power
+max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
+max_torque_rpm    		= 2500.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.05
-rpm_increment_factor	= 0.0005
+rpm_increment_factor	= 0.005
 rpm_decrement_factor	= 0.008
 
 ; additional engine parameters
 
-max_engine_rpm    		= 3000			; rpm (5000) rpm will never be more
+max_engine_rpm    		= 4000			; rpm (5000) rpm will never be more
 idling_engine_rpm		= 750       	; rpm (750) min rpm - starts from this rpm value
 
 ;-------------------------------------------------------------------------------
@@ -283,6 +283,17 @@ hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_tor
 damping_factor          = 1			;
 spring_factor           = 1 		;
 friction_factor         = 0.8		;
+
+;-------------------------------------------------------------------------------
+;------ Weapons params ---------------------------------------------------------
+
+[mounted_weapon_definition]
+fire_bone       = mashine_gun_fire_point ; fire bone name
+rotate_x_bone   = mashine_gun            ; rotate X-axis(pitch) bone name
+rotate_y_bone   = mashine_gun_tower      ; rotate Y-axis(head)  bone name
+min_gun_speed   = 0.5
+max_gun_speed   = 2.5
+wpn_section     = stationary_mgun
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
