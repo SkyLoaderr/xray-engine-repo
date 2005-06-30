@@ -318,25 +318,31 @@ void CKinematics::CalculateBones_Invalidate	()
 	UCalc_Visibox	= psSkeletonUpdate;		
 }
 
-void CKinematics::Spawn	()
+void CKinematics::Spawn			()
 {
-	inherited::Spawn		();
+	inherited::Spawn			();
 	// bones
 	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
 	Update_Callback				= NULL;
 	CalculateBones_Invalidate	();
 	// wallmarks
-	ClearWallmarks	();
-}
-void CKinematics::Depart()
-{
-	inherited::Depart();
-	// wallmarks
-	ClearWallmarks	();
+	ClearWallmarks				();
+	Visibility_Invalidate		();
 }
 
-void CKinematics::Release()
+void CKinematics::Depart		()
+{
+	inherited::Depart			();
+	// wallmarks
+	ClearWallmarks				();
+
+	// visibility
+	children.insert				(children.end(),children_invisible.begin(),children_invisible.end());
+	children_invisible.clear	();
+}
+
+void CKinematics::Release		()
 {
 	// xr_free bones
 	for (u32 i=0; i<bones->size(); i++)
@@ -356,7 +362,7 @@ void CKinematics::Release()
 
 void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 {
-	VERIFY(bone_id<LL_BoneCount());      
+	VERIFY				(bone_id<LL_BoneCount());      
     u64 mask 			= u64(1)<<bone_id;
     visimask.set		(mask,val);
 	if (!visimask.is(mask)){
@@ -365,10 +371,11 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 		CalculateBones_Invalidate	();
 	}
 	bone_instances[bone_id].mRenderTransform.mul_43(bone_instances[bone_id].mTransform,(*bones)[bone_id]->m2b_transform);
-    if (bRecursive){
+    if (bRecursive)		{
         for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
             LL_SetBoneVisible((*C)->GetSelfID(),val,bRecursive);
     }
+	Visibility_Invalidate			();
 }
 
 void CKinematics::LL_SetBonesVisible(u64 mask)
@@ -385,7 +392,33 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
 	        B.mul_43		(A,(*bones)[b]->m2b_transform);
         }
 	}
-	CalculateBones_Invalidate	();
+	CalculateBones_Invalidate		();
+	Visibility_Invalidate			();
+}
+
+void CKinematics::Visibility_Update	()
+{
+	// check visible
+	for (u32 _it=0; _it<children.size(); _it++)				{
+		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children[_it]); VERIFY (_c)	;
+		if				(!_c->has_visible_bones())	{
+			// move into invisible list
+			children_invisible.push_back	(_c);	
+			swap(children[_it],children.back());
+			children.pop_back				();
+		}
+	}
+
+	// check invisible
+	for (u32 _it=0; _it<children_invisible.size(); _it++)	{
+		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children_invisible[_it]); VERIFY (_c)	;
+		if				(_c->has_visible_bones())	{
+			// move into invisible list
+			children.push_back				(_c);	
+			swap(children_invisible[_it],children_invisible.back());
+			children_invisible.pop_back		();
+		}
+	}
 }
 
 IC static void RecursiveBindTransform(CKinematics* K, xr_vector<Fmatrix>& matrices, u16 bone_id, const Fmatrix& parent)

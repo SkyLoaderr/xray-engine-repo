@@ -47,12 +47,13 @@ protected:
 	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1		};
 	enum					{ RM_SKINNING_SOFT, RM_SINGLE, RM_SKINNING_1B, RM_SKINNING_2B	};
 
-	CKinematics*			Parent;			// setted up by parent
-	ref_smem<vertBoned1W>	Vertices1W;		// shared
-	ref_smem<vertBoned2W>	Vertices2W;		// shared
+	CKinematics*			Parent		;		// setted up by parent
+	ref_smem<vertBoned1W>	Vertices1W	;		// shared
+	ref_smem<vertBoned2W>	Vertices2W	;		// shared
+	ref_smem<u16>			BonesUsed	;		// actual bones which have influence on vertices
 
-	u16						RenderMode;	
-	u16						ChildIDX;
+	u16						RenderMode	;	
+	u16						ChildIDX	;
 
 	// render-mode specifics
 	union {
@@ -61,8 +62,8 @@ protected:
 			u32				cache_vCount;
 			u32				cache_vOffset;
 		};
-		u32					RMS_boneid;		// single-bone-rendering
-		u32					RMS_bonecount;	// skinning, maximal bone ID
+		u32					RMS_boneid;			// single-bone-rendering
+		u32					RMS_bonecount;		// skinning, maximal bone ID
 	};
 
 	void					_Copy				(CSkeletonX *V);
@@ -85,6 +86,7 @@ protected:
 	virtual BOOL			_PickBoneHW2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)				=0;
 	virtual BOOL			_PickBone			(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount)						=0;
 public:
+	BOOL					has_visible_bones	();
 							CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
 
 	virtual void			SetParent		(CKinematics* K)					{ Parent = K; }

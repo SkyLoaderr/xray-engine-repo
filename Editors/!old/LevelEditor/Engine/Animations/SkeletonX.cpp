@@ -159,6 +159,7 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	ChildIDX				= B->ChildIDX;
 	Vertices1W				= B->Vertices1W;
 	Vertices2W				= B->Vertices2W;
+	BonesUsed				= B->BonesUsed;
 
 	// caution - overlapped (union)
 	cache_DiscardID			= B->cache_DiscardID;
@@ -272,7 +273,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	{
 	case OGF_VERTEXFORMAT_FVF_1L: // 1-Link
 		{
-			size			= dwVertCount*sizeof(vertBoned1W);
+			size				= dwVertCount*sizeof(vertBoned1W);
 #ifdef _EDITOR
 			// software
 			crc					= crc32	(data->pointer(),size);
@@ -309,8 +310,10 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			size			= dwVertCount*sizeof(vertBoned2W);
 			vertBoned2W* VO = (vertBoned2W*)data->pointer();
 			for (it=0; it<dwVertCount; it++)	{
-				if (VO[it].matrix0>sw_bones)	sw_bones = VO[it].matrix0;
-				if (VO[it].matrix1>sw_bones)	sw_bones = VO[it].matrix1;
+				if	(VO[it].matrix0>sw_bones)	sw_bones = VO[it].matrix0;
+				if	(VO[it].matrix1>sw_bones)	sw_bones = VO[it].matrix1;
+				if	(bids.end() == std::find(bids.begin(),bids.end(),VO[it].matrix0))	bids.push_back(VO[it].matrix0);
+				if	(bids.end() == std::find(bids.begin(),bids.end(),VO[it].matrix1))	bids.push_back(VO[it].matrix1);
 			}
 			if (sw_bones<=hw_bones) {
 				// HW- two weights
@@ -329,12 +332,28 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
 		break;
 	}
+	if (bids.size()>1)	BonesUsed.create	(crc32(bids.begin(),bids.size()*sizeof(u16)),bids.size(),bids.begin());
 }
+
+BOOL	CSkeletonX::has_visible_bones		()
+{
+	switch (RenderMode)
+	{
+	case RM_SINGLE:		return Parent->LL_GetBoneVisible(RMS_boneid)	;
+	case RM_SKINNING_SOFT:
+	case RM_SKINNING_1B:
+	case RM_SKINNING_2B:
+		for (u32 it=0; it<BonesUsed.size(); it++)
+			if (Parent->LL_GetBoneVisible(BonesUsed[it]))	return TRUE	;
+		return FALSE;
+	};
+}
+
 //-----------------------------------------------------------------------------------------------------
 // Wallmarks
 //-----------------------------------------------------------------------------------------------------
 #include "cl_intersect.h"
-BOOL CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
+BOOL	CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
 {
 	VERIFY				(*Vertices1W);
 	bool intersect		= FALSE;

@@ -745,6 +745,7 @@ void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 	if		(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
 	Update	();
 	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
+	if		(Update_Visibility)									Visibility_Update	();
 
 	// here we have either:
 	//	1:	timeout elapsed

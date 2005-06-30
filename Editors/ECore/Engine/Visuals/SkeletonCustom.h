@@ -144,6 +144,8 @@ protected:
 	SkeletonWMVec				wallmarks;
 	u32							wm_frame;
 
+	xr_vector<IRender_Visual*>	children_invisible	;
+
 	// Globals
     CInifile*					pUserData;
 	CBoneInstance*				bone_instances;	// bone instances
@@ -154,10 +156,10 @@ protected:
 	accel*						bone_map_N;		// bones  assotiations	(shared)	- sorted by name
 	accel*						bone_map_P;		// bones  assotiations	(shared)	- sorted by name-pointer
 
-	u32							Update_LastTime;
-
-	u32							UCalc_Time;
-	s32							UCalc_Visibox;
+	BOOL						Update_Visibility		;
+	u32							Update_LastTime			;
+	u32							UCalc_Time				;
+	s32							UCalc_Visibox			;
 
     Flags64						visimask;
     
@@ -167,6 +169,8 @@ protected:
     virtual CBoneData*			CreateBoneData			(u16 ID)=0;
 	virtual void				IBoneInstances_Create	();
 	virtual void				IBoneInstances_Destroy	();
+	void						Visibility_Invalidate	()	{ Update_Visibility=TRUE; };
+	void						Visibility_Update		()	;
 public:
 	UpdateCallback				Update_Callback;
 	void*						Update_Callback_Param;
@@ -198,9 +202,9 @@ public:
 	u16							LL_GetBoneRoot		()					{	return iRoot;													}
 	void						LL_SetBoneRoot		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	iRoot=bone_id;					}
 
-    BOOL						LL_GetBoneVisible	(u16 bone_id)	{VERIFY(bone_id<LL_BoneCount()); return visimask.is(u64(1)<<bone_id);	}
+    BOOL						LL_GetBoneVisible	(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return visimask.is(u64(1)<<bone_id);	}
 	void						LL_SetBoneVisible	(u16 bone_id, BOOL val, BOOL bRecursive);
-	u64							LL_GetBonesVisible	()				{return visimask.get();	}
+	u64							LL_GetBonesVisible	()					{	return visimask.get();	}
 	void						LL_SetBonesVisible	(u64 mask);
 
 	// Main functionality

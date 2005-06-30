@@ -265,7 +265,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 {
 	u16* indices		= 0;
-	//.	R_CHK				(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
+	//.	R_CHK			(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
 	R_CHK				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
 	indices				+= iBase;
 	switch	(RenderMode)
@@ -388,7 +388,7 @@ BOOL CSkeletonX_ext::_PickBoneHW2W		(Fvector& normal, float& dist, const Fvector
 
 BOOL CSkeletonX_ext::_PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount)
 {
-	VERIFY				(Parent&&(ChildIDX!=u16(-1)));
+	VERIFY							(Parent && (ChildIDX!=u16(-1)));
 	CBoneData& BD					= Parent->LL_GetData(bone_id);
 	CBoneData::FacesVec*	faces	= &BD.child_faces[ChildIDX];
 	u16* indices		= 0;
