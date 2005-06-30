@@ -1583,6 +1583,18 @@ C++ class cover_point {
 };
 
 C++ class danger_object {
+    const entity_death = 3;
+    const visual = 0;
+    const attacked = 5;
+    const enemy_sound = 7;
+    const entity_attacked = 2;
+    const grenade = 6;
+    const hiut = 2;
+    const attack_sound = 1;
+    const bullet_ricochet = 0;
+    const entity_corpse = 4;
+    const sound = 1;
+    
     function type() const;
     function time() const;
     operator ==(const danger_object&, danger_object);
