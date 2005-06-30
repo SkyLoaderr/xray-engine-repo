@@ -631,7 +631,7 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_signal" or c.name == "on_signal2" then
-			--printf("_bp: on_signal (c.v1 = %s)", c.v1)
+			printf("_bp: on_signal (c.v1 = %s)", c.v1)
 			if st.signals and st.signals[c.v1] then
 				--printf("_bp: signalled")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
@@ -965,6 +965,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis",  npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis2", npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
+	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal2",             npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info3",               npc))

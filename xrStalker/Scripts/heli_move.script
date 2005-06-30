@@ -193,8 +193,7 @@ end
 function heli_move:check_signals()
 	local sig  = self:waypoint_param( self.path_move_info, self.last_index, "sig" )
 	if sig then
-		local stor = db.storage[self.object:id()]
-		stor[stor.active_scheme].signals[sig] = true
+		self.a.signals[sig] = true
 	end
 end
 
