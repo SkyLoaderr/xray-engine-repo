@@ -294,7 +294,8 @@ private:
 
 bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_steps/*5*/,float resolve_depth/*=0.01f*/)
 {
-	if(trying_times[id]!=u32(-1))
+	bool  character_exist=CharacterExist();
+	if(character_exist&&trying_times[id]!=u32(-1))
 	{
 		Fvector dif;dif.sub(trying_poses[id],cast_fv(dBodyGetPosition(m_character->get_body())));
 		if(Device.dwTimeGlobal-trying_times[id]<500&&dif.magnitude()<0.05f)
@@ -302,7 +303,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	}
 	if(!m_character||m_character->PhysicsRefObject()->PPhysicsShell())return false;
 	DWORD old_id=BoxID();
-	bool  character_exist=CharacterExist();
+
 	bool  character_disabled=character_exist && !m_character->IsEnabled();
 	if(character_exist&&id==old_id)return true;
 
