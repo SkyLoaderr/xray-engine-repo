@@ -16,6 +16,7 @@
 #include "stalker_danger_property_evaluators.h"
 #include "memory_manager.h"
 #include "danger_manager.h"
+#include "enemy_manager.h"
 #include "cover_evaluators.h"
 #include "cover_manager.h"
 #include "cover_point.h"
@@ -52,7 +53,8 @@ void CStalkerDangerPlanner::finalize			()
 	if (!object().g_Alive())
 		return;
 
-	object().memory().danger().time_line		(Device.dwTimeGlobal);
+	if (object().memory().enemy().selected())
+		object().memory().danger().time_line	(Device.dwTimeGlobal);
 
 //	object().sound().remove_active_sounds		(u32(-1));
 }
