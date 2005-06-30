@@ -252,7 +252,7 @@ void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCo
 void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount) 
 {	
 	sbones_array	= "sbones_array";
-	xr_vector<u32>	bids;
+	xr_vector<u16>	bids;
 
 	// Load vertices
 	R_ASSERT	(data->find_chunk(OGF_VERTICES));
@@ -332,21 +332,19 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
 		break;
 	}
-	if (bids.size()>1)	BonesUsed.create	(crc32(bids.begin(),bids.size()*sizeof(u16)),bids.size(),bids.begin());
+	if (bids.size()>1)	{
+		crc					= crc32(&*bids.begin(),bids.size()*sizeof(u16)); 
+		BonesUsed.create	(crc,bids.size(),&*bids.begin());
+	}
 }
 
 BOOL	CSkeletonX::has_visible_bones		()
 {
-	switch (RenderMode)
-	{
-	case RM_SINGLE:		return Parent->LL_GetBoneVisible(RMS_boneid)	;
-	case RM_SKINNING_SOFT:
-	case RM_SKINNING_1B:
-	case RM_SKINNING_2B:
-		for (u32 it=0; it<BonesUsed.size(); it++)
-			if (Parent->LL_GetBoneVisible(BonesUsed[it]))	return TRUE	;
-		return FALSE;
-	};
+	if (RM_SINGLE==RenderMode)	return Parent->LL_GetBoneVisible(RMS_boneid)	;
+
+	for (u32 it=0; it<BonesUsed.size(); it++)
+		if (Parent->LL_GetBoneVisible(BonesUsed[it]))	return TRUE	;
+	return FALSE;
 }
 
 //-----------------------------------------------------------------------------------------------------

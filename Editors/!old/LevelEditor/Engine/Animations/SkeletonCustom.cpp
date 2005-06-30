@@ -403,7 +403,7 @@ void CKinematics::Visibility_Update	()
 		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children[_it]); VERIFY (_c)	;
 		if				(!_c->has_visible_bones())	{
 			// move into invisible list
-			children_invisible.push_back	(_c);	
+			children_invisible.push_back	(children[_it]);	
 			swap(children[_it],children.back());
 			children.pop_back				();
 		}
@@ -413,8 +413,8 @@ void CKinematics::Visibility_Update	()
 	for (u32 _it=0; _it<children_invisible.size(); _it++)	{
 		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children_invisible[_it]); VERIFY (_c)	;
 		if				(_c->has_visible_bones())	{
-			// move into invisible list
-			children.push_back				(_c);	
+			// move into visible list
+			children.push_back				(children_invisible[_it]);	
 			swap(children_invisible[_it],children_invisible.back());
 			children_invisible.pop_back		();
 		}
