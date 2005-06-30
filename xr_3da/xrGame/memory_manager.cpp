@@ -100,6 +100,9 @@ void CMemoryManager::update			(float time_delta)
 	sound().update		();
 	hit().update		();
 	
+	bool				registered_in_combat = false;
+	if (m_stalker)
+		registered_in_combat	= m_stalker->agent_manager().member().registered_in_combat(m_stalker);
 	// update enemies and items
 	enemy().reset		();
 	item().reset		();
@@ -108,8 +111,8 @@ void CMemoryManager::update			(float time_delta)
 	if (visual().enabled())
 		update			(visual().objects(),true);
 
-	update				(sound().objects(),update_value);
-	update				(hit().objects(),update_value);
+	update				(sound().objects(),registered_in_combat ? true : update_value);
+	update				(hit().objects(),registered_in_combat ? true : update_value);
 	
 	enemy().update		();
 	item().update		();
