@@ -1361,6 +1361,7 @@ u16 CPHSimpleCharacter::DamageInitiatorID()const
 
 CObject* CPHSimpleCharacter::DamageInitiator() const
 {
+	VERIFY(m_phys_ref_object);
 	if(m_collision_damage_info.m_dmc_type==SCollisionDamageInfo::ctStatic) return (CObject*) (m_phys_ref_object);
 	CObject* ret = (CObject*) (m_collision_damage_info.m_object);
 	u16 initiator_id=m_collision_damage_info.DamageInitiatorID();
@@ -1369,6 +1370,7 @@ CObject* CPHSimpleCharacter::DamageInitiator() const
 		ret=Level().Objects.net_Find(initiator_id);
 	}
 	if(!ret) ret = (CObject*) (m_phys_ref_object);
+	VERIFY(ret);
 	return ret;
 }
 

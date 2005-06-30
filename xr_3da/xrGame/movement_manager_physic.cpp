@@ -31,9 +31,11 @@ float CMovementManager::speed			(CPHMovementControl *movement_control) const
 
 void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 {
+		VERIFY(movement_control);
 	if (object().g_Alive()&&!fsimilar(0.f,movement_control->gcontact_HealthLost))
 	{
 		const ICollisionDamageInfo * di=movement_control->CollisionDamageInfo();
+		VERIFY(di);
 		Fvector dir;
 		di->HitDir(dir);
 		object().Hit	(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
@@ -43,7 +45,7 @@ void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	START_PROFILE("AI/Build Path/Move Along Path")
-
+	VERIFY(movement_control);
 	Fvector				motion;
 	dest_position		= object().Position();
 

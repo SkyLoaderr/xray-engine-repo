@@ -261,7 +261,7 @@ public:
 	void				SetFootCallBack			(ObjectContactCallbackFun* callback){VERIFY(m_character);m_character->SetWheelContactCallback(callback);}
 	ObjectContactCallbackFun* ObjectContactCallback(){if(m_character)return m_character->ObjectContactCallBack();else return NULL; }
 	u16					ContactBone				(){return m_character->ContactBone();}
-	const ICollisionDamageInfo	*CollisionDamageInfo ()const {return m_character->CollisionDamageInfo ();}
+	const ICollisionDamageInfo	*CollisionDamageInfo ()const {VERIFY(m_character);return m_character->CollisionDamageInfo ();}
 	void				GetDesiredPos			(Fvector& dpos)
 	{	
 		m_character->GetDesiredPosition(dpos);
