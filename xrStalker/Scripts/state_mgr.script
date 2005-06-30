@@ -123,9 +123,17 @@ function eva_state_mgr_end:evaluate()
 		self.mgr = self.object:motivation_action_manager()
 	end
 
-	if self.mgr:initialized() and self.mgr:current_action_id() ~= stalker_ids.action_combat_planner then
+	if not self.mgr:initialized() then
+		return false
+	end
+	
+	local current_action_id = self.mgr:current_action_id()
+	if current_action_id ~= stalker_ids.action_combat_planner and
+	   current_action_id ~= stalker_ids.action_danger_planner
+	then
 		self.st.combat = false
 	end
+
 	return false
 end
 
@@ -886,6 +894,10 @@ function bind_manager(object)
 
   	action = manager:action(stalker_ids.action_combat_planner)
   	action:add_precondition(world_property(properties["state_mgr_idle_combat"],true))
+  	
+  	action = manager:action(stalker_ids.action_danger_planner)
+  	action:add_precondition(world_property(properties["state_mgr_idle_combat"],true))
+
 	
 	return state_manager
 end
