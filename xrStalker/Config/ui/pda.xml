@@ -29,16 +29,16 @@
 	<!-- TAB CONTROL -->
 	<tab x="95" y="542" width="550" height="30">
 		<!-- BUTTONS -->
-		<button x="0" y="10" width="55" height="20" push_off_x="0" push_off_y="0">
+<!--		<button x="0" y="10" width="55" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Events</text>
 		</button>
 		<button x="70" y="10" width="70" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Contacts</text>
-		</button>
+		</button> -->
 		<button x="156" y="10" width="40" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Map</text>
 		</button>
-		<button x="210" y="10" width="95" height="20" push_off_x="0" push_off_y="0">
+<!--		<button x="210" y="10" width="95" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Encyclopedia</text>
 		</button>
 		<button x="327" y="10" width="70" height="20" push_off_x="0" push_off_y="0">
@@ -46,7 +46,7 @@
 		</button>
 		<button x="415" y="10" width="55" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Ranking</text>
-		</button>
+		</button>-->
 	</tab>
 
 </window>
