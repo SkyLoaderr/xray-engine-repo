@@ -22,11 +22,11 @@ damage              	= damage_bones
 ;-------------------------------------------------------------------------------
 ;------ Factory parameters of Engine -------------------------------------------
 
-fuel_tank         		= 30.         	; L
-fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 130.         	; horse_power (kW=hp*0.808) max power
+fuel_tank         		= 250.         	; L
+fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
+engine_power      		= 120.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4200        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3200.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 2800.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.02
 power_decrement_factor	= 0.08
@@ -52,13 +52,13 @@ hand_break_torque 		= 0.02        	; сила торможения пробелом (по умолчанию = br
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
 
-main_gear_ratio    		= 8.63         	; Передаточное отношение
+main_gear_ratio    		= 16.63         	; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
 
-R                  		= 2.29, 2000,4500	
+R                  		= 3.29, 2000,4500	
 N1                 		= 3.73, 2000,4500
 N2                 		= 2.29, 2000,4500
 N3                 		= 1.39, 2000,4500
