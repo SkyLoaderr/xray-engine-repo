@@ -400,7 +400,7 @@ float CVisualMemoryManager::feel_vision_mtl_transp(CObject* O, u32 element)
 	if (O){
 		CKinematics* V		= smart_cast<CKinematics*>(O->Visual());
 		if (0!=V){
-			CBoneData& B	= V->LL_GetData((u16)result.element);
+			CBoneData& B	= V->LL_GetData((u16)element);
 			vis				= GMLib.GetMaterialByIdx(B.game_mtl_idx)->fVisTransparencyFactor;
 		}
 	}else{
