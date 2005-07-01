@@ -69,6 +69,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miWeather;
 	TMenuItem *miWeatherNone;
 	TMenuItem *N6;
+	TMenuItem *miLogCommands;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

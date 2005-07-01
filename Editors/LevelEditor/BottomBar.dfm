@@ -438,6 +438,11 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
+    object miLogCommands: TMenuItem
+      Caption = 'Log Commands'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
     object miMuteSounds: TMenuItem
       Caption = 'Mute Sounds'
       GroupIndex = 4

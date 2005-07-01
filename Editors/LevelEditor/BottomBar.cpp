@@ -31,6 +31,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
     if (mi){
         mi->Checked = !mi->Checked;
         if (mi==miDrawGrid)     			ExecCommand(COMMAND_TOGGLE_GRID);
+        else if (mi==miLogCommands) 		ExecCommand(COMMAND_TOGGLE_COMMANDS_LOG);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
         else if (mi==miMuteSounds)			psDeviceFlags.set(rsMuteSounds,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
@@ -164,6 +165,7 @@ void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
     miFog->Checked					= psDeviceFlags.is(rsFog);
     miDrawGrid->Checked				= psDeviceFlags.is(rsDrawGrid);
     miDrawSafeRect->Checked			= psDeviceFlags.is(rsDrawSafeRect);
+    miLogCommands->Checked			= psDeviceFlags.is(rsCommandsLog);
 }
 //---------------------------------------------------------------------------
 
