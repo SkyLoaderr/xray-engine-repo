@@ -59,6 +59,6 @@ namespace Feel
 			return		Fvector().set(0,0,0).div(0);
 		}
 		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
-		virtual		float			feel_vision_mtl_transp	(u32 element)					= 0;	
+		virtual		float			feel_vision_mtl_transp	(CObject* O, u32 element)		= 0;	
 	};
 };
