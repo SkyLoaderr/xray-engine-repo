@@ -9,7 +9,6 @@
 #include "UIPropertiesBox.h"
 #include "UICheckButton.h"
 #include "UIRadioButton.h"
-#include "UIRadioGroup.h"
 #include "UIStatic.h"
 #include "UIEditBox.h"
 #include "UIFrameWindow.h"

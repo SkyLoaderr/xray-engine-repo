@@ -8,16 +8,10 @@
 #include "UIStatic.h"
 
 #include "UIButton.h"
-#include "UICheckButton.h"
+#include "UIScrollBar.h"
 
-#include "UIListWnd.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
-
-#include "UIMapSpot.h"
-#include "UIGlobalMapLocation.h"
-
-#include "UICharacterInfo.h"
 #include "UIWndCallback.h"
 
 class CUIMapWnd;

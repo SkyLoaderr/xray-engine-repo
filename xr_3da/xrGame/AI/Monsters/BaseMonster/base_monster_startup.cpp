@@ -8,7 +8,6 @@
 #include "../ai_monster_squad_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../critical_action_info.h"
-#include "../ai_monster_jump.h"
 #include "../../../detail_path_manager.h"
 #include "../../../level_navigation_graph.h"
 #include "../corpse_cover.h"

@@ -8,7 +8,6 @@
 #include "UIPropertiesBox.h"
 #include "UICheckButton.h"
 #include "UIRadioButton.h"
-#include "UIRadioGroup.h"
 #include "UIStatic.h"
 #include "UIEditBox.h"
 #include "UIFrameWindow.h"
@@ -54,7 +53,7 @@ export_class &script_register_ui_window1(export_class &instance)
 		.def("GetPropertiesBox",(CUIPropertiesBox* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIPropertiesBox>)
 		.def("GetCheckButton",	(CUICheckButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUICheckButton>)
 		.def("GetRadioButton",	(CUIRadioButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIRadioButton>)
-		.def("GetRadioGroup",	(CUIRadioGroup* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIRadioGroup>)
+//		.def("GetRadioGroup",	(CUIRadioGroup* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIRadioGroup>)
 
 	;return	(instance);
 }

@@ -9,7 +9,6 @@
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
 #include "../../../xrserver_objects_alife_monsters.h"
-#include "../ai_monster_jump.h"
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../seniority_hierarchy_holder.h"
