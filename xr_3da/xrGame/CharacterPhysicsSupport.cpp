@@ -288,7 +288,7 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell->mXFORM.set(mXFORM);
 	pShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
-	pShell->SmoothElementsInertia(0.3f);
+	//pShell->SmoothElementsInertia(0.3f);
 	pShell->set_JointResistance(0.f);
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
@@ -316,7 +316,7 @@ Fvector velocity;
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
-	m_pPhysicsShell->SmoothElementsInertia(0.3f);
+	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
 	disable_params.Load(smart_cast<CKinematics*>(m_EntityAlife.Visual())->LL_UserData());
