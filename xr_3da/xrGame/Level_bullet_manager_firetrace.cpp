@@ -29,7 +29,9 @@
 BOOL __stdcall CBulletManager::test_callback(CObject* object, LPVOID params)
 {
 	SBullet* bullet = (SBullet*)params;
-	if( (object->ID() == bullet->parent_id) &&  (bullet->fly_dist<PARENT_IGNORE_DIST) )	return FALSE;
+	if( (object->ID() == bullet->parent_id)		&&  
+		(bullet->fly_dist<PARENT_IGNORE_DIST)	&&
+		(!(bullet->flags&RICOCHET_FLAG)))		return FALSE;
 	
 	return TRUE;
 }
