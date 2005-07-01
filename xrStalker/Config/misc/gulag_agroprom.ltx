@@ -1,101 +1,257 @@
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. База военных на НИИ Агропром
 ;-------------------------------------------------------------------------------------------------
+;-------------------- снайпер на вышке --------------------
+[logic@agr_nii_tower_sniper]
+active = camper@agr_nii_tower_sniper
 
-[logic@agr_nii_walker1]
-active = walker1@agr_nii
+[camper@agr_nii_tower_sniper]
+path_walk = tower_sniper_walk
+path_look = tower_sniper_look
 
-[walker1@agr_nii]
-path_walk = guard1_walk
-path_look = guard1_look
+;---------------------- командир ---------------------
+[logic@agr_nii_day_commander]
+active = walker@agr_nii_day_commander
 
-
-[logic@agr_nii_walker2]
-active = walker2@agr_nii
-
-[walker2@agr_nii]
-path_walk = guard2_walk
-path_look = guard2_look
-
-
-[logic@agr_nii_walker3]
-active = walker3@agr_nii
-
-[walker3@agr_nii]
-path_walk = guard1_walk_night
-path_look = guard1_look_night
+[walker@agr_nii_day_commander]
+path_walk = day_commander_walk
+path_look = day_commander_look
 
 
-[logic@agr_nii_walker4]
-active = walker4@agr_nii
+[logic@agr_nii_night_commander]
+active = sleeper@agr_nii_night_commander
 
-[walker4@agr_nii]
-path_walk = guard2_walk_night
-path_look = guard2_look_night
-
-
-[logic@agr_nii_walker5]
-active = walker5@agr_nii
-
-[walker5@agr_nii]
-path_walk = place_walk
-path_look = place_look
+[walker@agr_nii_night_commander]
+path_main = night_commander_sleep
 
 
-[logic@agr_nii_walker6]
-active = walker6@agr_nii
+[logic@agr_nii_alarm_commander]
+active = walker@agr_nii_alarm_commander
 
-[walker6@agr_nii]
-path_walk = guard2stage_walk
-path_look = guard2stage_look
+[walker@agr_nii_alarm_commander]
+path_walk = alarm_commander_walk
+path_look = alarm_commander_look
 
+;------------------ пост на северных воротах -----------------------
+[logic@agr_nii_north_gate_walker1]
+active = {-agr_nii_alarm} walker1@agr_nii_north_gate, walker1@agr_nii_north_gate_alarm
 
-[logic@agr_nii_walker7]
-active = walker7@agr_nii
+[walker1@agr_nii_north_gate]
+path_walk = north_gate_walk1
+path_look = north_gate_look1
+on_info   = {+agr_nii_alarm} walker1@agr_nii_north_gate_alarm
 
-[walker7@agr_nii]
-path_walk = guard3stage_walk
-path_look = guard3stage_look
-
-
-[logic@agr_nii_camper1]
-active = camper1@agr_nii
-
-[camper1@agr_nii]
-path_walk = guard_house_walk
-path_look = guard_house_look
+[walker1@agr_nii_north_gate_alarm]
+path_walk = north_gate_alarm_walk1
+path_look = north_gate_alarm_look1
+on_info   = {-agr_nii_alarm} walker1@agr_nii_north_gate
 
 
-[logic@agr_nii_camper2]
-active = camper2@agr_nii
+[logic@agr_nii_north_gate_walker2]
+active = {-agr_nii_alarm} walker2@agr_nii_north_gate, walker2@agr_nii_north_gate_alarm
 
-[camper2@agr_nii]
-path_walk = sniper_roof_walk
-path_look = sniper_roof_look
+[walker2@agr_nii_north_gate]
+path_walk = north_gate_walk2
+path_look = north_gate_look2
+on_info   = {+agr_nii_alarm} walker2@agr_nii_north_gate_alarm
 
-
-[logic@agr_nii_patrol1]
-active = walker@agr_nii_patrol
-
-[walker@agr_nii_patrol]
-path_walk = patrol_walk
-look_look = patrol_look
+[walker2@agr_nii_north_gate_alarm]
+path_walk = north_gate_alarm_walk2
+path_look = north_gate_alarm_look2
+on_info   = {-agr_nii_alarm} walker2@agr_nii_north_gate
 
 
-[logic@agr_nii_follower1]
-active = follower1@agr_nii
+[logic@agr_nii_north_gate_walker3]
+active = {-agr_nii_alarm} walker3@agr_nii_north_gate, walker3@agr_nii_north_gate_alarm
 
-[follower1@agr_nii]
-escape_path = patrol_look
+[walker3@agr_nii_north_gate]
+path_walk = north_gate_walk3
+path_look = north_gate_look3
+on_info   = {+agr_nii_alarm} walker3@agr_nii_north_gate_alarm
+
+[walker3@agr_nii_north_gate_alarm]
+path_walk = north_gate_alarm_walk3
+path_look = north_gate_alarm_look3
+on_info   = {-agr_nii_alarm} walker3@agr_nii_north_gate
+
+;------------------ пост на восточных воротах -----------------------
+[logic@agr_nii_east_gate_walker1]
+active = {-agr_nii_alarm} walker1@agr_nii_east_gate, walker1@agr_nii_east_gate_alarm
+
+[walker1@agr_nii_east_gate]
+path_walk = east_gate_walk1
+path_look = east_gate_look1
+on_info   = {+agr_nii_alarm} walker1@agr_nii_east_gate_alarm
+
+[walker1@agr_nii_east_gate_alarm]
+path_walk = east_gate_alarm_walk1
+path_look = east_gate_alarm_look1
+on_info   = {-agr_nii_alarm} walker1@agr_nii_east_gate
 
 
-[logic@agr_nii_follower2]
-active = follower2@agr_nii
+[logic@agr_nii_east_gate_walker2]
+active = {-agr_nii_alarm} walker2@agr_nii_east_gate, walker2@agr_nii_east_gate_alarm
 
-[follower2@agr_nii]
-escape_path = patrol_look
+[walker2@agr_nii_east_gate]
+path_walk = east_gate_walk2
+path_look = east_gate_look2
+on_info   = {+agr_nii_alarm} walker2@agr_nii_east_gate_alarm
+
+[walker2@agr_nii_east_gate_alarm]
+path_walk = east_gate_alarm_walk2
+path_look = east_gate_alarm_look2
+on_info   = {-agr_nii_alarm} walker2@agr_nii_east_gate
+
+;------------------ 1-й этаж основного здания -----------------------
+[logic@agr_nii_floor1_day_walker1]
+active = walker1@agr_nii_floor1_day
+
+[walker1@agr_nii_floor1_day]
+path_walk = floor1_day_walk1
+path_look = floor1_day_look1
 
 
+[logic@agr_nii_floor1_alarm_walker1]
+active = walker1@agr_nii_floor1_alarm
+
+[walker1@agr_nii_floor1_alarm]
+path_walk = floor1_alarm_walk1
+path_look = floor1_alarm_look1
+
+;------------------ 2-й этаж основного здания -----------------------
+[logic@agr_nii_floor2_day_walker1]
+active = walker1@agr_nii_floor2_day
+
+[walker1@agr_nii_floor2_day]
+path_walk = floor2_day_walk1
+path_look = floor2_day_look1
+
+
+[logic@agr_nii_floor2_alarm_walker1]
+active = walker1@agr_nii_floor2_alarm
+
+[walker1@agr_nii_floor2_alarm]
+path_walk = floor2_alarm_walk1
+path_look = floor2_alarm_look1
+
+
+;------------------ 3-й этаж основного здания -----------------------
+[logic@agr_nii_floor3_walker1]
+active = {-agr_nii_alarm} walker1@agr_nii_floor3, walker1@agr_nii_floor3_alarm
+
+[walker1@agr_nii_floor3]
+path_walk = floor3_walk1
+path_look = floor3_look1
+on_info   = {+agr_nii_alarm} walker1@agr_nii_floor3_alarm
+
+[walker1@agr_nii_floor3_alarm]
+path_walk = floor3_alarm_walk1
+path_look = floor3_alarm_look1
+on_info   = {-agr_nii_alarm} walker1@agr_nii_floor3
+
+
+[logic@agr_nii_floor3_walker2]
+active = {-agr_nii_alarm} walker2@agr_nii_floor3, walker2@agr_nii_floor3_alarm
+
+[walker2@agr_nii_floor3]
+path_walk = floor3_walk2
+path_look = floor3_look2
+on_info   = {+agr_nii_alarm} walker2@agr_nii_floor3_alarm
+
+[walker2@agr_nii_floor3_alarm]
+path_walk = floor3_alarm_walk2
+path_look = floor3_alarm_look2
+on_info   = {-agr_nii_alarm} walker2@agr_nii_floor3
+
+
+[logic@agr_nii_floor3_walker3]
+active = {-agr_nii_alarm} walker1@agr_nii_floor3, walker1@agr_nii_floor3_alarm
+
+[walker3@agr_nii_floor3]
+path_walk = floor3_walk3
+path_look = floor3_look3
+
+;------------------ дневные патрули -----------------------
+[logic@agr_nii_day_patrol_walker1]
+active = walker1@agr_nii_day_patrol
+
+[walker1@agr_nii_day_patrol]
+path_walk = day_patrol_walk1
+path_look = day_patrol_look1
+
+
+[logic@agr_nii_day_patrol_walker2]
+active = walker2@agr_nii_day_patrol
+
+[walker2@agr_nii_day_patrol]
+path_walk = day_patrol_walk2
+path_look = day_patrol_look2
+
+;------------------ патрули в тревоге -----------------------
+[logic@agr_nii_alarm_patrol_walker1]
+active = walker1@agr_nii_alarm_patrol
+
+[walker1@agr_nii_alarm_patrol]
+path_walk = alarm_patrol_walk1
+path_look = alarm_patrol_look1
+
+
+[logic@agr_nii_alarm_patrol_walker2]
+active = walker2@agr_nii_alarm_patrol
+
+[walker2@agr_nii_alarm_patrol]
+path_walk = alarm_patrol_walk2
+path_look = alarm_patrol_look2
+
+
+[logic@agr_nii_alarm_patrol_walker3]
+active = walker3@agr_nii_alarm_patrol
+
+[walker3@agr_nii_alarm_patrol]
+path_walk = alarm_patrol_walk3
+path_look = alarm_patrol_look3
+
+
+[logic@agr_nii_alarm_patrol_walker4]
+active = walker4@agr_nii_alarm_patrol
+
+[walker4@agr_nii_alarm_patrol]
+path_walk = alarm_patrol_walk3
+path_look = alarm_patrol_look3
+
+
+[logic@agr_nii_alarm_patrol_walker5]
+active = walker5@agr_nii_alarm_patrol
+
+[walker5@agr_nii_alarm_patrol]
+path_walk = alarm_patrol_walk4
+path_look = alarm_patrol_look4
+
+;------------------ дневные отдыхающие -----------------------
+[logic@agr_nii_rest_walker1]
+active = walker1@agr_nii_rest
+
+[walker1@agr_nii_rest]
+path_walk = rest_walk1
+path_look = rest_look1
+
+
+[logic@agr_nii_rest_walker2]
+active = walker2@agr_nii_rest
+
+[walker2@agr_nii_rest]
+path_walk = rest_walk2
+path_look = rest_look2
+
+
+[logic@agr_nii_rest_walker3]
+active = walker3@agr_nii_rest
+
+[walker3@agr_nii_rest]
+path_walk = rest_walk3
+path_look = rest_look3
+
+;------------------ ночные отдыхающие -----------------------
 [logic@agr_nii_sleeper1]
 active = sleeper1@agr_nii
 
@@ -116,6 +272,41 @@ active = sleeper3@agr_nii
 [sleeper3@agr_nii]
 path_main = sleep3
 
+
+[logic@agr_nii_sleeper4]
+active = sleeper4@agr_nii
+
+[sleeper4@agr_nii]
+path_main = sleep4
+
+
+[logic@agr_nii_sleeper5]
+active = sleeper5@agr_nii
+
+[sleeper5@agr_nii]
+path_main = sleep5
+
+
+[logic@agr_nii_sleeper6]
+active = sleeper6@agr_nii
+
+[sleeper6@agr_nii]
+path_main = sleep6
+
+
+[logic@agr_nii_sleeper7]
+active = sleeper7@agr_nii
+
+[sleeper7@agr_nii]
+path_main = sleep7
+
+
+[logic@agr_nii_sleeper8]
+active = sleeper8@agr_nii
+
+[sleeper8@agr_nii]
+path_main = sleep8
+
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. Солдаты на фабрике 
 ;-------------------------------------------------------------------------------------------------
@@ -128,7 +319,7 @@ combat_ignore = combat_ignore@agr_factory_assault
 
 [walker1@agr_factory_assault]
 path_walk = walk1
-;path_look = look1
+;path_look = look10
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
@@ -466,55 +657,68 @@ path_look = look6
 
 [logic@agr_factory_defence_krot_walker1]
 active = walker1@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker1@agr_factory_defence_krot]
 path_walk = krot_walk1
 ;path_look = krot_look1
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker2]
 active = walker2@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker2@agr_factory_defence_krot]
 path_walk = krot_walk2
 ;path_look = krot_look2
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker3]
 active = walker3@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker3@agr_factory_defence_krot]
 path_walk = krot_walk3
 ;path_look = krot_look3
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker4]
 active = walker4@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker4@agr_factory_defence_krot]
 path_walk = krot_walk4
 ;path_look = krot_look4
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker5]
 active = walker5@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker5@agr_factory_defence_krot]
 path_walk = krot_walk5
 ;path_look = krot_look5
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker6]
 active = walker6@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker6@agr_factory_defence_krot]
 path_walk = krot_walk6
 ;path_look = krot_look6
+meet = meet@agr_factory_defence
 
 ;---------------- Бегут к колодцу и стоят там -----------------
 
 [logic@agr_factory_defence_to_well_walker1]
 active = walker1@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker1@agr_factory_defence_to_well]
 path_walk = to_well_walk1
@@ -523,10 +727,12 @@ on_signal = well | walker1@agr_factory_defence_well
 [walker1@agr_factory_defence_well]
 path_walk = well_walk1
 path_look = well_look1
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker2]
 active = walker2@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker2@agr_factory_defence_to_well]
 path_walk = to_well_walk2
@@ -535,10 +741,12 @@ on_signal = well | walker2@agr_factory_defence_well
 [walker2@agr_factory_defence_well]
 path_walk = well_walk2
 path_look = well_look2
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker3]
 active = walker3@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker3@agr_factory_defence_to_well]
 path_walk = to_well_walk3
@@ -547,10 +755,12 @@ on_signal = well | walker3@agr_factory_defence_well
 [walker3@agr_factory_defence_well]
 path_walk = well_walk3
 path_look = well_look3
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker4]
 active = walker4@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker4@agr_factory_defence_to_well]
 path_walk = to_well_walk4
@@ -559,10 +769,12 @@ on_signal = well | walker4@agr_factory_defence_well
 [walker4@agr_factory_defence_well]
 path_walk = well_walk4
 path_look = well_look4
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker5]
 active = walker5@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker5@agr_factory_defence_to_well]
 path_walk = to_well_walk5
@@ -571,10 +783,12 @@ on_signal = well | walker5@agr_factory_defence_well
 [walker5@agr_factory_defence_well]
 path_walk = well_walk5
 path_look = well_look5
+meet = meet@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker6]
 active = walker6@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
 
 [walker6@agr_factory_defence_to_well]
 path_walk = to_well_walk6
@@ -583,6 +797,20 @@ on_signal = well | walker6@agr_factory_defence_well
 [walker6@agr_factory_defence_well]
 path_walk = well_walk6
 path_look = well_look6
+meet = meet@agr_factory_defence
+
+
+[meet@agr_factory_defence]
+meet_state = 5 | guard@wait
+meet_state_wpn = 5 | guard@wait
+victim = 5 | actor
+victim_wpn = 5 | actor
+use = true
+use_wpn = true
+
+
+[actor_dialogs@agr_factory_defence]
+id = agr_factory_stalker_about
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM Удерживающие Крота солдаты

@@ -5,100 +5,170 @@
 local t = {}
 
 function load_job( sj, gname, type, squad, groups )
-	------------------ Agroprom NII ------------------------------------------
+	------------------ НИИ Агропром. База военных ------------------------------------------
+	-- состояния: 0-день, 1-ночь, 2-пересменка, 3-тревога
 	if type == "agr_nii" then
-		t = { section = "logic@agr_nii_walker1",
+		-- снайпер на вышке
+		t = { section = "logic@agr_nii_tower_sniper",
+			idle = 0,
+			prior = 10, state = {0,1,2,3},
+			predicate = function(obj)
+			            	return obj:name() == "agr_nii_tower_sniper"
+			            end,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- командир
+		t = { section = "logic@agr_nii_day_commnader",
 			idle = 0,
 			prior = 9, state = {0},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			predicate = function(obj)
+			            	return obj:name() == "agr_nii_commander"
+			            end,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker2",
+		t = { section = "logic@agr_nii_night_commnader",
 			idle = 0,
-			prior = 9, state = {0},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 9, state = {1,2},
+			predicate = function(obj)
+			            	return obj:name() == "agr_nii_commander"
+			            end,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker3",
+		t = { section = "logic@agr_nii_alarm_commnader",
 			idle = 0,
-			prior = 9, state = {1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 9, state = {3},
+			predicate = function(obj)
+			            	return obj:name() == "agr_nii_commander"
+			            end,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker4",
+		-- пост на северных воротах
+		t = { section = "logic@agr_nii_north_gate_walker1",
 			idle = 0,
-			prior = 9, state = {1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_camper1",
+		t = { section = "logic@agr_nii_north_gate_walker2",
 			idle = 0,
-			prior = 8, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker5",
+		t = { section = "logic@agr_nii_north_gate_walker3",
 			idle = 0,
-			prior = 7, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_camper2",
+		-- пост на восточных воротах
+		t = { section = "logic@agr_nii_east_gate_walker1",
 			idle = 0,
-			prior = 6, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker6",
+		t = { section = "logic@agr_nii_east_gate_walker2",
 			idle = 0,
-			prior = 5, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_walker7",
+		t = { section = "logic@agr_nii_east_gate_walker3",
 			idle = 0,
-			prior = 5, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 5, state = {0,1,2,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_patrol1",
-			idle = 4 * 1000 * 60 * 60,
-			prior = 4, state = {0},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@agr_nii_follower1",
-			idle = 4 * 1000 * 60 * 60,
+		-- 1-й этаж основного здания
+		t = { section = "logic@agr_nii_floor1_day_walker1",
+			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
-			dependent = "logic@agr_nii_patrol1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_follower2",
-			idle = 4 * 1000 * 60 * 60,
+		t = { section = "logic@agr_nii_floor1_alarm_walker1",
+			idle = 0,
+			prior = 3, state = {3},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- 2-й этаж основного здания
+		t = { section = "logic@agr_nii_floor2_day_walker1",
+			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
-			dependent = "logic@agr_nii_patrol1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_sleeper1",
+		t = { section = "logic@agr_nii_floor2_alarm_walker1",
 			idle = 0,
-			prior = 0, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 3, state = {3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_sleeper2",
+		-- 3-й этаж основного здания
+		t = { section = "logic@agr_nii_floor3_walker1",
 			idle = 0,
-			prior = 0, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 4, state = {0,1,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@agr_nii_sleeper3",
+		t = { section = "logic@agr_nii_floor3_walker2",
 			idle = 0,
-			prior = 0, state = {0,1},
-			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+			prior = 4, state = {0,1,3},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@agr_nii_floor3_walker3",
+			idle = 0,
+			prior = 4, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- дневные патрули
+		t = { section = "logic@agr_nii_day_patrol_walker1",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_day_patrol_walker2",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- патрули в тревоге
+		for i = 1, 5 do
+			t = { section = "logic@agr_nii_alarm_patrol_walker"..i,
+				idle = 0,
+				prior = 4, state = {3},
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+		-- дневные отдыхающие
+		for i = 1, 3 do
+			t = { section = "logic@agr_nii_rest_walker"..i,
+				idle = 0,
+				prior = 0, state = {0},
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+		-- ночные отдыхающие
+		for i = 1, 8 do
+			t = { section = "logic@agr_nii_sleeper"..i,
+				idle = 0,
+				prior = 0, state = {1,2},
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
 	end
 
 	------------------ Солдаты атакующие группу Крота ------------------------------------------
@@ -319,7 +389,7 @@ function load_job( sj, gname, type, squad, groups )
 		end
 	end
 
---boars-----------------------
+	-- Кабаны -----------------------
 	if type == "agr_boar_nest_type" then
 			local boar_num = 4
 		for i=1, boar_num do
@@ -341,9 +411,6 @@ function load_job( sj, gname, type, squad, groups )
 			table.insert(sj, t)
 		end
 	end
--------------
-
-	
 end
 
 function load_states( gname, type )
@@ -497,25 +564,20 @@ function load_states( gname, type )
 		end
 	end
 
-
-	
-if type == "agr_boar_nest_type" then        
-	return function(gulag)
-		local t = db.zone_by_name["agr_boar_territory"] 
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
+	if type == "agr_boar_nest_type" then        
+		return function(gulag)
+			local t = db.zone_by_name["agr_boar_territory"] 
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
+					return 1
+				else
+					return 0
+				end
 			else
-				return 0
+				return gulag.state
 			end
-		else
-			return gulag.state
 		end
 	end
-end
-
-
-
 
 	return nil
 end
@@ -536,15 +598,10 @@ function checkMonster( npc_community, gulag_type )
 	if gulag_type == "agr_rush" then
 		return npc_community == "dog"
 	end
-	
-	
 
-	
 	if gulag_type == "agr_boar_nest_type" then
 		return npc_community == "boar"
 	end
-
-
 
 	return false
 end
