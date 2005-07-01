@@ -85,8 +85,6 @@ u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
     if (psDeviceFlags.is(rsCommandsLog))
     	Msg		("%s (%d,%d)",CMD->Name(),p1,p2);
     CMD->command(p1,p2,res);
-    if (psDeviceFlags.is(rsCommandsLog))
-    	Msg		("; %s result = %d",CMD->Name(),res);
 //?	UI->RedrawScene();
     return		res;
 }
