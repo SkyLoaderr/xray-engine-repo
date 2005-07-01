@@ -113,3 +113,27 @@
     <string id="bar_arena_fight_dead">
 		<text>Итак! Противник уложил претендента. Вот так номер!</text>
     </string>
+
+
+    <string id="bar_territory_nodolg_1_hit">
+		<text>Прекратить стрельбу! На территории Долга стрельба запрещена! Ослушавшиеся будут наказаны!</text>
+    </string>
+    <string id="bar_territory_nodolg_2_hit">
+		<text>Внимание! За нарушение закона о применении оружия на территории Долга, Меченный объявлен преступником.</text>
+    </string>
+    <string id="bar_territory_nodolg_kill">
+		<text>Внимание! Обнаружен убийца! Приказ всем находящимся на территории Долга! Срочно уничтожить убийцу!</text>
+    </string>
+
+    <string id="bar_territory_dolg_1_hit">
+		<text>Меченый, ты что спятил? Немедленно прекрати стрельбу! Это приказ!</text>
+    </string>
+    <string id="bar_territory_dolg_2_hit">
+		<text>Меченый, немедленно прекрати стрельбу! Если ты ослушаешься приказа ты труп!</text>
+    </string>
+    <string id="bar_territory_dolg_3_hit">
+		<text>Меченный. За нарушение кодекса Долга ты изгнан из группировки. Отныне ты наш враг.</text>
+    </string>
+    <string id="bar_territory_dolg_kill">
+		<text>Меченый, ты ослушался приказа! Теперь ты труп! Долг такого не прощает!</text>
+    </string>

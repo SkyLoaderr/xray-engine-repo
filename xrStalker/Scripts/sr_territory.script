@@ -16,15 +16,23 @@ function action_territory:update(delta)
 end
 function action_territory:hit_callback(obj, amount, local_direction, who, bone_index)
 	printf("territory hit callback: [%s][%s]", tostring(amount), tostring(who:name()))
-	if who:id() == db.actor:id() then
-		xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_hit)
+	if who:id() ~= db.actor:id() then
+		return
 	end
+	if who:relation(db.actor) == game_object.enemy then
+		return
+	end	
+	xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_hit)
 end
 function action_territory:death_callback(victim, who)
 	printf("territory death callback: [%s]", tostring(victim:name()), tostring(who:name()))
-	if who:id() == db.actor:id() then
-		xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_death)		return
+	if who:id() ~= db.actor:id() then
+		return
 	end
+	if who:relation(db.actor) == game_object.enemy then
+		return
+	end	
+	xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_death)		return
 end
 
 ---------------------------------------------------------------------------------------------------------------------
