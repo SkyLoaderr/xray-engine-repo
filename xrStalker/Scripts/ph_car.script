@@ -128,6 +128,7 @@ function action_car:reset_scheme(loading)
 		    utils.abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
 	    end
 
+        self:start_car()
 	    self.path_walk_count = self.path_walk:count()
 
 	    if not self.path_walk_info then
@@ -314,9 +315,8 @@ function action_car:go_to_walkpoint(pt)
 	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
 	--printf("_pc: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
 	if pt == nil or pt < 0 then
-		xr_logic.mob_capture(self.object, true)
-		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
-		self.state_moving = state_moving_rot_left
+	    self:stop_car()
+		self.state_moving = state_moving_stop
 		return
 	end
 
@@ -328,9 +328,9 @@ function action_car:go_to_walkpoint(pt)
 		if self.state_moving ~= state_moving_fwd then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
-				move(move.on + move.fwd, self.speed),
-				object("right_light", object.activate),
-				object("left_light", object.activate),
+				move(move.fwd, self.speed), --move.on + 
+				object("right_light", object.deactivate),
+				object("left_light", object.deactivate),
 				cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
 			self.state_moving = state_moving_fwd
 		end
@@ -344,8 +344,8 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.left, self.speed),
-					object("right_light", object.activate),
+					move(move.fwd + move.left, self.speed), --move.on + 
+					object("right_light", object.deactivate),
 					object("left_light", object.activate),
 					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
 				self.state_moving = state_moving_rot_left
@@ -354,14 +354,21 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_right then
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.right, self.speed),
+					move(move.fwd + move.right, self.speed), --move.on + 
 					object("right_light", object.activate),
-					object("left_light", object.activate),
+					object("left_light", object.deactivate),
 					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
 				self.state_moving = state_moving_rot_right
 			end
 		end
 	end
+end
+
+function action_car:start_car()
+    printf("car <move>: car started.")
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, move(move.on + move.fwd, 10), cond(cond.time_end, 100)) --cond(cond.move_end))
+	--self.speed = 0
 end
 
 function action_car:stop_car()
@@ -831,6 +838,10 @@ function action_car:fast_update()
 	    elseif self.state_firetarget == state_firetarget_actor then
 	        if self.car:IsObjectVisible(db.actor) then
 	            printf("car <fire>: actor is visible.")
+
+		        self.target_fire_pt = db.actor:position()
+		        self:rot_to_firepoint(self.target_fire_pt)
+
 	            if self.car:CanHit() then
 	                printf("car <fire>: fighting actor.")
 	                if self.state_shooting == state_none then
@@ -844,9 +855,6 @@ function action_car:fast_update()
 
 		            self.state_shooting = state_none
 		            self:set_shooting(self.state_shooting)
-
-		            self.target_fire_pt = db.actor:position()
-		            self:rot_to_firepoint(self.target_fire_pt)
 
 		            self:set_signal("fire_end")
 		        end
