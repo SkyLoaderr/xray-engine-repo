@@ -29,7 +29,7 @@
 
 	<!-- Надпись на физических воротах -->
 	<string id="tip_gate_locked">
-		<text>Ворота закрыты</text>
+		<text>Ворота заблокированы</text>
 	</string>
 
 	<string id="tip_gate_open">
