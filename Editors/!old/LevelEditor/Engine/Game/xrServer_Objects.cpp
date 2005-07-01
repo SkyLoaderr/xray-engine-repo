@@ -527,7 +527,7 @@ CSE_AbstractVisual::~CSE_AbstractVisual()
 
 void CSE_AbstractVisual::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	visual_read					(tNetPacket);
+	visual_read						(tNetPacket,m_wVersion);
 	tNetPacket.r_stringZ			(startup_animation);
 }
 

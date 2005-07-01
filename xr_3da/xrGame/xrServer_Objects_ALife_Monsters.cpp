@@ -924,10 +924,9 @@ CSE_Visual* CSE_ALifeZoneVisual::visual	()
 void CSE_ALifeZoneVisual::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
-	visual_read					(tNetPacket);
+	visual_read					(tNetPacket,m_wVersion);
 	tNetPacket.r_stringZ(startup_animation);
 	tNetPacket.r_stringZ(attack_animation);
-	
 }
 
 void CSE_ALifeZoneVisual::STATE_Write		(NET_Packet	&tNetPacket)
@@ -1015,7 +1014,7 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 18)
 		tNetPacket.r_float		(fHealth);
 	if (m_wVersion < 32)
-		visual_read				(tNetPacket);
+		visual_read				(tNetPacket,m_wVersion);
 	o_model						= o_torso.yaw;
 
 	if (m_wVersion > 87) {
@@ -1293,13 +1292,13 @@ void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion > 18)
 			tNetPacket.r_float	(fHealth);
 		if (m_wVersion >= 3)
-			visual_read			(tNetPacket);
+			visual_read			(tNetPacket,m_wVersion);
 	}
 	else {
 		inherited1::STATE_Read	(tNetPacket,size);
 		inherited2::STATE_Read	(tNetPacket,size);
 		if (m_wVersion < 32)
-			visual_read			(tNetPacket);
+			visual_read			(tNetPacket,m_wVersion);
 	}
 	if(m_wVersion>91)
 	{
@@ -1434,7 +1433,7 @@ void CSE_ALifeCreatureCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 20) {
 		inherited::STATE_Read	(tNetPacket,size);
 		if (m_wVersion < 32)
-			visual_read			(tNetPacket);
+			visual_read			(tNetPacket,m_wVersion);
 	}
 }
 

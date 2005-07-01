@@ -537,7 +537,7 @@ void CSE_ALifeDynamicObjectVisual::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	if (m_wVersion > 31)
-		visual_read				(tNetPacket);
+		visual_read				(tNetPacket,m_wVersion);
 }
 
 void CSE_ALifeDynamicObjectVisual::UPDATE_Write(NET_Packet &tNetPacket)
@@ -790,11 +790,11 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion >= 16) {
 			inherited1::STATE_Read(tNetPacket,size);
 			if (m_wVersion < 32)
-				visual_read		(tNetPacket);
+				visual_read		(tNetPacket,m_wVersion);
 		}
 		else {
 			CSE_ALifeObject::STATE_Read(tNetPacket,size);
-			visual_read			(tNetPacket);
+			visual_read			(tNetPacket,m_wVersion);
 		}
 
 	if (m_wVersion>=64) inherited2::STATE_Read(tNetPacket,size);
@@ -920,7 +920,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion>=69)
 		inherited2::STATE_Read	(tNetPacket,size);
 	if (m_wVersion < 32)
-		visual_read				(tNetPacket);
+		visual_read				(tNetPacket,m_wVersion);
 
 	if (m_wVersion < 49){
 		shared_str s_tmp;

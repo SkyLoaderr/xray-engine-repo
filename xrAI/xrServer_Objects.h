@@ -120,8 +120,9 @@
 // 101 - CSE_ALifeCreaturePhantom		new class based on CSE_ALifeCreatureAbstract
 // 102 = CSE_ALifeAnomalousZone			appended m_owner_id
 // 103 = CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
+// 104 = CSE_Visual						appended flags
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(103)
+#define SPAWN_VERSION	u16(104)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
