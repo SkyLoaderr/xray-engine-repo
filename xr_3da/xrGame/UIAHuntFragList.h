@@ -14,6 +14,7 @@ public:
 //	void				Init			(u8 Team);
 //	virtual void		UpdateItemsList	();
 //	virtual void		Update();
+	virtual bool					SetItemData		(u32 ItemID, CUIStatsListItem *pItem);
 };
 
 #endif //__XR_UIAHUNTFRAGLIST_H__
