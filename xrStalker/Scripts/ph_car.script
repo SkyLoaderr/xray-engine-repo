@@ -125,7 +125,7 @@ function action_car:reset_scheme(loading)
 	if self.st.path_walk then
 	    self.path_walk = patrol(self.st.path_walk)
 	    if not self.path_walk then
-		    utils.abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
+		    abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
 	    end
 
         self:start_car()
@@ -134,7 +134,7 @@ function action_car:reset_scheme(loading)
 	    if not self.path_walk_info then
 		    self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	        if not self.path_walk_info then
-		        utils.abort("object '%s': path_walk ('%s'): unable to obtain path_walk_info from path",
+		        abort("object '%s': path_walk ('%s'): unable to obtain path_walk_info from path",
 			        self.object:name(), self.st.path_walk)
 	        end
 	    end
@@ -182,14 +182,14 @@ function action_car:reset_scheme(loading)
 	        printf("car <state>: firetarget = points")
 		    self.path_fire = patrol(self.st.path_fire)
 		    if not self.path_fire then
-			    utils.abort("object '%s': unable to find path_fire '%s' on the map",
+			    abort("object '%s': unable to find path_fire '%s' on the map",
 				    self.object:name(), self.st.path_fire)
 		    end
 
 	        if not self.path_fire_info then
 		        self.path_fire_info = utils.path_parse_waypoints(self.st.path_fire)
 	            if not self.path_fire_info then
-		            utils.abort("object '%s': path_fire ('%s'): unable to obtain path_fire_info from path",
+		            abort("object '%s': path_fire ('%s'): unable to obtain path_fire_info from path",
 			            self.object:name(), self.st.path_fire)
 	            end
 	        end
