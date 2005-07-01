@@ -12,6 +12,11 @@ function evaluator_danger:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_danger:evaluate()
+	-- проверка на активную схему
+	if db.storage[self.object:id()].active_scheme == nil then
+		return false
+	end
+
 	-- проверка на денжер.
 	best_danger = self.object:best_danger()
 	if best_danger == nil then
