@@ -9,6 +9,7 @@
 
 #include "stdafx.h"
 #include "UIMultiTextStatic.h"
+#include "../CustomHUD.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +146,9 @@ void CUICaption::setCaption(const shared_str& msg_name, LPCSTR message_to_out, u
 
 void CUICaption::Draw()
 {
-	inherited::Draw();
-	inherited::Update();
+	if (psHUD_Flags.test(HUD_DRAW))
+	{
+		inherited::Draw();
+		inherited::Update();
+	}	
 }
