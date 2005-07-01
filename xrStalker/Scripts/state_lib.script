@@ -438,22 +438,22 @@ states = {
 	-- Раненый
 	wounded = {	weapon = "strapped",
 				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
+				mental = anim.danger,
+				bodystate = move.crouch,
 				animstate = "wounded",
 				animation = nil
 			},
 	wounded_heavy = { weapon = "drop",
 				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
+				mental = anim.danger,
+				bodystate = move.crouch,
 				animstate = "wounded",
 				animation = "wound_heavy"
 			},
 	help_me = {	weapon = "strapped",
 				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
+				mental = anim.danger,
+				bodystate = move.crouch,
 				animstate = "wounded",
 				animation = "help_me"
 			},
