@@ -61,7 +61,7 @@ function evaluator_leader:evaluate ()
           else
              printf ("!!! ERROR !!! FOLLOWER %s NOT FOUND LEADER BECAUSE LEADER NOT DEFINED", self.object:name ())
           end    
-          utils.abort ("!!! ERROR !!! Leader for object %s not defined from GULAG system", self.object:name ())
+          abort ("!!! ERROR !!! Leader for object %s not defined from GULAG system", self.object:name ())
           self.time = 0
           xr_gulag.resetJob (gulag, self.object)
        end
@@ -281,7 +281,7 @@ function action_follow:calculate_position ()
        need_id = l_vid
     else
        if self.object:accessible (need_id) == false then
-          utils.abort ("FOLLOWER %s, ACCESSIBLE VERTEX ID ERROR !!!", self.object:name ())
+          abort ("FOLLOWER %s, ACCESSIBLE VERTEX ID ERROR !!!", self.object:name ())
        end 
     end
     
@@ -290,7 +290,7 @@ function action_follow:calculate_position ()
        if self.object:accessible (need_id) == false then
           printf ("!!!ERROR!!! Follower %s can't found accessible vertex id !!!", self.object:name ())
           need_id = self.object:nearest_accessible_position ()
-          --utils.abort ("ERROR: can't find vertex id for object %s", self.object:name ())
+          --abort ("ERROR: can't find vertex id for object %s", self.object:name ())
        end 
     end
     

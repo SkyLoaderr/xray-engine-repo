@@ -20,7 +20,7 @@ function snd_source:reset_scheme()
 	self.st.signals = {}
 	--load the sounds
 	if sound_theme.ph_snd_themes[self.st.theme] == nil or table.getn (sound_theme.ph_snd_themes[self.st.theme]) == 0 then
-	   utils.abort ("Invalid sound theme for object %s", self.object:name ())
+	   abort ("Invalid sound theme for object %s", self.object:name ())
 	   return
 	end
 	printf ("Load theme %s", self.st.theme)

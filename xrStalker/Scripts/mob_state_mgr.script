@@ -32,7 +32,7 @@ function set_state(obj, actor, state)
 		end
 	end
 
-	utils.abort("mob_state_mgr: object '%s': unknown state '%s' requested",
+	abort("mob_state_mgr: object '%s': unknown state '%s' requested",
 		obj:name(), state)
 end
 

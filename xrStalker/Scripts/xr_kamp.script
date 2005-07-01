@@ -143,10 +143,10 @@ function action_go_position:execute ()
 				self.object:set_path_type(game_object.level_path)
 				state_mgr.set_state(self.object, "walk")	
 			else
-				utils.abort("KAMP NODE IS NOT ACCESIBLE. npc=%s center_point=%s", self.object:name(), self.a.center_point)
+				abort("KAMP NODE IS NOT ACCESIBLE. npc=%s center_point=%s", self.object:name(), self.a.center_point)
 			end
 		else
-			utils.abort("There are no free kamp nodes. npc=%s center_point=%s", self.object:name(), self.a.center_point)
+			abort("There are no free kamp nodes. npc=%s center_point=%s", self.object:name(), self.a.center_point)
 		end
 	end
 end

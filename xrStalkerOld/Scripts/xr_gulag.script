@@ -270,7 +270,7 @@ function fract:get_stype( obj )
 	elseif IsMonster( obj ) then
 		return modules.stype_mobile
 	else
-		utils.abort( "[smart terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, obj:name() )
+		abort( "[smart terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, obj:name() )
 	end
 end
 

@@ -77,7 +77,7 @@ end
 function action_door:door_play_snd_from_set(sndset)
 	local snd = mob_sound.pick_sound_from_set(self.object, sndset, {})
 	if not snd then
-		utils.abort("physic object '%s': section '%s': sound set '%s' does not exist",
+		abort("physic object '%s': section '%s': sound set '%s' does not exist",
 			self.object:name(), self.st.section, sndset)
 	end
     
@@ -88,7 +88,7 @@ function action_door:door_play_snd_from_set(sndset)
         	
 	self.snd_obj = sound_object(snd)
 	if not self.snd_obj then
-		utils.abort("object '%s': unable to create a sound object for sound '%s' (soundset '%s')",
+		abort("object '%s': unable to create a sound object for sound '%s' (soundset '%s')",
 			self.object:name(), snd, sndset)
 	end
 	self.snd_obj:play_at_pos(self.object, self.object:position())--, 0, sound_object.s2d) -- FIXME: don't use position()
@@ -98,7 +98,7 @@ function action_door:update(delta)
 	--printf("_bp: action_door:update()", delta)
 
 	if not self.initialized then
-		utils.abort("object '%s': door failed to initialize", self.object:name())
+		abort("object '%s': door failed to initialize", self.object:name())
 	end
 
 	local actor = db.actor

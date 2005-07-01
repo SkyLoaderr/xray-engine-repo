@@ -30,14 +30,6 @@ function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 
 ----------------------------------------------------------------------------------------------------
 
--- Крешнуть игру (после вывода сообщения об ошибке в лог)
-function abort(fmt, ...)
-	local reason = string.format(fmt, unpack(arg))
-	printf("ERROR: %s", reason)
-	error_log("ERROR: " .. reason)
-	string.format("%s") -- crash the script
-end
-
 -- Выводит отладочное сообщение в лог, если скрипт активен (активный скрипт выбирается с помощью
 -- переменной debug_info.trace_script). 
 function trace(script_name, fmt, ...)
@@ -78,7 +70,7 @@ end
 -- Возвращает true или false
 function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 	if mandatory == nil then
-		utils.abort("section '%s': wrong arguments order in call to cfg_get_bool", section)
+		abort("section '%s': wrong arguments order in call to cfg_get_bool", section)
 	end
 	
 	--printf("DEBUG: conf_get_bool: section='%s', field='%s'", section, field)
@@ -89,20 +81,20 @@ function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 	if not mandatory then
 		if default_val then
 			if default_val ~= false and default_val ~= true then
-				utils.abort("object '%s': section '%s': field '%s': default value is " ..
+				abort("object '%s': section '%s': field '%s': default value is " ..
 					"not boolean", object:name(), section, field)
 			end
 			return default_val
 		end
 		return false
 	end
-	utils.abort("object '%s': attempt to read a non-existant boolean field '%s' in " ..
+	abort("object '%s': attempt to read a non-existant boolean field '%s' in " ..
 		"section '%s'", object:name(), field, section)
 end
 
 function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name, default_val)
 	if mandatory == nil or gulag_name == nil then
-		utils.abort("section '%s': wrong arguments order in call to cfg_get_string", section)
+		abort("section '%s': wrong arguments order in call to cfg_get_string", section)
 	end
 
 
@@ -119,12 +111,12 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 	end
 	local err = "object name '" .. object:name() .. "': attempt to read a non-existant string field '" ..
 		field .. "' in section '" .. section .. "'";
-	utils.abort("%s", err)
+	abort("%s", err)
 end
 
 function cfg_get_number(char_ini, section, field, object, mandatory, default_val)
 	if mandatory == nil then
-		utils.abort("section '%s': wrong arguments order in call to cfg_get_number", section)
+		abort("section '%s': wrong arguments order in call to cfg_get_number", section)
 	end
 
 	--printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
@@ -136,7 +128,7 @@ function cfg_get_number(char_ini, section, field, object, mandatory, default_val
 	end
 	local err = "object name '" .. object:name() .. "': attempt to read a non-existant numeric field '" ..
 		field .. "' in section '" .. section .. "'";
-	utils.abort("%s", err)
+	abort("%s", err)
 end
 
 function mob_get_string(char_ini, section, field, override, object, mandatory, default_val)
@@ -293,7 +285,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 			-- continue
 		else
 			if param == "" then
-				utils.abort("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
+				abort("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
 			end
 
 			fld_num = 1
@@ -305,14 +297,14 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 				elseif fld_num == 2 then
 					val = v
 				else
-					utils.abort("path '%s': waypoint '%s': syntax error while parsing the param '%s'",
+					abort("path '%s': waypoint '%s': syntax error while parsing the param '%s'",
 						pathname, wpname, param)
 				end
 				fld_num = fld_num + 1
 			end
 
 			if not fld or fld == "" then
-				utils.abort("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",
+				abort("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",
 					pathname, wpname, param)
 			end
 
@@ -341,7 +333,7 @@ function path_parse_waypoints(pathname)
 		--printf("_bp: %s", ptr:name(pt))
 		rslt[pt] = parse_waypoint_data(pathname, ptr:flags(pt), ptr:name(pt))
 		if not rslt[pt] then
-			utils.abort("error while parsing point %d of path '%s'", pt, pathname)
+			abort("error while parsing point %d of path '%s'", pt, pathname)
 		end
 
 	end
@@ -358,7 +350,7 @@ function path_parse_waypoints_from_arglist(pathname, num_points, ...)
 	local cnt = ptr:count()
 
 	if cnt ~= num_points then
-		utils.abort("path '%s' has %d points, but %d points were expected", pathname, cnt, num_points)
+		abort("path '%s' has %d points, but %d points were expected", pathname, cnt, num_points)
 	end
 
 	local rslt = {}
@@ -368,13 +360,13 @@ function path_parse_waypoints_from_arglist(pathname, num_points, ...)
 	for pt = 0, cnt-1 do
 		cur_arg = arg[pt + 1]
 		if not cur_arg then
-			utils.abort("script error [1] while processing point %d of path '%s'", pt, pathname)
+			abort("script error [1] while processing point %d of path '%s'", pt, pathname)
 		end
 		fl = flags32()
 		fl:assign(cur_arg[1])
 		rslt[pt] = parse_waypoint_data(pathname, fl, cur_arg[2])
 		if not rslt[pt] then
-			utils.abort("script error [2] while processing point %d of path '%s'", pt, pathname)
+			abort("script error [2] while processing point %d of path '%s'", pt, pathname)
 		end
 	end
 
@@ -520,7 +512,7 @@ function get_nearest_waypoint(obj, pathname, ptr, cnt)
 		end
 	end
 	if not pt_chosen then
-		utils.abort("object '%s': path '%s': get_nearest_waypoint: unable to choose a nearest waypoint (path has no waypoints?)",
+		abort("object '%s': path '%s': get_nearest_waypoint: unable to choose a nearest waypoint (path has no waypoints?)",
 			obj:name(), pathname)
 	end
 	return pt_chosen

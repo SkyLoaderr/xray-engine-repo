@@ -1085,5 +1085,13 @@ function id_by_sid( sid )
 
 	return nil
 end
+
+-- Крешнуть игру (после вывода сообщения об ошибке в лог)
+function abort(fmt, ...)
+	local reason = string.format(fmt, unpack(arg))
+	printf("ERROR: %s", reason)
+	error_log("ERROR: " .. reason)
+	string.format("%s") -- crash the script
+end
    
 --profiler.setup_hook	()

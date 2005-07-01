@@ -278,7 +278,7 @@ end
 function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then
 		return
-		--utils.abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
+		--abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
 	end
 	
 	if self.flag ~= flag then

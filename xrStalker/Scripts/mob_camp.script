@@ -33,7 +33,7 @@ function mob_camp:reset_scheme()
 	-- initialize look point
 	self.look_path = patrol(self.st.look_point)
 	if not self.look_path then
-		utils.abort("object '%s': unable to find look_point '%s' on the map",
+		abort("object '%s': unable to find look_point '%s' on the map",
 			self.object:name(), self.st.look_point)
 	end
 
@@ -41,7 +41,7 @@ function mob_camp:reset_scheme()
 	if self.st.home_point then
 		self.home_path = patrol(self.st.home_point)
 		if not self.home_path then
-			utils.abort("object '%s': unable to find home_point '%s' on the map",
+			abort("object '%s': unable to find home_point '%s' on the map",
 				self.object:name(), self.st.home_point)
 		end
 	else
@@ -52,7 +52,7 @@ function mob_camp:reset_scheme()
 	-- if there is home path and look path - point count must be equal
 	if self.home_path then
 		if (self.home_path:count() ~= self.look_path:count()) then
-			utils.abort("object '%s': you must setup home path points count must be equal to look path points count!", self.object:name())	
+			abort("object '%s': you must setup home path points count must be equal to look path points count!", self.object:name())	
 		end
 	end
 
@@ -265,12 +265,12 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	-- check min and max radius
 	if	storage.home_min_radius > storage.home_max_radius then
-		utils.abort("Mob_Camp : Home Min Radius MUST be < Max Radius")
+		abort("Mob_Camp : Home Min Radius MUST be < Max Radius")
 	end 
 	
 	-- check if there is look point (must be!)
 	if (not storage.look_point) or (not patrol(storage.look_point)) then
-		utils.abort("object '%s': unable to find look_point '%s' on the map",
+		abort("object '%s': unable to find look_point '%s' on the map",
 					npc:name(), storage.look_point)
 	end
 end

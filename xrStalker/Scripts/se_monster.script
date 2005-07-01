@@ -44,7 +44,7 @@ function se_monster:can_switch_online ()
 		            self.min_distance = 150
 		         else 
 		            if self.min_distance <= 50 then
-		               utils.abort ("SE_MONSTER - SWITCH DISTANCE IS TOO SMALL !!!") 
+		               abort ("SE_MONSTER - SWITCH DISTANCE IS TOO SMALL !!!") 
 		            end
 		         end   
 		      else

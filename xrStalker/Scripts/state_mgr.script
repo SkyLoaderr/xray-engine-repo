@@ -760,7 +760,7 @@ end
 function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
 	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
-		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
+		abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
 	end
 	if target then
 		if target.look_position then

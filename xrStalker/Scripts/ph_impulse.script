@@ -112,7 +112,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		st.force_min = 0.5
 		st.force_max = 1.5
 	else
-		utils.abort("object '%s': please specify both force_min and force_max fields in customdata",
+		abort("object '%s': please specify both force_min and force_max fields in customdata",
 			npc:object())
 	end
 	st.velocity  = utils.cfg_get_number(ini, section, "velocity", npc, false)
@@ -129,7 +129,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 			st.velocity_y = 0
 			st.velocity_z = 0.1
 		else
-			utils.abort("object '%s': please specify all three velocity_x, " ..
+			abort("object '%s': please specify all three velocity_x, " ..
 				"velocity_y and velocity_z fields in customdata", npc:object())
 		end
 	end

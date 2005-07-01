@@ -68,7 +68,7 @@ class "move_mgr"
 
 function move_mgr:__init(npc)
 	if npc == nil then
-		utils.abort("move_mgr:__init() - npc is nil, please update the script")
+		abort("move_mgr:__init() - npc is nil, please update the script")
 	end
 	self.object = npc
 	--self.dialog_mgr = xr_dialogs.dialog_mgr() UNCOMMENT ME
@@ -76,7 +76,7 @@ end
 
 function move_mgr:initialize(npc)
 	if npc ~= nil then
-		utils.abort("Wrong arguments passed to move_mgr:initialize(), please update the script")
+		abort("Wrong arguments passed to move_mgr:initialize(), please update the script")
 	end
 	--printf("move_mgr:initialize()")
 
@@ -91,7 +91,7 @@ function move_mgr:validate_paths()
 	local patrol_walk_count = self.patrol_walk:count()
 	if patrol_walk_count == 1 then
 		if self.path_walk_info[0].flags:get() == 0 then
-			utils.abort("object '%s': path_walk '%s' has 1 waypoint, but has no flags",
+			abort("object '%s': path_walk '%s' has 1 waypoint, but has no flags",
 				self.object:name(), self.path_walk)
 		end
 	end
@@ -135,23 +135,23 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	
 	self.patrol_walk = patrol(path_walk)
 	if not self.patrol_walk then
-		utils.abort("object '%s': unable to find path_walk '%s' on the map",
+		abort("object '%s': unable to find path_walk '%s' on the map",
 			self.object:name(), path_walk)
 	end
 	if not path_walk_info then
-		utils.abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
+		abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
 			self.object:name(), path_walk)
 	end
 	self.path_walk_info = path_walk_info
 
 	if path_look then
 		if not path_look_info then
-			utils.abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
+			abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
 				self.object:name(), path_look)
 		end
 		self.patrol_look = patrol(path_look)
 		if not self.patrol_look then
-			utils.abort("object '%s': unable to find path_look '%s' on the map",
+			abort("object '%s': unable to find path_look '%s' on the map",
 				self.object:name(), path_look)
 		end
 	else
@@ -440,7 +440,7 @@ function move_mgr:time_callback()
 		self:update_movement_state() -- идти дальше
 		local syn = self.path_look_info[self.last_look_index]["syn"]
 		if syn then
-			utils.abort("object '%s': path_walk '%s': syn flag used on non-terminal waypoint",
+			abort("object '%s': path_walk '%s': syn flag used on non-terminal waypoint",
 				self.object:name(), self.path_walk)
 		end
 	end
@@ -465,7 +465,7 @@ function move_mgr:turn_end_callback()
 		--self.syn_signal_set_tm = time_global() + 1000
 		self.syn_signal = self.path_look_info[self.last_look_index]["sig"]
 		if not self.syn_signal then
-			utils.abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)
+			abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)
 		end
 
 		-- Отметить, что мы сами уже прибыли в точку синхронизации:		
@@ -489,7 +489,7 @@ function move_mgr:turn_end_callback()
 
 	if self.retval_after_rotation then
 		if not self.move_cb_info then
-			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+			abort("object '%s': path_look '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_look)
 		end
@@ -504,7 +504,7 @@ function move_mgr:turn_end_callback()
 		state_mgr.set_state(self.object, self.cur_state_standing, nil, nil, nil)
 		-- 2) Вызываем callback
 		if not self.move_cb_info then
-			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+			abort("object '%s': path_look '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_look)
 		end
@@ -538,12 +538,12 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if suggested_snd then
 		local snd_from = self.path_walk_info[index]["sf"]
 		if snd_from then
-			utils.abort("move_mgr: object '%s': 'sf' field is deprecated",
+			abort("move_mgr: object '%s': 'sf' field is deprecated",
 				self.object:name())
 		end
 		local snd_to = self.path_walk_info[index]["st"]
 		if snd_to then
-			utils.abort("move_mgr: object '%s': 'st' field is deprecated",
+			abort("move_mgr: object '%s': 'st' field is deprecated",
 				self.object:name())
 		end
 
@@ -556,13 +556,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		local suggested_snd_cont = self.path_walk_info[index]["sc"]
 		if suggested_snd_cont then
-			utils.abort("move_mgr: object '%s': 'sc' field is deprecated",
+			abort("move_mgr: object '%s': 'sc' field is deprecated",
 				self.object:name())
 		end
 
 		local snd_wait_anim = self.path_walk_info[index]["sa"]
 		if snd_wait_anim then
-			utils.abort("move_mgr: object '%s': 'sa' field is deprecated",
+			abort("move_mgr: object '%s': 'sa' field is deprecated",
 				self.object:name())
 		end
 		
@@ -588,7 +588,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		local retv_num = tonumber(retv)
 		
 		if not self.move_cb_info then
-			utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
+			abort("object '%s': path_walk '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_walk)
 		end
@@ -635,7 +635,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			else
 				local tm = tonumber(suggested_wait_time)
 				if tm ~= 0 and (tm < 1000 or tm > 30000) then
-					utils.abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number in interval [1000, 30000] is expected)",
+					abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number in interval [1000, 30000] is expected)",
 						self.object:name(), self.path_look)
 				end
 				self.pt_wait_time = tm
@@ -686,7 +686,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
 		self:update()
 	else
-		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
+		abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
 			self.object:name(), self.path_walk, index, self.path_look)
 	end
 end

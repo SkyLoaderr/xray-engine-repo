@@ -95,7 +95,7 @@ function action_guide_activity:move_callback(mode, number)
 		xr_motivator.storage[self.object:id()].robber.enabled = true
 		return false -- false т.к. мы не меняли параметры движения в схеме, просто активировали другую...
 	end
-	utils.abort("object '%s': invalid 'ret' value specified in path: ret = %d", self.object:name(), number)
+	abort("object '%s': invalid 'ret' value specified in path: ret = %d", self.object:name(), number)
 	return false
 end
 

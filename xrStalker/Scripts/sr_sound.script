@@ -244,7 +244,7 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 	end
 
 	if table.getn( st.sound_names ) == 0 then
-		utils.abort( "restrictor '%s': no sounds specified in section '%s'", obj:name(), section )
+		abort( "restrictor '%s': no sounds specified in section '%s'", obj:name(), section )
 	end
 
 --	printf( table.concat( self.sound_names, "  " ) )

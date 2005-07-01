@@ -350,7 +350,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_wpn = utils.cfg_get_bool            (ini, section,   "no_wpn",          npc, false)
 	st.snd_anim_sync = utils.cfg_get_bool     (ini, section,   "snd_anim_sync",       npc, false)
 	if st.no_wpn then
-		utils.abort("object '%s': xr_remark.set_scheme: no_wpn field is deprecated", npc:name())
+		abort("object '%s': xr_remark.set_scheme: no_wpn field is deprecated", npc:name())
 	end
 	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
 	st.snd_dist = utils.cfg_get_number        (ini, section,   "snd_dist",        npc, false,     5)
@@ -365,7 +365,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
 
 	if not st.no_move and st.anim then
-		utils.abort("object '%s': section '%s': anim field specified, when no_move is false",
+		abort("object '%s': section '%s': anim field specified, when no_move is false",
 			npc:name(), section)
 	end
 end

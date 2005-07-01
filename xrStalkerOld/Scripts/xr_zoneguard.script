@@ -195,7 +195,7 @@ function action_zoneguard_activity:fsm_step()
 		self.st.zone_guard_obj = db.zone_by_name[self.st.zone_guard]
 		if self.st.zone_guard_obj then
 			if self.st.zone_guard_obj:clsid() == clsid.script_zone then
-				utils.abort("object '%s': you must use a restrictor instead of script zone '%s'",
+				abort("object '%s': you must use a restrictor instead of script zone '%s'",
 				            self.object:name(), self.st.zone_guard)
 			end
 			self.zone_appear_wait_end_time = nil
@@ -205,7 +205,7 @@ function action_zoneguard_activity:fsm_step()
 			if not self.zone_appear_wait_end_time then
 				self.zone_appear_wait_end_time = time_global() + zone_appear_in_db_wait_timeout
 			elseif time_global() >= self.zone_appear_wait_end_time then
-				utils.abort("object '%s': unable to find zone_guard '%s' on the map",
+				abort("object '%s': unable to find zone_guard '%s' on the map",
 					self.object:name(), self.st.zone_guard)
 			end
 			return
@@ -216,7 +216,7 @@ function action_zoneguard_activity:fsm_step()
 		self.st.zone_warn_obj = db.zone_by_name[self.st.zone_warn]
 		if self.st.zone_warn_obj then
 			if self.st.zone_warn_obj:clsid() == clsid.script_zone then
-				utils.abort("object '%s': you must use a restrictor instead of script zone '%s'",
+				abort("object '%s': you must use a restrictor instead of script zone '%s'",
 				            self.object:name(), self.st.zone_warn)
 			end
 			self.zone_appear_wait_end_time = nil
@@ -226,7 +226,7 @@ function action_zoneguard_activity:fsm_step()
 			if not self.zone_appear_wait_end_time then
 				self.zone_appear_wait_end_time = time_global() + zone_appear_in_db_wait_timeout
 			elseif time_global() >= self.zone_appear_wait_end_time then
-				utils.abort("object '%s': unable to find zone_warn '%s' on the map",
+				abort("object '%s': unable to find zone_warn '%s' on the map",
 					self.object:name(), self.st.zone_warn)
 			end
 			return

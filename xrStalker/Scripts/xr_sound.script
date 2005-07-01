@@ -143,7 +143,7 @@ function play_sound(npc, themes, personal)
 		if sound_theme.theme[npc:id()][v] ~= nil then
 			get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
 		else
-			utils.abort("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
+			abort("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
 		end
 		t = t + 1
 	end	

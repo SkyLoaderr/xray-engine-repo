@@ -49,7 +49,7 @@ function mob_remark:reset_scheme()
 		if sndset and an then
 			local snd = mob_sound.pick_sound_from_set(self.object, sndset, {})
 			if not snd then
-				utils.abort("mobile '%s': section '%s': sound set '%s' does not exist",
+				abort("mobile '%s': section '%s': sound set '%s' does not exist",
 					self.object:name(), self.st.section, sndset)
 			end
 			

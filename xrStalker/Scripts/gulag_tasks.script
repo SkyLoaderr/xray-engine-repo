@@ -611,7 +611,7 @@ function loadStates(gname, type)
 		return f
 	end
 
-	utils.abort("ERROR: unrecognized gulag's type '%s'", type)
+	abort("ERROR: unrecognized gulag's type '%s'", type)
 end
 
 function get_megafone(type, name)

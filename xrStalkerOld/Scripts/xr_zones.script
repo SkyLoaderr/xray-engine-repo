@@ -19,7 +19,7 @@ function bind( obj )
 				printf( "No simulation! SMART_TERRAIN '%s' disabled.", obj:name() )
 			end
 		else
-			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", obj:name() )
+			abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", obj:name() )
 		end
 	end
 end

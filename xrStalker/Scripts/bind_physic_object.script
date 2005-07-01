@@ -15,7 +15,7 @@ function init(obj)
 	local ini = obj:spawn_ini()
 	if ini and ini:section_exist("animation") then
 		--obj:bind_object(handing_lamp_binder(obj))
-		utils.abort("object '%s': animation section is deprecated, use logic + impulse combination",
+		abort("object '%s': animation section is deprecated, use logic + impulse combination",
 			obj:name())
 		return
 	end

@@ -30,14 +30,14 @@ function mob_walker:reset_scheme()
 
 	self.patrol_walk = patrol(self.st.path_walk)
 	if not self.patrol_walk then
-		utils.abort("object '%s': unable to find path_walk '%s' on the map",
+		abort("object '%s': unable to find path_walk '%s' on the map",
 			self.object:name(), self.st.path_walk)
 	end
 	
 	if self.st.path_look then
 		self.patrol_look = patrol(self.st.path_look)
 		if not self.patrol_look then
-			utils.abort("object '%s': unable to find path_look '%s' on the map",
+			abort("object '%s': unable to find path_look '%s' on the map",
 				self.object:name(), self.st.path_look)
 		end
 	else
@@ -206,7 +206,7 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
 		self:update(true)
 	else
-		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
+		abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
 			self.object:name(), self.path_walk, index, self.path_look)
 	end
 end

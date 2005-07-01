@@ -70,7 +70,7 @@ end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	if npc:clsid() ~= clsid.trader then
-		utils.abort("object '%s': attempt to use mob_trade script on non-trader mobile", npc:name())
+		abort("object '%s': attempt to use mob_trade script on non-trader mobile", npc:name())
 	end
 
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)

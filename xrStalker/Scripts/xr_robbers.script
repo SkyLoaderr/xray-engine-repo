@@ -148,13 +148,13 @@ function action_robber_activity:reset_scheme()
 
 	self.patrol_rob = patrol(self.st.path_rob)
 	if not self.patrol_rob then
-		utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.st.path_rob .. "'")
+		abort("%s", "xr_robbers: unable to find patrol path '" .. self.st.path_rob .. "'")
 	end
 
 	if self.st.zone_rob then
 		self.zone_rob_obj = level.object(self.st.zone_rob)
 		if not self.zone_rob_obj then
-			utils.abort("object '%s': unable to find zone_rob '%s' on the map",
+			abort("object '%s': unable to find zone_rob '%s' on the map",
 					self.object:name(), self.st.zone_rob)
 		end
 	else
@@ -616,7 +616,7 @@ function set_robber(object, activated_by_script, enabled, team, path_rob, dist, 
 	if utils.conf_get_string(char_ini, "robber", "bait_path", bait_path, object, false) or
 	   utils.conf_get_string(char_ini, "robber", "bait_object", bait_object, object, false) or
 	   utils.conf_get_bool(char_ini, "robber", "bait_self", bait_self, object, false) then
-	   	utils.abort("object '%s': attempt to use a deprecated robbers script, please reconfigure robbers",
+	   	abort("object '%s': attempt to use a deprecated robbers script, please reconfigure robbers",
 			object:name())
 	end
 	
