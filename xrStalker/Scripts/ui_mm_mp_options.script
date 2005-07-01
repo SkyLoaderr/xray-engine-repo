@@ -34,11 +34,8 @@ function mp_options:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_options:cap_starting_weather",	self.bk)
 	xml:InitStatic("tab_options:cap_rate_of_change",	self.bk)
 	
-	local btn
-	
-	handler.check_public_server = xml:InitCheck("tab_options:check_public_server", self.bk)
-	btn = xml:InitCheck("tab_options:check_map_rotation", self.bk)
-	btn:Enable(false)
+	handler.check_public_server			= xml:InitCheck("tab_options:check_public_server", self.bk)
+	handler.check_map_rotation			= xml:InitCheck("tab_options:check_map_rotation", self.bk)
 	handler.check_spectator				= xml:InitCheck("tab_options:check_spectator",				self.bk)
 	handler.check_allow_voting			= xml:InitCheck("tab_options:check_allow_voting",			self.bk)
 	handler.check_damage_block			= xml:InitCheck("tab_options:check_damage_block",			self.bk)
@@ -50,6 +47,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	handler.spin_weather				= xml:InitSpinText("tab_options:spin_weather",				self.bk)
 	handler.spin_friendly_fire			= xml:InitSpinNum("tab_options:spin_friendly_fire",			self.bk)
 	handler.spin_artefacts_num			= xml:InitSpinNum("tab_options:spin_artefacts_num",			self.bk)
+	handler.edit_maprotlist				= xml:InitEditBox("tab_options:edit_maprotlist",			self.bk)
 	handler.edit_spectator				= xml:InitEditBox("tab_options:edit_spectator",				self.bk)
 	handler.edit_force_respawn			= xml:InitEditBox("tab_options:edit_force_respawn", self.bk)
 	handler.edit_reinforcement 			= xml:InitEditBox("tab_options:edit_reinforcement", self.bk)
@@ -71,7 +69,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	handler.edit_anomaly_time			= xml:InitSpinNum("tab_options:edit_anomaly_time",			self.bk)
 	
 	handler.edit_rate_of_change			= xml:InitEditBox("tab_options:edit_rate_of_change",		self.bk)
-	handler.edit_rate_of_change:Enable(false)
+	handler.edit_rate_of_change:SetText("1.0")
 end
 
 function mp_options:SetGameMode(mode, handler)

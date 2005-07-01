@@ -354,6 +354,14 @@ function mp_main:GatherServerData()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/etimef=" .. tmp
 	end
+	
+	if self.check_map_rotation:GetCheck() then
+		tmp = handler.edit_maprotlist:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/maprot=" .. tmp ..".ltx"
+		end	
+	end	
+	
 		
 	self.map_list:SetServerParams(cmdstr)	
 end
