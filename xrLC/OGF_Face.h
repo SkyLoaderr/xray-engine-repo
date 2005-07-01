@@ -145,6 +145,8 @@ struct OGF : public OGF_Base
 	u16					_BuildVertex		(OGF_Vertex& V1);
 	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_ = true);
 
+	void				adjacent_select		(xr_vector<u32>& dest, xr_vector<bool>& vmark, xr_vector<bool>& fmark);
+
 	void				Optimize			();
 	void				CalculateTB			();
 	void				MakeProgressive		(float metric_limit);
