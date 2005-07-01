@@ -28,10 +28,10 @@ engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4200        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 2800.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.02
-power_decrement_factor	= 0.08
-rpm_increment_factor	= 0.025
-rpm_decrement_factor	= 0.10
+power_increment_factor	= 0.15
+power_decrement_factor	= 0.3
+rpm_increment_factor	= 0.005
+rpm_decrement_factor	= 0.01
 
 ; additional engine parameters
 
@@ -57,8 +57,8 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 750,1000	
-N1                 		= 3.73, 750,4500
+R                  		= 3.73, 2000,4500	
+N1                 		= 3.73, 2000,4500
 N2                 		= 2.29, 2000,4500
 N3                 		= 1.39, 2000,4500
 N4                 		= 0.96, 2000,4500
@@ -213,49 +213,49 @@ explode_duration    	= 50			;подолжительность взрыва (с)
 snd_explode 			= weapons\heli_explosion
 
 [explode_effector]
-time					=  0.75 ; 0.5
-amplitude				=  5.0; 3.5
-period_number	    	=  50 ; 11.0
+time					=  0.75
+amplitude				=  5.0
+period_number	    	=  50
 
 ;-------------------------------------------------------------------------------
 ;------ Others params ----------------------------------------------------------
 
 [air_resistance]
-linear_factor           =  10000.f	;
-angular_factor          =  10000.f	;
+linear_factor           = 20000.f	;
+angular_factor          = 5000.f	;
 
 [wheels_params]
-damping_factor          =  1		; 
-spring_factor           =  1		;
-friction_factor         =  0.6		;
+damping_factor          = 1			; 
+spring_factor           = 1			;
+friction_factor         = 0.7		;
 
 [front_left_wheel]
 break_torque			= 0.02		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.003		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 1			;
 spring_factor           = 1 		;
-friction_factor         = 0.6		;
+friction_factor         = 0.7		;
 
 [front_right_wheel]
 break_torque			= 0.02		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.003		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 1			;
 spring_factor           = 1 		;
-friction_factor         = 0.6		;
+friction_factor         = 0.7		;
 
 [back_left_wheel]
 break_torque			= 0.015		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 1			;
 spring_factor           = 1 		;
-friction_factor         = .65		;
+friction_factor         = .75		;
 
 [back_right_wheel]
 break_torque			= 0.015		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 1			;
 spring_factor           = 1 		;
-friction_factor         = 0.65		;
+friction_factor         = 0.75		;
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
