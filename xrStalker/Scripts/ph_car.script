@@ -128,7 +128,7 @@ function action_car:reset_scheme(loading)
 		    abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
 	    end
 
-        self:start_car()
+        --self:start_car()
 	    self.path_walk_count = self.path_walk:count()
 
 	    if not self.path_walk_info then
@@ -328,7 +328,7 @@ function action_car:go_to_walkpoint(pt)
 		if self.state_moving ~= state_moving_fwd then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
-				move(move.fwd, self.speed), --move.on + 
+				move(move.on + move.fwd, self.speed), --
 				object("right_light", object.deactivate),
 				object("left_light", object.deactivate),
 				cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
@@ -344,7 +344,7 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.fwd + move.left, self.speed), --move.on + 
+					move(move.on + move.fwd + move.left, self.speed), --
 					object("right_light", object.deactivate),
 					object("left_light", object.activate),
 					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
@@ -354,7 +354,7 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_right then
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.fwd + move.right, self.speed), --move.on + 
+					move(move.on + move.fwd + move.right, self.speed), --
 					object("right_light", object.activate),
 					object("left_light", object.deactivate),
 					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
@@ -374,7 +374,7 @@ end
 function action_car:stop_car()
     printf("car <move>: car stopping.")
 	xr_logic.mob_capture(self.object, true)
-	action(self.object, move(move.off, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
+	action(self.object, move(move.off + move.handbrake, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
 	self.speed = 0
 end
 
@@ -747,7 +747,7 @@ function action_car:fast_update()
 	        self.fc_upd_num = n + 1
 	    end
 	    self.fc_last_upd_tm = time
-	    printf("_pc: average update = %f, time(%f)", self.fc_upd_avg, time)
+	    --printf("_pc: average update = %f, time(%f)", self.fc_upd_avg, time)
 	end
 
 	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
