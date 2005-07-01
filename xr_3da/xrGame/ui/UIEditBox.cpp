@@ -40,6 +40,7 @@ CUIEditBox::CUIEditBox(void)
 	SetText("");
 	m_textPos.set(3,0);
 	m_bNumbersOnly = false;
+	m_bFloatNumbers = false;
 
 	m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
 	m_cursorColor = 0xAAFFFF00;
@@ -189,8 +190,10 @@ bool CUIEditBox::KeyPressed(int dik)
 	}
 
 	if (m_bNumbersOnly)
-		if ('.' == out_me)
+	{
+		if (('.' == out_me) && m_bFloatNumbers)
 			AddChar(out_me);
+	}
 	else
 		AddChar(out_me);
 
@@ -341,4 +344,8 @@ void CUIEditBox::Enable(bool status){
 
 void CUIEditBox::SetNumbersOnly(bool status){
 	m_bNumbersOnly = status;
+}
+
+void CUIEditBox::SetFloatNumbers(bool status){
+	m_bFloatNumbers = status;
 }

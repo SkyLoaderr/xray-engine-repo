@@ -291,6 +291,10 @@
 			<text font="letterica16" r="115" g="114" b="112">No Anomalies</text>
 		</check_no_anmalies>
 		
+		<edit_maprotlist x="123" y="65" width="98" height="23">
+			<options_item entry="net_con_maprotlist" group="mm_mp_server"/>
+			<texture>ui_linetextSmall_e</texture>			
+		</edit_maprotlist>		
 		<edit_spectator x="175" y="90" width="45" height="23" numonly="1">
 			<options_item entry="net_con_spectator" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
@@ -336,8 +340,8 @@
 			<texture>ui_linetextSmall_d</texture>
 		</edit_anomaly_time>
 		
-		<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1">
-			<options_item entry="net_weather_rateofchange" group="mm_mp_server"/>
+		<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1" float="1">
+			<!--options_item entry="net_weather_rateofchange" group="mm_mp_server"/-->
 			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
 		

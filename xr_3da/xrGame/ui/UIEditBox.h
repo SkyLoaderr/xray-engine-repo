@@ -35,6 +35,7 @@ public:
 	virtual	void	SetText			(LPCSTR str);
 	virtual void	Enable			(bool status);
 			void	SetNumbersOnly	(bool status);
+			void	SetFloatNumbers	(bool status);
 protected:
 
 	bool KeyPressed(int dik);
@@ -47,6 +48,7 @@ protected:
 	bool m_bShift;
 
 	bool m_bNumbersOnly;
+	bool m_bFloatNumbers;
 
 	//DIK клавиши, кот. нажата и удерживается, 0 если такой нет
 	int m_iKeyPressAndHold;

@@ -73,6 +73,7 @@ void CUIOptConCom::Init(){
 	strcpy(m_serverName, Core.CompName);
 
 	CMD3(CCC_String,	"net_srv_name",				m_serverName,	64);
+	CMD3(CCC_String,	"net_con_maprotlist",		m_maprotlist,	64);
 
 
 

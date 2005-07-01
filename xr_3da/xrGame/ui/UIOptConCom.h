@@ -32,6 +32,7 @@ protected:
 	u32			m_curGameMode;
 	string64	m_playerName;
 	string64	m_serverName;
+	string64	m_maprotlist;
 	int			m_iNetConSpectator;
 	int			m_iFriendlyFire;
 	int			m_iArtefactsNum;
