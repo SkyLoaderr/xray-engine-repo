@@ -79,8 +79,6 @@ function action_patrol:initialize()
 	
 	self:reset_scheme()
 	self.enemy_position = nil
-
-
 end
 function action_patrol:reset_scheme()
 	state_mgr.set_state(self.object, "patrol")	
@@ -173,12 +171,9 @@ function action_patrol:execute()
 		end
 	end
 
-
 	-- Три типа действия:
 	-- Есть враг
 	if self.enemy ~= nil then
-
-
 		if self.object:see(self.enemy) == true then
 			-- отстрел врага
 			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
@@ -224,61 +219,71 @@ function action_patrol:execute()
 		else
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
-
 				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 				-- сканируем
 				self:scan(-1)
 			else				
-				-- если норетрит или мы на месте - ныкаться, иначе идти на точку
+				-- если норетрит или мы на месте - ныкаться, иначе идти на точку				
 				if self:on_place() then 
 					printf("on place[%s]", self.object:name())
+					local position
+					if self.position then
+						position = {look_position = self.position}
+					end
 					if self.a.suggested_state.campering then
-						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil)
+						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position)
 					else
-						self.move_mgr:update()
-					end		
+						state_mgr.set_state(self.object, "hide", nil, nil, position)
+					end
 				else
-					-- идем дальше путем забывания врага
-					printf("not place[%s]", self.object:name())
-					self.object:enable_memory_object(self.enemy, false)
-					self.a.enemy_id = nil
-					self.enemy = nil
-					self.a.mem_enemy = nil
-					--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
+					-- идем дальше
 					self.move_mgr:continue()
+					self.move_mgr:update()
 				end
 			end
 		end
-	else
-		if self.a.sniper == true then
-			-- Сканирование местности в узловых точках
-			-- если мы на точке - запустить счетчик сканирования и посканировать определенное время.
-			if self:on_place() then
-				if self.scantime == nil then
-					self.scantime = time_global()
-				end
-				--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
-				-- сканируем
-				self:scan(self.a.wp_flag)
-				-- если мы стоим на финальной точке - не ресетить.
-				if self.move_mgr:standing_on_terminal_waypoint() then
-					return
-				end
-				-- проверка на завершение сканирования.
-				if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then
-					--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
-					self.move_mgr:continue()
-				end
-			else
-				self.scantime = nil
-				self.move_mgr:update()
+		return
+	end
+	
+	-- проверка на денжер.
+	best_danger = self.object:best_danger()
+	if best_danger then
+		if best_danger:type() == danger_object.grenade then
+			printf("danger_type [GRENADE]")
+		end
+		printf("danger_name [%s]", tostring(best_danger:object():name()))
+	end
+	
+
+	-- если нет ни врага ни денжера.	
+	if self.a.sniper == true then
+		-- Сканирование местности в узловых точках
+		-- если мы на точке - запустить счетчик сканирования и посканировать определенное время.
+		if self:on_place() then
+			if self.scantime == nil then
+				self.scantime = time_global()
+			end
+			--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
+			-- сканируем
+			self:scan(self.a.wp_flag)
+			-- если мы стоим на финальной точке - не ресетить.
+			if self.move_mgr:standing_on_terminal_waypoint() then
+				return
+			end
+			-- проверка на завершение сканирования.
+			if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then
+				--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
+				self.move_mgr:continue()
 			end
 		else
-			-- Перемещение по move_mgr
+			self.scantime = nil
 			self.move_mgr:update()
 		end
+	else
+		-- Перемещение по move_mgr
+		self.move_mgr:update()
+	end		
 		
-	end	
 end
 function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then
@@ -405,7 +410,8 @@ function add_to_binder(object, ini, scheme, section, storage)
 		action:add_precondition	(world_property(properties["can_fight"],	true))
 		xr_motivator.addCommonPrecondition(action)
 		action:add_effect (world_property(properties["end"],				true))
-		action:add_effect (world_property(stalker_ids.property_enemy,	false))
+		action:add_effect (world_property(stalker_ids.property_enemy,		false))
+		action:add_effect (world_property(stalker_ids.property_danger,		false))
 		manager:add_action (operators["patrol"], action)
 		xr_logic.subscribe_action_for_events(object, storage, action)
 
@@ -413,6 +419,10 @@ function add_to_binder(object, ini, scheme, section, storage)
 		action:add_precondition	(world_property(properties["end"],			true))
 
 		action = manager:action (stalker_ids.action_combat_planner)
+		action:add_precondition (world_property(properties["close_combat"],	true))
+		action:add_effect (world_property(properties["close_combat"],	false))
+
+		action = manager:action (stalker_ids.action_danger_planner)
 		action:add_precondition (world_property(properties["close_combat"],	true))
 		action:add_effect (world_property(properties["close_combat"],	false))
 end
