@@ -38,12 +38,17 @@ C++ class CCar : CGameObject,holder {
 };
 --]]
 
-local default_min_delta_per_sec = 0.2
-local default_min_car_explode_time = 1000
-local default_moving_speed = 10
---local default_arriving_factor = 0.4
-local default_min_fire_time = 0
-local default_update_time = 1.6
+local pi_2 = math.pi / 3 -- 60 degree
+
+local def_min_delta_per_sec = 0.2
+local def_min_car_explode_time = 1000
+local def_moving_speed = 10
+--local def_arriving_factor = 0.4
+local def_min_fire_time = 0
+local def_update_time = 1.6
+
+local def_max_fc_upd_num = 1000 -- default maximum fastcall updates num
+local def_arriving_koef = 3 --70
 
 local state_none = 0
 
@@ -71,15 +76,17 @@ function action_car:__init(obj, storage)
 	self.st = storage
 	self.car = self.object:get_car()
 	if self.car:HasWeapon() then
-	    self.car:Action(CCar.eWpnActivate,1)
-	    self.hasWeapon = true
+	  printf("car <fire>: car has weapon.")
+	  self.car:Action(CCar.eWpnActivate,1)
+	  self.hasWeapon = true
 	else
+	    printf("car <fire>: car hasn't weapon.")
 	    self.hasWeapon = false
 	end
 end
 
 function action_car:reset_scheme(loading)
---	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
+--	printf("_pc: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
 
@@ -94,15 +101,24 @@ function action_car:reset_scheme(loading)
 		self.min_car_explode_time = xr_logic.pstor_retrieve(self.object, "min_car_explode_time")
 		self.fire = xr_logic.pstor_retrieve(self.object, "fire")
 	else
-		self.speed = default_moving_speed
+		self.speed = def_moving_speed
 		self.loop = false
-		self.min_delta_per_sec = default_min_delta_per_sec
-		self.min_car_explode_time = default_min_car_explode_time
+		self.min_delta_per_sec = def_min_delta_per_sec
+		self.min_car_explode_time = def_min_car_explode_time
 		self.fire = false
 	end
 
 	xr_logic.mob_capture(self.object, true)
 	self.st.signals = {}
+
+	self.fc_upd_num = 0 -- fastcall updates num
+	self.fc_upd_avg = 150 -- average time of the fastcall updates (in millisecond)
+	self.fc_last_upd_tm = -1 -- fastcall last update time
+
+	self.last_pos = nil
+	self.last_pos_time = 0
+
+	self.state_moving = state_none
 
 	-- path_walk
 	if self.st.path_walk then
@@ -121,12 +137,8 @@ function action_car:reset_scheme(loading)
 	        end
 	    end
 
-	    self.last_pos = nil
-	    self.last_pos_time = 0
-
-	    self.state_moving = state_none
-
 	    self.arrival_signalled = false
+	    self.target_dist = -1
 
 	    if loading then
 		    self.target_walk_pt = xr_logic.pstor_retrieve(self.object, "target_walk_pt")
@@ -157,6 +169,10 @@ function action_car:reset_scheme(loading)
 	    self.path_fire = nil
 	    self.path_fire_info = nil
 	    self.fire_pt_count = 0
+	    
+	    self.target_fire_pt = nil
+	    self.target_fire_pt_idx = 0
+
 	    -- path_fire
 	    if self.state_firetarget == state_firetarget_points and self.st.path_fire then
 		    self.path_fire = patrol(self.st.path_fire)
@@ -184,11 +200,17 @@ function action_car:reset_scheme(loading)
     	    
 	        self:fire_arrival_callback(self.target_fire_pt_idx)
     	    
-	        --self:rot_to_firepoint(self.target_fire_pt, self.state_shooting)
+	        --self:rot_to_firepoint(self.target_fire_pt)
+	        --self:set_shooting(self.state_shooting)
 	    elseif self.state_firetarget == state_firetarget_actor then
 	        self.state_cannon = state_cannon_rotate
-	        local p = db.actor:position()
-		    self:rot_to_firepoint(p, 0)
+	        --local p = db.actor:position()
+		    --self:rot_to_firepoint(p, 0)
+	        self.target_fire_pt = db.actor:position()
+	        --self.target_fire_pt_idx = 0
+	        self.state_shooting = state_none
+		    self:rot_to_firepoint(self.target_fire_pt)
+		    self:set_shooting(self.state_shooting)
 	    else
 	        self.state_firetarget = state_none
 	        self.state_cannon = state_none
@@ -206,6 +228,241 @@ function action_car:save()
 	xr_logic.pstor_store(self.object, "fire", self.fire)
 	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt)
 end
+
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+--++++++++++++++++++++-- MOVE SECTION --++++++++++++++++++++--
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+
+function action_car:get_nearest_walkpoint()
+	return utils.get_nearest_waypoint(self.object, self.st.path_walk,
+		 self.path_walk, self.path_walk_count)
+end
+
+function action_car:get_next_walkpoint()
+	if self.target_walk_pt < self.path_walk_count - 1 then
+		return self.target_walk_pt + 1
+	elseif self.loop then
+		return 0
+	end
+	return nil
+end
+
+function action_car:at_target_walkpoint()
+    --printf("car <move>: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
+    local curVel = self.car:CurrentVel():magnitude()
+	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
+
+	--local arrived = 2 * dist < def_update_time * (curVel.x + self.speed) --def_update_time > 2 * dist / (curVel.x + self.speed)
+	--local arrived = dist < curVel.x * def_arriving_factor --8
+
+    -- def_arriving_koef * self.fc_upd_avg / 1000 > 2 * dist / (curVel.x + self.speed)
+	local arrived = false --2000 * dist < def_arriving_koef * self.fc_upd_avg * (curVel + self.speed)
+	
+	if self.fc_upd_avg < 100 then
+		arrived = 2000 * dist < def_arriving_koef * self.fc_upd_avg * (curVel + self.speed)
+	    if arrived then
+	        printf("car <move>: at target pt by formula: %f < %f", 2000 * dist, def_arriving_koef * self.fc_upd_avg * (curVel + self.speed))
+	    end
+	end
+	
+	if not arrived then
+	    local diff_angle = angle_xz(self.object, self.path_walk:point(self.target_walk_pt))
+	    arrived = dist < 2 and diff_angle >= pi_2
+	    if arrived then
+	        printf("car <move>: at target pt by dist(%f) and angle(%f).", dist, diff_angle)
+	    end
+	end
+	
+	local diff = dist - self.target_dist
+	printf("car <move>: dist = %f, target = %f, diff = %f", dist, self.target_dist, diff)
+	if self.target_dist ~= -1 and not arrived then
+	    if diff > 0 then
+	        if diff > 0.005 then
+	            arrived = true
+	            printf("car <move>: at target pt by diff(%f).", diff)
+	        end
+	    else
+	        self.target_dist = dist
+	    end
+	else
+        self.target_dist = dist
+	end
+--[[
+	--printf("car <move>: action_car:at_target_walkpoint(self.target_walk_pt=%d) = %d (arrived = %s)",		self.target_walk_pt, dist, utils.to_str(arrived))
+    --if arrived then
+        printf("car <move>: arrived = %f > %f, dist(%f), diff(%f), curSpd(%f), spd(%f)",
+               --def_arriving_koef * self.fc_upd_avg / 1000,
+               --2 * dist / (curVel.x + self.speed),
+               def_arriving_koef * self.fc_upd_avg * (curVel + self.speed),
+               2000 * dist,
+               dist, diff, curVel, self.speed)
+        --printf("car <move>: arrived = %f < (%f,%f,%f) * %f, spd(%f)", dist, curVel.x, curVel.y, curVel.z, def_arriving_factor, self.speed)
+    --end
+--]]
+    if arrived then
+	    self.target_dist = -1
+    end
+	return arrived
+end
+
+function action_car:go_to_walkpoint(pt)
+	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
+	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
+	--printf("_pc: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
+	if pt == nil or pt < 0 then
+		xr_logic.mob_capture(self.object, true)
+		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
+		self.state_moving = state_moving_rot_left
+		return
+	end
+
+    local diff_angle = angle_xz(self.object, self.path_walk:point(pt))
+    --printf("_pc: diff_angle = %f, katet = %f", diff_angle, get_katet(self.object, self.path_walk:point(pt)))
+	--if utils.no_need_to_rotate_xz(self.object, self.path_walk:point(pt)) then
+	if diff_angle < 0.3 then
+		printf("car <move>: no_need_to_rotate. speed = %f, time = %f", self.speed, self.fc_upd_avg)
+		if self.state_moving ~= state_moving_fwd then
+	   		xr_logic.mob_capture(self.object, true)
+			action(self.object,
+				move(move.on + move.fwd, self.speed),
+				object("right_light", object.activate),
+				object("left_light", object.activate),
+				cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+			self.state_moving = state_moving_fwd
+		end
+	else
+		-- Поворачиваться нужно, но в какую сторону?
+		local rotate_left = utils.angle_left_xz(self.object:direction(), 
+		                                        utils.vector_copy_by_val(self.path_walk:point(pt)
+		                                                                ):sub(self.object:position()))
+		printf("car <move>: must rotate: left? %s. speed = %f, time = %f", utils.to_str(rotate_left), self.speed, self.fc_upd_avg)
+		if rotate_left then
+			if self.state_moving ~= state_moving_rot_left then 
+				xr_logic.mob_capture(self.object, true)
+				action(self.object,
+					move(move.on + move.fwd + move.left, self.speed),
+					object("right_light", object.activate),
+					object("left_light", object.activate),
+					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+				self.state_moving = state_moving_rot_left
+			end
+		else
+			if self.state_moving ~= state_moving_rot_right then
+				xr_logic.mob_capture(self.object, true)
+				action(self.object,
+					move(move.on + move.fwd + move.right, self.speed),
+					object("right_light", object.activate),
+					object("left_light", object.activate),
+					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+				self.state_moving = state_moving_rot_right
+			end
+		end
+	end
+end
+
+function action_car:stop_car()
+    printf("car <move>: car stopping.")
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, move(move.off, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
+	self.speed = 0
+end
+
+function action_car:walk_arrival_callback(index)
+	--printf("car <move>: action_car:walk_arrival_callback(%d)", index)
+
+	local suggested_explode = self.path_walk_info[index]["explode"]
+	if suggested_explode == "true" then
+--		printf("action_car:walk_arrival_callback(): EXPLODE")
+		self.object:car_explode()
+		self.car:Action(CCar.eWpnActivate, 0)
+	end
+
+	local suggested_spd = self.path_walk_info[index]["spd"]
+	if suggested_spd then
+		self.speed = tonumber(suggested_spd)
+	else
+		self.speed = def_moving_speed
+	end
+
+	local suggested_loop = self.path_walk_info[index]["loop"]
+	if suggested_loop == "true" then
+		self.loop = true
+	else
+		self.loop = false
+	end
+
+	local suggested_dps = self.path_walk_info[index]["dps"]
+	if suggested_dps then
+		self.min_delta_per_sec = tonumber(suggested_dps)
+	else
+		self.min_delta_per_sec = def_min_delta_per_sec
+	end
+
+	local suggested_exptm = self.path_walk_info[index]["exptm"]
+	if suggested_exptm then
+		self.min_car_explode_time = tonumber(suggested_exptm)
+	else
+		self.min_car_explode_time = def_min_car_explode_time
+	end
+
+	local sig = self.path_walk_info[index]["sig"]
+	if sig then
+		self.st.signals[sig] = true
+	end
+
+    if self.hasWeapon and self.state_firetarget ~= state_none then
+        local next_idx = self:get_next_walkpoint()
+        --local next_idx = self.target_walk_pt
+        if next_idx then
+	        local fw = self.path_walk_info[next_idx]["fw"]
+	        if fw then
+		        self.fire_wait = if_then_else(fw == "true", true, false)
+	        else
+	            self.fire_wait = false
+	        end
+
+	        local fr = self.path_walk_info[next_idx]["fr"]
+	        if fr then
+	            local c = tonumber(fr)
+		        self.fire_rep = if_then_else(c > 0, c, 0)
+	        else
+	            self.fire_rep = 0
+	        end
+	    else
+	        self.fire_wait = false
+	        self.fire_rep = 0
+	    end
+        printf("car <fire>: fire_wait = %s", if_then_else(self.fire_wait, "true", "false"))
+        printf("car <fire>: fire_rep = %d", self.fire_rep)
+    end
+
+	-- Выбрать следующую точку езды:
+	self.target_walk_pt = self:get_next_walkpoint()
+	printf("car <move>: target_walk_pt = %s.", utils.to_str(self.target_walk_pt))
+	if not self.target_walk_pt then
+	    printf("car <move>: stop moving.")
+	    self:stop_car()
+		-- Остановить машину
+	    --if self.state_cannon == state_cannon_stop then
+		--    xr_logic.mob_capture(self.object, true)
+		--end
+		--action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
+		--self.state_moving = state_moving_end
+		return
+	end
+
+	-- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
+	if self:at_target_walkpoint() then
+		self:walk_arrival_callback(self.target_walk_pt)
+    else
+        --self.target_dist = -1
+	    self:go_to_walkpoint(self.target_walk_pt)
+	end
+end
+
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+--++++++++++++++++++++-- FIRE SECTION --++++++++++++++++++++--
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
 
 function action_car:change_fire_pts()
 	self.state_cannon = state_none
@@ -238,9 +495,10 @@ function action_car:change_fire_pts()
 	
 	if self.fire_pt_count == 0 then
 	    self.state_cannon = state_cannon_stop
+	    return
 	end
 	
-	printf("_bp: action_car:change_fire_pts()")
+	printf("car <fire>: action_car:change_fire_pts()")
 	print_table(self.fire_pt_arr)
 
 	--if self.fire_pt_count > 0 then
@@ -249,30 +507,17 @@ function action_car:change_fire_pts()
 	--end
 end
 
-function action_car:get_nearest_walkpoint()
-	return utils.get_nearest_waypoint(self.object, self.st.path_walk,
-		 self.path_walk, self.path_walk_count)
-end
-
-function action_car:get_next_walkpoint()
-	if self.target_walk_pt < self.path_walk_count - 1 then
-		return self.target_walk_pt + 1
-	elseif self.loop then
-		return 0
-	end
-	return nil
-end
-
 function action_car:get_next_firepoint()
     if self.fire_pt_count < 1 then return nil end
 
+    printf("car <fire>: action_car:get_next_firepoint()")
     local pt_idx
     if self.target_fire_pt_idx > 0 then -- not first time
         if self.fire_pt_count > 1 then -- we have at least 2 point to switch
             pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
             if (pt_idx < 1 or pt_idx > self.fire_pt_count) then
                 self.fire_rot_dir = -self.fire_rot_dir -- change rotate direction [-1,1]
-                --printf("changing direction")
+                --printf("car <fire>: changing direction")
                 if self.fire_rep > 0 then
                     pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
                     self.fire_rep = self.fire_rep - 1
@@ -288,7 +533,7 @@ function action_car:get_next_firepoint()
     end
     --self.target_fire_pt_idx = pt_idx
     
-    --printf("_bp: pt_idx = %d", pt_idx)
+    printf("car <fire>: pt_idx = %d", pt_idx)
 
 	if pt_idx > 0 then
 	    return pt_idx, self.path_fire:point(self.fire_pt_arr[pt_idx])
@@ -297,151 +542,59 @@ function action_car:get_next_firepoint()
 	return pt_idx, nil
 end
 
-function action_car:at_target_walkpoint()
-    --printf("_bp: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
-    local curVel = self.car:CurrentVel()
-	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
-	--local arrived = dist < default_update_time * curVel.x --default_update_time > 2 * dist / (curVel.x + self.speed)
-	local arrived = 2 * dist < default_update_time * (curVel.x + self.speed) --default_update_time > 2 * dist / (curVel.x + self.speed)
-	--local arrived = dist < curVel.x * default_arriving_factor --8
-	--printf("_bp: action_car:at_target_walkpoint(self.target_walk_pt=%d) = %d (arrived = %s)",		self.target_walk_pt, dist, utils.to_str(arrived))
-    if arrived then
-        printf("_bp: arrived = %f < %f, dist(%f), curSpd(%f), spd(%f)",
-               default_update_time,
-               2 * dist / (curVel.x + self.speed),
-               dist, curVel.x, self.speed)
-        --printf("_bp: arrived = %f < (%f,%f,%f) * %f, spd(%f)", dist, curVel.x, curVel.y, curVel.z, default_arriving_factor, self.speed)
+function action_car:rot_to_firepoint(pt)
+--[[
+    if pt then
+        self.car:SetParam(CCar.eWpnDesiredPos, pt)
     end
-	return arrived
+    printf("car <fire>: action_car:rot_to_firepoint(%d)", shooting)
+    self.car:Action(CCar.eWpnFire, shooting)
+--]]
+    if self.target_fire_pt then
+        self.car:SetParam(CCar.eWpnDesiredPos, self.target_fire_pt)
+        printf("car <fire>: action_car:rot_to_firepoint(%d)", self.target_fire_pt_idx)
+    end
 end
 
-function action_car:set_signal(sig)
-	local stor = db.storage[self.object:id()]
-	stor[stor.active_scheme].signals[sig] = true
-end
-
-function action_car:walk_arrival_callback(index)
-	--printf("_bp: action_car:walk_arrival_callback(%d)", index)
-
-	local suggested_explode = self.path_walk_info[index]["explode"]
-	if suggested_explode == "true" then
---		printf("action_car:walk_arrival_callback(): EXPLODE")
-		self.object:car_explode()
-		self.car:Action(CCar.eWpnActivate, 0)
-	end
-
-	local suggested_spd = self.path_walk_info[index]["spd"]
-	if suggested_spd then
-		self.speed = tonumber(suggested_spd)
-	else
-		self.speed = default_moving_speed
-	end
-
-	local suggested_loop = self.path_walk_info[index]["loop"]
-	if suggested_loop == "true" then
-		self.loop = true
-	else
-		self.loop = false
-	end
-
-	local suggested_dps = self.path_walk_info[index]["dps"]
-	if suggested_dps then
-		self.min_delta_per_sec = tonumber(suggested_dps)
-	else
-		self.min_delta_per_sec = default_min_delta_per_sec
-	end
-
-	local suggested_exptm = self.path_walk_info[index]["exptm"]
-	if suggested_exptm then
-		self.min_car_explode_time = tonumber(suggested_exptm)
-	else
-		self.min_car_explode_time = default_min_car_explode_time
-	end
-
-	local sig = self.path_walk_info[index]["sig"]
-	if sig then
-		self.st.signals[sig] = true
-	end
-
-    if self.hasWeapon and self.state_firetarget ~= state_none then
-        local next_idx = self:get_next_walkpoint()
-        if next_idx then
-	        local fw = self.path_walk_info[next_idx]["fw"]
-	        if fw then
-		        self.fire_wait = if_then_else(fw == "true", true, false)
-	        else
-	            self.fire_wait = false
-	        end
-
-	        local fr = self.path_walk_info[next_idx]["fr"]
-	        if fr then
-	            local c = tonumber(fr)
-		        self.fire_rep = if_then_else(c > 0, c, 0)
-	        else
-	            self.fire_rep = 0
-	        end
-	    else
-	        self.fire_wait = false
-	        self.fire_rep = 0
-	    end
-        printf("_bp: fire_wait = %s", if_then_else(self.fire_wait, "true", "false"))
-        printf("_bp: fire_rep = %d", self.fire_rep)
-    end
-
-	-- Выбрать следующую точку езды:
-	self.target_walk_pt = self:get_next_walkpoint()
-	printf("_bp: target_walk_pt = %s.", utils.to_str(self.target_walk_pt))
-	if not self.target_walk_pt then
-	    printf("_bp: stop moving.")
-	    self:stop_car()
-		-- Остановить машину
-	    --if self.state_cannon == state_cannon_stop then
-		--    xr_logic.mob_capture(self.object, true)
-		--end
-		--action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
-		--self.state_moving = state_moving_end
-		return
-	end
-
-	-- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
-	if self:at_target_walkpoint() then
-		self:walk_arrival_callback(self.target_walk_pt)
-	end
-	
-	self:go_to_walkpoint(self.target_walk_pt)
+function action_car:set_shooting(shooting)
+    self.car:Action(CCar.eWpnFire, self.state_shooting)
+    printf("car <fire>: action_car:set_shooting(%d)", self.state_shooting)
 end
 
 function action_car:fire_arrival_callback(cur_index)
     if self.fire_pt_count < 1 or self.state_cannon == state_cannon_stop then return end
     
-    --printf("_bp: action_car:fire_arrival_callback(%s)", utils.to_str(cur_index))
+    printf("car <fire>: action_car:fire_arrival_callback(%s)", utils.to_str(cur_index))
     if self.state_cannon == state_cannon_delay then
-        --printf("_bp: 1.delay mode off.")
+        printf("car <fire>: 1.delay mode off.")
 	    -- Выбрать следующую точку езды:
 	    self.target_fire_pt_idx, self.target_fire_pt = self:get_next_firepoint()
 
 	    if self.target_fire_pt then
-            --printf("_bp: 1.rotate mode on.")
+            printf("car <fire>: 1.rotate mode on.")
 	        self.state_cannon = state_cannon_rotate
 		    if self.fire_rot_dir == 1  and self.fire_forward or
 		       self.fire_rot_dir == -1 and self.fire_backward then
-		        --printf("_bp: 1.shooting on.")
+		        printf("car <fire>: 1.shooting on.")
 		        self.state_shooting = state_shooting_on
 	        else
-		        --printf("_bp: 1.shooting off.")
+		        printf("car <fire>: 1.shooting off.")
 		        self.state_shooting = state_none
 	        end
-	        self:rot_to_firepoint(self.target_fire_pt, self.state_shooting)
+	        self:rot_to_firepoint(self.target_fire_pt)
+	        self:set_shooting(self.state_shooting)
 	    else
-            --printf("_bp: 1.cannon stopped.")
+            printf("car <fire>: 1.cannon stopped.")
 	        self.state_cannon = state_cannon_stop
-            self:rot_to_firepoint(nil, 0)
-            self:set_signal("shooting_end")
+	        self.state_shooting = state_none
+            --self:rot_to_firepoint(nil)
+            self:set_shooting(self.state_shooting)
+            self:set_signal("fire_end")
 	    end
 	    return
     end
 
-	--printf("_bp: action_car: fire_arrival_callback(%s)", utils.to_str(cur_index))
+	--printf("_pc: action_car: fire_arrival_callback(%s)", utils.to_str(cur_index))
     if cur_index > 0 then
         local idx = self.fire_pt_arr[cur_index]
 
@@ -470,101 +623,75 @@ function action_car:fire_arrival_callback(cur_index)
 	    if ft then
 		    self.fire_time = tonumber(ft)
 	    else
-		    self.fire_time = default_min_fire_time
+		    self.fire_time = def_min_fire_time
 	    end
 	else
 		    self.fire_forward = false
 		    self.fire_backward = false
 		    self.state_shooting = if_then_else(self.st.auto_fire, state_shooting_on, state_none)
-		    self.fire_time = default_min_fire_time
+		    self.fire_time = def_min_fire_time
 	end
-    --printf("_bp: state_shooting = %s", if_then_else(self.state_shooting ~= 0, "true", "false"))
-    --printf("_bp: auto_fire = %s", if_then_else(self.st.auto_fire, "true", "false"))
-    --printf("_bp: fire_time = %f", self.fire_time)
+    printf("car <fire>: state_shooting = %s", if_then_else(self.state_shooting ~= 0, "true", "false"))
+    --printf("car <fire>: auto_fire = %s", if_then_else(self.st.auto_fire, "true", "false"))
+    printf("car <fire>: fire_time = %f", self.fire_time)
 
 	if self.fire_time > 0 then
-        --printf("_bp: 2.delay mode on.")
+        printf("car <fire>: 2.delay mode on.")
 	    self.state_cannon = state_cannon_delay
         self.fire_start_time = time_global()
-        --printf("_bp: state_shooting = %s", if_then_else(self.state_shooting ~= 0, "true", "false"))
-        self:rot_to_firepoint(nil, self.state_shooting)
+        --printf("car <fire>: state_shooting = %s", if_then_else(self.state_shooting ~= 0, "true", "false"))
+        --self:rot_to_firepoint(nil)
+        self:set_shooting(self.state_shooting)
     else
-	    -- Выбрать следующую точку езды:
+	    -- Выбрать следующую точку стрельбы:
 	    self.target_fire_pt_idx, self.target_fire_pt = self:get_next_firepoint()
 
 	    -- Если мы уже целимся в эту точку - не ждать апдейта, чтобы вызвать callback
 	    if self.target_fire_pt then
-            --printf("_bp: 2.rotate mode on.")
+            printf("car <fire>: 2.rotate mode on.")
 		    self.state_cannon = state_cannon_rotate
 		    if self.fire_rot_dir == 1  and self.fire_forward or
 		       self.fire_rot_dir == -1 and self.fire_backward then
 		        self.state_shooting = state_shooting_on
-		        --printf("_bp: 2.shooting on.")
+		        printf("car <fire>: 2.shooting on.")
 	        else
 		        self.state_shooting = state_none
-		        --printf("_bp: 2.shooting off.")
+		        printf("car <fire>: 2.shooting off.")
 	        end
-	        self:rot_to_firepoint(self.target_fire_pt, self.state_shooting)
+	        self:rot_to_firepoint(self.target_fire_pt)
+	        self:set_shooting(self.state_shooting)
 	    else
-            --printf("_bp: 2.cannon stopped.")
+            printf("car <fire>: 2.cannon stopped.")
 	        self.state_cannon = state_cannon_stop
-            self:rot_to_firepoint(nil, 0)
-            self:set_signal("shooting_end")
+	        self.state_shooting =state_none
+            --self:rot_to_firepoint(nil)
+            self:set_shooting(self.state_shooting)
+            self:set_signal("fire_end")
 	    end
 	end
 end
 
-function action_car:rot_to_firepoint(pt, shooting)
-    if pt then
-        self.car:SetParam(CCar.eWpnDesiredPos, pt)
-    end
-    --printf("_bp: action_car:rot_to_firepoint(%d)", shooting)
-    self.car:Action(CCar.eWpnFire, shooting)
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+--+++++++++++++++++++-- COMMON SECTION --+++++++++++++++++++--
+--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+
+function action_car:set_signal(sig)
+	local stor = db.storage[self.object:id()]
+	stor[stor.active_scheme].signals[sig] = true
 end
 
-function action_car:go_to_walkpoint()
-	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
-	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
-	printf("_bp: action_car:go_to_walkpoint(%s)", utils.to_str(self.target_walk_pt))
-	if utils.no_need_to_rotate_xz(self.object, self.path_walk:point(self.target_walk_pt)) then
---		printf("_bp: no_need_to_rotate")
-		if self.state_moving ~= state_moving_fwd then
-	   		xr_logic.mob_capture(self.object, true)
-			action(self.object,
-				move(move.on + move.fwd, self.speed),
-				object("right_light", object.activate),
-				object("left_light", object.activate),
-				cond(cond.time_end, time_infinite))
-			self.state_moving = state_moving_fwd
-		end
-	else
-		-- Поворачиваться нужно, но в какую сторону?
-		local rotate_left = utils.angle_left_xz(self.object:direction(), 
-		                                    utils.vector_copy_by_val(self.path_walk:point(self.target_walk_pt)):sub(
-		                                                                     self.object:position()))
---		printf("_bp: must rotate: left? %s", utils.to_str(rotate_left))
-		if rotate_left then
-			if self.state_moving ~= state_moving_rot_left then 
-				xr_logic.mob_capture(self.object, true)
-				action(self.object,
-					move(move.on + move.fwd + move.left, self.speed),
-					object("right_light", object.activate),
-					object("left_light", object.activate),
-					cond(cond.time_end, time_infinite))
-				self.state_moving = state_moving_rot_left
-			end
-		else
-			if self.state_moving ~= state_moving_rot_right then
-				xr_logic.mob_capture(self.object, true)
-				action(self.object,
-					move(move.on + move.fwd + move.right, self.speed),
-					object("right_light", object.activate),
-					object("left_light", object.activate),
-					cond(cond.time_end, time_infinite))
-				self.state_moving = state_moving_rot_right
-			end
-		end
-	end
+function angle_xz(npc, target_pos)
+	local dir1 = npc:direction()
+	dir1.y = 0
+	local dir2 = utils.vector_copy_by_val(target_pos):sub(npc:position())
+	dir2.y = 0
+	return yaw(dir1, dir2)
+end
+
+function get_katet(npc, target_pos)
+	local p = utils.vector_copy_by_val(target_pos):sub(npc:position())
+	local q = npc:direction()
+	return (p.x * q.y - p.y * q.x) / math.sqrt(q.x * q.x + q.y * q.y)
 end
 
 function action_car:fastcall()
@@ -585,26 +712,28 @@ function action_car:update(delta)
 	end
 end
 
-function action_car:stop_car()
-    printf("_bp: car stopping.")
-	xr_logic.mob_capture(self.object, true)
-	action(self.object, move(move.off, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
-	self.speed = 0
-end
-
 -- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
---	printf("_bp: action_car:update(): state=%d", self.state_moving)
+    --printf("_pc: action_car:update(): state=%d", self.state_moving)
 
 	--if not self.object:action() then
-	--	printf("_bp: CAR EXPLODE")
+	--	printf("_pc: CAR EXPLODE")
 	--	self.object:explode(0)
 	--	self.object:Explode()
 	--end
 	
-	--local pos_ = db.actor:position()
-	--self.car:SetParam(CCar.eWpnDesiredPos,pos_)
-	--self.car:Action(CCar.eWpnAutoFire,1)
+	local time = time_global()
+
+	if self.fc_upd_num < def_max_fc_upd_num then
+	    local last_upd = self.fc_last_upd_tm
+	    if last_upd ~= -1 then
+	        local n = self.fc_upd_num
+	        self.fc_upd_avg = (self.fc_upd_avg * n + (time - last_upd))/(n + 1)
+	        self.fc_upd_num = n + 1
+	    end
+	    self.fc_last_upd_tm = time
+	    printf("_pc: average update = %f, time(%f)", self.fc_upd_avg, time)
+	end
 
 	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
@@ -616,7 +745,7 @@ function action_car:fast_update()
 
 	if (self.state_moving ~= state_moving_end and self.state_moving ~= state_moving_stop or
 	   self.state_cannon ~= state_cannon_stop) and 
-	   time_global() >= self.last_pos_time + self.min_car_explode_time then
+	   time >= self.last_pos_time + self.min_car_explode_time then
 		if not self.last_pos then
 			self.last_pos = self.object:position()
 			self.last_pos_time = time_global()
@@ -624,17 +753,19 @@ function action_car:fast_update()
 			local cur_pos = self.object:position()
 			local diff = self.last_pos:distance_to(cur_pos)
 			if diff < self.min_delta_per_sec then
-                printf("_bp: car got stuck: explode")
+                printf("car <move>: car got stuck - explode")
                 self:stop_car()
 				--xr_logic.mob_capture(self.object, true)
 				--action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
 				--self:car_explode()
 				self.state_moving = state_moving_end
 				
-                printf("_bp: 3.cannon stopped.")
+                printf("car <fire>: 3.cannon stopped.")
 	            self.state_cannon = state_cannon_stop
-                self:rot_to_firepoint(nil, 0)
-                self:set_signal("shooting_end")
+	            self.state_shooting = state_none
+                --self:rot_to_firepoint(nil)
+                self:set_shooting(self.state_shooting)
+                self:set_signal("fire_end")
 				return false
 			end
 			self.last_pos = cur_pos
@@ -647,14 +778,14 @@ function action_car:fast_update()
 	        if self:at_target_walkpoint() then
 	            -- если нет флага ожидания стрельбы или мы уже отстрелялись или пошли в цикле обратно
 	            if not self.fire_wait or self.state_cannon == state_cannon_stop then --self.fire_rot_dir == -1 then
-	                    printf("_bp: car go to the new point.")
+	                    --printf("car <move>: car go to the new point.")
 		                -- Прибыли, выбрать новую точку
-		                printf("_bp: target_test2 = %s", utils.to_str(self.target_walk_pt))
+		                printf("car <move>: new target = %s", utils.to_str(self.target_walk_pt))
 		                self:walk_arrival_callback(self.target_walk_pt)
 		                -- меняем точки отстрела
 		                self:change_fire_pts()
 	            elseif self.state_moving ~= state_moving_stop then
-	                printf("_bp: 1.car stopped.")
+	                printf("car <move>: 1.car stopped.")
 	                self:stop_car()
 	                --xr_logic.mob_capture(self.object, true)
 		            --action(self.object, move(move.off, 0), cond(cond.time_end, 1000)) --cond(cond.move_end))
@@ -663,12 +794,12 @@ function action_car:fast_update()
 	                self.state_moving = state_moving_stop
 	            end
 	        else
-	            --printf("_bp: car keep going.")
+	            --printf("_pc: car keep going.")
 		        -- Продолжать ехать, или поворачиваться
 		        self:go_to_walkpoint(self.target_walk_pt)
 	        end
 	    elseif self.state_cannon == state_cannon_stop then
-	        printf("_bp: 2.car stopped.")
+	        printf("car <move>: 2.car stopped.")
 	        self:stop_car()
 	        --xr_logic.mob_capture(self.object, true)
 		    --action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
@@ -679,17 +810,18 @@ function action_car:fast_update()
 	if self.hasWeapon then
 	    if self.state_firetarget == state_firetarget_points then
 	        if self.fire_pt_count > 0 and self.state_cannon ~= state_cannon_stop then
+	            printf("car <fire>: shooting points")
 	            if self.state_cannon == state_cannon_delay then
 	                if self.fire_start_time + self.fire_time < time_global() then
-	                    --printf("_bp: stop delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
-		                --printf("_bp: 1.new fire point.")
+	                    --printf("car <fire>: stop delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
+		                --printf("car <fire>: 1.new fire point.")
 	                    self:fire_arrival_callback(self.target_fire_pt_idx)
 	                else
-	                    --printf("_bp: delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
+	                    printf("car <fire>: delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
 	                end
 	            else
-	                if self.car:CanHit() then
-		                --printf("_bp: 2.new fire point.")
+	                if self.car:CanHit() or self.target_fire_pt_idx == 0 then
+		                printf("car <fire>: 2.new fire point.")
 		                -- Прибыли, выбрать новую точку
 		                self:fire_arrival_callback(self.target_fire_pt_idx)
 		            end
@@ -697,24 +829,27 @@ function action_car:fast_update()
 	        end
 	    elseif self.state_firetarget == state_firetarget_actor then
 	        if self.car:IsObjectVisible(db.actor) then
-	            printf("_bp: actor is visible.")
+	            printf("car <fire>: actor is visible.")
 	            if self.car:CanHit() then
 	                if self.state_shooting == state_none then
-	                    printf("_bp: fighting actor.")
+	                    printf("car <fire>: fighting actor.")
 		                self.state_shooting = state_shooting_on
+		                self:set_signal("fire_start")
 		            end
 		        else
-	                printf("_bp: searching actor.")
+	                printf("car <fire>: searching actor.")
 		            self.state_shooting = state_none
-		            self:set_signal("shooting_end")
+		            self:set_signal("fire_end")
 		        end
-		        local p = db.actor:position()
-		        self:rot_to_firepoint(p, self.state_shooting)
+		        self.target_fire_pt = db.actor:position()
+		        self:rot_to_firepoint(self.target_fire_pt)
+		        self:set_shooting(self.state_shooting)
 		    else
-	            printf("_bp: actor isn't visible.")
+	            printf("car <fire>: actor isn't visible.")
 		        self.state_shooting = state_none
-		        self:rot_to_firepoint(nil, self.state_shooting)
-		        self:set_signal("shooting_end")
+		        --self:rot_to_firepoint(nil)
+		        self:set_shooting(self.state_shooting)
+		        self:set_signal("fire_end")
 		    end
 	    end
 	end
