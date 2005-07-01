@@ -32,11 +32,11 @@ function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 
 -- Выводит отладочное сообщение в лог, если скрипт активен (активный скрипт выбирается с помощью
 -- переменной debug_info.trace_script). 
-function trace(script_name, fmt, ...)
-	if debug_info.trace_script == script_name then
-		log(string.format("[TRACE] " .. script_name .. ".script: " .. fmt, unpack(arg)))
-	end
-end
+--function trace(script_name, fmt, ...)
+--	if debug_info.trace_script == script_name then
+--		log(string.format("[TRACE] " .. script_name .. ".script: " .. fmt, unpack(arg)))
+--	end
+--end
 
 -- Переводит переменную любого типа (включая nil) в строку. Используется для отладочного вывода информации.
 function to_str(what)
