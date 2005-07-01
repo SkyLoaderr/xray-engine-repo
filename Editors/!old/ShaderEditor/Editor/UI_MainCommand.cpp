@@ -68,12 +68,10 @@ SESubCommand* FindCommandByCommandName(LPCSTR nm)
 }
 u32 	ExecCommand		(const xr_shortcut& val)
 {
-	SESubCommand* CMD 	= FindCommandByShortcut(val);
+	SESubCommand* SUB 	= FindCommandByShortcut(val);
     u32 res 			= false;
-    if (CMD){
-	    CMD->parent->command(CMD->p0,CMD->p1,res);
-    	res				= true;
-    }
+    if (SUB)
+    	res				= ExecCommand(SUB->parent->idx,SUB->p0,SUB->p1);
     return res;
 }
 u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
@@ -84,7 +82,11 @@ u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
 	SECommand*	CMD = ECommands[cmd];
     VERIFY		(CMD&&!CMD->command.empty());
     u32 res		= TRUE;
+    if (psDeviceFlags.is(rsCommandsLog))
+    	Msg		("%s (%d,%d)",CMD->Name(),p1,p2);
     CMD->command(p1,p2,res);
+    if (psDeviceFlags.is(rsCommandsLog))
+    	Msg		("; %s result = %d",CMD->Name(),res);
 //?	UI->RedrawScene();
     return		res;
 }
@@ -440,6 +442,11 @@ void 	CommandExecuteCommandList(u32 _p1, u32 _p2, u32& res)
     }
 }
 
+void 	CommandToggleCommandsLog(u32 _p1, u32 _p2, u32& res)
+{
+	psDeviceFlags.invert(rsCommandsLog);
+}
+
 void TUI::RegisterCommands()
 {
 	REGISTER_CMD_S		(COMMAND_INITIALIZE,			CommandInitialize);
@@ -491,6 +498,7 @@ void TUI::RegisterCommands()
     REGISTER_CMD_S	    (COMMAND_CREATE_SOUND_LIB,   	CommandCreateSoundLib);
     REGISTER_CMD_S	    (COMMAND_MUTE_SOUND,         	CommandMuteSound);
     REGISTER_CMD_S	    (COMMAND_EXECUTE_COMMAND_LIST, 	CommandExecuteCommandList);
+    REGISTER_CMD_S	    (COMMAND_TOGGLE_COMMANDS_LOG, 	CommandToggleCommandsLog);
 }                                                                        
 
 //---------------------------------------------------------------------------

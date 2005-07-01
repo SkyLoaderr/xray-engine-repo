@@ -219,3 +219,8 @@ bool CCustomObject::GetSummaryInfo(SSceneSummary* inf)
     return true;
 }
 
+void CCustomObject::OnSynchronize()
+{
+	OnFrame		();
+}
+

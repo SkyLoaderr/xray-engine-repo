@@ -189,7 +189,7 @@ public:
 	virtual void 	OnDeviceCreate	(){;}
 	virtual void 	OnDeviceDestroy	(){;}
 
-	virtual void 	OnSynchronize	(){;}
+	virtual void 	OnSynchronize	();
     virtual void    OnShowHint      (AStringVec& dest);
 
     IC const Fmatrix& _ITransform			(){return FITransform;}
