@@ -349,8 +349,27 @@ end
 function load_states( gname, type )
 	if type == "agr_nii" then
 		return function(gulag)
-			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			end
+
+			local be
+
+			for k, v in gulag.Object do
+				be = v:best_enemy()
+				if be and be:id() == actor:id() then
+					actor:give_info( "agr_nii_alarm" )
+					return 3
+				end
+			end
+
+			actor:disable_info_portion( "agr_nii_alarm" )
+
+			if level.get_time_hours() >= 6 and level.get_time_hours() < 21 then
 				return 0  -- день
+			elseif level.get_time_hours() >= 23 then
+				return 2  -- ночь c пересменкой
 			else
 				return 1  -- ночь
 			end
