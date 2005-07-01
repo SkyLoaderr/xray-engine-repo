@@ -10,15 +10,19 @@
 #include "uiwindow.h"
 #include "UITabButton.h"
 #include "../script_export_space.h"
+#include "UIOptionsItem.h"
 
 DEF_VECTOR (TABS_VECTOR, CUITabButton*)
 
-class CUITabControl: public CUIWindow
-{
+class CUITabControl: public CUIWindow, public CUIOptionsItem {
 	typedef CUIWindow inherited;
 public:
 	CUITabControl();
 	virtual ~CUITabControl();
+
+	// options itme
+	virtual void SetCurrentValue();
+	virtual void SaveValue();
 
 	virtual void Init(float x, float y, float width, float height);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
@@ -57,6 +61,7 @@ public:
 	u32 GetGlobalButtonColor() const 			{ return m_cGlobalButtonColor; }
 
 	TABS_VECTOR * GetButtonsVector()			{ return &m_TabsArr; }
+	CUIButton*		GetButtonByIndex(int i)		{ R_ASSERT(i>=0 && i<(int)m_TabsArr.size()); return m_TabsArr[i];}
 
 protected:
 	// Список кнопок - переключателей закладок

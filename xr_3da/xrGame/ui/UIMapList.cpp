@@ -9,6 +9,16 @@
 #include "UIXmlInit.h"
 
 #define	MAP_LIST	"map_list.ltx"
+#define	MAP_ROTATION_LIST	"maprot_list.ltx"
+
+static LPSTR	g_GameTypeName	[]		= {
+	"UNKNOWN"					,
+		"Deathmatch"				,
+		"TeamDeathmatch"			,
+		"ArtefactHunt"				,
+
+		"END_LIST"					,
+};
 
 CUIMapList::CUIMapList(){
 	m_pList1 = xr_new<CUIListWnd>();
@@ -48,6 +58,10 @@ CUIMapList::CUIMapList(){
 	AttachChild(m_pBtnDown);
 }
 
+CUIMapList::~CUIMapList(){
+
+}
+
 void CUIMapList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);	
 }
@@ -71,14 +85,68 @@ void CUIMapList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData ){
 xr_token g_GameModes[ ];
 
 void CUIMapList::OnModeChange(){
+	UpdateMapList(GetCurGameType());
+}
+
+const char* CUIMapList::GetCLGameModeName(){
 	LPCSTR text = m_pModeSelector->GetText();
-	
+
 	if (0 == xr_strcmp(text, g_GameModes[0].name))
-		UpdateMapList(GAME_DEATHMATCH);
+		return	g_GameTypeName[GAME_DEATHMATCH];
 	else if (0 == xr_strcmp(text, g_GameModes[1].name))
-		UpdateMapList(GAME_TEAMDEATHMATCH);
+		return	g_GameTypeName[GAME_TEAMDEATHMATCH];
 	else if (0 == xr_strcmp(text, g_GameModes[2].name))
-		UpdateMapList(GAME_ARTEFACTHUNT);
+		return	g_GameTypeName[GAME_ARTEFACTHUNT];
+	else
+		NODEFAULT;
+
+	return NULL;
+}
+
+GAME_TYPE CUIMapList::GetCurGameType(){
+	LPCSTR text = m_pModeSelector->GetText();
+
+	if (0 == xr_strcmp(text, g_GameModes[0].name))
+		return	GAME_DEATHMATCH;
+	else if (0 == xr_strcmp(text, g_GameModes[1].name))
+		return	GAME_TEAMDEATHMATCH;
+	else if (0 == xr_strcmp(text, g_GameModes[2].name))
+		return	GAME_ARTEFACTHUNT;
+	else
+		NODEFAULT;
+
+	return GAME_UNKNOWN;
+}
+
+const char* CUIMapList::GetCommandLine(LPCSTR player_name){
+	char buf[16];
+	if (0 == m_pList2->GetItemsCount())
+		return NULL;
+	if (0 == xr_strlen(m_pList2->GetItem(0)->GetText()))
+		return NULL;
+	m_command.clear();
+	m_command = "start server(";
+	m_command += m_pList2->GetItem(0)->GetText(); //map_name
+	m_command += "/";
+	m_command += GetCLGameModeName();
+	m_command += m_srv_params;
+	m_command += "/estime=";
+	const char* weather = m_pWeatherSelector->GetText();
+	int estime = (*m_mapWeather.find(weather)).second;	
+	m_command += itoa(estime/60,buf,10);
+	m_command += ":";
+	m_command += itoa(estime%60,buf,10);
+	m_command += ")";
+
+
+	m_command +=" client(localhost/name=";
+	if (player_name == NULL || 0 == xr_strlen(player_name))
+		m_command += Core.UserName;
+	else
+		m_command +=player_name;
+	m_command +=")";
+
+    return m_command.c_str();
 }
 
 void CUIMapList::LoadMapList(){
@@ -138,6 +206,19 @@ void CUIMapList::LoadMapList(){
 	};
 }
 
+void	CUIMapList::SaveMapList(){
+	FILE* MapRotFile = fopen(MAP_ROTATION_LIST, "w");
+	if (!MapRotFile)
+		return;
+	
+	int count = m_pList2->GetItemsCount();
+
+	for (int i = 0; i < count; i++)
+        fprintf(MapRotFile, "sv_addmap %s\n", m_pList2->GetItem(i)->GetText());
+
+	fclose(MapRotFile);
+}
+
 void	CUIMapList::ParseWeather(char** ps, char* e)
 {
 	//	char* s = *ps;
@@ -169,6 +250,10 @@ void CUIMapList::SetWeatherSelector(CUISpinText* ws){
 
 void CUIMapList::SetModeSelector(CUISpinText* ms){
 	m_pModeSelector = ms;
+}
+
+void CUIMapList::SetServerParams(LPCSTR params){
+	m_srv_params = params;
 }
 
 void CUIMapList::AddWeather(char* WeatherType, char* WeatherTime){

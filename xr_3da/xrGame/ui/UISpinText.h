@@ -20,7 +20,7 @@ public:
 
 
 			void	AddItem(const char* item);
-			LPCSTR	GetText();
+//			LPCSTR	GetText();
 
 protected:
 	void	SetItem();
@@ -28,5 +28,5 @@ protected:
 	typedef xr_vector<xr_string>::iterator	Items_it;
 
     Items	m_list;
-	u32		m_curItem;
+	int		m_curItem;
 };

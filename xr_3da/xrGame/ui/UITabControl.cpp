@@ -22,6 +22,16 @@ CUITabControl::~CUITabControl()
 	RemoveAll();
 }
 
+void CUITabControl::SetCurrentValue(){
+	int ival, imin, imax;
+	GetOptIntegerValue(ival, imin, imax);
+	SetNewActiveTab(ival);
+}
+
+void CUITabControl::SaveValue(){
+	SaveOptIntegerValue(GetActiveIndex());
+}
+
 // добавление кнопки-закладки в список закладок контрола
 bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height)
 {

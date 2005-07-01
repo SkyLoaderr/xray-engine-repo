@@ -26,6 +26,7 @@ protected:
 
 public:
 			void				Register			(CUIWindow* pChild);
+			void				Register			(CUIWindow* pChild, LPCSTR name);
 								CUIDialogWndEx		();
 	virtual						~CUIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);

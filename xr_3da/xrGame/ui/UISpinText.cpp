@@ -9,7 +9,7 @@
 #include "UILines.h"
 
 CUISpinText::CUISpinText(){
-
+    m_curItem = -1;
 }
 
 CUISpinText::~CUISpinText(){
@@ -18,13 +18,19 @@ CUISpinText::~CUISpinText(){
 
 void CUISpinText::AddItem(const char* item){
 	m_list.push_back(item);
+	if (-1 == m_curItem)
+	{
+		m_curItem = 0;
+		SetItem();
+	}
 }
 
-LPCSTR CUISpinText::GetText(){
-	return m_pLines->GetText();
-}
+//LPCSTR CUISpinText::GetText(){
+//	return m_pLines->GetText();
+//}
 
 void CUISpinText::SetItem(){
+	R_ASSERT(m_curItem != -1);
 	m_pLines->SetText(m_list[m_curItem].c_str());
 }
 
@@ -52,7 +58,7 @@ void CUISpinText::SaveValue(){
 }
 
 void CUISpinText::OnBtnUpClick(){
-	if (m_curItem < m_list.size() - 1)
+	if (m_curItem < (int)m_list.size() - 1)
 	{
 		m_curItem ++;
 		SetItem();

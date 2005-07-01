@@ -34,6 +34,12 @@ void CUIDialogWndEx::Register			(CUIWindow* pChild)
 	pChild->SetMessageTarget(this);
 }
 
+void CUIDialogWndEx::Register(CUIWindow* pChild, LPCSTR name)
+{
+	pChild->SetWindowName(name);
+	pChild->SetMessageTarget(this);
+}
+
 void CUIDialogWndEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	event_comparer ec(pWnd->WindowName(),msg);

@@ -368,7 +368,7 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 {
 	if(NULL != GetParent())
-		GetParent()->SetCapture(this, capture_status);
+		GetParent()->SetKeyboardCapture(this, capture_status);
 
 	if(capture_status)
 	{

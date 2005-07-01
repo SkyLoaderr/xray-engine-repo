@@ -21,32 +21,29 @@ enum	GAME_TYPE
 	GAME_END_LIST				,
 };
 
-static LPSTR	g_GameTypeName	[]		= {
-	"UNKNOWN"					,
-		"Deathmatch"				,
-		"TeamDeathmatch"			,
-		"ArtefactHunt"				,
-
-		"END_LIST"					,
-};
-
 bool GetToken(char** sx, char* e, char* token);
 
 class CUIMapList : public CUIWindow {
 public:
 	CUIMapList();
+	~CUIMapList();
 	virtual void	Init(float x, float y, float width, float height);
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
 			void	InitFromXml(CUIXml& xml_doc, const char* path);	
 
 			void	SetWeatherSelector(CUISpinText* ws);
 			void	SetModeSelector(CUISpinText* ms);
-			void	UpdateMapList(GAME_TYPE GameType);
-			void	LoadMapList();
-			
-private:
-			void	SaveRightList();
+			void	SetServerParams(LPCSTR params);
 			void	OnModeChange();
+			void	LoadMapList();
+			void	SaveMapList();
+	const char*		GetCommandLine(LPCSTR player_name);
+		GAME_TYPE	GetCurGameType();
+private:
+	const char*		GetCLGameModeName(); // CL - command line
+			void	UpdateMapList(GAME_TYPE GameType);						
+			void	SaveRightList();
+
 			void	OnBtnLeftClick();
 			void	OnBtnRightClick();
 			void	OnBtnUpClick();
@@ -73,4 +70,6 @@ private:
 	int			m_MapsNum[GAME_END_LIST];	
 
 	xr_map<xr_string,int> m_mapWeather;
+	xr_string	m_command;
+	xr_string	m_srv_params;
 };

@@ -695,6 +695,9 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 	InitLabel(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
+	if (xml_doc.ReadAttribInt(path,index,"numonly",0))
+        pWnd->SetNumbersOnly(true);
+
 	return true;
 }
 
