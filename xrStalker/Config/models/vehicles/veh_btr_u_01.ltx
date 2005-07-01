@@ -9,9 +9,10 @@ angular_factor    		= 0.5
 
 camera_pos        		= -0.4, 1.7, 2.4
 
-driving_wheels    		= front_left_wheel,front_right_wheel,front_left_wheel2,front_right_wheel2,back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2  	; ведущие колёса
+;driving_wheels    		= front_left_wheel,front_right_wheel,front_left_wheel2,front_right_wheel2,back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2  	; ведущие колёса
+driving_wheels    		= back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2  	; ведущие колёса
 steering_wheels   		= front_left_wheel,front_right_wheel,front_left_wheel2,front_right_wheel2 ; рулевые колёса
-breaking_wheels   		= back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2 	; тормозящие колёса
+breaking_wheels   		= front_left_wheel,front_right_wheel,front_left_wheel2,front_right_wheel2,back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2	; тормозящие колёса
 doors             		= left_door,right_door,front_left_door,front_right_door 	; двери
 steer             		= stearing_wheel 					; руль
 driver_place      		= seat_left 						; место водителя
@@ -43,7 +44,7 @@ idling_engine_rpm		= 750       	; rpm (750) min rpm - starts from this rpm value
 
 reference_radius  		= 0.65			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.01        	; Ослабление скорости в неетральной позиции. (N*m)
-steering_speed    		= 2.5         	; Время поворота рулевого колеса, в максимум. rps (1)
+steering_speed    		= 1.0         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 90000.    	; Сила гидроусилителя руля. (N*m)
 break_torque      		= 0.02        	; Сила тормозных колодок. (N*m)
 break_time        		= 0.9         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
@@ -261,28 +262,28 @@ break_torque			= 0.1		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.15		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1 		;
-friction_factor         = 1.5		;
+friction_factor         = 1.8		;
 
 [back_right_wheel]
 break_torque			= 0.1		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.15		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1 		;
-friction_factor         = 1.5		;
+friction_factor         = 1.8		;
 
 [back_left_wheel2]
 break_torque			= 0.1		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.15		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1 		;
-friction_factor         = 1.5		;
+friction_factor         = 1.8		;
 
 [back_right_wheel2]
 break_torque			= 0.1		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.15		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1 		;
-friction_factor         = 1.5		;
+friction_factor         = 1.8		;
 
 ;-------------------------------------------------------------------------------
 ;------ Weapons params ---------------------------------------------------------
