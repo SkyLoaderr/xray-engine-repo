@@ -193,6 +193,7 @@ function action_gate:initialize(loading)
 	self:set_limits(1, def_open_limit, def_close_limit)
 	self:set_limits(2, def_open_limit, def_close_limit)
 
+    self.ph_shell:unblock_breaking()
 	if self.st.locking == "stick" then
 	    printf("_bp: ph_gate.locking = stick")
 	    self.locking = state_lock_stick
@@ -207,6 +208,8 @@ function action_gate:initialize(loading)
 	        self.right_stick_dir = 0
 	    end
 	elseif self.st.locking == "soft" then
+	    self.ph_shell:block_breaking()
+
 	    printf("_bp: ph_gate.locking = soft")
 	    local angle_left, angle_right, force, velocity
 
@@ -230,18 +233,20 @@ function action_gate:initialize(loading)
 		    self.object:set_tip_text(self.tip_open)
 	    end
 	elseif self.st.locking == "hard" then
+	    self.ph_shell:block_breaking()
+	    
 	    printf("_bp: ph_gate.locking = hard")
 	    local angle_left
 	    local angle_right
 
 	    self.locking = state_lock_hard
 	    if self.state == state_open then
-	        angle_left = def_close_limit
-	        angle_right = def_close_limit
-	        --self:open_gate(disable_snd)
-	    elseif self.state == state_closed then
 	        angle_left = def_open_limit
 	        angle_right = def_open_limit
+	        --self:open_gate(disable_snd)
+	    elseif self.state == state_closed then
+	        angle_left = def_close_limit
+	        angle_right = def_close_limit
 	    else
 	        angle_left = self:get_angle(1)
 	        angle_right = self:get_angle(2)
