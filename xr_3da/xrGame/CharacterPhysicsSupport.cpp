@@ -402,6 +402,7 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 {
 	//R_ASSERT2(m_eState!=esDead,"Cant change visual for dead body");
 	if(!m_physics_skeleton&&!m_pPhysicsShell) return;
+	BOOL b = m_physics_skeleton->bActive;
 	xr_delete(m_physics_skeleton);
 	CreateSkeleton(m_physics_skeleton);
 	if(m_pPhysicsShell)
@@ -409,7 +410,9 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
-
+	if(b)
+		m_EntityAlife.processing_deactivate();
+#pragma todo("Andy to Slipch : find more elegant way to fix problem with Props.bActiveCounter accumulation while changing visual")
 
 }
 

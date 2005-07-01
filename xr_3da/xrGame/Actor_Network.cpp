@@ -931,6 +931,9 @@ void	CActor::OnChangeVisual()
 		m_current_head.invalidate	();
 		m_current_legs.invalidate	();
 		m_current_torso.invalidate	();
+		m_current_legs_blend		= NULL;
+		m_current_torso_blend		= NULL;
+		m_current_jump_blend		= NULL;
 	}
 };
 
@@ -944,7 +947,7 @@ void	CActor::ChangeVisual			( shared_str NewVisual )
 
 	cNameVisual_set(NewVisual);
 
-	OnChangeVisual();
+//	OnChangeVisual();
 };
 
 void ACTOR_DEFS::net_update::lerp(ACTOR_DEFS::net_update& A, ACTOR_DEFS::net_update& B, float f)
