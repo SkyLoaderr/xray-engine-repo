@@ -146,6 +146,6 @@
 
 <!-- Погоня -->
 <info_portion id="val_chase_plr_in_car"></info_portion>
-
+<info_portion id="val_chase_soldier_start"></info_portion>
 
 </game_information_portions>
