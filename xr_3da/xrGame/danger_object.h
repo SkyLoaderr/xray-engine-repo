@@ -45,8 +45,8 @@ public:
 	IC		const CEntityAlive			*object					() const;
 	IC		const Fvector				&position				() const;
 	IC		u32							time					() const;
-	IC		const EDangerType			&type					() const;
-	IC		const EDangerPerceiveType	&perceive_type			() const;
+	IC		EDangerType					type					() const;
+	IC		EDangerPerceiveType			perceive_type			() const;
 	IC		const CObject				*dependent_object		() const;
 	IC		void						clear_dependent_object	();
 	IC		bool						operator==				(const CDangerObject &object) const;

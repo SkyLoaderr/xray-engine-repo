@@ -40,12 +40,12 @@ IC	u32	CDangerObject::time													() const
 	return				(m_time);
 }
 
-IC	const CDangerObject::EDangerType &CDangerObject::type					() const
+IC	CDangerObject::EDangerType CDangerObject::type							() const
 {
 	return				(m_type);
 }
 
-IC	const CDangerObject::EDangerPerceiveType &CDangerObject::perceive_type	() const
+IC	CDangerObject::EDangerPerceiveType CDangerObject::perceive_type			() const
 {
 	return				(m_perceive_type);
 }
