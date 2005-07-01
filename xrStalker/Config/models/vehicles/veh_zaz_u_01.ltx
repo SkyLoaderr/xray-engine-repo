@@ -28,9 +28,9 @@ engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4200        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 2800.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.15
-power_decrement_factor	= 0.3
-rpm_increment_factor	= 0.005
+power_increment_factor	= 0.01
+power_decrement_factor	= 0.03
+rpm_increment_factor	= 0.01
 rpm_decrement_factor	= 0.01
 
 ; additional engine parameters
@@ -57,11 +57,11 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 2000,4500	
-N1                 		= 3.73, 2000,4500
-N2                 		= 2.29, 2000,4500
-N3                 		= 1.39, 2000,4500
-N4                 		= 0.96, 2000,4500
+R                  		= 3.73, 3000,4500	
+N1                 		= 3.73, 3000,4500
+N2                 		= 2.29, 3000,4500
+N3                 		= 1.39, 3000,4500
+N4                 		= 0.96, 3000,4500
 
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
