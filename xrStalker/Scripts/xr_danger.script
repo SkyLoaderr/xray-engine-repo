@@ -13,7 +13,11 @@ function evaluator_danger:__init(name, storage) super (nil, name)
 end
 function evaluator_danger:evaluate()
 	-- проверка на активную схему
-	if db.storage[self.object:id()].active_scheme == nil then
+	if db.storage[self.object:id()].active_scheme == nil and
+	   not xr_wounded.is_wounded(self.object) and
+	   not xr_wounded.is_heavy_wounded_by_id(self.object:id()) and
+	   not xr_meet.is_meet(self.object)
+	then
 		return false
 	end
 
