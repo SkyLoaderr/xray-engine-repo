@@ -521,7 +521,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 				Fvector a	= {0,0,1};
 				float res = a.dotproduct(vLocalDir);
 				if (res < -0.707)
-					m_bWasBackStabbed = true;
+				{
+					game_PlayerState* ps = Game().GetPlayerByGameID(ID());
+					if (!ps || !ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))						
+						m_bWasBackStabbed = true;
+				}
 			};
 			
 			float hit_power = 0;

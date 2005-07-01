@@ -83,6 +83,9 @@ void		xrServer::client_Destroy	(IClient* C)
 }
 
 //--------------------------------------------------------------------
+#ifdef DEBUG
+INT	g_Dump_Update_Write = 0;
+#endif
 void xrServer::Update	()
 {
 	NET_Packet		Packet;
@@ -138,7 +141,9 @@ void xrServer::Update	()
 
 		if (!Client->flags.bLocal || client_Count() == 1)
 		{
-			// Entities
+#ifdef DEBUG
+			if (g_Dump_Update_Write) Msg("---- UPDATE_Write to %s --- ", *(Client->Name));
+#endif						// Entities
 			xrS_entities::iterator	I=entities.begin(),E=entities.end();
 			for (; I!=E; ++I)
 			{
@@ -155,9 +160,15 @@ void xrServer::Update	()
 					Packet.w_u16			(Test.ID		);
 					Packet.w_chunk_open8	(position		);
 					Test.UPDATE_Write		(Packet			);
+#ifdef DEBUG
+					if (g_Dump_Update_Write) Msg("* %s : %d", Test.name(), u32(Packet.w_tell()-position)-sizeof(u8));
+#endif
 					Packet.w_chunk_close8	(position		);
 				}
 			}
+#ifdef DEBUG
+			if (g_Dump_Update_Write) Msg("----------------------- ");
+#endif			
 		};
 
 		if (Packet.B.count > 2)	

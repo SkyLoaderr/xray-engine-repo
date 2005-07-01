@@ -484,6 +484,12 @@ void CCC_Register()
 	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.1f,	.5f);
 
 	CMD1(CCC_Pause,		"pause"			);
+#ifdef DEBUG
+	extern	INT	g_Dump_Export_Obj;
+	extern	INT	g_Dump_Import_Obj;
+	CMD4(CCC_Integer,	"net_dbg_dump_export_obj",	&g_Dump_Export_Obj, 0, 1);
+	CMD4(CCC_Integer,	"net_dbg_dump_import_obj",	&g_Dump_Import_Obj, 0, 1);
+#endif
 
 };
  

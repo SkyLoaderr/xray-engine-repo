@@ -2,6 +2,9 @@
 #include "xrServer.h"
 #include "xrServer_Objects.h"
 
+#ifdef DEBUG
+INT	g_Dump_Update_Read = 0;
+#endif
 void xrServer::Process_update(NET_Packet& P, ClientID sender)
 {
 	xrClientData* CL		= ID_to_client(sender);
@@ -10,6 +13,10 @@ void xrServer::Process_update(NET_Packet& P, ClientID sender)
 		return;
 	}
 //	if (CL)	CL->net_Ready	= TRUE;
+
+#ifdef DEBUG
+	if (g_Dump_Update_Read) Msg("---- UPDATE_Read --- ");
+#endif						// Entities
 
 	R_ASSERT(CL->flags.bLocal);
 	// while has information
@@ -28,6 +35,10 @@ void xrServer::Process_update(NET_Packet& P, ClientID sender)
 			//Msg				("sv_import: %d '%s'",E->ID,E->name_replace());
 			E->net_Ready	= TRUE;
 			E->UPDATE_Read	(P);
+#ifdef DEBUG
+			if (g_Dump_Update_Read) Msg("* %s : %d - %d", E->name(), size, P.r_tell() - _pos);
+#endif	
+
 			if ((P.r_tell()-_pos) != size)	{
 				string16	tmp;
 				CLSID2TEXT	(E->m_tClassID,tmp);
@@ -37,6 +48,10 @@ void xrServer::Process_update(NET_Packet& P, ClientID sender)
 		else
 			P.r_advance	(size);
 	}
+#ifdef DEBUG
+	if (g_Dump_Update_Read) Msg("-------------------- ");
+#endif						// Entities
+
 }
 
 void xrServer::Process_save(NET_Packet& P, ClientID sender)

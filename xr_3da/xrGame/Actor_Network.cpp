@@ -281,17 +281,13 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	u8					flags;
 	u16					tmp;
 
+	//CSE_ALifeCreatureAbstract
 	float health;
 	P.r_float_q16 (health,-500,1000);
 	//----------- for E3 -----------------------------
 	if (OnClient())SetfHealth(health);
 	//------------------------------------------------
-
-	float				fDummy;
-	//u32					dwDummy;
-
 	P.r_u32				(N.dwTimeStamp	);
-	
 	//---------------------------------------------
 	if (pStatGraph) 
 	{
@@ -359,9 +355,11 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 		};
 	};
 
-	P.r_float			(fDummy);
-	m_dwMoney =			P.r_u32();
+	//CSE_ALifeCreatureTrader
+//	P.r_float			(fDummy);
+//	m_dwMoney =			P.r_u32();
 
+	//CSE_ALifeCreatureActor
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);

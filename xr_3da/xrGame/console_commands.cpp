@@ -2053,4 +2053,11 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_AuthCheck,		"sv_no_auth_check",		&g_SV_Disable_Auth_Check, 0, 1);
 	CMD1(CCC_Name,			"name");
+
+#ifdef DEBUG
+	extern	INT	g_Dump_Update_Write;
+	extern	INT	g_Dump_Update_Read;
+	CMD4(CCC_Integer,	"net_dbg_dump_update_write",	&g_Dump_Update_Write, 0, 1);
+	CMD4(CCC_Integer,	"net_dbg_dump_update_read",	&g_Dump_Update_Read, 0, 1);
+#endif
 }
