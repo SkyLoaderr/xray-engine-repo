@@ -221,6 +221,8 @@ end
 ------------------------------------------------------------------------------------------------------------
 function enable_generic_schemes(ini, npc, stype, section)
 	if stype == modules.stype_stalker then
+		xr_danger.set_danger(npc, ini, "danger", "danger")
+		
 		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")
 		if combat_section then
 			xr_combat.set_combat_checker(npc, ini, "combat", combat_section)

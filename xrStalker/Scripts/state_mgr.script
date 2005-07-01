@@ -91,18 +91,26 @@ end
 function act_state_mgr_to_idle:initialize()
 	action_base.initialize(self)
 	if self.object:best_enemy() then
-		self.st:set_state("idle", nil, nil, nil, {animation = true})	
-	else
-		self.st:set_state("idle")	
+		self.st:set_state("idle", nil, nil, nil, {animation = true})
+		return
 	end
+	if self.object:best_danger() then
+		self.st:set_state("idle", nil, nil, nil, {animation = true})
+		return
+	end
+	self.st:set_state("idle")	
 end
 function act_state_mgr_to_idle:execute()
 	action_base.execute(self)
 	if self.object:best_enemy() then
-		self.st:set_state("idle", nil, nil, nil, {animation = true})	
-	else
-		self.st:set_state("idle")	
+		self.st:set_state("idle", nil, nil, nil, {animation = true})
+		return
 	end
+	if self.object:best_danger() then
+		self.st:set_state("idle", nil, nil, nil, {animation = true})
+		return
+	end
+	self.st:set_state("idle")	
 end
 function act_state_mgr_to_idle:finalize()
 	action_base.finalize(self)

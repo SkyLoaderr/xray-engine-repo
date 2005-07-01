@@ -6,387 +6,48 @@
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
 ----------------------------------------------------------------------------------------------------------------------
-	function id(npc)
-		if npc then
-			return npc:id()
-		end
-		return nil
-	end
-
 --' Условие завершения скрипта
-class "evaluator_end" (property_evaluator)
-function evaluator_end:__init(name, storage) super (nil, name)
+class "evaluator_danger" (property_evaluator)
+function evaluator_danger:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-function evaluator_end:evaluate()
-	if xr_wounded.is_wounded(self.object) then return true end
-	return not xr_logic.is_active(self.object, self.a)
-end
-
---' Обычный комбат или кемперский
-class "evaluator_close_combat" (property_evaluator)
-function evaluator_close_combat:__init(name, storage) super (nil, name)
-	self.a = storage
-	self.close_combat = false
-end
-function evaluator_close_combat:evaluate()
-	if not xr_logic.is_active(self.object, self.a) then
+function evaluator_danger:evaluate()
+	-- проверка на денжер.
+	best_danger = self.object:best_danger()
+	if best_danger == nil then
 		return true
 	end
 
-	local best_enemy = self.object:best_enemy()
-	if best_enemy == nil then return false end
-
---printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
-
-	if self.close_combat == false then
-		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+	if self.object:best_enemy() then
+		return true
 	end
-
-	if self.close_combat == true then
-		local a = self.object:memory_time(self.object:best_enemy())
-		if a then
---			printf("%s - %s ? %s", time_global(), a, 20000)
-			if time_global() - a > 20000 then
-				self.close_combat = false
-			end
-		else			
-			self.close_combat = false
-		end
-	end
-
-	return self.close_combat
-end
-
-----------------------------------------------------------------------------------------------------------------------
--- ACTIONS
-----------------------------------------------------------------------------------------------------------------------
---' Патрулировать территорию по патрульному пути
-
-class "action_patrol" (action_base)
-function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
-	self.a = storage
-	self.move_mgr = move_mgr.move_mgr(self.a.npc)
-	self.was_reset  = false
-	self.a.scan_table = {}
-end
-function action_patrol:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
 	
-	self:reset_scheme()
-	self.enemy_position = nil
-end
-function action_patrol:reset_scheme()
-	state_mgr.set_state(self.object, "patrol")	
-	self.a.signals = {}
-	self.a.scan_table = {}
-	self.move_mgr:initialize()
-	if self.a.sniper == true then
-		self.move_mgr:reset(self.a.path_walk, 
-			utils.path_parse_waypoints(self.a.path_walk),
-			nil,
-			nil,
-			nil,self.a.suggested_state,{obj=self,func=self.process_point})
+	-- инерция возврата
+	if self.danger_time and
+	   time_global() - self.danger_time < 10000 then
+	   return false
+	end
+
+	if time_global() - best_danger:time() >= 5000 then
+		return true
+	end
+--	printf("danger_time [%s]", tostring(best_danger:time()))
+
+	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
+	if danger_distance_sqr > 100 then
+		return true
+	end
+--	printf("danger_distance_sqr [%s]", tostring(danger_distance_sqr))
 			
-		-- тут вставить парсинг углов для скана
-		local path = patrol(self.a.path_look)
-		if path ~= nil then
-			for k = 0, path:count() - 1 do
-				for i = 0, 31 do
-					if path:flag(k, i) then
-						if self.a.scan_table[i] == nil then
-							self.a.scan_table[i] = {}
-						end
-						table.insert(self.a.scan_table[i], {key = k, pos =level.vertex_position(path:level_vertex_id(k))})
-					end
-				end
-			end
-		end		
-	else
-		self.move_mgr:reset(self.a.path_walk, 
-			utils.path_parse_waypoints(self.a.path_walk),
-			self.a.path_look,
-			utils.path_parse_waypoints(self.a.path_look),
-			nil,self.a.suggested_state,{obj=self,func=self.process_point})
-	end
-	self.was_reset = true
-	self.a.last_look_point = nil
-	self.a.cur_look_point = nil
-	self.a.scan_begin = nil
-end
-function action_patrol:activate_scheme()
-
-    self.was_reset = false
-end
-function action_patrol:execute()
-	action_base.execute (self)
-
-	if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
-		return
-	end
-
-	if not self.was_reset then
-		self:reset_scheme()
-    end
-
-	self.enemy = nil
-	if self.a.enemy_id == nil or
-	  self.a.enemy_id ~= id(self.object:best_enemy()) 
-	then
-		self.a.enemy_id = id(self.object:best_enemy())
-	end
-	
-	if self.a.enemy_id ~= nil then		
-		self.enemy = level.object_by_id(self.a.enemy_id)
-	end
-	
-	if self.enemy ~= nil then		
-		if self.object:memory_time(self.enemy) == nil then
-			self.a.enemy_id = nil
-			self.enemy = nil
-		else
-			self.a.mem_enemy = self.object:memory_time(self.enemy)
-		end
-	else
-		self.a.enemy_id = nil
-		self.enemy = nil
-	end
-	
-	--забывание врага по времени.	
-	if self.a.mem_enemy ~= nil then
-		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
-		if time_global()- self.a.mem_enemy > self.a.idle then
-			if self.enemy ~= nil then
-				self.object:enable_memory_object(self.enemy, false)
-			end
-			self.a.enemy_id = nil
-			self.enemy = nil
-			self.a.mem_enemy = nil
-			--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
-			self.move_mgr:continue()
-		end
-	end
-
-	-- Три типа действия:
-	-- Есть враг
-	if self.enemy ~= nil then
-		if self.object:see(self.enemy) == true then
-			-- отстрел врага
-			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
-			if self.a.sniper == true then
-				if self.a.suggested_state.campering_fire then
-					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
-				else
-					state_mgr.set_state(self.object, "hide_sniper_fire", nil, nil, {look_object = self.enemy})
-				end
-			else
-				if self.a.suggested_state.campering_fire then
-					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
-				else
-					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
-				end
-			end
-			self.enemy_position = self.enemy:position()
-			-- Занести место поиска врага в scan_table
-			if self.a.sniper == true then
-				self.position = self.object:position()
-
-				self.direction = vector():set(self.enemy_position.x - self.position.x,
-											  0,
-											  self.enemy_position.z - self.position.z)
-				self.direction:normalize()				
-				self.point_0 = vector():set(self.enemy_position.x + self.a.enemy_disp*self.direction.z,
-											self.enemy_position.y,
-											self.enemy_position.z - self.a.enemy_disp*self.direction.x)
-				--self.point_0:normalize()
-				self.point_2 = vector():set(self.enemy_position.x - self.a.enemy_disp*self.direction.z,
-											self.enemy_position.y,
-											self.enemy_position.z + self.a.enemy_disp*self.direction.x)
-				--self.point_1:normalize()
-				--printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
-				--printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
-				--printf("POINT 2 [%s] [%s] [%s]", self.point_2.x, self.point_2.y, self.point_2.z)
-				self.a.scan_table[-1] = {}
-				table.insert(self.a.scan_table[-1], {key = 0, pos =self.point_0})
-				table.insert(self.a.scan_table[-1], {key = 1, pos =self.enemy_position})
-				table.insert(self.a.scan_table[-1], {key = 2, pos =self.point_2})					
-			end
-
-		else
-			if self.a.sniper == true then
-				-- поиск врага (сканирование врага)
-				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
-				-- сканируем
-				self:scan(-1)
-			else				
-				-- если норетрит или мы на месте - ныкаться, иначе идти на точку				
-				if self:on_place() then 
-					printf("on place[%s]", self.object:name())
-					local position
-					if self.position then
-						position = {look_position = self.position}
-					end
-					if self.a.suggested_state.campering then
-						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position)
-					else
-						state_mgr.set_state(self.object, "hide", nil, nil, position)
-					end
-				else
-					-- идем дальше
-					self.move_mgr:continue()
-					self.move_mgr:update()
-				end
-			end
-		end
-		return
-	end
-	
-	-- проверка на денжер.
-	best_danger = self.object:best_danger()
-	if best_danger then
-		if best_danger:type() == danger_object.grenade then
-			printf("danger_type [GRENADE]")
-		end
-		printf("danger_distance_sqr [%s]", tostring(best_danger:position():distance_to_sqr(self.object:position())))
-		printf("danger_time [%s]", tostring(best_danger:time()))
-		printf("danger_name [%s]", tostring(best_danger:object():name()))
-	end
-	
-
-	-- если нет ни врага ни денжера.	
-	if self.a.sniper == true then
-		-- Сканирование местности в узловых точках
-		-- если мы на точке - запустить счетчик сканирования и посканировать определенное время.
-		if self:on_place() then
-			if self.scantime == nil then
-				self.scantime = time_global()
-			end
-			--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
-			-- сканируем
-			self:scan(self.a.wp_flag)
-			-- если мы стоим на финальной точке - не ресетить.
-			if self.move_mgr:standing_on_terminal_waypoint() then
-				return
-			end
-			-- проверка на завершение сканирования.
-			if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then
-				--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
-				self.move_mgr:continue()
-			end
-		else
-			self.scantime = nil
-			self.move_mgr:update()
-		end
-	else
-		-- Перемещение по move_mgr
-		self.move_mgr:update()
-	end		
-		
-end
-function action_patrol:scan(flag)
-	if self.a.scan_table[flag] == nil then
-		return
-		--utils.abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
-	end
-	
-	if self.flag ~= flag then
-		self.flag = flag
-		self.a.scan_begin = nil
-		self.a.cur_look_point = nil
-		self.a.last_look_point = nil
-	end
-
-	if self.a.scan_begin == nil or
-	   time_global() - self.a.scan_begin > self.a.time_scan_delta then
-	
-		self.next_point = self:get_next_point(flag)
-		if self.a.cur_look_point == nil then
-			self.a.cur_look_point = 1
-		end
-		if self.a.last_look_point == nil then
-			self.a.last_look_point = self.next_point
-		end
-			
-		--printf("Look at [%s][%s]", utils.to_str(self.a.last_look_point.key), utils.to_str(self.a.cur_look_point))
-		self.look_position = self.a.last_look_point.pos
-		self.dest_position = self.next_point.pos
-		self.look_point = vector():set(self.look_position.x + self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/self.a.scandelta,
-									   self.look_position.y + self.a.cur_look_point * (self.dest_position.y - self.look_position.y)/self.a.scandelta,
-									   self.look_position.z + self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/self.a.scandelta)
-		state_mgr.set_state(self.object, "hide_na", nil, nil, {look_position = self.look_point}, nil, nil, 0.2)
-
-		if self.a.cur_look_point >= self.a.scandelta then
-			self.a.cur_look_point = nil
-			self.a.last_look_point = self.next_point
-		else
-			if self.a.scan_begin ~= nil then
-				self.a.cur_look_point = self.a.cur_look_point + (time_global() - self.a.scan_begin)/self.a.time_scan_delta
-			else
-				self.a.cur_look_point = self.a.cur_look_point + 1
-			end
-		end	
-		self.a.scan_begin = time_global()
-	end
-end
-function action_patrol:get_next_point(flag)
-	local next = false
-
-	if self.a.last_look_point == nil then
-		table.sort(self.a.scan_table[flag], function(a,b) return a.key < b.key end)
-	end
---	print_table(self.a.scan_table[flag])
-	for k,v in self.a.scan_table[flag] do		
-		if self.a.last_look_point == nil then
-			return v
-		end
-		if next == true then
-			return v
-		end
-		if self.a.last_look_point.key == v.key then
-			next = true
-		end
-	end
-	if next == true then
-		if self.a.last_look_point.key == 0 then
-			table.sort(self.a.scan_table[flag], function(a,b) return a.key < b.key end)
-		else
-			table.sort(self.a.scan_table[flag], function(a,b) return a.key > b.key end)
-		end
-	end
-	return self.a.last_look_point
-end
-function action_patrol:process_point(mode, number)
-	return false
-end
-function action_patrol:finalize()
-	self.move_mgr:finalize()
-	action_base.finalize (self)
-end
-function action_patrol:on_place()
-    if self.a.no_retreat == true then return false end
-	
-	local path = patrol(self.a.path_walk)
-	if path ~= nil then
-		for k = 0, path:count() - 1 do
-			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), k) then
-				for i = 0, 31 do
-					if path:flag(k, i) then
-						self.a.wp_flag = i
-						return true
-					end
-				end
-				self.a.wp_flag = nil
-				return false
-			end
-		end
-		self.a.wp_flag = nil
+--	printf("danger_name [%s]", tostring(best_danger:object():name()))
+	if best_danger:type() == danger_object.grenade then
+--		printf("danger_type [GRENADE]")
+		self.danger_time = time_global()
 		return false
 	end
+	return true
 end
+
 
 ----------------------------------------------------------------------------------------------------------------------
 -- BINDER
@@ -397,67 +58,14 @@ function add_to_binder(object, ini, scheme, section, storage)
 		
 	   	local manager = object:motivation_action_manager()
 
-		operators["patrol"]			= xr_actions_id.stohe_camper_base + 1
-	
-		properties["end"]			= xr_evaluators_id.stohe_camper_base + 1
-		properties["can_fight"]		= xr_evaluators_id.sidor_wounded_base + 1
-		properties["close_combat"]	= xr_evaluators_id.stohe_camper_base + 2
+		properties["danger"]	= xr_evaluators_id.danger
 		
-		manager:add_evaluator (properties["end"], this.evaluator_end("camper_end", storage))
-		manager:add_evaluator (properties["close_combat"], this.evaluator_close_combat("camper_close_combat", storage))
-
-		local action = this.action_patrol (object:name(),"action_camper_patrol", storage)
-		action:add_precondition	(world_property(stalker_ids.property_alive, true))
-		action:add_precondition	(world_property(properties["close_combat"],	false))
-		action:add_precondition	(world_property(properties["can_fight"],	true))
-		xr_motivator.addCommonPrecondition(action)
-		action:add_effect (world_property(properties["end"],				true))
-		action:add_effect (world_property(stalker_ids.property_enemy,		false))
-		action:add_effect (world_property(stalker_ids.property_danger,		false))
-		manager:add_action (operators["patrol"], action)
-		xr_logic.subscribe_action_for_events(object, storage, action)
-
-		action = manager:action (xr_actions_id.alife)	
-		action:add_precondition	(world_property(properties["end"],			true))
-
-		action = manager:action (stalker_ids.action_combat_planner)
-		action:add_precondition (world_property(properties["close_combat"],	true))
-		action:add_effect (world_property(properties["close_combat"],	false))
+		manager:add_evaluator (properties["danger"], this.evaluator_danger("script_danger", storage))
 
 		action = manager:action (stalker_ids.action_danger_planner)
-		action:add_precondition (world_property(properties["close_combat"],	true))
-		action:add_effect (world_property(properties["close_combat"],	false))
+		action:add_precondition (world_property(properties["danger"],	false))
+		action:add_effect		(world_property(properties["danger"],	true))
 end
-
-function set_scheme(npc, ini, scheme, section, gulag_name)
+function set_danger(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
-
-	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
-	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
-	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
-	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
-	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
-	st.suggested_state = {}
-	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
-	st.suggested_state.moving1 = st.suggested_state.moving
-	st.suggested_state.moving2 = st.suggested_state.moving
-	st.suggested_state.moving3 = st.suggested_state.moving
-	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
-	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
-	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
-	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false)
-	
-	st.idle = 20*1000
-	st.enemy_disp = 20
-	
-	if st.radius == nil then
-		st.radius = 20
-	end
-	if st.scantime_free == nil then
-		st.scantime_free = 60000
-	end
-	st.scandelta = 30
-	st.timedelta = 4000
-	st.time_scan_delta = st.timedelta/st.scandelta
 end

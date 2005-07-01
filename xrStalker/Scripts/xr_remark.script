@@ -306,9 +306,10 @@ function add_to_binder(npc, ini, scheme, section, storage)
 		
 	   	local manager = npc:motivation_action_manager()
 
-		properties["event"] = xr_evaluators_id.reaction
-	 	properties["need_remark"] = xr_evaluators_id.zmey_remark_base + 1
-
+		properties["event"]			= xr_evaluators_id.reaction
+	 	properties["need_remark"]	= xr_evaluators_id.zmey_remark_base + 1
+		properties["danger"]		= xr_evaluators_id.danger
+		
 	 	operators["action_remark"] = xr_actions_id.zmey_remark_base + 1
 
 	   	-- // evaluators
@@ -316,16 +317,12 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
 		local new_action = this.action_remark_activity(npc, "action_remark_activity", storage)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
-	
-		-- added by Dima
-		if nil ~= stalker_ids.property_danger then
-			new_action:add_precondition(world_property(stalker_ids.property_danger, false))
-		end
-			
+		new_action:add_precondition(world_property(properties["danger"], true))
 		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
 		new_action:add_precondition(world_property(properties["need_remark"], true))
 		xr_motivator.addCommonPrecondition(new_action)
 	   	new_action:add_effect(world_property(properties["need_remark"], false))
+	   	new_action:add_effect(world_property(stalker_ids.property_danger,false))
 		manager:add_action(operators["action_remark"], new_action)
 
 		-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
