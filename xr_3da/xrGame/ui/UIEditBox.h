@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 class game_cl_GameState;
+class CUIColorAnimatorWrapper;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -32,6 +33,8 @@ public:
 
 	void			CaptureFocus	(bool bCapture) { m_bInputFocus = bCapture; }
 	virtual	void	SetText			(LPCSTR str);
+	virtual void	Enable			(bool status);
+			void	SetNumbersOnly	(bool status);
 protected:
 
 	bool KeyPressed(int dik);
@@ -43,13 +46,20 @@ protected:
 	bool m_bInputFocus;
 	bool m_bShift;
 
+	bool m_bNumbersOnly;
+
 	//DIK клавиши, кот. нажата и удерживается, 0 если такой нет
 	int m_iKeyPressAndHold;
 	bool m_bHoldWaitMode;
 
 	//положение текущее курсора при наборе текста
 	u32 m_iCursorPos;
+
+	static CUIColorAnimatorWrapper* m_pAnimation;
+	u32	m_cursorColor;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
+
 };
 
 add_to_type_list(CUIEditBox)

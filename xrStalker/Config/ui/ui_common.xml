@@ -140,13 +140,17 @@
     <texture id="ui_button_arrow_left_e" x="954" y="46" width="44" height="29" />
     <texture id="ui_button_arrow_left_h" x="753" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_left_t" x="797" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_left_d" x="954" y="46" width="44" height="29" />
     <texture id="ui_button_arrow_right_e" x="841" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_right_h" x="885" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_right_t" x="929" y="77" width="44" height="29" />
+    <texture id="ui_button_arrow_right_d" x="841" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_up_e" x="973" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_up_h" x="723" y="107" width="44" height="29" />
     <texture id="ui_button_arrow_up_t" x="767" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_up_d" x="973" y="77" width="44" height="29" />
     <texture id="ui_button_arrow_down_e" x="811" y="107" width="44" height="29" />
     <texture id="ui_button_arrow_down_h" x="855" y="107" width="44" height="29" />
     <texture id="ui_button_arrow_down_t" x="899" y="107" width="44" height="29" />
+    <texture id="ui_button_arrow_down_d" x="811" y="107" width="44" height="29" />
 </ui_texture>

@@ -17,59 +17,28 @@ end
 
 function mp_server:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
+	self:SetAutoDelete(true)
 	
 	-- SPIN BOXES	
-	local spin = CUISpinNum()
-	xml:InitSpinNum("tab_server:spin_max_players",0,spin)
-	self:AttachChild(spin)
+	handler.spin_max_players = xml:InitSpinNum("tab_server:spin_max_players", self)
+	handler.spin_mode = xml:InitSpinText("tab_server:spin_game_mode", self)
+	handler:Register(handler.spin_mode,"spin_game_mode")
 	
-	spin = CUISpinText()
-	xml:InitSpinText("tab_server:spin_game_mode",0,spin)
-	self:AttachChild(spin)
-	handler.spin_mode = spin
-	
-	local map_list = CUIMapList()
-	xml:InitMapList("tab_server:map_list",map_list)
-	self:AttachChild(map_list)
+	local map_list = xml:InitMapList("tab_server:map_list", self)
 	map_list:SetWeatherSelector(handler.spin_weather)
 	map_list:SetModeSelector(handler.spin_mode)
 	map_list:LoadMapList()
-	map_list:UpdateMapList(GAME_TYPE.GAME_DEATHMATCH)
-
-	
-	local lbl = CUILabel()
-	xml:InitLabel("tab_server:cap_server_settings",0,lbl)
-	self:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_server:cap_server_name",0,lbl)
-	self:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_server:cap_password",0,lbl)
-	self:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_server:cap_game_mode",0,lbl)
-	self:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_server:cap_max_players",0,lbl)
-	self:AttachChild(lbl)
-	
+	handler.map_list = map_list;
+	xml:InitLabel("tab_server:cap_server_settings", self)	
+	xml:InitStatic("tab_server:cap_server_name",	self)
+	xml:InitStatic("tab_server:cap_password",		self)
+	xml:InitStatic("tab_server:cap_game_mode",		self)
+	xml:InitStatic("tab_server:cap_max_players",	self)
 	-- CHECK BOXES
-	local btn = CUICheckButton()
-	xml:InitStatic("tab_server:check_dedicated",0,btn)
-	self:AttachChild(btn)
-	handler:Register(btn)
-	
+	local btn = xml:InitCheck("tab_server:check_dedicated", self);
+	btn:Enable(false)
 	-- EDIT BOXES
-	local edt = CUIEditBox()
-	xml:InitLabel("tab_server:edit_server_name",0,edt)
-	self:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_server:edit_password",0,edt)
-	self:AttachChild(edt)
+	handler.edit_server_name = xml:InitEditBox("tab_server:edit_server_name", self)
+	handler.edit_password = xml:InitEditBox("tab_server:edit_password", self)
 end
 

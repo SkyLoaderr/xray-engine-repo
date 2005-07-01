@@ -18,25 +18,25 @@
 
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 	:	colorAnimation		(NULL),
-		animationTime		(0.0f),
+		animationTime		(0),
 		color				(NULL),
 		isDone				(false),
 		reverse				(false),
 		kRev				(0.0f)
 {
-	prevGlobalTime	= Device.fTimeGlobal;
+	prevGlobalTime	= Device.TimerAsyncMM();
 	currColor		= 0xffff0000;
 }
 
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(u32 *colorToModify)
 	:	colorAnimation		(NULL),
-	animationTime		(0.0f),
+	animationTime		(0),
 	color				(NULL),
 	isDone				(false),
 	reverse				(false),
 	kRev				(0.0f)
 {
-	prevGlobalTime	= Device.fTimeGlobal;
+	prevGlobalTime	= Device.TimerAsyncMM();
 	color			= colorToModify;
 	currColor		= 0xffff0000;
 }
@@ -44,14 +44,14 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(u32 *colorToModify)
 
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName)
 	:	colorAnimation		(LALib.FindItem(*animationName)),
-		animationTime		(0.0f),
+		animationTime		(0),
 		color				(NULL),
 		isDone				(false),
 		reverse				(false),
 		kRev				(0.0f)
 {
 	VERIFY(colorAnimation);
-	prevGlobalTime	= Device.fTimeGlobal;
+	prevGlobalTime	= Device.TimerAsyncMM();
 	currColor		= 0xffff0000;
 }
 
@@ -91,7 +91,7 @@ void CUIColorAnimatorWrapper::Update()
 				//Msg("name: %s, color: %x, frame: %d", *colorAnimation->cName,currColor, currFrame);
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
-				animationTime	+= Device.fTimeGlobal - prevGlobalTime;
+				animationTime	+= Device.TimerAsyncMM() - prevGlobalTime;
 			}
 			else
 			{
@@ -104,7 +104,7 @@ void CUIColorAnimatorWrapper::Update()
 		}
 		else
 		{
-			currColor	= colorAnimation->CalculateBGR(Device.fTimeGlobal, currFrame);
+			currColor	= colorAnimation->CalculateBGR(Device.TimerAsyncMM()/1000.0f, currFrame);
 			currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 		}
 
@@ -114,15 +114,15 @@ void CUIColorAnimatorWrapper::Update()
 		}
 	}
 
-	prevGlobalTime = Device.fTimeGlobal;
+	prevGlobalTime = Device.TimerAsyncMM();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIColorAnimatorWrapper::Reset()
 {
-	prevGlobalTime	= Device.fTimeGlobal;
-	animationTime	= 0.0f;
+	prevGlobalTime	= Device.TimerAsyncMM();
+	animationTime	= 0;
 	isDone			= false;
 }
 
@@ -154,13 +154,13 @@ void CUIColorAnimatorWrapper::Reverese(bool value)
 
 	if (!Done())
 	{
-		animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime;
+		animationTime = iFloor(colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime);
 	}
 }
 
 void CUIColorAnimatorWrapper::GoToEnd(){
-	prevGlobalTime	= Device.fTimeGlobal;
+	prevGlobalTime	= Device.TimerAsyncMM();
 	this->currFrame = colorAnimation->iFrameCount;
-	animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS;
+	animationTime = iFloor(colorAnimation->iFrameCount / colorAnimation->fFPS);
 	this->isDone = false;
 }

@@ -98,16 +98,10 @@ function mp_main:InitControls()
 	xml:ParseFile("ui_mm_mp.xml")
 	
 	-- Player Name	
-	local st = CUIStatic()
-	st:SetAutoDelete(true)
-	xml:InitStatic("static_player_name",0,st)
-	self.bk:AttachChild(st)
-	
-	st = CUIEditBox()
-	st:SetAutoDelete(true)
+	local st = xml:InitStatic("static_player_name",self.bk)
+
+	st = xml:InitEditBox("edit_player_name", self.bk)
 	st:SetText("Player_name")
-	xml:InitEditBox("edit_player_name",0,st)
-	self.bk:AttachChild(st)
 	self.player_name = st
 	
 	-- CD Key
@@ -120,11 +114,8 @@ function mp_main:InitControls()
 	st:SetStretchTexture(true)	
 	self.bk:AttachChild(st)
 	
-	self.tab = CUITabControl()
-	self.tab:SetWindowName("tab")
-	xml:InitTab("tab",0,self.tab)
-	self.bk:AttachChild(self.tab)	
-	self:Register(self.tab)
+	self.tab = xml:InitTab("tab",self.bk)
+	self:Register(self.tab, "tab")
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()
 	self.dlg_join:InitControls(121,224, xml, self)
@@ -139,33 +130,25 @@ function mp_main:InitControls()
 	self.dlg_server:InitControls(121,224, xml, self)
 	self.dlg_server:Show(false)
 	self.bk:AttachChild(self.dlg_server)
-	
-	btn = CUI3tButton()
-	xml:Init3tButton("btn_create",0,btn)
-	btn:Enable(false)
-	btn:SetWindowName("btn_create")
-	self:Register(btn)
-	self.bk:AttachChild(btn)
+
+	btn = xml:Init3tButton("btn_create", self)
+	self:Register(btn, "btn_create")
 	self.btn_create = btn
+	btn:Enable(false)
 	
-	btn = CUI3tButton()
-	xml:Init3tButton("btn_join",0,btn)
-	btn:SetWindowName("btn_join")
-	self:Register(btn)
-	self.bk:AttachChild(btn)
+	btn = xml:Init3tButton("btn_join", self)
+	self:Register(btn, "btn_join")
 	self.btn_join = btn
 	
-	btn = CUI3tButton()
-	xml:Init3tButton("btn_cancel",0,btn)
-	btn:SetWindowName("btn_cancel")
-	self:Register(btn)
-	self.bk:AttachChild(btn)
+	btn = xml:Init3tButton("btn_cancel", self)
+	self:Register(btn, "btn_cancel")
 	
 	
 	-- SET DEFAULT VALUES FOR CONTROLS	
 	local opt = COptionsManager()
 	opt:SetCurrentValues("mm_mp_client")
 	opt:SetCurrentValues("mm_mp_server")
+	self:OnGameModeChange()
 end
 
 function mp_main:InitCallBacks()
@@ -179,11 +162,18 @@ function mp_main:InitCallBacks()
 	self:AddCallback("check_without_pass",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_without_ff",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_without_pb",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
-	self:AddCallback("check_listen_servers",ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
+	self:AddCallback("check_listen_servers",ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)	
+	-- ui_mm_mp_options	
+	self:AddCallback("spin_game_mode",		ui_events.BUTTON_CLICKED,	self.OnGameModeChange,self)	
 	
 	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)	
 	-- ui_mm_mp_join
 	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
+end
+
+function mp_main:OnGameModeChange()
+	self.map_list:OnModeChange()
+	self.dlg_options:SetGameMode(self.map_list:GetCurGameType(), self)
 end
 
 function mp_main:OnFilterChange()
@@ -235,7 +225,137 @@ end
 
 function mp_main:OnBtn_Create()
 	local opt = COptionsManager()
-	opt:SaveValues("mm_mp_server")
+	local console = get_console()
+	--opt:SaveValues("mm_mp_server")
+	self.map_list:SaveMapList()
+	self:GatherServerData()
+--	self.map_list:SetServerParams(self.srv_cmdstr)	
+	local command = self.map_list:GetCommandLine(self.player_name:GetText())
+	console:execute("main_menu off")
+	console:execute(command)
+end
+
+function mp_main:GatherServerData()
+	local cmdstr = ""
+	local tmp;
+	
+	-- server name ------------------------------------------------------------------
+	tmp	= self.edit_server_name:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = "/hname=" .. tmp
+	end
+	-- password ---------------------------------------------------------------------
+	tmp = self.edit_password:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/pasw=" .. tmp
+	end
+	-- max players ------------------------------------------------------------------
+	tmp = self.spin_max_players:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/maxplayers=" .. tmp
+	end
+	-- public server ----------------------------------------------------------------
+	tmp = self.check_public_server:GetCheck()
+	if true == tmp then
+		cmdstr = cmdstr .. "/public=1"
+	end
+	-- spectator --------------------------------------------------------------------
+	if self.check_spectator:GetCheck() then
+		tmp = self.edit_spectator:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/spectr=" .. tmp
+		end
+	end
+	-- allow voting ------------------------------------------------------------------
+	tmp = self.check_allow_voting:GetCheck()
+	if true == tmp then
+		cmdstr = cmdstr .. "/vote=1"
+	end
+	-- damage block ------------------------------------------------------------------
+	tmp = self.edit_damage_block:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/dmgblock=" .. tmp
+	end
+	if self.check_damage_block:GetCheck() then
+		cmdstr = cmdstr .. "/dmbi=1"
+	end
+	-- freeze time --------------------------------------------------------------------
+	tmp = self.edit_freeze_time:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/rpfrz=" .. tmp
+	end
+	-- frag limit ---------------------------------------------------------------------
+	tmp = self.edit_frag_limit:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/fraglimit=" .. tmp
+	end
+	-- time limit ---------------------------------------------------------------------
+	tmp = self.edit_time_limit:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/timelimit=" .. tmp
+	end
+	-- friendly fire ------------------------------------------------------------------
+	tmp = self.spin_friendly_fire:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/ffire=" .. tmp
+	end
+	-- auto team balance --------------------------------------------------------------
+	if self.check_auto_team_balance:GetCheck() then
+		cmdstr = cmdstr .. "/abalance=1" .. tmp
+	end	
+	-- Force respawn --------------------------------------------------------------
+	if self.tab_respawn:GetActiveIndex() == 1 then
+		tmp = self.edit_force_respawn:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/frcrspwn=" .. tmp
+		end
+	end
+	
+	-- ARTEFACTHUNT only ----------------------------------------------	
+	if self.map_list:GetCurGameType() == GAME_TYPE.GAME_ARTEFACTHUNT then
+		-- number of artefacts ---------------------------------------------------------
+		tmp = self.spin_artefacts_num:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/anum=" .. tmp
+		end
+		-- aretefact delay --------------------------------------------------------------
+		tmp = self.edit_artefact_delay:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/ardelta=" .. tmp
+		end
+		-- artefact stay ----------------------------------------------------------------
+		tmp = self.edit_artefact_stay:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/astime=" .. tmp
+		end
+		
+		if self.tab_respawn:GetActiveIndex() == 2 then // artefact capture selected
+			cmdstr = cmdstr .. "/reinf=-1"
+		else
+			tmp = self.edit_reinforcement:GetText()
+			if string.len(tmp) > 0 then
+				cmdstr = cmdstr .. "/reinf=" .. tmp
+			end
+		end
+	end
+	-- friendly indicators --------------------------------------------------------------
+	if self.check_friendly_indicators:GetCheck() then
+		cmdstr = cmdstr .. "/fi=1" .. tmp
+	end	
+	-- anomaly time ---------------------------------------------------------------------	
+	if false == self.check_no_anmalies:GetCheck() then
+		tmp = self.edit_anomaly_time:GetText()
+		if string.len(tmp) > 0 then
+			cmdstr = cmdstr .. "/anslen=" .. tmp
+		end
+	end
+	-- rate of weather change -----------------------------------------------------------
+	tmp = self.edit_rate_of_change:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/etimef=" .. tmp
+	end
+		
+	self.map_list:SetServerParams(cmdstr)	
 end
 
 function mp_main:OnBtn_Join()

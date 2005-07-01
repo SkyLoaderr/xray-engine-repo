@@ -20,103 +20,59 @@ end
 
 function mp_join:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
+	self:SetAutoDelete(true)
+		
+	self.bk = xml:InitFrame("frame", self)
+
+	handler.server_list = xml:InitServerList("tab_client:server_list", self.bk)
+
+	xml:InitLabel("tab_client:cap_network_connection", self.bk)
+	xml:InitLabel("tab_client:cap_server_list", self.bk)
+	xml:InitLabel("tab_client:cap_filters",self.bk)
 	
-	self.bk = CUIFrameWindow()
-	xml:InitFrame("frame",0, self.bk)
-	self:AttachChild(self.bk)
-	
-	local srvlist = CServerList()
-	xml:InitServerList("tab_client:server_list", srvlist)
-	self.bk:AttachChild(srvlist)
-	handler.server_list = srvlist
-	
-	local frm = CUILabel()
-	xml:InitLabel("tab_client:cap_network_connection",0,frm)
-	self.bk:AttachChild(frm)
-	
-	frm = CUILabel()
-	xml:InitLabel("tab_client:cap_server_list",0,frm)
-	self.bk:AttachChild(frm)
-	
-	frm = CUILabel()
-	xml:InitLabel("tab_client:cap_filters",0,frm)
-	self.bk:AttachChild(frm)
-	
-	local radio = CUITabControl()
-	xml:InitTab("tab_client:radio_tab_network_connection",0,radio)
-	self.bk:AttachChild(radio)
+	local radio = xml:InitTab("tab_client:radio_tab_network_connection", self.bk)
 	radio:SetNewActiveTab(1)
 	handler.radio_net_connection = radio
-	
+
 	handler.filters = {}
-	
-	
-	local btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_empty",0,btn)
-	btn:SetWindowName("check_empty")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+
+	local btn = xml:InitCheck("tab_client:check_empty", self.bk)
+	handler:Register(btn, "check_empty")
 	handler.filters.btn_check_empty = btn
-	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_full",0,btn)
-	btn:SetWindowName("check_full")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+
+	btn = xml:InitCheck("tab_client:check_full", self.bk)
+	handler:Register(btn, "check_full")
 	handler.filters.btn_check_full = btn
 	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_with_pass",0,btn)
-	btn:SetWindowName("check_with_pass")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:InitCheck("tab_client:check_with_pass", self.bk)
+	handler:Register(btn, "check_with_pass")
 	handler.filters.btn_check_with_pass = btn
 	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_without_pass",0,btn)
-	btn:SetWindowName("check_without_pass")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:InitCheck("tab_client:check_without_pass", self.bk)
+	handler:Register(btn, "check_without_pass")
 	handler.filters.btn_check_without_pass = btn
 	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_without_ff",0,btn)
-	btn:SetWindowName("check_without_ff")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:InitCheck("tab_client:check_without_ff", self.bk)
+	handler:Register(btn, "check_without_ff")
 	handler.filters.btn_check_without_ff = btn
-	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_without_pb",0,btn)
-	btn:SetWindowName("check_without_pb")
+
+	btn = xml:InitCheck("tab_client:check_without_pb", self.bk)
 	btn:Enable(false)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	handler:Register(btn, "check_without_pb")
 	handler.filters.btn_check_without_pb = btn
 	
-	btn = CUICheckButton()
-	xml:InitCheck("tab_client:check_listen_servers",0,btn)
-	btn:SetWindowName("check_listen_servers")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:InitCheck("tab_client:check_listen_servers", self.bk)
+	handler:Register(btn, "check_listen_servers")
 	handler.filters.btn_check_listen_servers = btn
 	
-	btn = CUI3tButton()
-	xml:Init3tButton("tab_client:btn_refresh",0,btn)
-	btn:SetWindowName("btn_refresh")
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:Init3tButton("tab_client:btn_refresh", self.bk)
+	handler:Register(btn, "btn_refresh")
 	
-	btn = CUI3tButton()
-	xml:Init3tButton("tab_client:btn_quick_refresh",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:Init3tButton("tab_client:btn_quick_refresh", self.bk)
+	handler:Register(btn,"btn_quick_refresh")
 	btn:Enable(false)
 	
-	btn = CUI3tButton()
-	xml:Init3tButton("tab_client:btn_server_info",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
+	btn = xml:Init3tButton("tab_client:btn_server_info", self.bk)
+	handler:Register(btn, "btn_server_info")
 	btn:Enable(false)
-
 end

@@ -12,173 +12,108 @@ function mp_options:__finalize()
 end
 
 function mp_options:InitControls(x, y, xml, handler)
+
 	self:Init(x,y, 738, 416)
+	self:SetAutoDelete(true)
 	
-	self.bk = CUIFrameWindow()
-	xml:InitFrame("frame",0, self.bk)
-	self:AttachChild(self.bk)
+	self.bk = xml:InitFrame("frame", self)
+
+	xml:InitLabel("tab_options:cap_network_connection",	self.bk)
+	xml:InitLabel("tab_options:cap_respawn_options",	self.bk)
+	xml:InitLabel("tab_options:cap_server_list",		self.bk)
+	xml:InitLabel("tab_options:cap_weather_options",	self.bk)
+	xml:InitStatic("tab_options:cap_freeze_time",		self.bk)
+	xml:InitStatic("tab_options:cap_damage_block",		self.bk)
+	xml:InitStatic("tab_options:cap_friendly_fire",		self.bk)
+	xml:InitStatic("tab_options:cap_frag_limit",		self.bk)
+	xml:InitStatic("tab_options:cap_time_limit",		self.bk)
+	xml:InitStatic("tab_options:cap_artefact_stay",		self.bk)
+	xml:InitStatic("tab_options:cap_artefact_num",		self.bk)
+	xml:InitStatic("tab_options:cap_anomaly_time",		self.bk)
+	xml:InitStatic("tab_options:cap_artefact_delay",	self.bk)
+	xml:InitStatic("tab_options:cap_starting_weather",	self.bk)
+	xml:InitStatic("tab_options:cap_rate_of_change",	self.bk)
 	
-	local lbl = CUILabel()
-	xml:InitLabel("tab_options:cap_network_connection",0,lbl)
-	self.bk:AttachChild(lbl)
+	local btn
 	
-	lbl = CUILabel()
-	xml:InitLabel("tab_options:cap_respawn_options",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUILabel()
-	xml:InitLabel("tab_options:cap_server_list",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUILabel()
-	xml:InitLabel("tab_options:cap_weather_options",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_freeze_time",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_damage_block",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_friendly_fire",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_frag_limit",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_time_limit",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_artefact_stay",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_artefact_num",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_anomaly_time",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_artefact_delay",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_starting_weather",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	lbl = CUIStatic()
-	xml:InitStatic("tab_options:cap_rate_of_change",0,lbl)
-	self.bk:AttachChild(lbl)
-	
-	
-	local btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_public_server",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_map_rotation",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_spectator",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_allow_voting",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-		
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_damage_block",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_auto_team_balance",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_friendly_indicators",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	btn = CUICheckButton()
-	xml:InitStatic("tab_options:check_no_anmalies",0,btn)
-	self.bk:AttachChild(btn)
-	handler:Register(btn)
-	
-	radio = CUITabControl()
-	xml:InitTab("tab_options:radio_tab_respawn_options",0,radio)
-	self.bk:AttachChild(radio)
-	handler:Register(radio)
-	
+	handler.check_public_server = xml:InitCheck("tab_options:check_public_server", self.bk)
+	btn = xml:InitCheck("tab_options:check_map_rotation", self.bk)
+	btn:Enable(false)
+	handler.check_spectator				= xml:InitCheck("tab_options:check_spectator",				self.bk)
+	handler.check_allow_voting			= xml:InitCheck("tab_options:check_allow_voting",			self.bk)
+	handler.check_damage_block			= xml:InitCheck("tab_options:check_damage_block",			self.bk)
+	handler.check_auto_team_balance		= xml:InitCheck("tab_options:check_auto_team_balance",		self.bk)
+	handler.check_friendly_indicators	= xml:InitCheck("tab_options:check_friendly_indicators",	self.bk)
+	handler.check_no_anmalies			= xml:InitCheck("tab_options:check_no_anmalies",			self.bk)
+	handler.tab_respawn					= xml:InitTab("tab_options:radio_tab_respawn_options",		self.bk)
 	-- spin boxes
-	local spin = CUISpinText()
-	xml:InitSpinText("tab_options:spin_weather",0,spin)
-	self.bk:AttachChild(spin)
-	handler:Register(radio)
-	handler.spin_weather = spin
+	handler.spin_weather				= xml:InitSpinText("tab_options:spin_weather",				self.bk)
+	handler.spin_friendly_fire			= xml:InitSpinNum("tab_options:spin_friendly_fire",			self.bk)
+	handler.spin_artefacts_num			= xml:InitSpinNum("tab_options:spin_artefacts_num",			self.bk)
+	handler.edit_spectator				= xml:InitEditBox("tab_options:edit_spectator",				self.bk)
+	handler.edit_force_respawn			= xml:InitEditBox("tab_options:edit_force_respawn", self.bk)
+	handler.edit_reinforcement 			= xml:InitEditBox("tab_options:edit_reinforcement", self.bk)
+--[[
+	handler.edit_freeze_time			= xml:InitEditBox("tab_options:edit_freeze_time",			self.bk)
+	handler.edit_damage_block			= xml:InitEditBox("tab_options:edit_damage_block",			self.bk)
+	handler.edit_frag_limit				= xml:InitEditBox("tab_options:edit_frag_limit",			self.bk)
+	handler.edit_time_limit				= xml:InitEditBox("tab_options:edit_time_limit",			self.bk)
+	handler.edit_artefact_stay			= xml:InitEditBox("tab_options:edit_artefact_stay",			self.bk)
+	handler.edit_artefact_delay			= xml:InitEditBox("tab_options:edit_artefact_delay",		self.bk)
+	handler.edit_anomaly_time			= xml:InitEditBox("tab_options:edit_anomaly_time",			self.bk)
+	]]
+	handler.edit_freeze_time			= xml:InitSpinNum("tab_options:edit_freeze_time",			self.bk)
+	handler.edit_damage_block			= xml:InitSpinNum("tab_options:edit_damage_block",			self.bk)
+	handler.edit_frag_limit				= xml:InitSpinNum("tab_options:edit_frag_limit",			self.bk)
+	handler.edit_time_limit				= xml:InitSpinNum("tab_options:edit_time_limit",			self.bk)
+	handler.edit_artefact_stay			= xml:InitSpinNum("tab_options:edit_artefact_stay",			self.bk)
+	handler.edit_artefact_delay			= xml:InitSpinNum("tab_options:edit_artefact_delay",		self.bk)
+	handler.edit_anomaly_time			= xml:InitSpinNum("tab_options:edit_anomaly_time",			self.bk)
 	
-	-- edit boxes
-	local edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_spectator",0,edt)
-	self.bk:AttachChild(edt)
+	handler.edit_rate_of_change			= xml:InitEditBox("tab_options:edit_rate_of_change",		self.bk)
+	handler.edit_rate_of_change:Enable(false)
+end
+
+function mp_options:SetGameMode(mode, handler)
+	handler.spin_friendly_fire:Enable(true)
+	handler.check_auto_team_balance:Enable(true)
+	handler.spin_artefacts_num:Enable(true)
+	handler.edit_artefact_delay:Enable(true)
+	handler.edit_artefact_stay:Enable(true)
+	handler.check_friendly_indicators:Enable(true)
+	handler.edit_reinforcement:Enable(true)
+	handler.edit_frag_limit:Enable(true)
 	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_force_respawn",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_reinforcement",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_freeze_time",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_damage_block",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_frag_limit",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_time_limit",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_artefact_stay",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_artefact_dealy",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_artefact_dealy",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_anomaly_time",0,edt)
-	self.bk:AttachChild(edt)
-	
-	edt = CUIEditBox()
-	xml:InitLabel("tab_options:edit_rate_of_change",0,edt)
-	self.bk:AttachChild(edt)
+	local btn_reinforcement = handler.tab_respawn:GetButtonByIndex(1)
+	local btn_artefactcapture = handler.tab_respawn:GetButtonByIndex(2)
+	btn_reinforcement:Enable(true)
+	btn_artefactcapture:Enable(true)
+		
+
+	if GAME_TYPE.GAME_DEATHMATCH == mode then
+		handler.spin_friendly_fire:Enable(false)
+		handler.check_auto_team_balance:Enable(false)
+		handler.spin_artefacts_num:Enable(false)
+		handler.edit_artefact_delay:Enable(false)
+		handler.edit_artefact_stay:Enable(false)
+		handler.check_friendly_indicators:Enable(false)
+		handler.edit_reinforcement:Enable(false)		
+		-- tab
+		handler.tab_respawn:SetNewActiveTab(0)
+		btn_reinforcement:Enable(false)
+		btn_artefactcapture:Enable(false)
+	elseif GAME_TYPE.GAME_TEAMDEATHMATCH == mode then
+		handler.spin_artefacts_num:Enable(false)
+		handler.edit_artefact_delay:Enable(false)
+		handler.edit_artefact_stay:Enable(false)
+		-- tab
+		handler.tab_respawn:SetNewActiveTab(0)
+		btn_reinforcement:Enable(false)
+		btn_artefactcapture:Enable(false)
+	elseif GAME_TYPE.GAME_ARTEFACTHUNT == mode then
+		handler.edit_frag_limit:Enable(false)
+	end
+
 end
 
 

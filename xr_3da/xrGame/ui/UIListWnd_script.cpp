@@ -89,8 +89,13 @@ void CUIListWnd::script_register(lua_State *L)
 		.def(							constructor<>())
 		.def("SetWeatherSelector",		&CUIMapList::SetWeatherSelector)
 		.def("SetModeSelector",			&CUIMapList::SetModeSelector)
-		.def("UpdateMapList",			&CUIMapList::UpdateMapList)
-		.def("LoadMapList",				&CUIMapList::LoadMapList),
+		.def("OnModeChange",			&CUIMapList::OnModeChange)
+		.def("LoadMapList",				&CUIMapList::LoadMapList)
+		.def("SaveMapList",				&CUIMapList::SaveMapList)
+		.def("GetCommandLine",			&CUIMapList::GetCommandLine)
+		.def("SetServerParams",			&CUIMapList::SetServerParams)
+		.def("GetCurGameType",			&CUIMapList::GetCurGameType),
+		
 
 		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")
 		.enum_("gametype")

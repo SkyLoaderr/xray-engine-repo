@@ -24,12 +24,14 @@ public:
 	virtual void	Init(float x, float y, float width, float height);
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
 	virtual void	Draw();
+	virtual void	Enable(bool status);
 
 
 
 	// own
 	virtual void	OnBtnUpClick();
 	virtual void	OnBtnDownClick();
+			LPCSTR	GetText();
 	
 
 protected:

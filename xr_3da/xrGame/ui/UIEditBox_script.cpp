@@ -11,6 +11,7 @@ void CUIEditBox::script_register(lua_State *L)
 	[
 		class_<CUIEditBox, CUILabel>("CUIEditBox")
 		.def(						constructor<>())
+		.def("SetNumbersOnly", CUIEditBox::SetNumbersOnly)
 
 //		.def("",				&CUIEditBox:: )
 	];

@@ -152,6 +152,7 @@
 		</spin_game_mode>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
+			<options_item entry="net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
 		<edit_password x="150" y="65" width="275" height="21">
@@ -257,74 +258,102 @@
 		</cap_rate_of_change>
 		
 		<check_public_server x="18" y="40" width="155" height="23">
+			<options_item entry="net_con_publicserver" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Public server</text>
 		</check_public_server>
 		<check_map_rotation x="18" y="65" width="155" height="23">
+			<options_item entry="net_con_maprotation" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Map Rotation</text>
 		</check_map_rotation>
 		<check_spectator x="18" y="90" width="155" height="23">
+			<options_item entry="net_con_spectator_on" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Spectator</text>
 		</check_spectator>
 		<check_allow_voting x="18" y="115" width="155" height="23">
+			<options_item entry="net_con_allowvoting" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Allow voting</text>
 		</check_allow_voting>
 		<check_damage_block x="18" y="325" width="155" height="23">
+			<options_item entry="net_con_damageblockindicator" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Damage Block Indicator</text>
 		</check_damage_block>
 		
 		<check_auto_team_balance x="269" y="200" width="155" height="23">
+			<options_item entry="net_srv_autoteambalance" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Auto Team Balance</text>
 		</check_auto_team_balance>
 		<check_friendly_indicators x="269" y="225" width="155" height="23">
+			<options_item entry="net_srv_friendlyindicators" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">Friendly Indicators</text>
 		</check_friendly_indicators>
 		<check_no_anmalies x="269" y="275" width="155" height="23">
+			<options_item entry="net_srv_noanomalies" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">No Anomalies</text>
 		</check_no_anmalies>
 		
-		<edit_spectator x="175" y="90" width="45" height="23">
+		<edit_spectator x="175" y="90" width="45" height="23" numonly="1">
+			<options_item entry="net_con_spectator" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_spectator>
-		<edit_force_respawn x="175" y="185" width="45" height="23">
+		<edit_force_respawn x="175" y="185" width="45" height="23" numonly="1">
+			<options_item entry="net_force_respawn" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_force_respawn>
-		<edit_reinforcement x="175" y="210" width="45" height="23">
+		<edit_reinforcement x="175" y="210" width="45" height="23" numonly="1">
+			<options_item entry="net_reinforcement" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_reinforcement>
 
 		
 		<edit_freeze_time x="175" y="270" width="45" height="23">
+			<options_item entry="net_respawn_freezetime" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_freeze_time>
 		<edit_damage_block x="175" y="295" width="45" height="23">
+			<options_item entry="net_respawn_damageblock" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_damage_block>
 		
 		<edit_frag_limit x="423" y="65" width="45" height="23">
+			<options_item entry="net_srv_fraglimit" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_frag_limit>
 		<edit_time_limit x="423" y="90" width="45" height="23">
+			<options_item entry="net_srv_timelimit" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_time_limit>
 		<edit_artefact_stay x="423" y="115" width="45" height="23">
+			<options_item entry="net_srv_artefactstay" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_artefact_stay>
-		<edit_artefact_dealy x="423" y="165" width="45" height="23">
+		<edit_artefact_delay x="423" y="165" width="45" height="23">
+			<options_item entry="net_srv_artefactdelay" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
-		</edit_artefact_dealy>
+		</edit_artefact_delay>
 		
 		<edit_anomaly_time x="423" y="300" width="45" height="23">
+			<options_item entry="net_srv_anomalytime" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_d</texture>
 		</edit_anomaly_time>
 		
-		<edit_rate_of_change x="671" y="65" width="45" height="23">
+		<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1">
+			<options_item entry="net_weather_rateofchange" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
 		
-		<spin_weather x="637" y="40" width="112" height="23">					
+		<spin_weather x="637" y="40" width="80" height="23">					
 		</spin_weather>
 		
+		<spin_friendly_fire x="423" y="40" width="45" height="23">
+			<options_item entry="net_srv_friendlyfire" group="mm_mp_server"/>					
+		</spin_friendly_fire>
+		
+		<spin_artefacts_num x="423" y="140" width="45" height="23">
+			<options_item entry="net_srv_artefactsnum" group="mm_mp_server"/>		
+		</spin_artefacts_num>		
+		
 		<radio_tab_respawn_options x="10" y="185" width="142" height="76" radio="1">
+			<options_item entry="net_srv_artefactsnum" group="mm_mp_server"/>
 			<button x="0" y="0" width="142">
 				<text font="letterica16" r="115" g="114" b="112">Force Respawn</text>
 			</button>		

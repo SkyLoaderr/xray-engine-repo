@@ -64,6 +64,16 @@ void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL 
 	}
 }
 
+void CUICustomSpin::Enable(bool status){
+	m_pBtnDown->Enable(status);
+	m_pBtnUp->Enable(status);
+
+	if (!status)
+		m_pLines->SetTextColor(color_argb(255,100,100,100));
+	else
+		m_pLines->SetTextColor(color_argb(255,255,255,255));
+}
+
 void CUICustomSpin::OnBtnUpClick(){
 	// do nothing
 }
@@ -76,5 +86,9 @@ void CUICustomSpin::Draw(){
 	CUIWindow::Draw();
 	Fvector2 pos = GetAbsolutePos();
 	m_pLines->Draw(pos.x + 3, pos.y);
+}
+
+LPCSTR CUICustomSpin::GetText(){
+	return m_pLines->GetText();
 }
 

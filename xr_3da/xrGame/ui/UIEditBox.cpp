@@ -6,6 +6,7 @@
 #include <dinput.h>
 #include "uieditbox.h"
 #include "../HUDManager.h"
+#include "UIColorAnimatorWrapper.h"
 
 
 static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, 
@@ -19,6 +20,7 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 static xr_map<u32, char> gs_DIK2CHR;
 
 
+CUIColorAnimatorWrapper* CUIEditBox::m_pAnimation;
 
 CUIEditBox::CUIEditBox(void)
 {
@@ -36,6 +38,13 @@ CUIEditBox::CUIEditBox(void)
 
 	m_iCursorPos = 0;
 	SetText("");
+	m_textPos.set(3,0);
+	m_bNumbersOnly = false;
+
+	m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
+	m_cursorColor = 0xAAFFFF00;
+//	m_pAnimation->SetColorToModify(&m_cursorColor);
+	m_pAnimation->Cyclic(true);
 }
 
 CUIEditBox::~CUIEditBox(void)
@@ -179,7 +188,11 @@ bool CUIEditBox::KeyPressed(int dik)
 		return true;
 	}
 
-	AddChar(out_me);
+	if (m_bNumbersOnly)
+		if ('.' == out_me)
+			AddChar(out_me);
+	else
+		AddChar(out_me);
 
 	return true;
 }
@@ -219,6 +232,13 @@ void CUIEditBox::AddChar(char c)
 
 void CUIEditBox::AddLetter(char c)
 {
+	if (m_bNumbersOnly)
+	{
+		if ((c >= '0' && c<='9'))
+			AddChar(c);
+
+		return;
+	}
 	if(m_bShift)
 	{
 		switch(c) {
@@ -294,11 +314,12 @@ void  CUIEditBox::Draw()
 		tmp_str.assign(tmp_str.begin(), tmp_str.begin()+m_iCursorPos);
 
 		outX = GetFont()->SizeOf(tmp_str.c_str());
-		outY = 0;
+		outY = (GetHeight() - GetFont()->CurrentHeightRel())/2;
 
-
-		GetFont()->SetColor(0xAAFFFF00);
-		UI()->OutText(GetFont(), GetWndRect(), (float)rect.left+outX, 
+		m_pAnimation->Update();
+		GetFont()->SetColor(subst_alpha(m_cursorColor, color_get_A(m_pAnimation->GetColor())));
+		//GetFont()->SetColor(m_cursorColor);
+		UI()->OutText(GetFont(), rect, (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 		GetFont()->OnRender();
 	}	
@@ -308,4 +329,16 @@ void CUIEditBox::SetText(LPCSTR str)
 {
 	CUILabel::SetText(str);
 	m_iCursorPos = xr_strlen(m_lines.GetText());
+}
+
+void CUIEditBox::Enable(bool status){
+	CUIWindow::Enable(status);
+	if (!status)
+		m_lines.SetTextColor(color_argb(255,100,100,100));
+	else
+		m_lines.SetTextColor(color_argb(255,255,255,255));
+}
+
+void CUIEditBox::SetNumbersOnly(bool status){
+	m_bNumbersOnly = status;
 }
