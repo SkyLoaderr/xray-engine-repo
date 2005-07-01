@@ -38,11 +38,15 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
 public:
 	shared_str						visual_name;
 	shared_str						startup_animation;
+	enum{
+		flUseAsObstacle				= (1<<0)
+	};
+	Flags8							flags;
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
 
-	void							visual_read		(NET_Packet& P);
+	void							visual_read		(NET_Packet& P, u16 version);
 	void							visual_write	(NET_Packet& P);
 
     void							set_visual		(LPCSTR name, bool load=true);
@@ -57,7 +61,7 @@ add_to_type_list(CSE_Visual)
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
 	void __stdcall	OnChangeMotion	(PropValue* sender);  
 public:
-	shared_str							motion_name;
+	shared_str						motion_name;
 public:
 									CSE_Motion 		(LPCSTR name=0);
 	virtual							~CSE_Motion		();

@@ -21,6 +21,7 @@ CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
 	visual_name					= name;
     startup_animation			= "$editor";
+	flags.zero					();
 }
 
 CSE_Visual::~CSE_Visual			()
@@ -35,14 +36,17 @@ void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 	visual_name					= tmp; 
 }
 
-void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
+void CSE_Visual::visual_read   	(NET_Packet &tNetPacket, u16 version)
 {
 	tNetPacket.r_stringZ		(visual_name);
+	if (version>103)
+		flags.assign			(tNetPacket.r_u8());
 }
 
 void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_stringZ		(visual_name);
+	tNetPacket.w_u8				(flags.get());
 }
 
 void CSE_Visual::OnChangeVisual	(PropValue* sender)
@@ -64,6 +68,7 @@ void CSE_Visual::FillProps		(LPCSTR pref, PropItemVec &items)
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
 	V							= PHelper().CreateChoose(items,	PrepareKey(pref,abstract->name(),"Model\\Animation"),	&startup_animation, smSkeletonAnims,0,(void*)*visual_name);
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeAnim);
+	PHelper().CreateFlag8		(items, PrepareKey(pref,abstract->name(),"Model\\Use As Obstacle"),	&flags,	flUseAsObstacle);
 }
 
 ////////////////////////////////////////////////////////////////////////////
