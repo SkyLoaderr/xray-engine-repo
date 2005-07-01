@@ -356,3 +356,18 @@ void CEntity::shedule_Update	(u32 dt)
 		}
 	}
 }
+void CEntity::ChangeTeam(int team, int squad, int group)
+{
+	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
+	VERIFY2(g_Alive(), "Try to change team of a dead object");
+	
+	// remove from current team
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member	(this,false);
+
+	id_Team					= team;
+	id_Squad				= squad;
+	id_Group				= group;
+
+	// add to new team
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member		(this);
+}

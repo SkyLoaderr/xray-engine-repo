@@ -510,17 +510,19 @@ LPCSTR CScriptGameObject::CharacterCommunity	()
 	return *pInventoryOwner->CharacterInfo().Community().id();
 }
 
-void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
+void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm, int squad, int group)
 {
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
+	CInventoryOwner*	pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
+	CEntity*			entity			= smart_cast<CEntity*>(&object());
 
-	if (!pInventoryOwner) {
+	if (!pInventoryOwner || !entity) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCharacterCommunity available only for InventoryOwner");
 		return;
 	}
 	CHARACTER_COMMUNITY	community;
 	community.set(comm);
-	return pInventoryOwner->SetCommunity(community.index());
+	pInventoryOwner->SetCommunity(community.index());
+	entity->ChangeTeam(community.team(), squad, group);
 }
 
 LPCSTR CScriptGameObject::snd_character_profile_sect () const

@@ -59,6 +59,8 @@ public:
 	int					id_Team;
 	int					id_Squad;
 	int					id_Group;
+	
+	virtual void		ChangeTeam				(int team, int squad, int group);
 
 	struct SEntityState
 	{

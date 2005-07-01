@@ -868,7 +868,7 @@ bool CCustomMonster::use_model_pitch	() const
 {
 	return					(true);
 }
-
+/* moved to CEntity
 void CCustomMonster::ChangeTeam(int team, int squad, int group)
 {
 	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
@@ -883,7 +883,7 @@ void CCustomMonster::ChangeTeam(int team, int squad, int group)
 
 	// add to new team
 	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member		(this);
-}
+}*/
 
 void CCustomMonster::PitchCorrection() 
 {

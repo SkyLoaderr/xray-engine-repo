@@ -193,8 +193,8 @@ public:
 	{
 		return					(false);
 	}
-	
-	virtual void				ChangeTeam				(int team, int squad, int group);
+//. moved to CEntity	
+//.	virtual void				ChangeTeam				(int team, int squad, int group);
 	virtual	void				PitchCorrection			();
 
 	virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
