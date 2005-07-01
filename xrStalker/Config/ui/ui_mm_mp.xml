@@ -104,7 +104,7 @@
 		</check_without_ff>
 		<check_without_pb x="570" y="165" width="150" height="22">
 			<options_item entry="net_filter_without_punkbusier" group="mm_mp_client"/>
-			<text font="letterica16" r="115" g="114" b="112">Without PunkBusier</text>
+			<text font="letterica16" r="115" g="114" b="112">Without PunkBuster</text>
 		</check_without_pb>
 		<check_listen_servers x="570" y="190" width="150" height="22">
 			<options_item entry="net_filter_listenservers" group="mm_mp_client"/>
