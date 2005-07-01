@@ -74,6 +74,12 @@ function process_info_portion(info_id)
 	elseif info_id == "val_exit_gate_show" then
 		level_tasks.add_location(421, "val_exit_gate_location")
 		return true
+	elseif info_id == "val_sos_give_tip" then
+		level_tasks.add_location(422, "val_sos_location")
+		return true
+	elseif info_id == "val_sos_actor_near_wounded" then
+		level_tasks.remove_location(422, "val_sos_location")
+		return true
 	end
 
 	return false
