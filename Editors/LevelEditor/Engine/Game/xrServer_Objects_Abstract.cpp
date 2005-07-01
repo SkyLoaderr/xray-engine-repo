@@ -68,7 +68,7 @@ void CSE_Visual::FillProps		(LPCSTR pref, PropItemVec &items)
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
 	V							= PHelper().CreateChoose(items,	PrepareKey(pref,abstract->name(),"Model\\Animation"),	&startup_animation, smSkeletonAnims,0,(void*)*visual_name);
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeAnim);
-	PHelper().CreateFlag8		(items, PrepareKey(pref,abstract->name(),"Model\\Use As Obstacle"),	&flags,	flUseAsObstacle);
+	PHelper().CreateFlag8		(items, PrepareKey(pref,abstract->name(),"Model\\Allow use as obstacle"),	&flags,	flUseAsObstacle);
 }
 
 ////////////////////////////////////////////////////////////////////////////
