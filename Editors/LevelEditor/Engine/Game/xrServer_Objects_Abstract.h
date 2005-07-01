@@ -39,7 +39,7 @@ public:
 	shared_str						visual_name;
 	shared_str						startup_animation;
 	enum{
-		flUseAsObstacle				= (1<<0)
+		flObstacle					= (1<<0)
 	};
 	Flags8							flags;
 public:
