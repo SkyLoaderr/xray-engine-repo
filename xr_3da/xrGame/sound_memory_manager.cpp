@@ -111,6 +111,7 @@ IC	bool is_sound_type(int s, const ESoundTypes &t)
 
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound_UserDataPtr user_data, const Fvector &position, float sound_power)
 {
+	VERIFY					(_valid(sound_power));
 	if (!m_sounds)
 		return;
 
@@ -133,21 +134,27 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (!entity_alive->g_Alive())
 		return;
 	
+	VERIFY					(_valid(sound_power));
 	if (is_sound_type(sound_type,SOUND_TYPE_WEAPON))
 		sound_power			*= m_weapon_factor;
 	
+	VERIFY					(_valid(sound_power));
 	if (is_sound_type(sound_type,SOUND_TYPE_ITEM))
 		sound_power			*= m_item_factor;
 
+	VERIFY					(_valid(sound_power));
 	if (is_sound_type(sound_type,SOUND_TYPE_MONSTER))
 		sound_power			*= m_npc_factor;
 
+	VERIFY					(_valid(sound_power));
 	if (is_sound_type(sound_type,SOUND_TYPE_ANOMALY))
 		sound_power			*= m_anomaly_factor;
 	
+	VERIFY					(_valid(sound_power));
 	if (is_sound_type(sound_type,SOUND_TYPE_WORLD))
 		sound_power			*= m_world_factor;
 	
+	VERIFY					(_valid(sound_power));
 	if (sound_power >= m_sound_threshold) {
 		if (is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING)) {
 			// this is fake!
