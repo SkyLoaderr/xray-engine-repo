@@ -193,9 +193,14 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	VERIFY							(E);
 
-	const CSE_Visual				*l_tpVisual = smart_cast<const CSE_Visual*>(E);
-	if (l_tpVisual) 
+	const CSE_Visual* l_tpVisual	= smart_cast<const CSE_Visual*>(E);
+	if (l_tpVisual){ 
 		cNameVisual_set				(l_tpVisual->get_visual());
+		if (l_tpVisual->flags.test(CSE_Visual::flObstacle)){
+			ISpatial*	self		= smart_cast<ISpatial*> (this);
+			self->spatial.type		|=	STYPE_OBSTACLE;
+		}
+	}
 
 	// Naming
 	cName_set						(E->s_name);

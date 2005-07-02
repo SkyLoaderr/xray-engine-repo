@@ -29,10 +29,10 @@ BOOL CObjectSpace::_RayTest	( const Fvector &start, const Fvector &dir, float ra
 	collide::ray_defs	Q	(start,dir,range,CDB::OPT_ONLYFIRST,tgt);
 
 	// dynamic test
-	if (tgt&rqtDyn) 
-	{
+	if (tgt&rqtDyn){
+		u32			d_flags =	STYPE_COLLIDEABLE|((tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((tgt&rqtShape)?STYPE_SHAPE:0);
 		// traverse object database
-		g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,start,dir,range);
+		g_SpatialSpace->q_ray	(r_spatial,0,d_flags,start,dir,range);
 		// Determine visibility for dynamic part of scene
 		for (u32 o_it=0; o_it<r_spatial.size(); o_it++)
 		{
@@ -40,7 +40,7 @@ BOOL CObjectSpace::_RayTest	( const Fvector &start, const Fvector &dir, float ra
 			CObject*	collidable		= spatial->dcast_CObject	();
 			if (collidable)	{
 				ECollisionFormType tp	= collidable->collidable.model->Type();
-				if ((tgt&rqtObject)&&(tp==cftObject)&&collidable->collidable.model->_RayQuery(Q,r_temp))	return TRUE;
+				if ((tgt&(rqtObject|rqtObstacle))&&(tp==cftObject)&&collidable->collidable.model->_RayQuery(Q,r_temp))	return TRUE;
 				if ((tgt&rqtShape)&&(tp==cftShape)&&collidable->collidable.model->_RayQuery(Q,r_temp))		return TRUE;
 			}
 		}
@@ -110,14 +110,15 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 	if (tgt&rqtDyn){ 
 		collide::ray_defs Q		(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,tgt);
 		// traverse object database
-		g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,start,dir,range);
+		u32			d_flags =	STYPE_COLLIDEABLE|((tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((tgt&rqtShape)?STYPE_SHAPE:0);
+		g_SpatialSpace->q_ray	(r_spatial,0,d_flags,start,dir,range);
 		// Determine visibility for dynamic part of scene
 		for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
 			ISpatial*	spatial			= r_spatial[o_it];
 			CObject*	collidable		= spatial->dcast_CObject();
 			if			(0==collidable)	continue;
 			ECollisionFormType tp		= collidable->collidable.model->Type();
-			if (((tgt&rqtObject)&&(tp==cftObject))||((tgt&rqtShape)&&(tp==cftShape))){
+			if (((tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((tgt&rqtShape)&&(tp==cftShape))){
 				u32		C	= D3DCOLOR_XRGB	(64,64,64);
 				Q.range		= R.range;
 				if (collidable->collidable.model->_RayQuery(Q,r_temp)){
@@ -159,7 +160,10 @@ BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* C
 	ray_defs	s_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
 	ray_defs	d_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
 	rq_target	s_mask	= rqtStatic;
-	rq_target	d_mask	= rq_target(((R.tgt&rqtObject)?rqtObject:rqtNone)|((R.tgt&rqtShape)?rqtShape:rqtNone));
+	rq_target	d_mask	= rq_target(((R.tgt&rqtObject)?rqtObject:rqtNone)|
+									((R.tgt&rqtObstacle)?rqtObstacle:rqtNone)|
+									((R.tgt&rqtShape)?rqtShape:rqtNone));
+	u32			d_flags =	STYPE_COLLIDEABLE|((R.tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((R.tgt&rqtShape)?STYPE_SHAPE:0);
 
 	s_res.set				(0,s_rd.range,-1);
 	do{
@@ -181,14 +185,14 @@ BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* C
 		if ((R.tgt&d_mask)&&sd_test.is_any(d_mask)&&(next_test&d_mask)){ 
 			r_temp.r_clear	();
 			// Traverse object database
-			g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,d_rd.start,d_rd.dir,d_rd.range);
+			g_SpatialSpace->q_ray	(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
 			// Determine visibility for dynamic part of scene
 			for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
 				CObject*	collidable		= r_spatial[o_it]->dcast_CObject();
 				if			(0==collidable)	continue;
 				ICollisionForm*	cform		= collidable->collidable.model;
 				ECollisionFormType tp		= collidable->collidable.model->Type();
-				if (((R.tgt&rqtObject)&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+				if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
 					if (tb&&!tb(collidable,user_data))continue;
 					cform->_RayQuery(d_rd,r_temp);
 				}

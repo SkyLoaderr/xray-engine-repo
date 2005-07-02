@@ -53,26 +53,20 @@ void CObject::processing_deactivate	()
 
 void CObject::setEnabled			(BOOL _enabled)
 {
-	if (_enabled)
-	{
+	if (_enabled){
 		Props.bEnabled							=	1;	
 		if (collidable.model)	spatial.type	|=	STYPE_COLLIDEABLE;
-	}
-	else
-	{
+	}else{
 		Props.bEnabled							=	0;
 		spatial.type							&=	~STYPE_COLLIDEABLE;
 	}
 }
 void CObject::setVisible			(BOOL _visible)
 {
-	if (_visible)				// Parent should control object visibility itself (??????)
-	{
+	if (_visible){				// Parent should control object visibility itself (??????)
 		Props.bVisible							= 1;
 		if (renderable.visual)	spatial.type	|=	STYPE_RENDERABLE;
-	}
-	else
-	{
+	}else{
 		Props.bVisible							= 0;
 		spatial.type							&=	~STYPE_RENDERABLE;
 	}

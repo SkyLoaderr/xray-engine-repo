@@ -209,9 +209,6 @@ void CBulletManager::Update()
 	m_Lock.Leave		();
 }
 
-
-
-
 bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 {
 	VERIFY				(bullet);
@@ -229,7 +226,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	Fvector cur_dir = bullet->dir;
 	
 	bullet->flags.set				(SBullet::RICOCHET_FLAG,0);
-	collide::ray_defs RD			(bullet->pos, bullet->dir, range, 0 ,/*collide::rqtAll*/collide::rqtBoth);
+	collide::ray_defs RD			(bullet->pos, bullet->dir, range, 0, collide::rqtBoth);
 	BOOL result						= FALSE;
 	result							= Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet, test_callback);
 	if (result) range				= (Level().ObjectSpace.r_results.r_begin()+Level().ObjectSpace.r_results.r_count()-1)->range;

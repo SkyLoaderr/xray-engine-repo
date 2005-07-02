@@ -55,9 +55,9 @@ namespace collide
 		rqtObject	= (1<<0),
 		rqtStatic	= (1<<1),
 		rqtShape	= (1<<2),
+		rqtObstacle	= (1<<3),
 		rqtBoth		= (rqtObject|rqtStatic),
-		rqtAll		= (rqtObject|rqtStatic|rqtShape),
-		rqtDyn		= (rqtObject|rqtShape)
+		rqtDyn		= (rqtObject|rqtShape|rqtObstacle)
 	};
 	struct			ray_defs
 	{

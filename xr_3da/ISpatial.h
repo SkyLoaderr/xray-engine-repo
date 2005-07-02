@@ -33,6 +33,8 @@ enum
 	STYPE_VISIBLEFORAI			= (1<<3),
 	STYPE_REACTTOSOUND			= (1<<4),
 	STYPE_PHYSIC				= (1<<5),
+	STYPE_OBSTACLE				= (1<<6),
+	STYPE_SHAPE					= (1<<7),
 
 	STYPEFLAG_INVALIDSECTOR		= (1<<16)
 };
@@ -176,10 +178,10 @@ public:
 	};
 
 	// query
-	void							q_ray			(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector&		_start,  const Fvector&	_dir, float _range);
-	void							q_box			(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector&		_center, const Fvector& _size);
-	void							q_sphere		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector&		_center, const float _radius);
-	void							q_frustum		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const CFrustum&	_frustum);
+	void							q_ray			(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_and, const Fvector&		_start,  const Fvector&	_dir, float _range);
+	void							q_box			(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_or,  const Fvector&		_center, const Fvector& _size);
+	void							q_sphere		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_or,  const Fvector&		_center, const float _radius);
+	void							q_frustum		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_or,  const CFrustum&	_frustum);
 };
 
 ENGINE_API extern ISpatial_DB*		g_SpatialSpace			;

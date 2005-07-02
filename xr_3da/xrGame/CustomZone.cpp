@@ -87,7 +87,7 @@ void CCustomZone::Load(LPCSTR section)
 	
 //////////////////////////////////////////////////////////////////////////
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
-	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
+	if (self)		self->spatial.type	|=	(STYPE_COLLIDEABLE|STYPE_SHAPE);
 //////////////////////////////////////////////////////////////////////////
 
 	LPCSTR sound_str = NULL;

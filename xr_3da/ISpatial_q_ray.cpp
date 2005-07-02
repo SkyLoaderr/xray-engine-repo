@@ -228,7 +228,7 @@ public:
 		for (; _it!=_end; _it++)
 		{
 			ISpatial*		S	= *_it;
-			if (0==(S->spatial.type&mask))	continue;
+			if (mask!=(S->spatial.type&mask))	continue;
 
 			Fvector&		sC	= S->spatial.center;
 			float			sR	= S->spatial.radius;
@@ -257,7 +257,7 @@ public:
 	}
 };
 
-void	ISpatial_DB::q_ray	(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector&	_start,  const Fvector&	_dir, float _range)
+void	ISpatial_DB::q_ray	(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_and, const Fvector&	_start,  const Fvector&	_dir, float _range)
 {
 	cs.Enter			();
 	q_result			= &R;
@@ -265,20 +265,20 @@ void	ISpatial_DB::q_ray	(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvect
 	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
 		if (_o & O_ONLYFIRST)
 		{
-			if (_o & O_ONLYNEAREST)		{ walker<true,true,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<true,true,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<true,true,true>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<true,true,false>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		} else {
-			if (_o & O_ONLYNEAREST)		{ walker<true,false,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<true,false,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<true,false,true>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<true,false,false>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		}
 	} else {
 		if (_o & O_ONLYFIRST)
 		{
-			if (_o & O_ONLYNEAREST)		{ walker<false,true,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<false,true,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<false,true,true>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<false,true,false>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		} else {
-			if (_o & O_ONLYNEAREST)		{ walker<false,false,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<false,false,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<false,false,true>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<false,false,false>	W(this,_mask_and,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		}
 	}
 	cs.Leave		();

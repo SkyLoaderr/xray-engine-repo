@@ -24,7 +24,6 @@ namespace Feel {
 	};
 	IC BOOL __stdcall feel_vision_callback(collide::rq_result& result, LPVOID params)
 	{
-		VERIFY(!result.O);
 		SFeelParam* fp	= (SFeelParam*)params;
 		float vis		= fp->parent->feel_vision_mtl_transp(result.O, result.element);
 		fp->vis			*= vis;
@@ -184,7 +183,7 @@ namespace Feel {
 			if (f>fuzzy_guaranteed){
 				D.div						(f);
 				// setup ray defs & feel params
-				collide::ray_defs RD		(P,D,f,0,collide::rqtStatic);
+				collide::ray_defs RD		(P,D,f,0,collide::rq_target(collide::rqtStatic|collide::rqtObstacle));
 				SFeelParam	feel_params		(this,&*I,vis_threshold);
 				// check cache
 				if (I->Cache.result&&I->Cache.similar(P,D,f)){
