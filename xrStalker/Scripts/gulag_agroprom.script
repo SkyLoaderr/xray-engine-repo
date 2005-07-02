@@ -420,7 +420,7 @@ function load_states( gname, type )
 			for k, v in gulag.Object do
 				be = v:best_enemy()
 				if be and be:id() == actor:id() then
-					actor:give_info( "agr_nii_alarm" )
+					actor:give_info_portion( "agr_nii_alarm" )
 					return 3
 				end
 			end
