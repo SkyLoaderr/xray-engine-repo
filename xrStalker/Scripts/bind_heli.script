@@ -146,13 +146,18 @@ function heli_binder:check_health()
 			heli:SetfHealth( health )
 		else
 			health = heli:GetfHealth()
+
+			if health < 0 then
+				heli:SetfHealth( 0 )
+				health = 0
+			end
 		end
 
 		if health < 30 and not heli.m_flame_started then
 			heli_start_flame( self.object )
 		end
 
-		if health <= 0.5 then
+		if health <= 0.5 and not self.st.immortal then
 			heli_die( self.object )
 		end
 	elseif not heli.m_exploded then

@@ -367,5 +367,7 @@ function set_scheme( npc, ini, scheme, section )
 
 	local st = db.storage[npc:id()]
 	st.combat:read_custom_data( ini, section )
+
 	st.invulnerable = utils.cfg_get_bool( ini, section, "invulnerable", npc, false, false )
+	st.immortal     = utils.cfg_get_bool( ini, section, "immortal",     npc, false, false )
 end
