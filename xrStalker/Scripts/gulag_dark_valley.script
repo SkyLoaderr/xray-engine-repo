@@ -800,6 +800,11 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 end
 
+function mb_predicate(obj)
+    local pname = obj:profile_name()
+	return pname == "monolit_regular" or pname == "soldier_regular" or pname == "soldier_specnaz"
+end
+
 function load_job_monolith_base(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
 	-- œ–»Œ–»“≈“ 4 - œ¿“–”À» Õ¿ “≈––»“Œ–»»
@@ -809,9 +814,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -820,9 +826,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 	
@@ -831,9 +838,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -842,9 +850,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -853,9 +862,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -864,9 +874,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 4, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -878,9 +889,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -889,9 +901,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -900,9 +913,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -911,9 +925,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -925,9 +940,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -936,9 +952,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -947,9 +964,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -958,9 +976,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -972,9 +991,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -983,9 +1003,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -994,9 +1015,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1005,9 +1027,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1019,9 +1042,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 3, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1030,9 +1054,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 3, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1041,9 +1066,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 3, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1052,9 +1078,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 3, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1063,9 +1090,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 3, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1077,9 +1105,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 2, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1088,9 +1117,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 2, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj) 
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1099,9 +1129,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 2, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj)
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 
@@ -1110,9 +1141,10 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		prior = 2, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_monolith_base_main_building_restrictor",
-		predicate = function(obj) 
-		            	return obj:profile_name() == "monolit_regular"
-		            end
+		predicate = mb_predicate
+		            --function(obj)
+		            --	return obj:profile_name() == "monolit_regular"
+		            --end
 	}
 	table.insert(sj, t)
 end
