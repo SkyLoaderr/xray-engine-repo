@@ -368,6 +368,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
 	
 	properties["attendant_leader"]      =   xr_evaluators_id.sidor_attendant_eva + 0
 	properties["attendant_follow"]      =   xr_evaluators_id.sidor_attendant_eva + 1
+	properties["danger"]				= xr_evaluators_id.danger
 
     operators["attendant_wait"] 	    =   xr_actions_id.sidor_attendant_act + 0
     operators["attendant_follow"]       =   xr_actions_id.sidor_attendant_act + 1
@@ -376,25 +377,23 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     manager:add_evaluator (properties["attendant_follow"], this.evaluator_follow ("attendant_follow", storage))
 
     local action = this.action_wait ("attendant_wait", storage)
-    action:add_precondition     (world_property (stalker_ids.property_alive, true))
-	
-	-- added by Dima
-	if nil ~= stalker_ids.property_danger then
-		action:add_precondition	(world_property(stalker_ids.property_danger, false))
-	end
-		
-    action:add_precondition     (world_property (stalker_ids.property_enemy, false))
-    action:add_precondition     (world_property (properties["attendant_leader"], false))
-    action:add_effect           (world_property (properties["attendant_leader"], true))
+    action:add_precondition     (world_property(stalker_ids.property_alive, true))
+	action:add_precondition     (world_property(stalker_ids.property_enemy, false))
+	action:add_precondition		(world_property(properties["danger"],		true))
+    action:add_precondition     (world_property(properties["attendant_leader"], false))
+    action:add_effect           (world_property(properties["attendant_leader"], true))
+    action:add_effect			(world_property(stalker_ids.property_danger,		false))
     manager:add_action (operators["attendant_wait"], action)
    	xr_logic.subscribe_action_for_events (npc, storage, action)
 
     action = this.action_follow ("attendant_follow", storage)
     action:add_precondition     (world_property (stalker_ids.property_alive, true))
     action:add_precondition     (world_property (stalker_ids.property_enemy, false))
+    action:add_precondition		(world_property(properties["danger"],		true))
     action:add_precondition     (world_property (properties["attendant_leader"], true))
     action:add_precondition     (world_property (properties["attendant_follow"], true))
     action:add_effect           (world_property (properties["attendant_follow"], false))
+    action:add_effect			(world_property(stalker_ids.property_danger,	false))
     manager:add_action (operators["attendant_follow"], action)
    	xr_logic.subscribe_action_for_events (npc, storage, action)
     
