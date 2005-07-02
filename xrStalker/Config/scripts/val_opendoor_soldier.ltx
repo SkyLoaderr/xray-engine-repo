@@ -30,7 +30,7 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 ;meet = meet@def
-on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} walker@gulag
+on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil ;walker@gulag
 ;on_signal = fight | camper@fight
 ;combat_ignore_cond = always
 combat_ignore_cond = {!check_fighting(410)} ;{=fighting_actor -val_opendoor_plr_detected}
@@ -40,18 +40,18 @@ snd = speech
 anim = guard_rac
 ;meet = meet@def
 on_signal = sound_end | walker@leave
-on_info = {+val_opendoor_plr_detected} walker@gulag
+on_info = {+val_opendoor_plr_detected} nil ;walker@gulag
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 
 [walker@leave]
 path_walk = val_opendoor_soldier_leave_walk
 path_look = val_opendoor_soldier_leave_look
 ;meet = meet@def
-on_signal = arrived | walker@gulag
-on_info = {+val_opendoor_plr_detected} walker@gulag
+on_signal = arrived | nil ;walker@gulag
+on_info = {+val_opendoor_plr_detected} nil ;walker@gulag
 combat_ignore_cond = {=fighting_actor -val_opendoor_plr_detected}
 
-[walker@gulag]
-path_walk = val_soldiers_to_gulag_walk
-path_look = val_soldiers_to_gulag_look
-def_state_moving = rush
+;[walker@gulag]
+;path_walk = val_soldiers_to_gulag_walk
+;path_look = val_soldiers_to_gulag_look
+;def_state_moving = rush
