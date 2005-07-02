@@ -37,7 +37,8 @@ local state_lock_soft = 2
 local state_lock_hard = 3
 ----------------------------------------------------------------------------------------------------
 
-local def_open_limit = -100.0 * math.pi / 180.0
+--local def_open_limit = -100.0 * math.pi / 180.0
+local def_open_limit = 100.0
 local def_close_limit = 0.0
 
 local def_close_angle = 0.0
@@ -129,6 +130,18 @@ function action_gate:initialize(loading)
 		return
 	end
 	
+	local left_open_limit, right_open_limit
+	if self.st.la and self.st.la >= 0 and self.st.la <= 180 then
+	    left_open_limit = -utils.deg2rad(self.st.la)
+	else
+	    left_open_limit = -utils.deg2rad(def_open_limit)
+	end
+	if self.st.ra and self.st.ra >= 0 and self.st.ra <= 180 then
+	    right_open_limit = -utils.deg2rad(self.st.ra)
+	else
+	    right_open_limit = -utils.deg2rad(def_open_limit)
+	end
+	
 	if self.st.tip_open then
 		self.tip_open = string_table():get_by_id(self.st.tip_open)
 	else
@@ -185,15 +198,21 @@ function action_gate:initialize(loading)
 	    self.state = state_none
 	end
 	
-	self.left_open_limits = def_open_limit
-	self.left_close_limits = def_close_limit
-	self.right_open_limits = def_open_limit
-	self.right_close_limits = def_close_limit
+	self.left_open_limit = left_open_limit
+	self.left_close_limit = def_close_limit
+	self.right_open_limit = right_open_limit
+	self.right_close_limit = def_close_limit
 	
-	self:set_limits(1, def_open_limit, def_close_limit)
-	self:set_limits(2, def_open_limit, def_close_limit)
+	self:set_limits(1, left_open_limit, def_close_limit)
+	self:set_limits(2, right_open_limit, def_close_limit)
 
-    self.ph_shell:unblock_breaking()
+    self.breakable = self.st.breakable
+    
+    if self.breakable then
+        self.ph_shell:unblock_breaking()
+    else
+        self.ph_shell:block_breaking()
+    end
 	if self.st.locking == "stick" then
 	    printf("_bp: ph_gate.locking = stick")
 	    self.locking = state_lock_stick
@@ -208,7 +227,9 @@ function action_gate:initialize(loading)
 	        self.right_stick_dir = 0
 	    end
 	elseif self.st.locking == "soft" then
-	    self.ph_shell:block_breaking()
+	    if self.breakable then
+	        self.ph_shell:block_breaking()
+	    end
 
 	    printf("_bp: ph_gate.locking = soft")
 	    local angle_left, angle_right, force, velocity
@@ -233,7 +254,9 @@ function action_gate:initialize(loading)
 		    self.object:set_tip_text(self.tip_open)
 	    end
 	elseif self.st.locking == "hard" then
-	    self.ph_shell:block_breaking()
+	    if self.breakable then
+	        self.ph_shell:block_breaking()
+	    end
 	    
 	    printf("_bp: ph_gate.locking = hard")
 	    local angle_left
@@ -241,8 +264,8 @@ function action_gate:initialize(loading)
 
 	    self.locking = state_lock_hard
 	    if self.state == state_open then
-	        angle_left = def_open_limit
-	        angle_right = def_open_limit
+	        angle_left = left_open_limit
+	        angle_right = right_open_limit
 	        --self:open_gate(disable_snd)
 	    elseif self.state == state_closed then
 	        angle_left = def_close_limit
@@ -253,10 +276,10 @@ function action_gate:initialize(loading)
 	        --angle_left = self.joint_left:get_axis_angle(1)
 	        --angle_right = self.joint_right:get_axis_angle(1)
 	    end
-	    self.left_open_limits = angle_left
-	    self.left_close_limits = angle_left
-	    self.right_open_limits = angle_right
-	    self.right_close_limits = angle_right
+	    self.left_open_limit = angle_left
+	    self.left_close_limit = angle_left
+	    self.right_open_limit = angle_right
+	    self.right_close_limit = angle_right
 	
 	    self:set_limits(1, angle_left, angle_left)
 	    self:set_limits(2, angle_right, angle_right)
@@ -276,20 +299,20 @@ function action_gate:initialize(loading)
 	    --end
 	end
 --[[
-	self.left_open_limits, self.left_close_limits = 0, 0
-	self.left_open_limits, self.left_close_limits	= self.joint_left:get_limits(self.left_open_limits, self.left_close_limits, 0)
-	printf("_bp: left_limits(%f,%f)", self.left_open_limits, self.left_close_limits)
+	self.left_open_limit, self.left_close_limit = 0, 0
+	self.left_open_limit, self.left_close_limit	= self.joint_left:get_limits(self.left_open_limit, self.left_close_limit, 0)
+	printf("_bp: left_limits(%f,%f)", self.left_open_limit, self.left_close_limit)
 
-	self.right_open_limits, self.right_close_limits = 0, 0
-	self.right_open_limits, self.right_close_limits	= self.joint_right:get_limits(self.right_open_limits, self.right_close_limits, 0)
-	printf("_bp: right_limits(%f,%f)", self.right_open_limits, self.right_close_limits)
+	self.right_open_limit, self.right_close_limit = 0, 0
+	self.right_open_limit, self.right_close_limit	= self.joint_right:get_limits(self.right_open_limit, self.right_close_limit, 0)
+	printf("_bp: right_limits(%f,%f)", self.right_open_limit, self.right_close_limit)
 --]]
 	self.soundless_block = false
 
 	self.object:set_nonscript_usable(false)
 	-- FIXME: перевести под универсальную схему
-	--self.object:set_callback(callback.hit, self.hit_callback, self)
-	--self.object:set_callback(callback.use_object, self.use_callback, self)
+	self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.object:set_callback(callback.use_object, self.use_callback, self)
 
 	if self.st.snd_init then
 		self:gate_play_snd_from_set(self.st.snd_init)
@@ -400,9 +423,9 @@ function action_gate:is_closed()
 	local angle_left = self.joint_left:get_axis_angle(1)
 	local angle_right = self.joint_right:get_axis_angle(1)
 	printf("_bp: action_gate:update(): left: angle %f limits %f, %f; right: angle %f limits %f, %f",
-		angle_left, self.left_open_limits, self.left_close_limits,
-		angle_right, self.right_open_limits, self.right_close_limits)
-	if angle_left <= self.left_open_limits and angle_right <= self.right_open_limits then
+		angle_left, self.left_open_limit, self.left_close_limit,
+		angle_right, self.right_open_limit, self.right_close_limit)
+	if angle_left <= self.left_open_limit and angle_right <= self.right_open_limit then
 		printf("_bp: close_check(): true")
 		return true
 	end
@@ -452,8 +475,8 @@ end
 
 -- 
 function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
-    printf("_bp: action_gate:hit_callback()")
-	if self.locking == state_lock_hard or self.locking == state_lock_soft then
+    printf("gate <hit>: action_gate:hit_callback()")
+	if self.locking == state_lock_hard then
 		if self.st.snd_open_start then
 			self:gate_play_snd_from_set(self.st.snd_open_start)
 		end
@@ -469,10 +492,10 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 	    end
 
 	    local angle_left = self:get_angle(1)
-	    if angle_left > self.left_open_limits - def_stick_angle then
+	    if angle_left > self.left_open_limit - def_stick_angle then
 	        force = def_open_force
 	        velocity = -def_open_velocity
-	    elseif angle_left < self.left_close_limits + def_stick_angle then
+	    elseif angle_left < self.left_close_limit + def_stick_angle then
 	        force = def_close_force
 	        velocity = def_close_velocity
 	        stick_close = true
@@ -484,10 +507,10 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 	    --self.joint_left:set_max_force_and_velocity(force, velocity, 1)
 
 	    local angle_right = self:get_angle(2)
-	    if angle_right > self.right_open_limits - def_stick_angle then
+	    if angle_right > self.right_open_limit - def_stick_angle then
 	        force = def_open_force
 	        velocity = -def_open_velocity
-	    elseif angle_right < self.right_close_limits + def_stick_angle then
+	    elseif angle_right < self.right_close_limit + def_stick_angle then
 	        force = def_close_force
 	        velocity = def_close_velocity
 	        if stick_close and self.tip_open then
@@ -499,6 +522,26 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 	    end
 	    self:set_max_fv(2, force, velocity)
 	    --self.joint_right:set_max_force_and_velocity(force, velocity, 1)
+	elseif self.state == state_closed and self.locking == state_lock_soft then
+		if self.st.snd_open_start then
+			self:gate_play_snd_from_set(self.st.snd_open_start)
+		end
+	    printf("gate <locking>: al(%f,%f) ar(%f,%f) max(%f)",
+	            self:get_angle(1), self.left_close_limit,
+	            self:get_angle(2), self.right_close_limit,
+	            def_max_close_angle_diff)
+	    if self:get_angle(1) > self.left_close_limit + def_max_close_angle_diff or
+	       self:get_angle(2) > self.right_close_limit + def_max_close_angle_diff then
+	        printf("gate <locking>: changed from soft to stick.")
+	        
+	        if self.breakable then
+	            self.ph_shell:unblock_breaking()
+	        end
+
+	        self.locking = state_lock_stick
+	        self:set_max_fv(1, 0, 0)
+	        self:set_max_fv(2, 0, 0)
+	    end
 	end
 end
 
@@ -525,8 +568,8 @@ function action_gate:use_callback(obj, who)
 	local angle_left = self:get_angle(1)
 	local angle_right = self:get_angle(1)
 
-	--if angle_left - self.left_open_limits < self.left_close_limits - angle_left and
-	--   angle_right - self.right_open_limits < self.right_close_limits - angle_right then
+	--if angle_left - self.left_open_limit < self.left_close_limit - angle_left and
+	--   angle_right - self.right_open_limit < self.right_close_limit - angle_right then
 	if self.bone_id[1] and angle_left < def_close_angle - def_max_close_angle_diff or
 	   self.bone_id[2] and angle_right < def_close_angle - def_max_close_angle_diff then
 		self:close_gate(false)
@@ -552,6 +595,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.state     = utils.cfg_get_string(ini, section, "state", npc, false, "", "none")
 	st.locking   = utils.cfg_get_string(ini, section, "locking", npc, false, "", "none")
+	st.la        = utils.cfg_get_number(ini, section, "left_limit", npc, false, def_open_limit)
+	st.ra        = utils.cfg_get_number(ini, section, "right_limit", npc, false, def_open_limit)
+	st.breakable = utils.cfg_get_bool(ini, section, "breakable", npc, false, true)
 
 	--st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	--st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
