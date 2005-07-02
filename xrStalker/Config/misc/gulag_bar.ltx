@@ -2,122 +2,48 @@
 id = bar_dolg_base_guard_acces
 
 [logic1@bar_dolg_general_guard_left]
-active = zoneguard1@bar_dolg_general_guard_left
+active = camper@bar_dolg_general_guard_left
 actor_dialogs = actor_dialogs
 
-[zoneguard1@bar_dolg_general_guard_left]
+[camper@bar_dolg_general_guard_left]
 path_walk = guard_left_walk
 path_look = guard_left_look
-team = bar_dolg_general_guard_team1
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
-;snd_greet = bar_dolg_base_guard_no_talk
-on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard111@bar_dolg_general_guard_left
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+radius = 5
+meet = meet@bar_dolg_general_guard
 
-[zoneguard11@bar_dolg_general_guard_left_friend]
-path_walk = guard_left_walk
-path_look = guard_left_look
-team = bar_dolg_general_guard_team1
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
+[meet@bar_dolg_general_guard]
 meet_dialog = bar_dolg_base_guard_start
-anim = guard
-
-[zoneguard111@bar_dolg_general_guard_left]
-path_walk = guard_left_walk
-path_look = guard_left_look
-team = bar_dolg_general_guard_team1
-zone_guard = guard_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
+use = true
+use_wpn = true
+zones = bar_dolg_general_warn_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
 
 
 [logic2@bar_dolg_general_guard_right]
-active = zoneguard2@bar_dolg_general_guard_right
+active = camper@bar_dolg_general_guard_right
 actor_dialogs = actor_dialogs
 
-[zoneguard2@bar_dolg_general_guard_right]
+[camper@bar_dolg_general_guard_right]
 path_walk = guard_right_walk
 path_look = guard_right_look
-team = bar_dolg_general_guard_team2
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
-;snd_greet = bar_dolg_base_guard_no_talk
-on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard121@bar_dolg_general_guard_right
-
-[zoneguard12@bar_dolg_general_guard_right_friend]
-path_walk = guard_right_walk
-path_look = guard_right_look
-team = bar_dolg_general_guard_team2
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-anim = guard
-
-[zoneguard121@bar_dolg_general_guard_right]
-path_walk = guard_right_walk
-path_look = guard_right_look
-team = bar_dolg_general_guard_team2
-zone_guard = guard_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
-
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+radius = 5
+meet = meet@bar_dolg_general_guard
 
 
 [logic3@bar_dolg_general_guard_center]
-active = zoneguard3@bar_dolg_general_guard_center
+active = camper@bar_dolg_general_guard_center
 actor_dialogs = actor_dialogs
 
-[zoneguard3@bar_dolg_general_guard_center]
+[camper@bar_dolg_general_guard_center]
 path_walk = guard_center_walk
 path_look = guard_center_look
-team = bar_dolg_general_guard_team3
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center_friend
-snd_greet = bar_dolg_base_guard_backoff
-on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard131@bar_dolg_general_guard_center
-
-[zoneguard13@bar_dolg_general_guard_center_friend]
-path_walk = guard_center_walk
-path_look = guard_center_look
-team = bar_dolg_general_guard_team3
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-anim = guard
-
-[zoneguard131@bar_dolg_general_guard_center]
-path_walk = guard_center_walk
-path_look = guard_center_look
-team = bar_dolg_general_guard_team3
-zone_guard = guard_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center_friend
-
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+radius = 5
+meet = meet@bar_dolg_general_guard
 
 
 [logic4@bar_dolg_general_kamp]
@@ -205,57 +131,33 @@ def_state_campering_fire = hide_fire
 ; ÂÅÒÅĞÀÍÛ ÄÎËÃÀ
 
 [logic1@bar_dolg_veterans_guard_bunker1]
-active = zoneguard4@bar_dolg_veterans_guard_bunker1
+active = camper@bar_dolg_veterans_guard_bunker
 actor_dialogs = actor_dialogs
 
-[zoneguard4@bar_dolg_veterans_guard_bunker1]
+[camper@bar_dolg_veterans_guard_bunker]
 path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
-team = bar_dolg_guard_bunker_team
-zone_guard = bunker_kill_zone
-zone_warn = bunker_warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start 
-on_info = {+bar_dolg_community_leader} zoneguard44@bar_dolg_veterans_guard_bunker1_friend
-snd_greet = bar_dolg_base_guard_backoff
+radius = 5
+meet = meet@bar_dolg_veterans_guard_bunker
 
-[zoneguard44@bar_dolg_veterans_guard_bunker1_friend]
-path_walk = guard_bunker_1_walk
-path_look = guard_bunker_1_look
-team = bar_dolg_guard_bunker_team
-zone_warn = bunker_warn_zone
-no_move = true
-meet_talk_enabled = true
+[meet@bar_dolg_veterans_guard_bunker]
 meet_dialog = bar_dolg_guard_bunker_start 
-anim = guard
+use = true
+use_wpn = true
+zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
+
 
 
 [logic2@bar_dolg_veterans_guard_bunker2]
-active = zoneguard5@bar_dolg_veterans_guard_bunker2
+active = camper2@bar_dolg_veterans_guard_bunker
 actor_dialogs = actor_dialogs
 
-[zoneguard5@bar_dolg_veterans_guard_bunker2]
+[camper2@bar_dolg_veterans_guard_bunker]
 path_walk = guard_bunker_2_walk
 path_look = guard_bunker_2_look
-team = bar_dolg_guard_bunker_team1
-zone_guard = bunker_kill_zone
-zone_warn = bunker_warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start
-on_info = {+bar_dolg_community_leader} zoneguard55@bar_dolg_veterans_guard_bunker2_friend
-;snd_greet = bar_dolg_base_guard_no_talk
+radius = 5
+meet = meet@bar_dolg_veterans_guard_bunker
 
-[zoneguard55@bar_dolg_veterans_guard_bunker2_friend]
-path_walk = guard_bunker_2_walk
-path_look = guard_bunker_2_look
-team = bar_dolg_guard_bunker_team1
-zone_warn = bunker_warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start 
-anim = guard
 
 
 [logic7@bar_dolg_veterans_bunker]
