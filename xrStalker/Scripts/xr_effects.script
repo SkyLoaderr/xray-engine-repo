@@ -143,7 +143,7 @@ end
 
 function gar_hellcar_victory(actor, npc)
 	if actor:has_info("gar_hellcar_help") then
-		news_manager.send_tip( actor, "gar_hellcar_victory", 0, "stalker", 0)
+		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
 	end
 end
 	
