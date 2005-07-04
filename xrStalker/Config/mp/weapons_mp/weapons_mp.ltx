@@ -4,7 +4,6 @@ scope_name 					= mp_wpn_addon_scope
 silencer_name  				= mp_wpn_addon_silencer
 grenade_launcher_name 		= mp_wpn_addon_grenade_launcher
 grenade_class				= mp_ammo_vog-25, mp_ammo_vog-25p
-
 ;params of weapon recoil
 fire_dispersion_base			= 0.05		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
@@ -32,14 +31,12 @@ silencer_hit_impulse	 	= 120
 silencer_fire_distance   	= 250
 silencer_bullet_speed	 	= 600
 
-
 [mp_wpn_ak74]:wpn_ak74
 $spawn              		= ""
 scope_name 					= mp_wpn_addon_scope
 silencer_name  				= mp_wpn_addon_silencer
 grenade_launcher_name 		= mp_wpn_addon_grenade_launcher
 grenade_class				= mp_ammo_vog-25, mp_ammo_vog-25p
-
 ;-----------------------------------------------------------------------------------
 ;params of weapon recoil
 fire_dispersion_base			= 0.05		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
@@ -80,6 +77,9 @@ silencer_name  				= mp_wpn_addon_silencer
 [mp_wpn_beretta]:wpn_beretta
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+rpm                      	= 275
+fire_dispersion_base		= 0.13
+silencer_hit_power       	= 40
 
 [mp_wpn_binoc]:wpn_binoc
 $spawn              	= ""
@@ -91,10 +91,13 @@ $spawn              	= ""
 [mp_wpn_colt1911]:wpn_colt1911
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+fire_dispersion_base		= 0.12
+silencer_hit_power       	= 55
 
 [mp_wpn_desert_eagle]:wpn_desert_eagle
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+silencer_hit_power       	= 72
 
 [mp_wpn_fn2000]:wpn_fn2000
 $spawn              	= ""
@@ -102,6 +105,7 @@ $spawn              	= ""
 [mp_wpn_fort]:wpn_fort
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+silencer_hit_power       	= 30
 
 [mp_wpn_gauss]:wpn_gauss
 $spawn              	= ""
@@ -115,6 +119,8 @@ grenade_class				= mp_ammo_vog-25, mp_ammo_vog-25p
 [mp_wpn_hpsa]:wpn_hpsa
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+fire_dispersion_base		= 0.14
+silencer_hit_power       	= 32
 
 [mp_wpn_knife]:wpn_knife
 $spawn              	= ""
@@ -139,6 +145,7 @@ $spawn              	= ""
 [mp_wpn_pm]:wpn_pm
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+silencer_hit_power       	= 30
 
 [mp_wpn_rg-6]:wpn_rg-6
 $spawn              	= ""
@@ -154,6 +161,8 @@ $spawn              	= ""
 [mp_wpn_sig220]:wpn_sig220
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+fire_dispersion_base		= 0.12
+silencer_hit_power       	= 53
 
 [mp_wpn_sig550]:wpn_sig550
 $spawn              	= ""
@@ -168,8 +177,13 @@ $spawn              	= ""
 
 [mp_wpn_svd]:wpn_svd
 $spawn              	= ""
+hit_power               = 310
+sprint_allowed			= false
+
 [mp_wpn_svu]:wpn_svu
 $spawn              	= ""
+sprint_allowed			= false
+hit_power               = 250
 
 [mp_wpn_toz34]:wpn_toz34
 $spawn              	= ""
@@ -177,6 +191,8 @@ $spawn              	= ""
 [mp_wpn_usp]:wpn_usp
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+rpm                      	= 325
+silencer_hit_power       	= 53
 
 [mp_wpn_val]:wpn_val
 $spawn              	= ""
@@ -187,6 +203,9 @@ $spawn              	= ""
 [mp_wpn_walther]:wpn_walther
 $spawn              	= ""
 silencer_name  				= mp_wpn_addon_silencer
+rpm                      	= 280
+fire_dispersion_base		= 0.13
+silencer_hit_power       	= 40
 
 [mp_wpn_fake_missile]:wpn_fake_missile
 $spawn              	= ""
