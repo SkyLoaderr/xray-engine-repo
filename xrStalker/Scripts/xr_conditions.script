@@ -149,13 +149,19 @@ end
 
 -- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
 function check_fighting(actor, npc, p)
-	printf("_bp: check_fighting(%d)", v)
-	for i, v in pairs(p) do
-	    enemy = db.storage[npc:id()].enemy
-		if enemy and type(v) == 'number' and enemy:story_id() == v then
-			printf("TRUE")
-			return true
-		end
+	local enemy = db.storage[npc:id()].enemy
+	local sid
+	if enemy and enemy:alive() then
+	    sid = enemy:story_id()
+	    for i, v in pairs(p) do
+	        --printf("_bp: %s.check_fighting(%d)", npc:name(), v)
+		    if type(v) == 'number' and sid == v then
+			    --printf("TRUE")
+			    return true
+		    --else
+			--    printf("FALSE")
+		    end
+	    end
 	end
 	--printf("_bp: check_fighting() = false")
 	return false
