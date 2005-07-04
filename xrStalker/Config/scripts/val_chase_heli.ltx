@@ -2,35 +2,35 @@
 active = heli_move@wait
 
 [heli_move@wait]
-path_move = val_chase_heli_wait_move
+path_move    = val_chase_heli_wait_move
 engine_sound = false
-on_info = {+val_exit_gate_show} heli_move@ready
+on_info      = {+val_exit_gate_show} heli_move@ready
 
 [heli_move@ready]
-path_move = val_chase_heli_ready_move
-path_look = val_chase_heli_ready_look
-engine_sound = true
-combat_enemy = nil
+path_move         = val_chase_heli_ready_move
+path_look         = val_chase_heli_ready_look
+engine_sound      = true
+combat_enemy      = nil
 combat_use_rocket = false
-combat_use_mgun = true
-;invulnerable = true
-on_info = {+val_chase_plr_in_car} heli_move@start
+combat_use_mgun   = true
+;invulnerable     = true
+on_info           = {+val_chase_plr_in_car} heli_move@start
 
 [heli_move@start]
-path_move = val_chase_heli_start_move
-path_look = val_chase_heli_start_look
-engine_sound = true
-combat_enemy = nil
+path_move         = val_chase_heli_start_move
+path_look         = val_chase_heli_start_look
+engine_sound      = true
+combat_enemy      = nil
 combat_use_rocket = false
-combat_use_mgun = true
-;invulnerable = true
-;on_info = {+val_stairs_start} heli_move@start
-on_signal = arrived | heli_move@chase
+combat_use_mgun   = true
+;invulnerable     = true
+;on_info          = {+val_stairs_start} heli_move@start
+on_signal         = arrived | heli_move@chase
 
 [heli_move@chase]
-path_move = val_chase_heli_chase_move
-engine_sound = true
-combat_enemy = actor
+path_move         = val_chase_heli_chase_move
+engine_sound      = true
+combat_enemy      = actor
 combat_use_rocket = true
-combat_use_mgun = false
-;invulnerable = true
+combat_use_mgun   = false
+;invulnerable     = true
