@@ -23,6 +23,7 @@ class CUIAnimatedStatic;
 class CUIArtefactPanel;
 class CServerList;
 class CUIMapList;
+class CUITrackBar;
 
 class CScriptXmlInit {
 public:
@@ -64,6 +65,7 @@ public:
 	CUITabControl*		InitTab(LPCSTR path, CUIWindow* parent);
 	CServerList*		InitServerList(LPCSTR path, CUIWindow* parent);
 	CUIMapList*			InitMapList(LPCSTR path, CUIWindow* parent);
+	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
 
 protected:
 	CUIXml	m_xml;

@@ -36,6 +36,19 @@ void CUIOptionsItem::SaveOptIntegerValue(int val){
 	Console->Execute(command.c_str());
 }
 
+void CUIOptionsItem::GetOptFloatValue(float& val, float& min, float& max){
+	Console->GetFloat(m_entry.c_str(), val, min, max);
+}
+
+void CUIOptionsItem::SaveOptFloatValue(float val){
+	char buf[64];
+	xr_string command = m_entry;
+	command += " ";
+	sprintf(buf,"%f",val);
+	command += buf;
+	Console->Execute(command.c_str());
+}
+
 bool CUIOptionsItem::GetOptBoolValue(){
 	BOOL val;
 	Console->GetBool(m_entry.c_str(), val);

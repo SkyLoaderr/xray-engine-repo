@@ -24,7 +24,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 		reverse				(false),
 		kRev				(0.0f)
 {
-	prevGlobalTime	= Device.TimerAsyncMM();
+	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	currColor		= 0xffff0000;
 }
 
@@ -36,7 +36,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(u32 *colorToModify)
 	reverse				(false),
 	kRev				(0.0f)
 {
-	prevGlobalTime	= Device.TimerAsyncMM();
+	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	color			= colorToModify;
 	currColor		= 0xffff0000;
 }
@@ -51,7 +51,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName
 		kRev				(0.0f)
 {
 	VERIFY(colorAnimation);
-	prevGlobalTime	= Device.TimerAsyncMM();
+	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	currColor		= 0xffff0000;
 }
 
@@ -91,7 +91,7 @@ void CUIColorAnimatorWrapper::Update()
 				//Msg("name: %s, color: %x, frame: %d", *colorAnimation->cName,currColor, currFrame);
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
-				animationTime	+= Device.TimerAsyncMM() - prevGlobalTime;
+				animationTime	+= Device.TimerAsyncMM()/1000.0f - prevGlobalTime;
 			}
 			else
 			{
@@ -114,14 +114,14 @@ void CUIColorAnimatorWrapper::Update()
 		}
 	}
 
-	prevGlobalTime = Device.TimerAsyncMM();
+	prevGlobalTime = Device.TimerAsyncMM()/1000.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIColorAnimatorWrapper::Reset()
 {
-	prevGlobalTime	= Device.TimerAsyncMM();
+	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	animationTime	= 0;
 	isDone			= false;
 }
@@ -159,7 +159,7 @@ void CUIColorAnimatorWrapper::Reverese(bool value)
 }
 
 void CUIColorAnimatorWrapper::GoToEnd(){
-	prevGlobalTime	= Device.TimerAsyncMM();
+	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	this->currFrame = colorAnimation->iFrameCount;
 	animationTime = iFloor(colorAnimation->iFrameCount / colorAnimation->fFPS);
 	this->isDone = false;

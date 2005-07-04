@@ -107,10 +107,10 @@ sPoly2D* C2DFrustum::ClipPoly	(sPoly2D& S, sPoly2D& D) const
 CMainUI::CMainUI	()
 {
 	m_Flags.zero				();
-	m_pOptionsManager			= xr_new<CUIOptionsManager>();
-	m_pFontManager				= xr_new<CFontManager>();
-	m_pUICursor					= xr_new<CUICursor>();
 	m_startDialog				= NULL;
+	m_pUICursor					= xr_new<CUICursor>();
+	m_pFontManager				= xr_new<CFontManager>();
+	m_pOptionsManager			= xr_new<CUIOptionsManager>();	
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();
 	// only temp
@@ -125,6 +125,7 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_startDialog);
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
+	xr_delete						(m_pOptionsManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
 }
 void CMainUI::Activate	(bool bActivate)

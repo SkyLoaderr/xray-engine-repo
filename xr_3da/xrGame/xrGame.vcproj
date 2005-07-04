@@ -10411,6 +10411,22 @@
 						RelativePath=".\ui\UISpinText.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="TrackBar"
+					Filter="">
+					<File
+						RelativePath=".\ui\UITrackBar.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITrackBar.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITrackButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITrackButton.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"

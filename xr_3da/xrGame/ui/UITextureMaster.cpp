@@ -64,7 +64,6 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 			{				
 				tc->CreateShader((*sht_it).first.c_str());	// texture file name
 				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
-//				tc->SetOriginalRect((*reg_it).second);    // region on texture
 				return;
 			}
 		}
@@ -79,4 +78,38 @@ void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureCon
 	xr_string tx = texture_name;
 	InitTexture(tx, tc);
 //	Msg("----InitTexture[%d]",T.GetElapsed_ms());
+}
+
+float CUITextureMaster::GetTextureHeight(const char* texture_name){
+	if (IsSh(texture_name))
+	{
+		shared_textures_it	sht_it;
+		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+		{
+			regions_it reg_it = (*sht_it).second.find(texture_name);
+			if (reg_it != (*sht_it).second.end())
+			{				
+				return (*reg_it).second.height();
+			}
+		}
+	}
+	R_ASSERT3(false,"CUITextureMaster::GetTextureHeight Can't find texture", texture_name);
+	return 0;
+}
+
+float CUITextureMaster::GetTextureWidth(const char* texture_name){
+	if (IsSh(texture_name))
+	{
+		shared_textures_it	sht_it;
+		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+		{
+			regions_it reg_it = (*sht_it).second.find(texture_name);
+			if (reg_it != (*sht_it).second.end())
+			{				
+				return (*reg_it).second.width();
+			}
+		}
+	}
+	R_ASSERT3(false,"CUITextureMaster::GetTextureHeight Can't find texture", texture_name);
+	return 0;
 }

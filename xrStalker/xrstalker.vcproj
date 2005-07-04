@@ -1022,6 +1022,9 @@
 					RelativePath=".\Config\ui\ui_mm_mp.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_mm_opt.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\zone_map.xml">
 				</File>
 				<Filter
@@ -1633,25 +1636,22 @@
 					Name="options"
 					Filter="">
 					<File
-						RelativePath=".\scripts\ui_options_base_tab.script">
+						RelativePath=".\Scripts\ui_mm_opt_controls.script">
 					</File>
 					<File
-						RelativePath=".\scripts\ui_options_controls_tab.script">
+						RelativePath=".\Scripts\ui_mm_opt_gameplay.script">
 					</File>
 					<File
-						RelativePath=".\scripts\ui_options_dialog.script">
+						RelativePath=".\Scripts\ui_mm_opt_main.script">
 					</File>
 					<File
-						RelativePath=".\scripts\ui_options_game_tab.script">
+						RelativePath=".\Scripts\ui_mm_opt_sound.script">
 					</File>
 					<File
-						RelativePath=".\Scripts\ui_options_profiles_tab.script">
+						RelativePath=".\Scripts\ui_mm_opt_video.script">
 					</File>
 					<File
-						RelativePath=".\scripts\ui_options_sound_tab.script">
-					</File>
-					<File
-						RelativePath=".\scripts\ui_options_video_tab.script">
+						RelativePath=".\Scripts\ui_mm_opt_video_adv.script">
 					</File>
 				</Filter>
 			</Filter>

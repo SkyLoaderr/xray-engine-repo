@@ -1,0 +1,36 @@
+class "opt_video" (CUIWindow)
+
+function opt_video:__init() super()
+end
+
+function opt_video:__finalize()
+
+end
+
+function opt_video:InitControls(x, y, xml, handler)
+
+	self:Init(x,y, 738, 416)
+	self:SetAutoDelete(true)
+	
+	self.bk = xml:InitFrame("frame", self)
+
+	xml:InitLabel("tab_video:cap_preset",			self)
+	xml:InitLabel("tab_video:cap_resolution",		self)
+	xml:InitLabel("tab_video:cap_gamma",			self)
+	xml:InitLabel("tab_video:cap_contrast",			self)
+	xml:InitLabel("tab_video:cap_brightness",		self)
+	
+	xml:InitCheck("tab_video:check_fullscreen",		self)
+	xml:InitCheck("tab_video:check_no_vsync",		self)
+	
+	xml:InitTrackBar("tab_video:track_gamma",		self)
+	xml:InitTrackBar("tab_video:track_contrast",	self)
+	local t = xml:InitTrackBar("tab_video:track_brightness",	self)
+	t:Enable(false)
+	
+	
+	local btn = xml:InitSpinText("tab_video:list_presets",	self)
+	btn:Enable(false)
+	xml:InitSpinText("tab_video:list_resolution",	self)
+	
+end

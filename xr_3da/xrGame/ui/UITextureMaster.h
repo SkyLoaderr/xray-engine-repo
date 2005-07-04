@@ -18,6 +18,8 @@ public:
 
 	static void InitTexture(const char* texture_name,		IUISimpleTextureControl* tc);
 	static void InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc);
+	static float GetTextureHeight(const char* texture_name);
+	static float GetTextureWidth(const char* texture_name);
 
 protected:
 	IC	static bool IsSh					(const xr_string& texture_name);

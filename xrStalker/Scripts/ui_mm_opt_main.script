@@ -1,7 +1,109 @@
 -- file:		UI_MM_OPT_MAIN.script
 -- created:		01.07.2005
--- description:		options dialog
+-- description:	options dialog
 -- author:		Serge Vynnychenko
 --
 
+class "options_dialog" (CUIScriptWnd)
+
+function options_dialog:__init() super()
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+   
+   self:InitControls()
+   self:InitCallBacks()
+end
+
+function options_dialog:__finalize()
+
+end
+
+function options_dialog:InitControls()	
+	self:Init(0,0,1024,768)
+	self:Enable(true)
+	
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_mm_opt.xml")
+	
+	xml:InitStatic("background", self)
+	self.dialog = xml:InitStatic("main_dialog:dialog", self)
+		
+	self.dlg_video = ui_mm_opt_video.opt_video()
+	self.dlg_video:InitControls(55,74, xml, self)
+	self.dialog:AttachChild(self.dlg_video)
+--[[		
+	self.dlg_join = ui_mm_mp_join.mp_join()
+	self.dlg_join:InitControls(121,224, xml, self)
+	self.bk:AttachChild(self.dlg_join)
+	
+	self.dlg_options = ui_mm_mp_options.mp_options()
+	self.dlg_options:InitControls(121,224, xml, self)
+	self.dlg_options:Show(false)
+	self.bk:AttachChild(self.dlg_options)
+
+	self.dlg_server = ui_mm_mp_server.mp_server()
+	self.dlg_server:InitControls(121,224, xml, self)
+	self.dlg_server:Show(false)
+	self.bk:AttachChild(self.dlg_server)
+
+	btn = xml:Init3tButton("btn_create", self)
+	self:Register(btn, "btn_create")
+	self.btn_create = btn
+	btn:Enable(false)
+	
+	btn = xml:Init3tButton("btn_join", self)
+	self:Register(btn, "btn_join")
+	self.btn_join = btn
+	
+	btn = xml:Init3tButton("btn_cancel", self)
+	self:Register(btn, "btn_cancel")
+	]]
+	
+	self.tab = xml:InitTab("main_dialog:tab", self.dialog)
+	self:Register(self.tab, "tab")
+	
+	-- SET DEFAULT VALUES FOR CONTROLS	
+	local opt = COptionsManager()
+	opt:SetCurrentValues("mm_opt_video")
+end
+
+function options_dialog:InitCallBacks()
+	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)	
+end
+
+function options_dialog:OnTabChange()
+--[[
+	self.dlg_join:Show(false)
+	self.dlg_options:Show(false)
+	self.dlg_server:Show(false)
+	self.btn_join:Enable(false)
+	self.btn_create:Enable(false)
+
+	local i = self.tab:GetActiveIndex()
+	if i == 0 then
+		self.dlg_join:Show(true)
+		self.btn_join:Enable(true)
+	elseif i == 2 then
+		self.dlg_options:Show(true)
+	else
+		self.dlg_server:Show(true)
+		self.btn_create:Enable(true)
+	end
+	]]
+end
+
+function options_dialog:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	
+	local bind = dik_to_bind(dik)
+	local console = get_console()
+	
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
+			self:GetHolder():start_stop_menu(self,true)
+		end	
+	
+	end
+   
+	return true
+end
 
